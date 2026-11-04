@@ -198,6 +198,66 @@ RSpec.describe ReportBuilder::Report do
     end
   end
 
+  describe '#fail_chat_turn!' do
+    let(:report) { create(:report) }
+    let(:chat) { report.chat!(locale: 'en') }
+
+    it 'tells the admin the turn failed and lets them ask again' do
+      chat.update!(status: 'running', turn_started_at: Time.current)
+
+      report.fail_chat_turn!('turn_failed')
+
+      expect(chat.reload).to have_attributes(status: 'failed', last_error_code: 'turn_failed')
+      expect(chat.messages.last).to have_attributes(
+        role: 'assistant', content: described_class::FAILED_TURN_REPLY, displayed: true, replayed: false
+      )
+    end
+
+    it 'leaves a chat alone that is not waiting for an answer' do
+      expect { report.fail_chat_turn!('turn_failed') }.not_to change { chat.reload.messages.count }
+      expect(chat).to be_idle
+    end
+  end
+
+  describe '#recover_lost_runs!' do
+    let(:report) { create(:report) }
+    let(:chat) { report.chat!(locale: 'en') }
+    let(:lost) { described_class::RUN_ASSUMED_LOST_AFTER.ago - 1.minute }
+
+    it 'fails a chat turn whose job never came back, and the run it left going' do
+      chat.update!(status: 'running', turn_started_at: lost)
+      run = create(:report_run, report: report, kind: 'revision', stopped_because: nil, created_at: lost)
+
+      report.recover_lost_runs!
+
+      expect(chat.reload).to have_attributes(status: 'failed', last_error_code: 'turn_timed_out')
+      expect(run.reload.stopped_because).to eq 'failed'
+    end
+
+    # A generation is not a chat turn, but a lost one is offered to stop forever all the same.
+    it 'fails a lost generation too' do
+      run = create(:report_run, report: report, stopped_because: nil, created_at: lost)
+
+      report.recover_lost_runs!
+
+      expect(run.reload.stopped_because).to eq 'failed'
+    end
+
+    it 'leaves a turn alone that may still be going' do
+      chat.update!(status: 'running', turn_started_at: 10.minutes.ago)
+      run = create(:report_run, report: report, kind: 'revision', stopped_because: nil, created_at: 10.minutes.ago)
+
+      report.recover_lost_runs!
+
+      expect(chat.reload).to be_running
+      expect(run.reload).to be_running
+    end
+
+    it 'does nothing for a report nobody has chatted about' do
+      expect { report.recover_lost_runs! }.not_to raise_error
+    end
+  end
+
   describe 'deletion' do
     it 'takes its ready notifications with it, rather than being refused by the foreign key' do
       report = create(:report, :with_phase)

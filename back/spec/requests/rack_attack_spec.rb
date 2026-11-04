@@ -807,6 +807,42 @@ describe 'Rack::Attack' do
     end
   end
 
+  describe 'report chat turns' do
+    let(:path) { "/web_api/v1/reports/#{SecureRandom.uuid}/chat" }
+
+    def ask(token: nil, ip: '1.2.3.4')
+      post(path, params: '{ "message": "shorter" }', headers: json_headers(token: token, ip: ip))
+    end
+
+    it 'limits turns for the same user to 30 in an hour, whatever the IP' do
+      freeze_time do
+        30.times { |i| ask(token: token, ip: "10.0.0.#{i}") }
+        expect(status).not_to eq(429)
+
+        ask(token: token, ip: '10.0.1.1')
+        expect(status).to eq(429)
+
+        ask(token: AuthToken::AuthToken.new(payload: create(:user).to_token_payload).token, ip: '10.0.1.2')
+        expect(status).not_to eq(429)
+      end
+
+      travel_to(1.hour.from_now) do
+        ask(token: token, ip: '10.0.1.1')
+        expect(status).not_to eq(429)
+      end
+    end
+
+    it 'limits turns from the same IP to 60 in an hour' do
+      freeze_time do
+        60.times { ask }
+        expect(status).not_to eq(429)
+
+        ask
+        expect(status).to eq(429)
+      end
+    end
+  end
+
   describe 'spam reports' do
     let(:headers) { { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => '1.2.3.4' } }
     let(:params) { '{ "spam_report": { "reason_code": "other", "other_reason": "spam" } }' }

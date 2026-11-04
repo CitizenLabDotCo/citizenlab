@@ -6,7 +6,7 @@ module ReportBuilder
   #
   # It runs as a job for the same reason generation does — a turn that adds a chart
   # is a minute of model calls and SQL — and the panel follows it by polling the
-  # chat, which is pending for as long as the last message it shows is the admin's.
+  # chat, which is pending for as long as the turn is running.
   class ReviseReportJob < ApplicationJob
     include Jobs::TrackableJob
 
@@ -19,6 +19,11 @@ module ReportBuilder
     #   have to save before asking for a change. Falls back to the stored layout for
     #   a caller that has no editor open.
     def run(report, instruction:, locale:, craftjs_json: nil)
+      # The turn was given up on while this job waited (see Report#recover_lost_runs!),
+      # and the admin has been told it failed. Running it now would answer a question
+      # they may have asked again since.
+      return mark_as_complete! unless report.chat&.running?
+
       tracker.update!(progress: 0, error_count: 0)
       run_record = Run.create!(conversation: report.chat!(locale: locale), kind: 'revision')
       composer = Composition::ReportComposer.new(
@@ -52,6 +57,7 @@ module ReportBuilder
       run_record.append_message!(
         role: 'assistant', content: reply_for(result, composer.stopped_because), replayed: false
       )
+      report.chat.update!(status: 'idle', last_error_code: nil)
 
       track_progress
       mark_as_complete!
@@ -97,19 +103,8 @@ module ReportBuilder
     # waiting forever.
     def expire
       super
-      answer_failure(arguments.first.chat)
+      arguments.first.fail_chat_turn!('turn_failed')
       mark_as_complete!
-    end
-
-    # Not part of any run: the attempt that failed may never have created one.
-    def answer_failure(chat)
-      return if chat.nil?
-
-      chat.with_lock do
-        chat.messages.create!(
-          role: 'assistant', content: 'Something went wrong on my side. Please try again.', replayed: false
-        )
-      end
     end
 
     def job_tracking_context

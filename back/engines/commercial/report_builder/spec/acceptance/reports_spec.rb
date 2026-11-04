@@ -684,6 +684,14 @@ resource 'Reports' do
         assert_status 202
       end
 
+      example '[error] Nothing is running, once a lost run is given up on', document: false do
+        create(:report_run, report: report, stopped_because: nil, created_at: 2.hours.ago)
+
+        do_request
+
+        assert_status 404
+      end
+
       example '[error] Nothing is running' do
         create(:report_run, report: report, stopped_because: 'done')
 
@@ -739,10 +747,24 @@ resource 'Reports' do
       end
 
       example 'A turn the model still owes an answer to is pending', document: false do
-        report.chat!(locale: 'en').messages.create!(role: 'user', content: 'shorter please', replayed: false)
+        chat = report.chat!(locale: 'en')
+        chat.messages.create!(role: 'user', content: 'shorter please', replayed: false)
+        chat.update!(status: 'running', turn_started_at: Time.current)
 
         do_request
         expect(response_data[:attributes][:pending]).to be true
+      end
+
+      example 'A turn whose job never came back is answered as failed', document: false do
+        chat = report.chat!(locale: 'en')
+        chat.messages.create!(role: 'user', content: 'shorter please', replayed: false)
+        chat.update!(status: 'running', turn_started_at: 2.hours.ago)
+
+        do_request
+        expect(response_data[:attributes][:pending]).to be false
+        expect(response_data[:attributes][:turns].last).to include(
+          role: 'assistant', text: ReportBuilder::Report::FAILED_TURN_REPLY
+        )
       end
     end
 
@@ -789,6 +811,25 @@ resource 'Reports' do
 
         enqueued = QueJob.by_job_class(ReportBuilder::ReviseReportJob).last
         expect(enqueued.args.to_json).to include 'only-in-the-editor'
+      end
+
+      example '[error] Ask while a turn is running', :active_job_que_adapter do
+        report.chat!(locale: 'en').update!(status: 'running', turn_started_at: Time.current)
+
+        expect { do_request }
+          .not_to change { QueJob.by_job_class(ReportBuilder::ReviseReportJob).count }
+
+        assert_status 409
+        expect(json_response_body.dig(:errors, :base).first[:error]).to eq 'conversation_busy'
+        expect(report.chat.messages).to be_empty
+      end
+
+      example 'Ask again after a turn failed', :active_job_que_adapter, document: false do
+        report.chat!(locale: 'en').update!(status: 'failed', last_error_code: 'turn_failed')
+
+        do_request
+        assert_status 201
+        expect(report.chat.reload).to have_attributes(status: 'running', last_error_code: nil)
       end
 
       example '[error] Ask for nothing', :active_job_que_adapter do
