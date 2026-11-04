@@ -397,7 +397,7 @@ describe('Events widget', () => {
       .first()
       .click({ force: true });
     cy.contains('label', 'Show a message when there are no events').click();
-    cy.get('div#ROOT').should('contain', 'There are no events yet.');
+    cy.get('div#ROOT').should('contain', 'No events to display');
 
     cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectPageLayout'
@@ -408,7 +408,7 @@ describe('Events widget', () => {
     cy.visit(`/en/projects/${emptyProjectSlug}`);
     cy.get('#e2e-project-page-events').should(
       'contain',
-      'There are no events yet.'
+      'No events to display'
     );
   });
 

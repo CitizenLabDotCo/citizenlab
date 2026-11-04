@@ -84,9 +84,9 @@ const selectionParams = (
 
 const emptyMessage = (timeFilters: EventsTimeFilter[]): MessageDescriptor => {
   if (timeFilters.includes('upcoming') && timeFilters.includes('past')) {
-    return messages.noEvents;
+    return messages.noEventsToDisplay;
   }
-  if (timeFilters.includes('past')) return messages.noPastEvents;
+  if (timeFilters.includes('past')) return eventsPageMessages.noPastEvents;
 
   return eventsPageMessages.noUpcomingOrOngoingEvents;
 };
