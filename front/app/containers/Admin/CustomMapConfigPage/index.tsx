@@ -175,14 +175,14 @@ const CustomMapConfigPage = memo<Props>((props) => {
             mapConfig={mapConfig}
             variant={variant}
             centerAndZoom={
-              variant === 'bo' && (
+              variant === 'bo' ? (
                 <StagedCenterAndZoom
                   mapConfig={mapConfig}
                   staged={staged}
                   invalid={stagedInvalid}
                   onChange={stageTyped}
                 />
-              )
+              ) : undefined
             }
           />
         )}
