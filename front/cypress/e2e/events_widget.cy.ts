@@ -108,7 +108,7 @@ const homepageLayoutWithColumns = () => ({
   }),
 });
 
-const TOOLBOX_PROJECT_PAGE_PROPS = {
+const DEFAULT_PROJECT_PAGE_PROPS = {
   source: 'currentProject',
   timeFilters: ['upcoming', 'past'],
   limit: 'all',
@@ -268,7 +268,7 @@ describe('Events widget', () => {
   it('offers the project page scroll target', () => {
     cy.apiUpdateProjectPageLayout(
       projectId,
-      projectPageLayoutWith('EventsList', TOOLBOX_PROJECT_PAGE_PROPS)
+      projectPageLayoutWith('EventsList', DEFAULT_PROJECT_PAGE_PROPS)
     );
 
     cy.visit(`/en/projects/${projectSlug}`);
@@ -381,7 +381,7 @@ describe('Events widget', () => {
   it('shows the empty message once an admin switches it on', () => {
     cy.apiUpdateProjectPageLayout(
       emptyProjectId,
-      projectPageLayoutWith('EventsList', TOOLBOX_PROJECT_PAGE_PROPS)
+      projectPageLayoutWith('EventsList', DEFAULT_PROJECT_PAGE_PROPS)
     );
 
     cy.visit(`/en/projects/${emptyProjectSlug}`);
