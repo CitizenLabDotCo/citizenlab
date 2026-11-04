@@ -28,7 +28,17 @@ module McpServer
   #     always-on-search_path catalog such as `pg_catalog.pg_user`. It follows
   #     Postgres's own order too: a CTE body sees only the CTEs declared before it
   #     in its WITH list, and sees itself only when the list is RECURSIVE;
+  #   - every node in the parse tree is a type this validator knows, so a construct
+  #     that invokes something without looking like `name(...)` cannot ride in
+  #     unread;
   #   - every function call is on the pure-function allowlist.
+  #
+  # One shape it cannot see: Postgres reads `r.f` as `f(r)` when `f` is not a column
+  # of `r`, and that is an ordinary ColumnRef in the tree, indistinguishable from
+  # reading a column. It reaches only single-argument functions accepting that row's
+  # composite type — on this cluster, 21 stable or immutable ones (to_jsonb,
+  # pg_typeof, num_nulls and the like), none volatile, and not set_config, which
+  # takes three arguments. Layer 2 bounds what they can be pointed at.
   class SqlSandboxer
     # Pure, side-effect-free functions safe to expose. Anything not listed is
     # rejected with its name, so the list grows from real eval failures rather
@@ -59,6 +69,37 @@ module McpServer
       lag lead first_value last_value nth_value
     ].to_set.freeze
 
+    # Every node type a reporting SELECT is built from; anything else is refused.
+    #
+    # The function allowlist can only see a `name(...)` FuncCall, and Postgres has
+    # other spellings: `xmlparse(document '<a/>')` is an XmlExpr, `current_user` a
+    # keyword, `JSON_VALUE(...)` a JsonFuncExpr. What those reach today is harmless,
+    # but they arrive unread, and the allowlist is what holds `set_config` shut — so
+    # the walk refuses a construct it does not know instead of walking past it.
+    # Adding a type here is deciding that the type itself invokes nothing.
+    ALLOWED_NODE_TYPES = %w[
+      ParseResult RawStmt Node List
+      SelectStmt WithClause CommonTableExpr
+      RangeVar RangeSubselect RangeFunction JoinExpr Alias
+      ResTarget ColumnRef A_Star A_Indirection A_Indices
+      A_Const Integer Float String Boolean BitString
+      A_Expr BoolExpr NullTest BooleanTest CoalesceExpr MinMaxExpr RowExpr A_ArrayExpr
+      CaseExpr CaseWhen TypeCast TypeName CollateClause
+      FuncCall NamedArgExpr WindowDef SortBy GroupingSet GroupingFunc
+      SubLink SQLValueFunction
+    ].to_set.freeze
+
+    # The temporal half of SQLValueFunction. The rest of it — current_user,
+    # session_user, user, current_catalog, current_schema — answers which role and
+    # database the query is running as, which is layer 2's business to arrange and
+    # nothing a chart needs to read back.
+    ALLOWED_VALUE_FUNCTION_OPS = %w[
+      SVFOP_CURRENT_DATE SVFOP_CURRENT_TIME SVFOP_CURRENT_TIME_N
+      SVFOP_CURRENT_TIMESTAMP SVFOP_CURRENT_TIMESTAMP_N
+      SVFOP_LOCALTIME SVFOP_LOCALTIME_N
+      SVFOP_LOCALTIMESTAMP SVFOP_LOCALTIMESTAMP_N
+    ].to_set.freeze
+
     # On success, `normalized_sql` carries the query re-rendered from the parse
     # tree: a single statement, no trailing semicolon or comments, safe for the
     # tool to wrap in a row-capping subquery.
@@ -79,7 +120,7 @@ module McpServer
       parsed = ::PgQuery.parse(@sql)
       check_single_top_level_select!(parsed)
       validate_statements!(parsed)
-      validate_relations!(parsed.tree, Set.new)
+      validate_tree!(parsed.tree, Set.new)
       Result.new(valid: true, error: nil, normalized_sql: parsed.deparse)
     rescue ::PgQuery::ParseError => e
       Result.new(valid: false, error: "Could not parse SQL: #{e.message}", normalized_sql: nil)
@@ -112,14 +153,19 @@ module McpServer
       end
     end
 
-    # Relation checks must be scope-aware, so they cannot ride on the flat walk!:
-    # a CTE name only exempts references inside the lexical scope that defines it.
-    # `visible_ctes` is the set of CTE names in scope at `node`; it grows as we
+    # The scope-aware walk. Relation checks cannot ride on the flat walk! because a
+    # CTE name only exempts references inside the lexical scope that defines it:
+    # `visible_ctes` is the set of CTE names in scope at `node`, which grows as we
     # descend into a statement carrying a WITH clause and is NOT leaked to sibling
     # or outer scopes (a fresh set per branch). We recurse generically over the
-    # protobuf tree so every RangeVar is still reached, exactly as walk! would.
-    def validate_relations!(node, visible_ctes)
-      check_relation!(node, visible_ctes) if node.is_a?(::PgQuery::RangeVar)
+    # protobuf tree so every node is still reached, exactly as walk! would.
+    def validate_tree!(node, visible_ctes)
+      check_node_type!(node)
+
+      case node
+      when ::PgQuery::RangeVar then check_relation!(node, visible_ctes)
+      when ::PgQuery::SQLValueFunction then check_value_function!(node)
+      end
 
       with_clause = with_clause_of(node)
       if with_clause
@@ -132,7 +178,7 @@ module McpServer
         # Walked above, under the narrower scope a CTE body actually has.
         next if child.is_a?(::PgQuery::WithClause)
 
-        validate_relations!(child, visible_ctes)
+        validate_tree!(child, visible_ctes)
       end
     end
 
@@ -147,7 +193,7 @@ module McpServer
 
       with_clause.ctes.each_with_index do |cte, index|
         siblings = with_clause.recursive ? names : names.first(index)
-        validate_relations!(cte, visible_ctes | siblings)
+        validate_tree!(cte, visible_ctes | siblings)
       end
     end
 
@@ -168,7 +214,10 @@ module McpServer
     # lexical scope through the descent.
     def each_child_node(node)
       node.class.descriptor.each do |field|
-        value = node.public_send(field.name)
+        # Through the descriptor rather than public_send: RangeTableSample has a
+        # field named `method`, and Object#method answered for it with an
+        # ArgumentError that escaped #validate instead of a verdict.
+        value = field.get(node)
         next if value.nil?
 
         if value.is_a?(::Google::Protobuf::RepeatedField)
@@ -181,6 +230,20 @@ module McpServer
 
     def parse_tree_node?(value)
       value.class.respond_to?(:descriptor)
+    end
+
+    def check_node_type!(node)
+      type = node.class.name.split('::').last
+      return if ALLOWED_NODE_TYPES.include?(type)
+
+      reject!("#{type} is not a supported SQL construct here. Write a plain SELECT over the reporting tables.")
+    end
+
+    def check_value_function!(node)
+      op = node.op.to_s
+      return if ALLOWED_VALUE_FUNCTION_OPS.include?(op)
+
+      reject!("#{op.delete_prefix('SVFOP_').downcase} is not allowed.")
     end
 
     def check_no_select_into!(select_stmt)

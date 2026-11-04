@@ -84,7 +84,30 @@ RSpec.describe McpServer::SqlSandboxer do
       # A CTE may legitimately be named like a catalog as long as it is only ever
       # resolved to that CTE (its body reads an allowed table). The shadowing is
       # safe; only cross-scope name confusion (tested below) is not.
-      'WITH pg_user AS (SELECT * FROM reporting_contributions) SELECT count(*) FROM pg_user'
+      'WITH pg_user AS (SELECT * FROM reporting_contributions) SELECT count(*) FROM pg_user',
+
+      # Expression syntax the node-type allowlist has to keep letting through. Each
+      # of these is a parse-tree node of its own rather than a FuncCall, so a list
+      # that forgot one would reject a chart that a model will reasonably write.
+      "SELECT CASE WHEN likes_count > 10 THEN 'high' ELSE 'low' END AS bucket, " \
+      'count(*) FROM reporting_inputs GROUP BY 1',
+      'SELECT greatest(likes_count, dislikes_count), least(likes_count, 0) FROM reporting_inputs',
+      'SELECT count(*) FROM reporting_inputs WHERE author_id IS NOT NULL AND published_at IS NULL',
+      'SELECT count(*) FILTER (WHERE likes_count > 0) AS liked, count(*) FROM reporting_inputs',
+      'SELECT count(*) FROM reporting_inputs WHERE likes_count IN (1, 2, 3) AND (likes_count > 0) IS TRUE',
+      'SELECT project_id, grouping(project_id) FROM reporting_contributions GROUP BY ROLLUP (project_id)',
+      'SELECT DISTINCT ON (project_id) project_id, contributed_at FROM reporting_contributions ' \
+      'ORDER BY project_id, contributed_at DESC NULLS LAST',
+      "SELECT unnest(ARRAY['a', 'b']) AS tag, (ARRAY['a', 'b'])[1] FROM reporting_inputs",
+      "SELECT * FROM unnest(ARRAY['a', 'b']) AS t(x)",
+      "SELECT (custom_field_values -> 'age')::text, avg(likes_count) * 1.5 FROM reporting_users GROUP BY 1",
+      "SELECT date_trunc(field => 'month', source => contributed_at) FROM reporting_contributions",
+      'SELECT title COLLATE "C" FROM reporting_projects ORDER BY 1',
+
+      # The temporal keywords are SQLValueFunctions, the same node type as
+      # current_user; only the identity half of it is refused.
+      'SELECT count(*) FROM reporting_contributions WHERE contributed_at > current_date - 30',
+      'SELECT current_timestamp, localtimestamp'
     ].each do |sql|
       it("accepts: #{sql[0, 80]}") { expect_accepted(sql) }
     end
@@ -111,6 +134,12 @@ RSpec.describe McpServer::SqlSandboxer do
         ["DO $$ BEGIN PERFORM set_config('role','postgres',false); END $$", /top-level SELECT/],
       'CALL a procedure' => ['CALL some_proc()', /top-level SELECT/],
       'SET ROLE smuggled as a second statement' => ['SET ROLE postgres; SELECT 1', /single statement/],
+      # Keywords, not FuncCalls, so the function allowlist never saw them.
+      'current_user' => ['SELECT current_user', /current_user is not allowed/],
+      'session_user' => ['SELECT session_user', /session_user is not allowed/],
+      'user' => ['SELECT user FROM reporting_contributions', /user is not allowed/],
+      'current_user inside an expression' =>
+        ['SELECT count(*) FROM reporting_users WHERE email = current_user', /current_user is not allowed/],
       'SET ROLE smuggled as a trailing statement' => ['SELECT 1; SET ROLE postgres', /single statement/]
     }.each do |label, (sql, message)|
       it("rejects #{label}") { expect_rejected(sql, message) }
@@ -154,6 +183,10 @@ RSpec.describe McpServer::SqlSandboxer do
         ['SELECT * FROM analytics_fact_visits', /not queryable/],
       'a non-whitelisted table inside a JOIN' =>
         ['SELECT * FROM reporting_contributions f JOIN users u ON u.id = f.user_id', /not queryable/],
+
+      # Keyword spellings of the same disclosure, which carry no FuncCall either.
+      'current_schema' => ['SELECT current_schema', /current_schema is not allowed/],
+      'current_catalog' => ['SELECT current_catalog', /current_catalog is not allowed/],
 
       # search_path manipulation.
       'search_path change via set_config' =>
@@ -274,6 +307,45 @@ RSpec.describe McpServer::SqlSandboxer do
       'PREPARE' => ['PREPARE p AS SELECT 1', /top-level SELECT/],
       'DECLARE CURSOR' => ['DECLARE c CURSOR FOR SELECT 1', /top-level SELECT/],
       'VACUUM' => ['VACUUM', /top-level SELECT/]
+    }.each do |label, (sql, message)|
+      it("rejects #{label}") { expect_rejected(sql, message) }
+    end
+  end
+
+  # The function allowlist only ever saw `name(...)`. Postgres has other spellings
+  # for calling something, and a construct the validator cannot read is refused
+  # rather than walked past, so the next one does not need a new rule here.
+  #
+  # The one spelling this cannot reach: `SELECT r.to_jsonb FROM reporting_users r`
+  # calls to_jsonb(r) but parses as an ordinary ColumnRef, identical to reading a
+  # column. It admits only single-argument functions that accept that row's
+  # composite type — all stable or immutable, none of them set_config — and layer
+  # 2 decides what they can be pointed at.
+  describe 'parse-tree allowlist (a construct the validator cannot read is refused)' do
+    {
+      'xmlparse (an XML expression, not a function call)' =>
+        ["SELECT xmlparse(document '<a/>')", /XmlExpr is not a supported SQL construct/],
+      'xmlelement' => ["SELECT xmlelement(name foo, 'x')", /XmlExpr is not a supported SQL construct/],
+      'xmlserialize' =>
+        ["SELECT xmlserialize(document xmlparse(document '<a/>') AS text)", /XmlSerialize/],
+      'XMLTABLE as a row source' =>
+        ["SELECT * FROM xmltable('/a' PASSING xmlparse(document '<a/>') COLUMNS x text PATH '.')",
+          /RangeTableFunc/],
+      'JSON_TABLE as a row source' =>
+        ["SELECT * FROM json_table('[]'::jsonb, '$' COLUMNS (x int PATH '$.x'))", /JsonTable/],
+      'JSON_VALUE' => ["SELECT json_value('{}'::jsonb, '$.a')", /JsonFuncExpr/],
+      'JSON_OBJECT' => ["SELECT json_object('a': 1)", /JsonObjectConstructor/],
+      'IS JSON' => ["SELECT '{}'::text IS JSON", /JsonIsPredicate/],
+      # FOR UPDATE takes row locks, so a SELECT stops being read-only.
+      'FOR UPDATE' => ['SELECT * FROM reporting_inputs FOR UPDATE', /LockingClause/],
+      'a bind parameter' => ['SELECT $1 FROM reporting_inputs', /ParamRef/],
+      # This one used to raise ArgumentError straight out of #validate, because
+      # RangeTableSample has a field named `method` and Object#method answered for it.
+      'TABLESAMPLE' =>
+        ['SELECT * FROM reporting_inputs TABLESAMPLE bernoulli (1)', /RangeTableSample/],
+      'a recursive SEARCH clause' =>
+        ['WITH RECURSIVE t(n) AS (SELECT 1) SEARCH DEPTH FIRST BY n SET s SELECT * FROM t',
+          /CTESearchClause/]
     }.each do |label, (sql, message)|
       it("rejects #{label}") { expect_rejected(sql, message) }
     end
