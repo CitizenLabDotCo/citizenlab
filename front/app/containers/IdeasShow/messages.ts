@@ -9,6 +9,10 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.notAnswered',
     defaultMessage: 'Not answered',
   },
+  valueOutOfMaximum: {
+    id: 'app.containers.IdeasShow.valueOutOfMaximum',
+    defaultMessage: '{value} out of {maximum}',
+  },
   deletedUser: {
     id: 'app.containers.IdeasShow.deletedUser',
     defaultMessage: 'deleted user',
