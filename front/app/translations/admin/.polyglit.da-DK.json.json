@@ -9699,6 +9699,11 @@
     "verified_at": "2026-10-14T13:50:17.433373Z",
     "verified_by": "kielgast@govocal.com"
   },
+  "app.containers.Admin.projects.project.earlyAccess.feedbackNoticeDescriptionWithoutSlack": {
+    "state": "verified",
+    "verified_at": "2026-11-04T09:14:37.594715Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.Admin.projects.project.earlyAccess.feedbackNoticeTitle": {
     "state": "verified",
     "verified_at": "2026-10-14T13:50:17.433373Z",
@@ -9712,6 +9717,11 @@
   "app.containers.Admin.projects.project.earlyAccess.turnOnNoticeDescription": {
     "state": "verified",
     "verified_at": "2026-10-14T13:50:17.433373Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.projects.project.earlyAccess.turnOnNoticeDescriptionGeneral": {
+    "state": "verified",
+    "verified_at": "2026-11-04T09:14:37.594715Z",
     "verified_by": "kielgast@govocal.com"
   },
   "app.containers.Admin.projects.project.earlyAccess.turnOnNoticeTitle": {
