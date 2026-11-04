@@ -536,7 +536,7 @@ jobs:
     resource_class: small
     docker:
       # The Node the service runs under, which is the one its runtime image ships.
-      - image: cimg/node:22.20
+      - image: cimg/node:26.13
     working_directory: ~/citizenlab/custom-block-renderer
     environment:
       # The unit tests never start Chromium, and the browser download is the slowest
