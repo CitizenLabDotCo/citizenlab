@@ -2106,7 +2106,7 @@
   "app.containers.Admin.projects.project.manageView": "Gérer",
   "app.containers.Admin.projects.project.messagingSection": "Messagerie",
   "app.containers.Admin.projects.project.nCauses": "{count, plural, one {# cause} other {# causes}}",
-  "app.containers.Admin.projects.project.nInputsToLink": "{count, plural, =0 {Toutes les contributions de cette phase sont déjà des options} one {# contribution sera ajoutée} other {# contributions seront ajoutées}}",
+  "app.containers.Admin.projects.project.nInputsToLink": "=0 {Toutes les contributions ont déjà été ajoutées comme options} one {# contribution sera ajoutée comme option} other {# contributions seront ajoutées comme options}",
   "app.containers.Admin.projects.project.nSignedUp": "{count, plural, =0 {Aucun volontaire pour l'instant} other {# volontaires}}",
   "app.containers.Admin.projects.project.nStatements": "{count, plural, one {# affirmation} other {# affirmations}}",
   "app.containers.Admin.projects.project.nVotingOptions": "{count, plural, one {# option} other {# options}}",

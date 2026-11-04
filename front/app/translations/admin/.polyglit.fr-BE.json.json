@@ -10729,6 +10729,11 @@
     "verified_at": "2026-11-04T21:34:00.492998Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects.project.nInputsToLink": {
+    "state": "verified",
+    "verified_at": "2026-11-04T23:04:34.158166Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.nSignedUp": {
     "state": "verified",
     "verified_at": "2026-11-04T21:47:54.518044Z",
