@@ -9169,6 +9169,11 @@
     "verified_at": "2026-10-28T13:19:15.868690Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Admin.projects.project.createForm": {
+    "state": "verified",
+    "verified_at": "2026-11-04T22:27:26.990956Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.deleteCause": {
     "state": "verified",
     "verified_at": "2026-11-04T21:34:00.492998Z",
@@ -9243,6 +9248,11 @@
     "state": "verified",
     "verified_at": "2026-09-16T19:26:50.773492Z",
     "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.emptyOptionError": {
+    "state": "verified",
+    "verified_at": "2026-11-04T22:27:26.990956Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.emptyStatementError": {
     "state": "verified",
@@ -9619,6 +9629,11 @@
     "verified_at": "2026-10-30T12:38:53.184545Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects.project.hideCauses": {
+    "state": "verified",
+    "verified_at": "2026-11-04T22:27:26.990956Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.homepageCard": {
     "state": "verified",
     "verified_at": "2026-10-28T13:09:38.242718Z",
@@ -9687,6 +9702,11 @@
   "app.containers.Admin.projects.project.importStatements": {
     "state": "verified",
     "verified_at": "2026-11-04T20:50:15.551076Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.importVotingOptions": {
+    "state": "verified",
+    "verified_at": "2026-11-04T22:27:26.990956Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.importingStatements": {
