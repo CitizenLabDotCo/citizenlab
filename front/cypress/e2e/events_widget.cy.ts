@@ -405,6 +405,27 @@ describe('Events widget', () => {
     });
   });
 
+  // A widget an admin adds is there for its events, so it says when there are none.
+  it('shows the empty message on a widget added from the toolbox', () => {
+    // Starts without an events widget, so the one on the canvas is the one dragged in.
+    cy.apiUpdateProjectPageLayout(
+      emptyProjectId,
+      projectPageLayoutWith('TextMultiloc', { text: { en: 'Intro' } })
+    );
+    cy.setAdminLoginCookie();
+    cy.visit(`/admin/project-page-builder/projects/${emptyProjectId}`);
+    cy.get('div#ROOT');
+
+    cy.get('#e2e-draggable-events').dragAndDrop('#e2e-project-page-body', {
+      position: 'inside',
+    });
+
+    cy.dataCy('e2e-events-show-empty-message')
+      .find('input')
+      .should('be.checked');
+    cy.get('div#ROOT').should('contain', 'There are no events yet.');
+  });
+
   // A widget without the setting hides itself when it has no events.
   it('shows the empty message once an admin switches it on', () => {
     cy.apiUpdateProjectPageLayout(

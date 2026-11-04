@@ -32,6 +32,7 @@ const ProjectPageBuilderToolbox = () => {
               source="currentProject"
               timeFilters={['upcoming', 'past']}
               limit="all"
+              showEmptyMessage
             />
           }
           icon="calendar"

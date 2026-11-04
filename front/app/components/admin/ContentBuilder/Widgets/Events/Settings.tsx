@@ -131,6 +131,7 @@ const EventsSettings = () => {
 
       <CheckboxWithLabel
         label={formatMessage(messages.showEmptyMessage)}
+        dataCy="e2e-events-show-empty-message"
         checked={props.showEmptyMessage === true}
         onChange={() =>
           setProp(
