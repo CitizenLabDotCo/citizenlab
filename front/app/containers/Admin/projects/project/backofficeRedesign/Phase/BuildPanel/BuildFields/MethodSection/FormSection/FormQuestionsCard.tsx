@@ -11,7 +11,7 @@ import SummaryPill from 'containers/Admin/projects/_shared/components/SummaryPil
 import actionFormMessages from 'components/admin/ActionForm/messages';
 import FormInputEditWarningModal from 'components/admin/FormInputEditWarningModal';
 import formBuilderMessages from 'components/FormBuilder/components/messages';
-import { getTranslatedStringKey } from 'components/FormBuilder/utils';
+import { getTranslatedStringKey } from 'components/FormBuilder/fieldLabels';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
@@ -45,27 +45,20 @@ const FormQuestionsCard = ({ projectId, phaseId, title, survey }: Props) => {
       <PanelField
         label={title}
         action={
-          <Box display="flex" alignItems="center" gap="4px">
-            {customFields && !open && (
-              <SummaryPill
-                label={formatMessage(actionFormMessages.nQuestions, {
-                  nQuestions,
-                })}
-              />
-            )}
-            <Button
-              buttonStyle="bo-text"
-              icon={open ? 'chevron-up' : 'chevron-down'}
-              iconSize="16px"
-              width="28px"
-              height="28px"
-              padding="0"
-              ariaLabel={title}
-              ariaExpanded={open}
-              onClick={() => setOpen((open) => !open)}
+          customFields &&
+          !open && (
+            <SummaryPill
+              label={formatMessage(actionFormMessages.nQuestions, {
+                nQuestions,
+              })}
             />
-          </Box>
+          )
         }
+        button={{
+          icon: open ? 'chevron-up' : 'chevron-down',
+          expanded: open,
+          onClick: () => setOpen((open) => !open),
+        }}
       >
         {open && (
           <>

@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import { Box, Button } from '@citizenlab/cl2-component-library';
-
 import { Action, IPhasePermissionAction } from 'api/permissions/types';
 import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
 
@@ -49,22 +47,9 @@ const DemographicsCard = ({ phaseId }: Props) => {
     <>
       <PanelField
         label={label}
-        action={
-          <Box display="flex" alignItems="center" gap="4px">
-            {/* The summary follows the phase's main action, sorted first. */}
-            <DemographicsSummary phaseId={phaseId} action={actions[0]} />
-            <Button
-              buttonStyle="bo-text"
-              icon="chevron-right"
-              iconSize="16px"
-              width="28px"
-              height="28px"
-              padding="0"
-              ariaLabel={label}
-              onClick={() => setOpened(true)}
-            />
-          </Box>
-        }
+        // The summary follows the phase's main action, sorted first.
+        action={<DemographicsSummary phaseId={phaseId} action={actions[0]} />}
+        button={{ icon: 'chevron-right', onClick: () => setOpened(true) }}
       />
       <DemographicsModal
         phaseId={phaseId}

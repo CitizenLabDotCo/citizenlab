@@ -17,7 +17,7 @@ const setupTitle = (participationMethod: ParticipationMethod) => {
     case 'volunteering':
       return messages.volunteeringSetup;
     case 'document_annotation':
-      return messages.documentAnnotationSetup;
+      return messages.documentAnnotationSetup2;
     case 'native_survey':
     case 'community_monitor_survey':
     case 'survey':

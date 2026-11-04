@@ -19,7 +19,7 @@ const actionLabel = (action: IPhasePermissionAction) => {
     case 'voting':
       return configMessages.votingOnInputsAction;
     case 'volunteering':
-      return configMessages.volunteeringAction;
+      return configMessages.volunteeringAction2;
     case 'taking_survey':
       return messages.takingSurveyAction;
     case 'taking_poll':

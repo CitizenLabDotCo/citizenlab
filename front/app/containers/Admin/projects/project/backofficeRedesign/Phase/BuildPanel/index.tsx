@@ -92,6 +92,12 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
         start_at: formData.start_at,
         end_at: formData.end_at,
         input_term: formData.input_term,
+        ...(phase.attributes.participation_method === 'survey'
+          ? {
+              survey_service: formData.survey_service,
+              survey_embed_url: formData.survey_embed_url,
+            }
+          : {}),
         ...(phase.attributes.participation_method === 'document_annotation'
           ? {
               document_annotation_embed_url:
@@ -119,12 +125,14 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
   return (
     <Box display="flex" flexDirection="column" flexGrow={1} minHeight="0">
       <Box flexGrow={1}>
-        <SurveyPlacement
-          phase={phase}
-          hasUnsavedChanges={dirty || !!pageSave?.dirty}
-          onMoved={(updatedPhase) => setFormData(updatedPhase.attributes)}
-        />
         <BuildFields
+          surveyPlacement={
+            <SurveyPlacement
+              phase={phase}
+              hasUnsavedChanges={dirty || !!pageSave?.dirty}
+              onMoved={(updatedPhase) => setFormData(updatedPhase.attributes)}
+            />
+          }
           projectId={projectId}
           phaseId={phase.id}
           participationMethod={phase.attributes.participation_method}

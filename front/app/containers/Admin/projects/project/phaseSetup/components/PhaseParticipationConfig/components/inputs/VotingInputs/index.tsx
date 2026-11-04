@@ -15,6 +15,7 @@ import usePhase from 'api/phases/usePhase';
 
 import PhaseActionAccessRow from 'containers/Admin/projects/_shared/components/PhaseActionAccessRow';
 import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';
+import PanelHeading from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelHeading';
 
 import {
   SectionDescription,
@@ -214,6 +215,9 @@ const VotingInputs = ({
   if (panel) {
     return (
       <>
+        <Box mb="10px">
+          <PanelHeading label={formatMessage(configMessages.settingsGroup)} />
+        </Box>
         <PanelGroup
           label={formatMessage(votingMessages.votingMethodSelectorTitle)}
           defaultOpen

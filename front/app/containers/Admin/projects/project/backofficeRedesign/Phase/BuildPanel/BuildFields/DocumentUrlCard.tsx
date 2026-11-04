@@ -20,7 +20,6 @@ interface Props {
   onChange: (document_annotation_embed_url: string) => void;
 }
 
-/** The Konveio document a document annotation phase embeds. */
 const DocumentUrlCard = ({ value, errors, onChange }: Props) => {
   const { formatMessage } = useIntl();
   const apiErrors = errors?.document_annotation_embed_url;

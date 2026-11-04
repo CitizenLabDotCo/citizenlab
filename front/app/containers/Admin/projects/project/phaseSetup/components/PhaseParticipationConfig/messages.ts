@@ -39,9 +39,17 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.votingOnInputsAction',
     defaultMessage: 'Voting on inputs',
   },
-  volunteeringAction: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.volunteeringAction',
-    defaultMessage: 'Volunteering',
+  takingPollAction: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.takingPollAction',
+    defaultMessage: 'Taking the poll',
+  },
+  takingSurveyAction: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.takingSurveyAction',
+    defaultMessage: 'Taking the survey',
+  },
+  volunteeringAction2: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.volunteeringAction2',
+    defaultMessage: 'Signing up for a cause',
   },
   proposalRequirementsGroup: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.proposalRequirementsGroup',
@@ -56,8 +64,20 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.howIdeasAreShown',
     defaultMessage: 'How ideas are shown',
   },
-  rulesGroup: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.rulesGroup',
-    defaultMessage: 'Rules',
+  howProposalsAreShown: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.howProposalsAreShown',
+    defaultMessage: 'How proposals are shown',
+  },
+  acceptNewResponses: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.acceptNewResponses',
+    defaultMessage: 'Accept new responses',
+  },
+  acceptNewResponsesDescription: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.acceptNewResponsesDescription',
+    defaultMessage: 'When off, participants can no longer submit the survey.',
+  },
+  settingsGroup: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.settingsGroup',
+    defaultMessage: 'Settings',
   },
 });

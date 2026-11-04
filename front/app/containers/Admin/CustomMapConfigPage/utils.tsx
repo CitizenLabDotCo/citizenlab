@@ -1,5 +1,7 @@
 // getFeatureLayerInitialTitleMultiloc
 
+import { inRange } from 'lodash-es';
+
 import { IMapConfig } from 'api/map_config/types';
 
 // Description: This function is used to generate the initial title multiloc for an Esri feature layer.
@@ -28,3 +30,6 @@ export const getLayerType = (mapConfig: IMapConfig) => {
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   return layers?.[0]?.type;
 };
+
+export const isValidCenterAndZoom = (lat: number, lng: number, zoom: number) =>
+  inRange(lng, -180, 180) && inRange(lat, -90, 90) && inRange(zoom, 0, 21);

@@ -4,11 +4,12 @@ import {
   Box,
   CardButton,
   IconTooltip,
-  Radio,
   Text,
 } from '@citizenlab/cl2-component-library';
 
 import { VotingMethod } from 'api/phases/types';
+
+import ChoiceRadio from 'containers/Admin/projects/_shared/components/ChoiceRadio';
 
 import { SubSectionTitle } from 'components/admin/Section';
 
@@ -23,17 +24,17 @@ const VOTING_METHODS = [
   {
     method: 'single_voting',
     title: messages.singleVotingMethodTitle,
-    subtitle: messages.singleVotingMethodSubtitle,
+    subtitle: messages.singleVotingMethodSubtitle2,
   },
   {
     method: 'multiple_voting',
     title: messages.multipleVotingMethodTitle,
-    subtitle: messages.multipleVotingMethodSubtitle,
+    subtitle: messages.multipleVotingMethodSubtitle2,
   },
   {
     method: 'budgeting',
     title: messages.budgetingVotingMethodTitle,
-    subtitle: messages.budgetingVotingMethodSubtitle,
+    subtitle: messages.budgetingVotingMethodSubtitle2,
   },
 ] as const;
 
@@ -53,26 +54,16 @@ const VotingMethodSelector = ({
 
   if (layout === 'panel') {
     return (
-      <Box display="flex" flexDirection="column" gap="16px">
+      <Box display="flex" flexDirection="column" gap="20px">
         {VOTING_METHODS.map(({ method, title, subtitle }) => (
-          <Radio
+          <ChoiceRadio
             key={method}
-            variant="bo"
             name="voting_method"
-            id={`voting-method-${method}`}
             value={method}
             currentValue={voting_method}
-            onChange={handleVotingMethodOnChange}
-            label={
-              <Box display="flex" flexDirection="column" gap="2px">
-                <Text as="span" variant="boControl" m="0">
-                  {formatMessage(title)}
-                </Text>
-                <Text as="span" variant="boHelper" m="0">
-                  {formatMessage(subtitle)}
-                </Text>
-              </Box>
-            }
+            title={formatMessage(title)}
+            description={formatMessage(subtitle)}
+            onChange={() => handleVotingMethodOnChange(method)}
           />
         ))}
       </Box>

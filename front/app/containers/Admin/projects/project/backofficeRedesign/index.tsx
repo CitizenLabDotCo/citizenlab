@@ -1,13 +1,14 @@
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, Suspense, lazy, useState } from 'react';
 
-import { Box, bo, colors } from '@citizenlab/cl2-component-library';
+import { Box, Spinner, bo, colors } from '@citizenlab/cl2-component-library';
 
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 
 import { usePageSave } from 'components/admin/PageSaveContext';
 
-import { useLocation } from 'utils/router';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { useLocation, useSearch } from 'utils/router';
 
 import FeedbackNotice from '../earlyAccess/FeedbackNotice';
 
@@ -18,6 +19,11 @@ import MethodSettings from './Phase/MethodSettings';
 import { viewFromPathname } from './Phase/usePhaseViews';
 import ViewContent from './Phase/ViewContent';
 import ProjectSetupPanel from './ProjectSetupPanel';
+
+// Lazy so ArcGIS only loads once the map is opened.
+const CustomMapConfigPage = lazy(
+  () => import('containers/Admin/CustomMapConfigPage')
+);
 
 const PROJECT_PANEL_WIDTH = '332px';
 const PHASE_PANEL_WIDTH = '560px';
@@ -46,6 +52,7 @@ const ProjectWorkspace = ({
   children,
 }: Props) => {
   const { pathname } = useLocation();
+  const { map_config } = useSearch({ strict: false });
   const [openDropdown, setOpenDropdown] = useState<HeaderDropdownName | null>(
     null
   );
@@ -57,7 +64,15 @@ const ProjectWorkspace = ({
   const inPhase = !!(phase || draft);
   // An open phase email takes the whole width, like the other views.
   const editingEmail = /\/emails\/[^/]+\/edit$/.test(pathname);
-  const showPanels = (!phase || activeView === 'build') && !editingEmail;
+  // The map configuration does the same, and keeps the phase panel mounted so
+  // a phase that isn't saved yet keeps its edits.
+  const editingMap = inPhase && !!map_config;
+  const showPanels =
+    (!phase || activeView === 'build') && !editingEmail && !editingMap;
+  // Once opened, the map stays mounted, so its unsaved edits wait for the
+  // page's save button like the rest of the phase.
+  const [mapOpened, setMapOpened] = useState(false);
+  if (editingMap && !mapOpened) setMapOpened(true);
 
   const settingsPanel = draft ? (
     draft.methodSettings
@@ -130,7 +145,19 @@ const ProjectWorkspace = ({
       borderRadius={bo.panelBorderRadius}
       background={colors.grey100}
     >
-      {children}
+      {mapOpened && (
+        <Box display={editingMap ? 'block' : 'none'} h="100%">
+          <Suspense fallback={<Spinner />}>
+            <CustomMapConfigPage
+              // Discarding the changes drops its staged edits too.
+              key={pageSave?.revision}
+              variant="bo"
+              onBack={() => removeSearchParams(['map_config'])}
+            />
+          </Suspense>
+        </Box>
+      )}
+      {!editingMap && children}
     </Box>
   );
 
@@ -152,6 +179,7 @@ const ProjectWorkspace = ({
         draftParentLabel={draft?.parentLabel}
         saveLabel={draft?.saveLabel}
         activeView={activeView}
+        editingMap={editingMap}
         section={section}
         openDropdown={openDropdown}
         onOpenDropdown={setOpenDropdown}

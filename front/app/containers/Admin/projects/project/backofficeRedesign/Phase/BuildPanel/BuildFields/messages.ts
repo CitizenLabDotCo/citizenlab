@@ -29,9 +29,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.volunteeringSetup',
     defaultMessage: 'Volunteering setup',
   },
-  documentAnnotationSetup: {
-    id: 'app.containers.Admin.projects.project.documentAnnotationSetup',
-    defaultMessage: 'Document annotation setup',
+  documentAnnotationSetup2: {
+    id: 'app.containers.Admin.projects.project.documentAnnotationSetup2',
+    defaultMessage: 'Document setup',
   },
   inputTermDescription: {
     id: 'app.containers.Admin.projects.project.inputTermDescription',
@@ -53,5 +53,17 @@ export default defineMessages({
   attachments: {
     id: 'app.containers.Admin.projects.project.attachments',
     defaultMessage: 'Attachments',
+  },
+  optionsAndParticipantData: {
+    id: 'app.containers.Admin.projects.project.optionsAndParticipantData',
+    defaultMessage: 'Options and participant data',
+  },
+  phaseTitle: {
+    id: 'app.containers.Admin.projects.project.phaseTitle',
+    defaultMessage: 'Phase title',
+  },
+  nativeSurveyOptionDescription: {
+    id: 'app.containers.Admin.projects.project.nativeSurveyOptionDescription',
+    defaultMessage: 'AI-powered insights and a wide range of question types',
   },
 });

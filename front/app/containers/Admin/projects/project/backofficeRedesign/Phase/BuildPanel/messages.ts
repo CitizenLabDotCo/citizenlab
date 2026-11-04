@@ -47,4 +47,25 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.switchConfirm',
     defaultMessage: 'Change',
   },
+  surveySetupLead: {
+    id: 'app.containers.Admin.projects.project.surveySetupLead',
+    defaultMessage:
+      'Build the survey, or bring in responses you collected offline.',
+  },
+  startFromScratch: {
+    id: 'app.containers.Admin.projects.project.startFromScratch',
+    defaultMessage: 'Start from scratch',
+  },
+  usePreviousSurvey: {
+    id: 'app.containers.Admin.projects.project.usePreviousSurvey',
+    defaultMessage: 'Use a previous survey',
+  },
+  usePreviousSurveyTooltip: {
+    id: 'app.containers.Admin.projects.project.usePreviousSurveyTooltip',
+    defaultMessage: 'Reuse the questions from a survey you ran before',
+  },
+  importResponses: {
+    id: 'app.containers.Admin.projects.project.importResponses',
+    defaultMessage: 'Import responses you already have',
+  },
 });
