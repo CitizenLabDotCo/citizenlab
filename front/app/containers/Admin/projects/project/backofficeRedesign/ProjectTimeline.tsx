@@ -18,15 +18,16 @@ import TimelinePhases from 'containers/Admin/projects/project/projectPage/Timeli
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
+import PanelToggleButton from './PanelToggleButton';
 import SelectMethodModal from './ProjectSetupPanel/SelectMethodModal';
 import TimelineEvents from './TimelineEvents';
 
 interface Props {
   projectId: string;
-  onCollapse: () => void;
+  withNewMethod: boolean;
 }
 
-const ProjectTimeline = ({ projectId, onCollapse }: Props) => {
+const ProjectTimeline = ({ projectId, withNewMethod }: Props) => {
   const { formatMessage } = useIntl();
   const [methodModalOpened, setMethodModalOpened] = useState(false);
   const { data: phases } = usePhases(projectId);
@@ -54,39 +55,30 @@ const ProjectTimeline = ({ projectId, onCollapse }: Props) => {
           </Text>
         </Box>
         <Box display="flex" gap="4px">
-          <Tooltip
-            content={formatMessage(messages.hidePanel)}
-            theme="dark"
-            placement="bottom"
-          >
-            <Button
-              buttonStyle="bo-text"
-              icon="panel-left"
-              width="32px"
-              height="32px"
-              padding="0"
-              ariaLabel={formatMessage(messages.hidePanel)}
-              onClick={onCollapse}
-            />
-          </Tooltip>
-          <Tooltip
-            content={formatMessage(projectPageMessages.newParticipationMethod)}
-            theme="dark"
-            placement="bottom"
-          >
-            <Button
-              className="intercom-product-tour-project-timeline-new-phase"
-              buttonStyle="bo-text"
-              icon="plus"
-              width="32px"
-              height="32px"
-              padding="0"
-              ariaLabel={formatMessage(
+          <PanelToggleButton buttonStyle="bo-text" />
+          {withNewMethod && (
+            <Tooltip
+              content={formatMessage(
                 projectPageMessages.newParticipationMethod
               )}
-              onClick={() => setMethodModalOpened(true)}
-            />
-          </Tooltip>
+              theme="dark"
+              placement="bottom"
+              appendTo={() => document.body}
+            >
+              <Button
+                className="intercom-product-tour-project-timeline-new-phase"
+                buttonStyle="bo-text"
+                icon="plus"
+                width="32px"
+                height="32px"
+                padding="0"
+                ariaLabel={formatMessage(
+                  projectPageMessages.newParticipationMethod
+                )}
+                onClick={() => setMethodModalOpened(true)}
+              />
+            </Tooltip>
+          )}
         </Box>
       </Box>
       <Box className="intercom-product-tour-project-timeline">

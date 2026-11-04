@@ -77,6 +77,7 @@ const TimelineEvents = ({ projectId }: Props) => {
           content={formatMessage(messages.newEvent)}
           theme="dark"
           placement="bottom"
+          appendTo={() => document.body}
         >
           <ButtonWithLink
             to="/admin/projects/$projectId/events/new"

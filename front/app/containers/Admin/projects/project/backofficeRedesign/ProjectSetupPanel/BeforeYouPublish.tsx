@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
 
@@ -7,6 +7,8 @@ import { IProjectData } from 'api/projects/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import projectPageMessages from 'containers/Admin/projects/project/projectPage/messages';
+
 import { useIntl } from 'utils/cl-intl';
 import { usePermission } from 'utils/permissions';
 
@@ -14,6 +16,7 @@ import messages from '../messages';
 import { useParticipationPanel } from '../ParticipationPanelContext';
 
 import PanelHeading from './PanelHeading';
+import SelectMethodModal from './SelectMethodModal';
 import SetupCard from './SetupCard';
 import SetupCards from './SetupCards';
 import { getMissingItems, SETUP_ITEMS } from './setupItems';
@@ -29,6 +32,7 @@ const BeforeYouPublish = ({ project, onOpenSettings }: Props) => {
   const participationPanel = useParticipationPanel();
   const projectId = project.id;
   const { readiness } = useSetupReadiness(project);
+  const [methodModalOpened, setMethodModalOpened] = useState(false);
 
   const isProjectReviewEnabled = useFeatureFlag({ name: 'project_review' });
   const { data: projectReview } = useProjectReview(projectId);
@@ -91,14 +95,31 @@ const BeforeYouPublish = ({ project, onOpenSettings }: Props) => {
           id="e2e-setup-card-methods"
           title={formatMessage(messages.participationMethods)}
           ready={readiness.methods}
-          behaviour={{
-            kind: 'action',
-            icon: 'chevron-right',
-            actionLabel: formatMessage(messages.showPanel),
-            onClick: () => participationPanel.setCollapsed(false),
-          }}
+          behaviour={
+            participationPanel.collapsed
+              ? {
+                  kind: 'action',
+                  icon: 'chevron-right',
+                  actionLabel: formatMessage(messages.showPanel),
+                  onClick: () => participationPanel.setCollapsed(false),
+                }
+              : {
+                  kind: 'action',
+                  icon: 'plus',
+                  actionLabel: formatMessage(
+                    projectPageMessages.newParticipationMethod
+                  ),
+                  onClick: () => setMethodModalOpened(true),
+                }
+          }
         />
       </Box>
+
+      <SelectMethodModal
+        projectId={projectId}
+        opened={methodModalOpened}
+        onClose={() => setMethodModalOpened(false)}
+      />
     </Box>
   );
 };

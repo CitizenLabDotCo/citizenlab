@@ -15,13 +15,13 @@ import FeedbackNotice from '../earlyAccess/FeedbackNotice';
 import { sectionFromPathname } from './_shared/sections';
 import WorkspaceHeader from './Header';
 import { HeaderDropdownName } from './Header/HeaderDropdown';
+import PanelToggleButton from './PanelToggleButton';
 import { useParticipationPanel } from './ParticipationPanelContext';
 import MethodSettings from './Phase/MethodSettings';
 import { viewFromPathname } from './Phase/usePhaseViews';
 import ViewContent from './Phase/ViewContent';
 import ProjectSetupPanel from './ProjectSetupPanel';
 import ProjectTimeline from './ProjectTimeline';
-import ShowPanelButton from './ShowPanelButton';
 
 const PROJECT_PANEL_WIDTH = '332px';
 const SIDE_PANEL_WIDTH = '300px';
@@ -98,7 +98,7 @@ const ProjectWorkspace = ({
   withParticipation = true,
   children,
 }: Props) => {
-  const participation = useParticipationPanel();
+  const { pending, collapsed, animate } = useParticipationPanel();
   const { pathname } = useLocation();
   const [openDropdown, setOpenDropdown] = useState<HeaderDropdownName | null>(
     null
@@ -142,9 +142,8 @@ const ProjectWorkspace = ({
       {settingsPanel}
     </Box>
   );
-  const showParticipation = withParticipation && (!inPhase || showPanels);
-  const { collapsed, animate } = participation;
-  const expandParticipation = () => participation.setCollapsed(false);
+  const showParticipation =
+    withParticipation && !pending && (!inPhase || showPanels);
   const participationSlot = showParticipation && (
     <CollapsiblePanel
       collapsed={collapsed}
@@ -164,17 +163,11 @@ const ProjectWorkspace = ({
         aria-hidden={collapsed}
         width={SIDE_PANEL_WIDTH}
       >
-        <ProjectTimeline
-          projectId={project.id}
-          onCollapse={() => participation.setCollapsed(true)}
-        />
+        <ProjectTimeline projectId={project.id} withNewMethod={!draft} />
       </PanelContent>
       {inPhase && collapsed && (
         <Box position="absolute" top="18px" left="8px">
-          <ShowPanelButton
-            buttonStyle="bo-text"
-            onClick={expandParticipation}
-          />
+          <PanelToggleButton buttonStyle="bo-text" />
         </Box>
       )}
     </CollapsiblePanel>
@@ -265,10 +258,7 @@ const ProjectWorkspace = ({
             {mainSlot}
             {showParticipation && !inPhase && collapsed && (
               <Box position="absolute" top="8px" left="8px" zIndex="1">
-                <ShowPanelButton
-                  buttonStyle="bo-secondary"
-                  onClick={expandParticipation}
-                />
+                <PanelToggleButton buttonStyle="bo-secondary" />
               </Box>
             )}
           </Box>

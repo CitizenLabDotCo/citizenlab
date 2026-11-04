@@ -3,6 +3,7 @@ import React, { ReactNode, createContext, useContext, useState } from 'react';
 import usePhases from 'api/phases/usePhases';
 
 interface ParticipationPanel {
+  pending: boolean;
   collapsed: boolean;
   // Only a toggle by the admin animates; the default state just appears.
   animate: boolean;
@@ -29,13 +30,13 @@ export const ParticipationPanelProvider = ({ projectId, children }: Props) => {
   // Until the admin toggles it, the panel stays closed while the project has
   // no methods, and opens on its own once the first one is added.
   // Placeholder data still belongs to the previous project.
-  const collapsed = chosen
-    ? chosen.collapsed
-    : !isPlaceholderData && phases?.data.length === 0;
+  const pending = !chosen && (isPlaceholderData || !phases);
+  const collapsed = chosen ? chosen.collapsed : phases?.data.length === 0;
 
   return (
     <ParticipationPanelContext.Provider
       value={{
+        pending,
         collapsed,
         animate: !!chosen,
         setCollapsed: (collapsed) => setChoice({ projectId, collapsed }),

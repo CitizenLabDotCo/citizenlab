@@ -1,15 +1,17 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
+import { router } from 'routes';
 
 import { ParticipationMethod } from 'api/phases/types';
+
+import useLocale from 'hooks/useLocale';
 
 import SettingsModal from 'containers/Admin/projects/project/backofficeRedesign/_shared/components/SettingsModal';
 import ParticipationMethodChoices from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/components/ParticipationMethodChoices';
 import projectPageMessages from 'containers/Admin/projects/project/projectPage/messages';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
-import clHistory from 'utils/cl-router/history';
 import { useSearch } from 'utils/router';
 
 import messages from '../messages';
@@ -46,6 +48,7 @@ interface Props {
 // phase is created there once it has a title and dates.
 const SelectMethodModal = ({ projectId, opened, onClose }: Props) => {
   const { formatMessage } = useIntl();
+  const locale = useLocale();
   const { participation_method } = useSearch({ strict: false });
 
   return (
@@ -71,9 +74,15 @@ const SelectMethodModal = ({ projectId, opened, onClose }: Props) => {
               onSelect={(_event, method) =>
                 method === participation_method
                   ? onClose()
-                  : clHistory.push(
-                      `/admin/projects/${projectId}/phases/new?participation_method=${method}`
-                    )
+                  : // Through the router, so unsaved changes block it.
+                    router.navigate({
+                      to: '/$locale/admin/projects/$projectId/phases/new',
+                      params: { locale, projectId },
+                      search: ({ project_backoffice_redesign }) => ({
+                        project_backoffice_redesign,
+                        participation_method: method,
+                      }),
+                    })
               }
             />
           </Box>
