@@ -43,6 +43,7 @@ import messages from '../../../messages';
 import InstructionAnimation from '../components/InstructionAnimation';
 import UndoButton from '../components/UndoButton';
 import {
+  exceedsPinLimit,
   getCoordinatesFromMultiPointData,
   handleMapClickMultipoint,
   isMultiPointInput,
@@ -194,7 +195,8 @@ const FullscreenMapInput = memo<Props>(
 
     const pinCount: number =
       getCoordinatesFromMultiPointData(data, inputType)?.length ?? 0;
-    const limitReached = !!maxPins && pinCount >= maxPins;
+    const limitReached =
+      maxPins !== undefined && exceedsPinLimit(pinCount + 1, maxPins);
 
     // Get map height by calculating the height of the bottom section
     const getMapHeight = () => {

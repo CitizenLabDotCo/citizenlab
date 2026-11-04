@@ -104,7 +104,8 @@ const MapField = ({
   const maxPins = question.maximum_select_count;
   const pinCount: number =
     getCoordinatesFromMultiPointData(value, question.input_type)?.length ?? 0;
-  const limitReached = !!maxPins && pinCount >= maxPins;
+  const limitReached =
+    maxPins !== undefined && exceedsPinLimit(pinCount + 1, maxPins);
 
   const errors = get(formContextErrors, name) as RHFErrors;
   const validationError = errors?.message;

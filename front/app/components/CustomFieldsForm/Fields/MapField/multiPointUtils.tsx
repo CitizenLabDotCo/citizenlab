@@ -38,7 +38,9 @@ export const isMultiPointInput = (inputType: MapInputType) => {
 
 // exceedsPinLimit
 // Description: Whether a number of pins is past the question's limit. A
-// question with no limit set takes any number of pins.
+// question with no limit takes any number of pins, and so does one with a
+// limit of 0, the way the other select count questions read it. Pass
+// pinCount + 1 to ask whether there is room for one more pin.
 export const exceedsPinLimit = (pinCount: number, maxPins?: number) =>
   !!maxPins && pinCount > maxPins;
 

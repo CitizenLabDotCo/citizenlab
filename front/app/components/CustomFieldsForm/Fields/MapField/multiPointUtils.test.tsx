@@ -197,5 +197,6 @@ describe('exceedsPinLimit', () => {
   });
   it('allows any number of pins when there is no limit', () => {
     expect(exceedsPinLimit(12, undefined)).toBe(false);
+    expect(exceedsPinLimit(12, 0)).toBe(false);
   });
 });
