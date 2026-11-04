@@ -426,6 +426,24 @@ describe('Events widget', () => {
     cy.get('div#ROOT').should('contain', 'There are no events yet.');
   });
 
+  // The builder note fits any widget, whatever its events' source, and names the setting that
+  // would show visitors a message instead.
+  it('tells an admin how to show visitors an empty widget', () => {
+    cy.apiUpdateHomepageLayout({
+      craftjs_json: homepageLayoutWith('EventsList', {
+        source: 'projects',
+        ids: [emptyProjectId],
+      }),
+    });
+    // Not goToHomepageBuilder: it waits for the default homepage's frame, which this layout replaces.
+    cy.setAdminLoginCookie();
+    cy.visit('en/admin/pages-menu/homepage-builder');
+
+    cy.contains(
+      'unless you switch on “Show a message when there are no events”'
+    ).should('exist');
+  });
+
   // A widget without the setting hides itself when it has no events.
   it('shows the empty message once an admin switches it on', () => {
     cy.apiUpdateProjectPageLayout(
