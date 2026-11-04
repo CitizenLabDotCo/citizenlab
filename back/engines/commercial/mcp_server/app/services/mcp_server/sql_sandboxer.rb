@@ -25,7 +25,9 @@ module McpServer
   #     on every tenant schema). The CTE exemption is scope-aware: a CTE named
   #     like a real relation (e.g. `pg_user`) does NOT exempt a same-named
   #     reference sitting in another scope, which would otherwise reach an
-  #     always-on-search_path catalog such as `pg_catalog.pg_user`;
+  #     always-on-search_path catalog such as `pg_catalog.pg_user`. It follows
+  #     Postgres's own order too: a CTE body sees only the CTEs declared before it
+  #     in its WITH list, and sees itself only when the list is RECURSIVE;
   #   - every function call is on the pure-function allowlist.
   class SqlSandboxer
     # Pure, side-effect-free functions safe to expose. Anything not listed is
@@ -117,21 +119,46 @@ module McpServer
     # or outer scopes (a fresh set per branch). We recurse generically over the
     # protobuf tree so every RangeVar is still reached, exactly as walk! would.
     def validate_relations!(node, visible_ctes)
-      visible_ctes |= cte_names_in_scope(node)
       check_relation!(node, visible_ctes) if node.is_a?(::PgQuery::RangeVar)
-      each_child_node(node) { |child| validate_relations!(child, visible_ctes) }
+
+      with_clause = with_clause_of(node)
+      if with_clause
+        validate_cte_bodies!(with_clause, visible_ctes)
+        # The statement owning the WITH sees all of its CTEs, in any order.
+        visible_ctes |= cte_names(with_clause)
+      end
+
+      each_child_node(node) do |child|
+        # Walked above, under the narrower scope a CTE body actually has.
+        next if child.is_a?(::PgQuery::WithClause)
+
+        validate_relations!(child, visible_ctes)
+      end
     end
 
-    # CTE names introduced by a node's own WITH clause (empty for nodes without
-    # one). They are visible to the WITH's own CTE bodies (for inter-CTE and
-    # `WITH RECURSIVE` self references) and to the statement that owns the WITH.
-    def cte_names_in_scope(node)
-      return [] unless node.respond_to?(:with_clause)
+    # A CTE body sees only the CTEs declared before it in the same WITH list.
+    # Without RECURSIVE a CTE cannot even see itself, so Postgres reads the inner
+    # reference in `WITH users AS (SELECT * FROM users)` as the real users table —
+    # treating it as the CTE would wave a query through to layer 2 that this layer
+    # is meant to stop. RECURSIVE is what makes a name resolve to its own CTE, and
+    # it also makes the list unordered, so there every sibling is in scope.
+    def validate_cte_bodies!(with_clause, visible_ctes)
+      names = cte_names(with_clause)
 
-      with_clause = node.with_clause
-      return [] if with_clause.nil?
+      with_clause.ctes.each_with_index do |cte, index|
+        siblings = with_clause.recursive ? names : names.first(index)
+        validate_relations!(cte, visible_ctes | siblings)
+      end
+    end
 
+    def cte_names(with_clause)
       with_clause.ctes.map { |cte| cte.common_table_expr.ctename }
+    end
+
+    def with_clause_of(node)
+      return nil unless node.respond_to?(:with_clause)
+
+      node.with_clause
     end
 
     # Yields each child that is itself a parse-tree node, transparently unwrapping

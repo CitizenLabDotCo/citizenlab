@@ -62,6 +62,14 @@ RSpec.describe McpServer::SqlSandboxer do
       'WITH a AS (SELECT count(*) AS c FROM reporting_contributions), ' \
       'b AS (SELECT count(*) AS c FROM reporting_users) SELECT a.c, b.c FROM a, b',
 
+      # A RECURSIVE list is unordered, so a body may read a sibling declared later.
+      'WITH RECURSIVE a AS (SELECT * FROM b), ' \
+      'b AS (SELECT count(*) AS c FROM reporting_contributions) SELECT * FROM a',
+
+      # Shadowing an allowed table: the body's own reference reaches the real view,
+      # which is allowed, and everything after the WITH reaches the CTE.
+      'WITH reporting_users AS (SELECT * FROM reporting_users) SELECT count(*) FROM reporting_users',
+
       # LATERAL + correlated subquery (scope inherited from the outer query).
       'SELECT c.project_id FROM reporting_contributions c, ' \
       'LATERAL (SELECT count(*) FROM reporting_phases ph WHERE ph.id = c.phase_id) x',
@@ -187,7 +195,27 @@ RSpec.describe McpServer::SqlSandboxer do
           /Table 'pg_user' is not queryable/],
       'CTE-name confusion leaking pg_database (nested WITH scope)' =>
         ['WITH dummy AS (WITH pg_database AS (SELECT 1 AS id) SELECT id FROM pg_database) SELECT * FROM pg_database',
-          /Table 'pg_database' is not queryable/]
+          /Table 'pg_database' is not queryable/],
+
+      # Postgres resolves a name a non-recursive CTE body cannot see to the real
+      # relation, so taking the CTE's name for it is how a query reaches `users`
+      # with layer 1's blessing. Verified against Postgres: the inner reference
+      # below errors as a missing *relation*, not as the CTE.
+      'a CTE body reading the table the CTE is named after' =>
+        ['WITH users AS (SELECT * FROM users) SELECT email FROM users', /Table 'users' is not queryable/],
+      'the same shape over a cluster catalog' =>
+        ['WITH pg_user AS (SELECT * FROM pg_user) SELECT * FROM pg_user', /Table 'pg_user' is not queryable/],
+      'a CTE body reading a table named like a sibling declared after it' =>
+        ['WITH a AS (SELECT * FROM users), users AS (SELECT 1 AS id) SELECT * FROM a',
+          /Table 'users' is not queryable/],
+      'a self-naming CTE nested inside another CTE' =>
+        ['WITH wrapper AS (WITH users AS (SELECT * FROM users) SELECT * FROM users) SELECT * FROM wrapper',
+          /Table 'users' is not queryable/],
+      # RECURSIVE makes the name resolve to the CTE, so it is the one shape where
+      # self-reference is real — and it must not become a way back in.
+      'a recursive CTE smuggling a forbidden table past its own name' =>
+        ['WITH RECURSIVE users AS (SELECT 1 AS id UNION ALL SELECT id FROM pg_user) SELECT * FROM users',
+          /Table 'pg_user' is not queryable/]
     }.each do |label, (sql, message)|
       it("rejects #{label}") { expect_rejected(sql, message) }
     end
