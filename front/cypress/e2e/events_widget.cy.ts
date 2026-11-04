@@ -121,6 +121,8 @@ describe('Events widget', () => {
 
   let projectId = '';
   let projectSlug = '';
+  let emptyProjectId = '';
+  let emptyProjectSlug = '';
   let homepageLayout: Record<string, unknown>;
   let spacesWasEnabled = false;
 
@@ -204,6 +206,15 @@ describe('Events widget', () => {
         endDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
       });
     });
+
+    cy.apiCreateProject({
+      title: `Empty ${randomString()}`,
+      descriptionPreview: projectTitle,
+      publicationStatus: 'published',
+    }).then((project) => {
+      emptyProjectId = project.body.data.id;
+      emptyProjectSlug = project.body.data.attributes.slug;
+    });
   });
 
   beforeEach(() => {
@@ -214,6 +225,7 @@ describe('Events widget', () => {
     cy.apiUpdateHomepageLayout({ craftjs_json: homepageLayout });
     setSpaces(spacesWasEnabled);
     if (projectId) cy.apiRemoveProject(projectId);
+    if (emptyProjectId) cy.apiRemoveProject(emptyProjectId);
   });
 
   it('renders with the props the toolbox wrote', () => {
@@ -363,6 +375,34 @@ describe('Events widget', () => {
     cy.get('label[for="events-source-all"]').click();
     cy.get('#events-limit-all').should('exist');
     cy.get('#events-source-spaces').should('not.exist');
+  });
+
+  it('names the time periods it has no events for', () => {
+    const cases = [
+      {
+        timeFilters: ['upcoming'],
+        message: 'No upcoming or ongoing events are currently scheduled.',
+      },
+      { timeFilters: ['past'], message: 'There are no past events.' },
+      {
+        timeFilters: ['upcoming', 'past'],
+        message: 'There are no events yet.',
+      },
+    ];
+
+    cases.forEach(({ timeFilters, message }) => {
+      cy.apiUpdateProjectPageLayout(
+        emptyProjectId,
+        projectPageLayoutWith('EventsList', {
+          ...TOOLBOX_PROJECT_PAGE_PROPS,
+          timeFilters,
+          showEmptyMessage: true,
+        })
+      );
+
+      cy.visit(`/en/projects/${emptyProjectSlug}`);
+      cy.get('#e2e-project-page-events').should('contain', message);
+    });
   });
 
   // A query that is switched off keeps serving its last result, so a bucket has to be read

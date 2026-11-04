@@ -73,4 +73,12 @@ export default defineMessages({
     id: 'app.components.admin.ContentBuilder.Widgets.Events.heading',
     defaultMessage: 'Heading',
   },
+  noPastEvents: {
+    id: 'app.components.admin.ContentBuilder.Widgets.Events.noPastEvents',
+    defaultMessage: 'There are no past events.',
+  },
+  noEvents: {
+    id: 'app.components.admin.ContentBuilder.Widgets.Events.noEvents',
+    defaultMessage: 'There are no events yet.',
+  },
 });

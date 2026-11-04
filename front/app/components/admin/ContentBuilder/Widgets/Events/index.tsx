@@ -28,7 +28,7 @@ import EditModeHeightCap from 'components/ProjectPageBuilder/Widgets/EditModeHei
 import EmptyEvents from 'components/ProjectPageBuilder/Widgets/Events/EmptyEvents';
 import EventsSection from 'components/ProjectPageBuilder/Widgets/Events/EventsSection';
 
-import { useIntl } from 'utils/cl-intl';
+import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import Link, { typedStyled } from 'utils/cl-router/Link';
 import sharedMessages from 'utils/messages';
 import { useLocation } from 'utils/router';
@@ -40,7 +40,7 @@ import { VerticalRhythmContext } from '../../verticalRhythm';
 
 import messages from './messages';
 import EventsSettings, { defaultHeadingMessage } from './Settings';
-import { EventsProps, EventsSource } from './types';
+import { EventsProps, EventsSource, EventsTimeFilter } from './types';
 
 export const EVENTS_WIDGET_NAME = 'EventsList';
 // The project page's events CTAs scroll to this. It lives here so a node stored under
@@ -80,6 +80,15 @@ const selectionParams = (
     case 'all':
       return {};
   }
+};
+
+const emptyMessage = (timeFilters: EventsTimeFilter[]): MessageDescriptor => {
+  if (timeFilters.includes('upcoming') && timeFilters.includes('past')) {
+    return messages.noEvents;
+  }
+  if (timeFilters.includes('past')) return messages.noPastEvents;
+
+  return eventsPageMessages.noUpcomingOrOngoingEvents;
 };
 
 const EventsList: UserComponent<EventsProps> = ({
@@ -189,7 +198,7 @@ const EventsList: UserComponent<EventsProps> = ({
       {isEmpty ? (
         <Box display="flex" alignItems="center" mb="32px">
           <NoEventsText>
-            {formatMessage(eventsPageMessages.noUpcomingOrOngoingEvents)}
+            {formatMessage(emptyMessage(timeFilters))}
           </NoEventsText>
         </Box>
       ) : (
