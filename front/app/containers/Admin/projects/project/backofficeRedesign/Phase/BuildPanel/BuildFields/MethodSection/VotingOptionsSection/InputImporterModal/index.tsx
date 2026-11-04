@@ -9,11 +9,11 @@ import {
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import ImportExcelModal from 'containers/Admin/projects/project/inputImporter/ImportModal/ImportExcelModal';
-import ImportPdfModal from 'containers/Admin/projects/project/inputImporter/ImportModal/ImportPdfModal';
 import inputImporterMessages from 'containers/Admin/projects/project/inputImporter/messages';
 
 import formSyncMessages from 'components/admin/FormSync/messages';
+import ImportExcelModal from 'components/admin/InputImporterModals/ImportExcelModal';
+import ImportPdfModal from 'components/admin/InputImporterModals/ImportPdfModal';
 import Modal from 'components/UI/Modal';
 import UpsellTooltip from 'components/UpsellTooltip';
 
@@ -108,6 +108,8 @@ const InputImporterModal = ({ projectId, phaseId, opened, onClose }: Props) => {
         </Box>
       </Modal>
       <ImportPdfModal
+        projectId={projectId}
+        phaseId={phaseId}
         open={upload === 'pdf'}
         onClose={() => setUpload(null)}
         onUploaded={goToReview}

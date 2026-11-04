@@ -20,7 +20,6 @@ import Modal from 'components/UI/Modal';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
-import { useParams } from 'utils/router';
 import validateLocale from 'utils/yup/validateLocale';
 
 import { IDEA_IMPORT_FILE_MAX_SIZE_MB } from './constants';
@@ -36,25 +35,27 @@ interface FormValues {
 }
 
 interface Props {
+  projectId: string;
+  phaseId: string;
   open: boolean;
   onClose: () => void;
   /** Called once the file is uploaded, after the modal closes. */
   onUploaded?: () => void;
 }
 
-const ImportPdfModal = ({ open, onClose, onUploaded }: Props) => {
+const ImportPdfModal = ({
+  projectId,
+  phaseId,
+  open,
+  onClose,
+  onUploaded,
+}: Props) => {
   const { formatMessage } = useIntl();
   const { mutateAsync: addOfflineIdeas, isPending } = useAddOfflineIdeasAsync();
   const locale = useLocale();
-  const { projectId, phaseId } = useParams({
-    strict: false,
-  });
   const { data: phase } = usePhase(phaseId);
 
-  const downloadFormParams = { projectId, phaseId } as {
-    projectId: string;
-    phaseId: string;
-  };
+  const downloadFormParams = { projectId, phaseId };
   const downloadFormLink =
     phase?.data.attributes.participation_method === 'native_survey'
       ? ({
