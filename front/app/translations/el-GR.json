@@ -628,7 +628,6 @@
   "app.components.ProjectPageBuilder.Widgets.bannerEmptyNote": "Δεν υπάρχει εικόνα ακόμα · μόνο οι διαχειριστές και οι συντονιστές αυτού του έργου μπορούν να το δουν αυτό",
   "app.components.ProjectPageBuilder.Widgets.bannerEmptyTitle": "Προσθήκη εικόνας έργου",
   "app.components.ProjectPageBuilder.Widgets.bannerWidgetTitle": "Εικόνα έργου",
-  "app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage": "Δεν υπάρχουν ακόμα εκδηλώσεις — οι εκδηλώσεις που προστίθενται στο πρόγραμμα επεξεργασίας του έργου εμφανίζονται εδώ αυτόματα. Οι επισκέπτες δεν θα βλέπουν αυτή την ενότητα μέχρι τότε.",
   "app.components.ProjectPageBuilder.Widgets.eventsLinkText": "Εκδηλώσεις",
   "app.components.ProjectPageBuilder.Widgets.eventsManagedNote": "Η διαχείριση των εκδηλώσεων γίνεται στο πρόγραμμα επεξεργασίας έργου, στην ενότητα {eventsLink}. Προσθέστε, επεξεργαστείτε ή αφαιρέστε τις εκεί — θα εμφανιστούν εδώ αυτόματα.",
   "app.components.ProjectPageBuilder.Widgets.eventsWidgetTitle": "Εκδηλώσεις",

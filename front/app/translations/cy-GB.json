@@ -628,7 +628,6 @@
   "app.components.ProjectPageBuilder.Widgets.bannerEmptyNote": "Dim delwedd eto · dim ond gweinyddwyr a chymedrolwyr y prosiect hwn sy'n gallu gweld hyn",
   "app.components.ProjectPageBuilder.Widgets.bannerEmptyTitle": "Ychwanegu delwedd prosiect",
   "app.components.ProjectPageBuilder.Widgets.bannerWidgetTitle": "Delwedd y prosiect",
-  "app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage": "Dim digwyddiadau eto — mae digwyddiadau a ychwanegir yng ngolygydd y prosiect yn ymddangos yma yn awtomatig. Ni fydd ymwelwyr yn gweld yr adran hon tan hynny.",
   "app.components.ProjectPageBuilder.Widgets.eventsLinkText": "Digwyddiadau",
   "app.components.ProjectPageBuilder.Widgets.eventsManagedNote": "Rheolir digwyddiadau yn y golygydd prosiect, o dan {eventsLink}. Gallwch eu hychwanegu, eu golygu neu eu tynnu yno — byddant yn ymddangos yma yn awtomatig.",
   "app.components.ProjectPageBuilder.Widgets.eventsWidgetTitle": "Digwyddiadau",

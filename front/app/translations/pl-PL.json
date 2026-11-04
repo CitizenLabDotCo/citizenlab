@@ -628,7 +628,6 @@
   "app.components.ProjectPageBuilder.Widgets.bannerEmptyNote": "Brak zdjęcia · tylko administratorzy i moderatorzy tego projektu mogą to zobaczyć",
   "app.components.ProjectPageBuilder.Widgets.bannerEmptyTitle": "Dodaj zdjęcie projektu",
   "app.components.ProjectPageBuilder.Widgets.bannerWidgetTitle": "Zdjęcie projektu",
-  "app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage": "Brak wydarzeń — wydarzenia dodane w edytorze projektu pojawią się tutaj automatycznie. Do tego czasu odwiedzający nie będą widzieć tej sekcji.",
   "app.components.ProjectPageBuilder.Widgets.eventsLinkText": "Wydarzenia",
   "app.components.ProjectPageBuilder.Widgets.eventsManagedNote": "Wydarzeniami zarządza się w edytorze projektu, w sekcji {eventsLink}. Tam możesz je dodawać, edytować lub usuwać — pojawią się tutaj automatycznie.",
   "app.components.ProjectPageBuilder.Widgets.eventsWidgetTitle": "Wydarzenia",

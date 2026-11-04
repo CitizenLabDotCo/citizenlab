@@ -628,7 +628,6 @@
   "app.components.ProjectPageBuilder.Widgets.bannerEmptyNote": "Ingen bild ännu · endast administratörer och moderatorer för det här projektet kan se detta",
   "app.components.ProjectPageBuilder.Widgets.bannerEmptyTitle": "Lägg till en projektbild",
   "app.components.ProjectPageBuilder.Widgets.bannerWidgetTitle": "Projektbild",
-  "app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage": "Inga evenemang ännu — evenemang som läggs till i projektredigeraren visas här automatiskt. Besökare ser inte den här sektionen förrän dess.",
   "app.components.ProjectPageBuilder.Widgets.eventsLinkText": "Evenemang",
   "app.components.ProjectPageBuilder.Widgets.eventsManagedNote": "Evenemang hanteras i projektverktyget, under {eventsLink}. Lägg till, redigera eller ta bort dem där – de visas här automatiskt.",
   "app.components.ProjectPageBuilder.Widgets.eventsWidgetTitle": "Evenemang",

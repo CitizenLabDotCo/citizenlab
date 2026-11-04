@@ -628,7 +628,6 @@
   "app.components.ProjectPageBuilder.Widgets.bannerEmptyNote": "Atvaizdo dar nėra · tai matyti gali tik šio projekto administratoriai ir moderatoriai",
   "app.components.ProjectPageBuilder.Widgets.bannerEmptyTitle": "Pridėti projekto atvaizdą",
   "app.components.ProjectPageBuilder.Widgets.bannerWidgetTitle": "Projekto atvaizdas",
-  "app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage": "Renginių dar nėra – projekto redaktoriuje pridėti renginiai čia atsiras automatiškai. Lankytojai šios skilties nematys iki tol.",
   "app.components.ProjectPageBuilder.Widgets.eventsLinkText": "Renginiai",
   "app.components.ProjectPageBuilder.Widgets.eventsManagedNote": "Renginiai valdomi projekto redaktoriuje, skiltyje {eventsLink}. Ten juos pridėkite, redaguokite arba pašalinkite – čia jie atsiras automatiškai.",
   "app.components.ProjectPageBuilder.Widgets.eventsWidgetTitle": "Renginiai",

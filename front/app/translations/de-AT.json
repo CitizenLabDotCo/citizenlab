@@ -628,7 +628,6 @@
   "app.components.ProjectPageBuilder.Widgets.bannerEmptyNote": "Noch kein Bild · Nur Admins und Projektmanager*innen können dies sehen",
   "app.components.ProjectPageBuilder.Widgets.bannerEmptyTitle": "Projektbild hinzufügen",
   "app.components.ProjectPageBuilder.Widgets.bannerWidgetTitle": "Projektbild",
-  "app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage": "Noch keine Veranstaltungen — im Projekteditor hinzugefügte Veranstaltungen erscheinen hier automatisch. Besucher*innen sehen diesen Bereich erst dann.",
   "app.components.ProjectPageBuilder.Widgets.eventsLinkText": "Veranstaltungen",
   "app.components.ProjectPageBuilder.Widgets.eventsManagedNote": "Veranstaltungen werden im Projekteditor unter {eventsLink} verwaltet. Fügen Sie sie dort hinzu, bearbeiten oder entfernen Sie sie – sie erscheinen hier automatisch.",
   "app.components.ProjectPageBuilder.Widgets.eventsWidgetTitle": "Veranstaltungen",

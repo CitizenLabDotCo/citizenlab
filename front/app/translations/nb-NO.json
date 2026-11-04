@@ -628,7 +628,6 @@
   "app.components.ProjectPageBuilder.Widgets.bannerEmptyNote": "Ingen bilder ennå · kun administratorer og moderatorer for dette prosjektet kan se dette",
   "app.components.ProjectPageBuilder.Widgets.bannerEmptyTitle": "Legg til et prosjektbilde",
   "app.components.ProjectPageBuilder.Widgets.bannerWidgetTitle": "Prosjektbilde",
-  "app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage": "Ingen arrangementer ennå — arrangementer som legges til i prosjektredigeringen vises her automatisk. Besøkende vil ikke se denne seksjonen før det.",
   "app.components.ProjectPageBuilder.Widgets.eventsLinkText": "Arrangementer",
   "app.components.ProjectPageBuilder.Widgets.eventsManagedNote": "Arrangementer administreres i prosjektredigeringen, under {eventsLink}. Legg til, rediger eller fjern dem der – de vil vises her automatisk.",
   "app.components.ProjectPageBuilder.Widgets.eventsWidgetTitle": "Arrangementer",

@@ -628,7 +628,6 @@
   "app.components.ProjectPageBuilder.Widgets.bannerEmptyNote": "Ei vielä kuvaa · vain tämän hankkeen ylläpitäjät ja moderaattorit voivat nähdä tämän",
   "app.components.ProjectPageBuilder.Widgets.bannerEmptyTitle": "Lisää hankkeen kuva",
   "app.components.ProjectPageBuilder.Widgets.bannerWidgetTitle": "Hankkeen kuva",
-  "app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage": "Ei vielä tapahtumia — projektieditorissa lisätyt tapahtumat ilmestyvät tänne automaattisesti. Vierailijat eivät näe tätä osiota ennen sitä.",
   "app.components.ProjectPageBuilder.Widgets.eventsLinkText": "Tapahtumat",
   "app.components.ProjectPageBuilder.Widgets.eventsManagedNote": "Tapahtumia hallinnoidaan hankkeen muokkaustyökalussa kohdassa {eventsLink}. Lisää, muokkaa tai poista niitä siellä – ne ilmestyvät tänne automaattisesti.",
   "app.components.ProjectPageBuilder.Widgets.eventsWidgetTitle": "Tapahtumat",

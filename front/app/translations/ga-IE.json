@@ -628,7 +628,6 @@
   "app.components.ProjectPageBuilder.Widgets.bannerEmptyNote": "Níl aon íomhá ann fós · ní féidir ach le riarthóirí agus modhnóirí an tionscadail seo é seo a fheiceáil",
   "app.components.ProjectPageBuilder.Widgets.bannerEmptyTitle": "Cuir íomhá tionscadail leis",
   "app.components.ProjectPageBuilder.Widgets.bannerWidgetTitle": "Íomhá tionscadail",
-  "app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage": "Níl aon imeachtaí ann fós — beidh imeachtaí a chuirtear leis in eagarthóir an tionscadail le feiceáil anseo go huathoibríoch. Ní fheicfidh cuairteoirí an rannán seo go dtí sin.",
   "app.components.ProjectPageBuilder.Widgets.eventsLinkText": "Imeachtaí",
   "app.components.ProjectPageBuilder.Widgets.eventsManagedNote": "Bainistítear imeachtaí in eagarthóir an tionscadail, faoi {eventsLink}. Cuir leis, cuir in eagar, nó bain iad ansin — feicfear anseo go huathoibríoch iad.",
   "app.components.ProjectPageBuilder.Widgets.eventsWidgetTitle": "Imeachtaí",
