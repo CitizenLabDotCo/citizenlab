@@ -733,7 +733,7 @@ describe ReportBuilder::Composition::ReportComposer do
       end
 
       it 'stops when the admin pressed stop, and keeps what was written' do
-        run = create(:generation_transcript, report: create(:report, project: project), stopped_because: nil)
+        run = create(:report_run, report: create(:report, project: project), stopped_because: nil)
         composer = described_class.new(project, locale: 'en', client: client, run_record: run)
         allow(client).to receive(:converse) do |args|
           sent_messages << args[:messages].deep_dup
@@ -746,8 +746,24 @@ describe ReportBuilder::Composition::ReportComposer do
         expect(client).to have_received(:converse).once
       end
 
+      # A run that dies leaves what it did, instead of a record written only at the end.
+      it 'writes each round to the report conversation as it happens' do
+        run = create(:report_run, report: create(:report, project: project), stopped_because: nil)
+        composer = described_class.new(project, locale: 'en', client: client, run_record: run)
+        stub_converse(write_layout(text_layout), done)
+
+        composer.compose
+
+        brief, patch, reply = run.messages.to_a
+        expect([brief, patch, reply].map(&:role)).to eq %w[user assistant assistant]
+        expect(brief.content).to include 'Generate the report.'
+        expect(patch).to have_attributes(input_tokens: 100, output_tokens: 20)
+        expect(patch.tool_calls.sole).to have_attributes(name: 'patch_layout', status: 'auto_executed')
+        expect(reply.content).to eq 'Wrote the report.'
+      end
+
       it 'fails a cancelled run that had written nothing, and says why' do
-        run = create(:generation_transcript, report: create(:report, project: project), stopped_because: nil)
+        run = create(:report_run, report: create(:report, project: project), stopped_because: nil)
         composer = described_class.new(project, locale: 'en', client: client, run_record: run)
         allow(client).to receive(:converse) do
           run.update!(cancel_requested_at: Time.current)
@@ -834,14 +850,16 @@ describe ReportBuilder::Composition::ReportComposer do
         expect(sent_messages.first.last[:content].first[:text]).to include project.title_multiloc['en']
       end
 
-      it 'records only what this turn added' do
+      it 'writes only what this turn added to the conversation: the history is already there' do
         stub_converse(done('Sure.'))
+        run = create(:report_run, report: create(:report, project: project), kind: 'revision', stopped_because: nil)
+        composer = described_class.new(project, locale: 'en', client: client, run_record: run)
 
         composer.revise(current_layout: text_layout, instruction: 'hello', history: history)
 
         expect(composer.transcript.size).to eq 4
-        expect(composer.turn_messages.size).to eq 2
-        expect(composer.turn_messages.first[:role]).to eq 'user'
+        expect(run.messages.map(&:role)).to eq %w[user assistant]
+        expect(run.messages.first.content).to include 'hello'
       end
 
       it 'says the turn finished' do

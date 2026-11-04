@@ -71,14 +71,14 @@ RSpec.describe ReportBuilder::GenerateReportJob do
     end
 
     describe 'the record of the run' do
-      it 'writes what the model was told and what it cost' do
-        expect { enqueue_job.perform_now }.to change(ReportBuilder::GenerationTranscript, :count).by(1)
+      it 'writes which model ran, in the report conversation, and that it finished' do
+        expect { enqueue_job.perform_now }.to change(ReportBuilder::Run, :count).by(1)
 
-        transcript = ReportBuilder::GenerationTranscript.last
-        expect(transcript.report).to eq report
-        expect(transcript.model).to be_present
-        expect(transcript.kind).to eq 'generation'
-        expect(transcript).not_to be_running
+        run = ReportBuilder::Run.last
+        expect(run.conversation).to eq report.chat
+        expect(run.model).to be_present
+        expect(run.kind).to eq 'generation'
+        expect(run).not_to be_running
       end
 
       # The cancel endpoint marks the record, and the versions a run writes point at
@@ -99,21 +99,21 @@ RSpec.describe ReportBuilder::GenerateReportJob do
           .to receive(:compose).and_raise(ReportBuilder::Composition::ReportComposer::ComposeError, 'nope')
 
         expect { suppress(StandardError) { enqueue_job.perform_now } }
-          .to change(ReportBuilder::GenerationTranscript, :count).by(1)
-        expect(ReportBuilder::GenerationTranscript.last.stopped_because).to eq 'failed'
+          .to change(ReportBuilder::Run, :count).by(1)
+        expect(ReportBuilder::Run.last.stopped_because).to eq 'failed'
       end
 
       it 'marks the run as the one the report holds, once it is actually saved' do
         enqueue_job.perform_now
 
-        expect(ReportBuilder::GenerationTranscript.last.report_saved_at).to be_present
+        expect(ReportBuilder::Run.last.report_saved_at).to be_present
       end
 
       # The report is already saved by then: failing here would rerun minutes of
       # paid work to fix a bookkeeping row.
       it 'does not take the run down if it cannot be marked as saved' do
-        allow_any_instance_of(ReportBuilder::GenerationTranscript).to receive(:update!).and_call_original
-        allow_any_instance_of(ReportBuilder::GenerationTranscript)
+        allow_any_instance_of(ReportBuilder::Run).to receive(:update!).and_call_original
+        allow_any_instance_of(ReportBuilder::Run)
           .to receive(:update!).with(hash_including(:report_saved_at))
           .and_raise(ActiveRecord::RecordInvalid)
 
@@ -122,7 +122,7 @@ RSpec.describe ReportBuilder::GenerateReportJob do
       end
 
       it 'does not take the run down if the record cannot be filled in' do
-        allow_any_instance_of(ReportBuilder::GenerationTranscript).to receive(:update!).and_raise(ActiveRecord::RecordInvalid)
+        allow_any_instance_of(ReportBuilder::Run).to receive(:update!).and_raise(ActiveRecord::RecordInvalid)
 
         expect { enqueue_job.perform_now }.not_to raise_error
         expect(report.reload.layout.craftjs_json).to eq composed_layout
@@ -140,7 +140,7 @@ RSpec.describe ReportBuilder::GenerateReportJob do
       expect(ReportBuilder::Composition::ReportComposer)
         .to receive(:new)
         .with(phase.project, locale: 'en', phase: phase, author: owner, layout_record: report.layout,
-          run_record: kind_of(ReportBuilder::GenerationTranscript))
+          run_record: kind_of(ReportBuilder::Run))
         .and_call_original
 
       enqueue_job.perform_now
@@ -153,7 +153,7 @@ RSpec.describe ReportBuilder::GenerateReportJob do
         expect(ReportBuilder::Composition::ReportComposer)
           .to receive(:new)
           .with(phase.project, locale: 'en', phase: nil, author: owner, layout_record: report.layout,
-            run_record: kind_of(ReportBuilder::GenerationTranscript))
+            run_record: kind_of(ReportBuilder::Run))
           .and_call_original
 
         job = enqueue_job

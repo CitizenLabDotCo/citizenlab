@@ -5,7 +5,7 @@
 # Table name: ai_assistant_conversations
 #
 #  id              :uuid             not null, primary key
-#  user_id         :uuid             not null
+#  user_id         :uuid
 #  subject_type    :string           not null
 #  subject_id      :uuid             not null
 #  surface_key     :string           not null
@@ -18,8 +18,9 @@
 #
 # Indexes
 #
-#  index_ai_assistant_conversations_on_subject  (subject_type,subject_id)
-#  index_ai_assistant_conversations_on_user_id  (user_id)
+#  index_ai_assistant_conversations_on_subject         (subject_type,subject_id)
+#  index_ai_assistant_conversations_on_user_id         (user_id)
+#  index_ai_assistant_conversations_shared_on_subject  (subject_type,subject_id,surface_key) UNIQUE WHERE (user_id IS NULL)
 #
 # Foreign Keys
 #
@@ -29,12 +30,17 @@ module AIAssistant
   # A chat between a user and the AI assistant about one record (the subject), e.g. the
   # survey of a phase. +surface_key+ says where the assistant is used, which decides its
   # prompt and tools.
+  #
+  # The report builder keeps its chat here too, under its own surface key. That chat
+  # has no user: it is the report's, shared by everyone who may edit the report, and
+  # there is one per report. The assistant's endpoints only reach conversations the
+  # current user owns, so they never see it.
   class Conversation < ApplicationRecord
     STATUSES = %w[idle running failed].freeze
     # A running turn stores a message more often than this, unless its job was lost.
     TURN_TIMEOUT = 10.minutes
 
-    belongs_to :user
+    belongs_to :user, optional: true
     belongs_to :subject, polymorphic: true
 
     has_many :messages, -> { order(:position) }, class_name: 'AIAssistant::Message', dependent: :destroy, inverse_of: :conversation

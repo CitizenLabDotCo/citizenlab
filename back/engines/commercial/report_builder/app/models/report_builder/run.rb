@@ -2,45 +2,47 @@
 
 # == Schema Information
 #
-# Table name: report_builder_generation_transcripts
+# Table name: report_builder_runs
 #
 #  id                  :uuid             not null, primary key
-#  report_id           :uuid             not null
-#  model               :string           default(""), not null
+#  conversation_id     :uuid             not null
 #  kind                :string           default("generation"), not null
-#  messages            :jsonb            not null
+#  model               :string           default(""), not null
 #  usage               :jsonb            not null
 #  stopped_because     :string
 #  cancel_requested_at :datetime
+#  report_saved_at     :datetime
+#  first_position      :integer
+#  last_position       :integer
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
-#  report_saved_at     :datetime
 #
 # Indexes
 #
-#  index_report_builder_generation_transcripts_on_report_id  (report_id)
+#  index_report_builder_runs_on_conversation_id  (conversation_id)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (report_id => report_builder_reports.id) ON DELETE => cascade
+#  fk_rails_...  (conversation_id => ai_assistant_conversations.id) ON DELETE => cascade
 #
 module ReportBuilder
-  # What the model was told and what it did, for one run: the first generation, or
-  # one turn of the chat.
+  # One run of the model on a report: the first generation, or one turn of the chat.
   #
   # A run is minutes of paid work behind a background job with nobody watching. When
-  # one produces a disappointing report, or none at all, this is the only way to tell
-  # a bad prompt from a bad reply from a broken tool — everything else the run leaves
-  # behind is the outcome, not the reasoning.
+  # one produces a disappointing report, or none at all, its messages are the only way
+  # to tell a bad prompt from a bad reply from a broken tool — everything else the run
+  # leaves behind is the outcome, not the reasoning.
   #
-  # The row is written when the run starts and filled in when it stops, so a run that
-  # is still going has a record: the cancel endpoint marks it, and the versions a run
-  # writes point back at it.
+  # The messages live in the report's conversation ({Report#chat}), written as they
+  # happen, so a run that dies still leaves what it did. This row holds what only a run
+  # has: its kind, its cost, why it stopped, and the range of positions it wrote. It is
+  # created when the run starts, so a run that is still going has a record: the cancel
+  # endpoint marks it, and the versions a run writes point back at it.
   #
   # Read back in order, the finished runs of a report are the conversation the model
   # continues on the next chat turn, tool calls included. That is what lets a turn
   # remember the chart it wrote three turns ago without re-reading it.
-  class GenerationTranscript < ApplicationRecord
+  class Run < ApplicationRecord
     KINDS = %w[generation revision].freeze
     STOP_REASONS = %w[done round_cap timeout cancelled failed].freeze
     STOPPED_EARLY = %w[round_cap timeout cancelled].freeze
@@ -56,7 +58,7 @@ module ReportBuilder
     # and the reply.
     MAX_HISTORY_CHARS = 400_000
 
-    belongs_to :report, class_name: 'ReportBuilder::Report', inverse_of: :generation_transcripts
+    belongs_to :conversation, class_name: '::AIAssistant::Conversation'
 
     validates :kind, inclusion: { in: KINDS }
     validates :stopped_because, inclusion: { in: STOP_REASONS }, allow_nil: true
@@ -80,9 +82,9 @@ module ReportBuilder
     # did produce the report, along with every turn since. Failed runs are left out
     # for the same reason.
     #
-    # @return [Array<GenerationTranscript>]
+    # @return [Array<Run>]
     def self.session_runs_for(report)
-      runs = report.generation_transcripts.finished.not_failed.oldest_first.to_a
+      runs = report.runs.finished.not_failed.oldest_first.to_a
       start = runs.rindex { |run| run.generation? && run.saved_the_report? }
       return [] if start.nil?
 
@@ -103,19 +105,42 @@ module ReportBuilder
       kept
     end
 
+    # Adds a message to the report's conversation as part of this run.
+    #
+    # Under the conversation's lock, because a message is numbered by reading the
+    # highest position so far, and the admin's next message can arrive from a web
+    # request while this run is writing.
+    def append_message!(**attributes)
+      conversation.with_lock do
+        message = conversation.messages.create!(attributes)
+        update!(first_position: first_position || message.position, last_position: message.position)
+        message
+      end
+    end
+
+    # What this run sent to and got from the model, oldest first: the messages it
+    # wrote that are replayed, with their tool calls.
+    def messages
+      return ::AIAssistant::Message.none if first_position.nil?
+
+      conversation.messages
+        .where(position: first_position..last_position, replayed: true)
+        .includes(:tool_calls)
+    end
+
     def generation? = kind == 'generation'
 
     # This run's work is what the report holds, as opposed to a run that stopped for
     # a respectable reason and still wrote nothing.
     def saved_the_report? = report_saved_at.present?
 
-    # Called once the layout this run produced has been written. Best effort, like
-    # the transcript itself: the report is already saved by this point, and failing
-    # the job over a bookkeeping row would rerun minutes of paid work to fix it.
+    # Called once the layout this run produced has been written. Best effort: the
+    # report is already saved by this point, and failing the job over a bookkeeping
+    # row would rerun minutes of paid work to fix it.
     def report_saved!
       update!(report_saved_at: Time.current)
     rescue StandardError => e
-      ErrorReporter.report(e, extra: { report_id: report_id })
+      ErrorReporter.report(e, extra: { run_id: id })
     end
 
     def running? = stopped_because.nil?
@@ -125,13 +150,13 @@ module ReportBuilder
     # the admin should be told it may be incomplete.
     def stopped_early? = STOPPED_EARLY.include?(stopped_because)
 
-    def rounds
-      messages.count { |message| message['role'] == 'assistant' }
-    end
+    def rounds = messages.where(role: 'assistant').count
 
     # What this run adds to a prompt that replays it. Asked of the code that does the
     # replaying, so that what is budgeted for and what is sent cannot drift apart.
-    def size_in_chars = Composition::Messages.replayed_size(messages)
+    def size_in_chars
+      @size_in_chars ||= Composition::Messages.replayed_size(messages)
+    end
 
     # What the run cost, once the provider's cache is taken into account. A cache read
     # figure of zero on a multi-round run means the prompt is not stable and every

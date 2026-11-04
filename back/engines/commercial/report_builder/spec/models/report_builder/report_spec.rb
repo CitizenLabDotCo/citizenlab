@@ -169,7 +169,7 @@ RSpec.describe ReportBuilder::Report do
 
   describe '#last_generation' do
     def generation(stopped:, saved:, at:)
-      create(:generation_transcript, report: report, kind: 'generation',
+      create(:report_run, report: report, kind: 'generation',
         stopped_because: stopped, report_saved_at: saved ? at : nil, created_at: at)
     end
 
