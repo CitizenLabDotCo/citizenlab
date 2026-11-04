@@ -1772,7 +1772,7 @@
   "app.containers.Admin.projects.project.buildView": "Conception",
   "app.containers.Admin.projects.project.causeCancel": "Annuler",
   "app.containers.Admin.projects.project.causeDescriptionPlaceholder": "Ce que fera le volontaire, où et combien de temps cela prendra.",
-  "app.containers.Admin.projects.project.causeImageDrop": "Faites glisser une image ici, ou parcourez",
+  "app.containers.Admin.projects.project.causeImageDrop": "Glissez-déposez ou cliquez pour téléverser une image",
   "app.containers.Admin.projects.project.causeSaveChanges": "Enregistrer",
   "app.containers.Admin.projects.project.causeTitlePlaceholder": "Par ex. : Plantation d’arbres",
   "app.containers.Admin.projects.project.causesSection": "Causes",

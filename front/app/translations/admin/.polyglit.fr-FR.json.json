@@ -9144,6 +9144,11 @@
     "verified_at": "2026-11-04T22:22:28.054547Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects.project.causeImageDrop": {
+    "state": "verified",
+    "verified_at": "2026-11-04T23:14:19.805420Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.causeSaveChanges": {
     "state": "verified",
     "verified_at": "2026-11-04T22:22:28.054547Z",
