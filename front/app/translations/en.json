@@ -2078,7 +2078,6 @@
   "app.containers.IdeasShow.topicSharingModalTitle": "Thanks for submitting your topic!",
   "app.containers.IdeasShow.topicTwitterMessage": "Support this topic: {postTitle}",
   "app.containers.IdeasShow.topicWhatsAppMessage": "Support this topic: {postTitle}",
-  "app.containers.IdeasShow.valueOutOfMaximum": "{value} out of {maximum}",
   "app.containers.Navbar.completeOnboarding": "Complete onboarding",
   "app.containers.Navbar.completeProfile": "Complete profile",
   "app.containers.Navbar.confirmEmail2": "Confirm email",
