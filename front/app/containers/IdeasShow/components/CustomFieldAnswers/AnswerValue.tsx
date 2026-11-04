@@ -10,11 +10,10 @@ import LinearScaleField from 'components/CustomFieldsForm/Fields/LinearScale';
 import { getLinearScaleLabel } from 'components/CustomFieldsForm/Fields/LinearScale/utils';
 import MultiSelectField from 'components/CustomFieldsForm/Fields/MultiSelectField';
 import SingleSelectField from 'components/CustomFieldsForm/Fields/SingleSelectField';
+import formMessages from 'components/CustomFieldsForm/messages';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { useIntl } from 'utils/cl-intl';
-
-import messages from '../../messages';
 
 interface Props {
   field: IFlatCustomField;
@@ -53,16 +52,20 @@ const AnswerValue = ({ field, answer }: Props) => {
       }
 
       const label = getLinearScaleLabel(field, answer);
-      const sentence = formatMessage(messages.valueOutOfMaximum, {
-        value: answer,
-        maximum: field.maximum,
-      });
+      const sentence = label
+        ? formatMessage(formMessages.valueOutOfTotalWithLabel, {
+            value: answer,
+            total: field.maximum,
+            label: localize(label),
+          })
+        : formatMessage(formMessages.valueOutOfTotal, {
+            value: answer,
+            total: field.maximum,
+          });
 
       return (
         <>
-          <ScreenReaderOnly>
-            {label ? `${sentence}, ${localize(label)}` : sentence}
-          </ScreenReaderOnly>
+          <ScreenReaderOnly>{sentence}</ScreenReaderOnly>
           <Box aria-hidden>
             <LinearScaleField question={field} disabled />
           </Box>
