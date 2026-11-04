@@ -129,6 +129,16 @@ const EventsSettings = () => {
         )}
       </Box>
 
+      <CheckboxWithLabel
+        label={formatMessage(messages.showEmptyMessage)}
+        checked={props.showEmptyMessage === true}
+        onChange={() =>
+          setProp(
+            (p: EventsProps) => (p.showEmptyMessage = !p.showEmptyMessage)
+          )
+        }
+      />
+
       {/* Under `currentProject` the widget pins the statuses itself, so there is nothing to set. */}
       {props.source !== 'currentProject' && (
         <CheckboxWithLabel

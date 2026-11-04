@@ -73,6 +73,10 @@ export default defineMessages({
     id: 'app.components.admin.ContentBuilder.Widgets.Events.heading',
     defaultMessage: 'Heading',
   },
+  showEmptyMessage: {
+    id: 'app.components.admin.ContentBuilder.Widgets.Events.showEmptyMessage',
+    defaultMessage: 'Show a message when there are no events',
+  },
   noPastEvents: {
     id: 'app.components.admin.ContentBuilder.Widgets.Events.noPastEvents',
     defaultMessage: 'There are no past events.',

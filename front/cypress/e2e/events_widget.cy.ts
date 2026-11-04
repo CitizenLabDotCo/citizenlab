@@ -405,6 +405,41 @@ describe('Events widget', () => {
     });
   });
 
+  // A widget without the setting hides itself when it has no events.
+  it('shows the empty message once an admin switches it on', () => {
+    cy.apiUpdateProjectPageLayout(
+      emptyProjectId,
+      projectPageLayoutWith('EventsList', TOOLBOX_PROJECT_PAGE_PROPS)
+    );
+
+    cy.visit(`/en/projects/${emptyProjectSlug}`);
+    cy.get('#e2e-project-page-title').should('exist');
+    cy.get('#e2e-project-page-events').should('not.exist');
+
+    cy.setAdminLoginCookie();
+    cy.visit(`/admin/project-page-builder/projects/${emptyProjectId}`);
+    cy.get('div#ROOT');
+    // The widget takes no pointer events in the builder, so select the node around it.
+    cy.contains('No events yet')
+      .parents('.e2e-render-node')
+      .first()
+      .click({ force: true });
+    cy.contains('label', 'Show a message when there are no events').click();
+    cy.get('div#ROOT').should('contain', 'There are no events yet.');
+
+    cy.intercept('**/content_builder_layouts/project_page/upsert').as(
+      'saveProjectPageLayout'
+    );
+    cy.get('#e2e-content-builder-topbar-save').click();
+    cy.wait('@saveProjectPageLayout');
+
+    cy.visit(`/en/projects/${emptyProjectSlug}`);
+    cy.get('#e2e-project-page-events').should(
+      'contain',
+      'There are no events yet.'
+    );
+  });
+
   // A query that is switched off keeps serving its last result, so a bucket has to be read
   // through its own setting rather than through the query: switching one off and back on must
   // not leave the old section on screen.
