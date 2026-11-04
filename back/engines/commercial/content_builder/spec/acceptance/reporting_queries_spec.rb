@@ -214,12 +214,14 @@ resource 'ReportingQueries' do
       end
     end
 
-    # A report's answers do not depend on who opens it first: they read the project it
-    # is about, unless an admin made it admins only.
+    # An admin reads every row and keeps the answer to the admins. A moderator reads
+    # only the projects they moderate, and on a report about a project only that one.
     context 'when the layout belongs to a report' do
       let(:project) { create(:project) }
+      let(:other_project) { create(:project) }
       let(:report) { create(:report, phase: create(:phase, project: project)) }
       let(:layout) { report.layout }
+      let(:moderator) { create(:project_moderator, projects: [project, other_project]) }
 
       def scope_run_with
         scope = nil
@@ -227,41 +229,53 @@ resource 'ReportingQueries' do
         scope
       end
 
-      example 'An admin reads only the reported project', document: false do
-        admin_header_token
-        do_request(query: sql, layout_id: layout.id)
-
-        assert_status 200
-        expect(scope_run_with).to eq McpServer::QueryScope.new(project_ids: [project.id])
-        expect(layout.query_snapshots.sole.query_scope).to eq('project_ids' => [project.id])
-        expect(report.reload.admins_only).to be false
+      def request_as_moderator(layout)
+        token = ContentBuilder::ScopedReportingToken.mint(layout_id: layout.id, user_id: moderator.id)
+        do_request(query: sql, layout_id: layout.id, reporting_token: token)
       end
 
-      example 'An admin reads every row of an admins-only report', document: false do
-        report.update!(admins_only: true)
+      example 'An admin reads every row, and the report becomes admins only', document: false do
         admin_header_token
         do_request(query: sql, layout_id: layout.id)
 
         assert_status 200
         expect(scope_run_with).to eq McpServer::QueryScope.all
+        expect(report.reload.admins_only).to be true
+      end
+
+      example 'An admin reads every row of a report without a project', document: false do
+        global = create(:report)
+        admin_header_token
+        do_request(query: sql, layout_id: global.layout.id)
+
+        assert_status 200
+        expect(scope_run_with).to eq McpServer::QueryScope.all
+        expect(global.reload.admins_only).to be true
       end
 
       example 'A moderator of two projects reads only the reported one', document: false do
-        moderator = create(:project_moderator, projects: [project, create(:project)])
-        token = ContentBuilder::ScopedReportingToken.mint(layout_id: layout.id, user_id: moderator.id)
-        do_request(query: sql, layout_id: layout.id, reporting_token: token)
+        request_as_moderator(layout)
+
+        assert_status 200
+        expect(scope_run_with).to eq McpServer::QueryScope.new(project_ids: [project.id])
+        expect(report.reload.admins_only).to be false
+      end
+
+      example 'A moderator reads only the reported project on an admins-only report too', document: false do
+        report.update!(admins_only: true)
+        request_as_moderator(layout)
 
         assert_status 200
         expect(scope_run_with).to eq McpServer::QueryScope.new(project_ids: [project.id])
       end
 
-      example 'A moderator reads nothing on a global report', document: false do
-        global = create(:report, owner: create(:project_moderator, projects: [project]))
-        token = ContentBuilder::ScopedReportingToken.mint(layout_id: global.layout.id, user_id: global.owner.id)
-        do_request(query: sql, layout_id: global.layout.id, reporting_token: token)
+      example 'A moderator reads the projects they moderate on a report without a project', document: false do
+        global = create(:report, owner: moderator)
+        request_as_moderator(global.layout)
 
         assert_status 200
-        expect(scope_run_with).to eq McpServer::QueryScope.new(project_ids: [])
+        expect(scope_run_with).to eq McpServer::QueryScope.for(moderator)
+        expect(global.reload.admins_only).to be false
       end
     end
   end

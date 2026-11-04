@@ -85,19 +85,21 @@ module ContentBuilder
           report ? authorize(report, :write?) : authorize(layout, :update?)
         end
 
-        # The rows the query may read. A report's queries read only the project it is
-        # about, unless it is admins only, so that its answers do not depend on who
-        # happens to open it first. Within that, they read only the rows of whoever
-        # asks: the custom block renderer's browser has no session, only a token good
-        # for this one layout's data, so it asks for the person the token was minted
-        # for. Everyone else has to pass ReportingQueryPolicy.
+        # The rows the query may read: those of whoever asks. The custom block
+        # renderer's browser has no session, only a token good for this one layout's
+        # data, so it asks for the person the token was minted for. Everyone else has
+        # to pass ReportingQueryPolicy.
+        #
+        # On a report about a project, a moderator reads only that project: the
+        # project's other moderators can open the report too, and may not moderate
+        # the asker's other projects. An admin reads every row; storing that answer
+        # makes the report admins only.
         def query_scope_for(layout)
           user_scope = asking_user_scope(layout)
-          report = report_for(layout)
-          return user_scope if report.nil? || report.admins_only?
+          project = report_for(layout)&.reported_project
+          return user_scope if user_scope.all? || project.nil?
 
-          # A global report is about no project, so it gives nothing to read.
-          user_scope.limited_to([report.reported_project&.id].compact)
+          user_scope.limited_to([project.id])
         end
 
         def asking_user_scope(layout)
@@ -151,10 +153,18 @@ module ContentBuilder
             snapshot = QuerySnapshot.create_or_find_by!(
               layout_id: layout.id, query_hash: QuerySnapshot.hash_for(sql)
             ) { |s| s.assign_attributes(sql: sql, data: data, executed_at: executed_at, query_scope: scope.to_stamp) }
+            mark_report_admins_only(layout) if scope.all?
             return render_result(snapshot.data, snapshot.executed_at, snapshot: true)
           end
 
           render_result(data, executed_at, snapshot: false)
+        end
+
+        # An admin's answer may hold rows from every project, so the report stays with
+        # the admins until one of them shares it.
+        def mark_report_admins_only(layout)
+          report = report_for(layout)
+          report.update!(admins_only: true) if report && !report.admins_only?
         end
 
         def result_data(result)
