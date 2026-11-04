@@ -11164,6 +11164,11 @@
     "verified_at": "2026-07-22T21:06:37.274481Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects.project.optionAnonymousTooltip": {
+    "state": "verified",
+    "verified_at": "2026-11-04T22:59:44.031515Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.optionFormTitle": {
     "state": "verified",
     "verified_at": "2026-10-28T13:19:15.868690Z",
@@ -11177,6 +11182,21 @@
   "app.containers.Admin.projects.project.optionPlaceholder": {
     "state": "verified",
     "verified_at": "2026-11-04T20:50:15.551076Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.optionsAndParticipantData": {
+    "state": "verified",
+    "verified_at": "2026-11-04T22:59:44.031515Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.paperForms": {
+    "state": "verified",
+    "verified_at": "2026-11-04T22:59:44.031515Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.paperFormsDescription": {
+    "state": "verified",
+    "verified_at": "2026-11-04T22:59:44.031515Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.participantCount": {
@@ -12063,6 +12083,16 @@
     "state": "verified",
     "verified_at": "2026-09-16T19:26:50.773492Z",
     "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.showCauses": {
+    "state": "verified",
+    "verified_at": "2026-11-04T22:59:44.031515Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.spreadsheetImportDescription": {
+    "state": "verified",
+    "verified_at": "2026-11-04T22:59:44.031515Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.startFromScratch": {
     "state": "verified",
