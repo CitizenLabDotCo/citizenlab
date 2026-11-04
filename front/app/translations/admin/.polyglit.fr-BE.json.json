@@ -9204,6 +9204,11 @@
     "verified_at": "2026-10-28T13:19:15.868690Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Admin.projects.project.documentAnnotationSetup2": {
+    "state": "verified",
+    "verified_at": "2026-11-04T23:09:32.022480Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.downloadVolunteers": {
     "state": "verified",
     "verified_at": "2026-11-04T21:57:33.062981Z",
@@ -9697,6 +9702,11 @@
   "app.containers.Admin.projects.project.importProjectLabel": {
     "state": "verified",
     "verified_at": "2026-11-04T20:50:15.551076Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.importResponses": {
+    "state": "verified",
+    "verified_at": "2026-11-04T23:09:32.022480Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.importStatements": {
@@ -10692,6 +10702,11 @@
   "app.containers.Admin.projects.project.linkInputs": {
     "state": "verified",
     "verified_at": "2026-11-04T20:50:15.551076Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.linkPhaseDescription": {
+    "state": "verified",
+    "verified_at": "2026-11-04T23:09:32.022480Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.linkPhaseLabel": {

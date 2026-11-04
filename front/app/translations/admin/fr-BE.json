@@ -2099,7 +2099,7 @@
   "app.containers.Admin.projects.project.itemsReady": "{ready} sur {total} prêts",
   "app.containers.Admin.projects.project.linkCancel": "Annuler",
   "app.containers.Admin.projects.project.linkInputs": "Importer",
-  "app.containers.Admin.projects.project.linkPhaseDescription": "Choisissez une phase précédente de ce projet. Ses contributions deviendront des options de vote, tout en conservant leurs commentaires et réactions.",
+  "app.containers.Admin.projects.project.linkPhaseDescription": "Choisissez une phase précédente de ce projet. Ses contributions deviendront des options soumises au vote, et conserveront leurs commentaires et réactions.",
   "app.containers.Admin.projects.project.linkPhaseLabel": "Phase",
   "app.containers.Admin.projects.project.listing": "Référencement",
   "app.containers.Admin.projects.project.manageFiles": "Gérer les fichiers",
