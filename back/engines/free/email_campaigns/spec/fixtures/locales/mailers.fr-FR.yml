@@ -596,7 +596,7 @@ fr-FR:
         voting: 'Vote'
         surveys: 'Enquêtes'
       trigger:
-        7_days_after_invite_is_sent: '7 jours après l''envoi de l''invitation'
+        3_days_after_invite_is_sent: '3 jours après l''envoi de l''invitation'
         7_days_before_the_project_changes_phase: '7 jours avant le changement de phase du projet'
         comment_is_deleted: 'Suppression d''un commentaire'
         comment_is_flagged_as_spam: 'Commentaire marqué comme spam'
