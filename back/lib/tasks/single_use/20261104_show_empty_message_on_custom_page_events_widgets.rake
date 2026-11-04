@@ -7,8 +7,8 @@
 #
 # A widget without the prop is switched on. One an admin switched off keeps `false`.
 #
-# It only adds a prop, which a front end that does not know it ignores, so it is safe to run at any
-# time, before or after the setting ships.
+# The front end already reads the prop, so the message shows as soon as the task runs. Run it after
+# the release that adds the setting, or admins have no way to switch the message off again.
 #
 #     rake single_use:show_empty_message_on_custom_page_events_widgets                    # dry run, all tenants
 #     rake 'single_use:show_empty_message_on_custom_page_events_widgets[execute]'         # write, all tenants
