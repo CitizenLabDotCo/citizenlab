@@ -10704,6 +10704,11 @@
     "verified_at": "2026-11-04T21:34:00.296083Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects.project.nSignedUp": {
+    "state": "verified",
+    "verified_at": "2026-11-04T21:47:54.315163Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.nStatements": {
     "state": "verified",
     "verified_at": "2026-11-04T21:34:00.296083Z",
