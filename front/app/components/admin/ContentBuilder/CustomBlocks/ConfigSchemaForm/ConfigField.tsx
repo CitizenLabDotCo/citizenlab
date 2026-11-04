@@ -89,7 +89,7 @@ const ConfigField = ({ name, schema, value, onChange }: Props) => {
     );
   }
 
-  if (schema.enum) {
+  if (Array.isArray(schema.enum)) {
     return (
       <Select
         id={id}
