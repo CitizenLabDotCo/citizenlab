@@ -51,6 +51,7 @@ class McpServer::Tools::UpdateHomepageLayout < McpServer::BaseTool
 
       stored = layout.craftjs_json || {}
       protect_fixed_widgets!(stored)
+      show_events_empty_message!
       graph = patched_graph(stored)
       preserve_no_delete!(stored, graph)
       protect_fixed_structure!(stored, graph)
@@ -120,6 +121,16 @@ class McpServer::Tools::UpdateHomepageLayout < McpServer::BaseTool
 
       raise PatchError, "node #{id}: the homepage events widget lists events from every project and cannot " \
                         'be filtered. Use "source":"all".'
+    end
+
+    # As from the builder's toolbox, a homepage events widget says when there are no events, unless
+    # the client switches that off.
+    def show_events_empty_message!
+      patch_nodes.each_value do |node|
+        next unless node.is_a?(Hash) && resolved_name(node) == ContentBuilder::Craftjs::Nodes::EVENTS_WIDGET_NAME
+
+        node['props'] = { 'showEmptyMessage' => true }.merge(node['props'] || {})
+      end
     end
 
     # A fixed widget may have its props edited but not be restructured: no type change, no
