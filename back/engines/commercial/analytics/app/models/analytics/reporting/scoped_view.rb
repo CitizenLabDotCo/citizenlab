@@ -16,7 +16,8 @@ module Analytics
           raise NotImplementedError, "#{name} has no project scope rule"
         end
 
-        # An admin-only view is left out of every query that is not for every row.
+        # An admin-only view can be read only by a query over every row (an admin's);
+        # any query limited to some projects cannot use it.
         def admin_only? = false
       end
     end
