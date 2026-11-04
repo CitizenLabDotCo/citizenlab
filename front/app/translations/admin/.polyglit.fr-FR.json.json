@@ -8814,6 +8814,11 @@
     "verified_at": "2026-10-28T15:04:19.830183Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects.project.addStatement": {
+    "state": "verified",
+    "verified_at": "2026-11-04T20:50:15.349490Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
@@ -9064,6 +9069,11 @@
     "verified_at": "2026-09-16T19:26:50.578477Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Admin.projects.project.causeCancel": {
+    "state": "verified",
+    "verified_at": "2026-11-04T20:50:15.349490Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.causesSection": {
     "state": "verified",
     "verified_at": "2026-10-28T14:58:12.335665Z",
@@ -9178,6 +9188,11 @@
     "state": "verified",
     "verified_at": "2026-09-16T19:26:50.578477Z",
     "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.emptyStatementError": {
+    "state": "verified",
+    "verified_at": "2026-11-04T20:50:15.349490Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.event.addDescription": {
     "state": "verified",
@@ -9598,6 +9613,26 @@
     "state": "verified",
     "verified_at": "2026-10-28T13:19:05.930261Z",
     "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.importPhaseLabel": {
+    "state": "verified",
+    "verified_at": "2026-11-04T20:50:15.349490Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.importProjectLabel": {
+    "state": "verified",
+    "verified_at": "2026-11-04T20:50:15.349490Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.importStatements": {
+    "state": "verified",
+    "verified_at": "2026-11-04T20:50:15.349490Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.importingStatements": {
+    "state": "verified",
+    "verified_at": "2026-11-04T20:50:15.349490Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.information.ReportTab.afterCreating": {
     "state": "verified",
@@ -10569,6 +10604,21 @@
     "verified_at": "2026-10-28T13:09:38.034320Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Admin.projects.project.linkCancel": {
+    "state": "verified",
+    "verified_at": "2026-11-04T20:50:15.349490Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.linkInputs": {
+    "state": "verified",
+    "verified_at": "2026-11-04T20:50:15.349490Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.linkPhaseLabel": {
+    "state": "verified",
+    "verified_at": "2026-11-04T20:50:15.349490Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.listing": {
     "state": "verified",
     "verified_at": "2026-10-30T14:13:55.267160Z",
@@ -10593,6 +10643,11 @@
     "state": "verified",
     "verified_at": "2026-09-16T19:26:50.578477Z",
     "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.nativeSurveyOptionDescription": {
+    "state": "verified",
+    "verified_at": "2026-11-04T20:50:15.349490Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.newPhase": {
     "state": "verified",
@@ -10633,6 +10688,11 @@
     "state": "verified",
     "verified_at": "2026-09-16T19:26:50.578477Z",
     "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.nobodySignedUpYet": {
+    "state": "verified",
+    "verified_at": "2026-11-04T20:50:15.349490Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.notOnProjectPage": {
     "state": "verified",
@@ -11008,6 +11068,16 @@
     "state": "verified",
     "verified_at": "2026-10-28T13:19:05.930261Z",
     "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.optionLabel": {
+    "state": "verified",
+    "verified_at": "2026-11-04T20:50:15.349490Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.optionPlaceholder": {
+    "state": "verified",
+    "verified_at": "2026-11-04T20:50:15.349490Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.participantCount": {
     "state": "verified",
@@ -11894,9 +11964,19 @@
     "verified_at": "2026-09-16T19:26:50.578477Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Admin.projects.project.startFromScratch": {
+    "state": "verified",
+    "verified_at": "2026-11-04T20:50:15.349490Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.statementCancel": {
     "state": "verified",
     "verified_at": "2026-11-04T16:14:07.799727Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.statementPostAnonymously": {
+    "state": "verified",
+    "verified_at": "2026-11-04T20:50:15.349490Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.stepAddPhaseOrSurvey": {
@@ -12333,6 +12413,11 @@
     "state": "verified",
     "verified_at": "2026-10-28T13:19:05.930261Z",
     "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.surveySetupLead": {
+    "state": "verified",
+    "verified_at": "2026-11-04T20:50:15.349490Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.switchCancel": {
     "state": "verified",
