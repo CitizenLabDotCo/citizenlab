@@ -13,6 +13,7 @@ describe ReportBuilder::Composition::ReportComposer do
   # rubocop:enable RSpec/BeforeAfterAll
 
   before do
+    SettingsService.new.activate_feature!('llm_reporting')
     allow(ENV).to receive(:fetch).and_call_original
     allow(ENV).to receive(:fetch).with('CUSTOM_BLOCK_RENDERER_SECRET', nil).and_return('test-secret')
     stub_renderer
@@ -59,7 +60,6 @@ describe ReportBuilder::Composition::ReportComposer do
     )
   end
 
-  before { SettingsService.new.activate_feature!('llm_reporting') }
   let(:renderer) { instance_double(ContentBuilder::CustomBlocks::RendererClient) }
 
   # Just enough of a PNG for the checker to read its size off the header.
