@@ -13,7 +13,7 @@ const getMessageKey = (fieldType: string): string => {
     'file_upload',
     'shapefile_upload',
   ];
-  const mappingTypes = ['point', 'line', 'polygon'];
+  const mappingTypes = ['point', 'line', 'polygon', 'multipoint'];
 
   switch (true) {
     case fileUploadTypes.includes(fieldType):

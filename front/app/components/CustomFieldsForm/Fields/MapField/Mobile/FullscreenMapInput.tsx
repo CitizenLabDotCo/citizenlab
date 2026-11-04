@@ -43,8 +43,10 @@ import messages from '../../../messages';
 import InstructionAnimation from '../components/InstructionAnimation';
 import UndoButton from '../components/UndoButton';
 import {
+  exceedsPinLimit,
+  getCoordinatesFromMultiPointData,
   handleMapClickMultipoint,
-  isLineOrPolygonInput,
+  isMultiPointInput,
   setupPointDrag,
 } from '../multiPointUtils';
 import { clearPointData, handleMapClickPoint } from '../pointUtils';
@@ -63,6 +65,7 @@ type Props = {
   inputType: MapInputType;
   mapViewSurveyPage?: MapView | null;
   questionPageMapView?: MapView | null;
+  maxPins?: number;
 };
 
 const FullscreenMapInput = memo<Props>(
@@ -74,6 +77,7 @@ const FullscreenMapInput = memo<Props>(
     handleMultiPointChange,
     inputType,
     questionPageMapView,
+    maxPins,
   }: Props) => {
     const theme = useTheme();
     const locale = useLocale();
@@ -126,7 +130,7 @@ const FullscreenMapInput = memo<Props>(
         }
         if (inputType === 'point') {
           handleMapClickPoint(event, mapView, handleSinglePointChange);
-        } else if (isLineOrPolygonInput(inputType)) {
+        } else if (isMultiPointInput(inputType)) {
           handleMapClickMultipoint(event, mapView, handleMultiPointChange);
         }
       },
@@ -189,6 +193,11 @@ const FullscreenMapInput = memo<Props>(
       }
     }, [data, inputType, locale, mapView, theme]);
 
+    const pinCount: number =
+      getCoordinatesFromMultiPointData(data, inputType)?.length ?? 0;
+    const limitReached =
+      maxPins !== undefined && exceedsPinLimit(pinCount + 1, maxPins);
+
     // Get map height by calculating the height of the bottom section
     const getMapHeight = () => {
       // TODO: Fix this the next time the file is edited.
@@ -218,23 +227,30 @@ const FullscreenMapInput = memo<Props>(
             Array.isArray(data.coordinates[0]) &&
             data.coordinates[0].length >= 4
           );
+        case 'multipoint':
+          // A single pin is a complete answer; the min/max are validated on submit
+          return data.coordinates.length >= 1;
       }
     };
 
     // Attach behaviour for when a user edits a point by dragging it
     useEffect(() => {
-      isLineOrPolygonInput(inputType) &&
-        handleMultiPointChange &&
-        setupPointDrag({
-          mapView,
-          handleMultiPointChange,
-          pointBeingDragged,
-          temporaryDragGraphic,
-          tenantSecondaryColor: theme.colors.tenantSecondary,
-          data,
-          inputType,
-          pointSymbolSize: 26,
-        });
+      if (!isMultiPointInput(inputType) || !handleMultiPointChange) {
+        return;
+      }
+
+      const dragHandle = setupPointDrag({
+        mapView,
+        handleMultiPointChange,
+        pointBeingDragged,
+        temporaryDragGraphic,
+        tenantSecondaryColor: theme.colors.tenantSecondary,
+        data,
+        inputType,
+        pointSymbolSize: 26,
+      });
+
+      return () => dragHandle?.remove();
     }, [data, handleMultiPointChange, inputType, mapView, theme]);
 
     return modalPortalElement
@@ -304,9 +320,15 @@ const FullscreenMapInput = memo<Props>(
                         mr="4px"
                       />
                       <Box my="auto">
-                        {inputType === 'point'
-                          ? formatMessage(messages.tapOnFullscreenMapToAddPoint)
-                          : formatMessage(messages.tapOnFullscreenMapToAdd)}
+                        {limitReached
+                          ? formatMessage(messages.maximumPinsReachedTap, {
+                              maxPins,
+                            })
+                          : formatMessage(
+                              inputType === 'point'
+                                ? messages.tapOnFullscreenMapToAddPoint
+                                : messages.tapOnFullscreenMapToAdd
+                            )}
                       </Box>
                     </Box>
                   </Label>
@@ -329,7 +351,7 @@ const FullscreenMapInput = memo<Props>(
                       {formatMessage(messages.back)}
                     </Button>
                   )}
-                  {data && isLineOrPolygonInput(inputType) && (
+                  {data && isMultiPointInput(inputType) && (
                     <UndoButton
                       handleMultiPointChange={handleMultiPointChange}
                       mapView={mapView}
