@@ -16,6 +16,7 @@
 #  quarter           :integer
 #  community_monitor :boolean          default(FALSE), not null
 #  project_id        :uuid
+#  admins_only       :boolean          default(FALSE), not null
 #
 # Indexes
 #

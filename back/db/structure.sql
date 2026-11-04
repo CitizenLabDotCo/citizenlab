@@ -3955,7 +3955,8 @@ CREATE TABLE public.report_builder_reports (
     year integer,
     quarter integer,
     community_monitor boolean DEFAULT false NOT NULL,
-    project_id uuid
+    project_id uuid,
+    admins_only boolean DEFAULT false NOT NULL
 );
 
 
@@ -10863,6 +10864,7 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261104120100'),
 ('20261103170100'),
 ('20261028180200'),
 ('20261028180100'),
