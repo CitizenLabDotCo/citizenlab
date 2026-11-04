@@ -628,6 +628,7 @@
   "app.components.ProjectPageBuilder.Widgets.bannerEmptyNote": "ਅਜੇ ਤੱਕ ਕੋਈ ਤਸਵੀਰ ਨਹੀਂ ਹੈ · ਸਿਰਫ਼ ਇਸ ਪ੍ਰੋਜੈਕਟ ਦੇ ਐਡਮਿਨ ਅਤੇ ਸੰਚਾਲਕ ਹੀ ਇਸਨੂੰ ਦੇਖ ਸਕਦੇ ਹਨ",
   "app.components.ProjectPageBuilder.Widgets.bannerEmptyTitle": "ਪ੍ਰੋਜੈਕਟ ਦੀ ਤਸਵੀਰ ਸ਼ਾਮਲ ਕਰੋ",
   "app.components.ProjectPageBuilder.Widgets.bannerWidgetTitle": "ਪ੍ਰੋਜੈਕਟ ਦੀ ਤਸਵੀਰ",
+  "app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage2": "ਅਜੇ ਤੱਕ ਕੋਈ ਸਮਾਗਮ ਨਹੀਂ ਹਨ। ਜਦੋਂ ਤੱਕ ਇਹ ਖਾਲੀ ਹੈ, ਵਿਜ਼ਿਟਰਾਂ ਨੂੰ ਇਹ ਸੈਕਸ਼ਨ ਦਿਖਾਈ ਨਹੀਂ ਦੇਵੇਗਾ, ਜਦੋਂ ਤੱਕ ਤੁਸੀਂ “ਜਦੋਂ ਕੋਈ ਸਮਾਗਮ ਨਾ ਹੋਵੇ ਤਾਂ ਸੁਨੇਹਾ ਦਿਖਾਓ” ਨੂੰ ਚਾਲੂ ਨਹੀਂ ਕਰਦੇ।",
   "app.components.ProjectPageBuilder.Widgets.eventsLinkText": "ਸਮਾਗਮ",
   "app.components.ProjectPageBuilder.Widgets.eventsManagedNote": "ਸਮਾਗਮਾਂ ਦਾ ਪ੍ਰਬੰਧਨ ਪ੍ਰੋਜੈਕਟ ਐਡੀਟਰ ਵਿੱਚ, {eventsLink} ਦੇ ਅਧੀਨ ਕੀਤਾ ਜਾਂਦਾ ਹੈ। ਉਹਨਾਂ ਨੂੰ ਉੱਥੇ ਸ਼ਾਮਲ ਕਰੋ, ਸੋਧੋ ਜਾਂ ਹਟਾਓ — ਉਹ ਇੱਥੇ ਆਪਣੇ ਆਪ ਦਿਖਾਈ ਦੇਣਗੇ।",
   "app.components.ProjectPageBuilder.Widgets.eventsWidgetTitle": "ਸਮਾਗਮ",

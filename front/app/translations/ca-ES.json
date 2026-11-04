@@ -628,6 +628,7 @@
   "app.components.ProjectPageBuilder.Widgets.bannerEmptyNote": "Encara no hi ha cap imatge · només els administradors i moderadors d'aquest projecte poden veure això",
   "app.components.ProjectPageBuilder.Widgets.bannerEmptyTitle": "Afegeix una imatge del projecte",
   "app.components.ProjectPageBuilder.Widgets.bannerWidgetTitle": "Imatge del projecte",
+  "app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage2": "Encara no hi ha cap esdeveniment. Els visitants no veuran aquesta secció mentre estigui buida, a menys que activis «Mostra un missatge quan no hi hagi esdeveniments».",
   "app.components.ProjectPageBuilder.Widgets.eventsLinkText": "Esdeveniments",
   "app.components.ProjectPageBuilder.Widgets.eventsManagedNote": "Els esdeveniments es gestionen a l'editor del projecte, a {eventsLink}. Afegeix-los, edita'ls o elimina'ls allà; apareixeran aquí automàticament.",
   "app.components.ProjectPageBuilder.Widgets.eventsWidgetTitle": "Esdeveniments",

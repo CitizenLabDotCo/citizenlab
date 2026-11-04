@@ -628,6 +628,7 @@
   "app.components.ProjectPageBuilder.Widgets.bannerEmptyNote": "لا توجد صورة بعد · يمكن لمسؤولي ومشرفي هذا المشروع فقط رؤية هذا",
   "app.components.ProjectPageBuilder.Widgets.bannerEmptyTitle": "إضافة صورة للمشروع",
   "app.components.ProjectPageBuilder.Widgets.bannerWidgetTitle": "صورة المشروع",
+  "app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage2": "لا توجد فعاليات بعد. لن يرى الزوار هذا القسم طالما أنه فارغ، ما لم تقم بتفعيل \"إظهار رسالة عند عدم وجود فعاليات\".",
   "app.components.ProjectPageBuilder.Widgets.eventsLinkText": "الفعاليات",
   "app.components.ProjectPageBuilder.Widgets.eventsManagedNote": "تتم إدارة الفعاليات في محرر المشروع، تحت {eventsLink}. يمكنك إضافتها أو تعديلها أو إزالتها هناك — وستظهر هنا تلقائياً.",
   "app.components.ProjectPageBuilder.Widgets.eventsWidgetTitle": "الفعاليات",

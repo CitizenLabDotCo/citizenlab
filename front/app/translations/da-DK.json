@@ -628,6 +628,7 @@
   "app.components.ProjectPageBuilder.Widgets.bannerEmptyNote": "Intet billede endnu · kun administratorer og moderatorer for dette projekt kan se dette",
   "app.components.ProjectPageBuilder.Widgets.bannerEmptyTitle": "Tilføj et projektbillede",
   "app.components.ProjectPageBuilder.Widgets.bannerWidgetTitle": "Projektbillede",
+  "app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage2": "Ingen begivenheder endnu. Besøgende vil ikke kunne se denne sektion, så længe den er tom, medmindre du aktiverer ”Vis en besked, når der ikke er nogen begivenheder”.",
   "app.components.ProjectPageBuilder.Widgets.eventsLinkText": "Begivenheder",
   "app.components.ProjectPageBuilder.Widgets.eventsManagedNote": "Begivenheder administreres i projektredigeringen under {eventsLink}. Tilføj, rediger eller fjern dem der — de vises her automatisk.",
   "app.components.ProjectPageBuilder.Widgets.eventsWidgetTitle": "Begivenheder",
