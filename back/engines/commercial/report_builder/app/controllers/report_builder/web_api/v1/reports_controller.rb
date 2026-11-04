@@ -148,7 +148,6 @@ module ReportBuilder
             .require(:report)
             .permit(
               :name,
-              :phase_id,
               :visible,
               :year,
               :quarter,

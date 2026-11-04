@@ -533,6 +533,14 @@ resource 'Reports' do
         expect(report.admins_only).to be(false)
       end
 
+      # A report's phase is set when it is created. Moving a report to another project
+      # would show its stored answers to that project's moderators.
+      example 'A moderator cannot move their report into a phase', document: false do
+        do_request(report: { phase_id: create(:phase).id })
+        assert_status 200
+        expect(ReportBuilder::Report.find(id).phase_id).to be_nil
+      end
+
       example 'A moderator cannot share their admins-only report', document: false do
         ReportBuilder::Report.find(id).update!(admins_only: true)
         do_request(report: { admins_only: false })
