@@ -126,6 +126,19 @@ describe McpServer::Tools::UpdateHomepageLayout do
       expect(response).not_to be_error
       expect(layout.reload.craftjs_json.dig('EVENTS', 'props', 'showEmptyMessage')).to be false
     end
+
+    it 'keeps it off for a stored widget when the props leave it out' do
+      stored = craftjs_node('EventsList', parent: 'ROOT', props: { 'source' => 'all', 'showEmptyMessage' => false })
+      layout.update!(craftjs_json: layout.craftjs_json.merge('ROOT' => root_with_events, 'EVENTS' => stored))
+      edited = craftjs_node('EventsList', parent: 'ROOT', props: { 'source' => 'all', 'limit' => 6 })
+
+      response = run(nodes: { 'EVENTS' => edited })
+
+      expect(response).not_to be_error
+      expect(layout.reload.craftjs_json.dig('EVENTS', 'props')).to eq(
+        'source' => 'all', 'limit' => 6, 'showEmptyMessage' => false
+      )
+    end
   end
 
   context 'with an events widget filtered by area' do
