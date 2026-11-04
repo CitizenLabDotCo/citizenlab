@@ -3339,6 +3339,16 @@
     "verified_at": "2026-10-26T13:27:19.471017Z",
     "verified_by": "Adrien"
   },
+  "app.components.app.containers.AdminPage.ProjectEdit.votingAction": {
+    "state": "verified",
+    "verified_at": "2026-11-04T22:22:28.253918Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.app.containers.AdminPage.ProjectEdit.votingDisplayGroup": {
+    "state": "verified",
+    "verified_at": "2026-11-04T22:22:28.253918Z",
+    "verified_by": "Adrien"
+  },
   "app.components.formBuilder.copySurveyModal.cancel": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
@@ -9087,6 +9097,21 @@
   "app.containers.Admin.projects.project.causeCancel": {
     "state": "verified",
     "verified_at": "2026-11-04T20:50:15.551076Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.causeDescriptionPlaceholder": {
+    "state": "verified",
+    "verified_at": "2026-11-04T22:22:28.253918Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.causeSaveChanges": {
+    "state": "verified",
+    "verified_at": "2026-11-04T22:22:28.253918Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.causeTitlePlaceholder": {
+    "state": "verified",
+    "verified_at": "2026-11-04T22:22:28.253918Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.causesSection": {
