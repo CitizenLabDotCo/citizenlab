@@ -539,6 +539,11 @@
     "verified_at": "2026-03-18T11:50:36.765055Z",
     "verified_by": "Admin"
   },
+  "form_builder.pdf_export.multipoint_print_description": {
+    "state": "verified",
+    "verified_at": "2026-10-08T12:35:33.680225Z",
+    "verified_by": "stephanie"
+  },
   "form_builder.pdf_export.optional": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.765055Z",
