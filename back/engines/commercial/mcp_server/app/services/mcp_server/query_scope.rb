@@ -28,5 +28,11 @@ module McpServer
     def within?(other)
       other.all? || (!all? && (project_ids - other.project_ids).empty?)
     end
+
+    # Only the rows of these projects, and only those this scope already reads. Every
+    # row becomes just these projects' rows.
+    def limited_to(ids)
+      self.class.new(project_ids: (all? ? ids : project_ids & ids).uniq.sort)
+    end
   end
 end

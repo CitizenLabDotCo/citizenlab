@@ -86,4 +86,24 @@ RSpec.describe McpServer::QueryScope do
       end
     end
   end
+
+  describe '#limited_to' do
+    using RSpec::Parameterized::TableSyntax
+
+    def scope(ids) = ids == :all ? described_class.all : described_class.new(project_ids: ids)
+
+    where(:case_name, :from, :limit, :result) do
+      'every row, to one project'          | :all      | %w[P1]    | %w[P1]
+      'every row, to no project'           | :all      | []        | []
+      'a moderator, to their project'      | %w[P1 P2] | %w[P1]    | %w[P1]
+      'a moderator, to another project'    | %w[P1]    | %w[P2]    | []
+      'a moderator, sorted and unrepeated' | %w[P3 P1] | %w[P3 P1 P1] | %w[P1 P3]
+    end
+
+    with_them do
+      it 'keeps only the rows of those projects that the scope already reads' do
+        expect(scope(from).limited_to(limit)).to eq scope(result)
+      end
+    end
+  end
 end

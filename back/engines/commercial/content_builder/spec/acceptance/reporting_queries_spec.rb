@@ -213,6 +213,57 @@ resource 'ReportingQueries' do
         expect(other.query_snapshots.count).to eq 0
       end
     end
+
+    # A report's answers do not depend on who opens it first: they read the project it
+    # is about, unless an admin made it admins only.
+    context 'when the layout belongs to a report' do
+      let(:project) { create(:project) }
+      let(:report) { create(:report, phase: create(:phase, project: project)) }
+      let(:layout) { report.layout }
+
+      def scope_run_with
+        scope = nil
+        expect(McpServer::ReportingQueryRunner).to have_received(:run) { |_, kwargs| scope = kwargs[:scope] }
+        scope
+      end
+
+      example 'An admin reads only the reported project', document: false do
+        admin_header_token
+        do_request(query: sql, layout_id: layout.id)
+
+        assert_status 200
+        expect(scope_run_with).to eq McpServer::QueryScope.new(project_ids: [project.id])
+        expect(layout.query_snapshots.sole.query_scope).to eq('project_ids' => [project.id])
+        expect(report.reload.admins_only).to be false
+      end
+
+      example 'An admin reads every row of an admins-only report', document: false do
+        report.update!(admins_only: true)
+        admin_header_token
+        do_request(query: sql, layout_id: layout.id)
+
+        assert_status 200
+        expect(scope_run_with).to eq McpServer::QueryScope.all
+      end
+
+      example 'A moderator of two projects reads only the reported one', document: false do
+        moderator = create(:project_moderator, projects: [project, create(:project)])
+        token = ContentBuilder::ScopedReportingToken.mint(layout_id: layout.id, user_id: moderator.id)
+        do_request(query: sql, layout_id: layout.id, reporting_token: token)
+
+        assert_status 200
+        expect(scope_run_with).to eq McpServer::QueryScope.new(project_ids: [project.id])
+      end
+
+      example 'A moderator reads nothing on a global report', document: false do
+        global = create(:report, owner: create(:project_moderator, projects: [project]))
+        token = ContentBuilder::ScopedReportingToken.mint(layout_id: global.layout.id, user_id: global.owner.id)
+        do_request(query: sql, layout_id: global.layout.id, reporting_token: token)
+
+        assert_status 200
+        expect(scope_run_with).to eq McpServer::QueryScope.new(project_ids: [])
+      end
+    end
   end
 
   post 'web_api/v1/content_builder_layouts/:layout_id/refresh_snapshots' do

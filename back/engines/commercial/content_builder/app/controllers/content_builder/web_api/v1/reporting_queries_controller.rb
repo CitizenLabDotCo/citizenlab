@@ -85,11 +85,22 @@ module ContentBuilder
           report ? authorize(report, :write?) : authorize(layout, :update?)
         end
 
-        # The rows the query may read: those of whoever asks. The custom block
-        # renderer's browser has no session, only a token good for this one layout's
-        # data, so it asks for the person the token was minted for. Everyone else has
-        # to pass ReportingQueryPolicy.
+        # The rows the query may read. A report's queries read only the project it is
+        # about, unless it is admins only, so that its answers do not depend on who
+        # happens to open it first. Within that, they read only the rows of whoever
+        # asks: the custom block renderer's browser has no session, only a token good
+        # for this one layout's data, so it asks for the person the token was minted
+        # for. Everyone else has to pass ReportingQueryPolicy.
         def query_scope_for(layout)
+          user_scope = asking_user_scope(layout)
+          report = report_for(layout)
+          return user_scope if report.nil? || report.admins_only?
+
+          # A global report is about no project, so it gives nothing to read.
+          user_scope.limited_to([report.reported_project&.id].compact)
+        end
+
+        def asking_user_scope(layout)
           if scoped_token_permits?(layout)
             McpServer::QueryScope.for(ScopedReportingToken.user(params[:reporting_token]))
           else
