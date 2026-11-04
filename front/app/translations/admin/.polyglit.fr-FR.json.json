@@ -11889,6 +11889,11 @@
     "verified_at": "2026-09-16T19:26:50.578477Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Admin.projects.project.statementCancel": {
+    "state": "verified",
+    "verified_at": "2026-11-04T16:14:07.799727Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.stepAddPhaseOrSurvey": {
     "state": "verified",
     "verified_at": "2026-09-16T19:26:50.578477Z",
@@ -12303,6 +12308,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.projects.project.surveyDates": {
+    "state": "verified",
+    "verified_at": "2026-11-04T16:14:07.799727Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.surveyForm": {
     "state": "verified",
