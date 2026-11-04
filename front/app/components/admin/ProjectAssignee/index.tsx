@@ -16,7 +16,7 @@ interface Props {
   onAssigneeChange: (assignee: string | null) => void;
 }
 
-const AssigneeRow = ({ projectId, assignee, onAssigneeChange }: Props) => {
+const ProjectAssignee = ({ projectId, assignee, onAssigneeChange }: Props) => {
   const { formatMessage } = useIntl();
   const { loaded, options, savedAssignee } = useProjectAssignee(projectId);
 
@@ -55,4 +55,4 @@ const AssigneeRow = ({ projectId, assignee, onAssigneeChange }: Props) => {
   );
 };
 
-export default AssigneeRow;
+export default ProjectAssignee;
