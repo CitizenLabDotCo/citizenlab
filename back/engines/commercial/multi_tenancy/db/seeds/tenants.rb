@@ -360,10 +360,6 @@ module MultiTenancy
               allowed: true,
               project_id: ''
             },
-            user_fields_in_surveys: {
-              enabled: true,
-              allowed: true
-            },
             common_ground: {
               enabled: true,
               allowed: true

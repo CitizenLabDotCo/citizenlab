@@ -180,6 +180,7 @@ pt-BR:
       logic_no_further_questions: Com base em suas respostas, você <strong>não</strong> precisa responder a mais nenhuma pergunta.
       logic_section: Seção %{letter}
       matrix_print_description: Para cada linha, marque um círculo com uma cruz para indicar sua preferência.
+      multipoint_print_description: Por favor, desenhe um X no mapa abaixo para cada localização que deseja adicionar.
       optional: opcional
       page: Página
       permission: Permissão

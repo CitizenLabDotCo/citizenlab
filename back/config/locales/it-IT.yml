@@ -180,6 +180,7 @@ it-IT:
       logic_no_further_questions: In base alle tue risposte, <strong>non</strong> è necessario rispondere ad altre domande.
       logic_section: Sezione %{letter}
       matrix_print_description: Per ogni riga, segna un'opzione con una croce per indicare la tua preferenza.
+      multipoint_print_description: Segna con una X sulla mappa sottostante ogni posizione che desideri aggiungere.
       optional: opzionale
       page: Pagina
       permission: Permesso

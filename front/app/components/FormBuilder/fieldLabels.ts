@@ -103,6 +103,9 @@ const getInputTypeStringKey = (
     case 'polygon':
       translatedStringKey = messages.drawArea;
       break;
+    case 'multipoint':
+      translatedStringKey = messages.dropMultiplePins;
+      break;
     case 'ranking':
       translatedStringKey = messages.ranking;
       break;

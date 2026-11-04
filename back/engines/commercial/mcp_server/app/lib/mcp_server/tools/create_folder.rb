@@ -14,9 +14,10 @@ class McpServer::Tools::CreateFolder < McpServer::BaseTool
 
   def description
     <<~DESC.squish
-      Creates a project folder to group related projects. Created as a draft; publish it from the
-      admin UI once it has projects. Put a project in it by passing this folder's id as folder_id
-      when you create the project (create_project).
+      Creates a project folder to group related projects. Created as a draft; publish it once it
+      has projects (set_publication_status on demo/trial platforms, the admin UI elsewhere). Put a
+      project in it by passing this folder's id as folder_id when you create the project
+      (create_project).
     DESC
   end
 
@@ -25,7 +26,10 @@ class McpServer::Tools::CreateFolder < McpServer::BaseTool
       properties: {
         title_multiloc: { **multiloc_schema, description: 'Folder name.' },
         description_preview_multiloc: { **multiloc_schema, description: 'Short folder description shown on its card and page (HTML).' },
-        remote_header_bg_url: { type: 'string', format: 'uri', description: 'Public URL of the image to download and use as the header background.' }
+        remote_header_bg_url: { type: %w[string null], format: 'uri', description: <<~DESC.squish }
+          Public URL of the image to download and use as the header background.
+          Pass null to remove the existing header background when updating.
+        DESC
       },
       required: %w[title_multiloc],
       additionalProperties: false
