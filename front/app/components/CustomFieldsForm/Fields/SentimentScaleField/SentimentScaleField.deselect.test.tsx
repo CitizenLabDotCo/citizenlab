@@ -26,13 +26,20 @@ const question: IFlatCustomField = {
   ask_follow_up: false,
 };
 
-const renderComponent = (defaultValues: Record<string, unknown>) => {
+const renderComponent = (
+  defaultValues: Record<string, unknown>,
+  disabled = false
+) => {
   const Wrapper = () => {
     const methods = useForm({ defaultValues });
 
     return (
       <FormProvider {...methods}>
-        <SentimentScaleField question={question} scrollErrorIntoView={false} />
+        <SentimentScaleField
+          question={question}
+          scrollErrorIntoView={false}
+          disabled={disabled}
+        />
       </FormProvider>
     );
   };
@@ -54,5 +61,17 @@ describe('SentimentScaleField deselect', () => {
     await userEvent.click(option(3));
 
     expect(option(3)).toHaveAttribute('aria-pressed', 'false');
+  });
+});
+
+describe('SentimentScaleField disabled', () => {
+  it('ignores clicks and takes no tab stop', async () => {
+    renderComponent({ [question.key]: 3 }, true);
+
+    await userEvent.click(option(4));
+
+    expect(option(3)).toHaveAttribute('aria-pressed', 'true');
+    expect(option(4)).toHaveAttribute('aria-disabled', 'true');
+    expect(screen.getByRole('slider')).not.toHaveAttribute('tabindex');
   });
 });

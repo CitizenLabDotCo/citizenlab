@@ -17,9 +17,14 @@ import SentimentScale from './SentimentScale';
 interface Props {
   question: IFlatCustomField;
   scrollErrorIntoView: boolean;
+  disabled?: boolean;
 }
 
-const SentimentScaleField = ({ question, scrollErrorIntoView }: Props) => {
+const SentimentScaleField = ({
+  question,
+  scrollErrorIntoView,
+  disabled,
+}: Props) => {
   const { formatMessage } = useIntl();
 
   const {
@@ -59,6 +64,7 @@ const SentimentScaleField = ({ question, scrollErrorIntoView }: Props) => {
                 }
                 onChange(value);
               }}
+              disabled={disabled}
             />
           );
         }}

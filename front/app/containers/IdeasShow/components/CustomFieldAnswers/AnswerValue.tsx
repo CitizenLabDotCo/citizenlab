@@ -9,6 +9,9 @@ import useLocalize from 'hooks/useLocalize';
 import LinearScaleField from 'components/CustomFieldsForm/Fields/LinearScale';
 import { getLinearScaleLabel } from 'components/CustomFieldsForm/Fields/LinearScale/utils';
 import MultiSelectField from 'components/CustomFieldsForm/Fields/MultiSelectField';
+import SentimentScaleField from 'components/CustomFieldsForm/Fields/SentimentScaleField';
+import { MAXIMUM as SENTIMENT_SCALE_MAXIMUM } from 'components/CustomFieldsForm/Fields/SentimentScaleField/constants';
+import { getAriaValueText as getSentimentScaleText } from 'components/CustomFieldsForm/Fields/SentimentScaleField/utils';
 import SingleSelectField from 'components/CustomFieldsForm/Fields/SingleSelectField';
 import formMessages from 'components/CustomFieldsForm/messages';
 
@@ -68,6 +71,30 @@ const AnswerValue = ({ field, answer }: Props) => {
           <ScreenReaderOnly>{sentence}</ScreenReaderOnly>
           <Box aria-hidden>
             <LinearScaleField question={field} disabled />
+          </Box>
+        </>
+      );
+    }
+    case 'sentiment_linear_scale': {
+      if (typeof answer !== 'number') return null;
+
+      return (
+        <>
+          <ScreenReaderOnly>
+            {getSentimentScaleText({
+              value: answer,
+              total: SENTIMENT_SCALE_MAXIMUM,
+              question: field,
+              formatMessage,
+              localize,
+            })}
+          </ScreenReaderOnly>
+          <Box aria-hidden style={{ pointerEvents: 'none' }}>
+            <SentimentScaleField
+              question={field}
+              scrollErrorIntoView={false}
+              disabled
+            />
           </Box>
         </>
       );

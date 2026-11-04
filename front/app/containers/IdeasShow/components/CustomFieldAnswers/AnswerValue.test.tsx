@@ -26,6 +26,25 @@ const linearScaleField: IFlatCustomField = {
   linear_scale_label_3_multiloc: { en: 'Neutral' },
 };
 
+const sentimentScaleField: IFlatCustomField = {
+  id: 'experience-id',
+  type: 'custom_field',
+  key: 'experience',
+  title_multiloc: { en: 'How was your experience?' },
+  description_multiloc: {},
+  input_type: 'sentiment_linear_scale',
+  required: false,
+  answers_visible_to: 'public',
+  show_as_filter: false,
+  enabled: true,
+  ordering: 0,
+  created_at: '',
+  updated_at: '',
+  logic: {},
+  ask_follow_up: false,
+  linear_scale_label_4_multiloc: { en: 'Good' },
+};
+
 describe('AnswerValue', () => {
   it('shows a linear scale answer as the selected option and as a sentence', () => {
     render(
@@ -38,5 +57,22 @@ describe('AnswerValue', () => {
       screen.getByRole('radio', { name: '3 - Neutral', hidden: true })
     ).toHaveAttribute('aria-checked', 'true');
     expect(screen.getByText('3 out of 5, Neutral')).toBeInTheDocument();
+  });
+
+  it('shows a sentiment scale answer as the selected option and as a sentence', () => {
+    render(
+      <AnswersForm answers={{ experience: 4 }}>
+        <AnswerValue field={sentimentScaleField} answer={4} />
+      </AnswersForm>
+    );
+
+    expect(
+      screen.getByRole('button', { name: '4 out of 5, Good', hidden: true })
+    ).toHaveAttribute('aria-pressed', 'true');
+    // The hidden emoji button carries the same text as its name, so look
+    // for the sentence a screen reader actually gets.
+    expect(
+      screen.getByText('4 out of 5, Good', { ignore: '[aria-hidden="true"] *' })
+    ).toBeInTheDocument();
   });
 });
