@@ -646,7 +646,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.storyTerm": "Témoignage",
   "app.components.app.containers.AdminPage.ProjectEdit.suggestionTerm": "Suggestion",
   "app.components.app.containers.AdminPage.ProjectEdit.takingPollAction": "Répondre au sondage",
-  "app.components.app.containers.AdminPage.ProjectEdit.takingSurveyAction": "Répondre au questionnaire",
+  "app.components.app.containers.AdminPage.ProjectEdit.takingSurveyAction": "Répondre à l'enquête",
   "app.components.app.containers.AdminPage.ProjectEdit.timelineTab": "Ligne du temps",
   "app.components.app.containers.AdminPage.ProjectEdit.topicTerm": "Thème",
   "app.components.app.containers.AdminPage.ProjectEdit.trafficTab": "Trafic",
