@@ -109,7 +109,7 @@ RSpec.describe ReportBuilder::ReviseReportJob do
     it 'records the reply as part of a run that saved the report only when it changed it' do
       stub_revision({ layout: revised_layout, reply: 'Trimmed it.' })
       enqueue_job.perform_now
-      changed = ReportBuilder::Run.last
+      changed = ReportBuilder::Run.newest_first.first
       expect(changed).to be_saved_the_report
       expect(changed.last_position).to eq shown.last.position
 
@@ -118,7 +118,7 @@ RSpec.describe ReportBuilder::ReviseReportJob do
       described_class.with_tracking(owner: owner)
         .perform_later(report, instruction: 'what is that', locale: 'en', craftjs_json: nil)
         .perform_now
-      unchanged = ReportBuilder::Run.last
+      unchanged = ReportBuilder::Run.newest_first.first
       expect(unchanged).not_to be_saved_the_report
       expect(unchanged.last_position).to eq shown.last.position
     end
@@ -168,7 +168,7 @@ RSpec.describe ReportBuilder::ReviseReportJob do
 
       expect { enqueue_job.perform_now }.to change(ReportBuilder::Run, :count).by(1)
 
-      run = ReportBuilder::Run.last
+      run = ReportBuilder::Run.newest_first.first
       expect(run).to have_attributes(conversation: chat, kind: 'revision', stopped_because: 'done')
     end
 
@@ -178,7 +178,7 @@ RSpec.describe ReportBuilder::ReviseReportJob do
       enqueue_job.perform_now
 
       expect(shown.last.content).to include 'Stopped'
-      expect(ReportBuilder::Run.last).to be_saved_the_report
+      expect(ReportBuilder::Run.newest_first.first).to be_saved_the_report
     end
 
     it 'keeps the turn the admin wrote after the job was enqueued' do
