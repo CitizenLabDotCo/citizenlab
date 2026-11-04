@@ -591,7 +591,7 @@
   "app.components.ProjectCard.xContributions": "{ideasCount, plural, one {# contributo} other {# contributi}}",
   "app.components.ProjectCard.xIdeas": "{ideasCount, plural, =0 {nessuna idea ancora} one {# idea} other {# idee}}",
   "app.components.ProjectCard.xInitiatives": "{ideasCount, plural, no {# iniziative} one {# iniziative} other {# iniziative}}",
-  "app.components.ProjectCard.xIssues1": "{ideasCount, plural, no {# numeri} one {# numeri} other {# numeri}}",
+  "app.components.ProjectCard.xIssues1": "{ideasCount, plural, no {# segnalazioni} one {# segnalazione} other {# segnalazioni}}",
   "app.components.ProjectCard.xOptions": "{ideasCount, plural, one {# opzione} other {# opzioni}}",
   "app.components.ProjectCard.xPetitions": "{ideasCount, plural, no {# petizioni} one {# petizione} other {# petizioni}}",
   "app.components.ProjectCard.xPosts": "{ideasCount, plural, no {# post} one {# post} other {# post}}",
