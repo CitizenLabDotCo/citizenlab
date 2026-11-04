@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
+import { useFormContext } from 'react-hook-form';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 
@@ -9,8 +10,8 @@ import useLocalize from 'hooks/useLocalize';
 import LinearScaleField from 'components/CustomFieldsForm/Fields/LinearScale';
 import { getLinearScaleLabel } from 'components/CustomFieldsForm/Fields/LinearScale/utils';
 import MultiSelectField from 'components/CustomFieldsForm/Fields/MultiSelectField';
-import SentimentScaleField from 'components/CustomFieldsForm/Fields/SentimentScaleField';
 import { MAXIMUM as SENTIMENT_SCALE_MAXIMUM } from 'components/CustomFieldsForm/Fields/SentimentScaleField/constants';
+import SentimentScale from 'components/CustomFieldsForm/Fields/SentimentScaleField/SentimentScale';
 import { getAriaValueText as getSentimentScaleText } from 'components/CustomFieldsForm/Fields/SentimentScaleField/utils';
 import SingleSelectField from 'components/CustomFieldsForm/Fields/SingleSelectField';
 import formMessages from 'components/CustomFieldsForm/messages';
@@ -26,6 +27,7 @@ interface Props {
 const AnswerValue = ({ field, answer }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
+  const { watch } = useFormContext();
 
   switch (field.input_type) {
     case 'text':
@@ -78,6 +80,8 @@ const AnswerValue = ({ field, answer }: Props) => {
     case 'sentiment_linear_scale': {
       if (typeof answer !== 'number') return null;
 
+      const followUp = watch(`${field.key}_follow_up`);
+
       return (
         <>
           <ScreenReaderOnly>
@@ -90,12 +94,18 @@ const AnswerValue = ({ field, answer }: Props) => {
             })}
           </ScreenReaderOnly>
           <Box aria-hidden style={{ pointerEvents: 'none' }}>
-            <SentimentScaleField
+            <SentimentScale
               question={field}
-              scrollErrorIntoView={false}
+              value={answer}
+              onChange={() => {}}
               disabled
             />
           </Box>
+          {typeof followUp === 'string' && (
+            <Text mt="12px" mb="0px">
+              {followUp}
+            </Text>
+          )}
         </>
       );
     }

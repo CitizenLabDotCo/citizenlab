@@ -41,7 +41,7 @@ const sentimentScaleField: IFlatCustomField = {
   created_at: '',
   updated_at: '',
   logic: {},
-  ask_follow_up: false,
+  ask_follow_up: true,
   linear_scale_label_4_multiloc: { en: 'Good' },
 };
 
@@ -59,9 +59,11 @@ describe('AnswerValue', () => {
     expect(screen.getByText('3 out of 5, Neutral')).toBeInTheDocument();
   });
 
-  it('shows a sentiment scale answer as the selected option and as a sentence', () => {
+  it('shows a sentiment scale answer as the selected option, a sentence and the follow-up text', () => {
     render(
-      <AnswersForm answers={{ experience: 4 }}>
+      <AnswersForm
+        answers={{ experience: 4, experience_follow_up: 'Friendly staff' }}
+      >
         <AnswerValue field={sentimentScaleField} answer={4} />
       </AnswersForm>
     );
@@ -74,5 +76,10 @@ describe('AnswerValue', () => {
     expect(
       screen.getByText('4 out of 5, Good', { ignore: '[aria-hidden="true"] *' })
     ).toBeInTheDocument();
+    expect(screen.getByText('Friendly staff')).toBeInTheDocument();
+    // The form's follow-up input must not be rendered, not even hidden
+    expect(
+      screen.queryByRole('textbox', { hidden: true })
+    ).not.toBeInTheDocument();
   });
 });
