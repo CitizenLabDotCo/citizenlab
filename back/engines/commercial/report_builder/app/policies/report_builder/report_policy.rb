@@ -22,7 +22,9 @@ module ReportBuilder
       if admin?
         true
       elsif user.moderator?
-        if record.phase?
+        if record.admins_only?
+          false
+        elsif record.phase?
           policy_for(record.phase).active_moderator?
         else
           record.owner == user

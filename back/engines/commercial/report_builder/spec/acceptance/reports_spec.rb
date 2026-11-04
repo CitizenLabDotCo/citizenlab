@@ -138,6 +138,7 @@ resource 'Reports' do
             created_at: report.created_at.iso8601(3),
             updated_at: report.updated_at.iso8601(3),
             visible: false,
+            admins_only: false,
             year: nil,
             quarter: nil
           },
@@ -338,6 +339,7 @@ resource 'Reports' do
             created_at: be_a(String),
             updated_at: be_a(String),
             visible: false,
+            admins_only: false,
             year: 2025,
             quarter: 1
           },
@@ -476,6 +478,19 @@ resource 'Reports' do
         end
       end
 
+      describe 'making a report admins only, and sharing it again' do
+        example 'An admin sets and clears admins_only' do
+          do_request(report: { admins_only: true })
+          assert_status 200
+          expect(report.reload.admins_only).to be(true)
+          expect(response_data.dig(:attributes, :admins_only)).to be(true)
+
+          do_request(report: { admins_only: false })
+          assert_status 200
+          expect(report.reload.admins_only).to be(false)
+        end
+      end
+
       describe 'side effects', document: false do
         let(:side_fx_service) do
           instance_spy(ReportBuilder::SideFxReportService, 'side_fx_service')
@@ -501,6 +516,28 @@ resource 'Reports' do
           expect(side_fx_service).to have_received(:before_update)
           expect(side_fx_service).not_to have_received(:after_update)
         end
+      end
+    end
+
+    describe 'when a moderator owns the report' do
+      let(:moderator) { create(:project_moderator) }
+      let(:id) { create(:report, owner: moderator, layout: build(:layout, craftjs_json: {})).id }
+
+      before { header_token_for moderator }
+
+      example 'A moderator cannot make their report admins only', document: false do
+        do_request(report: { name: 'renamed', admins_only: true })
+        assert_status 200
+        report = ReportBuilder::Report.find(id)
+        expect(report.name).to eq('renamed')
+        expect(report.admins_only).to be(false)
+      end
+
+      example 'A moderator cannot share their admins-only report', document: false do
+        ReportBuilder::Report.find(id).update!(admins_only: true)
+        do_request(report: { admins_only: false })
+        assert_status 401
+        expect(ReportBuilder::Report.find(id).admins_only).to be(true)
       end
     end
 

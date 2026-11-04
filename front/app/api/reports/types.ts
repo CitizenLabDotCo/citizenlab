@@ -17,7 +17,7 @@ type EditingReportEnabled = {
 
 type EditingReportDisabled = {
   enabled: false;
-  disabled_reason: 'report_has_unauthorized_data';
+  disabled_reason: 'report_admins_only' | 'report_has_unauthorized_data';
 };
 
 type EditingReport = EditingReportEnabled | EditingReportDisabled;
@@ -33,6 +33,7 @@ export interface Report {
       editing_report: EditingReport;
     };
     visible: boolean;
+    admins_only: boolean;
     year?: number | null;
     quarter?: number | null;
   };

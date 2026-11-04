@@ -32,8 +32,8 @@ RSpec.describe ReportBuilder::Permissions::ReportPermissionsService do
       expect(described_class.new.editing_disabled_reason_for_report(report, user)).to be_nil
     end
 
-    it 'returns no error for a chart answer read from every row' do
-      create(:query_snapshot, layout: report.layout, query_scope: 'all')
+    it 'returns no error for an admins-only report' do
+      report.update!(admins_only: true)
 
       expect(described_class.new.editing_disabled_reason_for_report(report, user)).to be_nil
     end
@@ -57,22 +57,24 @@ RSpec.describe ReportBuilder::Permissions::ReportPermissionsService do
         expect(described_class.new.editing_disabled_reason_for_report(report, user)).to be_nil
       end
 
-      it 'returns no error for a chart answer read from that project' do
-        create(:query_snapshot, layout: report.layout, query_scope: { 'project_ids' => [project_id] })
+      it 'returns report_admins_only for an admins-only report' do
+        report.update!(admins_only: true)
 
-        expect(described_class.new.editing_disabled_reason_for_report(report, user)).to be_nil
+        expect(described_class.new.editing_disabled_reason_for_report(report, user)).to eq('report_admins_only')
       end
 
-      it 'returns error for a chart answer read from every row' do
+      it 'returns report_admins_only for an admins-only report they own' do
+        report.update!(admins_only: true, owner: user)
+
+        expect(described_class.new.editing_disabled_reason_for_report(report, user)).to eq('report_admins_only')
+      end
+
+      # Once an admin shares it, its stored answers no longer decide who may open it:
+      # the flag does.
+      it 'returns no error for a shared report holding a chart answer read with access to every row' do
         create(:query_snapshot, layout: report.layout, query_scope: 'all')
 
-        expect(described_class.new.editing_disabled_reason_for_report(report, user)).to eq('report_has_unauthorized_data')
-      end
-
-      it 'returns error for a chart answer that also reads another project' do
-        create(:query_snapshot, layout: report.layout, query_scope: { 'project_ids' => [project_id, create(:project).id] })
-
-        expect(described_class.new.editing_disabled_reason_for_report(report, user)).to eq('report_has_unauthorized_data')
+        expect(described_class.new.editing_disabled_reason_for_report(report, user)).to be_nil
       end
 
       context 'when phase_is is not configured in widget' do

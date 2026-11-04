@@ -1,11 +1,14 @@
 # inspired by BasePermissionsService - But has no need to inherit from it
 class ReportBuilder::Permissions::ReportPermissionsService
   EDITING_DENIED_REASONS = {
+    report_admins_only: 'report_admins_only',
     report_has_unauthorized_data: 'report_has_unauthorized_data'
   }.freeze
 
   def editing_disabled_reason_for_report(report, current_user)
-    if report_has_unauthorized_data?(report, current_user)
+    if report_admins_only_for?(report, current_user)
+      EDITING_DENIED_REASONS[:report_admins_only]
+    elsif report_has_unauthorized_data?(report, current_user)
       EDITING_DENIED_REASONS[:report_has_unauthorized_data]
     end
   end
@@ -22,10 +25,15 @@ class ReportBuilder::Permissions::ReportPermissionsService
 
   private
 
+  # A report an admin made with access to data from the whole platform is theirs to
+  # share: until an admin switches the flag off, no one else may open it, whoever owns it.
+  def report_admins_only_for?(report, current_user)
+    report.admins_only? && !current_user.admin?
+  end
+
   def report_has_unauthorized_data?(report, current_user)
     return false if current_user.admin?
     return true if current_user.normal_user?
-    return true if snapshot_wider_than_user?(report, current_user)
 
     project_ids = UserRoleService.new.moderatable_projects(current_user).ids
 
@@ -50,14 +58,5 @@ class ReportBuilder::Permissions::ReportPermissionsService
     end
 
     false
-  end
-
-  # The answers behind LLM-written charts are stored with the scope they were read
-  # with. One read from rows the user may not analyse is data they may not see.
-  def snapshot_wider_than_user?(report, user)
-    user_scope = McpServer::QueryScope.for(user)
-    report.layout.query_snapshots.any? do |snapshot|
-      !McpServer::QueryScope.from_stamp(snapshot.query_scope).within?(user_scope)
-    end
   end
 end

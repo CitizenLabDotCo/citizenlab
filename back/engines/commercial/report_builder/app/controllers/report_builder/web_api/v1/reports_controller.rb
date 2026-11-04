@@ -152,6 +152,9 @@ module ReportBuilder
               :visible,
               :year,
               :quarter,
+              # Only an admin may share a report made with access to platform-wide
+              # data, or take it back.
+              *(current_user&.admin? ? [:admins_only] : []),
               layout: [craftjs_json: {}]
             )
 

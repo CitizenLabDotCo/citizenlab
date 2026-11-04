@@ -215,6 +215,43 @@ RSpec.describe ReportBuilder::ReportPolicy do
     end
   end
 
+  context 'when report is admins only' do
+    let_it_be(:empty_layout) { create(:layout, craftjs_json: { ROOT: { type: 'div', props: {} } }) }
+
+    context 'when user is an admin' do
+      let_it_be(:user) { create(:admin) }
+      let_it_be(:report) { create(:report, admins_only: true, phase: future_phase, layout: empty_layout) }
+
+      it_behaves_like 'permitted everything'
+    end
+
+    context 'when a moderator owns the report' do
+      let_it_be(:user) { create(:project_moderator, projects: [project]) }
+      let_it_be(:report) { create(:report, admins_only: true, owner: user, layout: empty_layout) }
+
+      it_behaves_like 'not permitted anything'
+      # Still listed, so it does not disappear from their reports without explanation.
+      it { expect(scope.resolve).to contain_exactly(report) }
+    end
+
+    context 'when a moderator moderates the phase of an unpublished report' do
+      let_it_be(:user) { create(:project_moderator, projects: [project]) }
+      let_it_be(:report) { create(:report, admins_only: true, phase: future_phase, layout: empty_layout) }
+
+      it_behaves_like 'not permitted anything'
+    end
+
+    # Publishing shares a report with everyone, moderators included.
+    context 'when a moderator moderates the phase of a published report' do
+      let_it_be(:user) { create(:project_moderator, projects: [project]) }
+      let_it_be(:report) { create(:report, :visible, admins_only: true, phase: current_phase, layout: empty_layout) }
+
+      it { is_expected.not_to permit(:show) }
+      it { is_expected.to permit(:layout) }
+      it { is_expected.not_to permit(:update) }
+    end
+  end
+
   context 'when user is a visitor' do
     let_it_be(:user) { nil }
 

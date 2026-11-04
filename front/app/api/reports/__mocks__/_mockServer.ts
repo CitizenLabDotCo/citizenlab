@@ -33,6 +33,7 @@ export const reportsData: Report[] = [
         },
       },
       visible: false,
+      admins_only: false,
     },
     relationships: {
       layout: {
@@ -63,6 +64,7 @@ export const reportsData: Report[] = [
         },
       },
       visible: false,
+      admins_only: false,
     },
     relationships: {
       layout: {
