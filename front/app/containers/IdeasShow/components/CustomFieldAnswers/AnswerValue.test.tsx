@@ -45,6 +45,24 @@ const sentimentScaleField: IFlatCustomField = {
   linear_scale_label_4_multiloc: { en: 'Good' },
 };
 
+const ratingField: IFlatCustomField = {
+  id: 'quality-id',
+  type: 'custom_field',
+  key: 'quality',
+  title_multiloc: { en: 'How good is the square today?' },
+  description_multiloc: {},
+  input_type: 'rating',
+  required: false,
+  answers_visible_to: 'public',
+  show_as_filter: false,
+  enabled: true,
+  ordering: 0,
+  created_at: '',
+  updated_at: '',
+  logic: {},
+  maximum: 5,
+};
+
 describe('AnswerValue', () => {
   it('shows a linear scale answer as the selected option and as a sentence', () => {
     render(
@@ -81,5 +99,19 @@ describe('AnswerValue', () => {
     expect(
       screen.queryByRole('textbox', { hidden: true })
     ).not.toBeInTheDocument();
+  });
+
+  it('shows a rating answer as the given stars and as a sentence', () => {
+    render(
+      <AnswersForm answers={{ quality: 3 }}>
+        <AnswerValue field={ratingField} answer={3} />
+      </AnswersForm>
+    );
+
+    expect(screen.getByRole('slider', { hidden: true })).toHaveAttribute(
+      'aria-valuenow',
+      '3'
+    );
+    expect(screen.getByText('3 out of 5')).toBeInTheDocument();
   });
 });

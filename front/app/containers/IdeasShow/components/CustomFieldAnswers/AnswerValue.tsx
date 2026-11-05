@@ -10,6 +10,7 @@ import useLocalize from 'hooks/useLocalize';
 import LinearScaleField from 'components/CustomFieldsForm/Fields/LinearScale';
 import { getLinearScaleLabel } from 'components/CustomFieldsForm/Fields/LinearScale/utils';
 import MultiSelectField from 'components/CustomFieldsForm/Fields/MultiSelectField';
+import Rating from 'components/CustomFieldsForm/Fields/RatingField/Rating';
 import { MAXIMUM as SENTIMENT_SCALE_MAXIMUM } from 'components/CustomFieldsForm/Fields/SentimentScaleField/constants';
 import SentimentScale from 'components/CustomFieldsForm/Fields/SentimentScaleField/SentimentScale';
 import { getAriaValueText as getSentimentScaleText } from 'components/CustomFieldsForm/Fields/SentimentScaleField/utils';
@@ -73,6 +74,30 @@ const AnswerValue = ({ field, answer }: Props) => {
           <ScreenReaderOnly>{sentence}</ScreenReaderOnly>
           <Box aria-hidden>
             <LinearScaleField question={field} disabled />
+          </Box>
+        </>
+      );
+    }
+    case 'rating': {
+      if (typeof answer !== 'number' || field.maximum === undefined) {
+        return null;
+      }
+
+      return (
+        <>
+          <ScreenReaderOnly>
+            {formatMessage(formMessages.valueOutOfTotal, {
+              value: answer,
+              total: field.maximum,
+            })}
+          </ScreenReaderOnly>
+          <Box aria-hidden style={{ pointerEvents: 'none' }}>
+            <Rating
+              question={field}
+              value={answer}
+              onChange={() => {}}
+              disabled
+            />
           </Box>
         </>
       );
