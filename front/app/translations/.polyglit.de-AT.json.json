@@ -19,6 +19,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "EmailSettingsPage.initialUnsubscribeSuccessWithoutCampaign": {
+    "state": "verified",
+    "verified_at": "2026-11-05T15:49:05.874475Z",
+    "verified_by": "Jelena"
+  },
   "UI.FormComponents.optional": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
