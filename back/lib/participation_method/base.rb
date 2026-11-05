@@ -252,9 +252,10 @@ module ParticipationMethod
       'all_data'
     end
 
-    # Only implemented in native_survey and community monitor
+    # Distinct from 'demographics_only', which also drops the user id but keeps
+    # the demographic answers.
     def fully_anonymous?
-      false
+      user_data_collection == 'anonymous'
     end
 
     # Only implemented in native_survey, community monitor and ideation
