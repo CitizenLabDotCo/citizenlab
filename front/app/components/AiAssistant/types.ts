@@ -2,12 +2,19 @@ import { ComponentType } from 'react';
 
 import { MessageDescriptor } from 'react-intl';
 
+import {
+  AiAssistantToolName,
+  IAiAssistantToolCallData,
+} from 'api/ai_assistant_tool_calls/types';
+
 // How a feature presents one of its tools in the assistant panel.
 export type AiAssistantToolView = {
   label: MessageDescriptor;
-  // Shows what an approved call would do, from the arguments of the model's call.
-  Preview?: ComponentType<{ args: Record<string, unknown> }>;
+  // Shows what an approved call would do. Narrow it with isToolCall to read its arguments.
+  Preview?: ComponentType<{ toolCall: IAiAssistantToolCallData }>;
   approveWarning?: MessageDescriptor;
 };
 
-export type AiAssistantToolViews = Record<string, AiAssistantToolView>;
+export type AiAssistantToolViews = Partial<
+  Record<AiAssistantToolName, AiAssistantToolView>
+>;
