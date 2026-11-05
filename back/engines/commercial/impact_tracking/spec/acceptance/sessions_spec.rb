@@ -67,6 +67,18 @@ resource 'Impact tracking session' do
       expect(ImpactTracking::Session.count).to eq 0
     end
 
+    # Documenting this behaviour.
+    example 'Create new sesssion with same monthly_user_hash for same signed in user', document: false do
+      user = create(:user)
+      header_token_for(user)
+      do_request
+      expect(response_status).to eq 200
+      expect(ImpactTracking::Session.count).to eq 1
+      do_request
+      expect(response_status).to eq 200
+      expect(ImpactTracking::Session.count).to eq 2
+    end
+
     example 'Track the session start of an admin', document: false do
       user = create(:admin)
       header_token_for(user)

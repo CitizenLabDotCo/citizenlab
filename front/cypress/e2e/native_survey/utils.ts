@@ -167,10 +167,9 @@ export const setSurveyFields = (
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return cy.requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'PATCH',
       url: `web_api/v1/phases/${phaseId}/custom_fields/update_all`,

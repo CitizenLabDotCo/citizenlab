@@ -111,7 +111,8 @@ context 'keycloak verification (Rheinbahn)' do
   end
 
   it 'does not verify or add an identity an existing logged in user' do
-    get "/auth/keycloak?token=#{@token}&random-passthrough-param=somevalue&verification_pathname=/yipie"
+    cookies[AuthToken::Cookie::NAME] = @token
+    get '/auth/keycloak?verification=true&random-passthrough-param=somevalue&verification_pathname=/yipie'
     follow_redirect!
 
     expect_user_to_not_be_verified(@user)
@@ -177,8 +178,8 @@ context 'keycloak verification (Rheinbahn)' do
       follow_redirect!
 
       expect(response).to redirect_to('/en/?param=some-param&sso_flow=signin&sso_success=true')
-      expect(cookies[:cl2_jwt]).to be_present
-      jwt_payload = JWT.decode(cookies[:cl2_jwt], nil, false).first
+      expect(cookies[AuthToken::Cookie::NAME]).to be_present
+      jwt_payload = JWT.decode(cookies[AuthToken::Cookie::NAME], nil, false).first
       expect(sso_user.reload).to eq(sso_user)
       expect(jwt_payload['sub']).to eq(sso_user.id)
     end

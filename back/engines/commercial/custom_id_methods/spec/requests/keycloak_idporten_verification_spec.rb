@@ -117,7 +117,8 @@ context 'keycloak verification (ID-Porten - Oslo)' do
 
   context 'email provided in auth response' do
     it 'successfully verifies an existing user' do
-      get "/auth/keycloak?token=#{@token}&random-passthrough-param=somevalue&verification_pathname=/yipie"
+      cookies[AuthToken::Cookie::NAME] = @token
+      get '/auth/keycloak?verification=true&random-passthrough-param=somevalue&verification_pathname=/yipie'
       follow_redirect!
 
       expect_user_to_be_verified(@user)
@@ -126,7 +127,8 @@ context 'keycloak verification (ID-Porten - Oslo)' do
     end
 
     it 'successfully authenticates an existing user that was previously verified' do
-      get "/auth/keycloak?token=#{@token}"
+      cookies[AuthToken::Cookie::NAME] = @token
+      get '/auth/keycloak?verification=true'
       follow_redirect!
 
       expect(User.count).to eq(1)
@@ -142,7 +144,8 @@ context 'keycloak verification (ID-Porten - Oslo)' do
     end
 
     it 'successfully verifies another user with another ID-Porten account' do
-      get "/auth/keycloak?token=#{@token}"
+      cookies[AuthToken::Cookie::NAME] = @token
+      get '/auth/keycloak?verification=true'
       follow_redirect!
       expect(@user.reload).to have_attributes({
         verified: true
@@ -153,7 +156,8 @@ context 'keycloak verification (ID-Porten - Oslo)' do
       auth_hash['uid'] = 'f8f151a4-4a80-4106-919c-244084e1ce21'
       OmniAuth.config.mock_auth[:keycloak] = OmniAuth::AuthHash.new(auth_hash)
 
-      get "/auth/keycloak?token=#{token2}"
+      cookies[AuthToken::Cookie::NAME] = token2
+      get '/auth/keycloak?verification=true'
       follow_redirect!
       expect(user2.reload).to have_attributes(verified: true)
     end
@@ -165,7 +169,8 @@ context 'keycloak verification (ID-Porten - Oslo)' do
         hashed_uid: Verification::VerificationService.new.send(:hashed_uid, auth_hash['uid'], 'keycloak')
       )
 
-      get "/auth/keycloak?token=#{@token}"
+      cookies[AuthToken::Cookie::NAME] = @token
+      get '/auth/keycloak?verification=true'
       follow_redirect!
 
       expect(@user.reload).to have_attributes(verified: false)
@@ -242,7 +247,8 @@ context 'keycloak verification (ID-Porten - Oslo)' do
         before { new_user.update!(email: Faker::Internet.email) }
 
         it 'does not verify another user and does not delete previously verified new user' do
-          get "/auth/keycloak?token=#{@token}&verification_pathname=/some-page"
+          cookies[AuthToken::Cookie::NAME] = @token
+          get '/auth/keycloak?verification=true&verification_pathname=/some-page'
           follow_redirect!
 
           expect(response).to redirect_to('/some-page?verification_error=true&error_code=taken')
@@ -258,7 +264,8 @@ context 'keycloak verification (ID-Porten - Oslo)' do
 
       context 'when verified registration is not completed by new user' do
         it 'successfully verifies another user and deletes previously verified blank new user' do
-          get "/auth/keycloak?token=#{@token}&verification_pathname=/some-page"
+          cookies[AuthToken::Cookie::NAME] = @token
+          get '/auth/keycloak?verification=true&verification_pathname=/some-page'
           follow_redirect!
 
           expect(response).to redirect_to('/en/some-page?verification_success=true')
@@ -279,7 +286,7 @@ context 'keycloak verification (ID-Porten - Oslo)' do
       expect(user.confirmation_required?).to be(true)
       expect(ActionMailer::Base.deliveries.count).to eq(0)
 
-      headers = { 'Authorization' => authorization_header(user) }
+      headers = { 'Cookie' => auth_cookie(user) }
 
       post '/web_api/v1/user/request_code_new_email', params: { request_code: { new_email: 'newcoolemail@example.org' } }, headers: headers
       expect(response).to have_http_status(:ok)

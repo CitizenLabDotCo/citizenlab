@@ -94,13 +94,12 @@ describe('Project description builder display', () => {
       const adminJwt = response.body.jwt;
       const headers = {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       };
 
       // Upload a file to the project's file repository.
       cy.fixture('example.pdf', 'base64')
         .then((fileContent) => {
-          return cy.request({
+          return cy.requestAs(adminJwt, {
             headers,
             method: 'POST',
             url: 'web_api/v1/files',
@@ -116,7 +115,7 @@ describe('Project description builder display', () => {
         .then((fileResponse) => {
           // Author a project page holding the description and a FileAttachment
           // widget, as the project page builder does.
-          cy.request({
+          cy.requestAs(adminJwt, {
             headers,
             method: 'POST',
             url: `web_api/v1/projects/${projectId}/content_builder_layouts/project_page/upsert`,
@@ -157,12 +156,11 @@ describe('Project description builder display', () => {
     cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
       const headers = {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${response.body.jwt}`,
       };
 
       cy.fixture('example.pdf', 'base64')
         .then((fileContent) =>
-          cy.request({
+          cy.requestAs(response.body.jwt, {
             headers,
             method: 'POST',
             url: 'web_api/v1/files',
@@ -176,7 +174,7 @@ describe('Project description builder display', () => {
           })
         )
         .then((fileResponse) =>
-          cy.request({
+          cy.requestAs(response.body.jwt, {
             headers,
             method: 'POST',
             url: `web_api/v1/projects/${projectId}/content_builder_layouts/project_page/upsert`,
@@ -192,7 +190,7 @@ describe('Project description builder display', () => {
         );
 
       cy.fixture('example.pdf', 'base64').then((fileContent) =>
-        cy.request({
+        cy.requestAs(response.body.jwt, {
           headers,
           method: 'POST',
           url: 'web_api/v1/files',

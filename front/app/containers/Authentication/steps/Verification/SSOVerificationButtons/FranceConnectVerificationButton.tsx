@@ -9,7 +9,6 @@ import { AUTH_PATH } from 'containers/App/constants';
 import FranceConnectButton from 'components/UI/FranceConnectButton';
 import messages from 'components/UI/FranceConnectButton/messages';
 
-import { getJwt } from 'utils/auth/jwt';
 import { injectIntl } from 'utils/cl-intl';
 import { removeUrlLocale } from 'utils/removeUrlLocale';
 
@@ -25,10 +24,9 @@ const FranceConnectVerificationButton = ({
 }: Props & WrappedComponentProps) => {
   const handleOnClick = () => {
     onClick(method);
-    const jwt = getJwt();
     const pathname = removeUrlLocale(window.location.pathname);
     // See id_franceconnect/app/lib/id_franceconnect/franceconnect_omniauth.rb for how it works.
-    window.location.href = `${AUTH_PATH}/franceconnect?token=${jwt}&verification_pathname=${pathname}&sso_verification=true`;
+    window.location.href = `${AUTH_PATH}/franceconnect?verification=true&verification_pathname=${pathname}&sso_verification=true`;
   };
 
   return (

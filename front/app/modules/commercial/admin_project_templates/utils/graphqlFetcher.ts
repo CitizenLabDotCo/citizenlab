@@ -1,5 +1,3 @@
-import { getJwt } from 'utils/auth/jwt';
-
 interface GraphQLRequest {
   query: string;
   variables?: Record<string, any>;
@@ -16,17 +14,16 @@ export const graphqlFetcher = async <TData = any>({
   query,
   variables,
 }: GraphQLRequest): Promise<TData> => {
-  const jwt = getJwt();
-
   const response = await fetch(ADMIN_TEMPLATES_GRAPHQL_PATH, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: jwt ? `Bearer ${jwt}` : '',
       Origin: '*',
       'Access-Control-Allow-Origin': '*',
     },
     mode: 'cors',
+    // The auth cookie authenticates the request
+    credentials: 'include',
     body: JSON.stringify({
       query,
       variables,

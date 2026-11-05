@@ -12,18 +12,16 @@ module UserCookies
     current_user.expire_token!
 
     # Get the expiry time from the current token
-    current_token = request.headers['Authorization']&.split&.last
-    current_payload = AuthToken::AuthToken.new(token: current_token).payload
+    current_payload = AuthToken::AuthToken.new(token: AuthToken::Cookie.read(request)).payload
 
     # Set a new token with the same expiry time
     payload = current_user.to_token_payload
     payload[:exp] = current_payload['exp']
 
-    cookies[:cl2_jwt] = {
-      value: AuthToken::AuthToken.new(payload: payload).token,
-      expires: Time.at(current_payload['exp']),
-      secure: false, # Unfortunately, we can't use secure cookies in production yet
-      same_site: 'Lax' # Strict won't work because of SSO
-    }
+    AuthToken::Cookie.write(
+      response,
+      AuthToken::AuthToken.new(payload: payload).token,
+      expires: Time.zone.at(current_payload['exp'])
+    )
   end
 end

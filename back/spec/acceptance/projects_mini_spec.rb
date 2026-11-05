@@ -48,7 +48,7 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
     end
 
     example 'Returns an empty list if the user is not signed in', document: false do
-      header 'Authorization', nil
+      header 'Cookie', nil
 
       do_request
       expect(status).to eq 200
