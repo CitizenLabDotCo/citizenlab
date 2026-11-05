@@ -26,14 +26,14 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import { getErrorMessage, getRequestErrorCode } from '../errors';
 import messages from '../messages';
-import { AiAssistantToolView } from '../types';
+import { AiAssistantToolDisplay } from '../types';
 
 type Props = {
   toolCall: IAiAssistantToolCallData;
   conversationId: string;
   // Only calls awaiting the user in a conversation that waits for a decision can be decided on.
   decidable: boolean;
-  view: AiAssistantToolView | undefined;
+  display: AiAssistantToolDisplay | undefined;
   onExecuted: (toolName: AiAssistantToolName) => void;
 };
 
@@ -84,7 +84,7 @@ const ToolCallCard = ({
   toolCall,
   conversationId,
   decidable,
-  view,
+  display,
   onExecuted,
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -103,7 +103,7 @@ const ToolCallCard = ({
   } = useRejectAiAssistantToolCall();
 
   const { name, status, arguments: args } = toolCall.attributes;
-  const toolLabel = view ? formatMessage(view.label) : name;
+  const toolLabel = display ? formatMessage(display.label) : name;
 
   if (status !== 'awaiting_user' || !decidable) {
     const { icon, color, message } = statusLine(status);
@@ -118,7 +118,7 @@ const ToolCallCard = ({
   }
 
   const error = approveError ?? rejectError;
-  const Preview = view?.Preview;
+  const Preview = display?.Preview;
 
   return (
     <Box
@@ -154,9 +154,9 @@ const ToolCallCard = ({
         </Box>
       )}
 
-      {view?.approveWarning && (
+      {display?.approveWarning && (
         <Warning>
-          <FormattedMessage {...view.approveWarning} />
+          <FormattedMessage {...display.approveWarning} />
         </Warning>
       )}
 

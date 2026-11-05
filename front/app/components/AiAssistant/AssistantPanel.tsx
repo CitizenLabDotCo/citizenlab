@@ -28,7 +28,7 @@ import Composer from './Composer';
 import { getErrorMessage, getRequestErrorCode } from './errors';
 import messages from './messages';
 import Transcript from './Transcript';
-import { AiAssistantToolViews } from './types';
+import { AiAssistantToolDisplays } from './types';
 import useLatestConversation from './useLatestConversation';
 
 type Props = {
@@ -38,7 +38,7 @@ type Props = {
   // Files are shared as files of this project.
   projectId?: string;
   intro: MessageDescriptor;
-  toolViews: AiAssistantToolViews;
+  toolDisplays: AiAssistantToolDisplays;
   onToolExecuted: (toolName: AiAssistantToolName) => void;
 };
 
@@ -47,7 +47,7 @@ const AssistantPanel = ({
   subjectId,
   projectId,
   intro,
-  toolViews,
+  toolDisplays,
   onToolExecuted,
 }: Props) => {
   const locale = useLocale();
@@ -184,7 +184,7 @@ const AssistantPanel = ({
         {conversation && hasMessages ? (
           <Transcript
             conversation={conversation}
-            toolViews={toolViews}
+            toolDisplays={toolDisplays}
             onToolExecuted={onToolExecuted}
           />
         ) : (

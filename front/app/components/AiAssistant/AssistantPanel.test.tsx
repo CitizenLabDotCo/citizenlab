@@ -126,7 +126,7 @@ const renderPanel = () =>
       subjectId="phase-1"
       projectId="project-1"
       intro={{ id: 'test.intro', defaultMessage: 'Describe your survey' }}
-      toolViews={{}}
+      toolDisplays={{}}
       onToolExecuted={jest.fn()}
     />
   );

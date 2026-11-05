@@ -9,7 +9,7 @@ import { AiAssistantToolName } from 'api/ai_assistant_tool_calls/types';
 import { useIntl } from 'utils/cl-intl';
 
 import { getErrorMessage } from '../errors';
-import { AiAssistantToolViews } from '../types';
+import { AiAssistantToolDisplays } from '../types';
 
 import AssistantMessage from './AssistantMessage';
 import ToolCallCard from './ToolCallCard';
@@ -18,11 +18,11 @@ import WorkingIndicator from './WorkingIndicator';
 
 type Props = {
   conversation: IAiAssistantConversation;
-  toolViews: AiAssistantToolViews;
+  toolDisplays: AiAssistantToolDisplays;
   onToolExecuted: (toolName: AiAssistantToolName) => void;
 };
 
-const Transcript = ({ conversation, toolViews, onToolExecuted }: Props) => {
+const Transcript = ({ conversation, toolDisplays, onToolExecuted }: Props) => {
   const { formatMessage } = useIntl();
   const endRef = useRef<HTMLDivElement>(null);
   const { attributes } = conversation.data;
@@ -52,7 +52,7 @@ const Transcript = ({ conversation, toolViews, onToolExecuted }: Props) => {
                 toolCall={toolCall}
                 conversationId={conversation.data.id}
                 decidable={attributes.status === 'awaiting_user'}
-                view={toolViews[toolCall.attributes.name]}
+                display={toolDisplays[toolCall.attributes.name]}
                 onExecuted={onToolExecuted}
               />
             ))}
