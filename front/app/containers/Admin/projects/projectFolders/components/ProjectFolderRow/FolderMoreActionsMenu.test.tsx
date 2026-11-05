@@ -11,6 +11,7 @@ import FolderMoreActionsMenu, { Props } from './FolderMoreActionsMenu';
 
 const props: Props = {
   folderId: 'folderId',
+  folderName: 'Test Folder',
   setError: jest.fn(),
 };
 
@@ -22,7 +23,6 @@ const mockUserData: IUserData = {
     first_name: 'Stewie',
     last_name: 'McKenzie',
     locale: 'en',
-    slug: 'stewie-mckenzie',
     highest_role: 'admin',
     bio_multiloc: {},
     roles: [{ type: 'admin' }],
@@ -66,6 +66,7 @@ describe('FolderMoreActionsMenu', () => {
     const setErrorFn = jest.fn();
     const customProps: Props = {
       folderId: 'folderId',
+      folderName: 'Test Folder',
       setError: setErrorFn,
     };
     render(<FolderMoreActionsMenu {...customProps} />);
@@ -74,10 +75,19 @@ describe('FolderMoreActionsMenu', () => {
     const threeDotsButton = screen.getByTestId('moreOptionsButton');
     await user.click(threeDotsButton);
 
-    const deleteFolderButton = await screen.findByRole('button', {
+    const deleteFolderButton = await screen.findByRole('menuitem', {
       name: 'Delete folder',
     });
     await user.click(deleteFolderButton);
+
+    const confirmationInput = await screen.findByPlaceholderText('DELETE');
+    await user.type(confirmationInput, 'DELETE');
+
+    const confirmDeleteButton = await screen.findByRole('button', {
+      name: 'Delete folder',
+    });
+    await user.click(confirmDeleteButton);
+
     await waitFor(() => {
       expect(setErrorFn).toHaveBeenLastCalledWith(
         'There was an issue removing this folder. Please try again.'
@@ -93,7 +103,7 @@ describe('FolderMoreActionsMenu', () => {
       const threeDotsButton = screen.getByTestId('moreOptionsButton');
       await user.click(threeDotsButton);
 
-      const deleteFolderButton = await screen.findByRole('button', {
+      const deleteFolderButton = await screen.findByRole('menuitem', {
         name: 'Delete folder',
       });
       expect(deleteFolderButton).toBeInTheDocument();
@@ -105,6 +115,7 @@ describe('FolderMoreActionsMenu', () => {
       mockUserData.attributes.roles = [
         { type: 'project_moderator', project_id: 'projectId' },
       ];
+      mockUserData.attributes.highest_role = 'project_moderator';
     });
 
     it('Does not have the more options menu', async () => {
@@ -120,6 +131,7 @@ describe('FolderMoreActionsMenu', () => {
       mockUserData.attributes.roles = [
         { type: 'project_folder_moderator', project_folder_id: props.folderId },
       ];
+      mockUserData.attributes.highest_role = 'project_folder_moderator';
     });
 
     // To be checked if a folder mod can't do this.

@@ -21,4 +21,21 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.registrationDateRange',
     defaultMessage: 'Registration date range',
   },
+  demographicsTableCaption: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.demographicsTableCaption',
+    defaultMessage:
+      'Demographics data table showing category, count and percentage of participants',
+  },
+  categoryColumn: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.categoryColumn',
+    defaultMessage: 'Category',
+  },
+  countColumn: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.countColumn',
+    defaultMessage: 'Count',
+  },
+  participantsColumn: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.participantsColumn',
+    defaultMessage: 'Participants %',
+  },
 });

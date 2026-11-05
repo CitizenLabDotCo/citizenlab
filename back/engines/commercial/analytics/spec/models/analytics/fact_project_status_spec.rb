@@ -8,6 +8,26 @@ RSpec.describe Analytics::FactProjectStatus do
   it { is_expected.to belong_to(:dimension_project) }
   it { is_expected.to belong_to(:dimension_date) }
 
+  describe 'primary key' do
+    let!(:projects) { create_list(:project, 2) }
+
+    it 'is the natural key of the view, which holds one row per project' do
+      expect(described_class.primary_key).to eq('dimension_project_id')
+      expect(described_class.count).to eq(described_class.distinct.count(:dimension_project_id))
+    end
+
+    # Without a primary key this interpolates an Arel::Table into the SQL.
+    it 'counts an eager-loaded relation without a syntax error' do
+      relation = described_class
+        .includes(:dimension_project)
+        .where.not(dimension_project: { id: nil })
+
+      expect(relation).to be_eager_loading
+      expect { relation.count }.not_to raise_error
+      expect(relation.count).to eq(projects.size)
+    end
+  end
+
   shared_examples 'project can have status' do |status|
     it "the project can have the #{status} status", :aggregate_failures do
       project.update!({ admin_publication_attributes: { publication_status: status } })
@@ -35,25 +55,25 @@ RSpec.describe Analytics::FactProjectStatus do
 
   context 'when the project has phases' do
     let!(:project) { phase.project }
-    let(:phase) { create(:phase, start_at: Time.zone.today - 10, end_at: end_date) }
-    let(:end_date) { Time.zone.today + 10 }
+    let(:phase) { create(:phase, start_at: 10.days.ago, end_at: end_date) }
+    let(:end_date) { 10.days.from_now }
 
     context 'and its last phase is finished' do
-      let(:end_date) { Time.zone.today - 5 }
+      let(:end_date) { 5.days.ago }
 
       it 'the project is also finished', :aggregate_failures do
         expect(described_class.count).to eq(1)
 
         project_status = described_class.first
         expect(project_status.dimension_project_id).to eq(project.id)
-        expect(project_status.timestamp).to eq (phase.end_at + 1).to_time(:utc)
+        expect(project_status.timestamp).to eq phase.end_at
         expect(project_status.status).to eq('published')
         expect(project_status.finished).to be(true)
       end
     end
 
     context 'and its last phase is not finished' do
-      let(:end_date) { Time.zone.today + 10 }
+      let(:end_date) { 10.days.from_now }
 
       it 'the project is not finished', :aggregate_failures do
         expect(described_class.count).to eq(1)

@@ -6,7 +6,7 @@ import T from 'components/T';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
-import { isNilOrError, stopPropagation } from 'utils/helperUtils';
+import { stopPropagation } from 'utils/helperUtils';
 
 import messages from '../../messages';
 import NotificationWrapper from '../NotificationWrapper';
@@ -21,13 +21,15 @@ const MentionInCommentNotification = memo<Props>((props) => {
 
   const officialFeedbackAuthorMultiloc =
     notification.attributes.official_feedback_author;
-  const deletedUser = isNilOrError(
-    notification.attributes.initiating_user_slug
-  );
+  const userId = notification.attributes.initiating_user_id;
+  const slug = notification.attributes.post_slug;
+
+  if (!slug) return null;
 
   return (
     <NotificationWrapper
-      linkTo={`/ideas/${notification.attributes.post_slug}`}
+      to="/ideas/$slug"
+      params={{ slug }}
       timing={notification.attributes.created_at}
       icon="mention"
       isRead={!!notification.attributes.read_at}
@@ -35,11 +37,12 @@ const MentionInCommentNotification = memo<Props>((props) => {
       <FormattedMessage
         {...messages.mentionInOfficialFeedback}
         values={{
-          officialName: deletedUser ? (
+          officialName: !userId ? (
             <DeletedUser />
           ) : (
             <Link
-              to={`/profile/${notification.attributes.initiating_user_slug}`}
+              to="/profile/$userId"
+              params={{ userId }}
               onClick={stopPropagation}
             >
               <T value={officialFeedbackAuthorMultiloc} />

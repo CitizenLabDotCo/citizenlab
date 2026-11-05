@@ -34,4 +34,8 @@ export default defineMessages({
     id: 'app.components.ProjectFolderCards.components.Topbar.filterBy',
     defaultMessage: 'Filter by',
   },
+  searchProjectsAndFolders: {
+    id: 'app.components.ProjectFolderCards.components.Topbar.searchProjectsAndFolders',
+    defaultMessage: 'Search projects and folders',
+  },
 });

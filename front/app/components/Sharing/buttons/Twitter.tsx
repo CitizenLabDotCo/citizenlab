@@ -30,6 +30,16 @@ const StyledBox = styled(Box)`
   &:hover {
     background-color: ${lighten(0.3, colors.black)};
   }
+
+  button:focus-visible,
+  button:focus {
+    outline: none;
+  }
+
+  &:has(:focus-visible) {
+    outline: 2px solid #000;
+    outline-offset: 2px;
+  }
 `;
 
 const Twitter = ({ url, twitterMessage }: Props) => {

@@ -8,12 +8,26 @@ module ParticipationMethod
       'proposals'
     end
 
+    def phase_insights_class
+      Insights::ProposalsPhaseInsightsService
+    end
+
+    # The feed view hides vote counts and progress towards the reacting threshold, so participants
+    # don't realise a proposal has to collect votes. It was never designed for this method.
+    def allowed_presentation_modes
+      %w[card map]
+    end
+
+    def allowed_ideas_orders
+      super + %w[status_priority]
+    end
+
     def assign_defaults_for_phase
       super
       phase.reacting_dislike_enabled = false
       phase.expire_days_limit ||= 90
       phase.reacting_threshold ||= 300
-      phase.prescreening_enabled ||= false
+      phase.prescreening_mode ||= nil
     end
 
     def budget_in_form?(_)
@@ -23,8 +37,6 @@ module ParticipationMethod
     def cosponsors_in_form?
       true
     end
-
-    def validate_phase; end
 
     def supported_email_campaigns
       super + %w[cosponsor_of_your_idea invitation_to_cosponsor_idea]
@@ -44,6 +56,10 @@ module ParticipationMethod
 
     def transitive?
       false
+    end
+
+    def destroy_ideas_on_phase_destroy?
+      true
     end
 
     def use_reactions_as_votes?

@@ -21,6 +21,7 @@
 #  intro_multiloc       :jsonb
 #  button_text_multiloc :jsonb
 #  context_type         :string
+#  channel              :string           default("email"), not null
 #
 # Indexes
 #
@@ -40,6 +41,7 @@ module EmailCampaigns
     include RecipientConfigurable
     include Trackable
     include ContentConfigurable
+    include ContextConfigurable
     include LifecycleStageRestrictable
     allow_lifecycle_stages only: %w[trial active]
 
@@ -51,6 +53,10 @@ module EmailCampaigns
 
     def activity_triggers
       { 'Notifications::ProjectPublished' => { 'created' => true } }
+    end
+
+    def activity_context(activity)
+      activity.item.project if activity.item.is_a?(Notifications::ProjectPublished)
     end
 
     def filter_notification_recipient(users_scope, activity:, time: nil)
@@ -71,6 +77,10 @@ module EmailCampaigns
 
     def self.trigger_multiloc_key
       'email_campaigns.admin_labels.trigger.project_published'
+    end
+
+    def self.supported_context_class
+      Project
     end
 
     def generate_commands(recipient:, activity:)

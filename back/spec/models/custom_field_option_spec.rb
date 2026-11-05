@@ -5,6 +5,8 @@ require 'rails_helper'
 RSpec.describe CustomFieldOption do
   subject(:option) { create(:custom_field_option) }
 
+  it_behaves_like 'a plain text multiloc', factory: :custom_field_option
+
   it { is_expected.to be_valid }
   it { is_expected.to have_one(:area).dependent(:nullify) }
 
@@ -14,26 +16,6 @@ RSpec.describe CustomFieldOption do
   it { is_expected.not_to allow_value('key#1').for(:key) }
 
   it { is_expected.to validate_presence_of(:title_multiloc) }
-
-  context 'when updated' do
-    before do
-      create(:custom_field_domicile)
-      create_list(:area, 2)
-    end
-
-    let(:area) { Area.last }
-    let(:option) { area.custom_field_option }
-
-    it 'updates the associated area (if any)', :aggregate_failures do
-      new_title = { 'en' => 'new title' }
-      expect(option.title_multiloc).not_to eq new_title # sanity check
-
-      option.update(title_multiloc: new_title, ordering: 0)
-
-      expect(option.title_multiloc).to eq(new_title)
-      expect(option.ordering).to eq(0)
-    end
-  end
 
   context 'hooks' do
     it 'generates unique keys in the custom field scope on creation, if not specified' do
@@ -56,6 +38,29 @@ RSpec.describe CustomFieldOption do
       cf = create(:custom_field_select)
       cfo = create(:custom_field_option, key: nil, custom_field: cf, other: true)
       expect(cfo.key).to eq 'other'
+    end
+  end
+
+  describe '#answer_key' do
+    it 'returns the option key' do
+      expect(create(:custom_field_option, key: 'bike').answer_key).to eq 'bike'
+    end
+
+    context 'for the domicile field' do
+      # The domicile field creates an option per existing area on creation, and
+      # each later area creates its own.
+      let!(:domicile) { create(:custom_field_domicile) }
+      let!(:area) { create(:area) }
+
+      it "returns the area id for an area's option" do
+        expect(area.custom_field_option.answer_key).to eq area.id
+      end
+
+      it "returns 'outside' for the somewhere else option" do
+        somewhere_else = domicile.options.reload.find { |option| option.area.nil? }
+
+        expect(somewhere_else.answer_key).to eq 'outside'
+      end
     end
   end
 

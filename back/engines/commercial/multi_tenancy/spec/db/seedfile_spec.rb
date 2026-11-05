@@ -23,7 +23,7 @@ describe 'db/seeds.rb' do
       expect(User.find_by(email: 'admin@govocal.com').id).to eq '386d255e-2ff1-4192-8e50-b3022576be50'
       expect(User.find_by(email: 'moderator@govocal.com').id).to eq '61caabce-f7e5-4804-b9df-36d7d7d73e4d'
       expect(User.find_by(email: 'user@govocal.com').id).to eq '546335a3-33b9-471c-a18a-d5b58ebf173a'
-      expect(Topic.count).to be > 0
+      expect(GlobalTopic.count).to be > 0
       expect(Area.count).to be > 0
       expect(Project.count).to be > 0
       expect(Phase.count).to be > 0
@@ -41,17 +41,14 @@ describe 'db/seeds.rb' do
       expect(CustomField.registration.count).to be > 0
       expect(CustomFieldOption.count).to be > 0
       expect(Invite.count).to be > 0
-      # expect(IdIdCardLookup::IdCard.count).to be 10
+      # expect(CustomIdMethods::IdCardLookup::IdCard.count).to be 10
       expect(EmailCampaigns::UnsubscriptionToken.count).to be > 0
       expect(CustomMaps::MapConfig.count).to be 2
       expect(CustomMaps::Layer.count).to be 2
       expect(Volunteering::Cause.count).to be 5
       expect(Volunteering::Volunteer.count).to be > 10
       expect(Analytics::DimensionDate.count).to be > 0
-      expect(Analytics::DimensionLocale.count).to be > 0
       expect(Analytics::DimensionType.count).to be > 0
-      expect(Analytics::DimensionReferrerType.count).to be > 0
-      expect(Analytics::FactVisit.count).to be 3
       expect(Project.find_by(slug: 'community-monitor')).not_to be_nil
     end
   end
@@ -65,7 +62,7 @@ describe 'db/seeds.rb' do
       expect(Tenant.current.id).to eq '07ff8088-cc78-4307-9a1c-ebb6fb836f96'
       expect(User.count).to be 1
       expect(User.find_by(email: 'admin@govocal.com').id).to eq 'e0d698fc-5969-439f-9fe6-e74fe82b567a'
-      expect(Topic.count).to be > 0
+      expect(GlobalTopic.count).to be > 0
       expect(IdeaStatus.count).to be > 0
       expect(Area.count).to be 0
       expect(Project.count).to be 1

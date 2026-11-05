@@ -9,6 +9,12 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
+# Indexes
+#
+#  index_impact_tracking_pageviews_on_created_at  (created_at)
+#  index_impact_tracking_pageviews_on_project_id  (project_id)
+#  index_impact_tracking_pageviews_on_session_id  (session_id)
+#
 # Foreign Keys
 #
 #  fk_rails_...  (project_id => projects.id)

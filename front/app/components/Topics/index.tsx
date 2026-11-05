@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
 
-import useTopics from 'api/topics/useTopics';
+import useGlobalTopics from 'api/global_topics/useGlobalTopics';
 
 import UpdateFollowTopic from './UpdateFollowTopic';
 import UpdateOnboardingTopic from './UpdateOnboardingTopic';
@@ -16,7 +16,7 @@ const Topics = ({
   showOnboardingTopics,
   action = 'updateFollowPreferences',
 }: Props) => {
-  const { data: topics, isLoading } = useTopics({
+  const { data: topics, isLoading } = useGlobalTopics({
     forOnboarding: showOnboardingTopics,
     sort: 'projects_count',
   });

@@ -7,6 +7,7 @@ type DropProps = {
   type: string;
   children: React.ReactNode;
   isDropDisabled?: boolean;
+  'data-cy'?: string;
 };
 
 export const Drop = ({

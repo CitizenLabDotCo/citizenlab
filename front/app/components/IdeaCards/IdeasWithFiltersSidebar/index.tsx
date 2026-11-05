@@ -9,7 +9,6 @@ import {
   Text,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useCustomFields from 'api/custom_fields/useCustomFields';
@@ -18,12 +17,15 @@ import { IdeaQueryParameters } from 'api/ideas/types';
 import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 import { PresentationMode, IdeaSortMethod, InputTerm } from 'api/phases/types';
+import usePhase from 'api/phases/usePhase';
+import { getSelectedView } from 'api/phases/utils';
 
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { useSearch } from 'utils/router';
 
 import messages from '../messages';
 import IdeasView from '../shared/IdeasView';
@@ -72,15 +74,16 @@ export interface QueryParametersUpdate {
   search?: string;
   idea_status?: string;
   topics?: string[];
+  answers?: Record<string, string[]>;
 }
 
 export interface Props {
   ideaQueryParameters: IdeaQueryParameters;
   onUpdateQuery: (newParams: QueryParametersUpdate) => void;
-  showViewToggle?: boolean;
   defaultView?: PresentationMode;
   projectId?: string;
   phaseId?: string;
+  projectSlug?: string;
   inputTerm?: InputTerm;
 }
 
@@ -88,21 +91,25 @@ const IdeasWithFiltersSidebar = ({
   ideaQueryParameters,
   projectId,
   phaseId,
+  projectSlug,
   defaultView = 'card',
   onUpdateQuery,
-  showViewToggle,
   inputTerm,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const [searchParams] = useSearchParams();
+  const searchParams = useSearch({ strict: false });
   const smallerThanPhone = useBreakpoint('phone');
   const biggerThanLargeTablet = !useBreakpoint('tablet');
 
+  const { data: phase } = usePhase(phaseId);
+
   // Get data from searchParams
-  const selectedIdeaMarkerId = searchParams.get('idea_map_id');
-  const selectedView =
-    (searchParams.get('view') as PresentationMode | null) ??
-    (selectedIdeaMarkerId ? 'map' : defaultView);
+  const selectedIdeaMarkerId = searchParams.idea_map_id;
+  const selectedView = getSelectedView({
+    requestedView: searchParams.view,
+    availableViews: phase?.data.attributes.available_views,
+    defaultView: selectedIdeaMarkerId ? 'map' : defaultView,
+  });
 
   // Fetch ideas list & filter counts
   const {
@@ -124,7 +131,6 @@ const IdeasWithFiltersSidebar = ({
     (field) => field.key === 'location_description'
   )?.enabled;
 
-  const showViewButtons = !!(locationEnabled && showViewToggle);
   const loadIdeaMarkers = locationEnabled && selectedView === 'map';
   const { data: ideaMarkers } = useIdeaMarkers(
     {
@@ -179,6 +185,23 @@ const IdeasWithFiltersSidebar = ({
     [onUpdateQuery]
   );
 
+  const handleAnswerOnChange = useCallback(
+    (fieldId: string, optionKey: string | null) => {
+      trackEventByName(tracks.answersFilter, { fieldId, optionKey });
+
+      const answers = { ...ideaQueryParameters.custom_field_answers };
+      if (optionKey) {
+        answers[fieldId] = [optionKey];
+      } else {
+        delete answers[fieldId];
+      }
+      onUpdateQuery({
+        answers: Object.keys(answers).length > 0 ? answers : undefined,
+      });
+    },
+    [ideaQueryParameters.custom_field_answers, onUpdateQuery]
+  );
+
   const showInputFilterSidebar =
     biggerThanLargeTablet && selectedView === 'card';
 
@@ -189,17 +212,15 @@ const IdeasWithFiltersSidebar = ({
     onSearch: handleSearchOnChange,
     onChangeStatus: handleStatusOnChange,
     onChangeTopics: handleTopicsOnChange,
+    onChangeAnswer: handleAnswerOnChange,
     handleSortOnChange,
     phaseId,
+    projectId,
   };
 
   return (
     <Container id="e2e-ideas-container">
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        mb={showViewButtons ? '8px' : '16px'}
-      >
+      <Box display="flex" justifyContent="space-between" mb="8px">
         {inputTerm && (
           <Title
             variant="h5"
@@ -214,9 +235,11 @@ const IdeasWithFiltersSidebar = ({
           </Title>
         )}
 
-        {showViewButtons && (
-          <ViewButtons selectedView={selectedView} onClick={setSelectedView} />
-        )}
+        <ViewButtons
+          selectedView={selectedView}
+          onClick={setSelectedView}
+          availableViews={phase?.data.attributes.available_views}
+        />
       </Box>
 
       {list === undefined && (
@@ -227,7 +250,9 @@ const IdeasWithFiltersSidebar = ({
 
       {list && (
         <>
-          <ButtonWithFiltersModal {...inputFiltersProps} />
+          {selectedView !== 'feed' && (
+            <ButtonWithFiltersModal {...inputFiltersProps} />
+          )}
           {/* 
             If we have an inputTerm (are on the project page), we don't need this because the number of results is displayed next to the heading (see above). This fallback is used on the /ideas page, where we have no inputTerm. 
             TO DO: refactor this component so we can add it to the page instead to this general component.
@@ -258,6 +283,7 @@ const IdeasWithFiltersSidebar = ({
                 view={selectedView}
                 hasMoreThanOneView={false}
                 projectId={projectId}
+                projectSlug={projectSlug}
                 hasFilterSidebar={true}
                 phaseId={phaseId}
                 ideaMarkers={ideaMarkers}

@@ -38,10 +38,16 @@ import IconTooltip, {
   ContentWrapper as TooltipContentWrapper,
 } from './components/IconTooltip';
 import Image, { ImageProps } from './components/Image';
-import Input, { InputProps } from './components/Input';
+import Input, {
+  InputProps,
+  boInputLabelStyle,
+  boInputStyle,
+  boLabelStyle,
+} from './components/Input';
 import InputMultiloc from './components/Input/InputMultiloc';
 import InputMultilocWithLocaleSwitcher, {
   Props as InputMultilocWithLocaleSwitcherProps,
+  stackedLabelStyle,
 } from './components/Input/InputMultilocWithLocaleSwitcher';
 import Label from './components/Label';
 import ListItem from './components/ListItem';
@@ -78,7 +84,9 @@ import Title, { TitleProps } from './components/Title';
 import Toggle from './components/Toggle';
 import Tooltip, { TooltipProps } from './components/Tooltip';
 import useBreakpoint from './hooks/useBreakpoint';
+import useTouchDevice from './hooks/useTouchDevice';
 import useWindowSize from './hooks/useWindowSize';
+import ClickOutside from './utils/containers/clickOutside';
 import InputContainer from './utils/containers/InputContainer';
 import {
   viewportWidths,
@@ -90,6 +98,7 @@ import {
   defaultCardHoverStyle,
   defaultOutline,
   defaultInputStyle,
+  bo,
   stylingConsts,
   quillEditedContent,
   getTheme,
@@ -142,6 +151,10 @@ export type {
 };
 
 export {
+  boInputLabelStyle,
+  boInputStyle,
+  boLabelStyle,
+  stackedLabelStyle,
   Spinner,
   Radio,
   Label,
@@ -179,6 +192,7 @@ export {
   defaultCardHoverStyle,
   defaultOutline,
   defaultInputStyle,
+  bo,
   stylingConsts,
   quillEditedContent,
   getTheme,
@@ -199,6 +213,7 @@ export {
   Box,
   useWindowSize,
   useBreakpoint,
+  useTouchDevice,
   Image,
   IconButton,
   Text,
@@ -209,6 +224,7 @@ export {
   Divider,
   Quote,
   InputContainer,
+  ClickOutside,
 
   /** @deprecated Please use components/UI/MultiSelect instead */
   MultiSelect,

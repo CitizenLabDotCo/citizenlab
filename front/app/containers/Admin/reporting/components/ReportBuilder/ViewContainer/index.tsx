@@ -20,8 +20,12 @@ interface Props {
 
 const getBoxProps = (view: View) => {
   if (view === 'pdf') {
+    // Reflows to fit the available width instead of forcing full A4 and
+    // overflowing. The PDF export uses a separate /print route, so its A4
+    // fidelity is unaffected by this on-screen width.
     const outerBox: BoxProps = {
-      width: A4_WIDTH,
+      width: '100%',
+      maxWidth: A4_WIDTH,
     };
 
     const innerBox: BoxProps = {
@@ -36,7 +40,8 @@ const getBoxProps = (view: View) => {
   }
 
   const outerBox: BoxProps = {
-    width: view === 'phone' ? '360px' : '1140px',
+    width: '100%',
+    maxWidth: view === 'phone' ? '360px' : '1140px',
     height: '620px',
     border: 'solid black',
     borderWidth: '40px 20px 20px 20px',

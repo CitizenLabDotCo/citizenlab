@@ -8,6 +8,7 @@ import basketsIdeasKeys from 'api/baskets_ideas/keys';
 import phasesKeys from 'api/phases/keys';
 import { IPhaseData } from 'api/phases/types';
 
+import { customerAnalyticsEvents, trackEventByName } from 'utils/analytics';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import basketsKeys from '../baskets/keys';
@@ -56,6 +57,12 @@ const useVoteForIdeaMutation = () => {
         queryClient.invalidateQueries({
           queryKey: phasesKeys.list({ projectId: project_id }),
         });
+
+        // The first vote in a phase creates the basket.
+        trackEventByName(customerAnalyticsEvents.votingStarted, {
+          project_id,
+          phase_id,
+        });
       }
     },
   });
@@ -63,19 +70,22 @@ const useVoteForIdeaMutation = () => {
 
 const useVoteForIdea = (phase?: IPhaseData) => {
   const [processing, setProcessing] = useState(false);
+  const [basketId, setBasketId] = useState<string>();
   const { mutateAsync } = useVoteForIdeaMutation();
 
   const handleVoteForIdea = useCallback(
-    async (ideaId: string, votes: number, basketId?: string) => {
+    async (ideaId: string, votes: number, existingBasketId?: string) => {
       if (!phase) return;
 
-      await mutateAsync({
+      const data = await mutateAsync({
         idea_id: ideaId,
         votes: votes === 0 ? null : votes,
-        basket_id: basketId,
+        basket_id: existingBasketId,
         project_id: phase.relationships.project.data.id,
         phase_id: phase.id,
       });
+
+      setBasketId(data.data.relationships.basket.data.id);
       setProcessing(false);
     },
     [mutateAsync, phase]
@@ -86,9 +96,9 @@ const useVoteForIdea = (phase?: IPhaseData) => {
   }, [handleVoteForIdea]);
 
   const voteForIdea = useCallback(
-    (ideaId: string, votes: number, basketId?: string) => {
+    (ideaId: string, votes: number, existingBasketId?: string) => {
       setProcessing(true);
-      handleVoteForIdeaDebounced(ideaId, votes, basketId);
+      handleVoteForIdeaDebounced(ideaId, votes, existingBasketId);
     },
     [handleVoteForIdeaDebounced]
   );
@@ -96,6 +106,7 @@ const useVoteForIdea = (phase?: IPhaseData) => {
   return {
     voteForIdea,
     processing,
+    basketId,
   };
 };
 

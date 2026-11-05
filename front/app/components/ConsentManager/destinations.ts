@@ -63,6 +63,7 @@ function isFeatureActive(
 ) {
   return (
     appConfig.attributes.settings[featureName]?.allowed &&
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     appConfig.attributes.settings[featureName]?.enabled
   );
 }

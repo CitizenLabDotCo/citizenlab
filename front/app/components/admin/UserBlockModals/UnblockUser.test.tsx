@@ -25,7 +25,7 @@ jest.mock('api/blocked_users/useUnblockUser', () =>
 );
 
 it('Unblock a user', async () => {
-  render(<UnblockUserModal open={true} setClose={() => {}} user={user.data} />);
+  render(<UnblockUserModal setClose={() => {}} user={user.data} />);
 
   fireEvent.click(screen.getByTestId('unblockBtn'));
 

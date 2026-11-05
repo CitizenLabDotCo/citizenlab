@@ -14,10 +14,14 @@ interface Props {
 
 const CosponsorOfYourIdeaNotification = memo<Props>((props) => {
   const { notification } = props;
+  const slug = notification.attributes.post_slug;
+
+  if (!slug) return null;
 
   return (
     <NotificationWrapper
-      linkTo={`/ideas/${notification.attributes.post_slug}`}
+      to="/ideas/$slug"
+      params={{ slug }}
       timing={notification.attributes.created_at}
       icon="label"
       isRead={!!notification.attributes.read_at}
@@ -28,7 +32,7 @@ const CosponsorOfYourIdeaNotification = memo<Props>((props) => {
           name: (
             <UserLink
               userName={notification.attributes.initiating_user_first_name}
-              userSlug={notification.attributes.initiating_user_slug}
+              userId={notification.attributes.initiating_user_id}
             />
           ),
         }}

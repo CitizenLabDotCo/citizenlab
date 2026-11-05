@@ -1,13 +1,12 @@
 import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box, IconTooltip, Text } from '@citizenlab/cl2-component-library';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { getSubtextElement } from 'components/Form/Components/Controls/controlUtils';
 import Input from 'components/HookForm/Input';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import LocationInput from 'components/HookForm/LocationInput';
@@ -15,8 +14,10 @@ import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWi
 import TextArea from 'components/HookForm/TextArea';
 import Topics from 'components/HookForm/Topics';
 import { FormLabel } from 'components/UI/FormComponents';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { sanitizeForClassname } from 'utils/JSONFormUtils';
 
 import CheckboxField from './Fields/CheckboxField';
 import CosponsorsField from './Fields/CosponsorsField';
@@ -34,6 +35,7 @@ import SentimentScaleField from './Fields/SentimentScaleField';
 import SingleFileUploadField from './Fields/SingleFileUploadField';
 import SingleSelectField from './Fields/SingleSelectField';
 import InputIQ from './InputIQ';
+import ManagersOnlyAnswerNote from './ManagersOnlyAnswerNote';
 import messages from './messages';
 import { getInstructionMessage } from './util';
 
@@ -41,27 +43,38 @@ const renderField = ({
   question,
   projectId,
   ideaId,
+  participationMethod,
+  scrollErrorIntoView = true,
 }: {
   question: IFlatCustomField;
   projectId?: string;
   ideaId?: string;
+  participationMethod?: ParticipationMethod;
+  scrollErrorIntoView?: boolean;
 }) => {
+  // Only user fields can be locked (disabled) for now due to a verification method!
+  // Possible user fields are: text, number, multiline_text, select, multiselect, checkbox, date
+  const disabled = question.constraints?.locked;
+  const hideLocaleSwitcher = participationMethod !== 'common_ground';
+
   switch (question.input_type) {
     case 'text_multiloc':
       return (
         <InputMultilocWithLocaleSwitcher
           name={question.key}
-          hideLocaleSwitcher
+          hideLocaleSwitcher={hideLocaleSwitcher}
           maxCharCount={question.max_characters}
-          scrollErrorIntoView={true}
+          scrollErrorIntoView={scrollErrorIntoView}
+          disabled={disabled}
+          required={question.required}
         />
       );
     case 'html_multiloc':
       return (
         <QuillMultilocWithLocaleSwitcher
           name={question.key}
-          hideLocaleSwitcher
-          scrollErrorIntoView={true}
+          hideLocaleSwitcher={hideLocaleSwitcher}
+          scrollErrorIntoView={scrollErrorIntoView}
           id={question.key}
           maxCharCount={question.max_characters}
           minCharCount={question.min_characters}
@@ -70,13 +83,20 @@ const renderField = ({
     case 'text':
     case 'number':
       return question.key === 'location_description' ? (
-        <LocationInput name={question.key} scrollErrorIntoView={true} />
+        <LocationInput
+          name={question.key}
+          scrollErrorIntoView={scrollErrorIntoView}
+          isDisabled={disabled}
+          required={question.required}
+        />
       ) : (
         <Input
           type={question.input_type === 'number' ? 'number' : 'text'}
           name={question.key}
           maxCharCount={question.max_characters}
-          scrollErrorIntoView={true}
+          scrollErrorIntoView={scrollErrorIntoView}
+          disabled={disabled}
+          required={question.required}
         />
       );
     case 'multiline_text':
@@ -84,17 +104,27 @@ const renderField = ({
         <TextArea
           name={question.key}
           maxCharCount={question.max_characters}
-          scrollErrorIntoView={true}
+          scrollErrorIntoView={scrollErrorIntoView}
           minRows={2}
+          disabled={disabled}
+          required={question.required}
         />
       );
     case 'select':
       return (
-        <SingleSelectField question={question} scrollErrorIntoView={true} />
+        <SingleSelectField
+          question={question}
+          scrollErrorIntoView={scrollErrorIntoView}
+          disabled={disabled}
+        />
       );
     case 'multiselect':
       return (
-        <MultiSelectField question={question} scrollErrorIntoView={true} />
+        <MultiSelectField
+          question={question}
+          scrollErrorIntoView={scrollErrorIntoView}
+          disabled={disabled}
+        />
       );
     case 'image_files':
       return (
@@ -105,7 +135,7 @@ const renderField = ({
             'image/*': ['.jpg', '.jpeg', '.png'],
           }}
           ideaId={ideaId}
-          scrollErrorIntoView={true}
+          scrollErrorIntoView={scrollErrorIntoView}
         />
       );
     case 'files':
@@ -113,7 +143,7 @@ const renderField = ({
         <MultiFileUploadField
           name={question.key}
           ideaId={ideaId}
-          scrollErrorIntoView={true}
+          scrollErrorIntoView={scrollErrorIntoView}
         />
       );
     case 'topic_ids':
@@ -121,28 +151,57 @@ const renderField = ({
         <Topics
           name={question.key}
           projectId={projectId}
-          scrollErrorIntoView={true}
+          scrollErrorIntoView={scrollErrorIntoView}
         />
       );
     case 'linear_scale':
       return (
-        <LinearScaleField question={question} scrollErrorIntoView={true} />
+        <LinearScaleField
+          question={question}
+          scrollErrorIntoView={scrollErrorIntoView}
+        />
       );
     case 'ranking':
-      return <RankingField question={question} scrollErrorIntoView={true} />;
+      return (
+        <RankingField
+          question={question}
+          scrollErrorIntoView={scrollErrorIntoView}
+        />
+      );
     case 'rating':
-      return <RatingField question={question} scrollErrorIntoView={true} />;
+      return (
+        <RatingField
+          question={question}
+          scrollErrorIntoView={scrollErrorIntoView}
+        />
+      );
     case 'matrix_linear_scale':
-      return <MatrixField question={question} scrollErrorIntoView={true} />;
+      return (
+        <MatrixField
+          question={question}
+          scrollErrorIntoView={scrollErrorIntoView}
+        />
+      );
     case 'sentiment_linear_scale':
       return (
-        <SentimentScaleField question={question} scrollErrorIntoView={true} />
+        <SentimentScaleField
+          question={question}
+          scrollErrorIntoView={scrollErrorIntoView}
+        />
       );
     case 'cosponsor_ids':
-      return <CosponsorsField question={question} scrollErrorIntoView={true} />;
+      return (
+        <CosponsorsField
+          question={question}
+          scrollErrorIntoView={scrollErrorIntoView}
+        />
+      );
     case 'multiselect_image':
       return (
-        <ImageMultichoiceField question={question} scrollErrorIntoView={true} />
+        <ImageMultichoiceField
+          question={question}
+          scrollErrorIntoView={scrollErrorIntoView}
+        />
       );
     case 'file_upload':
     case 'shapefile_upload':
@@ -150,27 +209,40 @@ const renderField = ({
         <SingleFileUploadField
           name={question.key}
           ideaId={ideaId}
-          scrollErrorIntoView={true}
+          scrollErrorIntoView={scrollErrorIntoView}
         />
       );
     case 'point':
     case 'line':
     case 'polygon':
+    case 'multipoint':
       return (
         <MapField
           question={
             question as IFlatCustomField & {
-              input_type: 'point' | 'polygon' | 'line';
+              input_type: 'point' | 'polygon' | 'line' | 'multipoint';
             }
           }
           projectId={projectId}
-          scrollErrorIntoView={true}
+          scrollErrorIntoView={scrollErrorIntoView}
         />
       );
     case 'checkbox':
-      return <CheckboxField name={question.key} scrollErrorIntoView={true} />;
+      return (
+        <CheckboxField
+          name={question.key}
+          scrollErrorIntoView={scrollErrorIntoView}
+          disabled={disabled}
+        />
+      );
     case 'date':
-      return <DateField name={question.key} scrollErrorIntoView={true} />;
+      return (
+        <DateField
+          name={question.key}
+          scrollErrorIntoView={scrollErrorIntoView}
+          disabled={disabled}
+        />
+      );
     default:
       return null;
   }
@@ -182,33 +254,59 @@ const CustomFields = ({
   ideaId,
   phase,
   participationMethod,
+  showQuestionNumbers,
+  scrollErrorIntoView = true,
 }: {
   questions: IFlatCustomField[];
   projectId?: string;
   ideaId?: string;
   phase?: IPhaseData;
   participationMethod?: ParticipationMethod;
+  showQuestionNumbers?: boolean;
+  scrollErrorIntoView?: boolean;
 }) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
-
   return (
     <>
       {questions
         .filter((question) => question.enabled)
-        .map((question) => {
+        .map((question, index) => {
+          // These question types render non-labelable elements (e.g. div[role="slider"], table, ul)
+          // so htmlFor would create an invalid label reference. They use aria-labelledby instead.
+          const nonLabelableTypes = [
+            'linear_scale',
+            'rating',
+            'matrix_linear_scale',
+            'sentiment_linear_scale',
+            'ranking',
+            'html_multiloc',
+          ];
+          const htmlFor = nonLabelableTypes.includes(question.input_type)
+            ? undefined
+            : question.key;
+
           const labelProps = {
-            htmlFor: question.key,
+            id: `${sanitizeForClassname(question.key)}-label`,
+            htmlFor,
             labelValue: localize(question.title_multiloc),
             optional: !question.required,
-            subtextValue: getSubtextElement(
-              localize(question.description_multiloc)
+            subtextValue: (
+              <QuillEditedContent fontWeight={400}>
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: localize(question.description_multiloc),
+                  }}
+                />
+              </QuillEditedContent>
             ),
             subtextSupportsHtml: true,
+            questionNumber: showQuestionNumbers ? index + 1 : undefined,
           };
 
           const answerNotPublic =
-            !question.visible_to_public &&
+            question.answers_visible_to !== 'public' &&
+            participationMethod &&
             participationMethod !== 'native_survey';
           const inputIqFields = ['title_multiloc', 'body_multiloc'];
 
@@ -220,7 +318,8 @@ const CustomFields = ({
               data-question-id={question.id}
             >
               <FormLabel {...labelProps} />
-              <Text mt="4px" mb={answerNotPublic ? '4px' : '8px'} fontSize="s">
+              {answerNotPublic && <ManagersOnlyAnswerNote />}
+              <Text mt="4px" mb="8px" fontSize="s">
                 {getInstructionMessage({
                   minItems: question.minimum_select_count,
                   maxItems: question.maximum_select_count,
@@ -231,13 +330,24 @@ const CustomFields = ({
                   <FormattedMessage {...messages.uploadShapefileInstructions} />
                 )}
               </Text>
-              {answerNotPublic && (
-                <Text mt="0px" fontSize="s">
-                  <FormattedMessage {...messages.notPublic} />
-                </Text>
-              )}
-              {renderField({ question, projectId, ideaId })}
-              {question?.code && inputIqFields.includes(question.code) && (
+              <Box display="flex" alignItems="center" gap="8px">
+                <Box w="100%">
+                  {renderField({
+                    question,
+                    projectId,
+                    ideaId,
+                    participationMethod,
+                    scrollErrorIntoView,
+                  })}
+                </Box>
+                {question.constraints?.locked && (
+                  <IconTooltip
+                    content={<FormattedMessage {...messages.blockedVerified} />}
+                    icon="lock"
+                  />
+                )}
+              </Box>
+              {question.code && inputIqFields.includes(question.code) && (
                 <InputIQ phase={phase} field={question} />
               )}
             </Box>

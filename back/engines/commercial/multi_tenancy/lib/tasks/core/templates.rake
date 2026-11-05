@@ -6,10 +6,10 @@ require 'yaml'
 # Interim solution. We should find better. For discussion and ideas, see:
 # https://citizenlab.atlassian.net/browse/CL-1588
 MAX_VERIFICATION_TIMES = {
-  'global-demo_template' => 14,
-  'insights_template' => 15,
-  'mi-municipio_template' => 15,
-  'trial-en_template' => 23
+  'global-demo.template.govocal.com' => 14,
+  'insights.template.govocal.com' => 15,
+  'mi-municipio.template.govocal.com' => 15,
+  'blank-demo.template.govocal.com' => 15
 }.freeze
 
 namespace :templates do

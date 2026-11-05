@@ -27,11 +27,12 @@ import ReactionButton from './ReactionButton';
 import ScreenReaderContent from './ScreenReaderContent';
 
 type TSize = '1' | '2' | '3' | '4';
-type TStyleType = 'border' | 'shadow';
+type TStyleType = 'border' | 'shadow' | 'compact';
 
-const Container = styled.div`
+const Container = styled.div<{ reverse?: boolean }>`
   display: flex;
   align-items: center;
+  flex-direction: ${({ reverse }) => (reverse ? 'row-reverse' : 'row')};
 
   ${isRtl`
     flex-direction: row-reverse;
@@ -60,6 +61,7 @@ const ReactionControl = ({
   size,
   className,
   styleType,
+  unauthenticatedReactionClick,
   disabledReactionClick,
   variant = 'icon',
 }: Props) => {
@@ -69,9 +71,9 @@ const ReactionControl = ({
   const { formatMessage } = useIntl();
   const [screenReaderMessage, setScreenReaderMessage] = useState<string>('');
   const { data: idea } = useIdeaById(ideaId);
-  const { mutate: addReaction, isLoading: addReactionIsLoading } =
+  const { mutate: addReaction, isPending: addReactionIsLoading } =
     useAddIdeaReaction();
-  const { mutate: deleteReaction, isLoading: deleteReactionIsLoading } =
+  const { mutate: deleteReaction, isPending: deleteReactionIsLoading } =
     useDeleteIdeaReaction();
   const { data: authUser } = useAuthUser();
   const { data: phases } = usePhases(idea?.data.relationships.project.data.id);
@@ -249,6 +251,7 @@ const ReactionControl = ({
         !reactingEnabled &&
         isFixableByAuthentication(reactingDisabledReason)
       ) {
+        unauthenticatedReactionClick?.(reactionMode);
         triggerAuthenticationFlow({ context, successAction });
       } else if (reactingDisabledReason) {
         disabledReactionClick?.(reactingDisabledReason);
@@ -274,6 +277,7 @@ const ReactionControl = ({
         dislikesCount={dislikesCount}
       />
       <Container
+        reverse={styleType === 'compact'}
         className={[
           className,
           'e2e-reaction-controls',
@@ -292,6 +296,7 @@ const ReactionControl = ({
           iconName="vote-up"
           reactionsCount={likesCount}
           ideaId={idea.data.id}
+          phaseId={phaseId}
           variant={variant}
         />
         {variant === 'icon' && showDislike && (
@@ -305,6 +310,7 @@ const ReactionControl = ({
             iconName="vote-down"
             reactionsCount={dislikesCount}
             ideaId={idea.data.id}
+            phaseId={phaseId}
           />
         )}
         <ScreenReaderOnly aria-live="polite">

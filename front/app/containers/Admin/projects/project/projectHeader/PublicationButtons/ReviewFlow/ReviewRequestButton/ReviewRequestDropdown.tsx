@@ -42,7 +42,7 @@ const ReviewRequestDropdown = ({
             {formatMessage(messages.requestApprovalDescription, { inFolder })}
           </Text>
           <Button
-            buttonStyle="primary"
+            buttonStyle="admin-dark"
             onClick={handleSendRequest}
             id="e2e-request-approval-confirm"
           >

@@ -25,6 +25,14 @@ export default defineMessages({
     id: 'app.components.admin.UserFilterConditions.field_registration_completed_at',
     defaultMessage: 'Registration date',
   },
+  field_last_active_at: {
+    id: 'app.components.admin.UserFilterConditions.field_last_active_at',
+    defaultMessage: 'Last active date',
+  },
+  field_imported: {
+    id: 'app.components.admin.UserFilterConditions.field_imported',
+    defaultMessage: 'Imported',
+  },
   field_role: {
     id: 'app.components.admin.UserFilterConditions.field_role',
     defaultMessage: 'Role',
@@ -44,6 +52,10 @@ export default defineMessages({
   field_participated_in_input_status: {
     id: 'app.components.admin.UserFilterConditions.field_participated_in_input_status',
     defaultMessage: 'Interacted with an input with status',
+  },
+  field_participated_in_input: {
+    id: 'app.components.admin.UserFilterConditions.field_participated_in_input',
+    defaultMessage: 'Interacted with inputs',
   },
   field_verified: {
     id: 'app.components.admin.UserFilterConditions.field_verified',
@@ -157,13 +169,37 @@ export default defineMessages({
     id: 'app.components.admin.UserFilterConditions.predicate_not_is_admin',
     defaultMessage: 'is not an admin',
   },
+  predicate_is_space_moderator: {
+    id: 'app.components.admin.UserFilterConditions.predicate_is_space_moderator',
+    defaultMessage: 'is a space manager',
+  },
+  predicate_not_is_space_moderator: {
+    id: 'app.components.admin.UserFilterConditions.predicate_not_is_space_moderator',
+    defaultMessage: 'is not a space manager',
+  },
   predicate_is_project_moderator: {
     id: 'app.components.admin.UserFilterConditions.predicate_is_project_moderator',
-    defaultMessage: 'is a moderator',
+    defaultMessage: 'is a project manager',
   },
   predicate_not_is_project_moderator: {
     id: 'app.components.admin.UserFilterConditions.predicate_not_is_project_moderator',
-    defaultMessage: 'is not a moderator',
+    defaultMessage: 'is not a project manager',
+  },
+  predicate_is_project_folder_moderator: {
+    id: 'app.components.admin.UserFilterConditions.predicate_is_project_folder_moderator',
+    defaultMessage: 'is a folder manager',
+  },
+  predicate_not_is_project_folder_moderator: {
+    id: 'app.components.admin.UserFilterConditions.predicate_not_is_project_folder_moderator',
+    defaultMessage: 'is not a folder manager',
+  },
+  predicate_is_moderator: {
+    id: 'app.components.admin.UserFilterConditions.predicate_is_moderator',
+    defaultMessage: 'is any type of manager',
+  },
+  predicate_not_is_moderator: {
+    id: 'app.components.admin.UserFilterConditions.predicate_not_is_moderator',
+    defaultMessage: 'is not any type of manager',
   },
   predicate_is_normal_user: {
     id: 'app.components.admin.UserFilterConditions.predicate_is_normal_user',
@@ -245,6 +281,14 @@ export default defineMessages({
   predicate_not_is_verified: {
     id: 'app.components.admin.UserFilterConditions.predicate_not_is_verified',
     defaultMessage: 'is not verified',
+  },
+  predicate_is_imported: {
+    id: 'app.components.admin.UserFilterConditions.predicate_is_imported',
+    defaultMessage: 'is imported',
+  },
+  predicate_not_is_imported: {
+    id: 'app.components.admin.UserFilterConditions.predicate_not_is_imported',
+    defaultMessage: 'is not imported',
   },
   predicate_something: {
     id: 'app.components.admin.UserFilterConditions.predicate_something',
@@ -338,5 +382,20 @@ export default defineMessages({
   ideaStatusMethodIdeation: {
     id: 'app.components.admin.UserFilterConditions.ideaStatusMethodIdeation',
     defaultMessage: 'Ideation',
+  },
+  emailListPlaceholder: {
+    id: 'app.components.admin.UserFilterConditions.emailListPlaceholder',
+    defaultMessage:
+      'Paste email addresses, separated by commas or on separate lines',
+  },
+  emailListCount: {
+    id: 'app.components.admin.UserFilterConditions.emailListCount',
+    defaultMessage:
+      '{count, plural, =0 {No email addresses} one {# email address} other {# email addresses}}',
+  },
+  emailListInvalid: {
+    id: 'app.components.admin.UserFilterConditions.emailListInvalid',
+    defaultMessage:
+      '{count, plural, one {# entry is not a valid email address} other {# entries are not valid email addresses}}: {emails}',
   },
 });

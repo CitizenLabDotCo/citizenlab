@@ -34,10 +34,6 @@ module CustomFieldBins
       range.cover?(value)
     end
 
-    def filter_by_bin(scope)
-      scope.where("(custom_field_values->>'#{custom_field.key}')::integer IN (?)", range)
-    end
-
     def self.generate_bins(custom_field,
       lower_bound: find_lowest_value(custom_field),
       upper_bound: find_highest_value(custom_field),
@@ -49,7 +45,7 @@ module CustomFieldBins
       return if interval.zero?
 
       [*Array.new(bin_count) { (lower_bound + (interval * _1)).round }, upper_bound].each_cons(2) do |low, high|
-        create!(custom_field:, range: low...high)
+        find_or_create_by!(custom_field:, range: low...high)
       end
     end
 
@@ -59,11 +55,11 @@ module CustomFieldBins
     end
 
     def self.find_lowest_value(custom_field)
-      custom_field.items_claz.minimum("(custom_field_values->>'#{custom_field.key}')::integer")
+      AnswerableFilter.new(custom_field, custom_field.items_claz).min_value
     end
 
     def self.find_highest_value(custom_field)
-      custom_field.items_claz.maximum("(custom_field_values->>'#{custom_field.key}')::integer")
+      AnswerableFilter.new(custom_field, custom_field.items_claz).max_value
     end
 
     private

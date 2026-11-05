@@ -47,7 +47,7 @@ const ProjectAndFolderCards = ({
 
   // used locally to keep track of the depth of the search
   const [search, setSearch] = useState<string | null>(null);
-  const [topicIds, setTopicsIds] = useState<string[] | null>(null);
+  const [globalTopics, setGlobalTopics] = useState<string[] | null>(null);
   const [areaIds, setAreasIds] = useState<string[] | null>(null);
   const [currentTab, setCurrentTab] = useState<PublicationTab>(
     getCurrentTab(allStatusCountsWithoutFilters)
@@ -68,7 +68,8 @@ const ProjectAndFolderCards = ({
         publicationStatusFilter: PUBLICATION_STATUSES,
         rootLevelOnly,
         removeNotAllowedParents: true,
-        topicIds,
+        remove_all_unlisted: true,
+        globalTopics,
         areaIds,
         search,
       },
@@ -76,23 +77,18 @@ const ProjectAndFolderCards = ({
     )
   );
 
-  const {
-    data,
-    isInitialLoading,
-    hasNextPage,
-    fetchNextPage,
-    isFetchingNextPage,
-  } = useAdminPublications({
-    pageSize: 6,
-    publicationStatusFilter: getPublicationStatuses(currentTab),
-    rootLevelOnly,
-    removeNotAllowedParents: true,
-    topicIds,
-    areaIds,
-    search,
-    include_publications: true,
-    remove_all_unlisted: true,
-  });
+  const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } =
+    useAdminPublications({
+      pageSize: 6,
+      publicationStatusFilter: getPublicationStatuses(currentTab),
+      rootLevelOnly,
+      removeNotAllowedParents: true,
+      globalTopics,
+      areaIds,
+      search,
+      include_publications: true,
+      remove_all_unlisted: true,
+    });
 
   const adminPublications = data?.pages.map((page) => page.data).flat();
 
@@ -119,11 +115,12 @@ const ProjectAndFolderCards = ({
       showFilters={true}
       adminPublications={adminPublications || []}
       statusCountsWithoutFilters={allStatusCountsWithoutFilters}
-      loadingInitial={isInitialLoading}
+      loadingInitial={isLoading}
       hasMore={hasNextPage}
       loadingMore={isFetchingNextPage}
+      searchTerm={search}
       {...otherProps}
-      onChangeTopics={setTopicsIds}
+      onChangeTopics={setGlobalTopics}
       onChangeAreas={setAreasIds}
       onChangeSearch={handleSearchChange}
       onLoadMore={fetchNextPage}
@@ -138,6 +135,7 @@ const ProjectAndFolderCardsWrapper = (props: Props) => {
       publicationStatusFilter: PUBLICATION_STATUSES,
       rootLevelOnly: true,
       removeNotAllowedParents: true,
+      remove_all_unlisted: true,
     }
   );
 

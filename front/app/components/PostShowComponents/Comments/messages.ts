@@ -250,4 +250,8 @@ export default defineMessages({
     id: 'app.containers.SearchInput.a11y_cancelledPostingComment',
     defaultMessage: 'Cancelled posting comment.',
   },
+  actionsMenuTitle: {
+    id: 'app.components.UI.MoreActionsMenu.actionsMenuTitle',
+    defaultMessage: 'for this comment',
+  },
 });

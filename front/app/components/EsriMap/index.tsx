@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import Basemap from '@arcgis/core/Basemap';
 import esriConfig from '@arcgis/core/config';
-import Collection from '@arcgis/core/core/Collection';
+import * as projection from '@arcgis/core/geometry/projection.js';
 import Graphic from '@arcgis/core/Graphic';
 import { setLocale as setEsriLocale } from '@arcgis/core/intl/locale.js';
 import Layer from '@arcgis/core/layers/Layer';
@@ -19,12 +19,19 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import useLocale from 'hooks/useLocale';
 
+import { useIntl } from 'utils/cl-intl';
+import { isPrerender } from 'utils/prerender';
+
 import { configureMapView } from './config';
 import { InitialData, DefaultBasemapType } from './types';
 import {
   getDefaultBasemapType,
   getDefaultBasemap,
   handleWebMapReferenceLayers,
+  createUserLocationGraphic,
+  showEsriFeaturePopup,
+  changeCursorOnFeaturePopupHover,
+  resetCursor,
 } from './utils';
 
 // Custom Esri styles
@@ -42,12 +49,29 @@ const MapContainer = styled(Box)<{
     max-height: 120px !important;
   }
 
+  /* Esri lets popups grow to 340px anchored and 80% of the view docked; cap
+     both so they cover less of the map (content scrolls internally). The
+     docked cap stays a percentage so it keeps scaling with the view height. */
+  .esri-popup__main-container {
+    max-height: 300px !important;
+  }
+
+  .esri-popup--is-docked .esri-popup__main-container {
+    max-height: 80% !important;
+  }
+
   .esri-layer-list {
     max-height: 200px !important;
   }
 
   .esri-ui-corner .esri-component {
     box-shadow: none !important;
+  }
+
+  .esri-attribution__sources {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
   }
 
   ${media.phone`
@@ -71,6 +95,11 @@ export type EsriMapProps = {
   onClick?: (event: any, mapView: MapView) => void;
   onHover?: (event: any, mapView: MapView) => void;
   globalMapSettings: AppConfigurationMapSettings;
+  showUserLocation?: boolean;
+  // When no onClick handler is provided, clicking a web map feature opens the
+  // popup that was configured for it in ArcGIS (if any). Consumers with their
+  // own onClick handle feature popups themselves (see showEsriFeaturePopup).
+  esriFeaturePopupsEnabled?: boolean;
 };
 
 const EsriMap = ({
@@ -84,21 +113,37 @@ const EsriMap = ({
   webMapId,
   initialData,
   globalMapSettings,
+  showUserLocation = false,
+  esriFeaturePopupsEnabled = false,
 }: EsriMapProps) => {
   const locale = useLocale();
+  const { formatMessage } = useIntl();
   const isMobileOrSmaller = useBreakpoint('phone');
   const { data: appConfig } = useAppConfiguration();
 
   const [map, setMap] = useState<Map | WebMap | null>(null);
   const [mapView, setMapView] = useState<MapView | null>(null);
-  const [referenceLayers, setReferenceLayers] =
-    useState<Collection<Layer> | null>(null);
+  const referenceLayersHandled = useRef(false);
 
   const mapRef = useRef<HTMLDivElement | null>(null);
   const [updateMapViewConfig, setUpdateMapViewConfig] = useState(false);
   const [initialized, setInitialized] = useState(false);
 
   const mapRefAvailable = !!mapRef.current;
+
+  // ESRI's MapView preventDefault()s Tab globally, trapping focus. Run before it
+  // (capture, pre-MapView) and drop Tab so the browser's native Tab still works.
+  useEffect(() => {
+    const releaseTabFromEsriTrap = (e: globalThis.KeyboardEvent) => {
+      if (e.key === 'Tab') {
+        e.stopImmediatePropagation();
+      }
+    };
+
+    document.addEventListener('keydown', releaseTabFromEsriTrap, true);
+    return () =>
+      document.removeEventListener('keydown', releaseTabFromEsriTrap, true);
+  }, []);
 
   useEffect(() => {
     if (!mapRefAvailable) return;
@@ -131,6 +176,10 @@ const EsriMap = ({
     setMapView(mapView);
     setUpdateMapViewConfig(true);
 
+    // Load the projection engine early so synchronous projection.project() calls work.
+    // This is required for WebMaps that use non-Web Mercator spatial references.
+    projection.load();
+
     return () => {
       mapView.destroy();
     };
@@ -139,6 +188,7 @@ const EsriMap = ({
   // If the webMapId changes, reset the initialized state
   useEffect(() => {
     setInitialized(false);
+    referenceLayersHandled.current = false;
   }, [webMapId]);
 
   // Load initial map configuration data that was passed in.
@@ -151,7 +201,8 @@ const EsriMap = ({
       mapView,
       initialData,
       globalMapSettings,
-      isMobileOrSmaller
+      isMobileOrSmaller,
+      formatMessage
     );
 
     setUpdateMapViewConfig(false);
@@ -161,6 +212,7 @@ const EsriMap = ({
     globalMapSettings,
     initialData,
     isMobileOrSmaller,
+    formatMessage,
   ]);
 
   // Run onInit function once on init if it was provided
@@ -196,17 +248,23 @@ const EsriMap = ({
     // Otherwise add the layers into the WebMap
     if (isWebMap) {
       map.when(() => {
-        // If the Web Map has any reference layers, re-order them so the layer hierarchy is correct
-        if (referenceLayers && referenceLayers.length > 0) {
-          handleWebMapReferenceLayers(map, referenceLayers);
+        // On first load, move basemap reference layers underneath our layers
+        if (
+          !referenceLayersHandled.current &&
+          map.basemap?.referenceLayers.length &&
+          map.basemap.referenceLayers.length > 0
+        ) {
+          handleWebMapReferenceLayers(map, map.basemap.referenceLayers);
+          referenceLayersHandled.current = true;
         }
 
-        // Remove any internal layers that were passed in as props to the Web Map
-        map.layers.forEach((layer) => {
-          if (layer.id.includes('_internal')) {
-            map.remove(layer);
-          }
-        });
+        // Remove any internal layers that were passed in as props to the Web Map.
+        // Note: We collect layers first, then remove — mutating a Collection
+        // during forEach iteration causes items to be skipped.
+        const layersToRemove = map.layers
+          .filter((layer) => layer.id.includes('_internal'))
+          .toArray();
+        layersToRemove.forEach((layer) => map.remove(layer));
 
         // Now, add any additional layers that passed in as props to the Web Map
         layers.forEach((layer) => {
@@ -215,12 +273,9 @@ const EsriMap = ({
             : `${layer.id}_internal`;
           map.add(layer);
         });
-
-        // If the WebMap has reference layers, save them in state
-        setReferenceLayers(map.basemap.referenceLayers);
       });
     }
-  }, [layers, map, mapView, referenceLayers]);
+  }, [layers, map, mapView]);
 
   useEffect(() => {
     // Add any graphics which were passed in
@@ -233,25 +288,48 @@ const EsriMap = ({
   }, [graphics, mapView]);
 
   useEffect(() => {
-    // On map click, pass the event to onClick handler if it was provided
-    if (onClick) {
-      mapView?.on('click', function (event) {
-        // By passing the mapView to onClick functions, we can easily change the map from that function
+    // On map click, pass the event to onClick handler if it was provided.
+    // Otherwise, open any popups configured in ArcGIS for web map features
+    // at the clicked location (read-only maps).
+    if (!mapView || (!onClick && !esriFeaturePopupsEnabled)) return;
+
+    const handle = mapView.on('click', function (event) {
+      if (onClick) {
         onClick(event, mapView);
-      });
-    }
-  }, [onClick, mapView]);
+        return;
+      }
+      showEsriFeaturePopup({ event, mapView });
+    });
+
+    return () => {
+      handle.remove();
+    };
+  }, [onClick, esriFeaturePopupsEnabled, mapView]);
 
   useEffect(() => {
-    // On map hover, pass the event to hover handler if it was provided
-    if (onHover && mapView) {
-      const debouncedHover = debounce((event: any) => {
-        onHover(event, mapView);
-      }, 60);
+    // On map hover, pass the event to hover handler if it was provided.
+    // Otherwise, show a pointer cursor over clickable web map features.
+    if (!mapView || (!onHover && !esriFeaturePopupsEnabled)) return;
 
-      mapView.on('pointer-move', debouncedHover);
-    }
-  }, [onHover, mapView]);
+    const debouncedHover = debounce((event: any) => {
+      if (onHover) {
+        onHover(event, mapView);
+        return;
+      }
+      changeCursorOnFeaturePopupHover(event, mapView);
+    }, 60);
+
+    const handle = mapView.on('pointer-move', debouncedHover);
+
+    return () => {
+      handle.remove();
+      // The hover handlers set the cursor on document.body, so a pending call
+      // would outlive this map — and a pointer cursor left behind would apply
+      // to the whole page.
+      debouncedHover.cancel();
+      resetCursor();
+    };
+  }, [onHover, esriFeaturePopupsEnabled, mapView]);
 
   useEffect(() => {
     // Sets the locale of the map
@@ -268,6 +346,55 @@ const EsriMap = ({
     }
   }, [appConfig?.data.attributes.settings.esri_integration?.api_key]);
 
+  // Handle user location
+  useEffect(() => {
+    if (!showUserLocation || !mapView) return;
+
+    let currentLocationGraphic: Graphic | null = null;
+    let watchId: number | null = null;
+
+    const updateUserLocation = (position: GeolocationPosition) => {
+      const { longitude, latitude } = position.coords;
+
+      // Remove existing location graphic if it exists
+      if (currentLocationGraphic) {
+        mapView.graphics.remove(currentLocationGraphic);
+      }
+
+      // Create new user location graphic
+      const locationGraphic = createUserLocationGraphic(longitude, latitude);
+      mapView.graphics.add(locationGraphic);
+      currentLocationGraphic = locationGraphic;
+    };
+
+    const handleLocationError = (error: GeolocationPositionError) => {
+      console.warn('Error getting user location:', error);
+    };
+
+    if ('geolocation' in navigator) {
+      // Use watchPosition for continuous location updates
+      watchId = navigator.geolocation.watchPosition(
+        updateUserLocation,
+        handleLocationError,
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 30000, // Cache location for 30 seconds
+        }
+      );
+    }
+
+    // Cleanup function to remove user location graphic and stop watching
+    return () => {
+      if (currentLocationGraphic) {
+        mapView.graphics.remove(currentLocationGraphic);
+      }
+      if (watchId !== null) {
+        navigator.geolocation.clearWatch(watchId);
+      }
+    };
+  }, [showUserLocation, mapView]);
+
   return (
     <>
       <MapContainer
@@ -276,6 +403,10 @@ const EsriMap = ({
         width={width ? `${width}` : '100%'}
         height={height ? `${height}` : '400px'}
         basemapType={getDefaultBasemapType(globalMapSettings.tile_provider)}
+        style={{
+          maxHeight: height || '400px',
+          overflow: 'hidden',
+        }}
       />
     </>
   );
@@ -284,6 +415,10 @@ const EsriMap = ({
 const EsriMapWrapper = (props: Omit<EsriMapProps, 'globalMapSettings'>) => {
   const { data: appConfig } = useAppConfiguration();
   const globalMapSettings = appConfig?.data.attributes.settings.maps;
+
+  // Catch-all: MapView needs WebGL2, which the prerenderer lacks. Consumers
+  // that can skip loading Esri entirely gate above their own lazy boundary.
+  if (isPrerender()) return null;
 
   return (
     <>

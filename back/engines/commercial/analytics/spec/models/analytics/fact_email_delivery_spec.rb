@@ -10,5 +10,11 @@ RSpec.describe Analytics::FactEmailDelivery do
     it 'is also available as a email delivery fact' do
       expect { described_class.find(delivery.id) }.not_to raise_error
     end
+
+    it 'references the recipient as the user dimension' do
+      fact = described_class.find(delivery.id)
+      expect(fact.dimension_user_id).to eq(delivery.user_id)
+      expect(fact.dimension_user).to eq(Analytics::DimensionUser.find(delivery.user_id))
+    end
   end
 end

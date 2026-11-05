@@ -39,4 +39,16 @@ describe('<Dropdown />', () => {
     const dropdown = result.container.querySelector('#prop-zindex');
     expect(dropdown).toHaveStyle({ zIndex: 100 });
   });
+  it('uses the value of the borderRadius prop when supplied', () => {
+    const result = render(
+      <Dropdown
+        id="prop-border-radius"
+        opened={true}
+        content={<div>Test dropdown</div>}
+        borderRadius="8px"
+      />
+    );
+    const dropdown = result.container.querySelector('#prop-border-radius');
+    expect(dropdown).toHaveStyle({ borderRadius: '8px' });
+  });
 });

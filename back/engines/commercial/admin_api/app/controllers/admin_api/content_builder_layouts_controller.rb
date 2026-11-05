@@ -2,11 +2,11 @@
 
 module AdminApi
   class ContentBuilderLayoutsController < AdminApiController
-    # Experimental: endpoint to get the textual multiloc values of a project description layout
+    # Experimental: endpoint to get the textual multiloc values of a project's page layout
     def project_description_layout_multiloc
       layout = ContentBuilder::Layout.find_by(
         content_buildable_id: params[:id],
-        code: 'project_description',
+        code: ContentBuilder::ProjectPageLayoutService::CODE,
         enabled: true
       )
 

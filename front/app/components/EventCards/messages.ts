@@ -45,6 +45,10 @@ export default defineMessages({
     id: 'app.containers.EventsShow.locationIconAltText',
     defaultMessage: 'Location',
   },
+  viewLocationOnGoogleMaps: {
+    id: 'app.containers.EventsShow.viewLocationOnGoogleMaps',
+    defaultMessage: 'View {location} on Google Maps (opens in a new window)',
+  },
   onlineLinkIconAltText: {
     id: 'app.containers.EventsShow.onlineLinkIconAltText',
     defaultMessage: 'Online meeting link',

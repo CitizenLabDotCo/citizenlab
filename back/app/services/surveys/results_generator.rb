@@ -7,13 +7,19 @@
 
 module Surveys
   class ResultsGenerator < FieldVisitorService
-    def initialize(phase, structure_by_category: false)
+    # options_sort_order: 'count' (default) sorts options by count descending, 'original' preserves option order
+    # exclude_admins_and_moderators: true leaves out inputs of users with an admin or moderator role
+    def initialize(phase, structure_by_category: false, options_sort_order: 'count', exclude_admins_and_moderators: false)
       super()
       @phase = phase
+      @options_sort_order = options_sort_order
+      @exclude_admins_and_moderators = exclude_admins_and_moderators
       form = phase.custom_form || CustomForm.new(participation_context: phase)
       @fields = IdeaCustomFieldsService.new(form).survey_results_fields(structure_by_category:)
       @locales = AppConfiguration.instance.settings('core', 'locales')
-      @inputs = phase.ideas.supports_survey.published
+      @all_inputs = phase.ideas.supports_survey.published
+      @all_inputs = @all_inputs.excluding_admin_and_moderator_authors if exclude_admins_and_moderators
+      @structure_by_category = structure_by_category
     end
 
     # Get the results for a single survey question
@@ -30,13 +36,12 @@ module Surveys
         results = add_question_numbers_to_results results
         results = add_page_response_count_to_results results
         results = add_averages results
-        results = add_additional_fields_to_results results
         results = cleanup_results results
       end
 
       {
         results: results,
-        totalSubmissions: inputs.size
+        totalSubmissions: @all_inputs.size
       }
     end
 
@@ -63,14 +68,14 @@ module Surveys
 
     def visit_ranking(field)
       core_field_attributes(field).merge({
-        average_rankings: field.average_rankings(inputs),
-        rankings_counts: field.rankings_counts(inputs),
+        average_rankings: field.average_rankings(inputs(field)),
+        rankings_counts: field.rankings_counts(inputs(field)),
         multilocs: get_multilocs(field)
       })
     end
 
     def visit_text(field)
-      answers = get_text_responses(field.key)
+      answers = get_text_responses(field)
       response_count = answers.size
 
       core_field_attributes(field, response_count:).merge({
@@ -102,10 +107,9 @@ module Surveys
     end
 
     def visit_file_upload(field)
-      file_ids = inputs
-        .select("custom_field_values->'#{field.key}'->'id' as value")
-        .where("custom_field_values->'#{field.key}' IS NOT NULL")
-        .map(&:value)
+      file_ids = CustomFieldAnswer.main_for(field)
+        .where(answerable_id: inputs(field))
+        .pluck(Arel.sql("value ->> 'id'"))
 
       files = ::Files::FileAttachment.where(id: file_ids).map do |attachment|
         { name: attachment.file.name, url: attachment.file.content.url }
@@ -134,16 +138,110 @@ module Surveys
       responses_to_geographic_input_type(field)
     end
 
+    def visit_multipoint(field)
+      responses_to_geographic_input_type(field)
+    end
+
     def visit_page(field)
       core_field_attributes(field, response_count: 0) # Response count gets updated later by looking at all the results
     end
 
     private
 
-    attr_reader :phase, :fields, :inputs, :locales
+    attr_reader :phase, :fields, :locales
 
-    def add_additional_fields_to_results(results)
-      results # This method is a placeholder for overriding in subclasses
+    def survey_has_logic?
+      return false if @structure_by_category # If structuring by category (community monitor only) then logic will never work
+
+      @survey_has_logic ||= fields.any? { |field| field.logic != {} && field.logic != { 'rules' => [] } }
+    end
+
+    # Build a hash of field IDs to an array of input IDs that will have actually seen field based on logic
+    # This enables us to accurately calculate the totalResponseCount for each field
+    def seen_field_responses
+      @seen_field_responses ||= begin
+        # First nest the input_fields inside pages to make logic easier to process
+        current_page = nil
+        pages = {}
+        fields.each do |field|
+          current_page = field.id if field.input_type == 'page'
+          pages[current_page] ||= []
+          pages[current_page] << field
+        end
+
+        all_page_ids = pages.keys.compact
+
+        # Next build the responses with an array of input IDs that were seen for each field based on logic & values
+        @all_inputs.includes(:custom_field_answers).each_with_object({}) do |input, seen|
+          next_page_id = nil
+          pages.each do |page_id, fields_on_page|
+            next unless next_page_id.nil? || page_id == next_page_id
+
+            # Define the default next page if no logic changes it
+            next_page_id = all_page_ids[all_page_ids.index(page_id) + 1]
+
+            fields_on_page.each do |field|
+              seen[field.id] ||= []
+              seen[field.id] << input.id
+
+              # Is there a different next page based on logic?
+              next_logic_page_id = next_page_id_from_logic(field, input, all_page_ids)
+              next_page_id = next_logic_page_id if next_logic_page_id
+            end
+          end
+        end
+      end
+    end
+
+    def next_page_id_from_logic(field, input, all_page_ids)
+      return if field.logic.blank?
+
+      # Any page logic that will change the next page?
+      return field.logic['next_page_id'] if field.page?
+
+      # Options / Linear scale logic
+      field_value = input.answer_for_key(field.key)&.value
+
+      if field_value
+        if field_value.is_a? Array
+          # Multiple options selected (multiselect - legacy support)? We find the furthest page
+          option_ids = field.options.select { |o| field_value.include?(o.key) }.map(&:id)
+          furthest_page_id = option_ids.map { |option_id| goto_page_id(field, option_id) }
+            .max_by { |id| all_page_ids.index(id) }
+
+          return furthest_page_id if furthest_page_id
+        else
+          # Individual option selected (single select / linear scale)
+          option_value = field.supports_linear_scale? ? field_value : field.options.find { |o| o.key == field_value }&.id
+          option_next_page_id = goto_page_id(field, option_value)
+          return option_next_page_id if option_next_page_id
+        end
+
+        # Any other answer selected?
+        goto_page_id(field, 'any_other_answer')
+      else
+        # Field empty
+        goto_page_id(field, 'no_answer')
+      end
+    end
+
+    # The page a logic rule of the field jumps to when the answer matches the rule key.
+    def goto_page_id(field, rule_key)
+      field.logic['rules']&.find { |r| r['if'] == rule_key }&.dig('goto_page_id')
+    end
+
+    def field_seen_count(field)
+      return @all_inputs.size unless survey_has_logic?
+
+      seen_field_responses[field.id]&.count || 0
+    end
+
+    # Pre-filters inputs based on logic if there is any logic
+    def inputs(field)
+      return @all_inputs unless survey_has_logic?
+
+      input_ids = seen_field_responses[field.id]
+      @all_inputs.where(id: input_ids)
     end
 
     def core_field_attributes(field, response_count: nil)
@@ -156,7 +254,7 @@ module Surveys
         required: field.required,
         grouped: false,
         hidden: false,
-        totalResponseCount: @inputs.size,
+        totalResponseCount: field_seen_count(field),
         questionResponseCount: response_count,
         pageNumber: nil,
         questionNumber: nil,
@@ -165,50 +263,51 @@ module Surveys
     end
 
     def base_responses(field)
-      inputs
-        .select("custom_field_values->'#{field.key}' as value")
-        .where("custom_field_values->'#{field.key}' IS NOT NULL")
-        .map do |response|
-        { answer: response.value }
-      end
+      CustomFieldAnswer.main_for(field)
+        .where(answerable_id: inputs(field))
+        .pluck(:value)
+        .map { { answer: it } }
     end
 
     def visit_select_base(field)
-      query = inputs.select(
-        select_field_query(field, as: 'answer')
-      )
-      answers = construct_select_answers(query, field)
+      answers = construct_select_answers(counts_by_value(field), field)
 
       # Build response
       build_select_response(answers, field)
     end
 
-    def select_field_query(field, as: 'answer')
-      table = field.resource_type == 'User' ? 'users' : 'ideas'
+    # How many times each value was answered, with a nil count for the inputs
+    # that did not answer. Multiple selections count once per selected option.
+    def counts_by_value(field)
+      raise "Unsupported field type: #{field.input_type}" if !field.supports_selection?
 
-      if field.supports_single_selection?
-        "COALESCE(#{table}.custom_field_values->'#{field.key}', 'null') as #{as}"
-      elsif field.supports_multiple_selection?
-        %{
-          jsonb_array_elements(
-            CASE WHEN (
-              jsonb_path_exists(#{table}.custom_field_values, '$ ? (exists (@."#{field.key}"))') AND
-              jsonb_typeof(#{table}.custom_field_values->'#{field.key}') = 'array'
-            ) THEN #{table}.custom_field_values->'#{field.key}'
-              ELSE '[null]'::jsonb END
-          ) as #{as}
-      }
+      answers = CustomFieldAnswer.main_for(field).where(answerable_id: inputs(field))
+      if field.supports_multiple_selection?
+        counts = answers.per_selection.group('selections.selection').count
+        counts[nil] = (counts[nil] || 0) + field_seen_count(field) - answered_count(field)
       else
-        raise "Unsupported field type: #{field.input_type}"
+        counts = answers.group(:value).count
+        counts[nil] = (counts[nil] || 0) + field_seen_count(field) - counts.values.sum
       end
+      counts
+    end
+
+    def answered_count(field)
+      @answered_count ||= {}
+      @answered_count[field.id] ||= CustomFieldAnswer.main_for(field).where(answerable_id: inputs(field)).count
     end
 
     def build_select_response(answers, field)
-      # NOTE: This is an additional query for selects so impacts performance slightly
-      question_response_count = inputs.where("custom_field_values->'#{field.key}' IS NOT NULL").count
+      question_response_count = if field.supports_multiple_selection?
+        answered_count(field)
+      else
+        answers.reject { |a| a[:answer].nil? }.pluck(:count).sum
+      end
 
       # Sort answers correctly
-      answers = answers.sort_by { |a| -a[:count] } unless field.supports_linear_scale?
+      if @options_sort_order == 'count' && !field.supports_linear_scale?
+        answers = answers.sort_by { |a| -a[:count] }
+      end
       answers = answers.sort_by { |a| a[:answer] == 'other' ? 1 : 0 } # other should always be last
 
       attributes = core_field_attributes(field, response_count: question_response_count).merge({
@@ -217,7 +316,7 @@ module Surveys
         multilocs: get_multilocs(field)
       })
 
-      attributes[:textResponses] = get_text_responses(field.additional_text_question_key) if field.additional_text_question_key
+      attributes[:textResponses] = get_text_responses(field, additional_text_question_key: field.additional_text_question_key) if field.additional_text_question_key
 
       attributes
     end
@@ -233,7 +332,7 @@ module Surveys
 
       field.ordered_transformed_options.each_with_object({}) do |option, accu|
         option_detail = { title_multiloc: option.title_multiloc }
-        option_detail[:image] = option.image&.image&.versions&.transform_values(&:url) if field.support_option_images?
+        option_detail[:image] = option.image&.image&.versions&.transform_values(&:url) if field.supports_option_images?
         accu[option.key] = option_detail
       end
     end
@@ -254,10 +353,10 @@ module Surveys
       answer_multilocs
     end
 
-    def construct_select_answers(query, field)
+    def construct_select_answers(counts, field)
       answer_keys = generate_select_answer_keys(field)
 
-      grouped_answers_hash = select_group_query(query)
+      grouped_answers_hash = counts
         .each_with_object({}) do |(answer, count), accu|
         valid_answer = answer_keys.include?(answer) ? answer : nil
 
@@ -270,21 +369,15 @@ module Surveys
       end
     end
 
-    def select_group_query(query)
-      Idea
-        .select(:answer)
-        .from(query)
-        .group(:answer)
-        .count
-    end
-
     def generate_select_answer_keys(field)
       (field.supports_linear_scale? ? (1..field.maximum).to_a : field.ordered_transformed_options.map(&:key)) + [nil]
     end
 
     def matrix_linear_scale_statements(field)
+      field_answers = CustomFieldAnswer.main_for(field).where(answerable_id: inputs(field))
+      unanswered_count = field_seen_count(field) - answered_count(field)
       field.matrix_statements.pluck(:key, :title_multiloc).to_h do |statement_key, statement_title_multiloc|
-        query_result = inputs.group("custom_field_values->'#{field.key}'->'#{statement_key}'").count
+        query_result = field_answers.group("value->'#{statement_key}'").count
         answers = (1..field.maximum).reverse_each.map do |answer|
           { answer: answer, count: query_result[answer] || 0 }
         end
@@ -292,7 +385,7 @@ module Surveys
         answers.each do |answer|
           answer[:percentage] = question_response_count > 0 ? (answer[:count].to_f / question_response_count) : 0.0
         end
-        answers += [{ answer: nil, count: query_result[nil] || 0 }]
+        answers += [{ answer: nil, count: (query_result[nil] || 0) + unanswered_count }]
         value = {
           question: statement_title_multiloc,
           questionResponseCount: question_response_count,
@@ -311,14 +404,15 @@ module Surveys
     end
 
     # Get any associated text responses - where follow up question or other option is used
-    def get_text_responses(field_key)
-      inputs
-        .select("custom_field_values->'#{field_key}' as value")
-        .where("custom_field_values->'#{field_key}' IS NOT NULL")
+    def get_text_responses(field, additional_text_question_key: nil)
+      field_key = additional_text_question_key || field.key
+      CustomFieldAnswer.where(custom_field: field, key: field_key)
+        .where(answerable_id: inputs(field))
         # Remove all sequences of one or more whitespace characters (including spaces, newlines, tabs),
         # then check the result is not empty. TRIM would not handle newlines correctly.
-        .where("regexp_replace(custom_field_values->>'#{field_key}', '[[:space:]]+', '', 'g') != ''")
-        .map { |answer| { answer: answer.value.to_s } }
+        .where("regexp_replace(value #>> '{}', '[[:space:]]+', '', 'g') != ''")
+        .pluck(:value)
+        .map { { answer: it.to_s } }
         .sort_by { |a| a[:answer] }
     end
 
@@ -366,7 +460,7 @@ module Surveys
 
     def add_averages(results)
       # By default 'this_period' is all time
-      averages = AverageGenerator.new(phase).field_averages
+      averages = AverageGenerator.new(phase, exclude_admins_and_moderators: @exclude_admins_and_moderators).field_averages
 
       # Merge the averages into the main results
       results.each do |result|

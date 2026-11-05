@@ -11,22 +11,24 @@ import {
 
 import useProjectImage from 'api/project_images/useProjectImage';
 import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
-import { IUser } from 'api/users/types';
-import useUsersWithIds from 'api/users/useUsersWithIds';
+import { IUserData } from 'api/users/types';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import ProjectMoreActionsMenu, {
   ActionType,
-} from 'containers/Admin/projects/components/ProjectRow/ProjectMoreActionsMenu';
+} from 'containers/Admin/projects/_shared/components/ProjectRow/ProjectMoreActionsMenu';
 
 import Error from 'components/UI/Error';
 
 import Link from 'utils/cl-router/Link';
 import { parseBackendDateString } from 'utils/dateUtils';
+import { usePermission } from 'utils/permissions';
 
 import ManagerBubbles from '../../_shared/ManagerBubbles';
 import RowImage from '../../_shared/RowImage';
+import RowLabel from '../../_shared/RowLabel';
 
 import CurrentPhase from './CurrentPhase';
 import Visibility from './Visibility';
@@ -35,10 +37,17 @@ interface Props {
   project: ProjectMiniAdminData;
   participantsCount?: number;
   firstRow: boolean;
+  moderatorsById?: Record<string, IUserData>;
 }
 
-const Row = ({ project, participantsCount, firstRow }: Props) => {
+const Row = ({
+  project,
+  participantsCount,
+  firstRow,
+  moderatorsById,
+}: Props) => {
   const localize = useLocalize();
+  const spacesEnabled = useFeatureFlag({ name: 'spaces' });
 
   const imageId = project.relationships.project_images.data[0]?.id;
   const { data: image } = useProjectImage({
@@ -49,7 +58,9 @@ const Row = ({ project, participantsCount, firstRow }: Props) => {
   const imageVersions = image?.data.attributes.versions;
   const imageUrl = imageVersions?.large ?? imageVersions?.medium;
 
-  const [hover, setHover] = useState<'none' | 'project' | 'folder'>('none');
+  const [hover, setHover] = useState<'none' | 'project' | 'folder' | 'space'>(
+    'none'
+  );
 
   const [isBeingDeleted, setIsBeingDeleted] = useState(false);
   const [isBeingCopyied, setIsBeingCopyied] = useState(false);
@@ -58,6 +69,7 @@ const Row = ({ project, participantsCount, firstRow }: Props) => {
   const {
     first_phase_start_date,
     folder_title_multiloc,
+    space_title_multiloc,
     last_phase_end_date,
     title_multiloc,
   } = project.attributes;
@@ -65,10 +77,9 @@ const Row = ({ project, participantsCount, firstRow }: Props) => {
   const moderatorIds = project.relationships.moderators.data.map(
     (user) => user.id
   );
-  const moderatorsData = useUsersWithIds(moderatorIds);
-  const moderators = moderatorsData
-    .map((result) => result.data)
-    .filter((user): user is IUser => !!user);
+  const moderators = moderatorsById
+    ? moderatorIds.map((id) => moderatorsById[id])
+    : [];
 
   const formatDate = (date: string | null) => {
     const parsedDate = date ? parseBackendDateString(date) : undefined;
@@ -77,6 +88,18 @@ const Row = ({ project, participantsCount, firstRow }: Props) => {
   };
 
   const folderId = project.relationships.folder?.data?.id;
+  const spaceId = project.relationships.space?.data?.id;
+  const canModerateThisFolder = usePermission({
+    item: 'project_folder',
+    action: 'moderate',
+    context: { folderId, folderSpaceId: spaceId },
+  });
+  const canModerateThisSpace = usePermission({
+    item: 'space',
+    action: 'manage_projects_and_folders',
+    context: { spaceId },
+  });
+  const showSpace = spacesEnabled && !!space_title_multiloc && !!spaceId;
 
   const handleActionLoading = (actionType: ActionType, isRunning: boolean) => {
     if (actionType === 'copying') {
@@ -86,10 +109,27 @@ const Row = ({ project, participantsCount, firstRow }: Props) => {
     }
   };
 
-  const link =
-    hover === 'folder'
-      ? (`/admin/projects/folders/${folderId}` as const)
-      : (`/admin/projects/${project.id}` as const);
+  const link: {
+    to:
+      | '/admin/projects/folders/$projectFolderId'
+      | '/admin/projects/spaces/$spaceId'
+      | '/admin/projects/$projectId';
+    params: Record<string, string>;
+  } =
+    hover === 'folder' && canModerateThisFolder && folderId
+      ? {
+          to: '/admin/projects/folders/$projectFolderId',
+          params: { projectFolderId: folderId },
+        }
+      : hover === 'space' && canModerateThisSpace && spaceId
+      ? {
+          to: '/admin/projects/spaces/$spaceId',
+          params: { spaceId },
+        }
+      : {
+          to: '/admin/projects/$projectId',
+          params: { projectId: project.id },
+        };
 
   return (
     <Tr dataCy="projects-overview-table-row">
@@ -106,45 +146,68 @@ const Row = ({ project, participantsCount, firstRow }: Props) => {
             : undefined
         }
       >
-        <Box
-          display="flex"
-          alignItems="center"
-          w="100%"
-          h="100%"
-          as={Link}
-          to={link}
+        <Link
+          to={link.to}
+          params={link.params as Parameters<typeof Link>[0]['params']}
         >
-          <RowImage
-            imageUrl={imageUrl ?? undefined}
-            alt={localize(title_multiloc)}
-          />
-          <Box ml="8px">
-            <Text
-              m="0"
-              fontSize="s"
-              textDecoration={hover === 'project' ? 'underline' : 'none'}
-            >
-              {localize(title_multiloc)}
-            </Text>
-            {folder_title_multiloc && (
+          <Box display="flex" alignItems="center" w="100%" h="100%">
+            <RowImage
+              imageUrl={imageUrl ?? undefined}
+              alt={localize(title_multiloc)}
+            />
+            <Box ml="8px">
               <Text
                 m="0"
-                fontSize="xs"
-                color="textSecondary"
-                textDecoration={hover === 'folder' ? 'underline' : 'none'}
-                onMouseEnter={() => setHover('folder')}
-                onMouseLeave={() => setHover('project')}
+                fontSize="s"
+                textDecoration={hover === 'project' ? 'underline' : 'none'}
               >
-                {localize(folder_title_multiloc)}
+                {localize(title_multiloc)}
               </Text>
+              <Box
+                display="flex"
+                alignItems="center"
+                flexWrap="wrap"
+                gap="2px 4px"
+              >
+                {showSpace && (
+                  <RowLabel
+                    iconName="spaces"
+                    titleMultiloc={space_title_multiloc}
+                    underline={hover === 'space' && canModerateThisSpace}
+                    onHoverChange={
+                      canModerateThisSpace
+                        ? (hovering) => setHover(hovering ? 'space' : 'project')
+                        : undefined
+                    }
+                  />
+                )}
+                {showSpace && folder_title_multiloc && (
+                  <Text m="0" fontSize="xs" color="textSecondary">
+                    ·
+                  </Text>
+                )}
+                {folder_title_multiloc && (
+                  <RowLabel
+                    iconName="folder-solid"
+                    titleMultiloc={folder_title_multiloc}
+                    underline={hover === 'folder' && canModerateThisFolder}
+                    onHoverChange={
+                      canModerateThisFolder
+                        ? (hovering) =>
+                            setHover(hovering ? 'folder' : 'project')
+                        : undefined
+                    }
+                  />
+                )}
+              </Box>
+            </Box>
+            {(isBeingCopyied || isBeingDeleted) && (
+              <Box ml="12px">
+                <Spinner size="20px" color={colors.grey400} />
+              </Box>
             )}
           </Box>
-          {(isBeingCopyied || isBeingDeleted) && (
-            <Box ml="12px">
-              <Spinner size="20px" color={colors.grey400} />
-            </Box>
-          )}
-        </Box>
+        </Link>
         {error && (
           <Box mt="8px">
             <Error text={error} />
@@ -165,7 +228,7 @@ const Row = ({ project, participantsCount, firstRow }: Props) => {
       </Td>
       <Td background={colors.grey50} width="140px">
         <ManagerBubbles
-          managers={moderators.map(({ data: { attributes } }) => ({
+          managers={moderators.map(({ attributes }) => ({
             first_name: attributes.first_name ?? undefined,
             last_name: attributes.last_name ?? undefined,
             avatar: attributes.avatar,
@@ -189,6 +252,7 @@ const Row = ({ project, participantsCount, firstRow }: Props) => {
         <Box mr="12px">
           <ProjectMoreActionsMenu
             projectId={project.id}
+            projectName={localize(project.attributes.title_multiloc)}
             firstPublishedAt={project.attributes.first_published_at}
             folderId={folderId}
             color={colors.black}

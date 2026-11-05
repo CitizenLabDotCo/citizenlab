@@ -11,15 +11,31 @@ describe UserPolicy do
     let(:current_user) { nil }
     let(:subject_user) { create(:user) }
 
-    it { is_expected.to     permit(:show)    }
     it { is_expected.not_to permit(:update)  }
     it { is_expected.not_to permit(:destroy) }
     it { is_expected.not_to permit(:index) }
     it { is_expected.not_to permit(:index_xlsx) }
+    it { is_expected.not_to permit(:participation_stats) }
 
-    it 'should not index the user through the scope' do
+    it 'does not index the user through the scope' do
       subject_user.save!
       expect(scope.resolve.size).to eq 0
+    end
+
+    context 'when subject user has no public contributions' do
+      it { is_expected.not_to permit(:show) }
+    end
+
+    context 'when subject user has a non-anonymous idea in an ideation phase' do
+      before { create(:idea, author: subject_user, anonymous: false) }
+
+      it { is_expected.to permit(:show) }
+    end
+
+    context 'when subject user has comments' do
+      before { create(:comment, author: subject_user) }
+
+      it { is_expected.to permit(:show) }
     end
   end
 
@@ -34,8 +50,9 @@ describe UserPolicy do
       it { is_expected.to     permit(:destroy) }
       it { is_expected.not_to permit(:index) }
       it { is_expected.not_to permit(:index_xlsx) }
+      it { is_expected.to     permit(:participation_stats) }
 
-      it 'should not index the user through the scope' do
+      it 'does not index the user through the scope' do
         subject_user.save!
         expect(scope.resolve.size).to eq 0
       end
@@ -48,18 +65,26 @@ describe UserPolicy do
       it { is_expected.to     permit(:show) }
       it { is_expected.not_to permit(:update) }
       it { is_expected.to     permit(:destroy) }
+      it { is_expected.to     permit(:participation_stats) }
     end
 
     context 'on someone else' do
       let(:subject_user) { create(:user) }
 
-      it { is_expected.to     permit(:show)    }
+      it { is_expected.not_to permit(:show) }
       it { is_expected.not_to permit(:update)  }
       it { is_expected.not_to permit(:destroy) }
       it { is_expected.not_to permit(:index) }
       it { is_expected.not_to permit(:index_xlsx) }
+      it { is_expected.not_to permit(:participation_stats) }
 
-      it 'should index the users through the scope' do
+      context 'when subject user has public contributions' do
+        before { create(:idea, author: subject_user, anonymous: false) }
+
+        it { is_expected.to permit(:show) }
+      end
+
+      it 'indexes the users through the scope' do
         subject_user.save!
         expect(scope.resolve.size).to eq 0
       end
@@ -77,8 +102,9 @@ describe UserPolicy do
       it { is_expected.to permit(:destroy) }
       it { is_expected.to permit(:index) }
       it { is_expected.to permit(:index_xlsx) }
+      it { is_expected.to permit(:participation_stats) }
 
-      it 'should index the user through the scope' do
+      it 'indexes the user through the scope' do
         subject_user.save!
         expect(scope.resolve.size).to eq 1
       end
@@ -92,8 +118,9 @@ describe UserPolicy do
       it { is_expected.to permit(:destroy) }
       it { is_expected.to permit(:index) }
       it { is_expected.to permit(:index_xlsx) }
+      it { is_expected.to permit(:participation_stats) }
 
-      it 'should index the users through the scope' do
+      it 'indexes the users through the scope' do
         subject_user.save!
         expect(scope.resolve.size).to eq 2
       end
@@ -115,6 +142,7 @@ describe UserPolicy do
       it { is_expected.not_to permit(:block)   }
       it { is_expected.not_to permit(:unblock) }
       it { is_expected.not_to permit(:index_xlsx) }
+      it { is_expected.to     permit(:participation_stats) }
 
       it 'indexes the user through the scope' do
         subject_user.save!
@@ -132,6 +160,7 @@ describe UserPolicy do
       it { is_expected.not_to permit(:block)   }
       it { is_expected.not_to permit(:unblock) }
       it { is_expected.not_to permit(:index_xlsx) }
+      it { is_expected.not_to permit(:participation_stats) }
 
       it 'does not index the user through the scope' do
         subject_user.save!
@@ -148,7 +177,7 @@ describe UserPolicy do
       create(:idea).author
       participant = create(:idea, project: project2).author
       admin = create(:admin)
-      expect(scope.resolve.ids).to match_array [participant.id, current_user.id, moderators[0].id, moderators[2].id, admin.id]
+      expect(scope.resolve.ids).to contain_exactly(participant.id, current_user.id, moderators[0].id, moderators[2].id, admin.id)
     end
   end
 
@@ -169,6 +198,7 @@ describe UserPolicy do
       it { is_expected.not_to permit(:block)   }
       it { is_expected.not_to permit(:unblock) }
       it { is_expected.not_to permit(:index_xlsx) }
+      it { is_expected.to     permit(:participation_stats) }
 
       it 'indexes the user through the scope' do
         subject_user.save!
@@ -186,6 +216,7 @@ describe UserPolicy do
       it { is_expected.not_to permit(:block)   }
       it { is_expected.not_to permit(:unblock) }
       it { is_expected.not_to permit(:index_xlsx) }
+      it { is_expected.not_to permit(:participation_stats) }
 
       it 'does not index the user through the scope' do
         subject_user.save!
@@ -203,7 +234,146 @@ describe UserPolicy do
       create(:comment).author
       participant = create(:idea, project: project2).author
       admin = create(:admin)
-      expect(scope.resolve.ids).to match_array [participant.id, current_user.id, moderators[0].id, moderators[2].id, admin.id]
+      expect(scope.resolve.ids).to contain_exactly(participant.id, current_user.id, moderators[0].id, moderators[2].id, admin.id)
+    end
+  end
+
+  describe 'phone signup' do
+    let(:current_user) { nil }
+    let(:subject_user) { build(:user) }
+
+    before { SettingsService.new.activate_feature! 'sms_login' }
+
+    context 'when the sms and password_login features are enabled' do
+      include_context 'with sms feature enabled'
+
+      before { SettingsService.new.activate_feature! 'password_login' }
+
+      it { is_expected.to permit(:check_phone) }
+      it { is_expected.to permit(:create_phone) }
+    end
+
+    context 'when the sms feature is disabled' do
+      before { SettingsService.new.activate_feature! 'password_login' }
+
+      it { is_expected.not_to permit(:check_phone) }
+      it { is_expected.not_to permit(:create_phone) }
+      it { is_expected.to permit(:check_email) }
+      it { is_expected.to permit(:create) }
+    end
+
+    context 'when password_login is disabled' do
+      include_context 'with sms feature enabled'
+
+      before { SettingsService.new.deactivate_feature! 'password_login' }
+
+      it { is_expected.not_to permit(:check_phone) }
+      it { is_expected.not_to permit(:create_phone) }
+    end
+
+    context 'when the sms_login feature is disabled' do
+      include_context 'with sms feature enabled'
+
+      before do
+        SettingsService.new.activate_feature! 'password_login'
+        SettingsService.new.deactivate_feature! 'sms_login'
+      end
+
+      it { is_expected.not_to permit(:check_phone) }
+      it { is_expected.not_to permit(:create_phone) }
+
+      context 'with an authenticated user' do
+        let(:current_user) { create(:admin) }
+
+        it { is_expected.to permit(:check_phone) }
+        it { is_expected.to permit(:create_phone) }
+      end
+    end
+  end
+
+  describe 'intercom_token?' do
+    subject { described_class.new(current_user, :user).intercom_token? }
+
+    let(:current_user) { create(:admin) }
+    let(:secret) { 'intercom-messenger-secret' }
+
+    before do
+      SettingsService.new.activate_feature!('intercom')
+      allow(ENV).to receive(:fetch).and_call_original
+      allow(ENV).to receive(:fetch).with('INTERCOM_MESSENGER_SECRET', nil).and_return(secret)
+    end
+
+    it { is_expected.to be true }
+
+    context 'for a super admin' do
+      let(:current_user) { create(:super_admin) }
+
+      it { is_expected.to be true }
+    end
+
+    context 'for a project moderator' do
+      let(:current_user) { create(:project_moderator) }
+
+      it { is_expected.to be true }
+    end
+
+    context 'for a folder moderator' do
+      let(:current_user) { create(:project_folder_moderator) }
+
+      it { is_expected.to be true }
+    end
+
+    context 'for a resident' do
+      let(:current_user) { create(:user) }
+
+      it { is_expected.to be false }
+    end
+
+    context 'for a visitor' do
+      let(:current_user) { nil }
+
+      it { is_expected.to be_falsey }
+    end
+
+    context 'when the intercom feature is not active' do
+      before { SettingsService.new.deactivate_feature!('intercom') }
+
+      it { is_expected.to be false }
+    end
+
+    context 'when the secret is missing' do
+      let(:secret) { nil }
+
+      it { is_expected.to be false }
+    end
+  end
+
+  describe 'permitted_attributes_for_update' do
+    subject(:permitted) { described_class.new(current_user, subject_user).permitted_attributes_for_update }
+
+    def permits_early_access_opt_ins?
+      permitted.any? { |attribute| attribute.is_a?(Hash) && attribute.key?(:early_access_opt_ins) }
+    end
+
+    context 'for an admin on their own record' do
+      let(:current_user) { create(:admin) }
+      let(:subject_user) { current_user }
+
+      it { expect(permits_early_access_opt_ins?).to be true }
+    end
+
+    context 'for an admin on somebody else' do
+      let(:current_user) { create(:admin) }
+      let(:subject_user) { create(:admin) }
+
+      it { expect(permits_early_access_opt_ins?).to be false }
+    end
+
+    context 'for a resident on their own record' do
+      let(:current_user) { create(:user) }
+      let(:subject_user) { current_user }
+
+      it { expect(permits_early_access_opt_ins?).to be false }
     end
   end
 end

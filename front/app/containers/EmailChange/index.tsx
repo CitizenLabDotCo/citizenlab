@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -6,7 +6,9 @@ import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { object, string } from 'yup';
 
-import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
+import { confirmCodeNewEmail } from 'api/authentication/confirm_email/confirmEmailConfirmationCode';
+import { requestCodeNewEmail } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
+import meKeys from 'api/me/keys';
 import useAuthUser from 'api/me/useAuthUser';
 
 import { ERROR_CODE_MESSAGES } from 'containers/Authentication/messageUtils';
@@ -19,8 +21,8 @@ import GoBackButton from 'components/UI/GoBackButton';
 import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
+import { queryClient } from 'utils/cl-react-query/queryClient';
 import clHistory from 'utils/cl-router/history';
-import { isNilOrError } from 'utils/helperUtils';
 
 import CancelUpdate from './CancelUpdate';
 import messages from './messages';
@@ -55,23 +57,19 @@ const EmailChange = () => {
     resolver: yupResolver(schema),
   });
 
-  // Once auth user is fetched, set the email field to the user's email
-  useEffect(() => {
-    if (!isNilOrError(authUser) && authUser.data.attributes.email) {
-      if (!methods.watch('email')) {
-        methods.setValue('email', authUser.data.attributes.email);
-      }
-    }
-  }, [authUser, methods]);
+  const emailValue = methods.watch('email');
 
-  const onEmailConfirmation = async (code: string) => {
+  const onEmailConfirmation = async (_email: string, code: string) => {
     setLoading(true);
 
     try {
-      await confirmEmail({ code });
+      if (!emailValue) return;
+      await confirmCodeNewEmail(code);
+      await queryClient.invalidateQueries({ queryKey: meKeys.all() });
       setConfirmationError(null);
       setOpenConfirmationModal(false);
       setUpdateSuccessful(true);
+      methods.reset({ email: '' });
     } catch (e) {
       if (e?.code?.[0]?.error === 'invalid') {
         setConfirmationError('wrong_confirmation_code');
@@ -86,6 +84,8 @@ const EmailChange = () => {
   if (!authUser) {
     return null;
   }
+
+  const newEmail = methods.watch('email');
 
   return (
     <>
@@ -112,9 +112,8 @@ const EmailChange = () => {
             <UpdateEmailForm
               updateSuccessful={updateSuccessful}
               setOpenConfirmationModal={setOpenConfirmationModal}
-              setUpdateSuccessful={setUpdateSuccessful}
               methods={methods}
-              user={authUser.data}
+              user={authUser}
             />
           )}
         </StyledContentContainer>
@@ -137,16 +136,13 @@ const EmailChange = () => {
               </Box>
             )}
             <EmailConfirmation
-              state={{
-                flow: 'signup',
-                email: methods.watch('email'),
-                token: null,
-                prefilledBuiltInFields: null,
-                ssoProvider: null,
-              }}
+              email={newEmail}
               loading={loading}
               setError={setConfirmationError}
               onConfirm={onEmailConfirmation}
+              onResendCode={async (email: string) => {
+                await requestCodeNewEmail(email);
+              }}
             />
           </Box>
         </Modal>

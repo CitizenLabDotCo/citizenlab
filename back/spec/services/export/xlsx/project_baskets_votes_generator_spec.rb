@@ -51,12 +51,12 @@ describe Export::Xlsx::ProjectBasketsVotesGenerator do
 
     it 'contains a worksheet for each voting phase' do
       expect(workbook.worksheets.size).to eq(3)
-      expect(workbook.worksheets.map(&:sheet_name)).to match_array(['Phase 1', 'Phase 2', 'Phase 3'])
+      expect(workbook.worksheets.map(&:sheet_name)).to contain_exactly('Phase 1', 'Phase 2', 'Phase 3')
     end
 
     it 'handles phases same title multiloc values' do
       phase1.update!(title_multiloc: phase2.title_multiloc)
-      expect(workbook.worksheets.map(&:sheet_name)).to match_array(['Phase 2 (1)', 'Phase 2 (2)', 'Phase 3'])
+      expect(workbook.worksheets.map(&:sheet_name)).to contain_exactly('Phase 2 (1)', 'Phase 2 (2)', 'Phase 3')
     end
 
     it 'contains a row for every user who voted in each phase' do
@@ -73,7 +73,7 @@ describe Export::Xlsx::ProjectBasketsVotesGenerator do
     it 'contains one column for each idea in a phase, on each respective worksheet' do
       3.times do |i|
         header_row = workbook.worksheets[i][0].cells.map(&:value)
-        expect(header_row).to match_array(['idea1', 'idea2', 'idea3', 'idea4', 'Submitted at'])
+        expect(header_row).to contain_exactly('idea1', 'idea2', 'idea3', 'idea4', 'Submitted at')
       end
     end
 
@@ -85,7 +85,13 @@ describe Export::Xlsx::ProjectBasketsVotesGenerator do
       expect(user_row[header_row.find_index 'idea2']).to eq baskets_idea4.votes
       expect(user_row[header_row.find_index 'idea3']).to eq 0
       expect(user_row[header_row.find_index 'idea4']).to eq 0
-      expect(user_row[header_row.find_index 'Submitted at'].to_i).to eq basket3.submitted_at.to_i
+
+      # On writing: Axlsx ignores timezone and offset when storing dates.
+      # On reading: RubyXL reads the naive datetime as UTC.
+      submitted_at = user_row[header_row.find_index('Submitted at')]
+      submitted_at = override_timezone(submitted_at, AppConfiguration.timezone)
+      # Not an exact match due to xlsx serialization precision loss
+      expect(submitted_at).to be_within(1e-3.seconds).of basket3.submitted_at
     end
 
     it 'handles ideas with same title multiloc values' do
@@ -100,7 +106,7 @@ describe Export::Xlsx::ProjectBasketsVotesGenerator do
     it 'contains extra columns for custom user fields' do
       create(:custom_field_domicile)
       area = create(:area, title_multiloc: { 'en' => 'Center' })
-      user1.update!(custom_field_values: { 'domicile' => area.id })
+      user1.custom_field_answers.create!(key: 'domicile', value: area.id)
 
       header_row = workbook.worksheets[1][0].cells.map(&:value)
       user_row = workbook.worksheets[1][1].cells.map(&:value)

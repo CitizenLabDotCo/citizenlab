@@ -1,6 +1,7 @@
 import React, { PureComponent, ReactNode } from 'react';
 
-import { colors, defaultOutline } from '@citizenlab/cl2-component-library';
+import { colors } from '@citizenlab/cl2-component-library';
+import { focusRing } from 'global-styles';
 import { Range, getTrackBackground } from 'react-range';
 import styled from 'styled-components';
 
@@ -24,7 +25,7 @@ const Container = styled.div`
     }
 
     &.focus-visible {
-      ${defaultOutline};
+      ${focusRing}
     }
   }
 `;

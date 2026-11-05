@@ -21,7 +21,7 @@ const PowerBI = () => {
       background={colors.white}
       display="flex"
       p="20px"
-      my="20px"
+      mb="20px"
       width="100%"
     >
       <Box
@@ -63,7 +63,7 @@ const PowerBI = () => {
               iconColor={colors.white}
               iconPos="right"
               width="fit-content"
-              linkTo="/admin/tools/power-bi"
+              to="/admin/tools/power-bi"
               textColor="white"
               bgColor={colors.primary}
             >

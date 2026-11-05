@@ -6,11 +6,12 @@ import {
   getLineSymbol,
   getShapeSymbol,
 } from 'components/EsriMap/utils';
-import { EsriGeometryType } from 'components/Form/Components/Controls/MapInput/utils';
 
 export interface IGeometryTypeConfig {
   renderer: SimpleRenderer;
 }
+
+export type EsriGeometryType = 'point' | 'polygon' | 'polyline' | 'multipoint';
 
 export const pointConfig: IGeometryTypeConfig = {
   renderer: new SimpleRenderer({
@@ -46,6 +47,7 @@ export const polygonConfig: IGeometryTypeConfig = {
 export const getGeometryTypeConfig = (geometryType: EsriGeometryType) => {
   switch (geometryType) {
     case 'point':
+    case 'multipoint':
       return pointConfig;
     case 'polygon':
       return polygonConfig;

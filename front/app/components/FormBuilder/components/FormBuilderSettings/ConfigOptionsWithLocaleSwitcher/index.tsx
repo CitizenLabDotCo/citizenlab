@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 
 import {
   Box,
@@ -19,10 +19,7 @@ import {
 } from 'react-hook-form';
 import { SupportedLocale, CLError, RHFErrors } from 'typings';
 
-import { useCustomFieldOptionImages } from 'api/content_field_option_images/useCustomFieldOptionImage';
 import { ICustomFieldInputType, IOptionsType } from 'api/custom_fields/types';
-
-import usePrevious from 'hooks/usePrevious';
 
 import { List, Row } from 'components/admin/ResourceList';
 import SortableRow from 'components/admin/ResourceList/SortableRow';
@@ -67,6 +64,7 @@ const ConfigSelectWithLocaleSwitcher = ({
     control,
     formState: { errors: formContextErrors },
     trigger,
+    setValue,
   } = useFormContext();
 
   // Handles drag and drop
@@ -78,46 +76,35 @@ const ConfigSelectWithLocaleSwitcher = ({
     platformLocale
   );
   const { formatMessage } = useIntl();
-  const selectOptions = useWatch({ name });
-
-  const imageIds = selectOptions
-    .filter((selectOption) => selectOption?.image_id)
-    .map((selectOption) => selectOption?.image_id);
-  const customFieldOptionImages = useCustomFieldOptionImages(imageIds);
-  const prevImageQueries = usePrevious(customFieldOptionImages);
-  const [optionImages, setOptionImages] = useState<OptionImageType>();
+  const selectOptions = useWatch({ name }) as any as IOptionsType[];
+  const [optionImages, setOptionImages] = useState<OptionImageType>({});
+  const optionImagesLoaded = useRef({});
 
   useEffect(() => {
-    if (
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      customFieldOptionImages &&
-      customFieldOptionImages.length !== prevImageQueries?.length
-    ) {
-      (async () => {
-        const promises = customFieldOptionImages.map(
-          async (customFieldOptionImage) => {
-            if (
-              // TODO: Fix this the next time the file is edited.
-              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-              !customFieldOptionImage?.data?.data.attributes.versions.medium
-            ) {
-              return;
-            }
-            const imageData = await convertUrlToUploadFile(
-              // TODO: Fix this the next time the file is edited.
-              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-              customFieldOptionImage?.data?.data.attributes.versions.medium
-            );
-            return { [customFieldOptionImage.data.data.id]: imageData };
-          }
-        );
-        const optionImageArray = await Promise.all(promises);
-        const optionImagesObject = Object.assign({}, ...optionImageArray);
-        setOptionImages(optionImagesObject);
-      })();
-    }
-  }, [customFieldOptionImages, prevImageQueries]);
+    selectOptions.forEach((option) => {
+      const image = option.image;
+
+      if (image?.attributes.versions.medium) {
+        const id = image.id;
+        const medium = image.attributes.versions.medium;
+
+        if (!(id in optionImagesLoaded.current)) {
+          // Set to true while we wait for the conversion,
+          // so that we don't accidentally request this twice
+          optionImagesLoaded.current[id] = null;
+
+          convertUrlToUploadFile(medium).then((uploadFile) => {
+            if (uploadFile === null) return;
+
+            setOptionImages((currentImages) => ({
+              ...currentImages,
+              [id]: uploadFile,
+            }));
+          });
+        }
+      }
+    });
+  }, [selectOptions, optionImages]);
 
   // Handles locale change
   useEffect(() => {
@@ -200,6 +187,13 @@ const ConfigSelectWithLocaleSwitcher = ({
       ...(!choice.id && !choice.temp_id ? { temp_id: generateTempId() } : {}),
     });
   };
+
+  const updateChoiceTitle = useCallback(
+    (value: string, index: number, locale: SupportedLocale) => {
+      setValue(`${name}.${index}.title_multiloc.${locale}`, value);
+    },
+    [setValue, name]
+  );
 
   const handleMultilinePaste = useCallback(
     (lines, index) => {
@@ -321,6 +315,7 @@ const ConfigSelectWithLocaleSwitcher = ({
                                   canDeleteLastOption={canDeleteLastOption}
                                   removeOption={removeOption}
                                   onChoiceUpdate={updateChoice}
+                                  onTitleChange={updateChoiceTitle}
                                   optionImages={optionImages}
                                 />
                               </Row>
@@ -344,6 +339,7 @@ const ConfigSelectWithLocaleSwitcher = ({
                                   optionImages={optionImages}
                                   removeOption={removeOption}
                                   onChoiceUpdate={updateChoice}
+                                  onTitleChange={updateChoiceTitle}
                                   onMultilinePaste={
                                     multilinePasteAllowed
                                       ? handleMultilinePaste

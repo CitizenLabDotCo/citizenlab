@@ -9,6 +9,8 @@ export const data: IAPIClients = {
         name: 'Test token',
         created_at: '2021-03-18T09:00:00.000Z',
         last_used_at: '2021-03-19T09:00:00.000Z',
+        last_user_agent:
+          'Microsoft.Data.Mashup (https://go.microsoft.com/fwlink/?LinkID=304225)',
         masked_secret: '*****',
       },
     },

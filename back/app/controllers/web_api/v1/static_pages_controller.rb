@@ -5,7 +5,17 @@ class WebApi::V1::StaticPagesController < ApplicationController
   before_action :set_page, only: %i[show update destroy]
 
   def index
-    @pages = paginate policy_scope(StaticPage)
+    pages = policy_scope(StaticPage)
+    pages = if params[:project_id].present?
+      # Pages scoped to a single project, restricted to projects the user can see
+      # so a hidden/private project doesn't leak its pages.
+      visible_projects = policy_scope(Project)
+      pages.where(project_id: params[:project_id], project: visible_projects)
+    else
+      # The global pages menu only lists global (non-project) pages.
+      pages.where(project_id: nil)
+    end
+    @pages = paginate pages
 
     render json: linked_json(@pages, WebApi::V1::StaticPageSerializer, params: jsonapi_serializer_params)
   end
@@ -41,7 +51,6 @@ class WebApi::V1::StaticPagesController < ApplicationController
     assign_attributes
     authorize @page
 
-    SideFxStaticPageService.new.before_update @page, current_user
     if @page.save
       SideFxStaticPageService.new.after_update @page, current_user
       render json: WebApi::V1::StaticPageSerializer.new(@page, params: jsonapi_serializer_params).serializable_hash, status: :ok

@@ -18,11 +18,16 @@ interface Props {
 }
 
 const ChartFilters = ({ projectId, onProjectFilter, noData }: Props) => (
-  <Box display="flex" justifyContent="space-between" alignItems="flex-end">
+  <Box
+    display="flex"
+    justifyContent="space-between"
+    alignItems="center"
+    gap="8px"
+  >
     <ProjectFilter projectId={projectId} onProjectFilter={onProjectFilter} />
     {!noData && (
       <ButtonWithLink
-        linkTo="/admin/dashboard/representation/edit-base-data"
+        to="/admin/dashboard/representation/edit-base-data"
         text={<FormattedMessage {...messages.editBaseData} />}
         bgColor={colors.teal}
       />

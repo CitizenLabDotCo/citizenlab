@@ -1,16 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import { useParams } from 'react-router-dom';
+import { Box, Text, Button } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+import { SupportedLocale } from 'typings';
 
-import { ICampaignData } from 'api/campaigns/types';
-import useDeleteCampaign from 'api/campaigns/useDeleteCampaign';
+import { IEmailCampaignData } from 'api/campaigns/email/types';
+import useDeleteEmailCampaign from 'api/campaigns/email/useDeleteEmailCampaign';
 
-import PreviewFrame from 'components/admin/Email/PreviewFrame';
-import ButtonWithLink from 'components/UI/ButtonWithLink';
+import PreviewFrameWithLocaleSwitcher from 'components/admin/Email/PreviewFrameWithLocaleSwitcher';
+import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { useParams } from 'utils/router';
 
 import messages from './messages';
 
@@ -21,42 +23,78 @@ const ButtonWrapper = styled.div`
 `;
 
 interface Props {
-  campaign: ICampaignData;
+  campaign: IEmailCampaignData;
+  previewLocale: SupportedLocale;
+  onPreviewLocaleChange: (locale: SupportedLocale) => void;
 }
 
-const DraftCampaignDetails = ({ campaign }: Props) => {
-  const { projectId } = useParams();
+const DraftCampaignDetails = ({
+  campaign,
+  previewLocale,
+  onPreviewLocaleChange,
+}: Props) => {
+  const { projectId } = useParams({ strict: false });
   const { formatMessage } = useIntl();
-  const { mutate: deleteCampaign, isLoading } = useDeleteCampaign();
+  const { mutate: deleteCampaign, isPending } = useDeleteEmailCampaign();
 
   const handleDelete = () => {
-    const deleteMessage = formatMessage(messages.campaignDeletionConfirmation);
-    if (window.confirm(deleteMessage)) {
-      deleteCampaign(campaign.id, {
-        onSuccess: () => {
-          if (projectId) {
-            clHistory.push(`/admin/projects/${projectId}/messaging`);
-          } else {
-            clHistory.push('/admin/messaging/emails/custom');
-          }
-        },
-      });
-    }
+    deleteCampaign(campaign.id, {
+      onSuccess: () => {
+        setIsDeleteModalOpen(false);
+        if (projectId) {
+          clHistory.push(`/admin/projects/${projectId}/messaging`);
+        } else {
+          clHistory.push('/admin/messaging/emails/custom');
+        }
+      },
+    });
   };
 
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   return (
     <>
-      <PreviewFrame campaignId={campaign.id} />
+      <PreviewFrameWithLocaleSwitcher
+        campaignId={campaign.id}
+        locale={previewLocale}
+        onLocaleChange={onPreviewLocaleChange}
+      />
       <ButtonWrapper>
-        <ButtonWithLink
+        <Button
           buttonStyle="delete"
           icon="delete"
-          onClick={handleDelete}
-          processing={isLoading}
+          onClick={() => setIsDeleteModalOpen(true)}
+          processing={isPending}
         >
           {formatMessage(messages.deleteCampaignButton)}
-        </ButtonWithLink>
+        </Button>
       </ButtonWrapper>
+      <Modal
+        opened={isDeleteModalOpen}
+        close={() => setIsDeleteModalOpen(false)}
+        header={formatMessage(messages.campaignDeleteConfirmation)}
+      >
+        <Box p="32px">
+          <Text color="textSecondary" mt="0">
+            {formatMessage(messages.campaignDeleteWarning)}
+          </Text>
+          <Box display="flex" gap="16px" justifyContent="flex-end">
+            <Button
+              buttonStyle="secondary"
+              onClick={() => setIsDeleteModalOpen(false)}
+            >
+              {formatMessage(messages.cancel)}
+            </Button>
+            <Button
+              buttonStyle="delete"
+              icon="delete"
+              onClick={handleDelete}
+              processing={isPending}
+            >
+              {formatMessage(messages.deleteCampaignButton)}
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
     </>
   );
 };

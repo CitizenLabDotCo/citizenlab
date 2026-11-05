@@ -49,17 +49,14 @@ FactoryBot.define do
             'fr-FR' => 'Liege'
           },
           organization_type: 'medium_city',
-          onboarding: true
-        },
-        user_confirmation: {
-          enabled: false,
-          allowed: false
-        },
-        verification: {
-          enabled: false,
-          allowed: false
+          onboarding: true,
+          exclude_admins_and_moderators_from_statistics: false
         },
         follow: {
+          enabled: true,
+          allowed: true
+        },
+        permissions_custom_fields: {
           enabled: true,
           allowed: true
         }

@@ -59,6 +59,30 @@ describe XlsxService do
       expect(document3[0].map { |r| r.cells.map(&:value) }).to eq [%w[col1 col2], ['g', 7]]
     end
 
+    it 'trims trailing empty rows before splitting' do
+      rows = [
+        %w[col1 col2],
+        ['a', 1],
+        ['b', 2],
+        ['c', 3],
+        ['', ''],
+        ['', ''],
+        ['', ''],
+        ['', ''],
+        ['', '']
+      ]
+      xlsx = service.xlsx_from_rows(rows)
+      multiple_xlsx = service.split_xlsx(xlsx, 2)
+
+      expect(multiple_xlsx.count).to eq 2
+
+      document1 = RubyXL::Parser.parse_buffer(multiple_xlsx[0])
+      expect(document1[0].map { |r| r.cells.map(&:value) }).to eq [%w[col1 col2], ['a', 1], ['b', 2]]
+
+      document2 = RubyXL::Parser.parse_buffer(multiple_xlsx[1])
+      expect(document2[0].map { |r| r.cells.map(&:value) }).to eq [%w[col1 col2], ['c', 3]]
+    end
+
     it 'writes dates correctly in split xlsx files' do
       sheet_rows = [
         %w[col1 col2],

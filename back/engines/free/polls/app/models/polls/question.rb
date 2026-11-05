@@ -19,6 +19,7 @@
 #
 module Polls
   class Question < ApplicationRecord
+    include PlainTextMultiloc
     QUESTION_TYPES = %w[single_option multiple_options]
 
     acts_as_list column: :ordering, top_of_list: 0, add_new_at: :bottom, scope: %i[phase_id]
@@ -26,9 +27,13 @@ module Polls
     belongs_to :phase
     has_many :options, class_name: 'Polls::Option', dependent: :destroy
 
+    plain_text_multiloc :title_multiloc
     validates :title_multiloc, presence: true, multiloc: { presence: true }
     validates :question_type, presence: true, inclusion: { in: QUESTION_TYPES }
     validates :max_options, numericality: { only_integer: true, greater_than_or_equal_to: 1 }, allow_nil: true, if: :multiple_options?
+    validate :phase_is_poll, on: :create
+
+    delegate :project, :project_id, to: :phase
 
     def single_option?
       question_type == 'single_option'
@@ -38,8 +43,15 @@ module Polls
       question_type == 'multiple_options'
     end
 
-    def project_id
-      phase.try(:project_id)
+    private
+
+    # Poll questions only make sense in a poll phase. The inverse (a phase leaving
+    # the poll method while it still has questions) is guarded on the phase side by
+    # Polls::PollPhase#poll_questions_allowed_in_participation_method.
+    def phase_is_poll
+      return if phase.nil? || phase.poll?
+
+      errors.add(:phase, :unsupported_participation_method, message: "must be a poll phase (participation_method is '#{phase.participation_method}')")
     end
   end
 end

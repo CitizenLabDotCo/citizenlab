@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class WebApi::V1::ProjectsController < ApplicationController
-  before_action :set_project, only: %i[show update reorder destroy index_xlsx votes_by_user_xlsx votes_by_input_xlsx delete_inputs refresh_preview_token destroy_participation_data]
+  before_action :set_project, only: %i[show update destroy index_xlsx votes_by_user_xlsx votes_by_input_xlsx refresh_preview_token destroy_participation_data publication_recipient_count]
+  before_action :authorize_project, only: %i[show update destroy index_xlsx votes_by_user_xlsx votes_by_input_xlsx refresh_preview_token destroy_participation_data publication_recipient_count]
 
   skip_before_action :authenticate_user
   skip_after_action :verify_policy_scoped, only: :index
@@ -9,15 +10,6 @@ class WebApi::V1::ProjectsController < ApplicationController
   def index
     # Hidden community monitor project not included by default via AdminPublication policy scope
     policy_context[:include_hidden] = true if params[:include_hidden] == 'true'
-
-    # By default, this endpoint will remove unlisted projects that the user cannot moderate.
-    # But if the `remove_all_unlisted` parameter is set to 'true', it will
-    # even remove all unlisted projects.
-    policy_context[:remove_unlisted] = if params[:remove_all_unlisted] == 'true'
-      'remove_all_unlisted'
-    else
-      'remove_unlisted_that_user_cannot_moderate'
-    end
 
     publications = policy_scope(AdminPublication)
     publications = AdminPublicationsFilteringService.new.filter(publications, params.merge(current_user: current_user))
@@ -32,11 +24,24 @@ class WebApi::V1::ProjectsController < ApplicationController
     # Using `pluck(:publication_id)` instead of `select(:publication_id)` also helps if used with `includes`,
     # but it doesn't make any difference with `preload`. Still using it in case the query changes.
     @projects = Project.where(id: publications.pluck(:publication_id)).ordered
+
+    # By default, this endpoint will remove unlisted projects that the user cannot moderate.
+    # But if the `remove_all_unlisted` parameter is set to 'true', it will
+    # even remove all unlisted projects.
+    @projects = if params[:remove_all_unlisted] == 'true'
+      ProjectsListedScopeService.new.remove_unlisted_projects(@projects)
+    else
+      ProjectsListedScopeService.new.remove_unlisted_that_user_cannot_moderate(
+        @projects,
+        current_user
+      )
+    end
+
     @projects = paginate @projects
     @projects = @projects.preload(
       :project_images,
       :areas,
-      :topics,
+      :global_topics,
       :content_builder_layouts, # Defined in ContentBuilder engine
       phases: [:report, { permissions: [:groups] }],
       admin_publication: [:children]
@@ -49,18 +54,25 @@ class WebApi::V1::ProjectsController < ApplicationController
       end
     user_followers ||= {}
 
+    publication_email_enabled_per_project = EmailCampaigns::Campaigns::ProjectPublished
+      .where(context_id: @projects.map(&:id))
+      .to_h { |campaign| [campaign.context_id, campaign.enabled] }
+
     instance_options = {
       user_followers: user_followers,
-      timeline_active: TimelineService.new.timeline_active_on_collection(@projects.to_a),
       visible_children_count_by_parent_id: {}, # projects don't have children
-      user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false)
+      publication_email_enabled_per_project: publication_email_enabled_per_project,
+      # Cannot use `find_sole_by` here: the global ProjectPublished campaign is normally seeded by
+      # AssureCampaignsService on tenant finalization, but isn't guaranteed in every environment
+      # (notably test fixtures), so we fall back to treating a missing global campaign as enabled.
+      global_publication_email_enabled: EmailCampaigns::Campaigns::ProjectPublished.find_by(context_id: nil)&.enabled != false
     }
 
     render json: linked_json(
       @projects,
       WebApi::V1::ProjectSerializer,
-      params: jsonapi_serializer_params(instance_options),
-      include: %i[admin_publication project_images current_phase]
+      params: project_serializer_params(instance_options),
+      include: %i[admin_publication project_images current_phase highlighted_phase]
     )
   end
 
@@ -69,11 +81,8 @@ class WebApi::V1::ProjectsController < ApplicationController
   # OR are archived, ordered by last phase end_at (nulls first), creation date second and ID third.
   # => [Project]
   def index_finished_or_archived
-    # In this widget, we always want to remove all unlisted projects,
-    # even those that the user can moderate.
-    policy_context[:remove_unlisted] = 'remove_all_unlisted'
-
     projects = policy_scope(Project)
+    projects = ProjectsListedScopeService.new.remove_unlisted_projects(projects)
     projects = ProjectsFinderService.new(projects, current_user, params).finished_or_archived
 
     @projects = paginate projects
@@ -89,11 +98,8 @@ class WebApi::V1::ProjectsController < ApplicationController
   # AND (are followed by user OR relate to an idea, area, topic or folder followed by user),
   # ordered by the follow created_at (most recent first).
   def index_for_followed_item
-    # In this widget, we always want to remove all unlisted projects,
-    # even those that the user can moderate.
-    policy_context[:remove_unlisted] = 'remove_all_unlisted'
-
     projects = policy_scope(Project)
+    projects = ProjectsListedScopeService.new.remove_unlisted_projects(projects)
     projects = projects.not_draft
     projects = ProjectsFinderService.new(projects, current_user).followed_by_user
 
@@ -110,25 +116,16 @@ class WebApi::V1::ProjectsController < ApplicationController
   # AND in an active participatory phase (where user can do something).
   # Ordered by the end date of the current phase, soonest first (nulls last).
   def index_with_active_participatory_phase
-    # In this widget, we always want to remove all unlisted projects,
-    # even those that the user can moderate.
-    policy_context[:remove_unlisted] = 'remove_all_unlisted'
-
     projects = policy_scope(Project)
-    projects_and_descriptors = ProjectsFinderService.new(projects, current_user, params).participation_possible
-    projects = projects_and_descriptors[:projects]
+    projects = ProjectsListedScopeService.new.remove_unlisted_projects(projects)
+    projects = ProjectsFinderService.new(projects, current_user, params).participation_possible
 
     @projects = paginate projects
     @projects = @projects.includes(:project_images, phases: [:report, { permissions: [:groups] }])
 
     authorize @projects, :index_with_active_participatory_phase?
 
-    render json: linked_json(
-      @projects,
-      WebApi::V1::ProjectMiniSerializer,
-      params: jsonapi_serializer_params.merge(project_descriptor_pairs: projects_and_descriptors[:descriptor_pairs]),
-      include: %i[project_images current_phase]
-    )
+    base_render_mini_index
   end
 
   # For use with 'Areas or topics' homepage widget. Uses ProjectMiniSerializer.
@@ -136,11 +133,8 @@ class WebApi::V1::ProjectsController < ApplicationController
   # Else: Returns all non-draft projects that are visible to user, for the areas user follows or for all-areas.
   # Ordered by created_at, newest first.
   def index_for_areas
-    # In this widget, we always want to remove all unlisted projects,
-    # even those that the user can moderate.
-    policy_context[:remove_unlisted] = 'remove_all_unlisted'
-
     projects = policy_scope(Project)
+    projects = ProjectsListedScopeService.new.remove_unlisted_projects(projects)
     projects = ProjectsFinderService.new(projects, current_user, params).projects_for_areas
 
     @projects = paginate projects
@@ -155,14 +149,11 @@ class WebApi::V1::ProjectsController < ApplicationController
   # Returns all non-draft projects that are visible to user, for the selected topics.
   # Ordered by created_at, newest first.
   def index_for_topics
-    # In this widget, we always want to remove all unlisted projects,
-    # even those that the user can moderate.
-    policy_context[:remove_unlisted] = 'remove_all_unlisted'
-
     projects = policy_scope(Project)
+    projects = ProjectsListedScopeService.new.remove_unlisted_projects(projects)
     projects = projects
       .not_draft
-      .with_some_topics(params[:topics])
+      .with_some_global_topics(params[:topics])
       .order(created_at: :desc)
 
     @projects = paginate projects
@@ -174,15 +165,15 @@ class WebApi::V1::ProjectsController < ApplicationController
   end
 
   def index_for_admin
-    # In this endpoint, we only want to remove unlisted projects
-    # that the user cannot moderate.
-    policy_context[:remove_unlisted] = 'remove_unlisted_that_user_cannot_moderate'
-
     projects = policy_scope(Project).not_hidden
+    projects = ProjectsListedScopeService.new.remove_unlisted_that_user_cannot_moderate(
+      projects,
+      current_user
+    )
     projects = ProjectsFinderAdminService.execute(projects, params, current_user: current_user)
 
     projects = paginate projects
-    projects = projects.includes(:phases, :admin_publication, :project_images, :groups)
+    projects = projects.includes(:space, phases: [:report, :custom_form, { permissions: [:groups], project: :admin_publication }], admin_publication: [:parent], project_images: [], groups: [])
 
     moderators_per_project = UserRoleService.new.moderators_per_project(
       projects.pluck(:id)
@@ -194,7 +185,7 @@ class WebApi::V1::ProjectsController < ApplicationController
       projects,
       WebApi::V1::ProjectMiniAdminSerializer,
       params: jsonapi_serializer_params(
-        moderators_per_project: moderators_per_project
+        moderators_per_project:
       ),
       include: %i[phases project_images groups moderators]
     )
@@ -204,7 +195,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     render json: WebApi::V1::ProjectSerializer.new(
       @project,
       params: jsonapi_serializer_params.merge(use_cache: params[:use_cache], request: request),
-      include: %i[admin_publication project_images current_phase avatars]
+      include: %i[admin_publication project_images current_phase highlighted_phase avatars]
     ).serializable_hash
   end
 
@@ -215,7 +206,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   end
 
   def create
-    project = Project.new(permitted_attributes(Project))
+    project = Project.new(create_params)
     sidefx.before_create(project, current_user)
 
     created = Project.transaction do
@@ -284,18 +275,23 @@ class WebApi::V1::ProjectsController < ApplicationController
   end
 
   def update
-    params[:project][:area_ids] ||= [] if params[:project].key?(:area_ids)
-    params[:project][:topic_ids] ||= [] if params[:project].key?(:topic_ids)
+    process_due_status_transition(@project)
+    policy_context[:prior_record] = Project.find(@project.id)
+    @project.assign_attributes(update_params)
+    keep_completed_setup_steps(@project)
+    remove_image_if_requested!(@project, update_params, :header_bg)
 
-    project_params = permitted_attributes(@project)
-
-    @project.assign_attributes project_params
-    remove_image_if_requested!(@project, project_params, :header_bg)
+    # Authorize again here (in addition to the :authorize_project before_action)
+    # so ProjectPolicy#update? can inspect pending changes via dirty tracking —
+    # notably the rules around moving the project between folders / to root.
+    authorize @project
 
     sidefx.before_update(@project, current_user)
 
+    publication_email_enabled = params.dig(:project, :publication_email_enabled)
+
     if save_project(@project)
-      sidefx.after_update(@project, current_user)
+      sidefx.after_update(@project, current_user, publication_email_enabled:)
       render json: WebApi::V1::ProjectSerializer.new(
         @project,
         params: jsonapi_serializer_params,
@@ -307,6 +303,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   end
 
   def destroy
+    process_due_status_transition(@project)
     sidefx.before_destroy(@project, current_user)
     if @project.destroy
       sidefx.after_destroy(@project, current_user)
@@ -388,9 +385,21 @@ class WebApi::V1::ProjectsController < ApplicationController
     ).serializable_hash
   end
 
+  def publication_recipient_count
+    # Temporarily pretend the project is published (in-memory only) to compute the list
+    # of recipients, even for draft projects.
+    @project.admin_publication.publication_status = 'published'
+    notification_recipients = Notifications::ProjectPublished.recipients(@project)
+    opt_outs = EmailCampaigns::Consent.where(campaign_type: 'EmailCampaigns::Campaigns::ProjectPublished', consented: false)
+    recipients = notification_recipients.where.not(id: opt_outs.select(:user_id))
+
+    render json: raw_json({ count: recipients.count })
+  end
+
   def participant_counts
     projects = policy_scope(Project)
       .where(id: params[:project_ids])
+      .includes(:phases)
 
     authorize projects, :participant_counts?
 
@@ -407,18 +416,12 @@ class WebApi::V1::ProjectsController < ApplicationController
   end
 
   def save_project(project)
-    # Update folder_id only if it is provided in the request (even if it's nil)
-    if params[:project].key?(:folder_id)
-      project.folder_id = params.dig(:project, :folder_id)
-    end
-
     ActiveRecord::Base.transaction do
       project.save.tap do |saved|
         if saved
           # The project must be saved before performing the authorization because it requires
           # the admin publication to be created.
           authorize(project)
-          check_publication_inconsistencies!
         else
           skip_authorization
         end
@@ -428,34 +431,69 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def set_project
     @project = Project.find(params[:id])
+  end
+
+  def authorize_project
     authorize @project
   end
 
-  def check_publication_inconsistencies!
-    # This code is meant to be temporary to find the cause of the disappearing admin publication bugs
-    Project.all.each do |project|
-      next if project.valid?
+  def process_due_status_transition(publication)
+    admin_pub = publication.admin_publication
+    return unless admin_pub.scheduled_at&.<(Time.current)
 
-      errors = project&.errors&.details
+    ProcessScheduledPublicationTransitionsJob.perform_now(admin_pub)
+  end
 
-      # Skip a known case where we expect project to be invalid at this point
-      moved_folder = project.admin_publication&.parent_id_was == project.folder_id
-      assignee_error_only = errors == { :default_assignee_id => [{ :error => :assignee_can_not_moderate_project }] }
-      next if assignee_error_only && moved_folder
-
-      # Validation errors will appear in the Sentry error 'Additional Data'
-      ErrorReporter.report_msg("Project change would lead to inconsistencies! (id: #{project.id})", extra: errors || {})
+  def create_params
+    @create_params ||= permitted_attributes(Project).tap do |project_params|
+      admin_pub_attrs = project_params[:admin_publication_attributes]
+      assign_scheduled_by(admin_pub_attrs) if admin_pub_attrs
     end
+  end
+
+  def update_params
+    @update_params ||= begin
+      # When area_ids or global_topic_ids is sent as nil, they are dropped entirely by
+      # strong parameters since it expects an array. Converting nil to [] ensures the
+      # association is cleared as intended.
+      params[:project][:area_ids] ||= [] if params[:project].key?(:area_ids)
+      params[:project][:global_topic_ids] ||= [] if params[:project].key?(:global_topic_ids)
+
+      permitted_attributes(@project).tap do |project_params|
+        admin_pub_attrs = project_params[:admin_publication_attributes]
+        assign_scheduled_by(admin_pub_attrs) if admin_pub_attrs
+      end
+    end
+  end
+
+  # Merge, so a client with a stale copy can't drop steps the server added.
+  def keep_completed_setup_steps(project)
+    return unless project.completed_setup_steps_changed?
+
+    project.completed_setup_steps = project.completed_setup_steps_was | project.completed_setup_steps
+  end
+
+  def assign_scheduled_by(admin_publication_attrs)
+    attrs = admin_publication_attrs.slice(:scheduled_status, :scheduled_at)
+    return if attrs.keys.blank?
+
+    scheduling = attrs.values.any?
+    admin_publication_attrs[:scheduled_by_id] = scheduling ? current_user.id : nil
+  end
+
+  def project_serializer_params(extra_params = {})
+    jsonapi_serializer_params(
+      user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false),
+      **extra_params
+    )
   end
 
   def base_render_mini_index
     render json: linked_json(
       @projects,
       WebApi::V1::ProjectMiniSerializer,
-      params: jsonapi_serializer_params({
-        user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false)
-      }),
-      include: %i[project_images current_phase]
+      params: project_serializer_params,
+      include: %i[project_images highlighted_phase]
     )
   end
 end

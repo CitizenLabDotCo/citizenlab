@@ -1,10 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  settings: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.settings',
-    defaultMessage: 'Settings',
-  },
   view: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.view',
     defaultMessage: 'View',
@@ -34,9 +30,9 @@ export default defineMessages({
     defaultMessage: 'Anyone with the link can interact with the draft project',
   },
   participants: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participants',
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participants2',
     defaultMessage:
-      '{participantsCount, plural, one {1 participant} other {{participantsCount} participants}}',
+      '{participantsCount, plural, one {1 project participant} other {{participantsCount} project participants}}',
   },
   offlineVoters: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.offlineVoters',
@@ -69,6 +65,10 @@ export default defineMessages({
   publishedFinished: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.publishedFinished1',
     defaultMessage: 'Published - Finished',
+  },
+  scheduled: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.scheduledStatus',
+    defaultMessage: 'Scheduled',
   },
   draftStatus: {
     id: 'app.containers.AdminPage.ProjectEdit.draftStatus',
@@ -160,10 +160,6 @@ export default defineMessages({
   approvedBy: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approvedBy',
     defaultMessage: 'Approved by {name}',
-  },
-  editDescription: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.editDescription',
-    defaultMessage: 'Edit description',
   },
   public: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.public',

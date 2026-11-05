@@ -4,12 +4,18 @@ module PublicApi
   class PublicApiController < ActionController::API
     include ::AuthToken::Authenticable
     include ::Pundit::Authorization
+    include CallerMetadata
 
     around_action :switch_locale
     before_action :authenticate_api_client
     before_action :check_api_token
 
     rescue_from InvalidEnumParameterValueError, with: :render_problem_details
+
+    def append_info_to_payload(payload)
+      super
+      append_caller_info(payload, current_public_api_api_client&.id)
+    end
 
     def render_problem_details(exception)
       problem_details = {
@@ -56,17 +62,16 @@ module PublicApi
 
     # TODO: Raise errors for incorrectly formatted parameters
     def common_date_filters(base_query)
-      base_query = base_query.where(date_filter_where_clause('created_at', params[:created_at])) if params[:created_at]
-      base_query = base_query.where(date_filter_where_clause('updated_at', params[:updated_at])) if params[:updated_at]
+      base_query = base_query.where(created_at: parse_date_range(params[:created_at])) if params[:created_at]
+      base_query = base_query.where(updated_at: parse_date_range(params[:updated_at])) if params[:updated_at]
       base_query
     end
 
-    def date_filter_where_clause(date_field, date_values)
-      dates = date_values.split(',')
-      # TODO: fix SQL injection vulnerability?
-      start_date = dates[0].presence || '-infinity'
-      end_date = dates[1].presence || 'infinity'
-      "#{date_field} BETWEEN '#{start_date}' AND '#{end_date}'"
+    def parse_date_range(date_values)
+      start_date, end_date = date_values.split(',', 2)
+      start_time = start_date&.in_time_zone&.beginning_of_day
+      end_time = end_date&.in_time_zone&.end_of_day
+      start_time..end_time
     end
 
     # Default per page is 25, maximum is 100
@@ -76,9 +81,9 @@ module PublicApi
 
     private
 
-    def switch_locale(&action)
+    def switch_locale(&)
       locale = AppConfiguration.instance.closest_locale_to(requested_locale)
-      I18n.with_locale(locale, &action)
+      I18n.with_locale(locale, &)
     end
 
     def requested_locale
@@ -97,7 +102,7 @@ module PublicApi
 
     def check_api_token
       if (api_client = current_public_api_api_client)
-        api_client.used!
+        api_client.used!(request.user_agent)
       else
         head :unauthorized
       end

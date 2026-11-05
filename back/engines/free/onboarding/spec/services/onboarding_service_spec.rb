@@ -11,7 +11,7 @@ describe Onboarding::OnboardingService do
       create(
         :user,
         bio_multiloc: { en: "I'm a great bloke" },
-        custom_field_values: { custom_field.key => 'Quite often' }
+        custom_field_answers: [build(:custom_field_answer, key: custom_field.key, value: 'Quite often')]
       )
     end
 
@@ -25,13 +25,25 @@ describe Onboarding::OnboardingService do
     end
 
     it 'returns :complete_profile when the user has empty signup fields' do
-      user.update!(custom_field_values: {})
+      user.custom_field_answers.destroy_all
       expect(service.current_campaign(user)).to eq :complete_profile
     end
 
-    it 'returns :complete_profile when the user has no avatar configured' do
+    it 'returns :complete_profile when the user has no avatar configured and user_avatars feature fag is enabled' do
+      config = AppConfiguration.instance
+      config.settings['user_avatars']['enabled'] = true
+      config.save!
+
       user.remove_avatar!
       expect(service.current_campaign(user)).to eq :complete_profile
+    end
+
+    it 'returns :default when the user has no avatar configured and user_avatars feature flag is disabled' do
+      config = AppConfiguration.instance
+      config.settings['user_avatars']['enabled'] = false
+      config.save!
+      user.remove_avatar!
+      expect(service.current_campaign(user)).to eq :default
     end
 
     it 'returns :default when a user with an incomplete profile dismissed :complete_profile' do
@@ -64,10 +76,10 @@ describe Onboarding::OnboardingService do
     context 'verification' do
       before do
         @app_config = AppConfiguration.instance.tap do |cfg|
-          cfg.settings['verification'] = {
+          cfg.settings['id_config'] = {
             allowed: true,
             enabled: true,
-            verification_methods: [
+            id_methods: [
               { name: 'fake_sso' }
             ]
           }
@@ -91,18 +103,10 @@ describe Onboarding::OnboardingService do
           expect(service.current_campaign(user_not_verified)).not_to eq :verification
         end
 
-        context 'when verification is not active' do
-          it 'does not return :verification' do
-            SettingsService.new.deactivate_feature! 'verification'
-            Onboarding::CampaignDismissal.create(user: user_not_verified, campaign_name: 'verification')
-            expect(service.current_campaign(user_not_verified)).not_to eq :verification
-          end
-        end
-
         context 'when there are no verification methods' do
           it 'does not return :verification' do
             settings = AppConfiguration.instance.settings
-            settings['verification']['verification_methods'] = []
+            settings['id_config']['id_methods'] = []
             AppConfiguration.instance.update!(settings:)
             Onboarding::CampaignDismissal.create(user: user_not_verified, campaign_name: 'verification')
             expect(service.current_campaign(user_not_verified)).not_to eq :verification
@@ -112,7 +116,7 @@ describe Onboarding::OnboardingService do
         context 'when all verification methods have "hide_from_profile = true"' do
           it 'does not return :verification' do
             settings = AppConfiguration.instance.settings
-            settings['verification']['verification_methods'] = [
+            settings['id_config']['id_methods'] = [
               { name: 'fake_sso', hide_from_profile: true }
             ]
             AppConfiguration.instance.update!(settings:)

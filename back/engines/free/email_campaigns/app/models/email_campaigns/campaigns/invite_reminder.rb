@@ -21,6 +21,7 @@
 #  intro_multiloc       :jsonb
 #  button_text_multiloc :jsonb
 #  context_type         :string
+#  channel              :string           default("email"), not null
 #
 # Indexes
 #
@@ -34,6 +35,7 @@
 #
 module EmailCampaigns
   class Campaigns::InviteReminder < Campaign
+    include Consentable
     include ActivityTriggerable
     include Disableable
     include LifecycleStageRestrictable
@@ -46,6 +48,11 @@ module EmailCampaigns
 
     def mailer_class
       InviteReminderMailer
+    end
+
+    # Only invitees get this email, so only they see it in their email settings.
+    def self.consentable_roles
+      %w[invite_pending]
     end
 
     def activity_triggers
@@ -91,7 +98,7 @@ module EmailCampaigns
     end
 
     def self.trigger_multiloc_key
-      'email_campaigns.admin_labels.trigger.7_days_after_invite_is_sent'
+      'email_campaigns.admin_labels.trigger.3_days_after_invite_is_sent'
     end
   end
 end

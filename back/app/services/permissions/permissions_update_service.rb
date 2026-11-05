@@ -2,10 +2,17 @@
 
 class Permissions::PermissionsUpdateService
   # scope = phase or null
+  #
+  # Inheritable actions are not created here: without a permission of their own
+  # they follow the global 'visiting' permission, and only get a row once an
+  # admin overrides them. That is every phase action, plus the global
+  # 'attending_event'. The remaining global actions have nothing to inherit
+  # from, so they are still created eagerly.
+  # See Permissions::PermissionInheritanceService.
   def update_permissions_for_scope(scope)
     actions = Permission.available_actions scope
     remove_extras_actions(scope, actions)
-    add_missing_actions(scope, actions)
+    add_missing_actions(scope, actions.reject { |action| inheritance_service.inheritable?(scope, action) })
     fix_permitted_by(scope)
   end
 
@@ -39,6 +46,10 @@ class Permissions::PermissionsUpdateService
   end
 
   private
+
+  def inheritance_service
+    @inheritance_service ||= Permissions::PermissionInheritanceService.new
+  end
 
   def remove_extras_actions(scope, actions = nil)
     actions ||= Permission.available_actions(scope)

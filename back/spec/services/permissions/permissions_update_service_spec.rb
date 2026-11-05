@@ -5,10 +5,6 @@ require 'rails_helper'
 describe Permissions::PermissionsUpdateService do
   let(:service) { described_class.new }
 
-  before do
-    SettingsService.new.activate_feature! 'user_confirmation'
-  end
-
   describe '#update_all_permissions' do
     let(:project) { create(:project) }
     let!(:invalid_permission) do
@@ -26,16 +22,17 @@ describe Permissions::PermissionsUpdateService do
   end
 
   describe '#update_permissions_for_scope' do
-    it 'changes the permissions for a phase when the method is changed' do
+    it 'removes the overridden permissions that the new method does not support' do
       phase = create(:phase, participation_method: 'ideation', with_permissions: true)
       expect(phase.permissions.pluck(:action)).to match_array %w[posting_idea commenting_idea reacting_idea attending_event]
 
       phase.update!(participation_method: 'voting', voting_method: 'budgeting', ideas_order: 'random')
       service.update_permissions_for_scope(phase)
-      expect(phase.permissions.pluck(:action)).to match_array %w[voting commenting_idea attending_event]
+      expect(phase.permissions.pluck(:action)).to match_array %w[commenting_idea attending_event]
     end
 
-    it 'changes permitted_by to "users" when changing from native_survey to ideation if permitted_by is "everyone"' do
+    it 'does not change permitted_by to "users" when changing from native_survey to ideation if permitted_by is "everyone"' do
+      # It used to be that permitted_by was changed to "users" in this case. Now not anymore.
       phase = create(:native_survey_phase, with_permissions: true)
       phase.permissions.where(action: 'posting_idea').update!(permitted_by: 'everyone')
       expect(phase.permissions.pluck(:action)).to match_array %w[posting_idea attending_event]
@@ -43,13 +40,15 @@ describe Permissions::PermissionsUpdateService do
 
       phase.update!(participation_method: 'ideation', input_term: 'idea')
       service.update_permissions_for_scope(phase)
-      expect(phase.permissions.pluck(:action)).to match_array %w[posting_idea commenting_idea reacting_idea attending_event]
-      expect(phase.permissions.pluck(:permitted_by)).to match_array %w[users users users users]
+      # commenting_idea and reacting_idea are not created: they inherit the
+      # global 'visiting' permission until an admin overrides them.
+      expect(phase.permissions.pluck(:action)).to match_array %w[posting_idea attending_event]
+      expect(phase.permissions.pluck(:permitted_by)).to match_array %w[everyone users]
     end
 
     it 'does not change permitted_by to "users" for external surveys permitted_by "everyone"' do
       phase = create(:typeform_survey_phase, with_permissions: true)
-      permission = phase.permissions.first
+      permission = phase.permissions.find_by!(action: 'taking_survey')
       permission.update!(permitted_by: 'everyone')
       service.update_permissions_for_scope(phase)
 
@@ -64,16 +63,26 @@ describe Permissions::PermissionsUpdateService do
 
       phase.update!(participation_method: 'ideation', input_term: 'idea')
       service.update_permissions_for_scope(phase)
-      expect(phase.permissions.pluck(:action)).to match_array %w[posting_idea commenting_idea reacting_idea attending_event]
-      expect(phase.permissions.pluck(:permitted_by)).to match_array %w[users users users users]
+      expect(phase.permissions.pluck(:action)).to match_array %w[posting_idea attending_event]
+      expect(phase.permissions.pluck(:permitted_by)).to match_array %w[users users]
     end
 
-    it 'sets all permissions to "users" when creating new permissions' do
+    it 'does not create permissions for a phase, which inherits them instead' do
       phase = create(:phase)
       expect(phase.permissions).to be_empty
 
       service.update_permissions_for_scope(phase)
-      expect(phase.permissions.pluck(:permitted_by)).to match_array %w[users users users users]
+      expect(phase.permissions.reload).to be_empty
+    end
+
+    it 'still creates the global permissions that have nothing to inherit from' do
+      Permission.where(permission_scope: nil).destroy_all
+
+      service.update_permissions_for_scope(nil)
+      # attending_event is not created: it inherits the global 'visiting'
+      # permission until an admin overrides it.
+      expect(Permission.where(permission_scope: nil).pluck(:action))
+        .to match_array %w[visiting following]
     end
   end
 end

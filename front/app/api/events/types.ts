@@ -1,4 +1,3 @@
-import { RouteType } from 'routes';
 import { Multiloc, ILinks, IRelationship } from 'typings';
 
 import { PublicationStatus } from 'api/projects/types';
@@ -25,7 +24,7 @@ export interface IEventData {
     attendees_count: number;
     maximum_attendees: number | null;
     attend_button_multiloc?: Multiloc;
-    using_url?: RouteType;
+    using_url?: string;
     online_link?: string | null;
   };
   relationships: {
@@ -52,6 +51,9 @@ type SortType = 'start_at' | '-start_at';
 export interface InputParameters {
   projectIds?: string[];
   staticPageId?: string;
+  areas?: string[];
+  globalTopics?: string[];
+  spaces?: string[];
   endsOnOrAfterDate?: string;
   endsBeforeDate?: string;
   currentAndFutureOnly?: boolean;
@@ -62,6 +64,7 @@ export interface InputParameters {
   projectPublicationStatuses?: PublicationStatus[];
   attendeeId?: string;
   ongoing_during?: (string | null)[]; // [startDate, endDate], use null for open ended
+  show_unlisted_events_user_can_moderate?: boolean;
 }
 export interface IEvent {
   data: IEventData;
@@ -84,7 +87,7 @@ export interface IEventProperties {
   location_point_geojson?: GeoJSON.Point | null;
   online_link?: string;
   attend_button_multiloc?: Multiloc;
-  using_url?: RouteType;
+  using_url?: string;
   maximum_attendees?: number | null;
 }
 

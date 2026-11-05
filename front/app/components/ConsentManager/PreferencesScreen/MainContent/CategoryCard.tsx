@@ -94,6 +94,7 @@ interface Props {
   checked: boolean;
   disableUncheck?: boolean;
   onChange: (category: TCategory, value: boolean) => void;
+  autoFocus?: boolean;
 }
 
 const DestinationName = ({
@@ -131,6 +132,7 @@ const CategoryCard = ({
   checked,
   onChange,
   disableUncheck,
+  autoFocus,
 }: Props) => {
   const { data: appConfig } = useAppConfiguration();
 
@@ -155,6 +157,7 @@ const CategoryCard = ({
             </Title>
           </legend>
           <Radio
+            autoFocus={autoFocus && checked === true}
             onChange={
               category === 'required' ? undefined : handleChange(category, true)
             }
@@ -166,6 +169,7 @@ const CategoryCard = ({
             isRequired
           />
           <Radio
+            autoFocus={autoFocus && checked === false}
             onChange={
               category === 'required'
                 ? undefined

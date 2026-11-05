@@ -1,0 +1,35 @@
+# frozen_string_literal: true
+
+class McpServer::Tools::ListFolders < McpServer::BaseTool
+  def name = 'list_folders'
+  def annotations = READ_ANNOTATIONS
+  def description = 'Lists project folders. Search by title.'
+
+  def input_schema
+    {
+      properties: {
+        search: { type: 'string', description: 'Search folders by title' },
+        **PAGINATION_SCHEMA
+      }
+    }
+  end
+
+  class Runner < McpServer::BaseTool::Runner
+    def run
+      finder_params = params.slice(:search)
+
+      scope = FoldersFinderAdminService.execute(
+        ProjectFolders::Folder.all,
+        finder_params
+      )
+
+      paginated_response(
+        'folders',
+        scope,
+        **params.slice(:page, :per_page),
+        serializer: McpServer::Serializers::Folder,
+        params: { current_user: }
+      )
+    end
+  end
+end

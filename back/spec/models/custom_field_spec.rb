@@ -75,6 +75,10 @@ class TestVisitor < FieldVisitorService
     'polygon from visitor'
   end
 
+  def visit_multipoint(_field)
+    'multipoint from visitor'
+  end
+
   def visit_linear_scale(_field)
     'linear_scale from visitor'
   end
@@ -128,6 +132,16 @@ RSpec.describe CustomField do
     end
   end
 
+  describe '#input_type_strategy' do
+    it 'has a strategy class for every INPUT_TYPE' do
+      CustomField::INPUT_TYPES.each do |input_type|
+        strategy_class_name = "InputTypeStrategy::#{input_type.camelize}"
+        expect { strategy_class_name.constantize }.not_to raise_error,
+          "Missing InputTypeStrategy class for '#{input_type}'. Expected #{strategy_class_name} to exist."
+      end
+    end
+  end
+
   describe '#logic?' do
     it 'returns true when there is logic' do
       field.logic = { 'rules' => [{ if: 2, goto_page_id: 'some_page_id' }] }
@@ -149,54 +163,31 @@ RSpec.describe CustomField do
     end
   end
 
-  describe '#file_upload?' do
-    it 'returns true when the input_type is "file_upload"' do
-      files_field = described_class.new input_type: 'file_upload'
-      expect(files_field.file_upload?).to be true
+  describe '#user_field_in_form?' do
+    it 'returns true for fields with the user-field-in-form key prefix' do
+      field = build(:custom_field, key: UserFieldsInFormService.prefix_key('gender'))
+      expect(field.user_field_in_form?).to be true
     end
 
-    it 'returns true when the input_type is "shapefile_upload"' do
-      files_field = described_class.new input_type: 'shapefile_upload'
-      expect(files_field.file_upload?).to be true
-    end
-
-    it 'returns false otherwise' do
-      other_field = described_class.new input_type: 'something_else'
-      expect(other_field.file_upload?).to be false
+    it 'returns false for fields without the prefix' do
+      expect(build(:custom_field, key: 'gender').user_field_in_form?).to be false
+      expect(build(:custom_field, key: nil).user_field_in_form?).to be false
     end
   end
 
-  describe '#multiloc?' do
-    it 'returns true when the input_type is "text_multiloc"' do
-      files_field = described_class.new input_type: 'text_multiloc'
-      expect(files_field.multiloc?).to be true
+  describe '#clear_logic_unless_supported' do
+    it 'saves logic when the field supports logic' do
+      field = create(:custom_field, resource: create(:custom_form), input_type: 'select')
+      field.logic = { 'rules' => [{ 'if' => 2, 'goto_page_id' => 'some_page_id' }] }
+      field.save!
+      expect(field.logic).to eq({ 'rules' => [{ 'if' => 2, 'goto_page_id' => 'some_page_id' }] })
     end
 
-    it 'returns true when the input_type is "multiline_text_multiloc"' do
-      files_field = described_class.new input_type: 'multiline_text_multiloc'
-      expect(files_field.multiloc?).to be true
-    end
-
-    it 'returns true when the input_type is "html_multiloc"' do
-      files_field = described_class.new input_type: 'html_multiloc'
-      expect(files_field.multiloc?).to be true
-    end
-
-    it 'returns false otherwise' do
-      other_field = described_class.new input_type: 'something_else'
-      expect(other_field.multiloc?).to be false
-    end
-  end
-
-  describe '#page?' do
-    it 'returns true when the input_type is "page"' do
-      page_field = described_class.new input_type: 'page'
-      expect(page_field.page?).to be true
-    end
-
-    it 'returns false otherwise' do
-      other_field = described_class.new input_type: 'something_else'
-      expect(other_field.page?).to be false
+    it 'does not save logic when the field does not support logic' do
+      field = create(:custom_field, resource: create(:custom_form), input_type: 'multiselect')
+      field.logic = { 'rules' => [{ 'if' => 2, 'goto_page_id' => 'some_page_id' }] }
+      field.save!
+      expect(field.logic).to eq({})
     end
   end
 
@@ -326,6 +317,16 @@ RSpec.describe CustomField do
       cf = create(:custom_field, key: nil, title_multiloc: { 'ar-SA': 'الرئيسية' })
       expect(cf.key).to be_present
     end
+
+    it 'generates a key from the title with its markup already stripped' do
+      cf = create(:custom_field, key: nil, title_multiloc: { 'en' => '<b>Age</b>' })
+      expect(cf.key).to start_with 'age_'
+    end
+
+    it 'generates a key from a title carrying a payload without keeping any of it' do
+      cf = create(:custom_field, key: nil, title_multiloc: { 'en' => '<img src=x onerror=alert(1)>hi' })
+      expect(cf.key).to start_with 'hi_'
+    end
   end
 
   context 'when domicile field is created' do
@@ -351,14 +352,13 @@ RSpec.describe CustomField do
     end
   end
 
-  describe 'description sanitizer' do
-    it 'sanitizes script tags in the description' do
-      custom_field = create(:custom_field, description_multiloc: {
-        'en' => '<p>Test</p><script>This content will stay</script><p>This content will also stay</p><a href="http://www.citizenlab.co" rel="nofollow">Click</a>'
-      })
-      expect(custom_field.description_multiloc).to eq({ 'en' => '<p>Test</p>This content will stay<p>This content will also stay</p><a href="http://www.citizenlab.co" rel="nofollow">Click</a>' })
-    end
+  it_behaves_like 'a sanitized html_multiloc', factory: :custom_field
+  it_behaves_like 'a plain text multiloc', factory: :custom_field
+  it_behaves_like 'a plain text multiloc', factory: :custom_field, attribute: :page_button_label_multiloc
+  it_behaves_like 'a plain text multiloc', factory: :custom_field, attribute: :linear_scale_label_1_multiloc
+  it_behaves_like 'a plain text multiloc', factory: :custom_field, attribute: :linear_scale_label_11_multiloc
 
+  describe 'description sanitizer' do
     it 'does not sanitize allowed tags in the description' do
       description_multiloc = { 'en' => <<-DESC
       <h2> This is fine ! </h2>
@@ -435,45 +435,63 @@ RSpec.describe CustomField do
     end
   end
 
-  describe 'visible_to_public?' do
-    it 'returns true for a default input field' do
-      field = build(:custom_field, :for_custom_form, input_type: 'text_multiloc', code: 'title_multiloc')
-      expect(field.visible_to_public?).to be true
+  describe 'answers_visible_to' do
+    it 'defaults to moderators' do
+      field = create(:custom_field, :for_custom_form)
+      expect(field.answers_visible_to_moderators?).to be true
     end
 
-    it 'returns false for a custom input field' do
-      field = build(:custom_field, :for_custom_form, input_type: 'number')
-      expect(field.visible_to_public?).to be false
+    it 'can be set to public' do
+      field = create(:custom_field, :for_custom_form, answers_visible_to: 'public')
+      expect(field.reload.answers_visible_to_public?).to be true
     end
 
-    it 'returns true for a custom input page' do
-      field = build(:custom_field_page, :for_custom_form)
-      expect(field.visible_to_public?).to be true
+    it 'rejects unknown values' do
+      field = build(:custom_field, :for_custom_form, answers_visible_to: 'everyone')
+      expect(field).to be_invalid
+      expect(field.errors.details[:answers_visible_to]).to include(error: :inclusion, value: 'everyone')
     end
 
-    it 'returns true for a custom input end page' do
-      field = build(:custom_field_form_end_page, :for_custom_form)
-      expect(field.visible_to_public?).to be true
+    it 'must be public for a built-in input field' do
+      field = build(:default_input_field, answers_visible_to: 'moderators')
+      expect(field).to be_invalid
+      expect(field.errors.details[:answers_visible_to]).to include(error: :inclusion, value: 'moderators')
     end
 
-    it 'returns false for a default registration field' do
-      field = build(:custom_field_birthyear)
-      expect(field.visible_to_public?).to be false
+    it 'must be moderators for a registration field' do
+      field = build(:custom_field, :for_registration, answers_visible_to: 'public')
+      expect(field).to be_invalid
+      expect(field.errors.details[:answers_visible_to]).to include(error: :inclusion, value: 'public')
     end
 
-    it 'returns false for a custom registration field' do
-      field = build(:custom_field_select, :for_registration)
-      expect(field.visible_to_public?).to be false
+    it 'must be moderators for a page' do
+      field = build(:custom_field_page, :for_custom_form, answers_visible_to: 'public')
+      expect(field).to be_invalid
+      expect(field.errors.details[:answers_visible_to]).to include(error: :inclusion, value: 'public')
+    end
+  end
+
+  describe 'show_as_filter' do
+    it 'defaults to false' do
+      field = create(:custom_field_select, :for_custom_form)
+      expect(field.show_as_filter).to be false
     end
 
-    it 'returns true for a custom registration page' do
-      field = build(:custom_field_page, :for_registration)
-      expect(field.visible_to_public?).to be true
+    it 'can be set for a public choice question' do
+      field = create(:custom_field_select, :for_custom_form, answers_visible_to: 'public', show_as_filter: true)
+      expect(field.reload.show_as_filter).to be true
     end
 
-    it 'returns true for a custom registration end page' do
-      field = build(:custom_field_form_end_page, :for_registration)
-      expect(field.visible_to_public?).to be true
+    it 'cannot be set for a private choice question' do
+      field = build(:custom_field_select, :for_custom_form, answers_visible_to: 'moderators', show_as_filter: true)
+      expect(field).to be_invalid
+      expect(field.errors.details[:show_as_filter]).to include(error: :inclusion)
+    end
+
+    it 'cannot be set for a public text question' do
+      field = build(:custom_field_text, :for_custom_form, answers_visible_to: 'public', show_as_filter: true)
+      expect(field).to be_invalid
+      expect(field.errors.details[:show_as_filter]).to include(error: :inclusion)
     end
   end
 
@@ -492,6 +510,112 @@ RSpec.describe CustomField do
     it 'cannot be less than 0' do
       field.minimum_select_count = -1
       expect(field.valid?).to be false
+    end
+  end
+
+  describe 'topic_ids field with select counts' do
+    let(:project) { create(:single_phase_native_survey_project) }
+    let(:custom_form) { create(:custom_form, participation_context: project.phases.first) }
+    let(:field) { create(:custom_field, resource: custom_form, input_type: 'topic_ids', select_count_enabled: true) }
+
+    it 'accepts valid minimum_select_count' do
+      field.minimum_select_count = 2
+      expect(field.valid?).to be true
+    end
+
+    it 'accepts valid maximum_select_count' do
+      field.maximum_select_count = 5
+      expect(field.valid?).to be true
+    end
+
+    it 'cannot have minimum_select_count less than 0' do
+      field.minimum_select_count = -1
+      expect(field.valid?).to be false
+    end
+
+    it 'cannot have maximum_select_count less than 0' do
+      field.maximum_select_count = -1
+      expect(field.valid?).to be false
+    end
+
+    it 'supports select_count_enabled flag' do
+      field.select_count_enabled = true
+      field.minimum_select_count = 1
+      field.maximum_select_count = 3
+      expect(field.valid?).to be true
+    end
+
+    it 'cannot have maximum_select_count less than minimum_select_count' do
+      field.minimum_select_count = 5
+      field.maximum_select_count = 3
+      expect(field.valid?).to be false
+      expect(field.errors[:maximum_select_count]).to be_present
+    end
+
+    it 'can have maximum_select_count equal to minimum_select_count' do
+      field.minimum_select_count = 3
+      field.maximum_select_count = 3
+      expect(field.valid?).to be true
+    end
+
+    context 'when select_count_enabled is false' do
+      before { field.select_count_enabled = false }
+
+      it 'cannot set minimum_select_count' do
+        field.minimum_select_count = 2
+        expect(field.valid?).to be false
+        expect(field.errors[:minimum_select_count]).to be_present
+      end
+
+      it 'cannot set maximum_select_count' do
+        field.maximum_select_count = 5
+        expect(field.valid?).to be false
+        expect(field.errors[:maximum_select_count]).to be_present
+      end
+
+      it 'is valid when both counts are nil' do
+        field.minimum_select_count = nil
+        field.maximum_select_count = nil
+        expect(field.valid?).to be true
+      end
+    end
+  end
+
+  describe 'multipoint field with pin counts' do
+    let(:project) { create(:single_phase_native_survey_project) }
+    let(:custom_form) { create(:custom_form, participation_context: project.phases.first) }
+    let(:field) { create(:custom_field_multipoint, resource: custom_form, select_count_enabled: true) }
+
+    it 'supports select counts' do
+      expect(field.supports_select_count?).to be true
+    end
+
+    it 'accepts a minimum and maximum number of pins' do
+      field.minimum_select_count = 2
+      field.maximum_select_count = 5
+      expect(field.valid?).to be true
+    end
+
+    it 'cannot have maximum_select_count less than minimum_select_count' do
+      field.minimum_select_count = 5
+      field.maximum_select_count = 3
+      expect(field.valid?).to be false
+      expect(field.errors[:maximum_select_count]).to be_present
+    end
+
+    it 'cannot have minimum_select_count less than 0' do
+      field.minimum_select_count = -1
+      expect(field.valid?).to be false
+    end
+
+    context 'when select_count_enabled is false' do
+      before { field.select_count_enabled = false }
+
+      it 'cannot set the pin counts' do
+        field.minimum_select_count = 2
+        expect(field.valid?).to be false
+        expect(field.errors[:minimum_select_count]).to be_present
+      end
     end
   end
 
@@ -523,44 +647,6 @@ RSpec.describe CustomField do
     end
   end
 
-  describe '#linear_scale_print_description' do
-    let(:field) do
-      create(
-        :custom_field_linear_scale,
-        maximum: 3,
-        linear_scale_label_1_multiloc: { en: 'Bad', 'fr-FR': 'Mauvais' },
-        linear_scale_label_2_multiloc: { en: 'Neutral', 'fr-FR': 'Neutre' },
-        linear_scale_label_3_multiloc: { en: 'Good', 'fr-FR': 'Bon' },
-        linear_scale_label_4_multiloc: {
-          en: 'Not in use (beyond maximum)', 'fr-FR': 'Non utilisé (au-delà du maximum)'
-        },
-        linear_scale_label_5_multiloc: {
-          en: 'Not in use (beyond maximum)', 'fr-FR': 'Non utilisé (au-delà du maximum)'
-        },
-        linear_scale_label_6_multiloc: {
-          en: 'Not in use (beyond maximum)', 'fr-FR': 'Non utilisé (au-delà du maximum)'
-        },
-        linear_scale_label_7_multiloc: {
-          en: 'Not in use (beyond maximum)', 'fr-FR': 'Non utilisé (au-delà du maximum)'
-        }
-      )
-    end
-
-    it 'returns the linear scale print description for the specified locale' do
-      expect(field.linear_scale_print_description('en')).to eq 'Please write a number between 1 (Bad) and 3 (Good) only'
-      expect(field.linear_scale_print_description('fr-FR'))
-        .to eq 'Veuillez écrire un nombre entre 1 (Mauvais) et 3 (Bon) uniquement'
-    end
-
-    it 'returns default copy if the locale values is/are not specified' do
-      field.linear_scale_label_1_multiloc = { en: '' }
-      field.linear_scale_label_3_multiloc = { en: '' }
-
-      expect(field.linear_scale_print_description('en')).to eq 'Please write a number between 1 and 3 only'
-      expect(field.linear_scale_print_description('fr-FR')).to eq 'Veuillez écrire un nombre entre 1 et 3 uniquement'
-    end
-  end
-
   describe '#nth_linear_scale_multiloc' do
     let(:field) do
       create(
@@ -577,19 +663,25 @@ RSpec.describe CustomField do
   end
 
   describe '#average_rankings' do
-    let!(:field) { create(:custom_field_ranking) }
+    let!(:custom_form) { create(:custom_form) }
+    let!(:field) { create(:custom_field_ranking, resource: custom_form) }
     let!(:option1) { create(:custom_field_option, custom_field: field, key: 'by_foot') }
     let!(:option2) { create(:custom_field_option, custom_field: field, key: 'by_bike') }
     let!(:option3) { create(:custom_field_option, custom_field: field, key: 'by_train') }
     let!(:option4) { create(:custom_field_option, custom_field: field, key: 'by_horse') }
 
-    it 'works' do
-      create(:idea, custom_field_values: { field.key => %w[by_bike by_horse by_train by_foot] })
-      create(:idea, custom_field_values: { field.key => %w[by_train by_bike by_foot by_horse] })
-      create(:idea, custom_field_values: {})
-      create(:idea, custom_field_values: { field.key => %w[by_horse by_foot by_train by_bike] })
-      create(:idea, custom_field_values: { field.key => %w[by_bike by_foot by_train by_horse] })
-      excluded_idea = create(:idea, custom_field_values: { field.key => %w[by_bike by_horse by_foot by_train] })
+    def create_idea(ranking = nil)
+      answers = ranking ? [build(:custom_field_answer, key: field.key, value: ranking, custom_field: field)] : []
+      create(:idea, project: custom_form.participation_context, custom_field_answers: answers)
+    end
+
+    it 'calculates average rankings for field options' do
+      create_idea(%w[by_bike by_horse by_train by_foot])
+      create_idea(%w[by_train by_bike by_foot by_horse])
+      create_idea
+      create_idea(%w[by_horse by_foot by_train by_bike])
+      create_idea(%w[by_bike by_foot by_train by_horse])
+      excluded_idea = create_idea(%w[by_bike by_horse by_foot by_train])
 
       expect(field.average_rankings(Idea.where.not(id: [excluded_idea.id]))).to eq({
         'by_bike' => 2,
@@ -607,13 +699,18 @@ RSpec.describe CustomField do
     let!(:option3) { create(:custom_field_option, custom_field: field, key: 'by_train') }
     let!(:option4) { create(:custom_field_option, custom_field: field, key: 'by_horse') }
 
-    it 'works' do
-      create(:user, custom_field_values: { field.key => %w[by_bike by_horse by_train by_foot] })
-      create(:user, custom_field_values: { field.key => %w[by_train by_bike by_foot by_horse] })
-      create(:user, custom_field_values: {})
-      create(:user, custom_field_values: { field.key => %w[by_horse by_foot by_train by_bike] })
-      create(:user, custom_field_values: { field.key => %w[by_bike by_foot by_train by_horse] })
-      excluded_user = create(:user, custom_field_values: { field.key => %w[by_bike by_horse by_foot by_train] })
+    def create_user(ranking = nil)
+      answers = ranking ? [build(:custom_field_answer, key: field.key, value: ranking, custom_field: field)] : []
+      create(:user, custom_field_answers: answers)
+    end
+
+    it 'returns ranking position counts for each option' do
+      create_user(%w[by_bike by_horse by_train by_foot])
+      create_user(%w[by_train by_bike by_foot by_horse])
+      create_user
+      create_user(%w[by_horse by_foot by_train by_bike])
+      create_user(%w[by_bike by_foot by_train by_horse])
+      excluded_user = create_user(%w[by_bike by_horse by_foot by_train])
 
       expect(field.rankings_counts(User.where.not(id: [excluded_user.id]))).to eq({
         'by_foot' => {

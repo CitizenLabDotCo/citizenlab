@@ -1,6 +1,7 @@
 import { isEqual } from 'lodash-es';
-import { RouteType } from 'routes';
 import { Multiloc } from 'typings';
+
+import { INavbarItem } from 'api/navbar/types';
 
 export const TEMP_DROPDOWN_ITEM_STYLES = `
   display: inline-block;
@@ -12,9 +13,11 @@ export const TEMP_DROPDOWN_ITEM_STYLES = `
 `;
 
 export interface NavbarItemProps {
-  linkTo: RouteType;
+  // null for dropdown items, which carry `navbarItem` instead.
+  linkTo: string | null;
   onlyActiveOnIndex?: boolean;
   navigationItemTitle: Multiloc;
+  navbarItem?: INavbarItem;
 }
 
 const createTempElement = (
@@ -109,9 +112,10 @@ export const calculateAvailableWidth = (
 
 export const createTempElementsForMeasurement = (
   navbarItemPropsArray: Array<{
-    linkTo: RouteType | null;
+    linkTo: string | null;
     onlyActiveOnIndex: boolean;
     navigationItemTitle: Multiloc;
+    navbarItem?: INavbarItem;
   }>,
   hiddenContainer: HTMLElement,
   localize: (multiloc: Multiloc) => string
@@ -121,13 +125,20 @@ export const createTempElementsForMeasurement = (
   const allItems: NavbarItemProps[] = [];
 
   navbarItemPropsArray.forEach((navbarItemProps) => {
-    const { linkTo, onlyActiveOnIndex, navigationItemTitle } = navbarItemProps;
+    const { linkTo, onlyActiveOnIndex, navigationItemTitle, navbarItem } =
+      navbarItemProps;
 
-    if (linkTo) {
+    // A regular item has a linkTo; a dropdown item has a navbarItem.
+    if (linkTo || navbarItem) {
       const titleText = localize(navigationItemTitle);
       const tempElement = createTempElement(titleText, hiddenContainer);
       tempHTMLElements.push(tempElement);
-      allItems.push({ linkTo, onlyActiveOnIndex, navigationItemTitle });
+      allItems.push({
+        linkTo,
+        onlyActiveOnIndex,
+        navigationItemTitle,
+        navbarItem,
+      });
     }
   });
 

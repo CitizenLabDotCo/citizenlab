@@ -1,0 +1,29 @@
+# Context
+Currently we support InputTopics to categorize ideas, which a user can pick when posting their idea. The InputTopics available are configured per project. We also have DefaultInputTopics. They define which InputTopics should be created for new projects, and hence follows the same structure.
+
+# Goal   
+We want to implement a change where InputTopics, currently an ordered list, become a hierarchy with topics and subtopics.
+
+# Caveat: GlobalTopic
+
+The codebase also contains GlobalTopics, which are used to categorize Projects. These should stay exactly as they are, and not become a hierarchy!
+
+# Implementation
+
+- Use https://github.com/collectiveidea/awesome_nested_set Gem for the implementation, like we already do in e.g. the Comment model
+- Since trees managed by awesome_nested_set are ordered, the `ordering` column should be removed
+- The change must happen to both InputTopic and DefaultInputTopic. The latter defines which InputTopics should be created for new projects, and hence follows the same structure.
+- The interface for defining topics and default topics should change to reflect the hierarchy. The user should be able to define tags and subtags. The list view should show both, with subtags living under the tags.
+- In terms of behavior of the platform in general, nothing should change after we release this change. All platforms should have lists of InputTopics with only root topics to begin with
+- We don't want to support hierarchies more than 1 level (even if the gem supports it), but ideally the code can deal with this if we ever want to.
+- In order to minimize the front-end impact wherever we display input_topics, the back-end should add a `full_title_multiloc` attribute to an InputTopic which looks like `topic_title > subtopic_title`. This can be used by the FE instead of the current `title_multiloc`
+- Can inputs be classified in the level-1 topics directly, even if that level-1 topic has subtopics?
+  ⇒ Yes, required in case there are no subtopics (everywhere, right now), and when the topic hierarchy evolves over time
+- Can ideas be simultaneously classified in both the level-1 its child level-2 topic?
+  ⇒ No, should be prohibited, only in level 2 and not in its parent at the same time. We should silently clean up the data in case a user or a system attempts to do so.
+- If a subtopic is deleted, should the associated idas automatically be assigned to the parent topic (if no sibling subtopic was assigned too)
+  ⇒ Yes
+- If a parent topic is deleted, should all the subtopics be deleted as well?
+  ⇒ Yes, but with proper and clear warning in the UI
+- Do filtering operations on a level-1 filter return data in subtopics as well?
+  ⇒ By default, yes. The API should present an option to filter ideas by exact match topic, as it might depend case by case

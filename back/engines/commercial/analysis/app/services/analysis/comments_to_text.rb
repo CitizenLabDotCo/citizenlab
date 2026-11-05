@@ -19,7 +19,7 @@ module Analysis
         body_pseudomized = pseudomize_mentions(body_plain_text)
         body_truncated = truncate_values ? body_pseudomized.truncate(truncate_values) : body_pseudomized
         body_formatted = [
-          include_author ? "#{slug_to_pseudonym(comment.author&.slug)}:" : nil,
+          include_author ? "#{user_id_to_pseudonym(comment.author&.id)}:" : nil,
           body_truncated
         ].compact.join("\n")
         if is_subcomment
@@ -34,17 +34,17 @@ module Analysis
 
     def pseudomize_mentions(text)
       new_text = text.dup
-      @mention_service.extract_mentions(text).each do |slug|
-        peudonym = slug_to_pseudonym(slug)
-        new_text.gsub!(slug, peudonym)
+      @mention_service.extract_mention_ids(text).each do |id|
+        peudonym = user_id_to_pseudonym(id)
+        new_text.gsub!(id, peudonym)
       end
       new_text
     end
 
-    def slug_to_pseudonym(slug)
-      return 'ANONYMOUS_USER' if slug.nil?
+    def user_id_to_pseudonym(id)
+      return 'ANONYMOUS_USER' if id.nil?
 
-      @pseudonym_map[slug] ||= "USER_#{SecureRandom.hex(3)}"
+      @pseudonym_map[id] ||= "USER_#{SecureRandom.hex(3)}"
     end
 
     def strip_html(html)

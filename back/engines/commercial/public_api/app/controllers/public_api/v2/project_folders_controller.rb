@@ -13,7 +13,7 @@ module PublicApi
       list_items(
         folders,
         V2::ProjectFolders::FolderSerializer,
-        includes: [:admin_publication]
+        includes: %i[admin_publication content_builder_layouts]
       )
     end
 

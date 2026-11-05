@@ -10,4 +10,4 @@ nb:
       event_description: 'Du har fått tildelt et innspill. Gi tilbakemelding ved å skrive en offisiell oppdatering eller ved å endre status.'
       title: '%{firstName}, ble en inngang tildelt deg'
       subject: 'Du ble tildelt et innspill på plattformen til %{organizationName}'
-      preheader_idea: 'Innspill fra %{authorName} har blitt tildelt deg'
+      preheader: 'Inngangen til %{authorName} har blitt tildelt deg'

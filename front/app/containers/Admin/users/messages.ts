@@ -29,30 +29,6 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.admin',
     defaultMessage: 'Admin',
   },
-  setAsAdmin: {
-    id: 'app.containers.Admin.Users.setAsAdmin',
-    defaultMessage: 'Set as admin',
-  },
-  setAsNormalUser: {
-    id: 'app.containers.Admin.Users.setAsNormalUser',
-    defaultMessage: 'Set as normal user',
-  },
-  registeredUser: {
-    id: 'app.containers.Admin.Users.registeredUser',
-    defaultMessage: 'Registered user',
-  },
-  platformAdmin: {
-    id: 'app.containers.Admin.Users.platformAdmin',
-    defaultMessage: 'Platform admin',
-  },
-  folderManager: {
-    id: 'app.containers.Admin.Users.folderManager',
-    defaultMessage: 'Folder manager',
-  },
-  projectManager: {
-    id: 'app.containers.Admin.Users.projectManager',
-    defaultMessage: 'Project manager',
-  },
   role: {
     id: 'app.containers.Admin.Users.role',
     defaultMessage: 'Role',
@@ -65,14 +41,6 @@ export default defineMessages({
   options: {
     id: 'app.containers.Admin.Users.options',
     defaultMessage: 'Options',
-  },
-  seeProfile: {
-    id: 'app.containers.Admin.Users.seeProfile',
-    defaultMessage: 'See profile',
-  },
-  deleteUser: {
-    id: 'app.containers.Admin.Users.deleteUser',
-    defaultMessage: 'Delete user',
   },
   userDeletionConfirmation: {
     id: 'app.containers.Admin.Users.userDeletionConfirmation',
@@ -87,11 +55,6 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.userDeletionFailed',
     defaultMessage:
       'An error occured while deleting this user, please try again.',
-  },
-  youCantDeleteYourself: {
-    id: 'app.containers.Admin.Users.youCantDeleteYourself',
-    defaultMessage:
-      'You cannot delete your own account via the user admin page',
   },
   userExportFileName: {
     id: 'app.containers.Admin.Users.userExportFileName',
@@ -122,13 +85,17 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.GroupsPanel.admins',
     defaultMessage: 'Admins',
   },
-  managers: {
+  spaceManagers: {
+    id: 'app.containers.Admin.Users.GroupsPanel.spaceManagers',
+    defaultMessage: 'Space managers',
+  },
+  folderManagers: {
+    id: 'app.containers.Admin.Users.GroupsPanel.folderManagers',
+    defaultMessage: 'Folder managers',
+  },
+  projectManagers: {
     id: 'app.containers.Admin.Users.GroupsPanel.managers',
     defaultMessage: 'Project managers',
-  },
-  seeAssignedItems: {
-    id: 'app.containers.Admin.Users.GroupsPanel.seeAssignedItems',
-    defaultMessage: 'Assigned items',
   },
   groupsTitle: {
     id: 'app.containers.Admin.Users.GroupsPanel.groupsTitle',
@@ -179,10 +146,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Users.GroupCreation.step1LearnMoreGroups',
     defaultMessage: 'Learn more about groups',
   },
-  readMoreLink2: {
-    id: 'app.containers.AdminPage.Users.GroupCreation.readMoreLink3',
+  readMoreArticalLink: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.readMoreArticalLink',
     defaultMessage:
-      'https://support.govocal.com/en/articles/7043801-using-smart-and-manual-user-groups',
+      'https://support.govocal.com/en/articles/527589-user-management-and-user-groups',
   },
   modalHeaderStep1: {
     id: 'app.containers.AdminPage.Users.GroupCreation.modalHeaderStep1',
@@ -254,6 +221,10 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.UserTableRow.userInvitationPending',
     defaultMessage: 'Invitation pending',
   },
+  registrationNotCompleted: {
+    id: 'app.containers.Admin.Users.UserTableRow.registrationNotCompleted',
+    defaultMessage: 'Registration not completed',
+  },
   blockedUsers: {
     id: 'app.containers.Admin.Users.BlockedUsers.blockedUsers',
     defaultMessage: 'Blocked users',
@@ -287,32 +258,101 @@ export default defineMessages({
     defaultMessage:
       'The user is moderating the folder this project belongs to. Remove assignment from "{folderTitle}" instead.',
   },
-  setAsProjectModerator: {
-    id: 'app.containers.Admin.Users.setAsProjectModerator',
-    defaultMessage: 'Assign as project manager',
-  },
-  folder: {
-    id: 'app.containers.Admin.Users.folder',
-    defaultMessage: 'Folder',
-  },
-  setUserAsProjectModerator: {
-    id: 'app.containers.Admin.Users.setUserAsProjectModerator',
-    defaultMessage: 'Assign {name} as project manager',
-  },
-  assign: {
-    id: 'app.containers.Admin.Users.assign',
-    defaultMessage: 'Assign',
-  },
-  selectPublications: {
-    id: 'app.containers.Admin.Users.selectPublications',
-    defaultMessage: 'Select projects or folders',
-  },
-  selectPublicationsPlaceholder: {
-    id: 'app.containers.Admin.Users.selectPublicationsPlaceholder',
-    defaultMessage: 'Type to search',
-  },
   projectFilterPlaceholder: {
     id: 'app.containers.Admin.Users.projectFilterPlaceholder',
     defaultMessage: 'Filter by project',
+  },
+  bannedEmails: {
+    id: 'app.containers.Admin.Users.BannedEmails.bannedEmails',
+    defaultMessage: 'Banned emails',
+  },
+  bannedEmailsSubtitle: {
+    id: 'app.containers.Admin.Users.BannedEmails.bannedEmailsSubtitle',
+    defaultMessage: 'Manage email addresses blocked from registration',
+  },
+  totalBannedEmails: {
+    id: 'app.containers.Admin.Users.BannedEmails.totalBannedEmails',
+    defaultMessage: 'Total banned emails',
+  },
+  checkEmailBan: {
+    id: 'app.containers.Admin.Users.BannedEmails.checkEmailBan',
+    defaultMessage: 'Check if an email is banned',
+  },
+  enterEmailPlaceholder: {
+    id: 'app.containers.Admin.Users.BannedEmails.enterEmailPlaceholder',
+    defaultMessage: 'Enter email address',
+  },
+  checkButton: {
+    id: 'app.containers.Admin.Users.BannedEmails.checkButton',
+    defaultMessage: 'Check',
+  },
+  emailIsBanned: {
+    id: 'app.containers.Admin.Users.BannedEmails.emailIsBanned',
+    defaultMessage: '{email} is banned',
+  },
+  emailNotBanned: {
+    id: 'app.containers.Admin.Users.BannedEmails.emailNotBanned',
+    defaultMessage: '{email} is not banned',
+  },
+  banReason: {
+    id: 'app.containers.Admin.Users.BannedEmails.banReason',
+    defaultMessage: 'Reason',
+  },
+  unbanButton: {
+    id: 'app.containers.Admin.Users.BannedEmails.unbanButton',
+    defaultMessage: 'Unban email',
+  },
+  seatsOverview: {
+    id: 'app.containers.Admin.Users.Seats.seatsOverview',
+    defaultMessage: 'Seats overview',
+  },
+  emailBounces: {
+    id: 'app.containers.Admin.Users.EmailBounces.emailBounces',
+    defaultMessage: 'Email bounces',
+  },
+  emailBouncesDescription: {
+    id: 'app.containers.Admin.Users.EmailBounces.emailBouncesDescription',
+    defaultMessage:
+      'Email addresses that permanently bounced. The platform does not send any emails to these addresses. A high number of bounces may impact the deliverability of other emails from the platform.',
+  },
+  emailBouncesDelete: {
+    id: 'app.containers.Admin.Users.EmailBounces.emailBouncesDelete',
+    defaultMessage: 'Delete',
+  },
+  emailBouncesName: {
+    id: 'app.containers.Admin.Users.EmailBounces.emailBouncesName',
+    defaultMessage: 'Name',
+  },
+  emailBouncesBouncedAt: {
+    id: 'app.containers.Admin.Users.EmailBounces.emailBouncesBouncedAt',
+    defaultMessage: 'Bounced on',
+  },
+  emailBouncesReason: {
+    id: 'app.containers.Admin.Users.EmailBounces.emailBouncesReason',
+    defaultMessage: 'Reason',
+  },
+  emailBouncesStatus: {
+    id: 'app.containers.Admin.Users.EmailBounces.emailBouncesStatus',
+    defaultMessage: 'Status',
+  },
+  emailBouncesStatusPendingInvite: {
+    id: 'app.containers.Admin.Users.EmailBounces.emailBouncesStatusPendingInvite',
+    defaultMessage: 'Pending invite',
+  },
+  emailBouncesStatusAwaitingConfirmation: {
+    id: 'app.containers.Admin.Users.EmailBounces.emailBouncesStatusAwaitingConfirmation',
+    defaultMessage: 'Awaiting confirmation',
+  },
+  emailBouncesStatusRegistrationIncomplete: {
+    id: 'app.containers.Admin.Users.EmailBounces.emailBouncesStatusRegistrationIncomplete',
+    defaultMessage: 'Registration incomplete',
+  },
+  emailBouncesStatusRegistered: {
+    id: 'app.containers.Admin.Users.EmailBounces.emailBouncesStatusRegistered',
+    defaultMessage: 'Registered',
+  },
+  emailBouncesNone: {
+    id: 'app.containers.Admin.Users.EmailBounces.emailBouncesNone',
+    defaultMessage: 'No email addresses have bounced.',
   },
 });

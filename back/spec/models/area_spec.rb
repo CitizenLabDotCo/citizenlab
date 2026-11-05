@@ -5,12 +5,12 @@ require 'rails_helper'
 RSpec.describe Area do
   subject { build(:area) }
 
+  it_behaves_like 'a plain text multiloc', factory: :area
+
   describe 'Default factory' do
     it { is_expected.to be_valid }
   end
 
-  it { is_expected.not_to validate_presence_of(:ordering) }
-  it { is_expected.to validate_numericality_of(:ordering) }
   it { is_expected.to validate_presence_of(:title_multiloc) }
   it { is_expected.to belong_to(:custom_field_option).optional }
 
@@ -20,14 +20,7 @@ RSpec.describe Area do
     end
   end
 
-  describe 'description_multiloc' do
-    it 'sanitizes script tags in the description' do
-      area = create(:area, description_multiloc: {
-        'en' => '<p>Test</p><script>These tags should be removed!</script>'
-      })
-      expect(area.description_multiloc).to eq({ 'en' => '<p>Test</p>These tags should be removed!' })
-    end
-  end
+  it_behaves_like 'a sanitized html_multiloc', factory: :area
 
   describe 'description sanitizer' do
     it 'with invalid locales marks the model as invalid' do
@@ -54,7 +47,7 @@ RSpec.describe Area do
 
       let(:ordering) { described_class.maximum(:ordering) + 1 }
 
-      it 'should stay as given' do
+      it 'stays as given' do
         expect(subject.ordering).to eq(ordering)
       end
     end

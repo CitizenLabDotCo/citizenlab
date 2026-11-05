@@ -1,4 +1,4 @@
-import React, { useRef, KeyboardEvent, FormEvent, useState } from 'react';
+import React, { useRef, KeyboardEvent, FormEvent, useEffect } from 'react';
 
 import {
   Dropdown,
@@ -17,6 +17,7 @@ import Checkbox from 'components/UI/Checkbox';
 
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
+import DropdownFocusSentinel from './DropdownFocusSentinel';
 import { List, ListItemText } from './StyledComponents';
 import Title from './Title';
 
@@ -83,9 +84,9 @@ export interface SelectorProps {
   filterSelectorStyle?: 'button' | 'text';
   minWidth?: string;
   toggleValuesList: () => void;
+  closeExpanded: () => void;
   textColor?: string;
   currentTitle: string | JSX.Element;
-  handleKeyDown?: (event: KeyboardEvent) => void;
   isLoading?: boolean;
 }
 
@@ -116,60 +117,127 @@ const MultiSelectDropdown = ({
   filterSelectorStyle,
   minWidth,
   toggleValuesList,
+  closeExpanded,
   textColor,
   currentTitle,
-  handleKeyDown,
   isLoading,
 }: Props) => {
   const tabsRef = useRef<(HTMLLIElement | null)[]>([]);
-  const [focusedIndex, setFocusedIndex] = useState(-1);
+  const triggerRef = useRef<HTMLDivElement>(null);
+  const focusFirstItemOnOpen = useRef(false);
   const isPhoneOrSmaller = useBreakpoint('phone');
+
+  const focusTrigger = () => {
+    triggerRef.current?.querySelector<HTMLElement>('button')?.focus();
+  };
 
   const handleOnToggleCheckbox =
     (entry: IFilterSelectorValue) => (_event: React.ChangeEvent) => {
       onChange(entry.value);
     };
 
-  const handleOnSelectSingleValue =
-    (entry: IFilterSelectorValue) => (event: KeyboardEvent<HTMLLIElement>) => {
-      if (
-        event.type === 'keydown' &&
-        (event.key === 'ArrowUp' || event.key === 'ArrowDown')
-      ) {
+  const handleOnKeyDown = (event: KeyboardEvent) => {
+    const target = event.currentTarget as HTMLElement;
+    const value = target.getAttribute('data-value');
+    const index = parseInt(target.getAttribute('data-index')!, 10);
+    const key = event.key;
+    const totalItems = values.length;
+
+    switch (key) {
+      case 'ArrowDown':
         event.preventDefault();
-        const totalItems = values.length;
-        let nextIndex = 0;
-        if (event.key === 'ArrowUp') {
-          nextIndex = focusedIndex === 0 ? totalItems - 1 : focusedIndex - 1;
-        } else {
-          nextIndex = focusedIndex === totalItems - 1 ? 0 : focusedIndex + 1;
+        if (!opened) {
+          // ArrowDown on the closed trigger opens the list, same as Enter.
+          toggleValuesList();
+          return;
         }
-        setFocusedIndex(nextIndex);
-      } else if (
-        event.type === 'click' ||
-        (event.type === 'keydown' && event.code === 'Space')
-      ) {
+        // From the trigger (no data-index), jump into the list at item 0.
+        // From a list item, navigate to next (circular 0,1,2,3,...,0).
+        tabsRef.current[isNaN(index) ? 0 : (index + 1) % totalItems]?.focus();
+        break;
+
+      case 'ArrowUp':
         event.preventDefault();
-        onChange(entry.value);
+        if (!opened) {
+          toggleValuesList();
+          return;
+        }
+        // From the trigger, jump to the last item.
+        // From a list item, navigate to previous (circular ...,3,2,1,0,3).
+        tabsRef.current[
+          isNaN(index) ? totalItems - 1 : (index - 1 + totalItems) % totalItems
+        ]?.focus();
+        break;
+
+      case 'Home':
+        if (!opened || isNaN(index)) return;
+        event.preventDefault();
+        tabsRef.current[0]?.focus();
+        break;
+
+      case 'End':
+        if (!opened || isNaN(index)) return;
+        event.preventDefault();
+        tabsRef.current[totalItems - 1]?.focus();
+        break;
+
+      case 'Enter':
+      case ' ':
+        if (value) {
+          event.preventDefault();
+          onChange(value);
+        } else if (!opened) {
+          focusFirstItemOnOpen.current = true;
+        }
+        break;
+
+      case 'Escape':
+        if (opened) {
+          event.preventDefault();
+          closeExpanded();
+          focusTrigger();
+        }
+        break;
+
+      case 'Tab':
+        if (opened) {
+          closeExpanded();
+        }
+        break;
+    }
+  };
+  useEffect(() => {
+    if (opened) {
+      if (focusFirstItemOnOpen.current) {
+        focusFirstItemOnOpen.current = false;
+        tabsRef.current[0]?.focus();
+      } else {
+        focusTrigger();
       }
-    };
+    } else {
+      focusFirstItemOnOpen.current = false;
+    }
+  }, [opened]);
 
   const handleOnClickOutside = (event: FormEvent) => {
+    // Skip trigger clicks — its onClick already toggles, otherwise it'd reopen immediately.
+    if (triggerRef.current?.contains(event.target as Node)) return;
     onClickOutside?.(event);
   };
 
   return (
     <Box>
-      <Box id={selectorId}>
+      <Box id={selectorId} ref={triggerRef}>
         {filterSelectorStyle === 'button' ? (
           <Button
             height={isPhoneOrSmaller ? '32px' : '36px'}
             borderRadius="24px"
             onClick={toggleValuesList}
             minWidth={minWidth}
-            onKeyDown={handleKeyDown}
+            onKeyDown={handleOnKeyDown}
             ariaExpanded={opened}
             ariaControls={baseID}
+            ariaHasPopup="true"
           >
             <Box display="flex" gap="8px">
               {currentTitle}
@@ -187,7 +255,8 @@ const MultiSelectDropdown = ({
             onClick={toggleValuesList}
             baseID={baseID}
             textColor={textColor}
-            handleKeyDown={handleKeyDown}
+            handleKeyDown={handleOnKeyDown}
+            ariaHasPopup="true"
           />
         )}
       </Box>
@@ -210,6 +279,7 @@ const MultiSelectDropdown = ({
               {values.map((entry, index) => {
                 const checked = includes(selected, entry.value);
                 const last = index === values.length - 1;
+                const labelId = `${baseID}-label-${index}`;
                 const classNames = [
                   `e2e-sort-item-${
                     entry.value !== '-new' ? entry.value : 'old'
@@ -224,21 +294,38 @@ const MultiSelectDropdown = ({
                     id={`${baseID}-${index}`}
                     key={entry.value}
                     onMouseDown={removeFocusAfterMouseClick}
-                    onKeyDown={handleOnSelectSingleValue(entry)}
+                    onKeyDown={handleOnKeyDown}
+                    onClick={() => onChange(entry.value)}
                     className={classNames}
                     ref={(el) => (tabsRef.current[index] = el)}
                     role="checkbox"
                     aria-checked={checked}
+                    aria-labelledby={labelId}
+                    data-value={entry.value}
+                    data-index={index}
                     tabIndex={0}
                   >
-                    <Checkbox
-                      checked={checked}
-                      onChange={handleOnToggleCheckbox(entry)}
-                      label={<CheckboxLabel>{entry.text}</CheckboxLabel>}
-                      name={name}
-                      selectedBorderColor={colors.white}
-                      checkBoxTabIndex={-1}
-                    />
+                    {/* The inner Checkbox is purely visual. We hide it from the
+                        accessibility tree (aria-hidden) because JAWS sends
+                        Enter/Space to the native <input type="checkbox"> inside
+                        it instead of the <li role="checkbox"> that has the
+                        keyboard handlers. pointerEvents: 'none' ensures clicks
+                        go through the <li>'s onClick handler.
+                    */}
+                    <Box aria-hidden="true" pointerEvents="none">
+                      <Checkbox
+                        checked={checked}
+                        onChange={handleOnToggleCheckbox(entry)}
+                        label={
+                          <CheckboxLabel id={labelId}>
+                            {entry.text}
+                          </CheckboxLabel>
+                        }
+                        name={name}
+                        selectedBorderColor={colors.white}
+                        checkBoxTabIndex={-1}
+                      />
+                    </Box>
                   </CheckboxListItem>
                 );
               })}
@@ -247,6 +334,7 @@ const MultiSelectDropdown = ({
           </Box>
         }
       />
+      <DropdownFocusSentinel opened={opened} onClose={closeExpanded} />
     </Box>
   );
 };

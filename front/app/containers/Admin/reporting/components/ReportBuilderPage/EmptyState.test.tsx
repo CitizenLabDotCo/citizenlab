@@ -1,16 +1,23 @@
 import React from 'react';
 
-import * as FeatureFlag from 'hooks/useFeatureFlag';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { render, screen } from 'utils/testUtils/rtl';
 
 import EmptyState from './EmptyState';
 
-const mockFeatureFlag = FeatureFlag as { default: () => boolean };
+// Assigning to the module namespace does not work here, as the transformer
+// emits ES module exports as non-configurable getters.
+jest.mock('hooks/useFeatureFlag', () => ({
+  __esModule: true,
+  default: jest.fn(),
+}));
+
+const mockFeatureFlag = useFeatureFlag as jest.Mock;
 
 describe('EmptyState', () => {
   it('renders with an enabled button to create a report when the feature flag is turned on', () => {
-    mockFeatureFlag.default = jest.fn(() => true);
+    mockFeatureFlag.mockReturnValue(true);
     const onOpenModal = jest.fn();
     render(<EmptyState onOpenModal={onOpenModal} />);
 
@@ -21,7 +28,7 @@ describe('EmptyState', () => {
   });
 
   it('renders with a disabled button when the feature flag is turned off', () => {
-    mockFeatureFlag.default = jest.fn(() => false);
+    mockFeatureFlag.mockReturnValue(false);
     const onOpenModal = jest.fn();
     render(<EmptyState onOpenModal={onOpenModal} />);
 

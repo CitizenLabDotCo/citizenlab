@@ -3,7 +3,6 @@ import React, { useCallback, useState, MouseEvent, useMemo } from 'react';
 import { clone } from 'lodash-es';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import { ICauseData } from 'api/causes/types';
@@ -101,8 +100,6 @@ const AllCauses = ({ phaseId, projectId }: Props) => {
     }
   };
 
-  const newCauseLink: RouteType = `/admin/projects/${projectId}/phases/${phaseId}/volunteering/causes/new`;
-
   if (isNilOrError(causes)) return null;
 
   return (
@@ -111,7 +108,8 @@ const AllCauses = ({ phaseId, projectId }: Props) => {
         <ButtonWithLink
           buttonStyle="admin-dark"
           icon="plus-circle"
-          linkTo={newCauseLink}
+          to="/admin/projects/$projectId/phases/$phaseId/volunteering/causes/new"
+          params={{ projectId, phaseId }}
         >
           <FormattedMessage {...messages.addCauseButton} />
         </ButtonWithLink>
@@ -145,7 +143,8 @@ const AllCauses = ({ phaseId, projectId }: Props) => {
                   <FormattedMessage {...messages.deleteButtonLabel} />
                 </ButtonWithLink>
                 <ButtonWithLink
-                  linkTo={`/admin/projects/${projectId}/phases/${phaseId}/volunteering/causes/${cause.id}`}
+                  to="/admin/projects/$projectId/phases/$phaseId/volunteering/causes/$causeId"
+                  params={{ projectId, phaseId, causeId: cause.id }}
                   icon="edit"
                   buttonStyle="secondary-outlined"
                 >

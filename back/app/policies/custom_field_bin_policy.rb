@@ -6,6 +6,6 @@ class CustomFieldBinPolicy < ApplicationPolicy
   # custom field this bin belongs to.
 
   def show?
-    user&.active? && (user.admin? || user.project_or_folder_moderator?) && policy_for(record.custom_field).show?
+    user&.active? && (user.admin? || user.moderator?) && policy_for(record.custom_field).show?
   end
 end

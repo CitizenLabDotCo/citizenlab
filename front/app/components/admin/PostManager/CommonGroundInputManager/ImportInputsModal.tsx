@@ -1,11 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
 import { IOption } from 'typings';
 
-import { IJob } from 'api/copy_inputs/types';
 import useCopyInputs from 'api/copy_inputs/useCopyInputs';
+import { IJob } from 'api/jobs/types';
 import usePhase from 'api/phases/usePhase';
 
 import Modal from 'components/UI/Modal';
@@ -13,6 +12,7 @@ import PhaseFilter from 'components/UI/PhaseFilter';
 import ProjectFilter from 'components/UI/ProjectFilter';
 
 import { useIntl } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import messages from './messages';
 
@@ -27,14 +27,14 @@ const ImportInputsModal = ({
   setShowPastInputsModal,
   currentPhaseid,
 }: Props) => {
-  const { projectId: currentProjectId } = useParams();
+  const { projectId: currentProjectId } = useParams({ strict: false });
   const { formatMessage } = useIntl();
   const [selectedProjectId, setSelectedProjectId] = useState<
     string | undefined
   >();
   const [phaseId, setPhaseId] = useState<string | undefined>();
   const [noOfInputs, setNoOfInputs] = useState<number | undefined>();
-  const { mutate: copyInputs, isLoading: isCopying } = useCopyInputs();
+  const { mutate: copyInputs, isPending: isCopying } = useCopyInputs();
   const { data: currentPhase } = usePhase(currentPhaseid);
 
   const handleProjectFilter = useCallback(

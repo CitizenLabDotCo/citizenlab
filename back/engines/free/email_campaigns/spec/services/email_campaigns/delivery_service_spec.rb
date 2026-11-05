@@ -30,6 +30,18 @@ class ConsentableDisableableCampaignBForTest < EmailCampaigns::Campaign
   end
 end
 
+class ConsentableHiddenCampaignForTest < EmailCampaigns::Campaign
+  include EmailCampaigns::Consentable
+
+  def self.consentable_roles
+    []
+  end
+
+  def hidden_from_admin?
+    true
+  end
+end
+
 describe EmailCampaigns::DeliveryService do
   let(:service) { described_class.new }
 
@@ -39,17 +51,45 @@ describe EmailCampaigns::DeliveryService do
     end
 
     it 'returns campaign_types that all have at least 1 campaign_type_description translation defined' do
-      multiloc_service = MultilocService.new
       service.campaign_types.each do |campaign_type|
-        campaign_name = campaign_type.constantize.campaign_name
-        expect { multiloc_service.i18n_to_multiloc("email_campaigns.campaign_type_description.#{campaign_name}") }
-          .not_to raise_error
+        expect { campaign_type.constantize.campaign_description_multiloc }.not_to raise_error
       end
     end
 
     it 'returns campaign_types that are all instantiatable without extra arguments, except for Manual campaigns' do
       (service.campaign_types - service.manual_campaign_types).each do |campaign_type|
         expect { campaign_type.constantize.create! }.not_to raise_error
+      end
+    end
+  end
+
+  describe 'send_now_to_user' do
+    let(:campaign) { create(:email_confirmation_campaign) }
+    let(:user) { create(:user, locale: 'en') }
+
+    it 'delivers the campaign mail synchronously to the given recipient' do
+      expect { service.send_now_to_user(campaign, user, { code: '1234' }) }
+        .to change { ActionMailer::Base.deliveries.count }.by(1)
+      mail = ActionMailer::Base.deliveries.last
+      expect(mail.to).to eq([user.email])
+      expect(mail.body.encoded).to match('1234')
+    end
+
+    it 'records a tracked delivery for the recipient' do
+      expect { service.send_now_to_user(campaign, user, { code: '1234' }) }
+        .to change(EmailCampaigns::Delivery, :count).by(1)
+      delivery = EmailCampaigns::Delivery.order(:created_at).last
+      expect(delivery.user).to eq(user)
+      expect(delivery.campaign).to eq(campaign)
+    end
+
+    context 'when the recipient email bounced' do
+      let(:user) { create(:user, email_bounced_at: 1.day.ago) }
+
+      it 'neither sends the mail nor records a delivery' do
+        expect { service.send_now_to_user(campaign, user, { code: '1234' }) }
+          .to not_change { ActionMailer::Base.deliveries.count }
+          .and(not_change(EmailCampaigns::Delivery, :count))
       end
     end
   end
@@ -77,12 +117,34 @@ describe EmailCampaigns::DeliveryService do
       end
     end
 
+    it 'skips recipients whose email bounced' do
+      admin.update_columns(email_bounced_at: 1.day.ago)
+
+      travel_to campaign.ic_schedule.start_time do
+        expect { service.send_on_schedule(Time.now) }
+          .not_to have_enqueued_job(ActionMailer::MailDeliveryJob)
+        expect(campaign.deliveries).to be_empty
+      end
+    end
+
     it 'doesn\'t raise errors while processing all types of campaigns' do
       service.campaign_classes.each do |klaz|
         factory_type = :"#{klaz.name.demodulize.underscore}_campaign"
         create(factory_type)
       end
       expect { service.send_on_schedule(Time.now) }.not_to raise_error
+    end
+
+    context 'with scheduled manual campaign' do
+      let!(:campaign) { create(:manual_campaign, scheduled_at: 1.hour.from_now) }
+      let!(:users) { create_list(:user, 3) }
+
+      it 'does not send manual campaigns via cron (handled by SendScheduledCampaignJob)' do
+        travel_to(2.hours.from_now) do
+          expect { service.send_on_schedule(Time.zone.now) }
+            .not_to have_enqueued_job(ActionMailer::MailDeliveryJob)
+        end
+      end
     end
   end
 
@@ -189,6 +251,15 @@ describe EmailCampaigns::DeliveryService do
       service.send_now(campaign)
       expect(EmailCampaigns::Delivery.count).to eq User.count
     end
+
+    it 'leaves out users whose email bounced, so they get no delivery' do
+      bounced = users.first
+      bounced.update_columns(email_bounced_at: 1.day.ago)
+
+      expect { service.send_now(campaign) }
+        .to have_enqueued_job(ActionMailer::MailDeliveryJob).exactly(User.count - 1).times
+      expect(campaign.deliveries.pluck(:user_id)).to match_array(User.where.not(id: bounced.id).ids)
+    end
   end
 
   describe 'consentable_campaign_types_for' do
@@ -199,6 +270,7 @@ describe EmailCampaigns::DeliveryService do
       ConsentableCampaignForTest.create!
       ConsentableDisableableCampaignAForTest.create!(enabled: false)
       ConsentableDisableableCampaignBForTest.create!(enabled: true)
+      ConsentableHiddenCampaignForTest.create!
 
       allow(service).to receive(
         :campaign_classes
@@ -207,7 +279,8 @@ describe EmailCampaigns::DeliveryService do
           NonConsentableCampaignForTest,
           ConsentableCampaignForTest,
           ConsentableDisableableCampaignAForTest,
-          ConsentableDisableableCampaignBForTest
+          ConsentableDisableableCampaignBForTest,
+          ConsentableHiddenCampaignForTest
         ]
       )
     end
@@ -218,6 +291,10 @@ describe EmailCampaigns::DeliveryService do
 
     it 'does not return all campaign types that return false to #consentable_for?, for the given user and have an enabled campaign' do
       expect(service.consentable_campaign_types_for(user)).not_to include('ConsentableDisableableCampaignAForTest')
+    end
+
+    it 'does not return transactional campaign types that are hidden from admin' do
+      expect(service.consentable_campaign_types_for(user)).not_to include('ConsentableHiddenCampaignForTest')
     end
   end
 

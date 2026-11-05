@@ -94,18 +94,6 @@ RSpec.describe ParticipationMethod::Voting do
     end
   end
 
-  describe '#author_in_form?' do
-    before { SettingsService.new.activate_feature! 'idea_author_change' }
-
-    it 'returns false for a resident when idea_author_change is activated' do
-      expect(participation_method.author_in_form?(create(:user))).to be false
-    end
-
-    it 'returns true for a moderator when idea_author_change is activated' do
-      expect(participation_method.author_in_form?(create(:admin))).to be true
-    end
-  end
-
   describe '#budget_in_form?' do
     it 'returns false for a resident and a budgeting phase' do
       expect(participation_method.budget_in_form?(create(:user))).to be false
@@ -187,21 +175,6 @@ RSpec.describe ParticipationMethod::Voting do
     end
   end
 
-  describe '#validate_phase' do
-    it 'does not add an error with transitive inputs' do
-      create(:idea, phases: [phase], project: phase.project)
-      expect(phase).to be_valid
-    end
-
-    it 'adds an error with non-transitive inputs' do
-      phase.update!(participation_method: 'proposals', reacting_threshold: 50, expire_days_limit: 10)
-      create(:proposal, creation_phase: phase, project: phase.project)
-      phase.participation_method = 'voting'
-      expect(phase).not_to be_valid
-      expect(phase.errors.details).to eq({ participation_method: [{ error: :non_complying_inputs }] })
-    end
-  end
-
   its(:allowed_ideas_orders) { is_expected.to eq ['random'] }
   its(:return_disabled_actions?) { is_expected.to be false }
   its(:supports_assignment?) { is_expected.to be true }
@@ -217,14 +190,17 @@ RSpec.describe ParticipationMethod::Voting do
   its(:supports_toxicity_detection?) { is_expected.to be true }
   its(:supports_reacting?) { is_expected.to be false }
   its(:supports_status?) { is_expected.to be true }
+  its(:supports_standalone_placement?) { is_expected.to be false }
   its(:supports_submission?) { is_expected.to be false }
+  its(:supports_input_pdf_export?) { is_expected.to be false }
   its(:use_reactions_as_votes?) { is_expected.to be false }
   its(:transitive?) { is_expected.to be true }
+  its(:destroy_ideas_on_phase_destroy?) { is_expected.to be false }
   its(:supports_private_attributes_in_export?) { is_expected.to be true }
-  its(:form_logic_enabled?) { is_expected.to be false }
+  its(:supports_form_logic?) { is_expected.to be false }
   its(:follow_idea_on_idea_submission?) { is_expected.to be true }
   its(:supports_custom_field_categories?) { is_expected.to be false }
-  its(:user_fields_in_form?) { is_expected.to be false }
+  its(:user_fields_in_form_enabled?) { is_expected.to be false }
   its(:supports_multiple_phase_reports?) { is_expected.to be false }
   its(:add_autoreaction_to_inputs?) { is_expected.to be(false) }
   its(:everyone_tracking_enabled?) { is_expected.to be false }

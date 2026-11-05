@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
 import { Badge, colors, Button } from '@citizenlab/cl2-component-library';
-import { useLocation } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 
 import useAddFollower from 'api/follow_unfollow/useAddFollower';
 import useDeleteFollower from 'api/follow_unfollow/useDeleteFollower';
-import { ITopicData } from 'api/topics/types';
+import { IGlobalTopicData } from 'api/global_topics/types';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -16,16 +15,17 @@ import T from 'components/T';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
+import { useLocation } from 'utils/router';
 
 import messages from './messages';
 
 interface Props {
-  topic: ITopicData;
+  topic: IGlobalTopicData;
 }
 
 const UpdateFollowTopic = ({ topic }: Props) => {
-  const { mutate: addFollower, isLoading: isAddingFollower } = useAddFollower();
-  const { mutate: deleteFollower, isLoading: isDeletingFollower } =
+  const { mutate: addFollower, isPending: isAddingFollower } = useAddFollower();
+  const { mutate: deleteFollower, isPending: isDeletingFollower } =
     useDeleteFollower();
   const { pathname } = useLocation();
   const theme = useTheme();
@@ -61,20 +61,20 @@ const UpdateFollowTopic = ({ topic }: Props) => {
       deleteFollower({
         followerId,
         followableId: topic.id,
-        followableType: 'topics',
+        followableType: 'global_topics',
       });
       trackEventByName(tracks.unfollow, {
-        followableType: 'topics',
+        followableType: 'global_topics',
         id: topic.id,
         urlPathName: pathname,
       });
     } else {
       addFollower({
-        followableType: 'topics',
+        followableType: 'global_topics',
         followableId: topic.id,
       });
       trackEventByName(tracks.follow, {
-        followableType: 'topics',
+        followableType: 'global_topics',
         id: topic.id,
         urlPathName: pathname,
       });
@@ -94,6 +94,7 @@ const UpdateFollowTopic = ({ topic }: Props) => {
         iconPos="right"
         padding="0px"
         my="0px"
+        whiteSpace="normal"
         processing={isLoading}
         textColor={topicButtonContentColor}
         ariaPressed={!isLoading ? isFollowing : undefined}

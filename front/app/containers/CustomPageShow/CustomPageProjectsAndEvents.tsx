@@ -56,27 +56,33 @@ const CustomPageProjectsAndEvents = ({
     getCurrentTab(allStatusCountsWithoutFilters)
   );
 
-  // There will be either topic or area ids if this component renders.
-  // To enable it, the page needs either a topic or area associated with it.
-  const topicIds = page.relationships.topics.data.map((topic) => topic.id);
+  // There will be either topic, area or space ids if this component renders.
+  // To enable it, the page needs either a topic, area or space associated with it.
+  const globalTopics = page.relationships.global_topics.data.map(
+    (topic) => topic.id
+  );
   const areaIds = page.relationships.areas.data.map((area) => area.id);
+  const spaceIdList = page.relationships.spaces.data.map((space) => space.id);
+  const spaceIds = spaceIdList.length > 0 ? spaceIdList : undefined;
 
-  const {
-    data,
-    isInitialLoading,
-    hasNextPage,
-    fetchNextPage,
-    isFetchingNextPage,
-  } = useAdminPublications({
-    pageSize: 6,
-    topicIds,
-    areaIds,
-    publicationStatusFilter: getPublicationStatuses(currentTab),
-    rootLevelOnly: false,
-    removeNotAllowedParents: true,
-    onlyProjects: true,
-    remove_all_unlisted: true,
-  });
+  // When filtering by space we show folder cards in the space too (not just
+  // projects), so we keep folder publications in the result set and restrict
+  // to top-level publications to avoid duplicating folder children as
+  // standalone project cards.
+  const isSpaceFiltered = !!spaceIds;
+
+  const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } =
+    useAdminPublications({
+      pageSize: 6,
+      globalTopics,
+      areaIds,
+      spaceIds,
+      publicationStatusFilter: getPublicationStatuses(currentTab),
+      rootLevelOnly: isSpaceFiltered,
+      removeNotAllowedParents: true,
+      onlyProjects: !isSpaceFiltered,
+      remove_all_unlisted: true,
+    });
 
   const adminPublications = data?.pages.map((page) => page.data).flat();
 
@@ -106,7 +112,7 @@ const CustomPageProjectsAndEvents = ({
             adminPublications={adminPublications || []}
             statusCountsWithoutFilters={allStatusCountsWithoutFilters}
             layout="dynamic"
-            loadingInitial={isInitialLoading}
+            loadingInitial={isLoading}
             loadingMore={isFetchingNextPage}
             hasMore={hasNextPage}
             currentTab={currentTab}
@@ -128,19 +134,25 @@ const CustomPageProjectsAndEvents = ({
 };
 
 const CustomPageProjectsAndEventsWrapper = ({ page }: Props) => {
-  // There will be either topic or area ids if this component renders.
-  // To enable it, the page needs either a topic or area associated with it.
-  const topicIds = page.relationships.topics.data.map((topic) => topic.id);
+  // There will be either topic, area or space ids if this component renders.
+  // To enable it, the page needs either a topic, area or space associated with it.
+  const globalTopics = page.relationships.global_topics.data.map(
+    (topic) => topic.id
+  );
   const areaIds = page.relationships.areas.data.map((area) => area.id);
+  const spaceIdList = page.relationships.spaces.data.map((space) => space.id);
+  const spaceIds = spaceIdList.length > 0 ? spaceIdList : undefined;
+  const isSpaceFiltered = !!spaceIds;
 
   const { data: statusCountsWithoutFilters } = useAdminPublicationsStatusCounts(
     {
-      topicIds,
+      globalTopics,
       areaIds,
+      spaceIds,
       publicationStatusFilter: PUBLICATION_STATUSES,
-      rootLevelOnly: false,
+      rootLevelOnly: isSpaceFiltered,
       removeNotAllowedParents: true,
-      onlyProjects: true,
+      onlyProjects: !isSpaceFiltered,
     }
   );
 

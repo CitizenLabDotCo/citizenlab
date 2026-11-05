@@ -51,6 +51,7 @@ const ChartFilters = ({
       mb="20px"
       justifyContent="space-between"
       flexDirection={isSmallerThanSmallDesktop ? 'column' : 'row'}
+      alignItems="center"
     >
       <Box display="flex" mb={isSmallerThanSmallDesktop ? '12px' : undefined}>
         <TimeControl

@@ -1,11 +1,9 @@
 import React from 'react';
 
-import styled from 'styled-components';
-
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
 
 import messages from './messages';
@@ -14,16 +12,12 @@ import ProjectFolderSiteMapItem from './ProjectFolderSiteMapItem';
 
 import { H2 } from '.';
 
-const AllProjectsLink = styled(Link)`
+const AllProjectsLink = typedStyled(Link)`
   display: block;
   margin-bottom: 20px;
 `;
 
-interface Props {
-  projectsSectionRef: any;
-}
-
-const ProjectsAndFoldersSection = ({ projectsSectionRef }: Props) => {
+const ProjectsAndFoldersSection = () => {
   const { data } = useAdminPublications({
     publicationStatusFilter: ['draft', 'published', 'archived'],
     rootLevelOnly: true,
@@ -36,10 +30,10 @@ const ProjectsAndFoldersSection = ({ projectsSectionRef }: Props) => {
   if (!isNilOrError(adminPublications)) {
     return (
       <>
-        <H2 ref={projectsSectionRef} tabIndex={-1}>
+        <H2 id="projects-section" tabIndex={-1}>
           <FormattedMessage {...messages.projectsSection} />
         </H2>
-        <AllProjectsLink to="/projects" id="projects-section">
+        <AllProjectsLink to="/projects">
           <FormattedMessage {...messages.allProjects} />
         </AllProjectsLink>
         {adminPublications.map((adminPublication) => (

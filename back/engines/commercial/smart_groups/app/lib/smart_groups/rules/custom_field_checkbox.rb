@@ -42,14 +42,14 @@ module SmartGroups::Rules
 
     def filter(users_scope)
       custom_field = CustomField.find(custom_field_id)
-      key = custom_field.key
       return unless custom_field.input_type == 'checkbox'
 
+      answer_filter = AnswerableFilter.new(custom_field, users_scope)
       case predicate
       when 'is_checked'
-        users_scope.where("(custom_field_values->>'#{key}')::boolean")
+        answer_filter.eq(true)
       when 'not_is_checked'
-        users_scope.where.not("(custom_field_values->>'#{key}')::boolean")
+        answer_filter.eq(false)
       else
         raise "Unsupported predicate #{predicate}"
       end

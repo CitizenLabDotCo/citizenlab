@@ -10,4 +10,4 @@ en:
       event_description: 'An idea has been assigned to you. Give feedback by writing an official update or by changing its status.'
       title: '%{firstName}, an input was assigned to you'
       subject: 'You have an assignment on the platform of %{organizationName}'
-      preheader_idea: 'The idea of %{authorName} has been assigned to you'
+      preheader: 'The idea of %{authorName} has been assigned to you'

@@ -27,11 +27,15 @@ import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { getInputTermMessage } from 'utils/i18n';
 import { usePermission } from 'utils/permissions';
 
 import AuthoringAssistanePrototype from './components/AuthoringAssistanePrototype';
+import IdeaSharingButton from './components/Buttons/IdeaSharingButton';
+import SharingButtonComponent from './components/Buttons/SharingButtonComponent';
 import Container from './components/Container';
 import Cosponsorship from './components/Cosponsorship';
+import CustomFieldAnswers from './components/CustomFieldAnswers';
 import IdeaTitle from './components/IdeaTitle';
 import MetaInformation from './components/MetaInformation';
 import ProposalInfo from './components/ProposalInfo';
@@ -55,6 +59,7 @@ interface Props {
   setRef?: (element: HTMLDivElement) => void;
   compact: boolean;
   className?: string;
+  onUnauthenticatedCommentClick?: () => void;
 }
 
 export const IdeasShow = ({
@@ -63,6 +68,7 @@ export const IdeasShow = ({
   compact,
   ideaId,
   setRef,
+  onUnauthenticatedCommentClick,
 }: Props) => {
   const { data: ideaImages, isLoading: isLoadingIdeaImages } =
     useIdeaImages(ideaId);
@@ -113,8 +119,24 @@ export const IdeasShow = ({
                 content={
                   <Box>
                     <FormattedMessage
-                      {...messages.importedTooltip}
-                      values={{ inputTerm: getInputTerm(phases?.data) }}
+                      {...getInputTermMessage(getInputTerm(phases?.data), {
+                        idea: messages.importedTooltipIdea,
+                        option: messages.importedTooltipOption,
+                        project: messages.importedTooltipProject,
+                        question: messages.importedTooltipQuestion,
+                        issue: messages.importedTooltipIssue,
+                        contribution: messages.importedTooltipContribution,
+                        proposal: messages.importedTooltipProposal,
+                        initiative: messages.importedTooltipInitiative,
+                        petition: messages.importedTooltipPetition,
+                        comment: messages.importedTooltipComment,
+                        response: messages.importedTooltipResponse,
+                        suggestion: messages.importedTooltipSuggestion,
+                        topic: messages.importedTooltipTopic,
+                        post: messages.importedTooltipPost,
+                        story: messages.importedTooltipStory,
+                        observation: messages.importedTooltipObservation,
+                      })}
                     />
                   </Box>
                 }
@@ -165,6 +187,11 @@ export const IdeasShow = ({
               translateButtonClicked={translateButtonIsClicked}
             />
           </Box>
+          <CustomFieldAnswers
+            ideaId={ideaId}
+            project={project.data}
+            compact={compact}
+          />
           {compact && <Cosponsorship ideaId={ideaId} />}
 
           {compact && statusId && (
@@ -191,6 +218,7 @@ export const IdeasShow = ({
                   participationContext?.attributes.allow_anonymous_participation
                 }
                 postId={ideaId}
+                onUnauthenticatedCommentClick={onUnauthenticatedCommentClick}
               />
             </Suspense>
           </Box>
@@ -206,6 +234,12 @@ export const IdeasShow = ({
                 width="100%"
                 toolTipType="input"
               />
+              <Box mt="16px">
+                <IdeaSharingButton
+                  ideaId={ideaId}
+                  buttonComponent={<SharingButtonComponent />}
+                />
+              </Box>
             </Box>
           )}
         </Box>

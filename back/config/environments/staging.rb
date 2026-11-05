@@ -42,9 +42,10 @@ Rails.application.configure do
   # config.action_cable.url = 'wss://example.com/cable'
   # config.action_cable.allowed_request_origins = [ 'http://example.com', /http:\/\/example.*/ ]
 
-  # Assume all access to the app is happening through a SSL-terminating reverse proxy.
-  # Can be used together with config.force_ssl for Strict-Transport-Security and secure cookies.
-  # config.assume_ssl = true
+  # TLS terminates at CloudFront; the ALB → Rails hop is HTTP. Tell Rails to
+  # treat requests as HTTPS so request.scheme, request.base_url, URL helpers,
+  # and CSRF Origin checks all see the public-facing scheme.
+  config.assume_ssl = true
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   # config.force_ssl = true

@@ -35,8 +35,8 @@ resource 'Graph data units' do
       }
     }
     phase = create(:phase,
-      start_at: Time.zone.today - 2.days,
-      end_at: Time.zone.today + 2.days,
+      start_at: 2.days.ago,
+      end_at: 2.days.from_now,
       project: project)
 
     @report = create(
@@ -47,7 +47,10 @@ resource 'Graph data units' do
     )
 
     # Make TimeBoundariesParser work as expected
-    AppConfiguration.instance.update!(created_at: filtered_date - 2.days)
+    AppConfiguration.instance.update!(
+      created_at: filtered_date - 2.days,
+      platform_start_at: filtered_date - 2.days
+    )
 
     # This is used if the data query is implemented with Analytics API
     # create(:dimension_date, date: filtered_date)
@@ -55,9 +58,9 @@ resource 'Graph data units' do
 
     # With the current implementation, registration_completed_at is used to filter users by startAt/endAt.
     # But the participation date can be used instead in the future (Idea#created_at).
-    participant = create(:user, gender: @gender, registration_completed_at: filtered_date)
+    participant = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'gender', value: @gender)], registration_completed_at: filtered_date)
     create(:idea, project: project, created_at: filtered_date, author: participant)
-    _not_returned_idea = create(:idea, project: create(:project), created_at: filtered_date, author: create(:user, gender: @gender))
+    _not_returned_idea = create(:idea, project: create(:project), created_at: filtered_date, author: create(:user, custom_field_answers: [build(:custom_field_answer, key: 'gender', value: @gender)]))
   end
 
   def expected_series

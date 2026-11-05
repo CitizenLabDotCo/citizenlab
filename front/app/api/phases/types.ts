@@ -1,6 +1,7 @@
-import { IRelationship, Multiloc } from 'typings';
+import { CLErrorsWrapper, IRelationship, Multiloc } from 'typings';
 
-import { UserDataCollection } from 'api/phase_permissions/types';
+import { UserDataCollection } from 'api/permissions/types';
+import { PhaseActionDescriptors } from 'api/projects/types';
 
 import { Keys } from 'utils/cl-react-query/types';
 
@@ -34,8 +35,11 @@ export interface IPhaseData {
 }
 
 export interface IPhaseAttributes {
+  voting_filtering_enabled: boolean;
+  placement_type: PhasePlacementType;
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
+  draft_description_multiloc: Multiloc;
   start_at: string;
   end_at: string | null;
   input_term: InputTerm;
@@ -53,6 +57,7 @@ export interface IPhaseAttributes {
   reacting_dislike_enabled: boolean;
   reacting_dislike_limited_max: number;
   presentation_mode: PresentationMode;
+  available_views?: PresentationMode[];
   survey_service?: TSurveyService | null;
   survey_embed_url?: string | null;
   survey_popup_frequency?: number | null;
@@ -61,9 +66,10 @@ export interface IPhaseAttributes {
   document_annotation_embed_url?: string | null;
   custom_form_persisted?: boolean;
   voting_method?: VotingMethod | null;
-  vote_term: VoteTerm;
+  vote_term?: VoteTerm; // Some existing phases in reports JSON may not have this defined.
   voting_min_total?: number | null;
   voting_max_total?: number | null;
+  voting_min_selected_options?: number | null;
   voting_max_votes_per_idea?: number | null;
   ideas_count: number;
   baskets_count: number;
@@ -74,12 +80,23 @@ export interface IPhaseAttributes {
   report_public: boolean;
   native_survey_title_multiloc?: Multiloc;
   native_survey_button_multiloc?: Multiloc;
-  prescreening_enabled?: boolean;
+  allow_multiple_responses?: boolean;
+  prescreening_mode?: PrescreeningMode;
+  /** The prescreening_mode reduced to what the platform's feature flags permit. A phase
+   * can carry a prescreening_mode on a platform without the screening feature (tenant
+   * templates and project copies bring the value across), in which case the back end
+   * ignores it and this is null. Use this, not prescreening_mode, to decide whether
+   * screening is in effect. */
+  effective_prescreening_mode?: PrescreeningMode | null;
   manual_voters_amount?: number;
   similarity_enabled?: boolean;
   similarity_threshold_title?: number | null;
   similarity_threshold_body?: number | null;
+  supports_form_logic: boolean;
+  supports_public_visibility: boolean;
   user_data_collection: UserDataCollection;
+  user_fields_in_form_enabled: boolean;
+  action_descriptors: PhaseActionDescriptors;
 }
 
 export interface IPhases {
@@ -92,13 +109,16 @@ export interface IPhase {
 
 export interface IUpdatedPhaseProperties {
   project_id?: string;
+  placement_type?: PhasePlacementType;
   title_multiloc?: Multiloc;
   description_multiloc?: Multiloc;
+  draft_description_multiloc?: Multiloc;
   input_term?: InputTerm;
   start_at?: string;
   end_at?: string | null;
   participation_method?: ParticipationMethod;
   voting_method?: VotingMethod | null;
+  voting_min_selected_options?: number | null;
   submission_enabled?: boolean | null;
   commenting_enabled?: boolean | null;
   autoshare_results_enabled?: boolean | null;
@@ -109,10 +129,12 @@ export interface IUpdatedPhaseProperties {
   reacting_dislike_enabled?: boolean | null;
   reacting_dislike_limited_max?: number | null;
   reacting_threshold?: number | null;
-  presentation_mode?: 'card' | 'map' | null;
+  presentation_mode?: 'card' | 'map' | 'feed' | null;
+  available_views?: PresentationMode[] | null;
   voting_min_total?: number | null;
   voting_max_total?: number | null;
   voting_max_votes_per_idea?: number | null;
+  voting_filtering_enabled?: boolean | null;
   vote_term?: VoteTerm;
   survey_service?: TSurveyService | null;
   survey_embed_url?: string | null;
@@ -122,7 +144,8 @@ export interface IUpdatedPhaseProperties {
   document_annotation_embed_url?: string | null;
   native_survey_title_multiloc?: Multiloc;
   native_survey_button_multiloc?: Multiloc;
-  prescreening_enabled?: boolean | null;
+  allow_multiple_responses?: boolean;
+  prescreening_mode?: PrescreeningMode | null;
   allow_anonymous_participation?: boolean;
   expire_days_limit?: number;
   manual_voters_amount?: number;
@@ -137,6 +160,11 @@ export interface AddPhaseObject extends IUpdatedPhaseProperties {
 
 export interface UpdatePhaseObject extends IUpdatedPhaseProperties {
   phaseId: string;
+  timeline_phase_dates?: {
+    id: string;
+    start_at?: string;
+    end_at?: string | null;
+  }[];
 }
 
 export type TSurveyService =
@@ -150,30 +178,41 @@ export type TSurveyService =
   | 'microsoft_forms'
   | 'snap_survey';
 
-export type ParticipationMethod =
-  | 'ideation'
-  | 'common_ground'
-  | 'information'
-  | 'native_survey'
-  | 'community_monitor_survey'
-  | 'survey'
-  | 'voting'
-  | 'poll'
-  | 'volunteering'
-  | 'document_annotation'
-  | 'proposals';
+export const participationMethods = [
+  'ideation',
+  'common_ground',
+  'information',
+  'native_survey',
+  'community_monitor_survey',
+  'survey',
+  'voting',
+  'poll',
+  'volunteering',
+  'document_annotation',
+  'proposals',
+] as const;
+
+export type ParticipationMethod = (typeof participationMethods)[number];
+
+export type PhasePlacementType = 'on_timeline' | 'standalone';
+
+export type PhasePlacementFilter = PhasePlacementType | 'all';
 
 export type VotingMethod = 'budgeting' | 'multiple_voting' | 'single_voting';
 
-export type VoteTerm = 'vote' | 'point' | 'token' | 'credit';
+export type VoteTerm = 'vote' | 'point' | 'token' | 'credit' | 'percent';
 
-export type IdeaSortMethod =
-  | 'trending'
-  | 'comments_count'
-  | 'random'
-  | 'popular'
-  | 'new'
-  | '-new';
+export const ideaSortMethods = [
+  'trending',
+  'comments_count',
+  'random',
+  'popular',
+  'new',
+  '-new',
+  'status_priority',
+] as const;
+
+export type IdeaSortMethod = (typeof ideaSortMethods)[number];
 
 export type InputTerm =
   | 'idea'
@@ -184,6 +223,20 @@ export type InputTerm =
   | 'contribution'
   | 'proposal'
   | 'initiative'
-  | 'petition';
+  | 'petition'
+  | 'comment'
+  | 'response'
+  | 'suggestion'
+  | 'topic'
+  | 'post'
+  | 'story'
+  | 'observation';
 
-export type PresentationMode = 'card' | 'map';
+export const presentationModes = ['card', 'map', 'feed'] as const;
+export type PresentationMode = (typeof presentationModes)[number];
+
+export type PrescreeningMode = 'flagged_only' | 'all';
+
+export interface PhaseUpdateError extends CLErrorsWrapper {
+  meta?: { phase_id: string };
+}

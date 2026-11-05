@@ -10,4 +10,4 @@ ro:
       event_description_idea: 'Ți-a fost atribuită o idee. Trimiteți feedback prin scrierea unei actualizări oficiale sau schimbarea statusului ei.'
       main_header: '%{firstName}, aveți o sarcină nouă'
       subject: 'Aveți o misiune pe platforma %{organizationName}'
-      preheader_idea: 'Ideea de %{authorName} v-a fost atribuită'
+      preheader: 'Ideea de %{authorName} v-a fost atribuită'

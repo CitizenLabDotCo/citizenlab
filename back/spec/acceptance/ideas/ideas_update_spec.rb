@@ -18,7 +18,7 @@ resource 'Ideas' do
 
   patch 'web_api/v1/ideas/:id' do
     with_options scope: :idea do
-      parameter :project_id, 'The idea of the project that hosts the idea'
+      parameter :project_id, 'The id of the project that hosts the idea'
       parameter :phase_ids, 'The phases the idea is part of, defaults to the current only, only allowed by admins'
       parameter :author_id, 'The user id of the user owning the idea. This can only be specified by moderators and is inferred from the JWT token for residents.'
       parameter :publication_status, "Either #{Idea::PUBLICATION_STATUSES.join(', ')}"
@@ -38,8 +38,7 @@ resource 'Ideas' do
         parameter :budget, 'The budget needed to realize the idea, as determined by the city'
       end
 
-      let(:with_permissions) { false }
-      let(:project) { create(:single_phase_ideation_project, phase_attrs: { with_permissions: with_permissions }) }
+      let(:project) { create(:single_phase_ideation_project) }
       let(:input) { create(:idea, project: project, phases: project.phases) }
 
       context 'when author' do
@@ -50,13 +49,13 @@ resource 'Ideas' do
         let(:location_point_geojson) { { type: 'Point', coordinates: [51.4365635, 3.825930459] } }
         let(:location_description) { 'Watkins Road 8' }
         let(:title_multiloc) { { 'en' => 'Changed title' } }
-        let(:topic_ids) { create_list(:topic, 2, projects: [project]).map(&:id) }
+        let(:topic_ids) { create_list(:input_topic, 2, project: project).map(&:id) }
 
         example_request 'Update an idea' do
           assert_status 200
           json_response = json_parse(response_body)
           expect(json_response.dig(:data, :attributes, :title_multiloc, :en)).to eq 'Changed title'
-          expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
+          expect(json_response.dig(:data, :relationships, :input_topics, :data).pluck(:id)).to match_array topic_ids
           expect(json_response.dig(:data, :attributes, :location_point_geojson)).to eq location_point_geojson
           expect(json_response.dig(:data, :attributes, :location_description)).to eq location_description
         end
@@ -69,6 +68,14 @@ resource 'Ideas' do
             json_response = json_parse response_body
             expect(json_response.dig(:data, :attributes, :publication_status)).to eq 'published'
           end
+        end
+
+        context 'when body_multiloc contains images' do
+          let(:body_multiloc) { { 'en' => html_with_base64_image } }
+
+          it_behaves_like 'updates record with text images',
+            model_class: Idea,
+            field: :body_multiloc
         end
 
         describe do
@@ -94,8 +101,8 @@ resource 'Ideas' do
         end
 
         example '[error] Update an idea when there is a posting disabled reason' do
-          expect_any_instance_of(Permissions::ProjectPermissionsService)
-            .to receive(:denied_reason_for_action).with('editing_idea', anything).and_return('i_dont_like_you')
+          expect_any_instance_of(Permissions::PhasePermissionsService)
+            .to receive(:denied_reason_for_action).with('editing_idea').and_return('i_dont_like_you')
 
           do_request
 
@@ -113,7 +120,7 @@ resource 'Ideas' do
             expect(json_response.dig(:data, :attributes, :title_multiloc, :en)).to eq 'Changed title'
             # proposed_budget is disabled, so its given value was ignored.
             expect(json_response.dig(:data, :attributes, :proposed_budget)).to eq input.proposed_budget
-            expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
+            expect(json_response.dig(:data, :relationships, :input_topics, :data).pluck(:id)).to match_array topic_ids
             expect(json_response.dig(:data, :attributes, :location_point_geojson)).to eq location_point_geojson
             expect(json_response.dig(:data, :attributes, :location_description)).to eq location_description
           end
@@ -123,11 +130,11 @@ resource 'Ideas' do
           let(:topic_ids) { [] }
 
           example 'Remove the topics', document: false do
-            input.topics = create_list :topic, 2
+            input.input_topics = create_list :input_topic, 2, project: project
             do_request
             assert_status 200
             json_response = json_parse response_body
-            expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
+            expect(json_response.dig(:data, :relationships, :input_topics, :data).pluck(:id)).to match_array topic_ids
           end
         end
 
@@ -164,6 +171,98 @@ resource 'Ideas' do
             expect(response_data.dig(:relationships, :author, :data, :id)).not_to eq author_id
           end
         end
+
+        describe 'prescreening' do
+          before_all { SettingsService.new.activate_feature!('prescreening_ideation') }
+
+          let!(:proposed_status) { create(:idea_status_proposed) }
+
+          let(:phase) { create(:phase, :ongoing, prescreening_mode: prescreening_mode) }
+          let(:input) { create(:idea, phases: [phase], idea_status: proposed_status) }
+          let(:title_multiloc) { { 'en' => 'Changed title' } }
+
+          context 'when prescreening_mode is all' do
+            let(:prescreening_mode) { 'all' }
+
+            example '[error] Author cannot edit a published idea after screening', document: false do
+              do_request
+
+              assert_status 401
+              expect(json_response_body).to include_response_error(:base, 'published_after_screening')
+            end
+          end
+
+          context 'when prescreening_mode is flagged_only' do
+            before_all { SettingsService.new.activate_feature!('flag_inappropriate_content') }
+
+            let(:prescreening_mode) { 'flagged_only' }
+
+            example 'Author can edit a published idea in flagged_only mode', document: false do
+              do_request
+
+              assert_status 200
+              expect(response_data.dig(:attributes, :title_multiloc, :en)).to eq('Changed title')
+            end
+          end
+        end
+
+        # A phase can carry a prescreening_mode on a platform without the feature: tenant
+        # templates and project copies bring the value across from platforms that have it.
+        # The mode must not restrict the author where screening never applied.
+        context 'when prescreening_mode is all but the prescreening_ideation feature is disabled' do
+          let!(:proposed_status) { create(:idea_status_proposed) }
+
+          let(:phase) { create(:phase, :ongoing, prescreening_mode: 'all') }
+          let(:input) { create(:idea, phases: [phase], idea_status: proposed_status) }
+          let(:title_multiloc) { { 'en' => 'Changed title' } }
+
+          example 'Author can edit a published idea', document: false do
+            do_request
+
+            assert_status 200
+            expect(response_data.dig(:attributes, :title_multiloc, :en)).to eq('Changed title')
+          end
+
+          # The screening restriction is keyed on the phase the input was created in, so it
+          # also lifts for inputs of a phase that has since ended.
+          context 'and the screened phase has ended, but the project has a current phase' do
+            let(:project) { create(:project) }
+            let!(:phase) do
+              create(
+                :phase,
+                project: project,
+                prescreening_mode: 'all',
+                start_at: Time.zone.today - 30.days,
+                end_at: Time.zone.today - 10.days
+              )
+            end
+            let!(:current_phase) do
+              create(:phase, project: project, start_at: Time.zone.today - 9.days, end_at: Time.zone.today + 10.days)
+            end
+
+            example 'Author can edit a published idea', document: false do
+              do_request
+
+              assert_status 200
+              expect(response_data.dig(:attributes, :title_multiloc, :en)).to eq('Changed title')
+            end
+          end
+
+          # Editing is denied for want of a current phase, before screening is ever considered,
+          # so a project that has ended gives the author nothing back.
+          context 'and the project has ended' do
+            let(:phase) do
+              create(:phase, prescreening_mode: 'all', start_at: Time.zone.today - 30.days, end_at: Time.zone.today - 10.days)
+            end
+
+            example '[error] Author cannot edit a published idea', document: false do
+              do_request
+
+              assert_status 401
+              expect(json_response_body).to include_response_error(:base, 'project_inactive')
+            end
+          end
+        end
       end
 
       context 'when admin' do
@@ -178,11 +277,11 @@ resource 'Ideas' do
 
         describe do
           before do
-            project.update! allowed_input_topics: create_list(:topic, 2)
-            input.update! topics: project.allowed_input_topics
+            project.update! input_topics: create_list(:input_topic, 2, project:)
+            input.update! input_topics: project.input_topics
           end
 
-          let(:project_id) { create(:project, allowed_input_topics: [project.allowed_input_topics.first]).id }
+          let(:project_id) { create(:project, input_topics: [project.input_topics.first]).id }
 
           example_request 'Change the project' do
             assert_status 200
@@ -193,18 +292,37 @@ resource 'Ideas' do
           end
         end
 
-        example '[error] Removing the author of a published idea', document: false do
-          input.update! publication_status: 'published'
-          do_request idea: { author_id: nil }
-          assert_status 422
-          expect(json_response_body).to include_response_error(:author, 'blank')
+        example 'Move the idea to a project with another form, relinking the answers by key', document: false do
+          source_form = create(:custom_form, :with_default_fields, participation_context: project)
+          shared_field = create(:custom_field_text, resource: source_form, key: 'shared')
+          only_here_field = create(:custom_field_text, resource: source_form, key: 'only_here')
+          input.custom_field_answers.create!(key: 'shared', value: 'kept', custom_field: shared_field)
+          input.custom_field_answers.create!(key: 'only_here', value: 'also kept', custom_field: only_here_field)
+          destination_project = create(:single_phase_ideation_project)
+          destination_form = create(:custom_form, :with_default_fields, participation_context: destination_project)
+          destination_shared_field = create(:custom_field_text, resource: destination_form, key: 'shared')
+
+          do_request idea: { project_id: destination_project.id }
+
+          assert_status 200
+          expect(input.reload.custom_field_answers.pluck(:key, :value, :custom_field_id)).to contain_exactly(
+            ['shared', 'kept', destination_shared_field.id],
+            ['only_here', 'also kept', nil]
+          )
         end
 
-        example '[error] Publishing an idea without author', document: false do
+        example 'Removing the author of a published idea', document: false do
+          input.update! publication_status: 'published'
+          do_request idea: { author_id: nil }
+          assert_status 200
+          expect(response_data.dig(:attributes, :author_id)).to be_nil
+        end
+
+        example 'Publishing an idea without author', document: false do
           input.update! publication_status: 'draft', author: nil
           do_request idea: { publication_status: 'published' }
-          assert_status 422
-          expect(json_response_body).to include_response_error(:author, 'blank')
+          assert_status 200
+          expect(response_data.dig(:attributes, :author_id)).to be_nil
         end
 
         describe 'draft ideas' do
@@ -238,6 +356,86 @@ resource 'Ideas' do
             assert_status 200
             json_response = json_parse response_body
             expect(json_response.dig(:data, :relationships, :idea_status, :data, :id)).to eq idea_status_id
+          end
+        end
+
+        describe 'clearing location_point_geojson' do
+          let(:input) do
+            create(
+              :idea,
+              project: project,
+              phases: project.phases,
+              location_description: 'Old address',
+              location_point_geojson: { 'type' => 'Point', 'coordinates' => [1.0, 2.0] }
+            )
+          end
+          let(:location_description) { nil }
+          let(:location_point_geojson) { nil }
+
+          example 'admin clears the location by sending null for both attributes', document: false do
+            do_request idea: { location_description: nil, location_point_geojson: nil }
+            assert_status 200
+            expect(input.reload.location_description).to be_nil
+            expect(input.reload.location_point_geojson).to be_nil
+          end
+        end
+
+        describe 'profanity blocking on update' do
+          before { SettingsService.new.activate_feature! 'blocking_profanity' }
+
+          context 'admin changes only the status of an idea whose stored body contains a blocked word' do
+            let(:input) do
+              create(
+                :idea,
+                project: project,
+                phases: project.phases,
+                idea_status: create(:idea_status),
+                body_multiloc: { 'nl-BE' => 'Wat een mietje.' }
+              )
+            end
+            let!(:idea_status_id) { create(:idea_status_proposed).id }
+
+            example_request 'succeeds and persists the new status' do
+              assert_status 200
+              expect(input.reload.idea_status_id).to eq idea_status_id
+            end
+          end
+
+          context 'admin edits body_multiloc to add a flagged word in a previously unused locale' do
+            let(:input) do
+              create(
+                :idea,
+                project: project,
+                phases: project.phases,
+                body_multiloc: { 'en' => 'A clean idea.' }
+              )
+            end
+            let(:body_multiloc) { { 'en' => 'A clean idea.', 'nl-BE' => 'Wat een mietje.' } }
+
+            example_request '[error] is blocked with includes_banned_words on body_multiloc' do
+              assert_status 422
+              json_response = json_parse response_body
+              err = json_response.dig(:errors, :base)&.find { |e| e[:error] == 'includes_banned_words' }
+              expect(err).to be_present
+              expect(err[:blocked_words].pluck(:attribute)).to include('body_multiloc')
+            end
+          end
+
+          context 'admin edits one locale of body_multiloc; flagged word remains untouched in another locale' do
+            let(:input) do
+              create(
+                :idea,
+                project: project,
+                phases: project.phases,
+                body_multiloc: { 'en' => 'Original.', 'nl-BE' => 'Wat een mietje.' }
+              )
+            end
+            let(:body_multiloc) { { 'en' => 'A cleaner English version.', 'nl-BE' => 'Wat een mietje.' } }
+
+            example_request 'succeeds — unchanged locales are not re-validated' do
+              assert_status 200
+              expect(input.reload.body_multiloc['en']).to eq 'A cleaner English version.'
+            end
           end
         end
 
@@ -423,7 +621,7 @@ resource 'Ideas' do
         end
 
         context 'when reviewing is enabled' do
-          let(:creation_phase) { create(:proposals_phase, prescreening_enabled: true) }
+          let(:creation_phase) { create(:proposals_phase, prescreening_mode: 'all') }
           let(:input) { create(:proposal, idea_status: proposals_status, publication_status: publication_status, creation_phase: creation_phase, project: creation_phase.project) }
 
           describe do
@@ -471,6 +669,25 @@ resource 'Ideas' do
 
             expect(json_response.dig(:data, :relationships, :cosponsors, :data).length).to eq 3
             expect(json_response.dig(:data, :relationships, :cosponsors, :data).pluck(:id)).to include new_cosponsor.id
+          end
+        end
+
+        describe do
+          let(:input) { create(:proposal) }
+          let(:new_cosponsor) { create(:user) }
+          let(:cosponsor_ids) { [new_cosponsor.id] }
+
+          before { CustomField.find_by(code: 'cosponsor_ids').update!(enabled: true) }
+
+          # Adding a cosponsor via an idea update must log a `Cosponsorship 'created'`
+          # activity, which is what drives the InvitationToCosponsorIdea notification.
+          example 'Adding a cosponsor logs the activity that drives the invite notification', document: false do
+            expect { do_request }
+              .to have_enqueued_job(LogActivityJob)
+              .with(an_instance_of(Cosponsorship), 'created', anything, anything)
+
+            assert_status 200
+            expect(input.reload.cosponsors).to include(new_cosponsor)
           end
         end
       end
@@ -521,7 +738,7 @@ resource 'Ideas' do
           example '[error] Move a proposal to a different phase', document: false do
             do_request
             assert_status 422
-            expect(json_response_body).to include_response_error(:phase_ids, 'Cannot change the phases of non-transitive inputs')
+            expect(json_response_body).to include_response_error(:phase_ids, 'cannot_change_phases')
             expect(input.reload.phase_ids).not_to include phase.id
           end
         end
@@ -533,7 +750,7 @@ resource 'Ideas' do
           example '[error] Move a proposal to a different project', document: false do
             do_request
             assert_status 422
-            expect(json_response_body).to include_response_error(:project_id, 'Cannot change the project of non-transitive inputs')
+            expect(json_response_body).to include_response_error(:project_id, 'cannot_change_project')
             expect(input.reload.project_id).not_to eq project_id
           end
         end
@@ -548,7 +765,7 @@ resource 'Ideas' do
         end
 
         context 'when reviewing is enabled' do
-          let(:creation_phase) { create(:proposals_phase, prescreening_enabled: true) }
+          let(:creation_phase) { create(:proposals_phase, prescreening_mode: 'all') }
           let!(:prescreening) { create(:proposals_status, code: 'prescreening') }
           let!(:proposed) { create(:proposals_status, code: 'proposed') }
           let(:input) { create(:proposal, idea_status: proposed, creation_phase: creation_phase, project: creation_phase.project) }
@@ -585,7 +802,7 @@ resource 'Ideas' do
         phase = project.phases.first
 
         permission = phase.permissions.find_by(action: 'posting_idea')
-        permission.update!(global_custom_fields: false)
+        permission.update!(custom_fields_behavior: 'custom')
         permission.permissions_custom_fields = [
           create(:permissions_custom_field, custom_field: create(:custom_field, key: 'age'))
         ]
@@ -593,7 +810,7 @@ resource 'Ideas' do
         project
       end
 
-      let(:author) { create(:user, custom_field_values: { age: 30 }) }
+      let(:author) { create(:user, custom_field_answers: [build(:custom_field_answer, key: 'age', value: 30)]) }
       let(:input) { create(:native_survey_response, project: project, author: author) }
 
       context 'when author' do
@@ -610,7 +827,54 @@ resource 'Ideas' do
 
             # It also saves the custom field values into the idea
             idea = Idea.find(response_data[:id])
-            expect(idea.custom_field_values['u_age']).to eq 30
+            expect(idea.answer_for_key('u_age')&.value).to eq 30
+          end
+
+          context 'when the phase is standalone' do
+            before { input.creation_phase.update!(placement_type: 'standalone') }
+
+            example_request 'Can change a survey response from draft to published in a standalone phase' do
+              assert_status 200
+              expect(response_data[:attributes][:publication_status]).to eq 'published'
+            end
+
+            context 'with the anonymous parameter' do
+              let(:anonymous) { true }
+
+              example_request '[error] Publish an anonymous survey response when the standalone phase does not allow it' do
+                assert_status 422
+                expect(json_response_body).to include_response_error(:base, 'anonymous_participation_not_allowed')
+              end
+
+              context 'when the standalone phase allows anonymous participation' do
+                before { input.creation_phase.update!(allow_anonymous_participation: true) }
+
+                example_request 'Publish an anonymous survey response in a standalone phase' do
+                  assert_status 200
+                  expect(response_data.dig(:attributes, :anonymous)).to be true
+                end
+              end
+            end
+          end
+
+          context 'with user_data_collection set to demographics only' do
+            before do
+              permission = project.phases.first.permissions.find_by(action: 'posting_idea')
+              permission.update!(user_data_collection: 'demographics_only')
+            end
+
+            let(:publication_status) { 'published' }
+
+            example_request 'Can change a survey response from draft to published' do
+              assert_status 200
+              expect(response_data[:attributes][:publication_status]).to eq 'published'
+
+              idea = Idea.find(response_data[:id])
+              expect(idea.answer_for_key('u_age')&.value).to eq 30
+              expect(idea.anonymous).to be true
+              expect(idea.author).to be_nil
+              expect(idea.author_hash).to eq(Idea.create_author_hash(input.author.id, project.id, true))
+            end
           end
         end
       end
@@ -623,7 +887,7 @@ resource 'Ideas' do
 
           let(:publication_status) { 'published' }
 
-          example_request 'Can change an an imported native survey response from draft to published' do
+          example_request 'Can change an imported native survey response from draft to published' do
             assert_status 200
             expect(response_data[:attributes][:publication_status]).to eq 'published'
           end
@@ -632,12 +896,8 @@ resource 'Ideas' do
     end
 
     context 'in a voting phase' do
+      public_input_params(self)
       with_options scope: :idea do
-        parameter :title_multiloc, 'Multi-locale field with the idea title', extra: 'Maximum 100 characters'
-        parameter :body_multiloc, 'Multi-locale field with the idea body', extra: 'Required if not draft'
-        parameter :topic_ids, 'Array of ids of the associated topics'
-        parameter :location_point_geojson, 'A GeoJSON point that situates the location the idea applies to'
-        parameter :location_description, 'A human readable description of the location the idea applies to'
         parameter :proposed_budget, 'The budget needed to realize the idea, as proposed by the author'
         parameter :budget, 'The budget needed to realize the idea, as determined by the city'
       end
@@ -697,13 +957,13 @@ resource 'Ideas' do
 
             example 'Successfully removes the idea from a voting phase and recalculates vote counts', document: false do
               # Voting counts before
-              expect(input.ideas_phases.pluck(:votes_count)).to match_array [0, 1]
+              expect(input.ideas_phases.pluck(:votes_count)).to contain_exactly(0, 1)
 
               do_request
               assert_status 200
 
               # Voting phase counts after
-              expect(input.ideas_phases.pluck(:votes_count)).to match_array [0]
+              expect(input.ideas_phases.pluck(:votes_count)).to contain_exactly(0)
             end
           end
 
@@ -713,12 +973,12 @@ resource 'Ideas' do
             example 'Successfully added the idea to the voting phase and restores vote counts', document: false do
               # Voting counts before
               input.update!(phases: [project.phases.first])
-              expect(input.ideas_phases.pluck(:votes_count)).to match_array [0]
+              expect(input.ideas_phases.pluck(:votes_count)).to contain_exactly(0)
 
               do_request
               assert_status 200
 
-              expect(input.ideas_phases.pluck(:votes_count)).to match_array [1]
+              expect(input.ideas_phases.pluck(:votes_count)).to contain_exactly(1)
             end
           end
 

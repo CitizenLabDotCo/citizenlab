@@ -3,9 +3,10 @@ import React from 'react';
 import { Box, Text, fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import authProvidersMessages from 'containers/Authentication/steps/AuthProviders/messages';
+import authProvidersMessages from 'containers/Authentication/steps/_components/AuthProviderButton/messages';
 
 import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
+import ManualCampaignConsent from 'components/SmsConsent/ManualCampaignConsent';
 
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
@@ -37,46 +38,46 @@ export const ConsentText = styled.div`
 
 interface Props {
   showByContinuingText?: boolean;
+  showSmsManualCampaignConsent?: boolean;
+  byContinuingCopy?: string;
 }
 
-const PoliciesMarkup = ({ showByContinuingText = true }: Props) => {
+const PoliciesMarkup = ({
+  showByContinuingText = true,
+  showSmsManualCampaignConsent = false,
+  byContinuingCopy,
+}: Props) => {
   const { formatMessage } = useIntl();
 
   return (
     <>
-      <Box id="e2e-terms-conditions-container">
+      <Box id="e2e-policies-container">
         <CheckboxWithLabel
-          name="termsAndConditionsAccepted"
-          dataTestId="termsAndConditionsAccepted"
+          name="policiesAccepted"
+          dataTestId="policiesAccepted"
+          required
           label={
             <ConsentText>
               <FormattedMessage
-                {...authProvidersMessages.iHaveReadAndAgreeToTerms}
+                {...authProvidersMessages.iHaveReadAndAgreeToTermsAndPrivacy}
                 values={{
-                  link: (
-                    <Link target="_blank" to="/pages/terms-and-conditions">
+                  termsLink: (
+                    <Link
+                      target="_blank"
+                      to="/pages/$slug"
+                      params={{ slug: 'terms-and-conditions' }}
+                    >
                       <FormattedMessage
                         {...authProvidersMessages.theTermsAndConditions}
                       />
                     </Link>
                   ),
-                }}
-              />
-            </ConsentText>
-          }
-        />
-      </Box>
-      <Box mt="8px" id="e2e-privacy-policy-container">
-        <CheckboxWithLabel
-          name="privacyPolicyAccepted"
-          dataTestId="privacyPolicyAccepted"
-          label={
-            <ConsentText>
-              <FormattedMessage
-                {...authProvidersMessages.iHaveReadAndAgreeToPrivacy}
-                values={{
-                  link: (
-                    <Link target="_blank" to="/pages/privacy-policy">
+                  privacyLink: (
+                    <Link
+                      target="_blank"
+                      to="/pages/$slug"
+                      params={{ slug: 'privacy-policy' }}
+                    >
                       <FormattedMessage
                         {...authProvidersMessages.thePrivacyPolicy}
                       />
@@ -88,9 +89,20 @@ const PoliciesMarkup = ({ showByContinuingText = true }: Props) => {
           }
         />
       </Box>
+      {showSmsManualCampaignConsent && (
+        <Box mt="8px">
+          <ManualCampaignConsent />
+        </Box>
+      )}
       {showByContinuingText && (
-        <Text mt="24px" mb="0px" fontSize="s" color="tenantText">
-          {formatMessage(messages.byContinuing)}
+        <Text
+          id="email-consent-description"
+          mt="24px"
+          mb="0px"
+          fontSize="s"
+          color="tenantText"
+        >
+          {byContinuingCopy ?? formatMessage(messages.byContinuing)}
         </Text>
       )}
     </>

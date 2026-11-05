@@ -48,7 +48,7 @@ const ContentWrapper = styled.div`
   }
 `;
 
-interface Props {
+export interface Props {
   resource: {
     title: string;
     subtitle?: string;

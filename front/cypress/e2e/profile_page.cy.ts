@@ -32,7 +32,12 @@ describe('Profile Page', () => {
       })
       .then((project) => {
         projectId = project.body.data.id;
-        return cy.apiCreateIdea({ projectId, ideaTitle, ideaContent, jwt });
+        return cy.apiCreateIdea({
+          phaseId: project.body.data.relationships.current_phase.data.id,
+          ideaTitle,
+          ideaContent,
+          jwt,
+        });
       })
       .then((idea) => {
         ideaId = idea.body.data.id;
@@ -58,7 +63,7 @@ describe('Profile Page', () => {
   });
 
   beforeEach(() => {
-    cy.visit(`/profile/${newUserName}-${newUserSurname}`);
+    cy.visit(`/profile/${userId}`);
     cy.get('#e2e-usersshowpage');
     cy.wait(1000);
     cy.injectAxe();
@@ -68,6 +73,14 @@ describe('Profile Page', () => {
     cy.get('#e2e-usersshowpage-fullname').contains(
       `${newUserName} ${newUserSurname}`
     );
+
+    // The idea cards render after the page container appears, so wait for the
+    // card the before() hook created before scanning. Otherwise the scan races
+    // the card and silently passes by running against a half-rendered page.
+    cy.get('#e2e-ideas-container')
+      .find('.e2e-idea-card')
+      .should('have.length', 1);
+
     cy.checkA11y(undefined, {
       includedImpacts: ['critical', 'serious'],
     });
@@ -96,7 +109,7 @@ describe('Profile Page', () => {
   it('shows the events the user is attending', () => {
     cy.clearCookies();
     // Confirm that the user event tab is not visible to other users
-    cy.visit(`/profile/${newUserName}-${newUserSurname}`);
+    cy.visit(`/profile/${userId}`);
     cy.acceptCookies();
 
     cy.get('#e2e-usersshowpage');
@@ -114,7 +127,7 @@ describe('Profile Page', () => {
     cy.wait(1000);
 
     // Go to profile
-    cy.visit(`/profile/${newUserName}-${newUserSurname}`);
+    cy.visit(`/profile/${userId}`);
     cy.get('#e2e-usersshowpage');
 
     // Confirm the event is in the list

@@ -1,69 +1,80 @@
 import React, { useState } from 'react';
 
-import {
-  Box,
-  Title,
-  Text,
-  colors,
-  stylingConsts,
-  Spinner,
-} from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { Box, Title, Text, colors } from '@citizenlab/cl2-component-library';
 
-import { IBackgroundJobData } from 'api/background_jobs/types';
-import useTrackBackgroundJobs from 'api/background_jobs/useTrackBackgroundJobs';
 import useDeleteIdea from 'api/ideas/useDeleteIdea';
 import useIdeaById from 'api/ideas/useIdeaById';
-import useApproveOfflineIdeas from 'api/import_ideas/useApproveOfflineIdeas';
+import useApprovedImportedIdeas from 'api/import_ideas/useApprovedImportedIdeas';
+import useApproveImportedIdeas from 'api/import_ideas/useApproveImportedIdeas';
+import useDeleteAllDraftImportedIdeas from 'api/import_ideas/useDeleteAllDraftImportedIdeas';
 import useImportedIdeaMetadata from 'api/import_ideas/useImportedIdeaMetadata';
 import useImportedIdeas from 'api/import_ideas/useImportedIdeas';
+import useTrackImportJobProgress from 'api/import_ideas/useTrackImportJobProgress';
+import usePhase from 'api/phases/usePhase';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
+import Tabs, {
+  getDefaultTabId,
+  getDefaultTabPanelId,
+} from 'components/UI/FilterTabs';
+import WarningModal from 'components/WarningModal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
+import ApprovedInputsList from './ApprovedInputsList';
 import EmptyState from './EmptyState';
 import IdeaEditor from './IdeaEditor';
 import IdeaList from './IdeaList';
+import ImportStatus from './ImportStatus';
 import messages from './messages';
-import PDFPageControl from './PDFPageControl';
 import PDFViewer from './PDFViewer';
+import { getApproveAllExplanationMessage } from './utils';
 
 const ReviewSection = ({
-  importJobs,
+  onClickPDFImport,
+  onClickExcelImport,
 }: {
-  importJobs: IBackgroundJobData[];
+  onClickPDFImport: () => void;
+  onClickExcelImport: () => void;
 }) => {
-  const { projectId, phaseId } = useParams() as {
+  const { projectId, phaseId } = useParams({ strict: false }) as {
     projectId: string;
     phaseId: string;
   };
   const { formatMessage } = useIntl();
   const [ideaId, setIdeaId] = useState<string | null>(null);
+  const [currentTab, setCurrentTab] = useState('toReview');
   const [approvals, setApprovals] = useState({ approved: 0, not_approved: 0 });
+  const [confirmAction, setConfirmAction] = useState<
+    'approveAll' | 'removeAll' | null
+  >(null);
 
   const {
     data: ideas,
     refetch: refetchIdeas,
     isLoading: isLoadingIdeas,
   } = useImportedIdeas({ projectId, phaseId });
+  const { data: approvedIdeas, isLoading: isLoadingApprovedIdeas } =
+    useApprovedImportedIdeas({ projectId, phaseId });
 
   const {
-    active: importing,
-    failed: importFailed,
-    errors: importErrors,
-  } = useTrackBackgroundJobs({
-    jobs: importJobs,
-    onChange: refetchIdeas,
-  });
+    importing,
+    importHasErrors,
+    importProgress,
+    importTotal,
+    errorCount,
+    importErrors,
+  } = useTrackImportJobProgress(phaseId);
 
   const { mutate: deleteIdea } = useDeleteIdea();
-  const { mutate: approveIdeas, isLoading: isApproving } =
-    useApproveOfflineIdeas();
+  const { mutate: approveIdeas, isPending: isApproving } =
+    useApproveImportedIdeas();
+  const { mutate: deleteAllIdeas, isPending: isDeleting } =
+    useDeleteAllDraftImportedIdeas();
 
-  const [currentPageIndex, setCurrentPageIndex] = useState(0);
-
+  const { data: phase } = usePhase(phaseId);
   const { data: idea } = useIdeaById(ideaId ?? undefined, false);
   const { data: ideaMetadata } = useImportedIdeaMetadata({
     id: isLoadingIdeas
@@ -74,13 +85,35 @@ const ReviewSection = ({
   if (ideas === undefined) return null;
 
   const numIdeas = ideas.data.length;
-  if (importJobs.length === 0 && numIdeas === 0) {
-    return <EmptyState />;
+  const numApprovedIdeas =
+    approvedIdeas?.pages.flatMap((page) => page.data).length ?? 0;
+
+  // Past approvals keep the review UI reachable: their list is the way back to
+  // an approved input's PDF and answers.
+  if (
+    !importing &&
+    !importHasErrors &&
+    numIdeas === 0 &&
+    !isLoadingApprovedIdeas &&
+    numApprovedIdeas === 0
+  ) {
+    return (
+      <EmptyState
+        onClickPDFImport={onClickPDFImport}
+        onClickExcelImport={onClickExcelImport}
+      />
+    );
   }
 
   const handleSelectIdea = (ideaId: string) => {
-    setCurrentPageIndex(0);
     setIdeaId(ideaId);
+  };
+
+  // The selection belongs to the list it was made in, so switching tabs
+  // clears it and empties the editor and PDF panes.
+  const handleChangeTab = (tab: string) => {
+    setCurrentTab(tab);
+    setIdeaId(null);
   };
 
   const handleDeleteIdea = (idToBeDeleted: string) => {
@@ -88,10 +121,16 @@ const ReviewSection = ({
       onSuccess: () => {
         if (ideaId === idToBeDeleted) {
           setIdeaId(null);
-          setCurrentPageIndex(0);
         }
       },
     });
+  };
+
+  const importType = ideaMetadata?.data.attributes.import_type;
+
+  const tabData = {
+    toReview: { label: messages.toReviewTab, count: numIdeas },
+    approved: { label: messages.approvedTab },
   };
 
   const handleApproveAll = () => {
@@ -99,20 +138,20 @@ const ReviewSection = ({
       onSuccess: (data) => {
         setApprovals(data.data.attributes);
         setIdeaId(null);
-        refetchIdeas();
+        setConfirmAction(null);
       },
     });
   };
 
-  const pages =
-    ideaMetadata?.data.attributes.import_type === 'pdf'
-      ? // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        ideaMetadata?.data.attributes.page_range.map((page) => Number(page))
-      : null;
-
-  const goToNextPage = () => setCurrentPageIndex((index) => index + 1);
-  const goToPreviousPage = () => setCurrentPageIndex((index) => index - 1);
+  const handleDeleteAll = () => {
+    deleteAllIdeas(phaseId, {
+      onSuccess: () => {
+        setIdeaId(null);
+        setConfirmAction(null);
+        refetchIdeas();
+      },
+    });
+  };
 
   return (
     <Box
@@ -136,67 +175,63 @@ const ReviewSection = ({
         </Title>
       </Box>
 
-      <Box
-        px="25px"
-        borderBottom={`5px ${colors.grey200} solid`}
-        display="flex"
-      >
-        <Box w="60%" display="flex" alignItems="center">
-          {approvals.not_approved === 0 ? (
-            <>
-              <Box px="15px" py="10px">
-                <ButtonWithLink
-                  bgColor={colors.primary}
-                  icon="check"
-                  processing={isApproving}
-                  disabled={isApproving || importing}
-                  onClick={handleApproveAll}
-                >
-                  <FormattedMessage {...messages.approveAllInputs} />
-                </ButtonWithLink>
-              </Box>
-              <Box>
-                <Text>
-                  <FormattedMessage
-                    {...messages.inputsImported}
-                    values={{ numIdeas }}
-                  />
-                </Text>
-              </Box>
-            </>
-          ) : (
-            <Error
-              text={formatMessage(messages.inputsNotApproved, {
-                numNotApproved: approvals.not_approved,
-              })}
-              marginTop="0px"
-              showBackground={false}
-              showIcon={true}
-            />
-          )}
+      <Box px="25px" borderBottom={`5px ${colors.grey200} solid`}>
+        {/* The bulk actions only act on the pending queue, so they are disabled
+            (not hidden, to keep the layout stable) on the Approved tab. */}
+        <Box display="flex">
+          <Box w="100%" display="flex" alignItems="center">
+            <Box pl="15px" py="10px">
+              <ButtonWithLink
+                bgColor={colors.primary}
+                icon="check"
+                processing={isApproving}
+                disabled={
+                  isApproving ||
+                  isDeleting ||
+                  importing ||
+                  currentTab === 'approved'
+                }
+                onClick={() => setConfirmAction('approveAll')}
+              >
+                <FormattedMessage
+                  {...messages.approveAllInputs}
+                  values={{ numIdeas }}
+                />
+              </ButtonWithLink>
+            </Box>
+            <Box px="12px" py="10px">
+              <ButtonWithLink
+                buttonStyle="admin-dark-outlined"
+                icon="delete"
+                processing={isDeleting}
+                disabled={
+                  isApproving ||
+                  isDeleting ||
+                  importing ||
+                  currentTab === 'approved'
+                }
+                onClick={() => setConfirmAction('removeAll')}
+              >
+                <FormattedMessage {...messages.removeAllInputs} />
+              </ButtonWithLink>
+            </Box>
+          </Box>
         </Box>
-        <Box
-          w="40%"
-          display="flex"
-          flexDirection="column"
-          justifyContent="center"
-          alignItems="center"
-        >
-          {pages && (
-            <PDFPageControl
-              currentPageNumber={currentPageIndex + 1}
-              // TODO: Fix this the next time the file is edited.
-              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-              numberOfPages={pages?.length}
-              goToNextPage={goToNextPage}
-              goToPreviousPage={goToPreviousPage}
-            />
-          )}
-        </Box>
+        {approvals.not_approved > 0 && (
+          <Error
+            text={formatMessage(messages.inputsNotApproved, {
+              numNotApproved: approvals.not_approved,
+            })}
+            marginTop="0px"
+            showBackground={false}
+            showIcon={true}
+          />
+        )}
       </Box>
 
       <Box
-        h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px - 100px)`}
+        flex="1"
+        minHeight="0"
         display="flex"
         px="40px"
         justifyContent="space-between"
@@ -205,48 +240,60 @@ const ReviewSection = ({
           w="25%"
           borderRight={`1px ${colors.grey400} solid`}
           pr="8px"
-          overflowY="scroll"
+          display="flex"
+          flexDirection="column"
+          minHeight="0"
         >
-          {/* TODO: Fix this the next time the file is edited. */}
-          {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-          {(importing || importFailed || isLoadingIdeas) && (
-            <Box
-              py="8px"
-              borderBottom={`1px ${colors.grey400} solid`}
-              position="relative"
-            >
-              {importErrors.length > 0 ? (
-                <>
-                  <Error
-                    text={formatMessage(messages.errorImporting)}
-                    showIcon={false}
-                  />
-                  {importErrors.map((error, index) => (
-                    <Error key={index} apiErrors={[error]} />
-                  ))}
-                </>
-              ) : (
-                <Box
-                  justifyContent="flex-start"
-                  alignItems="center"
-                  display="flex"
-                >
-                  <Box mr="8px">
-                    <Spinner size="20px" />
-                  </Box>
-                  <Text m="0" color="black" fontSize="m">
-                    <FormattedMessage {...messages.importing} />
-                  </Text>
-                </Box>
-              )}
-            </Box>
-          )}
-          <IdeaList
-            ideaId={ideaId}
-            ideas={ideas}
-            onSelectIdea={handleSelectIdea}
-            onDeleteIdea={handleDeleteIdea}
+          <Tabs
+            currentTab={currentTab}
+            availableTabs={['toReview', 'approved']}
+            tabData={tabData}
+            onChangeTab={handleChangeTab}
+            showCount
+            fullWidth
           />
+          <Box
+            flex="1"
+            minHeight="0"
+            overflowY="auto"
+            role="tabpanel"
+            id={getDefaultTabPanelId(currentTab)}
+            aria-labelledby={getDefaultTabId(currentTab)}
+          >
+            {currentTab === 'toReview' ? (
+              <>
+                {(importing || importHasErrors) && (
+                  <ImportStatus
+                    hasErrors={importHasErrors}
+                    progress={importProgress}
+                    total={importTotal}
+                    errorCount={errorCount}
+                    errors={importErrors}
+                  />
+                )}
+                {!importing &&
+                !importHasErrors &&
+                numIdeas === 0 &&
+                numApprovedIdeas > 0 ? (
+                  <Text m="0" p="12px" color="coolGrey600" fontSize="s">
+                    <FormattedMessage {...messages.allInputsApprovedHint} />
+                  </Text>
+                ) : (
+                  <IdeaList
+                    ideaId={ideaId}
+                    ideas={ideas}
+                    onSelectIdea={handleSelectIdea}
+                    onDeleteIdea={handleDeleteIdea}
+                  />
+                )}
+              </>
+            ) : (
+              <ApprovedInputsList
+                selectedIdeaId={ideaId}
+                onSelectIdea={handleSelectIdea}
+              />
+            )}
+          </Box>
         </Box>
         <Box
           w="35%"
@@ -259,15 +306,14 @@ const ReviewSection = ({
           <IdeaEditor ideaId={ideaId} setIdeaId={setIdeaId} />
         </Box>
         <Box w="40%">
-          {ideaMetadata && pages && (
+          {ideaMetadata && ideaId && importType === 'pdf' && (
             <PDFViewer
-              currentPageIndex={currentPageIndex}
               file={ideaMetadata.data.attributes.file.url}
-              pages={pages}
+              ideaId={ideaId}
             />
           )}
-          {ideaMetadata?.data.attributes.import_type === 'xlsx' && (
-            <Box w="100%" h="100%" m="10px">
+          {importType === 'xlsx' && (
+            <Box w="100%" h="100%" m="16px">
               <Text>
                 <FormattedMessage {...messages.pdfNotAvailable} />
               </Text>
@@ -275,6 +321,29 @@ const ReviewSection = ({
           )}
         </Box>
       </Box>
+      <WarningModal
+        open={confirmAction !== null}
+        isLoading={isApproving || isDeleting}
+        title={
+          confirmAction === 'approveAll'
+            ? formatMessage(messages.confirmApproveAll)
+            : formatMessage(messages.confirmRemoveAll)
+        }
+        explanation={
+          confirmAction === 'approveAll'
+            ? formatMessage(
+                getApproveAllExplanationMessage(
+                  phase?.data.attributes.participation_method
+                ),
+                { numIdeas }
+              )
+            : formatMessage(messages.confirmRemoveAllExplanation)
+        }
+        onClose={() => setConfirmAction(null)}
+        onConfirm={
+          confirmAction === 'approveAll' ? handleApproveAll : handleDeleteAll
+        }
+      />
     </Box>
   );
 };

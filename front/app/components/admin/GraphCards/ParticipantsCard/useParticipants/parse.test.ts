@@ -32,18 +32,22 @@ describe('parseTimeSeries', () => {
       {
         date: '2022-09-01',
         participants: 1,
+        visitors: 0,
       },
       {
         date: '2022-10-01',
         participants: 4,
+        visitors: 0,
       },
       {
         date: '2022-11-01',
         participants: 3,
+        visitors: 0,
       },
       {
         date: '2022-12-01',
         participants: 0,
+        visitors: 0,
       },
     ];
 

@@ -14,23 +14,50 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     :created_at,
     :updated_at,
     :header_bg_alt_text_multiloc,
-    :listed
+    :listed,
+    :track_participation_location,
+    :live_auto_input_topics_enabled,
+    :space_id
   )
+
+  # The index endpoint preloads a hash of per-project values to avoid N+1 queries
+  attribute :publication_email_enabled do |project, params|
+    if params[:publication_email_enabled_per_project]
+      !!params.dig(:publication_email_enabled_per_project, project.id)
+    else
+      !EmailCampaigns::Campaigns::ProjectPublished.exists?(context: project, enabled: false)
+    end
+  end
+
+  # The index endpoint passes the preloaded value via params to avoid looking it up per project
+  attribute :global_publication_email_enabled do |_project, params|
+    if params.key?(:global_publication_email_enabled)
+      params[:global_publication_email_enabled]
+    else
+      EmailCampaigns::Campaigns::ProjectPublished.find_by(context_id: nil)&.enabled != false
+    end
+  end
 
   attribute :folder_id do |project|
     project.folder&.id
   end
 
   attribute :publication_status do |object|
-    object.admin_publication.publication_status
+    object.admin_publication.effective_publication_status
+  end
+
+  attribute :scheduled_status, if: proc { |object, params| can_moderate?(object, params) } do |object|
+    admin_pub = object.admin_publication
+    admin_pub.scheduled_status unless admin_pub.due_status_transition?
+  end
+
+  attribute :scheduled_at, if: proc { |object, params| can_moderate?(object, params) } do |object|
+    admin_pub = object.admin_publication
+    admin_pub.scheduled_at unless admin_pub.due_status_transition?
   end
 
   attribute :first_published_at do |object|
     object.admin_publication.first_published_at
-  end
-
-  attribute :description_multiloc do |object|
-    TextImageService.new.render_data_images_multiloc object.description_multiloc, field: :description_multiloc, imageable: object
   end
 
   attribute :header_bg do |object|
@@ -39,9 +66,7 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
 
   attribute :action_descriptors do |object, params|
     user_requirements_service = params[:user_requirements_service] || Permissions::UserRequirementsService.new(check_groups_and_verification: false)
-    request = params[:request] || nil
-
-    Permissions::ProjectPermissionsService.new(object, current_user(params), user_requirements_service: user_requirements_service, request: request).action_descriptors
+    Permissions::ProjectPermissionsService.new(object, current_user(params), user_requirements_service:).action_descriptors
   end
 
   attribute :avatars_count do |object, params|
@@ -58,21 +83,18 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     end
   end
 
-  attribute :timeline_active do |object, params|
-    if params[:timeline_active]
-      params.dig(:timeline_active, object.id)
-    else
-      TimelineService.new.timeline_active object
-    end
+  attribute :participation_status do |object|
+    object.schedule.participation_status
   end
 
   attribute :preview_token, if: proc { |object, params| can_moderate? object, params }
+  attribute :completed_setup_steps, if: proc { |object, params| can_moderate? object, params }
 
   has_one :admin_publication
 
   has_many :project_images, serializer: WebApi::V1::ImageSerializer
   has_many :areas
-  has_many :topics, serializer: WebApi::V1::TopicSerializer
+  has_many :global_topics, serializer: WebApi::V1::GlobalTopicSerializer
   has_many :avatars, serializer: WebApi::V1::AvatarSerializer do |object, params|
     avatars_for_project(object, params)[:users]
   end
@@ -83,8 +105,22 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     user_follower object, params
   end
 
-  has_one :current_phase, serializer: WebApi::V1::PhaseSerializer, record_type: :phase do |object|
-    TimelineService.new.current_phase(object)
+  has_one :current_phase, serializer: WebApi::V1::PhaseSerializer, record_type: :phase do |project|
+    phase = TimelineService.new.current_phase(project)
+    phase.project = project if phase # Performance optimization (keep preloaded relationships)
+    phase
+  end
+
+  # Only while the flag is on: the linkage costs a query per project, and every
+  # projects listing pays it.
+  has_one :report, serializer: ReportBuilder::WebApi::V1::ReportSerializer, if: proc {
+    AppConfiguration.instance.feature_activated?('llm_reporting')
+  }
+
+  has_one :highlighted_phase, serializer: WebApi::V1::PhaseSerializer, record_type: :phase do |project|
+    phase = project.schedule.highlighted_phase
+    phase.project = project if phase # Performance optimization (keep preloaded relationships)
+    phase
   end
 
   def self.avatars_for_project(object, _params)
@@ -111,4 +147,3 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
 end
 
 WebApi::V1::ProjectSerializer.include(IdeaAssignment::Extensions::WebApi::V1::ProjectSerializer)
-WebApi::V1::ProjectSerializer.include(ContentBuilder::Extensions::WebApi::V1::ProjectSerializer)

@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Table.archived',
     defaultMessage: 'Archived',
   },
+  scheduled: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.scheduled',
+    defaultMessage: 'Scheduled',
+  },
   loadingMore: {
     id: 'app.containers.Admin.projects.all.new.Projects.Table.loadingMore',
     defaultMessage: 'Loading more…',
@@ -32,5 +36,14 @@ export default defineMessages({
   allProjectsHaveLoaded: {
     id: 'app.containers.Admin.projects.all.new.Projects.Table.allProjectsHaveLoaded',
     defaultMessage: 'All projects have been loaded',
+  },
+  managers: {
+    id: 'app.containers.Admin.projects.all.new.Folders.Table.managers',
+    defaultMessage: 'Managers',
+  },
+  filteredProjectCount: {
+    id: 'app.containers.Admin.projects.all.new.filteredProjectCount',
+    defaultMessage:
+      '{filteredCount} of {totalCount, plural, one {# project} other {# projects}}',
   },
 });

@@ -21,6 +21,7 @@
 #  intro_multiloc       :jsonb
 #  button_text_multiloc :jsonb
 #  context_type         :string
+#  channel              :string           default("email"), not null
 #
 # Indexes
 #
@@ -39,7 +40,7 @@ module EmailCampaigns
     include ContentConfigurable
     include Disableable
 
-    filter :filter_request_approved
+    filter :filter_pending_request
     recipient_filter :notification_recipient
 
     def mailer_class
@@ -50,8 +51,8 @@ module EmailCampaigns
       { 'Notifications::ProjectReviewRequest' => { 'created' => true } }
     end
 
-    def filter_request_approved(activity:, time: nil)
-      activity && activity.item.project_review.approved?
+    def filter_pending_request(activity:, time: nil)
+      activity && !activity.item.project_review.approved?
     end
 
     def notification_recipient(users_scope, activity:, time: nil)

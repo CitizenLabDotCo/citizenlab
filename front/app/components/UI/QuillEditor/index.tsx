@@ -8,23 +8,20 @@ import React, {
 
 import { Label, IconTooltip, Box } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
-import Quill, { RangeStatic } from 'quill';
-
-import 'quill/dist/quill.snow.css';
+import Quill from 'quill';
 
 import { useIntl } from 'utils/cl-intl';
 
-import { configureQuill } from './configureQuill';
-import { createQuill } from './createQuill';
+import 'quill/dist/quill.snow.css';
+import '@enzedonline/quill-blot-formatter2/dist/css/quill-blot-formatter2.css';
+
+import { configureQuill, setEmbeddedVideoTitle } from './configureQuill';
+import { createQuill, detachQuillFromToolbar } from './createQuill';
+import ImageTooLargeModal from './ImageTooLargeModal';
 import messages from './messages';
-import StyleContainer from './StyleContainer';
+import StyleContainer, { QuillVariant } from './StyleContainer';
 import Toolbar from './Toolbar';
-import {
-  getHTML,
-  setHTML,
-  syncPlaceHolder,
-  getQuillPlainTextLength,
-} from './utils';
+import { getHTML, setHTML, getQuillPlainTextLength } from './utils';
 
 export interface Props {
   id: string;
@@ -35,6 +32,7 @@ export interface Props {
   noVideos?: boolean;
   noAlign?: boolean;
   noLinks?: boolean;
+  withGifSupport?: boolean;
   limitedTextFormatting?: boolean;
   maxHeight?: string;
   minHeight?: string;
@@ -44,6 +42,12 @@ export interface Props {
   onBlur?: () => void;
   maxCharCount?: number;
   minCharCount?: number;
+  ariaLabelledBy?: string;
+  ariaDescribedBy?: string;
+  ariaInvalid?: boolean;
+  ariaLabel?: string;
+  placeholder?: string;
+  variant?: QuillVariant;
 }
 
 configureQuill();
@@ -57,6 +61,7 @@ const QuillEditor = ({
   noImages = false,
   noVideos = false,
   noLinks = false,
+  withGifSupport,
   limitedTextFormatting,
   maxHeight,
   minHeight,
@@ -66,10 +71,18 @@ const QuillEditor = ({
   onFocus,
   maxCharCount,
   minCharCount,
+  ariaLabelledBy,
+  ariaDescribedBy,
+  ariaInvalid,
+  ariaLabel,
+  placeholder,
+  variant,
 }: Props) => {
   const { formatMessage } = useIntl();
   const [editor, setEditor] = useState<Quill | null>(null);
   const [focussed, setFocussed] = useState(false);
+  const [imageTooLargeModalOpened, setImageTooLargeModalOpened] =
+    useState(false);
 
   const [isButtonsMenuVisible, setIsButtonsMenuVisible] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -97,6 +110,8 @@ const QuillEditor = ({
       container.ownerDocument.createElement('div')
     );
 
+    setEmbeddedVideoTitle(formatMessage(messages.embeddedVideo));
+
     const quill = createQuill(editorContainer, {
       id,
       toolbarId,
@@ -104,15 +119,41 @@ const QuillEditor = ({
       noVideos,
       noAlign,
       noLinks,
+      withGifSupport,
       limitedTextFormatting,
       withCTAButton,
       onBlur: onBlurRef.current,
+      onImageTooLarge: () => setImageTooLargeModalOpened(true),
+      altTextLabel: formatMessage(messages.altTextLabel),
+      imageTitleLabel: formatMessage(messages.imageTitleLabel),
+      ariaLabelledBy,
+      ariaLabel,
+      placeholder,
     });
 
     setHTML(quill, value);
     setEditor(quill);
 
+    // When the blot-formatter alt text modal is appended to document.body,
+    // it falls outside react-focus-on's focus trap (used by our Modal component).
+    // Adding data-no-focus-lock lets react-focus-lock allow interaction with it.
+    const observer = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        for (const node of mutation.addedNodes) {
+          if (
+            node instanceof HTMLElement &&
+            node.hasAttribute('data-blot-formatter-modal')
+          ) {
+            node.setAttribute('data-no-focus-lock', 'true');
+          }
+        }
+      }
+    });
+    observer.observe(document.body, { childList: true });
+
     return () => {
+      observer.disconnect();
+      detachQuillFromToolbar(quill);
       container.innerHTML = '';
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -134,27 +175,27 @@ const QuillEditor = ({
 
     const debouncedTextChangeHandler = debounce(textChangeHandler, 100);
 
-    // Not sure why we handle focus like this, but seems to work
-    const focusHandler = (range: RangeStatic, oldRange: RangeStatic) => {
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      if (range === null && oldRange !== null) {
-        setFocussed(false);
-        onBlurRef.current?.();
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      } else if (range !== null && oldRange === null) {
-        setFocussed(true);
-        onFocusRef.current?.();
-      }
+    // Native focus/blur handlers for cross-browser compatibility
+    const handleFocus = () => {
+      setFocussed(true);
+      onFocusRef.current?.();
     };
 
+    const handleBlur = () => {
+      setFocussed(false);
+      onBlurRef.current?.();
+    };
+
+    const editorElement = editor.root;
+
     editor.on('text-change', debouncedTextChangeHandler);
-    editor.on('selection-change', focusHandler);
+    editorElement.addEventListener('focus', handleFocus);
+    editorElement.addEventListener('blur', handleBlur);
 
     return () => {
       editor.off('text-change', debouncedTextChangeHandler);
-      editor.off('selection-change', focusHandler);
+      editorElement.removeEventListener('focus', handleFocus);
+      editorElement.removeEventListener('blur', handleBlur);
     };
   }, [editor]);
 
@@ -168,12 +209,6 @@ const QuillEditor = ({
       htmlRef.current = html;
     }
   }, [value, editor]);
-
-  // Hack to get correct placeholder for image alt text input
-  const altTextPlaceHolder = formatMessage(messages.altTextPlaceholder);
-  useEffect(() => {
-    syncPlaceHolder(altTextPlaceHolder);
-  }, [altTextPlaceHolder]);
 
   // Function to save the latest state of the content.
   // We call this when the mouse leaves the editor, to ensure the
@@ -194,11 +229,31 @@ const QuillEditor = ({
 
   const className = focussed ? 'focus' : '';
 
+  // Update aria attributes dynamically when they change
+  useEffect(() => {
+    if (!editor) return;
+
+    const editorElement = editor.root;
+
+    if (ariaInvalid) {
+      editorElement.setAttribute('aria-invalid', String(ariaInvalid));
+    } else {
+      editorElement.removeAttribute('aria-invalid');
+    }
+
+    if (ariaDescribedBy) {
+      editorElement.setAttribute('aria-describedby', ariaDescribedBy);
+    } else {
+      editorElement.removeAttribute('aria-describedby');
+    }
+  }, [editor, ariaInvalid, ariaDescribedBy]);
+
   return (
     <StyleContainer
       maxHeight={maxHeight}
       minHeight={minHeight}
       className={className}
+      variant={variant}
       onMouseLeave={saveLatestContent}
     >
       {label && (
@@ -222,6 +277,10 @@ const QuillEditor = ({
       <div>
         <div ref={containerRef} />
       </div>
+      <ImageTooLargeModal
+        opened={imageTooLargeModalOpened}
+        close={() => setImageTooLargeModalOpened(false)}
+      />
       {(maxCharCount || minCharCount) && editor && (
         <Box
           display="flex"

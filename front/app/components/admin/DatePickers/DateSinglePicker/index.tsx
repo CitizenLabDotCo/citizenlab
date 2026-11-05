@@ -17,8 +17,10 @@ const DateSinglePicker = ({
   startMonth,
   endMonth,
   defaultMonth,
-  placement = 'bottom',
+  placement,
   onChange,
+  disabledPast = undefined,
+  formatDate,
 }: Props) => {
   const [calendarOpen, setCalendarOpen] = useState(false);
 
@@ -35,12 +37,14 @@ const DateSinglePicker = ({
               startMonth={startMonth}
               endMonth={endMonth}
               defaultMonth={defaultMonth}
+              disabledPast={disabledPast}
               onChange={(date) => {
                 // We don't allow deselecting dates
                 // TODO: Fix this the next time the file is edited.
                 // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 if (!date) return;
                 onChange(date);
+                setCalendarOpen(false);
               }}
             />
           </Box>
@@ -52,6 +56,8 @@ const DateSinglePicker = ({
           id={id}
           disabled={disabled}
           selectedDate={selectedDate}
+          ariaExpanded={calendarOpen}
+          formatDate={formatDate}
           onClick={() => setCalendarOpen(true)}
         />
       </Tooltip>

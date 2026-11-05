@@ -21,14 +21,15 @@ const OptionLabel = ({
   fetchNextPage,
 }: OptionLabelProps) => {
   if (optionIsUser(option)) {
+    const { last_name, first_name, email } = option.attributes;
+
     return (
       <Box
         display="flex"
         alignItems="center"
         data-cy={`e2e-user-${option.attributes.email}`}
       >
-        {option.attributes.last_name}, {option.attributes.first_name} (
-        {option.attributes.email})
+        {`${last_name}, ${first_name}${email ? ` (${email})` : ''}`}
       </Box>
     );
   }

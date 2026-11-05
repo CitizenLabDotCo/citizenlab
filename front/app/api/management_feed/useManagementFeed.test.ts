@@ -24,6 +24,7 @@ const managementFeedData: ManagementFeed = {
         },
         change: null,
         item_exists: true,
+        permission_action: null,
       },
       relationships: {
         user: {

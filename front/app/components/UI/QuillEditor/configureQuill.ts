@@ -1,28 +1,84 @@
+import BlotFormatter from '@enzedonline/quill-blot-formatter2';
 import Quill from 'quill';
-import BlotFormatter from 'quill-blot-formatter/dist/BlotFormatter';
+import QuillInline from 'quill/blots/inline';
+import Bold from 'quill/formats/bold';
+import QuillLink from 'quill/formats/link';
+import Video from 'quill/formats/video';
 
-import {
-  attributes,
-  ImageBlot,
-  AltTextToImagesModule,
-  KeepHTML,
-} from './altTextToImagesModule';
+import { isYouTubeEmbedLink } from 'utils/urlUtils';
+
+import { attributes, ImageBlot, KeepHTML } from './altTextToImagesModule';
+
+let embeddedVideoTitle = 'Embedded video';
+
+export const setEmbeddedVideoTitle = (title: string) => {
+  embeddedVideoTitle = title;
+};
 
 export const configureQuill = () => {
+  // Pre-register imageAlign and iframeAlign formats so they exist in the
+  // registry when Quill validates the "formats" whitelist during construction.
+  // BlotFormatter2 registers its own (richer) versions in its constructor,
+  // overwriting these placeholders, but Quill needs them in the registry
+  // *before* modules are instantiated.
+  const Parchment = Quill.import('parchment');
+  const ImageAlign = new Parchment.ClassAttributor(
+    'imageAlign',
+    'ql-image-align',
+    { scope: Parchment.Scope.INLINE, whitelist: ['left', 'center', 'right'] }
+  );
+  const IframeAlign = new Parchment.ClassAttributor(
+    'iframeAlign',
+    'ql-iframe-align',
+    { scope: Parchment.Scope.BLOCK, whitelist: ['left', 'center', 'right'] }
+  );
+  Quill.register(
+    {
+      'formats/imageAlign': ImageAlign,
+      'attributors/class/imageAlign': ImageAlign,
+      'formats/iframeAlign': IframeAlign,
+      'attributors/class/iframeAlign': IframeAlign,
+    },
+    true
+  );
+
   Quill.register('modules/blotFormatter', BlotFormatter);
 
+  class CustomBold extends Bold {}
+  CustomBold.tagName = ['B'];
+  Quill.register('formats/bold', CustomBold, true);
+
   // BEGIN allow video resizing styles
-  const BaseVideoFormat = Quill.import('formats/video');
-  class VideoFormat extends BaseVideoFormat {
-    static formats(domNode) {
-      return attributes.reduce((formats, attribute) => {
-        if (domNode.hasAttribute(attribute)) {
-          formats[attribute] = domNode.getAttribute(attribute);
-        }
-        return formats;
-      }, {});
+  class VideoFormat extends Video {
+    static create(url: string) {
+      const node = super.create(url);
+
+      node.setAttribute('title', embeddedVideoTitle);
+
+      // Add referrer policy to YouTube video embeds
+      if (isYouTubeEmbedLink(url)) {
+        node.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+      }
+
+      return node;
     }
-    format(name, value) {
+
+    static formats(domNode: Element) {
+      return attributes.reduce(
+        (formats: Record<string, string | null>, attribute) => {
+          // `title` is set dynamically from the current locale in `create`;
+          // skip it here so a stale title in saved HTML doesn't override it.
+          if (attribute === 'title') return formats;
+          if (domNode.hasAttribute(attribute)) {
+            formats[attribute] = domNode.getAttribute(attribute);
+          }
+          return formats;
+        },
+        {}
+      );
+    }
+    format(name: string, value: string) {
+      if (name === 'title') return;
       if (attributes.indexOf(name) > -1) {
         if (value) {
           this.domNode.setAttribute(name, value);
@@ -50,9 +106,7 @@ export const configureQuill = () => {
   // END function to detect whether urls are external
 
   // BEGIN custom link implementation
-  const Link = Quill.import('formats/link');
-
-  class CustomLink extends Link {
+  class CustomLink extends QuillLink {
     static create(url: string) {
       const node = super.create(url);
       node.setAttribute('rel', 'noreferrer noopener nofollow');
@@ -76,11 +130,9 @@ export const configureQuill = () => {
   // END custom link implementation
 
   // BEGIN custom button implementation
-  const Inline = Quill.import('blots/inline');
-
-  class CustomButton extends Inline {
+  class CustomButton extends QuillInline {
     static create(url: string) {
-      const node = super.create();
+      const node = super.create() as HTMLElement;
       node.setAttribute('href', url);
       node.setAttribute('rel', 'noorefferer');
 
@@ -92,7 +144,7 @@ export const configureQuill = () => {
       return node;
     }
 
-    static formats(node) {
+    static formats(node: HTMLElement) {
       return node.getAttribute('href');
     }
   }
@@ -103,13 +155,7 @@ export const configureQuill = () => {
   Quill.register(CustomButton);
   // END custom button implementation
 
-  Quill.register(
-    {
-      'formats/image': ImageBlot,
-      'modules/altTextToImages': AltTextToImagesModule,
-    },
-    true
-  );
+  Quill.register('formats/image', ImageBlot, true);
 
   Quill.register(KeepHTML);
 };

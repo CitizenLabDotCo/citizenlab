@@ -21,7 +21,7 @@ module Analysis
 
         prompt = genereate_prompt(inputs_slice, tags)
 
-        answer = gpt4.chat(prompt)
+        answer = gpt5.chat(prompt)
 
         inputs_slice.zip(answer.lines).each do |(input, label)|
           tag = tags.find { |t| t.name.casecmp(label.strip) == 0 }

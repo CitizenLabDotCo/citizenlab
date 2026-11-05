@@ -37,38 +37,6 @@ RSpec.describe CustomFieldBins::ValueBin do
     end
   end
 
-  describe '#filter_by_bin' do
-    let(:scope) { Idea.all }
-
-    context 'with a custom field of type checkbox' do
-      let(:bin) { create(:value_bin, custom_field: create(:custom_field_checkbox), values: [true]) }
-
-      it 'filters the scope by the bin values' do
-        idea1 = create(:idea, custom_field_values: { bin.custom_field.key => true })
-        idea2 = create(:idea, custom_field_values: { bin.custom_field.key => false })
-
-        filtered_scope = bin.filter_by_bin(scope)
-
-        expect(filtered_scope).to include(idea1)
-        expect(filtered_scope).not_to include(idea2)
-      end
-    end
-
-    context 'with a custom field of type linear_scale' do
-      let(:bin) { create(:value_bin, custom_field: create(:custom_field_linear_scale), values: [1]) }
-
-      it 'filters the scope by the bin values' do
-        idea1 = create(:idea, custom_field_values: { bin.custom_field.key => 1 })
-        idea2 = create(:idea, custom_field_values: { bin.custom_field.key => 2 })
-
-        filtered_scope = bin.filter_by_bin(scope)
-
-        expect(filtered_scope).to include(idea1)
-        expect(filtered_scope).not_to include(idea2)
-      end
-    end
-  end
-
   describe '#generate_bins' do
     let(:custom_field) { create(:custom_field_linear_scale) }
 
@@ -92,7 +60,7 @@ RSpec.describe CustomFieldBins::ValueBin do
             described_class.generate_bins(custom_field)
           end.to change(described_class, :count).by(2)
 
-          expect(described_class.all.pluck(:values)).to match_array([[true], [false]])
+          expect(described_class.all.pluck(:values)).to contain_exactly([true], [false])
         end
       end
 
@@ -104,7 +72,7 @@ RSpec.describe CustomFieldBins::ValueBin do
             described_class.generate_bins(custom_field)
           end.to change(described_class, :count).by(3)
 
-          expect(described_class.all.pluck(:values)).to match_array([[1], [2], [3]])
+          expect(described_class.all.pluck(:values)).to contain_exactly([1], [2], [3])
         end
       end
     end

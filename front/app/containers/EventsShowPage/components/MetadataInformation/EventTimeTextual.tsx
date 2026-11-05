@@ -5,7 +5,9 @@ import { Text } from '@citizenlab/cl2-component-library';
 import { IEventData } from 'api/events/types';
 
 import { AddEventToCalendarButton } from 'components/AddEventToCalendarButton';
+import messages from 'components/EventCards/messages';
 
+import { useIntl } from 'utils/cl-intl';
 import { getEventDateString } from 'utils/dateUtils';
 
 import { Container, Content, StyledIcon } from './MetadataInformationStyles';
@@ -15,11 +17,16 @@ export interface Props {
 }
 
 const FullEventTime = ({ event }: Props) => {
+  const { formatMessage } = useIntl();
   const eventDateString = getEventDateString(event);
 
   return (
     <Container>
-      <StyledIcon name="calendar" ariaHidden />
+      <StyledIcon
+        name="calendar"
+        title={formatMessage(messages.eventDateTimeIcon)}
+        ariaHidden={false}
+      />
       <Content>
         {/* We hide this from screen readers because the date is
          already read out in the child component above */}

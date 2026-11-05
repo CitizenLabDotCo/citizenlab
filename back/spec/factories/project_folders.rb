@@ -8,12 +8,6 @@ FactoryBot.define do
         'nl-BE' => 'Alles rond zwembaden'
       }
     end
-    description_multiloc do
-      {
-        'en' => "<p>A <i>swimming pool</i> is a pool where people swim. Unless they can't swim.</p>",
-        'nl-BE' => '<p>Een <i>zwembad</i> is een bad waar mensen kunnen zwemmen. Tenzij ze niet kunnen zwemmen.</p>'
-      }
-    end
     description_preview_multiloc do
       {
         'en' => "<p>A <i>swimming pool</i> is a pool where people swim. Unless they can't swim.</p>",

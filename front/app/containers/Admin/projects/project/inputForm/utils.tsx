@@ -7,6 +7,8 @@ import Warning from 'components/UI/Warning';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
+import UserFieldsInFormNotice from '../../_shared/components/UserFieldsInFormNotice';
+
 import messages from './messages';
 
 // ideationConfig is also used for participation method 'voting'
@@ -47,12 +49,7 @@ export const ideationConfig: FormBuilderConfig = {
     'idea_images_attributes',
     'idea_files_attributes',
   ],
-  formCustomFields: undefined,
-
   showStatusBadge: false,
-  isLogicEnabled: false,
-  alwaysShowCustomFields: false,
-  isFormPhaseSpecific: false,
   getWarningNotice: () => {
     return (
       <Box id="e2e-warning-notice" mb="16px">
@@ -61,6 +58,9 @@ export const ideationConfig: FormBuilderConfig = {
         </Warning>
       </Box>
     );
+  },
+  getUserFieldsNotice: () => {
+    return <UserFieldsInFormNotice />;
   },
 };
 
@@ -102,13 +102,7 @@ export const proposalsConfig: FormBuilderConfig = {
     'idea_files_attributes',
     'cosponsor_ids',
   ],
-  formCustomFields: undefined,
-
   showStatusBadge: false,
-  isLogicEnabled: false,
-  alwaysShowCustomFields: false,
-  isFormPhaseSpecific: true,
-
   getWarningNotice: () => {
     return (
       <Box id="e2e-warning-notice" mb="16px">
@@ -117,5 +111,8 @@ export const proposalsConfig: FormBuilderConfig = {
         </Warning>
       </Box>
     );
+  },
+  getUserFieldsNotice: () => {
+    return <UserFieldsInFormNotice />;
   },
 };

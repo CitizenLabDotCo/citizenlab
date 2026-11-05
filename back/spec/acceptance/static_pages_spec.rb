@@ -18,10 +18,29 @@ resource 'StaticPages' do
       parameter :number, 'Page number'
       parameter :size, 'Number of pages (data model pages) per page'
     end
+    parameter :project_id, 'Filter by project. When omitted, only global (non-project) pages are returned'
 
-    example_request 'List all static pages' do
+    example_request 'List all global static pages' do
       expect(status).to eq 200
       expect(json_response[:data].size).to eq 2
+    end
+
+    example 'Does not include project-scoped pages in the global list' do
+      create(:static_page, :project_scoped)
+      do_request
+      expect(status).to eq 200
+      expect(json_response[:data].size).to eq 2
+      expect(json_response[:data].pluck(:id)).to match_array(@pages.map(&:id))
+    end
+
+    example 'Lists only the pages of the given project when project_id is set' do
+      project = create(:project)
+      project_pages = create_list(:static_page, 2, project: project)
+      create(:static_page, :project_scoped) # another project's page
+
+      do_request(project_id: project.id)
+      expect(status).to eq 200
+      expect(json_response[:data].pluck(:id)).to match_array(project_pages.map(&:id))
     end
   end
 
@@ -79,7 +98,7 @@ resource 'StaticPages' do
         parameter :bottom_info_section_enabled, 'if the bottom info section is enabled'
         parameter :bottom_info_section_multiloc, 'The bottom content of the static page, as a multiloc HTML string'
         parameter :header_bg, 'image for the header background'
-        parameter :topic_ids, 'the IDs of topics that are used to filter the page projects list', type: :array
+        parameter :global_topic_ids, 'the IDs of global topics that are used to filter the page projects list', type: :array
         parameter :area_ids, 'the ID of an area that is used to filter the page projects list', type: :array
       end
       ValidationErrorHelper.new.error_fields self, StaticPage
@@ -124,14 +143,14 @@ resource 'StaticPages' do
 
       describe 'updating topics' do
         let(:projects_filter_type) { 'topics' }
-        let(:topic1) { create(:topic) }
-        let(:topic2) { create(:topic) }
-        let(:topic_ids) { [topic1.id, topic2.id] }
+        let(:topic1) { create(:global_topic) }
+        let(:topic2) { create(:global_topic) }
+        let(:global_topic_ids) { [topic1.id, topic2.id] }
 
         example_request 'set topics for projects list' do
           json_response = json_parse(response_body)
           expect(response_status).to eq 200
-          expect(json_response.dig(:data, :relationships, :topics, :data).length).to eq(2)
+          expect(json_response.dig(:data, :relationships, :global_topics, :data).length).to eq(2)
         end
 
         context 'when wrong project filter type is set' do
@@ -143,7 +162,7 @@ resource 'StaticPages' do
         end
 
         context 'when no topic ids in request' do
-          let(:topic_ids) { [] }
+          let(:global_topic_ids) { [] }
 
           example_request 'attempt to update page' do
             expect(response_status).to eq 422
@@ -229,6 +248,19 @@ resource 'StaticPages' do
         expect(json_response.dig(:data, :attributes, :code)).to eq 'custom'
       end
 
+      example 'Create a project-scoped static page' do
+        project = create(:project)
+        do_request(
+          static_page: {
+            title_multiloc: page.title_multiloc,
+            top_info_section_multiloc: page.top_info_section_multiloc,
+            project_id: project.id
+          }
+        )
+        assert_status 201
+        expect(json_response.dig(:data, :attributes, :project_id)).to eq project.id
+      end
+
       example 'Does not create a NavBarItem' do
         item_title_multiloc = { 'en' => 'Awesome item' }
 
@@ -252,6 +284,14 @@ resource 'StaticPages' do
           assert_status 422
           expect(json_response).to include_response_error(:slug, 'blank')
         end
+      end
+
+      context 'when bottom section contains images' do
+        let(:bottom_info_section_multiloc) { { 'en' => html_with_base64_image } }
+
+        it_behaves_like 'creates record with text images',
+          model_class: StaticPage,
+          field: :bottom_info_section_multiloc
       end
     end
 

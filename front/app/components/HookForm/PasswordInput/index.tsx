@@ -21,9 +21,11 @@ interface Props
   name: string;
   id?: string;
   label?: string;
+  ariaInvalid?: boolean;
+  ariaDescribedBy?: string;
 }
 
-const PasswordInput = ({ name, label, ...rest }: Props) => {
+const PasswordInput = ({ name, label, id, ...rest }: Props) => {
   const {
     getValues,
     formState: { errors: formContextErrors },
@@ -38,11 +40,12 @@ const PasswordInput = ({ name, label, ...rest }: Props) => {
 
   // If an API error with a matching name has been returned from the API response, apiError is set to an array with the error message as the only item
   const apiError = errors?.error && ([errors] as CLError[]);
-
+  const ariaDescribedById =
+    validationError || apiError ? `${name}-error` : undefined;
   return (
     <>
       {label && (
-        <Label htmlFor={name}>
+        <Label htmlFor={id ?? name}>
           <span>{label}</span>
         </Label>
       )}
@@ -51,18 +54,27 @@ const PasswordInput = ({ name, label, ...rest }: Props) => {
         name={name}
         control={control}
         defaultValue={defaultValue}
-        render={({ field: { ref: _ref, ...field } }) => (
+        // `ref` is pulled out of `field` so it isn't spread onto the function
+        // component as a real React ref (which React can't attach and warns
+        // about). The ref is forwarded via the `setRef` prop instead.
+        render={({ field: { ref, ...field }, fieldState }) => (
           <PasswordInputComponent
+            setRef={(el) => {
+              ref(el);
+            }}
             {...field}
             {...rest}
-            id={name}
+            id={id ?? name}
             aria-label={formatMessage(messages.passwordLabel)}
             password={getValues(name)}
+            ariaInvalid={!!fieldState.error}
+            ariaDescribedBy={ariaDescribedById}
           />
         )}
       />
       {validationError && (
         <Error
+          id={`${name}-error`}
           marginTop="8px"
           marginBottom="8px"
           text={validationError}
@@ -71,6 +83,7 @@ const PasswordInput = ({ name, label, ...rest }: Props) => {
       )}
       {apiError && (
         <Error
+          id={`${name}-error`}
           fieldName={name as TFieldName}
           apiErrors={apiError}
           marginTop="8px"

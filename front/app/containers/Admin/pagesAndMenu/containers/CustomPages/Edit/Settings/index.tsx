@@ -1,15 +1,18 @@
 import React from 'react';
 
 import { omit } from 'lodash-es';
-import { useParams } from 'react-router-dom';
 
 import { TCustomPageCode } from 'api/custom_pages/types';
 import useCustomPageById from 'api/custom_pages/useCustomPageById';
 import useUpdateCustomPage from 'api/custom_pages/useUpdateCustomPage';
+import { isContentBuilderPage } from 'api/custom_pages/util';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { FormValues } from 'containers/Admin/pagesAndMenu/containers/CustomPages/CustomPageSettingsForm';
 
 import { isNilOrError } from 'utils/helperUtils';
+import { useParams } from 'utils/router';
 
 import CustomPageSettingsForm from '../../CustomPageSettingsForm';
 // Pages which are not allowed to have their slug edited are linked to internally.
@@ -29,8 +32,13 @@ const customPageSlugAllowedToEdit: { [key in TCustomPageCode]: boolean } = {
 
 const EditCustomPageSettings = () => {
   const { mutateAsync: updateCustomPage } = useUpdateCustomPage();
-  const { customPageId } = useParams() as { customPageId: string };
+  const { customPageId } = useParams({ strict: false }) as {
+    customPageId: string;
+  };
   const { data: customPage } = useCustomPageById(customPageId);
+  const customPageBuilderEnabled = useFeatureFlag({
+    name: 'custom_page_builder',
+  });
 
   if (!isNilOrError(customPage)) {
     const hasNavbarItem = !!customPage.data.relationships.nav_bar_item.data?.id;
@@ -38,11 +46,14 @@ const EditCustomPageSettings = () => {
     const handleOnSubmit = async (formValues: FormValues) => {
       // the form returns one area_id as a string,
       // the backend expects an array of area_ids
+      const isSpaces = formValues.projects_filter_type === 'spaces';
       const newFormValues = {
         ...formValues,
         ...(formValues.projects_filter_type === 'areas' && {
-          area_ids: [formValues.area_id],
+          area_ids: formValues.area_id ? [formValues.area_id] : [],
         }),
+        // Clear space_ids when not in spaces mode so the backend removes the join records
+        space_ids: isSpaces ? formValues.space_ids ?? [] : [],
       };
       await updateCustomPage({
         id: customPageId,
@@ -50,11 +61,14 @@ const EditCustomPageSettings = () => {
       });
     };
 
-    const topicIds = customPage.data.relationships.topics.data.map(
+    const topicIds = customPage.data.relationships.global_topics.data.map(
       (topicRelationship) => topicRelationship.id
     );
     const areaIds = customPage.data.relationships.areas.data.map(
       (areaRelationship) => areaRelationship.id
+    );
+    const spaceIds = customPage.data.relationships.spaces.data.map(
+      (spaceRelationship) => spaceRelationship.id
     );
 
     return (
@@ -68,12 +82,17 @@ const EditCustomPageSettings = () => {
           }),
           slug: customPage.data.attributes.slug,
           projects_filter_type: customPage.data.attributes.projects_filter_type,
-          topic_ids: topicIds,
+          global_topic_ids: topicIds,
           area_id: areaIds[0],
+          space_ids: spaceIds,
         }}
         showNavBarItemTitle={hasNavbarItem}
         onSubmit={handleOnSubmit}
         hideSlug={!customPageSlugAllowedToEdit[customPage.data.attributes.code]}
+        // The content builder lists projects through its own widgets, so linked items don't apply.
+        hideLinkedItems={
+          customPageBuilderEnabled && isContentBuilderPage(customPage.data)
+        }
       />
     );
   }

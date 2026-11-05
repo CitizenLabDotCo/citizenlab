@@ -3,28 +3,25 @@
 class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   @@multiloc_service = MultilocService.new
 
-  def ideas_count
-    ideas = policy_scope(Idea.published, policy_scope_class: StatIdeaPolicy::Scope)
-      .where(published_at: @start_at..@end_at)
-    result = IdeasFinder.new(params, scope: ideas, current_user: current_user).find_records
-    render json: raw_json({ count: result.count })
-  end
-
-  def ideas_by_topic_serie
+  def ideas_by_topic_serie(limit = nil)
     ideas = policy_scope(Idea.published, policy_scope_class: StatIdeaPolicy::Scope)
     ideas = IdeasFinder.new(params, scope: ideas, current_user: current_user).find_records
+    ideas = apply_exclude_admins_and_moderators_filter(ideas, :author_id)
 
-    ideas
+    serie = ideas
       .where(published_at: @start_at..@end_at)
-      .joins(:ideas_topics)
-      .group('ideas_topics.topic_id')
-      .order('ideas_topics.topic_id')
-      .count
+      .joins(:ideas_input_topics)
+      .group('ideas_input_topics.input_topic_id')
+      .order('count_id DESC')
+      .limit(limit)
+      .count('id')
+
+    add_child_counts_to_parents(serie)
   end
 
   def ideas_by_topic
-    serie = ideas_by_topic_serie
-    topics = Topic.pluck(:id, :title_multiloc).map do |id, title_multiloc|
+    serie = ideas_by_topic_serie(params[:limit])
+    topics = InputTopic.where(id: serie.keys).pluck(:id, :title_multiloc).map do |id, title_multiloc|
       [id, { title_multiloc: title_multiloc }]
     end
     render json: raw_json({ series: { ideas: serie }, topics: topics.to_h })
@@ -33,7 +30,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   def ideas_by_topic_as_xlsx
     serie = ideas_by_topic_serie
 
-    topics = Topic.where(id: serie.keys).select(:id, :title_multiloc)
+    topics = InputTopic.where(id: serie.keys).select(:id, :title_multiloc)
 
     res = serie.map do |topic_id, count|
       {
@@ -51,6 +48,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   def ideas_by_project_serie
     ideas = policy_scope(Idea.published, policy_scope_class: StatIdeaPolicy::Scope)
     ideas = IdeasFinder.new(params, scope: ideas, current_user: current_user).find_records
+    ideas = apply_exclude_admins_and_moderators_filter(ideas, :author_id)
 
     ideas
       .where(published_at: @start_at..@end_at)

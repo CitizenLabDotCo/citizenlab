@@ -22,6 +22,7 @@
 #
 #  fk_rails_...  (custom_field_id => custom_fields.id)
 #  fk_rails_...  (custom_field_option_id => custom_field_options.id)
+#
 
 # A CustomFieldBin defines a subdivision, often relevant for
 # statistical/graphing purposes, over the answer-values of a CustomField. This
@@ -40,14 +41,8 @@ class CustomFieldBin < ApplicationRecord
   end
 
   # Does the given value fall into this bin.
-  # - `value` is the custom_field_value for the custom_field, as extracted from the custom_field_values
+  # - `value` is the answer value for the custom_field
   def in_bin?(value)
-    raise NotImplementedError
-  end
-
-  # Returns the given ActiveRecord scope, filtered for items that are in this bin
-  # The resource covered by the scope needs to have a `custom_field_values` column (users or ideas)
-  def filter_by_bin(scope)
     raise NotImplementedError
   end
 

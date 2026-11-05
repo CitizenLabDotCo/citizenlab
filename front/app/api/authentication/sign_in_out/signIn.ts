@@ -1,17 +1,23 @@
 import { API_PATH } from 'containers/App/constants';
 
 import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
+import { clearClaimToken } from 'utils/claimToken';
 
 import getAuthUser from '../auth_user/getAuthUser';
 
 import signOut from './signOut';
 
-interface Parameters {
-  email: string;
-  password?: string;
+// Users sign in with either their email address or their phone number.
+type Identifier =
+  | { email: string; phone?: never }
+  | { phone: string; email?: never };
+
+type Parameters = Identifier & {
+  password: string;
   rememberMe?: boolean;
   tokenLifetime?: number;
-}
+  claimTokens?: string[];
+};
 
 export default async function signIn(parameters: Parameters) {
   try {
@@ -28,23 +34,39 @@ export default async function signIn(parameters: Parameters) {
   }
 }
 
-export async function getAndSetToken({
+async function getAndSetToken({
   email,
-  password = '',
+  phone,
+  password,
   rememberMe = false,
-}: // tokenLifetime,
-Parameters) {
-  const bodyData = { auth: { email, password, remember_me: rememberMe } };
+  claimTokens,
+}: Parameters) {
+  // Each identifier has its own endpoint: they look the account up differently
+  // and each one requires that identifier to have been confirmed.
+  const endpoint = phone ? 'user_token_phone' : 'user_token';
 
-  // TODO: Replace with fetcher after the backend is updated
-  return await fetch(`${API_PATH}/user_token`, {
+  const bodyData = {
+    auth: {
+      ...(phone ? { phone } : { email }),
+      password,
+      remember_me: rememberMe,
+      claim_tokens: claimTokens,
+    },
+  };
+
+  return await fetch(`${API_PATH}/${endpoint}`, {
     method: 'POST',
     credentials: 'include', // Include cookies (session, auth tokens)
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(bodyData),
-  }).then((response) => response.json());
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      clearClaimToken();
+      return data;
+    });
 }
 
 async function getAuthUserAsync() {

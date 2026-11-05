@@ -63,6 +63,18 @@ RSpec.describe ParticipationMethod::CommonGround do
     end
   end
 
+  describe '#create_default_form!' do
+    it 'creates a phase-scoped custom form with the default fields' do
+      expect { participation_method.create_default_form! }.to change(CustomForm, :count).by(1)
+
+      form = phase.reload.custom_form
+      expect(form).to be_present
+      expect(form.participation_context).to eq(phase)
+      expect(form.custom_fields.pluck(:code)).to match_array(%w[title_page title_multiloc] + [nil])
+      expect(form.custom_fields.find_by(code: 'title_multiloc').input_type).to eq('text_multiloc')
+    end
+  end
+
   describe 'constraints' do
     it 'has no constraints' do
       expect(participation_method.constraints).to eq({})
@@ -77,13 +89,16 @@ RSpec.describe ParticipationMethod::CommonGround do
 
   its(:use_reactions_as_votes?) { is_expected.to be(true) }
   its(:transitive?) { is_expected.to be(false) }
+  its(:destroy_ideas_on_phase_destroy?) { is_expected.to be(true) }
   its(:supports_status?) { is_expected.to be(false) }
   its(:supports_inputs_without_author?) { is_expected.to be(false) }
+  its(:supports_standalone_placement?) { is_expected.to be false }
   its(:supports_submission?) { is_expected.to be(true) }
+  its(:supports_input_pdf_export?) { is_expected.to be(false) }
   its(:allow_posting_again_after) { is_expected.to eq(0.seconds) }
   its(:follow_idea_on_idea_submission?) { is_expected.to be(false) }
   its(:supports_edits_after_publication?) { is_expected.to be(true) }
-  its(:supports_permitted_by_everyone?) { is_expected.to be(false) }
+  its(:supports_permitted_by_everyone?) { is_expected.to be(true) }
   its(:supports_multiple_phase_reports?) { is_expected.to be(false) }
   its(:supports_input_term?) { is_expected.to be(false) }
   its(:supports_assignment?) { is_expected.to be(false) }
@@ -92,8 +107,7 @@ RSpec.describe ParticipationMethod::CommonGround do
   its(:supports_public_visibility?) { is_expected.to be(true) }
   its(:add_autoreaction_to_inputs?) { is_expected.to be(false) }
 
-  its(:form_logic_enabled?) { is_expected.to be(false) }
-  its(:user_fields_in_form?) { is_expected.to be(false) }
+  its(:supports_form_logic?) { is_expected.to be(false) }
   its(:supports_custom_field_categories?) { is_expected.to be(false) }
   its(:built_in_title_required?) { is_expected.to be(true) }
 

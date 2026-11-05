@@ -1,0 +1,75 @@
+import React from 'react';
+
+import { Box, Title } from '@citizenlab/cl2-component-library';
+
+import { IPhaseData } from 'api/phases/types';
+
+import useLocalize from 'hooks/useLocalize';
+
+import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import DemographicsSection from '../demographics/DemographicsSection';
+import messages from '../messages';
+import MethodSpecificInsights from '../methodSpecific/MethodSpecificInsights';
+import ParticipantsTimeline from '../ParticipantsTimeline';
+import ParticipationMetrics from '../participationMetrics/ParticipationMetrics';
+
+import FontWarmup from './FontWarmup';
+
+interface Props {
+  phase: IPhaseData;
+}
+
+/**
+ * PDF-specific layout for Insights content.
+ * Rendered in a hidden offscreen container during PDF export.
+ * Components receive isPdfExport=true to render PDF-optimized layouts.
+ */
+const InsightsPdfContent = ({ phase }: Props) => {
+  const localize = useLocalize();
+  const phaseName = localize(phase.attributes.title_multiloc);
+
+  return (
+    <Box
+      id="insights-pdf-hidden-container"
+      background="white"
+      display="flex"
+      flexDirection="column"
+    >
+      <FontWarmup />
+      <Box data-pdf-section="true">
+        {phaseName && (
+          <Title variant="h1" as="h1" color="textPrimary" m="0px" mb="24px">
+            {phaseName}
+          </Title>
+        )}
+        <Title variant="h2" as="h2" color="textPrimary" m="0px">
+          <FormattedMessage {...messages.insights} />
+        </Title>
+      </Box>
+
+      <Box display="flex" flexDirection="column" gap="16px" pt="16px">
+        <PageBreakBox data-pdf-section="true">
+          <ParticipationMetrics phase={phase} />
+        </PageBreakBox>
+
+        <PageBreakBox data-pdf-section="true">
+          <ParticipantsTimeline phase={phase} />
+        </PageBreakBox>
+
+        <DemographicsSection phase={phase} />
+
+        <PageBreakBox data-pdf-section="true">
+          <MethodSpecificInsights
+            phaseId={phase.id}
+            participationMethod={phase.attributes.participation_method}
+          />
+        </PageBreakBox>
+      </Box>
+    </Box>
+  );
+};
+
+export default InsightsPdfContent;

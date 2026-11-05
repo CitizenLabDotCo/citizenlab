@@ -13,7 +13,8 @@ class WebApi::V1::ResetPasswordController < ApplicationController
 
       user.update! reset_password_token: token
 
-      reset_password_service.send_email_later user, token
+      # Sent synchronously: the user is waiting for this email to reset their password.
+      reset_password_service.send_email user, token
       reset_password_service.log_activity user, token
     end
     head :accepted
@@ -22,8 +23,20 @@ class WebApi::V1::ResetPasswordController < ApplicationController
   def reset_password
     @user = User.not_invited
       .find_by(reset_password_token: reset_password_params[:token])
+
     if @user && ResetPasswordService.new.token_valid?(@user, reset_password_params[:token])
-      if @user.update(password: reset_password_params[:password], reset_password_token: nil)
+      @user.assign_attributes(
+        password: reset_password_params[:password],
+        reset_password_token: nil
+      )
+
+      # Resetting the password also proves that the user has access to the email,
+      # so we can confirm the user if they were pending confirmation.
+      @user.find_or_create_confirmation(:email_confirmation).confirm! if @user.confirmation_required?
+
+      if @user.save
+        @user.expire_token!
+
         render json: WebApi::V1::UserSerializer.new(
           @user,
           params: jsonapi_serializer_params

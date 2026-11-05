@@ -10,4 +10,4 @@ fi:
       event_description: 'Sinulle on annettu palaute. Anna palautetta kirjoittamalla virallinen päivitys tai muuttamalla sen tilaa.'
       title: '%{firstName}, sinulle on määritetty syöte'
       subject: 'Sinulla on tehtävä alustalla %{organizationName}'
-      preheader_idea: 'Idea %{authorName} on annettu sinulle'
+      preheader: 'Syöte %{authorName} on määritetty sinulle'

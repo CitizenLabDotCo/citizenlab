@@ -16,6 +16,13 @@ RSpec.describe AppConfiguration::Settings do
     described_class.instance_variable_set(:@extension_features_hash, @initial_features_hash)
   end
 
+  # The combined schema adds this setting to the internal early access features.
+  def without_early_access_upgrade(schema)
+    schema.deep_dup.tap do |res|
+      res['properties'].each_value { |feature| feature['properties'].delete('early_access_upgrade') }
+    end
+  end
+
   shared_examples 'produces_valid_json_schema' do
     it 'produces a valid json schema' do
       metaschema = JSON::Validator.validator_for_name('draft4').metaschema
@@ -28,7 +35,7 @@ RSpec.describe AppConfiguration::Settings do
       subject(:json_schema) { described_class.json_schema }
 
       it 'uses only the core json schema settings' do
-        expect(json_schema).to match(described_class.core_settings_json_schema)
+        expect(without_early_access_upgrade(json_schema)).to match(described_class.core_settings_json_schema)
       end
 
       it 'uses no extension features' do
@@ -62,7 +69,7 @@ RSpec.describe AppConfiguration::Settings do
       it 'includes core json schema settings in schema' do
         expect(json_schema.except('properties')).to eq(described_class.core_settings_json_schema.except('properties'))
         # json_schema['properties'] has `dummy_feature` which is not included in core_settings_json_schema['properties']
-        expect(json_schema['properties'].except(feature_spec.feature_name))
+        expect(without_early_access_upgrade(json_schema)['properties'].except(feature_spec.feature_name))
           .to eq(described_class.core_settings_json_schema['properties'])
       end
 
@@ -75,6 +82,69 @@ RSpec.describe AppConfiguration::Settings do
 
     describe '.extension_features_specs' do
       it { expect(described_class.extension_features_specs.length).to eq(1) }
+    end
+
+    describe '.early_access_tiers' do
+      it 'does not include the feature by default' do
+        expect(described_class.early_access_tiers).not_to have_key(feature_spec.feature_name)
+      end
+
+      context 'when the feature declares itself early access' do
+        before { feature_spec.define_singleton_method(:early_access) { 'internal' } }
+
+        it 'includes the feature with its tier' do
+          expect(described_class.early_access_tiers[feature_spec.feature_name]).to eq 'internal'
+        end
+
+        it 'marks the feature in the json schema' do
+          expect(described_class.json_schema.dig('properties', feature_spec.feature_name, 'early_access'))
+            .to eq 'internal'
+        end
+
+        it 'lets Admin HQ upgrade the feature' do
+          expect(described_class.json_schema.dig('properties', feature_spec.feature_name, 'properties'))
+            .to have_key('early_access_upgrade')
+        end
+      end
+    end
+  end
+
+  describe '.early_access_tiers' do
+    it 'includes the core features marked early access, with their tier' do
+      marked = described_class.core_settings_json_schema['properties']
+        .select { |_name, feature| feature['early_access'] }
+        .transform_values { |feature| feature['early_access'] }
+
+      expect(described_class.early_access_tiers).to eq(marked)
+    end
+
+    it 'only uses tiers a user can be eligible for' do
+      expect(described_class.early_access_tiers.values.uniq)
+        .to all(be_in(described_class::EARLY_ACCESS_TIERS))
+    end
+
+    it 'lets Admin HQ upgrade only the internal features' do
+      properties = described_class.json_schema['properties']
+
+      expect(properties.dig('project_backoffice_redesign', 'properties', 'early_access_upgrade')).to be_present
+      expect(properties.dig('redirects', 'properties')).not_to have_key('early_access_upgrade')
+      expect(properties.dig('analysis', 'properties')).not_to have_key('early_access_upgrade')
+    end
+
+    it 'rejects an upgrade on a feature that is not internal' do
+      config = AppConfiguration.instance
+      config.settings['redirects'] = { 'allowed' => false, 'enabled' => false, 'early_access_upgrade' => true }
+
+      expect(config).not_to be_valid
+    end
+
+    it 'only marks features that need nothing else to work' do
+      schema = described_class.json_schema
+
+      described_class.early_access_tiers.each_key do |feature|
+        expect(schema.dig('properties', feature, 'required-settings')).to be_nil
+        expect(schema.dig('dependencies', feature)).to be_nil
+      end
     end
   end
 

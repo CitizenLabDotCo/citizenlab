@@ -15,6 +15,7 @@
 #
 # Indexes
 #
+#  custom_field_options_field_id_ordering_unique          (custom_field_id,ordering) UNIQUE
 #  index_custom_field_options_on_custom_field_id          (custom_field_id)
 #  index_custom_field_options_on_custom_field_id_and_key  (custom_field_id,key) UNIQUE
 #
@@ -23,10 +24,14 @@
 #  fk_rails_...  (custom_field_id => custom_fields.id)
 #
 class CustomFieldOption < ApplicationRecord
+  include PlainTextMultiloc
+  include BulkReorderable
+
   # non-persisted attribute to enable form copying
   attribute :temp_id, :string, default: nil
 
-  acts_as_list column: :ordering, top_of_list: 0, scope: :custom_field
+  acts_as_list column: :ordering, top_of_list: 0, scope: :custom_field, sequential_updates: true
+  bulk_reorderable constraint_name: :custom_field_options_field_id_ordering_unique
 
   belongs_to :custom_field
 
@@ -36,38 +41,36 @@ class CustomFieldOption < ApplicationRecord
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validate :belongs_to_select_field
 
+  plain_text_multiloc :title_multiloc
   before_validation :generate_key, on: :create
 
   # Options of the domicile custom field are associated with an area.
   # The two associated resources are kept in sync: changes to the
   # area are reflected in the option, and vice versa.
   has_one :area, dependent: :nullify
-  after_update :update_area
 
   has_one :image, dependent: :destroy, class_name: 'CustomFieldOptionImage', inverse_of: :custom_field_option
   has_many :custom_field_bins, dependent: :destroy, class_name: 'CustomFieldBins::OptionBin', inverse_of: :custom_field_option
 
   delegate :project_id, to: :custom_field
 
+  # A domicile answer holds the id of the chosen area, or 'outside' for the
+  # "somewhere else" option, never the option key.
+  def answer_key
+    return key unless custom_field.domicile?
+
+    area&.id || 'outside'
+  end
+
   private
 
   def belongs_to_select_field
-    return unless custom_field && !custom_field.support_options?
+    return unless custom_field && !custom_field.supports_options?
 
     errors.add(
       :base,
       :option_on_non_select_field,
       message: 'The custom field option you\'re specifying does not belong to a custom field that supports options'
-    )
-  end
-
-  def update_area
-    return unless area
-    return unless ordering_previously_changed? || title_multiloc_previously_changed?
-
-    area.update!(
-      ordering: ordering,
-      title_multiloc: title_multiloc
     )
   end
 

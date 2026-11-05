@@ -1,11 +1,7 @@
 import React, { useEffect } from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import { createPortal } from 'react-dom';
-import { FocusOn } from 'react-focus-on';
 import { SupportedLocale } from 'typings';
-
-import useDeleteFileAttachment from 'api/file_attachments/useDeleteFileAttachment';
 
 import eventEmitter from 'utils/eventEmitter';
 
@@ -13,7 +9,6 @@ import {
   CONTENT_BUILDER_DELETE_ELEMENT_EVENT,
   CONTENT_BUILDER_ERROR_EVENT,
   IMAGE_UPLOADING_EVENT,
-  CONTENT_BUILDER_Z_INDEX,
 } from '../constants';
 import { SelectedNode } from '../Settings/typings';
 
@@ -35,8 +30,6 @@ export const ContentBuilder = ({
   onUploadImage,
   children,
 }: Props) => {
-  const { mutate: deleteFileAttachment } = useDeleteFileAttachment({});
-
   useEffect(() => {
     if (!onErrors) return;
 
@@ -53,30 +46,17 @@ export const ContentBuilder = ({
   useEffect(() => {
     if (!onDeleteElement) return;
 
-    const cleanUpElementAfterDeletion = (deletedElement: SelectedNode) => {
-      // Add additional cleanup logic below for other element types as needed.
-
-      // File Attachment
-      if (deletedElement.custom?.title.defaultMessage === 'File Attachment') {
-        const fileAttachmentId = deletedElement.props.fileAttachmentId;
-        deleteFileAttachment(fileAttachmentId);
-      }
-    };
-
     const subscription = eventEmitter
       .observeEvent(CONTENT_BUILDER_DELETE_ELEMENT_EVENT)
       .subscribe(({ eventValue }) => {
         const deletedElement = eventValue as SelectedNode;
-
-        cleanUpElementAfterDeletion(deletedElement);
-
         const deletedElementId = deletedElement.id;
         onDeleteElement(deletedElementId);
       });
     return () => {
       subscription.unsubscribe();
     };
-  }, [deleteFileAttachment, onDeleteElement]);
+  }, [onDeleteElement]);
 
   useEffect(() => {
     const subscription = eventEmitter
@@ -95,23 +75,14 @@ export const ContentBuilder = ({
       display="flex"
       flexDirection="column"
       w="100%"
-      zIndex={String(CONTENT_BUILDER_Z_INDEX.main)}
       position="fixed"
       bgColor={colors.background}
       h="100vh"
       data-testid="contentBuilderPage"
     >
-      <FocusOn>{children}</FocusOn>
+      {children}
     </Box>
   );
 };
 
-const FullscreenContentBuilder = (props: Props) => {
-  const modalPortalElement = document.getElementById('modal-portal');
-
-  return modalPortalElement
-    ? createPortal(<ContentBuilder {...props} />, modalPortalElement)
-    : null;
-};
-
-export default FullscreenContentBuilder;
+export default ContentBuilder;

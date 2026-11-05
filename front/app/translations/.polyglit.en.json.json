@@ -1,0 +1,22 @@
+{
+  "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.preferToStayAnonymous": {
+    "state": "verified",
+    "verified_at": "2026-08-10T15:10:50.508681Z",
+    "verified_by": "KenVM"
+  },
+  "app.components.PostCardsComponents.feed": {
+    "state": "verified",
+    "verified_at": "2026-03-31T12:17:27.190175Z",
+    "verified_by": "Nola Moreau"
+  },
+  "app.containers.SignIn.signInError2": {
+    "state": "verified",
+    "verified_at": "2026-09-16T09:23:52.693959Z",
+    "verified_by": "KenVM"
+  },
+  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": {
+    "state": "verified",
+    "verified_at": "2026-04-20T09:49:19.291150Z",
+    "verified_by": "Nola Moreau"
+  }
+}

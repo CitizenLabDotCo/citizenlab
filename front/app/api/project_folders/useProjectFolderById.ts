@@ -6,13 +6,13 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import projectFoldersKeys from './keys';
 import { IProjectFolder, ProjectFoldersKeys } from './types';
 
-const fetchProjectFolderById = ({ id }: { id?: string }) =>
+const fetchProjectFolderById = ({ id }: { id?: string | null }) =>
   fetcher<IProjectFolder>({
     path: `/project_folders/${id}`,
     action: 'get',
   });
 
-const useProjectFolderById = (projectFolderId?: string) => {
+const useProjectFolderById = (projectFolderId?: string | null) => {
   return useQuery<IProjectFolder, CLErrors, IProjectFolder, ProjectFoldersKeys>(
     {
       queryKey: projectFoldersKeys.item({ id: projectFolderId }),

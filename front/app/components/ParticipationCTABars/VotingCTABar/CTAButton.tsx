@@ -10,11 +10,13 @@ import JSConfetti from 'js-confetti';
 import styled, { useTheme } from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useBasket from 'api/baskets/useBasket';
 import useUpdateBasket from 'api/baskets/useUpdateBasket';
 import useVoting from 'api/baskets_ideas/useVoting';
 import { IPhaseData } from 'api/phases/types';
+import { getPhaseActionDescriptor } from 'api/phases/utils';
 import { IProjectData } from 'api/projects/types';
+
+import useCustomAccessDeniedMessage from 'hooks/useCustomAccessDeniedMessage';
 
 import { triggerPostActionEvents } from 'containers/App/events';
 
@@ -66,16 +68,30 @@ interface Props {
 }
 
 const CTAButton = ({ phase, project }: Props) => {
-  const basketId = phase.relationships.user_basket?.data?.id;
-  const { data: basket } = useBasket(basketId);
   const { mutate: updateBasket } = useUpdateBasket();
-  const { numberOfVotesCast, processing: votingProcessing } = useVoting();
+  const {
+    numberOfVotesCast,
+    numberOfOptionsSelected,
+    processing: votingProcessing,
+    basketId,
+  } = useVoting();
   const { data: appConfig } = useAppConfiguration();
   const formatCurrency = useFormatCurrency();
   const theme = useTheme();
   const { formatMessage } = useIntl();
   const [processing, setProcessing] = useState(false);
   const [isSubmitSuccessful, setIsSubmitSuccessful] = useState<boolean>(false);
+
+  const permissionsDisabledReason = getPhaseActionDescriptor(
+    phase,
+    'voting'
+  ).disabled_reason;
+
+  const customAccessDeniedMessage = useCustomAccessDeniedMessage({
+    phaseId: phase.id,
+    action: 'voting',
+    disabledReason: permissionsDisabledReason,
+  });
 
   if (
     !appConfig ||
@@ -86,60 +102,54 @@ const CTAButton = ({ phase, project }: Props) => {
   }
 
   const handleSubmitOnClick = () => {
-    if (basket) {
-      const update = () => {
-        updateBasket(
-          {
-            id: basket.data.id,
-            submitted: true,
-          },
-          {
-            onSuccess: () => {
-              setProcessing(false);
-              setIsSubmitSuccessful(true);
+    if (!basketId) return;
 
-              // If on the project page, scroll down to the status module
-              if (location.pathname.includes('/projects/')) {
-                confetti.addConfetti();
-                scrollToElement({
-                  id: 'voting-status-module',
-                });
-              }
+    setProcessing(true);
+    updateBasket(
+      {
+        id: basketId,
+        submitted: true,
+      },
+      {
+        onSuccess: () => {
+          setProcessing(false);
+          setIsSubmitSuccessful(true);
 
-              // If on the idea page, redirect to project page and scroll to status module
-              if (location.pathname.includes('/ideas/')) {
-                clHistory.push(
-                  `/projects/${project.attributes.slug}?scrollToStatusModule=true`
-                );
-              }
-
-              triggerPostActionEvents({});
-            },
+          // If on the project page, scroll down to the status module
+          if (location.pathname.includes('/projects/')) {
+            confetti.addConfetti();
+            scrollToElement({ id: 'voting-status-module' });
           }
-        );
-      };
 
-      if (votingProcessing) {
-        // Add a bit of timeout so that the voting request
-        // has time to complete
-        setTimeout(() => {
-          update();
-        }, 300);
-      } else {
-        update();
+          // If on the idea page, redirect to project page and scroll to status module
+          if (location.pathname.includes('/ideas/')) {
+            clHistory.push(
+              `/projects/${project.attributes.slug}?scrollToStatusModule=true`
+            );
+          }
+
+          triggerPostActionEvents({});
+        },
+        onError: () => {
+          setProcessing(false);
+        },
       }
-    }
+    );
   };
 
-  const permissionsDisabledReason =
-    project.attributes.action_descriptors.voting.disabled_reason;
-  const disabledExplanation = getVoteSubmissionDisabledExplanation(
-    formatMessage,
-    phase,
-    permissionsDisabledReason,
-    numberOfVotesCast,
-    formatCurrency
-  );
+  const disabledExplanation =
+    customAccessDeniedMessage ||
+    getVoteSubmissionDisabledExplanation(
+      formatMessage,
+      phase,
+      permissionsDisabledReason,
+      numberOfVotesCast,
+      formatCurrency,
+      numberOfOptionsSelected
+    );
+
+  // Don't allow submitting while votes are still being saved
+  const isDisabled = !!disabledExplanation || votingProcessing;
 
   return (
     <Box width="100%">
@@ -148,9 +158,7 @@ const CTAButton = ({ phase, project }: Props) => {
         placement="bottom"
         content={disabledExplanation}
       >
-        {/* We need to add a tabIndex of 0 to
-        make sure this is keyboard-focusable so screen reader software can read the explanation */}
-        <Box width="100%" tabIndex={disabledExplanation ? 0 : -1}>
+        <Box width="100%">
           <StyledButton
             icon="vote-ballot"
             buttonStyle="primary-inverse"
@@ -161,9 +169,9 @@ const CTAButton = ({ phase, project }: Props) => {
             textHoverColor={theme.colors.black}
             padding="6px 12px"
             fontSize="14px"
-            disabled={!!disabledExplanation}
+            disabled={isDisabled}
             processing={processing}
-            className={disabledExplanation ? '' : 'pulse'}
+            className={isDisabled ? '' : 'pulse'}
             ariaDescribedby="explanation"
             opacityDisabled="0.6"
             textDisabledColor={colors.black}

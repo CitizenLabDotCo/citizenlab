@@ -1,12 +1,11 @@
 import React, { memo } from 'react';
 
-import { Outlet as RouterOutlet } from 'react-router-dom';
-
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import HelmetIntl from 'components/HelmetIntl';
 
 import { useIntl } from 'utils/cl-intl';
+import { Outlet as RouterOutlet } from 'utils/router';
 
 import DashboardTabs from './components/DashboardTabs';
 import messages from './messages';

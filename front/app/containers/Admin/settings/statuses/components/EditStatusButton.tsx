@@ -1,23 +1,26 @@
 import React from 'react';
 
 import { Tooltip, Box, TooltipProps } from '@citizenlab/cl2-component-library';
-import { RouteType } from 'routes';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { type TypedLinkProps } from 'utils/cl-router/Link';
 
 import messages from './messages';
 
-interface Props {
+interface Props extends TypedLinkProps {
   buttonDisabled: boolean;
   tooltipContent: TooltipProps['content'];
-  linkTo: RouteType;
+  linkTo?: string;
 }
 
 const EditStatusButton = ({
   buttonDisabled,
   tooltipContent,
+  to,
+  params,
+  search,
   linkTo,
 }: Props) => {
   const tooltipDisabled = !buttonDisabled;
@@ -32,6 +35,9 @@ const EditStatusButton = ({
     >
       <Box>
         <ButtonWithLink
+          to={to}
+          params={params}
+          search={search}
           linkTo={linkTo}
           buttonStyle="secondary-outlined"
           icon="edit"

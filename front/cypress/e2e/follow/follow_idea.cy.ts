@@ -1,3 +1,4 @@
+import { signUpEmailConformation } from '../../support/auth';
 import { randomString, randomEmail } from '../../support/commands';
 import moment = require('moment');
 
@@ -19,13 +20,11 @@ describe('Follow idea', () => {
   let ideaSlug2: string;
   let projectId: string;
   let projectSlug: string;
-  let userSlug: string;
 
   before(() => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: '',
-      description: '',
       publicationStatus: 'published',
     })
       .then((project) => {
@@ -44,20 +43,18 @@ describe('Follow idea', () => {
       })
       .then((phase) => {
         cy.apiCreateIdea({
-          projectId,
+          phaseId: phase.body.data.id,
           ideaTitle: ideaTitle1,
           ideaContent: ideaContent1,
-          phaseIds: [phase.body.data.id],
         }).then((idea) => {
           ideaId1 = idea.body.data.id;
           ideaSlug1 = idea.body.data.attributes.slug;
         });
 
         cy.apiCreateIdea({
-          projectId,
+          phaseId: phase.body.data.id,
           ideaTitle: ideaTitle2,
           ideaContent: ideaContent2,
-          phaseIds: [phase.body.data.id],
         }).then((idea) => {
           ideaId2 = idea.body.data.id;
           ideaSlug2 = idea.body.data.attributes.slug;
@@ -66,7 +63,6 @@ describe('Follow idea', () => {
 
     cy.apiSignup(firstName, lastName, email, password).then((response) => {
       userId = response.body.data.id;
-      userSlug = response.body.data.attributes.slug;
     });
   });
 
@@ -128,15 +124,7 @@ describe('Follow idea', () => {
     cy.dataCy('e2e-follow-button').should('exist');
     cy.dataCy('e2e-follow-button').click();
 
-    cy.get('input#email').focus().type(randomEmail());
-    cy.get('#e2e-light-flow-email-submit').click();
-
-    cy.get('#e2e-terms-conditions-container .e2e-checkbox').click();
-    cy.get('#e2e-privacy-policy-container .e2e-checkbox').click();
-    cy.get('#e2e-policies-continue').click();
-
-    cy.get('input#code').focus().type('1234');
-    cy.get('#e2e-verify-email-button').click();
+    signUpEmailConformation(cy);
 
     cy.get('#e2e-success-continue-button').click();
 

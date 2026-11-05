@@ -69,6 +69,10 @@ export default defineMessages({
     defaultMessage:
       '{numberOfVotes, plural, =0 {0 credits} one {1 credit} other {# credits}}',
   },
+  numberOfPercents: {
+    id: 'app.utils.votingMethodUtils.numberOfPercents2',
+    defaultMessage: '{numberOfVotes, plural, =0 {0%} one {1%} other {#%}}',
+  },
   budgetingSubmissionInstructionsTotalBudget2: {
     id: 'app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget2',
     defaultMessage:
@@ -173,9 +177,24 @@ export default defineMessages({
     defaultMessage:
       'You can add a maximum of {maxVotes, plural, one {# credit} other {# credits}} per option.',
   },
+  cumulativeVotingInstructionsMaxPercentsPerIdea: {
+    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsMaxPercentsPerIdea2',
+    defaultMessage:
+      'You can add a maximum of {maxVotes, plural, one {#%} other {#%}} per option.',
+  },
   cumulativeVotingInstructionsOnceYouAreDone: {
     id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsOnceYouAreDone',
     defaultMessage: 'Once you are done, click “Submit” to cast your vote.',
+  },
+  cumulativeVotingInstructionsTotalPercents: {
+    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalPercents2',
+    defaultMessage:
+      'You have <b>{totalVotes, plural, one {#%} other {#%}} to distribute between {optionCount, plural, one {# option} other {# options}}</b>.',
+  },
+  minSelectedOptionsMessage: {
+    id: 'app.utils.votingMethodUtils.minSelectedOptionsMessage',
+    defaultMessage:
+      ' You must select a minimum of at least <b>{minSelectedOptions, plural, one {# option} other {# options}}</b>.',
   },
   multipleVotingEnded: {
     id: 'app.utils.votingMethodUtils.multipleVotingEnded1',

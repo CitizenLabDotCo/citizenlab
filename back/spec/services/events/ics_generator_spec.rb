@@ -30,14 +30,14 @@ RSpec.describe Events::IcsGenerator do
         BEGIN:VTIMEZONE
         TZID:America/New_York
         BEGIN:DAYLIGHT
-        DTSTART:20170312T030000
+        DTSTART:20170312T020000
         TZOFFSETFROM:-0500
         TZOFFSETTO:-0400
         RRULE:FREQ=YEARLY;BYDAY=2SU;BYMONTH=3
         TZNAME:EDT
         END:DAYLIGHT
         BEGIN:STANDARD
-        DTSTART:20171105T010000
+        DTSTART:20171105T020000
         TZOFFSETFROM:-0400
         TZOFFSETTO:-0500
         RRULE:FREQ=YEARLY;BYDAY=1SU;BYMONTH=11
@@ -47,8 +47,8 @@ RSpec.describe Events::IcsGenerator do
         BEGIN:VEVENT
         DTSTAMP:%DTSTAMP_PLACEHOLDER%
         UID:%UID_PLACEHOLDER%
-        DTSTART;TZID=America/New_York:20170501T160000
-        DTEND;TZID=America/New_York:20170501T180000
+        DTSTART;TZID=America/New_York:20170501T200000
+        DTEND;TZID=America/New_York:20170501T220000
         DESCRIPTION:Event details: http://example.org/en/events/#{event.id[..-18]}
          #{event.id[-17..]}
         GEO:50.8465574798584;4.351710319519043

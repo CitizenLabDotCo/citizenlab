@@ -1,0 +1,244 @@
+import React, { FormEvent } from 'react';
+
+import {
+  Toggle,
+  IconTooltip,
+  Box,
+  Text,
+  colors,
+} from '@citizenlab/cl2-component-library';
+import { CLErrors } from 'typings';
+
+import { PresentationMode } from 'api/phases/types';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';
+
+import { SectionField, SubSectionTitle } from 'components/admin/Section';
+import Error from 'components/UI/Error';
+
+import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
+
+import messages from '../../../../../messages';
+
+import MapConfigButton from './MapConfigButton';
+import ViewRow from './ViewRow';
+
+interface ViewOption {
+  value: PresentationMode;
+  title: MessageDescriptor;
+  description: MessageDescriptor;
+  descriptionValues?: Record<string, React.ReactNode>;
+  alwaysEnabled?: boolean;
+}
+
+interface Props {
+  presentation_mode: PresentationMode | null | undefined;
+  available_views: PresentationMode[] | null | undefined;
+  apiErrors: CLErrors | null | undefined;
+  handleIdeasDisplayChange: (presentation_mode: PresentationMode) => void;
+  handleAvailableViewsChange: (
+    available_views: PresentationMode[],
+    presentation_mode?: PresentationMode
+  ) => void;
+  title?: MessageDescriptor;
+  hideFeed?: boolean;
+  variant?: 'default' | 'panel';
+}
+
+const ViewSelector = ({
+  presentation_mode,
+  available_views,
+  apiErrors,
+  handleIdeasDisplayChange,
+  handleAvailableViewsChange,
+  title,
+  hideFeed,
+  variant = 'default',
+}: Props) => {
+  const { formatMessage } = useIntl();
+  const { projectId, phaseId } = useParams({ strict: false }) as {
+    projectId: string;
+    phaseId: string;
+  };
+  const ideaFeedEnabled = useFeatureFlag({ name: 'idea_feed' });
+
+  const currentAvailableViews = available_views || ['card'];
+
+  const inputFormUrl = `/admin/projects/${projectId}/phases/${phaseId}/form/edit`;
+  const inputFormLink = (
+    <a href={inputFormUrl} target="_blank" rel="noreferrer">
+      <FormattedMessage {...messages.locationFieldWarningLink} />
+    </a>
+  );
+
+  const inputTagsUrl = `/admin/projects/${projectId}/general/input-tags`;
+  const inputTagsLink = (
+    <a href={inputTagsUrl} target="_blank" rel="noreferrer">
+      <FormattedMessage {...messages.inputTagsPageLink} />
+    </a>
+  );
+
+  const viewOptions: ViewOption[] = [
+    {
+      value: 'card',
+      title: messages.listViewTitle,
+      description: messages.listViewDescription,
+      alwaysEnabled: true,
+    },
+    {
+      value: 'map',
+      title: messages.mapViewTitle,
+      description: messages.mapViewDescription,
+      descriptionValues: { inputFormLink },
+    },
+    // Feed view is hidden for voting and proposals phases, as it's only relevant for ideation
+    ...(ideaFeedEnabled && !hideFeed
+      ? [
+          {
+            value: 'feed' as const,
+            title: messages.feedViewTitle,
+            description: messages.feedViewDescription,
+            descriptionValues: { inputTagsLink },
+          },
+        ]
+      : []),
+  ];
+
+  const handleToggle = (view: PresentationMode) => (_event: FormEvent) => {
+    const isEnabled = currentAvailableViews.includes(view);
+
+    if (isEnabled) {
+      const newViews = currentAvailableViews.filter((v) => v !== view);
+      if (view === presentation_mode) {
+        handleAvailableViewsChange(newViews, 'card');
+      } else {
+        handleAvailableViewsChange(newViews);
+      }
+    } else {
+      handleAvailableViewsChange([...currentAvailableViews, view]);
+    }
+  };
+
+  const handleMakeDefault = (view: PresentationMode) => () => {
+    handleIdeasDisplayChange(view);
+  };
+
+  if (variant === 'panel') {
+    const defaultView = viewOptions.find(
+      (option) => option.value === presentation_mode
+    );
+
+    return (
+      <PanelGroup
+        label={formatMessage(title || messages.availableViews)}
+        summary={defaultView && formatMessage(defaultView.title)}
+      >
+        <Box display="flex" flexDirection="column">
+          {viewOptions.map((option, index) => (
+            <Box
+              key={option.value}
+              borderTop={index > 0 ? `1px solid ${colors.grey200}` : undefined}
+            >
+              <ViewRow
+                title={formatMessage(option.title)}
+                description={
+                  <FormattedMessage
+                    {...option.description}
+                    values={option.descriptionValues}
+                  />
+                }
+                enabled={currentAvailableViews.includes(option.value)}
+                alwaysEnabled={option.alwaysEnabled}
+                isDefault={presentation_mode === option.value}
+                onToggle={handleToggle(option.value)}
+                onMakeDefault={handleMakeDefault(option.value)}
+              >
+                {option.value === 'map' && <MapConfigButton />}
+              </ViewRow>
+            </Box>
+          ))}
+        </Box>
+        <Error apiErrors={apiErrors && apiErrors.presentation_mode} />
+      </PanelGroup>
+    );
+  }
+
+  return (
+    <SectionField>
+      <SubSectionTitle>
+        <FormattedMessage {...(title || messages.availableViews)} />
+      </SubSectionTitle>
+      {viewOptions.map((option) => {
+        const isEnabled = currentAvailableViews.includes(option.value);
+        const isDefault = presentation_mode === option.value;
+
+        return (
+          <Box key={option.value} mb="16px">
+            <Box display="flex" alignItems="flex-start" gap="12px">
+              <Toggle
+                checked={isEnabled}
+                disabled={option.alwaysEnabled}
+                onChange={handleToggle(option.value)}
+              />
+              <Box>
+                <Box display="flex" alignItems="center" gap="4px">
+                  <Text fontWeight="bold" fontSize="base" mb="0px" as="span">
+                    {formatMessage(option.title)}
+                  </Text>
+                  {option.alwaysEnabled && (
+                    <IconTooltip
+                      content={formatMessage(messages.listViewCannotBeDisabled)}
+                    />
+                  )}
+                </Box>
+                <Text
+                  color="textSecondary"
+                  fontSize="s"
+                  mb="4px"
+                  as="span"
+                  display="block"
+                >
+                  <FormattedMessage
+                    {...option.description}
+                    values={option.descriptionValues}
+                  />
+                </Text>
+                {isEnabled && isDefault && (
+                  <Text
+                    color="primary"
+                    fontSize="s"
+                    fontWeight="bold"
+                    mb="0px"
+                    as="span"
+                  >
+                    {formatMessage(messages.defaultLabel)}
+                  </Text>
+                )}
+                {isEnabled && !isDefault && (
+                  <Text
+                    color="teal400"
+                    fontSize="s"
+                    mb="0px"
+                    as="span"
+                    display="block"
+                    textDecoration="underline"
+                    style={{ cursor: 'pointer' }}
+                    onClick={handleMakeDefault(option.value)}
+                  >
+                    {formatMessage(messages.makeDefault)}
+                  </Text>
+                )}
+              </Box>
+            </Box>
+          </Box>
+        );
+      })}
+      <Error apiErrors={apiErrors && apiErrors.presentation_mode} />
+    </SectionField>
+  );
+};
+
+export default ViewSelector;

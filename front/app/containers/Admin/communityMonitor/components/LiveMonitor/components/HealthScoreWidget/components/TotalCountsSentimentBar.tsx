@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Tooltip } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
 
 import SentimentBar from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion/components/SentimentScore/SentimentBar';
 import SentimentTooltip from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion/components/SentimentScore/SentimentTooltip';
@@ -9,6 +8,7 @@ import { getAnswerGroups } from 'components/admin/FormResults/FormResultsQuestio
 import { SentimentAnswers } from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion/utils';
 
 import { isNil } from 'utils/helperUtils';
+import { useSearch } from 'utils/router';
 
 import { QuarterlyScores } from '../types';
 import { getQuarterFilter, getYearFilter } from '../utils';
@@ -19,11 +19,11 @@ type Props = {
   quarter?: string;
 };
 const TotalCountsSentimentBar = ({ sentimentScores, ...props }: Props) => {
-  const [search] = useSearchParams();
+  const search = useSearch({ strict: false });
 
   // Get the current year/quarter filter
-  const year = props.year || getYearFilter(search);
-  const quarter = props.quarter || getQuarterFilter(search);
+  const year = props.year || getYearFilter(search.year);
+  const quarter = props.quarter || getQuarterFilter(search.quarter);
 
   // Get the total counts data for the current quarter
   const quarterData = sentimentScores?.totalHealthScoreCounts.find(

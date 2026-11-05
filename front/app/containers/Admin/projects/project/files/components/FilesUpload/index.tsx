@@ -7,9 +7,18 @@ import {
   Title,
 } from '@citizenlab/cl2-component-library';
 import { useDropzone } from 'react-dropzone';
-import { useParams } from 'react-router-dom';
+
+import useAuthUser from 'api/me/useAuthUser';
+
+import { UploadStatus } from 'containers/Admin/projects/_shared/fileUploads/types';
+import {
+  MAX_FILES,
+  MAX_FILE_SIZE,
+  trackFileUpload,
+} from 'containers/Admin/projects/_shared/fileUploads/utils';
 
 import { useIntl } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import messages from '../messages';
 
@@ -17,7 +26,7 @@ import FileDropzone from './components/FileDropzone';
 import FileUploadActions from './components/FileUploadActions';
 import InformationSection from './components/InformationSection/index';
 import SelectedFile from './components/SelectedFile';
-import { FileWithMeta, UploadStatus } from './types';
+import { FileWithMeta } from './types';
 import { countFilesWithStatus } from './utils';
 
 type Props = {
@@ -26,12 +35,13 @@ type Props = {
 };
 
 const FINISHED_STATUSES: UploadStatus[] = ['uploaded', 'error', 'too_large'];
-const MAX_FILE_SIZE = 50 * 1024 * 1024;
-const MAX_FILES = 35;
 
 const FilesUpload = ({ setModalOpen, setShowFirstUploadView }: Props) => {
+  const { data: user } = useAuthUser();
   const { formatMessage } = useIntl();
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId } = useParams({
+    from: '/$locale/admin/projects/$projectId/files',
+  });
 
   const [fileList, setFileList] = useState<FileWithMeta[]>([]);
   const [hasStartedUploading, setHasStartedUploading] = useState(false);
@@ -70,6 +80,17 @@ const FilesUpload = ({ setModalOpen, setShowFirstUploadView }: Props) => {
   });
 
   const handleUpload = () => {
+    fileList
+      .filter(({ status }) => status === 'queued')
+      .forEach((file) => {
+        trackFileUpload({
+          file: file.file,
+          projectId,
+          user,
+          aiProcessingAllowed: allowAiProcessing,
+        });
+      });
+
     setHasStartedUploading(true);
 
     // If uploading for the first time, this keeps the initial "First Upload" view visible

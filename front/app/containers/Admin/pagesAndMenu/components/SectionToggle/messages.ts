@@ -22,6 +22,15 @@ export default defineMessages({
     defaultMessage:
       'Add your own content to the customizable section at the top of the page.',
   },
+  projectsAndFoldersList: {
+    id: 'app.containers.Admin.PagesAndMenu.SectionToggle.projectsAndFoldersList',
+    defaultMessage: 'Projects and folders list',
+  },
+  projectsAndFoldersListTooltip: {
+    id: 'app.containers.Admin.PagesAndMenu.SectionToggle.projectsAndFoldersListTooltip',
+    defaultMessage:
+      'Show the projects and folders based on your page settings. You can preview the projects and folders that will be shown.',
+  },
   projectsList: {
     id: 'app.containers.Admin.PagesAndMenu.SectionToggle.projectsList',
     defaultMessage: 'Projects list',

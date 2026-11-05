@@ -7,6 +7,7 @@ RSpec.describe Project do
     subject(:project) { build(:project) }
 
     it { is_expected.to be_valid }
+    it { is_expected.to belong_to(:space).optional }
     it { is_expected.to have_one(:review).class_name('ProjectReview').dependent(:destroy) }
     it { is_expected.to have_many(:jobs_trackers).class_name('Jobs::Tracker').dependent(:destroy) }
     it { is_expected.to validate_presence_of(:title_multiloc) }
@@ -26,11 +27,11 @@ RSpec.describe Project do
 
   describe 'Factory with topics' do
     it 'is valid' do
-      expect(create(:project_with_allowed_input_topics)).to be_valid
+      expect(create(:project_with_input_topics)).to be_valid
     end
 
     it 'has topics' do
-      expect(create(:project_with_allowed_input_topics).allowed_input_topics).not_to be_empty
+      expect(create(:project_with_input_topics).input_topics).not_to be_empty
     end
   end
 
@@ -51,6 +52,79 @@ RSpec.describe Project do
 
     it 'has ideas' do
       expect(create(:project_xl).ideas).not_to be_empty
+    end
+  end
+
+  describe 'space_must_match_folder_space validation' do
+    let(:space) { create(:space) }
+    let(:folder) { create(:project_folder, space: space) }
+
+    it "[error] is invalid if not in its folder's space" do
+      other_space = create(:space)
+      project_in_folder = build(:project, folder: folder)
+      project_in_folder.space = other_space
+
+      expect(project_in_folder).to be_invalid
+      expect(project_in_folder.errors[:space_id]).to include('project space must match the space of its folder')
+
+      project_in_folder.space = nil
+
+      expect(project_in_folder).to be_invalid
+      expect(project_in_folder.errors[:space_id]).to include('project space must match the space of its folder')
+    end
+
+    it '[error] is invalid if in a space, but its folder is not in any space' do
+      folder_without_space = create(:project_folder, space: nil)
+      project_in_folder = build(:project, folder: folder_without_space) # folder= method will sync the project space to the folder space (nil)
+      project_in_folder.space = space # override to create mismatch we are testing for
+
+      expect(project_in_folder).to be_invalid
+      expect(project_in_folder.errors[:space_id]).to include('project space must match the space of its folder')
+    end
+
+    it "is valid if in its folder's space" do
+      project_in_folder = build(:project, space: space, folder: folder)
+
+      expect(project_in_folder).to be_valid
+    end
+
+    it 'is valid if in a space and not in a folder' do
+      other_space = create(:space)
+      project = build(:project, space: other_space)
+
+      expect(project&.folder).to be_nil
+      expect(project).to be_valid
+    end
+
+    it 'is valid if not in a space and not in a folder' do
+      project = build(:project, space: nil)
+
+      expect(project&.folder).to be_nil
+      expect(project).to be_valid
+    end
+  end
+
+  describe 'completed_setup_steps validation' do
+    it 'is valid when every step is a known setup step' do
+      expect(build(:project, completed_setup_steps: Project::SETUP_STEPS)).to be_valid
+    end
+
+    it 'is valid when empty' do
+      expect(build(:project, completed_setup_steps: [])).to be_valid
+    end
+
+    it '[error] is invalid when it holds an unknown step' do
+      project = build(:project, completed_setup_steps: %w[share not-a-step])
+
+      expect(project).to be_invalid
+      expect(project.errors[:completed_setup_steps]).to include('contains unknown setup steps')
+    end
+
+    it '[error] is invalid when it is not an array' do
+      project = build(:project, completed_setup_steps: 'share')
+
+      expect(project).to be_invalid
+      expect(project.errors[:completed_setup_steps]).to include('must be an array')
     end
   end
 
@@ -77,12 +151,19 @@ RSpec.describe Project do
     end
   end
 
-  describe 'description sanitizer' do
-    it 'sanitizes script tags in the description' do
-      project = create(:project, description_multiloc: {
-        'en' => '<p>Test</p><script>This should be removed!</script><h2>Title</h2><ul><li>A bullet</li></ul><ol type="1"><li>And a listing</li></ol>'
-      })
-      expect(project.description_multiloc).to eq({ 'en' => '<p>Test</p>This should be removed!<h2>Title</h2><ul><li>A bullet</li></ul><ol type="1"><li>And a listing</li></ol>' })
+  it_behaves_like 'a plain text multiloc', factory: :project
+  it_behaves_like 'a plain text multiloc', factory: :project, attribute: :header_bg_alt_text_multiloc
+
+  describe 'title sanitizer' do
+    it 'is not rewritten by a save that does not touch the title' do
+      project = create(:project)
+      # Bypass the callbacks to mimic a row stored before titles were sanitized.
+      project.update_columns(title_multiloc: { 'en' => 'Fish & chips' })
+      project.reload
+
+      project.update!(description_preview_multiloc: { 'en' => '<p>updated</p>' })
+
+      expect(project.reload.title_multiloc['en']).to eq 'Fish & chips'
     end
   end
 
@@ -99,12 +180,19 @@ RSpec.describe Project do
 
       expect { project.destroy }.not_to raise_error
     end
-  end
 
-  describe 'allowed_input_topics' do
-    it 'cannot have duplicate topics' do
-      project = create(:project_with_allowed_input_topics)
-      expect(project.projects_allowed_input_topics.create(topic: project.allowed_input_topics.first)).not_to be_valid
+    it "invalidates a sole-role moderator's token when destroyed" do
+      # after_destroy -> remove_moderators strips the project_moderator role,
+      # dropping the user's highest_role to :user, which must invalidate their
+      # JWT. Guards against this destroy path bypassing the model
+      # callback (e.g. if it were switched to update_columns).
+      project = create(:project)
+      moderator = create(:project_moderator, projects: [project])
+      moderator.update_column(:token_expiry_key, 'initial-key') # bypasses the callback
+
+      project.destroy!
+
+      expect(moderator.reload.token_expiry_key).not_to eq('initial-key')
     end
   end
 
@@ -115,11 +203,40 @@ RSpec.describe Project do
       project.update!(title_multiloc: { 'en' => 'my project', 'nl-BE' => 'mijn project', 'fr-BE' => 'mon projet' })
       expect(project.slug).to eq 'my-project'
     end
+
+    it 'generates a slug from the sanitized title, not the raw one' do
+      project.update!(title_multiloc: { 'en' => '<b>Bold</b> project' })
+      expect(project.slug).to eq 'bold-project'
+    end
   end
 
   describe 'pmethod' do
     it 'returns an instance of ParticipationMethod::Ideation' do
       expect(build(:project).pmethod).to be_an_instance_of(ParticipationMethod::Ideation)
+    end
+
+    # There is some super hacky method on the project to make sure that the project
+    # has a `.pmethod` attribute. This attribute was defaulting to the first phase
+    # of the project always. This was causing bugs.
+    # This test makes sure that it defaults to the current phase.
+    # Still messy as hell and extremely confusing but at least now it is tested
+    it 'returns correct pmethod' do
+      project = create(:project)
+      create(
+        :native_survey_phase,
+        start_at: 3.weeks.ago,
+        end_at: 2.weeks.ago,
+        project: project
+      )
+      ideation_phase = create(
+        :phase,
+        start_at: 1.week.ago,
+        end_at: 3.weeks.from_now,
+        participation_method: 'ideation',
+        project: project
+      )
+
+      expect(project.pmethod.phase).to eq(ideation_phase)
     end
   end
 
@@ -132,6 +249,30 @@ RSpec.describe Project do
 
       expect(project.preview_token).to be_present
       expect(project.preview_token).not_to eq(old_token)
+    end
+  end
+
+  describe 'listed default' do
+    it 'is listed by default' do
+      expect(described_class.new.listed).to be true
+    end
+
+    it 'is unlisted by default when the platform setting is enabled' do
+      config = AppConfiguration.instance
+      config.settings['core']['projects_unlisted_by_default'] = true
+      config.save!
+
+      expect(described_class.new.listed).to be false
+      expect(described_class.new(listed: true).listed).to be true
+    end
+
+    it 'keeps the stored value of existing projects' do
+      project = create(:project, listed: true)
+      config = AppConfiguration.instance
+      config.settings['core']['projects_unlisted_by_default'] = true
+      config.save!
+
+      expect(described_class.find(project.id).listed).to be true
     end
   end
 
@@ -149,7 +290,74 @@ RSpec.describe Project do
     let!(:project3) { create(:project) }
 
     it 'returns projects not in a draft folder' do
-      expect(described_class.not_in_draft_folder).to match_array([project2, project3])
+      expect(described_class.not_in_draft_folder).to contain_exactly(project2, project3)
+    end
+  end
+
+  describe 'with_active_phase scope' do
+    let!(:active_project) do
+      create(:project).tap do |p|
+        create(:phase, project: p, start_at: Time.zone.today - 7.days, end_at: Time.zone.today + 7.days)
+      end
+    end
+
+    let!(:past_project) do
+      create(:project).tap do |p|
+        create(:phase, project: p, start_at: Time.zone.today - 30.days, end_at: Time.zone.today - 1.day)
+      end
+    end
+
+    let!(:future_project) do
+      create(:project).tap do |p|
+        create(:phase, project: p, start_at: Time.zone.today + 1.day, end_at: Time.zone.today + 30.days)
+      end
+    end
+
+    let!(:open_ended_project) do
+      create(:project).tap do |p|
+        create(:phase, project: p, start_at: Time.zone.today - 7.days, end_at: nil)
+      end
+    end
+
+    let!(:no_phase_project) { create(:project) }
+
+    it 'returns only projects with a currently active phase' do
+      expect(described_class.with_active_phase).to contain_exactly(active_project, open_ended_project)
+    end
+  end
+
+  describe 'ending_soon scope' do
+    it 'orders by current phase end_at ascending, open-ended last' do
+      open_ended = create(:project)
+      create(:phase, project: open_ended, start_at: 1.week.ago, end_at: nil)
+
+      later = create(:project)
+      create(:phase, project: later, start_at: 1.week.ago, end_at: 10.days.from_now)
+
+      soon = create(:project)
+      create(:phase, project: soon, start_at: 1.week.ago, end_at: 2.days.from_now)
+
+      ids = described_class.ending_soon.pluck(:id)
+      expect(ids).to eq([soon.id, later.id, open_ended.id])
+    end
+  end
+
+  describe 'by_participation_count scope' do
+    before_all do
+      Analytics::PopulateDimensionsService.populate_types
+    end
+
+    it 'orders by participation count in the given direction' do
+      project_many = create(:project)
+      project_few = create(:project)
+      create_list(:idea, 3, project: project_many)
+      create_list(:idea, 1, project: project_few)
+
+      ids_desc = described_class.by_participation_count(:desc).where(id: [project_many.id, project_few.id]).pluck(:id)
+      expect(ids_desc).to eq([project_many.id, project_few.id])
+
+      ids_asc = described_class.by_participation_count(:asc).where(id: [project_many.id, project_few.id]).pluck(:id)
+      expect(ids_asc).to eq([project_few.id, project_many.id])
     end
   end
 
@@ -163,6 +371,56 @@ RSpec.describe Project do
 
     it 'returns projects that are not hidden' do
       expect(described_class.not_hidden.count).to eq 1
+    end
+  end
+
+  describe 'with_participation_count scope' do
+    before_all do
+      Analytics::PopulateDimensionsService.populate_types
+    end
+
+    let(:scope_with_count) do
+      described_class
+        .with_participation_count
+        .select('projects.*, project_participants.participants_count')
+    end
+
+    it 'includes participation count for each project' do
+      project1 = create(:project)
+      project2 = create(:project)
+
+      create_list(:idea, 3, project: project1)
+      create_list(:idea, 5, project: project2)
+
+      results = scope_with_count.where(id: [project1.id, project2.id])
+
+      result1 = results.find { |p| p.id == project1.id }
+      result2 = results.find { |p| p.id == project2.id }
+
+      expect(result1['participants_count']).to eq(3)
+      expect(result2['participants_count']).to eq(5)
+    end
+
+    it 'returns 0 for projects with no participation' do
+      project = create(:project)
+
+      result = scope_with_count.find(project.id)
+
+      expect(result['participants_count']).to eq(0)
+    end
+
+    it 'counts distinct participants across multiple participation types' do
+      project = create(:project)
+      idea = create(:idea, project: project)
+
+      # Same user participates multiple times
+      create_list(:comment, 2, idea: idea)
+      create_list(:reaction, 3, reactable: idea)
+
+      result = scope_with_count.find(project.id)
+
+      # Should count distinct participants, not total actions
+      expect(result['participants_count']).to be > 1
     end
   end
 end

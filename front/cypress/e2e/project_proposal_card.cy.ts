@@ -16,7 +16,6 @@ describe('Proposal card component', () => {
   let childCommentId: string;
   let projectTitle = randomString();
   let projectDescriptionPreview = randomString();
-  let projectDescription = randomString();
   let projectId: string;
   let projectSlug: string;
 
@@ -27,7 +26,6 @@ describe('Proposal card component', () => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     }).then((project) => {
       projectId = project.body.data.id;
@@ -53,7 +51,7 @@ describe('Proposal card component', () => {
       .then((project) => {
         projectId = project.body.data.id;
         return cy.apiCreateIdea({
-          projectId: project?.body.data.id,
+          phaseId: project.body.data.relationships.current_phase.data.id,
           ideaTitle,
           ideaContent,
         });

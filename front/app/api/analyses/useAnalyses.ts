@@ -28,6 +28,8 @@ const useAnalyses = (params: IAnalysesQueryParams) => {
   return useQuery<IAnalyses, CLErrors, IAnalyses, AnalysesKeys>({
     queryKey: analysesKeys.list(params),
     queryFn: () => fetchAnalyses(params),
+    // If there is no projectId or phaseId, don't fetch analyses
+    enabled: !!params.projectId || !!params.phaseId,
   });
 };
 

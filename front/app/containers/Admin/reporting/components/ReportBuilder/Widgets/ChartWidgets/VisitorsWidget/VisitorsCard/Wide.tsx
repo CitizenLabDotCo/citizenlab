@@ -6,8 +6,13 @@ import moment from 'moment';
 import Chart from 'components/admin/GraphCards/VisitorsCard/Chart';
 import visitorsCardMessages from 'components/admin/GraphCards/VisitorsCard/messages';
 import { TimeSeries } from 'components/admin/GraphCards/VisitorsCard/useVisitors/typings';
+import { AccessibilityProps } from 'components/admin/Graphs/typings';
 import { IResolution } from 'components/admin/ResolutionControl';
 
+import { useIntl } from 'utils/cl-intl';
+
+import A11yTable, { Column } from '../../_shared/A11yTable';
+import messages from '../../messages';
 import { formatLargeNumber, getDaysInRange } from '../../utils';
 import { Stats } from '../typings';
 
@@ -34,8 +39,31 @@ const Wide = ({
   stats,
   timeSeries,
   hideStatistics,
-}: Props) => {
+  ariaLabel,
+  ariaDescribedBy,
+}: Props & AccessibilityProps) => {
   const previousDays = getDaysInRange(startAt, endAt);
+  const accessibilityProps = {
+    ariaLabel,
+    ariaDescribedBy,
+  };
+  const { formatMessage } = useIntl();
+
+  const columns: Column[] = [
+    {
+      key: 'date',
+      label: formatMessage(messages.dateColumn),
+      type: 'date',
+    },
+    {
+      key: 'visitors',
+      label: formatMessage(messages.visitorsColumn),
+    },
+    {
+      key: 'visits',
+      label: formatMessage(messages.visitsColumn),
+    },
+  ];
 
   return (
     <Box
@@ -81,7 +109,6 @@ const Wide = ({
           </Box>
         </Box>
       )}
-
       <Box
         flexGrow={1}
         display="flex"
@@ -100,8 +127,14 @@ const Wide = ({
             tickFormatter: formatLargeNumber,
           }}
           margin={{ top: 0, right: -16, bottom: 0, left: 0 }}
+          {...accessibilityProps}
         />
       </Box>
+      <A11yTable
+        columns={columns}
+        data={timeSeries || []}
+        caption={formatMessage(messages.visitorsCaption)}
+      />
     </Box>
   );
 };

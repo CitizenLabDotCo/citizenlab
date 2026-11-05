@@ -18,7 +18,7 @@ interface Props {
 }
 
 const UpdateOnboardingArea = ({ area }: Props) => {
-  const { mutate: updateArea, isLoading, error } = useUpdateArea();
+  const { mutate: updateArea, isPending, error } = useUpdateArea();
   const { formatMessage } = useIntl();
   const theme = useTheme();
   const iconName = area.attributes.include_in_onboarding
@@ -49,7 +49,8 @@ const UpdateOnboardingArea = ({ area }: Props) => {
           iconPos="right"
           padding="0px"
           my="0px"
-          processing={isLoading}
+          whiteSpace="normal"
+          processing={isPending}
           textColor={areaButtonContentColor}
           iconColor={areaButtonContentColor}
         >

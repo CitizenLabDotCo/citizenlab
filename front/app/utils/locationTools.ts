@@ -86,11 +86,6 @@ const parsePosition = async (position?: string) => {
         location_description = null;
         break;
 
-      case undefined:
-        location_point_geojson = undefined;
-        location_description = undefined;
-        break;
-
       default:
         location_point_geojson = await geocode(position);
         location_description = position;

@@ -16,11 +16,23 @@ module MultiTenancy
 
     def around_apply_template(tenant, _template, current_user = nil)
       yield
-    rescue Exception => e
+    rescue StandardError => e
       LogActivityJob.perform_later(tenant, 'creation_failed', current_user, Time.now.to_i, payload: {
         error_message: "Loading of the template failed.\n#{e}"
       })
       raise e
+    end
+
+    def after_interrupted_apply_template(tenant, template, current_user = nil)
+      ErrorReporter.report_msg(
+        'Tenant template application was interrupted and not resumed',
+        extra: { tenant_id: tenant.id, host: tenant.host, template: template,
+                 started_at: tenant.template_application_started_at }
+      )
+      LogActivityJob.perform_later(tenant, 'creation_failed', current_user, Time.now.to_i, payload: {
+        error_message: 'Template application was interrupted (the background worker was restarted). ' \
+                       'Delete this platform and create it again.'
+      })
     end
 
     def after_apply_template(tenant, template, current_user = nil)
@@ -31,7 +43,7 @@ module MultiTenancy
       tenant.switch do
         TenantService.new.finalize_creation tenant
         LogActivityJob.perform_later tenant, 'creation_finalized', current_user, tenant.creation_finalized_at.to_i
-      rescue Exception => e
+      rescue StandardError => e
         LogActivityJob.perform_later(tenant, 'creation_failed', current_user, Time.now.to_i, payload: {
           error_message: 'Finalization of tenant (default campaigns, permissions, tracking) failed'
         })
@@ -75,3 +87,7 @@ module MultiTenancy
     end
   end
 end
+
+MultiTenancy::SideFxTenantService.prepend(
+  ContentBuilder::Patches::MultiTenancy::SideFxTenantService
+)

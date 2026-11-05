@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { MessageDescriptor } from 'react-intl';
-import { RouteType } from 'routes';
 import { SupportedLocale } from 'typings';
 
 import {
@@ -22,8 +21,10 @@ import MultiselectSettings from './components/FormBuilderSettings/MultiselectSet
 import OptionsSettings from './components/FormBuilderSettings/OptionsSettings';
 import PageButtonSettings from './components/FormBuilderSettings/PageButtonSettings';
 import PageLayoutSettings from './components/FormBuilderSettings/PageLayoutSettings';
+import PinCountSettings from './components/FormBuilderSettings/PinCountSettings';
 import PointSettings from './components/FormBuilderSettings/PointSettings';
 import SentimentLinearScaleSettings from './components/FormBuilderSettings/SentimentLinearScaleSettings';
+import TopicsSettings from './components/FormBuilderSettings/TopicsSettings';
 import messages from './components/messages';
 
 export const builtInFieldKeys = [
@@ -51,19 +52,10 @@ export type FormBuilderConfig = {
   pagesLogicHelperText?: MessageDescriptor;
 
   toolboxFieldsToInclude: ICustomFieldInputType[];
-  formCustomFields: IFlatCustomField[] | undefined | Error;
 
   displayBuiltInFields: boolean;
   builtInFields: BuiltInKeyType[];
   showStatusBadge: boolean;
-  isLogicEnabled: boolean;
-  alwaysShowCustomFields: boolean;
-  /* For Ideation, when you configure the form it gets applied to ALL ideation phases within a project, 
-  however when you configure the form for surveys for example, 
-  each survey phase within a project can have a different form */
-  isFormPhaseSpecific: boolean;
-
-  goBackUrl?: RouteType;
 
   getDeletionNotice?: (projectId: string) => React.JSX.Element;
   getWarningNotice?: () => React.JSX.Element;
@@ -74,6 +66,26 @@ export type FormBuilderConfig = {
   ) => React.JSX.Element | null;
   getUserFieldsNotice?: () => React.ReactNode;
 };
+
+// A FormBuilderConfig is a constant per builder, written before any data is
+// loaded. These values depend on the phase, which the backend decides per
+// participation method, so they are only known once the phase has loaded.
+export type ResolvedFormBuilderConfig = FormBuilderConfig & {
+  goBackUrl: string;
+  isLogicEnabled: boolean;
+  isParticipationPublic: boolean;
+};
+
+export const resolveFormBuilderConfig = (
+  config: FormBuilderConfig,
+  phase: IPhaseData,
+  goBackUrl: string
+): ResolvedFormBuilderConfig => ({
+  ...config,
+  goBackUrl,
+  isLogicEnabled: phase.attributes.supports_form_logic,
+  isParticipationPublic: phase.attributes.supports_public_visibility,
+});
 
 export const getIsPostingEnabled = (
   phase?: IPhaseData | Error | null | undefined
@@ -132,6 +144,7 @@ export function getAdditionalSettings(
             inputType={field.input_type}
             randomizeName={`customFields.${field.index}.random_option_ordering`}
             dropdownLayoutName={`customFields.${field.index}.dropdown_layout`}
+            selectOptionsName={`customFields.${field.index}.options`}
           />
         </>
       );
@@ -148,6 +161,7 @@ export function getAdditionalSettings(
             inputType={field.input_type}
             randomizeName={`customFields.${field.index}.random_option_ordering`}
             dropdownLayoutName={`customFields.${field.index}.dropdown_layout`}
+            selectOptionsName={`customFields.${field.index}.options`}
           />
         </>
       );
@@ -164,6 +178,7 @@ export function getAdditionalSettings(
             inputType={field.input_type}
             randomizeName={`customFields.${field.index}.random_option_ordering`}
             dropdownLayoutName={`customFields.${field.index}.dropdown_layout`}
+            selectOptionsName={`customFields.${field.index}.options`}
           />
         </>
       );
@@ -208,6 +223,20 @@ export function getAdditionalSettings(
           field={field}
         />
       );
+    case 'multipoint':
+      return (
+        <>
+          <PointSettings
+            mapConfigIdName={`customFields.${field.index}.map_config_id`}
+            field={field}
+          />
+          <PinCountSettings
+            minimumSelectCountName={`customFields.${field.index}.minimum_select_count`}
+            maximumSelectCountName={`customFields.${field.index}.maximum_select_count`}
+            selectCountToggleName={`customFields.${field.index}.select_count_enabled`}
+          />
+        </>
+      );
     case 'text':
     case 'multiline_text':
     case 'text_multiloc':
@@ -216,6 +245,14 @@ export function getAdditionalSettings(
         <CharacterLimitSettings
           minCharactersName={`customFields.${field.index}.min_characters`}
           maxCharactersName={`customFields.${field.index}.max_characters`}
+        />
+      );
+    case 'topic_ids':
+      return (
+        <TopicsSettings
+          minimumSelectCountName={`customFields.${field.index}.minimum_select_count`}
+          maximumSelectCountName={`customFields.${field.index}.maximum_select_count`}
+          selectCountToggleName={`customFields.${field.index}.select_count_enabled`}
         />
       );
     default:
@@ -306,6 +343,9 @@ const getInputTypeStringKey = (
       break;
     case 'polygon':
       translatedStringKey = messages.drawArea;
+      break;
+    case 'multipoint':
+      translatedStringKey = messages.dropMultiplePins;
       break;
     case 'ranking':
       translatedStringKey = messages.ranking;

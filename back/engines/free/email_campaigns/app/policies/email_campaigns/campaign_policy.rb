@@ -11,7 +11,8 @@ module EmailCampaigns
       end
 
       def resolve
-        if user&.active? && UserRoleService.new.can_moderate?(campaign_context, user)
+        # Only moderators of the phase can see the campaigns on the phase, but ANY moderator can see (but not edit) the default campaigns.
+        if user&.active? && (campaign_context ? UserRoleService.new.can_moderate?(campaign_context, user) : active_admin_or_moderator?)
           scope.where(context: campaign_context)
         else
           scope.none
@@ -19,11 +20,11 @@ module EmailCampaigns
       end
     end
 
-    def create?
-      can_access_and_modify?
+    def show?
+      record.context ? can_access_and_modify? : active_admin_or_moderator?
     end
 
-    def show?
+    def create?
       can_access_and_modify?
     end
 
@@ -34,22 +35,38 @@ module EmailCampaigns
     end
 
     def do_send?
+      can_access_and_modify?
+    end
+
+    def send_email_preview?
       update?
     end
 
-    def send_preview?
+    def send_sms_preview?
       update?
     end
 
-    def preview?
+    def email_preview?
       show?
     end
 
-    def deliveries?
+    def email_deliveries?
       show?
     end
 
-    def stats?
+    def sms_deliveries?
+      show?
+    end
+
+    def email_stats?
+      show?
+    end
+
+    def sms_stats?
+      show?
+    end
+
+    def sms_send_summary?
       show?
     end
 

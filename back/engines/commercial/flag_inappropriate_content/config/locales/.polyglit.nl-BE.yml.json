@@ -1,0 +1,47 @@
+{
+  "email_campaigns.admin_campaign_type_description.inappropriate_content_flagged": {
+    "state": "verified",
+    "verified_at": "2026-03-18T16:34:36.246620Z",
+    "verified_by": "Admin"
+  },
+  "email_campaigns.campaign_type_description.inappropriate_content_flagged": {
+    "state": "verified",
+    "verified_at": "2026-03-18T11:49:32.638586Z",
+    "verified_by": "Admin"
+  },
+  "email_campaigns.inappropriate_content_flagged.author_wrote": {
+    "state": "verified",
+    "verified_at": "2026-03-18T11:49:32.638586Z",
+    "verified_by": "Admin"
+  },
+  "email_campaigns.inappropriate_content_flagged.automatically_flagged": {
+    "state": "verified",
+    "verified_at": "2026-03-18T11:49:32.638586Z",
+    "verified_by": "Admin"
+  },
+  "email_campaigns.inappropriate_content_flagged.cta_button": {
+    "state": "verified",
+    "verified_at": "2026-03-18T11:49:32.638586Z",
+    "verified_by": "Admin"
+  },
+  "email_campaigns.inappropriate_content_flagged.how_to_review": {
+    "state": "verified",
+    "verified_at": "2026-03-18T11:49:32.638586Z",
+    "verified_by": "Admin"
+  },
+  "email_campaigns.inappropriate_content_flagged.preheader": {
+    "state": "verified",
+    "verified_at": "2026-03-18T11:49:32.638586Z",
+    "verified_by": "Admin"
+  },
+  "email_campaigns.inappropriate_content_flagged.subject": {
+    "state": "verified",
+    "verified_at": "2026-03-18T16:34:36.246620Z",
+    "verified_by": "Admin"
+  },
+  "email_campaigns.inappropriate_content_flagged.title": {
+    "state": "verified",
+    "verified_at": "2026-03-18T11:49:32.638586Z",
+    "verified_by": "Admin"
+  }
+}

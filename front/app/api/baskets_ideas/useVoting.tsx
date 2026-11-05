@@ -27,6 +27,8 @@ interface VotingInterface {
   numberOfVotesCast?: number;
   userHasVotesLeft?: boolean;
   processing?: boolean;
+  numberOfOptionsSelected?: number;
+  basketId?: string;
 }
 
 const VotingInterfaceContext = createContext<VotingInterface | null>(null);
@@ -61,11 +63,16 @@ const useVotingInterface = ({
 
   const [votesPerIdea, setVotesPerIdea] = useState<Record<string, number>>({});
 
-  const { voteForIdea, processing } = useVoteForIdea(phase);
+  const {
+    voteForIdea,
+    processing,
+    basketId: basketIdFromVote,
+  } = useVoteForIdea(phase);
 
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const basketId = phase?.relationships?.user_basket?.data?.id;
+  const phaseBasketId = phase?.relationships.user_basket?.data?.id;
+  // For first-time voters, the phase hasn't refetched yet when the basket
+  // is created. Fall back to the basket ID from the vote response.
+  const basketId = phaseBasketId || basketIdFromVote;
   const { data: basketIdeas, isFetching: basketIdeasLoading } =
     useBasketsIdeas(basketId);
 
@@ -138,6 +145,19 @@ const useVotingInterface = ({
     return numberOfVotesCast;
   }, [getVotes, remoteVotesPerIdea, votesPerIdea]);
 
+  const numberOfOptionsSelected = useMemo(() => {
+    if (remoteVotesPerIdea === undefined) return undefined;
+
+    // Count the number of ideas with votes > 0
+    const ideaIdsSet = new Set([
+      ...Object.keys(votesPerIdea),
+      ...(remoteVotesPerIdea ? Object.keys(remoteVotesPerIdea) : []),
+    ]);
+
+    return Array.from(ideaIdsSet).filter((id) => (getVotes(id) ?? 0) > 0)
+      .length;
+  }, [getVotes, remoteVotesPerIdea, votesPerIdea]);
+
   const userHasVotesLeft = useMemo(() => {
     if (numberOfVotesCast === undefined || isNil(numberOfVotesUserHas)) {
       return undefined;
@@ -153,7 +173,9 @@ const useVotingInterface = ({
     setVotes,
     numberOfVotesCast,
     userHasVotesLeft,
+    numberOfOptionsSelected,
     processing,
+    basketId,
   };
 };
 
@@ -167,6 +189,8 @@ const useVoting = (): VotingInterface => {
       numberOfVotesCast: undefined,
       userHasVotesLeft: undefined,
       processing: undefined,
+      numberOfOptionsSelected: undefined,
+      basketId: undefined,
     };
   }
 

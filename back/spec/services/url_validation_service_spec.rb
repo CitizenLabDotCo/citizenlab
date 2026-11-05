@@ -18,7 +18,8 @@ describe UrlValidationService do
         'https://dailymotion.com/embed/video/something',
         'https://media.videotool.dk/?vn=1',
         'https://www.dreambroker.com/channel/something/iframe/something',
-        'https://dreambroker.com/channel/something/iframe/something'
+        'https://dreambroker.com/channel/something/iframe/something',
+        'https://www.videoask.com/fo7kzkcxv'
       ]
     end
     let :invalid_video_urls do

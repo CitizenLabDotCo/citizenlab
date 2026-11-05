@@ -15,24 +15,66 @@ import Section from 'components/admin/ContentBuilder/Toolbox/Section';
 import AccordionMultiloc, {
   accordionMultilocTitle,
 } from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
+import Areas, {
+  areasTitle,
+} from 'components/admin/ContentBuilder/Widgets/Areas';
 import ButtonMultiloc, {
   buttonMultilocTitle,
 } from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
+import CallToAction, {
+  callToActionTitle,
+} from 'components/admin/ContentBuilder/Widgets/CallToAction';
+import CommunityMonitorCTA, {
+  communityMonitorCTATitle,
+} from 'components/admin/ContentBuilder/Widgets/CommunityMonitorCTA';
+import communityMonitorMessages from 'components/admin/ContentBuilder/Widgets/CommunityMonitorCTA/messages';
+import CustomPages, {
+  customPagesTitle,
+} from 'components/admin/ContentBuilder/Widgets/CustomPages';
+import EventsList from 'components/admin/ContentBuilder/Widgets/Events';
+import FinishedOrArchived, {
+  finishedOrArchivedTitle,
+} from 'components/admin/ContentBuilder/Widgets/FinishedOrArchived';
+import finishedOrArchivedMessages from 'components/admin/ContentBuilder/Widgets/FinishedOrArchived/messages';
+import FollowedItems, {
+  followedItemsTitle,
+} from 'components/admin/ContentBuilder/Widgets/FollowedItems';
+import followedItemsMessages from 'components/admin/ContentBuilder/Widgets/FollowedItems/messages';
+import HtmlBlockMultiloc, {
+  htmlBlockMultilocTitle,
+} from 'components/admin/ContentBuilder/Widgets/HtmlBlockMultiloc';
 import IframeMultiloc, {
   iframeTitle,
 } from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
 import ImageMultiloc, {
   imageMultilocTitle,
 } from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
+import OpenToParticipation, {
+  openToParticipationTitle,
+} from 'components/admin/ContentBuilder/Widgets/OpenToParticipation';
+import Published, {
+  publishedTitle,
+} from 'components/admin/ContentBuilder/Widgets/Published';
+import Selection, {
+  selectionTitle,
+} from 'components/admin/ContentBuilder/Widgets/Selection';
+import Spotlight, {
+  spotlightTitle,
+  buttonTextDefault,
+} from 'components/admin/ContentBuilder/Widgets/Spotlight';
 import ThreeColumn, {
   threeColumnTitle,
 } from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import TwoColumn, {
   twoColumnTitle,
 } from 'components/admin/ContentBuilder/Widgets/TwoColumn';
+import VideoEmbed, {
+  videoEmbedTitle,
+} from 'components/admin/ContentBuilder/Widgets/VideoEmbed';
 import WhiteSpace, {
   whiteSpaceTitle,
 } from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+import NewLabel from 'components/UI/NewLabel';
 
 import {
   useIntl,
@@ -41,39 +83,17 @@ import {
 } from 'utils/cl-intl';
 
 import messages from '../../messages';
-import Areas, { areasTitle } from '../Widgets/Areas';
-import CallToAction, { callToActionTitle } from '../Widgets/CallToAction';
-import CommunityMonitorCTA, {
-  communityMonitorCTATitle,
-} from '../Widgets/CommunityMonitorCTA';
-import Events from '../Widgets/Events';
-import FinishedOrArchived, {
-  finishedOrArchivedTitle,
-} from '../Widgets/FinishedOrArchived';
-import finishedOrArchivedMessages from '../Widgets/FinishedOrArchived/messages';
-import FollowedItems, { followedItemsTitle } from '../Widgets/FollowedItems';
-import followedItemsMessages from '../Widgets/FollowedItems/messages';
 import HomepageBanner, { homepageBannerTitle } from '../Widgets/HomepageBanner';
 import {
   getHomepageBannerDefaultImage,
   getHomepageBannerDefaultSettings,
 } from '../Widgets/HomepageBanner/utils';
 import ImageTextCards from '../Widgets/ImageTextCards';
-import OpenToParticipation, {
-  openToParticipationTitle,
-} from '../Widgets/OpenToParticipation';
 import ProjectsAndFoldersLegacy, {
   projectsAndFoldersLegacyTitle,
 } from '../Widgets/ProjectsAndFoldersLegacy';
 import projectsMessages from '../Widgets/ProjectsAndFoldersLegacy/messages';
-import Published, { publishedTitle } from '../Widgets/Published';
-import Selection, { selectionTitle } from '../Widgets/Selection';
-import Spotlight, {
-  spotlightTitle,
-  buttonTextDefault,
-} from '../Widgets/Spotlight';
 import TextMultiloc, { textMultilocTitle } from '../Widgets/TextMultiloc';
-import VideoEmbed, { videoEmbedTitle } from '../Widgets/VideoEmbed';
 
 import { platformCreatedBeforeReleaseNewWidgets } from './utils';
 
@@ -84,7 +104,9 @@ const HomepageBuilderToolbox = () => {
   const appConfigurationLocales = useAppConfigurationLocales();
   const followEnabled = useFeatureFlag({ name: 'follow' });
   const communityMonitorEnabled = useFeatureFlag({ name: 'community_monitor' });
-
+  const isHtmlBlockMultilocEnabled = useFeatureFlag({
+    name: 'html_block_in_content_builder',
+  });
   const { data: appConfiguration } = useAppConfiguration();
 
   if (
@@ -181,6 +203,13 @@ const HomepageBuilderToolbox = () => {
           label={formatMessage(selectionTitle)}
         />
         <DraggableElement
+          id="e2e-draggable-custom-pages"
+          component={<CustomPages customPages={[]} />}
+          icon="page"
+          label={formatMessage(customPagesTitle)}
+          labelSuffix={<NewLabel />}
+        />
+        <DraggableElement
           id="e2e-draggable-published"
           component={<Published titleMultiloc={toMultiloc(publishedTitle)} />}
           icon="check-circle"
@@ -188,7 +217,15 @@ const HomepageBuilderToolbox = () => {
         />
         <DraggableElement
           id="e2e-draggable-events"
-          component={<Events />}
+          component={
+            <EventsList
+              source="all"
+              timeFilters={['upcoming']}
+              limit={3}
+              projectPublicationStatuses={['published']}
+              showEmptyMessage
+            />
+          }
           icon="calendar"
           label={formatMessage(messages.eventsTitle)}
         />
@@ -205,12 +242,14 @@ const HomepageBuilderToolbox = () => {
             id="e2e-draggable-community-monitor-cta"
             component={
               <CommunityMonitorCTA
-                title={toMultiloc(messages.communityMonitorCtaDefaultTitle)}
+                title={toMultiloc(
+                  communityMonitorMessages.communityMonitorCtaDefaultTitle
+                )}
                 description={toMultiloc(
-                  messages.communityMonitorCtaDefaultDescription
+                  communityMonitorMessages.communityMonitorCtaDefaultDescription
                 )}
                 surveyButtonText={toMultiloc(
-                  messages.communityMonitorCtaDefaultSurveyButtonText
+                  communityMonitorMessages.communityMonitorCtaDefaultSurveyButtonText
                 )}
               />
             }
@@ -242,6 +281,15 @@ const HomepageBuilderToolbox = () => {
           icon="text"
           label={formatMessage(textMultilocTitle)}
         />
+        {isHtmlBlockMultilocEnabled && (
+          <DraggableElement
+            id="e2e-draggable-html-block-multiloc"
+            component={<HtmlBlockMultiloc html={{}} />}
+            icon="code"
+            label={formatMessage(htmlBlockMultilocTitle)}
+            labelSuffix={<NewLabel expiryDate={new Date('2027-02-19')} />}
+          />
+        )}
         <DraggableElement
           id="e2e-draggable-white-space"
           component={<WhiteSpace size="small" />}

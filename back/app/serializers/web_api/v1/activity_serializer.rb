@@ -20,6 +20,12 @@ class WebApi::V1::ActivitySerializer < WebApi::V1::BaseSerializer
     object.payload.dig(item_name, 'title_multiloc')
   end
 
+  # Permissions have no title; surface the action they govern (e.g. 'posting_idea')
+  # so the management feed can show what the changed permission is for.
+  attribute :permission_action do |object|
+    object.payload.dig('permission', 'action') if object.item_type == 'Permission'
+  end
+
   attribute :change do |object|
     object.payload&.dig('change')
   end

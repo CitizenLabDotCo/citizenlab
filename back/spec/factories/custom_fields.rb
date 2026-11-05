@@ -71,6 +71,20 @@ FactoryBot.define do
       input_type { 'polygon' }
     end
 
+    factory :custom_field_multipoint do
+      title_multiloc do
+        {
+          'en' => 'Which locations should we look at?'
+        }
+      end
+      description_multiloc do
+        {
+          'en' => 'Please drop a pin on each location you want to flag.'
+        }
+      end
+      input_type { 'multipoint' }
+    end
+
     factory :custom_field_multiline_text do
       title_multiloc do
         {
@@ -116,6 +130,22 @@ FactoryBot.define do
         after(:create) do |cf|
           create(:custom_field_option, custom_field: cf, key: 'option1')
           create(:custom_field_option, custom_field: cf, key: 'option2')
+        end
+      end
+    end
+
+    factory :custom_field_select_image do
+      title_multiloc do
+        {
+          'en' => 'Choose an image'
+        }
+      end
+      input_type { 'select_image' }
+
+      trait :with_options do
+        after(:create) do |cf|
+          create(:custom_field_option, custom_field: cf, key: 'image1', image: create(:custom_field_option_image))
+          create(:custom_field_option, custom_field: cf, key: 'image2', image: create(:custom_field_option_image))
         end
       end
     end
@@ -389,6 +419,19 @@ FactoryBot.define do
       title_multiloc { { 'en' => 'domicile' } }
       code { 'domicile' }
       input_type { 'select' }
+    end
+  end
+
+  # A default input field as the form's participation method defines it; overrides apply on top.
+  factory :default_input_field, class: 'CustomField' do
+    transient do
+      code { 'title_multiloc' }
+    end
+    resource { association(:custom_form) }
+
+    initialize_with do
+      resource.participation_context.pmethod.default_fields(resource).find { it.code == code } ||
+        raise(ArgumentError, "No default input field with code #{code.inspect}")
     end
   end
 end

@@ -8,7 +8,7 @@ import {
   IFlatCustomFieldWithIndex,
 } from 'api/custom_fields/types';
 
-import { FormBuilderConfig } from 'components/FormBuilder/utils';
+import { ResolvedFormBuilderConfig } from 'components/FormBuilder/utils';
 
 import {
   detectConflictsByPage,
@@ -21,6 +21,7 @@ import { getFieldNumbers } from '../utils';
 
 import { fieldAreaDNDType } from './constants';
 import { FormField } from './FormField';
+import { FieldArrayOperations } from './types';
 
 interface FormFieldsProps {
   onEditField: (field: IFlatCustomFieldWithIndex) => void;
@@ -29,8 +30,9 @@ interface FormFieldsProps {
     nestedGroupData: NestedGroupingStructure[]
   ) => void;
   selectedFieldId?: string;
-  builderConfig: FormBuilderConfig;
+  builderConfig: ResolvedFormBuilderConfig;
   closeSettings: (triggerAutosave?: boolean) => void;
+  fieldArrayOperations: FieldArrayOperations;
 }
 
 const FormFields = ({
@@ -38,6 +40,7 @@ const FormFields = ({
   selectedFieldId,
   builderConfig,
   closeSettings,
+  fieldArrayOperations,
 }: FormFieldsProps) => {
   const { watch } = useFormContext();
   const formCustomFields: IFlatCustomField[] = watch('customFields');
@@ -85,11 +88,17 @@ const FormFields = ({
                   fieldNumbers={fieldNumbers}
                   closeSettings={closeSettings}
                   conflicts={conflictsByPage[grouping.groupElement.id]}
+                  fieldArrayOperations={fieldArrayOperations}
                 />
                 <Drop
                   key={grouping.id}
                   id={grouping.id}
                   type={fieldAreaDNDType}
+                  data-cy={
+                    grouping.groupElement.key
+                      ? `e2e-page-drop-${grouping.groupElement.key}`
+                      : undefined
+                  }
                 >
                   <Box height="100%">
                     {grouping.questions.length === 0 ? (
@@ -111,6 +120,7 @@ const FormFields = ({
                                 builderConfig={builderConfig}
                                 fieldNumbers={fieldNumbers}
                                 closeSettings={closeSettings}
+                                fieldArrayOperations={fieldArrayOperations}
                               />
                             </Drag>
                           ) : (
@@ -139,6 +149,7 @@ const FormFields = ({
                 builderConfig={builderConfig}
                 fieldNumbers={fieldNumbers}
                 closeSettings={closeSettings}
+                fieldArrayOperations={fieldArrayOperations}
               />
             </Box>
           </>

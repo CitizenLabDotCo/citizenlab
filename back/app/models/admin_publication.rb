@@ -40,6 +40,9 @@
 #  children_allowed   :boolean          default(TRUE), not null
 #  children_count     :integer          default(0), not null
 #  first_published_at :datetime
+#  scheduled_status   :string
+#  scheduled_at       :datetime
+#  scheduled_by_id    :uuid
 #
 # Indexes
 #
@@ -50,34 +53,49 @@
 #  index_admin_publications_on_publication_status                   (publication_status)
 #  index_admin_publications_on_publication_type_and_publication_id  (publication_type,publication_id)
 #  index_admin_publications_on_rgt                                  (rgt)
+#  index_admin_publications_on_scheduled_by_id                      (scheduled_by_id)
+#  index_admin_publications_on_scheduled_transition                 (scheduled_at,scheduled_status) WHERE (scheduled_status IS NOT NULL)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (scheduled_by_id => users.id)
 #
 class AdminPublication < ApplicationRecord
   PUBLICATION_STATUSES = %w[draft published archived]
 
   belongs_to :publication, polymorphic: true, touch: true
+  belongs_to :scheduled_by, class_name: 'User', optional: true
 
   acts_as_nested_set dependent: :destroy, order_column: :ordering, counter_cache: :children_count
   acts_as_list column: :ordering, top_of_list: 0, scope: [:parent_id], add_new_at: :top
 
   validates :publication, presence: true
   validates :publication_status, presence: true, inclusion: { in: PUBLICATION_STATUSES }
+  validates :scheduled_status, inclusion: { in: PUBLICATION_STATUSES }, allow_nil: true
   validate :parent_allowed_to_have_children
+  validate :validate_scheduling_fields
+  validate :validate_scheduled_status_differs_from_current, if: :will_save_change_to_scheduled_status?
+  validate :validate_scheduled_at_in_future, if: :will_save_change_to_scheduled_at?
 
   before_validation :set_publication_status, on: :create
   before_validation :set_default_children_allowed, on: :create
+  before_save :cancel_scheduled_transition, if: :will_save_change_to_publication_status?
   before_save :set_first_published_at
 
-  scope :published, lambda {
-    where(publication_status: 'published')
+  # Returns publications with the given status(es), taking scheduled transitions into account.
+  scope :with_status, lambda { |*statuses|
+    statuses = statuses.flatten
+    no_schedule = where(publication_status: statuses, scheduled_status: nil)
+    future_schedule = where(publication_status: statuses, scheduled_at: Time.current..)
+    due_schedule = where(scheduled_status: statuses, scheduled_at: ..Time.current)
+
+    no_schedule.or(future_schedule).or(due_schedule)
   }
 
-  scope :draft, lambda {
-    where(publication_status: 'draft')
-  }
-
-  scope :not_draft, lambda {
-    where.not(publication_status: 'draft')
-  }
+  scope :published, -> { with_status('published') }
+  scope :draft, -> { with_status('draft') }
+  scope :not_draft, -> { where.not(id: with_status('draft')) }
+  scope :archived, -> { with_status('archived') }
 
   # Sorts admin publications by the title_multiloc of their associated
   # publication (Project or ProjectFolders::Folder), in the specified direction.
@@ -110,24 +128,35 @@ class AdminPublication < ApplicationRecord
       .order("title_for_sorting #{direction}")
   }
 
-  def archived?
-    publication_status == 'archived'
-  end
-
-  def published?
-    publication_status == 'published'
-  end
+  def archived? = effective_publication_status == 'archived'
+  def published? = effective_publication_status == 'published'
+  def draft? = effective_publication_status == 'draft'
 
   def ever_published?
-    first_published_at.present?
+    # `published?` allows for a due schedule to count as published.
+    first_published_at.present? || published?
   end
 
   def never_published?
     !ever_published?
   end
 
-  def draft?
-    publication_status == 'draft'
+  def cancel_scheduled_transition
+    self.scheduled_status = nil
+    self.scheduled_at = nil
+    self.scheduled_by = nil
+
+    self
+  end
+
+  def cancel_scheduled_transition! = cancel_scheduled_transition.save!
+
+  def effective_publication_status
+    due_status_transition? ? scheduled_status : publication_status
+  end
+
+  def due_status_transition?
+    scheduled_at.present? && scheduled_at <= Time.current
   end
 
   def self.publication_types
@@ -152,10 +181,34 @@ class AdminPublication < ApplicationRecord
 
   def set_first_published_at
     return unless first_published_at.nil?
-    return unless published?
+    return unless self[:publication_status] == 'published'
 
     self.updated_at = Time.zone.now
     self.created_at ||= updated_at
     self.first_published_at = updated_at
+  end
+
+  def validate_scheduling_fields
+    # Skips validation when only +scheduled_by+ changes to allow it to be nullified.
+    return unless will_save_change_to_scheduled_status? || will_save_change_to_scheduled_at?
+
+    fields = [scheduled_status, scheduled_at, scheduled_by]
+    return if fields.all?(&:present?) || fields.all?(&:blank?)
+
+    errors.add(:scheduled_status, message: 'must be provided when scheduling publication') unless scheduled_status
+    errors.add(:scheduled_at, message: 'must be provided when scheduling publication') unless scheduled_at
+    errors.add(:scheduled_by, message: 'must be provided when scheduling publication') unless scheduled_by
+  end
+
+  def validate_scheduled_status_differs_from_current
+    return if scheduled_status.blank? || scheduled_status != publication_status
+
+    errors.add(:scheduled_status, message: 'must differ from current publication status')
+  end
+
+  def validate_scheduled_at_in_future
+    return if scheduled_at.blank? || scheduled_at > Time.current
+
+    errors.add(:scheduled_at, message: 'must be in the future')
   end
 end

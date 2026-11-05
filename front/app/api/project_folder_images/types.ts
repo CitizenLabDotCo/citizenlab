@@ -9,7 +9,7 @@ import projectFolderImagesKeys from './keys';
 export type ProjectFolderImagesKeys = Keys<typeof projectFolderImagesKeys>;
 
 export type IQueryParameters = {
-  folderId: string;
+  folderId?: string;
 };
 
 export interface addProjectFolderImageObject {

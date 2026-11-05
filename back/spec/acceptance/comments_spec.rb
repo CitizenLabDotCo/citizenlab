@@ -19,6 +19,23 @@ resource 'Comments' do
     end
     parameter :sort, 'Either new, -new, likes_count or -likes_count. Defaults to -new. Only applies to the top-level comments, children are always returned chronologically.'
 
+    describe 'answers of the authors' do
+      before do
+        admin_header_token
+        create_list(:comment, 3, idea: @idea).each do |comment|
+          field = create(:custom_field, :for_registration)
+          create(:custom_field_answer, answerable: comment.author, custom_field: field, key: field.key)
+        end
+      end
+
+      let(:idea_id) { @idea.id }
+
+      example 'preloads the answers and their fields', document: false do
+        expect { do_request }.not_to exceed_query_limit(2).with(/FROM "custom_field_answers"/)
+        expect { do_request }.not_to exceed_query_limit(2).with(/FROM "custom_fields"/)
+      end
+    end
+
     describe 'default sorting' do
       before do
         @c1 = create(:comment, idea: @idea)
@@ -493,6 +510,26 @@ resource 'Comments' do
             assert_status 422
             json_response = json_parse response_body
             expect(json_response).to include_response_error(:base, 'anonymous_participation_not_allowed')
+          end
+        end
+      end
+
+      describe 'profanity blocking on update' do
+        before { SettingsService.new.activate_feature! 'blocking_profanity' }
+
+        context 'author toggles anonymous on a comment whose stored body contains a blocked word' do
+          let(:allow_anonymous_participation) { true }
+          let(:comment) do
+            create(:comment, author: @user, idea: @idea, body_multiloc: { 'nl-BE' => 'Wat een mietje.' })
+          end
+          let(:body_multiloc) { comment.body_multiloc }
+          let(:anonymous) { true }
+
+          before { @idea.project.phases.first.update! allow_anonymous_participation: allow_anonymous_participation }
+
+          example_request 'succeeds — unchanged body_multiloc is not re-validated' do
+            assert_status 200
+            expect(response_data.dig(:attributes, :anonymous)).to be true
           end
         end
       end

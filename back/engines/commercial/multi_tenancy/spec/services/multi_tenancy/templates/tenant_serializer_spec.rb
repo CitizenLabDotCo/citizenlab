@@ -39,6 +39,23 @@ describe MultiTenancy::Templates::TenantSerializer do
         expect(CustomMaps::MapConfig.count).to be 2
         expect(CustomMaps::Layer.count).to be 2
         expect(StaticPage.count).to be > 0
+        expect(Space.count).to be > 0
+      end
+    end
+
+    it 'round-trips a custom field with its matrix statements into a new tenant' do
+      create(:custom_field_matrix_linear_scale, :for_custom_form)
+      template = tenant_serializer.run(deserializer_format: true)
+
+      tenant = create(:tenant, locales: AppConfiguration.instance.settings('core', 'locales'))
+      tenant.switch do
+        MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
+
+        matrix_field = CustomField.find_by(input_type: 'matrix_linear_scale')
+        expect(matrix_field).to be_present
+        statements = matrix_field.matrix_statements.order(:ordering)
+        expect(statements.pluck(:key)).to eq(%w[send_more_animals_to_space ride_bicycles_more_often])
+        expect(statements.first.title_multiloc).to eq('en' => 'We should send more animals into space')
       end
     end
 
@@ -48,6 +65,20 @@ describe MultiTenancy::Templates::TenantSerializer do
 
       home_attributes = template.dig('models', 'nav_bar_item').find { |item| item['code'] == 'home' }
       expect(home_attributes['title_multiloc']).to be_blank
+    end
+
+    it 'preserves nav bar item references to project folders' do
+      folder = create(:project_folder, title_multiloc: { 'en' => 'My folder' })
+      create(:nav_bar_item, project_folder: folder, static_page: nil, title_multiloc: { 'en' => 'Folder link' })
+
+      template = tenant_serializer.run(deserializer_format: true)
+
+      tenant = create(:tenant, locales: AppConfiguration.instance.settings('core', 'locales'))
+      tenant.switch do
+        MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
+        nav_bar_item = NavBarItem.find_by(title_multiloc: { 'en' => 'Folder link' })
+        expect(nav_bar_item.project_folder.title_multiloc).to eq({ 'en' => 'My folder' })
+      end
     end
 
     it 'can deal with nested admin publications in projects' do
@@ -136,6 +167,111 @@ describe MultiTenancy::Templates::TenantSerializer do
       end
     end
 
+    it 'successfully copies over Files engine files, projects and attachments' do
+      project = create(:single_phase_ideation_project)
+      phase = project.phases.first
+      idea = create(:idea, project: project, phases: [phase])
+
+      project_file = create(:file, name: 'project.pdf', projects: [project])
+      create(:file_attachment, file: project_file, attachable: project)
+      phase_file = create(:file, name: 'phase.pdf', projects: [project])
+      create(:file_attachment, file: phase_file, attachable: phase)
+      idea_file = create(:file, name: 'idea.pdf', projects: [project])
+      create(:file_attachment, file: idea_file, attachable: idea)
+
+      template = tenant_serializer.run(deserializer_format: true)
+
+      tenant = create(:tenant)
+      tenant.switch do
+        MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
+
+        new_project = Project.sole
+        expect(new_project.files.pluck(:name)).to match_array(%w[project.pdf phase.pdf idea.pdf])
+        expect(new_project.attached_files.sole.content.file).to be_present
+
+        expect(new_project.file_attachments.count).to eq 1
+        expect(new_project.phases.sole.file_attachments.count).to eq 1
+        expect(Idea.sole.file_attachments.count).to eq 1
+      end
+    end
+
+    it 'successfully copies over project global topics' do
+      project = create(:project)
+      global_topic = create(:global_topic)
+      project.global_topics << global_topic
+
+      template = tenant_serializer.run(deserializer_format: true)
+
+      tenant = create(:tenant)
+      tenant.switch do
+        MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
+
+        expect(Project.count).to be 1
+        new_project = Project.first
+        expect(new_project.global_topics.map(&:title_multiloc)).to eq [global_topic.title_multiloc]
+      end
+    end
+
+    it 'successfully copies over a project report with its project link' do
+      project = create(:project)
+      create(:report, project: project, name: 'Project report')
+
+      template = tenant_serializer.run(deserializer_format: true)
+
+      tenant = create(:tenant)
+      tenant.switch do
+        MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
+
+        expect(Project.count).to be 1
+        report = ReportBuilder::Report.find_by(name: 'Project report')
+        expect(report).to be_present
+        expect(report.project).to eq Project.first
+      end
+    end
+
+    it 'successfully copies over a project-scoped static page with its project link' do
+      project = create(:project)
+      create(:static_page, :project_scoped, project: project, title_multiloc: { 'en' => 'Project about' },
+        top_info_section_multiloc: { 'en' => '<p>About this project</p>' })
+
+      template = tenant_serializer.run(deserializer_format: true)
+
+      tenant = create(:tenant)
+      tenant.switch do
+        MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
+
+        expect(Project.count).to be 1
+        page = StaticPage.find_by("title_multiloc->>'en' = 'Project about'")
+        expect(page).to be_present
+        expect(page.project).to eq Project.first
+        expect(page.top_info_section_multiloc['en']).to include('About this project')
+      end
+    end
+
+    it 'successfully copies over email campaign consents and campaign groups' do
+      campaign = create(:manual_campaign)
+      group = create(:group)
+      create(:campaigns_group, campaign: campaign, group: group)
+      consent_user = create(:user, email: 'consenter@example.com')
+      create(:consent, user: consent_user, campaign_type: 'EmailCampaigns::Campaigns::Manual', consented: false)
+
+      template = tenant_serializer.run(deserializer_format: true)
+
+      tenant = create(:tenant)
+      tenant.switch do
+        MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
+
+        expect(EmailCampaigns::CampaignsGroup.count).to be 1
+        campaigns_group = EmailCampaigns::CampaignsGroup.first
+        expect(campaigns_group.campaign.subject_multiloc).to eq campaign.subject_multiloc
+        expect(campaigns_group.group.title_multiloc).to eq group.title_multiloc
+
+        consent = EmailCampaigns::Consent.find_by(user: User.find_by(email: consent_user.email))
+        expect(consent.campaign_type).to eq 'EmailCampaigns::Campaigns::Manual'
+        expect(consent.consented).to be false
+      end
+    end
+
     it 'successfully copies over native surveys and responses' do
       create(:idea_status_proposed)
 
@@ -146,7 +282,7 @@ describe MultiTenancy::Templates::TenantSerializer do
       field = create(:custom_field, :for_custom_form, resource: form)
 
       create(:idea, project: timeline_project, phases: [ideation_phase])
-      create(:idea, project: timeline_project, phases: [survey_phase], creation_phase: survey_phase, custom_field_values: { field.key => 'My value' })
+      create(:idea, project: timeline_project, phases: [survey_phase], creation_phase: survey_phase, custom_field_answers: [build(:custom_field_answer, key: field.key, value: 'My value')])
 
       template = tenant_serializer.run(deserializer_format: true)
 
@@ -162,20 +298,17 @@ describe MultiTenancy::Templates::TenantSerializer do
 
         new_timeline_project = Project.first
         new_survey_phase = new_timeline_project.phases.order(:start_at).last
-        expect(new_timeline_project.ideas.map(&:creation_phase_id)).to match_array [nil, new_survey_phase.id]
+        expect(new_timeline_project.ideas.map(&:creation_phase_id)).to contain_exactly(nil, new_survey_phase.id)
         expect(new_survey_phase.custom_form.custom_fields.pluck(:input_type)).to eq ['text']
         new_field = new_survey_phase.custom_form.custom_fields.first
         expect(new_survey_phase.ideas_count).to eq 1
-        expect(new_survey_phase.ideas.first.custom_field_values[new_field.key]).to eq 'My value'
+        expect(new_survey_phase.ideas.first.answer_for_key(new_field.key)&.value).to eq 'My value'
       end
     end
 
     it 'successfully exports custom field' do
-      description_multiloc = {
-        'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />'
-      }
+      description_multiloc = { 'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />' }
       field = create(:custom_field_page, :for_custom_form, description_multiloc: description_multiloc)
-      field.update! description_multiloc: TextImageService.new.swap_data_images_multiloc(field.description_multiloc, field: :description_multiloc, imageable: field)
 
       template = tenant_serializer.run(deserializer_format: true)
 
@@ -237,23 +370,20 @@ describe MultiTenancy::Templates::TenantSerializer do
       unsupported_field = create(:custom_field, :for_custom_form, input_type: 'file_upload', resource: custom_form)
       create(:idea_status_proposed)
       response = create(:native_survey_response, project: project)
-      custom_field_values = {
-        supported_fields[0].key => 7,
-        supported_fields[1].key => 1,
-        unsupported_field.key => create(:file_upload, idea: response).id,
-        supported_fields[2].key => false
-      }
-      response.update! custom_field_values: custom_field_values
+      response.custom_field_answers.build(key: supported_fields[0].key, value: 7, custom_field: supported_fields[0])
+      response.custom_field_answers.build(key: supported_fields[1].key, value: 1, custom_field: supported_fields[1])
+      response.custom_field_answers.build(key: unsupported_field.key, value: create(:file_upload, idea: response).id, custom_field: unsupported_field)
+      response.custom_field_answers.build(key: supported_fields[2].key, value: false, custom_field: supported_fields[2])
+      response.save!
 
       template = tenant_serializer.run(deserializer_format: true)
 
-      expected_custom_field_values = {
-        supported_fields[0].key => 7,
-        supported_fields[1].key => 1,
-        supported_fields[2].key => false
-      }
       expect(template['models']['idea'].size).to eq 1
-      expect(template['models']['idea'].first['custom_field_values']).to match expected_custom_field_values
+      expect(template['models']['custom_field_answer'].map { |answer| answer.values_at('key', 'value') }).to contain_exactly(
+        [supported_fields[0].key, 7],
+        [supported_fields[1].key, 1],
+        [supported_fields[2].key, false]
+      )
     end
 
     it 'copies exact :ordering values of records for models that use acts_as_list gem' do
@@ -296,7 +426,7 @@ describe MultiTenancy::Templates::TenantSerializer do
         MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
         expect(Basket.count).to eq 2
         expect(BasketsIdea.count).to eq 2
-        expect(BasketsIdea.all.pluck(:votes)).to match_array([1, 2])
+        expect(BasketsIdea.all.pluck(:votes)).to contain_exactly(1, 2)
       end
     end
 
@@ -314,12 +444,51 @@ describe MultiTenancy::Templates::TenantSerializer do
     end
 
     it 'changes "verified" permissions to "user" permissions' do
-      SettingsService.new.activate_feature! 'verification', settings: { verification_methods: [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
+      AppConfiguration.instance.settings['id_config'] = { allowed: true, enabled: true, id_methods: [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
+      AppConfiguration.instance.save!
       create(:permission, :by_admins_moderators)
       create(:permission, :by_verified)
       template = tenant_serializer.run(deserializer_format: true)
       expect(template['models']['permission'].first['permitted_by']).to eq 'admins_moderators' # Not changed
       expect(template['models']['permission'].last['permitted_by']).to eq 'users' # Changed
+    end
+
+    it 'successfully exports only manual campaigns with the context relationship' do
+      _global_auto_campaign = create(:comment_on_your_comment_campaign)
+      global_manual_campaign = create(:manual_campaign)
+      phase = create(:ideation_phase)
+      _context_auto_campaign = create(:comment_on_your_comment_campaign, context: phase)
+      project = create(:project)
+      context_manual_campaign = create(:manual_project_participants_campaign, context: project)
+
+      template = tenant_serializer.run(deserializer_format: true)
+
+      expect(template['models']['email_campaigns/campaign'].size).to eq 2
+      expect(template['models']['email_campaigns/campaign']).to match array_including(
+        hash_including(
+          'type' => 'EmailCampaigns::Campaigns::Manual',
+          'enabled' => global_manual_campaign.enabled,
+          'sender' => global_manual_campaign.sender,
+          'subject_multiloc' => global_manual_campaign.subject_multiloc,
+          'body_multiloc' => global_manual_campaign.body_multiloc
+        ),
+        hash_including(
+          'type' => 'EmailCampaigns::Campaigns::ManualProjectParticipants',
+          'enabled' => context_manual_campaign.enabled,
+          'sender' => context_manual_campaign.sender,
+          'subject_multiloc' => context_manual_campaign.subject_multiloc,
+          'body_multiloc' => context_manual_campaign.body_multiloc,
+          'context_ref' => hash_including(
+            'title_multiloc' => project.title_multiloc
+          )
+        )
+      )
+
+      tenant = create(:tenant, locales: AppConfiguration.instance.settings('core', 'locales'))
+      tenant.switch do
+        MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
+        expect(EmailCampaigns::Campaign.count).to eq 2
+      end
     end
   end
 end

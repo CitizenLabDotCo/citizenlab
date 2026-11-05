@@ -116,7 +116,7 @@ namespace :single_use do
 
   # Example output:
   #
-  # root@bf8d826eaec0:/cl2_back# bundle exec rake single_use:destroy_delayed_jobs
+  # root@bf8d826eaec0:/citizenlab/back# bundle exec rake single_use:destroy_delayed_jobs
   # 1: Destroying job ID: 60, run_at: 2026-06-03 17:45:42 UTC, enqueued_at: 2025-06-03 17:45:42 UTC, Time Diff: 11 months, 4 weeks, 2 days, 4 hours, 39 minutes, and 53.999819073826075 seconds
   # 2: Destroying job ID: 63, run_at: 2026-06-03 17:46:22 UTC, enqueued_at: 2025-06-03 17:46:22 UTC, Time Diff: 11 months, 4 weeks, 2 days, 4 hours, 39 minutes, and 53.99979120865464 seconds
   # 3: Destroying job ID: 81, run_at: 2026-06-03 17:48:11 UTC, enqueued_at: 2025-06-03 17:48:11 UTC, Time Diff: 11 months, 4 weeks, 2 days, 4 hours, 39 minutes, and 53.99979778006673 seconds

@@ -36,14 +36,14 @@ RSpec.describe LogActivityJob do
       admin = create(:admin)
       user = create(:user)
       t = Time.now
-      expect { job.perform(user, 'admin_rights_given', admin, t) }
+      expect { job.perform(user, 'admin_rights_received', admin, t) }
         .to have_enqueued_job(MakeNotificationsForClassJob)
         .with do |notification_class, activity|
         expect(notification_class).to eq 'Notifications::AdminRightsReceived'
         expect(activity.item).to match({
           item: user,
           user: admin,
-          action: 'admin_rights_given',
+          action: 'admin_rights_received',
           acted_at: t
         })
       end
@@ -71,6 +71,25 @@ RSpec.describe LogActivityJob do
       item = create(:notification)
       user = create(:user)
       expect { job.perform(item, 'created', user, Time.now) }.not_to have_enqueued_job(TrackEventJob)
+    end
+
+    it 'calls Webhooks::EnqueueService when there are enabled webhooks' do
+      allow(Resolv).to receive(:getaddresses).with(a_string_matching(/webhook.example.com.*/)).and_return(['93.184.216.34'])
+
+      create(:webhook_subscription)
+      idea = create(:idea)
+
+      expect_any_instance_of(Webhooks::EnqueueService).to receive(:call).with(instance_of(Activity))
+
+      job.perform(idea, 'created', idea.author, Time.now)
+    end
+
+    it 'does not call Webhooks::EnqueueService when there are no enabled webhooks' do
+      idea = create(:idea)
+
+      expect_any_instance_of(Webhooks::EnqueueService).not_to receive(:call)
+
+      job.perform(idea, 'created', idea.author, Time.now)
     end
   end
 
@@ -153,6 +172,45 @@ RSpec.describe LogActivityJob do
     end
   end
 
+  describe 'logging of channel' do
+    let(:item) { create(:project) }
+    let(:user) { create(:user) }
+
+    context 'when Current.activity_channel is set' do
+      around do |example|
+        Current.activity_channel = 'mcp'
+        example.run
+      ensure
+        Current.activity_channel = nil
+      end
+
+      it 'stamps the created activity with the channel' do
+        described_class.perform_now(item, 'created', user)
+        expect(Activity.last.channel).to eq('mcp')
+      end
+
+      it 'bakes the channel into the options of the enqueued job' do
+        expect { described_class.perform_later(item, 'created', user) }
+          .to enqueue_job(described_class)
+          .with(item, 'created', user, nil, { project_id: item.id, channel: 'mcp' })
+      end
+
+      it 'does not override an explicitly passed channel' do
+        options = { channel: 'other', project_id: item.id }
+        expect { described_class.perform_later(item, 'created', user, nil, options) }
+          .to enqueue_job(described_class)
+          .with(item, 'created', user, nil, options)
+      end
+    end
+
+    context 'when Current.activity_channel is not set' do
+      it 'leaves the channel nil' do
+        described_class.perform_now(item, 'created', user)
+        expect(Activity.last.channel).to be_nil
+      end
+    end
+  end
+
   describe 'logging of project_id' do
     where(:model_class) do
       [
@@ -170,6 +228,7 @@ RSpec.describe LogActivityJob do
         GroupsProject,
         Idea,
         IdeaAssignment::Notifications::IdeaAssignedToYou,
+        InputTopic,
         Moderation::Moderation,
         Moderation::ModerationStatus,
         Notification,
@@ -199,8 +258,7 @@ RSpec.describe LogActivityJob do
         Project,
         ProjectFile,
         ProjectImage,
-        ProjectsAllowedInputTopic,
-        ProjectsTopic,
+        ProjectsGlobalTopic,
         SpamReport,
         Surveys::Response,
         Volunteering::Cause,

@@ -12,7 +12,7 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Modal from 'components/UI/Modal';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { usePermission } from 'utils/permissions';
 
 import { deleteCommentModalClosed } from '../events';
@@ -68,11 +68,12 @@ const CommentsMoreActions = ({
   className,
   ideaId,
 }: Props) => {
+  const { formatMessage } = useIntl();
   const moreActionsButtonRef = useRef<HTMLButtonElement>(null);
   // TODO: Fix this the next time the file is edited.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const parentCommentId = comment.relationships?.parent?.data?.id;
-  const { mutate: markForDeletion, isLoading } = useMarkCommentForDeletion({
+  const { mutate: markForDeletion, isPending } = useMarkCommentForDeletion({
     ideaId,
     parentCommentId,
   });
@@ -179,6 +180,7 @@ const CommentsMoreActions = ({
           showLabel={false}
           actions={actions}
           ref={moreActionsButtonRef}
+          ideaTitle={formatMessage(messages.actionsMenuTitle)}
         />
       </Container>
 
@@ -204,7 +206,7 @@ const CommentsMoreActions = ({
             </CancelButton>
             <AcceptButton
               buttonStyle="primary"
-              processing={isLoading}
+              processing={isPending}
               className="e2e-confirm-internal-comment-deletion"
               onClick={handleDeleteClick}
             >

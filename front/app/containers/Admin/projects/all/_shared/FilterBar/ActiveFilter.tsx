@@ -6,6 +6,7 @@ import Folders from './Filters/Folders';
 import Manager from './Filters/Manager';
 import ParticipationMethods from './Filters/ParticipationMethods';
 import ParticipationStates from './Filters/ParticipationStates';
+import Spaces from './Filters/Spaces';
 import Status from './Filters/Status';
 import Visibility from './Filters/Visibility';
 
@@ -30,6 +31,8 @@ const ActiveFilter = ({ filterKey, onRemove }: Props) => {
       return <Visibility onClear={onRemove} />;
     case 'discoverability':
       return <Discoverability onClear={onRemove} />;
+    case 'space_ids':
+      return <Spaces onClear={onRemove} openedDefaultValue={true} />;
   }
 };
 

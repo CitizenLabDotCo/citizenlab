@@ -6,19 +6,21 @@ describe ProfanityService do
   let(:service) { described_class.new }
 
   describe 'search_blocked_words' do
-    before { Rails.cache.clear } # for some reason, caching is enabled while testing
-
-    before { stub_fetch_blocked_words! service }
+    # for some reason, caching is enabled while testing
+    before do
+      Rails.cache.clear
+      stub_fetch_blocked_words! service
+    end
 
     after { Rails.cache.clear }
 
     it 'matches exact occurences' do
       text = 'Ik vind hem een beetje een zeveraar.'
-      expect(service.search_blocked_words(text)).to match_array([{
+      expect(service.search_blocked_words(text)).to contain_exactly({
         word: 'zeveraar',
         # position: 27,
         language: 'nl'
-      }])
+      })
     end
 
     it 'returns no matches when there are no occurences' do
@@ -62,26 +64,91 @@ describe ProfanityService do
 
     it 'returns matches for multilple languages' do
       text = 'His recipe for chili con carne is so stupid.'
-      expect(service.search_blocked_words(text)).to match_array(
-        [
-          {
-            word: 'con',
-            language: 'fr'
-          },
-          {
-            word: 'stupid',
-            language: 'en'
-          }
-        ]
-      )
+      expect(service.search_blocked_words(text)).to contain_exactly({
+        word: 'con',
+        language: 'fr'
+      }, {
+        word: 'stupid',
+        language: 'en'
+      })
     end
 
     it 'matches case-insensitively' do
       text = 'Il est un peu déBiLE.'
-      expect(service.search_blocked_words(text)).to match_array([{
+      expect(service.search_blocked_words(text)).to contain_exactly({
         word: 'débile',
         language: 'fr'
-      }])
+      })
+    end
+
+    context 'when the word is wrapped in quotes' do
+      where(:text) do
+        [
+          'Il est un peu "débile".',
+          "Il est un peu 'débile'.",
+          'Il est un peu `débile`.',
+          'Il est un peu « débile ».',
+          'Il est un peu “débile”.',
+          'Il est un peu ‘débile’.',
+          'Il est un peu „débile“.',
+          'Il est un peu ‹débile›.',
+          'Il est un peu 〝débile〞.',
+          'Il est un peu ＂débile＂.',
+          'Il est un peu ′débile″.',
+          'Il est un peu ❝débile❞.'
+        ]
+      end
+
+      with_them do
+        it 'matches the word' do
+          expect(service.search_blocked_words(text)).to contain_exactly({
+            word: 'débile',
+            language: 'fr'
+          })
+        end
+      end
+    end
+
+    context 'when an apostrophe glues the word to the previous one' do
+      where(:text) do
+        [
+          "C'est l'idiot du village.",
+          'C’est l’idiot du village.'
+        ]
+      end
+
+      with_them do
+        it 'matches the word' do
+          expect(service.search_blocked_words(text)).to contain_exactly({
+            word: 'idiot',
+            language: 'fr'
+          }, {
+            word: 'idiot',
+            language: 'en'
+          })
+        end
+      end
+    end
+
+    it 'matches when punctuation glues the word to the next one' do
+      text = 'Il est un peu débile.Vraiment.'
+      expect(service.search_blocked_words(text)).to contain_exactly({
+        word: 'débile',
+        language: 'fr'
+      })
+    end
+
+    it 'matches a word masked with underscores' do
+      text = 'Il est un peu d_é_b_i_l_e.'
+      expect(service.search_blocked_words(text)).to contain_exactly({
+        word: 'débile',
+        language: 'fr'
+      })
+    end
+
+    it "doesn't split on hyphens" do
+      text = 'Il est un peu demi-débile.'
+      expect(service.search_blocked_words(text)).to be_blank
     end
 
     it "doesn't match on accents or digits" do
@@ -91,10 +158,10 @@ describe ProfanityService do
 
     it 'matches with HTML' do
       text = '<p>Je suis tombé dans une pute</p>'
-      expect(service.search_blocked_words(text)).to match_array([{
+      expect(service.search_blocked_words(text)).to contain_exactly({
         word: 'pute',
         language: 'fr'
-      }])
+      })
     end
   end
 

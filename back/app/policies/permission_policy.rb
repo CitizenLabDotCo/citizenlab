@@ -22,7 +22,11 @@ class PermissionPolicy < ApplicationPolicy
     user&.active? && UserRoleService.new.can_moderate?(record, user)
   end
 
-  def reset?
+  def override?
+    update?
+  end
+
+  def inherit?
     update?
   end
 
@@ -30,11 +34,11 @@ class PermissionPolicy < ApplicationPolicy
     true
   end
 
-  def schema?
+  def custom_fields?
     true
   end
 
-  def custom_fields?
+  def custom_field_options?
     true
   end
 

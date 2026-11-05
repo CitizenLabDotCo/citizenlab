@@ -12,10 +12,13 @@ import { PieRow } from './typings';
 export const parsePieData = ({
   sessions_per_locale,
 }: VisitorsLanguagesResponse['data']['attributes']): PieRow[] | null => {
-  const asArray = keys(sessions_per_locale).map((key) => ({
-    locale: key,
-    count: sessions_per_locale[key],
-  }));
+  // Sort by locale name alphabetically for consistent colors across timeframes
+  const asArray = keys(sessions_per_locale)
+    .toSorted((a, b) => a.localeCompare(b))
+    .map((key) => ({
+      locale: key,
+      count: sessions_per_locale[key],
+    }));
 
   const percentages = roundPercentages(asArray.map(({ count }) => count));
 

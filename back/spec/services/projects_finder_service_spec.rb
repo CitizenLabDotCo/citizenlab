@@ -16,8 +16,8 @@ describe ProjectsFinderService do
       create(:project_with_active_ideation_phase, admin_publication_attributes: { publication_status: 'archived' })
 
       expect(Project.count).to eq 5
-      expect(result[:projects].size).to eq 1
-      expect(result[:projects][0].id).to eq active_ideation_project.id
+      expect(result.size).to eq 1
+      expect(result[0].id).to eq active_ideation_project.id
     end
 
     it 'excludes projects in draft folder' do
@@ -25,21 +25,21 @@ describe ProjectsFinderService do
       folder.admin_publication.update!(publication_status: 'draft')
 
       expect(Project.count).to eq 3
-      expect(result[:projects].size).to eq 0
+      expect(result.size).to eq 0
     end
 
     it 'excludes projects without active participatory (not information) phase' do
       expect(Project.count).to eq 3
-      expect(result[:projects].size).to eq 1
-      expect(result[:projects][0].id).to eq active_ideation_project.id
+      expect(result.size).to eq 1
+      expect(result[0].id).to eq active_ideation_project.id
     end
 
     it 'excludes projects with information phase' do
       create(:project_with_past_ideation_and_current_information_phase)
 
       expect(Project.count).to eq 4
-      expect(result[:projects].size).to eq 1
-      expect(result[:projects][0].id).to eq active_ideation_project.id
+      expect(result.size).to eq 1
+      expect(result[0].id).to eq active_ideation_project.id
     end
 
     it "lists projects ordered by end_at of projects' active phase (ASC NULLS LAST)" do
@@ -49,37 +49,30 @@ describe ProjectsFinderService do
       active_project2.phases.first.update!(end_at: soonest_end_at + 1.day)
       active_project3 = create(:project_with_active_ideation_phase)
       active_project3.phases.first.update!(end_at: soonest_end_at + 2.days)
+      open_ended_project = create(:project_with_active_ideation_phase)
+      open_ended_project.phases.first.update!(end_at: nil)
 
-      expect(Project.count).to eq 5
-      expect(result[:projects].size).to eq 3
-      expect(result[:projects].map(&:id)).to eq [active_ideation_project.id, active_project2.id, active_project3.id]
+      expect(Project.count).to eq 6
+      expect(result.size).to eq 4
+      expect(result.map(&:id)).to eq [
+        active_ideation_project.id, active_project2.id, active_project3.id, open_ended_project.id
+      ]
     end
 
-    it 'includes action descriptors for each returned project' do
-      expect(Project.count).to eq 3
-      expect(result[:projects].size).to eq 1
-      expect(result[:projects][0].id).to eq active_ideation_project.id
+    # Without the created_at and id tiebreaks, projects would repeat across pages.
+    it 'orders projects by id when active phase end dates and creation dates are the same' do
+      projects = [active_ideation_project, *create_list(:project_with_active_ideation_phase, 3)]
+      end_at = 1.week.from_now
+      created_at = 1.day.ago
+      projects.each do |project|
+        project.phases.first.update!(end_at: end_at)
+        project.update!(created_at: created_at)
+      end
 
-      expect(result[:descriptor_pairs][active_ideation_project.id]).to be_a(Hash).and(include(
-        posting_idea: { enabled: true, disabled_reason: nil, future_enabled_at: nil },
-        commenting_idea: { enabled: true, disabled_reason: nil },
-        reacting_idea: {
-          enabled: true,
-          disabled_reason: nil,
-          up: { enabled: true, disabled_reason: nil },
-          down: { enabled: false, disabled_reason: 'reacting_dislike_disabled' }
-        },
-        comment_reacting_idea: { enabled: true, disabled_reason: nil },
-        annotating_document: { enabled: false, disabled_reason: 'not_document_annotation' },
-        taking_survey: { enabled: false, disabled_reason: 'not_survey' },
-        taking_poll: { enabled: false, disabled_reason: 'not_poll' },
-        voting: { enabled: false, disabled_reason: 'not_voting' },
-        attending_event: { enabled: true, disabled_reason: nil },
-        volunteering: { enabled: false, disabled_reason: 'not_volunteering' }
-      ))
+      expect(result.map(&:id)).to eq Project.where(id: projects).order(:id).pluck(:id)
     end
 
-    it "excludes projects where only permitted action is attending_event & no permission is 'fixable'" do
+    it "excludes projects where no action is permitted & no permission is 'fixable'" do
       group = create(:group)
       permission = create(:permission, action: 'posting_idea', permission_scope: active_ideation_project.phases.first, permitted_by: 'users')
       create(:groups_permission, permission_id: permission.id, group: group)
@@ -89,33 +82,33 @@ describe ProjectsFinderService do
       create(:groups_permission, permission_id: permission.id, group: group)
 
       user_requirements_service = Permissions::UserRequirementsService.new(check_groups_and_verification: false)
-      action_descriptors = Permissions::ProjectPermissionsService.new(
-        active_ideation_project, user, user_requirements_service: user_requirements_service
+      action_descriptors = Permissions::PhasePermissionsService.new(
+        active_ideation_project.phases.first, user, user_requirements_service: user_requirements_service
       ).action_descriptors
 
-      expect(action_descriptors.except(:attending_event).all? { |_k, v| v[:enabled] == false }).to be true
+      expect(action_descriptors.all? { |_k, v| v[:enabled] == false }).to be true
       expect(action_descriptors[:posting_idea][:disabled_reason]).to eq 'user_not_in_group'
       expect(action_descriptors[:commenting_idea][:disabled_reason]).to eq 'user_not_in_group'
       expect(action_descriptors[:reacting_idea][:disabled_reason]).to eq 'user_not_in_group'
 
       expect(Project.count).to eq 3
-      expect(result[:projects].size).to eq 0
+      expect(result.size).to eq 0
     end
 
-    it "includes projects where no action permitted (excluding attending_event), but a permission is 'fixable'" do
+    it "includes projects where no action is permitted, but a permission is 'fixable'" do
       create(:custom_field, required: true)
 
       user_requirements_service = Permissions::UserRequirementsService.new(check_groups_and_verification: false)
-      action_descriptors = Permissions::ProjectPermissionsService.new(
-        active_ideation_project, user, user_requirements_service: user_requirements_service
+      action_descriptors = Permissions::PhasePermissionsService.new(
+        active_ideation_project.phases.first, user, user_requirements_service: user_requirements_service
       ).action_descriptors
 
-      expect(action_descriptors.except(:attending_event).all? { |_k, v| v[:enabled] == false }).to be true
+      expect(action_descriptors.all? { |_k, v| v[:enabled] == false }).to be true
       expect(action_descriptors[:posting_idea][:disabled_reason]).to eq 'user_missing_requirements'
 
       expect(Project.count).to eq 3
-      expect(result[:projects].size).to eq 1
-      expect(result[:projects][0].id).to eq active_ideation_project.id
+      expect(result.size).to eq 1
+      expect(result[0].id).to eq active_ideation_project.id
     end
 
     it 'does not invoke unnecessary queries' do
@@ -123,9 +116,54 @@ describe ProjectsFinderService do
 
       # The creation of action descriptors for projects that have been selected
       # (as published, with active participatory phase) is the most expensive part of the invoked query chain(s).
-      # For this reason, we limit this somewhat to the n projects within the pagination limit,
-      # and we avoid getting the action descriptors again in the serializer, by passing them along.
+      # For this reason, we limit this somewhat to the n projects within the pagination limit.
       expect { result }.not_to exceed_query_limit(50)
+    end
+
+    it 'includes projects with active document annotation phase' do
+      annotation_project = create(:project)
+      create(:phase,
+        project: annotation_project,
+        participation_method: 'document_annotation',
+        start_at: 1.day.ago,
+        end_at: 1.day.from_now,
+        document_annotation_embed_url: 'https://test.konveio.com/123456')
+
+      expect(Project.count).to eq 4
+      expect(result.size).to eq 2
+      expect(result.map(&:id)).to include(active_ideation_project.id, annotation_project.id)
+    end
+
+    it 'includes projects whose only active phase is a standalone phase' do
+      standalone_project = create(:project)
+      create(:phase, project: standalone_project, start_at: 2.months.ago, end_at: 1.month.ago)
+      create(:phase, :standalone, project: standalone_project, with_permissions: true, start_at: 1.week.ago, end_at: 1.week.from_now)
+
+      expect(result.map(&:id)).to include standalone_project.id
+    end
+
+    it 'returns a project with multiple active phases only once' do
+      create(:phase, :standalone, project: active_ideation_project, with_permissions: true, start_at: 1.week.ago, end_at: 1.week.from_now)
+
+      expect(result.map(&:id).count(active_ideation_project.id)).to eq 1
+    end
+
+    it 'includes a project when its timeline phase denies participation but an active standalone phase allows it' do
+      group = create(:group)
+      %w[posting_idea commenting_idea reacting_idea].each do |action|
+        permission = create(:permission, action:, permission_scope: active_ideation_project.phases.first, permitted_by: 'users')
+        create(:groups_permission, permission_id: permission.id, group: group)
+      end
+      create(:phase, :standalone, project: active_ideation_project, with_permissions: true, start_at: 1.week.ago, end_at: 1.week.from_now)
+
+      expect(result.map(&:id)).to include active_ideation_project.id
+    end
+
+    it 'includes a project whose active timeline phase is information when a standalone phase is active' do
+      info_project = create(:project_with_past_ideation_and_current_information_phase)
+      create(:phase, :standalone, project: info_project, with_permissions: true, start_at: 1.week.ago, end_at: 1.week.from_now)
+
+      expect(result.map(&:id)).to include info_project.id
     end
   end
 
@@ -142,7 +180,7 @@ describe ProjectsFinderService do
       create(:follower, followable: followed_project2, user: user)
 
       expect(Project.count).to eq 3
-      expect(result).to match_array [followed_project, followed_project2]
+      expect(result).to contain_exactly(followed_project, followed_project2)
     end
 
     it 'excludes projects not followed by user' do
@@ -166,7 +204,7 @@ describe ProjectsFinderService do
       create(:follower, followable: idea, user: user)
 
       expect(service.new(Project.all, user).followed_by_user)
-        .to match_array([followed_project, project_with_followed_idea])
+        .to contain_exactly(followed_project, project_with_followed_idea)
     end
 
     it 'includes projects for an Area the user follows' do
@@ -176,17 +214,17 @@ describe ProjectsFinderService do
       create(:follower, followable: area, user: user)
 
       expect(service.new(Project.all, user).followed_by_user)
-        .to match_array([followed_project, project_for_followed_area])
+        .to contain_exactly(followed_project, project_for_followed_area)
     end
 
-    it 'includes projects for a Topic the user follows' do
+    it 'includes projects for a GlobalTopic the user follows' do
       project_for_followed_topic = create(:project)
-      topic = create(:topic)
-      create(:projects_topic, project: project_for_followed_topic, topic: topic)
+      topic = create(:global_topic)
+      create(:projects_global_topic, project: project_for_followed_topic, global_topic: topic)
       create(:follower, followable: topic, user: user)
 
       expect(service.new(Project.all, user).followed_by_user)
-        .to match_array([followed_project, project_for_followed_topic])
+        .to contain_exactly(followed_project, project_for_followed_topic)
     end
 
     it 'includes projects in a Folder the user follows' do
@@ -196,7 +234,7 @@ describe ProjectsFinderService do
       create(:follower, followable: folder, user: user)
 
       expect(service.new(Project.all, user).followed_by_user)
-        .to match_array([followed_project, project_in_followed_folder])
+        .to contain_exactly(followed_project, project_in_followed_folder)
     end
 
     it 'orders the projects by the creation date of follows (most recent first)' do
@@ -273,7 +311,7 @@ describe ProjectsFinderService do
         create(:report, phase: unfinished_project2.phases.last, visible: true)
 
         expect(Project.count).to eq 3
-        expect(result).to match_array([finished_project1, unfinished_project2])
+        expect(result).to contain_exactly(finished_project1, unfinished_project2)
       end
 
       it 'excludes unfinished projects with a last phase that contains an invisible report' do
@@ -282,7 +320,7 @@ describe ProjectsFinderService do
         create(:report, phase: unfinished_project2.phases.last, visible: false)
 
         expect(Project.count).to eq 3
-        expect(result).to match_array([finished_project1])
+        expect(result).to contain_exactly(finished_project1)
       end
 
       it 'excludes unfinished projects with a phase containing a visible report that is not the final phase' do
@@ -292,7 +330,7 @@ describe ProjectsFinderService do
         create(:report, phase: phase1, visible: true)
 
         expect(Project.count).to eq 3
-        expect(result).to match_array([finished_project1])
+        expect(result).to contain_exactly(finished_project1)
       end
 
       it 'inludes projects with an endless last phase & visible report in last phase' do
@@ -301,7 +339,7 @@ describe ProjectsFinderService do
         create(:report, phase: endless_project.phases.last, visible: true)
 
         expect(Project.count).to eq 3
-        expect(result).to match_array([endless_project, finished_project1])
+        expect(result).to contain_exactly(endless_project, finished_project1)
       end
 
       it 'excludes projects with an endless last phase & NO report in last phase' do
@@ -309,14 +347,14 @@ describe ProjectsFinderService do
         create(:phase, project: endless_project, start_at: 3.days.ago, end_at: nil)
 
         expect(Project.count).to eq 3
-        expect(result).to match_array([finished_project1])
+        expect(result).to contain_exactly(finished_project1)
       end
 
       it 'excludes projects with no phase' do
         _phaseless_project = create(:project, phases: [])
 
         expect(Project.count).to eq 3
-        expect(result).to match_array([finished_project1])
+        expect(result).to contain_exactly(finished_project1)
       end
 
       it 'lists projects ordered by last phase end_at DESC' do
@@ -333,6 +371,20 @@ describe ProjectsFinderService do
         expect(finished_project2.phases[1].end_at).to be_after(finished_project3.phases[1].end_at)
 
         expect(result).to eq [endless_project, finished_project2, finished_project3, finished_project1]
+      end
+
+      # Identical creation dates are possible when tenant templates are applied.
+      # Without the id tiebreak, projects would repeat across pages.
+      it 'orders projects by id when last phase end dates and creation dates are the same' do
+        projects = [finished_project1, *create_list(:project_with_two_past_ideation_phases, 3)]
+        end_at = 20.days.ago
+        created_at = 1.day.ago
+        projects.each do |project|
+          project.phases.last.update!(end_at: end_at)
+          project.update!(created_at: created_at)
+        end
+
+        expect(result.map(&:id)).to eq Project.where(id: projects).order(:id).pluck(:id)
       end
     end
 
@@ -418,7 +470,7 @@ describe ProjectsFinderService do
 
       it 'includes expected projects' do
         expect(Project.count).to eq 7
-        expect(result).to match_array [finished_project1, archived_project, unfinished_project1]
+        expect(result).to contain_exactly(finished_project1, archived_project, unfinished_project1)
       end
 
       it 'lists projects ordered by last phase end_at DESC (Nulls first)' do
@@ -483,7 +535,7 @@ describe ProjectsFinderService do
       result = service.new(Project.all, user, { areas: [area1.id] }).projects_for_areas
 
       expect(Project.count).to eq 3
-      expect(result).to match_array [project_with_areas, project_for_all_areas]
+      expect(result).to contain_exactly(project_with_areas, project_for_all_areas)
     end
 
     it 'Orders projects by created_at DESC' do
@@ -513,7 +565,7 @@ describe ProjectsFinderService do
 
       result = service.new(Project.all, user, {}).projects_for_areas
 
-      expect(result).to match_array [project_with_areas, project_for_all_areas]
+      expect(result).to contain_exactly(project_with_areas, project_for_all_areas)
     end
 
     it 'Does not include draft projects, even for an admin' do

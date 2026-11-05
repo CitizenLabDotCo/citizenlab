@@ -34,13 +34,15 @@
 #
 class Event < ApplicationRecord
   include Files::FileAttachable
+  include PlainTextMultiloc
   include GeoJsonHelpers
+
+  has_many_text_images from: :description_multiloc
 
   belongs_to :project
   has_many :attendances, class_name: 'Events::Attendance', dependent: :destroy
   has_many :attendees, through: :attendances
   has_many :event_files, -> { order(:ordering) }, dependent: :destroy
-  has_many :text_images, as: :imageable, dependent: :destroy
   has_many :event_images, -> { order(:ordering) }, dependent: :destroy, inverse_of: :event
   accepts_nested_attributes_for :text_images, :event_images
 
@@ -57,12 +59,12 @@ class Event < ApplicationRecord
   validate :validate_start_at_before_end_at
 
   before_validation :sanitize_description_multiloc
+  plain_text_multiloc :title_multiloc, :location_multiloc, :address_2_multiloc, :attend_button_multiloc
   before_validation :strip_title
 
-  scope :with_project_publication_statuses, (proc do |publication_statuses|
-    joins(project: [:admin_publication])
-      .where(projects: { admin_publications: { publication_status: publication_statuses } })
-  end)
+  scope :with_project_publication_statuses, lambda { |statuses|
+    where(project: Project.where(admin_publication: AdminPublication.with_status(statuses)))
+  }
 
   private
 

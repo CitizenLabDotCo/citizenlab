@@ -3,6 +3,19 @@ const path = require('path');
 const { rmdir } = require('fs');
 
 module.exports = (on) => {
+  // ArcGIS maps require WebGL2. In the GPU-less Cypress container Chrome falls
+  // back to software rendering (SwiftShader), which Chrome 137+ disables unless
+  // explicitly opted into. Force ANGLE->SwiftShader so WebGL2 is available.
+  on('before:browser:launch', (browser, launchOptions) => {
+    if (browser.family === 'chromium' && browser.name !== 'electron') {
+      launchOptions.args.push('--enable-unsafe-swiftshader');
+      launchOptions.args.push('--use-gl=angle');
+      launchOptions.args.push('--use-angle=swiftshader');
+      launchOptions.args.push('--ignore-gpu-blocklist');
+    }
+    return launchOptions;
+  });
+
   on(
     'file:preprocessor',
     wp({

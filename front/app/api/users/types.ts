@@ -1,5 +1,7 @@
 import { ImageSizes, SupportedLocale, Multiloc } from 'typings';
 
+import { TAppConfigurationSetting } from 'api/app_configuration/types';
+
 import { Keys } from 'utils/cl-react-query/types';
 import { TRole } from 'utils/permissions/roles';
 
@@ -7,11 +9,19 @@ import usersKeys from './keys';
 
 export type UsersKeys = Keys<typeof usersKeys>;
 
+export type EarlyAccessTier = 'general' | 'internal';
+
+export type OfferedEarlyAccessFeatures = Partial<
+  Record<TAppConfigurationSetting, EarlyAccessTier>
+>;
+
 export interface UserCheckResponse {
   data: {
     type: 'check';
     attributes: {
       action: Action;
+      // Only returned by check_phone: seconds until a new SMS code may be requested.
+      code_retry_after?: number;
     };
   };
 }
@@ -24,22 +34,26 @@ export type OnboardingType = {
   topics_and_areas?: RequirementStatus;
 };
 
+export type HighestRole =
+  | 'super_admin'
+  | 'admin'
+  | 'space_moderator'
+  | 'project_folder_moderator'
+  | 'project_moderator'
+  | 'user';
+
 export interface IUserAttributes {
   first_name?: string | null;
   last_name?: string | null;
-  slug: string;
   locale: SupportedLocale;
-  highest_role:
-    | 'super_admin'
-    | 'admin'
-    | 'project_folder_moderator'
-    | 'project_moderator'
-    | 'user';
+  highest_role?: HighestRole;
   bio_multiloc: Multiloc;
   block_end_at?: string;
   block_reason?: string;
   block_start_at?: string;
   blocked?: boolean;
+  email_bounced_at?: string | null;
+  email_bounce_reason?: string | null;
   registration_completed_at: string | null;
   created_at: string;
   updated_at: string;
@@ -48,6 +62,8 @@ export interface IUserAttributes {
   confirmation_required: boolean;
   custom_field_values?: Record<string, any>;
   onboarding?: OnboardingType;
+  early_access_opt_ins?: TAppConfigurationSetting[];
+  offered_early_access_features?: OfferedEarlyAccessFeatures;
   avatar?: ImageSizes;
   roles?: TRole[];
   email?: string;
@@ -60,6 +76,11 @@ export interface IUserAttributes {
   no_password?: boolean;
   followings_count: number;
   last_active_at?: string | null;
+  new_email?: string | null;
+  merge_target_email?: string | null;
+  phone?: string | null;
+  phone_confirmed_at?: string | null;
+  new_phone?: string | null;
 }
 
 export interface IUserData {
@@ -98,6 +119,8 @@ export interface IUserUpdate {
   bio_multiloc?: Multiloc;
   custom_field_values?: Record<string, any>;
   onboarding?: OnboardingType;
+  early_access_opt_ins?: TAppConfigurationSetting[];
+  phone?: string;
 }
 
 export interface IChangePassword {
@@ -115,7 +138,9 @@ export type Sort =
   | 'role'
   | '-role'
   | 'last_active_at'
-  | '-last_active_at';
+  | '-last_active_at'
+  | 'registration_completed_at'
+  | '-registration_completed_at';
 
 export interface IQueryParameters {
   pageNumber?: number;
@@ -125,18 +150,23 @@ export interface IQueryParameters {
   group?: string;
   can_moderate_project?: string;
   can_moderate?: true;
-  can_admin?: boolean;
+  admins_only?: boolean;
   only_blocked?: boolean;
+  only_email_bounced?: boolean;
   not_citizenlab_member?: boolean;
   include_inactive?: boolean;
-  // Pass project id to exclude all users who can moderate
-  // the project
+  // Pass project/folder/space id to exclude all users who are
+  // project moderators of the project/folder/space
   is_not_project_moderator?: string;
-  // Pass folder id to exclude all users who can moderate
-  // the folder
   is_not_folder_moderator?: string;
+  is_not_space_moderator?: string;
+
   // Admin users that can approve project review requests
   project_reviewer?: boolean;
   // Pass project id to filter users who participated in the project
   project?: string;
+
+  project_moderators_only?: boolean;
+  folder_moderators_only?: boolean;
+  space_moderators_only?: boolean;
 }

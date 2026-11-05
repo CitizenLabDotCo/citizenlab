@@ -28,15 +28,23 @@ const Select = ({ name, scrollErrorIntoView, ...rest }: Props) => {
   // If an API error with a matching name has been returned from the API response, apiError is set to an array with the error message as the only item
   const apiError = errors?.error && ([errors] as CLError[]);
 
+  const ariaDescribedBy =
+    validationError || apiError ? `${name}-error` : undefined;
+
   return (
     <>
       <Controller
         name={name}
         control={control}
-        render={({ field: { ref: _ref, ...field } }) => {
+        render={({ field: { ref, ...field }, fieldState }) => {
           return (
             <SelectComponent
               id={name}
+              setRef={(el) => {
+                ref(el);
+              }}
+              ariaInvalid={!!fieldState.error}
+              ariaDescribedBy={ariaDescribedBy}
               {...field}
               {...rest}
               onChange={(option) => {
@@ -49,14 +57,17 @@ const Select = ({ name, scrollErrorIntoView, ...rest }: Props) => {
       />
       {validationError && (
         <Error
+          id={`${name}-error`}
           marginTop="8px"
           marginBottom="8px"
           text={validationError}
           scrollIntoView={scrollErrorIntoView}
+          liveRegion={false}
         />
       )}
       {apiError && (
         <Error
+          id={`${name}-error`}
           fieldName={name as TFieldName}
           apiErrors={apiError}
           marginTop="8px"

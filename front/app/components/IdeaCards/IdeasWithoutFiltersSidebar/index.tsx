@@ -7,16 +7,15 @@ import {
   isRtl,
   Box,
 } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useCustomFields from 'api/custom_fields/useCustomFields';
 import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
 import { IIdeaQueryParameters } from 'api/ideas/types';
 import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
-import { IdeaSortMethod } from 'api/phases/types';
+import { IdeaSortMethod, PresentationMode } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
-import { IdeaSortMethodFallback } from 'api/phases/utils';
+import { getSelectedView, IdeaSortMethodFallback } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
@@ -24,9 +23,10 @@ import ProjectFilterDropdown from 'components/ProjectFilterDropdown';
 import SearchInput from 'components/UI/SearchInput';
 
 import { trackEventByName } from 'utils/analytics';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { isNilOrError } from 'utils/helperUtils';
+import { useSearch } from 'utils/router';
 
 import messages from '../messages';
 import SelectSort from '../shared/Filters/SortFilterDropdown';
@@ -83,9 +83,8 @@ export interface Props {
   // other
   projectId?: string;
   phaseId?: string;
-  showViewToggle?: boolean | undefined;
   defaultSortingMethod?: IdeaSortMethod;
-  defaultView?: 'card' | 'map';
+  defaultView?: 'card' | 'map' | 'feed';
   className?: string;
   allowProjectsFilter?: boolean;
   showSearchbar: boolean;
@@ -97,7 +96,6 @@ const IdeasWithoutFiltersSidebar = ({
   onUpdateQuery,
   projectId,
   phaseId,
-  showViewToggle = false,
   defaultView,
   defaultSortingMethod,
   className,
@@ -105,17 +103,22 @@ const IdeasWithoutFiltersSidebar = ({
   showDropdownFilters,
   showSearchbar,
 }: Props) => {
-  const [searchParams] = useSearchParams();
-  const selectedIdeaMarkerId = searchParams.get('idea_map_id');
+  const { formatMessage } = useIntl();
+  const searchParams = useSearch({ strict: false });
   const smallerThanTablet = useBreakpoint('tablet');
   const smallerThanPhone = useBreakpoint('phone');
   const { data: project } = useProjectById(projectId);
+  const { data: phase } = usePhase(phaseId);
 
-  const selectedView =
-    (searchParams.get('view') as 'card' | 'map' | null) ??
-    (selectedIdeaMarkerId ? 'map' : defaultView ?? 'card');
+  // Get data from searchParams
+  const selectedIdeaMarkerId = searchParams.idea_map_id;
+  const selectedView = getSelectedView({
+    requestedView: searchParams.view,
+    availableViews: phase?.data.attributes.available_views,
+    defaultView: selectedIdeaMarkerId ? 'map' : defaultView ?? 'card',
+  });
 
-  const setSelectedView = useCallback((view: 'card' | 'map') => {
+  const setSelectedView = useCallback((view: PresentationMode) => {
     updateSearchParams({ view });
   }, []);
 
@@ -134,7 +137,6 @@ const IdeasWithoutFiltersSidebar = ({
   const list = useMemo(() => {
     return data?.pages.map((page) => page.data).flat();
   }, [data?.pages]);
-  const { data: phase } = usePhase(phaseId);
 
   const loadIdeaMarkers = locationEnabled && selectedView === 'map';
   const { data: ideaMarkers } = useIdeaMarkers(
@@ -185,7 +187,6 @@ const IdeasWithoutFiltersSidebar = ({
     onUpdateQuery({ idea_status });
   };
 
-  const showViewButtons = !!(locationEnabled && showViewToggle);
   const showSearch = !(selectedView === 'map') && showSearchbar;
   const participationMethod = phase?.data.attributes.participation_method;
 
@@ -196,12 +197,11 @@ const IdeasWithoutFiltersSidebar = ({
       <Box id="e2e-ideas-container" className={`${className || ''}`}>
         <FiltersArea id="e2e-ideas-filters" className="ideasContainer">
           <Box display="flex" justifyContent="flex-end">
-            {showViewButtons && (
-              <ViewButtons
-                selectedView={selectedView}
-                onClick={setSelectedView}
-              />
-            )}
+            <ViewButtons
+              selectedView={selectedView}
+              onClick={setSelectedView}
+              availableViews={phase?.data.attributes.available_views}
+            />
           </Box>
           <Box
             display="flex"
@@ -215,6 +215,7 @@ const IdeasWithoutFiltersSidebar = ({
                 className="e2e-search-ideas-input"
                 onChange={handleSearchOnChange}
                 a11y_numberOfSearchResults={list.length}
+                placeholder={formatMessage(messages.searchContributions)}
               />
             )}
             {showDropdownFilters && (
@@ -241,7 +242,7 @@ const IdeasWithoutFiltersSidebar = ({
                 {topicsEnabled && !isNilOrError(project) && projectId && (
                   <TopicFilterDropdown
                     projectId={projectId}
-                    selectedTopicIds={ideaQueryParameters.topics ?? []}
+                    selectedTopicIds={ideaQueryParameters.input_topics ?? []}
                     onChange={handleTopicsOnChange}
                     alignment={smallerThanTablet ? 'right' : 'left'}
                   />
@@ -258,7 +259,7 @@ const IdeasWithoutFiltersSidebar = ({
                     alignment={smallerThanTablet ? 'right' : 'left'}
                     participationMethod={participationMethod}
                     isScreeningEnabled={
-                      phase?.data.attributes.prescreening_enabled
+                      !!phase?.data.attributes.effective_prescreening_mode
                     }
                   />
                 )}

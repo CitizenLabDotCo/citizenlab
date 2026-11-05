@@ -6,7 +6,7 @@ import React, {
   useEffect,
 } from 'react';
 
-import { useSearchParams } from 'react-router-dom';
+import { useSearch } from 'utils/router';
 
 const Context = createContext<{
   selectedInputId: string | null;
@@ -18,8 +18,10 @@ const Context = createContext<{
 
 const SelectedInputContext = ({ children }) => {
   const [selectedInputId, setSelectedInputId] = useState<string | null>(null);
-  const [search] = useSearchParams();
-  const inputId = search.get('selected_input_id');
+  const search = useSearch({
+    from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
+  });
+  const inputId = search.selected_input_id;
 
   useEffect(() => {
     if (inputId) {

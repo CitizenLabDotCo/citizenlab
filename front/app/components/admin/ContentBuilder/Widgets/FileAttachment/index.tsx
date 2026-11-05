@@ -1,56 +1,81 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import {
   Box,
   colors,
+  IconButton,
   Select,
   Spinner,
   Text,
 } from '@citizenlab/cl2-component-library';
-import { useNode } from '@craftjs/core';
-import { useParams } from 'react-router-dom';
+import { useNode, useEditor } from '@craftjs/core';
 
-import useAddFileAttachment from 'api/file_attachments/useAddFileAttachment';
-import useDeleteFileAttachment from 'api/file_attachments/useDeleteFileAttachment';
-import useFileAttachmentById from 'api/file_attachments/useFileAttachmentById';
+import useCustomPageById from 'api/custom_pages/useCustomPageById';
+import useFileAttachments from 'api/file_attachments/useFileAttachments';
+import useFileById from 'api/files/useFileById';
 import useFiles from 'api/files/useFiles';
-import useProjectDescriptionBuilderLayout from 'api/project_description_builder/useProjectDescriptionBuilderLayout';
 
-import ButtonWithLink from 'components/UI/ButtonWithLink';
+import { BUILDER_CONTENT_MAX_WIDTH } from 'components/admin/ContentBuilder/constants';
+import { useContentBuilderLayoutContext } from 'components/admin/ContentBuilder/context/ContentBuilderLayoutContext';
+import WidgetPlaceholder from 'components/admin/ContentBuilder/Widgets/WidgetPlaceholder';
 import FileDisplay from 'components/UI/FileAttachments/FileDisplay';
 
-import { useIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import messages from './messages';
+import UploadFilesLink from './UploadFilesLink';
+import { getIsFileAlreadyUsed } from './utils';
 
 type FileAttachmentProps = {
   fileId?: string;
-  fileAttachmentId?: string;
 };
 
-const FileAttachment = ({ fileAttachmentId }: FileAttachmentProps) => {
-  const { data: fileAttachment } = useFileAttachmentById(fileAttachmentId);
+const FilePreview = ({ fileId }: { fileId?: string }) => {
+  const { data: file, isLoading } = useFileById(fileId);
 
-  if (!fileAttachment) {
+  if (!fileId) {
+    return (
+      <Box maxWidth={BUILDER_CONTENT_MAX_WIDTH} margin="0 auto">
+        <WidgetPlaceholder iconName="file-add">
+          <FormattedMessage {...messages.selectFilePrompt} />
+        </WidgetPlaceholder>
+      </Box>
+    );
+  }
+
+  if (isLoading) {
     return null;
   }
 
+  if (!file) {
+    return (
+      <Box maxWidth={BUILDER_CONTENT_MAX_WIDTH} margin="0 auto">
+        <WidgetPlaceholder iconName="paperclip" variant="error">
+          <FormattedMessage {...messages.fileMissing} />
+        </WidgetPlaceholder>
+      </Box>
+    );
+  }
+
   return (
-    <Box id="e2e-file-attachment" maxWidth="1200px" margin="0 auto">
+    <Box
+      data-cy="e2e-file-attachment"
+      maxWidth={BUILDER_CONTENT_MAX_WIDTH}
+      margin="0 auto"
+      pointerEvents="none"
+    >
       <FileDisplay
         file={{
-          // Transform the file data to match the current expected type structure.
-          // TODO: In the future, once we remove the old files structure/api, we can simplify this.
-          ...fileAttachment.data,
+          id: file.data.id,
+          type: 'file',
           attributes: {
-            ordering: fileAttachment.data.attributes.position,
-            name: fileAttachment.data.attributes.file_name,
-            size: fileAttachment.data.attributes.file_size,
-            created_at: fileAttachment.data.attributes.created_at,
-            updated_at: fileAttachment.data.attributes.updated_at,
-            file: {
-              url: fileAttachment.data.attributes.file_url,
-            },
+            name: file.data.attributes.name,
+            file: { url: '' },
+            ordering: null,
+            size: file.data.attributes.size,
+            created_at: '',
+            updated_at: '',
           },
         }}
       />
@@ -58,42 +83,123 @@ const FileAttachment = ({ fileAttachmentId }: FileAttachmentProps) => {
   );
 };
 
+const FileAttachment = ({ fileId }: FileAttachmentProps) => {
+  const { layoutId } = useContentBuilderLayoutContext();
+  const { enabled } = useEditor((state) => ({
+    enabled: state.options.enabled,
+  }));
+
+  const { data: attachments } = useFileAttachments({
+    attachable_id: layoutId,
+    attachable_type: 'ContentBuilder::Layout',
+  });
+
+  const attachment = useMemo(() => {
+    return attachments?.data.find(
+      (a) => a.relationships.file.data.id === fileId
+    );
+  }, [attachments, fileId]);
+
+  if (attachment) {
+    const attachmentAttributes = attachment.attributes;
+    return (
+      <Box
+        data-cy="e2e-file-attachment"
+        maxWidth={BUILDER_CONTENT_MAX_WIDTH}
+        margin="0 auto"
+      >
+        <FileDisplay
+          file={{
+            id: attachment.relationships.file.data.id,
+            type: 'file',
+            attributes: {
+              ordering: 1,
+              name: attachmentAttributes.file_name,
+              size: attachmentAttributes.file_size,
+              created_at: attachmentAttributes.created_at,
+              updated_at: attachmentAttributes.updated_at,
+              file: {
+                url: attachmentAttributes.file_url,
+              },
+            },
+          }}
+        />
+      </Box>
+    );
+  }
+
+  // No attachment in view mode -> hides widget
+  if (!enabled) return null;
+
+  return <FilePreview fileId={fileId} />;
+};
+
 const FileAttachmentSettings = () => {
   const {
     actions: { setProp },
     fileId,
-    fileAttachmentId,
   } = useNode((node) => ({
     fileId: node.data.props.fileId,
-    fileAttachmentId: node.data.props.fileAttachmentId,
-    id: node.id,
   }));
 
   const { formatMessage } = useIntl();
-  // File attachment API hooks
-  const { mutate: addFileAttachment } = useAddFileAttachment({});
-  const { mutate: deleteFileAttachment } = useDeleteFileAttachment({});
+  const { query } = useEditor();
+  const { projectId: routeProjectId, customPageId } = useParams({
+    strict: false,
+  });
+  // A project's page keeps its files in the project, so it offers and uploads the project's.
+  const { data: customPage, isLoading: isLoadingPage } =
+    useCustomPageById(customPageId);
+  const projectId =
+    routeProjectId ?? customPage?.data.attributes.project_id ?? undefined;
 
-  const { projectId } = useParams();
-
-  const { data: projectDescriptionLayout } = useProjectDescriptionBuilderLayout(
-    projectId || ''
+  // Scoped to where the layout lives, so a page cannot publish a file belonging to a project
+  // the visitor has no access to. Uploading goes through the link below.
+  const {
+    data: files,
+    isLoading: isLoadingFiles,
+    isFetching: isFetchingFiles,
+    refetch: refetchFiles,
+  } = useFiles(
+    projectId ? { project: [projectId] } : { staticPage: customPageId }
   );
 
-  // Get files for project
-  const { data: files, isFetching: isFetchingFiles } = useFiles({
-    project: projectId ? [projectId] : [],
-  });
+  // Get current layout state to check for duplicate files
+  const craftjsJson = useMemo(() => {
+    try {
+      return query.getSerializedNodes();
+    } catch {
+      return {};
+    }
+  }, [query]);
 
-  // Generate options for the file select dropdown
-  const fileOptions = files
-    ? files.data.map((file) => ({
+  let fileOptions = useMemo(() => {
+    if (!files) return [];
+
+    return files.data.map((file) => {
+      return {
         value: file.id,
         label: file.attributes.name,
-      }))
-    : [];
+      };
+    });
+  }, [files]);
 
-  if (isFetchingFiles) {
+  // Filter out any files already being used in the layout
+  fileOptions = fileOptions.filter((option) => {
+    if (option.value === fileId) return true; // Always include the currently selected file
+    const isFileUsed = getIsFileAlreadyUsed(craftjsJson, option.value);
+    return !isFileUsed;
+  });
+
+  const nothingUploadedMessage = projectId
+    ? messages.noFilesAvailable
+    : messages.noFilesYet;
+  const emptyStateMessage = files?.data.length
+    ? messages.allFilesAlreadyUsed
+    : nothingUploadedMessage;
+
+  // Full-panel spinner on initial load only; refetches keep the panel visible.
+  if (isLoadingPage || isLoadingFiles) {
     return <Spinner />;
   }
 
@@ -106,52 +212,41 @@ const FileAttachmentSettings = () => {
       gap="12px"
     >
       {fileOptions.length === 0 ? (
-        <Text m="0px">{formatMessage(messages.noFilesAvailable)}</Text>
+        <Text m="0px">{formatMessage(emptyStateMessage)}</Text>
       ) : (
         <Select
           value={fileId}
           onChange={(option) => {
             setProp((props: FileAttachmentProps) => {
-              // Remove any current file attachment.
-              if (fileAttachmentId) {
-                deleteFileAttachment(fileAttachmentId);
-              }
-              // Set the new selected file ID.
               props.fileId = option.value;
-
-              // Create a new file attachment to the project description layout.
-              projectDescriptionLayout?.data.id &&
-                addFileAttachment(
-                  {
-                    file_id: option.value,
-                    attachable_type: 'ContentBuilder::Layout',
-                    attachable_id: projectDescriptionLayout.data.id,
-                  },
-                  {
-                    onSuccess: (data) => {
-                      // Update the node's fileId prop with the newly created attachment.
-                      setProp((props: FileAttachmentProps) => {
-                        props.fileAttachmentId = data.data.id;
-                      });
-                    },
-                  }
-                );
             });
           }}
           placeholder={formatMessage(messages.selectFile)}
           options={fileOptions}
           label={formatMessage(messages.selectFile)}
+          dataCy="e2e-file-attachment-file-select"
         />
       )}
 
-      <ButtonWithLink
-        linkTo={`/admin/projects/${projectId}/files`}
-        buttonStyle="text"
-        icon="upload-file"
-        openLinkInNewTab={true}
-      >
-        {formatMessage(messages.uploadFiles)}
-      </ButtonWithLink>
+      {(projectId || customPageId) && (
+        <Box display="flex" alignItems="center" gap="4px">
+          <UploadFilesLink projectId={projectId} customPageId={customPageId} />
+          {/* Refresh the list to pick up files uploaded in the other tab. */}
+          {isFetchingFiles ? (
+            <Box p="4px" display="flex">
+              <Spinner size="20px" />
+            </Box>
+          ) : (
+            <IconButton
+              iconName="refresh"
+              onClick={() => refetchFiles()}
+              a11y_buttonActionMessage={formatMessage(messages.refreshFiles)}
+              iconColor={colors.textSecondary}
+              iconColorOnHover={colors.black}
+            />
+          )}
+        </Box>
+      )}
     </Box>
   );
 };

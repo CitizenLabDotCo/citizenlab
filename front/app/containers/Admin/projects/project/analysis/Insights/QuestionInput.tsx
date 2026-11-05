@@ -7,14 +7,15 @@ import {
   stylingConsts,
   Button,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
 
+import useAnalysis from 'api/analyses/useAnalysis';
 import useAddAnalysisQuestion from 'api/analysis_questions/useAddAnalysisQuestion';
 
 import tracks from 'containers/Admin/projects/project/analysis/tracks';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 
@@ -23,8 +24,14 @@ import messages from './messages';
 const QuestionInput = ({ onClose }: { onClose: () => void }) => {
   const [question, setQuestion] = useState('');
   const { formatMessage } = useIntl();
-  const { mutate: askQuestion, isLoading } = useAddAnalysisQuestion();
-  const { analysisId } = useParams() as { analysisId: string };
+  const { mutate: askQuestion, isPending } = useAddAnalysisQuestion();
+  const { analysisId } = useParams({
+    from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
+  });
+  const { data: analysis } = useAnalysis(analysisId);
+  const fileIds = analysis?.data.relationships.files?.data.map(
+    (file) => file.id
+  );
   const filters = useAnalysisFilterParams();
 
   const handleAskQuestion = () => {
@@ -33,6 +40,7 @@ const QuestionInput = ({ onClose }: { onClose: () => void }) => {
         analysisId,
         filters,
         question,
+        fileIds,
       },
       {
         onSuccess: () => {
@@ -49,7 +57,6 @@ const QuestionInput = ({ onClose }: { onClose: () => void }) => {
     <Box
       bgColor={colors.successLight}
       p="16px"
-      mb="8px"
       borderRadius={stylingConsts.borderRadius}
       display="flex"
       gap="8px"
@@ -66,7 +73,7 @@ const QuestionInput = ({ onClose }: { onClose: () => void }) => {
         <Button
           buttonStyle="admin-dark"
           onClick={handleAskQuestion}
-          processing={isLoading}
+          processing={isPending}
           disabled={!question}
           type="submit"
         >

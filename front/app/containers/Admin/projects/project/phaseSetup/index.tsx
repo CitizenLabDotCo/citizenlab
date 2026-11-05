@@ -1,27 +1,22 @@
-import React, { FormEvent, useEffect, useState } from 'react';
+import React, { FormEvent, useEffect, useRef, useState } from 'react';
 
-import {
-  Box,
-  Title,
-  IconTooltip,
-  colors,
-} from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
-import { CLErrors, Multiloc, UploadFile } from 'typings';
+import { Box, Title, colors } from '@citizenlab/cl2-component-library';
+import { CLErrors, Multiloc } from 'typings';
 
-import { IFileAttachmentData } from 'api/file_attachments/types';
 import useFileAttachments from 'api/file_attachments/useFileAttachments';
-import { IFileData } from 'api/files/types';
-import useAddFile from 'api/files/useAddFile';
 import { IPhase, IUpdatedPhaseProperties } from 'api/phases/types';
 import useAddPhase from 'api/phases/useAddPhase';
 import usePhase from 'api/phases/usePhase';
 import usePhases from 'api/phases/usePhases';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
+import { getPhaseSaveRedirectTab, isTimelinePhase } from 'api/phases/utils';
 
-import { useSyncFiles } from 'hooks/files/useSyncFiles';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
+
+import usePhaseFileAttachments, {
+  fileAttachmentErrors,
+} from 'containers/Admin/projects/_shared/usePhaseFileAttachments';
 
 import {
   Section,
@@ -32,7 +27,6 @@ import SubmitWrapper from 'components/admin/SubmitWrapper';
 import Error from 'components/UI/Error';
 import FileRepositorySelectAndUpload from 'components/UI/FileRepositorySelectAndUpload';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 
 import {
   FormattedMessage,
@@ -40,23 +34,25 @@ import {
   useIntl,
 } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import { generateTemporaryFileAttachment } from 'utils/fileUtils';
+import { useParams, useSearch } from 'utils/router';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
 import DateSetup from './components/DateSetup';
 import PhaseParticipationConfig from './components/PhaseParticipationConfig';
 import { ideationDefaultConfig } from './components/PhaseParticipationConfig/utils/participationMethodConfigs';
+import PhasePlacement from './components/PhasePlacement';
 import messages from './messages';
+import { getNewPhaseDefaults, localizedDefaults } from './newPhaseDefaults';
 import { SubmitStateType, ValidationErrors } from './typings';
-import { getTimelineTab } from './utils';
 import validate from './validate';
 
 interface Props {
   projectId: string;
   phase: IPhase | undefined;
+  standaloneSurvey?: boolean;
 }
 
-const AdminPhaseEdit = ({ projectId, phase }: Props) => {
+const AdminPhaseEdit = ({ projectId, phase, standaloneSurvey }: Props) => {
   const phaseId = phase?.data.id;
   const { data: phaseFileAttachments } = useFileAttachments({
     attachable_id: phaseId,
@@ -65,16 +61,15 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
   const { data: phases } = usePhases(projectId);
   const { mutate: addPhase } = useAddPhase();
   const { mutate: updatePhase } = useUpdatePhase();
-  const { mutate: addFile, isLoading: isAddingFile } = useAddFile();
-  const syncPhaseFiles = useSyncFiles();
   const [errors, setErrors] = useState<CLErrors | null>(null);
   const [processing, setProcessing] = useState<boolean>(false);
-  const [inStatePhaseFileAttachments, setInStatePhaseFileAttachments] =
-    useState<IFileAttachmentData[] | undefined>(phaseFileAttachments?.data);
-  const [phaseFileAttachmentsToRemove, setPhaseFileAttachmentsToRemove] =
-    useState<IFileAttachmentData[]>([]);
-
   const [submitState, setSubmitState] = useState<SubmitStateType>('disabled');
+  const files = usePhaseFileAttachments({
+    projectId,
+    phaseId,
+    savedAttachments: phaseFileAttachments?.data,
+    onStage: () => setSubmitState('enabled'),
+  });
   const [formData, setFormData] = useState<IUpdatedPhaseProperties>();
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>(
     {}
@@ -84,39 +79,65 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
   const { width, containerRef } = useContainerWidthAndHeight();
   const tenantLocales = useAppConfigurationLocales();
 
+  // Detached phases skip the timeline rules (dates may overlap and stay
+  // open-ended) and keep their fixed participation method.
+  const standalone = phase ? !isTimelinePhase(phase.data) : standaloneSurvey;
+
+  const standaloneSeededRef = useRef(false);
+
   useEffect(() => {
     // Whenever the selected phase changes, we reset the form data.
     // If no phase is selected, we initialize the form data with default values.
-    setFormData(phase ? phase.data.attributes : ideationDefaultConfig);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [phase]);
-
-  useEffect(() => {
-    if (phaseFileAttachments) {
-      setInStatePhaseFileAttachments(phaseFileAttachments.data);
+    if (phase) {
+      setFormData(phase.data.attributes);
+      return;
     }
-  }, [phaseFileAttachments]);
+
+    if (standaloneSurvey) {
+      if (
+        standaloneSeededRef.current ||
+        !tenantLocales ||
+        !formatMessageWithLocale
+      ) {
+        return;
+      }
+
+      setFormData(
+        getNewPhaseDefaults({
+          participationMethod: 'native_survey',
+          standalone: true,
+          tenantLocales,
+          formatMessageWithLocale,
+        })
+      );
+      standaloneSeededRef.current = true;
+      return;
+    }
+
+    standaloneSeededRef.current = false;
+    setFormData(ideationDefaultConfig);
+  }, [phase, standaloneSurvey, tenantLocales, formatMessageWithLocale]);
 
   if (!formatMessageWithLocale) return null;
 
   const handlePhaseParticipationConfigChange = (
     participationContextConfig: IUpdatedPhaseProperties
   ) => {
-    const surveyCTALabel = tenantLocales?.reduce((acc, locale) => {
-      acc[locale] = formatMessageWithLocale(
-        locale,
-        messages.defaultSurveyCTALabel
+    const surveyCTALabel =
+      tenantLocales &&
+      localizedDefaults(
+        messages.defaultSurveyCTALabel,
+        tenantLocales,
+        formatMessageWithLocale
       );
-      return acc;
-    }, {});
 
-    const surveyTitle = tenantLocales?.reduce((acc, locale) => {
-      acc[locale] = formatMessageWithLocale(
-        locale,
-        messages.defaultSurveyTitleLabel
+    const surveyTitle =
+      tenantLocales &&
+      localizedDefaults(
+        messages.defaultSurveyTitleLabel,
+        tenantLocales,
+        formatMessageWithLocale
       );
-      return acc;
-    }, {});
 
     setSubmitState('enabled');
     // Important to keep the order of the spread operators
@@ -130,7 +151,7 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
         }),
       ...(participationContextConfig.participation_method === 'native_survey' &&
         !formData?.native_survey_title_multiloc &&
-        !phase?.data.attributes.native_survey_button_multiloc && {
+        !phase?.data.attributes.native_survey_title_multiloc && {
           native_survey_title_multiloc: surveyTitle,
         }),
     }));
@@ -148,117 +169,17 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
     updateFormData({ title_multiloc });
   };
 
-  const handleEditorOnChange = (description_multiloc: Multiloc) => {
-    updateFormData({ description_multiloc });
-  };
-
-  const handlePhaseFileOnAttach = (file: IFileData) => {
-    const isDuplicate = inStatePhaseFileAttachments?.some((fileAttachment) => {
-      return fileAttachment.relationships.file.data.id === file.id;
-    });
-
-    if (isDuplicate) return;
-
-    const temporaryFileAttachment = generateTemporaryFileAttachment({
-      fileId: file.id,
-      attachableId: phaseId,
-      attachableType: 'Phase',
-      position: inStatePhaseFileAttachments
-        ? inStatePhaseFileAttachments.length
-        : 0,
-    });
-
-    setInStatePhaseFileAttachments((inStatePhaseFileAttachments) => [
-      ...(inStatePhaseFileAttachments || []),
-      temporaryFileAttachment,
-    ]);
-    setSubmitState('enabled');
-  };
-
-  const handlePhaseFileOnAdd = (fileToAdd: UploadFile) => {
-    // Upload the file to the Data Repository, so we can make the attachment later.
-    addFile(
-      {
-        content: fileToAdd.base64,
-        project: projectId,
-        name: fileToAdd.name,
-        category: 'other', // Default to 'other' when added from phase setup
-        ai_processing_allowed: false, // Default to false when added from phase setup
-      },
-      {
-        onSuccess: (newFile) => {
-          // Create a temporary file attachment to add to the state, so the user sees it in the list.
-          const temporaryFileAttachment = generateTemporaryFileAttachment({
-            fileId: newFile.data.id,
-            attachableId: phaseId,
-            attachableType: 'Phase',
-            position: inStatePhaseFileAttachments
-              ? inStatePhaseFileAttachments.length
-              : 0,
-          });
-
-          const isDuplicate = inStatePhaseFileAttachments?.some(
-            (fileAttachment) => {
-              return (
-                fileAttachment.relationships.file.data.id ===
-                temporaryFileAttachment.relationships.file.data.id
-              );
-            }
-          );
-
-          setInStatePhaseFileAttachments(
-            isDuplicate
-              ? inStatePhaseFileAttachments
-              : [
-                  ...(inStatePhaseFileAttachments || []),
-                  temporaryFileAttachment,
-                ]
-          );
-
-          setSubmitState(isDuplicate ? submitState : 'enabled');
-        },
-      }
-    );
-  };
-
-  const handlePhaseFileOnRemove = (
-    fileAttachmentToRemove: IFileAttachmentData
-  ) => {
-    setInStatePhaseFileAttachments(
-      inStatePhaseFileAttachments?.filter(
-        (fileAttachment) => fileAttachment.id !== fileAttachmentToRemove.id
-      )
-    );
-    setPhaseFileAttachmentsToRemove([
-      ...phaseFileAttachmentsToRemove,
-      fileAttachmentToRemove,
-    ]);
-    setSubmitState('enabled');
-  };
-
-  const handleFilesReorder = (
-    updatedFileAttachments: IFileAttachmentData[]
-  ) => {
-    // Update the position of the updated file attachments
-    const updatedFileAttachmentsWithPosition = updatedFileAttachments.map(
-      (fileAttachment, index) => ({
-        ...fileAttachment,
-        attributes: {
-          ...fileAttachment.attributes,
-          position: index,
-        },
-      })
-    );
-
-    setInStatePhaseFileAttachments(updatedFileAttachmentsWithPosition);
-    setSubmitState('enabled');
-  };
-
   const handleOnSubmit = async (event: FormEvent<any>) => {
     event.preventDefault();
     if (!formData) return;
 
-    const { isValidated, errors } = validate(formData, phases, formatMessage);
+    const { isValidated, errors } = validate(
+      formData,
+      phases,
+      formatMessage,
+      phase?.data.id,
+      standalone
+    );
 
     setValidationErrors(errors);
 
@@ -282,52 +203,28 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
     const phaseResponse = response.data;
     const phaseId = phaseResponse.id;
 
-    const initialFileAttachmentOrdering = phaseFileAttachments?.data.reduce(
-      (acc, file) => {
-        if (file.id) {
-          acc[file.id] = file.attributes.position;
-        }
-        return acc;
-      },
-      {}
-    );
+    try {
+      await files.save(phaseId);
+    } catch (reason) {
+      setErrors(fileAttachmentErrors(reason));
+      setProcessing(false);
+      setSubmitState('error');
+      return;
+    }
 
-    await syncPhaseFiles({
-      attachableId: phaseId,
-      attachableType: 'Phase',
-      fileAttachments: inStatePhaseFileAttachments || [],
-      fileAttachmentsToRemove: phaseFileAttachmentsToRemove,
-      fileAttachmentOrdering: initialFileAttachmentOrdering || {},
-    })
-      .then(() => {
-        setPhaseFileAttachmentsToRemove([]);
-        setProcessing(false);
-        setErrors(null);
-        setSubmitState('success');
+    setProcessing(false);
+    setErrors(null);
+    setSubmitState('success');
 
-        if (redirectAfterSave) {
-          const redirectTab = getTimelineTab(phaseResponse);
-          window.scrollTo(0, 0);
-          clHistory.push(
-            `/admin/projects/${projectId}/phases/${phaseId}/${redirectTab}`
-          );
-        } else {
-          setFormData(response.data.attributes);
-        }
-      })
-      .catch(({ errors }) => {
-        // For some reason, the BE adds a 'blank' error
-        // to the file errors array when the real error is
-        // extension_whitelist_error. So if we get that error,
-        // we filter out the blank error and only show the
-        // extension_whitelist_error.
-        errors.file[0].error === 'extension_whitelist_error'
-          ? setErrors({ file: [errors.file[0]] })
-          : setErrors({ ...errors });
-
-        setProcessing(false);
-        setSubmitState('error');
-      });
+    if (redirectAfterSave) {
+      const redirectTab = getPhaseSaveRedirectTab(phaseResponse);
+      window.scrollTo(0, 0);
+      clHistory.push(
+        `/admin/projects/${projectId}/phases/${phaseId}/${redirectTab}${window.location.search}`
+      );
+    } else {
+      setFormData(response.data.attributes);
+    }
   };
 
   const save = async (formData: IUpdatedPhaseProperties) => {
@@ -335,14 +232,13 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
     setProcessing(true);
 
     if (phase) {
+      // Placement only changes through PhasePlacement, so the form never sends it.
+      const { placement_type: _placementType, ...phaseData } = formData;
+
       updatePhase(
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         {
-          // TODO: Fix this the next time the file is edited.
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-          phaseId: phase?.data.id,
-          ...formData,
+          phaseId: phase.data.id,
+          ...phaseData,
         },
         {
           onSuccess: (response) => {
@@ -373,7 +269,11 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
     <Box ref={containerRef}>
       <Title variant="h3" color="primary">
         {phase && <FormattedMessage {...messages.editPhaseTitle} />}
-        {!phase && <FormattedMessage {...messages.newPhaseTitle} />}
+        {!phase && (
+          <FormattedMessage
+            {...(standalone ? messages.newSurveyTitle : messages.newPhaseTitle)}
+          />
+        )}
       </Title>
       <form onSubmit={handleOnSubmit}>
         <Section>
@@ -391,6 +291,7 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
                   : formatMessage(messages.phaseTitlePlaceholder)
               }
               onChange={handleTitleMultilocOnChange}
+              className="intercom-admin-phase-name"
             />
             <Error apiErrors={errors && errors.title_multiloc} />
           </SectionField>
@@ -398,6 +299,7 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
             formData={formData}
             errors={errors}
             validationErrors={validationErrors}
+            standalone={standalone}
             setSubmitState={setSubmitState}
             setFormData={setFormData}
             setValidationErrors={setValidationErrors}
@@ -409,43 +311,31 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
             apiErrors={errors}
             onChange={handlePhaseParticipationConfigChange}
             setValidationErrors={setValidationErrors}
+            hideMethodPicker={standalone}
           />
-          <SectionField className="fullWidth">
-            <Box display="flex" alignItems="center">
-              <SubSectionTitle>
-                <FormattedMessage {...messages.descriptionLabel} />
-              </SubSectionTitle>
-              {phases && phases.data.length < 2 && (
-                <IconTooltip
-                  content={
-                    <FormattedMessage {...messages.emptyDescriptionWarning} />
-                  }
-                />
-              )}
-            </Box>
-            <QuillMultilocWithLocaleSwitcher
-              id="description"
-              valueMultiloc={formData.description_multiloc}
-              onChange={handleEditorOnChange}
-              withCTAButton
+          {phase && (
+            <PhasePlacement
+              phase={phase.data}
+              hasUnsavedChanges={
+                submitState === 'enabled' || submitState === 'error'
+              }
             />
-            <Error apiErrors={errors && errors.description_multiloc} />
-          </SectionField>
+          )}
           <SectionField>
             <SubSectionTitle>
               <FormattedMessage {...messages.uploadAttachments} />
             </SubSectionTitle>
             <FileRepositorySelectAndUpload
               id="project-timeline-edit-form-file-uploader"
-              onFileAdd={handlePhaseFileOnAdd}
-              onFileRemove={handlePhaseFileOnRemove}
-              onFileReorder={handleFilesReorder}
-              onFileAttach={handlePhaseFileOnAttach}
-              fileAttachments={inStatePhaseFileAttachments}
+              onFileAdd={files.uploadFile}
+              onFileRemove={files.removeFile}
+              onFileReorder={files.reorderFiles}
+              onFileAttach={files.attachFile}
+              fileAttachments={files.attachments}
               enableDragAndDrop
               apiErrors={errors}
               maxSizeMb={10}
-              isUploadingFile={isAddingFile}
+              isUploadingFile={files.isUploadingFile}
             />
           </SectionField>
 
@@ -475,7 +365,11 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
           display="flex"
           justifyContent="flex-start"
         >
-          <Box py="8px" px={`${defaultAdminCardPadding}px`}>
+          <Box
+            py="8px"
+            px={`${defaultAdminCardPadding}px`}
+            className="intercom-phase-save-button"
+          >
             <SubmitWrapper
               loading={processing}
               status={submitState}
@@ -494,7 +388,8 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
 };
 
 const AdminPhaseEditWrapper = () => {
-  const { projectId, phaseId } = useParams();
+  const { projectId, phaseId } = useParams({ strict: false });
+  const { placement } = useSearch({ strict: false });
   const { data: phase } = usePhase(phaseId);
 
   if (!projectId) return null;
@@ -503,7 +398,11 @@ const AdminPhaseEditWrapper = () => {
   if (phaseLoading) return null;
 
   return (
-    <AdminPhaseEdit projectId={projectId} phase={phaseId ? phase : undefined} />
+    <AdminPhaseEdit
+      projectId={projectId}
+      phase={phaseId ? phase : undefined}
+      standaloneSurvey={placement === 'standalone'}
+    />
   );
 };
 

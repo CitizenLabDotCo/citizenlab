@@ -47,7 +47,7 @@ RSpec.describe Invites::BulkCreateJob do
 
         expect(invites_import.result.count).to eq(6)
         expect(invites_import.result.map { |h| h['email'] }).to match_array(emails)
-        expect(invites_import.result.map { |h| h['locale'] }.uniq).to match_array([locale, 'en', 'fr-FR'])
+        expect(invites_import.result.map { |h| h['locale'] }.uniq).to contain_exactly(locale, 'en', 'fr-FR')
         invites_import.result.each do |invite|
           expect(invite['roles']).to include(
             { 'type' => 'admin' },
@@ -63,8 +63,8 @@ RSpec.describe Invites::BulkCreateJob do
 
         expected_emails = emails - existing_invitee_emails
         expect(Invite.all.map { |i| i.invitee.email }).to match_array(expected_emails)
-        expect(Invite.all.map { |i| i.invitee.groups.map(&:id) }.uniq).to match_array [group_ids]
-        expect(Invite.all.map(&:invite_text).uniq).to match_array [invite_text]
+        expect(Invite.all.map { |i| i.invitee.groups.map(&:id) }.uniq).to contain_exactly(group_ids)
+        expect(Invite.all.map(&:invite_text).uniq).to contain_exactly(invite_text)
         expect(Invite.all.map { |i| i.invitee.locale }.uniq).to eq [locale]
         expect(Invite.all.map { |i| i.invitee.admin? }.uniq).to eq [true]
         expect(Invite.all.map { |i| i.invitee.project_moderator?(project.id) }.all?).to be true
@@ -179,6 +179,25 @@ RSpec.describe Invites::BulkCreateJob do
         duplicate_rows: [3, 6],
         invalid_rows: [2, 5],
         extra_args: { job_type: 'bulk_create_xlsx', xlsx_import: true }
+    end
+
+    describe 'when an unexpected error occurs' do
+      let(:invites_import) { create(:invites_import, job_type: 'bulk_create', importer: user) }
+
+      before do
+        allow(Invites::Service).to receive(:new).and_raise(ActiveRecord::StatementInvalid, 'boom')
+      end
+
+      # Checks the job routes through Invites::ImportRunner, which holds the rescue.
+      it 'completes the invites_import with an error and re-raises' do
+        expect do
+          described_class.perform_now(user, { emails: emails }, invites_import.id)
+        end.to raise_error(ActiveRecord::StatementInvalid)
+
+        invites_import.reload
+        expect(invites_import.completed_at).to be_present
+        expect(invites_import.result).to eq('errors' => [{ 'error' => 'unexpected_invite_error' }])
+      end
     end
   end
 end

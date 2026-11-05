@@ -1,13 +1,13 @@
-import { IOption } from 'typings';
-
 import { IFlatCustomField } from 'api/custom_fields/types';
 
 import { Localize } from 'hooks/useLocalize';
 
+import { trackVirtualPageView } from 'utils/analytics';
 import { MessageDescriptor } from 'utils/cl-intl';
 import { FormatMessageValues } from 'utils/cl-intl/useIntl';
 import { isNilOrError, isEmptyMultiloc } from 'utils/helperUtils';
 
+import { LIST_LAYOUT_MAX_OPTIONS } from './constants';
 import messages from './messages';
 
 export type Pages = {
@@ -37,14 +37,22 @@ export const convertCustomFieldsToNestedPages = (
   return nestedPagesData;
 };
 
-const isNillish = (value: any) => {
+export const isNillish = (value: any) => {
   if (!value) return true;
   if (Array.isArray(value) && value.length === 0) return true;
   if (value.constructor === Object) {
     if (Object.keys(value).length === 0) return true;
-    if (isEmptyMultiloc(value)) return true;
+    const isMultiloc = Object.values(value).every((v) => typeof v === 'string');
+    if (isMultiloc && isEmptyMultiloc(value)) return true;
   }
   return false;
+};
+
+export const hasUnansweredQuestions = (
+  pageQuestions: IFlatCustomField[],
+  formValues: Record<string, any>
+): boolean => {
+  return pageQuestions.some((q) => isNillish(formValues[q.key]));
 };
 
 type GetFormCompletionPercentageParams = {
@@ -90,50 +98,58 @@ export function getFormCompletionPercentage({
     }
   });
 
+  // A page with no questions (e.g. a title-only page) contributes no
+  // per-page progress. Guard against dividing by zero, which would
+  // otherwise produce NaN ("NaN% complete" in the progress bar).
   const percentageOnPage =
-    ((indexOfLastFilledOutQuestion + 1) / numberOfQuestionsOnPage) *
-    percentagePerPage;
+    numberOfQuestionsOnPage === 0
+      ? 0
+      : ((indexOfLastFilledOutQuestion + 1) / numberOfQuestionsOnPage) *
+        percentagePerPage;
 
   const percentage = pageNumberPercentage + percentageOnPage;
 
   return Math.floor(percentage);
 }
 
+export const isDropdownLayoutForced = (
+  inputType: string,
+  optionCount: number
+) => inputType === 'select' && optionCount > LIST_LAYOUT_MAX_OPTIONS;
+
 export const extractOptions = (
   question: IFlatCustomField,
   localize: Localize,
   randomize = false
-): IOption[] => {
-  let result: IOption[] = [];
-  if (question.options) {
-    result = question.options.map((selectOption) => {
-      return {
-        value: selectOption.key,
-        label: localize(selectOption.title_multiloc),
-        imageId: selectOption.image_id,
-      } as IOption;
-    });
+) => {
+  if (!question.options) return [];
 
-    if (randomize) {
-      // Separate "other" options from regular options
-      const otherOptions = result.filter((option) => option.value === 'other');
-      const regularOptions = result.filter(
-        (option) => option.value !== 'other'
-      );
+  let result = question.options.map((selectOption) => {
+    return {
+      value: selectOption.key,
+      label: localize(selectOption.title_multiloc),
+      image: selectOption.image,
+    };
+  });
 
-      // Shuffle only regular options
-      for (let i = regularOptions.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [regularOptions[i], regularOptions[j]] = [
-          regularOptions[j],
-          regularOptions[i],
-        ];
-      }
+  if (randomize) {
+    // Separate "other" options from regular options
+    const otherOptions = result.filter((option) => option.value === 'other');
+    const regularOptions = result.filter((option) => option.value !== 'other');
 
-      // Recombine arrays
-      result = [...regularOptions, ...otherOptions];
+    // Shuffle only regular options
+    for (let i = regularOptions.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [regularOptions[i], regularOptions[j]] = [
+        regularOptions[j],
+        regularOptions[i],
+      ];
     }
+
+    // Recombine arrays
+    result = [...regularOptions, ...otherOptions];
   }
+
   return result;
 };
 
@@ -170,4 +186,33 @@ export const getInstructionMessage = ({
     }
   }
   return null;
+};
+
+const PREFIX = 'u_';
+
+export const addPrefix = (customFieldValues: Record<string, any>) => {
+  const newValues = {};
+
+  for (const key in customFieldValues) {
+    newValues[`${PREFIX}${key}`] = customFieldValues[key];
+  }
+
+  return newValues;
+};
+
+// Pages have no key, although the type says otherwise.
+export const isUserField = (field: IFlatCustomField) =>
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  !!field.key?.startsWith(PREFIX);
+
+// Tracks each page view after the first page - the first page is tracked when the form is opened
+export const trackFormPageView = (
+  currentPageIndex: number,
+  lastPageIndex: number
+) => {
+  const pageNum =
+    currentPageIndex === lastPageIndex ? 'submitted' : currentPageIndex + 1;
+  if (pageNum !== 1) {
+    trackVirtualPageView(`${window.location.pathname}/${pageNum}`);
+  }
 };

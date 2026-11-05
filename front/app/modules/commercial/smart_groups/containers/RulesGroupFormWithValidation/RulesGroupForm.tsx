@@ -7,8 +7,11 @@ import styled from 'styled-components';
 import { Multiloc } from 'typings';
 import { string, object, array, number } from 'yup';
 
+import {
+  FooterContainer,
+  Fill,
+} from 'containers/Admin/users/_shared/NormalGroupForm';
 import adminUsersMessages from 'containers/Admin/users/messages';
-import { FooterContainer, Fill } from 'containers/Admin/users/NormalGroupForm';
 
 import { SectionField } from 'components/admin/Section';
 import Feedback from 'components/HookForm/Feedback';
@@ -19,7 +22,11 @@ import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 
 import { HookFormUserFilterConditions } from '../../components/UserFilterConditions';
-import { TRule } from '../../components/UserFilterConditions/rules';
+import {
+  MAX_EMAIL_LIST_SIZE,
+  TRule,
+  isEmailListRule,
+} from '../../components/UserFilterConditions/rules';
 
 import messages from './messages';
 
@@ -64,6 +71,20 @@ const RulesGroupForm = ({
           ) {
             return false;
           } else return true;
+        }
+      )
+      .test(
+        'emailListSize',
+        formatMessage(messages.emailListTooLongError, {
+          max: MAX_EMAIL_LIST_SIZE,
+        }),
+        function (rules: TRule[]) {
+          return !rules.some(
+            (rule) =>
+              isEmailListRule(rule) &&
+              Array.isArray(rule.value) &&
+              rule.value.length > MAX_EMAIL_LIST_SIZE
+          );
         }
       )
       .min(1, formatMessage(messages.atLeastOneRuleError))

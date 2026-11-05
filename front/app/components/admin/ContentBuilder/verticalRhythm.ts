@@ -1,0 +1,106 @@
+import { createContext, useContext } from 'react';
+
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
+import { useEditor, useNode } from '@craftjs/core';
+
+// Spacing between stacked widgets is a property of the boundary between two
+// roles, not of a widget: https://govocal-prototypes.pages.dev/playground/fo-spacing-rhythm/
+export const VerticalRhythmContext = createContext(false);
+
+// flow: inline content that reads as one column of text (paragraphs, images,
+// buttons). card: a visually bounded box (accordions, info boxes). band: a
+// full-width section of its own (phases, events).
+type WidgetRole = 'flow' | 'card' | 'band';
+
+const WIDGET_ROLES: Record<string, WidgetRole> = {
+  TextMultiloc: 'flow',
+  RichTextMultiloc: 'flow',
+  ImageMultiloc: 'flow',
+  IframeMultiloc: 'flow',
+  VideoEmbed: 'flow',
+  ButtonMultiloc: 'flow',
+  WhiteSpace: 'flow',
+  HtmlBlockMultiloc: 'flow',
+  FileAttachment: 'flow',
+  PageLink: 'flow',
+  TwoColumn: 'flow',
+  ThreeColumn: 'flow',
+  AccordionMultiloc: 'card',
+  AboutBox: 'card',
+  ImageTextCards: 'card',
+  InfoWithAccordions: 'card',
+  ExtraSurveysWidget: 'card',
+  CommunityMonitorCTA: 'card',
+  PhasesWidget: 'band',
+  EventsWidget: 'band',
+  EventsList: 'band',
+  ProjectsByFilter: 'band',
+  Spotlight: 'band',
+  Selection: 'band',
+  CustomPages: 'band',
+  Published: 'band',
+  OpenToParticipation: 'band',
+  FollowedItems: 'band',
+  Areas: 'band',
+  FinishedOrArchived: 'band',
+  CallToAction: 'band',
+  CustomPageBanner: 'band',
+  CustomPageTitle: 'flow',
+};
+
+const BOUNDARY_MARGINS = {
+  tight: { desktop: '12px', phone: '8px' },
+  flow: { desktop: '32px', phone: '24px' },
+  section: { desktop: '48px', phone: '32px' },
+} as const;
+
+// The gap at a major boundary the rhythm cannot see: above a page's first widget, which has
+// no previous sibling to be spaced against, or below a heading that sits outside the rhythm.
+export const useSectionBoundaryMargin = () =>
+  BOUNDARY_MARGINS.section[useBreakpoint('phone') ? 'phone' : 'desktop'];
+
+export const getBoundaryMargin = (
+  previousRole: WidgetRole | undefined,
+  role: WidgetRole | undefined,
+  isPhone: boolean
+): string | undefined => {
+  if (!previousRole || !role) return undefined;
+
+  const size = isPhone ? 'phone' : 'desktop';
+
+  if (previousRole === 'band' && role === 'band') return '0px';
+  if (previousRole === 'band' || role === 'band') {
+    return BOUNDARY_MARGINS.section[size];
+  }
+  if (previousRole === 'card' && role === 'card') {
+    return BOUNDARY_MARGINS.tight[size];
+  }
+  return BOUNDARY_MARGINS.flow[size];
+};
+
+// Margin above the current craft node, derived from the roles of the node and
+// its previous sibling. Undefined when rhythm is off for this builder, the
+// node has no role (regions, columns' inner containers), or it comes first.
+export const useVerticalRhythmMargin = (): string | undefined => {
+  const rhythmEnabled = useContext(VerticalRhythmContext);
+  const isPhone = useBreakpoint('phone');
+  const { id, name, parent } = useNode((node) => ({
+    name: node.data.name,
+    parent: node.data.parent,
+  }));
+  const { query } = useEditor();
+
+  if (!rhythmEnabled || !parent) return undefined;
+
+  const siblingIds = query.node(parent).get().data.nodes;
+  const index = siblingIds.indexOf(id);
+  if (index <= 0) return undefined;
+
+  const previousName = query.node(siblingIds[index - 1]).get().data.name;
+
+  return getBoundaryMargin(
+    WIDGET_ROLES[previousName],
+    WIDGET_ROLES[name],
+    isPhone
+  );
+};

@@ -1,16 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrorsWrapper } from 'typings';
 
-import adminPublicationsKeys from 'api/admin_publications/keys';
-import adminPublicationsStatusCountsKeys from 'api/admin_publications_status_counts/keys';
-import areasKeys from 'api/areas/keys';
-import meKeys from 'api/me/keys';
-import topicsKeys from 'api/topics/keys';
+import projectReviewsKeys from 'api/project_reviews/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import projectsKeys from './keys';
 import { IProject, IUpdatedProjectProperties } from './types';
+import { invalidateOnCRUD } from './utils';
 
 export const updateProject = async ({
   projectId,
@@ -24,18 +20,15 @@ export const updateProject = async ({
 
 const useUpdateProject = () => {
   const queryClient = useQueryClient();
+
   return useMutation<IProject, CLErrorsWrapper, IUpdatedProjectProperties>({
     mutationFn: updateProject,
-    onSuccess: async (_data) => {
-      queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
-      queryClient.invalidateQueries({ queryKey: topicsKeys.lists() });
-      queryClient.invalidateQueries({ queryKey: areasKeys.lists() });
-      queryClient.invalidateQueries({ queryKey: meKeys.all() });
+    onSuccess: async (project) => {
+      invalidateOnCRUD();
+      // A publication status change can delete or approve the project's review
+      // server-side, so the cached review no longer reflects the project.
       queryClient.invalidateQueries({
-        queryKey: adminPublicationsKeys.lists(),
-      });
-      queryClient.invalidateQueries({
-        queryKey: adminPublicationsStatusCountsKeys.items(),
+        queryKey: projectReviewsKeys.item({ projectId: project.data.id }),
       });
     },
   });

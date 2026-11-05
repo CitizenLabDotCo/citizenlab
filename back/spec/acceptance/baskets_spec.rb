@@ -53,47 +53,6 @@ resource 'Baskets' do
     end
   end
 
-  post 'web_api/v1/baskets' do
-    with_options scope: :basket do
-      parameter :submitted, 'Boolean value to mark the basket as submitted or unsubmitted. Defaults to false.', required: false
-      parameter :phase_id, 'The id of the phase/project to whom the basket belongs', required: true
-    end
-    ValidationErrorHelper.new.error_fields(self, Basket)
-
-    context 'when authenticated' do
-      before { header_token_for @user }
-
-      let(:submitted) { false }
-      let(:phase_id) { @project.phases.first.id }
-
-      example_request 'Create a basket' do
-        assert_status 201
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :attributes, :submitted_at)).to be_nil
-        expect(json_response.dig(:data, :relationships, :user, :data, :id)).to eq @user.id
-        expect(json_response.dig(:data, :relationships, :phase, :data, :id)).to eq phase_id
-      end
-
-      example '[error] Create a basket in a survey', document: false do
-        do_request(
-          basket: {
-            phase_id: create(:single_phase_typeform_survey_project).phases.first.id
-          }
-        )
-
-        expect(response_status).to be >= 400
-      end
-
-      context 'when the voting phase is over' do
-        before { @project.phases.first.update!(start_at: (Time.now - 5.days), end_at: (Time.now - 3.days)) }
-
-        example_request '[error] Create a basket' do
-          assert_status 401
-        end
-      end
-    end
-  end
-
   patch 'web_api/v1/baskets/:basket_id' do
     parameter :submitted, 'Boolean value to mark the basket as submitted or unsubmitted. Defaults to false.', scope: :basket, required: true
     ValidationErrorHelper.new.error_fields(self, Basket)

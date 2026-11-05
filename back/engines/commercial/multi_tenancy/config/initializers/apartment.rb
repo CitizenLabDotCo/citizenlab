@@ -73,7 +73,7 @@ Apartment.configure do |config|
     require 'gem_extensions/active_record/connection_adapters/postgre_sql_adapter'
     ActiveRecord::Migrator.prepend(GemExtensions::ActiveRecord::Migrator)
     ActiveRecord::ConnectionAdapters::AbstractAdapter.prepend(GemExtensions::ActiveRecord::ConnectionAdapters::AbstractAdapter)
-    ActiveRecord::ConnectionAdapters::PostgreSQLAdapter.prepend(GemExtensions::ActiveRecord::ConnectionAdapters::PostgreSqlAdapter) # rubocop:disable Rails/ActiveSupportOnLoad
+    ActiveSupport.on_load(:active_record_postgresqladapter) { prepend GemExtensions::ActiveRecord::ConnectionAdapters::PostgreSqlAdapter }
 
     config.parallel_migration_threads = parallel_migration_threads
   end
@@ -163,12 +163,32 @@ require 'apartment/adapters/abstract_adapter'
 # Registering +switch+ callbacks
 Apartment::Adapters::AbstractAdapter.set_callback :switch, :before do
   Current.reset_tenant # invalidate cached tenant and app_configuration
+  Time.zone = Rails.application.config.time_zone
+end
+
+# Set a flag to indicate that tenant creation is in progress. Currently, this is only used
+# in the `after` switch callback to minimize the number of DB queries (more details in the
+# `after` switch callback). DO NOT use this flag for anything else.
+Apartment::Adapters::AbstractAdapter.set_callback :create, :around do |_, block|
+  Thread.current[:apartment_creating_tenant] = true
+  block.call
+ensure
+  Thread.current[:apartment_creating_tenant] = false
 end
 
 Apartment::Adapters::AbstractAdapter.set_callback :switch, :after do |object|
   # It's not always correct. E.g. it's `public` tracking errors by sentry-rails gem in controllers.
   # But still extremely useful for errors in background jobs, rake tasks, and the console.
   Sentry.set_tags(switched_tenant: Tenant.schema_name_to_host(object.current)) if defined?(Sentry)
+
+  # We rely on the flag set by the :around create callback to avoid extra database queries
+  # in this callback, which runs on almost every request. Without the flag, we'd need a
+  # separate query to check if the `app_configurations` table exists, because querying a
+  # missing table causes a PostgreSQL error that makes the enclosing transaction
+  # unrecoverable.
+  Time.zone = AppConfiguration.timezone unless Thread.current[:apartment_creating_tenant]
+rescue ActiveRecord::RecordNotFound
+  Time.zone = Rails.application.config.time_zone
 end
 
 # Patching +PostgresqlSchemaAdapter+ to invalidate the current +AppConfiguration+ and
@@ -182,6 +202,7 @@ end
 module Apartment::Adapters::PostgresqlSchemaAdapterPatch
   def reset
     Current.reset_tenant
+    Time.zone = Rails.application.config.time_zone
     super
   end
 end

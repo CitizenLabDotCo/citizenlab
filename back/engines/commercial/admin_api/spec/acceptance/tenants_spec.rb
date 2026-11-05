@@ -35,6 +35,23 @@ resource 'Tenants', admin_api: true do
     end
   end
 
+  get 'admin_api/tenants/by_host' do
+    parameter :host, 'The hostname to look up', required: true
+
+    let(:host) { tenant.host }
+
+    example_request 'Get a tenant by hostname' do
+      assert_status 200
+      expect(json_response_body[:id]).to eq(tenant.id)
+      expect(json_response_body[:host]).to eq(tenant.host)
+    end
+
+    example 'Returns 404 for unknown host' do
+      do_request(host: 'nonexistent.example.com')
+      assert_status 404
+    end
+  end
+
   patch 'admin_api/tenants/:tenant_id' do
     with_options scope: :tenant do
       parameter :name, 'The name of the tenant'

@@ -13,11 +13,12 @@ resource 'Analytics', use_transactional_fixtures: false do
   post 'web_api/v1/analytics' do
     parameter :query, 'The query object.', required: true
 
-    let(:date) { Date.new(2022, 9, 1) }
+    let(:created_at) { Time.utc(2022, 9, 1) }
+    let(:date) { created_at.to_date }
 
     before do
       create(:dimension_date, date: date)
-      create(:idea, created_at: date)
+      create(:idea, created_at: created_at)
       create(:dimension_type)
     end
 

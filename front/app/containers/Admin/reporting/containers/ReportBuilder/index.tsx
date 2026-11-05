@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
+import { SerializedNodes } from '@craftjs/core';
 import { isEmpty } from 'lodash-es';
-import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 import { SupportedLocale } from 'typings';
 
 import { ReportLayout } from 'api/report_layout/types';
@@ -13,14 +13,15 @@ import useReportBuilderEnabled from 'api/reports/useReportBuilderEnabled';
 
 import useLocale from 'hooks/useLocale';
 
+import ContentBuilderCanvas from 'components/admin/ContentBuilder/Canvas';
 import Frame from 'components/admin/ContentBuilder/Frame';
-import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWrapper';
 import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
 import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { useLocation, useParams, useSearch } from 'utils/router';
 
 import Editor from '../../components/ReportBuilder/Editor';
 import Settings from '../../components/ReportBuilder/Settings';
@@ -37,6 +38,7 @@ import { A4_WIDTH } from '../../constants';
 import { ReportContextProvider } from '../../context/ReportContext';
 import messages from '../../messages';
 import areCraftjsObjectsEqual from '../../utils/areCraftjsObjectsEqual';
+import { ReportWordExportProvider } from '../../word/ReportWordExportContext';
 
 import { getTemplateConfig, TemplateConfig } from './utils';
 
@@ -71,97 +73,99 @@ const ReportBuilder = ({ report, reportLayout, templateConfig }: Props) => {
 
   const [saved, setSaved] = useState(true);
 
-  const handleSetSaved = () => {
+  // Use ref to track last saved nodes to avoid stale closure issues
+  const lastSavedNodesRef = useRef<SerializedNodes>(
+    reportLayout.attributes.craftjs_json
+  );
+
+  const handleSetSaved = useCallback((savedNodes: SerializedNodes) => {
+    lastSavedNodesRef.current = savedNodes;
     setSaved(true);
-  };
+  }, []);
+
+  const handleNodesChange = useCallback((query) => {
+    const currentNodes = query.getSerializedNodes();
+    const isSaved = areCraftjsObjectsEqual(
+      currentNodes,
+      lastSavedNodesRef.current
+    );
+    // Use setTimeout to defer state update outside render cycle
+    setTimeout(() => setSaved(isSaved), 0);
+  }, []);
 
   return (
-    <ReportContextProvider width={view} reportId={reportId} phaseId={phaseId}>
+    <ReportContextProvider
+      width={view}
+      reportId={reportId}
+      phaseId={phaseId}
+      contentBuilderLocale={selectedLocale}
+    >
       <FullscreenContentBuilder onUploadImage={setImageUploading}>
         <Editor
           isPreview={false}
           // onNodesChange is called twice on initial load.
-          onNodesChange={(query) => {
-            // This comparison is still not perfect.
-            // E.g., if you add a node with rich text editor, save the report,
-            // and then modify the default text and revert the change,
-            // areCraftjsObjectsEqual may still return false, because the default text may not have
-            // a wrapping <p> tag, which is added as soon as you start typing.
-            // But it's good enough for now.
-            // Also, see reactions_by_time_widget.cy.ts#getReportLayout
-            // for the current pitfalls of the `saved` state.
-            //
-            // Ideally, we should detected this `saved` state in only one way.
-            // Either always via areCraftjsObjectsEqual (probably,
-            // storing `currentNodes` state instead or `saved` state)
-            // or always via setSaved(true) (and then without detecting
-            // when nodes were changed and then changed back w/o saving).
-            // Also, we could move the states from ContentBuilderTopBar
-            // here to manage the entire state in one place and get rid of
-            // `setInterval`.
-            setSaved(
-              areCraftjsObjectsEqual(
-                query.getSerializedNodes(),
-                reportLayout.attributes.craftjs_json
-              )
-            );
-          }}
+          onNodesChange={handleNodesChange}
         >
-          <TopBar
-            hasPendingState={imageUploading}
-            selectedLocale={selectedLocale}
-            reportId={reportId}
-            isTemplate={!!templateConfig}
-            saved={saved}
-            view={view}
-            setView={setView}
-            setSaved={handleSetSaved}
-            setSelectedLocale={setSelectedLocale}
-          />
-          <Box mt={`${stylingConsts.menuHeight}px`}>
-            <Toolbox selectedLocale={selectedLocale} />
-            <LanguageProvider
-              contentBuilderLocale={selectedLocale}
-              platformLocale={platformLocale}
-            >
-              <StyledRightColumn>
-                {!!phaseId && (
-                  <Box maxWidth={A4_WIDTH} mb="20px">
-                    <Warning>
-                      <FormattedMessage {...messages.warningBanner} />
-                    </Warning>
-                  </Box>
-                )}
-                <ViewContainer view={view}>
-                  <Frame editorData={initialData}>
-                    {emptyReportOnInit &&
-                    templateConfig?.template === 'project' ? (
-                      <ProjectTemplate
-                        reportId={reportId}
-                        projectId={templateConfig.projectId}
-                      />
-                    ) : emptyReportOnInit &&
-                      templateConfig?.template === 'phase' ? (
-                      <PhaseTemplate phaseId={templateConfig.phaseId} />
-                    ) : emptyReportOnInit &&
-                      templateConfig?.template === 'platform' ? (
-                      <PlatformTemplate
-                        startDate={templateConfig.startDate}
-                        endDate={templateConfig.endDate}
-                      />
-                    ) : emptyReportOnInit &&
-                      templateConfig?.template === 'community-monitor' ? (
-                      <CommunityMonitorTemplate
-                        quarter={templateConfig.quarter}
-                        year={templateConfig.year}
-                      />
-                    ) : null}
-                  </Frame>
-                </ViewContainer>
-              </StyledRightColumn>
-            </LanguageProvider>
-            <Settings />
-          </Box>
+          <ReportWordExportProvider>
+            <TopBar
+              hasPendingState={imageUploading}
+              selectedLocale={selectedLocale}
+              reportId={reportId}
+              isTemplate={!!templateConfig}
+              saved={saved}
+              view={view}
+              setView={setView}
+              setSaved={handleSetSaved}
+              setSelectedLocale={setSelectedLocale}
+            />
+            <Box mt={`${stylingConsts.menuHeight}px`}>
+              <Toolbox selectedLocale={selectedLocale} />
+              <LanguageProvider
+                contentBuilderLocale={selectedLocale}
+                platformLocale={platformLocale}
+              >
+                <ContentBuilderCanvas toolboxWidth="220px">
+                  {!!phaseId && (
+                    <Box maxWidth={A4_WIDTH} mb="20px">
+                      <Warning>
+                        <FormattedMessage {...messages.warningBanner} />
+                      </Warning>
+                    </Box>
+                  )}
+                  <ViewContainer view={view}>
+                    <Frame editorData={initialData}>
+                      {emptyReportOnInit &&
+                      templateConfig?.template === 'project' ? (
+                        <ProjectTemplate
+                          reportId={reportId}
+                          projectId={templateConfig.projectId}
+                        />
+                      ) : emptyReportOnInit &&
+                        templateConfig?.template === 'phase' ? (
+                        <PhaseTemplate
+                          phaseId={templateConfig.phaseId}
+                          selectedLocale={selectedLocale}
+                        />
+                      ) : emptyReportOnInit &&
+                        templateConfig?.template === 'platform' ? (
+                        <PlatformTemplate
+                          startDate={templateConfig.startDate}
+                          endDate={templateConfig.endDate}
+                        />
+                      ) : emptyReportOnInit &&
+                        templateConfig?.template === 'community-monitor' ? (
+                        <CommunityMonitorTemplate
+                          quarter={templateConfig.quarter}
+                          year={templateConfig.year}
+                        />
+                      ) : null}
+                    </Frame>
+                  </ViewContainer>
+                </ContentBuilderCanvas>
+              </LanguageProvider>
+              <Settings />
+            </Box>
+          </ReportWordExportProvider>
         </Editor>
       </FullscreenContentBuilder>
     </ReportContextProvider>
@@ -171,24 +175,28 @@ const ReportBuilder = ({ report, reportLayout, templateConfig }: Props) => {
 const ReportBuilderWrapper = () => {
   const reportBuilderEnabled = useReportBuilderEnabled();
   const { pathname } = useLocation();
-  const { reportId } = useParams();
+  const { reportId } = useParams({ strict: false });
   const { data: report } = useReport(reportId);
   const { data: reportLayout } = useReportLayout(reportId);
 
-  const [search] = useSearchParams();
-  const [templateProjectId] = useState(search.get('templateProjectId'));
-  const [templatePhaseId] = useState(search.get('templatePhaseId'));
+  const search = useSearch({
+    from: '/$locale/admin/reporting/report-builder/$reportId/editor',
+  });
+  const [templateProjectId] = useState(search.templateProjectId ?? null);
+  const [templatePhaseId] = useState(search.templatePhaseId ?? null);
   const [startDatePlatformReport] = useState(
-    search.get('startDatePlatformReport')
+    search.startDatePlatformReport ?? null
   );
 
-  const [endDatePlatformReport] = useState(search.get('endDatePlatformReport'));
+  const [endDatePlatformReport] = useState(
+    search.endDatePlatformReport ?? null
+  );
 
   const [templateYear] = useState(
-    report?.data.attributes.year?.toString() || search.get('year')
+    report?.data.attributes.year?.toString() || search.year || null
   );
   const [templateQuarter] = useState(
-    report?.data.attributes.quarter?.toString() || search.get('quarter')
+    report?.data.attributes.quarter?.toString() || search.quarter || null
   );
 
   useEffect(() => {

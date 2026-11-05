@@ -2,7 +2,6 @@ import React, { memo, useState } from 'react';
 
 import { Tooltip } from '@citizenlab/cl2-component-library';
 import flatten from 'geojson-flatten';
-import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { IMapConfig } from 'api/map_config/types';
@@ -15,6 +14,7 @@ import Error from 'components/UI/Error';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
+import { useParams } from 'utils/router';
 
 import { getUnnamedLayerTitleMultiloc } from '../../../../utils/mapUtils/map';
 import messages from '../messages';
@@ -65,7 +65,7 @@ interface Props {
 const GeoJsonImportButton = memo<Props>(({ mapConfig, className }) => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const { projectId } = useParams() as {
+  const { projectId } = useParams({ strict: false }) as {
     projectId: string;
   };
   const { mutate: createProjectMapLayer } = useAddMapLayer(projectId);

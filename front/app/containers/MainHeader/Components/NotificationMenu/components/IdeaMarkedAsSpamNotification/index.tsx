@@ -19,7 +19,8 @@ const IdeaMarkedAsSpamNotification = memo<Props>((props) => {
 
   return (
     <NotificationWrapper
-      linkTo={`/ideas/${notification.attributes.post_slug}`}
+      to="/ideas/$slug"
+      params={{ slug: notification.attributes.post_slug }}
       timing={notification.attributes.created_at}
       icon="idea"
       isRead={!!notification.attributes.read_at}
@@ -30,7 +31,7 @@ const IdeaMarkedAsSpamNotification = memo<Props>((props) => {
           name: (
             <UserLink
               userName={notification.attributes.initiating_user_first_name}
-              userSlug={notification.attributes.initiating_user_slug}
+              userId={notification.attributes.initiating_user_id}
             />
           ),
           postTitle: <T value={notification.attributes.post_title_multiloc} />,

@@ -5,8 +5,8 @@ module MultiTenancy
     module Serializers
       module ReportBuilder
         class Report < Base
-          ref_attributes %i[owner phase]
-          attributes %i[name visible]
+          ref_attributes %i[owner phase project]
+          attributes %i[community_monitor name quarter visible year]
         end
       end
     end

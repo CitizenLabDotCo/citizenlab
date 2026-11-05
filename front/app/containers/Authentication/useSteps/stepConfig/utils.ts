@@ -1,18 +1,75 @@
 import { AuthenticationRequirements } from 'api/authentication/authentication_requirements/types';
+import { requestReconfirmCodeEmail } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
+import { requestReconfirmCodePhone } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode';
+import { redirectToSSOProvider } from 'api/authentication/singleSignOn';
+import { checkEmail, checkPhone } from 'api/users/checkUser';
 
-import { AuthenticationData } from 'containers/Authentication/typings';
+import { customerAnalyticsEvents, trackEventByName } from 'utils/analytics';
 
-export const checkMissingData = (
+import {
+  GetRequirements,
+  UpdateState,
+  AuthenticationData,
+  SSOProviderWithoutVienna,
+  State,
+} from '../../typings';
+
+import { Step } from './typings';
+
+// The back end sets the flow, so 'signup' means a new account was created.
+export const trackAuthenticated = (
+  flow: 'signup' | 'signin',
+  method: 'email' | 'phone' | 'sso' | 'invite'
+) => {
+  trackEventByName(
+    flow === 'signup'
+      ? customerAnalyticsEvents.signUp
+      : customerAnalyticsEvents.login,
+    {
+      method,
+    }
+  );
+};
+
+export const checkMissingData = async (
   requirements: AuthenticationRequirements['requirements'],
   { context }: AuthenticationData,
   flow: 'signup' | 'signin'
 ) => {
-  if (requiredBuiltInFields(requirements)) {
-    return 'missing-data:built-in';
+  // The email/phone action encodes both the step and the request/confirm
+  // endpoint pair the user needs (provide vs confirm, own email vs new_email).
+  const emailStep = emailActionStep(requirements);
+  if (emailStep) {
+    // Re-confirmation (confirmed_email_expiry elapsed) lands the user on the
+    // confirmation step without a code having been auto-sent, so request one.
+    // The call is idempotent (onlyIfFirstTime) and authenticated (backend uses
+    // current_user), so reopening the flow won't duplicate. Awaited on purpose:
+    // the code only exists once this resolves, so returning earlier would show
+    // the code input for a code that hasn't been generated yet, and a code
+    // submitted in that window is rejected as invalid. Failures are swallowed -
+    // the user falls back to the resend button.
+    if (
+      requirements.authentication.email_action_required === 'reconfirm_email'
+    ) {
+      await requestReconfirmCodeEmail({ onlyIfFirstTime: true });
+    }
+    return emailStep;
   }
 
-  if (confirmationRequired(requirements)) {
-    return 'missing-data:email-confirmation';
+  const phoneStep = phoneActionStep(requirements);
+  if (phoneStep) {
+    if (
+      requirements.authentication.phone_action_required === 'reconfirm_phone'
+    ) {
+      await requestReconfirmCodePhone({ onlyIfFirstTime: true });
+    }
+    return phoneStep;
+  }
+
+  // The remaining built-in fields (name/password) plus providing an email are
+  // all collected on the built-in step - see requiredBuiltInFields.
+  if (requiredBuiltInFields(requirements)) {
+    return 'missing-data:built-in';
   }
 
   if (requirements.verification) {
@@ -53,12 +110,45 @@ export const doesNotMeetGroupCriteria = (
   return requirements.group_membership;
 };
 
-export const confirmationRequired = (
+// Maps email_action_required to the step that resolves it. The provide actions
+// return null here because the email input lives on the built-in step (see
+// requiredBuiltInFields); confirm_email uses the unauthenticated in-place
+// confirmation, confirm_new_email the authenticated new_email confirmation, and
+// confirm_merge_account the code sent to the pending merge_target_email.
+const emailActionStep = (
   requirements: AuthenticationRequirements['requirements']
-) => {
-  return requirements.authentication.missing_user_attributes.includes(
-    'confirmation'
-  );
+): Step | null => {
+  switch (requirements.authentication.email_action_required) {
+    case 'confirm_email':
+      return 'pre-auth:unauthenticated-confirmation';
+    case 'confirm_new_email':
+      return 'confirmation:new_email';
+    case 'confirm_merge_account':
+      return 'confirmation:merge-account';
+    case 'reconfirm_email':
+      return 'confirmation:reconfirm-email';
+    default:
+      return null;
+  }
+};
+
+// Maps phone_action_required to its step. Both provide actions collect the
+// number on the phone step; confirm_new_phone jumps straight to confirmation.
+const phoneActionStep = (
+  requirements: AuthenticationRequirements['requirements']
+): Step | null => {
+  switch (requirements.authentication.phone_action_required) {
+    case 'provide_new_phone':
+      return 'missing-data:new_phone';
+    case 'confirm_phone':
+      return 'pre-auth:unauthenticated-phone-confirmation';
+    case 'confirm_new_phone':
+      return 'confirmation:new_phone';
+    case 'reconfirm_phone':
+      return 'confirmation:reconfirm-phone';
+    default:
+      return null;
+  }
 };
 
 export const showOnboarding = (
@@ -88,6 +178,19 @@ const requiredCustomFields = (
   return false;
 };
 
+// Whether the user should provide an email as part of the built-in step. This
+// is a "provide" action (the value gets stored in email/new_email and confirmed
+// afterwards) - the confirm actions are handled by emailActionStep instead.
+export const askEmailOnBuiltInStep = (
+  requirements: AuthenticationRequirements['requirements']
+) => {
+  const { email_action_required } = requirements.authentication;
+  return (
+    email_action_required === 'provide_email' ||
+    email_action_required === 'provide_new_email'
+  );
+};
+
 const requiredBuiltInFields = (
   requirements: AuthenticationRequirements['requirements']
 ) => {
@@ -97,8 +200,115 @@ const requiredBuiltInFields = (
 
   const askFirstName = missingAttributes.has('first_name');
   const askLastName = missingAttributes.has('last_name');
-  const askEmail = missingAttributes.has('email');
   const askPassword = missingAttributes.has('password');
 
-  return askFirstName || askLastName || askEmail || askPassword;
+  return (
+    askFirstName ||
+    askLastName ||
+    askPassword ||
+    askEmailOnBuiltInStep(requirements)
+  );
+};
+
+export const handleSubmitEmail = async (
+  email: string,
+  setCurrentStep: (step: Step) => void,
+  updateState: UpdateState
+) => {
+  try {
+    const response = await checkEmail(email);
+    const { action } = response.data.attributes;
+
+    if (action === 'terms') {
+      updateState({ flow: 'signup' });
+      setCurrentStep('pre-auth:policies');
+    }
+
+    if (action === 'password') {
+      updateState({ flow: 'signin' });
+      setCurrentStep('pre-auth:password');
+    }
+
+    if (action === 'confirm') {
+      updateState({ flow: 'signin' });
+      setCurrentStep('pre-auth:unauthenticated-confirmation');
+    }
+  } catch (e) {
+    if (e.errors?.email?.[0]?.error === 'taken_by_invite') {
+      setCurrentStep('invite:taken');
+    } else {
+      throw e;
+    }
+  }
+};
+
+// The phone mirror of handleSubmitEmail. Invites are never sent to a phone
+// number, so there is no taken_by_invite case here.
+export const handleSubmitPhone = async (
+  phone: string,
+  setCurrentStep: (step: Step) => void,
+  updateState: UpdateState
+) => {
+  const response = await checkPhone(phone);
+  const { action } = response.data.attributes;
+
+  if (action === 'terms') {
+    updateState({ flow: 'signup' });
+    setCurrentStep('pre-auth:phone-policies');
+  }
+
+  if (action === 'password') {
+    updateState({ flow: 'signin' });
+    setCurrentStep('pre-auth:password');
+  }
+
+  if (action === 'confirm') {
+    updateState({ flow: 'signin' });
+    setCurrentStep('pre-auth:unauthenticated-phone-confirmation');
+  }
+};
+
+export const handleSSOClick = async (
+  ssoProvider: SSOProviderWithoutVienna,
+  getAuthenticationData: () => AuthenticationData,
+  getRequirements: GetRequirements,
+  setCurrentStep: (step: Step) => void,
+  updateState: UpdateState,
+  state: State,
+  claimTokens?: string[]
+) => {
+  if (ssoProvider === 'clave_unica') {
+    // If clave unica, we always go straight to SSO login
+    redirectToSSOProvider(
+      ssoProvider,
+      getAuthenticationData(),
+      true,
+      state.flow,
+      claimTokens
+    );
+  } else if (ssoProvider === 'franceconnect') {
+    const { requirements } = await getRequirements();
+
+    redirectToSSOProvider(
+      'franceconnect',
+      getAuthenticationData(),
+      requirements.verification,
+      'signin',
+      claimTokens
+    );
+  } else {
+    // If other SSO provider, it depends on the flow
+    if (state.flow === 'signin') {
+      redirectToSSOProvider(
+        ssoProvider,
+        getAuthenticationData(),
+        true,
+        state.flow,
+        claimTokens
+      );
+    } else {
+      updateState({ ssoProvider });
+      setCurrentStep('pre-auth:sso-policies');
+    }
+  }
 };

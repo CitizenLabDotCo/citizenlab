@@ -52,7 +52,7 @@ describe LocalProjectCopyService do
     let!(:timeline_project) { create(:project_with_past_ideation_and_current_information_phase) }
     let!(:folder) { create(:project_folder) }
 
-    it 'works' do
+    it 'creates a new project when copying' do
       project_count = Project.count
       service.copy(open_ended_project)
 
@@ -108,20 +108,33 @@ describe LocalProjectCopyService do
       expect(copied_project.areas.map(&:as_json)).to match_array(source_project.areas.map(&:as_json))
     end
 
-    it 'associates topics of source project with copied project' do
-      source_project = create(:project, topics: create_list(:topic, 2))
+    it 'associates global topics of source project with copied project' do
+      source_project = create(:project, global_topics: create_list(:global_topic, 2))
       copied_project = service.copy(source_project.reload)
 
-      expect(copied_project.topics.map(&:as_json)).to match_array(source_project.topics.map(&:as_json))
+      expect(copied_project.global_topics.map(&:as_json)).to match_array(source_project.global_topics.map(&:as_json))
     end
 
-    it 'copies associated projects_allowed_input_topics' do
-      create_list(:projects_allowed_input_topic, 2, project_id: open_ended_project.id)
+    it 'copies associated input_topics' do
+      create_list(:input_topic, 2, project_id: open_ended_project.id)
       copied_project = service.copy(open_ended_project)
 
-      expect(copied_project.allowed_input_topics.count).to eq 2
-      expect(copied_project.allowed_input_topics.map(&:as_json))
-        .to match_array(open_ended_project.allowed_input_topics.map(&:as_json))
+      expect(copied_project.input_topics.count).to eq 2
+      expect(copied_project.input_topics.map { it.as_json(except: %i[id project_id created_at updated_at]) })
+        .to match_array(open_ended_project.input_topics.map { it.as_json(except: %i[id project_id created_at updated_at]) })
+    end
+
+    it 'copies nested associated input_topics preserving hierarchy' do
+      parent_topic = create(:input_topic, project_id: open_ended_project.id)
+      child_topic1 = create(:input_topic, parent: parent_topic, project_id: open_ended_project.id)
+      child_topic2 = create(:input_topic, parent: parent_topic, project_id: open_ended_project.id)
+      copied_project = service.copy(open_ended_project)
+      copied_parent_topic = copied_project.input_topics.find_by(title_multiloc: parent_topic.title_multiloc)
+      copied_child_topic1 = copied_project.input_topics.find_by(title_multiloc: child_topic1.title_multiloc)
+      copied_child_topic2 = copied_project.input_topics.find_by(title_multiloc: child_topic2
+        .title_multiloc)
+      expect(copied_child_topic1.parent_id).to eq copied_parent_topic.id
+      expect(copied_child_topic2.parent_id).to eq copied_parent_topic.id
     end
 
     it 'copies associated maps configs and layers' do
@@ -141,13 +154,14 @@ describe LocalProjectCopyService do
     end
 
     it 'copies associated volunteering_causes' do
-      create_list(:cause, 2, phase: open_ended_project.phases.first)
-      copied_project = service.copy(open_ended_project.reload)
+      volunteering_project = create(:single_phase_volunteering_project)
+      create_list(:cause, 2, phase: volunteering_project.phases.first)
+      copied_project = service.copy(volunteering_project.reload)
 
       expect(copied_project.phases.first.causes.map do |record|
         record.as_json(except: %i[id phase_id image updated_at created_at])
       end)
-        .to match_array(open_ended_project.phases.first.causes.map do |record|
+        .to match_array(volunteering_project.phases.first.causes.map do |record|
           record.as_json(except: %i[id phase_id image updated_at created_at])
         end)
     end
@@ -234,20 +248,19 @@ describe LocalProjectCopyService do
     end
 
     describe 'when source project has file attachments' do
-      before { create_list(:project_file, 2, project: open_ended_project) }
+      before do
+        create_list(:file, 2, projects: [open_ended_project]).each do |file|
+          create(:file_attachment, file: file, attachable: open_ended_project)
+        end
+      end
 
-      it 'creates associated copies of the file attachments' do
+      it 'creates associated copies of the files and their attachments' do
         copied_project = service.copy(open_ended_project)
 
-        expect(copied_project.project_files.count).to eq 2
-        expect(copied_project.project_files.first.file.url).to include(open_ended_project.project_files.first.name)
-
-        expect(copied_project.project_files.map do |record|
-          record.as_json(only: %i[ordering name])
-        end)
-          .to match_array(open_ended_project.project_files.map do |record|
-            record.as_json(only: %i[ordering name])
-          end)
+        expect(copied_project.files.count).to eq 2
+        expect(copied_project.file_attachments.count).to eq 2
+        expect(copied_project.attached_files.map(&:name))
+          .to match_array(open_ended_project.attached_files.map(&:name))
       end
     end
 
@@ -272,9 +285,8 @@ describe LocalProjectCopyService do
       let(:groups) { create_list(:group, 2) }
       let(:permission) do
         Permissions::PermissionsUpdateService.new.update_all_permissions
-        TimelineService.new
-          .current_phase_not_archived(source_project).permissions
-          .find_by(action: 'commenting_idea')
+        phase = TimelineService.new.current_phase_not_archived(source_project)
+        override_permissions!(phase, actions: ['commenting_idea']).first
       end
 
       it 'copies the action groups permission' do
@@ -283,40 +295,60 @@ describe LocalProjectCopyService do
         copied_project = service.copy(source_project)
         expect(copied_project.phases.first.permissions.find_by(action: 'commenting_idea').groups).to match_array(groups)
       end
+
+      it 'leaves the actions that inherit the global permission inherited' do
+        permission.update!(permitted_by: 'users', groups: groups)
+
+        copied_project = service.copy(source_project)
+        copied_phase = copied_project.phases.first
+        expect(copied_phase.permissions.pluck(:action)).to eq ['commenting_idea']
+        expect(Permissions::PermissionInheritanceService.new.find(copied_phase, 'posting_idea')).to be_inherited
+      end
     end
 
     describe 'when source project phase has file attachments' do
       let(:source_phase) { timeline_project.phases.order(:start_at).first }
 
-      before { create_list(:phase_file, 2, phase: source_phase) }
+      before do
+        files = create_list(:file, 2, projects: [timeline_project])
+        files.each { |file| create(:file_attachment, file: file, attachable: source_phase) }
+      end
 
-      it 'creates associated copies of the file attachments' do
+      it 'creates associated copies of the files and their attachments' do
         copied_project = service.copy(timeline_project)
         copied_phase = copied_project.phases.order(:start_at).first
 
-        expect(copied_phase.phase_files.count).to eq 2
-        expect(copied_phase.phase_files.first.file.url).to include(source_phase.phase_files.first.name)
-
-        expect(copied_phase.phase_files.map do |record|
-          record.as_json(only: %i[ordering name])
-        end)
-          .to match_array(source_phase.phase_files.map do |record|
-            record.as_json(only: %i[ordering name])
-          end)
+        expect(copied_phase.file_attachments.count).to eq 2
+        expect(copied_phase.attached_files.map(&:name))
+          .to match_array(source_phase.attached_files.map(&:name))
       end
     end
 
     it 'shifts timelines of phases to start first phase on day of copying' do
-      freeze_time do
-        phase1_start = timeline_project.phases.order(:start_at).first.start_at
-        phase2_end = timeline_project.phases.order(:start_at).second.end_at
+      # Pin the date so that neither the original timeline nor the copied one (which
+      # starts today) crosses a DST boundary.
+      travel_to Time.zone.parse('2026-06-15 12:00') do
+        project = create(:project)
+        create(:phase, project: project, start_at: 10.days.ago, end_at: 5.days.ago)
+        create(:phase, project: project, participation_method: 'information', start_at: 5.days.ago, end_at: 5.days.from_now)
 
-        today = Time.zone.today
-        expected_shift = (today - phase1_start).days
-        copied_project = service.copy(timeline_project)
+        phase1_start = project.phases.first.start_at
+        phase2_end = project.phases.second.end_at
 
-        expect(copied_project.phases.order(:start_at).first.start_at).to eq today
-        expect(copied_project.phases.order(:start_at).second.end_at).to eq phase2_end + expected_shift
+        copied_project = service.copy(project)
+        copied_phase1_start = copied_project.phases.first.start_at
+        copied_phase2_end = copied_project.phases.second.end_at
+
+        today = Date.current
+        expect(copied_phase1_start)
+          # The first phase should start on the copy date at the same time as the original
+          # phase. Subsecond precision is lost by the serialization/deserialization
+          # process used by LocalProjectCopyService.
+          .to be_within(1.second)
+          .of(phase1_start.change(year: today.year, month: today.month, day: today.day))
+
+        expect(copied_phase2_end - copied_phase1_start)
+          .to be_within(1.second).of(phase2_end - phase1_start)
       end
     end
 

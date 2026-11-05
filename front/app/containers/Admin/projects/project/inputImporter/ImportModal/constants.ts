@@ -1,0 +1,1 @@
+export const IDEA_IMPORT_FILE_MAX_SIZE_MB = 75;

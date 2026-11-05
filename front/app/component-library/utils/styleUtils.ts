@@ -68,6 +68,7 @@ export const themeColors = {
   blue700: '#022331',
   blue500: '#044D6C', // formerly adminTextColor, emailText
   blue400: '#00577C', // formerly clIconPrimary
+  blue10: '#E6EEF1', // 10% opacity of blue500
   /**
    * Teal
    */
@@ -77,6 +78,7 @@ export const themeColors = {
   teal300: '#40B8C5', // formerly clBlueLight
   teal200: '#80CFD8', // formerly clBlueLighter
   teal100: '#BEE7EB', // formerly clBlueLightest
+  teal75: '#E5F5F7',
   teal50: '#EDF8FA',
   /**
    * Red
@@ -90,10 +92,12 @@ export const themeColors = {
    * Green
    */
   green700: '#024D2B',
+  green600: '#096F03',
   green500: '#04884C', // formerly clGreen
   green400: '#32B67A',
   green300: '#62C462',
   green100: '#e4f7ef', // formerly clGreenSuccessBackground
+  greenMint: '#CAE0CD',
 
   /**
    * Orange
@@ -144,6 +148,7 @@ export type Color =
   | 'inherit';
 
 export const fontSizes = {
+  xxs: 10,
   xs: 12,
   s: 14,
   base: 16,
@@ -193,6 +198,69 @@ export const defaultOutline = css`
   border: 2px solid ${(props) => props.theme.colors.tenantPrimary};
 `;
 
+export const focusRing = css`
+  outline: 2px solid ${colors.black};
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px ${colors.white};
+`;
+
+// Back office theme
+const BO_HEADER_FONT_SIZE = '13px';
+const BO_CONTROL_FONT_SIZE = 13;
+
+export const bo = {
+  colors: {
+    textHeadingStrong: '#1E1E1E',
+    textHeading: '#474747',
+    statusFill: '#E2EEE1',
+    stepHalo: '#D7E3E7',
+    liveHalo: '#DAF2E7',
+    stepBorder: '#D4D9DD',
+    stepDone: '#4A935E',
+    crumbSeparator: '#8D9EAC',
+  },
+  borderRadius: '8px',
+  panelBorderRadius: '12px',
+  headerFontSize: BO_HEADER_FONT_SIZE,
+  controlFontSize: BO_CONTROL_FONT_SIZE,
+  buttonMedium: {
+    height: '32px',
+    padding: '0 16px',
+    fontSize: BO_HEADER_FONT_SIZE,
+    iconSize: '14px',
+  },
+};
+
+export const stylingConsts = {
+  menuHeight: 78,
+  mobileMenuHeight: 72,
+  mobileTopBarHeight: 66,
+  footerHeight: 60,
+  maxPageWidth: 952,
+  inputHeight: 48,
+  bannerWidth: 1340,
+  pageWidth: 1150,
+  textWidth: 720,
+  borderRadius: '3px',
+  border: `1px solid ${colors.divider}`,
+};
+
+type DefaultInputStyleProps = {
+  theme: MainThemeProps;
+  height?: string | number;
+  size?: InputSize;
+};
+
+const getHeight = (props: DefaultInputStyleProps) => {
+  if (typeof props.height === 'string') {
+    return props.height;
+  }
+  if (typeof props.height === 'number') {
+    return `${props.height}px`;
+  }
+  return `${stylingConsts.inputHeight}px`;
+};
+
 export const defaultInputStyle = css`
   color: ${colors.textPrimary};
   font-size: ${fontSizes.base}px;
@@ -208,6 +276,7 @@ export const defaultInputStyle = css`
   -moz-appearance: none;
   -webkit-appearance: none;
   transition: box-shadow 100ms ease-out;
+  height: ${getHeight};
 
   &:not(:disabled):not(.disabled) {
     &:not(.error):hover,
@@ -233,9 +302,9 @@ export const defaultInputStyle = css`
   &:disabled,
   &.disabled {
     opacity: 1;
-    color: #666;
-    background-color: #f9f9f9;
-    border-color: #ccc;
+    color: ${colors.grey700};
+    background-color: ${colors.grey100};
+    border-color: ${colors.grey400};
     cursor: not-allowed;
   }
   ${(props: { size?: InputSize }) =>
@@ -244,21 +313,7 @@ export const defaultInputStyle = css`
       font-size: ${fontSizes.s}px;
       padding: 10px;
     `}
-  }
 `;
-
-export const stylingConsts = {
-  menuHeight: 78,
-  mobileMenuHeight: 72,
-  mobileTopBarHeight: 66,
-  footerHeight: 60,
-  maxPageWidth: 952,
-  bannerWidth: 1340,
-  pageWidth: 1150,
-  textWidth: 720,
-  borderRadius: '3px',
-  border: `1px solid ${colors.divider}`,
-};
 
 export const getFontWeightCSS = (fontWeight: FontWeight) => {
   switch (fontWeight) {
@@ -428,6 +483,36 @@ export function quillEditedContent(
       max-width: 100%;
     }
 
+    [class^="ql-image-align-"],
+    [class^="ql-iframe-align-"] {
+      display: block;
+      width: var(--resize-width, auto);
+      max-width: 100%;
+    }
+
+    [class^="ql-image-align-"] > img {
+      width: 100%;
+      height: auto;
+    }
+
+    .ql-image-align-left,
+    .ql-iframe-align-left {
+      float: left;
+      margin: 0 1em 1em 0;
+    }
+
+    .ql-image-align-center,
+    .ql-iframe-align-center {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .ql-image-align-right,
+    .ql-iframe-align-right {
+      float: right;
+      margin: 0 0 1em 1em;
+    }
+
     .custom-button {
       padding: 10px 18px;
       display: inline-block;
@@ -443,6 +528,11 @@ export function quillEditedContent(
         color: #fff;
         text-decoration: none;
         background-color: ${darken(0.15, buttonColor)};
+      }
+
+      &:focus-visible {
+        outline: 2px solid #fff;
+        outline-offset: -4px;
       }
     }
   `;
@@ -540,21 +630,4 @@ export function hexToRgb(hex: any) {
         b: parseInt(result[3], 16),
       }
     : null;
-}
-
-// RGBAtoRGB
-// Description: Function to convert RGBA color to RGB representation by blending it with a white background.
-// https://stackoverflow.com/a/71532946
-export function RGBAtoRGB(rgba: string, alpha: number) {
-  const rgbaValues: RegExpMatchArray | null = rgba.match(/\d+/g);
-
-  if (rgbaValues) {
-    const r = Math.round((1 - alpha) * 255 + alpha * parseFloat(rgbaValues[0]));
-    const g = Math.round((1 - alpha) * 255 + alpha * parseFloat(rgbaValues[1]));
-    const b = Math.round((1 - alpha) * 255 + alpha * parseFloat(rgbaValues[2]));
-
-    return `rgba(${r},${g},${b}, 1.0)`;
-  }
-
-  return '';
 }

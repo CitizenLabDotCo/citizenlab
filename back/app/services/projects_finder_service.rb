@@ -8,62 +8,23 @@ class ProjectsFinderService
     @areas = params[:areas]
   end
 
-  # Returns an ActiveRecord collection of published projects that are
-  # in an active participatory phase (where user can probably do something),
-  # ordered by the end date of the current phase, soonest first (nulls last).
-  # Also returns action descriptors for each project, to avoid getting them again when serializing.
-  # => { projects: [Project], descriptor_pairs: { <project.id>: { <action_descriptors> }, ... } }
+  # Returns an ActiveRecord collection of published projects with an active
+  # participatory phase in which the user can (probably) participate, ordered
+  # by the end date of that phase, soonest first (nulls last).
   def participation_possible
-    subquery = @projects
-      .not_in_draft_folder # This includes a LEFT OUTER JOIN with admin_publications
-      .where(admin_publications: { publication_status: 'published' })
+    project_ids = []
 
-    # Projects with active participatory (not information) phase & include the phases.end_at column
-    subquery = projects_with_active_phase(subquery)
-      .joins('INNER JOIN phases AS active_phases ON active_phases.project_id = projects.id')
-      .where.not(phases: { participation_method: 'information' })
-      .select('projects.created_at AS projects_created_at, projects.id AS projects_id')
+    active_participatory_phases.each do |phase|
+      next if project_ids.include?(phase.project_id)
+      next if !participation_possible_for?(phase)
 
-    # Perform the SELECT DISTINCT on the outer query and order first by the end date of the active phase,
-    # second by project created_at, and third by project ID.
-    # Secondary & ternary orderings prevent duplicates when paginating, when prior ordering involves equivalent values
-    projects = Project
-      .from(subquery, :projects)
-      .distinct
-      .order('phase_end_at ASC NULLS LAST, projects_created_at ASC, projects_id ASC')
-      .preload(phases: { permissions: [:groups] })
-
-    # Projects user can participate in, or where such participation could (probably) be made possible by user
-    # (e.g. user not signed in).
-    # Unfortunately, this breaks the query chain, so we have to start a new one after this.
-    #
-    # Step 1: Create pairs of project ids and action descriptors.
-    # Since this is the last filtering step, we will keep going, until we reach the limit required for pagination.
-    pagination_limit = @page_size * @page_number
-    project_descriptor_pairs = {}
-
-    projects.each do |project|
-      service = Permissions::ProjectPermissionsService.new(
-        project, @user, user_requirements_service: user_requirements_service
-      )
-      action_descriptors = service.action_descriptors
-      next unless service.participation_possible?(action_descriptors)
-
-      project_descriptor_pairs[project.id] = action_descriptors
-      break if project_descriptor_pairs.size >= pagination_limit + 1 # +1 needed to produce pagination link to next page
+      project_ids << phase.project_id
+      break if project_ids.size >= max_needed_projects
     end
 
-    # Step 2: Use project_descriptor_pairs keys (project IDs) to filter projects
-    projects = Project.where(id: project_descriptor_pairs.keys)
+    return Project.none if project_ids.empty?
 
-    # We join with active phases again, to reorder by phases.end_at first, projects.created_at second, project ID third.
-    # Secondary & ternary orderings prevent duplicates when paginating, when prior ordering involves equivalent values.
-    projects = projects_with_active_phase(projects)
-      .order('phase_end_at ASC NULLS LAST, projects.created_at ASC, projects.id ASC')
-
-    # We pass the action descriptors to the serializer to avoid needing to get them again when serializing,
-    # so we return them along with the filtered projects.
-    { projects: projects, descriptor_pairs: project_descriptor_pairs }
+    Project.in_order_of(:id, project_ids)
   end
 
   # Returns an ActiveRecord collection of published projects that are also
@@ -82,10 +43,10 @@ class ProjectsFinderService
       )
       .joins('LEFT JOIN areas_projects ON areas_projects.area_id = followed_areas.id')
       .joins(
-        'LEFT JOIN topics AS followed_topics ON followers.followable_type = \'Topic\' ' \
-        'AND followed_topics.id = followers.followable_id'
+        'LEFT JOIN global_topics AS followed_global_topics ON followers.followable_type = \'GlobalTopic\' ' \
+        'AND followed_global_topics.id = followers.followable_id'
       )
-      .joins('LEFT JOIN projects_topics ON projects_topics.topic_id = followed_topics.id')
+      .joins('LEFT JOIN projects_global_topics ON projects_global_topics.global_topic_id = followed_global_topics.id')
       .joins(
         'LEFT JOIN ideas AS followed_ideas ON followers.followable_type = \'Idea\' ' \
         'AND followed_ideas.id = followers.followable_id'
@@ -99,7 +60,7 @@ class ProjectsFinderService
         'INNER JOIN projects ON ' \
         '(followers.followable_type = \'Project\' AND followers.followable_id = projects.id) ' \
         'OR (areas_projects.project_id = projects.id) ' \
-        'OR (projects_topics.project_id = projects.id) ' \
+        'OR (projects_global_topics.project_id = projects.id) ' \
         'OR (followed_ideas.project_id = projects.id)' \
         'OR (children.publication_id = projects.id)'
       )
@@ -142,50 +103,55 @@ class ProjectsFinderService
 
   # Returns ActiveRecord collection of projects that are either (finished OR have a last phase that contains a report)
   # OR are archived, ordered by last phase end_at (nulls first), creation date second and ID third.
-  # => [Project]
+  # @return [Project::ActiveRecord_Relation]
   def finished_or_archived
-    base_scope = @projects
-      .joins('INNER JOIN admin_publications AS admin_publications ON admin_publications.publication_id = projects.id')
-      .joins('INNER JOIN phases ON phases.project_id = projects.id')
-      .not_in_draft_folder
+    return @projects unless @filter_by.in? %w[finished archived finished_and_archived]
 
-    include_finished = %w[finished finished_and_archived].include?(@filter_by)
-    include_archived = %w[archived finished_and_archived].include?(@filter_by)
+    result = @projects.none
+    base_scope = @projects.joins(:phases).not_in_draft_folder
 
-    if include_finished
-      finished_scope = base_scope.where(admin_publications: { publication_status: 'published' })
-      finished_scope = joins_last_phases_with_reports(finished_scope)
-        .where(
-          '(last_phases.last_phase_end_at < ? OR (reports.id IS NOT NULL AND reports.visible = true))' \
-          "AND admin_publications.publication_status = 'published'",
-          Time.zone.now
-        )
+    if @filter_by.in? %w[finished finished_and_archived]
+      published_scope = base_scope.where(admin_publication: AdminPublication.published)
+      finished_scope = joins_last_phases_with_reports(published_scope).where(<<~SQL.squish, Time.zone.now)
+        last_phases.last_phase_end_at <= ? OR (reports.id IS NOT NULL AND reports.visible = true)
+      SQL
+      result = result.or(finished_scope)
     end
 
-    if include_archived
-      archived_scope = base_scope.where(admin_publications: { publication_status: 'archived' })
+    if @filter_by.in? %w[archived finished_and_archived]
+      archived_scope = base_scope.where(admin_publication: AdminPublication.archived)
       archived_scope = joins_last_phases_with_reports(archived_scope)
+      result = result.or(archived_scope)
     end
 
-    if include_finished && include_archived
-      return order_by_created_at_and_id_with_distinct_on(finished_scope.or(archived_scope))
-    end
-
-    return order_by_created_at_and_id_with_distinct_on(finished_scope) if include_finished
-
-    order_by_created_at_and_id_with_distinct_on(archived_scope)
+    order_by_created_at_and_id_with_distinct_on(result)
   end
 
   private
 
-  def projects_with_active_phase(projects)
-    projects
-      .joins('INNER JOIN phases AS phases ON phases.project_id = projects.id')
-      .where(
-        'phases.start_at <= ? AND (phases.end_at >= ? OR phases.end_at IS NULL)',
-        Time.zone.now.to_fs(:db), Time.zone.now.to_fs(:db)
-      )
-      .select('projects.*, phases.end_at AS phase_end_at')
+  def participation_possible_for?(phase)
+    Permissions::PhasePermissionsService.new(
+      phase, @user, user_requirements_service: user_requirements_service
+    ).participation_possible?
+  end
+
+  def active_participatory_phases
+    candidates = @projects
+      .not_in_draft_folder
+      .where(admin_publication: AdminPublication.published)
+
+    Phase.current
+      .where.not(participation_method: 'information')
+      .joins(:project)
+      .where(project_id: candidates.select(:id))
+      .order(Arel.sql('phases.end_at ASC NULLS LAST, projects.created_at ASC, projects.id ASC'))
+      .preload(permissions: [:groups], project: :admin_publication)
+  end
+
+  # One more project than fits the requested page, so pagination can tell
+  # whether there is a next page.
+  def max_needed_projects
+    (@page_size * @page_number) + 1
   end
 
   def order_by_created_at_and_id_with_distinct_on(projects)

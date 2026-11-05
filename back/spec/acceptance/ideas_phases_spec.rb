@@ -57,7 +57,7 @@ resource 'IdeasPhases' do
   end
 
   context 'when logged in as a regular user' do
-    let(:user) { create(:user_with_confirmation) }
+    let(:user) { create(:unconfirmed_user) }
 
     before do
       header_token_for(user)

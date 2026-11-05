@@ -6,7 +6,6 @@
 #
 #  id                           :uuid             not null, primary key
 #  title_multiloc               :jsonb
-#  description_multiloc         :jsonb
 #  description_preview_multiloc :jsonb
 #  header_bg                    :string
 #  slug                         :string
@@ -14,37 +13,46 @@
 #  updated_at                   :datetime         not null
 #  followers_count              :integer          default(0), not null
 #  header_bg_alt_text_multiloc  :jsonb
+#  space_id                     :uuid
 #
 # Indexes
 #
-#  index_project_folders_folders_on_slug  (slug)
+#  index_project_folders_folders_on_slug      (slug)
+#  index_project_folders_folders_on_space_id  (space_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (space_id => spaces.id)
 #
 module ProjectFolders
   class Folder < ::ApplicationRecord
     self.table_name = 'project_folders_folders'
     include Files::FileAttachable
     include PgSearch::Model
+    include PlainTextMultiloc
 
     slug from: proc { |folder| folder.title_multiloc&.values&.find(&:present?) }
 
-    has_one :admin_publication, as: :publication, dependent: :destroy
+    belongs_to :space, optional: true
+
+    # Inline images of RichTextMultiloc bridge widgets in the folder's layouts
+    has_many :text_images, as: :imageable, dependent: :destroy
+
+    has_one :admin_publication, as: :publication, inverse_of: :publication, dependent: :destroy
     has_one :nav_bar_item, dependent: :destroy, inverse_of: 'project_folder', foreign_key: 'project_folder_id'
     accepts_nested_attributes_for :admin_publication, update_only: true
     has_many :images, -> { order(:ordering) }, dependent: :destroy, inverse_of: 'project_folder', foreign_key: 'project_folder_id' # TODO: remove after renaming project_folder association in Image model
     has_many :files, -> { order(:ordering) }, dependent: :destroy, inverse_of: 'project_folder', foreign_key: 'project_folder_id'  # TODO: remove after renaming project_folder association in File model
-    has_many :text_images, as: :imageable, dependent: :destroy
-    accepts_nested_attributes_for :text_images
     has_many :followers, as: :followable, dependent: :destroy
 
     mount_base64_uploader :header_bg, HeaderBgUploader
 
     validates :title_multiloc, presence: true, multiloc: { presence: true }
-    validates :description_multiloc, multiloc: { presence: false, html: true }
     validates :description_preview_multiloc, multiloc: { presence: false, html: true }
     validate :admin_publication_must_exist, unless: proc { Current.loading_tenant_template }
 
-    before_validation :sanitize_description_multiloc, if: :description_multiloc
     before_validation :sanitize_description_preview_multiloc, if: :description_preview_multiloc
+    plain_text_multiloc :title_multiloc, :header_bg_alt_text_multiloc, prepend: true
     before_validation :strip_title
     before_validation :set_admin_publication, unless: proc { Current.loading_tenant_template }
 
@@ -54,12 +62,19 @@ module ProjectFolders
     after_destroy :remove_moderators
 
     pg_search_scope :search_by_all,
-      against: %i[title_multiloc description_multiloc description_preview_multiloc slug],
+      against: %i[title_multiloc description_preview_multiloc slug],
       using: { tsearch: { prefix: true } }
 
     pg_search_scope :search_by_title,
       against: :title_multiloc,
       using: { tsearch: { prefix: true } }
+
+    class << self
+      def search_ids_by_all_including_patches(term)
+        result = defined?(super) ? super : []
+        result + search_by_all(term).pluck(:id)
+      end
+    end
 
     def projects
       Project.joins(:admin_publication).where(admin_publication: admin_publication.children)
@@ -78,16 +93,6 @@ module ProjectFolders
       return unless id.present? && admin_publication&.id.blank?
 
       errors.add(:admin_publication_id, :blank, message: "Admin publication can't be blank")
-    end
-
-    def sanitize_description_multiloc
-      service = SanitizationService.new
-      self.description_multiloc = service.sanitize_multiloc(
-        description_multiloc,
-        %i[title alignment list decoration link image video]
-      )
-      self.description_multiloc = service.remove_multiloc_empty_trailing_tags description_multiloc
-      self.description_multiloc = service.linkify_multiloc description_multiloc
     end
 
     def sanitize_description_preview_multiloc
@@ -135,3 +140,4 @@ module ProjectFolders
 end
 
 ProjectFolders::Folder.include(SmartGroups::Concerns::ValueReferenceable)
+ProjectFolders::Folder.include(ContentBuilder::Concerns::ContentBuildable)

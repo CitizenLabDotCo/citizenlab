@@ -14,9 +14,16 @@ import ConsentManager from '.';
 
 // mocks
 
-jest.mock('utils/cl-router/Link', () => ({ children }) => (
-  <button>{children}</button>
-));
+jest.mock('utils/cl-router/Link', () => {
+  const Link = ({ children }: { children?: React.ReactNode }) => (
+    <button>{children}</button>
+  );
+  return {
+    __esModule: true,
+    default: Link,
+    typedStyled: () => () => Link,
+  };
+});
 
 let mockAuthUser: IUserData | null = null;
 jest.mock('api/me/useAuthUser', () => () => ({ data: { data: mockAuthUser } }));
@@ -26,11 +33,16 @@ const mockAppConfiguration = {
     id: '1',
     attributes: {
       settings: {
+        core: {
+          organization_name: {
+            en: 'Test Organization',
+          },
+        },
         matomo: {
           allowed: true,
           enabled: true,
         },
-        google_analytics: {
+        google_tag_manager: {
           allowed: true,
           enabled: true,
         },
@@ -63,10 +75,10 @@ registerDestination({
 });
 
 registerDestination({
-  key: 'google_analytics',
+  key: 'google_tag_manager',
   category: 'analytics',
-  feature_flag: 'google_analytics',
-  name: () => 'Google Analytics',
+  feature_flag: 'google_tag_manager',
+  name: () => 'Google Tag Manager',
 });
 
 registerDestination({
@@ -131,7 +143,7 @@ describe('<ConsentManager />', () => {
         advertising: true,
         savedChoices: {
           matomo: true,
-          google_analytics: true,
+          google_tag_manager: true,
         },
       });
     });
@@ -147,7 +159,7 @@ describe('<ConsentManager />', () => {
         advertising: false,
         savedChoices: {
           matomo: false,
-          google_analytics: false,
+          google_tag_manager: false,
         },
       });
     });
@@ -164,7 +176,7 @@ describe('<ConsentManager />', () => {
         advertising: false,
         savedChoices: {
           matomo: false,
-          google_analytics: false,
+          google_tag_manager: false,
         },
       });
     });
@@ -197,7 +209,7 @@ describe('<ConsentManager />', () => {
         advertising: false,
         savedChoices: {
           matomo: true,
-          google_analytics: true,
+          google_tag_manager: true,
         },
       });
     });
@@ -213,7 +225,7 @@ describe('<ConsentManager />', () => {
         advertising: false,
         savedChoices: {
           matomo: false,
-          google_analytics: false,
+          google_tag_manager: false,
         },
       };
     });
@@ -254,7 +266,7 @@ describe('<ConsentManager />', () => {
         advertising: false,
         savedChoices: {
           matomo: true,
-          google_analytics: true,
+          google_tag_manager: true,
         },
       });
     });
@@ -279,7 +291,7 @@ describe('<ConsentManager />', () => {
         advertising: true,
         savedChoices: {
           matomo: true,
-          google_analytics: true,
+          google_tag_manager: true,
         },
       });
 
@@ -295,7 +307,7 @@ describe('<ConsentManager />', () => {
         advertising: true,
         savedChoices: {
           matomo: true,
-          google_analytics: true,
+          google_tag_manager: true,
         },
       });
       // Verify that the modal is closed after accepting cookies again.
@@ -322,7 +334,7 @@ describe('<ConsentManager />', () => {
         advertising: false,
         savedChoices: {
           matomo: false,
-          google_analytics: false,
+          google_tag_manager: false,
         },
       });
       expect(screen.queryByTestId('consent-manager')).not.toBeInTheDocument();
@@ -338,7 +350,7 @@ describe('<ConsentManager />', () => {
         advertising: false,
         savedChoices: {
           matomo: false,
-          google_analytics: false,
+          google_tag_manager: false,
         },
       });
       expect(screen.queryByTestId('consent-manager')).not.toBeInTheDocument();
@@ -353,7 +365,7 @@ describe('<ConsentManager />', () => {
         advertising: false,
         savedChoices: {
           matomo: true,
-          google_analytics: true,
+          google_tag_manager: true,
         },
       };
     });

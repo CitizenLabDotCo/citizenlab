@@ -47,17 +47,21 @@ const ProjectFolderSitemap = ({ projectFolderId, hightestTitle }: Props) => {
         </TitleComponent>
         <ul>
           <li>
-            <Link to={`/folders/${folder.data.attributes.slug}`}>
+            <Link
+              to="/folders/$slug"
+              params={{ slug: folder.data.attributes.slug }}
+            >
               <FormattedMessage {...messages.folderInfo} />
             </Link>
           </li>
           {!isNilOrError(childAdminPublications) &&
             childAdminPublications.map((adminPublication) => (
-              <Project
-                key={adminPublication.id}
-                hightestTitle="h4"
-                projectId={adminPublication.relationships.publication.data.id}
-              />
+              <li key={adminPublication.id}>
+                <Project
+                  hightestTitle="h4"
+                  projectId={adminPublication.relationships.publication.data.id}
+                />
+              </li>
             ))}
         </ul>
       </>

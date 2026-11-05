@@ -9,4 +9,8 @@ export default defineMessages({
     id: 'app.components.PostCardsComponents.list',
     defaultMessage: 'List',
   },
+  perspectives: {
+    id: 'app.components.PostCardsComponents.perspectives',
+    defaultMessage: 'Perspectives',
+  },
 });

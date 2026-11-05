@@ -80,7 +80,7 @@ export const QuestionRuleInput = ({
       } else {
         logic.rules = [newRule];
       }
-      setValue(name, { ...field, logic }, { shouldDirty: true });
+      setValue(`${name}.logic`, logic, { shouldDirty: true });
       trigger();
     }
   };
@@ -91,7 +91,7 @@ export const QuestionRuleInput = ({
       logic.rules = logic.rules.filter((rule) => rule.if !== answer.key);
     }
     // Update rule variable
-    setValue(name, { ...field, logic }, { shouldDirty: true });
+    setValue(`${name}.logic`, logic, { shouldDirty: true });
     trigger();
   };
 

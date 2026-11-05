@@ -14,10 +14,6 @@ module MultiTenancy
         # Ignored: we don't add the company when there is not current tenant.
       end
 
-      def user_attributes(user)
-        super.merge(TrackingTenantService.new.tenant_properties)
-      end
-
       def activity_attributes(activity)
         tracking_service = TrackingTenantService.new
         super.merge(tracking_service.tenant_properties)

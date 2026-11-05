@@ -1,17 +1,17 @@
 import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import { useLocation, useParams } from 'react-router-dom';
+import { ITab } from 'typings';
 
-import usePhases from 'api/phases/usePhases';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
-import NavigationTabs, {
-  Tab,
-  TabsPageLayout,
-} from 'components/admin/NavigationTabs';
+import ProjectTraffic from 'containers/Admin/projects/project/traffic';
+
+import NavigationTabs, { Tab } from 'components/admin/NavigationTabs';
 
 import { useIntl } from 'utils/cl-intl';
 import { isTopBarNavActive } from 'utils/helperUtils';
+import { useLocation, useParams } from 'utils/router';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
 import Demographics from './Demographics';
@@ -19,56 +19,68 @@ import messages from './messages';
 import Users from './Users';
 
 const ProjectParticipation = () => {
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId } = useParams({ strict: false }) as { projectId: string };
   const { pathname } = useLocation();
   const { formatMessage } = useIntl();
-  const { data: phases } = usePhases(projectId);
+  const { data: appConfiguration } = useAppConfiguration();
 
-  const startOfFirstPhase = phases?.data[0]?.attributes.start_at;
-  const endOfLastPhase =
-    phases?.data[phases.data.length - 1]?.attributes.end_at;
+  const basePath = `/admin/projects/${projectId}/audience`;
 
-  if (!phases) return null;
+  const privateAttributesInExport =
+    appConfiguration?.data.attributes.settings.core
+      .private_attributes_in_export !== false;
 
-  const basePath = `/admin/projects/${projectId}/participation`;
-  const isDemographicsTab = pathname.includes('/demographics');
+  const participantsTab: ITab[] = privateAttributesInExport
+    ? [
+        {
+          name: 'participants',
+          label: formatMessage(messages.participantsTab),
+          url: basePath,
+        },
+      ]
+    : [];
+
+  const tabs: ITab[] = [
+    ...participantsTab,
+    {
+      name: 'demographics',
+      label: formatMessage(messages.demographicsTab),
+      url: `${basePath}/demographics`,
+    },
+    {
+      name: 'traffic',
+      label: formatMessage(messages.trafficTab),
+      url: `${basePath}/traffic`,
+    },
+  ];
+
+  // Find the active tab based on current pathname
+  const activeTab =
+    tabs.find((tab) => isTopBarNavActive(basePath, pathname, tab.url)) ||
+    tabs[0];
 
   return (
-    <>
-      <NavigationTabs position="relative">
-        <Tab
-          label={formatMessage(messages.usersTab)}
-          url={`/admin/projects/${projectId}/participation`}
-          active={isTopBarNavActive(
-            basePath,
-            pathname,
-            `/admin/projects/${projectId}/participation`
-          )}
-        />
-        <Tab
-          label={formatMessage(messages.demographicsTab)}
-          url={`/admin/projects/${projectId}/participation/demographics`}
-          active={isTopBarNavActive(
-            basePath,
-            pathname,
-            `/admin/projects/${projectId}/participation/demographics`
-          )}
-        />
-      </NavigationTabs>
-
-      <TabsPageLayout paddingTop={42}>
-        <Box background={colors.white} p={`${defaultAdminCardPadding}px`}>
-          {isDemographicsTab ? (
-            <Demographics
-              defaultStartDate={startOfFirstPhase}
-              defaultEndDate={endOfLastPhase ?? undefined}
-            />
-          ) : (
-            <Users />
-          )}
+    <Box p="8px 24px 24px 24px">
+      <Box background={colors.white}>
+        <Box position="sticky" top="0" background={colors.white} zIndex="1">
+          <NavigationTabs position="relative">
+            {tabs.map(({ url, label, name }) => (
+              <Tab
+                key={name}
+                label={label}
+                url={url}
+                active={isTopBarNavActive(basePath, pathname, url)}
+              />
+            ))}
+          </NavigationTabs>
         </Box>
-      </TabsPageLayout>
-    </>
+        <Box p={`${defaultAdminCardPadding}px`}>
+          {activeTab.name === 'participants' && <Users />}
+          {activeTab.name === 'demographics' && <Demographics />}
+          {activeTab.name === 'traffic' && <ProjectTraffic />}
+        </Box>
+      </Box>
+    </Box>
   );
 };
 

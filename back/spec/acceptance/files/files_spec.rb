@@ -12,6 +12,7 @@ resource 'Files' do
     parameter :uploader, 'Filter files by uploader user ID(s)', type: %i[string array]
     parameter :project, 'Filter files by project ID(s)', type: %i[string array]
     parameter :search, 'Filter files by searching in filename'
+    parameter :static_page, 'Filter files by the static page they are attached to'
 
     parameter :category, <<~CATEGORY_DESC.squish, type: %i[string array], required: false
       Filter files by category (values: #{Files::File.categories.values.join(', ')})
@@ -66,6 +67,17 @@ resource 'Files' do
           assert_status 200
           expect(response_data.size).to eq(1)
           expect(response_ids).to eq [file.id]
+        end
+      end
+
+      describe 'when filtering by static page' do
+        let(:static_page) { create(:static_page).id }
+        let!(:attachment) { create(:file_attachment, attachable: StaticPage.find(static_page)) }
+
+        example 'List all files attached to a specific static page', document: false do
+          do_request
+          assert_status 200
+          expect(response_ids).to eq [attachment.file_id]
         end
       end
 
@@ -164,7 +176,8 @@ resource 'Files' do
             attachments: { data: [] },
             uploader: { data: { id: file.uploader_id, type: 'user' } },
             projects: { data: [{ id: project.id, type: 'project' }] },
-            preview: { data: nil }
+            preview: { data: nil },
+            transcript: { data: nil }
           }
         )
       end
@@ -242,7 +255,8 @@ resource 'Files' do
             attachments: { data: [] },
             uploader: { data: { id: admin.id, type: 'user' } },
             projects: { data: [{ id: project, type: 'project' }] },
-            preview: { data: nil } # pdf file doesn't generate a preview
+            preview: { data: nil }, # pdf file doesn't generate a preview
+            transcript: { data: nil }
           }
         )
       end
@@ -300,6 +314,24 @@ resource 'Files' do
           id: kind_of(String),
           type: 'file_preview'
         })
+      end
+
+      # AD1 / TAN-7631: replays the literal pentest payload (eicar.txt.exe with
+      # base64 EICAR bytes). Both the extension and the content-type allowlists
+      # should reject it before the file is persisted.
+      example 'rejects a file upload with a disallowed extension/content-type', document: false do
+        eicar_b64 = Base64.strict_encode64('X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*')
+
+        expect do
+          do_request(file: {
+            name: 'eicar.txt.exe',
+            content: "data:application/octet-stream;base64,#{eicar_b64}",
+            project: project
+          })
+        end.not_to change(Files::File, :count)
+
+        assert_status 422
+        expect(json_response_body[:errors]).to be_present
       end
     end
   end

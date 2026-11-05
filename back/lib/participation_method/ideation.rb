@@ -12,6 +12,10 @@ module ParticipationMethod
       'ideation'
     end
 
+    def phase_insights_class
+      Insights::IdeationPhaseInsightsService
+    end
+
     def additional_export_columns
       %w[manual_votes]
     end
@@ -24,8 +28,17 @@ module ParticipationMethod
       %w[trending random popular -new new comments_count]
     end
 
+    # The feed view was designed for ideation, and only ideation allows it: both methods
+    # inheriting from here narrow the list down.
+    def allowed_presentation_modes
+      %w[card map feed]
+    end
+
     def assign_defaults(input)
-      input_status_code = phase&.prescreening_enabled ? 'prescreening' : 'proposed'
+      # Only the `all` prescreening mode starts inputs in prescreening. The `flagged_only`
+      # mode starts inputs as published, and oxicity detection will asynchronously move
+      # flagged inputs to prescreening.
+      input_status_code = phase&.prescreening_all? ? 'prescreening' : 'proposed'
       input.idea_status ||= IdeaStatus.find_by!(code: input_status_code, participation_method: idea_status_method)
       input.publication_status ||= input.idea_status.public_post? ? 'published' : 'submitted'
     end
@@ -35,12 +48,6 @@ module ParticipationMethod
       phase.input_term ||= default_input_term if supports_input_term?
       phase.similarity_threshold_title ||= 0.3
       phase.similarity_threshold_body ||= 0.4
-    end
-
-    def author_in_form?(user)
-      AppConfiguration.instance.feature_activated?('idea_author_change') \
-      && !!user \
-      && UserRoleService.new.can_moderate_project?(phase.project, user)
     end
 
     def budget_in_form?(user)
@@ -92,14 +99,7 @@ module ParticipationMethod
           code: 'title_page',
           key: nil,
           title_multiloc: {},
-          description_multiloc: begin
-            multiloc_service.i18n_to_multiloc(
-              'custom_fields.ideas.title_page.description',
-              locales: CL2_SUPPORTED_LOCALES
-            )
-          rescue StandardError
-            {}
-          end,
+          description_multiloc: {},
           required: false,
           enabled: true,
           ordering: 0
@@ -109,19 +109,13 @@ module ParticipationMethod
           resource: custom_form,
           key: 'title_multiloc',
           code: 'title_multiloc',
+          answers_visible_to: 'public',
           input_type: 'text_multiloc',
           title_multiloc: multiloc_service.i18n_to_multiloc(
             'custom_fields.ideas.title.title',
             locales: CL2_SUPPORTED_LOCALES
           ),
-          description_multiloc: begin
-            multiloc_service.i18n_to_multiloc(
-              'custom_fields.ideas.title.description',
-              locales: CL2_SUPPORTED_LOCALES
-            )
-          rescue StandardError
-            {}
-          end,
+          description_multiloc: {},
           required: true,
           enabled: true,
           ordering: 1,
@@ -139,14 +133,7 @@ module ParticipationMethod
             'custom_fields.ideas.body_page.title',
             locales: CL2_SUPPORTED_LOCALES
           ),
-          description_multiloc: begin
-            multiloc_service.i18n_to_multiloc(
-              'custom_fields.ideas.body_page.description',
-              locales: CL2_SUPPORTED_LOCALES
-            )
-          rescue StandardError
-            {}
-          end,
+          description_multiloc: {},
           required: false,
           enabled: true,
           ordering: 2
@@ -156,19 +143,13 @@ module ParticipationMethod
           resource: custom_form,
           key: 'body_multiloc',
           code: 'body_multiloc',
+          answers_visible_to: 'public',
           input_type: 'html_multiloc',
           title_multiloc: multiloc_service.i18n_to_multiloc(
             'custom_fields.ideas.body.title',
             locales: CL2_SUPPORTED_LOCALES
           ),
-          description_multiloc: begin
-            multiloc_service.i18n_to_multiloc(
-              'custom_fields.ideas.body.description',
-              locales: CL2_SUPPORTED_LOCALES
-            )
-          rescue StandardError
-            {}
-          end,
+          description_multiloc: {},
           required: true,
           enabled: true,
           ordering: 3
@@ -184,14 +165,7 @@ module ParticipationMethod
             'custom_fields.ideas.uploads_page.title',
             locales: CL2_SUPPORTED_LOCALES
           ),
-          description_multiloc: begin
-            multiloc_service.i18n_to_multiloc(
-              'custom_fields.ideas.uploads_page.description',
-              locales: CL2_SUPPORTED_LOCALES
-            )
-          rescue StandardError
-            {}
-          end,
+          description_multiloc: {},
           required: false,
           enabled: true,
           ordering: 4
@@ -201,19 +175,13 @@ module ParticipationMethod
           resource: custom_form,
           key: 'idea_images_attributes',
           code: 'idea_images_attributes',
+          answers_visible_to: 'public',
           input_type: 'image_files',
           title_multiloc: multiloc_service.i18n_to_multiloc(
             'custom_fields.ideas.images.title',
             locales: CL2_SUPPORTED_LOCALES
           ),
-          description_multiloc: begin
-            multiloc_service.i18n_to_multiloc(
-              'custom_fields.ideas.images.description',
-              locales: CL2_SUPPORTED_LOCALES
-            )
-          rescue StandardError
-            {}
-          end,
+          description_multiloc: {},
           required: false,
           enabled: true,
           ordering: 5
@@ -223,19 +191,13 @@ module ParticipationMethod
           resource: custom_form,
           key: 'idea_files_attributes',
           code: 'idea_files_attributes',
+          answers_visible_to: 'public',
           input_type: 'files',
           title_multiloc: multiloc_service.i18n_to_multiloc(
             'custom_fields.ideas.attachments.title',
             locales: CL2_SUPPORTED_LOCALES
           ),
-          description_multiloc: begin
-            multiloc_service.i18n_to_multiloc(
-              'custom_fields.ideas.attachments.description',
-              locales: CL2_SUPPORTED_LOCALES
-            )
-          rescue StandardError
-            {}
-          end,
+          description_multiloc: {},
           required: false,
           enabled: true,
           ordering: 6
@@ -251,14 +213,7 @@ module ParticipationMethod
             'custom_fields.ideas.details_page.title',
             locales: CL2_SUPPORTED_LOCALES
           ),
-          description_multiloc: begin
-            multiloc_service.i18n_to_multiloc(
-              'custom_fields.ideas.details_page.description',
-              locales: CL2_SUPPORTED_LOCALES
-            )
-          rescue StandardError
-            {}
-          end,
+          description_multiloc: {},
           required: false,
           enabled: true,
           ordering: 7
@@ -268,19 +223,13 @@ module ParticipationMethod
           resource: custom_form,
           key: 'topic_ids',
           code: 'topic_ids',
+          answers_visible_to: 'public',
           input_type: 'topic_ids',
           title_multiloc: multiloc_service.i18n_to_multiloc(
             'custom_fields.ideas.topic_ids.title',
             locales: CL2_SUPPORTED_LOCALES
           ),
-          description_multiloc: begin
-            multiloc_service.i18n_to_multiloc(
-              'custom_fields.ideas.topic_ids.description',
-              locales: CL2_SUPPORTED_LOCALES
-            )
-          rescue StandardError
-            {}
-          end,
+          description_multiloc: {},
           required: false,
           enabled: true,
           ordering: 8
@@ -290,19 +239,13 @@ module ParticipationMethod
           resource: custom_form,
           key: 'location_description',
           code: 'location_description',
+          answers_visible_to: 'public',
           input_type: 'text',
           title_multiloc: multiloc_service.i18n_to_multiloc(
             'custom_fields.ideas.location.title',
             locales: CL2_SUPPORTED_LOCALES
           ),
-          description_multiloc: begin
-            multiloc_service.i18n_to_multiloc(
-              'custom_fields.ideas.location.description',
-              locales: CL2_SUPPORTED_LOCALES
-            )
-          rescue StandardError
-            {}
-          end,
+          description_multiloc: {},
           required: false,
           enabled: true,
           ordering: 9
@@ -314,19 +257,13 @@ module ParticipationMethod
           resource: custom_form,
           key: 'proposed_budget',
           code: 'proposed_budget',
+          answers_visible_to: 'public',
           input_type: 'number',
           title_multiloc: multiloc_service.i18n_to_multiloc(
             'custom_fields.ideas.proposed_budget.title',
             locales: CL2_SUPPORTED_LOCALES
           ),
-          description_multiloc: begin
-            multiloc_service.i18n_to_multiloc(
-              'custom_fields.ideas.proposed_budget.description',
-              locales: CL2_SUPPORTED_LOCALES
-            )
-          rescue StandardError
-            {}
-          end,
+          description_multiloc: {},
           required: false,
           enabled: false,
           ordering: 10
@@ -339,19 +276,16 @@ module ParticipationMethod
           resource: custom_form,
           key: 'cosponsor_ids',
           code: 'cosponsor_ids',
+          answers_visible_to: 'public',
           input_type: 'cosponsor_ids',
           title_multiloc: multiloc_service.i18n_to_multiloc(
             'custom_fields.ideas.consponsor_ids.title',
             locales: CL2_SUPPORTED_LOCALES
           ),
-          description_multiloc: begin
-            multiloc_service.i18n_to_multiloc(
-              'custom_fields.ideas.consponsor_ids.description',
-              locales: CL2_SUPPORTED_LOCALES
-            )
-          rescue StandardError
-            {}
-          end,
+          description_multiloc: multiloc_service.i18n_to_multiloc(
+            'custom_fields.ideas.consponsor_ids.description',
+            locales: CL2_SUPPORTED_LOCALES
+          ),
           required: false,
           enabled: false,
           ordering: proposed_budget_in_form? ? 11 : 10
@@ -378,18 +312,8 @@ module ParticipationMethod
       SlugService.new.generate_slug input, title
     end
 
-    def validate_phase
-      if phase.id && Idea.exists?(creation_phase_id: phase.id)
-        phase.errors.add(:participation_method, :non_complying_inputs, message: 'some inputs do not comply with the participation method')
-      end
-    end
-
     def supported_email_campaigns
       super + %w[your_input_in_screening]
-    end
-
-    def supports_answer_visible_to?
-      true
     end
 
     def supports_assignment?
@@ -421,7 +345,11 @@ module ParticipationMethod
     end
 
     def supports_inputs_without_author?
-      false
+      true
+    end
+
+    def supports_permitted_by_everyone?
+      true
     end
 
     def supports_public_visibility?
@@ -433,6 +361,10 @@ module ParticipationMethod
     end
 
     def supports_submission?
+      true
+    end
+
+    def supports_input_pdf_export?
       true
     end
 
@@ -452,10 +384,24 @@ module ParticipationMethod
       true
     end
 
+    def user_fields_in_form_enabled?
+      return false if posting_permission.nil?
+
+      posting_permission.user_fields_in_form_enabled?
+    end
+
     private
 
     def proposed_budget_in_form?
       true
+    end
+
+    def posting_permission
+      # phase should always be defined,
+      # but for some reason it's not in some unit tests.
+      return nil if phase.nil?
+
+      @posting_permission ||= Permissions::PermissionInheritanceService.new.find(phase, 'posting_idea')
     end
   end
 end

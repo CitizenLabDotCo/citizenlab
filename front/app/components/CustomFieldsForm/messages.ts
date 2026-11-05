@@ -44,8 +44,18 @@ export default defineMessages({
     defaultMessage: 'At least one attachment is required',
   },
   topicRequired: {
-    id: 'app.components.CustomFieldsForm.topicRequired',
-    defaultMessage: 'At least one tag is required',
+    id: 'app.components.CustomFieldsForm.tagsRequired',
+    defaultMessage: 'Selecting a tag is required',
+  },
+  topicMaximum: {
+    id: 'app.components.CustomFieldsForm.topicMaximumItems',
+    defaultMessage:
+      'At most {maxSelections, plural, one {# tag} other {# tags}} can be selected',
+  },
+  topicMinimum: {
+    id: 'app.components.CustomFieldsForm.topicMinimumItems',
+    defaultMessage:
+      'At least {minSelections, plural, one {# tag} other {# tags}} should be selected',
   },
   fieldRequired: {
     id: 'app.components.CustomFieldsForm.fieldRequired',
@@ -73,11 +83,6 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.adminFieldTooltip',
     defaultMessage: 'Field only visible to admins',
   },
-  notPublic: {
-    id: 'app.components.CustomFieldsForm.notPublic1',
-    defaultMessage:
-      '*This answer will only be shared with project managers, and not to the public.',
-  },
   selectBetween: {
     id: 'app.components.CustomFieldsForm.selectBetween',
     defaultMessage: '*Select between { minItems } and { maxItems } options',
@@ -104,6 +109,10 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.typeYourAnswerRequired',
     defaultMessage: 'It is required to type your answer',
   },
+  typeToSearch: {
+    id: 'app.components.CustomFieldsForm.typeToSearch',
+    defaultMessage: 'Type to search',
+  },
   authorFieldPlaceholder: {
     id: 'app.components.CustomFieldsForm.authorFieldPlaceholder',
     defaultMessage: 'Start typing to search by user email or name...',
@@ -129,6 +138,10 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.tapOnMapMultipleToAdd3',
     defaultMessage: 'Tap on the map to add your answer.',
   },
+  tapOnMapToAddMultiplePins: {
+    id: 'app.components.CustomFieldsForm.tapOnMapToAddMultiplePins',
+    defaultMessage: 'Tap on the map to add locations.',
+  },
   tapOnFullscreenMapToAddPoint: {
     id: 'app.components.CustomFieldsForm.tapOnFullscreenMapToAddPoint',
     defaultMessage: 'Tap on the map to draw.',
@@ -147,6 +160,11 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.clickOnMapMultipleToAdd3',
     defaultMessage:
       'Click on the map to draw. Then, drag on points to move them.',
+  },
+  clickOnMapToAddMultiplePins2: {
+    id: 'app.components.CustomFieldsForm.clickOnMapToAddMultiplePins2',
+    defaultMessage:
+      'Click on the map to add locations. Then, drag on points to move them. You can remove your last location by clicking on the Undo button in the top right corner of the map.',
   },
   minimumCoordinates: {
     id: 'app.components.CustomFieldsForm.minimumCoordinates2',
@@ -172,6 +190,10 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.tapToAddAnArea',
     defaultMessage: 'Tap to add an area',
   },
+  tapToAddPins: {
+    id: 'app.components.CustomFieldsForm.tapToAddPins',
+    defaultMessage: 'Tap to add locations',
+  },
   back: {
     id: 'app.components.CustomFieldsForm.back',
     defaultMessage: 'Back',
@@ -192,6 +214,30 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.atLeastThreePointsRequired',
     defaultMessage: 'At least three points are required for a polygon.',
   },
+  atLeastOnePinRequired: {
+    id: 'app.components.CustomFieldsForm.atLeastOnePinRequired',
+    defaultMessage: 'At least one location is required.',
+  },
+  minimumPinsRequired: {
+    id: 'app.components.CustomFieldsForm.minimumPinsRequired',
+    defaultMessage:
+      'Add at least {minPins, plural, one {# location} other {# locations}}.',
+  },
+  maximumPinsAllowed: {
+    id: 'app.components.CustomFieldsForm.maximumPinsAllowed',
+    defaultMessage:
+      'Add no more than {maxPins, plural, one {# location} other {# locations}}.',
+  },
+  maximumPinsReachedClick: {
+    id: 'app.components.CustomFieldsForm.maximumPinsReachedClick',
+    defaultMessage:
+      'You have added all {maxPins, plural, one {# location} other {# locations}}. To add another, remove one by clicking on the Undo button in the top right corner of the map.',
+  },
+  maximumPinsReachedTap: {
+    id: 'app.components.CustomFieldsForm.maximumPinsReachedTap',
+    defaultMessage:
+      'You have added all {maxPins, plural, one {# location} other {# locations}}. To add another, remove one with the Undo button.',
+  },
   fileSizeLimit: {
     id: 'app.components.CustomFieldsForm.fileSizeLimit',
     defaultMessage: 'The file size limit is {maxFileSize} MB.',
@@ -199,5 +245,200 @@ export default defineMessages({
   otherArea: {
     id: 'app.components.CustomFieldsForm.otherArea',
     defaultMessage: 'Somewhere else',
+  },
+  blockedVerified: {
+    id: 'app.components.CustomFieldsForm.blockedVerified',
+    defaultMessage:
+      "You can't edit this field because it contains verified information",
+  },
+  allStatementsError: {
+    id: 'app.components.form.controls.allStatementsError',
+    defaultMessage: 'An answer must be selected for all statements.',
+  },
+  submitApiError: {
+    id: 'app.components.form.submitApiError',
+    defaultMessage:
+      'There was an issue submitting the form. Please check for any errors and try again.',
+  },
+  submit: {
+    id: 'app.components.form.submit',
+    defaultMessage: 'Submit',
+  },
+  error: {
+    id: 'app.components.form.error',
+    defaultMessage: 'Error',
+  },
+  locationGoogleUnavailable: {
+    id: 'app.components.form.locationGoogleUnavailable',
+    defaultMessage: "Couldn't load location field provided by google maps.",
+  },
+  guidelinesLinkText: {
+    id: 'app.components.form.ErrorDisplay.guidelinesLinkText',
+    defaultMessage: 'our guidelines',
+  },
+  userPickerPlaceholder: {
+    id: 'app.components.form.ErrorDisplay.userPickerPlaceholder',
+    defaultMessage: 'Start typing to search by user email or name...',
+  },
+  verifiedBlocked: {
+    id: 'app.components.form.verifiedBlocked',
+    defaultMessage:
+      "You can't edit this field because it contains verified information",
+  },
+  previous: {
+    id: 'app.components.form.ErrorDisplay.previous',
+    defaultMessage: 'Previous',
+  },
+  next: {
+    id: 'app.components.form.ErrorDisplay.next',
+    defaultMessage: 'Next',
+  },
+  save: {
+    id: 'app.components.form.ErrorDisplay.save',
+    defaultMessage: 'Save',
+  },
+  backToProject: {
+    id: 'app.components.form.backToProject',
+    defaultMessage: 'Back to project',
+  },
+  backToInputManager: {
+    id: 'app.components.form.backToInputManager',
+    defaultMessage: 'Back to input manager',
+  },
+  viewYourInput: {
+    id: 'app.utils.IdeasNewPage.viewYourInput',
+    defaultMessage: 'View your input',
+  },
+  viewYourIdea: {
+    id: 'app.utils.IdeasNewPage.viewYourIdea',
+    defaultMessage: 'View your idea',
+  },
+  viewYourOption: {
+    id: 'app.utils.IdeasNewPage.viewYourOption',
+    defaultMessage: 'View your option',
+  },
+  viewYourContribution: {
+    id: 'app.utils.IdeasNewPage.viewYourContribution',
+    defaultMessage: 'View your contribution',
+  },
+  viewYourProject: {
+    id: 'app.utils.IdeasNewPage.viewYourProject',
+    defaultMessage: 'View your project',
+  },
+  viewYourQuestion: {
+    id: 'app.utils.IdeasNewPage.viewYourQuestion',
+    defaultMessage: 'View your question',
+  },
+  viewYourComment: {
+    id: 'app.utils.IdeasNewPage.viewYourComment',
+    defaultMessage: 'View your comment',
+  },
+  viewYourProposal: {
+    id: 'app.utils.IdeasNewPage.viewYourProposal',
+    defaultMessage: 'View your proposal',
+  },
+  viewYourInitiative: {
+    id: 'app.utils.IdeasNewPage.viewYourInitiative',
+    defaultMessage: 'View your initiative',
+  },
+  viewYourPetition: {
+    id: 'app.utils.IdeasNewPage.viewYourPetition',
+    defaultMessage: 'View your petition',
+  },
+  viewYourIssue: {
+    id: 'app.utils.IdeasNewPage.viewYourIssue',
+    defaultMessage: 'View your issue',
+  },
+  viewYourResponse: {
+    id: 'app.utils.IdeasNewPage.viewYourResponse',
+    defaultMessage: 'View your response',
+  },
+  viewYourSuggestion: {
+    id: 'app.utils.IdeasNewPage.viewYourSuggestion',
+    defaultMessage: 'View your suggestion',
+  },
+  viewYourTopic: {
+    id: 'app.utils.IdeasNewPage.viewYourTopic',
+    defaultMessage: 'View your topic',
+  },
+  viewYourPost: {
+    id: 'app.utils.IdeasNewPage.viewYourPost',
+    defaultMessage: 'View your post',
+  },
+  viewYourStory: {
+    id: 'app.utils.IdeasNewPage.viewYourStory',
+    defaultMessage: 'View your story',
+  },
+  viewYourObservation: {
+    id: 'app.utils.IdeasNewPage.viewYourObservation',
+    defaultMessage: 'View your observation',
+  },
+  valueOutOfTotalWithLabel: {
+    id: 'app.components.form.controls.valueOutOfTotalWithLabel',
+    defaultMessage: '{value} out of {total}, {label}',
+  },
+  valueOutOfTotalWithMaxExplanation: {
+    id: 'app.components.form.controls.valueOutOfTotalWithMaxExplanation',
+    defaultMessage: '{value} out of {total}, where {maxValue} is {maxLabel}',
+  },
+  valueOutOfTotal: {
+    id: 'app.components.form.controls.valueOutOfTotal',
+    defaultMessage: '{value} out of {total}',
+  },
+  cosponsorsPlaceholder: {
+    id: 'app.components.form.controls.cosponsorsPlaceholder',
+    defaultMessage: 'Start typing a name to search',
+  },
+  clearAll: {
+    id: 'app.components.form.controls.clearAll',
+    defaultMessage: 'Clear all',
+  },
+  clearAllScreenreader: {
+    id: 'app.components.form.controls.clearAllScreenreader',
+    defaultMessage: 'Clear all answers from above matrix question',
+  },
+  matrixStatementHeader: {
+    id: 'app.components.form.controls.matrixStatementHeader',
+    defaultMessage: 'Statement',
+  },
+  noRankSelected: {
+    id: 'app.components.form.controls.noRankSelected',
+    defaultMessage: 'No rank selected',
+  },
+  currentRank: {
+    id: 'app.components.form.controls.currentRank',
+    defaultMessage: 'Current rank: ',
+  },
+  rankingInstructions: {
+    id: 'app.components.form.controls.rankingInstructions',
+    defaultMessage: 'Drag and drop to rank options.',
+  },
+  rankingDragHandleLabel: {
+    id: 'app.components.form.controls.rankingDragHandleLabel',
+    defaultMessage: 'Drag to reorder {label}',
+  },
+  optionalParentheses: {
+    id: 'app.components.form.controls.optionalParentheses',
+    defaultMessage: '(optional)',
+  },
+  submitConfirmation: {
+    id: 'app.components.CustomFieldsForm.submitConfirmation',
+    defaultMessage: 'Are you sure you want to submit your answers?',
+  },
+  continueEditing: {
+    id: 'app.components.CustomFieldsForm.continueEditing',
+    defaultMessage: 'Continue editing',
+  },
+  yesSubmit: {
+    id: 'app.components.CustomFieldsForm.yesSubmit',
+    defaultMessage: 'Yes, submit',
+  },
+  birthyearTooHigh: {
+    id: 'app.components.form.controls.birthyearTooHigh',
+    defaultMessage: 'Birth year cannot be in the future',
+  },
+  birthyearTooLow: {
+    id: 'app.components.form.controls.birthyearTooLow',
+    defaultMessage: 'Birth year must be at least 1900',
   },
 });

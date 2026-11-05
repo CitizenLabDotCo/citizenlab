@@ -2,11 +2,12 @@
 
 module BulkImportIdeas::Exporters
   class BaseFormExporter
-    def initialize(phase, locale, _personal_data_enabled)
+    def initialize(phase, locale, _personal_data_enabled, include_logic: false)
       @phase = phase
       @project = phase.project
       @locale = locale
       @participation_method = phase.pmethod
+      @include_logic = include_logic
     end
 
     def export

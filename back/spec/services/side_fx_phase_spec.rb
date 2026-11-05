@@ -23,19 +23,7 @@ describe SideFxPhaseService do
         )
     end
 
-    it 'runs the description through the necessary steps' do
-      expect_any_instance_of(TextImageService).to receive(:swap_data_images_multiloc).with(phase.description_multiloc, field: :description_multiloc, imageable: phase).and_return(phase.description_multiloc)
-      service.after_create(phase, user)
-    end
-
     it { expect { service.after_create(phase, user) }.to have_enqueued_job(Surveys::WebhookManagerJob) }
-  end
-
-  describe 'before_update' do
-    it 'runs the description through the text image service' do
-      expect_any_instance_of(TextImageService).to receive(:swap_data_images_multiloc).with(phase.description_multiloc, field: :description_multiloc, imageable: phase).and_return(phase.description_multiloc)
-      service.before_update(phase, user)
-    end
   end
 
   describe 'after_update' do
@@ -83,7 +71,9 @@ describe SideFxPhaseService do
       }.each do |attribute, new_value|
         it "logs a '#{attribute}_changed' action job when the phase attribute has changed" do
           old_value = phase[attribute]
-          phase.update!(attribute => new_value)
+          attrs = { attribute => new_value }
+          attrs[:available_views] = %w[card map] if attribute == :presentation_mode
+          phase.update!(attrs)
           expect { service.after_update(phase, user) }
             .to have_enqueued_job(LogActivityJob)
             .with(phase, "changed_#{attribute}", user, phase.updated_at.to_i, project_id: phase.project.id, payload: { change: [old_value, new_value] })

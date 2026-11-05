@@ -68,7 +68,7 @@ const Invitation = ({ loading, setError, onSubmit }: Props) => {
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(handleSubmit)}>
+      <form noValidate onSubmit={methods.handleSubmit(handleSubmit)}>
         <Box>
           <Input
             name="token"

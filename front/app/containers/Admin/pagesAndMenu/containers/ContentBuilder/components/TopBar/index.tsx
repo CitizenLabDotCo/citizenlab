@@ -4,7 +4,7 @@ import { Box, Title, Text, colors } from '@citizenlab/cl2-component-library';
 import { useEditor, SerializedNodes } from '@craftjs/core';
 import { SupportedLocale } from 'typings';
 
-import useAddHomepageBuilderLayout from 'api/home_page_layout/useAddHomepageLayout';
+import useAddContentBuilderLayout from 'api/content_builder/useAddContentBuilderLayout';
 
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
 import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
@@ -42,8 +42,8 @@ const BuilderTopBar = ({
   const {
     mutate: updateHomepage,
     isError,
-    isLoading,
-  } = useAddHomepageBuilderLayout();
+    isPending,
+  } = useAddContentBuilderLayout();
   const { formatMessage } = useIntl();
   const disableSave = hasError || hasPendingState;
 
@@ -53,6 +53,8 @@ const BuilderTopBar = ({
 
   const handleSave = () => {
     updateHomepage({
+      contentBuildableId: 'homepage',
+      contentBuildableType: 'homepage',
       craftjs_json: query.getSerializedNodes(),
     });
   };
@@ -90,12 +92,12 @@ const BuilderTopBar = ({
           px="11px"
           py="6px"
           ml="32px"
-          linkTo="/"
+          to="/"
           openLinkInNewTab
         />
         <SaveButton
           isDisabled={!!(disableSave || hasPendingState)}
-          isLoading={isLoading}
+          isLoading={isPending}
           onSave={handleSave}
         />
         {isError && (

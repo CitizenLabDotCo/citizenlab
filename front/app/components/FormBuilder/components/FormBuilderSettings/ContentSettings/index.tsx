@@ -2,7 +2,6 @@ import React from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import { useFormContext } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
 
 import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
 
@@ -10,26 +9,35 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
 
 import { SectionField } from 'components/admin/Section';
-import { getAdditionalSettings } from 'components/FormBuilder/utils';
+import {
+  getAdditionalSettings,
+  ResolvedFormBuilderConfig,
+} from 'components/FormBuilder/utils';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 import Toggle from 'components/HookForm/Toggle';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
+import { useParams } from 'utils/router';
 
 import messages from '../../messages';
+import AnswerFilterToggle from '../AnswerFilterToggle';
+import AnswerVisibilityToggle from '../AnswerVisibilityToggle';
 import FieldTypeSwitcher from '../FieldTypeSwitcher';
 
 type ContentSettingsProps = {
   field: IFlatCustomFieldWithIndex;
+  builderConfig: ResolvedFormBuilderConfig;
 };
 
-const ContentSettings = ({ field }: ContentSettingsProps) => {
-  const { projectId } = useParams();
+const ContentSettings = ({ field, builderConfig }: ContentSettingsProps) => {
+  const { projectId } = useParams({ strict: false });
 
   const locales = useAppConfigurationLocales();
   const { watch } = useFormContext();
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const lockedAttributes = field.constraints?.locks?.attributes || [];
   const platformLocale = useLocale();
   const isFieldGrouping = field.input_type === 'page';
@@ -61,14 +69,15 @@ const ContentSettings = ({ field }: ContentSettingsProps) => {
               />
             </SectionField>
           )}
-          {field.input_type === 'topic_ids' && (
+          {field.input_type === 'topic_ids' && projectId && (
             <Text>
               <FormattedMessage
                 {...messages.manageTagsExplanation}
                 values={{
                   inputTagsLink: (
                     <Link
-                      to={`/admin/projects/${projectId ?? ''}/settings/tags`}
+                      to="/admin/projects/$projectId/general/input-tags"
+                      params={{ projectId }}
                       target="_blank"
                     >
                       <FormattedMessage {...messages.inputTagsPage} />
@@ -101,14 +110,15 @@ const ContentSettings = ({ field }: ContentSettingsProps) => {
           <Toggle
             name={`customFields.${field.index}.required`}
             disabled={lockedAttributes.includes('required')}
-            label={
-              <Text as="span" variant="bodyM" my="0px">
-                <FormattedMessage {...messages.requiredToggleLabel} />
-              </Text>
+            label={<FormattedMessage {...messages.requiredToggleLabel} />}
+            description={
+              <FormattedMessage {...messages.requiredToggleDescription} />
             }
           />
         </SectionField>
       )}
+      <AnswerVisibilityToggle field={field} builderConfig={builderConfig} />
+      <AnswerFilterToggle field={field} />
     </Box>
   );
 };

@@ -1,0 +1,124 @@
+import { addDays, format } from 'date-fns';
+
+import { phasesData } from 'api/phases/__mocks__/_mockServer';
+import { IPhaseData, ParticipationMethod } from 'api/phases/types';
+
+import {
+  excludeHidden,
+  groupSpotlightSurveys,
+  phaseHasPrimaryCTA,
+} from './participationOptions';
+
+const date = (daysFromNow: number) =>
+  format(addDays(new Date(), daysFromNow), 'yyyy-MM-dd');
+
+const phase = (
+  attributes: Partial<IPhaseData['attributes']> = {},
+  id?: string
+): IPhaseData => {
+  const base = phasesData[0];
+
+  return {
+    ...base,
+    ...(id ? { id } : {}),
+    attributes: {
+      ...base.attributes,
+      participation_method: 'native_survey',
+      placement_type: 'standalone',
+      start_at: date(-7),
+      end_at: date(7),
+      ...attributes,
+    },
+  };
+};
+
+describe('phaseHasPrimaryCTA', () => {
+  const withCTA: ParticipationMethod[] = [
+    'ideation',
+    'proposals',
+    'native_survey',
+    'poll',
+    'document_annotation',
+    'volunteering',
+  ];
+
+  it.each(withCTA)('returns true for %s', (method) => {
+    expect(phaseHasPrimaryCTA(phase({ participation_method: method }))).toBe(
+      true
+    );
+  });
+
+  // External surveys only ever render a mobile-only scroll link, so they never
+  // count as a box CTA.
+  it.each(['survey', 'information', 'common_ground'] as const)(
+    'returns false for %s',
+    (method) => {
+      expect(phaseHasPrimaryCTA(phase({ participation_method: method }))).toBe(
+        false
+      );
+    }
+  );
+});
+
+describe('groupSpotlightSurveys', () => {
+  it('returns empty groups for undefined input', () => {
+    expect(groupSpotlightSurveys(undefined)).toEqual({
+      open: [],
+      upcoming: [],
+    });
+  });
+
+  it('groups standalone surveys by temporal state and drops past ones', () => {
+    const openSpotlightSurvey = phase({}, 'open');
+    const upcomingSpotlightSurvey = phase(
+      { start_at: date(3), end_at: date(10) },
+      'upcoming'
+    );
+    const pastSpotlightSurvey = phase(
+      { start_at: date(-10), end_at: date(-3) },
+      'past'
+    );
+
+    const { open: openSpotlightSurveys, upcoming: upcomingSpotlightSurveys } =
+      groupSpotlightSurveys([
+        openSpotlightSurvey,
+        upcomingSpotlightSurvey,
+        pastSpotlightSurvey,
+      ]);
+
+    expect(openSpotlightSurveys.map((p) => p.id)).toEqual(['open']);
+    expect(upcomingSpotlightSurveys.map((p) => p.id)).toEqual(['upcoming']);
+  });
+
+  it('treats surveys without an end date as open', () => {
+    const ongoing = phase({ end_at: null }, 'ongoing');
+    expect(groupSpotlightSurveys([ongoing]).open.map((p) => p.id)).toEqual([
+      'ongoing',
+    ]);
+  });
+
+  it('ignores phases that are not standalone native surveys', () => {
+    const timelinePhase = phase({ placement_type: 'on_timeline' });
+    const standaloneIdeation = phase({ participation_method: 'ideation' });
+
+    expect(groupSpotlightSurveys([timelinePhase, standaloneIdeation])).toEqual({
+      open: [],
+      upcoming: [],
+    });
+  });
+});
+
+describe('excludeHidden', () => {
+  const phases = [phase({}, 'a'), phase({}, 'b')];
+
+  it('returns all phases when nothing is hidden', () => {
+    expect(excludeHidden(phases, undefined)).toEqual(phases);
+    expect(excludeHidden(phases, [])).toEqual(phases);
+  });
+
+  it('filters out hidden phases and ignores unknown ids', () => {
+    expect(excludeHidden(phases, ['b', 'deleted']).map((p) => p.id)).toEqual([
+      'a',
+    ]);
+  });
+});

@@ -25,5 +25,9 @@ FactoryBot.define do
         code # slug matches code for non-custom pages
       end
     end
+
+    trait :project_scoped do
+      association :project
+    end
   end
 end

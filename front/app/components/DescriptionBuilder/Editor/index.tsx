@@ -1,0 +1,78 @@
+import React from 'react';
+
+import { Box } from '@citizenlab/cl2-component-library';
+import { SerializedNodes } from '@craftjs/core';
+
+import AboutBox from 'components/admin/ContentBuilder/Widgets/AboutBox';
+import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
+import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
+import Container from 'components/admin/ContentBuilder/Widgets/Container';
+import FileAttachment from 'components/admin/ContentBuilder/Widgets/FileAttachment';
+import HtmlBlockMultiloc from 'components/admin/ContentBuilder/Widgets/HtmlBlockMultiloc';
+import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
+import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
+import ImageTextCards from 'components/admin/ContentBuilder/Widgets/ImageTextCards';
+import PageLink from 'components/admin/ContentBuilder/Widgets/PageLink';
+import Published from 'components/admin/ContentBuilder/Widgets/Published';
+import Selection from 'components/admin/ContentBuilder/Widgets/Selection';
+import Spotlight from 'components/admin/ContentBuilder/Widgets/Spotlight';
+import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
+import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
+import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
+import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+import FolderFiles from 'components/DescriptionBuilder/Widgets/FolderFiles';
+import FolderTitle from 'components/DescriptionBuilder/Widgets/FolderTitle';
+import RichTextMultiloc from 'components/DescriptionBuilder/Widgets/RichTextMultiloc';
+
+import InfoWithAccordions from '.././Widgets/InfoWithAccordions';
+
+import BaseEditor from './Editor';
+
+type EditorProps = {
+  children?: React.ReactNode;
+  isPreview: boolean;
+  onNodesChange?: (nodes: SerializedNodes) => void;
+};
+
+const Editor: React.FC<EditorProps> = ({
+  onNodesChange,
+  isPreview,
+  children,
+}) => {
+  return (
+    <BaseEditor
+      resolver={{
+        Box,
+        Container,
+        TwoColumn,
+        ThreeColumn,
+        TextMultiloc,
+        ImageMultiloc,
+        IframeMultiloc,
+        FileAttachment,
+        PageLink,
+        AboutBox,
+        AccordionMultiloc,
+        WhiteSpace,
+        InfoWithAccordions,
+        ImageTextCards,
+        ButtonMultiloc,
+        Published,
+        Spotlight,
+        Selection,
+        FolderFiles,
+        FolderTitle,
+        // Migration-only bridge widget: resolvable so migrated layouts render,
+        // but deliberately absent from the toolbox so admins can't add new ones.
+        RichTextMultiloc,
+        HtmlBlockMultiloc,
+      }}
+      isPreview={isPreview}
+      onNodesChange={onNodesChange}
+    >
+      {children}
+    </BaseEditor>
+  );
+};
+
+export default Editor;

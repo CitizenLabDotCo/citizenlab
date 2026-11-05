@@ -3,32 +3,45 @@
 require 'rails_helper'
 
 RSpec.describe Permission do
-  describe 'Default factory' do
-    it 'is valid' do
-      expect(build(:permission)).to be_valid
+  it_behaves_like 'a sanitized html_multiloc', factory: :permission, attribute: :access_denied_explanation_multiloc
+
+  def configure_verification_method
+    AppConfiguration.instance.settings['id_config'] =
+      { 'allowed' => true, 'enabled' => true, 'id_methods' => [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
+    AppConfiguration.instance.save!
+  end
+
+  def verified_members_group
+    create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
+  end
+
+  describe 'access denied explanation sanitizer' do
+    def explanation_of(html)
+      create(:permission, access_denied_explanation_multiloc: { 'en' => html })
+        .access_denied_explanation_multiloc['en']
+    end
+
+    it 'strips a javascript: scheme from a link' do
+      expect(explanation_of('<a href="javascript:alert(1)">Click</a>')).to eq '<a rel="nofollow">Click</a>'
+    end
+
+    it 'keeps a real link and the decoration tags' do
+      expect(explanation_of('<p>Ask your <b>council</b>: <a href="https://example.com">here</a></p>')).to eq(
+        '<p>Ask your <b>council</b>: <a href="https://example.com" rel="nofollow">here</a></p>'
+      )
+    end
+
+    # Lists are kept because production holds them (nine rows, every cluster surveyed), left over
+    # from the Quill editor this field had until June 2026. Nothing else survives the allowlist.
+    it 'keeps a list, and strips the rest of what a rich text editor once offered' do
+      expect(explanation_of('<h2>Title</h2><ul><li>A bullet</li></ul><img src="https://example.com/a.png">'))
+        .to eq 'Title<ul><li>A bullet</li></ul>'
     end
   end
 
-  describe 'global_custom_fields' do
-    context 'everyone' do
-      it 'is true when created' do
-        permission = create(:permission, :by_everyone)
-        expect(permission.global_custom_fields).to be_truthy
-      end
-    end
-
-    context 'everyone_confirmed_email' do
-      it 'is true when created' do
-        permission = create(:permission, :by_everyone_confirmed_email)
-        expect(permission.global_custom_fields).to be_truthy
-      end
-    end
-
-    context 'user' do
-      it 'is true when created' do
-        permission = create(:permission, :by_users, global_custom_fields: nil)
-        expect(permission.global_custom_fields).to be_truthy
-      end
+  describe 'Default factory' do
+    it 'is valid' do
+      expect(build(:permission)).to be_valid
     end
   end
 
@@ -64,85 +77,282 @@ RSpec.describe Permission do
     end
   end
 
-  describe 'verification' do
-    context 'verification enabled for an action' do
-      before { SettingsService.new.activate_feature! 'verification', settings: { verification_methods: [{ name: 'fake_sso', enabled_for_verified_actions: true }] } }
+  describe 'default values' do
+    it 'defaults the authentication requirements' do
+      permission = described_class.new
+      expect(permission.require_confirmed_email).to be true
+      expect(permission.require_name).to be true
+      expect(permission.require_password).to be true
+      expect(permission.require_verification).to be false
+      expect(permission.confirmed_email_expiry).to be_nil
+      expect(permission.require_confirmed_phone_number).to be false
+      expect(permission.confirmed_phone_number_expiry).to be_nil
+    end
+  end
 
-      describe 'permitted_by' do
-        it 'can set the verified permitted_by' do
-          permission = create(:permission, :by_verified, global_custom_fields: nil)
-          expect(permission.permitted_by).to eq('verified')
-        end
-      end
-
-      describe 'global_custom_fields' do
-        it 'is true when created for a "verified" permitted_by' do
-          permission = create(:permission, :by_verified, global_custom_fields: nil)
-          expect(permission.global_custom_fields).to be_truthy
-        end
-      end
-
-      describe 'verification_expiry' do
-        it 'can set the verification_expiry when permitted_by is "verified"' do
-          permission = create(:permission, :by_verified, verification_expiry: 1.day)
-          expect(permission.verification_expiry).to eq(1.day)
-        end
-
-        it 'cannot set the verification_expiry when permitted_by is not "verified"' do
-          expect { create(:permission, :by_users, verification_expiry: 1.day) }.to raise_error(ActiveRecord::RecordInvalid)
-        end
-
-        it 'does not cause a problem if set and permitted_by is changed' do
-          permission = create(:permission, :by_verified, verification_expiry: 1.day)
-          permission.update!(permitted_by: 'users')
-          expect(permission.verification_expiry).to eq(1.day)
-        end
+  describe 'permitted_by' do
+    it 'is valid for everyone, users and admins_moderators' do
+      %w[everyone users admins_moderators].each do |value|
+        expect(build(:permission, permitted_by: value)).to be_valid
       end
     end
 
-    context 'verification not enabled for any actions' do
-      describe 'permitted_by' do
-        it 'returns an error if no methods are enabled' do
-          expect { create(:permission, :by_verified, global_custom_fields: nil) }.to raise_error(ActiveRecord::RecordInvalid)
+    it 'is no longer valid for the removed everyone_confirmed_email value' do
+      expect(build(:permission, permitted_by: 'everyone_confirmed_email')).not_to be_valid
+    end
+
+    it 'is no longer valid for the removed verified value' do
+      expect(build(:permission, permitted_by: 'verified')).not_to be_valid
+    end
+
+    it "is valid as 'everyone' when the action is 'posting_idea' and the method supports it" do
+      expect(build(:permission, permitted_by: 'everyone', action: 'posting_idea')).to be_valid
+    end
+
+    it "is valid as 'everyone' for 'taking_survey' on an external survey phase" do
+      permission = build(:permission, permitted_by: 'everyone', action: 'taking_survey', permission_scope: create(:typeform_survey_phase))
+      expect(permission).to be_valid
+    end
+
+    it "is invalid as 'everyone' for global (scope-less) permissions" do
+      permission = build(:global_permission, permitted_by: 'everyone', action: 'visiting')
+      expect(permission).not_to be_valid
+      expect(permission.errors.details[:permitted_by]).to include(error: :everyone_not_allowed_for_action)
+    end
+
+    it "is invalid as 'everyone' when the action does not allow it" do
+      permission = build(:permission, permitted_by: 'everyone', action: 'commenting_idea')
+      expect(permission).not_to be_valid
+      expect(permission.errors.details[:permitted_by]).to include(error: :everyone_not_allowed_for_action)
+    end
+
+    it "allows other permitted_by values for actions that do not allow 'everyone'" do
+      expect(build(:permission, permitted_by: 'users', action: 'commenting_idea')).to be_valid
+    end
+  end
+
+  describe 'following permission default' do
+    it 'defaults to a users permission that only requires a confirmed email' do
+      permission = create(:global_permission, action: 'following', permitted_by: nil)
+      expect(permission.permitted_by).to eq('users')
+      expect(permission.require_confirmed_email).to be true
+      expect(permission.require_name).to be false
+      expect(permission.require_password).to be false
+    end
+  end
+
+  describe '#require_confirmed_phone_number' do
+    let(:permission) { create(:permission, :by_users, require_confirmed_phone_number: true) }
+
+    context 'when the sms feature is enabled' do
+      include_context 'with sms feature enabled'
+
+      it 'returns the stored value' do
+        expect(permission.require_confirmed_phone_number).to be true
+        expect(permission.require_confirmed_phone_number?).to be true
+      end
+    end
+
+    context 'when the sms feature is disabled' do
+      it 'is false, whatever is stored' do
+        expect(permission.require_confirmed_phone_number).to be false
+        expect(permission.require_confirmed_phone_number?).to be false
+      end
+
+      it 'masks the stored value rather than clearing it' do
+        expect(permission.reload.read_attribute(:require_confirmed_phone_number)).to be true
+      end
+
+      it 'returns the stored value again once the feature is switched back on' do
+        SettingsService.new.activate_feature!('sms')
+        expect(permission.require_confirmed_phone_number).to be true
+      end
+    end
+  end
+
+  describe '#require_verification' do
+    let(:permission) { create(:permission, :by_users, require_verification: true) }
+
+    context 'when a verification method is configured' do
+      before { configure_verification_method }
+
+      it 'returns the stored value' do
+        expect(permission.require_verification).to be true
+        expect(permission.require_verification?).to be true
+      end
+    end
+
+    context 'when no verification method is configured' do
+      it 'is false, whatever is stored' do
+        expect(permission.require_verification).to be false
+        expect(permission.require_verification?).to be false
+      end
+
+      it 'masks the stored value rather than clearing it' do
+        expect(permission.reload.read_attribute(:require_verification)).to be true
+      end
+
+      it 'returns the stored value again once a method is configured' do
+        configure_verification_method
+        expect(permission.require_verification).to be true
+      end
+    end
+  end
+
+  describe '#require_password' do
+    let(:permission) { create(:permission, :by_users, require_password: true) }
+
+    it 'returns the stored value while password_login is enabled' do
+      expect(permission.require_password).to be true
+      expect(permission.require_password?).to be true
+    end
+
+    context 'when password_login is disabled' do
+      before { SettingsService.new.deactivate_feature!('password_login') }
+
+      it 'is false, whatever is stored' do
+        expect(permission.require_password).to be false
+        expect(permission.require_password?).to be false
+      end
+
+      it 'masks the stored value rather than clearing it' do
+        expect(permission.reload.read_attribute(:require_password)).to be true
+      end
+
+      it 'returns the stored value again once the feature is switched back on' do
+        SettingsService.new.activate_feature!('password_login')
+        expect(permission.require_password).to be true
+      end
+    end
+  end
+
+  describe '#custom_fields_behavior' do
+    let(:permission) { create(:permission, :by_users, custom_fields_behavior: 'custom') }
+
+    it 'returns the stored value while permissions_custom_fields is enabled' do
+      expect(permission.custom_fields_behavior).to eq 'custom'
+    end
+
+    context 'when permissions_custom_fields is disabled' do
+      before { SettingsService.new.deactivate_feature!('permissions_custom_fields') }
+
+      it "falls back to the platform-wide questions instead of the action's own" do
+        expect(permission.custom_fields_behavior).to eq 'global'
+      end
+
+      it 'masks the stored value rather than clearing it' do
+        expect(permission.reload.read_attribute(:custom_fields_behavior)).to eq 'custom'
+      end
+
+      it 'returns the stored value again once the feature is switched back on' do
+        SettingsService.new.activate_feature!('permissions_custom_fields')
+        expect(permission.custom_fields_behavior).to eq 'custom'
+      end
+
+      it 'leaves the other behaviors alone' do
+        %w[global disabled].each do |behavior|
+          permission.update!(custom_fields_behavior: behavior)
+          expect(permission.custom_fields_behavior).to eq behavior
         end
       end
     end
   end
 
-  describe 'user_fields_in_form_frontend_descriptor' do
-    it 'returns locked: true and explanation if phase is not native_survey or community_monitor' do
-      permission = create(:permission)
-      descriptor = permission.user_fields_in_form_frontend_descriptor
+  describe '#verification_enabled?' do
+    context 'when a verification method is configured' do
+      before { configure_verification_method }
+
+      it 'is true when require_verification is true' do
+        expect(create(:permission, :by_users, require_verification: true).verification_enabled?).to be true
+      end
+
+      it 'is true when a verification group is set' do
+        permission = create(:permission, :by_users, groups: [verified_members_group])
+        expect(permission.verification_enabled?).to be true
+      end
+
+      it 'is false when verification is not required and there is no verification group' do
+        expect(create(:permission, :by_users).verification_enabled?).to be false
+      end
+    end
+
+    context 'when no verification method is configured' do
+      it 'is false even when require_verification is true' do
+        expect(create(:permission, :by_users, require_verification: true).verification_enabled?).to be false
+      end
+
+      # The group still restricts who may participate, which is reported as a group
+      # membership requirement rather than as a verification step.
+      it 'is false even when a verification group is set' do
+        permission = create(:permission, :by_users, groups: [verified_members_group])
+        expect(permission.verification_enabled?).to be false
+      end
+    end
+  end
+
+  describe '#user_fields_in_form_descriptor' do
+    it 'returns locked: true and explanation if phase is not native_survey, community_monitor or ideation' do
+      permission = create(:permission, action: 'taking_poll', permission_scope: create(:poll_phase))
+      descriptor = permission.user_fields_in_form_descriptor
       expect(descriptor[:value]).to be_nil
       expect(descriptor[:locked]).to be_truthy
-      expect(descriptor[:explanation]).to eq('user_fields_in_survey_not_supported_for_participation_method')
+      expect(descriptor[:explanation]).to eq('user_fields_in_form_not_supported_for_action')
     end
 
-    it 'if permitted_by is everyone and data collection is anonymous: returns locked: true, value: nil and explanation' do
-      phase = create(:native_survey_phase)
-      permission = create(:permission, action: 'posting_idea', permission_scope: phase, permitted_by: 'everyone', user_data_collection: 'anonymous')
-      descriptor = permission.user_fields_in_form_frontend_descriptor
-      expect(descriptor[:value]).to be_nil
-      expect(descriptor[:locked]).to be_truthy
-      expect(descriptor[:explanation]).to eq('with_these_settings_cannot_ask_demographic_fields')
+    context 'surveys' do
+      let(:permission) { create(:permission, action: 'posting_idea', permission_scope: create(:native_survey_phase)) }
+
+      it 'if permitted_by is everyone and data collection is anonymous: returns locked: true, value: nil and explanation' do
+        permission.update!(permitted_by: 'everyone', user_data_collection: 'anonymous')
+        descriptor = permission.user_fields_in_form_descriptor
+        expect(descriptor[:value]).to be_nil
+        expect(descriptor[:locked]).to be_truthy
+        expect(descriptor[:explanation]).to eq('with_these_settings_cannot_ask_demographic_fields')
+      end
+
+      it 'if permitted_by is everyone and data collection is not anonymous: returns locked: true, value: true and explanation' do
+        permission.update!(permitted_by: 'everyone', user_data_collection: 'all_data')
+        descriptor = permission.user_fields_in_form_descriptor
+        expect(descriptor[:value]).to be_truthy
+        expect(descriptor[:locked]).to be_truthy
+        expect(descriptor[:explanation]).to eq('cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone')
+      end
+
+      it 'if permitted_by is not everyone and data collection is anonymous: returns locked: true, value: false and explanation' do
+        permission.update!(permitted_by: 'users', user_data_collection: 'anonymous')
+        descriptor = permission.user_fields_in_form_descriptor
+        expect(descriptor[:value]).to be_falsey
+        expect(descriptor[:locked]).to be_truthy
+        expect(descriptor[:explanation]).to eq('with_these_settings_can_only_ask_demographic_fields_in_registration_flow')
+      end
     end
 
-    it 'if permitted_by is everyone and data collection is not anonymous: returns locked: true, value: true and explanation' do
-      phase = create(:native_survey_phase)
-      permission = create(:permission, action: 'posting_idea', permission_scope: phase, permitted_by: 'everyone', user_data_collection: 'all_data')
-      descriptor = permission.user_fields_in_form_frontend_descriptor
-      expect(descriptor[:value]).to be_truthy
-      expect(descriptor[:locked]).to be_truthy
-      expect(descriptor[:explanation]).to eq('cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone')
-    end
+    context 'ideation' do
+      let(:permission) { create(:permission, action: 'posting_idea', permission_scope: create(:ideation_phase)) }
 
-    it 'if permitted_by is not everyone and data collection is anonymous: returns locked: true, value: false and explanation' do
-      phase = create(:native_survey_phase)
-      permission = create(:permission, action: 'posting_idea', permission_scope: phase, permitted_by: 'users', user_data_collection: 'anonymous')
-      descriptor = permission.user_fields_in_form_frontend_descriptor
-      expect(descriptor[:value]).to be_falsey
-      expect(descriptor[:locked]).to be_truthy
-      expect(descriptor[:explanation]).to eq('with_these_settings_can_only_ask_demographic_fields_in_registration_flow')
+      it 'if permitted_by is everyone: returns locked: true and value: true' do
+        permission.update!(permitted_by: 'everyone', user_fields_in_form: false)
+        descriptor = permission.user_fields_in_form_descriptor
+        expect(descriptor[:value]).to be_truthy
+        expect(descriptor[:locked]).to be_truthy
+        expect(descriptor[:explanation]).to eq('cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone')
+      end
+
+      it 'if permitted_by is not everyone: returns locked: false and whatever user_fields_in_form is' do
+        permission.update!(permitted_by: 'users', user_fields_in_form: false)
+        descriptor = permission.user_fields_in_form_descriptor
+        expect(descriptor[:value]).to be_falsey
+        expect(descriptor[:locked]).to be_falsey
+        expect(descriptor[:explanation]).to be_nil
+      end
+
+      it 'returns locked: true and explanation if action is not posting_idea' do
+        permission = create(:permission, action: 'commenting_idea', permission_scope: create(:ideation_phase))
+        descriptor = permission.user_fields_in_form_descriptor
+        expect(descriptor[:value]).to be_nil
+        expect(descriptor[:locked]).to be_truthy
+        expect(descriptor[:explanation]).to eq('user_fields_in_form_not_supported_for_action')
+      end
     end
   end
 end

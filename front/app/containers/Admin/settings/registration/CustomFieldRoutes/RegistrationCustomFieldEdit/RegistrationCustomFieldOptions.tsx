@@ -16,16 +16,17 @@ import SortableRow from 'components/admin/ResourceList/SortableRow';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { injectIntl } from 'utils/cl-intl';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
+import { useParams } from 'utils/router';
 
 import messages from '../messages';
 
 const RegistrationCustomFieldOptions = memo(
-  ({
-    intl: { formatMessage },
-    params: { userCustomFieldId },
-  }: WrappedComponentProps & WithRouterProps) => {
+  ({ intl: { formatMessage } }: WrappedComponentProps) => {
+    const { userCustomFieldId } = useParams({ strict: false }) as Record<
+      string,
+      string
+    >;
     const { data: userCustomFieldOptions } =
       useCustomFieldOptions(userCustomFieldId);
     const { mutate: deleteCustomFieldOption } =
@@ -64,7 +65,8 @@ const RegistrationCustomFieldOptions = memo(
             <ButtonWithLink
               buttonStyle="admin-dark"
               icon="plus-circle"
-              linkTo={`/admin/settings/registration/custom-fields/${userCustomFieldId}/options/new`}
+              to="/admin/settings/registration/custom-fields/$userCustomFieldId/options/new"
+              params={{ userCustomFieldId }}
             >
               {formatMessage(messages.addOption)}
             </ButtonWithLink>
@@ -101,7 +103,11 @@ const RegistrationCustomFieldOptions = memo(
                           )}
                         </TextCell>
                         <ButtonWithLink
-                          linkTo={`/admin/settings/registration/custom-fields/${userCustomFieldId}/options/${userCustomFieldOptionId}`}
+                          to="/admin/settings/registration/custom-fields/$userCustomFieldId/options/$userCustomFieldOptionId"
+                          params={{
+                            userCustomFieldId,
+                            userCustomFieldOptionId,
+                          }}
                           buttonStyle="secondary-outlined"
                           icon="edit"
                         >
@@ -129,4 +135,4 @@ const RegistrationCustomFieldOptions = memo(
   }
 );
 
-export default withRouter(injectIntl(RegistrationCustomFieldOptions));
+export default injectIntl(RegistrationCustomFieldOptions);

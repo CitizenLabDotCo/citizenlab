@@ -4,17 +4,20 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
   skip_before_action :authenticate_user
   before_action :set_admin_publication, only: %i[reorder show]
 
-  def index
-    # By default, this endpoint will remove unlisted projects that the user cannot moderate.
-    # But if the `remove_all_unlisted` parameter is set to 'true', it will
-    # even remove all unlisted projects.
-    policy_context[:remove_unlisted] = if params[:remove_all_unlisted] == 'true'
-      'remove_all_unlisted'
-    else
-      'remove_unlisted_that_user_cannot_moderate'
-    end
+  # A nested query param where a scalar is expected (`?publication_statuses[x]=y`) makes
+  # ActiveRecord raise "can't cast ActionController::Parameters". That's bad input → 400,
+  # not a 500. Other TypeErrors are re-raised.
+  rescue_from TypeError do |exception|
+    raise exception unless exception.message.start_with?("can't cast ActionController::Parameters")
 
+    # Can't re-raise as ApiError here (rescue_from doesn't chain), so render its payload directly.
+    error = ApiError.new(:invalid_filter_parameter, status: 400)
+    render json: error.payload, status: error.status
+  end
+
+  def index
     admin_publications = policy_scope(AdminPublication.includes(:parent))
+    admin_publications = apply_projects_listed_scope(admin_publications)
     admin_publications = admin_publication_filterer.filter(admin_publications, params.merge(current_user: current_user))
 
     admin_publications = case params[:sort]
@@ -25,7 +28,7 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
     when nil
       admin_publications.order('admin_publications.ordering ASC')
     else
-      raise 'Unsupported sort method'
+      raise ApiError.new(:unsupported_sort_parameter, status: 400)
     end
 
     @admin_publications = paginate admin_publications
@@ -43,7 +46,8 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
       @admin_publications,
       WebApi::V1::AdminPublicationSerializer,
       params: jsonapi_serializer_params(
-        visible_children_count_by_parent_id: admin_publication_filterer.visible_children_counts_by_parent_id
+        visible_children_count_by_parent_id: admin_publication_filterer.visible_children_counts_by_parent_id,
+        user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false)
       ),
       include: included
     )
@@ -53,7 +57,8 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
   # Returns non-draft admin_publications for specified IDs, ordered by order of the specified IDs.
   # => [AdminPublication]
   def index_select_and_order_by_ids
-    ids = params[:ids]
+    # ids should be an explicit id array; anything else is an empty selection
+    ids = params[:ids].is_a?(Array) ? params[:ids].select { |id| id.is_a?(String) } : []
 
     visible_not_draft_admin_publications = policy_scope(AdminPublication.includes(:parent)).not_draft
     admin_publications = admin_publication_filterer.filter(visible_not_draft_admin_publications,
@@ -74,7 +79,8 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
       @admin_publications,
       WebApi::V1::AdminPublicationSerializer,
       params: jsonapi_serializer_params(
-        visible_children_count_by_parent_id: admin_publication_filterer.visible_children_counts_by_parent_id
+        visible_children_count_by_parent_id: admin_publication_filterer.visible_children_counts_by_parent_id,
+        user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false)
       ),
       include: included_for_publications
     )
@@ -105,6 +111,7 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
 
     admin_publication_filterer = AdminPublicationsFilteringService.new
     admin_publications = policy_scope(AdminPublication.includes(:parent))
+    admin_publications = apply_projects_listed_scope(admin_publications)
     admin_publications = admin_publication_filterer.filter(admin_publications, params)
 
     counts = admin_publications.group(:publication_status).count
@@ -117,6 +124,12 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
       @admin_publication,
       params: jsonapi_serializer_params
     ).serializable_hash, status: :ok
+  end
+
+  def tree_view
+    authorize :admin_publication, :tree_view
+    nodes = TreeViewService.new.generate_tree
+    render json: raw_json({ nodes: })
   end
 
   private
@@ -134,7 +147,7 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
     admin_publications.includes(
       {
         publication: [
-          { phases: %i[report custom_form permissions] },
+          { phases: [:report, :custom_form, { permissions: [:groups], project: :admin_publication }] },
           :admin_publication,
           :images,
           :project_images,
@@ -154,6 +167,26 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
       publication.current_phase
       publication.phases
     ]
+  end
+
+  def apply_projects_listed_scope(admin_publications_scope)
+    # By default, this endpoint will remove unlisted projects that the user cannot moderate.
+    # But if the `remove_all_unlisted` parameter is set to 'true', it will
+    # even remove all unlisted projects.
+    listed_projects = if params[:remove_all_unlisted] == 'true'
+      ProjectsListedScopeService.new.remove_unlisted_projects(Project.all)
+    else
+      ProjectsListedScopeService.new.remove_unlisted_that_user_cannot_moderate(
+        Project.all,
+        current_user
+      )
+    end
+
+    admin_publications_scope.where(
+      "(admin_publications.publication_type != 'Project') OR " \
+      "(admin_publications.publication_type = 'Project' AND admin_publications.publication_id IN (?))",
+      listed_projects.select(:id)
+    )
   end
 end
 

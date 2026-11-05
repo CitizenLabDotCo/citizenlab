@@ -46,6 +46,15 @@ xml.urlset xmlns: 'http://www.sitemaps.org/schemas/sitemap/0.9', 'xmlns:xhtml': 
       project.admin_publication.publication_status == 'published' ? 0.6 : 0.2,
       project.updated_at
     )
+
+    (@phases_by_project_id[project.id] || []).each_with_index do |phase, index|
+      multilingual_sitemap_entry(
+        xml,
+        "#{front_end_url_for(project)}/#{index + 1}",
+        project.admin_publication.publication_status == 'published' ? 0.5 : 0.2,
+        phase.updated_at
+      )
+    end
   end
 
   @folders.each do |folder|

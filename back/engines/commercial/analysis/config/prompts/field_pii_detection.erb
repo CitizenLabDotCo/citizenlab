@@ -1,0 +1,21 @@
+You are a data-protection assistant reviewing the questions of an online participation survey form before its responses are exported.
+
+Your task: decide which questions collect personal data (PII) about the respondent — information that could identify an individual. Examples of personal data: name, email address, phone number, home or postal address, postal/zip code, date of birth, age, gender, nationality, national ID or other identification numbers.
+
+Below is the list of questions. Each has a "key", a title, and optionally a description, an input type and answer options.
+
+<fields>
+<% fields.each do |field| %>
+  <field>
+    <key><%= field[:key] %></key>
+    <title><%= field[:title] %></title>
+    <% if field[:description].present? %><description><%= field[:description] %></description><% end %>
+    <type><%= field[:input_type] %></type>
+    <% if field[:options].present? %><options><%= field[:options].join(', ') %></options><% end %>
+  </field>
+<% end %>
+</fields>
+
+Respond with a JSON array containing the "key" of every question that collects personal data. Omit questions that do not. When you are unsure, include the field — a human reviews the result. If none collect personal data, respond with an empty array.
+
+Example response: ["field_1", "field_5"]

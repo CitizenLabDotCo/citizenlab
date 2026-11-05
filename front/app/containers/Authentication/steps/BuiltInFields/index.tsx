@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -19,9 +19,11 @@ import {
 import Input from 'components/HookForm/Input';
 import PasswordInput from 'components/HookForm/PasswordInput';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
-import { DEFAULT_MINIMUM_PASSWORD_LENGTH } from 'components/UI/PasswordInput';
+import {
+  DEFAULT_MINIMUM_PASSWORD_LENGTH,
+  passwordUserInputs,
+} from 'components/UI/PasswordInput';
 
-import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import {
   isCLErrorsWrapper,
@@ -29,8 +31,8 @@ import {
 } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
-import tracks from '../../tracks';
 import { BuiltInFieldsUpdate } from '../../useSteps/stepConfig/typings';
+import { askEmailOnBuiltInStep } from '../../useSteps/stepConfig/utils';
 import sharedMessages from '../messages';
 
 import { DEFAULT_VALUES, getSchema } from './form';
@@ -39,7 +41,7 @@ import messages from './messages';
 interface BaseProps {
   loading: boolean;
   setError: SetError;
-  onSubmit: (userId: string, update: BuiltInFieldsUpdate) => void;
+  onSubmit: (userId: string, update: BuiltInFieldsUpdate) => Promise<void>;
 }
 
 interface Props extends BaseProps {
@@ -61,11 +63,21 @@ const BuiltInFields = ({
   const minimumPasswordLength =
     appConfigSettings?.password_login?.minimum_length ??
     DEFAULT_MINIMUM_PASSWORD_LENGTH;
+  const minimumStrength = appConfigSettings?.password_login?.minimum_strength;
+
+  // Stored attributes (those not asked here) so the strength check penalises them too.
+  const storedUserInputs = passwordUserInputs({
+    email: authUser?.data.attributes.email,
+    first_name: authUser?.data.attributes.first_name,
+    last_name: authUser?.data.attributes.last_name,
+  });
 
   const schema = getSchema(
     minimumPasswordLength,
     formatMessage,
-    authenticationRequirements
+    authenticationRequirements,
+    minimumStrength,
+    storedUserInputs
   );
 
   const methods = useForm({
@@ -74,11 +86,21 @@ const BuiltInFields = ({
     resolver: yupResolver(schema),
   });
 
-  useEffect(() => {
-    trackEventByName(tracks.signUpEmailPasswordStepEntered);
-  }, []);
+  // Live values for the meter; fall back to stored attributes for fields not asked here.
+  const [firstName, lastName, email] = methods.watch([
+    'first_name',
+    'last_name',
+    'email',
+  ]);
 
   if (isNilOrError(locale) || isNilOrError(authUser)) return null;
+
+  const userAttributes = authUser.data.attributes;
+  const passwordInputs = passwordUserInputs({
+    email: email ?? userAttributes.email,
+    first_name: firstName ?? userAttributes.first_name,
+    last_name: lastName ?? userAttributes.last_name,
+  });
 
   const handleSubmit = async ({
     first_name,
@@ -93,7 +115,19 @@ const BuiltInFields = ({
         email,
         password,
       });
-    } catch (e) {
+    } catch (e: any) {
+      if (e?.errors?.new_email?.[0]?.error === 'is already taken') {
+        setError('email_taken_and_user_can_be_verified');
+        return;
+      }
+
+      // A `base` error belongs to no form field, so react-hook-form would record it
+      // against one that is never rendered and nothing would appear to happen.
+      if (e?.errors?.base) {
+        setError('unknown');
+        return;
+      }
+
       if (isCLErrorsWrapper(e)) {
         handleHookFormSubmissionError(e, methods.setError);
         return;
@@ -109,13 +143,15 @@ const BuiltInFields = ({
 
   const askFirstName = missingAttributes.has('first_name');
   const askLastName = missingAttributes.has('last_name');
-  const askEmail = missingAttributes.has('email');
+  const askEmail = askEmailOnBuiltInStep(
+    authenticationRequirements.requirements
+  );
   const askPassword = missingAttributes.has('password');
 
   return (
     <Box id="e2e-built-in-fields-container">
       <FormProvider {...methods}>
-        <form onSubmit={methods.handleSubmit(handleSubmit)}>
+        <form noValidate onSubmit={methods.handleSubmit(handleSubmit)}>
           <Text mt="0px" mb="32px">
             {formatMessage(messages.pleaseCompleteYourProfile)}
           </Text>
@@ -127,6 +163,7 @@ const BuiltInFields = ({
                 type="text"
                 autocomplete="given-name"
                 label={formatMessage(sharedMessages.firstNamesLabel)}
+                required
               />
             </Box>
           )}
@@ -138,6 +175,7 @@ const BuiltInFields = ({
                 type="text"
                 autocomplete="family-name"
                 label={formatMessage(sharedMessages.lastNameLabel)}
+                required
               />
             </Box>
           )}
@@ -149,6 +187,7 @@ const BuiltInFields = ({
                 type="email"
                 autocomplete="email"
                 label={formatMessage(sharedMessages.email)}
+                required
               />
             </Box>
           )}
@@ -158,7 +197,9 @@ const BuiltInFields = ({
                 name="password"
                 id="password"
                 label={formatMessage(sharedMessages.password)}
-                autocomplete="current-password"
+                autocomplete="new-password"
+                required
+                userInputs={passwordInputs}
               />
             </Box>
           )}

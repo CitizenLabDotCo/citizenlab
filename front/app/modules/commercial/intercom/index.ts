@@ -1,4 +1,5 @@
 import { combineLatest } from 'rxjs';
+import { withLatestFrom } from 'rxjs/operators';
 
 import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
 import authUserStream from 'api/me/authUserStream';
@@ -16,7 +17,7 @@ import {
   shutdownFor,
   tenantInfo,
 } from 'utils/analytics';
-import { isNilOrError } from 'utils/helperUtils';
+import fetcher from 'utils/cl-react-query/fetcher';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import { isAdmin, isRegularUser } from 'utils/permissions/roles';
 import { getFullName } from 'utils/textUtils';
@@ -38,13 +39,32 @@ const destinationConfig: IDestinationConfig = {
   name: () => 'Intercom',
 };
 
+interface IIntercomToken {
+  data: {
+    type: 'intercom_token';
+    attributes: { token: string };
+  };
+}
+
+const fetchIntercomToken = async () => {
+  try {
+    const { data } = await fetcher<IIntercomToken>({
+      path: '/users/me/intercom_token',
+      action: 'get',
+    });
+    return data.attributes.token;
+  } catch {
+    return undefined;
+  }
+};
+
 const configuration: ModuleConfiguration = {
   beforeMountApplication: () => {
     combineLatest([
       appConfigurationStream,
       authUserStream,
       initializeFor('intercom'),
-    ]).subscribe(([tenant, user, _]) => {
+    ]).subscribe(async ([tenant, user, _]) => {
       if (!INTERCOM_APP_ID) return;
 
       (function () {
@@ -68,7 +88,7 @@ const configuration: ModuleConfiguration = {
             const s = d.createElement('script');
             s.type = 'text/javascript';
             s.async = true;
-            s.src = `https://widget.intercom.io/widget/'${INTERCOM_APP_ID}`;
+            s.src = `https://widget.intercom.io/widget/${INTERCOM_APP_ID}`;
             const x = d.getElementsByTagName('script')[0];
             // TODO: Fix this the next time the file is edited.
             // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -84,11 +104,14 @@ const configuration: ModuleConfiguration = {
         }
       })();
 
-      tenant &&
-        window.Intercom &&
+      if (tenant && window.Intercom) {
+        const intercomUserJwt = user ? await fetchIntercomToken() : undefined;
+
         window.Intercom('boot', {
           app_id: INTERCOM_APP_ID,
-          ...(!isNilOrError(user)
+          api_base: 'https://api-iam.eu.intercom.io',
+          region: 'eu',
+          ...(user
             ? {
                 email: user.data.attributes.email,
                 user_id: user.data.id,
@@ -97,18 +120,18 @@ const configuration: ModuleConfiguration = {
                 lastName: user.data.attributes.last_name,
                 locale: user.data.attributes.locale,
                 ...tenantInfo(tenant.data),
+                ...(intercomUserJwt
+                  ? { intercom_user_jwt: intercomUserJwt }
+                  : {}),
               }
             : {}),
-          ...(!isNilOrError(tenant)
-            ? {
-                company: {
-                  company_id: tenant.data.id,
-                  name: tenant.data.attributes.name,
-                  ...tenantInfo(tenant.data),
-                },
-              }
-            : {}),
+          company: {
+            company_id: tenant.data.id,
+            name: tenant.data.attributes.name,
+            ...tenantInfo(tenant.data),
+          },
         });
+      }
     });
 
     shutdownFor('intercom').subscribe(() => {
@@ -121,7 +144,7 @@ const configuration: ModuleConfiguration = {
       bufferUntilInitialized('intercom', events$),
       appConfigurationStream,
     ]).subscribe(([event, tenant]) => {
-      if (!isNilOrError(tenant) && window.Intercom) {
+      if (tenant && window.Intercom) {
         const properties = {
           ...tenantInfo(tenant.data),
           ...event.properties,
@@ -130,13 +153,20 @@ const configuration: ModuleConfiguration = {
       }
     });
 
-    pageChanges$.subscribe((_pageChange) => {
-      if (window.Intercom) {
-        window.Intercom('update', {
-          last_request_at: new Date().getTime() / 1000,
-        });
-      }
-    });
+    pageChanges$
+      .pipe(withLatestFrom(appConfigurationStream))
+      .subscribe(([_pageChange, tenant]) => {
+        if (window.Intercom && tenant) {
+          window.Intercom('update', {
+            last_request_at: new Date().getTime() / 1000,
+            company: {
+              company_id: tenant.data.id,
+              name: tenant.data.attributes.name,
+              ...tenantInfo(tenant.data),
+            },
+          });
+        }
+      });
 
     registerDestination(destinationConfig);
   },

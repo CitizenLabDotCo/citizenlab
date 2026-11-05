@@ -3,7 +3,7 @@ import React from 'react';
 import useProjectById from 'api/projects/useProjectById';
 import useUpdateProject from 'api/projects/useUpdateProject';
 
-import ProjectDiscoverabilityRadios from '../../general/components/ProjectDiscoverabilityRadios';
+import ProjectDiscoverabilityRadios from '../../../_shared/components/ProjectSetupForm/ProjectDiscoverabilityRadios';
 
 interface Props {
   projectId: string;

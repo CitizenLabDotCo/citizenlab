@@ -9,7 +9,6 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { WrappedComponentProps } from 'react-intl';
-import { useParams } from 'react-router-dom';
 import { UploadFile } from 'typings';
 import { mixed, object } from 'yup';
 
@@ -22,7 +21,7 @@ import { handleAddPageFiles, handleRemovePageFiles } from 'api/page_files/util';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { adminCustomPageContentPath } from 'containers/Admin/pagesAndMenu/routes';
+import { adminCustomPageContentLink } from 'containers/Admin/pagesAndMenu/routes';
 
 import { SectionField } from 'components/admin/Section';
 import HelmetIntl from 'components/HelmetIntl';
@@ -33,11 +32,9 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { useParams } from 'utils/router';
 
-import {
-  pagesAndMenuBreadcrumb,
-  pagesAndMenuBreadcrumbLinkTo,
-} from '../../breadcrumbs';
+import { pagesBreadcrumb, pagesBreadcrumbLink } from '../../breadcrumbs';
 import SectionFormWrapper from '../../components/SectionFormWrapper';
 import ShownOnPageBadge from '../../components/ShownOnPageBadge';
 import ViewCustomPageButton from '../CustomPages/Edit/ViewCustomPageButton';
@@ -53,7 +50,9 @@ const AttachmentsForm = ({
 }: WrappedComponentProps) => {
   const { mutateAsync: updateCustomPage } = useUpdateCustomPage();
   const localize = useLocalize();
-  const { customPageId } = useParams() as { customPageId: string };
+  const { customPageId } = useParams({ strict: false }) as {
+    customPageId: string;
+  };
 
   const { data: customPage } = useCustomPageById(customPageId);
   const { data: remoteFiles } = usePageFiles(customPageId);
@@ -159,12 +158,12 @@ const AttachmentsForm = ({
             badge={<ShownOnPageBadge shownOnPage={isSectionEnabled} />}
             breadcrumbs={[
               {
-                label: formatMessage(pagesAndMenuBreadcrumb.label),
-                linkTo: pagesAndMenuBreadcrumbLinkTo,
+                label: formatMessage(pagesBreadcrumb.label),
+                link: pagesBreadcrumbLink,
               },
               {
                 label: localize(customPage.data.attributes.title_multiloc),
-                linkTo: adminCustomPageContentPath(customPageId),
+                link: adminCustomPageContentLink(customPageId),
               },
               {
                 label: formatMessage(messages.pageTitle),
@@ -172,7 +171,8 @@ const AttachmentsForm = ({
             ]}
             rightSideCTA={
               <ViewCustomPageButton
-                linkTo={`/pages/${customPage.data.attributes.slug}`}
+                to="/pages/$slug"
+                params={{ slug: customPage.data.attributes.slug }}
               />
             }
           >

@@ -21,7 +21,9 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
     :proposed_budget,
     :manual_votes_amount,
     :anonymous,
-    :author_hash
+    :author_hash,
+    :expires_at,
+    :weglot_data
 
   attribute :author_name do |object, params|
     name_service = UserDisplayNameService.new(AppConfiguration.instance, current_user(params))
@@ -41,10 +43,11 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
     Permissions::IdeaPermissionsService.new(object, current_user(params), user_requirements_service: user_requirements_service).action_descriptors
   end
 
-  attribute :expires_at, if: proc { |input|
-    input.published? && input.participation_method_on_creation.supports_serializing_input?(:expires_at)
-  } do |input|
-    input.published_at + input.creation_phase.expire_days_limit.days
+  # Whether this input is a public contribution (ideation, proposals, voting,
+  # common ground) rather than e.g. a survey response. Drives which actions the
+  # front-office offers on it.
+  attribute :supports_public_visibility do |input|
+    input.participation_method_on_creation.supports_public_visibility?
   end
 
   attribute :reacting_threshold, if: proc { |input|
@@ -53,7 +56,7 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
     input.creation_phase.reacting_threshold
   end
 
-  has_many :topics
+  has_many :input_topics, serializer: WebApi::V1::InputTopicSerializer
   has_many :idea_images, serializer: WebApi::V1::ImageSerializer
   has_many :phases
   has_many :ideas_phases
@@ -62,6 +65,7 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
   belongs_to :author, record_type: :user, serializer: WebApi::V1::UserSerializer
   belongs_to :project
   belongs_to :idea_status
+  belongs_to :creation_phase, serializer: WebApi::V1::PhaseSerializer
 
   has_one :user_reaction, if: proc { |object, params|
     signed_in? object, params
@@ -126,6 +130,14 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
   attribute :manual_votes_last_updated_at, if: proc { |idea, params|
     can_moderate?(idea, params)
   }
+
+  attribute :claim_token, if: ->(_idea, params) { params[:include_claim_token] } do |idea|
+    idea.claim_token&.token
+  end
+
+  attribute :claim_token_expires_at, if: ->(_idea, params) { params[:include_claim_token] } do |idea|
+    idea.claim_token&.expires_at
+  end
 
   has_one :manual_votes_last_updated_by, record_type: :user, serializer: WebApi::V1::UserSerializer, if: proc { |idea, params|
     can_moderate?(idea, params)

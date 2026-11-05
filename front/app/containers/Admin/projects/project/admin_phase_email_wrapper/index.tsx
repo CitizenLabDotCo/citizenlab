@@ -1,60 +1,39 @@
 import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
-
-import useCampaigns from 'api/campaigns/useCampaigns';
-import useSupportedCampaignNames from 'api/campaigns/useSupportedCampaignNames';
-
-import useLocalize from 'hooks/useLocalize';
+import { Box, Spinner, Text } from '@citizenlab/cl2-component-library';
 
 import CampaignRow from 'containers/Admin/messaging/AutomatedEmails/CampaignRow';
-import { stringifyCampaignFields } from 'containers/Admin/messaging/AutomatedEmails/utils';
+
+import Centerer from 'components/UI/Centerer';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import messages from './messages';
+import usePhaseEmailCampaigns from './usePhaseEmailCampaigns';
 
 const AdminPhaseEmailWrapper = () => {
-  const localize = useLocalize();
-  const { phaseId } = useParams();
-  const { data: supportedCampaigns } = useSupportedCampaignNames({ phaseId });
-  const supportedCampaignNames = supportedCampaigns?.data.attributes || [];
-  const contextCampaigns = useCampaigns({
-    ...(phaseId ? { context: { phaseId } } : {}),
-    pageSize: 250,
-  }).data?.pages.flatMap((page) => page.data);
-  const { data: supportedCampaignsPages } = useCampaigns({ pageSize: 250 });
-  const globalCampaigns = supportedCampaignsPages?.pages.flatMap(
-    (page) => page.data
-  );
+  const { phaseId } = useParams({ strict: false });
+  const { campaigns, loading } = usePhaseEmailCampaigns(phaseId);
 
   return (
     <Box>
       <Text color="coolGrey600" mt="0px" fontSize="m">
         <FormattedMessage {...messages.automatedEmailsDescription} />
       </Text>
-      {supportedCampaignNames.length > 0 &&
-        supportedCampaignNames.map((campaignType) => {
-          let campaign = contextCampaigns?.find(
-            (campaign) => campaign.attributes.campaign_name === campaignType
-          );
-          if (!campaign) {
-            campaign = globalCampaigns?.find(
-              (campaign) => campaign.attributes.campaign_name === campaignType
-            );
-          }
-
-          return (
-            campaign && (
-              <CampaignRow
-                campaign={stringifyCampaignFields(campaign, localize)}
-                key={campaign.id}
-                context={{ phaseId }}
-              />
-            )
-          );
-        })}
+      {loading && (
+        <Centerer height="200px">
+          <Spinner />
+        </Centerer>
+      )}
+      {!loading &&
+        campaigns.map((campaign) => (
+          <CampaignRow
+            campaign={campaign}
+            key={campaign.id}
+            context={{ phaseId }}
+          />
+        ))}
     </Box>
   );
 };

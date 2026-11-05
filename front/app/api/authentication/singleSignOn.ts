@@ -1,6 +1,5 @@
 import { omitBy, isNil } from 'lodash-es';
 import { stringify } from 'qs';
-import { RouteType } from 'routes';
 
 import { AUTH_PATH } from 'containers/App/constants';
 import { isProjectContext } from 'containers/Authentication/steps/Verification/utils';
@@ -8,6 +7,8 @@ import {
   AuthenticationData,
   SignUpInError,
 } from 'containers/Authentication/typings';
+
+import { trackVirtualPageView } from 'utils/analytics';
 
 export interface SSOProviderMap {
   azureactivedirectory: 'azureactivedirectory';
@@ -19,10 +20,15 @@ export interface SSOProviderMap {
   hoplr: 'hoplr';
   id_austria: 'id_austria';
   criipto: 'criipto';
+  etat_lu: 'etat_lu';
   fake_sso: 'fake_sso';
+  federa: 'federa';
   nemlog_in: 'nemlog_in';
   keycloak: 'keycloak';
   twoday: 'twoday';
+  publik: 'publik';
+  okta: 'okta';
+  acm: 'acm';
   id_vienna_saml: 'id_vienna_saml';
 }
 
@@ -32,7 +38,7 @@ export type SSOProvider = SSOProviderMap[keyof SSOProviderMap];
 // All are optional as there may be cases the backend does not always return these
 export interface SSOParams {
   sso_flow?: 'signup' | 'signin';
-  sso_pathname?: RouteType;
+  sso_pathname?: string;
   sso_verification?: string;
   sso_verification_action?: string;
   sso_verification_id?: string;
@@ -41,17 +47,15 @@ export interface SSOParams {
   // TODO: Refactoring + better integration of verification into new
   // registration flow when there is BE support
   verification_success?: string;
+  claim_tokens?: string[];
 }
 
-const setHrefVienna = () => {
-  window.location.href = `${AUTH_PATH}/vienna_citizen`;
-};
-
-export const handleOnSSOClick = (
+export const redirectToSSOProvider = (
   provider: SSOProvider,
   metaData: AuthenticationData,
   verification: boolean,
-  flow: 'signup' | 'signin'
+  flow: 'signup' | 'signin',
+  claimTokens?: string[]
 ) => {
   if (metaData.successAction) {
     localStorage.setItem(
@@ -60,22 +64,33 @@ export const handleOnSSOClick = (
     );
   }
   localStorage.setItem('auth_context', JSON.stringify(metaData.context));
-  localStorage.setItem('auth_path', window.location.pathname as RouteType);
+  // Store the full path *and* query (e.g. ?phase_id=...&idea_id=...) so the
+  // user's participation params survive the SSO round trip and they land back
+  // exactly where they were.
+  localStorage.setItem(
+    'auth_path',
+    `${window.location.pathname}${window.location.search}`
+  );
 
-  provider === 'id_vienna_saml'
-    ? setHrefVienna()
-    : setHref(provider, metaData, verification, flow);
+  // Track the SSO click as a pageView
+  trackVirtualPageView(`${window.location.pathname}/auth/sso/${provider}`);
+
+  setHref(provider, metaData, verification, flow, claimTokens);
 };
 
 function setHref(
   provider: SSOProvider,
   authenticationData: AuthenticationData,
   verification: boolean,
-  flow: 'signup' | 'signin'
+  flow: 'signup' | 'signin',
+  claimTokens?: string[]
 ) {
   const { context } = authenticationData;
 
-  const pathname = window.location.pathname as RouteType;
+  // Include the query string (e.g. ?phase_id=...&idea_id=...) so that
+  // participation params survive the SSO round-trip
+  // Encoded in sso_pathname as avoids re-encoding and any potential naming clashes.
+  const pathname = `${window.location.pathname}${window.location.search}`;
   const ssoParams: SSOParams = {
     sso_flow: flow,
     sso_pathname: pathname, // Also used by back-end to set user.locale following successful signup
@@ -83,7 +98,15 @@ function setHref(
     sso_verification_action: context.action,
     sso_verification_id: isProjectContext(context) ? context.id : undefined,
     sso_verification_type: context.type,
+    claim_tokens: claimTokens,
   };
-  const urlSearchParams = stringify(omitBy(ssoParams, isNil));
-  window.location.href = `${AUTH_PATH}/${provider}?${urlSearchParams}`;
+
+  // NOTE: SSO passthru params are not currently called for Vienna SAML login
+  // This may mean that some flows (eg post participation registration) do not work as expected
+  if (provider === 'id_vienna_saml') {
+    window.location.href = `${AUTH_PATH}/vienna_citizen`;
+  } else {
+    const urlSearchParams = stringify(omitBy(ssoParams, isNil));
+    window.location.href = `${AUTH_PATH}/${provider}?${urlSearchParams}`;
+  }
 }

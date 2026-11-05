@@ -3,7 +3,7 @@ import React, { useCallback } from 'react';
 import { Title, Box } from '@citizenlab/cl2-component-library';
 
 import { useSurveyQuestionResult } from 'api/graph_data_units';
-import { GroupMode } from 'api/graph_data_units/requestTypes';
+import { GroupMode, OptionsSortOrder } from 'api/graph_data_units/requestTypes';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -12,6 +12,7 @@ import MatrixQuestion from 'components/admin/FormResults/FormResultsQuestion/Mat
 import RankingQuestion from 'components/admin/FormResults/FormResultsQuestion/RankingQuestion';
 import SentimentQuestion from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion';
 import Legend from 'components/admin/Graphs/Legend';
+import { legendColors } from 'components/admin/Graphs/legendColors';
 import { DEFAULT_CATEGORICAL_COLORS } from 'components/admin/Graphs/styling';
 import SurveyBarsHorizontal from 'components/admin/Graphs/SurveyBars/SurveyBarsHorizontal';
 import SurveyBarsVertical from 'components/admin/Graphs/SurveyBars/SurveyBarsVertical';
@@ -32,6 +33,7 @@ interface Props {
   year?: number;
   quarter?: number;
   heatmap?: boolean;
+  optionsSortOrder?: OptionsSortOrder;
 }
 
 const SurveyQuestionResult = ({
@@ -43,6 +45,7 @@ const SurveyQuestionResult = ({
   heatmap,
   year,
   quarter,
+  optionsSortOrder,
 }: Props) => {
   const { data, error } = useSurveyQuestionResult({
     phase_id: phaseId,
@@ -51,6 +54,7 @@ const SurveyQuestionResult = ({
     group_field_id: groupFieldId,
     year: year?.toString(),
     quarter: quarter?.toString(),
+    options_sort_order: optionsSortOrder,
   });
 
   const localize = useLocalize();
@@ -88,6 +92,7 @@ const SurveyQuestionResult = ({
       case 'point':
       case 'line':
       case 'polygon':
+      case 'multipoint':
         return (
           <MapQuestion
             attributes={attributes}
@@ -109,12 +114,18 @@ const SurveyQuestionResult = ({
               <Box mt="20px">
                 <Legend
                   labels={getLegendLabels(attributes, localize, formatMessage)}
-                  colors={DEFAULT_CATEGORICAL_COLORS}
+                  colors={legendColors(
+                    attributes.legend,
+                    DEFAULT_CATEGORICAL_COLORS
+                  )}
                 />
               </Box>
             )}
           </>
         );
+      case 'text':
+      case 'multiline_text':
+        return <div />;
       default:
         return (
           <>
@@ -126,7 +137,10 @@ const SurveyQuestionResult = ({
               <Box mt="20px">
                 <Legend
                   labels={getLegendLabels(attributes, localize, formatMessage)}
-                  colors={DEFAULT_CATEGORICAL_COLORS}
+                  colors={legendColors(
+                    attributes.legend,
+                    DEFAULT_CATEGORICAL_COLORS
+                  )}
                 />
               </Box>
             )}
@@ -161,6 +175,7 @@ const SurveyQuestionResult = ({
         required={attributes.required}
         totalSubmissions={attributes.totalResponseCount}
         totalResponses={attributes.questionResponseCount}
+        aria-hidden={true}
       />
       {renderQuestionComponent()}
     </Box>

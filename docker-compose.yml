@@ -15,8 +15,10 @@ services:
     volumes:
       - "postgres:/var/lib/postgresql/data"
 
+  # NOTE: WORKTREE_PREFIX is an env var that can be set when running in a git worktree
+  # to allow independent containers per worktree (though they cannot run simultaneously due to port conflicts)
   web:
-    container_name: cl-back-web
+    container_name: ${WORKTREE_PREFIX:-cl}-back-web
     depends_on:
       - "postgres"
       - "mailcatcher"
@@ -25,23 +27,29 @@ services:
     build:
       context: .
       dockerfile: back/Dockerfile.development
+      args:
+        USER_UID: ${USER_UID:-1000}
+        USER_GID: ${USER_GID:-1000}
+    user: "${USER_UID:-1000}:${USER_GID:-1000}"
     ports:
       - "4000:4000"
     volumes:
-      - "./back:/cl2_back"
-      - bundle_path:/bundle
+      - "./back:/citizenlab/back"
+      - bundle:/bundle
     env_file:
       - "env_files/back-safe.env"
       - "env_files/back-secret.env"
     environment:
       - BUNDLE_PATH=/bundle
       - BASE_DEV_URI
+      - USER_UID=${USER_UID:-1000}
+      - USER_GID=${USER_GID:-1000}
       - ASSET_HOST_URI
     tty: true
     stdin_open: true
 
   que:
-    container_name: cl-que
+    container_name: ${WORKTREE_PREFIX:-cl}-que
     depends_on:
       - "postgres"
       - "mailcatcher"
@@ -49,20 +57,27 @@ services:
     build:
       context: .
       dockerfile: back/Dockerfile.development
+      args:
+        USER_UID: ${USER_UID:-1000}
+        USER_GID: ${USER_GID:-1000}
+    user: "${USER_UID:-1000}:${USER_GID:-1000}"
     command: bundle exec que
     volumes:
-      - "./back:/cl2_back"
-      - bundle_path:/bundle
+      - "./back:/citizenlab/back"
+      - bundle:/bundle
     env_file:
       - "env_files/back-safe.env"
       - "env_files/back-secret.env"
     environment:
-      BUNDLE_PATH: /bundle
+      - BUNDLE_PATH=/bundle
+      - BASE_DEV_URI
+      - USER_UID=${USER_UID:-1000}
+      - USER_GID=${USER_GID:-1000}
     tty: true
     stdin_open: true
 
   rabbitmq:
-    container_name: cl-back-rabbit
+    container_name: ${WORKTREE_PREFIX:-cl}-back-rabbit
     image: "rabbitmq:3.8-management"
     ports:
       - "8088:15672"
@@ -83,7 +98,7 @@ services:
 
   # Open API documentation - Only starts if you run docker compose --profile openapi up
   openapi:
-    container_name: cl-open-api
+    container_name: ${WORKTREE_PREFIX:-cl}-open-api
     image: swaggerapi/swagger-ui
     ports:
       - 8080:8080
@@ -96,14 +111,114 @@ services:
 
   # For generating PDFs
   gotenberg:
-    container_name: cl-gotenberg
-    image: gotenberg/gotenberg:8.21
+    container_name: ${WORKTREE_PREFIX:-cl}-gotenberg
+    # Keep at >= 8.34.0: from 8.34.0 LibreOffice conversion renders only the
+    # document's own embedded content. Production's deploy config must match.
+    image: gotenberg/gotenberg:8.37.0
     restart: always
+    command:
+      - gotenberg
+      # Big renders (e.g. the input responses PDF) can take minutes.
+      # GotenbergClient::JOB_TIMEOUT_SECONDS is set slightly above this.
+      - --api-timeout=600s
+      # Office-doc conversion should render only the file's own embedded
+      # content, not fetch anything it links to.
+      - --libreoffice-deny-private-ips
+      - --libreoffice-deny-public-ips
+      # We only call /forms/chromium/convert/html and /forms/libreoffice/convert;
+      # disable the routes we don't use.
+      - --pdfengines-disable-routes
+      - --webhook-disable
+      - --api-disable-download-from
+
+  # Builds and checks the custom blocks the report generation loop writes.
+  # Its own container because it executes model-generated JavaScript, which must
+  # not run inside the Rails process.
+  custom_block_renderer:
+    container_name: ${WORKTREE_PREFIX:-cl}-custom-block-renderer
+    build:
+      # The repository root, so the image can take the SDK type definitions from
+      # the front-end tree.
+      context: .
+      dockerfile: custom-block-renderer/Dockerfile
+    restart: always
+    environment:
+      # Rails authenticates with this header; both sides read the same variable.
+      CUSTOM_BLOCK_RENDERER_SECRET: ${CUSTOM_BLOCK_RENDERER_SECRET:-development-renderer-secret}
+      PORT: 3100
+      SDK_TYPES_PATH: /app/sdk/gv-sdk.d.ts
+      # The tenant is `localhost` here, which inside this container means this
+      # container. Point the browser at the machine running the front end instead.
+      RENDER_HOST_RESOLVER_RULES: ${RENDER_HOST_RESOLVER_RULES:-MAP localhost host-gateway}
+    extra_hosts:
+      - "host-gateway:host-gateway"
+    volumes:
+      # So editing the contract does not need an image rebuild in development.
+      - ./front/app/components/admin/ContentBuilder/CustomBlocks/sdk/v1/gv-sdk.d.ts:/app/sdk/gv-sdk.d.ts:ro
+
+  # Fake OIDC provider used by the `fake_sso` verification/auth method.
+  # Only starts if you run `docker compose --profile fake_sso up`
+  # (or via `make up-fake-sso` / `make e2e-setup-and-up-fake-sso`).
+  #
+  # Local setup (one-time):
+  #   1) Clone the fake_sso repo next to the citizenlab repo (defaults to ../fake_sso)
+  #      or set FAKE_SSO_PATH to wherever you have it checked out.
+  #   2) Add `127.0.0.1 host.docker.internal` to /etc/hosts so the browser can
+  #      resolve the OIDC issuer (the back-end already reaches it via the docker
+  #      host-gateway).
+  fake_sso:
+    # Distinct from the standalone fake_sso/docker-compose.yml (which uses
+    # `cl-fake-sso`) so the two stacks can coexist without conflicting.
+    container_name: ${WORKTREE_PREFIX:-cl}-fake-sso-app
+    image: node:22-alpine
+    working_dir: /app
+    ports:
+      - "8081:8081"
+    volumes:
+      - "${FAKE_SSO_PATH:-../fake_sso}:/app"
+      # Anonymous volume so the in-container install doesn't trash the host's
+      # node_modules (the host may have darwin-built native modules).
+      - "/app/node_modules"
+    command: sh -c "npm install --no-audit --no-fund --prefer-offline && npm start"
+    env_file:
+      # Pulls FAKE_SSO_JWT_SECRET from the main back env so the id_token can be
+      # verified by the Rails back-end.
+      - "env_files/back-secret.env"
+    environment:
+      PORT: 8081
+    profiles:
+      - fake_sso
+
+  # Front-end dev server - Only starts if you run docker compose --profile frontend up
+  front:
+    container_name: ${WORKTREE_PREFIX:-cl}-front
+    image: node:24.15.0
+    working_dir: /citizenlab/front
+    command: sh -c "npm install && npm start"
+    depends_on:
+      - "web"
+    ports:
+      - "3000:3000"
+    volumes:
+      - "./front:/citizenlab/front"
+      - front_node_modules:/citizenlab/front/node_modules
+    env_file:
+      - "env_files/front-safe.env"
+      - "env_files/front-secret.env"
+    environment:
+      - API_HOST=web
+      - API_PORT=4000
+      - NODE_OPTIONS=--max-old-space-size=4096
+    tty: true
+    stdin_open: true
+    profiles:
+      - frontend
 
 volumes:
   postgres:
-  bundle_path:
+  bundle:
+  front_node_modules:
 
 networks:
   default:
-    name: citizenlab
+    name: ${WORKTREE_PREFIX:-citizenlab}

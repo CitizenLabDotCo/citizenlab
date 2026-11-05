@@ -3,7 +3,7 @@ import React from 'react';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import useGroups from 'api/groups/useGroups';
-import { IPhasePermissionData } from 'api/phase_permissions/types';
+import { IPermissionData } from 'api/permissions/types';
 
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
 
@@ -14,7 +14,7 @@ import {
 } from './utils';
 
 type PermissionTooltipMessageProps = {
-  permissions?: IPhasePermissionData[];
+  permissions?: IPermissionData[];
 };
 
 const PermissionTooltipMessage = ({
@@ -28,7 +28,7 @@ const PermissionTooltipMessage = ({
     return null;
   }
 
-  const getParticipantsInPermission = (permission: IPhasePermissionData) => {
+  const getParticipantsInPermission = (permission: IPermissionData) => {
     return getPartipationRequirementMessage(
       permission.attributes.permitted_by,
       formatMessage
@@ -58,12 +58,21 @@ const PermissionTooltipMessage = ({
             // TODO: Fix this the next time the file is edited.
             // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             permissions?.map((permission) => {
+              const label = getParticipationActionLabel(
+                permission.attributes.action
+              );
+              if (!label) return null;
+
               return (
-                <Text my="0px" variant="bodyS" key={permission.id}>
+                <Text
+                  my="0px"
+                  variant="bodyS"
+                  // Not the id: an inherited permission has no record of its
+                  // own, so its id is blank.
+                  key={permission.attributes.action}
+                >
                   <FormattedMessage
-                    {...getParticipationActionLabel(
-                      permission.attributes.action
-                    )}
+                    {...label}
                     values={{
                       participants: getParticipantsInPermission(permission),
                       b: (chunks) => (

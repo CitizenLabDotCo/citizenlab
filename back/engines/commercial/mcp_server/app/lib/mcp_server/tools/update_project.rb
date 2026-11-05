@@ -1,0 +1,85 @@
+# frozen_string_literal: true
+
+# Dedicated update tool for projects (too side-effect-heavy for the generic update_resource).
+# Publication state is intentionally not updatable here — set_publication_status owns that.
+class McpServer::Tools::UpdateProject < McpServer::BaseTool
+  def name = 'update_project'
+
+  def annotations
+    {
+      read_only_hint: false,
+      destructive_hint: true,
+      idempotent_hint: true,
+      open_world_hint: true # Fetches `remote_header_bg_url` from an arbitrary public URL.
+    }
+  end
+
+  def description
+    <<~DESC.squish
+      Updates an existing project's content and settings. Partial update — only the fields you pass
+      change, and `*_multiloc` fields merge per locale. Accepts the same content fields as
+      create_project (see that tool for field semantics). folder_id moves the project into a
+      folder, null moves it out. Does not change publication status (set_publication_status does).
+    DESC
+  end
+
+  def input_schema
+    create_properties = McpServer::Tools::CreateProject.new.input_schema[:properties].merge(
+      folder_id: {
+        type: %w[string null],
+        description: 'ID of the folder to move the project into; null moves it out of its ' \
+                     'folder. Use list_folders to find valid IDs.'
+      }
+    )
+    {
+      properties: { project_id: { type: 'string', description: 'The ID of the project to update.' }, **create_properties },
+      additionalProperties: false,
+      required: %w[project_id]
+    }
+  end
+
+  class Runner < McpServer::BaseTool::Runner
+    def run
+      project = Project.find_by(id: params[:project_id])
+      return not_found_error('Project', params[:project_id]) unless project
+
+      authorize_project!(project)
+      authorize(project, :update?)
+
+      if params[:folder_id].present? && !ProjectFolders::Folder.exists?(params[:folder_id])
+        return not_found_error('Folder', params[:folder_id])
+      end
+
+      prior_project = Project.find(project.id)
+      attributes = params.except(:project_id)
+      # A null remote_<uploader>_url is a no-op on assignment; clear_uploaders! below
+      # turns it into a removal.
+      project.assign_attributes(merge_multilocs(project, attributes))
+
+      # Authorize again now that the changes are assigned, like the web controller:
+      # ProjectPolicy#update? only checks a folder move (moderating both the old and
+      # the new folder) when it sees the pending change and the prior record.
+      Pundit.authorize(
+        ApplicationPolicy::UserContext.new(current_user, prior_record: prior_project),
+        project,
+        :update?
+      )
+      # Only now: removing an upload deletes the file right away.
+      clear_uploaders!(project, attributes)
+
+      SideFxProjectService.new.before_update(project, current_user)
+      project.save!
+      SideFxProjectService.new.after_update(project, current_user)
+
+      # The ProjectBanner node's own image would otherwise override the header_bg set here.
+      ContentBuilder::ProjectPageLayoutService.new.reset_banner_image!(project) if params.key?(:remote_header_bg_url)
+
+      response(
+        "Updated project #{project.id}",
+        structured: McpServer::Serializers::Project.serialize(project, params: { current_user: })
+      )
+    rescue ActiveRecord::RecordInvalid => e
+      invalid_record_error(e.record)
+    end
+  end
+end

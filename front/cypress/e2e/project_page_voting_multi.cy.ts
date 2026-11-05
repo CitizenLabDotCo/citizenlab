@@ -19,7 +19,6 @@ describe('Multiple voting project', () => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: '',
-      description: '',
       publicationStatus: 'published',
     }).then((project) => {
       cy.apiCreatePhase({
@@ -37,10 +36,9 @@ describe('Multiple voting project', () => {
         projectSlug = project.body.data.attributes.slug;
         return cy
           .apiCreateIdea({
-            projectId,
+            phaseId: phase.body.data.id,
             ideaTitle,
             ideaContent,
-            phaseIds: [phase.body.data.id],
           })
           .then((idea) => {
             ideaId = idea.body.data.id;
@@ -80,6 +78,7 @@ describe('Multiple voting project', () => {
   it('can allocate the votes to ideas and show how many votes are left', () => {
     cy.contains('Cast your vote');
     cy.contains('How to vote');
+    cy.dockProjectCtaBar();
     cy.dataCy('project-cta-bar-top').contains('5 out of 5 votes left');
 
     cy.get('#e2e-voting-submit-button')
@@ -111,14 +110,23 @@ describe('Multiple voting project', () => {
   });
 
   it('can submit the votes', () => {
-    cy.intercept(`**/baskets/**`).as('basketRequest');
-    cy.visit(`/en/projects/${projectSlug}`);
-    cy.wait('@basketRequest');
+    cy.dockProjectCtaBar();
+    // The vote count from the previous test proves the basket state has
+    // loaded (a slow project → phase → basket fetch chain), without racing
+    // a network intercept whose request may start later than the 5s
+    // requestTimeout.
+    cy.dataCy('project-cta-bar-top').contains('3 out of 5 votes left');
     cy.get('#e2e-voting-submit-button')
       .should('be.visible')
       .should('not.have.class', 'disabled');
-    cy.wait(1000);
-    cy.get('#e2e-voting-submit-button').find('button').click({ force: true });
+
+    // Wait for the submission to actually persist before the test ends —
+    // the next test needs the basket in 'hasSubmitted' state on the backend.
+    cy.intercept('PATCH', '**/baskets/**').as('submitBasket');
+    cy.get('#e2e-voting-submit-button').find('button').click();
+    cy.wait('@submitBasket')
+      .its('response.statusCode')
+      .should('be.oneOf', [200, 201]);
 
     cy.contains('Vote submitted');
     cy.contains('Congratulations, your vote has been submitted');
@@ -133,13 +141,21 @@ describe('Multiple voting project', () => {
   });
 
   it('can modify and remove your votes', () => {
-    cy.get('#e2e-modify-votes')
+    cy.dockProjectCtaBar();
+    // Longer timeout: the modify button renders only once the basket query
+    // (end of the project → phase → basket chain) resolves as submitted.
+    cy.get('#e2e-modify-votes', { timeout: 30000 })
       .should('be.visible')
       .should('contain', 'Modify your submission')
       .click();
-    cy.wait(1000);
 
-    cy.get('#e2e-ideas-container').find('.e2e-vote-minus button').click();
+    // Clicking "Modify your submission" reopens the basket via a mutation,
+    // and the vote buttons stay disabled until it settles — a click in that
+    // window is a silent no-op.
+    cy.get('#e2e-ideas-container')
+      .find('.e2e-vote-minus button')
+      .should('not.have.class', 'disabled')
+      .click();
 
     cy.get('#e2e-ideas-container')
       .find('.e2e-vote-plus button')
@@ -147,7 +163,11 @@ describe('Multiple voting project', () => {
 
     cy.dataCy('project-cta-bar-top').contains('4 out of 5 votes left');
 
-    cy.get('#e2e-ideas-container').find('.e2e-vote-minus button').click();
+    // Same guard: the previous vote mutation may briefly disable the button.
+    cy.get('#e2e-ideas-container')
+      .find('.e2e-vote-minus button')
+      .should('not.have.class', 'disabled')
+      .click();
 
     cy.dataCy('project-cta-bar-top').contains('5 out of 5 votes left');
 

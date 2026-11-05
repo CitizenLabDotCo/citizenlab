@@ -11,13 +11,17 @@ import { isArray, isEmpty, uniqBy } from 'lodash-es';
 import { darken } from 'polished';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
-import { CLError } from 'typings';
+import { CLError, Multiloc } from 'typings';
 
 import { IAppConfiguration } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useIdMethods from 'api/id_methods/useIdMethods';
+import { getEmployeeSsoConfigs } from 'api/id_methods/utils';
 import { IInviteError } from 'api/invites/types';
 
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import useLocalize, { Localize } from 'hooks/useLocalize';
+
+import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
@@ -138,6 +142,7 @@ export interface ErrorProps {
   apiErrors?: (CLError | IInviteError)[] | null;
   id?: string;
   scrollIntoView?: boolean;
+  liveRegion?: boolean;
 }
 
 export interface TFieldNameMap {
@@ -184,7 +189,7 @@ export interface TFieldNameMap {
 
 export type TFieldName = TFieldNameMap[keyof TFieldNameMap];
 
-export const findErrorMessage = (
+export const findErrorMessageDescriptor = (
   fieldName: TFieldName | undefined,
   error: string
 ) => {
@@ -195,8 +200,7 @@ export const findErrorMessage = (
   if (messages[error]) {
     return messages[error] as MessageDescriptor;
   }
-  // Return a empty error message
-  return '';
+  return;
 };
 
 // Get the variables to use inside API error messages
@@ -220,9 +224,32 @@ export const getApiErrorValues = (
   return payload ? { ...payload, ...values } : values;
 };
 
+// Allow custom error messages (configured on a verification method) for specific
+// API errors. The staff SSO methods (Azure AD, Okta) can define a custom message
+// for users who must sign in via SSO because of their email domain.
+const findCustomErrorMessage = (
+  error: string,
+  ssoEnforcedForDomainMultiloc: Multiloc | undefined,
+  localize: Localize
+) => {
+  if (error === 'sso_enforced_for_domain') {
+    return ssoEnforcedForDomainMultiloc
+      ? localize(ssoEnforcedForDomainMultiloc)
+      : undefined;
+  }
+  return;
+};
+
 const Error = (props: ErrorProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const { data: appConfiguration } = useAppConfiguration();
+  const { data: idMethods } = useIdMethods();
+  const { formatMessage } = useIntl();
+  const localize = useLocalize();
+
+  const ssoEnforcedForDomainMultiloc = getEmployeeSsoConfigs(idMethods).find(
+    (method) => method.attributes.enforced_email_domain_error_multiloc
+  )?.attributes.enforced_email_domain_error_multiloc;
 
   const {
     text,
@@ -236,7 +263,10 @@ const Error = (props: ErrorProps) => {
     animate = true,
     id,
     scrollIntoView = true,
+    liveRegion,
   } = props;
+
+  const isLiveRegion = liveRegion ?? true;
 
   useEffect(() => {
     if (scrollIntoView) {
@@ -260,7 +290,7 @@ const Error = (props: ErrorProps) => {
       classNames="error"
       in={!!(text || apiErrors)}
       timeout={timeout}
-      mounOnEnter={true}
+      mountOnEnter={true}
       unmountOnExit={true}
       enter={animate}
       exit={animate}
@@ -270,7 +300,7 @@ const Error = (props: ErrorProps) => {
         id={id}
         marginTop={marginTop}
         marginBottom={marginBottom}
-        role="alert"
+        role={isLiveRegion ? 'alert' : undefined}
         data-testid="error-message"
       >
         <ContainerInner
@@ -296,48 +326,34 @@ const Error = (props: ErrorProps) => {
                     {dedupApiErrors.map((error, index) => {
                       // If we have multiple possible errors for a certain input field,
                       // we can 'group' them in the messages.js file using the fieldName as a prefix
-                      // Check the implementation of findErrorMessage for details
-                      const errorMessage = findErrorMessage(
+                      // Check the implementation of findErrorMessageDescriptor for details
+                      const errorMessageDescriptor = findErrorMessageDescriptor(
                         fieldName,
                         error.error
                       );
+                      const values = getApiErrorValues(error, appConfiguration);
 
-                      if (errorMessage) {
-                        // Variables for inside messages.js
-                        const values = getApiErrorValues(
-                          error,
-                          appConfiguration
-                        );
+                      const customErrorMessage = findCustomErrorMessage(
+                        error.error,
+                        ssoEnforcedForDomainMultiloc,
+                        localize
+                      );
 
-                        if (values.value || values.row || values.rows) {
-                          return (
-                            <ErrorListItem key={index}>
-                              {dedupApiErrors.length > 1 && (
-                                <Bullet aria-hidden>•</Bullet>
-                              )}
+                      const errorMessage = customErrorMessage
+                        ? customErrorMessage
+                        : errorMessageDescriptor &&
+                          formatMessage(errorMessageDescriptor, values);
 
-                              <FormattedMessage
-                                {...errorMessage}
-                                values={values}
-                              />
-                            </ErrorListItem>
-                          );
-                        }
+                      if (!errorMessage) return null;
 
-                        return (
-                          <ErrorListItem key={index}>
-                            {dedupApiErrors.length > 1 && (
-                              <Bullet aria-hidden>•</Bullet>
-                            )}
-                            <FormattedMessage
-                              {...errorMessage}
-                              values={values}
-                            />
-                          </ErrorListItem>
-                        );
-                      }
-
-                      return null;
+                      return (
+                        <ErrorListItem key={index}>
+                          {dedupApiErrors.length > 1 && (
+                            <Bullet aria-hidden>•</Bullet>
+                          )}
+                          {errorMessage}
+                        </ErrorListItem>
+                      );
                     })}
                   </ErrorList>
                 )}

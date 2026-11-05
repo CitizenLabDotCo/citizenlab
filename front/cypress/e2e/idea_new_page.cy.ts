@@ -46,7 +46,8 @@ describe('Idea submission form', () => {
 
   it('shows an error when no title is provided', () => {
     // Try to go to the next page
-    cy.dataCy('e2e-next-page').should('be.visible').click();
+    cy.get('#idea-form').should('be.visible');
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
     cy.get('.e2e-error-message');
   });
 
@@ -85,19 +86,25 @@ describe('Idea submission form', () => {
 
     cy.dataCy('e2e-next-page').should('be.visible').click();
     cy.dataCy('e2e-next-page').should('be.visible').click();
-    cy.dataCy('e2e-submit-form').click();
+
+    cy.intercept('POST', '**/phases/*/inputs').as('submitIdea');
+    cy.clickInputFormPageButton('e2e-submit-form');
+    cy.wait('@submitIdea')
+      .its('response.statusCode')
+      .should('be.oneOf', [200, 201]);
+
     cy.dataCy('e2e-after-submission').should('exist').click();
     cy.contains(ideaTitle).should('exist');
   });
 
   it('saves correct location point when provided in URL', () => {
-    cy.intercept('POST', '**/ideas').as('submitIdea');
+    cy.intercept('POST', '**/phases/*/inputs').as('submitIdea');
 
     const ideaTitle = randomString(40);
     const ideaContent = randomString(60);
-    const geocodedLocation = 'Korenmarkt 11, 9000 Gent, Belgium';
-    const lat = 51.0546195;
-    const long = 3.7219968;
+    const geocodedLocation = 'Minnemeers 10, 9000 Gent, Belgium';
+    const lat = 51.059736;
+    const long = 3.729047;
 
     // Go to URL with lat/long where point is in body of water
     cy.visit(

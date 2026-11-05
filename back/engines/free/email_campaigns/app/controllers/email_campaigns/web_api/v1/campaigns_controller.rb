@@ -2,13 +2,12 @@
 
 module EmailCampaigns
   class WebApi::V1::CampaignsController < EmailCampaignsController
-    before_action :set_campaign, only: %i[show update do_send send_preview preview deliveries stats destroy]
+    before_action :set_campaign, only: %i[show update do_send send_email_preview send_sms_preview email_preview email_deliveries sms_deliveries email_stats sms_stats sms_send_summary destroy]
     skip_after_action :verify_authorized, only: %i[supported_campaign_names]
 
     def index
       @campaigns = CampaignPolicy::Scope.new(pundit_user, Campaign, campaign_context)
         .resolve
-        .order(created_at: :desc)
       # Necessary because we instantiate the scope directly instead of using Pundit's
       # `policy_scope` method.
       skip_policy_scope
@@ -18,13 +17,29 @@ module EmailCampaigns
         @campaigns = @campaigns.where.not(type: campaign_types)
       end
 
+      @campaigns = @campaigns.where(channel: params[:channel]) if params[:channel].present?
+
       if campaign_context
         @campaigns = @campaigns.where(context: campaign_context)
         supported_ids = @campaigns.filter { |campaign| campaign.class.supports_context?(campaign_context) }.map(&:id)
         @campaigns = @campaigns.where(id: supported_ids)
       end
 
-      @campaigns = parse_bool(params[:manual]) ? @campaigns.manual : @campaigns.automatic if params[:manual]
+      delivery_service = EmailCampaigns::DeliveryService.new
+
+      # Records of campaigns whose feature is deactivated are kept around (they come back
+      # when the feature does), but they have no business in the admin dashboard meanwhile.
+      @campaigns = @campaigns.where(type: delivery_service.campaign_types)
+
+      # Filter out campaigns that are hidden from the admin dashboard (e.g. the phone confirmation OTP campaign)
+      @campaigns = @campaigns.where.not(type: delivery_service.hidden_from_admin_campaign_types)
+
+      @campaigns = case parse_bool(params[:manual])
+      when true then manual_order(@campaigns.manual)
+      when false then @campaigns.automatic.order(created_at: :desc)
+      else # NOTE: parse_bool(nil) -> nil
+        @campaigns.order(created_at: :desc)
+      end
 
       @campaigns = paginate @campaigns
 
@@ -32,7 +47,11 @@ module EmailCampaigns
     end
 
     def show
-      render json: WebApi::V1::CampaignSerializer.new(@campaign, params: jsonapi_serializer_params).serializable_hash
+      render json: WebApi::V1::CampaignSerializer.new(
+        @campaign,
+        params: jsonapi_serializer_params,
+        include: %i[groups]
+      ).serializable_hash
     end
 
     def create
@@ -98,10 +117,7 @@ module EmailCampaigns
     end
 
     def do_send
-      if @campaign.valid?(:send)
-        SideFxCampaignService.new.before_send(@campaign, current_user)
-        EmailCampaigns::DeliveryService.new.send_now(@campaign)
-        SideFxCampaignService.new.after_send(@campaign, current_user)
+      if @campaign.valid?(:send) && SendManualCampaignService.new.call(@campaign, current_user)
         render json: WebApi::V1::CampaignSerializer.new(
           @campaign.reload,
           params: jsonapi_serializer_params
@@ -111,12 +127,24 @@ module EmailCampaigns
       end
     end
 
-    def send_preview
-      EmailCampaigns::DeliveryService.new.send_preview(@campaign, current_user)
+    def send_email_preview
+      apply_preview_locale
+      EmailCampaigns::DeliveryService.new.send_email_preview(@campaign, current_user)
       head :ok
     end
 
-    def preview
+    def send_sms_preview
+      @campaign.previewer = current_user
+      if @campaign.valid?(:preview)
+        EmailCampaigns::DeliveryService.new.send_sms_preview(@campaign, current_user)
+        head :ok
+      else
+        render json: { errors: @campaign.errors.details }, status: :unprocessable_entity
+      end
+    end
+
+    def email_preview
+      apply_preview_locale
       preview = EmailCampaigns::DeliveryService.new.preview_email(@campaign, current_user)
       render json: {
         data: {
@@ -127,22 +155,29 @@ module EmailCampaigns
       }
     end
 
-    def deliveries
-      @deliveries = @campaign.deliveries
-        .includes(:user)
-        .order(:created_at)
-        .page(params.dig(:page, :number))
-        .per(params.dig(:page, :size))
-      render json: linked_json(
-        @deliveries,
-        WebApi::V1::DeliverySerializer,
-        params: jsonapi_serializer_params,
-        include: [:user]
-      )
+    def email_deliveries
+      render_deliveries(@campaign.deliveries, WebApi::V1::DeliverySerializer)
     end
 
-    def stats
+    def sms_deliveries
+      render_deliveries(@campaign.sms_deliveries, WebApi::V1::Sms::DeliverySerializer)
+    end
+
+    def email_stats
       render json: raw_json(EmailCampaigns::Delivery.status_counts(@campaign.id))
+    end
+
+    def sms_stats
+      render json: raw_json(EmailCampaigns::Sms::Delivery.status_counts(@campaign.id))
+    end
+
+    # Balance is served alongside the cost so the admin weighs two figures read at the same instant.
+    def sms_send_summary
+      render json: raw_json({
+        recipients_count: @campaign.recipients_count,
+        segments_needed: @campaign.segments_for_send,
+        segments_balance: EmailCampaigns::Sms::BalanceService.new.balance
+      }, type: 'sms_send_summary')
     end
 
     def supported_campaign_names
@@ -157,6 +192,11 @@ module EmailCampaigns
     def set_campaign
       @campaign = Campaign.find(params[:id])
       authorize @campaign
+    end
+
+    # Renders the preview in another platform locale. The user is never saved, so their own locale is unchanged.
+    def apply_preview_locale
+      current_user.locale = params[:locale] if AppConfiguration.instance.settings('core', 'locales').include?(params[:locale])
     end
 
     def campaign_context
@@ -174,22 +214,48 @@ module EmailCampaigns
       @campaign_context = context_model.find(context_id)
     end
 
-    def campaign_params
-      @campaign.manual? ? manual_campaign_params : automated_campaign_params
+    def render_deliveries(relation, serializer)
+      deliveries = paginate relation.includes(:user).order(:created_at)
+      render json: linked_json(
+        deliveries,
+        serializer,
+        params: jsonapi_serializer_params,
+        include: [:user]
+      )
     end
 
-    def manual_campaign_params
+    def campaign_params
+      if @campaign.sms?
+        manual_sms_campaign_params
+      elsif @campaign.manual?
+        manual_email_campaign_params
+      else
+        automated_email_campaign_params
+      end
+    end
+
+    def manual_sms_campaign_params
       params.require(:campaign).permit(
         :enabled,
-        :sender,
-        :reply_to,
         group_ids: [],
         subject_multiloc: I18n.available_locales,
         body_multiloc: I18n.available_locales
       )
     end
 
-    def automated_campaign_params
+    def manual_email_campaign_params
+      params.require(:campaign).permit(
+        :enabled,
+        :sender,
+        :reply_to,
+        :scheduled_at,
+        group_ids: [],
+        subject_multiloc: I18n.available_locales,
+        body_multiloc: I18n.available_locales
+      )
+    end
+
+    def automated_email_campaign_params
       params.require(:campaign).permit(
         :enabled,
         :reply_to,
@@ -198,6 +264,22 @@ module EmailCampaigns
         intro_multiloc: I18n.available_locales,
         button_text_multiloc: I18n.available_locales
       )
+    end
+
+    # Sort campaigns by status group (draft → scheduled → sent),
+    # then by date within each group (most recent first).
+    def manual_order(scope)
+      scope.order(Arel.sql(<<~SQL))
+        CASE
+          WHEN deliveries_count = 0 AND (schedule IS NULL OR schedule = '{}') THEN 0 -- draft
+          WHEN schedule IS NOT NULL AND schedule != '{}' THEN 1 -- scheduled
+          ELSE 2 -- sent
+        END ASC,
+        CASE
+          WHEN schedule IS NOT NULL AND schedule != '{}' THEN (schedule->'rtimes'->0->>'time')::timestamp
+          ELSE updated_at
+        END DESC
+      SQL
     end
   end
 end

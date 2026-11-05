@@ -9,8 +9,8 @@ export interface DataRow {
 
 export interface ProgressBarsProps {
   data?: DataRow[] | null | Error;
-  width?: string | number;
-  height?: string | number;
+  width?: number | `${number}%`;
+  height?: number | `${number}%`;
   emptyContainerContent?: React.ReactNode;
   innerRef?: RefObject<any>;
 }

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 import {
   IconTooltip,
@@ -64,6 +64,7 @@ type CampaignFormProps = {
   defaultValues?: Partial<FormValues>;
   isLoading: boolean;
   campaignContextId?: string;
+  isScheduled?: boolean;
 };
 
 const CampaignForm = ({
@@ -71,6 +72,7 @@ const CampaignForm = ({
   defaultValues,
   isLoading,
   campaignContextId,
+  isScheduled,
 }: CampaignFormProps) => {
   const { formatMessage } = useIntl();
   const { data: authUser } = useAuthUser();
@@ -171,7 +173,11 @@ const CampaignForm = ({
               </Label>
               <Text fontSize="l">
                 <FormattedMessage {...messages.allParticipantsInProject} />{' '}
-                <Link to={`/admin/projects/${project.data.id}`} target="_blank">
+                <Link
+                  to="/admin/projects/$projectId"
+                  params={{ projectId: project.data.id }}
+                  target="_blank"
+                >
                   {localize(project.data.attributes.title_multiloc)}
                 </Link>
               </Text>
@@ -230,6 +236,7 @@ const CampaignForm = ({
                 firstName: '{{first_name}}',
                 lastName: '{{last_name}}',
               })}
+              withGifSupport
               noVideos
               noAlign
             />
@@ -240,8 +247,11 @@ const CampaignForm = ({
             id="e2e-campaign-form-save-button"
             type="submit"
             processing={isLoading}
+            disabled={!methods.formState.isDirty}
           >
-            {formatMessage(messages.formSaveAsDraft)}
+            {isScheduled
+              ? formatMessage(messages.formSave)
+              : formatMessage(messages.formSaveAsDraft)}
           </Button>
         </Box>
       </form>

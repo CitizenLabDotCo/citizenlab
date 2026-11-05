@@ -19,6 +19,7 @@
 #  intro_multiloc       :jsonb
 #  button_text_multiloc :jsonb
 #  context_type         :string
+#  channel              :string           default("email"), not null
 #
 # Indexes
 #
@@ -75,7 +76,7 @@ module EmailCampaigns
     def activity_context(activity)
       return nil unless activity.item.is_a?(::Idea)
 
-      activity.item && TimelineService.new.current_phase(activity.item.project)
+      activity.item.creation_phase
     end
 
     def self.supported_context_class
@@ -96,8 +97,9 @@ module EmailCampaigns
         event_payload: {
           idea_id: idea.id,
           project_title_multiloc: project.title_multiloc,
-          profile_url: Frontend::UrlService.new.profile_surveys_url(recipient.slug),
-          has_password: !recipient.no_password?
+          profile_url: Frontend::UrlService.new.profile_surveys_url(recipient.id),
+          has_password: !recipient.no_password?,
+          hide_submission_removal_text: AppConfiguration.instance.feature_activated?('hide_submission_removal_text')
         }
       }]
     end

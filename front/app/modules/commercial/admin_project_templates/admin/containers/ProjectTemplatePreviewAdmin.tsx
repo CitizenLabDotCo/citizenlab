@@ -3,7 +3,7 @@ import React, { memo } from 'react';
 import { get } from 'lodash-es';
 import styled from 'styled-components';
 
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { useParams } from 'utils/router';
 
 import ProjectTemplatePreview from '../../components/ProjectTemplatePreview';
 
@@ -17,8 +17,9 @@ export interface Props {
   className?: string;
 }
 
-const ProjectTemplatePreviewAdmin = memo<Props & WithRouterProps>(
-  ({ params, projectTemplateId, className }) => {
+const ProjectTemplatePreviewAdmin = memo<Props>(
+  ({ projectTemplateId, className }) => {
+    const params = useParams({ strict: false });
     const templateId: string | undefined =
       projectTemplateId || get(params, 'projectTemplateId');
 
@@ -34,4 +35,4 @@ const ProjectTemplatePreviewAdmin = memo<Props & WithRouterProps>(
   }
 );
 
-export default withRouter(ProjectTemplatePreviewAdmin);
+export default ProjectTemplatePreviewAdmin;

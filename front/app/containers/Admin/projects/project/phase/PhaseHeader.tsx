@@ -13,7 +13,6 @@ import {
   Tooltip,
 } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
-import { useLocation, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
@@ -23,11 +22,14 @@ import useDeletePhase from 'api/phases/useDeletePhase';
 import useLocalize from 'hooks/useLocalize';
 
 import { Tab } from 'components/admin/NavigationTabs';
-import Modal from 'components/UI/Modal';
+import NewLabel from 'components/UI/NewLabel';
+import TypedDeleteConfirmationModal from 'components/UI/TypedDeleteConfirmationModal';
+import typedDeleteConfirmationMessages from 'components/UI/TypedDeleteConfirmationModal/messages';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isTopBarNavActive } from 'utils/helperUtils';
+import { useLocation, useParams } from 'utils/router';
 
 import { IPhaseTab } from '../tabs';
 
@@ -37,6 +39,17 @@ import { getParticipantMessage } from './utils';
 
 const Container = styled(Box)`
   ${defaultCardStyle};
+`;
+
+// On narrow screens the tab strip scrolls sideways instead of squeezing the
+// tabs, so none of them (e.g. the last one) become unreachable.
+const TabBar = styled(Box)`
+  overflow-x: auto;
+  scrollbar-width: thin;
+
+  > * {
+    flex: 0 0 auto;
+  }
 `;
 
 export const participationMethodMessage: Record<
@@ -68,9 +81,9 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
   const [isDropdownOpened, setDropdownOpened] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const { mutate: deletePhase } = useDeletePhase();
-  const { projectId } = useParams() as {
-    projectId: string;
-  };
+  const { projectId } = useParams({
+    from: '/$locale/admin/projects/$projectId/phases',
+  });
   const { data: permissions } = usePhasePermissions({ phaseId: phase.id });
   const participationRequirementsMessage = getParticipantMessage(
     permissions?.data,
@@ -83,9 +96,10 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
     return null;
   }
 
-  const startAt = moment(phase.attributes.start_at).format('LL');
+  const startAt = moment(phase.attributes.start_at).format('LLL');
+
   const endAt = phase.attributes.end_at
-    ? moment(phase.attributes.end_at).format('LL')
+    ? moment(phase.attributes.end_at).format('LLL')
     : formatMessage(messages.noEndDate);
 
   const toggleDropdown = () => {
@@ -222,15 +236,25 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
             )}
           </Box>
         </Box>
-        <Box
+        <TabBar
+          className="intercom-product-tour-phase-tabs"
           display="flex"
           px="44px"
           boxShadow="0px 2px 4px -1px rgba(0, 0, 0, 0.06)"
           background="#FBFBFB"
         >
-          {tabs.map(({ url, label, disabledTooltipText }) => (
+          {tabs.map(({ url, label, name, disabledTooltipText, className }) => (
             <Tab
-              label={label}
+              label={
+                name === 'insights' ? (
+                  <Box display="flex" alignItems="center" gap="8px">
+                    {label}
+                    <NewLabel expiryDate={new Date('2026-05-09')} />
+                  </Box>
+                ) : (
+                  label
+                )
+              }
               url={url}
               key={url}
               active={isTopBarNavActive(
@@ -239,46 +263,23 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
                 url
               )}
               disabledTooltipText={disabledTooltipText}
+              className={className}
             />
           ))}
-        </Box>
+        </TabBar>
       </Container>
-      <Modal opened={showDeleteModal} close={closeModal}>
-        <Box display="flex" flexDirection="column" width="100%" p="20px">
-          <Box mb="40px">
-            <Title variant="h3" color="primary">
-              {formatMessage(messages.deletePhaseConfirmationQuestion)}
-            </Title>
-            <Text color="primary" fontSize="l">
-              {formatMessage(messages.deletePhaseInfo)}
-            </Text>
-          </Box>
-          <Box
-            display="flex"
-            flexDirection="row"
-            width="100%"
-            alignItems="center"
-          >
-            <Button
-              icon="delete"
-              data-cy={`e2e-confirm-delete-phase-${phase.id}`}
-              buttonStyle="delete"
-              width="auto"
-              mr="20px"
-              onClick={handleDeletePhase}
-            >
-              {formatMessage(messages.deletePhaseButtonText)}
-            </Button>
-            <Button
-              buttonStyle="secondary-outlined"
-              width="auto"
-              onClick={closeModal}
-            >
-              {formatMessage(messages.cancelDeletePhaseText)}
-            </Button>
-          </Box>
-        </Box>
-      </Modal>
+      <TypedDeleteConfirmationModal
+        opened={showDeleteModal}
+        onClose={closeModal}
+        onConfirm={handleDeletePhase}
+        title={messages.deletePhaseModalTitle}
+        entityName={localize(phase.attributes.title_multiloc)}
+        mainWarning={messages.deletePhaseModalWarning}
+        confirmationWord={
+          typedDeleteConfirmationMessages.confirmationWordDelete
+        }
+        deleteButtonText={messages.deletePhaseButtonText}
+      />
     </>
   );
 };

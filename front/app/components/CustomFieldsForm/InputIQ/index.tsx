@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 
 import { useFormContext } from 'react-hook-form';
 
+import { IFlatCustomField } from 'api/custom_fields/types';
 import { IPhaseData } from 'api/phases/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import SimilarIdeasList from 'containers/IdeasNewPage/SimilarInputs/SimilarInputsList';
-import { IFlatCustomField } from 'api/custom_fields/types';
 
 const InputIQ = ({
   phase,
@@ -20,9 +20,6 @@ const InputIQ = ({
   const isInputIQEnabled = useFeatureFlag({
     name: 'input_iq',
   });
-  const showSimilarInputs = !!(
-    phase?.attributes.similarity_enabled && isInputIQEnabled
-  );
 
   const titleMultiloc = watch('title_multiloc');
   const bodyMultiloc = watch('body_multiloc');
@@ -42,7 +39,7 @@ const InputIQ = ({
     return () => clearTimeout(timer);
   }, [titleMultiloc, bodyMultiloc]);
 
-  if (!showSimilarInputs) {
+  if (!phase?.attributes.similarity_enabled || !isInputIQEnabled) {
     return null;
   }
 

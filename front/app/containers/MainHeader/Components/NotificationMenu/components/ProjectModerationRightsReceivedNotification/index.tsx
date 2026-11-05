@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 
 import { IProjectModerationRightsReceivedNotificationData } from 'api/notifications/types';
 
-import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
+import { adminProjectsProjectLink } from 'containers/Admin/projects/routes';
 
 import T from 'components/T';
 
@@ -22,7 +22,7 @@ const ProjectModerationRightsReceivedNotification = memo<Props>((props) => {
 
   return (
     <NotificationWrapper
-      linkTo={adminProjectsProjectPath(notification.attributes.project_id)}
+      {...adminProjectsProjectLink(notification.attributes.project_id)}
       timing={notification.attributes.created_at}
       icon="shield-checkered"
       isRead={!!notification.attributes.read_at}
@@ -32,7 +32,7 @@ const ProjectModerationRightsReceivedNotification = memo<Props>((props) => {
         values={{
           projectLink: (
             <Link
-              to={adminProjectsProjectPath(notification.attributes.project_id)}
+              {...adminProjectsProjectLink(notification.attributes.project_id)}
               onClick={stopPropagation}
             >
               <T value={notification.attributes.project_title_multiloc} />

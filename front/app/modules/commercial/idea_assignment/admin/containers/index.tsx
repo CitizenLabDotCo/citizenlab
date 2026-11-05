@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { Section, SubSectionTitle } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 
 import AssigneeSelector from '../components/AssigneeSelector';
 
@@ -16,7 +16,7 @@ const InputAssignmentSection = styled(Section)`
   margin-bottom: 30px;
 `;
 
-const StyledLink = styled(Link)`
+const StyledLink = typedStyled(Link)`
   &:hover {
     text-decoration: underline;
   }
@@ -37,7 +37,7 @@ const InputAssignment = ({ projectId }: Props) => {
               {...messages.inputAssignmentTooltipText}
               values={{
                 globalInputManagerLink: (
-                  <StyledLink to={`/admin/ideas`}>
+                  <StyledLink to="/admin/ideas">
                     <FormattedMessage
                       {...messages.globalInputManagerLinkText}
                     />

@@ -6,7 +6,7 @@ module MultiTenancy
       class ProjectImage < Base
         ref_attribute :project
         upload_attribute :image
-        attribute :ordering
+        attributes %i[ordering alt_text_multiloc]
       end
     end
   end

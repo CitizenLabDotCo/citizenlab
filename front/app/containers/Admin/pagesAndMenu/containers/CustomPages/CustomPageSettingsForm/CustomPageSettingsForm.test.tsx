@@ -19,7 +19,7 @@ const editedTitleNL = 'edited title nl';
 // Slug computation takes primary title as base
 const slug = 'title-en';
 
-jest.mock('api/topics/useTopics');
+jest.mock('api/global_topics/useGlobalTopics');
 jest.mock('api/areas/useAreas');
 
 jest.mock('hooks/useAppConfigurationLocales', () =>
@@ -181,6 +181,26 @@ describe('CustomPageSettingsForm', () => {
         expect(screen.getAllByTestId('error-message')).toHaveLength(2);
         expect(screen.getByTestId('feedbackErrorMessage')).toBeInTheDocument();
         expect(defaultProps.onSubmit).not.toHaveBeenCalled();
+      });
+    });
+
+    it('saves with hidden linked items that are no longer valid', async () => {
+      const { container } = render(
+        <CustomPageSettingsForm
+          mode={mode}
+          {...defaultProps}
+          // An area filter whose area was deleted.
+          defaultValues={{
+            ...defaultProps.defaultValues,
+            projects_filter_type: 'areas',
+          }}
+          hideLinkedItems
+        />
+      );
+
+      fireEvent.click(container.querySelector('button[type="submit"]'));
+      await waitFor(() => {
+        expect(defaultProps.onSubmit).toHaveBeenCalled();
       });
     });
 

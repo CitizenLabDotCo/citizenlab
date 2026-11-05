@@ -9,6 +9,7 @@ import {
 
 import { ResultGrouped, ResultUngrouped } from 'api/survey_results/types';
 
+import { legendColors } from 'components/admin/Graphs/legendColors';
 import { DEFAULT_CATEGORICAL_COLORS } from 'components/admin/Graphs/styling';
 
 import Comments from './components/Comments';
@@ -28,6 +29,9 @@ const SentimentQuestion = ({
   ...props
 }: Props & BoxProps) => {
   const { textResponses } = result;
+  const groupColors = result.grouped
+    ? legendColors(result.legend, DEFAULT_CATEGORICAL_COLORS)
+    : [];
 
   const textResponsesCount = textResponses?.length || 0;
   const hasTextResponses = textResponsesCount > 0;
@@ -56,7 +60,7 @@ const SentimentQuestion = ({
                 key={groupKey}
                 result={result}
                 groupKey={groupKey}
-                color={DEFAULT_CATEGORICAL_COLORS[index]}
+                color={groupColors[index]}
                 label={legendLabels?.[index] || groupKey}
               />
             ))}
@@ -102,7 +106,7 @@ const SentimentQuestion = ({
               key={groupKey}
               result={result}
               groupKey={groupKey}
-              color={DEFAULT_CATEGORICAL_COLORS[index]}
+              color={groupColors[index]}
               label={legendLabels?.[index] || groupKey}
             />
           ))}

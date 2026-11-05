@@ -1,6 +1,11 @@
 import React, { memo } from 'react';
 
-import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Title,
+  useBreakpoint,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import styled, { useTheme } from 'styled-components';
 
 import ProjectFilterDropdown from 'components/ProjectFilterDropdown';
@@ -25,6 +30,7 @@ interface Props {
   showDateFilter?: boolean;
   setProjectIds: (projectIds: string[]) => void;
   setDateFilter: (dateFilter: dateFilterKey[]) => void;
+  dateFilter: dateFilterKey[];
   eventsTime?: 'past' | 'currentAndFuture';
 }
 
@@ -35,6 +41,7 @@ const TopBar = memo<Props>(
     showDateFilter,
     setProjectIds,
     setDateFilter,
+    dateFilter,
     eventsTime,
   }) => {
     const { formatMessage } = useIntl();
@@ -48,7 +55,7 @@ const TopBar = memo<Props>(
         display={isSmallerThanPhone ? 'block' : 'flex'}
         justifyContent="space-between"
         pb="14px"
-        borderBottom="solid 1px #ccc"
+        borderBottom={`solid 1px ${colors.grey400}`}
         mb="28px"
         flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
       >
@@ -78,6 +85,7 @@ const TopBar = memo<Props>(
               >
                 <DateFilterDropdown
                   onChange={setDateFilter}
+                  selectedValues={dateFilter}
                   textColor={theme.colors.tenantText}
                   listTop="44px"
                   mobileLeft={isSmallerThanPhone ? '-70px' : mobileLeft}

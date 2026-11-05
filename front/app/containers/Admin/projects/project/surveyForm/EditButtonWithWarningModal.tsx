@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import { RouteType } from 'routes';
-
 import usePhase from 'api/phases/usePhase';
 import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
 import { downloadSurveyResults } from 'api/survey_results/utils';
@@ -18,7 +16,7 @@ import messages from './messages';
 
 interface Props {
   phaseId: string;
-  editFormLink: RouteType;
+  editFormLink: string;
 }
 
 const EditButtonWithWarningModal = ({ phaseId, editFormLink }: Props) => {
@@ -52,6 +50,7 @@ const EditButtonWithWarningModal = ({ phaseId, editFormLink }: Props) => {
         width="auto"
         icon="edit"
         data-cy="e2e-edit-survey-form"
+        buttonStyle="admin-dark"
       >
         <FormattedMessage {...messages.editSurveyForm} />
       </ButtonWithLink>

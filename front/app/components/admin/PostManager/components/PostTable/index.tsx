@@ -28,6 +28,12 @@ import NoPost from './NoPost';
 import Row from './Row';
 
 const Container = styled.div`
+  overflow-x: auto;
+
+  table {
+    min-width: 680px;
+  }
+
   .ui.table {
     margin-bottom: 0;
   }

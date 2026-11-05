@@ -4,7 +4,6 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { WrappedComponentProps } from 'react-intl';
-import { useParams } from 'react-router-dom';
 import { Multiloc } from 'typings';
 import { object } from 'yup';
 
@@ -15,6 +14,7 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { injectIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import { useParams } from 'utils/router';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 
 import messages from '../messages';
@@ -33,7 +33,9 @@ const RegistrationCustomFieldOptionsForm = ({
   onSubmit,
   defaultValues,
 }: Props) => {
-  const { userCustomFieldId } = useParams() as { userCustomFieldId: string };
+  const { userCustomFieldId } = useParams({ strict: false }) as {
+    userCustomFieldId: string;
+  };
   const schema = object({
     title_multiloc: validateMultilocForEveryLocale(
       formatMessage(messages.answerOptionError)
@@ -79,7 +81,8 @@ const RegistrationCustomFieldOptionsForm = ({
 
           <ButtonWithLink
             buttonStyle="text"
-            linkTo={`/admin/settings/registration/custom-fields/${userCustomFieldId}/options/`}
+            to="/admin/settings/registration/custom-fields/$userCustomFieldId/options"
+            params={{ userCustomFieldId }}
           >
             {formatMessage(messages.optionCancelButton)}
           </ButtonWithLink>

@@ -11,7 +11,7 @@ module Analysis
       @comments_summary = comments_summary
       @task = comments_summary.background_task
       @analysis = comments_summary.analysis
-      @llm = kwargs[:llm] || LLM::GPT41.new
+      @llm = kwargs[:llm] || LLM::GPT54.new
     end
 
     def execute
@@ -26,7 +26,7 @@ module Analysis
         task.set_succeeded!
       rescue SummarizationFailedError => e
         ErrorReporter.report(e)
-        task.set_failed!
+        task.set_failed!(e)
       end
     end
 

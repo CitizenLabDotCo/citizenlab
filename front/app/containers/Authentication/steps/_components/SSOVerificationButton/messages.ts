@@ -29,4 +29,16 @@ export default defineMessages({
     id: 'app.components.VerificationModal.verifyBosaFas',
     defaultMessage: 'Verify with itsme or eID',
   },
+  verifyAcm: {
+    id: 'app.components.VerificationModal.verifyAcm',
+    defaultMessage: 'Verify with Itsme®',
+  },
+  verifyFedera: {
+    id: 'app.components.VerificationModal.verifyFedera',
+    defaultMessage: 'Verify with SPID, CIE or CNS',
+  },
+  verifyEtatLu: {
+    id: 'app.components.VerificationModal.verifyEtatLu2',
+    defaultMessage: 'Verify with your IAM identifier',
+  },
 });

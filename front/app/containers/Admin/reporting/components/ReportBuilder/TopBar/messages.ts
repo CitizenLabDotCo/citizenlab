@@ -26,6 +26,18 @@ export default defineMessages({
     defaultMessage:
       'This report contains unsaved changes. Please save before printing.',
   },
+  download: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.TopBar.download',
+    defaultMessage: 'Download',
+  },
+  downloadAsPdf: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.TopBar.downloadAsPdf',
+    defaultMessage: 'Download as PDF',
+  },
+  downloadAsWord: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.TopBar.downloadAsWord',
+    defaultMessage: 'Download as Word',
+  },
   titleTaken: {
     id: 'app.containers.Admin.reporting.components.ReportBuilder.TopBar.titleTaken',
     defaultMessage: 'Title is already taken',

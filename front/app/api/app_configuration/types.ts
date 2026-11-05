@@ -19,6 +19,7 @@ export type IAppConfigurationSettingsCore = {
   locales: SupportedLocale[];
   population: number | null;
   weglot_api_key: string | null;
+  weglot_switcher_in_navbar?: boolean;
   timezone: string;
   organization_name: Multiloc;
   organization_site?: string;
@@ -33,8 +34,9 @@ export type IAppConfigurationSettingsCore = {
   meta_title?: Multiloc | null;
   meta_description?: Multiloc | null;
   google_search_console_meta_attribute?: string | null;
-  login_helper_text?: Multiloc | null;
-  signup_helper_text?: Multiloc | null;
+  enter_email_helper_text?: Multiloc | null;
+  enter_password_helper_text?: Multiloc | null;
+  complete_your_profile_helper_text?: Multiloc | null;
   custom_fields_signup_helper_text?: Multiloc | null;
   color_main: string | null;
   color_secondary: string | null;
@@ -42,7 +44,6 @@ export type IAppConfigurationSettingsCore = {
   color_menu_bg?: string | null;
   currency: TCurrency;
   reply_to_email: string;
-  segment_destinations_blacklist: string[] | null;
   areas_term?: Multiloc;
   area_term?: Multiloc;
   topics_term?: Multiloc;
@@ -57,6 +58,7 @@ export type IAppConfigurationSettingsCore = {
   customer_portal_url?: string | null;
   anonymous_name_scheme?: string | null;
   private_attributes_in_export: boolean;
+  exclude_admins_and_moderators_from_statistics?: boolean;
   country_code: string | null;
 };
 
@@ -75,74 +77,8 @@ export interface IAppConfigurationSettings {
   password_login?: {
     allowed: boolean;
     enabled: boolean;
-    enable_signup: boolean;
     minimum_length?: number;
-  };
-  facebook_login?: {
-    allowed: boolean;
-    app_id: string;
-    app_secret?: string;
-    enabled: boolean;
-  };
-  google_login?: {
-    allowed: boolean;
-    client_id: string;
-    enabled: boolean;
-  };
-  azure_ad_login?: {
-    allowed: boolean;
-    enabled: boolean;
-    tenant: string;
-    client_id: string;
-    logo_url: string;
-    login_mechanism_name: string;
-    visibility?: 'show' | 'link' | 'hide';
-  };
-  azure_ad_b2c_login?: {
-    allowed: boolean;
-    enabled: boolean;
-    tenant_name: string;
-    tenant_id: string;
-    policy_name: string;
-    client_id: string;
-    logo_url: string;
-    login_mechanism_name: string;
-  };
-  franceconnect_login?: {
-    allowed: boolean;
-    enabled: boolean;
-  };
-  clave_unica_login?: {
-    allowed: boolean;
-    enabled: boolean;
-  };
-  hoplr_login?: {
-    allowed: boolean;
-    enabled: boolean;
-  };
-  id_austria_login?: {
-    allowed: boolean;
-    enabled: boolean;
-  };
-  criipto_login?: {
-    allowed: boolean;
-    enabled: boolean;
-  };
-  keycloak_login?: {
-    allowed: boolean;
-    enabled: boolean;
-  };
-  twoday_login?: {
-    allowed: boolean;
-    enabled: boolean;
-  };
-  nemlog_in_login?: {
-    allowed: boolean;
-    enabled: boolean;
-  };
-  vienna_citizen_login?: {
-    allowed: boolean;
-    enabled: boolean;
+    minimum_strength?: number;
   };
   custom_accessibility_statement_link: {
     allowed: boolean;
@@ -156,10 +92,13 @@ export interface IAppConfigurationSettings {
     enabled_fragments: string[];
   };
   verification?: {
-    allowed: boolean;
-    enabled: boolean;
     verification_methods: string[];
   };
+  sms?: AppConfigurationFeature & {
+    allowed_country_codes?: string[];
+  };
+  sms_login?: AppConfigurationFeature;
+  sms_manual_campaigns?: AppConfigurationFeature;
   smart_groups?: AppConfigurationFeature;
   typeform_surveys?: {
     allowed: boolean;
@@ -175,28 +114,21 @@ export interface IAppConfigurationSettings {
   microsoft_forms_surveys?: AppConfigurationFeature;
   survey_xact_surveys?: AppConfigurationFeature;
   snap_survey_surveys?: AppConfigurationFeature;
-  project_folders?: AppConfigurationFeature;
   project_preview_link?: AppConfigurationFeature;
-  bulk_import_ideas?: AppConfigurationFeature;
-  granular_permissions?: AppConfigurationFeature;
   machine_translations?: AppConfigurationFeature;
   polls?: AppConfigurationFeature;
   moderation?: AppConfigurationFeature;
   flag_inappropriate_content?: AppConfigurationFeature;
+  prescreening_flagged_only?: AppConfigurationFeature;
   disable_disliking?: AppConfigurationFeature;
   blocking_profanity?: AppConfigurationFeature;
   anonymous_participation?: AppConfigurationFeature;
   form_mapping?: AppConfigurationFeature;
+  input_form_answer_filters?: AppConfigurationFeature;
   custom_idea_statuses?: AppConfigurationFeature;
   intercom?: AppConfigurationFeature;
   satismeter?: AppConfigurationFeature & {
     write_key: string;
-  };
-  google_analytics?: AppConfigurationFeature & {
-    tracking_id: string;
-  };
-  segment?: AppConfigurationFeature & {
-    destinations: string;
   };
   google_tag_manager?: AppConfigurationFeature & {
     destinations: string;
@@ -217,11 +149,8 @@ export interface IAppConfigurationSettings {
     api_key: string;
   };
   disable_user_bios?: AppConfigurationFeature;
-  project_description_builder?: AppConfigurationFeature;
   remove_vendor_branding?: AppConfigurationFeature;
-  user_confirmation?: AppConfigurationFeature;
   permissions_custom_fields?: AppConfigurationFeature;
-  input_form_custom_fields?: AppConfigurationFeature;
   report_builder?: AppConfigurationFeature;
   report_data_grouping?: AppConfigurationFeature;
   posthog_integration?: AppConfigurationFeature;
@@ -258,19 +187,39 @@ export interface IAppConfigurationSettings {
   community_monitor?: AppConfigurationFeature & {
     project_id: string;
   };
+  data_repository_transcription?: AppConfigurationFeature;
   data_repository_ai_analysis?: AppConfigurationFeature;
-  user_fields_in_surveys?: AppConfigurationFeature;
-  html_pdfs?: AppConfigurationFeature;
   project_planning_calendar?: AppConfigurationFeature;
   common_ground?: AppConfigurationFeature;
   customised_automated_emails?: AppConfigurationFeature;
   customised_automated_context_emails?: AppConfigurationFeature;
   project_importer?: AppConfigurationFeature;
+  idea_feed?: AppConfigurationFeature;
+  id_config?: AppConfigurationFeature;
+  nested_input_topics?: AppConfigurationFeature;
+  live_auto_input_topics?: AppConfigurationFeature;
+  workshops?: AppConfigurationFeature;
+  participation_location_tracking?: AppConfigurationFeature;
+  spaces?: AppConfigurationFeature;
+  project_scheduling?: AppConfigurationFeature;
+  draft_phase_description?: AppConfigurationFeature;
+  custom_smtp?: AppConfigurationFeature;
+  hide_submission_removal_text?: AppConfigurationFeature;
+  project_static_pages?: AppConfigurationFeature;
+  project_backoffice_redesign?: AppConfigurationFeature;
+  html_block_in_content_builder?: AppConfigurationFeature;
+  custom_page_builder?: AppConfigurationFeature;
+  configurable_dropdown?: AppConfigurationFeature;
+  llm_reporting?: AppConfigurationFeature;
+  ai_assistant?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;
 
-export type TAppConfigurationSetting = keyof IAppConfigurationSettings;
+export type TAppConfigurationSetting = Exclude<
+  keyof IAppConfigurationSettings,
+  'verification'
+>;
 
 export interface AppConfigurationMapSettings extends AppConfigurationFeature {
   map_center: {

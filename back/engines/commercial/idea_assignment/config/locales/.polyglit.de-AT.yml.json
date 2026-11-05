@@ -1,0 +1,42 @@
+{
+  "email_campaigns.admin_campaign_type_description.idea_assigned_to_you": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.581032Z",
+    "verified_by": "Edwin Kato"
+  },
+  "email_campaigns.campaign_type_description.idea_assigned_to_you": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.581032Z",
+    "verified_by": "Edwin Kato"
+  },
+  "email_campaigns.idea_assigned_to_you.by_author": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.581032Z",
+    "verified_by": "Edwin Kato"
+  },
+  "email_campaigns.idea_assigned_to_you.cta_button": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.581032Z",
+    "verified_by": "Edwin Kato"
+  },
+  "email_campaigns.idea_assigned_to_you.event_description": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.581032Z",
+    "verified_by": "Edwin Kato"
+  },
+  "email_campaigns.idea_assigned_to_you.preheader": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.581032Z",
+    "verified_by": "Edwin Kato"
+  },
+  "email_campaigns.idea_assigned_to_you.subject": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.581032Z",
+    "verified_by": "Edwin Kato"
+  },
+  "email_campaigns.idea_assigned_to_you.title": {
+    "state": "verified",
+    "verified_at": "2026-03-30T12:57:38.581032Z",
+    "verified_by": "Edwin Kato"
+  }
+}

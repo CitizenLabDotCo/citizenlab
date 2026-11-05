@@ -1,12 +1,6 @@
 import React from 'react';
 
-import {
-  useBreakpoint,
-  Box,
-  media,
-  colors,
-} from '@citizenlab/cl2-component-library';
-import { useLocation } from 'react-router-dom';
+import { useBreakpoint, Box, media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useProjectById from 'api/projects/useProjectById';
@@ -22,10 +16,6 @@ const Container = styled.div`
   flex: 0 0 ${(props) => props.theme.mobileTopBarHeight}px;
   height: ${(props) => props.theme.mobileTopBarHeight}px;
   background-color: #fff;
-  border-bottom: solid 1px ${colors.coolGrey300};
-  position: sticky;
-  top: 0;
-  z-index: 2000;
 `;
 
 const TopBarInner = styled.div`
@@ -51,7 +41,6 @@ const MobileTopBar = ({ projectId }: Props) => {
   const { data: project } = useProjectById(projectId);
   const isSmallerThanTablet = useBreakpoint('tablet');
   const { formatMessage } = useIntl();
-  const location = useLocation();
 
   return (
     <Container>
@@ -61,7 +50,8 @@ const MobileTopBar = ({ projectId }: Props) => {
             text={formatMessage(messages.goBack)}
             iconSize={isSmallerThanTablet ? '42px' : undefined}
             onClick={() => {
-              const hasGoBackLink = location.key !== 'default';
+              // Check if there's history to go back to
+              const hasGoBackLink = window.history.length > 1;
               hasGoBackLink
                 ? clHistory.goBack()
                 : clHistory.push(`/projects/${project?.data.attributes.slug}`);

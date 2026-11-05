@@ -1,44 +1,56 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
+import { Box, Title } from '@citizenlab/cl2-component-library';
 
 import useCommonGroundProgress from 'api/common_ground/useCommonGroundProgress';
+import { IPhaseData } from 'api/phases/types';
+import { getPhaseActionDescriptor } from 'api/phases/utils';
 import { IProjectData } from 'api/projects/types';
+
+import useLocalize from 'hooks/useLocalize';
 
 import ParticipationPermission from 'containers/ProjectsShowPage/shared/ParticipationPermission';
 
 import Tabs, { TabData } from 'components/UI/FilterTabs';
 
 import { getPermissionsDisabledMessage } from 'utils/actionDescriptors';
+import { FormattedMessage } from 'utils/cl-intl';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { useSearch } from 'utils/router';
 
 import CommonGroundResults from './CommonGroundResults';
 import CommonGroundStatements from './CommonGroundStatements';
 import messages from './messages';
 
 const tabs = ['statements', 'results'];
-type TabKey = (typeof tabs)[number];
 
 interface Props {
-  phaseId: string;
+  phase: IPhaseData;
   project: IProjectData;
+  isPastPhase: boolean;
 }
 
-const CommonGroundTabs = ({ phaseId, project }: Props) => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const currentTabParam = searchParams.get('tab') as TabKey;
-  const currentTab = tabs.includes(currentTabParam)
-    ? currentTabParam
-    : 'statements';
-  const { enabled, disabled_reason } =
-    project.attributes.action_descriptors.reacting_idea;
+const CommonGroundTabs = ({ phase, project, isPastPhase }: Props) => {
+  const phaseId = phase.id;
+  // `strict: false` so this also renders off the project route (e.g. inside the
+  // project page builder); the tab falls back to its default there.
+  const searchParams = useSearch({ strict: false });
+  const localize = useLocalize();
+  const { data: progressData } = useCommonGroundProgress(phaseId);
+
+  const { enabled, disabled_reason } = getPhaseActionDescriptor(
+    phase,
+    'reacting_idea'
+  );
+  const defaultTab = isPastPhase ? 'results' : 'statements';
+  const currentTab = searchParams.tab ?? defaultTab;
   const disabledMessage =
     getPermissionsDisabledMessage('reacting_idea', disabled_reason) || null;
-  const { data: progressData } = useCommonGroundProgress(phaseId);
   const remainingStatementsCount = progressData
     ? progressData.data.attributes.num_ideas -
       progressData.data.attributes.num_reacted_ideas
     : undefined;
+  const projectName = localize(project.attributes.title_multiloc);
 
   const tabData: TabData = {
     statements: {
@@ -52,15 +64,50 @@ const CommonGroundTabs = ({ phaseId, project }: Props) => {
   };
 
   const onChangeTab = (tab: string) => {
-    setSearchParams({ tab });
+    updateSearchParams({ tab });
   };
+
+  // When the phase has ended, show the warning message and results only.
+  // We pass enabled={true} so ParticipationPermission renders the children
+  // (results) while still displaying the disabled warning message.
+  if (isPastPhase) {
+    return (
+      <ParticipationPermission
+        action="reacting_idea"
+        enabled={true}
+        phaseId={phaseId}
+        disabledReason={disabled_reason}
+        disabledMessage={disabledMessage}
+        projectName={projectName}
+        id="common-ground-tabs"
+      >
+        <Box
+          display="flex"
+          flexDirection="column"
+          width="100%"
+          maxWidth="600px"
+          margin="0 auto"
+          padding="8px"
+        >
+          <Box p="30px 30px 48px 30px" bg="white">
+            <Title variant="h3" mt="0">
+              <FormattedMessage {...messages.resultsTabLabel} />
+            </Title>
+            <CommonGroundResults phaseId={phaseId} />
+          </Box>
+        </Box>
+      </ParticipationPermission>
+    );
+  }
 
   return (
     <ParticipationPermission
       action="reacting_idea"
       enabled={enabled}
       phaseId={phaseId}
+      disabledReason={disabled_reason}
       disabledMessage={disabledMessage}
+      projectName={projectName}
       id="common-ground-tabs"
     >
       <Box
@@ -84,7 +131,11 @@ const CommonGroundTabs = ({ phaseId, project }: Props) => {
         {currentTab === 'statements' && (
           <CommonGroundStatements phaseId={phaseId} />
         )}
-        {currentTab === 'results' && <CommonGroundResults phaseId={phaseId} />}
+        {currentTab === 'results' && (
+          <Box p="30px 30px 48px 30px" bg="white">
+            <CommonGroundResults phaseId={phaseId} />
+          </Box>
+        )}
       </Box>
     </ParticipationPermission>
   );

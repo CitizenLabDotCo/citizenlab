@@ -16,6 +16,7 @@ import {
   sizes,
   animation,
 } from 'components/admin/Graphs/styling';
+import { getRechartsAccessibilityProps } from 'components/admin/Graphs/utils';
 
 import Container from '../_components/Container';
 import EmptyState from '../_components/EmptyState';
@@ -26,6 +27,7 @@ import {
 } from '../_components/Legend/typings';
 import { DEFAULT_LEGEND_OFFSET } from '../MultiBarChart';
 import { getRechartsLayout, getLabelConfig } from '../MultiBarChart/utils';
+import { AccessibilityProps } from '../typings';
 import { hasNoData, getTooltipConfig, parseMargin } from '../utils';
 
 import { Props } from './typings';
@@ -49,7 +51,9 @@ const StackedBarChart = <Row,>({
   onMouseOver,
   onMouseOut,
   CustomLegend,
-}: Props<Row>) => {
+  ariaLabel,
+  ariaDescribedBy,
+}: Props<Row> & AccessibilityProps) => {
   const [graphDimensions, setGraphDimensions] = useState<
     GraphDimensions | undefined
   >();
@@ -102,7 +106,6 @@ const StackedBarChart = <Row,>({
       width={width}
       height={height}
       legend={legend}
-      graphDimensions={graphDimensions}
       legendDimensions={legendDimensions}
       defaultLegendOffset={DEFAULT_LEGEND_OFFSET}
       onUpdateGraphDimensions={setGraphDimensions}
@@ -120,7 +123,7 @@ const StackedBarChart = <Row,>({
         ref={innerRef}
         barGap={0}
         barCategoryGap={bars?.categoryGap}
-        accessibilityLayer
+        {...getRechartsAccessibilityProps(ariaLabel, ariaDescribedBy)}
       >
         {CustomLegend && legend && legendDimensions && (
           <RechartsLegend

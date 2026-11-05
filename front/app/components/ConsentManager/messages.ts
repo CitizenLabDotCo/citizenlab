@@ -14,6 +14,10 @@ export default defineMessages({
     defaultMessage:
       'Accepting cookies helps us improve this platform. {linkToCookiePolicy}.',
   },
+  cookieModalInitialScreenDescriptionWithoutLink: {
+    id: 'app.components.ConsentManager.Banner.cookieModalInitialScreenDescriptionWithoutLink',
+    defaultMessage: 'Accepting cookies helps us improve this platform.',
+  },
   linkToCookiePolicyText: {
     id: 'app.components.ConsentManager.Banner.linkToCookiePolicyText',
     defaultMessage: 'Read our cookie policy',

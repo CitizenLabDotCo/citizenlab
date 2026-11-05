@@ -31,6 +31,14 @@ describe('Cookie consent form for signed-in users', () => {
   });
 });
 
+describe('Cookie consent bypass via URL parameter', () => {
+  it('Does not show the cookie consent modal when yes-I-accept-cookies=true is in the URL', () => {
+    cy.clearCookies();
+    cy.visit('/?yes-I-accept-cookies=true');
+    cy.dataCy('e2e-manage-preferences-btn').should('not.exist');
+  });
+});
+
 describe('Cookie consent form for signed-in admins', () => {
   beforeEach(() => {
     cy.clearCookies();

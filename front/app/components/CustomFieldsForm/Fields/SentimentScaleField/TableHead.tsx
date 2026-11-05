@@ -17,18 +17,18 @@ import { getSentimentEmoji } from './utils';
 
 export const StyledImg = styled.img`
   padding: 8px;
-  border: 1px solid white;
+  border: 2px solid white;
   border-radius: 8px;
   width: 48px;
 
   &.isSelected {
-    border: 1px solid ${({ theme }) => theme.colors.tenantPrimary};
+    border: 2px solid ${({ theme }) => theme.colors.tenantPrimary};
     background-color: ${({ theme }) => theme.colors.tenantPrimaryLighten90};
   }
 
   &:not(.isSelected):hover {
     background-color: ${({ theme }) => theme.colors.grey100};
-    border: 1px solid ${({ theme }) => theme.colors.grey500};
+    border: 2px solid ${({ theme }) => theme.colors.borderDark};
   }
 `;
 
@@ -62,10 +62,11 @@ const TableHead = ({
             <Td py="4px" key={`${id}-radio-${visualIndex}`}>
               <Box display="flex" flexDirection="column" alignItems="center">
                 <Button
+                  type="button"
                   p="0px"
                   m="0px"
                   id={`${id}-linear-scale-option-${visualIndex}`}
-                  aria-pressed={isSelected}
+                  ariaPressed={isSelected}
                   width="100%"
                   tabIndex={-1}
                   onClick={() => {

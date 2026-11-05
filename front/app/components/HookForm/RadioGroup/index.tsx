@@ -11,12 +11,14 @@ interface Props {
   name: string;
   children?: React.ReactNode;
   scrollErrorIntoView?: boolean;
+  'aria-required'?: boolean;
 }
 
 const RadioGroup = ({
   name,
   children,
   scrollErrorIntoView,
+  'aria-required': ariaRequired,
   ...props
 }: Props & BoxProps) => {
   const {
@@ -30,7 +32,12 @@ const RadioGroup = ({
   const apiError = errors?.error && ([errors] as CLError[]);
 
   return (
-    <Box border="none" as="fieldset" p={props.padding}>
+    <Box
+      border="none"
+      as="fieldset"
+      p={props.padding}
+      aria-required={ariaRequired}
+    >
       {children}
       {validationError && (
         <Error

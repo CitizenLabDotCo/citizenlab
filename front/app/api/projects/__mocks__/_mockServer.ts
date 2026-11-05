@@ -28,9 +28,8 @@ export const project1: IProjectData = {
     updated_at: '2023-03-22T08:36:22.662Z',
     folder_id: null,
     publication_status: 'published',
-    description_multiloc: {
-      en: '<p>You can propose anywhere you like, but we will only accept Koekenbakstraat</p>',
-    },
+    scheduled_status: null,
+    scheduled_at: null,
     header_bg: {
       large:
         'https://demo.stg.govocal.com/uploads/c7e20cb9-f253-4c0c-aea1-e6e3c23c04c7/project/header_bg/be3f645b-3e1d-4afc-b91b-d68c4dc0100b/large_header_bg.jpeg',
@@ -38,62 +37,19 @@ export const project1: IProjectData = {
     header_bg_alt_text_multiloc: {},
     listed: true,
     action_descriptors: {
-      posting_idea: {
-        enabled: true,
-        disabled_reason: null,
-        future_enabled_at: null,
-      },
-      commenting_idea: {
-        enabled: true,
-        disabled_reason: null,
-      },
-      comment_reacting_idea: {
-        enabled: true,
-        disabled_reason: null,
-      },
-      reacting_idea: {
-        enabled: true,
-        disabled_reason: null,
-        up: {
-          enabled: true,
-          disabled_reason: null,
-        },
-        down: {
-          enabled: false,
-          disabled_reason: 'reacting_dislike_disabled',
-        },
-      },
-      voting: {
-        enabled: false,
-        disabled_reason: 'not_voting',
-      },
-      taking_survey: {
-        enabled: false,
-        disabled_reason: 'not_survey',
-      },
-      taking_poll: {
-        enabled: false,
-        disabled_reason: 'not_poll',
-      },
-      annotating_document: {
-        enabled: false,
-        disabled_reason: 'not_document_annotation',
-      },
       attending_event: {
         enabled: true,
         disabled_reason: null,
       },
-      volunteering: {
-        enabled: false,
-        disabled_reason: 'not_volunteering',
-      },
     },
     avatars_count: 8,
     participants_count: 8,
-    uses_content_builder: false,
     preview_token: 'fake-token-0123456789',
     baskets_count: 0,
     votes_count: 0,
+    live_auto_input_topics_enabled: false,
+    publication_email_enabled: true,
+    global_publication_email_enabled: true,
   },
   relationships: {
     admin_publication: {
@@ -119,7 +75,7 @@ export const project1: IProjectData = {
     areas: {
       data: [],
     },
-    topics: {
+    global_topics: {
       data: [],
     },
     avatars: {
@@ -176,69 +132,27 @@ export const project2: IProjectData = {
     updated_at: '2023-05-03T11:18:43.979Z',
     folder_id: null,
     publication_status: 'published',
-    description_multiloc: {},
+    scheduled_status: null,
+    scheduled_at: null,
     header_bg: {
       large: null,
     },
     header_bg_alt_text_multiloc: {},
     listed: true,
     action_descriptors: {
-      posting_idea: {
-        enabled: true,
-        disabled_reason: null,
-        future_enabled_at: null,
-      },
-      commenting_idea: {
-        enabled: true,
-        disabled_reason: null,
-      },
-      comment_reacting_idea: {
-        enabled: true,
-        disabled_reason: null,
-      },
-      reacting_idea: {
-        enabled: true,
-        disabled_reason: null,
-        up: {
-          enabled: true,
-          disabled_reason: null,
-        },
-        down: {
-          enabled: true,
-          disabled_reason: null,
-        },
-      },
-      voting: {
-        enabled: false,
-        disabled_reason: 'not_voting',
-      },
-      annotating_document: {
-        enabled: false,
-        disabled_reason: 'not_document_annotation',
-      },
-      taking_survey: {
-        enabled: false,
-        disabled_reason: 'not_survey',
-      },
-      taking_poll: {
-        enabled: false,
-        disabled_reason: 'not_poll',
-      },
       attending_event: {
         enabled: true,
         disabled_reason: null,
       },
-      volunteering: {
-        enabled: false,
-        disabled_reason: 'not_volunteering',
-      },
     },
     avatars_count: 6,
     participants_count: 6,
-    uses_content_builder: false,
     preview_token: 'fake-token-0123456789',
     baskets_count: 0,
     votes_count: 0,
+    live_auto_input_topics_enabled: false,
+    publication_email_enabled: true,
+    global_publication_email_enabled: true,
   },
   relationships: {
     admin_publication: {
@@ -259,7 +173,7 @@ export const project2: IProjectData = {
     areas: {
       data: [],
     },
-    topics: {
+    global_topics: {
       data: [],
     },
     avatars: {
@@ -324,67 +238,25 @@ const votingProject: IProject = {
       updated_at: '2023-10-19T10:25:13.230Z',
       folder_id: null,
       publication_status: 'published',
-      description_multiloc: {},
+      scheduled_status: null,
+      scheduled_at: null,
       header_bg: {
         large: null,
       },
       header_bg_alt_text_multiloc: {},
       listed: true,
       action_descriptors: {
-        posting_idea: {
-          enabled: false,
-          disabled_reason: 'posting_not_supported',
-          future_enabled_at: null,
-        },
-        commenting_idea: {
-          enabled: true,
-          disabled_reason: null,
-        },
-        comment_reacting_idea: {
-          enabled: true,
-          disabled_reason: null,
-        },
-        reacting_idea: {
-          enabled: false,
-          disabled_reason: 'reacting_not_supported',
-          up: {
-            enabled: false,
-            disabled_reason: 'reacting_not_supported',
-          },
-          down: {
-            enabled: false,
-            disabled_reason: 'reacting_not_supported',
-          },
-        },
-        voting: {
-          enabled: true,
-          disabled_reason: null,
-        },
         attending_event: {
           enabled: true,
           disabled_reason: null,
         },
-        annotating_document: {
-          enabled: false,
-          disabled_reason: 'not_document_annotation',
-        },
-        taking_survey: {
-          enabled: false,
-          disabled_reason: 'not_survey',
-        },
-        taking_poll: {
-          enabled: false,
-          disabled_reason: 'not_poll',
-        },
-        volunteering: {
-          enabled: false,
-          disabled_reason: 'not_volunteering',
-        },
       },
       avatars_count: 2,
       participants_count: 2,
-      uses_content_builder: true,
       preview_token: 'fake-token-0123456789',
+      live_auto_input_topics_enabled: false,
+      publication_email_enabled: true,
+      global_publication_email_enabled: true,
     },
     relationships: {
       admin_publication: {
@@ -399,7 +271,7 @@ const votingProject: IProject = {
       areas: {
         data: [],
       },
-      topics: {
+      global_topics: {
         data: [],
       },
       avatars: {

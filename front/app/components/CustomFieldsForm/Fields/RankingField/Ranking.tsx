@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 import { Box, Button, IOption, Text } from '@citizenlab/cl2-component-library';
 import styled, { useTheme } from 'styled-components';
@@ -8,7 +8,6 @@ import { IFlatCustomField } from 'api/custom_fields/types';
 import useLocalize from 'hooks/useLocalize';
 
 import { extractOptions } from 'components/CustomFieldsForm/util';
-import messages from 'components/Form/Components/Controls/messages';
 import {
   DragAndDrop,
   Drop,
@@ -16,6 +15,9 @@ import {
 import { DragAndDropResult } from 'components/FormBuilder/edit/utils';
 
 import { useIntl } from 'utils/cl-intl';
+import { sanitizeForClassname } from 'utils/JSONFormUtils';
+
+import messages from '../../messages';
 
 import RankingOption from './RankingOption';
 
@@ -44,16 +46,22 @@ const Ranking = ({ value: data, question, onChange }: Props) => {
   const localize = useLocalize();
   const theme = useTheme();
 
+  // Compute randomized options just once and cache in a ref so that
+  // re-renders (e.g. typing in another field) don't re-shuffle.
+  const questionOptionsRef = useRef<IOption[] | null>(null);
+  if (questionOptionsRef.current === null && question.options) {
+    questionOptionsRef.current = extractOptions(
+      question,
+      localize,
+      question.random_option_ordering
+    );
+  }
+
   if (!question.options) return null;
 
   // If form data present, get options in that ranking order.
   // Otherwise, get option order from the question.
-  const questionOptions: IOption[] = extractOptions(
-    question,
-    localize,
-    question.random_option_ordering
-  );
-
+  const questionOptions = questionOptionsRef.current!;
   const options = data
     ? getOptionsFromData(data, questionOptions)
     : questionOptions;
@@ -96,10 +104,10 @@ const Ranking = ({ value: data, question, onChange }: Props) => {
           }}
         >
           <Drop id="droppable" type="rankOptions">
-            <Text m="0px" aria-hidden color="tenantPrimary">
+            <Text m="0px" aria-hidden color="textPrimary">
               {formatMessage(messages.rankingInstructions)}
             </Text>
-            <Ul aria-labelledby={`ranking-question-label-${question.key}`}>
+            <Ul aria-labelledby={`${sanitizeForClassname(question.key)}-label`}>
               {options.map((option: IOption, index: number) => (
                 <RankingOption
                   key={option.value}
@@ -116,9 +124,10 @@ const Ranking = ({ value: data, question, onChange }: Props) => {
         {data !== undefined && (
           <Box display="flex">
             <Button
+              type="button"
               p="0px"
               buttonStyle="text"
-              textColor={theme.colors.tenantPrimary}
+              textColor={theme.colors.textPrimary}
               textDecoration="underline"
               text={formatMessage(messages.clearAll)}
               onClick={() => {

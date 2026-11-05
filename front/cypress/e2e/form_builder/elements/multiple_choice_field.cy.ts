@@ -3,7 +3,6 @@ import moment = require('moment');
 
 describe('Form builder multiple choice choose multiple component', () => {
   const projectTitle = randomString();
-  const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
   let projectId: string;
   let projectSlug: string;
@@ -17,7 +16,6 @@ describe('Form builder multiple choice choose multiple component', () => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     })
       .then((project) => {
@@ -122,8 +120,8 @@ describe('Form builder multiple choice choose multiple component', () => {
       }/en/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`
     );
 
-    cy.get(`[id^="${questionTitle}"]`)
-      .last()
+    cy.get(`[id^="${questionTitle}"]:not([id$="-label"])`)
+      .first()
       .should(($element) => {
         const id = $element.attr('id');
         expect(Cypress._.endsWith(id, '_other')).to.be.true;

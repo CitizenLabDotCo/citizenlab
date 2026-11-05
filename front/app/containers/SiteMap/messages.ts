@@ -58,8 +58,8 @@ export default defineMessages({
     id: 'app.containers.SiteMap.contributions',
     defaultMessage: 'Contributions',
   },
-  issues: {
-    id: 'app.containers.SiteMap.issues',
+  issues1: {
+    id: 'app.containers.SiteMap.issues1',
     defaultMessage: 'Issues',
   },
   options: {

@@ -10,7 +10,6 @@ import {
   Box,
   IconButton,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useAddAnalysisBulkTagging from 'api/analysis_taggings/useAnalysisBulkTaggings';
@@ -23,6 +22,7 @@ import Modal from 'components/UI/Modal';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 
@@ -38,11 +38,13 @@ const TagActions = ({ tag }: { tag: ITagData }) => {
   const [renameModalOpenedTagId, setRenameModalOpenedTagId] = useState('');
   const [isDropdownOpened, setDropdownOpened] = useState(false);
 
-  const { mutate: deleteTag, isLoading: deleteIsLoading } =
+  const { mutate: deleteTag, isPending: deleteIsLoading } =
     useDeleteAnalysisTag();
-  const { mutate: bulkAddTaggings, isLoading: bulkTaggingIsLoading } =
+  const { mutate: bulkAddTaggings, isPending: bulkTaggingIsLoading } =
     useAddAnalysisBulkTagging();
-  const { analysisId } = useParams() as { analysisId: string };
+  const { analysisId } = useParams({
+    from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
+  });
   const filters = useAnalysisFilterParams();
 
   const { formatMessage } = useIntl();
@@ -174,6 +176,7 @@ const TagActions = ({ tag }: { tag: ITagData }) => {
       <Modal
         opened={renameModalOpenedTagId === tag.id}
         close={closeTagRenameModal}
+        ariaLabelledBy="rename-tag-modal-title"
       >
         <RenameTagModal
           closeRenameModal={closeTagRenameModal}

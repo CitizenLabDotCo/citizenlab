@@ -24,14 +24,6 @@ class IdeaReactionPolicy < ApplicationPolicy
     reason ? raise_not_authorized(reason) : true
   end
 
-  def up?
-    upsert_reaction? 'up'
-  end
-
-  def down?
-    upsert_reaction? 'down'
-  end
-
   def destroy?
     return false unless could_modify?
 
@@ -42,14 +34,7 @@ class IdeaReactionPolicy < ApplicationPolicy
   private
 
   def could_modify?
-    active? && owner? && record.reactable.present?
-  end
-
-  def upsert_reaction?(mode)
-    return false unless could_modify?
-
-    reason = permissions_service.denied_reason_for_reaction_mode mode
-    reason ? raise_not_authorized(reason) : true
+    active? && owner? && record.reactable.present? && policy_for(record.reactable.project).show?
   end
 
   def permissions_service

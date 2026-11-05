@@ -13,11 +13,16 @@ resource 'Analytics - FactParticipations' do
 
   post 'web_api/v1/analytics' do
     before_all do
-      # Date dimensions
-      dates = [Date.new(2022, 9, 2), Date.new(2022, 9, 15), Date.new(2022, 10, 2), Date.new(2022, 10, 15)]
-      dates.each do |date|
-        create(:dimension_date, date: date)
-      end
+      # Using UTC explicitly, because (unfortunately) the fact_participations view uses UTC when
+      # converting created_at to dates instead of tenant timezone.
+      times = [
+        Time.utc(2022, 9, 2),
+        Time.utc(2022, 9, 15),
+        Time.utc(2022, 10, 2),
+        Time.utc(2022, 10, 15)
+      ]
+
+      times.each { |time| create(:dimension_date, date: time) }
 
       # Type dimensions
       [
@@ -28,14 +33,14 @@ resource 'Analytics - FactParticipations' do
         create(:dimension_type, name: type[:name], parent: type[:parent])
       end
 
-      male = create(:user, gender: 'male')
-      female = create(:user, gender: 'female')
-      _unspecified = create(:user, gender: 'unspecified')
+      male = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'gender', value: 'male')])
+      female = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'gender', value: 'female')])
+      _unspecified = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'gender', value: 'unspecified')])
 
       # Create participations (3 by citizens, 1 by admin)
-      idea = create(:idea, created_at: dates[0], author: male)
-      create(:comment, created_at: dates[2], idea: idea, author: female)
-      create(:reaction, created_at: dates[3], user: create(:admin, gender: 'female'), reactable: idea)
+      idea = create(:idea, created_at: times[0], author: male)
+      create(:comment, created_at: times[2], idea: idea, author: female)
+      create(:reaction, created_at: times[3], user: create(:admin, custom_field_answers: [build(:custom_field_answer, key: 'gender', value: 'female')]), reactable: idea)
     end
 
     example 'group participations by month' do
@@ -49,10 +54,7 @@ resource 'Analytics - FactParticipations' do
         }
       })
       assert_status 200
-      expect(response_data[:attributes]).to match_array([
-        { 'dimension_date_created.month': '2022-09', count: 1 },
-        { 'dimension_date_created.month': '2022-10', count: 2 }
-      ])
+      expect(response_data[:attributes]).to contain_exactly({ 'dimension_date_created.month': '2022-09', count: 1 }, { 'dimension_date_created.month': '2022-10', count: 2 })
     end
 
     example 'filter between dates and return citizen participations only' do
@@ -69,7 +71,29 @@ resource 'Analytics - FactParticipations' do
         }
       })
       assert_status 200
-      expect(response_data[:attributes]).to match_array([{ count: 1 }])
+      expect(response_data[:attributes]).to contain_exactly({ count: 1 })
+    end
+
+    example 'exclude participations of admins and moderators' do
+      idea = Idea.first
+      create_admins_and_moderators.each do |user|
+        create(:comment, created_at: Time.utc(2022, 10, 15), idea: idea, author: user)
+      end
+
+      enable_exclude_admins_and_moderators_from_statistics
+      do_request({
+        query: {
+          fact: 'participation',
+          filters: {
+            'dimension_date_created.date': { from: '2022-10-01', to: '2022-10-31' }
+          },
+          aggregations: {
+            all: 'count'
+          }
+        }
+      })
+      assert_status 200
+      expect(response_data[:attributes]).to contain_exactly({ count: 1 })
     end
 
     example 'filter participations by project' do
@@ -85,7 +109,7 @@ resource 'Analytics - FactParticipations' do
         }
       })
       assert_status 200
-      expect(response_data[:attributes]).to match_array([{ count: 3 }])
+      expect(response_data[:attributes]).to contain_exactly({ count: 3 })
     end
   end
 end

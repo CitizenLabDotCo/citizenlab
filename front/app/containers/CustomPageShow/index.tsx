@@ -1,91 +1,59 @@
 import React from 'react';
 
-import {
-  Box,
-  fontSizes,
-  isRtl,
-  media,
-} from '@citizenlab/cl2-component-library';
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { Helmet } from 'react-helmet-async';
-import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useCustomPageBySlug from 'api/custom_pages/useCustomPageBySlug';
-import usePageFiles from 'api/page_files/usePageFiles';
+import { isContentBuilderPage } from 'api/custom_pages/util';
 
 import useLocalize from 'hooks/useLocalize';
 
-import ContentContainer from 'components/ContentContainer';
+import {
+  BUILDER_CONTENT_MAX_WIDTH,
+  DEFAULT_PADDING,
+} from 'components/admin/ContentBuilder/constants';
+import { useSectionBoundaryMargin } from 'components/admin/ContentBuilder/verticalRhythm';
+import CustomPageContentViewer from 'components/CustomPageBuilder/ContentViewer';
+import useCustomPageBuilderContent from 'components/CustomPageBuilder/ContentViewer/useCustomPageBuilderContent';
 import { Container, Content } from 'components/LandingPages/citizen';
-import InfoSection from 'components/LandingPages/citizen/InfoSection';
 import PageNotFound from 'components/PageNotFound';
-import FileAttachments from 'components/UI/FileAttachments';
 
-import { isNilOrError } from 'utils/helperUtils';
+import { useParams } from 'utils/router';
 
-import CustomPageHeader from './CustomPageHeader';
-import AdminCustomPageEditButton from './CustomPageHeader/AdminCustomPageEditButton';
-import CustomPageProjectsAndEvents from './CustomPageProjectsAndEvents';
+import AdminCustomPageEditButton from './AdminCustomPageEditButton';
+import BackToProjectLink from './BackToProjectLink';
+import LegacyPageHeader from './LegacyPageHeader';
+import PageSections from './PageSections';
 
-const PageTitle = styled.h1`
-  color: ${({ theme }) => theme.colors.tenantText};
-  font-size: ${fontSizes.xxxxl}px;
-  line-height: normal;
-  font-weight: 600;
-  text-align: left;
-  margin: 0;
-  padding: 0;
-
-  ${media.tablet`
-    font-size: ${fontSizes.xxxl}px;
-  `}
-
-  ${isRtl`
-    text-align: right;
-    direction: rtl;
-  `}
-`;
-
-const AttachmentsContainer = styled(ContentContainer)<{
-  topInfoSectionEnabled: boolean;
-}>`
-  background: #fff;
-  padding-top: ${({ topInfoSectionEnabled }) =>
-    topInfoSectionEnabled ? '0' : '50px'};
-  padding-bottom: 50px;
-  padding-left: 20px;
-  padding-right: 20px;
-
-  ${media.tablet`
-    padding-top: 30px;
-    padding-bottom: 30px;
-  `}
-`;
-
-const NoBannerContainer = styled(ContentContainer)`
-  background: #fff;
-  padding: 50px 50px 50px 50px;
-
-  ${media.tablet`
-    padding: 50px 20px 50px 20px;
-  `}
+// Builder content is one white block, so the page's grey would only show as a strip below it.
+const PageContainer = styled(Container)<{ builderContent: boolean }>`
+  ${({ builderContent, theme }) =>
+    builderContent && `background: ${theme.colors.white};`}
 `;
 
 const CustomPageShow = () => {
-  const { slug } = useParams() as {
-    slug: string;
+  // Serves the `/pages/:slug` catch-all — policy pages included — and the project-scoped
+  // `/projects/:slug/pages/:pageSlug`, so accept either param.
+  const { slug, pageSlug } = useParams({ strict: false }) as {
+    slug?: string;
+    pageSlug?: string;
   };
+  const pageSlugToUse = pageSlug ?? slug;
   const { data: appConfiguration } = useAppConfiguration();
   const localize = useLocalize();
-  const { data: page, isError } = useCustomPageBySlug(slug);
-  const { data: remotePageFiles } = usePageFiles(
-    page ? page.data.id : undefined
+  const { data: page, isError } = useCustomPageBySlug(pageSlugToUse);
+  const isSmallerThanTablet = useBreakpoint('tablet');
+  const sectionBoundaryMargin = useSectionBoundaryMargin();
+  // Pages off the builder must not wait on a layout request that can only 404.
+  const builderContent = useCustomPageBuilderContent(
+    page && isContentBuilderPage(page.data) ? page.data.id : undefined
   );
 
   // when neither have loaded
   if (!appConfiguration || !page) {
-    return null;
+    return <PageNotFound />;
   }
 
   if (
@@ -94,6 +62,10 @@ const CustomPageShow = () => {
   ) {
     return <PageNotFound />;
   }
+
+  // The sections wait for the query rather than rendering and being replaced when it lands.
+  const showBuilderContent =
+    builderContent.isLoading || builderContent.hasContent;
 
   const pageAttributes = page.data.attributes;
   const localizedOrgName = localize(
@@ -108,47 +80,48 @@ const CustomPageShow = () => {
           pageAttributes.title_multiloc
         )} | ${localizedOrgName}`}
       />
-      <main className={`e2e-page-${slug}`}>
-        <Container>
-          {pageAttributes.banner_enabled ? (
-            <Box background="#fff" width="100%">
-              <CustomPageHeader pageData={page.data} />
+      <main className={`e2e-page-${pageSlugToUse}`}>
+        <PageContainer builderContent={showBuilderContent}>
+          {showBuilderContent ? (
+            // The layout draws the header, so only the edit button renders here. Full width, or the
+            // flex parent collapses its anchor.
+            <Box
+              position="relative"
+              w="100%"
+              maxWidth={
+                builderContent.startsWithBanner
+                  ? undefined
+                  : BUILDER_CONTENT_MAX_WIDTH
+              }
+              zIndex="40000"
+            >
+              {pageAttributes.project_id && (
+                // Spaced and aligned like the layout's own content below it.
+                <Box
+                  maxWidth={BUILDER_CONTENT_MAX_WIDTH}
+                  mx="auto"
+                  pt={sectionBoundaryMargin}
+                  px={isSmallerThanTablet ? DEFAULT_PADDING : undefined}
+                >
+                  <BackToProjectLink projectId={pageAttributes.project_id} />
+                </Box>
+              )}
+              <AdminCustomPageEditButton
+                pageId={page.data.id}
+                projectId={pageAttributes.project_id}
+              />
             </Box>
           ) : (
-            <NoBannerContainer>
-              {/* show page text title if the banner is disabled */}
-              <PageTitle>{localize(pageAttributes.title_multiloc)}</PageTitle>
-              <Box zIndex="40000">
-                <AdminCustomPageEditButton pageId={page.data.id} />
-              </Box>
-            </NoBannerContainer>
+            <LegacyPageHeader page={page.data} />
           )}
           <Content>
-            {pageAttributes.top_info_section_enabled && (
-              <InfoSection
-                multilocContent={pageAttributes.top_info_section_multiloc}
-              />
+            {showBuilderContent ? (
+              <CustomPageContentViewer staticPageId={page.data.id} />
+            ) : (
+              <PageSections page={page.data} />
             )}
-            {pageAttributes.files_section_enabled &&
-              !isNilOrError(remotePageFiles) &&
-              remotePageFiles.data.length > 0 && (
-                <AttachmentsContainer
-                  topInfoSectionEnabled={
-                    pageAttributes.top_info_section_enabled
-                  }
-                >
-                  <FileAttachments files={remotePageFiles.data} />
-                </AttachmentsContainer>
-              )}
-            <CustomPageProjectsAndEvents page={page.data} />
-            {pageAttributes.bottom_info_section_enabled &&
-              pageAttributes.bottom_info_section_multiloc && (
-                <InfoSection
-                  multilocContent={pageAttributes.bottom_info_section_multiloc}
-                />
-              )}
           </Content>
-        </Container>
+        </PageContainer>
       </main>
     </>
   );

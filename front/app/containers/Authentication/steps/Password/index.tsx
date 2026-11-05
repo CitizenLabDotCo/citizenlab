@@ -1,6 +1,12 @@
 import React, { useMemo } from 'react';
 
-import { Box, Text, Icon, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Text,
+  Icon,
+  Input,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { string, object, boolean } from 'yup';
@@ -30,11 +36,12 @@ interface Props {
   loading: boolean;
   setError: SetError;
   onSubmit: (
-    email: string,
     password: string,
     rememberMe: boolean,
-    tokenLifetime: number
+    tokenLifetime: number,
+    claimTokens?: string[]
   ) => void;
+  onClose: () => void;
 }
 
 interface FormValues {
@@ -47,7 +54,7 @@ const DEFAULT_VALUES: Partial<FormValues> = {
   rememberMe: false,
 };
 
-const Password = ({ state, loading, setError, onSubmit }: Props) => {
+const Password = ({ state, loading, setError, onSubmit, onClose }: Props) => {
   const { formatMessage } = useIntl();
   const { data: appConfiguration } = useAppConfiguration();
 
@@ -66,12 +73,16 @@ const Password = ({ state, loading, setError, onSubmit }: Props) => {
     mode: 'onSubmit',
     defaultValues: DEFAULT_VALUES,
     resolver: yupResolver(schema),
+    shouldFocusError: true,
   });
 
   if (isNilOrError(appConfiguration)) return null;
 
-  const { email } = state;
-  if (email === null) return null;
+  // The user got here by identifying themselves with either an email address or
+  // a phone number; we only show which account they are logging in to.
+  const { email, phone } = state;
+  const account = email ?? phone;
+  if (account === null) return null;
 
   const handleSubmit = async ({ password, rememberMe }: FormValues) => {
     const tokenLifetime =
@@ -79,7 +90,12 @@ const Password = ({ state, loading, setError, onSubmit }: Props) => {
         .authentication_token_lifetime_in_days;
 
     try {
-      await onSubmit(email, password, rememberMe, tokenLifetime);
+      await onSubmit(
+        password,
+        rememberMe,
+        tokenLifetime,
+        state.claimTokens ?? undefined
+      );
     } catch (e) {
       if (isCLErrorsWrapper(e)) {
         handleHookFormSubmissionError(e, methods.setError);
@@ -92,7 +108,7 @@ const Password = ({ state, loading, setError, onSubmit }: Props) => {
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(handleSubmit)}>
+      <form noValidate onSubmit={methods.handleSubmit(handleSubmit)}>
         <Text mt="0px" mb="32px">
           <Icon
             width="20px"
@@ -105,15 +121,20 @@ const Password = ({ state, loading, setError, onSubmit }: Props) => {
           <FormattedMessage
             {...messages.logInToYourAccount}
             values={{
-              account: <strong>{state.email}</strong>,
+              account: <strong>{account}</strong>,
             }}
           />
         </Text>
+        <Input type="hidden" value={account} autocomplete="username" />
+
         <Box>
           <PasswordInput
+            id="e2e-password-input"
+            autocomplete="current-password"
             name="password"
             isLoginPasswordInput
             label={formatMessage(sharedMessages.password)}
+            required
           />
         </Box>
         <Box mt="28px">
@@ -129,7 +150,7 @@ const Password = ({ state, loading, setError, onSubmit }: Props) => {
         </Box>
         <Box w="100%" display="flex" mt="32px">
           <ButtonWithLink
-            id="e2e-light-flow-password-submit"
+            id="e2e-password-submit"
             type="submit"
             width="auto"
             disabled={loading}
@@ -140,7 +161,7 @@ const Password = ({ state, loading, setError, onSubmit }: Props) => {
         </Box>
       </form>
       <Box mt="32px">
-        <TextLink to="/password-recovery">
+        <TextLink to="/password-recovery" onClick={onClose}>
           {formatMessage(sharedMessages.forgotPassword)}
         </TextLink>
       </Box>

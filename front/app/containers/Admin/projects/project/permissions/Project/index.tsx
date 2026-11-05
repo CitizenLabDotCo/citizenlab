@@ -1,21 +1,23 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
-
 import { SectionDescription, SectionTitle } from 'components/admin/Section';
-import Outlet from 'components/Outlet';
+import Highlighter from 'components/Highlighter';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import messages from '../messages';
 
 import ProjectDiscoverability from './ProjectDiscoverability';
-import ProjectManagement from './ProjectManagement';
+import ProjectManagementSection from './ProjectManagementSection';
 import ProjectVisibility from './ProjectVisibility';
 
+export const projectVisibilityFragmentId = 'project-visibility';
+
 const ProjectPermissions = () => {
-  const { projectId } = useParams();
+  const { projectId } = useParams({
+    from: '/$locale/admin/projects/$projectId/general/access-rights',
+  });
   if (!projectId) return null;
 
   return (
@@ -27,18 +29,10 @@ const ProjectPermissions = () => {
         <FormattedMessage {...messages.projectVisibilitySubtitle} />
       </SectionDescription>
       <ProjectDiscoverability projectId={projectId} />
-      <ProjectVisibility projectId={projectId} />
-      <Outlet
-        id="app.containers.Admin.project.edit.permissions.moderatorRights"
-        projectId={projectId}
-      >
-        {(outletComponents) =>
-          outletComponents.length > 0 ? (
-            <Box mb="48px">{outletComponents}</Box>
-          ) : null
-        }
-      </Outlet>
-      <ProjectManagement projectId={projectId} />
+      <Highlighter fragmentId={projectVisibilityFragmentId}>
+        <ProjectVisibility projectId={projectId} />
+      </Highlighter>
+      <ProjectManagementSection projectId={projectId} />
     </>
   );
 };

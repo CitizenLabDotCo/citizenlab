@@ -6,6 +6,7 @@ import {
   IFlatCustomField,
 } from 'api/custom_fields/types';
 
+import { isDropdownLayoutForced } from 'components/CustomFieldsForm/util';
 import { getInitialLinearScaleLabel } from 'components/FormBuilder/components/FormBuilderToolbox/utils';
 import {
   questionDNDType,
@@ -285,7 +286,7 @@ export const getNestedGroupData = (
   );
 };
 
-const nullableNumber = number()
+export const nullableNumber = number()
   .transform((value, originalValue) => {
     // If the original input is null or an empty string, transform it to null.
     if (
@@ -359,12 +360,14 @@ export const createNewField = (
     description_multiloc: {},
     input_type: type,
     required: false,
+    answers_visible_to: 'moderators' as const,
+    show_as_filter: false,
     title_multiloc: {
       [locale]: '',
     },
     // Set default character limits for text-supporting fields (excluding html_multiloc)
     ...(['text', 'multiline_text', 'text_multiloc'].includes(type) && {
-      min_characters: 3,
+      min_characters: 2,
       max_characters: type === 'text_multiloc' ? 120 : undefined,
     }),
     linear_scale_label_1_multiloc: getInitialLinearScaleLabel({
@@ -445,6 +448,8 @@ export const transformFieldForSubmission = (
         }),
     required: field.required,
     enabled: field.enabled,
+    answers_visible_to: field.answers_visible_to,
+    show_as_filter: field.show_as_filter,
     // TODO: Fix this the next time the file is edited.
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     title_multiloc: field.title_multiloc || {},
@@ -477,11 +482,24 @@ export const transformFieldForSubmission = (
         ? field.maximum_select_count
         : null,
       minimum_select_count: field.select_count_enabled
-        ? field.minimum_select_count || '0'
+        ? field.minimum_select_count || 0
         : null,
       select_count_enabled: field.select_count_enabled,
       random_option_ordering: field.random_option_ordering,
-      dropdown_layout: field.dropdown_layout,
+      // A long option list renders as a dropdown whatever the admin picked, so
+      // the saved value has to say so too.
+      dropdown_layout:
+        field.dropdown_layout ||
+        isDropdownLayoutForced(field.input_type, field.options?.length ?? 0),
+    }),
+    ...(['topic_ids', 'multipoint'].includes(field.input_type) && {
+      maximum_select_count: field.select_count_enabled
+        ? field.maximum_select_count
+        : null,
+      minimum_select_count: field.select_count_enabled
+        ? field.minimum_select_count || 0
+        : null,
+      select_count_enabled: field.select_count_enabled,
     }),
     ...(field.input_type === 'ranking' && {
       options: field.options || {},

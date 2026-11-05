@@ -4,7 +4,9 @@ const baseKey = { type: 'static_page' };
 
 const customPagesKeys = {
   all: () => [baseKey],
-  lists: () => [{ ...baseKey, operation: 'list' }],
+  lists: (params?: { projectId?: string }) => [
+    { ...baseKey, operation: 'list', parameters: params },
+  ],
   items: () => [{ ...baseKey, operation: 'item' }],
   item: ({ id, slug }: { id?: string; slug?: string }) => [
     {

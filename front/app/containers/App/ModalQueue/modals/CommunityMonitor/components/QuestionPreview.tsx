@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect } from 'react';
+import React, { Suspense, useEffect, useRef } from 'react';
 
 import { Spinner, Text } from '@citizenlab/cl2-component-library';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -44,21 +44,28 @@ const QuestionPreview = ({
   // Extract the first sentiment question from the UI Schema
   const fieldValue = methods.watch(firstSentimentLinearScale?.key || '');
 
+  // onClose gets a new identity on every parent render, so without this guard
+  // the effect re-fires and pushes a duplicate history entry each time.
+  const hasRedirected = useRef(false);
+
   // If the user has answered the question, redirect them to the full survey
   useEffect(() => {
     const redirectToFullSurvey = () => {
+      hasRedirected.current = true;
+
       // Close the modal
       onClose();
 
       // Track the popup interaction
       trackEventByName(tracks.communityMonitorPopupAnsweredAndRedirected);
 
-      // Redirect to full survey page
+      // Redirect to full survey page. Pass go_back so leaving the survey
+      // returns the user here rather than to the (non-public) project page.
       clHistory.push(
-        `/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`
+        `/projects/${projectSlug}/surveys/new?phase_id=${phaseId}&go_back=true`
       );
     };
-    if (fieldValue) {
+    if (fieldValue && !hasRedirected.current) {
       redirectToFullSurvey();
     }
   }, [fieldValue, onClose, projectSlug, phaseId]);
@@ -81,7 +88,12 @@ const QuestionPreview = ({
           participationMethod={'native_survey'}
         />
       </Suspense>
-      <Text textAlign="center" color="textSecondary" fontSize="s">
+      <Text
+        id="community-monitor-modal-title"
+        textAlign="center"
+        color="textSecondary"
+        fontSize="s"
+      >
         {formatMessage(messages.surveyDescription)}
       </Text>
     </FormProvider>

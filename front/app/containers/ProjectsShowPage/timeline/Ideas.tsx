@@ -1,7 +1,6 @@
 import React, { lazy, Suspense, useMemo } from 'react';
 
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
 
 import { IdeaSortMethod, IPhaseData } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
@@ -19,6 +18,8 @@ import IdeaListScrollAnchor from 'components/IdeaListScrollAnchor';
 
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+import { useParams, useSearch } from 'utils/router';
+
 interface InnerProps {
   projectId: string;
   phase: IPhaseData;
@@ -34,42 +35,46 @@ interface QueryParameters {
   // filters
   search?: string;
   sort: IdeaSortMethod;
-  topics?: string[];
+  input_topics?: string[];
   idea_status?: string;
+  custom_field_answers?: Record<string, string[]>;
 }
 
 const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
-  const [searchParams] = useSearchParams();
-  const sortParam = searchParams.get('sort') as IdeaSortMethod | null;
-  const searchParam = searchParams.get('search');
-  const topicsParam = searchParams.get('topics');
-  const ideaStatusParam = searchParams.get('idea_status');
-  const config = getMethodConfig(phase.attributes.participation_method);
-
+  // `strict: false` so this also renders off the project route (e.g. inside the
+  // project page builder), where slug + filters are absent and fall back to
+  // defaults. On the public project route the values resolve as before; the cast
+  // restores the per-route search shape that the loose read widens.
+  const { slug } = useParams({ strict: false });
+  const { sort, search, topics, idea_status, answers } = useSearch({
+    strict: false,
+  }) as {
+    sort?: IdeaSortMethod;
+    search?: string;
+    topics?: string[];
+    idea_status?: string;
+    answers?: Record<string, string[]>;
+  };
+  const config = getMethodConfig(phase.attributes.participation_method, {
+    showIdeaFilters: phase.attributes.voting_filtering_enabled,
+  });
+  // Feed view is now handled through the view switcher in IdeasView
   const ideaQueryParameters = useMemo<QueryParameters>(
     () => ({
       'page[number]': 1,
       'page[size]': config.inputsPageSize || 24,
       projects: [projectId],
       phase: phase.id,
-      sort: sortParam ?? phase.attributes.ideas_order ?? IdeaSortMethodFallback,
-      search: searchParam ?? undefined,
-      topics: topicsParam ? JSON.parse(topicsParam) : undefined,
-      idea_status: ideaStatusParam ?? undefined,
+      sort: sort ?? phase.attributes.ideas_order ?? IdeaSortMethodFallback,
+      search: search ?? undefined,
+      input_topics: topics,
+      idea_status: idea_status ?? undefined,
+      custom_field_answers: answers,
     }),
-    [
-      config,
-      projectId,
-      sortParam,
-      searchParam,
-      phase,
-      topicsParam,
-      ideaStatusParam,
-    ]
+    [config, projectId, sort, search, phase, topics, idea_status, answers]
   );
 
   const participationMethod = phase.attributes.participation_method;
-  const isVotingContext = participationMethod === 'voting';
 
   const inputTerm = phase.attributes.input_term;
 
@@ -78,30 +83,31 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
     onUpdateQuery: updateSearchParams,
     projectId,
     phaseId: phase.id,
-    showViewToggle: true,
+    projectSlug: slug,
     defaultView: phase.attributes.presentation_mode,
   };
+  const sidebarFiltersEnabled = config.showIdeaFilters === true;
 
   return (
     <Box
       id="project-ideas"
       className={`e2e-timeline-project-idea-cards ${className || ''}`}
     >
-      {isVotingContext ? (
-        <IdeaCardsWithoutFiltersSidebar
-          defaultSortingMethod={ideaQueryParameters.sort}
-          invisibleTitleMessage={messages.a11y_titleInputsPhase}
-          showDropdownFilters={false}
-          showSearchbar={false}
-          {...sharedProps}
-        />
-      ) : (
+      {sidebarFiltersEnabled ? (
         <>
           <IdeaListScrollAnchor />
           <Suspense fallback={<Spinner />}>
             <IdeasWithFiltersSidebar inputTerm={inputTerm} {...sharedProps} />
           </Suspense>
         </>
+      ) : (
+        <IdeaCardsWithoutFiltersSidebar
+          defaultSortingMethod={ideaQueryParameters.sort}
+          invisibleTitleMessage={messages.a11y_titleInputsPhase}
+          showDropdownFilters={config.showIdeaFilters ?? false}
+          showSearchbar={participationMethod !== 'voting'}
+          {...sharedProps}
+        />
       )}
     </Box>
   );

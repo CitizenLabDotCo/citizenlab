@@ -8,6 +8,14 @@ module Analysis
     class AzureOpenAI < Base
       MAX_RETRIES = 20
 
+      SUPPORTED_IMAGE_TYPES = %w[
+        image/gif
+        image/jpeg
+        image/jpg
+        image/png
+        image/webp
+      ].freeze
+
       class << self
         def gpt_model
           raise NotImplementedError
@@ -41,6 +49,10 @@ module Analysis
         ).responses
       end
 
+      def self.family
+        'azure_openai'
+      end
+
       # @param message [String, Analysis::LLM::Message, Array<String, Analysis::LLM::Message>]
       #   The message(s) to send to the model.
       def response(message, retries: MAX_RETRIES, **params)
@@ -52,12 +64,22 @@ module Analysis
 
         if block_given?
           parameters[:stream] = proc do |chunk, _event|
+            raise StreamError, chunk if chunk['type'] == 'error'
+
             yield chunk['delta'] if chunk['type'] == 'response.output_text.delta'
           end
         end
 
         begin
           response_client.create(parameters:)
+        rescue StreamError, Faraday::BadRequestError => e
+          error = e.is_a?(StreamError) ? e.chunk['error'] : e.response_body['error']
+          message = error['message']
+
+          raise TooManyImagesError if message.include?('Too many images')
+          raise UnsupportedAttachmentError if error['code'] == 'unsupported_file'
+
+          raise
         rescue Faraday::TooManyRequestsError => e
           if retries.positive?
             sleep(rand(20..40))
@@ -68,7 +90,8 @@ module Analysis
               'API request to Azure OpenAI failed',
               extra: { response: e.response }
             )
-            raise
+
+            raise TooManyRequestsError
           end
         end
       end
@@ -104,8 +127,9 @@ module Analysis
 
       def format_input(input)
         case input
-        when String then format_text(input)
-        when Files::File then format_file(input)
+        in String then format_text(input)
+        in Files::File if input.image? then format_image(input)
+        in Files::File then format_file(input)
         else raise ArgumentError, <<~MSG.squish
           Unsupported content type: #{input.class}.
           Must be String or Files::File."
@@ -115,17 +139,67 @@ module Analysis
 
       # @param file [Files::File]
       def format_file(file)
-        encoded = Base64.strict_encode64(file.content.read)
+        # Azure reads text files and PDFs itself, and decodes legacy charsets on
+        # its own. Anything else is sent as its PDF preview.
+        content, mime_type = if file.text? || file.mime_type == 'application/pdf'
+          [file.content.read, file.mime_type]
+        else
+          [pdf_preview_content(file), 'application/pdf']
+        end
 
         {
           type: 'input_file',
           filename: file.name,
-          file_data: "data:#{file.mime_type};base64,#{encoded}"
+          file_data: "data:#{mime_type};base64,#{Base64.strict_encode64(content)}"
+        }
+      end
+
+      # @param file [Files::File]
+      def pdf_preview_content(file)
+        preview = file.preview
+
+        raise UnsupportedAttachmentError, file.mime_type if preview.nil? || preview.status == 'failed'
+        raise PreviewPendingError if preview.status == 'pending'
+
+        preview.content.read
+      end
+
+      def format_image(file)
+        if file.mime_type.not_in?(SUPPORTED_IMAGE_TYPES)
+          raise UnsupportedAttachmentError, file.mime_type
+        end
+
+        encoded = Base64.strict_encode64(file.content.read)
+
+        {
+          type: 'input_image',
+          image_url: "data:#{file.mime_type};base64,#{encoded}"
         }
       end
 
       def format_text(text)
         { type: 'input_text', text: text }
+      end
+
+      class StreamError < StandardError
+        attr_reader :chunk
+
+        # Example of an error chunk:
+        # {
+        #   "type" => "error",
+        #   "sequence_number" => 2,
+        #   "error" => {
+        #     "type" => nil,
+        #     "code" => "BadRequest",
+        #     "message" => "Too many images in the request. The maximum is 50.",
+        #     "param" => nil
+        #   }
+        # }
+        def initialize(chunk)
+          @chunk = chunk
+          message = chunk.dig('error', 'message')
+          super(message || chunk.to_s)
+        end
       end
     end
   end

@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
 
 import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
 
@@ -9,6 +8,8 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import Analysis from 'components/admin/FormResults/FormResultsQuestion/TextQuestion/Analysis/';
 import AnalysisUpsell from 'components/admin/FormResults/FormResultsQuestion/TextQuestion/AnalysisUpsell';
+
+import { useParams } from 'utils/router';
 
 import TextResponses from '../../TextQuestion/TextResponses';
 
@@ -28,7 +29,9 @@ const Comments = ({
   const isTabletOrSmaller = useBreakpoint('tablet');
 
   // Get the relevant project and phase id from the URL
-  const { projectId: projectIdParam, phaseId: phaseIdParam } = useParams() as {
+  const { projectId: projectIdParam, phaseId: phaseIdParam } = useParams({
+    strict: false,
+  }) as {
     projectId: string;
     phaseId: string;
   };
@@ -65,7 +68,7 @@ const Comments = ({
           <Box flexGrow={1}>
             <TextResponses
               textResponses={textResponses}
-              hasFollowUpResponses={true}
+              textResponseSource="follow_up"
             />
           </Box>
 
@@ -77,6 +80,7 @@ const Comments = ({
                 <Analysis
                   customFieldId={customFieldId}
                   textResponsesCount={textResponses.length}
+                  textResponseSource="follow_up"
                   projectId={projectId}
                   phaseId={phaseId}
                 />

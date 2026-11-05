@@ -6,9 +6,11 @@ import {
   colors,
   TooltipContentWrapper,
   Tooltip,
+  Dropdown,
+  DropdownListItem,
+  Badge,
 } from '@citizenlab/cl2-component-library';
-import { useEditor } from '@craftjs/core';
-import { RouteType } from 'routes';
+import { useEditor, SerializedNodes } from '@craftjs/core';
 import { SupportedLocale } from 'typings';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -17,10 +19,14 @@ import useProjectById from 'api/projects/useProjectById';
 import useUpdateReportLayout from 'api/report_layout/useUpdateReportLayout';
 
 import useLocalize from 'hooks/useLocalize';
+import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
+import projectFilesMessages from 'containers/Admin/projects/project/files/components/messages';
+import insightWordMessages from 'containers/Admin/projects/project/insights/word/messages';
 import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
+import { useReportWordExportContext } from 'containers/Admin/reporting/word/ReportWordExportContext';
 
-import { CONTENT_BUILDER_Z_INDEX } from 'components/admin/ContentBuilder/constants';
+import { getResolvedName } from 'components/admin/ContentBuilder/resolvedName';
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
 import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
 import LocaleSelect from 'components/admin/ContentBuilder/TopBar/LocaleSelect';
@@ -50,7 +56,7 @@ type ContentBuilderTopBarProps = {
   saved: boolean;
   view: View;
   setView: (view: View) => void;
-  setSaved: () => void;
+  setSaved: (savedNodes: SerializedNodes) => void;
   setSelectedLocale: React.Dispatch<React.SetStateAction<SupportedLocale>>;
 };
 
@@ -79,17 +85,24 @@ const ContentBuilderTopBar = ({
   const { data: appConfig } = useAppConfiguration();
   const [initialized, setInitialized] = useState(false);
   const [showQuitModal, setShowQuitModal] = useState(false);
+  const [downloadMenuOpened, setDownloadMenuOpened] = useState(false);
   const { query } = useEditor();
-  const { mutate: updateReportLayout, isLoading } = useUpdateReportLayout();
+  const { mutate: updateReportLayout, isPending } = useUpdateReportLayout();
   const { projectId, phaseId } = useReportContext();
+  const { downloadWord, isDownloading, error, status, progress } =
+    useReportWordExportContext();
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
+  const backofficeRedesign = useProjectBackofficeRedesign();
 
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
   const disableSave = hasPendingState || saved;
   const disablePrint = hasPendingState || !saved;
+  const disableWordExport = isDownloading;
+  const hasUnsavedChanges = hasPendingState || !saved;
+  const disableDownloadMenu = hasUnsavedChanges && isDownloading;
 
   const closeModal = () => {
     setShowQuitModal(false);
@@ -110,27 +123,68 @@ const ContentBuilderTopBar = ({
       return;
     }
 
-    const goBackUrl: RouteType =
+    // The redesigned workspace shows the phase preview on its setup page.
+    const phaseTab = backofficeRedesign ? 'setup' : 'report';
+    const goBackUrl =
       projectId && phaseId
-        ? `/admin/projects/${projectId}/phases/${phaseId}/report`
+        ? `/admin/projects/${projectId}/phases/${phaseId}/${phaseTab}`
         : '/admin/reporting/report-builder';
 
     clHistory.push(goBackUrl);
   };
 
   const handleSave = () => {
+    const nodesToSave = query.getSerializedNodes();
     updateReportLayout(
       {
         id: reportId,
-        craftjs_json: query.getSerializedNodes(),
+        craftjs_json: nodesToSave,
         projectId,
       },
       {
         onSuccess: () => {
-          setSaved();
+          setSaved(nodesToSave);
         },
       }
     );
+  };
+
+  const handleDownloadPdf = () => {
+    if (disablePrint) return;
+
+    if (projectId && isCommunityMonitorProject(projectId, appConfig)) {
+      trackEventByName(tracks.communinityMonitorReportPrinted);
+    }
+
+    const printUrl = `/admin/reporting/report-builder/${reportId}/print`;
+    window.open(printUrl, '_blank', 'noreferrer');
+    setDownloadMenuOpened(false);
+  };
+
+  const handleDownloadWord = () => {
+    if (disableWordExport) return;
+    setDownloadMenuOpened(false);
+    downloadWord();
+  };
+
+  const toggleDownloadMenu = (value?: boolean) => () => {
+    setDownloadMenuOpened(value ?? !downloadMenuOpened);
+  };
+
+  const getExportStatusText = () => {
+    switch (status) {
+      case 'preparing':
+        return formatMessage(insightWordMessages.exportPreparing);
+      case 'capturing':
+        return formatMessage(insightWordMessages.exportCapturing, {
+          completed: progress.completed,
+          total: progress.total,
+        });
+      case 'generating':
+        return formatMessage(insightWordMessages.exportGenerating);
+      default:
+        return null;
+    }
   };
 
   useEffect(() => {
@@ -160,11 +214,7 @@ const ContentBuilderTopBar = ({
       const firstNode = nodes.ROOT?.nodes[0];
       if (!firstNode) return;
 
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      const type = nodes?.[firstNode].type;
-      const resolvedName =
-        typeof type === 'object' ? type.resolvedName : undefined;
+      const resolvedName = getResolvedName(nodes[firstNode]);
 
       if (!isTemplateNode(resolvedName)) {
         // In theory this should not be possible, but handling
@@ -201,7 +251,7 @@ const ContentBuilderTopBar = ({
         },
         {
           onSuccess: () => {
-            setSaved();
+            setSaved(nodes);
           },
         }
       );
@@ -222,7 +272,7 @@ const ContentBuilderTopBar = ({
   ]);
 
   return (
-    <Container id="e2e-report-builder-topbar">
+    <Container id="e2e-report-builder-topbar" zIndex="100000">
       <QuitModal
         open={showQuitModal}
         onCloseModal={closeModal}
@@ -253,8 +303,7 @@ const ContentBuilderTopBar = ({
         <Box ml="32px">
           <Tooltip
             placement="bottom"
-            disabled={!disablePrint}
-            zIndex={CONTENT_BUILDER_Z_INDEX.tooltip}
+            disabled={!disableDownloadMenu}
             content={
               <TooltipContentWrapper tippytheme="light">
                 {formatMessage(messages.cannotPrint)}
@@ -263,34 +312,67 @@ const ContentBuilderTopBar = ({
           >
             <div>
               <ButtonWithLink
-                icon="print"
+                icon="download"
                 buttonStyle="secondary-outlined"
                 iconColor={colors.textPrimary}
                 iconSize="16px"
                 px="12px"
                 py="8px"
-                onClick={() => {
-                  // track any community monitor report print for user analytics
-                  if (
-                    projectId &&
-                    isCommunityMonitorProject(projectId, appConfig)
-                  ) {
-                    trackEventByName(tracks.communinityMonitorReportPrinted);
-                  }
-
-                  clHistory.push(
-                    `/admin/reporting/report-builder/${reportId}/print`
-                  );
-                }}
-                openLinkInNewTab
-                disabled={disablePrint}
-              />
+                onClick={toggleDownloadMenu()}
+                disabled={disableDownloadMenu}
+                processing={isDownloading}
+              >
+                {formatMessage(messages.download)}
+              </ButtonWithLink>
             </div>
           </Tooltip>
+          <Dropdown
+            width="max-content"
+            top="35px"
+            right="12px"
+            zIndex="1000002"
+            opened={downloadMenuOpened}
+            onClickOutside={toggleDownloadMenu(false)}
+            content={
+              <Box style={{ whiteSpace: 'nowrap' }}>
+                <DropdownListItem
+                  onClick={handleDownloadPdf}
+                  disabled={disablePrint}
+                >
+                  {formatMessage(messages.downloadAsPdf)}
+                </DropdownListItem>
+                <DropdownListItem
+                  onClick={handleDownloadWord}
+                  disabled={disableWordExport}
+                >
+                  <Box display="inline-flex" alignItems="center" gap="6px">
+                    {formatMessage(messages.downloadAsWord)}
+                    <Badge color={colors.coolGrey600} className="inverse">
+                      {formatMessage(projectFilesMessages.beta)}
+                    </Badge>
+                  </Box>
+                </DropdownListItem>
+              </Box>
+            }
+          />
         </Box>
+        {isDownloading && getExportStatusText() && (
+          <Box ml="16px">
+            <Text m="0" color="textSecondary" fontSize="s">
+              {getExportStatusText()}
+            </Text>
+          </Box>
+        )}
+        {error && !isDownloading && (
+          <Box ml="16px">
+            <Text m="0" color="error" fontSize="s">
+              {error}
+            </Text>
+          </Box>
+        )}
         <SaveButton
           isDisabled={disableSave}
-          isLoading={isLoading}
+          isLoading={isPending}
           isSaved={saved}
           onSave={handleSave}
         />

@@ -25,6 +25,10 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.archived',
     defaultMessage: 'Archived',
   },
+  sort: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.sort',
+    defaultMessage: 'Sort by',
+  },
   published: {
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.published',
     defaultMessage: 'Published',

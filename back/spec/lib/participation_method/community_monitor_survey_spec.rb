@@ -59,12 +59,7 @@ RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
   end
 
   describe '#default_fields' do
-    it 'returns an empty list if form is persisted' do
-      form = create(:custom_form, participation_context: phase)
-      expect(participation_method.default_fields(form)).to eq []
-    end
-
-    it 'returns the default fields if the form is not persisted' do
+    it 'returns the default fields' do
       form = build(:custom_form, participation_context: phase)
       expect(participation_method.default_fields(form).count).to eq 15
       expect(participation_method.default_fields(form).pluck(:key)).to eq(%w[
@@ -95,13 +90,6 @@ RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
       participation_method.create_default_form!
       phase_in_db = Phase.find(phase.id)
       expect(phase_in_db.custom_form.custom_fields.size).to eq 15
-    end
-  end
-
-  describe '#author_in_form?' do
-    it 'returns false for a moderator when idea_author_change is activated' do
-      SettingsService.new.activate_feature! 'idea_author_change'
-      expect(participation_method.author_in_form?(create(:admin))).to be false
     end
   end
 
@@ -173,41 +161,6 @@ RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
     end
   end
 
-  describe '#user_fields_in_form?' do
-    it 'returns false when not enabled' do
-      phase.permissions.find_by(action: 'posting_idea').update!(user_fields_in_form: false)
-      expect(participation_method.user_fields_in_form?).to be false
-    end
-
-    it 'returns true when enabled' do
-      phase.permissions.find_by(action: 'posting_idea').update!(user_fields_in_form: true)
-      expect(participation_method.user_fields_in_form?).to be true
-    end
-
-    context 'when permission permitted_by is \'everyone\' and there is at least one demographic field' do
-      before do
-        permission = Permission.find_by(
-          permission_scope_id: phase.id,
-          action: 'posting_idea'
-        )
-
-        permission.permitted_by = 'everyone'
-        permission.permissions_custom_fields = [create(:permissions_custom_field)]
-        permission.save!
-      end
-
-      it 'returns true even when not enabled' do
-        phase.permissions.find_by(action: 'posting_idea').update!(user_fields_in_form: false)
-        expect(participation_method.user_fields_in_form?).to be true
-      end
-
-      it 'returns true when enabled' do
-        phase.permissions.find_by(action: 'posting_idea').update!(user_fields_in_form: true)
-        expect(participation_method.user_fields_in_form?).to be true
-      end
-    end
-  end
-
   describe '#everyone_tracking_enabled?' do
     let(:phase) { create(:community_monitor_survey_phase, with_permissions: true) }
 
@@ -227,6 +180,24 @@ RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
     end
   end
 
+  describe '#user_data_collection' do
+    let(:phase) { create(:community_monitor_survey_phase, with_permissions: true) }
+
+    it 'returns "all_data" by default' do
+      expect(participation_method.user_data_collection).to eq 'all_data'
+    end
+
+    it 'delegates to the posting permission when it collects demographics only' do
+      phase.permissions.first.update!(user_data_collection: 'demographics_only')
+      expect(participation_method.user_data_collection).to eq 'demographics_only'
+    end
+
+    it 'delegates to the posting permission when it is anonymous' do
+      phase.permissions.first.update!(user_data_collection: 'anonymous')
+      expect(participation_method.user_data_collection).to eq 'anonymous'
+    end
+  end
+
   its(:additional_export_columns) { is_expected.to eq [] }
   its(:allowed_ideas_orders) { is_expected.to be_empty }
   its(:return_disabled_actions?) { is_expected.to be true }
@@ -242,11 +213,15 @@ RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
   its(:supports_public_visibility?) { is_expected.to be false }
   its(:supports_reacting?) { is_expected.to be false }
   its(:supports_status?) { is_expected.to be false }
+  its(:supports_standalone_placement?) { is_expected.to be false }
   its(:supports_submission?) { is_expected.to be true }
+  its(:supports_input_pdf_export?) { is_expected.to be true }
   its(:supports_toxicity_detection?) { is_expected.to be false }
   its(:use_reactions_as_votes?) { is_expected.to be false }
   its(:transitive?) { is_expected.to be false }
-  its(:form_logic_enabled?) { is_expected.to be false }
+  its(:destroy_ideas_on_phase_destroy?) { is_expected.to be true }
+  its(:supports_form_logic?) { is_expected.to be false }
+  its(:form_editable_after_responses?) { is_expected.to be true }
   its(:follow_idea_on_idea_submission?) { is_expected.to be false }
   its(:supports_custom_field_categories?) { is_expected.to be true }
   its(:supports_multiple_phase_reports?) { is_expected.to be true }

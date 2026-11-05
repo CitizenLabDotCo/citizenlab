@@ -1,11 +1,12 @@
 import React from 'react';
 
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
 
 import LineChart from 'components/admin/Graphs/LineChart';
+import { AccessibilityProps } from 'components/admin/Graphs/typings';
 
 import { useIntl } from 'utils/cl-intl';
+import { useSearch } from 'utils/router';
 
 import messages from '../messages';
 import { QuarterlyScores } from '../types';
@@ -15,8 +16,12 @@ type Props = {
   sentimentScores: QuarterlyScores | null;
 };
 
-const HealthScoreChart = ({ sentimentScores }: Props) => {
-  const [search] = useSearchParams();
+const HealthScoreChart = ({
+  sentimentScores,
+  ariaLabel,
+  ariaDescribedBy,
+}: Props & AccessibilityProps) => {
+  const search = useSearch({ strict: false });
   const { formatMessage } = useIntl();
   const isMobileOrSmaller = useBreakpoint('phone');
 
@@ -47,7 +52,7 @@ const HealthScoreChart = ({ sentimentScores }: Props) => {
 
   // Generate an empty chart object if there are no scores for the selected time period.
   if (timeSeries?.length === 0) {
-    timeSeries = generateEmptyChartData(search);
+    timeSeries = generateEmptyChartData(search.year, search.quarter);
   }
 
   const lineConfig = {
@@ -101,6 +106,8 @@ const HealthScoreChart = ({ sentimentScores }: Props) => {
             tickLine: true,
           }}
           innerRef={undefined}
+          ariaLabel={ariaLabel ?? formatMessage(messages.healthScore)}
+          ariaDescribedBy={ariaDescribedBy}
         />
       </Box>
     </Box>

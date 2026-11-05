@@ -1,9 +1,16 @@
+import React from 'react';
+
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
+
+import appConfigurationKeys from 'api/app_configuration/keys';
+import seatsKeys from 'api/seats/keys';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
+import { IInvitesImport } from './types';
 import useInvitesImport from './useInvitesImport';
 
 const importId = '123';
@@ -21,6 +28,41 @@ const mockResponse = {
       },
     },
   },
+};
+
+type InvitesImportAttributes = IInvitesImport['data']['attributes'];
+
+const respondWith = (attributes: Partial<InvitesImportAttributes>) =>
+  server.use(
+    http.get(apiPath, () =>
+      HttpResponse.json(
+        {
+          data: {
+            ...mockResponse.data,
+            attributes: { ...mockResponse.data.attributes, ...attributes },
+          },
+        },
+        { status: 200 }
+      )
+    )
+  );
+
+// The shared wrapper does not expose its client, and these assertions are
+// about what the hook does to it.
+const createSpyingWrapper = () => {
+  const queryClient = new QueryClient({
+    defaultOptions: { queries: { retry: false } },
+  });
+
+  return {
+    invalidateQueries: jest.spyOn(queryClient, 'invalidateQueries'),
+    wrapper: ({ children }: { children: React.ReactNode }) =>
+      React.createElement(
+        QueryClientProvider,
+        { client: queryClient },
+        children
+      ),
+  };
 };
 
 const server = setupServer(
@@ -68,5 +110,69 @@ describe('useInvitesImport', () => {
     await waitFor(() => expect(result.current.isError).toBe(true));
     expect(result.current.error).toBeDefined();
     expect(result.current.isLoading).toBe(false);
+  });
+
+  // Consumers put this in effect dependencies; a new identity per render
+  // would re-run those effects on every poll.
+  it('returns the same resetQueryData across re-renders', async () => {
+    const { result, rerender } = renderHook(
+      () => useInvitesImport({ importId, enabled: true }),
+      {
+        wrapper: createQueryClientWrapper(),
+      }
+    );
+
+    const initial = result.current.resetQueryData;
+
+    rerender();
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+    expect(result.current.resetQueryData).toBe(initial);
+  });
+
+  // Seat counts change when invites are created, so the views showing them are
+  // refreshed here rather than in the component waiting on the job.
+  describe('refreshing the seat counts', () => {
+    const renderAndSettle = async () => {
+      const { wrapper, invalidateQueries } = createSpyingWrapper();
+      const { result } = renderHook(
+        () => useInvitesImport({ importId, enabled: true }),
+        { wrapper }
+      );
+
+      await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+      return invalidateQueries;
+    };
+
+    const invalidatedKeys = (invalidateQueries: jest.SpyInstance) =>
+      invalidateQueries.mock.calls.map(([args]) => args.queryKey);
+
+    it('refreshes them once a creation job completes', async () => {
+      const invalidateQueries = await renderAndSettle();
+
+      expect(invalidatedKeys(invalidateQueries)).toEqual(
+        expect.arrayContaining([seatsKeys.items(), appConfigurationKeys.all()])
+      );
+    });
+
+    // This runs on every poll, so an ungated version would fire every 5s.
+    it('leaves them alone while the job is still running', async () => {
+      respondWith({ completed_at: null, result: {} });
+
+      expect(await renderAndSettle()).not.toHaveBeenCalled();
+    });
+
+    it('leaves them alone for a seat count job', async () => {
+      respondWith({ job_type: 'count_new_seats' });
+
+      expect(await renderAndSettle()).not.toHaveBeenCalled();
+    });
+
+    it('leaves them alone when the creation failed', async () => {
+      respondWith({ result: { errors: [{ error: 'no_invites_specified' }] } });
+
+      expect(await renderAndSettle()).not.toHaveBeenCalled();
+    });
   });
 });

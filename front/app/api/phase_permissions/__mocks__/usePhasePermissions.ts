@@ -1,26 +1,33 @@
-import { IPhasePermissionData } from '../types';
+import { IPermissionData } from 'api/permissions/types';
 
-export const phasePermissionsData: IPhasePermissionData = {
+export const phasePermissionsData: IPermissionData = {
   id: '80419431-f691-4dc5-8aeb-5d14ece5feb0',
   type: 'permission',
   attributes: {
     action: 'commenting_idea',
-    permitted_by: 'everyone_confirmed_email',
+    permitted_by: 'users',
     created_at: '2023-03-28T12:29:20.848Z',
     updated_at: '2023-03-28T13:15:59.410Z',
-    global_custom_fields: false,
+    custom_fields_behavior: 'global',
     verification_enabled: false,
     verification_expiry: null,
     access_denied_explanation_multiloc: {},
     everyone_tracking_enabled: false,
     user_data_collection: 'all_data',
-    user_fields_in_form: false,
-    user_fields_in_form_frontend_descriptor: {
+    user_fields_in_form_descriptor: {
       value: null,
       locked: true,
-      explanation:
-        'user_fields_in_survey_not_supported_for_participation_method',
+      explanation: 'user_fields_in_form_not_supported_for_action',
     },
+    require_confirmed_email: true,
+    confirmed_email_expiry: null,
+    require_confirmed_phone_number: false,
+    confirmed_phone_number_expiry: null,
+    require_name: true,
+    require_password: true,
+    require_verification: false,
+    permitted_by_everyone_allowed: false,
+    inherited: false,
   },
   relationships: {
     permission_scope: {

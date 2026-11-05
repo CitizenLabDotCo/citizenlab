@@ -18,14 +18,28 @@ module CitizenLab
     end
 
     def sign_url(url, expires_in: 1.month)
-      expires_at = Time.now + expires_in
-      @signer.signed_url(url, expires: expires_at)
+      @signer.signed_url(url, expires: stable_expiry(url, expires_in))
     end
 
     class MissingConfigurationError < StandardError
       def initialize(message = 'CloudFront key pair ID or private key not found')
         super
       end
+    end
+
+    private
+
+    # Browsers cache files by their full URL, signature included, so a URL signed
+    # with a new expiry on every request is never served from the browser cache.
+    # Rounding the expiry up to the next day keeps the URL the same for a day.
+    # Each URL moves on to its next day at a different time, so that browsers don't
+    # fetch every file again at the same moment.
+    def stable_expiry(url, expires_in)
+      day = 1.day.to_i
+      offset = Zlib.crc32(url) % day
+      earliest = (Time.current + expires_in).to_i
+
+      (((earliest - offset + day - 1) / day) * day) + offset
     end
   end
 end

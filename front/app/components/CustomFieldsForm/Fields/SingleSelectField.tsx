@@ -1,8 +1,7 @@
 import React, { useMemo } from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
 import { useFormContext } from 'react-hook-form';
-import styled, { useTheme } from 'styled-components';
+import { useTheme } from 'styled-components';
 
 import useAreas from 'api/areas/useAreas';
 import { IFlatCustomField } from 'api/custom_fields/types';
@@ -12,28 +11,24 @@ import useLocalize from 'hooks/useLocalize';
 import Input from 'components/HookForm/Input';
 import RadioGroup from 'components/HookForm/RadioGroup';
 import Radio from 'components/HookForm/RadioGroup/Radio';
-import Select from 'components/HookForm/Select';
+import SearchSelect from 'components/HookForm/SearchSelect';
 
-import { ScreenReaderOnly } from 'utils/a11y';
 import { useIntl } from 'utils/cl-intl';
 
+import { SEARCHABLE_OPTION_COUNT } from '../constants';
 import messages from '../messages';
-import { extractOptions } from '../util';
+import { extractOptions, isDropdownLayoutForced } from '../util';
 
-const StyledBox = styled(Box)`
-  cursor: pointer;
-  background-color: ${colors.grey100};
-  &:hover {
-    background-color: ${colors.grey200};
-  }
-`;
+import RadioOptionBox, { radioOptionPadding } from './_shared/RadioOptionBox';
 
 const SingleSelectField = ({
   question,
   scrollErrorIntoView,
+  disabled,
 }: {
   question: IFlatCustomField;
   scrollErrorIntoView?: boolean;
+  disabled?: boolean;
 }) => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
@@ -42,9 +37,8 @@ const SingleSelectField = ({
   const { data: areas } = useAreas({});
 
   const value = watch(question.key);
-
   const options = useMemo(() => {
-    if (question.key === 'u_domicile') {
+    if (question.key === 'u_domicile' || question.key === 'domicile') {
       return [
         ...(areas?.data || []).map((area) => ({
           value: area.id,
@@ -56,32 +50,36 @@ const SingleSelectField = ({
     return extractOptions(question, localize, question.random_option_ordering);
   }, [question, localize, areas, formatMessage]);
 
+  const isSearchable = options.length >= SEARCHABLE_OPTION_COUNT;
+  const dropdownLayout =
+    question.dropdown_layout ||
+    isDropdownLayoutForced(question.input_type, options.length);
+
   return (
     <>
-      {question.dropdown_layout ? (
-        <Select
+      {dropdownLayout ? (
+        <SearchSelect
           name={question.key}
           options={options}
+          isSearchable={isSearchable}
+          isClearable={!question.required}
+          required={question.required}
+          placeholder={
+            isSearchable ? formatMessage(messages.typeToSearch) : undefined
+          }
           scrollErrorIntoView={scrollErrorIntoView}
+          isDisabled={disabled}
         />
       ) : (
-        <RadioGroup name={question.key} padding="0px">
-          <ScreenReaderOnly>
-            <legend>{localize(question.title_multiloc)}</legend>
-          </ScreenReaderOnly>
+        <RadioGroup
+          name={question.key}
+          padding="0px"
+          aria-required={question.required}
+        >
           {options.map((option) => (
-            <StyledBox
-              style={{ cursor: 'pointer' }}
-              mb="12px"
-              padding="20px 20px 8px 20px"
-              border={
-                options.includes(option.value)
-                  ? `2px solid ${theme.colors.tenantPrimary}`
-                  : `1px solid ${theme.colors.tenantPrimary}`
-              }
-              background={theme.colors.tenantPrimaryLighten95}
+            <RadioOptionBox
               key={option.value}
-              borderRadius="3px"
+              selected={option.value === value}
             >
               <Radio
                 name={question.key}
@@ -89,9 +87,12 @@ const SingleSelectField = ({
                 key={option.value}
                 value={option.value}
                 label={option.label}
+                buttonColor={theme.colors.tenantPrimary}
                 canDeselect
+                disabled={disabled}
+                {...radioOptionPadding}
               />
-            </StyledBox>
+            </RadioOptionBox>
           ))}
         </RadioGroup>
       )}
@@ -100,6 +101,7 @@ const SingleSelectField = ({
           name={`${question.key}_other`}
           type="text"
           placeholder={formatMessage(messages.typeYourAnswer)}
+          disabled={disabled}
         />
       )}
     </>

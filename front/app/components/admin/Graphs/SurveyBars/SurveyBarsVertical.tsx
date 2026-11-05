@@ -64,6 +64,8 @@ const SurveyBarsVertical = ({
         width="100%"
         gap={`${GAP_SIZE}px`}
         overflow="hidden"
+        role="list"
+        aria-label={formatMessage(messages.surveyResults)}
       >
         {answers.map(
           (
@@ -86,6 +88,11 @@ const SurveyBarsVertical = ({
                 justifyContent="flex-end"
                 height="100%"
                 width={`${columnWidth}px`}
+                role="listitem"
+                tabIndex={0}
+                aria-label={`${label}: ${formatMessage(messages.responseCount, {
+                  choiceCount: count,
+                })} (${percentage}%)`}
               >
                 {image?.small && (
                   <Box mb="12px">

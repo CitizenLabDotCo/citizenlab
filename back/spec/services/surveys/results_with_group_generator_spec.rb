@@ -11,7 +11,7 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
   include_context 'survey_setup'
 
   describe 'generate_results' do
-    it 'it is not implemented and returns an error' do
+    it 'is not implemented and returns an error' do
       generator = described_class.new(survey_phase)
       expect { generator.generate_results }.to raise_error(NotImplementedError)
     end
@@ -620,6 +620,35 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
 
         expect(result).to match expected_result_select_sliced_by_linear_scale
       end
+
+      context 'when logic is in the form' do
+        it 'groups select by gender user field and returns the correct counts' do
+          linear_scale_field.update!(logic: {
+            rules: [
+              { if: 2, goto_page_id: mid_page_field2.id },
+              { if: 'no_answer', goto_page_id: last_page_field.id }
+            ]
+          })
+
+          generator = described_class.new(survey_phase,
+            group_mode: 'user_field',
+            group_field_id: gender_user_custom_field.id)
+
+          expected_result_after_logic = expected_result_select_with_gender_user_field_grouping
+          expected_result_after_logic[:totalResponseCount] = 17
+          expected_result_after_logic[:totalPickCount] = 17
+          expected_result_after_logic[:questionResponseCount] = 2
+          expected_result_after_logic[:textResponses] = []
+          expected_result_after_logic[:answers] = [
+            { answer: nil, count: 15, groups: [{ count: 15, group: nil }] },
+            { answer: 'la', count: 1, groups: [{ count: 1, group: 'male' }] },
+            { answer: 'ny', count: 1, groups: [{ count: 1, group: 'female' }] },
+            { answer: 'other', count: 0, groups: [] }
+          ]
+
+          expect(generator.generate_result_for_field(select_field.id)).to match expected_result_after_logic
+        end
+      end
     end
 
     describe 'image select fields' do
@@ -656,6 +685,107 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
           }
         ]
       end
+    end
+  end
+
+  describe 'anonymous participation with user field grouping' do
+    let_it_be(:anon_project) { create(:single_phase_native_survey_project) }
+    let_it_be(:anon_phase) do
+      anon_project.phases.first.tap { |p| p.update!(allow_anonymous_participation: true) }
+    end
+    let_it_be(:anon_form) { create(:custom_form, participation_context: anon_phase) }
+    let_it_be(:anon_page) { create(:custom_field_page, resource: anon_form) }
+    let_it_be(:favourite_animal_field) do
+      create(
+        :custom_field_select,
+        resource: anon_form,
+        title_multiloc: { 'en' => 'What is your favourite animal?' },
+        description_multiloc: {},
+        required: true,
+        options: [
+          create(:custom_field_option, key: 'godzilla', title_multiloc: { 'en' => 'Godzilla' }),
+          create(:custom_field_option, key: 'gremlin', title_multiloc: { 'en' => 'Gremlin' }),
+          create(:custom_field_option, key: 'unicorn', title_multiloc: { 'en' => 'Unicorn' })
+        ]
+      )
+    end
+
+    let_it_be(:anon_responses) do
+      male_user = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'gender', value: 'male')])
+      female_user = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'gender', value: 'female')])
+
+      # Anonymous responses - author_id becomes NULL, but demographic
+      # data is merged into idea answers with u_-prefixed keys
+      # (simulating what the controller does via UserFieldsInFormService)
+      create(
+        :native_survey_response,
+        project: anon_project,
+        phases: [anon_phase],
+        custom_field_answers: [
+          build(:custom_field_answer, key: favourite_animal_field.key, value: 'godzilla'),
+          build(:custom_field_answer, key: 'u_gender', value: 'male', custom_field: gender_user_custom_field)
+        ],
+        author: male_user,
+        anonymous: true
+      )
+      create(
+        :native_survey_response,
+        project: anon_project,
+        phases: [anon_phase],
+        custom_field_answers: [
+          build(:custom_field_answer, key: favourite_animal_field.key, value: 'godzilla'),
+          build(:custom_field_answer, key: 'u_gender', value: 'female', custom_field: gender_user_custom_field)
+        ],
+        author: female_user,
+        anonymous: true
+      )
+      create(
+        :native_survey_response,
+        project: anon_project,
+        phases: [anon_phase],
+        custom_field_answers: [
+          build(:custom_field_answer, key: favourite_animal_field.key, value: 'gremlin'),
+          build(:custom_field_answer, key: 'u_gender', value: 'female', custom_field: gender_user_custom_field)
+        ],
+        author: female_user,
+        anonymous: true
+      )
+    end
+
+    it 'returns correct counts when grouping anonymous responses by user field' do
+      generator = described_class.new(
+        anon_phase,
+        group_mode: 'user_field',
+        group_field_id: gender_user_custom_field.id
+      )
+      result = generator.generate_result_for_field(favourite_animal_field.id)
+
+      expect(result[:totalResponseCount]).to eq 3
+      expect(result[:questionResponseCount]).to eq 3
+      expect(result[:answers]).to match [
+        { answer: 'godzilla', count: 2, groups: [
+          { count: 1, group: 'male' },
+          { count: 1, group: 'female' }
+        ] },
+        { answer: 'gremlin', count: 1, groups: [
+          { count: 1, group: 'female' }
+        ] },
+        { answer: 'unicorn', count: 0, groups: [] },
+        { answer: nil, count: 0, groups: [] }
+      ]
+    end
+  end
+
+  describe 'performance' do
+    it 'does not run too many SQL queries when generating a single result' do
+      expect do
+        generator = described_class.new(
+          survey_phase,
+          group_mode: 'user_field',
+          group_field_id: gender_user_custom_field.id
+        )
+        generator.generate_result_for_field(select_field.id)
+      end.not_to exceed_query_limit(16).with(/SELECT/)
     end
   end
 end

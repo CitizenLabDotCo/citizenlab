@@ -3,7 +3,6 @@ import moment = require('moment');
 
 describe('Form builder image multiple choice choose multiple component', () => {
   const projectTitle = randomString();
-  const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
   let projectId: string;
   let projectSlug: string;
@@ -17,7 +16,6 @@ describe('Form builder image multiple choice choose multiple component', () => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     })
       .then((project) => {
@@ -72,11 +70,11 @@ describe('Form builder image multiple choice choose multiple component', () => {
     cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
     cy.contains(questionTitle).should('exist');
     cy.wait(2000);
-    cy.get(`*[id^="${questionTitle}"]`).eq(1).click({
+    cy.get(`*[id^="${questionTitle}"]:not([id$="-label"])`).eq(1).click({
       force: true,
     });
     cy.contains('Survey').should('exist');
-    cy.get(`*[id^="${questionTitle}"]`).should('exist');
+    cy.get(`*[id^="${questionTitle}"]:not([id$="-label"])`).should('exist');
 
     // Try submitting without entering data for required field
     cy.dataCy('e2e-submit-form').wait(1000).click();
@@ -90,8 +88,8 @@ describe('Form builder image multiple choice choose multiple component', () => {
       }/en/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`
     );
 
-    cy.get(`*[id^="${questionTitle}"]`)
-      .last()
+    cy.get(`*[id^="${questionTitle}"]:not([id$="-label"])`)
+      .eq(2)
       .should(($element) => {
         const id = $element.attr('id');
         expect(Cypress._.endsWith(id, '_other')).to.be.true;

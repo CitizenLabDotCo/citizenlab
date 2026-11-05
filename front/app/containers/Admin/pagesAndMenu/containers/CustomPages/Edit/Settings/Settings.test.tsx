@@ -6,7 +6,7 @@ import { screen, render, waitFor, userEvent } from 'utils/testUtils/rtl';
 
 import EditCustomPageSettings from './';
 
-jest.mock('api/topics/useTopics');
+jest.mock('api/global_topics/useGlobalTopics');
 jest.mock('api/areas/useAreas');
 
 const mockCustomPage: ICustomPageData = {
@@ -40,8 +40,9 @@ const mockCustomPage: ICustomPageData = {
   },
   relationships: {
     nav_bar_item: { data: { id: '123', type: 'nav_bar_item' } },
-    topics: { data: [] },
+    global_topics: { data: [] },
     areas: { data: [] },
+    spaces: { data: [] },
   },
 };
 jest.mock('api/custom_pages/useCustomPageById', () =>

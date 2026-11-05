@@ -3,7 +3,6 @@ import moment = require('moment');
 
 describe('Form builder number field', () => {
   const projectTitle = randomString();
-  const projectDescription = randomString();
   const questionTitle = randomString();
   const projectDescriptionPreview = randomString(30);
   let projectId: string;
@@ -18,7 +17,6 @@ describe('Form builder number field', () => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     })
       .then((project) => {
@@ -90,13 +88,16 @@ describe('Form builder number field', () => {
     );
 
     // Try entering text that isn't a number
-    cy.get(`*[id^="${questionTitle}"]`)
+    cy.get(`*[id^="${questionTitle}"]:not([id$="-label"])`)
+      .first()
       .clear()
       .type('Test text', { force: true });
     cy.get('.e2e-error-message');
 
     // Enter a number
-    cy.get(`*[id^="${questionTitle}"]`).type('45', { force: true });
+    cy.get(`*[id^="${questionTitle}"]:not([id$="-label"])`)
+      .first()
+      .type('45', { force: true });
     cy.get('.e2e-error-message').should('have.length', 0);
 
     // Save survey response

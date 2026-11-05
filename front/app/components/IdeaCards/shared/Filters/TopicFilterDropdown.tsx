@@ -1,8 +1,6 @@
 import React, { useMemo } from 'react';
 
-import useProjectAllowedInputTopics from 'api/project_allowed_input_topics/useProjectAllowedInputTopics';
-import { getTopicIds } from 'api/project_allowed_input_topics/util/getProjectTopicsIds';
-import useTopics from 'api/topics/useTopics';
+import useInputTopics from 'api/input_topics/useInputTopics';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -26,38 +24,18 @@ const TopicFilterDropdown = ({
   onChange,
 }: Props) => {
   const localize = useLocalize();
-  const { data: allowedInputTopics } = useProjectAllowedInputTopics({
-    projectId,
-  });
-
-  const topicIds = getTopicIds(allowedInputTopics?.data);
-  const { data: topics } = useTopics();
-
-  const filteredTopics = useMemo(() => {
-    if (!topics) return [];
-
-    const topicsById = topics.data.reduce((acc, topic) => {
-      if (topicIds.includes(topic.id)) {
-        acc[topic.id] = topic;
-      }
-      return acc;
-    }, {});
-
-    // Return filtered topics in the order of topicIds
-    return topicIds.map((id) => topicsById[id]).filter(Boolean);
-  }, [topics, topicIds]);
+  const { data: inputTopics } = useInputTopics(projectId);
 
   const options = useMemo(() => {
     return (
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      filteredTopics?.map((topic) => ({
-        text: localize(topic.attributes.title_multiloc),
+      inputTopics?.data.map((topic) => ({
+        text: localize(topic.attributes.full_title_multiloc),
         value: topic.id,
       })) ?? []
     );
-  }, [filteredTopics, localize]);
+  }, [inputTopics, localize]);
 
-  if (!allowedInputTopics || allowedInputTopics.data.length === 0) {
+  if (!inputTopics || inputTopics.data.length === 0) {
     return null;
   }
 

@@ -1,0 +1,20 @@
+ga:
+  analysis:
+    example_tag_n: Clib shamplach %{n}
+    cell_statement:
+      percent_more: "%{percent}% níos mó"
+      percent_less: "%{percent}% níos lú"
+      range_min_max: "%{min} go %{max}"
+      range_min: "%{min} nó níos mó"
+      range_max: "%{max} nó níos lú"
+      tag_vs_bin:
+        inputs: "Daoine a fhreagraíonn %{answer} do %{question} postáil %{percent_more_less} i %{tag} níos airde ná an meán."
+        likes: "Is fearr le daoine a fhreagraíonn %{answer} go %{question} ionchuir %{percent_more_less} i %{tag} ná an meán."
+        dislikes: "Daoine a fhreagraíonn %{answer} go %{question} , is fuath leo ionchuir %{percent_more_less} i %{tag} ná an meán."
+        participants: "Bíonn daoine a fhreagraíonn %{answer} go %{question} páirteach %{percent_more_less} i %{tag} níos mó ná an meán."
+      bin_vs_bin:
+        inputs: "Daoine a fhreagraíonn %{answer1} go %{question1} a fhreagraíonn %{answer2} go %{question2} %{percent_more_less} níos airde ná an meán."
+        likes: "Is fearr le daoine a fhreagraíonn %{answer1} go %{question1} ionchuir %{percent_more_less} nuair a fhreagraíonn siad %{answer2} go %{question2} ná an meán."
+        dislikes: "Is beag an meas atá ag daoine a fhreagraíonn %{answer1} go %{question1} ar ionchur %{percent_more_less} nuair a fhreagraíonn siad %{answer2} go %{question2} ná an meán."
+        participants: "Bíonn daoine a fhreagraíonn %{answer1} go %{question1} níos rannpháirteacha i %{percent_more_less} nuair a fhreagraíonn siad %{answer2} go %{question2} ná an meán."
+

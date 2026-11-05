@@ -44,8 +44,6 @@ module WebApi
 
           raise "Unknown verification method #{params[:method_name]}" unless @verification_method
 
-          raise Pundit::NotAuthorizedError unless AppConfiguration.instance.feature_activated?('verification')
-
           return if @ver_ser.active_methods(AppConfiguration.instance).include?(@verification_method)
 
           raise Pundit::NotAuthorizedError

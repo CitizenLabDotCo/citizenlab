@@ -3,14 +3,14 @@
 class SideFxUserService
   include SideFxHelper
 
-  def after_create(user, current_user)
+  def after_create(user, current_user, claim_tokens: nil)
     create_followers user
     TrackUserJob.perform_later(user)
     GenerateUserAvatarJob.perform_later(user)
     LogActivityJob.set(wait: 10.seconds).perform_later(user, 'created', user, user.created_at.to_i, payload: create_user_activity_payload(user))
     UpdateMemberCountJob.perform_later
     if user.admin?
-      LogActivityJob.set(wait: 5.seconds).perform_later(user, 'admin_rights_given', current_user, user.created_at.to_i)
+      LogActivityJob.set(wait: 5.seconds).perform_later(user, 'admin_rights_received', current_user, user.created_at.to_i)
     end
 
     if user.registration_completed_at # For example, when a user is created via SSO
@@ -18,8 +18,21 @@ class SideFxUserService
     end
 
     user.create_email_campaigns_unsubscription_token
-    RequestConfirmationCodeJob.perform_now(user) if should_send_confirmation_email?(user)
+    if should_send_confirmation_email?(user)
+      if user.email.present?
+        RequestEmailConfirmationCodeJob.perform_now(user)
+      elsif user.merge_target_email.present?
+        # An unconfirmed SSO email another account owns: proving the inbox merges the two.
+        RequestMergeAccountConfirmationCodeJob.perform_now(user, merge_target_email: user.merge_target_email)
+      else
+        # Some SSO methods only set new_email (e.g. when the SSO email is unconfirmed),
+        # so we use the new_email confirmation flow to promote it to email after confirmation.
+        RequestNewEmailConfirmationCodeJob.perform_now(user, new_email: user.new_email)
+      end
+    end
+    RequestPhoneConfirmationCodeJob.issue_code_and_deliver_later(user) if should_send_confirmation_sms?(user)
     AdditionalSeatsIncrementer.increment_if_necessary(user, current_user) if user.roles_previously_changed?
+    ClaimTokenService.claim(user, claim_tokens)
   end
 
   def after_update(user, current_user)
@@ -31,22 +44,29 @@ class SideFxUserService
     end
     after_roles_changed current_user, user if user.roles_previously_changed?
 
-    AdditionalSeatsIncrementer.increment_if_necessary(user, current_user) if user.roles_previously_changed?
-
     UpdateMemberCountJob.perform_later
-    RequestConfirmationCodeJob.perform_now(user) if should_send_confirmation_email?(user)
   end
 
-  def after_destroy(frozen_user, current_user)
+  def after_destroy(frozen_user, current_user, participation_data_deleted: false, update_member_counts: true)
     activity_user = current_user&.id == frozen_user&.id ? nil : current_user
-    LogActivityJob.perform_later(encode_frozen_resource(frozen_user), 'deleted', activity_user, Time.now.to_i)
-    UpdateMemberCountJob.perform_later
+
+    LogActivityJob.perform_later(
+      encode_frozen_resource(frozen_user),
+      'deleted',
+      activity_user,
+      Time.now.to_i,
+      payload: { participation_data_deleted: }
+    )
+
+    UpdateMemberCountJob.perform_later if update_member_counts
     RemoveUserFromIntercomJob.perform_later(frozen_user.id)
     RemoveUsersFromSegmentJob.perform_later([frozen_user.id])
   end
 
   def after_block(user, current_user)
     TrackUserJob.perform_later(user)
+    # Logging the 'blocked' activity triggers the EmailCampaigns::Campaigns::UserBlocked
+    # campaign, which notifies the user that their account was blocked.
     LogActivityJob.perform_later(
       user,
       'blocked',
@@ -58,7 +78,7 @@ class SideFxUserService
         block_end_at: user.block_end_at
       }
     )
-    UserBlockedMailer.with(user: user).send_user_blocked_email.deliver_later
+    user.expire_token! # Stop any active sessions of the blocked user
   end
 
   def after_unblock(user, current_user)
@@ -85,33 +105,43 @@ class SideFxUserService
   def after_roles_changed(current_user, user)
     gained_roles(user).each { |role| role_created_side_fx(role, user, current_user) }
     lost_roles(user).each { |role| role_destroyed_side_fx(role, user, current_user) }
+    AdditionalSeatsIncrementer.increment_if_necessary(user, current_user)
   end
 
   def role_created_side_fx(role, user, current_user)
-    new_project_moderator(role, user, current_user) if role['type'] == 'project_moderator'
-    new_admin(user, current_user) if role['type'] == 'admin'
-  end
+    item_id_attribute_name = role_item_id_name(role)
 
-  def new_admin(user, current_user)
-    LogActivityJob
-      .set(wait: 5.seconds)
-      .perform_later(user, 'admin_rights_given', current_user, user.updated_at.to_i)
-  end
-
-  def new_project_moderator(role, user, current_user)
     LogActivityJob.set(wait: 5.seconds).perform_later(
-      user, 'project_moderation_rights_given',
-      current_user, Time.now.to_i,
-      payload: { project_id: role['project_id'] }
+      user,
+      "#{role_prefix(role)}_rights_received",
+      current_user,
+      Time.now.to_i,
+      payload: item_id_attribute_name.present? ? { item_id_attribute_name.to_sym => role[item_id_attribute_name] } : {}
     )
   end
 
   def role_destroyed_side_fx(role, user, current_user)
-    project_moderator_destroyed(user, current_user) if role['type'] == 'project_moderator'
+    item_id_attribute_name = role_item_id_name(role)
+
+    LogActivityJob.perform_later(
+      user,
+      "#{role_prefix(role)}_rights_removed",
+      current_user,
+      Time.now.to_i,
+      payload: item_id_attribute_name.present? ? { item_id_attribute_name.to_sym => role[item_id_attribute_name] } : {}
+    )
   end
 
-  def project_moderator_destroyed(user, current_user)
-    LogActivityJob.perform_later(user, 'project_moderation_rights_removed', current_user, Time.now.to_i)
+  def role_prefix(role)
+    return 'admin' if role['type'] == 'admin'
+
+    "#{role['type'].split('_moderator').first}_moderation"
+  end
+
+  def role_item_id_name(role)
+    return nil if role['type'] == 'admin'
+
+    "#{role['type'].split('_moderator').first}_id"
   end
 
   def lost_roles(user)
@@ -125,18 +155,29 @@ class SideFxUserService
   end
 
   def create_followers(user)
-    area = Area.where(id: user.domicile).first
+    area = Area.where(id: user.answer_for_code('domicile')&.value).first
     Follower.find_or_create_by(followable: area, user: user) if area
   end
 
   def should_send_confirmation_email?(user)
-    user.confirmation_required? && user.email_confirmation_code_sent_at.nil? &&
-      (user.email.present? || user.new_email.present?) # some SSO methods don't provide email
+    !user.invite_pending? && user.confirmation_required? && user.email_confirmation&.code_sent_at.nil? &&
+      (user.email.present? || user.new_email.present? || user.merge_target_email.present?) # some SSO methods don't provide email
+  end
+
+  def should_send_confirmation_sms?(user)
+    !user.invite_pending? && user.phone.present? && user.phone_confirmed_at.nil? &&
+      user.phone_confirmation&.code_sent_at.nil?
   end
 
   def create_user_activity_payload(user)
-    if user.sso?
+    # An invitation creates the account before the person does anything, so
+    # it must not read as a sign-up they started.
+    if user.invite_pending?
+      { flow: 'invitation' }
+    elsif user.sso?
       { flow: 'sso', method: user.identities.first&.provider }
+    elsif user.phone.present? && user.email.blank?
+      { flow: 'phone_confirmation' }
     elsif user.password.nil?
       { flow: 'email_confirmation' }
     else

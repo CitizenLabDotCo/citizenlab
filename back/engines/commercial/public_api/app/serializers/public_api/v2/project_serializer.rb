@@ -25,7 +25,7 @@ class PublicApi::V2::ProjectSerializer < PublicApi::V2::BaseSerializer
   end
 
   def description_html
-    multiloc_service.t(object.description_multiloc)
+    multiloc_service.t(description_service.description_multiloc(object))
   end
 
   def description_preview

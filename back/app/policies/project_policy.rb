@@ -1,40 +1,6 @@
 # frozen_string_literal: true
 
 class ProjectPolicy < ApplicationPolicy
-  def self.apply_listed_scope(scope, user, remove_unlisted_type)
-    # remove_unlisted_type can be:
-    # - 'remove_all_unlisted': only return listed projects
-    # - 'remove_unlisted_that_user_cannot_moderate': return listed projects
-    # AND unlisted projects that the user can moderate.
-
-    if remove_unlisted_type == 'remove_all_unlisted'
-      return scope.where(listed: true)
-    end
-
-    # Admins: return all projects,
-    # since they can moderate all projects.
-    if user&.admin?
-      return scope
-    end
-
-    # Moderators: return all projects that
-    # they can moderate.
-    if user&.project_or_folder_moderator?
-      scope = scope.joins(:admin_publication)
-
-      return scope.where(
-        '(projects.listed = TRUE) OR ' \
-        '(projects.listed = FALSE AND projects.id IN (?)) OR ' \
-        '(projects.listed = FALSE AND admin_publications.parent_id IN (?))',
-        user.moderatable_project_ids,
-        AdminPublication.where(publication_id: user.moderated_project_folder_ids).select(:id)
-      )
-    end
-
-    # Other users: return only listed projects.
-    scope.where(listed: true)
-  end
-
   class Scope < ApplicationPolicy::Scope
     def resolve
       @scope = scope.includes(:admin_publication)
@@ -45,19 +11,9 @@ class ProjectPolicy < ApplicationPolicy
       # of the user gives access).
       moderator_scope = user&.active? ? UserRoleService.new.moderatable_projects(user, scope) : scope.none
 
-      moderator_scope = moderator_scope
+      moderator_scope
         .or(resolve_for_visitor)
         .or(resolve_for_normal_user)
-
-      if context[:remove_unlisted]
-        moderator_scope = ProjectPolicy.apply_listed_scope(
-          moderator_scope,
-          user,
-          context[:remove_unlisted]
-        )
-      end
-
-      moderator_scope
     end
 
     private
@@ -89,10 +45,10 @@ class ProjectPolicy < ApplicationPolicy
     end
 
     def resolve
-      return scope.all if record.visible_to == 'public' && record.admin_publication.publication_status != 'draft'
+      return scope.all if record.visible_to == 'public' && !record.admin_publication.draft?
 
       moderator_scope = UserRoleService.new.moderators_for_project record, scope
-      if record.visible_to == 'groups' && record.admin_publication.publication_status != 'draft'
+      if record.visible_to == 'groups' && !record.admin_publication.draft?
         scope.in_any_group(record.groups).or(moderator_scope)
       else
         moderator_scope
@@ -125,7 +81,7 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def index_for_admin?
-    user&.admin? || user&.project_moderator? || user&.project_folder_moderator?
+    user&.admin? || user&.moderator?
   end
 
   def votes_by_user_xlsx?
@@ -142,13 +98,16 @@ class ProjectPolicy < ApplicationPolicy
 
     if record.folder
       UserRoleService.new.can_moderate?(record.folder, user)
+    elsif record.space
+      UserRoleService.new.can_moderate?(record.space, user)
     else
-      record.admin_publication.draft? && (user.project_moderator? || user.project_folder_moderator?)
+      # Moderators can create draft projects, which then need to be approved.
+      record.admin_publication.draft? && user.moderator?
     end
   end
 
   def show?
-    return false if Permissions::ProjectPermissionsService.new(record, user).project_visible_disabled_reason
+    return false if project_not_visible_to_user?
 
     active_moderator? || project_published_or_archived? || project_preview?
   end
@@ -158,7 +117,10 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def update?
-    active_moderator?
+    return true if active_admin?
+    return active_moderator? unless record.folder_changed? || record.space_changed?
+
+    can_moderate_before_and_after_change?
   end
 
   def refresh_preview_token?
@@ -170,9 +132,7 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def destroy?
-    return false unless active?
-
-    admin? || (active_moderator? && record.never_published?)
+    active_admin? || can_moderate_space? || (active_moderator? && record.never_published?)
   end
 
   def copy?
@@ -183,8 +143,12 @@ class ProjectPolicy < ApplicationPolicy
     active_moderator?
   end
 
+  def publication_recipient_count?
+    active_moderator?
+  end
+
   def participant_counts?
-    user&.admin? || user&.project_moderator? || user&.project_folder_moderator?
+    user&.admin? || user&.moderator?
   end
 
   def shared_permitted_attributes
@@ -194,26 +158,37 @@ class ProjectPolicy < ApplicationPolicy
       :visible_to,
       :include_all_areas,
       :listed,
+      :live_auto_input_topics_enabled,
       {
         title_multiloc: CL2_SUPPORTED_LOCALES,
-        description_multiloc: CL2_SUPPORTED_LOCALES,
         description_preview_multiloc: CL2_SUPPORTED_LOCALES,
         area_ids: [],
-        topic_ids: [],
-        header_bg_alt_text_multiloc: CL2_SUPPORTED_LOCALES
+        global_topic_ids: [],
+        header_bg_alt_text_multiloc: CL2_SUPPORTED_LOCALES,
+        completed_setup_steps: []
       }
     ]
+
+    shared << :folder_id if user&.admin? || user&.space_moderator? || user&.project_folder_moderator?
+    shared << :space_id if user&.admin? || user&.space_moderator?
 
     if AppConfiguration.instance.feature_activated? 'disable_disliking'
       shared += %i[reacting_dislike_enabled reacting_dislike_method reacting_dislike_limited_max]
     end
+
+    if AppConfiguration.instance.feature_activated? 'participation_location_tracking'
+      shared += %i[track_participation_location]
+    end
+
     shared
   end
 
   def permitted_attributes_for_create
     shared_permitted_attributes.tap do |attrs|
       nested_attrs = attrs.find { |attr| attr.is_a?(Hash) }
-      nested_attrs.deep_merge!({ admin_publication_attributes: [:publication_status] })
+      nested_attrs.deep_merge!({
+        admin_publication_attributes: %i[publication_status]
+      })
     end
   end
 
@@ -222,7 +197,9 @@ class ProjectPolicy < ApplicationPolicy
       next unless update_status?
 
       nested_attrs = attrs.find { |attr| attr.is_a?(Hash) }
-      nested_attrs.deep_merge!({ admin_publication_attributes: [:publication_status] })
+      nested_attrs.deep_merge!({
+        admin_publication_attributes: %i[publication_status scheduled_status scheduled_at]
+      })
     end
   end
 
@@ -243,25 +220,40 @@ class ProjectPolicy < ApplicationPolicy
   private
 
   def update_status?
-    admin_like? || record.ever_published? || record.review&.approved?
+    active_admin? || can_moderate_folder? || can_moderate_space? || record.ever_published? || record.review&.approved?
   end
 
-  def admin_like?
-    admin? || folder_moderator?
+  def can_moderate_folder?
+    record.folder && active? && UserRoleService.new.can_moderate?(record.folder, user)
   end
 
-  def folder_moderator?
-    record.folder && UserRoleService.new.can_moderate?(record.folder, user)
+  def can_moderate_space?
+    record.space && active? && UserRoleService.new.can_moderate?(record.space, user)
+  end
+
+  def can_moderate_before_and_after_change?
+    return false unless active?
+
+    service = UserRoleService.new
+    service.can_moderate_project?(context[:prior_record], user) &&
+      service.can_moderate_project?(record, user)
   end
 
   def project_preview?
-    return false unless record.admin_publication.publication_status == 'draft'
+    return false unless record.admin_publication.draft?
 
     context[:project_preview_token] && context[:project_preview_token] == record.preview_token
   end
 
   def project_published_or_archived?
-    %w[published archived].include?(record.admin_publication.publication_status)
+    record.admin_publication.published? || record.admin_publication.archived?
+  end
+
+  def project_not_visible_to_user?
+    return false if user && UserRoleService.new.can_moderate?(record, user)
+
+    record.visible_to == 'admins' ||
+      (record.visible_to == 'groups' && !user&.in_any_groups?(record.groups))
   end
 end
 

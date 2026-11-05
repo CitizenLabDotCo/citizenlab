@@ -185,7 +185,7 @@ namespace :complex_migrations do
             end
           end
         end
-      rescue Exception => e
+      rescue StandardError => e
         errors += ["Failed to migrate topics for tenant #{tenant.host}: #{e.message}"]
       end
     end

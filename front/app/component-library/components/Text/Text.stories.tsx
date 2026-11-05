@@ -37,3 +37,31 @@ export const BodyXs: Story = {
     variant: 'bodyXs',
   },
 };
+
+export const BackOfficeSection: Story = {
+  args: {
+    children: 'Section header · group / field label',
+    variant: 'boSection',
+  },
+};
+
+export const BackOfficeLabel: Story = {
+  args: {
+    children: 'Control / option label',
+    variant: 'boLabel',
+  },
+};
+
+export const BackOfficeHelper: Story = {
+  args: {
+    children: 'Helper / description text',
+    variant: 'boHelper',
+  },
+};
+
+export const BackOfficeMicro: Story = {
+  args: {
+    children: 'Micro / hint',
+    variant: 'boMicro',
+  },
+};

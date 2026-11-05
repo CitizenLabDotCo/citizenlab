@@ -31,15 +31,22 @@ class XlsxService
   # | John  |      | 35  |
   # into this hash array:
   #   [{'name' => 'Ron', 'size' => 'xl'), {'name' => 'John', 'age' => 35}]
-  def xlsx_to_hash_array(xlsx)
+  def xlsx_to_hash_array(xlsx, include_empty_cells: false, rich_text_columns: [])
     workbook = RubyXL::Parser.parse_buffer(xlsx)
     worksheet = workbook.worksheets[0]
+    rich_text_column_set = rich_text_columns.to_set
     worksheet.drop(1).map do |row|
       xlsx_utils = Export::Xlsx::Utils.new
       (row&.cells || []).compact.filter_map do |cell|
-        if cell.value
-          column_header = xlsx_utils.add_duplicate_column_name_suffix(worksheet[0][cell.column]&.value)
-          [column_header, cell.value]
+        if cell.value || include_empty_cells
+          raw_column_header = worksheet[0][cell.column]&.value
+          column_header = xlsx_utils.add_duplicate_column_name_suffix(raw_column_header)
+          value = if rich_text_column_set.include?(raw_column_header)
+            rich_text_cell_html(cell, workbook) || cell.value
+          else
+            cell.value
+          end
+          [column_header, value]
         end
       end.to_h
     end
@@ -62,16 +69,16 @@ class XlsxService
     xlsx_from_rows([header, *rows], sheetname: sheetname)
   end
 
-  def generate_xlsx(sheetname, columns, instances)
-    columns = columns.uniq { |c| c[:header] }
+  def generate_xlsx(sheetname, columns, instances, reject_duplicate_columns: true)
+    columns = columns.uniq { |c| c[:header] } if reject_duplicate_columns
     pa = Axlsx::Package.new
-    generate_sheet pa.workbook, sheetname, columns, instances
+    generate_sheet pa.workbook, sheetname, columns, instances, reject_duplicate_columns: reject_duplicate_columns
     pa.to_stream
   end
 
-  def generate_sheet(workbook, sheetname, columns, instances)
+  def generate_sheet(workbook, sheetname, columns, instances, reject_duplicate_columns: true)
     sheetname = utils.sanitize_sheetname sheetname
-    columns = columns.uniq { |c| c[:header] }
+    columns = columns.uniq { |c| c[:header] } if reject_duplicate_columns
     workbook.styles do |s|
       workbook.add_worksheet(name: sheetname) do |sheet|
         header = columns.pluck(:header)
@@ -126,6 +133,7 @@ class XlsxService
       { header: 'created_at', f: ->(u) { u.created_at }, skip_sanitization: true },
       { header: 'registration_completed_at', f: ->(u) { u.registration_completed_at }, skip_sanitization: true },
       { header: 'invite_status', f: ->(u) { u.invite_status }, skip_sanitization: true },
+      *id_method_columns,
       *user_custom_field_columns(:itself)
     ]
     columns.reject! { |c| %w[id email first_name last_name].include?(c[:header]) } unless view_private_attributes
@@ -154,7 +162,7 @@ class XlsxService
       { header: 'unsure',               f: ->(i) { i.neutral_reactions_count }, skip_sanitization: true },
       { header: 'url',                  f: ->(i) { Frontend::UrlService.new.model_to_url(i) }, skip_sanitization: true, hyperlink: true },
       { header: 'project',              f: ->(i) { multiloc_service.t(i&.project&.title_multiloc) } },
-      { header: 'topics',               f: ->(i) { i.topics.map { |t| multiloc_service.t(t.title_multiloc) }.join(',') } },
+      { header: 'topics',               f: ->(i) { i.input_topics.map { |t| multiloc_service.t(t.title_multiloc) }.join(',') } },
       { header: 'status',               f: ->(i) { multiloc_service.t(i&.idea_status&.title_multiloc) } },
       { header: 'assignee',             f: ->(i) { i.assignee&.full_name } },
       { header: 'assignee_email',       f: ->(i) { i.assignee&.email } },
@@ -236,6 +244,22 @@ class XlsxService
 
   private
 
+  # Only platforms that configured SSO or verification methods have anything to report here.
+  def id_method_columns
+    id_methods = IdMethodService.new.configured_methods(AppConfiguration.instance)
+    columns = []
+
+    if id_methods.any?(&:authentication?)
+      columns << { header: 'sso_methods', f: ->(u) { u.identities.map(&:provider).uniq.sort.join(', ') }, skip_sanitization: true }
+    end
+
+    if id_methods.any?(&:verification?)
+      columns << { header: 'verifications', f: ->(u) { u.verifications.select(&:active?).map(&:method_name).uniq.sort.join(', ') }, skip_sanitization: true }
+    end
+
+    columns
+  end
+
   def multiloc_service
     @multiloc_service ||= MultilocService.new app_configuration: AppConfiguration.instance
   end
@@ -243,18 +267,18 @@ class XlsxService
   def title_multiloc_for(record, field, options)
     return unless record
 
-    case record.custom_field_values[field.key]
+    case (value = record.answer_for_key(field.key)&.value)
     when Array
-      record.custom_field_values[field.key].map do |key|
+      value.map do |key|
         multiloc_service.t(options[namespace(field.id, key)]&.title_multiloc)
       end.join(', ')
     when String
-      multiloc_service.t(options[namespace(field.id, record.custom_field_values[field.key])]&.title_multiloc)
+      multiloc_service.t(options[namespace(field.id, value)]&.title_multiloc)
     end
   end
 
   def value_getter_for_user_custom_field_columns(field, record_to_user, options)
-    if field.support_options? # field with options
+    if field.supports_options? # field with options
       if field.domicile? # 'domicile' options are a special case
         options = field.ordered_transformed_options.index_by { |option| namespace(option.custom_field_id, option.key) }
       end
@@ -266,7 +290,7 @@ class XlsxService
     else # all other custom fields
       lambda do |record|
         user = record.send(record_to_user)
-        user && user.custom_field_values[field.key]
+        user&.answer_for_key(field.key)&.value
       end
     end
   end
@@ -302,6 +326,58 @@ class XlsxService
 
   def utils
     @utils ||= Export::Xlsx::Utils.new
+  end
+
+  # Returns an HTML string if the cell is backed by a shared string with
+  # formatting runs (bold/italic/underline/strike). Returns nil for plain text cells.
+  # NOTE: A run is the standard xlsx terminology for a formatted text segment inside a cell - containing <r> elements
+  def rich_text_cell_html(cell, workbook)
+    entry = case cell.datatype
+    when RubyXL::DataType::SHARED_STRING
+      workbook.shared_strings_container&.[](cell.raw_value.to_i)
+    when 'inlineStr'
+      cell.respond_to?(:is) ? cell.is : nil
+    end
+
+    return nil unless entry
+
+    runs = entry.respond_to?(:r) ? entry.r : nil
+    return nil if runs.blank?
+
+    # If there are HTML tags in the cell, skip rich-text conversion
+    # so we don't double-encode their tags — fall back to plain text.
+    return nil if contains_html_tags?(entry.to_s)
+
+    runs.map { |run| rich_text_run_to_html(run) }.join.presence
+  end
+
+  def contains_html_tags?(text)
+    text.to_s.match?(%r{</?[a-zA-Z][^>]*>})
+  end
+
+  def rich_text_run_to_html(run)
+    text_node = run.respond_to?(:t) ? run.t : nil
+    raw_text = text_node.respond_to?(:value) ? text_node.value.to_s : text_node.to_s
+    html = CGI.escapeHTML(raw_text).gsub("\n", '<br>')
+
+    rpr = %i[r_pr rpr run_properties].filter_map { |m| run.send(m) if run.respond_to?(m) }.first
+    return html unless rpr
+
+    html = "<s>#{html}</s>" if rich_text_flag?(rpr, :strike)
+    html = "<u>#{html}</u>" if rich_text_flag?(rpr, :u)
+    html = "<em>#{html}</em>" if rich_text_flag?(rpr, :i)
+    html = "<strong>#{html}</strong>" if rich_text_flag?(rpr, :b)
+    html
+  end
+
+  def rich_text_flag?(rpr, name)
+    return false unless rpr.respond_to?(name)
+
+    value = rpr.public_send(name)
+    return false if value.nil?
+    return value.val != false if value.respond_to?(:val)
+
+    !!value
   end
 end
 

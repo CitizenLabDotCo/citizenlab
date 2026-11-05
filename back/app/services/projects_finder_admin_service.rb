@@ -12,12 +12,16 @@ class ProjectsFinderAdminService
     projects = filter_review_state(projects, params)
     projects = filter_by_folder_ids(projects, params)
     projects = filter_project_manager(projects, params)
+    projects = filter_excluded_project_ids(projects, params)
+    projects = filter_excluded_folder_ids(projects, params)
     projects = search(projects, params)
     projects = filter_start_date(projects, params)
+    projects = filter_phase_date_range(projects, params)
     projects = filter_participation_states(projects, params)
-    projects = filter_current_phase_participation_method(projects, params)
+    projects = filter_participation_methods(projects, params)
     projects = filter_visibility(projects, params)
     projects = filter_discoverability(projects, params)
+    projects = filter_space(projects, params)
 
     # Apply sorting
     case params[:sort]
@@ -27,6 +31,8 @@ class ProjectsFinderAdminService
       sort_phase_starting_or_ending_soon(projects)
     when 'alphabetically_asc', 'alphabetically_desc'
       sort_alphabetically(projects, params)
+    when 'participation_asc', 'participation_desc'
+      sort_by_participation(projects, params)
     else
       direction = params[:sort] == 'recently_created_desc' ? 'DESC' : 'ASC'
       projects.order("projects.created_at #{direction}, projects.id ASC")
@@ -72,20 +78,23 @@ class ProjectsFinderAdminService
   end
 
   def self.sort_phase_starting_or_ending_soon(scope)
-    phases_ending_soon_subquery = Phase
-      .where("coalesce(end_at, 'infinity'::DATE) >= current_date")
-      .group(:project_id)
-      .select("project_id, min(coalesce(end_at, 'infinity'::DATE)) AS min_end_at")
+    now = Time.zone.now
 
-    phases_starting_soon_subquery = Phase
-      .where('start_at >= current_date')
+    phases_ending_soon = Phase
+      .where("coalesce(end_at, 'infinity'::timestamptz) >= ?", now)
+      .group(:project_id)
+      .select("project_id, min(coalesce(end_at, 'infinity'::timestamptz)) AS min_end_at")
+
+    phases_starting_soon = Phase
+      .where(start_at: now..)
       .group(:project_id)
       .select('project_id, min(start_at) AS min_start_at')
 
     projects_subquery = scope
-      .joins("LEFT JOIN (#{phases_ending_soon_subquery.to_sql}) AS phases_ending_soon ON phases_ending_soon.project_id = projects.id")
-      .joins("LEFT JOIN (#{phases_starting_soon_subquery.to_sql}) AS phases_starting_soon ON phases_starting_soon.project_id = projects.id")
-      .select('least(phases_ending_soon.min_end_at, phases_starting_soon.min_start_at) AS soon_date, projects.*')
+      .with(phases_ending_soon:, phases_starting_soon:)
+      .joins('LEFT JOIN phases_ending_soon ON phases_ending_soon.project_id = projects.id')
+      .joins('LEFT JOIN phases_starting_soon ON phases_starting_soon.project_id = projects.id')
+      .select('projects.*, least(phases_ending_soon.min_end_at, phases_starting_soon.min_start_at) AS soon_date')
 
     # We order by soon_date, but tie-break with created_at and id for a stable sort,
     # which is important for pagination
@@ -95,12 +104,21 @@ class ProjectsFinderAdminService
   end
 
   def self.sort_alphabetically(scope, params)
-    locale = params[:locale] || 'en'
+    # Filter locale param against configured locales to prevent SQL injection
+    configured_locales = AppConfiguration.instance.settings('core', 'locales')
+    locale = configured_locales.include?(params[:locale]) ? params[:locale] : 'en'
     direction = params[:sort] == 'alphabetically_desc' ? 'DESC' : 'ASC'
+    # quote method is used to prevent SQL injection
+    quoted_locale = scope.connection.quote(locale)
 
     scope.order(
-      Arel.sql("projects.title_multiloc->>'#{locale}' #{direction}, projects.created_at ASC, projects.id ASC")
+      Arel.sql("projects.title_multiloc->>#{quoted_locale} #{direction}, projects.created_at ASC, projects.id ASC")
     )
+  end
+
+  def self.sort_by_participation(scope, params)
+    direction = params[:sort] == 'participation_desc' ? :desc : :asc
+    scope.by_participation_count(direction)
   end
 
   # FILTERING METHODS
@@ -111,6 +129,7 @@ class ProjectsFinderAdminService
   end
 
   def self.filter_moderatable(scope, current_user)
+    return scope.none unless current_user
     return scope if current_user.admin?
 
     moderatable_project_ids = current_user.moderatable_project_ids
@@ -132,12 +151,10 @@ class ProjectsFinderAdminService
   end
 
   def self.filter_status(scope, params = {})
-    status = params[:status] || []
-    return scope if status.blank?
+    statuses = params[:status] || []
+    return scope if statuses.blank?
 
-    scope
-      .joins("INNER JOIN admin_publications ON admin_publications.publication_id = projects.id AND admin_publications.publication_type = 'Project'")
-      .where(admin_publications: { publication_status: status })
+    scope.where(admin_publication: AdminPublication.with_status(statuses))
   end
 
   def self.filter_review_state(scope, params = {})
@@ -200,6 +217,30 @@ class ProjectsFinderAdminService
     scope.where(id: moderated_projects)
   end
 
+  # Excludes projects by their project IDs
+  def self.filter_excluded_project_ids(scope, params = {})
+    excluded_project_ids = params[:excluded_project_ids] || []
+    return scope if excluded_project_ids.blank?
+
+    scope.where.not(id: excluded_project_ids)
+  end
+
+  # NOTE: This method requires admin_publications to be joined to the scope.
+  # Excludes projects whose parent folder is in the excluded folders list.
+  # When a folder is excluded, all projects within that folder are automatically excluded.
+  def self.filter_excluded_folder_ids(scope, params = {})
+    excluded_folder_ids = params[:excluded_folder_ids] || []
+    return scope if excluded_folder_ids.blank?
+
+    excluded_folder_admin_pub_ids = AdminPublication
+      .where(publication_type: 'ProjectFolders::Folder', publication_id: excluded_folder_ids)
+      .select(:id)
+
+    scope.where(admin_publication: { parent_id: [nil] }).or(
+      scope.where.not(admin_publication: { parent_id: excluded_folder_admin_pub_ids })
+    )
+  end
+
   def self.search(scope, params = {})
     search = params[:search] || ''
     return scope if search.blank?
@@ -223,16 +264,34 @@ class ProjectsFinderAdminService
     scope.where(id: overlapping_project_ids)
   end
 
+  # Filter projects by a date range where ANY phase overlaps with the given range.
+  # This is different from filter_start_date which filters by when the first phase started.
+  # Used primarily for report building to find projects active during a time period.
+  def self.filter_phase_date_range(scope, params = {})
+    phase_start_date = params[:phase_start_date]
+    phase_end_date = params[:phase_end_date]
+    return scope if phase_start_date.blank? || phase_end_date.blank?
+
+    start_date = parse_date(phase_start_date)
+    end_date = parse_date(phase_end_date)
+    return scope if start_date.blank? || end_date.blank?
+
+    overlapping_project_ids = Phase
+      .select(:project_id)
+      .where("(start_at, coalesce(end_at, 'infinity'::timestamp)) OVERLAPS (?::timestamp, ?::timestamp)", start_date, end_date)
+
+    scope.where(id: overlapping_project_ids)
+  end
+
   def self.filter_participation_states(scope, params = {})
     participation_states = params[:participation_states] || []
     return scope if participation_states.blank?
 
-    today = Time.zone.today
     conditions = []
 
     if participation_states.include?('not_started')
       # Projects with no phases that have started yet
-      conditions << "projects.id NOT IN (SELECT project_id FROM phases WHERE start_at < '#{today}')"
+      conditions << 'projects.id NOT IN (SELECT project_id FROM phases WHERE start_at < now())'
     end
 
     if participation_states.include?('collecting_data')
@@ -240,7 +299,7 @@ class ProjectsFinderAdminService
       conditions << <<-SQL.squish
         projects.id IN (
           SELECT project_id FROM phases
-          WHERE (start_at, coalesce(end_at, 'infinity'::DATE)) OVERLAPS ('#{today}', '#{today}')
+          WHERE start_at <= now() AND coalesce(end_at, 'infinity'::timestamp) > now()
           AND participation_method != 'information'
         )
       SQL
@@ -251,7 +310,7 @@ class ProjectsFinderAdminService
       conditions << <<-SQL.squish
         projects.id IN (
           SELECT project_id FROM phases
-          WHERE (start_at, coalesce(end_at, 'infinity'::DATE)) OVERLAPS ('#{today}', '#{today}')
+          WHERE start_at <= now() AND coalesce(end_at, 'infinity'::timestamp) > now()
           AND participation_method = 'information'
         )
       SQL
@@ -261,10 +320,10 @@ class ProjectsFinderAdminService
       # Projects that have at least one phase and all phases have ended
       conditions << <<-SQL.squish
         projects.id IN (
-          SELECT project_id FROM phases 
-          GROUP BY project_id 
-          HAVING COUNT(*) > 0 
-          AND MAX(coalesce(end_at, 'infinity'::DATE)) < '#{today}'
+          SELECT project_id FROM phases
+          GROUP BY project_id
+          HAVING COUNT(*) > 0
+          AND MAX(coalesce(end_at, 'infinity'::timestamp)) <= now()
         )
       SQL
     end
@@ -272,16 +331,13 @@ class ProjectsFinderAdminService
     scope.where(conditions.map { |c| "(#{c})" }.join(' OR '))
   end
 
-  # Filter projects by the participation method of their current phase
-  def self.filter_current_phase_participation_method(scope, params = {})
+  # Filter projects that have at least one phase with one of the given participation methods
+  def self.filter_participation_methods(scope, params = {})
     participation_methods = params[:participation_methods] || []
     return scope if participation_methods.blank?
 
-    current_phases_with_participation_methods = Phase
+    project_ids_with_matching_phase = Phase
       .where(participation_method: participation_methods)
-      .where("start_at <= current_date AND coalesce(end_at, 'infinity'::DATE) >= current_date")
-
-    project_ids_with_matching_phase = current_phases_with_participation_methods
       .select(:project_id)
 
     scope.where(id: project_ids_with_matching_phase)
@@ -325,5 +381,13 @@ class ProjectsFinderAdminService
     else
       scope.where(listed: false)
     end
+  end
+
+  # Filter projects by space
+  def self.filter_space(scope, params = {})
+    space_ids = params[:space_ids]
+    return scope if space_ids.blank?
+
+    scope.where(space_id: space_ids)
   end
 end

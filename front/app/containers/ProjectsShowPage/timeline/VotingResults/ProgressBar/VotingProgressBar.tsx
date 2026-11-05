@@ -40,6 +40,7 @@ const VotingProgressBar = ({ phase, idea }: Props) => {
     point: assignMultipleVotesInputMessages.xPoints,
     token: assignMultipleVotesInputMessages.xTokens,
     credit: assignMultipleVotesInputMessages.xCredits,
+    percent: assignMultipleVotesInputMessages.xPercents,
   });
   const tooltip = formatMessage(messages.votingTooltip);
 

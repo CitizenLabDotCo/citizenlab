@@ -12,6 +12,7 @@ import participantsMessages from 'components/admin/GraphCards/ParticipantsCard/m
 
 import { useIntl } from 'utils/cl-intl';
 
+import { AccessibilityInputs } from '../_shared/AccessibilityInputs';
 import {
   ComparisonToggle,
   HideStatisticsToggle,
@@ -48,6 +49,7 @@ const ChartWidgetSettings = () => {
       <TimeSeriesWidgetSettings resetComparePeriod />
       <ComparisonToggle />
       <HideStatisticsToggle />
+      <AccessibilityInputs />
     </Box>
   );
 };

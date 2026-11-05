@@ -5,10 +5,10 @@ export default defineMessages({
     id: 'app.components.Admin.ImageCropper.infoLinkText',
     defaultMessage: 'recommended ratio',
   },
-  imageSupportPageURL: {
-    id: 'app.components.Admin.ImageCropper.imageSupportPageURL',
+  imageSupportPageURL2: {
+    id: 'app.components.Admin.ImageCropper.imageSupportPageURL2',
     defaultMessage:
-      'https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images',
+      'https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images',
   },
   cropSentenceOne: {
     id: 'app.components.Admin.ImageCropper.cropSentenceOne',

@@ -55,6 +55,22 @@ RSpec.describe Files::FileFinder do
       end
     end
 
+    context 'with attachable filter' do
+      let_it_be(:static_page) { create(:static_page) }
+      let_it_be(:attachment) { create(:file_attachment, attachable: static_page) }
+
+      it 'returns only the files attached to that record' do
+        create(:file_attachment, attachable: create(:static_page))
+
+        expect(described_class.new(scope, attachable: static_page).execute)
+          .to contain_exactly(attachment.file)
+      end
+
+      it 'returns every file when no attachable is given' do
+        expect(results).to include(*@files)
+      end
+    end
+
     context 'with uploader filter' do
       context 'when uploader is a single user' do
         let(:params) { { uploader: @uploader1 } }

@@ -21,15 +21,12 @@ describe ProjectFolders::SideFxProjectFolderService do
           payload: { project_folder: clean_time_attributes(project_folder.attributes) }
         )
     end
-  end
 
-  describe 'before_update' do
-    it 'runs the description through the text image service' do
-      expect_any_instance_of(TextImageService)
-        .to receive(:swap_data_images_multiloc)
-        .with(project_folder.description_multiloc, field: :description_multiloc, imageable: project_folder)
-        .and_return(project_folder.description_multiloc)
-      service.before_update(project_folder, user)
+    it 'provisions an enabled Content Builder description layout (content_builder patch)' do
+      service.after_create(project_folder, user)
+
+      layout = project_folder.content_builder_layouts.find_by(code: 'project_folder_description')
+      expect(layout&.enabled).to be(true)
     end
   end
 
@@ -50,6 +47,37 @@ describe ProjectFolders::SideFxProjectFolderService do
           }
         ).exactly(1).times
     end
+
+    it 'enqueues the transition job when a schedule is set' do
+      scheduled_at = 1.day.from_now
+
+      project_folder.update!(admin_publication_attributes: {
+        scheduled_status: 'archived',
+        scheduled_at: scheduled_at,
+        scheduled_by_id: user.id
+      })
+
+      expect { service.after_update(project_folder, user) }
+        .to have_enqueued_job(ProcessScheduledPublicationTransitionsJob)
+        .at(project_folder.admin_publication.scheduled_at)
+    end
+
+    it 'does not enqueue the transition job when no schedule is set' do
+      project_folder.update!(title_multiloc: { en: 'changed' })
+
+      expect { service.after_update(project_folder, user) }
+        .not_to have_enqueued_job(ProcessScheduledPublicationTransitionsJob)
+    end
+
+    it 'does not enqueue the transition job when schedule is cancelled' do
+      project_folder.update!(admin_publication_attributes: {
+        scheduled_status: nil,
+        scheduled_at: nil
+      })
+
+      expect { service.after_update(project_folder, user) }
+        .not_to have_enqueued_job(ProcessScheduledPublicationTransitionsJob)
+    end
   end
 
   describe 'after_destroy' do
@@ -61,11 +89,11 @@ describe ProjectFolders::SideFxProjectFolderService do
       end
     end
 
-    it 'invokes ContentBuilder::LayoutService#clean_homepage_layout_when_publication_deleted' do
+    it 'invokes ContentBuilder::LayoutService#clean_layouts_when_publication_deleted' do
       layout_service = instance_double(ContentBuilder::LayoutService)
       allow(ContentBuilder::LayoutService).to receive(:new).and_return(layout_service)
       expect(layout_service).to receive(
-        :clean_homepage_layout_when_publication_deleted
+        :clean_layouts_when_publication_deleted
       ).with(instance_of(ProjectFolders::Folder))
 
       frozen_folder = project_folder.destroy

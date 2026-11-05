@@ -1,4 +1,4 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, InfiniteData } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
@@ -45,12 +45,14 @@ const useInternalComments = (
   return useInfiniteQuery<
     IInternalComments,
     CLErrors,
-    IInternalComments,
-    InternalCommentsKeys
+    InfiniteData<IInternalComments>,
+    InternalCommentsKeys,
+    number
   >({
     queryKey: internalCommentKeys.list(parameters),
     queryFn: ({ pageParam }) =>
       fetchInternalComments({ ...parameters, pageNumber: pageParam }),
+    initialPageParam: 1,
     getNextPageParam: (lastPage) => {
       // TODO: Fix this the next time the file is edited.
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition

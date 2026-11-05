@@ -111,6 +111,10 @@ export default defineMessages({
     id: 'app.components.formBuilder.drawArea',
     defaultMessage: 'Draw area',
   },
+  dropMultiplePins: {
+    id: 'app.components.formBuilder.dropMultiplePins1',
+    defaultMessage: 'Drop pins',
+  },
   bodyMultiloc: {
     id: 'app.components.formBuilder.bodyMultiloc',
     defaultMessage: 'Description',
@@ -195,9 +199,9 @@ export default defineMessages({
     id: 'app.components.formBuilder.requiredToggleLabel',
     defaultMessage: 'Make answering this question required',
   },
-  showResponseToUsersToggleLabel: {
-    id: 'app.components.formBuilder.showResponseToUsersToggleLabel',
-    defaultMessage: 'Show response to users',
+  requiredToggleDescription: {
+    id: 'app.components.formBuilder.requiredToggleDescription',
+    defaultMessage: 'Participants must answer to continue.',
   },
   deleteButtonLabel: {
     id: 'app.components.formBuilder.deleteButtonLabel',
@@ -275,19 +279,13 @@ export default defineMessages({
     defaultMessage:
       'This has already been added in the form. Default content may only be used once.',
   },
-  disabledCustomFieldsTooltip: {
-    id: 'app.components.formBuilder.disabledCustomFieldsTooltip1',
-    defaultMessage:
-      'Adding custom content is not part of your current license. Reach out to your GovSuccess Manager to learn more about it.',
-  },
   questionCannotBeDeleted: {
     id: 'app.components.formBuilder.questionCannotBeDeleted',
     defaultMessage: "This question can't be deleted.",
   },
-  fieldIsNotVisibleTooltip: {
-    id: 'app.components.formBuilder.fieldIsNotVisibleTooltip',
-    defaultMessage:
-      'Currently, answers to these questions are only available in the exported excel file on Input Manager, and not visible to the users.',
+  managersOnly: {
+    id: 'app.components.formBuilder.managersOnly',
+    defaultMessage: 'Managers only',
   },
   leaveBuilderConfirmationQuestion: {
     id: 'app.components.formBuilder.leaveBuilderConfirmationQuestion',

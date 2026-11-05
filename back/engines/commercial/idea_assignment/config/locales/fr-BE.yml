@@ -9,5 +9,5 @@ fr-BE:
       cta_button: 'Faites votre retour à %{authorName}'
       event_description: 'Une idée vous a été attribuée. Envoyer une mise à jour en écrivant un commentaire officiel ou en changeant son statut.'
       title: '%{firstName}, une contribution vous a été assignée.'
-      subject: 'Vous avez une attribution sur la plate-forme de %{organizationName}'
-      preheader_idea: 'L’idée de %{authorName} vous a été attribuée'
+      subject: 'Vous avez une attribution sur la plateforme de %{organizationName}'
+      preheader: 'La contribution de %{authorName} vous a été assignée'

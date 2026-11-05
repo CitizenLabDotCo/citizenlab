@@ -4,12 +4,16 @@ module ParticipationMethod
   class NativeSurvey < Base
     ALLOWED_EXTRA_FIELD_TYPES = %w[
       page number linear_scale rating text multiline_text select multiselect
-      multiselect_image file_upload shapefile_upload point line polygon
+      multiselect_image file_upload shapefile_upload point line polygon multipoint
       ranking matrix_linear_scale sentiment_linear_scale
     ]
 
     def self.method_str
       'native_survey'
+    end
+
+    def phase_insights_class
+      Insights::NativeSurveyPhaseInsightsService
     end
 
     def allowed_extra_field_input_types
@@ -23,14 +27,13 @@ module ParticipationMethod
 
     # NOTE: This is only ever used by the analyses controller - otherwise the front-end always persists the form
     def create_default_form!
-      form = CustomForm.new(participation_context: phase)
+      form = CustomForm.create(participation_context: phase)
 
       default_fields(form).reverse_each do |field|
         field.save!
         field.move_to_top
       end
 
-      form.save!
       phase.reload
 
       form
@@ -41,8 +44,6 @@ module ParticipationMethod
     end
 
     def default_fields(custom_form)
-      return [] if custom_form.persisted?
-
       multiloc_service = MultilocService.new
       [
         start_page_field(custom_form),
@@ -71,7 +72,7 @@ module ParticipationMethod
       ]
     end
 
-    def form_logic_enabled?
+    def supports_form_logic?
       true
     end
 
@@ -100,7 +101,10 @@ module ParticipationMethod
     end
 
     def allow_posting_again_after
-      nil # Never allow posting again
+      # When the phase allows multiple responses, 0.seconds removes the posting
+      # limit (see Permissions::PhasePermissionsService#posting_limit_reached?).
+      # Otherwise nil locks it to a single response per user.
+      0.seconds if phase.allow_multiple_responses?
     end
 
     def supported_email_campaigns
@@ -112,7 +116,15 @@ module ParticipationMethod
     end
 
     def supports_serializing?(attribute)
-      %i[native_survey_title_multiloc native_survey_button_multiloc].include?(attribute)
+      %i[native_survey_title_multiloc native_survey_button_multiloc allow_multiple_responses].include?(attribute)
+    end
+
+    def destroy_ideas_on_phase_destroy?
+      true
+    end
+
+    def supports_standalone_placement?
+      true
     end
 
     def supports_submission?
@@ -123,30 +135,21 @@ module ParticipationMethod
       true
     end
 
+    def supports_input_pdf_export?
+      true
+    end
+
     def supports_toxicity_detection?
       false
     end
 
-    # Attribute used interally by backend to determine if user fields should be shown in the form
-    def user_fields_in_form?
-      return false if posting_permission.nil?
-      return false if posting_permission.user_data_collection == 'anonymous'
-
-      case posting_permission.permitted_by
-      when 'everyone'
-        !posting_permission.permissions_custom_fields.empty?
-      when 'everyone_confirmed_email'
-        posting_permission.user_fields_in_form && !posting_permission.permissions_custom_fields.empty?
-      else
-        if posting_permission.global_custom_fields == true
-          posting_permission.user_fields_in_form
-        else
-          posting_permission.user_fields_in_form && !posting_permission.permissions_custom_fields.empty?
-        end
-      end
-    end
-
     delegate :user_data_collection, to: :posting_permission
+
+    def user_fields_in_form_enabled?
+      return false if posting_permission.nil?
+
+      posting_permission.user_fields_in_form_enabled?
+    end
 
     private
 
@@ -174,10 +177,11 @@ module ParticipationMethod
     end
 
     def posting_permission
-      @posting_permission ||= Permission.find_by(
-        permission_scope_id: phase.id,
-        action: 'posting_idea'
-      )
+      # phase should always be defined,
+      # but for some reason it's not in some unit tests.
+      return nil if phase.nil?
+
+      @posting_permission ||= Permissions::PermissionInheritanceService.new.find(phase, 'posting_idea')
     end
   end
 end

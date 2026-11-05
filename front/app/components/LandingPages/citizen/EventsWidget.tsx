@@ -21,8 +21,9 @@ import eventsPageMessages from 'containers/EventsPage/messages';
 import EventCards from 'components/EventCards';
 
 import { useIntl } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 import { isNilOrError, isNil, isError } from 'utils/helperUtils';
+import sharedMessages from 'utils/messages';
 
 import messages from './messages';
 
@@ -49,7 +50,7 @@ const StyledTitle = styled(Title)`
   `};
 `;
 
-const EventPageLink = styled(Link)`
+const EventPageLink = typedStyled(Link)`
   color: ${colors.textSecondary};
   margin-top: auto;
 
@@ -113,7 +114,7 @@ const EventsWidget = ({ staticPageId }: Props) => {
 
           <Box alignSelf="center">
             <EventPageLink to="/events">
-              {formatMessage(messages.viewAllEventsText)}
+              {formatMessage(sharedMessages.viewAllEvents)}
             </EventPageLink>
           </Box>
         </>

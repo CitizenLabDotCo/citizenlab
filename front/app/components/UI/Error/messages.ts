@@ -39,6 +39,11 @@ export default defineMessages({
     defaultMessage:
       'This password can be easily guessed. Please choose a stronger password.',
   },
+  too_weak: {
+    id: 'app.errors.too_weak',
+    defaultMessage:
+      'This password can be easily guessed. Please choose a stronger password, for example by making it longer or using several unrelated words.',
+  },
   confirmation_code_invalid: {
     id: 'app.errors.confirmation_code_invalid',
     defaultMessage:
@@ -84,6 +89,16 @@ export default defineMessages({
     id: 'app.errors.no_invites_specified',
     defaultMessage: 'Could not find any email addresses.',
   },
+  unexpected_invite_error: {
+    id: 'app.errors.unexpected_invite_error',
+    defaultMessage:
+      'Something went wrong while processing your invitations. Check the "All invitations" tab before trying again.',
+  },
+  unexpected_seats_count_error: {
+    id: 'app.errors.unexpected_seats_count_error',
+    defaultMessage:
+      'Something went wrong while checking how many seats these invitations need. No invitations were sent. Please try again.',
+  },
   unknown_group: {
     id: 'app.errors.unknown_group',
     defaultMessage: 'The group {value} found in row {row} is not a known group',
@@ -126,6 +141,19 @@ export default defineMessages({
     defaultMessage:
       'One or more duplicate values for the email address {value} were found in the following row(s): {rows}',
   },
+  email_banned: {
+    id: 'app.errors.email_banned',
+    defaultMessage:
+      'The email address {value} found in row {row} has been banned and cannot be invited',
+  },
+  invalid_first_name: {
+    id: 'app.errors.invalid_first_name',
+    defaultMessage: 'First name {value} in row {row} is not valid',
+  },
+  invalid_last_name: {
+    id: 'app.errors.invalid_last_name',
+    defaultMessage: 'Last name {value} in row {row} is not valid',
+  },
   is_not_timeline_project: {
     id: 'app.errors.is_not_timeline_project',
     defaultMessage: 'The current project does not support phases.',
@@ -133,6 +161,11 @@ export default defineMessages({
   has_other_overlapping_phases: {
     id: 'app.errors.has_other_overlapping_phases',
     defaultMessage: 'Projects cannot have overlapping phases.',
+  },
+  not_supported_in_standalone_phase: {
+    id: 'app.errors.not_supported_in_standalone_phase',
+    defaultMessage:
+      'Only surveys can run alongside the timeline. This participation method needs to be a phase on the timeline.',
   },
   group_ids_unauthorized_choice_moderator: {
     id: 'app.errors.group_ids_unauthorized_choice_moderator',
@@ -158,6 +191,11 @@ export default defineMessages({
     id: 'app.errors.cannot_contain_ideas',
     defaultMessage:
       'The participation method you selected does not support this type of input. Please edit your selection and try again.',
+  },
+  has_inputs: {
+    id: 'app.errors.has_inputs',
+    defaultMessage:
+      'You cannot change the participation method because this phase already has inputs. Please remove all inputs first.',
   },
   slug_taken: {
     id: 'app.errors.slug_taken',
@@ -217,6 +255,11 @@ export default defineMessages({
     id: 'app.errors.email_blank',
     defaultMessage: 'Please enter your email address',
   },
+  email_sso_enforced_for_domain: {
+    id: 'app.errors.email_sso_enforced_for_domain',
+    defaultMessage:
+      'You must sign in using single sign-on (SSO) for this email domain.',
+  },
   first_name_blank: {
     id: 'app.errors.first_name_blank',
     defaultMessage: 'Please enter your first name',
@@ -258,6 +301,11 @@ export default defineMessages({
     defaultMessage:
       'The uploaded PDF file appears to be malformed. Try exporting the PDF again from your source and then upload again.',
   },
+  bulk_import_pdf_parsing_timeout: {
+    id: 'app.errors.bulk_import_pdf_parsing_timeout',
+    defaultMessage:
+      'The uploaded PDF is taking too long to process. Try exporting the PDF again from your source and then upload again.',
+  },
   bulk_import_maximum_pdf_pages_exceeded: {
     id: 'app.errors.bulk_import_maximum_pdf_pages_exceeded',
     defaultMessage: 'The maximum of {value} pages in a PDF has been exceeded.',
@@ -290,6 +338,16 @@ export default defineMessages({
     id: 'app.errors.bulk_import_not_enough_pdf_pages',
     defaultMessage:
       'The uploaded PDF does not have enough pages - it should have at least the same number of pages as the downloaded template.',
+  },
+  bulk_import_pdf_pages_not_divisible: {
+    id: 'app.errors.bulk_import_pdf_pages_not_divisible',
+    defaultMessage:
+      'The total number of pages in the PDF must be evenly divisible by the specified number of pages per form.',
+  },
+  bulk_import_user_not_valid: {
+    id: 'app.errors.bulk_import_user_not_valid',
+    defaultMessage:
+      'A user could not be created from the import data: {value}. This issue occurs in the row with ID {row}.',
   },
   uncaught_error: {
     id: 'app.errors.uncaught_error',
@@ -363,6 +421,21 @@ export default defineMessages({
     defaultMessage:
       "The campaign can't be sent out because there are no recipients. The group you're sending to is either empty, or nobody has consented to receiving emails.",
   },
+  insufficient_sms_balance: {
+    id: 'app.errors.insufficient_sms_balance',
+    defaultMessage:
+      'There are not enough SMS credits left to send this message. To purchase more credits, contact your GovSuccess Manager.',
+  },
+  sms_not_configured: {
+    id: 'app.errors.sms_not_configured',
+    defaultMessage:
+      'Some of the SMS configuration is missing. Contact your GovSuccess Manager to have it completed.',
+  },
+  no_previewer_phone: {
+    id: 'app.errors.no_previewer_phone',
+    defaultMessage:
+      'A preview goes to your own phone. Add a phone number to your profile first.',
+  },
   verification_taken: {
     id: 'app.errors.verification_taken',
     defaultMessage:
@@ -381,5 +454,27 @@ export default defineMessages({
     id: 'app.errors.something_went_wrong',
     defaultMessage:
       'Something went wrong. Please contact us if the problem persists.',
+  },
+  duration_too_short: {
+    id: 'app.errors.phase_too_short',
+    defaultMessage: 'The phase is too short. It must be at least 24 hours.',
+  },
+  new_phone_blank: {
+    id: 'app.errors.new_phone_blank',
+    defaultMessage: 'Please enter your phone number.',
+  },
+  new_phone_invalid: {
+    id: 'app.errors.new_phone_invalid',
+    defaultMessage: 'Please enter a valid phone number.',
+  },
+  new_phone_taken: {
+    id: 'app.errors.new_phone_taken',
+    defaultMessage:
+      'This phone number is already taken. Please try another one.',
+  },
+  file_too_large: {
+    id: 'app.errors.file_too_large',
+    defaultMessage:
+      '"{value}" is too large. The maximum file size is {max_size_mb} MB. Please remove it and upload a smaller file.',
   },
 });

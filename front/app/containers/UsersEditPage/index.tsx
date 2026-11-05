@@ -5,14 +5,13 @@ import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import CampaignsConsentForm from 'components/CampaignConsentForm';
 import Unauthorized from 'components/Unauthorized';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 
+import EarlyAccess from './EarlyAccess';
 import LoginCredentials from './LoginCredentials';
 import messages from './messages';
 import ProfileDeletion from './ProfileDeletion';
@@ -33,7 +32,6 @@ const Container = styled.div`
 `;
 
 const UsersEditPage = () => {
-  const passwordLoginActive = useFeatureFlag({ name: 'password_login' });
   const { data: authUser } = useAuthUser();
 
   if (!authUser?.data.attributes.registration_completed_at) {
@@ -59,11 +57,12 @@ const UsersEditPage = () => {
           <div>
             <VerificationStatus />
             <ProfileForm />
-            {passwordLoginActive && <LoginCredentials user={authUser.data} />}
+            <LoginCredentials user={authUser.data} />
             <ProfileDeletion />
             <CampaignsConsentForm
               trackEventName={tracks.defaultSettingsChanged}
             />
+            <EarlyAccess />
           </div>
         </Container>
       </main>

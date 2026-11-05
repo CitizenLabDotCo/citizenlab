@@ -13,7 +13,6 @@ import { getFullName } from 'utils/textUtils';
 import messages from './messages';
 
 type Props = {
-  open: boolean;
   setClose: () => void;
   user: IUserData;
   /**
@@ -24,7 +23,7 @@ type Props = {
   returnFocusRef?: React.RefObject<HTMLElement>;
 };
 
-const UnblockUserModal = ({ open, setClose, user, returnFocusRef }: Props) => {
+const UnblockUserModal = ({ setClose, user, returnFocusRef }: Props) => {
   const { formatMessage } = useIntl();
   const { mutate: unBlockUser } = useUnblockUser();
 
@@ -39,10 +38,11 @@ const UnblockUserModal = ({ open, setClose, user, returnFocusRef }: Props) => {
     <Modal
       width={400}
       close={setClose}
-      opened={open}
+      opened={true}
       returnFocusRef={returnFocusRef}
+      ariaLabelledBy="unblock-user-modal-title"
     >
-      <Title variant="h3" m="35px 0 30px">
+      <Title id="unblock-user-modal-title" variant="h3" m="35px 0 30px">
         {formatMessage(messages.confirmUnblock, {
           name: getFullName(user),
         })}

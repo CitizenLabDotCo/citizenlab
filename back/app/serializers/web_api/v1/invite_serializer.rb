@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::InviteSerializer < WebApi::V1::BaseSerializer
-  attributes :token, :invite_text, :accepted_at, :updated_at, :created_at
+  attributes :token, :accepted_at, :updated_at, :created_at
 
   attribute :activate_invite_url do |object|
     Frontend::UrlService.new.invite_url object.token, locale: Locale.new(object.invitee.locale)

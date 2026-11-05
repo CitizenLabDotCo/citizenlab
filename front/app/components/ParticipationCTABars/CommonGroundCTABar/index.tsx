@@ -1,25 +1,22 @@
 import React, { useEffect, useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { useLocation } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 
 import { IPhaseData } from 'api/phases/types';
-import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
+import { getCurrentPhase, getPhaseActionDescriptor } from 'api/phases/utils';
 
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import { scrollTo } from 'containers/Authentication/SuccessActions/actions/scrollTo';
 
 import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
-import {
-  CTABarProps,
-  hasProjectEndedOrIsArchived,
-} from 'components/ParticipationCTABars/utils';
+import { CTABarProps } from 'components/ParticipationCTABars/utils';
 import Button from 'components/UI/ButtonWithLink';
 
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import { FormattedMessage } from 'utils/cl-intl';
+import { useLocation } from 'utils/router';
 
 import messages from '../messages';
 
@@ -29,7 +26,7 @@ const CommonGroundCTABar = ({ phases, project }: CTABarProps) => {
   const { pathname, hash: divId } = useLocation();
 
   useEffect(() => {
-    setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
+    setCurrentPhase(getCurrentPhase(phases));
   }, [phases]);
 
   useEffect(() => {
@@ -39,16 +36,18 @@ const CommonGroundCTABar = ({ phases, project }: CTABarProps) => {
     }
   }, [divId]);
 
-  const { enabled: reactingEnabled, disabled_reason: reactingDisabledReason } =
-    project.attributes.action_descriptors.reacting_idea;
-  const { enabled: postingEnabled } =
-    project.attributes.action_descriptors.posting_idea;
-  const showButtons =
-    reactingEnabled || isFixableByAuthentication(reactingDisabledReason);
-
-  if (!currentPhase || hasProjectEndedOrIsArchived(project, currentPhase)) {
+  if (!currentPhase) {
     return null;
   }
+
+  const { enabled: reactingEnabled, disabled_reason: reactingDisabledReason } =
+    getPhaseActionDescriptor(currentPhase, 'reacting_idea');
+  const { enabled: postingEnabled } = getPhaseActionDescriptor(
+    currentPhase,
+    'posting_idea'
+  );
+  const showButtons =
+    reactingEnabled || isFixableByAuthentication(reactingDisabledReason);
 
   const handleReactToInputs = () => {
     const scrollToParams = {
@@ -95,7 +94,9 @@ const CommonGroundCTABar = ({ phases, project }: CTABarProps) => {
                 textHoverColor={theme.colors.black}
                 padding="6px 12px"
                 fontSize="14px"
-                linkTo={`/projects/${project.attributes.slug}/ideas/new?phase_id=${currentPhase.id}`}
+                to="/projects/$slug/ideas/new"
+                params={{ slug: project.attributes.slug }}
+                search={{ phase_id: currentPhase.id }}
               >
                 <FormattedMessage {...messages.addInput} />
               </Button>

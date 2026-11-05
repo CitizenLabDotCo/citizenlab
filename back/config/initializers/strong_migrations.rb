@@ -13,6 +13,10 @@ StrongMigrations.statement_timeout = 1.hour
 # Outdated statistics can sometimes hurt performance
 StrongMigrations.auto_analyze = true
 
+# We decided to disable the check during CDM: https://www.notion.so/govocal/Back-end-Code-Discussion-Meeting-BE-CDM-a94ef3cfdd9849e4bde22d2b10dcffeb?source=copy_link#3289663b7b268061bc60eaeb5096fe1a
+# Adding indexes concurrently adds limited value and often fail in the middle of the migration with no rollback.
+StrongMigrations.disable_check(:add_index)
+
 # Set the version of the production database
 # so the right checks are run in development
 # StrongMigrations.target_version = 10

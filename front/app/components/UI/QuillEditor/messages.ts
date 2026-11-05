@@ -49,6 +49,10 @@ export default defineMessages({
     id: 'app.components.QuillEditor.video',
     defaultMessage: 'Add video',
   },
+  embeddedVideo: {
+    id: 'app.components.QuillEditor.embeddedVideo',
+    defaultMessage: 'Embedded video',
+  },
   link: {
     id: 'app.components.QuillEditor.link',
     defaultMessage: 'Add link',
@@ -89,8 +93,25 @@ export default defineMessages({
     id: 'app.components.QuillEditor.customLink',
     defaultMessage: 'Add button',
   },
-  altTextPlaceholder: {
-    id: 'app.components.QuillEditor.imageAltPlaceholder',
-    defaultMessage: 'Short description of the image',
+  altTextLabel: {
+    id: 'app.components.QuillEditor.altTextLabel',
+    defaultMessage: 'Alt Text',
+  },
+  imageTitleLabel: {
+    id: 'app.components.QuillEditor.imageTitleLabel',
+    defaultMessage: 'Image Title',
+  },
+  imageTooLargeTitle: {
+    id: 'app.components.QuillEditor.imageTooLargeTitle',
+    defaultMessage: 'This image is too large',
+  },
+  imageTooLarge: {
+    id: 'app.components.QuillEditor.imageTooLarge',
+    defaultMessage:
+      'The selected image exceeds the maximum allowed size of {maxSizeMb}MB. Please choose a smaller image.',
+  },
+  imageTooLargeConfirm: {
+    id: 'app.components.QuillEditor.imageTooLargeConfirm',
+    defaultMessage: 'I understand',
   },
 });

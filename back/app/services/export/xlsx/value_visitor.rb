@@ -94,11 +94,11 @@ module Export
         visit_point(field)
       end
 
-      def visit_page(_field)
-        '' # The field does not capture data, so there is no value.
+      def visit_multipoint(field)
+        visit_point(field)
       end
 
-      def visit_section(_field)
+      def visit_page(_field)
         '' # The field does not capture data, so there is no value.
       end
 
@@ -108,9 +108,10 @@ module Export
 
         if (file = model.idea_files.detect { |f| f.id == file_id })
           file.file.url
-        else
-          file_attachment = model.file_attachments.detect { |f| f.id == file_id }
+        elsif (file_attachment = model.file_attachments.detect { |f| f.id == file_id })
           file_attachment.file.content.url
+        else
+          ''
         end
       end
 
@@ -119,9 +120,9 @@ module Export
       end
 
       def visit_topic_ids(_field)
-        return '' if model.topics.empty?
+        return '' if model.input_topics.empty?
 
-        topic_titles = model.topics.map do |topic|
+        topic_titles = model.input_topics.map do |topic|
           value_for_multiloc topic.title_multiloc
         end
         topic_titles.join(VALUE_SEPARATOR)
@@ -145,16 +146,16 @@ module Export
       end
 
       def value_for(field)
-        stored_value = if field.built_in?
+        stored_value = if field.stored_on_model?
           model.public_send field.key
         else
-          model.custom_field_values[field.key]
+          model.answer_for_key(field.key)&.value
         end
         stored_value.nil? ? '' : stored_value
       end
 
       def value_for_multiloc(maybe_multiloc)
-        maybe_multiloc.is_a?(Hash) ? multiloc_service.t(maybe_multiloc) : ''
+        maybe_multiloc.is_a?(Hash) ? multiloc_service.t(maybe_multiloc, ignore_blank: true) : ''
       end
     end
   end

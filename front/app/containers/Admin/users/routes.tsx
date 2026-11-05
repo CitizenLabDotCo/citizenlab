@@ -1,82 +1,146 @@
 import React, { lazy } from 'react';
 
-const AdminUsersIndex = lazy(() => import('.'));
-const AdminAllUsers = lazy(() => import('./AllUsers'));
-const AdminAdmins = lazy(() => import('./Admins'));
-const AdminModerators = lazy(() => import('./Moderators'));
-const AdminUsersGroup = lazy(() => import('./UsersGroup'));
-const AdminBlockedUsers = lazy(() => import('./BlockedUsers'));
 import PageLoading from 'components/UI/PageLoading';
 
-import { AdminRoute } from '../routes';
+import { createRoute } from 'utils/router';
 
-export enum usersRoutes {
-  users = 'users',
-  admins = 'admins',
-  moderators = 'moderators',
-  groupId = `:groupId`,
-  blocked = 'blocked',
-}
+import { adminRoute } from '../routes';
 
-type UsersRoute<T extends string = string> =
-  AdminRoute<`${usersRoutes.users}/${T}`>;
+const AdminUsersIndex = lazy(() => import('.'));
+const AdminAllUsers = lazy(() => import('./tabs/AllUsers'));
+const AdminAdmins = lazy(() => import('./tabs/Admins'));
+const AdminSpaceModerators = lazy(() => import('./tabs/SpaceModerators'));
+const AdminFolderModerators = lazy(() => import('./tabs/FolderModerators'));
+const AdminProjectModerators = lazy(() => import('./tabs/ProjectModerators'));
+const AdminBlockedUsers = lazy(() => import('./tabs/BlockedUsers'));
+const AdminBannedEmails = lazy(() => import('./tabs/BannedEmails'));
+const AdminEmailBounces = lazy(() => import('./tabs/EmailBounces'));
+const AdminUsersGroup = lazy(() => import('./UsersGroup'));
+const AdminSeatsOverview = lazy(() => import('./SeatsOverview'));
 
-export type userRouteTypes =
-  | AdminRoute<`${usersRoutes.users}`>
-  | UsersRoute<`${usersRoutes.admins}`>
-  | UsersRoute<`${usersRoutes.moderators}`>
-  | UsersRoute<`${usersRoutes.blocked}`>
-  | UsersRoute<`${string}`>;
-
-const createAdminUsersRoutes = () => ({
-  path: usersRoutes.users,
-  element: (
+const usersRoute = createRoute({
+  getParentRoute: () => adminRoute,
+  path: 'users',
+  component: () => (
     <PageLoading>
       <AdminUsersIndex />
     </PageLoading>
   ),
-  children: [
-    {
-      index: true,
-      element: (
-        <PageLoading>
-          <AdminAllUsers />
-        </PageLoading>
-      ),
-    },
-    {
-      path: usersRoutes.admins,
-      element: (
-        <PageLoading>
-          <AdminAdmins />
-        </PageLoading>
-      ),
-    },
-    {
-      path: usersRoutes.moderators,
-      element: (
-        <PageLoading>
-          <AdminModerators />
-        </PageLoading>
-      ),
-    },
-    {
-      path: usersRoutes.groupId,
-      element: (
-        <PageLoading>
-          <AdminUsersGroup />
-        </PageLoading>
-      ),
-    },
-    {
-      path: usersRoutes.blocked,
-      element: (
-        <PageLoading>
-          <AdminBlockedUsers />
-        </PageLoading>
-      ),
-    },
-  ],
 });
+
+const usersIndexRoute = createRoute({
+  getParentRoute: () => usersRoute,
+  path: '/',
+  component: () => (
+    <PageLoading>
+      <AdminAllUsers />
+    </PageLoading>
+  ),
+});
+
+const adminsRoute = createRoute({
+  getParentRoute: () => usersRoute,
+  path: 'admins',
+  component: () => (
+    <PageLoading>
+      <AdminAdmins />
+    </PageLoading>
+  ),
+});
+
+const spaceModeratorsRoute = createRoute({
+  getParentRoute: () => usersRoute,
+  path: 'space-moderators',
+  component: () => (
+    <PageLoading>
+      <AdminSpaceModerators />
+    </PageLoading>
+  ),
+});
+
+const folderModeratorsRoute = createRoute({
+  getParentRoute: () => usersRoute,
+  path: 'folder-moderators',
+  component: () => (
+    <PageLoading>
+      <AdminFolderModerators />
+    </PageLoading>
+  ),
+});
+
+const projectModeratorsRoute = createRoute({
+  getParentRoute: () => usersRoute,
+  path: 'project-moderators',
+  component: () => (
+    <PageLoading>
+      <AdminProjectModerators />
+    </PageLoading>
+  ),
+});
+
+const groupRoute = createRoute({
+  getParentRoute: () => usersRoute,
+  path: 'groups/$groupId',
+  component: () => (
+    <PageLoading>
+      <AdminUsersGroup />
+    </PageLoading>
+  ),
+});
+
+const blockedRoute = createRoute({
+  getParentRoute: () => usersRoute,
+  path: 'blocked',
+  component: () => (
+    <PageLoading>
+      <AdminBlockedUsers />
+    </PageLoading>
+  ),
+});
+
+const bannedEmailsRoute = createRoute({
+  getParentRoute: () => usersRoute,
+  path: 'banned-emails',
+  component: () => (
+    <PageLoading>
+      <AdminBannedEmails />
+    </PageLoading>
+  ),
+});
+
+const emailBouncesRoute = createRoute({
+  getParentRoute: () => usersRoute,
+  path: 'email-bounces',
+  component: () => (
+    <PageLoading>
+      <AdminEmailBounces />
+    </PageLoading>
+  ),
+});
+
+const seatsRoute = createRoute({
+  getParentRoute: () => usersRoute,
+  path: 'seats',
+  component: () => (
+    <PageLoading>
+      <AdminSeatsOverview />
+    </PageLoading>
+  ),
+});
+
+const createAdminUsersRoutes = () => {
+  return usersRoute.addChildren([
+    usersIndexRoute,
+    adminsRoute,
+    spaceModeratorsRoute,
+    folderModeratorsRoute,
+    projectModeratorsRoute,
+    groupRoute,
+    blockedRoute,
+    bannedEmailsRoute,
+    emailBouncesRoute,
+    seatsRoute,
+  ]);
+};
 
 export default createAdminUsersRoutes;

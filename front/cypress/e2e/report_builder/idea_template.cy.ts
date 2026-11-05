@@ -8,7 +8,6 @@ describe('Idea template', () => {
 
   const projectTitle = randomString();
   const projectDescriptionPreview = randomString();
-  const projectDescription = randomString();
   const phaseTitle = randomString();
 
   const ideaTitle = randomString();
@@ -23,7 +22,6 @@ describe('Idea template', () => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     })
       .then((project) => {
@@ -42,25 +40,23 @@ describe('Idea template', () => {
       .then((phase) => {
         phaseId = phase.body.data.id;
         cy.apiCreateIdea({
-          projectId,
+          phaseId,
           ideaTitle,
           ideaContent,
-          phaseIds: [phaseId],
         });
       })
       .then(() => {
         cy.apiCreateIdea({
-          projectId,
+          phaseId,
           ideaTitle: higherLikedIdeaTitle,
           ideaContent,
-          phaseIds: [phaseId],
         }).then((idea) => {
           const email = randomEmail();
           const password = randomString();
           cy.apiSignup(randomString(), randomString(), email, password).then(
             (user) => {
               userId = user.body.data.id;
-              cy.apiLikeIdea(email, password, idea.body.data.id);
+              cy.apiReactToIdea(email, password, idea.body.data.id, 'up');
             }
           );
         });

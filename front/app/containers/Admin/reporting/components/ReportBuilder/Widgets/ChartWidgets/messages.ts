@@ -63,8 +63,92 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.hideStatistics',
     defaultMessage: 'Hide statistics',
   },
+  showVisitors: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ParticipantsWidget.ChartWidgetSettings.showVisitors',
+    defaultMessage: 'Show visitors',
+  },
+  showActiveStats: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.InternalAdoptionWidget.ChartWidgetSettings.showActiveStats',
+    defaultMessage: 'Show active users',
+  },
   youNeedToSelectADateRange: {
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.youNeedToSelectADateRange',
     defaultMessage: 'You need to select a date range first.',
+  },
+  analyticsChartAriaLabel: {
+    id: 'app.containers.admin.ReportBuilder.charts.analyticsChartAriaLabel',
+    defaultMessage: 'Label',
+  },
+  analyticsChartDescription: {
+    id: 'app.containers.admin.ReportBuilder.charts.analyticsChartDescription',
+    defaultMessage: 'Description',
+  },
+  accessibility: {
+    id: 'app.containers.admin.ReportBuilder.charts.accessibility',
+    defaultMessage: 'Accessibility',
+  },
+  analyticsChartAriaLabelTooltip3: {
+    id: 'app.containers.admin.ReportBuilder.charts.analyticsChartAriaLabelTooltip3',
+    defaultMessage:
+      'Provide a label that describes the chart for improved accessibility.',
+  },
+  analyticsChartDescriptionTooltip3: {
+    id: 'app.containers.admin.ReportBuilder.charts.analyticsChartDescriptionTooltip3',
+    defaultMessage:
+      'Provide a more detailed description of the chart and any relevant trends for improved accessibility.',
+  },
+  description: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.messages.description',
+    defaultMessage: 'Description:',
+  },
+  projectPublicationStatusLabel: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.MethodsUsedWidget.ChartWidgetSettings.projectPublicationStatusLabel',
+    defaultMessage: 'Project publication status',
+  },
+  publishedLabel: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.MethodsUsedWidget.ChartWidgetSettings.publishedLabel',
+    defaultMessage: 'Published',
+  },
+  archivedLabel: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.MethodsUsedWidget.ChartWidgetSettings.archivedLabel',
+    defaultMessage: 'Archived',
+  },
+  accessibilityDescription: {
+    id: 'app.containers.admin.ReportBuilder.charts.accessibilityDescription',
+    defaultMessage:
+      'Use these fields to provide a clear text description so users who rely on assistive technologies can understand the chart’s meaning.',
+  },
+  reffererColumn: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsTrafficSourcesWidget.referrerColumn',
+    defaultMessage: 'Referrer',
+  },
+  visitsColumn: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsTrafficSourcesWidget.visitsColumn',
+    defaultMessage: 'Visits',
+  },
+  visitorsColumn: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsTrafficSourcesWidget.visitorsColumn',
+    defaultMessage: 'Visitors',
+  },
+  dateColumn: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsWidget.VisitorsCard.dateColumn',
+    defaultMessage: 'Date',
+  },
+  visitorsTrafficSourcesCaption: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsTrafficSourcesWidget.visitorsTrafficSourcesCaption2',
+    defaultMessage:
+      'Traffic sources data table showing referrer, value, and percentage',
+  },
+  visitorsCaption: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.VisitorsWidget.VisitorsCard.visitorsCaption',
+    defaultMessage: 'Visitors data table showing date, visitors, and visits',
+  },
+  percentageColumn: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.messages.percentageColumn',
+    defaultMessage: 'Percentage',
+  },
+  valueColumn: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.messages.valueColumn',
+    defaultMessage: 'Value',
   },
 });

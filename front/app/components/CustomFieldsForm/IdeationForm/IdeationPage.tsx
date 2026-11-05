@@ -1,8 +1,7 @@
-import React, { useState, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { FormProvider } from 'react-hook-form';
-import { useLocation, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
@@ -14,11 +13,13 @@ import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { triggerPostParticipationFlow } from 'containers/Authentication/events';
 import ProfileVisiblity from 'containers/IdeasNewPage/IdeasNewIdeationForm/ProfileVisibility';
 
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
 import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
-import SubmissionReference from 'components/Form/Components/Layouts/SubmissionReference';
+import CustomFieldsSignupHelperText from 'components/CustomFieldsForm/CustomFieldsSignupHelperText';
+import SubmissionReference from 'components/CustomFieldsForm/SubmissionReference';
 import Feedback from 'components/HookForm/Feedback';
 
 import clHistory from 'utils/cl-router/history';
@@ -26,6 +27,7 @@ import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { isPage } from 'utils/helperUtils';
 import { isAdmin } from 'utils/permissions/roles';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+import { useLocation, useSearch } from 'utils/router';
 
 import CustomFields from '../CustomFields';
 import AuthorField from '../Fields/AuthorField';
@@ -37,7 +39,8 @@ import PageFooter from '../Page/PageFooter';
 import PageTitle from '../Page/PageTitle';
 import { FormValues } from '../Page/types';
 import usePageForm from '../Page/usePageForm';
-import { getFormCompletionPercentage } from '../util';
+import PostParticipationBox from '../PostParticipationBox';
+import { getFormCompletionPercentage, trackFormPageView } from '../util';
 
 const StyledForm = styled.form`
   height: 100%;
@@ -92,8 +95,8 @@ const IdeationPage = ({
   const isMapPage = page.page_layout === 'map';
   const isMobileOrSmaller = useBreakpoint('phone');
 
-  const [searchParams] = useSearchParams();
-  const ideaId = (initialIdeaId || searchParams.get('idea_id')) ?? undefined;
+  const searchParams = useSearch({ strict: false });
+  const ideaId = (initialIdeaId || searchParams.idea_id) ?? undefined;
   const { data: idea } = useIdeaById(ideaId);
   const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
     useState(false);
@@ -101,16 +104,42 @@ const IdeationPage = ({
     idea?.data.attributes.anonymous || false
   );
 
+  useEffect(() => {
+    trackFormPageView(currentPageIndex, lastPageIndex);
+  }, [currentPageIndex, lastPageIndex]);
+
+  useEffect(() => {
+    if (pageRef.current) {
+      pageRef.current.focus();
+    }
+  }, [currentPageIndex]);
+
+  // allow moderators also to edit BudgetField
+  const isAdminOrModerator =
+    isAdmin(authUser) ||
+    (project && canModerateProject(project.data, authUser));
+
   const handleNextAndsubmit = () => {
     pageRef.current?.scrollTo(0, 0);
     if (currentPageIndex === lastPageIndex) {
+      const phaseId = searchParams.phase_id;
       const userCanModerate = project
         ? canModerateProject(project.data, authUser)
         : false;
-      const path =
-        userCanModerate && participationMethod === 'common_ground'
-          ? `/admin/projects/${project?.data.id}/phases/${phase?.id}/ideas`
-          : `/ideas/${idea?.data.attributes.slug}`;
+
+      const shouldGoToIdeaFeed =
+        participationMethod === 'ideation' &&
+        phase?.attributes.presentation_mode === 'feed';
+
+      const shouldGoToInputManager =
+        userCanModerate && participationMethod === 'common_ground';
+
+      const path = shouldGoToIdeaFeed
+        ? `/projects/${project?.data.attributes.slug}/ideas-feed?phase_id=${phaseId}&initial_idea_id=${idea?.data.id}&idea_id=${idea?.data.id}`
+        : shouldGoToInputManager
+        ? `/admin/projects/${project?.data.id}/phases/${phase?.id}/ideas`
+        : `/ideas/${idea?.data.attributes.slug}`;
+
       clHistory.push({ pathname: path });
     }
     methods.handleSubmit((e) => onFormSubmit(e))();
@@ -195,6 +224,11 @@ const IdeationPage = ({
     setIsDisclaimerOpened(false);
   };
 
+  const isLastPage = currentPageIndex === lastPageIndex;
+
+  const showSubmissionReference = isLastPage && idea && showIdeaId;
+  const showPostParticipationSignup = !!(isLastPage && idea && !authUser);
+
   return (
     <FormProvider {...methods}>
       <StyledForm id="idea-form">
@@ -231,6 +265,9 @@ const IdeationPage = ({
               overflowY="auto"
               overflowX="hidden"
               ref={pageRef}
+              tabIndex={0}
+              role="region"
+              aria-labelledby={`page-${currentPageIndex + 1}-title`}
             >
               {showFormFeedback && <Feedback />}
 
@@ -246,7 +283,14 @@ const IdeationPage = ({
               >
                 <Box p="24px" w="100%">
                   <Box display="flex" flexDirection="column">
-                    <PageTitle page={page} />
+                    <PageTitle
+                      page={page}
+                      id={`page-${currentPageIndex + 1}-title`}
+                    />
+
+                    {page.key === 'user_page' && (
+                      <CustomFieldsSignupHelperText />
+                    )}
 
                     {currentPageIndex === 0 && isAdmin(authUser) && (
                       <Box mb="24px">
@@ -254,7 +298,7 @@ const IdeationPage = ({
                       </Box>
                     )}
                     {currentPageIndex === lastPageIndex - 1 &&
-                      isAdmin(authUser) &&
+                      isAdminOrModerator &&
                       phase?.attributes.voting_method === 'budgeting' && (
                         <Box mb="24px">
                           <BudgetField name="budget" />
@@ -276,14 +320,28 @@ const IdeationPage = ({
                           onChange={handleOnChangeAnonymousPosting}
                         />
                       )}
-                    {currentPageIndex === lastPageIndex &&
-                      idea &&
-                      showIdeaId && (
-                        <SubmissionReference
-                          inputId={idea.data.id}
-                          participationMethod={participationMethod}
-                        />
-                      )}
+                    {showPostParticipationSignup && project && (
+                      <PostParticipationBox
+                        showJoinDiscussionsBulletPoint
+                        onCreateAccount={() => {
+                          triggerPostParticipationFlow({
+                            name: 'followProjectAndRedirect',
+                            params: {
+                              projectId: project.data.id,
+                              path: `/ideas/${idea.data.attributes.slug}`,
+                            },
+                          });
+                        }}
+                      />
+                    )}
+                    {showSubmissionReference && (
+                      <SubmissionReference
+                        inputId={idea.data.id}
+                        postParticipationSignUpVisible={
+                          showPostParticipationSignup
+                        }
+                      />
+                    )}
                   </Box>
                 </Box>
               </Box>

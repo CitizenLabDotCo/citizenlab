@@ -4,6 +4,7 @@ import { Button } from '@citizenlab/cl2-component-library';
 
 import Modal from 'components/UI/Modal';
 
+import { ScreenReaderOnly } from 'utils/a11y';
 import { useIntl } from 'utils/cl-intl';
 
 import FilesUpload from './FilesUpload';
@@ -26,7 +27,11 @@ const UploadFileButtonWithModal = () => {
         opened={modalOpen}
         close={() => setModalOpen(false)}
         padding={'40px'}
+        ariaLabelledBy="upload-files-modal-title"
       >
+        <ScreenReaderOnly id="upload-files-modal-title">
+          {formatMessage(messages.addFiles)}
+        </ScreenReaderOnly>
         <FilesUpload setModalOpen={setModalOpen} />
       </Modal>
     </>

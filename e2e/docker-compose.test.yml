@@ -14,7 +14,6 @@ services:
       start_period: 30s
 
   front:
-    image: citizenlabdotco/cl2-devops-front-e2e-static:latest
     build:
       context: ../front/.
       dockerfile: Dockerfile-static-hosting
@@ -44,3 +43,27 @@ services:
     env_file:
       - "../env_files/front-safe.env"
       - "../env_files/front-secret.env"
+
+  # Fake OIDC provider used by the `fake_sso` verification/auth method.
+  # The image is published from the fake_sso repo's own CircleCI pipeline.
+  # The `host.docker.internal` alias makes both the back-end (e2e-web) and the
+  # browser (cypress) resolve the issuer URL `http://host.docker.internal:8081`
+  # to this container -- the same hostname the local dev convention uses, so a
+  # single OIDC issuer string works in both environments.
+  fake_sso:
+    container_name: e2e-fake-sso
+    image: citizenlabdotco/fake-sso:latest
+    env_file:
+      # Reuses the back-secret env file (already restored from workspace) so
+      # FAKE_SSO_JWT_SECRET matches what the back-end uses to verify id_tokens.
+      - "../env_files/back-secret.env"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8081/"]
+      interval: 2s
+      timeout: 2s
+      retries: 30
+      start_period: 15s
+    networks:
+      default:
+        aliases:
+          - host.docker.internal

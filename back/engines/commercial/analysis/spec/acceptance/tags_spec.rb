@@ -106,7 +106,7 @@ resource 'Tags' do
       example 'properly interprets array filter params that filter for absent values', document: false do
         custom_field = create(:custom_field_select, :with_options)
         input4 = create(:idea, project: analysis.source_project,
-          author: create(:user, custom_field_values: { custom_field.key => custom_field.options.first.key }))
+          author: create(:user, custom_field_answers: [build(:custom_field_answer, key: custom_field.key, value: custom_field.options.first.key)]))
         create(:tagging, input: input4, tag: tags[0])
 
         # What the front-end passes to its request framework

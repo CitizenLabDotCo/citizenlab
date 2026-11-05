@@ -33,24 +33,6 @@ describe IdeaCustomFieldsService do
       end
     end
 
-    describe 'visible_fields' do
-      it 'excludes disabled fields' do
-        output = service.visible_fields
-        expect(output.filter_map(&:code)).to eq %w[
-          title_page
-          title_multiloc
-          body_page
-          body_multiloc
-          uploads_page
-          idea_images_attributes
-          idea_files_attributes
-          details_page
-          topic_ids
-          location_description
-        ]
-      end
-    end
-
     describe 'submittable_fields' do
       it 'excludes disabled fields and pages' do
         output = service.submittable_fields
@@ -80,32 +62,6 @@ describe IdeaCustomFieldsService do
           topic_ids
           location_description
         ]
-      end
-    end
-
-    describe 'enabled_public_fields' do
-      it 'excludes disabled & answer_visible_to: admins fields' do
-        output = service.enabled_public_fields
-        expect(output.map(&:code)).to eq [
-          'title_page',
-          'title_multiloc',
-          'body_page',
-          'body_multiloc',
-          'uploads_page',
-          'idea_images_attributes',
-          'idea_files_attributes',
-          'details_page',
-          'topic_ids',
-          'location_description',
-          nil
-        ]
-      end
-    end
-
-    describe 'extra_visible_fields' do
-      it 'excludes disabled and built-in fields' do
-        output = service.extra_visible_fields
-        expect(output.size).to eq 1
       end
     end
 
@@ -190,31 +146,6 @@ describe IdeaCustomFieldsService do
       end
     end
 
-    describe 'visible_fields' do
-      it 'excludes disabled fields' do
-        topic_field = custom_form.custom_fields.find_by(code: 'topic_ids')
-        topic_field.update!(enabled: false)
-        custom_form.custom_fields.find_by(code: 'location_description').destroy!
-
-        output = service.visible_fields
-        expect(output).to include extra_field1
-        expect(output).not_to include extra_field2
-        expect(output).not_to include topic_field
-        expect(output.map(&:code)).to eq [
-          'title_page',
-          'title_multiloc',
-          'body_page',
-          'body_multiloc',
-          'uploads_page',
-          'idea_images_attributes',
-          'idea_files_attributes',
-          'details_page',
-          nil,
-          nil
-        ]
-      end
-    end
-
     describe 'submittable_fields' do
       it 'excludes disabled fields and pages' do
         topic_field = custom_form.custom_fields.find_by(code: 'topic_ids')
@@ -256,15 +187,6 @@ describe IdeaCustomFieldsService do
         ]
       end
     end
-
-    describe 'extra_visible_fields' do
-      it 'excludes disabled and built-in fields' do
-        output = service.extra_visible_fields
-        expect(output).to include extra_field1
-        expect(output).not_to include extra_field2
-        expect(output.map(&:code)).to eq [nil, nil]
-      end
-    end
   end
 
   context 'copying fields' do
@@ -284,7 +206,12 @@ describe IdeaCustomFieldsService do
         _multi_select_option = create(:custom_field_option, custom_field: multi_select_field)
         map_field = create(:custom_field_point, resource: custom_form, map_config: create(:map_config))
         map_field_no_config = create(:custom_field_point, resource: custom_form)
-        select_field.update!(logic: { rules: [{ if: select_option.id, goto_page_id: page3.id }] })
+        select_field.update!(logic: {
+          rules: [
+            { if: select_option.id, goto_page_id: page3.id },
+            { if: 'no_answer', goto_page_id: page3.id }
+          ]
+        })
         page2.update!(logic: { next_page_id: page3.id })
 
         expect(CustomField.count).to eq 9
@@ -303,7 +230,8 @@ describe IdeaCustomFieldsService do
         expect(fields[1].id).not_to eq select_field.id
         expect(fields[1].logic).to match({
           'rules' => [
-            { 'if' => fields[1].options[0].temp_id, 'goto_page_id' => fields[5].id }
+            { 'if' => fields[1].options[0].temp_id, 'goto_page_id' => fields[5].id },
+            { 'if' => 'no_answer', 'goto_page_id' => fields[5].id }
           ]
         })
         expect(fields[1].options[0].temp_id).to match 'TEMP-ID-'

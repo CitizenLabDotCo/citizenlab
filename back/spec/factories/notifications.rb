@@ -132,6 +132,11 @@ FactoryBot.define do
     project_folder
   end
 
+  factory :space_moderation_rights_received, parent: :notification, class: 'Notifications::SpaceModerationRightsReceived' do
+    initiating_user
+    space
+  end
+
   factory :project_moderation_rights_received, parent: :notification, class: 'Notifications::ProjectModerationRightsReceived' do
     initiating_user
     project
@@ -150,6 +155,12 @@ FactoryBot.define do
   factory :project_published, parent: :notification, class: 'Notifications::ProjectPublished' do
     initiating_user
     project
+  end
+
+  factory :report_generated, parent: :notification, class: 'Notifications::ReportGenerated' do
+    recipient factory: :admin
+    project
+    report { association :report, project: project }
   end
 
   factory :project_review_request, parent: :notification, class: 'Notifications::ProjectReviewRequest' do
@@ -173,6 +184,11 @@ FactoryBot.define do
   end
 
   factory :threshold_reached_for_admin, parent: :notification, class: 'Notifications::ThresholdReachedForAdmin' do
+    idea
+    idea_status
+  end
+
+  factory :proposal_expired_for_admin, parent: :notification, class: 'Notifications::ProposalExpiredForAdmin' do
     idea
     idea_status
   end

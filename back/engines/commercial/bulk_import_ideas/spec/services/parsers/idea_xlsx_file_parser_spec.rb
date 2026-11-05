@@ -9,8 +9,8 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
 
   before do
     # Topics for project
-    project.allowed_input_topics << create(:topic_economy)
-    project.allowed_input_topics << create(:topic_waste)
+    project.input_topics << create(:input_topic_economy, project:)
+    project.input_topics << create(:input_topic_waste, project:)
 
     # Custom fields - 1 of each type
     create(:custom_field_text, resource: custom_form, key: 'text_field', title_multiloc: { 'en' => 'Text field' })
@@ -23,7 +23,7 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
     select_field = create(:custom_field_select, resource: custom_form, key: 'select_field', title_multiloc: { 'en' => 'Select field' })
     create(:custom_field_option, custom_field: select_field, key: 'yes', title_multiloc: { 'en' => 'Yes' })
     create(:custom_field_option, custom_field: select_field, key: 'no', title_multiloc: { 'en' => 'No' })
-    create(:custom_field_option, custom_field: select_field, other: true, title_multiloc: { 'en' => 'Other' })
+    create(:custom_field_option, custom_field: select_field, key: 'other', other: true, title_multiloc: { 'en' => 'Other' })
 
     multiselect_field = create(:custom_field_multiselect, resource: custom_form, key: 'multiselect_field', title_multiloc: { 'en' => 'Multi select field' })
     create(:custom_field_option, custom_field: multiselect_field, key: 'this', title_multiloc: { 'en' => 'This' })
@@ -49,19 +49,10 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
     )
   end
 
-  describe 'parse_file_async' do
-    it 'creates a job to process a file with less that 50 ideas' do
-      base_64_content = Base64.encode64 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/import.xlsx').read
-      expect do
-        service.parse_file_async("data:application/pdf;base64,#{base_64_content}")
-      end.to have_enqueued_job(BulkImportIdeas::IdeaImportJob)
-    end
-  end
-
   describe 'create_files' do
     it 'splits the file into separate files (1 original & 1 copy) when uploading' do
       base_64_content = Base64.encode64 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/import.xlsx').read
-      service.send(:create_files, "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,#{base_64_content}")
+      service.create_files("data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,#{base_64_content}")
       expect(BulkImportIdeas::IdeaImportFile.all.count).to eq 2
       expect(BulkImportIdeas::IdeaImportFile.first.import_type).to eq 'xlsx'
       expect(BulkImportIdeas::IdeaImportFile.last.import_type).to eq 'xlsx'
@@ -72,35 +63,32 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
     let(:xlsx_ideas_array) do
       [
         {
-          pdf_pages: [1],
-          fields: {
-            'First name(s)' => 'Bill',
-            'Last name' => 'Test',
-            'Email address' => 'bill@citizenlab.co',
-            'Permission' => 'X',
-            'Date Published (dd-mm-yyyy)' => '15-08-2023',
-            'Title' => 'A title',
-            'Description' => 'A description',
-            'Tags' => 'Economy; Waste',
-            'Location' => 'Somewhere',
-            'Text field' => 'Loads to say here',
-            'Multiline text field' => 'More to say here',
-            'Number field' => 5,
-            'Linear scale field' => 3,
-            'Rating field' => 2,
-            'Select field' => 'Yes',
-            'Multi select field' => 'This; That',
-            'Image select field' => 'Image 1; Image 2',
-            'Ranking field' => 'Two; One',
-            'Image URL' => 'https://images.com/image.png',
-            'Latitude' => 50.5035,
-            'Longitude' => 6.0944
-          }
+          'First name(s)' => 'Bill',
+          'Last name' => 'Test',
+          'Email address' => 'bill@citizenlab.co',
+          'Permission' => 'X',
+          'Date Published (dd-mm-yyyy)' => '15-08-2023',
+          'Title' => 'A title',
+          'Description' => 'A description',
+          'Tags' => 'Economy; Waste',
+          'Location' => 'Somewhere',
+          'Text field' => 'Loads to say here',
+          'Multiline text field' => 'More to say here',
+          'Number field' => 5,
+          'Linear scale field' => 3,
+          'Rating field' => 2,
+          'Select field' => 'Yes',
+          'Multi select field' => 'This; That',
+          'Image select field' => 'Image 1; Image 2',
+          'Ranking field' => 'Two; One',
+          'Image URL' => 'https://images.com/image.png',
+          'Latitude' => 50.5035,
+          'Longitude' => 6.0944
         }
       ]
     end
     let!(:import_file) { create(:idea_import_file) }
-    let(:rows) { service.send(:ideas_to_idea_rows, xlsx_ideas_array, import_file) }
+    let(:rows) { service.ideas_to_idea_rows(xlsx_ideas_array, import_file) }
 
     it 'converts parsed XLSX core fields into idea rows' do
       expect(rows[0]).to include({
@@ -112,8 +100,7 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
         latitude: 50.5035,
         longitude: 6.0944,
         location_description: 'Somewhere',
-        image_url: 'https://images.com/image.png',
-        pdf_pages: [1]
+        image_url: 'https://images.com/image.png'
       })
     end
 
@@ -126,8 +113,8 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
     end
 
     it 'does not include user details when "Permission" is blank' do
-      xlsx_ideas_array[0][:fields]['Permission'] = ''
-      rows = service.send(:ideas_to_idea_rows, xlsx_ideas_array, import_file)
+      xlsx_ideas_array[0]['Permission'] = ''
+      rows = service.ideas_to_idea_rows(xlsx_ideas_array, import_file)
 
       expect(rows[0]).not_to include({
         user_first_name: 'Bill',
@@ -151,27 +138,24 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
     it 'ignores completely blank rows' do
       xlsx_ideas_array = [
         {
-          pdf_pages: [1],
-          fields: {
-            'First name' => '',
-            'Last name' => '',
-            'Email address' => '',
-            'Permission' => '',
-            'Date Published (dd-mm-yyyy)' => '',
-            'Title' => '',
-            'Description' => '',
-            'Tags' => '',
-            'Location' => '',
-            'Text field' => '',
-            'Number field' => '',
-            'Select field' => '',
-            'Multi select field' => '',
-            'Another select field' => '',
-            'Image URL' => ''
-          }
+          'First name' => '',
+          'Last name' => '',
+          'Email address' => '',
+          'Permission' => '',
+          'Date Published (dd-mm-yyyy)' => '',
+          'Title' => '',
+          'Description' => '',
+          'Tags' => '',
+          'Location' => '',
+          'Text field' => '',
+          'Number field' => '',
+          'Select field' => '',
+          'Multi select field' => '',
+          'Another select field' => '',
+          'Image URL' => ''
         }
       ]
-      idea_rows = service.send(:ideas_to_idea_rows, xlsx_ideas_array, import_file)
+      idea_rows = service.ideas_to_idea_rows(xlsx_ideas_array, import_file)
       expect(idea_rows.count).to eq 0
     end
 
@@ -179,35 +163,76 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
       create(:custom_field_text, resource: custom_form, key: 'text_field2', title_multiloc: { 'en' => 'Text field' })
       xlsx_ideas_array = [
         {
-          pdf_pages: [1],
-          fields: {
-            'Text field' => 'First text field',
-            'Text field__1' => 'Second text field'
-          }
+          'Text field' => 'First text field',
+          'Text field__1' => 'Second text field'
         }
       ]
-      idea_rows = service.send(:ideas_to_idea_rows, xlsx_ideas_array, import_file)
+      idea_rows = service.ideas_to_idea_rows(xlsx_ideas_array, import_file)
       expect(idea_rows.count).to eq 1
       expect(idea_rows[0][:custom_field_values][:text_field]).to eq 'First text field'
       expect(idea_rows[0][:custom_field_values][:text_field2]).to eq 'Second text field'
     end
 
+    it 'correctly converts multiple select fields with other options' do
+      another_select_field = create(:custom_field_multiselect, resource: custom_form, key: 'another_select_field', title_multiloc: { 'en' => 'Another select field' })
+      create(:custom_field_option, custom_field: another_select_field, key: 'yes', title_multiloc: { 'en' => 'Yes' })
+      create(:custom_field_option, custom_field: another_select_field, key: 'no', title_multiloc: { 'en' => 'No' })
+      create(:custom_field_option, custom_field: another_select_field, key: 'other', other: true, title_multiloc: { 'en' => 'Other' })
+
+      third_select_field = create(:custom_field_multiselect, resource: custom_form, key: 'third_select_field', title_multiloc: { 'en' => 'Third select field' })
+      create(:custom_field_option, custom_field: third_select_field, key: 'yes', title_multiloc: { 'en' => 'Yes' })
+      create(:custom_field_option, custom_field: third_select_field, key: 'no', title_multiloc: { 'en' => 'No' })
+      create(:custom_field_option, custom_field: third_select_field, key: 'other', other: true, title_multiloc: { 'en' => 'Other' })
+
+      fourth_select_field = create(:custom_field_multiselect, resource: custom_form, key: 'fourth_select_field', title_multiloc: { 'en' => 'Fourth select field' })
+      create(:custom_field_option, custom_field: fourth_select_field, key: 'yes', title_multiloc: { 'en' => 'Yes' })
+      create(:custom_field_option, custom_field: fourth_select_field, key: 'no', title_multiloc: { 'en' => 'No' })
+      create(:custom_field_option, custom_field: fourth_select_field, key: 'other', other: true, title_multiloc: { 'en' => 'Other' })
+
+      base_64_content = Base64.encode64 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/import_select_other.xlsx').read
+      file = service.row_mapper.upload_source_file("data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,#{base_64_content}")
+      parsed_rows = service.parse_rows(file)
+
+      expect(parsed_rows.pluck(:custom_field_values)).to eq(
+        [
+          {
+            select_field: 'other',
+            select_field_other: 'Answer one',
+            another_select_field: ['other'],
+            another_select_field_other: 'Answer two',
+            third_select_field: ['other'],
+            third_select_field_other: 'Answer three',
+            fourth_select_field: ['other'],
+            fourth_select_field_other: 'Answer Four'
+          },
+          {
+            select_field: 'other',
+            another_select_field: ['other'],
+            another_select_field_other: 'Answer two',
+            third_select_field: ['other'],
+            fourth_select_field: ['other'],
+            fourth_select_field_other: 'Answer Four'
+          }
+        ]
+      )
+    end
+
     it 'correctly parses the rows of a real xlsx file and converts to idea_rows' do
       base_64_content = Base64.encode64 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/import.xlsx').read
-      file = service.send(:upload_source_file, "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,#{base_64_content}")
+      file = service.row_mapper.upload_source_file("data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,#{base_64_content}")
       parsed_rows = service.parse_rows(file)
       expect(parsed_rows.count).to eq 2
       expect(parsed_rows[0]).to include(
-        :title_multiloc => { :en => 'Another idea from xlsx' },
-        :body_multiloc => { :en => 'And some bigger description here' },
-        :location_description => 'Oxford',
-        :custom_field_values => { :text_field => 'Some custom text here' }
+        title_multiloc: { en: 'Another idea from xlsx' },
+        body_multiloc: { en: 'And some bigger description here' },
+        location_description: 'Oxford',
+        custom_field_values: { text_field: 'Some custom text here' }
       )
       expect(parsed_rows[1]).to include(
-        :title_multiloc => { :en => 'One more idea from xlsx' },
-        :body_multiloc => { :en => 'And another description here' },
-        :location_description => 'Cambridge',
-        :custom_field_values => {}
+        title_multiloc: { en: 'One more idea from xlsx' },
+        body_multiloc: { en: 'And another description here' },
+        location_description: 'Cambridge',
+        custom_field_values: {}
       )
     end
 
@@ -221,23 +246,20 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
       )
       xlsx_ideas_array = [
         {
-          pdf_pages: [1],
-          fields: {
-            'Select integer field' => 2
-          }
+          'Select integer field' => 2
         }
       ]
-      idea_rows = service.send(:ideas_to_idea_rows, xlsx_ideas_array, import_file)
+      idea_rows = service.ideas_to_idea_rows(xlsx_ideas_array, import_file)
       expect(idea_rows.count).to eq 1
       expect(idea_rows[0][:custom_field_values][:select_integer]).to eq '2'
     end
 
     it 'text fields return text values if xlsx values are integers or floats' do
       xlsx_ideas_array = [
-        { pdf_pages: [1], fields: { 'Text field' => 2 } },
-        { pdf_pages: [1], fields: { 'Text field' => 2.2 } }
+        { 'Text field' => 2 },
+        { 'Text field' => 2.2 }
       ]
-      idea_rows = service.send(:ideas_to_idea_rows, xlsx_ideas_array, import_file)
+      idea_rows = service.ideas_to_idea_rows(xlsx_ideas_array, import_file)
       expect(idea_rows.count).to eq 2
       expect(idea_rows[0][:custom_field_values][:text_field]).to eq '2'
       expect(idea_rows[1][:custom_field_values][:text_field]).to eq '2.2'
@@ -245,15 +267,15 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
 
     it 'parses matrix fields correctly' do
       xlsx_ideas_array = [
-        { pdf_pages: [1], fields: { 'Matrix field' => 'We should send more animals into space: Yes; We should ride our bicycles more often: Maybe' } }
+        { 'Matrix field' => 'We should send more animals into space: Yes; We should ride our bicycles more often: Maybe' }
       ]
-      idea_rows = service.send(:ideas_to_idea_rows, xlsx_ideas_array, import_file)
+      idea_rows = service.ideas_to_idea_rows(xlsx_ideas_array, import_file)
       expect(idea_rows.count).to eq 1
       expect(idea_rows[0][:custom_field_values][:matrix_field]).to eq({ 'send_more_animals_to_space' => 3, 'ride_bicycles_more_often' => 2 })
 
       # Misformatted matrix field - detects what it can
-      xlsx_ideas_array[0][:fields]['Matrix field'] = 'We should send more animals into spaceNo; We should ride our bicycles more often: Yes'
-      idea_rows = service.send(:ideas_to_idea_rows, xlsx_ideas_array, import_file)
+      xlsx_ideas_array = [{ 'Matrix field' => 'We should send more animals into spaceNo; We should ride our bicycles more often: Yes' }]
+      idea_rows = service.ideas_to_idea_rows(xlsx_ideas_array, import_file)
       expect(idea_rows[0][:custom_field_values][:matrix_field]).to eq({ 'ride_bicycles_more_often' => 3 })
     end
 
@@ -275,16 +297,13 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
 
       xlsx_ideas_array = [
         {
-          pdf_pages: [1],
-          fields: {
-            'Text field' => 'Something',
-            'Gender' => 'Male',
-            'A Checkbox field' => 'X',
-            'A Date field' => '01-01-2025'
-          }
+          'Text field' => 'Something',
+          'Gender' => 'Male',
+          'A Checkbox field' => 'X',
+          'A Date field' => '01-01-2025'
         }
       ]
-      idea_rows = service.send(:ideas_to_idea_rows, xlsx_ideas_array, import_file)
+      idea_rows = service.ideas_to_idea_rows(xlsx_ideas_array, import_file)
       expect(idea_rows.count).to eq 1
       custom_field_values = idea_rows[0][:custom_field_values]
       expect(custom_field_values[:text_field]).to eq 'Something'
@@ -294,22 +313,34 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
     end
   end
 
+  describe 'rich_text_column_headers' do
+    it 'returns the localized title of the body_multiloc field' do
+      expect(service.send(:rich_text_column_headers)).to eq ['Description']
+    end
+
+    it 'returns an empty array when the form has no html or html_multiloc fields' do
+      survey_phase = create(:native_survey_phase)
+      survey_service = described_class.new(create(:admin), 'en', survey_phase.id, false)
+      expect(survey_service.send(:rich_text_column_headers)).to eq []
+    end
+  end
+
   describe 'format_date' do
     it 'formats date strings in dd-mm-yyyy format' do
       date_string = '15-08-2023'
-      formatted_date = service.send(:format_date, date_string)
+      formatted_date = service.row_mapper.send(:format_date, date_string)
       expect(formatted_date).to eq '2023-08-15'
     end
 
     it 'formats date objects' do
       date_object = Date.new(2023, 8, 15)
-      formatted_date = service.send(:format_date, date_object)
+      formatted_date = service.row_mapper.send(:format_date, date_object)
       expect(formatted_date).to eq '2023-08-15'
     end
 
     it 'returns nil for invalid date strings' do
       invalid_date_string = 'A DATE'
-      formatted_date = service.send(:format_date, invalid_date_string)
+      formatted_date = service.row_mapper.send(:format_date, invalid_date_string)
       expect(formatted_date).to be_nil
     end
   end

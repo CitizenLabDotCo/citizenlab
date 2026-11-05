@@ -22,6 +22,8 @@ class WebApi::V1::EventsController < ApplicationController
         ]
       ).find_records
 
+    events = apply_projects_listed_scope(events, params)
+
     events = paginate SortByParamsService.new.sort_events(events, params)
 
     serializer_params = jsonapi_serializer_params
@@ -30,7 +32,8 @@ class WebApi::V1::EventsController < ApplicationController
     render json: linked_json(
       events,
       WebApi::V1::EventSerializer,
-      params: serializer_params
+      params: serializer_params,
+      include: [:event_images]
     )
   end
 
@@ -42,7 +45,7 @@ class WebApi::V1::EventsController < ApplicationController
     attendees = User.where(id: event.attendances.pluck(:attendee_id))
 
     I18n.with_locale(current_user&.locale) do
-      xlsx = Export::Xlsx::AttendeesGenerator.new.generate_attendees_xlsx attendees, view_private_attributes: true
+      xlsx = Export::Xlsx::AttendeesGenerator.new.generate_attendees_xlsx attendees.includes(:custom_field_answers), view_private_attributes: true
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'attendees.xlsx'
     end
 
@@ -70,11 +73,9 @@ class WebApi::V1::EventsController < ApplicationController
   def create
     event = Event.new(event_params)
     event.project_id = params[:project_id]
-
-    sidefx.before_create(event, current_user)
-
     authorize(event)
 
+    sidefx.before_create(event, current_user)
     if event.save
       sidefx.after_create(event, current_user)
       render json: WebApi::V1::EventSerializer.new(event, params: jsonapi_serializer_params, include: %i[event_images]).serializable_hash, status: :created
@@ -86,7 +87,6 @@ class WebApi::V1::EventsController < ApplicationController
   def update
     @event.assign_attributes event_params
     authorize @event
-    sidefx.before_update(@event, current_user)
     if @event.save
       sidefx.after_update(@event, current_user)
       render json: WebApi::V1::EventSerializer.new(@event, params: jsonapi_serializer_params, include: %i[event_images]).serializable_hash, status: :ok
@@ -159,14 +159,23 @@ class WebApi::V1::EventsController < ApplicationController
 
   def finder_params
     params.tap do |p|
-      if p.key?(:ongoing_during)
-        p[:ongoing_during] = parse_date_range(p[:ongoing_during])
-      end
+      p[:ongoing_during] = parse_date_range(p[:ongoing_during]) if p.key?(:ongoing_during)
+      # EventsFinder passes these straight into SQL, so parse them here (nil drops the
+      # filter) — otherwise a bad value reaches Postgres and 500s instead of 400ing.
+      parse_date_param!(p, :ends_before_date)
+      parse_date_param!(p, :ends_on_or_after_date)
     end
   end
 
+  def parse_date_param!(params, key)
+    return unless params.key?(key)
+
+    parsed = parse_date(params[key])
+    parsed ? params[key] = parsed : params.delete(key)
+  end
+
   def parse_date_range(date_range)
-    raise ArgumentError, 'date_range must be a String' unless date_range.is_a?(String)
+    raise ApiError.new(:invalid_date_parameter, status: 400) unless date_range.is_a?(String)
 
     date_range = date_range.reverse.chomp('[').reverse.chomp(']')
     # Ignore extra items if there are more than two. ("Be conservative in what you send,
@@ -179,12 +188,15 @@ class WebApi::V1::EventsController < ApplicationController
   end
 
   def parse_date(date_str)
-    return nil unless date_str
+    return nil unless date_str.is_a?(String)
 
     date_str = date_str.strip
     return nil if date_str.in?(['null', ''])
 
-    AppConfiguration.timezone.parse(date_str)
+    AppConfiguration.timezone.parse(date_str) || raise(ApiError.new(:invalid_date_parameter, status: 400))
+  rescue ArgumentError, RangeError
+    # Malformed input: too long (>128 chars), null byte, out-of-range, etc.
+    raise ApiError.new(:invalid_date_parameter, status: 400)
   end
 
   def default_locale
@@ -193,6 +205,30 @@ class WebApi::V1::EventsController < ApplicationController
 
   def sidefx
     @sidefx ||= SideFxEventService.new
+  end
+
+  def apply_projects_listed_scope(events, params)
+    # We hide events of unlisted projects when listing all events, so they stay
+    # undiscoverable. Two filters opt out: project_ids (the caller already knows the
+    # project) and attendee_id (EventPolicy::Scope has authorized the caller, and the
+    # finder limits results to that attendee's registrations).
+    if params[:project_ids].blank? && params[:attendee_id].blank?
+      # This 'show_unlisted_events_user_can_moderate' flag is needed in e.g.
+      # the case of smart groups, where a moderator should be able to see unlisted
+      # events of projects that they can moderate, but not other unlisted events.
+      projects = if params[:show_unlisted_events_user_can_moderate]
+        ProjectsListedScopeService.new.remove_unlisted_that_user_cannot_moderate(
+          Project.all,
+          current_user
+        )
+      else
+        ProjectsListedScopeService.new.remove_unlisted_projects(Project.all)
+      end
+
+      return events.where(project_id: projects.select(:id))
+    end
+
+    events
   end
 end
 

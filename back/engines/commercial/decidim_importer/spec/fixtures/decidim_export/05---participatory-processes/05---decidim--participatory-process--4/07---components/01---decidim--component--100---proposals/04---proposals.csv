@@ -1,0 +1,3 @@
+uid,authors,category,scope,title,body,address,latitude,longitude,state,state_token,reference,answer,answered_at,votes_count,endorsements_count,comments_count,attachments_count,followers_count,published_at,related_proposals,related_meetings,is_amend,original_proposal,withdrawn,withdrawn_at
+decidim--proposals--proposal--100,"[""decidim-user-1""]",,,"{""fr"":""Rénover la rue A""}","{""fr"":""<p>La rue A a besoin de travaux.</p>""}",,,,decidim--state--1,accepted,REF-100,,,3,0,0,0,0,2022-09-02 09:00:00 +0100,[],[],false,,false,
+decidim--proposals--proposal--101,"[""decidim-user-2""]",,,"{""fr"":""Rénover la rue B""}","{""fr"":""<p>La rue B est abîmée.</p>""}",,,,decidim--state--3,not_answered,REF-101,,,2,0,0,0,0,2022-09-02 09:00:00 +0100,[],[],false,,false,

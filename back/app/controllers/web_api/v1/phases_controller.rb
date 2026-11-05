@@ -4,60 +4,106 @@ class WebApi::V1::PhasesController < ApplicationController
   skip_before_action :authenticate_user
   around_action :detect_invalid_timeline_changes, only: %i[create update destroy]
   before_action :set_phase, only: %i[
-    show show_mini update destroy survey_results sentiment_by_quarter
-    submission_count index_xlsx delete_inputs show_progress common_ground_results
+    show show_mini update destroy survey_results input_responses_pdf input_responses_pdf_result
+    input_responses_xlsx input_response_fields sentiment_by_quarter submission_count index_xlsx
+    delete_inputs show_progress common_ground_results
+  ]
+  before_action :ensure_input_export_review, only: %i[
+    input_responses_pdf input_responses_pdf_result input_responses_xlsx input_response_fields
   ]
 
   def index
     @phases = policy_scope(Phase)
       .where(project_id: params[:project_id])
-      .order(:start_at)
+      .ordered
+    @phases = case params[:placement_type]
+    when 'all' then @phases
+    when 'standalone' then @phases.standalone
+    else @phases.on_timeline # default
+    end
     @phases = paginate @phases
-    @phases = @phases.includes(:permissions, :report, :custom_form, :manual_voters_last_updated_by)
+    @phases = @phases.includes(:report, :custom_form, :manual_voters_last_updated_by, permissions: [:groups], project: :admin_publication)
 
-    render json: linked_json(@phases, WebApi::V1::PhaseSerializer, params: jsonapi_serializer_params, include: %i[permissions manual_voters_last_updated_by])
+    render json: linked_json(
+      @phases,
+      WebApi::V1::PhaseSerializer,
+      params: phase_serializer_params,
+      include: %i[permissions manual_voters_last_updated_by]
+    )
   end
 
   def show
-    render json: WebApi::V1::PhaseSerializer.new(@phase, params: jsonapi_serializer_params, include: %i[permissions]).serializable_hash
+    render json: WebApi::V1::PhaseSerializer.new(@phase, params: phase_serializer_params, include: %i[permissions]).serializable_hash
   end
 
   def show_mini
-    render json: WebApi::V1::PhaseMiniSerializer.new(@phase, params: jsonapi_serializer_params).serializable_hash
+    render json: WebApi::V1::PhaseMiniSerializer.new(@phase, params: phase_serializer_params).serializable_hash
   end
 
   def create
-    @phase = Phase.new(phase_params)
+    @phase = Phase.new(phase_params_for_create)
     @phase.project_id = params[:project_id]
     sidefx.before_create(@phase, current_user)
     authorize @phase
 
-    if @phase.save
-      sidefx.after_create(@phase, current_user)
-      render json: WebApi::V1::PhaseSerializer.new(@phase, params: jsonapi_serializer_params).serializable_hash, status: :created
-    else
-      render json: { errors: @phase.errors.details }, status: :unprocessable_entity
-    end
+    save_or_raise!(@phase)
+    sidefx.after_create(@phase, current_user)
+    render json: WebApi::V1::PhaseSerializer.new(@phase, params: phase_serializer_params).serializable_hash, status: :created
   end
 
   def update
-    @phase.set_manual_voters(phase_params[:manual_voters_amount], current_user) if phase_params[:manual_voters_amount]
-    @phase.assign_attributes phase_params
+    update_params = phase_params_for_update
+    timeline_dates = update_params.delete(:timeline_phase_dates) || []
+    @phase.set_manual_voters(update_params[:manual_voters_amount], current_user) if update_params[:manual_voters_amount]
+    @phase.assign_attributes update_params
     authorize @phase
-    sidefx.before_update(@phase, current_user)
 
-    if @phase.save
-      sidefx.after_update(@phase, current_user)
-      render json: WebApi::V1::PhaseSerializer.new(@phase, params: jsonapi_serializer_params).serializable_hash, status: :ok
-    else
-      render json: { errors: @phase.errors.details }, status: :unprocessable_entity
+    phases = @phase.project.with_lock do
+      updated_phases = timeline_dates.map do |dates|
+        phase = @phase.project.phases.on_timeline.where.not(id: @phase.id).find(dates[:id])
+        authorize phase, :update?
+        phase.assign_attributes(dates.except(:id))
+        phase
+      end
+      if updated_phases.map(&:id).uniq.length != updated_phases.length
+        raise ApiError.new(:duplicate_phase_ids, field: :timeline_phase_dates)
+      end
+
+      updated_phases << @phase
+
+      # Validate against the final timeline, including edits to other phases.
+      # These writes roll back together if any phase fails validation.
+      if timeline_dates.any?
+        # Reject invalid ranges before staging dates, which would otherwise
+        # violate the database constraint before model validation can respond.
+        updated_phases.each do |phase|
+          phase.valid?
+          if phase.errors.of_kind?(:start_at, :blank) || phase.errors.of_kind?(:base, :duration_too_short)
+            raise_phase_validation_error(phase)
+          end
+
+          dates = phase.changes.slice('start_at', 'end_at', 'placement_type').transform_values(&:last)
+          Phase.where(id: phase.id).update_all(dates) if dates.any?
+        end
+      end
+
+      updated_phases.each do |phase|
+        sidefx.before_update(phase, current_user)
+        raise_phase_validation_error(phase) unless phase.save
+      end
+      # Permissions and project-page cleanup must roll back with the move.
+      updated_phases.each { |phase| sidefx.after_update_in_transaction(phase, current_user) } # rubocop:disable Style/CombinableLoops
+      updated_phases
     end
+    phases.each { |phase| sidefx.after_update_notifications(phase, current_user) }
+
+    render json: WebApi::V1::PhaseSerializer.new(@phase, params: phase_serializer_params).serializable_hash, status: :ok
   end
 
   def destroy
     sidefx.before_destroy(@phase, current_user)
     phase = ActiveRecord::Base.transaction do
-      @phase.ideas.each(&:destroy!) unless @phase.pmethod.transitive?
+      @phase.ideas.each(&:destroy!) if @phase.pmethod.destroy_ideas_on_phase_destroy?
 
       @phase.destroy
     end
@@ -73,7 +119,13 @@ class WebApi::V1::PhasesController < ApplicationController
     results = if @phase.pmethod.class.method_str == 'community_monitor_survey'
       year = params[:year]
       quarter = params[:quarter]
-      Surveys::ResultsWithDateGenerator.new(@phase, structure_by_category: true, year: year, quarter: quarter).generate_results
+      Surveys::ResultsWithDateGenerator.new(
+        @phase,
+        structure_by_category: true,
+        year:,
+        quarter:,
+        exclude_admins_and_moderators: StatisticsRoleExclusion.new.exclude_admins_and_moderators?
+      ).generate_results
     else
       logic_ids = params[:filter_logic_ids].presence || [] # Array of page and option IDs
       Surveys::ResultsWithLogicGenerator.new(@phase).generate_results(logic_ids:)
@@ -82,8 +134,93 @@ class WebApi::V1::PhasesController < ApplicationController
     render json: raw_json(results)
   end
 
+  # Lists the fields of the responses export (shared by the pdf and xlsx
+  # flavours), flagging personal-data fields so the UI can pre-select them for
+  # redaction: form/user fields are classified by the LLM, computed columns
+  # (author/assignee) carry a structural flag. Source of truth for the exports'
+  # field set.
+  def input_response_fields
+    fields = I18n.with_locale(current_user.locale) do
+      Export::InputReportFields.new(@phase).reviewable_fields
+    end
+    pii_keys = Export::PiiDetector.new.personal_data_keys(fields.filter_map(&:custom_field))
+    data = fields.map do |field|
+      {
+        id: field.key,
+        type: 'input_response_field',
+        attributes: {
+          title: field.title,
+          personal_data: field.custom_field ? pii_keys.include?(field.key) : field.personal_data
+        }
+      }
+    end
+
+    render json: { data: data }
+  end
+
+  # Starts a background job (see Export::Pdf::InputResponsesJob) that renders
+  # the input responses PDF (cover page + one card per response) and returns
+  # its Jobs::Tracker for the frontend to poll. Field-level PII redaction is
+  # driven by `redacted_field_keys`. `cover_only` renders just the cover page
+  # synchronously (used by the live preview — it skips loading responses).
+  #
+  # Refuses with 409 while an export is already running: reusing that job
+  # would silently apply someone else's redaction choices.
+  def input_responses_pdf
+    return input_responses_pdf_cover_preview if ActiveModel::Type::Boolean.new.cast(params[:cover_only])
+
+    # The lock makes the in-progress check + enqueue atomic across concurrent requests.
+    tracker = begin
+      CitizenLab::LockManager.try_with_transaction_lock("input_responses_pdf/#{@phase.id}") do
+        enqueue_input_responses_pdf_job.tracker unless in_progress_input_responses_pdf_tracker
+      end
+    rescue CitizenLab::LockManager::FailedToLock
+      nil
+    end
+
+    if tracker
+      render json: WebApi::V1::Jobs::TrackerSerializer.new(
+        tracker,
+        params: jsonapi_serializer_params
+      ).serializable_hash, status: :accepted
+    else
+      render json: { errors: { base: [{ error: 'export_in_progress' }] } }, status: :conflict
+    end
+  end
+
+  # Streams the PDF of export job `tracker_id`, only to the user who started
+  # it (the file reflects their reviewed redaction choices); 404 otherwise.
+  def input_responses_pdf_result
+    tracker = Jobs::Tracker.find_by(
+      id: params[:tracker_id],
+      context: @phase,
+      root_job_type: Export::Pdf::InputResponsesJob.name,
+      owner: current_user
+    )
+    result = tracker && Export::ResultFile
+      .where(tracker: tracker)
+      .where(expires_at: Time.current..)
+      .order(created_at: :desc)
+      .first
+    return head :not_found unless result
+
+    send_data result.content.read, type: 'application/pdf', filename: result.name
+  end
+
+  # Generates an xlsx of input responses: the regular full data dump, minus the
+  # fields redacted via `redacted_field_keys` (same review flow as the pdf).
+  def input_responses_xlsx
+    I18n.with_locale(current_user.locale) do
+      xlsx = Export::Xlsx::InputsGenerator.new.generate_inputs_for_phase(
+        @phase.id,
+        redacted_field_keys: params[:redacted_field_keys] || []
+      )
+      send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'input_responses.xlsx'
+    end
+  end
+
   def common_ground_results
-    results = CommonGround::ResultsService.new(@phase).results
+    results = CommonGround::ResultsService.new(@phase, exclude_admins_and_moderators: StatisticsRoleExclusion.new.exclude_admins_and_moderators?).results
 
     render json: WebApi::V1::CommonGround::ResultsSerializer
       .new(results, params: jsonapi_serializer_params)
@@ -94,18 +231,23 @@ class WebApi::V1::PhasesController < ApplicationController
 
   # Used for community_monitor_survey dashboard
   def sentiment_by_quarter
-    average_generator = Surveys::AverageGenerator.new(@phase, input_type: 'sentiment_linear_scale')
+    average_generator = Surveys::AverageGenerator.new(
+      @phase,
+      input_type: 'sentiment_linear_scale',
+      exclude_admins_and_moderators: StatisticsRoleExclusion.new.exclude_admins_and_moderators?
+    )
     render json: raw_json(average_generator.summary_averages_by_quarter)
   end
 
   def submission_count
-    count = if @phase.pmethod.supports_survey_form?
-      @phase.ideas.supports_survey.published.count
+    # Transitive methods share the project's form, the others have their own.
+    inputs = if @phase.pmethod.transitive?
+      @phase.project.ideas.transitive
     else
-      @phase.ideas.transitive.published.count
+      Idea.where(creation_phase: @phase)
     end
 
-    render json: raw_json({ totalSubmissions: count })
+    render json: raw_json({ totalSubmissions: inputs.submitted_or_published.count })
   end
 
   def index_xlsx
@@ -138,6 +280,13 @@ class WebApi::V1::PhasesController < ApplicationController
 
   private
 
+  def phase_serializer_params
+    jsonapi_serializer_params(
+      user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false),
+      request: request
+    )
+  end
+
   def sidefx
     @sidefx ||= SideFxPhaseService.new
   end
@@ -147,7 +296,76 @@ class WebApi::V1::PhasesController < ApplicationController
     authorize @phase
   end
 
-  def phase_params
+  def phase_params_for_create
+    params.require(:phase).permit(:placement_type, *shared_phase_params)
+  end
+
+  def phase_params_for_update
+    params.require(:phase).permit(:placement_type, *shared_phase_params, timeline_phase_dates: %i[id start_at end_at])
+  end
+
+  def raise_phase_validation_error(phase)
+    raise ApiError.from_record(phase) if phase.id == @phase.id
+
+    raise ApiError.new(:validation_failed, payload: {
+      errors: phase.errors.details,
+      meta: { phase_id: phase.id }
+    })
+  end
+
+  def ensure_input_export_review
+    head :unprocessable_entity unless @phase.pmethod.supports_input_pdf_export?
+  end
+
+  def input_responses_pdf_cover_preview
+    pdf = I18n.with_locale(current_user.locale) do
+      Export::Pdf::InputResponsesGenerator.new(
+        @phase,
+        cover: cover_from_params,
+        redacted_field_keys: params[:redacted_field_keys] || [],
+        cover_only: true
+      ).generate_pdf
+    end
+
+    send_data pdf.read, type: 'application/pdf', filename: 'input_responses.pdf'
+  end
+
+  # An export that is still running for this phase, if any — clicking Generate
+  # twice (or a second admin clicking it) must not start a second heavy render.
+  # Failed jobs complete their tracker (with job_errors), so they don't block a
+  # new export; the time window is a safety valve against trackers orphaned by
+  # e.g. a dev environment without a running worker.
+  def in_progress_input_responses_pdf_tracker
+    Jobs::Tracker
+      .where(context: @phase, root_job_type: Export::Pdf::InputResponsesJob.name, completed_at: nil)
+      .where(created_at: 1.hour.ago..)
+      .order(created_at: :desc)
+      .first
+  end
+
+  def enqueue_input_responses_pdf_job
+    Export::Pdf::InputResponsesJob
+      .with_tracking(owner: current_user)
+      .perform_later(
+        @phase,
+        cover: cover_from_params,
+        redacted_field_keys: params[:redacted_field_keys] || [],
+        locale: current_user.locale.to_s
+      )
+  end
+
+  def cover_from_params
+    {
+      include: ActiveModel::Type::Boolean.new.cast(params.dig(:cover, :include)),
+      title: params.dig(:cover, :title).to_s,
+      subtitle: params.dig(:cover, :subtitle).to_s,
+      date: params.dig(:cover, :date).to_s,
+      prepared_by: params.dig(:cover, :prepared_by).to_s,
+      notes: params.dig(:cover, :notes).to_s
+    }
+  end
+
+  def shared_phase_params
     permitted = [
       :project_id,
       :start_at,
@@ -156,6 +374,7 @@ class WebApi::V1::PhasesController < ApplicationController
       :submission_enabled,
       :commenting_enabled,
       :autoshare_results_enabled,
+      :allow_multiple_responses,
       :reacting_enabled,
       :reacting_like_method,
       :reacting_like_limited_max,
@@ -167,12 +386,14 @@ class WebApi::V1::PhasesController < ApplicationController
       :voting_max_total,
       :voting_min_total,
       :voting_max_votes_per_idea,
+      :voting_min_selected_options,
+      :voting_filtering_enabled,
       :poll_anonymous,
       :document_annotation_embed_url,
       :ideas_order,
       :input_term,
       :vote_term,
-      :prescreening_enabled,
+      :prescreening_mode,
       :reacting_threshold,
       :expire_days_limit,
       :manual_voters_amount,
@@ -181,16 +402,20 @@ class WebApi::V1::PhasesController < ApplicationController
       :similarity_threshold_title,
       :similarity_threshold_body,
       {
+        available_views: [],
         title_multiloc: CL2_SUPPORTED_LOCALES,
         description_multiloc: CL2_SUPPORTED_LOCALES,
+        draft_description_multiloc: CL2_SUPPORTED_LOCALES,
         native_survey_title_multiloc: CL2_SUPPORTED_LOCALES,
         native_survey_button_multiloc: CL2_SUPPORTED_LOCALES
       }
     ]
+
     if AppConfiguration.instance.feature_activated? 'disable_disliking'
       permitted += %i[reacting_dislike_enabled reacting_dislike_method reacting_dislike_limited_max]
     end
-    params.require(:phase).permit(permitted)
+
+    permitted
   end
 
   def detect_invalid_timeline_changes

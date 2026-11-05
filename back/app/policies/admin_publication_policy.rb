@@ -20,14 +20,6 @@ class AdminPublicationPolicy < ApplicationPolicy
           scope = scope.not_hidden
         end
 
-        if context[:remove_unlisted]
-          scope = ProjectPolicy.apply_listed_scope(
-            scope,
-            user,
-            context[:remove_unlisted]
-          )
-        end
-
         scope
       else
         scope_for(klass)
@@ -58,5 +50,9 @@ class AdminPublicationPolicy < ApplicationPolicy
 
   def status_counts
     true
+  end
+
+  def tree_view
+    active_admin? || user&.space_moderator?
   end
 end

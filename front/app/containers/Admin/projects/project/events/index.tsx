@@ -9,7 +9,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import saveAs from 'file-saver';
 import moment from 'moment';
-import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { IEventData } from 'api/events/types';
@@ -26,6 +25,7 @@ import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { requestBlob } from 'utils/requestBlob';
+import { useParams } from 'utils/router';
 
 import messages from './messages';
 
@@ -43,7 +43,9 @@ const StyledList = styled(List)`
 `;
 
 const AdminProjectEventsIndex = () => {
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId } = useParams({
+    from: '/$locale/admin/projects/$projectId/events',
+  });
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const { data: events } = useEvents({
@@ -52,7 +54,7 @@ const AdminProjectEventsIndex = () => {
     sort: 'start_at',
   });
 
-  const { mutate: deleteEvent, isLoading } = useDeleteEvent();
+  const { mutate: deleteEvent, isPending } = useDeleteEvent();
 
   const createDeleteClickHandler =
     (eventId: string) => (event: React.FormEvent<any>) => {
@@ -92,7 +94,8 @@ const AdminProjectEventsIndex = () => {
           <AddButton
             buttonStyle="admin-dark"
             icon="plus-circle"
-            linkTo={`/admin/projects/${projectId}/events/new`}
+            to="/admin/projects/$projectId/events/new"
+            params={{ projectId }}
           >
             <FormattedMessage {...messages.addEventButton} />
           </AddButton>
@@ -113,7 +116,7 @@ const AdminProjectEventsIndex = () => {
                   supportArticleLink: (
                     <a
                       href={formatMessage(
-                        messages.attendanceSupportArticleLink
+                        messages.attendanceSupportArticleLink2
                       )}
                       target="_blank"
                       rel="noopener noreferrer"
@@ -175,7 +178,7 @@ const AdminProjectEventsIndex = () => {
                         buttonStyle="text"
                         icon="delete"
                         onClick={createDeleteClickHandler(event.id)}
-                        processing={isLoading}
+                        processing={isPending}
                       >
                         <FormattedMessage {...messages.deleteButtonLabel} />
                       </ButtonWithLink>
@@ -190,7 +193,8 @@ const AdminProjectEventsIndex = () => {
                       <ButtonWithLink
                         buttonStyle="secondary-outlined"
                         icon="edit"
-                        linkTo={`/admin/projects/${projectId}/events/${event.id}`}
+                        to="/admin/projects/$projectId/events/$id"
+                        params={{ projectId, id: event.id }}
                       >
                         <FormattedMessage {...messages.editButtonLabel} />
                       </ButtonWithLink>

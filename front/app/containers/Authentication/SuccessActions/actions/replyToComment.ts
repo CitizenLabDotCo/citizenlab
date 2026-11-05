@@ -5,7 +5,7 @@ export interface ReplyToCommentParams {
   parentCommentId: string | null;
   authorFirstName?: string | null;
   authorLastName?: string | null;
-  authorSlug?: string | null;
+  authorId?: string | null;
 }
 
 export const replyToComment = (params: ReplyToCommentParams) => async () => {

@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
-
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
+import useOnQuerySuccess from 'hooks/useOnQuerySuccess';
 
 import fetcher, { BaseResponseData } from 'utils/cl-react-query/fetcher';
 
@@ -20,24 +20,15 @@ const useAnalytics = <Response extends BaseResponseData>(
   onSuccess?: () => void,
   enabled = true
 ) => {
-  const queryClient = useQueryClient();
-  const stringifiedQuery = JSON.stringify(query);
-
-  // Call onSuccess if the query is already in the cache
-  useEffect(() => {
-    const parsedQuery = JSON.parse(stringifiedQuery);
-    const queryKey = analyticsKeys.item(parsedQuery);
-    if (queryClient.getQueryData(queryKey)) {
-      onSuccess && onSuccess();
-    }
-  }, [stringifiedQuery, queryClient, onSuccess]);
-
-  return useQuery<Response, CLErrors, Response, any>({
+  const result = useQuery<Response, CLErrors, Response, any>({
     queryKey: analyticsKeys.item(query),
     queryFn: () => fetchAnalytics(query),
-    onSuccess,
     enabled,
   });
+
+  useOnQuerySuccess(result, onSuccess);
+
+  return result;
 };
 
 export default useAnalytics;

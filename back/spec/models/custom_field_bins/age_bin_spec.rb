@@ -37,31 +37,11 @@ RSpec.describe CustomFieldBins::AgeBin do
       expect(bin.in_bin?(nil)).to be false
     end
 
-    it 'it deals well with an open-ended range' do
+    it 'deals well with an open-ended range' do
       bin = build(:age_bin, range: 20...nil)
       expect(bin.in_bin?(1990)).to be true
       expect(bin.in_bin?(2010)).to be false
       expect(bin.in_bin?(nil)).to be false
-    end
-  end
-
-  describe '#filter_by_bin' do
-    let(:custom_field) { create(:custom_field_birthyear) }
-    let(:bin) { create(:age_bin, custom_field:, range: 20...40) }
-    let(:scope) { User.all }
-
-    it 'filters the scope by birthyear in the range' do
-      user1 = create(:user, custom_field_values: { custom_field.key => 1990 })
-      user2 = create(:user, custom_field_values: { custom_field.key => 2010 })
-      user3 = create(:user, custom_field_values: { custom_field.key => nil })
-      user4 = create(:user)
-
-      filtered_scope = bin.filter_by_bin(scope)
-
-      expect(filtered_scope).to include(user1)
-      expect(filtered_scope).not_to include(user2)
-      expect(filtered_scope).not_to include(user3)
-      expect(filtered_scope).not_to include(user4)
     end
   end
 

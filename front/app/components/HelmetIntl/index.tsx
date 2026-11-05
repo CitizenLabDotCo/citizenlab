@@ -11,11 +11,12 @@ type Props = {
 };
 
 const HelmetIntl = ({ title, description }: Props) => {
-  const { formatMessage } = useIntl();
+  const { formatMessage, locale } = useIntl();
 
   return (
     <>
       <Helmet
+        htmlAttributes={{ lang: locale || 'en' }}
         title={formatMessage(title)}
         meta={
           description

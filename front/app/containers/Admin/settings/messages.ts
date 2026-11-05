@@ -89,10 +89,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.saveSuccessMessage',
     defaultMessage: 'Your changes have been saved.',
   },
-  registrationTitle: {
-    id: 'app.containers.AdminPage.SettingsPage.registrationTitle',
-    defaultMessage: 'Registration',
-  },
   tabAreas: {
     id: 'app.containers.AdminPage.SettingsPage.tabAreas1',
     defaultMessage: 'Areas',
@@ -113,23 +109,6 @@ export default defineMessages({
   signupFormText: {
     id: 'app.containers.AdminPage.SettingsPage.signupFormText2',
     defaultMessage: 'Registration and login helper text',
-  },
-  loginHelper: {
-    id: 'app.containers.AdminPage.SettingsPage.loginHelper',
-    defaultMessage: 'Login screen',
-  },
-  loginHelperTooltip: {
-    id: 'app.containers.AdminPage.SettingsPage.loginHelperTooltip',
-    defaultMessage: 'This is shown on the top of the login form.',
-  },
-  step1: {
-    id: 'app.containers.AdminPage.SettingsPage.step1',
-    defaultMessage: 'Step 1 (email and password)',
-  },
-  step1Tooltip: {
-    id: 'app.containers.AdminPage.SettingsPage.step1Tooltip',
-    defaultMessage:
-      'This is shown on the top of the first page of the sign-up form (name, email, password).',
   },
   platformConfiguration: {
     id: 'app.containers.AdminPage.SettingsPage.platformConfiguration',
@@ -213,5 +192,9 @@ export default defineMessages({
   anonymousNameScheme_animal: {
     id: 'app.containers.AdminPage.SettingsPage.anonymousNameScheme_animal2',
     defaultMessage: 'Animal - eg Elephant Cat',
+  },
+  otherRegistrationSettings: {
+    id: 'app.containers.AdminPage.SettingsPage.otherRegistrationSettings',
+    defaultMessage: 'Other registration settings',
   },
 });

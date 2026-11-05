@@ -5,6 +5,7 @@ import { filter } from 'rxjs/operators';
 import styled, { useTheme } from 'styled-components';
 import { CLErrors } from 'typings';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IUpdatedComment } from 'api/comments/types';
 import useComment from 'api/comments/useComment';
 import useUpdateComment from 'api/comments/useUpdateComment';
@@ -14,15 +15,16 @@ import useLocalize from 'hooks/useLocalize';
 
 import Outlet from 'components/Outlet';
 import {
-  getCommentContent,
-  getEditableCommentContent,
-} from 'components/PostShowComponents/Comments/utils';
+  formatCommentContent,
+  formatEditableCommentContent,
+} from 'components/PostShowComponents/utils';
 import Error from 'components/UI/Error';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
+import { weglotTranslateSubmission } from 'utils/weglot';
 
 import { commentTranslateButtonClicked$ } from '../events';
 import messages from '../messages';
@@ -35,6 +37,9 @@ const CommentWrapper = styled.div`
 
 export const CommentText = styled.div`
   display: inline;
+  .cl-mention-user {
+    font-style: italic;
+  }
 `;
 
 const StyledForm = styled.form`
@@ -71,8 +76,9 @@ const CommentBody = ({
   ideaId,
 }: Props) => {
   const theme = useTheme();
+  const { data: appConfiguration } = useAppConfiguration();
   const { data: comment } = useComment(commentId);
-  const { mutate: updateComment, isLoading: processing } = useUpdateComment({
+  const { mutate: updateComment, isPending: processing } = useUpdateComment({
     ideaId,
   });
   const localize = useLocalize();
@@ -93,9 +99,9 @@ const CommentBody = ({
       const localizedEditableCommentContent = localize(
         comment.data.attributes.body_multiloc
       );
-      setCommentContent(getCommentContent(localizedCommentContent));
+      setCommentContent(formatCommentContent(localizedCommentContent));
       setEditableCommentContent(
-        getEditableCommentContent(localizedEditableCommentContent)
+        formatEditableCommentContent(localizedEditableCommentContent)
       );
     }
   }, [comment, commentContent, localize]);
@@ -154,13 +160,21 @@ const CommentBody = ({
     event.preventDefault();
 
     if (!isNilOrError(locale)) {
+      const processedValue = editableCommentContent.replace(
+        /@\[(.*?)\]\((.*?)\)/gi,
+        '@$2'
+      );
+
+      const { translatedText, weglotData } = await weglotTranslateSubmission(
+        processedValue,
+        locale,
+        appConfiguration?.data.attributes.settings.core.weglot_api_key
+      );
+      const bodyMultiloc = { [locale]: translatedText };
+
       const updatedComment: Omit<IUpdatedComment, 'commentId'> = {
-        body_multiloc: {
-          [locale]: editableCommentContent.replace(
-            /@\[(.*?)\]\((.*?)\)/gi,
-            '@$2'
-          ),
-        },
+        body_multiloc: bodyMultiloc,
+        weglot_data: weglotData,
       };
 
       setApiErrors(null);
@@ -187,7 +201,9 @@ const CommentBody = ({
   const cancelEditing = (event: React.MouseEvent) => {
     event.preventDefault();
     setEditableCommentContent(
-      getEditableCommentContent(localize(comment.data.attributes.body_multiloc))
+      formatEditableCommentContent(
+        localize(comment.data.attributes.body_multiloc)
+      )
     );
     onCancelEditing();
   };

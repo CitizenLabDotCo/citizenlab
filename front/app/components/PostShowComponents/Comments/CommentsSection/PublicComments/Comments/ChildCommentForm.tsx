@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Box, colors, ClickOutside } from '@citizenlab/cl2-component-library';
 import { hideVisually } from 'polished';
 import { Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
@@ -21,9 +21,9 @@ import TextArea from 'components/PostShowComponents/Comments/CommentForm/TextAre
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import clickOutside from 'utils/containers/clickOutside';
 import { isNilOrError } from 'utils/helperUtils';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+import { weglotTranslateSubmission } from 'utils/weglot';
 
 import { commentReplyButtonClicked$, commentAdded } from '../../../events';
 import messages from '../../../messages';
@@ -35,7 +35,7 @@ const StyledAvatar = styled(Avatar)`
   margin-top: 3px;
 `;
 
-const FormContainer = styled(clickOutside)`
+const FormContainer = styled(ClickOutside)`
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -84,7 +84,7 @@ const ChildCommentForm = ({
 
   const {
     mutate: addCommentToIdeaComment,
-    isLoading: isAddCommentToIdeaLoading,
+    isPending: isAddCommentToIdeaLoading,
   } = useAddCommentToIdea();
 
   const [inputValue, setInputValue] = useState('');
@@ -109,9 +109,9 @@ const ChildCommentForm = ({
           })
         )
         .subscribe(({ eventValue }) => {
-          const { authorFirstName, authorLastName, authorSlug } = eventValue;
-          if (authorFirstName && authorLastName && authorSlug) {
-            const tag = `@[${authorFirstName} ${authorLastName}](${authorSlug}) `;
+          const { authorFirstName, authorLastName, authorId } = eventValue;
+          if (authorFirstName && authorLastName && authorId) {
+            const tag = `@[${authorFirstName} ${authorLastName}](${authorId}) `;
             setTagValue(tag);
             setInputValue(tag);
           }
@@ -172,9 +172,14 @@ const ChildCommentForm = ({
 
   const continueSubmission = async () => {
     if (canSubmit) {
-      const commentBodyMultiloc = {
-        [locale]: inputValue.replace(/@\[(.*?)\]\((.*?)\)/gi, '@$2'),
-      };
+      const processedValue = inputValue.replace(/@\[(.*?)\]\((.*?)\)/gi, '@$2');
+
+      const { translatedText, weglotData } = await weglotTranslateSubmission(
+        processedValue,
+        locale,
+        appConfiguration?.data.attributes.settings.core.weglot_api_key
+      );
+      const commentBodyMultiloc = { [locale]: translatedText };
 
       setCanSubmit(false);
 
@@ -192,6 +197,7 @@ const ChildCommentForm = ({
             author_id: authUser.data.id,
             parent_id: parentId,
             body_multiloc: commentBodyMultiloc,
+            weglot_data: weglotData,
             anonymous: postAnonymously,
           },
           {

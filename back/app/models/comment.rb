@@ -20,6 +20,7 @@
 #  children_count     :integer          default(0), not null
 #  author_hash        :string
 #  anonymous          :boolean          default(FALSE), not null
+#  weglot_data        :jsonb            not null
 #
 # Indexes
 #
@@ -37,11 +38,19 @@
 #
 class Comment < ApplicationRecord
   include AnonymousParticipation
+  include LocationTrackableParticipation
+
+  # `SanitizationService` features allowed in the body, shared with anything that re-sanitizes a
+  # stored body (e.g. machine translations). `:link` is safe only because `sanitize_comment_body`
+  # relabels every anchor from its href first, so a kept link cannot lie about where it goes.
+  BODY_SANITIZE_FEATURES = %i[mention link].freeze
 
   acts_as_nested_set dependent: :destroy, counter_cache: :children_count
 
-  belongs_to :author, class_name: 'User', optional: true
   belongs_to :idea
+  delegate :project_id, :project, to: :idea
+
+  belongs_to :author, class_name: 'User', optional: true
   has_many :reactions, as: :reactable, dependent: :destroy
   has_many :likes, -> { where(mode: 'up') }, as: :reactable, class_name: 'Reaction'
   has_many :dislikes, -> { where(mode: 'down') }, as: :reactable, class_name: 'Reaction'
@@ -52,6 +61,7 @@ class Comment < ApplicationRecord
   before_validation :sanitize_body_multiloc
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
+  has_one :wise_voice_flag, as: :flaggable, class_name: 'WiseVoiceFlag', dependent: :destroy
 
   counter_culture(
     :idea,
@@ -78,8 +88,6 @@ class Comment < ApplicationRecord
 
   scope :published, -> { where publication_status: 'published' }
 
-  delegate :project_id, to: :idea
-
   def published?
     publication_status == 'published'
   end
@@ -95,10 +103,7 @@ class Comment < ApplicationRecord
   end
 
   def sanitize_body_multiloc
-    service = SanitizationService.new
-    self.body_multiloc = service.sanitize_multiloc body_multiloc, %i[mention]
-    self.body_multiloc = service.remove_multiloc_empty_trailing_tags body_multiloc
-    self.body_multiloc = service.linkify_multiloc body_multiloc
+    self.body_multiloc = SanitizationService.new.sanitize_comment_body_multiloc(body_multiloc)
   end
 
   def remove_notifications

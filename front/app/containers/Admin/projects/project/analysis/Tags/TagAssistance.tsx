@@ -27,7 +27,7 @@ const Step1 = ({ onSetStep }) => {
         <FormattedMessage {...messages.autoAssignQuestion} />
       </Title>
 
-      <Box display="flex" gap="24px" mt="24px">
+      <Box display="flex" gap="24px" mt="24px" flexWrap="wrap">
         <Button
           buttonStyle="primary-outlined"
           onClick={() => onSetStep('step2-auto')}

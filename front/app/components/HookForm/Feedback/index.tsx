@@ -10,7 +10,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import Error, {
   ErrorProps,
-  findErrorMessage,
+  findErrorMessageDescriptor,
   getApiErrorValues,
   TFieldName,
 } from 'components/UI/Error';
@@ -75,7 +75,7 @@ const Feedback = ({
           message: String(standardFieldError),
         });
       } else if (apiError) {
-        const apiErrorMessage = findErrorMessage(
+        const apiErrorMessage = findErrorMessageDescriptor(
           field as TFieldName,
           String(apiError)
         );

@@ -1,6 +1,5 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
 
-import { gql, useQuery, useMutation } from '@apollo/client';
 import {
   Input,
   Icon,
@@ -16,15 +15,13 @@ import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 import { SupportedLocale, Multiloc, IOption } from 'typings';
 
-import adminPublicationsKeys from 'api/admin_publications/keys';
-import meKeys from 'api/me/keys';
 import useAuthUser from 'api/me/useAuthUser';
 import useProjectFolders from 'api/project_folders/useProjectFolders';
-import projectsKeys from 'api/projects/keys';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
 import useLocalize from 'hooks/useLocalize';
+
+import newProjectFormMessages from 'containers/Admin/projects/_shared/components/NewProjectForm/messages';
 
 import T from 'components/T';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
@@ -34,9 +31,7 @@ import Modal from 'components/UI/Modal';
 
 import { trackEventByName } from 'utils/analytics';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { queryClient } from 'utils/cl-react-query/queryClient';
 import Link from 'utils/cl-router/Link';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import eventEmitter from 'utils/eventEmitter';
 import { convertToGraphqlLocale, isNilOrError } from 'utils/helperUtils';
 import { isAdmin } from 'utils/permissions/roles';
@@ -44,17 +39,21 @@ import {
   userModeratesFolder,
   isProjectFolderModerator,
 } from 'utils/permissions/rules/projectFolderPermissions';
+import { useParams } from 'utils/router';
+import validateTitle from 'utils/validateTitle';
 
 import tracks from '../../tracks';
-import { client } from '../../utils/apolloUtils';
+import useApplyProjectTemplate from '../api/useApplyProjectTemplate';
+import useTemplateTitle from '../api/useTemplateTitle';
 
+import FolderPicker from './FolderPicker';
 import messages from './messages';
 
-const Content = styled.div`
-  padding-left: 30px;
-  padding-right: 30px;
-  padding-top: 35px;
-  padding-bottom: 50px;
+type Variant = 'default' | 'bo';
+
+const Content = styled.div<{ variant: Variant }>`
+  padding: ${({ variant }) =>
+    variant === 'bo' ? '24px' : '35px 30px 50px 30px'};
 `;
 
 const Success = styled.div`
@@ -95,10 +94,12 @@ const SuccessText = styled.div`
   }
 `;
 
-const Footer = styled.div`
+const Footer = styled.div<{ variant: Variant }>`
   width: 100%;
   display: flex;
   align-items: center;
+  justify-content: ${({ variant }) =>
+    variant === 'bo' ? 'flex-end' : 'flex-start'};
 `;
 
 const CreateProjectButton = styled(ButtonWithLink)`
@@ -113,90 +114,49 @@ export interface Props {
   emitSuccessEvent?: boolean;
   showGoBackLink?: boolean;
   close: () => void;
-}
-
-interface IVariables {
-  projectTemplateId: string | undefined;
-  titleMultiloc: Multiloc;
-  timelineStartAt: string;
-  folderId: string | null;
+  onCreated?: () => void;
+  variant?: Variant;
 }
 
 const noFolderOption = 'NO_FOLDER_OPTION';
 
-const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
+const UseTemplateModal = memo<Props & WrappedComponentProps>(
   ({
-    params,
     intl,
     projectTemplateId,
     opened,
     emitSuccessEvent,
     showGoBackLink,
     close,
+    onCreated,
+    variant = 'default',
   }) => {
+    const params = useParams({ strict: false });
     const templateId: string | undefined =
       projectTemplateId || get(params, 'projectTemplateId');
 
     const tenantLocales = useAppConfigurationLocales();
-    const graphqlTenantLocales = useGraphqlTenantLocales();
     const { data: projectFolders } = useProjectFolders({});
     const { data: authUser } = useAuthUser();
     const localize = useLocalize();
+
+    const { data } = useTemplateTitle(templateId);
+    const { mutateAsync: applyProjectTemplate } = useApplyProjectTemplate();
+
     const [titleMultiloc, setTitleMultiloc] = useState<Multiloc | null>(null);
     const [startDate, setStartDate] = useState<string | null>(null);
     const [folderId, setFolderId] = useState<string | null>(null);
     const [folderOptions, setFolderOptions] = useState<IOption[] | null>(null);
-    const [selectedLocale, setSelectedLocale] =
-      useState<SupportedLocale | null>(null);
-    const [titleError, setTitleError] = useState<string | null>(null);
+    const [titleError, setTitleError] = useState<Multiloc | null>(null);
     const [startDateError, setStartDateError] = useState<string | null>(null);
     const [processing, setProcessing] = useState(false);
     const [success, setSuccess] = useState(false);
     const [responseError, setResponseError] = useState<any>(null);
 
-    const TEMPLATE_TITLE_QUERY = gql`
-    {
-      projectTemplate(id: "${projectTemplateId}"){
-        titleMultiloc {
-          ${graphqlTenantLocales}
-        }
-      }
-    }
-  `;
-
-    const APPLY_PROJECT_TEMPLATE = gql`
-      mutation ApplyProjectTemplate(
-        $projectTemplateId: ID!
-        $titleMultiloc: MultilocAttributes!
-        $timelineStartAt: String
-        $folderId: String
-      ) {
-        applyProjectTemplate(
-          projectTemplateId: $projectTemplateId
-          titleMultiloc: $titleMultiloc
-          timelineStartAt: $timelineStartAt
-          folderId: $folderId
-        ) {
-          errors
-        }
-      }
-    `;
-
-    const { data } = useQuery(TEMPLATE_TITLE_QUERY, { client });
-
-    const [applyProjectTemplate] = useMutation<any, IVariables>(
-      APPLY_PROJECT_TEMPLATE,
-      { client }
-    );
-
     const onCreateProject = useCallback(async () => {
       const invalidTitle =
-        isEmpty(titleMultiloc) || // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        (titleMultiloc &&
-          Object.getOwnPropertyNames(titleMultiloc).every((key) =>
-            isEmpty(titleMultiloc[`${key}`])
-          ));
+        !titleMultiloc ||
+        Object.values(titleMultiloc).every((title) => isEmpty(title));
       const noDate = isEmpty(startDate);
       const invalidDate = !moment(
         startDate || '',
@@ -209,11 +169,17 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
       });
 
       if (invalidTitle && !isNilOrError(tenantLocales)) {
-        if (tenantLocales.length === 1) {
-          setTitleError(intl.formatMessage(messages.projectTitleError));
-        } else {
-          setTitleError(intl.formatMessage(messages.projectTitleMultilocError));
-        }
+        setTitleError(
+          validateTitle(
+            tenantLocales,
+            titleMultiloc ?? undefined,
+            intl.formatMessage(
+              tenantLocales.length === 1
+                ? messages.projectTitleError
+                : messages.projectTitleMultilocError
+            )
+          )
+        );
       }
 
       if (noDate) {
@@ -224,9 +190,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
         );
       }
 
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      if (!invalidTitle && !invalidDate && titleMultiloc && startDate) {
+      if (!invalidTitle && !invalidDate && startDate) {
         setResponseError(null);
         setTitleError(null);
         setStartDateError(null);
@@ -234,23 +198,16 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
 
         try {
           await applyProjectTemplate({
-            variables: {
-              titleMultiloc: transform(
-                titleMultiloc,
-                (result: Multiloc, val, key: SupportedLocale) => {
-                  result[convertToGraphqlLocale(key)] = val;
-                }
-              ),
-              projectTemplateId: templateId,
-              timelineStartAt: startDate,
-              folderId: folderId !== noFolderOption ? folderId : null,
-            },
+            titleMultiloc: transform(
+              titleMultiloc,
+              (result: Multiloc, val, key: SupportedLocale) => {
+                result[convertToGraphqlLocale(key)] = val;
+              }
+            ),
+            projectTemplateId: templateId!,
+            timelineStartAt: startDate,
+            folderId: folderId !== noFolderOption ? folderId : null,
           });
-          queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
-          queryClient.invalidateQueries({
-            queryKey: adminPublicationsKeys.lists(),
-          });
-          queryClient.invalidateQueries({ queryKey: meKeys.all() });
 
           if (emitSuccessEvent) {
             eventEmitter.emit('NewProjectCreated');
@@ -258,31 +215,34 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
 
           setProcessing(false);
           setSuccess(true);
+          onCreated?.();
         } catch (error) {
           setProcessing(false);
           setResponseError(error);
         }
       }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [tenantLocales, titleMultiloc, startDate, selectedLocale, folderId]);
+    }, [
+      titleMultiloc,
+      startDate,
+      projectTemplateId,
+      tenantLocales,
+      intl,
+      applyProjectTemplate,
+      templateId,
+      folderId,
+      emitSuccessEvent,
+      onCreated,
+    ]);
 
     const onClose = useCallback(() => {
       close();
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [close]);
 
     const onTitleChange = useCallback((titleMultiloc: Multiloc | null) => {
       setResponseError(null);
       setTitleError(null);
       setTitleMultiloc(titleMultiloc);
     }, []);
-
-    const onSelectedLocaleChange = useCallback(
-      (newSelectedLocale: SupportedLocale) => {
-        setSelectedLocale(newSelectedLocale);
-      },
-      []
-    );
 
     const onStartDateChange = useCallback((startDate: string) => {
       setResponseError(null);
@@ -297,7 +257,6 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
     useEffect(() => {
       setTitleMultiloc(null);
       setStartDate(null);
-      setSelectedLocale(null);
       setTitleError(null);
       setStartDateError(null);
       setProcessing(false);
@@ -354,9 +313,13 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
       folderOptions.length === 1
     );
 
+    const isBo = variant === 'bo';
+    const buttonStyle = isBo ? 'bo-primary' : 'secondary-outlined';
+
     return (
       <Modal
-        width={500}
+        width={isBo ? 560 : 500}
+        variant={variant}
         opened={opened}
         close={onClose}
         closeOnClickOutside={false}
@@ -367,11 +330,11 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
           />
         }
         footer={
-          <Footer>
+          <Footer variant={variant}>
             {!success ? (
               <>
                 <CreateProjectButton
-                  buttonStyle="secondary-outlined"
+                  buttonStyle={buttonStyle}
                   onClick={onCreateProject}
                   processing={processing}
                 >
@@ -387,28 +350,35 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
                 )}
               </>
             ) : (
-              <CloseButton buttonStyle="secondary-outlined" onClick={onClose}>
+              <CloseButton buttonStyle={buttonStyle} onClick={onClose}>
                 <FormattedMessage {...messages.close} />
               </CloseButton>
             )}
           </Footer>
         }
       >
-        <Content>
+        <Content variant={variant}>
           {!success ? (
             <>
               <InputMultilocWithLocaleSwitcher
                 id="project-title"
-                label={intl.formatMessage(messages.projectTitle)}
-                placeholder={intl.formatMessage(messages.typeProjectName)}
+                label={
+                  isBo ? undefined : intl.formatMessage(messages.projectTitle)
+                }
+                ariaLabel={intl.formatMessage(messages.projectTitle)}
+                placeholder={intl.formatMessage(
+                  isBo
+                    ? newProjectFormMessages.titlePlaceholder
+                    : messages.typeProjectName
+                )}
                 type="text"
                 valueMultiloc={titleMultiloc}
                 onChange={onTitleChange}
-                onSelectedLocaleChange={onSelectedLocaleChange}
-                error={titleError}
+                errorMultiloc={titleError}
                 autoFocus={true}
+                variant={variant}
               />
-              <Box my="36px">
+              <Box my={isBo ? '24px' : '36px'}>
                 <Input
                   id="project-start-date"
                   label={intl.formatMessage(messages.projectStartDate)}
@@ -416,21 +386,33 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
                   onChange={onStartDateChange}
                   value={startDate}
                   error={startDateError}
+                  variant={variant}
                 />
               </Box>
-              <Select
-                value={folderId}
-                label={intl.formatMessage(messages.projectFolder)}
-                options={folderOptions}
-                disabled={isSelectDisabled}
-                onChange={handleSelectFolderChange}
-              />
+              {isBo ? (
+                folderOptions && (
+                  <FolderPicker
+                    options={folderOptions}
+                    value={folderId}
+                    onChange={setFolderId}
+                  />
+                )
+              ) : (
+                <Select
+                  value={folderId}
+                  label={intl.formatMessage(messages.projectFolder)}
+                  options={folderOptions}
+                  disabled={isSelectDisabled}
+                  onChange={handleSelectFolderChange}
+                />
+              )}
             </>
           ) : (
             <Success>
               <SuccessIcon name="check-circle" />
               <SuccessText>
                 <FormattedMessage {...messages.successMessage} />
+                <FormattedMessage {...messages.findItInProjectsList} />
                 {showGoBackLink && (
                   <FormattedMessage
                     {...messages.goBackTo}
@@ -454,4 +436,4 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
   }
 );
 
-export default injectIntl(withRouter(UseTemplateModal));
+export default injectIntl(UseTemplateModal);

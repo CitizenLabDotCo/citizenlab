@@ -1,0 +1,100 @@
+require 'rails_helper'
+
+RSpec.describe Insights::PollPhaseInsightsService do
+  let(:service) { described_class.new(phase) }
+  let(:phase) { create(:poll_phase) }
+
+  let(:user1) { create(:user) }
+  let!(:response1) { create(:poll_response, phase: phase, user: user1) }
+
+  let(:user2) { create(:user) }
+  let!(:response2) { create(:poll_response, phase: phase, user: user2) }
+
+  describe '#participation_taking_poll' do
+    it 'returns the participation taking polls data associated with the phase' do
+      participation_taking_poll = service.send(:participation_taking_poll)
+
+      expect(participation_taking_poll).to contain_exactly({
+        item_id: response1.id,
+        action: 'taking_poll',
+        acted_at: a_kind_of(Time),
+        classname: 'Response',
+        participant_id: user1.id,
+        user_custom_field_values: {}
+      }, {
+        item_id: response2.id,
+        action: 'taking_poll',
+        acted_at: a_kind_of(Time),
+        classname: 'Response',
+        participant_id: user2.id,
+        user_custom_field_values: {}
+      })
+
+      first_participation = participation_taking_poll.first
+      expect(first_participation[:acted_at])
+        .to be_within(1.second).of(Polls::Response.find(first_participation[:item_id]).created_at)
+    end
+  end
+
+  describe '#phase_participations' do
+    it 'returns the expected aggregation of sets of participations' do
+      participations = service.send(:phase_participations)
+
+      expect(participations).to eq({
+        taking_poll: service.send(:participation_taking_poll)
+      })
+
+      expect(participations[:taking_poll].map { |p| p[:item_id] }).to contain_exactly(response1.id, response2.id)
+    end
+  end
+
+  describe '#call with exclude_admins_and_moderators' do
+    let(:phase) { create(:poll_phase, start_at: 17.days.ago, end_at: 2.days.ago) }
+
+    before do
+      AppConfiguration.instance.update!(platform_start_at: 1.year.ago.beginning_of_day)
+
+      create_admins_and_moderators(project: phase.project).each do |user|
+        create(:poll_response, phase: phase, user: user)
+      end
+
+      create(:session, :with_pageview, monthly_user_hash: 'user', project: phase.project, pageview_created_at: 10.days.ago)
+      admin_and_moderator_highest_roles.each do |highest_role|
+        create(:session, :with_pageview, monthly_user_hash: highest_role, highest_role: highest_role, project: phase.project, pageview_created_at: 10.days.ago)
+      end
+    end
+
+    it 'includes admins and moderators by default' do
+      metrics = described_class.new(phase).call[:metrics]
+
+      expect(metrics).to include(visitors: 6, participants: 7, participation_rate_as_percent: 116.7)
+      expect(metrics['poll']).to include(responses: 7)
+    end
+
+    it 'excludes participations and visits of admins and moderators' do
+      metrics = described_class.new(phase, exclude_admins_and_moderators: true).call[:metrics]
+
+      expect(metrics).to include(visitors: 1, participants: 2, participation_rate_as_percent: 200.0)
+      expect(metrics['poll']).to include(responses: 2)
+    end
+  end
+
+  describe 'phase_participation_method_metrics' do
+    let(:user1) { create(:user) }
+    let(:participation1) { create(:taking_poll_participation, acted_at: 10.days.ago, user: user1) }
+    let(:participation2) { create(:taking_poll_participation, acted_at: 5.days.ago, user: user1) }
+
+    let(:participations) do
+      { taking_poll: [participation1, participation2] }
+    end
+
+    it 'calculates the correct metrics' do
+      metrics = service.send(:phase_participation_method_metrics, participations)
+
+      expect(metrics).to eq({
+        responses: 2,
+        responses_7_day_percent_change: 100.0 # from 1 response by 7-days ago, to 2 now = 100% change
+      })
+    end
+  end
+end

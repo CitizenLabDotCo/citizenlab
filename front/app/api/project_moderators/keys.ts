@@ -5,7 +5,7 @@ const baseKey = { type: 'user', variant: 'project_moderator' };
 const projectModeratorsKeys = {
   all: () => [baseKey],
   lists: () => [{ ...baseKey, operation: 'list' }],
-  list: ({ projectId }: { projectId: string }) => [
+  list: ({ projectId }: { projectId?: string }) => [
     {
       ...baseKey,
       operation: 'list',

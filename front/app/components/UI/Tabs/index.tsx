@@ -5,6 +5,7 @@ import {
   IconNames,
   colors,
   fontSizes,
+  stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
@@ -40,6 +41,7 @@ const Tab = styled.button<{ minWidth?: number; disabled?: boolean }>`
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   transition: all 80ms ease-out;
   justify-content: center;
+  height: ${stylingConsts.inputHeight}px;
   ${(props) => props.minWidth && `min-width: ${props.minWidth}px;`}
 
   &.first {

@@ -69,7 +69,11 @@ class ProfileDeletion extends PureComponent<
             </ButtonWithLink>
           </Row>
         </FormSection>
-        <Modal opened={dialogOpened} close={this.onCloseDialog}>
+        <Modal
+          opened={dialogOpened}
+          close={this.onCloseDialog}
+          ariaLabelledBy="delete-account-modal-title"
+        >
           <DeletionDialog closeDialog={this.onCloseDialog} />
         </Modal>
       </>

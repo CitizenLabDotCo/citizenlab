@@ -10,27 +10,33 @@ import {
   Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { rgba } from 'polished';
-import { useFormContext, useFieldArray } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import styled from 'styled-components';
 
 import {
   ICreateMatrixStatementsType,
+  ICustomFieldInputType,
   ICustomFieldSettingsTab,
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
   IOptionsType,
 } from 'api/custom_fields/types';
 import useDuplicateMapConfig from 'api/map_config/useDuplicateMapConfig';
+import useFormSubmissionsCount from 'api/submission_count/useSubmissionCount';
+
+import inputFormMessages from 'containers/Admin/projects/project/inputForm/messages';
 
 import { Conflict } from 'components/FormBuilder/edit/utils';
-import { FormBuilderConfig } from 'components/FormBuilder/utils';
+import { ResolvedFormBuilderConfig } from 'components/FormBuilder/utils';
 import Modal from 'components/UI/Modal';
 import MoreActionsMenu from 'components/UI/MoreActionsMenu';
 
 import { useIntl } from 'utils/cl-intl';
 import { generateTempId } from 'utils/helperUtils';
+import { useParams } from 'utils/router';
 
 import { FlexibleRow } from '../../FlexibleRow';
+import { FieldArrayOperations } from '../types';
 import { getFieldBackgroundColor } from '../utils';
 
 import LocationDeletionModal from './components/LocationDeletionModal';
@@ -47,14 +53,22 @@ const FormFieldsContainer = styled(Box)`
   }
 `;
 
+const MAPPING_INPUT_TYPES: ICustomFieldInputType[] = [
+  'point',
+  'line',
+  'polygon',
+  'multipoint',
+];
+
 type Props = {
   field: IFlatCustomField;
   onEditField: (field: IFlatCustomFieldWithIndex) => void;
   selectedFieldId?: string;
-  builderConfig: FormBuilderConfig;
+  builderConfig: ResolvedFormBuilderConfig;
   fieldNumbers: Record<string, number>;
   closeSettings: (triggerAutosave?: boolean) => void;
   conflicts?: Conflict[];
+  fieldArrayOperations: FieldArrayOperations;
 };
 
 export const FormField = ({
@@ -65,6 +79,7 @@ export const FormField = ({
   fieldNumbers,
   closeSettings,
   conflicts,
+  fieldArrayOperations,
 }: Props) => {
   const {
     watch,
@@ -75,14 +90,17 @@ export const FormField = ({
   const moreActionsButtonRef = useRef<HTMLButtonElement>(null);
   const { formatMessage } = useIntl();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showDeleteAnswersModal, setShowDeleteAnswersModal] = useState(false);
   const [showLocationDeleteModal, setShowLocationDeleteModal] = useState(false);
   const formCustomFields: IFlatCustomField[] = watch('customFields');
   const index = formCustomFields.findIndex((f) => f.id === field.id);
-  const { insert, move, remove } = useFieldArray({
-    name: 'customFields',
-  });
+  const { insert, move, remove } = fieldArrayOperations;
   const { formEndPageLogicOption, displayBuiltInFields } = builderConfig;
   const { mutateAsync: duplicateMapConfig } = useDuplicateMapConfig();
+  const { phaseId } = useParams({ strict: false });
+  const { data: submissionCount } = useFormSubmissionsCount({ phaseId });
+  const formHasSubmissions =
+    (submissionCount?.data.attributes.totalSubmissions ?? 0) > 0;
 
   const hasErrors = !!errors.customFields?.[index];
   const message = getConflictMessageKey(conflicts);
@@ -101,6 +119,8 @@ export const FormField = ({
     return pages < 3;
   };
   const shouldShowDelete =
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     !isLastPage() && !field?.constraints?.locks?.deletion;
 
   const editFieldAndValidate = (defaultTab: ICustomFieldSettingsTab) => {
@@ -173,7 +193,7 @@ export const FormField = ({
 
     // Duplicate the map config if this is a mapping question
     if (
-      originalField.input_type === 'point' &&
+      MAPPING_INPUT_TYPES.includes(originalField.input_type) &&
       // TODO: Fix this the next time the file is edited.
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       originalField.map_config?.data?.id
@@ -253,8 +273,18 @@ export const FormField = ({
         return;
       }
 
+      if (!field.code && field.input_type !== 'page' && formHasSubmissions) {
+        setShowDeleteAnswersModal(true);
+        return;
+      }
+
       onDelete(fieldIndex);
     }
+  };
+
+  const confirmDeleteAnswersAndField = () => {
+    setShowDeleteAnswersModal(false);
+    onDelete(index);
   };
 
   const removeLogicAndDelete = () => {
@@ -405,10 +435,11 @@ export const FormField = ({
         opened={showDeleteModal}
         close={closeModal}
         returnFocusRef={moreActionsButtonRef}
+        ariaLabelledBy="delete-field-modal-title"
       >
         <Box display="flex" flexDirection="column" width="100%" p="20px">
           <Box mb="40px">
-            <Title variant="h3" color="primary">
+            <Title id="delete-field-modal-title" variant="h3" color="primary">
               {formatMessage(messages.deleteFieldWithLogicConfirmationQuestion)}
             </Title>
             <Text color="primary" fontSize="l">
@@ -435,6 +466,51 @@ export const FormField = ({
               buttonStyle="secondary-outlined"
               width="auto"
               onClick={closeModal}
+            >
+              {formatMessage(messages.cancelDeleteButtonText)}
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
+      <Modal
+        opened={showDeleteAnswersModal}
+        close={() => setShowDeleteAnswersModal(false)}
+        returnFocusRef={moreActionsButtonRef}
+        ariaLabelledBy="delete-answered-field-modal-title"
+      >
+        <Box display="flex" flexDirection="column" width="100%" p="20px">
+          <Box mb="40px">
+            <Title
+              id="delete-answered-field-modal-title"
+              variant="h3"
+              color="primary"
+            >
+              {formatMessage(inputFormMessages.existingSubmissionsWarning)}
+            </Title>
+            <Text color="primary" fontSize="l">
+              {formatMessage(messages.deleteResultsInfo)}
+            </Text>
+          </Box>
+          <Box
+            display="flex"
+            flexDirection="row"
+            width="100%"
+            alignItems="center"
+          >
+            <Button
+              icon="delete"
+              data-cy="e2e-confirm-delete-answered-field"
+              buttonStyle="delete"
+              width="auto"
+              mr="20px"
+              onClick={confirmDeleteAnswersAndField}
+            >
+              {formatMessage(messages.delete)}
+            </Button>
+            <Button
+              buttonStyle="secondary-outlined"
+              width="auto"
+              onClick={() => setShowDeleteAnswersModal(false)}
             >
               {formatMessage(messages.cancelDeleteButtonText)}
             </Button>

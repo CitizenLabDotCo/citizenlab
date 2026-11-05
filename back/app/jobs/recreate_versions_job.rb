@@ -10,7 +10,7 @@ class RecreateVersionsJob < ApplicationJob
     )
     return unless instance.valid? && instance.send(:"#{attribute}?")
 
-    instance.send(attribute).recreate_versions!(*versions)
+    instance.send(attribute).recreate_versions!(*versions.map(&:to_sym))
     instance.save!
   end
 end

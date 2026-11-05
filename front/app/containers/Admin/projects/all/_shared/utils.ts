@@ -3,7 +3,11 @@ import { colors } from '@citizenlab/cl2-component-library';
 import { ParticipationMethod } from 'api/phases/types';
 import { PublicationStatus } from 'api/projects/types';
 
-export const getStatusColor = (status: PublicationStatus) => {
+export const getStatusColor = (
+  status: PublicationStatus,
+  isScheduled = false
+) => {
+  if (isScheduled) return '#7C3AED';
   switch (status) {
     case 'published':
       return colors.green500;

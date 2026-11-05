@@ -17,7 +17,7 @@ const InviteAcceptedNotification = memo<Props>((props) => {
 
   return (
     <NotificationWrapper
-      linkTo={'/admin/users/invitations'}
+      to="/admin/users/invitations"
       timing={notification.attributes.created_at}
       icon="user-check"
       isRead={!!notification.attributes.read_at}
@@ -28,7 +28,7 @@ const InviteAcceptedNotification = memo<Props>((props) => {
           name: (
             <UserLink
               userName={notification.attributes.initiating_user_first_name}
-              userSlug={notification.attributes.initiating_user_slug}
+              userId={notification.attributes.initiating_user_id}
             />
           ),
         }}

@@ -27,9 +27,23 @@ export default defineMessages({
     id: 'app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkText',
     defaultMessage: 'support article',
   },
-  userAnonymitySupportTooltipLinkUrl: {
-    id: 'app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl',
+  userAnonymitySupportTooltipLinkUrl2: {
+    id: 'app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl2',
     defaultMessage:
-      'https://support.govocal.com/en/articles/7946486-enabling-anonymous-participation',
+      'https://support.govocal.com/en/articles/527583-enabling-anonymous-participation',
+  },
+  anonymousParticipationAutoEnabled: {
+    id: 'app.components.AnonymousPostingToggle.anonymousParticipationAutoEnabled',
+    defaultMessage:
+      'Anonymous posting for logged-in users is automatically enabled when the posting requirement is set to "None" (no registration needed).',
+  },
+  anonymousParticipation: {
+    id: 'app.components.admin.AnonymousPostingToggle.anonymousParticipation',
+    defaultMessage: 'Anonymous participation',
+  },
+  anonymousParticipationDescription: {
+    id: 'app.components.admin.AnonymousPostingToggle.anonymousParticipationDescription',
+    defaultMessage:
+      'Participants can hide their identity from other participants, administrators and managers.',
   },
 });

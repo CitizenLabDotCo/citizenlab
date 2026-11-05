@@ -260,6 +260,7 @@ describe Invites::Service do
           key: 'integer_field',
           input_type: 'number'
         )
+        create(:custom_field_birthyear)
       end
 
       let(:hash_array) do
@@ -272,33 +273,38 @@ describe Invites::Service do
           { email: 'user5@domain.net', checkbox_field: 'FALSE' },
 
           { email: 'user6@domain.net', float_field: '666.34' },
-          { email: 'user7@domain.net', integer_field: '1873050293742134' }
+          { email: 'user7@domain.net', integer_field: '1873050293742134' },
+
+          { email: 'user8@domain.net', birthyear: '1990' }
         ]
       end
 
       it 'initializes custom_field_values with matching column names and appropriate types' do
-        expect { service.bulk_create_xlsx(xlsx, {}) }.to change(Invite, :count).from(0).to(7)
+        expect { service.bulk_create_xlsx(xlsx, {}) }.to change(Invite, :count).from(0).to(8)
 
         user = User.find_by(email: 'user1@domain.net')
-        expect(user.custom_field_values).to eq({ 'text_field' => 'some_value' })
+        expect(user.custom_field_answers.pluck(:key, :value)).to eq [%w[text_field some_value]]
 
         user = User.find_by(email: 'user2@domain.net')
-        expect(user.custom_field_values).to eq({ 'checkbox_field' => true })
+        expect(user.custom_field_answers.pluck(:key, :value)).to eq [['checkbox_field', true]]
 
         user = User.find_by(email: 'user3@domain.net')
-        expect(user.custom_field_values).to eq({ 'checkbox_field' => true })
+        expect(user.custom_field_answers.pluck(:key, :value)).to eq [['checkbox_field', true]]
 
         user = User.find_by(email: 'user4@domain.net')
-        expect(user.custom_field_values).to eq({ 'checkbox_field' => false })
+        expect(user.custom_field_answers.pluck(:key, :value)).to eq [['checkbox_field', false]]
 
         user = User.find_by(email: 'user5@domain.net')
-        expect(user.custom_field_values).to eq({ 'checkbox_field' => false })
+        expect(user.custom_field_answers.pluck(:key, :value)).to eq [['checkbox_field', false]]
 
         user = User.find_by(email: 'user6@domain.net')
-        expect(user.custom_field_values).to eq({ 'float_field' => 666.34 })
+        expect(user.custom_field_answers.pluck(:key, :value)).to eq [['float_field', 666.34]]
 
         user = User.find_by(email: 'user7@domain.net')
-        expect(user.custom_field_values).to eq({ 'integer_field' => 1_873_050_293_742_134 })
+        expect(user.custom_field_answers.pluck(:key, :value)).to eq [['integer_field', 1_873_050_293_742_134]]
+
+        user = User.find_by(email: 'user8@domain.net')
+        expect(user.custom_field_answers.pick(:value)).to be 1990
       end
     end
 
@@ -325,6 +331,23 @@ describe Invites::Service do
       it 'trims the spaces' do
         expect { service.bulk_create_xlsx(xlsx) }.to change(User, :count).from(0).to(1)
         expect(User.first.email).to eq('user@domain.net')
+      end
+    end
+
+    context 'with a multiselect custom field column' do
+      before do
+        create(:custom_field_multiselect, :with_options, key: 'multiselect_field')
+      end
+
+      let(:hash_array) do
+        [{ email: 'user@domain.net', multiselect_field: 'option1' }]
+      end
+
+      # Pins the current behaviour, which is likely not the desired one:
+      # importing the selected options would make more sense.
+      it 'does not store a value' do
+        expect { service.bulk_create_xlsx(xlsx) }.to change(User, :count).from(0).to(1)
+        expect(User.first.custom_field_answers).to be_empty
       end
     end
 
@@ -464,6 +487,59 @@ describe Invites::Service do
       end
     end
 
+    context 'with @ in first_name' do
+      let(:hash_array) do
+        [
+          { email: 'a@example.com', first_name: 'bad@name', last_name: 'Smith' }
+        ]
+      end
+
+      it 'fails with invalid_first_name error including the bad value' do
+        expect { service.bulk_create_xlsx(xlsx, {}) }.to raise_error(Invites::FailedError)
+
+        error = service_errors.sole
+        expect(error.error_key).to eq Invites::ErrorStorage::INVITE_ERRORS[:invalid_first_name]
+        expect(error.row).to eq 2
+        expect(error.value).to eq 'bad@name'
+      end
+    end
+
+    context 'with @ in last_name' do
+      let(:hash_array) do
+        [
+          { email: 'b@example.com', first_name: 'Alice', last_name: 'also@bad' }
+        ]
+      end
+
+      it 'fails with invalid_last_name error including the bad value' do
+        expect { service.bulk_create_xlsx(xlsx, {}) }.to raise_error(Invites::FailedError)
+
+        error = service_errors.sole
+        expect(error.error_key).to eq Invites::ErrorStorage::INVITE_ERRORS[:invalid_last_name]
+        expect(error.row).to eq 2
+        expect(error.value).to eq 'also@bad'
+      end
+    end
+
+    context 'with a banned email' do
+      before { EmailBan.ban!('banned.user@gmail.com') }
+
+      let(:hash_array) do
+        [
+          { email: 'john@john.son' },
+          { email: 'banned.user+alias@gmail.com' }
+        ]
+      end
+
+      it 'fails with email_banned error' do
+        expect { service.bulk_create_xlsx(xlsx, {}) }.to raise_error(Invites::FailedError)
+
+        error = service_errors.sole
+        expect(error.error_key).to eq Invites::ErrorStorage::INVITE_ERRORS[:email_banned]
+        expect(error.row).to eq 3
+      end
+    end
+
     context 'with an email that is already used by an active user (case insensitive)' do
       before { create(:user, email: 'someUser@somedomain.com') }
 
@@ -498,8 +574,8 @@ describe Invites::Service do
         expect { service.bulk_create_xlsx(xlsx) }.to change(Invite, :count).from(0).to(1)
 
         user.reload
-        expect(user.roles).to match_array([{ 'type' => 'admin' }, old_role])
-        expect(user.manual_groups).to match_array([old_group, new_group])
+        expect(user.roles).to contain_exactly({ 'type' => 'admin' }, old_role)
+        expect(user.manual_groups).to contain_exactly(old_group, new_group)
       end
 
       context 'when new role and group duplicate existing ones' do
@@ -516,8 +592,8 @@ describe Invites::Service do
           expect { service.bulk_create_xlsx(xlsx, default_params) }.to change(Invite, :count).from(0).to(1)
 
           user.reload
-          expect(user.roles).to match_array([old_role])
-          expect(user.manual_groups).to match_array([old_group])
+          expect(user.roles).to contain_exactly(old_role)
+          expect(user.manual_groups).to contain_exactly(old_group)
         end
       end
     end
@@ -552,6 +628,27 @@ describe Invites::Service do
         expect(service_errors.first.error_key).to eq Invites::ErrorStorage::INVITE_ERRORS[:emails_duplicate]
         expect(service_errors.first.rows).to eq [2, 3, 5]
         expect(service_errors.first.value).to eq 'someuser@somedomain.com'
+      end
+    end
+
+    context 'with duplicate emails that differ only in case' do
+      let(:hash_array) do
+        [
+          { email: 'someuser@somedomain.com' },
+          { email: 'SomeUser@somedomain.com' }
+        ]
+      end
+
+      # check_duplicate_emails compares the raw email strings, so case variants
+      # slip past the up-front duplicate check. The collision is then only caught
+      # by the case-insensitive DB lookup at save! time, which raises
+      # :taken_by_invite (an error key with no translation) and crashes
+      # Invites::CountNewSeatsJob. They should be flagged as duplicates instead.
+      it 'detects them as duplicates instead of crashing at save time' do
+        expect { service.bulk_create_xlsx(xlsx, {}) }.to raise_error(Invites::FailedError)
+        expect(service_errors.size).to eq 1
+        expect(service_errors.first.error_key).to eq Invites::ErrorStorage::INVITE_ERRORS[:emails_duplicate]
+        expect(service_errors.first.rows).to eq [2, 3]
       end
     end
 

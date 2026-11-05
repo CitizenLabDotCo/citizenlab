@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import {
   Title,
@@ -8,8 +8,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { InsertConfigurationOptions } from 'typings';
 
-import AdminProjectsProjectGeneral from 'containers/Admin/projects/project/general';
-import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
+import useAuthUser from 'api/me/useAuthUser';
 
 import Outlet from 'components/Outlet';
 import GoBackButton from 'components/UI/GoBackButton';
@@ -17,11 +16,10 @@ import Tabs, { ITabItem } from 'components/UI/Tabs';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
-import clHistory from 'utils/cl-router/history';
-import eventEmitter from 'utils/eventEmitter';
 import { insertConfiguration } from 'utils/moduleUtils';
 
 import messages from './messages';
+import ProjectSetupForm from './ProjectSetupForm';
 import tracks from './tracks';
 
 export interface INewProjectCreatedEvent {
@@ -35,6 +33,7 @@ export interface ITabNamesMap {
 export type TTabName = ITabNamesMap[keyof ITabNamesMap];
 
 const CreateProject = () => {
+  const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
   const [tabs, setTabs] = useState<ITabItem[]>([
     {
@@ -45,26 +44,6 @@ const CreateProject = () => {
   ]);
 
   const [selectedTabValue, setSelectedTabValue] = useState<TTabName>('scratch');
-
-  useEffect(() => {
-    const subscription = eventEmitter
-      .observeEvent<INewProjectCreatedEvent>('NewProjectCreated')
-      .subscribe(({ eventValue }) => {
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        const projectId = eventValue?.projectId;
-
-        if (projectId) {
-          setTimeout(() => {
-            clHistory.push({
-              pathname: `${adminProjectsProjectPath(projectId)}/phases/new`,
-            });
-          }, 1000);
-        }
-      });
-
-    return () => subscription.unsubscribe();
-  }, []);
 
   const handleTabOnClick = (newSelectedTabValue: TTabName) => {
     trackEventByName(tracks.createdProject, {
@@ -78,9 +57,11 @@ const CreateProject = () => {
       return insertConfiguration({ ...data, insertAfterName: 'scratch' })(tabs);
     });
 
+  if (!authUser) return null;
+
   return (
     <Box>
-      <GoBackButton linkTo="/admin/projects" />
+      <GoBackButton to="/admin/projects" />
       <Title color="primary" mb="32px">
         {formatMessage(messages.createAProject)}
       </Title>
@@ -109,7 +90,7 @@ const CreateProject = () => {
           id="app.containers.Admin.projects.all.createProject"
           selectedTabValue={selectedTabValue}
         />
-        {selectedTabValue === 'scratch' && <AdminProjectsProjectGeneral />}
+        {selectedTabValue === 'scratch' && <ProjectSetupForm />}
       </Box>
     </Box>
   );

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
 import { Title, colors } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
@@ -10,6 +9,7 @@ import useUpdateCampaignConsents from 'api/campaign_consents/useUpdateCampaignCo
 import CampaignConsentForm from 'components/CampaignConsentForm';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { useSearch } from 'utils/router';
 
 import InitialUnsubscribeFeedback from './InitialUnsubscribeFeedback';
 import messages from './messages';
@@ -30,10 +30,15 @@ const EmailSettingPage = () => {
   >();
   const [unsubscribedCampaignMultiloc, setUnsubscribedCampaignMultiloc] =
     useState<Multiloc | null>(null);
+  const [unsubscribedConsentId, setUnsubscribedConsentId] = useState<
+    string | undefined
+  >();
+  // Assume they can until the unsubscribe response says otherwise, so the error paths still show the form.
+  const [canManagePreferences, setCanManagePreferences] = useState(true);
 
-  const [searchParams] = useSearchParams();
-  const unsubscriptionToken = searchParams.get('unsubscription_token');
-  const campaignId = searchParams.get('campaign_id');
+  const searchParams = useSearch({ strict: false });
+  const unsubscriptionToken = searchParams.unsubscription_token;
+  const campaignId = searchParams.campaign_id;
 
   const { mutate: updateCampaignConsents } = useUpdateCampaignConsents();
 
@@ -61,6 +66,10 @@ const EmailSettingPage = () => {
             setUnsubscribedCampaignMultiloc(
               data[0].data.attributes.campaign_type_description_multiloc
             );
+            setUnsubscribedConsentId(data[0].data.id);
+            setCanManagePreferences(
+              data[0].data.attributes.can_manage_preferences
+            );
           },
           onError: () => {
             setInitialUnsubscribeStatus('error');
@@ -84,14 +93,17 @@ const EmailSettingPage = () => {
                 className="e2e-unsubscribe-status"
                 status={initialUnsubscribeStatus}
                 unsubscribedCampaignMultiloc={unsubscribedCampaignMultiloc}
+                canManagePreferences={canManagePreferences}
               />
             )}
           {initialUnsubscribeStatus &&
-            initialUnsubscribeStatus !== 'loading' && (
+            initialUnsubscribeStatus !== 'loading' &&
+            canManagePreferences && (
               <CampaignConsentForm
                 trackEventName={tracks.unsubscribedFromLink}
                 runOnSave={closeInitialUnsubscribe}
                 unsubscriptionToken={unsubscriptionToken}
+                unsubscribedConsentId={unsubscribedConsentId}
               />
             )}
         </div>

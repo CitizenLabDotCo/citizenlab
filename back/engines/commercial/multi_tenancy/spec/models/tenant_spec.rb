@@ -9,6 +9,32 @@ RSpec.describe Tenant do
     end
   end
 
+  describe 'host format validation' do
+    it 'rejects an invalid host on create' do
+      expect(build(:tenant, host: 'Uppercase.example.com')).to be_invalid
+    end
+
+    it 'rejects a change to an invalid host' do
+      tenant = create(:tenant, host: 'lowercase.example.com')
+      tenant.host = 'Uppercase.example.com'
+
+      expect(tenant).to be_invalid
+    end
+
+    # A host that got in without passing through the model — the tenant clone service inserts
+    # with raw SQL — used to make the whole record unsavable for good, blocking its own
+    # soft-delete and every rake task that iterates tenants and saves them.
+    it 'does not re-check a persisted host that has not changed' do
+      tenant = create(:tenant, host: 'uppercase.example.com')
+      tenant.update_column(:host, 'Uppercase.example.com')
+      tenant.reload
+
+      tenant.deleted_at = Time.zone.now
+
+      expect(tenant).to be_valid
+    end
+  end
+
   describe '#switch!' do
     let_it_be(:other_tenant) { create(:tenant, name: 'other-tenant') }
 
@@ -35,6 +61,20 @@ RSpec.describe Tenant do
       expect(described_class.current).to eq(other_tenant)
     end
 
+    it 'sets Time.zone to the tenant timezone' do
+      timezone_before = AppConfiguration.timezone
+      timezone_after = other_tenant.switch do
+        AppConfiguration.instance.settings['core']['timezone'] = 'America/New_York'
+        AppConfiguration.instance.save!
+        AppConfiguration.timezone
+      end
+
+      expect { other_tenant.switch! }
+        .to change(Time, :zone)
+        .from(timezone_before)
+        .to(timezone_after)
+    end
+
     it 'fails when the tenant is not persisted' do
       tenant = build(:tenant, host: 'unused.hostname.com')
       expect { tenant.switch! }.to raise_error(Apartment::TenantNotFound)
@@ -59,11 +99,36 @@ RSpec.describe Tenant do
       expect(current_tenant).to eq(other_tenant)
     end
 
+    it 'sets Time.zone to the tenant timezone inside the block and restores it after' do
+      timezone_before = AppConfiguration.timezone
+      timezone_after = other_tenant.switch do
+        AppConfiguration.instance.settings['core']['timezone'] = 'America/New_York'
+        AppConfiguration.instance.save!
+        AppConfiguration.timezone
+      end
+
+      expect(Time.zone).to eq(timezone_before)
+      other_tenant.switch { expect(Time.zone).to eq(timezone_after) }
+      expect(Time.zone).to eq(timezone_before)
+    end
+
     it 'fails if the tenant is not persisted' do
       tenant = build(:tenant, host: 'unused.hostname.com')
       expect do
         tenant.switch { User.first }
       end.to raise_error(Apartment::TenantNotFound)
+    end
+  end
+
+  describe 'Apartment::Tenant.reset' do
+    it 'resets Time.zone to the Rails default' do
+      AppConfiguration.instance.settings['core']['timezone'] = 'America/New_York'
+      AppConfiguration.instance.save!
+
+      expect { Apartment::Tenant.reset }
+        .to change { Time.zone.name }
+        .from('America/New_York')
+        .to(Rails.application.config.time_zone)
     end
   end
 
@@ -123,6 +188,41 @@ RSpec.describe Tenant do
       t = create(:tenant, host: 'something.else-than-the-default-test-tenant')
       expect(Apartment::Tenant).to receive(:drop).with(t.host.tr('.', '_'))
       t.destroy
+    end
+
+    it 'deletes the tenant que_jobs on destroy' do
+      tenant = create(:tenant, host: 'something.else-than-the-default-test-tenant')
+      tenant_job = create(:que_job, tenant_schema_name: tenant.schema_name)
+      other_job = create(:que_job, tenant_schema_name: described_class.current.schema_name)
+
+      expect { tenant.destroy! }.to change(QueJob, :count).by(-1)
+
+      expect(QueJob.exists?(tenant_job.id)).to be false
+      expect(QueJob.exists?(other_job.id)).to be true
+    end
+
+    # Both +delete_apartment_tenant+ and +delete_que_jobs+ are +after_destroy+ callbacks, so they
+    # run inside the transaction opened by +destroy!+, on the same connection. Postgres DDL is
+    # transactional, so rolling that transaction back must restore the schema *and* the que_jobs
+    # rows. This is what makes the relative order of the two callbacks irrelevant: no other
+    # connection can observe a dropped schema whose jobs are still queued.
+    it 'rolls back the schema drop and the que_jobs deletion together' do
+      tenant = create(:tenant, host: 'something.else-than-the-default-test-tenant')
+      job = create(:que_job, tenant_schema_name: tenant.schema_name)
+
+      ActiveRecord::Base.transaction(requires_new: true) do
+        tenant.destroy!
+
+        # Inside the transaction, both effects are already visible to this connection.
+        expect(Apartment.connection.schema_exists?(tenant.schema_name)).to be false
+        expect(QueJob.exists?(job.id)).to be false
+
+        raise ActiveRecord::Rollback
+      end
+
+      expect(Apartment.connection.schema_exists?(tenant.schema_name)).to be true
+      expect(QueJob.exists?(job.id)).to be true
+      expect(described_class.exists?(tenant.id)).to be true
     end
 
     it 'fails on a duplicate hostname' do
@@ -210,6 +310,76 @@ RSpec.describe Tenant do
           collected_hosts << tenant.host
         end
       end.not_to raise_error
+      expect(collected_hosts).to eq(%w[tenant1.example.com])
+    end
+
+    # Ranking reads a table out of every schema in the scope, so a tenant that could not be ranked
+    # used to abort the run before it visited anyone.
+    it 'skips a tenant whose schema is missing rather than failing the whole run' do
+      described_class.find_by(host: 'example.org').update!(creation_finalized_at: nil)
+      create(:tenant, host: 'tenant1.example.com', creation_finalized_at: Time.zone.now)
+      schemaless = create(:tenant, host: 'tenant2.example.com', creation_finalized_at: Time.zone.now)
+      Apartment::Tenant.drop(schemaless.schema_name)
+      collected_hosts = []
+
+      described_class.safe_switch_each { |tenant| collected_hosts << tenant.host }
+
+      expect(collected_hosts).to eq(%w[tenant1.example.com])
+    end
+
+    it 'visits a tenant whose configuration is missing last rather than failing the whole run' do
+      described_class.find_by(host: 'example.org').update!(creation_finalized_at: nil)
+      create(:tenant, host: 'tenant1.example.com', lifecycle: 'active', creation_finalized_at: Time.zone.now)
+      configless = create(:tenant, host: 'tenant2.example.com', creation_finalized_at: Time.zone.now)
+      configless.switch { AppConfiguration.instance.delete }
+      collected_hosts = []
+
+      described_class.safe_switch_each { |tenant| collected_hosts << tenant.host }
+
+      expect(collected_hosts).to eq(%w[tenant1.example.com tenant2.example.com])
+    end
+
+    it 'limits the run to the given host' do
+      create(:tenant, host: 'tenant1.example.com', creation_finalized_at: Time.zone.now)
+      collected_hosts = []
+
+      described_class.safe_switch_each(host: 'tenant1.example.com') { |tenant| collected_hosts << tenant.host }
+
+      expect(collected_hosts).to eq(%w[tenant1.example.com])
+    end
+
+    it 'limits the run to the given hosts' do
+      create(:tenant, host: 'tenant1.example.com', lifecycle: 'active', creation_finalized_at: Time.zone.now)
+      create(:tenant, host: 'tenant2.example.com', lifecycle: 'demo', creation_finalized_at: Time.zone.now)
+      collected_hosts = []
+
+      described_class.safe_switch_each(host: %w[tenant1.example.com tenant2.example.com]) do |tenant|
+        collected_hosts << tenant.host
+      end
+
+      expect(collected_hosts).to eq(%w[tenant1.example.com tenant2.example.com])
+    end
+
+    # The point of the parameter: narrowing to one tenant must not drop the protections the scope
+    # carries, as passing a `scope` built around the host does.
+    it 'still skips a host that the scope in play excludes' do
+      create(:tenant, host: 'tenant1.example.com', creation_finalized_at: nil)
+      collected_hosts = []
+
+      described_class.safe_switch_each(host: 'tenant1.example.com') { |tenant| collected_hosts << tenant.host }
+
+      expect(collected_hosts).to be_empty
+    end
+
+    it 'narrows an explicit scope rather than replacing it' do
+      create(:tenant, host: 'tenant1.example.com', lifecycle: 'churned', creation_finalized_at: Time.zone.now)
+      create(:tenant, host: 'tenant2.example.com', lifecycle: 'churned', creation_finalized_at: Time.zone.now)
+      collected_hosts = []
+
+      described_class.safe_switch_each(scope: described_class.with_lifecycle('churned'), host: 'tenant1.example.com') do |tenant|
+        collected_hosts << tenant.host
+      end
+
       expect(collected_hosts).to eq(%w[tenant1.example.com])
     end
   end

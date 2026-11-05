@@ -54,17 +54,21 @@ interface Delete {
 
 type FetcherArgs = Get | Patch | Put | Post | Delete;
 
-type BaseData = { id?: string; type: string };
+export type BaseData = { id?: string; type: string };
 
 export type BaseResponseData =
   | { data: BaseData; included?: BaseData[] }
   | { data: BaseData[]; included?: BaseData[] };
 
-function fetcher<TResponseData extends BaseResponseData>(
+export class HttpError extends Error {
+  constructor(message: string, readonly status: number) {
+    super(message);
+  }
+}
+
+function fetcher<TResponseData extends BaseResponseData | null>(
   args: FetcherArgs
-): FetcherArgs['action'] extends 'delete'
-  ? null
-  : Promise<Omit<TResponseData, 'included'>>;
+): FetcherArgs['action'] extends 'delete' ? null : Promise<TResponseData>;
 
 /**
  * @param cacheIndividualItems : When set to true, if the API response returns an array of items, these items will individually be added to the cache in addition to the whole request.
@@ -134,7 +138,7 @@ async function fetcher({
       action === 'post' &&
       (response.status === 201 || response.status === 200)
     ) {
-      return; // TODO temporary workaround
+      return null;
     }
 
     if (response.status === 504) {
@@ -152,7 +156,7 @@ async function fetcher({
     }
 
     reportError('Unsupported case. No valid JSON.');
-    throw new Error('Unsupported case. No valid JSON.');
+    throw new HttpError('Unsupported case. No valid JSON.', response.status);
   }
 
   if (!response.ok) {
@@ -224,9 +228,7 @@ async function fetcher({
   // TODO: Fix this the next time the file is edited.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!data) return null;
-
-  const { included: _included, ...rest } = data;
-  return rest as Omit<BaseResponseData, 'included'>;
+  return data;
 }
 
 export default fetcher;

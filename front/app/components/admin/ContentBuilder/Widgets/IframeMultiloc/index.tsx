@@ -1,8 +1,15 @@
 import React from 'react';
 
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { useEditor } from '@craftjs/core';
 
 import useLocalize from 'hooks/useLocalize';
+
+import { BUILDER_CONTENT_MAX_WIDTH } from 'components/admin/ContentBuilder/constants';
+import WidgetPlaceholder from 'components/admin/ContentBuilder/Widgets/WidgetPlaceholder';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { isYouTubeEmbedLink } from 'utils/urlUtils';
 
 import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 
@@ -26,6 +33,9 @@ const IframeMultiloc = ({
   const isMobile = useBreakpoint('phone');
   const isTablet = useBreakpoint('tablet');
   const componentDefaultPadding = useCraftComponentDefaultPadding();
+  const { enabled } = useEditor((state) => ({
+    enabled: state.options.enabled,
+  }));
 
   const responsiveHeight = getResponsiveHeight(
     embedMode,
@@ -47,10 +57,17 @@ const IframeMultiloc = ({
     <Box
       className="e2e-content-builder-iframe-component"
       minHeight="26px"
-      maxWidth="1200px"
+      maxWidth={BUILDER_CONTENT_MAX_WIDTH}
       margin="0 auto"
       px={componentDefaultPadding}
     >
+      {enabled && !url && (
+        <Box data-cy="e2e-iframe-placeholder">
+          <WidgetPlaceholder iconName="code">
+            <FormattedMessage {...messages.noUrlPrompt} />
+          </WidgetPlaceholder>
+        </Box>
+      )}
       {!hasError &&
         url &&
         (embedMode === 'aspectRatio' ? (
@@ -58,10 +75,26 @@ const IframeMultiloc = ({
             aspectRatio={aspectRatio}
             customAspectRatio={customAspectRatio}
           >
-            <iframe {...iframeProps} height="100%" />
+            <iframe
+              referrerPolicy={
+                isYouTubeEmbedLink(iframeProps.src)
+                  ? 'strict-origin-when-cross-origin'
+                  : undefined
+              }
+              {...iframeProps}
+              height="100%"
+            />
           </AspectRatioContainer>
         ) : (
-          <iframe {...iframeProps} height={responsiveHeight} />
+          <iframe
+            referrerPolicy={
+              isYouTubeEmbedLink(iframeProps.src)
+                ? 'strict-origin-when-cross-origin'
+                : undefined
+            }
+            {...iframeProps}
+            height={responsiveHeight}
+          />
         ))}
     </Box>
   );

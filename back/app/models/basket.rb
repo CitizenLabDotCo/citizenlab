@@ -13,15 +13,17 @@
 #
 # Indexes
 #
-#  index_baskets_on_phase_id      (phase_id)
-#  index_baskets_on_submitted_at  (submitted_at)
-#  index_baskets_on_user_id       (user_id)
+#  index_baskets_on_phase_id                     (phase_id)
+#  index_baskets_on_submitted_at                 (submitted_at)
+#  index_baskets_on_user_id                      (user_id)
+#  index_baskets_on_user_id_and_phase_id_unique  (user_id,phase_id) UNIQUE WHERE (user_id IS NOT NULL)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (user_id => users.id)
 #
 class Basket < ApplicationRecord
+  include LocationTrackableParticipation
   belongs_to :phase
 
   belongs_to :user, optional: true
@@ -31,12 +33,13 @@ class Basket < ApplicationRecord
   has_many :notifications, dependent: :destroy
 
   validates :phase, presence: true
+  validates :user_id, uniqueness: { scope: :phase_id }, allow_nil: true
   validate :basket_submission, on: :basket_submission
 
   scope :submitted, -> { where.not(submitted_at: nil) }
   scope :not_submitted, -> { where(submitted_at: nil) }
 
-  delegate :project_id, to: :phase
+  delegate :project_id, :project, to: :phase
 
   def submitted?
     !!submitted_at
@@ -47,7 +50,7 @@ class Basket < ApplicationRecord
   end
 
   def destroy_or_keep!
-    if submitted? && TimelineService.new.phase_is_complete?(phase)
+    if submitted? && phase.complete?
       update!(user: nil)
     else
       destroy!
@@ -110,7 +113,9 @@ class Basket < ApplicationRecord
       baskets = Basket.where(phase: count_phases).submitted
       baskets_count = baskets.count
       votes_count = BasketsIdea.where(basket: baskets).sum(:votes)
-      update_context.update!(baskets_count: baskets_count, votes_count: votes_count)
+
+      # Denormalized counters: validating here would let an unrelated invalid attribute fail every recount.
+      update_context.update_columns(baskets_count: baskets_count, votes_count: votes_count, updated_at: Time.current)
     end
   end
 
@@ -119,7 +124,12 @@ class Basket < ApplicationRecord
   def basket_submission
     return unless submitted?
 
-    if phase.voting_min_total && (total_votes < phase.voting_min_total)
+    if baskets_ideas.size < phase.voting_min_selected_options
+      errors.add(
+        :baskets_ideas, :greater_than_or_equal_to, value: baskets_ideas.size, count: phase.voting_min_selected_options,
+        message: "must be greater than or equal to #{phase.voting_min_selected_options}"
+      )
+    elsif phase.voting_min_total && (total_votes < phase.voting_min_total)
       errors.add(
         :total_votes, :greater_than_or_equal_to, value: total_votes, count: phase.voting_min_total,
         message: "must be greater than or equal to #{phase.voting_min_total}"
@@ -129,6 +139,7 @@ class Basket < ApplicationRecord
         :total_votes, :less_than_or_equal_to, value: total_votes, count: phase.voting_max_total,
         message: "must be less than or equal to #{phase.voting_max_total}"
       )
+
     end
 
     max_votes = phase.voting_max_votes_per_idea

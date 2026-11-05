@@ -70,7 +70,7 @@ const InternalCommentReplyButton = ({
       parentCommentId,
       authorFirstName: author?.data.attributes.first_name,
       authorLastName: author?.data.attributes.last_name,
-      authorSlug: author?.data.attributes.slug,
+      authorId: author?.data.id,
     });
   };
 

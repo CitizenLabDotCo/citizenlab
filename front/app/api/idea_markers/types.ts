@@ -13,7 +13,8 @@ export interface QueryParameters {
   projectIds: string[] | null;
   sort?: Sort;
   search?: string | null;
-  topics?: string[] | null;
+  input_topics?: string[] | null;
+  custom_field_answers?: Record<string, string[]>;
 }
 
 export interface IIdeaMarkerData {

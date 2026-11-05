@@ -27,9 +27,9 @@ const ProjectReview = () => {
   const { formatMessage } = useIntl();
 
   const [selectedUsers, setSelectedUsers] = useState<IOption[]>([]);
-  const { mutate: updateUser, isLoading } = useUpdateUser();
+  const { mutate: updateUser, isPending } = useUpdateUser();
   const { data: adminUsers } = useUsers({
-    can_admin: true,
+    admins_only: true,
   });
   const { data: projectReviewers } = useUsers({
     project_reviewer: true,
@@ -112,7 +112,7 @@ const ProjectReview = () => {
           <Button
             buttonStyle="admin-dark"
             onClick={handleSave}
-            processing={isLoading}
+            processing={isPending}
           >
             {formatMessage(messages.save)}
           </Button>

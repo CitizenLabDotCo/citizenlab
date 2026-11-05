@@ -150,6 +150,7 @@ resource 'User Custom Fields' do
       end
 
       describe 'Invalid custom fields' do
+        let(:input_type) { 'text' }
         let(:key) { 'No spaces allowed' }
         let(:title_multiloc) { { 'en' => '' } }
 
@@ -159,6 +160,19 @@ resource 'User Custom Fields' do
           json_response = json_parse response_body
           expect(json_response).to include_response_error(:key, 'invalid', value: key)
           expect(json_response).to include_response_error(:title_multiloc, 'blank')
+        end
+      end
+
+      describe 'min_characters on a registration text field' do
+        # Registration form sends no min_characters; backend leaves it nil (effectively min of 1).
+        # Contrast: survey FormBuilder seeds new text fields with min_characters: 2.
+        let(:input_type) { 'text' }
+        let(:title_multiloc) { { 'en' => 'Your nickname' } }
+
+        example 'Stores nil when min_characters is omitted from the request' do
+          do_request
+          assert_status 201
+          expect(response_data.dig(:attributes, :min_characters)).to be_nil
         end
       end
 
@@ -256,35 +270,27 @@ resource 'User Custom Fields' do
         expect(CustomField.registration.order(:ordering)[1].id).to eq id
         expect(CustomField.registration.order(:ordering).map(&:ordering)).to eq (0..3).to_a
       end
-
-      example 'Fix the custom field order when ordering has gone wrong' do
-        ActiveRecord::Base.connection.execute("UPDATE custom_fields SET ordering = 0 WHERE id != '#{custom_field.id}'")
-        expect(custom_field.ordering).to eq 3
-        expect(CustomField.registration.order(:ordering).map(&:ordering)).to eq [0, 0, 0, 3]
-        do_request
-        expect(response_status).to eq 200
-        assert_status 200
-        expect(response_data.dig(:attributes, :ordering)).to match ordering
-        expect(custom_field.reload.ordering).to eq 1
-        expect(CustomField.registration.order(:ordering)[1].id).to eq id
-        expect(CustomField.registration.order(:ordering).map(&:ordering)).to eq (0..3).to_a
-      end
     end
 
     delete 'web_api/v1/users/custom_fields/:id' do
-      let(:custom_field) { create(:custom_field, key: 'new_field') }
+      let(:custom_field) { create(:custom_field, key: 'field_to_delete') }
       let(:id) { custom_field.id }
 
       example 'Delete a custom field, user saved values and permission relationships' do
         permission = create(:permission)
         permissions_custom_field = create(:permissions_custom_field, custom_field: custom_field, permission: permission)
-        user_with_fields = create(:user, custom_field_values: { new_field: 'a value' })
+        user_with_fields = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'field_to_delete', value: 'a value')])
+        input = create(:idea, custom_field_answers: [
+          build(:custom_field_answer, key: 'u_field_to_delete', value: 'a value', custom_field: custom_field),
+          build(:custom_field_answer, key: 'another_field', value: 'another value')
+        ])
 
         do_request
         expect(response_status).to eq 200
         expect { CustomField.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
         expect { PermissionsCustomField.find(permissions_custom_field.id) }.to raise_error(ActiveRecord::RecordNotFound)
-        expect(user_with_fields.reload.custom_field_values).to eq({})
+        expect(user_with_fields.reload.custom_field_answers).to be_empty
+        expect(input.reload.custom_field_answers.pluck(:key, :value)).to eq [['another_field', 'another value']]
       end
 
       example "[error] Delete a custom field that's still referenced in a rules group" do

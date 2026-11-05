@@ -4,15 +4,16 @@ import { CLErrors } from 'typings';
 import { IIdeas } from 'api/ideas/types';
 
 import fetcher from 'utils/cl-react-query/fetcher';
+import { NO_PLACEHOLDER_DATA } from 'utils/cl-react-query/queryClient';
 
 import similarIdeasKeys from './keys';
 import { ISimilarityRequestPayload } from './types';
 
-const fetchSimilarIdeas = (ideaPayload: ISimilarityRequestPayload) =>
+const fetchSimilarIdeas = ({ phase_id, idea }: ISimilarityRequestPayload) =>
   fetcher<IIdeas>({
-    path: `/ideas/similar_ideas`,
+    path: `/phases/${phase_id}/inputs/similar`,
     action: 'post',
-    body: ideaPayload,
+    body: { idea },
   });
 
 const useSimilarIdeas = (
@@ -25,7 +26,7 @@ const useSimilarIdeas = (
     enabled,
     staleTime: 0,
     refetchOnWindowFocus: false,
-    keepPreviousData: false,
+    placeholderData: NO_PLACEHOLDER_DATA,
   });
 };
 

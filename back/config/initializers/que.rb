@@ -7,3 +7,24 @@ Que::Job.tap do |config|
   config.retry_interval      = proc { |count| (count**6) + 15 + (rand(30) * (count + 1)) }
   config.maximum_retry_count = 9
 end
+
+# Rails 7.2 introduced transaction-aware job enqueueing, which requires queue adapters
+# to implement the `enqueue_after_transaction_commit?` method. The Que gem has not yet
+# implemented this method, causing an error.
+ActiveSupport.on_load(:active_job) do
+  adapter = ActiveJob::QueueAdapters::QueAdapter
+  raise 'This patch can be deleted.' if adapter.instance_methods.include?(:enqueue_after_transaction_commit?)
+
+  adapter.class_eval do
+    def enqueue_after_transaction_commit? = false
+  end
+end
+
+# Opt-in compatibility layer that overwrites the `clean_lockers` query for PostgreSQL
+# protected by the aiven-pg-security extension (e.g. Scaleway Managed Database).
+if ENV.fetch('QUE_AIVEN_PG_SECURITY_COMPAT', false) == 'true'
+  Rails.application.config.to_prepare do
+    CitizenLab::Que::AivenPgSecurityCompat.apply!
+    Rails.logger.info('[que] clean_lockers patched for aiven-pg-security (QUE_AIVEN_PG_SECURITY_COMPAT)')
+  end
+end

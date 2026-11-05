@@ -1,6 +1,10 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  questions: {
+    id: 'app.containers.Admin.projects.project.insights.questions',
+    defaultMessage: 'Questions',
+  },
   totalSurveyResponses: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.totalSurveyResponses2',
     defaultMessage: 'Total {count} responses',
@@ -144,6 +148,11 @@ export default defineMessages({
   createAIAnalysis: {
     id: 'app.containers.Admin.projects.project.survey.analysis.createAIAnalysis',
     defaultMessage: 'Open AI analysis',
+  },
+  autoSummaryInfo: {
+    id: 'app.containers.Admin.projects.project.survey.analysis.autoSummaryInfo',
+    defaultMessage:
+      'An AI summary will be generated automatically once there are more than 10 responses.',
   },
   openAnalysisActions: {
     id: 'app.containers.Admin.projects.project.survey.analysis.openAnalysisActions',

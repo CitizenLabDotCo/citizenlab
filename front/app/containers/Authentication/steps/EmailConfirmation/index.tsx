@@ -5,8 +5,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { string, object } from 'yup';
 
-import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
-
 import Input from 'components/HookForm/Input';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
@@ -16,18 +14,19 @@ import {
   handleHookFormSubmissionError,
 } from 'utils/errorUtils';
 
-import { State, SetError } from '../../typings';
+import { SetError } from '../../typings';
 
 import CodeSentMessage from './CodeSentMessage';
 import FooterNotes from './FooterNotes';
 import messages from './messages';
 
 interface Props {
-  state: State;
+  email: string | null;
   loading: boolean;
   setError: SetError;
-  onConfirm: (code: string) => void;
+  onConfirm: (email: string, code: string) => void;
   onChangeEmail?: () => void;
+  onResendCode: (email: string) => Promise<void>;
 }
 
 interface FormValues {
@@ -42,12 +41,19 @@ const isWrongConfirmationCodeError = (e: any) => {
   return e?.code?.[0]?.error === 'invalid';
 };
 
+// Only confirm_code_merge_account returns this: the code was right, but that account
+// may not be linked to. Which rule refused is not disclosed, so one message covers all.
+const isMergeNotAllowedError = (e: any) => {
+  return e?.base?.[0]?.error === 'merge_not_allowed';
+};
+
 const EmailConfirmation = ({
-  state,
+  email,
   loading,
   setError,
   onConfirm,
   onChangeEmail,
+  onResendCode,
 }: Props) => {
   const [codeResent, setCodeResent] = useState(false);
   const [resendingCode, setResendingCode] = useState(false);
@@ -59,8 +65,12 @@ const EmailConfirmation = ({
     () =>
       object({
         code: string()
-          .required(formatMessage(messages.codeMustHaveFourDigits))
-          .matches(/^\d{4}$/, formatMessage(messages.codeMustHaveFourDigits)),
+          .required(formatMessage(messages.codeMustHaveSixDigits))
+          // 4 digits stays accepted until codes sent before the switch have expired.
+          .matches(
+            /^(?:\d{4}|\d{6})$/,
+            formatMessage(messages.codeMustHaveSixDigits)
+          ),
       }),
     [formatMessage]
   );
@@ -71,12 +81,14 @@ const EmailConfirmation = ({
     resolver: yupResolver(schema),
   });
 
+  if (!email) return null;
+
   const handleConfirm = async ({ code }: FormValues) => {
     setResendingCode(false);
     setCodeResent(false);
 
     try {
-      await onConfirm(code);
+      await onConfirm(email, code);
     } catch (e) {
       if (isCLErrorsWrapper(e)) {
         handleHookFormSubmissionError(e, methods.setError);
@@ -88,6 +100,11 @@ const EmailConfirmation = ({
         return;
       }
 
+      if (isMergeNotAllowedError(e)) {
+        setError('account_merge_not_allowed');
+        return;
+      }
+
       setError('unknown');
     }
   };
@@ -96,7 +113,7 @@ const EmailConfirmation = ({
     e.preventDefault();
     setResendingCode(true);
 
-    resendEmailConfirmationCode()
+    onResendCode(email)
       .then(() => {
         setResendingCode(false);
         setCodeResent(true);
@@ -107,26 +124,25 @@ const EmailConfirmation = ({
       });
   };
 
-  const handleChangeEmail = (e: FormEvent) => {
-    e.preventDefault();
-    onChangeEmail && onChangeEmail();
-  };
+  const handleChangeEmail = onChangeEmail
+    ? (e: FormEvent) => {
+        e.preventDefault();
+        onChangeEmail();
+      }
+    : undefined;
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(handleConfirm)}>
+      <form noValidate onSubmit={methods.handleSubmit(handleConfirm)}>
         <Box mt="-8px">
-          <CodeSentMessage
-            email={state.email ?? undefined}
-            codeResent={codeResent}
-          />
+          <CodeSentMessage email={email} codeResent={codeResent} />
         </Box>
         <Box>
           <Input
             name="code"
             type="text"
             label={formatMessage(messages.codeInput)}
-            maxCharCount={4}
+            maxCharCount={6}
           />
         </Box>
         <Box w="100%" display="flex" mt="32px">
@@ -144,7 +160,7 @@ const EmailConfirmation = ({
           <FooterNotes
             codeResent={codeResent}
             onResendCode={handleResendCode}
-            onChangeEmail={onChangeEmail ? handleChangeEmail : undefined}
+            onChangeEmail={handleChangeEmail}
           />
         </Box>
       </form>

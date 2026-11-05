@@ -1,14 +1,19 @@
 import React, { memo, useEffect } from 'react';
 
 import { colors, media } from '@citizenlab/cl2-component-library';
-import { Outlet as RouterOutlet, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 
+import {
+  CUSTOM_PAGE_BUILDER_PATH,
+  HOMEPAGE_BUILDER_PATH,
+  PROJECT_PAGE_BUILDER_PATH,
+} from 'components/admin/ContentBuilder/constants';
+
 import clHistory from 'utils/cl-router/history';
 import { usePermission } from 'utils/permissions';
-import { isAdmin, isModerator } from 'utils/permissions/roles';
+import { Outlet as RouterOutlet, useLocation } from 'utils/router';
 
 import Sidebar from './sideBar/';
 
@@ -62,6 +67,10 @@ export const RightColumn = styled.div`
     max-width: none;
   }
 
+  &.projectPage {
+    min-width: 0;
+  }
+
   &.noPadding {
     padding: 0;
     max-width: none;
@@ -95,22 +104,10 @@ const AdminPage = memo<Props>(({ className }) => {
   });
 
   useEffect(() => {
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (authUser === null || (authUser !== undefined && !userCanViewPath)) {
+    if (authUser && !userCanViewPath) {
       clHistory.push('/');
     }
-
-    if (pathname.endsWith('/admin') || pathname.endsWith('/admin/')) {
-      if (isAdmin(authUser)) {
-        clHistory.push('/admin/dashboard/overview');
-      }
-
-      if (isModerator(authUser)) {
-        clHistory.push('/admin/projects');
-      }
-    }
-  }, [authUser, userCanViewPath, pathname]);
+  }, [authUser, userCanViewPath]);
 
   if (!userCanViewPath) {
     return null;
@@ -124,36 +121,61 @@ const AdminPage = memo<Props>(({ className }) => {
       /admin\/projects\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}(\/(?!projects(?:\/|$))[\w-]+)*/
     ) && !isFoldersPage;
 
-  const projectsExceptNewAndFolders =
+  const isReportBuilderEditorRoute = pathname.match(
+    /\/admin\/reporting\/report-builder\/[\w-]+\/editor$/
+  );
+  const isHomePageBuilderRoute = pathname.includes(HOMEPAGE_BUILDER_PATH);
+  const isDescriptionBuilderRoute = pathname.match(
+    /\/admin\/description-builder/
+  );
+  const isProjectPageBuilderRoute = pathname.includes(
+    PROJECT_PAGE_BUILDER_PATH
+  );
+  const isCustomPageBuilderRoute = pathname.includes(CUSTOM_PAGE_BUILDER_PATH);
+
+  const sidebarRendered =
+    !isHomePageBuilderRoute &&
+    !isDescriptionBuilderRoute &&
+    !isProjectPageBuilderRoute &&
+    !isCustomPageBuilderRoute &&
+    !isReportBuilderEditorRoute;
+
+  const projectsExceptNewAndFoldersAndSpaces =
     pathname.includes('admin/projects') &&
     !pathname.includes('admin/projects/new') &&
-    !pathname.includes('admin/projects/folders');
+    !pathname.includes('admin/projects/folders') &&
+    !pathname.includes('admin/projects/spaces');
 
   const noPadding =
     pathname.includes('admin/dashboard') ||
-    projectsExceptNewAndFolders ||
+    projectsExceptNewAndFoldersAndSpaces ||
     pathname.includes('admin/messaging') ||
     pathname.includes('admin/settings') ||
     pathname.includes('admin/ideas') ||
     pathname.includes('admin/inspiration-hub') ||
-    isProjectPage;
+    pathname.includes('admin/users/seats') ||
+    isProjectPage ||
+    !sidebarRendered;
 
   const fullWidth =
     pathname.includes('admin/dashboard') ||
-    projectsExceptNewAndFolders ||
+    projectsExceptNewAndFoldersAndSpaces ||
     pathname.includes('admin/messaging') ||
     pathname.includes('admin/settings') ||
     pathname.includes('admin/ideas') ||
     pathname.includes('admin/community-monitor') ||
-    isProjectPage;
+    pathname.includes('admin/users/seats') ||
+    isProjectPage ||
+    !sidebarRendered;
 
   return (
     <Container className={className}>
-      <Sidebar />
+      {sidebarRendered && <Sidebar />}
       <RightColumn
         className={`
-          ${fullWidth ? 'fullWidth' : ''} 
+          ${fullWidth ? 'fullWidth' : ''}
           ${noPadding ? 'noPadding' : ''}
+          ${isProjectPage ? 'projectPage' : ''}
         `}
       >
         <RouterOutlet />

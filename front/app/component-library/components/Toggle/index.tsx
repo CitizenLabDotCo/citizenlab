@@ -1,25 +1,41 @@
-import React, { PureComponent, FormEvent } from 'react';
+import React, { PureComponent, FormEvent, ReactNode } from 'react';
 
 import { hideVisually, darken } from 'polished';
 import styled, { css } from 'styled-components';
+import { v4 as uuidv4 } from 'uuid';
 
 import {
+  bo,
   colors,
   fontSizes,
-  defaultOutline,
+  focusRing,
   isRtl,
 } from '../../utils/styleUtils';
 import testEnv from '../../utils/testUtils/testEnv';
 
-const size = 21;
+type Size = 'small' | 'medium';
+type Variant = 'default' | 'bo';
+type LabelAlign = 'center' | 'top';
+
+const BO_KNOB = 12;
+const BO_PADDING = 2;
+
+const mediumSize = 21;
+const smallSize = 15;
 const padding = 3;
 
-const Container = styled.div`
+const SIZES: Record<Size, number> = {
+  small: smallSize,
+  medium: mediumSize,
+};
+
+const Container = styled.div<{ labelAlign: LabelAlign }>`
   display: inline-block;
 
   &.hasLabel {
     display: flex;
-    align-items: center;
+    align-items: ${({ labelAlign }) =>
+      labelAlign === 'top' ? 'flex-start' : 'center'};
 
     ${isRtl`
         flex-direction: row-reverse;
@@ -31,12 +47,17 @@ const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
   ${hideVisually()};
 `;
 
-const StyledToggle = styled.i<{ checked: boolean; disabled: boolean }>`
+const StyledToggle = styled.i<{
+  checked: boolean;
+  disabled: boolean;
+  sizeInPixels: number;
+  variant: Variant;
+}>`
   display: inline-block;
   padding: ${padding}px;
-  padding-right: ${size}px;
-  border-radius: ${size + padding}px;
-  background-color: #ccc;
+  padding-right: ${(props) => props.sizeInPixels}px;
+  border-radius: ${(props) => props.sizeInPixels + padding}px;
+  background-color: ${colors.grey400};
   border: solid 1px transparent;
   transition: padding 150ms cubic-bezier(0.165, 0.84, 0.44, 1),
     background-color 80ms ease-out;
@@ -44,9 +65,9 @@ const StyledToggle = styled.i<{ checked: boolean; disabled: boolean }>`
   &:before {
     display: block;
     content: '';
-    width: ${size}px;
-    height: ${size}px;
-    border-radius: ${size}px;
+    width: ${(props) => props.sizeInPixels}px;
+    height: ${(props) => props.sizeInPixels}px;
+    border-radius: ${(props) => props.sizeInPixels}px;
     background: #fff;
     transition: all 80ms ease-out;
   }
@@ -60,13 +81,47 @@ const StyledToggle = styled.i<{ checked: boolean; disabled: boolean }>`
     props.checked &&
     css`
       padding-right: ${padding}px;
-      padding-left: ${size}px;
+      padding-left: ${(props: any) => props.sizeInPixels}px;
       background-color: ${colors.success};
+    `};
+
+  ${(props) =>
+    props.variant === 'bo' &&
+    css`
+      padding: ${BO_PADDING}px ${BO_KNOB}px ${BO_PADDING}px ${BO_PADDING}px;
+      border: none;
+      border-radius: 999px;
+      background-color: ${colors.grey300};
+      transition: padding 150ms ease-out, background-color 150ms ease-out;
+
+      &:before {
+        width: ${BO_KNOB}px;
+        height: ${BO_KNOB}px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+      }
+
+      &.enabled:hover {
+        background: ${props.checked ? colors.textPrimary : colors.grey400};
+      }
+
+      ${props.checked &&
+      css`
+        padding: ${BO_PADDING}px ${BO_PADDING}px ${BO_PADDING}px ${BO_KNOB}px;
+        background-color: ${colors.coolGrey700};
+      `}
     `};
 `;
 
-const StyledToggleWrapper = styled.div<{ checked: boolean; disabled: boolean }>`
-  height: ${size + padding * 2}px;
+const StyledToggleWrapper = styled.div<{
+  checked: boolean;
+  disabled: boolean;
+  sizeInPixels: number;
+  variant: Variant;
+}>`
+  height: ${(props) =>
+    props.variant === 'bo'
+      ? BO_KNOB + BO_PADDING * 2
+      : props.sizeInPixels + padding * 2}px;
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -79,17 +134,14 @@ const StyledToggleWrapper = styled.div<{ checked: boolean; disabled: boolean }>`
     `};
 
   ${HiddenCheckbox}.focus-visible + & ${StyledToggle} {
-    ${defaultOutline};
+    ${focusRing}
   }
 `;
 
-const Label = styled.label<{ labelTextColor?: string }>`
-  color: ${({ labelTextColor }) => labelTextColor || colors.textPrimary};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  line-height: normal;
+const LabelAndDescription = styled.div`
+  display: flex;
+  flex-direction: column;
   padding-left: 10px;
-  cursor: pointer;
 
   ${isRtl`
     padding-left: 0;
@@ -97,17 +149,43 @@ const Label = styled.label<{ labelTextColor?: string }>`
   `}
 `;
 
+const Label = styled.label<{ labelTextColor?: string; variant: Variant }>`
+  color: ${({ labelTextColor, variant }) =>
+    labelTextColor ||
+    (variant === 'bo' ? bo.colors.textHeadingStrong : colors.textPrimary)};
+  font-size: ${({ variant }) =>
+    variant === 'bo' ? bo.controlFontSize : fontSizes.base}px;
+  font-weight: 400;
+  line-height: normal;
+  cursor: pointer;
+`;
+
+const Description = styled.span<{ variant: Variant }>`
+  display: block;
+  color: ${({ variant }) =>
+    variant === 'bo' ? colors.coolGrey600 : colors.textSecondary};
+  font-size: ${({ variant }) =>
+    variant === 'bo' ? fontSizes.xs : fontSizes.s}px;
+`;
+
 interface Props {
   checked: boolean;
   disabled?: boolean | undefined;
   label?: string | JSX.Element | null | undefined;
+  description?: ReactNode;
   labelTextColor?: string;
+  size?: Size;
+  variant?: Variant;
+  labelAlign?: LabelAlign;
   onChange: (event: FormEvent) => void;
   className?: string;
   id?: string;
 }
 
 class Toggle extends PureComponent<Props> {
+  instanceId = uuidv4();
+  descriptionId = `toggle-description-${this.instanceId}`;
+
   handleOnClick = (event: FormEvent) => {
     if (!this.props.disabled) {
       event.preventDefault();
@@ -120,20 +198,31 @@ class Toggle extends PureComponent<Props> {
       checked,
       disabled,
       label,
+      description,
       labelTextColor,
       className,
       id,
+      size = 'medium',
+      variant = 'default',
+      labelAlign = 'center',
       onChange,
     } = this.props;
 
+    const sizeInPixels = SIZES[size];
+    const inputId = id ?? `toggle-${this.instanceId}`;
+
     return (
-      <Container className={`${className || ''} ${label ? 'hasLabel' : ''}`}>
+      <Container
+        className={`${className || ''} ${label ? 'hasLabel' : ''}`}
+        labelAlign={labelAlign}
+      >
         <HiddenCheckbox
           onChange={onChange}
           checked={checked}
           disabled={disabled}
           tabIndex={0}
-          id={id}
+          id={inputId}
+          aria-describedby={description ? this.descriptionId : undefined}
         />
 
         <StyledToggleWrapper
@@ -141,23 +230,35 @@ class Toggle extends PureComponent<Props> {
           disabled={!!disabled}
           onClick={this.handleOnClick}
           data-testid={testEnv('toggle')}
+          sizeInPixels={sizeInPixels}
+          variant={variant}
         >
           <StyledToggle
             checked={checked}
             disabled={!!disabled}
             className={disabled ? 'disabled' : 'enabled'}
+            sizeInPixels={sizeInPixels}
+            variant={variant}
           />
         </StyledToggleWrapper>
 
         {label && (
-          <Label
-            htmlFor={id}
-            onClick={this.handleOnClick}
-            labelTextColor={labelTextColor}
-            data-cy={id}
-          >
-            {label}
-          </Label>
+          <LabelAndDescription>
+            <Label
+              htmlFor={inputId}
+              onClick={this.handleOnClick}
+              labelTextColor={labelTextColor}
+              variant={variant}
+              data-cy={id}
+            >
+              {label}
+            </Label>
+            {description && (
+              <Description id={this.descriptionId} variant={variant}>
+                {description}
+              </Description>
+            )}
+          </LabelAndDescription>
         )}
       </Container>
     );

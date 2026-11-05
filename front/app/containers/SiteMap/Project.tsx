@@ -3,6 +3,7 @@ import React from 'react';
 import useEvents from 'api/events/useEvents';
 import useProjectById from 'api/projects/useProjectById';
 
+import { EVENTS_WIDGET_ANCHOR_ID } from 'components/admin/ContentBuilder/Widgets/Events';
 import T from 'components/T';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -35,7 +36,10 @@ const Project = ({ projectId, hightestTitle }: Props) => {
         </TitleComponent>
         <ul>
           <li>
-            <Link to={`/projects/${project.data.attributes.slug}`}>
+            <Link
+              to="/projects/$slug"
+              params={{ slug: project.data.attributes.slug }}
+            >
               <FormattedMessage {...messages.projectInfo} />
             </Link>
           </li>
@@ -43,7 +47,11 @@ const Project = ({ projectId, hightestTitle }: Props) => {
 
           {!isNilOrError(events) && events.data.length > 0 && (
             <li>
-              <Link to={`/projects/${project.data.attributes.slug}/events`}>
+              <Link
+                to="/projects/$slug"
+                params={{ slug: project.data.attributes.slug }}
+                hash={EVENTS_WIDGET_ANCHOR_ID}
+              >
                 <FormattedMessage {...messages.projectEvents} />
               </Link>
             </li>

@@ -5,14 +5,51 @@ import { IUpdatedPhaseProperties, IPhases } from 'api/phases/types';
 
 import messages from '../messages';
 
-const validate = (
+export const validateDates = (
   state: IUpdatedPhaseProperties,
   phases: IPhases | undefined,
+  formatMessage: FormatMessage,
+  phaseId?: string,
+  standalone?: boolean
+) => {
+  const { start_at, end_at } = state;
+
+  let isValidated = true;
+  let phaseDateError: string | undefined;
+
+  if (!start_at) {
+    phaseDateError = formatMessage(messages.missingStartDateError);
+    isValidated = false;
+  } else if (!standalone && phases && phases.data.length > 0 && !end_at) {
+    const startAtDates = phases.data.map((phase) =>
+      new Date(phase.attributes.start_at).getTime()
+    );
+    const maxStartAt = Math.max(...startAtDates);
+
+    if (new Date(start_at).getTime() < maxStartAt) {
+      // Allow open end when editing the last phase (phase with latest start_at).
+      const phaseBeingEdited = phaseId
+        ? phases.data.find((p) => p.id === phaseId)
+        : undefined;
+      const isEditingLastPhase =
+        phaseBeingEdited &&
+        new Date(phaseBeingEdited.attributes.start_at).getTime() === maxStartAt;
+
+      if (!isEditingLastPhase) {
+        phaseDateError = formatMessage(messages.missingEndDateError);
+        isValidated = false;
+      }
+    }
+  }
+
+  return { isValidated, errors: { phaseDateError } };
+};
+
+export const validateParticipation = (
+  state: IUpdatedPhaseProperties,
   formatMessage: FormatMessage
 ) => {
   const {
-    start_at,
-    end_at,
     reacting_like_method,
     reacting_dislike_method,
     reacting_like_limited_max,
@@ -22,12 +59,12 @@ const validate = (
     voting_min_total,
     voting_max_total,
     voting_max_votes_per_idea,
+    voting_min_selected_options,
     reacting_threshold,
     expire_days_limit,
   } = state;
 
   let isValidated = true;
-  let phaseDateError: string | undefined;
   let noLikingLimitError: string | undefined;
   let noDislikingLimitError: string | undefined;
   let minTotalVotesError: string | undefined;
@@ -35,29 +72,7 @@ const validate = (
   let maxVotesPerOptionError: string | undefined;
   let expireDateLimitError: string | undefined;
   let reactingThresholdError: string | undefined;
-
-  if (!phases || phases.data.length === 0) {
-    if (!start_at) {
-      phaseDateError = formatMessage(messages.missingStartDateError);
-      isValidated = false;
-    }
-  } else {
-    if (!start_at) {
-      phaseDateError = formatMessage(messages.missingStartDateError);
-      isValidated = false;
-    } else {
-      if (!end_at) {
-        const startAtDates = phases.data.map((phase) =>
-          new Date(phase.attributes.start_at).getTime()
-        );
-        const maxStartAt = Math.max(...startAtDates);
-        if (new Date(start_at).getTime() < maxStartAt) {
-          phaseDateError = formatMessage(messages.missingEndDateError);
-          isValidated = false;
-        }
-      }
-    }
-  }
+  let minSelectedOptionsError: string | undefined;
 
   if (
     participation_method === 'voting' &&
@@ -66,6 +81,16 @@ const validate = (
     voting_max_votes_per_idea > voting_max_total
   ) {
     maxVotesPerOptionError = formatMessage(messages.maxVotesPerOptionError);
+    isValidated = false;
+  }
+
+  if (
+    participation_method === 'voting' &&
+    voting_min_selected_options &&
+    voting_max_total &&
+    voting_min_selected_options > voting_max_total
+  ) {
+    minSelectedOptionsError = formatMessage(messages.minSelectedOptionsError);
     isValidated = false;
   }
 
@@ -160,7 +185,6 @@ const validate = (
   return {
     isValidated,
     errors: {
-      phaseDateError,
       noLikingLimitError,
       noDislikingLimitError,
       minTotalVotesError,
@@ -168,7 +192,30 @@ const validate = (
       maxVotesPerOptionError,
       expireDateLimitError,
       reactingThresholdError,
+      minSelectedOptionsError,
     },
+  };
+};
+
+const validate = (
+  state: IUpdatedPhaseProperties,
+  phases: IPhases | undefined,
+  formatMessage: FormatMessage,
+  phaseId?: string,
+  standalone?: boolean
+) => {
+  const dates = validateDates(
+    state,
+    phases,
+    formatMessage,
+    phaseId,
+    standalone
+  );
+  const participation = validateParticipation(state, formatMessage);
+
+  return {
+    isValidated: dates.isValidated && participation.isValidated,
+    errors: { ...dates.errors, ...participation.errors },
   };
 };
 

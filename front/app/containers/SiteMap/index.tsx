@@ -1,4 +1,4 @@
-import React, { KeyboardEvent, MouseEvent, RefObject, useRef } from 'react';
+import React from 'react';
 
 import { colors, fontSizes, media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { TCustomPageCode } from 'api/custom_pages/types';
 import useCustomPages from 'api/custom_pages/useCustomPages';
 import useAuthUser from 'api/me/useAuthUser';
+import { TDefaultNavbarItemCode } from 'api/navbar/types';
 import useNavbarItems from 'api/navbar/useNavbarItems';
 import { DEFAULT_PAGE_SLUGS } from 'api/navbar/util';
 
@@ -16,7 +17,6 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
-import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 import messages from './messages';
 import ProjectsAndFoldersSection from './ProjectsAndFoldersSection';
@@ -55,7 +55,7 @@ const Title = styled.h1`
 `;
 
 const TOC = styled.div`
-  border: 1px solid #ccc;
+  border: 1px solid ${colors.grey400};
   padding: 20px;
   margin-bottom: 30px;
 `;
@@ -65,17 +65,17 @@ const Ul = styled.ul`
   margin-bottom: 0 !important;
 `;
 
-const ProjectsSubsectionUl = styled.ul`
-  list-style-type: circle;
-  margin-bottom: 0 !important;
-`;
-
 const Header = styled.h2`
   font-weight: bold;
 `;
 
 export const H2 = styled.h2`
   font-size: ${fontSizes.xxl}px !important;
+  scroll-margin-top: ${(props) => props.theme.menuHeight + 20}px;
+
+  ${(props) => media.tablet`
+    scroll-margin-top: ${props.theme.mobileTopBarHeight + 20}px;
+  `}
 `;
 
 export const H3 = styled.h3`
@@ -84,14 +84,6 @@ export const H3 = styled.h3`
 
 export const H4 = styled.h4`
   font-size: ${fontSizes.l}px !important;
-`;
-
-const NavItem = styled.button`
-  cursor: pointer;
-  &:focus,
-  &:hover {
-    text-decoration: underline;
-  }
 `;
 
 const SiteMap = () => {
@@ -103,30 +95,6 @@ const SiteMap = () => {
   const hasStaticPageWithCode = (code: TCustomPageCode): boolean => {
     return pages?.data.some((page) => page.attributes.code === code) || false;
   };
-
-  const scrollTo =
-    (component: RefObject<HTMLHeadingElement | null>) =>
-    (event: MouseEvent | KeyboardEvent) => {
-      if (component.current) {
-        // if the event is synthetic, it's a key event and we move focus
-        // https://github.com/facebook/react/issues/3907
-        if ((event as any).detail === 0) {
-          component.current.focus();
-        }
-
-        component.current.scrollIntoView();
-      }
-    };
-
-  const homeSection = useRef<HTMLHeadingElement | null>(null);
-  const projectsSection = useRef<HTMLHeadingElement | null>(null);
-  const archivedSection = useRef<HTMLHeadingElement | null>(null);
-  const currentSection = useRef<HTMLHeadingElement | null>(null);
-  const draftSection = useRef<HTMLHeadingElement | null>(null);
-  const userSpaceSection = useRef<HTMLHeadingElement | null>(null);
-  const customPagesSection = useRef<HTMLHeadingElement | null>(null);
-  const hasProjectSubsection =
-    archivedSection.current || draftSection.current || currentSection.current;
 
   if (pages) {
     const nonCustomStaticPages = pages.data.filter((page) => {
@@ -164,81 +132,29 @@ const SiteMap = () => {
                     </Header>
                     <Ul>
                       <li>
-                        <NavItem
-                          onMouseDown={removeFocusAfterMouseClick}
-                          onClick={scrollTo(homeSection)}
-                        >
+                        <a href="#home-section">
                           <FormattedMessage {...messages.homeSection} />
-                        </NavItem>
+                        </a>
                       </li>
                       <li>
-                        <NavItem
-                          onMouseDown={removeFocusAfterMouseClick}
-                          onClick={scrollTo(userSpaceSection)}
-                        >
+                        <a href="#user-space-section">
                           <FormattedMessage {...messages.userSpaceSection} />
-                        </NavItem>
+                        </a>
                       </li>
                       <li>
-                        <NavItem
-                          onMouseDown={removeFocusAfterMouseClick}
-                          onClick={scrollTo(projectsSection)}
-                        >
+                        <a href="#projects-section">
                           <FormattedMessage {...messages.projectsSection} />
-                        </NavItem>
-                        {hasProjectSubsection && (
-                          <ProjectsSubsectionUl>
-                            {currentSection.current && (
-                              <li>
-                                <NavItem
-                                  onMouseDown={removeFocusAfterMouseClick}
-                                  onClick={scrollTo(currentSection)}
-                                >
-                                  <FormattedMessage
-                                    {...messages.projectsCurrent}
-                                  />
-                                </NavItem>
-                              </li>
-                            )}
-                            {archivedSection.current && (
-                              <li>
-                                <NavItem
-                                  onMouseDown={removeFocusAfterMouseClick}
-                                  onClick={scrollTo(archivedSection)}
-                                >
-                                  <FormattedMessage
-                                    {...messages.projectsArchived}
-                                  />
-                                </NavItem>
-                              </li>
-                            )}
-                            {draftSection.current && (
-                              <li>
-                                <NavItem
-                                  onMouseDown={removeFocusAfterMouseClick}
-                                  onClick={scrollTo(draftSection)}
-                                >
-                                  <FormattedMessage
-                                    {...messages.projectsDraft}
-                                  />
-                                </NavItem>
-                              </li>
-                            )}
-                          </ProjectsSubsectionUl>
-                        )}
+                        </a>
                       </li>
                       <li>
-                        <NavItem
-                          onMouseDown={removeFocusAfterMouseClick}
-                          onClick={scrollTo(customPagesSection)}
-                        >
+                        <a href="#custom-pages-section">
                           <FormattedMessage {...messages.customPageSection} />
-                        </NavItem>
+                        </a>
                       </li>
                     </Ul>
                   </TOC>
 
-                  <H2 ref={homeSection} tabIndex={-1}>
+                  <H2 id="home-section" tabIndex={-1}>
                     <FormattedMessage {...messages.homeSection} />
                   </H2>
                   <ul>
@@ -249,13 +165,19 @@ const SiteMap = () => {
                           (navBarItem) =>
                             navBarItem.relationships.static_page.data ===
                               null &&
-                            navBarItem.relationships.project.data === null
+                            navBarItem.relationships.project.data === null &&
+                            // Only default items map to DEFAULT_PAGE_SLUGS;
+                            // 'custom' items (leaves and dropdowns) don't.
+                            navBarItem.attributes.code !== 'custom'
                         )
                         .map((navBarItem) => (
                           <li key={navBarItem.id}>
                             <Link
                               to={
-                                DEFAULT_PAGE_SLUGS[navBarItem.attributes.code]
+                                DEFAULT_PAGE_SLUGS[
+                                  navBarItem.attributes
+                                    .code as TDefaultNavbarItemCode
+                                ]
                               }
                             >
                               {localize(navBarItem.attributes.title_multiloc)}
@@ -266,7 +188,10 @@ const SiteMap = () => {
                     {nonCustomStaticPages.map((page) => {
                       return (
                         <li key={page.id}>
-                          <Link to={`/pages/${page.attributes.slug}`}>
+                          <Link
+                            to="/pages/$slug"
+                            params={{ slug: page.attributes.slug }}
+                          >
                             {localize(page.attributes.title_multiloc)}
                           </Link>
                         </li>
@@ -286,14 +211,17 @@ const SiteMap = () => {
                   <>
                     {authUser && (
                       <>
-                        <H2 ref={userSpaceSection} tabIndex={-1}>
+                        <H2 id="user-space-section" tabIndex={-1}>
                           <FormattedMessage {...messages.userSpaceSection} />
                         </H2>
                         <ul>
                           <>
                             <li>
                               <Link
-                                to={`/profile/${authUser.data.attributes.slug}`}
+                                to="/profile/$userId"
+                                params={{
+                                  userId: authUser.data.id,
+                                }}
                               >
                                 <FormattedMessage {...messages.profilePage} />
                               </Link>
@@ -311,20 +239,21 @@ const SiteMap = () => {
                     )}
                   </>
 
-                  <ProjectsAndFoldersSection
-                    projectsSectionRef={projectsSection}
-                  />
+                  <ProjectsAndFoldersSection />
                   <>
                     {customStaticPages.length > 0 && (
                       <>
-                        <H2 ref={customPagesSection} tabIndex={-1}>
+                        <H2 id="custom-pages-section" tabIndex={-1}>
                           <FormattedMessage {...messages.customPageSection} />
                         </H2>
                         <Ul>
                           {/* Custom static pages */}
                           {customStaticPages.map((item) => (
                             <li key={item.id}>
-                              <Link to={`/pages/${item.attributes.slug}`}>
+                              <Link
+                                to="/pages/$slug"
+                                params={{ slug: item.attributes.slug }}
+                              >
                                 {localize(item.attributes.title_multiloc)}
                               </Link>
                             </li>

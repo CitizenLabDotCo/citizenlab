@@ -7,35 +7,31 @@ import {
   fontSizes,
 } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
-import { RouteType } from 'routes';
 import styled from 'styled-components';
 
-import Link from 'utils/cl-router/Link';
+import Link, { typedStyled, type TypedLinkProps } from 'utils/cl-router/Link';
 
 const MenuItem = styled.li`
   font-size: ${fontSizes.base}px;
+  font-weight: 600;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
+  gap: 8px;
 `;
 
-const StyledLink = styled(Link)`
+const StyledLink = typedStyled(Link)`
   color: ${colors.textPrimary};
-  padding: 20px 10px;
-  border-radius: 5px;
   &:hover {
     color: ${darken(0.2, colors.textPrimary)};
-  }
-  &:active {
-    background: ${darken(0.05, '#fff')};
   }
   &.active {
     color: ${(props) => props.theme.colors.tenantPrimary};
   }
 `;
 
-interface Props {
-  linkTo: RouteType;
+interface Props extends TypedLinkProps {
+  linkTo?: string;
   navigationItemTitle: string;
   onlyActiveOnIndex?: boolean;
   onClick: () => void;
@@ -44,6 +40,9 @@ interface Props {
 }
 
 const FullMobileNavMenuItem = ({
+  to,
+  params,
+  search,
   linkTo,
   navigationItemTitle,
   onClick,
@@ -57,7 +56,9 @@ const FullMobileNavMenuItem = ({
     {iconName && <Icon name={iconName} height="20px" />}
     <StyledLink
       onClick={onClick}
-      to={linkTo}
+      to={(to ?? linkTo) as Parameters<typeof StyledLink>[0]['to']}
+      params={params as Parameters<typeof StyledLink>[0]['params']}
+      search={search as Parameters<typeof StyledLink>[0]['search']}
       onlyActiveOnIndex={onlyActiveOnIndex}
       scrollToTop={scrollToTop}
     >

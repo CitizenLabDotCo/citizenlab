@@ -16,17 +16,24 @@ module Analysis
     private
 
     def exectute_project(project)
-      description_text = if ContentBuilder::Layout.exists?(content_buildable: project, code: 'project_description', enabled: true)
-        layout = ContentBuilder::Layout.find_by!(content_buildable: project, code: 'project_description', enabled: true)
-        multilocs = ContentBuilder::Craftjs::VisibleTextualMultilocs.new(layout.craftjs_json).extract
-        multilocs.map { |multiloc| Nokogiri::HTML(@multiloc_service.t(multiloc)).text }.join("\n")
-      else
-        Nokogiri::HTML(@multiloc_service.t(project.description_multiloc)).text
-      end
       {
         'Project title' => @multiloc_service.t(project.title_multiloc),
-        'Project description' => description_text
+        'Project description' => project_description_text(project)
       }
+    end
+
+    # The project description lives in the project page layout, authored in the
+    # project page builder.
+    def project_description_text(project)
+      layout = ContentBuilder::Layout.find_by(
+        content_buildable: project,
+        code: ContentBuilder::ProjectPageLayoutService::CODE,
+        enabled: true
+      )
+      return '' unless layout
+
+      multilocs = ContentBuilder::Craftjs::VisibleTextualMultilocs.new(layout.craftjs_json).extract
+      multilocs.map { |multiloc| Nokogiri::HTML(@multiloc_service.t(multiloc)).text }.join("\n")
     end
 
     def execute_phase(phase)

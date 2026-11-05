@@ -23,16 +23,22 @@ class ProjectsFilteringService
     end
   end
 
-  HOMEPAGE_FILTER_PARAMS << :topics
-  add_filter('by_topics') do |scope, options|
-    topics = options[:topics]
-    topics ? scope.with_some_topics(topics) : scope
+  HOMEPAGE_FILTER_PARAMS << :global_topics
+  add_filter('by_global_topics') do |scope, options|
+    global_topics = options[:global_topics]
+    global_topics ? scope.with_some_global_topics(global_topics) : scope
   end
 
   HOMEPAGE_FILTER_PARAMS << :areas
   add_filter('by_areas') do |scope, options|
     areas = options[:areas]
     areas ? scope.with_some_areas(areas).or(scope.with_all_areas) : scope
+  end
+
+  HOMEPAGE_FILTER_PARAMS << :spaces
+  add_filter('by_spaces') do |scope, options|
+    spaces = options[:spaces]
+    spaces.present? ? scope.where(space_id: spaces) : scope
   end
 
   add_filter('filter_ids') do |scope, options|
@@ -49,20 +55,6 @@ class ProjectsFilteringService
     else
       scope.none
     end
-  end
-
-  add_filter('is_moderator_of') do |scope, options|
-    next scope unless (['true', true, '1'].include? options[:filter_is_moderator_of]) ||
-                      options[:filter_user_is_moderator_of].present?
-
-    moderator = User.find_by(id: options[:filter_user_is_moderator_of])
-    user = moderator.presence || options[:current_user]
-
-    next scope.none unless user
-
-    moderated_project_ids = user.roles.select { |r| r['type'] == 'project_moderator' }.pluck('project_id')
-
-    scope.where(id: moderated_project_ids)
   end
 
   add_filter('review_state') do |scope, options|

@@ -3,7 +3,6 @@ import moment = require('moment');
 
 describe('Admin reset project participation data', () => {
   const projectTitle = randomString();
-  const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
   let projectId: string;
   let projectSlug: string;
@@ -14,7 +13,6 @@ describe('Admin reset project participation data', () => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     }).then((project) => {
       projectId = project.body.data.id;
@@ -31,8 +29,7 @@ describe('Admin reset project participation data', () => {
         canReact: true,
       }).then((phase) => {
         cy.apiCreateIdea({
-          projectId,
-          phaseIds: [phase.body.data.id],
+          phaseId: phase.body.data.id,
           ideaTitle: ideationIdeaTitle,
           ideaContent: randomString(),
         });
@@ -50,8 +47,7 @@ describe('Admin reset project participation data', () => {
         canReact: true,
       }).then((phase) => {
         cy.apiCreateIdea({
-          projectId,
-          phaseIds: [phase.body.data.id],
+          phaseId: phase.body.data.id,
           ideaTitle: votingIdeaTitle,
           ideaContent: randomString(),
         });
@@ -72,7 +68,7 @@ describe('Admin reset project participation data', () => {
     cy.get('.e2e-single-vote-button').should('contain', 'Selected');
 
     // Reset project participation data
-    cy.visit(`/admin/projects/${projectId}/settings/data`);
+    cy.visit(`/admin/projects/${projectId}/general/data`);
     cy.get('#e2e-reset-participation-data').click();
     cy.get('#e2e-reset-participation-data-yes').click();
 

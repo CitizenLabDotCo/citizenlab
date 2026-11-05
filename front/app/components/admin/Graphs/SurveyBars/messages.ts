@@ -20,4 +20,8 @@ export default defineMessages({
     id: 'app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.noAnswer',
     defaultMessage: 'No answer',
   },
+  surveyResults: {
+    id: 'app.components.admin.Graphs.SurveyBars.surveyResults',
+    defaultMessage: 'Survey results',
+  },
 });

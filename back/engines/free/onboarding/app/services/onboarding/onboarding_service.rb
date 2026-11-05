@@ -33,15 +33,15 @@ module Onboarding
 
     def profile_incomplete?(user)
       MultilocService.new.empty?(user.bio_multiloc) ||
-        user.avatar.blank? ||
+        (user.avatar.blank? && AppConfiguration.instance.feature_activated?('user_avatars')) ||
         CustomField.registration.enabled.any? do |cf|
-          user.custom_field_values[cf.key].nil?
+          !user.answer_for_key(cf.key)
         end
     end
 
     def needs_verification?(user)
-      settings = ::SettingsService.new.disable_verification_if_no_methods_enabled(AppConfiguration.instance.settings)
-      settings['verification']['enabled'] && !user.verified
+      verification_enabled = !!Verification::VerificationService.new.first_method_enabled
+      verification_enabled && !user.verified
     end
   end
 end

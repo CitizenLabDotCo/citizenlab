@@ -11,6 +11,8 @@ import { Subscription } from 'rxjs';
 import styled from 'styled-components';
 
 import useBlockedUsercount from 'api/blocked_users/useBlockedUsersCount';
+import useEmailBansCount from 'api/email_bans/useEmailBansCount';
+import useEmailBouncedUsersCount from 'api/email_bounced_users/useEmailBouncedUsersCount';
 import { IGroupData } from 'api/groups/types';
 import useGroups from 'api/groups/useGroups';
 import useUsersCount from 'api/users_count/useUsersCount';
@@ -27,7 +29,7 @@ import SearchInput from 'components/UI/SearchInput';
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
-import Link from 'utils/cl-router/Link';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -49,7 +51,6 @@ const Separator = styled.hr`
   background: ${colors.divider};
   border: none;
   height: 1px;
-  margin: 1rem 0 3rem 0;
 `;
 
 const MenuTitle = styled.div`
@@ -84,7 +85,7 @@ const GroupsList = styled.div`
   overflow-y: auto;
 `;
 
-const MenuLink = styled(Link)`
+const MenuLink = typedStyled(Link)`
   color: ${colors.primary};
   font-size: ${fontSizes.base}px;
   display: flex;
@@ -175,9 +176,19 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
     new Set<IGroupData['id']>()
   );
   const { data: blockedUsercount } = useBlockedUsercount();
+  const { data: bannedEmailsCount } = useEmailBansCount();
   const isUserBlockingEnabled = useFeatureFlag({
     name: 'user_blocking',
   });
+  const spacesEnabled = useFeatureFlag({ name: 'spaces' });
+  const isCustomSmtpEnabled = useFeatureFlag({ name: 'custom_smtp' });
+  const { data: emailBouncedUsersCount } = useEmailBouncedUsersCount();
+  // Bounces are only recorded from Mailgun webhooks. A tenant on its own SMTP
+  // server only has the ones left from before it switched, and they still
+  // block sending, so the link stays until they're cleared.
+  const showEmailBounces =
+    !isCustomSmtpEnabled ||
+    (emailBouncedUsersCount?.data.attributes.count ?? 0) > 0;
 
   useEffect(() => {
     const subs: Subscription[] = [];
@@ -221,13 +232,35 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
           </MembersCount>
         )}
       </MenuLink>
-      <MenuLink to="/admin/users/moderators">
+      {spacesEnabled && (
+        <MenuLink to="/admin/users/space-moderators">
+          <GroupName>
+            <FormattedMessage {...messages.spaceManagers} />
+          </GroupName>
+          {usersCount && (
+            <MembersCount data-cy="e2e-space-moderator-count">
+              {usersCount.data.attributes.space_moderators_count}
+            </MembersCount>
+          )}
+        </MenuLink>
+      )}
+      <MenuLink to="/admin/users/folder-moderators">
         <GroupName>
-          <FormattedMessage {...messages.managers} />
+          <FormattedMessage {...messages.folderManagers} />
         </GroupName>
         {usersCount && (
-          <MembersCount data-cy="e2e-moderator-count">
-            {usersCount.data.attributes.moderators_count}
+          <MembersCount data-cy="e2e-folder-moderator-count">
+            {usersCount.data.attributes.folder_moderators_count}
+          </MembersCount>
+        )}
+      </MenuLink>
+      <MenuLink to="/admin/users/project-moderators">
+        <GroupName>
+          <FormattedMessage {...messages.projectManagers} />
+        </GroupName>
+        {usersCount && (
+          <MembersCount data-cy="e2e-project-moderator-count">
+            {usersCount.data.attributes.project_moderators_count}
           </MembersCount>
         )}
       </MenuLink>
@@ -243,6 +276,32 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
           {!isNilOrError(blockedUsercount) && (
             <MembersCount>
               {blockedUsercount.data.attributes.count}
+            </MembersCount>
+          )}
+        </MenuLink>
+      )}
+      <MenuLink
+        to="/admin/users/banned-emails"
+        data-testid="banned-emails-link"
+      >
+        <GroupName>
+          <FormattedMessage {...messages.bannedEmails} />
+        </GroupName>
+        {bannedEmailsCount && (
+          <MembersCount>{bannedEmailsCount.data.attributes.count}</MembersCount>
+        )}
+      </MenuLink>
+      {showEmailBounces && (
+        <MenuLink
+          to="/admin/users/email-bounces"
+          data-testid="email-bounces-link"
+        >
+          <GroupName>
+            <FormattedMessage {...messages.emailBounces} />
+          </GroupName>
+          {emailBouncedUsersCount && (
+            <MembersCount>
+              {emailBouncedUsersCount.data.attributes.count}
             </MembersCount>
           )}
         </MenuLink>
@@ -289,10 +348,11 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
             >
               <MenuLink
                 key={group.id}
-                to={`/admin/users/${group.id}`}
-                className={() =>
-                  `${highlightedGroups.has(group.id) ? 'highlight' : ''}`
-                }
+                to="/admin/users/groups/$groupId"
+                params={{ groupId: group.id }}
+                className={`${
+                  highlightedGroups.has(group.id) ? 'highlight' : ''
+                }`}
               >
                 <Outlet
                   id="app.containers.Admin.users.GroupsListPanel.listitem.icon"
@@ -310,7 +370,7 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
       </GroupsList>
       <Box display="flex" flexGrow={1} />
       <ButtonWithLink
-        linkTo="/admin/users/invitations"
+        to="/admin/users/invitations"
         icon="email"
         className="intercom-users-invite-users-button"
       >

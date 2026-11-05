@@ -5,6 +5,7 @@ import { isEmpty, isEqual } from 'lodash-es';
 import { CLErrors, Multiloc, UploadFile } from 'typings';
 
 import useAdminPublication from 'api/admin_publications/useAdminPublication';
+import useAuthUser from 'api/me/useAuthUser';
 import useAddProjectFolderFile from 'api/project_folder_files/useAddProjectFolderFile';
 import useProjectFolderFiles from 'api/project_folder_files/useProjectFolderFiles';
 import {
@@ -32,16 +33,17 @@ import {
   SubSectionTitle,
 } from 'components/admin/Section';
 import SlugInput from 'components/admin/SlugInput';
+import SpaceSelectSection from 'components/admin/SpaceSelectSection';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import FileUploader from 'components/UI/FileUploader';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError, isError } from 'utils/helperUtils';
+import { isAdmin, isSpaceModerator } from 'utils/permissions/roles';
 import { validateSlug } from 'utils/textUtils';
 
 import messages from '../../messages';
@@ -60,8 +62,7 @@ type IProjectFolderSubmitState =
 
 interface Props {
   mode: 'edit' | 'new';
-  // This is wrong. Can be undefined if mode is 'new'
-  projectFolderId: string;
+  projectFolderId?: string;
 }
 
 const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
@@ -93,23 +94,23 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
       : null
   );
   const tenantLocales = useAppConfigurationLocales();
-  const { mutate: addProjectFolder, isLoading: isAddProjectFolderLoading } =
-    useAddProjectFolder();
-  const { mutate: updateProjectFolder } = useUpdateProjectFolder();
+  const { mutateAsync: addProjectFolder } = useAddProjectFolder();
+  const { mutateAsync: updateProjectFolder } = useUpdateProjectFolder();
 
   /*
     ==============
     State
     ==============
-  */ const [errors, setErrors] = useState<CLErrors>({});
+  */
+  const [errors, setErrors] = useState<CLErrors>({});
+  const { data: authUser } = useAuthUser();
   const [titleMultiloc, setTitleMultiloc] = useState<Multiloc | null>(null);
   const [slug, setSlug] = useState<string | null>(null);
   const [showSlugErrorMessage, setShowSlugErrorMessage] =
     useState<boolean>(false);
   const [shortDescriptionMultiloc, setShortDescriptionMultiloc] =
     useState<Multiloc | null>(null);
-  const [descriptionMultiloc, setDescriptionMultiloc] =
-    useState<Multiloc | null>(null);
+  const [spaceId, setSpaceId] = useState<string | null>(null);
   const [headerBgBase64, setHeaderBgBase64] = useState<string | null>(null);
   const [headerImageAltText, setHeaderImageAltText] = useState<Multiloc>({});
   const [publicationStatus, setPublicationStatus] = useState<
@@ -134,6 +135,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   >([]);
   const [submitState, setSubmitState] =
     useState<IProjectFolderSubmitState>('disabled');
+  const [spaceIdError, setSpaceIdError] = useState(false);
 
   /*
     ==============
@@ -144,15 +146,13 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
       if (mode === 'edit' && !isNilOrError(projectFolder)) {
         setTitleMultiloc(projectFolder.data.attributes.title_multiloc);
         setSlug(projectFolder.data.attributes.slug);
-        setDescriptionMultiloc(
-          projectFolder.data.attributes.description_multiloc
-        );
         setShortDescriptionMultiloc(
           projectFolder.data.attributes.description_preview_multiloc
         );
         setHeaderImageAltText(
           projectFolder.data.attributes.header_bg_alt_text_multiloc
         );
+        setSpaceId(projectFolder.data.attributes.space_id);
       }
     })();
   }, [mode, projectFolder]);
@@ -226,6 +226,12 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     }
   }, []);
 
+  const handleSpaceIdChange = (spaceId: string | null) => {
+    setSubmitState('enabled');
+    setSpaceIdError(false);
+    setSpaceId(spaceId);
+  };
+
   const handleHeaderBgChange = useCallback((newImageBase64: string | null) => {
     setSubmitState('enabled');
 
@@ -291,15 +297,26 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
 
   const validate = useCallback(() => {
     let valid = false;
+
     if (!isNilOrError(tenantLocales)) {
-      // check that all fields have content for all tenant locales
+      // The main description is optional and authored in the Content Builder
+      // after the folder is created, so only title and short description are
+      // required for all tenant locales here.
       valid = tenantLocales.every(
         (locale) =>
           !isEmpty(titleMultiloc?.[locale]) &&
-          !isEmpty(descriptionMultiloc?.[locale]) &&
           !isEmpty(shortDescriptionMultiloc?.[locale])
       );
     }
+
+    // Mirrors ProjectFolders::FolderPolicy#create?: a space manager may only
+    // create folders inside their own space, but an admin may leave the space
+    // empty even when they also manage one.
+    if (!isAdmin(authUser) && isSpaceModerator(authUser) && !spaceId) {
+      valid = false;
+      setSpaceIdError(true);
+    }
+
     if (!valid) {
       setSubmitState('error');
     }
@@ -308,8 +325,9 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   }, [
     tenantLocales,
     titleMultiloc,
-    descriptionMultiloc,
     shortDescriptionMultiloc,
+    authUser,
+    spaceId,
   ]);
 
   const saveForm = async () => {
@@ -317,60 +335,42 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
       setSubmitState('loading');
       if (mode === 'new') {
         try {
-          if (
-            titleMultiloc &&
-            descriptionMultiloc &&
-            shortDescriptionMultiloc
-          ) {
-            addProjectFolder(
-              {
-                title_multiloc: titleMultiloc,
-                slug,
-                description_multiloc: descriptionMultiloc,
-                description_preview_multiloc: shortDescriptionMultiloc,
-                header_bg: headerBgBase64,
-                header_bg_alt_text_multiloc: headerImageAltText,
-                admin_publication_attributes: {
-                  publication_status: publicationStatus,
-                },
+          if (titleMultiloc && shortDescriptionMultiloc) {
+            const projectFolder = await addProjectFolder({
+              title_multiloc: titleMultiloc,
+              slug,
+              description_preview_multiloc: shortDescriptionMultiloc,
+              header_bg: headerBgBase64,
+              header_bg_alt_text_multiloc: headerImageAltText,
+              admin_publication_attributes: {
+                publication_status: publicationStatus,
               },
-              {
-                onSuccess: async (projectFolder) => {
-                  if (
-                    !isAddProjectFolderLoading &&
-                    !isNilOrError(projectFolder)
-                  ) {
-                    const cardImageToAddPromise = croppedFolderCardBase64
-                      ? addProjectFolderImage({
-                          folderId: projectFolder.data.id,
-                          base64: croppedFolderCardBase64,
-                          alt_text_multiloc: folderCardImageAltText,
-                        })
-                      : null;
+              space_id: spaceId,
+            });
 
-                    const filesToAddPromises = projectFolderFiles.map((file) =>
-                      addProjectFolderFile({
-                        projectFolderId: projectFolder.data.id,
-                        file: file.base64,
-                        name: file.name,
-                      })
-                    );
+            const cardImageToAddPromise = croppedFolderCardBase64
+              ? addProjectFolderImage({
+                  folderId: projectFolder.data.id,
+                  base64: croppedFolderCardBase64,
+                  alt_text_multiloc: folderCardImageAltText,
+                })
+              : null;
 
-                    // TODO: Fix this the next time the file is edited.
-                    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                    (cardImageToAddPromise || filesToAddPromises) &&
-                      (await Promise.all<any>([
-                        cardImageToAddPromise,
-                        ...filesToAddPromises,
-                      ]));
-                    clHistory.push(
-                      `/admin/projects/folders/${projectFolder.data.id}`
-                    );
-                  }
-                },
-              }
+            const filesToAddPromises = projectFolderFiles.map((file) =>
+              addProjectFolderFile({
+                projectFolderId: projectFolder.data.id,
+                file: file.base64,
+                name: file.name,
+              })
             );
+
+            await Promise.all<any>([
+              cardImageToAddPromise,
+              ...filesToAddPromises,
+            ]);
+
             setSubmitState('success');
+            clHistory.push(`/admin/projects/folders/${projectFolder.data.id}`);
           }
         } catch (errors) {
           setErrors(errors.errors);
@@ -380,7 +380,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
         try {
           if (
             titleMultiloc &&
-            descriptionMultiloc &&
             shortDescriptionMultiloc &&
             !isNilOrError(projectFolder)
           ) {
@@ -403,7 +402,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             const cardToRemovePromises =
               folderCardImageToRemove?.id &&
               deleteProjectFolderImage({
-                folderId: projectFolderId,
+                folderId: projectFolder.data.id,
                 imageId: folderCardImageToRemove.id,
               });
 
@@ -418,7 +417,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             );
 
             const folderFilesPromise = await syncProjectFolderFiles({
-              projectFolderId,
+              projectFolderId: projectFolder.data.id,
               projectFolderFiles,
               filesToRemove: projectFolderFilesToRemove,
               fileOrdering: initialFileOrdering || {},
@@ -435,10 +434,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               titleMultiloc,
               projectFolder.data.attributes.title_multiloc
             );
-            const changedDescriptionMultiloc = !isEqual(
-              descriptionMultiloc,
-              projectFolder.data.attributes.description_multiloc
-            );
             const changedShortDescriptionMultiloc = !isEqual(
               shortDescriptionMultiloc,
               projectFolder.data.attributes.description_preview_multiloc
@@ -454,42 +449,35 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                 adminPublication.data.attributes.publication_status
               );
 
+            const changedSpaceId = !isEqual(
+              spaceId,
+              projectFolder.data.attributes.space_id
+            );
+
             if (
               changedTitleMultiloc ||
               changedSlug ||
-              changedDescriptionMultiloc ||
               changedShortDescriptionMultiloc ||
               changedHeaderBg ||
-              changedPublicationStatus
+              changedPublicationStatus ||
+              changedSpaceId
             ) {
-              updateProjectFolder(
-                {
-                  projectFolderId,
-                  title_multiloc: changedTitleMultiloc
-                    ? titleMultiloc
-                    : undefined,
-                  slug: changedSlug ? slug : undefined,
-                  description_multiloc: changedDescriptionMultiloc
-                    ? descriptionMultiloc
-                    : undefined,
-                  description_preview_multiloc: changedShortDescriptionMultiloc
-                    ? shortDescriptionMultiloc
-                    : undefined,
-                  header_bg: changedHeaderBg ? headerBgBase64 : undefined,
-                  header_bg_alt_text_multiloc: headerImageAltText,
-                  admin_publication_attributes: {
-                    publication_status: publicationStatus,
-                  },
+              await updateProjectFolder({
+                projectFolderId: projectFolder.data.id,
+                title_multiloc: changedTitleMultiloc
+                  ? titleMultiloc
+                  : undefined,
+                slug: changedSlug ? slug : undefined,
+                description_preview_multiloc: changedShortDescriptionMultiloc
+                  ? shortDescriptionMultiloc
+                  : undefined,
+                header_bg: changedHeaderBg ? headerBgBase64 : undefined,
+                header_bg_alt_text_multiloc: headerImageAltText,
+                admin_publication_attributes: {
+                  publication_status: publicationStatus,
                 },
-                {
-                  onError: async () => {
-                    setSubmitState('apiError');
-                  },
-                  onSuccess: async () => {
-                    setSubmitState('success');
-                  },
-                }
-              );
+                space_id: spaceId,
+              });
             }
             setProjectFolderFilesToRemove([]);
             setSubmitState('success');
@@ -511,6 +499,22 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   const folderCardImageShouldBeSaved = folderCardImage
     ? !folderCardImage.remote
     : false;
+
+  const getErrorMessage = () => {
+    if (submitState === 'apiError') {
+      return messages.saveErrorMessage;
+    }
+
+    if (spaceIdError) {
+      return messages.spaceRequiredError;
+    }
+
+    if (tenantLocales && tenantLocales.length > 1) {
+      return messages.multilocError;
+    }
+
+    return messages.textFieldsError;
+  };
 
   return (
     <form onSubmit={saveForm}>
@@ -564,8 +568,24 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             label={<FormattedMessage {...messages.titleInputLabel} />}
           />
         </SectionField>
-
-        {/* Only show this field when slug is already saved to folder (i.e. not when creating a new folder, which uses this form as well) */}
+        <SectionField>
+          <Box mt="35px" data-cy="e2e-project-folder-short-description">
+            <TextAreaMultilocWithLocaleSwitcher
+              valueMultiloc={shortDescriptionMultiloc}
+              name="textAreaMultiloc"
+              onChange={getHandler(setShortDescriptionMultiloc)}
+              label={
+                <FormattedMessage {...messages.shortDescriptionInputLabel} />
+              }
+              labelTooltipText={
+                <FormattedMessage
+                  {...messages.shortDescriptionInputLabelTooltip}
+                />
+              }
+            />
+          </Box>
+        </SectionField>
+        {/* Only show URL field when slug is already saved to folder (i.e. not when creating a new folder, which uses this form as well) */}
         {!isNilOrError(projectFolder) && slug && (
           <SectionField>
             <>
@@ -585,36 +605,12 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             </>
           </SectionField>
         )}
-        <SectionField data-cy="e2e-project-folder-short-description">
-          <SubSectionTitle>
-            <FormattedMessage {...messages.folderDescriptions} />
-          </SubSectionTitle>
-          <Box mb="35px">
-            <TextAreaMultilocWithLocaleSwitcher
-              data-cy="e2e-project-folder-short-description"
-              valueMultiloc={shortDescriptionMultiloc}
-              name="textAreaMultiloc"
-              onChange={getHandler(setShortDescriptionMultiloc)}
-              label={
-                <FormattedMessage {...messages.shortDescriptionInputLabel} />
-              }
-              labelTooltipText={
-                <FormattedMessage
-                  {...messages.shortDescriptionInputLabelTooltip}
-                />
-              }
-            />
-          </Box>
-          <Box data-cy="e2e-project-folder-description">
-            <QuillMutilocWithLocaleSwitcher
-              id="description"
-              valueMultiloc={descriptionMultiloc}
-              onChange={getHandler(setDescriptionMultiloc)}
-              label={<FormattedMessage {...messages.descriptionInputLabel} />}
-              withCTAButton
-            />
-          </Box>
-        </SectionField>
+
+        <SpaceSelectSection
+          spaceId={spaceId}
+          error={spaceIdError}
+          onChange={handleSpaceIdChange}
+        />
 
         <SectionField>
           <SubSectionTitle>
@@ -709,12 +705,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           messages={{
             buttonSave: messages.save,
             buttonSuccess: messages.saveSuccess,
-            messageError:
-              submitState === 'apiError'
-                ? messages.saveErrorMessage
-                : tenantLocales && tenantLocales.length > 1
-                ? messages.multilocError
-                : messages.textFieldsError,
+            messageError: getErrorMessage(),
             messageSuccess: messages.saveSuccessMessage,
           }}
         />

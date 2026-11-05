@@ -1,0 +1,467 @@
+import React, { useState, useEffect } from 'react';
+
+import { Box, colors, IconTooltip } from '@citizenlab/cl2-component-library';
+import { isEmpty } from 'lodash-es';
+import { Multiloc, UploadFile, CLErrors } from 'typings';
+
+import useProjectImages, {
+  CARD_IMAGE_ASPECT_RATIO_HEIGHT,
+  CARD_IMAGE_ASPECT_RATIO_WIDTH,
+} from 'api/project_images/useProjectImages';
+import projectsKeys from 'api/projects/keys';
+import { IUpdatedProjectProperties, IProject } from 'api/projects/types';
+import useProjectById from 'api/projects/useProjectById';
+import useUpdateProject from 'api/projects/useUpdateProject';
+
+import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import ProjectContextSection from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection';
+import { useValidateProjectContext } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/utils';
+import useSyncProjectImages from 'containers/Admin/projects/_shared/useSyncProjectImages';
+import { getSelectedTopicIds } from 'containers/Admin/projects/_shared/utils/getSelectedTopicIds';
+
+import ImageCropperContainer from 'components/admin/ImageCropper/Container';
+import {
+  Section,
+  SectionTitle,
+  SectionDescription,
+  SubSectionTitle,
+  SectionField,
+} from 'components/admin/Section';
+import SlugInput from 'components/admin/SlugInput';
+import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
+import Highlighter from 'components/Highlighter';
+import Error from 'components/UI/Error';
+import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
+import Warning from 'components/UI/Warning';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import Link from 'utils/cl-router/Link';
+import { convertUrlToUploadFile, isUploadFile } from 'utils/fileUtils';
+import { useParams, useLocation } from 'utils/router';
+import { defaultAdminCardPadding } from 'utils/styleConstants';
+import { validateSlug } from 'utils/textUtils';
+
+import { TOnProjectAttributesDiffChangeFunction } from '..';
+import GeographicAreaInputs from '../../../_shared/components/ProjectSetupForm/GeographicAreaInputs';
+import ProjectCardImageDropzone from '../../../_shared/components/ProjectSetupForm/ProjectCardImageDropzone';
+import ProjectCardImageTooltip from '../../../_shared/components/ProjectSetupForm/ProjectCardImageTooltip';
+import {
+  StyledForm,
+  StyledInputMultiloc,
+  StyledSectionField,
+} from '../../../_shared/components/ProjectSetupForm/styling';
+import TopicInputs from '../../../_shared/components/ProjectSetupForm/TopicInputs';
+import messages from '../messages';
+
+interface Props {
+  project: IProject;
+}
+
+const AdminProjectsProjectGeneral = ({ project }: Props) => {
+  const { formatMessage } = useIntl();
+  const projectId = project.data.id;
+
+  const isProjectLibraryEnabled = useFeatureFlag({ name: 'project_library' });
+  const { width, containerRef } = useContainerWidthAndHeight();
+  const { pathname } = useLocation();
+  const showStickySaveButton = pathname.endsWith(
+    `/admin/projects/${projectId}/general`
+  );
+
+  const { data: remoteProjectImages } = useProjectImages(projectId);
+  const { mutateAsync: updateProject } = useUpdateProject();
+
+  const syncProjectImages = useSyncProjectImages();
+
+  const [submitState, setSubmitState] = useState<ISubmitState>('disabled');
+
+  const [processing, setProcessing] = useState(false);
+  const [apiErrors, setApiErrors] = useState<CLErrors>({});
+  const [projectAttributesDiff, setProjectAttributesDiff] =
+    useState<IUpdatedProjectProperties>({});
+  const [projectContextError, setProjectContextError] = useState(false);
+
+  // We should probably not have slug, publicationStatus, etc.
+  // both in projectAttributesDiff and as separate state.
+  const [projectCardImage, setProjectCardImage] = useState<UploadFile | null>(
+    null
+  );
+  const [projectCardImageAltText, setProjectCardImageAltText] =
+    useState<Multiloc | null>(null);
+  // project_images should always store one record, but in practice it was (or is?) different (maybe because of a bug)
+  // https://citizenlabco.slack.com/archives/C015M14HYSF/p1674228018666059
+  const [projectCardImageToRemove, setProjectCardImageToRemove] =
+    useState<UploadFile | null>(null);
+  // If we use cropper, we need to store two different images:
+  // original and cropped.
+  const [croppedProjectCardBase64, setCroppedProjectCardBase64] = useState<
+    string | null
+  >(null);
+
+  const [slug, setSlug] = useState<string>(project.data.attributes.slug);
+  const [showSlugErrorMessage, setShowSlugErrorMessage] = useState(false);
+
+  // Description state
+  const [descriptionPreviewMultiloc, setDescriptionPreviewMultiloc] =
+    useState<Multiloc | null>(
+      project.data.attributes.description_preview_multiloc
+    );
+
+  const validateProjectContext = useValidateProjectContext();
+
+  const projectInRoot =
+    !project.data.attributes.space_id && !project.data.attributes.folder_id;
+
+  useEffect(() => {
+    (async () => {
+      if (remoteProjectImages) {
+        for (const projectImage of remoteProjectImages.data) {
+          const url = projectImage.attributes.versions.large;
+          const altTextValue = projectImage.attributes.alt_text_multiloc;
+
+          if (url) {
+            const uploadFile = await convertUrlToUploadFile(
+              url,
+              projectImage.id,
+              null
+            );
+            if (isUploadFile(uploadFile)) {
+              setProjectCardImage(uploadFile);
+              setProjectCardImageAltText(altTextValue);
+              break;
+            }
+          }
+        }
+      }
+    })();
+  }, [remoteProjectImages]);
+
+  const handleProjectAttributeDiffOnChange: TOnProjectAttributesDiffChangeFunction =
+    (
+      projectAttributesDiff: IUpdatedProjectProperties,
+      submitState: ISubmitState = 'enabled'
+    ) => {
+      setProjectAttributesDiff((currentProjectAttributesDiff) => {
+        return {
+          ...currentProjectAttributesDiff,
+          ...projectAttributesDiff,
+        };
+      });
+
+      setSubmitState(submitState);
+    };
+
+  const handleAltTextMultilocOnChange = (altTextMultiloc: Multiloc) => {
+    setSubmitState('enabled');
+    setProjectCardImageAltText(altTextMultiloc);
+  };
+
+  const handleProjectCardImageOnAdd = (projectImages: UploadFile[]) => {
+    setSubmitState('enabled');
+    setProjectCardImage(projectImages[0]);
+    setCroppedProjectCardBase64(projectImages[0].base64);
+  };
+
+  const handleProjectCardImageOnRemove = (
+    projectCardImageToRemove: UploadFile
+  ) => {
+    setProjectCardImage(null);
+    setCroppedProjectCardBase64(null);
+    projectCardImageToRemove.remote &&
+      setProjectCardImageToRemove(projectCardImageToRemove);
+    setSubmitState('enabled');
+  };
+
+  const handleCroppedProjectCardImageOnRemove = () => {
+    projectCardImage && handleProjectCardImageOnRemove(projectCardImage);
+  };
+
+  const handleProjectCardImageOnCompleteCropping = (base64: string) => {
+    setSubmitState('enabled');
+    setCroppedProjectCardBase64(base64);
+  };
+
+  const handleTopicsChange = (topicIds: string[]) => {
+    handleProjectAttributeDiffOnChange({ global_topic_ids: topicIds });
+  };
+
+  const handleDescriptionPreviewChange = (
+    description_preview_multiloc: Multiloc
+  ) => {
+    setDescriptionPreviewMultiloc(description_preview_multiloc);
+    handleProjectAttributeDiffOnChange({ description_preview_multiloc });
+  };
+
+  async function saveForm() {
+    const isFormValid = validateForm();
+
+    if (!isFormValid) {
+      setSubmitState('error');
+      return;
+    }
+
+    if (processing) return;
+
+    try {
+      setProcessing(true);
+      if (!isEmpty(projectAttributesDiff)) {
+        await updateProject({
+          projectId,
+          ...projectAttributesDiff,
+        });
+      }
+
+      await syncProjectImages({
+        croppedProjectCardBase64,
+        projectCardImageAltText,
+        projectCardImageToUpdate: projectCardImage,
+        projectCardImageToRemove,
+        projectId,
+      });
+
+      setSubmitState('success');
+      setProjectCardImageToRemove(null);
+      setProcessing(false);
+
+      queryClient.invalidateQueries({
+        queryKey: projectsKeys.item({ slug: project.data.attributes.slug }),
+      });
+    } catch (errors) {
+      setSubmitState('error');
+      setApiErrors((errors as any).errors);
+      setProcessing(false);
+    }
+  }
+
+  const onSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    saveForm();
+  };
+
+  const handleSlugOnChange = (slug: string) => {
+    setProjectAttributesDiff((projectAttributesDiff) => {
+      return {
+        ...projectAttributesDiff,
+        slug,
+      };
+    });
+    setSlug(slug);
+    // This validation part should move to validateForm
+    // Look out for complication with new project (where there's)
+    // no slug and form should validate without.
+    const isSlugValid = validateSlug(slug);
+    setShowSlugErrorMessage(!isSlugValid);
+    setSubmitState(isSlugValid ? 'enabled' : 'disabled');
+  };
+
+  const projectAttrs = {
+    ...project.data.attributes,
+    ...projectAttributesDiff,
+  };
+
+  const validateForm = () => {
+    if (
+      !validateProjectContext({
+        spaceId: projectAttrs.space_id,
+        folderId: projectAttrs.folder_id,
+        projectInRoot,
+      })
+    ) {
+      setProjectContextError(true);
+      return false;
+    }
+
+    return true;
+  };
+
+  const selectedTopicIds = getSelectedTopicIds(
+    projectAttributesDiff,
+    project.data
+  );
+
+  const projectCardImageShouldBeSaved = projectCardImage
+    ? !projectCardImage.remote
+    : false;
+
+  return (
+    <Box ref={containerRef}>
+      <StyledForm
+        className="e2e-project-general-form intercom-projects-new-project-form"
+        onSubmit={onSubmit}
+        showStickySaveButton={showStickySaveButton}
+      >
+        <Section>
+          {projectId && (
+            <>
+              <SectionTitle>
+                <FormattedMessage {...messages.titleGeneral} />
+              </SectionTitle>
+              <SectionDescription>
+                <FormattedMessage {...messages.subtitleGeneral} />
+              </SectionDescription>
+            </>
+          )}
+
+          {/* Homepage Description */}
+          <SectionField>
+            <Highlighter fragmentId="description-preview-multiloc">
+              <TextAreaMultilocWithLocaleSwitcher
+                valueMultiloc={descriptionPreviewMultiloc}
+                onChange={handleDescriptionPreviewChange}
+                label={formatMessage(messages.homepageDescriptionLabel)}
+                labelTooltipText={formatMessage(
+                  messages.homepageDescriptionTooltip
+                )}
+              />
+            </Highlighter>
+            <Error
+              fieldName="description_preview_multiloc"
+              apiErrors={apiErrors.description_preview_multiloc}
+            />
+          </SectionField>
+
+          {isProjectLibraryEnabled && (
+            <Box mb="20px">
+              <Warning>
+                <>
+                  <strong>
+                    <FormattedMessage {...messages.needInspiration} />
+                  </strong>{' '}
+                  <FormattedMessage
+                    {...messages.needInspirationDescription}
+                    values={{
+                      inspirationHubLink: (
+                        <Link to="/admin/inspiration-hub" target="_blank">
+                          <FormattedMessage {...messages.inspirationHub} />
+                        </Link>
+                      ),
+                    }}
+                  />
+                </>
+              </Warning>
+            </Box>
+          )}
+
+          <StyledSectionField>
+            <SubSectionTitle>
+              <FormattedMessage {...messages.url} />
+            </SubSectionTitle>
+            <SlugInput
+              intercomLabelClassname="intercom-product-tour-project-slug-label"
+              slug={slug}
+              pathnameWithoutSlug={'projects'}
+              apiErrors={apiErrors}
+              showSlugErrorMessage={showSlugErrorMessage}
+              onSlugChange={handleSlugOnChange}
+              showSlugChangedWarning={slug !== project.data.attributes.slug}
+            />
+          </StyledSectionField>
+
+          <TopicInputs
+            selectedTopicIds={selectedTopicIds}
+            onChange={handleTopicsChange}
+          />
+
+          <GeographicAreaInputs
+            areaIds={projectAttrs.area_ids}
+            onProjectAttributesDiffChange={handleProjectAttributeDiffOnChange}
+          />
+
+          <ProjectContextSection
+            spaceId={projectAttrs.space_id}
+            folderId={projectAttrs.folder_id}
+            projectInRoot={projectInRoot}
+            error={projectContextError}
+            onChange={(spaceAndFolderId) => {
+              handleProjectAttributeDiffOnChange(spaceAndFolderId);
+              setProjectContextError(false);
+            }}
+          />
+
+          <StyledSectionField>
+            <SubSectionTitle>
+              <FormattedMessage {...messages.projectCardImageLabelText} />
+              <ProjectCardImageTooltip />
+            </SubSectionTitle>
+            {projectCardImageShouldBeSaved ? (
+              <Box display="flex" flexDirection="column" gap="8px">
+                <ImageCropperContainer
+                  image={projectCardImage}
+                  onComplete={handleProjectCardImageOnCompleteCropping}
+                  aspectRatioWidth={CARD_IMAGE_ASPECT_RATIO_WIDTH}
+                  aspectRatioHeight={CARD_IMAGE_ASPECT_RATIO_HEIGHT}
+                  onRemove={handleCroppedProjectCardImageOnRemove}
+                />
+              </Box>
+            ) : (
+              <ProjectCardImageDropzone
+                images={projectCardImage && [projectCardImage]}
+                onAddImages={handleProjectCardImageOnAdd}
+                onRemoveImage={handleProjectCardImageOnRemove}
+              />
+            )}
+          </StyledSectionField>
+          {projectCardImage && (
+            <StyledSectionField>
+              <SubSectionTitle>
+                <FormattedMessage {...messages.projectImageAltTextTitle} />
+                <IconTooltip
+                  content={
+                    <FormattedMessage
+                      {...messages.projectImageAltTextTooltip}
+                    />
+                  }
+                />
+              </SubSectionTitle>
+              <StyledInputMultiloc
+                type="text"
+                valueMultiloc={projectCardImageAltText}
+                label={<FormattedMessage {...messages.altText} />}
+                onChange={handleAltTextMultilocOnChange}
+              />
+            </StyledSectionField>
+          )}
+        </Section>
+        <Box
+          {...(showStickySaveButton && {
+            position: 'fixed',
+            borderTop: `1px solid ${colors.divider}`,
+            bottom: '0',
+            w: `calc(${width}px + ${defaultAdminCardPadding * 2}px)`,
+            ml: `-${defaultAdminCardPadding}px`,
+            background: colors.white,
+            display: 'flex',
+            justifyContent: 'flex-start',
+            px: `${defaultAdminCardPadding}px`,
+          })}
+          py="8px"
+        >
+          <SubmitWrapper
+            className="intercom-projects-new-project-save-button"
+            loading={processing}
+            status={submitState}
+            messages={{
+              buttonSave: messages.saveProject,
+              buttonSuccess: messages.saveSuccess,
+              messageError: messages.saveErrorMessage,
+              messageSuccess: messages.saveSuccessMessage,
+            }}
+          />
+        </Box>
+      </StyledForm>
+    </Box>
+  );
+};
+
+const AdminProjectsProjectGeneralWrapper = () => {
+  const { projectId } = useParams({ strict: false });
+  const { data: project } = useProjectById(projectId);
+  if (!project) return null;
+
+  return <AdminProjectsProjectGeneral project={project} />;
+};
+
+export default AdminProjectsProjectGeneralWrapper;

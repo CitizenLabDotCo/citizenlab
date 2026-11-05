@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { IconTooltip, Box } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
@@ -17,23 +17,23 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import messages from 'containers/Admin/settings/messages';
 
 import {
-  SectionTitle,
   SubSectionTitle,
-  SectionField,
   SectionDescription,
+  SectionTitle,
+  Section,
 } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import Areas from 'components/Areas';
 import Topics from 'components/Topics';
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import getSubmitState from 'utils/getSubmitState';
 import { isNilOrError } from 'utils/helperUtils';
 
 import CustomFieldSettings from './CustomFieldSettings';
-import CustomFieldsSignupText from './CustomFieldsSignupText';
+import HelperTextInputs from './HelperTextInputs';
 import ToggleShowFollowPreferences from './ToggleShowFollowPreferences';
+import VisitingPermission from './VisitingPermission';
 
 export const LabelTooltip = styled.div`
   display: flex;
@@ -44,7 +44,7 @@ const SettingsRegistrationTab = () => {
   const {
     mutate: updateAppConfiguration,
     error,
-    isLoading: isFormSubmitting,
+    isPending: isFormSubmitting,
     isSuccess: isFormSaved,
   } = useUpdateAppConfiguration();
 
@@ -125,77 +125,14 @@ const SettingsRegistrationTab = () => {
   if (!isNilOrError(latestAppConfigSettings)) {
     return (
       <>
-        <SectionTitle>
-          <FormattedMessage {...messages.registrationTitle} />
-        </SectionTitle>
-        <Box mb="60px" key={'signup_fields'}>
-          <SubSectionTitle className="intercom-settings-tab-registration-helper-text">
-            <FormattedMessage {...messages.signupFormText} />
-          </SubSectionTitle>
-          <SectionDescription>
-            <FormattedMessage {...messages.registrationHelperTextDescription} />
-          </SectionDescription>
-          <form onSubmit={handleSubmit}>
-            <SectionField>
-              <InputMultilocWithLocaleSwitcher
-                type="text"
-                valueMultiloc={latestAppConfigSettings.core.login_helper_text}
-                onChange={handleCoreSettingWithMultilocOnChange(
-                  'login_helper_text'
-                )}
-                label={
-                  <LabelTooltip>
-                    <FormattedMessage {...messages.loginHelper} />
-                    <IconTooltip
-                      content={
-                        <FormattedMessage {...messages.loginHelperTooltip} />
-                      }
-                    />
-                  </LabelTooltip>
-                }
-              />
-            </SectionField>
-
-            <SectionField>
-              <InputMultilocWithLocaleSwitcher
-                type="text"
-                valueMultiloc={latestAppConfigSettings.core.signup_helper_text}
-                onChange={handleCoreSettingWithMultilocOnChange(
-                  'signup_helper_text'
-                )}
-                label={
-                  <LabelTooltip>
-                    <FormattedMessage {...messages.step1} />
-                    <IconTooltip
-                      content={<FormattedMessage {...messages.step1Tooltip} />}
-                    />
-                  </LabelTooltip>
-                }
-              />
-            </SectionField>
-            <CustomFieldsSignupText
-              onCoreSettingWithMultilocChange={
-                handleCoreSettingWithMultilocOnChange
-              }
-              customFieldsSignupHelperTextMultiloc={
-                latestAppConfigSettings.core.custom_fields_signup_helper_text
-              }
-            />
-            <SubmitWrapper
-              loading={isFormSubmitting}
-              status={getSubmitState({
-                errors: error,
-                saved: isFormSaved,
-                diff: attributesDiff,
-              })}
-              messages={{
-                buttonSave: messages.save,
-                buttonSuccess: messages.saveSuccess,
-                messageError: messages.saveErrorMessage,
-                messageSuccess: messages.saveSuccessMessage,
-              }}
-            />
-          </form>
+        <VisitingPermission />
+        <Box mb="80px">
+          <CustomFieldSettings />
+        </Box>
+        <Section>
+          <SectionTitle>
+            <FormattedMessage {...messages.otherRegistrationSettings} />
+          </SectionTitle>
           {isFollowingEnabled && (
             <Box maxWidth="500px" mt="36px">
               <ToggleShowFollowPreferences
@@ -218,8 +155,39 @@ const SettingsRegistrationTab = () => {
               )}
             </Box>
           )}
-        </Box>
-        <CustomFieldSettings />
+          <Box mb="60px" key={'signup_fields'}>
+            <SubSectionTitle className="intercom-settings-tab-registration-helper-text">
+              <FormattedMessage {...messages.signupFormText} />
+            </SubSectionTitle>
+            <SectionDescription>
+              <FormattedMessage
+                {...messages.registrationHelperTextDescription}
+              />
+            </SectionDescription>
+            <form onSubmit={handleSubmit}>
+              <HelperTextInputs
+                coreSettings={latestAppConfigSettings.core}
+                onCoreSettingWithMultilocChange={
+                  handleCoreSettingWithMultilocOnChange
+                }
+              />
+              <SubmitWrapper
+                loading={isFormSubmitting}
+                status={getSubmitState({
+                  errors: error,
+                  saved: isFormSaved,
+                  diff: attributesDiff,
+                })}
+                messages={{
+                  buttonSave: messages.save,
+                  buttonSuccess: messages.saveSuccess,
+                  messageError: messages.saveErrorMessage,
+                  messageSuccess: messages.saveSuccessMessage,
+                }}
+              />
+            </form>
+          </Box>
+        </Section>
       </>
     );
   }

@@ -13,7 +13,6 @@ import { IPhaseData } from 'api/phases/types';
 
 import usePostManagerColumnFilter from 'hooks/usePostManagerColumnFilter';
 
-import AssigneeSelect from 'components/admin/PostManager/components/PostTable/AssigneeSelect';
 import FeatureFlag from 'components/FeatureFlag';
 import T from 'components/T';
 import Checkbox from 'components/UI/Checkbox';
@@ -32,6 +31,7 @@ import IdeaOfficialFeedbackModal, {
   getIdeaOfficialFeedbackModalEventName,
 } from '../../IdeaOfficialFeedbackModal';
 
+import AssigneeCell from './AssigneeCell';
 import LikeIndicator from './LikeIndicator';
 import PhaseDeselectModal from './PhaseDeselectModal';
 import StyledRow from './StyledRow';
@@ -87,7 +87,7 @@ const IdeaRow = ({
   const phaseDeselectModalOpen = !!phasesToBeSelected;
   const closePhaseDeselectModal = () => setPhasesToBeSeselected(null);
 
-  const { mutate: updateIdea, isLoading: updatingIdea } = useUpdateIdea();
+  const { mutate: updateIdea, isPending: updatingIdea } = useUpdateIdea();
 
   const handleConfirmDeselectPhase = () => {
     updateIdea({ id: idea.id, requestBody: { phase_ids: phasesToBeSelected } });
@@ -164,24 +164,7 @@ const IdeaRow = ({
           idea: ideaId,
         });
       },
-      Component: ({
-        idea,
-        onChange,
-      }: Override<
-        IdeaCellComponentProps,
-        {
-          onChange: (idea: IIdeaData) => (assigneeId?: string) => void;
-        }
-      >) => {
-        const projectId = idea.relationships.project.data.id;
-        return (
-          <AssigneeSelect
-            onAssigneeChange={onChange(idea)}
-            projectId={projectId}
-            assigneeId={idea.relationships.assignee?.data?.id}
-          />
-        );
-      },
+      Component: AssigneeCell,
     },
     {
       name: 'votes',
@@ -310,7 +293,7 @@ const IdeaRow = ({
           : [item.id];
 
         if (dropResult.type === 'topic') {
-          const currentTopics = idea.relationships.topics?.data.map(
+          const currentTopics = idea.relationships.input_topics?.data.map(
             (d) => d.id
           );
           const newTopics = uniq(currentTopics?.concat(dropResult.id));
@@ -366,7 +349,7 @@ const IdeaRow = ({
   });
 
   const selectedPhases = idea.relationships.phases.data.map((p) => p.id);
-  const selectedTopics = idea.relationships.topics?.data.map((p) => p.id);
+  const selectedTopics = idea.relationships.input_topics?.data.map((p) => p.id);
   const active = selection.has(idea.id);
   const projectId = idea.relationships.project.data.id;
   const selectedStatus = idea.relationships.idea_status.data?.id;
@@ -442,6 +425,7 @@ const IdeaRow = ({
     <>
       <StyledRow
         className={`${className} e2e-idea-manager-idea-row`}
+        dataCy={`e2e-idea-row-${idea.id}`}
         undraggable={false}
         background={active ? colors.grey300 : undefined}
         ref={drag}

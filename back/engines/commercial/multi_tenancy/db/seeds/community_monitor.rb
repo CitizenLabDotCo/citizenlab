@@ -16,7 +16,7 @@ module MultiTenancy
         service = CommunityMonitorService.new
         @project = service.project || service.create_and_set_project
         @phase = @project.phases.first
-        @fields = @phase.custom_form.custom_fields.reject(&:page?)
+        @fields = @phase.custom_form.custom_fields.select(&:supports_submission?)
         @num_quarters.times do |num_quarters_ago| # NOTE: 0 = current quarter
           runner.num_ideas.times do |index|
             create_survey_response((3 * num_quarters_ago).months.ago, index)
@@ -31,14 +31,15 @@ module MultiTenancy
         answers = question_keys.index_with { |_k| rand(1..5) }
         follow_ups = question_keys.each_with_object({}) { |key, accu| accu["#{key}_follow_up"] = random_follow_up(key, index) }
 
-        Idea.create!({
+        idea = Idea.new({
           project: @project,
           phases: [@phase],
           creation_phase: @phase,
           publication_status: 'published',
-          created_at: created_at,
-          custom_field_values: answers.merge(follow_ups)
+          created_at: created_at
         })
+        CustomFieldValuesTransitionService.new.assign(idea, answers.merge(follow_ups))
+        idea.save!
       end
 
       def random_follow_up(question_key, index)

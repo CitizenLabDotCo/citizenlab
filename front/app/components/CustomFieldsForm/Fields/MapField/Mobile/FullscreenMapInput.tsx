@@ -16,7 +16,6 @@ import {
   Label,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { ControlProps } from '@jsonforms/core';
 import { createPortal } from 'react-dom';
 import { useTheme } from 'styled-components';
 
@@ -26,8 +25,17 @@ import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
 import EsriMap from 'components/EsriMap';
+import MapInteractionToggle, {
+  MapInteractionMode,
+} from 'components/EsriMap/components/MapInteractionToggle';
 import ResetMapViewButton from 'components/EsriMap/components/ResetMapViewButton';
-import { parseLayers } from 'components/EsriMap/utils';
+import {
+  parseLayers,
+  showEsriFeaturePopup,
+  changeCursorOnFeaturePopupHover,
+  pinUiElementToTop,
+  resetCursor,
+} from 'components/EsriMap/utils';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -35,8 +43,10 @@ import messages from '../../../messages';
 import InstructionAnimation from '../components/InstructionAnimation';
 import UndoButton from '../components/UndoButton';
 import {
+  exceedsPinLimit,
+  getCoordinatesFromMultiPointData,
   handleMapClickMultipoint,
-  isLineOrPolygonInput,
+  isMultiPointInput,
   setupPointDrag,
 } from '../multiPointUtils';
 import { clearPointData, handleMapClickPoint } from '../pointUtils';
@@ -49,12 +59,13 @@ import {
 type Props = {
   setShowFullscreenMap: (show: boolean) => void;
   mapConfig?: IMapConfig;
-  data: GeoJSON.Point | number[][] | undefined;
+  data: GeoJSON.Point | GeoJSON.LineString | GeoJSON.Polygon | undefined;
   handleSinglePointChange: (point: GeoJSON.Point | undefined) => void;
   handleMultiPointChange?: (points: number[][] | undefined) => void;
   inputType: MapInputType;
   mapViewSurveyPage?: MapView | null;
   questionPageMapView?: MapView | null;
+  maxPins?: number;
 };
 
 const FullscreenMapInput = memo<Props>(
@@ -66,7 +77,8 @@ const FullscreenMapInput = memo<Props>(
     handleMultiPointChange,
     inputType,
     questionPageMapView,
-  }: ControlProps & Props) => {
+    maxPins,
+  }: Props) => {
     const theme = useTheme();
     const locale = useLocale();
     const localize = useLocalize();
@@ -89,6 +101,14 @@ const FullscreenMapInput = memo<Props>(
     const resetButtonRef: React.RefObject<HTMLDivElement> = React.createRef();
     const undoButtonRef: React.RefObject<HTMLDivElement> = React.createRef();
     const instructionRef: React.RefObject<HTMLDivElement> = React.createRef();
+    // Stable ref (not re-created each render) so the pinning effect below always
+    // references the currently-mounted toggle element
+    const interactionToggleRef = useRef<HTMLDivElement>(null);
+
+    // Draw vs Explore toggle: on web maps, users can switch to an explore mode
+    // where tapping a feature opens its ArcGIS-configured popup instead of drawing
+    const [interactionMode, setInteractionMode] =
+      useState<MapInteractionMode>('draw');
 
     // Create map layers from map configuration to load in
     const mapLayers = useMemo(() => {
@@ -100,16 +120,42 @@ const FullscreenMapInput = memo<Props>(
       setMapView(mapView);
     }, []);
 
-    // When the user clicks on the map, update the form data
+    // When the user clicks on the map, update the form data (draw mode) or
+    // open the ArcGIS-configured popup of the tapped feature (explore mode)
     const onMapClick = useCallback(
       (event: any, mapView: MapView) => {
+        if (interactionMode === 'explore') {
+          showEsriFeaturePopup({ event, mapView });
+          return;
+        }
         if (inputType === 'point') {
           handleMapClickPoint(event, mapView, handleSinglePointChange);
-        } else if (isLineOrPolygonInput(inputType)) {
+        } else if (isMultiPointInput(inputType)) {
           handleMapClickMultipoint(event, mapView, handleMultiPointChange);
         }
       },
-      [handleMultiPointChange, handleSinglePointChange, inputType]
+      [
+        handleMultiPointChange,
+        handleSinglePointChange,
+        inputType,
+        interactionMode,
+      ]
+    );
+
+    const onMapHover = useCallback((event: any, mapView: MapView) => {
+      changeCursorOnFeaturePopupHover(event, mapView);
+    }, []);
+
+    const handleInteractionModeChange = useCallback(
+      (mode: MapInteractionMode) => {
+        setInteractionMode(mode);
+        if (mode === 'draw') {
+          // Clean up explore mode leftovers
+          mapView?.closePopup();
+          resetCursor();
+        }
+      },
+      [mapView]
     );
 
     // Add the custom UI elements to the map
@@ -121,6 +167,15 @@ const FullscreenMapInput = memo<Props>(
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       mapView?.ui?.add(instructionRef?.current || '', 'bottom-left');
     }, [instructionRef, mapView?.ui, resetButtonRef]);
+
+    // Keep the Draw/Explore toggle pinned to the very top of the top-right
+    // controls, regardless of when the map's other widgets (zoom, fullscreen,
+    // web map defaults) finish loading in.
+    useEffect(() => {
+      const toggleEl = interactionToggleRef.current;
+      if (!isWebMap || !mapView || !toggleEl) return;
+      return pinUiElementToTop(mapView, toggleEl);
+    }, [isWebMap, mapView]);
 
     // Show graphic(s) on the map for user input
     useEffect(() => {
@@ -137,6 +192,11 @@ const FullscreenMapInput = memo<Props>(
         clearPointData(mapView);
       }
     }, [data, inputType, locale, mapView, theme]);
+
+    const pinCount: number =
+      getCoordinatesFromMultiPointData(data, inputType)?.length ?? 0;
+    const limitReached =
+      maxPins !== undefined && exceedsPinLimit(pinCount + 1, maxPins);
 
     // Get map height by calculating the height of the bottom section
     const getMapHeight = () => {
@@ -156,34 +216,41 @@ const FullscreenMapInput = memo<Props>(
 
     // Check if confirm button is enabled
     const isConfirmEnabled = () => {
+      if (!data || !('coordinates' in data)) return false;
       switch (inputType) {
         case 'point':
-          return !(data?.address === '');
         case 'line':
-          // Has 2 or more points
-          return data?.coordinates?.length && data.coordinates.length >= 2;
+          return data.coordinates.length >= 2;
         case 'polygon':
-          // Has 4 or more points (3 & 1 duplicated first point to close the polygon)
+          // For polygon, check if the first ring has 4+ points (3 points + 1 duplicated to close)
           return (
-            data?.coordinates?.[0]?.length && data.coordinates?.[0].length >= 4
+            Array.isArray(data.coordinates[0]) &&
+            data.coordinates[0].length >= 4
           );
+        case 'multipoint':
+          // A single pin is a complete answer; the min/max are validated on submit
+          return data.coordinates.length >= 1;
       }
     };
 
     // Attach behaviour for when a user edits a point by dragging it
     useEffect(() => {
-      isLineOrPolygonInput(inputType) &&
-        handleMultiPointChange &&
-        setupPointDrag({
-          mapView,
-          handleMultiPointChange,
-          pointBeingDragged,
-          temporaryDragGraphic,
-          tenantSecondaryColor: theme.colors.tenantSecondary,
-          data,
-          inputType,
-          pointSymbolSize: 26,
-        });
+      if (!isMultiPointInput(inputType) || !handleMultiPointChange) {
+        return;
+      }
+
+      const dragHandle = setupPointDrag({
+        mapView,
+        handleMultiPointChange,
+        pointBeingDragged,
+        temporaryDragGraphic,
+        tenantSecondaryColor: theme.colors.tenantSecondary,
+        data,
+        inputType,
+        pointSymbolSize: 26,
+      });
+
+      return () => dragHandle?.remove();
     }, [data, handleMultiPointChange, inputType, mapView, theme]);
 
     return modalPortalElement
@@ -213,9 +280,17 @@ const FullscreenMapInput = memo<Props>(
                   onInit: onMapInit,
                 }}
                 onClick={onMapClick}
+                onHover={interactionMode === 'explore' ? onMapHover : undefined}
                 webMapId={mapConfig?.data.attributes.esri_web_map_id}
               />
               <Box>
+                {isWebMap && (
+                  <MapInteractionToggle
+                    toggleRef={interactionToggleRef}
+                    mode={interactionMode}
+                    onModeChange={handleInteractionModeChange}
+                  />
+                )}
                 <ResetMapViewButton
                   resetButtonRef={resetButtonRef}
                   mapConfig={mapConfig}
@@ -245,9 +320,15 @@ const FullscreenMapInput = memo<Props>(
                         mr="4px"
                       />
                       <Box my="auto">
-                        {inputType === 'point'
-                          ? formatMessage(messages.tapOnFullscreenMapToAddPoint)
-                          : formatMessage(messages.tapOnFullscreenMapToAdd)}
+                        {limitReached
+                          ? formatMessage(messages.maximumPinsReachedTap, {
+                              maxPins,
+                            })
+                          : formatMessage(
+                              inputType === 'point'
+                                ? messages.tapOnFullscreenMapToAddPoint
+                                : messages.tapOnFullscreenMapToAdd
+                            )}
                       </Box>
                     </Box>
                   </Label>
@@ -270,12 +351,16 @@ const FullscreenMapInput = memo<Props>(
                       {formatMessage(messages.back)}
                     </Button>
                   )}
-                  {data && isLineOrPolygonInput(inputType) && (
+                  {data && isMultiPointInput(inputType) && (
                     <UndoButton
                       handleMultiPointChange={handleMultiPointChange}
                       mapView={mapView}
                       undoButtonRef={undoButtonRef}
-                      undoEnabled={data}
+                      undoEnabled={
+                        'coordinates' in data &&
+                        Array.isArray(data.coordinates) &&
+                        data.coordinates.length > 0
+                      }
                       inputType={inputType}
                       buttonStyle="secondary"
                     />

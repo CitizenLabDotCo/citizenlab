@@ -79,4 +79,28 @@ describe('getFormCompletionPercentage', () => {
 
     expect(result).toEqual(87);
   });
+
+  it('returns overall survey progress (no NaN) on a page with no questions', () => {
+    const result = getFormCompletionPercentage({
+      pageQuestions: [],
+      currentPageIndex: 3,
+      lastPageIndex: 4,
+      formValues: {},
+      userIsEditing: false,
+    });
+
+    expect(result).toEqual(75);
+  });
+
+  it('returns 0 (no NaN) on the first page when it has no questions', () => {
+    const result = getFormCompletionPercentage({
+      pageQuestions: [],
+      currentPageIndex: 0,
+      lastPageIndex: 4,
+      formValues: {},
+      userIsEditing: false,
+    });
+
+    expect(result).toEqual(0);
+  });
 });

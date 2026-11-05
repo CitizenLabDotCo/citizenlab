@@ -3,7 +3,6 @@ import moment = require('moment');
 
 describe('Input form builder', () => {
   const projectTitle = randomString();
-  const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
   let projectId: string;
   let projectSlug: string;
@@ -19,7 +18,6 @@ describe('Input form builder', () => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     })
       .then((project) => {

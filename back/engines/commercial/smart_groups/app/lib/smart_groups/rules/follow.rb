@@ -155,7 +155,7 @@ module SmartGroups::Rules
       when 'is_one_of_inputs', 'is_not_input'
         Idea
       when 'is_one_of_topics', 'is_not_topic'
-        Topic
+        GlobalTopic
       when 'is_one_of_areas', 'is_not_area'
         Area
       else

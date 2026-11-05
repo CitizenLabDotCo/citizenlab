@@ -1,10 +1,20 @@
-import { RouteType } from 'routes';
+import tabMessages from './components/PagesMenuTabs/messages';
 
-import messages from './messages';
-
-export const pagesAndMenuBreadcrumb = {
-  label: messages.pagesAndMenuTitle,
-  linkTo: '/admin/pages-menu',
+// The "Pages & menu" section was split into two tabs (Pages and Menu), each
+// its own page. Sub-pages point their first breadcrumb at the tab they belong
+// to, reusing the tab labels as the single source of truth.
+export const pagesBreadcrumb = {
+  label: tabMessages.pagesTab,
 };
 
-export const pagesAndMenuBreadcrumbLinkTo: RouteType = '/admin/pages-menu';
+export const pagesBreadcrumbLink = {
+  to: '/admin/pages-menu/pages',
+} as const;
+
+export const menuBreadcrumb = {
+  label: tabMessages.menuTab,
+};
+
+export const menuBreadcrumbLink = {
+  to: '/admin/pages-menu/menu',
+} as const;

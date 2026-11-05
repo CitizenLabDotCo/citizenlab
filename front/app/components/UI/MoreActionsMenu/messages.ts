@@ -9,4 +9,8 @@ export default defineMessages({
     id: 'app.components.UI.MoreActionsMenu.moreOptions',
     defaultMessage: 'More options',
   },
+  actionsMenu: {
+    id: 'app.components.UI.MoreActionsMenu.actionsMenu',
+    defaultMessage: 'Actions menu {title}',
+  },
 });

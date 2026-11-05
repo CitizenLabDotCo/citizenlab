@@ -11,7 +11,7 @@ class WebApi::V1::CommentsController < ApplicationController
   MINIMAL_SUBCOMMENTS = 2
 
   def index
-    include_attrs = [author: [:unread_notifications]]
+    include_attrs = [author: [:unread_notifications, { custom_field_answers: :custom_field }]]
     root_comments = policy_scope(Comment)
       .where(idea_id: params[:idea_id])
       .where(parent: nil)
@@ -29,7 +29,7 @@ class WebApi::V1::CommentsController < ApplicationController
     when nil
       root_comments.order(lft: :asc)
     else
-      raise 'Unsupported sort method'
+      raise ApiError.new(:unsupported_sort_parameter, status: 400)
     end
     root_comments = paginate root_comments
 
@@ -90,7 +90,7 @@ class WebApi::V1::CommentsController < ApplicationController
 
     I18n.with_locale(current_user&.locale) do
       service = XlsxService.new
-      xlsx = service.generate_comments_xlsx @comments, view_private_attributes: true
+      xlsx = service.generate_comments_xlsx @comments.includes(author: :custom_field_answers), view_private_attributes: true
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'comments.xlsx'
     end
   end
@@ -181,7 +181,7 @@ class WebApi::V1::CommentsController < ApplicationController
         render json: { errors: @comment.errors.details }, status: :unprocessable_entity
       end
     else
-      raise ClErrors::TransactionError.new(error_key: :invalid_reason)
+      raise ApiError, :invalid_reason
     end
   end
 
@@ -210,14 +210,15 @@ class WebApi::V1::CommentsController < ApplicationController
     params.require(:comment).permit(
       :parent_id,
       :anonymous,
-      body_multiloc: CL2_SUPPORTED_LOCALES
+      body_multiloc: CL2_SUPPORTED_LOCALES,
+      weglot_data: %i[locale body]
     )
   end
 
   def comment_update_params
     attrs = []
     if @comment.author_id == current_user&.id
-      attrs += [:anonymous, { body_multiloc: CL2_SUPPORTED_LOCALES }]
+      attrs += [:anonymous, { body_multiloc: CL2_SUPPORTED_LOCALES, weglot_data: %i[locale body] }]
     end
     params.require(:comment).permit(attrs)
   end

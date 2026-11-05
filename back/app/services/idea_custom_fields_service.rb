@@ -10,7 +10,7 @@ class IdeaCustomFieldsService
     fields = if @custom_form.custom_field_ids.empty?
       @participation_method.default_fields(@custom_form)
     else
-      @custom_form.custom_fields.includes(:map_config, options: [:image])
+      @custom_form.custom_fields.includes(:map_config, :matrix_statements, options: [:image])
     end
 
     fields = fields.to_a
@@ -24,8 +24,11 @@ class IdeaCustomFieldsService
     fields
   end
 
-  def xlsx_exportable_fields
-    UserFieldsInSurveyService
+  # Fields included in tabular/report exports (xlsx + pdf): the form fields plus
+  # the appended user/registration fields, minus non-exportable ones (pages,
+  # image uploads).
+  def exportable_fields
+    UserFieldsInFormService
       .add_user_fields_to_form(all_fields, participation_method, custom_form)
       .filter(&:supports_xlsx_export?)
   end
@@ -34,12 +37,8 @@ class IdeaCustomFieldsService
     all_fields.filter(&:supports_geojson?)
   end
 
-  def visible_fields
-    enabled_fields
-  end
-
   def submittable_fields
-    enabled_fields.select(&:submittable?)
+    enabled_fields.select(&:supports_submission?)
   end
 
   def submittable_fields_with_other_options
@@ -48,33 +47,28 @@ class IdeaCustomFieldsService
 
   # Used in the printable PDF export
   def printable_fields
-    enabled_fields_with_other_options(print_version: true).select(&:printable?)
-  end
-
-  # This supports the deprecated prawn based PDF export/import that did not support all field types
-  def printable_fields_legacy
-    enabled_fields_with_other_options.select(&:printable_legacy?)
+    enabled_fields_with_other_options(print_version: true).select(&:supports_printing?)
   end
 
   def xlsx_importable_fields
-    enabled_fields_with_other_options.select(&:xlsx_importable?)
+    enabled_fields_with_other_options.select(&:supports_xlsx_import?)
+  end
+
+  def fields_to_validate_on_import
+    # Currently we do not handle forms with logic, since we cannot validate required
+    # fields as the logic may hide required fields based on previous answers.
+    return [] if form_has_logic?
+
+    enabled_fields.select { |f| f.required? && !f.built_in? && f.supports_submission? }
   end
 
   def enabled_fields
     fields = all_fields.select(&:enabled?)
-    UserFieldsInSurveyService.add_user_fields_to_form(fields, participation_method, custom_form)
+    UserFieldsInFormService.add_user_fields_to_form(fields, participation_method, custom_form)
   end
 
   def enabled_fields_with_other_options(print_version: false)
     insert_other_option_text_fields(enabled_fields, print_version:)
-  end
-
-  def enabled_public_fields
-    enabled_fields.select(&:visible_to_public?)
-  end
-
-  def extra_visible_fields
-    visible_fields.reject(&:built_in?)
   end
 
   def survey_results_fields(structure_by_category: false)
@@ -83,7 +77,7 @@ class IdeaCustomFieldsService
     # Restructure the results to order by category with each category as a page
 
     # Remove the original pages
-    fields = enabled_fields.reject { |field| field.input_type == 'page' }
+    fields = enabled_fields.select(&:supports_submission?)
 
     # Order fields by the order of categories in custom field
     categories = CustomField::QUESTION_CATEGORIES
@@ -117,6 +111,7 @@ class IdeaCustomFieldsService
   def duplicate_all_fields
     fields = all_fields
     logic_id_map = {}
+    logic_catch_all_values = %w[any_other_answer no_answer]
     copied_fields = fields.map do |field|
       # Duplicate fields to return with a new id
       copied_field = field.dup
@@ -162,7 +157,7 @@ class IdeaCustomFieldsService
     copied_fields.map do |field|
       if field.logic['rules']
         field.logic['rules'].map! do |rule|
-          rule['if'] = logic_id_map[rule['if']]
+          rule['if'] = logic_id_map[rule['if']] unless logic_catch_all_values.include?(rule['if'])
           rule['goto_page_id'] = logic_id_map[rule['goto_page_id']]
           rule
         end
@@ -174,6 +169,10 @@ class IdeaCustomFieldsService
   end
 
   private
+
+  def form_has_logic?
+    all_fields.any? { |field| field.logic.present? && field.logic != { 'rules' => [] } }
+  end
 
   # @param fields [Enumerable<CustomField>]
   # @return [Array<CustomField>]

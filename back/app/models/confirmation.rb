@@ -1,0 +1,122 @@
+# frozen_string_literal: true
+
+# == Schema Information
+#
+# Table name: confirmations
+#
+#  id               :uuid             not null, primary key
+#  user_id          :uuid             not null
+#  type             :string           not null
+#  code             :string
+#  code_retry_count :integer          default(0), not null
+#  code_reset_count :integer          default(0), not null
+#  code_sent_at     :datetime
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#
+# Indexes
+#
+#  index_confirmations_on_user_id           (user_id)
+#  index_confirmations_on_user_id_and_type  (user_id,type) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (user_id => users.id) ON DELETE => cascade
+#
+class Confirmation < ApplicationRecord
+  CODE_DURATION = 24.hours
+  RESEND_INTERVAL = 1.minute
+
+  belongs_to :user
+
+  validates :code, format: { with: USER_CONFIRMATION_CODE_PATTERN }, allow_nil: true
+  validates :code_retry_count, numericality: { less_than_or_equal_to: ENV.fetch('EMAIL_CONFIRMATION_MAX_RETRIES', 5) }
+  validates :code_reset_count, numericality: { less_than_or_equal_to: ENV.fetch('EMAIL_CONFIRMATION_MAX_RETRIES', 5) }
+
+  def expiration_at
+    return nil if code_sent_at.nil?
+
+    code_sent_at + CODE_DURATION
+  end
+
+  # How long the caller still has to wait before a new code may be requested, in
+  # seconds (0 when it may be requested right away). An SMS costs money and takes
+  # a moment to arrive, so a code asked for seconds after the previous one is
+  # nearly always impatience rather than a lost message.
+  def seconds_until_resend_allowed
+    return 0 if code_sent_at.nil?
+
+    [(code_sent_at + RESEND_INTERVAL - Time.zone.now).ceil, 0].max
+  end
+
+  # Whether a code has been sent and not yet consumed. Used by the idempotent
+  # "send a code only if it's the first time this cycle" path
+  # (request_reconfirm_code_email / request_reconfirm_code_phone with
+  # only_if_first_time): an outstanding code means one was already sent for the
+  # current cycle and re-sending would both spam the user and invalidate the code
+  # they hold. Mirrors the code_sent_at.nil? guard in
+  # SideFxUserService#should_send_confirmation_email?.
+  def code_outstanding?
+    code.present?
+  end
+
+  # The name of the User has_one that points here, which is also this class's own
+  # name: :email_confirmation, :new_email_confirmation, :phone_confirmation,
+  # :new_phone_confirmation or :merge_account_confirmation.
+  def association_name
+    self.class.name.underscore.to_sym
+  end
+
+  def reset_code!
+    update!(
+      code: self.class.generate_code,
+      code_reset_count: code_reset_count + 1,
+      code_retry_count: 0
+    )
+  end
+
+  # Clears the code but keeps the row: the retry and reset counters have to
+  # survive expiry, or waiting out a code would lift the limit on requesting new
+  # ones. A row without a code can never be confirmed (see
+  # UserConfirmationService#validate_and_confirm!).
+  def expire_code!
+    update!(code: nil)
+  end
+
+  # Drops the row once its code has done its job. A confirmation carries nothing
+  # but the state of one code cycle, so an absent row and a used-up row mean the
+  # same thing everywhere: whether a flow still has to happen is read from the
+  # user (User#confirmation_pending?), never from here. The owner's cached has_one
+  # has to let go of the deleted record too, or callers holding the user would
+  # keep reading it back.
+  def consume!
+    destroy!
+    user.association(association_name).reset
+  end
+
+  def self.generate_code
+    Rails.env.development? ? '123456' : format('%06d', rand(1_000_000))
+  end
+
+  protected
+
+  # Cancel pending email-change requests on OTHER users that target `email`,
+  # so they don't end up with an invalid (now-taken) new_email.
+  def cancel_other_users_pending_email_change(email)
+    other_user_ids = User.where(new_email: email).where.not(id: user_id).pluck(:id)
+    return if other_user_ids.empty?
+
+    User.where(id: other_user_ids).update_all(new_email: nil, updated_at: Time.zone.now)
+    NewEmailConfirmation.where(user_id: other_user_ids).delete_all
+  end
+
+  # Cancel pending phone-change requests on OTHER users that target `phone`,
+  # so they don't end up with an invalid (now-taken) new_phone.
+  def cancel_other_users_pending_phone_change(phone)
+    other_user_ids = User.where(new_phone: phone).where.not(id: user_id).pluck(:id)
+    return if other_user_ids.empty?
+
+    User.where(id: other_user_ids).update_all(new_phone: nil, updated_at: Time.zone.now)
+    NewPhoneConfirmation.where(user_id: other_user_ids).delete_all
+  end
+end

@@ -1,15 +1,14 @@
 import React, { memo, MouseEvent } from 'react';
 
 import { colors, fontSizes, isRtl } from '@citizenlab/cl2-component-library';
+import { xor } from 'lodash-es';
 import { darken, lighten } from 'polished';
 import styled from 'styled-components';
 
-import { ITopicData } from 'api/topics/types';
-import useTopics from 'api/topics/useTopics';
+import { IGlobalTopicData } from 'api/global_topics/types';
+import { IInputTopicData } from 'api/input_topics/types';
 
 import useLocalize from 'hooks/useLocalize';
-
-import T from 'components/T';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -73,77 +72,59 @@ const TopicSwitch = styled.button`
   }
 `;
 
+export type TopicData = IGlobalTopicData | IInputTopicData;
+
 export interface Props {
   onClick: (tocisIds: string[]) => void;
   selectedTopicIds: string[];
   id?: string;
   className?: string;
-  availableTopics: ITopicData[] | { const: string; title: string }[];
+  availableTopics: TopicData[];
 }
+
+const topicTitleMultiloc = (topic: TopicData) => {
+  const titleMultiloc =
+    (topic.attributes as IInputTopicData['attributes'] | undefined)
+      ?.full_title_multiloc ||
+    (topic.attributes as IGlobalTopicData['attributes']).title_multiloc;
+  return titleMultiloc;
+};
 
 const TopicsPicker = memo(
   ({ onClick, selectedTopicIds, availableTopics, className }: Props) => {
-    const { data: topics } = useTopics();
     const localize = useLocalize();
 
-    const filteredTopics = topics?.data.filter((topic) =>
+    const filteredTopics = (availableTopics as TopicData[]).filter((topic) =>
       selectedTopicIds.includes(topic.id)
     );
 
     const handleOnChange = (topicId: string) => (event: MouseEvent) => {
       event.stopPropagation();
       event.preventDefault();
-      const newTopics = [...selectedTopicIds];
-
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      if (!selectedTopicIds) {
-        onClick([topicId]);
-      } else {
-        const i = newTopics.lastIndexOf(topicId);
-        const topicNotSelectedYet = i === -1;
-
-        if (topicNotSelectedYet) {
-          newTopics.push(topicId);
-        } else {
-          newTopics.splice(i, 1);
-        }
-
-        onClick(newTopics);
-      }
+      onClick(xor(selectedTopicIds, [topicId]));
     };
 
     if (!isNilOrError(availableTopics)) {
       const numberOfSelectedTopics = selectedTopicIds.length;
       const selectedTopicNames = filteredTopics
-        ? filteredTopics
-            .map((topic: ITopicData) =>
-              localize(topic.attributes.title_multiloc)
-            )
-            .join(', ')
-        : '';
+        .map((topic: TopicData) => localize(topicTitleMultiloc(topic)))
+        .join(', ');
+
       return (
         <>
           <TopicsContainer className={`${className} e2e-topics-picker`}>
             {availableTopics.map((topic) => {
-              const topicId = topic.id || topic.const;
-              const topicTitle = topic?.attributes?.title_multiloc ? (
-                <T value={topic.attributes.title_multiloc} />
-              ) : (
-                topic.title
-              );
+              const topicId = topic.id;
+              const topicTitle = localize(topicTitleMultiloc(topic));
               const isSelected = selectedTopicIds.includes(topicId);
 
               return (
                 <TopicSwitch
                   key={topicId}
                   onClick={handleOnChange(topicId)}
-                  className={[
-                    'e2e-topics-picker-item',
-                    isSelected ? 'selected' : null,
-                  ]
-                    .filter((item) => item)
-                    .join(' ')}
+                  className={`e2e-topics-picker-item${
+                    isSelected ? ' selected' : ''
+                  }`}
                   onMouseDown={removeFocusAfterMouseClick}
                   disabled={false}
                 >

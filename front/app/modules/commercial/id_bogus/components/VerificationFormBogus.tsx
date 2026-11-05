@@ -17,8 +17,7 @@ import {
   Footer,
   SubmitButton,
   CancelButton,
-} from 'containers/Authentication/steps/AuthProviders/styles';
-
+} from 'components/AuthProviderStyles/styles';
 import Error from 'components/UI/Error';
 
 import { isNilOrError } from 'utils/helperUtils';
@@ -58,9 +57,9 @@ const VerificationFormBogus = memo<Props>(
           await verifyBogus(desiredError);
 
           if (!isNilOrError(authUser)) {
-            queryClient.invalidateQueries(
-              usersKeys.item({ id: authUser.data.id })
-            );
+            queryClient.invalidateQueries({
+              queryKey: usersKeys.item({ id: authUser.data.id }),
+            });
           }
 
           queryClient.invalidateQueries({ queryKey: meKeys.all() });

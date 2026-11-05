@@ -32,7 +32,7 @@ const RenameTag = ({
   analysisId,
 }: RenameTagProps) => {
   const { formatMessage } = useIntl();
-  const { mutateAsync: updateTag, isLoading } = useUpdateAnalysisTag();
+  const { mutateAsync: updateTag, isPending } = useUpdateAnalysisTag();
 
   const schema = object({
     name: string().required(formatMessage(messages.emptyNameError)),
@@ -57,7 +57,9 @@ const RenameTag = ({
 
   return (
     <Box>
-      <Title>{formatMessage(messages.renameTagModalTitle)}</Title>
+      <Title id="rename-tag-modal-title">
+        {formatMessage(messages.renameTagModalTitle)}
+      </Title>
       <FormProvider {...methods}>
         <Box as="form" mt="40px" onSubmit={methods.handleSubmit(onFormSubmit)}>
           <Input
@@ -75,7 +77,7 @@ const RenameTag = ({
               {formatMessage(messages.renameTagModalCancel)}
             </Button>
             <Button
-              processing={isLoading}
+              processing={isPending}
               type="submit"
               bgColor={colors.primary}
             >

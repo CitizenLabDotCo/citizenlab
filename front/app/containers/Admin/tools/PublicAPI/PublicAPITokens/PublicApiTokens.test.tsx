@@ -2,7 +2,7 @@ import React from 'react';
 
 import { data } from 'api/api_clients/__mocks__/useApiClients';
 
-import { render, screen } from 'utils/testUtils/rtl';
+import { render, screen, userEvent } from 'utils/testUtils/rtl';
 
 import PublicApiTokens from './';
 
@@ -23,6 +23,16 @@ describe('<PublicApiTokens />', () => {
     expect(screen.getByText('Test token')).toBeInTheDocument();
     expect(screen.getByText('3/18/2021')).toBeInTheDocument();
     expect(screen.getByText('3/19/2021')).toBeInTheDocument();
+  });
+
+  it('shows the user agent of the last call when hovering the last used date', async () => {
+    render(<PublicApiTokens />);
+
+    await userEvent.hover(screen.getByText('3/19/2021'));
+
+    expect(
+      await screen.findByText(/Last user agent: Microsoft.Data.Mashup/)
+    ).toBeInTheDocument();
   });
 
   it('renders empty state correctly', () => {

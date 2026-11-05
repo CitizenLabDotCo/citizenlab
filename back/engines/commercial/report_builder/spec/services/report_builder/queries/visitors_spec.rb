@@ -8,7 +8,10 @@ RSpec.describe ReportBuilder::Queries::Visitors do
   describe '#run_query' do
     before_all do
       # Make TimeBoundariesParser work as expected
-      AppConfiguration.instance.update!(created_at: Date.new(2021, 1, 1))
+      AppConfiguration.instance.update!(
+        created_at: Date.new(2021, 1, 1),
+        platform_start_at: Date.new(2021, 1, 1)
+      )
 
       ### SEPTEMBER
       september = Date.new(2022, 9, 10)
@@ -215,15 +218,17 @@ RSpec.describe ReportBuilder::Queries::Visitors do
       })
     end
 
-    it 'applies exclude_roles filter' do
-      # Create session december (admin)
-      session = create(:session, created_at: Date.new(2022, 12, 2), highest_role: 'admin')
-      create(:pageview, session_id: session.id, path: '/en/', created_at: DateTime.new(2022, 12, 2, 10, 0, 0))
+    it 'excludes roles' do
+      # Create sessions in december by all kinds of admins and moderators
+      admin_and_moderator_highest_roles.each do |highest_role|
+        session = create(:session, created_at: Date.new(2022, 12, 2), highest_role: highest_role)
+        create(:pageview, session_id: session.id, path: '/en/', created_at: DateTime.new(2022, 12, 2, 10, 0, 0))
+      end
 
       params = {
         start_at: Date.new(2022, 8, 1),
         end_at: Date.new(2023, 1, 1),
-        exclude_roles: 'exclude_admins_and_moderators'
+        exclude_admins_and_moderators: true
       }
 
       expect(query.run_query(**params)).to eq({
@@ -286,8 +291,7 @@ RSpec.describe ReportBuilder::Queries::Visitors do
 
       result = query.run_query(**params)
 
-      expect(result[:visits_whole_period]).to eq(18) # should increase
-      expect(result[:visitors_whole_period]).to eq(5) # should increase
+      expect(result[:visits_whole_period]).to eq(8) # should not increase
       expect(result[:avg_seconds_per_session_whole_period]).to eq(135) # should not be affected
       expect(result[:avg_pages_visited_whole_period]).to eq(1.5) # should not be affected
     end

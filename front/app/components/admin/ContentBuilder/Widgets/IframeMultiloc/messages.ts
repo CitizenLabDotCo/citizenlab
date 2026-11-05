@@ -126,13 +126,17 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.IframeMultiloc.iframeEmbedVisitLinkMessage',
     defaultMessage: 'Visit our support page',
   },
-  iframeSupportLink: {
-    id: 'app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink',
+  iframeSupportLink2: {
+    id: 'app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink2',
     defaultMessage:
-      'https://support.govocal.com/en/articles/6354058-embedding-elements-in-the-content-builder-to-enrich-project-descriptions',
+      'https://support.govocal.com/en/articles/527598-embedding-elements-in-the-content-builder-to-enrich-project-descriptions',
   },
   invalidAspectRatio: {
     id: 'app.containers.admin.ContentBuilder.IframeMultiloc.invalidAspectRatio',
     defaultMessage: 'Enter a valid aspect ratio, for example 16:10 or 5:3.',
+  },
+  noUrlPrompt: {
+    id: 'app.containers.admin.ContentBuilder.IframeMultiloc.noUrlPrompt',
+    defaultMessage: 'No website address entered.',
   },
 });

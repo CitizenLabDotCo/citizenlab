@@ -6,17 +6,22 @@ import {
   IconTooltip,
   media,
   Tooltip,
+  useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+import { Multiloc } from 'typings';
 
 import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import messages from 'containers/ProjectsShowPage/messages';
 
 import AvatarBubbles from 'components/AvatarBubbles';
 
+import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { isAdmin } from 'utils/permissions/roles';
@@ -35,15 +40,25 @@ const StyledProjectActionButtons = styled(ProjectActionButtons)`
 interface Props {
   projectId: string;
   hideParticipationAvatars?: boolean;
+  hiddenOptionIds?: string[];
+  collapsedButtonTitleMultiloc?: Multiloc;
   className?: string;
 }
 
 const ProjectInfoSideBar = memo<Props>(
-  ({ projectId, className, hideParticipationAvatars = false }) => {
+  ({
+    projectId,
+    className,
+    hideParticipationAvatars = false,
+    hiddenOptionIds,
+    collapsedButtonTitleMultiloc,
+  }) => {
     const { data: authUser } = useAuthUser();
     const { data: project } = useProjectById(projectId, !isAdmin(authUser));
     const { data: phases } = usePhases(projectId);
     const { formatMessage } = useIntl();
+    const userAvatarsEnabled = useFeatureFlag({ name: 'user_avatars' });
+    const isSmallerThanPhone = useBreakpoint('phone');
 
     if (project) {
       const projectParticipantsCount =
@@ -64,8 +79,12 @@ const ProjectInfoSideBar = memo<Props>(
 
       return (
         <Box id="e2e-project-sidebar" className={className || ''} w="100%">
-          <StyledProjectActionButtons projectId={projectId} />
-          {!hideParticipationAvatars && (
+          <StyledProjectActionButtons
+            projectId={projectId}
+            hiddenOptionIds={hiddenOptionIds}
+            collapsedButtonTitleMultiloc={collapsedButtonTitleMultiloc}
+          />
+          {!hideParticipationAvatars && userAvatarsEnabled && (
             <Box
               display="flex"
               alignItems="center"
@@ -76,8 +95,10 @@ const ProjectInfoSideBar = memo<Props>(
                 disabled={!isAdmin(authUser)}
                 // Needs to be "left" at the time of writing
                 // to ensure the tooltip doesn't slip under the project CTA bar.
-                placement="left"
+                placement={isSmallerThanPhone ? 'top' : 'left'}
+                maxWidth={isSmallerThanPhone ? '90vw' : '300px'}
                 content={formatMessage(messages.liveDataMessage)}
+                aria-hidden={true}
               >
                 <Box
                   my="8px"
@@ -85,7 +106,19 @@ const ProjectInfoSideBar = memo<Props>(
                   display="flex"
                   justifyContent="center"
                   alignItems="center"
+                  tabIndex={0}
+                  aria-label={`${projectParticipantsCount} ${formatMessage(
+                    messages.participants
+                  )}`}
+                  aria-describedby={
+                    isAdmin(authUser)
+                      ? `project-participants-${projectId}`
+                      : undefined
+                  }
                 >
+                  <ScreenReaderOnly id={`project-participants-${projectId}`}>
+                    {formatMessage(messages.liveDataMessage)}
+                  </ScreenReaderOnly>
                   <AvatarBubbles
                     size={32}
                     limit={3}
@@ -108,7 +141,8 @@ const ProjectInfoSideBar = memo<Props>(
                             values={{
                               accessRightsLink: (
                                 <Link
-                                  to={`/admin/projects/${projectId}/settings/access-rights`}
+                                  to="/admin/projects/$projectId/general/access-rights"
+                                  params={{ projectId }}
                                 >
                                   <FormattedMessage
                                     {...messages.accessRights}

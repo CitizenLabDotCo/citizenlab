@@ -17,7 +17,7 @@ namespace :cl2_back do
             'en' => 'Wonderville',
             'nl-BE' => 'Mirakelgem'
           },
-          signup_helper_text: {
+          enter_email_helper_text: {
             en: 'If you don\'t want to register, use hello@govocal.com/democrazy as email/password'
           },
           maximum_admins_number: 2,
@@ -43,10 +43,6 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        user_confirmation: {
-          enabled: true,
-          allowed: true
-        },
         permissions_custom_fields: {
           enabled: true,
           allowed: true
@@ -59,26 +55,13 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        idea_author_change: {
-          enabled: true,
-          allowed: true
-        },
         blocking_profanity: {
-          enabled: true,
-          allowed: true
-        },
-        widgets: {
-          enabled: true,
-          allowed: true
-        },
-        granular_permissions: {
           enabled: true,
           allowed: true
         },
         password_login: {
           enabled: true,
           allowed: true,
-          enable_signup: true,
           minimum_length: 8
         },
         pages: {
@@ -94,18 +77,14 @@ namespace :cl2_back do
           allowed: true
         },
         segment: {
-          enabled: true,
-          allowed: true
+          enabled: false,
+          allowed: false
         },
         planhat: {
           enabled: false,
           allowed: false
         },
         satismeter: {
-          enabled: false,
-          allowed: true
-        },
-        google_analytics: {
           enabled: false,
           allowed: true
         },
@@ -163,18 +142,14 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        events_widget: {
-          enabled: true,
-          allowed: true
-        },
         polls: {
           enabled: true,
           allowed: true
         },
-        verification: {
-          enabled: true,
+        id_config: {
           allowed: true,
-          verification_methods: [
+          enabled: true,
+          id_methods: [
             {
               name: 'cow',
               api_username: 'fake_username',
@@ -218,15 +193,7 @@ namespace :cl2_back do
             }
           ]
         },
-        project_folders: {
-          enabled: true,
-          allowed: true
-        },
         project_preview_link: {
-          enabled: true,
-          allowed: true
-        },
-        project_description_builder: {
           enabled: true,
           allowed: true
         },
@@ -242,6 +209,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        prescreening_flagged_only: {
+          enabled: false,
+          allowed: false
+        },
         disable_disliking: {
           enabled: true,
           allowed: true
@@ -250,11 +221,11 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        input_form_custom_fields: {
+        form_mapping: {
           enabled: true,
           allowed: true
         },
-        form_mapping: {
+        input_form_answer_filters: {
           enabled: true,
           allowed: true
         },
@@ -323,6 +294,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        project_scheduling: {
+          enabled: true,
+          allowed: true
+        },
         platform_templates: {
           enabled: false,
           allowed: false
@@ -335,12 +310,66 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        idea_feed: {
+          enabled: true,
+          allowed: true
+        },
+        nested_input_topics: {
+          enabled: true,
+          allowed: true
+        },
+        live_auto_input_topics: {
+          enabled: true,
+          allowed: true
+        },
+        data_repository_transcription: {
+          enabled: true,
+          allowed: true
+        },
         data_repository_ai_analysis: {
           enabled: true,
           allowed: true
         },
         project_planning_calendar: {
           enabled: true,
+          allowed: true
+        },
+        participation_location_tracking: {
+          enabled: false,
+          allowed: false
+        },
+        spaces: {
+          enabled: true,
+          allowed: true
+        },
+        mcp_server: {
+          enabled: true,
+          allowed: true
+        },
+        html_block_in_content_builder: {
+          enabled: true,
+          allowed: true
+        },
+        sms: {
+          enabled: true,
+          allowed: true,
+          use_test_mode: true
+        },
+        sms_login: {
+          enabled: true,
+          allowed: true
+        },
+        sms_manual_campaigns: {
+          enabled: true,
+          allowed: true,
+          messages_purchased: 10_000
+        },
+        configurable_dropdown: {
+          enabled: true,
+          allowed: true
+        },
+        project_backoffice_redesign: {
+          enabled: false,
           allowed: true
         }
       }
@@ -369,6 +398,11 @@ namespace :cl2_back do
       admin = User.find_by(email: 'admin@govocal.com')
       UserService.update_in_tenant_template!(admin) if admin
       Analytics::PopulateDimensionsService.run
+
+      # Otherwise the first admin request that needs the community monitor creates it, and that
+      # request saves every setting as it read them at its start, reverting any change saved
+      # meanwhile — such as an e2e spec switching a feature on.
+      CommunityMonitorService.new.create_and_set_project
     end
 
     MultiTenancy::TenantService.new.finalize_creation(tenant)

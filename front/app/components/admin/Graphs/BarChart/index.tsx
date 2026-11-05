@@ -2,6 +2,8 @@ import React from 'react';
 
 import MultiBarChart from 'components/admin/Graphs/MultiBarChart';
 
+import { AccessibilityProps } from '../typings';
+
 import { Props } from './typings';
 import { convertMapping, convertBars } from './utils';
 
@@ -10,8 +12,10 @@ const BarChart = <Row,>({
   bars,
   onMouseOver,
   onMouseOut,
+  ariaLabel,
+  ariaDescribedBy,
   ...otherProps
-}: Props<Row>) => {
+}: Props<Row> & AccessibilityProps) => {
   const convertedMapping = convertMapping(mapping);
   const convertedBars = convertBars(bars);
 
@@ -22,6 +26,10 @@ const BarChart = <Row,>({
   const handleMouseOut = ({ row, rowIndex }, event: React.MouseEvent) => {
     onMouseOut && onMouseOut({ row, rowIndex }, event);
   };
+  const accessibilityProps = {
+    ariaLabel,
+    ariaDescribedBy,
+  };
 
   return (
     <MultiBarChart
@@ -30,6 +38,7 @@ const BarChart = <Row,>({
       onMouseOver={handleMouseOver}
       onMouseOut={handleMouseOut}
       {...otherProps}
+      {...accessibilityProps}
     />
   );
 };

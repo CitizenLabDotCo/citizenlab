@@ -241,10 +241,10 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.supportButtonLabel',
     defaultMessage: 'See examples on our support page',
   },
-  supportButtonLink: {
-    id: 'app.containers.Admin.emails.supportButtonLink2',
+  supportButtonLink3: {
+    id: 'app.containers.Admin.emails.supportButtonLink3',
     defaultMessage:
-      'https://support.govocal.com/en/articles/7042664-changing-the-settings-of-the-automated-email-notifications',
+      'https://support.govocal.com/en/articles/527592-changing-the-settings-of-the-automated-email-notifications',
   },
   sentToUsers: {
     id: 'app.containers.Admin.emails.sentToUsers',
@@ -318,5 +318,209 @@ export default defineMessages({
   editRegion_button_text_multiloc: {
     id: 'app.containers.Admin.emails.editRegion_button_text_multiloc',
     defaultMessage: 'Button text',
+  },
+  scheduled: {
+    id: 'app.containers.Admin.emails.scheduled',
+    defaultMessage: 'Scheduled',
+  },
+  tabSms: {
+    id: 'app.containers.Admin.messaging.tabSms',
+    defaultMessage: 'SMS',
+  },
+  smsCampaignsDescription: {
+    id: 'app.containers.Admin.messaging.smsCampaignsDescription',
+    defaultMessage: 'Send text messages to your participants.',
+  },
+  noSmsCampaignsHeader: {
+    id: 'app.containers.Admin.messaging.noSmsCampaignsHeader',
+    defaultMessage: 'Send your first text message',
+  },
+  noSmsCampaignsDescription: {
+    id: 'app.containers.Admin.messaging.noSmsCampaignsDescription',
+    defaultMessage:
+      'Reach participants who shared a phone number with a short text message.',
+  },
+  addSmsCampaignButton: {
+    id: 'app.containers.Admin.messaging.addSmsCampaignButton',
+    defaultMessage: 'Create SMS',
+  },
+  addSmsCampaignTitle: {
+    id: 'app.containers.Admin.messaging.addSmsCampaignTitle',
+    defaultMessage: 'New SMS message',
+  },
+  fieldSmsLabel: {
+    id: 'app.containers.Admin.messaging.fieldSmsLabel',
+    defaultMessage: 'Label',
+  },
+  fieldSmsLabelTooltip: {
+    id: 'app.containers.Admin.messaging.fieldSmsLabelTooltip',
+    defaultMessage:
+      'An internal label to recognise this campaign. It is not sent to recipients.',
+  },
+  fieldSmsLabelError: {
+    id: 'app.containers.Admin.messaging.fieldSmsLabelError',
+    defaultMessage: 'Provide a label for all languages',
+  },
+  fieldSmsBody: {
+    id: 'app.containers.Admin.messaging.fieldSmsBody',
+    defaultMessage: 'Message',
+  },
+  fieldSmsBodyError: {
+    id: 'app.containers.Admin.messaging.fieldSmsBodyError',
+    defaultMessage: 'Provide a message for all languages',
+  },
+  fieldSmsBodyTooManySegmentsError: {
+    id: 'app.containers.Admin.messaging.fieldSmsBodyTooManySegmentsError',
+    defaultMessage: 'Keep each message to {maxSegments} SMS or fewer',
+  },
+  smsSegmentPill: {
+    id: 'app.containers.Admin.messaging.smsSegmentPill',
+    defaultMessage: '{segmentCount} SMS',
+  },
+  smsSegmentCost: {
+    id: 'app.containers.Admin.messaging.smsSegmentCost',
+    defaultMessage:
+      '{segmentCount, plural, one {Sent as # message to every recipient.} other {Sent as # messages to every recipient. Each one is billed separately.}}',
+  },
+  smsSegmentCostOverLimit: {
+    id: 'app.containers.Admin.messaging.smsSegmentCostOverLimit',
+    defaultMessage:
+      'Sent as {segmentCount} messages to every recipient. The limit is {maxSegments}, so this cannot be sent.',
+  },
+  smsSegmentEncodingWarning: {
+    id: 'app.containers.Admin.messaging.smsSegmentEncodingWarning',
+    defaultMessage:
+      '{characters} switched this message to Unicode, which fits {perSegment} characters per message instead of {gsmPerSegment}.',
+  },
+  manageButtonLabel: {
+    id: 'app.containers.Admin.messaging.manageButtonLabel',
+    defaultMessage: 'Manage',
+  },
+  confirmSendSmsHeader2: {
+    id: 'app.containers.Admin.messaging.confirmSendSmsHeader2',
+    defaultMessage: 'Send this text message?',
+  },
+  confirmSendSmsRecipientsLabel: {
+    id: 'app.containers.Admin.messaging.confirmSendSmsRecipientsLabel',
+    defaultMessage: 'Recipients',
+  },
+  confirmSendSmsRecipientsTooltip: {
+    id: 'app.containers.Admin.messaging.confirmSendSmsRecipientsTooltip2',
+    defaultMessage:
+      'Only users with a confirmed phone number who have opted in to text messages are counted.',
+  },
+  confirmSendSmsCreditsLabel: {
+    id: 'app.containers.Admin.messaging.confirmSendSmsCreditsLabel',
+    defaultMessage: 'Credits needed',
+  },
+  confirmSendSmsBalanceLabel: {
+    id: 'app.containers.Admin.messaging.confirmSendSmsBalanceLabel',
+    defaultMessage: 'Credits remaining',
+  },
+  confirmSendSmsCreditsHint: {
+    id: 'app.containers.Admin.messaging.confirmSendSmsCreditsHint',
+    defaultMessage:
+      'A message too long for one SMS is sent in several parts, and each part costs a credit for every recipient who receives it.',
+  },
+  confirmSendSmsInsufficientBalance: {
+    id: 'app.containers.Admin.messaging.confirmSendSmsInsufficientBalance',
+    defaultMessage:
+      'This message needs {required, number} credits, but only {balance, number} are left. To purchase more credits, contact your GovSuccess Manager.',
+  },
+  confirmSendSmsNoRecipients: {
+    id: 'app.containers.Admin.messaging.confirmSendSmsNoRecipients',
+    defaultMessage:
+      'Nobody matches this message right now. Recipients need a confirmed phone number and must have opted in to text messages.',
+  },
+  editSmsCampaignTitle: {
+    id: 'app.containers.Admin.messaging.editSmsCampaignTitle',
+    defaultMessage: 'Edit SMS message',
+  },
+  sendSmsPreviewButton: {
+    id: 'app.containers.Admin.messaging.sendSmsPreviewButton',
+    defaultMessage: 'Send a preview',
+  },
+  sendSmsPreviewTooltip: {
+    id: 'app.containers.Admin.messaging.sendSmsPreviewTooltip',
+    defaultMessage: 'Sends a test text message to your own phone number.',
+  },
+  sendSmsPreviewNoPhoneTooltip: {
+    id: 'app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltip',
+    defaultMessage:
+      'A preview goes to your own phone. Add a phone number to your {profileLink} first.',
+  },
+  sendSmsPreviewNoPhoneTooltipLink: {
+    id: 'app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltipLink',
+    defaultMessage: 'profile',
+  },
+  smsPreviewSentConfirmation: {
+    id: 'app.containers.Admin.messaging.smsPreviewSentConfirmation',
+    defaultMessage: 'A test text message was sent to your phone number.',
+  },
+  deleteSmsButton: {
+    id: 'app.containers.Admin.messaging.deleteSmsButton',
+    defaultMessage: 'Delete',
+  },
+  deleteSmsConfirmation: {
+    id: 'app.containers.Admin.messaging.deleteSmsConfirmation',
+    defaultMessage: 'Are you sure you want to delete this SMS message?',
+  },
+  cancelButton: {
+    id: 'app.containers.Admin.messaging.cancelButton',
+    defaultMessage: 'Cancel',
+  },
+  smsStatsTitle: {
+    id: 'app.containers.Admin.messaging.smsStatsTitle',
+    defaultMessage: 'Delivery statistics',
+  },
+  smsRecipientsTitle: {
+    id: 'app.containers.Admin.messaging.smsRecipientsTitle',
+    defaultMessage: 'Recipients',
+  },
+  smsDeliveryStatus_pending: {
+    id: 'app.containers.Admin.messaging.smsDeliveryStatus_pending',
+    defaultMessage: 'Pending',
+  },
+  smsDeliveryStatus_sent: {
+    id: 'app.containers.Admin.messaging.smsDeliveryStatus_sent',
+    defaultMessage: 'Sent',
+  },
+  smsDeliveryStatus_delivered: {
+    id: 'app.containers.Admin.messaging.smsDeliveryStatus_delivered',
+    defaultMessage: 'Delivered',
+  },
+  smsDeliveryStatus_failed: {
+    id: 'app.containers.Admin.messaging.smsDeliveryStatus_failed',
+    defaultMessage: 'Failed',
+  },
+  smsBalanceTitle: {
+    id: 'app.containers.Admin.messaging.smsBalanceTitle',
+    defaultMessage: 'SMS credits remaining',
+  },
+  smsBalanceOfPurchased: {
+    id: 'app.containers.Admin.messaging.smsBalanceOfPurchased',
+    defaultMessage: 'of {purchased, number} credits purchased',
+  },
+  smsBalanceLowWarning: {
+    id: 'app.containers.Admin.messaging.smsBalanceLowWarning',
+    defaultMessage:
+      'You are running low on SMS credits. To purchase more credits, contact your GovSuccess Manager.',
+  },
+  smsBalancePurchaseHint: {
+    id: 'app.containers.Admin.messaging.smsBalancePurchaseHint',
+    defaultMessage:
+      'To purchase more credits, contact your GovSuccess Manager.',
+  },
+  smsBalanceUsedManual: {
+    id: 'app.containers.Admin.messaging.smsBalanceUsedManual',
+    defaultMessage: 'SMS campaigns',
+  },
+  smsBalanceUsedOther: {
+    id: 'app.containers.Admin.messaging.smsBalanceUsedOther',
+    defaultMessage: 'Test messages',
+  },
+  smsBalanceUsedTotal: {
+    id: 'app.containers.Admin.messaging.smsBalanceUsedTotal',
+    defaultMessage: 'Total used',
   },
 });

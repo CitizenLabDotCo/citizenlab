@@ -1,19 +1,22 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import { Box, Text, Title } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { isEqual } from 'lodash-es';
 import { FormProvider, useForm, useWatch } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
 import { array, object, string } from 'yup';
 
+import useAnalysis from 'api/analyses/useAnalysis';
 import useUpdateAnalysis from 'api/analyses/useUpdateAnalysis';
 import useFiles from 'api/files/useFiles';
 
 import MultipleSelect from 'components/HookForm/MultipleSelect';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import GoBackButton from 'components/UI/GoBackButton';
+import NewLabel from 'components/UI/NewLabel';
 
 import { useIntl } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import messages from '../messages';
 
@@ -23,8 +26,21 @@ type Props = {
 };
 
 const FileSelectionView = ({ setIsFileSelectionOpen, analysisId }: Props) => {
-  const { projectId } = useParams();
+  const { projectId } = useParams({
+    from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
+  });
   const { mutate: updateAnalysis } = useUpdateAnalysis();
+
+  const { data: analysis, isLoading: isLoadingAnalysis } =
+    useAnalysis(analysisId);
+
+  const initialFileIds = analysis?.data.relationships.files?.data.map(
+    (file) => file.id
+  );
+
+  // Track previous file IDs to prevent unnecessary auto-submits
+  // (on initial load or reset)
+  const previousFileIdsRef = useRef<string[]>(initialFileIds || []);
 
   const { data: files } = useFiles({
     project: projectId ? [projectId] : [],
@@ -42,7 +58,7 @@ const FileSelectionView = ({ setIsFileSelectionOpen, analysisId }: Props) => {
   const methods = useForm<FormData>({
     mode: 'onBlur',
     defaultValues: {
-      file_ids: [],
+      file_ids: initialFileIds || [],
     },
     resolver: yupResolver(schema),
   });
@@ -55,13 +71,18 @@ const FileSelectionView = ({ setIsFileSelectionOpen, analysisId }: Props) => {
 
   // Auto-submit when file_ids changes (debounced by 500ms)
   useEffect(() => {
+    // Skip if the values haven't changed from the previous state
+    if (isEqual(watchedFileIds, previousFileIdsRef.current)) return;
+
     const timeoutId = setTimeout(() => {
-      methods.handleSubmit(() =>
+      methods.handleSubmit(() => {
         updateAnalysis({
           id: analysisId,
           files: watchedFileIds,
-        })
-      )();
+        });
+
+        previousFileIdsRef.current = watchedFileIds;
+      })();
     }, 500);
 
     return () => clearTimeout(timeoutId);
@@ -69,10 +90,9 @@ const FileSelectionView = ({ setIsFileSelectionOpen, analysisId }: Props) => {
 
   // Generate options for the file select dropdown
   const fileOptions =
-    files?.data.map((file) => ({
-      value: file.id,
-      label: file.attributes.name,
-    })) || [];
+    files?.data
+      .map((file) => ({ value: file.id, label: file.attributes.name }))
+      .sort((a, b) => a.label.localeCompare(b.label)) || [];
 
   return (
     <FormProvider {...methods}>
@@ -99,23 +119,28 @@ const FileSelectionView = ({ setIsFileSelectionOpen, analysisId }: Props) => {
                 numberAttachedFiles: watchedFileIds.length || 0,
               })}
             </Title>
+            <NewLabel ml="4px" mt="4px" expiryDate={new Date('2026-01-15')} />
           </Box>
+
           <Text>{formatMessage(messages.attachFilesDescription)}</Text>
 
           <MultipleSelect
             name="file_ids"
             options={fileOptions}
+            disabled={isLoadingAnalysis}
             placeholder={formatMessage(messages.attachFilesFromProject)}
           />
 
           <Box mt="24px">
             <ButtonWithLink
-              linkTo={`/admin/projects/${projectId}/files`}
+              to="/admin/projects/$projectId/files"
+              params={{ projectId }}
               buttonStyle="text"
-              icon="upload-file"
+              icon="open-in-new"
+              iconPos="right"
               openLinkInNewTab={true}
             >
-              {formatMessage(messages.uploadFiles)}
+              {formatMessage(messages.manageFiles)}
             </ButtonWithLink>
           </Box>
         </Box>

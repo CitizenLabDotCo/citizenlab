@@ -1,15 +1,24 @@
 import React, { PureComponent, FocusEvent, ChangeEvent } from 'react';
 
 import { isString, get, isNumber } from 'lodash-es';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Placement } from 'tippy.js';
 
-import { defaultInputStyle, colors, isRtl } from '../../utils/styleUtils';
+import {
+  defaultInputStyle,
+  defaultStyles,
+  colors,
+  isRtl,
+  stylingConsts,
+} from '../../utils/styleUtils';
 import testEnv from '../../utils/testUtils/testEnv';
 import { IOption, InputSize } from '../../utils/typings';
 import Icon from '../Icon';
 import IconTooltip from '../IconTooltip';
+import { boInputLabelStyle, boInputStyle } from '../Input';
 import Label from '../Label';
+
+type Variant = 'default' | 'bo';
 
 export const SelectIcon = styled(Icon)`
   fill: #999;
@@ -26,9 +35,11 @@ export const SelectIcon = styled(Icon)`
   `}
 `;
 
-const Container = styled.div`
+const Container = styled.div<{ variant: Variant }>`
   position: relative;
   outline: none !important;
+
+  ${({ variant }) => variant === 'bo' && boInputLabelStyle}
 
   &.enabled {
     &:hover {
@@ -46,7 +57,7 @@ const Container = styled.div`
 
   &.disabled {
     ${SelectIcon} {
-      fill: #666;
+      fill: ${colors.grey700};
     }
   }
 
@@ -59,26 +70,58 @@ const Container = styled.div`
   }
 `;
 
-export const SelectWrapper = styled.div<{ mr?: string; size?: InputSize }>`
+const CHEVRON_SPACE = '36px';
+
+const boSelectStyle = css`
+  padding-right: 32px;
+
+  ${isRtl`
+    padding-right: 11px;
+    padding-left: 32px;
+  `}
+
+  & + ${SelectIcon} {
+    width: 16px;
+    fill: ${colors.coolGrey500};
+  }
+`;
+
+export const SelectWrapper = styled.div<{
+  mr?: string;
+  size?: InputSize;
+  height?: string;
+  variant?: Variant;
+}>`
   width: 100%;
   position: relative;
   select {
+    /* First, so the declarations below override its padding and cursor */
+    ${({ variant }) => (variant === 'bo' ? boInputStyle : defaultInputStyle)};
     width: 100%;
     margin: 0;
-    padding-right: 27px;
+    /* Keep the text clear of the chevron (24px wide, 11px from the edge) */
+    padding-right: ${CHEVRON_SPACE};
     cursor: pointer;
     outline: none !important;
 
     ${({ mr }) => (mr ? `margin-right: ${mr};` : '')}
 
     ${isRtl`
-    padding-right: 0;
-    padding-left: 27px;
-  `}
+      padding-right: ${({ size }) =>
+        size === 'small' ? '10px' : defaultStyles.inputPadding};
+      padding-left: ${CHEVRON_SPACE};
+    `}
     &::-ms-expand {
       display: none;
     }
-    ${defaultInputStyle};
+    ${({ variant, height }) =>
+      variant === 'bo'
+        ? boSelectStyle
+        : css`
+            height: ${height
+              ? height
+              : `${stylingConsts.inputHeight}px`} !important;
+          `}
   }
 `;
 
@@ -98,9 +141,14 @@ export interface Props extends DefaultProps {
   labelTooltipPlacement?: Placement;
   className?: string;
   size?: InputSize;
+  height?: string;
   placeholder?: string;
   mr?: string;
   dataCy?: string;
+  setRef?: (arg: HTMLSelectElement | null) => void;
+  ariaInvalid?: boolean;
+  ariaDescribedBy?: string;
+  variant?: Variant;
 }
 
 const DEFAULT_VALUE = 'DEFAULT_SELECT_VALUE';
@@ -154,11 +202,16 @@ class Select extends PureComponent<Props> {
       label,
       labelTooltipText,
       labelTooltipPlacement,
+      height,
       size,
       value,
       placeholder,
       mr,
       dataCy,
+      setRef,
+      ariaInvalid,
+      ariaDescribedBy,
+      variant = 'default',
     } = this.props;
 
     const safeValue =
@@ -171,6 +224,7 @@ class Select extends PureComponent<Props> {
     return (
       <Container
         className={`${className} ${disabled ? 'disabled' : 'enabled'}`}
+        variant={variant}
       >
         {label && (
           <Label htmlFor={id}>
@@ -183,7 +237,7 @@ class Select extends PureComponent<Props> {
             )}
           </Label>
         )}
-        <SelectWrapper size={size} mr={mr}>
+        <SelectWrapper mr={mr} size={size} height={height} variant={variant}>
           <select
             id={id}
             disabled={disabled}
@@ -195,6 +249,9 @@ class Select extends PureComponent<Props> {
             value={selectedValue}
             data-testid={testEnv('select')}
             data-cy={dataCy}
+            ref={setRef}
+            aria-invalid={ariaInvalid}
+            aria-describedby={ariaDescribedBy}
           >
             {placeholder !== undefined && (
               <option

@@ -2,10 +2,13 @@ import React, { useEffect } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
+import { useQueryClient } from '@tanstack/react-query';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import styled from 'styled-components';
 import { SupportedLocale } from 'typings';
+
+import fileAttachmentsKeys from 'api/file_attachments/keys';
 
 import { DEFAULT_PADDING } from '../constants';
 
@@ -36,6 +39,8 @@ export const FullScreenPreviewWrapper = ({
   children,
   padding,
 }: Props) => {
+  const queryClient = useQueryClient();
+
   useEffect(() => {
     const handleMessage = (e: MessageEvent) => {
       // Make sure there is a root node in the draft data
@@ -49,12 +54,18 @@ export const FullScreenPreviewWrapper = ({
       ) {
         onUpdateLocale(e.data.selectedLocale);
       }
+      // The save creates the layout's file attachments, and this document caches its own copy.
+      if (e.origin === window.location.origin && e.data.layoutSaved) {
+        queryClient.invalidateQueries({
+          queryKey: fileAttachmentsKeys.lists(),
+        });
+      }
     };
     window.addEventListener('message', handleMessage);
     return () => {
       window.removeEventListener('message', handleMessage);
     };
-  }, [onUpdateDraftData, onUpdateLocale]);
+  }, [onUpdateDraftData, onUpdateLocale, queryClient]);
 
   return (
     <FocusOn>

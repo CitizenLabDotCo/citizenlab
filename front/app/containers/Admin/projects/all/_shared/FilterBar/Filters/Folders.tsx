@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 
 import useProjectFolders from 'api/project_folders/useProjectFolders';
 
@@ -23,23 +23,13 @@ const Folders = ({ onClear }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
 
-  // Disabled by default because we want to only make the request when the user opens the dropdown
-  // This prevents unnecessary requests when the component is mounted and the user doesn't interact with it
-  const { data, isLoading, refetch } = useProjectFolders({}, false);
-  const hasFetchedRef = useRef(false);
+  const { data, isLoading } = useProjectFolders({});
 
   const folderOptions =
     data?.data.map((folder) => ({
       value: folder.id,
       label: localize(folder.attributes.title_multiloc),
     })) ?? [];
-
-  const handleOpen = () => {
-    if (!hasFetchedRef.current) {
-      refetch();
-      hasFetchedRef.current = true;
-    }
-  };
 
   return (
     <MultiSelect
@@ -48,7 +38,6 @@ const Folders = ({ onClear }: Props) => {
       selected={folderIds}
       isLoading={isLoading}
       openedDefaultValue={folderIds.length === 0}
-      onOpen={handleOpen}
       onChange={(folderIds) => {
         setParam('folder_ids', folderIds);
         trackEventByName(tracks.setFolder, {

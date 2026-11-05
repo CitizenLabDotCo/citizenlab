@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 import { fontSizes, Button } from '@citizenlab/cl2-component-library';
 import saveAs from 'file-saver';
-import { useParams } from 'react-router-dom';
 
 import usePhases from 'api/phases/usePhases';
 
@@ -10,13 +9,14 @@ import { API_PATH } from 'containers/App/constants';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { requestBlob } from 'utils/requestBlob';
+import { useParams } from 'utils/router';
 
 import messages from '../../messages';
 
 const ExportVotesByUser = () => {
   const [exporting, setExporting] = useState(false);
   const { formatMessage, formatDate } = useIntl();
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId } = useParams({ strict: false }) as { projectId: string };
   const { data: phases } = usePhases(projectId);
 
   const hasVotingPhase = phases?.data.some(

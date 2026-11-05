@@ -3,18 +3,18 @@
 require 'rails_helper'
 
 describe Verification::VerificationService do
-  let(:sfxv_service) { instance_double(Verification::SideFxVerificationService) }
-  let(:service) { described_class.new sfxv_service }
+  let(:service) { described_class.new }
 
   before do
-    SettingsService.new.activate_feature!(
-      'verification',
-      settings: {
-        verification_methods: [
-          { name: 'cow', api_username: 'fake_username', api_password: 'fake_password', rut_empresa: 'fake_rut_empresa' }
-        ]
-      }
-    )
+    AppConfiguration.instance.settings['id_config'] = {
+      'allowed' => true,
+      'enabled' => true,
+      'id_methods' => [
+        { name: 'cow', api_username: 'fake_username', api_password: 'fake_password', rut_empresa: 'fake_rut_empresa' }
+      ]
+    }
+
+    AppConfiguration.instance.save!
   end
 
   describe 'verify_sync' do
@@ -27,32 +27,25 @@ describe Verification::VerificationService do
         verification_parameters: { desired_error: nil }
       }
 
-      allow_any_instance_of(IdBogus::BogusVerification)
+      allow_any_instance_of(CustomIdMethods::Bogus::BogusVerification)
         .to receive(:verify_sync)
         .and_return({ uid: 'fakeuuid' })
 
-      expect(sfxv_service)
-        .to receive(:before_create)
-        .with(instance_of(Verification::Verification), user)
+      expect { service.verify_sync(**params) }
+        .to have_enqueued_job(LogActivityJob)
+        .with(an_instance_of(Verification::Verification), 'created', user, anything, payload: { method: 'bogus' })
 
-      expect(sfxv_service)
-        .to receive(:after_create)
-        .with(instance_of(Verification::Verification), user)
-
-      service.verify_sync(**params)
+      expect(user.reload.verified).to be true
     end
 
     it 'updates the user with received attributes from verify_sync' do
-      allow(sfxv_service).to receive(:before_create)
-      allow(sfxv_service).to receive(:after_create)
-
       params = {
         user: user,
         method_name: 'bogus',
         verification_parameters: {}
       }
 
-      allow_any_instance_of(IdBogus::BogusVerification)
+      allow_any_instance_of(CustomIdMethods::Bogus::BogusVerification)
         .to receive(:verify_sync)
         .and_return({
           uid: '123',
@@ -65,14 +58,10 @@ describe Verification::VerificationService do
     end
 
     it 'updates the user with received custom_field_values from verify_sync' do
-      allow(sfxv_service).to receive(:before_create)
-      allow(sfxv_service).to receive(:after_create)
       cf1 = create(:custom_field)
       cf2 = create(:custom_field)
-      user.update!(custom_field_values: {
-        cf1.key => 'original',
-        cf2.key => 'original'
-      })
+      create(:custom_field_answer, answerable: user, key: cf1.key, value: 'original')
+      create(:custom_field_answer, answerable: user, key: cf2.key, value: 'original')
 
       params = {
         user: user,
@@ -80,7 +69,7 @@ describe Verification::VerificationService do
         verification_parameters: {}
       }
 
-      allow_any_instance_of(IdBogus::BogusVerification)
+      allow_any_instance_of(CustomIdMethods::Bogus::BogusVerification)
         .to receive(:verify_sync)
         .and_return({
           uid: '123',
@@ -91,16 +80,26 @@ describe Verification::VerificationService do
 
       service.verify_sync(**params)
 
-      expect(user.reload.custom_field_values).to eq({
+      expect(user.reload.custom_field_answers.to_h { [it.key, it.value] }).to eq({
         cf1.key => 'original',
         cf2.key => 'changed'
       })
     end
 
-    it 'adds a verification' do
-      allow(sfxv_service).to receive(:before_create)
-      allow(sfxv_service).to receive(:after_create)
+    # Stored, a key with no field makes the profile form refuse every later save.
+    it 'ignores custom_field_values for fields that do not exist' do
+      field = create(:custom_field)
 
+      allow_any_instance_of(CustomIdMethods::Bogus::BogusVerification)
+        .to receive(:verify_sync)
+        .and_return({ uid: '123', custom_field_values: { field.key => 'kept', 'postal_code' => '1212' } })
+
+      service.verify_sync(user: user, method_name: 'bogus', verification_parameters: {})
+
+      expect(user.reload.custom_field_answers.pluck(:key, :value)).to eq [[field.key, 'kept']]
+    end
+
+    it 'adds a verification' do
       params = {
         user: user,
         method_name: 'cow',
@@ -109,7 +108,7 @@ describe Verification::VerificationService do
 
       expect(Verification::Verification.count).to eq 0
 
-      expect_any_instance_of(IdCow::CowVerification)
+      expect_any_instance_of(CustomIdMethods::Cow::CowVerification)
         .to receive(:verify_sync)
         .with(params[:verification_parameters])
         .and_return({ uid: '001529382' })
@@ -126,16 +125,13 @@ describe Verification::VerificationService do
     end
 
     it 'raises a VerificationTakenError when another user verified with that identity' do
-      allow(sfxv_service).to receive(:before_create)
-      allow(sfxv_service).to receive(:after_create)
-
       params1 = {
         user: create(:user),
         method_name: 'cow',
         verification_parameters: { run: '12.025.365-6', id_serial: 'A001529382' }
       }
 
-      expect_any_instance_of(IdCow::CowVerification)
+      expect_any_instance_of(CustomIdMethods::Cow::CowVerification)
         .to receive(:verify_sync)
         .with(params1[:verification_parameters])
         .and_return({ uid: '001529382' })
@@ -148,16 +144,77 @@ describe Verification::VerificationService do
         verification_parameters: { run: '12.025.365-6', id_serial: 'A001529382' }
       }
 
-      expect_any_instance_of(IdCow::CowVerification)
+      expect_any_instance_of(CustomIdMethods::Cow::CowVerification)
         .to receive(:verify_sync)
         .with(params2[:verification_parameters])
         .and_return({ uid: '001529382' })
 
       expect { service.verify_sync(**params2) }.to raise_error(Verification::VerificationService::VerificationTakenError)
     end
+
+    # The email-less account an SSO method leaves behind, which may have participated.
+    # Merging it keeps what it contributed; deleting it would nullify its ideas and
+    # destroy its follows.
+    context 'when an email-less SSO account already holds the identity' do
+      let(:source) do
+        create(:user, registration_completed_at: Time.zone.now).tap do |u|
+          u.update_columns(email: nil, password_digest: nil)
+          create(:identity, user: u, provider: 'clave_unica', uid: '11111')
+        end
+      end
+
+      # An omniauth method: only those assert their own uid, and only those merge.
+      def verify!(as:)
+        service.verify_omniauth(
+          user: as,
+          auth: OmniAuth::AuthHash.new(provider: 'fake_sso', uid: 'shared-uid')
+        )
+      end
+
+      it 'merges the source rather than deleting it, keeping its participation' do
+        verify!(as: source)
+        idea = create(:idea, author: source)
+        follow = create(:follower, user: source)
+
+        verify!(as: user)
+
+        expect { source.reload }.to raise_error ActiveRecord::RecordNotFound
+        expect(idea.reload.author_id).to eq user.id
+        expect(follow.reload.user_id).to eq user.id
+      end
+
+      it 'leaves the survivor with a single verification for the shared uid' do
+        verify!(as: source)
+
+        verify!(as: user)
+
+        expect(Verification::Verification.where(user_id: user.id).count).to eq 1
+        expect(user.reload.verified).to be true
+      end
+
+      # A manual_sync uid is typed by the user, so merging on it would let anyone
+      # knowing somebody's number take their account.
+      it 'refuses instead of merging when the uid was typed rather than asserted' do
+        allow_any_instance_of(CustomIdMethods::Bogus::BogusVerification)
+          .to receive(:verify_sync).and_return({ uid: 'typed-uid' })
+        typed = lambda do |as|
+          service.verify_sync(user: as, method_name: 'bogus', verification_parameters: { desired_error: nil })
+        end
+
+        typed.call(source)
+
+        expect { typed.call(user) }.to raise_error described_class::VerificationTakenError
+        expect(source.reload).to be_present
+      end
+    end
   end
 
   describe 'locked_attributes' do
+    before do
+      AppConfiguration.instance.settings['id_config']['id_methods'] << { name: 'bosa_fas' }
+      AppConfiguration.instance.save!
+    end
+
     context 'for a user only authenticated with facebook' do
       it 'returns no locked attributes' do
         identity = create(:facebook_identity)
@@ -171,9 +228,21 @@ describe Verification::VerificationService do
         expect(service.locked_attributes(verification.user)).to match_array %i[first_name last_name]
       end
     end
+
+    context 'for a user verified with a method that is no longer configured' do
+      it 'returns no locked attributes' do
+        verification = create(:verification, method_name: 'clave_unica')
+        expect(service.locked_attributes(verification.user)).to eq []
+      end
+    end
   end
 
   describe 'locked_custom_fields' do
+    before do
+      AppConfiguration.instance.settings['id_config']['id_methods'] << { name: 'bogus' }
+      AppConfiguration.instance.save!
+    end
+
     context 'for a user only authenticated with facebook' do
       it 'returns no locked custom field keys' do
         identity = create(:facebook_identity)
@@ -185,7 +254,7 @@ describe Verification::VerificationService do
       it 'returns some locked custom field keys when the custom field exists' do
         create(:custom_field_gender)
         verification = create(:verification, method_name: 'bogus')
-        expect(service.locked_custom_fields(verification.user)).to match_array [:gender]
+        expect(service.locked_custom_fields(verification.user)).to contain_exactly(:gender)
       end
 
       it 'does not return locked custom field keys when the field does not exist' do
@@ -193,35 +262,15 @@ describe Verification::VerificationService do
         expect(service.locked_custom_fields(verification.user)).to be_empty
       end
     end
-  end
 
-  describe 'method_metadata' do
-    it 'returns allowed_for_verified_actions: false if first method does not support verified actions' do
-      vm = service.method_metadata(service.first_method_enabled)
-      expect(vm[:allowed_for_verified_actions]).to be(false)
-    end
-
-    it 'returns information about the first enabled method enabled for actions' do
-      create(:custom_field_gender)
-      create(:custom_field_birthyear)
-
-      configuration = AppConfiguration.instance
-      configuration.settings['verification']['verification_methods'] << { name: 'fake_sso', enabled_for_verified_actions: true }
-      configuration.save!
-
-      metadata = service.method_metadata(service.first_method_enabled_for_verified_actions)
-      expect(metadata[:name]).to eq 'Fake SSO'
-      expect(metadata[:locked_attributes]).to match_array [
-        { 'en' => 'First name(s)', 'fr-FR' => 'Prénom(s)', 'nl-NL' => 'Voornamen' },
-        { 'en' => 'Last name', 'fr-FR' => 'Nom de famille', 'nl-NL' => 'Achternaam' }
-      ]
-      expect(metadata[:other_attributes]).to match_array [
-        { 'en' => 'Email', 'fr-FR' => 'E-mail', 'nl-NL' => 'E-mail' }
-      ]
-      expect(metadata[:locked_custom_fields]).to match_array [
-        { 'en' => 'gender' }, { 'en' => 'birthyear' }
-      ]
-      expect(metadata[:other_custom_fields]).to be_empty
+    context 'for a user verified with a method that is no longer configured' do
+      it 'returns no locked custom field keys' do
+        # gent_rrn reads its custom_field_key from the tenant config, which is
+        # gone once the method is removed from id_methods.
+        create(:custom_field_gender)
+        verification = create(:verification, method_name: 'gent_rrn')
+        expect(service.locked_custom_fields(verification.user)).to be_empty
+      end
     end
   end
 end

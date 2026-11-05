@@ -7,8 +7,7 @@ class SideFxProjectService
 
   def after_create(project, user)
     ensure_user_can_moderate_project!(project, user)
-    project.set_default_topics!
-    project.update!(description_multiloc: TextImageService.new.swap_data_images_multiloc(project.description_multiloc, field: :description_multiloc, imageable: project))
+    project.set_default_input_topics!
     serialized_project = clean_time_attributes(project.attributes)
 
     LogActivityJob.perform_later(
@@ -18,6 +17,8 @@ class SideFxProjectService
       project.created_at.to_i,
       payload: { project: serialized_project }
     )
+
+    CheckProjectPublicationConsistencyJob.perform_later(project.id)
 
     after_publish project, user if project.admin_publication.published?
   end
@@ -49,11 +50,13 @@ class SideFxProjectService
 
   def before_update(project, _user)
     @publication_status_was = project.admin_publication.publication_status_was
+    @first_published_at_was = project.admin_publication.first_published_at
     @folder_id_was = project.admin_publication.parent_id_was
-    project.description_multiloc = TextImageService.new.swap_data_images_multiloc(project.description_multiloc, field: :description_multiloc, imageable: project)
   end
 
-  def after_update(project, user)
+  def after_update(project, user, publication_email_enabled: nil)
+    sync_publication_email_campaign(project, publication_email_enabled)
+
     change = project.saved_changes
     if project.admin_publication.publication_status != @publication_status_was
       change['publication_status'] = [@publication_status_was, project.admin_publication.publication_status]
@@ -69,15 +72,25 @@ class SideFxProjectService
       payload: payload
     )
 
+    CheckProjectPublicationConsistencyJob.perform_later(project.id)
+
     after_folder_changed project, user if @folder_id_was != project.folder_id
+    # Changing a project from published to draft or archived implicitly deletes an approved review.
+    delete_approved_review(project, user) if project.admin_publication.publication_status != 'published' && @publication_status_was == 'published'
+    # Publishing a project (draft or archived) directly implicitly approves a review that is still pending.
+    # Both sides read the raw column: `published?` also reports a due but not yet applied scheduled
+    # transition as published, which would approve the review on any unrelated update.
+    approve_pending_review(project, user) if project.admin_publication.publication_status == 'published' && @publication_status_was != 'published'
     # We don't want to send out the "project published" campaign when e.g. changing from "archived" to "published"
-    after_publish project, user if project.admin_publication.published? && @publication_status_was == 'draft'
+    # or when republishing a project that went back to draft.
+    after_publish project, user if project.admin_publication.published? && @publication_status_was == 'draft' && @first_published_at_was.nil?
+    enqueue_scheduled_transition(project.admin_publication)
   end
 
   def before_destroy(project, user); end
 
   def after_destroy(frozen_project, user)
-    ContentBuilder::LayoutService.new.clean_homepage_layout_when_publication_deleted(frozen_project)
+    ContentBuilder::LayoutService.new.clean_layouts_when_publication_deleted(frozen_project)
 
     serialized_project = clean_time_attributes(frozen_project.attributes)
 
@@ -126,10 +139,52 @@ class SideFxProjectService
     LogActivityJob.perform_later project, 'published', user, project.updated_at.to_i
   end
 
+  # A per-project ProjectPublished campaign only exists to override the global default to disabled.
+  # Enabling removes the override so the project inherits the global setting; disabling persists it.
+  def sync_publication_email_campaign(project, publication_email_enabled)
+    return if publication_email_enabled.nil?
+
+    if publication_email_enabled
+      EmailCampaigns::Campaigns::ProjectPublished.find_by(context: project)&.destroy!
+    else
+      campaign = EmailCampaigns::Campaigns::ProjectPublished.find_or_initialize_by(context: project)
+      campaign.update!(enabled: false)
+    end
+  end
+
+  def enqueue_scheduled_transition(admin_pub)
+    return unless admin_pub.saved_change_to_scheduled_at?
+    return if admin_pub.scheduled_at.blank?
+
+    ProcessScheduledPublicationTransitionsJob
+      .set(wait_until: admin_pub.scheduled_at)
+      .perform_later
+  end
+
   def after_folder_changed(project, current_user)
     # Defined in core app to eliminate dependency between
     # idea assignment and folder engine.
   end
+
+  def approve_pending_review(project, user)
+    review = project.review
+    # A reviewer is mandatory to approve, so we cannot approve on behalf of nobody
+    # (e.g. a scheduled transition whose scheduler has since been deleted).
+    return if user.nil? || review.nil? || review.approved?
+    return unless review.approvable_by?(user)
+
+    review.approve!(user)
+    SideFxProjectReviewService.new.after_update(review, user)
+  end
+
+  def delete_approved_review(project, user)
+    review = project.review
+    return if review.nil? || !review.approved?
+
+    review.destroy!
+    SideFxProjectReviewService.new.after_destroy(review, user)
+  end
 end
 
 SideFxProjectService.prepend(IdeaAssignment::Patches::SideFxProjectService)
+SideFxProjectService.prepend(ContentBuilder::Patches::SideFxProjectService)

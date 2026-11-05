@@ -47,11 +47,33 @@ describe Export::Xlsx::InputSheetGenerator do
                 'Project',
                 'Status',
                 'Assignee',
-                'Assignee email'
+                'Assignee email',
+                'Imported'
               ],
               rows: []
             }
           ])
+        end
+      end
+
+      describe 'timezone handling' do
+        let(:tenant_timezone) { 'America/Toronto' }
+        let(:utc_time) { Time.utc(2019, 9, 9, 18, 30, 0) }
+        let(:idea) { create(:idea, project: phase.project, phases: [phase], created_at: utc_time, submitted_at: utc_time) }
+        let(:inputs) { [idea] }
+
+        before do
+          settings = AppConfiguration.instance.settings
+          settings['core']['timezone'] = tenant_timezone
+          AppConfiguration.instance.update!(settings: settings)
+        end
+
+        it 'exports timestamps in the tenant timezone' do
+          submitted_at_index = xlsx.first[:column_headers].index('Submitted at')
+          exported_timestamp = xlsx.first[:rows].first[submitted_at_index].to_time.round
+
+          expect(exported_timestamp.strftime('%Y-%m-%d %H:%M:%S'))
+            .to eq('2019-09-09 14:30:00')
         end
       end
 
@@ -62,7 +84,7 @@ describe Export::Xlsx::InputSheetGenerator do
             :idea_with_topics,
             project: phase.project,
             phases: [phase],
-            author: create(:user, custom_field_values: { create(:custom_field_birthyear).code => 1999 }),
+            author: create(:user, custom_field_answers: [build(:custom_field_answer, key: create(:custom_field_birthyear).key, value: 1999)]),
             assignee: assignee,
             manual_votes_amount: 5
           )
@@ -101,6 +123,7 @@ describe Export::Xlsx::InputSheetGenerator do
                 'Status',
                 'Assignee',
                 'Assignee email',
+                'Imported',
                 'birthyear'
               ],
               rows: [
@@ -109,7 +132,7 @@ describe Export::Xlsx::InputSheetGenerator do
                   ideation_response1.title_multiloc['en'],
                   'It would improve the air quality!', # html tags are removed
                   %r{\A/uploads/.+/idea_file/file/#{attachment1.id}/#{attachment1.name}\Z},
-                  "#{ideation_response1.topics[0].title_multiloc['en']};#{ideation_response1.topics[1].title_multiloc['en']}",
+                  "#{ideation_response1.input_topics[0].title_multiloc['en']};#{ideation_response1.input_topics[1].title_multiloc['en']}",
                   ideation_response1.location_point.coordinates.last,
                   ideation_response1.location_point.coordinates.first,
                   ideation_response1.location_description,
@@ -128,6 +151,7 @@ describe Export::Xlsx::InputSheetGenerator do
                   ideation_response1.idea_status.title_multiloc['en'],
                   ideation_response1.assignee.full_name,
                   ideation_response1.assignee.email,
+                  'false',
                   1999
                 ]
               ]
@@ -145,7 +169,7 @@ describe Export::Xlsx::InputSheetGenerator do
             :idea_with_topics,
             project: phase.project,
             phases: [phase],
-            custom_field_values: { extra_idea_field.key => 'Answer' },
+            custom_field_answers: [build(:custom_field_answer, key: extra_idea_field.key, value: 'Answer')],
             assignee: assignee
           )
         end
@@ -191,7 +215,8 @@ describe Export::Xlsx::InputSheetGenerator do
                 'Project',
                 'Status',
                 'Assignee',
-                'Assignee email'
+                'Assignee email',
+                'Imported'
               ],
               rows: [
                 [
@@ -199,7 +224,7 @@ describe Export::Xlsx::InputSheetGenerator do
                   ideation_response1.title_multiloc['en'],
                   'It would improve the air quality!', # html tags are removed
                   %r{\A/uploads/.+/idea_file/file/#{attachment1.id}/#{attachment1.name}\n/uploads/.+/idea_file/file/#{attachment2.id}/#{attachment2.name}\Z},
-                  "#{ideation_response1.topics[0].title_multiloc['en']};#{ideation_response1.topics[1].title_multiloc['en']}",
+                  "#{ideation_response1.input_topics[0].title_multiloc['en']};#{ideation_response1.input_topics[1].title_multiloc['en']}",
                   ideation_response1.location_point.coordinates.last,
                   ideation_response1.location_point.coordinates.first,
                   ideation_response1.location_description,
@@ -218,12 +243,130 @@ describe Export::Xlsx::InputSheetGenerator do
                   phase.project.title_multiloc['en'],
                   ideation_response1.idea_status.title_multiloc['en'],
                   "#{assignee.first_name} #{assignee.last_name}",
-                  assignee.email
+                  assignee.email,
+                  'false'
                 ]
               ]
             }
           ])
         end
+      end
+    end
+
+    context 'for a proposals context' do
+      let(:phase) { create(:proposals_phase) }
+      let(:assignee1) { create(:admin, first_name: 'Jane', last_name: 'Smith') }
+      let(:assignee2) { create(:admin, first_name: 'John', last_name: 'Doe') }
+      let(:status1) { create(:proposals_status, title_multiloc: { 'en' => 'Accepted' }) }
+      let(:status2) { create(:proposals_status, title_multiloc: { 'en' => 'Under Review' }) }
+
+      let!(:proposal1) do
+        create(
+          :proposal,
+          project: phase.project,
+          creation_phase: phase,
+          assignee: assignee1,
+          idea_status: status1,
+          publication_status: 'published'
+        )
+      end
+      let!(:proposal2) do
+        create(
+          :proposal,
+          project: phase.project,
+          creation_phase: phase,
+          assignee: assignee2,
+          idea_status: status2,
+          publication_status: 'draft',
+          published_at: nil
+        )
+      end
+
+      let(:inputs) { [proposal1, proposal2] }
+
+      it 'Generates a sheet with the phase inputs' do
+        expect(xlsx).to match([
+          {
+            sheet_name: 'My sheet',
+            column_headers: [
+              'ID',
+              'Title',
+              'Description',
+              'Attachments',
+              'Tags',
+              'Latitude',
+              'Longitude',
+              'Location',
+              'Co-sponsors',
+              'Author name',
+              'Author email',
+              'Author ID',
+              'Submitted at',
+              'Published at',
+              'Comments',
+              'Likes',
+              'Offline votes',
+              'URL',
+              'Project',
+              'Status',
+              'Assignee',
+              'Assignee email',
+              'Imported'
+            ],
+            rows: [
+              [
+                proposal1.id,
+                proposal1.title_multiloc['en'],
+                'It would improve the air quality!',
+                '',
+                '',
+                proposal1.location_point.coordinates.last,
+                proposal1.location_point.coordinates.first,
+                proposal1.location_description,
+                '',
+                proposal1.author.full_name,
+                proposal1.author.email,
+                proposal1.author_id,
+                an_instance_of(DateTime),
+                an_instance_of(DateTime),
+                0,
+                0,
+                nil,
+                "http://example.org/ideas/#{proposal1.slug}",
+                phase.project.title_multiloc['en'],
+                'Accepted',
+                assignee1.full_name,
+                assignee1.email,
+                'false'
+              ],
+              [
+                proposal2.id,
+                proposal2.title_multiloc['en'],
+                'It would improve the air quality!',
+                '',
+                '',
+                proposal2.location_point.coordinates.last,
+                proposal2.location_point.coordinates.first,
+                proposal2.location_description,
+                '',
+                proposal2.author.full_name,
+                proposal2.author.email,
+                proposal2.author_id,
+                an_instance_of(DateTime),
+                nil,
+                0,
+                0,
+                nil,
+                "http://example.org/ideas/#{proposal2.slug}",
+                phase.project.title_multiloc['en'],
+                'Under Review',
+                assignee2.full_name,
+                assignee2.email,
+                'false'
+              ]
+            ]
+          }
+        ])
       end
     end
 
@@ -257,8 +400,14 @@ describe Export::Xlsx::InputSheetGenerator do
           project: phase.project,
           creation_phase: phase,
           phases: [phase],
-          custom_field_values: { multiselect_field.key => %w[cat dog], ranking_field.key => %w[by_train by_bike] },
-          author: create(:user, custom_field_values: { 'birthyear' => 1999, 'gender' => 'female' })
+          custom_field_answers: [
+            build(:custom_field_answer, key: multiselect_field.key, value: %w[cat dog]),
+            build(:custom_field_answer, key: ranking_field.key, value: %w[by_train by_bike])
+          ],
+          author: create(:user, custom_field_answers: [
+            build(:custom_field_answer, key: 'birthyear', value: 1999),
+            build(:custom_field_answer, key: 'gender', value: 'female')
+          ])
         )
       end
       let(:survey_response2) do
@@ -267,7 +416,10 @@ describe Export::Xlsx::InputSheetGenerator do
           project: phase.project,
           creation_phase: phase,
           phases: [phase],
-          custom_field_values: { multiselect_field.key => %w[cat], matrix_field.key => { 'send_more_animals_to_space' => 3, 'ride_bicycles_more_often' => 4 } }
+          custom_field_answers: [
+            build(:custom_field_answer, key: multiselect_field.key, value: %w[cat]),
+            build(:custom_field_answer, key: matrix_field.key, value: { 'send_more_animals_to_space' => 3, 'ride_bicycles_more_often' => 4 })
+          ]
         )
       end
       let(:survey_response3) do
@@ -276,7 +428,10 @@ describe Export::Xlsx::InputSheetGenerator do
           project: phase.project,
           creation_phase: phase,
           phases: [phase],
-          custom_field_values: { multiselect_field.key => %w[dog], ranking_field.key => %w[by_bike by_train] },
+          custom_field_answers: [
+            build(:custom_field_answer, key: multiselect_field.key, value: %w[dog]),
+            build(:custom_field_answer, key: ranking_field.key, value: %w[by_bike by_train])
+          ],
           author: nil
         )
       end
@@ -301,7 +456,8 @@ describe Export::Xlsx::InputSheetGenerator do
                 'We should ride our bicycles more often',
                 'Author ID',
                 'Submitted at',
-                'Project'
+                'Project',
+                'Imported'
               ],
               rows: [
                 [
@@ -312,7 +468,8 @@ describe Export::Xlsx::InputSheetGenerator do
                   nil,
                   survey_response1.author_id,
                   an_instance_of(DateTime), # created_at
-                  phase.project.title_multiloc['en']
+                  phase.project.title_multiloc['en'],
+                  'false'
                 ],
                 [
                   survey_response2.id,
@@ -322,7 +479,8 @@ describe Export::Xlsx::InputSheetGenerator do
                   4,
                   survey_response2.author_id,
                   an_instance_of(DateTime), # created_at
-                  phase.project.title_multiloc['en']
+                  phase.project.title_multiloc['en'],
+                  'false'
                 ],
                 [
                   survey_response3.id,
@@ -332,7 +490,8 @@ describe Export::Xlsx::InputSheetGenerator do
                   nil,
                   survey_response3.author_id,
                   an_instance_of(DateTime), # created_at
-                  phase.project.title_multiloc['en']
+                  phase.project.title_multiloc['en'],
+                  'false'
                 ]
               ]
             }
@@ -342,7 +501,10 @@ describe Export::Xlsx::InputSheetGenerator do
         context 'when there are "other" options' do
           it 'Generates an sheet with the phase inputs, including the "other" column' do
             create(:custom_field_option, custom_field: multiselect_field, key: 'other', title_multiloc: { 'en' => 'Other' }, other: true)
-            survey_response1.update!(custom_field_values: { multiselect_field.key => %w[cat dog other], "#{multiselect_field.key}_other" => 'Fish' })
+            survey_response1.answer_for_key(multiselect_field.key).update!(value: %w[cat dog other])
+            survey_response1.answer_for_key(ranking_field.key).destroy!
+            create(:custom_field_answer, answerable: survey_response1, key: "#{multiselect_field.key}_other", value: 'Fish', custom_field: multiselect_field)
+            survey_response1.custom_field_answers.reset
             expect(xlsx).to match([
               {
                 sheet_name: 'My sheet',
@@ -355,7 +517,8 @@ describe Export::Xlsx::InputSheetGenerator do
                   'We should ride our bicycles more often',
                   'Author ID',
                   'Submitted at',
-                  'Project'
+                  'Project',
+                  'Imported'
                 ],
                 rows: [
                   [
@@ -367,7 +530,8 @@ describe Export::Xlsx::InputSheetGenerator do
                     nil,
                     survey_response1.author_id,
                     an_instance_of(DateTime), # created_at
-                    phase.project.title_multiloc['en']
+                    phase.project.title_multiloc['en'],
+                    'false'
                   ],
                   [
                     survey_response2.id,
@@ -378,7 +542,8 @@ describe Export::Xlsx::InputSheetGenerator do
                     4,
                     survey_response2.author_id,
                     an_instance_of(DateTime), # created_at
-                    phase.project.title_multiloc['en']
+                    phase.project.title_multiloc['en'],
+                    'false'
                   ],
                   [
                     survey_response3.id,
@@ -389,7 +554,8 @@ describe Export::Xlsx::InputSheetGenerator do
                     nil,
                     survey_response3.author_id,
                     an_instance_of(DateTime), # created_at
-                    phase.project.title_multiloc['en']
+                    phase.project.title_multiloc['en'],
+                    'false'
                   ]
                 ]
               }
@@ -414,6 +580,7 @@ describe Export::Xlsx::InputSheetGenerator do
               'Author ID',
               'Submitted at',
               'Project',
+              'Imported',
               'Gender',
               'Birth year'
             ])
@@ -426,6 +593,7 @@ describe Export::Xlsx::InputSheetGenerator do
               survey_response1.author_id,
               an_instance_of(DateTime), # created_at
               phase.project.title_multiloc['en'],
+              'false',
               'Female',
               1999
             ])
@@ -433,7 +601,10 @@ describe Export::Xlsx::InputSheetGenerator do
 
           it 'Generates an sheet with user fields from the inputs' do
             phase.permissions.find_by(action: 'posting_idea').update!(user_fields_in_form: true)
-            survey_response1.update!(custom_field_values: { multiselect_field.key => %w[cat dog], 'u_birthyear' => 1998, 'u_gender' => 'male' })
+            survey_response1.answer_for_key(ranking_field.key).destroy!
+            create(:custom_field_answer, answerable: survey_response1, key: 'u_birthyear', value: 1998, custom_field: CustomField.find_by(code: 'birthyear'))
+            create(:custom_field_answer, answerable: survey_response1, key: 'u_gender', value: 'male', custom_field: CustomField.find_by(code: 'gender'))
+            survey_response1.custom_field_answers.reset
             expect(xlsx.first[:column_headers]).to match([
               'ID',
               'What are your favourite pets?',
@@ -444,7 +615,8 @@ describe Export::Xlsx::InputSheetGenerator do
               'Birth year',
               'Author ID',
               'Submitted at',
-              'Project'
+              'Project',
+              'Imported'
             ])
             expect(xlsx.first[:rows].first).to match([
               survey_response1.id,
@@ -456,7 +628,8 @@ describe Export::Xlsx::InputSheetGenerator do
               1998,
               survey_response1.author_id,
               an_instance_of(DateTime), # created_at
-              phase.project.title_multiloc['en']
+              phase.project.title_multiloc['en'],
+              'false'
             ])
           end
         end
@@ -486,7 +659,8 @@ describe Export::Xlsx::InputSheetGenerator do
                   'Author email',
                   'Author ID',
                   'Submitted at',
-                  'Project'
+                  'Project',
+                  'Imported'
                 ],
                 rows: []
               }
@@ -508,7 +682,8 @@ describe Export::Xlsx::InputSheetGenerator do
                 'Author email',
                 'Author ID',
                 'Submitted at',
-                'Project'
+                'Project',
+                'Imported'
               ],
               rows: [
                 [
@@ -521,7 +696,8 @@ describe Export::Xlsx::InputSheetGenerator do
                   survey_response1.author.email,
                   survey_response1.author_id,
                   an_instance_of(DateTime), # created_at
-                  phase.project.title_multiloc['en']
+                  phase.project.title_multiloc['en'],
+                  'false'
                 ],
                 [
                   survey_response2.id,
@@ -533,7 +709,8 @@ describe Export::Xlsx::InputSheetGenerator do
                   survey_response2.author.email,
                   survey_response2.author_id,
                   an_instance_of(DateTime), # created_at
-                  phase.project.title_multiloc['en']
+                  phase.project.title_multiloc['en'],
+                  'false'
                 ],
                 [
                   survey_response3.id,
@@ -545,7 +722,8 @@ describe Export::Xlsx::InputSheetGenerator do
                   nil,
                   nil,
                   an_instance_of(DateTime), # created_at
-                  phase.project.title_multiloc['en']
+                  phase.project.title_multiloc['en'],
+                  'false'
                 ]
               ]
             }
@@ -587,7 +765,8 @@ describe Export::Xlsx::InputSheetGenerator do
                   'Project',
                   'Status',
                   'Assignee',
-                  'Assignee email'
+                  'Assignee email',
+                  'Imported'
                 ],
                 rows: []
               }
@@ -625,7 +804,8 @@ describe Export::Xlsx::InputSheetGenerator do
                   'Project',
                   'Status',
                   'Assignee',
-                  'Assignee email'
+                  'Assignee email',
+                  'Imported'
                 ],
                 rows: []
               }
@@ -663,7 +843,8 @@ describe Export::Xlsx::InputSheetGenerator do
                   'Project',
                   'Status',
                   'Assignee',
-                  'Assignee email'
+                  'Assignee email',
+                  'Imported'
                 ],
                 rows: []
               }
@@ -679,7 +860,7 @@ describe Export::Xlsx::InputSheetGenerator do
             :idea_with_topics,
             project: phase.project,
             phases: [phase],
-            author: create(:user, custom_field_values: { create(:custom_field_birthyear).code => 1999 }),
+            author: create(:user, custom_field_answers: [build(:custom_field_answer, key: create(:custom_field_birthyear).key, value: 1999)]),
             assignee: assignee,
             manual_votes_amount: 12
           )
@@ -719,6 +900,7 @@ describe Export::Xlsx::InputSheetGenerator do
                 'Status',
                 'Assignee',
                 'Assignee email',
+                'Imported',
                 'birthyear'
               ],
               rows: [
@@ -727,7 +909,7 @@ describe Export::Xlsx::InputSheetGenerator do
                   ideation_response1.title_multiloc['en'],
                   'It would improve the air quality!', # html tags are removed
                   %r{\A/uploads/.+/idea_file/file/#{attachment1.id}/#{attachment1.name}\Z},
-                  "#{ideation_response1.topics[0].title_multiloc['en']};#{ideation_response1.topics[1].title_multiloc['en']}",
+                  "#{ideation_response1.input_topics[0].title_multiloc['en']};#{ideation_response1.input_topics[1].title_multiloc['en']}",
                   ideation_response1.location_point.coordinates.last,
                   ideation_response1.location_point.coordinates.first,
                   ideation_response1.location_description,
@@ -745,6 +927,7 @@ describe Export::Xlsx::InputSheetGenerator do
                   ideation_response1.idea_status.title_multiloc['en'],
                   ideation_response1.assignee.full_name,
                   ideation_response1.assignee.email,
+                  'false',
                   1999
                 ]
               ]
@@ -762,7 +945,7 @@ describe Export::Xlsx::InputSheetGenerator do
             :idea_with_topics,
             project: phase.project,
             phases: [phase],
-            custom_field_values: { extra_idea_field.key => 'Answer' },
+            custom_field_answers: [build(:custom_field_answer, key: extra_idea_field.key, value: 'Answer')],
             assignee: assignee
           )
         end
@@ -821,7 +1004,8 @@ describe Export::Xlsx::InputSheetGenerator do
                   'Project',
                   'Status',
                   'Assignee',
-                  'Assignee email'
+                  'Assignee email',
+                  'Imported'
                 ],
                 rows: [
                   [
@@ -829,7 +1013,7 @@ describe Export::Xlsx::InputSheetGenerator do
                     ideation_response1.title_multiloc['en'],
                     'It would improve the air quality!', # html tags are removed
                     %r{\A/uploads/.+/idea_file/file/#{attachment1.id}/#{attachment1.name}\n/uploads/.+/idea_file/file/#{attachment2.id}/#{attachment2.name}\Z},
-                    "#{ideation_response1.topics[0].title_multiloc['en']};#{ideation_response1.topics[1].title_multiloc['en']}",
+                    "#{ideation_response1.input_topics[0].title_multiloc['en']};#{ideation_response1.input_topics[1].title_multiloc['en']}",
                     ideation_response1.location_point.coordinates.last,
                     ideation_response1.location_point.coordinates.first,
                     ideation_response1.location_description,
@@ -847,7 +1031,8 @@ describe Export::Xlsx::InputSheetGenerator do
                     phase.project.title_multiloc['en'],
                     ideation_response1.idea_status.title_multiloc['en'],
                     ideation_response1.assignee.full_name,
-                    ideation_response1.assignee.email
+                    ideation_response1.assignee.email,
+                    'false'
                   ]
                 ]
               }
@@ -885,7 +1070,8 @@ describe Export::Xlsx::InputSheetGenerator do
                   'Project',
                   'Status',
                   'Assignee',
-                  'Assignee email'
+                  'Assignee email',
+                  'Imported'
                 ],
                 rows: [
                   [
@@ -893,7 +1079,7 @@ describe Export::Xlsx::InputSheetGenerator do
                     ideation_response1.title_multiloc['en'],
                     'It would improve the air quality!', # html tags are removed
                     %r{\A/uploads/.+/idea_file/file/#{attachment1.id}/#{attachment1.name}\n/uploads/.+/idea_file/file/#{attachment2.id}/#{attachment2.name}\Z},
-                    "#{ideation_response1.topics[0].title_multiloc['en']};#{ideation_response1.topics[1].title_multiloc['en']}",
+                    "#{ideation_response1.input_topics[0].title_multiloc['en']};#{ideation_response1.input_topics[1].title_multiloc['en']}",
                     ideation_response1.location_point.coordinates.last,
                     ideation_response1.location_point.coordinates.first,
                     ideation_response1.location_description,
@@ -911,7 +1097,8 @@ describe Export::Xlsx::InputSheetGenerator do
                     phase.project.title_multiloc['en'],
                     ideation_response1.idea_status.title_multiloc['en'],
                     "#{assignee.first_name} #{assignee.last_name}",
-                    assignee.email
+                    assignee.email,
+                    'false'
                   ]
                 ]
               }
@@ -943,7 +1130,8 @@ describe Export::Xlsx::InputSheetGenerator do
                 'Dislikes',
                 'Unsure',
                 'URL',
-                'Project'
+                'Project',
+                'Imported'
               ],
               rows: []
             }
@@ -974,7 +1162,8 @@ describe Export::Xlsx::InputSheetGenerator do
                 'Dislikes',
                 'Unsure',
                 'URL',
-                'Project'
+                'Project',
+                'Imported'
               ],
               rows: [
                 [
@@ -989,7 +1178,8 @@ describe Export::Xlsx::InputSheetGenerator do
                   1,
                   3,
                   anything,
-                  idea.project.title_multiloc['en']
+                  idea.project.title_multiloc['en'],
+                  'false'
                 ]
               ]
             }

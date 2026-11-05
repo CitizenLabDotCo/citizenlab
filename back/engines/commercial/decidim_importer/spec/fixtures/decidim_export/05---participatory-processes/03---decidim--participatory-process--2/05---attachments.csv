@@ -1,0 +1,3 @@
+uid,title,description,weight,file
+decidim--attachment--1,"{""fr"":""Compte-rendu de la réunion""}","{""fr"":""Compte-rendu détaillé""}",1,http://example.org/files/redirect/abc123/Compte-rendu%20r%C3%A9union.pdf
+decidim--attachment--2,"{""fr"":""Plan d'actions""}","{""fr"":""Document de travail""}",0,http://example.org/files/redirect/def456/Plan%20d'actions.pdf

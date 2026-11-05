@@ -50,19 +50,17 @@ describe ProjectsFinderAdminService do
     it 'returns all projects for admin user' do
       admin_user = create(:admin)
       result = described_class.filter_moderatable(Project.all, admin_user)
-      expect(result.pluck(:id)).to match_array([
-        project_in_folder1.id,
-        project_in_folder2.id,
-        project_without_folder.id
-      ])
+      expect(result.pluck(:id)).to contain_exactly(project_in_folder1.id, project_in_folder2.id, project_without_folder.id)
     end
 
     it 'returns projects user can moderate if not admin' do
       result = described_class.filter_moderatable(Project.all, user)
-      expect(result.pluck(:id)).to match_array([
-        project_without_folder.id,
-        project_in_folder1.id
-      ])
+      expect(result.pluck(:id)).to contain_exactly(project_without_folder.id, project_in_folder1.id)
+    end
+
+    it 'returns empty scope if there is no user' do
+      result = described_class.filter_moderatable(Project.all, nil)
+      expect(result.count).to eq 0
     end
   end
 
@@ -155,7 +153,7 @@ describe ProjectsFinderAdminService do
 
     it 'returns all projects when no managers specified' do
       result = described_class.filter_project_manager(Project.all, {})
-      expect(result.pluck(:id)).to match_array([p1.id, p2.id, p3.id])
+      expect(result.pluck(:id)).to contain_exactly(p1.id, p2.id, p3.id)
     end
   end
 
@@ -175,75 +173,69 @@ describe ProjectsFinderAdminService do
     end
   end
 
-  describe 'self.filter_start_date' do
-    let!(:p1) { create_project(start_at: Time.zone.today - 5.days, end_at: Time.zone.today + 5.days) }
-    let!(:p2) { create_project(start_at: Time.zone.today - 10.days, end_at: Time.zone.today - 5.days) }
-    let!(:p3) { create_project(start_at: Time.zone.today + 5.days, end_at: Time.zone.today + 10.days) }
-    let!(:p4) { create_project(start_at: Time.zone.today + 1.day, end_at: nil) }
+  describe '.filter_start_date' do
+    let!(:p1) { create_project(start_at: 5.days.ago, end_at: 5.days.from_now) }
+    let!(:p2) { create_project(start_at: 10.days.ago, end_at: 5.days.ago) }
+    let!(:p3) { create_project(start_at: 5.days.from_now, end_at: 10.days.from_now) }
+    let!(:p4) { create_project(start_at: 1.day.from_now) }
     let!(:p5) do
       create_project(
-        start_at: Time.zone.today - 50.days,
-        end_at: Time.zone.today - 5.days,
-        start_at2: Time.zone.today - 4.days,
-        end_at2: Time.zone.today + 3.days
+        start_at: 50.days.ago, end_at: 5.days.ago,
+        start_at2: 4.days.ago, end_at2: 3.days.from_now
       )
     end
 
     it 'filters projects by start date' do
-      result = described_class.filter_start_date(Project.all, { min_start_date: Time.zone.today - 7.days, max_start_date: Time.zone.today + 3.days })
-      expect(result.pluck(:id).sort).to match_array([p1.id, p4.id])
+      today = Date.current
+
+      result = described_class.filter_start_date(Project, {
+        min_start_date: today - 5.days,
+        max_start_date: today + 2.days
+      })
+
+      expect(result).to contain_exactly(p1, p4)
     end
 
     it 'returns all projects when range is empty' do
       result = described_class.filter_start_date(Project.all, { min_start_date: nil, max_start_date: nil })
-      expect(result.pluck(:id).sort).to match_array([p1.id, p2.id, p3.id, p4.id, p5.id])
+      expect(result.pluck(:id).sort).to contain_exactly(p1.id, p2.id, p3.id, p4.id, p5.id)
     end
   end
 
   describe 'self.filter_participation_states' do
     # Project that has not started yet
-    let!(:not_started_project) do
-      project = create(:project)
-      create(:phase, start_at: Time.zone.today + 10.days, project: project)
-      project
-    end
+    let!(:not_started_project) { create(:phase, start_at: 10.days.from_now).project }
 
     # Project with current data collection phase
     let!(:collecting_data_project) do
-      project = create(:project)
-      create(:phase, start_at: Time.zone.today - 20.days, end_at: Time.zone.today - 11.days, project: project, participation_method: 'information')
-      create(:phase, start_at: Time.zone.today - 10.days, end_at: Time.zone.today + 10.days, project: project, participation_method: 'ideation')
-      project
+      create(:project).tap do |project|
+        p1 = create(:information_phase, start_at: 20.days.ago, end_at: 10.days.ago, project:)
+        create(:ideation_phase, start_at: p1.end_at, end_at: 10.days.from_now, project:)
+      end
     end
 
     # Project with current information phase
     let!(:information_phase_project) do
-      project = create(:project)
-      create(:phase, start_at: Time.zone.today - 20.days, end_at: Time.zone.today - 11.days, project: project, participation_method: 'ideation')
-      create(:phase, start_at: Time.zone.today - 10.days, end_at: Time.zone.today + 10.days, project: project, participation_method: 'information')
-      create(:phase, start_at: Time.zone.today + 11.days, end_at: nil, project: project, participation_method: 'ideation')
-      project
+      create(:project).tap do |project|
+        past_phase = create(:ideation_phase, start_at: 20.days.ago, end_at: 10.days.ago, project:)
+        current_phase = create(:information_phase, start_at: past_phase.end_at, end_at: 10.days.from_now, project:)
+        create(:ideation_phase, start_at: current_phase.end_at, project:)
+      end
     end
 
     # Project that is completely in the past
-    let!(:past_project) do
-      project = create(:project)
-      create(:phase, start_at: Time.zone.today - 30.days, end_at: Time.zone.today - 20.days, project: project)
-      project
-    end
+    let!(:past_project) { create(:phase, start_at: 30.days.ago, end_at: 20.days.ago).project }
 
     # Project that has a gap between phases, and right now we're in the gap
     let!(:gap_project) do
-      project = create(:project)
-      create(:phase, start_at: Time.zone.today - 30.days, end_at: Time.zone.today - 20.days, project: project)
-      create(:phase, start_at: Time.zone.today + 10.days, end_at: Time.zone.today + 20.days, project: project)
-      project
+      create(:project).tap do |project|
+        create(:phase, start_at: 30.days.ago, end_at: 20.days.ago, project:)
+        create(:phase, start_at: 10.days.from_now, end_at: 20.days.from_now, project:)
+      end
     end
 
     # Project without any phases
-    let!(:project_without_phases) do
-      create(:project)
-    end
+    let!(:project_without_phases) { create(:project) }
 
     it 'returns all projects when no participation states specified' do
       result = described_class.filter_participation_states(Project.all, {})
@@ -307,12 +299,12 @@ describe ProjectsFinderAdminService do
 
     it 'returns projects in the specified folder' do
       result = described_class.filter_by_folder_ids(Project.all, { folder_ids: [folder1.id] })
-      expect(result.pluck(:id)).to match_array([project_in_folder1.id])
+      expect(result.pluck(:id)).to contain_exactly(project_in_folder1.id)
     end
 
     it 'returns projects in any of the specified folders' do
       result = described_class.filter_by_folder_ids(Project.all, { folder_ids: [folder1.id, folder2.id] })
-      expect(result.pluck(:id)).to match_array([project_in_folder1.id, project_in_folder2.id])
+      expect(result.pluck(:id)).to contain_exactly(project_in_folder1.id, project_in_folder2.id)
     end
 
     it 'returns all projects if folder_ids is blank' do
@@ -321,43 +313,57 @@ describe ProjectsFinderAdminService do
     end
   end
 
-  describe 'self.filter_current_phase_participation_method' do
-    let!(:project_ideation) do
-      project = create(:project)
-      create(:phase, start_at: Time.zone.today - 10.days, end_at: Time.zone.today + 10.days, project: project, participation_method: 'ideation')
-      project
-    end
-    let!(:project_voting) do
-      project = create(:project)
-      create(:phase, start_at: Time.zone.today - 10.days, end_at: Time.zone.today + 10.days, project: project, participation_method: 'voting', voting_method: 'single_voting')
-      project
-    end
-    let!(:project_information) do
-      project = create(:project)
-      create(:phase, start_at: Time.zone.today - 10.days, end_at: Time.zone.today + 10.days, project: project, participation_method: 'information')
-      project
-    end
-    let!(:project_ideation_future) do
-      project = create(:project)
-      create(:phase, start_at: Time.zone.today + 10.days, end_at: Time.zone.today + 20.days, project: project, participation_method: 'ideation')
+  describe 'self.filter_participation_methods' do
+    let!(:project_ideation) { create(:ideation_phase, start_at: 10.days.ago, end_at: 10.days.from_now).project }
+    let!(:project_voting) { create(:single_voting_phase, start_at: 10.days.ago, end_at: 10.days.from_now).project }
+    let!(:project_information) { create(:information_phase, start_at: 10.days.ago, end_at: 10.days.from_now).project }
+    let!(:project_ideation_future) { create(:ideation_phase, start_at: 10.days.from_now, end_at: 20.days.from_now).project }
+    let!(:project_ideation_past) { create(:ideation_phase, start_at: 20.days.ago, end_at: 10.days.ago).project }
+
+    # A project whose current phase is information, but which also has a past
+    # voting phase and a future ideation phase.
+    let!(:project_multi_phase) do
+      project = create(:information_phase, start_at: 10.days.ago, end_at: 10.days.from_now).project
+      create(:single_voting_phase, project: project, start_at: 20.days.ago, end_at: 11.days.ago)
+      create(:ideation_phase, project: project, start_at: 11.days.from_now, end_at: 20.days.from_now)
       project
     end
 
     it 'returns all projects when no participation_methods specified' do
-      result = described_class.filter_current_phase_participation_method(Project.all, {})
-      expect(result.pluck(:id)).to match_array([
-        project_ideation.id, project_voting.id, project_information.id, project_ideation_future.id
-      ])
+      result = described_class.filter_participation_methods(Project.all, {})
+      expect(result.pluck(:id)).to contain_exactly(
+        project_ideation.id, project_voting.id, project_information.id,
+        project_ideation_future.id, project_ideation_past.id, project_multi_phase.id
+      )
     end
 
     it 'filters projects by a single participation method' do
-      result = described_class.filter_current_phase_participation_method(Project.all, { participation_methods: ['ideation'] })
-      expect(result.pluck(:id)).to eq([project_ideation.id])
+      result = described_class.filter_participation_methods(Project.all, { participation_methods: ['ideation'] })
+      expect(result.pluck(:id)).to contain_exactly(project_ideation.id, project_ideation_future.id, project_ideation_past.id, project_multi_phase.id)
     end
 
     it 'filters projects by multiple participation methods' do
-      result = described_class.filter_current_phase_participation_method(Project.all, { participation_methods: %w[ideation voting] })
-      expect(result.pluck(:id)).to match_array([project_ideation.id, project_voting.id])
+      result = described_class.filter_participation_methods(Project.all, { participation_methods: %w[ideation voting] })
+      expect(result.pluck(:id)).to contain_exactly(
+        project_ideation.id, project_voting.id, project_ideation_future.id,
+        project_ideation_past.id, project_multi_phase.id
+      )
+    end
+
+    it 'matches on phases that are not current' do
+      result = described_class.filter_participation_methods(Project.all, { participation_methods: ['voting'] })
+      expect(result.pluck(:id)).to contain_exactly(project_voting.id, project_multi_phase.id)
+    end
+
+    it 'returns each matching project only once when several of its phases match' do
+      result = described_class.filter_participation_methods(Project.all, { participation_methods: %w[information voting] })
+      expect(result.pluck(:id)).to contain_exactly(project_information.id, project_voting.id, project_multi_phase.id)
+    end
+
+    it 'excludes projects without phases' do
+      project_without_phases = create(:project)
+      result = described_class.filter_participation_methods(Project.all, { participation_methods: ['ideation'] })
+      expect(result.pluck(:id)).not_to include(project_without_phases.id)
     end
   end
 
@@ -369,6 +375,137 @@ describe ProjectsFinderAdminService do
     it 'sorts projects alphabetically by title' do
       result = described_class.sort_alphabetically(Project.all, { locale: 'en', sort: 'alphabetically_asc' })
       expect(result.pluck(:id)).to eq([p1.id, p2.id, p3.id])
+    end
+
+    it 'sorts projects in reverse alphabetical order' do
+      result = described_class.sort_alphabetically(Project.all, { locale: 'en', sort: 'alphabetically_desc' })
+      expect(result.pluck(:id)).to eq([p3.id, p2.id, p1.id])
+    end
+
+    it 'falls back to en when the locale is not configured on the tenant' do
+      expect(AppConfiguration.instance.settings('core', 'locales')).not_to include('zz')
+
+      result = described_class.sort_alphabetically(Project.all, { locale: 'zz', sort: 'alphabetically_asc' })
+
+      expect(result.pluck(:id)).to eq([p1.id, p2.id, p3.id])
+    end
+
+    it 'still sorts on a configured non-default locale' do
+      # The whitelist must not break locales the tenant legitimately uses.
+      locale = (AppConfiguration.instance.settings('core', 'locales') - ['en']).first
+      # Deliberately ordered the other way round in en, so sorting on the other
+      # locale is what produces the expectation below.
+      other1 = create(:project, title_multiloc: { 'en' => 'Zeta', locale => 'Aap' })
+      other2 = create(:project, title_multiloc: { 'en' => 'Alpha B', locale => 'Zebra' })
+
+      result = described_class.sort_alphabetically(
+        Project.where(id: [other1.id, other2.id]),
+        { locale: locale, sort: 'alphabetically_asc' }
+      )
+
+      expect(result.pluck(:id)).to eq([other1.id, other2.id])
+    end
+
+    # The ORDER BY is built with Arel.sql, which opts out of ActiveRecord's
+    # protection against raw SQL in `order`, and params[:locale] reaches it
+    # straight from the query string. These cover the sanitising.
+    context 'when params[:locale] carries a SQL injection payload' do
+      # Interpolated verbatim, this closes the string literal and appends its
+      # own ordering; the trailing -- swallows the rest of the clause.
+      let(:reordering_payload) { "zz' , projects.title_multiloc->>'en' DESC --" }
+
+      it 'does not let the payload take over the ORDER BY' do
+        result = described_class.sort_alphabetically(
+          Project.all, { locale: reordering_payload, sort: 'alphabetically_asc' }
+        )
+
+        expect(result.pluck(:id)).to eq([p1.id, p2.id, p3.id])
+        # The order the payload would have produced.
+        expect(result.pluck(:id)).not_to eq([p3.id, p2.id, p1.id])
+      end
+
+      it 'does not emit the payload into the generated SQL' do
+        sql = described_class.sort_alphabetically(
+          Project.all, { locale: reordering_payload, sort: 'alphabetically_asc' }
+        ).to_sql
+
+        expect(sql).not_to include('DESC --')
+        expect(sql).to include("->>'en'")
+      end
+
+      it 'does not break on a locale containing a single quote' do
+        # Interpolated verbatim, this leaves an unterminated string literal and
+        # the query fails to parse.
+        expect do
+          described_class.sort_alphabetically(
+            Project.all, { locale: "en'", sort: 'alphabetically_asc' }
+          ).load
+        end.not_to raise_error
+      end
+
+      it 'does not let the payload reach the query planner' do
+        # Syntactically valid, so it gets past the parser; it only fails once
+        # the planner resolves identifiers. Treated as a literal it is inert.
+        expect do
+          described_class.sort_alphabetically(
+            Project.all, { locale: "zz' , projects.no_such_column --" }
+          ).load
+        end.not_to raise_error
+      end
+    end
+  end
+
+  describe 'self.sort_by_participation' do
+    before_all do
+      Analytics::PopulateDimensionsService.populate_types
+    end
+
+    let!(:p1) { create(:project, title_multiloc: { 'en' => 'Project 1' }) }
+    let!(:p2) { create(:project, title_multiloc: { 'en' => 'Project 2' }) }
+    let!(:p3) { create(:project, title_multiloc: { 'en' => 'Project 3' }) }
+    let!(:p4) { create(:project, title_multiloc: { 'en' => 'Project 4' }) }
+
+    before do
+      create_list(:idea, 5, project: p1)
+      create_list(:idea, 10, project: p2)
+      create_list(:idea, 2, project: p3)
+    end
+
+    it 'sorts projects by participation count in ascending order' do
+      result = described_class.sort_by_participation(Project.all, { sort: 'participation_asc' })
+      expect(result.pluck(:id)).to eq([p4.id, p3.id, p1.id, p2.id])
+    end
+
+    it 'sorts projects by participation count in descending order' do
+      result = described_class.sort_by_participation(Project.all, { sort: 'participation_desc' })
+      expect(result.pluck(:id)).to eq([p2.id, p1.id, p3.id, p4.id])
+    end
+
+    it 'handles multiple participation types correctly' do
+      idea = create(:idea, project: p3)
+      create_list(:comment, 3, idea: idea)
+      create_list(:reaction, 2, reactable: idea)
+
+      result = described_class.sort_by_participation(Project.all, { sort: 'participation_desc' })
+      # p3 now has: 2 ideas + 1 new idea + 3 comments + 2 reactions = 8 participations
+      # p2 has 10, p3 has 8, p1 has 5, p4 has 0
+      expect(result.pluck(:id)).to eq([p2.id, p3.id, p1.id, p4.id])
+    end
+
+    it 'works with pre-filtered scopes that have joins' do
+      pre_filtered_scope = Project
+        .joins(:admin_publication)
+        .where(admin_publication: { publication_status: 'published' })
+
+      result = described_class.execute(
+        pre_filtered_scope,
+        { sort: 'participation_desc' },
+        current_user: create(:admin)
+      )
+
+      # Force the query to actually run
+      expect { result.to_a }.not_to raise_error(ActiveRecord::StatementInvalid)
+      expect(result.to_a).to be_an(Array)
     end
   end
 
@@ -485,31 +622,26 @@ describe ProjectsFinderAdminService do
     describe 'sort: recently_viewed' do
       let!(:user) { create(:admin) }
       let!(:p1) do
-        project = create_project(start_at: Time.zone.today - 40.days, end_at: Time.zone.today - 5.days)
-        create_session(project, Time.zone.today - 20.days)
-        project
+        create_project(start_at: 40.days.ago, end_at: 5.days.ago).tap do |project|
+          create_session(project, 20.days.ago)
+        end
       end
       let!(:p2) do
-        project = create_project(start_at: Time.zone.today - 30.days, end_at: Time.zone.today + 30.days)
-        create_session(project, Time.zone.today - 30.days)
-        create_session(project, Time.zone.today - 10.days)
-        project
+        create_project(start_at: 30.days.ago, end_at: 30.days.from_now).tap do |project|
+          create_session(project, 30.days.ago)
+          create_session(project, 10.days.ago)
+        end
       end
       let!(:p3) do
-        project = create_project(start_at: Time.zone.today - 30.days, end_at: Time.zone.today + 30.days)
-        create_session(project, Time.zone.today - 5.days)
-        project
+        create_project(start_at: 30.days.ago, end_at: 30.days.from_now).tap do |project|
+          create_session(project, 5.days.ago)
+        end
       end
       let!(:p4) do
-        project = create_project(start_at: Time.zone.today - 30.days, end_at: Time.zone.today + 30.days)
-        s4 = create(:session, created_at: Time.zone.today - 4.days, user_id: create(:user).id)
-        create(
-          :pageview,
-          session_id: s4.id,
-          path: '/en/',
-          created_at: Time.zone.today - 4.days
-        )
-        project
+        create_project(start_at: 30.days.ago, end_at: 30.days.from_now).tap do |_project|
+          session = create(:session, created_at: 4.days.ago, user_id: create(:user).id)
+          create(:pageview, session_id: session.id, path: '/en/', created_at: session.created_at)
+        end
       end
 
       def create_session(project, created_at)
@@ -532,7 +664,7 @@ describe ProjectsFinderAdminService do
       end
 
       it 'filters overlapping period' do
-        min_start_date = Time.zone.today - 35.days
+        min_start_date = 35.days.ago
 
         result = described_class.execute(
           Project.all,
@@ -545,33 +677,19 @@ describe ProjectsFinderAdminService do
     end
 
     describe 'sort: phase_starting_or_ending_soon' do
-      let!(:p1) do
-        create_project(
-          start_at: Date.new(2020, 1, 1),
-          end_at: Date.new(2021, 1, 1),
-          created_at: Date.new(2019, 1, 1)
-        )
-      end
-      let!(:p2) do
-        create_project(
-          start_at: Date.new(2020, 2, 1),
-          end_at: nil,
-          created_at: Date.new(2019, 2, 1)
-        )
-      end
-
+      let!(:p1) { create_project(start_at: '2020-01-01', end_at: '2021-01-01', created_at: '2019-01-01') }
+      let!(:p2) { create_project(start_at: '2020-02-01', end_at: nil, created_at: '2019-02-01') }
       let!(:p3) do
         create_project(
-          start_at: Date.new(2020, 2, 3), end_at: Date.new(2023, 4, 1),
-          start_at2: Date.new(2023, 4, 2), end_at2: Time.zone.today + 20.days
+          start_at: '2020-02-03', end_at: '2023-04-01',
+          start_at2: '2023-04-01', end_at2: 21.days.from_now
         )
       end
-
-      let!(:p4) { create_project(start_at: Date.new(2020, 4, 1), end_at: Time.zone.today + 100.days) }
-      let!(:p5) { create_project(start_at: Time.zone.today + 5.days, end_at: Time.zone.today + 25.days) }
-      let!(:p6) { create_project(start_at: Time.zone.today + 4.days, end_at: Time.zone.today + 50.days) }
-      let!(:p7) { create_project(start_at: Time.zone.today + 8.days, end_at: nil) }
-      let!(:p8) { create_project(start_at: Time.zone.today + 60.days, end_at: Time.zone.today + 90.days) }
+      let!(:p4) { create_project(start_at: '2020-04-01', end_at: 100.days.from_now) }
+      let!(:p5) { create_project(start_at: 5.days.from_now, end_at: 25.days.from_now) }
+      let!(:p6) { create_project(start_at: 4.days.from_now, end_at: 50.days.from_now) }
+      let!(:p7) { create_project(start_at: 8.days.from_now, end_at: nil) }
+      let!(:p8) { create_project(start_at: 60.days.from_now, end_at: 90.days.from_now) }
 
       it 'sorts projects by phases starting or ending soon' do
         result = described_class.execute(
@@ -588,7 +706,7 @@ describe ProjectsFinderAdminService do
       end
 
       it 'filters overlapping period' do
-        min_start_date = Time.zone.today
+        min_start_date = Date.current
 
         result = described_class.execute(
           Project.all,
@@ -597,6 +715,60 @@ describe ProjectsFinderAdminService do
         )
 
         expect(result.pluck(:id)).to eq([p6, p5, p7, p8].pluck(:id))
+      end
+    end
+
+    describe 'with excluded_project_ids' do
+      let!(:project1) { create(:project) }
+      let!(:project2) { create(:project) }
+      let!(:project3) { create(:project) }
+      let(:admin_user) { create(:admin) }
+
+      it 'excludes projects by their project IDs' do
+        result = described_class.execute(
+          Project.all,
+          { excluded_project_ids: [project1.id] },
+          current_user: admin_user
+        )
+
+        expect(result.pluck(:id)).to contain_exactly(project2.id, project3.id)
+      end
+
+      it 'returns all projects when excluded_project_ids is empty' do
+        result = described_class.execute(
+          Project.all,
+          { excluded_project_ids: [] },
+          current_user: admin_user
+        )
+
+        expect(result.pluck(:id)).to contain_exactly(project1.id, project2.id, project3.id)
+      end
+    end
+
+    describe 'with excluded_folder_ids' do
+      let!(:folder) { create(:project_folder) }
+      let!(:project_in_folder) { create(:project, folder: folder) }
+      let!(:project_outside_folder) { create(:project) }
+      let(:admin_user) { create(:admin) }
+
+      it 'excludes projects within excluded folders' do
+        result = described_class.execute(
+          Project.all,
+          { excluded_folder_ids: [folder.id] },
+          current_user: admin_user
+        )
+
+        expect(result.pluck(:id)).to contain_exactly(project_outside_folder.id)
+      end
+
+      it 'returns all projects when excluded_folder_ids is empty' do
+        result = described_class.execute(
+          Project.all,
+          { excluded_folder_ids: [] },
+          current_user: admin_user
+        )
+
+        expect(result.pluck(:id)).to contain_exactly(project_in_folder.id, project_outside_folder.id)
       end
     end
   end

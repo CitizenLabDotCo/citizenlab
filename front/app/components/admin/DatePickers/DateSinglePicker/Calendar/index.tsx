@@ -11,12 +11,18 @@ import { userTimezone } from 'utils/dateUtils';
 
 import { getEndMonth } from '../../_shared/getStartEndMonth';
 import { getLocale } from '../../_shared/locales';
+import { preventEnterToSubmit } from '../../_shared/preventEnterToSubmit';
 import { CalendarProps } from '../typings';
 
 const DayPickerStyles = styled.div`
   .rdp-root {
     --rdp-accent-color: ${colors.teal700};
     --rdp-accent-background-color: ${colors.teal100};
+
+    .rdp-dropdown_root:has(> select:focus-visible) {
+      border: 2px solid ${colors.black};
+      border-radius: 4px;
+    }
   }
 
   .rdp-selected > button.rdp-day_button {
@@ -33,13 +39,14 @@ const Calendar = ({
   endMonth: _endMonth,
   defaultMonth,
   onChange,
+  disabledPast = undefined,
 }: CalendarProps) => {
   const locale = useLocale();
   const startMonth = _startMonth ?? new Date(1900, 0);
   const endMonth = getEndMonth({ endMonth: _endMonth, selectedDate });
 
   return (
-    <DayPickerStyles>
+    <DayPickerStyles onKeyDown={preventEnterToSubmit}>
       <DayPicker
         mode="single"
         captionLayout="dropdown"
@@ -51,6 +58,7 @@ const Calendar = ({
         selected={selectedDate}
         onSelect={onChange}
         timeZone={userTimezone}
+        disabled={disabledPast}
       />
     </DayPickerStyles>
   );

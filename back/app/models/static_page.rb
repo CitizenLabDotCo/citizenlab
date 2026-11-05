@@ -28,36 +28,61 @@
 #  bottom_info_section_enabled  :boolean          default(FALSE), not null
 #  bottom_info_section_multiloc :jsonb            not null
 #  header_bg                    :string
+#  project_id                   :uuid
 #
 # Indexes
 #
-#  index_static_pages_on_code  (code)
-#  index_static_pages_on_slug  (slug) UNIQUE
+#  index_static_pages_on_code        (code)
+#  index_static_pages_on_project_id  (project_id)
+#  index_static_pages_on_slug        (slug) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (project_id => projects.id)
 #
 class StaticPage < ApplicationRecord
   include Files::FileAttachable
+  include PlainTextMultiloc
 
   CODES = %w[about cookie-policy terms-and-conditions privacy-policy faq custom].freeze
   RESERVED_SLUGS = (CODES - %w[custom]).freeze
+  # Pages whose content is authored in the content builder. The policy pages keep their own editor.
+  CONTENT_BUILDER_CODES = %w[custom about faq].freeze
 
   slug from: proc { |page| page.title_multiloc&.values&.find(&:present?) }, except: RESERVED_SLUGS
 
-  enum :projects_filter_type, { no_filter: 'no_filter', areas: 'areas', topics: 'topics' }
+  enum :projects_filter_type, { no_filter: 'no_filter', areas: 'areas', global_topics: 'topics', spaces: 'spaces' }
+
+  scope :content_builder_pages, -> { where(code: CONTENT_BUILDER_CODES) }
+
+  has_many_text_images from: :top_info_section_multiloc, as: :top_info_section_text_images
+  has_many_text_images from: :bottom_info_section_multiloc, as: :bottom_info_section_text_images
+  has_many :text_images, as: :imageable, dependent: :destroy
+  accepts_nested_attributes_for :text_images
+
+  belongs_to :project, optional: true
 
   has_one :nav_bar_item, dependent: :destroy
+  has_one :content_builder_layout, class_name: 'ContentBuilder::Layout',
+    as: :content_buildable, dependent: :destroy
   has_many :static_page_files, -> { order(:ordering) }, dependent: :destroy
-  has_many :text_images, as: :imageable, dependent: :destroy
-
-  has_many :static_pages_topics, dependent: :destroy
-  has_many :topics, -> { order(:ordering) }, through: :static_pages_topics
+  has_many :static_pages_global_topics, dependent: :destroy
+  has_many :global_topics, -> { order(:ordering) }, through: :static_pages_global_topics
 
   has_many :areas_static_pages, dependent: :destroy
   has_many :areas, through: :areas_static_pages
 
+  has_many :static_pages_spaces, dependent: :destroy
+  has_many :spaces, through: :static_pages_spaces
+
   accepts_nested_attributes_for :nav_bar_item
-  accepts_nested_attributes_for :text_images
 
   before_validation :set_code, on: :create
+  plain_text_multiloc :title_multiloc,
+    :banner_header_multiloc,
+    :banner_subheader_multiloc,
+    :banner_cta_button_multiloc,
+    prepend: true
   before_validation :strip_title
   before_validation :sanitize_top_info_section_multiloc
   before_validation :sanitize_bottom_info_section_multiloc
@@ -69,6 +94,7 @@ class StaticPage < ApplicationRecord
   validates :code, inclusion: { in: CODES }
   validates :code, uniqueness: true, unless: :custom?
   validate :validate_slug
+  validate :no_nav_bar_item_for_project_scoped
 
   validates :banner_enabled, inclusion: [true, false]
   validates :banner_layout, inclusion: %w[full_width_banner_layout two_column_layout two_row_layout fixed_ratio_layout]
@@ -102,18 +128,30 @@ class StaticPage < ApplicationRecord
       # tenant template, AreasStaticPage records are created after StaticPage records
       # because of their `belongs_to :static_page` association that references StaticPage
       # records.)
-      projects_filter_type == self.class.projects_filter_types.fetch(:areas) && !Current.loading_tenant_template
+      areas? && !Current.loading_tenant_template
     end
   )
   validates(
-    :topics, length: { minimum: 1 },
+    :global_topics, length: { minimum: 1 },
     if: lambda do
       # The validation is skipped when loading a tenant template because it assumes the
-      # existence of StaticPagesTopics records that are not created yet. (When loading a
-      # tenant template, StaticPagesTopics records are created after StaticPage records
+      # existence of StaticPagesGlobalTopics records that are not created yet. (When loading a
+      # tenant template, StaticPagesGlobalTopics records are created after StaticPage records
       # because of their `belongs_to :static_page` association that references StaticPage
       # records.)
-      projects_filter_type == self.class.projects_filter_types.fetch(:topics) && !Current.loading_tenant_template
+      global_topics? && !Current.loading_tenant_template
+    end
+  )
+  validates(
+    :spaces, length: { minimum: 1 },
+    if: lambda do
+      # The validation is skipped when loading a tenant template because it assumes the
+      # existence of StaticPagesSpace records that are not created yet. (When loading a
+      # tenant template, StaticPagesSpace records are created after StaticPage records
+      # because of their `belongs_to :static_page` association that references StaticPage
+      # records.)
+      # NOTE: `spaces?` refers to the projects_filter_type enum predicate.
+      spaces? && !Current.loading_tenant_template
     end
   )
 
@@ -121,8 +159,7 @@ class StaticPage < ApplicationRecord
 
   class << self
     def associations_project_filter_types
-      no_filter = projects_filter_types.fetch(:no_filter)
-      projects_filter_types.except(no_filter)
+      projects_filter_types.except(:no_filter)
     end
   end
 
@@ -130,13 +167,23 @@ class StaticPage < ApplicationRecord
     code == 'custom'
   end
 
+  def content_builder_page?
+    code.in?(CONTENT_BUILDER_CODES)
+  end
+
+  def project_scoped?
+    project_id.present? || project.present?
+  end
+
   def filter_projects(projects_scope)
     options =
       case projects_filter_type
-      when self.class.projects_filter_types.fetch(:areas)
+      when 'areas'
         { areas: areas_static_pages.pluck(:area_id) }
-      when self.class.projects_filter_types.fetch(:topics)
-        { topics: static_pages_topics.pluck(:topic_id) }
+      when 'global_topics'
+        { global_topics: static_pages_global_topics.pluck(:global_topic_id) }
+      when 'spaces'
+        { spaces: static_pages_spaces.pluck(:space_id) }
       else
         {}
       end
@@ -157,6 +204,14 @@ class StaticPage < ApplicationRecord
 
   def validate_slug
     errors.add(:slug, 'reserved') if custom? && slug.in?(RESERVED_SLUGS)
+  end
+
+  # Project-scoped pages live inside a single project and are never added to the
+  # global navigation, so they must not have an associated nav bar item.
+  def no_nav_bar_item_for_project_scoped
+    return unless project_scoped? && nav_bar_item.present?
+
+    errors.add(:nav_bar_item, :not_allowed_for_project_page, message: 'cannot be set for a project page')
   end
 
   def set_code
@@ -194,7 +249,10 @@ class StaticPage < ApplicationRecord
   end
 
   def destroy_obsolete_associations
-    (self.class.associations_project_filter_types.values - [projects_filter_type]).each do |association|
+    # Get enum keys (which match association names like :areas, :global_topics) except for the current filter type
+    # projects_filter_type returns the key as a string, and .keys also returns strings
+    current_key = projects_filter_type
+    (self.class.associations_project_filter_types.keys - [current_key]).each do |association|
       public_send(association).destroy_all
     end
   end

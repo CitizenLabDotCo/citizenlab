@@ -1,30 +1,17 @@
 # frozen_string_literal: true
 
-class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metrics/ClassLength
+class WebApi::V1::IdeasController < ApplicationController
   include BlockingProfanity
 
   SIMILARITIES_LIMIT = 5
 
   before_action :authorize_project_or_ideas, only: %i[index_xlsx]
   skip_before_action :authenticate_user # TODO: temp fix to pass tests
-  skip_after_action :verify_authorized, only: %i[index_xlsx index_mini index_idea_markers filter_counts]
-  skip_after_action :verify_authorized, only: %i[create], unless: -> { response.status == 400 }
+  skip_after_action :verify_authorized, only: %i[index_xlsx index_mini index_idea_markers filter_counts index_survey_submissions similar_ideas]
   after_action :verify_policy_scoped, only: %i[index index_mini]
-  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
-
-  def json_forms_schema
-    input = Idea.find params[:id]
-    enabled_fields = IdeaCustomFieldsService.new(input.custom_form).enabled_fields
-    json_attributes = JsonFormsService.new.input_ui_and_json_multiloc_schemas enabled_fields, current_user, input.participation_method_on_creation, input.input_term
-    render json: raw_json(json_attributes)
-  end
 
   def index
-    ideas = IdeasFinder.new(
-      params,
-      scope: policy_scope(Idea).submitted_or_published,
-      current_user: current_user
-    ).find_records
+    ideas = find_ideas
 
     ideas = paginate SortByParamsService.new.sort_ideas(ideas, params, current_user)
 
@@ -32,14 +19,15 @@ class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metr
     ideas = ideas.includes(
       :idea_images,
       :idea_trending_info,
-      :topics,
-      :phases,
+      :input_topics,
       :idea_status,
-      :creation_phase,
       :manual_votes_last_updated_by,
       {
+        custom_field_answers: :custom_field,
+        phases: { permissions: [:groups] },
+        creation_phase: { permissions: [:groups] },
         project: [:phases, { phases: { permissions: [:groups] } }, { custom_form: [:custom_fields] }],
-        author: [:unread_notifications]
+        author: [:unread_notifications, { custom_field_answers: :custom_field }]
       }
     )
     ideas = ideas.includes(:idea_import) unless current_user&.normal_user? # defined through BulkImportIdeas engine
@@ -48,11 +36,7 @@ class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metr
   end
 
   def index_mini
-    ideas = IdeasFinder.new(
-      params,
-      scope: policy_scope(Idea).submitted_or_published,
-      current_user: current_user
-    ).find_records
+    ideas = find_ideas
     ideas = paginate SortByParamsService.new.sort_ideas(ideas, params, current_user)
     ideas = ideas.includes(:idea_trending_info)
 
@@ -60,31 +44,23 @@ class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metr
   end
 
   def index_idea_markers
-    ideas = IdeasFinder.new(
-      params,
-      scope: policy_scope(Idea).submitted_or_published,
-      current_user: current_user
-    ).find_records
+    ideas = find_ideas
     ideas = paginate SortByParamsService.new.sort_ideas(ideas, params, current_user)
-    ideas = ideas.includes(:author, :topics, :project, :idea_status)
+    ideas = ideas.includes(:author, :input_topics, :project, :idea_status)
 
     render json: linked_json(ideas, WebApi::V1::PostMarkerSerializer, params: jsonapi_serializer_params)
   end
 
   def index_xlsx
-    ideas = IdeasFinder.new(
-      params.merge(filter_can_moderate: true),
-      scope: policy_scope(Idea).submitted_or_published,
-      current_user: current_user
-    ).find_records
+    ideas = find_ideas(finder_params: params.merge(filter_can_moderate: true))
     ideas = SortByParamsService.new.sort_ideas(ideas, params, current_user)
-    ideas = ideas.includes(:author, :topics, :project, :idea_status, :idea_files, :attached_files)
+    ideas = ideas.includes(:author, :input_topics, :project, :idea_status, :idea_files, :attached_files)
 
     with_cosponsors = AppConfiguration.instance.feature_activated?('input_cosponsorship')
     ideas = ideas.includes(:cosponsors) if with_cosponsors
 
     I18n.with_locale(current_user&.locale) do
-      xlsx = XlsxService.new.generate_ideas_xlsx(ideas, view_private_attributes: true, with_cosponsors:)
+      xlsx = XlsxService.new.generate_ideas_xlsx(ideas.includes(author: :custom_field_answers), view_private_attributes: true, with_cosponsors:)
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas.xlsx'
     end
   end
@@ -110,17 +86,10 @@ class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metr
   end
 
   def filter_counts
-    ideas = IdeasFinder.new(
-      params,
-      scope: policy_scope(Idea),
-      current_user: current_user
-    ).find_records
-    ideas = SortByParamsService.new.sort_ideas(ideas, params, current_user)
-    ideas = ideas.includes(:idea_trending_info)
-
-    result = IdeasCountService.counts(ideas)
-    result['total'] = ideas.count
-    render json: raw_json(result)
+    scopes_by_facet = filter_count_facets.to_h.transform_values do |filter_path|
+      ideas_without_filter(filter_path)
+    end
+    render json: raw_json(Facets::CountsService.new.counts(filtered_ideas, scopes_by_facet))
   end
 
   def show
@@ -145,104 +114,101 @@ class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metr
   # returns an empty idea if none found
   # used only in native survey autosave
   def draft_by_phase
-    phase = Phase.find(params[:phase_id])
     draft_idea =
-      (current_user && Idea.find_by(creation_phase_id: params[:phase_id], author: current_user, publication_status: 'draft')) ||
+      (current_user && Idea.find_by(creation_phase: phase, author: current_user, publication_status: 'draft')) ||
       Idea.new(project: phase.project, author: current_user, publication_status: 'draft')
-
-    # Merge custom field values from the user's profile
-    # if user fields are presented in the idea form
-    # AND the user_data_collection setting allows it
-    if phase.pmethod.user_fields_in_form?
-      draft_idea.custom_field_values = UserFieldsInSurveyService.merge_user_fields_into_idea(
-        current_user,
-        phase,
-        draft_idea.custom_field_values
-      )
-    end
 
     render_show draft_idea, check_auth: false
   end
 
-  #   Normal users always post in an active phase. They should never provide a phase id.
-  #   Users who can moderate projects post in an active phase if no phase id is given.
-  #   Users who can moderate projects post in the given phase if a phase id is given.
   def create
-    send_error and return if !phase_for_input
-
-    form = phase_for_input.pmethod.custom_form
+    form = phase.pmethod.custom_form
     extract_custom_field_values_from_params!(form)
-    params_for_create = idea_params form
+    # Map topic_ids to input_topic_ids for the new InputTopics system
+    if params[:idea].key?(:topic_ids)
+      params[:idea][:input_topic_ids] = params[:idea].delete(:topic_ids) || []
+    end
+    params_for_create = idea_params(form).except(:project_id, :phase_ids)
     files_params = extract_file_params(params_for_create)
+    # Blank answers mean unanswered, as in #update. Left in, an optional select
+    # sent as '' fails the publication validation for not being one of its options.
+    custom_field_values = CustomFieldService.new.compact_custom_field_values!(params_for_create.delete(:custom_field_values).to_h)
 
     input = Idea.new params_for_create
+    input.project = phase.project
+    input.creation_phase = (phase if !phase.pmethod.transitive?)
+    input.phases = [phase]
 
     files_params.each do |file_params|
       build_idea_file_attachment(input, file_params)
     end
 
-    input.creation_phase = (phase_for_input if !phase_for_input.pmethod.transitive?)
-    input.phase_ids = [phase_for_input.id] if params.dig(:idea, :phase_ids).blank?
-
     # Non persisted attribute needed by policy & anonymous_participation concern for 'everyone' participation only
-    input.request = request if phase_for_input.pmethod.everyone_tracking_enabled?
+    input.request = request if phase.pmethod.everyone_tracking_enabled?
 
-    # If native survey or community monitor:
+    # If native survey or community monitor, and we are publishing this survey:
     # Do not store user ID if user_data_collection it set to "anonymous" or "demographics_only"
     # (anonymous = true on the input just means "do not store user ID")
-    if phase_for_input.pmethod.supports_survey_form? && phase_for_input.pmethod.user_data_collection != 'all_data'
+    # If we are NOT publishing this survey: we need to store the author_id
+    # because otherwise we cannot PATCH it because only the author can
+    published = params_for_create[:publication_status] == 'published'
+    surveylike = phase.pmethod.supports_survey_form?
+    not_all_data = phase.pmethod.user_data_collection != 'all_data'
+
+    if published && surveylike && not_all_data
       input.anonymous = true
     end
 
     input.author ||= current_user
 
-    phase_for_input.pmethod.assign_defaults(input)
+    phase.pmethod.assign_defaults(input)
 
     sidefx.before_create(input, current_user)
 
     authorize input
-    if anonymous_not_allowed?(phase_for_input)
-      render json: { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }, status: :unprocessable_entity
-      return
-    end
-    if idea_status_not_allowed?(input)
-      render json: { errors: { idea_status_id: [{ error: 'Cannot manually assign inputs to an automatic status', value: input.idea_status_id }] } }, status: :unprocessable_entity
-      return
-    end
+    raise ApiError, :anonymous_participation_not_allowed if anonymous_not_allowed?(phase)
+    raise ApiError.new(:idea_status_not_allowed, field: :idea_status_id, value: input.idea_status_id) if idea_status_not_allowed?(input)
+
     verify_profanity input
 
     save_options = {}
-    publication_status = params.dig(:idea, :publication_status)
+    save_options[:context] = :publication if published
 
-    if publication_status == 'published'
-      save_options[:context] = :publication
-
-      if UserFieldsInSurveyService.should_merge_user_fields_into_idea?(
+    if input.publication_status == 'published' && UserFieldsInFormService.should_merge_user_fields_into_idea?(
+      current_user,
+      phase,
+      input
+    )
+      custom_field_values = UserFieldsInFormService.merge_user_fields_into_idea(
         current_user,
-        phase_for_input,
-        input
+        phase,
+        custom_field_values
       )
-        input.custom_field_values = UserFieldsInSurveyService.merge_user_fields_into_idea(
-          current_user,
-          phase_for_input,
-          input.custom_field_values
-        )
-      end
     end
 
+    validate_custom_field_values!(input, form, custom_field_values) if published
+    CustomFieldValuesTransitionService.new.assign(input, custom_field_values)
+
     ActiveRecord::Base.transaction do
-      if input.save(**save_options)
-        update_file_upload_fields input, form, params_for_create
-        sidefx.after_create(input, current_user)
-        write_everyone_tracking_cookie input
-        render json: WebApi::V1::IdeaSerializer.new(
-          input.reload,
-          params: jsonapi_serializer_params,
-          include: %i[author topics phases user_reaction idea_images]
-        ).serializable_hash, status: :created
-      else
-        render json: { errors: input.errors.details }, status: :unprocessable_entity
+      save_or_raise!(input, **save_options)
+      update_file_upload_fields input, form, custom_field_values
+      sidefx.after_create(input, current_user, phase)
+      write_everyone_tracking_cookie input
+
+      permission = Permissions::PermissionInheritanceService.new.find(phase, 'posting_idea')
+      generate_claim_token = permission && permission.permitted_by == 'everyone' && permission.user_data_collection != 'anonymous' && current_user.nil?
+
+      if generate_claim_token
+        ClaimTokenService.generate(input)
       end
+
+      serializer_params = jsonapi_serializer_params.merge(include_claim_token: true)
+
+      render json: WebApi::V1::IdeaSerializer.new(
+        input.reload,
+        params: serializer_params,
+        include: %i[author input_topics phases user_reaction idea_images]
+      ).serializable_hash, status: :created
     end
   end
 
@@ -251,18 +217,10 @@ class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metr
 
     authorize input
 
-    if invalid_blank_author_for_update? input, params
-      render json: { errors: { author: [{ error: :blank }] } }, status: :unprocessable_entity
-      return
-    end
+    raise ApiError.new(:blank, field: :author) if invalid_blank_author_for_update?(input, params)
 
-    extract_custom_field_values_from_params!(input.custom_form)
-    params[:idea][:topic_ids] ||= [] if params[:idea].key?(:topic_ids)
-    params[:idea][:cosponsor_ids] ||= [] if params[:idea].key?(:cosponsor_ids)
-    params[:idea][:phase_ids] ||= [] if params[:idea].key?(:phase_ids)
-    params_service.mark_custom_field_values_to_clear!(input.custom_field_values, params[:idea][:custom_field_values])
-
-    update_params = idea_params(input.custom_form).to_h
+    update_params = prepare_update_params(input)
+    custom_field_values = update_params.delete(:custom_field_values)
 
     legacy_files = FileUpload.where(idea: input)
 
@@ -272,59 +230,74 @@ class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metr
       end
     end
 
-    phase_ids = update_params.delete(:phase_ids) if update_params[:phase_ids]
-    update_params[:custom_field_values] = params_service.updated_custom_field_values(input.custom_field_values, update_params[:custom_field_values])
-    CustomFieldService.new.compact_custom_field_values! update_params[:custom_field_values]
+    # phase_ids/cosponsor_ids are assigned after before_update (below), not via
+    # assign_attributes, so the side-fx can snapshot the previous associations first.
+    phase_ids, cosponsor_ids = extract_deferred_relationship_ids(update_params)
     input.set_manual_votes(update_params[:manual_votes_amount], current_user) if update_params[:manual_votes_amount]
 
     creation_phase = input.creation_phase
 
-    if (input.publication_status == 'published' || update_params[:publication_status] == 'published') && UserFieldsInSurveyService.should_merge_user_fields_into_idea?(
+    if (input.publication_status == 'published' || update_params[:publication_status] == 'published') && UserFieldsInFormService.should_merge_user_fields_into_idea?(
       current_user,
       creation_phase,
       input
     )
-      update_params[:custom_field_values] = UserFieldsInSurveyService.merge_user_fields_into_idea(
+      custom_field_values = UserFieldsInFormService.merge_user_fields_into_idea(
         current_user,
         creation_phase,
-        update_params[:custom_field_values]
+        custom_field_values
       )
     end
 
-    update_errors = nil
+    # If native survey or community monitor, and we are publishing this survey:
+    # Do not store user ID if user_data_collection it set to "anonymous" or "demographics_only"
+    # (anonymous = true on the input just means "do not store user ID")
+    # we can only anonymize it after publishing because before that it might
+    # still receive other PATCHes
+    anonymize_user_at_the_end = if creation_phase
+      published = update_params[:publication_status] == 'published'
+      surveylike = creation_phase.pmethod.supports_survey_form?
+      not_all_data = creation_phase.pmethod.user_data_collection != 'all_data'
+
+      published && surveylike && not_all_data
+    else
+      false
+    end
+
     ActiveRecord::Base.transaction do # Assigning relationships cause database changes
       input.assign_attributes(update_params)
+      CustomFieldValuesTransitionService.new.assign(input, custom_field_values)
       sidefx.before_update(input, current_user)
-      input.phase_ids = phase_ids if phase_ids
+      assign_deferred_relationship_ids(input, phase_ids, cosponsor_ids)
 
       authorize(input)
-
-      update_errors = not_allowed_update_errors(input)
-      raise ActiveRecord::Rollback if update_errors
-
+      validate_update!(input)
       verify_profanity input
     end
 
-    if update_errors
-      render json: update_errors, status: :unprocessable_entity
-      return
+    save_options = {}
+    if params.dig(:idea, :publication_status) == 'published'
+      save_options[:context] = :publication
+      validate_custom_field_values!(input, input.custom_form, custom_field_values)
     end
 
-    save_options = {}
-    save_options[:context] = :publication if params.dig(:idea, :publication_status) == 'published'
-
     ActiveRecord::Base.transaction do
-      if input.save(**save_options)
-        sidefx.after_update(input, current_user)
-        update_file_upload_fields input, input.custom_form, update_params
-        render json: WebApi::V1::IdeaSerializer.new(
-          input.reload,
-          params: jsonapi_serializer_params,
-          include: %i[author topics user_reaction idea_images cosponsors]
-        ).serializable_hash, status: :ok
-      else
-        render json: { errors: input.errors.details }, status: :unprocessable_entity
+      save_or_raise!(input, **save_options)
+      sidefx.after_update(input, current_user)
+      update_file_upload_fields input, input.custom_form, custom_field_values
+
+      if anonymize_user_at_the_end
+        # the anonymous_participation concern will set author_id to nil
+        # setting anonymous to true ensures that author_hash is generated with salt_anon
+        input.anonymous = true
+        input.save!
       end
+
+      render json: WebApi::V1::IdeaSerializer.new(
+        input.reload,
+        params: jsonapi_serializer_params,
+        include: %i[author input_topics user_reaction idea_images cosponsors]
+      ).serializable_hash, status: :ok
     end
   end
 
@@ -344,28 +317,24 @@ class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metr
     require_feature! 'input_iq'
 
     idea = Idea.new idea_params_for_similarities
+    idea.project_id = phase.project_id
     service = SimilarIdeasService.new(idea)
 
-    phase_for_similarity = params[:phase_id] ? Phase.find(params[:phase_id]) : phase_for_input
-    title_threshold = phase_for_similarity.similarity_threshold_title
-    body_threshold = phase_for_similarity.similarity_threshold_body
-    cache_key = "similar_ideas/#{{ id: idea.id, title_multiloc: idea.title_multiloc, body_multiloc: idea.body_multiloc, project_id: idea.project_id, title_threshold:, body_threshold: }}"
+    scope = policy_scope(Idea).where(project_id: idea.project_id)
+    results = service.similar_ideas(
+      scope:,
+      title_threshold: phase.similarity_threshold_title,
+      body_threshold: phase.similarity_threshold_body,
+      limit: SIMILARITIES_LIMIT
+    )
 
-    json_result = Rails.cache.fetch(cache_key, expires_in: 10.minutes) do
-      scope = policy_scope(Idea)
-      scope = scope.where(project_id: idea.project_id) if idea.project_id
-      results = service.similar_ideas(scope:, title_threshold:, body_threshold:, limit: SIMILARITIES_LIMIT)
-      WebApi::V1::IdeaSerializer.new(results, serialization_options_for(results)).serializable_hash
-    end
-
-    render json: json_result
+    render json: WebApi::V1::IdeaSerializer.new(results, serialization_options_for(results)).serializable_hash
   end
 
   def copy
-    dest_phase = Phase.find(params[:phase_id])
-    authorize(dest_phase, :copy_inputs_to_phase?)
+    authorize(phase, :copy_inputs_to_phase?)
 
-    job_args = [:submitted_or_published, copy_filters, dest_phase, current_user]
+    job_args = [:submitted_or_published, copy_filters, phase, current_user]
     job_kwargs = { allow_duplicates: allow_duplicates? }.compact
 
     tracker = if dry_run?
@@ -387,30 +356,57 @@ class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metr
 
   private
 
-  def phase_for_input
-    return @phase_for_input if defined? @phase_for_input
+  def find_ideas(scope: policy_scope(Idea).submitted_or_published, finder_params: params)
+    IdeasFinder.new(finder_params, scope:, current_user:).find_records
+  end
 
-    project = Project.find(params.dig(:idea, :project_id))
-    phase_ids = params.dig(:idea, :phase_ids) || []
-    is_moderator = current_user && UserRoleService.new.can_moderate_project?(project, current_user)
-    return false if phase_ids.any? && !(is_moderator && phase_ids.size == 1)
+  # Each facet with the request parameter it answers, as a key or a nested key path.
+  def filter_count_facets
+    [
+      [Facets::Column.new(:idea_status_id), :idea_status],
+      [Facets::IdeaInputTopic.new, :input_topics],
+      *answer_facets
+    ]
+  end
 
-    @phase_for_input = if is_moderator && phase_ids.any?
-      Phase.find(phase_ids.first)
-    else
-      TimelineService.new.current_phase_not_archived(project)
-    end
-    return false if !@phase_for_input
+  def answer_facets
+    filter_phase = Phase.find_by(id: params[:phase])
+    return [] if !filter_phase
 
-    @phase_for_input
+    form = filter_phase.pmethod.custom_form
+    fields = form.custom_fields.enabled.where(show_as_filter: true)
+    CustomFieldPolicy::Scope.new(pundit_user, fields, form).resolve
+      .map { |field| [Facets::IdeaCustomFieldAnswer.new(field), [:custom_field_answers, field.id]] }
+  end
+
+  def filtered_ideas
+    @filtered_ideas ||= find_ideas(scope: policy_scope(Idea))
+  end
+
+  # The ideas with every filter applied except the given one, so a facet
+  # counts what choosing one of its options would yield.
+  def ideas_without_filter(filter_path)
+    return filtered_ideas if params.dig(*Array(filter_path)).blank?
+
+    find_ideas(scope: policy_scope(Idea), finder_params: finder_params_without(filter_path))
+  end
+
+  def finder_params_without(filter_path)
+    *parents, key = Array(filter_path)
+    params.deep_dup.tap { |copy| (parents.empty? ? copy : copy.dig(*parents))&.delete(key) }
+  end
+
+  def phase
+    @phase ||= Phase.find(params[:phase_id])
   end
 
   def render_show(input, check_auth: true)
-    authorize input if check_auth # we should usually check auth, except when we're returning an empty draft idea
+    # We should usually check auth, except when we're returning an empty draft idea.
+    check_auth ? authorize(input) : skip_authorization
     render json: WebApi::V1::IdeaSerializer.new(
       input,
       params: jsonapi_serializer_params,
-      include: %i[author topics user_reaction idea_images]
+      include: %i[author input_topics user_reaction idea_images]
     ).serializable_hash
   end
 
@@ -424,16 +420,42 @@ class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metr
     params[:idea][:custom_field_values] = custom_field_values if custom_field_values.present?
   end
 
-  def extract_params_for_file_upload_fields(custom_form, params)
-    return {} if params['custom_field_values'].blank?
+  # Mutates `params` to shape them for permitting, like the create action does inline.
+  def prepare_update_params(input)
+    extract_custom_field_values_from_params!(input.custom_form)
+    # Map topic_ids to input_topic_ids for the new InputTopics system
+    if params[:idea].key?(:topic_ids)
+      params[:idea][:input_topic_ids] = params[:idea].delete(:topic_ids) || []
+    end
+    params[:idea][:cosponsor_ids] ||= [] if params[:idea].key?(:cosponsor_ids)
+    params[:idea][:phase_ids] ||= [] if params[:idea].key?(:phase_ids)
+    stored_values = CustomFieldValuesTransitionService.new.custom_field_values(input)
+    params_service.mark_custom_field_values_to_clear!(stored_values, params[:idea][:custom_field_values])
 
-    file_upload_field_keys = IdeaCustomFieldsService.new(custom_form).all_fields.select(&:file_upload?).map(&:key)
-    params['custom_field_values'].extract!(*file_upload_field_keys)
+    update_params = idea_params(input.custom_form).to_h
+    update_params[:custom_field_values] = params_service.updated_custom_field_values(stored_values, update_params[:custom_field_values])
+    CustomFieldService.new.compact_custom_field_values! update_params[:custom_field_values]
+    update_params
   end
 
-  def update_file_upload_fields(input, custom_form, params)
+  def extract_params_for_file_upload_fields(custom_form, custom_field_values)
+    return {} if custom_field_values.blank?
+
+    file_upload_field_keys = IdeaCustomFieldsService.new(custom_form).all_fields.select(&:supports_file_upload?).map(&:key)
+    custom_field_values.extract!(*file_upload_field_keys)
+  end
+
+  def update_file_upload_fields(input, custom_form, custom_field_values)
     file_uploads_exist = false
-    params_for_file_upload_fields = extract_params_for_file_upload_fields custom_form, params
+    # A file field the user cleared arrives as null; indexing into it would raise.
+    params_for_file_upload_fields =
+      (extract_params_for_file_upload_fields custom_form, custom_field_values).compact_blank
+
+    # Validated up front so the file reported is the first one in the form, and so
+    # nothing is written before we know every file is acceptable.
+    params_for_file_upload_fields.each do |key, params_for_files_field|
+      validate_file_size! params_for_files_field, key
+    end
 
     legacy_files = FileUpload.where(idea: input)
 
@@ -441,7 +463,7 @@ class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metr
       if (file_id = params_for_files_field['id'])
         idea_file = Files::FileAttachment.find_by(id: file_id) || FileUpload.find(file_id)
         filename = idea_file.is_a?(FileUpload) ? idea_file.name : idea_file.file.name
-        input.custom_field_values[key] = { id: idea_file.id, name: filename }
+        input.answer_for_key(key).value = { 'id' => idea_file.id, 'name' => filename }
         file_uploads_exist = true
 
       elsif params_for_files_field['content']
@@ -451,11 +473,11 @@ class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metr
             content: params_for_files_field['content']
           })
         else
-          build_idea_file_attachment(input, params_for_files_field).tap(&:save!)
+          build_idea_file_attachment(input, params_for_files_field, field_key: key).tap(&:save!)
         end
 
         filename = idea_file.is_a?(FileUpload) ? idea_file.name : idea_file.file.name
-        input.custom_field_values[key] = { id: idea_file.id, name: filename }
+        input.answer_for_key(key).value = { 'id' => idea_file.id, 'name' => filename }
         file_uploads_exist = true
       end
     end
@@ -469,7 +491,43 @@ class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metr
       .map { |file_params| file_params.fetch(:file_by_content) }
   end
 
-  def build_idea_file_attachment(idea, file_params)
+  # Checked before building the `Files::File`: the uploader's `size_range` only fires
+  # after the base64 has been decoded into memory and copied to disk. Reading the encoded
+  # length skips both, so keep this even if `Files::FileAttachment` gains `autosave`
+  # (which would fix the silent drop that makes the failure a 500, but not the cost).
+  def validate_file_size!(file_params, field_key)
+    content = file_params['content']
+    return if content.blank?
+
+    # From the uploader, so it can't drift from the validation this mirrors.
+    max_size = Files::FileUploader.new.size_range.max
+    return if base64_byte_size(content) <= max_size
+
+    raise ApiError.new(
+      :file_too_large,
+      payload: {
+        errors: {
+          field_key => [{
+            error: 'file_too_large',
+            value: file_params['name'],
+            payload: { max_size_mb: max_size / 1.megabyte }
+          }]
+        }
+      }
+    )
+  end
+
+  # Decoded size of a base64 data URI, from the encoded length — decoding would mean
+  # materialising ~133 MB for a file at the limit.
+  def base64_byte_size(content)
+    encoded = content.to_s.split(',', 2).last.to_s
+    padding = encoded.length - encoded.chomp('==').chomp('=').length
+    ((encoded.length * 3) / 4) - padding
+  end
+
+  def build_idea_file_attachment(idea, file_params, field_key: :base)
+    validate_file_size! file_params, field_key
+
     files_file = Files::File.new(
       content_by_content: {
         content: file_params['content'],
@@ -485,6 +543,21 @@ class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metr
 
   def sidefx
     @sidefx ||= SideFxIdeaService.new
+  end
+
+  # phase_ids/cosponsor_ids must be assigned *after* SideFxIdeaService#before_update so it
+  # can snapshot the prior associations. Assigning them via assign_attributes (which mutates
+  # the persisted record immediately) would make the before/after diff empty — e.g. no
+  # newly-added cosponsors would be detected, so their invite notifications wouldn't be sent.
+  def extract_deferred_relationship_ids(update_params)
+    phase_ids = update_params.delete(:phase_ids) if update_params[:phase_ids]
+    cosponsor_ids = update_params.delete(:cosponsor_ids) if update_params.key?(:cosponsor_ids)
+    [phase_ids, cosponsor_ids]
+  end
+
+  def assign_deferred_relationship_ids(input, phase_ids, cosponsor_ids)
+    input.phase_ids = phase_ids if phase_ids
+    input.cosponsor_ids = cosponsor_ids if cosponsor_ids
   end
 
   def params_service
@@ -509,7 +582,12 @@ class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metr
 
   def idea_simple_attributes(submittable_field_keys)
     simple_attributes = %i[location_description proposed_budget] & submittable_field_keys
-    simple_attributes.push(:publication_status, :project_id, :anonymous)
+    # location_point_geojson is also permitted as a nested hash via
+    # idea_complex_attributes for setting a Point. Permitting it here as a
+    # scalar additionally allows the client to send `null` to clear it —
+    # strong-params silently drops a `null` value against a nested-hash
+    # permit, so without this an explicit clear from the FE has no effect.
+    simple_attributes.push(:publication_status, :project_id, :anonymous, :location_point_geojson, { weglot_data: %i[locale body] })
     if submittable_field_keys.include?(:idea_images_attributes)
       simple_attributes << [idea_images_attributes: [:image]]
     end
@@ -539,7 +617,8 @@ class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metr
     end
 
     if submittable_field_keys.include?(:topic_ids)
-      complex_attributes[:topic_ids] = []
+      # topic_ids is mapped to input_topic_ids for the InputTopics system
+      complex_attributes[:input_topic_ids] = []
     end
 
     if submittable_field_keys.include?(:cosponsor_ids)
@@ -550,11 +629,15 @@ class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metr
   end
 
   def idea_params_for_similarities
-    params.require(:idea).permit([:id, :project_id, { title_multiloc: CL2_SUPPORTED_LOCALES, body_multiloc: CL2_SUPPORTED_LOCALES }])
+    params.require(:idea).permit([:id, { title_multiloc: CL2_SUPPORTED_LOCALES, body_multiloc: CL2_SUPPORTED_LOCALES }])
   end
 
   def submittable_custom_fields(custom_form)
-    IdeaCustomFieldsService.new(custom_form).submittable_fields_with_other_options
+    @submittable_custom_fields ||= {}
+
+    # if the default form has not been edited there will be no form id
+    cache_key = custom_form&.id || :no_form
+    @submittable_custom_fields[cache_key] ||= IdeaCustomFieldsService.new(custom_form).submittable_fields_with_other_options
   end
 
   def authorize_project_or_ideas
@@ -568,7 +651,14 @@ class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metr
   # Only relevant for allow_anonymous_participation in the context of ideation
   # Not relevant for 'user_data_collection' in the context of surveys
   def anonymous_not_allowed?(phase)
+    return false if permitted_by_everyone?(phase)
+
     params.dig('idea', 'anonymous') && !phase.allow_anonymous_participation
+  end
+
+  def permitted_by_everyone?(phase)
+    permission = Permissions::PermissionInheritanceService.new.find(phase, 'posting_idea')
+    permission&.permitted_by == 'everyone'
   end
 
   def idea_status_not_allowed?(input)
@@ -620,24 +710,38 @@ class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metr
     !input.participation_method_on_creation.supports_inputs_without_author?
   end
 
-  def not_allowed_update_errors(input)
+  def validate_update!(input)
     can_moderate = UserRoleService.new.can_moderate?(input.project, current_user)
 
-    if !can_moderate && anonymous_not_allowed?(TimelineService.new.current_phase_not_archived(input.project))
-      return { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }
+    phase = Permissions::IdeaPermissionsService.new(input, current_user).editing_phase
+    if !can_moderate && phase && anonymous_not_allowed?(phase)
+      raise ApiError, :anonymous_participation_not_allowed
     end
 
     if idea_status_not_allowed?(input)
-      return { errors: { idea_status_id: [{ error: 'Cannot manually assign inputs to this status', value: input.idea_status_id }] } }
+      raise ApiError.new(:idea_status_not_allowed, field: :idea_status_id, value: input.idea_status_id)
     end
 
     if !input.participation_method_on_creation.transitive? && input.project_id_changed?
-      return { errors: { project_id: [{ error: 'Cannot change the project of non-transitive inputs', value: input.project_id }] } }
+      raise ApiError.new(:cannot_change_project, field: :project_id, value: input.project_id)
     end
 
     if !input.participation_method_on_creation.transitive? && input.ideas_phases.find_index(&:changed?)
-      { errors: { phase_ids: [{ error: 'Cannot change the phases of non-transitive inputs', value: input.phase_ids }] } }
+      raise ApiError.new(:cannot_change_phases, field: :phase_ids, value: input.phase_ids)
     end
+  end
+
+  # User field values merged into the input (u_-prefixed keys) are not validated.
+  def validate_custom_field_values!(input, custom_form, values)
+    fields = IdeaCustomFieldsService.new(custom_form).all_fields.select(&:supports_submission?)
+    values = values.reject { |key, _| key.start_with?(UserFieldsInFormService.prefix) }
+    errors = CustomFieldValuesValidationService.new.json_schema_validation_errors(fields, values)
+    return if errors.empty?
+
+    errors.each do |error|
+      input.errors.add(:custom_field_values, error, value: values)
+    end
+    raise ApiError.from_record(input)
   end
 
   def copy_filters

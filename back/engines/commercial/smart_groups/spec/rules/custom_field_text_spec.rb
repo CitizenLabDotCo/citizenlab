@@ -35,11 +35,11 @@ describe SmartGroups::Rules::CustomFieldText do
     let(:custom_field) { create(:custom_field) }
     let!(:users) do
       users = build_list(:user, 5)
-      users[0].custom_field_values[custom_field.key] = 'one'
-      users[1].custom_field_values[custom_field.key] = 'two'
-      users[2].custom_field_values[custom_field.key] = 'three'
-      users[3].custom_field_values[custom_field.key] = 'four'
-      users[4].custom_field_values[custom_field.key] = 'five'
+      users[0].custom_field_answers.build(key: custom_field.key, value: 'one', custom_field: custom_field)
+      users[1].custom_field_answers.build(key: custom_field.key, value: 'two', custom_field: custom_field)
+      users[2].custom_field_answers.build(key: custom_field.key, value: 'three', custom_field: custom_field)
+      users[3].custom_field_answers.build(key: custom_field.key, value: 'four', custom_field: custom_field)
+      users[4].custom_field_answers.build(key: custom_field.key, value: 'five', custom_field: custom_field)
       users.each(&:save)
     end
 
@@ -91,6 +91,17 @@ describe SmartGroups::Rules::CustomFieldText do
     it "correctly filters on 'not_is_empty' predicate" do
       rule = described_class.new(custom_field.id, 'not_is_empty')
       expect(rule.filter(User).count).to eq User.count
+    end
+
+    # Rules on multiline text fields exist in production: the field type is only validated when the
+    # rule is created, and this used to work because the filter queried `custom_field_values` directly.
+    context 'when the custom field is a multiline text field' do
+      let(:custom_field) { create(:custom_field, input_type: 'multiline_text') }
+
+      it "filters on the 'is' and 'contains' predicates" do
+        expect(described_class.new(custom_field.id, 'is', 'two').filter(User).count).to eq 1
+        expect(described_class.new(custom_field.id, 'contains', 'hre').filter(User).count).to eq 1
+      end
     end
   end
 

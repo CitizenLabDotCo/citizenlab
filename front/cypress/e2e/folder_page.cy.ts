@@ -14,26 +14,25 @@ describe('Project selection page', () => {
     cy.apiCreateProject({
       title: projectOneTitle,
       descriptionPreview: randomString(),
-      description: randomString(),
       publicationStatus: 'published',
     }).then((projectOne) => {
       projectOneId = projectOne.body.data.id;
       cy.apiCreateProject({
         title: projectTwoTitle,
         descriptionPreview: randomString(),
-        description: randomString(),
         publicationStatus: 'published',
       }).then((projectTwo) => {
         projectTwoId = projectTwo.body.data.id;
         cy.apiCreateFolder({
           title: folderTitle,
           descriptionPreview: randomString(30),
-          description: folderDescription,
           publicationStatus: 'published',
         }).then((folder) => {
           folderId = folder.body.data.id;
           folderSlug = folder.body.data.attributes.slug;
 
+          // The folder description is authored in the Content Builder.
+          cy.apiSetFolderDescription(folderId, folderDescription);
           cy.apiAddProjectsToFolder([projectOneId, projectTwoId], folderId);
         });
       });
@@ -56,15 +55,18 @@ describe('Project selection page', () => {
   });
 
   it('shows the folder description', () => {
-    cy.get('.e2e-folder-description').contains(folderDescription);
+    cy.get('[data-testid="descriptionBuilderFolderPreviewContent"]').contains(
+      folderDescription
+    );
   });
 
   it('shows the contained projects', () => {
     cy.get('#e2e-folder-page');
-    cy.wait(4000); // without it sometimes the selector '.e2e-project-card-project-title' is executed
-    // when only one project is loaded. So, it never finds the project 1.
-    cy.get('.e2e-project-card-project-title').eq(0).contains(projectTwoTitle);
-    cy.get('.e2e-project-card-project-title').eq(1).contains(projectOneTitle);
+    cy.wait(4000);
+    cy.get('.e2e-published-projects-and-folders').within(() => {
+      cy.contains(projectOneTitle);
+      cy.contains(projectTwoTitle);
+    });
   });
 
   after(() => {

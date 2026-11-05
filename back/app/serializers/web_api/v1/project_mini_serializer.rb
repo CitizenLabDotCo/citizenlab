@@ -1,41 +1,25 @@
 # frozen_string_literal: true
 
 class WebApi::V1::ProjectMiniSerializer < WebApi::V1::BaseSerializer
-  attributes(
-    :title_multiloc,
-    :slug
-  )
+  attributes :title_multiloc, :slug
 
-  attribute :starts_days_from_now do |object|
-    first_phase = object.phases.order(start_at: :asc).first
-    today = Time.zone.now.to_date
-
-    if first_phase&.start_at && first_phase.start_at > today
-      (first_phase.start_at.to_date - today).to_i
-    end
+  attribute :participation_status do |project|
+    project.schedule.participation_status
   end
 
-  attribute :ended_days_ago do |object|
-    last_phase = object.phases.order(end_at: :desc).last
-    today = Time.zone.now.to_date
-
-    if last_phase&.end_at && last_phase.end_at < today
-      (today - last_phase.end_at.to_date).to_i
-    end
+  attribute :days_until_start do |project|
+    project.schedule.days_until_start
   end
 
-  attribute :action_descriptors do |object, params|
-    if params[:project_descriptor_pairs]
-      params[:project_descriptor_pairs][object.id]
-    else
-      user_requirements_service = params[:user_requirements_service] || Permissions::UserRequirementsService.new(check_groups_and_verification: false)
-      Permissions::ProjectPermissionsService.new(object, current_user(params), user_requirements_service: user_requirements_service).action_descriptors
-    end
+  attribute :days_since_end do |project|
+    project.schedule.days_since_end
   end
 
   has_many :project_images, serializer: WebApi::V1::ImageSerializer
 
-  has_one :current_phase, serializer: WebApi::V1::PhaseMiniSerializer, record_type: :phase do |object|
-    TimelineService.new.current_phase(object)
+  has_one :highlighted_phase, serializer: WebApi::V1::PhaseMiniSerializer, record_type: :phase do |project|
+    phase = project.schedule.highlighted_phase
+    phase.project = project if phase # Performance optimization (keep preloaded relationships)
+    phase
   end
 end

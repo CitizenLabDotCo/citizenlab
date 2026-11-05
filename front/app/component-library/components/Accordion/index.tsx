@@ -10,6 +10,7 @@ import Box, {
   BoxMarginProps,
   BoxPaddingProps,
   BoxWidthProps,
+  BoxColorProps,
 } from '../Box';
 import Icon from '../Icon';
 import ListItem from '../ListItem';
@@ -26,7 +27,8 @@ type AccordionProps = {
 } & BoxMarginProps &
   BoxWidthProps &
   BoxPaddingProps &
-  BoxBorderProps;
+  BoxBorderProps &
+  BoxColorProps;
 
 const ChevronIcon = styled(Icon)`
   fill: ${colors.textSecondary};

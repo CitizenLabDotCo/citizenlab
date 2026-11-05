@@ -19,8 +19,7 @@ import {
   SubmitButton,
   CancelButton,
   HelpImage,
-} from 'containers/Authentication/steps/AuthProviders/styles';
-
+} from 'components/AuthProviderStyles/styles';
 import Collapse from 'components/UI/Collapse';
 import Error from 'components/UI/Error';
 
@@ -89,9 +88,9 @@ const VerificationFormCOW = memo<Props & WrappedComponentProps>(
             await verifyCOW(run, idSerial);
 
             if (!isNilOrError(authUser)) {
-              queryClient.invalidateQueries(
-                usersKeys.item({ id: authUser.data.id })
-              );
+              queryClient.invalidateQueries({
+                queryKey: usersKeys.item({ id: authUser.data.id }),
+              });
             }
 
             queryClient.invalidateQueries({ queryKey: meKeys.all() });

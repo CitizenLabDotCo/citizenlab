@@ -7,11 +7,12 @@ describe UserPolicy do
 
   let(:scope) { UserPolicy::Scope.new current_user, User }
 
-  context 'for a project moderator' do
-    let(:project1) { create(:project) }
-    let(:project2) { create(:project) }
-    let(:current_user) { create(:project_moderator, projects: [project1, project2]) }
+  let!(:space) { create(:space) }
+  let!(:project1) { create(:project, space: space) }
+  let!(:project2) { create(:project, space: space) }
+  let!(:folder) { create(:project_folder, projects: [project1, project2], space: space) }
 
+  shared_examples 'allows editing only an imported draft user in a moderated project' do
     context 'on a user created through import' do
       let(:subject_user) { create(:user) }
 
@@ -60,5 +61,23 @@ describe UserPolicy do
         it { is_expected.not_to permit(:update) }
       end
     end
+  end
+
+  context 'for a project moderator' do
+    let(:current_user) { create(:project_moderator, projects: [project1, project2]) }
+
+    it_behaves_like 'allows editing only an imported draft user in a moderated project'
+  end
+
+  context 'for a folder moderator' do
+    let(:current_user) { create(:project_folder_moderator, project_folders: [folder]) }
+
+    it_behaves_like 'allows editing only an imported draft user in a moderated project'
+  end
+
+  context 'for a space moderator' do
+    let(:current_user) { create(:space_moderator, spaces: [space]) }
+
+    it_behaves_like 'allows editing only an imported draft user in a moderated project'
   end
 end

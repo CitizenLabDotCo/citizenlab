@@ -13,7 +13,11 @@ interface Props extends Omit<RadioProps, 'onChange'> {
 }
 
 const Radio = ({ name, id, canDeselect, ...rest }: Props) => {
-  const { trigger, setValue, control } = useFormContext();
+  const { trigger, setValue, control, watch } = useFormContext();
+  // field.value falls back to the value the field had when it first appeared
+  // whenever the answer is cleared, so the old answer stays selected.
+  // watch() always gives the real current value.
+  const value = watch(name);
 
   return (
     <>
@@ -27,14 +31,16 @@ const Radio = ({ name, id, canDeselect, ...rest }: Props) => {
               {...rest}
               id={id}
               onClick={() => {
-                // Deselect the radio button if it is already selected
-                if (field.value === rest.value && canDeselect) {
-                  setValue(name, '');
+                // Deselect the radio button if it is already selected. Clear it
+                // to undefined rather than '', so the answer is left out of the
+                // submission instead of being sent as a value that isn't an option.
+                if (value === rest.value && canDeselect) {
+                  setValue(name, undefined);
                   trigger(name);
                   return;
                 }
               }}
-              currentValue={field.value}
+              currentValue={value}
               onChange={(value) => {
                 setValue(name, value);
                 trigger(name);

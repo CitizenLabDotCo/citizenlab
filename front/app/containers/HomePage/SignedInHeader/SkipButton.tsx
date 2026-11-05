@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { media, isRtl } from '@citizenlab/cl2-component-library';
+import { media, isRtl, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
@@ -21,6 +21,13 @@ const StyledButton = styled(ButtonWithLink)`
     margin-right: 0px;
     margin-left: 10px;
   `}
+
+  && button:focus-visible,
+  && button.focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px ${colors.white}, 0 0 0 4px ${colors.black},
+      0 0 0 6px ${colors.white};
+  }
 `;
 
 interface Props {

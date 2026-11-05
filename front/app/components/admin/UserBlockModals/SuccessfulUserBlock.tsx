@@ -17,21 +17,28 @@ import messages from './messages';
 type Props = {
   opened: boolean;
   resetSuccess: () => void;
+  setClose: () => void;
   date: string;
   name: string;
 };
 
-export default ({ opened, resetSuccess, date, name }: Props) => {
+export default ({ opened, resetSuccess, setClose, date, name }: Props) => {
   const [localOpened, setLocaloOpened] = useState(opened);
   const { formatMessage } = useIntl();
 
   const onClose = () => {
     resetSuccess();
     setLocaloOpened(false);
+    setClose();
   };
 
   return (
-    <Modal width={400} opened={localOpened} close={onClose}>
+    <Modal
+      width={400}
+      opened={localOpened}
+      close={onClose}
+      ariaLabelledBy="user-block-success-title"
+    >
       <Box p="30px">
         <Box display="flex" justifyContent="center">
           <Icon
@@ -41,7 +48,7 @@ export default ({ opened, resetSuccess, date, name }: Props) => {
             height="60px"
           />
         </Box>
-        <Title variant="h2" textAlign="center">
+        <Title id="user-block-success-title" variant="h2" textAlign="center">
           {formatMessage(messages.allDone)}
         </Title>
         <Text textAlign="center">

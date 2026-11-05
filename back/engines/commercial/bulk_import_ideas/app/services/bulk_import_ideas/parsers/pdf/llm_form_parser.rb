@@ -1,0 +1,127 @@
+# frozen_string_literal: true
+
+module BulkImportIdeas::Parsers::Pdf
+  class LLMFormParser
+    def initialize(phase, locale, personal_data_enabled: false, printable_fields: nil)
+      @phase = phase
+      @locale = locale
+      @personal_data_enabled = personal_data_enabled
+      @printable_fields = printable_fields
+    end
+
+    # Return in format compatible with idea_to_idea_row
+    def parse_idea(file_uploader, page_count)
+      parsed_response = parse(file_uploader)
+
+      {
+        pdf_pages: (1..page_count).to_a,
+        fields: map_response_to_fields(parsed_response)
+      }
+    end
+
+    def parser_name
+      llm.name
+    end
+
+    private
+
+    def parse(file_uploader)
+      pdf_file = Files::File.new(
+        name: 'scan.pdf',
+        mime_type: 'application/pdf',
+        content: file_uploader
+      )
+
+      message = Analysis::LLM::Message.new(prompt, pdf_file)
+
+      begin
+        response = llm.chat(message, response_schema: schema_builder.output_schema)
+      rescue RubyLLM::BadRequestError => e
+        raise unless e.message.include?('grammar is too large')
+
+        response = llm.chat(message)
+      rescue RubyLLM::ForbiddenError => e
+        raise unless e.message.include?('Signature expired')
+
+        raise BulkImportIdeas::Error.new 'bulk_import_pdf_parsing_timeout', value: file_uploader.url
+      end
+      parse_response(response)
+    end
+
+    # RubyLLM auto-parses JSON when a schema is set, so response may be a Hash or a String.
+    def parse_response(response)
+      return nil if response.blank?
+      return response if response.is_a?(Hash)
+
+      parsed = response.match(/\{.+\}/m)&.try(:[], 0)
+      return nil if parsed.blank?
+
+      JSON.parse(parsed.squish)
+    rescue JSON::ParserError => e
+      ErrorReporter.report_msg("LLM form parser returned malformed JSON: #{e.message}")
+      nil
+    end
+
+    def map_response_to_fields(response)
+      return {} if response.blank?
+
+      mapping = schema_builder.key_mapping
+      result = {}
+
+      response.each do |schema_key, answer|
+        field_info = mapping[schema_key]
+        next unless field_info
+
+        case field_info[:type]
+        when :personal_data
+          next if not_found?(answer)
+
+          result[field_info[:label]] = answer if answer.present?
+        when :field
+          next if not_found?(answer)
+
+          result[field_info[:field_key]] = answer if answer.present?
+        when :matrix
+          matrix_answer = build_matrix_answer(answer, field_info)
+          result[field_info[:field_key]] = matrix_answer if matrix_answer.present?
+        end
+      end
+
+      result
+    end
+
+    def build_matrix_answer(answer, field_info)
+      return {} unless answer.is_a?(Hash)
+
+      result = {}
+      field_info[:statements].each do |sub_key, statement_key|
+        sub_answer = answer[sub_key]
+        next if sub_answer.blank? || not_found?(sub_answer) || sub_answer == 0
+
+        result[statement_key] = sub_answer
+      end
+      result
+    end
+
+    def not_found?(value)
+      return true if value == FormSyncSchemaBuilder::NOT_FOUND
+      return true if value.is_a?(Integer) && value == -1
+
+      false
+    end
+
+    def prompt
+      ::Analysis::LLM::Prompt.new.fetch('form_sync',
+        locale: @locale,
+        output_schema_json: JSON.pretty_generate(schema_builder.output_schema))
+    end
+
+    def schema_builder
+      @schema_builder ||= FormSyncSchemaBuilder.new(@phase, @locale, personal_data_enabled: @personal_data_enabled, printable_fields: @printable_fields)
+    end
+
+    def llm
+      @llm ||= LLMSelector.new.llm_class_for_use_case('form_sync').new
+    end
+  end
+end

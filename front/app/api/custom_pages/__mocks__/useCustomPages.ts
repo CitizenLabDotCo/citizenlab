@@ -8,10 +8,13 @@ export const customPagesData: ICustomPageData[] = [
       nav_bar_item: {
         data: null,
       },
-      topics: {
+      global_topics: {
         data: [],
       },
       areas: {
+        data: [],
+      },
+      spaces: {
         data: [],
       },
     },
@@ -107,10 +110,13 @@ export const customPagesData: ICustomPageData[] = [
       nav_bar_item: {
         data: null,
       },
-      topics: {
+      global_topics: {
         data: [],
       },
       areas: {
+        data: [],
+      },
+      spaces: {
         data: [],
       },
     },
@@ -167,10 +173,13 @@ export const customPagesData: ICustomPageData[] = [
           type: 'nav_bar_item',
         },
       },
-      topics: {
+      global_topics: {
         data: [],
       },
       areas: {
+        data: [],
+      },
+      spaces: {
         data: [],
       },
     },
@@ -227,10 +236,13 @@ export const customPagesData: ICustomPageData[] = [
           type: 'nav_bar_item',
         },
       },
-      topics: {
+      global_topics: {
         data: [],
       },
       areas: {
+        data: [],
+      },
+      spaces: {
         data: [],
       },
     },
@@ -285,10 +297,13 @@ export const customPagesData: ICustomPageData[] = [
       nav_bar_item: {
         data: null,
       },
-      topics: {
+      global_topics: {
         data: [],
       },
       areas: {
+        data: [],
+      },
+      spaces: {
         data: [],
       },
     },
@@ -342,10 +357,13 @@ export const customPagesData: ICustomPageData[] = [
       nav_bar_item: {
         data: null,
       },
-      topics: {
+      global_topics: {
         data: [],
       },
       areas: {
+        data: [],
+      },
+      spaces: {
         data: [],
       },
     },

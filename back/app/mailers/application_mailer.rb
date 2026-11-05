@@ -15,7 +15,8 @@ class ApplicationMailer < ActionMailer::Base
     :align_direction
 
   helper_method :organization_name, :recipient_name, :url_service, :multiloc_service,
-    :loc, :localize_for_recipient, :localize_for_recipient_and_truncate, :recipient_first_name
+    :loc, :localize_for_recipient, :localize_for_recipient_and_truncate, :recipient_first_name,
+    :localize_date_for_recipient
 
   helper_method :unsubscribe_url, :terms_conditions_url, :privacy_policy_url, :gv_gray_logo_url,
     :home_url, :tenant_logo_url, :show_terms_link?, :show_privacy_policy_link?, :format_message,
@@ -85,6 +86,12 @@ class ApplicationMailer < ActionMailer::Base
     linkified.html_safe
   end
 
+  def localize_date_for_recipient(date, format: :long)
+    return if date.blank?
+
+    I18n.l(date.to_date, format: format, locale: locale.locale_sym)
+  end
+
   def count_from(value)
     case value
     when Array   then value.length
@@ -102,13 +109,15 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   def default_config
-    {
+    config = {
       subject: subject,
       from: from_email,
       to: to_email,
       reply_to: reply_to_email,
       domain: domain
     }
+    config.merge!(custom_smtp_delivery_options) if custom_smtp_enabled?
+    config
   end
 
   def mailgun_headers
@@ -149,6 +158,23 @@ class ApplicationMailer < ActionMailer::Base
 
   def domain
     raw_from_email&.split('@')&.last
+  end
+
+  def custom_smtp_enabled?
+    app_configuration.feature_activated?('custom_smtp')
+  end
+
+  def custom_smtp_delivery_options
+    smtp = app_configuration.settings['custom_smtp']
+    options = { address: smtp['address'] }
+    options[:port]                 = smtp['port']                 if smtp['port']
+    options[:domain]               = smtp['domain']               if smtp['domain']
+    options[:user_name]            = smtp['user_name']            if smtp['user_name']
+    options[:password]             = smtp['password']             if smtp['password']
+    options[:authentication]       = smtp['authentication_type']&.to_sym if smtp['authentication_type']
+    options[:enable_starttls_auto] = smtp['enable_starttls_auto'] unless smtp['enable_starttls_auto'].nil?
+    options[:openssl_verify_mode]  = smtp['openssl_verify_mode']  if smtp['openssl_verify_mode']
+    { delivery_method: :smtp, delivery_method_options: options }
   end
 
   def app_settings

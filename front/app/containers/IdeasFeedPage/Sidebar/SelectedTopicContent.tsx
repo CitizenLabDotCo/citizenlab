@@ -1,0 +1,178 @@
+import React from 'react';
+
+import {
+  Box,
+  Button,
+  colors,
+  Divider,
+  Text,
+  Title,
+} from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
+import useInputTopicById from 'api/input_topics/useInputTopicById';
+import useInputTopics from 'api/input_topics/useInputTopics';
+
+import T from 'components/T';
+import Emoji from 'components/UI/Emoji';
+import GoBackButton from 'components/UI/GoBackButton';
+
+import { trackEventByName, trackVirtualPageView } from 'utils/analytics';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { useSearch } from 'utils/router';
+
+import messages from '../messages';
+import { getTopicColor } from '../topicsColor';
+import tracks from '../tracks';
+
+interface Props {
+  projectId: string;
+  topicId: string;
+  topicCount: number;
+  topicCounts: Record<string, number>;
+  onBack: () => void;
+  isMobile?: boolean;
+}
+
+const StyledButton = styled(Button)`
+  .buttonText {
+    width: 100%;
+  }
+`;
+
+const SelectedTopicContent = ({
+  projectId,
+  topicId,
+  topicCount,
+  topicCounts,
+  onBack,
+}: Props) => {
+  const searchParams = useSearch({
+    from: '/$locale/projects/$slug/ideas-feed',
+  });
+  const selectedSubtopicId = searchParams.subtopic;
+
+  const { data: topic } = useInputTopicById(topicId);
+  const { data: subtopics } = useInputTopics(projectId, {
+    parent_id: topicId,
+    depth: 1,
+    sort: '-ideas_count',
+  });
+
+  const handleSubtopicClick = (subtopicId: string) => {
+    if (selectedSubtopicId === subtopicId) {
+      trackEventByName(tracks.subtopicDeselected);
+      removeSearchParams(['subtopic', 'sheet_open']);
+    } else {
+      trackEventByName(tracks.subtopicSelected);
+      trackVirtualPageView(
+        `${window.location.pathname}/topic/${topicId}/subtopic/${subtopicId}`
+      );
+      removeSearchParams(['sheet_open']);
+      updateSearchParams({ subtopic: subtopicId });
+    }
+  };
+
+  return (
+    <>
+      <Box px="16px" mb="16px">
+        <GoBackButton
+          onClick={onBack}
+          customMessage={messages.back}
+          size="s"
+          iconSize="20px"
+          iconColor={colors.textPrimary}
+          textColor={colors.textPrimary}
+          mb="16px"
+        />
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          mb="8px"
+        >
+          <Box display="flex" alignItems="center" gap="8px">
+            {topic?.data.attributes.icon && (
+              <Emoji emoji={topic.data.attributes.icon} size="28px" />
+            )}
+            <Title as="h1" variant="h3" m="0px">
+              <T value={topic?.data.attributes.title_multiloc} />
+            </Title>
+          </Box>
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            minWidth="40px"
+            height="40px"
+            borderRadius="50%"
+            background={getTopicColor(topicId)}
+          >
+            <Text m="0px" fontWeight="bold" variant="bodyS">
+              {topicCount}
+            </Text>
+          </Box>
+        </Box>
+        <Text variant="bodyS" color="coolGrey600">
+          <T value={topic?.data.attributes.description_multiloc} supportHtml />
+        </Text>
+      </Box>
+
+      {subtopics?.data.map((subtopic) => {
+        const isActive = selectedSubtopicId === subtopic.id;
+        return (
+          <React.Fragment key={subtopic.id}>
+            <Divider m="0px" />
+            <Box
+              as={StyledButton}
+              data-cy="e2e-subtopic-item"
+              buttonStyle="text"
+              bgColor={isActive ? colors.grey100 : 'transparent'}
+              onClick={() => handleSubtopicClick(subtopic.id)}
+              borderColor="transparent"
+              justify="left"
+              py="12px"
+              px="16px"
+            >
+              <Box
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+                mb="4px"
+                w="100%"
+              >
+                <Box display="flex" alignItems="center" gap="8px">
+                  <Text fontWeight="bold" variant="bodyM" mb="0px">
+                    <T value={subtopic.attributes.title_multiloc} />
+                  </Text>
+                </Box>
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  minWidth="28px"
+                  height="28px"
+                  borderRadius="50%"
+                  background={getTopicColor(topicId)}
+                >
+                  <Text m="0px" fontWeight="bold" variant="bodyXs">
+                    {topicCounts[subtopic.id] || 0}
+                  </Text>
+                </Box>
+              </Box>
+              <Text variant="bodyS" color="coolGrey600" m="0px">
+                <T
+                  value={subtopic.attributes.description_multiloc}
+                  supportHtml
+                />
+              </Text>
+            </Box>
+          </React.Fragment>
+        );
+      })}
+    </>
+  );
+};
+
+export default SelectedTopicContent;

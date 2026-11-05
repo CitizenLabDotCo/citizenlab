@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useCustomFields from 'api/custom_fields/useCustomFields';
 import { IIdeaData } from 'api/ideas/types';
 import useAddIdea from 'api/ideas/useAddIdea';
@@ -9,17 +10,18 @@ import useUpdateIdea from 'api/ideas/useUpdateIdea';
 import useAuthUser from 'api/me/useAuthUser';
 import { ParticipationMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
-import useProjectById from 'api/projects/useProjectById';
 
-import { trackEventByName } from 'utils/analytics';
+import useLocale from 'hooks/useLocale';
+
+import { customerAnalyticsEvents, trackEventByName } from 'utils/analytics';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+import { weglotTranslateIdeaSubmission } from 'utils/weglot';
 
 import { FormValues } from '../Page/types';
-import tracks from '../tracks';
 import { convertCustomFieldsToNestedPages } from '../util';
 
 import IdeationPage from './IdeationPage';
+import { getInitialData } from './utils';
 
 const IdeationForm = ({
   projectId,
@@ -37,57 +39,98 @@ const IdeationForm = ({
 }) => {
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
 
+  const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
-  const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
+  const locale = useLocale();
 
   const { mutateAsync: addIdea } = useAddIdea();
   const { mutateAsync: updateIdea } = useUpdateIdea();
   const { data: customFields } = useCustomFields({
     projectId,
-    phaseId:
-      participationMethod !== 'ideation' && participationMethod !== 'voting'
-        ? phaseId
-        : undefined,
+    phaseId,
     publicFields: true,
   });
+
+  if (!phase) return null;
 
   const nestedPagesData = convertCustomFieldsToNestedPages(customFields || []);
 
   const showTogglePostAnonymously =
-    phase?.data.attributes.allow_anonymous_participation &&
+    !!authUser &&
+    phase.data.attributes.allow_anonymous_participation &&
     participationMethod !== 'native_survey';
 
   const lastPageIndex = nestedPagesData.length - 1;
 
   const onSubmit = async (formValues: FormValues) => {
     if (currentPageIndex === nestedPagesData.length - 2) {
-      if (!idea) {
-        // If the user is an admin or project moderator, we allow them to post to a specific phase
-        const phase_ids =
-          project && phaseId && canModerateProject(project.data, authUser)
-            ? [phaseId]
-            : null;
+      // Common ground lets admins enter the statement in every platform locale,
+      // so the full multiloc hash must be preserved and auto-translation is skipped.
+      const isCommonGround = participationMethod === 'common_ground';
+      const { translatedTitle, translatedBody, weglotData } = isCommonGround
+        ? {
+            translatedTitle: undefined,
+            translatedBody: undefined,
+            weglotData: {},
+          }
+        : await weglotTranslateIdeaSubmission(
+            formValues.title_multiloc?.[locale],
+            formValues.body_multiloc?.[locale],
+            locale,
+            appConfiguration?.data.attributes.settings.core.weglot_api_key
+          );
+      const translatedFormValues = {
+        ...formValues,
+        ...(translatedTitle !== undefined && {
+          title_multiloc: { [locale]: translatedTitle },
+        }),
+        ...(translatedBody !== undefined && {
+          body_multiloc: { [locale]: translatedBody },
+        }),
+      };
 
+      if (!idea) {
         const idea = await addIdea({
-          ...formValues,
-          project_id: projectId,
-          phase_ids,
-          publication_status:
-            participationMethod === 'common_ground' ? 'published' : undefined,
+          phaseId: phase.data.id,
+          requestBody: {
+            ...translatedFormValues,
+            publication_status:
+              participationMethod === 'common_ground' ? 'published' : undefined,
+            weglot_data: weglotData,
+          },
         });
         updateSearchParams({ idea_id: idea.data.id });
-        trackEventByName(tracks.ideaFormSubmitted);
+        trackEventByName(customerAnalyticsEvents.ideaSubmitted, {
+          project_id: projectId,
+          phase_id: phase.data.id,
+          participation_method: participationMethod,
+        });
       } else {
         // Strip away idea_files_attributes from the form values
         // as they are handled via separate API calls
         const { idea_files_attributes: _, ...formValuesWithoutFiles } =
-          formValues;
+          translatedFormValues;
+        const requestBody = {
+          ...formValuesWithoutFiles,
+          weglot_data: weglotData,
+        };
+        // Keep location_point_geojson consistent with location_description:
+        // null it when the user cleared the description, and also when the
+        // form config no longer contains an enabled location field. In that
+        // second case the LocationInput never mounts, but defaultValues
+        // spread all idea attributes (getInitialData), so the idea's old
+        // location_description sits in form state anyway and the idea would
+        // invisibly keep a location its form can no longer show or edit.
+        const formHasLocationField = customFields?.some(
+          (field) => field.key === 'location_description' && field.enabled
+        );
+        if (!requestBody.location_description || !formHasLocationField) {
+          requestBody.location_point_geojson = null;
+        }
         await updateIdea({
           id: idea.id,
-          requestBody: {
-            ...formValuesWithoutFiles,
-          },
+          requestBody,
         });
         updateSearchParams({ idea_id: idea.id });
       }
@@ -99,16 +142,7 @@ const IdeationForm = ({
       setCurrentPageIndex((pageNumber: number) => pageNumber + 1);
     }
   };
-  const initialFormData = idea
-    ? {
-        ...idea.attributes,
-        author_id: idea.relationships.author?.data?.id,
-        cosponsor_ids: idea.relationships.cosponsors?.data?.map(
-          (cosponsor) => cosponsor.id
-        ),
-        topic_ids: idea.relationships.topics?.data.map((topic) => topic.id),
-      }
-    : undefined;
+  const initialFormData = getInitialData(idea, authUser, phase);
 
   return (
     <Box w="100%">
@@ -124,7 +158,7 @@ const IdeationForm = ({
           ideaId={idea?.id}
           projectId={projectId}
           onSubmit={onSubmit}
-          phase={phase?.data}
+          phase={phase.data}
           defaultValues={initialFormData}
           pages={nestedPagesData}
         />

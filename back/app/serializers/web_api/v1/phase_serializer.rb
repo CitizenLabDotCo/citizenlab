@@ -6,19 +6,19 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
   include DocumentAnnotation::WebApi::V1::DocumentAnnotationPhaseSerializer
 
   attributes :title_multiloc, :start_at, :end_at, :created_at, :updated_at, :ideas_count,
-    :participation_method, :submission_enabled, :commenting_enabled,
+    :participation_method, :placement_type, :submission_enabled, :commenting_enabled,
     :reacting_enabled, :reacting_like_method, :reacting_like_limited_max,
     :reacting_dislike_enabled, :reacting_dislike_method, :reacting_dislike_limited_max,
-    :allow_anonymous_participation, :presentation_mode, :ideas_order, :input_term, :vote_term,
-    :prescreening_enabled, :manual_voters_amount, :manual_votes_count,
+    :presentation_mode, :available_views, :ideas_order, :input_term, :vote_term,
+    :prescreening_mode, :effective_prescreening_mode, :manual_voters_amount, :manual_votes_count,
     :similarity_enabled, :similarity_threshold_title, :similarity_threshold_body,
     :survey_popup_frequency
 
   %i[
     voting_method voting_max_total voting_min_total
-    voting_max_votes_per_idea baskets_count
-    native_survey_title_multiloc native_survey_button_multiloc
-    expire_days_limit reacting_threshold autoshare_results_enabled
+    voting_max_votes_per_idea baskets_count voting_min_selected_options
+    native_survey_title_multiloc native_survey_button_multiloc allow_multiple_responses
+    expire_days_limit reacting_threshold autoshare_results_enabled voting_filtering_enabled
   ].each do |attribute_name|
     attribute attribute_name, if: proc { |phase|
       phase.pmethod.supports_serializing?(attribute_name)
@@ -47,6 +47,12 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
     TextImageService.new.render_data_images_multiloc object.description_multiloc, field: :description_multiloc, imageable: object
   end
 
+  attribute :draft_description_multiloc, if: proc { |phase, params|
+    can_moderate?(phase, params)
+  } do |object|
+    TextImageService.new.render_data_images_multiloc object.draft_description_multiloc, field: :draft_description_multiloc, imageable: object
+  end
+
   attribute :previous_phase_end_at_updated do |object|
     object.previous_phase_end_at_updated?
   end
@@ -59,12 +65,36 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
     object.custom_form_persisted?
   end
 
+  attribute :supports_form_logic do |phase|
+    phase.pmethod.supports_form_logic?
+  end
+
+  attribute :supports_public_visibility do |phase|
+    phase.pmethod.supports_public_visibility?
+  end
+
   attribute :supports_survey_form do |phase|
     phase.pmethod.supports_survey_form?
   end
 
   attribute :user_data_collection do |phase|
     phase.pmethod.user_data_collection
+  end
+
+  attribute :user_fields_in_form_enabled do |phase|
+    phase.pmethod.user_fields_in_form_enabled?
+  end
+
+  attribute :allow_anonymous_participation do |phase|
+    # Resolved through the service so an action that still inherits the global
+    # 'visiting' permission is read the same way as an overridden one.
+    posting_permission = Permissions::PermissionInheritanceService.new.find(phase, 'posting_idea')
+    posting_permission&.permitted_by == 'everyone' || phase.allow_anonymous_participation
+  end
+
+  attribute :action_descriptors do |phase, params|
+    user_requirements_service = params[:user_requirements_service] || Permissions::UserRequirementsService.new(check_groups_and_verification: false)
+    Permissions::PhasePermissionsService.new(phase, current_user(params), user_requirements_service:, request: params[:request]).action_descriptors
   end
 
   belongs_to :project
@@ -93,6 +123,6 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
   def self.view_votes?(phase, user)
     return true if user && UserRoleService.new.can_moderate?(phase, user)
 
-    TimelineService.new.phase_is_complete?(phase)
+    phase.complete?
   end
 end

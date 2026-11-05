@@ -1,43 +1,37 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
-import permissionsCustomFieldsKeys from 'api/permissions_custom_fields/keys';
+import permissionsPhaseCustomFieldsKeys from 'api/permissions_phase_custom_fields/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import permissionKeys from './keys';
-import { IGlobalPermission, PermissionUpdateParams } from './types';
+import { IPermission, UpdateGlobalPermissionParams } from './types';
 
 const updatePermission = async ({
   action,
-  ...requestBody
-}: Partial<PermissionUpdateParams>) =>
-  fetcher<IGlobalPermission>({
+  permission,
+}: UpdateGlobalPermissionParams) =>
+  fetcher<IPermission>({
     path: `/permissions/${action}`,
     action: 'patch',
-    body: { permission: requestBody },
+    body: { permission },
   });
 
 const useUpdatePermission = () => {
   const queryClient = useQueryClient();
-  return useMutation<
-    IGlobalPermission,
-    CLErrors,
-    Partial<PermissionUpdateParams>
-  >({
+  return useMutation<IPermission, CLErrors, UpdateGlobalPermissionParams>({
     mutationFn: updatePermission,
     onSuccess: (_, { action }) => {
       queryClient.invalidateQueries({
-        queryKey: permissionKeys.lists(),
+        queryKey: permissionKeys.item({ action }),
       });
 
-      if (action) {
-        queryClient.invalidateQueries({
-          queryKey: permissionsCustomFieldsKeys.list({
-            action,
-          }),
-        });
-      }
+      queryClient.invalidateQueries({
+        queryKey: permissionsPhaseCustomFieldsKeys.list({
+          action,
+        }),
+      });
     },
   });
 };

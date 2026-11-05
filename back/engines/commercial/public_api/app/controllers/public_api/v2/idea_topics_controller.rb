@@ -7,7 +7,7 @@ module PublicApi
       # `created_at` column, which the `list_items` method relies on to order the
       # records (and at this point, we don't want to make the `list_items` method more
       # complex to handle this case).
-      idea_topics = IdeasTopic
+      idea_topics = IdeasInputTopic
         .where(query_filters)
         .order(:id)
         .page(params[:page_number])
@@ -22,7 +22,9 @@ module PublicApi
     private
 
     def query_filters
-      params.permit(:idea_id, :topic_id).to_h
+      result = params.permit(:idea_id, :topic_id).to_h
+      result[:input_topic_id] = result.delete(:topic_id) if result.key?(:topic_id)
+      result
     end
   end
 end

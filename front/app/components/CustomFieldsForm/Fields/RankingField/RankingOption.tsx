@@ -10,11 +10,12 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled, { useTheme } from 'styled-components';
 
-import messages from 'components/Form/Components/Controls/messages';
 import { Drag } from 'components/FormBuilder/components/DragAndDrop';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { useIntl } from 'utils/cl-intl';
+
+import messages from '../../messages';
 
 const StyledSelect = styled(Select)`
   min-width: 52px;
@@ -24,13 +25,19 @@ const StyledSelect = styled(Select)`
 
   select {
     padding: 4px;
-    border: solid 1px ${(props) => props.theme.colors.tenantPrimary};
-    color: ${(props) => props.theme.colors.tenantPrimary};
+    border: solid 1px ${(props) => props.theme.colors.borderDark};
+    color: ${(props) => props.theme.colors.textPrimary};
   }
 
   svg {
-    fill: ${(props) => props.theme.colors.tenantPrimary} !important;
+    fill: ${(props) => props.theme.colors.borderDark} !important;
     width: 16px;
+  }
+`;
+
+const StyledBox = styled(Box)`
+  :hover {
+    box-shadow: 0 0 0 1px ${(props) => props.theme.colors.borderDark};
   }
 `;
 
@@ -69,67 +76,80 @@ const RankingOption = ({
     })
   );
 
+  const selectId = `ranking-select-${option.value}`;
+
   return (
     <li aria-roledescription="sortable">
       <Drag index={index} useBorder={false} id={`ranking-item-${option.value}`}>
-        <Box
-          style={{ cursor: 'grab' }}
-          mb="12px"
-          background={theme.colors.tenantPrimaryLighten95}
-          borderRadius={theme.borderRadius}
-          border={`1px solid ${theme.colors.tenantPrimary}`}
-        >
-          <Box
-            padding="18px 20px 18px 20px"
-            display="flex"
-            justifyContent="space-between"
+        {({ dragHandleProps }) => (
+          <StyledBox
+            mb="12px"
+            borderRadius={theme.borderRadius}
+            border={`1px solid ${theme.colors.borderDark}`}
           >
-            <Box display="flex">
-              <ScreenReaderOnly>
-                <Label>
-                  {`${option.label}. ${
-                    getRankOfOption(option)
-                      ? formatMessage(messages.currentRank)
-                      : formatMessage(messages.noRankSelected)
-                  }`}
-                </Label>
-              </ScreenReaderOnly>
+            <StyledBox
+              padding="18px 20px 18px 20px"
+              display="flex"
+              justifyContent="space-between"
+            >
+              <Box display="flex">
+                <ScreenReaderOnly>
+                  <Label htmlFor={selectId}>
+                    {`${option.label}. ${
+                      getRankOfOption(option)
+                        ? formatMessage(messages.currentRank)
+                        : formatMessage(messages.noRankSelected)
+                    }`}
+                  </Label>
+                </ScreenReaderOnly>
 
-              <StyledSelect
-                options={rankDropdownOptions}
-                value={getRankOfOption(option)}
-                onChange={(selectedOption) => {
-                  moveOptionInArray(index, selectedOption.value - 1);
+                <StyledSelect
+                  id={selectId}
+                  options={rankDropdownOptions}
+                  value={getRankOfOption(option)}
+                  height="auto"
+                  onChange={(selectedOption) => {
+                    moveOptionInArray(index, selectedOption.value - 1);
 
-                  // For a11y, focus the list item again after reordering.
-                  (
-                    document.querySelector(
-                      `[data-rbd-drag-handle-draggable-id="ranking-item-${option.value}"]`
-                    ) as HTMLElement
-                  ).focus();
-                }}
-              />
-              <Text
-                maxWidth="80%"
-                my="auto"
-                color="tenantPrimary"
-                p="0px"
-                m="0px"
-                aria-hidden
-              >
-                {option.label}
-              </Text>
-            </Box>
+                    // For a11y, focus the select dropdown of the reordered item.
+                    requestAnimationFrame(() => {
+                      document
+                        .getElementById(`ranking-item-${option.value}`)
+                        ?.querySelector<HTMLSelectElement>('select')
+                        ?.focus();
+                    });
+                  }}
+                />
+                <Text
+                  maxWidth="80%"
+                  my="auto"
+                  color="textPrimary"
+                  p="0px"
+                  m="0px"
+                  aria-hidden
+                >
+                  {option.label}
+                </Text>
+              </Box>
 
-            <Box flexShrink={0} my="auto" pl="8px">
-              <Icon
-                height="18px"
-                name="drag-handle"
-                fill={theme.colors.tenantPrimary}
-              />
-            </Box>
-          </Box>
-        </Box>
+              <Box flexShrink={0} my="auto" pl="8px">
+                <div
+                  style={{ cursor: 'grab' }}
+                  {...dragHandleProps}
+                  aria-label={formatMessage(messages.rankingDragHandleLabel, {
+                    label: option.label,
+                  })}
+                >
+                  <Icon
+                    height="18px"
+                    name="drag-handle"
+                    fill={theme.colors.textPrimary}
+                  />
+                </div>
+              </Box>
+            </StyledBox>
+          </StyledBox>
+        )}
       </Drag>
     </li>
   );

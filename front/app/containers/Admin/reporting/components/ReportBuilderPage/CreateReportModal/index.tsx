@@ -38,7 +38,7 @@ interface Props {
 }
 
 const CreateReportModal = ({ open, onClose }: Props) => {
-  const { mutate: createReport, isLoading } = useAddReport();
+  const { mutate: createReport, isPending } = useAddReport();
 
   const [reportTitle, setReportTitle] = useState('');
   const [template, setTemplate] = useState<Template>('blank');
@@ -96,9 +96,19 @@ const CreateReportModal = ({ open, onClose }: Props) => {
   };
 
   return (
-    <Modal opened={open} close={onClose} width="640px">
+    <Modal
+      opened={open}
+      close={onClose}
+      width="640px"
+      ariaLabelledBy="create-report-modal-title"
+    >
       <Box display="flex" flexDirection="column" alignItems="center" px="100px">
-        <Title variant="h2" color="primary" mt="40px">
+        <Title
+          id="create-report-modal-title"
+          variant="h2"
+          color="primary"
+          mt="40px"
+        >
           {formatMessage(messages.createReportModalTitle)}
         </Title>
         <Text
@@ -116,7 +126,7 @@ const CreateReportModal = ({ open, onClose }: Props) => {
           type="text"
           label={formatMessage(messages.createReportModalInputLabel)}
           onChange={setReportTitle}
-          disabled={isLoading}
+          disabled={isPending}
         />
         <Box as="fieldset" border="0px" width="100%" p="0px" mt="28px">
           <Label>{formatMessage(messages.reportTemplate)}</Label>
@@ -154,6 +164,7 @@ const CreateReportModal = ({ open, onClose }: Props) => {
               selectedProjectId={selectedProjectId}
               emptyOptionMessage={messages.noProjectSelected}
               onProjectFilter={handleProjectFilter}
+              includeHiddenProjects={true}
               id="e2e-project-filter"
             />
           </Box>
@@ -173,8 +184,8 @@ const CreateReportModal = ({ open, onClose }: Props) => {
           width="auto"
           mt="40px"
           mb="40px"
-          disabled={blockSubmit || isLoading}
-          processing={isLoading}
+          disabled={blockSubmit || isPending}
+          processing={isPending}
           data-testid="create-report-button"
           onClick={onCreateReport}
         >

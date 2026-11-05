@@ -54,6 +54,7 @@ const SelectableResourceByTopicChart = ({
     end_at: endAt,
     project: otherProps.currentProjectFilter,
     enabled: currentResourceByTopic === 'ideas',
+    limit: 20,
   });
 
   const { data: commentsByTopic } = useCommentsByTopic({
@@ -61,6 +62,7 @@ const SelectableResourceByTopicChart = ({
     end_at: endAt,
     project: otherProps.currentProjectFilter,
     enabled: currentResourceByTopic === 'comments',
+    limit: 20,
   });
 
   const { data: reactionsByTopic } = useReactionsByTopic({
@@ -68,6 +70,7 @@ const SelectableResourceByTopicChart = ({
     end_at: endAt,
     project: otherProps.currentProjectFilter,
     enabled: currentResourceByTopic === 'reactions',
+    limit: 20,
   });
 
   const localize = useLocalize();

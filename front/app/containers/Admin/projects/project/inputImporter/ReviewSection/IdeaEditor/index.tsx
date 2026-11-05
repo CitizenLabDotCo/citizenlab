@@ -1,14 +1,14 @@
-import React, { useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import {
   Box,
   Button,
   colors,
   stylingConsts,
+  Text,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { UseFormSetError } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
 
 import useIdeaById from 'api/ideas/useIdeaById';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
@@ -22,11 +22,11 @@ import useUserById from 'api/users/useUserById';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { FormValues } from 'components/Form/typings';
-
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import { useParams } from 'utils/router';
 
+import hasEngagement from '../hasEngagement';
 import messages from '../messages';
 
 import IdeaForm from './IdeaForm';
@@ -46,15 +46,18 @@ interface Props {
   setIdeaId: (ideaId: null | string) => void;
 }
 
+type FormValues = Record<string, any>;
+
 const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
   const [ideaFormDataValid, setIdeaFormDataValid] = useState(false);
+  const [loadingUndoApproval, setLoadingUndoApproval] = useState(false);
   const setError = useRef<UseFormSetError<FormValues>>();
 
-  const { projectId, phaseId } = useParams() as {
-    projectId: string;
-    phaseId: string;
-  };
+  const { projectId, phaseId } = useParams({
+    from: '/$locale/admin/projects/$projectId/phases/$phaseId/input-importer',
+  });
 
   const [userFormStatePerIdea, setUserFormStatePerIdea] = useState<
     Record<string, UserFormData>
@@ -77,10 +80,16 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
 
   const { data: phase } = usePhase(phaseId);
 
-  const { mutateAsync: updateIdea, isLoading: loadingApproveIdea } =
+  const { mutateAsync: updateIdea, isPending: loadingApproveIdea } =
     useUpdateIdea();
   const { mutate: updateUser } = useUpdateUser();
   const { mutateAsync: createOfflineUser } = useCreateOfflineUser();
+
+  // An approved input is read-only until the approval is undone: its answers
+  // are live data, so nothing in the editor may write to it.
+  const isApproved = idea?.data.attributes.publication_status === 'published';
+  const undoDisabledByEngagement =
+    !!idea && isApproved && hasEngagement(idea.data.attributes);
 
   const userFormData = getUserFormValues(
     ideaId,
@@ -119,6 +128,29 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
       [ideaId]: ideaFormData,
     }));
   };
+
+  // Auto-save form edits to the backend so that "Approve All" picks up changes.
+  // Strip publication_status: the form's defaultValues carry the idea's current
+  // status, so sending it back could race with an Approve for another idea and
+  // flip a just-approved idea back to 'draft'. Only Approve/Undo should ever
+  // touch publication_status.
+  const autoSave = useCallback(
+    (id: string, formData: FormValues) => {
+      const { publication_status: _omit, ...rest } = formData;
+      updateIdea({ id, requestBody: rest, skipRefetchCounts: true });
+    },
+    [updateIdea]
+  );
+
+  useEffect(() => {
+    if (!ideaId || isApproved || !(ideaId in ideaFormStatePerIdea)) return;
+
+    const timeout = setTimeout(() => {
+      autoSave(ideaId, ideaFormStatePerIdea[ideaId]);
+    }, 500);
+
+    return () => clearTimeout(timeout);
+  }, [ideaId, isApproved, ideaFormStatePerIdea, autoSave]);
 
   const userFormDataValid = isUserFormDataValid(userFormData);
 
@@ -199,6 +231,20 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
     }
   };
 
+  const onUndoApproval = async () => {
+    if (!ideaId) return;
+
+    setLoadingUndoApproval(true);
+    try {
+      await updateIdea({
+        id: ideaId,
+        requestBody: { publication_status: 'draft' },
+      });
+    } finally {
+      setLoadingUndoApproval(false);
+    }
+  };
+
   const phaseName = phase
     ? localize(phase.data.attributes.title_multiloc)
     : undefined;
@@ -221,20 +267,48 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
       >
         {ideaMetadata && (
           <>
-            <MetaBox phaseName={phaseName} locale={locale} />
-            {userFormData && (
-              <UserForm
-                userFormData={userFormData}
-                setUserFormData={setUserFormData}
-              />
+            {isApproved && (
+              <Box
+                w="90%"
+                mt="12px"
+                px="12px"
+                py="8px"
+                bgColor={colors.grey100}
+                borderRadius={stylingConsts.borderRadius}
+              >
+                <Text m="0" color="coolGrey700" fontSize="s">
+                  <FormattedMessage {...messages.approvedReadOnlyNotice} />
+                </Text>
+              </Box>
             )}
-            <IdeaForm
-              formData={ideaFormData ?? {}}
-              setIdeaFormDataValid={setIdeaFormDataValid}
-              setFormData={setIdeaFormData}
-              setError={setError}
-              key={ideaId}
-            />
+            <Box
+              w="100%"
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+              // `inert` blocks mouse and keyboard interaction for the whole
+              // subtree, like FullScreenPreview does for builder previews.
+              ref={(el: HTMLElement | null) =>
+                isApproved
+                  ? el?.setAttribute('inert', '')
+                  : el?.removeAttribute('inert')
+              }
+            >
+              <MetaBox phaseName={phaseName} locale={locale} />
+              {userFormData && (
+                <UserForm
+                  userFormData={userFormData}
+                  setUserFormData={setUserFormData}
+                />
+              )}
+              <IdeaForm
+                formData={ideaFormData ?? {}}
+                setIdeaFormDataValid={setIdeaFormDataValid}
+                setFormData={setIdeaFormData}
+                setError={setError}
+                key={ideaId}
+              />
+            </Box>
           </>
         )}
       </Box>
@@ -247,26 +321,46 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
         flexDirection="column"
         justifyContent="flex-end"
       >
-        {ideaId && (
-          <Tooltip
-            disabled={!disabledReason}
-            placement="top"
-            content={disabledReason || <></>}
-          >
-            <div>
-              <Button
-                bgColor={colors.primary}
-                icon="check"
-                w="100%"
-                processing={loadingApproveIdea}
-                disabled={!userFormDataValid || !ideaFormDataValid}
-                onClick={onApproveIdea}
-              >
-                <FormattedMessage {...messages.approve} />
-              </Button>
-            </div>
-          </Tooltip>
-        )}
+        {ideaId &&
+          (isApproved ? (
+            <Tooltip
+              disabled={!undoDisabledByEngagement}
+              placement="top"
+              content={formatMessage(messages.undoApprovalDisabledEngagement)}
+            >
+              <div>
+                <Button
+                  buttonStyle="secondary-outlined"
+                  icon="undo"
+                  w="100%"
+                  processing={loadingUndoApproval}
+                  disabled={undoDisabledByEngagement}
+                  onClick={onUndoApproval}
+                >
+                  <FormattedMessage {...messages.undoApproval} />
+                </Button>
+              </div>
+            </Tooltip>
+          ) : (
+            <Tooltip
+              disabled={!disabledReason}
+              placement="top"
+              content={disabledReason || <></>}
+            >
+              <div>
+                <Button
+                  bgColor={colors.primary}
+                  icon="check"
+                  w="100%"
+                  processing={loadingApproveIdea}
+                  disabled={!userFormDataValid || !ideaFormDataValid}
+                  onClick={onApproveIdea}
+                >
+                  <FormattedMessage {...messages.approve} />
+                </Button>
+              </div>
+            </Tooltip>
+          ))}
       </Box>
     </>
   );

@@ -7,7 +7,7 @@ RSpec.describe EmailCampaigns::NativeSurveyNotSubmittedMailer do
     before_all { create(:idea_status_proposed) }
 
     let_it_be(:recipient) { create(:user, locale: 'en') }
-    let_it_be(:phase) { create(:native_survey_phase, start_at: '2022-12-01', end_at: '2022-12-31', title_multiloc: { 'en' => 'The Big Survey' }) }
+    let_it_be(:phase) { create(:native_survey_phase, start_at: '2022-12-01', end_at: '2023-01-01', title_multiloc: { 'en' => 'The Big Survey' }) }
     let_it_be(:idea) { create(:native_survey_response, project: phase.project, phases: [phase], creation_phase: phase) }
     let_it_be(:command) do
       {

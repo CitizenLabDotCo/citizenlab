@@ -10,13 +10,11 @@ describe('Follow folder', () => {
   let userId: string;
   let folderId: string;
   let folderSlug: string;
-  let userSlug: string;
 
   before(() => {
     cy.apiCreateFolder({
       title: folderTitle,
       descriptionPreview: folderShortDescription,
-      description: randomString(),
       publicationStatus: 'published',
     }).then((folder) => {
       folderId = folder.body.data.id;
@@ -25,7 +23,6 @@ describe('Follow folder', () => {
 
     cy.apiSignup(firstName, lastName, email, password).then((response) => {
       userId = response.body.data.id;
-      userSlug = response.body.data.attributes.slug;
     });
   });
 

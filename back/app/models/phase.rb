@@ -50,6 +50,7 @@
 #  manual_voters_last_updated_by_id :uuid
 #  manual_voters_last_updated_at    :datetime
 #  vote_term                        :string           default("vote")
+#  placement_type                   :string           default("on_timeline"), not null
 #
 # Indexes
 #
@@ -63,53 +64,65 @@
 #
 class Phase < ApplicationRecord
   include Polls::PollPhase
+  include PlainTextMultiloc
   include Surveys::SurveyPhase
   include Volunteering::VolunteeringPhase
   include DocumentAnnotation::DocumentAnnotationPhase
   include Files::FileAttachable
 
+  PRESCREENING_MODES = %w[flagged_only all].freeze
   PARTICIPATION_METHODS = ParticipationMethod::Base.all_methods.map(&:method_str).freeze
+  PLACEMENT_TYPES       = %w[on_timeline standalone].freeze
   VOTING_METHODS        = %w[budgeting multiple_voting single_voting].freeze
-  PRESENTATION_MODES    = %w[card map].freeze
+  PRESENTATION_MODES    = %w[card map feed].freeze
   REACTING_METHODS      = %w[unlimited limited].freeze
-  INPUT_TERMS           = %w[idea question contribution project issue option proposal initiative petition].freeze
+  INPUT_TERMS           = %w[idea question contribution project issue option proposal initiative petition comment response suggestion topic post story observation].freeze
   FALLBACK_INPUT_TERM   = 'idea'
-  VOTE_TERMS            = %w[vote point token credit]
+  VOTE_TERMS            = %w[vote point token credit percent]
+  MIN_DURATION          = 1.day
 
   attribute :reacting_dislike_enabled, :boolean, default: -> { disliking_enabled_default }
+
+  has_many_text_images from: :description_multiloc, as: :text_images
+  accepts_nested_attributes_for :text_images
+
+  has_many_text_images from: :draft_description_multiloc, as: :draft_description_text_images
 
   belongs_to :project
 
   has_one :custom_form, as: :participation_context, dependent: :destroy # native_survey only
 
   has_many :baskets, dependent: :destroy
+  has_many :ai_assistant_conversations, class_name: 'AIAssistant::Conversation', as: :subject, dependent: :destroy
   has_many :permissions, as: :permission_scope, dependent: :destroy
   has_many :ideas_phases, dependent: :destroy
   has_many :ideas, through: :ideas_phases
   has_many :reactions, through: :ideas
-  has_many :text_images, as: :imageable, dependent: :destroy
-  accepts_nested_attributes_for :text_images
   has_many :phase_files, -> { order(:ordering) }, dependent: :destroy
   has_many :jobs_trackers, -> { where(context_type: 'Phase') }, class_name: 'Jobs::Tracker', as: :context, dependent: :destroy
   belongs_to :manual_voters_last_updated_by, class_name: 'User', optional: true
 
   before_validation :sanitize_description_multiloc
+  before_validation :sanitize_draft_description_multiloc
+  plain_text_multiloc :title_multiloc, :native_survey_title_multiloc, :native_survey_button_multiloc
   before_validation :strip_title
   before_validation :set_participation_method_defaults, on: :create
+  before_validation :set_participation_method_defaults_on_method_change, on: :update
   before_validation :set_presentation_mode, on: :create
-
+  before_save :close_previous_open_phase # see also Phase#validate_previous_phase_can_be_closed
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
 
   validates :project, presence: true
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, multiloc: { presence: false, html: true }
+  validates :draft_description_multiloc, multiloc: { presence: false, html: true }
   validates :start_at, presence: true
-  validates :prescreening_enabled, inclusion: { in: [true, false] }
   validate :validate_end_at
-  validate :validate_previous_blank_end_at
-  validate :validate_start_at_before_end_at # Also enforced by the phases_start_before_end check constraint
+  validate :validate_duration
+  validate :validate_previous_phase_can_be_closed # see also Phase#close_previous_open_phase
   validate :validate_no_other_overlapping_phases
+  validate :validate_standalone_participation_method
   validates :manual_voters_amount, numericality: { only_integer: true, greater_than_or_equal_to: 0, allow_nil: true }
   # This is a counter cache column, but it was too complex to implement it with counter_culture. It's
   # therefore updated manually by calling update_manual_votes_count! through the idea sidefx service.
@@ -118,12 +131,15 @@ class Phase < ApplicationRecord
   validates :survey_popup_frequency, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }, allow_nil: true
 
   validates :participation_method, inclusion: { in: PARTICIPATION_METHODS }
+  validates :placement_type, inclusion: { in: PLACEMENT_TYPES }
+  validates :prescreening_mode, inclusion: { in: PRESCREENING_MODES }, allow_nil: true
 
   with_options if: ->(phase) { phase.pmethod.supports_public_visibility? } do
     validates :presentation_mode, inclusion: { in: PRESENTATION_MODES }
     validates :presentation_mode, presence: true
     validates :similarity_enabled, inclusion: { in: [true, false] }
     validates :similarity_threshold_title, :similarity_threshold_body, presence: true, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 1 }
+    validate :validate_available_views
   end
 
   validates :submission_enabled, inclusion: { in: [true, false] }, if: lambda { |phase|
@@ -172,6 +188,7 @@ class Phase < ApplicationRecord
     validates :voting_method, presence: true, inclusion: { in: VOTING_METHODS }
     validates :autoshare_results_enabled, inclusion: { in: [true, false] }
   end
+
   validates :voting_min_total,
     numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: :voting_max_total,
                     if: %i[voting? voting_max_total],
@@ -180,48 +197,55 @@ class Phase < ApplicationRecord
     numericality: { greater_than_or_equal_to: :voting_min_total,
                     if: %i[voting? voting_min_total],
                     allow_nil: true }
+  validates :voting_min_selected_options,
+    numericality: { greater_than_or_equal_to: 1, less_than_or_equal_to: :voting_max_total,
+                    if: %i[voting? voting_max_total],
+                    allow_nil: false }
   validates :voting_max_votes_per_idea,
     numericality: { greater_than_or_equal_to: 1, less_than_or_equal_to: :voting_max_total,
                     if: %i[voting? voting_max_total],
                     allow_nil: true }
-
-  scope :starting_on, lambda { |date|
-    where(start_at: date)
-  }
+  validates :voting_filtering_enabled, inclusion: { in: [true, false] }
 
   # any type of native_survey phase
   with_options if: ->(phase) { phase.pmethod.supports_survey_form? } do
     validates :native_survey_title_multiloc, presence: true, multiloc: { presence: true }
     validates :native_survey_button_multiloc, presence: true, multiloc: { presence: true }
+    validates :allow_multiple_responses, inclusion: { in: [true, false] }
   end
 
+  validate :validate_no_inputs_on_participation_method_change, on: :update
   validate :validate_phase_participation_method
 
   scope :published, lambda {
-    joined = includes(project: { admin_publication: :parent })
-    joined.where(
-      projects: {
-        admin_publications: {
-          publication_status: 'published',
-          parents_admin_publications: { publication_status: 'published' }
-        }
-      }
-    ).or(
-      joined.where(
-        projects: {
-          admin_publications: {
-            publication_status: 'published',
-            parent_id: nil
-          }
-        }
-      )
-    )
+    published_admin_pubs = AdminPublication.published.where(parent_id: nil)
+      .or(AdminPublication.published.where(parent_id: AdminPublication.published))
+    published_projects = Project.where(admin_publication: published_admin_pubs)
+    where(project: published_projects)
   }
 
-  def ends_before?(date)
-    return false if end_at.blank?
+  scope :current, lambda {
+    now = Time.zone.now
+    where('start_at <= ? AND (end_at IS NULL OR end_at > ?)', now, now)
+  }
 
-    end_at.iso8601 < date.to_date.iso8601
+  scope :on_timeline, -> { where(placement_type: 'on_timeline') }
+  scope :standalone, -> { where(placement_type: 'standalone') }
+
+  # Timeline phases first, then chronological; created_at/id break start_at ties.
+  scope :ordered, -> { order(:placement_type, :start_at, :created_at, :id) }
+
+  def ends_before?(time)
+    end_at.present? && end_at <= time
+  end
+
+  def complete?
+    ends_before?(Time.zone.now)
+  end
+
+  def active?(time = Time.now)
+    time = time.in_time_zone
+    start_at <= time && (end_at.nil? || time < end_at)
   end
 
   def permission_scope
@@ -248,9 +272,32 @@ class Phase < ApplicationRecord
     start_at <= Time.zone.now
   end
 
+  def start_date
+    start_at&.to_date
+  end
+
+  def end_date
+    return unless end_at
+
+    date = end_at.to_date
+    end_at.seconds_since_midnight.zero? ? date - 1.day : date
+  end
+
   # Used for validations (which are hard to delegate through the participation method)
   def voting?
     participation_method == 'voting'
+  end
+
+  def ideation?
+    participation_method == 'ideation'
+  end
+
+  # The inputs that belong in an export/report of this phase: submitted or
+  # published inputs, minus content-less rows for methods that keep drafts
+  # (ideation/proposals). Survey methods keep every submission.
+  def inputs_for_export
+    scope = ideas.submitted_or_published
+    pmethod.supports_survey_form? ? scope : scope.with_content
   end
 
   def pmethod
@@ -282,6 +329,12 @@ class Phase < ApplicationRecord
     end
   end
 
+  # Whether the phase is placed on the project timeline, as opposed to running
+  # in parallel with it (e.g. an extra survey).
+  def on_timeline?
+    placement_type == 'on_timeline'
+  end
+
   def set_manual_voters(amount, user)
     return if amount == manual_voters_amount
 
@@ -292,7 +345,9 @@ class Phase < ApplicationRecord
 
   def update_manual_votes_count!
     reload
-    update!(manual_votes_count: ideas.filter_map(&:manual_votes_amount).sum)
+
+    # Denormalized counter: validating here would let an unrelated invalid attribute fail every recount.
+    update_columns(manual_votes_count: ideas.filter_map(&:manual_votes_amount).sum, updated_at: Time.current)
   end
 
   # If 'disable_disliking' is NOT enabled, then disliking will always be set to enabled on creation and cannot be changed
@@ -301,51 +356,86 @@ class Phase < ApplicationRecord
     !AppConfiguration.instance.feature_activated?('disable_disliking')
   end
 
+  def feed_enabled?
+    available_views&.include?('feed')
+  end
+
+  def prescreening_enabled? = effective_prescreening_mode.present?
+  def prescreening_flagged_only? = effective_prescreening_mode == 'flagged_only'
+  def prescreening_all? = effective_prescreening_mode == 'all'
+
+  # The configured `prescreening_mode`, reduced to what this platform's features permit.
+  # The column is configuration data and is stored verbatim: tenant templates and project
+  # copies carry it between platforms whose features differ, so it can be set on a
+  # platform where prescreening is not available. It only takes effect where it is.
+  def effective_prescreening_mode
+    return if prescreening_mode.nil?
+
+    prescreening_flag = participation_method == 'proposals' ? 'prescreening' : 'prescreening_ideation'
+    return unless AppConfiguration.instance.feature_activated?(prescreening_flag)
+    return if prescreening_mode == 'flagged_only' && !AppConfiguration.instance.feature_activated?('flag_inappropriate_content')
+
+    prescreening_mode
+  end
+
   private
 
   def sanitize_description_multiloc
-    service = SanitizationService.new
-    self.description_multiloc = service.sanitize_multiloc(
-      description_multiloc,
-      %i[title alignment list decoration link image video]
-    )
-    self.description_multiloc = service.remove_multiloc_empty_trailing_tags(description_multiloc)
-    self.description_multiloc = service.linkify_multiloc(description_multiloc)
+    self.description_multiloc = sanitize_html_multiloc(description_multiloc)
+  end
+
+  def sanitize_draft_description_multiloc
+    return if draft_description_multiloc.blank?
+
+    self.draft_description_multiloc = sanitize_html_multiloc(draft_description_multiloc)
   end
 
   def validate_end_at
+    return if !on_timeline?
     return if end_at.present? || TimelineService.new.last_phase?(self)
 
     errors.add(:end_at, message: 'cannot be blank unless it is the last phase')
   end
 
-  # If a previous phase has a blank end_at, update it and validate that the end date is 2 days after
-  def validate_previous_blank_end_at
-    previous_phase = TimelineService.new.previous_phase(self)
-    if previous_phase && previous_phase.end_at.blank?
-      if start_at < (previous_phase.start_at + 2.days)
-        errors.add(:start_at, message: 'must be 2 days after the start of the last phase')
-      else
-        previous_phase.update!(end_at: (start_at - 1.day))
-        @previous_phase_end_at_updated = true
-      end
-    end
-  end
+  def validate_duration
+    return unless start_at.present? && end_at.present? && (end_at - start_at) < MIN_DURATION
 
-  def validate_start_at_before_end_at
-    return unless start_at.present? && end_at.present? && start_at > end_at
-
-    errors.add(:start_at, :after_end_at, message: 'is after end_at')
+    errors.add(:base, :duration_too_short, message: "must be at least #{MIN_DURATION.in_hours} hours")
   end
 
   def validate_no_other_overlapping_phases
-    ts = TimelineService.new
-    ts.other_project_phases(self).each do |other_phase|
-      next unless ts.overlaps?(self, other_phase)
+    return if !on_timeline?
+
+    TimelineService.new.overlapping_phases(self).each do |other_phase|
+      # Skip open-ended phases that start before this phase as they have their own
+      # validation. See Phase#validate_previous_phase_can_be_closed
+      next if other_phase.end_at.nil? && other_phase.start_at < start_at
 
       errors.add(:base, :has_other_overlapping_phases,
-        message: 'has other phases which overlap in start and end date')
+        message: "overlaps with Phase##{other_phase.id}")
     end
+  end
+
+  def validate_previous_phase_can_be_closed
+    return if !on_timeline?
+
+    previous_phase = TimelineService.new.previous_phase(self)
+    return unless previous_phase && previous_phase.end_at.nil?
+
+    previous_phase.end_at = start_at
+    return if previous_phase.valid?
+
+    previous_phase.errors.each { |error| errors.add(:previous_phase, error.full_message) }
+  end
+
+  def close_previous_open_phase
+    return if !on_timeline?
+
+    previous_phase = TimelineService.new.previous_phase(self)
+    return unless previous_phase && previous_phase.end_at.nil?
+
+    previous_phase.update!(end_at: start_at)
+    @previous_phase_end_at_updated = true
   end
 
   def strip_title
@@ -368,13 +458,87 @@ class Phase < ApplicationRecord
     pmethod.assign_defaults_for_phase
   end
 
+  def set_participation_method_defaults_on_method_change
+    return unless participation_method_changed?
+
+    pmethod.assign_defaults_for_phase
+  end
+
   def set_presentation_mode
     self.presentation_mode ||= 'card'
+    self.available_views = ['card'] if available_views.blank?
+    self.available_views |= [presentation_mode] unless available_views.include?(presentation_mode)
+  end
+
+  def validate_available_views
+    if available_views.blank? || !available_views.is_a?(Array)
+      errors.add(:available_views, :blank, message: 'must be a non-empty array')
+      return
+    end
+
+    unless available_views.all? { |v| PRESENTATION_MODES.include?(v) }
+      errors.add(:available_views, :invalid, message: 'contains invalid view modes')
+      return
+    end
+
+    unless available_views.include?('card')
+      errors.add(:available_views, :invalid, message: 'must include card view')
+      return
+    end
+
+    unless available_views.include?(presentation_mode)
+      errors.add(:available_views, :invalid, message: 'must include the default presentation mode')
+      return
+    end
+
+    # The rest is narrower: some methods do not offer every view. It only applies when the views or
+    # the method are written, so a phase left holding a view its method no longer offers can still
+    # be saved for unrelated edits until the data has been migrated. The method is part of that
+    # condition because switching it can invalidate views that were fine a moment before.
+    return unless presentation_mode_changed? || available_views_changed? || participation_method_changed?
+
+    disallowed = (available_views + [presentation_mode]).compact.uniq - pmethod.allowed_presentation_modes
+    return if disallowed.empty?
+
+    errors.add(
+      :available_views, :invalid,
+      message: "#{disallowed.join(', ')} not available for the #{participation_method} method"
+    )
+  end
+
+  def validate_no_inputs_on_participation_method_change
+    return if !participation_method_changed?
+    return if !id
+
+    if Idea.exists?(creation_phase_id: id) || IdeasPhase.exists?(phase_id: id)
+      errors.add(
+        :participation_method,
+        :has_inputs,
+        message: 'cannot change the participation method when there are inputs in the phase'
+      )
+    end
   end
 
   # Delegate any rules specific to a method to the participation method itself
   def validate_phase_participation_method
     pmethod.validate_phase
+  end
+
+  def validate_standalone_participation_method
+    return if on_timeline?
+    return if pmethod.supports_standalone_placement?
+
+    errors.add(:participation_method, :not_supported_in_standalone_phase, message: 'is not supported in standalone phases')
+  end
+
+  def sanitize_html_multiloc(multiloc)
+    service = SanitizationService.new
+    multiloc = service.sanitize_multiloc(
+      multiloc,
+      %i[title alignment list decoration link image video]
+    )
+    multiloc = service.remove_multiloc_empty_trailing_tags(multiloc)
+    service.linkify_multiloc(multiloc)
   end
 end
 

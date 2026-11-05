@@ -2,7 +2,7 @@ import { stringify } from 'qs';
 
 import clHistory from 'utils/cl-router/history';
 
-export const removeSearchParams = (paramsToBeDeleted: string[]) => {
+export const removeSearchParams = (paramsToBeDeleted: readonly string[]) => {
   const searchString = window.location.search;
   const searchParams = new URLSearchParams(searchString);
 
@@ -17,5 +17,6 @@ export const removeSearchParams = (paramsToBeDeleted: string[]) => {
   clHistory.replace({
     pathname: window.location.pathname,
     search: stringify(newSearchParams, { addQueryPrefix: true }),
+    hash: window.location.hash,
   });
 };

@@ -1,0 +1,152 @@
+import { SerializedNodes, SerializedNode } from '@craftjs/core';
+
+import {
+  findNodeIdByName,
+  getResolvedName,
+} from 'components/admin/ContentBuilder/resolvedName';
+
+import { isEmptyMultiloc } from 'utils/helperUtils';
+
+import { CustomPageBannerProps } from './Widgets/CustomPageBanner/types';
+
+export const BODY_NODE_ID = 'CUSTOM_PAGE_BODY';
+
+const ROOT_ID = 'ROOT';
+
+const bodyNode = (childIds: string[]): SerializedNode => ({
+  type: { resolvedName: 'CustomPageBody' },
+  nodes: childIds,
+  props: {},
+  custom: { region: true },
+  hidden: false,
+  parent: ROOT_ID,
+  isCanvas: true,
+  displayName: 'CustomPageBody',
+  linkedNodes: {},
+});
+
+const rootNode = (childIds: string[]): SerializedNode => ({
+  type: { resolvedName: 'CustomPageRoot' },
+  nodes: childIds,
+  props: {},
+  custom: { region: true },
+  hidden: false,
+  parent: null,
+  isCanvas: true,
+  displayName: 'CustomPageRoot',
+  linkedNodes: {},
+});
+
+export const defaultCustomPageLayout = (): SerializedNodes => ({
+  [ROOT_ID]: rootNode([BODY_NODE_ID]),
+  [BODY_NODE_ID]: bodyNode([]),
+});
+
+// A node off the wire may have no children array at all, whatever the type says.
+const childIdsOf = (node: SerializedNode): string[] =>
+  Array.isArray(node.nodes) ? node.nodes : [];
+
+const isTitle = (nodes: SerializedNodes, id: string) =>
+  getResolvedName(nodes[id]) === 'CustomPageTitle';
+
+// Every stored layout carries the scaffold and the title, so an unused builder still yields
+// a non-empty graph. Content means the body region holds something else — or ROOT does, on a
+// graph with no body.
+export const layoutHasContent = (nodes?: SerializedNodes): boolean => {
+  if (!nodes) return false;
+
+  const bodyId = findNodeIdByName(nodes, 'CustomPageBody');
+  // Widened: an index lookup is typed as always present, but either node may be missing.
+  const container = (bodyId ? nodes[bodyId] : nodes[ROOT_ID]) as
+    | SerializedNode
+    | undefined;
+
+  return !!container && childIdsOf(container).some((id) => !isTitle(nodes, id));
+};
+
+// A derived banner may hold only a subheader or a button, so those count.
+export const bannerHasContent = ({
+  image,
+  headerMultiloc,
+  subheaderMultiloc,
+  ctaType,
+}: Pick<
+  CustomPageBannerProps,
+  'image' | 'headerMultiloc' | 'subheaderMultiloc' | 'ctaType'
+>) =>
+  !!image?.imageUrl ||
+  !isEmptyMultiloc(headerMultiloc) ||
+  !isEmptyMultiloc(subheaderMultiloc) ||
+  ctaType === 'customized_button';
+
+// True when the first visible body node is a banner that draws something. The page then drops its
+// top gap and anchors the edit button to the window edge.
+export const layoutStartsWithBanner = (nodes?: SerializedNodes): boolean => {
+  if (!nodes) return false;
+
+  const bodyId = findNodeIdByName(nodes, 'CustomPageBody');
+  if (!bodyId) return false;
+
+  const firstVisibleId = childIdsOf(nodes[bodyId]).find(
+    (id) => !(isTitle(nodes, id) && nodes[id].props.showTitle === false)
+  );
+  return (
+    firstVisibleId !== undefined &&
+    getResolvedName(nodes[firstVisibleId]) === 'CustomPageBanner' &&
+    bannerHasContent(nodes[firstVisibleId].props)
+  );
+};
+
+// Guarantees the scaffold the editor relies on: a CustomPageRoot holding one CustomPageBody
+// with every other node under the body. A layout saved against an older scaffold is repaired
+// rather than discarded.
+export const normalizeCustomPageLayout = (
+  nodes?: SerializedNodes
+): SerializedNodes => {
+  if (!nodes || !(ROOT_ID in nodes)) {
+    return defaultCustomPageLayout();
+  }
+
+  const next: SerializedNodes = { ...nodes };
+
+  const existingBodyId = findNodeIdByName(next, 'CustomPageBody');
+  const bodyId = existingBodyId ?? BODY_NODE_ID;
+  if (!existingBodyId) {
+    // No body yet: adopt what ROOT was holding so no content is lost.
+    next[bodyId] = bodyNode(childIdsOf(next[ROOT_ID]));
+  }
+
+  next[bodyId] = {
+    ...next[bodyId],
+    parent: ROOT_ID,
+    nodes: childIdsOf(next[bodyId]),
+  };
+  next[bodyId].nodes.forEach((childId) => {
+    const child = next[childId] as SerializedNode | undefined;
+    if (child && child.parent !== bodyId) {
+      next[childId] = { ...child, parent: bodyId };
+    }
+  });
+
+  const root = next[ROOT_ID];
+  // Derivation puts nothing but the body on ROOT, but a stored graph may hold more; any such
+  // sibling keeps its stored order. When the body was just created they were adopted into it
+  // instead, so ROOT keeps only the body.
+  const storedRootIds = existingBodyId
+    ? childIdsOf(root).filter((id) => id in next)
+    : [];
+  const rootIds = storedRootIds.includes(bodyId)
+    ? storedRootIds
+    : [...storedRootIds, bodyId];
+
+  next[ROOT_ID] = {
+    ...root,
+    type: { resolvedName: 'CustomPageRoot' },
+    isCanvas: true,
+    displayName: 'CustomPageRoot',
+    custom: { ...root.custom, region: true },
+    nodes: rootIds,
+  };
+
+  return next;
+};

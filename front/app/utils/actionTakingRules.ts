@@ -1,9 +1,9 @@
 import { IPhaseData } from 'api/phases/types';
+import { getPhaseActionDescriptor } from 'api/phases/utils';
 import { IProjectData } from 'api/projects/types';
 import { IUserData } from 'api/users/types';
 
-import { ProjectPostingDisabledReason } from 'utils/actionDescriptors/types';
-import { pastPresentOrFuture } from 'utils/dateUtils';
+import { PhasePostingDisabledReason } from 'utils/actionDescriptors/types';
 
 import { canModerateProject } from './permissions/rules/projectPermissions';
 
@@ -48,11 +48,10 @@ export type AuthenticationRequirements =
   | 'complete_registration';
 
 const ideaPostingDisabledReason = (
-  backendReason: ProjectPostingDisabledReason | null,
-  signedIn: boolean,
-  futureEnabled: string | null
+  backendReason: PhasePostingDisabledReason | null,
+  signedIn: boolean
 ): {
-  disabledReason: ProjectPostingDisabledReason | null;
+  disabledReason: PhasePostingDisabledReason | null;
   authenticationRequirements: AuthenticationRequirements | null;
 } => {
   switch (backendReason) {
@@ -80,11 +79,6 @@ const ideaPostingDisabledReason = (
       return {
         disabledReason: backendReason,
         authenticationRequirements: 'sign_in_up',
-      };
-    case 'project_inactive':
-      return {
-        disabledReason: futureEnabled ? 'future_enabled' : backendReason,
-        authenticationRequirements: null,
       };
     case 'posting_disabled':
       return {
@@ -132,13 +126,10 @@ export const getIdeaPostingRules = ({
   project: IProjectData | null | undefined;
   phase: IPhaseData | undefined;
   authUser: IUserData | undefined;
-}): ActionPermission<ProjectPostingDisabledReason> => {
+}): ActionPermission<PhasePostingDisabledReason> => {
   const signedIn = !!authUser;
 
   if (project) {
-    const { disabled_reason, future_enabled_at, enabled } =
-      project.attributes.action_descriptors.posting_idea;
-
     if (authUser && canModerateProject(project, { data: authUser })) {
       return {
         show: true,
@@ -148,37 +139,47 @@ export const getIdeaPostingRules = ({
       };
     }
 
-    // timeline
-    if (phase) {
-      // not an enabled ideation or native survey or proposals phase
-      if (
-        (phase.attributes.participation_method === 'ideation' ||
-          phase.attributes.participation_method === 'proposals') &&
-        !phase.attributes.submission_enabled &&
-        disabled_reason !== 'posting_not_supported'
-      ) {
-        return {
-          show: false,
-          enabled: null,
-          disabledReason: null,
-          authenticationRequirements: null,
-        };
-      }
+    // TODO: once the POST /ideas endpoint always carries phase_id in the path, a phase is
+    // always resolved before reaching here and the no-phase case becomes unreachable.
+    if (!phase) {
+      return {
+        show: true,
+        enabled: false,
+        disabledReason: 'inactive_phase',
+        authenticationRequirements: null,
+      };
+    }
 
-      // if not in current phase - not sure this is possible to trigger
-      if (
-        pastPresentOrFuture([
-          phase.attributes.start_at,
-          phase.attributes.end_at,
-        ]) !== 'present'
-      ) {
-        return {
-          show: true,
-          enabled: false,
-          disabledReason: 'inactive_phase',
-          authenticationRequirements: null,
-        };
-      }
+    const { disabled_reason, enabled } = getPhaseActionDescriptor(
+      phase,
+      'posting_idea'
+    );
+
+    if (
+      disabled_reason === 'inactive_phase' ||
+      disabled_reason === 'project_inactive'
+    ) {
+      return {
+        show: true,
+        enabled: false,
+        disabledReason: disabled_reason,
+        authenticationRequirements: null,
+      };
+    }
+
+    // not an enabled ideation or native survey or proposals phase
+    if (
+      (phase.attributes.participation_method === 'ideation' ||
+        phase.attributes.participation_method === 'proposals') &&
+      !phase.attributes.submission_enabled &&
+      disabled_reason !== 'posting_not_supported'
+    ) {
+      return {
+        show: false,
+        enabled: null,
+        disabledReason: null,
+        authenticationRequirements: null,
+      };
     }
 
     if (enabled) {
@@ -191,7 +192,7 @@ export const getIdeaPostingRules = ({
     }
 
     const { disabledReason, authenticationRequirements } =
-      ideaPostingDisabledReason(disabled_reason, signedIn, future_enabled_at);
+      ideaPostingDisabledReason(disabled_reason, signedIn);
 
     if (authenticationRequirements) {
       return {
@@ -207,7 +208,7 @@ export const getIdeaPostingRules = ({
       authenticationRequirements: null,
       show: true,
       enabled: false,
-    } as ActionPermissionDisabled<ProjectPostingDisabledReason>;
+    } as ActionPermissionDisabled<PhasePostingDisabledReason>;
     // TODO enforce the validity of this by adding a test to ensure either action or disabledReason is not null
   }
   // if !project

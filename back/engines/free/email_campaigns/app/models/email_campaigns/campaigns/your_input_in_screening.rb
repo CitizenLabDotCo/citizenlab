@@ -19,6 +19,7 @@
 #  intro_multiloc       :jsonb
 #  button_text_multiloc :jsonb
 #  context_type         :string
+#  channel              :string           default("email"), not null
 #
 # Indexes
 #
@@ -64,7 +65,7 @@ module EmailCampaigns
     def activity_context(activity)
       return nil unless activity.item.is_a?(::Idea)
 
-      activity.item.idea && TimelineService.new.current_phase(activity.item.idea.project)
+      TimelineService.new.current_phase(activity.item.project)
     end
 
     def self.supported_context_class

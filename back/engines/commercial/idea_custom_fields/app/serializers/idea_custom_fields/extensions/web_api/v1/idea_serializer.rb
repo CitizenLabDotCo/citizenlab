@@ -8,7 +8,10 @@ module IdeaCustomFields
           def self.included(base)
             base.class_eval do
               attribute(:custom_field_values) do |idea, params|
-                CustomFieldService.remove_not_visible_fields idea, current_user(params)
+                user = current_user(params)
+                idea.custom_field_answers
+                  .select { |answer| CustomFieldAnswerPolicy.new(user, answer).show? }
+                  .to_h { [it.key, it.value] }
               end
 
               def self.attributes_hash(record, fieldset = nil, params = {})

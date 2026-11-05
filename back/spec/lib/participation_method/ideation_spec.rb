@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe ParticipationMethod::Ideation do
   subject(:participation_method) { described_class.new phase }
 
-  let(:phase) { create(:phase) }
+  let(:phase) { create(:phase, with_permissions: true) }
 
   describe '#method_str' do
     it 'returns ideation' do
@@ -47,6 +47,64 @@ RSpec.describe ParticipationMethod::Ideation do
         expect(input.idea_status).to eq initial_status
       end
     end
+
+    context 'with prescreening_mode' do
+      before_all do
+        SettingsService.new.activate_feature!('prescreening_ideation')
+        SettingsService.new.activate_feature!('flag_inappropriate_content')
+      end
+
+      let!(:prescreening_status) { create(:idea_status_prescreening) }
+      let!(:proposed_status) { create(:idea_status_proposed) }
+      let(:phase) { create(:phase, prescreening_mode: prescreening_mode, with_permissions: true) }
+
+      context 'when prescreening_mode is all' do
+        let(:prescreening_mode) { 'all' }
+
+        it 'sets idea_status to prescreening and publication_status to submitted' do
+          input = build(:idea, idea_status: nil, publication_status: nil)
+          participation_method.assign_defaults input
+          expect(input.idea_status).to eq prescreening_status
+          expect(input.publication_status).to eq 'submitted'
+        end
+      end
+
+      context 'when prescreening_mode is flagged_only' do
+        let(:prescreening_mode) { 'flagged_only' }
+
+        it 'sets idea_status to proposed and publication_status to published' do
+          input = build(:idea, idea_status: nil, publication_status: nil)
+          participation_method.assign_defaults input
+          expect(input.idea_status).to eq(proposed_status)
+          expect(input.publication_status).to eq('published')
+        end
+      end
+
+      context 'when prescreening_mode is nil' do
+        let(:prescreening_mode) { nil }
+
+        it 'sets idea_status to proposed and publication_status to published' do
+          input = build(:idea, idea_status: nil, publication_status: nil)
+          participation_method.assign_defaults input
+          expect(input.idea_status).to eq proposed_status
+          expect(input.publication_status).to eq 'published'
+        end
+      end
+    end
+
+    # A phase can carry a prescreening_mode on a platform without the feature: tenant
+    # templates and project copies bring the value across from platforms that have it.
+    context 'with prescreening_mode but the prescreening_ideation feature disabled' do
+      let!(:proposed_status) { create(:idea_status_proposed) }
+      let(:phase) { create(:phase, prescreening_mode: 'all', with_permissions: true) }
+
+      it 'ignores the mode: sets idea_status to proposed and publication_status to published' do
+        input = build(:idea, idea_status: nil, publication_status: nil)
+        participation_method.assign_defaults input
+        expect(input.idea_status).to eq proposed_status
+        expect(input.publication_status).to eq 'published'
+      end
+    end
   end
 
   describe '#assign_defaults_for_phase' do
@@ -60,9 +118,9 @@ RSpec.describe ParticipationMethod::Ideation do
     describe 'when prescreening is activated' do
       before { SettingsService.new.activate_feature! 'prescreening' }
 
-      it 'sets prescreening_enabled to false' do
+      it 'does not set prescreening_mode' do
         participation_method.assign_defaults_for_phase
-        expect(phase.prescreening_enabled).to be false
+        expect(phase.prescreening_mode).to be_nil
       end
     end
   end
@@ -107,27 +165,12 @@ RSpec.describe ParticipationMethod::Ideation do
         proposed_budget
       ]
     end
-  end
 
-  describe '#author_in_form?' do
-    it 'returns false for a visitor when idea_author_change is activated' do
-      SettingsService.new.activate_feature! 'idea_author_change'
-      expect(participation_method.author_in_form?(nil)).to be false
-    end
-
-    it 'returns false for a resident when idea_author_change is activated' do
-      SettingsService.new.activate_feature! 'idea_author_change'
-      expect(participation_method.author_in_form?(create(:user))).to be false
-    end
-
-    it 'returns false for a moderator when idea_author_change is deactivated' do
-      SettingsService.new.deactivate_feature! 'idea_author_change'
-      expect(participation_method.author_in_form?(create(:admin))).to be false
-    end
-
-    it 'returns true for a moderator when idea_author_change is activated' do
-      SettingsService.new.activate_feature! 'idea_author_change'
-      expect(participation_method.author_in_form?(create(:admin))).to be true
+    it 'shows the answers of the built-in questions publicly' do
+      fields = participation_method.default_fields(create(:custom_form, participation_context: phase))
+      questions, pages = fields.partition(&:supports_submission?)
+      expect(questions.map(&:answers_visible_to).uniq).to eq ['public']
+      expect(pages.map(&:answers_visible_to).uniq).to eq ['moderators']
     end
   end
 
@@ -204,21 +247,6 @@ RSpec.describe ParticipationMethod::Ideation do
     end
   end
 
-  describe '#validate_phase' do
-    it 'does not add an error with transitive inputs' do
-      create(:idea, phases: [phase], project: phase.project)
-      expect(phase).to be_valid
-    end
-
-    it 'adds an error with non-transitive inputs' do
-      phase.update!(participation_method: 'proposals', reacting_threshold: 50, expire_days_limit: 10)
-      create(:proposal, creation_phase: phase, project: phase.project)
-      phase.participation_method = 'ideation'
-      expect(phase).not_to be_valid
-      expect(phase.errors.details).to eq({ participation_method: [{ error: :non_complying_inputs }] })
-    end
-  end
-
   its(:additional_export_columns) { is_expected.to eq %w[manual_votes] }
   its(:allowed_ideas_orders) { is_expected.to eq %w[trending random popular -new new comments_count] }
   its(:return_disabled_actions?) { is_expected.to be false }
@@ -228,20 +256,22 @@ RSpec.describe ParticipationMethod::Ideation do
   its(:supports_edits_after_publication?) { is_expected.to be true }
   its(:supports_exports?) { is_expected.to be true }
   its(:supports_input_term?) { is_expected.to be true }
-  its(:supports_inputs_without_author?) { is_expected.to be false }
+  its(:supports_inputs_without_author?) { is_expected.to be true }
   its(:allow_posting_again_after) { is_expected.to eq 0.seconds }
-  its(:supports_permitted_by_everyone?) { is_expected.to be false }
+  its(:supports_permitted_by_everyone?) { is_expected.to be true }
   its(:supports_public_visibility?) { is_expected.to be true }
   its(:supports_status?) { is_expected.to be true }
+  its(:supports_standalone_placement?) { is_expected.to be false }
   its(:supports_submission?) { is_expected.to be true }
+  its(:supports_input_pdf_export?) { is_expected.to be true }
   its(:supports_toxicity_detection?) { is_expected.to be true }
   its(:use_reactions_as_votes?) { is_expected.to be false }
   its(:transitive?) { is_expected.to be true }
+  its(:destroy_ideas_on_phase_destroy?) { is_expected.to be false }
   its(:supports_private_attributes_in_export?) { is_expected.to be true }
-  its(:form_logic_enabled?) { is_expected.to be false }
+  its(:supports_form_logic?) { is_expected.to be false }
   its(:follow_idea_on_idea_submission?) { is_expected.to be true }
   its(:supports_custom_field_categories?) { is_expected.to be false }
-  its(:user_fields_in_form?) { is_expected.to be false }
   its(:supports_multiple_phase_reports?) { is_expected.to be false }
   its(:add_autoreaction_to_inputs?) { is_expected.to be(true) }
   its(:everyone_tracking_enabled?) { is_expected.to be false }

@@ -23,7 +23,7 @@ describe('useDeleteUser', () => {
     });
 
     act(() => {
-      result.current.mutate('id');
+      result.current.mutate({ userId: 'id', deleteParticipationData: false });
     });
 
     await waitFor(() => expect(result.current.data).not.toBe(undefined));
@@ -41,7 +41,7 @@ describe('useDeleteUser', () => {
     });
 
     act(() => {
-      result.current.mutate('id');
+      result.current.mutate({ userId: 'id', deleteParticipationData: false });
     });
 
     await waitFor(() => expect(result.current.isError).toBe(true));

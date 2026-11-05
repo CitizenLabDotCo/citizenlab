@@ -1,6 +1,14 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  moreFromThisSubmission: {
+    id: 'app.containers.IdeasShow.moreFromThisSubmission',
+    defaultMessage: 'More from this submission',
+  },
+  notAnswered: {
+    id: 'app.containers.IdeasShow.notAnswered',
+    defaultMessage: 'Not answered',
+  },
   deletedUser: {
     id: 'app.containers.IdeasShow.deletedUser',
     defaultMessage: 'deleted user',
@@ -59,7 +67,7 @@ export default defineMessages({
     defaultMessage: 'Support this option: {postTitle}',
   },
   issueTwitterMessage: {
-    id: 'app.containers.IdeasShow.issueTwitterMessage',
+    id: 'app.containers.IdeasShow.issueTwitterMessage1',
     defaultMessage: 'Support this issue: {postTitle}',
   },
   projectTwitterMessage: {
@@ -86,6 +94,34 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.petitionTwitterMessage',
     defaultMessage: 'Support this petition: {postTitle}',
   },
+  commentTwitterMessage: {
+    id: 'app.containers.IdeasShow.commentTwitterMessage',
+    defaultMessage: 'Support this comment: {postTitle}',
+  },
+  responseTwitterMessage: {
+    id: 'app.containers.IdeasShow.responseTwitterMessage',
+    defaultMessage: 'Support this response: {postTitle}',
+  },
+  suggestionTwitterMessage: {
+    id: 'app.containers.IdeasShow.suggestionTwitterMessage',
+    defaultMessage: 'Support this suggestion: {postTitle}',
+  },
+  topicTwitterMessage: {
+    id: 'app.containers.IdeasShow.topicTwitterMessage',
+    defaultMessage: 'Support this topic: {postTitle}',
+  },
+  postTwitterMessage: {
+    id: 'app.containers.IdeasShow.postTwitterMessage',
+    defaultMessage: 'Support this post: {postTitle}',
+  },
+  storyTwitterMessage: {
+    id: 'app.containers.IdeasShow.storyTwitterMessage',
+    defaultMessage: 'Support this story: {postTitle}',
+  },
+  observationTwitterMessage: {
+    id: 'app.containers.IdeasShow.observationTwitterMessage',
+    defaultMessage: 'Support this observation: {postTitle}',
+  },
   // #input_term_copy
   ideaWhatsAppMessage: {
     id: 'app.containers.IdeasShow.ideaWhatsAppMessage',
@@ -108,7 +144,7 @@ export default defineMessages({
     defaultMessage: 'Join the discussion: {postTitle}',
   },
   issueWhatsAppMessage: {
-    id: 'app.containers.IdeasShow.ideasWhatsAppMessage',
+    id: 'app.containers.IdeasShow.issueWhatsAppMessage1',
     defaultMessage: 'Support this issue: {postTitle}',
   },
   proposalWhatsAppMessage: {
@@ -122,6 +158,34 @@ export default defineMessages({
   petitionWhatsAppMessage: {
     id: 'app.containers.IdeasShow.petitionWhatsAppMessage',
     defaultMessage: 'Support this petition: {postTitle}',
+  },
+  commentWhatsAppMessage: {
+    id: 'app.containers.IdeasShow.commentWhatsAppMessage',
+    defaultMessage: 'Support this comment: {postTitle}',
+  },
+  responseWhatsAppMessage: {
+    id: 'app.containers.IdeasShow.responseWhatsAppMessage',
+    defaultMessage: 'Support this response: {postTitle}',
+  },
+  suggestionWhatsAppMessage: {
+    id: 'app.containers.IdeasShow.suggestionWhatsAppMessage',
+    defaultMessage: 'Support this suggestion: {postTitle}',
+  },
+  topicWhatsAppMessage: {
+    id: 'app.containers.IdeasShow.topicWhatsAppMessage',
+    defaultMessage: 'Support this topic: {postTitle}',
+  },
+  postWhatsAppMessage: {
+    id: 'app.containers.IdeasShow.postWhatsAppMessage',
+    defaultMessage: 'Support this post: {postTitle}',
+  },
+  storyWhatsAppMessage: {
+    id: 'app.containers.IdeasShow.storyWhatsAppMessage',
+    defaultMessage: 'Support this story: {postTitle}',
+  },
+  observationWhatsAppMessage: {
+    id: 'app.containers.IdeasShow.observationWhatsAppMessage',
+    defaultMessage: 'Support this observation: {postTitle}',
   },
   // #input_term_copy
   ideaEmailSharingSubject: {
@@ -158,11 +222,11 @@ export default defineMessages({
       "Join the discussion about this question '{ideaTitle}' at {ideaUrl}!",
   },
   issueEmailSharingSubject: {
-    id: 'app.containers.IdeasShow.issueEmailSharingSubject',
+    id: 'app.containers.IdeasShow.issueEmailSharingSubject1',
     defaultMessage: 'Support this issue: {ideaTitle}',
   },
   issueEmailSharingBody: {
-    id: 'app.containers.IdeasShow.issueEmailSharingBody',
+    id: 'app.containers.IdeasShow.issueEmailSharingBody1',
     defaultMessage: "Support this issue '{ideaTitle}' at {ideaUrl}!",
   },
   projectEmailSharingSubject: {
@@ -197,6 +261,62 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.petitionEmailSharingBody',
     defaultMessage: "Support this petition '{ideaTitle}' at {ideaUrl}!",
   },
+  commentEmailSharingSubject: {
+    id: 'app.containers.IdeasShow.commentEmailSharingSubject',
+    defaultMessage: 'Support this comment: {ideaTitle}',
+  },
+  commentEmailSharingBody: {
+    id: 'app.containers.IdeasShow.commentEmailSharingBody',
+    defaultMessage: "Support this comment '{ideaTitle}' at {ideaUrl}!",
+  },
+  responseEmailSharingSubject: {
+    id: 'app.containers.IdeasShow.responseEmailSharingSubject',
+    defaultMessage: 'Support this response: {ideaTitle}',
+  },
+  responseEmailSharingBody: {
+    id: 'app.containers.IdeasShow.responseEmailSharingBody',
+    defaultMessage: "Support this response '{ideaTitle}' at {ideaUrl}!",
+  },
+  suggestionEmailSharingSubject: {
+    id: 'app.containers.IdeasShow.suggestionEmailSharingSubject',
+    defaultMessage: 'Support this suggestion: {ideaTitle}',
+  },
+  suggestionEmailSharingBody: {
+    id: 'app.containers.IdeasShow.suggestionEmailSharingBody',
+    defaultMessage: "Support this suggestion '{ideaTitle}' at {ideaUrl}!",
+  },
+  topicEmailSharingSubject: {
+    id: 'app.containers.IdeasShow.topicEmailSharingSubject',
+    defaultMessage: 'Support this topic: {ideaTitle}',
+  },
+  topicEmailSharingBody: {
+    id: 'app.containers.IdeasShow.topicEmailSharingBody',
+    defaultMessage: "Support this topic '{ideaTitle}' at {ideaUrl}!",
+  },
+  postEmailSharingSubject: {
+    id: 'app.containers.IdeasShow.postEmailSharingSubject',
+    defaultMessage: 'Support this post: {ideaTitle}',
+  },
+  postEmailSharingBody: {
+    id: 'app.containers.IdeasShow.postEmailSharingBody',
+    defaultMessage: "Support this post '{ideaTitle}' at {ideaUrl}!",
+  },
+  storyEmailSharingSubject: {
+    id: 'app.containers.IdeasShow.storyEmailSharingSubject',
+    defaultMessage: 'Support this story: {ideaTitle}',
+  },
+  storyEmailSharingBody: {
+    id: 'app.containers.IdeasShow.storyEmailSharingBody',
+    defaultMessage: "Support this story '{ideaTitle}' at {ideaUrl}!",
+  },
+  observationEmailSharingSubject: {
+    id: 'app.containers.IdeasShow.observationEmailSharingSubject',
+    defaultMessage: 'Support this observation: {ideaTitle}',
+  },
+  observationEmailSharingBody: {
+    id: 'app.containers.IdeasShow.observationEmailSharingBody',
+    defaultMessage: "Support this observation '{ideaTitle}' at {ideaUrl}!",
+  },
   share: {
     id: 'app.containers.IdeasShow.share',
     defaultMessage: 'Share',
@@ -209,9 +329,88 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.imported',
     defaultMessage: 'Imported',
   },
-  importedTooltip: {
-    id: 'app.containers.IdeasShow.importedTooltip',
+  importedTooltipIdea: {
+    id: 'app.containers.IdeasShow.importedTooltipIdea',
     defaultMessage:
-      'This {inputTerm} was collected offline and automatically uploaded to the platform.',
+      'This idea was collected offline and automatically uploaded to the platform.',
+  },
+  importedTooltipOption: {
+    id: 'app.containers.IdeasShow.importedTooltipOption',
+    defaultMessage:
+      'This option was collected offline and automatically uploaded to the platform.',
+  },
+  importedTooltipProject: {
+    id: 'app.containers.IdeasShow.importedTooltipProject',
+    defaultMessage:
+      'This project was collected offline and automatically uploaded to the platform.',
+  },
+  importedTooltipQuestion: {
+    id: 'app.containers.IdeasShow.importedTooltipQuestion',
+    defaultMessage:
+      'This question was collected offline and automatically uploaded to the platform.',
+  },
+  importedTooltipIssue: {
+    id: 'app.containers.IdeasShow.importedTooltipIssue',
+    defaultMessage:
+      'This issue was collected offline and automatically uploaded to the platform.',
+  },
+  importedTooltipContribution: {
+    id: 'app.containers.IdeasShow.importedTooltipContribution',
+    defaultMessage:
+      'This contribution was collected offline and automatically uploaded to the platform.',
+  },
+  importedTooltipProposal: {
+    id: 'app.containers.IdeasShow.importedTooltipProposal',
+    defaultMessage:
+      'This proposal was collected offline and automatically uploaded to the platform.',
+  },
+  importedTooltipInitiative: {
+    id: 'app.containers.IdeasShow.importedTooltipInitiative',
+    defaultMessage:
+      'This initiative was collected offline and automatically uploaded to the platform.',
+  },
+  importedTooltipPetition: {
+    id: 'app.containers.IdeasShow.importedTooltipPetition',
+    defaultMessage:
+      'This petition was collected offline and automatically uploaded to the platform.',
+  },
+  importedTooltipComment: {
+    id: 'app.containers.IdeasShow.importedTooltipComment',
+    defaultMessage:
+      'This comment was collected offline and automatically uploaded to the platform.',
+  },
+  importedTooltipResponse: {
+    id: 'app.containers.IdeasShow.importedTooltipResponse',
+    defaultMessage:
+      'This response was collected offline and automatically uploaded to the platform.',
+  },
+  importedTooltipSuggestion: {
+    id: 'app.containers.IdeasShow.importedTooltipSuggestion',
+    defaultMessage:
+      'This suggestion was collected offline and automatically uploaded to the platform.',
+  },
+  importedTooltipTopic: {
+    id: 'app.containers.IdeasShow.importedTooltipTopic',
+    defaultMessage:
+      'This topic was collected offline and automatically uploaded to the platform.',
+  },
+  importedTooltipPost: {
+    id: 'app.containers.IdeasShow.importedTooltipPost',
+    defaultMessage:
+      'This post was collected offline and automatically uploaded to the platform.',
+  },
+  importedTooltipStory: {
+    id: 'app.containers.IdeasShow.importedTooltipStory',
+    defaultMessage:
+      'This story was collected offline and automatically uploaded to the platform.',
+  },
+  importedTooltipObservation: {
+    id: 'app.containers.IdeasShow.importedTooltipObservation',
+    defaultMessage:
+      'This observation was collected offline and automatically uploaded to the platform.',
+  },
+  actionsMenuTitle: {
+    id: 'app.containers.IdeasShow.actionsMenuTitle',
+    defaultMessage: 'for {ideaTitle}',
   },
 });

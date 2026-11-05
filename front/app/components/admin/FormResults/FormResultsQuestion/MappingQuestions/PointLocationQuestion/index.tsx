@@ -1,8 +1,7 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import MapView from '@arcgis/core/views/MapView';
 import { Box, Spinner, Toggle } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
 
 import useMapConfigById from 'api/map_config/useMapConfigById';
 import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
@@ -11,6 +10,8 @@ import PointMap from 'components/admin/Graphs/PointMap';
 import ResetMapViewButton from 'components/EsriMap/components/ResetMapViewButton';
 
 import { useIntl } from 'utils/cl-intl';
+import { registerMapView, unregisterMapView } from 'utils/mapViewRegistry';
+import { useParams } from 'utils/router';
 
 import messages from '../../../messages';
 import ExportGeoJSONButton from '../components/ExportGeoJSONButton';
@@ -32,7 +33,7 @@ const PointLocationQuestion = ({
   const resetButtonRef: React.RefObject<HTMLDivElement> = React.createRef();
 
   // Get project from URL
-  const { projectId, phaseId } = useParams() as {
+  const { projectId, phaseId } = useParams({ strict: false }) as {
     projectId: string;
     phaseId: string;
   };
@@ -40,6 +41,20 @@ const PointLocationQuestion = ({
   // State variables
   const [mapView, setMapView] = useState<MapView | null>(null);
   const [showHeatMap, setShowHeatMap] = useState<boolean>(false);
+
+  const handleMapInit = useCallback(
+    (view: MapView) => {
+      setMapView(view);
+      registerMapView(customFieldId, view);
+    },
+    [customFieldId]
+  );
+
+  useEffect(() => {
+    return () => {
+      unregisterMapView(customFieldId);
+    };
+  }, [customFieldId]);
 
   // Add reset button to the map
   useEffect(() => {
@@ -91,7 +106,7 @@ const PointLocationQuestion = ({
             layerTitle={formatMessage(messages.responses)}
             layerId={`responsesLayer_${customFieldId}`}
             heatmap={showHeatMap}
-            onInit={setMapView}
+            onInit={handleMapInit}
           />
           <ResetMapViewButton
             mapView={mapView}

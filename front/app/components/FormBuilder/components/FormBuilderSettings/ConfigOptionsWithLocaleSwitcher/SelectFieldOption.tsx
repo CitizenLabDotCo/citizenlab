@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 
 import {
   Box,
@@ -19,7 +19,7 @@ import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 export interface OptionImageType {
-  [key: string]: UploadFile;
+  [key: string]: UploadFile | null;
 }
 
 interface Props {
@@ -30,6 +30,11 @@ interface Props {
   locale: SupportedLocale;
   removeOption: (index: number) => void;
   onChoiceUpdate: (choice: IOptionsType, index: number) => void;
+  onTitleChange: (
+    value: string,
+    index: number,
+    locale: SupportedLocale
+  ) => void;
   onMultilinePaste?: (lines: string[], index: number) => void;
   optionImages: OptionImageType | undefined;
 }
@@ -43,21 +48,36 @@ const SelectFieldOption = memo(
     locale,
     removeOption,
     onChoiceUpdate,
+    onTitleChange,
     onMultilinePaste,
     optionImages,
   }: Props) => {
     const [isUploading, setIsUploading] = useState(false);
+    const [localTitle, setLocalTitle] = useState(
+      choice.title_multiloc[locale] || ''
+    );
     const { formatMessage } = useIntl();
+
+    // Sync from external changes (locale switch, drag reorder, etc.)
+    useEffect(() => {
+      setLocalTitle(choice.title_multiloc[locale] || '');
+    }, [choice.title_multiloc, locale]);
     const showImageSettings =
       inputType === 'multiselect_image' && !choice.other;
     const { mutateAsync: addCustomFieldOptionImage } =
       useAddCustomFieldOptionImage();
-    const image =
-      optionImages &&
-      choice.image_id &&
-      Object.prototype.hasOwnProperty.call(optionImages, choice.image_id)
-        ? [optionImages[choice.image_id]]
-        : [];
+
+    const getImage = () => {
+      if (!optionImages) return [];
+      const imageId = choice.image_id;
+      if (!imageId) return [];
+      if (!(imageId in optionImages)) return [];
+      const image = optionImages[imageId];
+      if (!image) return [];
+      return [image];
+    };
+
+    const image = getImage();
 
     const handleOnAddImage = async (imageFiles: UploadFile[]) => {
       try {
@@ -68,6 +88,7 @@ const SelectFieldOption = memo(
           {
             ...choice,
             image_id: response.data.id,
+            image: response.data,
           } as IOptionsType,
           index
         );
@@ -82,7 +103,13 @@ const SelectFieldOption = memo(
       onChoiceUpdate(
         {
           ...choice,
+
+          // WARNING!
+          // THIS image_id REALLY HAS TO BE AN EMPTY STRING.
+          // IF YOU SET IT TO UNDEFINED, IT WON'T REMOVE
+          // THE IMAGE RELATION FROM THE OPTION IN THE BACKEND.
           image_id: '',
+          image: undefined,
         } as IOptionsType,
         index
       );
@@ -102,11 +129,11 @@ const SelectFieldOption = memo(
             id={`e2e-option-input-${index}`}
             size="small"
             type="text"
-            value={choice.title_multiloc[locale]}
+            value={localTitle}
             onKeyDown={handleKeyDown}
             onChange={(value) => {
-              choice.title_multiloc[locale] = value;
-              onChoiceUpdate(choice, index);
+              setLocalTitle(value);
+              onTitleChange(value, index, locale);
             }}
             autoFocus={false}
             onMultilinePaste={

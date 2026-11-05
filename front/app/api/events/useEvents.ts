@@ -16,8 +16,12 @@ const fetchEvents = (filters: InputParameters) => {
     pageSize,
     projectPublicationStatuses: project_publication_statuses,
     staticPageId: static_page_id,
+    areas,
+    globalTopics: global_topics,
+    spaces,
     attendeeId: attendee_id,
     ongoing_during,
+    show_unlisted_events_user_can_moderate,
   } = filters;
   return fetcher<IEvents>({
     path: '/events',
@@ -27,6 +31,9 @@ const fetchEvents = (filters: InputParameters) => {
       ends_before_date,
       ends_on_or_after_date,
       static_page_id,
+      areas,
+      global_topics,
+      spaces,
       sort,
       'page[number]': pageNumber,
       'page[size]': pageSize,
@@ -34,24 +41,32 @@ const fetchEvents = (filters: InputParameters) => {
       attendee_id,
       ongoing_during:
         ongoing_during && `[${ongoing_during[0]}, ${ongoing_during[1]}]`,
+      show_unlisted_events_user_can_moderate,
     },
   });
 };
 
 const newDate = new Date().toJSON();
 
-const useEvents = ({
-  projectIds,
-  staticPageId,
-  currentAndFutureOnly,
-  pastOnly,
-  pageSize,
-  sort,
-  projectPublicationStatuses,
-  pageNumber,
-  attendeeId,
-  ongoing_during,
-}: InputParameters) => {
+const useEvents = (
+  {
+    projectIds,
+    staticPageId,
+    areas,
+    globalTopics,
+    spaces,
+    currentAndFutureOnly,
+    pastOnly,
+    pageSize,
+    sort,
+    projectPublicationStatuses,
+    pageNumber,
+    attendeeId,
+    ongoing_during,
+    show_unlisted_events_user_can_moderate,
+  }: InputParameters,
+  { enabled = true } = {}
+) => {
   const queryParams: InputParameters = {
     projectPublicationStatuses,
     sort: sort || (currentAndFutureOnly ? 'start_at' : '-start_at'),
@@ -61,13 +76,18 @@ const useEvents = ({
     pageSize,
     projectIds,
     staticPageId,
+    areas,
+    globalTopics,
+    spaces,
     attendeeId,
     ongoing_during,
+    show_unlisted_events_user_can_moderate,
   };
 
   return useQuery<IEvents, CLErrors, IEvents, EventsKeys>({
     queryKey: eventsKeys.list(queryParams),
     queryFn: () => fetchEvents(queryParams),
+    enabled,
   });
 };
 

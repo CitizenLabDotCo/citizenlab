@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import {
   Box,
@@ -8,93 +7,122 @@ import {
   IconTooltip,
   StatusLabel,
   Title,
+  Text,
+  Success,
 } from '@citizenlab/cl2-component-library';
-import { useParams, useSearchParams } from 'react-router-dom';
+import moment from 'moment';
 
-import { CampaignFormValues } from 'api/campaigns/types';
-import useCampaign from 'api/campaigns/useCampaign';
-import useSendCampaignPreview from 'api/campaigns/useSendCampaignPreview';
-import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { EmailCampaignFormValues } from 'api/campaigns/email/types';
+import useEmailCampaign from 'api/campaigns/email/useEmailCampaign';
+import useSendEmailCampaignPreview from 'api/campaigns/email/useSendEmailCampaignPreview';
+import useUpdateEmailCampaign from 'api/campaigns/email/useUpdateEmailCampaign';
+import { isEmailCampaignDraft } from 'api/campaigns/email/util';
+
+import useLocale from 'hooks/useLocale';
 
 import AutomatedCampaignForm from 'containers/Admin/messaging/AutomatedEmails/CampaignForm';
 import CustomCampaignForm from 'containers/Admin/messaging/CustomEmails/CampaignForm';
 import messages from 'containers/Admin/messaging/messages';
 
-import PreviewFrame from 'components/admin/Email/PreviewFrame';
-import SuccessFeedback from 'components/HookForm/Feedback/SuccessFeedback';
+import PreviewFrameWithLocaleSwitcher from 'components/admin/Email/PreviewFrameWithLocaleSwitcher';
 import T from 'components/T';
 import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { useParams } from 'utils/router';
+
+import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
 type EditProps = {
   campaignType: 'custom' | 'automated';
 };
-
-type FeedbackType = 'sent' | 'updated' | 'created' | null;
-
-const feedbackMessages = {
-  sent: messages.previewSentConfirmation,
-  updated: messages.emailUpdated,
-  created: messages.emailCreated,
-};
-
 const Edit = ({ campaignType }: EditProps) => {
-  const { campaignId } = useParams() as {
+  const { campaignId, projectId, phaseId } = useParams({ strict: false }) as {
     campaignId: string;
+    projectId?: string;
+    phaseId?: string;
   };
-  const { data: campaign } = useCampaign(campaignId);
-  const { mutateAsync: updateCampaign, isLoading } = useUpdateCampaign();
+  const backofficeRedesign = useProjectBackofficeRedesign();
+  // The redesigned workspace edits a phase's emails from its build view.
+  const phaseBuildPath =
+    backofficeRedesign && projectId && phaseId
+      ? `/admin/projects/${projectId}/phases/${phaseId}/setup`
+      : undefined;
+  const { data: tenant } = useAppConfiguration();
+  const { data: campaign } = useEmailCampaign(campaignId);
+  const { mutateAsync: updateCampaign, isPending } = useUpdateEmailCampaign();
 
-  const [searchParams] = useSearchParams();
-  const created = searchParams.get('created');
-  const [feedbackType, setFeedbackType] = useState<FeedbackType>(
-    created ? 'created' : null
-  );
+  const [previewSent, setPreviewSent] = useState(false);
+  const locale = useLocale();
+  const [previewLocale, setPreviewLocale] = useState(locale);
 
-  useEffect(() => {
-    if (created) removeSearchParams(['created']);
-  }, [created]);
-
-  const { mutate: sendCampaignPreview, isLoading: isSendingCampaignPreview } =
-    useSendCampaignPreview();
+  const { mutate: sendCampaignPreview, isPending: isSendingCampaignPreview } =
+    useSendEmailCampaignPreview();
   const { formatMessage } = useIntl();
 
   const handleSendPreviewEmail = () => {
-    sendCampaignPreview(campaignId, {
-      onSuccess: () => {
-        setFeedbackType('sent');
-      },
-    });
+    sendCampaignPreview(
+      { id: campaignId, locale: previewLocale },
+      {
+        onSuccess: () => {
+          setPreviewSent(true);
+        },
+      }
+    );
   };
 
   if (!campaign) {
     return null;
   }
 
-  const handleSubmit = async (values: CampaignFormValues) => {
+  const handleSubmit = async (values: EmailCampaignFormValues) => {
     await updateCampaign({ id: campaign.data.id, campaign: values });
-    setFeedbackType('updated');
+    // Automated emails stay on the page, so the admin sees the saved changes in the preview.
+    if (campaignType === 'custom') {
+      clHistory.push(
+        `/admin/messaging/emails/custom/${campaign.data.id}?updated=true`
+      );
+    }
   };
 
   const goBack = () => {
-    clHistory.goBack();
+    if (phaseBuildPath) {
+      clHistory.push(phaseBuildPath);
+    } else {
+      clHistory.goBack();
+    }
   };
+  const timeZone = tenant?.data.attributes.settings.core.timezone;
 
   return (
     <Box background={colors.white} p="40px">
       <GoBackButton onClick={goBack} />
       {campaignType === 'custom' ? (
-        <Box display="flex" alignItems="center">
+        <Box display="flex" alignItems="center" gap="12px">
           <Title mr="12px">
             <T value={campaign.data.attributes.subject_multiloc} />
           </Title>
-          <StatusLabel
-            backgroundColor={colors.brown}
-            text={<FormattedMessage {...messages.draft} />}
-          />
+          {isEmailCampaignDraft(campaign.data) && (
+            <StatusLabel
+              backgroundColor={colors.brown}
+              text={<FormattedMessage {...messages.draft} />}
+            />
+          )}
+          {campaign.data.attributes.scheduled_at && timeZone && (
+            <>
+              <StatusLabel
+                backgroundColor={colors.teal500}
+                text={<FormattedMessage {...messages.scheduled} />}
+              />
+              <Text fontSize="base" whiteSpace="nowrap">
+                {moment(campaign.data.attributes.scheduled_at)
+                  .tz(timeZone)
+                  .format('LLL')}
+              </Text>
+            </>
+          )}
         </Box>
       ) : (
         <Title>
@@ -102,24 +130,27 @@ const Edit = ({ campaignType }: EditProps) => {
         </Title>
       )}
       <Box>
-        {feedbackType && (
-          <SuccessFeedback
-            successMessage={formatMessage(feedbackMessages[feedbackType])}
-            closeSuccessMessage={() => setFeedbackType(null)}
-          />
+        {previewSent && (
+          <Box mb="8px">
+            <Success
+              text={formatMessage(messages.previewSentConfirmation)}
+              showIcon
+              showBackground
+            />
+          </Box>
         )}
       </Box>
       <Box display="flex">
         <Box width="50%" mr="36px">
           {campaignType === 'automated' ? (
             <AutomatedCampaignForm
-              isLoading={isLoading}
+              isLoading={isPending}
               onSubmit={handleSubmit}
               campaign={campaign}
             />
           ) : (
             <CustomCampaignForm
-              isLoading={isLoading}
+              isLoading={isPending}
               onSubmit={handleSubmit}
               campaignContextId={campaign.data.relationships.context?.data?.id}
               defaultValues={{
@@ -131,6 +162,7 @@ const Edit = ({ campaignType }: EditProps) => {
                   (d) => d.id
                 ),
               }}
+              isScheduled={campaign.data.attributes.scheduled_at !== null}
             />
           )}
         </Box>
@@ -162,13 +194,13 @@ const Edit = ({ campaignType }: EditProps) => {
               </Button>
             </Box>
           </Box>
-          <Box>
-            <PreviewFrame
-              campaignId={campaign.data.id}
-              showHeaders={true}
-              height="740px"
-            />
-          </Box>
+          <PreviewFrameWithLocaleSwitcher
+            campaignId={campaign.data.id}
+            locale={previewLocale}
+            onLocaleChange={setPreviewLocale}
+            showHeaders={true}
+            height="740px"
+          />
         </Box>
       </Box>
     </Box>

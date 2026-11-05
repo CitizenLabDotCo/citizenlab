@@ -70,7 +70,7 @@ resource 'Invites' do
           assert_status 200
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 3
-          expect(json_response[:data].pluck(:id)).to match_array [invite1.id, invite2.id, invite3.id]
+          expect(json_response[:data].pluck(:id)).to contain_exactly(invite1.id, invite2.id, invite3.id)
         end
       end
 
@@ -132,6 +132,9 @@ resource 'Invites' do
         parameter :password, 'The password of the invitee.', required: true
         parameter :avatar, 'The avatar of the invitee.', required: false
         parameter :locale, 'The locale of the invitee.', required: false
+        parameter :claim_tokens, <<~DESC
+          Tokens used to claim anonymous participation data (e.g., ideas) created before accepting the invite.
+        DESC
       end
       ValidationErrorHelper.new.error_fields(self, Invite)
       ValidationErrorHelper.new.error_fields(self, User)
@@ -160,13 +163,16 @@ resource 'Invites' do
         ).exactly(1).times
       end
 
-      describe do
-        let(:email) { 'Super.Boulette@hotmail.com' }
+      example 'Accept an invite with a different-case email', document: false do
+        # Changing only the letter-case of the invited email must make no
+        # difference and still be valid (emails are matched case-insensitively).
+        invite.invitee.update!(email: 'Super.Boulette@Hotmail.com')
 
-        example 'Accept an invite using different capitalization for the email', document: false do
-          do_request
-          assert_status 200
-        end
+        do_request(invite: { email: 'super.boulette@hotmail.com' })
+
+        assert_status(200)
+        expect(invite.reload.accepted_at).to be_present
+        expect(invite.invitee.invite_status).to eq('accepted')
       end
 
       example '[error] Accept an invite with an invalid token', document: false do
@@ -194,6 +200,22 @@ resource 'Invites' do
         # Would be more robust if we would block acceptance of expired
         # invites in the controller as well.
         expect(response_status).to eq 200
+      end
+
+      context 'with claim_tokens' do
+        let!(:claim_token) { create(:claim_token) }
+        let(:idea) { claim_token.item }
+        let(:claim_tokens) { [claim_token.token] }
+
+        example 'claims participation data when accepting invite', document: false do
+          expect(idea.author_id).to be_nil
+
+          do_request
+
+          assert_status 200
+          expect(idea.reload.author_id).to eq(invite.invitee.id)
+          expect { claim_token.reload }.to raise_error(ActiveRecord::RecordNotFound)
+        end
       end
     end
 

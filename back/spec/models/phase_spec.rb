@@ -21,22 +21,31 @@ RSpec.describe Phase do
     end
   end
 
-  it { is_expected.to belong_to(:project) }
-  it { is_expected.to validate_presence_of(:title_multiloc) }
-
-  describe 'description sanitizer' do
-    it 'sanitizes script tags in the description' do
-      phase = create(:phase, description_multiloc: {
-        'en' => '<p>Test</p><script>This should be removed!</script>'
-      })
-      expect(phase.description_multiloc).to eq({ 'en' => '<p>Test</p>This should be removed!' })
+  describe 'idea_feed_phase factory' do
+    it 'is valid' do
+      expect(build(:idea_feed_phase)).to be_valid
     end
   end
 
+  it { is_expected.to belong_to(:project) }
+  it { is_expected.to validate_presence_of(:title_multiloc) }
+
+  it_behaves_like 'a sanitized html_multiloc', factory: :phase
+  it_behaves_like 'a plain text multiloc', factory: :phase
+  it_behaves_like 'a plain text multiloc', factory: :phase, attribute: :native_survey_title_multiloc
+  it_behaves_like 'a plain text multiloc', factory: :phase, attribute: :native_survey_button_multiloc
+
   describe 'timing model validation' do
-    it 'succeeds when start_at and end_at are equal' do
+    it 'fails when the duration is less than 1 day' do
       phase = build(:phase)
-      phase.end_at = phase.start_at
+      phase.end_at = phase.start_at + 1.day - 1.second
+      expect(phase).to be_invalid
+      expect(phase.errors.details[:base]).to include(error: :duration_too_short)
+    end
+
+    it 'succeeds when the duration is exactly 1 day' do
+      phase = build(:phase)
+      phase.end_at = phase.start_at + 1.day
       expect(phase).to be_valid
     end
 
@@ -48,14 +57,15 @@ RSpec.describe Phase do
   end
 
   describe 'timing database validation' do
-    it 'succeeds when start_at and end_at are equal' do
-      phase = create(:phase)
-      expect { phase.update_columns(end_at: phase.start_at) }.not_to raise_error
+    let_it_be(:phase) { create(:phase) }
+
+    it 'succeeds if `start_at` is before `end_at`' do
+      expect { phase.update_columns(end_at: phase.start_at + 1.second) }.not_to raise_error
     end
 
-    it 'fails when end_at is before start_at' do
-      phase = build(:phase)
-      expect { phase.update_columns(end_at: (phase.start_at - 1.day)) }.to raise_error(ActiveRecord::ActiveRecordError)
+    it 'fails if `start_at` is equal or after `end_at`' do
+      expect { phase.update_columns(end_at: phase.start_at) }.to raise_error(ActiveRecord::StatementInvalid)
+      expect { phase.update_columns(end_at: phase.start_at - 1.second) }.to raise_error(ActiveRecord::StatementInvalid)
     end
   end
 
@@ -70,32 +80,31 @@ RSpec.describe Phase do
       p = create(:phase, participation_method: 'voting', voting_method: 'budgeting', voting_max_total: 200)
       expect(p.save).to be true
     end
+  end
 
-    it 'can be changed from ideation to voting' do
+  describe '#validate_no_inputs_on_participation_method_change' do
+    it 'blocks changing the participation method when the phase has transitive inputs (via ideas_phases)' do
       phase = create(:phase, participation_method: 'ideation')
-      phase.participation_method = 'voting'
-      phase.voting_method = 'budgeting'
-      phase.ideas_order = 'random'
-      phase.voting_max_total = 200
-      expect(phase.save).to be true
-    end
-
-    it 'can be changed from ideation to native_survey' do
-      phase = create(:phase, participation_method: 'ideation')
-      phase.participation_method = 'native_survey'
-      phase.native_survey_title_multiloc = { en: 'Survey' }
-      phase.native_survey_button_multiloc = { en: 'Take the survey' }
+      create(:idea, phases: [phase], project: phase.project)
+      phase.participation_method = 'information'
       phase.ideas_order = nil
-      expect(phase.save).to be true
+      expect(phase).not_to be_valid
+      expect(phase.errors.details).to eq({ participation_method: [{ error: :has_inputs }] })
     end
 
-    it 'can be changed from native_survey to ideation' do
-      phase = create(:native_survey_phase)
-      phase.participation_method = 'voting'
-      phase.voting_method = 'budgeting'
-      phase.voting_max_total = 200
-      phase.input_term = 'idea'
-      expect(phase.save).to be true
+    it 'blocks changing the participation method when the phase has non-transitive inputs (via creation_phase)' do
+      phase = create(:proposals_phase)
+      create(:proposal, creation_phase: phase, project: phase.project)
+      phase.participation_method = 'ideation'
+      expect(phase).not_to be_valid
+      expect(phase.errors.details).to eq({ participation_method: [{ error: :has_inputs }] })
+    end
+
+    it 'allows changing the participation method when there are no inputs' do
+      phase = create(:phase, participation_method: 'ideation')
+      phase.participation_method = 'information'
+      phase.ideas_order = nil
+      expect(phase).to be_valid
     end
   end
 
@@ -135,6 +144,155 @@ RSpec.describe Phase do
     end
   end
 
+  describe 'available_views' do
+    describe 'defaults (set_presentation_mode callback)' do
+      it 'defaults to [card] when not explicitly set' do
+        phase = create(:phase, available_views: nil)
+        expect(phase.available_views).to eq %w[card]
+      end
+
+      it 'automatically includes the presentation_mode in available_views' do
+        phase = create(:phase, presentation_mode: 'map', available_views: %w[card])
+        expect(phase.available_views).to include('map')
+      end
+
+      it 'does not duplicate if presentation_mode is already included' do
+        phase = create(:phase, presentation_mode: 'card', available_views: %w[card map])
+        expect(phase.available_views).to eq %w[card map]
+      end
+    end
+
+    describe 'validation' do
+      # Stub set_presentation_mode so the before_validation callback
+      # doesn't auto-correct the values we're testing against.
+      before { allow_any_instance_of(described_class).to receive(:set_presentation_mode) }
+
+      it 'is invalid when empty' do
+        phase = build(:phase, presentation_mode: 'card', available_views: [])
+        expect(phase).not_to be_valid
+        expect(phase.errors[:available_views].first).to include('non-empty array')
+      end
+
+      it 'is invalid with an unrecognized view mode' do
+        phase = build(:phase, presentation_mode: 'card', available_views: %w[card unknown])
+        expect(phase).not_to be_valid
+        expect(phase.errors[:available_views].first).to include('invalid view modes')
+      end
+
+      it 'is invalid without card view' do
+        phase = build(:phase, presentation_mode: 'map', available_views: %w[map])
+        expect(phase).not_to be_valid
+        expect(phase.errors[:available_views].first).to include('must include card view')
+      end
+
+      it 'is invalid when available_views does not include the presentation_mode' do
+        phase = build(:phase, presentation_mode: 'map', available_views: %w[card feed])
+        expect(phase).not_to be_valid
+        expect(phase.errors[:available_views].first).to include('must include the default presentation mode')
+      end
+
+      it 'is valid with card and the current presentation_mode' do
+        phase = build(:phase, presentation_mode: 'map', available_views: %w[card map])
+        expect(phase).to be_valid
+      end
+
+      it 'is valid with all presentation modes' do
+        phase = build(:phase, presentation_mode: 'card', available_views: %w[card map feed])
+        expect(phase).to be_valid
+      end
+    end
+
+    describe 'views the participation method does not allow' do
+      it 'is invalid when a proposals phase opens on the feed view' do
+        phase = build(:proposals_phase, presentation_mode: 'feed', available_views: %w[card feed])
+        expect(phase).not_to be_valid
+        expect(phase.errors[:available_views].first).to include('feed not available for the proposals method')
+      end
+
+      it 'is invalid when a proposals phase merely offers the feed view' do
+        phase = build(:proposals_phase, presentation_mode: 'card', available_views: %w[card feed])
+        expect(phase).not_to be_valid
+        expect(phase.errors[:available_views].first).to include('feed not available for the proposals method')
+      end
+
+      it 'is valid when a proposals phase offers the card and map views' do
+        phase = build(:proposals_phase, presentation_mode: 'map', available_views: %w[card map])
+        expect(phase).to be_valid
+      end
+
+      it 'is valid when an ideation phase offers the feed view' do
+        phase = build(:phase, presentation_mode: 'feed', available_views: %w[card feed])
+        expect(phase).to be_valid
+      end
+
+      # Switching the method can invalidate views that were allowed a moment ago, and neither view
+      # attribute changes when it does, so the method has to be part of the guard. Not reachable
+      # from the phase form, which applies proposalsDefaultConfig and so sends card views along with
+      # the new method; this is for callers that change the method alone, i.e. the REST API and the
+      # MCP update_phase tool.
+      it 'is invalid when an ideation phase offering the feed view is switched to proposals' do
+        phase = create(:phase, presentation_mode: 'feed', available_views: %w[card feed])
+
+        expect(phase.update(participation_method: 'proposals')).to be false
+        expect(phase.errors[:available_views].first).to include('feed not available for the proposals method')
+      end
+
+      # The rule only fires when the view attributes are written, so a phase that predates it can
+      # still be edited. Without this, an unrelated write would fail on a phase nobody has migrated.
+      it 'does not block unrelated edits to a proposals phase that already offers the feed view' do
+        phase = create(:proposals_phase)
+        phase.update_column(:available_views, %w[card feed])
+
+        expect(phase.reload.update(title_multiloc: { 'en' => 'New title' })).to be true
+      end
+
+      # The feed shows neither the vote count nor the controls to cast one. The phase form has never
+      # offered the toggle for voting, so this closes the API's side of that door.
+      it 'is invalid when a voting phase offers the feed view' do
+        phase = build(:single_voting_phase, presentation_mode: 'card', available_views: %w[card feed])
+        expect(phase).not_to be_valid
+        expect(phase.errors[:available_views].first).to include('feed not available for the voting method')
+      end
+
+      it 'is valid when a voting phase offers the card and map views' do
+        phase = build(:budgeting_phase, presentation_mode: 'map', available_views: %w[card map])
+        expect(phase).to be_valid
+      end
+
+      # As above for proposals. The ideas order goes in the same write because voting allows only
+      # 'random'; without it the switch is rejected on that instead.
+      it 'is invalid when an ideation phase offering the feed view is switched to voting' do
+        phase = create(:phase, presentation_mode: 'feed', available_views: %w[card feed])
+
+        expect(phase.update(participation_method: 'voting', voting_method: 'single_voting', ideas_order: 'random')).to be false
+        expect(phase.errors[:available_views].first).to include('feed not available for the voting method')
+      end
+
+      # Common ground is the other method the rule applies to. It has its own interface and no view
+      # selector, and nothing but the views themselves gates the feed page.
+      it 'is invalid when a common ground phase offers the feed view' do
+        phase = build(:common_ground_phase, presentation_mode: 'card', available_views: %w[card feed])
+        expect(phase).not_to be_valid
+        expect(phase.errors[:available_views].first).to include('feed not available for the common_ground method')
+      end
+
+      # Methods that show no inputs publicly never reach this rule, and they do hold stale view
+      # values: several phases in the e2e template sit on the map view without ever rendering one.
+      it 'is valid when a method that shows no inputs publicly holds a view it cannot render' do
+        phase = build(:poll_phase, presentation_mode: 'map', available_views: %w[card map])
+        expect(phase).to be_valid
+      end
+
+      # The views come along on a method change and no longer mean anything once they arrive. The
+      # ideas order has to go in the same write, as information allows no order at all.
+      it 'is valid when an ideation phase on the map view becomes an information phase' do
+        phase = create(:phase, presentation_mode: 'map', available_views: %w[card map])
+
+        expect(phase.update(participation_method: 'information', ideas_order: nil)).to be true
+      end
+    end
+  end
+
   describe 'input_term' do
     it 'default is set by the participation method defaults' do
       phase = build(:phase, input_term: nil)
@@ -143,39 +301,56 @@ RSpec.describe Phase do
     end
   end
 
-  describe 'project validation' do
-    it 'succeeds when the associated project is a timeline project' do
-      phase = build(:phase, project: build(:project))
+  describe '#validate_no_other_overlapping_phases' do
+    let_it_be(:project) { create(:project) }
+    let_it_be(:p) { create(:phase, project:, start_at: 5.days.ago, end_at: 5.days.from_now) }
+
+    it 'rejects a phase overlapping on the left' do
+      phase = build(:phase, project:, start_at: 10.days.ago, end_at: p.start_at + 1.second)
+      expect(phase).to be_invalid
+    end
+
+    it 'rejects a phase overlapping on the right' do
+      phase = build(:phase, project:, start_at: p.end_at - 1.second)
+      expect(phase).to be_invalid
+    end
+
+    it 'rejects a phase contained inside' do
+      phase = build(:phase, project:, start_at: p.start_at + 1.second, end_at: p.end_at - 1.second)
+      expect(phase).to be_invalid
+    end
+
+    it 'rejects a phase that contains the existing one' do
+      phase = build(:phase, project:, start_at: p.start_at - 1.second, end_at: p.end_at + 1.second)
+      expect(phase).to be_invalid
+    end
+
+    it 'accepts a contiguous phase on the left' do
+      phase = build(:phase, project:, start_at: 10.days.ago, end_at: p.start_at)
       expect(phase).to be_valid
     end
 
-    it 'fails when the associated project has overlapping phases' do
-      project = create(:project)
-      create(:phase, project: project, start_at: (Time.now - 5.days), end_at: (Time.now + 5.days))
-      phase_left_overlap = build(:phase, project: project.reload, start_at: (Time.now - 10.days), end_at: (Time.now - 3.days))
-      expect(phase_left_overlap).to be_invalid
-      phase_left_overlap = build(:phase, project: project.reload, start_at: (Time.now - 10.days), end_at: (Time.now - 5.days))
-      expect(phase_left_overlap).to be_invalid # also not same day
-      phase_right_overlap = build(:phase, project: project.reload, start_at: (Time.now + 5.days), end_at: (Time.now + 10.days))
-      expect(phase_right_overlap).to be_invalid # also not same day
-      phase_inside = build(:phase, project: project.reload, start_at: (Time.now - 3.days), end_at: (Time.now + 3.days))
-      expect(phase_inside).to be_invalid
-      phase_outside = build(:phase, project: project.reload, start_at: (Time.now - 10.days), end_at: (Time.now + 10.days))
-      expect(phase_outside).to be_invalid
-      phase_equal = build(:phase, project: project.reload, start_at: (Time.now - 5.days), end_at: (Time.now + 5.days))
-      expect(phase_equal).to be_invalid
-      phase_left = build(:phase, project: project.reload, start_at: (Time.now - 10.days), end_at: (Time.now - 6.days))
-      expect(phase_left).to be_valid
-      phase_right = build(:phase, project: project.reload, start_at: (Time.now + 6.days), end_at: (Time.now + 10.days))
-      expect(phase_right).to be_valid
+    it 'accepts a contiguous phase on the right' do
+      phase = build(:phase, project:, start_at: p.end_at, end_at: 10.days.from_now)
+      expect(phase).to be_valid
     end
 
-    it 'fails when inserting a phase in-between two phases, where then next phase has no end date' do
-      project = create(:project)
-      create(:phase, project: project, start_at: (Time.now - 5.days), end_at: (Time.now - 2.days))
-      create(:phase, project: project, start_at: (Time.now + 5.days), end_at: nil)
-      phase = build(:phase, project: project, start_at: (Time.now + 2.days), end_at: (Time.now + 12.days))
+    it 'fails when inserting a phase in-between two phases, where then new phase has no end date' do
+      create(:phase, project:, start_at: 5.days.after(p.end_at), end_at: nil)
+
+      phase = build(:phase, project:, start_at: 2.days.after(p.end_at), end_at: nil)
       expect(phase).not_to be_valid
+    end
+
+    it 'accepts a standalone phase overlapping a timeline phase' do
+      phase = build(:phase, :standalone, project:, start_at: p.start_at + 1.second, end_at: p.end_at - 1.second)
+      expect(phase).to be_valid
+    end
+
+    it 'accepts standalone phases overlapping each other' do
+      create(:phase, :standalone, project:, start_at: p.start_at, end_at: p.end_at)
+      phase = build(:phase, :standalone, project:, start_at: p.start_at, end_at: p.end_at)
+      expect(phase).to be_valid
     end
   end
 
@@ -231,56 +406,200 @@ RSpec.describe Phase do
     end
   end
 
-  describe '#ends_before?' do
-    let(:start_date) { Time.zone.today }
-    let(:phase) { create(:phase, start_at: start_date, end_at: start_date + 1.day) }
-
-    it 'returns false if passing today\'s date' do
-      expect(phase.ends_before?(start_date)).to be false
+  describe '#validate_standalone_participation_method' do
+    it 'accepts a standalone native survey phase' do
+      expect(build(:phase, :standalone)).to be_valid
     end
 
-    it 'returns true if passing tomorrow\'s date' do
-      expect(phase.ends_before?(start_date + 2.days)).to be true
+    it 'rejects a standalone phase whose method does not support standalone placement' do
+      phase = build(:phase, :standalone, participation_method: 'ideation')
+      expect(phase).not_to be_valid
+      expect(phase.errors.details[:participation_method]).to include(error: :not_supported_in_standalone_phase)
+    end
+
+    it 'accepts any participation method on timeline phases' do
+      expect(build(:phase)).to be_valid
+    end
+  end
+
+  describe '#ends_before?' do
+    let(:phase) { create(:phase) }
+
+    it 'returns false if passing a time before phase.end_at' do
+      expect(phase.ends_before?(phase.end_at - 1.second)).to be false
+    end
+
+    it 'returns true if passing a time after phase.end_at' do
+      expect(phase.ends_before?(phase.end_at + 1.second)).to be true
+    end
+
+    it 'returns true if passing a time equal to phase.end_at' do
+      expect(phase.ends_before?(phase.end_at)).to be true
     end
 
     it 'returns false if the phase has no end date' do
-      phase_without_end_date = create(:phase, start_at: start_date, end_at: nil)
-      expect(phase_without_end_date.ends_before?(start_date + 2.days)).to be false
+      phase.update!(end_at: nil)
+      expect(phase.ends_before?(phase.start_at + 10.years)).to be false
     end
   end
 
-  # too lazy to split the tests at this stage
-  describe '::published' do
-    let(:start_date) { Time.zone.today }
-    let!(:phases) { create_list(:phase, 6, start_at: start_date, end_at: start_date + 1.month) }
+  describe '#complete?' do
+    it 'returns true when the phase has ended' do
+      phase = create(:phase, start_at: 10.days.ago, end_at: 5.days.ago)
+      expect(phase.complete?).to be true
+    end
 
-    context 'when there are 3 phases that belong to published publications' do
-      before do
-        phases.first(2).each do |phase|
-          draft = create(:project, admin_publication_attributes: { publication_status: 'draft' })
-          phase.project.admin_publication.update(parent: draft.admin_publication)
-        end
+    it 'returns false when the phase is ongoing' do
+      phase = create(:phase, start_at: 2.days.ago, end_at: 3.days.from_now)
+      expect(phase.complete?).to be false
+    end
 
-        phases[2].project.admin_publication.update(publication_status: 'draft')
-      end
-
-      it 'returns only the phases that belong to published publications' do
-        expect(described_class.published.length).to eq 3
-      end
+    it 'returns false when the phase has no end date' do
+      phase = create(:phase, start_at: 2.days.ago, end_at: nil)
+      expect(phase.complete?).to be false
     end
   end
 
-  describe '::starting_on' do
-    let(:start_date) { Time.zone.today }
-    let!(:phases) { create_list(:phase, 6, start_at: start_date, end_at: start_date + 1.month) }
+  describe '#active?' do
+    it 'returns true when the phase is ongoing' do
+      phase = build(:phase, start_at: 2.days.ago, end_at: 3.days.from_now)
+      expect(phase.active?).to be true
+    end
 
-    context 'when there are 3 phases that belong to published publications' do
-      it 'returns only the phases that belong to published publications' do
-        expect(described_class.starting_on(start_date).length).to eq phases.length
+    it 'returns false before the phase starts' do
+      phase = build(:phase, start_at: 2.days.from_now, end_at: 5.days.from_now)
+      expect(phase.active?).to be false
+    end
+
+    it 'returns false after the phase ends' do
+      phase = build(:phase, start_at: 10.days.ago, end_at: 5.days.ago)
+      expect(phase.active?).to be false
+    end
+
+    it 'returns false at the exact end time (exclusive end)' do
+      phase = build(:phase, start_at: 10.days.ago, end_at: 5.days.ago)
+      expect(phase.active?(phase.end_at)).to be false
+    end
+
+    it 'returns true for an open-ended phase that has started' do
+      phase = build(:phase, start_at: 2.days.ago, end_at: nil)
+      expect(phase.active?).to be true
+    end
+
+    it 'evaluates against the given time' do
+      phase = build(:phase, start_at: 10.days.ago, end_at: 5.days.ago)
+      expect(phase.active?(7.days.ago)).to be true
+    end
+  end
+
+  describe '#start_date' do
+    it 'returns the date when start_at is set' do
+      phase = build(:phase, start_at: '2025-03-15 14:30:00')
+      expect(phase.start_date).to eq Date.new(2025, 3, 15)
+    end
+
+    it 'returns the same day even if start_at is midnight' do
+      phase = build(:phase, start_at: '2025-03-15 00:00:00')
+      expect(phase.start_date).to eq Date.new(2025, 3, 15)
+    end
+  end
+
+  describe '#end_date' do
+    it 'returns the previous day if end_at is midnight (exclusive end)' do
+      phase = build(:phase, end_at: '2025-03-15 00:00:00')
+      expect(phase.end_date).to eq Date.new(2025, 3, 14)
+    end
+
+    it 'returns the same day if end_at is non-midnight' do
+      phase = build(:phase, end_at: '2025-03-15 14:30:00')
+      expect(phase.end_date).to eq Date.new(2025, 3, 15)
+    end
+
+    it 'returns nil if end_at is nil' do
+      phase = build(:phase, end_at: nil)
+      expect(phase.end_date).to be_nil
+    end
+  end
+
+  describe '.published' do
+    let(:published_phase) { create(:phase) }
+
+    before do
+      # Phase in a draft project
+      create(:phase, project: create(:project, :draft))
+
+      # Phase in a published project, but in a draft folder
+      create(:phase).tap do |phase|
+        admin_publication_folder = create(:admin_publication, :folder, :draft)
+        phase.project.admin_publication.update(parent: admin_publication_folder)
       end
+    end
 
-      it 'returns no phases if the date is tomorrow' do
-        expect(described_class.starting_on(start_date + 1.day).length).to eq 0
+    it 'returns only the phases that belong to published publications' do
+      expect(described_class.published).to contain_exactly(published_phase)
+    end
+  end
+
+  describe '.ordered' do
+    it 'orders by placement (timeline first), then start_at, then created_at' do
+      project = create(:project)
+      shared_start = 1.day.ago
+      timeline = create(:phase, project:, start_at: 20.days.from_now, end_at: 30.days.from_now)
+      later_standalone = create(:phase, :standalone, project:, start_at: 5.days.from_now, end_at: 10.days.from_now)
+      # Same start_at: created_at breaks the tie (set opposite to creation order to
+      # prove created_at decides it, not insertion/id order).
+      newer_standalone = create(:phase, :standalone, project:, start_at: shared_start, end_at: 2.days.from_now, created_at: 1.hour.ago)
+      older_standalone = create(:phase, :standalone, project:, start_at: shared_start, end_at: 2.days.from_now, created_at: 3.hours.ago)
+
+      expect(described_class.where(project: project).ordered).to eq [
+        timeline,         # on_timeline before standalone, despite the latest start_at
+        older_standalone, # then by start_at; for equal start_at, by created_at
+        newer_standalone,
+        later_standalone
+      ]
+    end
+  end
+
+  describe '.current' do
+    let(:timeline_service) { TimelineService.new }
+
+    it 'includes phases that have started and not yet ended' do
+      phase = create(:phase, start_at: 1.day.ago, end_at: 1.day.from_now)
+      expect(described_class.current).to include(phase)
+      expect(timeline_service.current_phase(phase.project)).to eq(phase)
+    end
+
+    it 'includes phases starting now' do
+      freeze_time do
+        phase = create(:phase, start_at: Time.current)
+        expect(described_class.current).to include(phase)
+        expect(timeline_service.current_phase(phase.project)).to eq(phase)
+      end
+    end
+
+    it 'includes phases with no end date that have started' do
+      phase = create(:phase, start_at: 1.day.ago, end_at: nil)
+      expect(described_class.current).to include(phase)
+      expect(timeline_service.current_phase(phase.project)).to eq(phase)
+    end
+
+    it 'excludes phases that have not started yet' do
+      phase = create(:phase, start_at: 1.day.from_now)
+      expect(described_class.current).not_to include(phase)
+      expect(timeline_service.current_phase(phase.project)).to be_nil
+    end
+
+    it 'excludes phases that have ended' do
+      phase = create(:phase, start_at: 10.days.ago, end_at: 1.day.ago)
+      expect(described_class.current).not_to include(phase)
+      expect(timeline_service.current_phase(phase.project)).to be_nil
+    end
+
+    it 'excludes phases whose end_at is now (exclusive end)' do
+      freeze_time do
+        phase = create(:phase, start_at: 1.day.ago, end_at: Time.current)
+        expect(described_class.current).not_to include(phase)
+        expect(timeline_service.current_phase(phase.project)).to be_nil
       end
     end
   end
@@ -351,90 +670,85 @@ RSpec.describe Phase do
     end
 
     it 'allows decreasing the start date of a phase with no end date' do
-      phase = create(:phase, start_at: Time.zone.today, end_at: nil)
+      phase = create(:phase, end_at: nil)
       phase.start_at -= 1.day
       expect(phase).to be_valid
     end
-  end
 
-  describe '#validate_no_other_overlapping_phases' do
-    let(:project) { create(:project) }
-
-    before do
-      project.phases << create(:phase, project: project, start_at: '2022-10-01', end_at: '2022-10-08')
-    end
-
-    it 'validates when phases do not overlap' do
-      phase = create(:phase, project: project, start_at: '2022-10-09', end_at: '2022-10-15')
-      expect(phase).to be_valid
-    end
-
-    it 'is not valid when phases overlap' do
-      expect { create(:phase, project: project, start_at: '2022-10-07', end_at: '2022-10-10') }.to raise_error ActiveRecord::RecordInvalid
-    end
-
-    it 'is valid when there is no end date for the last phase' do
-      phase = create(:phase, project: project, start_at: '2022-10-09', end_at: nil)
-      expect(phase).to be_valid
+    it 'allows a standalone phase to be open-ended even when it is not the last phase' do
+      first_phase = project.phases.first
+      standalone = build(:phase, :standalone, project:, start_at: first_phase.start_at, end_at: nil)
+      expect(standalone).to be_valid
     end
   end
 
-  describe '#validate_previous_blank_end_at' do
-    let(:project) { create(:project_with_phases) }
-    let(:old_last_phase) { project.phases.last }
-
-    before { old_last_phase.update!(end_at: nil) }
-
-    context 'phase with no end_at date is added' do
-      it 'adds an end date to a previous phase with no end date when a later phase is added' do
-        expect(old_last_phase.reload.end_at).to be_nil
-        expect(project.phases.count).to eq 5
-
-        new_phase_start = old_last_phase.start_at + 5.days
-        new_phase = create(:phase, project: project, start_at: new_phase_start, end_at: nil)
-        expect(old_last_phase.reload.end_at).to eq(new_phase_start - 1.day)
-        expect(new_phase.previous_phase_end_at_updated?).to be true
-        expect(project.phases.count).to eq 6
-      end
-
-      it 'returns an error if the new phase start date is too close to the old phase start date' do
-        new_phase_start = old_last_phase.start_at + 1.day
-        expect { create(:phase, project: project, start_at: new_phase_start, end_at: nil) }.to raise_error ActiveRecord::RecordInvalid
-        expect(old_last_phase.reload.end_at).to be_nil
-        expect(project.phases.count).to eq 5
+  context 'when the project has an open-ended last phase' do
+    let_it_be(:project) do
+      create(:project).tap do |p|
+        p.phases << create(:phase, start_at: 5.days.ago, end_at: 5.days.from_now)
+        p.phases << create(:phase, start_at: 10.days.from_now, end_at: nil)
       end
     end
 
-    context 'phase with end_at date is added' do
-      it 'adds an end_at date to a previous phase with no end date when a later phase is added' do
-        expect(old_last_phase.reload.end_at).to be_nil
-        expect(project.phases.count).to eq 5
+    let(:last_phase) { project.phases.last }
 
-        new_phase_start = old_last_phase.start_at + 5.days
-        new_phase = create(:phase, project: project, start_at: new_phase_start, end_at: new_phase_start + 5.days)
-        expect(old_last_phase.reload.end_at).to eq(new_phase_start - 1.day)
+    context 'and an open-ended phase is added' do
+      it 'after the last phase, it closes the previous phase' do
+        new_phase_start = last_phase.start_at + 15.days
+        new_phase = create(:phase, project:, start_at: new_phase_start, end_at: nil)
+
+        expect(last_phase.reload.end_at).to eq(new_phase_start)
         expect(new_phase.previous_phase_end_at_updated?).to be true
-        expect(project.phases.count).to eq 6
       end
 
-      it 'returns an error if the new phase start date is too close to the old phase start date' do
-        new_phase_start = old_last_phase.start_at + 1.day
-        expect { create(:phase, project: project, start_at: new_phase_start, end_at: new_phase_start + 5.days) }.to raise_error ActiveRecord::RecordInvalid
-        expect(old_last_phase.reload.end_at).to be_nil
-        expect(project.phases.count).to eq 5
+      it 'too early after the last phase, it is invalid' do
+        new_phase_start = last_phase.start_at + 23.hours
+        new_phase = build(:phase, project:, start_at: new_phase_start, end_at: nil)
+
+        expect(new_phase).not_to be_valid
+        expect(new_phase.errors[:previous_phase]).to include('must be at least 24.0 hours')
+      end
+
+      it 'before the last phase, it is invalid' do
+        new_phase = build(:phase, project:, start_at: last_phase.start_at - 1.day, end_at: nil)
+
+        expect(new_phase).not_to be_valid
+        expect(new_phase.errors[:end_at]).to include('cannot be blank unless it is the last phase')
       end
     end
 
-    it 'allows increasing the start date of a phase with no end date' do
-      phase = create(:phase, start_at: Time.zone.today, end_at: nil)
-      phase.start_at += 1.day
-      expect(phase).to be_valid
+    context 'and a bounded phase is added' do
+      it 'after the last phase, it closes the previous phase' do
+        new_phase_start = last_phase.start_at + 15.days
+        # 2 days, not 1: a 1-day phase whose start lands the day before a DST
+        # spring-forward is only 23h, which is < MIN_DURATION (24h).
+        new_phase = create(:phase, project:, start_at: new_phase_start, end_at: new_phase_start + 2.days)
+
+        expect(last_phase.reload.end_at).to eq(new_phase_start)
+        expect(new_phase.previous_phase_end_at_updated?).to be true
+      end
+    end
+
+    context 'and a standalone phase is added' do
+      it 'after the last phase, it does not close the previous phase' do
+        new_phase_start = last_phase.start_at + 15.days
+        # 2 days, not 1: guards against a DST-shortened 23h day (< MIN_DURATION).
+        new_phase = create(:phase, :standalone, project:, start_at: new_phase_start, end_at: new_phase_start + 2.days)
+
+        expect(last_phase.reload.end_at).to be_nil
+        expect(new_phase.previous_phase_end_at_updated?).to be false
+      end
+    end
+
+    it 'allows increasing the start_at of the open-ended phase' do
+      last_phase.start_at += 1.day
+      expect(last_phase).to be_valid
     end
   end
 
   describe '#validate_community_monitor_phase' do
     let(:project) { create(:project) }
-    let(:survey_phase) { create(:native_survey_phase, project: project, start_at: Time.zone.today, end_at: nil) }
+    let(:survey_phase) { create(:native_survey_phase, project: project, start_at: Date.current, end_at: nil) }
 
     context 'survey is not a community monitor survey' do
       it 'is valid when the phase is not a community monitor native survey' do
@@ -458,7 +772,7 @@ RSpec.describe Phase do
       end
 
       it 'is not valid when the phase has an end date' do
-        survey_phase.end_at = Time.zone.today + 1.day
+        survey_phase.end_at = survey_phase.start_at + 2.days
         expect(survey_phase).not_to be_valid
       end
 
@@ -481,6 +795,169 @@ RSpec.describe Phase do
       AppConfiguration.instance.save!
       phase = create(:phase)
       expect(phase.reacting_dislike_enabled).to be true
+    end
+  end
+
+  describe 'prescreening_mode' do
+    using RSpec::Parameterized::TableSyntax
+
+    def set_feature_flags(prescreening:, flag_inappropriate_content:)
+      AppConfiguration.instance.settings.tap do |settings|
+        settings['prescreening'] = { 'allowed' => true, 'enabled' => prescreening }
+        settings['prescreening_ideation'] = { 'allowed' => true, 'enabled' => prescreening }
+        settings['flag_inappropriate_content'] = { 'allowed' => true, 'enabled' => flag_inappropriate_content }
+      end
+
+      AppConfiguration.instance.save!
+    end
+
+    # `prescreening_mode` is configuration data, not a feature-gated invariant: tenant
+    # templates and project copies carry it onto platforms whose features differ, so any
+    # valid mode is storable regardless of the flags. It is the *effect* that is gated -
+    # see 'effective mode' below.
+    describe 'validation' do
+      where(:factory, :prescreening_mode, :prescreening, :flag_inappropriate_content, :valid) do
+        :phase           | nil            | false | false | true
+        :phase           | 'all'          | false | false | true
+        :phase           | 'all'          | true  | false | true
+        :phase           | 'flagged_only' | false | false | true
+        :phase           | 'flagged_only' | true  | true  | true
+        :phase           | 'invalid'      | true  | true  | false
+        :proposals_phase | nil            | false | false | true
+        :proposals_phase | 'all'          | false | false | true
+        :proposals_phase | 'flagged_only' | false | false | true
+        :proposals_phase | 'invalid'      | true  | true  | false
+      end
+
+      with_them do
+        before { set_feature_flags(prescreening:, flag_inappropriate_content:) }
+
+        it { expect(build(factory, prescreening_mode: prescreening_mode).valid?).to eq valid }
+      end
+    end
+
+    # The mode only takes effect where the platform has the corresponding feature. Note
+    # ideation phases are gated on `prescreening_ideation` and proposals phases on
+    # `prescreening`; `set_feature_flags` sets both together.
+    describe 'effective mode' do
+      where(:factory, :mode, :prescreening, :flag_inappropriate_content, :effective, :enabled, :flagged_only, :all) do
+        # No mode configured: inert regardless of the flags.
+        :phase           | nil            | true  | true  | nil            | false | false | false
+        :phase           | nil            | false | false | nil            | false | false | false
+
+        # Mode configured, prescreening feature off: inert.
+        :phase           | 'all'          | false | false | nil            | false | false | false
+        :phase           | 'flagged_only' | false | true  | nil            | false | false | false
+        :proposals_phase | 'all'          | false | false | nil            | false | false | false
+
+        # Mode configured, prescreening feature on: in effect.
+        :phase           | 'all'          | true  | false | 'all'          | true  | false | true
+        :proposals_phase | 'all'          | true  | false | 'all'          | true  | false | true
+
+        # 'flagged_only' additionally requires flag_inappropriate_content.
+        :phase           | 'flagged_only' | true  | false | nil            | false | false | false
+        :phase           | 'flagged_only' | true  | true  | 'flagged_only' | true  | true  | false
+        :proposals_phase | 'flagged_only' | true  | true  | 'flagged_only' | true  | true  | false
+      end
+
+      with_them do
+        subject(:phase) { build(factory, prescreening_mode: mode) }
+
+        before { set_feature_flags(prescreening:, flag_inappropriate_content:) }
+
+        # `effective_prescreening_mode` is serialized to the front end, so it is part of the
+        # API contract in its own right, not only through the predicates below.
+        it { expect(phase.effective_prescreening_mode).to eq effective }
+        it { expect(phase.prescreening_enabled?).to eq enabled }
+        it { expect(phase.prescreening_flagged_only?).to eq flagged_only }
+        it { expect(phase.prescreening_all?).to eq all }
+      end
+
+      it 'preserves the configured mode even where the feature is off' do
+        set_feature_flags(prescreening: false, flag_inappropriate_content: false)
+        phase = create(:phase, prescreening_mode: 'all')
+
+        expect(phase.reload.prescreening_mode).to eq 'all'
+        expect(phase.prescreening_all?).to be false
+      end
+
+      it 'takes effect once the feature is enabled, without rewriting the phase' do
+        set_feature_flags(prescreening: false, flag_inappropriate_content: false)
+        phase = create(:phase, prescreening_mode: 'all')
+        expect(phase.prescreening_all?).to be false
+
+        set_feature_flags(prescreening: true, flag_inappropriate_content: false)
+
+        expect(phase.prescreening_all?).to be true
+      end
+
+      # The two participation methods are gated on different features, so converting a
+      # phase moves it from one gate to the other. This matters on a default-configured
+      # platform, where `prescreening` (proposals) is enabled and `prescreening_ideation`
+      # is not.
+      describe 'when the participation_method is converted' do
+        before do
+          AppConfiguration.instance.settings.tap do |settings|
+            settings['prescreening'] = { 'allowed' => true, 'enabled' => true }
+            settings['prescreening_ideation'] = { 'allowed' => false, 'enabled' => false }
+          end
+
+          AppConfiguration.instance.save!
+        end
+
+        it 'stops taking effect when proposals (feature on) becomes ideation (feature off)' do
+          phase = create(:proposals_phase, prescreening_mode: 'all')
+          expect(phase.prescreening_all?).to be true
+
+          phase.update!(participation_method: 'ideation')
+
+          expect(phase.reload.prescreening_mode).to eq 'all'
+          expect(phase.prescreening_all?).to be false
+        end
+
+        it 'starts taking effect when ideation (feature off) becomes proposals (feature on)' do
+          phase = create(:phase, prescreening_mode: 'all')
+          expect(phase.prescreening_all?).to be false
+
+          phase.update!(participation_method: 'proposals')
+
+          expect(phase.reload.prescreening_mode).to eq 'all'
+          expect(phase.prescreening_all?).to be true
+        end
+      end
+    end
+  end
+
+  describe '#update_manual_votes_count!' do
+    let(:phase) { create(:budgeting_phase) }
+
+    before do
+      create(:idea, project: phase.project, phases: [phase], manual_votes_amount: 7)
+      create(:idea, project: phase.project, phases: [phase], manual_votes_amount: 3)
+    end
+
+    it 'sums the manual votes of the ideas in the phase' do
+      phase.update_manual_votes_count!
+      expect(phase.reload.manual_votes_count).to eq 10
+    end
+
+    # Counter maintenance must not depend on the phase being valid on unrelated attributes.
+    # A phase can be persisted in an invalid state by an unvalidated bulk write, as the
+    # 20260223103753 backfill did when it omitted 'map' from the `available_views` it created.
+    context 'when the phase is invalid on an unrelated attribute' do
+      before do
+        phase.update_column(:presentation_mode, 'map')
+        phase.update_column(:available_views, ['card'])
+      end
+
+      it 'is invalid, to confirm the setup' do
+        expect(phase.reload).not_to be_valid
+      end
+
+      it 'still updates the count' do
+        expect { phase.update_manual_votes_count! }.not_to raise_error
+        expect(phase.reload.manual_votes_count).to eq 10
+      end
     end
   end
 end

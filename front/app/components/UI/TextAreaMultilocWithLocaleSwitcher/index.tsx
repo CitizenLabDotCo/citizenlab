@@ -5,8 +5,10 @@ import {
   LocaleSwitcher,
   Label,
   colors,
+  boLabelStyle,
+  stackedLabelStyle,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { SupportedLocale, Multiloc } from 'typings';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
@@ -18,11 +20,26 @@ import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.div``;
 
-const LabelContainer = styled.div`
+const LabelContainer = styled.div<{
+  variant: TextAreaProps['variant'];
+  stacked: boolean;
+}>`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px;
+
+  ${({ variant }) =>
+    variant === 'bo'
+      ? css`
+          flex-wrap: wrap;
+          gap: 4px;
+          margin-bottom: 4px;
+        `
+      : css`
+          margin-bottom: 10px;
+        `}
+
+  ${({ stacked }) => stacked && stackedLabelStyle}
 `;
 
 const StyledLabel = styled(Label)`
@@ -39,14 +56,25 @@ const StyledLocaleSwitcher = styled(LocaleSwitcher)`
   width: auto;
 `;
 
-const LabelText = styled.span`
-  color: ${colors.textSecondary};
+const LabelText = styled.span<{ variant: TextAreaProps['variant'] }>`
+  ${({ variant }) =>
+    variant === 'bo'
+      ? boLabelStyle
+      : css`
+          color: ${colors.textSecondary};
+        `}
 `;
 
 export interface Props extends Omit<TextAreaProps, 'value' | 'onChange'> {
   valueMultiloc: Multiloc | null | undefined;
   onChange: (value: Multiloc, locale: SupportedLocale) => void;
   labelTextElement?: JSX.Element;
+  stackedLabel?: boolean;
+  // Rendered inside the field; gets the selected locale (this component's own state).
+  renderCounter?: (
+    value: string | null,
+    locale: SupportedLocale
+  ) => React.ReactNode;
 }
 
 const TextAreaMultilocWithLocaleSwitcher = memo<Props>((props) => {
@@ -57,6 +85,8 @@ const TextAreaMultilocWithLocaleSwitcher = memo<Props>((props) => {
     label,
     labelTooltipText,
     labelTextElement,
+    renderCounter,
+    stackedLabel = false,
     ...textAreaProps
   } = props;
 
@@ -92,13 +122,16 @@ const TextAreaMultilocWithLocaleSwitcher = memo<Props>((props) => {
 
   if (selectedLocale) {
     const id = `${props.id}-${selectedLocale}`;
+    const value = valueMultiloc?.[selectedLocale] || null;
 
     return (
       <Container className={className}>
-        <LabelContainer>
+        <LabelContainer variant={textAreaProps.variant} stacked={stackedLabel}>
           {label || labelTextElement ? (
             <StyledLabel htmlFor={id}>
-              {labelTextElement || <LabelText>{label}</LabelText>}
+              {labelTextElement || (
+                <LabelText variant={textAreaProps.variant}>{label}</LabelText>
+              )}
               {labelTooltipText && <IconTooltip content={labelTooltipText} />}
             </StyledLabel>
           ) : (
@@ -110,16 +143,19 @@ const TextAreaMultilocWithLocaleSwitcher = memo<Props>((props) => {
             locales={!isNilOrError(tenantLocales) ? tenantLocales : []}
             selectedLocale={selectedLocale}
             values={{ valueMultiloc }}
+            variant={textAreaProps.variant}
           />
         </LabelContainer>
 
         <TextArea
           {...textAreaProps}
-          value={valueMultiloc?.[selectedLocale] || null}
+          value={value}
           locale={selectedLocale}
           onChange={handleValueOnChange}
           id={id}
-        />
+        >
+          {renderCounter?.(value, selectedLocale)}
+        </TextArea>
       </Container>
     );
   }

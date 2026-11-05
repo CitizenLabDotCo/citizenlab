@@ -2,25 +2,29 @@ module ContentBuilder
   module Craftjs
     # Extracts multilocs for visible text from a craftjs in the order they appear in the visual layout.
     class VisibleTextualMultilocs
-      def initialize(craftjs, with_metadata: false)
-        @craftjs = LayoutSanitizationService.new.sanitize(craftjs)
+      # `sanitize: false` skips the HTML sanitization pass for craftjs read straight off a
+      # persisted Layout, which sanitizes on save. Nothing is mutated either way.
+      def initialize(craftjs, with_metadata: false, sanitize: true)
+        @craftjs = sanitize ? LayoutSanitizationService.new.sanitize(craftjs) : craftjs
         @with_metadata = with_metadata
         @ordered_multilocs = []
       end
 
       # Orders textual (text & title) multilocs found in the craftjs by how they appear in the layout,
       # so that columns are ordered from left to right, and texts from top to bottom within each column.
-      # Top to bottom ordering within containers is also respected.
+      # Top to bottom ordering within containers is also respected (via Query.each_visual).
       # Ignores ImageMultiloc nodes, which may include an image alt-text.
       def extract
-        multiloc_search_recursive('ROOT')
+        Query.each_visual(@craftjs) do |_id, node, _depth, _slot|
+          take_multiloc(node, Query.resolved_name(node))
+        end
         @ordered_multilocs
       end
 
       def extract_and_join
         @with_metadata = false
         locales = AppConfiguration.instance.settings['core']['locales']
-        extracted = extract
+        extracted = extract.compact
 
         locales.index_with do |locale|
           extracted.filter_map { |multiloc| multiloc[locale] }.join
@@ -28,24 +32,6 @@ module ContentBuilder
       end
 
       private
-
-      def multiloc_search_recursive(node_key)
-        node = @craftjs[node_key]
-        return if node.blank?
-
-        resolved_name = node['type']['resolvedName']
-        take_multiloc(node, resolved_name)
-
-        children = if resolved_name == 'TwoColumn'
-          [node['linkedNodes']['left'], node['linkedNodes']['right']]
-        elsif resolved_name == 'ThreeColumn'
-          [node['linkedNodes']['column1'], node['linkedNodes']['column2'], node['linkedNodes']['column3']]
-        end
-
-        children = children_ordered_by_nodes_order(node_key, node) if children.nil? || children.compact == []
-
-        children.each { |child_key| multiloc_search_recursive(child_key) } if children.present?
-      end
 
       # `with_metadata: true` may not be useful (TBD), as it only differentiates between accordian titles and texts.
       # TextMultiloc nodes always store their multiloc in node['props']['text'],
@@ -65,23 +51,24 @@ module ContentBuilder
           @ordered_multilocs << {
             node_type: resolved_name,
             multiloc_type: 'text',
-            multliloc: node['props']['text']
+            multliloc: body_multiloc(node)
           }
         else
           @ordered_multilocs << make_h3s(node['props']['title']) if resolved_name == 'AccordionMultiloc'
-          @ordered_multilocs << node['props']['text']
+          body = body_multiloc(node)
+          @ordered_multilocs << body if body.present?
         end
       end
 
-      def make_h3s(multliloc)
-        multliloc.transform_values! { |text| "<h3>#{text}</h3>" }
+      # Every text widget keeps its body in `text`, except HtmlBlockMultiloc, which keeps
+      # its raw HTML in `html` (see Craftjs::WidgetSpecs).
+      def body_multiloc(node)
+        node['props']['text'] || node['props']['html']
       end
 
-      def children_ordered_by_nodes_order(node_key, node)
-        # Sort keys of children to match stored order, if specified in the parent's node['nodes'] array.
-        @craftjs.select { |_key, value| value['parent'] == node_key }
-          .keys
-          .sort_by { |key| node['nodes']&.index(key) || Float::INFINITY }
+      # Non-mutating: callers may pass a persisted layout's own craftjs_json.
+      def make_h3s(multliloc)
+        multliloc.transform_values { |text| "<h3>#{text}</h3>" }
       end
     end
   end

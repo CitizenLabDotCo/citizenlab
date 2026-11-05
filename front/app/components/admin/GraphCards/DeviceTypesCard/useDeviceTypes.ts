@@ -29,7 +29,10 @@ const useDeviceTypes = ({
 
   const { counts_per_device_type } = data.data.attributes;
 
-  const deviceTypes = keys(counts_per_device_type);
+  // Sort device types alphabetically for consistent colors across timeframes
+  const deviceTypes = keys(counts_per_device_type).toSorted((a, b) =>
+    translations[a].localeCompare(translations[b])
+  );
   const counts = deviceTypes.map(
     (deviceType) => counts_per_device_type[deviceType]
   );

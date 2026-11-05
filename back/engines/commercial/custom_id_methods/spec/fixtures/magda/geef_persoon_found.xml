@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+  <soapenv:Body>
+    <web:GeefPersoonResponse xmlns:web="http://magda.vlaanderen.be/persoon/soap/geefpersoon/v02_02">
+      <Repliek>
+        <Context>
+          <Naam>GeefPersoon</Naam>
+          <Versie>02.02.0000</Versie>
+          <Bericht>
+            <Type>ANTWOORD</Type>
+            <Tijdstip>
+              <Datum>2026-08-24</Datum>
+              <Tijd>10:15:08.477</Tijd>
+            </Tijdstip>
+            <Afzender>
+              <Identificatie>vip.vlaanderen.be</Identificatie>
+              <Naam>MagdaGateway</Naam>
+              <Referte>2d032342-860e-4aa6-a6eb-415be1f1c6c4</Referte>
+            </Afzender>
+            <Ontvanger>
+              <Identificatie>bornem.be/govocal/ipdc77332-aip</Identificatie>
+              <Referte>d7176ee5-0eda-430c-a9b8-abc32d3a23da</Referte>
+              <Hoedanigheid>ipdc77332</Hoedanigheid>
+            </Ontvanger>
+          </Bericht>
+        </Context>
+        <Antwoorden>
+          <Antwoord>
+            <Referte>d7176ee5-0eda-430c-a9b8-abc32d3a23da</Referte>
+            <Inhoud>
+              <Persoon Bron="RR" DatumCreatie="2009-10-29" DatumModificatie="2009-10-29">
+                <INSZ>01234567993</INSZ>
+                <Naam DatumBegin="1990-05-15">
+                  <Achternamen>
+                    <Achternaam>Peeters</Achternaam>
+                  </Achternamen>
+                  <Voornamen>
+                    <Voornaam>Jan</Voornaam>
+                  </Voornamen>
+                </Naam>
+                <Geslacht>
+                  <Code>1</Code>
+                  <Omschrijving>Mannelijk</Omschrijving>
+                </Geslacht>
+                <Geboorte DatumBegin="1990-05-15">
+                  <Datum>1990-05-15</Datum>
+                  <Plaats>
+                    <Gemeente>
+                      <NISCode>12007</NISCode>
+                      <Naam>Bornem</Naam>
+                    </Gemeente>
+                    <Land>
+                      <NISCode>150</NISCode>
+                      <ISOCode>BEL</ISOCode>
+                      <Naam>BELGIE</Naam>
+                    </Land>
+                  </Plaats>
+                </Geboorte>
+                <Adressen>
+                  <Hoofdverblijfplaats DatumBegin="2014-05-23">
+                    <Straatnaam>
+                      <String>Hingenesteenweg</String>
+                      <Taal>nl</Taal>
+                    </Straatnaam>
+                    <Huisnummer>13</Huisnummer>
+                    <Gemeentenaam>
+                      <String>Bornem</String>
+                      <Taal>nl</Taal>
+                    </Gemeentenaam>
+                    <Land>
+                      <String>BELGIE</String>
+                      <Taal>nl</Taal>
+                    </Land>
+                    <Postcode>2880</Postcode>
+                    <NISCodeLand>150</NISCodeLand>
+                    <ISOCodeLand>BEL</ISOCodeLand>
+                    <NISCodeGemeente>12007</NISCodeGemeente>
+                  </Hoofdverblijfplaats>
+                </Adressen>
+              </Persoon>
+            </Inhoud>
+          </Antwoord>
+        </Antwoorden>
+      </Repliek>
+    </web:GeefPersoonResponse>
+  </soapenv:Body>
+</soapenv:Envelope>

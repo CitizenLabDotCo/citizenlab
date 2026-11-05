@@ -9,8 +9,10 @@ import SurveyBarsHorizontal from 'components/admin/Graphs/SurveyBars/SurveyBarsH
 import SurveyBarsVertical from 'components/admin/Graphs/SurveyBars/SurveyBarsVertical';
 
 import LineLocationQuestion from '../MappingQuestions/LineLocationQuestion';
+import MultipointLocationQuestion from '../MappingQuestions/MultipointLocationQuestion';
 import PointLocationQuestion from '../MappingQuestions/PointLocationQuestion';
 import PolygonLocationQuestion from '../MappingQuestions/PolygonLocationQuestion';
+import StaticMapScreenshot from '../MappingQuestions/StaticMapScreenshot';
 import MatrixQuestion from '../MatrixQuestion';
 import NumberQuestion from '../NumberQuestion';
 import RankingQuestion from '../RankingQuestion';
@@ -21,21 +23,23 @@ import { determineAnswerType } from '../utils';
 type FormResultQuestionValueProps = {
   result: ResultUngrouped;
   logicConfig: LogicConfig;
+  isPdfExport?: boolean;
 };
 
 const FormResultQuestionValue = ({
   result,
   logicConfig,
+  isPdfExport,
 }: FormResultQuestionValueProps) => {
   const hasAnswersOfType: ICustomFieldInputType | undefined =
     determineAnswerType(result);
 
   const {
-    answers,
     textResponses,
     pointResponses,
     lineResponses,
     polygonResponses,
+    multipointResponses,
     numberResponses,
     customFieldId,
     mapConfigId,
@@ -68,7 +72,7 @@ const FormResultQuestionValue = ({
             <TextQuestion
               textResponses={textResponses}
               customFieldId={customFieldId}
-              hasOtherResponses={!!answers}
+              textResponseSource="other_option"
             />
           )}
         </>
@@ -78,7 +82,7 @@ const FormResultQuestionValue = ({
         <TextQuestion
           textResponses={textResponses}
           customFieldId={customFieldId}
-          hasOtherResponses={!!answers}
+          textResponseSource="free_text"
         />
       ) : null;
 
@@ -88,6 +92,9 @@ const FormResultQuestionValue = ({
       ) : null;
     }
     case 'point': {
+      if (isPdfExport) {
+        return <StaticMapScreenshot customFieldId={customFieldId} />;
+      }
       return pointResponses ? (
         <PointLocationQuestion
           pointResponses={pointResponses}
@@ -97,6 +104,9 @@ const FormResultQuestionValue = ({
       ) : null;
     }
     case 'line': {
+      if (isPdfExport) {
+        return <StaticMapScreenshot customFieldId={customFieldId} />;
+      }
       return lineResponses ? (
         <LineLocationQuestion
           lineResponses={lineResponses}
@@ -106,9 +116,24 @@ const FormResultQuestionValue = ({
       ) : null;
     }
     case 'polygon': {
+      if (isPdfExport) {
+        return <StaticMapScreenshot customFieldId={customFieldId} />;
+      }
       return polygonResponses ? (
         <PolygonLocationQuestion
           polygonResponses={polygonResponses}
+          mapConfigId={mapConfigId}
+          customFieldId={customFieldId}
+        />
+      ) : null;
+    }
+    case 'multipoint': {
+      if (isPdfExport) {
+        return <StaticMapScreenshot customFieldId={customFieldId} />;
+      }
+      return multipointResponses ? (
+        <MultipointLocationQuestion
+          multipointResponses={multipointResponses}
           mapConfigId={mapConfigId}
           customFieldId={customFieldId}
         />

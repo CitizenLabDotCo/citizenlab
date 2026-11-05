@@ -1,7 +1,6 @@
 import { MouseEvent, FC } from 'react';
 
 import { MessageDescriptor } from 'react-intl';
-import { RouteType } from 'routes';
 
 import { TAppConfigurationSetting } from 'api/app_configuration/types';
 
@@ -20,7 +19,25 @@ declare global {
   }
   interface Window {
     Intercom?: any;
-    Weglot?: any;
+    Weglot?: {
+      initialize: (options: { api_key: string }) => void;
+      getCurrentLang: () => string;
+      switchTo: (lang: string) => void;
+      // Weglot fetches its project settings after initialize() returns, so
+      // nothing below is readable until this flips.
+      initialized: boolean;
+      // Source language plus each enabled target, once initialized.
+      getAvailableLanguages: () => string[];
+      on: (event: string, callback: (...args: any[]) => void) => void;
+      off: (event: string, callback: (...args: any[]) => void) => void;
+      translate: (
+        payload: {
+          words: { t: number; w: string }[];
+          languageTo: string;
+        },
+        callback: (data: any) => void
+      ) => void;
+    };
     _paq: any;
     attachEvent?: any;
     dataLayer?: any[];
@@ -38,8 +55,8 @@ export interface IRelationship {
 
 export interface ITab {
   name: string;
-  label: string;
-  url: RouteType;
+  label: React.ReactNode;
+  url: string;
   active?: boolean | ((pathname: string) => boolean);
   feature?: TAppConfigurationSetting;
   statusLabel?: string;
@@ -136,6 +153,7 @@ export interface ImageSizes {
   medium: string | null;
   large: string | null;
   fb?: string | null;
+  square_medium?: string | null;
 }
 
 export interface CRUDParams {

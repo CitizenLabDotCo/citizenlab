@@ -1,6 +1,26 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  # Doorkeeper serves only JSON here. Its HTML controllers are dropped:
+  # - authorizations: replaced by the SPA consent screen (McpServer::WebApi::V1::OauthAuthorizationsController)
+  # - applications / authorized_applications: client creation is handled by RFC 7591
+  #   Dynamic Client Registration (oauth/registrations), so the admin HTML UI is unused.
+  # This leaves the token/introspect/revoke endpoints, which are JSON.
+  use_doorkeeper do
+    skip_controllers :authorizations, :applications, :authorized_applications
+  end
+
+  # RFC 7591 Dynamic Client Registration + RFC 8414 Authorization Server Metadata
+  # + RFC 9728 Protected Resource Metadata (with /mcp-suffixed variants that MCP
+  # clients try when the resource lives at a non-root path).
+  namespace :oauth do
+    resources :registrations, only: :create, format: :json
+  end
+  get '.well-known/oauth-authorization-server', to: 'oauth/metadata#authorization_server'
+  get '.well-known/oauth-authorization-server/mcp', to: 'oauth/metadata#authorization_server'
+  get '.well-known/oauth-protected-resource', to: 'oauth/metadata#protected_resource'
+  get '.well-known/oauth-protected-resource/mcp', to: 'oauth/metadata#protected_resource'
+
   mount EmailCampaigns::Engine => '', as: 'email_campaigns'
   mount Frontend::Engine => '', as: 'frontend'
   mount Onboarding::Engine => '', as: 'onboarding'
@@ -8,15 +28,18 @@ Rails.application.routes.draw do
   mount Seo::Engine => '', as: 'seo'
   mount Surveys::Engine => '', as: 'surveys'
   mount Volunteering::Engine => '', as: 'volunteering'
+  mount Webhooks::Engine => '', as: 'webhooks'
 
   namespace :web_api, defaults: { format: :json } do
     namespace :v1 do
+      # The OAuth consent screen and MCP authorization management endpoints live in
+      # the MCP engine. See McpServer::Engine routes and
+      # McpServer::WebApi::V1::{OauthAuthorizations,McpAuthorizations}Controller.
+
       concern :reactable do
-        resources :reactions, except: [:update], shallow: true do
-          post :up, on: :collection
-          post :down, on: :collection
-        end
+        resources :reactions, except: [:update], shallow: true
       end
+
       concern :followable do
         resources :followers, only: [:create]
       end
@@ -27,10 +50,11 @@ Rails.application.routes.draw do
         # We named the param :permission_action, bc :action is already taken (controller action).
         resources :permissions, param: :permission_action do
           get 'requirements', on: :member
-          get 'schema', on: :member
           get 'custom_fields', on: :member
+          get 'custom_field_options', on: :member
           get 'access_denied_explanation', on: :member
-          patch 'reset', on: :member
+          patch 'override', on: :member
+          patch 'inherit', on: :member
           resources :permissions_custom_fields, shallow: true do
             patch 'reorder', on: :member
           end
@@ -53,6 +77,7 @@ Rails.application.routes.draw do
       resources :activities, only: [:index]
 
       resources :ideas,
+        except: %i[create],
         concerns: %i[reactable spam_reportable followable permissionable],
         defaults: { reactable: 'Idea', spam_reportable: 'Idea', followable: 'Idea', parent_param: :idea_id } do
         concerns :file_attachable, attachable_type: 'Idea'
@@ -69,7 +94,6 @@ Rails.application.routes.draw do
         get 'by_slug/:slug', on: :collection, to: 'ideas#by_slug'
         get :as_markers, on: :collection, action: 'index_idea_markers'
         get :filter_counts, on: :collection
-        get :json_forms_schema, on: :member
         get 'draft/:phase_id', on: :collection, to: 'ideas#draft_by_phase'
 
         resources :official_feedback, shallow: true
@@ -85,9 +109,9 @@ Rails.application.routes.draw do
         end
         get 'comments/as_xlsx', on: :collection, to: 'comments#index_xlsx'
 
-        post :similar_ideas, on: :collection
         resources :authoring_assistance_responses, only: %i[create]
         get :as_xlsx, on: :member, action: 'show_xlsx'
+        resources :exposures, controller: 'idea_exposures', only: %i[create]
       end
 
       resources :background_jobs, only: %i[index]
@@ -106,21 +130,38 @@ Rails.application.routes.draw do
       # auth
       post 'user_token' => 'user_token#create'
       delete 'user_token' => 'user_token#destroy'
+      post 'user_token_phone' => 'user_token#create_phone'
 
       resources :users, only: %i[index create update destroy] do
-        get :me, on: :collection
-        get :seats, on: :collection
-        get :as_xlsx, on: :collection, action: 'index_xlsx'
-        patch :block, :unblock, on: :member
-        post 'reset_password_email' => 'reset_password#reset_password_email', on: :collection
-        post 'reset_password' => 'reset_password#reset_password', on: :collection
-        post 'update_password', on: :collection
-        get 'by_slug/:slug', on: :collection, to: 'users#by_slug'
-        get 'by_invite/:token', on: :collection, to: 'users#by_invite'
-        get 'ideas_count', on: :member
-        get 'comments_count', on: :member
-        get 'blocked_count', on: :collection
-        get 'check/:email', on: :collection, to: 'users#check', constraints: { email: /.*/ }
+        collection do
+          get :me
+          get 'me/ping', action: 'ping'
+          get 'me/intercom_token', action: 'intercom_token'
+          get :seats
+          get :billed_admins
+          get :billed_moderators
+          get :as_xlsx, action: 'index_xlsx'
+
+          post 'reset_password_email' => 'reset_password#reset_password_email'
+          post 'reset_password' => 'reset_password#reset_password'
+          post 'update_password'
+          post 'check_email'
+          post 'check_phone'
+          post 'create_phone'
+
+          get 'by_invite/:token', to: 'users#by_invite'
+          get 'blocked_count'
+          get 'email_bounced_count'
+          get :check_if_exceeds_seats
+        end
+
+        member do
+          patch :block, :unblock
+          get 'ideas_count'
+          get 'comments_count'
+          get 'participation_stats'
+        end
+
         scope module: 'verification' do
           get 'me/locked_attributes', on: :collection, to: 'locked_attributes#index'
         end
@@ -132,17 +173,36 @@ Rails.application.routes.draw do
       get 'users/:id', to: 'users#show', constraints: { id: /\b(?!custom_fields|me)\b\S+/ }
 
       scope path: 'user' do
-        resource :confirmation, path: :confirm, only: %i[create]
-        resource :resend_code, only: %i[create]
+        post 'request_code_email', to: 'request_codes#request_code_email'
+        post 'request_code_new_email', to: 'request_codes#request_code_new_email'
+        post 'request_code_merge_account', to: 'request_codes#request_code_merge_account'
+        post 'request_code_phone', to: 'request_codes#request_code_phone'
+        post 'request_code_new_phone', to: 'request_codes#request_code_new_phone'
+        post 'request_reconfirm_code_email', to: 'request_codes#request_reconfirm_code_email'
+        post 'request_reconfirm_code_phone', to: 'request_codes#request_reconfirm_code_phone'
+
+        post 'confirm_code_email', to: 'confirmations#confirm_code_email'
+        post 'confirm_code_new_email', to: 'confirmations#confirm_code_new_email'
+        post 'confirm_code_merge_account', to: 'confirmations#confirm_code_merge_account'
+        post 'confirm_code_phone', to: 'confirmations#confirm_code_phone'
+        post 'confirm_code_new_phone', to: 'confirmations#confirm_code_new_phone'
+        post 'reconfirm_code_email', to: 'confirmations#reconfirm_code_email'
+        post 'reconfirm_code_phone', to: 'confirmations#reconfirm_code_phone'
       end
 
-      resources :topics do
+      resources :global_topics do
         patch 'reorder', on: :member
 
-        resources :followers, only: [:create], defaults: { followable: 'Topic' }
+        resources :followers, only: [:create], defaults: { followable: 'GlobalTopic' }
+      end
+
+      resources :default_input_topics do
+        patch 'move', on: :member
       end
 
       resources :areas do
+        patch 'reorder', on: :member
+
         resources :followers, only: [:create], defaults: { followable: 'Area' }
         collection do
           get 'with_visible_projects_counts', to: 'areas#with_visible_projects_counts'
@@ -152,6 +212,11 @@ Rails.application.routes.draw do
       resources :followers, except: %i[create update]
 
       resource :app_configuration, only: %i[show update]
+
+      # Constraint allows dots in email (prevents Rails treating top level domain as format)
+      resources :email_bans, only: %i[show destroy], param: :email, constraints: { email: %r{[^/]+} } do
+        get :count, on: :collection
+      end
 
       resources :static_pages do
         concerns :file_attachable, attachable_type: 'StaticPage'
@@ -184,6 +249,10 @@ Rails.application.routes.draw do
 
         member do
           get 'survey_results'
+          get 'input_response_fields'
+          post 'input_responses_pdf'
+          get 'input_responses_pdf_result'
+          post 'input_responses_xlsx'
           get 'common_ground_results'
           get 'sentiment_by_quarter'
           get :as_xlsx, action: 'index_xlsx'
@@ -191,16 +260,22 @@ Rails.application.routes.draw do
           get 'submission_count'
           get 'progress', action: 'show_progress'
           delete 'inputs', action: 'delete_inputs'
+          namespace :idea_feed do
+            resources :ideas, only: [:index]
+          end
         end
 
-        resources :inputs, only: [], controller: 'ideas' do
+        resources :inputs, only: [:create], controller: 'ideas' do
           post 'copy', on: :collection
+          post 'similar', on: :collection, action: 'similar_ideas'
+        end
+
+        resource :insights, only: [], controller: 'insights/phase_insights' do
+          get '', action: 'show_insights'
+          get :voting, action: 'votes_with_grouping'
         end
 
         resources :files, defaults: { container_type: 'Phase' }, shallow: false
-        resources :custom_fields, controller: 'phase_custom_fields', only: %i[] do
-          get 'json_forms_schema', on: :collection
-        end
         get 'custom_form', on: :member, controller: 'custom_forms', action: 'show', defaults: { container_type: 'Phase' }
         patch 'custom_form', on: :member, controller: 'custom_forms', action: 'update', defaults: { container_type: 'Phase' }
       end
@@ -209,17 +284,14 @@ Rails.application.routes.draw do
         concerns :file_attachable, attachable_type: 'Project'
 
         resources :events, only: %i[new create]
-        resources :projects_allowed_input_topics, only: [:index]
+        resources :input_topics, shallow: true do
+          patch 'move', on: :member
+        end
         resources :phases, only: %i[index new create]
         resources :images, defaults: { container_type: 'Project' }
         resources :files, defaults: { container_type: 'Project' }
         resources :groups_projects, shallow: true, except: [:update]
-        resources :custom_fields, controller: 'project_custom_fields', only: %i[] do
-          get 'json_forms_schema', on: :collection
-        end
-        resources :moderators, controller: 'project_moderators', except: [:update] do
-          get :users_search, on: :collection
-        end
+        resources :moderators, controller: 'moderators/project_moderators', except: [:update]
 
         collection do
           get 'by_slug/:slug', to: 'projects#by_slug'
@@ -245,24 +317,27 @@ Rails.application.routes.draw do
 
           delete :participation_data, action: 'destroy_participation_data'
 
+          get :publication_recipient_count
+
           get 'custom_form', controller: 'custom_forms', action: 'show', defaults: { container_type: 'Project' }
           patch 'custom_form', controller: 'custom_forms', action: 'update', defaults: { container_type: 'Project' }
         end
       end
 
-      resources :projects_allowed_input_topics, only: %i[show create destroy] do
-        patch 'reorder', on: :member
+      resources :spaces, only: %i[index show create update destroy] do
+        resources :moderators, controller: 'moderators/space_moderators', except: %i[update]
       end
 
       resources :admin_publications, only: %i[index show] do
         patch 'reorder', on: :member
         get 'select_and_order_by_ids', on: :collection, action: 'index_select_and_order_by_ids'
         get 'status_counts', on: :collection
+        get 'tree_view', on: :collection
       end
 
       resources :project_folders, controller: 'folders', concerns: [:followable], defaults: { followable: 'ProjectFolders::Folder' } do
         concerns :file_attachable, attachable_type: 'ProjectFolders::Folder'
-        resources :moderators, controller: 'folder_moderators', except: %i[update]
+        resources :moderators, controller: 'moderators/folder_moderators', except: %i[update]
         resources :images, controller: '/web_api/v1/images', defaults: { container_type: 'ProjectFolder' }
         resources :files, controller: '/web_api/v1/files', defaults: { container_type: 'ProjectFolder' }
         get 'by_slug/:slug', on: :collection, to: 'folders#by_slug'
@@ -307,8 +382,6 @@ Rails.application.routes.draw do
         end
 
         with_options controller: 'stats_ideas' do
-          get 'ideas_count'
-
           get 'ideas_by_topic'
           get 'ideas_by_project'
 
@@ -339,7 +412,7 @@ Rails.application.routes.draw do
         get 'users'
       end
 
-      resources :baskets, except: [:index] do
+      resources :baskets, except: %i[index create] do
         resources :baskets_ideas, shallow: true
       end
       put 'baskets/ideas/:idea_id', to: 'baskets_ideas#upsert'
@@ -348,14 +421,13 @@ Rails.application.routes.draw do
 
       resources :ideas_phases, only: %i[show]
 
-      resources :verification_methods, module: 'verification', only: [:index] do
-        get :first_enabled, on: :collection
-        get :first_enabled_for_verified_actions, on: :collection
-        Verification::VerificationService.new
+      resources :id_methods, only: [:index] do
+        get :first_enabled_verification_method, on: :collection
+        IdMethodService.new
           .all_methods
           .select { |vm| vm.verification_method_type == :manual_sync }
           .each do |vm|
-          post "#{vm.name}/verification", to: 'verifications#create', on: :collection, :defaults => { method_name: vm.name }
+          post "#{vm.name}/verification", to: 'verification/verifications#create', on: :collection, defaults: { method_name: vm.name }
         end
       end
 
@@ -375,9 +447,14 @@ Rails.application.routes.draw do
       resources :files, controller: 'files/files' do
         get 'preview', on: :member, to: 'files/previews#show'
         resources :attachments, controller: 'files/file_attachments', only: %i[index]
+        get 'transcript', on: :member, to: 'files/transcripts#show'
       end
 
       resources :file_attachments, controller: 'files/file_attachments'
+
+      resources :ai_assistant_conversations, only: %i[index show create], controller: 'ai_assistant/conversations' do
+        resources :messages, only: %i[create], controller: 'ai_assistant/messages'
+      end
     end
   end
 

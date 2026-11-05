@@ -23,6 +23,7 @@ const EventValuesSelector = ({ value, onChange }: Props) => {
   const { data: events, isLoading } = useEvents({
     sort: '-start_at',
     pageSize: 1000,
+    show_unlisted_events_user_can_moderate: true,
   });
   const localize = useLocalize();
 

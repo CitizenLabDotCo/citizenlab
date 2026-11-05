@@ -25,6 +25,14 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_desc',
     defaultMessage: 'Alphabetically (z-a)',
   },
+  participation_asc: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.Sort.participation_asc',
+    defaultMessage: 'Participation (low-high)',
+  },
+  participation_desc: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.Sort.participation_desc',
+    defaultMessage: 'Participation (high-low)',
+  },
   status: {
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.Sort.status',
     defaultMessage: 'Status',
@@ -72,10 +80,6 @@ export default defineMessages({
   participationMethodDocumentCommonGround: {
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.participationMethodDocumentCommonGround',
     defaultMessage: 'Common ground',
-  },
-  filterByCurrentPhaseMethod: {
-    id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.filterByCurrentPhaseMethod',
-    defaultMessage: 'Filter by the current phase participation method',
   },
   notStarted: {
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.notStarted',
@@ -144,5 +148,9 @@ export default defineMessages({
   pendingApproval: {
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.PendingApproval.pendingApproval',
     defaultMessage: 'Pending approval',
+  },
+  spaces: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.Spaces.spaces',
+    defaultMessage: 'Spaces',
   },
 });

@@ -1,16 +1,14 @@
+import { LabelProps } from 'recharts';
 import { Percentage } from 'typings';
 
 import { Payload } from '../BarChart/typings';
 import { BaseProps, KeyOfType, Cell, BaseMapping } from '../typings';
 
-// PROPS
 export interface Props<Row> extends BaseProps<Row, Payload<Row>> {
   mapping: Mapping<Row>;
   pie?: Pie;
   annotations?: boolean | ((row: Row) => string);
-  centerLabel?:
-    | React.ReactElement
-    | ((props: CenterLabelProps) => React.ReactElement);
+  centerLabel?: LabelProps['content'];
 }
 
 export interface Mapping<Row> extends BaseMapping<Payload<Row>> {
@@ -24,18 +22,6 @@ export interface Pie {
   outerRadius?: Percentage | number;
   startAngle?: number;
   endAngle?: number;
-}
-
-interface CenterLabelProps {
-  offset: number;
-  viewBox: {
-    cx: number;
-    cy: number;
-    startAngle: number;
-    endAngle: number;
-    innerRadius: number;
-    outerRadius: number;
-  };
 }
 
 // PARSED CONFIG

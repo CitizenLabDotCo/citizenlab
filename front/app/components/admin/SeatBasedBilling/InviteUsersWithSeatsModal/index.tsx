@@ -29,7 +29,7 @@ export type SeatTypeNumber = {
 interface InviteUsersWithSeatsModalProps {
   showModal: boolean;
   closeModal: () => void;
-  inviteUsers: () => void;
+  inviteUsers: () => Promise<boolean>;
   newSeatsResponse: IInvitesImport;
 }
 
@@ -41,22 +41,44 @@ const InviteUsersWithSeatsModal = ({
 }: InviteUsersWithSeatsModalProps) => {
   const { formatMessage } = useIntl();
   const [showSuccess, setShowSuccess] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const newSeats = newSeatsResponse.data.attributes;
 
-  const exceedsSeats = useExceedsSeats()({
-    newlyAddedAdminsNumber: newSeats.result.newly_added_admins_number,
-    newlyAddedModeratorsNumber: newSeats.result.newly_added_moderators_number,
+  const { loading, checkIfSeatsExceeded } = useExceedsSeats();
+  if (loading) return null;
+
+  const exceedsSeats = checkIfSeatsExceeded({
+    newlyAddedAdminsNumber: newSeats.result.newly_added_admins_number ?? 0,
+    newlyAddedModeratorsNumber:
+      newSeats.result.newly_added_moderators_number ?? 0,
   });
 
-  const handleConfirmClick = () => {
-    inviteUsers();
-    // `inviteUsers` can fail in theory, but very unlikely in practice.
-    // Errors should be displayed on the form in this case.
-    setShowSuccess(true);
+  const handleConfirmClick = async () => {
+    // The request only starts a background job, so this can take a moment.
+    // `processing` also blocks a second click.
+    setIsSubmitting(true);
+
+    try {
+      // Only claim success once the request has been accepted. A rejected one
+      // shows its error on the form, and takes this modal down with it.
+      const submitted = await inviteUsers();
+      if (submitted) {
+        setShowSuccess(true);
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const header = !showSuccess ? (
-    <Text color="primary" my="8px" fontSize="l" fontWeight="bold" px="2px">
+    <Text
+      id="invite-users-modal-title"
+      color="primary"
+      my="8px"
+      fontSize="l"
+      fontWeight="bold"
+      px="2px"
+    >
       {formatMessage(messages.confirmSeatUsageChange)}
     </Text>
   ) : undefined;
@@ -87,7 +109,12 @@ const InviteUsersWithSeatsModal = ({
   };
 
   return (
-    <Modal opened={showModal} close={resetModal} header={header}>
+    <Modal
+      opened={showModal}
+      close={resetModal}
+      header={header}
+      ariaLabelledBy="invite-users-modal-title"
+    >
       {showSuccess ? (
         <SeatSetSuccess
           closeModal={resetModal}
@@ -110,6 +137,7 @@ const InviteUsersWithSeatsModal = ({
           <Box display="flex">
             <Button
               onClick={handleConfirmClick}
+              processing={isSubmitting}
               data-testid="confirm-button-text"
             >
               {formatMessage(messages.confirmButtonText)}

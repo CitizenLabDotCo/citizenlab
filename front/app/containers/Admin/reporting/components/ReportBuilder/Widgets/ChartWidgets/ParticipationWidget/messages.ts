@@ -29,4 +29,13 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ParticipationWidget.showVotes',
     defaultMessage: 'Show votes',
   },
+  dateColumn: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ParticipationWidget.dateColumn',
+    defaultMessage: 'Date',
+  },
+  participantsCaption: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ParticipationWidget.participantsCaption',
+    defaultMessage:
+      'Participation data table showing date, participation types, and their values',
+  },
 });

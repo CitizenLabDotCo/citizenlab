@@ -1,9 +1,15 @@
-import { IFlatCustomField } from 'api/custom_fields/types';
+import {
+  ICustomFieldInputType,
+  IFlatCustomField,
+} from 'api/custom_fields/types';
+
+import { LIST_LAYOUT_MAX_OPTIONS } from 'components/CustomFieldsForm/constants';
 
 import {
   LogicConflictType,
   detectConflictsByPage,
   getReorderedFields,
+  transformFieldForSubmission,
   NestedGroupingStructure,
 } from './utils';
 
@@ -341,5 +347,95 @@ describe('detectConflictsByPage', () => {
     const conflictTypes = conflicts['page1']?.map((c) => c.conflictType);
     expect(conflictTypes).toContain(LogicConflictType.QUESTION_VS_PAGE_LOGIC);
     expect(conflictTypes).toContain(LogicConflictType.INTER_QUESTION_CONFLICT);
+  });
+});
+
+describe('transformFieldForSubmission', () => {
+  const optionsField = (
+    inputType: ICustomFieldInputType,
+    optionCount: number,
+    dropdownLayout: boolean
+  ) =>
+    ({
+      id: 'field1',
+      input_type: inputType,
+      key: 'field1',
+      dropdown_layout: dropdownLayout,
+      options: Array.from({ length: optionCount }, (_, index) => ({
+        id: `option-${index}`,
+      })),
+    } as IFlatCustomField);
+
+  it('keeps the layout the admin picked for a short option list', () => {
+    const field = optionsField('select', LIST_LAYOUT_MAX_OPTIONS, false);
+
+    expect(transformFieldForSubmission(field, [field])).toMatchObject({
+      dropdown_layout: false,
+    });
+  });
+
+  // The question renders as a dropdown above the threshold whatever is stored,
+  // so what gets saved has to say the same.
+  it('saves the dropdown layout once the option list is too long', () => {
+    const field = optionsField('select', LIST_LAYOUT_MAX_OPTIONS + 1, false);
+
+    expect(transformFieldForSubmission(field, [field])).toMatchObject({
+      dropdown_layout: true,
+    });
+  });
+
+  it('leaves a long multiselect alone', () => {
+    const field = optionsField('multiselect', 50, false);
+
+    expect(transformFieldForSubmission(field, [field])).toMatchObject({
+      dropdown_layout: false,
+    });
+  });
+
+  const multipointField = (
+    overrides: Partial<IFlatCustomField> = {}
+  ): IFlatCustomField =>
+    ({
+      id: 'field-1',
+      input_type: 'multipoint',
+      key: 'locations',
+      required: false,
+      enabled: true,
+      title_multiloc: { en: 'Which locations?' },
+      ...overrides,
+    } as IFlatCustomField);
+
+  it('submits the pin counts for a multipoint field', () => {
+    const result = transformFieldForSubmission(
+      multipointField({
+        select_count_enabled: true,
+        minimum_select_count: 2,
+        maximum_select_count: 5,
+      }),
+      []
+    );
+
+    expect(result).toMatchObject({
+      select_count_enabled: true,
+      minimum_select_count: 2,
+      maximum_select_count: 5,
+    });
+  });
+
+  it('clears the pin counts when the limit is turned off', () => {
+    const result = transformFieldForSubmission(
+      multipointField({
+        select_count_enabled: false,
+        minimum_select_count: 2,
+        maximum_select_count: 5,
+      }),
+      []
+    );
+
+    expect(result).toMatchObject({
+      select_count_enabled: false,
+      minimum_select_count: null,
+      maximum_select_count: null,
+    });
   });
 });

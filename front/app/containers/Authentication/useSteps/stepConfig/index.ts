@@ -4,15 +4,16 @@ import {
   AuthenticationData,
   SetError,
   State,
+  SSOProviderWithoutVienna,
 } from '../../typings';
 
-import { lightFlow } from './lightFlow';
+import { confirmationSteps } from './confirmationSteps';
+import { inviteFlow } from './inviteFlow';
 import { missingDataFlow } from './missingDataFlow';
+import { preAuthSteps } from './preAuthSteps';
 import { sharedSteps } from './sharedSteps';
-import { signInFlow } from './signInFlow';
-import { signUpFlow } from './signUpFlow';
-import { ssoVerificationFlow } from './ssoVerificationFlow';
 import { Step } from './typings';
+import { handleSubmitEmail, handleSubmitPhone, handleSSOClick } from './utils';
 
 export const getStepConfig = (
   getAuthenticationData: () => AuthenticationData,
@@ -20,16 +21,29 @@ export const getStepConfig = (
   setCurrentStep: (step: Step) => void,
   setError: SetError,
   updateState: UpdateState,
-  anySSOEnabled: boolean,
   state: State
 ) => {
   return {
-    ...lightFlow(
+    ...preAuthSteps(
       getAuthenticationData,
       getRequirements,
       setCurrentStep,
       updateState,
       state
+    ),
+
+    ...confirmationSteps(
+      getAuthenticationData,
+      getRequirements,
+      setCurrentStep,
+      state
+    ),
+
+    ...inviteFlow(
+      getAuthenticationData,
+      getRequirements,
+      setCurrentStep,
+      updateState
     ),
 
     ...missingDataFlow(
@@ -45,30 +59,6 @@ export const getStepConfig = (
       getRequirements,
       setCurrentStep,
       setError,
-      updateState,
-      anySSOEnabled
-    ),
-
-    ...signInFlow(
-      getAuthenticationData,
-      getRequirements,
-      setCurrentStep,
-      updateState,
-      anySSOEnabled
-    ),
-
-    ...signUpFlow(
-      getAuthenticationData,
-      getRequirements,
-      setCurrentStep,
-      updateState,
-      anySSOEnabled
-    ),
-
-    ...ssoVerificationFlow(
-      getAuthenticationData,
-      getRequirements,
-      setCurrentStep,
       updateState
     ),
 
@@ -81,8 +71,30 @@ export const getStepConfig = (
       CLOSE: () => setCurrentStep('closed'),
     },
 
-    'taken-by-invite': {
+    'post-participation:email': {
       CLOSE: () => setCurrentStep('closed'),
+
+      SUBMIT_EMAIL: async (email: string) => {
+        updateState({ email, phone: null });
+        await handleSubmitEmail(email, setCurrentStep, updateState);
+      },
+
+      SUBMIT_PHONE: async (phone: string) => {
+        updateState({ phone, email: null });
+        await handleSubmitPhone(phone, setCurrentStep, updateState);
+      },
+
+      CONTINUE_WITH_SSO: async (ssoProvider: SSOProviderWithoutVienna) => {
+        handleSSOClick(
+          ssoProvider,
+          getAuthenticationData,
+          getRequirements,
+          setCurrentStep,
+          updateState,
+          state,
+          state.claimTokens ?? undefined
+        );
+      },
     },
   };
 };

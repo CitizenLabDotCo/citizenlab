@@ -43,6 +43,19 @@
             "type": "string"
           }
         }
+      },
+      {
+        "type": "object",
+        "required": ["type", "space_id"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["space_moderator"]
+          },
+          "space_id": {
+            "type": "string"
+          }
+        }
       }
     ]
   }

@@ -10,6 +10,22 @@ describe MultiTenancy::Templates::Utils do
   let(:s3_client) { Aws::S3::Client.new(stub_responses: true) }
   let(:template_bucket) { 'template-bucket' }
 
+  describe '.s3_client' do
+    it 'stays pinned to AWS eu-central-1 even when endpoint env vars are set' do
+      stub_env(
+        'AWS_ACCESS_KEY_ID' => 'test-key',
+        'AWS_SECRET_ACCESS_KEY' => 'test-secret',
+        'AWS_ENDPOINT_URL_S3' => 'https://s3.fr-par.scw.cloud',
+        'AWS_ENDPOINT_URL' => 'https://s3.fr-par.scw.cloud'
+      )
+
+      client = described_class.s3_client
+
+      expect(client.config.endpoint.to_s).to eq('https://s3.eu-central-1.amazonaws.com')
+      expect(client.config.region).to eq('eu-central-1')
+    end
+  end
+
   describe '#internal_template_names' do
     it 'returns expected templates' do
       expect(service.internal_template_names)
@@ -87,6 +103,26 @@ describe MultiTenancy::Templates::Utils do
 
       manifest = service.external_manifest(prefix: 'foo')
       expect(manifest).to eq('template' => { 'required_locales' => ['en'] })
+    end
+  end
+
+  # A deployment whose S3 credentials belong to another provider cannot reach the
+  # bucket (it lives on GoVocal's AWS). Leaving TEMPLATE_BUCKET unset should
+  # short-circuit every S3 call: the stubs raise so an unguarded one fails the test.
+  context 'without a templates bucket' do
+    subject(:service) { described_class.new(template_bucket: nil, s3_client: s3_client) }
+
+    before do
+      s3_client.stub_responses(:get_object, 'InvalidAccessKeyId')
+      s3_client.stub_responses(:list_objects_v2, 'InvalidAccessKeyId')
+    end
+
+    it 'lists the internal templates only' do
+      expect(service.template_names).to eq %w[base e2etests_template]
+    end
+
+    it 'builds a manifest of the internal templates only' do
+      expect(service.template_manifest.keys).to contain_exactly('base', 'e2etests_template')
     end
   end
 

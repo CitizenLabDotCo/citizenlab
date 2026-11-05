@@ -27,6 +27,13 @@ const CharacterLimitSettings = ({
       event.preventDefault();
     }
   };
+  // when changing the min characters, watch(minCharactersName) will return a string
+  // we need to convert it to a number to calculate the min value for the max characters input
+  // and then convert it again in a string to set the min value for the max characters input
+  const minChars = Number(watch(minCharactersName));
+  const maxMin = String(
+    Number.isFinite(minChars) && minChars > 0 ? minChars + 1 : 1
+  );
 
   return (
     <Box mb="24px">
@@ -59,7 +66,7 @@ const CharacterLimitSettings = ({
               id="maxCharactersInput"
               type="number"
               size="small"
-              min={watch(minCharactersName) ? watch(minCharactersName) + 1 : 1}
+              min={maxMin}
               onKeyDown={handleKeyDown}
               placeholder={formatMessage(messages.noLimit)}
             />

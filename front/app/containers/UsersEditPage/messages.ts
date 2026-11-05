@@ -188,14 +188,6 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.submit',
     defaultMessage: 'Update profile',
   },
-  notificationsTitle: {
-    id: 'app.containers.UsersEditPage.notificationsTitle',
-    defaultMessage: 'Notifications',
-  },
-  notificationsSubTitle: {
-    id: 'app.containers.UsersEditPage.notificationsSubTitle',
-    defaultMessage: 'When do you want us to send you an email to notify you?',
-  },
   user: {
     id: 'app.containers.UsersEditPage.user',
     defaultMessage: 'When do you want us to send you an email to notify you?',
@@ -255,6 +247,14 @@ export default defineMessages({
   changePassword2: {
     id: 'app.containers.UsersEditPage.changePassword2',
     defaultMessage: 'Change password',
+  },
+  changePhone: {
+    id: 'app.containers.UsersEditPage.changePhone',
+    defaultMessage: 'Change phone number',
+  },
+  addPhone: {
+    id: 'app.containers.UsersEditPage.addPhone',
+    defaultMessage: 'Add phone number',
   },
   /*
    * Password change

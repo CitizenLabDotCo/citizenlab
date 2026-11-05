@@ -585,7 +585,11 @@ html {
 body {
   margin: 0px;
   padding: 0px;
-  overflow-x: hidden;
+  /* Use 'clip' instead of 'hidden' to prevent the body from becoming a scroll
+     container. 'hidden' silently converts overflow-y to 'auto' per the CSS spec,
+     which breaks Popper.js tooltip flip behavior at high zoom levels (e.g. 400%).
+     See: https://www.notion.so/govocal/a11y-Button-with-tooltip-is-not-visible-at-400-zoom-32e9663b7b2680b7b315c790d71105ee */
+  overflow-x: clip;
   min-width: 320px;
   background: #ffffff;
   font-family: 'Public Sans', 'Helvetica Neue', Arial, Helvetica, sans-serif;

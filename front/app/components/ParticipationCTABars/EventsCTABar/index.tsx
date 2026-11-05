@@ -7,8 +7,10 @@ import { useTheme } from 'styled-components';
 import useEvents from 'api/events/useEvents';
 import { getCurrentPhase } from 'api/phases/utils';
 
+import { EVENTS_WIDGET_ANCHOR_ID } from 'components/admin/ContentBuilder/Widgets/Events';
 import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
 import { CTABarProps } from 'components/ParticipationCTABars/utils';
+import useHasEventsWidget from 'components/ProjectPageBuilder/Widgets/Events/useHasEventsWidget';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { scrollToElement } from 'utils/scroll';
@@ -29,8 +31,9 @@ const EventsCTABar = ({ phases, project }: CTABarProps) => {
   });
   const theme = useTheme();
   const currentPhase = getCurrentPhase(phases);
+  const hasEventsWidget = useHasEventsWidget(project.id);
 
-  const showCTABar = !!events?.data.length;
+  const showCTABar = !!events?.data.length && hasEventsWidget;
 
   if (!showCTABar) return null;
 
@@ -40,9 +43,7 @@ const EventsCTABar = ({ phases, project }: CTABarProps) => {
       CTAButton={
         <Button
           id="e2e-cta-bar-see-events"
-          onClick={() =>
-            scrollToElement({ id: 'e2e-events-section-project-page' })
-          }
+          onClick={() => scrollToElement({ id: EVENTS_WIDGET_ANCHOR_ID })}
           fontWeight="500"
           bgColor={theme.colors.white}
           textColor={theme.colors.tenantText}

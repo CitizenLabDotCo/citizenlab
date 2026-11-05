@@ -18,7 +18,7 @@ export type StatementAttributes = {
 
 export interface IFormCustomFieldStatementData {
   id: string;
-  type: string;
+  type: 'custom_field_matrix_statement';
   attributes: StatementAttributes;
 }
 

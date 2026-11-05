@@ -20,7 +20,8 @@ export type ResolvedName =
   | 'ParticipationWidget'
   | 'ProjectsWidget'
   | 'ProjectsTimelineWidget'
-  | 'DeviceTypesWidget';
+  | 'DeviceTypesWidget'
+  | 'InternalAdoptionWidget';
 
 export interface BaseParams {
   resolved_name: ResolvedName;
@@ -42,10 +43,11 @@ export type ParametersLive =
   | ParticipationParams
   | ProjectsParams
   | ProjectsTimelineParams
-  | DeviceTypesParams;
+  | DeviceTypesParams
+  | InternalAdoptionParams;
 
 export type GroupMode = 'user_field' | 'survey_question';
-type ExcludeRoles = 'exclude_admins_and_moderators';
+export type OptionsSortOrder = 'count' | 'original';
 
 export interface SurveyQuestionResultProps {
   phase_id: string;
@@ -54,6 +56,7 @@ export interface SurveyQuestionResultProps {
   group_field_id?: string;
   year?: string;
   quarter?: string;
+  options_sort_order?: OptionsSortOrder;
 }
 
 export interface SurveyQuestionResultParams extends BaseParams {
@@ -106,9 +109,7 @@ export interface VisitorsParams extends BaseParams {
   props: VisitorsProps;
 }
 
-export interface VisitorsTrafficSourcesProps extends DateProps, ProjectId {
-  exclude_roles?: ExcludeRoles;
-}
+export interface VisitorsTrafficSourcesProps extends DateProps, ProjectId {}
 
 export interface VisitorsTrafficSourcesParams extends BaseParams {
   resolved_name: 'VisitorsTrafficSourcesWidget';
@@ -117,7 +118,6 @@ export interface VisitorsTrafficSourcesParams extends BaseParams {
 
 export interface VisitorsLanguagesProps extends DateProps {
   project_id?: string;
-  exclude_roles?: ExcludeRoles;
 }
 
 export interface VisitorsLanguagesParams extends BaseParams {
@@ -138,9 +138,7 @@ export interface DemographicsParams extends BaseParams {
   props: DemographicsProps;
 }
 
-export interface ParticipantsProps extends AnalyticsProps, CompareProps {
-  exclude_roles?: ExcludeRoles;
-}
+export interface ParticipantsProps extends AnalyticsProps, CompareProps {}
 
 export interface ParticipantsParams extends BaseParams {
   resolved_name: 'ParticipantsWidget';
@@ -161,7 +159,7 @@ interface RegistrationsParams {
   props: RegistrationsProps;
 }
 
-export interface MethodsUsedProps extends DateProps, CompareProps {}
+export interface MethodsUsedProps extends CompareProps, ProjectsProps {}
 
 interface MethodsUsedParams extends BaseParams {
   resolved_name: 'MethodsUsedWidget';
@@ -181,6 +179,10 @@ export type ProjectReportsPublicationStatus = 'published' | 'archived';
 
 export interface ProjectsProps extends DateProps {
   publication_statuses?: ProjectReportsPublicationStatus[];
+  excluded_project_ids?: string[];
+  excluded_folder_ids?: string[];
+  sort?: Parameters['sort'];
+  locale?: Parameters['locale'];
 }
 
 interface ProjectsParams extends BaseParams {
@@ -194,6 +196,8 @@ export interface ProjectsTimelineProps
   sort?: Parameters['sort'];
   locale?: Parameters['locale'];
   no_of_projects?: number;
+  excluded_project_ids?: string[];
+  excluded_folder_ids?: string[];
 }
 
 export interface ProjectsTimelineParams extends BaseParams {
@@ -201,13 +205,20 @@ export interface ProjectsTimelineParams extends BaseParams {
   props: ProjectsTimelineProps;
 }
 
-export interface DeviceTypesProps extends DateProps, ProjectId {
-  exclude_roles?: ExcludeRoles;
-}
+export interface DeviceTypesProps extends DateProps, ProjectId {}
 
 export interface DeviceTypesParams extends BaseParams {
   resolved_name: 'DeviceTypesWidget';
   props: DeviceTypesProps;
+}
+
+export interface InternalAdoptionProps
+  extends Omit<AnalyticsProps, 'project_id'>,
+    CompareProps {}
+
+export interface InternalAdoptionParams extends BaseParams {
+  resolved_name: 'InternalAdoptionWidget';
+  props: InternalAdoptionProps;
 }
 
 // published

@@ -14,7 +14,6 @@ const mentionsData: IMentionData[] = [
     attributes: {
       first_name: 'John',
       last_name: 'Doe',
-      slug: 'john-doe',
       avatar: {
         small: null,
         medium: null,
@@ -28,7 +27,6 @@ const mentionsData: IMentionData[] = [
     attributes: {
       first_name: 'Jane',
       last_name: 'Doe',
-      slug: 'jane-doe',
       avatar: {
         small: null,
         medium: null,

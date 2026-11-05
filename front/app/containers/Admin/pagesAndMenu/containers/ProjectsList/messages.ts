@@ -2,11 +2,19 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   pageTitle: {
-    id: 'app.containers.Admin.PagesAndMenu.containers.ProjectsList.pageTitle',
-    defaultMessage: 'Projects list',
+    id: 'app.containers.Admin.PagesAndMenu.containers.ProjectsList.pageTitle1',
+    defaultMessage: 'Projects and folders list',
   },
   pageMetaTitle: {
-    id: 'app.containers.Admin.PagesAndMenu.containers.ProjectsList.pageMetaTitle',
+    id: 'app.containers.Admin.PagesAndMenu.containers.ProjectsList.pageMetaTitle1',
+    defaultMessage: 'Projects and folders list | {orgName}',
+  },
+  projectsPageTitle: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.ProjectsList.projectsPageTitle',
+    defaultMessage: 'Projects list',
+  },
+  projectsPageMetaTitle: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.ProjectsList.projectsPageMetaTitle',
     defaultMessage: 'Projects list | {orgName}',
   },
   sectionDescription: {

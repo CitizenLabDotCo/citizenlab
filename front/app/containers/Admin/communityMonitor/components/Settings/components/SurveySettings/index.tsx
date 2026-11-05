@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import { Box, Title, Toggle, Spinner } from '@citizenlab/cl2-component-library';
-import { RouteType } from 'routes';
 
 import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
 import usePhase from 'api/phases/usePhase';
@@ -11,6 +10,8 @@ import useDeleteSurveyResults from 'api/survey_results/useDeleteSurveyResults';
 import { downloadSurveyResults } from 'api/survey_results/utils';
 
 import useLocale from 'hooks/useLocale';
+
+import useInputResponseExport from 'containers/Admin/projects/project/inputResponseExport/useInputResponseExport';
 
 import DeleteModal from 'components/admin/SurveyDeleteModal/SurveyDeleteModal';
 import DropdownSettings from 'components/admin/SurveyDropdownSettings/DropdownSettings';
@@ -33,6 +34,14 @@ const SurveySettings = () => {
   const phaseId = project?.data.relationships.current_phase?.data?.id;
   const { data: phase } = usePhase(phaseId);
   const { mutate: updatePhase } = useUpdatePhase();
+
+  // The shared responses export flow (PDF/Excel with PII review). The empty
+  // fallbacks are unreachable: the modal can only be opened from UI that
+  // renders after the guard below.
+  const inputResponseExport = useInputResponseExport({
+    projectId: project?.data.id ?? '',
+    phaseId: phaseId ?? '',
+  });
 
   // Form hooks
   const { mutate: deleteFormResults } = useDeleteSurveyResults();
@@ -59,7 +68,7 @@ const SurveySettings = () => {
   // Variables from form config
   const { postingEnabled, togglePostingEnabled, inputImporterLink } =
     getFormActionsConfig(project.data, updatePhase, phase.data);
-  const editFormLink: RouteType = `/admin/community-monitor/projects/${project.data.id}/phases/${phase.data.id}/survey/edit`;
+  const editFormLink = `/admin/community-monitor/projects/${project.data.id}/phases/${phase.data.id}/survey/edit`;
 
   // Functions to handle modal states
   const closeDeleteModal = () => {
@@ -124,7 +133,7 @@ const SurveySettings = () => {
               />
             </Box>
             <ButtonWithLink
-              linkTo={inputImporterLink}
+              {...inputImporterLink}
               icon="page"
               iconSize="20px"
               buttonStyle="secondary-outlined"
@@ -152,6 +161,8 @@ const SurveySettings = () => {
             <DropdownSettings
               haveSubmissionsComeIn={haveSubmissionsComeIn}
               handleDownloadResults={handleDownloadResults}
+              handleExportPdf={inputResponseExport.openPdfExportModal}
+              handleExportXlsx={inputResponseExport.openXlsxExportModal}
               setDropdownOpened={setDropdownOpened}
               isDropdownOpened={isDropdownOpened}
               setShowDeleteModal={setShowDeleteModal}
@@ -170,6 +181,7 @@ const SurveySettings = () => {
         closeDeleteModal={closeDeleteModal}
         deleteResults={deleteResults}
       />
+      {inputResponseExport.modal}
     </Box>
   );
 };

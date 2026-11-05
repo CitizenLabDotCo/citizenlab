@@ -79,7 +79,7 @@ const DeletionDialog = ({
     return (
       <Container>
         {logo && <Logo src={logo} alt={localizedOrgName} />}
-        <Styledh1>
+        <Styledh1 id="delete-account-modal-title">
           <FormattedMessage {...messages.deleteYourAccount} />
         </Styledh1>
         <p>
@@ -100,7 +100,11 @@ const DeletionDialog = ({
               {...messages.privacyReasons}
               values={{
                 conditionsLink: (
-                  <Link to="/pages/terms-and-conditions" target="_blank">
+                  <Link
+                    to="/pages/$slug"
+                    params={{ slug: 'terms-and-conditions' }}
+                    target="_blank"
+                  >
                     <FormattedMessage {...messages.conditionsLinkText} />
                   </Link>
                 ),

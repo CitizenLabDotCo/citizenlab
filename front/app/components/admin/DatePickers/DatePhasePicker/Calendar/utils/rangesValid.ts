@@ -1,4 +1,4 @@
-import { differenceInDays } from 'date-fns';
+import { differenceInDays, startOfDay } from 'date-fns';
 
 import { DateRange } from 'components/admin/DatePickers/_shared/typings';
 
@@ -67,7 +67,10 @@ export const rangesValid = (
     if (to === undefined) {
       const fromOverlapsWithAnyDisabledRange = disabledRanges.some(
         (disabledRange) => {
-          return from >= disabledRange.from && from <= disabledRange.to;
+          const fromDay = startOfDay(from);
+          const disabledFromDay = startOfDay(disabledRange.from);
+          const disabledToDay = startOfDay(disabledRange.to);
+          return fromDay > disabledFromDay && fromDay < disabledToDay;
         }
       );
 

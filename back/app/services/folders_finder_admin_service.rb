@@ -3,6 +3,7 @@ class FoldersFinderAdminService
     folders = filter_status(scope, params)
     folders = filter_folder_manager(folders, params)
     folders = search(folders, params)
+    folders = filter_space(folders, params)
 
     folders
       .order('project_folders_folders.created_at DESC, project_folders_folders.id ASC')
@@ -10,12 +11,10 @@ class FoldersFinderAdminService
 
   # FILTERING METHODS
   def self.filter_status(scope, params = {})
-    status = params[:status] || []
-    return scope if status.blank?
+    statuses = params[:status] || []
+    return scope if statuses.blank?
 
-    scope
-      .joins("INNER JOIN admin_publications ON admin_publications.publication_id = project_folders_folders.id AND admin_publications.publication_type = 'ProjectFolders::Folder'")
-      .where(admin_publications: { publication_status: status })
+    scope.where(admin_publication: AdminPublication.with_status(statuses))
   end
 
   def self.filter_folder_manager(scope, params = {})
@@ -41,5 +40,12 @@ class FoldersFinderAdminService
     return scope if search.blank?
 
     scope.search_by_title(search)
+  end
+
+  def self.filter_space(scope, params = {})
+    space_ids = params[:space_ids]
+    return scope if space_ids.blank?
+
+    scope.where(space_id: space_ids)
   end
 end

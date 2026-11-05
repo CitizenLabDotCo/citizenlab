@@ -54,6 +54,9 @@ const singleVotingConfig: VotingMethodConfig = {
           ? messages.singleVotingPreferredOption
           : messages.singleVotingPreferredOptions;
 
+      const minimumSelectedOptions =
+        phase.attributes.voting_min_selected_options;
+
       return (
         <>
           <FormattedMessage
@@ -65,6 +68,20 @@ const singleVotingConfig: VotingMethodConfig = {
             }}
             {...youCanVoteMessage}
           />
+          {minimumSelectedOptions && minimumSelectedOptions > 1 && (
+            <>
+              {' '}
+              <FormattedMessage
+                values={{
+                  b: (chunks) => (
+                    <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+                  ),
+                  minSelectedOptions: minimumSelectedOptions,
+                }}
+                {...messages.minSelectedOptionsMessage}
+              />
+            </>
+          )}
           <ul>
             <li>
               <FormattedMessage {...preferredOptionMessage} />

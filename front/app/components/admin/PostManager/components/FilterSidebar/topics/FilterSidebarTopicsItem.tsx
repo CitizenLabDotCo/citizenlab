@@ -2,14 +2,14 @@ import React from 'react';
 
 import { useDrop } from 'react-dnd';
 
-import { ITopicData } from 'api/topics/types';
+import { IInputTopicData } from 'api/input_topics/types';
 
 import T from 'components/T';
 
 import FilterRadioButton from '../FilterRadioButton';
 
 interface Props {
-  topic: ITopicData;
+  topic: IInputTopicData;
   active: boolean;
   onClick: any;
   name: string;
@@ -33,7 +33,7 @@ const FilterSidebarTopicsItem = ({ topic, active, onClick, name }: Props) => {
       <FilterRadioButton
         id={topic.id}
         name={name}
-        labelContent={<T value={topic.attributes.title_multiloc} />}
+        labelContent={<T value={topic.attributes.full_title_multiloc} />}
         isSelected={active || (isOver && canDrop)}
         onChange={onClick}
       />

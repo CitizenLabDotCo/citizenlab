@@ -63,7 +63,8 @@ resource 'Analyses' do
         participation_method: 'ideation',
         updated_at: kind_of(String),
         created_at: kind_of(String),
-        show_insights: true
+        show_insights: true,
+        auto_insights_too_many_fields: false
       })
       expect(response_data.dig(:relationships, :main_custom_field, :data, :id)).to eq main_field.id
       expect(response_data.dig(:relationships, :additional_custom_fields, :data).pluck(:id)).to eq [additional_field.id]
@@ -143,12 +144,31 @@ resource 'Analyses' do
         expect(response_status).to eq 422
       end
     end
+
+    describe do
+      let(:project) { create(:project) }
+      let(:phase) { create(:common_ground_phase, :ongoing, project: project) }
+      let(:phase_id) { phase.id }
+
+      example_request 'Create a phase analysis (common ground phase) when no custom_form exists' do
+        expect(response_status).to eq 201
+        additional_custom_field_ids = response_data.dig(:relationships, :additional_custom_fields, :data).pluck(:id)
+        expect(additional_custom_field_ids).not_to be_empty
+        included_additional_fields = json_response_body[:included].select { |d| additional_custom_field_ids.include? d[:id] }
+        expect(included_additional_fields.map { |d| d[:attributes][:code] }).to match_array(%w[title_multiloc])
+
+        tags = Analysis::Analysis.find(response_data[:id]).tags
+        expect(tags.count).to be > 0
+        expect(tags.pluck(:tag_type).uniq).to eq ['onboarding_example']
+      end
+    end
   end
 
   patch 'web_api/v1/analyses/:id' do
     with_options scope: :analysis do
-      parameter :show_insights, 'Whether to show insights or not', required: false
-      parameter :additional_custom_field_ids, 'The additional custom fields that should be part of the analysis.', required: false
+      parameter :show_insights, 'Indicates whether to display insights', required: false
+      parameter :files, 'Array of file IDs to attach to the analysis', required: false
+      parameter :additional_custom_field_ids, 'Array of additional custom field IDs to include in the analysis', required: false
 
       ValidationErrorHelper.new.error_fields(self, Analysis::Analysis)
     end
@@ -173,6 +193,31 @@ resource 'Analyses' do
         expect(response_status).to eq 200
         expect(response_data.dig(:relationships, :additional_custom_fields, :data).pluck(:id)).to match_array additional_custom_field_ids
       end
+    end
+
+    example 'Update the attached files of an analysis', document: false do
+      files = create_list(:file, 3, projects: [analysis.project])
+      before_files = files.first(2)
+      after_files = files.last(2)
+
+      analysis.attached_files = before_files
+      expect(analysis.attached_files).to match_array(before_files)
+
+      do_request(analysis: { files: after_files.map(&:id) })
+
+      assert_status(200)
+      analysis.reload
+      expect(analysis.attached_files).to match_array(after_files)
+    end
+
+    example '[error] Attach a file from another project to an analysis', document: false do
+      file = create(:file)
+
+      do_request(analysis: { files: [file.id] })
+
+      assert_status(422)
+      expect(json_response_body.dig(:errors, :file).sole[:error])
+        .to eq 'does_not_belong_to_project'
     end
   end
 

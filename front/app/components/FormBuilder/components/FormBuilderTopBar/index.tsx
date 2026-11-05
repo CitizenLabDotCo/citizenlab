@@ -11,10 +11,9 @@ import {
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
 import { useFormContext } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
-import { RouteType } from 'routes';
 import styled from 'styled-components';
 
+import { IFlatCustomField } from 'api/custom_fields/types';
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 import useSubmissionsCount from 'api/submission_count/useSubmissionCount';
@@ -23,7 +22,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import DownloadPDFButtonWithModal from 'components/admin/FormSync/DownloadPDFButtonWithModal';
 import {
-  FormBuilderConfig,
+  ResolvedFormBuilderConfig,
   getIsPostingEnabled,
 } from 'components/FormBuilder/utils';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
@@ -33,11 +32,14 @@ import Modal from 'components/UI/Modal';
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { type TypedLinkProps } from 'utils/cl-router/Link';
+import { useParams } from 'utils/router';
 
 import messages from '../messages';
 import tracks from '../tracks';
 
 import ownMessages from './messages';
+import EditSchemaButtonWithModal from './SuperAdmin/EditSchemaButtonWithModal';
 
 const StyledStatusLabel = styled(StatusLabel)`
   height: 20px;
@@ -46,11 +48,12 @@ const StyledStatusLabel = styled(StatusLabel)`
 
 type FormBuilderTopBarProps = {
   isSubmitting: boolean;
-  builderConfig: FormBuilderConfig;
-  viewFormLink: RouteType;
+  builderConfig: ResolvedFormBuilderConfig;
+  viewFormLink: TypedLinkProps;
   autosaveEnabled: boolean;
   setAutosaveEnabled: Dispatch<SetStateAction<boolean>>;
   phaseId: string;
+  onFormSave?: () => void;
 };
 
 const FormBuilderTopBar = ({
@@ -60,12 +63,14 @@ const FormBuilderTopBar = ({
   autosaveEnabled,
   setAutosaveEnabled,
   phaseId,
+  onFormSave,
 }: FormBuilderTopBarProps) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
-  const { projectId } = useParams() as {
+  const { projectId } = useParams({ strict: false }) as {
     projectId: string;
   };
+
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
   const { data: submissionCount } = useSubmissionsCount({
@@ -73,7 +78,9 @@ const FormBuilderTopBar = ({
   });
   const {
     formState: { isDirty },
+    watch,
   } = useFormContext();
+  const customFields = watch('customFields') as IFlatCustomField[];
   const [showLeaveModal, setShowLeaveModal] = useState(false);
 
   const closeModal = () => {
@@ -175,12 +182,18 @@ const FormBuilderTopBar = ({
           formType={builderConfig.type}
           phaseId={phaseId}
         />
+        <EditSchemaButtonWithModal
+          customFields={customFields}
+          projectId={projectId}
+          phase={phase.data}
+          onSaveSuccess={onFormSave}
+        />
         <ButtonWithLink
           buttonStyle="secondary-outlined"
           icon="eye"
           mr="20px"
           disabled={!project}
-          linkTo={viewFormLink}
+          {...viewFormLink}
           openLinkInNewTab
           data-cy="e2e-preview-form-button"
         >
@@ -189,15 +202,20 @@ const FormBuilderTopBar = ({
         <ButtonWithLink
           buttonStyle="admin-dark"
           processing={isSubmitting}
+          disabled={isSubmitting}
           type="submit"
         >
           <FormattedMessage {...messages.save} />
         </ButtonWithLink>
       </Box>
-      <Modal opened={showLeaveModal} close={closeModal}>
+      <Modal
+        opened={showLeaveModal}
+        close={closeModal}
+        ariaLabelledBy="leave-builder-modal-title"
+      >
         <Box display="flex" flexDirection="column" width="100%" p="20px">
           <Box mb="40px">
-            <Title variant="h3" color="primary">
+            <Title id="leave-builder-modal-title" variant="h3" color="primary">
               <FormattedMessage
                 {...messages.leaveBuilderConfirmationQuestion}
               />

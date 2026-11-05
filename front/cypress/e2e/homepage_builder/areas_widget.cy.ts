@@ -108,6 +108,8 @@ describe('"In your area" (areas) widget', () => {
     // Submit and publish project
     cy.get('.e2e-submit-wrapper-button button').click();
     cy.get('#e2e-publish').click();
+    cy.dataCy('e2e-mode-toggle-now').click();
+    cy.get('#e2e-schedule-launch-submit').click();
 
     toggleFollowArea();
 

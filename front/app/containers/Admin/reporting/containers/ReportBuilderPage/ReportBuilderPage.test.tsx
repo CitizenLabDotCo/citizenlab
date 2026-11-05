@@ -17,6 +17,7 @@ jest.mock('api/me/useAuthUser', () =>
           slug: 'user-1',
           locale: 'en',
           roles: [{ type: 'admin' }],
+          highest_role: 'admin',
         },
       },
     },
@@ -111,7 +112,6 @@ describe('<ReportBuilderPage />', () => {
       mockReports = [];
       render(<ReportBuilderPage />);
 
-      document.body.innerHTML;
       expect(screen.getByText('Create your first report')).toBeInTheDocument();
     });
 

@@ -1,6 +1,5 @@
 import { useCallback, useMemo } from 'react';
 
-import { useSearchParams } from 'react-router-dom';
 import { Multiloc, SupportedLocale } from 'typings';
 
 import { Country } from 'api/project_library_countries/types';
@@ -13,6 +12,7 @@ import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { keys } from 'utils/helperUtils';
 import { findSimilarLocale } from 'utils/i18n';
+import { useSearch } from 'utils/router';
 
 export const setRansackParam = <ParamName extends keyof RansackParams>(
   paramName: ParamName,
@@ -31,14 +31,14 @@ export const setRansackParam = <ParamName extends keyof RansackParams>(
 export const useRansackParam = <ParamName extends keyof RansackParams>(
   paramName: ParamName
 ): RansackParams[ParamName] => {
-  const [searchParams] = useSearchParams();
+  const searchParams = useSearch({
+    from: '/$locale/admin/inspiration-hub/',
+  });
 
-  const paramValue = searchParams.get(paramName);
+  const paramValue = (searchParams as Record<string, unknown>)[paramName];
 
   if (paramName.endsWith('in]')) {
-    return (
-      paramValue === null ? [] : JSON.parse(paramValue)
-    ) as RansackParams[typeof paramName];
+    return (paramValue ?? []) as RansackParams[typeof paramName];
   }
 
   return paramValue as RansackParams[typeof paramName];
@@ -56,18 +56,17 @@ const RANSACK_PARAMS: (keyof RansackParams)[] = [
 ];
 
 export const useRansackParams = () => {
-  const [searchParams] = useSearchParams();
+  const searchParams = useSearch({
+    from: '/$locale/admin/inspiration-hub/',
+  });
+  const indexed = searchParams as Record<string, unknown>;
   return useMemo(
     () =>
       RANSACK_PARAMS.reduce((acc, paramName) => {
-        let value = searchParams.get(paramName);
+        const value = indexed[paramName];
 
-        if (value === null) {
+        if (value === undefined) {
           return acc;
-        }
-
-        if (paramName.endsWith('in]')) {
-          value = JSON.parse(value);
         }
 
         return {
@@ -75,7 +74,7 @@ export const useRansackParams = () => {
           [paramName]: value as RansackParams[typeof paramName],
         };
       }, {} as RansackParams),
-    [searchParams]
+    [indexed]
   );
 };
 

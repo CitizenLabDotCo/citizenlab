@@ -40,7 +40,7 @@ export default defineMessages({
     id: 'app.components.PagesForm.saveSuccess',
     defaultMessage: 'Page successfully saved',
   },
-  navbarItemTitle: {
+  dropdownLabel: {
     id: 'app.components.PagesForm.navbarItemTitle',
     defaultMessage: 'Name in navbar',
   },

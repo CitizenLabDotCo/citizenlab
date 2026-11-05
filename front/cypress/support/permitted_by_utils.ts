@@ -1,0 +1,197 @@
+import moment = require('moment');
+import { randomString } from './commands';
+import { ParticipationMethod } from '../../app/api/phases/types';
+import {
+  IPhasePermissionAction,
+  IPermissionUpdate,
+} from '../../app/api/phase_permissions/types';
+
+const withAdminJwt = (
+  makeRequest: (adminJwt: string) => any,
+  adminJwt?: string
+) => {
+  if (adminJwt) return makeRequest(adminJwt);
+
+  return cy
+    .apiLogin('admin@govocal.com', 'democracy2.0')
+    .then((response: any) => {
+      const adminJwt = response.body.jwt;
+      return makeRequest(adminJwt);
+    });
+};
+
+export const setupProject = ({
+  participationMethod,
+}: {
+  participationMethod: ParticipationMethod;
+}) => {
+  let customFieldId: string;
+  let customFieldKey: string;
+  let projectId: string;
+  let projectSlug: string;
+  let phaseId: string;
+  const fieldName = randomString();
+
+  const twoDaysAgo = moment().subtract(2, 'days').format('DD/MM/YYYY');
+  const inTwoMonths = moment().add(2, 'month').format('DD/MM/YYYY');
+
+  // Create custom field
+  return cy
+    .apiCreateCustomField(fieldName, false)
+    .then((response) => {
+      customFieldId = response.body.data.id;
+      customFieldKey = response.body.data.attributes.key;
+
+      return cy.apiCreateProject({
+        title: randomString(),
+        descriptionPreview: randomString(),
+        publicationStatus: 'published',
+      });
+    })
+    .then((project) => {
+      projectId = project.body.data.id;
+      projectSlug = project.body.data.attributes.slug;
+
+      const extra =
+        participationMethod === 'ideation'
+          ? {
+              allow_anonymous_participation: true,
+              canComment: true,
+              canPost: true,
+              canReact: true,
+            }
+          : {
+              nativeSurveyButtonMultiloc: { en: 'bla' },
+              nativeSurveyTitleMultiloc: { en: 'bla' },
+            };
+
+      return cy.apiCreatePhase({
+        projectId,
+        title: randomString(),
+        startAt: twoDaysAgo,
+        endAt: inTwoMonths,
+        participationMethod,
+        description: 'Some description',
+        ...extra,
+      });
+    })
+    .then((phaseResponse) => {
+      phaseId = phaseResponse.body.data.id;
+      return {
+        customFieldId,
+        customFieldKey,
+        projectId,
+        projectSlug,
+        phaseId,
+        fieldName,
+      };
+    });
+};
+
+export const updatePermission = ({
+  adminJwt,
+  phaseId,
+  permission = 'posting_idea',
+  ...permissionBody
+}: {
+  adminJwt?: string;
+  phaseId: string;
+  user_fields_in_form?: boolean;
+  user_data_collection?: string;
+  permission?: IPhasePermissionAction;
+} & Partial<IPermissionUpdate>) => {
+  const makeRequest = (adminJwt: string) => {
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'PATCH',
+      url: `web_api/v1/phases/${phaseId}/permissions/${permission}`,
+      body: {
+        ...permissionBody,
+      },
+    });
+  };
+
+  // The action has no permission of its own until it is overridden.
+  return cy
+    .apiOverridePhasePermission({ phaseId, action: permission })
+    .then(() => withAdminJwt(makeRequest, adminJwt));
+};
+
+export const addPermissionsCustomField = ({
+  adminJwt,
+  phaseId,
+  customFieldId,
+  permission = 'posting_idea',
+}: {
+  adminJwt?: string;
+  phaseId: string;
+  customFieldId: string;
+  permission?: IPhasePermissionAction;
+}) => {
+  const makeRequest = (adminJwt: string) => {
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: `web_api/v1/phases/${phaseId}/permissions/${permission}/permissions_custom_fields`,
+      body: {
+        custom_field_id: customFieldId,
+        required: true,
+      },
+    });
+  };
+
+  // Nothing can be persisted against a permission that is still inherited.
+  return cy
+    .apiOverridePhasePermission({ phaseId, action: permission })
+    .then(() => withAdminJwt(makeRequest, adminJwt));
+};
+
+// A permission only accepts questions of its own once it has been switched to
+// asking custom ones.
+export const askOnlyDemographicQuestion = ({
+  adminJwt,
+  phaseId,
+  customFieldId,
+  permission = 'posting_idea',
+}: {
+  adminJwt?: string;
+  phaseId: string;
+  customFieldId: string;
+  permission?: IPhasePermissionAction;
+}) =>
+  updatePermission({
+    adminJwt,
+    phaseId,
+    permission,
+    custom_fields_behavior: 'custom',
+  }).then(() =>
+    addPermissionsCustomField({
+      adminJwt,
+      phaseId,
+      customFieldId,
+      permission,
+    })
+  );
+
+export const confirmUserCustomFieldHasValue = ({
+  key,
+  value,
+}: {
+  key: string;
+  value?: string;
+}) => {
+  cy.intercept('GET', `/web_api/v1/users/me`).as('getMe');
+  cy.visit('/');
+  cy.wait('@getMe').then((interception: any) => {
+    expect(interception.response?.statusCode).to.equal(200);
+    expect(
+      interception.response?.body.data.attributes.custom_field_values[key]
+    ).to.eq(value);
+  });
+};

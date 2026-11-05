@@ -1,0 +1,275 @@
+# frozen_string_literal: true
+
+require 'rails_helper'
+
+describe McpServer::Tools::UpdatePhasePermission do
+  let_it_be(:current_user) { create(:super_admin) }
+
+  let(:project) { create(:project, admin_publication_attributes: { publication_status: status }) }
+  let(:phase) { create(:phase, project: project, with_permissions: true) }
+  let(:permission) { phase.permissions.first }
+  let(:params) do
+    {
+      phase_id: phase.id,
+      action: permission.action,
+      permitted_by: 'admins_moderators'
+    }
+  end
+
+  def run(params)
+    run_mcp_tool(described_class, params:, current_user:)
+  end
+
+  context 'when the project is draft' do
+    let(:status) { 'draft' }
+
+    it 'updates the permission' do
+      response = nil
+      expect { response = run(params) }
+        .to change { permission.reload.permitted_by }.to('admins_moderators')
+
+      expect(response).not_to be_error
+    end
+
+    it 'returns the serialized permission' do
+      response = run(params)
+
+      expect(response.structured_content).to match(
+        action: permission.action,
+        inherited: false,
+        permitted_by: 'admins_moderators',
+        group_ids: [],
+        demographic_questions: [],
+        require_name: permission.require_name,
+        require_password: permission.require_password,
+        require_confirmed_email: permission.require_confirmed_email,
+        confirmed_email_expiry: permission.confirmed_email_expiry,
+        require_verification: permission.require_verification,
+        verification_expiry: nil,
+        confirmed_phone_number_expiry: permission.confirmed_phone_number_expiry,
+        require_confirmed_phone_number: permission.require_confirmed_phone_number,
+        access_denied_explanation_multiloc: permission.access_denied_explanation_multiloc
+      )
+    end
+
+    it 'sets and clears group restrictions' do
+      groups = create_list(:group, 2)
+
+      response = run(params.merge(permitted_by: 'users', group_ids: groups.map(&:id)))
+      expect(response).not_to be_error
+      expect(permission.reload.group_ids).to match_array(groups.map(&:id))
+
+      response = run(params.merge(permitted_by: 'users', group_ids: []))
+      expect(response).not_to be_error
+      expect(permission.reload.group_ids).to be_empty
+    end
+
+    it 'merges the access-denied explanation per locale' do
+      permission.update!(access_denied_explanation_multiloc: { 'en' => 'Old', 'fr-FR' => 'Ancien' })
+
+      run(params.merge(access_denied_explanation_multiloc: { 'en' => 'New' }))
+
+      expect(permission.reload.access_denied_explanation_multiloc).to eq('en' => 'New', 'fr-FR' => 'Ancien')
+    end
+
+    it 'removes the access-denied explanation when null' do
+      permission.update!(access_denied_explanation_multiloc: { 'en' => 'Old' })
+
+      response = run(params.merge(access_denied_explanation_multiloc: nil))
+
+      expect(response).not_to be_error
+      expect(permission.reload.access_denied_explanation_multiloc).to be_blank
+    end
+
+    it 'sets the verification expiry' do
+      # require_verification only reads back on a platform that has a verification method.
+      AppConfiguration.instance.settings['id_config'] =
+        { 'allowed' => true, 'enabled' => true, 'id_methods' => [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
+      AppConfiguration.instance.save!
+
+      response = run(params.merge(
+        permitted_by: 'users',
+        require_verification: true,
+        verification_expiry: 7
+      ))
+
+      expect(response).not_to be_error
+      expect(permission.reload.require_verification).to be(true)
+      expect(permission.verification_expiry).to eq(7)
+    end
+
+    it 'returns structured validation errors for an invalid update' do
+      commenting_permission = phase.permissions.find_by!(action: 'commenting_idea')
+      response = nil
+
+      expect { response = run(params.merge(action: 'commenting_idea', permitted_by: 'everyone')) }
+        .not_to change { commenting_permission.reload.permitted_by }
+
+      expect(response).to be_error
+
+      error = response.structured_content[:errors].sole
+      expect(error).to include(
+        attribute: 'permitted_by',
+        error: :everyone_not_allowed_for_action,
+        message: be_present
+      )
+    end
+
+    describe 'demographic_questions' do
+      # Admins and managers are never asked demographic questions, which would
+      # mask the behavior these examples are about.
+      let(:params) { super().merge(permitted_by: 'users') }
+      let!(:existing_field) { create(:custom_field) }
+
+      before do
+        permission.update!(custom_fields_behavior: 'custom')
+        permission.permissions_custom_fields.create!(custom_field: existing_field, required: true)
+      end
+
+      it 'leaves the existing configuration unchanged when omitted' do
+        response = run(params)
+
+        expect(response).not_to be_error
+        expect(permission.reload.custom_fields_behavior).to eq('custom')
+        expect(permission.permissions_custom_fields.pluck(:custom_field_id)).to eq([existing_field.id])
+      end
+
+      it 'resets to the platform defaults when null' do
+        response = run(params.merge(demographic_questions: nil))
+
+        expect(response).not_to be_error
+        expect(permission.reload.custom_fields_behavior).to eq('global')
+        expect(permission.permissions_custom_fields).to be_empty
+      end
+
+      it 'asks no questions when empty' do
+        response = run(params.merge(demographic_questions: []))
+
+        expect(response).not_to be_error
+        expect(permission.reload.custom_fields_behavior).to eq('disabled')
+        expect(permission.permissions_custom_fields).to be_empty
+      end
+
+      it 'replaces the rows in array order' do
+        field_a, field_b = create_list(:custom_field, 2)
+        demographic_questions = [
+          { custom_field_id: field_b.id, required: false },
+          { custom_field_id: field_a.id }
+        ]
+
+        response = run(params.merge(demographic_questions:))
+
+        expect(response).not_to be_error
+
+        rows = permission.reload.permissions_custom_fields.order(:ordering)
+        expect(rows).to match([
+          have_attributes(custom_field_id: field_b.id, required: false),
+          have_attributes(custom_field_id: field_a.id, required: true)
+        ])
+      end
+
+      it 'rolls back the whole update when a custom field is unknown' do
+        demographic_questions = [{ custom_field_id: SecureRandom.uuid }]
+
+        response = nil
+        expect { response = run(params.merge(demographic_questions:)) }
+          .not_to change { permission.reload.permitted_by }
+
+        expect(response).to be_error
+        expect(permission.permissions_custom_fields.pluck(:custom_field_id)).to eq([existing_field.id])
+      end
+    end
+
+    # A phase action has no permission row of its own until it is overridden;
+    # until then it follows the global 'visiting' permission.
+    # See Permissions::PermissionInheritanceService.
+    context 'when the phase has not customised the action' do
+      let(:phase) { create(:phase, project: project) }
+      let(:params) do
+        {
+          phase_id: phase.id,
+          action: 'commenting_idea',
+          permitted_by: 'admins_moderators'
+        }
+      end
+
+      let!(:visiting_permission) do
+        create(
+          :global_permission,
+          action: 'visiting',
+          permitted_by: 'users',
+          require_name: false,
+          require_password: false
+        )
+      end
+
+      before { Permissions::PermissionInheritanceService.clear_source_permission_cache }
+
+      it 'overrides the action and applies the update' do
+        response = nil
+        expect { response = run(params) }
+          .to change { phase.permissions.pluck(:action) }.from([]).to(%w[commenting_idea])
+
+        expect(response).not_to be_error
+        expect(phase.permissions.sole.permitted_by).to eq 'admins_moderators'
+      end
+
+      it 'starts from the settings the action was inheriting' do
+        response = run(params.merge(permitted_by: 'users'))
+
+        expect(response).not_to be_error
+        expect(response.structured_content).to include(
+          inherited: false, # It is customised for this phase from now on
+          permitted_by: 'users',
+          require_name: false,
+          require_password: false
+        )
+      end
+
+      it 'leaves no override behind when the update is rejected' do
+        demographic_questions = [{ custom_field_id: SecureRandom.uuid }]
+
+        response = nil
+        expect { response = run(params.merge(permitted_by: 'users', demographic_questions:)) }
+          .not_to change { phase.permissions.count }.from(0)
+
+        expect(response).to be_error
+      end
+    end
+
+    context 'with an invalid action' do
+      let(:params) do
+        {
+          phase_id: phase.id,
+          action: 'nonexistent_action',
+          permitted_by: 'admins_moderators'
+        }
+      end
+
+      it 'returns the invalid-action error' do
+        response = run(params)
+
+        expect(response).to be_error
+        expect(response.content.sole[:text]).to include('does not apply to this phase')
+      end
+    end
+  end
+
+  context 'when the project is published' do
+    let(:status) { 'published' }
+
+    it 'returns an isError response and does not update the permission' do
+      response = nil
+      expect { response = run(params) }
+        .not_to change { permission.reload.permitted_by }
+
+      expect(response).to be_unauthorized_project
+    end
+  end
+
+  it 'returns a not-found error when the phase is missing' do
+    response = run(phase_id: SecureRandom.uuid, action: 'commenting_idea', permitted_by: 'users')
+
+    expect(response).to be_not_found('Phase')
+  end
+end

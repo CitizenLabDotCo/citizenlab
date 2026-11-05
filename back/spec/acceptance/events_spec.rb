@@ -18,6 +18,9 @@ resource 'Events' do
   get 'web_api/v1/events' do
     parameter :project_ids, 'The ids of the project to filter events by', type: :array
     parameter :static_page_id, 'The id of the static page that shows events linked by projects', type: :string
+    parameter :areas, 'The ids of the areas whose projects to filter events by', type: :array
+    parameter :global_topics, 'The ids of the global topics whose projects to filter events by', type: :array
+    parameter :spaces, 'The ids of the spaces whose projects to filter events by', type: :array
     parameter :start_at_lt, 'Filter by maximum start at', type: :string
     parameter :start_at_gteq, 'Filter by minimum start at', type: :string
     parameter :project_publication_statuses, 'The publication statuses of the project to filter events by', type: :array
@@ -44,15 +47,26 @@ resource 'Events' do
     end
 
     context 'passing static page id' do
-      let(:static_page_id) { create(:static_page, projects_filter_type: 'topics', topics: [topic]).id }
+      let(:topic) { create(:global_topic) }
+      let(:static_page_id) { create(:static_page, projects_filter_type: 'topics', global_topics: [topic]).id }
 
-      let(:topic) { create(:topic) }
-
-      before { @project.update!(topics: [topic]) }
+      before { @project.update!(global_topics: [topic]) }
 
       example_request 'List all events of a page' do
         assert_status 200
         expect(response_data.size).to eq 2
+        expect(response_ids).to match_array(@project.events.pluck(:id))
+      end
+    end
+
+    context 'passing areas' do
+      let(:area) { create(:area) }
+      let(:areas) { [area.id] }
+
+      before { @project.update!(areas: [area]) }
+
+      example_request 'List all events of projects in an area' do
+        assert_status 200
         expect(response_ids).to match_array(@project.events.pluck(:id))
       end
     end
@@ -82,12 +96,12 @@ resource 'Events' do
 
       example 'List events that overlap with the given range' do
         do_request(ongoing_during: '[2020-12-31T00:00:00Z,2020-12-31T23:59:59Z]')
-        expect(response_ids).to match_array [event1.id]
+        expect(response_ids).to contain_exactly(event1.id)
       end
 
       example 'List events that overlap with the given range (right open-ended)', document: false do
         do_request(ongoing_during: '[2020-12-31,null]')
-        expect(response_ids).to match_array [event1.id, event2.id]
+        expect(response_ids).to contain_exactly(event1.id, event2.id)
       end
 
       example 'List events that overlap with the given range (left open-ended)', document: false do
@@ -98,6 +112,28 @@ resource 'Events' do
       example 'List events that overlap with the given range (both open-ended)', document: false do
         do_request(ongoing_during: '[null,null]')
         expect(response_data.size).to eq(Event.count)
+      end
+    end
+
+    context 'with malformed parameters' do
+      example 'returns 400 for an unsupported sort parameter', document: false do
+        do_request(sort: "start_at; WAITFOR DELAY '00:00:07'")
+        assert_status 400
+      end
+
+      example 'returns 400 for an unparseable ends_before_date', document: false do
+        do_request(ends_before_date: 'not-a-real-date')
+        assert_status 400
+      end
+
+      example 'returns 400 for an oversized ongoing_during value', document: false do
+        do_request(ongoing_during: "[#{'9' * 180},null]")
+        assert_status 400
+      end
+
+      example 'ignores a malformed nested page parameter instead of erroring', document: false do
+        do_request(page: { number: { injected: '1' } })
+        assert_status 200
       end
     end
 
@@ -124,6 +160,97 @@ resource 'Events' do
         end.compact
 
         expect(actual_attendance_ids).to eq expected_attendance_ids
+      end
+    end
+
+    context 'when there are unlisted projects' do
+      before do
+        @unlisted_project = create(:project, listed: false)
+        @unlisted_events = create_list(:event, 2, project: @unlisted_project)
+      end
+
+      example_request 'Does not list unlisted projects if not filtering by project ID' do
+        assert_status 200
+        expect(response_data.size).to eq 4
+        expected_ids = @events.pluck(:id) + @other_events.pluck(:id)
+        expect(response_ids.sort).to match_array(expected_ids.sort)
+      end
+
+      example_request 'Does list unlisted project if included in project IDs' do
+        do_request(project_ids: [@project.id, @unlisted_project.id])
+        assert_status 200
+        expect(response_data.size).to eq 4
+        expected_ids = @events.pluck(:id) + @unlisted_events.pluck(:id)
+        expect(response_ids.sort).to match_array(expected_ids.sort)
+      end
+
+      context 'when moderator' do
+        before do
+          @unlisted_project2 = create(:project, listed: false)
+          @unlisted_events2 = create_list(:event, 2, project: @unlisted_project2)
+
+          @user = create(:user, roles: [{ type: 'project_moderator', project_id: @unlisted_project2.id }])
+          header_token_for @user
+        end
+
+        example_request 'Does not list unlisted projects if not filtering by project ID' do
+          assert_status 200
+          expect(response_data.size).to eq 4
+          expected_ids = @events.pluck(:id) + @other_events.pluck(:id)
+          expect(response_ids.sort).to match_array(expected_ids.sort)
+        end
+
+        example 'Does list unlisted project the user can moderate if show_unlisted_events_user_can_moderate' do
+          do_request(
+            show_unlisted_events_user_can_moderate: true
+          )
+          assert_status 200
+          expect(response_data.size).to eq 6
+          expected_ids = @events.pluck(:id) + @other_events.pluck(:id) + @unlisted_events2.pluck(:id)
+          expect(response_ids.sort).to match_array(expected_ids.sort)
+        end
+
+        example_request 'Does list unlisted project if included in project IDs' do
+          do_request(project_ids: [@project.id, @unlisted_project.id])
+          assert_status 200
+          expect(response_data.size).to eq 4
+          expected_ids = @events.pluck(:id) + @unlisted_events.pluck(:id)
+          expect(response_ids.sort).to match_array(expected_ids.sort)
+        end
+      end
+
+      context 'when filtering by attendee ID' do
+        before do
+          @attendee = create(:user)
+          [@events.first, @unlisted_events.first].each { |event| event.attendees << @attendee }
+          header_token_for @attendee
+        end
+
+        example 'Does list unlisted project the attendee is registered to' do
+          do_request(attendee_id: @attendee.id)
+          assert_status 200
+          expected_ids = [@events.first.id, @unlisted_events.first.id]
+          expect(response_ids.sort).to match_array(expected_ids.sort)
+        end
+      end
+    end
+
+    context 'when the event has an image' do
+      before do
+        @event_with_image = create(:event, project: @project)
+        @event_image = create(:event_image, event: @event_with_image)
+      end
+
+      example_request 'Includes event images' do
+        assert_status 200
+        event_data = response_data.find { |e| e[:id] == @event_with_image.id }
+        relationships = event_data.dig(:relationships, :event_images, :data)
+        expect(relationships).to eq([
+          { type: 'image', id: @event_image.id }
+        ])
+
+        image = json_response_body[:included].find { |inc| inc[:id] == relationships.first[:id] }
+        expect(image[:type]).to eq 'image'
       end
     end
 
@@ -178,7 +305,7 @@ resource 'Events' do
 
       example 'Get xlsx of attendees of an event successfully translates column headers', document: false do
         fixtures = YAML.load_file(Rails.root.join('spec/fixtures/locales/fr-FR.yml'))
-        french_column_headers = fixtures['fr']['xlsx_export']['column_headers']
+        french_column_headers = fixtures['fr-FR']['xlsx_export']['column_headers']
         @admin.update!(locale: 'fr-FR')
 
         do_request
@@ -187,12 +314,7 @@ resource 'Events' do
         workbook = RubyXL::Parser.parse_buffer(response_body)
         header_row = workbook.worksheets[0][0].cells.map(&:value)
 
-        expect(header_row).to match_array([
-          french_column_headers['first_name'],
-          french_column_headers['last_name'],
-          french_column_headers['email'],
-          french_column_headers['registration_completed_at']
-        ])
+        expect(header_row).to contain_exactly(french_column_headers['first_name'], french_column_headers['last_name'], french_column_headers['email'], french_column_headers['registration_completed_at'])
       end
     end
 
@@ -217,7 +339,9 @@ resource 'Events' do
   end
 
   get 'web_api/v1/events/:id' do
-    let(:event) { @events.first }
+    # Reload: counter_culture updates the in-memory attendees_count of the shared
+    # before_all records, which other examples' attendances would otherwise leak into.
+    let(:event) { @events.first.reload }
     let(:id) { event.id }
 
     example_request 'Get one event by id' do
@@ -340,6 +464,19 @@ resource 'Events' do
         end
       end
 
+      context 'when event description contains images' do
+        let(:project_id) { @project.id }
+        let(:title_multiloc) { event.title_multiloc }
+        let(:description_multiloc) { { 'en' => html_with_base64_image } }
+        let(:start_at) { event.start_at }
+        let(:end_at) { event.end_at }
+        let(:online_link) { event.online_link }
+
+        it_behaves_like 'creates record with text images',
+          model_class: Event,
+          field: :description_multiloc
+      end
+
       example 'Create an event with a location using location_multiloc parameter', document: false do
         address_1 = 'event-location'
 
@@ -447,6 +584,14 @@ resource 'Events' do
         expect(attributes[:address_2_multiloc]).to eq(address_2_multiloc)
       end
 
+      context 'when description_multiloc contains images' do
+        let(:description_multiloc) { { 'en' => html_with_base64_image } }
+
+        it_behaves_like 'updates record with text images',
+          model_class: Event,
+          field: :description_multiloc
+      end
+
       example 'Update event location using location_multiloc parameter', document: false do
         address_1 = 'event-location'
         location_multiloc = { en: address_1 }
@@ -504,11 +649,14 @@ resource 'Events' do
   get 'web_api/v1/users/:user_id/events' do
     route_summary 'List all events to which a user is registered'
 
+    let_it_be(:unlisted_project) { create(:project, listed: false) }
+    let_it_be(:unlisted_event) { create(:event, project: unlisted_project) }
+    let_it_be(:unattended_unlisted_event) { create(:event, project: unlisted_project) }
     let_it_be(:user) { create(:user) }
     let_it_be(:user_id) { user.id }
 
     let_it_be(:user_events) do
-      [@events.first, @other_events.first].tap do |events|
+      [@events.first, @other_events.first, unlisted_event].tap do |events|
         events.each { |event| event.attendees << user }
       end
     end
@@ -536,6 +684,18 @@ resource 'Events' do
       before { header_token_for(user) }
 
       include_examples 'authorized'
+    end
+
+    context 'when moderator' do
+      before do
+        moderator = create(:user, roles: [{ type: 'project_moderator', project_id: unlisted_project.id }])
+        header_token_for moderator
+      end
+
+      example_request 'Lists only the events of the projects the moderator moderates' do
+        assert_status 200
+        expect(response_ids).to contain_exactly(unlisted_event.id)
+      end
     end
 
     context "when 'user_id' does not correspond to the current user" do

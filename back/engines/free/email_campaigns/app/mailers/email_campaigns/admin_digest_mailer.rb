@@ -29,7 +29,6 @@ module EmailCampaigns
           top_project_inputs: [
             {
               project: { url: data.project.url, title_multiloc: data.project.title_multiloc },
-              current_phase: nil,
               top_ideas: [
                 {
                   id: '1234',

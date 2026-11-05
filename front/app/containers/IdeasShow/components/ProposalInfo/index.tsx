@@ -48,7 +48,10 @@ const ProposalInfo = ({ idea, compact }: Props) => {
 
   // All the codes checked for here are ProposalsStatusCode types (see front/app/api/idea_statuses/types.ts)
   const showCountDown =
-    code === 'proposed' || code === 'expired' || code === 'custom';
+    code === 'proposed' ||
+    code === 'threshold_reached' ||
+    code === 'expired' ||
+    code === 'custom';
   const showProgressBar =
     code === 'proposed' ||
     code === 'threshold_reached' ||
@@ -56,6 +59,16 @@ const ProposalInfo = ({ idea, compact }: Props) => {
     code === 'ineligible' ||
     code === 'answered';
   const showVoteButtons = showProposalsReactions(idea.data);
+  const expiresAt = idea.data.attributes.expires_at;
+  const hasTimeRemaining = expiresAt ? new Date(expiresAt) > new Date() : false;
+
+  const renderDescription = () => {
+    if (code === 'threshold_reached') {
+      if (!hasTimeRemaining) return null;
+      return <FormattedMessage {...messages.thresholdReachedStillOpen} />;
+    }
+    return <T value={ideaStatus.data.attributes.description_multiloc} />;
+  };
 
   return (
     <Box
@@ -68,9 +81,7 @@ const ProposalInfo = ({ idea, compact }: Props) => {
           <ScreenReaderOnly>
             <FormattedMessage {...messages.a11y_timeLeft} />
           </ScreenReaderOnly>
-          {idea.data.attributes.expires_at && (
-            <CountDown targetTime={idea.data.attributes.expires_at} />
-          )}
+          {expiresAt && <CountDown targetTime={expiresAt} />}
         </Box>
       )}
       <Box display="flex" alignItems="center">
@@ -86,9 +97,7 @@ const ProposalInfo = ({ idea, compact }: Props) => {
         </StatusHeading>
       </Box>
       <Box mb="24px" aria-live="polite">
-        <Text m="0">
-          <T value={ideaStatus.data.attributes.description_multiloc} />
-        </Text>
+        <Text m="0">{renderDescription()}</Text>
       </Box>
       {showProgressBar && (
         <Box mb="24px">

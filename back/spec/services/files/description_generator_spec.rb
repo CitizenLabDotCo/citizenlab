@@ -63,8 +63,13 @@ RSpec.describe Files::DescriptionGenerator do
     end
 
     # UnsupportedAttachmentError is raised when a file is detected as an unsupported type
-    # before the request is sent to the LLM.
+    # before the request is sent to the LLM. We bypass the upload allowlist for this
+    # test so an .exe can be persisted; the point is to exercise RubyLLM's own
+    # type-rejection, not the uploader's.
     it 'raises RubyLLM::UnsupportedAttachmentError for unsupported file' do
+      allow_any_instance_of(Files::FileUploader).to receive(:extension_allowlist).and_return(nil)
+      allow_any_instance_of(Files::FileUploader).to receive(:content_type_allowlist).and_return(nil)
+
       file = create_ai_file(name: 'keylogger.exe')
 
       expect { service.generate_descriptions!(file) }
@@ -88,7 +93,7 @@ RSpec.describe Files::DescriptionGenerator do
           file = create_ai_file(name: 'david.docx')
 
           expect { service.generate_descriptions!(file) }
-            .to raise_error(Files::DescriptionGenerator::PreviewPendingError)
+            .to raise_error(Files::LLMFilePreprocessor::PreviewPendingError)
         end
       end
 
@@ -97,7 +102,7 @@ RSpec.describe Files::DescriptionGenerator do
           file = create_ai_file(name: 'david.docx')
           file.create_preview!(status: 'failed', content: nil)
 
-          expect(service) # rubocop:disable RSpec/SubjectStub
+          expect_any_instance_of(Files::LLMFilePreprocessor)
             .to receive(:docx_to_html)
             .with(satisfy { |f| f.id == file.id })
             .and_call_original
@@ -106,8 +111,17 @@ RSpec.describe Files::DescriptionGenerator do
           expect(file.description_multiloc).to be_present
         end
 
+        # When the preview failed and the file is not a docx, we fall back to sending the
+        # raw file to the LLM. Most previewable office formats (xls, xlsx, pptx, ods, ...)
+        # are now sent as documents and accepted by the LLM, so to exercise the rejection
+        # path we use a genuinely unsupported (but still previewable) type: a Visio file.
+        # As in the .exe test above, we bypass the upload allowlist so it can be persisted;
+        # the point is to exercise RubyLLM's type-rejection, not the uploader's.
         it 'raises RubyLLM::UnsupportedAttachmentError for non-docx file' do
-          file = create_ai_file(name: 'david.xlsx')
+          allow_any_instance_of(Files::FileUploader).to receive(:extension_allowlist).and_return(nil)
+          allow_any_instance_of(Files::FileUploader).to receive(:content_type_allowlist).and_return(nil)
+
+          file = create_ai_file(name: 'david.vsd')
           file.create_preview!(status: 'failed', content: nil)
 
           expect { service.generate_descriptions!(file) }
@@ -122,7 +136,7 @@ RSpec.describe Files::DescriptionGenerator do
           file = create_ai_file(name: 'header.jpg')
           allow(file).to receive(:size).and_return(1.megabyte) # Simulate a small image
 
-          expect(service).not_to receive(:resize_image) # rubocop:disable RSpec/SubjectStub
+          expect_any_instance_of(Files::LLMFilePreprocessor).not_to receive(:resize_image)
           service.generate_descriptions!(file)
           expect(file.description_multiloc).to be_present
         end
@@ -133,7 +147,7 @@ RSpec.describe Files::DescriptionGenerator do
           file = create_ai_file(name: 'header.jpg')
           allow(file).to receive(:size).and_return(15.megabytes) # Simulate a large image
 
-          expect(service) # rubocop:disable RSpec/SubjectStub
+          expect_any_instance_of(Files::LLMFilePreprocessor)
             .to receive(:resize_image)
             .with(satisfy { |f| f.id == file.id })
             .and_call_original
@@ -150,7 +164,7 @@ RSpec.describe Files::DescriptionGenerator do
           allow(file).to receive(:size).and_return(60.megabytes) # Simulate an oversized image
 
           expect { service.generate_descriptions!(file) }
-            .to raise_error(Files::DescriptionGenerator::ImageSizeLimitExceededError)
+            .to raise_error(Files::LLMFilePreprocessor::ImageSizeLimitExceededError)
         end
       end
     end

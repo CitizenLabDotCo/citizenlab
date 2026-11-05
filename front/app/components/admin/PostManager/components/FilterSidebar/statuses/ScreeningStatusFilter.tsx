@@ -2,13 +2,9 @@ import React from 'react';
 
 import { IconTooltip, Box, Tooltip } from '@citizenlab/cl2-component-library';
 import ColorIndicator from 'component-library/components/ColorIndicator';
-import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
-import usePhase from 'api/phases/usePhase';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { ManagerType } from 'components/admin/PostManager';
 import T from 'components/T';
@@ -18,6 +14,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../../messages';
 
 import StatusButton from './StatusButton';
+import usePrescreeningStatusFilter from './usePrescreeningStatusFilter';
 
 const StatusText = styled.div`
   &:first-letter {
@@ -33,46 +30,11 @@ interface Props {
 }
 
 const ScreeningStatusFilter = ({ status, active, onClick, type }: Props) => {
-  const { phaseId } = useParams();
-  const { data: phase } = usePhase(phaseId);
-  const prescreeningIdeationAllowed = useFeatureFlag({
-    name: 'prescreening_ideation',
-    onlyCheckAllowed: true,
-  });
-  const prescreeningProposalsAllowed = useFeatureFlag({
-    name: 'prescreening',
-    onlyCheckAllowed: true,
-  });
-  const prescreeningIdeationFeatureEnabled = useFeatureFlag({
-    name: 'prescreening_ideation',
-  });
-  const prescreeningProposalsFeatureEnabled = useFeatureFlag({
-    name: 'prescreening',
-  });
-
-  // Both ideation and proposal phases use the same setting.
-  const phaseSettingEnabled =
-    phase?.data.attributes.prescreening_enabled === true;
-  const statusFilterIsEnabled =
-    // We only show ideation inputs in the general input manager, so we don't need to check
-    // for the proposals screening feature being allowed here.
-    (prescreeningIdeationFeatureEnabled &&
-      (type === 'AllIdeas' ||
-        (type === 'ProjectIdeas' && phaseSettingEnabled))) ||
-    (prescreeningProposalsFeatureEnabled &&
-      type === 'ProjectProposals' &&
-      phaseSettingEnabled);
-  const showPhaseSettingIsDisabledTooltip =
-    ((prescreeningIdeationFeatureEnabled && type === 'ProjectIdeas') ||
-      (prescreeningProposalsFeatureEnabled && type === 'ProjectProposals')) &&
-    !phaseSettingEnabled;
-
-  const showPrescreeningUpsellTooltip =
-    // We only show ideation inputs in the general input manager, so we don't need to check
-    // for the proposals screening feature being allowed here.
-    (!prescreeningIdeationAllowed &&
-      (type === 'AllIdeas' || type === 'ProjectIdeas')) ||
-    (!prescreeningProposalsAllowed && type === 'ProjectProposals');
+  const {
+    isEnabled: statusFilterIsEnabled,
+    showPhaseSettingIsDisabledTooltip,
+    showPrescreeningUpsellTooltip,
+  } = usePrescreeningStatusFilter(type);
   const tooltipEnabled =
     showPhaseSettingIsDisabledTooltip || showPrescreeningUpsellTooltip;
 

@@ -1,8 +1,9 @@
 import { ResultGrouped } from 'api/survey_results/types';
 
+import { EMPTY_COLOR } from '../legendColors';
 import { DEFAULT_CATEGORICAL_COLORS } from '../styling';
 
-import { parseQuestionResult, EMPTY_COLOR } from './utils';
+import { parseQuestionResult } from './utils';
 
 describe('parseQuestionResult', () => {
   it('works', () => {

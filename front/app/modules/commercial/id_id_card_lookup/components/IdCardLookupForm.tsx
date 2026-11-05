@@ -8,7 +8,7 @@ import { WrappedComponentProps } from 'react-intl';
 import meKeys from 'api/me/keys';
 import useAuthUser from 'api/me/useAuthUser';
 import usersKeys from 'api/users/keys';
-import { IDLookupMethod } from 'api/verification_methods/types';
+import { IDLookupMethod } from 'api/id_methods/types';
 
 import {
   FormContainer,
@@ -20,8 +20,7 @@ import {
   SubmitButton,
   CancelButton,
   HelpImage,
-} from 'containers/Authentication/steps/AuthProviders/styles';
-
+} from 'components/AuthProviderStyles/styles';
 import Collapse from 'components/UI/Collapse';
 import Error from 'components/UI/Error';
 
@@ -74,9 +73,9 @@ const VerificationFormLookup = memo<Props & WrappedComponentProps>(
             await verifyIDLookup(cardId);
 
             if (!isNilOrError(authUser)) {
-              queryClient.invalidateQueries(
-                usersKeys.item({ id: authUser.data.id })
-              );
+              queryClient.invalidateQueries({
+                queryKey: usersKeys.item({ id: authUser.data.id }),
+              });
             }
 
             queryClient.invalidateQueries({ queryKey: meKeys.all() });

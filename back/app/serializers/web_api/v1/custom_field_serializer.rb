@@ -2,16 +2,10 @@
 
 class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
   attributes :key, :input_type, :title_multiloc, :required, :ordering,
-    :enabled, :code, :created_at, :updated_at, :logic, :random_option_ordering, :include_in_printed_form
+    :enabled, :code, :created_at, :updated_at, :logic, :random_option_ordering, :include_in_printed_form, :answers_visible_to, :show_as_filter
 
   attribute :description_multiloc do |field|
     TextImageService.new.render_data_images_multiloc field.description_multiloc, field: :description_multiloc, imageable: field
-  end
-
-  attribute :visible_to_public, if: proc { |_field, params|
-    params[:supports_answer_visible_to]
-  } do |field|
-    field.visible_to_public?
   end
 
   attribute :hidden, if: proc { |object, _params|
@@ -19,7 +13,7 @@ class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
   }
 
   attribute :page_layout, if: proc { |object, _params|
-    object.input_type == 'page'
+    object.page?
   }
 
   attribute :page_button_link, if: proc { |object, _params|
@@ -31,11 +25,11 @@ class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
   }
 
   attribute :dropdown_layout, if: proc { |object, _params|
-    object.dropdown_layout_type?
+    object.supports_dropdown_layout?
   }
 
   attribute :ask_follow_up, if: proc { |object, _params|
-    object.input_type == 'sentiment_linear_scale'
+    object.supports_follow_up?
   }
 
   attribute :constraints do |object, params|
@@ -68,11 +62,11 @@ class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
     if: proc { |object, _params| object.supports_linear_scale_labels? }
 
   attributes :select_count_enabled, :maximum_select_count, :minimum_select_count, if: proc { |object, _params|
-    object.multiselect?
+    object.supports_select_count?
   }
 
   attributes :min_characters, :max_characters, if: proc { |object, _params|
-    object.support_text?
+    object.supports_text?
   }
 
   has_many :options, record_type: :custom_field_option, serializer: ::WebApi::V1::CustomFieldOptionSerializer

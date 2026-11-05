@@ -44,6 +44,7 @@ resource 'Campaigns' do
       end
       parameter :without_campaign_names, "An array of campaign names that should not be returned. Possible values are #{EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES.map(&:campaign_name).join(', ')}", required: false
       parameter :manual, 'Filter manual campaigns - only manual if true, only automatic if false', required: false, type: 'boolean'
+      parameter :channel, "Filter campaigns by delivery channel ('email' or 'sms')", required: false
 
       example_request 'List all campaigns' do
         assert_status 200
@@ -55,6 +56,24 @@ resource 'Campaigns' do
         do_request(without_campaign_names: %w[manual])
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 2
+      end
+
+      context 'with the sms feature enabled' do
+        include_context 'with sms manual campaigns feature enabled'
+
+        example 'List only campaigns of a given channel' do
+          sms_campaign = create(:sms_manual_campaign)
+          do_request(channel: 'sms')
+          json_response = json_parse(response_body)
+          expect(json_response[:data].map { |c| c[:id] }).to contain_exactly(sms_campaign.id)
+        end
+      end
+
+      example 'Does not list campaigns whose feature is deactivated' do
+        create(:sms_manual_campaign) # the sms feature is off here
+        do_request(channel: 'sms')
+        json_response = json_parse(response_body)
+        expect(json_response[:data]).to be_empty
       end
 
       example 'List all manual campaigns' do
@@ -73,7 +92,7 @@ resource 'Campaigns' do
         end
 
         do_request(manual: false)
-        expect(response_data.size).to eq 48
+        expect(response_data.size).to eq 56
       end
 
       example 'List all manual campaigns when one has been sent' do
@@ -192,6 +211,23 @@ resource 'Campaigns' do
         expect(json_response[:data][:attributes][:delivery_stats]).to be_nil
       end
 
+      example 'Get a campaign includes its groups', document: false do
+        groups = create_list(:group, 2)
+        campaign.update!(groups: groups)
+        do_request
+        assert_status 200
+        expect(response_data.dig(:relationships, :groups, :data).pluck(:id)).to match_array groups.map(&:id)
+        expect(json_response_body[:included].select { |i| i[:type] == 'group' }.pluck(:id)).to match_array groups.map(&:id)
+      end
+
+      example 'Get a scheduled campaign includes scheduled_at', document: false do
+        campaign.scheduled_at = 2.hours.from_now
+        campaign.save!
+        do_request
+        assert_status 200
+        expect(response_data.dig(:attributes, :scheduled_at)).to be_present
+      end
+
       example 'Get a manual campaign that has been sent' do
         create_list(:delivery, 5, campaign: campaign)
         do_request
@@ -210,7 +246,7 @@ resource 'Campaigns' do
       end
     end
 
-    get '/web_api/v1/campaigns/:id/preview' do
+    get '/web_api/v1/campaigns/:id/email_preview' do
       let(:campaign) { create(:manual_campaign) }
       let(:id) { campaign.id }
 
@@ -218,6 +254,35 @@ resource 'Campaigns' do
         assert_status 200
         expect(response_data.dig(:attributes, :html)).to be_present
         expect(response_data.dig(:attributes, :subject)).to be_present
+      end
+
+      context 'with a locale' do
+        parameter :locale, 'Render the preview in this platform locale instead of the current user\'s locale', required: false
+
+        let(:campaign) { create(:manual_campaign, subject_multiloc: { 'en' => 'English subject', 'nl-NL' => 'Dutch subject' }) }
+
+        example 'Get a campaign HTML preview in another locale' do
+          do_request(locale: 'nl-NL')
+          assert_status 200
+          expect(response_data.dig(:attributes, :subject)).to eq 'Dutch subject'
+          expect(@user.reload.locale).to eq 'en'
+        end
+
+        example 'Ignores a locale that is not configured on the platform', document: false do
+          do_request(locale: 'xx-XX')
+          assert_status 200
+          expect(response_data.dig(:attributes, :subject)).to eq 'English subject'
+        end
+
+        context 'for an automated campaign' do
+          let(:campaign) { create(:invite_received_campaign, subject_multiloc: { 'en' => 'English invite', 'nl-NL' => 'Dutch invite' }) }
+
+          example 'Get an automated campaign HTML preview in another locale', document: false do
+            do_request(locale: 'nl-NL')
+            assert_status 200
+            expect(response_data.dig(:attributes, :subject)).to eq 'Dutch invite'
+          end
+        end
       end
     end
 
@@ -247,6 +312,36 @@ resource 'Campaigns' do
           expect(json_response.dig(:data, :attributes, :reply_to)).to match reply_to
           expect(json_response.dig(:data, :relationships, :author, :data, :id)).to eq @user.id
           expect(json_response.dig(:data, :relationships, :groups, :data).pluck(:id)).to eq group_ids
+        end
+
+        context 'when body contains images' do
+          let(:body_multiloc) { { 'en' => html_with_base64_image } }
+
+          it_behaves_like 'creates record with text images',
+            model_class: EmailCampaigns::Campaign,
+            field: :body_multiloc
+        end
+      end
+
+      context 'SMS campaigns' do
+        with_options scope: :campaign do
+          parameter :subject_multiloc, 'An admin-facing label for the SMS campaign (reuses the subject column; SMS has no subject line)', required: true
+        end
+
+        include_context 'with sms manual campaigns feature enabled'
+
+        let(:campaign_name) { 'sms_manual' }
+        let(:subject_multiloc) { { 'en' => 'Town hall reminder' } }
+        let(:body_multiloc) { { 'en' => 'A short SMS update from your city.' } }
+
+        example_request 'Create an SMS campaign' do
+          expect(response_status).to eq 201
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :attributes, :channel)).to eq 'sms'
+          expect(json_response.dig(:data, :attributes, :subject_multiloc).stringify_keys).to match subject_multiloc
+          expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to match body_multiloc
+          expect(json_response.dig(:data, :attributes, :title_multiloc)).to be_nil
+          expect(json_response.dig(:data, :attributes, :sender)).to be_nil
         end
       end
     end
@@ -345,6 +440,7 @@ resource 'Campaigns' do
       context 'manual campaigns' do
         with_options scope: :campaign do
           parameter :group_ids, 'Array of group ids to whom the email should be sent', required: false
+          parameter :scheduled_at, 'The datetime at which the campaign should be sent (ISO 8601)', required: false
         end
 
         let(:campaign) { create(:manual_campaign) }
@@ -362,6 +458,42 @@ resource 'Campaigns' do
           expect(json_response.dig(:data, :attributes, :reply_to)).to match reply_to
           expect(json_response.dig(:data, :relationships, :author, :data, :id)).to eq campaign.author_id
           expect(json_response.dig(:data, :relationships, :groups, :data).pluck(:id)).to eq group_ids
+        end
+
+        example 'Schedule a campaign for future sending', document: false do
+          scheduled_time = 2.hours.from_now.iso8601
+
+          expect { do_request(campaign: { scheduled_at: scheduled_time }) }
+            .to enqueue_job(EmailCampaigns::SendScheduledCampaignJob)
+
+          assert_status 200
+          expect(response_data.dig(:attributes, :scheduled_at)).to be_present
+        end
+
+        # Stale scheduled jobs are handled by SendScheduledCampaignJob
+        # which checks campaign.scheduled_at == expected_time before executing.
+        example 'Unschedule a campaign by setting scheduled_at to nil', document: false do
+          campaign.scheduled_at = 2.hours.from_now
+          campaign.save!
+
+          do_request(campaign: { scheduled_at: nil })
+
+          assert_status 200
+          expect(response_data.dig(:attributes, :scheduled_at)).to be_nil
+        end
+
+        example '[error] Schedule a campaign with a past date' do
+          do_request(campaign: { scheduled_at: 1.hour.ago.iso8601 })
+
+          assert_status 422
+        end
+
+        context 'when body contains images' do
+          let(:body_multiloc) { { 'en' => html_with_base64_image } }
+
+          it_behaves_like 'updates record with text images',
+            model_class: EmailCampaigns::Campaign,
+            field: :body_multiloc
         end
       end
 
@@ -408,6 +540,15 @@ resource 'Campaigns' do
               assert_status 200
               expect(campaign.reload.enabled).to be false
             end
+          end
+
+          context 'when intro contains images' do
+            let(:intro_multiloc) { { 'en' => html_with_base64_image } }
+
+            it_behaves_like 'updates record with text images',
+              model_class: EmailCampaigns::Campaign,
+              field: :intro_multiloc,
+              locale: :en
           end
         end
       end
@@ -459,8 +600,15 @@ resource 'Campaigns' do
 
       example_request 'Send out the campaign now' do
         assert_status 200
-        json_response = json_parse response_body
-        expect(json_response.dig(:data, :attributes, :deliveries_count)).to eq User.count
+        expect(response_data.dig(:attributes, :deliveries_count)).to eq User.count
+      end
+
+      example 'Send a scheduled campaign immediately (overrides schedule)' do
+        campaign.scheduled_at = 2.hours.from_now
+        campaign.save!
+        do_request
+        assert_status 200
+        expect(response_data.dig(:attributes, :deliveries_count)).to be >= 1
       end
 
       example '[error] Send out the campaign without an author' do
@@ -482,9 +630,106 @@ resource 'Campaigns' do
         assert_status 422
         expect(json_response_body).to include_response_error(:base, 'no_recipients')
       end
+
+      example '[error] Send a campaign that has already been sent' do
+        create(:delivery, campaign: campaign)
+        do_request
+        assert_status 422
+        expect(json_response_body).to include_response_error(:base, 'already_sent')
+      end
+
+      context 'SMS campaign' do
+        include_context 'with sms manual campaigns feature enabled'
+
+        before do
+          SettingsService.new.activate_feature!('sms_manual_campaigns', settings: { 'messages_purchased' => 100 })
+          recipient = create(:user, phone: '+14155552671', phone_confirmed_at: Time.zone.now)
+          create(:consent, :sms_manual, user: recipient)
+        end
+
+        let(:campaign) { create(:sms_manual_campaign) }
+
+        example 'Send out the SMS campaign now' do
+          expect { do_request }.to have_enqueued_job(EmailCampaigns::Sms::SendJob)
+          assert_status 200
+          expect(response_data.dig(:attributes, :deliveries_count)).to be >= 1
+        end
+
+        example '[error] Send out an SMS campaign to more recipients than the balance covers' do
+          SettingsService.new.activate_feature!('sms_manual_campaigns', settings: { 'messages_purchased' => 0 })
+
+          expect { do_request }.not_to have_enqueued_job(EmailCampaigns::Sms::SendJob)
+          assert_status 422
+          expect(json_response_body).to include_response_error(:base, 'insufficient_sms_balance')
+        end
+
+        # Refused before a delivery per recipient is created, rather than in the send job.
+        example '[error] Send out an SMS campaign while the SMS provider is not configured' do
+          SettingsService.new.activate_feature!('sms_manual_campaigns', settings: {
+            'twilio_manual_campaigns_messaging_service_sid' => ''
+          })
+
+          expect { do_request }.not_to have_enqueued_job(EmailCampaigns::Sms::SendJob)
+          assert_status 422
+          expect(json_response_body).to include_response_error(:base, 'sms_not_configured')
+          expect(EmailCampaigns::Sms::Delivery.count).to eq(0)
+        end
+      end
     end
 
-    get 'web_api/v1/campaigns/:id/deliveries' do
+    post 'web_api/v1/campaigns/:id/send_email_preview' do
+      include ActiveJob::TestHelper
+
+      parameter :locale, 'Send the preview in this platform locale instead of the current user\'s locale', required: false
+
+      let(:campaign) { create(:manual_campaign, subject_multiloc: { 'en' => 'English subject', 'nl-NL' => 'Dutch subject' }) }
+      let(:id) { campaign.id }
+
+      example 'Send a preview email in another locale' do
+        perform_enqueued_jobs(only: ActionMailer::MailDeliveryJob) { do_request(locale: 'nl-NL') }
+        assert_status 200
+        expect(ActionMailer::Base.deliveries.last.subject).to eq 'Dutch subject'
+        expect(@user.reload.locale).to eq 'en'
+      end
+    end
+
+    post 'web_api/v1/campaigns/:id/send_sms_preview' do
+      context 'SMS campaign' do
+        include_context 'with sms manual campaigns feature enabled'
+
+        before do
+          SettingsService.new.activate_feature!('sms_manual_campaigns', settings: { 'messages_purchased' => 10 })
+          @user.update!(phone: '+14155552671', phone_confirmed_at: Time.zone.now)
+        end
+
+        let(:campaign) { create(:sms_manual_campaign) }
+        let(:id) { campaign.id }
+
+        example 'Send a preview SMS to your own phone number' do
+          expect { do_request }.to have_enqueued_job(EmailCampaigns::Sms::SendJob)
+          assert_status 200
+          expect(campaign.reload.sent?).to be false
+        end
+
+        example '[error] Send a preview SMS the balance no longer covers' do
+          SettingsService.new.activate_feature!('sms_manual_campaigns', settings: { 'messages_purchased' => 0 })
+
+          expect { do_request }.not_to have_enqueued_job(EmailCampaigns::Sms::SendJob)
+          assert_status 422
+          expect(json_response_body).to include_response_error(:base, 'insufficient_sms_balance')
+        end
+
+        example '[error] Send a preview SMS without a confirmed phone number of your own' do
+          @user.update!(phone: nil, phone_confirmed_at: nil)
+
+          expect { do_request }.not_to have_enqueued_job(EmailCampaigns::Sms::SendJob)
+          assert_status 422
+          expect(json_response_body).to include_response_error(:base, 'no_previewer_phone')
+        end
+      end
+    end
+
+    get 'web_api/v1/campaigns/:id/email_deliveries' do
       with_options scope: :page do
         parameter :number, 'Page number'
         parameter :size, 'Number of deliveries per page'
@@ -502,7 +747,78 @@ resource 'Campaigns' do
       end
     end
 
-    get 'web_api/v1/campaigns/:id/stats' do
+    get 'web_api/v1/campaigns/:id/sms_deliveries' do
+      with_options scope: :page do
+        parameter :number, 'Page number'
+        parameter :size, 'Number of deliveries per page'
+      end
+
+      let(:campaign) { create(:sms_manual_campaign) }
+      let!(:id) { campaign.id }
+      let!(:sms_deliveries) { create_list(:sms_delivery, 3, campaign: campaign) }
+
+      example_request 'Get the SMS deliveries of a sent campaign. Includes the recipients.' do
+        assert_status 200
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq sms_deliveries.size
+      end
+    end
+
+    get 'web_api/v1/campaigns/:id/sms_stats' do
+      let(:campaign) { create(:sms_manual_campaign) }
+      let!(:id) { campaign.id }
+      let!(:sms_deliveries) do
+        create_list(:sms_delivery, 4, campaign: campaign, status: 'sent')
+      end
+
+      example_request 'Get the SMS delivery statistics of a sent campaign' do
+        assert_status 200
+        json_response = json_parse(response_body)
+        expect(json_response[:data][:attributes]).to match({
+          pending: 0,
+          queued: 0,
+          sent: 4,
+          delivered: 0,
+          undelivered: 0,
+          failed: 0,
+          errored: 0,
+          total: 4
+        })
+      end
+    end
+
+    get 'web_api/v1/campaigns/:id/sms_send_summary' do
+      context 'SMS campaign' do
+        include_context 'with sms manual campaigns feature enabled'
+
+        before do
+          SettingsService.new.activate_feature!('sms_manual_campaigns', settings: { 'messages_purchased' => 50 })
+        end
+
+        # 200 characters no longer fit one segment, so the French recipient costs two.
+        let(:campaign) { create(:sms_manual_campaign, body_multiloc: { 'en' => 'short', 'fr-FR' => 'a' * 200 }) }
+        let!(:id) { campaign.id }
+
+        let!(:recipients) do
+          %w[en en fr-FR].map do |locale|
+            create(:consent, :sms_manual, user: create(:user, :with_confirmed_phone, locale: locale))
+          end
+        end
+        # Reachable by SMS, but has not opted in to this campaign.
+        let!(:non_recipient) { create(:user, :with_confirmed_phone) }
+
+        example_request 'Get what sending an SMS campaign right now would reach and cost' do
+          assert_status 200
+          expect(response_data[:attributes]).to eq({
+            recipients_count: 3,
+            segments_needed: 4,
+            segments_balance: 50
+          })
+        end
+      end
+    end
+
+    get 'web_api/v1/campaigns/:id/email_stats' do
       let(:campaign) { create(:manual_campaign) }
       let!(:id) { campaign.id }
       let!(:deliveries) do
@@ -561,12 +877,13 @@ resource 'Campaigns' do
     get '/web_api/v1/campaigns/:id' do
       let(:id) { @automated_campaigns.first.id }
 
-      example_request '[Unauthorized] Get campaign of type not manageable by project moderators', document: false do
-        assert_status 401
+      example_request 'Get global campaign', document: false do
+        assert_status 200
+        expect(response_data[:id]).to eq id
       end
     end
 
-    get '/web_api/v1/campaigns/:id/preview' do
+    get '/web_api/v1/campaigns/:id/email_preview' do
       let(:id) { @manual_project_participants_campaign.id }
 
       example_request 'Get a campaign HTML preview, for campaign manageable by project moderator' do
@@ -576,7 +893,7 @@ resource 'Campaigns' do
       end
     end
 
-    get '/web_api/v1/campaigns/:id/preview' do
+    get '/web_api/v1/campaigns/:id/email_preview' do
       let(:id) { manual_project_participants_campaign_not_moderated_by_this_pm.id }
 
       example_request '[Unauthorized] Get preview, for campaign for project not moderated by project moderator', document: false do
@@ -584,7 +901,7 @@ resource 'Campaigns' do
       end
     end
 
-    get '/web_api/v1/campaigns/:id/preview' do
+    get '/web_api/v1/campaigns/:id/email_preview' do
       let(:campaign) { create(:manual_campaign) }
       let(:id) { manual_project_participants_campaign_not_moderated_by_this_pm.id }
 
@@ -647,7 +964,7 @@ resource 'Campaigns' do
       end
     end
 
-    get 'web_api/v1/campaigns/:id/stats' do
+    get 'web_api/v1/campaigns/:id/email_stats' do
       let(:campaign) { @manual_project_participants_campaign }
       let!(:deliveries) do
         create_list(
@@ -681,9 +998,9 @@ resource 'Campaigns' do
         assert_status 401
       end
 
-      example '[Unauthorized] Get the delivery statistics of a sent campaign not manageable by project moderator', document: false do
+      example 'Get the delivery statistics of a sent global campaign', document: false do
         do_request(id: @automated_campaigns.second.id)
-        assert_status 401
+        assert_status 200
       end
     end
   end

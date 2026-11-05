@@ -3,16 +3,17 @@
 class WebApi::V1::PermissionsController < ApplicationController
   include LockedUserCustomFieldsConcern
 
-  before_action :set_permission, only: %i[show update reset requirements schema custom_fields access_denied_explanation]
+  before_action :set_permission, only: %i[show update requirements custom_fields custom_field_options access_denied_explanation]
+  before_action :set_persisted_permission, only: %i[inherit]
   skip_before_action :authenticate_user
+  # The list mixes persisted permissions with inherited ones, which have no row
+  # to scope over; each is authorized individually instead.
+  skip_after_action :verify_policy_scoped, only: :index
 
   def index
-    @permissions = policy_scope(Permission)
-      .where(permission_scope: permission_scope)
-      .filter_enabled_actions(permission_scope)
-      .order_by_action(permission_scope)
-    @permissions = paginate @permissions
-    @permissions = @permissions.includes(:permission_scope, :custom_fields, :groups, permissions_custom_fields: [custom_field: [:options]])
+    permissions = inheritance_service.effective_permissions(permission_scope)
+      .select { |permission| PermissionPolicy.new(current_user, permission).show? }
+    @permissions = paginate Kaminari.paginate_array(permissions)
 
     render json: linked_json(@permissions, WebApi::V1::PermissionSerializer, params: jsonapi_serializer_params, include: %i[permissions_custom_fields custom_fields])
   end
@@ -22,27 +23,45 @@ class WebApi::V1::PermissionsController < ApplicationController
   end
 
   def update
-    @permission.assign_attributes(permission_params)
+    raise ActiveRecord::RecordNotFound if @permission.inherited?
+
+    attributes = permission_params
+    require_feature!('permissions_custom_fields') if attributes[:custom_fields_behavior] == 'custom'
+
+    old_group_ids = @permission.group_ids
+    @permission.assign_attributes(attributes)
     authorize @permission
     if @permission.save
+      sidefx.after_update(@permission, current_user, old_group_ids)
       render json: serialize(@permission), status: :ok
     else
       render json: { errors: @permission.errors.details }, status: :unprocessable_entity
     end
   end
 
-  def reset
-    authorize @permission
-    ActiveRecord::Base.transaction do
-      @permission.global_custom_fields = true
-      if @permission.save
-        @permission.permissions_custom_fields.destroy_all
-        @permission.groups_permissions.destroy_all
-        render json: serialize(@permission), status: :ok
-      else
-        render json: { errors: @permission.errors.details }, status: :unprocessable_entity
-      end
-    end
+  # Detach the action from the global 'visiting' permission by persisting a copy
+  # of it, so that it can be customised independently.
+  def override
+    permission = inheritance_service.find(permission_scope, permission_action)
+    raise ActiveRecord::RecordNotFound unless permission
+
+    authorize permission, :update?
+    @permission = inheritance_service.override!(permission_scope, permission_action)
+    sidefx.after_override(@permission, current_user)
+    render json: serialize(@permission), status: :ok
+  rescue Permissions::PermissionInheritanceService::NotInheritable
+    raise ActiveRecord::RecordNotFound
+  end
+
+  # Put the action back under the global 'visiting' permission. Its own groups
+  # and persisted demographic questions go with it.
+  def inherit
+    authorize @permission, :update?
+    sidefx.before_inherit(@permission, current_user)
+    @permission = inheritance_service.inherit!(@permission)
+    render json: serialize(@permission), status: :ok
+  rescue Permissions::PermissionInheritanceService::NotInheritable
+    raise ActiveRecord::RecordNotFound
   end
 
   def requirements
@@ -57,16 +76,29 @@ class WebApi::V1::PermissionsController < ApplicationController
     render json: raw_json(json_requirements), status: :ok
   end
 
-  def schema
-    authorize @permission
-    fields = user_requirements_service.requirements_custom_fields @permission
-    render json: raw_json(user_ui_and_json_multiloc_schemas(fields))
-  end
-
   def custom_fields
     authorize @permission
     fields = user_requirements_service.requirements_custom_fields @permission
-    render json: WebApi::V1::CustomFieldSerializer.new(fields, params: jsonapi_serializer_params_with_locked_fields).serializable_hash.to_json
+    ActiveRecord::Associations::Preloader.new(records: fields, associations: [options: :image]).call
+    render json: WebApi::V1::CustomFieldSerializer.new(
+      fields,
+      params: jsonapi_serializer_params_with_locked_fields,
+      include: [:options]
+    ).serializable_hash.to_json
+  end
+
+  def custom_field_options
+    authorize @permission
+    fields = user_requirements_service.requirements_custom_fields @permission
+    options = CustomFieldOption
+      .joins(:custom_field)
+      .where(custom_field_id: fields.map(&:id))
+      .order('custom_fields.ordering ASC, custom_field_options.ordering ASC')
+
+    render json: WebApi::V1::CustomFieldOptionSerializer.new(
+      options,
+      params: jsonapi_serializer_params
+    ).serializable_hash.to_json
   end
 
   def access_denied_explanation
@@ -87,10 +119,8 @@ class WebApi::V1::PermissionsController < ApplicationController
     ).serializable_hash
   end
 
-  def user_ui_and_json_multiloc_schemas(fields)
-    json_schemas = JsonFormsService.new.user_ui_and_json_multiloc_schemas(fields)
-    mark_locked_json_forms_fields(json_schemas) if current_user
-    json_schemas
+  def sidefx
+    @sidefx ||= Permissions::SideFxPermissionService.new
   end
 
   def permissions_update_service
@@ -101,7 +131,21 @@ class WebApi::V1::PermissionsController < ApplicationController
     @user_requirements_service ||= Permissions::UserRequirementsService.new
   end
 
+  def inheritance_service
+    @inheritance_service ||= Permissions::PermissionInheritanceService.new
+  end
+
+  # Resolves to the persisted permission, or — for an inheritable action that
+  # has not been overridden — to an unsaved copy of the global 'visiting'
+  # permission.
   def set_permission
+    permission = inheritance_service.find(permission_scope, permission_action)
+    raise ActiveRecord::RecordNotFound unless permission
+
+    @permission = authorize permission
+  end
+
+  def set_persisted_permission
     @permission = authorize Permission.find_by!(action: permission_action, permission_scope: permission_scope)
   end
 
@@ -116,36 +160,21 @@ class WebApi::V1::PermissionsController < ApplicationController
   def permission_params
     params.require(:permission).permit(
       :permitted_by,
-      :global_custom_fields,
+      :custom_fields_behavior,
       :verification_expiry,
       :everyone_tracking_enabled,
       :user_fields_in_form,
       :user_data_collection,
+      :require_confirmed_email,
+      :confirmed_email_expiry,
+      :require_name,
+      :require_password,
+      :require_verification,
+      :require_confirmed_phone_number,
+      :confirmed_phone_number_expiry,
       group_ids: [],
       access_denied_explanation_multiloc: CL2_SUPPORTED_LOCALES
     )
-  end
-
-  # lock any fields locked by verification method(s)
-  def mark_locked_json_forms_fields(schemas)
-    locked_custom_fields = Verification::VerificationService.new.locked_custom_fields(current_user).map(&:to_s)
-
-    # Mark fields as locked & read only
-    schemas[:ui_schema_multiloc].each_value do |ui_schema|
-      ui_schema[:elements]
-        .select { |e| locked_custom_fields.any? { |field| e[:scope].end_with?(field) } }
-        .each_with_index do |element, index|
-        ui_schema[:elements][index] = element.merge(options: element[:options].to_h.merge(readonly: true, verificationLocked: true))
-      end
-    end
-
-    # Mark fields as required (if not already required)
-    schemas[:json_schema_multiloc].each_value do |json_schema|
-      json_schema[:required] = [] if json_schema[:required].nil?
-      locked_custom_fields.each do |locked_field|
-        json_schema[:required] << locked_field if json_schema[:required].exclude?(locked_field)
-      end
-    end
   end
 end
 

@@ -12,21 +12,21 @@ describe SmartGroups::RulesService do
   let(:options) { create_list(:custom_field_option, 3, custom_field: cf3) }
   let!(:users) do
     users = build_list(:admin, 4)
-    users[0].custom_field_values[cf1.key] = 'one'
-    users[0].custom_field_values[cf2.key] = 'a'
-    users[0].custom_field_values[cf3.key] = options[0].key
+    users[0].custom_field_answers.build(key: cf1.key, value: 'one', custom_field: cf1)
+    users[0].custom_field_answers.build(key: cf2.key, value: 'a', custom_field: cf2)
+    users[0].custom_field_answers.build(key: cf3.key, value: options[0].key, custom_field: cf3)
 
-    users[1].custom_field_values[cf1.key] = 'three'
-    users[1].custom_field_values[cf2.key] = 'a'
-    users[1].custom_field_values[cf3.key] = options[0].key
+    users[1].custom_field_answers.build(key: cf1.key, value: 'three', custom_field: cf1)
+    users[1].custom_field_answers.build(key: cf2.key, value: 'a', custom_field: cf2)
+    users[1].custom_field_answers.build(key: cf3.key, value: options[0].key, custom_field: cf3)
 
-    users[2].custom_field_values[cf1.key] = 'three'
-    users[2].custom_field_values[cf2.key] = 'a'
-    users[2].custom_field_values[cf3.key] = options[1].key
+    users[2].custom_field_answers.build(key: cf1.key, value: 'three', custom_field: cf1)
+    users[2].custom_field_answers.build(key: cf2.key, value: 'a', custom_field: cf2)
+    users[2].custom_field_answers.build(key: cf3.key, value: options[1].key, custom_field: cf3)
 
-    users[3].custom_field_values[cf1.key] = 'four'
-    users[3].custom_field_values[cf2.key] = 'a'
-    users[3].custom_field_values[cf3.key] = options[2].key
+    users[3].custom_field_answers.build(key: cf1.key, value: 'four', custom_field: cf1)
+    users[3].custom_field_answers.build(key: cf2.key, value: 'a', custom_field: cf2)
+    users[3].custom_field_answers.build(key: cf3.key, value: options[2].key, custom_field: cf3)
 
     users.each(&:save)
   end
@@ -81,6 +81,32 @@ describe SmartGroups::RulesService do
       result = service.filter User, rules
       expect(result.count).to eq 1
     end
+
+    context 'voting' do
+      let(:project1) { create(:single_voting_phase, :ongoing).project }
+      let(:project2) { create(:single_voting_phase, :ongoing).project }
+
+      let(:rules) do
+        [
+          { 'ruleType' => 'participated_in_project', 'predicate' => 'not_voted_in', 'value' => project1.id },
+          { 'ruleType' => 'participated_in_project', 'predicate' => 'not_voted_in', 'value' => project2.id }
+        ]
+      end
+
+      it 'includes all users who have not voted in any of the projects' do
+        result = service.filter User, rules
+        expect(result.count).to eq 4
+      end
+
+      it 'filters out users who have voted in at least one of the projects' do
+        # 2 baskets, 2 users have voted in at least one project
+        create(:basket, phase: project1.phases.first, user: User.first)
+        create(:basket, phase: project2.phases.first, user: User.last)
+
+        result = service.filter User, rules
+        expect(result.count).to eq 2
+      end
+    end
   end
 
   describe 'groups_for_user' do
@@ -91,7 +117,7 @@ describe SmartGroups::RulesService do
 
     it 'returns only the rules groups the user is part of' do
       groups = service.groups_for_user(user)
-      expect(groups.map(&:id)).to match_array [group1.id, group2.id]
+      expect(groups.map(&:id)).to contain_exactly(group1.id, group2.id)
     end
 
     it 'uses a maximum of 3 queries' do

@@ -9,6 +9,12 @@ module Analysis
     # The number of tokens we reserve for the LLM response containing the answer
     TOKENS_FOR_RESPONSE = 600
 
+    # Substituted for %{comments_instruction} in a tenant's custom prompt
+    # template. A custom template cannot branch on include_comments itself, so we
+    # hand it the sentence the default template would have added.
+    COMMENTS_INSTRUCTION = 'Some responses might contain comments from other users, separated by +++. ' \
+                           'You can include the information taken from the comments in your response.'
+
     def generate_plan
       plan = nil
       include_comments = true
@@ -65,20 +71,47 @@ module Analysis
         shorten_labels: plan.shorten_labels,
         include_comments: plan.include_comments
       )
-      prompt = prompt(analysis.source_project, inputs_text, plan.include_comments)
 
+      prompt = prompt(analysis.source_project, inputs_text, plan.include_comments)
       question.update!(prompt:)
 
-      plan.llm.chat_async(prompt) do |new_text|
+      messages = if file_ai_analysis_enabled?
+        [
+          LLM::Message.new(prompt.to_s, role: 'system'),
+          LLM::Message.new(question.question, *analysis.attached_files)
+        ]
+      else
+        LLM::Message.new(prompt.to_s)
+      end
+
+      plan.llm.chat_async(messages, retries: 0) do |new_text|
         update_answer([question.answer || '', new_text].join)
       end
-    rescue StandardError => e
-      raise QAndAFailedError, e
     end
 
     def prompt(project, inputs_text, include_comments)
       project_title = MultilocService.new.t(project.title_multiloc)
-      LLM::Prompt.new.fetch('q_and_a', project_title:, question: question.question, inputs_text:, language: response_language, include_comments:)
+
+      custom_template = if file_ai_analysis_enabled?
+        AppConfiguration.instance.settings('data_repository_ai_analysis', 'prompt_template').presence
+      end
+
+      params = {
+        question: question.question,
+        language: response_language,
+        project_title:, inputs_text:, include_comments:
+      }
+
+      if custom_template
+        LLM::PlaceholderPrompt.new.render(
+          custom_template,
+          **params.except(:include_comments),
+          comments_instruction: include_comments ? COMMENTS_INSTRUCTION : ''
+        )
+      else
+        filename = file_ai_analysis_enabled? ? 'q_and_a.v2' : 'q_and_a'
+        LLM::Prompt.new.fetch(filename, **params)
+      end
     end
 
     def response_language
@@ -88,6 +121,12 @@ module Analysis
                I18n.default_locale
 
       Locale.new(locale).language_copy
+    end
+
+    private
+
+    def file_ai_analysis_enabled?
+      @file_ai_analysis_enabled ||= AppConfiguration.instance.feature_activated?('data_repository_ai_analysis')
     end
   end
 end

@@ -62,4 +62,17 @@ export default defineMessages({
     id: 'app.containers.ChangeEmail.backToProfile',
     defaultMessage: 'Back to profile settings',
   },
+  currentEmail: {
+    id: 'app.containers.ChangeEmail.currentEmail',
+    defaultMessage: 'Your current email address is:',
+  },
+  noEmail: {
+    id: 'app.containers.ChangeEmail.noEmail',
+    defaultMessage: 'You currently have no email address saved.',
+  },
+  adminEmailChangeWarning: {
+    id: 'app.containers.ChangeEmail.adminEmailChangeWarning2',
+    defaultMessage:
+      'Changing your email address will sign you out in other browsers you are also signed into. You will lose any unsaved changes.',
+  },
 });

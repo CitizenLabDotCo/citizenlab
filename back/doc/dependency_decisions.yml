@@ -161,12 +161,6 @@
     :versions: []
     :when: 2021-02-24 14:15:04.392754008 Z
 - - :approve
-  - user_confirmation
-  - :who: 
-    :why: 
-    :versions: []
-    :when: 2021-03-28 18:10:30.586364420 Z
-- - :approve
   - bundler-audit
   - :who: 
     :why: Despite bundler-audit being a GPL utility, we're not linking against it,

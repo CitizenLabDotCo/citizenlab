@@ -30,10 +30,10 @@ const CommentCount = ({ commentCount }: Props) => {
   return (
     <Container className="e2e-ideacard-comment-count">
       <CommentIcon name="comments" width="16px" height="16px" />
-      <span aria-hidden>{commentCount}</span>
+      <span>{commentCount}</span>
       <ScreenReaderOnly>
         <FormattedMessage
-          {...messages.xComments}
+          {...messages.comments}
           values={{ commentsCount: commentCount }}
         />
       </ScreenReaderOnly>

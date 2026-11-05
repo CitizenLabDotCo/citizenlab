@@ -27,15 +27,23 @@ const MultipleSelect = ({ name, scrollErrorIntoView, ...rest }: Props) => {
 
   const apiError = errors?.error && ([errors] as CLError[]);
 
+  const ariaDescribedBy =
+    validationError || apiError ? `${name}-error` : undefined;
+
   return (
     <>
       <Controller
         name={name}
         control={control}
-        render={({ field: { ref: _ref, ...field } }) => {
+        render={({ field: { ref, ...field }, fieldState }) => {
           return (
             <MultipleSelectComponent
               inputId={name}
+              setRef={(instance) => {
+                ref(instance);
+              }}
+              ariaInvalid={!!fieldState.error}
+              ariaDescribedBy={ariaDescribedBy}
               {...field}
               {...rest}
               onChange={(newOption: IOption[]) => {
@@ -54,6 +62,7 @@ const MultipleSelect = ({ name, scrollErrorIntoView, ...rest }: Props) => {
       />
       {validationError && (
         <Error
+          id={`${name}-error`}
           marginTop="8px"
           marginBottom="8px"
           text={validationError}
@@ -62,6 +71,7 @@ const MultipleSelect = ({ name, scrollErrorIntoView, ...rest }: Props) => {
       )}
       {apiError && (
         <Error
+          id={`${name}-error`}
           fieldName={name as TFieldName}
           apiErrors={apiError}
           marginTop="8px"

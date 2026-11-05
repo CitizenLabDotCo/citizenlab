@@ -35,25 +35,41 @@ const Input = ({
   // If an API error with a matching name has been returned from the API response, apiError is set to an array with the error message as the only item
   const apiError = errors?.error && ([errors] as CLError[]);
 
+  const ariaDescribedBy =
+    validationError || apiError ? `${name}-error` : undefined;
+
   return (
     <Box width="100%">
       <Controller
         name={name}
         control={control}
-        render={({ field: { ref: _ref, ...field } }) => (
-          <InputComponent id={name} type={type} {...field} {...rest} />
+        render={({ field, fieldState }) => (
+          <InputComponent
+            id={name}
+            type={type}
+            setRef={(el) => {
+              field.ref(el);
+            }}
+            ariaInvalid={!!fieldState.error}
+            ariaDescribedBy={ariaDescribedBy}
+            {...field}
+            {...rest}
+          />
         )}
       />
       {validationError && (
         <Error
+          id={`${name}-error`}
           marginTop="8px"
           marginBottom="8px"
           text={validationError}
           scrollIntoView={scrollErrorIntoView}
+          liveRegion={false}
         />
       )}
       {apiError && (
         <Error
+          id={`${name}-error`}
           fieldName={fieldName || (name as TFieldName)}
           apiErrors={apiError}
           marginTop="8px"

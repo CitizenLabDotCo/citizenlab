@@ -12,20 +12,24 @@ describe FlagInappropriateContent::ToxicityDetectionService do
       stub_classify_toxicity! service
     end
 
-    it 'creates a new flag if toxicity was detected' do
+    it 'creates and returns a new flag if toxicity was detected' do
       idea = create(:idea, title_multiloc: { 'en' => 'An idea for my fellow wankers' })
-      service.flag_toxicity! idea, attributes: [:title_multiloc]
+
+      flag = service.flag_toxicity! idea, attributes: [:title_multiloc]
+
       idea.reload
-      expect(idea.inappropriate_content_flag).to be_present
+      expect(flag).to eq idea.inappropriate_content_flag
       expect(idea.inappropriate_content_flag.toxicity_label).to eq 'insult'
       expect(idea.inappropriate_content_flag.ai_reason).to be_present
     end
 
-    it 'creates no flag if no toxicity was detected' do
+    it 'creates no flag and returns nil if no toxicity was detected' do
       idea = create(:idea, title_multiloc: { 'en' => 'My innocent idea' }, location_description: 'Wankerford')
-      service.flag_toxicity! idea, attributes: [:title_multiloc]
-      idea.reload
-      expect(idea.inappropriate_content_flag).to be_blank
+
+      flag = service.flag_toxicity! idea, attributes: [:title_multiloc]
+
+      expect(flag).to be_nil
+      expect(idea.reload.inappropriate_content_flag).to be_nil
     end
 
     it 'reintroduces a deleted flag if no toxicity was detected' do
@@ -45,6 +49,100 @@ describe FlagInappropriateContent::ToxicityDetectionService do
       service.flag_toxicity! idea, attributes: [:title_multiloc]
       idea.reload
       expect(idea.inappropriate_content_flag).to be_blank
+    end
+  end
+
+  describe 'check_toxicity' do
+    let(:llm) { instance_double(Analysis::LLM::ClaudeHaiku45) }
+
+    before do
+      SettingsService.new.activate_feature! 'moderation'
+      SettingsService.new.activate_feature! 'flag_inappropriate_content'
+      stub_const('ENV', ENV.to_h.merge('AWS_TOXICITY_DETECTION_REGION' => 'eu-central-1'))
+      allow(Analysis::LLM::ClaudeHaiku45).to receive(:new).and_return(llm)
+    end
+
+    it 'classifies the serialized input with project context and the default categories' do
+      project = create(:project, title_multiloc: { 'en' => 'Park renewal' })
+      idea = create(:idea, project:, title_multiloc: { 'en' => 'An idea for my fellow wankers' })
+
+      expect(llm).to receive(:chat) do |prompt, response_schema:|
+        expect(prompt).to include 'the participation project "Park renewal"'
+        expect(prompt).to include "### Title\nAn idea for my fellow wankers"
+        expect(prompt).not_to include '<guidelines>'
+        expect(response_schema.dig(:properties, :category, :enum)).to eq %w[A B C D E]
+        { 'category' => 'A', 'reason' => 'Contains an insult.' }
+      end
+
+      expect(service.check_toxicity(idea, attributes: [:title_multiloc]))
+        .to eq({ toxicity_label: 'insult', ai_reason: 'Contains an insult.' })
+    end
+
+    it 'does not classify the location of an idea' do
+      idea = create(:idea, title_multiloc: { 'en' => 'Broken street sign' }, location_description: '123 Fake Street')
+
+      expect(llm).to receive(:chat) do |prompt, **|
+        expect(prompt).not_to include '123 Fake Street'
+        { 'category' => 'E', 'reason' => 'Not toxic.' }
+      end
+
+      expect(service.check_toxicity(idea)).to be_nil
+    end
+
+    it 'includes the parent post context for comments' do
+      idea = create(:idea, title_multiloc: { 'en' => 'Better bike lanes' })
+      comment = create(:comment, idea:, body_multiloc: { 'en' => '<p>You are all idiots</p>' })
+
+      expect(llm).to receive(:chat) do |prompt, **|
+        expect(prompt).to include 'the discussion on "Better bike lanes"'
+        expect(prompt).to include 'You are all idiots'
+        expect(prompt).not_to include '<p>'
+        { 'category' => 'A', 'reason' => 'Contains an insult.' }
+      end
+
+      expect(service.check_toxicity(comment))
+        .to eq({ toxicity_label: 'insult', ai_reason: 'Contains an insult.' })
+    end
+
+    it 'checks content against custom guidelines when configured' do
+      config = AppConfiguration.instance
+      config.settings['flag_inappropriate_content']['custom_guidelines'] = 'Messages may not contain links.'
+      config.save!
+      comment = create(:comment, body_multiloc: { 'en' => 'Visit https://spam.example.com' })
+
+      expect(llm).to receive(:chat) do |prompt, response_schema:|
+        expect(prompt).to include 'Messages may not contain links.'
+        expect(response_schema.dig(:properties, :category, :enum)).to eq %w[A B C D E F]
+        { 'category' => 'F', 'reason' => 'The message contains a link.' }
+      end
+
+      expect(service.check_toxicity(comment))
+        .to eq({ toxicity_label: 'guideline_violation', ai_reason: 'The message contains a link.' })
+    end
+
+    it 'returns nil for non-toxic content' do
+      comment = create(:comment, body_multiloc: { 'en' => 'What a nice idea' })
+      allow(llm).to receive(:chat).and_return({ 'category' => 'E', 'reason' => 'Not toxic.' })
+
+      expect(service.check_toxicity(comment)).to be_nil
+    end
+
+    # Serializing the input to text used to rewrite the body in place, images and all, and the
+    # caller then persisted that flattened body on its next save of the same object.
+    it 'leaves the input it serializes untouched' do
+      html = '<p><img data-cl2-text-image-text-reference="c0ffee">Trees for the square</p>'
+      idea = create(:idea, body_multiloc: { 'en' => html.dup })
+
+      expect(llm).to receive(:chat) do |prompt, **|
+        expect(prompt).to include 'Trees for the square'
+        expect(prompt).not_to include '<p>'
+        { 'category' => 'E', 'reason' => 'Not toxic.' }
+      end
+
+      service.check_toxicity(idea, attributes: %i[title_multiloc body_multiloc])
+
+      expect(idea).not_to be_changed
+      expect(idea.body_multiloc).to eq({ 'en' => html })
     end
   end
 

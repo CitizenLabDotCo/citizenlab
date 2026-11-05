@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Icon } from '@citizenlab/cl2-component-library';
 import { Tooltip } from 'recharts';
+import { TooltipContentProps } from 'recharts/types/component/Tooltip';
 
 import TooltipOutline from 'components/admin/Graphs/_components/TooltipOutline';
 import { colors } from 'components/admin/Graphs/styling';
@@ -10,49 +11,71 @@ import { IResolution } from 'components/admin/ResolutionControl';
 import { FormattedMessage } from 'utils/cl-intl';
 import { toFullMonth } from 'utils/dateUtils';
 
-import messages from './messages';
+import { SERIES, SeriesKey } from './series';
 
 type CustomTooltipProps = {
-  label?: string;
+  label: TooltipContentProps<string, string>['label'];
   payload?:
     | [
         {
           payload?: {
-            participants: number;
+            participants?: number;
+            visitors?: number;
             date: string;
           };
         }
       ]
     | [];
   resolution: IResolution;
+  series: SeriesKey[];
 };
 
-const CustomTooltip = ({ label, payload, resolution }: CustomTooltipProps) => {
+const CustomTooltip = ({
+  label,
+  payload,
+  resolution,
+  series,
+}: CustomTooltipProps) => {
   if (!payload?.[0]?.payload || !label) return null;
 
+  const data = payload[0].payload;
+
   return (
-    <TooltipOutline label={toFullMonth(label, resolution)}>
-      <Box py="0px">
-        <FormattedMessage {...messages.participants} />:{' '}
-        {payload[0].payload.participants}
-      </Box>
+    <TooltipOutline label={toFullMonth(String(label), resolution)}>
+      {series.map((key) =>
+        data[key] === undefined ? null : (
+          <Box key={key} py="0px">
+            <Icon
+              name="dot"
+              width="8px"
+              height="8px"
+              fill={SERIES[key].color}
+              mr="6px"
+              mt="-2px"
+            />
+            <FormattedMessage {...SERIES[key].label} />: {data[key]}
+          </Box>
+        )
+      )}
     </TooltipOutline>
   );
 };
 
-const renderTooltip = (resolution: IResolution) => (props) =>
-  (
-    <Tooltip
-      {...props}
-      cursor={{ stroke: colors.gridHoverColor }}
-      content={(props) => (
-        <CustomTooltip
-          label={props.label}
-          payload={props.payload as any}
-          resolution={resolution}
-        />
-      )}
-    />
-  );
+const renderTooltip =
+  (resolution: IResolution, series: SeriesKey[]) => (props) =>
+    (
+      <Tooltip
+        {...props}
+        cursor={{ stroke: colors.gridHoverColor }}
+        content={(props) => (
+          <CustomTooltip
+            label={props.label}
+            payload={props.payload as any}
+            resolution={resolution}
+            series={series}
+          />
+        )}
+      />
+    );
 
 export default renderTooltip;

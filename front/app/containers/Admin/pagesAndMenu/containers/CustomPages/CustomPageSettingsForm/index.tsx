@@ -6,19 +6,21 @@ import {
   Label,
   colors,
   Tooltip,
+  Button,
 } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
-import { array, object, string } from 'yup';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IAreaData } from 'api/areas/types';
 import useAreas from 'api/areas/useAreas';
 import { ProjectsFilterTypes } from 'api/custom_pages/types';
-import { ITopicData } from 'api/topics/types';
-import useTopics from 'api/topics/useTopics';
+import { IGlobalTopicData } from 'api/global_topics/types';
+import useGlobalTopics from 'api/global_topics/useGlobalTopics';
+import { SpaceData } from 'api/spaces/types';
+import useSpaces from 'api/spaces/useSpaces';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -31,18 +33,18 @@ import { SectionField } from 'components/admin/Section';
 import Feedback from 'components/HookForm/Feedback';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import MultipleSelect from 'components/HookForm/MultipleSelect';
+import RadioGroup from 'components/HookForm/RadioGroup';
+import Radio from 'components/HookForm/RadioGroup/Radio';
 import Select from 'components/HookForm/Select';
 import SlugInput from 'components/HookForm/SlugInput';
-import Tabs from 'components/HookForm/Tabs';
-import ButtonWithLink from 'components/UI/ButtonWithLink';
+import NewLabel from 'components/UI/NewLabel';
 
 import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
-import { isNilOrError } from 'utils/helperUtils';
-import { slugRegEx } from 'utils/textUtils';
-import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 
 import messages from '../messages';
+
+import { getSchema } from './form';
 
 const LinkedProjectContainer = styled(Box)<{ disabled: boolean }>`
   &:hover {
@@ -61,8 +63,9 @@ export interface FormValues {
   nav_bar_item_title_multiloc?: Multiloc;
   slug?: string;
   projects_filter_type: ProjectsFilterTypes;
-  topic_ids?: string[];
+  global_topic_ids?: string[];
   area_id?: string | null;
+  space_ids?: string[];
 }
 
 type TMode = 'new' | 'edit';
@@ -71,14 +74,9 @@ interface Props {
   showNavBarItemTitle?: boolean;
   mode: TMode;
   hideSlug?: boolean;
+  hideLinkedItems?: boolean;
   onSubmit: (formValues: FormValues) => void | Promise<void>;
 }
-
-const projectsFilterTypesArray: ProjectsFilterTypes[] = [
-  'no_filter',
-  'topics',
-  'areas',
-];
 
 const fieldMarginBottom = '40px';
 
@@ -86,6 +84,7 @@ const CustomPageSettingsForm = ({
   showNavBarItemTitle,
   mode,
   hideSlug,
+  hideLinkedItems,
   onSubmit,
   defaultValues,
 }: Props) => {
@@ -95,62 +94,27 @@ const CustomPageSettingsForm = ({
     name: 'advanced_custom_pages',
     onlyCheckAllowed: true,
   });
+  const isSpacesEnabled = useFeatureFlag({ name: 'spaces' });
   const showPlanUpgradeTease = !isFeatureAllowed;
   const showAdvancedCustomPages = showPlanUpgradeTease || isFeatureEnabled;
+  const showLinkedItems = showAdvancedCustomPages && !hideLinkedItems;
   const { data: areas } = useAreas({});
   const { data: appConfig } = useAppConfiguration();
   const locale = useLocale();
   const configuredLocales = useAppConfigurationLocales();
-  const { data: topics } = useTopics();
+  const { data: topics } = useGlobalTopics();
+  const { data: spaces } = useSpaces();
   const { formatMessage } = useIntl();
 
-  const hasMultipleConfiguredLocales = !isNilOrError(configuredLocales)
+  const hasMultipleConfiguredLocales = configuredLocales
     ? configuredLocales.length > 1
     : false;
 
-  const schema = object({
-    title_multiloc: validateMultilocForEveryLocale(
-      formatMessage(
-        hasMultipleConfiguredLocales
-          ? messages.titleMultilocError
-          : messages.titleSinglelocError
-      )
-    ),
-    ...(showNavBarItemTitle && {
-      nav_bar_item_title_multiloc: validateMultilocForEveryLocale(
-        formatMessage(
-          hasMultipleConfiguredLocales
-            ? messages.titleMultilocError
-            : messages.titleSinglelocError
-        )
-      ),
-    }),
-    ...(mode === 'edit' && {
-      slug: string()
-        .matches(slugRegEx, formatMessage(messages.slugRegexError))
-        .required(formatMessage(messages.slugRequiredError)),
-    }),
-    projects_filter_type: string().oneOf(projectsFilterTypesArray).required(),
-    topic_ids: array()
-      .nullable()
-      .when('projects_filter_type', ([value]) => {
-        if (value === 'topics') {
-          return array()
-            .of(string())
-            .min(1, formatMessage(messages.atLeastOneTag));
-        }
-
-        return array();
-      }),
-    area_id: string()
-      .nullable()
-      .when('projects_filter_type', ([value]) => {
-        if (value === 'areas') {
-          return string().required(formatMessage(messages.selectAnArea));
-        }
-
-        return string().nullable();
-      }),
+  const schema = getSchema(formatMessage, {
+    hasMultipleConfiguredLocales,
+    showNavBarItemTitle,
+    mode,
+    hideLinkedItems,
   });
 
   const methods = useForm<FormValues>({
@@ -170,7 +134,9 @@ const CustomPageSettingsForm = ({
     }
   };
 
-  const mapFilterEntityToOptions = (input: IAreaData[] | ITopicData[]) => {
+  const mapFilterEntityToOptions = (
+    input: IAreaData[] | IGlobalTopicData[] | SpaceData[]
+  ) => {
     return input.map((entity) => {
       return {
         value: entity.id,
@@ -179,27 +145,35 @@ const CustomPageSettingsForm = ({
     });
   };
 
-  const projectsFilterTabs: { name: ProjectsFilterTypes; label: string }[] = [
+  const projectsFilterOptions: {
+    value: ProjectsFilterTypes;
+    label: string;
+    isNew?: boolean;
+  }[] = [
     {
-      name: 'no_filter',
+      value: 'no_filter',
       label: formatMessage(messages.noFilter),
     },
     {
-      name: 'topics',
+      value: 'global_topics',
       label: formatMessage(messages.byTagsFilter),
     },
     {
-      name: 'areas',
+      value: 'areas',
       label: formatMessage(messages.byAreaFilter),
     },
+    ...(isSpacesEnabled
+      ? [
+          {
+            value: 'spaces' as const,
+            label: formatMessage(messages.bySpaceFilter),
+            isNew: true,
+          },
+        ]
+      : []),
   ];
 
-  if (
-    isNilOrError(areas) ||
-    isNilOrError(topics) ||
-    isNilOrError(locale) ||
-    isNilOrError(appConfig)
-  ) {
+  if (!areas || !topics || !appConfig || (isSpacesEnabled && !spaces)) {
     return null;
   }
 
@@ -216,14 +190,14 @@ const CustomPageSettingsForm = ({
         <SectionFormWrapper
           stickyMenuContents={
             <Box display="flex">
-              <ButtonWithLink
+              <Button
                 data-cy="e2e-submit-custom-page"
                 type="submit"
                 processing={methods.formState.isSubmitting}
                 bgColor={colors.blue500}
               >
                 {formatMessage(messages.saveButton)}
-              </ButtonWithLink>
+              </Button>
             </Box>
           }
           flatTopBorder
@@ -260,19 +234,15 @@ const CustomPageSettingsForm = ({
               </Box>
             )}
 
-            {showAdvancedCustomPages && (
-              <LinkedProjectContainer
-                display="inline-flex"
-                disabled={showPlanUpgradeTease}
+            {showLinkedItems && (
+              <Tooltip
+                placement="top-start"
+                content={formatMessage(messages.contactGovSuccessToAccess)}
+                disabled={!showPlanUpgradeTease}
+                hideOnClick={false}
               >
-                <Tooltip
-                  maxWidth="250px"
-                  placement="right-end"
-                  content={formatMessage(messages.contactGovSuccessToAccess)}
-                  disabled={!showPlanUpgradeTease}
-                  hideOnClick={false}
-                >
-                  <div>
+                <div>
+                  <LinkedProjectContainer disabled={showPlanUpgradeTease}>
                     <Box mb={fieldMarginBottom}>
                       <Box
                         display="flex"
@@ -280,48 +250,79 @@ const CustomPageSettingsForm = ({
                         width="100%"
                       >
                         <Label>
-                          <span>
-                            {formatMessage(messages.linkedProjectsLabel)}
-                          </span>
+                          <span>{formatMessage(messages.linkedItems)}</span>
                           <IconTooltip
                             ml="10px"
-                            content={formatMessage(
-                              messages.linkedProjectsTooltip
-                            )}
+                            content={formatMessage(messages.linkedItemsTooltip)}
                           />
                         </Label>
                       </Box>
                       <Box mb="30px">
-                        <Tabs
-                          name="projects_filter_type"
-                          items={projectsFilterTabs}
-                          minTabWidth={120}
-                          disabled={showPlanUpgradeTease}
-                        />
+                        <RadioGroup name="projects_filter_type" padding="0px">
+                          <Box display="flex" flexDirection="column" gap="8px">
+                            {projectsFilterOptions.map((option) => (
+                              <Radio
+                                key={option.value}
+                                name="projects_filter_type"
+                                id={`projects_filter_type_${option.value}`}
+                                value={option.value}
+                                disabled={showPlanUpgradeTease}
+                                label={
+                                  <Box
+                                    display="inline-flex"
+                                    alignItems="center"
+                                    gap="8px"
+                                  >
+                                    <span>{option.label}</span>
+                                    {option.isNew && (
+                                      <NewLabel
+                                        expiryDate={new Date('2026-12-04')}
+                                      />
+                                    )}
+                                  </Box>
+                                }
+                              />
+                            ))}
+                          </Box>
+                        </RadioGroup>
                       </Box>
-                      {methods.watch('projects_filter_type') === 'topics' && (
-                        <SelectContainer mb="30px">
-                          <MultipleSelect
-                            name="topic_ids"
-                            options={mapFilterEntityToOptions(topics.data)}
-                            label={formatMessage(messages.selectedTagsLabel)}
-                          />
-                        </SelectContainer>
-                      )}
-                      {methods.watch('projects_filter_type') === 'areas' && (
-                        <SelectContainer mb="20px">
-                          <Select
-                            name="area_id"
-                            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                            options={mapFilterEntityToOptions(areas?.data)}
-                            label={formatMessage(messages.selectedAreasLabel)}
-                          />
-                        </SelectContainer>
-                      )}
                     </Box>
-                  </div>
-                </Tooltip>
-              </LinkedProjectContainer>
+                  </LinkedProjectContainer>
+                </div>
+              </Tooltip>
+            )}
+            {showLinkedItems && (
+              <>
+                {methods.watch('projects_filter_type') === 'global_topics' && (
+                  <SelectContainer mb="30px">
+                    <MultipleSelect
+                      name="global_topic_ids"
+                      options={mapFilterEntityToOptions(topics.data)}
+                      label={formatMessage(messages.selectedTagsLabel)}
+                    />
+                  </SelectContainer>
+                )}
+                {methods.watch('projects_filter_type') === 'areas' && (
+                  <SelectContainer mb="20px">
+                    <Select
+                      name="area_id"
+                      options={mapFilterEntityToOptions(areas.data)}
+                      label={formatMessage(messages.selectedAreasLabel)}
+                    />
+                  </SelectContainer>
+                )}
+                {isSpacesEnabled &&
+                  methods.watch('projects_filter_type') === 'spaces' &&
+                  spaces && (
+                    <SelectContainer mb="30px">
+                      <MultipleSelect
+                        name="space_ids"
+                        options={mapFilterEntityToOptions(spaces.data)}
+                        label={formatMessage(messages.selectedSpacesLabel)}
+                      />
+                    </SelectContainer>
+                  )}
+              </>
             )}
           </SectionField>
         </SectionFormWrapper>

@@ -7,6 +7,53 @@ RSpec.describe MultiTenancy::TenantService do
 
   let(:tenant_side_fx) { MultiTenancy::SideFxTenantService.new }
 
+  describe '#shift_timestamps' do
+    before do
+      allow(Tenant.current).to receive_messages(active?: false, churned?: false)
+    end
+
+    it 'shifts timestamps that are more than 24 hours in the past' do
+      original_time = 3.days.ago
+      user = create(:user, registration_completed_at: original_time)
+
+      service.shift_timestamps(1)
+
+      expect(user.reload.registration_completed_at).to be_within(5.seconds).of(original_time + 24.hours)
+    end
+
+    it 'shifts timestamps that are in the future' do
+      original_time = 3.days.from_now
+      user = create(:user, registration_completed_at: original_time)
+
+      service.shift_timestamps(1)
+
+      expect(user.reload.registration_completed_at).to be_within(5.seconds).of(original_time + 24.hours)
+    end
+
+    it 'does not shift timestamps that are less than 24 hours in the past' do
+      original_time = 12.hours.ago
+      user = create(:user, registration_completed_at: original_time)
+
+      service.shift_timestamps(1)
+
+      expect(user.reload.registration_completed_at).to be_within(5.seconds).of(original_time)
+    end
+
+    it 'maintains valid phase boundaries' do
+      project = create(:project)
+
+      past_phase = create(:phase, project: project, start_at: 10.days.ago, end_at: 1.day.ago)
+      ongoing_phase = create(:phase, project: project, start_at: past_phase.end_at, end_at: 1.day.from_now)
+      future_phase = create(:phase, project: project, start_at: ongoing_phase.end_at, end_at: 10.days.from_now)
+
+      service.shift_timestamps(1)
+
+      expect(past_phase.reload).to be_valid
+      expect(ongoing_phase.reload).to be_valid
+      expect(future_phase.reload).to be_valid
+    end
+  end
+
   describe '#delete' do
     let(:tenant) { Tenant.current }
 
@@ -27,6 +74,18 @@ RSpec.describe MultiTenancy::TenantService do
     it 'marks the tenant as deleted' do
       service.delete(tenant)
       expect(tenant.deleted_at).not_to be_nil
+    end
+
+    # The soft-delete used to go through `update!`, so a record that was already invalid raised
+    # RecordInvalid and nothing was deleted at all. The tenant that surfaced this had an
+    # uppercase host; the name stands in for it here, as that leaves the schema reachable.
+    it 'marks a tenant that fails validation as deleted' do
+      invalid_tenant = create(:tenant, host: 'invalid.example.com')
+      invalid_tenant.update_column(:name, nil)
+      expect(invalid_tenant.reload).to be_invalid
+
+      expect { service.delete(invalid_tenant) }.to have_enqueued_job(MultiTenancy::Tenants::DeleteJob)
+      expect(invalid_tenant.reload.deleted_at).not_to be_nil
     end
   end
 end

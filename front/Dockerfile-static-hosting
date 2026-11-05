@@ -12,8 +12,8 @@ RUN apt-get update && apt-get install -y curl
 
 WORKDIR /front
 
-RUN npm install express request compression
+RUN npm install express http-proxy-middleware@^3.0.7 compression
 
-ADD ./server server 
+ADD ./server server
 
 CMD ["node", "server/production"]

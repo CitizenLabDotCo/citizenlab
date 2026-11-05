@@ -59,6 +59,15 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.Voting.voteCalledPlaceholderPlural2',
     defaultMessage: 'E.g. tokens, points, carbon credits...',
   },
+  minimumOptions: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.minimumOptions',
+    defaultMessage: 'Minimum selected options',
+  },
+  minimumOptionsDescription: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.minimumOptionsDescription2',
+    defaultMessage:
+      'For example, if you choose a minimum of 2 options, users will have to vote for at least 2 different options before they can submit.',
+  },
   maximumVotes: {
     id: 'app.containers.AdminPage.ProjectEdit.Voting.maximumVotes',
     defaultMessage: 'Maximum amount of votes',
@@ -95,5 +104,26 @@ export default defineMessages({
   creditTerm: {
     id: 'app.containers.AdminPage.ProjectEdit.Voting.creditTerm',
     defaultMessage: 'Credit',
+  },
+  percentTerm: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.percentTerm',
+    defaultMessage: 'Percent',
+  },
+  changeVotingMethodTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.changeVotingMethodTitle',
+    defaultMessage: 'Change the voting method?',
+  },
+  changeVotingMethodWarning: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.changeVotingMethodWarning',
+    defaultMessage:
+      'People have already voted in this phase. Their votes are kept as numbers but read by the new method: a budget amount becomes a number of votes, or the other way round. The results will no longer be correct.',
+  },
+  changeVotingMethodCancel: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.changeVotingMethodCancel',
+    defaultMessage: 'Cancel',
+  },
+  changeVotingMethodConfirm: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.changeVotingMethodConfirm',
+    defaultMessage: 'Change anyway',
   },
 });

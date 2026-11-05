@@ -12,10 +12,9 @@ import {
 import * as Sentry from '@sentry/react';
 import GlobalStyle from 'global-styles';
 import 'intersection-observer';
-// moment-timezone extends the regular moment library,
+// moment-timezone extends regular moment library,
 // so there's no need to import both moment and moment-timezone
 import moment from 'moment-timezone';
-import { useLocation } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
 
 import { IAppConfigurationStyle } from 'api/app_configuration/types';
@@ -34,8 +33,10 @@ import {
 import Authentication from 'containers/Authentication';
 import MainHeader from 'containers/MainHeader';
 
+import { HOMEPAGE_BUILDER_PATH } from 'components/admin/ContentBuilder/constants';
 import ConsentManager from 'components/ConsentManager';
 import ErrorBoundary from 'components/ErrorBoundary';
+import WeglotSwitcher from 'components/WeglotSwitcher';
 
 import { trackPage } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
@@ -43,13 +44,12 @@ import clHistory from 'utils/cl-router/history';
 import Navigate from 'utils/cl-router/Navigate';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import eventEmitter from 'utils/eventEmitter';
-import {
-  initiativeShowPageSlug,
-  isIdeaShowPage,
-  isPage,
-} from 'utils/helperUtils';
+import { initiativeShowPageSlug, isPage } from 'utils/helperUtils';
+import patchMomentDeAtJanuary from 'utils/patchMomentDeAtJanuary';
 import { usePermission } from 'utils/permissions';
 import { isAdmin, isModerator } from 'utils/permissions/roles';
+import { useLocation } from 'utils/router';
+import { WEGLOT_READY_EVENT } from 'utils/weglot';
 
 import messages from './messages';
 import Meta from './Meta';
@@ -58,6 +58,7 @@ import CommunityMonitorModalManager from './ModalQueue/modals/CommunityMonitor/M
 import UserSessionRecordingModalManager from './ModalQueue/modals/UserSessionRecording/ModalManager';
 
 const UserDeletedModal = lazy(() => import('./UserDeletedModal'));
+const SessionExpiryModal = lazy(() => import('./SessionExpiryModal'));
 const PlatformFooter = lazy(() => import('containers/PlatformFooter'));
 
 const SkipLinkStyled = styled.a`
@@ -73,6 +74,9 @@ const SkipLinkStyled = styled.a`
   &:focus {
     top: 0;
   }
+  &:hover {
+    color: ${colors.teal200};
+  }
 `;
 
 interface Props {
@@ -80,9 +84,19 @@ interface Props {
 }
 
 const importedLocales = new Set();
+
+const ADMIN_PROJECT_PAGE_REGEX =
+  /\/admin\/projects\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/;
 async function importMomentLocaleFilePromise(momentLocale: string) {
   try {
     await localeGetter(momentLocale);
+    if (momentLocale === 'de-at') {
+      // date-fns' and moment's de-at locales render January as "Jänner" (wide)
+      // and "Jän." (short); we display "Januar"/"Jan." instead. This overrides
+      // moment's copy once its locale file is loaded (the date-fns counterpart
+      // lives in i18n/de-AT.ts).
+      patchMomentDeAtJanuary();
+    }
     importedLocales.add(momentLocale);
   } catch (error) {
     console.error(`Error processing locale: ${momentLocale}`, error);
@@ -91,7 +105,7 @@ async function importMomentLocaleFilePromise(momentLocale: string) {
 
 const App = ({ children }: Props) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
-  const location = useLocation();
+  const { pathname, searchStr } = useLocation();
   const { formatMessage } = useIntl();
   const locale = useLocale();
   const momentLocale = appLocalesMomentPairs[locale] || 'en';
@@ -102,6 +116,12 @@ const App = ({ children }: Props) => {
   const { data: authUser } = useAuthUser();
   const appContainerClassName =
     isAdmin(authUser) || isModerator(authUser) ? 'admin-user-view' : '';
+
+  // A project page scrolls its own panes, so it locks the viewport. The other
+  // sections under /admin/projects/ (new, folders, spaces) are ordinary pages
+  // that have to keep scrolling, so match the project id rather than listing
+  // the section names — a name left off that list silently stops scrolling.
+  const lockViewport = ADMIN_PROJECT_PAGE_REGEX.test(pathname);
   const [
     userDeletedSuccessfullyModalOpened,
     setUserDeletedSuccessfullyModalOpened,
@@ -109,6 +129,32 @@ const App = ({ children }: Props) => {
   const [userSuccessfullyDeleted, setUserSuccessfullyDeleted] = useState(false);
 
   const redirectsEnabled = useFeatureFlag({ name: 'redirects' });
+
+  // Scroll focused elements to center on mobile/tablet
+  // This improves accessibility for keyboard and screen reader users and has been
+  // recommended by the Frameless accessibility auditor.
+  useEffect(() => {
+    if (!isSmallerThanTablet) return;
+    let timeoutId: number | undefined;
+
+    const handleFocus = (e: FocusEvent) => {
+      const target = e.target as HTMLElement;
+      // :focus-visible for only keyboard focus
+      if (!target.matches(':focus-visible')) return;
+      clearTimeout(timeoutId);
+      timeoutId = window.setTimeout(() => {
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
+    };
+
+    document.addEventListener('focusin', handleFocus, true);
+    return () => {
+      document.removeEventListener('focusin', handleFocus, true);
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [isSmallerThanTablet]);
 
   useEffect(() => {
     moment.locale(momentLocale);
@@ -154,10 +200,12 @@ const App = ({ children }: Props) => {
         document.head.appendChild(script);
 
         script.onload = function () {
-          window.Weglot.initialize({
-            api_key:
-              appConfiguration.data.attributes.settings.core.weglot_api_key,
-          });
+          const apiKey =
+            appConfiguration.data.attributes.settings.core.weglot_api_key;
+          if (window.Weglot && apiKey) {
+            window.Weglot.initialize({ api_key: apiKey });
+            window.dispatchEvent(new Event(WEGLOT_READY_EVENT));
+          }
         };
 
         script.src = 'https://cdn.weglot.com/weglot.min.js';
@@ -186,7 +234,13 @@ const App = ({ children }: Props) => {
           if (fontName !== undefined && fontURL !== undefined) {
             WebfontLoader.load({
               custom: {
-                families: [fontName],
+                families: [
+                  fontName,
+                  // Support all common font variations (webfontloader will only load what exists in the CSS).
+                  // n3=normal 300, n4=normal 400, n5=normal 500, n6=normal 600, n7=normal 700, n8=normal 800
+                  // i3=italic 300, i4=italic 400, i5=italic 500, i6=italic 600, i7=italic 700, i8=italic 800
+                  `${fontName}:n3,n4,n5,n6,n7,n8,i3,i4,i5,i6,i7,i8`,
+                ],
                 urls: [fontURL],
               },
             });
@@ -199,7 +253,6 @@ const App = ({ children }: Props) => {
 
   useEffect(() => {
     const handleCustomRedirect = () => {
-      const { pathname } = location;
       const urlSegments = pathname.replace(/^\/+/g, '').split('/');
       const localeInUrl = urlSegments[0];
       const pathnameWithoutLocale = removeLocale(pathname).pathname?.replace(
@@ -215,7 +268,11 @@ const App = ({ children }: Props) => {
             locales.includes(localeInUrl) &&
             pathnameWithoutLocale === rule.path
           ) {
-            window.location.href = rule.target;
+            const separator = rule.target.includes('?') ? '&' : '?';
+            const targetUrl = searchStr
+              ? `${rule.target}${separator}${searchStr.slice(1)}`
+              : rule.target;
+            window.location.href = targetUrl;
           }
         });
       }
@@ -224,7 +281,7 @@ const App = ({ children }: Props) => {
     if (redirectsEnabled) {
       handleCustomRedirect();
     }
-  }, [redirectsEnabled, appConfiguration, location]);
+  }, [redirectsEnabled, appConfiguration, searchStr, pathname]);
 
   useEffect(() => {
     const subscriptions = [
@@ -258,10 +315,10 @@ const App = ({ children }: Props) => {
   }, [authUser]);
 
   useEffect(() => {
-    trackPage(location.pathname);
-  }, [location.pathname]);
+    trackPage(pathname);
+  }, [pathname]);
 
-  const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
+  const urlSegments = pathname.replace(/^\/+/g, '').split('/');
 
   // Redirect from /initiatives/:slug to /ideas/:slug to make sure old initiative links still work
   useEffect(() => {
@@ -275,38 +332,43 @@ const App = ({ children }: Props) => {
     setUserDeletedSuccessfullyModalOpened(false);
   };
 
-  const isAdminPage = isPage('admin', location.pathname);
-  const isPagesAndMenuPage = isPage('pages_menu', location.pathname);
-  const isIdeaFormPage = isPage('idea_form', location.pathname);
-  const isIdeaEditPage = isPage('idea_edit', location.pathname);
-  const isEventPage = isPage('event_page', location.pathname);
-  const isNativeSurveyPage = isPage('native_survey', location.pathname);
-
+  const isAdminPage = isPage('admin', pathname);
+  const isPagesAndMenuPage = isPage('pages_menu', pathname);
+  const isHomePageBuilderRoute = pathname.includes(HOMEPAGE_BUILDER_PATH);
+  const isIdeaFormPage = isPage('idea_form', pathname);
+  const isIdeaEditPage = isPage('idea_edit', pathname);
+  const isNativeSurveyPage = isPage('native_survey', pathname);
+  const isIdeasFeedPage = isPage('ideas_feed', pathname);
   const theme = getTheme(appConfiguration);
   const showFooter =
-    !isAdminPage && !isIdeaFormPage && !isIdeaEditPage && !isNativeSurveyPage;
-  const { pathname } = removeLocale(location.pathname);
+    !isAdminPage &&
+    !isIdeaFormPage &&
+    !isIdeaEditPage &&
+    !isNativeSurveyPage &&
+    !isIdeasFeedPage;
+  const { pathname: pathnameWithoutLocale } = removeLocale(pathname);
   const isAuthenticationPending = authUser === undefined;
   const canAccessRoute = usePermission({
     item: {
       type: 'route',
-      path: pathname,
+      path: pathnameWithoutLocale,
     },
     action: 'access',
   });
 
   const showFrontOfficeNavbar = () => {
     if (isAdminPage) {
-      if (!isPagesAndMenuPage) return false;
+      if (!isPagesAndMenuPage || isHomePageBuilderRoute) return false;
     }
 
     // citizen
-    if (isNativeSurveyPage || isIdeaFormPage || isIdeaEditPage) return false;
-
-    if (isSmallerThanTablet) {
-      if (isEventPage || isIdeaShowPage(urlSegments)) {
-        return false;
-      }
+    if (
+      isNativeSurveyPage ||
+      isIdeaFormPage ||
+      isIdeaEditPage ||
+      isIdeasFeedPage
+    ) {
+      return false;
     }
 
     return true;
@@ -341,6 +403,8 @@ const App = ({ children }: Props) => {
             position="relative"
             background={colors.white}
             minHeight="100vh"
+            height={lockViewport ? '100vh' : undefined}
+            overflow={lockViewport ? 'hidden' : undefined}
           >
             <Meta />
             <ErrorBoundary>
@@ -352,6 +416,9 @@ const App = ({ children }: Props) => {
                 closeUserDeletedModal={closeUserDeletedModal}
                 userSuccessfullyDeleted={userSuccessfullyDeleted}
               />
+              <Suspense fallback={null}>
+                <SessionExpiryModal />
+              </Suspense>
             </ErrorBoundary>
             <ErrorBoundary>
               <Authentication />
@@ -362,6 +429,14 @@ const App = ({ children }: Props) => {
             {showFrontOfficeNavbar() && (
               <ErrorBoundary>
                 <MainHeader />
+              </ErrorBoundary>
+            )}
+            {/* The navbar carries the switcher, and the survey and idea forms
+                carry it in their own footer. The ideas feed hides the navbar
+                and has no footer, so there it floats. */}
+            {isIdeasFeedPage && (
+              <ErrorBoundary>
+                <WeglotSwitcher floating />
               </ErrorBoundary>
             )}
             {!isAuthenticationPending && (

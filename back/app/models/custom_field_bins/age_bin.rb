@@ -37,10 +37,6 @@ module CustomFieldBins
       birthyear_range.cover?(value)
     end
 
-    def filter_by_bin(scope)
-      scope.where("(custom_field_values->>'#{custom_field.key}')::integer IN (?)", birthyear_range)
-    end
-
     def self.generate_bins(custom_field)
       return if custom_field.custom_field_bins.any?
 
@@ -48,7 +44,7 @@ module CustomFieldBins
       # achieving statistically significant auto-insights at the expense of
       # detail
       [0, 20, 40, 60, 80, nil].each_cons(2) do |low, high|
-        create!(custom_field:, range: low...high)
+        find_or_create_by!(custom_field:, range: low...high)
       end
     end
 

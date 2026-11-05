@@ -40,9 +40,7 @@ module PublicApi
     def filter_by_publication_status(scope)
       return scope unless @publication_status
 
-      scope
-        .joins(:admin_publication)
-        .where(admin_publication: { publication_status: @publication_status })
+      scope.where(admin_publication: AdminPublication.with_status(@publication_status))
     end
 
     # Select only the projects that have all the specified topics.
@@ -50,10 +48,10 @@ module PublicApi
       return scope unless @topic_ids
 
       scope
-        .joins(:topics)
-        .where(topics: { id: @topic_ids })
+        .joins(:global_topics)
+        .where(global_topics: { id: @topic_ids })
         .group('projects.id')
-        .having('COUNT(topics.id) = ?', @topic_ids.size)
+        .having('COUNT(global_topics.id) = ?', @topic_ids.size)
     end
 
     def filter_by_area_ids(scope)

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
 
 import { AutoTaggingMethod } from 'api/analysis_background_tasks/types';
 import useLaunchAnalysisAutotagging from 'api/analysis_background_tasks/useLaunchAnalysisAutotagging';
@@ -9,6 +8,7 @@ import useLaunchAnalysisAutotagging from 'api/analysis_background_tasks/useLaunc
 import GoBackButton from 'components/UI/GoBackButton';
 
 import { trackEventByName } from 'utils/analytics';
+import { useParams } from 'utils/router';
 
 import useAnalysisFilterParams from '../../hooks/useAnalysisFilterParams';
 import tracks from '../../tracks';
@@ -25,10 +25,12 @@ const AutotaggingModal = ({ onCloseModal }: { onCloseModal: () => void }) => {
     'all'
   );
 
-  const { analysisId } = useParams() as { analysisId: string };
+  const { analysisId } = useParams({
+    from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
+  });
   const {
     mutate: launchTagging,
-    isLoading,
+    isPending,
     variables,
   } = useLaunchAnalysisAutotagging();
   const currentFilters = useAnalysisFilterParams();
@@ -37,7 +39,7 @@ const AutotaggingModal = ({ onCloseModal }: { onCloseModal: () => void }) => {
     autoTaggingMethod: AutoTaggingMethod,
     tagsIds?: string[]
   ) => {
-    if (isLoading) return;
+    if (isPending) return;
 
     if (step === 'step1' && autoTaggingMethod === 'label_classification') {
       setStep('step2LabelClassification');
@@ -69,7 +71,7 @@ const AutotaggingModal = ({ onCloseModal }: { onCloseModal: () => void }) => {
       {step === 'step1' && (
         <Step1
           onSelectMethod={handleOnSelectMethod}
-          isLoading={isLoading}
+          isLoading={isPending}
           loadingMethod={variables?.autoTaggingMethod}
           autoTaggingTarget={autoTaggingTarget}
           onChangeAutoTaggingTarget={(target) => setAutoTaggingTarget(target)}

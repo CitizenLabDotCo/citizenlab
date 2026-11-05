@@ -14,6 +14,20 @@ RSpec.describe Activity do
       end
     end
 
+    describe 'channel' do
+      it 'is valid when nil (the regular web/API path)' do
+        expect(build(:activity, channel: nil)).to be_valid
+      end
+
+      it "is valid when 'mcp'" do
+        expect(build(:activity, channel: 'mcp')).to be_valid
+      end
+
+      it 'is invalid for any other value' do
+        expect(build(:activity, channel: 'web')).to be_invalid
+      end
+    end
+
     describe '.management scope' do
       let(:admin) { create(:admin) }
       let(:moderator) { create(:user, roles: [{ type: 'project_moderator', project_id: SecureRandom.uuid }]) }
@@ -34,7 +48,7 @@ RSpec.describe Activity do
       let!(:a12) { create(:project_folder_deleted_activity, user: admin) }
 
       it "includes 'Management Feed' activities" do
-        expect(described_class.management).to match_array [a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12]
+        expect(described_class.management).to contain_exactly(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12)
       end
 
       it 'excludes activities where item_type is not in the MANAGEMENT_FILTERS' do
@@ -51,6 +65,16 @@ RSpec.describe Activity do
         expect(management_filters.find { |x| x[:item_type] == activity.item_type }).to be_present
         expect(management_filters.find { |x| x[:item_type] == activity.item_type }[:actions])
           .not_to include(activity.action)
+        expect(described_class.management).not_to include(activity)
+      end
+
+      it "includes Permission 'changed' activities" do
+        activity = create(:activity, item: create(:permission), action: 'changed', user: admin)
+        expect(described_class.management).to include(activity)
+      end
+
+      it "excludes Permission 'changed_permitted_by' activities" do
+        activity = create(:activity, item: create(:permission), action: 'changed_permitted_by', user: admin)
         expect(described_class.management).not_to include(activity)
       end
 

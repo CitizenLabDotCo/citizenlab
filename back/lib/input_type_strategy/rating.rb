@@ -1,0 +1,37 @@
+# frozen_string_literal: true
+
+module InputTypeStrategy
+  class Rating < Base
+    def supports_average?
+      true
+    end
+
+    def supports_linear_scale?
+      true
+    end
+
+    def supports_linear_scale_labels?
+      false
+    end
+
+    def supports_single_selection?
+      true
+    end
+
+    def answers_eq(answers, value)
+      answers.where("(value #>> '{}')::integer = ?", value)
+    end
+
+    def answers_one_of(answers, values)
+      answers.where("(value #>> '{}')::integer IN (?)", values)
+    end
+
+    def answers_gteq(answers, value)
+      answers.where("(value #>> '{}')::integer >= ?", value)
+    end
+
+    def answers_lteq(answers, value)
+      answers.where("(value #>> '{}')::integer <= ?", value)
+    end
+  end
+end

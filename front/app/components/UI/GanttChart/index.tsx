@@ -245,9 +245,9 @@ const GanttChart = ({
                 width="2px"
                 bg={colors.primary}
                 zIndex="2"
+                pointerEvents="none"
                 style={{
                   left: `${todayOffset * unitWidth - 1}px`,
-                  pointerEvents: 'none',
                 }}
               >
                 <Box

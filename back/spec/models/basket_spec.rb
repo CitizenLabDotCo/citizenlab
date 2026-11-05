@@ -3,9 +3,64 @@
 require 'rails_helper'
 
 RSpec.describe Basket do
+  it_behaves_like 'location_trackable_participation'
+
   context 'Default factory' do
     it 'is valid' do
       expect(build(:basket)).to be_valid
+    end
+  end
+
+  context 'uniqueness' do
+    it 'does not allow duplicate baskets for the same user and phase' do
+      user = create(:user)
+      phase = create(:budgeting_phase)
+
+      create(:basket, user: user, phase: phase)
+
+      # Attempting to create a second basket for the same user and phase should fail
+      duplicate_basket = build(:basket, user: user, phase: phase)
+      expect(duplicate_basket.save).to be false
+      expect(duplicate_basket.errors.details).to eq(user_id: [{ error: :taken, value: user.id }])
+      expect(duplicate_basket.errors.messages).to eq(user_id: ['has already been taken'])
+    end
+
+    it 'allows multiple baskets for the same user in different phases' do
+      user = create(:user)
+      phase1 = create(:budgeting_phase)
+      phase2 = create(:budgeting_phase)
+
+      basket1 = create(:basket, user: user, phase: phase1)
+      basket2 = create(:basket, user: user, phase: phase2)
+
+      expect(basket1).to be_valid
+      expect(basket2).to be_valid
+    end
+
+    it 'allows multiple baskets for different users in the same phase' do
+      user1 = create(:user)
+      user2 = create(:user)
+      phase = create(:budgeting_phase)
+
+      basket1 = create(:basket, user: user1, phase: phase)
+      basket2 = create(:basket, user: user2, phase: phase)
+
+      expect(basket1).to be_valid
+      expect(basket2).to be_valid
+    end
+
+    it 'allows multiple baskets with NULL user_id for the same phase' do
+      phase = create(:budgeting_phase)
+
+      # Create first basket without user (simulating deleted user)
+      basket1 = described_class.new(user_id: nil, phase: phase)
+      expect(basket1.save).to be true
+
+      # Create second basket without user (simulating another deleted user)
+      basket2 = described_class.new(user_id: nil, phase: phase)
+      expect(basket2.save).to be true
+
+      expect(described_class.where(user_id: nil, phase: phase).count).to eq 2
     end
   end
 
@@ -84,20 +139,6 @@ RSpec.describe Basket do
     end
   end
 
-  context "when the basket's project is updated to non-budgeting participation method" do
-    let(:project) { create(:single_phase_budgeting_project, phase_attrs: { voting_min_total: 200 }) }
-    let!(:basket) { create(:basket, ideas: [idea], phase: project.phases.first, submitted_at: Time.now) }
-    let(:idea) { create(:idea, budget: 100, project: project, phases: project.phases) }
-
-    # Check the basket remains valid and thus won't fail data consistency checks, as would be the case,
-    # for example, if we enforce validation that the phase is budgeting.
-    it 'the basket remains valid' do
-      project.phases.first.update!(participation_method: 'ideation')
-      basket.reload
-      expect(basket).to be_valid
-    end
-  end
-
   context 'budgeting' do
     let(:project) { create(:single_phase_budgeting_project) }
     let(:idea) { create(:idea, project: project, budget: 5) }
@@ -166,6 +207,7 @@ RSpec.describe Basket do
   describe '#update_counts' do
     context 'existing basket on a project voting phase' do
       let(:project) { create(:project_with_past_ideation_and_active_budgeting_phase) }
+      let(:ideation_phase) { project.phases.find { |p| p.participation_method == 'ideation' } }
       let(:current_phase) { TimelineService.new.current_phase(project) }
       let(:basket) { create(:basket, phase: current_phase, submitted_at: nil) }
       let(:ideas) { create_list(:idea, 2, project: project, phases: project.phases) }
@@ -182,12 +224,12 @@ RSpec.describe Basket do
           expect(ideas[1].reload.baskets_count).to eq 1
           expect(ideas[0].reload.votes_count).to eq 10
           expect(ideas[1].reload.votes_count).to eq 10
-          expect(ideas[0].ideas_phases[0].reload.baskets_count).to eq 0
-          expect(ideas[1].ideas_phases[0].reload.baskets_count).to eq 0
-          expect(ideas[0].ideas_phases[1].reload.baskets_count).to eq 1
-          expect(ideas[1].ideas_phases[1].reload.baskets_count).to eq 1
-          expect(ideas[0].ideas_phases[1].reload.votes_count).to eq 10
-          expect(ideas[1].ideas_phases[1].reload.votes_count).to eq 10
+          expect(ideas[0].ideas_phases.find_by(phase: ideation_phase).reload.baskets_count).to eq 0
+          expect(ideas[1].ideas_phases.find_by(phase: ideation_phase).reload.baskets_count).to eq 0
+          expect(ideas[0].ideas_phases.find_by(phase: current_phase).reload.baskets_count).to eq 1
+          expect(ideas[1].ideas_phases.find_by(phase: current_phase).reload.baskets_count).to eq 1
+          expect(ideas[0].ideas_phases.find_by(phase: current_phase).reload.votes_count).to eq 10
+          expect(ideas[1].ideas_phases.find_by(phase: current_phase).reload.votes_count).to eq 10
           expect(current_phase.reload.baskets_count).to eq 1
           expect(current_phase.reload.votes_count).to eq 20
           expect(project.reload.votes_count).to eq 20
@@ -201,12 +243,12 @@ RSpec.describe Basket do
           expect(ideas[1].reload.baskets_count).to eq 0
           expect(ideas[0].reload.votes_count).to eq 0
           expect(ideas[1].reload.votes_count).to eq 0
-          expect(ideas[0].ideas_phases[0].reload.baskets_count).to eq 0
-          expect(ideas[1].ideas_phases[0].reload.baskets_count).to eq 0
-          expect(ideas[0].ideas_phases[1].reload.baskets_count).to eq 0
-          expect(ideas[1].ideas_phases[1].reload.baskets_count).to eq 0
-          expect(ideas[0].ideas_phases[1].reload.votes_count).to eq 0
-          expect(ideas[1].ideas_phases[1].reload.votes_count).to eq 0
+          expect(ideas[0].ideas_phases.find_by(phase: ideation_phase).reload.baskets_count).to eq 0
+          expect(ideas[1].ideas_phases.find_by(phase: ideation_phase).reload.baskets_count).to eq 0
+          expect(ideas[0].ideas_phases.find_by(phase: current_phase).reload.baskets_count).to eq 0
+          expect(ideas[1].ideas_phases.find_by(phase: current_phase).reload.baskets_count).to eq 0
+          expect(ideas[0].ideas_phases.find_by(phase: current_phase).reload.votes_count).to eq 0
+          expect(ideas[1].ideas_phases.find_by(phase: current_phase).reload.votes_count).to eq 0
           expect(current_phase.reload.baskets_count).to eq 0
           expect(project.reload.baskets_count).to eq 0
         end
@@ -218,14 +260,40 @@ RSpec.describe Basket do
           basket.update_counts!
           expect(ideas[0].reload.baskets_count).to eq 0
           expect(ideas[1].reload.baskets_count).to eq 0
-          expect(ideas[0].ideas_phases[0].reload.baskets_count).to eq 0
-          expect(ideas[1].ideas_phases[0].reload.baskets_count).to eq 0
-          expect(ideas[0].ideas_phases[1].reload.baskets_count).to eq 0
-          expect(ideas[1].ideas_phases[1].reload.baskets_count).to eq 0
+          expect(ideas[0].ideas_phases.find_by(phase: ideation_phase).reload.baskets_count).to eq 0
+          expect(ideas[1].ideas_phases.find_by(phase: ideation_phase).reload.baskets_count).to eq 0
+          expect(ideas[0].ideas_phases.find_by(phase: current_phase).reload.baskets_count).to eq 0
+          expect(ideas[1].ideas_phases.find_by(phase: current_phase).reload.baskets_count).to eq 0
           expect(current_phase.reload.baskets_count).to eq 0
           expect(current_phase.reload.votes_count).to eq 0
           expect(project.reload.baskets_count).to eq 0
           expect(project.reload.votes_count).to eq 0
+        end
+      end
+
+      # Counter maintenance must not depend on the phase being valid on unrelated attributes.
+      # A phase can be persisted in an invalid state by an unvalidated bulk write, as the
+      # 20260223103753 backfill did when it omitted 'map' from the `available_views` it created.
+      context 'when the phase is invalid on an unrelated attribute' do
+        before do
+          basket.update!(ideas: ideas, submitted_at: Time.zone.now)
+          basket.baskets_ideas.update_all(votes: 10)
+
+          current_phase.update_column(:presentation_mode, 'map')
+          current_phase.update_column(:available_views, ['card'])
+        end
+
+        it 'is invalid, to confirm the setup' do
+          expect(current_phase.reload).not_to be_valid
+        end
+
+        it 'still updates the counts of the phase and the project' do
+          expect { basket.update_counts! }.not_to raise_error
+
+          expect(current_phase.reload.baskets_count).to eq 1
+          expect(current_phase.reload.votes_count).to eq 20
+          expect(project.reload.baskets_count).to eq 1
+          expect(project.reload.votes_count).to eq 20
         end
       end
     end
@@ -244,10 +312,10 @@ RSpec.describe Basket do
           expect(ideas[1].reload.baskets_count).to eq 1
           expect(ideas[0].reload.votes_count).to eq 4
           expect(ideas[1].reload.votes_count).to eq 4
-          expect(ideas[0].ideas_phases[0].reload.baskets_count).to eq 1
-          expect(ideas[1].ideas_phases[0].reload.baskets_count).to eq 1
-          expect(ideas[0].ideas_phases[0].reload.votes_count).to eq 4
-          expect(ideas[1].ideas_phases[0].reload.votes_count).to eq 4
+          expect(ideas[0].ideas_phases.find_by(phase: current_phase).reload.baskets_count).to eq 1
+          expect(ideas[1].ideas_phases.find_by(phase: current_phase).reload.baskets_count).to eq 1
+          expect(ideas[0].ideas_phases.find_by(phase: current_phase).reload.votes_count).to eq 4
+          expect(ideas[1].ideas_phases.find_by(phase: current_phase).reload.votes_count).to eq 4
           expect(current_phase.reload.baskets_count).to eq 1
           expect(current_phase.reload.votes_count).to eq 8
           expect(project.reload.baskets_count).to eq 1
@@ -263,14 +331,24 @@ RSpec.describe Basket do
           expect(ideas[1].reload.baskets_count).to eq 0
           expect(ideas[0].reload.votes_count).to eq 0
           expect(ideas[1].reload.votes_count).to eq 0
-          expect(ideas[0].ideas_phases[0].reload.baskets_count).to eq 0
-          expect(ideas[1].ideas_phases[0].reload.baskets_count).to eq 0
-          expect(ideas[0].ideas_phases[0].reload.votes_count).to eq 0
-          expect(ideas[1].ideas_phases[0].reload.votes_count).to eq 0
+          expect(ideas[0].ideas_phases.find_by(phase: current_phase).reload.baskets_count).to eq 0
+          expect(ideas[1].ideas_phases.find_by(phase: current_phase).reload.baskets_count).to eq 0
+          expect(ideas[0].ideas_phases.find_by(phase: current_phase).reload.votes_count).to eq 0
+          expect(ideas[1].ideas_phases.find_by(phase: current_phase).reload.votes_count).to eq 0
           expect(current_phase.reload.baskets_count).to eq 0
           expect(current_phase.reload.votes_count).to eq 0
           expect(project.reload.baskets_count).to eq 0
           expect(project.reload.votes_count).to eq 0
+        end
+      end
+
+      context 'when votes_count exceeds 4-byte integer limit' do
+        it 'stores the votes_count without overflow on the phase and project' do
+          basket = create(:basket, phase: project.phases.first, ideas: ideas, submitted_at: Time.zone.now)
+          basket.baskets_ideas.update_all(votes: 1_500_000_000)
+          basket.update_counts!
+          expect(current_phase.reload.votes_count).to eq 3_000_000_000
+          expect(project.reload.votes_count).to eq 3_000_000_000
         end
       end
     end

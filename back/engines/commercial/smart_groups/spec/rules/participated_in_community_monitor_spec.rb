@@ -40,7 +40,7 @@ describe SmartGroups::Rules::ParticipatedInCommunityMonitor do
     it "correctly filters on 'not_take_survey' predicate" do
       rule = described_class.new('not_taken_survey')
       expect(rule.filter(User).count).to eq 2
-      expect(rule.filter(User).pluck(:id)).to match_array [users[1].id, users[2].id]
+      expect(rule.filter(User).pluck(:id)).to contain_exactly(users[1].id, users[2].id)
     end
   end
 end

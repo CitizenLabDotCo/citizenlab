@@ -14,7 +14,7 @@ module IdeaCustomFields
           next unless project.custom_form
 
           ::IdeaCustomFieldsService.new(project.custom_form)
-            .xlsx_exportable_fields
+            .exportable_fields
             .reject(&:built_in?)
         end
 
@@ -28,13 +28,13 @@ module IdeaCustomFields
       end
 
       def value_getter_for_custom_form_custom_field_columns(field, options)
-        if field.support_options?
+        if field.supports_options?
           lambda do |idea|
             title_multiloc_for idea, field, options
           end
         else
           lambda do |idea|
-            idea && idea.custom_field_values[field.key]
+            idea&.answer_for_key(field.key)&.value
           end
         end
       end

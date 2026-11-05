@@ -7,7 +7,7 @@ class IdeaPolicy < ApplicationPolicy
 
       if user&.admin?
         scope.all
-      elsif user&.project_or_folder_moderator? # We do this as a separate logic branch to avoid the moderatable_projects call for normal users
+      elsif user&.moderator? # We do this as a separate logic branch to avoid the moderatable_projects call for normal users
         scope
           .submitted_or_published.where(author: user)
           .or(scope.published.where_pmethod(&:supports_public_visibility?))
@@ -41,7 +41,7 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   def index_xlsx?
-    active? && (admin? || user&.project_moderator?)
+    active? && (admin? || user&.moderator?)
   end
 
   def index_mini?
@@ -54,27 +54,29 @@ class IdeaPolicy < ApplicationPolicy
 
   def create?
     return false if user&.blocked?
-    return true if record.draft?
     return true if active? && UserRoleService.new.can_moderate_project?(record.project, user)
-    return false if !active? && !record.participation_method_on_creation.supports_inputs_without_author?
 
-    reason = Permissions::ProjectPermissionsService.new(
-      record.project,
-      user,
-      request: record.request # Only present if pmethod.everyone_tracking_enabled? is true
-    ).denied_reason_for_action 'posting_idea'
+    phase = record.creation_phase_with_fallback
+    return false if !phase
+
+    reason = if record.draft?
+      draft_denied_reason(phase)
+    else
+      return false if !active? && !record.participation_method_on_creation.supports_inputs_without_author?
+
+      phase_posting_denied_reason(phase)
+    end
     raise_not_authorized(reason) if reason
 
     (!user || owner?) && policy_for(record.project).show?
   end
 
   def show?
+    return true if record.draft? && owner?
+
     if record.participation_method_on_creation.supports_public_visibility?
-      project_show = policy_for(record.project).show?
-      return true if project_show && %w[draft published].include?(record.publication_status)
+      return true if record.published? && policy_for(record.project).show?
       return true if record.cosponsors.include?(user)
-    elsif record.draft?
-      return true
     end
 
     active? && (owner? || UserRoleService.new.can_moderate_project?(record.project, user))
@@ -101,7 +103,7 @@ class IdeaPolicy < ApplicationPolicy
     posting_denied_reason = Permissions::IdeaPermissionsService.new(record, user).denied_reason_for_action permission_action
     raise_not_authorized(posting_denied_reason) if posting_denied_reason
 
-    true
+    policy_for(record.project).show?
   end
 
   def destroy?
@@ -109,6 +111,19 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   private
+
+  def draft_denied_reason(phase)
+    reason = phase_posting_denied_reason(phase)
+    Permissions::PhasePermissionsService::DEFERRABLE_DENIED_REASONS.include?(reason) ? nil : reason
+  end
+
+  def phase_posting_denied_reason(phase)
+    Permissions::PhasePermissionsService.new(
+      phase,
+      user,
+      request: record.request # Only present if pmethod.everyone_tracking_enabled? is true
+    ).denied_reason_for_action('posting_idea')
+  end
 
   def owner?
     user && record.author_id == user.id

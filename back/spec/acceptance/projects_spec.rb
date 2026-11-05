@@ -16,19 +16,34 @@ resource 'Projects' do
   shared_context 'PATCH project parameters' do
     with_options scope: :project do
       parameter :title_multiloc, 'The title of the project, as a multiloc string', required: true
-      parameter :description_multiloc, 'The description of the project, as a multiloc HTML string', required: true
       parameter :description_preview_multiloc, 'The description preview of the project, as a multiloc string'
       parameter :slug, 'The unique slug of the project'
       parameter :header_bg, 'Base64 encoded header image'
       parameter :area_ids, 'Array of ids of the associated areas'
-      parameter :topic_ids, 'Array of ids of the associated topics'
+      parameter :global_topic_ids, 'Array of ids of the associated global topics'
       parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(',')}.", required: false
       parameter :default_assignee_id, 'The user id of the admin or moderator that gets assigned to ideas by default. Set to null to default to unassigned', required: false
       parameter :folder_id, 'The ID of the project folder (can be set to nil for top-level projects)'
+      parameter :live_auto_input_topics_enabled, 'Whether the project should automatically detect topics and assign inputs to them. Defaults to false.', required: false
+      parameter :completed_setup_steps, "Steps of the admin setup checklist the manager has been through, a subset of #{Project::SETUP_STEPS.join(', ')}. Added to the steps already stored; steps can't be removed.", required: false
     end
 
     with_options scope: %i[project admin_publication_attributes] do
-      parameter :publication_status, "Describes the publication status of the project, either #{AdminPublication::PUBLICATION_STATUSES.join(',')}.", required: false
+      parameter :publication_status, <<~DESC.squish
+        The publication status of the project. 
+        Either #{AdminPublication::PUBLICATION_STATUSES.join(', ')}. Defaults to published.
+      DESC
+
+      parameter :scheduled_status, <<~DESC.squish
+        The publication status that the project is scheduled to transition to.
+        Either #{AdminPublication::PUBLICATION_STATUSES.join(', ')}. Must be set together with `scheduled_at`.
+        Set to null to cancel the schedule.
+      DESC
+
+      parameter :scheduled_at, <<~DESC.squish
+        The time at which the project is scheduled to transition to `scheduled_status`.
+        Must be set together with `scheduled_status`. Set to null to cancel the schedule.
+      DESC
     end
 
     ValidationErrorHelper.new.error_fields(self, Project)
@@ -37,15 +52,15 @@ resource 'Projects' do
   shared_context 'POST project parameters' do
     with_options scope: :project do
       parameter :title_multiloc, 'The title of the project, as a multiloc string', required: true
-      parameter :description_multiloc, 'The description of the project, as a multiloc HTML string', required: true
       parameter :description_preview_multiloc, 'The description preview of the project, as a multiloc string'
       parameter :slug, 'The unique slug of the project. If not given, it will be auto generated'
       parameter :header_bg, 'Base64 encoded header image'
       parameter :area_ids, 'Array of ids of the associated areas'
-      parameter :topic_ids, 'Array of ids of the associated topics'
+      parameter :global_topic_ids, 'Array of ids of the associated topics'
       parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(',')}. Defaults to public.", required: false
       parameter :folder_id, 'The ID of the project folder (can be set to nil for top-level projects)', required: false
       parameter :default_assignee_id, 'The user id of the admin or moderator that gets assigned to ideas by default. Defaults to unassigned', required: false
+      parameter :live_auto_input_topics_enabled, 'Whether the project should automatically detect topics and assign inputs to them. Defaults to false.', required: false
     end
 
     with_options scope: %i[project admin_publication_attributes] do
@@ -82,7 +97,6 @@ resource 'Projects' do
       parameter :areas, 'Filter by areas (AND)', required: false
       parameter :publication_statuses, 'Return only projects with the specified publication statuses (i.e. given an array of publication statuses); returns all projects by default', required: false
       parameter :filter_can_moderate, 'Filter out the projects the current_user is not allowed to moderate. False by default', required: false
-      parameter :filter_user_is_moderator_of, 'Filter out the projects the given user is moderator of (user id)', required: false
       parameter :filter_ids, 'Filter out only projects with the given list of IDs', required: false
       parameter :folder, 'Filter by folder (project folder id)', required: false
 
@@ -142,7 +156,7 @@ resource 'Projects' do
         do_request areas: [a1.id], publication_statuses: ['published']
 
         expect(json_response[:data].size).to eq 1
-        expect(json_response[:data].pluck(:id)).to match_array [p1.id]
+        expect(json_response[:data].pluck(:id)).to contain_exactly(p1.id)
       end
 
       example 'List all projects with all given areas', document: false do
@@ -164,7 +178,7 @@ resource 'Projects' do
 
         do_request areas: [a1.id, a2.id], publication_statuses: ['published']
         expect(json_response[:data].size).to eq 2
-        expect(json_response[:data].pluck(:id)).to match_array [p1.id, p2.id]
+        expect(json_response[:data].pluck(:id)).to contain_exactly(p1.id, p2.id)
       end
 
       example 'Admins can moderate all projects', document: false do
@@ -172,28 +186,10 @@ resource 'Projects' do
         assert_status 200
         expect(json_response[:data].size).to eq 4
       end
-
-      example 'List projects a specific user can moderate', document: false do
-        moderator = create(
-          :user,
-          roles: [
-            { type: 'project_moderator', project_id: @projects[0].id },
-            { type: 'project_moderator', project_id: @projects[1].id }
-          ]
-        )
-
-        do_request filter_user_is_moderator_of: moderator.id
-        assert_status 200
-        expect(json_response[:data].pluck(:id)).to match_array [@projects[0].id, @projects[1].id]
-      end
     end
 
     get 'web_api/v1/projects/:id' do
       let(:id) { @projects.first.id }
-
-      before do
-        Analytics::PopulateDimensionsService.populate_types
-      end
 
       example 'Get one project by id' do
         Permissions::PermissionsUpdateService.new.update_all_permissions
@@ -204,29 +200,9 @@ resource 'Projects' do
         expect(json_response.dig(:data, :type)).to eq 'project'
         expect(json_response.dig(:data, :attributes)).to include(
           slug: @projects.first.slug,
-          timeline_active: nil,
+          participation_status: nil,
           action_descriptors: {
-            posting_idea: { enabled: false, disabled_reason: 'project_inactive', future_enabled_at: nil },
-            commenting_idea: { enabled: false, disabled_reason: 'project_inactive' },
-            reacting_idea: {
-              enabled: false,
-              disabled_reason: 'project_inactive',
-              up: {
-                enabled: false,
-                disabled_reason: 'project_inactive'
-              },
-              down: {
-                enabled: false,
-                disabled_reason: 'project_inactive'
-              }
-            },
-            comment_reacting_idea: { enabled: false, disabled_reason: 'project_inactive' },
-            annotating_document: { enabled: false, disabled_reason: 'project_inactive' },
-            taking_survey: { enabled: false, disabled_reason: 'project_inactive' },
-            taking_poll: { enabled: false, disabled_reason: 'project_inactive' },
-            voting: { enabled: false, disabled_reason: 'project_inactive' },
-            attending_event: { enabled: true, disabled_reason: nil },
-            volunteering: { enabled: false, disabled_reason: 'project_inactive' }
+            attending_event: { enabled: true, disabled_reason: nil }
           },
           preview_token: an_instance_of(String)
         )
@@ -247,16 +223,19 @@ resource 'Projects' do
         expect(json_response.dig(:data, :relationships, :user_follower, :data, :id)).to eq followers.first.id
       end
 
-      example 'Get a project on a timeline project includes the current_phase', document: false do
+      example 'Get a project on a timeline project includes the current and highlighted phase', document: false do
         project = create(:project_with_current_phase)
         current_phase = project.phases[2]
         do_request id: project.id
         assert_status 200
+        expect(json_response.dig(:data, :attributes, :participation_status)).to eq 'active'
         expect(json_response.dig(:data, :relationships, :current_phase, :data, :id)).to eq current_phase.id
+        expect(json_response.dig(:data, :relationships, :highlighted_phase, :data, :id)).to eq current_phase.id
         expect(json_response[:included].pluck(:id)).to include(current_phase.id)
       end
 
       example 'Get a project includes the participants_count and avatars_count', document: false do
+        Analytics::PopulateDimensionsService.populate_types
         idea = create(:idea)
         project = idea.project
         do_request id: project.id
@@ -289,21 +268,21 @@ resource 'Projects' do
 
       describe do
         before do
-          create(:topic, code: 'nature', ordering: 0)
-          create(:topic, code: 'safety', ordering: 2)
-          create(:topic, code: 'mobility', ordering: 1)
+          create(:topic, ordering: 0)
+          create(:topic, ordering: 2)
+          create(:topic, ordering: 1)
         end
 
         let(:project) { build(:project) }
         let(:title_multiloc) { project.title_multiloc }
-        let(:description_multiloc) { project.description_multiloc }
         let(:description_preview_multiloc) { project.description_preview_multiloc }
         let(:header_bg) { file_as_base64 'header.jpg', 'image/jpeg' }
         let(:area_ids) { create_list(:area, 2).map(&:id) }
-        let(:topic_ids) { create_list(:topic, 2).map(&:id) }
+        let(:global_topic_ids) { create_list(:global_topic, 2).map(&:id) }
         let(:visible_to) { 'admins' }
         let(:publication_status) { 'published' }
         let(:default_assignee_id) { create(:admin).id }
+        let(:live_auto_input_topics_enabled) { true }
 
         example_request 'Create a timeline project' do
           assert_status 201
@@ -312,15 +291,15 @@ resource 'Projects' do
 
           expect(response_data[:attributes]).to include(
             title_multiloc: title_multiloc.symbolize_keys,
-            description_multiloc: description_multiloc.symbolize_keys,
             description_preview_multiloc: description_preview_multiloc.symbolize_keys,
             visible_to: visible_to,
             first_published_at: new_project.admin_publication.first_published_at.iso8601(3),
-            header_bg: be_present
+            header_bg: be_present,
+            live_auto_input_topics_enabled: live_auto_input_topics_enabled
           )
 
           expect(json_response.dig(:data, :relationships, :areas, :data).pluck(:id)).to match_array area_ids
-          expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
+          expect(json_response.dig(:data, :relationships, :global_topics, :data).pluck(:id)).to match_array global_topic_ids
           expect(json_response.dig(:data, :relationships, :default_assignee, :data, :id)).to eq default_assignee_id
 
           admin_publication_attrs = json_response[:included].find { |its| its[:type] == 'admin_publication' }[:attributes]
@@ -332,12 +311,28 @@ resource 'Projects' do
 
         example 'Create a project in a folder' do
           folder = create(:project_folder)
-          do_request folder_id: folder.id
+          do_request(project: { folder_id: folder.id })
           assert_status 201
+
           # New folder projects are added to the top
           expect(json_response[:included].find do |inc|
                    inc[:type] == 'admin_publication'
                  end.dig(:attributes, :ordering)).to eq 0
+
+          project = Project.find(json_response[:data][:id])
+          expect(project.folder_id).to eq folder.id
+          expect(project.space_id).to be_nil
+        end
+
+        example 'Create a project in a folder in a workspace' do
+          space = create(:space)
+          folder = create(:project_folder, space: space)
+          do_request(project: { folder_id: folder.id })
+          assert_status 201
+
+          project = Project.find(json_response[:data][:id])
+          expect(project.folder_id).to eq folder.id
+          expect(project.space_id).to eq folder.space.id
         end
       end
     end
@@ -345,117 +340,455 @@ resource 'Projects' do
     patch 'web_api/v1/projects/:id' do
       include_context 'PATCH project parameters'
 
-      before { @project = create(:project) }
+      context do
+        before { @project = create(:project) }
 
-      let(:id) { @project.id }
-      let(:title_multiloc) { { 'en' => 'Changed title' } }
-      let(:description_multiloc) { { 'en' => 'Changed body' } }
-      let(:description_preview_multiloc) { @project.description_preview_multiloc }
-      let(:slug) { 'changed-title' }
-      let(:header_bg) { file_as_base64 'header.jpg', 'image/jpeg' }
-      let(:area_ids) { create_list(:area, 2).map(&:id) }
-      let(:topic_ids) { create_list(:topic, 2).map(&:id) }
-      let(:visible_to) { 'groups' }
-      let(:publication_status) { 'archived' }
-      let(:default_assignee_id) { create(:admin).id }
+        let(:id) { @project.id }
+        let(:title_multiloc) { { 'en' => 'Changed title' } }
+        let(:description_preview_multiloc) { @project.description_preview_multiloc }
+        let(:slug) { 'changed-title' }
+        let(:header_bg) { file_as_base64 'header.jpg', 'image/jpeg' }
+        let(:area_ids) { create_list(:area, 2).map(&:id) }
+        let(:global_topic_ids) { create_list(:global_topic, 2).map(&:id) }
+        let(:visible_to) { 'groups' }
+        let(:publication_status) { 'archived' }
+        let(:default_assignee_id) { create(:admin).id }
+        let(:live_auto_input_topics_enabled) { true }
 
-      example 'Update a project' do
-        old_publcation_ids = AdminPublication.ids
-        do_request
+        example 'Update a project' do
+          old_publcation_ids = AdminPublication.ids
+          do_request
 
-        assert_status 200
-        # admin publications should not be replaced, but rather should be updated
-        expect(AdminPublication.ids).to match_array old_publcation_ids
-        expect(json_response.dig(:data, :attributes, :title_multiloc, :en)).to eq 'Changed title'
-        expect(json_response.dig(:data, :attributes, :description_multiloc, :en)).to eq 'Changed body'
-        expect(json_response.dig(:data, :attributes, :description_preview_multiloc).stringify_keys).to match description_preview_multiloc
-        expect(json_response.dig(:data, :attributes, :slug)).to eq 'changed-title'
-        expect(json_response.dig(:data, :relationships, :areas, :data).pluck(:id)).to match_array area_ids
-        expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
-        expect(json_response.dig(:data, :attributes, :visible_to)).to eq 'groups'
-        expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :publication_status)).to eq 'archived'
-        expect(json_response.dig(:data, :relationships, :default_assignee, :data, :id)).to eq default_assignee_id
-      end
+          assert_status 200
+          # admin publications should not be replaced, but rather should be updated
+          expect(AdminPublication.ids).to match_array old_publcation_ids
+          expect(json_response.dig(:data, :attributes, :title_multiloc, :en)).to eq 'Changed title'
+          expect(json_response.dig(:data, :attributes, :description_preview_multiloc).stringify_keys).to match description_preview_multiloc
+          expect(json_response.dig(:data, :attributes, :slug)).to eq 'changed-title'
+          expect(json_response.dig(:data, :relationships, :areas, :data).pluck(:id)).to match_array area_ids
+          expect(json_response.dig(:data, :relationships, :global_topics, :data).pluck(:id)).to match_array global_topic_ids
+          expect(json_response.dig(:data, :attributes, :visible_to)).to eq 'groups'
+          expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :publication_status)).to eq 'archived'
+          expect(json_response.dig(:data, :relationships, :default_assignee, :data, :id)).to eq default_assignee_id
+          expect(json_response.dig(:data, :attributes, :live_auto_input_topics_enabled)).to be true
+        end
 
-      example 'Add a project to a folder' do
-        folder = create(:project_folder)
+        example 'Mark a setup step as gone through' do
+          do_request(project: { completed_setup_steps: %w[share] })
 
-        do_request(project: { folder_id: folder.id })
-        @project.reload
+          assert_status 200
+          expect(json_response.dig(:data, :attributes, :completed_setup_steps)).to eq ['share']
+          expect(@project.reload.completed_setup_steps).to eq ['share']
+        end
 
-        expect(@project.folder_id).to eq folder.id
-        # Projects moved into folders are added to the top
-        expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :ordering)).to eq 0
-      end
+        example 'Marking a setup step keeps the steps already done', document: false do
+          @project.update!(completed_setup_steps: %w[page])
+          do_request(project: { completed_setup_steps: %w[settings] })
 
-      example 'Remove a project from a folder' do
-        create(:project_folder, projects: [@project])
+          assert_status 200
+          expect(@project.reload.completed_setup_steps).to eq %w[page settings]
+        end
 
-        do_request(project: { folder_id: nil })
-        @project.reload
+        example '[error] Mark an unknown setup step as gone through', document: false do
+          do_request(project: { completed_setup_steps: %w[not-a-step] })
 
-        expect(@project.folder_id).to be_nil
-        # Projects moved out of folders are added to the top
-        expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :ordering)).to eq 0
-      end
+          assert_status 422
+        end
 
-      example 'Move a project from one folder to another' do
-        old_folder = create(:project_folder, projects: [@project])
-        new_folder = create(:project_folder)
-        old_folder_moderators = create_list(:project_folder_moderator, 2, project_folders: [old_folder])
-        new_folder_moderators = create_list(:project_folder_moderator, 3, project_folders: [new_folder])
+        example 'Add a project to a folder' do
+          folder = create(:project_folder)
 
-        do_request(project: { folder_id: new_folder.id })
-        @project.reload
+          do_request(project: { folder_id: folder.id })
+          @project.reload
 
-        assert_status 200
-        expect(@project.folder_id).to eq new_folder.id
-        expect(@project.admin_publication.parent.id).to eq new_folder.admin_publication.id
+          expect(@project.folder_id).to eq folder.id
+          # Projects moved into folders are added to the top
+          expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :ordering)).to eq 0
+        end
 
-        project_moderators = User.project_moderator(@project.id)
-        expect(project_moderators.pluck(:id)).not_to match_array old_folder_moderators.pluck(:id)
-        expect(project_moderators.pluck(:id)).to match_array new_folder_moderators.pluck(:id)
-      end
+        context 'when space involved' do
+          context 'when project not in folder and not in space' do
+            before do
+              @project.update!(folder_id: nil, space_id: nil)
+            end
 
-      example '[error] Put a project in a non-existing folder' do
-        do_request(project: { folder_id: 'dinosaur' })
-        expect(response_status).to eq 404
-      end
+            example 'move project to a space' do
+              space = create(:space)
+              do_request(project: { space_id: space.id })
 
-      example 'Clear all areas', document: false do
-        @project.update!(area_ids: area_ids)
-        expect(@project.areas.size).to eq 2
-        do_request(project: { area_ids: [] })
-        expect(json_response.dig(:data, :relationships, :areas, :data).size).to eq 0
-      end
+              expect(response_status).to eq 200
+              expect(json_response[:data][:attributes][:space_id]).to eq space.id
+            end
 
-      example 'Clear all topics', document: false do
-        @project.update!(topic_ids: topic_ids)
-        expect(@project.topics.size).to eq 2
-        do_request(project: { topic_ids: [] })
-        expect(json_response.dig(:data, :relationships, :topics, :data).size).to eq 0
-      end
+            example 'Add a project to a folder in a space' do
+              space = create(:space)
+              folder = create(:project_folder, space: space)
 
-      example 'Set default assignee to unassigned', document: false do
-        @project.update!(default_assignee: create(:admin))
-        do_request(project: { default_assignee_id: nil })
-        expect(json_response.dig(:data, :relationships, :default_assignee, :data, :id)).to be_nil
-      end
+              # folder= method will sync the project space to the folder space
+              do_request(project: { folder_id: folder.id })
+              expect(response_status).to eq 200
 
-      describe do
-        example 'The header image can be removed' do
-          @project.update!(header_bg: Rails.root.join('spec/fixtures/header.jpg').open)
-          expect(@project.reload.header_bg_url).to be_present
-          do_request project: { header_bg: nil }
-          expect(@project.reload.header_bg_url).to be_nil
+              @project.reload
+
+              expect(@project.folder_id).to eq folder.id
+              expect(json_response[:data][:attributes][:space_id]).to eq space.id
+            end
+
+            example 'Add a project to a folder not in a space' do
+              folder = create(:project_folder, space: nil)
+
+              do_request(project: { folder_id: folder.id })
+              expect(response_status).to eq 200
+
+              @project.reload
+
+              expect(@project.folder_id).to eq folder.id
+              expect(json_response[:data][:attributes][:space_id]).to be_nil
+            end
+          end
+
+          context 'when project not in space and in folder not in space' do
+            before do
+              @folder = create(:project_folder, space: nil, projects: [@project])
+            end
+
+            example 'Remove the project from the folder' do
+              do_request(project: { folder_id: nil })
+              expect(response_status).to eq 200
+
+              @project.reload
+
+              expect(@project.folder_id).to be_nil
+              expect(json_response[:data][:attributes][:space_id]).to be_nil
+            end
+
+            example '[Error] Add the project to a space' do
+              space = create(:space)
+              do_request(project: { space_id: space.id })
+
+              expect(response_status).to eq 422
+              expect(json_response[:errors][:space_id]).to include(
+                { error: 'project space must match the space of its folder' }
+              )
+
+              @project.reload
+              expect(@project.folder_id).not_to be_nil
+            end
+
+            example 'Add the project to a folder in a space' do
+              space = create(:space)
+              folder2 = create(:project_folder, space: space)
+
+              do_request(project: { folder_id: folder2.id })
+              expect(response_status).to eq 200
+
+              # folder= method will sync the project space to the folder space
+              expect(response_status).to eq 200
+              expect(json_response[:data][:attributes][:space_id]).to eq space.id
+
+              @project.reload
+              expect(@project.folder_id).to eq folder2.id
+            end
+          end
+
+          context 'when project in space and not in folder' do
+            before do
+              @space = create(:space)
+              @project.update!(space_id: @space.id)
+            end
+
+            example 'Add the project to a folder in the same space' do
+              folder = create(:project_folder, space: @space)
+
+              do_request(project: { folder_id: folder.id })
+              expect(response_status).to eq 200
+
+              @project.reload
+
+              expect(@project.folder_id).to eq folder.id
+              expect(json_response[:data][:attributes][:space_id]).to eq @space.id
+            end
+
+            example 'Add the project to a folder in another space' do
+              space2 = create(:space)
+              folder = create(:project_folder, space: space2)
+
+              do_request(project: { folder_id: folder.id })
+              expect(response_status).to eq 200
+
+              # folder= method will sync the project space to the folder space
+              expect(response_status).to eq 200
+              expect(json_response[:data][:attributes][:space_id]).to eq space2.id
+
+              @project.reload
+              expect(@project.folder_id).to eq folder.id
+            end
+
+            example 'Add the project to a folder not in a space' do
+              folder = create(:project_folder, space: nil)
+
+              do_request(project: { folder_id: folder.id })
+              expect(response_status).to eq 200
+
+              # folder= method will sync the project space to the folder space (nil)
+              expect(response_status).to eq 200
+              expect(json_response[:data][:attributes][:space_id]).to be_nil
+
+              @project.reload
+              expect(@project.folder_id).to eq folder.id
+            end
+
+            example 'Move the project to another space' do
+              space2 = create(:space)
+              do_request(project: { space_id: space2.id })
+
+              expect(response_status).to eq 200
+              expect(json_response[:data][:attributes][:space_id]).to eq space2.id
+            end
+
+            example 'Move the project to no space' do
+              do_request(project: { space_id: nil })
+              expect(response_status).to eq 200
+
+              expect(json_response[:data][:attributes][:space_id]).to be_nil
+            end
+          end
+
+          context 'when project in folder in space' do
+            before do
+              @space = create(:space)
+              folder = create(:project_folder, space: @space)
+              @project.update!(folder_id: folder.id)
+            end
+
+            example '[Error] Move the project to another space' do
+              space2 = create(:space)
+              do_request(project: { space_id: space2.id })
+
+              expect(response_status).to eq 422
+              expect(json_response[:errors][:space_id]).to include(
+                { error: 'project space must match the space of its folder' }
+              )
+
+              @project.reload
+              expect(@project.space_id).to eq @space.id
+            end
+
+            example 'Move the project to a folder in another space' do
+              space2 = create(:space)
+              folder2 = create(:project_folder, space: space2)
+
+              do_request(project: { folder_id: folder2.id })
+              expect(response_status).to eq 200
+
+              # folder= method will sync the project space to the folder space
+              expect(response_status).to eq 200
+              expect(json_response[:data][:attributes][:space_id]).to eq space2.id
+
+              @project.reload
+              expect(@project.folder_id).to eq folder2.id
+            end
+
+            example '[Error] Move the project to no space' do
+              do_request(project: { space_id: nil })
+
+              expect(response_status).to eq 422
+              expect(json_response[:errors][:space_id]).to include(
+                { error: 'project space must match the space of its folder' }
+              )
+
+              @project.reload
+              expect(@project.space_id).to eq @space.id
+            end
+
+            example 'Remove the project from the folder' do
+              do_request(project: { folder_id: nil })
+              expect(response_status).to eq 200
+
+              @project.reload
+
+              # folder= method will sync the project space to the folder space (nil)
+              expect(@project.folder_id).to be_nil
+              expect(json_response[:data][:attributes][:space_id]).to eq @space.id
+            end
+          end
+        end
+
+        example 'Remove a project from a folder' do
+          create(:project_folder, projects: [@project])
+
+          do_request(project: { folder_id: nil })
+          @project.reload
+
+          expect(@project.folder_id).to be_nil
+          # Projects moved out of folders are added to the top
+          expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :ordering)).to eq 0
+        end
+
+        example 'Move a project from one folder to another' do
+          create(:project_folder, projects: [@project])
+          new_folder = create(:project_folder)
+
+          do_request(project: { folder_id: new_folder.id })
+          @project.reload
+
+          assert_status 200
+          expect(@project.folder_id).to eq new_folder.id
+          expect(@project.admin_publication.parent.id).to eq new_folder.admin_publication.id
+        end
+
+        example '[error] Put a project in a non-existing folder' do
+          do_request(project: { folder_id: 'dinosaur' })
+          expect(response_status).to eq 404
+        end
+
+        example 'Clear all areas', document: false do
+          @project.update!(area_ids: area_ids)
+          expect(@project.areas.size).to eq 2
+          do_request(project: { area_ids: [] })
+          expect(json_response.dig(:data, :relationships, :areas, :data).size).to eq 0
+        end
+
+        example 'Clear all topics', document: false do
+          @project.update!(global_topic_ids: global_topic_ids)
+          expect(@project.global_topics.size).to eq 2
+          do_request(project: { global_topic_ids: [] })
+          expect(json_response.dig(:data, :relationships, :global_topics, :data).size).to eq 0
+        end
+
+        example 'Set default assignee to unassigned', document: false do
+          @project.update!(default_assignee: create(:admin))
+          do_request(project: { default_assignee_id: nil })
+          expect(json_response.dig(:data, :relationships, :default_assignee, :data, :id)).to be_nil
+        end
+
+        describe do
+          example 'The header image can be removed' do
+            @project.update!(header_bg: Rails.root.join('spec/fixtures/header.jpg').open)
+            expect(@project.reload.header_bg_url).to be_present
+            do_request project: { header_bg: nil }
+            expect(@project.reload.header_bg_url).to be_nil
+          end
+        end
+
+        example 'Logs `published` activity when going from draft to published', document: false do
+          @project.admin_publication.update!(publication_status: 'draft', first_published_at: nil)
+          expect { do_request project: { admin_publication_attributes: { publication_status: 'published' } } }
+            .to have_enqueued_job(LogActivityJob)
+            .with(@project, 'published', anything, anything, anything)
         end
       end
 
-      example 'Logs `published` activity when going from draft to published', document: false do
-        @project.admin_publication.update!(publication_status: 'draft')
-        expect { do_request project: { admin_publication_attributes: { publication_status: 'published' } } }
-          .to have_enqueued_job(LogActivityJob)
-          .with(@project, 'published', anything, anything, anything)
+      context 'scheduled transitions', document: false do
+        let(:project) { create(:project) }
+        let(:admin_publication) { project.admin_publication }
+        let(:id) { project.id }
+
+        example 'Schedule a status transition' do
+          scheduled_at = 1.day.from_now.iso8601(3)
+          admin_publication_attributes = { scheduled_status: 'draft', scheduled_at: }
+
+          expect { do_request(project: { admin_publication_attributes: }) }
+            .to  change { admin_publication.reload.scheduled_status }.from(nil).to('draft')
+            .and change { admin_publication.reload.scheduled_at }.from(nil).to(scheduled_at.in_time_zone)
+            .and change { admin_publication.reload.scheduled_by }.from(nil).to(@user)
+
+          assert_status 200
+
+          expect(response_data[:attributes]).to include(
+            scheduled_status: 'draft',
+            scheduled_at: scheduled_at
+          )
+        end
+
+        example 'Cancel a scheduled transition' do
+          project.admin_publication.update!(
+            scheduled_status: 'archived',
+            scheduled_at: 1.day.from_now,
+            scheduled_by: create(:admin)
+          )
+
+          admin_publication_attributes = { scheduled_status: nil, scheduled_at: nil }
+
+          expect { do_request(project: { admin_publication_attributes: }) }
+            .to  change { admin_publication.reload.scheduled_status }.from('archived').to(nil)
+            .and change { admin_publication.reload.scheduled_at }.to(nil)
+            .and change { admin_publication.reload.scheduled_by }.to(nil)
+
+          assert_status 200
+
+          expect(response_data[:attributes]).to include(
+            scheduled_status: nil,
+            scheduled_at: nil
+          )
+        end
+
+        example 'Reschedule a transition' do
+          project.admin_publication.update!(
+            scheduled_status: 'archived',
+            scheduled_at: 1.day.from_now,
+            scheduled_by: create(:admin)
+          )
+
+          scheduled_at = 3.days.from_now.iso8601(3)
+          admin_publication_attributes = { scheduled_at: }
+
+          expect { do_request(project: { admin_publication_attributes: }) }
+            .to change { admin_publication.reload.scheduled_at }.to(scheduled_at.in_time_zone)
+            .and change { admin_publication.reload.scheduled_by }.to(@user)
+
+          assert_status 200
+
+          expect(response_data[:attributes]).to include(scheduled_at: scheduled_at)
+        end
+
+        example 'Immediate status change cancels schedule', document: false do
+          project.admin_publication.update!(
+            scheduled_status: 'archived',
+            scheduled_at: 1.day.from_now,
+            scheduled_by: @user
+          )
+
+          expect { do_request(project: { admin_publication_attributes: { publication_status: 'draft' } }) }
+            .to change { admin_publication.reload.publication_status }.from('published').to('draft')
+            .and change { admin_publication.reload.scheduled_status }.from('archived').to(nil)
+            .and change { admin_publication.reload.scheduled_at }.to(nil)
+            .and change { admin_publication.reload.scheduled_by }.to(nil)
+
+          assert_status 200
+
+          expect(response_data[:attributes]).to include(
+            publication_status: 'draft',
+            scheduled_status: nil,
+            scheduled_at: nil
+          )
+        end
+
+        example 'Updates materializes due status transition first' do
+          project.admin_publication.update_columns(
+            publication_status: 'draft',
+            first_published_at: nil,
+            scheduled_status: 'published',
+            scheduled_at: 1.hour.ago,
+            scheduled_by_id: @user.id
+          )
+
+          admin_publication_attributes = { publication_status: 'archived' }
+
+          expect { do_request(project: { admin_publication_attributes: }) }
+            .to enqueue_job(LogActivityJob).with(project, 'published', anything, anything, anything)
+            .and enqueue_job(LogActivityJob).with(project, 'changed', anything, anything, anything).twice
+
+          assert_status 200
+
+          admin_publication.reload
+          expect(admin_publication.first_published_at).to be_present
+
+          expect(admin_publication.publication_status).to eq('archived')
+          expect(admin_publication.scheduled_status).to be_nil
+          expect(admin_publication.scheduled_at).to be_nil
+          expect(admin_publication.scheduled_by).to be_nil
+        end
       end
     end
 
@@ -565,7 +898,7 @@ resource 'Projects' do
 
           expect(response_status).to eq 200
           expect(layout.reload.craftjs_json['nUOW77iNcW']['props']['adminPublicationIds'])
-            .to match_array [project2.admin_publication.id]
+            .to contain_exactly(project2.admin_publication.id)
         end
       end
     end
@@ -578,8 +911,8 @@ resource 'Projects' do
           :phase,
           project: project,
           participation_method: 'ideation',
-          start_at: (Time.zone.today - 40.days),
-          end_at: (Time.zone.today - 31.days)
+          start_at: 40.days.ago,
+          end_at: 30.days.ago
         )
       end
 
@@ -587,8 +920,8 @@ resource 'Projects' do
         create(
           :volunteering_phase,
           project: project,
-          start_at: (Time.zone.today - 30.days),
-          end_at: (Time.zone.today - 21.days)
+          start_at: ideation_phase.end_at,
+          end_at: 20.days.ago
         )
       end
 
@@ -596,8 +929,8 @@ resource 'Projects' do
         create(
           :poll_phase,
           project: project,
-          start_at: (Time.zone.today - 20.days),
-          end_at: (Time.zone.today - 11.days)
+          start_at: volunteering_phase.end_at,
+          end_at: 10.days.ago
         )
       end
 
@@ -703,219 +1036,212 @@ resource 'Projects' do
     end
 
     get 'web_api/v1/projects/:id/as_xlsx' do
-      let(:project) { create(:project) }
-      let(:project_form) { create(:custom_form, :with_default_fields, participation_context: project) }
-      let!(:extra_idea_field) { create(:custom_field, resource: project_form) }
-      let(:ideation_phase) do
-        create(
+      before_all do
+        @project = create(:project)
+        project_form = create(:custom_form, :with_default_fields, participation_context: @project)
+        @extra_idea_field = create(:custom_field, resource: project_form)
+
+        ideation_phase = create(
           :phase,
-          project: project,
+          project: @project,
           participation_method: 'ideation',
           title_multiloc: { 'en' => 'Phase 1: Ideation' },
-          start_at: (Time.zone.today - 40.days),
-          end_at: (Time.zone.today - 31.days)
+          start_at: 40.days.ago, end_at: 30.days.ago
         )
-      end
-      let(:native_survey_phase) do
-        create(
+
+        native_survey_phase = create(
           :native_survey_phase,
-          project: project,
+          project: @project,
           title_multiloc: { 'en' => 'Phase 2: Native survey' },
-          start_at: (Time.zone.today - 30.days),
-          end_at: (Time.zone.today - 21.days),
+          start_at: ideation_phase.end_at,
+          end_at: 20.days.ago,
           with_permissions: true
         )
-      end
-      let(:survey_form) { create(:custom_form, participation_context: native_survey_phase) }
-      let!(:linear_scale_field) { create(:custom_field_linear_scale, resource: survey_form) }
-      let(:information_phase) do
-        create(
+        survey_form = create(:custom_form, participation_context: native_survey_phase)
+        @linear_scale_field = create(:custom_field_linear_scale, resource: survey_form)
+
+        information_phase = create(
           :phase,
-          project: project,
+          project: @project,
           participation_method: 'information',
           title_multiloc: { 'en' => 'Phase 3: Information' },
-          start_at: (Time.zone.today - 20.days),
-          end_at: (Time.zone.today - 11.days)
+          start_at: native_survey_phase.end_at,
+          end_at: 10.days.ago
         )
-      end
-      let(:single_voting_phase) do
-        create(
-          :single_voting_phase,
-          project: project,
-          title_multiloc: { 'en' => 'Phase 4: Voting' },
-          start_at: (Time.zone.today - 10.days),
-          end_at: (Time.zone.today + 2.days)
-        )
-      end
-      let(:id) { project.id }
 
-      let!(:ideation_response) do
-        create(
+        single_voting_phase = create(
+          :single_voting_phase,
+          project: @project,
+          title_multiloc: { 'en' => 'Phase 4: Voting' },
+          start_at: information_phase.end_at,
+          end_at: 2.days.from_now
+        )
+
+        @ideation_response = create(
           :idea,
-          project: project,
-          custom_field_values: { extra_idea_field.key => 'Answer' },
+          custom_field_answers: [build(:custom_field_answer, key: @extra_idea_field.key, value: 'Answer')],
           phases: [ideation_phase, single_voting_phase],
           manual_votes_amount: 24
         )
-      end
-      let!(:survey_response) do
-        create(
+
+        @survey_response = create(
           :idea,
-          project: project,
           creation_phase: native_survey_phase,
           phases: [native_survey_phase],
-          custom_field_values: { linear_scale_field.key => 2 }
+          custom_field_answers: [build(:custom_field_answer, key: @linear_scale_field.key, value: 2)]
         )
       end
 
-      before do
-        config = AppConfiguration.instance
-        config.settings['core']['private_attributes_in_export'] = true
-        config.save!
-      end
+      let(:project) { @project }
+      let(:id) { project.id }
+      let(:ideation_response) { @ideation_response }
+      let(:survey_response) { @survey_response }
+      let(:linear_scale_field) { @linear_scale_field }
+      let(:extra_idea_field) { @extra_idea_field }
 
       example_request 'Download inputs of a timeline project with different phases in separate sheets' do
         assert_status 200
         xlsx = xlsx_contents response_body
         expect(xlsx.size).to eq 3
-        expect(xlsx).to match_array([
-          {
-            sheet_name: 'Phase 1 Ideation',
-            column_headers: [
-              'ID',
-              'Title',
-              'Description',
-              'Attachments',
-              'Tags',
-              'Latitude',
-              'Longitude',
-              'Location',
-              'Proposed Budget',
-              extra_idea_field.title_multiloc['en'],
-              'Author name',
-              'Author email',
-              'Author ID',
-              'Submitted at',
-              'Published at',
-              'Comments',
-              'Likes',
-              'Dislikes',
-              'Offline votes',
-              'URL',
-              'Project',
-              'Status',
-              'Assignee',
-              'Assignee email'
-            ],
-            rows: [
-              [
-                ideation_response.id,
-                ideation_response.title_multiloc['en'],
-                'It would improve the air quality!', # html tags are removed
-                '',
-                '',
-                ideation_response.location_point.coordinates.last,
-                ideation_response.location_point.coordinates.first,
-                ideation_response.location_description,
-                ideation_response.proposed_budget,
-                'Answer',
-                ideation_response.author_name,
-                ideation_response.author.email,
-                ideation_response.author_id,
-                an_instance_of(DateTime), # created_at
-                an_instance_of(DateTime), # published_at
-                0,
-                0,
-                0,
-                24,
-                "http://example.org/ideas/#{ideation_response.slug}",
-                project.title_multiloc['en'],
-                ideation_response.idea_status.title_multiloc['en'],
-                nil,
-                nil
-              ]
+        expect(xlsx).to contain_exactly({
+          sheet_name: 'Phase 1 Ideation',
+          column_headers: [
+            'ID',
+            'Title',
+            'Description',
+            'Attachments',
+            'Tags',
+            'Latitude',
+            'Longitude',
+            'Location',
+            'Proposed Budget',
+            extra_idea_field.title_multiloc['en'],
+            'Author name',
+            'Author email',
+            'Author ID',
+            'Submitted at',
+            'Published at',
+            'Comments',
+            'Likes',
+            'Dislikes',
+            'Offline votes',
+            'URL',
+            'Project',
+            'Status',
+            'Assignee',
+            'Assignee email',
+            'Imported'
+          ],
+          rows: [
+            [
+              ideation_response.id,
+              ideation_response.title_multiloc['en'],
+              'It would improve the air quality!', # html tags are removed
+              '',
+              '',
+              ideation_response.location_point.coordinates.last,
+              ideation_response.location_point.coordinates.first,
+              ideation_response.location_description,
+              ideation_response.proposed_budget,
+              'Answer',
+              ideation_response.author_name,
+              ideation_response.author.email,
+              ideation_response.author_id,
+              an_instance_of(DateTime), # created_at
+              an_instance_of(DateTime), # published_at
+              0,
+              0,
+              0,
+              24,
+              "http://example.org/ideas/#{ideation_response.slug}",
+              project.title_multiloc['en'],
+              ideation_response.idea_status.title_multiloc['en'],
+              nil,
+              nil,
+              'false'
             ]
-          },
-          {
-            sheet_name: 'Phase 2 Native survey',
-            column_headers: [
-              'ID',
-              linear_scale_field.title_multiloc['en'],
-              'Author name',
-              'Author email',
-              'Author ID',
-              'Submitted at',
-              'Project'
-            ],
-            rows: [
-              [
-                survey_response.id,
-                2,
-                survey_response.author_name,
-                survey_response.author.email,
-                survey_response.author_id,
-                an_instance_of(DateTime), # created_at
-                project.title_multiloc['en']
-              ]
+          ]
+        }, {
+          sheet_name: 'Phase 2 Native survey',
+          column_headers: [
+            'ID',
+            linear_scale_field.title_multiloc['en'],
+            'Author name',
+            'Author email',
+            'Author ID',
+            'Submitted at',
+            'Project',
+            'Imported'
+          ],
+          rows: [
+            [
+              survey_response.id,
+              2,
+              survey_response.author_name,
+              survey_response.author.email,
+              survey_response.author_id,
+              an_instance_of(DateTime), # created_at
+              project.title_multiloc['en'],
+              'false'
             ]
-          },
-          # Phase 3 is not included because it's an information phase.
-          {
-            sheet_name: 'Phase 4 Voting',
-            column_headers: [
-              'ID',
-              'Title',
-              'Description',
-              'Attachments',
-              'Tags',
-              'Latitude',
-              'Longitude',
-              'Location',
-              'Proposed Budget',
-              extra_idea_field.title_multiloc['en'],
-              'Author name',
-              'Author email',
-              'Author ID',
-              'Submitted at',
-              'Published at',
-              'Comments',
-              'Votes',
-              'Offline votes',
-              'URL',
-              'Project',
-              'Status',
-              'Assignee',
-              'Assignee email'
-            ],
-            rows: [
-              [
-                ideation_response.id,
-                ideation_response.title_multiloc['en'],
-                'It would improve the air quality!', # html tags are removed
-                '',
-                '',
-                ideation_response.location_point.coordinates.last,
-                ideation_response.location_point.coordinates.first,
-                ideation_response.location_description,
-                ideation_response.proposed_budget,
-                'Answer',
-                ideation_response.author_name,
-                ideation_response.author.email,
-                ideation_response.author_id,
-                an_instance_of(DateTime), # created_at
-                an_instance_of(DateTime), # published_at
-                0,
-                0,
-                24,
-                "http://example.org/ideas/#{ideation_response.slug}",
-                project.title_multiloc['en'],
-                ideation_response.idea_status.title_multiloc['en'],
-                nil,
-                nil
-              ]
+          ]
+        }, {
+          sheet_name: 'Phase 4 Voting',
+          column_headers: [
+            'ID',
+            'Title',
+            'Description',
+            'Attachments',
+            'Tags',
+            'Latitude',
+            'Longitude',
+            'Location',
+            'Proposed Budget',
+            extra_idea_field.title_multiloc['en'],
+            'Author name',
+            'Author email',
+            'Author ID',
+            'Submitted at',
+            'Published at',
+            'Comments',
+            'Votes',
+            'Offline votes',
+            'URL',
+            'Project',
+            'Status',
+            'Assignee',
+            'Assignee email',
+            'Imported'
+          ],
+          rows: [
+            [
+              ideation_response.id,
+              ideation_response.title_multiloc['en'],
+              'It would improve the air quality!', # html tags are removed
+              '',
+              '',
+              ideation_response.location_point.coordinates.last,
+              ideation_response.location_point.coordinates.first,
+              ideation_response.location_description,
+              ideation_response.proposed_budget,
+              'Answer',
+              ideation_response.author_name,
+              ideation_response.author.email,
+              ideation_response.author_id,
+              an_instance_of(DateTime), # created_at
+              an_instance_of(DateTime), # published_at
+              0,
+              0,
+              24,
+              "http://example.org/ideas/#{ideation_response.slug}",
+              project.title_multiloc['en'],
+              ideation_response.idea_status.title_multiloc['en'],
+              nil,
+              nil,
+              'false'
             ]
-          }
-        ])
+          ]
+        })
       end
     end
   end
@@ -952,6 +1278,46 @@ resource 'Projects' do
     end
   end
 
+  get 'web_api/v1/projects/:id/publication_recipient_count' do
+    context 'when admin' do
+      before { admin_header_token }
+
+      let(:topic) { create(:global_topic) }
+      let(:project) { create(:project, global_topics: [topic]) }
+      let(:id) { project.id }
+
+      example 'Returns the count of publication recipients' do
+        create_list(:follower, 2, followable: topic)
+
+        do_request
+        assert_status 200
+        expect(response_data.dig(:attributes, :count)).to eq 2
+      end
+
+      example 'Excludes users who opted out of the campaign' do
+        follower = create(:follower, followable: topic)
+        create(:follower, followable: topic)
+        create(:consent, user: follower.user, campaign_type: 'EmailCampaigns::Campaigns::ProjectPublished', consented: false)
+
+        do_request
+        assert_status 200
+        expect(json_response.dig(:data, :attributes, :count)).to eq 1
+      end
+    end
+
+    context 'when regular user' do
+      before { resident_header_token }
+
+      let(:project) { create(:project) }
+      let(:id) { project.id }
+
+      example '[Unauthorized] Get publication recipient count', document: false do
+        do_request
+        expect(status).to eq 401
+      end
+    end
+  end
+
   get 'web_api/v1/projects/:id/votes_by_user_xlsx' do
     let(:phase1) { create(:single_voting_phase, start_at: Time.now - 18.days, end_at: Time.now - 17.days) }
     let(:phase2) { create(:multiple_voting_phase, start_at: Time.now - 14.days, end_at: Time.now - 13.days) }
@@ -981,7 +1347,7 @@ resource 'Projects' do
 
       example 'Get xlsx of voters successfully translates column headers', document: false do
         fixtures = YAML.load_file(Rails.root.join('spec/fixtures/locales/nl-NL.yml'))
-        dutch_column_headers = fixtures['nl']['xlsx_export']['column_headers']
+        dutch_column_headers = fixtures['nl-NL']['xlsx_export']['column_headers']
         @admin.update!(locale: 'nl-NL')
 
         do_request
@@ -992,9 +1358,9 @@ resource 'Projects' do
         header_row2 = workbook.worksheets[1][0].cells.map(&:value)
         header_row3 = workbook.worksheets[2][0].cells.map(&:value)
 
-        expect(header_row1).to match_array([dutch_column_headers['submitted_at']])
-        expect(header_row2).to match_array([dutch_column_headers['submitted_at']])
-        expect(header_row3).to match_array([dutch_column_headers['submitted_at']])
+        expect(header_row1).to contain_exactly(dutch_column_headers['submitted_at'])
+        expect(header_row2).to contain_exactly(dutch_column_headers['submitted_at'])
+        expect(header_row3).to contain_exactly(dutch_column_headers['submitted_at'])
       end
     end
 
@@ -1047,7 +1413,7 @@ resource 'Projects' do
 
       example 'Get xlsx of voters successfully translates column headers', document: false do
         fixtures = YAML.load_file(Rails.root.join('spec/fixtures/locales/fr-FR.yml'))
-        french_column_headers = fixtures['fr']['xlsx_export']['column_headers']
+        french_column_headers = fixtures['fr-FR']['xlsx_export']['column_headers']
         @admin.update!(locale: 'fr-FR')
 
         do_request
@@ -1350,7 +1716,7 @@ resource 'Projects' do
           allow(Export::Xlsx::InputSheetGenerator).to receive(:new)
             .and_return(Export::Xlsx::InputSheetGenerator.new(*expected_params))
           do_request
-          expect(Export::Xlsx::InputSheetGenerator).to have_received(:new).with(*expected_params)
+          expect(Export::Xlsx::InputSheetGenerator).to have_received(:new).with(*expected_params, redacted_field_keys: [])
           assert_status 200
 
           expect(xlsx_contents(response_body)).to match([
@@ -1379,7 +1745,8 @@ resource 'Projects' do
                 'Project',
                 'Status',
                 'Assignee',
-                'Assignee email'
+                'Assignee email',
+                'Imported'
               ],
               rows: [
                 [
@@ -1405,7 +1772,8 @@ resource 'Projects' do
                   project.title_multiloc['en'],
                   idea.idea_status.title_multiloc['en'],
                   nil,
-                  nil
+                  nil,
+                  'false'
                 ]
               ]
             }
@@ -1420,7 +1788,6 @@ resource 'Projects' do
       describe do
         let(:project) { build(:project) }
         let(:title_multiloc) { project.title_multiloc }
-        let(:description_multiloc) { project.description_multiloc }
         let(:description_preview_multiloc) { project.description_preview_multiloc }
         let(:header_bg) { png_image_as_base64('header.jpg') }
         let(:area_ids) { create_list(:area, 2).map(&:id) }
@@ -1445,15 +1812,14 @@ resource 'Projects' do
             expect(admin_publication_parent).to eq project_folder.admin_publication
           end
 
-          example_request 'Adds all folder moderators as moderators of the project' do
+          example_request 'Does not add folder moderators as moderators of the project' do
             assert_status 201
 
             json_response              = json_parse(response_body)
             response_resource_id       = json_response.dig(:data, :id)
             project_moderators         = User.project_moderator(response_resource_id)
-            folder_moderators          = User.project_folder_moderator(project_folder.id)
 
-            expect(project_moderators.pluck(:id)).to match_array folder_moderators.pluck(:id)
+            expect(project_moderators.pluck(:id)).to eq []
           end
         end
 
@@ -1469,11 +1835,39 @@ resource 'Projects' do
 
     patch 'web_api/v1/projects/:id' do
       describe do
-        let(:project) { create(:project) }
         let(:id) { project.id }
 
-        example_request 'It does not authorize the folder moderator' do
-          assert_status 401
+        context 'when project is outside their folder' do
+          let(:project) { create(:project) }
+
+          example_request 'It does not authorize a folder moderator to update project outside their folder' do
+            assert_status 401
+          end
+        end
+
+        context 'when project is in a folder they moderate' do
+          let(:project) { create(:project, folder: project_folder) }
+
+          example 'It allows FM to move a project to another folder they moderate' do
+            project_folder2 = create(:project_folder)
+            moderator.add_role('project_folder_moderator', project_folder_id: project_folder2.id)
+            moderator.save!
+
+            do_request(project: { folder_id: project_folder2.id })
+            assert_status 200
+            expect(project.reload.folder_id).to eq project_folder2.id
+          end
+
+          example 'It allows FM to move a project to another folder they moderate, even if that project is in a space they cannot moderate' do
+            other_space = create(:space)
+            project_folder2 = create(:project_folder, space: other_space)
+            moderator.add_role('project_folder_moderator', project_folder_id: project_folder2.id)
+            moderator.save!
+
+            do_request(project: { folder_id: project_folder2.id })
+            assert_status 200
+            expect(project.reload.folder_id).to eq project_folder2.id
+          end
         end
       end
     end
@@ -1502,16 +1896,16 @@ resource 'Projects' do
 
           copied_project = Project.find(json_response.dig(:data, :id))
           expect(copied_project.title_multiloc['en']).to include(project_in_folder_user_moderates.title_multiloc['en'])
+          expect(copied_project.folder_id).to eq(project_in_folder_user_moderates.folder_id)
         end
 
-        example_request 'Adds all folder moderators as moderators of the project' do
+        example_request 'Does not add folder moderators as moderators of the project' do
           assert_status 201
 
           response_resource_id = json_response.dig(:data, :id)
           project_moderators = User.project_moderator(response_resource_id)
-          folder_moderators = User.project_folder_moderator(project_folder.id)
 
-          expect(project_moderators.pluck(:id)).to match_array folder_moderators.pluck(:id)
+          expect(project_moderators.pluck(:id)).to eq []
         end
       end
 
@@ -1544,6 +1938,18 @@ resource 'Projects' do
 
       example '[Unauthorized] Delete a project that has been published', document: false do
         project.admin_publication.update!(first_published_at: Time.zone.now)
+
+        do_request
+
+        assert_status 401
+        expect(Project.where(id: id)).to exist
+      end
+
+      example '[Unauthorized] Delete a project with a due scheduled publish', document: false do
+        project.admin_publication.update_columns(
+          scheduled_status: 'published', scheduled_at: 1.hour.ago,
+          scheduled_by_id: moderator.id
+        )
 
         do_request
 
@@ -1621,7 +2027,6 @@ resource 'Projects' do
       let(:moderator) { create(:project_moderator) }
       let(:project_attrs) { attributes_for(:project) }
       let(:title_multiloc) { project_attrs[:title_multiloc] }
-      let(:description_multiloc) { project_attrs[:description_multiloc] }
 
       # can create a draft project
       example 'Create a draft project', document: false do
@@ -1646,6 +2051,120 @@ resource 'Projects' do
       example '[Unauthorized] Create a project in a folder', document: false do
         do_request(project: { folder_id: create(:project_folder).id })
         assert_status 401
+      end
+    end
+
+    context 'when a space moderator' do
+      let(:space) { create(:space) }
+      let(:project_attrs) { attributes_for(:project) }
+      let(:title_multiloc) { project_attrs[:title_multiloc] }
+      let(:publication_status) { 'draft' }
+      let(:other_space) { create(:space) }
+      let(:moderator) { create(:space_moderator, spaces: [space]) }
+
+      before { header_token_for moderator }
+
+      context 'when space_id is provided' do
+        context 'when user moderates that space' do
+          let(:space_id) { space.id }
+
+          example 'Create a project in the moderated space' do
+            expect do
+              do_request(project: { space_id: space_id, admin_publication_attributes: { publication_status: publication_status } })
+            end.to change(Project, :count).by(1)
+
+            assert_status 201
+
+            created_project = Project.find(response_data[:id])
+            expect(created_project.space_id).to eq space.id
+            expect(created_project.folder_id).to be_nil
+          end
+        end
+
+        context 'when user moderates a different space' do
+          let(:space_id) { other_space.id }
+
+          example '[Unauthorized] Create a project in non-moderated space', document: false do
+            do_request(project: { space_id: space_id, admin_publication_attributes: { publication_status: publication_status } })
+            assert_status 401
+          end
+        end
+      end
+
+      context 'when folder_id is provided' do
+        context 'when folder is in the moderated space' do
+          let(:folder) { create(:project_folder, space: space) }
+          let(:folder_id) { folder.id }
+
+          example 'Create a project in a folder within the moderated space' do
+            expect do
+              do_request(project: { folder_id: folder_id, admin_publication_attributes: { publication_status: publication_status } })
+            end.to change(Project, :count).by(1)
+
+            assert_status 201
+
+            created_project = Project.find(response_data[:id])
+            expect(created_project.folder_id).to eq folder.id
+            expect(created_project.space_id).to eq space.id
+          end
+        end
+
+        context 'when folder is in a different space' do
+          let(:folder) { create(:project_folder, space: other_space) }
+          let(:folder_id) { folder.id }
+
+          example '[Unauthorized] Create a project in folder in non-moderated space', document: false do
+            do_request(project: { folder_id: folder_id, admin_publication_attributes: { publication_status: publication_status } })
+            assert_status 401
+          end
+        end
+
+        context 'when folder has no space assigned but user is also folder moderator' do
+          let(:folder) { create(:project_folder, space: nil) }
+          let(:folder_id) { folder.id }
+
+          before do
+            moderator.add_role('project_folder_moderator', project_folder_id: folder.id)
+            moderator.save!
+            # Re-authenticate with the updated moderator that now has the folder role
+            header_token_for moderator
+          end
+
+          example 'Create a project in folder without space' do
+            expect do
+              do_request(project: { folder_id: folder_id, admin_publication_attributes: { publication_status: publication_status } })
+            end.to change(Project, :count).by(1)
+
+            assert_status 201
+
+            created_project = Project.find(response_data[:id])
+            expect(created_project.folder_id).to eq folder.id
+            expect(created_project.space_id).to be_nil
+          end
+        end
+
+        context 'when folder has no space assigned and user is not folder moderator' do
+          let(:folder) { create(:project_folder, space: nil) }
+          let(:folder_id) { folder.id }
+
+          example '[Unauthorized] Create a project in folder without space', document: false do
+            do_request(project: { folder_id: folder_id, admin_publication_attributes: { publication_status: publication_status } })
+            assert_status 401
+          end
+        end
+      end
+
+      context 'when neither space_id nor folder_id is provided' do
+        example 'Can create project without space_id or folder_id', document: false do
+          do_request(project: { admin_publication_attributes: { publication_status: publication_status } })
+          assert_status 201
+        end
+
+        example 'Can create project without space_id or folder_id, also if there is an unrelated project in a space the user moderates', document: false do
+          create(:project, space: space)
+          do_request(project: { admin_publication_attributes: { publication_status: publication_status } })
+          assert_status 201
+        end
       end
     end
   end
@@ -1779,42 +2298,6 @@ resource 'Projects' do
           do_request
           assert_status 200
         end
-
-        context 'Survey has already been submitted' do
-          let!(:response) { create(:native_survey_response, project: phase.project, creation_phase: phase, author: nil, author_hash: author_hash) }
-
-          context 'when no consent given' do
-            let(:author_hash) do
-              # No consent hash based on ip and user agent
-              user_agent = 'User-Agent: Mozilla/5.0'
-              ip = '1.2.3.4'
-              "n_#{Idea.create_author_hash(ip + user_agent, phase.project_id, true)}"
-            end
-
-            example 'Get community monitor project when survey already submitted without consent' do
-              header 'User-Agent', 'User-Agent: Mozilla/5.0'
-              header 'X-Forwarded-For', '1.2.3.4'
-              do_request
-              assert_status 200
-
-              disabled_reason = response_data.dig(:attributes, :action_descriptors, :posting_idea, :disabled_reason)
-              expect(disabled_reason).to eq 'posting_limited_max_reached'
-            end
-          end
-
-          context 'when consent given - using hash from cookie' do
-            let(:author_hash) { 'COOKIE_AUTHOR_HASH' }
-
-            example 'Get community monitor project when survey already submitted with consent' do
-              header('Cookie', "#{phase.id}={\"lo\": \"#{author_hash}\"};cl2_consent={\"analytics\": true}")
-              do_request
-              assert_status 200
-
-              disabled_reason = response_data.dig(:attributes, :action_descriptors, :posting_idea, :disabled_reason)
-              expect(disabled_reason).to eq 'posting_limited_max_reached'
-            end
-          end
-        end
       end
     end
   end
@@ -1828,7 +2311,7 @@ resource 'Projects' do
     example 'Returns only listed projects' do
       do_request filter_by: 'finished_and_archived'
       assert_status 200
-      expect(response_data.pluck(:id)).to match_array [@listed_archived_project.id]
+      expect(response_data.pluck(:id)).to contain_exactly(@listed_archived_project.id)
     end
   end
 

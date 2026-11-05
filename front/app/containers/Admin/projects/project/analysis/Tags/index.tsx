@@ -13,7 +13,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useQueryClient } from '@tanstack/react-query';
 import { isEqual, omit, uniq } from 'lodash-es';
-import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import inputsKeys from 'api/analysis_inputs/keys';
@@ -25,6 +24,7 @@ import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { useParams } from 'utils/router';
 
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 import tracks from '../tracks';
@@ -89,7 +89,9 @@ const Tags = () => {
 
   const filters = useAnalysisFilterParams();
 
-  const { analysisId } = useParams() as { analysisId: string };
+  const { analysisId } = useParams({
+    from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
+  });
 
   const queryClient = useQueryClient();
   const { data: tags, isLoading: isLoadingTags } = useAnalysisTags({
@@ -147,7 +149,7 @@ const Tags = () => {
         tag_ids: nonNullSelectedTags?.filter((tagId) => tagId !== id),
       });
     }
-    queryClient.invalidateQueries(inputsKeys.lists());
+    queryClient.invalidateQueries({ queryKey: inputsKeys.lists() });
     trackEventByName(tracks.tagFilterUsed, {
       tagId: id,
     });
@@ -155,7 +157,7 @@ const Tags = () => {
 
   const toggleTagContainerClick = (id: string) => {
     updateSearchParams({ tag_ids: [id] });
-    queryClient.invalidateQueries(inputsKeys.lists());
+    queryClient.invalidateQueries({ queryKey: inputsKeys.lists() });
     trackEventByName(tracks.tagFilterUsed, {
       tagId: id,
     });
@@ -178,6 +180,7 @@ const Tags = () => {
         opened={autotaggingModalIsOpened}
         close={() => setAutotaggingModalIsOpened(false)}
         width="1000px"
+        ariaLabelledBy="auto-tagging-modal-title"
       >
         <AutotaggingModal
           onCloseModal={() => setAutotaggingModalIsOpened(false)}

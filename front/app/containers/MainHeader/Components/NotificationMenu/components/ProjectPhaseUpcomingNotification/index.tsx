@@ -20,7 +20,8 @@ const ProjectPhaseUpcomingNotification = memo<Props>((props) => {
 
   return (
     <NotificationWrapper
-      linkTo={`/projects/${notification.attributes.project_slug}`}
+      to="/projects/$slug"
+      params={{ slug: notification.attributes.project_slug }}
       timing={notification.attributes.created_at}
       icon="timeline"
       isRead={!!notification.attributes.read_at}
@@ -28,6 +29,9 @@ const ProjectPhaseUpcomingNotification = memo<Props>((props) => {
       <FormattedMessage
         {...messages.projectPhaseUpcoming}
         values={{
+          phaseTitle: (
+            <T value={notification.attributes.phase_title_multiloc} />
+          ),
           projectTitle: (
             <T value={notification.attributes.project_title_multiloc} />
           ),

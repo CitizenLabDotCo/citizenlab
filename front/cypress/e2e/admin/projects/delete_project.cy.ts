@@ -9,19 +9,14 @@ describe('Admin: delete project', () => {
   it('deletes a published project', () => {
     const projectTitle = randomString();
     const projectDescriptionPreview = randomString();
-    const projectDescription = randomString();
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     }).then((project) => {
       const projectId = project.body.data.id;
-      cy.visit('/admin/projects');
+      cy.visit(`/admin/projects?search=${projectTitle}`);
 
-      cy.dataCy('projects-overview-sort-select').select(
-        'recently_created_desc'
-      );
       cy.dataCy('projects-overview-table-row').first().contains(projectTitle);
 
       cy.get('[data-testid="moreOptionsButton"]').first().should('exist');
@@ -33,7 +28,9 @@ describe('Admin: delete project', () => {
       cy.contains('Delete project').should('exist');
       cy.contains('Delete project').click();
 
-      cy.on('window:confirm', () => true);
+      // Type confirmation word in the modal
+      cy.dataCy('typed-confirmation-input').find('input').type('DELETE');
+      cy.dataCy('typed-confirmation-delete-button').click();
 
       cy.wait('@deleteProject');
       cy.wait('@getProjectsForAdmin');
@@ -48,8 +45,7 @@ describe('Admin: delete project', () => {
         folder.body.data.attributes.title_multiloc['en'];
       const folderId = folder.body.data.id;
 
-      cy.visit('/admin/projects');
-      cy.dataCy('projects-overview-folders-tab').click();
+      cy.visit(`/admin/projects?tab=folders&search=${folderTitleToDelete}`);
 
       cy.contains(folderTitleToDelete).should('exist');
 
@@ -64,7 +60,9 @@ describe('Admin: delete project', () => {
       cy.contains('Delete folder').should('exist');
       cy.contains('Delete folder').click();
 
-      cy.on('window:confirm', () => true);
+      // Type confirmation word in the modal
+      cy.dataCy('typed-confirmation-input').find('input').type('DELETE');
+      cy.dataCy('typed-confirmation-delete-button').click();
 
       cy.wait('@deleteFolder');
       cy.wait('@getFoldersForAdmin');

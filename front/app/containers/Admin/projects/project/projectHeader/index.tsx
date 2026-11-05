@@ -15,6 +15,7 @@ import useProjectReview from 'api/project_reviews/useProjectReview';
 import useProjectById from 'api/projects/useProjectById';
 import useUserById from 'api/users/useUserById';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import NavigationTabs from 'components/admin/NavigationTabs';
@@ -27,10 +28,10 @@ import { getFullName } from 'utils/textUtils';
 
 import FolderProjectDropdown from './FolderProjectDropdown';
 import messages from './messages';
-import ProjectDescriptionPreview from './ProjectDescriptionPreview';
 import PublicationButtons from './PublicationButtons';
 import PublicationStatus from './PublicationStatus';
 import ShareLink from './ShareLink';
+import SpaceName from './SpaceName';
 
 const StyledTitle = styled(Title)`
   display: -webkit-box;
@@ -53,10 +54,13 @@ const ProjectHeader = ({ projectId }: Props) => {
 
   const { formatMessage } = useIntl();
   const localize = useLocalize();
+  const spacesEnabled = useFeatureFlag({ name: 'spaces' });
 
   if (!project) return null;
 
   const folderId = project.data.attributes.folder_id;
+  const spaceId = project.data.attributes.space_id;
+
   let visibilityMessage: MessageDescriptor = messages.everyone;
   let visibilityIcon: IconNames = 'lock';
   switch (project.data.attributes.visible_to) {
@@ -75,7 +79,7 @@ const ProjectHeader = ({ projectId }: Props) => {
   const { listed } = project.data.attributes;
 
   return (
-    <NavigationTabs position="static" paddingLeft="24px">
+    <NavigationTabs position="relative" paddingLeft="24px" zIndex={1001}>
       <Box
         display="flex"
         flexDirection="column"
@@ -98,7 +102,7 @@ const ProjectHeader = ({ projectId }: Props) => {
           >
             <Link
               to={createHighlighterLink(
-                `/admin/projects/${project.data.id}/settings#${fragmentId}`
+                `/admin/projects/${project.data.id}/general#${fragmentId}`
               )}
               data-cy="e2e-project-title-preview-link-to-settings"
             >
@@ -106,7 +110,6 @@ const ProjectHeader = ({ projectId }: Props) => {
                 {localize(project.data.attributes.title_multiloc)}
               </StyledTitle>
             </Link>
-            <ProjectDescriptionPreview project={project} />
           </Box>
           <Box
             display="flex"
@@ -114,7 +117,8 @@ const ProjectHeader = ({ projectId }: Props) => {
             className="intercom-projects-project-header-buttons"
           >
             <ButtonWithLink
-              linkTo={`/projects/${project.data.attributes.slug}`}
+              to="/projects/$slug"
+              params={{ slug: project.data.attributes.slug }}
               buttonStyle="secondary-outlined"
               icon="eye"
               size="s"
@@ -122,33 +126,19 @@ const ProjectHeader = ({ projectId }: Props) => {
               id="e2e-view-project"
               className="intercom-product-tour-project-view-link"
             />
-            <PublicationStatus
-              className="intercom-product-tour-project-publication-status-dropdown"
-              project={project}
-            />
             <ShareLink
               projectId={project.data.id}
               projectSlug={project.data.attributes.slug}
               token={project.data.attributes.preview_token}
               className="intercom-product-tour-project-sharing-dropdown"
             />
-            <ButtonWithLink
-              linkTo={`/admin/projects/${project.data.id}/settings`}
-              buttonStyle="admin-dark"
-              size="s"
-              padding="4px 8px"
-              icon="settings"
-              iconSize="18px"
-              className="intercom-product-tour-project-settings-link"
-            >
-              {formatMessage(messages.settings)}
-            </ButtonWithLink>
             <PublicationButtons project={project.data} />
           </Box>
         </Box>
         <Box display="flex" gap="8px">
           <ButtonWithLink
-            linkTo={`/admin/projects/${project.data.id}/settings/access-rights`}
+            to="/admin/projects/$projectId/general/access-rights"
+            params={{ projectId: project.data.id }}
             buttonStyle="text"
             size="s"
             padding="0px"
@@ -168,7 +158,8 @@ const ProjectHeader = ({ projectId }: Props) => {
             ·
           </Text>
           <ButtonWithLink
-            linkTo={`/admin/projects/${project.data.id}/settings/access-rights`}
+            to="/admin/projects/$projectId/general/access-rights"
+            params={{ projectId: project.data.id }}
             buttonStyle="text"
             size="s"
             padding="0px"
@@ -246,6 +237,14 @@ const ProjectHeader = ({ projectId }: Props) => {
               </Text>
             </Box>
           </Tooltip>
+          {typeof spaceId === 'string' && spacesEnabled && (
+            <>
+              <Text color="coolGrey600" fontSize="s" mb="0px" mt="2px">
+                ·
+              </Text>
+              <SpaceName spaceId={spaceId} />
+            </>
+          )}
           {typeof folderId === 'string' && (
             <>
               <Text color="coolGrey600" fontSize="s" mb="0px" mt="2px">
@@ -269,6 +268,10 @@ const ProjectHeader = ({ projectId }: Props) => {
               </Box>
             </>
           )}
+          <Text color="coolGrey600" fontSize="s" mb="0px" mt="2px">
+            ·
+          </Text>
+          <PublicationStatus project={project.data} />
         </Box>
       </Box>
     </NavigationTabs>

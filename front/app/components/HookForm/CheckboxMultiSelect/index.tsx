@@ -14,27 +14,43 @@ import { CLError, IOption, RHFErrors } from 'typings';
 
 import Error, { TFieldName } from 'components/UI/Error';
 
-import { ScreenReaderOnly } from 'utils/a11y';
 interface Props extends Omit<SelectProps, 'onChange'> {
   name: string;
   options: IOption[];
   scrollErrorIntoView?: boolean;
   title: string;
+  'aria-required'?: boolean;
 }
 
-const StyledBox = styled(Box)`
+const StyledBox = styled(Box)<{ selected: boolean; $disabled?: boolean }>`
   cursor: pointer;
-  background-color: ${colors.grey100};
   &:hover {
-    background-color: ${colors.grey200};
+    box-shadow: 0 0 0 1px
+      ${({ selected }) => (selected ? 'undefined' : colors.borderDark)};
   }
+
+  ${({ $disabled }) =>
+    $disabled &&
+    `
+    background-color: ${colors.grey100};
+
+    &:hover {
+      box-shadow: none;
+    }
+
+    /* CheckboxWithLabel sets an inline pointer cursor on its label */
+    &, * {
+      cursor: not-allowed !important;
+    }
+  `}
 `;
 
 const CheckboxMultiSelect = ({
   name,
   options,
   scrollErrorIntoView,
-  title,
+  disabled,
+  'aria-required': ariaRequired,
 }: Props) => {
   const {
     trigger,
@@ -51,29 +67,41 @@ const CheckboxMultiSelect = ({
   const theme = useTheme();
   const checkedOptions = watch(name) || [];
 
+  const ariaDescribedBy =
+    validationError || apiError ? `${name}-error` : undefined;
+
   return (
     <>
       <Controller
         name={name}
         control={control}
-        render={({ field: { ref: _ref } }) => {
+        render={({ field: { ref }, fieldState }) => {
           return (
-            <Box display="block" as="fieldset" border="none" p="0px">
-              <ScreenReaderOnly>
-                <legend>{title}</legend>
-              </ScreenReaderOnly>
-              {options.map((option) => (
+            <Box
+              display="block"
+              as="fieldset"
+              border="none"
+              p="0px"
+              aria-required={ariaRequired}
+              aria-invalid={fieldState.error ? true : undefined}
+              aria-describedby={ariaDescribedBy}
+            >
+              {options.map((option, index) => (
                 <StyledBox
-                  style={{ cursor: 'pointer' }}
                   mb="12px"
                   border={
                     checkedOptions.includes(option.value)
-                      ? `2px solid ${theme.colors.tenantPrimary}`
-                      : `1px solid ${theme.colors.tenantPrimary}`
+                      ? `2px solid ${
+                          disabled ? colors.grey400 : theme.colors.tenantPrimary
+                        }`
+                      : `1px solid ${
+                          disabled ? colors.grey400 : theme.colors.borderDark
+                        }`
                   }
-                  background={theme.colors.tenantPrimaryLighten95}
                   key={option.value}
                   borderRadius="3px"
+                  selected={checkedOptions.includes(option.value)}
+                  $disabled={disabled}
                 >
                   <CheckboxWithLabel
                     size="20px"
@@ -84,9 +112,17 @@ const CheckboxMultiSelect = ({
                         {option.label}
                       </Text>
                     }
+                    ariaLabel={option.label}
                     checked={checkedOptions.includes(option.value)}
-                    usePrimaryBorder={true}
+                    usePrimaryBorder={false}
+                    disabled={disabled}
+                    setRef={index === 0 ? (el) => ref(el) : undefined}
+                    ariaInvalid={!!fieldState.error}
+                    ariaDescribedBy={ariaDescribedBy}
                     onChange={() => {
+                      // Checkbox still calls onChange on click when disabled
+                      if (disabled) return;
+
                       if (checkedOptions.includes(option.value)) {
                         setValue(
                           name,
@@ -108,6 +144,7 @@ const CheckboxMultiSelect = ({
       />
       {validationError && (
         <Error
+          id={`${name}-error`}
           marginTop="8px"
           marginBottom="8px"
           text={validationError}
@@ -116,6 +153,7 @@ const CheckboxMultiSelect = ({
       )}
       {apiError && (
         <Error
+          id={`${name}-error`}
           fieldName={name as TFieldName}
           apiErrors={apiError}
           marginTop="8px"

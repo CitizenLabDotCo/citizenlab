@@ -9,7 +9,6 @@ namespace :fix_existing_tenants do
       Event => [:description_multiloc],
       Idea => [:body_multiloc],
       Phase => [:description_multiloc],
-      Project => [:description_multiloc],
       StaticPage => [:body_multiloc]
     }
 
@@ -63,14 +62,12 @@ namespace :fix_existing_tenants do
         imageable_html_multilocs.map do |claz, attributes|
           claz.all.map do |instance|
             attributes.each do |attribute|
-              instance.send attribute
-              begin
-                multiloc = TextImageService.new.swap_data_images_multiloc instance[attribute], field: attribute, imageable: instance
-                instance.send :"#{attribute}=", multiloc
-                instance.save!
-              rescue Exception => e
-                errors += [e.message]
-              end
+              # Mark attribute as changed to trigger image extraction
+              # via before_validation callback
+              instance.attribute_will_change!(attribute)
+              instance.save!
+            rescue StandardError => e
+              errors += [e.message]
             end
           end
         end
@@ -79,37 +76,40 @@ namespace :fix_existing_tenants do
     if errors.blank?
       puts 'Success!'
     else
-      puts 'Some issues occured.'
+      puts 'Some issues occurred.'
       errors.each { |err| puts err }
     end
   end
 
   desc 'Substitutes HTML URLs by the S3 url, according to a list of requested sustitutions (tenants that changed host)'
   task :substitute_html_relative_paths, [:url] => [:environment] do |_t, args|
-    tofix = JSON.parse open(args[:url]).read
-    tofix.each do |host, clazzes|
+    to_fix = JSON.parse open(args[:url]).read
+    to_fix.each do |host, klasses|
       Apartment::Tenant.switch(host.tr('.', '_')) do
-        clazzes.each do |claz, instances|
+        klasses.each do |klass, instances|
           instances.each do |id, attributes|
-            object = claz.constantize.find id
+            instance = klass.constantize.find(id)
+
             attributes.each_key do |attribute|
-              multiloc = object.send attribute
-              multiloc.each_key do |k|
-                text = multiloc[k]
+              multiloc = instance.public_send(attribute)
+
+              multiloc.transform_values! do |text|
                 doc = Nokogiri::HTML.fragment(text)
+
                 allowed_images = doc.css('img').select do |img|
                   img.attr('src') =~ %r{^$|^((http://.+)|(https://.+))}
                 end
+
                 allowed_images.each do |img|
                   url = img.attr('src')
                   path = "#{Frontend::UrlService.new.home_url}/uploads/#{url.partition('/uploads/').last}"
                   img.set_attribute('src', path)
                 end
-                multiloc[k] = doc.to_s
+
+                doc.to_s
               end
-              multiloc = TextImageService.new.swap_data_images_multiloc object[attribute], field: attribute, imageable: object
-              object.send :"#{attribute}=", multiloc
-              object.save!
+
+              instance.update(attribute => multiloc)
             end
           end
         end
@@ -202,12 +202,9 @@ namespace :fix_existing_tenants do
               end
               next unless changed
 
-              instance.update_column(attribute, multiloc)
               begin
-                multiloc = TextImageService.new.swap_data_images_multiloc instance[attribute], field: attribute, imageable: instance
-                instance.send :"#{attribute}=", multiloc
-                instance.save!
-              rescue Exception => e
+                instance.update!(attribute => multiloc)
+              rescue StandardError => e
                 errors += [e.message]
               end
             end
@@ -220,7 +217,7 @@ namespace :fix_existing_tenants do
     if errors.blank?
       puts 'Success!'
     else
-      puts 'Some issues occured.'
+      puts 'Some issues occurred.'
       errors.each { |err| puts err }
     end
   end
@@ -248,9 +245,7 @@ def imageable_html_multilocs
     Event => [:description_multiloc],
     StaticPage => [:body_multiloc],
     Phase => [:description_multiloc],
-    Project => [:description_multiloc],
     CustomField => [:description_multiloc],
-    ProjectFolders::Folder => [:description_multiloc],
     EmailCampaigns::Campaign => [:body_multiloc]
   }
 end

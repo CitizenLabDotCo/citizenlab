@@ -12,7 +12,7 @@ module EmailCampaigns
       {
         organizationName: organization_name,
         firstName: recipient&.first_name,
-        authorName: event&.comment_author_name,
+        authorName: event&.comment_author_name || format_message('anonymous_user', component: 'new_comment_for_admin'),
         authorFirstName: event&.initiating_user_first_name
       }
     end

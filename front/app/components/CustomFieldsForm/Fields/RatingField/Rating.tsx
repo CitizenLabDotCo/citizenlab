@@ -1,12 +1,7 @@
 import React, { useRef } from 'react';
 
-import {
-  Box,
-  useBreakpoint,
-  Button,
-  Icon,
-} from '@citizenlab/cl2-component-library';
-import { useTheme } from 'styled-components';
+import { Box, useBreakpoint, Icon } from '@citizenlab/cl2-component-library';
+import styled, { useTheme } from 'styled-components';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 
@@ -17,6 +12,18 @@ interface Props {
   question: IFlatCustomField;
   onChange: (value: number) => void;
 }
+
+const StyledIcon = styled(Icon)`
+  :hover {
+    fill: ${(props) => props.theme.colors.grey800};
+  }
+`;
+
+const OptionTarget = styled.div`
+  cursor: pointer;
+  padding: 12px 0;
+  width: 100%;
+`;
 
 const Rating = ({ value: data, question, onChange }: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
@@ -99,15 +106,10 @@ const Rating = ({ value: data, question, onChange }: Props) => {
                 key={`${id}-radio-${visualIndex}`}
                 minWidth={getButtonWidth()}
               >
-                <Button
-                  py="12px"
+                <OptionTarget
                   id={`${inputId}-option-${visualIndex}`}
-                  tabIndex={-1}
-                  aria-pressed={data === visualIndex}
-                  px="0"
-                  width="100%"
                   onClick={() => onChange(visualIndex)}
-                  buttonStyle="text"
+                  aria-hidden
                 >
                   <Box
                     display="flex"
@@ -115,19 +117,19 @@ const Rating = ({ value: data, question, onChange }: Props) => {
                     alignItems="center"
                     gap="4px"
                   >
-                    <Icon
+                    <StyledIcon
                       name={selectedIndex ? 'ratingFilled' : 'rating'}
                       height="40px"
                       width="40px"
                       fill={
                         selectedIndex
                           ? theme.colors.tenantPrimary
-                          : theme.colors.tenantPrimaryLighten75
+                          : theme.colors.borderDark
                       }
                     />
                     {visualIndex}
                   </Box>
-                </Button>
+                </OptionTarget>
               </Box>
             );
           })}

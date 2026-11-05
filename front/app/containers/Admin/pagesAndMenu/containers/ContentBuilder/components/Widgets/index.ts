@@ -1,76 +1,114 @@
 // Shared widgets
+import AboutBox, {
+  aboutBoxTitle,
+} from 'components/admin/ContentBuilder/Widgets/AboutBox';
 import AccordionMultiloc, {
   accordionMultilocTitle,
 } from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
+import Areas, {
+  areasTitle,
+} from 'components/admin/ContentBuilder/Widgets/Areas';
 import ButtonMultiloc, {
   buttonMultilocTitle,
 } from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
+import CallToAction, {
+  callToActionTitle,
+} from 'components/admin/ContentBuilder/Widgets/CallToAction';
+import CommunityMonitorCTA, {
+  communityMonitorCTATitle,
+} from 'components/admin/ContentBuilder/Widgets/CommunityMonitorCTA';
+import CustomPages, {
+  customPagesTitle,
+} from 'components/admin/ContentBuilder/Widgets/CustomPages';
+import EventsList, {
+  eventsListTitle,
+} from 'components/admin/ContentBuilder/Widgets/Events';
+import FinishedOrArchived, {
+  finishedOrArchivedTitle,
+} from 'components/admin/ContentBuilder/Widgets/FinishedOrArchived';
+import FollowedItems, {
+  followedItemsTitle,
+} from 'components/admin/ContentBuilder/Widgets/FollowedItems';
+import HtmlBlockMultiloc, {
+  htmlBlockMultilocTitle,
+} from 'components/admin/ContentBuilder/Widgets/HtmlBlockMultiloc';
 import IframeMultiloc, {
   iframeTitle,
 } from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
 import ImageMultiloc, {
   imageMultilocTitle,
 } from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
+import OpenToParticipation, {
+  openToParticipationTitle,
+} from 'components/admin/ContentBuilder/Widgets/OpenToParticipation';
+import Published, {
+  publishedTitle,
+} from 'components/admin/ContentBuilder/Widgets/Published';
+import Selection, {
+  selectionTitle,
+} from 'components/admin/ContentBuilder/Widgets/Selection';
+import Spotlight, {
+  spotlightTitle,
+} from 'components/admin/ContentBuilder/Widgets/Spotlight';
 import ThreeColumn, {
   threeColumnTitle,
 } from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import TwoColumn, {
   twoColumnTitle,
 } from 'components/admin/ContentBuilder/Widgets/TwoColumn';
+import VideoEmbed, {
+  videoEmbedTitle,
+} from 'components/admin/ContentBuilder/Widgets/VideoEmbed';
 import WhiteSpace, {
   whiteSpaceTitle,
 } from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+import FolderFiles, {
+  folderFilesTitle,
+} from 'components/DescriptionBuilder/Widgets/FolderFiles';
+import FolderTitle, {
+  folderTitleTitle,
+} from 'components/DescriptionBuilder/Widgets/FolderTitle';
+import InfoWithAccordions, {
+  infoWithAccordionsTitle,
+} from 'components/DescriptionBuilder/Widgets/InfoWithAccordions';
 
 import { MessageDescriptor } from 'utils/cl-intl';
 
-// Homepage builder widggets
+// Homepage builder widgets
 import Proposals from './_deprecated/Proposals';
-import Areas, { areasTitle } from './Areas';
-import CallToAction, { callToActionTitle } from './CallToAction';
-import CommunityMonitorCTA, {
-  communityMonitorCTATitle,
-} from './CommunityMonitorCTA';
 import Events, { eventsTitle } from './Events';
-import FinishedOrArchived, {
-  finishedOrArchivedTitle,
-} from './FinishedOrArchived';
-import FollowedItems, { followedItemsTitle } from './FollowedItems';
 import HomepageBanner, { homepageBannerTitle } from './HomepageBanner';
-import OpenToParticipation, {
-  openToParticipationTitle,
-} from './OpenToParticipation';
 import ProjectsAndFoldersLegacy, {
   projectsAndFoldersLegacyTitle,
 } from './ProjectsAndFoldersLegacy';
-import Published, { publishedTitle } from './Published';
-import Selection, { selectionTitle } from './Selection';
-import Spotlight, { spotlightTitle } from './Spotlight';
 import TextMultiloc, { textMultilocTitle } from './TextMultiloc';
-import VideoEmbed, { videoEmbedTitle } from './VideoEmbed';
 
 export const WIDGETS = {
   // Shared widgets
   AccordionMultiloc,
   ButtonMultiloc,
+  HtmlBlockMultiloc,
   IframeMultiloc,
   ImageMultiloc,
   ThreeColumn,
   TwoColumn,
   WhiteSpace,
+  Published,
+  Selection,
+  Spotlight,
+  EventsList,
 
   // Homepage builder widgets
   Areas,
   CallToAction,
   CommunityMonitorCTA,
+  CustomPages,
   Events,
   FollowedItems,
   FinishedOrArchived,
   HomepageBanner,
   OpenToParticipation,
   ProjectsAndFoldersLegacy,
-  Published,
-  Selection,
-  Spotlight,
   TextMultiloc,
   VideoEmbed,
 
@@ -80,6 +118,14 @@ export const WIDGETS = {
 
   // DEPRECATED (TODO remove in migration)
   Proposals,
+
+  // Folder description builder widgets
+  FolderTitle,
+  FolderFiles,
+
+  // Project description builder widgets
+  InfoWithAccordions,
+  AboutBox,
 };
 
 type WidgetName = keyof typeof WIDGETS;
@@ -88,25 +134,28 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   // Shared widgets
   AccordionMultiloc: accordionMultilocTitle,
   ButtonMultiloc: buttonMultilocTitle,
+  HtmlBlockMultiloc: htmlBlockMultilocTitle,
   IframeMultiloc: iframeTitle,
   ImageMultiloc: imageMultilocTitle,
   ThreeColumn: threeColumnTitle,
   TwoColumn: twoColumnTitle,
   WhiteSpace: whiteSpaceTitle,
+  Published: publishedTitle,
+  Selection: selectionTitle,
+  Spotlight: spotlightTitle,
+  EventsList: eventsListTitle,
 
   // Homepage builder widgets
   Areas: areasTitle,
   CallToAction: callToActionTitle,
   CommunityMonitorCTA: communityMonitorCTATitle,
+  CustomPages: customPagesTitle,
   Events: eventsTitle,
   FollowedItems: followedItemsTitle,
   FinishedOrArchived: finishedOrArchivedTitle,
   HomepageBanner: homepageBannerTitle,
   OpenToParticipation: openToParticipationTitle,
   ProjectsAndFoldersLegacy: projectsAndFoldersLegacyTitle,
-  Published: publishedTitle,
-  Selection: selectionTitle,
-  Spotlight: spotlightTitle,
   TextMultiloc: textMultilocTitle,
   VideoEmbed: videoEmbedTitle,
 
@@ -116,12 +165,21 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
 
   // DEPRECATED
   Proposals: callToActionTitle,
+
+  // Folder description builder widgets
+  FolderTitle: folderTitleTitle,
+  FolderFiles: folderFilesTitle,
+
+  // Project description builder widgets
+  InfoWithAccordions: infoWithAccordionsTitle,
+  AboutBox: aboutBoxTitle,
 };
 
 const WIDGETS_WITH_CHILDREN = new Set<string>([
   'TwoColumn',
   'ThreeColumn',
   'AccordionMultiloc',
+  'InfoWithAccordions',
 ] satisfies WidgetName[]);
 
 export const hasChildren = (nodeName: string) => {
@@ -132,25 +190,33 @@ const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
   // Shared widgets
   'ButtonMultiloc',
   'IframeMultiloc',
+  'Published',
+  'Selection',
+  'Spotlight',
 
   // Homepage builder widgets
   'Areas',
   'CallToAction',
   'CommunityMonitorCTA',
+  'CustomPages',
   'Events',
   'FollowedItems',
   'FinishedOrArchived',
   'HomepageBanner',
   'OpenToParticipation',
   'ProjectsAndFoldersLegacy',
-  'Published',
-  'Selection',
-  'Spotlight',
   'VideoEmbed',
 
   // RENAMED
   'Projects',
   'Highlight',
+
+  // Folder description builder widgets
+  'FolderTitle',
+  'FolderFiles',
+
+  // Project description builder widgets
+  'AboutBox',
 ] satisfies WidgetName[]);
 
 export const hasNoPointerEvents = (nodeName: string) => {

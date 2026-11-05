@@ -9,19 +9,13 @@ FactoryBot.define do
         'nl-BE' => 'Westpark vernieuwen'
       }
     end
-    description_multiloc do
-      {
-        'en' => '<p>Let\'s renew the parc at the city border and make it an enjoyable place for young and old.</p>',
-        'nl-BE' => '<p>Laten we het park op de grend van de stad vernieuwen en er een aangename plek van maken, voor jong en oud.</p>'
-      }
-    end
     description_preview_multiloc do
       {
         'en' => 'Let\'s renew the parc at the city border and make it an enjoyable place for young and old.',
         'nl-BE' => 'Laten we het park op de grend van de stad vernieuwen en er een aangename plek van maken, voor jong en oud.'
       }
     end
-    sequence(:slug) { |n| "renew-west-parc-#{n}" }
+    sequence(:slug) { |n| "renew-west-parc-#{n}-#{SecureRandom.hex(4)}" }
 
     transient do
       with_permissions { false }
@@ -37,13 +31,19 @@ FactoryBot.define do
       end
     end
 
-    factory :project_with_allowed_input_topics do
+    trait :draft do
+      admin_publication_attributes do
+        { publication_status: 'draft' }.merge(@overrides[:admin_publication_attributes] || {})
+      end
+    end
+
+    factory :project_with_input_topics do
       transient do
-        allowed_input_topics_count { 5 }
+        input_topics_count { 5 }
       end
 
       after(:create) do |project, evaluator|
-        evaluator.allowed_input_topics_count.times { project.allowed_input_topics << create(:topic) }
+        evaluator.input_topics_count.times { project.input_topics << create(:input_topic) }
       end
     end
 
@@ -67,8 +67,10 @@ FactoryBot.define do
         evaluator.phases_count.times do
           project.phases << create(
             :phase,
-            start_at: start_at + 1,
-            end_at: start_at += rand(1..120).days,
+            start_at: start_at,
+            # At least 2 days: a 1-day phase spanning a DST spring-forward is only
+            # 23h, which is < MIN_DURATION (24h) and fails validation.
+            end_at: start_at += rand(2..120).days,
             project: project
           )
         end
@@ -281,16 +283,15 @@ FactoryBot.define do
     factory :project_with_past_phases do
       transient do
         phases_count { 5 }
-        last_end_at { Faker::Date.between(from: 1.year.ago, to: Time.zone.now) }
+        last_end_at { Faker::Date.between(from: 1.year.ago, to: Time.current) }
       end
 
       after(:create) do |project, evaluator|
         end_at = evaluator.last_end_at
         evaluator.phases_count.times do
-          project.phases << create(:phase,
-            end_at: end_at - 1,
-            start_at: end_at -= rand(1..72).days,
-            project: project)
+          duration = rand((25.hours)..(2.months))
+          phase = create(:phase, project:, end_at:, start_at: end_at - duration)
+          end_at = phase.start_at
         end
       end
     end
@@ -324,7 +325,9 @@ FactoryBot.define do
         active_phase = create(
           :phase,
           start_at: Faker::Date.between(from: 6.months.ago, to: Time.zone.now),
-          end_at: Faker::Date.between(from: 1.day.from_now, to: 6.months.from_now),
+          # `from: 2.days.from_now` (not 1) guarantees the phase is at least 2 days
+          # long: a 1-day span over a DST spring-forward is 23h < MIN_DURATION.
+          end_at: Faker::Date.between(from: 2.days.from_now, to: 6.months.from_now),
           project: project,
           **phase_config
         )
@@ -334,8 +337,9 @@ FactoryBot.define do
         phases_before.to_s.chars.map(&:to_sym).reverse_each do |sequence_char|
           phase_config = evaluator.phases_config[sequence_char].clone || {}
           project.phases << create(phase_config[:factory] || :phase,
-            end_at: end_at - 1,
-            start_at: end_at -= rand(1..120).days,
+            end_at: end_at,
+            # At least 2 days: guards against a DST-shortened 23h day (< MIN_DURATION).
+            start_at: end_at -= rand(2..120).days,
             project: project,
             **phase_config.except(:factory))
         end
@@ -344,8 +348,9 @@ FactoryBot.define do
         phases_after.to_s.chars.map(&:to_sym).each do |sequence_char|
           phase_config = evaluator.phases_config[sequence_char].clone || {}
           project.phases << create(phase_config[:factory] || :phase,
-            start_at: start_at + 1,
-            end_at: start_at += rand(1..120).days,
+            start_at: start_at,
+            # At least 2 days: guards against a DST-shortened 23h day (< MIN_DURATION).
+            end_at: start_at += rand(2..120).days,
             project: project,
             **phase_config.except(:factory))
         end
@@ -355,15 +360,18 @@ FactoryBot.define do
     factory :project_with_future_phases do
       transient do
         phases_count { 5 }
-        first_start_at { Faker::Date.between(from: Time.zone.now, to: 1.year.from_now) }
+        # `from: 1.day.from_now` (not 1.hour): Faker::Date.between returns a Date, so
+        # a sub-day `from` collapses to *today* (midnight = already past), making the
+        # "future" phase actually current and breaking timeline-not-started specs.
+        first_start_at { Faker::Date.between(from: 1.day.from_now, to: 1.year.from_now) }
       end
+
       after(:create) do |project, evaluator|
         start_at = evaluator.first_start_at
         evaluator.phases_count.times do
-          project.phases << create(:phase,
-            start_at: start_at + 1,
-            end_at: start_at += rand(1..120).days,
-            project: project)
+          # At least 2 days: guards against a DST-shortened 23h day (< MIN_DURATION).
+          phase = create(:phase, project:, start_at:, end_at: start_at + rand(2..120).days)
+          start_at = phase.end_at
         end
       end
     end
@@ -371,7 +379,7 @@ FactoryBot.define do
     factory :project_xl do
       transient do
         ideas_count { 10 }
-        allowed_input_topics_count { 3 }
+        input_topics_count { 3 }
         areas_count { 3 }
         phases_count { 3 }
         events_count { 3 }
@@ -383,8 +391,8 @@ FactoryBot.define do
         evaluator.ideas_count.times do
           project.ideas << create(:idea, project: project)
         end
-        evaluator.allowed_input_topics_count.times do
-          project.allowed_input_topics << create(:topic)
+        evaluator.input_topics_count.times do
+          project.input_topics << create(:input_topic, project:)
         end
         evaluator.areas_count.times do
           project.areas << create(:area)
@@ -636,7 +644,9 @@ FactoryBot.define do
               :community_monitor_survey_phase,
               project: project,
               **evaluator.phase_attrs,
-              with_permissions: true
+              # As CommunityMonitorService populates it: its own permission,
+              # open to everyone, rather than one inherited from 'visiting'.
+              permissions_config: { 'posting_idea' => true }
             )
           end
 

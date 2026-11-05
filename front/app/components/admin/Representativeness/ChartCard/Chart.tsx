@@ -5,6 +5,7 @@ import {
   colors,
   DEFAULT_BAR_CHART_MARGIN,
 } from 'components/admin/Graphs/styling';
+import { Legend } from 'components/admin/Graphs/typings';
 
 import { RepresentativenessData } from '../../../../hooks/parseReferenceData';
 
@@ -23,6 +24,14 @@ const BAR_FILLS = [colors.blue, colors.lightBlue];
 const Chart = ({ currentChartRef, data, barNames, hideTicks }: Props) => {
   const hideLabels = data.length > 10;
   const slicedData = data.slice(0, 24);
+
+  const legend: Legend = {
+    items: [
+      { icon: 'rect', color: BAR_FILLS[0], label: barNames[0] },
+      { icon: 'rect', color: BAR_FILLS[1], label: barNames[1] },
+    ],
+    position: 'bottom-center',
+  };
 
   return (
     <MultiBarChart
@@ -45,6 +54,7 @@ const Chart = ({ currentChartRef, data, barNames, hideTicks }: Props) => {
       yaxis={{ tickFormatter: formatPercentage }}
       labels={hideLabels ? undefined : { formatter: formatPercentage }}
       tooltip={renderTooltip}
+      legend={legend}
     />
   );
 };

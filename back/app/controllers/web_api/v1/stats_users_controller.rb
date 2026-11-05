@@ -2,15 +2,14 @@
 
 class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
   def users_count
-    count = User.active
-      .where(registration_completed_at: @start_at..@end_at)
-      .active
-      .count
+    count = User.active.count
 
     render json: raw_json({
       count: count,
       administrators_count: User.billed_admins.count,
-      moderators_count: User.billed_moderators.count
+      space_moderators_count: User.space_moderator.not_citizenlab_member.count,
+      folder_moderators_count: User.project_folder_moderator.not_citizenlab_member.count,
+      project_moderators_count: User.project_moderator.not_citizenlab_member.count
     })
   end
 

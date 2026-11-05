@@ -10,19 +10,32 @@ import { getStepConfig } from './useSteps/stepConfig';
 export type ErrorCode =
   | 'account_creation_failed'
   | 'wrong_confirmation_code'
+  | 'wrong_phone_confirmation_code'
   | 'sign_in_failed'
   | 'requirements_fetching_failed'
   | 'invitation_error'
   | 'unknown'
   | 'franceconnect_merging_failed'
   | 'email_taken_and_user_can_be_verified'
-  | 'not_entitled_under_minimum_age'
+  | 'verification_under_minimum_age'
+  | 'verification_lives_outside'
+  | 'verification_no_match'
+  | 'verification_service_error'
+  | 'auth_under_minimum_age'
+  | 'auth_lives_outside'
+  | 'auth_no_match'
+  | 'auth_service_error'
   | 'verification_taken'
-  | 'resending_code_failed';
+  | 'resending_code_failed'
+  | 'account_merge_not_allowed';
 
 export interface State {
   flow: 'signup' | 'signin';
   email: string | null;
+  phone: string | null;
+  new_email: string | null;
+  new_phone: string | null;
+  smsManualCampaignConsent: boolean;
   token: string | null;
   prefilledBuiltInFields: {
     first_name?: string;
@@ -30,6 +43,7 @@ export interface State {
     email?: string;
   } | null;
   ssoProvider: SSOProvider | null;
+  claimTokens: string[] | null;
 }
 
 export type UpdateState = (state: Partial<State>) => void;
@@ -41,12 +55,16 @@ export type Step = keyof StepConfig;
 
 export type SetError = (errorCode: ErrorCode) => void;
 
-export type SignUpInFlow = 'signup' | 'signin';
+type NotEntitledError =
+  | 'not_entitled_under_minimum_age'
+  | 'not_entitled_lives_outside'
+  | 'not_entitled_no_match'
+  | 'not_entitled_service_error';
 export type SignUpInError =
+  | NotEntitledError
   | 'general'
-  | 'franceconnect_merging_failed'
-  | 'not_entitled_under_minimum_age';
-export type VerificationError = 'not_entitled_under_minimum_age';
+  | 'franceconnect_merging_failed';
+export type VerificationError = NotEntitledError | 'taken';
 
 export interface AuthenticationData {
   context: AuthenticationContext;

@@ -1,4 +1,4 @@
-import React, { useState, KeyboardEvent, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 
 import { Box, media, isRtl } from '@citizenlab/cl2-component-library';
 import {
@@ -12,8 +12,8 @@ import {
 } from 'lodash-es';
 import styled from 'styled-components';
 
-import Combobox from './Combobox';
 import MultiSelectDropdown from './MultiSelectDropdown';
+import SingleSelectDropdown from './SingleSelectDropdown';
 
 const Container = styled(Box)<{ mr?: string; ml?: string }>`
   display: inline-block;
@@ -206,13 +206,6 @@ const FilterSelector = ({
     closeExpanded();
   };
 
-  const handleKeyDown = (event: KeyboardEvent) => {
-    if (event.key === 'ArrowDown' && !opened) {
-      event.preventDefault();
-      toggleValuesList();
-    }
-  };
-
   // We use a random id for the selectorId to ensure it doesn't conflict if multiple
   // instances of the same filter selector are rendered on the same page.
   const selectorId = useMemo(
@@ -237,9 +230,9 @@ const FilterSelector = ({
     filterSelectorStyle,
     minWidth,
     toggleValuesList,
+    closeExpanded,
     textColor,
     currentTitle: getTitle(selected, values, multipleSelectionAllowed, title),
-    handleKeyDown,
   };
 
   return (
@@ -261,7 +254,7 @@ const FilterSelector = ({
           {...sharedProps}
         />
       ) : (
-        <Combobox
+        <SingleSelectDropdown
           options={values}
           onChange={selectionChange}
           {...sharedProps}

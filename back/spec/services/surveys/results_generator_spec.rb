@@ -28,19 +28,22 @@ RSpec.describe Surveys::ResultsGenerator do
         :native_survey_response,
         project: project,
         phases: phases_of_inputs,
-        custom_field_values: {
-          text_field.key => 'Green',
-          multiselect_field.key => 'some_single_select_value',
-          select_field.key => 'other',
-          "#{select_field.key}_other" => 'Austin',
-          multiselect_image_field.key => ['house'],
-          matrix_linear_scale_field.key => {
+        custom_field_answers: [
+          build(:custom_field_answer, key: text_field.key, value: 'Green'),
+          build(:custom_field_answer, key: multiselect_field.key, value: 'some_single_select_value'),
+          build(:custom_field_answer, key: select_field.key, value: 'other'),
+          build(:custom_field_answer, key: "#{select_field.key}_other", value: 'Austin', custom_field: select_field),
+          build(:custom_field_answer, key: multiselect_image_field.key, value: ['house']),
+          build(:custom_field_answer, key: matrix_linear_scale_field.key, value: {
             'ride_bicycles_more_often' => 3
-          },
-          sentiment_linear_scale_field.key => 5,
-          "#{sentiment_linear_scale_field.key}_follow_up" => 'Great thanks very much'
-        },
-        author: create(:user, custom_field_values: { gender: 'female', domicile: domicile_user_custom_field.options[1].area.id }),
+          }),
+          build(:custom_field_answer, key: sentiment_linear_scale_field.key, value: 5),
+          build(:custom_field_answer, key: "#{sentiment_linear_scale_field.key}_follow_up", value: 'Great thanks very much', custom_field: sentiment_linear_scale_field)
+        ],
+        author: create(:user, custom_field_answers: [
+          build(:custom_field_answer, key: 'gender', value: 'female'),
+          build(:custom_field_answer, key: 'domicile', value: domicile_user_custom_field.options[1].area.id)
+        ]),
         created_at: '2025-04-05'
       )
 
@@ -62,18 +65,18 @@ RSpec.describe Surveys::ResultsGenerator do
         expect(generated_results[:totalSubmissions]).to eq 27
       end
 
-      it 'returns the correct fields and structure' do
-        expect(generated_results[:results].count).to eq 18
+      it 'returns the correct fields in the correct order' do
+        expect(generated_results[:results].count).to eq 21
         expect(generated_results[:results].pluck(:customFieldId)).not_to include disabled_multiselect_field.id
       end
     end
 
     describe 'page fields' do
       it 'returns correct values for a page field in full results' do
-        page_result = generated_results[:results][0]
+        page_result = generated_results[:results][result_index(page_field)]
         expect(page_result[:inputType]).to eq 'page'
         expect(page_result[:totalResponseCount]).to eq(27)
-        expect(page_result[:questionResponseCount]).to eq(25)
+        expect(page_result[:questionResponseCount]).to eq(22)
         expect(page_result[:pageNumber]).to eq(1)
         expect(page_result[:questionNumber]).to be_nil
       end
@@ -104,7 +107,7 @@ RSpec.describe Surveys::ResultsGenerator do
       end
 
       it 'returns the results for a text field' do
-        expect(generated_results[:results][1]).to match expected_result_text_field
+        expect(generated_results[:results][result_index(text_field)]).to match expected_result_text_field
       end
 
       it 'returns a single result for a text field' do
@@ -113,7 +116,7 @@ RSpec.describe Surveys::ResultsGenerator do
       end
 
       it 'returns the results for an unanswered field' do
-        expect(generated_results[:results][7]).to match(
+        expect(generated_results[:results][result_index(unanswered_text_field)]).to match(
           {
             customFieldId: unanswered_text_field.id,
             inputType: 'text',
@@ -134,18 +137,18 @@ RSpec.describe Surveys::ResultsGenerator do
 
       # Documenting the behavior for 'empty' text fields explicitly.
       it 'does not return count empty text responses' do
-        text_answers = project.phases.first.ideas
-          .where(Arel.sql("custom_field_values ? '#{text_field.key}'"))
-          .pluck(Arel.sql("custom_field_values->>'#{text_field.key}'"))
+        text_answers = CustomFieldAnswer
+          .where(answerable: project.phases.first.ideas, key: text_field.key)
+          .pluck(:value)
 
         expect(text_answers).to include('', "   \n")
-        expect(generated_results[:results][1][:textResponses].pluck(:answer)).not_to include('', "   \n")
+        expect(generated_results[:results][result_index(text_field)][:textResponses].pluck(:answer)).not_to include('', "   \n")
       end
     end
 
     describe 'multiline text fields' do
       it 'returns the results for a multiline text field' do
-        expect(generated_results[:results][2]).to match(
+        expect(generated_results[:results][result_index(multiline_text_field)]).to match(
           {
             customFieldId: multiline_text_field.id,
             inputType: 'multiline_text',
@@ -206,12 +209,29 @@ RSpec.describe Surveys::ResultsGenerator do
       end
 
       it 'returns the results for a multi-select field' do
-        expect(generated_results[:results][3]).to match expected_result_multiselect
+        expect(generated_results[:results][result_index(multiselect_field)]).to match expected_result_multiselect
       end
 
       it 'returns a single result for multiselect' do
         expected_result_multiselect[:questionNumber] = nil
         expect(generator.generate_result_for_field(multiselect_field.id)).to match expected_result_multiselect
+      end
+
+      context 'with an empty selection' do
+        before do
+          create(:native_survey_response, project: project, phases: phases_of_inputs, custom_field_answers: [
+            build(:custom_field_answer, key: multiselect_field.key, value: [])
+          ])
+        end
+
+        it 'increases the question response count, leaving every answer count unchanged' do
+          result = generator.generate_result_for_field(multiselect_field.id)
+
+          expect(result[:totalResponseCount]).to eq 28
+          expect(result[:questionResponseCount]).to eq 5
+          expect(result[:answers]).to include({ answer: nil, count: 23 })
+          expect(result[:totalPickCount]).to eq 33
+        end
       end
     end
 
@@ -262,7 +282,7 @@ RSpec.describe Surveys::ResultsGenerator do
 
       it 'returns the results for a linear scale field' do
         expected_result_linear_scale[:questionNumber] = 4
-        expect(generated_results[:results][4]).to match expected_result_linear_scale
+        expect(generated_results[:results][result_index(linear_scale_field)]).to match expected_result_linear_scale
       end
 
       it 'returns a single result for a linear scale field' do
@@ -344,7 +364,7 @@ RSpec.describe Surveys::ResultsGenerator do
       end
 
       it 'returns the results for a rating field' do
-        expect(generated_results[:results][16]).to match expected_result_rating
+        expect(generated_results[:results][result_index(rating_field)]).to match expected_result_rating
       end
 
       it 'returns a single result for a rating field' do
@@ -399,7 +419,7 @@ RSpec.describe Surveys::ResultsGenerator do
       end
 
       it 'returns the results for a sentiment linear scale field' do
-        expect(generated_results[:results][17]).to match expected_result_sentiment_linear_scale
+        expect(generated_results[:results][result_index(sentiment_linear_scale_field)]).to match expected_result_sentiment_linear_scale
       end
 
       it 'returns a single result for a sentiment linear scale field' do
@@ -468,7 +488,7 @@ RSpec.describe Surveys::ResultsGenerator do
       end
 
       it 'returns the results for a matrix linear scale field' do
-        expect(generated_results[:results][15]).to match expected_result_matrix_linear_scale
+        expect(generated_results[:results][result_index(matrix_linear_scale_field)]).to match expected_result_matrix_linear_scale
       end
 
       it 'returns a single result for a linear scale field' do
@@ -520,13 +540,23 @@ RSpec.describe Surveys::ResultsGenerator do
 
       it 'returns the correct results for a select field' do
         expected_result_select[:questionNumber] = 5
-        expect(generated_results[:results][5]).to match expected_result_select
+        expect(generated_results[:results][result_index(select_field)]).to match expected_result_select
       end
 
       it 'returns select answers in order of the number of responses, with other always last' do
-        answers = generated_results[:results][5][:answers]
+        answers = generated_results[:results][result_index(select_field)][:answers]
         expect(answers.pluck(:answer)).to eq [nil, 'la', 'ny', 'other']
         expect(answers.pluck(:count)).to eq [21, 2, 1, 3]
+      end
+
+      context "when sort is 'original'" do
+        subject(:generator) { described_class.new(survey_phase, options_sort_order: 'original') }
+
+        it 'returns select answers in original field option order, with other always last' do
+          results = generator.generate_results
+          answers = results[:results][result_index(select_field)][:answers]
+          expect(answers.pluck(:answer)).to eq ['la', 'ny', nil, 'other']
+        end
       end
 
       it 'returns a single result for a select field' do
@@ -584,7 +614,7 @@ RSpec.describe Surveys::ResultsGenerator do
       end
 
       it 'returns the correct results for a ranking field' do
-        expect(generated_results[:results][14]).to match expected_result_ranking
+        expect(generated_results[:results][result_index(ranking_field)]).to match expected_result_ranking
       end
     end
 
@@ -639,7 +669,7 @@ RSpec.describe Surveys::ResultsGenerator do
       end
 
       it 'returns the results for a multi-select image field' do
-        expect(generated_results[:results][6]).to match expected_result_multiselect_image
+        expect(generated_results[:results][result_index(multiselect_image_field)]).to match expected_result_multiselect_image
       end
     end
 
@@ -665,7 +695,7 @@ RSpec.describe Surveys::ResultsGenerator do
       end
 
       it 'returns the results for file upload field' do
-        expect(generated_results[:results][8]).to match expected_result_file_upload
+        expect(generated_results[:results][result_index(file_upload_field)]).to match expected_result_file_upload
       end
     end
 
@@ -691,7 +721,7 @@ RSpec.describe Surveys::ResultsGenerator do
       end
 
       it 'returns the results for file upload field' do
-        expect(generated_results[:results][9]).to match expected_result_shapefile_upload
+        expect(generated_results[:results][result_index(shapefile_upload_field)]).to match expected_result_shapefile_upload
       end
     end
 
@@ -719,7 +749,7 @@ RSpec.describe Surveys::ResultsGenerator do
       end
 
       it 'returns the results for a point field' do
-        expect(generated_results[:results][10]).to match expected_result_point
+        expect(generated_results[:results][result_index(point_field)]).to match expected_result_point
       end
     end
 
@@ -747,7 +777,7 @@ RSpec.describe Surveys::ResultsGenerator do
       end
 
       it 'returns the results for a line field' do
-        expect(generated_results[:results][11]).to match expected_result_line
+        expect(generated_results[:results][result_index(line_field)]).to match expected_result_line
       end
     end
 
@@ -775,7 +805,35 @@ RSpec.describe Surveys::ResultsGenerator do
       end
 
       it 'returns the results for a polygon field' do
-        expect(generated_results[:results][12]).to match expected_result_polygon
+        expect(generated_results[:results][result_index(polygon_field)]).to match expected_result_polygon
+      end
+    end
+
+    describe 'multipoint fields' do
+      let(:expected_result_multipoint) do
+        {
+          inputType: 'multipoint',
+          question: { 'en' => 'Which locations should we look at?' },
+          required: false,
+          grouped: false,
+          description: {},
+          hidden: false,
+          pageNumber: nil,
+          questionNumber: 18,
+          questionCategory: nil,
+          questionResponseCount: 2,
+          totalResponseCount: 27,
+          customFieldId: multipoint_field.id,
+          mapConfigId: map_config_for_multipoint.id,
+          multipointResponses: a_collection_containing_exactly(
+            { answer: { 'coordinates' => [[1.1, 2.2], [3.3, 4.4], [5.5, 6.6]], 'type' => 'MultiPoint' } },
+            { answer: { 'coordinates' => [[1.2, 2.3], [3.4, 4.5]], 'type' => 'MultiPoint' } }
+          )
+        }
+      end
+
+      it 'returns the results for a multipoint field' do
+        expect(generated_results[:results][result_index(multipoint_field)]).to match expected_result_multipoint
       end
     end
 
@@ -802,8 +860,24 @@ RSpec.describe Surveys::ResultsGenerator do
       end
 
       it 'returns the results for a number field' do
-        expect(generated_results[:results][13]).to match expected_result_number
+        expect(generated_results[:results][result_index(number_field)]).to match expected_result_number
       end
+    end
+  end
+
+  describe 'performance' do
+    it 'does not run too many SQL queries when generating the full results' do
+      expect do
+        generator = described_class.new survey_phase
+        generator.generate_results
+      end.not_to exceed_query_limit(46).with(/SELECT/)
+    end
+
+    it 'does not run too many SQL queries when generating a single result' do
+      expect do
+        generator = described_class.new survey_phase
+        generator.generate_result_for_field(select_field.id)
+      end.not_to exceed_query_limit(14).with(/SELECT/)
     end
   end
 end

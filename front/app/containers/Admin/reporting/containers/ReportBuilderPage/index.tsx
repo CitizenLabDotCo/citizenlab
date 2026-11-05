@@ -7,7 +7,6 @@ import {
   Title,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
 
 import useAuthUser from 'api/me/useAuthUser';
 import useReportBuilderEnabled from 'api/reports/useReportBuilderEnabled';
@@ -21,6 +20,7 @@ import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isAdmin } from 'utils/permissions/roles';
+import { useSearch } from 'utils/router';
 
 import CreateReportModal from '../../components/ReportBuilderPage/CreateReportModal';
 import EmptyState from '../../components/ReportBuilderPage/EmptyState';
@@ -71,20 +71,13 @@ const ListContainer = ({ children }) => (
   </Box>
 );
 
-const tabNames = [
-  'all-reports',
-  'your-reports',
-  'service-reports',
-  'community-monitor',
-];
-
 type ReportBuilderPageProps = {
   tabsToHide?: string[];
 };
 
 const ReportBuilderPage = ({ tabsToHide }: ReportBuilderPageProps) => {
   const { formatMessage } = useIntl();
-  const [searchParams] = useSearchParams();
+  const searchParams = useSearch({ strict: false });
   const { data: me } = useAuthUser();
   const [modalOpen, setModalOpen] = useState(false);
   const [search, setSearch] = useState<string | undefined>();
@@ -119,8 +112,7 @@ const ReportBuilderPage = ({ tabsToHide }: ReportBuilderPageProps) => {
 
   const defaultTab = getDefaultTab(me);
 
-  const currentTab =
-    tabNames.find((tab) => tab === searchParams.get('tab')) ?? defaultTab;
+  const currentTab = searchParams.tab ?? defaultTab;
 
   const reports = {
     'your-reports': yourReports,

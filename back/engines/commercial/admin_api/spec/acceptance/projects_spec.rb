@@ -18,15 +18,168 @@ resource 'Project', admin_api: true do
       expect(json_response_body.first).to include(
         id: project.id,
         title_multiloc: kind_of(Hash),
-        description_multiloc: kind_of(Hash),
         slug: project.slug,
         map_config_id: nil,
-        visible_to: 'public'
+        visible_to: 'public',
+        listed: true
       )
       expect(json_response_body.first[:admin_publication]).to include(
         publication_status: 'published'
       )
       expect(json_response_body.first[:folder]).to be_nil
+    end
+
+    context 'when the project is not listed' do
+      let!(:project) { create(:project, listed: false) }
+
+      example_request 'Serializes listed as false' do
+        expect(status).to eq 200
+        expect(json_response_body.first).to include(listed: false)
+      end
+    end
+  end
+
+  get 'admin_api/projects/widget_projects' do
+    parameter :projects, 'Filter by specific project IDs', required: false
+    parameter :folders, 'Filter by folder IDs', required: false
+    parameter :sort, 'Sort order: platform_order (default), newest, ending_soon, most_participants', required: false
+    parameter :limit, 'Maximum number of projects to return (default 3)', required: false
+
+    before_all do
+      Analytics::PopulateDimensionsService.populate_types
+    end
+
+    before do
+      header 'tenant', Tenant.current.id
+
+      @public_active = create(:project, visible_to: 'public')
+      create(:phase, project: @public_active, start_at: 1.week.ago, end_at: 1.week.from_now)
+      create(:project_image, project: @public_active)
+
+      @public_active2 = create(:project, visible_to: 'public')
+      create(:phase, project: @public_active2, start_at: 1.week.ago, end_at: 1.week.from_now)
+
+      @public_no_phase = create(:project, visible_to: 'public')
+
+      @restricted_active = create(:project, visible_to: 'groups')
+      create(:phase, project: @restricted_active, start_at: 1.week.ago, end_at: 1.week.from_now)
+
+      @draft_active = create(:project,
+        admin_publication_attributes: { publication_status: 'draft' })
+      create(:phase, project: @draft_active, start_at: 1.week.ago, end_at: 1.week.from_now)
+
+      @hidden_active = create(:project, visible_to: 'public', hidden: true)
+      create(:phase, project: @hidden_active, start_at: 1.week.ago, end_at: 1.week.from_now)
+    end
+
+    example 'Returns only publicly visible projects with active phases by default' do
+      do_request
+      expect(status).to eq 200
+      json_response = json_parse(response_body)
+      ids = json_response[:projects].pluck(:id)
+      expect(ids).to include(@public_active.id, @public_active2.id)
+      expect(ids).not_to include(@public_no_phase.id)
+      expect(ids).not_to include(@restricted_active.id)
+      expect(ids).not_to include(@draft_active.id)
+      expect(ids).not_to include(@hidden_active.id)
+    end
+
+    example 'Returns specific projects filtered by visibility' do
+      do_request(projects: [@public_active.id, @restricted_active.id])
+      expect(status).to eq 200
+      json_response = json_parse(response_body)
+      ids = json_response[:projects].pluck(:id)
+      expect(ids).to include(@public_active.id)
+      expect(ids).not_to include(@restricted_active.id)
+    end
+
+    example 'Returns only publicly visible projects when filtering by non-active projects' do
+      do_request(projects: [@public_no_phase.id, @restricted_active.id, @draft_active.id])
+      expect(status).to eq 200
+      json_response = json_parse(response_body)
+      ids = json_response[:projects].pluck(:id)
+      expect(ids).to eq([@public_no_phase.id])
+    end
+
+    example 'Filters projects by folder' do
+      folder = create(:project_folder)
+      @public_active.update!(folder_id: folder.id)
+
+      do_request(folders: [folder.id])
+      expect(status).to eq 200
+      json_response = json_parse(response_body)
+      ids = json_response[:projects].pluck(:id)
+      expect(ids).to include(@public_active.id)
+      expect(ids).not_to include(@public_active2.id)
+    end
+
+    example 'Limits the number of projects' do
+      do_request(limit: 1)
+      expect(status).to eq 200
+      json_response = json_parse(response_body)
+      expect(json_response[:projects].size).to eq 1
+    end
+
+    example 'Sorts by newest (created_at DESC)' do
+      @public_active.update!(created_at: 2.days.ago)
+      @public_active2.update!(created_at: 1.day.ago)
+
+      do_request(sort: 'newest')
+      expect(status).to eq 200
+      json_response = json_parse(response_body)
+      ids = json_response[:projects].pluck(:id)
+      expect(ids).to eq([@public_active2.id, @public_active.id])
+    end
+
+    example 'Sorts by ending_soon (current phase end_at ASC)' do
+      @public_active.phases.first.update!(end_at: 3.days.from_now)
+      @public_active2.phases.first.update!(end_at: 1.day.from_now)
+
+      do_request(sort: 'ending_soon')
+      expect(status).to eq 200
+      json_response = json_parse(response_body)
+      ids = json_response[:projects].pluck(:id)
+      expect(ids).to eq([@public_active2.id, @public_active.id])
+    end
+
+    example 'Sorts by most_participants (participation count DESC)' do
+      user1 = create(:user)
+      user2 = create(:user)
+      create(:idea, project: @public_active, author: user1, phases: @public_active.phases)
+      create(:idea, project: @public_active, author: user2, phases: @public_active.phases)
+      create(:idea, project: @public_active2, author: user1, phases: @public_active2.phases)
+
+      do_request(sort: 'most_participants')
+      expect(status).to eq 200
+      json_response = json_parse(response_body)
+      ids = json_response[:projects].pluck(:id)
+      expect(ids.first).to eq(@public_active.id)
+    end
+
+    example 'Sorts by platform_order by default' do
+      do_request
+      expect(status).to eq 200
+      json_response = json_parse(response_body)
+      ids = json_response[:projects].pluck(:id)
+      expected_order = AdminPublication
+        .where(publication_type: 'Project', publication_id: ids)
+        .order(:ordering)
+        .pluck(:publication_id)
+      expect(ids).to eq(expected_order)
+    end
+
+    example 'Response includes widget fields' do
+      do_request(projects: [@public_active.id])
+      expect(status).to eq 200
+      json_response = json_parse(response_body)
+      project = json_response[:projects].first
+      expect(project[:title_multiloc]).to be_a(Hash)
+      expect(project[:description_preview_multiloc]).to be_a(Hash)
+      expect(project[:href]).to be_a(String)
+      expect(project).to have_key(:participants_count)
+      expect(project).to have_key(:current_phase_end_at)
+      expect(project[:project_images]).to be_present
+      expect(project[:project_images].first[:versions]).to be_a(Hash)
     end
   end
 
@@ -45,6 +198,8 @@ resource 'Project', admin_api: true do
 
     let(:tenant_id) { Tenant.current.id }
     let(:project) { create(:project_xl, phases_count: 8) }
+    let(:include_ideas) { true }
+    let(:max_ideas) { '' } # This is how Admin HQ currently calls the endpoint when max_ideas is not set
     let(:new_slug) { 'awesome-project' }
     let(:new_publication_status) { 'draft' }
     let(:id) { project.id }
@@ -53,13 +208,15 @@ resource 'Project', admin_api: true do
       example_request 'it exports a project' do
         expect(status).to eq 200
         json_response = json_parse(response_body)
-        template = YAML.load(json_response[:template_yaml], aliases: true)
+        template = YAML.unsafe_load(json_response[:template_yaml])
 
         expect(template['models']['project'].first.dig('title_multiloc', 'en')).to eq project.title_multiloc['en']
         expect(template['models']['phase'].size).to eq project.phases.count
         expect(template['models']['phase'].pluck('start_at')).to match(project.phases.map { |x| x.start_at.iso8601 })
         expect(template['models']['project_image'].pluck('remote_image_url')).to match project.project_images.map(&:image_url)
         expect(template['models']['project'].first.dig('admin_publication_attributes', 'publication_status')).to eq 'draft'
+        expect(template['models']['project'].first['slug']).to eq 'awesome-project'
+        expect(template['models']['idea'].size).to eq 10
       end
     end
   end
@@ -70,10 +227,12 @@ resource 'Project', admin_api: true do
     with_options scope: :project do
       parameter :template_yaml, 'The yml template for the project to import', required: true
       parameter :folder_id, 'The folder id in which to import the project', required: false
+      parameter :user_id, 'The id of the user that triggered the import', required: true
     end
 
     let(:tenant) { create(:tenant) }
     let(:folder) { tenant.switch { create(:project_folder) } }
+    let(:user) { tenant.switch { create(:admin) } }
     let(:template) do
       create(:tenant).switch do
         project = create(:project_xl, phases_count: 3, images_count: 0, files_count: 0) # no images nor files because URL's will not be available
@@ -86,8 +245,8 @@ resource 'Project', admin_api: true do
         template_yaml = template.to_yaml
 
         expect do
-          do_request(tenant_id: tenant.id, project: { template_yaml: template_yaml, folder_id: folder.id })
-        end.to enqueue_job(AdminApi::CopyProjectJob).with(template_yaml, folder.id)
+          do_request(tenant_id: tenant.id, project: { template_yaml: template_yaml, folder_id: folder.id, user_id: user.id })
+        end.to enqueue_job(AdminApi::CopyProjectJob).with(template_yaml, user.id, folder.id)
 
         expect(status).to eq(202)
       end

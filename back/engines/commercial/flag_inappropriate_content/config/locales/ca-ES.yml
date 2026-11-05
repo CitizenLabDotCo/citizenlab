@@ -1,15 +1,22 @@
-ca:
+ca-ES:
   email_campaigns:
-    campaign_type_description:
-      "inappropriate_content_flagged": Inappropriate content flagged
     admin_campaign_type_description:
-      "inappropriate_content_flagged": Inappropriate content flagged - admins
+      inappropriate_content_flagged: Inappropriate content flagged - admins
+    campaign_type_description:
+      inappropriate_content_flagged: Inappropriate content flagged
     inappropriate_content_flagged:
-      subject: 'A post on your platform has been flagged for review'
-      header_title: 'A post on your platform has been flagged for review'
-      comment_author: '%{authorName} commented:'
-      idea_author: '%{authorName} submitted a post:'
-      initiative_author: '%{authorName} submitted a proposal:'
-      this_post_was_flagged: >
+      author_wrote: "%{authorName} va escriure:"
+      automatically_flagged: S'ha detectat automàticament que aquesta publicació podria contenir contingut inadequat. T'enviem aquesta notificació perquè puguis revisar la publicació d'acord amb les teves pròpies directrius de moderació.
+      comment_author: "%{authorName} commented:"
+      cta_button: Revisa
+      cta_review_post: Review post
+      header_title: A post on your platform has been flagged for review
+      how_to_review: Si la publicació no conté contingut inadequat, pots eliminar l'avís a través de la teva plataforma a la pestanya Activitat del tauler d'administració.
+      idea_author: "%{authorName} submitted a post:"
+      initiative_author: "%{authorName} submitted a proposal:"
+      preheader: Una publicació de la teva plataforma s'ha marcat per revisar
+      subject: A post on your platform has been flagged for review
+      this_post_was_flagged: |
         <p>This post was automatically detected as potentially containing inappropriate content. We’re sending you this notification so that you can review the post in accordance with your own moderation guidelines.</p><p>If the post does not contain inappropriate content, you can remove the warning via your platform in the Activity tab in the admin panel.</p>
-      cta_review_post: 'Review post'
+
+      title: Una publicació s'ha marcat per revisar

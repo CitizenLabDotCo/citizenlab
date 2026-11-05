@@ -1,12 +1,11 @@
 import React from 'react';
 
-import { useParams } from 'react-router-dom';
-
 import { IFileAttachmentData } from 'api/file_attachments/types';
 import useFiles from 'api/files/useFiles';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import messages from '../../FileUploader/messages';
 
@@ -14,7 +13,7 @@ type Props = {
   fileAttachments?: IFileAttachmentData[];
 };
 const ScreenReaderFilesList = ({ fileAttachments }: Props) => {
-  const { projectId } = useParams();
+  const { projectId } = useParams({ strict: false });
   const { data: files } = useFiles({
     project: projectId ? [projectId] : [],
   });

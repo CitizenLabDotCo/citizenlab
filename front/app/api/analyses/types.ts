@@ -23,6 +23,7 @@ export interface IAnalysisData {
       | 'community_monitor_survey'
       | 'proposals';
     show_insights: boolean;
+    auto_insights_too_many_fields: boolean;
   };
   relationships: {
     project?: { data: IRelationship | null } | null;
@@ -31,6 +32,7 @@ export interface IAnalysisData {
     additional_custom_fields?: { data: IRelationship[] };
     main_custom_field?: { data: IRelationship | null };
     files?: { data: IRelationship[] } | null;
+    insightables?: { data: IRelationship[] };
   };
 }
 

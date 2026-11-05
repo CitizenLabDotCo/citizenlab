@@ -1,8 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 
-import { useBreakpoint, Box, Title } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
-import { RouteType } from 'routes';
+import {
+  useBreakpoint,
+  Box,
+  Title,
+  Tooltip,
+} from '@citizenlab/cl2-component-library';
+import { focusRingInset } from 'global-styles';
+import styled from 'styled-components';
 
 import useIdeaImage from 'api/idea_images/useIdeaImage';
 import { IIdea } from 'api/ideas/types';
@@ -11,21 +16,34 @@ import usePhase from 'api/phases/usePhase';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { IMAGES_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
-
 import clHistory from 'utils/cl-router/history';
-import Link from 'utils/cl-router/Link';
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
-import eventEmitter from 'utils/eventEmitter';
-import { scrollToElement } from 'utils/scroll';
+import { useSearch } from 'utils/router';
 
 import Body from './Body';
 import CardImage from './CardImage';
 import Container from './Container';
 import Footer from './Footer';
+import { useScrollToCard } from './hooks/useScrollToCard';
 import Interactions from './Interactions';
+
+const TitleClamp = styled.div`
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+`;
+
+const StyledLink = typedStyled(Link)`
+  display: block;
+
+  &.focus-visible,
+  &:focus-visible {
+    ${focusRingInset}
+  }
+`;
 
 export interface Props {
   ideaId: string;
@@ -51,11 +69,22 @@ const IdeaCard = ({
     idea.data.relationships.idea_images.data?.[0]?.id
   );
 
-  const image =
-    !hideImage && ideaImage ? ideaImage.data.attributes.versions.medium : null;
-
   const smallerThanPhone = useBreakpoint('phone');
   const smallerThanTablet = useBreakpoint('tablet');
+
+  const versions =
+    !hideImage && ideaImage ? ideaImage.data.attributes.versions : undefined;
+
+  // `square_medium` was added long after images started being uploaded, and the API
+  // returns its URL whether or not the version was ever generated. Fall back to
+  // `medium`, which every idea image has, so a missing square version doesn't leave
+  // an empty box on the card.
+  const image = smallerThanTablet
+    ? versions?.medium ?? null
+    : versions?.square_medium ?? versions?.medium ?? null;
+  const imageFallback = smallerThanTablet
+    ? undefined
+    : versions?.medium ?? undefined;
 
   const localize = useLocalize();
 
@@ -66,29 +95,26 @@ const IdeaCard = ({
   const config = participationMethod && getMethodConfig(participationMethod);
   const hideBody = config?.hideAuthorOnIdeas;
 
-  const ideaTitle = localize(idea.data.attributes.title_multiloc, {
-    maxChar: 50,
-  });
-  const [searchParams] = useSearchParams();
-  const scrollToCardParam = searchParams.get('scroll_to_card');
+  const ideaTitle = localize(idea.data.attributes.title_multiloc);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const [isTitleClamped, setIsTitleClamped] = useState(false);
 
   useEffect(() => {
-    if (scrollToCardParam && idea.data.id === scrollToCardParam) {
-      const subscription = eventEmitter
-        .observeEvent(IMAGES_LOADED_EVENT)
-        .subscribe(() => {
-          scrollToElement({
-            id: scrollToCardParam,
-            behavior: 'auto',
-            offset: smallerThanPhone ? 150 : 300,
-          });
-
-          subscription.unsubscribe();
-        });
+    const titleElement = titleRef.current;
+    if (titleElement) {
+      setIsTitleClamped(titleElement.scrollHeight > titleElement.clientHeight);
     }
+  }, [ideaTitle]);
+  const searchParams = useSearch({ strict: false });
+  const scrollToCardParam = searchParams.scroll_to_card;
 
-    removeSearchParams(['scroll_to_card']);
-  }, [scrollToCardParam, idea, smallerThanPhone]);
+  // Scroll to this card if it matches the scroll_to_card search param
+  const shouldScrollToCard =
+    scrollToCardParam && idea.data.id === scrollToCardParam
+      ? scrollToCardParam
+      : undefined;
+
+  useScrollToCard(shouldScrollToCard, smallerThanPhone);
 
   const { slug } = idea.data.attributes;
 
@@ -100,7 +126,7 @@ const IdeaCard = ({
     if (phaseId) {
       ideaUrl += `&phase_context=${phaseId}`;
     }
-    clHistory.push(ideaUrl as RouteType, {
+    clHistory.push(ideaUrl, {
       scrollToTop: true,
     });
   };
@@ -114,6 +140,7 @@ const IdeaCard = ({
       <CardImage
         phase={phaseData}
         image={image}
+        imageFallback={imageFallback}
         hideImagePlaceholder={hideImagePlaceholder}
       />
 
@@ -125,7 +152,6 @@ const IdeaCard = ({
         // Height of 100% needed to extent the card to the bottom of the row when there
         // is a card with an image and a card without an image in the same row.
         h="100%"
-        overflowX="hidden"
       >
         <Box
           mb={
@@ -136,17 +162,30 @@ const IdeaCard = ({
               : '8px'
           }
         >
-          <Link to={`/ideas/${slug}?go_back=true`} onClick={handleClick}>
-            <Title
-              variant="h3"
-              mt="4px"
-              mb="16px"
-              className="e2e-idea-card-title"
+          <StyledLink
+            to="/ideas/$slug"
+            params={{ slug }}
+            search={{ go_back: 'true' }}
+            onClick={handleClick}
+          >
+            <Tooltip
+              content={ideaTitle}
+              disabled={!isTitleClamped}
+              placement="top"
             >
-              {ideaTitle}
-            </Title>
+              <TitleClamp ref={titleRef}>
+                <Title
+                  variant="h3"
+                  mt="4px"
+                  mb="16px"
+                  className="e2e-idea-card-title"
+                >
+                  {ideaTitle}
+                </Title>
+              </TitleClamp>
+            </Tooltip>
             {!hideBody && <Body idea={idea} />}
-          </Link>
+          </StyledLink>
         </Box>
         {/* marginTop used to push the interactions/footer to bottom of the card */}
         <Box marginTop="auto">

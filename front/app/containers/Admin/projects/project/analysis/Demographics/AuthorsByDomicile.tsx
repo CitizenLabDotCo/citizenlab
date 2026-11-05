@@ -9,7 +9,6 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import { xor } from 'lodash-es';
-import { useParams } from 'react-router-dom';
 import {
   BarChart,
   Bar,
@@ -27,6 +26,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { useParams } from 'utils/router';
 
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 
@@ -68,7 +68,7 @@ type Props = {
 const AuthorsByDomicile = ({ customFieldId }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const { analysisId } = useParams() as { analysisId: string };
+  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
   const filters = useAnalysisFilterParams();
   const { data: totalAuthorsByDomicile } = useAuthorsByDomicile({
     analysisId,

@@ -17,6 +17,8 @@ import messages from './messages';
 type Props = {
   haveSubmissionsComeIn: boolean;
   handleDownloadResults: () => void;
+  handleExportPdf: () => void;
+  handleExportXlsx: () => void;
   isDropdownOpened: boolean;
   setShowDeleteModal: (show: boolean) => void;
   setDropdownOpened: (opened: boolean) => void;
@@ -25,6 +27,8 @@ type Props = {
 const DropdownSettings = ({
   haveSubmissionsComeIn,
   handleDownloadResults,
+  handleExportPdf,
+  handleExportXlsx,
   isDropdownOpened,
   setDropdownOpened,
   setShowDeleteModal,
@@ -64,6 +68,30 @@ const DropdownSettings = ({
         right="70px"
         content={
           <>
+            <DropdownListItem
+              onClick={() => {
+                closeDropdown();
+                handleExportPdf();
+              }}
+              data-cy="e2e-export-responses-pdf"
+            >
+              <Icon name="download" fill={colors.coolGrey600} mr="4px" />
+              <Text my="0px">
+                {formatMessage(messages.exportResponsesToPdf)}
+              </Text>
+            </DropdownListItem>
+            <DropdownListItem
+              onClick={() => {
+                closeDropdown();
+                handleExportXlsx();
+              }}
+              data-cy="e2e-export-responses-xlsx"
+            >
+              <Icon name="download" fill={colors.coolGrey600} mr="4px" />
+              <Text my="0px">
+                {formatMessage(messages.exportResponsesToXlsx)}
+              </Text>
+            </DropdownListItem>
             <DropdownListItem
               onClick={handleDownloadResults}
               data-cy="e2e-download-survey-results"

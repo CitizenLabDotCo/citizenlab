@@ -24,7 +24,12 @@ const AnonymousParticipationConfirmationModal = ({ onCloseModal }: Props) => {
   const { formatMessage } = useIntl();
 
   return (
-    <Modal width="460px" opened close={onCloseModal}>
+    <Modal
+      width="460px"
+      opened
+      close={onCloseModal}
+      ariaLabelledBy="anonymous-participation-modal-title"
+    >
       <Box
         display="flex"
         height="64px"
@@ -42,7 +47,11 @@ const AnonymousParticipationConfirmationModal = ({ onCloseModal }: Props) => {
       </Box>
       <Box display="flex" flexDirection="column" width="100%">
         <Box mb="40px">
-          <Title variant="h4" color="tenantText">
+          <Title
+            id="anonymous-participation-modal-title"
+            variant="h4"
+            color="tenantText"
+          >
             {formatMessage(messages.participateAnonymously)}
           </Title>
           <Text color="tenantText" fontSize="s">

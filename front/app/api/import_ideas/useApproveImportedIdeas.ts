@@ -1,0 +1,29 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { CLErrors } from 'typings';
+
+import ideasKeys from 'api/ideas/keys';
+import { IIdeaApprovals } from 'api/ideas/types';
+
+import fetcher from 'utils/cl-react-query/fetcher';
+
+import { importedIdeasKeys } from './keys';
+
+const approveIdeas = async (phaseId: string) =>
+  fetcher<IIdeaApprovals>({
+    path: `/phases/${phaseId}/importer/approve_all/idea`,
+    action: 'patch',
+    body: {},
+  });
+
+const useApproveImportedIdeas = () => {
+  const queryClient = useQueryClient();
+  return useMutation<IIdeaApprovals, CLErrors, string>({
+    mutationFn: approveIdeas,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ideasKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: importedIdeasKeys.lists() });
+    },
+  });
+};
+
+export default useApproveImportedIdeas;

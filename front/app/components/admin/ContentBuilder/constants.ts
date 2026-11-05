@@ -6,9 +6,15 @@ export const CONTENT_BUILDER_ERROR_EVENT = 'contentBuilderError';
 export const CONTENT_BUILDER_DELETE_ELEMENT_EVENT =
   'deleteContentBuilderElement';
 
-export const DEFAULT_PADDING = '20px';
+export const CUSTOM_PAGE_BUILDER_PATH = '/admin/custom-page-builder';
+export const PROJECT_PAGE_BUILDER_PATH = '/admin/project-page-builder';
+export const HOMEPAGE_BUILDER_PATH = '/admin/pages-menu/homepage-builder';
 
-export const CONTENT_BUILDER_Z_INDEX = {
-  main: 10000,
-  tooltip: 10010,
-};
+export const DEFAULT_PADDING = '20px';
+export const DEFAULT_Y_PADDING = '24px';
+export const BAND_Y_PADDING = '24px';
+
+export const BUILDER_CONTENT_MAX_WIDTH = '1200px';
+
+export const TOOLBOX_WIDTH = '236px';
+export const SETTINGS_PANEL_WIDTH = '400px';

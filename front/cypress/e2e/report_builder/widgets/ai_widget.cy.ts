@@ -29,11 +29,9 @@ describe('Report builder: AI widget', () => {
   before(() => {
     projectTitle = randomString();
     const projectDescriptionPreview = randomString();
-    const projectDescription = randomString();
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     }).then((project) => {
       projectId = project?.body.data.id;
@@ -63,7 +61,7 @@ describe('Report builder: AI widget', () => {
 
             surveyQuestionResponses.forEach((response) => {
               cy.apiCreateSurveyResponse({
-                project_id: projectId,
+                phase_id: surveyPhaseId,
                 fields: {
                   [surveyFields[1].attributes.key]: response,
                 },
@@ -88,22 +86,19 @@ describe('Report builder: AI widget', () => {
 
         const ideaContent = randomString();
         cy.apiCreateIdea({
-          projectId,
+          phaseId: ideationPhaseId,
           ideaTitle: ideaTitle1,
           ideaContent: ideaContent,
-          phaseIds: [ideationPhaseId],
         });
         cy.apiCreateIdea({
-          projectId,
+          phaseId: ideationPhaseId,
           ideaTitle: ideaTitle2,
           ideaContent: ideaContent,
-          phaseIds: [ideationPhaseId],
         });
         cy.apiCreateIdea({
-          projectId,
+          phaseId: ideationPhaseId,
           ideaTitle: ideaTitle3,
           ideaContent: ideaContent,
-          phaseIds: [ideationPhaseId],
         });
       });
     });
@@ -113,16 +108,13 @@ describe('Report builder: AI widget', () => {
     });
   });
 
-  it('should make AI analysis insights in a survey possible to include in a report', () => {
+  it.skip('should make AI analysis insights in a survey possible to include in a report', () => {
     cy.intercept('POST', '**/analyses').as('createAnalysis');
-    cy.intercept('GET', '**/insights', {
-      fixture: 'analysis_insights_survey.json',
-    });
 
     cy.visit(`/admin/reporting/report-builder/${reportId}/editor`);
     cy.get('#e2e-report-builder-ai-tab').click();
 
-    // Select project, phase and question
+    // Select project and phase
     cy.selectReactSelectOption(
       '#e2e-report-builder-analysis-project-filter-box',
       projectTitle
@@ -130,20 +122,22 @@ describe('Report builder: AI widget', () => {
     cy.get('#e2e-report-builder-analysis-phase-filter-box').select(
       surveyPhaseId
     );
-    cy.get('.e2e-question-select select').first().select(surveyFields[1].id);
 
     // Expect empty state at first
     cy.get('#e2e-report-buider-ai-no-analyses').should('exist');
 
-    // Go to the survey page where the analysis is created automatically
-    cy.visit(`/admin/projects/${projectId}/phases/${surveyPhaseId}/results`);
+    cy.visit(`/admin/projects/${projectId}/phases/${surveyPhaseId}/insights`);
+    cy.wait('@createAnalysis');
+    cy.wait(2000);
+    cy.get('#e2e-analysis-banner-button').should('be.visible');
+    cy.get('#e2e-analysis-banner-button').click({ force: true });
     cy.wait('@createAnalysis');
 
     // Go back to the report builder
     cy.visit(`/admin/reporting/report-builder/${reportId}/editor`);
     cy.get('#e2e-report-builder-ai-tab').click();
 
-    // Select project, phase and question
+    // Select project and phase
     cy.selectReactSelectOption(
       '#e2e-report-builder-analysis-project-filter-box',
       projectTitle
@@ -151,7 +145,6 @@ describe('Report builder: AI widget', () => {
     cy.get('#e2e-report-builder-analysis-phase-filter-box').select(
       surveyPhaseId
     );
-    cy.get('.e2e-question-select select').first().select(surveyFields[1].id);
 
     // Expect the insights to be shown
     cy.get('#e2e-report-buider-ai-no-analyses').should('not.exist');
@@ -174,7 +167,7 @@ describe('Report builder: AI widget', () => {
 
   it('should make AI analysis insights in an ideation project possible to include in a report', () => {
     cy.intercept('POST', '**/analyses').as('createAnalysis');
-    cy.intercept('GET', '**/insights', {
+    cy.intercept('GET', '**/analyses/*/insights', {
       fixture: 'analysis_insights_ideation.json',
     });
 

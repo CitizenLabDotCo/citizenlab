@@ -37,6 +37,11 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.permissionAction_attending_event_subtitle',
     defaultMessage: 'Who can sign up to attend an event?',
   },
+  permissionAction_attending_event_tooltip: {
+    id: 'app.containers.AdminPage.groups.permissions.permissionAction_attending_event_tooltip',
+    defaultMessage:
+      'If there is no active phase when a user tries to attend an event, the system will use the permissions from the most recently completed phase.',
+  },
   permissionAction_volunteering_subtitle: {
     id: 'app.containers.AdminPage.groups.permissions.permissionAction_volunteering_subtitle',
     defaultMessage: 'Who can volunteer?',

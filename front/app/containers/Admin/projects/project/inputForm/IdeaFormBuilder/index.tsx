@@ -1,8 +1,5 @@
 import React from 'react';
 
-import { useParams } from 'react-router-dom';
-import { RouteType } from 'routes';
-
 import useFormCustomFields from 'api/custom_fields/useCustomFields';
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
@@ -10,6 +7,9 @@ import useProjectById from 'api/projects/useProjectById';
 import FormBuilder from 'components/FormBuilder/edit';
 import { FormBuilderConfig } from 'components/FormBuilder/utils';
 
+import { useParams } from 'utils/router';
+
+import useFormBuilderGoBackUrl from '../../../_shared/useFormBuilderGoBackUrl';
 import { ideationConfig, proposalsConfig } from '../utils';
 
 const configs: {
@@ -37,25 +37,29 @@ const IdeaFormBuilder = ({
 
   const { data: formCustomFields } = useFormCustomFields({
     projectId,
-    phaseId: config.isFormPhaseSpecific ? phaseId : undefined,
+    phaseId,
   });
 
-  const goBackUrl: RouteType = `/admin/projects/${projectId}/phases/${phaseId}/form`;
+  const goBackUrl = useFormBuilderGoBackUrl(projectId, phaseId, 'form');
 
   return (
     <FormBuilder
-      builderConfig={{
-        ...config,
-        formCustomFields,
-        goBackUrl,
+      builderConfig={config}
+      formCustomFields={formCustomFields}
+      goBackUrl={goBackUrl}
+      viewFormLink={{
+        to: '/projects/$slug/ideas/new',
+        params: { slug: projectSlug },
+        search: { phase_id: phaseId },
       }}
-      viewFormLink={`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`}
     />
   );
 };
 
 export default () => {
-  const { projectId, phaseId } = useParams();
+  const { projectId, phaseId } = useParams({
+    from: '/$locale/admin/projects/$projectId/phases/$phaseId/form/edit',
+  });
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
 

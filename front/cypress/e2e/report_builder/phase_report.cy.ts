@@ -52,7 +52,6 @@ describe('Phase report', () => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: randomString(),
-      description: randomString(),
       publicationStatus: 'published',
     })
       .then((project) => {
@@ -74,10 +73,9 @@ describe('Phase report', () => {
       .then((phase) => {
         ideationPhaseId = phase.body.data.id;
         cy.apiCreateIdea({
-          projectId,
+          phaseId: phase.body.data.id,
           ideaTitle: randomString(),
           ideaContent: randomString(),
-          phaseIds: [phase.body.data.id],
         });
       })
       .then(() => {

@@ -1,44 +1,27 @@
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 
-import { Button } from '@citizenlab/cl2-component-library';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { trackEventByName } from 'utils/analytics';
-import { useIntl } from 'utils/cl-intl';
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
-import { useParams, setParam } from '../params';
+import { setParam } from '../params';
 
 import ActiveFilter from './ActiveFilter';
 import AddFilterDropdown from './AddFilterDropdown';
 import { FILTER_KEYS, FilterKey } from './constants';
-import messages from './messages';
 import tracks from './tracks';
 
 interface Props {
-  isUserAdmin: boolean;
+  activeFilters: FilterKey[];
+  setAddedFilters: Dispatch<SetStateAction<FilterKey[]>>;
 }
 
-const DynamicFilters = ({ isUserAdmin }: Props) => {
-  const params = useParams();
-  const { formatMessage } = useIntl();
-
-  const [activeFilters, setActiveFilters] = useState(() => {
-    return FILTER_KEYS.filter((key) => {
-      const paramValue = params[key];
-
-      if (!isUserAdmin && key === 'managers') {
-        return false; // Skip manager filter for non-admin users
-      }
-
-      return paramValue !== undefined && paramValue.length > 0;
-    });
-  });
-
-  const showClearButton = activeFilters.length > 0;
+const DynamicFilters = ({ activeFilters, setAddedFilters }: Props) => {
+  const spacesEnabled = useFeatureFlag({ name: 'spaces' });
 
   const handleAddFilter = (filterKey: FilterKey) => {
     if (!activeFilters.includes(filterKey)) {
-      setActiveFilters([...activeFilters, filterKey]);
+      setAddedFilters((addedFilters) => [...addedFilters, filterKey]);
 
       trackEventByName(tracks.addFilter, {
         filter: filterKey,
@@ -47,7 +30,9 @@ const DynamicFilters = ({ isUserAdmin }: Props) => {
   };
 
   const handleRemoveFilter = (filterKey: FilterKey) => {
-    setActiveFilters(activeFilters.filter((f) => f !== filterKey));
+    setAddedFilters((addedFilters) =>
+      addedFilters.filter((f) => f !== filterKey)
+    );
 
     // Clear the parameter when removing the filter
     setParam(filterKey, undefined);
@@ -57,18 +42,19 @@ const DynamicFilters = ({ isUserAdmin }: Props) => {
     });
   };
 
-  const handleClearAll = () => {
-    // Clear all parameters
-    removeSearchParams(activeFilters);
-    // Clear all active filters
-    setActiveFilters([]);
+  const getAvailableFilters = () => {
+    const availableFilterKeys = FILTER_KEYS.filter(
+      (key) => !activeFilters.includes(key)
+    );
 
-    trackEventByName(tracks.clearFilters);
+    if (!spacesEnabled) {
+      return availableFilterKeys.filter((key) => key !== 'space_ids');
+    }
+
+    return availableFilterKeys;
   };
 
-  const availableFilters = FILTER_KEYS.filter(
-    (key) => !activeFilters.includes(key)
-  );
+  const availableFilters = getAvailableFilters();
 
   return (
     <>
@@ -86,15 +72,6 @@ const DynamicFilters = ({ isUserAdmin }: Props) => {
         availableFilters={availableFilters}
         onAddFilter={handleAddFilter}
       />
-      {showClearButton && (
-        <Button
-          buttonStyle="text"
-          onClick={handleClearAll}
-          text={formatMessage(messages.clear)}
-          m="0"
-          ml="-16px"
-        />
-      )}
     </>
   );
 };

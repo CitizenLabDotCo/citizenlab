@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::FolderSerializer < WebApi::V1::BaseSerializer
-  attributes :title_multiloc, :description_preview_multiloc, :slug, :followers_count, :created_at, :updated_at, :header_bg_alt_text_multiloc
+  attributes :title_multiloc, :description_preview_multiloc, :slug, :followers_count, :created_at, :updated_at, :header_bg_alt_text_multiloc, :space_id
 
   attribute :comments_count do |object|
     Rails.cache.fetch("#{object.cache_key}/comments_count", expires_in: 1.day) do
@@ -13,10 +13,6 @@ class WebApi::V1::FolderSerializer < WebApi::V1::BaseSerializer
     Rails.cache.fetch("#{object.cache_key}/ideas_count", expires_in: 1.day) do
       object.projects.not_draft.sum(&:ideas_count)
     end
-  end
-
-  attribute :description_multiloc do |object|
-    TextImageService.new.render_data_images_multiloc object.description_multiloc, field: :description_multiloc, imageable: object
   end
 
   attribute :header_bg do |object|
@@ -66,3 +62,5 @@ class WebApi::V1::FolderSerializer < WebApi::V1::BaseSerializer
     end
   end
 end
+
+WebApi::V1::FolderSerializer.include(ContentBuilder::Extensions::WebApi::V1::FolderSerializer)

@@ -48,18 +48,76 @@ resource 'User', admin_api: true do
     end
   end
 
-  delete 'admin_api/users/bulk_delete_by_emails', active_job_inline_adapter: true do
+  get 'admin_api/users/:id/jwt_token' do
+    let(:id) { user.id }
+
+    example 'Get JWT token for a user' do
+      freeze_time = Time.zone.parse('2023-01-01 12:00:00')
+      travel_to(freeze_time) do
+        do_request
+      end
+
+      expect(status).to eq 200
+      jwt_token = json_parse(response_body)[:jwt_token]
+
+      # Test JWT structure (payloads starting with "{" will always start with "eyJ" when encoded)
+      expect(jwt_token).to match(/\AeyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\z/)
+
+      # Test the decoded payload
+      payload, header = JWT.decode(jwt_token, nil, false)
+      expect(header['alg']).to be_present
+      expect(payload).to include(
+        'sub' => id,
+        'exp' => (freeze_time + 30.minutes).to_i
+      )
+    end
+  end
+
+  delete 'admin_api/users/bulk_delete_by_emails_or_ids', active_job_inline_adapter: true do
     parameter :emails, 'Array of user emails'
+    parameter :ids, 'Array of user ids'
 
-    let(:emails) { [user.email, 'not-existing-email@example.com'] }
+    let!(:user_by_id) { create(:user) }
 
-    before do
-      expect(DeleteUserJob).to receive(:perform_later).with(user).once
-      expect(Sentry).to receive(:capture_message).once
+    context 'when all emails and ids match a user' do
+      let(:emails) { [user.email] }
+      let(:ids) { [user_by_id.id] }
+
+      before do
+        expect(DeleteUserJob).to receive(:perform_later).with(user).once
+        expect(DeleteUserJob).to receive(:perform_later).with(user_by_id).once
+        expect(Sentry).not_to receive(:capture_message)
+      end
+
+      example_request 'Delete users by emails and ids' do
+        expect(status).to eq 200
+      end
     end
 
-    example_request 'Delete users by emails' do
-      expect(status).to eq 200
+    context 'when some emails or ids do not match a user' do
+      let(:emails) { [user.email, 'not-existing-email@example.com'] }
+      let(:ids) { [user_by_id.id, SecureRandom.uuid] }
+
+      before do
+        expect(DeleteUserJob).to receive(:perform_later).with(user).once
+        expect(DeleteUserJob).to receive(:perform_later).with(user_by_id).once
+        expect(Sentry).to receive(:capture_message).once
+      end
+
+      example_request 'Delete the matching users and report the rest' do
+        expect(status).to eq 200
+      end
+    end
+
+    context 'when neither emails nor ids are given' do
+      before do
+        expect(DeleteUserJob).not_to receive(:perform_later)
+        expect(Sentry).to receive(:capture_message).once
+      end
+
+      example_request 'Reports an error and deletes nothing' do
+        expect(status).to eq 200
+      end
     end
   end
 
@@ -104,10 +162,6 @@ resource 'User', admin_api: true do
     describe do
       before do
         configuration = AppConfiguration.instance
-        configuration.settings['user_confirmation'] = {
-          allowed: true,
-          enabled: true
-        }
         configuration.save!
       end
 
@@ -153,10 +207,6 @@ resource 'User', admin_api: true do
     end
 
     describe do
-      before do
-        SettingsService.new.activate_feature!('user_confirmation')
-      end
-
       let(:confirm_email) { true }
       let(:password) { 'new-password' }
       let(:roles) { [{ type: 'admin' }] }

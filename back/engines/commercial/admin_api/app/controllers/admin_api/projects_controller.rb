@@ -10,6 +10,20 @@ module AdminApi
       render json: projects, adapter: :attributes
     end
 
+    def widget_projects
+      projects = ProjectPolicy::Scope.new(nil, Project).resolve.not_hidden
+      projects = projects.with_active_phase if params[:projects].blank?
+      projects = projects.where(id: params[:projects]) if params[:projects].present?
+      projects = filter_by_folders(projects) if params[:folders].present?
+
+      projects = sort_projects(projects)
+      projects = projects
+        .includes(:project_images, :phases, :admin_publication)
+        .limit(params[:limit]&.to_i || 3)
+
+      render json: projects, each_serializer: AdminApi::ProjectSerializer, adapter: :json
+    end
+
     def template_export
       project = Project.find(params[:id])
       options = template_export_params.to_h.symbolize_keys
@@ -21,16 +35,39 @@ module AdminApi
     def template_import
       folder_id = template_import_params[:folder_id]
       template_yaml = template_import_params[:template_yaml]
-      job = CopyProjectJob.perform_later(template_yaml, folder_id)
+      user_id = template_import_params[:user_id]
+      job = CopyProjectJob.perform_later(template_yaml, user_id, folder_id)
     rescue StandardError => e
       ErrorReporter.report(e)
-      raise ClErrors::TransactionError.new(error_key: :bad_template)
+      raise ApiError, :bad_template
     else
       render json: { job_id: job.job_id }, status: :accepted
     end
 
+    def sort_projects(projects)
+      case params[:sort]
+      when 'newest'
+        projects.newest
+      when 'ending_soon'
+        projects.ending_soon
+      when 'most_participants'
+        projects.by_participation_count(:desc)
+      else # 'platform_order' (default)
+        projects.ordered
+      end
+    end
+
+    def filter_by_folders(projects)
+      folder_publication_ids = AdminPublication.where(
+        publication_type: 'ProjectFolders::Folder',
+        publication_id: params[:folders]
+      ).select(:id)
+
+      projects.joins(:admin_publication).where(admin_publications: { parent_id: folder_publication_ids })
+    end
+
     def template_import_params
-      params.require(:project).permit(:template_yaml, :folder_id)
+      params.require(:project).permit(:template_yaml, :folder_id, :user_id)
     end
 
     def template_export_params

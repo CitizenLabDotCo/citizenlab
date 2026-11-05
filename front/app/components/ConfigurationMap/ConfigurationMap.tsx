@@ -50,7 +50,7 @@ const ConfigurationMap = memo<Props>(
           const element = result.results[0];
           if (element.type === 'graphic') {
             // Set the hovered layer id
-            setHoveredLayerId(element.layer['customParameters']?.layerId);
+            setHoveredLayerId(element.layer?.['customParameters']?.layerId);
           }
         } else {
           setHoveredLayerId(null);

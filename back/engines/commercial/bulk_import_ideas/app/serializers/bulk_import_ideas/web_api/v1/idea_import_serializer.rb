@@ -13,6 +13,10 @@ module BulkImportIdeas
         attribute :import_type do |object|
           object.file&.import_type
         end
+
+        attribute :parsed_value do |object|
+          object.file&.parsed_value
+        end
       end
     end
   end

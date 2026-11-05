@@ -6,8 +6,8 @@ import dotenv from 'dotenv';
 import { defineConfig } from 'vite';
 import checker from 'vite-plugin-checker';
 import commonjs from 'vite-plugin-commonjs';
-import tsconfigPaths from 'vite-plugin-tsconfig-paths';
 import mkcert from 'vite-plugin-mkcert';
+import tsconfigPaths from 'vite-plugin-tsconfig-paths';
 
 // Load environment variables using dotenv
 dotenv.config({
@@ -22,10 +22,20 @@ export default defineConfig(({ mode }) => {
   const isDev = mode === 'development';
   const isProd = mode === 'production';
   const isTestBuild = process.env.TEST_BUILD === 'true';
-  const sourceMapToSentry = !isDev && !isTestBuild && process.env.CI;
+  const sourceMapToSentry = !isDev && !isTestBuild && !!process.env.CI;
 
   const API_HOST = process.env.API_HOST || 'localhost';
   const API_PORT = process.env.API_PORT || '4000';
+  // API_URL points the SPA at a remote back end (staging, an epic) instead of
+  // the local Docker stack. The tenant comes from the Host header, so the
+  // proxy must rewrite it (changeOrigin). Example:
+  //   API_URL=https://prototype.stg.govocal.com npm start
+  const API_URL = process.env.API_URL;
+  const apiProxy = {
+    target: API_URL ?? `http://${API_HOST}:${API_PORT}`,
+    changeOrigin: API_URL !== undefined,
+    secure: true,
+  };
   const GRAPHQL_HOST = process.env.GRAPHQL_HOST || 'localhost';
   const GRAPHQL_PORT = process.env.GRAPHQL_PORT || '5001';
   const DEV_WORKSHOPS_HOST = process.env.DEV_WORKSHOPS_HOST || 'localhost';
@@ -36,24 +46,22 @@ export default defineConfig(({ mode }) => {
   // Determine if HTTPS should be used based on the presence of a HTTPS_HOST
   const HTTPS_HOST = process.env.HTTPS_HOST;
   const USE_HTTPS = HTTPS_HOST !== undefined;
-  if (USE_HTTPS) console.log('\nSecure local dev URL: https://' + HTTPS_HOST);
+  if (USE_HTTPS) console.log(`\nSecure local dev URL: https://${HTTPS_HOST}`);
 
   return {
     root: path.resolve(__dirname, 'app'), // Root directory
-    base: '/', // Base path for public assets
+    base: '/',
     server: {
-      port: USE_HTTPS ? 443 : 3000,
+      port: USE_HTTPS ? 443 : Number(process.env.PORT) || 3000,
       host: '0.0.0.0',
       allowedHosts: true,
+      watch: {
+        usePolling: true,
+        ignored: ['**/public/twemoji/**'],
+      },
       proxy: {
-        '/web_api/': {
-          target: `http://${API_HOST}:${API_PORT}`,
-          changeOrigin: false,
-        },
-        '/auth/': {
-          target: `http://${API_HOST}:${API_PORT}`,
-          changeOrigin: false,
-        },
+        '/web_api/': apiProxy,
+        '/auth/': apiProxy,
         '/widgets/': {
           target: `http://${API_HOST}:3200`,
           changeOrigin: false,
@@ -62,10 +70,7 @@ export default defineConfig(({ mode }) => {
           target: `http://${GRAPHQL_HOST}:${GRAPHQL_PORT}`,
           changeOrigin: false,
         },
-        '/uploads': {
-          target: `http://${API_HOST}:${API_PORT}`,
-          changeOrigin: false,
-        },
+        '/uploads': apiProxy,
         '/workshops': {
           target: `http://${DEV_WORKSHOPS_HOST}:${DEV_WORKSHOPS_PORT}`,
           changeOrigin: false,
@@ -77,6 +82,19 @@ export default defineConfig(({ mode }) => {
       },
     },
     plugins: [
+      {
+        name: 'browser-external-empty-stub',
+        enforce: 'pre',
+        load(id) {
+          if (id.includes('browser-external')) {
+            console.warn(
+              `Warning: Attempting to import a browser-external module (${id}) which is not supported in this environment. Returning an empty stub module instead.`
+            );
+            return 'module.exports = {};';
+          }
+          return null;
+        },
+      },
       react(),
       commonjs(),
       tsconfigPaths(), // Support for TS path aliases
@@ -95,7 +113,22 @@ export default defineConfig(({ mode }) => {
             project: 'cl2-front',
             release: {
               name: process.env.CIRCLE_BUILD_NUM,
+              // Our Sentry predates artifact bundles, so it only resolves maps
+              // attached to a release and named after their URL. The default
+              // debug-ID upload names them `<debugId>-<n>.js`, which it can't
+              // match — hence 0 artifacts on every release.
+              uploadLegacySourcemaps: {
+                paths: ['build'],
+                // Uploads are named after the URL they're served from. `~`
+                // means any scheme and host, so one upload covers every
+                // tenant domain.
+                urlPrefix: '~',
+                ext: ['js', 'map'],
+              },
             },
+            // After a Sentry upgrade, drop this and
+            // uploadLegacySourcemaps to switch back to debug IDs.
+            sourcemaps: { disable: true },
           }),
         USE_HTTPS && mkcert({ hosts: [HTTPS_HOST] }), // HTTPS in development
       ],
@@ -107,9 +140,11 @@ export default defineConfig(({ mode }) => {
       rollupOptions: {
         input: path.resolve(__dirname, 'app/index.html'),
         output: {
-          entryFileNames: '[name].[hash].min.js', // Generate the main.*.min.js file
-          chunkFileNames: '[name].[hash].chunk.js',
-          assetFileNames: '[name].[ext]',
+          // All releases share assets/ in S3. Content hashes give changed files
+          // new names, while unchanged ones keep their URL and stay cached.
+          entryFileNames: 'assets/[name].[hash].min.js',
+          chunkFileNames: 'assets/[name].[hash].chunk.js',
+          assetFileNames: 'assets/[name].[hash][extname]',
         },
       },
     },
@@ -154,7 +189,6 @@ export default defineConfig(({ mode }) => {
         INTERCOM_APP_ID: process.env.INTERCOM_APP_ID,
         SENTRY_DSN: process.env.SENTRY_DSN,
         SENTRY_ENV: process.env.SENTRY_ENV,
-        SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
         CI: process.env.CI,
         CIRCLECI: process.env.CIRCLECI,
         CIRCLE_BUILD_NUM: process.env.CIRCLE_BUILD_NUM,
@@ -162,6 +196,7 @@ export default defineConfig(({ mode }) => {
         CIRCLE_BRANCH: process.env.CIRCLE_BRANCH,
         MATOMO_HOST: process.env.MATOMO_HOST,
         POSTHOG_API_KEY: process.env.POSTHOG_API_KEY,
+        TWEMOJI_BASE_URL: process.env.TWEMOJI_BASE_URL,
       },
     },
   };

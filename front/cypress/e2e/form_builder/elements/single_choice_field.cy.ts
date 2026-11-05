@@ -3,7 +3,6 @@ import moment = require('moment');
 
 describe('Form builder single choice field', () => {
   const projectTitle = randomString();
-  const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
   let projectId: string;
   let projectSlug: string;
@@ -17,7 +16,6 @@ describe('Form builder single choice field', () => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     })
       .then((project) => {
@@ -110,7 +108,7 @@ describe('Form builder single choice field', () => {
     cy.wait(2000);
     cy.contains(otherText).click({ force: true });
     cy.contains('Survey').should('exist');
-    cy.get(`[id^="${questionTitle}"]`).should('exist');
+    cy.get(`[id^="${questionTitle}"]:not([id$="-label"])`).should('exist');
 
     // Try submitting without entering data for required field
     cy.dataCy('e2e-submit-form').click();
@@ -124,8 +122,8 @@ describe('Form builder single choice field', () => {
       }/en/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`
     );
 
-    cy.get(`[id^="${questionTitle}"]`)
-      .last()
+    cy.get(`[id^="${questionTitle}"]:not([id$="-label"])`)
+      .first()
       .should(($element) => {
         const id = $element.attr('id');
         expect(Cypress._.endsWith(id, '_other')).to.be.true;

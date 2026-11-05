@@ -158,7 +158,12 @@ resource 'Idea Custom Fields' do
     end
     let!(:area) { create(:area, title_multiloc: { 'en' => 'Brussels', 'nl-NL' => 'Bruxelles' }) }
 
-    let(:user) { create(:user, custom_field_values: { gender: 'female', domicile: area.id }) }
+    let(:user) do
+      create(:user, custom_field_answers: [
+        build(:custom_field_answer, key: 'gender', value: 'female'),
+        build(:custom_field_answer, key: 'domicile', value: area.id)
+      ])
+    end
 
     let(:idea1) do
       create(
@@ -166,18 +171,18 @@ resource 'Idea Custom Fields' do
         author: user,
         creation_phase: phase,
         project: project,
-        custom_field_values: {
-          custom_field_text.key => 'Text answer',
-          custom_field_multiline_text.key => 'Multiline answer',
-          custom_field_select.key => custom_field_option1.key,
-          custom_field_multiselect.key => [custom_field_option2.key, custom_field_option3.key],
-          custom_field_multiselect_image.key => [custom_field_option4.key, custom_field_option5.key],
-          custom_field_linear_scale.key => 3,
-          custom_field_number.key => 42,
-          custom_field_point.key => { type: 'Point', coordinates: [1.1, 2.2] },
-          custom_field_line.key => { type: 'LineString', coordinates: [[1.1, 2.2], [3.3, 4.4]] },
-          custom_field_polygon.key => { type: 'Polygon', coordinates: [[[1, 2], [3, 4], [5, 6], [1, 2]]] }
-        }
+        custom_field_answers: [
+          build(:custom_field_answer, key: custom_field_text.key, value: 'Text answer'),
+          build(:custom_field_answer, key: custom_field_multiline_text.key, value: 'Multiline answer'),
+          build(:custom_field_answer, key: custom_field_select.key, value: custom_field_option1.key),
+          build(:custom_field_answer, key: custom_field_multiselect.key, value: [custom_field_option2.key, custom_field_option3.key]),
+          build(:custom_field_answer, key: custom_field_multiselect_image.key, value: [custom_field_option4.key, custom_field_option5.key]),
+          build(:custom_field_answer, key: custom_field_linear_scale.key, value: 3),
+          build(:custom_field_answer, key: custom_field_number.key, value: 42),
+          build(:custom_field_answer, key: custom_field_point.key, value: { type: 'Point', coordinates: [1.1, 2.2] }),
+          build(:custom_field_answer, key: custom_field_line.key, value: { type: 'LineString', coordinates: [[1.1, 2.2], [3.3, 4.4]] }),
+          build(:custom_field_answer, key: custom_field_polygon.key, value: { type: 'Polygon', coordinates: [[[1, 2], [3, 4], [5, 6], [1, 2]]] })
+        ]
       )
     end
     let!(:file) { create(:idea_file, name: 'File1.pdf', idea: idea1) }
@@ -189,7 +194,7 @@ resource 'Idea Custom Fields' do
         author_id: nil,
         creation_phase: phase,
         project: project,
-        custom_field_values: { custom_field_point.key => { type: 'Point', coordinates: [3.3, 4.4] } }
+        custom_field_answers: [build(:custom_field_answer, key: custom_field_point.key, value: { type: 'Point', coordinates: [3.3, 4.4] })]
       )
     end
     let!(:idea_phase2) { create(:ideas_phase, idea: idea2, phase: phase) }
@@ -198,9 +203,11 @@ resource 'Idea Custom Fields' do
     let(:custom_field_id) { custom_field_point.id } # The generated GeoJSON Features will be for responses to this q.
 
     before do
-      cf_values = idea1.custom_field_values
-      cf_values[custom_field_file_upload.key] = { 'id' => file.id, 'name' => file.name }
-      idea1.update!(custom_field_values: cf_values)
+      idea1.custom_field_answers.create!(
+        key: custom_field_file_upload.key,
+        value: { 'id' => file.id, 'name' => file.name },
+        custom_field: custom_field_file_upload
+      )
     end
 
     context 'when admin' do
@@ -216,54 +223,51 @@ resource 'Idea Custom Fields' do
         expect(json_response.keys).to eq %i[type features]
         expect(json_response[:type]).to eq('FeatureCollection')
 
-        expect(json_response[:features]).to match_array([
-          {
-            type: 'Feature',
-            geometry: { type: 'Point', coordinates: [1.1, 2.2] },
-            properties: {
-              id: idea1.id,
-              gepubliceerd_op: idea1.published_at.strftime('%m/%d/%Y %H:%M:%S').to_s,
-              wat_is_uw_functie: 'Text answer',
-              wat_zijn_uw_belangrijkste_verantwoordelijkheden: 'Multiline answer',
-              selecteer_uw_favoriete_kleur: 'Optie 1',
-              selecteer_de_talen_die_u_spreekt: ['Optie 2', 'Optie 3'],
-              selecteer_de_beste_foto: ['Optie 4', 'Optie 5'],
-              beoordeel_uw_tevredenheid: 3,
-              welke_maat_schoenen_gebruik_je: 42,
-              upload_de_foto: file.file.url,
-              markeer_de_locatie_op_de_kaart: { type: 'Point', coordinates: [1.1, 2.2] },
-              teken_de_route_op_de_kaart: { type: 'LineString', coordinates: [[1.1, 2.2], [3.3, 4.4]] },
-              teken_het_gebied_op_de_kaart: {
-                type: 'Polygon',
-                coordinates: [[[1, 2], [3, 4], [5, 6], [1, 2]]]
-              },
-              gebruikersgegevens__auteur_id: idea1.author_id,
-              gebruikersgegevens__e_mail_van_auteur: idea1.author.email,
-              gebruikersgegevens__auteur_naam: idea1.author_name,
-              gebruikersgegevens__geslacht: 'Vrouw',
-              gebruikersgegevens__woonplaats: 'Bruxelles'
-            }
-          },
-          {
-            type: 'Feature',
-            geometry: { type: 'Point', coordinates: [3.3, 4.4] },
-            properties: {
-              id: idea2.id,
-              gepubliceerd_op: idea2.published_at.strftime('%m/%d/%Y %H:%M:%S').to_s,
-              wat_is_uw_functie: nil,
-              wat_zijn_uw_belangrijkste_verantwoordelijkheden: nil,
-              selecteer_uw_favoriete_kleur: nil,
-              selecteer_de_talen_die_u_spreekt: nil,
-              selecteer_de_beste_foto: nil,
-              beoordeel_uw_tevredenheid: nil,
-              welke_maat_schoenen_gebruik_je: nil,
-              upload_de_foto: nil,
-              markeer_de_locatie_op_de_kaart: { type: 'Point', coordinates: [3.3, 4.4] },
-              teken_de_route_op_de_kaart: nil,
-              teken_het_gebied_op_de_kaart: nil
-            }
+        expect(json_response[:features]).to contain_exactly({
+          type: 'Feature',
+          geometry: { type: 'Point', coordinates: [1.1, 2.2] },
+          properties: {
+            id: idea1.id,
+            gepubliceerd_op: idea1.published_at.strftime('%m/%d/%Y %H:%M:%S').to_s,
+            wat_is_uw_functie: 'Text answer',
+            wat_zijn_uw_belangrijkste_verantwoordelijkheden: 'Multiline answer',
+            selecteer_uw_favoriete_kleur: 'Optie 1',
+            selecteer_de_talen_die_u_spreekt: ['Optie 2', 'Optie 3'],
+            selecteer_de_beste_foto: ['Optie 4', 'Optie 5'],
+            beoordeel_uw_tevredenheid: 3,
+            welke_maat_schoenen_gebruik_je: 42,
+            upload_de_foto: file.file.url,
+            markeer_de_locatie_op_de_kaart: { type: 'Point', coordinates: [1.1, 2.2] },
+            teken_de_route_op_de_kaart: { type: 'LineString', coordinates: [[1.1, 2.2], [3.3, 4.4]] },
+            teken_het_gebied_op_de_kaart: {
+              type: 'Polygon',
+              coordinates: [[[1, 2], [3, 4], [5, 6], [1, 2]]]
+            },
+            gebruikersgegevens__auteur_id: idea1.author_id,
+            gebruikersgegevens__e_mail_van_auteur: idea1.author.email,
+            gebruikersgegevens__auteur_naam: idea1.author_name,
+            gebruikersgegevens__geslacht: 'Vrouw',
+            gebruikersgegevens__woonplaats: 'Bruxelles'
           }
-        ])
+        }, {
+          type: 'Feature',
+          geometry: { type: 'Point', coordinates: [3.3, 4.4] },
+          properties: {
+            id: idea2.id,
+            gepubliceerd_op: idea2.published_at.strftime('%m/%d/%Y %H:%M:%S').to_s,
+            wat_is_uw_functie: nil,
+            wat_zijn_uw_belangrijkste_verantwoordelijkheden: nil,
+            selecteer_uw_favoriete_kleur: nil,
+            selecteer_de_talen_die_u_spreekt: nil,
+            selecteer_de_beste_foto: nil,
+            beoordeel_uw_tevredenheid: nil,
+            welke_maat_schoenen_gebruik_je: nil,
+            upload_de_foto: nil,
+            markeer_de_locatie_op_de_kaart: { type: 'Point', coordinates: [3.3, 4.4] },
+            teken_de_route_op_de_kaart: nil,
+            teken_het_gebied_op_de_kaart: nil
+          }
+        })
       end
 
       context 'when custom field is not a geographic input type' do

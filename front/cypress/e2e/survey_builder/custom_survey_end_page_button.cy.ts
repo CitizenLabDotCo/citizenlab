@@ -28,8 +28,8 @@ describe('Survey page logic', () => {
     cy.visit(`/projects/${projectSlug}/surveys/new`);
 
     // Click next
-    cy.dataCy('e2e-submit-form').should('exist');
-    cy.dataCy('e2e-submit-form').click();
+    cy.contains('Submit').should('exist');
+    cy.contains('Submit').click();
     // Check if we are on the survey end page
     cy.dataCy('e2e-after-submission').should('exist');
     // Check if the button text is correct

@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Select, Label } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { IOption } from 'typings';
 
@@ -21,6 +20,7 @@ import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
+import { useParams } from 'utils/router';
 import { getFullName } from 'utils/textUtils';
 
 import tracks from '../../../../tracks';
@@ -40,7 +40,7 @@ interface Props {
 }
 
 const FeedbackSettings = ({ projectId, ideaId, className }: Props) => {
-  const { phaseId } = useParams() as { phaseId: string };
+  const { phaseId } = useParams({ strict: false }) as { phaseId: string };
   const { data: phase } = usePhase(phaseId);
   const { formatMessage } = useIntl();
   const localize = useLocalize();

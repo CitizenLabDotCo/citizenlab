@@ -1,0 +1,20 @@
+In this message is a scanned survey form that has been filled in by hand.
+
+Your task is to extract ALL questions and their answers from the form.
+
+Do not attempt to interpret or summarize the responses. Ignore any text that does not appear handwritten. Do not fill in any missing answers.
+
+Do not extract answers unless they are in the correct order in the scanned form.
+
+The language used in the form is <%= locale %>.
+
+The following JSON schema defines the exact structure of the output you must produce. Each property represents a question on the form. Read the descriptions carefully — they tell you exactly what to look for and how to format the answer.
+
+The question numbers in the output schema below match the numbered questions on the printed form.
+
+Be precise: copy option text exactly as defined in enum values when applicable.
+
+Return ONLY valid JSON matching the output schema below. No additional text or markers.
+
+Output JSON schema:
+<%= output_schema_json %>

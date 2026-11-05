@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useId, useState } from 'react';
 
 import {
   Box,
@@ -15,16 +15,16 @@ import { isEmpty, round } from 'lodash-es';
 import moment from 'moment';
 import { rgba, darken } from 'polished';
 import { useInView } from 'react-intersection-observer';
-import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import usePhase from 'api/phases/usePhase';
 import useProjectImage from 'api/project_images/useProjectImage';
 import { CARD_IMAGE_ASPECT_RATIO } from 'api/project_images/useProjectImages';
 import useProjectById from 'api/projects/useProjectById';
-import { getProjectUrl } from 'api/projects/utils';
+import { getProjectLinkProps } from 'api/projects/utils';
 import useReport from 'api/reports/useReport';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import AvatarBubbles from 'components/AvatarBubbles';
@@ -33,17 +33,17 @@ import { TLayout } from 'components/ProjectAndFolderCards';
 import T from 'components/T';
 import Image from 'components/UI/Image';
 
-import { ScreenReaderOnly } from 'utils/a11y';
+import { joinAriaIds } from 'utils/a11y';
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 
 import getCTAMessage from './getCTAMessage';
 import ImagePlaceholder from './ImagePlaceholder';
 import messages from './messages';
 import tracks from './tracks';
 
-const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
+const Container = styled.div<{ hideDescriptionPreview?: boolean }>`
   width: calc(33% - 12px);
   display: flex;
   flex-direction: column;
@@ -188,6 +188,11 @@ const ContentHeaderHeight = 39;
 const ContentHeaderBottomMargin = 13;
 
 const ContentHeader = styled.div`
+  /*
+    Rendered last in the DOM (after the title) so the title link comes first in
+    tab/screen-reader order. order: -1 pulls it back to the top visually.
+  */
+  order: -1;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -249,7 +254,11 @@ const ProgressBarOverlay = styled.div<{ progress: number }>`
   }
 `;
 
-const ProjectLabel = styled.button`
+const ProjectLabel = typedStyled(Link)`
+  /* Sit above ProjectTitleLink's overlay so this stays independently clickable */
+  position: relative;
+  z-index: 2;
+  display: inline-block;
   color: ${({ theme }) => darken(0.05, theme.colors.tenantSecondary)};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
@@ -257,8 +266,10 @@ const ProjectLabel = styled.button`
   white-space: nowrap;
   padding: 8px 14px;
   border-radius: ${(props) => props.theme.borderRadius};
-  border: 1px solid ${({ theme }) => darken(0.05, theme.colors.tenantSecondary)};
+  border: 1px solid ${({ theme }) =>
+    darken(0.05, theme.colors.tenantSecondary)};
   background: transparent;
+  text-decoration: none;
   transition: all 0.3s ease;
 
   &:hover {
@@ -286,8 +297,27 @@ const ProjectTitle = styled(Title)`
   color: ${({ theme }) => theme.colors.tenantText};
   margin: 0;
   padding: 0;
+`;
 
-  &:hover {
+const ProjectTitleLink = typedStyled(Link)`
+  /*
+    Accessible card pattern: a single primary link whose ::before pseudo-element
+    expands the hitbox over the entire card, so mouse users can click anywhere
+    while keyboard users have only one tab stop per card.
+    https://kittygiraudel.com/2022/04/02/accessible-cards/
+    https://inclusive-components.design/cards/
+  */
+  text-decoration: none;
+  color: inherit;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  &:hover ${ProjectTitle} {
     text-decoration: underline;
   }
 `;
@@ -371,11 +401,12 @@ const ProjectCard = memo<InputProps>(
       projectId,
       imageId,
     });
-    const currentPhaseId =
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      project?.data?.relationships?.current_phase?.data?.id ?? null;
-    const { data: phase } = usePhase(currentPhaseId);
+    const participationStatus = project?.data.attributes.participation_status;
+    const highlightedPhaseId =
+      project?.data.relationships.highlighted_phase?.data?.id ?? null;
+    const { data: phase } = usePhase(
+      participationStatus === 'active' ? highlightedPhaseId : null
+    );
     const { data: report } = useReport(
       phase?.data.relationships.report?.data?.id
     );
@@ -385,6 +416,9 @@ const ProjectCard = memo<InputProps>(
 
     const localize = useLocalize();
     const { formatMessage } = useIntl();
+    const userAvatarsEnabled = useFeatureFlag({ name: 'user_avatars' });
+    const descriptionPreviewId = `${useId()}-description-preview`;
+    const participantsId = `${useId()}-participants`;
 
     const [visible, setVisible] = useState(false);
 
@@ -409,11 +443,15 @@ const ProjectCard = memo<InputProps>(
       projectImage?.data.attributes.alt_text_multiloc
     );
 
-    const projectUrl: RouteType = getProjectUrl(project.data.attributes.slug);
-    const isFinished = project.data.attributes.timeline_active === 'past';
+    const projectLink = getProjectLinkProps(project.data.attributes.slug);
+    const hasDescriptionPreview =
+      !hideDescriptionPreview &&
+      !isEmpty(localize(project.data.attributes.description_preview_multiloc));
+    const isFinished = project.data.attributes.participation_status === 'ended';
     const isArchived =
       project.data.attributes.publication_status === 'archived';
-    const showAvatarBubbles = project.data.attributes.participants_count > 0;
+    const showAvatarBubbles =
+      userAvatarsEnabled && project.data.attributes.participants_count > 0;
     const avatarIds =
       project.data.relationships.avatars &&
       project.data.relationships.avatars.data
@@ -463,7 +501,7 @@ const ProjectCard = memo<InputProps>(
 
     const ctaMessage = phase
       ? getCTAMessage({
-          actionDescriptors: project.data.attributes.action_descriptors,
+          actionDescriptors: phase.data.attributes.action_descriptors,
           phase: phase.data,
           formatMessage,
           localize,
@@ -499,9 +537,21 @@ const ProjectCard = memo<InputProps>(
             className={`${size} ${countdown ? 'hasProgressBar' : ''}`}
           >
             <ProjectLabel
+              {...projectLink}
+              scrollToTop
               onClick={() => {
                 handleCTAOnClick(project.data.id);
               }}
+              onFocus={(event) => {
+                event.currentTarget.scrollIntoView({
+                  block: 'center',
+                  behavior: 'smooth',
+                });
+              }}
+              aria-label={formatMessage(messages.a11y_ctaForProject, {
+                cta: ctaMessage,
+                projectTitle: localize(project.data.attributes.title_multiloc),
+              })}
               className="e2e-project-card-cta"
             >
               {ctaMessage}
@@ -509,20 +559,6 @@ const ProjectCard = memo<InputProps>(
           </Box>
         )}
       </ContentHeader>
-    );
-
-    const screenReaderContent = (
-      <ScreenReaderOnly>
-        <ProjectTitle variant="h3">
-          <FormattedMessage {...messages.a11y_projectTitle} />
-          <T value={project.data.attributes.title_multiloc} />
-        </ProjectTitle>
-
-        <ProjectDescription>
-          <FormattedMessage {...messages.a11y_projectDescription} />
-          <T value={project.data.attributes.description_preview_multiloc} />
-        </ProjectDescription>
-      </ScreenReaderOnly>
     );
 
     return (
@@ -538,16 +574,11 @@ const ProjectCard = memo<InputProps>(
         ]
           .filter((item) => item)
           .join(' ')}
-        to={projectUrl}
-        scrollToTop
         onClick={() => {
           handleProjectCardOnClick(project.data.id);
         }}
         data-cy="e2e-project-card"
       >
-        {screenReaderContent}
-        {size !== 'large' && contentHeader}
-
         <ProjectImageContainer className={size}>
           {imageUrl ? (
             <ProjectImage
@@ -561,19 +592,26 @@ const ProjectCard = memo<InputProps>(
         </ProjectImageContainer>
 
         <ProjectContent className={size}>
-          {size === 'large' && contentHeader}
-
-          <ContentBody className={size} aria-hidden>
-            <ProjectTitle
-              variant="h3"
-              className="e2e-project-card-project-title"
-              data-testid="project-card-project-title"
+          <ContentBody className={size}>
+            <ProjectTitleLink
+              {...projectLink}
+              className="e2e-card-title-link"
               onClick={() => {
                 handleProjectTitleOnClick(project.data.id);
               }}
+              aria-describedby={joinAriaIds(
+                hasDescriptionPreview && descriptionPreviewId,
+                showAvatarBubbles && participantsId
+              )}
             >
-              <T value={project.data.attributes.title_multiloc} />
-            </ProjectTitle>
+              <ProjectTitle
+                variant="h3"
+                className="e2e-project-card-project-title"
+                data-testid="project-card-project-title"
+              >
+                <T value={project.data.attributes.title_multiloc} />
+              </ProjectTitle>
+            </ProjectTitleLink>
 
             {!hideDescriptionPreview && (
               <T value={project.data.attributes.description_preview_multiloc}>
@@ -583,6 +621,7 @@ const ProjectCard = memo<InputProps>(
                       <ProjectDescription
                         className="e2e-project-card-project-description-preview"
                         data-testid="project-card-project-description-preview"
+                        id={descriptionPreviewId}
                       >
                         {description}
                       </ProjectDescription>
@@ -596,7 +635,12 @@ const ProjectCard = memo<InputProps>(
           </ContentBody>
 
           {showAvatarBubbles && (
-            <Box borderTop={`1px solid ${colors.divider}`} pt="16px" mt="30px">
+            <Box
+              id={participantsId}
+              borderTop={`1px solid ${colors.divider}`}
+              pt="16px"
+              mt="30px"
+            >
               <ContentFooter className={size}>
                 <Box h="100%" display="flex" alignItems="center">
                   <AvatarBubbles
@@ -609,7 +653,11 @@ const ProjectCard = memo<InputProps>(
               </ContentFooter>
             </Box>
           )}
+
+          {size === 'large' && contentHeader}
         </ProjectContent>
+
+        {size !== 'large' && contentHeader}
       </Container>
     );
   }

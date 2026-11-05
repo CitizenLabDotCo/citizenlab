@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 
 import { Box, Title, Text, Button } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
 
 import usePhase from 'api/phases/usePhase';
 import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
+
+import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
 import CommonGroundInputManager from 'components/admin/PostManager/CommonGroundInputManager';
 import ImportInputsModal from 'components/admin/PostManager/CommonGroundInputManager/ImportInputsModal';
@@ -16,9 +17,11 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
-import AnalysisBanner from '../../components/AnalysisBanner';
-import NewIdeaButton from '../../components/NewIdeaButton';
+import AnalysisBanner from '../../_shared/components/AnalysisBanner';
+import NewIdeaButton from '../../_shared/components/NewIdeaButton';
+import InputManagerRedesign from '../backofficeRedesign/InputManager';
 import messages from '../messages';
 
 import ownMessages from './messages';
@@ -31,25 +34,34 @@ const timelineProjectVisibleFilterMenus: TFilterMenu[] = [
 ];
 
 const AdminProjectIdeas = () => {
-  const { projectId, phaseId } = useParams();
+  const { projectId, phaseId } = useParams({
+    from: '/$locale/admin/projects/$projectId/phases/$phaseId/ideas',
+  });
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
   const { data: phase } = usePhase(phaseId);
   const [showPastInputsModal, setShowPastInputsModal] = useState(false);
+  const isBackofficeRedesignEnabled = useProjectBackofficeRedesign();
   const isCommonGround =
     phase?.data.attributes.participation_method === 'common_ground';
 
-  if (
-    project === undefined ||
-    projectId === undefined ||
-    phaseId === undefined
-  ) {
+  if (project === undefined) {
     return null;
+  }
+
+  if (isBackofficeRedesignEnabled && phase && !isCommonGround) {
+    return (
+      <InputManagerRedesign
+        key={phaseId}
+        project={project.data}
+        phase={phase.data}
+      />
+    );
   }
 
   return (
     <>
-      <AnalysisBanner projectId={projectId} phaseId={phaseId} scope="project" />
+      <AnalysisBanner projectId={projectId} phaseId={phaseId} />
       <Box mb="30px">
         <Box
           display="flex"
@@ -64,7 +76,8 @@ const AdminProjectIdeas = () => {
             {!isCommonGround && (
               <ButtonWithLink
                 width="auto"
-                linkTo={`/admin/projects/${projectId}/phases/${phaseId}/input-importer`}
+                to="/admin/projects/$projectId/phases/$phaseId/input-importer"
+                params={{ projectId, phaseId }}
                 icon="page"
                 buttonStyle="secondary-outlined"
               >
@@ -83,7 +96,9 @@ const AdminProjectIdeas = () => {
               <NewIdeaButton
                 participationMethod={phase.data.attributes.participation_method}
                 inputTerm={phase.data.attributes.input_term}
-                linkTo={`/projects/${project.data.attributes.slug}/ideas/new?phase_id=${phaseId}`}
+                to="/projects/$slug/ideas/new"
+                params={{ slug: project.data.attributes.slug }}
+                search={{ phase_id: phaseId }}
               />
             )}
           </Box>

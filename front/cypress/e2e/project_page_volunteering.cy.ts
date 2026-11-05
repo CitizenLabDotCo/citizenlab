@@ -3,7 +3,6 @@ import { randomString, randomEmail } from '../support/commands';
 
 describe('Volunteering survey CTA', () => {
   const projectTitle = randomString();
-  const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
   let projectId: string;
   let projectSlug: string;
@@ -22,7 +21,6 @@ describe('Volunteering survey CTA', () => {
         cy.apiCreateProject({
           title: projectTitle,
           descriptionPreview: projectDescriptionPreview,
-          description: projectDescription,
           publicationStatus: 'published',
         }).then((project) => {
           projectId = project.body.data.id;
@@ -52,6 +50,7 @@ describe('Volunteering survey CTA', () => {
   it('shows the CTA button on visting the project page of an active volunteering project', () => {
     cy.visit(`/en/projects/${projectSlug}`);
 
+    cy.get('#e2e-show-volunteering-cta').should('exist');
     cy.get('#e2e-participation-cta-volunteer').should('exist');
 
     // Shows the event CTA when there is an upcoming event

@@ -10,5 +10,12 @@ FactoryBot.define do
       }
     end
     static_page
+
+    # A dropdown item: a title-only custom parent with no target of its own.
+    trait :dropdown do
+      code { 'custom' }
+      title_multiloc { { 'en' => 'Departments' } }
+      static_page { nil }
+    end
   end
 end

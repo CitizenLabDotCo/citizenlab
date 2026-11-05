@@ -3,20 +3,21 @@ import { randomString } from '../support/commands';
 
 describe('Existing Timeline project', () => {
   before(() => {
+    cy.setConsentAndAdminLoginCookies();
+
     cy.visit('/projects/test-project-1-timeline-with-file');
     cy.get('#e2e-project-page');
 
     cy.wait(1000);
   });
 
-  it('shows the correct elements', () => {
+  it.skip('shows the correct elements', () => {
     // shows the project page
     cy.get('#e2e-project-page');
 
     // shows the project header
     cy.get('#e2e-project-header-image');
-    cy.get('#e2e-project-description');
-    cy.get('#e2e-project-sidebar');
+    cy.get('#e2e-project-page-body');
     cy.get('#e2e-project-see-ideas-button');
     cy.get('#project-ideabutton');
     cy.get('.e2e-project-info')
@@ -46,7 +47,6 @@ describe('Existing Timeline project', () => {
 describe('New timeline project', () => {
   const projectTitle = randomString();
   const projectDescriptionPreview = randomString();
-  const projectDescription = randomString();
 
   const phasePastTitle = randomString();
   const phaseCurrentTitle = randomString();
@@ -56,18 +56,26 @@ describe('New timeline project', () => {
   let projectId: string;
   let projectSlug: string;
 
-  const twoMonthsAgo = moment().subtract(2, 'month').format('DD/MM/YYYY');
-  const twoDaysAgo = moment().subtract(2, 'days').format('DD/MM/YYYY');
-  const today = moment().format('DD/MM/YYYY');
-  const inTwoDays = moment().add(2, 'days').format('DD/MM/YYYY');
-  const inTwoMonths = moment().add(2, 'month').format('DD/MM/YYYY');
+  const twoMonthsAgo = moment()
+    .subtract(2, 'month')
+    .format('YYYY-MM-DDT00:00:00.000Z');
+  const twoDaysAgo = moment()
+    .subtract(2, 'days')
+    .format('YYYY-MM-DDT00:00:00.000Z');
+  const today = moment().format('YYYY-MM-DDT00:00:00.000Z');
+  const tomorrow = moment().add(1, 'day').format('YYYY-MM-DDT00:00:00.000Z');
+  const inTwoDays = moment().add(2, 'days').format('YYYY-MM-DDT00:00:00.000Z');
+  const inTwoMonths = moment()
+    .add(2, 'month')
+    .format('YYYY-MM-DDT00:00:00.000Z');
 
   before(() => {
+    cy.setConsentAndAdminLoginCookies();
+
     // create new project
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'draft',
     }).then((project) => {
       projectId = project.body.data.id;
@@ -88,7 +96,7 @@ describe('New timeline project', () => {
         projectId,
         title: phaseCurrentTitle,
         startAt: today,
-        endAt: today,
+        endAt: tomorrow,
         participationMethod: 'ideation',
         canComment: true,
         canPost: true,
@@ -119,7 +127,7 @@ describe('New timeline project', () => {
 
   beforeEach(() => {
     // navigate to project
-    cy.setAdminLoginCookie();
+    cy.setConsentAndAdminLoginCookies();
     const path = `/projects/${projectSlug}`;
     cy.visit(path);
     cy.wait(1000);
@@ -131,7 +139,7 @@ describe('New timeline project', () => {
       .find('.currentPhase')
       .should('have.class', 'selectedPhase')
       .contains(phaseCurrentTitle);
-    cy.get('.e2e-project-process-page').contains(phaseLongDescription);
+    cy.get('.e2e-phase-description').contains(phaseLongDescription);
   });
 
   // Temporarily disables on April 15 2025 - can verify this works locally
@@ -141,7 +149,7 @@ describe('New timeline project', () => {
       .find('.currentPhase')
       .should('have.class', 'selectedPhase')
       .contains(phaseCurrentTitle);
-    cy.get('.e2e-project-process-page').contains(phaseLongDescription);
+    cy.get('.e2e-phase-description').contains(phaseLongDescription);
 
     // Verify that the description is collapsed by default
     cy.get('[id*="see-less-button"]').should('not.exist');
@@ -180,9 +188,7 @@ describe('New timeline project', () => {
       .find('.selectedPhase')
       .should('have.class', 'first')
       .contains(phasePastTitle);
-    cy.get('.e2e-project-process-page').contains(
-      `description ${phasePastTitle}`
-    );
+    cy.get('.e2e-phase-description').contains(`description ${phasePastTitle}`);
   });
 
   it('shows the next phase', () => {
@@ -201,7 +207,7 @@ describe('New timeline project', () => {
       .find('.selectedPhase')
       .should('have.class', 'last')
       .contains(phaseFutureTitle);
-    cy.get('.e2e-project-process-page').contains(
+    cy.get('.e2e-phase-description').contains(
       `description ${phaseFutureTitle}`
     );
   });

@@ -47,7 +47,7 @@ const ImageMultiloc = ({ alt = {}, image, stretch = true }: Props) => {
       width="100%"
       display="flex"
       className="e2e-image"
-      style={{ pointerEvents: 'none' }}
+      pointerEvents="none"
       minHeight="26px"
       maxWidth="1200px"
       margin="0 auto"
@@ -56,6 +56,7 @@ const ImageMultiloc = ({ alt = {}, image, stretch = true }: Props) => {
       {image?.imageUrl && (
         <ImageComponent
           width={stretch ? '100%' : undefined}
+          maxWidth="100%"
           // TODO: Fix this the next time the file is edited.
           // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           src={image?.imageUrl}

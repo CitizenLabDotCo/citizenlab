@@ -55,7 +55,7 @@ resource 'Omniauth Callback', document: false do
 
   post '/auth/failure' do
     example_request 'Redirect to failure URL' do
-      expect(status).to eq(302)
+      assert_status(302)
       expect(response_headers['Location']).to include('authentication_error=true')
     end
   end
@@ -71,90 +71,37 @@ resource 'Omniauth Callback', document: false do
 
     get '/auth/clave_unica/logout_data' do
       example_request 'Returns ClaveUnica redirect URL' do
-        expect(status).to eq(200)
+        assert_status(200)
         expect(json_response_body[:url]).to start_with('https://accounts.claveunica.gob.cl/api/v1/accounts/app/logout')
       end
     end
   end
 
   context 'when authenticating via OAuth' do
-    def mock_app_configuration
-      app_config_mock = instance_double(AppConfiguration)
-      allow(app_config_mock).to receive(:closest_locale_to).and_return('en')
-      allow(app_config_mock).to receive(:feature_activated?).with('facebook_login').and_return(true)
-      allow(app_config_mock).to receive(:feature_activated?).with('user_confirmation').and_return(false)
-      allow(app_config_mock).to receive(:settings).with('facebook_login', 'app_id').and_return('mock_facebook_app_id')
-      allow(app_config_mock).to receive(:settings).with('facebook_login', 'app_secret').and_return('mock_facebook_app_secret')
-      allow(AppConfiguration).to receive(:instance).and_return(app_config_mock)
-
-      app_config_mock
-    end
-
-    def mock_facebook_auth_method(user)
-      facebook_method = instance_double(OmniauthMethods::Facebook)
-      allow(facebook_method).to receive_messages(
-        profile_to_user_attrs: { email: user.email, first_name: user.first_name },
-        email_confirmed?: true,
-        verification_prioritized?: false,
-        updateable_user_attrs: [],
-        can_merge?: true
-      )
-
-      facebook_method
-    end
-
-    def mock_authentication_service(facebook_method, user)
-      auth_service_mock = instance_double(AuthenticationService)
-      allow(auth_service_mock).to receive(:method_by_provider).with('facebook').and_return(facebook_method)
-      allow(auth_service_mock).to receive(:prevent_user_account_hijacking).and_return(user)
-
-      auth_service_mock
-    end
-
-    def mock_omniauth_callback_controller(auth_service_mock)
-      # Mock auth token
-      auth_token_double = instance_double(AuthToken::AuthToken, token: 'test-jwt-token')
-      allow_any_instance_of(OmniauthCallbackController).to receive(:auth_token).and_return(auth_token_double)
-
-      # Make sure set_auth_cookie is actually called
-      allow_any_instance_of(OmniauthCallbackController).to receive(:set_auth_cookie).and_call_original
-
-      # Mock other methods
-      allow_any_instance_of(OmniauthCallbackController).to receive(:authentication_service).and_return(auth_service_mock)
-      allow_any_instance_of(OmniauthCallbackController).to receive(:update_user!).and_return(true)
-      allow_any_instance_of(OmniauthCallbackController).to receive(:update_identity!).and_return(true)
-      allow_any_instance_of(OmniauthCallbackController).to receive(:verified_for_sso?).and_return(true)
-      allow_any_instance_of(OmniauthCallbackController).to receive(:signin_success_redirect)
-    end
-
     before do
-      @user = create(:user)
+      AppConfiguration.instance.settings['id_config'] = {
+        allowed: true,
+        enabled: true,
+        id_methods: [{ name: 'facebook' }]
+      }
+      AppConfiguration.instance.save!
 
-      # Mock OmniAuth's authentication
       OmniAuth.config.test_mode = true
       OmniAuth.config.mock_auth[:facebook] = OmniAuth::AuthHash.new({
-        'provider' => 'facebook',
-        'uid' => '12345',
-        'info' => {
-          'email' => @user.email,
-          'name' => @user.first_name
+        provider: 'facebook',
+        uid: '12345',
+        info: {
+          email: 'facebook_user@example.com',
+          first_name: 'Facebook',
+          last_name: 'User'
         },
-        'extra' => {
-          'raw_info' => {
-            'locale' => 'en_US',
-            'id' => '12345'
+        extra: {
+          raw_info: {
+            locale: 'en_US',
+            id: '12345'
           }
         }
       })
-
-      # Mock identity to return our test user
-      identity_double = instance_double(Identity, user: @user)
-      allow(Identity).to receive(:find_or_build_with_omniauth).and_return(identity_double)
-
-      mock_app_configuration
-      facebook_method = mock_facebook_auth_method(@user)
-      auth_service_mock = mock_authentication_service(facebook_method, @user)
-      mock_omniauth_callback_controller(auth_service_mock)
     end
 
     after do
@@ -162,13 +109,13 @@ resource 'Omniauth Callback', document: false do
     end
 
     get '/auth/facebook/callback' do
-      example 'Sets secure cookie with expected headers' do
+      example 'Sets auth cookie with expected headers' do
         do_request
 
-        expect(status).to eq(204)
+        assert_status(302) # Redirect code
 
         cookie_header = response_headers['Set-Cookie']
-        expect(cookie_header).to include('cl2_jwt=test-jwt-token')
+        expect(cookie_header).to match(/cl2_jwt=[^;]+/)
         expect(cookie_header).to include('SameSite=Lax')
         expect(cookie_header.include?('Secure')).to be(false) # No HTTPS in the test environment
         expect(cookie_header).to match(/expires=.+GMT/i)
@@ -178,10 +125,10 @@ resource 'Omniauth Callback', document: false do
 
   context 'when SSO method returns email and it is confirmed' do
     before do
-      AppConfiguration.instance.settings['verification'] = {
-        'allowed' => true,
-        'enabled' => true,
-        verification_methods: [{ name: 'fake_sso' }]
+      AppConfiguration.instance.settings['id_config'] = {
+        allowed: true,
+        enabled: true,
+        id_methods: [{ name: 'fake_sso' }]
       }
       AppConfiguration.instance.save!
       OmniAuth.config.test_mode = true
@@ -196,36 +143,234 @@ resource 'Omniauth Callback', document: false do
       example 'a new user is created and email is confirmed' do
         do_request
 
-        expect(status).to eq(302) # Redirect code
+        assert_status(302) # Redirect code
         user = User.find_by(email: 'billy_fixed@example.com')
         expect(user).not_to be_nil
+        expect(user.confirmation_required?).to be false
         expect(user.email_confirmed_at).to be_present
         expect(user.verified).to be true
       end
 
       example 'if there is a pending invite with this email: allow create account' do
-        create(:invited_user, email: 'billy_fixed@example.com')
+        invited_user = create(:invited_user, email: 'billy_fixed@example.com')
 
         do_request
 
-        expect(status).to eq(302) # Redirect code
+        assert_status(302) # Redirect code
         db_user = User.find_by(email: 'billy_fixed@example.com')
+        expect(db_user.id).to eq(invited_user.id)
         expect(db_user).not_to be_nil
+        expect(db_user.confirmation_required?).to be false
         expect(db_user.email_confirmed_at).to be_present
+      end
+
+      context 'with claim_tokens' do
+        let!(:claim_token) { create(:claim_token) }
+        let(:idea) { claim_token.item }
+
+        before do
+          allow_any_instance_of(OmniauthCallbackController)
+            .to receive(:omniauth_params)
+            .and_return({ 'claim_tokens' => [claim_token.token] })
+        end
+
+        example 'claims participation data immediately for new user' do
+          expect(idea.author_id).to be_nil
+
+          do_request
+          assert_status(302)
+          user = User.find_by(email: 'billy_fixed@example.com')
+          expect(user).not_to be_nil
+          expect(idea.reload.author_id).to eq(user.id)
+          expect { claim_token.reload }.to raise_error(ActiveRecord::RecordNotFound)
+        end
+
+        context 'when existing user logs in' do
+          let!(:existing_user) { create(:user, email: 'billy_fixed@example.com') }
+
+          example 'claims participation data immediately' do
+            expect(idea.author_id).to be_nil
+
+            do_request
+            assert_status(302)
+            db_user = User.find_by(email: 'billy_fixed@example.com')
+            expect(db_user.id).to eq(existing_user.id)
+            expect(idea.reload.author_id).to eq(existing_user.id)
+            expect { claim_token.reload }.to raise_error(ActiveRecord::RecordNotFound)
+          end
+        end
+
+        context 'when invited user accepts via SSO' do
+          let!(:invited_user) { create(:invited_user, email: 'billy_fixed@example.com') }
+
+          example 'claims participation data immediately after invite acceptance' do
+            expect(idea.author_id).to be_nil
+
+            do_request
+            assert_status(302)
+            db_user = User.find_by(email: 'billy_fixed@example.com')
+            expect(db_user.id).to eq(invited_user.id)
+            expect(idea.reload.author_id).to eq(invited_user.id)
+            expect { claim_token.reload }.to raise_error(ActiveRecord::RecordNotFound)
+          end
+        end
+
+        context 'when claim_tokens is passed as a Rack-parsed Hash (e.g. claim_tokens[0]=...)' do
+          before do
+            allow_any_instance_of(OmniauthCallbackController)
+              .to receive(:omniauth_params)
+              .and_return({ 'claim_tokens' => { '0' => claim_token.token } })
+          end
+
+          example 'still claims participation data without erroring' do
+            expect(idea.author_id).to be_nil
+
+            do_request
+            assert_status(302)
+            user = User.find_by(email: 'billy_fixed@example.com')
+            expect(user).not_to be_nil
+            expect(idea.reload.author_id).to eq(user.id)
+            expect { claim_token.reload }.to raise_error(ActiveRecord::RecordNotFound)
+          end
+        end
+      end
+
+      context 'when identity already exists and user has a confirmed email different from the SSO returned one' do
+        let!(:existing_user) { create(:user, email: 'existing@example.com') }
+        let!(:existing_identity) { create(:identity, user: existing_user, provider: 'fake_sso', uid: 'billy_fixed') }
+
+        example 'does not update email nor new_email' do
+          expect(User.count).to eq(1) # Only the existing user
+          do_request
+
+          assert_status(302)
+
+          # Make sure no new user was created
+          expect(User.count).to eq(1)
+
+          existing_user.reload
+          expect(existing_user.email).to eq('existing@example.com')
+          expect(existing_user.new_email).to be_nil
+        end
+      end
+
+      context 'when identity already exists and user has an unconfirmed email different from the SSO returned one' do
+        let!(:existing_user) { create(:unconfirmed_user, email: 'existing@example.com') }
+        let!(:existing_identity) { create(:identity, user: existing_user, provider: 'fake_sso', uid: 'billy_fixed') }
+
+        example 'does not update email nor new_email' do
+          expect(User.count).to eq(1) # Only the existing user
+          do_request
+
+          assert_status(302)
+
+          # Make sure no new user was created
+          expect(User.count).to eq(1)
+
+          existing_user.reload
+          expect(existing_user.email).to eq('existing@example.com')
+          expect(existing_user.new_email).to be_nil
+        end
+      end
+
+      context 'when identity already exists and user does not have an email' do
+        let!(:existing_user) do
+          user = build(:unconfirmed_user, email: nil)
+          user.identities.build(provider: 'fake_sso', uid: 'billy_fixed', auth_hash: {})
+          user.save!
+          user
+        end
+
+        example 'does not update email nor new_email' do
+          expect(User.count).to eq(1) # Only the existing user
+          do_request
+
+          assert_status(302)
+
+          # Make sure no new user was created
+          expect(User.count).to eq(1)
+
+          existing_user.reload
+          expect(existing_user.email).to be_nil
+          expect(existing_user.new_email).to be_nil
+        end
+      end
+
+      # Signed up with email only (no name), logged out, then logged in with SSO.
+      context 'when a passwordless user with a confirmed email but no name exists' do
+        let!(:existing_user) do
+          create(:user, email: 'billy_fixed@example.com', password: nil, first_name: nil, last_name: nil, avatar: nil)
+        end
+
+        example 'fills in the name the SSO method locks', document: false do
+          do_request
+
+          assert_status(302)
+          expect(User.count).to eq(1)
+
+          existing_user.reload
+          expect(existing_user.verified).to be true
+          expect(Verification::VerificationService.new.locked_attributes(existing_user)).to include(:first_name, :last_name)
+          expect(existing_user.first_name).to eq 'Billy'
+          expect(existing_user.last_name).to eq 'Fixed'
+        end
+      end
+
+      # Signed up through POST /web_api/v1/users, confirmed the email with the code,
+      # then logged in with an SSO that returns the same email.
+      context 'when a user signed up with email and confirmed it' do
+        before do
+          create(:custom_field_gender, :with_options)
+          create(:custom_field_birthyear)
+        end
+
+        example 'fills in the custom fields the SSO method locks', document: false do
+          client.post(
+            '/web_api/v1/users',
+            { user: { email: 'billy_fixed@example.com', password: 'democracy2.0', locale: 'en' } }.to_json,
+            headers
+          )
+          expect(client.status).to eq 201
+
+          user = User.find_by(email: 'billy_fixed@example.com')
+          client.post(
+            '/web_api/v1/user/confirm_code_email',
+            { confirmation: { email: user.email, code: user.email_confirmation.code } }.to_json,
+            headers
+          )
+          expect(client.status).to eq 200
+
+          do_request
+
+          assert_status(302)
+          expect(User.count).to eq(1)
+
+          user = User.find_by(email: 'billy_fixed@example.com')
+          expect(user.verified).to be true
+          expect(user.first_name).to eq 'Billy'
+          expect(user.last_name).to eq 'Fixed'
+          expect(Verification::VerificationService.new.locked_custom_fields(user)).to include(:gender, :birthyear)
+          expect(CustomFieldValuesTransitionService.new.custom_field_values(user)).to include('gender' => 'male', 'birthyear' => 1980)
+        end
       end
     end
   end
 
   context 'when SSO method returns email but it is not confirmed' do
+    # The confirmation code email is sent through the EmailCampaigns engine via
+    # DeliveryService#send_now_to_user; spy on it to assert the code was sent.
+    let(:delivery_service) { instance_spy(EmailCampaigns::DeliveryService) }
+
     before do
-      AppConfiguration.instance.settings['verification'] = {
-        'allowed' => true,
-        'enabled' => true,
-        verification_methods: [{ name: 'fake_sso' }]
+      AppConfiguration.instance.settings['id_config'] = {
+        allowed: true,
+        enabled: true,
+        id_methods: [{ name: 'fake_sso' }]
       }
       AppConfiguration.instance.save!
       OmniAuth.config.test_mode = true
       OmniAuth.config.mock_auth[:fake_sso] = get_auth_hash(email_confirmed: false)
+      allow(EmailCampaigns::DeliveryService).to receive(:new).and_return(delivery_service)
     end
 
     after do
@@ -236,19 +381,167 @@ resource 'Omniauth Callback', document: false do
       example 'a new user is created but email is not confirmed' do
         do_request
 
-        expect(status).to eq(302) # Redirect code
-        user = User.find_by(email: 'billy_fixed@example.com')
+        assert_status(302) # Redirect code
+        user = User.find_by(new_email: 'billy_fixed@example.com')
         expect(user).not_to be_nil
+        expect(user.confirmation_required?).to be true
         expect(user.email_confirmed_at).to be_nil
         expect(user.verified).to be true
+
+        # Make sure confirmation email was sent
+        expect(delivery_service).to have_received(:send_now_to_user)
+          .with(an_instance_of(EmailCampaigns::Campaigns::NewEmailConfirmation), user, hash_including(:code)).once
       end
 
       example 'if there is a pending invite with this email: return error' do
         user = create(:invited_user, email: 'billy_fixed@example.com')
         do_request
-        expect(status).to eq(302) # Redirect code
+        assert_status(302) # Redirect code
         expect(response_headers['Location']).to include('authentication_error=true')
         expect(user.reload.invite_status).to eq('pending')
+      end
+
+      context 'with claim_tokens' do
+        let!(:claim_token) { create(:claim_token) }
+        let(:idea) { claim_token.item }
+
+        before do
+          allow_any_instance_of(OmniauthCallbackController).to receive(:omniauth_params).and_return({
+            'claim_tokens' => [claim_token.token]
+          })
+        end
+
+        example 'marks claim tokens as pending for new user (not claimed until email confirmed)' do
+          expect(idea.author_id).to be_nil
+
+          do_request
+          assert_status(302)
+
+          user = User.find_by(new_email: 'billy_fixed@example.com')
+          expect(user).not_to be_nil
+          expect(user.confirmation_required?).to be true
+          expect(user.email_confirmed_at).to be_nil
+          expect(claim_token.reload.pending_claimer_id).to eq(user.id)
+          expect(idea.reload.author_id).to be_nil # Not yet claimed
+        end
+      end
+
+      context 'when identity already exists and user has a confirmed email different from the SSO returned one' do
+        let!(:existing_user) { create(:user, email: 'existing@example.com') }
+        let!(:existing_identity) { create(:identity, user: existing_user, provider: 'fake_sso', uid: 'billy_fixed') }
+
+        example 'does not update email nor new_email' do
+          expect(User.count).to eq(1) # Only the existing user
+          do_request
+
+          assert_status(302)
+
+          # Make sure no new user was created
+          expect(User.count).to eq(1)
+
+          existing_user.reload
+          expect(existing_user.email).to eq('existing@example.com')
+          expect(existing_user.new_email).to be_nil
+        end
+      end
+
+      context 'when identity already exists and user has an unconfirmed email different from the SSO returned one' do
+        let!(:existing_user) { create(:unconfirmed_user, email: 'existing@example.com') }
+        let!(:existing_identity) { create(:identity, user: existing_user, provider: 'fake_sso', uid: 'billy_fixed') }
+
+        example 'does not update email nor new_email' do
+          expect(User.count).to eq(1) # Only the existing user
+          do_request
+
+          assert_status(302)
+
+          # Make sure no new user was created
+          expect(User.count).to eq(1)
+
+          existing_user.reload
+          expect(existing_user.email).to eq('existing@example.com')
+          expect(existing_user.new_email).to be_nil
+        end
+      end
+
+      # The new-account case one step worse: parking the address on new_email made
+      # update_in_sso! raise, locking an existing user out of signing in at all.
+      context 'when identity already exists and the SSO email is owned by somebody else' do
+        let!(:owner) { create(:user, email: 'billy_fixed@example.com') }
+        let!(:existing_user) do
+          user = build(:unconfirmed_user, email: nil)
+          user.identities.build(provider: 'fake_sso', uid: 'billy_fixed', auth_hash: {})
+          user.save!
+          user
+        end
+
+        # :email only reaches update_in_sso! when password_login is off - that is
+        # what puts it in updateable_user_attrs (IdMethods::Base#updateable_user_attrs).
+        before { SettingsService.new.deactivate_feature!('password_login') }
+
+        example 'signs the user in without claiming the address' do
+          do_request
+
+          assert_status(302)
+          expect(response_headers['Location']).not_to include('authentication_error=true')
+
+          existing_user.reload
+          expect(existing_user.email).to be_nil
+          expect(existing_user.new_email).to be_nil
+          expect(owner.reload.email).to eq 'billy_fixed@example.com'
+        end
+      end
+
+      context 'when identity already exists and user does not have an email yet' do
+        let!(:existing_user) do
+          user = build(:unconfirmed_user, email: nil)
+          user.identities.build(provider: 'fake_sso', uid: 'billy_fixed', auth_hash: {})
+          user.save!
+          user
+        end
+
+        example 'does not update email nor new_email' do
+          expect(User.count).to eq(1) # Only the existing user
+          do_request
+
+          assert_status(302)
+
+          # Make sure no new user was created
+          expect(User.count).to eq(1)
+
+          existing_user.reload
+          expect(existing_user.email).to be_nil
+          expect(existing_user.new_email).to be_nil
+        end
+      end
+
+      # Somebody else's address cannot go in new_email, so it is held as
+      # merge_target_email and the merge code is sent straight away.
+      context 'when email is already taken by another confirmed user' do
+        let!(:existing_user) { create(:user, email: 'billy_fixed@example.com') }
+
+        example 'Signs the user in on a new account waiting to merge into it' do
+          do_request
+
+          expect(response_headers['Location']).not_to include('authentication_error=true')
+
+          created = User.where.not(id: existing_user.id).first
+          expect(created.email).to be_nil
+          expect(created.new_email).to be_nil
+          expect(created.merge_target_email).to eq 'billy_fixed@example.com'
+          expect(created.identities.pluck(:provider)).to eq ['fake_sso']
+          expect(delivery_service).to have_received(:send_now_to_user)
+            .with(an_instance_of(EmailCampaigns::Campaigns::MergeAccountConfirmation), created, hash_including(:code))
+            .once
+        end
+
+        example 'Leaves the account that owns the address untouched' do
+          do_request
+
+          existing_user.reload
+          expect(existing_user.email).to eq 'billy_fixed@example.com'
+          expect(existing_user.identities).to be_empty
+        end
       end
     end
   end

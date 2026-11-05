@@ -15,6 +15,7 @@ const campaignConsentData = {
       campaign_name: 'test',
       campaign_type_description_multiloc: {},
       content_type_multiloc: {},
+      channel: 'email',
       consented: true,
     },
   },

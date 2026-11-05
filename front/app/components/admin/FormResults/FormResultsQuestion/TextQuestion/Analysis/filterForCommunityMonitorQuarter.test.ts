@@ -74,7 +74,8 @@ describe('filterForCommunityMonitorQuarter', () => {
         data: [baseInsight('i1', 's1')],
       },
       analysisSummaries: [],
-      search: new URLSearchParams(),
+      yearParam: undefined,
+      quarterParam: undefined,
     });
 
     expect(result.data).toHaveLength(1);
@@ -101,7 +102,8 @@ describe('filterForCommunityMonitorQuarter', () => {
     const result = filterForCommunityMonitorQuarter({
       insights,
       analysisSummaries: summaries,
-      search: new URLSearchParams(),
+      yearParam: undefined,
+      quarterParam: undefined,
     });
 
     expect(result.data).toHaveLength(1);
@@ -145,7 +147,8 @@ describe('filterForCommunityMonitorQuarter', () => {
     const result = filterForCommunityMonitorQuarter({
       insights,
       analysisSummaries: summaries as any,
-      search: new URLSearchParams(),
+      yearParam: undefined,
+      quarterParam: undefined,
     });
 
     expect(result.data).toHaveLength(1);
@@ -167,7 +170,8 @@ describe('filterForCommunityMonitorQuarter', () => {
     const result = filterForCommunityMonitorQuarter({
       insights,
       analysisSummaries: summaries,
-      search: new URLSearchParams(),
+      yearParam: undefined,
+      quarterParam: undefined,
     });
 
     expect(result.data).toHaveLength(0);

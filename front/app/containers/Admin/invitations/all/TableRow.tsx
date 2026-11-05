@@ -1,22 +1,18 @@
 import React from 'react';
 
-import {
-  Tr,
-  Td,
-  Badge,
-  colors,
-  IconButton,
-} from '@citizenlab/cl2-component-library';
+import { Tr, Td, colors, IconButton } from '@citizenlab/cl2-component-library';
 import { FormattedDate } from 'react-intl';
 
 import { IInviteData } from 'api/invites/types';
 import useDeleteInvite from 'api/invites/useDeleteInvite';
 import useUserById from 'api/users/useUserById';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';
 
 import messages from '../messages';
+
+import InviteBadge from './InviteBadge';
 
 interface InputProps {
   invite: IInviteData;
@@ -48,15 +44,7 @@ const TableRow = ({ invite }: InputProps) => {
         <FormattedDate value={invite.attributes.created_at} />
       </Td>
       <Td style={{ textAlign: 'center' }}>
-        {user.data.attributes.invite_status === 'pending' ? (
-          <Badge>
-            <FormattedMessage {...messages.inviteStatusPending} />
-          </Badge>
-        ) : (
-          <Badge color={colors.success}>
-            <FormattedMessage {...messages.inviteStatusAccepted} />
-          </Badge>
-        )}
+        <InviteBadge user={user.data} />
       </Td>
       <Td display="flex" justifyContent="center">
         <IconButton

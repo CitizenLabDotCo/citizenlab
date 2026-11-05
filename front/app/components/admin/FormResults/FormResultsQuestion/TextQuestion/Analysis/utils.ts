@@ -1,33 +1,41 @@
 import { UseQueryResult } from '@tanstack/react-query';
-import { isArray } from 'lodash-es';
 import moment from 'moment';
 
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
 import { IInsights } from 'api/analysis_insights/types';
 import { ISummary } from 'api/analysis_summaries/types';
 
+import { Quarter } from 'containers/Admin/communityMonitor/components/LiveMonitor/components/HealthScoreWidget/types';
 import {
   getQuarterFilter,
   getYearFilter,
 } from 'containers/Admin/communityMonitor/components/LiveMonitor/components/HealthScoreWidget/utils';
 
-// Convert all values in the filters object to strings
-// This is necessary because the way we are storing arrays in the URL: we encode them as JSON values
-export const convertFilterValuesToString = (filters?: IInputsFilterParams) => {
-  return (
-    filters &&
-    Object.entries(filters).reduce((acc, [key, value]) => {
-      return {
-        ...acc,
-        [key]: isArray(value) ? JSON.stringify(value) : value,
-      };
-    }, {})
-  );
+// True when an insight (summary or Q&A) was generated scoped to a select
+// question's "other" option, i.e. its filters restrict inputs to that option
+// (input_custom_<questionFieldId> = ['other']). This is the signal that the
+// insight belongs in the phase-insights box shown next to the "other"
+// responses; insights generated over the whole question (e.g. on the Explore
+// page) lack it and must not be displayed there.
+export const isOtherFiltered = (
+  filters: IInputsFilterParams | undefined,
+  questionFieldId: string
+) => {
+  const value = filters?.[`input_custom_${questionFieldId}`];
+  return Array.isArray(value) ? value.includes('other') : value === 'other';
 };
+
+// True when an insight (summary or Q&A) was generated scoped to inputs that
+// actually have follow-up text (input_follow_up_not_empty). This is the signal
+// that it belongs in the box shown next to a sentiment question's follow-up
+// responses; insights generated over all scale responders lack it.
+export const isFollowUpFiltered = (filters: IInputsFilterParams | undefined) =>
+  filters?.input_follow_up_not_empty === true;
 
 type FilterForQuarterArgs = {
   insights?: IInsights;
-  search: URLSearchParams;
+  yearParam: string | undefined;
+  quarterParam: Quarter | undefined;
   analysisSummaries?: UseQueryResult<ISummary, unknown>[];
 };
 
@@ -38,13 +46,14 @@ type FilterForQuarterArgs = {
 export const filterForCommunityMonitorQuarter = ({
   analysisSummaries,
   insights,
-  search,
+  yearParam,
+  quarterParam,
 }: FilterForQuarterArgs) => {
-  const year = getYearFilter(search)
-    ? parseInt(getYearFilter(search), 10)
+  const year = getYearFilter(yearParam)
+    ? parseInt(getYearFilter(yearParam), 10)
     : null;
-  const quarter = getQuarterFilter(search)
-    ? parseInt(getQuarterFilter(search), 10)
+  const quarter = getQuarterFilter(quarterParam)
+    ? parseInt(getQuarterFilter(quarterParam), 10)
     : null;
 
   if (!year || !quarter) {
@@ -82,12 +91,18 @@ export const filterForCommunityMonitorQuarter = ({
 
 // getPublishedAtFromFilter
 // Description: This function generates a "published_at_from" date from the URL quarter parameters.
-export const getPublishedAtFromFilter = (search: URLSearchParams) => {
-  // Get the year/quarter from URL
-  const yearFilter = getYearFilter(search);
-  const quarterFilter = getQuarterFilter(search);
+// Returns undefined when either yearParam or quarterParam is missing — so that
+// non-Community-Monitor flows (which don't carry ?year=/?quarter= in the URL)
+// don't get a phantom current-quarter date filter baked into their summaries.
+export const getPublishedAtFromFilter = (
+  yearParam: string | undefined,
+  quarterParam: Quarter | undefined
+) => {
+  if (!yearParam || !quarterParam) return undefined;
 
-  // Parse quarter and year filters
+  const yearFilter = getYearFilter(yearParam);
+  const quarterFilter = getQuarterFilter(quarterParam);
+
   const quarter = quarterFilter ? parseInt(quarterFilter, 10) : null;
   const year = yearFilter ? parseInt(yearFilter, 10) : null;
 
@@ -99,12 +114,16 @@ export const getPublishedAtFromFilter = (search: URLSearchParams) => {
 
 // getPublishedAtToFilter
 // Description: This function generates a "published_at_to" date from the URL quarter parameters.
-export const getPublishedAtToFilter = (search: URLSearchParams) => {
-  // Get the year/quarter from URL
-  const yearFilter = getYearFilter(search);
-  const quarterFilter = getQuarterFilter(search);
+// See note on getPublishedAtFromFilter — same gating applies.
+export const getPublishedAtToFilter = (
+  yearParam: string | undefined,
+  quarterParam: Quarter | undefined
+) => {
+  if (!yearParam || !quarterParam) return undefined;
 
-  // Parse quarter and year filters
+  const yearFilter = getYearFilter(yearParam);
+  const quarterFilter = getQuarterFilter(quarterParam);
+
   const quarter = quarterFilter ? parseInt(quarterFilter, 10) : null;
   const year = yearFilter ? parseInt(yearFilter, 10) : null;
 

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::AreaSerializer < WebApi::V1::BaseSerializer
-  attributes :title_multiloc, :description_multiloc, :ordering, :static_page_ids, :followers_count, :include_in_onboarding
+  attributes :title_multiloc, :description_multiloc, :ordering, :followers_count, :include_in_onboarding
 
   attribute :visible_projects_count, if: proc { |_object, params|
     params && params[:counts_of_visible_projects_by_area]

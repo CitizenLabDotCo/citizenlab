@@ -31,7 +31,7 @@ module Files
       # TODO: Rework to allow regular users to upload idea files.
       #   Currently, idea files are still uploaded via the legacy endpoint/controller
       #   (+WebApi::V1::FilesController+) which relies on Files::FileAttachmentPolicy.
-      return false unless user.project_or_folder_moderator?
+      return false unless user.moderator?
 
       # Moderators are allowed to upload files only if they moderate all the projects
       # the file belongs to, or *if the file does not belong to any project* (a top-level

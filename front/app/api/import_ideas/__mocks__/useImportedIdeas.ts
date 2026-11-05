@@ -68,16 +68,18 @@ export const ideasData: IIdeaData[] = [
       },
       anonymous: false,
       author_hash: 'abc123',
+      supports_public_visibility: true,
       followers_count: 0,
       manual_votes_amount: 0,
     },
     relationships: {
-      topics: {
+      input_topics: {
         data: [],
       },
       idea_images: { data: [] },
       ideas_phases: { data: [] },
       phases: { data: [] },
+      creation_phase: { data: null },
       author: {
         data: {
           id: '8ea3a61c-e1bd-4756-a54d-c092553abccd',

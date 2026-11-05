@@ -29,7 +29,7 @@ const LaunchModal = ({ onClose }: LaunchModalProps) => {
     >
       <Box display="flex" gap="16px" alignItems="center">
         <Icon name="stars" fill={colors.orange500} width="40px" height="40px" />
-        <Title>{formatMessage(messages.title)}</Title>
+        <Title id="launch-modal-title">{formatMessage(messages.title)}</Title>
       </Box>
       <Box>
         <Text>{formatMessage(messages.subtitle)}</Text>
@@ -44,6 +44,10 @@ const LaunchModal = ({ onClose }: LaunchModalProps) => {
         <Text>
           <b>{formatMessage(messages.limitation3Title)}</b>{' '}
           {formatMessage(messages.limitation3Text)}
+        </Text>
+        <Text>
+          <b>{formatMessage(messages.limitation4Title)}</b>{' '}
+          {formatMessage(messages.limitation4Text)}
         </Text>
         <Text>{formatMessage(messages.description)}</Text>
       </Box>

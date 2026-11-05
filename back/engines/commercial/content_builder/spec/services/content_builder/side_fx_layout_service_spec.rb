@@ -30,6 +30,32 @@ describe ContentBuilder::SideFxLayoutService do
       expect_any_instance_of(ContentBuilder::LayoutImageService).to receive(:swap_data_images).with(layout.craftjs_json)
       service.before_update(layout, user)
     end
+
+    it 'extracts new inline images in RichTextMultiloc bridge nodes into TextImages' do
+      layout.craftjs_json = {
+        'ROOT' => {
+          'type' => 'div', 'isCanvas' => true, 'props' => {},
+          'displayName' => 'div', 'nodes' => ['bridge'], 'linkedNodes' => {}
+        },
+        'bridge' => {
+          'type' => { 'resolvedName' => 'RichTextMultiloc' },
+          'props' => {
+            'text' => {
+              'en' => '<p>Hi</p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">'
+            }
+          },
+          'parent' => 'ROOT', 'nodes' => [], 'linkedNodes' => {}
+        }
+      }
+
+      expect { service.before_update(layout, user) }.to change(TextImage, :count).by(1)
+
+      text_image = TextImage.order(:created_at).last
+      expect(text_image.imageable).to eq(layout.content_buildable)
+      html = layout.craftjs_json['bridge']['props']['text']['en']
+      expect(html).to include("data-cl2-text-image-text-reference=\"#{text_image.text_reference}\"")
+      expect(html).not_to include('base64')
+    end
   end
 
   describe 'before_destroy' do
@@ -75,6 +101,31 @@ describe ContentBuilder::SideFxLayoutService do
     it 'does not swap data images' do
       expect_any_instance_of(ContentBuilder::LayoutImageService).not_to receive(:swap_data_images)
       service.after_update(layout, user)
+    end
+  end
+
+  describe 'project page saved step' do
+    let(:project) { create(:project) }
+    let(:project_page_layout) { create(:layout, project: project, code: 'project_page') }
+
+    it 'marks the page step when the project page is saved, even unchanged' do
+      service.after_update(project_page_layout, user)
+
+      expect(project.reload.completed_setup_steps).to eq ['page']
+    end
+
+    it 'keeps the other steps and does not add the page step twice' do
+      project.update!(completed_setup_steps: ['settings'])
+
+      2.times { service.after_update(project_page_layout, user) }
+
+      expect(project.reload.completed_setup_steps).to eq %w[settings page]
+    end
+
+    it 'leaves the project alone for other layouts' do
+      service.after_update(layout, user)
+
+      expect(layout.content_buildable.reload.completed_setup_steps).to be_empty
     end
   end
 

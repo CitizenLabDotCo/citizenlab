@@ -25,11 +25,11 @@ describe ProjectPolicy do
     it { is_expected.not_to permit(:update)  }
     it { is_expected.not_to permit(:destroy) }
 
-    it 'should not index the project'  do
+    it 'does not index the project' do
       expect(scope.resolve.size).to eq 0
     end
 
-    it 'should not include the user in the users that have access' do
+    it 'does not include the user in the users that have access' do
       expect(inverse_scope.resolve).not_to include(user)
     end
   end
@@ -51,12 +51,46 @@ describe ProjectPolicy do
     it { is_expected.not_to permit(:update)  }
     it { is_expected.not_to permit(:destroy) }
 
-    it 'should index the project' do
+    it 'indexes the project' do
       expect(scope.resolve.size).to eq 1
     end
 
-    it 'should include the user in the users that have access' do
+    it 'includes the user in the users that have access' do
       expect(inverse_scope.resolve).to include(user)
+    end
+  end
+
+  describe 'shared_permitted_attributes' do
+    subject(:policy) { described_class.new(user, subject_project) }
+
+    let(:subject_project) { create(:project) }
+
+    shared_examples 'does not permit space_id' do
+      it 'does not include space_id' do
+        expect(policy.shared_permitted_attributes.flatten).not_to include(:space_id)
+      end
+    end
+
+    context 'for an admin' do
+      let(:user) { create(:admin) }
+
+      it 'includes space_id' do
+        expect(policy.shared_permitted_attributes.flatten).to include(:space_id)
+      end
+    end
+
+    # TODO: Insert test for space manager (moderator) once that role is implemented
+
+    context 'for a project moderator' do
+      let(:user) { create(:project_moderator) }
+
+      it_behaves_like 'does not permit space_id'
+    end
+
+    context 'for a folder moderator' do
+      let(:user) { create(:project_folder_moderator) }
+
+      it_behaves_like 'does not permit space_id'
     end
   end
 end

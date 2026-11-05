@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
 
 import { TCustomPageEnabledSetting } from 'api/custom_pages/types';
 import useCustomPageById from 'api/custom_pages/useCustomPageById';
@@ -20,6 +19,7 @@ import Warning from 'components/UI/Warning';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
+import { useParams } from 'utils/router';
 
 import messages from './messages';
 
@@ -31,7 +31,9 @@ export interface ICustomPageSectionToggleData extends ISectionToggleData {
 const CustomPagesEditContent = () => {
   const { mutate: updateCustomPage } = useUpdateCustomPage();
   const { formatMessage } = useIntl();
-  const { customPageId } = useParams() as { customPageId: string };
+  const { customPageId } = useParams({ strict: false }) as {
+    customPageId: string;
+  };
   const { data: customPage } = useCustomPageById(customPageId);
   const advancedCustomPagesEnabled = useFeatureFlag({
     name: 'advanced_custom_pages',
@@ -44,6 +46,10 @@ const CustomPagesEditContent = () => {
   const hideProjects =
     !advancedCustomPagesEnabled ||
     customPage.data.attributes.projects_filter_type === 'no_filter';
+  // Folders can only be listed when filtering by space: areas and tags are
+  // project-level associations, so the list is projects-only in those cases.
+  const showsFolders =
+    customPage.data.attributes.projects_filter_type === 'spaces';
 
   const sectionTogglesData: ICustomPageSectionToggleData[] = [
     {
@@ -70,9 +76,17 @@ const CustomPagesEditContent = () => {
     },
     {
       name: 'projects_enabled',
-      titleMessage: formatMessage(sectionToggleMessages.projectsList),
+      titleMessage: formatMessage(
+        showsFolders
+          ? sectionToggleMessages.projectsAndFoldersList
+          : sectionToggleMessages.projectsList
+      ),
       tooltipMessage: (
-        <FormattedMessage {...sectionToggleMessages.projectsListTooltip} />
+        <FormattedMessage
+          {...(showsFolders
+            ? sectionToggleMessages.projectsAndFoldersListTooltip
+            : sectionToggleMessages.projectsListTooltip)}
+        />
       ),
       hideSection: hideProjects,
       linkToPath: 'projects',

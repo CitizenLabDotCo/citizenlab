@@ -24,6 +24,7 @@ export const locales = [
   'da',
   'da-DK',
   'de',
+  'de-AT',
   'de-DE',
   'el-GR',
   'en',
@@ -38,6 +39,7 @@ export const locales = [
   'fr',
   'fr-BE',
   'fr-FR',
+  'ga-IE',
   'hr-HR',
   'hu-HU',
   'it-IT',
@@ -69,6 +71,7 @@ export const appLocalePairs = {
   'ca-ES': 'Català',
   'cy-GB': 'Cymraeg',
   'da-DK': 'Dansk',
+  'de-AT': 'Deutsch (Österreich)',
   'de-DE': 'Deutsch',
   'el-GR': 'Ελληνικά',
   en: 'English',
@@ -80,6 +83,7 @@ export const appLocalePairs = {
   'fi-FI': 'Suomi',
   'fr-BE': 'Français (Belgique)',
   'fr-FR': 'Français (France)',
+  'ga-IE': 'Gaeilge',
   'hr-HR': 'Hrvatski',
   'hu-HU': 'Magyar',
   'it-IT': 'Italiano',
@@ -100,7 +104,11 @@ export const appLocalePairs = {
   'sv-SE': 'Svenska',
   'tr-TR': 'Türkçe',
   'ur-PK': 'اردو (Urdu)',
-};
+} as const;
+
+export const supportedLocales = Object.keys(appLocalePairs) as Array<
+  keyof typeof appLocalePairs
+>;
 
 export const appGraphqlLocalePairs = {
   arMa: 'ar-MA',
@@ -110,6 +118,7 @@ export const appGraphqlLocalePairs = {
   da: 'da',
   daDk: 'da-DK',
   de: 'de',
+  deAt: 'de-AT',
   deDe: 'de-DE',
   elGr: 'el-GR',
   en: 'en',
@@ -124,6 +133,7 @@ export const appGraphqlLocalePairs = {
   fr: 'fr',
   frBe: 'fr-BE',
   frFr: 'fr-FR',
+  gaIe: 'ga-IE',
   hrHr: 'hr-HR',
   huHu: 'hu-HU',
   itIt: 'it-IT',
@@ -154,6 +164,7 @@ export const shortenedAppLocalePairs = {
   'ca-ES': 'Català',
   'cy-GB': 'Cymraeg',
   'da-DK': 'Dansk',
+  'de-AT': 'Deutsch',
   'de-DE': 'Deutsch',
   'el-GR': 'Ελληνικά',
   en: 'English',
@@ -165,6 +176,7 @@ export const shortenedAppLocalePairs = {
   'fi-FI': 'Suomi',
   'fr-BE': 'Français',
   'fr-FR': 'Français',
+  'ga-IE': 'Gaeilge',
   'hr-HR': 'Hrvatski',
   'hu-HU': 'Magyar',
   'it-IT': 'Italiano',
@@ -194,6 +206,7 @@ export const appLocalesMomentPairs = {
   'ca-ES': 'ca',
   'cy-GB': 'cy',
   'da-DK': 'da',
+  'de-AT': 'de-at',
   'de-DE': 'de',
   'el-GR': 'el',
   'en-CA': 'en-ca',
@@ -204,6 +217,7 @@ export const appLocalesMomentPairs = {
   'fi-FI': 'fi',
   'fr-BE': 'fr',
   'fr-FR': 'fr',
+  'ga-IE': 'ga',
   'hr-HR': 'hr',
   'hu-HU': 'hu',
   'it-IT': 'it',
@@ -267,6 +281,10 @@ export async function localeGetter(localeName: string) {
       // @ts-ignore
       await import('moment/dist/locale/de');
       break;
+    case 'de-at':
+      // @ts-ignore
+      await import('moment/dist/locale/de-at');
+      break;
     case 'el':
       // @ts-ignore
       await import('moment/dist/locale/el');
@@ -294,6 +312,10 @@ export async function localeGetter(localeName: string) {
     case 'fr':
       // @ts-ignore
       await import('moment/dist/locale/fr');
+      break;
+    case 'ga':
+      // @ts-ignore
+      await import('moment/dist/locale/ga');
       break;
     case 'hr':
       // @ts-ignore

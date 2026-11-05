@@ -95,4 +95,20 @@ export default defineMessages({
     id: 'app.components.Admin.Campaigns.subject',
     defaultMessage: 'Subject',
   },
+  scheduled: {
+    id: 'app.components.Admin.Campaigns.scheduled',
+    defaultMessage: 'Scheduled',
+  },
+  campaignDeleteConfirmation: {
+    id: 'app.components.Admin.Campaigns.campaignDeleteConfirmation',
+    defaultMessage: 'Are you sure you want to delete this campaign?',
+  },
+  campaignDeleteWarning: {
+    id: 'app.components.Admin.Campaigns.campaignDeleteWarning',
+    defaultMessage: 'This action cannot be undone.',
+  },
+  cancel: {
+    id: 'app.components.Admin.Campaigns.cancel',
+    defaultMessage: 'Cancel',
+  },
 });

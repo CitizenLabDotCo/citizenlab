@@ -55,13 +55,16 @@ class AdminPublicationsFilteringService
   end
 
   add_filter('filter_folders') do |scope, options|
-    next scope if options[:search].blank?
+    next scope if options[:search].blank? && options[:spaces].blank?
 
-    matching_folders = ProjectFolders::Folder.search_by_all(options[:search])
-    folder_publications_in_scope = scope.where(publication: matching_folders)
-    projects_still_in_scope = scope.where.not(publication_type: ProjectFolders::Folder.name)
+    folders = ProjectFolders::Folder.all
+    folders = folders.search_by_all(options[:search]) if options[:search].present?
+    folders = folders.where(space_id: options[:spaces]) if options[:spaces].present?
 
-    folder_publications_in_scope.or(projects_still_in_scope)
+    folder_publications_in_scope = scope.where(publication: folders)
+    non_folder_publications = scope.where.not(publication_type: ProjectFolders::Folder.name)
+
+    folder_publications_in_scope.or(non_folder_publications)
   end
 
   add_filter('compute_visible_children_counts') do |scope, _|
@@ -84,21 +87,6 @@ class AdminPublicationsFilteringService
     non_parents           = scope.where(children_allowed: false)
 
     parents_with_children.or(non_parents)
-  end
-
-  add_filter('remove_unmoderated_folders') do |scope, options|
-    next scope unless (['true', true, '1'].include? options[:filter_is_moderator_of]) ||
-                      options[:filter_user_is_moderator_of].present?
-
-    moderator = User.find_by(id: options[:filter_user_is_moderator_of])
-    user = moderator.presence || options[:current_user]
-
-    next scope.where(children_allowed: false) unless user
-
-    moderated_folder_ids = user.roles.select { |r| r['type'] == 'project_folder_moderator' }.pluck('project_folder_id')
-    unmoderated_parents = scope.where(children_allowed: true).where.not(publication_id: moderated_folder_ids)
-
-    scope.where.not(id: unmoderated_parents)
   end
 
   # This filter excludes AdminPublications that are for projects in folders that are still included in the scope.

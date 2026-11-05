@@ -8,14 +8,13 @@ import {
   colors,
   Title,
 } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
 import { IStatusCountsAll } from 'api/admin_publications_status_counts/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAreas from 'api/areas/useAreas';
-import useTopics from 'api/topics/useTopics';
+import useGlobalTopics from 'api/global_topics/useGlobalTopics';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -25,6 +24,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
+import { useSearch } from 'utils/router';
 
 import { PublicationTab } from '../..';
 
@@ -106,6 +106,7 @@ interface Props {
   onChangeTab: (tab: PublicationTab) => void;
   onChangeSearch: (search: string | null) => void;
   currentlyWorkingOnText?: Multiloc;
+  searchTerm?: string | null;
 }
 
 const Header = ({
@@ -123,29 +124,29 @@ const Header = ({
   onChangeTab,
   onChangeSearch,
   currentlyWorkingOnText,
+  searchTerm,
 }: Props) => {
   const { data: appConfiguration } = useAppConfiguration();
   const isSmallerThanPhone = useBreakpoint('phone');
   const isSmallerThanTablet = useBreakpoint('tablet');
-  const { data: topics } = useTopics({ forHomepageFilter: true });
+  const { data: topics } = useGlobalTopics({ forHomepageFilter: true });
   const { data: areas } = useAreas({ forHomepageFilter: true });
   const localize = useLocalize();
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
   const [selectedAreas, setSelectedAreas] = useState<string[]>([]);
-  const [searchParams] = useSearchParams();
+  const searchParams = useSearch({ strict: false });
   const [searchInputRef, setSearchInputRef] = useState<HTMLInputElement | null>(
     null
   );
   const { formatMessage } = useIntl();
 
   useEffect(() => {
-    const focusSearch = searchParams.get('focusSearch');
     // the value from the query param is a string, not a boolean
-    if (focusSearch === 'true' && searchInputRef) {
+    if (searchParams.focusSearch === 'true' && searchInputRef) {
       searchInputRef.focus();
       clHistory.replace('/projects');
     }
-  }, [searchParams, searchInputRef]);
+  }, [searchParams.focusSearch, searchInputRef]);
 
   const handleOnSearchChange = React.useCallback(
     (search: string | null) => {
@@ -193,6 +194,9 @@ const Header = ({
 
   const shouldShowAreaAndTagFilters = !isSmallerThanPhone && displayFilters;
 
+  const filtersAppliedCount =
+    (selectedTopics.length || 0) + (selectedAreas.length || 0);
+
   return (
     <div className={className}>
       {showTitle ? (
@@ -214,7 +218,10 @@ const Header = ({
         <StyledSearchInput
           onChange={handleOnSearchChange}
           a11y_numberOfSearchResults={statusCounts.all}
+          a11y_searchQuery={searchTerm ?? ''}
+          a11y_filtersAppliedCount={filtersAppliedCount}
           setInputRef={handleSetSearchInputRef}
+          placeholder={formatMessage(messages.searchProjectsAndFolders)}
         />
       )}
 

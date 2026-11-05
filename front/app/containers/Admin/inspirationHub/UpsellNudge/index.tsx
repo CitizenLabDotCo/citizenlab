@@ -60,7 +60,7 @@ const UpsellNudge = () => {
             <ButtonWithLink
               buttonStyle="text"
               textColor={theme.colors.tenantPrimary}
-              linkTo={formatMessage(messages.inspirationHubSupportArticle)}
+              linkTo={formatMessage(messages.inspirationHubSupportArticle2)}
               openLinkInNewTab
             >
               {formatMessage(messages.learnMore)}
@@ -74,7 +74,7 @@ const UpsellNudge = () => {
           alignItems="flex-start"
           justifyContent="center"
         >
-          <img src={CardSkeletons} alt="" width="100%" />
+          <img src={CardSkeletons} alt="" style={{ width: '100%' }} />
         </Box>
       </Box>
     </Box>

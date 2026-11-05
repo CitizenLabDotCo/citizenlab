@@ -26,7 +26,6 @@
 #  assignee_id                     :uuid
 #  assigned_at                     :datetime
 #  proposed_budget                 :integer
-#  custom_field_values             :jsonb            not null
 #  creation_phase_id               :uuid
 #  author_hash                     :string
 #  anonymous                       :boolean          default(FALSE), not null
@@ -38,12 +37,14 @@
 #  manual_votes_last_updated_by_id :uuid
 #  manual_votes_last_updated_at    :datetime
 #  neutral_reactions_count         :integer          default(0), not null
+#  weglot_data                     :jsonb            not null
 #
 # Indexes
 #
 #  index_ideas_on_author_hash                      (author_hash)
 #  index_ideas_on_author_id                        (author_id)
 #  index_ideas_on_body_multiloc                    (body_multiloc) USING gin
+#  index_ideas_on_creation_phase_id                (creation_phase_id)
 #  index_ideas_on_idea_status_id                   (idea_status_id)
 #  index_ideas_on_location_point                   (location_point) USING gist
 #  index_ideas_on_manual_votes_last_updated_by_id  (manual_votes_last_updated_by_id)
@@ -63,13 +64,21 @@
 #
 class Idea < ApplicationRecord
   include PgSearch::Model
+  include PlainTextMultiloc
   include GeoJsonHelpers
   include AnonymousParticipation
   include Files::FileAttachable
+  include ClaimableParticipation
+  include LocationTrackableParticipation
+  include Answerable
   extend OrderAsSpecified
 
   PUBLICATION_STATUSES = %w[draft submitted published].freeze
   SUBMISSION_STATUSES = %w[submitted published].freeze
+
+  # `SanitizationService` features allowed in the body, shared with anything that re-sanitizes a
+  # stored body (e.g. machine translations).
+  BODY_SANITIZE_FEATURES = %i[title alignment list decoration link image video].freeze
 
   attr_accessor :request # Non persisted attribute to store request to be used by EveryoneTrackingService
 
@@ -96,8 +105,14 @@ class Idea < ApplicationRecord
     delta_magnitude: proc { |idea| idea.comments_count }
   )
 
+  self.ignored_columns += %w[custom_field_values] # backup only; the answers are the source of truth
+
+  has_many_text_images from: :body_multiloc
+
+  before_validation :sanitize_body_multiloc, if: :body_multiloc
+  plain_text_multiloc :title_multiloc, prepend: true
+
   # Must appear before before_destroy
-  before_save :convert_wkt_geo_custom_field_values_to_geojson
   after_update :fix_comments_count_on_projects
 
   belongs_to :assignee, class_name: 'User', optional: true
@@ -118,13 +133,12 @@ class Idea < ApplicationRecord
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
 
-  has_many :ideas_topics, dependent: :destroy
-  has_many :topics, -> { order(:ordering) }, through: :ideas_topics
+  has_many :ideas_input_topics, dependent: :destroy
+  has_many :input_topics, -> { order(:lft) }, through: :ideas_input_topics
   has_many :ideas_phases, dependent: :destroy
   has_many :phases, through: :ideas_phases, after_add: :update_phase_counts, after_remove: :update_phase_counts
   has_many :baskets_ideas, dependent: :destroy
   has_many :baskets, through: :baskets_ideas
-  has_many :text_images, as: :imageable, dependent: :destroy
   has_many :followers, as: :followable, dependent: :destroy
   has_many :official_feedbacks, dependent: :destroy
 
@@ -139,6 +153,9 @@ class Idea < ApplicationRecord
 
   has_many :idea_relations, dependent: :destroy
   has_many :related_ideas, through: :idea_relations
+
+  has_many :idea_exposures, dependent: :destroy
+  has_one :wise_voice_flag, as: :flaggable, class_name: 'WiseVoiceFlag', dependent: :destroy
 
   accepts_nested_attributes_for :text_images, :idea_images, :idea_files
 
@@ -163,11 +180,11 @@ class Idea < ApplicationRecord
     validates :idea_status, presence: true
     validates :project, presence: true
     before_validation :assign_defaults
-    before_validation :sanitize_body_multiloc, if: :body_multiloc
   end
 
   pg_search_scope :search_by_all,
-    against: %i[title_multiloc body_multiloc custom_field_values slug],
+    against: %i[title_multiloc body_multiloc slug],
+    associated_against: { custom_field_answers: %i[value] },
     using: { tsearch: { prefix: true } }
 
   pg_search_scope :restricted_search,
@@ -184,8 +201,18 @@ class Idea < ApplicationRecord
   # > it will be impossible to speed up searches with database indexes. However, it
   # > is supported as a quick way to try out cross-model searching.
 
-  scope :with_some_topics, (proc do |topics|
-    ideas = joins(:ideas_topics).where(ideas_topics: { topic: topics })
+  scope :with_some_input_topics, (proc do |input_topics|
+    ideas = joins(:ideas_input_topics).where(ideas_input_topics: { input_topic: input_topics })
+    where(id: ideas)
+  end)
+
+  # Same as with_some_input_topics, but also includes ideas assigned to child topics
+  scope :with_some_input_topics_and_children, (proc do |input_topics|
+    input_topics = Array(input_topics)
+    input_topic_ids = InputTopic.where(id: input_topics).or(
+      InputTopic.where(parent_id: input_topics)
+    ).pluck(:id)
+    ideas = joins(:ideas_input_topics).where(ideas_input_topics: { input_topic_id: input_topic_ids })
     where(id: ideas)
   end)
 
@@ -194,10 +221,9 @@ class Idea < ApplicationRecord
       .where(ideas_phases: { phase_id: phase_id })
   end)
 
-  scope :with_project_publication_status, (proc do |publication_status|
-    joins(project: [:admin_publication])
-      .where(projects: { admin_publications: { publication_status: publication_status } })
-  end)
+  scope :with_project_publication_status, lambda { |status|
+    where(project: Project.where(admin_publication: AdminPublication.with_status(status)))
+  }
 
   scope :order_new, ->(direction = :desc) { order(published_at: direction) }
   scope :order_random, lambda { |user|
@@ -208,12 +234,29 @@ class Idea < ApplicationRecord
     includes(:author).order('users.first_name' => direction, 'users.last_name' => direction)
   }
 
+  scope :order_title, lambda { |locale, direction = :asc|
+    title = Arel::Nodes::InfixOperation.new('->>', arel_table[:title_multiloc], Arel::Nodes.build_quoted(locale))
+    order(Arel::Nodes::NamedFunction.new('LOWER', [title]).public_send(direction).nulls_last, :id)
+  }
+
   scope :order_popular, ->(direction = :desc) { order(Arel.sql("(likes_count - dislikes_count) #{direction}, ideas.id")) }
   # based on https://medium.com/hacking-and-gonzo/how-hacker-news-ranking-algorithm-works-1d9b0cf2c08d
 
   scope :order_status, lambda { |direction = :desc|
     joins(:idea_status)
       .order("idea_statuses.ordering #{direction}, ideas.id")
+  }
+
+  # Participant-facing ordering by status asc with tie-breaker on published_at desc, then id asc.
+  # The ordering is read through a subquery rather than `joins(:idea_status)`: an order that
+  # references a joined table makes the index action's `includes` switch from preload to a single
+  # eager_load join, which takes seconds on a page of inputs.
+  scope :order_status_priority, lambda {
+    order(Arel.sql(<<~SQL.squish))
+      (SELECT ordering FROM idea_statuses WHERE idea_statuses.id = ideas.idea_status_id) ASC,
+      ideas.published_at DESC NULLS LAST,
+      ideas.id
+    SQL
   }
 
   scope :activity_after, lambda { |time_ago|
@@ -249,6 +292,11 @@ class Idea < ApplicationRecord
 
   # Equivalent to pmethod.supports_survey_form?
   scope :supports_survey, -> { where(creation_phase: Phase.where(participation_method: %w[native_survey community_monitor_survey])) }
+  scope :supports_proposal, -> { where(creation_phase: Phase.where(participation_method: %w[proposals])) }
+  scope :supports_idea, -> { where(creation_phase: nil) }
+  scope :excluding_admin_and_moderator_authors, lambda {
+    StatisticsRoleExclusion.new.exclude_admin_and_moderator_records(all, :author_id)
+  }
 
   # Filters out all the ideas for which the ParticipationMethod responds truety
   # to the given block. The block receives the ParticipationMethod object as an
@@ -325,6 +373,10 @@ class Idea < ApplicationRecord
     creation_phase || phases.first || project.phases.where(participation_method: 'ideation').first || project.phases.first
   end
 
+  def active_phase
+    [*phases, creation_phase].compact.uniq.find(&:active?)
+  end
+
   def custom_form
     consultation_context.custom_form || CustomForm.new(participation_context: consultation_context)
   end
@@ -357,6 +409,16 @@ class Idea < ApplicationRecord
     self.manual_votes_last_updated_at = Time.now
   end
 
+  def expires_at
+    return if !published? || !creation_phase&.expire_days_limit
+
+    published_at + creation_phase.expire_days_limit.days
+  end
+
+  def voting_expired?
+    expires_at.present? && expires_at < Time.zone.now
+  end
+
   def draft?
     publication_status == 'draft'
   end
@@ -384,13 +446,7 @@ class Idea < ApplicationRecord
   end
 
   def sanitize_body_multiloc
-    service = SanitizationService.new
-    self.body_multiloc = service.sanitize_multiloc(
-      body_multiloc,
-      %i[title alignment list decoration link image video]
-    )
-    self.body_multiloc = service.remove_multiloc_empty_trailing_tags(body_multiloc)
-    self.body_multiloc = service.linkify_multiloc(body_multiloc)
+    self.body_multiloc = SanitizationService.new.sanitize_body_multiloc(body_multiloc, BODY_SANITIZE_FEATURES)
   end
 
   def fix_comments_count_on_projects
@@ -437,25 +493,6 @@ class Idea < ApplicationRecord
       :invalid_status,
       message: 'Inputs can only be published in public statuses'
     )
-  end
-
-  # The FE sends geographic values as wkt strings, since GeoJSON often includes nested arrays
-  # which are not supported by Rails strong params.
-  # This method converts the wkt strings for geographic values (e.g. for point, line, polygon, etc.) to GeoJSON.
-  #
-  # RGeo gem & wkt strings:
-  # https://github.com/rgeo/rgeo/blob/52d42407769d9fb5267e328ed4023db013f2b7d5/Spatial_Programming_With_RGeo.md?plain=1#L521-L528
-  def convert_wkt_geo_custom_field_values_to_geojson
-    return if custom_field_values.blank?
-
-    geo_cf_keys = custom_form
-      &.custom_fields.to_a
-      .select { |field| field.input_type.in? CustomField::GEOGRAPHIC_INPUT_TYPES }
-      .map(&:key)
-
-    custom_field_values.slice(*geo_cf_keys).each do |key, value|
-      custom_field_values[key] = wkt_string_to_geojson(value) if value.is_a?(String)
-    end
   end
 
   def transitive_input_term

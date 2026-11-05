@@ -31,7 +31,7 @@ describe('New project with native survey', () => {
 
   // TODO: Improve this test
   it('shows the correct project header', () => {
-    cy.get('#e2e-project-description');
+    cy.get('[data-testid="projectPageBuilderContent"]');
     cy.get('#e2e-project-sidebar');
   });
 
@@ -77,7 +77,6 @@ describe('Project with native survey phase but not active', () => {
 
 describe('Native survey CTA bar', () => {
   const projectTitle = randomString();
-  const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
   let projectId: string;
   let projectSlug: string;
@@ -97,7 +96,6 @@ describe('Native survey CTA bar', () => {
         cy.apiCreateProject({
           title: projectTitle,
           descriptionPreview: projectDescriptionPreview,
-          description: projectDescription,
           publicationStatus: 'published',
         }).then((project) => {
           projectId = project.body.data.id;
@@ -132,6 +130,10 @@ describe('Native survey CTA bar', () => {
 
     cy.setAdminLoginCookie();
 
+    // The action follows the platform defaults until it is overridden, and the
+    // panel only offers its settings once it has been.
+    cy.apiOverridePhasePermission({ phaseId, action: 'posting_idea' });
+
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/access-rights`);
 
     cy.get('.e2e-action-accordion-posting_idea').click();
@@ -161,7 +163,16 @@ describe('Native survey CTA bar', () => {
   });
 
   after(() => {
-    if (projectId) {
+    if (phaseId) {
+      // delete this project's ideas (survey responses), otherwise the project cannot be deleted
+      // because of the foreign key constraint between ideas and phases. Scope to projectId so we
+      // don't wipe ideas from other projects (e.g. the seeded "Verified Idea") that other specs rely on.
+      cy.apiRemoveIdeas(projectId).then(() => {
+        if (projectId) {
+          cy.apiRemoveProject(projectId);
+        }
+      });
+    } else if (projectId) {
       cy.apiRemoveProject(projectId);
     }
   });

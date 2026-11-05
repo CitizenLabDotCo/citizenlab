@@ -5,6 +5,7 @@ import {
   colors,
   fontSizes,
   Icon,
+  stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
@@ -14,6 +15,7 @@ const Container = styled.div<{ disabled: boolean }>`
   flex-direction: row;
   align-items: center;
   font-size: ${fontSizes.base}px;
+  height: ${stylingConsts.inputHeight}px;
   padding-left: 4px;
   padding-right: 10px;
   padding-top: 8px;

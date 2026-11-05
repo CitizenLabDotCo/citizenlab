@@ -91,7 +91,6 @@ const Form = ({ defaultValues, onSubmit }: Props) => {
     }
   };
 
-  // May need memoization
   const localeOptions = Object.entries(appLocalePairs).map(
     ([locale, label]) => {
       return {

@@ -1,0 +1,47 @@
+{
+  "decidim_importer.accountability_progress": {
+    "state": "verified",
+    "verified_at": "2026-08-19T08:21:56.662205Z",
+    "verified_by": "Roger"
+  },
+  "decidim_importer.accountability_status": {
+    "state": "verified",
+    "verified_at": "2026-08-19T08:21:56.662205Z",
+    "verified_by": "Roger"
+  },
+  "decidim_importer.assemblies": {
+    "state": "verified",
+    "verified_at": "2026-08-19T08:21:56.662205Z",
+    "verified_by": "Roger"
+  },
+  "decidim_importer.blog": {
+    "state": "verified",
+    "verified_at": "2026-08-19T08:21:56.662205Z",
+    "verified_by": "Roger"
+  },
+  "decidim_importer.consultations": {
+    "state": "verified",
+    "verified_at": "2026-08-19T08:21:56.662205Z",
+    "verified_by": "Roger"
+  },
+  "decidim_importer.debate_conclusions": {
+    "state": "verified",
+    "verified_at": "2026-08-19T08:21:56.662205Z",
+    "verified_by": "Roger"
+  },
+  "decidim_importer.debate_information_updates": {
+    "state": "verified",
+    "verified_at": "2026-08-19T08:21:12.874692Z",
+    "verified_by": "Roger"
+  },
+  "decidim_importer.debate_instructions": {
+    "state": "verified",
+    "verified_at": "2026-08-19T08:21:12.874692Z",
+    "verified_by": "Roger"
+  },
+  "decidim_importer.documents_to_consult": {
+    "state": "verified",
+    "verified_at": "2026-08-19T08:21:56.662205Z",
+    "verified_by": "Roger"
+  }
+}

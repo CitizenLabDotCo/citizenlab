@@ -8,6 +8,9 @@ import {
   Label,
 } from 'recharts';
 
+import { AccessibilityProps } from 'components/admin/Graphs/typings';
+import { getRechartsAccessibilityProps } from 'components/admin/Graphs/utils';
+
 import Container from '../_components/Container';
 import EmptyState from '../_components/EmptyState';
 import Legend from '../_components/Legend';
@@ -37,7 +40,9 @@ const PieChart = <Row,>({
   innerRef,
   onMouseOver,
   onMouseOut,
-}: Props<Row>) => {
+  ariaLabel,
+  ariaDescribedBy,
+}: Props<Row> & AccessibilityProps) => {
   const [graphDimensions, setGraphDimensions] = useState<
     GraphDimensions | undefined
   >();
@@ -65,7 +70,6 @@ const PieChart = <Row,>({
       width={width}
       height={height}
       legend={legend}
-      graphDimensions={graphDimensions}
       legendDimensions={legendDimensions}
       defaultLegendOffset={DEFAULT_LEGEND_OFFSET}
       onUpdateGraphDimensions={setGraphDimensions}
@@ -79,6 +83,7 @@ const PieChart = <Row,>({
           DEFAULT_LEGEND_OFFSET
         )}
         ref={innerRef}
+        {...getRechartsAccessibilityProps(ariaLabel, ariaDescribedBy)}
       >
         {legend && graphDimensions && legendDimensions && (
           <g className="graph-legend">
@@ -99,7 +104,9 @@ const PieChart = <Row,>({
         {typeof tooltip === 'function' && tooltip(tooltipConfig)}
 
         <Pie
-          data={data}
+          // Recharts expects ChartDataInput (Record<string, unknown>[]) but TS interfaces
+          // don't satisfy index signatures. The cast is safe as our data is always objects.
+          data={data as Record<string, unknown>[]}
           animationDuration={animation.duration}
           animationBegin={animation.begin}
           {...pieConfig.props}
@@ -110,7 +117,7 @@ const PieChart = <Row,>({
             <Cell key={`cell-${cellIndex}`} {...cell} />
           ))}
 
-          {centerLabel && <Label content={centerLabel} position="center" />}
+          {centerLabel && <Label content={centerLabel} />}
         </Pie>
       </RechartsPieChart>
     </Container>

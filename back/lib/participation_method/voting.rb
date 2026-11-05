@@ -3,14 +3,22 @@
 module ParticipationMethod
   class Voting < Ideation
     SUPPORTED_REACTION_MODES = [].freeze
-    delegate :additional_export_columns, :supports_serializing?, to: :voting_method
+    delegate :additional_export_columns, :supports_serializing?, :validate_phase, to: :voting_method
 
     def self.method_str
       'voting'
     end
 
+    def phase_insights_class
+      Insights::VotingPhaseInsightsService
+    end
+
     def allowed_ideas_orders
       %w[random]
+    end
+
+    def allowed_presentation_modes
+      %w[card map]
     end
 
     def assign_defaults_for_phase
@@ -25,16 +33,17 @@ module ParticipationMethod
       'ideation'
     end
 
-    def validate_phase
-      super
-      voting_method.validate_phase
-    end
-
     def supported_email_campaigns
       super + %w[voting_basket_submitted voting_basket_not_submitted voting_last_chance voting_phase_started voting_results]
     end
 
     def supports_submission?
+      false
+    end
+
+    # Voting reuses ideation inputs but has no admin-fillable response form to
+    # export (overrides the `true` inherited from Ideation).
+    def supports_input_pdf_export?
       false
     end
 
@@ -48,6 +57,14 @@ module ParticipationMethod
 
     def voting_method
       Factory.instance.voting_method_for(phase)
+    end
+
+    def supports_inputs_without_author?
+      false
+    end
+
+    def supports_permitted_by_everyone?
+      false
     end
   end
 end

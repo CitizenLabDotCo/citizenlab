@@ -29,6 +29,8 @@ const PhaseReport = ({ reportId, phaseId }: Props) => {
   if (!reportLayout) return null;
 
   const editorData = reportLayout.data.attributes.craftjs_json;
+  const hasContent = Object.keys(editorData).some((key) => key !== 'ROOT');
+  if (!hasContent) return null;
 
   return (
     <Box
@@ -62,9 +64,7 @@ const PhaseReport = ({ reportId, phaseId }: Props) => {
           >
             <Box maxWidth={MAX_REPORT_WIDTH} w="100%">
               <Editor isPreview={true}>
-                {/* TODO: Fix this the next time the file is edited. */}
-                {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-                {editorData && <ContentBuilderFrame editorData={editorData} />}
+                <ContentBuilderFrame editorData={editorData} />
               </Editor>
             </Box>
           </Box>

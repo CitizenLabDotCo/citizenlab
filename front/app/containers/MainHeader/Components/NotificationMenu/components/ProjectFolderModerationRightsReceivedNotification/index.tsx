@@ -7,6 +7,8 @@ import NotificationWrapper from 'containers/MainHeader/Components/NotificationMe
 import T from 'components/T';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { stopPropagation } from 'utils/helperUtils';
 
 import messages from './messages';
 
@@ -17,22 +19,29 @@ interface Props {
 const ProjectFolderModerationRightsReceivedNotification = ({
   notification,
 }: Props) => {
+  const projectFolderId = notification.attributes.project_folder_id;
+
   return (
     <NotificationWrapper
-      linkTo={`/admin/projects/folders/${notification.attributes.project_folder_id}`}
+      to="/admin/projects/folders/$projectFolderId"
+      params={{ projectFolderId }}
       timing={notification.attributes.created_at}
       icon="folder-solid"
       isRead={!!notification.attributes.read_at}
     >
       <FormattedMessage
-        {...messages.youveReceivedFolderAdminRights}
+        {...messages.youveReceivedFolderManagerRights}
         values={{
-          folderName: (
-            <strong>
+          folderLink: (
+            <Link
+              to="/admin/projects/folders/$projectFolderId"
+              params={{ projectFolderId }}
+              onClick={stopPropagation}
+            >
               <T
                 value={notification.attributes.project_folder_title_multiloc}
               />
-            </strong>
+            </Link>
           ),
         }}
       />

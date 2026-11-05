@@ -3,7 +3,7 @@ import React, { memo } from 'react';
 import styled from 'styled-components';
 
 import useCauses from 'api/causes/useCauses';
-import useProjectById from 'api/projects/useProjectById';
+import { IPhaseData } from 'api/phases/types';
 
 import CauseCard from './CauseCard';
 
@@ -12,22 +12,20 @@ const Container = styled.div`
 `;
 
 interface Props {
-  phaseId: string | null;
-  projectId: string;
+  phase: IPhaseData;
   className?: string;
 }
 
-const Volunteering = memo<Props>(({ projectId, phaseId, className }) => {
+const Volunteering = memo<Props>(({ phase, className }) => {
   const { data: causes } = useCauses({
-    phaseId,
+    phaseId: phase.id,
   });
-  const { data: project } = useProjectById(projectId);
 
-  if (causes && project) {
+  if (causes) {
     return (
       <Container className={className} id="volunteering">
         {causes.data.map((cause) => (
-          <CauseCard key={cause.id} cause={cause} project={project} />
+          <CauseCard key={cause.id} cause={cause} phase={phase} />
         ))}
       </Container>
     );

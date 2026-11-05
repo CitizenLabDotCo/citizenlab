@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Modal from 'components/UI/Modal';
 
+import { ScreenReaderOnly } from 'utils/a11y';
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -14,7 +15,6 @@ import tracks from '../../tracks';
 import ProjectTemplatePreviewAdmin from '../containers/ProjectTemplatePreviewAdmin';
 
 import messages from './messages';
-import UseTemplateModal from './UseTemplateModal';
 
 const duration = 300;
 const easing = 'cubic-bezier(0.165, 0.84, 0.44, 1)';
@@ -77,7 +77,8 @@ const Container = styled.div`
   border-radius: ${({ theme }) => theme.borderRadius};
   background: #f2f4f5;
   border: solid 1px #eaeaea;
-  overflow: hidden;
+  overflow: clip;
+  min-width: 0;
   position: relative;
 
   &:hover {
@@ -104,12 +105,11 @@ interface Props {
   title: string;
   body: string;
   className?: string;
+  onUse: (projectTemplateId: string, title: string) => void;
 }
 
 const ProjectTemplateCard = memo<Props>(
-  ({ projectTemplateId, imageUrl, title, body, className }) => {
-    const [useTemplateModalOpened, setUseTemplateModalOpened] =
-      useState<boolean>(false);
+  ({ projectTemplateId, imageUrl, title, body, className, onUse }) => {
     const [previewModalOpened, setPreviewModalOpened] =
       useState<boolean>(false);
 
@@ -121,23 +121,13 @@ const ProjectTemplateCard = memo<Props>(
       setPreviewModalOpened(true);
     }, [projectTemplateId, title]);
 
-    const onOpenUseTemplateModal = useCallback(() => {
+    const onUseTemplateBtnClick = useCallback(() => {
       trackEventByName(tracks.useTemplateButtonClicked, {
         projectTemplateId,
         title,
       });
-      setUseTemplateModalOpened(true);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    const onCloseUseTemplateModal = useCallback(() => {
-      trackEventByName(tracks.useTemplateModalClosed, {
-        projectTemplateId,
-        title,
-      });
-      setUseTemplateModalOpened(false);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+      onUse(projectTemplateId, title);
+    }, [onUse, projectTemplateId, title]);
 
     return (
       <Container className={`${className} ${imageUrl ? 'hasImage' : ''}`}>
@@ -151,7 +141,7 @@ const ProjectTemplateCard = memo<Props>(
 
         <Buttons>
           <UseTemplateButton
-            onClick={onOpenUseTemplateModal}
+            onClick={onUseTemplateBtnClick}
             buttonStyle="secondary-outlined"
             fullWidth={true}
             bgColor={darken(0.05, colors.grey200)}
@@ -169,18 +159,17 @@ const ProjectTemplateCard = memo<Props>(
           </MoreDetailsButton>
         </Buttons>
 
-        <UseTemplateModal
-          projectTemplateId={projectTemplateId}
-          opened={useTemplateModalOpened}
-          close={onCloseUseTemplateModal}
-        />
         <Modal
           opened={previewModalOpened}
           close={() => {
             setPreviewModalOpened(false);
           }}
           width={'95%'}
+          ariaLabelledBy="template-preview-modal-title"
         >
+          <ScreenReaderOnly id="template-preview-modal-title">
+            {title}
+          </ScreenReaderOnly>
           <Box width="100%" display="flex" justifyContent="center">
             <ProjectTemplatePreviewAdmin
               projectTemplateId={projectTemplateId}

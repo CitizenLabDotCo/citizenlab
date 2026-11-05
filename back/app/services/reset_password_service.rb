@@ -17,16 +17,16 @@ class ResetPasswordService
     JWT.encode(payload, secret, 'HS256')
   end
 
-  # Schedules an email to the user with instructions on how to reset their password
-  # after a token has been generated (and saved to the user record).
-  # @param user [User] the recipient of the user
+  # Sends the password reset email to the user immediately (synchronously) through
+  # the EmailCampaigns engine, so the user receives it without waiting on the
+  # async job queue. The reset token is embedded in the email's URL.
+  # @param user [User] the recipient of the email
   # @param token [String] the password reset token for the user
   # @return [void]
-  def send_email_later(user, token)
-    url = url_for(user, token)
-    ResetPasswordMailer.with(user: user, password_reset_url: url)
-      .send_reset_password
-      .deliver_later(priority: 1)
+  def send_email(user, token)
+    url = Frontend::UrlService.new.reset_password_url(token, locale: Locale.new(user.locale))
+    campaign = EmailCampaigns::Campaigns::PasswordReset.first_or_create!
+    EmailCampaigns::DeliveryService.new.send_now_to_user(campaign, user, { password_reset_url: url })
   end
 
   # Verifies if the specified token is valid for the user.
@@ -53,10 +53,6 @@ class ResetPasswordService
   end
 
   private
-
-  def url_for(user, token)
-    Frontend::UrlService.new.reset_password_url(token, locale: Locale.new(user.locale))
-  end
 
   def secret
     Rails.application.secret_key_base

@@ -32,7 +32,7 @@ resource 'IdeaImage' do
     example_request 'Get one image of an idea by id' do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
-      expect(json_response.dig(:data, :attributes, :versions).keys).to match %i[small medium large fb]
+      expect(json_response.dig(:data, :attributes, :versions).keys).to match_array %i[small medium large fb square_medium]
     end
   end
 
@@ -49,8 +49,22 @@ resource 'IdeaImage' do
     example_request 'Add an image to an idea' do
       expect(response_status).to eq 201
       json_response = json_parse(response_body)
-      expect(json_response.dig(:data, :attributes, :versions).keys).to match %i[small medium large fb]
+      expect(json_response.dig(:data, :attributes, :versions).keys).to match_array %i[small medium large fb square_medium]
       expect(json_response.dig(:data, :attributes, :ordering)).to eq(1)
+    end
+
+    example 'Unauthorized (401) when not signed in', document: false do
+      header 'Authorization', nil
+
+      expect { do_request }.not_to change(IdeaImage, :count)
+      assert_status 401
+    end
+
+    example 'Unauthorized (401) for a resident who is not the author', document: false do
+      resident_header_token
+
+      expect { do_request }.not_to change(IdeaImage, :count)
+      assert_status 401
     end
   end
 
@@ -68,7 +82,7 @@ resource 'IdeaImage' do
     example_request 'Update an image for an idea' do
       expect(response_status).to eq 200
       json_response = json_parse(response_body)
-      expect(json_response.dig(:data, :attributes, :versions).keys).to match %i[small medium large fb]
+      expect(json_response.dig(:data, :attributes, :versions).keys).to match_array %i[small medium large fb square_medium]
       expect(json_response.dig(:data, :attributes, :ordering)).to eq(2)
     end
   end

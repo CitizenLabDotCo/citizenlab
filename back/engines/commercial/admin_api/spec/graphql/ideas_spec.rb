@@ -81,14 +81,14 @@ RSpec.describe AdminApi::Schema do
     end
 
     context do
-      let(:t1) { create(:topic) }
-      let(:t2) { create(:topic) }
-      let(:t3) { create(:topic) }
-      let(:project) { create(:project, allowed_input_topics: [t1, t2, t3]) }
-      let!(:i1) { create(:idea, topics: [t1], project: project) }
-      let!(:i2) { create(:idea, topics: [t2], project: project) }
-      let!(:i3) { create(:idea, topics: [t1], project: project) }
-      let!(:i4) { create(:idea, topics: [t3, t2], project: project) }
+      let(:t1) { create(:input_topic) }
+      let(:t2) { create(:input_topic) }
+      let(:t3) { create(:input_topic) }
+      let(:project) { create(:project, input_topics: [t1, t2, t3]) }
+      let!(:i1) { create(:idea, input_topics: [t1], project: project) }
+      let!(:i2) { create(:idea, input_topics: [t2], project: project) }
+      let!(:i3) { create(:idea, input_topics: [t1], project: project) }
+      let!(:i4) { create(:idea, input_topics: [t3, t2], project: project) }
       let(:variables) { { topics: [t1.id, t3.id] } }
 
       it 'returns public ideas in topics' do

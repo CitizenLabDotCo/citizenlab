@@ -16,7 +16,7 @@ describe Export::Geojson::GeojsonGenerator do
     create(:custom_field_text, resource_type: 'User', title_multiloc: { 'en' => 'Field for registration question' })
   end
 
-  let(:user) { create(:user, custom_field_values: { custom_field3.key => 'Registration q answer' }) }
+  let(:user) { create(:user, custom_field_answers: [build(:custom_field_answer, key: custom_field3.key, value: 'Registration q answer')]) }
 
   describe '#generate_geojson' do
     let(:idea1) do
@@ -25,10 +25,10 @@ describe Export::Geojson::GeojsonGenerator do
         author: user,
         creation_phase: phase,
         project: project,
-        custom_field_values: {
-          custom_field1.key => { type: 'Point', coordinates: [1.1, 2.2] },
-          custom_field2.key => 'Text answer 1'
-        }
+        custom_field_answers: [
+          build(:custom_field_answer, key: custom_field1.key, value: { type: 'Point', coordinates: [1.1, 2.2] }),
+          build(:custom_field_answer, key: custom_field2.key, value: 'Text answer 1')
+        ]
       )
     end
     let!(:idea_phase1) { create(:ideas_phase, idea: idea1, phase: phase) }
@@ -38,10 +38,10 @@ describe Export::Geojson::GeojsonGenerator do
         :idea,
         creation_phase: phase,
         project: project,
-        custom_field_values: {
-          custom_field1.key => { type: 'Point', coordinates: [3.3, 4.4] },
-          custom_field2.key => 'Text answer 2'
-        }
+        custom_field_answers: [
+          build(:custom_field_answer, key: custom_field1.key, value: { type: 'Point', coordinates: [3.3, 4.4] }),
+          build(:custom_field_answer, key: custom_field2.key, value: 'Text answer 2')
+        ]
       )
     end
     let!(:idea_phase2) { create(:ideas_phase, idea: idea2, phase: phase) }
@@ -59,35 +59,29 @@ describe Export::Geojson::GeojsonGenerator do
     end
 
     it 'includes geometry of each response to the question custom_field in focus, in each respective GeoJSON Feature' do
-      expect(parsed_json['features'].pluck('geometry')).to match_array([
-        { 'type' => 'Point', 'coordinates' => [1.1, 2.2] },
-        { 'type' => 'Point', 'coordinates' => [3.3, 4.4] }
-      ])
+      expect(parsed_json['features'].pluck('geometry')).to contain_exactly({ 'type' => 'Point', 'coordinates' => [1.1, 2.2] }, { 'type' => 'Point', 'coordinates' => [3.3, 4.4] })
     end
 
     it "includes survey responses & selected user data for each input, in each related GeoJSON Feature's properties" do
-      expect(parsed_json['features'].pluck('properties')).to match_array([
-        {
-          'id' => idea1.id,
-          'published_at' => idea1.published_at.strftime('%m/%d/%Y %H:%M:%S').to_s,
-          'point_field_for_focus_of_export' => { 'type' => 'Point', 'coordinates' => [1.1, 2.2] },
-          'field_for_text_question' => 'Text answer 1',
-          'user_data__author_id' => idea1.author.id,
-          'user_data__author_email' => idea1.author.email,
-          'user_data__author_name' => idea1.author_name,
-          'user_data__field_for_registration_question' => 'Registration q answer'
-        },
-        {
-          'id' => idea2.id,
-          'published_at' => idea2.published_at.strftime('%m/%d/%Y %H:%M:%S').to_s,
-          'point_field_for_focus_of_export' => { 'type' => 'Point', 'coordinates' => [3.3, 4.4] },
-          'field_for_text_question' => 'Text answer 2',
-          'user_data__author_id' => idea2.author.id,
-          'user_data__author_email' => idea2.author.email,
-          'user_data__author_name' => idea2.author_name,
-          'user_data__field_for_registration_question' => nil
-        }
-      ])
+      expect(parsed_json['features'].pluck('properties')).to contain_exactly({
+        'id' => idea1.id,
+        'published_at' => idea1.published_at.strftime('%m/%d/%Y %H:%M:%S').to_s,
+        'point_field_for_focus_of_export' => { 'type' => 'Point', 'coordinates' => [1.1, 2.2] },
+        'field_for_text_question' => 'Text answer 1',
+        'user_data__author_id' => idea1.author.id,
+        'user_data__author_email' => idea1.author.email,
+        'user_data__author_name' => idea1.author_name,
+        'user_data__field_for_registration_question' => 'Registration q answer'
+      }, {
+        'id' => idea2.id,
+        'published_at' => idea2.published_at.strftime('%m/%d/%Y %H:%M:%S').to_s,
+        'point_field_for_focus_of_export' => { 'type' => 'Point', 'coordinates' => [3.3, 4.4] },
+        'field_for_text_question' => 'Text answer 2',
+        'user_data__author_id' => idea2.author.id,
+        'user_data__author_email' => idea2.author.email,
+        'user_data__author_name' => idea2.author_name,
+        'user_data__field_for_registration_question' => nil
+      })
     end
   end
 

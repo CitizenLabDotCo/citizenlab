@@ -16,9 +16,10 @@ const folderPublication: IAdminPublicationData = {
     ordering: 0,
     depth: 0,
     publication_status: 'published',
+    scheduled_status: null,
+    scheduled_at: null,
     visible_children_count: 0,
     publication_title_multiloc: {},
-    publication_description_multiloc: {},
     publication_description_preview_multiloc: {},
     publication_slug: 'folder_1',
     followers_count: 3,
@@ -46,7 +47,6 @@ const mockUserData: IUserData = {
     first_name: 'Stewie',
     last_name: 'McKenzie',
     locale: 'en',
-    slug: 'stewie-mckenzie',
     highest_role: 'admin',
     bio_multiloc: {},
     roles: [{ type: 'admin' }],
@@ -95,6 +95,7 @@ describe('ProjectFolderRow', () => {
             folderPublication.relationships.publication.data.id,
         },
       ];
+      mockUserData.attributes.highest_role = 'project_folder_moderator';
 
       render(<ProjectFolderRow {...props} />);
       const editButton = screen.getByTestId('folder-row-edit-button');
@@ -114,6 +115,7 @@ describe('ProjectFolderRow', () => {
       mockUserData.attributes.roles = [
         { type: 'project_folder_moderator', project_folder_id: 'testId' },
       ];
+      mockUserData.attributes.highest_role = 'project_folder_moderator';
       render(<ProjectFolderRow {...props} />);
 
       const editButton = within(
@@ -130,6 +132,7 @@ describe('ProjectFolderRow', () => {
             folderPublication.relationships.publication.data.id,
         },
       ];
+      mockUserData.attributes.highest_role = 'project_folder_moderator';
       render(<ProjectFolderRow {...props} />);
 
       const moreOptions = screen.queryByTestId('moreOptionsButton');

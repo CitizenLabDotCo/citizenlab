@@ -20,12 +20,20 @@
 module ContentBuilder
   class Layout < ApplicationRecord
     include Files::FileAttachable
-    TEXT_CRAFTJS_NODE_TYPES = %w[TextMultiloc AccordionMultiloc].freeze
+    # RichTextMultiloc is the "bridge" widget holding legacy WYSIWYG (Quill) HTML,
+    # both from the descriptions that were migrated onto the builder and from
+    # imports that still carry such HTML. Listing it here gives it the same HTML
+    # sanitization and text extraction as the native text widgets.
+    TEXT_CRAFTJS_NODE_TYPES = %w[TextMultiloc AccordionMultiloc RichTextMultiloc HtmlBlockMultiloc].freeze
+
+    HOMEPAGE_CODE = 'homepage'
 
     belongs_to :content_buildable, polymorphic: true, optional: true
+    has_many :query_snapshots, class_name: 'ContentBuilder::QuerySnapshot', dependent: :delete_all
 
     before_validation :swap_data_images, on: :create
     before_validation :set_craftjs_json, :sanitize_craftjs_json
+    after_save :sync_file_attachments
 
     validates :code, presence: true
     validate :validate_iframe_urls
@@ -60,14 +68,35 @@ module ContentBuilder
       end
     end
 
+    # Returns file IDs referenced by FileAttachment widgets in craftjs_json.
+    def referenced_file_ids
+      return [] if craftjs_json.blank?
+
+      craftjs_json.each_value.filter_map do |node|
+        node.dig('props', 'fileId') if file_attachment_widget?(node)
+      end
+    end
+
+    # Syncs file attachments based on fileIds referenced in craftjs_json.
+    # Creates new attachments for new fileIds and removes orphaned ones.
+    def sync_file_attachments
+      file_ids = referenced_file_ids
+      cleanup_orphaned_file_attachments(file_ids)
+      create_missing_file_attachments(file_ids)
+    end
+
     private
+
+    def file_attachment_widget?(node)
+      node.is_a?(Hash) && Craftjs::Query.resolved_name(node) == 'FileAttachment'
+    end
 
     def validate_iframe_urls
       url_starts = %w[http:// https://]
 
       LayoutService.new.select_craftjs_elements_for_types(craftjs_json, ['IframeMultiloc']).each do |elt|
         url = elt.dig 'props', 'url'
-        if url && url_starts.none? { |url_start| url.starts_with?(url_start) }
+        if url.present? && url_starts.none? { |url_start| url.starts_with?(url_start) }
           errors.add :craftjs_json, :iframe_url_invalid, url: url
         end
       end
@@ -78,7 +107,7 @@ module ContentBuilder
     end
 
     def set_craftjs_json
-      return if code != 'homepage' || craftjs_json.present?
+      return if code != HOMEPAGE_CODE || craftjs_json.present?
 
       craftjs_filepath = Rails.root.join('config/homepage/default_craftjs.json.erb')
       json_craftjs_str = ERB.new(File.read(craftjs_filepath)).result(binding)
@@ -87,9 +116,23 @@ module ContentBuilder
 
     # This ensures we process image data in a homepage layout created from the internal templates
     def swap_data_images
-      return if code != 'homepage' || craftjs_json.blank?
+      return if code != HOMEPAGE_CODE || craftjs_json.blank?
 
       self.craftjs_json = ContentBuilder::LayoutImageService.new.swap_data_images(craftjs_json)
+    end
+
+    def cleanup_orphaned_file_attachments(referenced_file_ids)
+      file_attachments.where.not(file_id: referenced_file_ids).destroy_all
+    end
+
+    def create_missing_file_attachments(file_ids)
+      # CraftJS state is not update when referenced files are deleted. As a result,
+      # there can be references to non-existing files.
+      existing_file_ids = ::Files::File.where(id: file_ids).pluck(:id)
+
+      existing_file_ids.each do |file_id|
+        file_attachments.find_or_create_by!(file_id: file_id)
+      end
     end
   end
 end

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+  <soapenv:Body>
+    <web:RegistreerInschrijvingResponse xmlns:web="http://webservice.registreerinschrijvingdienst-02_00.repertorium-02_00.vip.vlaanderen.be">
+      <Repliek>
+        <Context>
+          <Naam>RegistreerInschrijving</Naam>
+          <Versie>02.00.0000</Versie>
+          <Bericht>
+            <Type>ANTWOORD</Type>
+            <Tijdstip>
+              <Datum>2026-08-26</Datum>
+              <Tijd>10:15:07.100</Tijd>
+            </Tijdstip>
+            <Afzender>
+              <Identificatie>vip.vlaanderen.be</Identificatie>
+              <Naam>MagdaGateway</Naam>
+              <Referte>3f032342-860e-4aa6-a6eb-415be1f1c6c4</Referte>
+            </Afzender>
+            <Ontvanger>
+              <Identificatie>bornem.be/govocal/ipdc77332-aip</Identificatie>
+              <Referte>e8176ee5-0eda-430c-a9b8-abc32d3a23da</Referte>
+              <Hoedanigheid>ipdc77332</Hoedanigheid>
+            </Ontvanger>
+          </Bericht>
+        </Context>
+        <Antwoorden>
+          <Antwoord>
+            <Referte>e8176ee5-0eda-430c-a9b8-abc32d3a23da</Referte>
+            <Uitzonderingen>
+              <Uitzondering>
+                <Identificatie>20002</Identificatie>
+                <Oorsprong>MAGDA</Oorsprong>
+                <Type>FOUT</Type>
+                <Tijdstip>
+                  <Datum>2026-08-26</Datum>
+                  <Tijd>10:15:07.000</Tijd>
+                </Tijdstip>
+                <Diagnose>Het opgegeven INSZ nummer heeft een ongeldige structuur</Diagnose>
+              </Uitzondering>
+            </Uitzonderingen>
+            <Inhoud>
+              <Resultaat Beschrijving="Niet geslaagd">0</Resultaat>
+            </Inhoud>
+          </Antwoord>
+        </Antwoorden>
+      </Repliek>
+    </web:RegistreerInschrijvingResponse>
+  </soapenv:Body>
+</soapenv:Envelope>

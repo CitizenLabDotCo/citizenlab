@@ -30,12 +30,18 @@ describe DocumentAnnotation::DocumentAnnotationPhase do
         document_annotation_embed_url: 'https://anotherorg.konveio.net/node/5'
       )
       expect(pc).to be_valid
+
+      pc = build(
+        :document_annotation_phase,
+        document_annotation_embed_url: 'https://anotherorg.konveio.org/node/5'
+      )
+      expect(pc).to be_valid
     end
 
     it 'invalidates an invalid document_annotation_embed_url for konveio' do
       pc = build(
         :document_annotation_phase,
-        document_annotation_embed_url: 'https://citizenlab.konveio.org/node/5'
+        document_annotation_embed_url: 'https://citizenlab.konveio.gov/node/5'
       )
       expect(pc).to be_invalid
       pc = build(

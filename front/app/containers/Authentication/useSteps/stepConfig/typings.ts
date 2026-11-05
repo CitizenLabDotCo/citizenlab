@@ -4,27 +4,31 @@ export type Step =
   | 'success'
   | 'access-denied'
 
-  // old sign in flow
-  | 'sign-in:auth-providers'
-  | 'sign-in:email-password'
+  // pre-auth steps
+  | 'pre-auth:start'
+  | 'pre-auth:policies'
+  | 'pre-auth:phone-policies'
+  | 'pre-auth:password'
+  | 'pre-auth:sso-policies'
+  | 'pre-auth:unauthenticated-confirmation'
+  | 'pre-auth:unauthenticated-phone-confirmation'
 
-  // old sign up flow
-  | 'sign-up:auth-providers'
-  | 'sign-up:email-password'
-  | 'sign-up:invite'
+  // confirmation steps (code entry for email / phone)
+  | 'confirmation:reconfirm-email'
+  | 'confirmation:new_email'
+  | 'confirmation:merge-account'
+  | 'confirmation:reconfirm-phone'
+  | 'confirmation:new_phone'
 
-  // light flow
-  | 'light-flow:email'
-  | 'light-flow:email-policies'
-  | 'light-flow:sso-policies'
-  | 'light-flow:france-connect-login'
-  | 'light-flow:email-confirmation'
-  | 'light-flow:password'
+  // invite flow
+  | 'invite:email-password'
+  | 'invite:code'
+  | 'invite:taken'
 
   // missing data (if signed in already)
+  | 'missing-data:change-new-email'
+  | 'missing-data:new_phone'
   | 'missing-data:built-in'
-  | 'missing-data:email-confirmation'
-  | 'missing-data:change-email'
   | 'missing-data:verification'
   | 'missing-data:custom-fields'
 
@@ -35,13 +39,8 @@ export type Step =
   | 'verification-only'
   | 'verification-success'
 
-  // sso verification flow
-  | 'sso-verification:sso-providers'
-  | 'sso-verification:sso-providers-policies'
-  | 'sso-verification:email-password'
-
-  // invite taken flow
-  | 'taken-by-invite';
+  // post-participation flow (sign up after participation)
+  | 'post-participation:email';
 
 export interface BuiltInFieldsUpdate {
   first_name?: string;

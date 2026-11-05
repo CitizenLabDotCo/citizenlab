@@ -16,7 +16,7 @@ import {
 
 import {
   getTranslatedStringKey,
-  FormBuilderConfig,
+  ResolvedFormBuilderConfig,
 } from 'components/FormBuilder/utils';
 import CloseIconButton from 'components/UI/CloseIconButton';
 
@@ -33,7 +33,7 @@ import PrintSupportTooltip from './PrintSupportTooltip';
 interface Props {
   field: IFlatCustomFieldWithIndex;
   closeSettings: (triggerAutosave?: boolean) => void;
-  builderConfig: FormBuilderConfig;
+  builderConfig: ResolvedFormBuilderConfig;
 }
 
 const FormBuilderSettings = ({
@@ -62,10 +62,12 @@ const FormBuilderSettings = ({
       'page',
     ].includes(fieldType);
 
-    // For backwards compatibility, we only show the logic tab for multiselect/multiselect_image if they already have logic.
+    // For backwards compatibility (pre-2026), we only show the logic tab for multiselect/multiselect_image if they already have logic.
     const fieldHasLogic = field.logic.rules && field.logic.rules.length > 0;
     const isMultiselectWithLogic =
-      ['multiselect', 'multiselect_image'].includes(fieldType) && fieldHasLogic;
+      ['multiselect', 'multiselect_image'].includes(fieldType) &&
+      fieldHasLogic &&
+      field.created_at < '2026-01-18';
 
     const isFormEndPage = fieldType === 'page' && field.key === 'form_end';
 
@@ -152,7 +154,7 @@ const FormBuilderSettings = ({
         !builderConfig.isLogicEnabled || // TODO: Fix this the next time the file is edited.
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         (showTabbedSettings && currentTab === 'content')) && (
-        <ContentSettings field={field} />
+        <ContentSettings field={field} builderConfig={builderConfig} />
       )}
       {showTabbedSettings && currentTab === 'logic' && (
         <LogicSettings

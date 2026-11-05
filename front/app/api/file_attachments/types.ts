@@ -25,9 +25,7 @@ export type IFileAttachments = {
 export type IFileAttachmentData = {
   id: string;
   type: 'file_attachment';
-  attributes: {
-    position: number;
-  };
+  attributes: IFileAttachmentAttributes;
   relationships: {
     attachable: { data: IRelationship };
     file: { data: IRelationship };
@@ -45,18 +43,20 @@ export interface IAddFileAttachmentProperties {
   attachable_id: string;
 }
 
+interface IFileAttachmentAttributes {
+  position: number;
+  file_name: string;
+  file_size: number;
+  file_url: string;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface IFileAttachment {
   data: {
     type: 'file_attachment';
     id: string;
-    attributes: {
-      position: number;
-      file_name: string;
-      file_size: number;
-      file_url: string;
-      created_at: string;
-      updated_at: string;
-    };
+    attributes: IFileAttachmentAttributes;
     relationships: {
       attachable: { data: IRelationship };
       file: { data: IRelationship };

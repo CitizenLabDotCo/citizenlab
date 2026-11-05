@@ -2,16 +2,15 @@ import { ILinks, IRelationship, Multiloc } from 'typings';
 
 import {
   ActionDescriptor,
-  ActionDescriptorFutureEnabled,
-  ProjectDisabledReason,
-  ProjectCommentingDisabledReason,
-  ProjectDocumentAnnotationDisabledReason,
-  ProjectPollDisabledReason,
-  ProjectPostingDisabledReason,
-  ProjectReactingDisabledReason,
-  ProjectSurveyDisabledReason,
-  ProjectVotingDisabledReason,
-  ProjectVolunteeringDisabledReason,
+  AttendingEventDisabledReason,
+  PhaseCommentingDisabledReason,
+  PhaseDocumentAnnotationDisabledReason,
+  PhasePollDisabledReason,
+  PhasePostingDisabledReason,
+  PhaseReactingDisabledReason,
+  PhaseSurveyDisabledReason,
+  PhaseVotingDisabledReason,
+  PhaseVolunteeringDisabledReason,
 } from 'utils/actionDescriptors/types';
 import { Keys } from 'utils/cl-react-query/types';
 
@@ -28,7 +27,8 @@ export type ProjectsKeys = Keys<typeof projectsKeys>;
 
 // Misc
 type Sort = 'new' | '-new' | 'trending' | '-trending' | 'popular' | '-popular';
-export type PublicationStatus = 'draft' | 'published' | 'archived';
+export const publicationStatuses = ['draft', 'published', 'archived'] as const;
+export type PublicationStatus = (typeof publicationStatuses)[number];
 
 interface ProjectHeaderBgImageSizes {
   large: string | null;
@@ -69,9 +69,10 @@ export interface IProject {
   data: IProjectData;
 }
 
+export type ProjectSetupStep = 'settings' | 'share' | 'page';
+
 export interface IProjectAttributes {
   title_multiloc: Multiloc;
-  description_multiloc: Multiloc;
   description_preview_multiloc: Multiloc;
   slug: string;
   preview_token: string;
@@ -87,32 +88,42 @@ export interface IProjectAttributes {
   baskets_count: number;
   votes_count: number;
   visible_to: Visibility;
-  timeline_active?: 'past' | 'present' | 'future' | null;
+  participation_status?: 'active' | 'upcoming' | 'ended' | null;
   participants_count: number;
   internal_role: 'open_idea_box' | null;
   publication_status: PublicationStatus;
+  scheduled_status?: PublicationStatus | null;
+  scheduled_at?: string | null;
   include_all_areas: boolean;
   folder_id?: string | null;
-  action_descriptors: ActionDescriptors;
-  uses_content_builder: boolean;
+  action_descriptors: ProjectActionDescriptors;
   listed: boolean;
+  live_auto_input_topics_enabled: boolean;
+  publication_email_enabled: boolean;
+  global_publication_email_enabled: boolean;
+  space_id?: string | null;
+  // Only serialized for users who can moderate the project.
+  completed_setup_steps?: ProjectSetupStep[];
 }
 
-export type ActionDescriptors = {
-  posting_idea: ActionDescriptorFutureEnabled<ProjectPostingDisabledReason>;
-  commenting_idea: ActionDescriptor<ProjectCommentingDisabledReason>;
+export type PhaseActionDescriptors = {
+  posting_idea: ActionDescriptor<PhasePostingDisabledReason>;
+  commenting_idea: ActionDescriptor<PhaseCommentingDisabledReason>;
   // Same disabled reasons as commenting_idea at time of writing
-  comment_reacting_idea: ActionDescriptor<ProjectCommentingDisabledReason>;
-  reacting_idea: ActionDescriptor<ProjectReactingDisabledReason> & {
-    up: ActionDescriptor<ProjectReactingDisabledReason>;
-    down: ActionDescriptor<ProjectReactingDisabledReason>;
+  comment_reacting_idea: ActionDescriptor<PhaseCommentingDisabledReason>;
+  reacting_idea: ActionDescriptor<PhaseReactingDisabledReason> & {
+    up: ActionDescriptor<PhaseReactingDisabledReason>;
+    down: ActionDescriptor<PhaseReactingDisabledReason>;
   };
-  taking_survey: ActionDescriptor<ProjectSurveyDisabledReason>;
-  taking_poll: ActionDescriptor<ProjectPollDisabledReason>;
-  annotating_document: ActionDescriptor<ProjectDocumentAnnotationDisabledReason>;
-  voting: ActionDescriptor<ProjectVotingDisabledReason>;
-  attending_event: ActionDescriptor<ProjectDisabledReason>;
-  volunteering: ActionDescriptor<ProjectVolunteeringDisabledReason>;
+  taking_survey: ActionDescriptor<PhaseSurveyDisabledReason>;
+  taking_poll: ActionDescriptor<PhasePollDisabledReason>;
+  annotating_document: ActionDescriptor<PhaseDocumentAnnotationDisabledReason>;
+  voting: ActionDescriptor<PhaseVotingDisabledReason>;
+  volunteering: ActionDescriptor<PhaseVolunteeringDisabledReason>;
+};
+
+export type ProjectActionDescriptors = {
+  attending_event: ActionDescriptor<AttendingEventDisabledReason>;
 };
 
 export interface IProjectData {
@@ -129,10 +140,13 @@ export interface IProjectData {
     avatars?: {
       data?: IRelationship[];
     };
-    topics: {
+    global_topics: {
       data: IRelationship[];
     };
     current_phase?: {
+      data: IRelationship | null;
+    };
+    highlighted_phase?: {
       data: IRelationship | null;
     };
     user_basket?: {
@@ -147,14 +161,19 @@ export interface IProjectData {
     user_follower: {
       data: IRelationship | null;
     };
+    // Only present while the llm_reporting feature is on.
+    report?: {
+      data: IRelationship | null;
+    };
     permissions?: {
       data: IRelationship[];
     };
   };
 }
 
-export type Visibility = 'public' | 'groups' | 'admins';
-type PresentationMode = 'map' | 'card';
+export const visibilities = ['public', 'groups', 'admins'] as const;
+export type Visibility = (typeof visibilities)[number];
+type PresentationMode = 'map' | 'card' | 'feed';
 
 interface ProjectHeaderBgImageSizes {
   large: string | null;
@@ -172,8 +191,8 @@ export interface IUpdatedProjectProperties {
   // This oddity needs to be dealt with
   projectId?: string;
   header_bg?: string | ProjectHeaderBgImageSizes | null;
+  header_bg_alt_text_multiloc?: Multiloc;
   title_multiloc?: Multiloc;
-  description_multiloc?: Multiloc;
   description_preview_multiloc?: Multiloc;
   area_ids?: string[];
   visible_to?: Visibility;
@@ -189,6 +208,8 @@ export interface IUpdatedProjectProperties {
   presentation_mode?: PresentationMode | null;
   admin_publication_attributes?: {
     publication_status?: PublicationStatus;
+    scheduled_status?: PublicationStatus | null;
+    scheduled_at?: string | null;
   };
   publication_status?: PublicationStatus;
   voting_min_total?: number | null;
@@ -201,8 +222,13 @@ export interface IUpdatedProjectProperties {
   ideas_order?: IdeaSortMethod;
   input_term?: InputTerm;
   slug?: string;
-  topic_ids?: string[];
+  global_topic_ids?: string[];
   include_all_areas?: boolean;
   folder_id?: string | null;
   listed?: boolean;
+  live_auto_input_topics_enabled?: boolean;
+  space_id?: string | null;
+  scheduled_at?: string | null;
+  publication_email_enabled?: boolean;
+  completed_setup_steps?: ProjectSetupStep[];
 }

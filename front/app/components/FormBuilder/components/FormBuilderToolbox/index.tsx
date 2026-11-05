@@ -1,18 +1,12 @@
 import React from 'react';
 
-import {
-  Box,
-  IconTooltip,
-  Text,
-  Title,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import { Box, Title, colors } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
-import { FormBuilderConfig } from 'components/FormBuilder/utils';
+import { ResolvedFormBuilderConfig } from 'components/FormBuilder/utils';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
@@ -26,21 +20,14 @@ import LayoutFields from './LayoutFields';
 import ToolboxItem from './ToolboxItem';
 
 interface FormBuilderToolboxProps {
-  builderConfig: FormBuilderConfig;
+  builderConfig: ResolvedFormBuilderConfig;
 }
 
 const FormBuilderToolbox = ({ builderConfig }: FormBuilderToolboxProps) => {
-  const isInputFormCustomFieldsFlagEnabled = useFeatureFlag({
-    name: 'input_form_custom_fields',
-  });
-
   const isFormMappingEnabled = useFeatureFlag({
     name: 'form_mapping',
   });
 
-  const isCustomFieldsDisabled =
-    !isInputFormCustomFieldsFlagEnabled &&
-    !builderConfig.alwaysShowCustomFields;
   const { formatMessage } = useIntl();
   const locale = useLocale();
 
@@ -83,25 +70,6 @@ const FormBuilderToolbox = ({ builderConfig }: FormBuilderToolboxProps) => {
           >
             <FormattedMessage {...customToolBoxTitle} />
           </Title>
-          {!builderConfig.alwaysShowCustomFields && (
-            <IconTooltip
-              icon={isCustomFieldsDisabled ? 'info-outline' : 'info-solid'}
-              iconColor={
-                isCustomFieldsDisabled ? colors.coolGrey300 : colors.coolGrey500
-              }
-              placement="right-start"
-              ml="4px"
-              content={
-                <Box>
-                  <Text my="4px" color="white" fontSize="s">
-                    {isCustomFieldsDisabled
-                      ? formatMessage(messages.disabledCustomFieldsTooltip)
-                      : formatMessage(messages.fieldIsNotVisibleTooltip)}
-                  </Text>
-                </Box>
-              }
-            />
-          )}
         </Box>
         <Drop id="toolbox" type={fieldAreaDNDType} isDropDisabled={true}>
           <ToolboxItem
@@ -111,7 +79,6 @@ const FormBuilderToolbox = ({ builderConfig }: FormBuilderToolboxProps) => {
             data-cy="e2e-short-answer"
             fieldsToInclude={builderConfig.toolboxFieldsToInclude}
             inputType="text"
-            disabled={isCustomFieldsDisabled}
             showAIUpsell
             dragId="toolbox_text"
           />
@@ -122,7 +89,6 @@ const FormBuilderToolbox = ({ builderConfig }: FormBuilderToolboxProps) => {
             data-cy="e2e-long-answer"
             fieldsToInclude={builderConfig.toolboxFieldsToInclude}
             inputType="multiline_text"
-            disabled={isCustomFieldsDisabled}
             showAIUpsell
             dragId="toolbox_multiline_text"
           />
@@ -133,7 +99,6 @@ const FormBuilderToolbox = ({ builderConfig }: FormBuilderToolboxProps) => {
             data-cy="e2e-single-choice"
             fieldsToInclude={builderConfig.toolboxFieldsToInclude}
             inputType="select"
-            disabled={isCustomFieldsDisabled}
             dragId="toolbox_select"
           />
           <ToolboxItem
@@ -143,7 +108,6 @@ const FormBuilderToolbox = ({ builderConfig }: FormBuilderToolboxProps) => {
             data-cy="e2e-multiple-choice"
             fieldsToInclude={builderConfig.toolboxFieldsToInclude}
             inputType="multiselect"
-            disabled={isCustomFieldsDisabled}
             dragId="toolbox_multiselect"
           />
           <ToolboxItem
@@ -153,7 +117,6 @@ const FormBuilderToolbox = ({ builderConfig }: FormBuilderToolboxProps) => {
             data-cy="e2e-image-choice"
             fieldsToInclude={builderConfig.toolboxFieldsToInclude}
             inputType="multiselect_image"
-            disabled={isCustomFieldsDisabled}
             dragId="toolbox_multiselect_image"
           />
           <ToolboxItem
@@ -163,7 +126,6 @@ const FormBuilderToolbox = ({ builderConfig }: FormBuilderToolboxProps) => {
             data-cy="e2e-linear-scale"
             fieldsToInclude={builderConfig.toolboxFieldsToInclude}
             inputType="linear_scale"
-            disabled={isCustomFieldsDisabled}
             dragId="toolbox_linear_scale"
           />
           <ToolboxItem
@@ -173,7 +135,6 @@ const FormBuilderToolbox = ({ builderConfig }: FormBuilderToolboxProps) => {
             data-cy="e2e-ranking"
             fieldsToInclude={builderConfig.toolboxFieldsToInclude}
             inputType="ranking"
-            disabled={isCustomFieldsDisabled}
             dragId="toolbox_ranking"
           />
           <ToolboxItem
@@ -183,7 +144,6 @@ const FormBuilderToolbox = ({ builderConfig }: FormBuilderToolboxProps) => {
             data-cy="e2e-rating"
             fieldsToInclude={builderConfig.toolboxFieldsToInclude}
             inputType="rating"
-            disabled={isCustomFieldsDisabled}
             dragId="toolbox_rating"
           />
           <ToolboxItem
@@ -193,7 +153,6 @@ const FormBuilderToolbox = ({ builderConfig }: FormBuilderToolboxProps) => {
             data-cy="e2e-sentiment"
             fieldsToInclude={builderConfig.toolboxFieldsToInclude}
             inputType="sentiment_linear_scale"
-            disabled={isCustomFieldsDisabled}
             dragId="toolbox_sentiment_linear_scale"
           />
           <ToolboxItem
@@ -203,7 +162,6 @@ const FormBuilderToolbox = ({ builderConfig }: FormBuilderToolboxProps) => {
             data-cy="e2e-matrix"
             fieldsToInclude={builderConfig.toolboxFieldsToInclude}
             inputType="matrix_linear_scale"
-            disabled={isCustomFieldsDisabled}
             dragId="toolbox_matrix_linear_scale"
           />
 
@@ -214,7 +172,6 @@ const FormBuilderToolbox = ({ builderConfig }: FormBuilderToolboxProps) => {
             data-cy="e2e-number-field"
             fieldsToInclude={builderConfig.toolboxFieldsToInclude}
             inputType="number"
-            disabled={isCustomFieldsDisabled}
             dragId="toolbox_number"
           />
           <ToolboxItem
@@ -224,7 +181,6 @@ const FormBuilderToolbox = ({ builderConfig }: FormBuilderToolboxProps) => {
             data-cy="e2e-file-upload-field"
             fieldsToInclude={builderConfig.toolboxFieldsToInclude}
             inputType="file_upload"
-            disabled={isCustomFieldsDisabled}
             dragId="toolbox_file_upload"
           />
         </Drop>
@@ -279,6 +235,17 @@ const FormBuilderToolbox = ({ builderConfig }: FormBuilderToolboxProps) => {
                   />
                   <ToolboxItem
                     dragIndex={3}
+                    icon="dropPin"
+                    label={formatMessage(messages.dropMultiplePins)}
+                    data-cy="e2e-multipoint-field"
+                    fieldsToInclude={builderConfig.toolboxFieldsToInclude}
+                    inputType="multipoint"
+                    disabled={!isFormMappingEnabled}
+                    disabledTooltipMessage={messages.mappingNotInCurrentLicense}
+                    dragId="toolbox_multipoint"
+                  />
+                  <ToolboxItem
+                    dragIndex={4}
                     icon="upload-file"
                     label={formatMessage(messages.shapefileUpload)}
                     data-cy="e2e-file-shapefile-field"

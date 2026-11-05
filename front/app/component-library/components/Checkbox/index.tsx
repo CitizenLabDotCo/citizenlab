@@ -3,7 +3,7 @@ import React from 'react';
 import { hideVisually } from 'polished';
 import styled from 'styled-components';
 
-import { Color, defaultOutline } from '../../utils/styleUtils';
+import { Color, focusRing } from '../../utils/styleUtils';
 import testEnv from '../../utils/testUtils/testEnv';
 import Box, { BoxMarginProps, BoxPaddingProps } from '../Box';
 import Icon from '../Icon';
@@ -67,6 +67,10 @@ const StyledCheckbox = styled.div<{
   }
   `}
 
+  &.disabled {
+    opacity: 0.5;
+  }
+
   width: ${({ size }) => parseInt(size, 10)}px;
   height: ${({ size }) => parseInt(size, 10)}px;
   flex: 0 0 ${({ size }) => parseInt(size, 10)}px;
@@ -78,7 +82,7 @@ const StyledCheckbox = styled.div<{
   transition: all 120ms ease-out;
 
   ${HiddenCheckbox}.focus-visible + & {
-    ${defaultOutline};
+    ${focusRing}
   }
 `;
 
@@ -92,12 +96,17 @@ export type CheckboxProps = {
   stopLabelPropagation?: boolean;
   checkedColor?: Color;
   usePrimaryBorder?: boolean;
+  required?: boolean;
+  setRef?: (arg: HTMLInputElement | null) => void;
+  ariaInvalid?: boolean;
+  ariaDescribedBy?: string;
 };
 
 type Props = {
   id?: string;
   dataTestId?: string;
   tabIndex?: number;
+  ariaLabel?: string;
 } & CheckboxProps &
   BoxPaddingProps &
   BoxMarginProps;
@@ -118,7 +127,12 @@ const Checkbox = ({
   checkedColor,
   usePrimaryBorder = false,
   name,
+  required,
   tabIndex = 0,
+  setRef,
+  ariaInvalid,
+  ariaDescribedBy,
+  ariaLabel,
   ...boxProps
 }: Props) => {
   const handleOnCheckboxClick = (event: React.MouseEvent) => {
@@ -141,6 +155,11 @@ const Checkbox = ({
         disabled={disabled}
         tabIndex={tabIndex}
         name={name}
+        required={required}
+        ref={setRef}
+        aria-invalid={ariaInvalid}
+        aria-describedby={ariaDescribedBy}
+        aria-label={ariaLabel}
       />
       <StyledCheckbox
         data-testid={dataTestId || testEnv('check-mark-background')}

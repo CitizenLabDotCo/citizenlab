@@ -1,40 +1,43 @@
 import React, { lazy } from 'react';
 
-import moduleConfiguration from 'modules';
-
 import PageLoading from 'components/UI/PageLoading';
 
-import { AdminRoute } from '../routes';
+import { parseModuleRoutes, type RouteConfiguration } from 'utils/moduleUtils';
+import { createRoute } from 'utils/router';
+
+import { adminRoute } from '../routes';
 
 const AdminIdeasContainer = lazy(() => import('./index'));
 const AdminIdeasAll = lazy(() => import('./all'));
 
-export enum ideaRoutes {
-  ideas = 'ideas',
-  ideaId = `:ideaId`,
-}
-
-export type ideaRouteTypes =
-  | AdminRoute<ideaRoutes.ideas>
-  | AdminRoute<`${ideaRoutes.ideas}/${string}`>;
-
-export default () => ({
-  path: ideaRoutes.ideas,
-  element: (
+const ideasRoute = createRoute({
+  getParentRoute: () => adminRoute,
+  path: 'ideas',
+  component: () => (
     <PageLoading>
       <AdminIdeasContainer />
     </PageLoading>
   ),
-  children: [
-    {
-      index: true,
-      element: (
-        <PageLoading>
-          <AdminIdeasAll />
-        </PageLoading>
-      ),
-    },
-
-    ...moduleConfiguration.routes['admin.ideas'],
-  ],
 });
+
+const ideasIndexRoute = createRoute({
+  getParentRoute: () => ideasRoute,
+  path: '/',
+  component: () => (
+    <PageLoading>
+      <AdminIdeasAll />
+    </PageLoading>
+  ),
+});
+
+const createAdminIdeasRoutes = (moduleRoutes: RouteConfiguration[] = []) => {
+  return ideasRoute.addChildren([
+    ideasIndexRoute,
+    // Cast as never[] so dynamic module routes (which have `string` paths)
+    // don't widen the route tree type and break TanStack Router's type inference.
+    // The routes still work at runtime; they're just invisible to the type system.
+    ...(parseModuleRoutes(moduleRoutes, ideasRoute) as never[]),
+  ]);
+};
+
+export default createAdminIdeasRoutes;

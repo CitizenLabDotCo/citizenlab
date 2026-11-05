@@ -27,6 +27,8 @@
 #  basket_id                     :uuid
 #  cosponsorship_id              :uuid
 #  project_review_id             :uuid
+#  space_id                      :uuid
+#  report_id                     :uuid
 #
 # Indexes
 #
@@ -43,6 +45,8 @@
 #  index_notifications_on_project_review_id              (project_review_id)
 #  index_notifications_on_recipient_id                   (recipient_id)
 #  index_notifications_on_recipient_id_and_read_at       (recipient_id,read_at)
+#  index_notifications_on_report_id                      (report_id)
+#  index_notifications_on_space_id                       (space_id)
 #  index_notifications_on_spam_report_id                 (spam_report_id)
 #
 # Foreign Keys
@@ -61,6 +65,8 @@
 #  fk_rails_...  (project_id => projects.id)
 #  fk_rails_...  (project_review_id => project_reviews.id)
 #  fk_rails_...  (recipient_id => users.id)
+#  fk_rails_...  (report_id => report_builder_reports.id)
+#  fk_rails_...  (space_id => spaces.id)
 #  fk_rails_...  (spam_report_id => spam_reports.id)
 #
 module Notifications
@@ -79,5 +85,27 @@ module Notifications
     def self.make_notifications_on(_activity)
       []
     end
+
+    # Notify on the first report, then only when the flag was re-opened or the
+    # content was edited since. Repeat reports are recorded, not mailed.
+    def self.notify?(flaggable, last_notified_at)
+      return true if last_notified_at.blank?
+
+      flag_reopened_since?(flaggable, last_notified_at) || edited_since?(flaggable, last_notified_at)
+    end
+
+    # `introduce_flag!` clears `deleted_at` on re-open. Read the record, not its
+    # activity: the activity is logged by a job that races this one.
+    def self.flag_reopened_since?(flaggable, time)
+      flag = flaggable.try(:inappropriate_content_flag)
+      flag.present? && flag.deleted_at.nil? && flag.updated_at > time
+    end
+    private_class_method :flag_reopened_since?
+
+    # Not `flaggable.updated_at`: reaction and comment counters touch it.
+    def self.edited_since?(flaggable, time)
+      Activity.where(item: flaggable, action: 'changed').exists?(['acted_at > ?', time])
+    end
+    private_class_method :edited_since?
   end
 end

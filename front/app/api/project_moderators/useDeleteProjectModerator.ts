@@ -11,13 +11,13 @@ import projectModeratorsKeys from './keys';
 
 const deleteModerator = ({
   projectId,
-  id,
+  userId,
 }: {
   projectId: string;
-  id: string;
+  userId: string;
 }) =>
   fetcher({
-    path: `/projects/${projectId}/moderators/${id}`,
+    path: `/projects/${projectId}/moderators/${userId}`,
     action: 'delete',
   });
 

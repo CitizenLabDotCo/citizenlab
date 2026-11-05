@@ -6,6 +6,7 @@ if [ $# -ne 1 ]; then
 fi
 
 version="$1"
+
 repository="https://github.com/lastpass/lastpass-cli.git"
 
 # Clone the LastPass CLI repository with a shallow clone

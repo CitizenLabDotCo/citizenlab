@@ -4,7 +4,6 @@ import moment = require('moment');
 describe('Proposal edit page', () => {
   const projectTitle = randomString();
   const projectDescriptionPreview = randomString();
-  const projectDescription = randomString();
   const oldTitle = randomString(40);
   const newTitle = randomString(40);
   const ideaContent = randomString(60);
@@ -30,7 +29,6 @@ describe('Proposal edit page', () => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     }).then((project) => {
       projectId = project.body.data.id;
@@ -50,7 +48,7 @@ describe('Proposal edit page', () => {
           // Create a proposal with location
           return cy
             .apiCreateIdea({
-              projectId,
+              phaseId,
               ideaTitle: oldTitle,
               ideaContent: ideaContent,
               locationGeoJSON,
@@ -76,6 +74,8 @@ describe('Proposal edit page', () => {
 
     // Edit input form
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/form/edit`);
+    // A proposal has been published, so the builder warns about existing submissions
+    cy.get('#e2e-warning-notice').should('exist');
     // Delete the Details page
     cy.dataCy('e2e-form-fields')
       .contains('Details')
@@ -98,9 +98,17 @@ describe('Proposal edit page', () => {
       force: true,
       delay: 0,
     });
-    // Save the form
+    // Save the form and wait for the update to actually persist before
+    // navigating away. With only a fixed wait, the next cy.visit can abort the
+    // in-flight save request, so the Location-field deletion is lost and the
+    // location map still renders on the idea page (the flake this asserts against).
+    cy.intercept('PATCH', `**/phases/${phaseId}/custom_fields/update_all`).as(
+      'saveForm'
+    );
     cy.get('form').submit();
-    cy.wait(1000);
+    cy.wait('@saveForm')
+      .its('response.statusCode')
+      .should('be.oneOf', [200, 201]);
 
     // Edit proposal
     cy.visit(`/ideas/edit/${inputId}`);
@@ -135,14 +143,21 @@ describe('Proposal edit page', () => {
     cy.get('.e2e-topics-picker').should('exist');
     // Answer the extra field
     cy.contains(extraFieldTitle).should('exist');
-    cy.get(`*[id^="${extraFieldTitle}"]`).type(extraFieldAnswer, {
-      force: true,
-    });
+    cy.get(`*[id^="${extraFieldTitle}"]:not([id$="-label"])`).type(
+      extraFieldAnswer,
+      {
+        force: true,
+      }
+    );
+
+    cy.wait(1000);
+    cy.intercept('PATCH', `**/ideas/${inputId}**`).as('patchInput');
 
     // Submit
     cy.dataCy('e2e-submit-form').click();
-    cy.get('#e2e-accept-disclaimer').click();
     cy.wait(1000);
+    cy.get('#e2e-accept-disclaimer').click();
+    cy.wait('@patchInput');
 
     // Check new values
     cy.visit(`/ideas/${inputSlug}`);

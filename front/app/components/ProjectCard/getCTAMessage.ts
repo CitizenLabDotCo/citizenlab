@@ -2,7 +2,7 @@ import { FormatMessage } from 'typings';
 
 import { IPhaseData } from 'api/phases/types';
 import { PhaseMiniData } from 'api/phases_mini/types';
-import { ActionDescriptors } from 'api/projects/types';
+import { PhaseActionDescriptors } from 'api/projects/types';
 
 import { Localize } from 'hooks/useLocalize';
 
@@ -12,7 +12,7 @@ import messages from './messages';
 
 interface Params {
   phase: IPhaseData | PhaseMiniData;
-  actionDescriptors: ActionDescriptors;
+  actionDescriptors: PhaseActionDescriptors;
   formatMessage: FormatMessage;
   localize: Localize;
   hasPublicReport: boolean;
@@ -70,6 +70,13 @@ const getCTAMessage = ({
           initiative: messages.submitYourInitiative,
           proposal: messages.submitYourProposal,
           petition: messages.submitYourPetition,
+          comment: messages.submitYourComment,
+          response: messages.submitYourResponse,
+          suggestion: messages.submitYourSuggestion,
+          topic: messages.submitYourTopic,
+          post: messages.submitYourPost,
+          story: messages.submitYourStory,
+          observation: messages.submitYourObservation,
         })
       );
     } else if (canReact) {
@@ -83,11 +90,18 @@ const getCTAMessage = ({
           option: messages.viewTheOptions,
           project: messages.viewTheProjects,
           question: messages.viewTheQuestions,
-          issue: messages.viewTheIssues,
+          issue: messages.viewTheIssues1,
           contribution: messages.viewTheContributions,
           proposal: messages.viewTheProposals,
           initiative: messages.viewTheInitiatives,
           petition: messages.viewThePetitions,
+          comment: messages.viewTheComments,
+          response: messages.viewTheResponses,
+          suggestion: messages.viewTheSuggestions,
+          topic: messages.viewTheTopics,
+          post: messages.viewThePosts,
+          story: messages.viewTheStories,
+          observation: messages.viewTheObservations,
         })
       );
     }

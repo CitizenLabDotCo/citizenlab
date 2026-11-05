@@ -2,6 +2,7 @@
 
 AdminApi::Engine.routes.draw do
   resources :tenants do
+    get :by_host, on: :collection
     get :settings_schema, on: :collection
     get :style_schema, on: :collection
     get :templates, on: :collection
@@ -9,6 +10,7 @@ AdminApi::Engine.routes.draw do
   end
 
   resources :projects, only: [:index] do
+    get :widget_projects, on: :collection
     get :template_export, on: :member
     post :template_import, on: :collection
     resources :phases, only: [:index]
@@ -18,7 +20,8 @@ AdminApi::Engine.routes.draw do
 
   resources :users, only: %i[index create update show] do
     get :by_email, on: :collection
-    delete :bulk_delete_by_emails, on: :collection
+    get :jwt_token, on: :member
+    delete :bulk_delete_by_emails_or_ids, on: :collection
   end
 
   resources :jobs, only: [:show]
@@ -27,7 +30,7 @@ AdminApi::Engine.routes.draw do
 
   resources :invites, only: [:create]
 
-  resources :ideas, only: [:show]
+  resources :ideas, only: %i[index show]
 
   post '/graphql', to: 'graphql#execute'
 end

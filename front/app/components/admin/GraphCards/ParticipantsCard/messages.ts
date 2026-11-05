@@ -5,6 +5,10 @@ export default defineMessages({
     id: 'app.modules.commercial.analytics.admin.components.ActiveUsersCard.participants',
     defaultMessage: 'Participants',
   },
+  visitors: {
+    id: 'app.modules.commercial.analytics.admin.components.participants.visitors',
+    defaultMessage: 'Visitors',
+  },
   totalParticipants: {
     id: 'app.modules.commercial.analytics.admin.components.ActiveUsersCard.totalParticipants',
     defaultMessage: 'Total participants',

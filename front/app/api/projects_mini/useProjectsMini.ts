@@ -1,4 +1,4 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, InfiniteData } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
@@ -25,8 +25,9 @@ const useProjectsMini = (
   return useInfiniteQuery<
     MiniProjects,
     CLErrors,
-    MiniProjects,
-    MiniProjectsKeys
+    InfiniteData<MiniProjects>,
+    MiniProjectsKeys,
+    number
   >({
     queryKey: miniProjectsKeys.list(queryParams),
     queryFn: ({ pageParam }) => {
@@ -35,6 +36,7 @@ const useProjectsMini = (
         'page[number]': pageParam,
       });
     },
+    initialPageParam: 1,
     getNextPageParam: (lastPage) => {
       const hasNextPage = lastPage.links.next;
       const pageNumber = getPageNumberFromUrl(lastPage.links.self);

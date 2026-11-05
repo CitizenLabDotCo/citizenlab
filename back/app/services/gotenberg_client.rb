@@ -1,11 +1,31 @@
 # frozen_string_literal: true
 
 class GotenbergClient
-  class FileTypeUnsupportedError < StandardError; end
-  class GotenbergServiceUnavailableError < StandardError; end
+  # Web-request callers must fail fast (not pin Puma workers); only background
+  # jobs pass JOB_TIMEOUT_SECONDS. It sits slightly above Gotenberg's
+  # --api-timeout of 600s (see docker-compose.yml) so that when a render takes
+  # too long we get Gotenberg's 503 rather than a client-side timeout.
+  DEFAULT_TIMEOUT_SECONDS = 60
+  JOB_TIMEOUT_SECONDS = 630
+  OPEN_TIMEOUT_SECONDS = 10
 
-  def initialize
-    @api_url = ENV.fetch('GOTENBURG_PDF_URL', 'http://gotenberg:3000')
+  class Error < StandardError; end
+  class FileTypeUnsupportedError < Error; end
+  class GotenbergServiceUnavailableError < Error; end
+
+  class HttpError < Error
+    attr_reader :status, :body
+
+    def initialize(status, body)
+      @status = status
+      @body = body
+      super("Gotenberg responded with #{status}: #{body.truncate(200)}")
+    end
+  end
+
+  def initialize(timeout: DEFAULT_TIMEOUT_SECONDS)
+    @api_url = ENV.fetch('GOTENBERG_PDF_URL', 'http://gotenberg:3000')
+    @timeout = timeout
   end
 
   # Use Gotenberg web service (separate docker container) to render html to PDF
@@ -24,11 +44,9 @@ class GotenbergClient
     }
     url = "#{@api_url}/forms/chromium/convert/html"
 
-    conn = Faraday.new(url) do |f|
-      f.request :multipart, flat_encode: true
-      f.adapter :net_http
-    end
+    conn = connection(url)
     response = conn.post(url, payload)
+    raise_if_error!(response)
 
     output_pdf = Tempfile.new(['gotenberg', '.pdf'])
     output_pdf.binmode
@@ -47,12 +65,10 @@ class GotenbergClient
       'files' => Faraday::UploadIO.new(file, content_type, file_name)
     }
 
-    conn = Faraday.new(url) do |f|
-      f.request :multipart, flat_encode: true
-      f.adapter :net_http
-    end
+    conn = connection(url)
 
     response = conn.post(url, payload)
+    raise_if_error!(response)
 
     output_pdf = Tempfile.new([file_name, '.pdf'])
     output_pdf.binmode
@@ -74,6 +90,21 @@ class GotenbergClient
   end
 
   private
+
+  def connection(url)
+    Faraday.new(url) do |f|
+      f.request :multipart, flat_encode: true
+      f.options.timeout = @timeout
+      f.options.open_timeout = OPEN_TIMEOUT_SECONDS
+      f.adapter :net_http
+    end
+  end
+
+  def raise_if_error!(response)
+    return if response.success?
+
+    raise HttpError.new(response.status, response.body)
+  end
 
   # Is the Gotenberg service up and running?
   def up?

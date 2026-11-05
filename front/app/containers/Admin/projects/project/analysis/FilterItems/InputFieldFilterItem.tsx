@@ -6,7 +6,6 @@ import {
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
 
 import useAnalysis from 'api/analyses/useAnalysis';
 import useIdeaCustomField from 'api/idea_custom_fields/useIdeaCustomField';
@@ -25,6 +24,7 @@ type Props = {
   filterValue: any;
   isEditable: boolean;
   predicate: '<' | '>' | '=';
+  analysisId: string;
 };
 
 const InputFieldFilterItem = ({
@@ -33,9 +33,9 @@ const InputFieldFilterItem = ({
   filterValue,
   isEditable = true,
   predicate,
+  analysisId,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const { analysisId } = useParams() as { analysisId: string };
   const { data: analysis } = useAnalysis(analysisId);
   // TODO: Fix this the next time the file is edited.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -77,14 +77,13 @@ const InputFieldFilterItem = ({
           customField.data.attributes.input_type !== 'multiselect' &&
           customField.data.attributes.input_type !== 'multiselect_image' &&
           filterValue.map((filterItem, index) => (
-            <>
+            <React.Fragment key={filterItem}>
               {index !== 0 && ', '}
               <ShortFieldValue
-                key={filterItem}
                 customField={customField}
                 rawValue={filterItem}
               />
-            </>
+            </React.Fragment>
           ))}
         {(!Array.isArray(filterValue) ||
           customField.data.attributes.input_type === 'multiselect' ||

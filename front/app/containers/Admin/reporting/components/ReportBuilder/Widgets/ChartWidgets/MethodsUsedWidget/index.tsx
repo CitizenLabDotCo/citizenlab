@@ -7,9 +7,19 @@ import messages from './messages';
 import MethodsUsedCard from './MethodsUsedCard';
 import { Props } from './typings';
 
-const MethodsUsedWidget = ({ title, ...props }: Props) => {
+const MethodsUsedWidget = ({
+  title,
+  ariaLabel,
+  description,
+  ...props
+}: Props) => {
   return (
-    <Card title={title} pagebreak>
+    <Card
+      title={title}
+      ariaLabel={ariaLabel}
+      description={description}
+      pagebreak
+    >
       <MethodsUsedCard {...props} />
     </Card>
   );
@@ -22,6 +32,7 @@ MethodsUsedWidget.craft = {
     endAt: undefined,
     compareStartAt: undefined,
     compareEndAt: undefined,
+    projectPublicationStatus: undefined,
   },
   related: {
     settings: ChartWidgetSettings,

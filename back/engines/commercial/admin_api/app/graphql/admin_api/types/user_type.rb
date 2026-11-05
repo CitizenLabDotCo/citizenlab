@@ -25,7 +25,6 @@ module AdminApi
     field :first_name, String, null: true
     field :last_name, String, null: true
     field :email, String, null: true
-    field :slug, String, null: true
     field :locale, String, null: true
     field :avatar, UserAvatar, null: true
 

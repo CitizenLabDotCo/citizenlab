@@ -4,7 +4,7 @@ import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
 
 import useInstanceId from '../../hooks/useInstanceId';
-import { isRtl } from '../../utils/styleUtils';
+import { focusRing, isRtl } from '../../utils/styleUtils';
 import Box, { BoxProps } from '../Box';
 import Icon from '../Icon';
 import Title, { TitleProps } from '../Title';
@@ -14,6 +14,7 @@ const ANIMATION_SPEED_IN = 400;
 const ANIMATION_SPEED_OUT = 150;
 
 const ChevronIcon = styled(Icon)`
+  flex-shrink: 0;
   transition: fill 80ms ease-out, transform 200ms ease-out;
 `;
 
@@ -22,6 +23,8 @@ const TitleButton = styled.button`
   display: flex;
   justify-content: space-between;
   width: 100%;
+  padding: 0;
+  text-align: left;
 
   &.expanded {
     ${ChevronIcon} {
@@ -35,7 +38,7 @@ const TitleButton = styled.button`
   }
 
   &:focus-visible {
-    outline: 2px solid black;
+    ${focusRing}
     border-radius: ${({ theme }) => theme.borderRadius};
   }
 

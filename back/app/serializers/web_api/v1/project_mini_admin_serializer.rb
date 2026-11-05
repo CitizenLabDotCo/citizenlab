@@ -4,38 +4,45 @@ class WebApi::V1::ProjectMiniAdminSerializer < WebApi::V1::BaseSerializer
   attributes(:title_multiloc, :visible_to, :listed)
 
   attribute :publication_status do |object|
-    object.admin_publication.publication_status
+    object.admin_publication.effective_publication_status
   end
 
   attribute :first_published_at do |object|
     object.admin_publication.first_published_at
   end
 
+  attribute :scheduled_at do |object|
+    admin_pub = object.admin_publication
+    admin_pub.scheduled_at unless admin_pub.due_status_transition?
+  end
+
   attribute :first_phase_start_date do |object|
-    first_phase = object.phases.order(:start_at).first
-    first_phase&.start_at
+    object.schedule.phases_span&.first
   end
 
   attribute :last_phase_end_date do |object|
-    last_phase = object.phases.order(:start_at).last
-    last_phase&.end_at
+    object.schedule.phases_span&.last
   end
 
-  attribute :current_phase_start_date do |object|
-    phase = TimelineService.new.current_phase(object)
-    phase&.start_at
+  attribute :active_phases_start_date do |object|
+    object.schedule.active_span&.first
   end
 
-  attribute :current_phase_end_date do |object|
-    phase = TimelineService.new.current_phase(object)
-    phase&.end_at
+  attribute :active_phases_end_date do |object|
+    object.schedule.active_span&.last
   end
 
   attribute :folder_title_multiloc do |object|
     object.folder&.title_multiloc
   end
 
+  attribute :space_title_multiloc do |object|
+    object.space&.title_multiloc
+  end
+
   has_one :folder
+
+  has_one :space
 
   has_many :project_images, serializer: WebApi::V1::ImageSerializer
 

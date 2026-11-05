@@ -9,7 +9,10 @@ resource 'Ideas' do
   before { header 'Content-Type', 'application/json' }
 
   context 'when admin' do
-    before { admin_header_token }
+    before do
+      admin_header_token
+      create(:idea_status, code: 'proposed')
+    end
 
     get 'web_api/v1/ideas' do
       with_options scope: :page do
@@ -40,6 +43,18 @@ resource 'Ideas' do
         assert_status 200
         json_response = json_parse response_body
         expect(json_response[:data].size).to eq 2
+        expect(json_response[:data].pluck(:id)).to match_array ideas.map(&:id)
+      end
+
+      example 'List all ideas for several assignees, including unassigned' do
+        assignee = create(:admin)
+        ideas = [create(:idea, assignee: assignee), create(:idea, assignee: nil)]
+        create(:idea, assignee: create(:admin))
+
+        do_request assignee: [assignee.id, 'unassigned']
+
+        assert_status 200
+        json_response = json_parse response_body
         expect(json_response[:data].pluck(:id)).to match_array ideas.map(&:id)
       end
     end
@@ -80,22 +95,42 @@ resource 'Ideas' do
         expect(worksheet.count).to eq(ideas.size + 1)
       end
 
-      example 'XLSX export includes assignee', pending: true do
-        raise 'TODO'
-      end
+      example 'XLSX export includes assignee', :pending
     end
 
     get 'web_api/v1/ideas/filter_counts' do
       parameter :assignee, 'Filter by assignee (user id)', required: false
 
-      example 'List idea counts per filter option by assignee', pending: true do
-        raise 'TODO'
+      example 'List idea counts per assignee' do
+        assignee = create(:admin)
+        create_list(:idea, 2, assignee: assignee)
+        create(:idea, assignee: nil)
+
+        do_request
+
+        assert_status 200
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :attributes, :assignee_id)).to eq({ assignee.id.to_sym => 2 })
+        expect(json_response.dig(:data, :attributes, :total)).to eq 3
+      end
+
+      example 'Assignee counts ignore the assignee filter' do
+        assignee1 = create(:admin)
+        assignee2 = create(:admin)
+        create_list(:idea, 2, assignee: assignee1)
+        create(:idea, assignee: assignee2)
+
+        do_request assignee: assignee1.id
+
+        assert_status 200
+        json_attributes = json_parse(response_body).dig(:data, :attributes)
+        expect(json_attributes[:assignee_id]).to eq({ assignee1.id.to_sym => 2, assignee2.id.to_sym => 1 })
+        expect(json_attributes[:total]).to eq 2
       end
     end
 
-    post 'web_api/v1/ideas' do
+    post 'web_api/v1/phases/:phase_id/inputs' do
       with_options scope: :idea do
-        parameter :project_id, 'The identifier of the project that hosts the idea'
         parameter :publication_status, 'Publication status', required: true, extra: "One of #{Idea::PUBLICATION_STATUSES.join(',')}"
         parameter :title_multiloc, 'Multi-locale field with the idea title', required: true, extra: 'Maximum 100 characters'
         parameter :body_multiloc, 'Multi-locale field with the idea body', extra: 'Required if not draft'
@@ -105,14 +140,10 @@ resource 'Ideas' do
       response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
       response_field :base, "Array containing objects with signature { error: #{Permissions::PhasePermissionsService::POSTING_DENIED_REASONS.values.join(' | ')} }", scope: :errors
 
-      before do
-        create(:idea_status, code: 'proposed')
-      end
-
       let(:idea) { build(:idea) }
       let(:default_assignee) { create(:admin) }
       let(:project) { create(:single_phase_ideation_project, default_assignee: default_assignee) }
-      let(:project_id) { project.id }
+      let(:phase_id) { project.phases.first.id }
       let(:title_multiloc) { idea.title_multiloc }
       let(:body_multiloc) { idea.body_multiloc }
 
@@ -131,6 +162,60 @@ resource 'Ideas' do
         expect(response_status).to eq 201
         json_response = json_parse response_body
         expect(json_response.dig(:data, :relationships, :assignee, :data, :id)).to eq default_assignee.id
+      end
+    end
+  end
+
+  get 'web_api/v1/ideas/filter_counts' do
+    let(:project) { create(:single_phase_ideation_project) }
+    let(:other_project) { create(:single_phase_ideation_project) }
+
+    before do
+      create(:idea_status, code: 'proposed')
+      create(:idea, project: project, assignee: create(:admin))
+      create(:idea, project: other_project, assignee: create(:admin))
+    end
+
+    context 'when resident' do
+      before { resident_header_token }
+
+      example 'Does not count ideas per assignee', document: false do
+        do_request
+
+        assert_status 200
+        expect(json_parse(response_body).dig(:data, :attributes)).not_to have_key(:assignee_id)
+      end
+
+      example 'Does not count ideas per assignee when the assignee filter matches nothing', document: false do
+        do_request assignee: SecureRandom.uuid
+
+        assert_status 200
+        expect(json_parse(response_body).dig(:data, :attributes)).not_to have_key(:assignee_id)
+      end
+    end
+
+    context 'when project moderator' do
+      before { header_token_for create(:project_moderator, projects: [project]) }
+
+      example 'Counts ideas per assignee within the moderated project', document: false do
+        do_request projects: [project.id]
+
+        assert_status 200
+        expect(json_parse(response_body).dig(:data, :attributes, :assignee_id).size).to eq 1
+      end
+
+      example 'Does not count ideas per assignee across other projects', document: false do
+        do_request
+
+        assert_status 200
+        expect(json_parse(response_body).dig(:data, :attributes)).not_to have_key(:assignee_id)
+      end
+
+      example 'Does not count ideas per assignee across other projects when filtering on an assignee', document: false do
+        do_request assignee: Idea.find_by(project: project).assignee_id
+
+        assert_status 200
+        expect(json_parse(response_body).dig(:data, :attributes)).not_to have_key(:assignee_id)
       end
     end
   end

@@ -59,8 +59,14 @@ module BulkImportIdeas::Parsers::Pdf
 
     def import_config_for_field(field_or_option, pdf_pages, latest_question_number: nil, question_number_printed: false, next_field: nil)
       type = field_or_option.is_a?(CustomField) ? 'field' : 'option'
-      return if type == 'field' && !field_or_option.pdf_importable? # Skip fields that are not importable
-      return if type == 'option' && !field_or_option.custom_field.pdf_importable? # Skip options whose fields are not importable
+
+      # Skip fields or options whose fields are not importable
+      importable = if type == 'field'
+        field_or_option.supports_pdf_import?
+      else # option
+        field_or_option.custom_field.supports_pdf_import?
+      end
+      return unless importable
 
       print_title = if type == 'field'
         full_print_title(field_or_option, question_number_printed ? latest_question_number : nil)
@@ -99,11 +105,7 @@ module BulkImportIdeas::Parsers::Pdf
         end
       end
 
-      # Domicile options (when user fields in form enabled) need different keys
-      key = field_or_option.key
-      if type == 'option' && field_or_option.custom_field.key == 'u_domicile'
-        key = field_or_option.area&.id || 'outside'
-      end
+      key = type == 'option' ? field_or_option.answer_key : field_or_option.key
 
       # Create a config for the field or option
       field_config = {
@@ -163,7 +165,7 @@ module BulkImportIdeas::Parsers::Pdf
       end
 
       {
-        start: field.support_options? ? current_line : page_text[start_line_index], # Select fields use just the current line as start is less important
+        start: field.supports_options? ? current_line : page_text[start_line_index], # Select fields use just the current line as start is less important
         end: page_text[next_line_index] ? page_text[next_line_index].strip : next_question_title&.slice(0, 50)&.strip # truncated next_question_title will be used if this is the last field on the page
       }
     end
@@ -206,7 +208,7 @@ module BulkImportIdeas::Parsers::Pdf
     def full_print_title(field, question_number = nil)
       title = question_number ? "#{question_number}. " : ''
       title += field_title(field)
-      title += " #{pdf_exporter.optional_text}" unless field.required? || field.page?
+      title += " #{pdf_exporter.optional_text}" if !field.required? && field.supports_submission?
       title
     end
 

@@ -27,8 +27,6 @@ module Analysis
         sleep(0.25) unless Rails.env.test?
         memo
       end
-    rescue StandardError => e
-      raise QAndAFailedError, e
     end
   end
 end

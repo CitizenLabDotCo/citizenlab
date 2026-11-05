@@ -4,7 +4,7 @@ module ReportBuilder
     # @param start_at [String, Date] Beginning of analysis period (YYYY-MM-DD)
     # @param end_at [String, Date] End of analysis period (YYYY-MM-DD)
     # @param project_id [String] Optional project ID to filter participants
-    # @param exclude_roles [<String>] Flag to exclude certain roles from participant counts ('exclude_admins_and_moderators')
+    # @param exclude_admins_and_moderators [Boolean] Leave out admins and moderators from participant counts
     # @param resolution [String] Time grouping ('day', 'week', or 'month')
     # @return [Hash] Participant timeseries, counts and participation rates
     def run_query(
@@ -12,20 +12,20 @@ module ReportBuilder
       end_at: nil,
       project_id: nil,
       resolution: 'month',
-      exclude_roles: nil,
+      exclude_admins_and_moderators: false,
       compare_start_at: nil,
       compare_end_at: nil,
       **_other_props
     )
       validate_resolution(resolution)
 
-      start_date, end_date = TimeBoundariesParser.new(start_at, end_at).parse
+      start_at, end_at = TimeBoundaries.parse(start_at, end_at)
 
       participations_in_period = participations(
-        start_date,
-        end_date,
+        start_at,
+        end_at,
         project_id: project_id,
-        exclude_roles: exclude_roles
+        exclude_admins_and_moderators: exclude_admins_and_moderators
       )
 
       # Time series
@@ -49,31 +49,32 @@ module ReportBuilder
       response = {
         participants_timeseries: participants_timeseries,
         participants_whole_period: participants_whole_period,
-        participation_rate_whole_period: participation_rate(
+        participation_rate_whole_period: participation_rate_as_percent(
           participants_whole_period,
-          start_date,
-          end_date,
+          start_at,
+          end_at,
           project_id: project_id,
-          exclude_roles: exclude_roles
+          exclude_admins_and_moderators: exclude_admins_and_moderators
         )
       }
 
       if compare_start_at && compare_end_at
+        compare_start_at, compare_end_at = TimeBoundaries.parse(compare_start_at, compare_end_at)
         participants_compared_period = participations(
           compare_start_at,
           compare_end_at,
           project_id: project_id,
-          exclude_roles: exclude_roles
+          exclude_admins_and_moderators: exclude_admins_and_moderators
         )
           .count('distinct participant_id')
 
         response[:participants_compared_period] = participants_compared_period
-        response[:participation_rate_compared_period] = participation_rate(
+        response[:participation_rate_compared_period] = participation_rate_as_percent(
           participants_compared_period,
           compare_start_at,
           compare_end_at,
           project_id: project_id,
-          exclude_roles: exclude_roles
+          exclude_admins_and_moderators: exclude_admins_and_moderators
         )
       end
 
@@ -81,53 +82,25 @@ module ReportBuilder
     end
 
     def participations(
-      start_date,
-      end_date,
+      start_at,
+      end_at,
       project_id: nil,
-      exclude_roles: nil
+      exclude_admins_and_moderators: false
     )
       participations = Analytics::FactParticipation
-        .where(dimension_date_created_id: start_date..end_date)
+        .where(dimension_date_created_id: start_at...end_at)
 
       if project_id.present?
         participations = participations
           .where(dimension_project_id: project_id)
       end
 
-      if exclude_roles == 'exclude_admins_and_moderators'
-        participations = participations
-          .joins('INNER JOIN users ON users.id = analytics_fact_participations.dimension_user_id')
-
-        # Normal users have a 'rules' attribute which is just an empty array.
-        participations = participations.where('jsonb_array_length(users.roles) = 0')
-      end
-
-      participations
+      exclude_admins_and_moderators_from_participations(participations, exclude_admins_and_moderators)
     end
 
-    def participation_rate(
-      participants,
-      start_date,
-      end_date,
-      project_id: nil,
-      exclude_roles: nil
-    )
-      query = ImpactTracking::Session
-        .where(created_at: start_date..end_date)
-
-      if project_id.present?
-        query = query
-          .joins('INNER JOIN impact_tracking_pageviews ON impact_tracking_pageviews.session_id = impact_tracking_sessions.id')
-          .where(impact_tracking_pageviews: { project_id: project_id })
-      end
-
-      if exclude_roles == 'exclude_admins_and_moderators'
-        query = query
-          .where("highest_role IS NULL OR highest_role = 'user'")
-      end
-
-      visitors = query.distinct.count(:monthly_user_hash)
-
+    def participation_rate_as_percent(participants, start_at, end_at, project_id: nil, exclude_admins_and_moderators: false)
+      visits_service = Insights::VisitsService.new(project_id, start_at:, end_at:, exclude_admins_and_moderators:)
+      visitors = visits_service.total_visits[:visitors]
       visitors.zero? ? 0 : (participants / visitors.to_f)
     end
   end

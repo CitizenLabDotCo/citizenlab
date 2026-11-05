@@ -4,6 +4,7 @@ import {
   Icon,
   fontSizes,
   defaultStyles,
+  colors,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
@@ -16,7 +17,7 @@ const FakeInput = styled.div`
   font-weight: 400;
   padding: ${defaultStyles.inputPadding};
   border-radius: ${(props) => props.theme.borderRadius};
-  border: solid 1px #ccc;
+  border: solid 1px ${colors.grey400};
   outline: none;
   appearance: none;
   -moz-appearance: none;
@@ -25,15 +26,15 @@ const FakeInput = styled.div`
   width: 100%;
   position: relative;
   opacity: 1;
-  color: #666;
-  background-color: #f9f9f9;
+  color: ${colors.grey700};
+  background-color: ${colors.grey100};
   cursor: text;
   margin-bottom: 20px;
 `;
 
 const StyledIcon = styled(Icon)`
   cursor: pointer;
-  fill: #666;
+  fill: ${colors.grey700};
   &:hover {
     fill: black;
   }

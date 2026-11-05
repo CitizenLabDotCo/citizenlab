@@ -36,7 +36,7 @@ const PollAdminForm = ({ phaseId, pollQuestions }: Props) => {
   const { mutate: addPollQuestion } = useAddPollQuestion();
   const { mutate: deletePollQuestion } = useDeletePollQuestion();
   const { mutate: updatePollQuestion } = useUpdatePollQuestion();
-  const { mutate: reorderPollQuestion, isLoading } = useReorderPollQuestion();
+  const { mutate: reorderPollQuestion, isPending } = useReorderPollQuestion();
   const [newQuestionTitle, setNewQuestionTitle] = useState<Multiloc | null>(
     null
   );
@@ -51,7 +51,7 @@ const PollAdminForm = ({ phaseId, pollQuestions }: Props) => {
   >(null);
 
   const handleDragRow = (fromIndex: number, toIndex: number) => {
-    if (!isLoading) {
+    if (!isPending) {
       const listItems = getListItems();
 
       if (!listItems) return;

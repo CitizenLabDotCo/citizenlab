@@ -1,0 +1,341 @@
+module Insights
+  class BasePhaseInsightsService
+    attr_reader :phase
+
+    # @param exclude_admins_and_moderators [Boolean] Leave out the participation and visits of admins and moderators
+    def initialize(phase, exclude_admins_and_moderators: false)
+      @phase = phase
+      @exclude_admins_and_moderators = exclude_admins_and_moderators
+    end
+
+    # --- TEMPLATE METHOD (Instance Method) ---
+    # This method defines the immutable workflow for all child services.
+    def call
+      insights_data(filtered_phase_participations)
+    end
+
+    private
+
+    def exclude_admins_and_moderators?
+      @exclude_admins_and_moderators
+    end
+
+    # Removes the participations of admins and moderators when requested.
+    # The participant_id of a participation is the user id when the user is known,
+    # so participations without a known user (e.g. anonymous ones) are kept.
+    def filtered_phase_participations
+      participations = phase_participations
+      return participations unless exclude_admins_and_moderators?
+
+      participant_ids = participations.values.flatten.pluck(:participant_id).uniq
+      excluded_user_ids = User.not_normal_user.where(id: participant_ids).pluck(:id).to_set
+
+      participations.transform_values do |action_participations|
+        action_participations.reject { |p| excluded_user_ids.include?(p[:participant_id]) }
+      end
+    end
+
+    def insights_data(participations)
+      visits_service = VisitsService.new(@phase.project_id, start_at: @phase.start_at, end_at: @phase.end_at, exclude_admins_and_moderators: @exclude_admins_and_moderators)
+      flattened_participations = participations.values.flatten
+      participant_ids = flattened_participations.pluck(:participant_id).uniq
+      participation_method_metrics = phase_participation_method_metrics(participations)
+      metrics = metrics_data(participations, participant_ids, visits_service, participation_method_metrics)
+      demographics = demographics_data(flattened_participations, participant_ids)
+      participants_and_visitors_chart_data = participants_and_visitors_chart_data(flattened_participations, visits_service)
+
+      metrics.merge(demographics: { fields: demographics }, participants_and_visitors_chart_data: participants_and_visitors_chart_data)
+    end
+
+    def metrics_data(participations, participant_ids, visits_service, participation_method_metrics)
+      base_metrics = base_metrics(participations, participant_ids, visits_service)
+
+      phase_participation_method_metrics = {
+        @phase.participation_method => participation_method_metrics
+      }
+
+      { metrics: base_metrics.merge(phase_participation_method_metrics) }
+    end
+
+    def base_metrics(participations, participant_ids, visits_service)
+      visitors_count = visits_service.total_visits[:visitors]
+      participants_count = participant_ids.count
+      base_7_day_changes = base_7_day_changes(participations, visitors_count, participants_count)
+
+      {
+        visitors: visitors_count,
+        visitors_7_day_percent_change: base_7_day_changes[:visitors_7_day_percent_change],
+        participants: participants_count,
+        participants_7_day_percent_change: base_7_day_changes[:participants_7_day_percent_change],
+        participation_rate_as_percent: visitors_count > 0 ? ((participants_count.to_f / visitors_count) * 100).round(1) : 'participant_count_compared_with_zero_visitors',
+        participation_rate_7_day_percent_change: base_7_day_changes[:participation_rate_7_day_percent_change]
+      }
+    end
+
+    def base_7_day_changes(participations, visitors_count, participants_count)
+      unless phase_has_run_more_than_7_days?
+        return {
+          visitors_7_day_percent_change: nil,
+          participants_7_day_percent_change: nil,
+          participation_rate_7_day_percent_change: nil
+        }
+      end
+
+      flattened_participations = participations.values.flatten
+
+      participants_count_7_days_ago = flattened_participations.select do |p|
+        p[:acted_at] < 7.days.ago
+      end.pluck(:participant_id).uniq.count
+
+      visits_service_7_days_ago = VisitsService.new(@phase.project_id, start_at: @phase.start_at, end_at: 7.days.ago, exclude_admins_and_moderators: @exclude_admins_and_moderators)
+      visitors_count_7_days_ago = visits_service_7_days_ago.total_visits[:visitors]
+
+      participation_rate_7_day_percent_change = if visitors_count > 0 && visitors_count_7_days_ago > 0
+        participation_rate_7_days_ago = participants_count_7_days_ago.to_f / visitors_count_7_days_ago
+        participation_rate_now = participants_count.to_f / visitors_count
+        percentage_change(participation_rate_7_days_ago, participation_rate_now)
+      else
+        'no_visitors_in_one_or_both_periods'
+      end
+
+      {
+        visitors_7_day_percent_change: percentage_change(visitors_count_7_days_ago, visitors_count),
+        participants_7_day_percent_change: percentage_change(participants_count_7_days_ago, participants_count),
+        participation_rate_7_day_percent_change: participation_rate_7_day_percent_change
+      }
+    end
+
+    def phase_has_run_more_than_7_days?
+      effective_end = [@phase.end_at, Time.now].compact.min
+      (effective_end - @phase.start_at) / 1.day >= 7
+    end
+
+    def percentage_change(old_value, new_value)
+      return nil unless phase_has_run_more_than_7_days?
+      return 0.0 if old_value == new_value # Includes case where both are zero
+      return 'current_value_compared_with_zero' if old_value.zero? # Infinite percentage change (avoid division by zero)
+
+      # Round to one decimal place
+      (((new_value - old_value).to_f / old_value) * 100.0).round(1)
+    end
+
+    def participations_7_day_change(participations)
+      return nil unless phase_has_run_more_than_7_days?
+      return 0.0 if participations.empty?
+
+      participations_count = participations.count
+      participations_count_7_days_ago = participations.count { |p| p[:acted_at] < 7.days.ago }
+
+      percentage_change(participations_count_7_days_ago, participations_count)
+    end
+
+    def participant_id(item_id, user_id, user_hash = nil)
+      user_id.presence || user_hash.presence || item_id
+    end
+
+    def associated_published_ideas_count
+      @phase.ideas.where(publication_status: 'published').count
+    end
+
+    # Parses user demographics from the answers of both the item (if any)
+    # and/or the participant (user) referenced in each participation.
+    # Item values take precedence over participant values in case of key collisions,
+    # to prefer demographics at the time of participation.
+    def parse_user_custom_field_values(item, participant)
+      user_values = CustomFieldValuesTransitionService.new.custom_field_values(participant)
+
+      return user_values if !item.respond_to?(:custom_field_answers) || item.custom_field_answers.none?
+
+      prefix = @user_fields_prefix ||= UserFieldsInFormService.prefix
+
+      item_values = item.custom_field_answers
+        .select { |answer| answer.key.start_with?(prefix) }
+        .to_h { [it.key.delete_prefix(prefix), it.value] }
+
+      user_values.merge(item_values).reject { |_, v| v.is_a?(String) && v.blank? }
+    end
+
+    def demographics_data(participations, participant_ids)
+      participant_custom_field_values = participants_custom_field_values(participations, participant_ids)
+      permissions_custom_fields_service = Permissions::PermissionsCustomFieldsService.new
+
+      custom_fields = phase_permissions.flat_map do |permission|
+        permissions_custom_fields_service.fields_for_permission(permission)
+      end.map(&:custom_field).uniq
+
+      # Eager load options to avoid N+1 queries
+      custom_fields = CustomField.where(id: custom_fields.map(&:id)).includes(:options).to_a
+
+      custom_fields.filter_map do |custom_field|
+        reference_distribution = nil
+
+        result = {
+          id: custom_field.id,
+          key: custom_field.key,
+          code: custom_field.code,
+          input_type: custom_field.input_type,
+          title_multiloc: custom_field.title_multiloc,
+          series: nil # Will be set below
+        }
+
+        if custom_field.key == 'birthyear'
+          birthyear_data = birthyear_demographics_data(participant_custom_field_values)
+          result[:series] = birthyear_data[:series]
+          reference_distribution = birthyear_data[:reference_distribution]
+        elsif custom_field.supports_reference_distribution?
+          select_or_checkbox_data = select_or_checkbox_field_demographics_data(participant_custom_field_values, custom_field)
+          result[:series] = select_or_checkbox_data[:series]
+          result[:options] = select_or_checkbox_data[:options] if select_or_checkbox_data[:options]
+          reference_distribution = select_or_checkbox_data[:reference_distribution]
+        else
+          # Skip unsupported field types (other number fields, text fields, etc.)
+          next
+        end
+
+        result[:reference_distribution] = reference_distribution
+
+        result
+      end
+    end
+
+    # The permissions that actually govern participation in the phase: the rows
+    # the phase owns, plus, for every action it has not overridden, the copy of
+    # the global 'visiting' permission it inherits.
+    # See Permissions::PermissionInheritanceService.
+    # 'attending_event' is left out: event attendance is not phase participation.
+    def phase_permissions
+      Permissions::PermissionInheritanceService.new
+        .effective_permissions(@phase)
+        .reject { |permission| permission.action == 'attending_event' }
+    end
+
+    def birthyear_demographics_data(participant_custom_field_values)
+      age_stats = UserCustomFields::AgeStats.calculate(participant_custom_field_values)
+      reference_distribution = nil
+
+      if age_stats.reference_distribution.present?
+        distribution_data = age_stats.reference_distribution.distribution
+
+        if distribution_data.is_a?(Hash)
+          formatted_data = age_stats.format_in_ranges
+          reference_distribution = formatted_data[:ranged_reference_distribution]
+        end
+      end
+
+      formatted_data = age_stats.format_in_ranges
+
+      {
+        series: formatted_data[:ranged_series],
+        reference_distribution: reference_distribution
+      }
+    end
+
+    def select_or_checkbox_field_demographics_data(participant_custom_field_values, custom_field)
+      counts = select_or_checkbox_counts_for_field(participant_custom_field_values, custom_field)
+      reference_distribution = calculate_reference_distribution(custom_field)
+
+      options = nil
+      if custom_field.options.present?
+        options = custom_field.options.to_h do |o|
+          [o.key, o.attributes.slice('title_multiloc', 'ordering')]
+        end
+      end
+
+      {
+        series: counts,
+        reference_distribution: reference_distribution,
+        options: options
+      }
+    end
+
+    def select_or_checkbox_counts_for_field(participant_custom_field_values, custom_field)
+      counts = UserCustomFields::FieldValueCounter.counts_by_field_option(participant_custom_field_values, custom_field)
+
+      # Ensure checkbox fields always include both true and false options in consistent order
+      if custom_field.input_type == 'checkbox'
+        counts = {
+          true => counts[true] || 0,
+          false => counts[false] || 0,
+          '_blank' => counts['_blank']
+        }.compact
+      end
+
+      counts
+    end
+
+    def participants_custom_field_values(participations, participant_ids)
+      # Build lookup hash to avoid O(n × p) repeated searches. Reduces to O(n + p).
+      participation_by_user = participations.group_by { |p| p[:participant_id] }
+
+      # Get first participation's custom field values for each unique user
+      participant_ids.map do |participant_id|
+        participation_by_user[participant_id]
+          .find { |p| p[:user_custom_field_values].present? }
+          &.dig(:user_custom_field_values) || {}
+      end
+    end
+
+    # TODO: Copied from StatsUsersController. Consider moving to a shared location (a service?).
+    def calculate_reference_distribution(custom_field)
+      return if custom_field.key == 'birthyear'
+      return if (ref_distribution = custom_field.current_ref_distribution).blank?
+
+      ref_distribution.distribution_by_option_key
+    end
+
+    def participants_and_visitors_chart_data(flattened_participations, visits_service)
+      resolution = chart_resolution
+      grouped_visits = visits_service.visits_by_date(resolution).each_with_object({}) do |row, hash|
+        hash[row[:date_group]] = { visits: row[:visits], visitors: row[:visitors] }
+      end
+      grouped_participations = flattened_participations.group_by { |p| date_truncate(p[:acted_at], resolution) }
+
+      # Get all unique date groups from both participations and visits
+      all_date_groups = (grouped_participations.keys + grouped_visits.keys).uniq.sort
+
+      grouped_timeseries = all_date_groups.map do |date_group|
+        participations_in_group = grouped_participations[date_group] || []
+        visits_in_group = grouped_visits[date_group] || {}
+        {
+          participants: participations_in_group.pluck(:participant_id).uniq.count,
+          visitors: visits_in_group[:visitors] || 0,
+          date_group: date_group
+        }
+      end
+
+      {
+        resolution: resolution,
+        timeseries: grouped_timeseries.sort_by { |row| row[:date_group] }
+      }
+    end
+
+    # Modelled on logic in getSensibleresolution.ts, with addition of 'year' resolution
+    def chart_resolution
+      end_at = @phase.end_at.presence || Time.current
+      duration_seconds = end_at - @phase.start_at
+      duration_months = (duration_seconds / 1.month).round(1)
+      duration_weeks = (duration_seconds / 1.week).round(1)
+
+      if duration_months > 6
+        'month'
+      elsif duration_weeks > 4
+        'week'
+      else
+        'day'
+      end
+    end
+
+    # Week start is Monday, as in similar data produced by ReportBuilder Queries
+    def date_truncate(datetime, resolution)
+      date = datetime.to_date
+      case resolution
+      when 'day'
+        date
+      when 'week'
+        date.beginning_of_week
+      else # 'month'
+        Date.new(date.year, date.month, 1)
+      end
+    end
+  end
+end

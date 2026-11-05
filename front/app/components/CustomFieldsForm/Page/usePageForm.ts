@@ -16,9 +16,11 @@ import { FormValues } from './types';
 const usePageForm = ({
   pageQuestions,
   defaultValues,
+  otherTextOptional,
 }: {
   pageQuestions: IFlatCustomField[];
   defaultValues?: FormValues;
+  otherTextOptional?: boolean;
 }) => {
   const [showFormFeedback, setShowFormFeedback] = useState(false);
   const { formatMessage } = useIntl();
@@ -27,12 +29,14 @@ const usePageForm = ({
     pageQuestions,
     formatMessage,
     localize,
+    otherTextOptional,
   });
 
   const methods = useForm({
     mode: 'onBlur',
     resolver: yupResolver(schema),
     defaultValues,
+    shouldFocusError: true,
   });
 
   return {

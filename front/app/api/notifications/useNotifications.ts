@@ -1,4 +1,4 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, InfiniteData } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
@@ -23,12 +23,14 @@ const useInfiniteNotifications = (queryParams: IQueryParameters) => {
   return useInfiniteQuery<
     INotifications,
     CLErrors,
-    INotifications,
-    NotificationsKeys
+    InfiniteData<INotifications>,
+    NotificationsKeys,
+    number
   >({
     queryKey: notificationsKeys.list(queryParams),
     queryFn: ({ pageParam }) =>
       fetchInfiniteNotifications({ ...queryParams, pageNumber: pageParam }),
+    initialPageParam: 1,
     getNextPageParam: (lastPage) => {
       // TODO: Fix this the next time the file is edited.
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition

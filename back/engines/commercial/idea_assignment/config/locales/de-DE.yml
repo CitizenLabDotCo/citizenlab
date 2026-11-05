@@ -10,4 +10,4 @@ de:
       event_description: 'Ihnen wurde ein Beitrag zugewiesen. Geben Sie Feedback, indem Sie ein offizielles Update schreiben oder den Status ändern.'
       title: '%{firstName}, Ihnen wurde ein Beitrag zugewiesen'
       subject: 'Ihnen wurde ein Beitrag auf der Plattform von %{organizationName} zugewiesen'
-      preheader_idea: 'Ihnen wurde der Beitrag von %{authorName} zugewiesen'
+      preheader: 'Ihnen wurde der Beitrag von %{authorName} zugewiesen'

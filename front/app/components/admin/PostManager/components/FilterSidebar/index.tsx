@@ -7,19 +7,18 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
-import { useParams } from 'react-router-dom';
-import { RouteType } from 'routes';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
+import { IInputTopicData } from 'api/input_topics/types';
 import useAuthUser from 'api/me/useAuthUser';
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
-import { ITopicData } from 'api/topics/types';
 
 import { ManagerType, TFilterMenu } from 'components/admin/PostManager';
 
 import { useIntl } from 'utils/cl-intl';
 import { isAdmin } from 'utils/permissions/roles';
+import { useParams } from 'utils/router';
 
 import messages from '../../messages';
 
@@ -32,7 +31,7 @@ interface Props {
   phases?: IPhaseData[];
   projects?: IProjectData[];
   statuses: IIdeaStatusData[];
-  topics: ITopicData[];
+  topics?: IInputTopicData[];
   selectedTopics?: string[] | null;
   selectedPhase: string | undefined;
   selectedProject?: string | null;
@@ -67,7 +66,7 @@ const FilterSidebar = ({
   visibleFilterMenus,
   type,
 }: Props) => {
-  const { projectId } = useParams();
+  const { projectId } = useParams({ strict: false });
   const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
   const handleItemClick = (id: string) => {
@@ -76,16 +75,19 @@ const FilterSidebar = ({
 
   if (!authUser) return null;
 
-  const getLinkToTagManager = (): RouteType | null => {
+  const getLinkToTagManager = () => {
     // https://www.notion.so/citizenlab/Customised-tags-don-t-show-up-as-options-to-add-to-input-9c7c39f6af194c8385088878037cd498?pvs=4
     if (
       (type === 'ProjectIdeas' || type === 'ProjectProposals') &&
       typeof projectId === 'string'
     ) {
-      return `/admin/projects/${projectId}/settings/tags`;
+      return {
+        to: '/admin/projects/$projectId/general/input-tags',
+        params: { projectId },
+      } as const;
     } else if (isAdmin(authUser)) {
       // For admins we show the link to the platform-wide tag manager
-      return '/admin/settings/topics';
+      return { to: '/admin/settings/topics' } as const;
     } else {
       // Don't show the link to the platform-wide tag manager if the user is not an admin.
       // (i.e. project/folder managers that have access to the general input manager at /admin/ideas,
@@ -156,7 +158,7 @@ const FilterSidebar = ({
     {
       name: tabName('topicsTab', selectedTopics, 'topics'),
       key: 'topics',
-      content: (
+      content: topics && (
         <FilterSidebarTopics
           selectableTopics={topics}
           selectedTopics={selectedTopics}

@@ -5,6 +5,7 @@ import Layer from '@arcgis/core/layers/Layer';
 import MapView from '@arcgis/core/views/MapView';
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import { Point } from 'geojson';
+import { isEmpty } from 'lodash-es';
 import { useTheme } from 'styled-components';
 
 import { IMapConfig } from 'api/map_config/types';
@@ -12,7 +13,16 @@ import { IMapConfig } from 'api/map_config/types';
 import useLocale from 'hooks/useLocale';
 
 import EsriMap from 'components/EsriMap';
+import MapInteractionToggle, {
+  MapInteractionMode,
+} from 'components/EsriMap/components/MapInteractionToggle';
 import ResetMapViewButton from 'components/EsriMap/components/ResetMapViewButton';
+import {
+  showEsriFeaturePopup,
+  changeCursorOnFeaturePopupHover,
+  pinUiElementToTop,
+  resetCursor,
+} from 'components/EsriMap/utils';
 import { Option } from 'components/UI/LocationInput';
 
 import InstructionAnimation from '../components/InstructionAnimation';
@@ -21,7 +31,7 @@ import RemoveAnswerButton from '../components/RemoveAnswerButton';
 import UndoButton from '../components/UndoButton';
 import {
   handleMapClickMultipoint,
-  isLineOrPolygonInput,
+  isMultiPointInput,
   setupPointDrag,
 } from '../multiPointUtils';
 import { clearPointData, handleMapClickPoint } from '../pointUtils';
@@ -39,7 +49,7 @@ type Props = {
   mapView?: MapView | null;
   handleSinglePointChange: (point: GeoJSON.Point | undefined) => void;
   handleMultiPointChange?: (points: number[][] | undefined) => void;
-  data: any;
+  data: GeoJSON.Point | GeoJSON.LineString | GeoJSON.Polygon | undefined;
 };
 
 const DesktopView = ({
@@ -63,10 +73,18 @@ const DesktopView = ({
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const layerCount = mapConfig?.data?.attributes?.layers?.length || 0;
 
+  // Draw vs Explore toggle: on web maps, users can switch to an explore mode
+  // where clicking a feature opens its ArcGIS-configured popup instead of drawing
+  const [interactionMode, setInteractionMode] =
+    useState<MapInteractionMode>('draw');
+
   // Create refs for custom UI elements
   const resetButtonRef: React.RefObject<HTMLDivElement> = React.createRef();
   const undoButtonRef: React.RefObject<HTMLDivElement> = React.createRef();
   const instructionRef: React.RefObject<HTMLDivElement> = React.createRef();
+  // Stable ref (not re-created each render) so the pinning effect below always
+  // references the currently-mounted toggle element
+  const interactionToggleRef = useRef<HTMLDivElement>(null);
 
   // Create refs for dragging/editing a user's points on the map
   const pointBeingDragged = useRef<Graphic | null>(null);
@@ -78,8 +96,8 @@ const DesktopView = ({
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     mapView?.ui?.add(instructionRef?.current || '', 'bottom-left');
 
-    if (isLineOrPolygonInput(inputType)) {
-      // Show these buttons in sequence for line/polygon inputs
+    if (isMultiPointInput(inputType)) {
+      // Show these buttons in sequence for inputs that collect several points
       // TODO: Fix this the next time the file is edited.
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       mapView?.ui?.add(undoButtonRef?.current || '', 'top-right');
@@ -93,6 +111,15 @@ const DesktopView = ({
       mapView?.ui?.add(resetButtonRef?.current || '', 'top-right');
     }
   }, [inputType, instructionRef, mapView?.ui, resetButtonRef, undoButtonRef]);
+
+  // Keep the Draw/Explore toggle pinned to the very top of the top-right
+  // controls, regardless of when the map's other widgets (zoom, fullscreen,
+  // web map defaults) finish loading in.
+  useEffect(() => {
+    const toggleEl = interactionToggleRef.current;
+    if (!isWebMap || !mapView || !toggleEl) return;
+    return pinUiElementToTop(mapView, toggleEl);
+  }, [isWebMap, mapView]);
 
   // Show graphic(s) on the map for user input
   useEffect(() => {
@@ -112,16 +139,42 @@ const DesktopView = ({
     }
   }, [data, inputType, locale, mapView, theme]);
 
-  // When the user clicks on the map, update the form data
+  // When the user clicks on the map, update the form data (draw mode) or
+  // open the ArcGIS-configured popup of the clicked feature (explore mode)
   const onMapClick = useCallback(
     (event: any, mapView: MapView) => {
+      if (interactionMode === 'explore') {
+        showEsriFeaturePopup({ event, mapView });
+        return;
+      }
       if (inputType === 'point') {
         handleMapClickPoint(event, mapView, handleSinglePointChange);
-      } else if (isLineOrPolygonInput(inputType)) {
+      } else if (isMultiPointInput(inputType)) {
         handleMapClickMultipoint(event, mapView, handleMultiPointChange);
       }
     },
-    [handleMultiPointChange, handleSinglePointChange, inputType]
+    [
+      handleMultiPointChange,
+      handleSinglePointChange,
+      inputType,
+      interactionMode,
+    ]
+  );
+
+  const onMapHover = useCallback((event: any, mapView: MapView) => {
+    changeCursorOnFeaturePopupHover(event, mapView);
+  }, []);
+
+  const handleInteractionModeChange = useCallback(
+    (mode: MapInteractionMode) => {
+      setInteractionMode(mode);
+      if (mode === 'draw') {
+        // Clean up explore mode leftovers
+        mapView?.closePopup();
+        resetCursor();
+      }
+    },
+    [mapView]
   );
 
   // Handle typed address input
@@ -133,17 +186,21 @@ const DesktopView = ({
 
   // Attach behaviour for when a user edits a point by dragging it
   useEffect(() => {
-    isLineOrPolygonInput(inputType) &&
-      handleMultiPointChange &&
-      setupPointDrag({
-        mapView,
-        handleMultiPointChange,
-        pointBeingDragged,
-        temporaryDragGraphic,
-        tenantSecondaryColor: theme.colors.tenantSecondary,
-        data,
-        inputType,
-      });
+    if (!isMultiPointInput(inputType) || !handleMultiPointChange) {
+      return;
+    }
+
+    const dragHandle = setupPointDrag({
+      mapView,
+      handleMultiPointChange,
+      pointBeingDragged,
+      temporaryDragGraphic,
+      tenantSecondaryColor: theme.colors.tenantSecondary,
+      data,
+      inputType,
+    });
+
+    return () => dragHandle?.remove();
   }, [data, handleMultiPointChange, inputType, mapView, theme]);
 
   return (
@@ -177,20 +234,28 @@ const DesktopView = ({
             }}
             webMapId={mapConfig?.data.attributes.esri_web_map_id}
             onClick={onMapClick}
+            onHover={interactionMode === 'explore' ? onMapHover : undefined}
           />
-          {isLineOrPolygonInput(inputType) && data && (
+          {isWebMap && (
+            <MapInteractionToggle
+              toggleRef={interactionToggleRef}
+              mode={interactionMode}
+              onModeChange={handleInteractionModeChange}
+            />
+          )}
+          {isMultiPointInput(inputType) && data && (
             <RemoveAnswerButton
               mapView={mapView}
               handleMultiPointChange={handleMultiPointChange}
             />
           )}
           <Box>
-            {isLineOrPolygonInput(inputType) && (
+            {isMultiPointInput(inputType) && (
               <UndoButton
                 handleMultiPointChange={handleMultiPointChange}
                 mapView={mapView}
                 undoButtonRef={undoButtonRef}
-                undoEnabled={data}
+                undoEnabled={!isEmpty(data)}
                 inputType={inputType}
                 width="32px"
                 height="32px"

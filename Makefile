@@ -1,4 +1,4 @@
-.PHONY: build reset-dev-env migrate be-up fe-up up c rails-console rails-console-exec e2e-setup e2e-setup-and-up e2e-run-test e2e-ci-env-setup e2e-ci-env-setup-and-up e2e-ci-env-run-test ci-regenerate-templates ci-trigger-build ci-run-e2e release_pr
+.PHONY: build reset-dev-env claude-setup configure-worktree migrate be-up be-up-debug be-up-fake-sso fe-up fe-only up up-fake-sso c rails-console rails-console-exec e2e-setup e2e-setup-and-up e2e-setup-and-up-fake-sso e2e-run-test e2e-ci-env-setup e2e-ci-env-setup-and-up e2e-ci-env-run-test ci-regenerate-templates ci-trigger-build ci-run-e2e release_pr
 
 # You can run this file with `make` command:
 # make reset-dev-env
@@ -20,6 +20,8 @@ build:
 	cd front && npm install
 
 reset-dev-env:
+	# Best-effort: install the Claude private overlay if the dev has access. Fall through silently otherwise.
+	-@bin/setup-claude || echo "Skipping Claude private overlay (no access or setup failed). Continuing."
 	# -v removes volumes with all the data inside https://docs.docker.com/compose/reference/down/
 	docker compose down -v || true # do not exit on error (some networks may be present, volumes may be used, which is often fine)
 	make build
@@ -27,17 +29,68 @@ reset-dev-env:
 	docker compose run --rm web "bin/rails db:create && bin/rails db:reset"
 	docker compose run --rm -e RAILS_ENV=test web bin/rails db:drop db:create db:schema:load
 
+claude-setup:
+	@bin/setup-claude
+
+# For git worktrees: seed the gitignored *-secret.env files from the main checkout, install
+# front-end deps, write a root .env with WORKTREE_PREFIX (derived from this worktree's folder
+# name) so the stack gets its own container/network names and doesn't clash with other
+# worktrees, then reset the dev env (reset-dev-env handles the Claude overlay setup, image
+# build, and DB reset). Only works if the worktree is created in the same folder as the main
+# checkout (../citizenlab).
+configure-worktree:
+	@gitdir="$$(git rev-parse --git-dir 2>/dev/null)"; \
+	commondir="$$(git rev-parse --git-common-dir 2>/dev/null)"; \
+	if [ -z "$$gitdir" ]; then \
+		echo "configure-worktree: not inside a git repository. Aborting."; exit 1; \
+	elif [ "$$gitdir" = "$$commondir" ]; then \
+		echo "configure-worktree: this is the main checkout, not a linked git worktree. Aborting."; exit 1; \
+	fi
+	@for f in $$(cd ../citizenlab/env_files && ls *-secret.env 2>/dev/null); do \
+		if [ ! -e env_files/$$f ]; then \
+			cp ../citizenlab/env_files/$$f env_files/$$f && echo "Copied env_files/$$f from ../citizenlab"; \
+		else \
+			echo "Skipping env_files/$$f (already exists)"; \
+		fi; \
+	done
+	cd front && npm install
+	@prefix=$$(basename "$$PWD" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9_-]/-/g'); \
+	if [ -f .env ] && grep -q '^WORKTREE_PREFIX=' .env; then \
+		sed -i.bak "s/^WORKTREE_PREFIX=.*/WORKTREE_PREFIX=$$prefix/" .env && rm -f .env.bak && echo "Updated WORKTREE_PREFIX=$$prefix in .env"; \
+	else \
+		echo "WORKTREE_PREFIX=$$prefix" >> .env && echo "Set WORKTREE_PREFIX=$$prefix in .env"; \
+	fi
+	make reset-dev-env
+
+clean-tenant-settings:
+	docker compose run --rm web bin/rails cl2back:clean_tenant_settings
+
 migrate:
 	docker compose run --rm web bin/rails db:migrate cl2back:clean_tenant_settings email_campaigns:assure_campaign_records fix_existing_tenants:update_permissions cl2back:clear_cache_store email_campaigns:remove_deprecated
 
 be-up:
 	docker compose up
 
+be-up-debug:
+	docker compose -f docker-compose.yml -f docker-compose.debug.yml up
+
 fe-up:
 	cd front && npm start
 
+# Front end only, against a remote back end. No Docker, no secrets.
+# Default: the prototype tenant on staging. Any epic works too:
+#   make fe-only api=https://pr-123.epic.hq.govocal.com
+api ?= https://prototype.stg.govocal.com
+fe-only:
+	cd front && { [ -d node_modules ] || npm install; } && API_URL=$(api) npm start
+
 up:
 	make -j 2 be-up fe-up
+
+# Run stack with docker compose, including running npm inside of docker container
+up-docker:
+	docker compose --profile frontend down --remove-orphans
+	docker compose --profile frontend up
 
 # For testing different SSO methods using https in dev
 
@@ -49,9 +102,60 @@ be-up-sso:
 fe-up-sso:
 	cd front && npm run start:sso
 
+# ACM (Itsme)
+be-up-acm:
+	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[acm]'
+	BASE_DEV_URI=https://sso.dev.govocal.com ASSET_HOST_URI=https://sso.dev.govocal.com docker compose up
+
+fe-up-acm:
+	cd front && npm run start:sso
+
+# Criipto
+be-up-criipto:
+	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[criipto]'
+	docker compose up
+
+fe-up-criipto:
+	cd front && npm run start
+
+# etat_lu (Luxembourg IAM)
+be-up-etatlu:
+	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[etat_lu]'
+	sudo sed -i '' 's/^#[[:space:]]*127\.0\.0\.1 demo\.stg\.govocal\.com$$/127.0.0.1 demo.stg.govocal.com/' /etc/hosts
+	BASE_DEV_URI=https://demo.stg.govocal.com ASSET_HOST_URI=https://demo.stg.govocal.com docker compose up
+
+fe-up-etatlu:
+	cd front && npm run start:sso
+
+# France connect
+be-up-franceconnect:
+	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[franceconnect]'
+	BASE_DEV_URI=https://sso.dev.govocal.com ASSET_HOST_URI=https://sso.dev.govocal.com docker compose up
+
+fe-up-franceconnect:
+	cd front && npm run start:sso
+
+# Brings the back-end stack up together with the fake_sso OIDC provider.
+# Prerequisite: clone https://github.com/CitizenLabDotCo/fake_sso next to this
+# repo (or set FAKE_SSO_PATH to its checkout) and add
+# `127.0.0.1 host.docker.internal` to /etc/hosts.
+#
+# The profile is named on `down` as well: without it the fake_sso container survives
+# while the network is recreated, and the next `up` cannot attach it to a network that
+# no longer exists.
+be-up-fake-sso:
+	docker compose --profile fake_sso down --remove-orphans
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[fake_sso]'
+	docker compose --profile fake_sso up
+
 # Clave Unica
 be-up-claveunica:
 	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[clave_unica]'
 	BASE_DEV_URI=https://claveunica-h2dkc.loca.lt ASSET_HOST_URI=https://claveunica-h2dkc.loca.lt docker compose up
 
 fe-up-claveunica:
@@ -60,7 +164,8 @@ fe-up-claveunica:
 # MitID (via NemLogin)
 be-up-nemlogin:
 	docker compose down
- 	BASE_DEV_URI=https://nemlogin-k3kd.loca.lt ASSET_HOST_URI=https://nemlogin-k3kd.loca.lt docker compose up
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[nemlog_in]'
+	BASE_DEV_URI=https://nemlogin-k3kd.loca.lt ASSET_HOST_URI=https://nemlogin-k3kd.loca.lt docker compose up
 
 fe-up-nemlogin:
 	cd front && npm run start:sso:nemlogin
@@ -68,38 +173,127 @@ fe-up-nemlogin:
 # ID Austria
 be-up-idaustria:
 	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[id_austria]'
 	BASE_DEV_URI=https://idaustria-g3fy.loca.lt ASSET_HOST_URI=https://idaustria-g3fy.loca.lt docker compose up
 
 fe-up-idaustria:
 	cd front && npm run start:sso:idaustria
 
-# Keycloak (Oslo ID-Porten)
-be-up-keycloak:
+# Keycloak (Oslo ID-Porten & Rheinbahn)
+be-up-idporten:
 	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[idporten]'
 	BASE_DEV_URI=https://keycloak-r3tyu.loca.lt ASSET_HOST_URI=https://keycloak-r3tyu.loca.lt docker compose up
 
-fe-up-keycloak:
-	cd front && npm run start:sso:keycloak
+fe-up-idporten:
+	cd front && npm run start:sso:idporten
+
+# Note: Rheinbahn uses the same Keycloak setup as ID-Porten so verification config will need changing
+be-up-rheinbahn:
+	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[rheinbahn]'
+	sudo sed -i '' 's/^#[[:space:]]*127\.0\.0\.1 demo\.stg\.govocal\.com$$/127.0.0.1 demo.stg.govocal.com/' /etc/hosts
+	BASE_DEV_URI=https://demo.stg.govocal.com ASSET_HOST_URI=https://demo.stg.govocal.com docker compose up
+
+fe-up-rheinbahn:
+	cd front && npm run start:sso:rheinbahn
 
 # Twoday (Helsingborg BankID & Freja eID)
 be-up-twoday:
 	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[twoday]'
 	BASE_DEV_URI=https://twoday-h5jkg.loca.lt ASSET_HOST_URI=https://twoday-h5jkg.loca.lt docker compose up
 
 fe-up-twoday:
 	cd front && npm run start:sso:twoday
+
+# Publik (Meyzieu). No test environment exists, so this points at the production
+# IDP and the tenant's live host; only the platform runs locally.
+# The /etc/hosts line below hijacks jeparticipe.meyzieu.fr on this machine — run
+# `make sso-reset` when done, or you cannot reach the live platform.
+be-up-publik:
+	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[publik]'
+	@grep -q '^127\.0\.0\.1 jeparticipe\.meyzieu\.fr$$' /etc/hosts || \
+		echo '127.0.0.1 jeparticipe.meyzieu.fr' | sudo tee -a /etc/hosts > /dev/null
+	BASE_DEV_URI=https://jeparticipe.meyzieu.fr ASSET_HOST_URI=https://jeparticipe.meyzieu.fr docker compose up
+
+fe-up-publik:
+	cd front && npm run start:sso:publik
+
+# Hoplr
+be-up-hoplr:
+	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[hoplr]'
+	docker compose up
+
+fe-up-hoplr:
+	cd front && npm start
+
+# Vienna
+be-up-vienna:
+	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[vienna_citizen,vienna_employee]'
+	docker compose up
+
+fe-up-vienna:
+	cd front && npm start
+
+# Federa (Modena SSO)
+be-up-federa:
+	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[federa]'
+	sudo sed -i '' 's/^#[[:space:]]*127\.0\.0\.1 demo\.stg\.govocal\.com$$/127.0.0.1 demo.stg.govocal.com/' /etc/hosts
+	BASE_DEV_URI=https://demo.stg.govocal.com ASSET_HOST_URI=https://demo.stg.govocal.com docker compose up
+
+fe-up-federa:
+	cd front && npm run start:sso:federa
+
+# Google, Facebook
+be-up-social-logins:
+	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[google,facebook]'
+	docker compose up
+
+fe-up-social-logins:
+	cd front && npm start
+
+# Azure AD & Azure AD B2C.
+be-up-azure:
+	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[azureactivedirectory,azureactivedirectory_b2c]'
+	docker compose up
+
+fe-up-azure:
+	cd front && npm start
+
+# Okta. A free developer org at developer.okta.com accepts
+# http://localhost:4000/auth/okta/callback, so no HTTPS or /etc/hosts setup is needed.
+be-up-okta:
+	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[okta]'
+	docker compose up
+
+fe-up-okta:
+	cd front && npm start
+
+# Reset the /etc/hosts overrides that were added for sso local testing
+sso-reset:
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[fake_sso]'
+	sudo sed -i '' 's/^127\.0\.0\.1 demo\.stg\.govocal\.com$$/# 127.0.0.1 demo.stg.govocal.com/' /etc/hosts
+	sudo sed -i '' '/^127\.0\.0\.1 jeparticipe\.meyzieu\.fr$$/d' /etc/hosts
 
 # Run it with:
 # make c
 # # or
 # make rails-console
 c rails-console:
-	docker compose run --rm web bin/rails c
+	docker compose exec web bin/rails c
 
 # Runs rails console in an existing web container. May be useful if you need to access localhost:4000 in the console.
 # E.g., this command works in this console `curl http://localhost:4000`
 rails-console-exec:
-	docker exec -it "$$(docker ps | awk '/cl-back-web/ {print $$1}' | head -1)" bin/rails c
+	docker compose exec web bin/rails c
 
 # search_path=localhost specifies the schema of localhost tenant
 psql:
@@ -117,11 +311,11 @@ blint back-lint-autocorrect:
 # Usage example:
 # make r file=spec/models/idea_spec.rb
 r rspec:
-	docker compose run --rm web bin/rspec ${file}
+	docker compose run --rm web bin/rspec $(patsubst back/%,%,${file})
 
 # SSH session onto the running web container.
 bash-exec:
-	docker exec -it cl-back-web /bin/bash
+	docker compose exec web /bin/bash
 
 # Usage examples:
 # make feature-flag feature=initiative_cosponsors enabled=true

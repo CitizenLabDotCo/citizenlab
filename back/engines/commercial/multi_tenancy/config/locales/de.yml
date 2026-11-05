@@ -1,0 +1,11 @@
+#Translations for continuous to timeline migration
+de-inf:
+  phase_title_default:
+    ideation: Beiträge sammeln
+    voting: Abstimmung
+    poll: Blitz-Umfrage
+    native_survey: Umfrage
+    survey: Umfrage
+    document_annotation: Feedback zu Dokumenten
+    volunteering: Teilnehmende finden
+    information: Informieren

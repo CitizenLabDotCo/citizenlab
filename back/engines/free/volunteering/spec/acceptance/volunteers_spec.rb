@@ -101,18 +101,28 @@ resource 'Volunteering Volunteers' do
   end
 
   context 'when admin' do
-    before { admin_header_token }
+    before do
+      admin_header_token
+      @cause = create(:cause)
+      @volunteers = create_list(:volunteer, 3, cause: @cause)
+      create(:volunteer)
+      @phase = create(:volunteering_phase)
+      @cause1 = create(:cause, title_multiloc: { en: 'For sure works with very long titles too!!!' }, phase: @phase)
+      create(:custom_field_domicile)
+      area = create(:area, title_multiloc: { 'en' => 'Center' })
+      user = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'domicile', value: area.id)])
+      @volunteer1 = create(:volunteer, cause: @cause1, user: user)
+      @other_volunteers = create_list(:volunteer, 2, cause: @cause1)
+      @cause2 = create(:cause, phase: @phase)
+      @volunteers2 = create_list(:volunteer, 3, cause: @cause2)
+      create(:cause)
+      create(:volunteer)
+    end
 
     get 'web_api/v1/causes/:cause_id/volunteers' do
       with_options scope: :page do
         parameter :number, 'Page number'
         parameter :size, 'Number of volunteers per page'
-      end
-
-      before do
-        @cause = create(:cause)
-        @volunteers = create_list(:volunteer, 3, cause: @cause)
-        create(:volunteer)
       end
 
       let(:cause_id) { @cause.id }
@@ -127,20 +137,6 @@ resource 'Volunteering Volunteers' do
     end
 
     get 'web_api/v1/phases/:phase_id/volunteers/as_xlsx' do
-      before do
-        @phase = create(:volunteering_phase)
-        @cause1 = create(:cause, title_multiloc: { en: 'For sure works with very long titles too!!!' }, phase: @phase)
-        create(:custom_field_domicile)
-        area = create(:area, title_multiloc: { 'en' => 'Center' })
-        user = create(:user, custom_field_values: { 'domicile' => area.id })
-        @volunteer1 = create(:volunteer, cause: @cause1, user: user)
-        @other_volunteers = create_list(:volunteer, 2, cause: @cause1)
-        @cause2 = create(:cause, phase: @phase)
-        @volunteers2 = create_list(:volunteer, 3, cause: @cause2)
-        create(:cause)
-        create(:volunteer)
-      end
-
       let(:phase_id) { @phase.id }
 
       example_request 'XLSX export all volunteers of a project' do
@@ -155,8 +151,13 @@ resource 'Volunteering Volunteers' do
         expect(worksheets[0][1][0].value).to eq @volunteer1.user.first_name
         expect(worksheets[0][1][1].value).to eq @volunteer1.user.last_name
         expect(worksheets[0][1][2].value).to eq @volunteer1.user.email
-        expect(worksheets[0][1][3].value.to_i).to eq @volunteer1.created_at.to_i
         expect(worksheets[0][1][4].value).to eq 'Center'
+
+        # On writing: Axlsx ignores timezone and offset when storing dates.
+        # On reading: RubyXL reads the naive datetime as UTC.
+        created_at = override_timezone(worksheets[0][1][3].value, AppConfiguration.timezone)
+        # Not an exact match due to precision loss during xlsx serialization
+        expect(created_at).to be_within(1e-3.seconds).of @volunteer1.created_at
       end
 
       describe 'when resident' do

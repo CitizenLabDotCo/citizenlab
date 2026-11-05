@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { set } from 'js-cookie';
+import Cookies from 'js-cookie';
 
 import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
 
@@ -24,23 +24,29 @@ const CommunityMonitorModal = () => {
   });
   const phaseId = project?.data.relationships.current_phase?.data?.id;
 
-  const onClose = () => {
+  // Stable identity: QuestionPreview depends on this in an effect.
+  const onClose = useCallback(() => {
     // Set cookie expiration date to 3 months from today
     const expirationDate = new Date();
     expirationDate.setMonth(expirationDate.getMonth() + 3);
 
-    set('community_monitor_modal_seen', 'true', {
+    Cookies.set('community_monitor_modal_seen', 'true', {
       expires: expirationDate,
     });
     removeModal('community-monitor');
-  };
+  }, [removeModal]);
 
   if (!project || !phaseId) {
     return null;
   }
 
   return (
-    <Modal opened close={onClose} width="460px">
+    <Modal
+      opened
+      close={onClose}
+      width="460px"
+      ariaLabelledBy="community-monitor-modal-title"
+    >
       <Box mt="40px">
         <QuestionPreview
           projectSlug={project.data.attributes.slug}

@@ -9,6 +9,7 @@ import useDismissOnboardingCampaign from 'api/onboarding_campaigns/useDismissOnb
 
 import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/HomepageBanner';
 
+import { homepageBannerLayoutHeights } from 'components/LandingPages/citizen/constants';
 import {
   Container,
   HeaderImage,
@@ -20,6 +21,7 @@ import { trackEventByName } from 'utils/analytics';
 
 import tracks from '../tracks';
 
+import AdminHomePageEditButton from './AdminHomePageEditButton';
 import Skeleton from './Skeleton';
 
 const CompleteProfileStep = lazy(() => import('./CompleteProfileStep'));
@@ -29,15 +31,19 @@ const VerificationOnboardingStep = lazy(
 const CustomCTAStep = lazy(() => import('./CustomCTAStep'));
 const FallbackStep = lazy(() => import('./FallbackStep'));
 
-export const heights = {
+export const defaultHeights = {
   phone: 300,
   tablet: 250,
   desktop: 200,
 };
 
-const Header = styled.div`
+const Header = styled.div<{
+  desktopHeight: number;
+  tabletHeight: number;
+  phoneHeight: number;
+}>`
   width: 100%;
-  height: ${heights.desktop}px;
+  height: ${(props) => props.desktopHeight}px;
   margin: 0;
   padding: 0;
   position: relative;
@@ -47,11 +53,11 @@ const Header = styled.div`
   justify-content: center;
 
   ${media.tablet`
-    height: ${heights.tablet}px;
+    height: ${(props) => props.tabletHeight}px;
   `}
 
   ${media.phone`
-    height: ${heights.phone}px;
+    height: ${(props) => props.phoneHeight}px;
   `}
 `;
 
@@ -62,7 +68,7 @@ const SignedInHeader = ({
   homepageSettings: Partial<IHomepageBannerSettings>;
   isContentBuilderDisplay?: boolean;
 }) => {
-  const { data: currentOnboardingCampaign, isInitialLoading } =
+  const { data: currentOnboardingCampaign, isLoading } =
     useCurrentOnboardingCampaign();
   const { mutate: dismissOnboardingCampaign } = useDismissOnboardingCampaign();
 
@@ -79,11 +85,51 @@ const SignedInHeader = ({
   const homepageSettingOpacity =
     homepageSettings.banner_signed_in_header_overlay_opacity;
 
-  if (isInitialLoading) {
+  // When consistent height is enabled, use layout defaults for signed-in banner
+  const useConsistentHeight =
+    homepageSettings.banner_use_consistent_height === true;
+
+  // Get layout-specific defaults
+  const bannerLayout =
+    homepageSettings.banner_layout || 'full_width_banner_layout';
+  const layoutDefaults = homepageBannerLayoutHeights[bannerLayout];
+
+  let desktopHeight: number;
+  let tabletHeight: number;
+  let phoneHeight: number;
+
+  if (useConsistentHeight) {
+    // Use the same height as the signed-out banner (custom values if set, otherwise layout defaults)
+    desktopHeight =
+      homepageSettings.banner_signed_out_header_height_desktop ??
+      layoutDefaults.desktop;
+    tabletHeight =
+      homepageSettings.banner_signed_out_header_height_tablet ??
+      layoutDefaults.tablet;
+    phoneHeight =
+      homepageSettings.banner_signed_out_header_height_phone ??
+      layoutDefaults.phone;
+  } else {
+    // Use the custom signed-in heights, or fall back to default heights
+    desktopHeight =
+      homepageSettings.banner_signed_in_header_height_desktop ??
+      defaultHeights.desktop;
+    tabletHeight =
+      homepageSettings.banner_signed_in_header_height_tablet ??
+      defaultHeights.tablet;
+    phoneHeight =
+      homepageSettings.banner_signed_in_header_height_phone ??
+      defaultHeights.phone;
+  }
+
+  if (isLoading) {
     return (
       <Skeleton
         homepageSettingColor={homepageSettingColor ?? undefined}
         homepageSettingOpacity={homepageSettingOpacity ?? undefined}
+        desktopHeight={desktopHeight}
+        tabletHeight={tabletHeight}
+        phoneHeight={phoneHeight}
       />
     );
   }
@@ -100,48 +146,56 @@ const SignedInHeader = ({
       data-cy="e2e-full-width-banner-layout-container"
       className={`e2e-signed-in-header`}
     >
-      <Header id="hook-header">
-        <HeaderImage id="hook-header-image">
-          <HeaderImageBackground
-            data-testid="full-width-banner-layout-header-image"
-            data-cy="e2e-full-width-banner-layout-header-image"
-            src={homepageSettings.header_bg?.large || null}
-          />
-          {homepageSettingColor &&
-            typeof homepageSettingOpacity === 'number' && (
-              <HeaderImageOverlay
-                data-cy="e2e-full-width-layout-header-image-overlay"
-                overlayColor={homepageSettingColor}
-                overlayOpacity={homepageSettingOpacity}
-              />
-            )}
-        </HeaderImage>
+      <Box position="relative" w="100%">
+        <Header
+          id="hook-header"
+          desktopHeight={desktopHeight}
+          tabletHeight={tabletHeight}
+          phoneHeight={phoneHeight}
+        >
+          <HeaderImage id="hook-header-image">
+            <HeaderImageBackground
+              data-testid="full-width-banner-layout-header-image"
+              data-cy="e2e-full-width-banner-layout-header-image"
+              src={homepageSettings.header_bg?.large || null}
+            />
+            {homepageSettingColor &&
+              typeof homepageSettingOpacity === 'number' && (
+                <HeaderImageOverlay
+                  data-cy="e2e-full-width-layout-header-image-overlay"
+                  overlayColor={homepageSettingColor}
+                  overlayOpacity={homepageSettingOpacity}
+                />
+              )}
+          </HeaderImage>
 
-        <Box>
-          <Suspense fallback={null}>
-            <VerificationOnboardingStep
-              currentOnboardingCampaignName={onboardingCampaignName}
-              onSkip={handleSkip('verification')}
-            />
-            <CompleteProfileStep
-              currentOnboardingCampaignName={onboardingCampaignName}
-              onSkip={handleSkip('complete_profile')}
-            />
-            {/*
+          <Box>
+            <Suspense fallback={null}>
+              <VerificationOnboardingStep
+                currentOnboardingCampaignName={onboardingCampaignName}
+                onSkip={handleSkip('verification')}
+              />
+              <CompleteProfileStep
+                currentOnboardingCampaignName={onboardingCampaignName}
+                onSkip={handleSkip('complete_profile')}
+              />
+              {/*
             This step is configured via AdminHQ.
               See https://citizenlab.atlassian.net/browse/CL-2289
             */}
-            <CustomCTAStep
-              currentOnboardingCampaignName={onboardingCampaignName}
-              onSkip={handleSkip('custom_cta')}
-            />
-            <FallbackStep
-              currentOnboardingCampaignName={onboardingCampaignName}
-              homepageSettings={homepageSettings}
-            />
-          </Suspense>
-        </Box>
-      </Header>
+              <CustomCTAStep
+                currentOnboardingCampaignName={onboardingCampaignName}
+                onSkip={handleSkip('custom_cta')}
+              />
+              <FallbackStep
+                currentOnboardingCampaignName={onboardingCampaignName}
+                homepageSettings={homepageSettings}
+              />
+            </Suspense>
+          </Box>
+        </Header>
+        {!isContentBuilderDisplay && <AdminHomePageEditButton />}
+      </Box>
     </Container>
   );
 };

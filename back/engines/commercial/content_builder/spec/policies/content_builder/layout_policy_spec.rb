@@ -13,6 +13,7 @@ RSpec.describe ContentBuilder::LayoutPolicy do
 
     it { is_expected.to permit(:show) }
     it { is_expected.not_to permit(:upsert) }
+    it { is_expected.not_to permit(:update) }
     it { is_expected.not_to permit(:destroy) }
   end
 
@@ -21,6 +22,7 @@ RSpec.describe ContentBuilder::LayoutPolicy do
 
     it { is_expected.to permit(:show) }
     it { is_expected.not_to permit(:upsert) }
+    it { is_expected.not_to permit(:update) }
     it { is_expected.not_to permit(:destroy) }
   end
 
@@ -28,43 +30,196 @@ RSpec.describe ContentBuilder::LayoutPolicy do
     let(:user) { instance_double User, active?: true }
 
     before do
-      allow(user_role_service).to receive(
-        :can_moderate?
-      ).with(
-        layout.content_buildable,
-        user
-      ).and_return can_moderate
+      allow(user_role_service)
+        .to receive(:can_moderate?)
+        .with(layout.content_buildable, user)
+        .and_return can_moderate
     end
 
     context 'for non-moderators' do
       let(:can_moderate) { false }
 
       it { is_expected.to permit(:show) }
-
-      it 'forbids upsert' do
-        expect(user_role_service).to receive(:can_moderate?)
-        expect(policy).not_to permit(:upsert)
-      end
-
-      it 'forbids destroy' do
-        expect(user_role_service).to receive(:can_moderate?)
-        expect(policy).not_to permit(:destroy)
-      end
+      it { is_expected.not_to permit(:upsert) }
+      it { is_expected.not_to permit(:update) }
+      it { is_expected.not_to permit(:destroy) }
     end
 
     context 'for moderators' do
       let(:can_moderate) { true }
 
       it { is_expected.to permit(:show) }
+      it { is_expected.to permit(:upsert) }
+      it { is_expected.to permit(:update) }
+      it { is_expected.to permit(:destroy) }
 
-      it 'permits upsert' do
-        expect(user_role_service).to receive(:can_moderate?)
-        expect(policy).to permit(:upsert)
+      context 'when craftjs_json references files' do
+        let(:file) { create(:file) }
+        let(:layout) do
+          create(:layout, craftjs_json: {
+            'ROOT' => { 'type' => { 'resolvedName' => 'Container' }, 'nodes' => ['node1'] },
+            'node1' => { 'type' => { 'resolvedName' => 'FileAttachment' }, 'props' => { 'fileId' => file.id } }
+          })
+        end
+
+        context 'when user is authorized to use the file' do
+          before do
+            allow_any_instance_of(Files::FilePolicy).to receive(:update?).and_return(true)
+          end
+
+          it { is_expected.to permit(:upsert) }
+          it { is_expected.to permit(:update) }
+        end
+
+        context 'when user is not authorized to use the file' do
+          before do
+            allow_any_instance_of(Files::FilePolicy).to receive(:update?).and_return(false)
+          end
+
+          it { is_expected.not_to permit(:upsert) }
+          it { is_expected.not_to permit(:update) }
+        end
+
+        context 'when file does not exist' do
+          let(:layout) do
+            create(:layout, craftjs_json: {
+              'ROOT' => { 'type' => { 'resolvedName' => 'Container' }, 'nodes' => ['node1'] },
+              'node1' => { 'type' => { 'resolvedName' => 'FileAttachment' }, 'props' => { 'fileId' => 'non-existent-id' } }
+            })
+          end
+
+          it 'permits update (allows saving to fix layout)' do
+            expect(user_role_service).to receive(:can_moderate?)
+            expect(policy).to permit(:update)
+          end
+        end
+      end
+    end
+  end
+
+  # Unstubbed, unlike the contexts above, so these exercise UserRoleService#can_moderate?'s
+  # StaticPage branch: a global page's layout is admin-only.
+  context 'for a custom page layout' do
+    let(:layout) do
+      create(:layout, content_buildable: create(:static_page), code: ContentBuilder::CustomPageLayoutService::CODE)
+    end
+
+    context 'for a visitor' do
+      let(:user) { nil }
+
+      it { is_expected.to permit(:show) }
+      it { is_expected.not_to permit(:upsert) }
+      it { is_expected.not_to permit(:update) }
+      it { is_expected.not_to permit(:destroy) }
+    end
+
+    context 'for a regular user' do
+      let(:user) { create(:user) }
+
+      it { is_expected.to permit(:show) }
+      it { is_expected.not_to permit(:upsert) }
+      it { is_expected.not_to permit(:update) }
+      it { is_expected.not_to permit(:destroy) }
+    end
+
+    context 'for a project moderator' do
+      let(:user) { create(:project_moderator) }
+
+      it { is_expected.to permit(:show) }
+      it { is_expected.not_to permit(:upsert) }
+      it { is_expected.not_to permit(:update) }
+      it { is_expected.not_to permit(:destroy) }
+    end
+
+    context 'for an admin' do
+      let(:user) { create(:admin) }
+
+      it { is_expected.to permit(:show) }
+      it { is_expected.to permit(:upsert) }
+      it { is_expected.to permit(:update) }
+      it { is_expected.to permit(:destroy) }
+    end
+  end
+
+  # A project's page follows its project, as StaticPagePolicy does for the page itself.
+  context 'for a project page layout' do
+    let(:project) { create(:project) }
+    let(:layout) do
+      create(
+        :layout,
+        content_buildable: create(:static_page, project: project),
+        code: ContentBuilder::CustomPageLayoutService::CODE
+      )
+    end
+
+    context 'for a moderator of the page\'s project' do
+      let(:user) { create(:project_moderator, projects: [project]) }
+
+      it { is_expected.to permit(:upsert) }
+      it { is_expected.to permit(:update) }
+      it { is_expected.to permit(:destroy) }
+    end
+
+    context 'for a moderator of another project' do
+      let(:user) { create(:project_moderator) }
+
+      it { is_expected.not_to permit(:upsert) }
+      it { is_expected.not_to permit(:update) }
+      it { is_expected.not_to permit(:destroy) }
+    end
+
+    context 'when the project is a draft' do
+      let(:project) { create(:project, :draft) }
+
+      context 'for a visitor' do
+        let(:user) { nil }
+
+        it { is_expected.not_to permit(:show) }
       end
 
-      it 'permits destroy' do
-        expect(user_role_service).to receive(:can_moderate?)
-        expect(policy).to permit(:destroy)
+      context 'for a moderator of the page\'s project' do
+        let(:user) { create(:project_moderator, projects: [project]) }
+
+        it { is_expected.to permit(:show) }
+      end
+
+      context 'for an admin' do
+        let(:user) { create(:admin) }
+
+        it { is_expected.to permit(:show) }
+      end
+    end
+  end
+
+  describe 'Scope' do
+    subject(:resolved_scope) { described_class::Scope.new(user, ContentBuilder::Layout).resolve }
+
+    context 'when a content_buildable_type raises NotAuthorizedError' do
+      let(:user) { create(:user) }
+      let!(:project) { create(:project) }
+      let!(:accessible_layout) { create(:layout, content_buildable: project) }
+      let!(:homepage_layout) { create(:layout, content_buildable: nil) }
+
+      before do
+        # Create a layout with a content_buildable_type that will raise NotAuthorizedError
+        # We need to stub scope_for to raise the exception for a specific type
+        allow_any_instance_of(described_class::Scope).to receive(:scope_for) do |_instance, klass|
+          if klass == Project
+            raise Pundit::NotAuthorizedError, 'not allowed'
+          end
+
+          klass.none
+        end
+      end
+
+      it 'filters out layouts that raise NotAuthorizedError and returns accessible layouts' do
+        # The accessible_layout should be filtered out (because scope_for raises exception)
+        # But the homepage_layout (with nil content_buildable_type) should still be included
+        expect(resolved_scope).to contain_exactly(homepage_layout)
+      end
+
+      it 'does not raise an exception' do
+        expect { resolved_scope }.not_to raise_error
       end
     end
   end

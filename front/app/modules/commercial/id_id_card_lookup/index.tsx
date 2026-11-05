@@ -1,10 +1,7 @@
 import React from 'react';
 
-import {
-  TVerificationMethodName,
-  IDLookupMethod,
-} from 'api/verification_methods/types';
-import { isLastVerificationMethod } from 'api/verification_methods/util';
+import { IdMethodName, IDLookupMethod } from 'api/id_methods/types';
+import { isLastIdMethod } from 'api/id_methods/utils';
 
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
@@ -15,22 +12,19 @@ const IdCardLookupForm = React.lazy(
   () => import('./components/IdCardLookupForm')
 );
 
-const verificationMethodName: TVerificationMethodName = 'id_card_lookup';
+const verificationMethodName: IdMethodName = 'id_card_lookup';
 const configuration: ModuleConfiguration = {
   outlets: {
     'app.components.VerificationModal.buttons': ({
-      verificationMethods,
+      idMethods,
       ...otherProps
     }) => {
-      const method = verificationMethods.find(
+      const method = idMethods.find(
         (vm) => vm.attributes.name === verificationMethodName
       );
 
       if (method) {
-        const last = isLastVerificationMethod(
-          verificationMethodName,
-          verificationMethods
-        );
+        const last = isLastIdMethod(verificationMethodName, idMethods);
         return (
           <IdCardLookupButton
             last={last}

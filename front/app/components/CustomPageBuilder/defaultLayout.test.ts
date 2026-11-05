@@ -1,0 +1,224 @@
+import { SerializedNodes } from '@craftjs/core';
+
+import {
+  BODY_NODE_ID,
+  bannerHasContent,
+  defaultCustomPageLayout,
+  layoutHasContent,
+  layoutStartsWithBanner,
+  normalizeCustomPageLayout,
+} from './defaultLayout';
+
+const textNode = (parent: string) =>
+  ({
+    type: { resolvedName: 'TextMultiloc' },
+    nodes: [],
+    props: { text: { en: '<p>Hi</p>' } },
+    custom: {},
+    hidden: false,
+    parent,
+    isCanvas: false,
+    displayName: 'TextMultiloc',
+    linkedNodes: {},
+  } as unknown as SerializedNodes[string]);
+
+const rootOnlyLayout = (): SerializedNodes => {
+  const layout = defaultCustomPageLayout();
+  delete layout[BODY_NODE_ID];
+  layout.ROOT = { ...layout.ROOT, nodes: ['TXT'] };
+  layout.TXT = textNode('ROOT');
+  return layout;
+};
+
+describe('normalizeCustomPageLayout', () => {
+  it('returns the default scaffold when there is no stored layout', () => {
+    expect(normalizeCustomPageLayout(undefined)).toEqual(
+      defaultCustomPageLayout()
+    );
+  });
+
+  it('returns the default scaffold when the stored layout has no ROOT', () => {
+    expect(normalizeCustomPageLayout({})).toEqual(defaultCustomPageLayout());
+  });
+
+  it('leaves a well-formed layout intact', () => {
+    const nodes = {
+      ...defaultCustomPageLayout(),
+      TXT: textNode(BODY_NODE_ID),
+    } as SerializedNodes;
+    nodes[BODY_NODE_ID].nodes = ['TXT'];
+
+    const result = normalizeCustomPageLayout(nodes);
+
+    expect(result.ROOT.nodes).toEqual([BODY_NODE_ID]);
+    expect(result[BODY_NODE_ID].nodes).toEqual(['TXT']);
+    expect(result.TXT.parent).toBe(BODY_NODE_ID);
+  });
+
+  it('adopts ROOT children into a body when the layout has none', () => {
+    const result = normalizeCustomPageLayout(rootOnlyLayout());
+
+    expect(result.ROOT.nodes).toEqual([BODY_NODE_ID]);
+    expect(result[BODY_NODE_ID].nodes).toEqual(['TXT']);
+    expect(result.TXT.parent).toBe(BODY_NODE_ID);
+  });
+
+  // Normalising exists to survive a malformed stored graph, not to throw on one.
+  it('survives a ROOT with no children array', () => {
+    const result = normalizeCustomPageLayout({
+      ROOT: {},
+    } as unknown as SerializedNodes);
+
+    expect(result.ROOT.nodes).toEqual([BODY_NODE_ID]);
+    expect(result[BODY_NODE_ID].nodes).toEqual([]);
+  });
+
+  // The banner and title slots will sit here; rebuilding ROOT from the body alone drops them.
+  it('keeps a pinned sibling of the body on ROOT', () => {
+    const nodes = {
+      ...defaultCustomPageLayout(),
+      BANNER: textNode('ROOT'),
+    } as SerializedNodes;
+    nodes.ROOT = { ...nodes.ROOT, nodes: ['BANNER', BODY_NODE_ID] };
+
+    const result = normalizeCustomPageLayout(nodes);
+
+    expect(result.ROOT.nodes).toEqual(['BANNER', BODY_NODE_ID]);
+    expect(result.BANNER).toBeDefined();
+  });
+
+  it('drops a ROOT child that has no node in the graph', () => {
+    const nodes = { ...defaultCustomPageLayout() } as SerializedNodes;
+    nodes.ROOT = { ...nodes.ROOT, nodes: ['GHOST', BODY_NODE_ID] };
+
+    expect(normalizeCustomPageLayout(nodes).ROOT.nodes).toEqual([BODY_NODE_ID]);
+  });
+
+  it('re-parents a child that points somewhere other than the body', () => {
+    const nodes = {
+      ...defaultCustomPageLayout(),
+      TXT: textNode('SOMEWHERE_ELSE'),
+    } as SerializedNodes;
+    nodes[BODY_NODE_ID].nodes = ['TXT'];
+
+    expect(normalizeCustomPageLayout(nodes).TXT.parent).toBe(BODY_NODE_ID);
+  });
+});
+
+const titleNode = (showTitle: boolean) => ({
+  type: { resolvedName: 'CustomPageTitle' },
+  nodes: [],
+  props: { showTitle },
+  custom: {},
+  hidden: false,
+  parent: BODY_NODE_ID,
+  isCanvas: false,
+  displayName: 'CustomPageTitle',
+  linkedNodes: {},
+});
+
+const bannerNode = (headerMultiloc: Record<string, string>) => ({
+  type: { resolvedName: 'CustomPageBanner' },
+  nodes: [],
+  props: { headerMultiloc, subheaderMultiloc: {}, ctaType: 'no_button' },
+  custom: {},
+  hidden: false,
+  parent: BODY_NODE_ID,
+  isCanvas: false,
+  displayName: 'CustomPageBanner',
+  linkedNodes: {},
+});
+
+// A body in the given order, holding a title, a banner and a text widget.
+const bodyWith = (
+  showTitle: boolean,
+  bodyIds: string[],
+  bannerHeader: Record<string, string> = { en: 'Welcome' }
+) =>
+  ({
+    ...defaultCustomPageLayout(),
+    [BODY_NODE_ID]: {
+      ...defaultCustomPageLayout()[BODY_NODE_ID],
+      nodes: bodyIds,
+    },
+    title: titleNode(showTitle),
+    banner: bannerNode(bannerHeader),
+    txt: textNode(BODY_NODE_ID),
+  } as unknown as SerializedNodes);
+
+describe('bannerHasContent', () => {
+  const empty = {
+    image: {},
+    headerMultiloc: {},
+    subheaderMultiloc: {},
+    ctaType: 'no_button' as const,
+  };
+
+  it('is false for a banner fresh from the toolbox', () => {
+    expect(bannerHasContent(empty)).toBe(false);
+  });
+
+  it.each([
+    ['an image', { image: { imageUrl: 'https://example.com/header.jpg' } }],
+    ['a heading', { headerMultiloc: { en: 'Welcome' } }],
+    ['a subheader', { subheaderMultiloc: { en: 'Have your say' } }],
+    ['a button', { ctaType: 'customized_button' as const }],
+  ])('is true for a banner with only %s', (_, content) => {
+    expect(bannerHasContent({ ...empty, ...content })).toBe(true);
+  });
+});
+
+describe('layoutStartsWithBanner', () => {
+  it('is true when the body opens with a banner', () => {
+    expect(layoutStartsWithBanner(bodyWith(false, ['banner', 'title']))).toBe(
+      true
+    );
+    expect(layoutStartsWithBanner(bodyWith(true, ['banner', 'title']))).toBe(
+      true
+    );
+  });
+
+  it('is false when a shown title comes first', () => {
+    expect(layoutStartsWithBanner(bodyWith(true, ['title', 'banner']))).toBe(
+      false
+    );
+  });
+
+  // The page renders nothing for it, so the first real widget would sit under the nav bar.
+  it('is false when the banner that opens the body draws nothing', () => {
+    expect(
+      layoutStartsWithBanner(bodyWith(false, ['banner', 'title'], {}))
+    ).toBe(false);
+  });
+});
+
+describe('layoutHasContent', () => {
+  // Every derived layout carries the title, so it must not count as content: the page would
+  // otherwise hand itself to an empty builder and drop its legacy sections.
+  it('is false for a layout that holds only the scaffold and the title', () => {
+    expect(layoutHasContent(bodyWith(true, ['title']))).toBe(false);
+  });
+
+  it('is false for a layout that holds only the scaffold', () => {
+    expect(layoutHasContent(defaultCustomPageLayout())).toBe(false);
+  });
+
+  it('is false when there is no layout', () => {
+    expect(layoutHasContent(undefined)).toBe(false);
+  });
+
+  it('is true when the body region holds a widget', () => {
+    const nodes = {
+      ...defaultCustomPageLayout(),
+      TXT: textNode(BODY_NODE_ID),
+    } as SerializedNodes;
+    nodes[BODY_NODE_ID].nodes = ['TXT'];
+
+    expect(layoutHasContent(nodes)).toBe(true);
+  });
+
+  // A graph saved before the body region existed keeps its widgets on ROOT.
+  it('is true when ROOT holds the widgets and there is no body', () => {
+    expect(layoutHasContent(rootOnlyLayout())).toBe(true);
+  });
+});

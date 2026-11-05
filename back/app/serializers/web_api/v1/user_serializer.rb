@@ -1,59 +1,31 @@
 # frozen_string_literal: true
 
 class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
-  attributes :slug,
-    :locale,
-    :roles,
-    :highest_role,
+  PRIVATE = proc { |object, params| view_private_attributes? object, params }
+  OWN_EARLY_ACCESS = proc { |object, params| own_early_access? object, params }
+
+  # Public attributes
+  attributes :locale,
     :bio_multiloc,
+    :invite_status, # Cannot be private as there is no current_user when an invite is accepted
     :registration_completed_at,
-    :invite_status,
-    :blocked,
-    :block_start_at,
-    :block_end_at,
-    :block_reason,
-    :followings_count,
-    :onboarding,
     :created_at,
     :updated_at
 
   attribute :last_name do |object, params|
-    name_service = UserDisplayNameService.new(AppConfiguration.instance, current_user(params))
-    name_service.last_name(object)
+    name_service(params).last_name(object)
   end
 
   attribute :first_name do |object, params|
-    name_service = UserDisplayNameService.new(AppConfiguration.instance, current_user(params))
-    name_service.first_name(object)
+    name_service(params).first_name(object)
   end
 
   attribute :display_name do |object, params|
-    name_service = UserDisplayNameService.new(AppConfiguration.instance, current_user(params))
-    name_service.display_name(object)
+    name_service(params).display_name(object)
   end
 
   attribute :no_name do |object|
     object.no_name?
-  end
-
-  attribute :no_password, if: proc { |object, params|
-    view_private_attributes? object, params
-  } do |object|
-    object.no_password?
-  end
-
-  attribute :email, if: proc { |object, params|
-    view_private_attributes? object, params
-  }
-
-  attribute :last_active_at, if: proc { |object, params|
-    view_private_attributes? object, params
-  }
-
-  attribute :custom_field_values, if: proc { |object, params|
-    view_private_attributes? object, params
-  } do |object|
-    CustomFieldService.remove_hidden_custom_fields(object.custom_field_values)
   end
 
   attribute :avatar, if: proc { |object|
@@ -62,37 +34,61 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
     object.avatar.versions.to_h { |k, v| [k.to_s, v.url] }
   end
 
-  attribute :unread_notifications, if: proc { |object, params| object == current_user(params) } do |object|
+  # Private attributes
+  attribute :roles, if: PRIVATE
+  attribute :highest_role, if: PRIVATE
+  attribute :email, if: PRIVATE
+  attribute :last_active_at, if: PRIVATE
+  attribute :block_start_at, if: PRIVATE
+  attribute :block_end_at, if: PRIVATE
+  attribute :block_reason, if: PRIVATE
+  attribute :email_bounced_at, if: PRIVATE
+  attribute :email_bounce_reason, if: PRIVATE
+  attribute :verified, if: PRIVATE
+  attribute :followings_count, if: PRIVATE
+  attribute :onboarding, if: PRIVATE
+  attribute :early_access_opt_ins, if: OWN_EARLY_ACCESS
+  attribute :offered_early_access_features, if: OWN_EARLY_ACCESS
+
+  attribute :no_password, if: PRIVATE do |object|
+    object.no_password?
+  end
+
+  attribute :custom_field_values do |object, params|
+    user = current_user(params)
+    object.custom_field_answers
+      .select { |answer| CustomFieldAnswerPolicy.new(user, answer).show? }
+      .to_h { [it.key, it.value] }
+  end
+
+  attribute :unread_notifications, if: PRIVATE do |object|
     object.unread_notifications.size
   end
 
-  attribute :confirmation_required do |user|
+  attribute :confirmation_required, if: PRIVATE do |user|
     user.confirmation_required?
   end
 
-  attribute :blocked, if: proc { |object, params|
-    view_private_attributes? object, params
-  } do |object|
+  attribute :blocked, if: PRIVATE do |object|
     object.blocked?
   end
 
-  attribute :block_start_at, if: proc { |object, params|
-    view_private_attributes? object, params
-  }
+  attribute :new_email, if: PRIVATE
+  attribute :merge_target_email, if: PRIVATE
 
-  attribute :block_end_at, if: proc { |object, params|
-    view_private_attributes? object, params
-  }
+  attribute :phone, if: PRIVATE
+  attribute :phone_confirmed_at, if: PRIVATE
+  attribute :new_phone, if: PRIVATE
 
-  attribute :block_reason, if: proc { |object, params|
-    view_private_attributes? object, params
-  }
-
-  attribute :verified, if: proc { |object, params|
-    view_private_attributes? object, params
-  }
+  def self.name_service(params)
+    UserDisplayNameService.new(AppConfiguration.instance, current_user(params))
+  end
 
   def self.view_private_attributes?(object, params = {})
     Pundit.policy!(user_context(params), object).view_private_attributes?
+  end
+
+  def self.own_early_access?(object, params = {})
+    Pundit.policy!(user_context(params), object).own_early_access?
   end
 end

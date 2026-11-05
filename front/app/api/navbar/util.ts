@@ -1,22 +1,33 @@
-import { RouteType } from 'routes';
+import { TDefaultNavbarItemCode, INavbarItem, INavbarChild } from './types';
 
-import { TDefaultNavbarItemCode, INavbarItem } from './types';
-
-export const DEFAULT_PAGE_SLUGS: Record<TDefaultNavbarItemCode, RouteType> = {
+export const DEFAULT_PAGE_SLUGS: Record<TDefaultNavbarItemCode, string> = {
   home: '/',
   projects: '/projects',
   all_input: '/ideas',
   events: '/events',
 };
 
+// A dropdown is a custom navbar item that groups children instead of linking
+// to a target (page, project or folder) of its own.
+export function isNavbarDropdown({
+  attributes: { code },
+  relationships,
+}: INavbarItem): boolean {
+  const linksToTarget =
+    !!relationships.static_page.data?.id ||
+    !!relationships.project.data?.id ||
+    !!relationships.project_folder.data?.id;
+  return code === 'custom' && !linksToTarget;
+}
+
 // utility function to get slug associated with navbar item
 export function getNavbarItemSlug({
   attributes: { code, slug },
   relationships,
-}: INavbarItem): RouteType | null {
+}: INavbarItem): string | null {
   const hasCorrespondingPage = !!relationships.static_page.data?.id;
   const hasCorrespondingProject = !!relationships.project.data?.id;
-  const hasCorrespondingFolder = !!relationships.project_folder?.data?.id;
+  const hasCorrespondingFolder = !!relationships.project_folder.data?.id;
 
   // Default navbar item
   if (code !== 'custom' && !hasCorrespondingPage) {
@@ -38,8 +49,32 @@ export function getNavbarItemSlug({
     return `/folders/${slug}`;
   }
 
-  // This is impossible, but I can't seem to make typescript understand
-  // that. So just returning null here
+  // Dropdown items (custom, no target of their own) have no slug and land here.
+  return null;
+}
+
+// A navbar child always targets one of three typed routes, all of which take a
+// single `slug` param. Keeping the route literals in the type (rather than
+// widening `to` to `string`) is what lets Link callsites resolve `params`
+// against the route tree instead of casting.
+export type NavbarChildLink = {
+  to: '/pages/$slug' | '/projects/$slug' | '/folders/$slug';
+  params: { slug: string };
+};
+
+export function getNavbarChildLink(
+  child: INavbarChild
+): NavbarChildLink | null {
+  if (!child.slug) return null;
+  if (child.static_page_id) {
+    return { to: '/pages/$slug', params: { slug: child.slug } };
+  }
+  if (child.project_id) {
+    return { to: '/projects/$slug', params: { slug: child.slug } };
+  }
+  if (child.project_folder_id) {
+    return { to: '/folders/$slug', params: { slug: child.slug } };
+  }
   return null;
 }
 

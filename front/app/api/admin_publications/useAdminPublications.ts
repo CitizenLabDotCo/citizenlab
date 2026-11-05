@@ -1,4 +1,4 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, InfiniteData } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
 import useDebouncedValue from 'hooks/useDebouncedValue';
@@ -21,8 +21,9 @@ export const fetchAdminPublications = (filters: IQueryParameters) => {
     removeNotAllowedParents,
     publicationStatusFilter,
     childrenOfId,
-    topicIds,
+    globalTopics,
     areaIds,
+    spaceIds,
     onlyProjects,
     ...queryParameters
   } = filters;
@@ -36,8 +37,9 @@ export const fetchAdminPublications = (filters: IQueryParameters) => {
       remove_not_allowed_parents: removeNotAllowedParents,
       publication_statuses: publicationStatusFilter,
       folder: childrenOfId,
-      topics: topicIds,
+      global_topics: globalTopics,
       areas: areaIds,
+      spaces: spaceIds,
       only_projects: onlyProjects,
       ...queryParameters,
     },
@@ -57,8 +59,9 @@ const useAdminPublications = (
   return useInfiniteQuery<
     IAdminPublications,
     CLErrors,
-    IAdminPublications,
-    AdminPublicationsKeys
+    InfiniteData<IAdminPublications>,
+    AdminPublicationsKeys,
+    number
   >({
     queryKey: adminPublicationsKeys.list(debouncedQueryParams),
     queryFn: ({ pageParam }) =>
@@ -66,6 +69,7 @@ const useAdminPublications = (
         ...debouncedQueryParams,
         pageNumber: pageParam,
       }),
+    initialPageParam: 1,
     getNextPageParam: (lastPage) => {
       const hasNextPage = lastPage.links.next;
       const pageNumber = getPageNumberFromUrl(lastPage.links.self);

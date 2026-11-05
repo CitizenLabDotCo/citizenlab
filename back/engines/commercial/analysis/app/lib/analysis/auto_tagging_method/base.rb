@@ -40,6 +40,11 @@ module Analysis
 
     attr_reader :analysis, :task, :input_to_text, :input_to_text_classify
 
+    # Optional locale (e.g. 'nl-NL') forcing the language AI-generated tag names are
+    # written in, overriding the platform/user-derived default. Left nil on the normal
+    # UI/job path; set only by maintenance scripts that regenerate tags in a chosen locale.
+    attr_accessor :specified_locale
+
     class AutoTaggingFailedError < StandardError; end
 
     def self.for_auto_tagging_method auto_tagging_method, *params
@@ -94,8 +99,8 @@ module Analysis
 
     protected
 
-    def gpt4
-      @gpt4 ||= LLM::GPT41.new
+    def gpt5
+      @gpt5 ||= LLM::GPT54.new
     end
 
     def gpt4mini
@@ -128,7 +133,7 @@ module Analysis
     end
 
     def filtered_inputs
-      @filtered_inputs ||= InputsFinder.new(analysis, task.filters.symbolize_keys).execute.includes(:topics)
+      @filtered_inputs ||= InputsFinder.new(analysis, task.filters.symbolize_keys).execute.includes(:input_topics)
     end
 
     def find_or_create_tagging!(input_id:, tag_id:)

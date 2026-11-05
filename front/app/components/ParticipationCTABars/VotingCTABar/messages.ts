@@ -31,6 +31,17 @@ export default defineMessages({
       'You need to spend a minimum of {votesMinimum} before you can submit your basket.',
   },
 
+  // Minimum selected options
+  selectMinXOptions: {
+    id: 'app.components.ParticipationCTABars.VotingCTABar.selectMinXOptions',
+    defaultMessage: 'Select at least {minSelectedOptions} options',
+  },
+  selectMinXOptionsToVote: {
+    id: 'app.components.ParticipationCTABars.VotingCTABar.selectMinXOptionsToVote',
+    defaultMessage:
+      'You need to select at least {minSelectedOptions} options before you can submit.',
+  },
+
   // votes count
   currencyLeft1: {
     id: 'app.components.ParticipationCTABars.VotingCTABar.currencyLeft1',
@@ -55,6 +66,10 @@ export default defineMessages({
     id: 'app.components.ParticipationCTABars.VotingCTABar.numberOfCreditsLeft',
     defaultMessage:
       '{votesLeft, plural, =0 {No credits left} other {# out of {totalNumberOfVotes, plural, one {1 credit} other {# credits}} left}}',
+  },
+  numberOfPercentsLeft: {
+    id: 'app.components.ParticipationCTABars.VotingCTABar.numberOfPercentsLeft4',
+    defaultMessage: '{votesLeft, plural, =0 {No % left} other {#% left}}',
   },
   // Only used for single voting (no vote term config available)
   votesCast: {

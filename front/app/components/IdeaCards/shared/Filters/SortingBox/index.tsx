@@ -1,15 +1,15 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
 
-import { IdeaSortMethod } from 'api/phases/types';
+import { IdeaSortMethod, ideaSortMethods } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 
 import InputFilterCollapsible from 'components/FilterBoxes/InputFilterCollapsible';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { useSearch } from 'utils/router';
 
 import messages from '../messages';
 
@@ -25,9 +25,10 @@ const SortingBox = ({ handleSortOnChange, phaseId }: SortingBoxProps) => {
   const { data: phase } = usePhase(phaseId);
   const phaseDefaultSort = phase?.data.attributes.ideas_order;
 
-  const [searchParams] = useSearchParams();
-  const searchParamsSort = searchParams.get('sort') as IdeaSortMethod | null;
-  const currentSortType = searchParamsSort || phaseDefaultSort || 'trending';
+  const { sort } = useSearch({ strict: false });
+  const sortFromUrl = ideaSortMethods.find((m) => m === sort);
+  const currentSortType = sortFromUrl || phaseDefaultSort || 'trending';
+  const participationMethod = phase?.data.attributes.participation_method;
 
   return (
     <InputFilterCollapsible title={formatMessage(messages.sortBy)}>
@@ -62,6 +63,13 @@ const SortingBox = ({ handleSortOnChange, phaseId }: SortingBoxProps) => {
           handleSortOnChange={handleSortOnChange}
           isSelected={currentSortType === '-new'}
         />
+        {participationMethod === 'proposals' && (
+          <SortTypeButton
+            sortType="status_priority"
+            handleSortOnChange={handleSortOnChange}
+            isSelected={currentSortType === 'status_priority'}
+          />
+        )}
       </Box>
       <ScreenReaderOnly aria-live="polite">
         <FormattedMessage

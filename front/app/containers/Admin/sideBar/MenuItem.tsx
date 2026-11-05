@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { media, colors, Icon, Box } from '@citizenlab/cl2-component-library';
-import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
@@ -10,13 +9,16 @@ import useFeatureFlags from 'hooks/useFeatureFlags';
 
 import CountBadge from 'components/UI/CountBadge';
 
-import { FormattedMessage } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 import { usePermission } from 'utils/permissions';
 import { isSuperAdmin } from 'utils/permissions/roles';
+import { useLocation } from 'utils/router';
 
 import messages from './messages';
 import { NavItem } from './navItems';
+import RailTooltip from './RailTooltip';
+import useSidebarCollapsed from './useSidebarCollapsed';
 
 const Text = styled.div`
   flex: 1;
@@ -31,9 +33,13 @@ const Text = styled.div`
   ${media.tablet`
     display: none;
   `}
+
+  .collapsed & {
+    display: none;
+  }
 `;
 
-const MenuItemLink = styled(Link)<{ active: boolean }>`
+const MenuItemLink = typedStyled(Link)`
   flex: 0 0 auto;
   width: 224px;
   display: flex;
@@ -56,45 +62,31 @@ const MenuItemLink = styled(Link)<{ active: boolean }>`
 
   &:not(.active) {
     .cl-icon {
-      .cl-icon-primary {
-        fill: ${colors.blue400};
-      }
+      .cl-icon-primary,
       .cl-icon-accent {
-        fill: ${colors.teal400};
+        fill: ${colors.coolGrey300};
       }
     }
   }
 
   &.active {
     .cl-icon {
-      .cl-icon-primary {
-        fill: ${colors.teal400};
-      }
+      .cl-icon-primary,
       .cl-icon-accent {
-        fill: ${colors.blue400};
+        fill: ${colors.teal400};
       }
     }
   }
-
-  ${({ active }) =>
-    active
-      ? `
-    background: rgba(0, 0, 0, 0.7);
-    .cl-icon {
-      .cl-icon-primary {
-        fill: ${colors.teal400};
-      }
-      .cl-icon-accent {
-        fill: ${colors.blue400};
-      }
-    }
-  `
-      : ''}
 
   ${media.tablet`
     width: 56px;
     padding-right: 5px;
   `}
+
+  .collapsed & {
+    width: 56px;
+    padding-right: 5px;
+  }
 `;
 
 type Props = {
@@ -102,6 +94,7 @@ type Props = {
 };
 
 const MenuItem = ({ navItem }: Props) => {
+  const { formatMessage } = useIntl();
   const featuresEnabled = useFeatureFlags({
     names: navItem.featureNames ?? [],
     onlyCheckAllowed: navItem.onlyCheckAllowed,
@@ -109,6 +102,7 @@ const MenuItem = ({ navItem }: Props) => {
   const { data: user } = useAuthUser();
   const { pathname } = useLocation();
 
+  const collapsed = useSidebarCollapsed();
   const hasPermission = usePermission({
     action: 'access',
     item: { type: 'route', path: navItem.link },
@@ -130,27 +124,33 @@ const MenuItem = ({ navItem }: Props) => {
     pathname.includes('/admin/inspiration-hub');
 
   return (
-    <MenuItemLink
-      to={navItem.link}
-      className={`intercom-admin-menu-item-${navItem.name}`}
-      active={inspirationHubActive}
+    <RailTooltip
+      label={formatMessage(messages[navItem.message])}
+      disabled={!collapsed}
     >
-      <>
-        <Box
-          display="flex"
-          flex="0 0 auto"
-          alignItems="center"
-          justifyContent="center"
-          className={navItem.iconName}
-        >
-          <Icon name={navItem.iconName} height="20px" />
-        </Box>
-        <Text>
-          <FormattedMessage {...messages[navItem.message]} />
-          {!!navItem.count && <CountBadge count={navItem.count} />}
-        </Text>
-      </>
-    </MenuItemLink>
+      <MenuItemLink
+        to={navItem.link}
+        className={`intercom-admin-menu-item-${navItem.name}${
+          inspirationHubActive ? ' active' : ''
+        }`}
+      >
+        <>
+          <Box
+            display="flex"
+            flex="0 0 auto"
+            alignItems="center"
+            justifyContent="center"
+            className={navItem.iconName}
+          >
+            <Icon name={navItem.iconName} height="20px" />
+          </Box>
+          <Text>
+            <FormattedMessage {...messages[navItem.message]} />
+            {!!navItem.count && <CountBadge count={navItem.count} />}
+          </Text>
+        </>
+      </MenuItemLink>
+    </RailTooltip>
   );
 };
 

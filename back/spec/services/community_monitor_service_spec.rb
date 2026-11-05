@@ -70,6 +70,33 @@ describe CommunityMonitorService do
         end
       end
 
+      # The survey is open to everyone, which only holds while the phase has a
+      # permission of its own: without one it would inherit the global
+      # 'visiting' permission and start asking people to sign in.
+      context 'when the existing project was populated without a permission' do
+        let(:phase) { project.phases.first }
+
+        before do
+          Permission.where(permission_scope: phase).destroy_all
+          AppConfiguration.instance.settings['community_monitor']['project_id'] = nil
+        end
+
+        it 'gives the phase a permission of its own, open to everyone' do
+          service.find_or_create_project(current_user)
+
+          permission = Permission.find_by(permission_scope: phase, action: 'posting_idea')
+          expect(permission.permitted_by).to eq 'everyone'
+          expect(permission).not_to be_inherited
+        end
+
+        it 'leaves an existing permission alone, since it may have been narrowed on purpose' do
+          Permission.create!(action: 'posting_idea', permission_scope: phase, permitted_by: 'admins_moderators')
+
+          expect { service.find_or_create_project(current_user) }.not_to change(Permission, :count)
+          expect(Permission.find_by(permission_scope: phase).permitted_by).to eq 'admins_moderators'
+        end
+      end
+
       context 'when feature is disabled' do
         before { SettingsService.new.deactivate_feature! 'community_monitor' }
 
@@ -101,6 +128,8 @@ describe CommunityMonitorService do
           expect(created_phase.title_multiloc['en']).to eq 'Community monitor'
           expect(created_permission.permission_scope).to eq created_phase
           expect(created_permission.permitted_by).to eq 'everyone'
+          # A permission of its own, rather than one inherited from 'visiting'.
+          expect(created_permission).not_to be_inherited
           expect(created_form.participation_context).to eq created_phase
           expect(created_form.custom_fields.count).to eq 15
 

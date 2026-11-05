@@ -9,6 +9,9 @@ import ReactionsByTimeWidget, {
 import DemographicsWidget, {
   demographicsTitle,
 } from './ChartWidgets/DemographicsWidget';
+import InternalAdoptionWidget, {
+  internalAdoptionTitle,
+} from './ChartWidgets/InternalAdoptionWidget';
 import MethodsUsedWidget, {
   methodsUsedTitle,
 } from './ChartWidgets/MethodsUsedWidget';
@@ -28,11 +31,16 @@ import VisitorsWidget, { visitorsTitle } from './ChartWidgets/VisitorsWidget';
 import CommunityMonitorHealthScoreWidget, {
   communityMonitorHealthScoreTitle,
 } from './CommunityMonitorHealthScoreWidget';
+import Cover, { coverTitle } from './Cover';
+import Divider, { dividerTitle } from './Divider';
 import IframeMultiloc, { iframeMultilocTitle } from './IframeMultiloc';
 import ImageMultiloc, { imageMultilocTitle } from './ImageMultiloc';
+import KeyFigures, { keyFiguresTitle } from './KeyFigures';
+import messages from './messages';
 import MostReactedIdeasWidget, {
   mostReactedIdeasTitle,
 } from './MostReactedIdeasWidget';
+import PageBreak, { pageBreakTitle } from './PageBreak';
 import ProjectsTimelineWidget, {
   projectsTimelineTitle,
 } from './ProjectsTimelineWidget';
@@ -41,14 +49,20 @@ import SingleIdeaWidget, { singleIdeaTitle } from './SingleIdeaWidget';
 import SurveyQuestionResultWidget, {
   surveyQuestionResultTitle,
 } from './SurveyQuestionResultWidget';
+import TableOfContents, { tableOfContentsTitle } from './TableOfContents';
 import TextMultiloc, { textMultilocTitle } from './TextMultiloc';
 import TwoColumn, { twoColumnTitle } from './TwoColumn';
 
 export const WIDGETS = {
   TwoColumn,
   TextMultiloc,
+  Cover,
+  Divider,
+  KeyFigures,
   ImageMultiloc,
   WhiteSpace,
+  PageBreak,
+  TableOfContents,
   SurveyQuestionResultWidget,
   CommunityMonitorHealthScoreWidget,
   VisitorsWidget,
@@ -60,6 +74,7 @@ export const WIDGETS = {
   RegistrationsWidget,
   MethodsUsedWidget,
   ParticipationWidget,
+  InternalAdoptionWidget,
   ProjectsWidget,
   // RENAMED (TODO rename in migration)
   ActiveUsersWidget: ParticipantsWidget,
@@ -72,8 +87,29 @@ export const WIDGETS = {
 
 type WidgetName = keyof typeof WIDGETS;
 
+// For the Platform Report Template, we want to use specific
+// titles for some widgets.
+export const CUSTOM_TEMPLATE_WIDGET_TITLES: Record<string, MessageDescriptor> =
+  {
+    VisitorsWidgetFromStart: messages.visitorsWidgetFromStart,
+    TrafficSourcesWidgetFromStart: messages.trafficSourcesWidgetFromStart,
+    TrafficSourcesWidgetSince: messages.trafficSourcesWidgetSince,
+    VisitorsWidgetSince: messages.visitorsWidgetSince,
+    RegistrationsWidgetFromStart: messages.registrationWidgetFromStart,
+    RegistrationsWidgetSince: messages.registrationWidgetSince,
+    ParticipantsWidgetFromStart: messages.participantsWidgetFromStart,
+    ParticipantsWidgetSince: messages.participantsWidgetSince,
+    InternalAdoptionWidgetFromStart: messages.internalAdoptionWidgetFromStart,
+    InternalAdoptionWidgetSince: messages.internalAdoptionWidgetSince,
+  };
+
 export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   WhiteSpace: whiteSpaceMessages.whiteSpace,
+  Cover: coverTitle,
+  Divider: dividerTitle,
+  KeyFigures: keyFiguresTitle,
+  PageBreak: pageBreakTitle,
+  TableOfContents: tableOfContentsTitle,
   TextMultiloc: textMultilocTitle,
   TwoColumn: twoColumnTitle,
   ImageMultiloc: imageMultilocTitle,
@@ -88,6 +124,7 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   RegistrationsWidget: registrationsTitle,
   MethodsUsedWidget: methodsUsedTitle,
   ParticipationWidget: participationTitle,
+  InternalAdoptionWidget: internalAdoptionTitle,
   ProjectsWidget: projectsTitle,
   ParticipantsWidget: participantsTitle,
 
@@ -117,6 +154,7 @@ const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
   'RegistrationsWidget',
   'MethodsUsedWidget',
   'ParticipationWidget',
+  'InternalAdoptionWidget',
   'ParticipantsWidget',
 
   // RENAMED (TODO rename in migration)

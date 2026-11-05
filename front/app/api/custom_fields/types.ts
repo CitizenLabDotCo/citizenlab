@@ -1,5 +1,8 @@
 import { IRelationship, Multiloc } from 'typings';
 
+import { ICustomFieldOptionImage } from 'api/content_field_option_images/types';
+import { ICustomFieldOptionData } from 'api/custom_field_options/types';
+import { IFormCustomFieldStatementData } from 'api/custom_field_statements/types';
 import { IMapConfig } from 'api/map_config/types';
 
 import { Keys } from 'utils/cl-react-query/types';
@@ -39,6 +42,7 @@ export type ICustomFieldInputType =
   | 'point'
   | 'line'
   | 'polygon'
+  | 'multipoint'
   | 'cosponsor_ids'
   | 'sentiment_linear_scale'
   | 'checkbox'
@@ -51,6 +55,7 @@ export type IOptionsType = {
   other?: boolean;
   temp_id?: string;
   image_id?: string;
+  image?: ICustomFieldOptionImage['data'];
 };
 
 export type IMatrixStatementsType = {
@@ -79,12 +84,15 @@ export interface IAttributes {
   page_button_label_multiloc?: Multiloc;
   page_button_link?: string;
   required: boolean;
+  answers_visible_to: 'public' | 'moderators';
+  show_as_filter: boolean;
   isRequiredEditable?: boolean;
   isEnabledEditable?: boolean;
   isTitleEditable?: boolean;
   isDeleteEnabled?: boolean;
   ask_follow_up?: boolean;
   constraints?: {
+    locked: boolean;
     locks: {
       attributes?: ('title_multiloc' | 'required')[];
       deletion?: boolean;
@@ -123,7 +131,7 @@ export interface ICustomFieldResponse {
   type: string;
   attributes: IAttributes;
   relationships: {
-    options: {
+    options?: {
       data: IRelationship[];
     };
     matrix_statements?: {
@@ -149,7 +157,6 @@ export type IFlatCustomField = Omit<
     options?: IOptionsType[];
     matrix_statements?: IMatrixStatementsType[];
     map_config?: { data: IRelationship };
-    visible_to_public?: boolean;
   };
 
 export type ICustomFieldSettingsTab = 'content' | 'logic';
@@ -203,6 +210,11 @@ export type IFlatCreateCustomField = Omit<
 
 export interface ICustomFields {
   data: ICustomFieldResponse[];
+  included?: (
+    | ICustomFieldOptionData
+    | IFormCustomFieldStatementData
+    | ICustomFieldOptionImage['data']
+  )[];
 }
 
 export interface ICustomField {

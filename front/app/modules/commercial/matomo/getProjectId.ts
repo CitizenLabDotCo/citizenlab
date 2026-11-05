@@ -32,9 +32,10 @@ async function extractProjectIdFromProjectPath(path: string) {
 }
 
 async function getIdea(slug: string) {
-  return queryClient.fetchQuery(ideasKeys.item({ slug }), () =>
-    fetchIdea({ slug })
-  );
+  return queryClient.fetchQuery({
+    queryKey: ideasKeys.item({ slug }),
+    queryFn: () => fetchIdea({ slug }),
+  });
 }
 
 async function getProjectIdFromIdeaSlug(slug: string) {

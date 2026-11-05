@@ -39,13 +39,13 @@ module CitizenLab
       def observation_payload(observation)
         if observation.raised?
           {
-            :exception => observation.exception.class,
-            :message   => observation.exception.message,
-            :backtrace => observation.exception.backtrace
+            exception: observation.exception.class,
+            message: observation.exception.message,
+            backtrace: observation.exception.backtrace
           }
         else
           {
-            :value => observation.cleaned_value
+            value: observation.cleaned_value
           }
         end
       end

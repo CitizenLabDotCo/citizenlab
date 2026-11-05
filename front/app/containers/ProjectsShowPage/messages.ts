@@ -167,6 +167,10 @@ export default defineMessages({
     id: 'app.containers.Projects.takeThePoll',
     defaultMessage: 'Take the poll',
   },
+  castYourVote: {
+    id: 'app.containers.Projects.castYourVote',
+    defaultMessage: 'Cast your vote',
+  },
   // #input_term_copy
   ideas: {
     id: 'app.containers.Projects.ideas',
@@ -177,7 +181,7 @@ export default defineMessages({
     defaultMessage: 'Contributions',
   },
   issues: {
-    id: 'app.containers.Projects.issues',
+    id: 'app.containers.Projects.issues1',
     defaultMessage: 'Issues',
   },
   options: {
@@ -203,6 +207,30 @@ export default defineMessages({
   petitions: {
     id: 'app.containers.Projects.petitions',
     defaultMessage: 'Petitions',
+  },
+  commentsTerm: {
+    id: 'app.containers.Projects.commentsTerm',
+    defaultMessage: 'Comments',
+  },
+  responsesTerm: {
+    id: 'app.containers.Projects.responsesTerm',
+    defaultMessage: 'Responses',
+  },
+  suggestionsTerm: {
+    id: 'app.containers.Projects.suggestionsTerm',
+    defaultMessage: 'Suggestions',
+  },
+  topicsTerm: {
+    id: 'app.containers.Projects.topicsTerm',
+    defaultMessage: 'Topics',
+  },
+  postsTerm: {
+    id: 'app.containers.Projects.postsTerm',
+    defaultMessage: 'Posts',
+  },
+  storiesTerm: {
+    id: 'app.containers.Projects.storiesTerm',
+    defaultMessage: 'Stories',
   },
   survey: {
     id: 'app.containers.Projects.survey',
@@ -232,6 +260,10 @@ export default defineMessages({
     id: 'app.containers.Projects.readLess',
     defaultMessage: 'Read less',
   },
+  seeTheResults: {
+    id: 'app.containers.Projects.seeTheResults',
+    defaultMessage: 'See the results',
+  },
   seeTheIdeas: {
     id: 'app.containers.Projects.seeTheIdeas',
     defaultMessage: 'See the ideas',
@@ -248,8 +280,8 @@ export default defineMessages({
     id: 'app.containers.Projects.seeTheQuestions',
     defaultMessage: 'See the questions',
   },
-  seeTheIssues: {
-    id: 'app.containers.Projects.seeTheIssues',
+  seeTheIssues1: {
+    id: 'app.containers.Projects.seeTheIssues1',
     defaultMessage: 'See the issues',
   },
   seeTheContributions: {
@@ -267,6 +299,38 @@ export default defineMessages({
   seeThePetitions: {
     id: 'app.containers.Projects.seeThePetitions',
     defaultMessage: 'See the petitions',
+  },
+  seeTheComments: {
+    id: 'app.containers.Projects.seeTheComments',
+    defaultMessage: 'See the comments',
+  },
+  seeTheResponses: {
+    id: 'app.containers.Projects.seeTheResponses',
+    defaultMessage: 'See the responses',
+  },
+  seeTheSuggestions: {
+    id: 'app.containers.Projects.seeTheSuggestions',
+    defaultMessage: 'See the suggestions',
+  },
+  seeTheTopics: {
+    id: 'app.containers.Projects.seeTheTopics',
+    defaultMessage: 'See the topics',
+  },
+  seeThePosts: {
+    id: 'app.containers.Projects.seeThePosts',
+    defaultMessage: 'See the posts',
+  },
+  seeTheStories: {
+    id: 'app.containers.Projects.seeTheStories',
+    defaultMessage: 'See the stories',
+  },
+  seeTheObservations: {
+    id: 'app.containers.Projects.seeTheObservations',
+    defaultMessage: 'See the observations',
+  },
+  seeVolunteering: {
+    id: 'app.containers.Projects.seeVolunteering',
+    defaultMessage: 'Volunteer',
   },
   meetMinBudgetRequirement: {
     id: 'app.containers.Projects.meetMinBudgetRequirement',
@@ -322,5 +386,17 @@ export default defineMessages({
     id: 'app.containers.Projects.liveDataMessage',
     defaultMessage:
       "You're viewing real-time data. Participant counts are continuously updated for administrators. Please note that regular users see cached data, which may result in slight differences in the numbers.",
+  },
+  participate: {
+    id: 'app.containers.Projects.participate',
+    defaultMessage: 'Participate',
+  },
+  waysToParticipate: {
+    id: 'app.containers.Projects.waysToParticipate',
+    defaultMessage: 'Ways to participate',
+  },
+  openNowInTotal: {
+    id: 'app.containers.Projects.openNowInTotal',
+    defaultMessage: '{openCount} open now · {totalCount} in total',
   },
 });

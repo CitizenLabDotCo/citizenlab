@@ -119,10 +119,8 @@ export function returnFileSize(size: number) {
     return `${size} bytes`;
   } else if (size >= 1024 && size < 1048576) {
     return `${(size / 1024).toFixed(1)} KB`;
-  } else if (size >= 1048576) {
-    return `${(size / 1048576).toFixed(1)} MB`;
   }
-  return;
+  return `${(size / 1048576).toFixed(1)} MB`;
 }
 
 export function isUploadFile(file: UploadFile | null): file is UploadFile {
@@ -198,6 +196,11 @@ export const generateTemporaryFileAttachment = ({
     id: `TEMP-${uuidv4()}`, // Temporary ID, to mark it as a newly added file attachment.
     attributes: {
       position,
+      file_name: '',
+      file_size: 0,
+      file_url: '',
+      created_at: '',
+      updated_at: '',
     },
     relationships: {
       attachable: {

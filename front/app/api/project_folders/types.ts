@@ -7,23 +7,22 @@ import { Keys } from 'utils/cl-react-query/types';
 import projectFoldersKeys from './keys';
 
 export type ProjectFoldersKeys = Keys<typeof projectFoldersKeys>;
-export interface IQueryParameters {
-  pageNumber?: number;
-  pageSize?: number;
-}
+
 export interface IProjectFolders {
   data: IProjectFolderData[];
 }
 export interface INewProjectFolderDiff {
   title_multiloc: Multiloc;
   slug: string | null;
-  description_multiloc: Multiloc;
   description_preview_multiloc: Multiloc;
   header_bg?: string | null;
   header_bg_alt_text_multiloc?: Multiloc;
   admin_publication_attributes: {
     publication_status: PublicationStatus;
+    scheduled_status?: PublicationStatus | null;
+    scheduled_at?: string | null;
   };
+  space_id?: string | null;
 }
 
 export interface IProjectFolder {
@@ -40,13 +39,14 @@ export interface IProjectFolderData {
     participants_count: number;
     visible_projects_count: number;
     title_multiloc: Multiloc;
-    description_multiloc: Multiloc;
     description_preview_multiloc: Multiloc;
     slug: string;
     header_bg?: ImageSizes;
     header_bg_alt_text_multiloc: Multiloc;
     publication_status: PublicationStatus;
     followers_count: number;
+    uses_content_builder: boolean;
+    space_id: string | null;
   };
   relationships: {
     admin_publication: {
@@ -58,7 +58,7 @@ export interface IProjectFolderData {
     images: {
       data: IRelationship[] | null;
     };
-    user_follower: {
+    user_follower?: {
       data: IRelationship | null;
     };
   };
@@ -68,11 +68,13 @@ export interface IUpdatedProjectFolder {
   projectFolderId: string;
   title_multiloc?: Multiloc;
   slug?: string | null;
-  description_multiloc?: Multiloc;
   description_preview_multiloc?: Multiloc;
   header_bg?: string | null;
   header_bg_alt_text_multiloc?: Multiloc;
   admin_publication_attributes?: {
     publication_status?: PublicationStatus;
+    scheduled_status?: PublicationStatus | null;
+    scheduled_at?: string | null;
   };
+  space_id?: string | null;
 }

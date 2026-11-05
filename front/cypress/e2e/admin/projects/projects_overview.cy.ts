@@ -7,7 +7,6 @@ describe('Projects overview: admin (projects)', () => {
   before(() => {
     cy.apiCreateProject({
       title,
-      description: randomString(),
     }).then((response) => {
       projectId = response.body.data.id;
     });
@@ -52,6 +51,34 @@ describe('Projects overview: admin (projects)', () => {
     cy.dataCy('projects-overview-filter-status').should('exist');
     cy.dataCy('projects-overview-filter-status').contains('Status: Published');
   });
+
+  it('shows only the tab-appropriate create button', () => {
+    cy.setAdminLoginCookie();
+
+    // Projects tab (default)
+    cy.visit('/admin/projects');
+    cy.dataCy('e2e-new-project-button').should('be.visible');
+    cy.dataCy('e2e-new-project-folder-button').should('not.exist');
+    cy.dataCy('e2e-new-space-button').should('not.exist');
+
+    // Folders tab
+    cy.dataCy('projects-overview-folders-tab').click();
+    cy.dataCy('e2e-new-project-folder-button').should('be.visible');
+    cy.dataCy('e2e-new-project-button').should('not.exist');
+    cy.dataCy('e2e-new-space-button').should('not.exist');
+
+    // Spaces tab
+    cy.dataCy('projects-overview-spaces-tab').click();
+    cy.dataCy('e2e-new-space-button').should('be.visible');
+    cy.dataCy('e2e-new-project-button').should('not.exist');
+    cy.dataCy('e2e-new-project-folder-button').should('not.exist');
+
+    // Calendar tab - no create button
+    cy.dataCy('projects-overview-calendar-tab').click();
+    cy.dataCy('e2e-new-project-button').should('not.exist');
+    cy.dataCy('e2e-new-project-folder-button').should('not.exist');
+    cy.dataCy('e2e-new-space-button').should('not.exist');
+  });
 });
 
 describe('Projects overview: admin (folders)', () => {
@@ -61,7 +88,6 @@ describe('Projects overview: admin (folders)', () => {
   before(() => {
     cy.apiCreateFolder({
       title: folderTitle,
-      description: randomString(),
     }).then((response) => {
       folderId = response.body.data.id;
     });
@@ -95,7 +121,6 @@ describe('Projects overview: project moderator', () => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: randomString(),
-      description: randomString(),
       publicationStatus: 'draft',
     }).then((project) => {
       projectId = project.body.data.id;
@@ -147,21 +172,18 @@ describe('Projects overview: folder moderator', () => {
     cy.apiCreateProject({
       title: projectOneTitle,
       descriptionPreview: randomString(),
-      description: randomString(),
       publicationStatus: 'published',
     }).then((projectOne) => {
       projectOneId = projectOne.body.data.id;
       cy.apiCreateProject({
         title: projectTwoTitle,
         descriptionPreview: randomString(),
-        description: randomString(),
         publicationStatus: 'published',
       }).then((projectTwo) => {
         projectTwoId = projectTwo.body.data.id;
         cy.apiCreateFolder({
           title: folderTitle,
           descriptionPreview: folderShortDescription,
-          description: randomString(),
           publicationStatus: 'published',
         }).then((folder) => {
           folderId = folder.body.data.id;

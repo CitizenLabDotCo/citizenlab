@@ -9,8 +9,8 @@ module MultiTenancy
         internal_template_dir: Rails.root.join('config/tenant_templates'),
         tenant_bucket: ENV.fetch('AWS_S3_BUCKET', nil),
         template_bucket: ENV.fetch('TEMPLATE_BUCKET', nil),
-        tenant_s3_client: Aws::S3::Client.new(region: ENV.fetch('AWS_REGION')),
-        template_s3_client: Aws::S3::Client.new(region: 'eu-central-1')
+        tenant_s3_client: Aws::S3::Client.new,
+        template_s3_client: MultiTenancy::Templates::Utils.s3_client
       )
         @internal_template_dir = internal_template_dir
         @tenant_bucket = tenant_bucket
@@ -29,7 +29,7 @@ module MultiTenancy
 
       def apply_internal_template(template_name)
         serialized_models = template_utils.fetch_internal_template_models(template_name)
-        MultiTenancy::Templates::TenantDeserializer.new.deserialize(serialized_models)
+        MultiTenancy::Templates::TenantDeserializer.new.deserialize(serialized_models, bulk: true)
       end
 
       def apply_external_template(template_name, prefix: nil)
@@ -41,7 +41,7 @@ module MultiTenancy
         copy_s3_files(template_prefix, Tenant.current.id, model_id_mapping)
 
         MultiTenancy::Templates::TenantSerializer.format_for_deserializer!(template_models)
-        MultiTenancy::Templates::TenantDeserializer.new.deserialize(template_models)
+        MultiTenancy::Templates::TenantDeserializer.new.deserialize(template_models, bulk: true)
       end
 
       def tenant_bucket

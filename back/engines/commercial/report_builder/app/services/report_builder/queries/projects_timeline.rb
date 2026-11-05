@@ -26,7 +26,10 @@ module ReportBuilder
         visibility: params[:visibility] || [],
         discoverability: params[:discoverability] || [],
         sort: params[:sort] || 'recently_created_desc',
-        no_of_projects: params[:no_of_projects]
+        no_of_projects: params[:no_of_projects],
+        excluded_project_ids: params[:excluded_project_ids] || [],
+        excluded_folder_ids: params[:excluded_folder_ids] || [],
+        locale: params[:locale] || 'en'
       }
     end
 
@@ -50,18 +53,16 @@ module ReportBuilder
 
     def build_timeline_items(projects_with_phases)
       projects_with_phases.map do |project|
-        # Calculate phase data similar to ProjectMiniAdminSerializer
-        first_phase = project.phases.order(:start_at).first
-        last_phase = project.phases.order(:start_at).last
-        current_phase = TimelineService.new.current_phase(project)
+        phases_span = project.schedule.phases_span
+        active_span = project.schedule.active_span
 
         {
           id: project.id,
           title: project.title_multiloc,
-          start_date: first_phase&.start_at || project.first_published_at,
-          end_date: last_phase&.end_at,
-          current_phase_start_date: current_phase&.start_at,
-          current_phase_end_date: current_phase&.end_at,
+          start_date: phases_span&.first || project.admin_publication.first_published_at,
+          end_date: phases_span&.last,
+          active_phases_start_date: active_span&.first,
+          active_phases_end_date: active_span&.last,
           publication_status: project.admin_publication.publication_status,
           folder_title_multiloc: project.folder&.title_multiloc
         }

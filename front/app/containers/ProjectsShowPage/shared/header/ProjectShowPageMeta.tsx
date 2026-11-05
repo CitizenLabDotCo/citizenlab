@@ -34,7 +34,7 @@ const ProjectShowPageMeta = ({ project }: Props) => {
     }),
   });
   const description = stripHtml(
-    localize(project.attributes.description_multiloc),
+    localize(project.attributes.description_preview_multiloc),
     250
   );
   const image = project.attributes.header_bg.large;
@@ -69,7 +69,7 @@ const ProjectShowPageMeta = ({ project }: Props) => {
       />
       <meta property="og:url" content={location.href} />
       <meta name="twitter:card" content="summary_large_image" />
-      {project.attributes.listed && <meta name="robots" content="noindex" />}
+      {!project.attributes.listed && <meta name="robots" content="noindex" />}
     </Helmet>
   );
 };

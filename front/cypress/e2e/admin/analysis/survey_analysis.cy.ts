@@ -25,11 +25,9 @@ describe('Admin: survey analysis', () => {
   before(() => {
     const projectTitle = randomString();
     const projectDescriptionPreview = randomString();
-    const projectDescription = randomString();
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     }).then((project) => {
       projectId = project?.body.data.id;
@@ -61,7 +59,7 @@ describe('Admin: survey analysis', () => {
 
               surveyQuestionResponses.forEach((response) => {
                 cy.apiCreateSurveyResponse({
-                  project_id: projectId,
+                  phase_id: phaseId,
                   fields: {
                     [surveyFields[1].attributes.key]: response,
                   },
@@ -73,8 +71,8 @@ describe('Admin: survey analysis', () => {
   });
 
   it('shows and hides summaries on the survey results page', () => {
-    cy.visit(`/admin/projects/${projectId}/phases/${phaseId}/results`);
-    cy.intercept('GET', '**/insights', {
+    cy.visit(`/admin/projects/${projectId}/phases/${phaseId}/insights`);
+    cy.intercept('GET', '**/analyses/*/insights', {
       fixture: 'analysis_insights_survey.json',
     });
 
@@ -87,8 +85,8 @@ describe('Admin: survey analysis', () => {
   });
 
   it('adds and removes questions from the analysis', () => {
-    cy.visit(`/admin/projects/${projectId}/phases/${phaseId}/results`);
-    cy.intercept('GET', '**/insights', {
+    cy.visit(`/admin/projects/${projectId}/phases/${phaseId}/insights`);
+    cy.intercept('GET', '**/analyses/*/insights', {
       fixture: 'analysis_insights_survey.json',
     });
 

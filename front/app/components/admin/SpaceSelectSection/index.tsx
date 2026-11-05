@@ -1,0 +1,51 @@
+import React from 'react';
+
+import { Error, IconTooltip } from '@citizenlab/cl2-component-library';
+
+import useAuthUser from 'api/me/useAuthUser';
+import useSpaces from 'api/spaces/useSpaces';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { SectionField, SubSectionTitle } from 'components/admin/Section';
+import SpaceSelect from 'components/admin/SpaceSelectSection/SpaceSelect';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { isAdmin, isSpaceModerator } from 'utils/permissions/roles';
+
+import messages from './messages';
+
+interface Props {
+  spaceId?: string | null;
+  error?: boolean;
+  onChange: (spaceId: string | null) => void;
+}
+
+const SpaceSelectSection = ({ spaceId, error, onChange }: Props) => {
+  const spacesEnabled = useFeatureFlag({ name: 'spaces' });
+  const { data: spaces } = useSpaces();
+  const { data: authUser } = useAuthUser();
+  const { formatMessage } = useIntl();
+
+  const userIsAdmin = isAdmin(authUser);
+  const userIsSpaceModerator = isSpaceModerator(authUser);
+  const canSeeSpaceSelect = userIsAdmin || userIsSpaceModerator;
+
+  if (!spaces || !spacesEnabled || !canSeeSpaceSelect) return null;
+
+  return (
+    <SectionField>
+      <SubSectionTitle>
+        <FormattedMessage {...messages.spaceSelectTitle} />
+        {!userIsSpaceModerator && (
+          <IconTooltip content={formatMessage(messages.tooltip)} />
+        )}
+      </SubSectionTitle>
+
+      <SpaceSelect spaceId={spaceId} spaces={spaces.data} onChange={onChange} />
+      {error && <Error text={formatMessage(messages.pleaseSelectASpace)} />}
+    </SectionField>
+  );
+};
+
+export default SpaceSelectSection;

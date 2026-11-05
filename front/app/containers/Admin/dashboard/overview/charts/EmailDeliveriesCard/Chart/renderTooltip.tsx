@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Box, Icon } from '@citizenlab/cl2-component-library';
 import { Tooltip } from 'recharts';
+import { TooltipContentProps } from 'recharts/types/component/Tooltip';
 
 import TooltipOutline from 'components/admin/Graphs/_components/TooltipOutline';
 import { colors } from 'components/admin/Graphs/styling';
@@ -16,7 +17,7 @@ import { TimeSeriesRow } from '../useEmailDeliveries/typings';
 type DataKey = 'automated' | 'custom';
 
 interface CustomTooltipProps {
-  label?: string;
+  label: TooltipContentProps<string, string>['label'];
   payload?: {
     name: string;
     dataKey: DataKey;
@@ -35,7 +36,7 @@ const CustomTooltip = ({ label, payload, resolution }: CustomTooltipProps) => {
   if (!payload || !label) return null;
 
   return (
-    <TooltipOutline label={toFullMonth(label, resolution)}>
+    <TooltipOutline label={toFullMonth(String(label), resolution)}>
       {payload.map(({ stroke, dataKey, payload }) => (
         <Box py="0px" key={dataKey}>
           <Icon

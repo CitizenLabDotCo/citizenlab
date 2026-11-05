@@ -19,7 +19,6 @@ export default {
   // UserTable
   pagination: 'Clicked any pagination button in user section',
   toggleOneUser: 'Selected or unselected one user',
-  adminChangeRole: 'Clicked an action to change the user role',
   sortChange: 'Changed sorting of users in the table',
 
   // UsersHeader

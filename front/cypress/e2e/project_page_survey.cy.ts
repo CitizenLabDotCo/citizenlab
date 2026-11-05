@@ -15,7 +15,7 @@ describe('Existing project with survey', () => {
 
   // TODO: Improve this test
   it('shows the correct project header', () => {
-    cy.get('#e2e-project-description');
+    cy.get('[data-testid="projectPageBuilderContent"]');
     cy.get('#e2e-project-sidebar');
   });
 
@@ -29,8 +29,9 @@ describe('Existing project with survey', () => {
     // https://stackoverflow.com/a/64939524
     skipOn('firefox', () => {
       cy.get('.e2e-typeform-survey iframe').then(($iframe) => {
-        const $body = $iframe.contents().find('body');
-        cy.wrap($body).find('#root').contains('Enter');
+        // Check that Iframe src contains citizenlabco.typeform.com
+        const src = $iframe.attr('src');
+        expect(src).to.contain('citizenlabco.typeform.com');
       });
     });
   });
@@ -38,7 +39,6 @@ describe('Existing project with survey', () => {
 
 describe('New project with survey', () => {
   const projectTitle = randomString();
-  const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
 
   const phaseTitle = randomString();
@@ -47,7 +47,6 @@ describe('New project with survey', () => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     })
       .then((project) => {
@@ -86,7 +85,7 @@ describe('New project with survey', () => {
 
   // TODO: Improve this test
   it('shows the correct project header', () => {
-    cy.get('#e2e-project-description');
+    cy.get('[data-testid="projectPageBuilderContent"]');
     cy.get('#e2e-project-sidebar');
   });
 
@@ -118,7 +117,6 @@ describe('New project with survey', () => {
 
 describe('Timeline project with survey phase', () => {
   const projectTitle = randomString();
-  const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
   const phaseTitle = randomString();
 
@@ -126,7 +124,6 @@ describe('Timeline project with survey phase', () => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     }).then((project) => {
       projectId = project.body.data.id;
@@ -176,7 +173,6 @@ describe('Timeline project with survey phase', () => {
 
 describe('Timeline project with survey phase but not active', () => {
   const projectTitle = randomString();
-  const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
   const phaseTitle = randomString();
 
@@ -184,7 +180,6 @@ describe('Timeline project with survey phase but not active', () => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     }).then((project) => {
       projectId = project.body.data.id;
@@ -225,14 +220,12 @@ describe('Timeline project with survey phase but not active', () => {
 
 describe('Archived single phase project with survey', () => {
   const projectTitle = randomString();
-  const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
 
   before(() => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'archived',
     }).then((project) => {
       projectId = project.body.data.id;
@@ -270,7 +263,6 @@ describe('Archived single phase project with survey', () => {
 
 describe('Embedded survey CTA', () => {
   const projectTitle = randomString();
-  const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
 
   before(() => {
@@ -278,7 +270,6 @@ describe('Embedded survey CTA', () => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     }).then((project) => {
       projectId = project.body.data.id;

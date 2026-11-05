@@ -1,6 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import { useBreakpoint, colors } from '@citizenlab/cl2-component-library';
+import {
+  useBreakpoint,
+  ClickOutside,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import { hideVisually } from 'polished';
 import { Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
@@ -16,11 +20,9 @@ import MentionsTextArea from 'components/UI/MentionsTextArea';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import clickOutside from 'utils/containers/clickOutside';
 
 import { commentReplyButtonClicked$, commentAdded } from './events';
 import tracks from './tracks';
-import { getMentionRoles } from './utils';
 
 const Container = styled.div`
   display: flex;
@@ -32,7 +34,7 @@ const StyledAvatar = styled(Avatar)`
   margin-top: 3px;
 `;
 
-const FormContainer = styled(clickOutside)`
+const FormContainer = styled(ClickOutside)`
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -89,7 +91,7 @@ const InternalChildCommentForm = ({
 
   const {
     mutate: addCommentToIdeaComment,
-    isLoading: isAddCommentToIdeaLoading,
+    isPending: isAddCommentToIdeaLoading,
   } = useAddInternalCommentToIdea();
 
   const [inputValue, setInputValue] = useState('');
@@ -111,9 +113,9 @@ const InternalChildCommentForm = ({
           })
         )
         .subscribe(({ eventValue }) => {
-          const { authorFirstName, authorLastName, authorSlug } = eventValue;
-          if (authorFirstName && authorLastName && authorSlug) {
-            const tag = `@[${authorFirstName} ${authorLastName}](${authorSlug}) `;
+          const { authorFirstName, authorLastName, authorId } = eventValue;
+          if (authorFirstName && authorLastName && authorId) {
+            const tag = `@[${authorFirstName} ${authorLastName}](${authorId}) `;
             setTagValue(tag);
             setInputValue(tag);
           }
@@ -279,7 +281,7 @@ const InternalChildCommentForm = ({
                 border="none"
                 boxShadow="none"
                 getTextareaRef={setRef}
-                roles={getMentionRoles(true)}
+                adminsAndModerators
               />
               <ButtonWrapper>
                 <CancelButton

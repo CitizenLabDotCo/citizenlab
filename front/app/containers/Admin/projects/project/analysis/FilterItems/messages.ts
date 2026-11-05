@@ -37,6 +37,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.project.analysis.emptyCustomFieldFilter',
     defaultMessage: 'Hide empty answers',
   },
+  followUpNotEmpty: {
+    id: 'app.containers.AdminPage.projects.project.analysis.followUpNotEmpty',
+    defaultMessage: 'Has follow-up text',
+  },
   limit: {
     id: 'app.containers.AdminPage.projects.project.analysis.limit',
     defaultMessage: 'Limit',

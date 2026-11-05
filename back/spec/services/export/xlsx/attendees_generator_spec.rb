@@ -22,12 +22,28 @@ describe Export::Xlsx::AttendeesGenerator do
     it 'contains extra columns for custom user fields' do
       create(:custom_field_domicile)
       area = create(:area, title_multiloc: { 'en' => 'Center' })
-      users.first.update!(custom_field_values: { 'domicile' => area.id })
+      create(:custom_field_answer, answerable: users.first, key: 'domicile', value: area.id)
+      users.first.custom_field_answers.reset
 
       title_row = worksheet[0].cells.map(&:value)
       user_rows = worksheet.map { |row| row.cells.map(&:value) }
       user_row = user_rows.find { |values| values.include? users.first.email }
       expect([user_row[title_row.find_index 'domicile']]).to eq ['Center']
+    end
+
+    it 'allows duplicate column headers' do
+      create(:custom_field, title_multiloc: { 'en' => 'Last name' }, key: 'last_name', resource_type: 'User')
+      user_last_name = users.first.last_name
+      create(:custom_field_answer, answerable: users.first, key: 'last_name', value: 'Doe')
+      users.first.custom_field_answers.reset
+      title_row = worksheet[0].cells.map(&:value)
+      user_rows = worksheet.map { |row| row.cells.map(&:value) }
+      user_row = user_rows.find { |values| values.include? users.first.email }
+
+      expect(title_row.count('Last name')).to eq 2
+      expect(user_row.count('Doe')).to eq 1
+      expect(user_row.count(user_last_name)).to eq 1
+      expect(user_last_name).not_to eq 'Doe'
     end
 
     it 'includes hidden custom fields' do

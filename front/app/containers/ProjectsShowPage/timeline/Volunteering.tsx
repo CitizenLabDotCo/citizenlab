@@ -1,35 +1,22 @@
 import React from 'react';
 
-import styled from 'styled-components';
+import { Box } from '@citizenlab/cl2-component-library';
 
-import usePhase from 'api/phases/usePhase';
+import { IPhaseData } from 'api/phases/types';
 
 import Volunteering from '../shared/volunteering';
 
-const Container = styled.div``;
-
 interface Props {
-  projectId: string;
-  phaseId: string | null;
+  phase: IPhaseData;
   className?: string;
 }
 
-const VolunteeringContainer = ({ projectId, className, phaseId }: Props) => {
-  const { data: phase } = usePhase(phaseId);
-
-  if (phase?.data.attributes.participation_method === 'volunteering') {
-    return (
-      <Container
-        className={`e2e-timeline-project-volunteering-container ${
-          className || ''
-        }`}
-      >
-        <Volunteering phaseId={phaseId} projectId={projectId} />
-      </Container>
-    );
-  }
-
-  return null;
-};
+const VolunteeringContainer = ({ className, phase }: Props) => (
+  <Box
+    className={`e2e-timeline-project-volunteering-container ${className || ''}`}
+  >
+    <Volunteering phase={phase} />
+  </Box>
+);
 
 export default VolunteeringContainer;

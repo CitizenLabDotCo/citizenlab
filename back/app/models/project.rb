@@ -4,41 +4,48 @@
 #
 # Table name: projects
 #
-#  id                           :uuid             not null, primary key
-#  title_multiloc               :jsonb
-#  description_multiloc         :jsonb
-#  slug                         :string
-#  created_at                   :datetime         not null
-#  updated_at                   :datetime         not null
-#  header_bg                    :string
-#  ideas_count                  :integer          default(0), not null
-#  visible_to                   :string           default("public"), not null
-#  description_preview_multiloc :jsonb
-#  internal_role                :string
-#  comments_count               :integer          default(0), not null
-#  default_assignee_id          :uuid
-#  include_all_areas            :boolean          default(FALSE), not null
-#  baskets_count                :integer          default(0), not null
-#  votes_count                  :integer          default(0), not null
-#  followers_count              :integer          default(0), not null
-#  preview_token                :string           not null
-#  header_bg_alt_text_multiloc  :jsonb
-#  hidden                       :boolean          default(FALSE), not null
-#  listed                       :boolean          default(TRUE), not null
+#  id                             :uuid             not null, primary key
+#  title_multiloc                 :jsonb
+#  slug                           :string
+#  created_at                     :datetime         not null
+#  updated_at                     :datetime         not null
+#  header_bg                      :string
+#  ideas_count                    :integer          default(0), not null
+#  visible_to                     :string           default("public"), not null
+#  description_preview_multiloc   :jsonb
+#  internal_role                  :string
+#  comments_count                 :integer          default(0), not null
+#  default_assignee_id            :uuid
+#  include_all_areas              :boolean          default(FALSE), not null
+#  baskets_count                  :integer          default(0), not null
+#  votes_count                    :bigint           default(0), not null
+#  followers_count                :integer          default(0), not null
+#  header_bg_alt_text_multiloc    :jsonb
+#  preview_token                  :string           not null
+#  hidden                         :boolean          default(FALSE), not null
+#  listed                         :boolean          default(TRUE), not null
+#  track_participation_location   :boolean          default(FALSE), not null
+#  live_auto_input_topics_enabled :boolean          default(FALSE), not null
+#  space_id                       :uuid
+#  completed_setup_steps          :jsonb            not null
 #
 # Indexes
 #
-#  index_projects_on_slug  (slug) UNIQUE
+#  index_projects_on_slug      (slug) UNIQUE
+#  index_projects_on_space_id  (space_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (default_assignee_id => users.id)
+#  fk_rails_...  (space_id => spaces.id)
 #
 class Project < ApplicationRecord
   include Files::FileAttachable
   include PgSearch::Model
+  include PlainTextMultiloc
 
   attribute :preview_token, :string, default: -> { generate_preview_token }
+  attribute :listed, :boolean, default: -> { !AppConfiguration.instance.settings('core', 'projects_unlisted_by_default') }
 
   VISIBLE_TOS = %w[public groups admins].freeze
 
@@ -46,27 +53,34 @@ class Project < ApplicationRecord
 
   mount_base64_uploader :header_bg, ProjectHeaderBgUploader
 
+  # Inline images of RichTextMultiloc bridge widgets in the project's layouts
+  has_many :text_images, as: :imageable, dependent: :destroy
+  accepts_nested_attributes_for :text_images
+
+  belongs_to :space, optional: true
+
   has_one :custom_form, as: :participation_context, dependent: :destroy # ideation & voting phases only
 
   has_many :ideas, dependent: :destroy
   has_many :reactions, through: :ideas
 
-  has_many :projects_topics, dependent: :destroy
-  has_many :topics, -> { order(:ordering) }, through: :projects_topics
-  has_many :projects_allowed_input_topics, dependent: :destroy
-  has_many :allowed_input_topics, through: :projects_allowed_input_topics, source: :topic
+  # Use case A - Project categorization (GlobalTopics)
+  has_many :projects_global_topics, dependent: :destroy
+  has_many :global_topics, -> { order(:ordering) }, through: :projects_global_topics
+
+  # Use case B - Input categorization InputTopics)
+  has_many :input_topics, -> { order(:lft) }, dependent: :destroy, inverse_of: :project
+
   has_many :areas_projects, dependent: :destroy
   has_many :areas, through: :areas_projects
   has_many :groups_projects, dependent: :destroy
   has_many :groups, through: :groups_projects
 
-  has_many :phases, -> { order(:start_at) }, dependent: :destroy
+  has_many :phases, -> { ordered }, dependent: :destroy
   has_many :events, -> { order(:start_at) }, dependent: :destroy
   # project_images should always store one record, but in practice it's different (maybe because of a bug)
   # https://citizenlabco.slack.com/archives/C015M14HYSF/p1674228018666059
   has_many :project_images, -> { order(:ordering) }, dependent: :destroy
-  has_many :text_images, as: :imageable, dependent: :destroy
-  accepts_nested_attributes_for :text_images
   has_many :project_files, -> { order(:ordering) }, dependent: :destroy
   has_many :followers, as: :followable, dependent: :destroy
   has_many :impact_tracking_pageviews, class_name: 'ImpactTracking::Pageview', dependent: :nullify
@@ -74,39 +88,44 @@ class Project < ApplicationRecord
   has_many :files_projects, class_name: 'Files::FilesProject', dependent: :destroy
   has_many :files, through: :files_projects
 
-  before_validation :sanitize_description_multiloc, if: :description_multiloc
   before_validation :set_admin_publication, unless: proc { Current.loading_tenant_template }
   before_validation :set_visible_to, on: :create
+  plain_text_multiloc :title_multiloc, :header_bg_alt_text_multiloc, prepend: true
   before_validation :strip_title
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
 
   has_one :nav_bar_item, dependent: :destroy
+  has_many :static_pages, dependent: :destroy
   has_one :review, class_name: 'ProjectReview', dependent: :destroy
 
-  has_one :admin_publication, as: :publication, dependent: :destroy
+  has_one :admin_publication, as: :publication, inverse_of: :publication, dependent: :destroy
   accepts_nested_attributes_for :admin_publication, update_only: true
 
   after_destroy :remove_moderators
 
   attr_accessor :folder_changed, :folder_was
 
-  after_save :reassign_moderators, if: :folder_changed?
   after_commit :clear_folder_changes, if: :folder_changed?
 
   INTERNAL_ROLES = %w[open_idea_box community_monitor].freeze
+  # Steps of the admin setup checklist that have no signal of their own, so an
+  # admin action marks them done: opening them, or saving the project page.
+  SETUP_STEPS = %w[settings share page].freeze
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
-  validates :description_multiloc, multiloc: { presence: false, html: true }
   validates :description_preview_multiloc, multiloc: { presence: false }
   validates :visible_to, presence: true, inclusion: { in: VISIBLE_TOS }
   validates :internal_role, inclusion: { in: INTERNAL_ROLES, allow_nil: true }
+  validates :live_auto_input_topics_enabled, inclusion: { in: [true, false] }
+  validate :validate_completed_setup_steps
   validate :admin_publication_must_exist, unless: proc { Current.loading_tenant_template } # TODO: This should always be validated!
+  validate :space_must_match_folder_space
 
   scope :not_hidden, -> { where(hidden: false) }
 
   pg_search_scope :search_by_all,
-    against: %i[title_multiloc description_multiloc description_preview_multiloc slug],
+    against: %i[title_multiloc description_preview_multiloc slug],
     using: { tsearch: { prefix: true } }
 
   pg_search_scope :search_by_title,
@@ -120,8 +139,12 @@ class Project < ApplicationRecord
     where(id: with_dups)
   end)
 
-  scope :with_some_topics, (proc do |topic_ids|
-    joins(:projects_topics).where(projects_topics: { topic_id: topic_ids })
+  scope :with_some_global_topics, (proc do |topic_ids|
+    with_dups =
+      joins(:projects_global_topics)
+      .where(projects_global_topics: { global_topic_id: topic_ids })
+
+    where(id: with_dups)
   end)
 
   scope :ordered, lambda {
@@ -129,15 +152,36 @@ class Project < ApplicationRecord
   }
 
   scope :draft, lambda {
-    includes(:admin_publication).where(admin_publications: { publication_status: 'draft' })
+    draft_admin_pubs = AdminPublication.draft.where(publication_type: 'Project')
+    where(id: draft_admin_pubs.select(:publication_id))
   }
 
-  scope :not_draft, lambda {
-    where.not(id: draft)
+  scope :not_draft, -> { where.not(id: draft) }
+  scope :publicly_visible, -> { where(visible_to: 'public') }
+
+  scope :with_active_phase, -> { where(id: Phase.current.select(:project_id)) }
+
+  scope :newest, -> { order(created_at: :desc) }
+
+  scope :ending_soon, lambda {
+    joins(<<~SQL.squish)
+      INNER JOIN LATERAL (
+        SELECT phases.end_at AS current_phase_end_at
+        FROM phases
+        WHERE phases.project_id = projects.id
+          AND phases.start_at <= #{connection.quote(Time.zone.now)}
+          AND (phases.end_at >= #{connection.quote(Time.zone.now)} OR phases.end_at IS NULL)
+        ORDER BY phases.end_at ASC NULLS LAST
+        LIMIT 1
+      ) AS current_phase ON true
+    SQL
+      .order('current_phase.current_phase_end_at ASC NULLS LAST')
   }
 
-  scope :publicly_visible, lambda {
-    where(visible_to: 'public')
+  scope :by_participation_count, lambda { |direction = :desc|
+    dir = direction.to_s.upcase == 'ASC' ? 'ASC' : 'DESC'
+    with_participation_count
+      .order(Arel.sql("COALESCE(project_participants.participants_count, 0) #{dir}, projects.id ASC"))
   }
 
   scope :user_groups_visible, lambda { |user|
@@ -147,9 +191,24 @@ class Project < ApplicationRecord
   }
 
   scope :not_in_draft_folder, lambda {
-    joins(:admin_publication)
-      .joins('LEFT OUTER JOIN admin_publications AS parent_pubs ON admin_publications.parent_id = parent_pubs.id')
-      .where("admin_publications.parent_id IS NULL OR parent_pubs.publication_status != 'draft'")
+    draft_folders = AdminPublication.draft.where(children_allowed: true)
+
+    joined = joins(:admin_publication)
+    top_level = joined.where(admin_publications: { parent_id: nil })
+    in_folder = joined.where.not(admin_publications: { parent_id: draft_folders })
+
+    top_level.or(in_folder)
+  }
+
+  scope :with_participation_count, lambda {
+    joins(<<~SQL.squish
+      LEFT JOIN LATERAL (
+        SELECT COUNT(DISTINCT participant_id) as participants_count
+        FROM analytics_fact_participations
+        WHERE dimension_project_id = projects.id
+      ) AS project_participants ON true
+    SQL
+         )
   }
 
   alias project_id id
@@ -175,9 +234,25 @@ class Project < ApplicationRecord
     TimelineService.new.current_phase(self)
   end
 
-  def set_default_topics!
-    self.allowed_input_topics = Topic.defaults.order(:ordering).reverse
-    save!
+  def set_default_input_topics!
+    # First create root topics, then children
+    DefaultInputTopic.roots.order(:lft).each do |default_topic|
+      copy_default_input_topic_tree(default_topic)
+    end
+  end
+
+  def copy_default_input_topic_tree(default_topic, parent_input_topic = nil)
+    input_topic = input_topics.create!(
+      title_multiloc: default_topic.title_multiloc,
+      description_multiloc: default_topic.description_multiloc,
+      icon: default_topic.icon,
+      parent: parent_input_topic
+    )
+
+    # Recursively create children
+    default_topic.children.order(:lft).each do |child_default_topic|
+      copy_default_input_topic_tree(child_default_topic, input_topic)
+    end
   end
 
   def folder
@@ -197,13 +272,20 @@ class Project < ApplicationRecord
   end
 
   def folder_id=(id)
-    parent_id = AdminPublication.find_by(publication_type: 'ProjectFolders::Folder', publication_id: id)&.id
-    raise ActiveRecord::RecordNotFound if id.present? && parent_id.nil?
-    return unless folder&.admin_publication&.id != parent_id
+    target_admin_publication_parent = AdminPublication.find_by(publication_type: 'ProjectFolders::Folder', publication_id: id)
+    raise ActiveRecord::RecordNotFound if id.present? && target_admin_publication_parent.nil?
+
+    current_admin_publication_parent = admin_publication&.parent
+
+    # If target is the same as current, do nothing
+    return if current_admin_publication_parent&.id == target_admin_publication_parent&.id
+
+    target_folder = target_admin_publication_parent&.publication
+    self.space_id = target_folder&.space_id if target_folder.present?
 
     build_admin_publication unless admin_publication
     folder_will_change!
-    admin_publication.assign_attributes(parent_id: parent_id)
+    admin_publication.assign_attributes(parent_id: target_admin_publication_parent&.id)
   end
 
   def folder_changed?
@@ -228,8 +310,14 @@ class Project < ApplicationRecord
     # NOTE: if a project is passed to this method, timeline projects used to always return 'Ideation'
     # as it was never set and defaulted to this when the participation_method was available on the project
     # The following mimics the same behaviour now that participation method is not available on the project
-    # TODO: Maybe change to find phase with ideation or voting where created date between start and end date?
-    @pmethod ||= ParticipationMethod::Ideation.new(phases.first)
+    # This defaults to Ideation as pmethod is only needed when dealing with custom forms for Ideation phases
+    @pmethod ||= ParticipationMethod::Ideation.new(
+      TimelineService.new.current_or_backup_transitive_phase(self) || phases.first
+    )
+  end
+
+  def schedule
+    @schedule ||= ProjectSchedule.new(self)
   end
 
   def refresh_preview_token
@@ -242,6 +330,17 @@ class Project < ApplicationRecord
 
   private
 
+  def validate_completed_setup_steps
+    unless completed_setup_steps.is_a?(Array)
+      errors.add(:completed_setup_steps, :invalid, message: 'must be an array')
+      return
+    end
+
+    unless completed_setup_steps.all? { |step| SETUP_STEPS.include?(step) }
+      errors.add(:completed_setup_steps, :invalid, message: 'contains unknown setup steps')
+    end
+  end
+
   def admin_publication_must_exist
     # Built-in presence validation does not work.
     # Admin publication must always be present
@@ -251,14 +350,10 @@ class Project < ApplicationRecord
     errors.add(:admin_publication_id, :blank, message: "Admin publication can't be blank")
   end
 
-  def sanitize_description_multiloc
-    service = SanitizationService.new
-    self.description_multiloc = service.sanitize_multiloc(
-      description_multiloc,
-      %i[title alignment list decoration link image video]
-    )
-    self.description_multiloc = service.remove_multiloc_empty_trailing_tags(description_multiloc)
-    self.description_multiloc = service.linkify_multiloc(description_multiloc)
+  def space_must_match_folder_space
+    return unless folder.present? && folder.space_id != space_id
+
+    errors.add(:space_id, 'project space must match the space of its folder')
   end
 
   def set_visible_to
@@ -289,47 +384,14 @@ class Project < ApplicationRecord
       moderator.save!
     end
   end
-
-  def reassign_moderators
-    add_new_folder_moderators
-    remove_old_folder_moderators
-  end
-
-  def add_new_folder_moderators
-    new_folder_moderators.each do |moderator|
-      next if moderator.moderatable_project_ids.include?(id)
-
-      moderator.add_role('project_moderator', project_id: id)
-      moderator.save
-    end
-  end
-
-  def remove_old_folder_moderators
-    old_folder_moderators.each do |moderator|
-      next unless moderator.moderatable_project_ids.include?(id)
-
-      moderator.delete_role('project_moderator', project_id: id)
-      moderator.save
-    end
-  end
-
-  def new_folder_moderators
-    return ::User.none unless folder&.id
-
-    ::User.project_folder_moderator(folder&.id)
-  end
-
-  def old_folder_moderators
-    return ::User.none unless folder_was.is_a?(ProjectFolders::Folder)
-
-    ::User.project_folder_moderator(folder_was.id)
-  end
 end
 
 Project.include(SmartGroups::Concerns::ValueReferenceable)
 Project.include(CustomMaps::Extensions::Project)
 Project.include(IdeaAssignment::Extensions::Project)
-Project.include(ContentBuilder::Patches::Project)
+Project.include(ContentBuilder::Concerns::ContentBuildable)
 Project.include(Analysis::Patches::Project)
 Project.include(EmailCampaigns::Extensions::Project)
 Project.include(BulkImportIdeas::Patches::Project)
+Project.include(Webhooks::Patches::Project)
+Project.include(ReportBuilder::Patches::Project)

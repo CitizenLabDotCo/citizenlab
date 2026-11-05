@@ -22,7 +22,7 @@ class CustomFieldParamsService
       next if field.built_in?
 
       given_value = params.delete field.key
-      next if !given_value || !field.enabled?
+      next if given_value.nil? || !field.enabled?
 
       accu[field.key] = given_value
     end

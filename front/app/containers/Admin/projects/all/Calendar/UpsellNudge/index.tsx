@@ -43,7 +43,7 @@ const UpsellNudge = () => {
           </Tooltip>
 
           <ButtonWithLink
-            linkTo={formatMessage(messages.timelineSupportArticle)}
+            linkTo={formatMessage(messages.timelineSupportArticle2)}
             buttonStyle="text"
             textColor={theme.colors.tenantPrimary}
           >
@@ -60,7 +60,7 @@ const UpsellNudge = () => {
         justifyContent="flex-start"
         mt="40px"
       >
-        <img src={Calendar} alt="" width="100%" />
+        <img src={Calendar} alt="" style={{ width: '100%' }} />
       </Box>
       <Box position="absolute" top="20px" right="0">
         <PremiumIcon />

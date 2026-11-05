@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
 
@@ -7,14 +7,19 @@ import { IIdeaData } from 'api/ideas/types';
 import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
 import { IdeaSortMethod } from 'api/phases/types';
 
-import IdeasMap from 'components/IdeasMap';
+import StickyNotesPile from 'containers/IdeasFeedPage/StickyNotes/StickyNotesPile';
+
+import { isPrerender } from 'utils/prerender';
 
 import { InputFiltersProps } from '../../IdeasWithFiltersSidebar/InputFilters';
 
 import IdeasList from './IdeasList';
 
+// Lazy so the ArcGIS bundle is only fetched when the map view is selected.
+const IdeasMap = React.lazy(() => import('components/IdeasMap'));
+
 interface Props {
-  view: 'card' | 'map';
+  view: 'card' | 'map' | 'feed';
   // This prop is used to set the aria-labelledby attribute. Set this to false if only one view is shown all the time. That is when the tabs are hidden.
   hasMoreThanOneView?: boolean;
   defaultSortingMethod?: IdeaSortMethod;
@@ -23,6 +28,7 @@ interface Props {
   hideIdeaStatus: boolean;
   projectId?: string;
   phaseId?: string;
+  projectSlug?: string;
   list: IIdeaData[];
   querying: boolean;
   hasMore: boolean;
@@ -40,6 +46,7 @@ const IdeasView = ({
   hideIdeaStatus,
   projectId,
   phaseId,
+  projectSlug,
   list,
   querying,
   hasMore,
@@ -77,15 +84,22 @@ const IdeasView = ({
           hasFilterSidebar={hasFilterSidebar}
         />
       )}
-      {view === 'map' && projectId && (
-        <Box aria-label={'view-tab-2'} id={'view-panel-2'}>
-          <IdeasMap
-            projectId={projectId}
-            phaseId={phaseId}
-            mapConfig={mapConfig}
-            ideaMarkers={ideaMarkers}
-            inputFiltersProps={inputFiltersProps}
-          />
+      {view === 'map' && projectId && !isPrerender() && (
+        <Box id={'view-panel-2'}>
+          <Suspense fallback={<Spinner />}>
+            <IdeasMap
+              projectId={projectId}
+              phaseId={phaseId}
+              mapConfig={mapConfig}
+              ideaMarkers={ideaMarkers}
+              inputFiltersProps={inputFiltersProps}
+            />
+          </Suspense>
+        </Box>
+      )}
+      {view === 'feed' && phaseId && projectSlug && (
+        <Box aria-label={'view-tab-3'} id={'view-panel-3'}>
+          <StickyNotesPile phaseId={phaseId} slug={projectSlug} />
         </Box>
       )}
     </>

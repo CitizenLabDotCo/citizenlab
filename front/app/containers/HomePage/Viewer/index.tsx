@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
-import useHomepageLayout from 'api/home_page_layout/useHomepageLayout';
+import useContentBuilderLayout from 'api/content_builder/useContentBuilderLayout';
 
 import Editor from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Editor';
 
@@ -16,7 +16,7 @@ const handleLoadImages = () => {
 };
 
 const Preview = () => {
-  const { data: homepageLayout } = useHomepageLayout();
+  const { data: homepageLayout } = useContentBuilderLayout('homepage');
 
   const homepageContent = homepageLayout?.data.attributes.craftjs_json;
 

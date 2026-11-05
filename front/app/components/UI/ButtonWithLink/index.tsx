@@ -5,58 +5,95 @@ import {
   ButtonProps,
   ButtonStyles,
 } from '@citizenlab/cl2-component-library';
-import { RouteType } from 'routes';
 
-import Link from 'utils/cl-router/Link';
+import Link, { type TypedLinkProps } from 'utils/cl-router/Link';
 
-interface Props extends ButtonProps {
+import type { LinkProps } from '@tanstack/react-router';
+
+interface Props extends ButtonProps, TypedLinkProps {
+  // Legacy/external/admin-supplied URL escape hatch. Prefer `to` for known
+  // internal routes — this stays for arbitrary admin-configured URLs.
   linkTo?: string | null;
   openLinkInNewTab?: boolean;
   scrollToTop?: boolean;
+  hash?: string;
 }
 
 type Ref = HTMLButtonElement;
 
 const ButtonWithLink = forwardRef<Ref, Props>(
-  ({ linkTo, openLinkInNewTab, disabled, scrollToTop, ...rest }, ref) => {
+  (
+    {
+      to,
+      params,
+      search,
+      hash,
+      linkTo,
+      openLinkInNewTab,
+      disabled,
+      scrollToTop,
+      ...rest
+    },
+    ref
+  ) => {
     const isExternalLink =
       linkTo &&
       (linkTo.startsWith('http') ||
         linkTo.startsWith('www') ||
         linkTo.startsWith('mailto'));
 
-    const link =
-      linkTo && !disabled
-        ? isExternalLink
-          ? ({
-              children,
-              ...rest
-            }: ButtonProps & React.HTMLAttributes<HTMLAnchorElement>) => (
-              <a
-                href={linkTo}
-                target={openLinkInNewTab ? '_blank' : undefined}
-                rel="noreferrer"
-                {...rest}
-              >
-                {children}
-              </a>
-            )
-          : ({
-              children,
-              ...rest
-            }: Omit<ButtonProps, 'as' | 'size'> &
-              React.HTMLAttributes<HTMLAnchorElement>) => (
-              <Link
-                to={linkTo as RouteType}
-                target={openLinkInNewTab ? '_blank' : undefined}
-                rel="noreferrer"
-                scrollToTop={scrollToTop}
-                {...rest}
-              >
-                {children}
-              </Link>
-            )
-        : undefined;
+    const link = disabled
+      ? undefined
+      : to
+      ? ({
+          children,
+          ...rest
+        }: Omit<ButtonProps, 'as' | 'size'> &
+          React.HTMLAttributes<HTMLAnchorElement>) => (
+          <Link
+            to={to}
+            params={params as Parameters<typeof Link>[0]['params']}
+            search={search as Parameters<typeof Link>[0]['search']}
+            hash={hash}
+            target={openLinkInNewTab ? '_blank' : undefined}
+            rel="noreferrer"
+            scrollToTop={scrollToTop}
+            {...rest}
+          >
+            {children}
+          </Link>
+        )
+      : linkTo
+      ? isExternalLink
+        ? ({
+            children,
+            ...rest
+          }: ButtonProps & React.HTMLAttributes<HTMLAnchorElement>) => (
+            <a
+              href={linkTo}
+              target={openLinkInNewTab ? '_blank' : undefined}
+              rel="noreferrer"
+              {...rest}
+            >
+              {children}
+            </a>
+          )
+        : ({
+            children,
+            ...rest
+          }: Omit<ButtonProps, 'as' | 'size'> &
+            React.HTMLAttributes<HTMLAnchorElement>) => (
+            <Link
+              to={linkTo as LinkProps['to']}
+              target={openLinkInNewTab ? '_blank' : undefined}
+              rel="noreferrer"
+              scrollToTop={scrollToTop}
+              {...rest}
+            >
+              {children}
+            </Link>
+          )
+      : undefined;
 
     return <Button as={link} disabled={disabled} {...rest} ref={ref} />;
   }

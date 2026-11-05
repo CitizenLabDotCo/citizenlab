@@ -40,90 +40,13 @@ module MultiTenancy
             password_login: {
               allowed: true,
               enabled: true,
-              enable_signup: true,
               minimum_length: 8
             },
-            facebook_login: {
-              allowed: true,
-              enabled: true,
-              app_id: ENV.fetch('DEFAULT_FACEBOOK_LOGIN_APP_ID'),
-              app_secret: ENV.fetch('DEFAULT_FACEBOOK_LOGIN_APP_SECRET')
-            },
-            google_login: {
-              allowed: true,
-              enabled: true,
-              client_id: ENV.fetch('DEFAULT_GOOGLE_LOGIN_CLIENT_ID'),
-              client_secret: ENV.fetch('DEFAULT_GOOGLE_LOGIN_CLIENT_SECRET')
-            },
-            azure_ad_login: {
-              allowed: true,
-              enabled: true,
-              tenant: ENV.fetch('DEFAULT_AZURE_AD_LOGIN_TENANT_ID'),
-              client_id: ENV.fetch('DEFAULT_AZURE_AD_LOGIN_CLIENT_ID'),
-              logo_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/microsoft-azure-logo.png',
-              login_mechanism_name: 'Azure Active Directory',
-              visibility: 'show'
-            },
-            azure_ad_b2c_login: {
-              allowed: true,
-              enabled: true,
-              tenant_name: ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_TENANT_NAME'),
-              tenant_id: ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_TENANT_ID'),
-              policy_name: ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_POLICY_NAME'),
-              client_id: ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_CLIENT_ID'),
-              logo_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/microsoft-azure-logo.png',
-              login_mechanism_name: 'Azure AD B2C'
-            },
-            id_austria_login: {
-              allowed: true,
-              enabled: true
-            },
-            criipto_login: {
-              allowed: true,
-              enabled: true
-            },
-            clave_unica_login: {
-              allowed: true,
-              enabled: true
-            },
-            nemlog_in_login: {
-              allowed: true,
-              enabled: true
-            },
-            keycloak_login: {
-              allowed: true,
-              enabled: true
-            },
-            twoday_login: {
-              allowed: true,
-              enabled: true
-            },
-            franceconnect_login: {
-              allowed: true,
-              enabled: true,
-              environment: 'integration',
-              version: 'v2',
-              identifier: ENV.fetch('DEFAULT_FRANCECONNECT_LOGIN_IDENTIFIER', 'fake id'),
-              secret: ENV.fetch('DEFAULT_FRANCECONNECT_LOGIN_SECRET', 'fake secret')
-            },
-            hoplr_login: {
-              allowed: true,
-              enabled: true,
-              environment: 'test',
-              client_id: ENV.fetch('DEFAULT_HOPLR_CLIENT_ID', 'fake id'),
-              client_secret: ENV.fetch('DEFAULT_HOPLR_CLIENT_SECRET', 'fake secret')
-            },
-            vienna_citizen_login: {
-              allowed: true,
-              enabled: true,
-              environment: 'test'
-            },
-            vienna_employee_login: {
-              allowed: true,
-              enabled: true,
-              environment: 'test'
-            },
             pages: {
+              allowed: true,
+              enabled: true
+            },
+            project_static_pages: {
               allowed: true,
               enabled: true
             },
@@ -154,10 +77,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            user_confirmation: {
-              enabled: true,
-              allowed: true
-            },
             permissions_custom_fields: {
               enabled: true,
               allowed: true
@@ -166,27 +85,7 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            bulk_import_ideas: {
-              enabled: true,
-              allowed: true
-            },
-            project_description_builder: {
-              enabled: true,
-              allowed: true
-            },
             custom_idea_statuses: {
-              enabled: true,
-              allowed: true
-            },
-            idea_author_change: {
-              enabled: true,
-              allowed: true
-            },
-            widgets: {
-              enabled: true,
-              allowed: true
-            },
-            granular_permissions: {
               enabled: true,
               allowed: true
             },
@@ -195,8 +94,8 @@ module MultiTenancy
               allowed: true
             },
             intercom: {
-              enabled: true,
-              allowed: true
+              enabled: false,
+              allowed: false
             },
             segment: {
               enabled: false,
@@ -210,11 +109,6 @@ module MultiTenancy
               enabled: true,
               allowed: true,
               write_key: ENV.fetch('DEFAULT_SATISMETER_WRITE_KEY')
-            },
-            google_analytics: {
-              enabled: true,
-              allowed: true,
-              tracking_id: ENV.fetch('DEFAULT_GA_TRACKING_ID')
             },
             google_tag_manager: {
               enabled: true,
@@ -276,107 +170,48 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            events_widget: {
-              enabled: true,
-              allowed: true
-            },
             polls: {
               enabled: true,
               allowed: true
             },
-            verification: {
-              enabled: true,
+            id_config: {
               allowed: true,
-              verification_methods: [
-                # NOTE: for real platforms, you should never have
-                # more than one verification method enabled at a time.
-                # The below list is for testing purposes only.
+              enabled: true,
+              id_methods: [
+                # The built-in authentication methods (Facebook, Google, Azure AD,
+                # Azure AD B2C) and Fake SSO are seeded by default. To enable other
+                # verification/authentication methods locally, use: rake dev:enable_id_method[<method_name>]
                 {
                   name: 'fake_sso'
                 },
                 {
-                  name: 'cow',
-                  api_username: 'fake_username',
-                  api_password: 'fake_password',
-                  rut_empresa: 'fake_rut_empresa'
+                  name: 'facebook',
+                  app_id: ENV.fetch('DEFAULT_FACEBOOK_LOGIN_APP_ID'),
+                  app_secret: ENV.fetch('DEFAULT_FACEBOOK_LOGIN_APP_SECRET')
                 },
                 {
-                  name: 'bosa_fas',
-                  environment: 'integration',
-                  identifier: 'fake_identifier',
-                  secret: 'fake_secret'
+                  name: 'google',
+                  client_id: ENV.fetch('DEFAULT_GOOGLE_LOGIN_CLIENT_ID'),
+                  client_secret: ENV.fetch('DEFAULT_GOOGLE_LOGIN_CLIENT_SECRET')
                 },
                 {
-                  name: 'clave_unica',
-                  client_id: ENV.fetch('DEFAULT_CLAVE_UNICA_CLIENT_ID', 'fake id'),
-                  client_secret: ENV.fetch('DEFAULT_CLAVE_UNICA_CLIENT_SECRET', 'fake secret'),
-                  enabled_for_verified_actions: true
+                  name: 'azureactivedirectory',
+                  tenant: ENV.fetch('DEFAULT_AZURE_AD_LOGIN_TENANT_ID'),
+                  client_id: ENV.fetch('DEFAULT_AZURE_AD_LOGIN_CLIENT_ID'),
+                  logo_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/microsoft-azure-logo.png',
+                  login_mechanism_name: 'Azure Active Directory',
+                  visibility: 'show'
                 },
                 {
-                  name: 'bogus'
-                },
-                {
-                  name: 'id_card_lookup',
-                  ui_method_name: 'Enter social security number',
-                  card_id: 'Social security number',
-                  card_id_placeholder: 'xx-xxxxx-xx',
-                  card_id_tooltip: 'You can find this number on you ID card. We check your number without storing it.',
-                  explainer_image_url: 'http://localhost:4000/id_card_explainer.jpg'
-                },
-                {
-                  name: 'franceconnect'
-                },
-                {
-                  name: 'auth0',
-                  client_id: 'fake_client_id',
-                  client_secret: 'fake_client_secret',
-                  domain: 'fake_domain',
-                  method_name_multiloc: { en: 'Verify with Auth0' }
-                },
-                {
-                  name: 'nemlog_in',
-                  environment: 'pre_production_integration',
-                  issuer: ENV.fetch('DEFAULT_NEMLOG_IN_ISSUER', 'fake issuer'),
-                  private_key: ENV.fetch('DEFAULT_NEMLOG_IN_PRIVATE_KEY', 'fake key'),
-                  enabled_for_verified_actions: true
-                },
-                {
-                  name: 'criipto',
-                  domain: 'cl-test.criipto.id',
-                  client_id: ENV.fetch('DEFAULT_CRIIPTO_CLIENT_ID', 'fake id'),
-                  client_secret: ENV.fetch('DEFAULT_CRIIPTO_CLIENT_SECRET', 'fake secret'),
-                  identity_source: 'DK MitID',
-                  ui_method_name: 'MitID (Criipto)',
-                  enabled_for_verified_actions: true
-                },
-                {
-                  name: 'id_austria',
-                  client_id: ENV.fetch('DEFAULT_ID_IDAUSTRIA_CLIENT_ID', 'fake id'),
-                  client_secret: ENV.fetch('DEFAULT_ID_IDAUSTRIA_CLIENT_SECRET', 'fake secret'),
-                  ui_method_name: 'ID Austria',
-                  enabled_for_verified_actions: true
-                },
-                {
-                  name: 'keycloak',
-                  client_id: ENV.fetch('DEFAULT_ID_KEYCLOAK_CLIENT_ID', 'fake id'),
-                  client_secret: ENV.fetch('DEFAULT_ID_KEYCLOAK_CLIENT_SECRET', 'fake secret'),
-                  domain: ENV.fetch('DEFAULT_ID_KEYCLOAK_DOMAIN', 'fake domain'),
-                  ui_method_name: 'Bank ID',
-                  enabled_for_verified_actions: true
-                },
-                {
-                  name: 'twoday',
-                  client_id: ENV.fetch('DEFAULT_ID_TWODAY_CLIENT_ID', 'fake id'),
-                  client_secret: ENV.fetch('DEFAULT_ID_TWODAY_CLIENT_SECRET', 'fake secret'),
-                  domain: ENV.fetch('DEFAULT_ID_TWODAY_DOMAIN', 'fake domain'),
-                  ui_method_name: 'Bank ID',
-                  enabled_for_verified_actions: true
+                  name: 'azureactivedirectory_b2c',
+                  tenant_name: ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_TENANT_NAME'),
+                  tenant_id: ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_TENANT_ID'),
+                  policy_name: ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_POLICY_NAME'),
+                  client_id: ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_CLIENT_ID'),
+                  logo_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/microsoft-azure-logo.png',
+                  login_mechanism_name: 'Azure AD B2C'
                 }
               ]
-            },
-            project_folders: {
-              enabled: true,
-              allowed: true
             },
             project_preview_link: {
               enabled: true,
@@ -390,6 +225,10 @@ module MultiTenancy
               enabled: false,
               allowed: false
             },
+            prescreening_flagged_only: {
+              enabled: false,
+              allowed: false
+            },
             disable_disliking: {
               enabled: true,
               allowed: true
@@ -398,15 +237,15 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            input_form_answer_filters: {
+              enabled: true,
+              allowed: true
+            },
             report_builder: {
               enabled: true,
               allowed: true
             },
             report_data_grouping: {
-              enabled: true,
-              allowed: true
-            },
-            input_form_custom_fields: {
               enabled: true,
               allowed: true
             },
@@ -455,10 +294,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            html_pdfs: {
-              enabled: true,
-              allowed: true
-            },
             user_session_recording: {
               # Disable for E2E tests on localhost
               enabled: false,
@@ -492,10 +327,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            proposals_participation_method: {
-              enabled: true,
-              allowed: true
-            },
             input_cosponsorship: {
               enabled: true,
               allowed: true
@@ -508,12 +339,11 @@ module MultiTenancy
               enabled: false,
               allowed: true
             },
-            fake_sso: {
-              enabled: true,
-              allowed: true,
-              issuer: '' # Change this value to 'https://fake-sso.onrender.com' to test with the deployed version of the Fake SSO
-            },
             project_review: {
+              enabled: true,
+              allowed: true
+            },
+            project_scheduling: {
               enabled: true,
               allowed: true
             },
@@ -530,11 +360,23 @@ module MultiTenancy
               allowed: true,
               project_id: ''
             },
-            user_fields_in_surveys: {
+            common_ground: {
               enabled: true,
               allowed: true
             },
-            common_ground: {
+            idea_feed: {
+              enabled: true,
+              allowed: true
+            },
+            nested_input_topics: {
+              enabled: true,
+              allowed: true
+            },
+            live_auto_input_topics: {
+              enabled: true,
+              allowed: true
+            },
+            data_repository_transcription: {
               enabled: true,
               allowed: true
             },
@@ -555,6 +397,59 @@ module MultiTenancy
               allowed: true
             },
             project_importer: {
+              enabled: true,
+              allowed: true
+            },
+            participation_location_tracking: {
+              enabled: false,
+              allowed: false
+            },
+            spaces: {
+              enabled: false,
+              allowed: false
+            },
+            mcp_server: {
+              enabled: true,
+              allowed: true
+            },
+            html_block_in_content_builder: {
+              enabled: true,
+              allowed: true
+            },
+            custom_page_builder: {
+              enabled: true,
+              allowed: true
+            },
+            llm_reporting: {
+              enabled: true,
+              allowed: true
+            },
+            sms: {
+              enabled: true,
+              allowed: true,
+              use_test_mode: true
+            },
+            sms_login: {
+              enabled: true,
+              allowed: true
+            },
+            sms_manual_campaigns: {
+              enabled: true,
+              allowed: true
+            },
+            decidim_importer: {
+              enabled: true,
+              allowed: true
+            },
+            configurable_dropdown: {
+              enabled: true,
+              allowed: true
+            },
+            project_backoffice_redesign: {
+              enabled: false,
+              allowed: true
+            },
+            ai_assistant: {
               enabled: true,
               allowed: true
             }

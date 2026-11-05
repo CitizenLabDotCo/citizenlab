@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 
 import { MembershipType } from 'api/groups/types';
 
-import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
+import { NormalFormValues } from 'containers/Admin/users/_shared/NormalGroupForm';
 
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
@@ -45,21 +45,18 @@ const ModalHeaderOutlet = ({ type }: ModalHeaderOutletProps) => (
 interface ModalFormOutletProps {
   type: MembershipType;
   onSubmit: (values: NormalFormValues) => Promise<void>;
-  isVerificationEnabled: boolean;
   initialValues: RulesFormValues;
 }
 
 const ModalFormOutlet = ({
   type,
   onSubmit,
-  isVerificationEnabled,
   initialValues,
 }: ModalFormOutletProps) => (
   <RenderOnType type={type}>
     <RulesGroupFormWithValidation
       initialValues={initialValues}
       onSubmit={onSubmit}
-      isVerificationEnabled={isVerificationEnabled}
     />
   </RenderOnType>
 );

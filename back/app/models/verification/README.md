@@ -150,7 +150,7 @@ module Verification
 end
 ```
 
-By implementing the verification method, a new route will be exposed at `POST verification_methods/dna/verification` that expects the verification parameters in the format `{verification: {dna_string: 'ACAAGGACAT'}}`
+By implementing the verification method, a new route will be exposed at `POST id_methods/dna/verification` that expects the verification parameters in the format `{verification: {dna_string: 'ACAAGGACAT'}}`
 
 It's best to implement an acceptance test for the endpoint, and a unit test for the `verify_sync` implementation. See `Cow` as an example.
 

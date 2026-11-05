@@ -11,41 +11,33 @@ import styled from 'styled-components';
 import useAuthUser from 'api/me/useAuthUser';
 import useProjectById from 'api/projects/useProjectById';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useLocalize from 'hooks/useLocalize';
-
-import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
+import { adminProjectsProjectLink } from 'containers/Admin/projects/routes';
 import messages from 'containers/ProjectsShowPage/messages';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 
 import ContentContainer from 'components/ContentContainer';
 import FollowUnfollow from 'components/FollowUnfollow';
-import {
-  HeaderImage,
-  HeaderImageContainer,
-} from 'components/ProjectableHeader';
-import ContentViewer from 'components/ProjectDescriptionBuilder/ContentViewer';
+import ProjectPageContentViewer from 'components/ProjectPageBuilder/ContentViewer';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
+import checkIfFramed from 'utils/checkIfFramed';
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import ProjectArchivedIndicator from './ProjectArchivedIndicator';
 import ProjectFolderGoBackButton from './ProjectFolderGoBackButton';
-import ProjectInfo from './ProjectInfo';
 import ProjectPreviewIndicator from './ProjectPreviewIndicator';
 
 const Container = styled.div`
   padding-top: 30px;
-  padding-bottom: 65px;
+  padding-bottom: 0px;
   background: #fff;
   position: relative;
   z-index: 2;
 
   ${media.phone`
     padding-top: 30px;
-    padding-bottom: 35px;
   `}
 `;
 
@@ -64,60 +56,51 @@ interface Props {
 
 const ProjectHeader = memo<Props>(({ projectId, className }) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
+  const isPhoneOrSmaller = useBreakpoint('phone');
   const { formatMessage } = useIntl();
-  const localize = useLocalize();
-  const projectDescriptionBuilderEnabled = useFeatureFlag({
-    name: 'project_description_builder',
-  });
-  const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
   const { data: project } = useProjectById(projectId);
   const { data: authUser } = useAuthUser();
   const projectFolderId = project?.data.attributes.folder_id;
 
   if (project) {
     const projectHeaderImageLargeUrl = project.data.attributes.header_bg.large;
-    const projectHeaderImageAltText = localize(
-      project.data.attributes.header_bg_alt_text_multiloc
-    );
     const userCanEditProject =
       !isNilOrError(authUser) && canModerateProject(project.data, authUser);
+    // An admin preview shows this page in a frame, where the button would open the admin inside it.
+    const showEditButton = userCanEditProject && !checkIfFramed();
 
     return (
       <Container className={className || ''}>
         <ContentContainer maxWidth={maxPageWidth}>
           <Box
             display="flex"
+            flexWrap="wrap"
             justifyContent="center"
             alignItems="center"
             mb="20px"
           >
-            {(projectFolderId || userCanEditProject) && (
+            {projectFolderId && (
               <Box
-                w="100%"
+                w={isPhoneOrSmaller && userCanEditProject ? '100%' : 'auto'}
                 display="flex"
-                justifyContent="center"
-                alignItems="center"
+                justifyContent="flex-start"
               >
-                {projectFolderId && isProjectFoldersEnabled && (
-                  <ProjectFolderGoBackButton
-                    projectFolderId={projectFolderId}
-                  />
-                )}
-                <Box mr="8px" ml="auto" display="flex">
-                  {userCanEditProject && (
-                    <EditButton
-                      icon="edit"
-                      linkTo={adminProjectsProjectPath(project.data.id)}
-                      buttonStyle="secondary-outlined"
-                      padding="6px 12px"
-                    >
-                      {formatMessage(messages.editProject)}
-                    </EditButton>
-                  )}
-                </Box>
+                <ProjectFolderGoBackButton projectFolderId={projectFolderId} />
               </Box>
             )}
-            <Box ml="auto" mt="0px">
+            <Box ml="auto" display="flex" alignItems="center">
+              {showEditButton && (
+                <Box mr="8px" display="flex">
+                  <EditButton
+                    icon="edit"
+                    {...adminProjectsProjectLink(project.data.id)}
+                    buttonStyle="secondary-outlined"
+                    padding="6px 12px"
+                  >
+                    {formatMessage(messages.editProject)}
+                  </EditButton>
+                </Box>
+              )}
               <FollowUnfollow
                 followableType="projects"
                 followableId={project.data.id}
@@ -131,19 +114,6 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
               />
             </Box>
           </Box>
-          {projectHeaderImageLargeUrl && (
-            <HeaderImageContainer>
-              <HeaderImage
-                id="e2e-project-header-image"
-                src={projectHeaderImageLargeUrl}
-                cover={true}
-                fadeIn={false}
-                isLazy={false}
-                placeholderBg="transparent"
-                alt={projectHeaderImageAltText}
-              />
-            </HeaderImageContainer>
-          )}
           {!isSmallerThanTablet && (
             <ProjectArchivedIndicator
               projectId={projectId}
@@ -158,10 +128,7 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
               mt={projectHeaderImageLargeUrl ? '-20px' : '0px'}
             />
           )}
-          {!projectDescriptionBuilderEnabled && (
-            <ProjectInfo projectId={projectId} />
-          )}
-          <ContentViewer />
+          <ProjectPageContentViewer projectId={project.data.id} />
         </ContentContainer>
       </Container>
     );

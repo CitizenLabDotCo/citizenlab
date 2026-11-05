@@ -19,7 +19,7 @@ export interface ICustomFieldOptionData {
     updated_at: string;
   };
   relationships: {
-    image: { data?: IRelationship };
+    image?: { data?: IRelationship };
   };
 }
 

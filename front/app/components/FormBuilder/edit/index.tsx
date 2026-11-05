@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import {
   Box,
@@ -10,14 +10,13 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import { useForm, useFieldArray, FormProvider } from 'react-hook-form';
-import { useParams, useSearchParams } from 'react-router-dom';
-import { RouteType } from 'routes';
 
 import {
   IFlatCreateCustomField,
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
   ICustomFieldInputType,
+  ICustomFieldSettingsTab,
 } from 'api/custom_fields/types';
 import useFormCustomFields from 'api/custom_fields/useCustomFields';
 import useUpdateCustomField from 'api/custom_fields/useUpdateCustomFields';
@@ -29,21 +28,30 @@ import useSubmissionsCount from 'api/submission_count/useSubmissionCount';
 
 import useLocale from 'hooks/useLocale';
 
+import useAiAssistantEnabled from 'components/AiAssistant/useAiAssistantEnabled';
 import FormBuilderSettings from 'components/FormBuilder/components/FormBuilderSettings';
 import FormBuilderToolbox from 'components/FormBuilder/components/FormBuilderToolbox';
 import FormBuilderTopBar from 'components/FormBuilder/components/FormBuilderTopBar';
 import FormFields from 'components/FormBuilder/components/FormFields';
+import SurveyAssistant from 'components/FormBuilder/components/SurveyAssistant';
 import HelmetIntl from 'components/HelmetIntl';
 
 import { useIntl } from 'utils/cl-intl';
+import { type TypedLinkProps } from 'utils/cl-router/Link';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { useParams, useSearch } from 'utils/router';
 
 import { DragAndDrop, Drop } from '../components/DragAndDrop';
 import { pageDNDType } from '../components/FormFields/constants';
 import FormStatus from '../components/FormStatus';
 import messages from '../messages';
-import { FormBuilderConfig } from '../utils';
+import {
+  FormBuilderConfig,
+  ResolvedFormBuilderConfig,
+  resolveFormBuilderConfig,
+} from '../utils';
 
 import {
   getReorderedFields,
@@ -64,9 +72,9 @@ type FormEditProps = {
   defaultValues: {
     customFields: IFlatCustomField[];
   };
-  builderConfig: FormBuilderConfig;
+  builderConfig: ResolvedFormBuilderConfig;
   totalSubmissions: number;
-  viewFormLink: RouteType;
+  viewFormLink: TypedLinkProps;
   phase: IPhaseData;
 };
 
@@ -81,16 +89,18 @@ const FormEdit = ({
   const projectId = phase.relationships.project.data.id;
   const { formatMessage } = useIntl();
   const locale = useLocale();
-  const [selectedField, setSelectedField] = useState<
-    IFlatCustomFieldWithIndex | undefined
+  const [selectedFieldInfo, setSelectedFieldInfo] = useState<
+    { index: number; defaultTab?: ICustomFieldSettingsTab } | undefined
   >(undefined);
   const [successMessageIsVisible, setSuccessMessageIsVisible] = useState(false);
   const [autosaveEnabled, setAutosaveEnabled] = useState(true);
-  const { isFormPhaseSpecific } = builderConfig;
+  const assistantEnabled =
+    useAiAssistantEnabled() &&
+    phase.attributes.participation_method === 'native_survey';
   const { mutateAsync: updateFormCustomFields } = useUpdateCustomField();
   const { data: formCustomFields, isFetching } = useFormCustomFields({
     projectId,
-    phaseId: isFormPhaseSpecific ? phaseId : undefined,
+    phaseId,
   });
 
   const { data: customForm } = useCustomForm(phase);
@@ -129,21 +139,43 @@ const FormEdit = ({
     setValue,
   } = methods;
 
-  const { move, replace, insert } = useFieldArray({
+  const { move, replace, insert, remove } = useFieldArray({
     name: 'customFields',
     control,
   });
+
+  // Only the position is held in state; the field's data is read from the live
+  // form on each render so edits and server round-trips are reflected without
+  // a separate copy to maintain.
+  const liveCustomFields: IFlatCustomField[] = watch('customFields');
+  const selectedField: IFlatCustomFieldWithIndex | undefined =
+    selectedFieldInfo && liveCustomFields[selectedFieldInfo.index]
+      ? {
+          ...liveCustomFields[selectedFieldInfo.index],
+          index: selectedFieldInfo.index,
+          defaultTab: selectedFieldInfo.defaultTab,
+        }
+      : undefined;
+
+  const setSelectedField = (field: IFlatCustomFieldWithIndex | undefined) => {
+    setSelectedFieldInfo(
+      field ? { index: field.index, defaultTab: field.defaultTab } : undefined
+    );
+  };
 
   // This tracks form update. We isolate it to avoid setting data on other changes
   const [isUpdatingForm, setIsUpdatingForm] = useState(false);
   // This tracks form submission and update status
   const [isSubmitting, setIsSubmitting] = useState(false);
+  // Ref for synchronous submission tracking to prevent double-clicks and concurrent saves
+  const isSubmittingRef = useRef(false);
 
   useEffect(() => {
     if (isUpdatingForm && !isFetching) {
       reset({ customFields: formCustomFields });
       setIsUpdatingForm(false);
       setIsSubmitting(false);
+      isSubmittingRef.current = false;
     }
   }, [formCustomFields, isUpdatingForm, isFetching, reset]);
 
@@ -152,11 +184,13 @@ const FormEdit = ({
     setSelectedField(undefined);
 
     // If autosave is enabled, no submission have come in yet and there are changes, save
+    // Also check isSubmittingRef to prevent autosave while a manual save is in progress
     if (
       triggerAutosave &&
       autosaveEnabled &&
       totalSubmissions === 0 &&
-      isDirty
+      isDirty &&
+      !isSubmittingRef.current
     ) {
       autosave = true;
       onFormSubmit(getValues()).then(() => {
@@ -166,12 +200,11 @@ const FormEdit = ({
   };
 
   // Remove copy_from param on save to avoid overwriting a saved survey when reloading
-  const [searchParams, setSearchParams] = useSearchParams();
+  const searchParams = useSearch({ strict: false });
 
   const resetCopyFrom = () => {
-    if (searchParams.has('copy_from')) {
-      searchParams.delete('copy_from');
-      setSearchParams(searchParams);
+    if (searchParams.copy_from !== undefined) {
+      updateSearchParams({ copy_from: undefined });
     }
   };
 
@@ -190,6 +223,12 @@ const FormEdit = ({
   };
 
   const onFormSubmit = async ({ customFields }: FormValues) => {
+    // Prevent concurrent submissions (double-clicks, autosave during manual save, etc.)
+    if (isSubmittingRef.current) {
+      return;
+    }
+    isSubmittingRef.current = true;
+
     setSuccessMessageIsVisible(false);
     try {
       setIsSubmitting(true);
@@ -201,7 +240,7 @@ const FormEdit = ({
         {
           projectId,
           customFields: finalResponseArray,
-          phaseId: isFormPhaseSpecific ? phaseId : undefined,
+          phaseId,
           customForm: {
             saveType: autosave ? 'auto' : 'manual',
             openedAt: formOpenedAt,
@@ -226,6 +265,7 @@ const FormEdit = ({
           : 'customFields';
       handleHookFormSubmissionError(error, setError, errorType);
       setIsSubmitting(false);
+      isSubmittingRef.current = false;
     }
   };
 
@@ -321,6 +361,7 @@ const FormEdit = ({
               autosaveEnabled={autosaveEnabled}
               setAutosaveEnabled={setAutosaveEnabled}
               phaseId={phaseId}
+              onFormSave={() => setIsUpdatingForm(true)}
             />
             <DragAndDrop onDragEnd={reorderFields}>
               <Drop id="droppable" type={pageDNDType}>
@@ -330,7 +371,7 @@ const FormEdit = ({
                   </Box>
                   <Box
                     flex="1.8"
-                    border="1px solid #ccc"
+                    border={`1px solid ${colors.grey400}`}
                     overflowY="auto"
                     zIndex="2"
                     margin="0px"
@@ -353,18 +394,31 @@ const FormEdit = ({
                         handleDragEnd={reorderFields}
                         builderConfig={builderConfig}
                         closeSettings={closeSettings}
+                        fieldArrayOperations={{ insert, move, remove }}
                       />
                     </Box>
                   </Box>
-                  <Box flex={!isNilOrError(selectedField) ? '1' : '0'}>
+                  <Box
+                    flex={
+                      !isNilOrError(selectedField) || assistantEnabled
+                        ? '1'
+                        : '0'
+                    }
+                  >
                     {selectedField && (
                       <Box>
                         <FormBuilderSettings
-                          key={selectedField.id}
+                          key={selectedFieldInfo?.index}
                           field={selectedField}
                           closeSettings={closeSettings}
                           builderConfig={builderConfig}
                         />
+                      </Box>
+                    )}
+                    {/* Hidden, not unmounted, so a typed request survives editing a field. */}
+                    {assistantEnabled && (
+                      <Box display={selectedField ? 'none' : 'block'}>
+                        <SurveyAssistant phaseId={phaseId} />
                       </Box>
                     )}
                   </Box>
@@ -380,21 +434,23 @@ const FormEdit = ({
 
 type FormBuilderPageProps = {
   builderConfig: FormBuilderConfig;
-  viewFormLink: RouteType;
+  formCustomFields: IFlatCustomField[] | undefined | Error;
+  goBackUrl: string;
+  viewFormLink: TypedLinkProps;
 };
 
 const FormBuilderPage = ({
   builderConfig,
+  formCustomFields,
+  goBackUrl,
   viewFormLink,
 }: FormBuilderPageProps) => {
   const modalPortalElement = document.getElementById('modal-portal');
-  const { phaseId } = useParams();
+  const { phaseId } = useParams({ strict: false });
   const { data: submissionCount } = useSubmissionsCount({
     phaseId,
   });
   const { data: phase } = usePhase(phaseId);
-
-  const formCustomFields = builderConfig.formCustomFields;
 
   if (!phase) {
     return null;
@@ -409,7 +465,11 @@ const FormBuilderPage = ({
         <FormEdit
           defaultValues={{ customFields: formCustomFields }}
           phase={phase.data}
-          builderConfig={builderConfig}
+          builderConfig={resolveFormBuilderConfig(
+            builderConfig,
+            phase.data,
+            goBackUrl
+          )}
           totalSubmissions={submissionCount.data.attributes.totalSubmissions}
           viewFormLink={viewFormLink}
         />,

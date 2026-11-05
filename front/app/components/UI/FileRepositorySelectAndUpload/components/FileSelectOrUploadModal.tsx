@@ -1,16 +1,17 @@
 import React from 'react';
 
 import { Box, Button, Select, Text } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
 import { UploadFile } from 'typings';
 
 import { IFileAttachmentData } from 'api/file_attachments/types';
 import { IFileData } from 'api/files/types';
 import useFiles from 'api/files/useFiles';
 
+import IconAction from 'components/UI/IconAction';
 import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import FileInput from '../../FileUploader/FileInput';
 
@@ -23,6 +24,7 @@ type Props = {
   maxSizeMb?: number;
   dataCy?: string;
   isDisabled?: boolean;
+  iconOnly?: boolean;
 };
 
 const FileSelectOrUploadModal = ({
@@ -32,11 +34,12 @@ const FileSelectOrUploadModal = ({
   fileAttachments,
   isDisabled,
   dataCy,
+  iconOnly = false,
 }: Props) => {
   const { formatMessage } = useIntl();
   const [modalOpen, setModalOpen] = React.useState(false);
 
-  const { projectId } = useParams();
+  const { projectId } = useParams({ strict: false });
 
   const { data: files } = useFiles({
     project: projectId ? [projectId] : [],
@@ -68,15 +71,26 @@ const FileSelectOrUploadModal = ({
 
   return (
     <>
-      <Button
-        onClick={() => setModalOpen(true)}
-        id={'e2e-open-file-upload-modal-button'}
-        buttonStyle="secondary"
-        icon="file-add"
-        disabled={isDisabled}
-      >
-        {formatMessage(messages.addFile)}
-      </Button>
+      {iconOnly ? (
+        <IconAction
+          id="e2e-open-file-upload-modal-button"
+          icon="plus"
+          tooltip={formatMessage(messages.addFile)}
+          ariaLabel={formatMessage(messages.addFile)}
+          disabled={isDisabled}
+          onClick={() => setModalOpen(true)}
+        />
+      ) : (
+        <Button
+          onClick={() => setModalOpen(true)}
+          id={'e2e-open-file-upload-modal-button'}
+          buttonStyle="secondary"
+          icon="file-add"
+          disabled={isDisabled}
+        >
+          {formatMessage(messages.addFile)}
+        </Button>
+      )}
       <Modal
         closeOnClickOutside={true}
         close={() => setModalOpen(false)}

@@ -17,9 +17,12 @@ module SmartGroups
       SmartGroups::Rules::Follow,
       SmartGroups::Rules::LivesIn,
       SmartGroups::Rules::RegistrationCompletedAt,
+      SmartGroups::Rules::LastActiveAt,
+      SmartGroups::Rules::Imported,
       SmartGroups::Rules::ParticipatedInProject,
       SmartGroups::Rules::ParticipatedInTopic,
       SmartGroups::Rules::ParticipatedInIdeaStatus,
+      SmartGroups::Rules::ParticipatedInInput,
       SmartGroups::Rules::Verified,
       SmartGroups::Rules::ParticipatedInCommunityMonitor
 

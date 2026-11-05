@@ -1,36 +1,26 @@
 import React, { FunctionComponent, ReactElement } from 'react';
 
-import {
-  castArray,
-  clamp,
-  isNil,
-  mergeWith,
-  omitBy,
-  cloneDeep,
-} from 'lodash-es';
+import { castArray, clamp, mergeWith, cloneDeep } from 'lodash-es';
 import { IntlFormatters } from 'react-intl';
-import {
-  InsertConfigurationOptions,
-  ITab,
-  SupportedLocale,
-  Multiloc,
-} from 'typings';
+import { InsertConfigurationOptions, ITab, SupportedLocale } from 'typings';
 
 import { IGroupDataAttributes, MembershipType } from 'api/groups/types';
+import { IdMethodData } from 'api/id_methods/types';
 import { IIdeaData } from 'api/ideas/types';
 import { TNotificationData } from 'api/notifications/types';
-import { TVerificationMethod } from 'api/verification_methods/types';
 
 import { TTabName } from 'containers/Admin/projects/new';
 import { NavItem } from 'containers/Admin/sideBar/navItems';
 import { GroupCreationModal } from 'containers/Admin/users';
-import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
+import { NormalFormValues } from 'containers/Admin/users/_shared/NormalGroupForm';
 import { TVerificationStep } from 'containers/Authentication/steps/Verification/utils';
 
 import { ManagerType } from 'components/admin/PostManager';
 import { OutletRenderProps } from 'components/Outlet';
 import PageLoading from 'components/UI/PageLoading';
 import { ITabItem } from 'components/UI/Tabs';
+
+import { createRoute, type AnyRoute } from 'utils/router';
 
 export type ITabsOutlet = {
   formatMessage: IntlFormatters['formatMessage'];
@@ -40,22 +30,11 @@ export type ITabsOutlet = {
 export interface OutletsPropertyMap {
   'app.containers.Admin.projects.all.createProject': {
     selectedTabValue: TTabName;
+    onDone?: () => void;
+    variant?: 'default' | 'bo';
   };
   'app.containers.Admin.projects.all.createProject.tabs': {
     onData: (data: InsertConfigurationOptions<ITabItem>) => void;
-  };
-  'app.containers.Admin.projects.edit.description.projectDescriptionBuilder': {
-    onMount: () => void;
-    valueMultiloc: Multiloc | null | undefined;
-    onChange: (
-      description_multiloc: Multiloc,
-      _locale: SupportedLocale
-    ) => void;
-    label: string;
-    labelTooltipText: string;
-  };
-  'app.ProjectsShowPage.shared.header.ProjectInfo.projectDescriptionBuilder': {
-    id: string;
   };
   'app.containers.Admin.users.GroupsListPanel.listitem.icon': {
     type: MembershipType;
@@ -67,7 +46,6 @@ export interface OutletsPropertyMap {
   'app.containers.Admin.users.form': {
     type: GroupCreationModal;
     onSubmit: (values: NormalFormValues) => void;
-    isVerificationEnabled: boolean;
   };
   'app.containers.Admin.users.header': {
     type: GroupCreationModal;
@@ -76,7 +54,6 @@ export interface OutletsPropertyMap {
     initialValues: IGroupDataAttributes;
     type: GroupCreationModal;
     onSubmit: (values: NormalFormValues) => void;
-    isVerificationEnabled: boolean;
   };
   'app.containers.Admin.users.UsersGroup.header': {
     type: GroupCreationModal;
@@ -92,6 +69,9 @@ export interface OutletsPropertyMap {
     projectId: string;
     children: OutletRenderProps;
   };
+  'app.containers.Admin.projects.phase.moderation': {
+    projectId: string;
+  };
   'app.containers.Admin.ideas.tabs': ITabsOutlet;
   'app.containers.Admin.sideBar.navItems': {
     onData: (data: InsertConfigurationOptions<NavItem>) => void;
@@ -103,11 +83,11 @@ export interface OutletsPropertyMap {
     type: ManagerType;
   };
   'app.components.VerificationModal.buttons': {
-    onClick: (method: TVerificationMethod) => void;
-    verificationMethods: TVerificationMethod[];
+    onClick: (method: IdMethodData) => void;
+    idMethods: IdMethodData[];
   };
   'app.components.VerificationModal.methodSteps': {
-    method: TVerificationMethod | null;
+    method: IdMethodData | null;
     onCancel: () => void;
     onVerified: () => void;
     activeStep: TVerificationStep;
@@ -196,7 +176,7 @@ type RecursivePartial<T> = {
     : T[P];
 };
 
-interface Routes {
+export interface Routes {
   citizen: RouteConfiguration[];
   admin: RouteConfiguration[];
   'admin.projects': RouteConfiguration[];
@@ -234,37 +214,32 @@ type Modules = {
   configuration: ModuleConfiguration;
 }[];
 
-export const RouteTypes = {
-  CITIZEN: 'citizen',
-  ADMIN: 'admin',
+const convertConfigurationToRoute = (
+  { path, element, index, children }: RouteConfiguration,
+  parentRoute: AnyRoute
+) => {
+  const route = createRoute({
+    getParentRoute: () => parentRoute,
+    path: index ? '/' : path ?? '/',
+    ...(element
+      ? { component: () => <PageLoading>{element}</PageLoading> }
+      : {}),
+  });
+
+  if (children && children.length > 0) {
+    const childRoutes = children.map((child) =>
+      convertConfigurationToRoute(child, route)
+    );
+    return route.addChildren(childRoutes);
+  }
+
+  return route;
 };
 
-const convertConfigurationToRoute = ({
-  path,
-  element,
-  type = RouteTypes.CITIZEN,
-  index,
-  children,
-}: RouteConfiguration) => {
-  const routeObject = {
-    path,
-    element: <PageLoading>{element}</PageLoading>,
-    index,
-    children:
-      children &&
-      children.length > 0 &&
-      children.map((childRoute) =>
-        convertConfigurationToRoute({ ...childRoute, type })
-      ),
-  };
-
-  return omitBy(routeObject, isNil);
-};
-
-const parseModuleRoutes = (
+export const parseModuleRoutes = (
   routes: RouteConfiguration[] = [],
-  type = RouteTypes.CITIZEN
-) => routes.map((route) => convertConfigurationToRoute({ ...route, type }));
+  parentRoute: AnyRoute
+) => routes.map((route) => convertConfigurationToRoute(route, parentRoute));
 
 type LifecycleMethod = 'beforeMountApplication' | 'afterMountApplication';
 
@@ -287,80 +262,31 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
 
   const callLifecycleMethods = (lifecycleMethod: LifecycleMethod) => () => {
     moduleConfigurations.forEach((module: ModuleConfiguration) =>
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      module?.[lifecycleMethod]?.()
+      module[lifecycleMethod]?.()
     );
   };
-
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const citizenRoutes = parseModuleRoutes(mergedRoutes?.citizen);
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const adminRoutes = parseModuleRoutes(mergedRoutes?.admin, RouteTypes.ADMIN);
 
   return {
     outlets: mergedOutlets,
     routes: {
-      citizen: citizenRoutes,
-      admin: adminRoutes,
-      'admin.ideas': parseModuleRoutes(
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        mergedRoutes?.['admin.ideas'],
-        RouteTypes.ADMIN
-      ),
-      'admin.pages-menu': parseModuleRoutes(
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        mergedRoutes?.['admin.pages-menu'],
-        RouteTypes.ADMIN
-      ),
-      'admin.dashboards': parseModuleRoutes(
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        mergedRoutes?.['admin.dashboards'],
-        RouteTypes.ADMIN
-      ),
-      'admin.projects': parseModuleRoutes(
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        mergedRoutes?.['admin.projects'],
-        RouteTypes.ADMIN
-      ),
-      'admin.project_templates': parseModuleRoutes(
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        mergedRoutes?.['admin.project_templates'],
-        RouteTypes.ADMIN
-      ),
-      'admin.settings': parseModuleRoutes(
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        mergedRoutes?.['admin.settings'],
-        RouteTypes.ADMIN
-      ),
-      'admin.tools': parseModuleRoutes(
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        mergedRoutes?.['admin.tools'],
-        RouteTypes.ADMIN
-      ),
-      'admin.reporting': parseModuleRoutes(
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        mergedRoutes?.['admin.reporting'],
-        RouteTypes.ADMIN
-      ),
+      // Raw RouteConfiguration[] stored here.
+      // Use parseModuleRoutes(routes, parentRoute) to convert to TanStack Router routes.
+      citizen: mergedRoutes.citizen,
+      admin: mergedRoutes.admin,
+      'admin.ideas': mergedRoutes['admin.ideas'],
+      'admin.pages-menu': mergedRoutes['admin.pages-menu'],
+      'admin.dashboards': mergedRoutes['admin.dashboards'],
+      'admin.projects': mergedRoutes['admin.projects'],
+      'admin.project_templates': mergedRoutes['admin.project_templates'],
+      'admin.settings': mergedRoutes['admin.settings'],
+      'admin.tools': mergedRoutes['admin.tools'],
+      'admin.reporting': mergedRoutes['admin.reporting'],
     },
     beforeMountApplication: callLifecycleMethods('beforeMountApplication'),
     afterMountApplication: callLifecycleMethods('afterMountApplication'),
     streamsToReset: moduleConfigurations.reduce(
       (acc: string[], module: ModuleConfiguration) => {
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        return [...acc, ...(module?.streamsToReset ?? [])];
+        return [...acc, ...(module.streamsToReset ?? [])];
       },
       []
     ),
@@ -390,20 +316,18 @@ export const insertConfiguration =
       0,
       itemsClone.length
     );
-    const itemAtInsertIndex = itemsClone[insertIndex];
     const isItemInsertedBefore =
       itemAlreadyInserted &&
       insertBeforeName &&
       insertIndex &&
-      itemAtInsertIndex.name === insertBeforeName &&
+      insertIndex < itemsClone.length &&
+      itemsClone[insertIndex].name === insertBeforeName &&
       itemsClone[insertIndex - 1].name === configuration.name;
     const isItemInsertedAfter =
       itemAlreadyInserted &&
       insertAfterName &&
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      itemAtInsertIndex &&
-      itemAtInsertIndex.name === insertAfterName;
+      insertIndex < itemsClone.length &&
+      itemsClone[insertIndex].name === insertAfterName;
 
     // If item is already inserted then let's not do anything
     if (isItemInsertedBefore || isItemInsertedAfter) {

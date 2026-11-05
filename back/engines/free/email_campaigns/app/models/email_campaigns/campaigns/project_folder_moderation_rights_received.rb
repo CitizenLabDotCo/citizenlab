@@ -21,6 +21,7 @@
 #  intro_multiloc       :jsonb
 #  button_text_multiloc :jsonb
 #  context_type         :string
+#  channel              :string           default("email"), not null
 #
 # Indexes
 #
@@ -46,7 +47,7 @@ module EmailCampaigns
 
     recipient_filter :filter_notification_recipient
 
-    delegate :admin_project_folder_url, to: :url_service
+    delegate :admin_folder_url, to: :url_service
 
     def mailer_class
       ProjectFolders::EmailCampaigns::ProjectFolderModerationRightsReceivedMailer
@@ -67,7 +68,7 @@ module EmailCampaigns
           project_folder_id: folder.id,
           project_folder_title_multiloc: folder.title_multiloc,
           project_folder_projects_count: folder.projects.count,
-          project_folder_url: admin_project_folder_url(folder.id, locale: Locale.new(recipient.locale))
+          project_folder_url: admin_folder_url(folder, locale: Locale.new(recipient.locale))
         }
       }]
     end
@@ -81,7 +82,7 @@ module EmailCampaigns
     end
 
     def self.recipient_segment_multiloc_key
-      'email_campaigns.admin_labels.recipient_segment.user_who_is_receiving_folder_moderator_rights'
+      'email_campaigns.admin_labels.recipient_segment.user_who_is_receiving_folder_manager_rights'
     end
 
     def self.content_type_multiloc_key
@@ -89,7 +90,7 @@ module EmailCampaigns
     end
 
     def self.trigger_multiloc_key
-      'email_campaigns.admin_labels.trigger.user_is_given_folder_moderator_rights'
+      'email_campaigns.admin_labels.trigger.user_is_given_folder_manager_rights'
     end
   end
 end

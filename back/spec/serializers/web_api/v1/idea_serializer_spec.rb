@@ -10,7 +10,7 @@ describe WebApi::V1::IdeaSerializer do
     let(:john) { create(:user, first_name: 'John', last_name: 'Smith') }
     let(:admin) { create(:admin, first_name: 'Thomas', last_name: 'Anderson') }
 
-    it 'should abbreviate the author name' do
+    it 'abbreviates the author name' do
       jane_idea = create(:idea, author: jane)
       last_name = described_class
         .new(jane_idea, params: { current_user: john })
@@ -19,7 +19,7 @@ describe WebApi::V1::IdeaSerializer do
       expect(last_name).to eq 'Jane D.'
     end
 
-    it 'should not abbreviate user names for admins' do
+    it 'does not abbreviate user names for admins' do
       jane_idea = create(:idea, author: jane)
       last_name = described_class
         .new(jane_idea, params: { current_user: admin })
@@ -46,33 +46,33 @@ describe WebApi::V1::IdeaSerializer do
     end
 
     context 'when current user is nil (visitor)' do
-      it 'should not include internal comments count' do
+      it 'does not include internal comments count' do
         expect(internal_comments_count_for_current_user(idea, nil)).to be_nil
       end
     end
 
     context 'when current user is regular user' do
-      it 'should not include internal comments count' do
+      it 'does not include internal comments count' do
         expect(internal_comments_count_for_current_user(idea, create(:user))).to be_nil
       end
     end
 
     context "when current user is moderator of idea's project" do
-      it 'should include internal comments count' do
+      it 'includes internal comments count' do
         moderator = create(:project_moderator, projects: [project])
         expect(internal_comments_count_for_current_user(idea, moderator)).to eq 2
       end
     end
 
     context "when current user is moderator, but not of idea's project" do
-      it 'should not include internal comments count' do
+      it 'does not include internal comments count' do
         moderator = create(:project_moderator, projects: [create(:project)])
         expect(internal_comments_count_for_current_user(idea, moderator)).to be_nil
       end
     end
 
     context 'when current user is admin' do
-      it 'should include internal comments count' do
+      it 'includes internal comments count' do
         expect(internal_comments_count_for_current_user(idea, create(:admin))).to eq 2
       end
     end
@@ -90,7 +90,8 @@ describe WebApi::V1::IdeaSerializer do
 
       it 'returns the sum of expire_days_limit and published_at when published' do
         proposal.update!(publication_status: 'published', published_at: '2024-07-20 20:00')
-        expect(result.dig(:data, :attributes, :expires_at)).to eq '2024-07-25 20:00'
+        expires_at = result.dig(:data, :attributes, :expires_at)
+        expect(expires_at).to eq Time.zone.parse('2024-07-25T20:00:00')
       end
 
       it 'returns nil for draft proposals' do
@@ -128,7 +129,9 @@ describe WebApi::V1::IdeaSerializer do
     before do
       create(:baskets_idea, basket: create(:basket, phase: phase), idea: input, votes: 1)
       create(:baskets_idea, basket: create(:basket, phase: phase), idea: input, votes: 1)
-      phase.update!(end_at: phase.start_at + 1.day)
+      # 2 days, not 1: a 1-day phase whose start lands on a DST spring-forward day is
+      # only 23h, which is < MIN_DURATION (24h) and fails validation.
+      phase.update!(end_at: phase.start_at + 2.days)
       other_phase = create(:budgeting_phase, project: phase.project, start_at: phase.end_at + 1.day, end_at: phase.end_at + 10.days)
       create(:baskets_idea, basket: create(:basket, phase: other_phase), idea: input, votes: 1)
       Basket.update_counts(phase)
@@ -174,6 +177,28 @@ describe WebApi::V1::IdeaSerializer do
         expect(result.dig(:data, :relationships, :manual_votes_last_updated_by, :data, :id)).to be_blank
         expect(result.dig(:data, :attributes, :manual_votes_last_updated_at)).to be_blank
       end
+    end
+  end
+
+  describe 'supports_public_visibility' do
+    def supports_public_visibility(idea)
+      described_class
+        .new(idea, params: { current_user: nil })
+        .serializable_hash
+        .dig(:data, :attributes, :supports_public_visibility)
+    end
+
+    it 'is true for an ideation input' do
+      expect(supports_public_visibility(create(:idea))).to be true
+    end
+
+    it 'is true for a proposal' do
+      expect(supports_public_visibility(create(:proposal))).to be true
+    end
+
+    it 'is false for a native survey response' do
+      create(:idea_status_proposed)
+      expect(supports_public_visibility(create(:native_survey_response))).to be false
     end
   end
 

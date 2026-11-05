@@ -3,7 +3,6 @@ import moment = require('moment');
 
 describe('Form builder page element', () => {
   const projectTitle = randomString();
-  const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
   let projectId: string;
   let projectSlug: string;
@@ -17,7 +16,6 @@ describe('Form builder page element', () => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     })
       .then((project) => {
@@ -78,12 +76,13 @@ describe('Form builder page element', () => {
     cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
 
     // Go to the next page
+    cy.dataCy('e2e-next-page').should('be.visible');
     cy.dataCy('e2e-next-page').click();
     cy.wait(1000);
 
     // Save survey response
-    cy.dataCy('e2e-submit-form').should('exist');
-    cy.dataCy('e2e-submit-form').click();
+    cy.contains('Submit').should('exist');
+    cy.contains('Submit').click();
 
     // Check that we're on final page and return to project
     cy.dataCy('e2e-after-submission').should('exist');

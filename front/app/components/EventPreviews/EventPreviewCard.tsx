@@ -6,6 +6,7 @@ import {
   defaultCardStyle,
   Text,
   useBreakpoint,
+  colors,
 } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 import styled, { useTheme } from 'styled-components';
@@ -48,7 +49,7 @@ export const EventDate = styled(Box)`
   margin-left: 8px;
   border-radius: 3px;
   background: #f5f6f7;
-  border: solid 1px #ccc;
+  border: solid 1px ${colors.grey400};
   color: ${(props) => props.theme.colors.tenantText};
 `;
 

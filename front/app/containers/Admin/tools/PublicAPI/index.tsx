@@ -17,7 +17,7 @@ export const PublicAPI = () => {
   const { formatMessage } = useIntl();
 
   return (
-    <Box background={colors.white} display="flex" p="20px">
+    <Box background={colors.white} display="flex" p="20px" mb="20px">
       <img
         width="320px"
         height="240px"
@@ -47,7 +47,7 @@ export const PublicAPI = () => {
               iconColor={colors.white}
               iconPos="right"
               width="fit-content"
-              linkTo="/admin/tools/public-api-tokens"
+              to="/admin/tools/public-api-tokens"
               textColor="white"
               bgColor={colors.primary}
             >

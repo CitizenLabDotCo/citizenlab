@@ -13,8 +13,8 @@ describe('<Preferences />', () => {
   let onChange;
 
   const categoryDestinations: CategorizedDestinations = {
-    analytics: ['google_analytics', 'google_tag_manager'],
-    advertising: ['google_analytics'],
+    analytics: ['matomo', 'google_tag_manager'],
+    advertising: ['google_tag_manager'],
     functional: ['intercom'],
   };
 

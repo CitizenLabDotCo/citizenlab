@@ -16,6 +16,7 @@
 #  updated_at          :datetime         not null
 #  tags_ids            :jsonb
 #  filters             :jsonb            not null
+#  last_error_class    :string
 #
 # Indexes
 #

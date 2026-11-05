@@ -14,7 +14,10 @@ class Invites::ErrorStorage
     invalid_row: 'invalid_row',
     email_already_invited: 'email_already_invited',
     email_already_active: 'email_already_active',
-    emails_duplicate: 'emails_duplicate'
+    emails_duplicate: 'emails_duplicate',
+    email_banned: 'email_banned',
+    invalid_first_name: 'invalid_first_name',
+    invalid_last_name: 'invalid_last_name'
   }
 
   def initialize

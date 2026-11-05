@@ -184,7 +184,7 @@ resource BasketsIdea do
             idea.phases << current_phase
             postcode_field = create(:custom_field, resource_type: 'User', key: 'postcode_xyz', title_multiloc: { 'en' => 'Postcode' }, required: false)
             permission = project.phases.first.permissions.find_by(action: 'voting')
-            permission.update!(global_custom_fields: false)
+            permission.update!(custom_fields_behavior: 'custom')
             create(:permissions_custom_field, permission: permission, custom_field: postcode_field, required: true)
           end
 
@@ -194,7 +194,7 @@ resource BasketsIdea do
         end
 
         context 'voting phase is over' do
-          let(:project) { create(:single_voting_phase, start_at: (Time.zone.today - 5.days), end_at: (Time.zone.today - 3.days)).project }
+          let(:project) { create(:single_voting_phase, start_at: 5.days.ago, end_at: 3.days.ago).project }
 
           example_request '[error] Add an idea to a new basket' do
             assert_status 401
@@ -282,6 +282,30 @@ resource BasketsIdea do
 
         example_request 'Add an non existent idea to a basket' do
           assert_status 404
+        end
+      end
+
+      context 'a concurrent request creates the basket between find_or_initialize_by and save' do
+        let(:votes) { 1 }
+        let!(:concurrent_basket) { create(:basket, phase: project.phases.first, user: user, submitted_at: nil) }
+
+        before do
+          racing_basket = Basket.new(phase: project.phases.first, user: user)
+          allow(Basket).to receive(:find_or_initialize_by)
+            .with(phase: project.phases.first, user: user)
+            .and_return(racing_basket)
+          allow(racing_basket).to receive(:save).and_raise(ActiveRecord::RecordNotUnique)
+        end
+
+        example 'Recover from the race and attach the vote to the winning basket', document: false do
+          expect_any_instance_of(SideFxBasketService).not_to receive(:after_create)
+          do_request
+          assert_status 200
+          expect(response_data.dig(:relationships, :basket, :data, :id)).to eq concurrent_basket.id
+          baskets_idea = BasketsIdea.find_by(basket: concurrent_basket, idea: idea)
+          expect(baskets_idea).to be_present
+          expect(baskets_idea.votes).to eq 1
+          expect(Basket.where(user: user, phase: project.phases.first).count).to eq 1
         end
       end
     end

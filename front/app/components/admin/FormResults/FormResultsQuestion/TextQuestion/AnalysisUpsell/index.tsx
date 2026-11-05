@@ -36,7 +36,7 @@ const AnalysisUpsell = () => {
             values={{
               link: (
                 <a
-                  href={formatMessage(messages.supportArticleLink)}
+                  href={formatMessage(messages.supportArticleLink2)}
                   target="_blank"
                   rel="noreferrer"
                 >

@@ -19,11 +19,11 @@ RSpec.describe ProjectReview do
         expect(project_review.errors[:requester]).to include('must be present')
       end
 
-      it 'is invalid if the reviewer is not an admin or a moderator of the project folder' do
+      it 'is invalid if the reviewer is not an admin, a space moderator, or a folder moderator' do
         project_review = build(:project_review)
         project_review.reviewer = create(:user)
         expect(project_review).not_to be_valid
-        expect(project_review.errors[:reviewer]).to include('must be an admin or a moderator of the project folder')
+        expect(project_review.errors[:reviewer]).to include('must be an admin, a moderator of the project space, or a moderator of the project folder')
       end
 
       it 'valid if the reviewer is an admin' do
@@ -32,9 +32,17 @@ RSpec.describe ProjectReview do
         expect(project_review).to be_valid
       end
 
+      it 'valid if the reviewer is a moderator of the project space' do
+        space = create(:space)
+        project = create(:project, space: space)
+        project_review = build(:project_review, project: project)
+        project_review.reviewer = create(:space_moderator, spaces: [space])
+        expect(project_review).to be_valid
+      end
+
       it 'valid if the reviewer is a moderator of the project folder' do
-        project = build_stubbed(:project)
-        folder = build_stubbed(:project_folder, projects: [project])
+        project = create(:project)
+        folder = create(:project_folder, projects: [project])
         project_review = build(:project_review, project: project)
         project_review.reviewer = create(:project_folder_moderator, project_folders: [folder])
         expect(project_review).to be_valid
@@ -101,6 +109,77 @@ RSpec.describe ProjectReview do
     end
   end
 
+  describe '#approvable_by?' do
+    context 'when the project is neither in a folder nor in a space' do
+      let(:review) { create(:project_review) }
+
+      it 'is false without a user' do
+        expect(review.approvable_by?(nil)).to be false
+      end
+
+      it 'is true for an admin' do
+        expect(review.approvable_by?(create(:admin))).to be true
+      end
+
+      it 'is false for a normal user' do
+        expect(review.approvable_by?(create(:user))).to be false
+      end
+
+      it 'is false for a moderator of the project itself' do
+        moderator = create(:project_moderator, projects: [review.project])
+        expect(review.approvable_by?(moderator)).to be false
+      end
+
+      it 'is false for a moderator of an unrelated folder' do
+        expect(review.approvable_by?(create(:project_folder_moderator))).to be false
+      end
+
+      it 'is false for a moderator of an unrelated space' do
+        expect(review.approvable_by?(create(:space_moderator))).to be false
+      end
+    end
+
+    context 'when the project is in a folder' do
+      let(:project) { create(:project) }
+      let!(:folder) { create(:project_folder, projects: [project]) }
+      let(:review) { create(:project_review, project: project) }
+
+      it 'is true for a moderator of that folder' do
+        moderator = create(:project_folder_moderator, project_folders: [folder])
+        expect(review.approvable_by?(moderator)).to be true
+      end
+
+      it 'is false for a moderator of another folder' do
+        expect(review.approvable_by?(create(:project_folder_moderator))).to be false
+      end
+
+      context 'and the folder belongs to a space' do
+        let(:space) { create(:space) }
+        let!(:folder) { create(:project_folder, projects: [project], space: space) }
+
+        it 'is true for a moderator of that space' do
+          moderator = create(:space_moderator, spaces: [space])
+          expect(review.approvable_by?(moderator)).to be true
+        end
+      end
+    end
+
+    context 'when the project belongs to a space' do
+      let(:space) { create(:space) }
+      let(:project) { create(:project, space: space) }
+      let(:review) { create(:project_review, project: project) }
+
+      it 'is true for a moderator of that space' do
+        moderator = create(:space_moderator, spaces: [space])
+        expect(review.approvable_by?(moderator)).to be true
+      end
+
+      it 'is false for a moderator of another space' do
+        expect(review.approvable_by?(create(:space_moderator))).to be false
+      end
+    end
+  end
+
   describe '#approve!' do
     let_it_be(:project) { create(:project) }
     let_it_be(:folder) { create(:project_folder, projects: [project]) }
@@ -132,11 +211,11 @@ RSpec.describe ProjectReview do
         .with_message('Validation failed: Reviewer must be present when approving')
     end
 
-    it 'fails if the reviewer is not an admin or a moderator of the project folder' do
+    it 'fails if the reviewer is not an admin, a space moderator, or a folder moderator' do
       review = create(:project_review)
       expect { review.approve!(create(:user)) }
         .to raise_error(ActiveRecord::RecordInvalid)
-        .with_message('Validation failed: Reviewer must be an admin or a moderator of the project folder')
+        .with_message('Validation failed: Reviewer must be an admin, a moderator of the project space, or a moderator of the project folder')
     end
   end
 end

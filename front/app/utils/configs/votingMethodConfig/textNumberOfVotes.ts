@@ -24,6 +24,7 @@ const getTextNumberOfVotes = ({
       point: messages.numberOfPoints,
       token: messages.numberOfTokens,
       credit: messages.numberOfCredits,
+      percent: messages.numberOfPercents,
     }),
     {
       numberOfVotes,

@@ -46,13 +46,17 @@ const PublicationFilterTabs = ({
     },
   };
 
-  const getScreenReaderTextForTab = (_tab: string, count: number) => (
-    <FormattedMessage
-      {...messages.a11y_projectFilterTabInfo}
-      values={{
-        count,
-      }}
-    />
+  const getScreenReaderTextForTab = (tab: string, count: number) => (
+    <>
+      <FormattedMessage {...tabData[tab].label} />
+      {', '}
+      <FormattedMessage
+        {...messages.a11y_projectFilterTabInfo}
+        values={{
+          count,
+        }}
+      />
+    </>
   );
 
   return (

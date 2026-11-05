@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { useParams } from 'react-router-dom';
-
 import useCustomFieldOption from 'api/custom_field_options/useCustomFieldOption';
 import useUpdateCustomFieldOption from 'api/custom_field_options/useUpdateCustomFieldOption';
 
@@ -9,6 +7,7 @@ import { Section, SectionTitle } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { useParams } from 'utils/router';
 
 import messages from '../messages';
 
@@ -17,29 +16,25 @@ import RegistrationCustomFieldOptionsForm, {
 } from './RegistrationCustomFieldOptionsForm';
 
 const RegistrationCustomFieldOptionsEdit = () => {
-  const { userCustomFieldId, userCustomFieldOptionId } = useParams() as {
+  const { userCustomFieldId, userCustomFieldOptionId } = useParams({
+    strict: false,
+  }) as {
     userCustomFieldId: string;
     userCustomFieldOptionId: string;
   };
 
-  const { mutate: updateCustomFieldOption } = useUpdateCustomFieldOption();
+  const { mutateAsync: updateCustomFieldOption } = useUpdateCustomFieldOption();
   const { data: userCustomFieldOption } = useCustomFieldOption({
     optionId: userCustomFieldOptionId,
   });
 
-  const handleSubmit = (values: FormValues) => {
-    updateCustomFieldOption(
-      {
-        optionId: userCustomFieldOptionId,
-        title_multiloc: values.title_multiloc,
-      },
-      {
-        onSuccess: () => {
-          clHistory.push(
-            `/admin/settings/registration/custom-fields/${userCustomFieldId}/options/`
-          );
-        },
-      }
+  const handleSubmit = async (values: FormValues) => {
+    await updateCustomFieldOption({
+      optionId: userCustomFieldOptionId,
+      title_multiloc: values.title_multiloc,
+    });
+    clHistory.push(
+      `/admin/settings/registration/custom-fields/${userCustomFieldId}/options/`
     );
   };
 

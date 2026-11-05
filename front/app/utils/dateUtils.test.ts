@@ -253,57 +253,69 @@ describe('in America/Santiago time zone', () => {
   });
 
   describe('pastPresentOrFuture', () => {
-    describe('with a single input date', () => {
-      it('should accurately report a past date', () => {
-        expect(pastPresentOrFuture('2020-06-13')).toEqual('past');
+    describe('with a single input datetime', () => {
+      it('reports a datetime earlier today as past', () => {
+        expect(pastPresentOrFuture('2020-06-15T00:30:00Z')).toEqual('past');
       });
 
-      it('should accurately report a present date', () => {
-        expect(pastPresentOrFuture('2020-06-14')).toEqual('present');
+      it('reports a datetime equal to now as present', () => {
+        expect(pastPresentOrFuture('2020-06-15T01:00:00Z')).toEqual('present');
       });
 
-      it('should accurately report a future date', () => {
-        expect(pastPresentOrFuture('2020-06-15')).toEqual('future');
+      it('reports a datetime later today as future', () => {
+        expect(pastPresentOrFuture('2020-06-15T01:30:00Z')).toEqual('future');
       });
     });
 
-    describe('with an input date range', () => {
-      it('should accurately report a past date', () => {
-        expect(pastPresentOrFuture(['2020-06-10', '2020-06-13'])).toEqual(
-          'past'
-        );
+    describe('with an input datetime range', () => {
+      it('reports a range fully in the past as past', () => {
+        expect(
+          pastPresentOrFuture(['2020-06-10T00:00:00Z', '2020-06-14T00:00:00Z'])
+        ).toEqual('past');
       });
 
-      it('should accurately report a present date when in range', () => {
-        expect(pastPresentOrFuture(['2020-06-10', '2020-06-20'])).toEqual(
+      it('reports a range containing now as present', () => {
+        expect(
+          pastPresentOrFuture(['2020-06-10T00:00:00Z', '2020-06-20T00:00:00Z'])
+        ).toEqual('present');
+      });
+
+      it('reports a range whose end is earlier today as past (the bug)', () => {
+        // Phase ended 30 minutes ago; before the fix this returned 'present'
+        // because day-granularity treated the whole day as in-range.
+        expect(
+          pastPresentOrFuture(['2020-06-10T00:00:00Z', '2020-06-15T00:30:00Z'])
+        ).toEqual('past');
+      });
+
+      it('reports a range whose end is later today as present', () => {
+        expect(
+          pastPresentOrFuture(['2020-06-10T00:00:00Z', '2020-06-15T05:00:00Z'])
+        ).toEqual('present');
+      });
+
+      it('reports a range whose start equals now as present (start inclusive)', () => {
+        expect(
+          pastPresentOrFuture(['2020-06-15T01:00:00Z', '2020-06-20T00:00:00Z'])
+        ).toEqual('present');
+      });
+
+      it('reports a range whose start is later today as future', () => {
+        expect(
+          pastPresentOrFuture(['2020-06-15T05:00:00Z', '2020-06-20T00:00:00Z'])
+        ).toEqual('future');
+      });
+
+      it('reports null end with past start as present', () => {
+        expect(pastPresentOrFuture(['2020-06-10T00:00:00Z', null])).toEqual(
           'present'
         );
       });
 
-      it('should accurately report a present date, including start date', () => {
-        expect(pastPresentOrFuture(['2020-06-14', '2020-06-20'])).toEqual(
-          'present'
-        );
-      });
-
-      it('should accurately report a present date, including end date', () => {
-        expect(pastPresentOrFuture(['2020-06-10', '2020-06-14'])).toEqual(
-          'present'
-        );
-      });
-
-      it('should accurately report a present date if the end date is null', () => {
-        expect(pastPresentOrFuture(['2020-06-10', null])).toEqual('present');
-      });
-
-      it('should accurately report a future date', () => {
-        expect(pastPresentOrFuture(['2020-06-15', '2020-06-20'])).toEqual(
+      it('reports null end with future start as future', () => {
+        expect(pastPresentOrFuture(['2020-06-20T00:00:00Z', null])).toEqual(
           'future'
         );
-      });
-
-      it('should accurately report a future date if the end date is null', () => {
-        expect(pastPresentOrFuture(['2020-06-15', null])).toEqual('future');
       });
     });
   });
@@ -348,50 +360,40 @@ describe('in Asia/Tokyo time zone', () => {
     });
   });
 
+  // pastPresentOrFuture compares absolute instants, so the same datetime
+  // inputs must produce identical results regardless of the default timezone.
   describe('pastPresentOrFuture', () => {
-    describe('with a single input date', () => {
-      it('should accurately report a past date', () => {
-        expect(pastPresentOrFuture('2020-06-14')).toEqual('past');
+    describe('with a single input datetime', () => {
+      it('reports a datetime earlier today as past', () => {
+        expect(pastPresentOrFuture('2020-06-15T00:30:00Z')).toEqual('past');
       });
 
-      it('should accurately report a present date', () => {
-        expect(pastPresentOrFuture('2020-06-15')).toEqual('present');
+      it('reports a datetime equal to now as present', () => {
+        expect(pastPresentOrFuture('2020-06-15T01:00:00Z')).toEqual('present');
       });
 
-      it('should accurately report a future date', () => {
-        expect(pastPresentOrFuture('2020-06-16')).toEqual('future');
+      it('reports a datetime later today as future', () => {
+        expect(pastPresentOrFuture('2020-06-15T01:30:00Z')).toEqual('future');
       });
     });
 
-    describe('with an input date range', () => {
-      it('should accurately report a past date', () => {
-        expect(pastPresentOrFuture(['2020-06-10', '2020-06-14'])).toEqual(
-          'past'
-        );
+    describe('with an input datetime range', () => {
+      it('reports a range whose end is earlier today as past (the bug)', () => {
+        expect(
+          pastPresentOrFuture(['2020-06-10T00:00:00Z', '2020-06-15T00:30:00Z'])
+        ).toEqual('past');
       });
 
-      it('should accurately report a present date when in range', () => {
-        expect(pastPresentOrFuture(['2020-06-10', '2020-06-20'])).toEqual(
-          'present'
-        );
+      it('reports a range whose end is later today as present', () => {
+        expect(
+          pastPresentOrFuture(['2020-06-10T00:00:00Z', '2020-06-15T05:00:00Z'])
+        ).toEqual('present');
       });
 
-      it('should accurately report a present date, including start date', () => {
-        expect(pastPresentOrFuture(['2020-06-15', '2020-06-20'])).toEqual(
-          'present'
-        );
-      });
-
-      it('should accurately report a present date, including end date', () => {
-        expect(pastPresentOrFuture(['2020-06-10', '2020-06-15'])).toEqual(
-          'present'
-        );
-      });
-
-      it('should accurately report a future date', () => {
-        expect(pastPresentOrFuture(['2020-06-16', '2020-06-20'])).toEqual(
-          'future'
-        );
+      it('reports a range whose start is later today as future', () => {
+        expect(
+          pastPresentOrFuture(['2020-06-15T05:00:00Z', '2020-06-20T00:00:00Z'])
+        ).toEqual('future');
       });
     });
   });

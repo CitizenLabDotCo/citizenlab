@@ -1,11 +1,12 @@
 import React, { PureComponent, FormEvent, KeyboardEvent } from 'react';
 
 import { isNil, isEmpty, size as lodashSize, isBoolean } from 'lodash-es';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Placement } from 'tippy.js';
 
 import { ScreenReaderOnly } from '../../utils/a11y';
 import {
+  bo,
   colors,
   fontSizes,
   defaultInputStyle,
@@ -17,9 +18,66 @@ import Error from '../Error';
 import IconTooltip from '../IconTooltip';
 import Label from '../Label';
 
+type Variant = 'default' | 'bo';
+
 interface ContainerProps {
   size: InputSize;
+  variant: Variant;
 }
+
+const ringColor = (color: string) =>
+  `0 0 0 3px color-mix(in srgb, ${color} 16%, transparent)`;
+
+export const boLabelStyle = css`
+  font-size: ${fontSizes.xs}px;
+  line-height: 1.4;
+  color: ${colors.coolGrey600};
+`;
+
+export const boInputLabelStyle = css`
+  > label {
+    ${boLabelStyle}
+    font-weight: 400;
+    margin-bottom: 4px;
+  }
+`;
+
+export const boInputStyle = css`
+  height: 36px;
+  padding: 0 11px;
+  border: 1px solid ${colors.grey300};
+  border-radius: ${bo.borderRadius};
+  background: ${colors.white};
+  font-size: ${fontSizes.xs}px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: ${bo.colors.textHeadingStrong};
+  cursor: text;
+  outline: none;
+  appearance: none;
+  transition: border-color 100ms ease-out, box-shadow 100ms ease-out;
+
+  &::placeholder {
+    color: ${colors.coolGrey500};
+  }
+
+  &:focus {
+    border-color: ${({ theme }) => theme.colors.tenantPrimary};
+    box-shadow: ${({ theme }) => ringColor(theme.colors.tenantPrimary)};
+  }
+
+  &.error {
+    border-color: ${colors.red600};
+    box-shadow: ${ringColor(colors.red600)};
+  }
+
+  &:disabled,
+  &.disabled {
+    background: ${colors.grey50};
+    color: ${colors.coolGrey500};
+    cursor: not-allowed;
+  }
+`;
 
 const Container = styled.div<ContainerProps>`
   width: 100%;
@@ -36,8 +94,10 @@ const Container = styled.div<ContainerProps>`
           padding-right: ${defaultStyles.inputPadding};
           padding-left: 62px;
       }`}
-    ${defaultInputStyle};
+    ${({ variant }) => (variant === 'bo' ? boInputStyle : defaultInputStyle)};
   }
+
+  ${({ variant }) => variant === 'bo' && boInputLabelStyle}
 `;
 
 const CharCount = styled.div<{ inputSize?: InputSize }>`
@@ -68,19 +128,29 @@ const StyledInput = styled.input`
 
 export interface InputProps {
   ariaLabel?: string;
+  ariaInvalid?: boolean;
+  ariaDescribedBy?: string;
   id?: string;
   label?: string | JSX.Element | null;
   labelTooltipText?: string | JSX.Element | null;
   labelTooltipPlacement?: Placement;
   value?: string | null;
   locale?: Locale;
-  type: 'text' | 'email' | 'password' | 'number' | 'date';
+  type:
+    | 'text'
+    | 'email'
+    | 'password'
+    | 'number'
+    | 'date'
+    | 'search'
+    | 'hidden'
+    | 'tel';
   placeholder?: string | null;
   error?: string | null;
   onChange?: (arg: string, locale: Locale | undefined) => void;
   onFocus?: (arg: FormEvent<HTMLInputElement>) => void;
   onBlur?: (arg: FormEvent<HTMLInputElement>) => void;
-  setRef?: (arg: HTMLInputElement) => void | undefined;
+  setRef?: (arg: HTMLInputElement | null) => void;
   onKeyDown?: (event: KeyboardEvent) => void;
   onMultilinePaste?: (lines: string[]) => void;
   autoFocus?: boolean;
@@ -95,6 +165,8 @@ export interface InputProps {
   required?: boolean;
   autocomplete?:
     | 'email'
+    | 'tel'
+    | 'username'
     | 'given-name'
     | 'family-name'
     | 'current-password'
@@ -104,7 +176,9 @@ export interface InputProps {
   a11yCharactersLeftMessage?: string;
   className?: string;
   size?: InputSize;
+  variant?: Variant;
   'data-testid'?: string;
+  'data-cy'?: string;
 }
 
 class Input extends PureComponent<InputProps> {
@@ -129,10 +203,6 @@ class Input extends PureComponent<InputProps> {
     }
   };
 
-  handleRef = (element: HTMLInputElement) => {
-    this.props.setRef && this.props.setRef(element);
-  };
-
   render() {
     const {
       label,
@@ -142,6 +212,8 @@ class Input extends PureComponent<InputProps> {
       a11yCharactersLeftMessage,
       className,
       onKeyDown,
+      ariaInvalid,
+      ariaDescribedBy,
     } = this.props;
     const {
       id,
@@ -159,7 +231,9 @@ class Input extends PureComponent<InputProps> {
       required,
       autocomplete,
       size = 'medium',
+      variant = 'default',
       'data-testid': dataTestId,
+      'data-cy': dataCy,
       onChange,
       onMultilinePaste,
     } = this.props;
@@ -179,7 +253,9 @@ class Input extends PureComponent<InputProps> {
       <Container
         className={className || ''}
         size={size}
+        variant={variant}
         data-testid={dataTestId}
+        data-cy={dataCy}
       >
         {label && (
           <Label htmlFor={id}>
@@ -207,11 +283,10 @@ class Input extends PureComponent<InputProps> {
           onChange={this.handleOnChange}
           onFocus={onFocus}
           onBlur={this.handleOnBlur}
-          ref={this.handleRef}
+          ref={this.props.setRef}
           min={min}
           max={max}
           step={step}
-          // eslint-disable-next-line jsx-a11y/no-autofocus
           autoFocus={autoFocus}
           disabled={disabled}
           readOnly={readOnly}
@@ -235,6 +310,8 @@ class Input extends PureComponent<InputProps> {
               : undefined
           }
           {...optionalProps}
+          aria-invalid={ariaInvalid}
+          aria-describedby={ariaDescribedBy}
         />
 
         {maxCharCount && (

@@ -105,7 +105,7 @@ RSpec.describe EmailCampaigns::Campaigns::CommentOnYourComment do
       end
 
       context 'for a past phase' do
-        let(:phase) { create(:proposals_phase, start_at: Time.zone.today - 7.days, end_at: Time.zone.today - 1.day) }
+        let(:phase) { create(:proposals_phase, start_at: 7.days.ago, end_at: 1.day.ago) }
 
         it 'receives process_command for the global campaign' do
           expect(service).to receive(:process_command).with(global_campaign, anything).once

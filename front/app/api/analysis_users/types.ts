@@ -9,7 +9,6 @@ export type AnalysisUsersKeys = Keys<typeof analysisUsersKeys>;
 export interface IAnalysisUserAttributes {
   first_name?: string | null;
   last_name?: string | null;
-  slug: string;
   locale: SupportedLocale;
   created_at: string;
   updated_at: string;

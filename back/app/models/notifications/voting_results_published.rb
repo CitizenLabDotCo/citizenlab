@@ -27,6 +27,8 @@
 #  basket_id                     :uuid
 #  cosponsorship_id              :uuid
 #  project_review_id             :uuid
+#  space_id                      :uuid
+#  report_id                     :uuid
 #
 # Indexes
 #
@@ -43,6 +45,8 @@
 #  index_notifications_on_project_review_id              (project_review_id)
 #  index_notifications_on_recipient_id                   (recipient_id)
 #  index_notifications_on_recipient_id_and_read_at       (recipient_id,read_at)
+#  index_notifications_on_report_id                      (report_id)
+#  index_notifications_on_space_id                       (space_id)
 #  index_notifications_on_spam_report_id                 (spam_report_id)
 #
 # Foreign Keys
@@ -61,6 +65,8 @@
 #  fk_rails_...  (project_id => projects.id)
 #  fk_rails_...  (project_review_id => project_reviews.id)
 #  fk_rails_...  (recipient_id => users.id)
+#  fk_rails_...  (report_id => report_builder_reports.id)
+#  fk_rails_...  (space_id => spaces.id)
 #  fk_rails_...  (spam_report_id => spam_reports.id)
 #
 module Notifications
@@ -77,7 +83,8 @@ module Notifications
       if phase.voting? && phase.autoshare_results_enabled
         user_scope = ParticipantsService.new.projects_participants(Project.where(id: phase.project_id))
         ProjectPolicy::InverseScope.new(phase.project, user_scope).resolve.filter_map do |recipient|
-          next if Permissions::PhasePermissionsService.new(phase, recipient).denied_reason_for_action 'voting'
+          # time: nil - the phase has just ended
+          next if Permissions::PhasePermissionsService.new(phase, recipient, time: nil).denied_reason_for_action 'voting'
 
           new(
             recipient: recipient,

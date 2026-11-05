@@ -1,0 +1,3 @@
+uid,key,name,description,progress,created_at,updated_at,component
+decidim--status--1,,"{""fr"": ""Réalisé""}","{""fr"": ""Projet terminé""}",100,2023-01-01,2023-01-01,decidim--component--30
+decidim--status--2,,"{""fr"": ""À l'étude""}","{""fr"": ""En cours d'étude""}",40,2023-01-01,2023-01-01,decidim--component--30

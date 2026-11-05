@@ -11,7 +11,7 @@ module CustomMaps
     end
 
     def create?
-      admin_or_moderator?
+      active_admin_or_moderator?
     end
 
     def update?
@@ -24,12 +24,6 @@ module CustomMaps
 
     def duplicate_map_config_and_layers?
       create?
-    end
-
-    private
-
-    def admin_or_moderator?
-      active? && (admin? || user&.project_or_folder_moderator?)
     end
   end
 end

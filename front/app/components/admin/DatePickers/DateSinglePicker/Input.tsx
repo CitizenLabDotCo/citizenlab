@@ -10,10 +10,19 @@ interface Props {
   id?: string;
   disabled?: boolean;
   selectedDate?: Date;
+  ariaExpanded?: boolean;
+  formatDate?: (date: Date) => string;
   onClick: () => void;
 }
 
-const Input = ({ id, disabled, selectedDate, onClick }: Props) => {
+const Input = ({
+  id,
+  disabled,
+  selectedDate,
+  ariaExpanded,
+  formatDate = (date: Date) => date.toLocaleDateString(),
+  onClick,
+}: Props) => {
   const { formatMessage } = useIntl();
   const selectDate = formatMessage(sharedMessages.selectDate);
 
@@ -23,10 +32,9 @@ const Input = ({ id, disabled, selectedDate, onClick }: Props) => {
       id={id}
       disabled={disabled}
       className="e2e-date-single-picker-input"
+      ariaExpanded={ariaExpanded}
     >
-      <Box mr="8px">
-        {selectedDate ? selectedDate.toLocaleDateString() : selectDate}
-      </Box>
+      <Box mr="8px">{selectedDate ? formatDate(selectedDate) : selectDate}</Box>
       <Icon name="calendar" height="18px" />
     </InputContainer>
   );

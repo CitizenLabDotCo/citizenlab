@@ -9,7 +9,7 @@ import meKeys from 'api/me/keys';
 import useAuthUser from 'api/me/useAuthUser';
 import userLockedAttributesKeys from 'api/user_locked_attributes/keys';
 import usersKeys from 'api/users/keys';
-import { TVerificationMethod } from 'api/verification_methods/types';
+import { IdMethodData } from 'api/id_methods/types';
 
 import {
   FormContainer,
@@ -20,8 +20,7 @@ import {
   Footer,
   SubmitButton,
   CancelButton,
-} from 'containers/Authentication/steps/AuthProviders/styles';
-
+} from 'components/AuthProviderStyles/styles';
 import Collapse from 'components/UI/Collapse';
 import Error from 'components/UI/Error';
 
@@ -35,7 +34,7 @@ import messages from '../messages';
 interface Props {
   onCancel: () => void;
   onVerified: () => void;
-  method: TVerificationMethod;
+  method: IdMethodData;
   className?: string;
 }
 
@@ -76,12 +75,14 @@ const VerificationFormOostendeRrn = memo<Props & WrappedComponentProps>(
 
             await verifyOostendeRrn(rrn);
 
-            queryClient.invalidateQueries(userLockedAttributesKeys.all());
+            queryClient.invalidateQueries({
+              queryKey: userLockedAttributesKeys.all(),
+            });
 
             if (!isNilOrError(authUser)) {
-              queryClient.invalidateQueries(
-                usersKeys.item({ id: authUser.data.id })
-              );
+              queryClient.invalidateQueries({
+                queryKey: usersKeys.item({ id: authUser.data.id }),
+              });
             }
 
             queryClient.invalidateQueries({ queryKey: meKeys.all() });
@@ -98,7 +99,7 @@ const VerificationFormOostendeRrn = memo<Props & WrappedComponentProps>(
               setFormError(formatMessage(messages.noMatchFormError));
             } else if (
               get(error, 'errors.base[0].error') === 'not_entitled' &&
-              get(error, 'errors.base[0].why') === 'too_young'
+              get(error, 'errors.base[0].why') === 'under_minimum_age'
             ) {
               setFormError(
                 formatMessage(messages.notEntitledTooYoungFormError)

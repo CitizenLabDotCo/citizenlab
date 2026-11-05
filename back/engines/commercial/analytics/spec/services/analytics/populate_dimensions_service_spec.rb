@@ -24,16 +24,8 @@ describe Analytics::PopulateDimensionsService do
       expect(Analytics::DimensionType.count).to eq(16)
     end
 
-    it 'has 5 referrer types' do
-      expect(Analytics::DimensionReferrerType.count).to eq(5)
-    end
-
     it 'does not add any extra types if it is run again' do
       expect { described_class.run }.not_to change(Analytics::DimensionType, :count)
-    end
-
-    it 'does not add any extra referrer types if it is run again' do
-      expect { described_class.run }.not_to change(Analytics::DimensionReferrerType, :count)
     end
 
     it 'backfills date dimensions if an idea has a created date before the app configuration created date' do

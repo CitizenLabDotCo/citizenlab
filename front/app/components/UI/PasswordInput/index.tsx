@@ -21,6 +21,11 @@ export interface Props {
   placeholder?: string;
   isLoginPasswordInput?: boolean;
   errors?: PasswordErrors;
+  ariaInvalid?: boolean;
+  ariaDescribedBy?: string;
+  required?: boolean;
+  // zxcvbn user_inputs (email/name) for the live strength meter.
+  userInputs?: string[];
 }
 
 export const DEFAULT_MINIMUM_PASSWORD_LENGTH = 8;
@@ -34,6 +39,31 @@ export function hasPasswordMinimumLength(
     : password.length < DEFAULT_MINIMUM_PASSWORD_LENGTH;
 }
 
+// True if the password meets the minimum zxcvbn score (0-4); a falsy threshold
+// disables the check. `userInputs` (email/name) let zxcvbn penalise passwords
+// derived from them. zxcvbn is large, so it is imported lazily.
+export async function passwordMeetsStrength(
+  password: string,
+  minimumStrength: number | undefined,
+  userInputs: string[] = []
+): Promise<boolean> {
+  if (!minimumStrength) return true;
+  const { default: zxcvbn } = await import('zxcvbn');
+  return zxcvbn(password, userInputs).score >= minimumStrength;
+}
+
+// Collects the available user-identifying values (email/name) as zxcvbn
+// user_inputs, mirroring the backend's inputs in user_password_validations.rb.
+export function passwordUserInputs(inputs?: {
+  email?: string | null;
+  first_name?: string | null;
+  last_name?: string | null;
+}): string[] {
+  return [inputs?.first_name, inputs?.last_name, inputs?.email].filter(
+    (input): input is string => !!input
+  );
+}
+
 const PasswordInput = ({
   id,
   password,
@@ -44,6 +74,10 @@ const PasswordInput = ({
   placeholder,
   isLoginPasswordInput,
   errors,
+  ariaInvalid,
+  ariaDescribedBy,
+  required,
+  userInputs,
 }: Props) => {
   const { data: appConfig } = useAppConfiguration();
 
@@ -64,6 +98,10 @@ const PasswordInput = ({
         placeholder={placeholder}
         isLoginPasswordInput={isLoginPasswordInput}
         errors={errors}
+        ariaInvalid={ariaInvalid}
+        ariaDescribedBy={ariaDescribedBy}
+        required={required}
+        userInputs={userInputs}
       />
     );
   }

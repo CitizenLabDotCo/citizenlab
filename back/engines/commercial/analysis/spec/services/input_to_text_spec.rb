@@ -6,7 +6,7 @@ describe Analysis::InputToText do
   describe '#execute' do
     it 'works with ideation built-in textual fields' do
       custom_form = create(:custom_form, :with_default_fields)
-      custom_fields = custom_form.custom_fields.filter(&:support_free_text_value?)
+      custom_fields = custom_form.custom_fields.filter(&:supports_free_text_value?)
       service = described_class.new(custom_fields)
       input = build(
         :idea,
@@ -28,9 +28,9 @@ describe Analysis::InputToText do
       service = described_class.new(custom_fields)
       input = build(
         :idea,
-        custom_field_values: {
-          custom_fields[0].key => 'Newspaper'
-        }
+        custom_field_answers: [
+          build(:custom_field_answer, key: custom_fields[0].key, value: 'Newspaper')
+        ]
       )
       expect(service.execute(input)).to eq({
         'Where did you hear from us?' => 'Newspaper'
@@ -44,14 +44,11 @@ describe Analysis::InputToText do
       service = described_class.new(custom_fields)
       input1 = build(
         :idea,
-        custom_field_values: {
-          custom_fields[0].key => ''
-        }
+        custom_field_answers: [
+          build(:custom_field_answer, key: custom_fields[0].key, value: '')
+        ]
       )
-      input2 = build(
-        :idea,
-        custom_field_values: {}
-      )
+      input2 = build(:idea)
       expect(service.execute(input1)).to eq({})
       expect(service.execute(input2)).to eq({})
     end
@@ -63,9 +60,9 @@ describe Analysis::InputToText do
       service = described_class.new(custom_fields)
       input = build(
         :idea,
-        custom_field_values: {
-          custom_fields[0].key => 'Newspaper'
-        }
+        custom_field_answers: [
+          build(:custom_field_answer, key: custom_fields[0].key, value: 'Newspaper')
+        ]
       )
       override_field_labels = {
         custom_fields[0].id => 'QUESTION_1'
@@ -83,7 +80,7 @@ describe Analysis::InputToText do
 
     it 'truncates long values when passed the `truncate_values` option' do
       custom_form = create(:custom_form, :with_default_fields)
-      service = described_class.new(custom_form.custom_fields.filter(&:support_free_text_value?))
+      service = described_class.new(custom_form.custom_fields.filter(&:supports_free_text_value?))
       input = build(:idea, body_multiloc: { en: 'This is a way too long sentence!' })
       expect(service.execute(input, truncate_values: 20)).to include({ 'Description' => 'This is a way too...' })
     end
@@ -94,10 +91,10 @@ describe Analysis::InputToText do
       service = described_class.new([custom_field])
       input = build(
         :idea,
-        custom_field_values: {
-          custom_field.key => 'other',
-          "#{custom_field.key}_other" => 'Because none of the above'
-        }
+        custom_field_answers: [
+          build(:custom_field_answer, key: custom_field.key, value: 'other'),
+          build(:custom_field_answer, key: "#{custom_field.key}_other", value: 'Because none of the above')
+        ]
       )
       expect(service.execute(input)).to eq({
         'What\'s your favourite option?' => 'Other',
@@ -112,9 +109,9 @@ describe Analysis::InputToText do
       service = described_class.new(custom_fields)
       input = build(
         :idea,
-        custom_field_values: {
-          custom_fields[0].key => 3
-        }
+        custom_field_answers: [
+          build(:custom_field_answer, key: custom_fields[0].key, value: 3)
+        ]
       )
       expect(service.execute(input)).to eq({
         'How do you feel about our service?' => 3
@@ -132,10 +129,10 @@ describe Analysis::InputToText do
 
       input = build(
         :idea,
-        custom_field_values: {
-          custom_fields[0].key => 'Newspaper',
-          custom_fields[1].key => 'Yes, I would'
-        }
+        custom_field_answers: [
+          build(:custom_field_answer, key: custom_fields[0].key, value: 'Newspaper'),
+          build(:custom_field_answer, key: custom_fields[1].key, value: 'Yes, I would')
+        ]
       )
 
       expect(service.formatted(input)).to eq(
@@ -159,11 +156,11 @@ describe Analysis::InputToText do
 
       input = build(
         :idea,
-        custom_field_values: {
-          custom_fields[0].key => 'Newspaper',
-          custom_fields[1].key => 'Yes, I would',
-          custom_fields[2].key => 'Blonde'
-        }
+        custom_field_answers: [
+          build(:custom_field_answer, key: custom_fields[0].key, value: 'Newspaper'),
+          build(:custom_field_answer, key: custom_fields[1].key, value: 'Yes, I would'),
+          build(:custom_field_answer, key: custom_fields[2].key, value: 'Blonde')
+        ]
       )
 
       override_field_labels = {
@@ -202,9 +199,9 @@ describe Analysis::InputToText do
 
       input = build(
         :idea,
-        custom_field_values: {
-          custom_field.key => %w[by_bike by_train]
-        }
+        custom_field_answers: [
+          build(:custom_field_answer, key: custom_field.key, value: %w[by_bike by_train])
+        ]
       )
 
       expect(service.formatted(input)).to eq(
@@ -223,9 +220,9 @@ describe Analysis::InputToText do
 
       input = build(
         :idea,
-        custom_field_values: {
-          custom_field.key => { 'send_more_animals_to_space' => 5, 'more_benches_in_park' => 2 }
-        }
+        custom_field_answers: [
+          build(:custom_field_answer, key: custom_field.key, value: { 'send_more_animals_to_space' => 5, 'more_benches_in_park' => 2 })
+        ]
       )
 
       expect(service.formatted(input)).to eq(
@@ -244,9 +241,9 @@ describe Analysis::InputToText do
 
     input = build(
       :idea,
-      custom_field_values: {
-        custom_field.key => 'Newspaper'
-      },
+      custom_field_answers: [
+        build(:custom_field_answer, key: custom_field.key, value: 'Newspaper')
+      ],
       comments: [build(:comment, body_multiloc: { en: 'This is a comment' })]
     )
 

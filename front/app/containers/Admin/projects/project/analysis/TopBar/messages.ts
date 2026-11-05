@@ -69,10 +69,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.project.analysis.supportArticle',
     defaultMessage: 'Support Article',
   },
-  supportArticleLink: {
-    id: 'app.containers.AdminPage.projects.project.analysis.supportArticleLink',
+  supportArticleLink2: {
+    id: 'app.containers.AdminPage.projects.project.analysis.supportArticleLink2',
     defaultMessage:
-      'https://support.govocal.com/en/articles/8316692-ai-analysis',
+      'https://support.govocal.com/en/articles/527580-ai-analysis',
   },
   emptyCustomFields: {
     id: 'app.containers.AdminPage.projects.project.analysis.emptyCustomFieldsLabel',

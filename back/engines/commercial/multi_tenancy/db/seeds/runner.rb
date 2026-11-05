@@ -29,6 +29,7 @@ require_relative 'unsubscription_tokens'
 require_relative 'users'
 require_relative 'volunteering_causes'
 require_relative 'volunteers'
+require_relative 'spaces'
 
 module MultiTenancy
   module Seeds
@@ -105,6 +106,7 @@ module MultiTenancy
         MultiTenancy::Seeds::CustomFields.new(runner: self).run
         MultiTenancy::Seeds::Areas.new(runner: self).run
         MultiTenancy::Seeds::Topics.new(runner: self).run
+        MultiTenancy::Seeds::Spaces.new(runner: self).run
         MultiTenancy::Seeds::ProjectFolders.new(runner: self).run
         MultiTenancy::Seeds::Projects.new(runner: self).run
         MultiTenancy::Seeds::Ideas.new(runner: self).run
@@ -122,6 +124,11 @@ module MultiTenancy
         MultiTenancy::Seeds::Followers.new(runner: self).run
         MultiTenancy::Seeds::Events.new(runner: self).run
         MultiTenancy::Seeds::CommunityMonitor.new(runner: self).run
+
+        # Seeded projects/folders are created straight from the models, so they miss
+        # the SideFx hooks that normally put their descriptions on the Content
+        # Builder. Provision the layouts here instead, or the Content Builder 404s.
+        ContentBuilder::LayoutProvisioningService.new.provision_all!
       end
 
       # @return [Array[String]] default seed locales

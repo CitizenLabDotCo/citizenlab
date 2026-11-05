@@ -6,12 +6,7 @@ class SideFxCustomFieldService
   def before_create(custom_field, current_user); end
 
   def after_create(custom_field, current_user)
-    custom_field.update! description_multiloc: TextImageService.new.swap_data_images_multiloc(custom_field.description_multiloc, field: :description_multiloc, imageable: custom_field)
     LogActivityJob.perform_later(custom_field, 'created', current_user, custom_field.created_at.to_i)
-  end
-
-  def before_update(custom_field, _current_user)
-    custom_field.description_multiloc = TextImageService.new.swap_data_images_multiloc(custom_field.description_multiloc, field: :description_multiloc, imageable: custom_field)
   end
 
   def after_update(custom_field, current_user)
@@ -19,7 +14,7 @@ class SideFxCustomFieldService
   end
 
   def before_destroy(custom_field, _current_user)
-    UserCustomFieldService.new.delete_custom_field_values(custom_field)
+    CustomFieldService.new.delete_field_answers(custom_field)
   end
 
   def after_destroy(frozen_custom_field, current_user)

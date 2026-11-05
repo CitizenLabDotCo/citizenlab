@@ -58,6 +58,7 @@ module MultiTenancy
       tenant.switch do
         EmailCampaigns::AssureCampaignsService.new.assure_campaigns # fix campaigns
         Permissions::PermissionsUpdateService.new.update_all_permissions # fix permissions
+        McpServer::AnalyticsReaderProvisioner.provision_safely # reporting read grants (the clone strips them)
         TrackTenantJob.perform_later tenant
       end
 
@@ -87,7 +88,10 @@ module MultiTenancy
     # @param [ActiveSupport::Duration,nil] retry_interval
     def delete(tenant, retry_interval: nil)
       tenant_side_fx.before_destroy(tenant)
-      tenant.update!(deleted_at: Time.zone.now)
+      # Deliberately not `update!`: a tenant must not become undeletable because of the state of
+      # the record being deleted. `update_column` writes the one column, skipping validation and
+      # the app configuration sync — which ignores `deleted_at` anyway (see `attributes_delta`).
+      tenant.update_column(:deleted_at, Time.zone.now)
 
       # Users must be removed before the tenant to ensure PII is removed from
       # third-party services.
@@ -111,21 +115,11 @@ module MultiTenancy
         end
         next if timestamp_attrs.blank?
 
-        query = timestamp_attrs.map do |timestamp_attr|
-          "#{timestamp_attr} = (#{timestamp_attr} + ':num_days DAY'::INTERVAL)"
-        end.join(', ')
-        claz.update_all [query, { num_days: num_days }]
-
-        # We want to avoid timestamps to go to the future, while allowing future
-        # timestamps to remain in the future (e.g. future timeline phases, expiration
-        # date etc.)
-        timestamp_attrs.each do |atr|
-          instances = claz.where("#{atr} > NOW()")
-            .where("(#{atr} - ':num_days DAY'::INTERVAL) < NOW()", num_days: num_days)
-          query = "#{atr} = (#{atr} - ':num_days DAY'::INTERVAL)"
-          instances.update_all [query, { num_days: num_days }]
+        timestamp_attrs.each do |attr|
+          shift_keeping_past_in_past(claz, attr, num_days)
         end
       end
+
       LogActivityJob.perform_later(
         Tenant.current, 'timestamps_shifted', nil, Time.now.to_i, payload: { days_shifted: num_days }
       )
@@ -139,13 +133,23 @@ module MultiTenancy
 
     private
 
+    def shift_keeping_past_in_past(model_class, attr, num_days)
+      interval = ":num_days * INTERVAL '1 day'"
+      # Use CURRENT_DATE for date columns to avoid time-of-day comparison issues
+      now_func = model_class.columns_hash[attr].type == :date ? 'CURRENT_DATE' : 'NOW()'
+
+      model_class
+        .where.not("#{attr} < #{now_func} AND (#{attr} + (#{interval})) >= #{now_func}", num_days: num_days)
+        .update_all ["#{attr} = #{attr} + (#{interval})", { num_days: num_days }]
+    end
+
     # @param [String] template_name
     # @param [Enumerable<String>] config_locales
     def validate_locales(template_name, config_locales)
       required_locales = ::MultiTenancy::Templates::Utils.new.required_locales(template_name)
 
       if required_locales.to_set > config_locales.to_set
-        raise ClErrors::TransactionError.new(error_key: :missing_locales)
+        raise ApiError, :missing_locales
       end
     end
 

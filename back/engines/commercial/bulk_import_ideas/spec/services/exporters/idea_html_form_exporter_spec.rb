@@ -91,6 +91,25 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
       expect(parsed_html.css('h1').text).to eq 'PROJECT - PHASE'
     end
 
+    context 'for an ideation phase' do
+      let(:phase) { create(:phase, project: project, title_multiloc: { en: 'PHASE' }) }
+      let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
+      let!(:text_field) { create(:custom_field_text, resource: custom_form, title_multiloc: { 'en' => 'Private question' }) }
+      let!(:multiline_field) do
+        create(:custom_field_multiline_text, resource: custom_form, title_multiloc: { 'en' => 'Public question' }, answers_visible_to: 'public')
+      end
+
+      it 'marks the questions whose answers are not public' do
+        disclaimer = 'This answer will only be shared with moderators, and not to the public.'
+        marked, unmarked = parsed_html.css('div#questions div.question').partition { |question| question.text.include?(disclaimer) }
+        expect(marked.map { |question| question.css('h3').text }).to include(a_string_including('Private question'))
+        expect(unmarked.map { |question| question.css('h3').text }).to include(
+          a_string_including('Public question'),
+          a_string_including('Title')
+        )
+      end
+    end
+
     context 'personal data not enabled' do
       it 'does not return a personal data section' do
         expect(parsed_html.css('div#personal-data')).to be_empty
@@ -152,13 +171,27 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
         expect(pages[1]).to include 'Map page'
       end
 
+      context 'page with description but no title' do
+        let!(:page_no_title) { create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => '' }, description_multiloc: { 'en' => 'Page description without title' }) }
+
+        it 'includes the page description in the export' do
+          fresh_service = described_class.new(phase, 'en', false)
+          parsed = Nokogiri::HTML(fresh_service.export)
+          page = parsed.css("div[id='#{page_no_title.id}']")
+          expect(page).to be_present
+          expect(page.text).to include 'Page description without title'
+        end
+      end
+
       it 'shows 1 line for short text fields' do
-        single_line_text = parsed_html.css("div##{text_field.id}")
+        single_line_text = parsed_html.css("[id='#{text_field.id}']")
+        expect(single_line_text.count).to eq 1
         expect(single_line_text.css('div.line').count).to eq 1
       end
 
       it 'shows 7 lines for longer text fields' do
-        multiline_text = parsed_html.css("div##{multiline_field.id}")
+        multiline_text = parsed_html.css("[id='#{multiline_field.id}']")
+        expect(multiline_text.count).to eq 1
         expect(multiline_text.css('div.line').count).to eq 7
       end
 

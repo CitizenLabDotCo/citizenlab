@@ -3,6 +3,7 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import { Element } from '@craftjs/core';
 
+import { BUILDER_CONTENT_MAX_WIDTH } from 'components/admin/ContentBuilder/constants';
 import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
 import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
@@ -22,7 +23,7 @@ const ImageTextCards = () => {
       is={Box}
       canvas
       style={{
-        maxWidth: '1200px',
+        maxWidth: BUILDER_CONTENT_MAX_WIDTH,
         margin: '0 auto',
         padding: `0px ${craftComponentDefaultPadding}`,
       }}

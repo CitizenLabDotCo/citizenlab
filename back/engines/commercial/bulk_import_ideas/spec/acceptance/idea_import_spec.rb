@@ -72,9 +72,8 @@ resource 'BulkImportIdeasImportIdeas' do
             expect(User.all.count).to eq 1 # No new users created
             expect(BulkImportIdeas::IdeaImport.all.count).to eq 0
             expect(BulkImportIdeas::IdeaImportFile.all.count).to eq 2
-            # If we used the normal test adapter instead of :active_job_que_adapter, we could test it like this
-            # expect(BulkImportIdeas::IdeaImportJob).to have_been_enqueued
             expect(QueJob.by_args({ job_class: 'BulkImportIdeas::IdeaImportJob' }).count).to eq 1
+            expect(Jobs::Tracker.count).to eq 1
           end
         end
 
@@ -83,8 +82,7 @@ resource 'BulkImportIdeasImportIdeas' do
           let(:file) { create_project_bulk_import_ideas_pdf 1 }
 
           before do
-            # Enable HTML PDFs & stub the external export and import APIs
-            SettingsService.new.activate_feature! 'html_pdfs'
+            # Enable stub the external export and import APIs
             stub_external_apis
           end
 
@@ -101,9 +99,8 @@ resource 'BulkImportIdeasImportIdeas' do
             expect(User.all.count).to eq 1 # No new users created
             expect(BulkImportIdeas::IdeaImport.all.count).to eq 0
             expect(BulkImportIdeas::IdeaImportFile.all.count).to eq 2
-            # If we used the normal test adapter instead of :active_job_que_adapter, we could test it like this
-            # expect(BulkImportIdeas::IdeaImportJob).to have_been_enqueued
             expect(QueJob.by_args({ job_class: 'BulkImportIdeas::IdeaImportJob' }).count).to eq 1
+            expect(Jobs::Tracker.count).to eq 1
           end
         end
       end
@@ -129,7 +126,7 @@ resource 'BulkImportIdeasImportIdeas' do
 
         # Should return only the 2 draft ideas added to the phase
         expect(response_data.count).to eq 2
-        expect(response_data.pluck(:id)).to match_array [draft_ideas[0][:id], draft_ideas[1][:id]]
+        expect(response_data.pluck(:id)).to contain_exactly(draft_ideas[0][:id], draft_ideas[1][:id])
 
         # Relationships
         expect(response_data.first.dig(:relationships, :idea_import, :data)).not_to be_nil
@@ -146,6 +143,70 @@ resource 'BulkImportIdeasImportIdeas' do
 
         # Should return only the 1 draft idea on the phase with an idea_import
         expect(response_data.count).to eq 1
+      end
+    end
+
+    get 'web_api/v1/phases/:phase_id/importer/approved_records/idea' do
+      let(:project) { create(:project_with_active_native_survey_phase) }
+      let(:phase) { project.phases.first }
+      let(:phase_id) { phase.id }
+
+      let!(:approved_ideas) do
+        create_list(:idea, 3, project: project, creation_phase: phase, phases: [phase], publication_status: 'draft').map.with_index do |idea, index|
+          idea.update!(idea_import: create(:idea_import, idea: idea))
+          idea.update!(publication_status: 'published')
+          idea.idea_import.update!(approved_at: index.hours.ago)
+          idea
+        end
+      end
+
+      example 'Get the approved imported ideas for a phase, most recently approved first' do
+        # Still awaiting review: excluded.
+        draft = create(:idea, project: project, creation_phase: phase, phases: [phase], publication_status: 'draft')
+        draft.update!(idea_import: create(:idea_import, idea: draft))
+        # Approval undone: excluded, and the approval timestamp is cleared so a
+        # re-approval behaves like a first approval.
+        approved_ideas[2].update!(publication_status: 'draft')
+        expect(approved_ideas[2].idea_import.reload.approved_at).to be_nil
+
+        do_request
+        assert_status 200
+
+        expect(response_data.pluck(:id)).to eq [approved_ideas[0].id, approved_ideas[1].id]
+        expect(response_data.first.dig(:relationships, :idea_import, :data)).not_to be_nil
+        expect(json_response_body[:included].pluck(:type)).to include 'idea_import'
+      end
+
+      example 'Should only return approved ideas created via the importer' do
+        create(:idea, project: project, creation_phase: phase, phases: [phase], publication_status: 'published')
+
+        do_request
+        assert_status 200
+        expect(response_data.pluck(:id)).to match_array approved_ideas.map(&:id)
+      end
+
+      example 'Undoing and re-approving stamps a fresh approval and keeps earlier content changes' do
+        idea = approved_ideas[0]
+
+        idea.update!(publication_status: 'draft')
+        idea.update!(publication_status: 'published', title_multiloc: { 'en' => 'Fixed title' })
+        first_reapproval = idea.idea_import.reload
+        expect(first_reapproval.approved_at).to be_present
+        expect(first_reapproval.content_changes).to have_key('title_multiloc')
+
+        idea.update!(publication_status: 'draft')
+        idea.update!(publication_status: 'published', body_multiloc: { 'en' => '<p>Fixed body</p>' })
+        content_changes = idea.idea_import.reload.content_changes
+        expect(content_changes).to have_key('title_multiloc')
+        expect(content_changes).to have_key('body_multiloc')
+      end
+
+      example 'Paginates the approved ideas' do
+        do_request('page[size]' => 2, 'page[number]' => 1)
+        assert_status 200
+
+        expect(response_data.count).to eq 2
+        expect(json_response_body[:links][:next]).to be_present
       end
     end
 
@@ -178,6 +239,36 @@ resource 'BulkImportIdeasImportIdeas' do
         expect(response_data).to eq({ type: 'approve_all', attributes: { approved: 2, not_approved: 1 } })
         expect(draft_ideas.map { |idea| idea.reload.publication_status }).to eq %w[draft published published]
       end
+
+      context 'when a required select question has an "other" option' do
+        let(:project) { create(:project_with_active_native_survey_phase) }
+        let(:phase) { project.phases.first }
+        let(:survey_form) { create(:custom_form, participation_context: phase) }
+        let!(:select_field) do
+          create(:custom_field_select, resource: survey_form, key: 'select_field', required: true).tap do |field|
+            create(:custom_field_option, custom_field: field, key: 'option1')
+            create(:custom_field_option, custom_field: field, key: 'other', other: true)
+          end
+        end
+        let!(:draft_ideas) do
+          create_list(:idea, 2, project: project, creation_phase: phase, phases: [phase], publication_status: 'draft').each do |idea|
+            idea.update! idea_import: create(:idea_import, idea: idea)
+          end
+        end
+
+        example 'Approves ideas where "other" is selected but the "other" text is blank' do
+          # The respondent ticked "other" but left the "please specify" line blank,
+          # so there is no answer for the synthetic `select_field_other` field.
+          create(:custom_field_answer, answerable: draft_ideas[0], key: 'select_field', value: 'other')
+          # The required question itself is left unanswered, which should still block approval.
+
+          do_request
+          assert_status 200
+          expect(response_data).to eq({ type: 'approve_all', attributes: { approved: 1, not_approved: 1 } })
+          expect(draft_ideas.map { |idea| idea.reload.publication_status }).to eq %w[published draft]
+          expect(draft_ideas[0].answer_for_key('select_field_other')).to be_nil
+        end
+      end
     end
 
     context 'idea import metadata' do
@@ -191,7 +282,7 @@ resource 'BulkImportIdeasImportIdeas' do
         example_request 'Get the import meta data for an idea' do
           assert_status 200
           expect(response_data[:type]).to eq 'idea_import'
-          expect(response_data[:attributes].keys).to eq %i[user_created user_consent page_range locale created_at updated_at file import_type]
+          expect(response_data[:attributes].keys).to eq %i[user_created user_consent page_range locale created_at updated_at file import_type parsed_value]
         end
       end
 
@@ -224,6 +315,12 @@ resource 'BulkImportIdeasImportIdeas' do
         end
       end
 
+      get 'web_api/v1/phases/:phase_id/importer/approved_records/idea' do
+        example_request 'Getting approved ideas is authorized' do
+          assert_status 200
+        end
+      end
+
       get 'web_api/v1/idea_imports/:id' do
         let(:id) { create(:idea_import, idea: create(:idea, project: survey_project)).id }
 
@@ -250,6 +347,12 @@ resource 'BulkImportIdeasImportIdeas' do
 
       get 'web_api/v1/phases/:phase_id/importer/draft_records/idea' do
         example_request 'Getting draft ideas is NOT authorized' do
+          assert_status 401
+        end
+      end
+
+      get 'web_api/v1/phases/:phase_id/importer/approved_records/idea' do
+        example_request 'Getting approved ideas is NOT authorized' do
           assert_status 401
         end
       end
@@ -335,9 +438,7 @@ resource 'BulkImportIdeasImportIdeas' do
   end
 
   def stub_external_apis
-    allow_any_instance_of(Analysis::LLM::GPT41).to receive(:chat).and_return('[{}]')
+    allow_any_instance_of(Analysis::LLM::ClaudeSonnet46).to receive(:chat).and_return('[{}]')
     allow_any_instance_of(BulkImportIdeas::Exporters::IdeaPdfFormExporter).to receive(:export).and_return(Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_1.pdf'))
-    allow_any_instance_of(BulkImportIdeas::Parsers::Pdf::IdeaGoogleFormParserService).to receive(:raw_text_page_array).and_return(create_project_bulk_import_raw_text_array)
-    allow_any_instance_of(BulkImportIdeas::Parsers::Pdf::IdeaGoogleFormParserService).to receive(:parse_pdf).and_return(create_project_bulk_import_parse_pdf)
   end
 end

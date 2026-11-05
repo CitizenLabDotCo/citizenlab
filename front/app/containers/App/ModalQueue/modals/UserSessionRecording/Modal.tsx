@@ -8,7 +8,7 @@ import {
   Title,
   Box,
 } from '@citizenlab/cl2-component-library';
-import { set } from 'js-cookie';
+import Cookies from 'js-cookie';
 
 import Modal from 'components/UI/Modal';
 
@@ -25,18 +25,22 @@ const UserSessionRecordingModal = () => {
   const { formatMessage } = useIntl();
 
   const onAccept = () => {
-    set('user_session_recording_modal', 'true');
+    Cookies.set('user_session_recording_modal', 'true');
     eventEmitter.emit('user_session_recording_accepted', true);
     removeModal('user-session-recording');
   };
 
   const onClose = () => {
-    set('user_session_recording_modal', 'true');
+    Cookies.set('user_session_recording_modal', 'true');
     removeModal('user-session-recording');
   };
 
   return (
-    <Modal opened close={onClose}>
+    <Modal
+      opened
+      close={onClose}
+      ariaLabelledBy="session-recording-modal-title"
+    >
       <Box p="24px">
         <Box display="flex" gap="16px" alignItems="center">
           <Icon
@@ -45,7 +49,9 @@ const UserSessionRecordingModal = () => {
             width="40px"
             height="40px"
           />
-          <Title>{formatMessage(messages.modalTitle)}</Title>
+          <Title id="session-recording-modal-title">
+            {formatMessage(messages.modalTitle)}
+          </Title>
         </Box>
 
         <Text fontSize="l">{formatMessage(messages.modalDescription1)}</Text>

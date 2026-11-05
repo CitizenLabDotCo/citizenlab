@@ -3,20 +3,28 @@ import React from 'react';
 import {
   IconTooltip,
   Label,
+  boInputStyle,
   colors,
   defaultInputStyle,
   isRtl,
 } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import TextareaAutosize from 'react-textarea-autosize';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { SupportedLocale } from 'typings';
 
 import Error from 'components/UI/Error';
 
 const Container = styled.div``;
 
-const TextAreaContainer = styled.div`
+const boTextAreaStyle = css`
+  ${boInputStyle}
+  height: auto;
+  padding: 8px 11px;
+  resize: vertical;
+`;
+
+const TextAreaContainer = styled.div<{ variant: Variant }>`
   width: 100%;
   position: relative;
   padding: 2px;
@@ -25,7 +33,7 @@ const TextAreaContainer = styled.div`
 
   textarea {
     width: 100%;
-    ${defaultInputStyle}
+    ${({ variant }) => (variant === 'bo' ? boTextAreaStyle : defaultInputStyle)}
     ${isRtl`
         direction: rtl
     `}
@@ -45,6 +53,8 @@ const CharacterCount = styled.p`
   }
 `;
 
+type Variant = 'default' | 'bo';
+
 export type Props = {
   id?: string | undefined;
   name?: string;
@@ -63,9 +73,14 @@ export type Props = {
   autofocus?: boolean | undefined;
   maxCharCount?: number;
   disabled?: boolean;
+  required?: boolean;
   focusOnError?: boolean;
   className?: string;
   children?: React.ReactNode;
+  setRef?: (arg: HTMLTextAreaElement | null) => void;
+  ariaInvalid?: boolean;
+  ariaDescribedBy?: string;
+  variant?: Variant;
 };
 
 interface State {}
@@ -134,7 +149,12 @@ export default class TextArea extends React.PureComponent<Props, State> {
       children,
       maxCharCount,
       disabled,
+      required,
       className,
+      setRef,
+      ariaInvalid,
+      ariaDescribedBy,
+      variant = 'default',
     } = this.props;
 
     return (
@@ -146,7 +166,7 @@ export default class TextArea extends React.PureComponent<Props, State> {
           </Label>
         )}
 
-        <TextAreaContainer className="TextArea">
+        <TextAreaContainer className="TextArea" variant={variant}>
           <TextareaAutosize
             id={id}
             className={`textarea ${!isEmpty(error) ? 'error' : ''}`}
@@ -160,6 +180,13 @@ export default class TextArea extends React.PureComponent<Props, State> {
             onFocus={this.handleOnFocus}
             onBlur={this.handleOnBlur}
             disabled={disabled}
+            required={required}
+            ref={(el) => {
+              this.textareaElement = el;
+              setRef?.(el);
+            }}
+            aria-invalid={ariaInvalid}
+            aria-describedby={ariaDescribedBy}
           />
           {value && maxCharCount && (
             <CharacterCount

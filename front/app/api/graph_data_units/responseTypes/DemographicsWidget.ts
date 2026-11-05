@@ -14,6 +14,10 @@ export type DemographicsResponse = {
           ordering: number;
         };
       };
+      population_distribution?: {
+        [key: string]: number;
+      };
+      r_score?: number;
     };
   };
 };

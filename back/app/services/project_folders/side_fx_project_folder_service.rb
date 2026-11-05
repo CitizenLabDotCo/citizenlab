@@ -5,7 +5,6 @@ module ProjectFolders
     include SideFxHelper
 
     def after_create(folder, user)
-      folder.update!(description_multiloc: TextImageService.new.swap_data_images_multiloc(folder.description_multiloc, field: :description_multiloc, imageable: folder))
       LogActivityJob.perform_later(
         folder,
         'created',
@@ -15,20 +14,37 @@ module ProjectFolders
       )
     end
 
-    def before_update(folder, _user)
-      folder.description_multiloc = TextImageService.new.swap_data_images_multiloc(folder.description_multiloc, field: :description_multiloc, imageable: folder)
-    end
+    def before_update(_folder, _user); end
+
+    def before_destroy(_folder, _user); end
 
     def after_update(folder, user)
       change = folder.saved_changes
+
+      if folder.space_id_previously_changed?
+        folder.projects.each do |project|
+          project.space_id = folder.space_id
+
+          if project.save
+            project_change = project.saved_changes
+
+            payload = { project: clean_time_attributes(project.attributes) }
+            payload[:change] = sanitize_change(project_change) if project_change.present?
+
+            LogActivityJob.perform_later(project, 'changed', user, project.updated_at.to_i, payload: payload)
+          end
+        end
+      end
+
       payload = { project_folder: clean_time_attributes(folder.attributes) }
       payload[:change] = sanitize_change(change) if change.present?
 
       LogActivityJob.perform_later(folder, 'changed', user, folder.updated_at.to_i, payload: payload)
+      enqueue_scheduled_transition(folder.admin_publication)
     end
 
     def after_destroy(frozen_folder, user)
-      ContentBuilder::LayoutService.new.clean_homepage_layout_when_publication_deleted(frozen_folder)
+      ContentBuilder::LayoutService.new.clean_layouts_when_publication_deleted(frozen_folder)
 
       serialized_folder = clean_time_attributes(frozen_folder.attributes)
 
@@ -38,5 +54,20 @@ module ProjectFolders
         payload: { project_folder: serialized_folder }
       )
     end
+
+    private
+
+    def enqueue_scheduled_transition(admin_pub)
+      return unless admin_pub.saved_change_to_scheduled_at?
+      return if admin_pub.scheduled_at.blank?
+
+      ProcessScheduledPublicationTransitionsJob
+        .set(wait_until: admin_pub.scheduled_at)
+        .perform_later
+    end
   end
 end
+
+ProjectFolders::SideFxProjectFolderService.prepend(
+  ContentBuilder::Patches::ProjectFolders::SideFxProjectFolderService
+)

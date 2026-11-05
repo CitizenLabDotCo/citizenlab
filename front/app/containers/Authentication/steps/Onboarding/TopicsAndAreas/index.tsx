@@ -3,8 +3,8 @@ import React from 'react';
 import { Box, Title, Accordion } from '@citizenlab/cl2-component-library';
 
 import useAreas from 'api/areas/useAreas';
+import useGlobalTopics from 'api/global_topics/useGlobalTopics';
 import useAuthUser from 'api/me/useAuthUser';
-import useTopics from 'api/topics/useTopics';
 import { OnboardingType } from 'api/users/types';
 
 import Areas from 'components/Areas';
@@ -29,7 +29,7 @@ const TopicsAndAreas = ({ onSubmit, onSkip }: Props) => {
     sort: 'projects_count',
   });
 
-  const { data: topics } = useTopics({
+  const { data: topics } = useGlobalTopics({
     forOnboarding: true,
     sort: 'projects_count',
   });
@@ -70,7 +70,14 @@ const TopicsAndAreas = ({ onSubmit, onSkip }: Props) => {
         </Accordion>
       )}
       <Box display="flex" justifyContent="flex-end">
-        <Box my="20px" w="auto" display="flex" alignSelf="flex-end" gap="8px">
+        <Box
+          my="20px"
+          w="auto"
+          display="flex"
+          alignSelf="flex-end"
+          gap="8px"
+          flexWrap="wrap"
+        >
           <ButtonWithLink onClick={onSkip} buttonStyle="primary-outlined">
             {formatMessage(messages.skipForNow)}
           </ButtonWithLink>

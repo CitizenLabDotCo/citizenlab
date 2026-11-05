@@ -1,29 +1,32 @@
 import React from 'react';
 
-import { useParams } from 'react-router-dom';
-
 import useNavbarItems from 'api/navbar/useNavbarItems';
 import useUpdateNavbarItem from 'api/navbar/useUpdateNavbarItem';
 
 import useLocalize from 'hooks/useLocalize';
 
 import {
-  pagesAndMenuBreadcrumb,
-  pagesAndMenuBreadcrumbLinkTo,
+  menuBreadcrumb,
+  menuBreadcrumbLink,
 } from 'containers/Admin/pagesAndMenu/breadcrumbs';
 import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
 
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
+import { useParams } from 'utils/router';
 
 import NavbarItemForm, { FormValues } from '../../components/NavbarItemForm';
 
 import { getInitialFormValues, createNavbarItemUpdateData } from './utils';
 
 const EditNavbarItemForm = () => {
-  const { navbarItemId } = useParams() as { navbarItemId: string };
+  const { navbarItemId } = useParams({ strict: false }) as {
+    navbarItemId: string;
+  };
   const { formatMessage } = useIntl();
-  const { data: navbarItems } = useNavbarItems();
+  // Edits the stored title, so it must read the full (untruncated) title —
+  // otherwise submitting would persist the navbar-display-truncated version.
+  const { data: navbarItems } = useNavbarItems({ truncateTitles: false });
   const { mutateAsync: updateNavbarItem } = useUpdateNavbarItem();
 
   const navbarItem = navbarItems?.data.find((item) => item.id === navbarItemId);
@@ -46,8 +49,8 @@ const EditNavbarItemForm = () => {
       title={localize(navbarItem.attributes.title_multiloc)}
       breadcrumbs={[
         {
-          label: formatMessage(pagesAndMenuBreadcrumb.label),
-          linkTo: pagesAndMenuBreadcrumbLinkTo,
+          label: formatMessage(menuBreadcrumb.label),
+          link: menuBreadcrumbLink,
         },
         {
           label: localize(navbarItem.attributes.title_multiloc),

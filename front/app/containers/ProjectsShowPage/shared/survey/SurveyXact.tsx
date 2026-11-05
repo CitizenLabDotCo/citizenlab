@@ -4,6 +4,7 @@ import {
   defaultCardStyle,
   Spinner,
   useBreakpoint,
+  colors,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
@@ -15,7 +16,7 @@ const Container = styled.div`
   flex-direction: column;
 
   iframe {
-    border: solid 1px #ccc;
+    border: solid 1px ${colors.grey400};
     border-radius: ${(props) => props.theme.borderRadius};
   }
 `;
@@ -55,8 +56,7 @@ export default memo(({ surveyXactUrl, className }: Props) => {
             : (parseInt(width, 10) - 1).toString()
         );
       }, 1000);
-    }),
-      10000;
+    }, 10000);
   };
 
   return (

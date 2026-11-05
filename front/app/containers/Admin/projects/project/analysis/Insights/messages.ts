@@ -94,6 +94,11 @@ export default defineMessages({
     defaultMessage:
       'You can summarise a maximum of 30 inputs at a time on your current plan. Talk to your GovSuccess Manager or admin to unlock more.',
   },
+  summarizeUpsellMessage: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Insights.summarizeUpsellMessage',
+    defaultMessage:
+      'AI-powered analysis is not included in your current plan. Talk to your Government Success Manager or admin to unlock it.',
+  },
   inputsSelected: {
     id: 'app.containers.AdminPage.projects.project.analysis.Insights.inputsSelected',
     defaultMessage: 'inputs selected',
@@ -106,9 +111,34 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.analysis.aiSummary',
     defaultMessage: 'AI summary',
   },
+  aiDisclaimerBanner: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Insights.aiDisclaimerBanner',
+    defaultMessage:
+      'AI can make mistakes. Please verify important information.',
+  },
+  aiDisclaimerDetails: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Insights.aiDisclaimerDetails',
+    defaultMessage:
+      'The content in this section is AI-generated and may not be completely accurate. Please review and verify it against your inputs. Selecting fewer inputs can help improve accuracy.',
+  },
   aiSummaryTooltip: {
     id: 'app.containers.Admin.projects.project.analysis.aiSummaryTooltipText',
     defaultMessage:
       'This is AI-generated content. It may not be 100% accurate. Please review and cross-reference with the actual inputs for accuracy. Be aware that the accuracy is likely to improve if the number of selected inputs is reduced.',
+  },
+  taskFailureUnsupportedFileType: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Insights.taskFailureUnsupportedFileType',
+    defaultMessage:
+      'This file type is not supported for AI analysis. Please use a different file format.',
+  },
+  taskFailureTooManyImages: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Insights.taskFailureTooManyImages',
+    defaultMessage:
+      'The request includes too many images. Try attaching fewer files or reducing the number of images per file.',
+  },
+  taskFailureGenericError: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Insights.taskFailureGenericError',
+    defaultMessage:
+      'The request could not be completed. Please try again later.',
   },
 });

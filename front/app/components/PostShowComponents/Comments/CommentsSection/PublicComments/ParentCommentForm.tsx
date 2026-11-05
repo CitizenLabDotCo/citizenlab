@@ -1,9 +1,8 @@
 import React, { useState, useRef } from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Box, colors, ClickOutside } from '@citizenlab/cl2-component-library';
 import { isString, trim } from 'lodash-es';
 import { hideVisually } from 'polished';
-import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -22,9 +21,10 @@ import TextArea from 'components/PostShowComponents/Comments/CommentForm/TextAre
 import { ScreenReaderOnly } from 'utils/a11y';
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
-import clickOutside from 'utils/containers/clickOutside';
 import { isNilOrError, isPage } from 'utils/helperUtils';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+import { useLocation } from 'utils/router';
+import { weglotTranslateSubmission } from 'utils/weglot';
 
 import Actions from '../../CommentForm/Actions';
 import { commentAdded } from '../../events';
@@ -37,7 +37,7 @@ const StyledAvatar = styled(Avatar)`
   margin-top: 3px;
 `;
 
-const FormContainer = styled(clickOutside)`
+const FormContainer = styled(ClickOutside)`
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -90,7 +90,7 @@ const ParentCommentForm = ({
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
   const isAdminPage = isPage('admin', pathname);
-  const { mutate: addCommentToIdea, isLoading: addCommentToIdeaIsLoading } =
+  const { mutate: addCommentToIdea, isPending: addCommentToIdeaIsLoading } =
     useAddCommentToIdea();
 
   const textareaElement = useRef<HTMLTextAreaElement | null>(null);
@@ -152,9 +152,14 @@ const ParentCommentForm = ({
     setFocused(false);
 
     if (isString(inputValue) && trim(inputValue) !== '') {
-      const commentBodyMultiloc = {
-        [locale]: inputValue.replace(/@\[(.*?)\]\((.*?)\)/gi, '@$2'),
-      };
+      const processedValue = inputValue.replace(/@\[(.*?)\]\((.*?)\)/gi, '@$2');
+
+      const { translatedText, weglotData } = await weglotTranslateSubmission(
+        processedValue,
+        locale,
+        appConfiguration?.data.attributes.settings.core.weglot_api_key
+      );
+      const commentBodyMultiloc = { [locale]: translatedText };
 
       trackEventByName(tracks.clickParentCommentPublish, {
         postId: ideaId,
@@ -168,6 +173,7 @@ const ParentCommentForm = ({
             ideaId,
             author_id: authUser.data.id,
             body_multiloc: commentBodyMultiloc,
+            weglot_data: weglotData,
             anonymous: postAnonymously,
           },
           {

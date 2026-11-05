@@ -34,7 +34,6 @@ export const getAppConfigurationData = (
         color_secondary: '#551122',
         color_text: '#222222',
         currency: 'EUR',
-        segment_destinations_blacklist: null,
         reply_to_email: 'not-support@citizenlab.co',
         authentication_token_lifetime_in_days: 30,
         maximum_admins_number: 12,

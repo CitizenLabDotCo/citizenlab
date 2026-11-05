@@ -2,7 +2,12 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { defaultInputStyle, colors, fontSizes } from '../styleUtils';
+import {
+  defaultInputStyle,
+  colors,
+  fontSizes,
+  stylingConsts,
+} from '../styleUtils';
 
 const Container = styled.button<{ disabled: boolean }>`
   ${defaultInputStyle};
@@ -11,6 +16,7 @@ const Container = styled.button<{ disabled: boolean }>`
   flex-direction: row;
   align-items: center;
   font-size: ${fontSizes.base}px;
+  height: ${stylingConsts.inputHeight}px;
 
   color: ${colors.grey800};
 
@@ -45,6 +51,7 @@ interface Props {
   disabled?: boolean;
   children: React.ReactNode;
   className?: string;
+  ariaExpanded?: boolean;
   onClick?: () => void;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
@@ -57,6 +64,7 @@ const InputContainer = ({
   disabled = false,
   children,
   className,
+  ariaExpanded,
   onClick,
   onMouseEnter,
   onMouseLeave,
@@ -65,11 +73,13 @@ const InputContainer = ({
 }: Props) => {
   return (
     <Container
+      type="button"
       id={id}
       className={className}
       disabled={disabled}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
+      aria-expanded={ariaExpanded}
       onClick={(e) => {
         if (disabled) return;
         e.preventDefault();

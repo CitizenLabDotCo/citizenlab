@@ -10,7 +10,7 @@ describe BulkImportIdeas::Importers::ProjectImporter do
       {
         title_multiloc: { 'en' => 'Test Project' },
         slug: 'test-project',
-        description_multiloc: { 'en' => 'This is a test project.' },
+        description: { 'en' => 'This is a test project.' },
         admin_publication_attributes: { publication_status: 'published' }
       }
     end
@@ -34,6 +34,35 @@ describe BulkImportIdeas::Importers::ProjectImporter do
       project_data[:id] = 'NON_EXISTENT_ID'
       project = service.send(:find_or_create_project, project_data)
       expect(project).to be_nil
+    end
+
+    describe 'when the project description contains images' do
+      let(:project_data) do
+        {
+          title_multiloc: { 'en' => 'Test Project' },
+          slug: 'test-project',
+          description: {
+            'en' => html_with_base64_image
+          },
+          admin_publication_attributes: { publication_status: 'published' }
+        }
+      end
+
+      it 'carries the description into the project page and processes its text images' do
+        project = service.send(:find_or_create_project, project_data)
+        expect(project.title_multiloc['en']).to eq('Test Project')
+
+        layout = ContentBuilder::Layout.find_by(content_buildable: project, code: 'project_page')
+        # HTML with inline media goes on the RichTextMultiloc bridge, whose images are extracted.
+        text = layout.craftjs_json.values.find do |n|
+          n.is_a?(Hash) && n['type'].is_a?(Hash) && n['type']['resolvedName'] == 'RichTextMultiloc'
+        end
+
+        text_image = TextImage.find_by(imageable: project, imageable_field: 'craftjs_json')
+        expect(text_image).to be_present
+        expect(text['props']['text']['en']).to include("data-cl2-text-image-text-reference=\"#{text_image.text_reference}\"")
+        expect(text['props']['text']['en']).not_to include('base64')
+      end
     end
   end
 
@@ -112,96 +141,114 @@ describe BulkImportIdeas::Importers::ProjectImporter do
     end
   end
 
-  describe '#extract_project_user_data' do
-    let(:users) { [] }
-    let(:user_custom_fields) { [] }
-    let(:base_project_data) do
-      {
-        title_multiloc: { 'en' => 'Test Project' },
-        phases: []
+  describe '#process_user_custom_field_values' do
+    let!(:domicile) { create(:custom_field_domicile) }
+    let!(:area) { create(:area, title_multiloc: { 'en' => 'Westside' }) }
+    let(:custom_field_values) { service.send(:process_user_custom_field_values, [domicile], 'domicile' => answer) }
+
+    context 'when the user picked an area' do
+      let(:answer) { 'Westside' }
+
+      it 'answers domicile with the area id' do
+        expect(custom_field_values).to eq({ 'domicile' => area.id })
+      end
+    end
+
+    context 'when the user picked the somewhere else option' do
+      let(:answer) { 'Somewhere else' }
+
+      it "answers domicile with 'outside'" do
+        expect(custom_field_values).to eq({ 'domicile' => 'outside' })
+      end
+    end
+  end
+
+  describe '#create_project_attachments' do
+    let(:project) { create(:project) }
+
+    it 'imports attachments from local file path' do
+      # Ensure fixture files do not get deleted during tests
+      allow(File).to receive(:delete)
+
+      project_data = {
+        attachments: [
+          Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_1.pdf').to_s,
+          Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/import.xlsx').to_s
+        ]
       }
+      service.send(:create_project_attachments, project, project_data)
+
+      expect(project.file_attachments.count).to eq(2)
+
+      file1 = project.file_attachments.first
+      expect(file1.position).to eq(0)
+      expect(file1.file.name).to eq('scan_1.pdf')
+      expect(file1.file.mime_type).to eq('application/pdf')
+
+      file2 = project.file_attachments.last
+      expect(file2.position).to eq(1)
+      expect(file2.file.name).to eq('import.xlsx')
+      expect(file2.file.mime_type).to eq('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     end
+  end
 
-    it 'returns empty arrays when no user data exists' do
-      projects = [base_project_data]
-      result_users, result_custom_fields = service.send(:extract_project_user_data, projects, users, user_custom_fields)
-      expect(result_users).to be_empty
-      expect(result_custom_fields).to be_empty
-    end
+  describe '#create_project_banner_image' do
+    let(:project) { create(:project) }
 
-    it 'extracts user data from idea rows' do
-      projects = [{
-        **base_project_data,
-        phases: [{
-          idea_rows: [{
-            'Email address' => 'test@example.com',
-            'First Name(s)' => 'John',
-            'Last Name' => 'Doe'
-          }]
-        }]
-      }]
-
-      result_users, = service.send(:extract_project_user_data, projects, users, user_custom_fields)
-      expect(result_users.length).to eq(1)
-      expect(result_users.first).to include(
-        'Email address' => 'moc_elpmaxe_tset@example.com', # Email is replaced and reversed as we're on test
-        'First Name(s)' => 'John',
-        'Last Name' => 'Doe'
-      )
-    end
-
-    it 'does not duplicate users with the same email' do
-      existing_user = {
-        'Email address' => 'test@example.com',
-        'First Name(s)' => 'John',
-        'Last Name' => 'Doe'
+    it 'imports banner image from local file path' do
+      project_data = {
+        banner_url: Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/banner.jpg').to_s
       }
-      projects = [{
-        **base_project_data,
-        phases: [{
-          idea_rows: [existing_user.dup]
-        }]
-      }]
+      service.send(:create_project_banner_image, project, project_data)
 
-      result_users, = service.send(:extract_project_user_data, projects, [existing_user], user_custom_fields)
-      expect(result_users.length).to eq(1)
+      expect(project.header_bg).to be_present
+      file_path = project.header_bg.file.file
+      expect(file_path).to include(project.id)
+      expect(file_path).to end_with('.jpeg')
+    end
+  end
+
+  describe '#create_project_page_layout' do
+    let(:project) { create(:project) }
+
+    def page_layout
+      ContentBuilder::Layout.find_by(content_buildable: project, code: 'project_page')
     end
 
-    it 'merges user custom fields from phases if idea_rows are present' do
-      custom_field = {
-        title_multiloc: { 'en' => 'Custom Field' },
-        key: 'custom_field'
-      }
-      projects = [{
-        **base_project_data,
-        phases: [{
-          user_custom_fields: [custom_field],
-          idea_rows: [{ 'Organization' => 'ACME Corp' }]
-        }]
-      }]
-
-      _, result_custom_fields = service.send(:extract_project_user_data, projects, users, user_custom_fields)
-      expect(result_custom_fields).to include(custom_field)
+    def widget_names(layout)
+      layout.craftjs_json.each_value.filter_map do |node|
+        node['type']['resolvedName'] if node.is_a?(Hash) && node['type'].is_a?(Hash)
+      end
     end
 
-    it 'extracts user custom field values from idea rows' do
-      custom_field = {
-        title_multiloc: { 'en' => 'Organization' },
-        key: 'organization'
-      }
-      projects = [{
-        **base_project_data,
-        phases: [{
-          user_custom_fields: [custom_field],
-          idea_rows: [{
-            'Email address' => 'test@example.com',
-            'Organization' => 'ACME Corp'
-          }]
-        }]
-      }]
+    it 'creates the project page layout carrying the description' do
+      service.send(:create_project_page_layout, project, { 'en' => '<p>Imported</p>' })
 
-      result_users, = service.send(:extract_project_user_data, projects, users, user_custom_fields)
-      expect(result_users.first['Organization']).to eq('ACME Corp')
+      expect(page_layout).to be_present
+      expect(page_layout.enabled).to be(true)
+      texts = page_layout.craftjs_json.values.filter_map { |n| n.dig('props', 'text', 'en') if n.is_a?(Hash) }
+      expect(texts).to include('<p>Imported</p>')
+    end
+
+    it 'puts the participation box beside the description' do
+      service.send(:create_project_page_layout, project, { 'en' => '<p>Imported</p>' })
+
+      craftjs = page_layout.craftjs_json
+      expect(widget_names(page_layout)).to include('AboutBox', 'TwoColumn')
+
+      columns = craftjs.values.find { |n| n.dig('type', 'resolvedName') == 'TwoColumn' }
+      left = craftjs[columns['linkedNodes']['left']]
+      right = craftjs[columns['linkedNodes']['right']]
+      expect(craftjs[left['nodes'].first].dig('props', 'text', 'en')).to eq('<p>Imported</p>')
+      expect(craftjs[right['nodes'].first].dig('type', 'resolvedName')).to eq('AboutBox')
+    end
+
+    it 'falls back to the default page when there is no description' do
+      service.send(:create_project_page_layout, project, nil)
+
+      expect(page_layout.craftjs_json).to have_key('PROJECT_PAGE_BODY')
+      # The default page carries its own participation box.
+      expect(widget_names(page_layout)).to include('AboutBox')
     end
   end
 end

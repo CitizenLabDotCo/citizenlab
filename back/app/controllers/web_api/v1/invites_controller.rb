@@ -6,11 +6,6 @@ class WebApi::V1::InvitesController < ApplicationController
   # authenticate a user
   skip_before_action :authenticate_user
 
-  UNAUTHORIZED_ACCEPT_REASONS = {
-    token_not_found: 'token_not_found',
-    already_accepted: 'already_accepted'
-  }
-
   skip_after_action :verify_authorized, only: %i[accept resend]
 
   def index
@@ -47,11 +42,11 @@ class WebApi::V1::InvitesController < ApplicationController
       when nil
         @invites
       else
-        raise 'Unsupported sort method'
+        raise ApiError.new(:unsupported_sort_parameter, status: 400)
       end
     end
 
-    @invites = paginate @invites
+    @invites = paginate(@invites).includes(invitee: { custom_field_answers: :custom_field })
     render json: linked_json(@invites, WebApi::V1::InviteSerializer, params: jsonapi_serializer_params, include: [:invitee])
   end
 
@@ -73,42 +68,24 @@ class WebApi::V1::InvitesController < ApplicationController
 
   def accept
     @invite = Invite.find_by(token: params[:token])
-    unless @invite
-      render json: { errors: { base: [{ error: UNAUTHORIZED_ACCEPT_REASONS[:token_not_found] }] } }, status: :unauthorized
-      return
-    end
-    if @invite.accepted_at
-      render json: { errors: { base: [{ error: UNAUTHORIZED_ACCEPT_REASONS[:already_accepted] }] } }, status: :unauthorized
-      return
-    end
-    invitee = @invite.invitee
-    begin
-      ActiveRecord::Base.transaction do
-        invitee = UserService.assign_params_in_accept_invite(invitee, accept_params)
-        SideFxInviteService.new.before_accept @invite
-        unless invitee.save(context: :form_submission)
-          raise ClErrors::TransactionError.new(error_key: :unprocessable_invitee)
-        end
-        unless @invite.save
-          raise ClErrors::TransactionError.new(error_key: :unprocessable_invite)
-        end
+    raise ApiError.new(:token_not_found, status: 401) if !@invite
+    raise ApiError.new(:already_accepted, status: 401) if @invite.accepted_at
 
-        SideFxInviteService.new.after_accept @invite
-        render json: WebApi::V1::InviteSerializer.new(
-          @invite.reload,
-          params: jsonapi_serializer_params,
-          include: [:invitee]
-        ).serializable_hash, status: :ok
-      end
-    rescue ClErrors::TransactionError => e
-      case e.error_key
-      when :unprocessable_invitee
-        render json: { errors: invitee.errors.details }, status: :unprocessable_entity
-      when :unprocessable_invite
-        render json: { errors: @invite.errors.details }, status: :unprocessable_entity
-      else
-        raise e
-      end
+    invitee = @invite.invitee
+    ActiveRecord::Base.transaction do
+      invitee = UserService.assign_params_in_accept_invite(invitee, accept_params)
+      SideFxInviteService.new.before_accept @invite
+      save_or_raise! invitee, context: :form_submission
+      save_or_raise! @invite
+
+      claim_tokens = params.dig(:invite, :claim_tokens)
+      SideFxInviteService.new.after_accept(@invite, claim_tokens:)
+
+      render json: WebApi::V1::InviteSerializer.new(
+        @invite.reload,
+        params: jsonapi_serializer_params,
+        include: [:invitee]
+      ).serializable_hash, status: :ok
     end
   end
 
@@ -125,7 +102,7 @@ class WebApi::V1::InvitesController < ApplicationController
   end
 
   def resend
-    user = User.find_by(email: accept_params[:email])
+    user = User.find_by_cimail(accept_params[:email])
 
     unless user&.invite_status == 'pending'
       render json: { errors: { base: [{ error: 'no_pending_invite' }] } }, status: :unprocessable_entity

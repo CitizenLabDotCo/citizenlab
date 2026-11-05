@@ -48,7 +48,7 @@ resource 'Voting' do
 
       example_request 'List only basket-idea associations for the specified idea', document: false do
         assert_status 200
-        expect(json_response_body[:basket_ideas].pluck(:basket_id)).to match_array([basket_ideas.first[:basket_id]])
+        expect(json_response_body[:basket_ideas].pluck(:basket_id)).to contain_exactly(basket_ideas.first[:basket_id])
       end
     end
 
@@ -57,7 +57,7 @@ resource 'Voting' do
 
       example_request 'List only basket-idea associations for the specified basket', document: false do
         assert_status 200
-        expect(json_response_body[:basket_ideas].pluck(:idea_id)).to match_array([basket_ideas.first[:idea_id]])
+        expect(json_response_body[:basket_ideas].pluck(:idea_id)).to contain_exactly(basket_ideas.first[:idea_id])
       end
     end
   end

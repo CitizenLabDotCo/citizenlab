@@ -10,11 +10,14 @@ import {
   Td,
   colors,
   stylingConsts,
+  Text,
+  IconTooltip,
 } from '@citizenlab/cl2-component-library';
 
 import Pagination from 'components/Pagination';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { truncate } from 'utils/textUtils';
 
 import messages from './messages';
 import ReferrerListLink from './RefferListLink';
@@ -26,6 +29,7 @@ type Props = {
 };
 
 const PAGE_SIZE = 10;
+const MAX_REFERRER_LENGTH = 70;
 
 const TableComponent = ({ tableData, onOpenModal }: Props) => {
   const [pageNumber, setPageNumber] = useState<number>(1);
@@ -60,8 +64,32 @@ const TableComponent = ({ tableData, onOpenModal }: Props) => {
         <Tbody>
           {paginatedData.map((row, i) => (
             <Tr key={i}>
-              <Td background={colors.grey50}>
-                ({row.referrer_type}) {row.referrer}
+              <Td
+                background={colors.grey50}
+                display="flex"
+                gap="4px"
+                alignItems="center"
+              >
+                <Text
+                  m="0px"
+                  color="primary"
+                  fontSize="s"
+                  wordBreak="break-word"
+                >
+                  ({row.referrer_type}){' '}
+                  {row.referrer && truncate(row.referrer, MAX_REFERRER_LENGTH)}
+                </Text>
+                {row.referrer && row.referrer.length > MAX_REFERRER_LENGTH && (
+                  <IconTooltip
+                    content={
+                      <Text wordBreak="break-word" color="white" fontSize="s">
+                        {row.referrer}
+                      </Text>
+                    }
+                    icon="info-outline"
+                    placement="top"
+                  />
+                )}
               </Td>
               <Td>{row.visits}</Td>
               <Td>{row.visitors}</Td>

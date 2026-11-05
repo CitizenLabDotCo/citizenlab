@@ -5,8 +5,9 @@ module Seo
     def run(url)
       return unless Rails.env.production?
 
-      app_id     = AppConfiguration.instance.settings.dig('facebook_login', 'app_id')
-      app_secret = AppConfiguration.instance.settings.dig('facebook_login', 'app_secret')
+      facebook_config = Verification::VerificationService.new.method_by_name('facebook')&.config || {}
+      app_id     = facebook_config[:app_id]
+      app_secret = facebook_config[:app_secret]
       return unless app_id && app_secret
 
       FacebookHandler.new(app_id, app_secret).tap do |handler|

@@ -6,7 +6,11 @@ import { Dates, Resolution } from 'components/admin/GraphCards/typings';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import LineChart from 'components/admin/Graphs/LineChart';
 import { colors } from 'components/admin/Graphs/styling';
-import { Margin, YAxisProps } from 'components/admin/Graphs/typings';
+import {
+  Margin,
+  YAxisProps,
+  AccessibilityProps,
+} from 'components/admin/Graphs/typings';
 
 import { useIntl } from 'utils/cl-intl';
 import { toThreeLetterMonth } from 'utils/dateUtils';
@@ -18,7 +22,8 @@ import { generateEmptyData } from './generateEmptyData';
 import renderTooltip from './renderTooltip';
 
 type Props = Dates &
-  Resolution & {
+  Resolution &
+  AccessibilityProps & {
     timeSeries: CombinedTimeSeriesRow[] | null;
     innerRef?: React.RefObject<any>;
     margin?: Margin;
@@ -34,7 +39,7 @@ const LEGEND_ITEMS = {
     message: messages.inputs,
   },
   comments: {
-    color: colors.categorical02,
+    color: colors.categorical05,
     message: messages.comments,
   },
   votes: {
@@ -58,7 +63,9 @@ const Chart = ({
   margin,
   yaxis,
   participationTypes,
-}: Props) => {
+  ariaLabel,
+  ariaDescribedBy,
+}: Props & AccessibilityProps) => {
   const { formatMessage } = useIntl();
 
   const emptyData = useMemo(
@@ -98,6 +105,11 @@ const Chart = ({
 
   const noData = timeSeries === null;
 
+  const accessibilityProps = {
+    ariaLabel,
+    ariaDescribedBy,
+  };
+
   return (
     <LineChart
       width="100%"
@@ -118,6 +130,7 @@ const Chart = ({
         items: legendItems,
       }}
       innerRef={noData ? undefined : innerRef}
+      {...accessibilityProps}
     />
   );
 };

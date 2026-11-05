@@ -9,24 +9,6 @@ class WebApi::V1::BasketsController < ApplicationController
     ).serializable_hash
   end
 
-  def create
-    basket = Basket.new basket_create_attributes
-    basket.user ||= current_user
-    authorize basket
-
-    save_params = {}
-    save_params[:context] = [:basket_submission] if basket.submitted?
-    if basket.save(**save_params)
-      SideFxBasketService.new.after_create basket, current_user
-      render json: WebApi::V1::BasketSerializer.new(
-        basket,
-        params: jsonapi_serializer_params
-      ).serializable_hash, status: :created
-    else
-      render json: { errors: basket.errors.details }, status: :unprocessable_entity
-    end
-  end
-
   def update
     basket.assign_attributes basket_update_attributes
     save_params = {}
@@ -62,14 +44,6 @@ class WebApi::V1::BasketsController < ApplicationController
     @basket ||= Basket.find(params[:id]).tap do |basket|
       authorize basket
     end
-  end
-
-  def basket_create_attributes
-    attributes = params.require(:basket).permit(
-      :submitted,
-      :phase_id
-    ).to_h
-    map_submission attributes
   end
 
   def basket_update_attributes

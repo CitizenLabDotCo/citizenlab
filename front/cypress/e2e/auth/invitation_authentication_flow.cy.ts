@@ -102,8 +102,7 @@ describe('Invitation authentication flow', () => {
       const password = randomString();
       cy.get('#password').type(password).should('have.value', password);
 
-      cy.get('#e2e-terms-conditions-container .e2e-checkbox').click();
-      cy.get('#e2e-privacy-policy-container .e2e-checkbox').click();
+      cy.get('#e2e-policies-container .e2e-checkbox').click();
       cy.get('#e2e-signup-password-submit-button').click();
 
       cy.get('#e2e-success-continue-button').click();
@@ -131,8 +130,7 @@ describe('Invitation authentication flow', () => {
       cy.get('#email').type(email).should('have.value', email);
       cy.get('#password').type(password).should('have.value', password);
 
-      cy.get('#e2e-terms-conditions-container .e2e-checkbox').click();
-      cy.get('#e2e-privacy-policy-container .e2e-checkbox').click();
+      cy.get('#e2e-policies-container .e2e-checkbox').click();
       cy.get('#e2e-signup-password-submit-button').click();
 
       cy.get('#e2e-success-continue-button').click();

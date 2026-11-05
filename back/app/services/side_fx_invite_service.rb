@@ -9,12 +9,10 @@ class SideFxInviteService
 
   def before_accept(invite)
     invite.accepted_at = Time.now
-    return unless AppConfiguration.instance.feature_activated?('user_confirmation')
-
     invite.invitee.email_confirmed_at ||= invite.accepted_at
   end
 
-  def after_accept(invite)
+  def after_accept(invite, claim_tokens: nil)
     if invite.invitee.registration_completed_at_previously_changed?
       LogActivityJob.perform_later(invite.invitee, 'completed_registration', invite.invitee, invite.invitee.updated_at.to_i)
     end
@@ -22,6 +20,7 @@ class SideFxInviteService
     TrackUserJob.perform_later(invite.invitee)
     LogActivityJob.perform_later(invite, 'accepted', invite.invitee, invite.accepted_at.to_i)
     UpdateMemberCountJob.perform_later
+    ClaimTokenService.claim(invite.invitee, claim_tokens)
   end
 
   def after_destroy(frozen_invite, user)

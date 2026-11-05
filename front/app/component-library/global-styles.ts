@@ -1,6 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 
-import { fontSizes, colors } from './utils/styleUtils';
+import { fontSizes, colors, focusRing } from './utils/styleUtils';
 
 const GlobalStyle = createGlobalStyle`
   html {
@@ -17,6 +17,11 @@ const GlobalStyle = createGlobalStyle`
     &:not(.focus-visible) {
       outline: none;
     }
+  }
+
+  *:focus-visible,
+  *.focus-visible {
+    ${focusRing}
   }
 
   html,

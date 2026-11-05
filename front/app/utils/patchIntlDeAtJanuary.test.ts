@@ -1,0 +1,85 @@
+// Importing the module installs the global Intl patch (side effect).
+import 'utils/patchIntlDeAtJanuary';
+
+import { createIntl, createIntlCache } from 'react-intl';
+
+describe('patchIntlDeAtJanuary', () => {
+  const jan = new Date(2026, 0, 15);
+  const feb = new Date(2026, 1, 1);
+
+  it('rewrites de-AT wide January to "Januar" via Intl.DateTimeFormat.format', () => {
+    const out = new Intl.DateTimeFormat('de-AT', { month: 'long' }).format(jan);
+    expect(out).toBe('Januar');
+    expect(out).not.toBe('Jänner');
+  });
+
+  it('rewrites the month part in formatToParts', () => {
+    const parts = new Intl.DateTimeFormat('de-AT', {
+      month: 'long',
+    }).formatToParts(jan);
+    expect(parts.find((p) => p.type === 'month')?.value).toBe('Januar');
+  });
+
+  it('rewrites the short de-AT January to "Jan"', () => {
+    expect(
+      new Intl.DateTimeFormat('de-AT', { month: 'short' }).format(jan)
+    ).toBe('Jan');
+  });
+
+  it('rewrites Date#toLocaleDateString for de-AT (wide and short)', () => {
+    expect(jan.toLocaleDateString('de-AT', { month: 'long' })).toBe('Januar');
+    expect(jan.toLocaleDateString('de-AT', { month: 'short' })).toBe('Jan');
+  });
+
+  it('leaves other months, the narrow width, and other locales untouched', () => {
+    // Other months unaffected.
+    expect(
+      new Intl.DateTimeFormat('de-AT', { month: 'long' }).format(feb)
+    ).toBe('Februar');
+    expect(
+      new Intl.DateTimeFormat('de-AT', { month: 'short' }).format(feb)
+    ).toBe('Feb');
+    // Narrow stays a single letter.
+    expect(
+      new Intl.DateTimeFormat('de-AT', { month: 'narrow' }).format(jan)
+    ).toBe('J');
+    // Plain German already says "Januar"; English unaffected.
+    expect(new Intl.DateTimeFormat('de', { month: 'long' }).format(jan)).toBe(
+      'Januar'
+    );
+    expect(new Intl.DateTimeFormat('en', { month: 'long' }).format(jan)).toBe(
+      'January'
+    );
+  });
+
+  it('preserves the static supportedLocalesOf', () => {
+    expect(Intl.DateTimeFormat.supportedLocalesOf(['de-AT'])).toContain(
+      'de-AT'
+    );
+  });
+
+  // The real production path: cl-intl/react-intl's formatDate delegates to the
+  // global Intl.DateTimeFormat we patched, so a de-AT month renders "Januar"/"Jan".
+  describe('via react-intl formatDate', () => {
+    const intl = createIntl(
+      { locale: 'de-AT', messages: {} },
+      createIntlCache()
+    );
+
+    it('rewrites the wide January to "Januar"', () => {
+      const out = intl.formatDate(jan, { month: 'long' });
+      expect(out).toBe('Januar');
+      expect(out).not.toBe('Jänner');
+    });
+
+    it('rewrites the short January to "Jan"', () => {
+      const out = intl.formatDate(jan, { month: 'short' });
+      expect(out).toBe('Jan');
+      expect(out).not.toBe('Jän');
+    });
+
+    it('leaves other months untouched', () => {
+      expect(intl.formatDate(feb, { month: 'long' })).toBe('Februar');
+    });
+  });
+});

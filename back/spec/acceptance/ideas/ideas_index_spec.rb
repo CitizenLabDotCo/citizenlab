@@ -11,14 +11,15 @@ resource 'Ideas' do
       parameter :number, 'Page number'
       parameter :size, 'Number of ideas per page'
     end
-    parameter :topics, 'Filter by topics (OR)', required: false
+    parameter :input_topics, 'Filter by topics (OR)', required: false
     parameter :projects, 'Filter by projects (OR)', required: false
     parameter :phase, 'Filter by project phase', required: false
     parameter :basket_id, 'Filter by basket', required: false
     parameter :author, 'Filter by author (user id)', required: false
     parameter :idea_status, 'Filter by status (idea status id)', required: false
+    parameter :custom_field_answers, 'Filter by answers to public choice questions: { field_id: [option_key, ...] } (OR within a question, AND across questions)', required: false
     parameter :search, 'Filter by searching in title and body', required: false
-    parameter :sort, "Either 'new', '-new', 'trending', '-trending', 'popular', '-popular', 'author_name', '-author_name', 'likes_count', '-likes_count', 'dislikes_count', '-dislikes_count', 'status', '-status', 'baskets_count', '-baskets_count', 'votes_count', '-votes_count', 'budget', '-budget', 'random'", required: false
+    parameter :sort, "Either 'new', '-new', 'trending', '-trending', 'popular', '-popular', 'author_name', '-author_name', 'likes_count', '-likes_count', 'dislikes_count', '-dislikes_count', 'status', '-status', 'status_priority', 'baskets_count', '-baskets_count', 'votes_count', '-votes_count', 'budget', '-budget', 'random'", required: false
     parameter :publication_status, 'Filter by publication status; returns all published ideas by default', required: false
     parameter :project_publication_status, "Filter by project publication_status. One of #{AdminPublication::PUBLICATION_STATUSES.join(', ')}", required: false
     parameter :feedback_needed, 'Filter out ideas that need feedback', required: false
@@ -53,14 +54,14 @@ resource 'Ideas' do
           expect(input1_response.dig(:attributes, :manual_votes_amount)).to eq 5
           expect(input1_response.dig(:attributes, :total_votes)).to eq 5
           expect(input1_response.dig(:relationships, :manual_votes_last_updated_by, :data, :id)).to eq admin.id
-          expect(json_response_body[:included].find { |i| i[:id] == admin.id }&.dig(:attributes, :slug)).to eq admin.slug
+          expect(json_response_body[:included].find { |i| i[:id] == admin.id }&.dig(:attributes, :first_name)).to eq admin.first_name
           expect(input1_response.dig(:attributes, :manual_votes_last_updated_at)).to be_present
 
           input2_response = json_response_body[:data].find { |i| i[:id] == input2.id }
           expect(input2_response.dig(:attributes, :manual_votes_amount)).to eq 8
           expect(input2_response.dig(:attributes, :total_votes)).to eq 8
           expect(input2_response.dig(:relationships, :manual_votes_last_updated_by, :data, :id)).to eq moderator.id
-          expect(json_response_body[:included].find { |i| i[:id] == moderator.id }&.dig(:attributes, :slug)).to eq moderator.slug
+          expect(json_response_body[:included].find { |i| i[:id] == moderator.id }&.dig(:attributes, :first_name)).to eq moderator.first_name
           expect(input2_response.dig(:attributes, :manual_votes_last_updated_at)).to be_present
         end
       end
@@ -76,7 +77,7 @@ resource 'Ideas' do
         end
         @proposal = create(:proposal)
         survey_project = create(:single_phase_native_survey_project)
-        create(:idea, project: survey_project, creation_phase: survey_project.phases.first)
+        @survey_response = create(:idea, project: survey_project, creation_phase: survey_project.phases.first)
       end
 
       example_request 'List all published inputs (default behaviour)' do
@@ -87,13 +88,26 @@ resource 'Ideas' do
         expect(json_response[:data].pluck(:id)).to include(@proposal.id)
       end
 
+      example_request 'Offers ideas and proposals as inputs, but not native survey responses' do
+        # Inputs are scoped to publicly visible records, which keeps ideation
+        # inputs and proposals but drops native survey responses (their
+        # creation_phase is a survey phase). This is what lets the smart-group
+        # "Follow → one of the inputs" selector offer proposals while never
+        # offering survey responses.
+        assert_status 200
+        ids = json_parse(response_body)[:data].pluck(:id)
+        expect(ids).to include(@ideas.first.id)
+        expect(ids).to include(@proposal.id)
+        expect(ids).not_to include(@survey_response.id)
+      end
+
       example 'List all transitive inputs' do
         do_request transitive: true
 
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 4
-        expect(json_response[:data].pluck(:id)).to match_array [@ideas[0].id, @ideas[1].id, @ideas[3].id, @ideas[4].id]
+        expect(json_response[:data].pluck(:id)).to contain_exactly(@ideas[0].id, @ideas[1].id, @ideas[3].id, @ideas[4].id)
       end
 
       example 'Don\'t list drafts (default behaviour)', document: false do
@@ -103,53 +117,51 @@ resource 'Ideas' do
       end
 
       example 'List all ideas for a topic' do
-        t1 = create(:topic)
-
         i1 = @ideas.first
-        i1.project.update!(allowed_input_topics: Topic.all)
-        i1.topics << t1
+        t1 = create(:input_topic, project: i1.project)
+        i1.project.update!(input_topics: [t1])
+        i1.input_topics << t1
         i1.save!
 
-        do_request topics: [t1.id]
+        do_request input_topics: [t1.id]
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 1
         expect(json_response[:data][0][:id]).to eq i1.id
       end
 
       example 'List all ideas for a topic with other filters enabled', document: false do
-        t1 = create(:topic)
-
         i1 = @ideas.first
-        i1.project.update!(allowed_input_topics: Topic.all)
-        i1.topics << t1
+        t1 = create(:input_topic, project: i1.project)
+        i1.project.update!(input_topics: [t1])
+        i1.input_topics << t1
         i1.save!
 
-        do_request topics: [t1.id], sort: 'random'
+        do_request input_topics: [t1.id], sort: 'random'
         expect(status).to eq(200)
       end
 
       example 'List all ideas which match one of the given topics', document: false do
-        t1 = create(:topic)
-        t2 = create(:topic)
-        t3 = create(:topic)
+        t1 = create(:input_topic)
+        t2 = create(:input_topic)
+        t3 = create(:input_topic)
 
         i1 = @ideas[0]
-        i1.project.update!(allowed_input_topics: Topic.all)
-        i1.topics = [t1, t3]
+        i1.project.update!(input_topics: [t1, t2, t3])
+        i1.input_topics = [t1, t3]
         i1.save!
         i2 = @ideas[1]
-        i2.project.update!(allowed_input_topics: Topic.all)
-        i2.topics = [t2]
+        i2.project.update!(input_topics: [t1, t2, t3])
+        i2.input_topics = [t2]
         i2.save!
         i3 = @ideas[3]
-        i3.project.update!(allowed_input_topics: Topic.all)
-        i3.topics = [t3, t1, t2]
+        i3.project.update!(input_topics: [t1, t2, t3])
+        i3.input_topics = [t3, t1, t2]
         i3.save!
 
-        do_request topics: [t1.id, t2.id]
+        do_request input_topics: [t1.id, t2.id]
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 3
-        expect(json_response[:data].pluck(:id)).to match_array [i1.id, i2.id, i3.id]
+        expect(json_response[:data].pluck(:id)).to contain_exactly(i1.id, i2.id, i3.id)
       end
 
       example 'List all ideas in a project' do
@@ -171,7 +183,7 @@ resource 'Ideas' do
 
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 2
-        expect(json_response[:data].pluck(:id)).to match_array [i1.id, i2.id]
+        expect(json_response[:data].pluck(:id)).to contain_exactly(i1.id, i2.id)
       end
 
       example 'List all ideas in a phase of a project' do
@@ -187,7 +199,7 @@ resource 'Ideas' do
         do_request phase: ph2.id
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 2
-        expect(json_response[:data].pluck(:id)).to match_array [ideas[1].id, ideas[2].id]
+        expect(json_response[:data].pluck(:id)).to contain_exactly(ideas[1].id, ideas[2].id)
       end
 
       example 'List all ideas in a basket' do
@@ -197,7 +209,7 @@ resource 'Ideas' do
         do_request(basket_id: basket.id)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 2
-        expect(json_response[:data].pluck(:id)).to match_array [@ideas[1].id, @ideas[4].id]
+        expect(json_response[:data].pluck(:id)).to contain_exactly(@ideas[1].id, @ideas[4].id)
       end
 
       example 'List all ideas in published projects' do
@@ -216,6 +228,18 @@ resource 'Ideas' do
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 1
         expect(json_response[:data][0][:id]).to eq i.id
+      end
+
+      example 'List all ideas for an answer to a public choice question' do
+        i1, i2 = @ideas.first(2)
+        form = create(:custom_form, participation_context: i1.project)
+        field = create(:custom_field_select, :with_options, resource: form, answers_visible_to: 'public')
+        create(:custom_field_answer, answerable: i1, key: field.key, value: 'option1')
+        create(:custom_field_answer, answerable: i2, key: field.key, value: 'option2')
+
+        do_request custom_field_answers: { field.id => ['option1'] }
+        json_response = json_parse(response_body)
+        expect(json_response[:data].pluck(:id)).to eq [i1.id]
       end
 
       example 'List all ideas for a user' do
@@ -314,7 +338,7 @@ resource 'Ideas' do
         assert_status 200
 
         expect(response_data.size).to eq 2
-        expect(response_data.pluck(:id)).to match_array [ideas[0].id, ideas[1].id]
+        expect(response_data.pluck(:id)).to contain_exactly(ideas[0].id, ideas[1].id)
         ideas_phases = json_response_body[:included].map { |i| i if i[:type] == 'ideas_phase' }.compact!
         expect(ideas_phases.size).to eq 2
         expect(ideas_phases[0][:attributes][:baskets_count]).to eq 2
@@ -368,11 +392,7 @@ resource 'Ideas' do
           assert_status 200
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 3
-          expect(json_response[:data].pluck(:id)).to match_array([
-            published_proposal.id,
-            author_published_proposal.id,
-            other_published_proposal.id
-          ])
+          expect(json_response[:data].pluck(:id)).to contain_exactly(published_proposal.id, author_published_proposal.id, other_published_proposal.id)
         end
       end
 
@@ -384,12 +404,7 @@ resource 'Ideas' do
           assert_status 200
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 4
-          expect(json_response[:data].pluck(:id)).to match_array([
-            published_proposal.id,
-            author_prescreening_proposal.id,
-            author_published_proposal.id,
-            other_published_proposal.id
-          ])
+          expect(json_response[:data].pluck(:id)).to contain_exactly(published_proposal.id, author_prescreening_proposal.id, author_published_proposal.id, other_published_proposal.id)
         end
       end
 
@@ -403,13 +418,7 @@ resource 'Ideas' do
           assert_status 200
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 5
-          expect(json_response[:data].pluck(:id)).to match_array([
-            published_proposal.id,
-            author_prescreening_proposal.id,
-            other_prescreening_proposal.id,
-            author_published_proposal.id,
-            other_published_proposal.id
-          ])
+          expect(json_response[:data].pluck(:id)).to contain_exactly(published_proposal.id, author_prescreening_proposal.id, other_prescreening_proposal.id, author_published_proposal.id, other_published_proposal.id)
         end
       end
     end

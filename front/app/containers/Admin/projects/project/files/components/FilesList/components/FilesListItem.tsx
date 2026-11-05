@@ -131,6 +131,7 @@ const FilesListItem = ({
         opened={isDeleteModalOpen}
         close={() => setIsDeleteModalOpen(false)}
         width="540px"
+        ariaLabelledBy="delete-file-modal-title"
       >
         <Box display="flex" flexDirection="column" mt="20px">
           {isBeingUsedAsAttachment && (
@@ -138,7 +139,7 @@ const FilesListItem = ({
               <FormattedMessage {...messages.fileBeingUsed} />
             </Text>
           )}
-          <Text textAlign="center" m="0px">
+          <Text id="delete-file-modal-title" textAlign="center" m="0px">
             <FormattedMessage {...messages.confirmDelete} />{' '}
           </Text>
           {isBeingUsedAsAttachment && (

@@ -4,8 +4,8 @@ import {
   Box,
   BoxProps,
   colors,
-  stylingConsts,
   useBreakpoint,
+  useWindowSize,
 } from '@citizenlab/cl2-component-library';
 
 import usePhases from 'api/phases/usePhases';
@@ -16,13 +16,17 @@ import {
   getParticipationMethod,
 } from 'utils/configs/participationMethodConfig';
 
+import { getVerticalPositionProps } from './utils';
+
 type ProjectCTABarProps = {
   projectId: string;
+  className?: string;
 };
 
-const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
+const ProjectCTABar = ({ projectId, className }: ProjectCTABarProps) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
-  const sticksToBottom = isSmallerThanTablet;
+  const { windowHeight } = useWindowSize();
+
   const { data: phases } = usePhases(projectId);
   const { data: project } = useProjectById(projectId);
 
@@ -30,7 +34,11 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
     ? getParticipationMethod(project.data, phases?.data)
     : undefined;
 
-  if (!project || !participationMethod) {
+  if (
+    !project ||
+    !participationMethod ||
+    project.data.attributes.publication_status === 'archived'
+  ) {
     return null;
   }
 
@@ -44,20 +52,13 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
     zIndex: '1000',
     background: colors.white,
   };
-  const otherProps: BoxProps = sticksToBottom
-    ? {
-        // This id is needed to add padding to PlatformFooter
-        id: 'project-cta-bar-bottom',
-        position: 'fixed',
-        bottom: '0px',
-      }
-    : {
-        position: 'sticky',
-        top: `${stylingConsts.menuHeight}px`,
-      };
+  const verticalPositionProps = getVerticalPositionProps({
+    isSmallerThanTablet,
+    windowHeight,
+  });
 
   return (
-    <Box {...sharedProps} {...otherProps}>
+    <Box className={className} {...sharedProps} {...verticalPositionProps}>
       {BarContents}
     </Box>
   );

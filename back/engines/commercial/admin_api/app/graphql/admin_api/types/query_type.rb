@@ -65,8 +65,7 @@ module AdminApi
           ideas.order_new
         end
       end
-
-      ideas = ideas.with_some_topics(Topic.where(id: args[:topics])) if args[:topics].present?
+      ideas = ideas.with_some_input_topics(InputTopic.where(id: args[:topics])) if args[:topics].present?
       ideas = ideas.where(project_id: args[:projects]) if args[:projects].present?
 
       ideas

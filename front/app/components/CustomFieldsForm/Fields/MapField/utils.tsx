@@ -10,12 +10,12 @@ import { geocode, reverseGeocode } from 'utils/locationTools';
 
 import {
   getCoordinatesFromMultiPointData,
-  isLineOrPolygonInput,
+  isMultiPointInput,
   updateMultiPointsDataAndDisplay,
 } from './multiPointUtils';
 import { updatePointDataAndDisplay } from './pointUtils';
 
-export type MapInputType = 'point' | 'line' | 'polygon';
+export type MapInputType = 'point' | 'line' | 'polygon' | 'multipoint';
 
 // reverseGeocodeAndSave
 // Description: Reverse geocodes a point and saves the address
@@ -63,7 +63,7 @@ export const getUserInputPoints = (
   // TODO: Fix this the next time the file is edited.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   userGraphicsLayer?.graphics?.forEach((graphic) => {
-    if (graphic.geometry.type === 'point') {
+    if (graphic.geometry?.type === 'point') {
       // We want just a list of the points
       filteredGraphics.push(graphic);
     }
@@ -71,7 +71,7 @@ export const getUserInputPoints = (
 
   return filteredGraphics.map((graphic) => {
     const point = graphic.geometry as __esri.Point;
-    return [point.longitude, point.latitude];
+    return [point.longitude || 0, point.latitude || 0];
   });
 };
 
@@ -94,7 +94,7 @@ export const updateDataAndDisplay = ({
       tenantPrimaryColor: theme.colors.tenantPrimary,
       setAddress,
     });
-  } else if (isLineOrPolygonInput(inputType)) {
+  } else if (isMultiPointInput(inputType)) {
     updateMultiPointsDataAndDisplay({
       data: getCoordinatesFromMultiPointData(data, inputType),
       mapView,
@@ -137,7 +137,7 @@ export const getInitialMapCenter = (
 ) => {
   if (inputType === 'point') {
     return data || mapConfig?.data.attributes.center_geojson;
-  } else if (isLineOrPolygonInput(inputType)) {
+  } else if (isMultiPointInput(inputType)) {
     return mapConfig?.data.attributes.center_geojson;
   }
 };

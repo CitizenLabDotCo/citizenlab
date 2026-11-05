@@ -1,0 +1,93 @@
+import React from 'react';
+
+import { render, screen, waitFor } from 'utils/testUtils/rtl';
+
+import CustomPageBuilder from '.';
+
+jest.mock('./CustomPageBuilderPage', () => ({
+  __esModule: true,
+  default: () => <div data-testid="builderPage" />,
+}));
+
+jest.mock('utils/router', () => ({
+  ...jest.requireActual('utils/router'),
+  useParams: () => ({ customPageId: 'page-1' }),
+}));
+
+let pageCode = 'custom';
+jest.mock('api/custom_pages/useCustomPageById', () => ({
+  __esModule: true,
+  default: jest.fn(() => ({
+    data: {
+      data: {
+        id: 'page-1',
+        attributes: {
+          code: pageCode,
+          slug: 'about-us',
+          title_multiloc: { en: 'About' },
+        },
+      },
+    },
+  })),
+}));
+
+const mockUpsert = jest.fn();
+jest.mock('api/custom_page_layout/useUpsertCustomPageLayout', () =>
+  jest.fn(() => ({ mutate: mockUpsert }))
+);
+
+let featureEnabled = true;
+jest.mock('hooks/useFeatureFlag', () => jest.fn(() => featureEnabled));
+
+let layoutIsError = false;
+jest.mock('api/custom_page_layout/useCustomPageLayout', () => ({
+  __esModule: true,
+  default: jest.fn(() => ({ isError: layoutIsError })),
+}));
+
+describe('CustomPageBuilder bootstrap', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    layoutIsError = false;
+    featureEnabled = true;
+    pageCode = 'custom';
+  });
+
+  it('does not create a layout when one already exists', () => {
+    render(<CustomPageBuilder />);
+
+    expect(mockUpsert).not.toHaveBeenCalled();
+  });
+
+  // Gating only the link would let a typed URL reach the builder, which writes a layout.
+  it('renders nothing and writes no layout when the feature is off', () => {
+    featureEnabled = false;
+    layoutIsError = true;
+    render(<CustomPageBuilder />);
+
+    expect(screen.queryByTestId('builderPage')).not.toBeInTheDocument();
+    expect(mockUpsert).not.toHaveBeenCalled();
+  });
+
+  // A typed URL can name any page; a layout written for one off the builder is never shown.
+  it('renders nothing and writes no layout for a page not on the builder', () => {
+    pageCode = 'terms-and-conditions';
+    layoutIsError = true;
+    render(<CustomPageBuilder />);
+
+    expect(screen.queryByTestId('builderPage')).not.toBeInTheDocument();
+    expect(mockUpsert).not.toHaveBeenCalled();
+  });
+
+  // Without the ref guard this re-fires on every render, hammering the endpoint.
+  it('creates the layout only once across re-renders', async () => {
+    layoutIsError = true;
+    const { rerender } = render(<CustomPageBuilder />);
+
+    await waitFor(() => expect(mockUpsert).toHaveBeenCalledTimes(1));
+    rerender(<CustomPageBuilder />);
+    rerender(<CustomPageBuilder />);
+
+    expect(mockUpsert).toHaveBeenCalledTimes(1);
+  });
+});

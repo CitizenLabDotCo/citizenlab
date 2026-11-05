@@ -137,7 +137,7 @@ resource 'Moderations' do
           expect(status).to eq(200)
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 4
-          expect(json_response[:data].pluck(:id)).to match_array [@m2.id, @m3.id, @m4.id, @m5.id]
+          expect(json_response[:data].pluck(:id)).to contain_exactly(@m2.id, @m3.id, @m4.id, @m5.id)
         end
       end
 
@@ -156,7 +156,7 @@ resource 'Moderations' do
           expect(status).to eq(200)
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 3
-          expect(json_response[:data].pluck(:id)).to match_array [@m2.id, @m3.id, @m5.id]
+          expect(json_response[:data].pluck(:id)).to contain_exactly(@m2.id, @m3.id, @m5.id)
         end
       end
     end

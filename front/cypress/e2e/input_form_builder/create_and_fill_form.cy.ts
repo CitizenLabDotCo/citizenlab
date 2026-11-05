@@ -1,9 +1,8 @@
-import { randomString } from '../../support/commands';
+import { randomString, randomEmail } from '../../support/commands';
 import moment = require('moment');
 
 describe('Input form builder', () => {
   const projectTitle = randomString();
-  const projectDescription = randomString();
   let questionTitle = randomString();
   const answer = randomString();
   const ideaTitle = randomString(40);
@@ -24,7 +23,6 @@ describe('Input form builder', () => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     })
       .then((project) => {
@@ -140,7 +138,7 @@ describe('Input form builder', () => {
 
   it('can create input form with custom field, save form and user can respond to the form created', () => {
     // Intercept for the form submission
-    cy.intercept('POST', '**/web_api/v1/ideas').as('ideaSubmission');
+    cy.intercept('POST', '**/web_api/v1/phases/*/inputs').as('ideaSubmission');
 
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/form`);
     cy.dataCy('e2e-edit-input-form').click();
@@ -191,8 +189,12 @@ describe('Input form builder', () => {
     // Go to the next page of the idea form
     cy.dataCy('e2e-next-page').should('be.visible').click();
 
-    // Veryify location is present and properly geocoded (from the lat long in URL)
-    cy.contains('Steenakker 36, 5411').should('exist');
+    // Verify location is present and reverse-geocoded (from the lat long in
+    // URL). Match street + postcode but not the house number: that's the
+    // geocoding provider's data, which drifts over time (returned 36 until
+    // June 2026, then 34). The exact coordinates are asserted on submission
+    // via the ideaSubmission interception below.
+    cy.contains(/Steenakker \d+, 5411/).should('exist');
 
     // Cannot proceed to the next page without filling in the required custom field
     cy.dataCy('e2e-submit-form').click();
@@ -207,7 +209,9 @@ describe('Input form builder', () => {
 
     // Fill in required custom field
     cy.contains(questionTitle).should('exist');
-    cy.get(`*[id^="${questionTitle}"]`).type(answer, { force: true });
+    cy.get(`*[id^="${questionTitle}"]:not([id$="-label"])`)
+      .first()
+      .type(answer, { force: true });
 
     // save the form
     cy.dataCy('e2e-submit-form').click();
@@ -236,5 +240,104 @@ describe('Input form builder', () => {
 
     // Verify that the answer is not shown on the idea page
     cy.contains(questionTitle).should('not.exist');
+  });
+
+  it('lets a custom question show its answers publicly', () => {
+    const publicQuestion = randomString();
+    const privateQuestion = randomString();
+
+    cy.intercept('POST', '**/web_api/v1/phases/*/inputs').as('ideaSubmission');
+
+    // Add a public and a private question. Nothing has been submitted yet, so
+    // switching the first one on needs no confirmation.
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/form`);
+    cy.dataCy('e2e-edit-input-form').click();
+    cy.addItemToFormBuilder('#toolbox_text');
+    cy.get('#e2e-title-multiloc').type(publicQuestion, { force: true });
+    cy.get('#e2e-public-answers-toggle').find('input').click({ force: true });
+    cy.dataCy('e2e-confirm-public-answers').should('not.exist');
+    cy.get('#e2e-public-answers-toggle').find('input').should('be.checked');
+
+    cy.addItemToFormBuilder('#toolbox_text');
+    cy.get('#e2e-title-multiloc').type(privateQuestion, { force: true });
+
+    cy.get('form').submit();
+    cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
+
+    // Only the private question tells the participant who sees the answer
+    cy.visit(`/projects/${projectSlug}/ideas/new`);
+    cy.get('#idea-form');
+    cy.get('#title_multiloc ').click().type(ideaTitle, { delay: 0 });
+    cy.clickInputFormPageButton('e2e-next-page');
+    cy.dataCy('e2e-page-number-2').should('exist');
+    cy.get('#body_multiloc .ql-editor').type(ideaContent);
+    cy.get('#body_multiloc .ql-editor').contains(ideaContent);
+    cy.clickInputFormPageButton('e2e-next-page');
+    cy.dataCy('e2e-page-number-3').should('exist');
+    cy.get('#e2e-idea-image-upload').should('exist');
+    cy.clickInputFormPageButton('e2e-next-page');
+    cy.dataCy('e2e-page-number-4').should('exist');
+
+    cy.contains(publicQuestion)
+      .parents('[data-question-id]')
+      .find('[data-cy="e2e-private-answer-note"]')
+      .should('not.exist');
+    cy.contains(privateQuestion)
+      .parents('[data-question-id]')
+      .find('[data-cy="e2e-private-answer-note"]')
+      .should('exist');
+
+    cy.get(`*[id^="${publicQuestion}"]:not([id$="-label"])`)
+      .first()
+      .type(answer, { force: true });
+    cy.get(`*[id^="${privateQuestion}"]:not([id$="-label"])`)
+      .first()
+      .type(answer, { force: true });
+    cy.clickInputFormPageButton('e2e-submit-form');
+    cy.wait('@ideaSubmission');
+
+    // The admin sees both answers on the idea page, the private one marked
+    cy.visit(`/ideas/${ideaTitle}`);
+    cy.dataCy('e2e-custom-field-answer').should('have.length', 2);
+    cy.contains('[data-cy="e2e-custom-field-answer"]', publicQuestion)
+      .should('contain.text', answer)
+      .find('[data-cy="e2e-private-answer-note"]')
+      .should('not.exist');
+    cy.contains('[data-cy="e2e-custom-field-answer"]', privateQuestion)
+      .should('contain.text', answer)
+      .find('[data-cy="e2e-private-answer-note"]')
+      .should('exist');
+
+    // A resident only gets the public answer
+    const email = randomEmail();
+    const password = randomString();
+    cy.apiSignup(randomString(), randomString(), email, password);
+    cy.setLoginCookie(email, password);
+    cy.visit(`/ideas/${ideaTitle}`);
+    cy.dataCy('e2e-custom-field-answer')
+      .should('have.length', 1)
+      .should('contain.text', publicQuestion);
+    cy.dataCy('e2e-private-answer-note').should('not.exist');
+
+    // With a submission in, showing the private answers asks for confirmation
+    cy.setAdminLoginCookie();
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/form`);
+    cy.dataCy('e2e-edit-input-form').click();
+    cy.get('#e2e-warning-notice').should('exist');
+    cy.dataCy('e2e-form-fields').contains(privateQuestion).click();
+    cy.get('#e2e-public-answers-toggle').find('input').click({ force: true });
+    cy.dataCy('e2e-confirm-public-answers').should('be.visible');
+    cy.get('#e2e-public-answers-toggle').find('input').should('not.be.checked');
+
+    cy.get('.e2e-modal-close-button').click();
+    cy.dataCy('e2e-confirm-public-answers').should('not.exist');
+    cy.get('#e2e-public-answers-toggle').find('input').should('not.be.checked');
+
+    cy.get('#e2e-public-answers-toggle').find('input').click({ force: true });
+    cy.dataCy('e2e-confirm-public-answers').click();
+    cy.get('#e2e-public-answers-toggle').find('input').should('be.checked');
+
+    cy.get('form').submit();
+    cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
   });
 });

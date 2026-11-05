@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   Toggle,
@@ -7,15 +7,16 @@ import {
   Box,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { CLErrors, IOption } from 'typings';
 
-import { VoteTerm, VotingMethod } from 'api/phases/types';
+import { PresentationMode, VoteTerm, VotingMethod } from 'api/phases/types';
+import usePhase from 'api/phases/usePhase';
 
 import {
   SectionDescription,
   SectionField,
+  SubSectionTitle,
   SubSectionTitleWithDescription,
 } from 'components/admin/Section';
 import Error from 'components/UI/Error';
@@ -23,13 +24,16 @@ import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
+import { useParams } from 'utils/router';
 
 import messages from '../../../../../../messages';
 import { ValidationErrors } from '../../../../../typings';
-import DefaultViewPicker from '../../shared/DefaultViewPicker';
 import SimilarityDetectionConfig from '../../shared/SimilarityDetectionConfig';
 import { ToggleRow } from '../../shared/styling';
+import ViewSelector from '../../shared/ViewSelector';
+import ActionToggleRow from '../_shared/ActionToggleRow';
 
+import VotingMethodChangeModal from './VotingMethodChangeModal';
 import BudgetingInputs from './votingMethodInputs/BudgetingInputs';
 import MultipleVotingInputs from './votingMethodInputs/MultipleVotingInputs';
 import ShareResultsToggle from './votingMethodInputs/ShareResultsToggle/ShareResultsToggle';
@@ -41,6 +45,10 @@ export const StyledSectionDescription = styled(SectionDescription)`
   margin-bottom: 20px;
 `;
 
+const WideToggleRow = styled(ToggleRow)`
+  max-width: 500px;
+`;
+
 export interface VotingInputsProps {
   voting_method: VotingMethod | null | undefined;
   voting_min_total: number | null | undefined;
@@ -48,17 +56,28 @@ export interface VotingInputsProps {
   commenting_enabled: boolean | null | undefined;
   autoshare_results_enabled: boolean | null | undefined;
   voting_max_votes_per_idea?: number | null;
+  voting_min_selected_options?: number | null;
+  voting_filtering_enabled?: boolean | null;
+  handleMinVotingOptionsChange: (newMinVotingOptions: string | null) => void;
   handleVotingMinTotalChange: (newVotingMinTotal: string) => void;
   handleVotingMaxTotalChange: (newVotingMaxTotal: string | null) => void;
   handleMaxVotesPerOptionAmountChange: (newMaxVotesPerOption: string) => void;
+  toggleVotingFilteringEnabled: () => void;
   handleVoteTermChange: (option: IOption) => void;
   voteTerm?: VoteTerm;
   toggleCommentingEnabled: () => void;
   toggleAutoshareResultsEnabled: () => void;
   apiErrors: CLErrors | null | undefined;
   validationErrors: ValidationErrors;
-  presentation_mode: 'card' | 'map' | null | undefined;
-  handleIdeasDisplayChange: (presentation_mode: 'map' | 'card') => void;
+  presentation_mode: 'card' | 'map' | 'feed' | null | undefined;
+  available_views: PresentationMode[] | null | undefined;
+  handleIdeasDisplayChange: (
+    presentation_mode: 'map' | 'card' | 'feed'
+  ) => void;
+  handleAvailableViewsChange: (
+    available_views: PresentationMode[],
+    presentation_mode?: PresentationMode
+  ) => void;
   handleVotingMethodOnChange: (voting_method: VotingMethod) => void;
   similarity_enabled?: boolean | null;
   similarity_threshold_title: number | null | undefined;
@@ -68,12 +87,15 @@ export interface VotingInputsProps {
     field: 'similarity_threshold_title' | 'similarity_threshold_body',
     value: number
   ) => void;
+  layout?: 'page' | 'panel';
 }
 
 const VotingInputs = ({
   voting_method,
   voting_min_total,
   voting_max_total,
+  voting_min_selected_options,
+  voting_filtering_enabled,
   commenting_enabled,
   autoshare_results_enabled,
   voting_max_votes_per_idea,
@@ -82,10 +104,14 @@ const VotingInputs = ({
   toggleCommentingEnabled,
   toggleAutoshareResultsEnabled,
   handleMaxVotesPerOptionAmountChange,
+  handleMinVotingOptionsChange,
+  toggleVotingFilteringEnabled,
   apiErrors,
   validationErrors,
   presentation_mode,
+  available_views,
   handleIdeasDisplayChange,
+  handleAvailableViewsChange,
   handleVotingMethodOnChange,
   similarity_enabled,
   similarity_threshold_title,
@@ -94,11 +120,28 @@ const VotingInputs = ({
   handleThresholdChange,
   handleVoteTermChange,
   voteTerm,
+  layout = 'page',
 }: VotingInputsProps) => {
   const { formatMessage } = useIntl();
-  const { projectId, phaseId } = useParams() as {
-    projectId: string;
-    phaseId: string;
+  const { projectId, phaseId } = useParams({ strict: false });
+  const { data: phase } = usePhase(phaseId);
+  const [pendingVotingMethod, setPendingVotingMethod] =
+    useState<VotingMethod | null>(null);
+
+  const hasVotes =
+    !!phase &&
+    (phase.data.attributes.votes_count > 0 ||
+      phase.data.attributes.baskets_count > 0);
+  const panel = layout === 'panel';
+
+  const handleVotingMethodSelect = (method: VotingMethod) => {
+    if (method === voting_method) return;
+
+    if (panel && hasVotes && method !== phase.data.attributes.voting_method) {
+      setPendingVotingMethod(method);
+    } else {
+      handleVotingMethodOnChange(method);
+    }
   };
 
   const getVoteTypeDescription = () => {
@@ -118,42 +161,59 @@ const VotingInputs = ({
     <>
       <VotingMethodSelector
         voting_method={voting_method}
-        handleVotingMethodOnChange={handleVotingMethodOnChange}
+        handleVotingMethodOnChange={handleVotingMethodSelect}
+        layout={layout}
       />
-      <Box paddingLeft="32px" borderLeft={`1px solid ${colors.divider}`}>
-        <Box my="16px" width="700px">
-          <Warning>
-            <FormattedMessage
-              {...messages.learnMoreVotingMethod}
-              values={{
-                b: (chunks) => (
-                  <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
-                ),
-                voteTypeDescription: getVoteTypeDescription(),
-                optionAnalysisArticleLink: (
-                  <a
-                    href="https://support.govocal.com/en/articles/8124630-voting-and-prioritization-methods-for-enhanced-decision-making"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <FormattedMessage {...messages.optionAnalysisLinkText} />
-                  </a>
-                ),
-              }}
-            />
-          </Warning>
-        </Box>
+      <VotingMethodChangeModal
+        opened={pendingVotingMethod !== null}
+        onClose={() => setPendingVotingMethod(null)}
+        onConfirm={() => {
+          if (pendingVotingMethod) {
+            handleVotingMethodOnChange(pendingVotingMethod);
+          }
+          setPendingVotingMethod(null);
+        }}
+      />
+      <Box
+        paddingLeft={panel ? undefined : '32px'}
+        borderLeft={panel ? undefined : `1px solid ${colors.divider}`}
+      >
+        {!panel && (
+          <Box my="16px" maxWidth="700px">
+            <Warning>
+              <FormattedMessage
+                {...messages.learnMoreVotingMethod}
+                values={{
+                  b: (chunks) => (
+                    <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+                  ),
+                  voteTypeDescription: getVoteTypeDescription(),
+                  optionAnalysisArticleLink: (
+                    <a
+                      href="https://support.govocal.com/en/articles/527581-voting-and-prioritization-methods-for-enhanced-decision-making"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <FormattedMessage {...messages.optionAnalysisLinkText} />
+                    </a>
+                  ),
+                }}
+              />
+            </Warning>
+          </Box>
+        )}
         <SectionField>
           <SubSectionTitleWithDescription>
             <FormattedMessage {...messages.optionsToVoteOn} />
           </SubSectionTitleWithDescription>
-          {phaseId ? (
+          {phaseId && projectId ? (
             <FormattedMessage
               {...messages.optionsToVoteOnDescription}
               values={{
                 optionsPageLink: (
                   <Link
-                    to={`/admin/projects/${projectId}/phases/${phaseId}/ideas`}
+                    to="/admin/projects/$projectId/phases/$phaseId/ideas"
+                    params={{ projectId, phaseId }}
                     rel="noreferrer"
                   >
                     <FormattedMessage {...messages.optionsPageText} />
@@ -189,14 +249,20 @@ const VotingInputs = ({
             }
             handleVoteTermChange={handleVoteTermChange}
             voteTerm={voteTerm}
+            voting_min_selected_options={voting_min_selected_options}
+            handleMinVotingOptionsChange={handleMinVotingOptionsChange}
+            minSelectedOptionsError={validationErrors.minSelectedOptionsError}
           />
         )}
         {voting_method === 'single_voting' && (
           <SingleVotingInputs
             voting_max_total={voting_max_total}
+            voting_min_selected_options={voting_min_selected_options}
             apiErrors={apiErrors}
             maxTotalVotesError={validationErrors.maxTotalVotesError}
             handleMaxVotingAmountChange={handleVotingMaxTotalChange}
+            handleMinVotingOptionsChange={handleMinVotingOptionsChange}
+            minSelectedOptionsError={validationErrors.minSelectedOptionsError}
           />
         )}
         <SectionField>
@@ -209,18 +275,34 @@ const VotingInputs = ({
           <StyledSectionDescription>
             <FormattedMessage {...messages.enabledActionsForUsersDescription} />
           </StyledSectionDescription>
-
-          <ToggleRow>
+          <ActionToggleRow
+            phaseId={panel ? phaseId : undefined}
+            action="commenting_idea"
+          >
             <Toggle
+              variant={panel ? 'bo' : undefined}
               checked={!!commenting_enabled}
               onChange={toggleCommentingEnabled}
-              label={FormattedMessage(messages.inputCommentingEnabled)}
+              label={formatMessage(messages.inputCommentingEnabled)}
             />
-          </ToggleRow>
+          </ActionToggleRow>
           <Text mb="0px" pb="0px" color={'textSecondary'} fontSize="s">
             {formatMessage(messages.commentingBias)}
           </Text>
           <Error apiErrors={apiErrors && apiErrors.commenting_enabled} />
+        </SectionField>
+        <SectionField>
+          <SubSectionTitle>
+            <FormattedMessage {...messages.enabledVotingFiltering} />
+          </SubSectionTitle>
+          <WideToggleRow>
+            <Toggle
+              checked={!!voting_filtering_enabled}
+              onChange={toggleVotingFilteringEnabled}
+              label={formatMessage(messages.votingFilteringEnabled)}
+            />
+          </WideToggleRow>
+          <Error apiErrors={apiErrors && apiErrors.votingFilteringEnabled} />
         </SectionField>
 
         <ShareResultsToggle
@@ -238,11 +320,15 @@ const VotingInputs = ({
           handleThresholdChange={handleThresholdChange}
         />
 
-        <DefaultViewPicker
+        <ViewSelector
           presentation_mode={presentation_mode}
+          available_views={available_views}
           apiErrors={apiErrors}
           handleIdeasDisplayChange={handleIdeasDisplayChange}
+          handleAvailableViewsChange={handleAvailableViewsChange}
           title={messages.defaultViewOptions}
+          hideFeed
+          variant={panel ? 'panel' : undefined}
         />
       </Box>
     </>

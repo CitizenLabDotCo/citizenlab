@@ -1,24 +1,28 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { FormProvider } from 'react-hook-form';
-import { useLocation, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 import useIdeaById from 'api/ideas/useIdeaById';
+import useAuthUser from 'api/me/useAuthUser';
 import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
 
-import SubmissionReference from 'components/Form/Components/Layouts/SubmissionReference';
+import { triggerPostParticipationFlow } from 'containers/Authentication/events';
+
+import CustomFieldsSignupHelperText from 'components/CustomFieldsForm/CustomFieldsSignupHelperText';
+import SubmissionReference from 'components/CustomFieldsForm/SubmissionReference';
 import Feedback from 'components/HookForm/Feedback';
 
 import clHistory from 'utils/cl-router/history';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { isPage } from 'utils/helperUtils';
+import { useLocation, useSearch } from 'utils/router';
 
 import CustomFields from '../CustomFields';
 import PageEsriDivider from '../Map/PageEsriDivider';
@@ -28,9 +32,21 @@ import PageFooter from '../Page/PageFooter';
 import PageTitle from '../Page/PageTitle';
 import { FormValues } from '../Page/types';
 import usePageForm from '../Page/usePageForm';
-import { getFormCompletionPercentage, Pages } from '../util';
+import PostParticipationBox from '../PostParticipationBox';
+import {
+  getFormCompletionPercentage,
+  hasUnansweredQuestions,
+  isNillish,
+  Pages,
+  trackFormPageView,
+} from '../util';
 
-import { determineNextPageNumber, determinePreviousPageNumber } from './logic';
+import {
+  determineNextPageNumber,
+  determinePreviousPageNumber,
+  getSkippedPageIndices,
+} from './logic';
+import SubmitConfirmation from './SubmitConfirmation';
 
 const StyledForm = styled.form`
   height: 100%;
@@ -42,17 +58,30 @@ type SurveyPage = {
   pageQuestions: IFlatCustomField[];
   currentPageIndex: number;
   setCurrentPageIndex: React.Dispatch<React.SetStateAction<number>>;
+  userNavigationHistory: number[];
+  setUserNavigationHistory: React.Dispatch<React.SetStateAction<number[]>>;
   lastPageIndex: number;
   participationMethod?: ParticipationMethod;
   ideaId?: string;
   projectId: string;
   onSubmit: ({
     formValues,
+    pageValues,
     isSubmitPage,
   }: {
+    // Validated by the yup resolver, which casts values to the types the API
+    // expects (a number input hands React Hook Form a string).
     formValues: FormValues;
+    // The same answers before validation. The resolver drops keys whose value
+    // is undefined, so a cleared answer is missing from formValues and the
+    // parent would carry the previous one forward. Here it is still present.
+    pageValues: FormValues;
     isSubmitPage: boolean;
   }) => Promise<void>;
+  // Called when this page unmounts via the Previous button so the parent can
+  // accumulate the user's in-progress answers. Forward navigation goes through
+  // onSubmit and doesn't need this callback.
+  onCapturePageValues?: (values: FormValues) => void;
   phase?: IPhaseData;
   defaultValues?: FormValues;
 };
@@ -66,8 +95,11 @@ const SurveyPage = ({
   ideaId: initialIdeaId,
   projectId,
   onSubmit,
+  onCapturePageValues,
   currentPageIndex,
   setCurrentPageIndex,
+  userNavigationHistory,
+  setUserNavigationHistory,
   phase,
   defaultValues,
 }: SurveyPage) => {
@@ -81,9 +113,10 @@ const SurveyPage = ({
   const isAdminPage = isPage('admin', pathname);
   const isMapPage = page.page_layout === 'map';
   const isMobileOrSmaller = useBreakpoint('phone');
+  const { data: authUser } = useAuthUser();
 
-  const [searchParams] = useSearchParams();
-  const ideaId = (initialIdeaId || searchParams.get('idea_id')) ?? undefined;
+  const searchParams = useSearch({ strict: false });
+  const ideaId = (initialIdeaId || searchParams.idea_id) ?? undefined;
   const { data: idea } = useIdeaById(ideaId);
 
   const { methods, setShowFormFeedback, showFormFeedback } = usePageForm({
@@ -102,9 +135,8 @@ const SurveyPage = ({
     });
 
   const previousPageNumber = determinePreviousPageNumber({
-    pages,
-    currentPage: page,
-    formData: methods.watch(),
+    userNavigationHistory,
+    currentPageIndex,
   });
 
   const nextPageNumber = determineNextPageNumber({
@@ -113,10 +145,58 @@ const SurveyPage = ({
     formData: methods.watch(),
   });
 
+  const [showSubmitConfirmation, setShowSubmitConfirmation] = useState(false);
+  const isSubmissionPage = nextPageNumber === lastPageIndex;
+
+  useEffect(() => {
+    trackFormPageView(currentPageIndex, lastPageIndex);
+  }, [currentPageIndex, lastPageIndex]);
+
+  // Reset confirmation when user changes form values
+  useEffect(() => {
+    if (!showSubmitConfirmation) return undefined;
+
+    const subscription = methods.watch(() => {
+      setShowSubmitConfirmation(false);
+    });
+    return () => subscription.unsubscribe();
+  }, [showSubmitConfirmation, methods]);
+
+  // Clear values from skipped pages when form data changes
+  // This ensures that if a user changes an answer that affects conditional logic,
+  // any previously filled values from now-skipped pages are removed
+  useEffect(() => {
+    const subscription = methods.watch((formData) => {
+      const skippedPageIndices = getSkippedPageIndices({
+        pages,
+        formData,
+      });
+
+      // Clear all field values from skipped pages
+      skippedPageIndices.forEach((skippedPageIndex) => {
+        const skippedPage = pages[skippedPageIndex];
+        skippedPage.pageQuestions.forEach((question) => {
+          const currentValue = methods.getValues(question.key);
+          // Only clear if there's actually a value to clear
+          if (currentValue !== undefined && currentValue !== null) {
+            methods.setValue(question.key, undefined, {
+              shouldValidate: false,
+              shouldDirty: false,
+            });
+          }
+        });
+      });
+    });
+
+    return () => subscription.unsubscribe();
+  }, [methods, pages]);
+
   const onFormSubmit = async (formValues: FormValues) => {
-    // Go to the project page if this is the last page
+    // Go to the project page if this is the last page.
+    // Use replace to remove the survey URL from browser history,
+    // preventing back/forward navigation back into a completed survey.
     if (currentPageIndex === lastPageIndex) {
-      clHistory.push({
+      clHistory.replace({
         pathname: `/projects/${project?.data.attributes.slug}`,
       });
       return;
@@ -124,12 +204,16 @@ const SurveyPage = ({
 
     try {
       setShowFormFeedback(false);
+      setShowSubmitConfirmation(false);
       await onSubmit({
         formValues,
-        isSubmitPage: nextPageNumber === lastPageIndex,
+        pageValues: methods.getValues(),
+        isSubmitPage: isSubmissionPage,
       });
       // Go to the next page
       if (currentPageIndex < lastPageIndex) {
+        // Add the next page to navigation history
+        setUserNavigationHistory((history) => [...history, nextPageNumber]);
         setCurrentPageIndex(nextPageNumber);
       }
     } catch (error) {
@@ -159,14 +243,81 @@ const SurveyPage = ({
     methods.handleSubmit((e) => onFormSubmit(e))();
   };
 
+  const handleEnterKeySubmit = () => {
+    pageRef.current?.scrollTo(0, 0);
+    if (showSubmitConfirmation) setShowSubmitConfirmation(false);
+    methods.handleSubmit((formValues) => {
+      if (
+        isSubmissionPage &&
+        hasUnansweredQuestions(pageQuestions, formValues)
+      ) {
+        setShowSubmitConfirmation(true);
+        return;
+      }
+      return onFormSubmit(formValues);
+    })();
+  };
+
+  const handleContinueEditing = () => {
+    setShowSubmitConfirmation(false);
+
+    const formValues = methods.getValues();
+    const firstUnanswered = pageQuestions.find((q) =>
+      isNillish(formValues[q.key])
+    );
+
+    // Focus the user back to the first unanswered question on the page
+    if (firstUnanswered) {
+      const questionEl = document.querySelector(
+        `[data-question-id="${firstUnanswered.id}"]`
+      );
+      if (questionEl) {
+        const focusable = questionEl.querySelector<HTMLElement>(
+          'input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        focusable?.focus();
+        questionEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+  };
+
+  // Ensure that pressing Enter in a text or number input field does not
+  // accidentally submit the form with empty responses
+  const handleFormKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
+    if (e.key !== 'Enter') return;
+    const target = e.target as HTMLInputElement;
+    // A dropdown's search box is a text input too, but Enter there belongs to
+    // the dropdown, whether or not it has an option to pick.
+    if (target.getAttribute('role') === 'combobox') {
+      e.preventDefault();
+      return;
+    }
+    if (target.tagName.toLowerCase() !== 'input') return;
+    const inputType = target.type;
+    if (inputType !== 'text' && inputType !== 'number') return;
+    e.preventDefault();
+    handleEnterKeySubmit();
+  };
+
   const handlePrevious = () => {
     pageRef.current?.scrollTo(0, 0);
+    setShowSubmitConfirmation(false);
+    // Persist whatever the user has entered on this page so it survives the
+    // remount that the page transition triggers.
+    onCapturePageValues?.(methods.getValues());
+    // Remove the current page from navigation history when going back
+    setUserNavigationHistory((history) => history.slice(0, -1));
     setCurrentPageIndex(previousPageNumber);
   };
 
+  const isLastPage = currentPageIndex === lastPageIndex;
+
+  const showSubmissionReference = isLastPage && idea && showIdeaId;
+  const showPostParticipationSignup = !!(isLastPage && idea && !authUser);
+
   return (
     <FormProvider {...methods}>
-      <StyledForm id="idea-form">
+      <StyledForm id="idea-form" onKeyDown={handleFormKeyDown}>
         <Box
           id="container"
           display="flex"
@@ -217,6 +368,10 @@ const SurveyPage = ({
                     <Box display="flex" flexDirection="column">
                       <PageTitle page={page} />
 
+                      {page.key === 'user_page' && (
+                        <CustomFieldsSignupHelperText />
+                      )}
+
                       <CustomFields
                         questions={pageQuestions}
                         projectId={projectId}
@@ -224,19 +379,46 @@ const SurveyPage = ({
                         phase={phase}
                         participationMethod={participationMethod}
                       />
-                      {currentPageIndex === lastPageIndex &&
-                        idea &&
-                        showIdeaId && (
-                          <SubmissionReference
-                            inputId={idea.data.id}
-                            participationMethod={participationMethod}
+                      {showPostParticipationSignup && project && (
+                        <Box mb="24px">
+                          <PostParticipationBox
+                            onCreateAccount={() => {
+                              triggerPostParticipationFlow({
+                                name: 'followProjectAndRedirect',
+                                params: {
+                                  projectId: project.data.id,
+                                  // The community monitor project isn't meant to be
+                                  // browsed by residents, so send them home instead.
+                                  path:
+                                    phase?.attributes.participation_method ===
+                                    'community_monitor_survey'
+                                      ? '/'
+                                      : `/projects/${project.data.attributes.slug}`,
+                                },
+                              });
+                            }}
                           />
-                        )}
+                        </Box>
+                      )}
+                      {showSubmissionReference && (
+                        <SubmissionReference
+                          inputId={idea.data.id}
+                          postParticipationSignUpVisible={
+                            showPostParticipationSignup
+                          }
+                        />
+                      )}
                     </Box>
                   </Box>
                 </Box>
               </Box>
             </Box>
+            {showSubmitConfirmation && (
+              <SubmitConfirmation
+                onContinueEditing={handleContinueEditing}
+                onConfirmSubmit={handleNextAndSubmit}
+              />
+            )}
           </Box>
           <PageFooter
             variant={

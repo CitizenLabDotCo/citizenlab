@@ -6,6 +6,14 @@ export default defineMessages({
     id: 'app.utils.notInGroup',
     defaultMessage: 'You do not meet the requirements to participate.',
   },
+  defaultInactivePhase: {
+    id: 'app.utils.inactivePhase',
+    defaultMessage: 'Participating is only possible when this phase is active.',
+  },
+  defaultProjectInactive: {
+    id: 'app.utils.projectInactive',
+    defaultMessage: 'Participating in this project is no longer possible.',
+  },
 
   // 'posting_idea'
   postingDisabled: {
@@ -29,11 +37,6 @@ export default defineMessages({
     id: 'app.containers.IdeaButton.postingInNonActivePhases',
     defaultMessage: 'New submissions can only be added in active phases.',
   },
-  postingNotYetPossible: {
-    id: 'app.containers.IdeaButton.postingNotYetPossible',
-    defaultMessage: 'New submissions are not yet accepted here.',
-  },
-
   // 'commenting_idea'
   commentingDisabledInactiveProject: {
     id: 'app.components.Comments.commentingDisabledInactiveProject',
@@ -51,11 +54,6 @@ export default defineMessages({
   commentingDisabledUnverified: {
     id: 'app.components.Comments.commentingDisabledUnverified',
     defaultMessage: '{verifyIdentityLink} to comment.',
-  },
-  commentingMaybeNotPermitted: {
-    id: 'app.components.Comments.commentingMaybeNotPermitted',
-    defaultMessage:
-      'Not all users are allowed to comment. Please {signUpLink} or {signInLink} to see whether you comply.',
   },
   signInToComment: {
     id: 'app.containers.Comments.signInToComment',
@@ -78,10 +76,6 @@ export default defineMessages({
   reactingDisabledFutureEnabled: {
     id: 'app.components.ReactionControl.reactingDisabledFutureEnabled',
     defaultMessage: 'Reacting will be enabled once this phase starts',
-  },
-  reactingPossibleLater: {
-    id: 'app.components.ReactionControl.reactingPossibleLater',
-    defaultMessage: 'Reacting will start on {enabledFromDate}',
   },
   reactingNotEnabled: {
     id: 'app.components.ReactionControl.reactingNotEnabled',

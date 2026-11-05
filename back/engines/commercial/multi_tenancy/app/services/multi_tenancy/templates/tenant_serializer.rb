@@ -45,27 +45,25 @@ module MultiTenancy
           CustomField => serialize_records(CustomField),
           CustomForm => serialize_records(CustomForm),
           Event => serialize_records(Event),
-          EventFile => serialize_records(EventFile),
           EventImage => serialize_records(EventImage),
           Events::Attendance => serialize_records(Events::Attendance),
           IdeaStatus => serialize_records(IdeaStatus),
+          InputTopic => serialize_input_topics,
           NavBarItem => serialize_records(NavBarItem),
           Permission => serialize_records(Permission),
           PermissionsCustomField => serialize_records(PermissionsCustomField),
           Phase => serialize_records(Phase),
-          PhaseFile => serialize_records(PhaseFile),
           Project => serialize_records(Project),
-          ProjectFile => serialize_records(ProjectFile),
-          ProjectFolders::File => serialize_records(ProjectFolders::File),
           ProjectFolders::Folder => serialize_records(ProjectFolders::Folder),
           ProjectFolders::Image => serialize_records(ProjectFolders::Image),
           ProjectImage => serialize_records(ProjectImage),
-          ProjectsAllowedInputTopic => serialize_records(ProjectsAllowedInputTopic),
+          ProjectsGlobalTopic => serialize_records(ProjectsGlobalTopic),
           ReportBuilder::Report => serialize_records(ReportBuilder::Report),
-          StaticPagesTopic => serialize_records(StaticPagesTopic),
+          Space => serialize_records(Space),
+          StaticPagesGlobalTopic => serialize_records(StaticPagesGlobalTopic),
+          StaticPagesSpace => serialize_records(StaticPagesSpace),
           StaticPage => serialize_records(StaticPage),
-          StaticPageFile => serialize_records(StaticPageFile),
-          Topic => serialize_records(Topic),
+          GlobalTopic => serialize_records(GlobalTopic),
 
           # It is not necessary to serialize the CustomFieldOption records for the
           # 'domicile' custom field because they will be created automatically from
@@ -76,6 +74,7 @@ module MultiTenancy
             )
           ),
           CustomFieldOptionImage => serialize_records(CustomFieldOptionImage),
+          CustomFieldMatrixStatement => serialize_records(CustomFieldMatrixStatement),
 
           # Custom maps
           CustomMaps::Layer => serialize_records(CustomMaps::Layer),
@@ -94,16 +93,20 @@ module MultiTenancy
           # Ideas
           Idea => serialize_records(ideas),
           BasketsIdea => serialize_records(BasketsIdea.where(idea: ideas)),
-          IdeaFile => serialize_records(IdeaFile.where(idea: ideas)),
           IdeaImage => serialize_records(IdeaImage.where(idea: ideas)),
           IdeasPhase => serialize_records(IdeasPhase.where(idea: ideas)),
-          IdeasTopic => serialize_records(IdeasTopic.where(idea: ideas)),
+          IdeasInputTopic => serialize_records(IdeasInputTopic.where(idea: ideas)),
 
           Comment => serialize_comments(ideas),
           InternalComment => serialize_internal_comments(ideas),
           Reaction => serialize_reactions(ideas),
           OfficialFeedback => serialize_records(OfficialFeedback),
           Cosponsorship => serialize_records(Cosponsorship.where(idea: ideas)),
+
+          # Files
+          Files::File => serialize_records(Files::File),
+          Files::FilesProject => serialize_records(Files::FilesProject),
+          Files::FileAttachment => serialize_file_attachments(ideas),
 
           # Groups
           Group => serialize_records(groups),
@@ -112,12 +115,15 @@ module MultiTenancy
 
           # EmailCampaigns
           EmailCampaigns::Campaign => serialize_records(email_campaigns),
+          EmailCampaigns::CampaignsGroup => serialize_records(EmailCampaigns::CampaignsGroup.where(campaign: email_campaigns, group: groups)),
+          EmailCampaigns::Consent => serialize_records(EmailCampaigns::Consent.where(user: users)),
           EmailCampaigns::UnsubscriptionToken => serialize_records(EmailCampaigns::UnsubscriptionToken.where(user: users)),
 
           # Users
           User => serialize_records(users),
           Membership => serialize_records(Membership.where(user: users)),
           Follower => serialize_followers(users),
+          CustomFieldAnswer => serialize_records(serializable_custom_field_answers(ideas, users)),
 
           TextImage => serialize_records(TextImage.where(imageable: [
             CustomField.all,
@@ -171,6 +177,13 @@ module MultiTenancy
           graph[User] << CustomField
         end
 
+        # FileAttachment#validate_file_belongs_to_project reads file.files_projects, so the
+        # FilesProject records must exist before FileAttachments are deserialized. They don't
+        # reference each other directly, so the edge has to be added manually.
+        if graph.key?(Files::FileAttachment) && graph.key?(Files::FilesProject)
+          graph[Files::FileAttachment] << Files::FilesProject
+        end
+
         graph
       end
 
@@ -187,6 +200,17 @@ module MultiTenancy
             ERROR
           end
         end
+      end
+
+      # File values reference uploads and domicile values reference areas, which
+      # both get new ids in the destination tenant; answers without a field have
+      # nothing to attach to.
+      def serializable_custom_field_answers(ideas, users)
+        excluded_fields = CustomField.where(input_type: %w[file_upload shapefile_upload]).or(CustomField.where(code: 'domicile'))
+        CustomFieldAnswer
+          .where(answerable: ideas).or(CustomFieldAnswer.where(answerable: users))
+          .where.not(custom_field_id: nil)
+          .where.not(custom_field_id: excluded_fields.select(:id))
       end
 
       def serialize_records(scope)
@@ -255,6 +279,32 @@ module MultiTenancy
 
       def serialize_followers(users)
         serialize_records(Follower.where(user: users))
+      end
+
+      # Serialize FileAttachments whose attachable is itself templated. Analysis::* attachables
+      # aren't templated, and Idea attachables are restricted to the serialized ideas scope, so
+      # those attachments are skipped to avoid unresolvable references.
+      def serialize_file_attachments(ideas)
+        excluded_types = %w[Idea Analysis::Analysis Analysis::Question]
+        attachments = Files::FileAttachment.where.not(attachable_type: excluded_types)
+          .or(Files::FileAttachment.where(attachable: ideas))
+        serialize_records(attachments)
+      end
+
+      def serialize_input_topics
+        input_topics = serialize_records(InputTopic)
+
+        # The parent topics must be listed before their children since the
+        # children topics reference their parent.
+        child_to_parent = input_topics.transform_values do |attributes|
+          Array.wrap(attributes[:parent_ref]&.id)
+        end
+
+        each_node = ->(&block) { child_to_parent.each_key(&block) }
+        each_child = ->(node, &block) { child_to_parent[node].each(&block) }
+        ordered_ids = TSort.tsort(each_node, each_child)
+
+        input_topics.slice(*ordered_ids)
       end
     end
   end

@@ -8,6 +8,8 @@ RSpec.describe Reaction do
     it { is_expected.to belong_to(:reactable) }
   end
 
+  it_behaves_like 'location_trackable_participation'
+
   context 'Default factory' do
     it 'is valid' do
       expect(build(:reaction)).to be_valid

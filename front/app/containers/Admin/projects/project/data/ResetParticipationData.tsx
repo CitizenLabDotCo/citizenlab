@@ -1,20 +1,22 @@
 import React, { useState } from 'react';
 
 import { Button, Box, Title, Text } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
 
 import useResetProject from 'api/projects/useResetProject';
 
 import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import messages from './messages';
 
 const ResetParticipationData = () => {
   const [modalOpened, setModalOpened] = useState(false);
-  const { projectId } = useParams() as { projectId: string };
-  const { mutate: resetProject, isLoading: isProjectResetLoading } =
+  const { projectId } = useParams({
+    from: '/$locale/admin/projects/$projectId/general/data',
+  });
+  const { mutate: resetProject, isPending: isProjectResetLoading } =
     useResetProject();
 
   const { formatMessage } = useIntl();
@@ -27,8 +29,14 @@ const ResetParticipationData = () => {
       >
         {formatMessage(messages.resetParticipationData)}
       </Button>
-      <Modal opened={modalOpened} close={() => setModalOpened(false)}>
-        <Title variant="h3">{formatMessage(messages.confirmationTitle)}</Title>
+      <Modal
+        opened={modalOpened}
+        close={() => setModalOpened(false)}
+        ariaLabelledBy="reset-data-modal-title"
+      >
+        <Title id="reset-data-modal-title" variant="h3">
+          {formatMessage(messages.confirmationTitle)}
+        </Title>
         <Text>{formatMessage(messages.confirmationDescription)}</Text>
         <Box display="flex" justifyContent="flex-end" gap="12px">
           <Button

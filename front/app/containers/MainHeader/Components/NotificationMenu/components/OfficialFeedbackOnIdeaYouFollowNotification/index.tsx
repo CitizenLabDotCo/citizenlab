@@ -29,12 +29,14 @@ const OfficialFeedbackOnIdeaYouFollowNotification = memo<Props>((props) => {
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
 
-  if (project) {
+  const slug = notification.attributes.post_slug;
+  if (project && slug) {
     const inputTerm = getInputTerm(phases?.data);
 
     return (
       <NotificationWrapper
-        linkTo={`/ideas/${notification.attributes.post_slug}`}
+        to="/ideas/$slug"
+        params={{ slug }}
         timing={notification.attributes.created_at}
         icon="comments"
         isRead={!!notification.attributes.read_at}
@@ -50,13 +52,20 @@ const OfficialFeedbackOnIdeaYouFollowNotification = memo<Props>((props) => {
             proposal: messages.officialFeedbackOnProposalYouFollow,
             initiative: messages.officialFeedbackOnInitiativeYouFollow,
             petition: messages.officialFeedbackOnPetitionYouFollow,
+            comment: messages.officialFeedbackOnCommentYouFollow,
+            response: messages.officialFeedbackOnResponseYouFollow,
+            suggestion: messages.officialFeedbackOnSuggestionYouFollow,
+            topic: messages.officialFeedbackOnTopicYouFollow,
+            post: messages.officialFeedbackOnPostYouFollow,
+            story: messages.officialFeedbackOnStoryYouFollow,
+            observation: messages.officialFeedbackOnObservationYouFollow,
           })}
           values={{
             officialName: (
               <T value={notification.attributes.official_feedback_author} />
             ),
             idea: (
-              <Link to={`/ideas/${notification.attributes.post_slug}`}>
+              <Link to="/ideas/$slug" params={{ slug }}>
                 <T value={notification.attributes.post_title_multiloc} />
               </Link>
             ),

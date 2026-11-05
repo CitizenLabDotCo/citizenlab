@@ -1,0 +1,87 @@
+# frozen_string_literal: true
+
+class McpServer::Tools::AttachImage < McpServer::BaseTool
+  CONTAINERS = {
+    'project' => { class: Project, association: :project_images },
+    'event' => { class: Event, association: :event_images },
+    'idea' => { class: Idea, association: :idea_images },
+    'folder' => { class: ProjectFolders::Folder, association: :images }
+  }.freeze
+  private_constant :CONTAINERS
+
+  def name = 'attach_image'
+
+  def annotations
+    {
+      read_only_hint: false,
+      destructive_hint: false,
+      idempotent_hint: false,
+      open_world_hint: true # Fetches the image from an arbitrary public URL.
+    }
+  end
+
+  def description
+    <<~DESC.squish
+      Adds an image to an existing project, event, folder or input (idea or
+      proposal) by fetching it from a public URL. It is shown on the resource's
+      page, and for inputs also as the card image in listings.
+    DESC
+  end
+
+  def input_schema
+    {
+      properties: {
+        resource_type: { type: 'string', enum: CONTAINERS.keys },
+        resource_id: { type: 'string' },
+        remote_url: {
+          type: 'string',
+          format: 'uri',
+          description: 'Public URL of the image to download and attach.'
+        },
+        alt_text_multiloc: { **multiloc_schema, description: 'Alt text per locale. Not supported for inputs.' }
+      },
+      required: %w[resource_type resource_id remote_url],
+      additionalProperties: false
+    }
+  end
+
+  class Runner < McpServer::BaseTool::Runner
+    def run
+      unless container
+        return not_found_error("Resource (#{params[:resource_type]})", params[:resource_id])
+      end
+
+      authorize_project!(publication_owner_for(container))
+
+      image = container.public_send(images_association).build(remote_image_url: params[:remote_url])
+      # alt_text_multiloc exists on project/event/folder images but not idea images.
+      image.alt_text_multiloc = params[:alt_text_multiloc] if image.respond_to?(:alt_text_multiloc=)
+
+      authorize(image, :create?)
+      image.save!
+
+      response(
+        "Attached image to #{params[:resource_type]} #{container.id}",
+        structured: McpServer::Serializers::Image.serialize(image)
+      )
+    rescue ActiveRecord::RecordInvalid => e
+      # Download failures also land here: CarrierWave captures them as
+      # :carrierwave_download_error validation errors on assignment.
+      invalid_record_error(e.record)
+    end
+
+    private
+
+    def config
+      @config ||= CONTAINERS.fetch(params[:resource_type])
+    end
+
+    def container
+      @container ||= config.fetch(:class).find_by(id: params[:resource_id])
+    end
+
+    def images_association
+      @images_association ||= config.fetch(:association)
+    end
+  end
+end

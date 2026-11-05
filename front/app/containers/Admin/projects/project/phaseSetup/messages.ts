@@ -9,6 +9,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectTimeline.newPhaseTitle',
     defaultMessage: 'New Phase',
   },
+  newSurveyTitle: {
+    id: 'app.containers.AdminPage.ProjectTimeline.newSurveyTitle',
+    defaultMessage: 'New survey',
+  },
   titleLabel: {
     id: 'app.containers.AdminPage.ProjectTimeline.titleLabel',
     defaultMessage: 'Title',
@@ -29,6 +33,15 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectTimeline.previewSurveyCTALabel',
     defaultMessage: 'Preview',
   },
+  allowMultipleResponsesLabel: {
+    id: 'app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesLabel',
+    defaultMessage: 'Allow multiple responses',
+  },
+  allowMultipleResponsesDescription: {
+    id: 'app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesDescription',
+    defaultMessage:
+      'When enabled, a participant can submit this survey more than once. When disabled, each participant can only respond once.',
+  },
   defaultSurveyTitleLabel: {
     id: 'app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel',
     defaultMessage: 'Survey',
@@ -36,10 +49,6 @@ export default defineMessages({
   defaultSurveyCTALabel: {
     id: 'app.containers.AdminPage.ProjectTimeline.defaultSurveyCTALabel',
     defaultMessage: 'Take the survey',
-  },
-  descriptionLabel: {
-    id: 'app.containers.AdminPage.ProjectTimeline.descriptionLabel',
-    defaultMessage: 'Description',
   },
   datesLabel: {
     id: 'app.containers.AdminPage.ProjectTimeline.datesLabel',
@@ -111,9 +120,17 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectTimeline.startDate',
     defaultMessage: 'Start date',
   },
-  emptyDescriptionWarning: {
-    id: 'app.containers.Admin.PagesAndMenu.containers.ProjectsList.emptyDescriptionWarning1',
+  placementLabel: {
+    id: 'app.containers.AdminPage.ProjectTimeline.placementLabel2',
+    defaultMessage: 'Timeline or spotlight survey',
+  },
+  placementOnTimelineDescription: {
+    id: 'app.containers.AdminPage.ProjectTimeline.placementOnTimelineDescription2',
+    defaultMessage: 'This survey is a phase on the project timeline.',
+  },
+  placementSpotlightDescription: {
+    id: 'app.containers.AdminPage.ProjectTimeline.placementSpotlightDescription',
     defaultMessage:
-      'For single phase projects, if the end date is empty and the description is not filled in, a timeline will not be displayed on the project page.',
+      'This is a spotlight survey. It runs alongside the timeline and can overlap other phases.',
   },
 });

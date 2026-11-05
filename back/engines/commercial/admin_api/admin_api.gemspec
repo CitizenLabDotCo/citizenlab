@@ -15,12 +15,12 @@ Gem::Specification.new do |s|
 
   s.files = Dir['{app,config,db,lib}/**/*', 'Rakefile', 'README.md']
 
-  s.add_dependency 'rails', '~> 7.0'
   s.add_dependency 'active_model_serializers', '~> 0.10.7'
-  s.add_dependency 'ros-apartment', '>=2.9.0'
   s.add_dependency 'graphql', '~> 2.3'
   s.add_dependency 'kaminari', '~> 1.2'
   s.add_dependency 'multi_tenancy'
+  s.add_dependency 'rails', '~> 7.2'
+  s.add_dependency 'ros-apartment', '>=2.9.0'
 
   s.add_development_dependency 'rspec_api_documentation'
   s.add_development_dependency 'rspec-rails'

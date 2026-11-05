@@ -1,5 +1,7 @@
 import React, { createContext, useContext } from 'react';
 
+import { SupportedLocale } from 'typings';
+
 import usePhase from 'api/phases/usePhase';
 
 type ReportWidth = 'phone' | 'tablet' | 'desktop' | 'pdf';
@@ -8,6 +10,10 @@ interface ReportContextBase {
   width: ReportWidth;
   reportId?: string;
   phaseId?: string;
+  contentBuilderLocale?: SupportedLocale;
+  // Set once the PDF path has screenshotted every live map, after which a map is
+  // rendered as that screenshot. See MapQuestions.
+  mapsCaptured?: boolean;
 }
 
 export interface ReportContextProps extends ReportContextBase {
@@ -28,6 +34,8 @@ export const ReportContextProvider = ({
   width,
   reportId,
   phaseId,
+  contentBuilderLocale,
+  mapsCaptured,
   children,
 }: ReportContextProps) => {
   const { data: phase } = usePhase(phaseId);
@@ -43,6 +51,8 @@ export const ReportContextProvider = ({
         reportId,
         projectId,
         phaseId,
+        contentBuilderLocale,
+        mapsCaptured,
       }}
     >
       {children}

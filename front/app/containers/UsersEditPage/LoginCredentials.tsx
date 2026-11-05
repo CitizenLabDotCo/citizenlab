@@ -2,7 +2,10 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
+import useIdMethods from 'api/id_methods/useIdMethods';
 import { IUserData } from 'api/users/types';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import { FormSection, FormSectionTitle } from 'components/UI/FormComponents';
@@ -16,11 +19,30 @@ type PasswordChangeProps = {
 };
 
 const LoginCredentials = ({ user }: PasswordChangeProps) => {
+  const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
+  const smsEnabled = useFeatureFlag({ name: 'sms' });
+  const { data: idMethods } = useIdMethods();
+
+  const ssoWithoutEmailEnabled = !!idMethods?.data.some(
+    ({ attributes }) =>
+      attributes.method_metadata?.confirmed_email_always_present === false
+  );
+
+  const showChangePassword = passwordLoginEnabled;
+  const showChangeEmail = passwordLoginEnabled || ssoWithoutEmailEnabled;
+  const showChangePhone = smsEnabled;
+
+  if (!showChangeEmail && !showChangePassword && !showChangePhone) return null;
+
   const userHasPreviousPassword = !user.attributes.no_password;
 
   const passwordChangeButtonText = !userHasPreviousPassword
     ? messages.addPassword
     : messages.changePassword2;
+
+  const phoneNumberButtonText = !user.attributes.phone
+    ? messages.addPhone
+    : messages.changePhone;
 
   return (
     <FormSection>
@@ -30,7 +52,7 @@ const LoginCredentials = ({ user }: PasswordChangeProps) => {
       />
       <Box display="flex" flexWrap="wrap" gap="16px">
         <ButtonWithLink
-          linkTo="/profile/change-email"
+          to="/profile/change-email"
           scrollToTop
           width="auto"
           justifyWrapper="left"
@@ -39,16 +61,30 @@ const LoginCredentials = ({ user }: PasswordChangeProps) => {
         >
           <FormattedMessage {...messages.changeEmail} />
         </ButtonWithLink>
-        <ButtonWithLink
-          linkTo="/profile/change-password"
-          scrollToTop
-          width="auto"
-          justifyWrapper="left"
-          buttonStyle="secondary-outlined"
-          icon="lock"
-        >
-          <FormattedMessage {...passwordChangeButtonText} />
-        </ButtonWithLink>
+        {showChangePassword && (
+          <ButtonWithLink
+            to="/profile/change-password"
+            scrollToTop
+            width="auto"
+            justifyWrapper="left"
+            buttonStyle="secondary-outlined"
+            icon="lock"
+          >
+            <FormattedMessage {...passwordChangeButtonText} />
+          </ButtonWithLink>
+        )}
+        {showChangePhone && (
+          <ButtonWithLink
+            to="/profile/change-phone"
+            scrollToTop
+            width="auto"
+            justifyWrapper="left"
+            buttonStyle="secondary-outlined"
+            icon="tablet"
+          >
+            <FormattedMessage {...phoneNumberButtonText} />
+          </ButtonWithLink>
+        )}
       </Box>
     </FormSection>
   );

@@ -11,6 +11,7 @@ import {
   IdeaVotingDisabledReason,
 } from 'utils/actionDescriptors/types';
 import { Keys } from 'utils/cl-react-query/types';
+import { WeglotDataOrEmpty } from 'utils/weglot';
 
 import ideasKeys from './keys';
 
@@ -18,36 +19,44 @@ export type IdeasKeys = Keys<typeof ideasKeys>;
 
 export type IdeaPublicationStatus = 'draft' | 'published' | 'archived' | 'spam';
 
-export type Sort =
-  | 'random'
-  | 'new'
-  | '-new'
-  | 'trending'
-  | '-trending'
-  | 'popular'
-  | '-popular'
-  | 'author_name'
-  | '-author_name'
-  | 'likes_count'
-  | '-likes_count'
-  | 'dislikes_count'
-  | '-dislikes_count'
-  | 'baskets_count'
-  | '-baskets_count'
-  | 'status'
-  | '-status'
-  | 'votes_count'
-  | '-votes_count'
-  | 'total_votes'
-  | '-total_votes'
-  | 'total_baskets'
-  | '-total_baskets'
-  | 'manual_votes_amount'
-  | '-manual_votes_amount'
-  | 'comments_count'
-  | '-comments_count'
-  | 'budget'
-  | '-budget';
+export const ideaSortValues = [
+  'random',
+  'new',
+  '-new',
+  'trending',
+  '-trending',
+  'popular',
+  '-popular',
+  'author_name',
+  '-author_name',
+  'title',
+  '-title',
+  'assignee',
+  '-assignee',
+  'likes_count',
+  '-likes_count',
+  'dislikes_count',
+  '-dislikes_count',
+  'baskets_count',
+  '-baskets_count',
+  'status',
+  '-status',
+  'status_priority',
+  'votes_count',
+  '-votes_count',
+  'total_votes',
+  '-total_votes',
+  'total_baskets',
+  '-total_baskets',
+  'manual_votes_amount',
+  '-manual_votes_amount',
+  'comments_count',
+  '-comments_count',
+  'budget',
+  '-budget',
+] as const;
+
+export type Sort = (typeof ideaSortValues)[number];
 
 type ReactingIdeaActionDescriptor =
   | { enabled: true; disabled_reason: null; cancelling_enabled: boolean }
@@ -65,10 +74,11 @@ export interface IdeaQueryParameters {
   phase?: string;
 
   // filters
-  sort: IdeaSortMethod;
+  sort?: IdeaSortMethod;
   search?: string;
   idea_status?: string;
-  topics?: string[];
+  input_topics?: string[];
+  custom_field_answers?: Record<string, string[]>;
 }
 
 export interface IIdeaData {
@@ -126,9 +136,15 @@ export interface IIdeaData {
     };
     anonymous: boolean;
     author_hash: string;
+    /** False for inputs that are not public contributions, such as survey
+     * responses. Those have no readable public page, so front-office actions
+     * like reporting as spam do not apply to them. */
+    supports_public_visibility: boolean;
     followers_count: number;
     reacting_threshold?: number;
     expires_at?: string;
+    claim_token?: string;
+    claim_token_expires_at?: string;
   };
   relationships: {
     assignee?: {
@@ -152,10 +168,13 @@ export interface IIdeaData {
     phases: {
       data: IRelationship[];
     };
+    creation_phase: {
+      data: IRelationship | null;
+    };
     project: {
       data: IRelationship;
     };
-    topics?: {
+    input_topics?: {
       data: IRelationship[];
     };
     user_follower: {
@@ -177,9 +196,6 @@ export interface IIdeaData {
 }
 
 export interface IIdeaAdd {
-  // Required
-  project_id: string;
-  // Optional
   publication_status?: IdeaPublicationStatus;
   title_multiloc?: Multiloc;
   author_id?: string | null;
@@ -187,12 +203,12 @@ export interface IIdeaAdd {
   idea_status_id?: string | null;
   body_multiloc?: Multiloc;
   topic_ids?: string[] | null;
-  phase_ids?: string[] | null;
   location_point_geojson?: GeoJSON.Point | null;
   location_description?: string | null;
   budget?: number | null;
   proposed_budget?: number | null;
   anonymous?: boolean;
+  weglot_data?: WeglotDataOrEmpty;
 }
 
 export interface IIdeaUpdate {
@@ -213,6 +229,7 @@ export interface IIdeaUpdate {
   idea_images_attributes?: { image: string }[];
   manual_votes_amount?: number | null;
   publication_status?: IdeaPublicationStatus;
+  weglot_data?: WeglotDataOrEmpty;
 }
 
 export interface IIdeas {
@@ -224,7 +241,7 @@ export interface IIdea {
   data: IIdeaData;
 }
 
-export interface IIdeaQueryParameters {
+export interface IIdeaQueryParameters<FilterValue = string> {
   sort?: Sort;
   'page[number]'?: number;
   'page[size]'?: number;
@@ -232,13 +249,16 @@ export interface IIdeaQueryParameters {
   phase?: string;
   author?: string;
   search?: string;
-  topics?: string[];
-  idea_status?: string;
+  input_topics?: string[];
+  idea_status?: FilterValue;
+  custom_field_answers?: Record<string, string[]>;
   publication_status?: IdeaPublicationStatus;
   project_publication_status?: ProjectPublicationStatus;
   bounding_box?: number[];
-  assignee?: string;
+  assignee?: FilterValue;
   feedback_needed?: boolean;
+  official_feedback?: boolean;
+  imported?: boolean;
   filter_can_moderate?: boolean;
   basket_id?: string;
   transitive?: boolean;

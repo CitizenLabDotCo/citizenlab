@@ -1,13 +1,16 @@
-import * as cookies from 'js-cookie';
+import Cookies from 'js-cookie';
 
 import { SECURE_COOKIE } from '../cookie';
 
 import { setJwt } from './jwt';
 
 jest.mock('js-cookie', () => ({
-  set: jest.fn(),
-  get: jest.fn(),
-  remove: jest.fn(),
+  __esModule: true,
+  default: {
+    set: jest.fn(),
+    get: jest.fn(),
+    remove: jest.fn(),
+  },
 }));
 
 describe('jwt utilities', () => {
@@ -22,7 +25,7 @@ describe('jwt utilities', () => {
 
       setJwt(jwt, rememberMe);
 
-      expect(cookies.set).toHaveBeenCalledWith('cl2_jwt', jwt, {
+      expect(Cookies.set).toHaveBeenCalledWith('cl2_jwt', jwt, {
         secure: SECURE_COOKIE,
         sameSite: 'strict',
       });
@@ -35,7 +38,7 @@ describe('jwt utilities', () => {
 
       setJwt(jwt, rememberMe, tokenLifetime);
 
-      expect(cookies.set).toHaveBeenCalledWith('cl2_jwt', jwt, {
+      expect(Cookies.set).toHaveBeenCalledWith('cl2_jwt', jwt, {
         secure: SECURE_COOKIE,
         sameSite: 'strict',
         expires: tokenLifetime,

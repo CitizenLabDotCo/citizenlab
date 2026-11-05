@@ -1,0 +1,236 @@
+# frozen_string_literal: true
+
+require 'rails_helper'
+
+describe McpServer::Tools::UpdateProject do
+  let(:current_user) { create(:super_admin) }
+  let(:project) { create(:project, :draft) }
+
+  def run(params)
+    run_mcp_tool(described_class, params:, current_user:)
+  end
+
+  describe '#input_schema' do
+    it "reuses create_project's schema with a nullable folder_id" do
+      create_properties = McpServer::Tools::CreateProject.new.input_schema[:properties]
+      schema = described_class.new.input_schema
+
+      expect(schema[:properties].keys).to eq([:project_id, *create_properties.keys])
+      expect(schema[:properties][:folder_id][:type]).to eq(%w[string null])
+      expect(schema[:required]).to eq(%w[project_id])
+      expect(schema[:additionalProperties]).to be(false)
+    end
+  end
+
+  it 'updates the header background from a remote URL' do
+    remote_url = 'https://example.com/header.jpg'
+    fixture_path = stub_remote_image_download(remote_url)
+
+    response = run(project_id: project.id, remote_header_bg_url: remote_url)
+
+    expect(response).not_to be_error
+    expect(project.reload.header_bg.file.read).to eq(fixture_path.binread)
+  end
+
+  it 'removes the header background when remote_header_bg_url is null' do
+    stub_remote_image_download('https://example.com/header.jpg')
+    project.update!(remote_header_bg_url: 'https://example.com/header.jpg')
+
+    response = nil
+    expect { response = run(project_id: project.id, remote_header_bg_url: nil) }
+      .to change { project.reload.header_bg.file }.to(nil)
+
+    expect(response).not_to be_error
+  end
+
+  describe 'banner image reconciliation' do
+    let(:banner_id) { ContentBuilder::ProjectPageLayoutService::BANNER_ID }
+
+    def layout_with_baked_banner
+      graph = project_page_craftjs
+      graph[banner_id]['props']['image'] = { 'imageUrl' => 'https://example.com/baked.jpg' }
+      create(:layout, project: project, code: 'project_page', craftjs_json: graph)
+    end
+
+    it 'resets the ProjectBanner node image when a header is set, so header_bg renders' do
+      layout = layout_with_baked_banner
+      stub_remote_image_download('https://example.com/header.jpg')
+
+      response = run(project_id: project.id, remote_header_bg_url: 'https://example.com/header.jpg')
+
+      expect(response).not_to be_error
+      expect(project.reload.header_bg.file).to be_present
+      expect(layout.reload.craftjs_json.dig(banner_id, 'props', 'image')).to eq({})
+    end
+
+    it 'resets the banner node image when the header is removed' do
+      stub_remote_image_download('https://example.com/header.jpg')
+      project.update!(remote_header_bg_url: 'https://example.com/header.jpg')
+      layout = layout_with_baked_banner
+
+      response = run(project_id: project.id, remote_header_bg_url: nil)
+
+      expect(response).not_to be_error
+      expect(layout.reload.craftjs_json.dig(banner_id, 'props', 'image')).to eq({})
+    end
+
+    it 'leaves the banner node untouched when the update does not set a header' do
+      layout = layout_with_baked_banner
+
+      response = run(project_id: project.id, title_multiloc: { 'en' => 'Renamed' })
+
+      expect(response).not_to be_error
+      expect(layout.reload.craftjs_json.dig(banner_id, 'props', 'image')).to eq('imageUrl' => 'https://example.com/baked.jpg')
+    end
+  end
+
+  describe 'folder moves' do
+    let(:folder) { create(:project_folder, admin_publication_attributes: { publication_status: 'draft' }) }
+
+    it 'moves the project into a folder' do
+      response = nil
+      expect { response = run(project_id: project.id, folder_id: folder.id) }
+        .to change { project.reload.folder_id }.from(nil).to(folder.id)
+
+      expect(response).not_to be_error
+      expect(response.structured_content).to include(folder_id: folder.id)
+    end
+
+    it 'moves the project out of its folder' do
+      project.update!(folder_id: folder.id)
+
+      response = nil
+      expect { response = run(project_id: project.id, folder_id: nil) }
+        .to change { project.reload.folder_id }.from(folder.id).to(nil)
+
+      expect(response).not_to be_error
+      expect(response.structured_content).to include(folder_id: nil)
+    end
+
+    it 'returns a not-found error for a folder id that does not exist' do
+      response = nil
+      expect { response = run(project_id: project.id, folder_id: SecureRandom.uuid) }
+        .not_to change { project.reload.folder_id }
+
+      expect(response).to be_not_found('Folder')
+    end
+
+    context 'as a folder moderator' do
+      let(:other_folder) { create(:project_folder, admin_publication_attributes: { publication_status: 'draft' }) }
+
+      before { project.update!(folder_id: folder.id) }
+
+      it 'moves the project between folders it moderates' do
+        current_user = create(:project_folder_moderator, project_folders: [folder, other_folder])
+
+        response = run_mcp_tool(described_class, params: { project_id: project.id, folder_id: other_folder.id }, current_user:)
+
+        expect(response).not_to be_error
+        expect(project.reload.folder_id).to eq other_folder.id
+      end
+
+      it 'refuses to move the project into a folder it does not moderate, or out of its folder' do
+        current_user = create(:project_folder_moderator, project_folders: [folder])
+
+        [other_folder.id, nil].each do |folder_id|
+          response = run_mcp_tool(described_class, params: { project_id: project.id, folder_id: }, current_user:)
+
+          expect(response).to be_error
+          expect(project.reload.folder_id).to eq folder.id
+        end
+      end
+    end
+  end
+
+  it 'does not report an unknown area id as a missing folder' do
+    expect { run(project_id: project.id, area_ids: [SecureRandom.uuid]) }
+      .to raise_error(ActiveRecord::RecordNotFound, /Area/)
+  end
+
+  it 'replaces associations wholesale when their ids are given, and preserves them otherwise' do
+    area_a, area_b, area_c = create_list(:area, 3)
+    project.update!(areas: [area_a, area_b])
+
+    response = run(project_id: project.id, title_multiloc: { 'en' => 'Renamed' })
+    expect(response).not_to be_error
+    expect(project.reload.areas).to contain_exactly(area_a, area_b)
+
+    response = run(project_id: project.id, area_ids: [area_c.id])
+    expect(response).not_to be_error
+    expect(project.reload.areas).to contain_exactly(area_c)
+  end
+
+  it 'replaces the visibility groups' do
+    group_a, group_b = create_list(:group, 2)
+    project.update!(visible_to: 'groups', groups: [group_a])
+
+    response = run(project_id: project.id, group_ids: [group_b.id])
+
+    expect(response).not_to be_error
+    expect(project.reload.groups).to contain_exactly(group_b)
+    expect(response.structured_content).to include(group_ids: [group_b.id])
+  end
+
+  it 'updates only the given attributes' do
+    response = nil
+    expect { response = run(project_id: project.id, listed: false) }
+      .to change { project.reload.listed }.to(false)
+      .and not_change { project.reload.title_multiloc }
+
+    expect(response).not_to be_error
+  end
+
+  it 'returns the serialized project with merged multiloc fields' do
+    project.update!(title_multiloc: { 'en' => 'Old', 'fr-FR' => 'Ancien' })
+
+    response = run(project_id: project.id, title_multiloc: { 'en' => 'New' })
+
+    expect(response).not_to be_error
+    expect(response.structured_content).to include(
+      id: project.id,
+      title_multiloc: { 'en' => 'New', 'fr-FR' => 'Ancien' }
+    )
+  end
+
+  it 'returns structured validation errors for an invalid update' do
+    response = nil
+    expect { response = run(project_id: project.id, visible_to: 'everybody') }
+      .not_to change { project.reload.visible_to }
+
+    expect(response).to be_error
+
+    error = response.structured_content[:errors].sole
+    expect(error).to include(
+      attribute: 'visible_to',
+      error: :inclusion,
+      message: be_present
+    )
+  end
+
+  it 'refuses when the project is published' do
+    published = create(:project) # Projects are published by default.
+
+    response = nil
+    expect { response = run(project_id: published.id, title_multiloc: { 'en' => 'New' }) }
+      .not_to change { published.reload.title_multiloc }
+
+    expect(response).to be_unauthorized_project
+  end
+
+  it 'updates a published project on a demo platform' do
+    change_lifecycle_stage('demo')
+    published = create(:project)
+
+    response = nil
+    expect { response = run(project_id: published.id, title_multiloc: { 'en' => 'New' }) }
+      .to change { published.reload.title_multiloc }
+
+    expect(response).not_to be_error
+  end
+
+  it 'returns a not-found error when the project is missing' do
+    response = run(project_id: SecureRandom.uuid, title_multiloc: { 'en' => 'New' })
+
+    expect(response).to be_not_found('Project')
+  end
+end

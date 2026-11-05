@@ -13,6 +13,7 @@ import SearchInput from 'components/UI/SearchInput';
 
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 
+import { Templates } from '../../types';
 import DepartmentFilter from '../components/DepartmentFilter';
 
 import messages from './messages';
@@ -95,12 +96,9 @@ interface Props {
   onPurposeFilterChange: (purposes: string[]) => void;
   onDepartmentFilterChange: (departments: string[]) => void;
   onParticipationLevelFilterChange: (participationLevels: string[]) => void;
-  templates: {
-    edges: [];
-    pageInfo: {
-      hasNextPage: boolean;
-    };
-  } | null;
+  templates: Templates;
+  onUseTemplate: (projectTemplateId: string, title: string) => void;
+  variant?: 'default' | 'bo';
 }
 
 const ProjectTemplateCards = memo<Props & WrappedComponentProps>(
@@ -115,6 +113,8 @@ const ProjectTemplateCards = memo<Props & WrappedComponentProps>(
     onPurposeFilterChange,
     onDepartmentFilterChange,
     onParticipationLevelFilterChange,
+    onUseTemplate,
+    variant,
   }) => {
     const searchPlaceholder = intl.formatMessage(messages.searchPlaceholder);
     const searchAriaLabel = intl.formatMessage(messages.searchPlaceholder);
@@ -138,6 +138,7 @@ const ProjectTemplateCards = memo<Props & WrappedComponentProps>(
               placeholder={searchPlaceholder}
               ariaLabel={searchAriaLabel}
               onChange={onSearchChange}
+              variant={variant}
               // TODO: Fix this the next time the file is edited.
               // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               a11y_numberOfSearchResults={templates?.edges.length || 0}
@@ -166,6 +167,7 @@ const ProjectTemplateCards = memo<Props & WrappedComponentProps>(
                       imageUrl={cardImage}
                       title={localize(titleMultiloc)}
                       body={localize(subtitleMultiloc)}
+                      onUse={onUseTemplate}
                     />
                   );
                 }

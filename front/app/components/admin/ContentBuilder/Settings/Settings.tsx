@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 
 import {
   Title,
@@ -8,6 +8,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import { SETTINGS_PANEL_WIDTH } from 'components/admin/ContentBuilder/constants';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import CloseIconButton from 'components/UI/CloseIconButton';
 
@@ -23,7 +24,7 @@ const StyledBox = styled(Box)`
 
 const StyledCloseIconButton = styled(CloseIconButton)`
   position: absolute;
-  right: 8px;
+  right: 28px;
 `;
 
 interface Props {
@@ -40,7 +41,7 @@ const Settings = ({ selectedNode, onClose, onDelete }: Props) => {
       top={`${stylingConsts.menuHeight}px`}
       zIndex="99999"
       p="20px"
-      w="400px"
+      w={SETTINGS_PANEL_WIDTH}
       h={`calc(100vh - ${stylingConsts.menuHeight}px)`}
       background="#ffffff"
       overflowY="visible"
@@ -55,11 +56,15 @@ const Settings = ({ selectedNode, onClose, onDelete }: Props) => {
       />
       <Box h="100%" pr="8px" overflowY="auto">
         {selectedNode.title && (
-          <Title variant="h2" mt="-4px" mb="32px">
+          <Title variant="h2" mt="-4px" mb="32px" pr="48px">
             <FormattedMessage {...selectedNode.title} />
           </Title>
         )}
-        {selectedNode.settings && React.createElement(selectedNode.settings)}
+        {/* Some widgets load their settings lazily, so that public pages showing
+            the widget don't download editor code (e.g. the rich text editor). */}
+        <Suspense fallback={null}>
+          {selectedNode.settings && React.createElement(selectedNode.settings)}
+        </Suspense>
         {selectedNode.isDeletable ? (
           <Box display="flex">
             <ButtonWithLink

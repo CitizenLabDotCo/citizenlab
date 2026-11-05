@@ -4,9 +4,14 @@ import { Box } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 
 import Chart from 'components/admin/GraphCards/ParticipantsCard/Chart';
+import { AccessibilityProps } from 'components/admin/Graphs/typings';
 
+import { useIntl } from 'utils/cl-intl';
+
+import A11yTable, { Column } from '../../_shared/A11yTable';
 import { getDaysInRange } from '../../utils';
 
+import messages from './messages';
 import {
   ParticipantsStatistic,
   ParticipationRateStatistic,
@@ -17,11 +22,41 @@ const Narrow = ({
   startAt,
   endAt,
   hideStatistics,
+  showVisitors = false,
   timeSeries,
   stats,
   currentResolution,
-}: Props) => {
+  ariaLabel,
+  ariaDescribedBy,
+}: Props & AccessibilityProps) => {
   const previousDays = getDaysInRange(startAt, endAt);
+
+  const { formatMessage } = useIntl();
+  const accessibilityProps = {
+    ariaLabel,
+    ariaDescribedBy,
+  };
+
+  // Build columns dynamically based on showVisitors
+  const columns: Column[] = [
+    {
+      key: 'date',
+      label: formatMessage(messages.dateColumn),
+      type: 'date',
+    },
+    {
+      key: 'participants',
+      label: formatMessage(messages.participantsColumn),
+    },
+    ...(showVisitors
+      ? [
+          {
+            key: 'visitors',
+            label: formatMessage(messages.visitorsColumn),
+          },
+        ]
+      : []),
+  ];
 
   return (
     <Box
@@ -49,6 +84,7 @@ const Narrow = ({
           startAtMoment={startAt ? moment(startAt) : null}
           endAtMoment={endAt ? moment(endAt) : null}
           resolution={currentResolution}
+          showVisitors={showVisitors}
           margin={{
             left: 5,
             right: -20,
@@ -56,8 +92,15 @@ const Narrow = ({
             bottom: 0,
           }}
           yaxis={{ orientation: 'right' }}
+          {...accessibilityProps}
         />
       </Box>
+
+      <A11yTable
+        columns={columns}
+        data={timeSeries || []}
+        caption={formatMessage(messages.participantsCaption)}
+      />
     </Box>
   );
 };

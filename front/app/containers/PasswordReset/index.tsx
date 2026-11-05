@@ -23,7 +23,9 @@ import Error from 'components/UI/Error';
 import { FormLabel } from 'components/UI/FormComponents';
 import PasswordInput, {
   hasPasswordMinimumLength,
+  passwordMeetsStrength,
 } from 'components/UI/PasswordInput';
+import passwordInputMessages from 'components/UI/PasswordInput/messages';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
@@ -47,6 +49,7 @@ type State = {
   token: string | null;
   password: string | null;
   minimumLengthError: boolean;
+  strengthError: boolean;
   submitError: boolean;
   processing: boolean;
   success: boolean;
@@ -64,6 +67,7 @@ class PasswordReset extends React.PureComponent<Props, State> {
       token,
       password: null,
       minimumLengthError: false,
+      strengthError: false,
       submitError: false,
       processing: false,
       success: false,
@@ -112,6 +116,7 @@ class PasswordReset extends React.PureComponent<Props, State> {
     this.setState({
       password,
       minimumLengthError: false,
+      strengthError: false,
       submitError: false,
       apiErrors: null,
     });
@@ -123,57 +128,79 @@ class PasswordReset extends React.PureComponent<Props, State> {
 
   handleOnSubmit = async (event: FormEvent) => {
     const { password, token } = this.state;
+    const { appConfig } = this.props;
 
     event.preventDefault();
 
-    if (this.validate() && password && token) {
-      try {
-        this.setState({ processing: true, success: false });
-        await resetPassword({ password, token });
-        this.setState({ password: null, processing: false, success: true });
-      } catch (errors) {
-        const apiErrors = errors.errors;
-        const tokenErrors: CLError[] = apiErrors.token;
+    if (!this.validate() || !password || !token) {
+      return;
+    }
 
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        if (tokenErrors && tokenErrors.length > 0) {
-          const invalidTokenErrorIndex = tokenErrors
-            .map((tokenError) => tokenError.error)
-            .indexOf('invalid');
+    const minimumStrength =
+      appConfig?.data.attributes.settings.password_login?.minimum_strength;
+    const passwordStrongEnough = await passwordMeetsStrength(
+      password,
+      minimumStrength
+    );
 
-          // -1 if no element was found
-          if (invalidTokenErrorIndex !== -1) {
-            const invalidTokenError = tokenErrors[invalidTokenErrorIndex];
+    if (!passwordStrongEnough) {
+      this.setState({ strengthError: true });
+      this.passwordInputElement?.focus();
+      return;
+    }
 
-            invalidTokenError.payload = {
-              passwordResetLink: (
-                <Link to="/password-recovery">
-                  <FormattedMessage {...messages.requestNewPasswordReset} />
-                </Link>
-              ),
-            };
-          }
+    try {
+      this.setState({ processing: true, success: false });
+      await resetPassword({ password, token });
+      this.setState({ password: null, processing: false, success: true });
+    } catch (errors) {
+      const apiErrors = errors.errors;
+      const tokenErrors: CLError[] = apiErrors.token;
+
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      if (tokenErrors && tokenErrors.length > 0) {
+        const invalidTokenErrorIndex = tokenErrors
+          .map((tokenError) => tokenError.error)
+          .indexOf('invalid');
+
+        // -1 if no element was found
+        if (invalidTokenErrorIndex !== -1) {
+          const invalidTokenError = tokenErrors[invalidTokenErrorIndex];
+
+          invalidTokenError.payload = {
+            passwordResetLink: (
+              <Link to="/password-recovery">
+                <FormattedMessage {...messages.requestNewPasswordReset} />
+              </Link>
+            ),
+          };
         }
-
-        if (Object.keys(apiErrors).length > 0) {
-          this.passwordInputElement?.focus();
-        }
-
-        this.setState({
-          apiErrors,
-          processing: false,
-          success: false,
-          submitError: true,
-        });
       }
+
+      if (Object.keys(apiErrors).length > 0) {
+        this.passwordInputElement?.focus();
+      }
+
+      this.setState({
+        apiErrors,
+        processing: false,
+        success: false,
+        submitError: true,
+      });
     }
   };
 
   render() {
     const { formatMessage } = this.props;
-    const { password, processing, success, apiErrors, minimumLengthError } =
-      this.state;
+    const {
+      password,
+      processing,
+      success,
+      apiErrors,
+      minimumLengthError,
+      strengthError,
+    } = this.state;
     const helmetTitle = formatMessage(messages.helmetTitle);
     const helmetDescription = formatMessage(messages.helmetDescription);
     const title = formatMessage(messages.title);
@@ -213,6 +240,13 @@ class PasswordReset extends React.PureComponent<Props, State> {
                     setRef={this.handlePasswordInputSetRef}
                     errors={{ minimumLengthError }}
                   />
+                  {strengthError && (
+                    <Error
+                      text={formatMessage(
+                        passwordInputMessages.passwordStrengthError
+                      )}
+                    />
+                  )}
                   {apiErrors &&
                     Object.keys(apiErrors).map(
                       (errorField: ApiErrorFieldName) => (

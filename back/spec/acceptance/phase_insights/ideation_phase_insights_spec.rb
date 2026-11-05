@@ -1,0 +1,139 @@
+require 'rails_helper'
+require 'rspec_api_documentation/dsl'
+
+resource 'Phase insights' do
+  before do
+    admin_header_token
+    # This reference time means we can expect exact dates in the chart data
+    AppConfiguration.instance.update!(platform_start_at: '2025-09-01')
+    travel_to(Time.zone.parse('2025-12-02 12:00:00'))
+  end
+
+  let!(:custom_field_gender) { create(:custom_field, resource_type: 'User', key: 'gender', input_type: 'select', title_multiloc: { en: 'Gender' }) }
+  let!(:custom_field_option_male) { create(:custom_field_option, custom_field: custom_field_gender, key: 'male', title_multiloc: { en: 'Male' }) }
+  let!(:custom_field_option_female) { create(:custom_field_option, custom_field: custom_field_gender, key: 'female', title_multiloc: { en: 'Female' }) }
+  let!(:custom_field_option_other) { create(:custom_field_option, custom_field: custom_field_gender, key: 'unspecified', title_multiloc: { en: 'Unspecified' }) }
+
+  let!(:categorical_distribution) do
+    create(
+      :categorical_distribution,
+      custom_field: custom_field_gender,
+      population_counts: [480, 510, 10] # Male, Female, Unspecified counts
+    )
+  end
+
+  let!(:custom_field_birthyear) { create(:custom_field, resource_type: 'User', key: 'birthyear', input_type: 'number', title_multiloc: { en: 'Birthyear' }) }
+
+  let!(:binned_distribution) do
+    create(
+      :binned_distribution,
+      custom_field: custom_field_birthyear,
+      bins: [18, 25, 35, 45, 55, 65, nil], # Age ranges: <18, 18-25, 25-35, 35-45, 45-65, >65
+      counts: [50, 200, 400, 300, 50, 700] # Population in each bin
+    )
+  end
+
+  let(:ideation_phase) do
+    create(
+      :phase,
+      participation_method: 'ideation',
+      start_at: 20.days.ago,
+      end_at: 3.days.ago,
+      with_permissions: true
+    ).tap do |phase|
+      # Users
+      user1 = create(:user)
+      user2 = create(:user)
+      user3 = create(:user)
+      user4 = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'gender', value: 'female'), build(:custom_field_answer, key: 'birthyear', value: 1980)])
+      user5 = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'gender', value: 'male'), build(:custom_field_answer, key: 'birthyear', value: 1990)])
+
+      # Ideas
+      create(:idea, phases: [phase], author: user1, created_at: 25.days.ago, published_at: 25.days.ago) # published before ideation phase (not counted)
+      idea2 = create(:idea, phases: [phase], author: user2, created_at: 15.days.ago, published_at: 15.days.ago) # published during ideation phase
+      create(:idea, phases: [phase], author: user2, created_at: 5.days.ago, published_at: 5.days.ago) # published during ideation phase, and in last 7 days
+      create(:idea, phases: [phase], author: user3, created_at: 2.days.ago, published_at: 2.days.ago) # published after ideation phase (not counted)
+
+      # Comments
+      create(:comment, idea: idea2, author: user4, created_at: 10.days.ago) # in ideation phase (in week before last)
+
+      # Reactions
+      create(:reaction, reactable: idea2, user: user5, created_at: 5.days.ago) # in ideation phase, and in last 7 days
+
+      # Pageviews and sessions
+      session1 = create(:session, user_id: user1.id)
+      create(:pageview, session: session1, created_at: 25.days.ago, project_id: phase.project.id) # before ideation phase
+
+      session2 = create(:session, user_id: user2.id)
+      create(:pageview, session: session2, created_at: 15.days.ago, project_id: phase.project.id) # in ideation phase
+      create(:pageview, session: session2, created_at: 5.days.ago, project_id: phase.project.id) # in ideation phase & last 7 days, same session
+
+      session3 = create(:session, user_id: user3.id)
+      create(:pageview, session: session3, created_at: 2.days.ago, project_id: phase.project.id) # after ideation phase
+
+      session4 = create(:session)
+      create(:pageview, session: session4, created_at: 15.days.ago, project_id: phase.project.id) # in ideation phase, did not participate
+
+      session5 = create(:session, user_id: user4.id)
+      create(:pageview, session: session5, created_at: 10.days.ago, project_id: phase.project.id) # in ideation phase (in week before last)
+
+      session6 = create(:session, user_id: user5.id)
+      create(:pageview, session: session6, created_at: 5.days.ago, project_id: phase.project.id) # in ideation phase, and in last 7 days
+    end
+  end
+
+  let(:id) { ideation_phase.id }
+
+  get 'web_api/v1/phases/:id/insights' do
+    example_request 'returns insights data for ideation phase' do
+      assert_status 200
+
+      expect(json_response_body[:data][:id]).to eq(ideation_phase.id.to_s)
+      expect(json_response_body[:data][:type]).to eq('phase_insights')
+
+      metrics = json_response_body.dig(:data, :attributes, :metrics)
+      expect(metrics).to eq({
+        visitors: 4,
+        visitors_7_day_percent_change: 33.3, # from 3 unique visitors 7-days ago to 4 now = 33.3% increase
+        participants: 3,
+        participants_7_day_percent_change: 50.0, # from 2 unique participants 7-days ago, to 3 now = 50% increase
+        participation_rate_as_percent: 75.0,
+        participation_rate_7_day_percent_change: 12.5, # participation_rate_7_days_ago = 0.6666666666666666, participation_rate_now = 0.75 = (((0.75 - 0.6666666666666666).to_f / 0.6666666666666666) * 100.0).round(1) = 12.5% increase
+        ideation: {
+          ideas_posted: 2,
+          ideas_posted_7_day_percent_change: 100.0, # from 1 posted by 7-days ago, to 2 now = 100% increase => avoid division by zero
+          comments_posted: 1,
+          comments_posted_7_day_percent_change: 0.0, # from 1 by 7-days ago, to 1 now = 0% change
+          reactions: 1,
+          reactions_7_day_percent_change: 'current_value_compared_with_zero' # from 0 by 7-days ago, to 1 now => avoid division by zero
+        }
+      })
+
+      participants_and_visitors_chart_data = json_response_body.dig(:data, :attributes, :participants_and_visitors_chart_data)
+      expect(participants_and_visitors_chart_data).to eq({
+        resolution: 'day',
+        timeseries: [
+          { participants: 1, visitors: 2, date_group: '2025-11-17' },
+          { participants: 1, visitors: 1, date_group: '2025-11-22' },
+          { participants: 2, visitors: 2, date_group: '2025-11-27' }
+        ]
+      })
+    end
+
+    include_examples 'phase insights demographics',
+      gender_blank: 1,
+      birthyear_blank: 1
+
+    # Phase permissions only exist once an admin overrides them; until then the
+    # phase follows the global 'visiting' permission, and its demographic
+    # questions are the ones the insights report on.
+    # See Permissions::PermissionInheritanceService.
+    context 'when the phase has not overridden its permissions' do
+      before { ideation_phase.permissions.destroy_all }
+
+      include_examples 'phase insights demographics',
+        gender_blank: 1,
+        birthyear_blank: 1
+    end
+  end
+end

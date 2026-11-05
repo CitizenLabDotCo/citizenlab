@@ -14,6 +14,7 @@ resource 'Jobs' do
     parameter :context_type, 'Filter by context type', required: false, type: :string
     parameter :context_id, 'Filter by context id', required: false, type: :string
     parameter :completed, 'Filter by completion status', required: false, type: :boolean
+    parameter :root_job_type, 'Filter by root job type', required: false, type: :string
 
     let_it_be(:jobs) { create_list(:jobs_tracker, 3) }
 
@@ -84,6 +85,16 @@ resource 'Jobs' do
           end
         end
       end
+
+      describe 'filter by root job type' do
+        let!(:job) { create(:jobs_tracker, root_job_type: 'SomeSpecificJob') }
+        let(:root_job_type) { 'SomeSpecificJob' }
+
+        example_request 'Filter by root job type' do
+          expect(status).to eq(200)
+          expect(response_ids).to eq [job.id]
+        end
+      end
     end
   end
 
@@ -111,7 +122,8 @@ resource 'Jobs' do
             total: 150,
             completed_at: nil,
             created_at: job.created_at.iso8601(3),
-            updated_at: job.updated_at.iso8601(3)
+            updated_at: job.updated_at.iso8601(3),
+            errors: []
           },
           relationships: {
             owner: { data: { id: job.owner_id, type: 'user' } },

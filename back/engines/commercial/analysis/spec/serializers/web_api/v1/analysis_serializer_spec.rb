@@ -5,6 +5,14 @@ require 'rails_helper'
 describe Analysis::WebApi::V1::AnalysisSerializer do
   let(:result) { described_class.new(analysis, params: { current_user: create(:admin) }).serializable_hash }
 
+  describe 'auto_insights_too_many_fields' do
+    let(:analysis) { create(:ideation_analysis) }
+
+    it 'is exposed as an attribute' do
+      expect(result.dig(:data, :attributes)).to have_key(:auto_insights_too_many_fields)
+    end
+  end
+
   describe 'all_custom_fields' do
     context 'with custom form' do
       let(:project) { create(:project_with_active_native_survey_phase) }
@@ -16,7 +24,7 @@ describe Analysis::WebApi::V1::AnalysisSerializer do
       let(:analysis) { create(:analysis, phase: phase, project: nil, main_custom_field: main_field) }
 
       it 'includes all fields of the custom form' do
-        expect(result.dig(:data, :relationships, :all_custom_fields, :data).pluck(:id)).to match_array [main_field.id, *available_fields.map(&:id)]
+        expect(result.dig(:data, :relationships, :all_custom_fields, :data).pluck(:id)).to contain_exactly(main_field.id, *available_fields.map(&:id))
       end
     end
 
@@ -25,7 +33,7 @@ describe Analysis::WebApi::V1::AnalysisSerializer do
 
       it 'includes all default fields' do
         actual_ids = result.dig(:data, :relationships, :all_custom_fields, :data).pluck(:id)
-        expected_ids = IdeaCustomFieldsService.new(analysis.reload.participation_context.custom_form).all_fields.filter(&:accepts_input?).map(&:id)
+        expected_ids = IdeaCustomFieldsService.new(analysis.reload.participation_context.custom_form).all_fields.filter(&:supports_submission?).map(&:id)
         expect(actual_ids).to match_array expected_ids
       end
     end

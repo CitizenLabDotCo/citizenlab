@@ -4,13 +4,8 @@ require 'rails_helper'
 
 RSpec.describe Analysis::SummarizationMethod do
   describe 'Bogus summarization' do
-    it 'works' do
-      analysis = create(:analysis, main_custom_field: create(
-        :custom_field,
-        :for_custom_form,
-        code: 'title_multiloc',
-        key: 'title_multiloc'
-      ))
+    it 'generates a bogus summary from filtered ideas' do
+      analysis = create(:analysis, main_custom_field: create(:default_input_field))
 
       summarization_task = create(
         :summarization_task,
@@ -43,14 +38,7 @@ RSpec.describe Analysis::SummarizationMethod do
   end
 
   describe 'OnePassLLM summarization' do
-    let(:analysis) do
-      create(:analysis, main_custom_field: create(
-        :custom_field,
-        :for_custom_form,
-        code: 'title_multiloc',
-        key: 'title_multiloc'
-      ))
-    end
+    let(:analysis) { create(:analysis, main_custom_field: create(:default_input_field)) }
     let(:summary) { create(:summary, summary: nil, summarization_method: 'one_pass_llm', insight_attributes: { analysis: analysis, filters: { comments_from: 5 } }) }
     let(:summarization_task) { create(:summarization_task, analysis: analysis, state: 'queued', summary: summary) }
     let(:inputs) do
@@ -63,18 +51,18 @@ RSpec.describe Analysis::SummarizationMethod do
       end
     end
 
-    it 'works' do
+    it 'generates a summarization plan with default parameters' do
       plan = Analysis::SummarizationMethod::OnePassLLM.new(summary).generate_plan
       expect(plan).to have_attributes({
         summarization_method_class: Analysis::SummarizationMethod::OnePassLLM,
         llm: kind_of(Analysis::LLM::Base),
-        accuracy: 0.8,
+        accuracy: 0.9,
         include_id: true,
         shorten_labels: false,
         include_comments: true
       })
 
-      mock_llm = instance_double(Analysis::LLM::GPT41)
+      mock_llm = instance_double(Analysis::LLM::GPT54)
       plan.llm = mock_llm
       expect(mock_llm).to receive(:chat_async).with(kind_of(String)) do |prompt, &block|
         expect(prompt).to include(inputs[2].id)
@@ -85,8 +73,8 @@ RSpec.describe Analysis::SummarizationMethod do
       expect { plan.summarization_method_class.new(summary).execute(plan) }
         .to change { summarization_task.summary.summary }.from(nil).to('Complete summary')
         .and change { summarization_task.summary.prompt }.from(nil).to(kind_of(String))
-        .and change { summarization_task.summary.accuracy }.from(nil).to(0.8)
-        .and change { summarization_task.summary.inputs_ids }.from(nil).to(match_array([inputs[1].id, inputs[2].id]))
+        .and change { summarization_task.summary.accuracy }.from(nil).to(0.9)
+        .and change { summarization_task.summary.inputs_ids }.from(nil).to(contain_exactly(inputs[1].id, inputs[2].id))
 
       expect(summarization_task.reload).to have_attributes({
         state: 'succeeded',
@@ -98,7 +86,7 @@ RSpec.describe Analysis::SummarizationMethod do
       create(:comment, idea: inputs[1], body_multiloc: { en: 'I want to comment on that' })
 
       plan = Analysis::SummarizationMethod::OnePassLLM.new(summary).generate_plan
-      mock_llm = instance_double(Analysis::LLM::GPT41)
+      mock_llm = instance_double(Analysis::LLM::GPT54)
       plan.llm = mock_llm
       expect(mock_llm).to receive(:chat_async).with(kind_of(String)) do |prompt|
         expect(prompt).to include('I want to comment on that')

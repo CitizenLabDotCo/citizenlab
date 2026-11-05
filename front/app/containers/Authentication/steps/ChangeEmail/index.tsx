@@ -1,11 +1,13 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
-import { string, object } from 'yup';
+import { object } from 'yup';
 
-import { SetError } from 'containers/Authentication/typings';
+import useAuthUser from 'api/me/useAuthUser';
+
+import { SetError, State } from 'containers/Authentication/typings';
 
 import Input from 'components/HookForm/Input';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
@@ -16,51 +18,59 @@ import {
   handleHookFormSubmissionError,
 } from 'utils/errorUtils';
 
-import TextButton from '../_components/TextButton';
+import { getEmailSchema } from '../InviteSignUp/form';
 import sharedMessages from '../messages';
 
-import messages from './messages';
-
-// errors
+interface FormValues {
+  new_email: string;
+}
 
 interface Props {
+  state: State;
   loading: boolean;
   setError: SetError;
-  onGoBack: () => void;
-  onChangeEmail: (newEmail: string) => void;
+  onSubmit: (email: string) => Promise<void>;
 }
 
-interface FormValues {
-  email: string;
-}
-
-const DEFAULT_VALUES: Partial<FormValues> = {
-  email: undefined,
-};
-
-const ChangeEmail = ({ loading, setError, onGoBack, onChangeEmail }: Props) => {
+// A minimal, email-only form for when the user has a pending new_email or
+// merge_target_email (email_action_required is confirm_new_email or
+// confirm_merge_account) but wants to enter a different one. It is deliberately separate from the built-in-fields step: that step is
+// driven by the requirements, which here say "confirm", not "provide".
+const ChangeEmail = ({ state, loading, setError, onSubmit }: Props) => {
+  const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
 
-  const schema = useMemo(
-    () =>
-      object({
-        email: string()
-          .email(formatMessage(sharedMessages.emailFormatError))
-          .required(formatMessage(sharedMessages.emailMissingError)),
-      }),
-    [formatMessage]
-  );
+  const schema = object({
+    new_email: getEmailSchema(formatMessage),
+  });
+
+  const newEmail =
+    state.new_email ??
+    authUser?.data.attributes.new_email ??
+    authUser?.data.attributes.merge_target_email;
 
   const methods = useForm<FormValues>({
     mode: 'onSubmit',
-    defaultValues: DEFAULT_VALUES,
+    defaultValues: { new_email: newEmail ?? undefined },
     resolver: yupResolver(schema),
   });
 
-  const handleSubmit = async ({ email }: FormValues) => {
+  const handleSubmit = async ({ new_email }: FormValues) => {
     try {
-      await onChangeEmail(email);
-    } catch (e) {
+      await onSubmit(new_email);
+    } catch (e: any) {
+      if (e?.errors?.new_email?.[0]?.error === 'is already taken') {
+        setError('email_taken_and_user_can_be_verified');
+        return;
+      }
+
+      // A `base` error belongs to no form field, so react-hook-form would record it
+      // against one that is never rendered and nothing would appear to happen.
+      if (e?.errors?.base) {
+        setError('unknown');
+        return;
+      }
+
       if (isCLErrorsWrapper(e)) {
         handleHookFormSubmissionError(e, methods.setError);
         return;
@@ -71,40 +81,33 @@ const ChangeEmail = ({ loading, setError, onGoBack, onChangeEmail }: Props) => {
   };
 
   return (
-    <>
-      <Text mt="0px" mb="32px" color="tenantText">
-        {formatMessage(messages.enterNewEmail)}
-      </Text>
+    <Box id="e2e-change-email-container">
       <FormProvider {...methods}>
-        <form onSubmit={methods.handleSubmit(handleSubmit)}>
-          <Box>
+        <form noValidate onSubmit={methods.handleSubmit(handleSubmit)}>
+          <Box id="e2e-email-container">
             <Input
-              id="email"
-              name="email"
+              name="new_email"
+              id="new_email"
               type="email"
+              autocomplete="email"
               label={formatMessage(sharedMessages.email)}
+              required
             />
           </Box>
-          <Box w="100%" display="flex" mt="32px">
+          <Box w="100%" display="flex" mt="24px">
             <ButtonWithLink
-              id="e2e-change-email-submit"
               type="submit"
               width="auto"
-              processing={loading}
               disabled={loading}
+              processing={loading}
+              id="e2e-change-email-submit-button"
             >
-              {formatMessage(messages.sendEmailWithCode)}
+              {formatMessage(sharedMessages.continue)}
             </ButtonWithLink>
           </Box>
         </form>
       </FormProvider>
-      <Text mb="0px" mt="24px">
-        {formatMessage(messages.foundYourCode)}{' '}
-        <TextButton onClick={onGoBack}>
-          {formatMessage(messages.goBack)}
-        </TextButton>
-      </Text>
-    </>
+    </Box>
   );
 };
 

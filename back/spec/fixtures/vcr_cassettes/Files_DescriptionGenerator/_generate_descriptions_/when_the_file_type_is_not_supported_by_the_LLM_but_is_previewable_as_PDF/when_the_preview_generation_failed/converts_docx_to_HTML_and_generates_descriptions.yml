@@ -2,26 +2,26 @@
 http_interactions:
 - request:
     method: post
-    uri: https://bedrock-runtime.eu-central-1.amazonaws.com/model/eu.anthropic.claude-sonnet-4-20250514-v1:0/invoke
+    uri: https://bedrock-runtime.eu-central-1.amazonaws.com/model/eu.anthropic.claude-sonnet-4-5-20250929-v1:0/converse
     body:
       encoding: UTF-8
-      string: '{"anthropic_version":"bedrock-2023-05-31","messages":[{"role":"user","content":[{"type":"text","text":"Analyze
-        the provided document and generate a concise description or abstract (2-3
-        sentences) that accurately summarizes its nature, main purpose, key content,
-        and relevant context. \nThe description should be informative and capture
-        the essential meaning of the document. As extra context, the filename is:
-        \"david.docx\"\n\nOutput the results as a properly formatted JSON object with
-        the following requirements:\n- Avoid starting the summary with \"The document
-        is...\" or similar generic introductions.\n- Keys must be the following locale
-        codes: en, fr-FR, nl-NL\n- Values must be the description text accurately
-        translated for each respective locale\n- All translations should maintain
-        the same meaning and level of detail\n- Use proper JSON formatting with double
-        quotes around all keys and string values\n- Ensure the JSON is valid and parseable\n\nThe
-        response must contain ONLY the JSON object - no additional text, explanations,
-        code blocks, or formatting outside the JSON structure.\n\nExample format:\n{\n  \"en\":
-        \"... (description in en) ...\",\n  \"fr-FR\": \"... (description in fr-FR)
-        ...\",\n  \"nl-NL\": \"... (description in nl-NL) ...\"\n}\n"},{"type":"text","text":"<file
-        name=''david.docx20250820-203-qgnmj3.html'' mime_type=''text/html''><p style=\"font-size:12pt;text-align:center;\">Lorem
+      string: '{"messages":[{"role":"user","content":[{"text":"Analyze the provided
+        document and generate a concise description or abstract (2-3 sentences) that
+        accurately summarizes its nature, main purpose, key content, and relevant
+        context. \nThe description should be informative and capture the essential
+        meaning of the document. As extra context, the filename is: \"david.docx\"\n\nOutput
+        the results as a properly formatted JSON object with the following requirements:\n-
+        Avoid starting the summary with \"The document is...\" or similar generic
+        introductions.\n- Keys must be the following locale codes: en, fr-FR, nl-NL\n-
+        Values must be the description text accurately translated for each respective
+        locale\n- All translations should maintain the same meaning and level of detail\n-
+        Use proper JSON formatting with double quotes around all keys and string values\n-
+        Ensure the JSON is valid and parseable\n\nThe response must contain ONLY the
+        JSON object - no additional text, explanations, code blocks, or formatting
+        outside the JSON structure.\n\nExample format:\n{\n  \"en\": \"... (description
+        in en) ...\",\n  \"fr-FR\": \"... (description in fr-FR) ...\",\n  \"nl-NL\":
+        \"... (description in nl-NL) ...\"\n}\n"},{"text":"<file name=''david.docx20260302-2142-hjfspy.html''
+        mime_type=''text/html''><p style=\"font-size:12pt;text-align:center;\">Lorem
         ipsum </p>\\n<p style=\"font-size:10pt;text-align:both;\"><span style=\"font-size:10pt;\"><strong><em></em></strong></span></p>\\n<p
         style=\"font-size:12pt;\">Lorem ipsum dolor sit amet, consectetur adipiscing
         elit. Nunc ac faucibus odio. </p>\\n<p style=\"font-size:10pt;text-align:both;\"><span
@@ -167,47 +167,41 @@ http_interactions:
         Morbi velit neque, semper quis lorem quis, efficitur dignissim ipsum. Ut ac
         lorem sed turpis imperdiet eleifend sit amet id sapien.</em></strong></span></p>\\n<p
         style=\"font-size:10pt;text-align:both;\"><span style=\"font-size:10pt;\"><strong><em></em></strong></span></p>\\n<p
-        style=\"font-size:12pt;\"></p></file>"}]},{"role":"assistant","content":[{"type":"text","text":"{"}]}],"max_tokens":4096,"temperature":0.7}'
+        style=\"font-size:12pt;\"></p></file>"}]},{"role":"assistant","content":[{"text":"{"}]}],"inferenceConfig":{}}'
     headers:
       User-Agent:
-      - Faraday v2.12.2
+      - Faraday v2.14.1
       X-Amz-Date:
-      - 20250820T101528Z
+      - 20260302T153731Z
       X-Amz-Content-Sha256:
-      - c435efe772d5dc206dbdd4270288d96d4dcfdb944e4390434646c9553cbe5534
+      - 05bd7b0368d2d94a7fb05df321bc194393c295dbf7ea18c782cd9a7cfb5cfcb0
       Authorization:
-      - AWS4-HMAC-SHA256 Credential=AKIAVVRDDPNZZGMDU2VU/20250820/eu-central-1/bedrock/aws4_request,
-        SignedHeaders=host;x-amz-content-sha256;x-amz-date, Signature=cb0f81d1f6e985f6e9082e0b745cbbef2aa2067302c915c0b594f204a890f290
+      - AWS4-HMAC-SHA256 Credential=AKIAVVRDDPNZZGMDU2VU/20260302/eu-central-1/bedrock/aws4_request,
+        SignedHeaders=host;x-amz-content-sha256;x-amz-date, Signature=ba484db9e6235b3b1b669e784f6338c5277978e32d8f96f9003a6cf39b533712
       Content-Type:
-      - application/json
-      Accept:
       - application/json
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
   response:
     status:
       code: 200
       message: OK
     headers:
       Date:
-      - Wed, 20 Aug 2025 10:15:33 GMT
+      - Mon, 02 Mar 2026 15:37:37 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '1355'
+      - '1555'
       Connection:
       - keep-alive
       X-Amzn-Requestid:
-      - 4dbb6e50-077d-4cb1-9b09-14c1b3276cc4
-      X-Amzn-Bedrock-Invocation-Latency:
-      - '4979'
-      X-Amzn-Bedrock-Output-Token-Count:
-      - '275'
-      X-Amzn-Bedrock-Input-Token-Count:
-      - '4933'
+      - f4ea39d9-9a0a-4b39-9a3c-49feea6d0653
     body:
       encoding: ASCII-8BIT
       string: !binary |-
-        eyJpZCI6Im1zZ19iZHJrXzAxTEdlV0dNWXZVR0J2YXpEVmlZY3NYZCIsInR5cGUiOiJtZXNzYWdlIiwicm9sZSI6ImFzc2lzdGFudCIsIm1vZGVsIjoiY2xhdWRlLXNvbm5ldC00LTIwMjUwNTE0IiwiY29udGVudCI6W3sidHlwZSI6InRleHQiLCJ0ZXh0IjoiXG4gIFwiZW5cIjogXCJBIGZvcm1hdHRlZCB0ZXh0IGRvY3VtZW50IGNvbnRhaW5pbmcgTG9yZW0gaXBzdW0gcGxhY2Vob2xkZXIgdGV4dCBhcnJhbmdlZCBpbiBtdWx0aXBsZSBwYXJhZ3JhcGhzIHdpdGggdmFyaW91cyBmb250IHNpemVzIGFuZCBzdHlsaW5nIChib2xkLCBpdGFsaWMsIHVuZGVybGluZWQpLiBUaGUgZG9jdW1lbnQgaW5jbHVkZXMgYSBudW1iZXJlZCBsaXN0IHNlY3Rpb24gd2l0aCA1IGl0ZW1zIGFuZCBhcHBlYXJzIHRvIGJlIGEgdGVtcGxhdGUgb3Igc2FtcGxlIGRvY3VtZW50IGZvciB0ZXN0aW5nIGxheW91dCBhbmQgZm9ybWF0dGluZyBwdXJwb3Nlcy5cIixcbiAgXCJmci1GUlwiOiBcIlVuIGRvY3VtZW50IHRleHRlIGZvcm1hdMOpIGNvbnRlbmFudCBkdSB0ZXh0ZSBkZSBzdWJzdGl0dXRpb24gTG9yZW0gaXBzdW0gb3JnYW5pc8OpIGVuIHBsdXNpZXVycyBwYXJhZ3JhcGhlcyBhdmVjIGRpdmVyc2VzIHRhaWxsZXMgZGUgcG9saWNlIGV0IHN0eWxlcyAoZ3JhcywgaXRhbGlxdWUsIHNvdWxpZ27DqSkuIExlIGRvY3VtZW50IGluY2x1dCB1bmUgc2VjdGlvbiBkZSBsaXN0ZSBudW3DqXJvdMOpZSBhdmVjIDUgw6lsw6ltZW50cyBldCBzZW1ibGUgw6p0cmUgdW4gbW9kw6hsZSBvdSB1biBkb2N1bWVudCBkJ2V4ZW1wbGUgcG91ciB0ZXN0ZXIgbGEgbWlzZSBlbiBwYWdlIGV0IGxlIGZvcm1hdGFnZS5cIixcbiAgXCJubC1OTFwiOiBcIkVlbiBnZWZvcm1hdHRlZXJkIHRla3N0ZG9jdW1lbnQgbWV0IExvcmVtIGlwc3VtLXBsYWF0c2hvdWRlciB0ZWtzdCBnZXJhbmdzY2hpa3QgaW4gbWVlcmRlcmUgYWxpbmVhJ3MgbWV0IHZlcnNjaGlsbGVuZGUgbGV0dGVyZ3Jvb3R0ZXMgZW4gb3BtYWFrICh2ZXQsIGN1cnNpZWYsIG9uZGVyc3RyZWVwdCkuIEhldCBkb2N1bWVudCBiZXZhdCBlZW4gZ2VudW1tZXJkZSBsaWpzdHNlY3RpZSBtZXQgNSBpdGVtcyBlbiBsaWprdCBlZW4gc2phYmxvb24gb2Ygdm9vcmJlZWxkZG9jdW1lbnQgdGUgemlqbiB2b29yIGhldCB0ZXN0ZW4gdmFuIGxheS1vdXQgZW4gb3BtYWFrZG9lbGVpbmRlbi5cIlxufSJ9XSwic3RvcF9yZWFzb24iOiJlbmRfdHVybiIsInN0b3Bfc2VxdWVuY2UiOm51bGwsInVzYWdlIjp7ImlucHV0X3Rva2VucyI6NDkzMywiY2FjaGVfY3JlYXRpb25faW5wdXRfdG9rZW5zIjowLCJjYWNoZV9yZWFkX2lucHV0X3Rva2VucyI6MCwib3V0cHV0X3Rva2VucyI6Mjc1fX0=
-  recorded_at: Wed, 20 Aug 2025 10:15:33 GMT
+        eyJtZXRyaWNzIjp7ImxhdGVuY3lNcyI6NjIxMH0sIm91dHB1dCI6eyJtZXNzYWdlIjp7ImNvbnRlbnQiOlt7InRleHQiOiJcbiAgXCJlblwiOiBcIlRoaXMgZG9jdW1lbnQgY29udGFpbnMgTGF0aW4gcGxhY2Vob2xkZXIgdGV4dCAoTG9yZW0gSXBzdW0pIGZvcm1hdHRlZCB3aXRoIHZhcmlvdXMgdHlwb2dyYXBoaWMgc3R5bGVzIGluY2x1ZGluZyBib2xkLCBpdGFsaWMsIGFuZCB1bmRlcmxpbmVkIGVsZW1lbnRzLiBJdCBhcHBlYXJzIHRvIGJlIGEgdGVtcGxhdGUgb3IgZm9ybWF0dGluZyB0ZXN0IGRvY3VtZW50IHdpdGggbXVsdGlwbGUgcGFyYWdyYXBocyBvZiBkdW1teSB0ZXh0IGFuZCBhIG51bWJlcmVkIGxpc3QgKDEtNSkgd2l0aCBicmllZiBpdGFsaWMgZW50cmllcywgZGVtb25zdHJhdGluZyBkaWZmZXJlbnQgdGV4dCBhbGlnbm1lbnQgYW5kIHN0eWxpbmcgb3B0aW9ucy5cIixcbiAgXCJmci1GUlwiOiBcIkNlIGRvY3VtZW50IGNvbnRpZW50IGR1IHRleHRlIGRlIHN1YnN0aXR1dGlvbiBlbiBsYXRpbiAoTG9yZW0gSXBzdW0pIGZvcm1hdMOpIGF2ZWMgZGl2ZXJzIHN0eWxlcyB0eXBvZ3JhcGhpcXVlcyBpbmNsdWFudCBkZXMgw6lsw6ltZW50cyBlbiBncmFzLCBpdGFsaXF1ZSBldCBzb3VsaWduw6lzLiBJbCBzJ2FnaXQgYXBwYXJlbW1lbnQgZCd1biBtb2TDqGxlIG91IGQndW4gZG9jdW1lbnQgZGUgdGVzdCBkZSBtaXNlIGVuIGZvcm1lIGF2ZWMgcGx1c2lldXJzIHBhcmFncmFwaGVzIGRlIHRleHRlIGZpY3RpZiBldCB1bmUgbGlzdGUgbnVtw6lyb3TDqWUgKDEtNSkgYXZlYyBkZSBicsOodmVzIGVudHLDqWVzIGVuIGl0YWxpcXVlLCBkw6ltb250cmFudCBkaWZmw6lyZW50ZXMgb3B0aW9ucyBkJ2FsaWduZW1lbnQgZXQgZGUgc3R5bGUgZGUgdGV4dGUuXCIsXG4gIFwibmwtTkxcIjogXCJEaXQgZG9jdW1lbnQgYmV2YXQgTGF0aWpuc2UgcGxhYXRzdmVydmFuZ2VuZGUgdGVrc3QgKExvcmVtIElwc3VtKSBvcGdlbWFha3QgbWV0IHZlcnNjaGlsbGVuZGUgdHlwb2dyYWZpc2NoZSBzdGlqbGVuLCB3YWFyb25kZXIgdmV0Z2VkcnVrdGUsIGN1cnNpZXZlIGVuIG9uZGVyc3RyZWVwdGUgZWxlbWVudGVuLiBIZXQgbGlqa3QgZWVuIHNqYWJsb29uIG9mIG9wbWFha3Rlc3Rkb2N1bWVudCB0ZSB6aWpuIG1ldCBtZWVyZGVyZSBhbGluZWEncyBkdW1teXRla3N0IGVuIGVlbiBnZW51bW1lcmRlIGxpanN0ICgxLTUpIG1ldCBrb3J0ZSBjdXJzaWV2ZSBpdGVtcywgd2FhcmluIHZlcnNjaGlsbGVuZGUgdGVrc3R1aXRsaWpuaW5ncy0gZW4gc3RpamxvcHRpZXMgd29yZGVuIGdlZGVtb25zdHJlZXJkLlwiXG59In1dLCJyb2xlIjoiYXNzaXN0YW50In19LCJzdG9wUmVhc29uIjoiZW5kX3R1cm4iLCJ1c2FnZSI6eyJjYWNoZVJlYWRJbnB1dFRva2VuQ291bnQiOjAsImNhY2hlUmVhZElucHV0VG9rZW5zIjowLCJjYWNoZVdyaXRlSW5wdXRUb2tlbkNvdW50IjowLCJjYWNoZVdyaXRlSW5wdXRUb2tlbnMiOjAsImlucHV0VG9rZW5zIjo0OTMyLCJvdXRwdXRUb2tlbnMiOjMzMCwic2VydmVyVG9vbFVzYWdlIjp7fSwidG90YWxUb2tlbnMiOjUyNjJ9fQ==
+  recorded_at: Mon, 02 Mar 2026 15:37:37 GMT
 recorded_with: VCR 6.2.0

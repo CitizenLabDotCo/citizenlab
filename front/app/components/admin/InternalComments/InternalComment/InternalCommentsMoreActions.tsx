@@ -68,7 +68,7 @@ const InternalCommentsMoreActions = ({
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const parentCommentId = comment.relationships?.parent?.data?.id;
   const { data: authUser } = useAuthUser();
-  const { mutate: markForDeletion, isLoading } =
+  const { mutate: markForDeletion, isPending } =
     useMarkInternalCommentForDeletion({
       ideaId,
       parentCommentId,
@@ -159,7 +159,7 @@ const InternalCommentsMoreActions = ({
           </CancelButton>
           <AcceptButton
             buttonStyle="primary"
-            processing={isLoading}
+            processing={isPending}
             className="e2e-confirm-internal-comment-deletion"
             onClick={handleDeleteClick}
             id="e2e-confirm-internal-comment-deletion"

@@ -7,9 +7,7 @@ import { IAdminPublicationData } from 'api/admin_publications/types';
 import { IStatusCountsAll } from 'api/admin_publications_status_counts/types';
 import { PublicationStatus } from 'api/projects/types';
 
-import { ScreenReaderOnly } from 'utils/a11y';
 import { trackEventByName } from 'utils/analytics';
-import { useIntl } from 'utils/cl-intl';
 
 import EmptyContainer from './components/EmptyContainer';
 import Footer from './components/Footer';
@@ -38,6 +36,7 @@ interface Props extends BaseProps {
   onChangePublicationStatus?: (publicationStatus: PublicationStatus[]) => void;
   onLoadMore?: () => void;
   onChangeCurrentTab: (tab: PublicationTab) => void;
+  searchTerm?: string | null;
 }
 
 const ProjectAndFolderCardsInner = ({
@@ -58,9 +57,8 @@ const ProjectAndFolderCardsInner = ({
   onChangeSearch,
   onLoadMore,
   onChangeCurrentTab,
+  searchTerm,
 }: Props) => {
-  const { formatMessage } = useIntl();
-
   const handleChangeSearch = React.useCallback(
     (search: string | null) => {
       onChangeSearch?.(search);
@@ -79,7 +77,37 @@ const ProjectAndFolderCardsInner = ({
 
   const showMore = () => {
     trackEventByName(tracks.clickOnProjectsShowMoreButton);
-    onLoadMore && onLoadMore();
+    const list = document.querySelector<HTMLElement>(
+      '.e2e-projects-list.active-tab'
+    );
+
+    if (list) {
+      const previousCount = list.querySelectorAll(
+        '.e2e-admin-publication-card'
+      ).length;
+      // Each new card mounts only after its own useProjectById query resolves,
+      // so adminPublications.length growing doesn't mean the cards are in the
+      // DOM yet. Watch the list and focus the first new card's title link the
+      // moment it appears — the card root is a non-focusable div under the
+      // accessible-card pattern. Attach before triggering the fetch so we
+      // can't miss any mutations that race in between.
+      const observer = new MutationObserver(() => {
+        const cards = list.querySelectorAll<HTMLElement>(
+          '.e2e-admin-publication-card'
+        );
+        if (cards.length > previousCount) {
+          const titleLink = cards[previousCount].querySelector<HTMLElement>(
+            '.e2e-card-title-link'
+          );
+          titleLink?.focus();
+          observer.disconnect();
+        }
+      });
+      observer.observe(list, { childList: true, subtree: true });
+      setTimeout(() => observer.disconnect(), 10000);
+    }
+
+    onLoadMore?.();
   };
 
   const handleChangeTopics = (topics: string[]) => {
@@ -96,11 +124,6 @@ const ProjectAndFolderCardsInner = ({
 
   return (
     <Box id="e2e-projects-container" display="flex" flexDirection="column">
-      <ScreenReaderOnly aria-live="assertive">
-        {formatMessage(messages.a11y_projectsHaveChanged1, {
-          numberOfFilteredResults: adminPublications.length,
-        })}
-      </ScreenReaderOnly>
       <Box mb="30px">
         <Topbar
           showTitle={showTitle}
@@ -116,6 +139,7 @@ const ProjectAndFolderCardsInner = ({
           onChangeSearch={handleChangeSearch}
           onChangeTab={onChangeCurrentTab}
           currentlyWorkingOnText={currentlyWorkingOnText}
+          searchTerm={searchTerm}
         />
       </Box>
 
@@ -135,7 +159,11 @@ const ProjectAndFolderCardsInner = ({
         />
       )}
 
-      {!loadingInitial && hasPublications && (
+      {/* Rendered under the same condition as the Topbar tabs (the list is
+          empty while loading), so the tab panels the tabs' aria-controls
+          point to always exist — axe flags aria-controls referencing a missing
+          id as an aria-valid-attr-value violation during the load window. */}
+      {!noAdminPublicationsAtAll && (
         <PublicationStatusTabs
           currentTab={currentTab}
           availableTabs={availableTabs}

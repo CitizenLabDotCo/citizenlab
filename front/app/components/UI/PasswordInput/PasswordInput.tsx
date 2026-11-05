@@ -19,7 +19,18 @@ import messages from './messages';
 
 import { Props as WrapperProps } from './';
 
-const PasswordStrengthBar = lazy(() => import('react-password-strength-bar'));
+const PasswordStrengthBar = lazy(() =>
+  // react-password-strength-bar is a CommonJS module (exports.default + __esModule).
+  // Vite's dev dep-optimizer double-wraps its default export, so in dev `module.default`
+  // is `{ default: Component }` rather than the component itself, which makes React.lazy
+  // throw "Element type is invalid". Unwrap the inner default when present (production is fine).
+  import('react-password-strength-bar').then((module) => {
+    const imported = module.default as typeof module.default & {
+      default?: typeof module.default;
+    };
+    return { default: imported.default ?? imported };
+  })
+);
 
 const Container = styled.div`
   position: relative;
@@ -59,6 +70,10 @@ const PasswordInputComponent = ({
   setRef,
   errors = {},
   intl: { formatMessage },
+  ariaInvalid,
+  ariaDescribedBy,
+  required,
+  userInputs,
 }: Props & WrappedComponentProps) => {
   const locale = useLocale();
   const { data: appConfig } = useAppConfiguration();
@@ -98,6 +113,12 @@ const PasswordInputComponent = ({
     setPasswordScore(score);
   };
 
+  const strengthDescriptionId = `${id}-strength-description`;
+  const combinedAriaDescribedBy =
+    [!isLoginPasswordInput ? strengthDescriptionId : undefined, ariaDescribedBy]
+      .filter(Boolean)
+      .join(' ') || undefined;
+
   if (!isNilOrError(locale) && !isNilOrError(appConfig)) {
     return (
       <>
@@ -115,6 +136,9 @@ const PasswordInputComponent = ({
             autocomplete={autocomplete}
             placeholder={placeholder}
             setRef={setInputRef}
+            ariaInvalid={ariaInvalid}
+            ariaDescribedBy={combinedAriaDescribedBy}
+            required={required}
           />
           <ShowPasswordIconButton
             showPassword={showPassword}
@@ -138,30 +162,36 @@ const PasswordInputComponent = ({
         </Container>
         {!isLoginPasswordInput && (
           <>
-            <Suspense fallback={null}>
-              <PasswordStrengthBar
-                password={password || undefined}
-                minLength={minimumPasswordLength}
-                shortScoreWord={formatMessage(
-                  messages.initialPasswordStrengthCheckerMessage,
-                  {
-                    minimumPasswordLength,
-                  }
-                )}
-                scoreWords={[
-                  formatMessage(messages.strength1Password),
-                  formatMessage(messages.strength2Password),
-                  formatMessage(messages.strength3Password),
-                  formatMessage(messages.strength4Password),
-                  formatMessage(messages.strength5Password),
-                ]}
-                onChangeScore={handleOnChangeScore}
-                scoreWordStyle={{
-                  color: colors.textSecondary,
-                }}
-              />
-            </Suspense>
-            <ScreenReaderOnly aria-live="polite">
+            <div aria-hidden="true">
+              <Suspense fallback={null}>
+                <PasswordStrengthBar
+                  // The bar only re-scores on `password` change, so key on
+                  // userInputs to remount it when the email/name are edited.
+                  key={userInputs?.join(' ')}
+                  password={password || undefined}
+                  userInputs={userInputs}
+                  minLength={minimumPasswordLength}
+                  shortScoreWord={formatMessage(
+                    messages.initialPasswordStrengthCheckerMessage,
+                    {
+                      minimumPasswordLength,
+                    }
+                  )}
+                  scoreWords={[
+                    formatMessage(messages.strength1Password),
+                    formatMessage(messages.strength2Password),
+                    formatMessage(messages.strength3Password),
+                    formatMessage(messages.strength4Password),
+                    formatMessage(messages.strength5Password),
+                  ]}
+                  onChangeScore={handleOnChangeScore}
+                  scoreWordStyle={{
+                    color: colors.textSecondary,
+                  }}
+                />
+              </Suspense>
+            </div>
+            <ScreenReaderOnly id={strengthDescriptionId} aria-live="polite">
               {formatMessage(
                 {
                   0: messages.a11y_strength1Password,
@@ -174,9 +204,11 @@ const PasswordInputComponent = ({
             </ScreenReaderOnly>
           </>
         )}
-        {isLoginPasswordInput && <Error text={emptyPasswordErrorMessage} />}
-        {!isLoginPasswordInput && (
-          <Error text={minimumPasswordLengthErrorMessage} />
+        {isLoginPasswordInput && emptyPasswordErrorMessage && (
+          <Error id="password-error" text={emptyPasswordErrorMessage} />
+        )}
+        {!isLoginPasswordInput && minimumPasswordLengthErrorMessage && (
+          <Error id="password-error" text={minimumPasswordLengthErrorMessage} />
         )}
       </>
     );

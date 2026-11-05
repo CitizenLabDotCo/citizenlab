@@ -19,11 +19,10 @@ describe('Idea with anonymous commenting allowed', () => {
       userId = response.body.data.id;
     });
     cy.setAdminLoginCookie();
-    cy.getAuthUser().then(() => {
+    cy.getAdminAuthUser().then(() => {
       cy.apiCreateProject({
         title: projectTitle,
         descriptionPreview: '',
-        description: '',
         publicationStatus: 'published',
       })
         .then((project) => {
@@ -43,10 +42,9 @@ describe('Idea with anonymous commenting allowed', () => {
         .then((phase) => {
           return cy
             .apiCreateIdea({
-              projectId,
+              phaseId: phase.body.data.id,
               ideaTitle,
               ideaContent,
-              phaseIds: [phase.body.data.id],
             })
             .then((idea) => {
               ideaId = idea.body.data.id;

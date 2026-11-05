@@ -8,11 +8,13 @@ import adminPublicationsKeys from './keys';
 
 export type AdminPublicationsKeys = Keys<typeof adminPublicationsKeys>;
 
-export type ReviewState = 'pending' | 'approved';
+export const reviewStates = ['pending', 'approved'] as const;
+export type ReviewState = (typeof reviewStates)[number];
 
 export interface IQueryParameters {
-  topicIds?: string[] | null;
+  globalTopics?: string[] | null;
   areaIds?: string[] | null;
+  spaceIds?: string[] | null;
   publicationStatusFilter?: PublicationStatus[];
   childrenOfId?: string;
   search?: string | null;
@@ -22,8 +24,6 @@ export interface IQueryParameters {
   removeNotAllowedParents?: boolean;
   onlyProjects?: boolean;
   review_state?: ReviewState;
-  filter_is_moderator_of?: boolean;
-  filter_user_is_moderator_of?: string;
   // This excludes projects that are already inside included folders from the result set, so we don't show duplicates.
   exclude_projects_in_included_folders?: boolean;
   include_publications?: boolean;
@@ -47,9 +47,10 @@ export interface IAdminPublicationData {
     ordering: number;
     depth: number;
     publication_status: PublicationStatus;
+    scheduled_status?: PublicationStatus | null;
+    scheduled_at?: string | null;
     visible_children_count: number;
     publication_title_multiloc: Multiloc;
-    publication_description_multiloc: Multiloc;
     publication_description_preview_multiloc: Multiloc;
     publication_slug: string;
     publication_visible_to?: 'public' | 'groups' | 'admins' | null;
@@ -83,3 +84,36 @@ export interface IAdminPublications {
 export interface IAdminPublication {
   data: IAdminPublicationData;
 }
+
+export type SpaceNode = {
+  id: string;
+  type: 'space';
+  title_multiloc: Multiloc;
+  children: (FolderNode | ProjectNode)[];
+};
+
+export type FolderNode = {
+  id: string;
+  type: 'folder';
+  title_multiloc: Multiloc;
+  children: ProjectNode[];
+};
+
+export type ProjectNode = {
+  id: string;
+  type: 'project';
+  title_multiloc: Multiloc;
+};
+
+export type TreeNode = SpaceNode | FolderNode | ProjectNode;
+
+export type NodeType = TreeNode['type'];
+
+export type TreeView = {
+  data: {
+    type: 'tree_view';
+    attributes: {
+      nodes: TreeNode[];
+    };
+  };
+};

@@ -13,8 +13,6 @@ module ParticipationMethod
     end
 
     def default_fields(custom_form)
-      return [] if custom_form.persisted?
-
       [
         page_field(custom_form, 'quality_of_life'),
         sentiment_field(custom_form, 'place_to_live', 'quality_of_life'),
@@ -43,12 +41,16 @@ module ParticipationMethod
       }
     end
 
-    def form_logic_enabled?
+    def form_editable_after_responses?
+      true
+    end
+
+    def supports_form_logic?
       false
     end
 
     def everyone_tracking_enabled?
-      permission = phase.permissions&.find_by(action: 'posting_idea')
+      permission = Permissions::PermissionInheritanceService.new.find(phase, 'posting_idea')
       return false unless permission
 
       permission.everyone_tracking_enabled?
@@ -76,11 +78,19 @@ module ParticipationMethod
       false
     end
 
+    def supports_standalone_placement?
+      false
+    end
+
     def supports_custom_field_categories?
       true
     end
 
     def supports_multiple_phase_reports?
+      true
+    end
+
+    def destroy_ideas_on_phase_destroy?
       true
     end
 

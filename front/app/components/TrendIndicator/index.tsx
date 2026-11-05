@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Text, Icon, Box } from '@citizenlab/cl2-component-library';
 
+import { ScreenReaderOnly } from 'utils/a11y';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
@@ -33,9 +34,23 @@ const TrendIndicator = ({
     percentageDifference >= 0 ? '+' : ''
   }${Math.round(percentageDifference)}%`;
 
+  // Screen-reader friendly description of the trend
+  const absPercentage = Math.abs(Math.round(percentageDifference));
+  const trendMessage =
+    trendType === 'positive'
+      ? formatMessage(messages.trendIncreased, { percentage: absPercentage })
+      : trendType === 'negative'
+      ? formatMessage(messages.trendDecreased, { percentage: absPercentage })
+      : formatMessage(messages.trendNoChange);
+  const screenReaderLabel = showQuarterComparisonLabel
+    ? `${trendMessage}${formatMessage(messages.comparedToLastQuarter)}`
+    : trendMessage;
+
   return (
     <Box display="flex" gap="8px">
+      <ScreenReaderOnly>{screenReaderLabel}</ScreenReaderOnly>
       <Text
+        aria-hidden
         m="0px"
         color={trendConfiguration[trendType].colorName}
         fontSize="s"
@@ -50,7 +65,7 @@ const TrendIndicator = ({
         )}
         {trendPercentageLabel}
       </Text>
-      <Text m="0px" color="textSecondary">
+      <Text aria-hidden m="0px" color="textSecondary">
         {showQuarterComparisonLabel && formatMessage(messages.lastQuarter)}
       </Text>
     </Box>

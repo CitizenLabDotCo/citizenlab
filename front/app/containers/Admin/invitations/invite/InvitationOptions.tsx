@@ -126,7 +126,7 @@ const InvitationOptions = ({
             values={{
               supportPageLink: (
                 <a
-                  href={formatMessage(messages.invitesSupportPageURL)}
+                  href={formatMessage(messages.invitesSupportPageURL2)}
                   target="_blank"
                   rel="noreferrer"
                 >
@@ -177,7 +177,7 @@ const InvitationOptions = ({
                       moderatorLabelTooltipLink: (
                         <a
                           href={formatMessage(
-                            messages.moderatorLabelTooltipLink
+                            messages.moderatorLabelTooltipLink2
                           )}
                           target="_blank"
                           rel="noreferrer"
@@ -254,7 +254,7 @@ const InvitationOptions = ({
         </SectionField>
 
         <SectionField>
-          <Label>
+          <Label id="invite-text-label">
             <FormattedMessage {...messages.inviteTextLabel} />
           </Label>
           <QuillEditor
@@ -264,6 +264,7 @@ const InvitationOptions = ({
             limitedTextFormatting
             noVideos
             withCTAButton
+            ariaLabelledBy="invite-text-label"
           />
         </SectionField>
       </Box>

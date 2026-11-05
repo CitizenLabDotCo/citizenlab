@@ -1,0 +1,20 @@
+# frozen_string_literal: true
+
+require 'rails_helper'
+
+RSpec.describe ProjectFolders::Image do
+  subject { create(:project_folder_image) }
+
+  it_behaves_like 'a plain text multiloc', factory: :project_folder_image, attribute: :alt_text_multiloc
+
+  describe 'Default factory' do
+    it 'is valid' do
+      expect(build(:project_folder_image)).to be_valid
+    end
+  end
+
+  it { is_expected.to belong_to(:project_folder) }
+  it { is_expected.to validate_presence_of(:project_folder) }
+  it { is_expected.not_to validate_presence_of(:ordering) }
+  it { is_expected.to validate_numericality_of(:ordering) }
+end

@@ -17,10 +17,6 @@ class PublicApi::V2::UserSerializer < PublicApi::V2::BaseSerializer
     :email_confirmation_code_sent_at,
     :confirmation_required,
     :custom_field_values,
-    # TODO: Add in these additional user stats
-    # :last_access_at,
-    # :first_participated_at,
-    # :average_time_on_platform,
     :status
 
   def status
@@ -29,8 +25,22 @@ class PublicApi::V2::UserSerializer < PublicApi::V2::BaseSerializer
     object.active? ? 'active' : 'incomplete'
   end
 
+  # Preserves the v2 API shape: previously a column on users, now lives on the
+  # active confirmation row (new_email_confirmation if a change is in flight,
+  # otherwise email_confirmation). That row is deleted once its code has been
+  # used, so this reads as null for a user with no code outstanding — where the
+  # old column kept the last send time for good.
+  def email_confirmation_code_sent_at
+    active = object.new_email.present? ? object.new_email_confirmation : object.email_confirmation
+    active&.code_sent_at
+  end
+
   def bio
     multiloc_service.t(object.bio_multiloc)
+  end
+
+  def custom_field_values
+    CustomFieldValuesTransitionService.new.custom_field_values(object)
   end
 
   private

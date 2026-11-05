@@ -1,7 +1,29 @@
 import { addDays, format } from 'date-fns';
 import { http, HttpResponse } from 'msw';
 
+import { PhaseActionDescriptors } from 'api/projects/types';
+
 import { IPhaseData } from '../types';
+
+export const mockPhaseActionDescriptors: PhaseActionDescriptors = {
+  posting_idea: { enabled: true, disabled_reason: null },
+  commenting_idea: { enabled: true, disabled_reason: null },
+  comment_reacting_idea: { enabled: true, disabled_reason: null },
+  reacting_idea: {
+    enabled: true,
+    disabled_reason: null,
+    up: { enabled: true, disabled_reason: null },
+    down: { enabled: true, disabled_reason: null },
+  },
+  taking_survey: { enabled: false, disabled_reason: 'not_survey' },
+  taking_poll: { enabled: false, disabled_reason: 'not_poll' },
+  annotating_document: {
+    enabled: false,
+    disabled_reason: 'not_document_annotation',
+  },
+  voting: { enabled: false, disabled_reason: 'not_voting' },
+  volunteering: { enabled: false, disabled_reason: 'not_volunteering' },
+};
 
 export const phasesData: IPhaseData[] = [
   {
@@ -11,10 +33,12 @@ export const phasesData: IPhaseData[] = [
       allow_anonymous_participation: false,
       title_multiloc: { en: 'A Mock Information phase' },
       description_multiloc: { en: 'For testing purposes' },
+      draft_description_multiloc: {},
       start_at: 'today',
       end_at: format(addDays(new Date(), 21), 'yyyy-MM-dd'),
       created_at: 'yesterday',
       updated_at: 'yesterday but later',
+      action_descriptors: mockPhaseActionDescriptors,
       submission_enabled: false,
       commenting_enabled: false,
       reacting_enabled: false,
@@ -22,6 +46,7 @@ export const phasesData: IPhaseData[] = [
       reacting_dislike_enabled: false,
       reacting_dislike_limited_max: 0,
       participation_method: 'ideation',
+      placement_type: 'on_timeline',
       reacting_like_method: 'limited',
       reacting_dislike_method: 'limited',
       input_term: 'idea',
@@ -33,6 +58,10 @@ export const phasesData: IPhaseData[] = [
       report_public: false,
       total_votes_amount: 0,
       user_data_collection: 'all_data',
+      voting_filtering_enabled: false,
+      user_fields_in_form_enabled: false,
+      supports_form_logic: false,
+      supports_public_visibility: true,
     },
     relationships: {
       permissions: {
@@ -56,11 +85,14 @@ export const phasesData: IPhaseData[] = [
       allow_anonymous_participation: false,
       title_multiloc: { en: 'A Mock Poll phase' },
       description_multiloc: { en: 'For testing purposes' },
+      draft_description_multiloc: {},
       start_at: 'today',
       end_at: 'one week from now',
       created_at: 'yesterday',
       updated_at: 'yesterday but later',
+      action_descriptors: mockPhaseActionDescriptors,
       participation_method: 'poll',
+      placement_type: 'on_timeline',
       submission_enabled: false,
       commenting_enabled: false,
       reacting_enabled: false,
@@ -79,6 +111,10 @@ export const phasesData: IPhaseData[] = [
       report_public: false,
       total_votes_amount: 0,
       user_data_collection: 'all_data',
+      voting_filtering_enabled: false,
+      user_fields_in_form_enabled: false,
+      supports_form_logic: false,
+      supports_public_visibility: false,
     },
     relationships: {
       permissions: {
@@ -99,11 +135,14 @@ export const phasesData: IPhaseData[] = [
       allow_anonymous_participation: false,
       title_multiloc: { en: 'A Mock Information phase' },
       description_multiloc: { en: 'For testing purposes' },
+      draft_description_multiloc: {},
       start_at: 'today',
       end_at: 'one week from now',
       created_at: 'yesterday',
       updated_at: 'yesterday but later',
+      action_descriptors: mockPhaseActionDescriptors,
       participation_method: 'ideation',
+      placement_type: 'on_timeline',
       submission_enabled: true,
       commenting_enabled: true,
       reacting_enabled: true,
@@ -121,6 +160,10 @@ export const phasesData: IPhaseData[] = [
       report_public: false,
       total_votes_amount: 0,
       user_data_collection: 'all_data',
+      voting_filtering_enabled: false,
+      user_fields_in_form_enabled: false,
+      supports_form_logic: false,
+      supports_public_visibility: true,
     },
     relationships: {
       permissions: {
@@ -146,10 +189,12 @@ export const mockPhaseInformationData: IPhaseData = {
     allow_anonymous_participation: false,
     title_multiloc: { en: 'A Mock Information phase' },
     description_multiloc: { en: 'For testing purposes' },
+    draft_description_multiloc: {},
     start_at: 'today',
     end_at: 'one week from now',
     created_at: 'yesterday',
     updated_at: 'yesterday but later',
+    action_descriptors: mockPhaseActionDescriptors,
     submission_enabled: false,
     commenting_enabled: false,
     reacting_enabled: false,
@@ -157,6 +202,7 @@ export const mockPhaseInformationData: IPhaseData = {
     reacting_dislike_enabled: false,
     reacting_dislike_limited_max: 0,
     participation_method: 'information',
+    placement_type: 'on_timeline',
     reacting_like_method: 'limited',
     reacting_dislike_method: 'limited',
     input_term: 'idea',
@@ -168,6 +214,10 @@ export const mockPhaseInformationData: IPhaseData = {
     report_public: false,
     total_votes_amount: 0,
     user_data_collection: 'all_data',
+    voting_filtering_enabled: false,
+    user_fields_in_form_enabled: false,
+    supports_form_logic: false,
+    supports_public_visibility: false,
   },
   relationships: {
     permissions: {
@@ -192,11 +242,14 @@ export const mockPhaseIdeationData: IPhaseData = {
     allow_anonymous_participation: false,
     title_multiloc: { en: 'A Mock Information phase' },
     description_multiloc: { en: 'For testing purposes' },
+    draft_description_multiloc: {},
     start_at: 'today',
     end_at: 'one week from now',
     created_at: 'yesterday',
     updated_at: 'yesterday but later',
+    action_descriptors: mockPhaseActionDescriptors,
     participation_method: 'ideation',
+    placement_type: 'on_timeline',
     submission_enabled: true,
     commenting_enabled: true,
     reacting_enabled: true,
@@ -214,6 +267,10 @@ export const mockPhaseIdeationData: IPhaseData = {
     report_public: false,
     total_votes_amount: 0,
     user_data_collection: 'all_data',
+    voting_filtering_enabled: false,
+    user_fields_in_form_enabled: false,
+    supports_form_logic: false,
+    supports_public_visibility: true,
   },
   relationships: {
     permissions: {
@@ -238,11 +295,14 @@ export const mockPhaseSurveyTypeformData: IPhaseData = {
     allow_anonymous_participation: false,
     title_multiloc: { en: 'A Mock Information phase' },
     description_multiloc: { en: 'For testing purposes' },
+    draft_description_multiloc: {},
     start_at: 'today',
     end_at: 'one week from now',
     created_at: 'yesterday',
     updated_at: 'yesterday but later',
+    action_descriptors: mockPhaseActionDescriptors,
     participation_method: 'survey',
+    placement_type: 'on_timeline',
     reacting_like_method: 'limited',
     reacting_dislike_method: 'limited',
     input_term: 'idea',
@@ -262,6 +322,10 @@ export const mockPhaseSurveyTypeformData: IPhaseData = {
     report_public: false,
     total_votes_amount: 0,
     user_data_collection: 'all_data',
+    voting_filtering_enabled: false,
+    user_fields_in_form_enabled: false,
+    supports_form_logic: false,
+    supports_public_visibility: false,
   },
   relationships: {
     permissions: {
@@ -286,11 +350,14 @@ export const mockPhaseSurveyGoogleFormData: IPhaseData = {
     allow_anonymous_participation: false,
     title_multiloc: { en: 'A Mock Information phase' },
     description_multiloc: { en: 'For testing purposes' },
+    draft_description_multiloc: {},
     start_at: 'today',
     end_at: 'one week from now',
     created_at: 'yesterday',
     updated_at: 'yesterday but later',
+    action_descriptors: mockPhaseActionDescriptors,
     participation_method: 'survey',
+    placement_type: 'on_timeline',
     reacting_like_method: 'limited',
     reacting_dislike_method: 'limited',
     input_term: 'idea',
@@ -310,6 +377,10 @@ export const mockPhaseSurveyGoogleFormData: IPhaseData = {
     report_public: false,
     total_votes_amount: 0,
     user_data_collection: 'all_data',
+    voting_filtering_enabled: false,
+    user_fields_in_form_enabled: false,
+    supports_form_logic: false,
+    supports_public_visibility: false,
   },
   relationships: {
     permissions: {
@@ -346,7 +417,9 @@ const votingPhase: IPhaseData = {
     allow_anonymous_participation: false,
     title_multiloc: { en: 'A Mock voting phase' },
     description_multiloc: { en: 'For testing purposes' },
+    draft_description_multiloc: {},
     participation_method: 'voting',
+    placement_type: 'on_timeline',
     voting_method: 'single_voting',
     poll_anonymous: false,
     survey_embed_url: null,
@@ -356,6 +429,7 @@ const votingPhase: IPhaseData = {
     end_at: '2025-11-19',
     created_at: '2023-11-12T11:05:43.934Z',
     updated_at: '2024-01-25T17:29:22.242Z',
+    action_descriptors: mockPhaseActionDescriptors,
     ideas_count: 0,
     submission_enabled: true,
     commenting_enabled: true,
@@ -377,6 +451,10 @@ const votingPhase: IPhaseData = {
     vote_term: 'vote',
     report_public: false,
     user_data_collection: 'all_data',
+    voting_filtering_enabled: true,
+    user_fields_in_form_enabled: false,
+    supports_form_logic: false,
+    supports_public_visibility: true,
   },
   relationships: {
     permissions: {

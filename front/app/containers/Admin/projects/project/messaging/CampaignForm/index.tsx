@@ -62,6 +62,7 @@ export interface FormValues {
   reply_to: string;
   subject_multiloc: Multiloc;
   body_multiloc: Multiloc;
+  isScheduled?: boolean;
 }
 
 type CampaignFormProps = {
@@ -94,7 +95,7 @@ const CampaignForm = ({
       formatMessage(messages.fieldBodyError)
     ),
   });
-
+  const isScheduledSavedCampaign = defaultValues?.isScheduled;
   const methods = useForm<FormValues>({
     mode: 'onBlur',
     defaultValues,
@@ -242,6 +243,7 @@ const CampaignForm = ({
                 firstName: '{{first_name}}',
                 lastName: '{{last_name}}',
               })}
+              withGifSupport
               noVideos
               noAlign
             />
@@ -252,8 +254,11 @@ const CampaignForm = ({
             id="e2e-campaign-form-save-button"
             type="submit"
             processing={isLoading}
+            disabled={!methods.formState.isDirty}
           >
-            {formatMessage(messages.formSave)}
+            {isScheduledSavedCampaign
+              ? formatMessage(messages.save)
+              : formatMessage(messages.formSave)}
           </Button>
         </Box>
       </form>

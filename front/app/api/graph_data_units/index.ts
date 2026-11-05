@@ -15,10 +15,12 @@ import {
   ProjectsTimelineProps,
   DeviceTypesProps,
   VisitorsLanguagesProps,
+  InternalAdoptionProps,
 } from './requestTypes';
 // Response types
 import { DemographicsResponse } from './responseTypes/DemographicsWidget';
 import { DeviceTypesResponse } from './responseTypes/DeviceTypesWidget';
+import { InternalAdoptionResponse } from './responseTypes/InternalAdoptionWidget';
 import { MethodsUsedResponse } from './responseTypes/MethodsUsedWidget';
 import { MostReactedIdeasResponse } from './responseTypes/MostReactedIdeasWidget';
 import { ParticipantsResponse } from './responseTypes/ParticipantsWidget';
@@ -162,6 +164,32 @@ export const useParticipantsLive = (
   return useGraphDataUnitsLive<ParticipantsResponse>(
     {
       resolved_name: 'ParticipantsWidget',
+      props,
+    },
+    { onSuccess }
+  );
+};
+
+export const useInternalAdoption = (
+  props: InternalAdoptionProps,
+  { onSuccess }: { onSuccess?: () => void } = {}
+) => {
+  return useGraphDataUnits<InternalAdoptionResponse>(
+    {
+      resolved_name: 'InternalAdoptionWidget',
+      props,
+    },
+    { onSuccess }
+  );
+};
+
+export const useInternalAdoptionLive = (
+  props: InternalAdoptionProps,
+  { onSuccess }: { onSuccess?: () => void } = {}
+) => {
+  return useGraphDataUnitsLive<InternalAdoptionResponse>(
+    {
+      resolved_name: 'InternalAdoptionWidget',
       props,
     },
     { onSuccess }

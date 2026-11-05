@@ -59,7 +59,7 @@ const FilterSidebarProjects = ({
           buttonStyle="text"
           icon="edit"
           pl="12px"
-          linkTo="/admin/projects"
+          to="/admin/projects"
           iconPos="right"
           iconSize="14px"
         >

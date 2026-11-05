@@ -22,7 +22,9 @@ resource 'Idea Custom Fields' do
       logic: {},
       constraints: {},
       random_option_ordering: false,
-      include_in_printed_form: true
+      include_in_printed_form: true,
+      answers_visible_to: 'moderators',
+      show_as_filter: false
     }
   end
 
@@ -133,6 +135,55 @@ resource 'Idea Custom Fields' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 1
+      end
+
+      example 'Stores min_characters on an inserted text field' do
+        # FormBuilder seeds new survey text fields with min_characters: 2;
+        # assert that value passes through the bulk-update endpoint.
+        request = {
+          custom_fields: [
+            { input_type: 'page', page_layout: 'default' },
+            {
+              input_type: 'text',
+              title_multiloc: { 'en' => 'Inserted field' },
+              min_characters: 2
+            },
+            final_page
+          ]
+        }
+        do_request request
+
+        assert_status 200
+        json_response = json_parse(response_body)
+        expect(json_response[:data][1][:attributes][:min_characters]).to eq 2
+      end
+
+      example 'Deleting a field deletes the answers of existing inputs', document: false do
+        delete_field = create(:custom_field_text, resource: custom_form, key: 'field_to_delete')
+        keep_field = create(:custom_field_text, resource: custom_form, key: 'field_to_keep')
+        input = create(
+          :idea,
+          project: context.project,
+          creation_phase: context,
+          phases: [context],
+          custom_field_answers: [
+            build(:custom_field_answer, key: 'field_to_delete', value: 'an answer', custom_field: delete_field),
+            build(:custom_field_answer, key: 'field_to_keep', value: 'another answer', custom_field: keep_field)
+          ]
+        )
+
+        request = {
+          custom_fields: [
+            { input_type: 'page', page_layout: 'default' },
+            { id: keep_field.id, title_multiloc: { 'en' => 'Kept field' } },
+            final_page
+          ]
+        }
+        do_request request
+
+        assert_status 200
+        expect(CustomField.where(id: delete_field).count).to eq 0
+        expect(input.reload.custom_field_answers.pluck(:key, :value)).to eq [['field_to_keep', 'another answer']]
       end
 
       example 'Add a custom field with options, including an "other" option and delete a field with options' do
@@ -636,7 +687,7 @@ resource 'Idea Custom Fields' do
 
         assert_status 422
         json_response = json_parse response_body
-        expect(json_response).to eq({ :errors => { :form => [{ :error => 'stale_data' }] } })
+        expect(json_response).to eq({ errors: { form: [{ error: 'stale_data' }] } })
       end
 
       example '[error] last custom field is not the end page' do
@@ -653,7 +704,7 @@ resource 'Idea Custom Fields' do
 
         assert_status 422
         json_response = json_parse response_body
-        expect(json_response).to eq({ :errors => { :form => [{ :error => 'no_end_page' }] } })
+        expect(json_response).to eq({ errors: { form: [{ error: 'no_end_page' }] } })
       end
 
       example 'Update linear_scale field' do
@@ -950,9 +1001,7 @@ resource 'Idea Custom Fields' do
           assert_status 200
           expect(CustomFieldOptionImage.all.count).to eq 2
           expect(CustomFieldOption.find(option1.id).image.id).to eq new_image.id
-          expect(CustomFieldOptionImage.pluck(:custom_field_option_id)).to match_array(
-            [new_image.reload.custom_field_option_id, image2.custom_field_option_id]
-          )
+          expect(CustomFieldOptionImage.pluck(:custom_field_option_id)).to contain_exactly(new_image.reload.custom_field_option_id, image2.custom_field_option_id)
           expect(json_response_body[:included].pluck(:type)).to match_array(
             %w[image custom_field_option image custom_field_option custom_form]
           )
@@ -1152,22 +1201,24 @@ resource 'Idea Custom Fields' do
       end
 
       context 'when CustomForm custom field has same key as User custom_field' do
-        example 'Deleting the CustomForm field does not cause deletion User custom_field_values key', document: false do
+        example 'Deleting the CustomForm field does not cause deletion of the User answer key', document: false do
           custom_field = create(:custom_field, resource: custom_form, title_multiloc: { 'en' => 'Some field' })
-          user1 = create(:user, custom_field_values: { custom_field.key => 'some value' })
+          user_field = create(:custom_field, resource_type: 'User', key: custom_field.key)
+          user1 = create(:user, custom_field_answers: [build(:custom_field_answer, key: custom_field.key, value: 'some value', custom_field: user_field)])
 
           do_request({ custom_fields: [final_page] })
 
           assert_status 200
-          expect(user1.reload.custom_field_values).to eq({ custom_field.key => 'some value' })
+          expect(user1.reload.custom_field_answers.pluck(:key, :value)).to eq [[custom_field.key, 'some value']]
         end
       end
 
       context 'when CustomForm custom field option collides with User custom field option' do
-        example 'Deleting the CustomForm option does not delete the User custom_field_values value', document: false do
+        example 'Deleting the CustomForm option does not delete the User answer value', document: false do
           field_to_update = create(:custom_field, input_type: 'select', resource: custom_form)
           option = create(:custom_field_option, custom_field: field_to_update)
-          user1 = create(:user, custom_field_values: { field_to_update.key => option.key })
+          user_field = create(:custom_field, resource_type: 'User', key: field_to_update.key)
+          user1 = create(:user, custom_field_answers: [build(:custom_field_answer, key: field_to_update.key, value: option.key, custom_field: user_field)])
 
           request = {
             custom_fields: [
@@ -1186,7 +1237,7 @@ resource 'Idea Custom Fields' do
           do_request request
 
           assert_status 200
-          expect(user1.reload.custom_field_values).to eq({ field_to_update.key => option.key })
+          expect(user1.reload.custom_field_answers.pluck(:key, :value)).to eq [[field_to_update.key, option.key]]
         end
       end
 
@@ -1572,7 +1623,9 @@ resource 'Idea Custom Fields' do
               logic: { next_page_id: 'TEMP-ID-1' },
               constraints: {},
               random_option_ordering: false,
-              include_in_printed_form: true
+              include_in_printed_form: true,
+              answers_visible_to: 'moderators',
+              show_as_filter: false
             },
             {
               id: page2.id,
@@ -3239,6 +3292,39 @@ resource 'Idea Custom Fields' do
         })
       end
 
+      example 'Swap the order of existing options' do
+        select_field = create(:custom_field_select, resource: custom_form)
+        option_a = create(:custom_field_option, custom_field: select_field, key: 'option_a', title_multiloc: { 'en' => 'Option A' }, ordering: 0)
+        option_b = create(:custom_field_option, custom_field: select_field, key: 'option_b', title_multiloc: { 'en' => 'Option B' }, ordering: 1)
+
+        # Swap the order: B first, then A
+        request = {
+          custom_fields: [
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
+            {
+              id: select_field.id,
+              input_type: 'select',
+              title_multiloc: select_field.title_multiloc,
+              options: [
+                { id: option_b.id, title_multiloc: { 'en' => 'Option B' } },
+                { id: option_a.id, title_multiloc: { 'en' => 'Option A' } }
+              ]
+            },
+            final_page
+          ]
+        }
+        do_request request
+
+        assert_status 200
+
+        # Verify ordering was swapped
+        expect(option_b.reload.ordering).to eq(0)
+        expect(option_a.reload.ordering).to eq(1)
+      end
+
       example 'Updating custom fields when there are responses' do
         create(:custom_field, resource: custom_form) # field to ensure custom form has been created
         create(:idea_status_proposed)
@@ -3309,7 +3395,6 @@ resource 'Idea Custom Fields' do
         expect { do_request(request) }.to enqueue_job(LogActivityJob).with(field2, 'changed', any_args).exactly(1).times
 
         # 1 for the form
-        # NOTE: If this test fails, check :params_size - this will increase if additional attributes are added to fields
         request[:custom_fields][2][:title_multiloc] = { 'en' => 'Field 2 changed once more' }
         expect { do_request(request) }
           .to enqueue_job(LogActivityJob).with(
@@ -3317,7 +3402,7 @@ resource 'Idea Custom Fields' do
             'changed',
             User.first,
             kind_of(Integer),
-            payload: { save_type: 'manual', pages: 2, fields: 2, params_size: 1405, form_opened_at: kind_of(DateTime), form_updated_at: kind_of(DateTime) },
+            payload: { save_type: 'manual', pages: 2, fields: 2, params_size: kind_of(Integer), form_opened_at: kind_of(DateTime), form_updated_at: kind_of(DateTime) },
             project_id: custom_form.project_id
           ).exactly(1).times
       end

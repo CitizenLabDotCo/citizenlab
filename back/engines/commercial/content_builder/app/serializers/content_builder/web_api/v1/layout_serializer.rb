@@ -8,7 +8,10 @@ module ContentBuilder
         attributes :enabled, :code, :created_at, :updated_at
 
         attribute :craftjs_json do |layout|
-          LayoutImageService.new.render_data_images layout.craftjs_json
+          craftjs_json = LayoutImageService.new.render_data_images layout.craftjs_json
+          LayoutTextImageService.new.render_data_images(
+            craftjs_json, imageable: layout.content_buildable
+          )
         end
       end
     end

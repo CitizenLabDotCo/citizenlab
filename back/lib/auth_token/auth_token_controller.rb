@@ -1,51 +1,27 @@
 # frozen_string_literal: true
 
 # After https://github.com/nsarno/knock/blob/master/app/controllers/knock/auth_token_controller.rb.
+#
+# Only used by the public API token endpoint. User tokens are issued by
+# WebApi::V1::UserTokenController, which does not go through here.
 module AuthToken
   class AuthTokenController < ActionController::API
-    include ActionController::Cookies
-
-    TOKEN_LIFETIME = 1.day
-
-    before_action :authenticate, except: [:destroy]
+    before_action :authenticate
 
     rescue_from ActiveRecord::RecordNotFound, with: :not_found
 
     def create
-      @token_lifetime = token_lifetime
-      token = auth_token.token
-
-      # Use response.set_cookie, not `cookies[:cl2_jwt] =`, to bypass middleware
-      # dependency to ensure reliable HttpOnly flag setting in API-only Rails apps
-      response.set_cookie(:cl2_jwt, {
-        value: token,
-        httponly: true,
-        secure: true,
-        same_site: :strict,
-        expires: @token_lifetime.from_now,
-        path: '/'
-      })
-
       render json: auth_token, status: :created
-    end
-
-    def destroy
-      # Clear the JWT cookie by setting it to expire immediately
-      response.set_cookie(:cl2_jwt, {
-        value: '',
-        expires: 1.second.ago,
-        path: '/',
-        httponly: true,
-        secure: true,
-        same_site: :strict
-      })
-
-      head :no_content
     end
 
     private
 
     def authenticate
+      # A blank secret is never a valid credential. The entity is expected to reject it as
+      # well, but we refuse it here too so that no entity implementation can ever hand out a
+      # token to a request that did not supply a password/secret.
+      raise ActiveRecord::RecordNotFound if auth_params[secret_param].blank?
+
       return if entity.present? && entity.authenticate(auth_params[secret_param])
 
       raise ActiveRecord::RecordNotFound
@@ -94,18 +70,6 @@ module AuthToken
 
     def not_found
       head :not_found
-    end
-
-    def token_lifetime
-      lifetime = TOKEN_LIFETIME
-
-      if auth_params[:remember_me] == true
-        config = AppConfiguration.instance
-        max_lifetime = config.settings.dig('core', 'authentication_token_lifetime_in_days')
-        lifetime = max_lifetime.days if max_lifetime.present?
-      end
-
-      lifetime
     end
   end
 end
