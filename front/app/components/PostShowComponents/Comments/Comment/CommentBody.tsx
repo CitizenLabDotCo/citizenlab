@@ -86,7 +86,8 @@ const CommentBody = ({
 
   const [commentContent, setCommentContent] = useState('');
   const [editableCommentContent, setEditableCommentContent] = useState('');
-  const [translateButtonClicked, setTranslateButtonClicked] = useState(false);
+  // Show the machine translation by default, when the comment is not in the user's locale.
+  const [translateButtonClicked, setTranslateButtonClicked] = useState(true);
 
   const [apiErrors, setApiErrors] = useState<CLErrors | null>(null);
   const textareaElement = useRef<HTMLTextAreaElement | null>(null);

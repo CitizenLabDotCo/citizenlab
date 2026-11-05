@@ -1,6 +1,5 @@
 import React, { memo, useCallback, useState } from 'react';
 
-import { colors, fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useComment from 'api/comments/useComment';
@@ -10,12 +9,12 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
 import { commentTranslateButtonClicked } from 'components/PostShowComponents/Comments/events';
-import messages from 'components/PostShowComponents/Comments/messages';
 import tracks from 'components/PostShowComponents/Comments/tracks';
 
 import { trackEventByName } from 'utils/analytics';
-import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
+
+import TranslationNotice from './TranslationNotice';
 
 const Container = styled.li`
   display: flex;
@@ -23,22 +22,6 @@ const Container = styled.li`
   list-style: none;
   margin: 0;
   padding: 0;
-`;
-
-const TranslateButton = styled.button`
-  color: ${colors.textSecondary};
-  font-size: ${fontSizes.s}px;
-  font-weight: 400;
-  white-space: nowrap;
-  cursor: pointer;
-  padding: 0;
-  margin: 0;
-  border: none;
-
-  &:hover {
-    color: #000;
-    text-decoration: underline;
-  }
 `;
 
 interface Props {
@@ -54,7 +37,8 @@ const CommentTranslateButton = memo<Props>(({ commentId, className }) => {
     name: 'machine_translations',
   });
 
-  const [translateButtonClicked, setTranslateButtonClicked] = useState(false);
+  // The translation is shown by default. Keep in sync with CommentBody.
+  const [translateButtonClicked, setTranslateButtonClicked] = useState(true);
 
   const onTranslate = useCallback(() => {
     const { clickGoBackToOriginalCommentButton, clickTranslateCommentButton } =
@@ -81,13 +65,11 @@ const CommentTranslateButton = memo<Props>(({ commentId, className }) => {
   if (machineTranslationsEnabled && showTranslateButton) {
     return (
       <Container className={`translate ${className || ''}`}>
-        <TranslateButton onClick={onTranslate}>
-          {!translateButtonClicked ? (
-            <FormattedMessage {...messages.seeTranslation} />
-          ) : (
-            <FormattedMessage {...messages.seeOriginal} />
-          )}
-        </TranslateButton>
+        <TranslationNotice
+          multiloc={commentBodyMultiloc}
+          showTranslation={translateButtonClicked}
+          onToggle={onTranslate}
+        />
       </Container>
     );
   }

@@ -76,8 +76,9 @@ export const IdeasShow = ({
   const { data: project, isLoading: isLoadingProject } =
     useProjectById(projectId);
   const localize = useLocalize();
+  // Show the machine translation by default, when the idea is not in the user's locale.
   const [translateButtonIsClicked, setTranslateButtonIsClicked] =
-    useState(false);
+    useState(true);
   const postOfficialFeedbackPermission = usePermission({
     item: project?.data || null,
     action: 'moderate',
