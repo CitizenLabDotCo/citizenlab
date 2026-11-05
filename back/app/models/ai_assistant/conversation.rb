@@ -30,7 +30,7 @@ module AIAssistant
   # survey of a phase. +surface_key+ says where the assistant is used, which decides its
   # prompt and tools.
   class Conversation < ApplicationRecord
-    STATUSES = %w[idle running awaiting_approval failed].freeze
+    STATUSES = %w[idle running awaiting_user failed].freeze
     # A running turn stores a message more often than this, unless its job was lost.
     TURN_TIMEOUT = 10.minutes
 
@@ -44,10 +44,10 @@ module AIAssistant
 
     validates :surface_key, :locale, presence: true
 
-    # A failed turn's calls awaiting approval can't be decided on anymore.
+    # A failed turn's calls awaiting the user can't be decided on anymore.
     def fail_turn!(error_code)
       transaction do
-        expire_calls_awaiting_approval!
+        expire_calls_awaiting_user!
         close_cut_off_tool_calls!
         update!(status: 'failed', last_error_code: error_code)
       end
@@ -60,22 +60,22 @@ module AIAssistant
     end
 
     # Gets the conversation out of a state that nothing would end anymore: a turn whose job
-    # was lost, a decision whose request died, or calls awaiting approval nobody decided on.
+    # was lost, a decision whose request died, or calls awaiting the user nobody decided on.
     def recover_if_stuck!
       if running?
         fail_turn!('turn_timed_out') if updated_at < TURN_TIMEOUT.ago
-      elsif awaiting_approval?
+      elsif awaiting_user?
         recover_stuck_decisions!
       end
     end
 
     # These calls can no longer be decided on: the model will see them as expired.
-    def expire_calls_awaiting_approval!
+    def expire_calls_awaiting_user!
       transaction do
-        tool_calls.awaiting_approval.find_each do |tool_call|
+        tool_calls.awaiting_user.find_each do |tool_call|
           tool_call.update!(status: 'expired', result: { expired: true }.to_json)
         end
-        update!(status: 'idle') if awaiting_approval?
+        update!(status: 'idle') if awaiting_user?
       end
     end
 
@@ -83,11 +83,11 @@ module AIAssistant
 
     def recover_stuck_decisions!
       return unless tool_calls.where(status: ToolCall::UNDECIDED_STATUSES).none? ||
-                    tool_calls.interrupted_approvals.exists? || tool_calls.overdue_for_approval.exists?
+                    tool_calls.interrupted_approvals.exists? || tool_calls.overdue.exists?
 
       transaction do
         tool_calls.interrupted_approvals.find_each { |tool_call| tool_call.update!(status: 'failed') }
-        expire_calls_awaiting_approval! if tool_calls.overdue_for_approval.exists?
+        expire_calls_awaiting_user! if tool_calls.overdue.exists?
         update!(status: 'idle') if tool_calls.where(status: ToolCall::UNDECIDED_STATUSES).none?
       end
     end

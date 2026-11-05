@@ -32,10 +32,10 @@ module AIAssistant
   # A tool call made by the model. Read-only tools run right away; write tools are only
   # stored, and run once the user approves them.
   class ToolCall < ApplicationRecord
-    STATUSES = %w[pending auto_executed awaiting_approval approved executed failed rejected expired].freeze
+    STATUSES = %w[pending auto_executed awaiting_user approved executed failed rejected expired].freeze
     # Statuses that still wait for a decision or for the approved tool to finish.
-    UNDECIDED_STATUSES = %w[awaiting_approval approved].freeze
-    APPROVAL_TTL = 24.hours
+    UNDECIDED_STATUSES = %w[awaiting_user approved].freeze
+    AWAITING_USER_TTL = 24.hours
     # An approved change runs in the request that approves it, so one still approved after
     # this was interrupted.
     RUN_TIMEOUT = 10.minutes
@@ -45,7 +45,7 @@ module AIAssistant
 
     enum :status, STATUSES.index_by(&:itself)
 
-    scope :overdue_for_approval, -> { awaiting_approval.where(created_at: ...APPROVAL_TTL.ago) }
+    scope :overdue, -> { awaiting_user.where(created_at: ...AWAITING_USER_TTL.ago) }
     scope :interrupted_approvals, -> { approved.where(decided_at: ...RUN_TIMEOUT.ago) }
 
     validates :tool_use_id, :name, presence: true
@@ -53,7 +53,7 @@ module AIAssistant
     delegate :conversation, to: :message
 
     def expired?
-      awaiting_approval? && created_at < APPROVAL_TTL.ago
+      awaiting_user? && created_at < AWAITING_USER_TTL.ago
     end
 
     # What the model gets back as the result of this call.

@@ -13,7 +13,7 @@ module AIAssistant
     AWAITING_APPROVAL_TEXT = 'Sent to the user, who will approve or reject it.'
     BUDGET_TEXT = { error: 'Too many tool calls in one turn. Stop and summarise for the user.' }.to_json
     # Bedrock refuses two user turns in a row, which happens when a turn failed or its
-    # calls awaiting approval expired before the user wrote again.
+    # waiting calls expired before the user wrote again.
     NO_REPLY_TEXT = '(No reply.)'
 
     attr_reader :conversation
@@ -57,10 +57,10 @@ module AIAssistant
 
     private
 
-    # The turn already ended, with a reply or with calls awaiting approval, but the worker
+    # The turn already ended, with a reply or with calls awaiting the user, but the worker
     # stopped before saving the status.
     def ended?
-      return true if conversation.tool_calls.awaiting_approval.exists?
+      return true if conversation.tool_calls.awaiting_user.exists?
 
       last_message = conversation.messages.last
       last_message.assistant? && last_message.tool_calls.none?
@@ -164,7 +164,7 @@ module AIAssistant
         @current_tool_call.update!(status: 'failed', arguments:, result: text)
         text
       else
-        @current_tool_call.update!(status: 'awaiting_approval', arguments:, pinned_arguments: pinned)
+        @current_tool_call.update!(status: 'awaiting_user', arguments:, pinned_arguments: pinned)
         RubyLLM::Tool::Halt.new(AWAITING_APPROVAL_TEXT)
       end
     end
@@ -180,8 +180,8 @@ module AIAssistant
 
     def finish
       conversation.close_cut_off_tool_calls!
-      if conversation.tool_calls.awaiting_approval.exists?
-        conversation.update!(status: 'awaiting_approval', last_error_code: nil)
+      if conversation.tool_calls.awaiting_user.exists?
+        conversation.update!(status: 'awaiting_user', last_error_code: nil)
       else
         conversation.update!(status: 'idle', last_error_code: nil)
       end

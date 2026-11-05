@@ -23,7 +23,7 @@ export type AiAssistantErrorCode =
 
 type ConversationState =
   | {
-      status: 'idle' | 'awaiting_approval';
+      status: 'idle' | 'awaiting_user';
       last_error_code: null;
       turn_started_at: string | null;
     }

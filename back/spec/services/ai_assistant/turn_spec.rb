@@ -71,15 +71,15 @@ describe AIAssistant::Turn do
     expect(conversation.messages.assistant).to be_empty
   end
 
-  it 'only finishes a turn that already stopped on calls awaiting approval' do
+  it 'only finishes a turn that already stopped on calls awaiting the user' do
     tool_message = create(:ai_assistant_message, conversation:, role: 'assistant', content: nil)
-    create(:ai_assistant_tool_call, message: tool_message, name: 'replace_form_fields', status: 'awaiting_approval')
+    create(:ai_assistant_tool_call, message: tool_message, name: 'replace_form_fields', status: 'awaiting_user')
     stub_bedrock
 
     turn.run
 
     expect(bedrock_requests).to be_empty
-    expect(conversation.reload.status).to eq('awaiting_approval')
+    expect(conversation.reload.status).to eq('awaiting_user')
   end
 
   it 'runs read-only tools right away, pinned to the conversation record' do
@@ -112,12 +112,12 @@ describe AIAssistant::Turn do
     expect { turn.run }.not_to change { phase.reload.custom_form }
 
     tool_call = AIAssistant::ToolCall.find_by!(tool_use_id: 'write_1')
-    expect(tool_call).to have_attributes(status: 'awaiting_approval', result: nil)
+    expect(tool_call).to have_attributes(status: 'awaiting_user', result: nil)
     expect(tool_call.arguments['fields'].size).to eq(3)
     expect(tool_call.pinned_arguments).to eq('container_type' => 'phase', 'container_id' => phase.id)
     expect(tool_call.message.content).to eq('Here is a first draft.')
     expect(bedrock_requests.size).to eq(1)
-    expect(conversation.reload.status).to eq('awaiting_approval')
+    expect(conversation.reload.status).to eq('awaiting_user')
   end
 
   it 'pins the form version to the call' do
@@ -199,7 +199,7 @@ describe AIAssistant::Turn do
     expect(conversation.reload).to have_attributes(status: 'failed', last_error_code: 'tool_budget_exceeded')
   end
 
-  it 'expires the calls awaiting approval of a turn that went over the tool-call limit' do
+  it 'expires the calls awaiting the user of a turn that went over the tool-call limit' do
     stub_const("#{described_class}::MAX_TOOL_CALLS", 2)
     stub_bedrock(
       bedrock_tool_use(

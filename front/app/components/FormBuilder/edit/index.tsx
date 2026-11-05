@@ -108,7 +108,7 @@ const FormEdit = ({
   const assistantStatus = assistantConversation?.data.attributes.status;
   // Editing by hand meanwhile would make the assistant's proposed change stale.
   const lockedByAssistant =
-    assistantStatus === 'running' || assistantStatus === 'awaiting_approval';
+    assistantStatus === 'running' || assistantStatus === 'awaiting_user';
   const { mutateAsync: updateFormCustomFields } = useUpdateCustomField();
   const { data: formCustomFields, isFetching } = useFormCustomFields({
     projectId,

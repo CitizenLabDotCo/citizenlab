@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 module AIAssistant
-  # Applies the user's decision on a tool call awaiting approval. An approved call runs as
+  # Applies the user's decision on a waiting tool call. An approved call runs as
   # the deciding user, through the tool's own authorization. Once every call of the turn is
   # decided, the conversation continues so the model can react to the outcome.
   #
   # Returns :ok, :busy (the conversation isn't waiting for a decision), :expired, or
-  # :not_awaiting_approval (already decided).
+  # :not_awaiting_user (already decided).
   class ToolCallDecider
     def initialize(tool_call, user)
       @tool_call = tool_call
@@ -25,14 +25,14 @@ module AIAssistant
     private
 
     def decide(approved:, reason: nil)
-      return :busy unless @conversation.awaiting_approval?
+      return :busy unless @conversation.awaiting_user?
 
       if @tool_call.expired?
-        @conversation.with_lock { @conversation.expire_calls_awaiting_approval! }
+        @conversation.with_lock { @conversation.expire_calls_awaiting_user! }
         return :expired
       end
 
-      return :not_awaiting_approval unless claim(approved:, reason:)
+      return :not_awaiting_user unless claim(approved:, reason:)
 
       # Runs outside any transaction: the tool opens its own, which a surrounding one would
       # not roll back correctly.
@@ -40,7 +40,7 @@ module AIAssistant
 
       @conversation.with_lock do
         @tool_call.update!(outcome)
-        continue_conversation if @conversation.awaiting_approval? && @conversation.tool_calls.where(status: ToolCall::UNDECIDED_STATUSES).none?
+        continue_conversation if @conversation.awaiting_user? && @conversation.tool_calls.where(status: ToolCall::UNDECIDED_STATUSES).none?
       end
 
       log_activity(approved)
@@ -50,7 +50,7 @@ module AIAssistant
     # Claims the call for this decision. Returns whether it worked: false if someone decided on it first.
     def claim(approved:, reason:)
       claimed = ToolCall
-        .where(id: @tool_call.id, status: 'awaiting_approval')
+        .where(id: @tool_call.id, status: 'awaiting_user')
         .update_all(
           status: approved ? 'approved' : 'rejected',
           decided_by_id: @user.id,

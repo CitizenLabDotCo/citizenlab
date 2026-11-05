@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe AIAssistant::ToolCallDecider do
-  let(:conversation) { create(:ai_assistant_conversation, status: 'awaiting_approval') }
+  let(:conversation) { create(:ai_assistant_conversation, status: 'awaiting_user') }
   let(:user) { conversation.user }
   let(:phase) { conversation.subject }
   let(:assistant_message) { create(:ai_assistant_message, conversation:, role: 'assistant', content: nil) }
@@ -51,11 +51,11 @@ describe AIAssistant::ToolCallDecider do
       expect(form.reload.custom_fields).to eq([hand_built])
     end
 
-    it 'waits for the other calls awaiting approval before continuing' do
+    it 'waits for the other calls awaiting the user before continuing' do
       create(:ai_assistant_tool_call, message: assistant_message)
 
       expect { described_class.new(tool_call, user).approve! }.not_to have_enqueued_job(AIAssistant::TurnJob)
-      expect(conversation.reload.status).to eq('awaiting_approval')
+      expect(conversation.reload.status).to eq('awaiting_user')
     end
 
     it 'does not continue a conversation that stopped waiting while the tool ran' do
@@ -63,7 +63,7 @@ describe AIAssistant::ToolCallDecider do
       allow(AIAssistant::Surface).to receive(:for).and_return(surface)
       allow(surface.tool('replace_form_fields')).to receive(:call).and_wrap_original do |call, *args|
         # What "New chat" does to the previous conversation.
-        AIAssistant::Conversation.find(conversation.id).expire_calls_awaiting_approval!
+        AIAssistant::Conversation.find(conversation.id).expire_calls_awaiting_user!
         call.call(*args)
       end
 
@@ -75,7 +75,7 @@ describe AIAssistant::ToolCallDecider do
     it 'refuses a call that was already decided' do
       tool_call.update!(status: 'rejected')
 
-      expect(described_class.new(tool_call, user).approve!).to eq(:not_awaiting_approval)
+      expect(described_class.new(tool_call, user).approve!).to eq(:not_awaiting_user)
     end
 
     it 'refuses when the conversation is not waiting for a decision' do
@@ -84,7 +84,7 @@ describe AIAssistant::ToolCallDecider do
       expect(described_class.new(tool_call, user).approve!).to eq(:busy)
     end
 
-    it 'expires calls awaiting approval longer than the approval TTL' do
+    it 'expires calls awaiting the user longer than the TTL' do
       tool_call.update!(created_at: 25.hours.ago)
 
       expect(described_class.new(tool_call, user).approve!).to eq(:expired)

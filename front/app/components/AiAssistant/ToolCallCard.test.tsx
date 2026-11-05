@@ -24,7 +24,7 @@ const toolCall = (
   attributes: {
     name: 'replace_form_fields',
     arguments: { fields: [] },
-    status: 'awaiting_approval',
+    status: 'awaiting_user',
     reason: null,
     decided_at: null,
     created_at: '2026-10-01T08:00:00.000Z',

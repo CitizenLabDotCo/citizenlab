@@ -84,7 +84,7 @@ const conversation = (
       attributes: {
         name: 'replace_form_fields',
         arguments: { fields: [] },
-        status: 'awaiting_approval',
+        status: 'awaiting_user',
         reason: null,
         decided_at: null,
         created_at: '2026-10-01T08:00:10.000Z',
@@ -123,7 +123,7 @@ describe('AssistantPanel', () => {
   it('blocks new messages until the proposed change is decided on', () => {
     mockConversation = conversation({
       ...baseAttributes,
-      status: 'awaiting_approval',
+      status: 'awaiting_user',
       last_error_code: null,
     });
     renderPanel();

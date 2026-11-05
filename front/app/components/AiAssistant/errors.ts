@@ -32,7 +32,7 @@ export const getErrorMessage = (
       return messages.errorConversationBusy;
     case 'tool_call_expired':
       return messages.errorToolCallExpired2;
-    case 'tool_call_not_awaiting_approval':
+    case 'tool_call_not_awaiting_user':
       return messages.errorToolCallNotAwaitingApproval;
     case 'too_long':
       return messages.errorTooLong;

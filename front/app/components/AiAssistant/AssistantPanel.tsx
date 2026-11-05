@@ -58,8 +58,7 @@ const AssistantPanel = ({
   const [sendError, setSendError] = useState<string>();
 
   const status = conversation?.data.attributes.status;
-  const busy =
-    sending || status === 'running' || status === 'awaiting_approval';
+  const busy = sending || status === 'running' || status === 'awaiting_user';
   const hasMessages =
     (conversation?.data.relationships.messages.data.length ?? 0) > 0;
 
@@ -141,7 +140,7 @@ const AssistantPanel = ({
         )}
       </Box>
       <Box mt="16px">
-        {status === 'awaiting_approval' && (
+        {status === 'awaiting_user' && (
           <Text m="0px" mb="8px" fontSize="s" color="textSecondary">
             <FormattedMessage {...messages.awaitingApprovalHint} />
           </Text>

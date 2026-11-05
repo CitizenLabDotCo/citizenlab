@@ -3,14 +3,14 @@
 require 'rails_helper'
 
 describe AIAssistant::Conversation do
-  describe '#expire_calls_awaiting_approval!' do
-    it 'expires the calls awaiting approval and stops waiting for a decision' do
+  describe '#expire_calls_awaiting_user!' do
+    it 'expires the calls awaiting the user and stops waiting for a decision' do
       tool_call = create(:ai_assistant_tool_call)
       conversation = tool_call.conversation
-      conversation.update!(status: 'awaiting_approval')
+      conversation.update!(status: 'awaiting_user')
       executed = create(:ai_assistant_tool_call, message: tool_call.message, status: 'executed', result: 'Done')
 
-      conversation.expire_calls_awaiting_approval!
+      conversation.expire_calls_awaiting_user!
 
       expect(tool_call.reload).to have_attributes(status: 'expired', result: include('expired'))
       expect(executed.reload.status).to eq('executed')
@@ -38,7 +38,7 @@ describe AIAssistant::Conversation do
       expect(done.reload.status).to eq('auto_executed')
     end
 
-    it 'expires the calls awaiting approval' do
+    it 'expires the calls awaiting the user' do
       conversation = create(:ai_assistant_conversation, status: 'running')
       tool_call = create(:ai_assistant_tool_call, message: create(:ai_assistant_message, conversation:, role: 'assistant', content: nil))
 
@@ -77,16 +77,16 @@ describe AIAssistant::Conversation do
       expect(conversation.reload.status).to eq('running')
     end
 
-    context 'while awaiting approval' do
-      let(:conversation) { create(:ai_assistant_conversation, status: 'awaiting_approval') }
+    context 'while awaiting the user' do
+      let(:conversation) { create(:ai_assistant_conversation, status: 'awaiting_user') }
       let(:message) { create(:ai_assistant_message, conversation:, role: 'assistant', content: nil) }
 
       where(:call_status, :age, :new_call_status, :new_conversation_status) do
-        'approved'          | 11.minutes | 'failed'            | 'idle'
-        'approved'          | 1.minute   | 'approved'          | 'awaiting_approval'
-        'awaiting_approval' | 25.hours   | 'expired'           | 'idle'
-        'awaiting_approval' | 1.hour     | 'awaiting_approval' | 'awaiting_approval'
-        'rejected'          | 1.minute   | 'rejected'          | 'idle'
+        'approved'      | 11.minutes | 'failed'        | 'idle'
+        'approved'      | 1.minute   | 'approved'      | 'awaiting_user'
+        'awaiting_user' | 25.hours   | 'expired'       | 'idle'
+        'awaiting_user' | 1.hour     | 'awaiting_user' | 'awaiting_user'
+        'rejected'      | 1.minute   | 'rejected'      | 'idle'
       end
 
       with_them do
@@ -102,12 +102,12 @@ describe AIAssistant::Conversation do
 
       it 'keeps waiting for the other calls after an interrupted approval' do
         interrupted = create(:ai_assistant_tool_call, message:, status: 'approved', decided_at: 11.minutes.ago)
-        create(:ai_assistant_tool_call, message:, status: 'awaiting_approval')
+        create(:ai_assistant_tool_call, message:, status: 'awaiting_user')
 
         conversation.recover_if_stuck!
 
         expect(interrupted.reload.status).to eq('failed')
-        expect(conversation.reload.status).to eq('awaiting_approval')
+        expect(conversation.reload.status).to eq('awaiting_user')
       end
     end
   end

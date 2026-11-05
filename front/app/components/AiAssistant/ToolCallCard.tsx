@@ -30,7 +30,7 @@ import { AiAssistantToolView } from './types';
 type Props = {
   toolCall: IAiAssistantToolCallData;
   conversationId: string;
-  // Only calls awaiting approval in a conversation that waits for a decision can be decided on.
+  // Only calls awaiting the user in a conversation that waits for a decision can be decided on.
   decidable: boolean;
   view: AiAssistantToolView | undefined;
   onExecuted: (toolName: string) => void;
@@ -104,7 +104,7 @@ const ToolCallCard = ({
   const { name, status, arguments: args } = toolCall.attributes;
   const toolLabel = view ? formatMessage(view.label) : name;
 
-  if (status !== 'awaiting_approval' || !decidable) {
+  if (status !== 'awaiting_user' || !decidable) {
     const { icon, color, message } = statusLine(status);
     return (
       <Box display="flex" alignItems="center" gap="6px">

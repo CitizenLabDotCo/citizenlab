@@ -32,7 +32,7 @@ resource 'AI assistant messages' do
       end
 
       example '[error] Send a message while the assistant is busy', document: false do
-        conversation.update!(status: 'awaiting_approval')
+        conversation.update!(status: 'awaiting_user')
 
         do_request
 

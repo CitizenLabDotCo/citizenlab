@@ -11,7 +11,7 @@ resource 'AI assistant tool calls' do
     SettingsService.new.activate_feature!('ai_assistant')
   end
 
-  let(:conversation) { create(:ai_assistant_conversation, status: 'awaiting_approval') }
+  let(:conversation) { create(:ai_assistant_conversation, status: 'awaiting_user') }
   let(:phase) { conversation.subject }
   let(:tool_call) do
     create(
@@ -48,7 +48,7 @@ resource 'AI assistant tool calls' do
         do_request
 
         assert_status 409
-        expect(json_response_body.dig(:errors, :base, 0, :error)).to eq 'tool_call_not_awaiting_approval'
+        expect(json_response_body.dig(:errors, :base, 0, :error)).to eq 'tool_call_not_awaiting_user'
       end
 
       example '[error] Approve an expired proposed change', document: false do

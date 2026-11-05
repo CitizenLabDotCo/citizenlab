@@ -68,7 +68,7 @@ const Transcript = ({ conversation, toolViews, onToolExecuted }: Props) => {
                   key={id}
                   toolCall={toolCall}
                   conversationId={conversation.data.id}
-                  decidable={attributes.status === 'awaiting_approval'}
+                  decidable={attributes.status === 'awaiting_user'}
                   view={toolViews[toolCall.attributes.name]}
                   onExecuted={onToolExecuted}
                 />
