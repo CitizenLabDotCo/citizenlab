@@ -19,6 +19,7 @@ export type IAppConfigurationSettingsCore = {
   locales: SupportedLocale[];
   population: number | null;
   weglot_api_key: string | null;
+  weglot_switcher_in_navbar?: boolean;
   timezone: string;
   organization_name: Multiloc;
   organization_site?: string;
@@ -123,7 +124,7 @@ export interface IAppConfigurationSettings {
   blocking_profanity?: AppConfigurationFeature;
   anonymous_participation?: AppConfigurationFeature;
   form_mapping?: AppConfigurationFeature;
-  input_form_answer_visibility?: AppConfigurationFeature;
+  input_form_answer_filters?: AppConfigurationFeature;
   custom_idea_statuses?: AppConfigurationFeature;
   intercom?: AppConfigurationFeature;
   satismeter?: AppConfigurationFeature & {
@@ -188,7 +189,6 @@ export interface IAppConfigurationSettings {
   };
   data_repository_transcription?: AppConfigurationFeature;
   data_repository_ai_analysis?: AppConfigurationFeature;
-  user_fields_in_surveys?: AppConfigurationFeature;
   project_planning_calendar?: AppConfigurationFeature;
   common_ground?: AppConfigurationFeature;
   customised_automated_emails?: AppConfigurationFeature;
@@ -210,6 +210,7 @@ export interface IAppConfigurationSettings {
   custom_page_builder?: AppConfigurationFeature;
   configurable_dropdown?: AppConfigurationFeature;
   llm_reporting?: AppConfigurationFeature;
+  ai_assistant?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

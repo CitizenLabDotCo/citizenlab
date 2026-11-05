@@ -167,4 +167,18 @@ describe('SingleSelectField', () => {
     await waitFor(() => expect(latestValues[FIELD]).toBeUndefined());
     expect(screen.getByRole('radio', { name: 'Estate 2' })).not.toBeChecked();
   });
+
+  // Regression test: the padding used to sit on the bordered box, which has no
+  // click handler, so clicks near the edge of an option did nothing.
+  it('selects an option when its box is clicked outside the label', async () => {
+    const user = userEvent.setup();
+    renderField(buildQuestion(3, { dropdown_layout: false }));
+
+    const optionBox = screen.getAllByTestId('radio-container')[1];
+    expect(optionBox).toHaveStyle({ padding: '20px 20px 8px 20px' });
+
+    await user.click(optionBox);
+
+    await waitFor(() => expect(latestValues[FIELD]).toBe('estate_2'));
+  });
 });

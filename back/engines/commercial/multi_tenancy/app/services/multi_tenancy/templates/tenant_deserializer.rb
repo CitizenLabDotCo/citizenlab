@@ -15,6 +15,60 @@ module MultiTenancy
 
       SKIP_IMAGE_PRESENCE_VALIDATION = %w[IdeaImage ContentBuilder::LayoutImage ProjectImage].freeze
 
+      TRANSACTION_BATCH_SIZE = 200
+
+      # Only used with `bulk: true` (see #deserialize).
+      #
+      # High-volume models that are inserted with `insert_all!` instead of being saved one
+      # by one. Saving a record costs several queries (resolving each ref with a `find`,
+      # uniqueness validations, counter cache updates); with thousands of records, these
+      # round trips to the database dominate the time spent applying a template. These
+      # models are only eligible because none of their callbacks matter when applying a
+      # template, and the database enforces their uniqueness and foreign keys. Their
+      # validations are skipped, so only add models for which this is acceptable.
+      BULK_INSERT_MODELS = %w[
+        CustomFieldAnswer
+        EmailCampaigns::Consent
+        Follower
+        Reaction
+      ].freeze
+
+      BULK_INSERT_BATCH_SIZE = 1000
+
+      # Only used with `bulk: true` (see #deserialize).
+      #
+      # Models whose counter caches are not updated record by record while applying the
+      # template, but recomputed once afterwards with `counter_culture_fix_counts`. Each
+      # counter update is an extra UPDATE (and often a touch) per record. Only models whose
+      # counters can all be recomputed by counter_culture can be listed here (no
+      # `delta_magnitude` proc, no `column_name` proc without `column_names`). Bulk inserted
+      # models that have counter caches must be listed here, since `insert_all!` skips
+      # callbacks.
+      #
+      # Maps each model to the list of options to pass to `counter_culture_fix_counts`.
+      DEFERRED_COUNTER_CACHE_MODELS = {
+        'Comment' => [{}],
+        'Events::Attendance' => [{}],
+        'Follower' => [{}],
+        'IdeasPhase' => [{}],
+        'InternalComment' => [{}],
+        'OfficialFeedback' => [{}],
+        # Reconciled per reactable class: comments have no `neutral_reactions_count` column.
+        'Reaction' => [
+          { polymorphic_classes: 'Idea' },
+          { polymorphic_classes: 'Comment', column_name: 'likes_count' },
+          { polymorphic_classes: 'Comment', column_name: 'dislikes_count' }
+        ],
+        'Volunteering::Volunteer' => [{}]
+      }.freeze
+
+      # Makes counter_culture use the current connection. By default, it wraps every query
+      # in `ActiveRecord::Base.connected_to`, which makes Apartment switch to the tenant
+      # again and reload the current tenant and app configuration (2 extra queries per
+      # counter update).
+      CURRENT_CONNECTION = ->(_reading, block) { block.call }
+      private_constant :CURRENT_CONNECTION
+
       # Attributes that were removed from the schema but may still be present in
       # templates serialized before their removal; assigning them would raise
       # ActiveModel::UnknownAttributeError and abort the whole template application.
@@ -33,7 +87,12 @@ module MultiTenancy
       #   model_class) { existing_record_or_nil }`. A returned record is reused instead of inserted — its id
       #   (and its nested `*_attributes` submodels' ids) registered for `*_ref` resolution. Empty by default,
       #   so a normal apply is unaffected. See engines/decidim_importer for an example of this in use.
-      def deserialize(template, validate: true, max_time: nil, local_copy: false, reuse_by: {})
+      # @param bulk [Boolean] speeds up the application of large templates by inserting the
+      #   {BULK_INSERT_MODELS} in bulk (without validations or callbacks) and by recomputing
+      #   the counter caches of the {DEFERRED_COUNTER_CACHE_MODELS} once at the end. Only meant
+      #   for templates applied to a new tenant: recomputing the counter caches goes over all
+      #   the records of the tenant.
+      def deserialize(template, validate: true, max_time: nil, local_copy: false, reuse_by: {}, bulk: false)
         # To ensure that `CurrentAttributes` is not unexpectedly reset during the
         # application of a template, we need to make sure that the template is wrapped by
         # the executor before setting the `CurrentAttributes` value. This is because
@@ -48,7 +107,11 @@ module MultiTenancy
         # Note: It's safe to call wrap multiple times because the executor is re-entrant.
         ::Rails.application.executor.wrap do
           Current.set(loading_tenant_template: true) do
-            _deserialize(template, validate, max_time, local_copy, reuse_by)
+            if bulk
+              deserialize_in_bulk(template, validate, max_time, local_copy, reuse_by)
+            else
+              _deserialize(template, validate, max_time, local_copy, reuse_by)
+            end
           end
         end
 
@@ -57,7 +120,36 @@ module MultiTenancy
 
       private
 
-      def _deserialize(template, validate, max_time, local_copy, reuse_by = {})
+      def deserialize_in_bulk(template, validate, max_time, local_copy, reuse_by)
+        deferred_classes = DEFERRED_COUNTER_CACHE_MODELS.keys.map(&:constantize)
+
+        created_objects_ids = skip_counter_culture_updates(deferred_classes) do
+          _deserialize(template, validate, max_time, local_copy, reuse_by, bulk: true)
+        end
+
+        fix_deferred_counter_caches(created_objects_ids.keys)
+        created_objects_ids
+      end
+
+      def fix_deferred_counter_caches(created_model_names)
+        DEFERRED_COUNTER_CACHE_MODELS.slice(*created_model_names).each do |model_name, fix_options|
+          fix_options.each do |options|
+            if options.key?(:polymorphic_classes)
+              options = options.merge(polymorphic_classes: Array(options[:polymorphic_classes]).map(&:constantize))
+            end
+
+            model_name.constantize.counter_culture_fix_counts(options.merge(db_connection_builder: CURRENT_CONNECTION))
+          end
+        end
+      end
+
+      def skip_counter_culture_updates(classes, &block)
+        classes.reduce(block) do |inner, klass|
+          -> { klass.skip_counter_culture_updates(&inner) }
+        end.call
+      end
+
+      def _deserialize(template, validate, max_time, local_copy, reuse_by = {}, bulk: false)
         t1 = Time.zone.now
         obj_to_id_and_class = {}.compare_by_identity
         created_objects_ids = Hash.new { |h, k| h[k] = [] } # Hash with empty arrays as default values
@@ -71,73 +163,135 @@ module MultiTenancy
           end
 
           model_class = model_name.classify.constantize
+
+          if bulk && bulk_insertable?(model_class, reuse_by)
+            bulk_insert(model_class, records, obj_to_id_and_class, created_objects_ids, t1, max_time)
+            next
+          end
+
           uploaders_names = model_class.uploaders.keys.map(&:to_s)
 
-          records.each do |attributes|
-            minutes_spent = Time.zone.now - t1
-            if max_time && (minutes_spent > max_time)
-              raise "Template application exceed time limit of #{max_time / 1.minute} minutes"
-            end
+          # Records are saved in batches, each in a single transaction: one commit per batch
+          # instead of one per record. In production, the commit is the costly part of saving
+          # a record (it waits for the Multi-AZ standby). Batches are kept small to avoid
+          # long-running transactions.
+          records.each_slice(TRANSACTION_BATCH_SIZE) do |batch|
+            ActiveRecord::Base.transaction do
+              batch.each do |attributes|
+                check_time_limit!(t1, max_time)
 
-            attributes ||= {} # Avoid nil. Enables an empty model field to lead to creation of record with default values.
-            restored_attributes = restore_template_attributes(
-              attributes,
-              obj_to_id_and_class,
-              AppConfiguration.instance.settings,
-              model_class: model_class
-            )
+                attributes ||= {} # Avoid nil. Enables an empty model field to lead to creation of record with default values.
+                restored_attributes = restore_template_attributes(
+                  attributes,
+                  obj_to_id_and_class,
+                  AppConfiguration.instance.settings,
+                  model_class: model_class
+                )
 
-            # Reuse an existing record instead of inserting a duplicate (when `reuse_by` matches).
-            if (existing = reusable_record(reuse_by, model_class, restored_attributes))
-              register_reused_record(existing, attributes, obj_to_id_and_class)
-              next
-            end
-
-            remote_image_attributes, restored_attributes = restored_attributes.partition do |field_name, _field_value|
-              field_name.start_with?('remote_') && field_name.end_with?('_url') && field_name.exclude?('file')
-            end.map(&:to_h)
-
-            model = model_class.new(restored_attributes)
-            model.skip_image_presence = true if SKIP_IMAGE_PRESENCE_VALIDATION.include?(model_class.name)
-
-            begin
-              preserve_ordering(model) { save_model(model, validate) }
-
-              # Only upload attributes that are strings are copied verbatim using
-              # `update_columns` to bypass the CarrierWave uploader.
-              str_upload_attributes = restored_attributes
-                .slice(*uploaders_names)
-                .select { |_, v| v.is_a?(String) }
-              model.update_columns(str_upload_attributes) if str_upload_attributes.present?
-
-              # Assign images that were serialized as remote URLs (`remote_*_url`).
-              assign_images(model, remote_image_attributes) if remote_image_attributes.present?
-
-              # taking original attributes to get correct object ID
-              attributes.each do |field_name, field_value|
-                if field_name.end_with?('_attributes') && field_value.is_a?(Hash) # linking attribute refs (not supported for lists of attributes)
-                  submodel = model.send(field_name.chomp('_attributes'))
-                  obj_to_id_and_class[field_value] = [submodel.id, submodel.class]
+                # Reuse an existing record instead of inserting a duplicate (when `reuse_by` matches).
+                if (existing = reusable_record(reuse_by, model_class, restored_attributes))
+                  register_reused_record(existing, attributes, obj_to_id_and_class)
+                  next
                 end
-              end
-            rescue StandardError => e
-              json_info = {
-                error_message: e.message,
-                model_class: model_class.name,
-                attributes: attributes,
-                error_backtrace: e.backtrace
-              }.to_json
-              message = "Failed to create instance during template application: #{json_info}"
-              ErrorReporter.report_msg(message)
-              raise message
-            end
 
-            obj_to_id_and_class[attributes] = [model.id, model_class]
-            created_objects_ids[model_class.name] << model.id
+                remote_image_attributes, restored_attributes = restored_attributes.partition do |field_name, _field_value|
+                  field_name.start_with?('remote_') && field_name.end_with?('_url') && field_name.exclude?('file')
+                end.map(&:to_h)
+
+                model = model_class.new(restored_attributes)
+                model.skip_image_presence = true if SKIP_IMAGE_PRESENCE_VALIDATION.include?(model_class.name)
+
+                begin
+                  preserve_ordering(model) { save_model(model, validate) }
+
+                  # Only upload attributes that are strings are copied verbatim using
+                  # `update_columns` to bypass the CarrierWave uploader.
+                  str_upload_attributes = restored_attributes
+                    .slice(*uploaders_names)
+                    .select { |_, v| v.is_a?(String) }
+                  model.update_columns(str_upload_attributes) if str_upload_attributes.present?
+
+                  # Assign images that were serialized as remote URLs (`remote_*_url`).
+                  assign_images(model, remote_image_attributes) if remote_image_attributes.present?
+
+                  # taking original attributes to get correct object ID
+                  attributes.each do |field_name, field_value|
+                    if field_name.end_with?('_attributes') && field_value.is_a?(Hash) # linking attribute refs (not supported for lists of attributes)
+                      submodel = model.send(field_name.chomp('_attributes'))
+                      obj_to_id_and_class[field_value] = [submodel.id, submodel.class]
+                    end
+                  end
+                rescue StandardError => e
+                  json_info = {
+                    error_message: e.message,
+                    model_class: model_class.name,
+                    attributes: attributes,
+                    error_backtrace: e.backtrace
+                  }.to_json
+                  message = "Failed to create instance during template application: #{json_info}"
+                  ErrorReporter.report_msg(message)
+                  raise message
+                end
+
+                obj_to_id_and_class[attributes] = [model.id, model_class]
+                created_objects_ids[model_class.name] << model.id
+              end
+            end
           end
         end
 
         created_objects_ids
+      end
+
+      # Inserts the records with `insert_all!`, without instantiating them through the
+      # regular save path: no validations, no callbacks and refs are resolved to ids
+      # without loading the referenced records.
+      def bulk_insert(model_class, records, obj_to_id_and_class, created_objects_ids, t1, max_time)
+        app_settings = AppConfiguration.instance.settings
+        column_names = model_class.column_names
+
+        records.each_slice(BULK_INSERT_BATCH_SIZE) do |batch|
+          check_time_limit!(t1, max_time)
+          now = Time.zone.now
+
+          rows = batch.map do |attributes|
+            attributes ||= {}
+            restored_attributes = restore_template_attributes(
+              attributes,
+              obj_to_id_and_class,
+              app_settings,
+              model_class: model_class,
+              refs_as_ids: true
+            )
+
+            # Instantiating the model (no queries) applies the column defaults and type casts
+            # the values, as a regular save would.
+            row = model_class.new(restored_attributes).attributes.slice(*column_names)
+            row['id'] ||= SecureRandom.uuid
+            row['created_at'] ||= now if row.key?('created_at')
+            row['updated_at'] ||= now if row.key?('updated_at')
+
+            obj_to_id_and_class[attributes] = [row['id'], model_class]
+            created_objects_ids[model_class.name] << row['id']
+            row
+          end
+
+          model_class.insert_all!(rows, returning: false)
+        end
+      rescue StandardError => e
+        message = "Failed to bulk insert #{model_class.name} records during template application: #{e.message}"
+        ErrorReporter.report_msg(message)
+        raise message
+      end
+
+      def bulk_insertable?(model_class, reuse_by)
+        BULK_INSERT_MODELS.include?(model_class.name) && !reuse_by.key?(model_class.name)
+      end
+
+      def check_time_limit!(t1, max_time)
+        return unless max_time && (Time.zone.now - t1 > max_time)
+
+        raise "Template application exceed time limit of #{max_time / 1.minute} minutes"
       end
 
       # The already-existing record a `reuse_by` matcher points this template row at, or nil to create it.
@@ -157,7 +311,10 @@ module MultiTenancy
         end
       end
 
-      def restore_template_attributes(attributes, obj_to_id_and_class, app_settings, model_class: nil)
+      # @param refs_as_ids [Boolean] resolves the `*_ref` attributes to foreign keys (and
+      #   foreign types for polymorphic associations) instead of loading the referenced
+      #   records. Requires `model_class`.
+      def restore_template_attributes(attributes, obj_to_id_and_class, app_settings, model_class: nil, refs_as_ids: false)
         start_of_day = AppConfiguration.timezone.now.beginning_of_day
         locales = USER_INPUT_CLASSES.include?(model_class) ? app_settings.dig('core', 'locales') : all_supported_locales
 
@@ -182,7 +339,17 @@ module MultiTenancy
             ref_suffix = field_name.end_with?('_attributes_ref') ? '_attributes_ref' : '_ref' # linking attribute refs
             if field_value
               id, ref_class = obj_to_id_and_class.fetch(field_value)
-              new_attributes[field_name.chomp(ref_suffix)] = ref_class.find(id)
+              association_name = field_name.chomp(ref_suffix)
+
+              if refs_as_ids
+                raise ArgumentError, "Cannot resolve #{field_name} to an id" if ref_suffix == '_attributes_ref'
+
+                reflection = model_class.reflect_on_association(association_name)
+                new_attributes[reflection.foreign_key] = id
+                new_attributes[reflection.foreign_type] = ref_class.polymorphic_name if reflection.polymorphic?
+              else
+                new_attributes[association_name] = ref_class.find(id)
+              end
             end
 
           elsif field_name.end_with?('_timediff')

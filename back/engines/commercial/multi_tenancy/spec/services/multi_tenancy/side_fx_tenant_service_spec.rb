@@ -64,6 +64,7 @@ describe MultiTenancy::SideFxTenantService do
     end
 
     it 'provisions no custom page layouts while the feature is off (content_builder patch)' do
+      SettingsService.new.deactivate_feature!('custom_page_builder')
       page = create(:static_page, top_info_section_multiloc: { 'en' => '<p>Templated</p>' }, top_info_section_enabled: true)
 
       service.after_apply_template(tenant, 'base', current_user)

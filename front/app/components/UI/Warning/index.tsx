@@ -1,6 +1,7 @@
 import React from 'react';
 
 import {
+  bo,
   Box,
   BoxProps,
   Icon,
@@ -71,11 +72,39 @@ const Text = styled.div`
   }
 `;
 
+const BoContainer = styled(Container)`
+  padding: 10px 12px;
+  border-radius: ${bo.borderRadius};
+`;
+
+const BoIcon = styled(StyledIcon)`
+  flex-basis: 16px;
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+
+  ${isRtl`
+    margin-right: 0;
+    margin-left: 8px;
+  `}
+`;
+
+const BoText = styled(Text)`
+  font-size: ${bo.controlFontSize}px;
+  line-height: 1.5;
+
+  ul {
+    margin: 4px 0 0;
+    padding-left: 18px;
+  }
+`;
+
 export type Props = {
   children: string | JSX.Element;
   icon?: IconNames;
   className?: string;
   hideIcon?: boolean;
+  variant?: 'default' | 'bo';
 } & BoxProps;
 
 const Warning = ({
@@ -83,13 +112,19 @@ const Warning = ({
   icon,
   className,
   hideIcon,
+  variant = 'default',
   ...boxProps
 }: Props) => {
+  const isBo = variant === 'bo';
+  const WarningContainer = isBo ? BoContainer : Container;
+  const WarningIcon = isBo ? BoIcon : StyledIcon;
+  const WarningText = isBo ? BoText : Text;
+
   return (
-    <Container className={`${className || ''}`} {...boxProps}>
-      {!hideIcon && <StyledIcon name={icon || 'info-outline'} />}
-      <Text>{children}</Text>
-    </Container>
+    <WarningContainer className={`${className || ''}`} {...boxProps}>
+      {!hideIcon && <WarningIcon name={icon || 'info-outline'} />}
+      <WarningText>{children}</WarningText>
+    </WarningContainer>
   );
 };
 

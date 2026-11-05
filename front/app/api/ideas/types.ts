@@ -41,6 +41,7 @@ export const ideaSortValues = [
   '-baskets_count',
   'status',
   '-status',
+  'status_priority',
   'votes_count',
   '-votes_count',
   'total_votes',
@@ -77,6 +78,7 @@ export interface IdeaQueryParameters {
   search?: string;
   idea_status?: string;
   input_topics?: string[];
+  custom_field_answers?: Record<string, string[]>;
 }
 
 export interface IIdeaData {
@@ -249,6 +251,7 @@ export interface IIdeaQueryParameters<FilterValue = string> {
   search?: string;
   input_topics?: string[];
   idea_status?: FilterValue;
+  custom_field_answers?: Record<string, string[]>;
   publication_status?: IdeaPublicationStatus;
   project_publication_status?: ProjectPublicationStatus;
   bounding_box?: number[];

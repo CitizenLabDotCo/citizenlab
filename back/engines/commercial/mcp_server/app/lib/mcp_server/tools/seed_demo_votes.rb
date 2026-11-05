@@ -41,13 +41,12 @@ class McpServer::Tools::SeedDemoVotes < McpServer::BaseTool
   end
 
   class Runner < McpServer::BaseTool::Runner
-    DEMO_ONLY_MESSAGE = 'Demo votes can only be created on demo and trial platforms.'
     STOP_PROBABILITY = 0.4
 
     def run
       phase = Phase.find_by(id: params[:phase_id])
       return not_found_error('Phase', params[:phase_id]) unless phase
-      return error(DEMO_ONLY_MESSAGE) unless published_writable_platform?
+      return demo_only_error('Creating demo votes') unless published_writable_platform?
       return error('Phase is not a voting phase.') unless phase.participation_method == 'voting'
 
       ideas = votable_ideas(phase)

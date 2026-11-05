@@ -41,6 +41,8 @@ module McpServer
         server,
         stateless: true,
         enable_json_response: true,
+        # Answers subscriptions/listen as unsupported, for the same reason as McpController.
+        serve_subscriptions_listen: false,
         # The public /mcp endpoint pins allowed_hosts to the tenant host, but this
         # channel is reached via cluster-internal hostnames that never match the
         # tenant host. DNS rebinding is a browser attack vector; this endpoint is

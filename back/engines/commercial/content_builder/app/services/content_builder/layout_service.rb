@@ -28,7 +28,7 @@ module ContentBuilder
         .with_widget_type('Spotlight', 'Selection')
         .find_each do |layout|
           json = layout.craftjs_json.deep_dup
-          remove_spotlights_for_publication(json, publication.id)
+          remove_widgets(json, 'Spotlight', 'publicationId', publication.id)
           remove_from_selections(json, admin_publication_id)
           next if json == layout.craftjs_json
 
@@ -38,15 +38,31 @@ module ContentBuilder
         end
     end
 
+    def clean_project_page_when_survey_phase_removed(phase)
+      layout = Layout.find_by(
+        content_buildable_type: 'Project',
+        content_buildable_id: phase.project_id,
+        code: ProjectPageLayoutService::CODE
+      )
+      return if layout.nil?
+
+      json = layout.craftjs_json.deep_dup
+      remove_widgets(json, 'ExtraSurveysWidget', 'surveyPhaseId', phase.id)
+      return if json == layout.craftjs_json
+
+      # update_column: an unrelated widget failing validation must not leave this one behind.
+      layout.update_column(:craftjs_json, json)
+    end
+
     private
 
-    def remove_spotlights_for_publication(json, publication_id)
+    def remove_widgets(json, resolved_name, id_prop, id)
       state = Craftjs::State.new(json)
-      state.nodes_by_resolved_name('Spotlight').each do |id, node|
-        next unless node.dig('props', 'publicationId') == publication_id
+      state.nodes_by_resolved_name(resolved_name).each do |node_id, node|
+        next unless node.dig('props', id_prop) == id
 
         # A stored graph may reference a parent it no longer holds; drop the node alone then.
-        json.key?(node['parent']) ? state.delete_node(id) : json.delete(id)
+        json.key?(node['parent']) ? state.delete_node(node_id) : json.delete(node_id)
       end
     end
 

@@ -14,6 +14,11 @@ export default defineMessages({
     defaultMessage:
       'It is in internal early access for Go Vocal staff only. Turn it on under "Early access" in your {profileSettingsLink}. You can turn it off again there at any time.',
   },
+  turnOnNoticeDescriptionGeneral: {
+    id: 'app.containers.Admin.projects.project.earlyAccess.turnOnNoticeDescriptionGeneral',
+    defaultMessage:
+      'It is in early access. Turn it on under "Early access" in your {profileSettingsLink}. You can turn it off again there at any time.',
+  },
   feedbackNoticeTitle: {
     id: 'app.containers.Admin.projects.project.earlyAccess.feedbackNoticeTitle',
     defaultMessage: 'You are using the new project back office.',
@@ -22,5 +27,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.earlyAccess.feedbackNoticeDescription',
     defaultMessage:
       'We are still improving it, and your feedback at any point helps shape it: share it in the {slackChannelLink} Slack channel. To go back to the current back office, turn it off under "Early access" in your {profileSettingsLink}.',
+  },
+  feedbackNoticeDescriptionWithoutSlack: {
+    id: 'app.containers.Admin.projects.project.earlyAccess.feedbackNoticeDescriptionWithoutSlack',
+    defaultMessage:
+      'We are still improving it. To go back to the current back office, turn it off under "Early access" in your {profileSettingsLink}.',
   },
 });

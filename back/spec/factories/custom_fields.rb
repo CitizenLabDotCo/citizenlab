@@ -71,6 +71,20 @@ FactoryBot.define do
       input_type { 'polygon' }
     end
 
+    factory :custom_field_multipoint do
+      title_multiloc do
+        {
+          'en' => 'Which locations should we look at?'
+        }
+      end
+      description_multiloc do
+        {
+          'en' => 'Please drop a pin on each location you want to flag.'
+        }
+      end
+      input_type { 'multipoint' }
+    end
+
     factory :custom_field_multiline_text do
       title_multiloc do
         {

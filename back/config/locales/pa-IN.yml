@@ -180,6 +180,7 @@ pa-IN:
       logic_no_further_questions: ਤੁਹਾਡੇ ਜਵਾਬਾਂ ਦੇ ਅਧਾਰ 'ਤੇ, ਤੁਹਾਨੂੰ ਅੱਗੇ ਕਿਸੇ ਹੋਰ ਸਵਾਲ ਦਾ ਜਵਾਬ ਦੇਣ ਦੀ <strong>ਲੋੜ ਨਹੀਂ</strong> ਹੈ।
       logic_section: ਸੈਕਸ਼ਨ %{letter}
       matrix_print_description: ਹਰੇਕ ਕਤਾਰ ਲਈ, ਆਪਣੀ ਪਸੰਦ ਨੂੰ ਦਰਸਾਉਣ ਲਈ ਇੱਕ ਚੱਕਰ ਨੂੰ ਕਰਾਸ ਨਾਲ ਚਿੰਨ੍ਹਿਤ ਕਰੋ।
+      multipoint_print_description: ਕਿਰਪਾ ਕਰਕੇ ਹਰੇਕ ਥਾਂ ਲਈ ਹੇਠਾਂ ਦਿੱਤੇ ਨਕਸ਼ੇ 'ਤੇ ਇੱਕ X ਬਣਾਓ ਜਿਸ ਨੂੰ ਤੁਸੀਂ ਜੋੜਨਾ ਚਾਹੁੰਦੇ ਹੋ।
       optional: ਵਿਕਲਪਿਕ
       page: ਪੰਨਾ
       permission: ਇਜਾਜ਼ਤ

@@ -180,6 +180,7 @@ ur-PK:
       logic_no_further_questions: آپ کے جوابات کی بنیاد پر، آپ کو مزید کسی سوال کا جواب دینے کی <strong>ضرورت نہیں</strong> ہے۔
       logic_section: سیکشن %{letter}
       matrix_print_description: ہر قطار کے لیے، اپنی ترجیح کی نشاندہی کرنے کے لیے ایک دائرے کو کراس سے نشان زد کریں۔
+      multipoint_print_description: براہ کرم ہر اس مقام کے لیے نیچے نقشے پر X کا نشان لگائیں جسے آپ شامل کرنا چاہتے ہیں۔
       optional: اختیاری
       page: صفحہ
       permission: اجازت
