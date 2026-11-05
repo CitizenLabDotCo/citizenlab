@@ -14,6 +14,9 @@ import { SupportedLocale, Multiloc } from 'typings';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
 
+import MachineTranslationHint from 'components/UI/MultilocTranslation/MachineTranslationHint';
+import MultilocTranslateAction from 'components/UI/MultilocTranslation/MultilocTranslateAction';
+import useMultilocTranslation from 'components/UI/MultilocTranslation/useMultilocTranslation';
 import TextArea, { Props as TextAreaProps } from 'components/UI/TextArea';
 
 import { isNilOrError } from 'utils/helperUtils';
@@ -96,6 +99,11 @@ const TextAreaMultilocWithLocaleSwitcher = memo<Props>((props) => {
 
   const locale = useLocale();
   const tenantLocales = useAppConfigurationLocales();
+  const translation = useMultilocTranslation({
+    valueMultiloc,
+    onChange: (multiloc) =>
+      selectedLocale && onChange(multiloc, selectedLocale),
+  });
 
   useEffect(() => {
     !isNilOrError(locale) && setSelectedLocale(locale);
@@ -138,6 +146,10 @@ const TextAreaMultilocWithLocaleSwitcher = memo<Props>((props) => {
             <Spacer />
           )}
 
+          <MultilocTranslateAction
+            translation={translation}
+            selectedLocale={selectedLocale}
+          />
           <StyledLocaleSwitcher
             onSelectedLocaleChange={handleOnSelectedLocaleChange}
             locales={!isNilOrError(tenantLocales) ? tenantLocales : []}
@@ -156,6 +168,10 @@ const TextAreaMultilocWithLocaleSwitcher = memo<Props>((props) => {
         >
           {renderCounter?.(value, selectedLocale)}
         </TextArea>
+        <MachineTranslationHint
+          translation={translation}
+          selectedLocale={selectedLocale}
+        />
       </Container>
     );
   }

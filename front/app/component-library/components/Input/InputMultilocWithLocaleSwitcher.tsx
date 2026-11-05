@@ -59,6 +59,10 @@ export interface Props extends Omit<InputProps, 'value' | 'onChange'> {
   initiallySelectedLocale?: Locale;
   hideLocaleSwitcher?: boolean;
   stackedLabel?: boolean;
+  // Rendered next to the locale switcher, e.g. a translate action.
+  renderLocaleSwitcherAction?: (selectedLocale: Locale) => React.ReactNode;
+  // Rendered under the input, e.g. a hint about the selected locale.
+  renderBelowInput?: (selectedLocale: Locale) => React.ReactNode;
 }
 
 const InputMultilocWithLocaleSwitcher = memo<Props>((props) => {
@@ -73,6 +77,8 @@ const InputMultilocWithLocaleSwitcher = memo<Props>((props) => {
     initiallySelectedLocale,
     hideLocaleSwitcher,
     stackedLabel = false,
+    renderLocaleSwitcherAction,
+    renderBelowInput,
     ...inputProps
   } = props;
   const { id, className } = props;
@@ -141,6 +147,8 @@ const InputMultilocWithLocaleSwitcher = memo<Props>((props) => {
             ) : (
               <Spacer />
             )}
+            {!hideLocaleSwitcher &&
+              renderLocaleSwitcherAction?.(selectedLocale)}
             {!hideLocaleSwitcher && (
               <StyledLocaleSwitcher
                 onSelectedLocaleChange={handleOnSelectedLocaleChange}
@@ -160,6 +168,7 @@ const InputMultilocWithLocaleSwitcher = memo<Props>((props) => {
           onChange={handleValueOnChange}
           error={error}
         />
+        {renderBelowInput?.(selectedLocale)}
       </Box>
     );
   }
