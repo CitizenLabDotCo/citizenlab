@@ -12,7 +12,7 @@ import { getErrorMessage } from '../errors';
 import { AiAssistantToolDisplays } from '../types';
 
 import AssistantMessage from './AssistantMessage';
-import ToolCallCard from './ToolCallCard';
+import TranscriptToolCall from './TranscriptToolCall';
 import UserMessage from './UserMessage';
 import WorkingIndicator from './WorkingIndicator';
 
@@ -47,13 +47,12 @@ const Transcript = ({ conversation, toolDisplays, onToolExecuted }: Props) => {
               <AssistantMessage content={message.attributes.content} />
             )}
             {toolCalls.map((toolCall) => (
-              <ToolCallCard
+              <TranscriptToolCall
                 key={toolCall.id}
                 toolCall={toolCall}
-                conversationId={conversation.data.id}
-                decidable={attributes.status === 'awaiting_user'}
-                display={toolDisplays[toolCall.attributes.name]}
-                onExecuted={onToolExecuted}
+                conversation={conversation}
+                toolDisplays={toolDisplays}
+                onToolExecuted={onToolExecuted}
               />
             ))}
           </Box>
