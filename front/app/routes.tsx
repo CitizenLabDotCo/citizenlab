@@ -99,8 +99,8 @@ const rootSearchSchema = yup.object({
   'yes-I-accept-cookies': yup.string().optional(),
   // Phase context (used by sharing buttons, idea cards)
   phase_context: yup.string().optional(),
-  // SSO provider testing param
-  provider: yup.string().optional(),
+  // Shows SSO and verification methods while the id_config feature is off
+  id_config: yup.string().optional(),
   // Used by IdeaCard across many routes to scroll to a specific card
   scroll_to_card: yup.string().optional(),
   // Used by vote inputs after auth flow completes
