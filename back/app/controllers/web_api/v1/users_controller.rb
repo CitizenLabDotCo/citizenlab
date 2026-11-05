@@ -114,7 +114,8 @@ class WebApi::V1::UsersController < ApplicationController
       return
     end
 
-    head :ok
+    # The front-end can't read the auth token, so it learns when the session ends from here.
+    render json: { expires_at: AuthToken::AuthToken.new(token: token).payload['exp'] }
   end
 
   def intercom_token

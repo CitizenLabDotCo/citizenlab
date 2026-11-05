@@ -125,7 +125,8 @@ context 'Twoday verification (BankID - Helsingborg)' do
         before { new_user.update!(email: Faker::Internet.email) }
 
         it 'does not verify another user and does not delete previously verified new user' do
-          get "/auth/twoday?token=#{@token}&verification_pathname=/some-page"
+          cookies[AuthToken::Cookie::NAME] = @token
+          get '/auth/twoday?verification=true&verification_pathname=/some-page'
           follow_redirect!
 
           expect(response).to redirect_to('/some-page?verification_error=true&error_code=taken')
@@ -141,7 +142,8 @@ context 'Twoday verification (BankID - Helsingborg)' do
 
       context 'when verified registration is not completed by new user' do
         it 'successfully verifies another user and deletes previously verified blank new user' do
-          get "/auth/twoday?token=#{@token}&verification_pathname=/some-page"
+          cookies[AuthToken::Cookie::NAME] = @token
+          get '/auth/twoday?verification=true&verification_pathname=/some-page'
           follow_redirect!
 
           expect(response).to redirect_to('/en/some-page?verification_success=true')
@@ -162,7 +164,7 @@ context 'Twoday verification (BankID - Helsingborg)' do
       expect(user.confirmation_required?).to be(true)
       expect(ActionMailer::Base.deliveries.count).to eq(0)
 
-      headers = { 'Authorization' => authorization_header(user) }
+      headers = { 'Cookie' => auth_cookie(user) }
 
       post '/web_api/v1/user/request_code_new_email', params: { request_code: { new_email: 'newcoolemail@example.org' } }, headers: headers
       expect(response).to have_http_status(:ok)

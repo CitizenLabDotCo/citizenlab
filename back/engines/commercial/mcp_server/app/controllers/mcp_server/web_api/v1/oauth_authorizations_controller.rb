@@ -7,8 +7,8 @@ module McpServer
       # Replaces Doorkeeper's HTML consent page: the SPA reads the pending
       # authorization with #show, then approves (#create) or denies (#destroy).
       #
-      # The resource owner is the JWT `current_user` (the SPA's normal bearer
-      # token), not Doorkeeper's cookie-based `resource_owner_authenticator`.
+      # The resource owner is the JWT `current_user` (from the SPA's normal auth
+      # cookie), not Doorkeeper's `resource_owner_authenticator`.
       # `authenticate_user` (inherited, not skipped) guarantees a logged-in user,
       # so `current_resource_owner` is never nil when minting a grant.
       #

@@ -15,13 +15,12 @@ type Identifier =
 type Parameters = Identifier & {
   password: string;
   rememberMe?: boolean;
-  tokenLifetime?: number;
   claimTokens?: string[];
 };
 
 export default async function signIn(parameters: Parameters) {
   try {
-    await getAndSetToken(parameters);
+    await requestAuthCookie(parameters);
 
     const authUser = await getAuthUserAsync();
 
@@ -34,7 +33,9 @@ export default async function signIn(parameters: Parameters) {
   }
 }
 
-async function getAndSetToken({
+// On success, the API sets the auth token in an HttpOnly cookie, which the browser
+// then sends along with every API request. This code never sees the token.
+async function requestAuthCookie({
   email,
   phone,
   password,
@@ -54,19 +55,20 @@ async function getAndSetToken({
     },
   };
 
-  return await fetch(`${API_PATH}/${endpoint}`, {
+  const response = await fetch(`${API_PATH}/${endpoint}`, {
     method: 'POST',
     credentials: 'include', // Include cookies (session, auth tokens)
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(bodyData),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      clearClaimToken();
-      return data;
-    });
+  });
+
+  if (!response.ok) {
+    throw new Error(`Sign in failed with status ${response.status}`);
+  }
+
+  clearClaimToken();
 }
 
 async function getAuthUserAsync() {

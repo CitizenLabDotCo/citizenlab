@@ -11,24 +11,17 @@ module UserCookies
 
     current_user.expire_token!
 
-    # Get the expiry time from the current token (the HttpOnly cookie, falling
-    # back to the Authorization header for non-browser clients)
-    current_token = cookies[:cl2_jwt].presence || request.headers['Authorization']&.split&.last
-    current_payload = AuthToken::AuthToken.new(token: current_token).payload
+    # Get the expiry time from the current token
+    current_payload = AuthToken::AuthToken.new(token: AuthToken::Cookie.read(request)).payload
 
     # Set a new token with the same expiry time
     payload = current_user.to_token_payload
     payload[:exp] = current_payload['exp']
 
-    # Use response.set_cookie, not `cookies[:cl2_jwt] =`, to ensure the HttpOnly
-    # flag is reliably set in API-only Rails apps
-    response.set_cookie(:cl2_jwt, {
-      value: AuthToken::AuthToken.new(payload: payload).token,
-      expires: Time.at(current_payload['exp']),
-      httponly: true,
-      secure: true,
-      same_site: :lax, # Strict won't work because of SSO
-      path: '/'
-    })
+    AuthToken::Cookie.write(
+      response,
+      AuthToken::AuthToken.new(payload: payload).token,
+      expires: Time.zone.at(current_payload['exp'])
+    )
   end
 end

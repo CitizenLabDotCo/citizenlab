@@ -262,14 +262,7 @@ class OmniauthCallbackController < ApplicationController
   end
 
   def set_auth_cookie(provider: nil)
-    response.set_cookie(:cl2_jwt, {
-      value: auth_token(@user, provider).token,
-      httponly: true,
-      secure: true,
-      same_site: :lax,
-      expires: 1.month.from_now,
-      path: '/'
-    })
+    AuthToken::Cookie.write(response, auth_token(@user, provider).token, expires: 1.month.from_now)
   end
 
   # Updates the auth_hash in a users identity to ensure tokens are up to date for logout (mainly for FranceConnect)

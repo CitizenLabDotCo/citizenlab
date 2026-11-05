@@ -81,7 +81,7 @@ context 'publik authentication' do
       verified: false
     )
     expect(user.confirmation_required?).to be(false)
-    expect(cookies[:cl2_jwt]).to be_present
+    expect(cookies[AuthToken::Cookie::NAME]).to be_present
   end
 
   context 'when the email is not verified' do

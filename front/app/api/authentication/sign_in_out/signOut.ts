@@ -1,6 +1,5 @@
 import { API_PATH } from 'containers/App/constants';
 
-import { removeJwt } from 'utils/auth/jwt';
 import {
   invalidateQueryCache,
   resetMeQuery,
@@ -21,22 +20,42 @@ const PATHS_TO_REDIRECT = [
   '/profile/change-phone',
 ];
 
-export default async function signOut() {
+const hasLogoutUrl = (body: unknown): body is { logout_url: string } =>
+  typeof body === 'object' &&
+  body !== null &&
+  'logout_url' in body &&
+  typeof body.logout_url === 'string';
+
+/*
+  Clears the HttpOnly auth cookie, which only the API can do.
+  Returns the URL to sign out at the SSO provider the user signed in with,
+  if that provider supports it.
+*/
+export async function signOutOnServer(): Promise<string | null> {
   try {
-    // Call backend to clear the HttpOnly cookie
-    await fetch(`${API_PATH}/user_token`, {
+    const response = await fetch(`${API_PATH}/user_token`, {
       method: 'DELETE',
       credentials: 'include', // Include cookies (session, auth tokens)
     });
+    if (response.status !== 200) return null;
+
+    const body: unknown = await response.json();
+    return hasLogoutUrl(body) ? body.logout_url : null;
   } catch (error) {
     console.error('Sign out failed:', error);
+    return null;
+  }
+}
+
+export default async function signOut() {
+  const logoutUrl = await signOutOnServer();
+
+  // Sign out at the SSO provider too. It sends the user back to the platform.
+  if (logoutUrl) {
+    window.location.href = logoutUrl;
+    return;
   }
 
-  // Clears any JS-readable token left over and marks the removal as
-  // deliberate, so it is not reported as an unexpected token loss.
-  removeJwt();
-
-  // Always do client-side cleanup
   await resetMeQuery();
   invalidateQueryCache();
   const { pathname } = removeLocale(location.pathname);

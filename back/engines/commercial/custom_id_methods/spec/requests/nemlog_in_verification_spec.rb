@@ -73,7 +73,8 @@ describe CustomIdMethods::NemlogIn::NemlogInOmniauth do
   end
 
   it 'successfully verifies a user' do
-    get "/auth/nemlog_in?token=#{token}&random-passthrough-param=somevalue&verification_pathname=/yipie"
+    cookies[AuthToken::Cookie::NAME] = token
+    get '/auth/nemlog_in?verification=true&random-passthrough-param=somevalue&verification_pathname=/yipie'
     follow_redirect!
 
     expect(response).to redirect_to('/en/yipie?random-passthrough-param=somevalue&verification_success=true')
@@ -95,7 +96,8 @@ describe CustomIdMethods::NemlogIn::NemlogInOmniauth do
   it "successfully verifies a user that hasn't completed her registration" do
     user.update!(registration_completed_at: nil)
 
-    get "/auth/nemlog_in?token=#{token}&verification_pathname=/yipie"
+    cookies[AuthToken::Cookie::NAME] = token
+    get '/auth/nemlog_in?verification=true&verification_pathname=/yipie'
     follow_redirect!
 
     expect(response).to redirect_to('/en/yipie?verification_success=true')
@@ -105,7 +107,8 @@ describe CustomIdMethods::NemlogIn::NemlogInOmniauth do
   end
 
   it 'redirect to a path without an ending slash when no pathname is passed' do
-    get "/auth/nemlog_in?token=#{token}"
+    cookies[AuthToken::Cookie::NAME] = token
+    get '/auth/nemlog_in?verification=true'
     follow_redirect!
     expect(response).to redirect_to('/en?verification_success=true')
   end
@@ -130,7 +133,8 @@ describe CustomIdMethods::NemlogIn::NemlogInOmniauth do
       .to receive(:merge!).and_raise(AccountMergeService::IncompleteMergeError)
     allow(ErrorReporter).to receive(:report)
 
-    get "/auth/nemlog_in?token=#{token}&verification_pathname=/some-page"
+    cookies[AuthToken::Cookie::NAME] = token
+    get '/auth/nemlog_in?verification=true&verification_pathname=/some-page'
     follow_redirect!
 
     expect(response).to redirect_to('/some-page?verification_error=true&error_code=taken')
@@ -148,7 +152,8 @@ describe CustomIdMethods::NemlogIn::NemlogInOmniauth do
       hashed_uid: Verification::VerificationService.new.send(:hashed_uid, saml_auth_response[:uid], 'nemlog_in')
     )
 
-    get "/auth/nemlog_in?token=#{token}&verification_pathname=/some-page"
+    cookies[AuthToken::Cookie::NAME] = token
+    get '/auth/nemlog_in?verification=true&verification_pathname=/some-page'
     follow_redirect!
 
     expect(response).to redirect_to('/some-page?verification_error=true&error_code=taken')
@@ -163,7 +168,8 @@ describe CustomIdMethods::NemlogIn::NemlogInOmniauth do
     it 'does not verify a user under specified age limit' do
       saml_auth_response.extra.raw_info['https://data.gov.dk/model/core/eid/age'] = ['14']
 
-      get "/auth/nemlog_in?token=#{token}&verification_pathname=/en/some-page"
+      cookies[AuthToken::Cookie::NAME] = token
+      get '/auth/nemlog_in?verification=true&verification_pathname=/en/some-page'
       follow_redirect!
 
       expect(response).to redirect_to('/en/some-page?verification_error=true&error_code=not_entitled_under_minimum_age')
@@ -175,7 +181,8 @@ describe CustomIdMethods::NemlogIn::NemlogInOmniauth do
     it 'verifies a user over specified age limit' do
       saml_auth_response.extra.raw_info['https://data.gov.dk/model/core/eid/age'] = ['15']
 
-      get "/auth/nemlog_in?token=#{token}&random-passthrough-param=somevalue&verification_pathname=/some-page"
+      cookies[AuthToken::Cookie::NAME] = token
+      get '/auth/nemlog_in?verification=true&random-passthrough-param=somevalue&verification_pathname=/some-page'
       follow_redirect!
 
       expect(response).to redirect_to('/en/some-page?random-passthrough-param=somevalue&verification_success=true')
@@ -195,7 +202,8 @@ describe CustomIdMethods::NemlogIn::NemlogInOmniauth do
       end
 
       it 'stores the birthyear in the custom field' do
-        get "/auth/nemlog_in?token=#{token}&verification_pathname=/some-page"
+        cookies[AuthToken::Cookie::NAME] = token
+        get '/auth/nemlog_in?verification=true&verification_pathname=/some-page'
         follow_redirect!
 
         expect(user.reload.answer_for_key('birthyear')&.value).to eq(1944)
@@ -211,7 +219,8 @@ describe CustomIdMethods::NemlogIn::NemlogInOmniauth do
       end
 
       it 'stores the birthyear in the custom field' do
-        get "/auth/nemlog_in?token=#{token}&verification_pathname=/some-page"
+        cookies[AuthToken::Cookie::NAME] = token
+        get '/auth/nemlog_in?verification=true&verification_pathname=/some-page'
         follow_redirect!
 
         expect(user.reload.answer_for_key('birthyear')).to be_nil
@@ -227,8 +236,8 @@ describe CustomIdMethods::NemlogIn::NemlogInOmniauth do
       follow_redirect!
 
       expect(response).to redirect_to('/en/whatever-page?other_param=123&sso_flow=signup&sso_success=true')
-      expect(cookies[:cl2_jwt]).to be_present
-      jwt_payload = JWT.decode(cookies[:cl2_jwt], nil, false).first
+      expect(cookies[AuthToken::Cookie::NAME]).to be_present
+      jwt_payload = JWT.decode(cookies[AuthToken::Cookie::NAME], nil, false).first
       expect(User.first.id).to eq jwt_payload['sub']
       expect(User.first.email).to be_nil
       expect(User.first.email_confirmed_at).to be_nil
@@ -245,7 +254,7 @@ describe CustomIdMethods::NemlogIn::NemlogInOmniauth do
       follow_redirect!
 
       expect(response).to redirect_to('/en/whatever-page?error_code=not_entitled_under_minimum_age&authentication_error=true')
-      expect(cookies[:cl2_jwt]).to be_nil
+      expect(cookies[AuthToken::Cookie::NAME]).to be_nil
       expect(User.count).to eq 0
     end
   end
@@ -266,8 +275,8 @@ describe CustomIdMethods::NemlogIn::NemlogInOmniauth do
       follow_redirect!
 
       expect(response).to redirect_to('/en/another-page?test_param=test&sso_flow=signin&sso_success=true')
-      expect(cookies[:cl2_jwt]).to be_present
-      jwt_payload = JWT.decode(cookies[:cl2_jwt], nil, false).first
+      expect(cookies[AuthToken::Cookie::NAME]).to be_present
+      jwt_payload = JWT.decode(cookies[AuthToken::Cookie::NAME], nil, false).first
       expect(User.first.id).to eq jwt_payload['sub']
       expect(User.first.first_name).to eq('Bob')
       expect(User.first.last_name).to eq('Jelly')

@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
+# Signs users in and out. The auth token is handed out in an HttpOnly cookie only:
+# it never appears in a response body, so the front-end has no access to it.
 class WebApi::V1::UserTokenController < ActionController::API
   include ActionController::Cookies
   include EnforceUserSso
-
-  COOKIE_NAME = :cl2_jwt
 
   before_action :sso_enforced?, only: %i[create]
 
@@ -17,7 +17,7 @@ class WebApi::V1::UserTokenController < ActionController::API
     return head :not_found unless user && !user.confirmation_required? && password_correct?(user)
 
     handle_successful_authentication_sidefx(user)
-    render_auth_token(user)
+    sign_in(user)
   end
 
   # Phone number + password
@@ -29,41 +29,48 @@ class WebApi::V1::UserTokenController < ActionController::API
     return head :not_found unless user&.phone_confirmed_at && password_correct?(user)
 
     handle_successful_authentication_sidefx(user)
-    render_auth_token(user)
+    sign_in(user)
   end
 
-  # Sign out: clear the HttpOnly JWT cookie by making it expire immediately.
+  # Sign out. Users signed in through an SSO provider that supports logout must also
+  # be signed out there, so the URL to send them to is returned when there is one.
   def destroy
-    response.set_cookie(COOKIE_NAME, {
-      value: '',
-      expires: 1.second.ago,
-      path: '/',
-      httponly: true,
-      secure: true,
-      same_site: :strict
-    })
+    logout_url = sso_logout_url
+    AuthToken::Cookie.clear(response)
 
-    head :no_content
+    if logout_url
+      render json: { logout_url: logout_url }
+    else
+      head :no_content
+    end
   end
 
   private
 
-  def render_auth_token(user)
-    lifetime = token_lifetime
-    auth_token = auth_token(user, lifetime)
+  def sign_in(user)
+    remember_me = auth_params[:remember_me] == true
+    expires_at = token_lifetime(remember_me).from_now
 
-    # Use response.set_cookie, not `cookies[:cl2_jwt] =`, to bypass middleware
-    # dependency to ensure reliable HttpOnly flag setting in API-only Rails apps
-    response.set_cookie(COOKIE_NAME, {
-      value: auth_token.token,
-      httponly: true,
-      secure: true,
-      same_site: :strict,
-      expires: lifetime.from_now,
-      path: '/'
-    })
+    payload = user.to_token_payload
+    payload[:exp] = expires_at.to_i
+    token = AuthToken::AuthToken.new(payload: payload).token
 
-    render json: auth_token, status: :created
+    # The cookie lives as long as the token: 1 day, or longer with remember_me.
+    AuthToken::Cookie.write(response, token, expires: expires_at)
+    head :created
+  end
+
+  def sso_logout_url
+    token = AuthToken::Cookie.read(request)
+    return unless token
+
+    payload = AuthToken::AuthToken.new(token: token).payload
+    return unless payload['logout_supported'] && payload['provider']
+
+    user = User.find_by(id: payload['sub'])
+    AuthenticationService.new.logout_url(payload['provider'], user) if user
+  rescue JWT::DecodeError
+    nil
   end
 
   def handle_successful_authentication_sidefx(user)
@@ -77,18 +84,8 @@ class WebApi::V1::UserTokenController < ActionController::API
     password.present? && user.authenticate(password).present?
   end
 
-  def auth_token(user, lifetime)
-    payload = user.to_token_payload
-
-    # TODO: This can probably be removed, since the FE no longer needs it,
-    # but leaving it for now to avoid any potential issues with other services.
-    payload[:exp] = lifetime.from_now.to_i
-
-    AuthToken::AuthToken.new payload: payload
-  end
-
-  def token_lifetime
-    return AuthToken::AuthToken::TOKEN_SHORT_LIFETIME unless auth_params[:remember_me] == true
+  def token_lifetime(remember_me)
+    return AuthToken::AuthToken::TOKEN_SHORT_LIFETIME unless remember_me
 
     max_lifetime = AppConfiguration.instance.settings.dig('core', 'authentication_token_lifetime_in_days')
     max_lifetime.present? ? max_lifetime.to_i.days : AuthToken::AuthToken::TOKEN_DEFAULT_LIFETIME

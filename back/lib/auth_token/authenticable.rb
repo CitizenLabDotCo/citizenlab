@@ -19,8 +19,7 @@ module AuthToken
     private
 
     def token
-      # params[:token] || token_from_request_headers
-      params[:token] || cookies[:cl2_jwt]
+      Cookie.read(request)
     end
 
     def method_missing(method, *args)
@@ -54,10 +53,6 @@ module AuthToken
 
     def unauthorized_entity(_entity_name)
       head(:unauthorized)
-    end
-
-    def token_from_request_headers
-      request.headers['Authorization']&.split&.last
     end
 
     # Dynamically defines a method similar to the example below.
