@@ -3244,6 +3244,11 @@
     "verified_at": "2026-07-09T13:46:09.862763Z",
     "verified_by": "Jelena"
   },
+  "app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage2": {
+    "state": "verified",
+    "verified_at": "2026-11-05T14:23:57.645106Z",
+    "verified_by": "Jelena"
+  },
   "app.components.ProjectPageBuilder.Widgets.eventsEmptyNote": {
     "state": "verified",
     "verified_at": "2026-07-08T12:11:44.569954Z",
