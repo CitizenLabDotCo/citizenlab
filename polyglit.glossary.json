@@ -366,6 +366,9 @@
   "sign in": {
     "nl-NL": "inloggen"
   },
+  "visitors": {
+    "de-DE": "Besucher*innen"
+  },
   "traffic sources": {
     "nl-NL": "kanalen"
   },
