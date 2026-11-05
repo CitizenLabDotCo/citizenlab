@@ -781,8 +781,6 @@
   "app.components.UI.PillPicker.remove": "Noņemt {label}",
   "app.components.UI.PillPicker.selectedCount": "{count, plural, =0 {Nekas nav atlasīts} one {# atlasīts} other {# atlasīti}}",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Noņemt",
-  "app.components.UI.TranslateButton.original": "Oriģināls",
-  "app.components.UI.TranslateButton.translate": "Tulkot",
   "app.components.Unauthorized.additionalInformationRequired": "Lai varētu piedalīties, ir nepieciešama papildu informācija.",
   "app.components.Unauthorized.completeProfile": "Pilns profils",
   "app.components.Unauthorized.completeProfileTitle": "Aizpildiet savu profilu, lai piedalītos",

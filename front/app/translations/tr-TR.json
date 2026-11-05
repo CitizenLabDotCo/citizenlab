@@ -781,8 +781,6 @@
   "app.components.UI.PillPicker.remove": "{label} kaldır",
   "app.components.UI.PillPicker.selectedCount": "{count, plural, =0 {Hiçbiri seçilmedi} other {# seçildi}}",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Kaldır",
-  "app.components.UI.TranslateButton.original": "Orijinal",
-  "app.components.UI.TranslateButton.translate": "Çevir",
   "app.components.Unauthorized.additionalInformationRequired": "Katılabilmeniz için ek bilgiler gerekmektedir.",
   "app.components.Unauthorized.completeProfile": "Tam profil",
   "app.components.Unauthorized.completeProfileTitle": "Katılmak için profilinizi tamamlayın",

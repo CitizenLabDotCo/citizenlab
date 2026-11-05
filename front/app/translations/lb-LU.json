@@ -781,8 +781,6 @@
   "app.components.UI.PillPicker.remove": "{label} läschen",
   "app.components.UI.PillPicker.selectedCount": "{count, plural, =0 {Keen ausgewielt} other {# ausgewielt}}",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Ewechhuelen",
-  "app.components.UI.TranslateButton.original": "Original",
-  "app.components.UI.TranslateButton.translate": "Iwwersetzen",
   "app.components.Unauthorized.additionalInformationRequired": "Zousätzlech Informatioun ass néideg fir Iech matzemaachen.",
   "app.components.Unauthorized.completeProfile": "Komplett Profil",
   "app.components.Unauthorized.completeProfileTitle": "Fëllt Äre Profil aus fir matzemaachen",

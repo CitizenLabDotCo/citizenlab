@@ -1,19 +1,16 @@
 import React from 'react';
 
-import styled from 'styled-components';
+import { Box } from '@citizenlab/cl2-component-library';
 import { SupportedLocale } from 'typings';
 
 import { IIdeaData } from 'api/ideas/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import TranslateButton from 'components/UI/TranslateButton';
-
-const StyledTranslateButton = styled(TranslateButton)`
-  margin-bottom: 20px;
-`;
+import TranslationNotice from './TranslationNotice';
 
 interface Props {
+  // True when the translation is shown. This is the default.
   translateButtonClicked: boolean;
   onClick: () => void;
   idea: IIdeaData;
@@ -27,15 +24,19 @@ const IdeasShowTranslateButton = ({
   onClick,
 }: Props) => {
   const featureEnabled = useFeatureFlag({ name: 'machine_translations' });
-  const showTranslateButton = !idea.attributes.title_multiloc[locale];
+  const titleMultiloc = idea.attributes.title_multiloc;
+  const needsTranslation = !titleMultiloc[locale];
 
-  if (!featureEnabled || !showTranslateButton) return null;
+  if (!featureEnabled || !needsTranslation) return null;
 
   return (
-    <StyledTranslateButton
-      translateButtonClicked={translateButtonClicked}
-      onClick={onClick}
-    />
+    <Box mb="20px">
+      <TranslationNotice
+        multiloc={titleMultiloc}
+        showTranslation={translateButtonClicked}
+        onToggle={onClick}
+      />
+    </Box>
   );
 };
 

@@ -781,8 +781,6 @@
   "app.components.UI.PillPicker.remove": "{label} ہٹائیں",
   "app.components.UI.PillPicker.selectedCount": "{count, plural, =0 {کوئی منتخب نہیں کیا گیا} other {# منتخب شدہ}}",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "ہٹا دیں۔",
-  "app.components.UI.TranslateButton.original": "اصل",
-  "app.components.UI.TranslateButton.translate": "ترجمہ کریں۔",
   "app.components.Unauthorized.additionalInformationRequired": "آپ کو شرکت کرنے کے لیے اضافی معلومات درکار ہیں۔",
   "app.components.Unauthorized.completeProfile": "مکمل پروفائل",
   "app.components.Unauthorized.completeProfileTitle": "حصہ لینے کے لیے اپنا پروفائل مکمل کریں۔",

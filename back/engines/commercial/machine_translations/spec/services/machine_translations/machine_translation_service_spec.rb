@@ -5,7 +5,19 @@ require 'rails_helper'
 describe MachineTranslations::MachineTranslationService do
   subject(:translator) { described_class.new }
 
-  before { stub_easy_translate! }
+  let(:llm_translator) { instance_double(MachineTranslations::LLMTranslator) }
+
+  before do
+    allow(MachineTranslations::LLMTranslator).to receive(:new).and_return(llm_translator)
+    allow(llm_translator).to receive(:translate) do |_text, _locale_from, locale_to|
+      translation = {
+        'en' => '<strong>Health & Wellness</strong>',
+        'fr-BE' => '<strong>Santé &amp; Bien-être</strong>',
+        'nl-NL' => ''
+      }[locale_to]
+      translation || raise(ArgumentError, 'Locale not supported!')
+    end
+  end
 
   describe 'translate' do
     it 'translates to the correct language for a given locale' do
@@ -25,30 +37,17 @@ describe MachineTranslations::MachineTranslationService do
       expect(text).to eq ''
     end
 
-    it 'propagates exception from EasyTranslate' do
+    it 'propagates exception from the translator' do
       expect do
-        translator.translate 'Test', 'en', 'un-SUPPORTED-LOCALE'
-      end.to raise_error(EasyTranslate::EasyTranslateException)
+        translator.translate 'Test', 'en', 'de-DE'
+      end.to raise_error(ArgumentError)
     end
 
     it 'retries translating multiple times when specified' do
-      expect(EasyTranslate).to receive(:translate).twice
       expect do
-        translator.translate 'Test', 'en', 'un-SUPPORTED-LOCALE', retries: 1, max_sleep: 0
-      end.to raise_error(EasyTranslate::EasyTranslateException)
-    end
-  end
-
-  private
-
-  def stub_easy_translate!
-    allow(EasyTranslate).to receive(:translate) do |_, options|
-      translation = {
-        'en' => '<strong>Health & Wellness</strong>',
-        'fr' => '<strong>Santé &amp; Bien-être</strong>',
-        'nl' => ''
-      }[options[:to]]
-      translation || raise(EasyTranslate::EasyTranslateException, 'Locale not supported!')
+        translator.translate 'Test', 'en', 'de-DE', retries: 1, max_sleep: 0
+      end.to raise_error(ArgumentError)
+      expect(llm_translator).to have_received(:translate).twice
     end
   end
 end

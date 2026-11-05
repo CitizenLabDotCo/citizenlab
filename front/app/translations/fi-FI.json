@@ -781,8 +781,6 @@
   "app.components.UI.PillPicker.remove": "Poista {label}",
   "app.components.UI.PillPicker.selectedCount": "{count, plural, =0 {Ei valintoja} other {# valittu}}",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Poista",
-  "app.components.UI.TranslateButton.original": "Alkuperäinen",
-  "app.components.UI.TranslateButton.translate": "Kääntää",
   "app.components.Unauthorized.additionalInformationRequired": "Osallistuminen edellyttää lisätietoja.",
   "app.components.Unauthorized.completeProfile": "Täydellinen profiili",
   "app.components.Unauthorized.completeProfileTitle": "Täytä profiilisi osallistuaksesi",

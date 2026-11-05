@@ -781,8 +781,6 @@
   "app.components.UI.PillPicker.remove": "{label} verwijderen",
   "app.components.UI.PillPicker.selectedCount": "{count, plural, =0 {Geen geselecteerd} other {# geselecteerd}}",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Verwijder",
-  "app.components.UI.TranslateButton.original": "Origineel",
-  "app.components.UI.TranslateButton.translate": "Vertaal",
   "app.components.Unauthorized.additionalInformationRequired": "Er is aanvullende informatie nodig voordat je deel kunt nemen.",
   "app.components.Unauthorized.completeProfile": "Vul je profiel verder aan",
   "app.components.Unauthorized.completeProfileTitle": "Vul je profiel verder aan om deel te nemen",

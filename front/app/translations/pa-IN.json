@@ -781,8 +781,6 @@
   "app.components.UI.PillPicker.remove": "{label} ਹਟਾਓ",
   "app.components.UI.PillPicker.selectedCount": "{count, plural, =0 {ਕੋਈ ਨਹੀਂ ਚੁਣਿਆ ਗਿਆ} other {# ਚੁਣੇ ਗਏ}}",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "ਹਟਾਓ",
-  "app.components.UI.TranslateButton.original": "ਮੂਲ",
-  "app.components.UI.TranslateButton.translate": "ਅਨੁਵਾਦ ਕਰੋ",
   "app.components.Unauthorized.additionalInformationRequired": "ਤੁਹਾਡੇ ਭਾਗ ਲੈਣ ਲਈ ਵਾਧੂ ਜਾਣਕਾਰੀ ਦੀ ਲੋੜ ਹੈ।",
   "app.components.Unauthorized.completeProfile": "ਪੂਰਾ ਪ੍ਰੋਫਾਈਲ",
   "app.components.Unauthorized.completeProfileTitle": "ਹਿੱਸਾ ਲੈਣ ਲਈ ਆਪਣੀ ਪ੍ਰੋਫਾਈਲ ਨੂੰ ਪੂਰਾ ਕਰੋ",

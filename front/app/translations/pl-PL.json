@@ -781,8 +781,6 @@
   "app.components.UI.PillPicker.remove": "Usuń {label}",
   "app.components.UI.PillPicker.selectedCount": "{count, plural, =0 {Nic nie wybrano} other {# wybrano}}",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Usuń",
-  "app.components.UI.TranslateButton.original": "Oryginał",
-  "app.components.UI.TranslateButton.translate": "Przetłumacz",
   "app.components.Unauthorized.additionalInformationRequired": "Aby wziąć udział w konkursie, musisz podać dodatkowe informacje.",
   "app.components.Unauthorized.completeProfile": "Pełny profil",
   "app.components.Unauthorized.completeProfileTitle": "Uzupełnij swój profil, aby wziąć udział",

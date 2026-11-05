@@ -12,6 +12,8 @@ import { SupportedLocale, Multiloc } from 'typings';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
 
+import MultilocTranslationStatus from 'components/UI/MultilocTranslation/MultilocTranslationStatus';
+import useMultilocTranslation from 'components/UI/MultilocTranslation/useMultilocTranslation';
 import QuillEditor, {
   Props as QuillEditorProps,
 } from 'components/UI/QuillEditor';
@@ -82,6 +84,11 @@ const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
     useLocale()
   );
   const tenantLocales = useAppConfigurationLocales();
+  const translation = useMultilocTranslation({
+    valueMultiloc,
+    onChange: (multiloc) => onChange(multiloc, selectedLocale),
+    html: true,
+  });
 
   useEffect(() => {
     if (setRef && containerRef.current) {
@@ -138,6 +145,8 @@ const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
             selectedLocale={selectedLocale}
             values={{ valueMultiloc }}
             variant={quillProps.variant}
+            localeStates={translation.localeStates}
+            localeStateLabels={translation.localeStateLabels}
           />
         )}
       </LabelContainer>
@@ -155,6 +164,12 @@ const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
         maxCharCount={maxCharCount}
         minCharCount={minCharCount}
       />
+      {!hideLocaleSwitcher && (
+        <MultilocTranslationStatus
+          translation={translation}
+          selectedLocale={selectedLocale}
+        />
+      )}
     </Container>
   );
 });

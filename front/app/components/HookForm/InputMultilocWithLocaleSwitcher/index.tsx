@@ -1,9 +1,6 @@
 import React from 'react';
 
-import {
-  InputMultilocWithLocaleSwitcher as InputMultilocWithLocaleSwitcherComponent,
-  InputMultilocWithLocaleSwitcherProps,
-} from '@citizenlab/cl2-component-library';
+import { InputMultilocWithLocaleSwitcherProps } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 import { Controller, useFormContext, FieldError } from 'react-hook-form';
 import { CLError, SupportedLocale, RHFErrors } from 'typings';
@@ -12,6 +9,8 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
 
 import Error, { TFieldName } from 'components/UI/Error';
+// Adds the machine translation action to the component library input.
+import InputMultilocWithLocaleSwitcherComponent from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -73,7 +72,6 @@ const InputMultilocWithLocaleSwitcher = ({
               }}
               {...field}
               {...rest}
-              locales={locales}
               type="text"
               valueMultiloc={{ ...defaultValue, ...field.value }}
               initiallySelectedLocale={locale}

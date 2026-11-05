@@ -1,5 +1,7 @@
 import React from 'react';
 
+import useComment from 'api/comments/useComment';
+
 import useLocale from 'hooks/useLocale';
 
 import { CommentText } from 'components/PostShowComponents/Comments/Comment/CommentBody';
@@ -19,6 +21,7 @@ const PostShowTranslatedCommentBody = ({
   commentId,
 }: Props) => {
   const locale = useLocale();
+  const { data: comment } = useComment(commentId);
 
   const translation = useTranslation({
     context: 'comment',
@@ -26,6 +29,7 @@ const PostShowTranslatedCommentBody = ({
     localeTo: locale,
     attributeName: 'body_multiloc',
     machineTranslationButtonClicked: translateButtonClicked || false,
+    multiloc: comment?.data.attributes.body_multiloc,
   });
   const showTranslatedContent = translateButtonClicked && translation;
   const content = showTranslatedContent

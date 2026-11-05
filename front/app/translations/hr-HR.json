@@ -781,8 +781,6 @@
   "app.components.UI.PillPicker.remove": "Ukloni {label}",
   "app.components.UI.PillPicker.selectedCount": "{count, plural, =0 {Nijedna nije odabrana} one {# odabrana} few {# odabrane} other {# odabrano}}",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Ukloni",
-  "app.components.UI.TranslateButton.original": "Original",
-  "app.components.UI.TranslateButton.translate": "Prevedi",
   "app.components.Unauthorized.additionalInformationRequired": "Za sudjelovanje su potrebne dodatne informacije.",
   "app.components.Unauthorized.completeProfile": "Kompletan profil",
   "app.components.Unauthorized.completeProfileTitle": "Za sudjelovanje ispunite svoj profil",

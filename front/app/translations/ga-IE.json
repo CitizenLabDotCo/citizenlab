@@ -781,8 +781,6 @@
   "app.components.UI.PillPicker.remove": "Bain {label}",
   "app.components.UI.PillPicker.selectedCount": "{count, plural, =0 {Dada roghnaithe} other {# roghnaithe}}",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Bain",
-  "app.components.UI.TranslateButton.original": "Bunaidh",
-  "app.components.UI.TranslateButton.translate": "Aistrigh",
   "app.components.Unauthorized.additionalInformationRequired": "Tá tuilleadh eolais ag teastáil le go mbeidh tú in ann páirt a ghlacadh.",
   "app.components.Unauthorized.completeProfile": "Próifíl iomlán",
   "app.components.Unauthorized.completeProfileTitle": "Comhlánaigh do phróifíl le bheith páirteach",
