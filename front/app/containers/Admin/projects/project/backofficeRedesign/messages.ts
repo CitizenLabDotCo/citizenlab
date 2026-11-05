@@ -82,6 +82,26 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.newEvent',
     defaultMessage: 'New event',
   },
+  methodGroupGatherInput: {
+    id: 'app.containers.Admin.projects.project.methodGroupGatherInput',
+    defaultMessage: 'Gather input',
+  },
+  methodGroupShapeDecisions: {
+    id: 'app.containers.Admin.projects.project.methodGroupShapeDecisions',
+    defaultMessage: 'Shape decisions',
+  },
+  methodGroupInformAndRecruit: {
+    id: 'app.containers.Admin.projects.project.methodGroupInformAndRecruit',
+    defaultMessage: 'Inform and recruit',
+  },
+  hidePanel: {
+    id: 'app.containers.Admin.projects.project.hidePanel',
+    defaultMessage: 'Hide panel',
+  },
+  showPanel: {
+    id: 'app.containers.Admin.projects.project.showPanel',
+    defaultMessage: 'Show panel',
+  },
   filesSection: {
     id: 'app.containers.Admin.projects.project.filesSection',
     defaultMessage: '360 Input',
@@ -173,10 +193,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.newSurveyCrumb',
     defaultMessage: 'New survey',
   },
-  selectMethodContinue: {
-    id: 'app.containers.Admin.projects.project.selectMethodContinue',
-    defaultMessage: 'Continue',
-  },
   addQuestions: {
     id: 'app.containers.Admin.projects.project.addQuestions',
     defaultMessage: 'Add questions',
@@ -226,6 +242,18 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.publishEmailRecipients',
     defaultMessage:
       '\u2248 {count} recipients. Everyone who follows this project or has taken part will get it.',
+  },
+  publishChooseGroups: {
+    id: 'app.containers.Admin.projects.project.publishChooseGroups',
+    defaultMessage: 'Choose which groups can open it',
+  },
+  publishGroupsSaveFailed: {
+    id: 'app.containers.Admin.projects.project.publishGroupsSaveFailed',
+    defaultMessage: "That change couldn't be saved. Please try again.",
+  },
+  publishNoGroups: {
+    id: 'app.containers.Admin.projects.project.publishNoGroups',
+    defaultMessage: 'There are no user groups yet. Create them under Users.',
   },
   publishEmailUnavailable: {
     id: 'app.containers.Admin.projects.project.publishEmailUnavailable',
@@ -413,22 +441,6 @@ export default defineMessages({
   settingsSaveChanges: {
     id: 'app.containers.Admin.projects.project.settingsSaveChanges',
     defaultMessage: 'Save changes',
-  },
-  placementTimeline: {
-    id: 'app.containers.Admin.projects.project.placementTimeline',
-    defaultMessage: 'Timeline',
-  },
-  placementStandalone: {
-    id: 'app.containers.Admin.projects.project.placementStandalone',
-    defaultMessage: 'Standalone',
-  },
-  placementTimelineDescription: {
-    id: 'app.containers.Admin.projects.project.placementTimelineDescription',
-    defaultMessage: 'Runs as a phase, in the order you set.',
-  },
-  placementStandaloneDescription: {
-    id: 'app.containers.Admin.projects.project.placementStandaloneDescription',
-    defaultMessage: 'Runs on its own, outside the timeline.',
   },
   switchLockedResponses: {
     id: 'app.containers.Admin.projects.project.switchLockedResponses',

@@ -13,36 +13,15 @@ import {
   CheckboxWithLabel,
   SearchInput,
   Text,
-  bo,
   colors,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { useIntl } from 'utils/cl-intl';
 
+import CheckOption from './CheckOption';
 import getPopoverPlacement, { PopoverPlacement } from './getPopoverPlacement';
 import messages from './messages';
-
-const Option = styled.div`
-  border-radius: ${bo.borderRadius};
-  font-size: 13px;
-  line-height: 1.5;
-  color: ${bo.colors.textHeadingStrong};
-
-  &:hover {
-    background: ${colors.grey100};
-  }
-
-  .e2e-checkbox:not(.checked) {
-    opacity: 0;
-    transition: opacity 0.1s;
-  }
-
-  &:hover .e2e-checkbox,
-  input.focus-visible + .e2e-checkbox {
-    opacity: 1;
-  }
-`;
 
 const GAP = 8;
 const LIST_MAX_HEIGHT = 248;
@@ -161,7 +140,7 @@ const PillPickerPopover = ({
 
       <List ref={listRef}>
         {visibleOptions.map(({ value, label }) => (
-          <Option key={value}>
+          <CheckOption key={value}>
             <CheckboxWithLabel
               p="8px"
               size="17px"
@@ -170,7 +149,7 @@ const PillPickerPopover = ({
               onChange={() => onToggle(value)}
               label={label}
             />
-          </Option>
+          </CheckOption>
         ))}
         {visibleOptions.length === 0 && (
           <Text
