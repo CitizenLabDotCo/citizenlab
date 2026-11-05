@@ -24,9 +24,9 @@ import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-import { getErrorMessage, getRequestErrorCode } from './errors';
-import messages from './messages';
-import { AiAssistantToolView } from './types';
+import { getErrorMessage, getRequestErrorCode } from '../errors';
+import messages from '../messages';
+import { AiAssistantToolView } from '../types';
 
 type Props = {
   toolCall: IAiAssistantToolCallData;
