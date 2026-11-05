@@ -10,7 +10,7 @@ import {
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import messages from './messages';
+import messages from '../messages';
 
 type Props = {
   startedAt: string;

@@ -8,10 +8,11 @@ import { AiAssistantToolName } from 'api/ai_assistant_tool_calls/types';
 
 import { useIntl } from 'utils/cl-intl';
 
+import { getErrorMessage } from '../errors';
+import { AiAssistantToolViews } from '../types';
+
 import AssistantMessage from './AssistantMessage';
-import { getErrorMessage } from './errors';
 import ToolCallCard from './ToolCallCard';
-import { AiAssistantToolViews } from './types';
 import UserMessage from './UserMessage';
 import WorkingIndicator from './WorkingIndicator';
 
