@@ -55,11 +55,28 @@ RSpec.describe Files::FileUploader do
       expect(uploader.fog_attributes['Content-Disposition']).to start_with('inline;')
     end
 
-    it 'serves XML content as a download, also when the extension is not .xml' do
-      script = '<x:script xmlns:x="http://www.w3.org/1999/xhtml">alert(1)</x:script>'
-      uploader.cache!(tempfile_with('budget.csv', %(<?xml version="1.0"?>#{script})))
+    context 'with XML content, whatever the extension' do
+      using RSpec::Parameterized::TableSyntax
 
-      expect(uploader.fog_attributes['Content-Disposition']).to start_with('attachment;')
+      xhtml_script = '<?xml version="1.0"?><x:script xmlns:x="http://www.w3.org/1999/xhtml">alert(1)</x:script>'
+      svg_script = '<?xml version="1.0"?><s:svg xmlns:s="http://www.w3.org/2000/svg"><s:script>alert(1)</s:script></s:svg>'
+
+      where(:filename, :content) do
+        'budget.csv' | xhtml_script
+        'data.json'  | xhtml_script
+        'notes.txt'  | xhtml_script
+        'route.gpx'  | xhtml_script
+        'map.kml'    | xhtml_script
+        'shape.txt'  | svg_script
+      end
+
+      with_them do
+        it 'serves the file as a download' do
+          uploader.cache!(tempfile_with(filename, content))
+
+          expect(uploader.fog_attributes['Content-Disposition']).to start_with('attachment;')
+        end
+      end
     end
   end
 
