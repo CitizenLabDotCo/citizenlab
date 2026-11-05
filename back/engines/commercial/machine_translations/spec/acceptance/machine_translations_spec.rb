@@ -110,7 +110,7 @@ resource 'MachineTranslations' do
 
     let(:multiloc) { { 'en' => 'Bike lanes in the city centre' } }
     let(:source_locale) { 'en' }
-    let(:target_locales) { %w[nl-BE fr-FR] }
+    let(:target_locales) { %w[nl-NL fr-FR] }
     let(:html) { false }
 
     context 'when admin' do
@@ -119,7 +119,7 @@ resource 'MachineTranslations' do
       example_request 'Translate a multiloc into the target locales' do
         expect(status).to eq 200
         expect(json_parse(response_body).dig(:data, :attributes, :multiloc)).to eq(
-          'nl-BE': 'This is a translation',
+          'nl-NL': 'This is a translation',
           'fr-FR': 'This is a translation'
         )
       end
