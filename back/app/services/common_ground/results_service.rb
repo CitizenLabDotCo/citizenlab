@@ -34,12 +34,17 @@ module CommonGround
       query = query.where("#{consensus_score_sql} <= ?", max_score) if max_score
 
       query
-        .order(reverse ? consensus_score_sql.asc : consensus_score_sql.desc, votes_count_sql.desc)
+        .order(reverse ? consensus_score_sql.asc : consensus_score_sql.desc, votes_count_sql.desc, :id)
         .limit(n)
     end
 
+    # Ties break on the vote margin, not on the vote count: that puts the best-backed statement
+    # first among the agreed ones and last among the disagreed ones. The margin is always 0 on an
+    # even split, so the vote count decides there.
     def ideas_by_agreement
-      ideas_with_reaction_counts.order(net_agreement_sql.desc, votes_count_sql.desc)
+      ideas_with_reaction_counts.order(
+        net_agreement_sql.desc, vote_margin_sql.desc, votes_count_sql.desc, :id
+      )
     end
 
     # The vote counts are computed from the (filtered) reactions rather than taken from the
@@ -68,13 +73,15 @@ module CommonGround
 
     # Runs from +1 (everyone who took a side agreed) to -1 (everyone disagreed).
     def net_agreement_sql
-      @net_agreement_sql ||= Arel.sql(<<~SQL.squish)
-        (reaction_counts.likes_count - reaction_counts.dislikes_count) * 1.0
-        / NULLIF(#{votes_count_sql}, 0)
-      SQL
+      @net_agreement_sql ||= Arel.sql("#{vote_margin_sql} * 1.0 / NULLIF(#{votes_count_sql}, 0)")
     end
 
-    # Neutral votes are left out, so ties break on the number of participants who took a side.
+    # How many more participants agreed than disagreed. Negative the other way round.
+    def vote_margin_sql
+      @vote_margin_sql ||= Arel.sql('(reaction_counts.likes_count - reaction_counts.dislikes_count)')
+    end
+
+    # The number of participants who took a side. Neutral votes are left out.
     def votes_count_sql
       @votes_count_sql ||= Arel.sql('(reaction_counts.likes_count + reaction_counts.dislikes_count)')
     end
