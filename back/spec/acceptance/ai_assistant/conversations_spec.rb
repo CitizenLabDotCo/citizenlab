@@ -175,6 +175,21 @@ resource 'AI assistant conversations' do
         assert_status 422
         expect(json_response_body.dig(:errors, :locale, 0, :error)).to eq 'inclusion'
       end
+
+      example 'Start drafting a project', document: false do
+        project = create(:project, :draft)
+
+        do_request(ai_assistant_conversation: { surface_key: 'project_generator', subject_id: project.id, locale: })
+
+        assert_status 201
+        expect(AIAssistant::Conversation.find(response_data[:id])).to have_attributes(subject: project, surface_key: 'project_generator')
+      end
+
+      example '[error] Start drafting a published project', document: false do
+        do_request(ai_assistant_conversation: { surface_key: 'project_generator', subject_id: create(:project).id, locale: })
+        assert_status 422
+        expect(json_response_body.dig(:errors, :base, 0, :error)).to eq 'surface_unavailable'
+      end
     end
 
     context 'when admin' do
