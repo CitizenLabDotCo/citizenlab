@@ -10,6 +10,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { MessageDescriptor } from 'react-intl';
 
+import { getToolCalls } from 'api/ai_assistant_conversations/constructTranscript';
 import { AiAssistantSurfaceKey } from 'api/ai_assistant_conversations/types';
 import useAddAiAssistantConversation from 'api/ai_assistant_conversations/useAddAiAssistantConversation';
 import useAddAiAssistantMessage from 'api/ai_assistant_messages/useAddAiAssistantMessage';
@@ -27,6 +28,7 @@ import { getBase64FromFile } from 'utils/fileUtils';
 import Composer from './Composer';
 import { getErrorMessage, getRequestErrorCode } from './errors';
 import messages from './messages';
+import { hasOpenQuestions } from './questions';
 import Transcript from './Transcript';
 import { AiAssistantToolDisplays } from './types';
 import useLatestConversation from './useLatestConversation';
@@ -71,6 +73,9 @@ const AssistantPanel = ({
   const busy = sending || status === 'running' || status === 'awaiting_user';
   const hasMessages =
     (conversation?.data.relationships.messages.data.length ?? 0) > 0;
+  const openQuestions = conversation
+    ? hasOpenQuestions(getToolCalls(conversation))
+    : false;
 
   // Shares the attached files as project files the assistant may process.
   const uploadFiles = async (): Promise<{
@@ -196,7 +201,11 @@ const AssistantPanel = ({
       <Box mt="16px">
         {status === 'awaiting_user' && (
           <Text m="0px" mb="8px" fontSize="s" color="textSecondary">
-            <FormattedMessage {...messages.awaitingApprovalHint} />
+            <FormattedMessage
+              {...(openQuestions
+                ? messages.awaitingAnswersHint
+                : messages.awaitingApprovalHint)}
+            />
           </Text>
         )}
         <Composer
