@@ -88,6 +88,12 @@ class LLMSelector
       default_model: ::Analysis::LLM::ClaudeSonnet46
     ),
     LLMUseCase.new(
+      key: 'content_translation',
+      description: 'Machine translation of content into the other platform languages',
+      supported_models: [::Analysis::LLM::GPT4oMini, ::Analysis::LLM::ClaudeHaiku45, ::Analysis::LLM::Gemini3Flash],
+      default_model: ::Analysis::LLM::GPT4oMini
+    ),
+    LLMUseCase.new(
       key: 'ai_assistant',
       description: 'In-app AI assistant that proposes changes through tools',
       # Claude only: the Gemini adapter drops parts of the tool schemas.

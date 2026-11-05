@@ -34,19 +34,16 @@ module MachineTranslations
     end
 
     def translate(text_or_html, locale_from, locale_to, retries: 0, max_sleep: 60)
-      # Uses Google translate
-      from = locale_from[0...2]
-      to = locale_to[0...2]
-
-      return text_or_html if from == to
+      # Uses the LLM of the `content_translation` use case
+      return text_or_html if locale_from[0...2] == locale_to[0...2]
 
       translation = nil
       exception = nil
       (retries + 1).times do |i|
-        Rails.logger.info "GOOGLE TRANSLATE (attempt #{i + 1}/#{retries + 1})"
-        translation = EasyTranslate.translate text_or_html, from: from, to: to
+        Rails.logger.info "LLM TRANSLATE (attempt #{i + 1}/#{retries + 1})"
+        translation = llm_translator.translate text_or_html, locale_from, locale_to
         break
-      rescue EasyTranslate::EasyTranslateException => e
+      rescue StandardError => e
         exception = e
         sleep rand(max_sleep + 1) if i < retries
       end
@@ -61,6 +58,10 @@ module MachineTranslations
     end
 
     private
+
+    def llm_translator
+      @llm_translator ||= LLMTranslator.new
+    end
 
     def fix_html(text_or_html)
       doc = Nokogiri::HTML.fragment text_or_html

@@ -10,5 +10,9 @@ module MachineTranslations
       end
       record.translatable && translatable_policy.new(user_context, record.translatable).show?
     end
+
+    def translate_multiloc?
+      active_admin_or_moderator?
+    end
   end
 end

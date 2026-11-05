@@ -10,7 +10,7 @@ resource 'MachineTranslations' do
     header 'Content-Type', 'application/json'
     resident_header_token
 
-    stub_easy_translate!
+    stub_llm_translator!
   end
 
   get '/web_api/v1/ideas/:idea_id/machine_translation' do
@@ -100,11 +100,54 @@ resource 'MachineTranslations' do
     end
   end
 
+  post '/web_api/v1/machine_translations/translate_multiloc' do
+    with_options scope: :machine_translation do
+      parameter :multiloc, 'The multiloc with the source text'
+      parameter :source_locale, 'The locale to translate from'
+      parameter :target_locales, 'The locales to translate to'
+      parameter :html, 'Whether the text is HTML'
+    end
+
+    let(:multiloc) { { 'en' => 'Bike lanes in the city centre' } }
+    let(:source_locale) { 'en' }
+    let(:target_locales) { %w[nl-BE fr-FR] }
+    let(:html) { false }
+
+    context 'when admin' do
+      before { admin_header_token }
+
+      example_request 'Translate a multiloc into the target locales' do
+        expect(status).to eq 200
+        expect(json_parse(response_body).dig(:data, :attributes, :multiloc)).to eq(
+          'nl-BE': 'This is a translation',
+          'fr-FR': 'This is a translation'
+        )
+      end
+
+      context 'when a target locale is not a platform locale' do
+        let(:target_locales) { %w[de-DE] }
+
+        example_request '[error] Returns 422' do
+          expect(status).to eq 422
+          expect(json_parse(response_body).dig(:errors, :base)).to eq([{ error: 'invalid_locales' }])
+        end
+      end
+    end
+
+    context 'when resident' do
+      example_request '[error] Returns 401 unauthorized' do
+        expect(status).to eq 401
+      end
+    end
+  end
+
   private
 
-  def stub_easy_translate!
-    EasyTranslate.stub(:translate) do
-      'This is a translation'
+  def stub_llm_translator!
+    translator = instance_double(MachineTranslations::LLMTranslator, translate: 'This is a translation')
+    allow(translator).to receive(:translate_to_locales) do |_text, _from, locales_to, **|
+      locales_to.index_with { 'This is a translation' }
     end
+    allow(MachineTranslations::LLMTranslator).to receive(:new).and_return(translator)
   end
 end
