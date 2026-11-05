@@ -7,6 +7,7 @@ import { IFlatCustomField } from 'api/custom_fields/types';
 
 import useLocalize from 'hooks/useLocalize';
 
+import ImageMultichoiceField from 'components/CustomFieldsForm/Fields/ImageMultichoiceField';
 import LinearScaleField from 'components/CustomFieldsForm/Fields/LinearScale';
 import { getLinearScaleLabel } from 'components/CustomFieldsForm/Fields/LinearScale/utils';
 import MultiSelectField from 'components/CustomFieldsForm/Fields/MultiSelectField';
@@ -52,6 +53,8 @@ const AnswerValue = ({ field, answer }: Props) => {
           <MultiSelectField question={field} disabled />
         </Box>
       );
+    case 'multiselect_image':
+      return <ImageMultichoiceField question={field} disabled />;
     case 'linear_scale': {
       if (typeof answer !== 'number' || field.maximum === undefined) {
         return null;
