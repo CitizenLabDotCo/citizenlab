@@ -183,6 +183,29 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     end
   end
 
+  describe '#identifies_author?' do
+    let(:permission) { phase.permissions.find_by(action: 'posting_idea') }
+
+    it 'follows the posting permission' do
+      permission.update!(user_data_collection: 'all_data')
+      expect(participation_method.identifies_author?).to be true
+    end
+
+    it 'is false when only the demographics are collected' do
+      permission.update!(user_data_collection: 'demographics_only')
+      expect(participation_method.identifies_author?).to be false
+    end
+
+    it 'is false when the survey is fully anonymous' do
+      permission.update!(user_data_collection: 'anonymous')
+      expect(participation_method.identifies_author?).to be false
+    end
+
+    it 'is true without a posting permission' do
+      expect(described_class.new(nil).identifies_author?).to be true
+    end
+  end
+
   its(:additional_export_columns) { is_expected.to eq [] }
   its(:allowed_ideas_orders) { is_expected.to be_empty }
   its(:return_disabled_actions?) { is_expected.to be true }

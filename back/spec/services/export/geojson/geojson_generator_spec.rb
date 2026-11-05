@@ -96,6 +96,19 @@ describe Export::Geojson::GeojsonGenerator do
         expect(property_keys.grep(/^user_data__/)).to be_empty
       end
     end
+
+    context 'when the survey collects demographics only' do
+      before { phase.permissions.find_by(action: 'posting_idea').update!(user_data_collection: 'demographics_only') }
+
+      # idea1 was submitted before the setting was turned on, so it still has an
+      # author whose profile carries the demographics.
+      it 'keeps the demographics but omits the author from the properties' do
+        properties = parsed_json['features'].find { |feature| feature['properties']['id'] == idea1.id }['properties']
+
+        expect(properties['user_data__field_for_registration_question']).to eq 'Registration q answer'
+        expect(properties.keys).not_to include('user_data__author_id', 'user_data__author_email', 'user_data__author_name')
+      end
+    end
   end
 
   describe '#set_non_colliding_titles' do

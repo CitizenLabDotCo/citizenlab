@@ -5,7 +5,7 @@ module Export
     # Each Feature has a geometry attribute, with its value representing the response,
     # Each Feature also has a properties attribute, with a value that includes all the answers to the survey questions
     # for the respective survey submission, along with selected user (input.author) data, unless the survey is
-    # fully anonymous.
+    # fully anonymous. Only a survey that identifies its author carries the author's name, email and id.
     class GeojsonGenerator
       def initialize(phase, field)
         @phase = phase
@@ -15,6 +15,7 @@ module Export
         @multiloc_service = MultilocService.new(app_configuration: @app_configuration)
         @value_visitor = Geojson::ValueVisitor
         @fully_anonymous = phase.pmethod.fully_anonymous?
+        @identifies_author = phase.pmethod.identifies_author?
       end
 
       def generate_geojson
@@ -60,7 +61,10 @@ module Export
         return {} if @fully_anonymous || input&.author.nil?
 
         user_data_key = sanitized_translation_for('user_data')
-        basic_author_data(input, user_data_key).merge(user_custom_field_values_data(input, user_data_key))
+        demographics = user_custom_field_values_data(input, user_data_key)
+        return demographics unless @identifies_author
+
+        basic_author_data(input, user_data_key).merge(demographics)
       end
 
       def basic_author_data(input, user_data_key)
