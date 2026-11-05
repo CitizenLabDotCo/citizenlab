@@ -4814,6 +4814,26 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+  "app.components.aiAssistant.approve": {
+    "state": "verified",
+    "verified_at": "2026-11-05T13:49:12.963809Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.aiAssistant.awaitingApprovalHint": {
+    "state": "verified",
+    "verified_at": "2026-11-05T13:49:12.963809Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.aiAssistant.cancel": {
+    "state": "verified",
+    "verified_at": "2026-11-05T13:49:12.963809Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.aiAssistant.confirmReject": {
+    "state": "verified",
+    "verified_at": "2026-11-05T13:49:12.963809Z",
+    "verified_by": "Jelena"
+  },
   "app.components.aiAssistant.elapsed": {
     "state": "verified",
     "verified_at": "2026-11-02T07:29:11.714511Z",
@@ -4859,6 +4879,16 @@
     "verified_at": "2026-11-02T08:13:57.268481Z",
     "verified_by": "Jelena"
   },
+  "app.components.aiAssistant.errorToolCallExpired2": {
+    "state": "verified",
+    "verified_at": "2026-11-05T13:49:12.963809Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.aiAssistant.errorToolCallNotAwaitingApproval": {
+    "state": "verified",
+    "verified_at": "2026-11-05T13:49:12.963809Z",
+    "verified_by": "Jelena"
+  },
   "app.components.aiAssistant.errorTurnTimedOut": {
     "state": "verified",
     "verified_at": "2026-11-02T07:29:11.714511Z",
@@ -4874,14 +4904,44 @@
     "verified_at": "2026-11-02T07:29:11.714511Z",
     "verified_by": "Jelena"
   },
+  "app.components.aiAssistant.proposedChange": {
+    "state": "verified",
+    "verified_at": "2026-11-05T13:49:12.963809Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.aiAssistant.reject": {
+    "state": "verified",
+    "verified_at": "2026-11-05T13:49:12.963809Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.aiAssistant.rejectReasonLabel": {
+    "state": "verified",
+    "verified_at": "2026-11-05T13:49:12.963809Z",
+    "verified_by": "Jelena"
+  },
   "app.components.aiAssistant.send": {
     "state": "verified",
     "verified_at": "2026-11-02T07:29:11.714511Z",
     "verified_by": "Jelena"
   },
+  "app.components.aiAssistant.showDetails": {
+    "state": "verified",
+    "verified_at": "2026-11-05T13:49:12.963809Z",
+    "verified_by": "Jelena"
+  },
   "app.components.aiAssistant.statusAutoExecuted": {
     "state": "verified",
     "verified_at": "2026-11-02T08:13:57.268481Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.aiAssistant.statusExecuted": {
+    "state": "verified",
+    "verified_at": "2026-11-05T13:49:12.963809Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.aiAssistant.statusExpired": {
+    "state": "verified",
+    "verified_at": "2026-11-05T13:49:12.963809Z",
     "verified_by": "Jelena"
   },
   "app.components.aiAssistant.statusFailed": {
@@ -4892,6 +4952,11 @@
   "app.components.aiAssistant.statusInProgress": {
     "state": "verified",
     "verified_at": "2026-11-02T08:13:57.268481Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.aiAssistant.statusRejected": {
+    "state": "verified",
+    "verified_at": "2026-11-05T13:49:12.963809Z",
     "verified_by": "Jelena"
   },
   "app.components.aiAssistant.title": {
@@ -6014,14 +6079,54 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+  "app.components.formBuilder.surveyAssistant.editingLocked2": {
+    "state": "verified",
+    "verified_at": "2026-11-05T13:49:12.963809Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.formBuilder.surveyAssistant.endPage": {
+    "state": "verified",
+    "verified_at": "2026-11-05T13:49:12.963809Z",
+    "verified_by": "Jelena"
+  },
   "app.components.formBuilder.surveyAssistant.intro": {
     "state": "verified",
     "verified_at": "2026-11-02T07:29:11.714511Z",
     "verified_by": "Jelena"
   },
+  "app.components.formBuilder.surveyAssistant.outlineSummary": {
+    "state": "verified",
+    "verified_at": "2026-11-05T13:49:12.963809Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.formBuilder.surveyAssistant.pageNumber": {
+    "state": "verified",
+    "verified_at": "2026-11-05T13:49:12.963809Z",
+    "verified_by": "Jelena"
+  },
   "app.components.formBuilder.surveyAssistant.readSurvey": {
     "state": "verified",
     "verified_at": "2026-11-02T08:13:57.268481Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.formBuilder.surveyAssistant.replaceSurvey": {
+    "state": "verified",
+    "verified_at": "2026-11-05T13:49:12.963809Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.formBuilder.surveyAssistant.replaceWarning": {
+    "state": "verified",
+    "verified_at": "2026-11-05T13:49:12.963809Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.formBuilder.surveyAssistant.required": {
+    "state": "verified",
+    "verified_at": "2026-11-05T13:49:12.963809Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.formBuilder.surveyAssistant.untitled": {
+    "state": "verified",
+    "verified_at": "2026-11-05T13:49:12.963809Z",
     "verified_by": "Jelena"
   },
   "app.components.formBuilder.tags": {
