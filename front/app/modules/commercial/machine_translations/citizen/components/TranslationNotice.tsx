@@ -13,7 +13,7 @@ import { Multiloc } from 'typings';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
 
-import { getLocaleDisplayName } from 'components/UI/MultilocTranslation/utils';
+import { getLanguageName } from 'components/UI/MultilocTranslation/utils';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -62,7 +62,7 @@ const TranslationNotice = ({ multiloc, showTranslation, onToggle }: Props) => {
       {showTranslation && sourceLocale && (
         <Text as="span" m="0" fontSize="s" color="textSecondary">
           {formatMessage(messages.translatedFrom, {
-            language: getLocaleDisplayName(sourceLocale, locale),
+            language: getLanguageName(sourceLocale, locale),
           })}{' '}
           ·
         </Text>

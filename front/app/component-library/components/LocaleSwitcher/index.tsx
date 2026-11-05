@@ -95,6 +95,26 @@ const Dot = styled.div<{ variant: Variant }>`
     background: ${colors.success};
   }
 
+  /* A machine translation: filled for one half. */
+  &.machine {
+    background: linear-gradient(
+      90deg,
+      ${colors.success} 50%,
+      ${colors.white} 50%
+    );
+    box-shadow: 0 0 0 1px ${colors.success};
+  }
+
+  /* A machine translation of an older version of the source text. */
+  &.stale {
+    background: linear-gradient(
+      90deg,
+      ${colors.orange500} 50%,
+      ${colors.white} 50%
+    );
+    box-shadow: 0 0 0 1px ${colors.orange500};
+  }
+
   ${({ variant }) => variant === 'bo' && boDotStyle}
 `;
 
@@ -118,6 +138,9 @@ export const isValueForLocaleFilled = (
   return isSingleMultilocObjectFilled(locale, values);
 };
 
+// Extra state of a filled locale, shown with a different dot.
+export type LocaleState = 'machine' | 'stale';
+
 interface Props {
   onSelectedLocaleChange: (selectedLocale: Locale) => void;
   locales: Locale[];
@@ -125,6 +148,9 @@ interface Props {
   values?: MultilocFormValues | MultilocFormValues[];
   className?: string;
   variant?: Variant;
+  localeStates?: Partial<Record<Locale, LocaleState>>;
+  // Accessible names of the locale states, e.g. "machine translation".
+  localeStateLabels?: Partial<Record<LocaleState, string>>;
 }
 
 class LocaleSwitcher extends PureComponent<Props> {
@@ -147,6 +173,8 @@ class LocaleSwitcher extends PureComponent<Props> {
       values,
       className,
       variant = 'default',
+      localeStates,
+      localeStateLabels,
     } = this.props;
 
     // TODO: Fix this the next time the file is edited.
@@ -154,33 +182,46 @@ class LocaleSwitcher extends PureComponent<Props> {
     if (locales && locales.length > 1) {
       return (
         <Container className={className} variant={variant}>
-          {locales.map((locale, index) => (
-            <StyledButton
-              key={locale}
-              onMouseDown={this.removeFocus}
-              onClick={this.handleOnClick(locale)}
-              type="button"
-              variant={variant}
-              className={[
-                'e2e-localeswitcher',
-                locale,
-                locale === selectedLocale ? 'selected' : '',
-                index + 1 === locales.length ? 'last' : '',
-              ].join(' ')}
-            >
-              {values && (
-                <Dot
-                  variant={variant}
-                  className={
-                    isValueForLocaleFilled(locale, values)
-                      ? 'notEmpty'
-                      : 'empty'
-                  }
-                />
-              )}
-              {locale}
-            </StyledButton>
-          ))}
+          {locales.map((locale, index) => {
+            const localeState = localeStates?.[locale];
+            const localeStateLabel = localeState
+              ? localeStateLabels?.[localeState]
+              : undefined;
+
+            return (
+              <StyledButton
+                key={locale}
+                onMouseDown={this.removeFocus}
+                onClick={this.handleOnClick(locale)}
+                type="button"
+                variant={variant}
+                className={[
+                  'e2e-localeswitcher',
+                  locale,
+                  locale === selectedLocale ? 'selected' : '',
+                  index + 1 === locales.length ? 'last' : '',
+                ].join(' ')}
+                title={
+                  localeStateLabel
+                    ? `${locale}: ${localeStateLabel}`
+                    : undefined
+                }
+              >
+                {values && (
+                  <Dot
+                    variant={variant}
+                    className={[
+                      isValueForLocaleFilled(locale, values)
+                        ? 'notEmpty'
+                        : 'empty',
+                      localeState ?? '',
+                    ].join(' ')}
+                  />
+                )}
+                {locale}
+              </StyledButton>
+            );
+          })}
         </Container>
       );
     }

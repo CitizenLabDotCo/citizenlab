@@ -1,7 +1,6 @@
 import React, { memo, useState, useCallback, useRef, useEffect } from 'react';
 
 import {
-  Box,
   IconTooltip,
   LocaleSwitcher,
   Label,
@@ -13,8 +12,7 @@ import { SupportedLocale, Multiloc } from 'typings';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
 
-import MachineTranslationHint from 'components/UI/MultilocTranslation/MachineTranslationHint';
-import MultilocTranslateAction from 'components/UI/MultilocTranslation/MultilocTranslateAction';
+import MultilocTranslationStatus from 'components/UI/MultilocTranslation/MultilocTranslationStatus';
 import useMultilocTranslation from 'components/UI/MultilocTranslation/useMultilocTranslation';
 import QuillEditor, {
   Props as QuillEditorProps,
@@ -141,19 +139,15 @@ const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
         {!label && <Spacer />}
 
         {!hideLocaleSwitcher && (
-          <Box display="flex" alignItems="center">
-            <MultilocTranslateAction
-              translation={translation}
-              selectedLocale={selectedLocale}
-            />
-            <StyledLocaleSwitcher
-              onSelectedLocaleChange={handleOnSelectedLocaleChange}
-              locales={!isNilOrError(tenantLocales) ? tenantLocales : []}
-              selectedLocale={selectedLocale}
-              values={{ valueMultiloc }}
-              variant={quillProps.variant}
-            />
-          </Box>
+          <StyledLocaleSwitcher
+            onSelectedLocaleChange={handleOnSelectedLocaleChange}
+            locales={!isNilOrError(tenantLocales) ? tenantLocales : []}
+            selectedLocale={selectedLocale}
+            values={{ valueMultiloc }}
+            variant={quillProps.variant}
+            localeStates={translation.localeStates}
+            localeStateLabels={translation.localeStateLabels}
+          />
         )}
       </LabelContainer>
 
@@ -171,7 +165,7 @@ const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
         minCharCount={minCharCount}
       />
       {!hideLocaleSwitcher && (
-        <MachineTranslationHint
+        <MultilocTranslationStatus
           translation={translation}
           selectedLocale={selectedLocale}
         />
