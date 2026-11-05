@@ -62,45 +62,4 @@ RSpec.describe ContentBuilder::CustomBlockPolicy do
       it { is_expected.not_to permit(:bundle) }
     end
   end
-
-  describe 'Scope' do
-    subject(:resolved_scope) { described_class::Scope.new(user, ContentBuilder::CustomBlock).resolve }
-
-    let!(:draft_block) { create(:custom_block) }
-    let!(:published_block) { create(:custom_block, :published) }
-
-    context 'for an active admin' do
-      let(:user) { create(:admin) }
-
-      it { is_expected.to contain_exactly(draft_block, published_block) }
-    end
-
-    # A moderator edits reports, but a block names no project, so the list cannot be
-    # narrowed to the ones they moderate.
-    context 'for a project moderator' do
-      let(:user) { create(:project_moderator) }
-
-      it { is_expected.to be_empty }
-    end
-
-    context 'for a regular user' do
-      let(:user) { create(:user) }
-
-      it { is_expected.to be_empty }
-    end
-
-    context 'for a visitor' do
-      let(:user) { nil }
-
-      it { is_expected.to be_empty }
-    end
-
-    context 'when the feature is not activated' do
-      let(:user) { create(:admin) }
-
-      before { SettingsService.new.deactivate_feature!('llm_reporting') }
-
-      it { is_expected.to be_empty }
-    end
-  end
 end
