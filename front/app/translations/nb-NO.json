@@ -781,8 +781,6 @@
   "app.components.UI.PillPicker.remove": "Fjern {label}",
   "app.components.UI.PillPicker.selectedCount": "{count, plural, =0 {Ingen valgt} other {# valgte}}",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Fjern",
-  "app.components.UI.TranslateButton.original": "Original",
-  "app.components.UI.TranslateButton.translate": "Oversett",
   "app.components.Unauthorized.additionalInformationRequired": "Det kreves ytterligere informasjon for at du skal kunne delta.",
   "app.components.Unauthorized.completeProfile": "Fullstendig profil",
   "app.components.Unauthorized.completeProfileTitle": "Fyll ut profilen din for å delta",

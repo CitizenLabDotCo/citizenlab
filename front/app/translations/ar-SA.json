@@ -781,8 +781,6 @@
   "app.components.UI.PillPicker.remove": "إزالة {label}",
   "app.components.UI.PillPicker.selectedCount": "{count, plural, =0 {لم يتم اختيار أي عنصر} other {تم اختيار #}}",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "إزالة",
-  "app.components.UI.TranslateButton.original": "الأصلي",
-  "app.components.UI.TranslateButton.translate": "ترجمة",
   "app.components.Unauthorized.additionalInformationRequired": "مطلوب معلومات إضافية بالنسبة لك للمشاركة.",
   "app.components.Unauthorized.completeProfile": "الملف الشخصي الكامل",
   "app.components.Unauthorized.completeProfileTitle": "أكمل ملفك الشخصي للمشاركة",

@@ -781,8 +781,6 @@
   "app.components.UI.PillPicker.remove": "Pašalinti {label}",
   "app.components.UI.PillPicker.selectedCount": "{count, plural, =0 {Nepasirinkta} one {# pasirinktas} few {# pasirinkti} other {# pasirinkta}}",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Pašalinti",
-  "app.components.UI.TranslateButton.original": "Originalus",
-  "app.components.UI.TranslateButton.translate": "Išversti",
   "app.components.Unauthorized.additionalInformationRequired": "Kad galėtumėte dalyvauti, reikia pateikti papildomos informacijos.",
   "app.components.Unauthorized.completeProfile": "Pilnas profilis",
   "app.components.Unauthorized.completeProfileTitle": "Užpildykite savo profilį, kad galėtumėte dalyvauti",

@@ -627,8 +627,6 @@
   "app.components.UI.NewLabel.new": "NEW",
   "app.components.UI.PhaseFilter.noAppropriatePhases": "No appropriate phases found for this project",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Уклони",
-  "app.components.UI.TranslateButton.original": "Оригинал",
-  "app.components.UI.TranslateButton.translate": "превести",
   "app.components.Unauthorized.additionalInformationRequired": "Додатне информације су потребне да бисте учествовали.",
   "app.components.Unauthorized.completeProfile": "Комплетан профил",
   "app.components.Unauthorized.completeProfileTitle": "Попуните свој профил да бисте учествовали",

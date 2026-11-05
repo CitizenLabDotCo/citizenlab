@@ -627,8 +627,6 @@
   "app.components.UI.NewLabel.new": "NEW",
   "app.components.UI.PhaseFilter.noAppropriatePhases": "No appropriate phases found for this project",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Ukloni",
-  "app.components.UI.TranslateButton.original": "Original",
-  "app.components.UI.TranslateButton.translate": "Prevedi",
   "app.components.Unauthorized.additionalInformationRequired": "Additional information is required for you to participate.",
   "app.components.Unauthorized.completeProfile": "Complete profile",
   "app.components.Unauthorized.completeProfileTitle": "Complete your profile to participate",

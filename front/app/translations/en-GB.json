@@ -781,8 +781,6 @@
   "app.components.UI.PillPicker.remove": "Remove {label}",
   "app.components.UI.PillPicker.selectedCount": "{count, plural, =0 {None selected} other {# selected}}",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Remove",
-  "app.components.UI.TranslateButton.original": "Original",
-  "app.components.UI.TranslateButton.translate": "Translate",
   "app.components.Unauthorized.additionalInformationRequired": "Additional information is required for you to participate.",
   "app.components.Unauthorized.completeProfile": "Complete profile",
   "app.components.Unauthorized.completeProfileTitle": "Complete your profile to participate",
