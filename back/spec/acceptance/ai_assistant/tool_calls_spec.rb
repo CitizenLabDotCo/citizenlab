@@ -91,4 +91,42 @@ resource 'AI assistant tool calls' do
       end
     end
   end
+
+  post 'web_api/v1/ai_assistant_tool_calls/:id/answer' do
+    with_options scope: :ai_assistant_tool_call do
+      parameter :answers, 'The answers to the questions, each with its question and answer', required: true
+    end
+
+    let(:tool_call) do
+      create(
+        :ai_assistant_tool_call,
+        message: create(:ai_assistant_message, conversation:, role: 'assistant'),
+        name: 'ask_user',
+        arguments: { 'questions' => [{ 'question' => 'When should it start?', 'options' => %w[Soon Later] }] }
+      )
+    end
+    let(:answers) { [{ question: 'When should it start?', answer: 'Soon' }] }
+
+    context 'when the owner' do
+      before { header_token_for(conversation.user) }
+
+      example 'Answer the questions of the assistant', :active_job_que_adapter do
+        do_request
+
+        assert_status 200
+        expect(response_data[:attributes]).to include(status: 'executed', answers:)
+        expect(conversation.reload.status).to eq('running')
+      end
+    end
+
+    context 'when another super admin' do
+      before { header_token_for(create(:super_admin)) }
+
+      example '[error] Answer the questions asked to someone else', document: false do
+        do_request
+        assert_status 401
+        expect(tool_call.reload.status).to eq('awaiting_user')
+      end
+    end
+  end
 end

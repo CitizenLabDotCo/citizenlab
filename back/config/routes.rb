@@ -457,6 +457,7 @@ Rails.application.routes.draw do
       resources :ai_assistant_tool_calls, only: [], controller: 'ai_assistant/tool_calls' do
         post :approve, on: :member
         post :reject, on: :member
+        post :answer, on: :member
       end
     end
   end
