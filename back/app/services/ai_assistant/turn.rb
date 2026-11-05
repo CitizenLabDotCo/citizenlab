@@ -57,6 +57,15 @@ module AIAssistant
       end
     end
 
+    # Questions wait for the user like write calls do; their answers become the call's result.
+    def ask_user(arguments)
+      error = AskUserTool.validation_error(arguments)
+      return refuse_call(arguments, error) if error
+
+      @current_tool_call.update!(status: 'awaiting_user', arguments:)
+      RubyLLM::Tool::Halt.new(AskUserTool::ASKED_TEXT)
+    end
+
     private
 
     # The turn already ended, with a reply or with calls awaiting the user, but the worker
@@ -74,7 +83,7 @@ module AIAssistant
       llm.chat_context
         .chat(model: llm.model, **llm.chat_options)
         .with_instructions(@surface.system_prompt(locale: conversation.locale))
-        .with_tools(*@surface.tools.map { |tool| LLMTool.new(tool, self) })
+        .with_tools(*@surface.llm_tools(self))
         .with_params(inferenceConfig: { maxTokens: MAX_OUTPUT_TOKENS })
         .after_message { |message| persist(message) }
         .before_tool_call { |tool_call| count_tool_call!(tool_call) }
@@ -187,16 +196,17 @@ module AIAssistant
     def request_approval(tool, arguments)
       pinned = tool.pinned.compact
       error = @surface.write_call_error(tool, conversation) || tool.validation_error(@user, arguments.merge(pinned))
+      return refuse_call(arguments, error) if error
 
-      if error
-        # Sent back to the model, so it fixes the call before the user is asked.
-        text = "Error: #{error}"
-        @current_tool_call.update!(status: 'failed', arguments:, result: text)
-        text
-      else
-        @current_tool_call.update!(status: 'awaiting_user', arguments:, pinned_arguments: pinned)
-        RubyLLM::Tool::Halt.new(AWAITING_APPROVAL_TEXT)
-      end
+      @current_tool_call.update!(status: 'awaiting_user', arguments:, pinned_arguments: pinned)
+      RubyLLM::Tool::Halt.new(AWAITING_APPROVAL_TEXT)
+    end
+
+    # Sent back to the model, so it fixes the call before the user is asked.
+    def refuse_call(arguments, error)
+      text = "Error: #{error}"
+      @current_tool_call.update!(status: 'failed', arguments:, result: text)
+      text
     end
 
     # The tools store their own results. A call still pending here never reached a tool,

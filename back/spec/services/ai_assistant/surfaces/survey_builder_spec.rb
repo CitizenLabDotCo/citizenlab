@@ -73,6 +73,10 @@ describe AIAssistant::Surfaces::SurveyBuilder do
     end
   end
 
+  it 'gives the model a tool to ask questions' do
+    expect(surface.llm_tools(instance_double(AIAssistant::Turn)).map(&:name)).to include('ask_user')
+  end
+
   it 'describes the survey in the system prompt' do
     prompt = surface.system_prompt(locale: 'en')
 
