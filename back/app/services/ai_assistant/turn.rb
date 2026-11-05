@@ -48,7 +48,7 @@ module AIAssistant
     # the call is stored to await approval and the turn stops, until the user approves or
     # rejects it (see ToolCallDecider).
     def handle_tool_call(tool, args)
-      arguments = args.except(*tool.pinned.keys)
+      arguments = args.except(*tool.hidden_keys)
 
       if tool.read_only?
         run_read_tool(tool, arguments)
