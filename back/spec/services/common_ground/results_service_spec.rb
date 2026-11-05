@@ -23,6 +23,13 @@ describe CommonGround::ResultsService do
 
     let(:n) { 2 }
 
+    def idea_with_reactions(up: 0, down: 0)
+      create(:idea, project: phase.project, phases: [phase]).tap do |idea|
+        create_list(:reaction, up, reactable: idea, mode: 'up')
+        create_list(:reaction, down, reactable: idea, mode: 'down')
+      end
+    end
+
     context 'when there are no ideas' do
       it 'returns results with empty arrays and zero stats' do
         expect(results.phase_id).to eq(phase.id)
@@ -95,11 +102,7 @@ describe CommonGround::ResultsService do
       end
 
       context 'when there are ties in consensus scores' do
-        let!(:idea5) do
-          idea = create(:idea, project: phase.project, phases: [phase])
-          create_list(:reaction, 5, reactable: idea, mode: 'up')
-          idea
-        end
+        let!(:idea5) { idea_with_reactions(up: 5) }
 
         it 'returns the idea with the highest number of votes first' do
           expect(results.top_consensus_ideas).to eq [idea5, idea1]
@@ -123,20 +126,46 @@ describe CommonGround::ResultsService do
         expect(service.results(1).ideas_by_agreement).to eq [idea1, idea2, idea3]
       end
 
-      context 'when more ideas pass the thresholds than the limit' do
-        # Both tie on consensus score with an idea of the base fixture, and win the tie on votes.
-        let!(:consensus_idea) do
-          idea = create(:idea, project: phase.project, phases: [phase])
-          create_list(:reaction, 4, reactable: idea, mode: 'up')
-          idea
+      context 'when an idea has more disagree than agree votes' do
+        let!(:disagreed_idea) { idea_with_reactions(up: 4, down: 46) }
+
+        it 'orders it after the ideas that lean towards agree' do
+          expect(results.ideas_by_agreement).to eq [idea1, idea2, idea3, disagreed_idea]
         end
 
-        let!(:close_call_idea) do
-          idea = create(:idea, project: phase.project, phases: [phase])
-          create_list(:reaction, 2, reactable: idea, mode: 'up')
-          create_list(:reaction, 2, reactable: idea, mode: 'down')
-          idea
+        it 'counts it as a highest consensus idea, since the majority is clear' do
+          expect(results.top_consensus_ideas).to eq [idea1, disagreed_idea]
         end
+      end
+
+      context 'when ideas tie on net agreement' do
+        let!(:most_agreed) { idea_with_reactions(up: 20) }
+        let!(:least_agreed) { idea_with_reactions(up: 1) }
+        let!(:least_disagreed) { idea_with_reactions(down: 1) }
+        let!(:most_disagreed) { idea_with_reactions(down: 20) }
+
+        it 'orders the tied ideas by their number of votes, in both directions' do
+          expect(results.ideas_by_agreement).to eq [
+            most_agreed, idea1, least_agreed, idea2, idea3, least_disagreed, most_disagreed
+          ]
+        end
+      end
+
+      context 'when many ideas tie on every ordering key' do
+        # An even split on idea3's vote count, so no other ordering key can separate them. The
+        # number of them matters: on a handful of rows Postgres returns them in id order anyway,
+        # and the example below would pass even without the id key.
+        let!(:tied_ideas) { Array.new(20) { idea_with_reactions(up: 1, down: 1) } }
+
+        it 'falls back on the idea id, so the order holds from one call to the next' do
+          expect(results.ideas_by_agreement.to_a.last(21)).to eq [idea3, *tied_ideas].sort_by(&:id)
+        end
+      end
+
+      context 'when more ideas pass the thresholds than the limit' do
+        # Both tie on consensus score with an idea of the base fixture, and win the tie on votes.
+        let!(:consensus_idea) { idea_with_reactions(up: 4) }
+        let!(:close_call_idea) { idea_with_reactions(up: 2, down: 2) }
 
         it 'respects the limit parameter' do
           expect(results.top_consensus_ideas).to eq [consensus_idea, idea1]
