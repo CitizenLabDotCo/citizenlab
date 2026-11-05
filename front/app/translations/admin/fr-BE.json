@@ -2203,7 +2203,7 @@
   "app.containers.Admin.projects.project.publishButton": "Publier",
   "app.containers.Admin.projects.project.publishButtonLive": "En ligne",
   "app.containers.Admin.projects.project.publishCancel": "Annuler",
-  "app.containers.Admin.projects.project.publishChooseGroups": "Choisissez quels groupes peuvent le voir",
+  "app.containers.Admin.projects.project.publishChooseGroups": "Cochez les groupes qui pourront le voir",
   "app.containers.Admin.projects.project.publishEmailRecipients": "≈ {count} destinataires. Toutes les personnes qui suivent ce projet ou y ont participé le recevront.",
   "app.containers.Admin.projects.project.publishEmailUnavailable": "Rendez le projet public pour envoyer un e-mail aux personnes à ce sujet.",
   "app.containers.Admin.projects.project.publishFindPrivate": "Privé",

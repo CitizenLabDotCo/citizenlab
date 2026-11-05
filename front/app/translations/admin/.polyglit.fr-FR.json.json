@@ -11504,6 +11504,11 @@
     "verified_at": "2026-10-26T13:27:19.241589Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects.project.publishChooseGroups": {
+    "state": "verified",
+    "verified_at": "2026-11-05T08:42:39.138709Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.publishEmailRecipients": {
     "state": "verified",
     "verified_at": "2026-09-16T19:26:50.578477Z",
