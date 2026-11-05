@@ -4,7 +4,7 @@
 # Build context is the repository root, because the image needs the SDK type
 # definitions out of the front-end tree — they are the single source the type
 # checker and the model's prompt both read.
-FROM node:26-slim AS build
+FROM node:26.13.0-slim AS build
 
 WORKDIR /app
 
@@ -18,8 +18,9 @@ RUN npm run build
 
 # Chromium and its system libraries come from Playwright's image. Its tag must
 # match the playwright version in package.json, or the browser it ships will not
-# be the one the library drives.
-FROM mcr.microsoft.com/playwright:v1.56.0-noble AS runtime
+# be the one the library drives. Pinned by digest because Microsoft rebuilds
+# tags in place: this one ships Node 26.13.0 (patched for CVE-2026-111497).
+FROM mcr.microsoft.com/playwright:v1.64.1-noble@sha256:2f05f8a734509a7b3f26a912639488ee08f58a7b292d14d62271bcff9038768f AS runtime
 
 ENV NODE_ENV=production
 WORKDIR /app
