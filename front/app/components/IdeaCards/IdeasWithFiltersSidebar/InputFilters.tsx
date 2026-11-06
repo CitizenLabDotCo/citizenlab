@@ -111,9 +111,10 @@ const InputFilters = ({
           />
         </Box>
       )}
-      {projectId && (
+      {projectId && phaseId && (
         <TopicFilterBox
           projectId={projectId}
+          phaseId={phaseId}
           selectedTopicIds={ideaQueryParameters.input_topics}
           filterCounts={counts}
           onChange={onChangeTopics}

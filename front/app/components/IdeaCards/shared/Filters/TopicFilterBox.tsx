@@ -10,6 +10,7 @@ import { FilterCounts } from 'components/FilterBoxes/types';
 
 interface Props {
   projectId: string;
+  phaseId: string;
   filterCounts: FilterCounts;
   selectedTopicIds: string[] | null | undefined;
   onChange: (arg: string[] | null) => void;
@@ -17,11 +18,22 @@ interface Props {
 }
 
 const TopicFilterBox = memo<Props>(
-  ({ projectId, selectedTopicIds, filterCounts, onChange, className }) => {
-    const { data: customFields } = useCustomFields({ projectId });
-    const topicsEnabled = customFields?.find(
-      (field) => field.key === 'topic_ids'
-    )?.enabled;
+  ({
+    projectId,
+    phaseId,
+    selectedTopicIds,
+    filterCounts,
+    onChange,
+    className,
+  }) => {
+    // Public fields only include the enabled ones.
+    const { data: customFields } = useCustomFields({
+      phaseId,
+      publicFields: true,
+    });
+    const topicsEnabled = customFields?.some(
+      (field) => field.code === 'topic_ids'
+    );
 
     const { data: topics } = useInputTopics(projectId, {
       sort: '-ideas_count',

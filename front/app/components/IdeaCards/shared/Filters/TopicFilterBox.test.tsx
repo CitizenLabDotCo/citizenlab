@@ -1,5 +1,6 @@
 import React from 'react';
 
+import useCustomFields from 'api/custom_fields/useCustomFields';
 import { IInputTopicData } from 'api/input_topics/types';
 
 import { render, screen } from 'utils/testUtils/rtl';
@@ -11,7 +12,7 @@ let mockTopicsFieldEnabled = true;
 
 jest.mock('api/custom_fields/useCustomFields', () =>
   jest.fn(() => ({
-    data: [{ key: 'topic_ids', enabled: mockTopicsFieldEnabled }],
+    data: mockTopicsFieldEnabled ? [{ code: 'topic_ids' }] : [],
   }))
 );
 jest.mock('api/input_topics/useInputTopics', () =>
@@ -41,6 +42,7 @@ const renderTopicFilterBox = () =>
   render(
     <TopicFilterBox
       projectId="project1"
+      phaseId="phase1"
       selectedTopicIds={null}
       filterCounts={{
         idea_status_id: {},
@@ -79,5 +81,15 @@ describe('TopicFilterBox', () => {
     renderTopicFilterBox();
 
     expect(screen.getByText('Mobility')).toBeInTheDocument();
+  });
+
+  it('reads the fields from the phase form', () => {
+    mockTopics = [topic];
+    renderTopicFilterBox();
+
+    expect(useCustomFields).toHaveBeenCalledWith({
+      phaseId: 'phase1',
+      publicFields: true,
+    });
   });
 });
