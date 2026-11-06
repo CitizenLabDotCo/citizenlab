@@ -1,9 +1,11 @@
 import { useInfiniteQuery, InfiniteData } from '@tanstack/react-query';
+import { omitBy } from 'lodash-es';
 import { CLErrors } from 'typings';
 
 import useDebouncedValue from 'hooks/useDebouncedValue';
 
 import fetcher from 'utils/cl-react-query/fetcher';
+import { isNil } from 'utils/helperUtils';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 import adminPublicationsKeys from './keys';
@@ -51,10 +53,16 @@ const useAdminPublications = (
   { enabled = true } = {}
 ) => {
   const debouncedSearch = useDebouncedValue(queryParams.search, 350);
-  const debouncedQueryParams = {
-    ...queryParams,
-    search: debouncedSearch,
-  };
+  // Nil params are left out of the request URL, so they are left out of the
+  // query key too. Otherwise a caller passing `null` and one passing nothing
+  // get different keys for the same request, and both fetch it.
+  const debouncedQueryParams = omitBy(
+    {
+      ...queryParams,
+      search: debouncedSearch,
+    },
+    isNil
+  );
 
   return useInfiniteQuery<
     IAdminPublications,
