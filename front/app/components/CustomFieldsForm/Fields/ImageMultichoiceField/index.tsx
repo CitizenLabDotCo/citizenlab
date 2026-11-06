@@ -37,14 +37,15 @@ const HoverBox = styled(Box)<{ selected: boolean; disabled?: boolean }>`
   ${({ disabled }) =>
     disabled &&
     `
+    cursor: default;
+
     &:hover {
       box-shadow: none;
     }
 
-    /* The label sets an inline pointer cursor, the checkbox a not-allowed one.
-       The expand button of the image keeps working. */
-    &, *:not(button, button *) {
-      cursor: default !important;
+    /* The checkbox shows not-allowed when disabled */
+    .disabled {
+      cursor: default;
     }
   `}
 `;
@@ -146,7 +147,7 @@ const ImageMultichoiceField = ({
                     <Box
                       as="label"
                       htmlFor={`${name}-checkbox-${index}`}
-                      style={{ cursor: 'pointer' }}
+                      style={{ cursor: disabled ? 'default' : 'pointer' }}
                     >
                       <Box p="16px" pb="0">
                         {option.value === 'other' ? (
