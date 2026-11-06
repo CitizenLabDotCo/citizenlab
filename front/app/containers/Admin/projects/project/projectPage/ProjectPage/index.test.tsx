@@ -44,6 +44,10 @@ jest.mock(
 jest.mock('api/app_configuration/useAppConfiguration');
 jest.mock('hooks/useProjectBackofficeRedesign', () => () => false);
 jest.mock('components/admin/PagePreview', () => () => null);
+jest.mock(
+  'containers/Admin/projects/_shared/components/ProjectGenerator/EditWithAi/EditWithAiBar',
+  () => () => null
+);
 
 const NOT_ADDED = /These groups couldn't be added/;
 

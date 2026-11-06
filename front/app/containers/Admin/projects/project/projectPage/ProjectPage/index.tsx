@@ -16,6 +16,7 @@ import useLocalize from 'hooks/useLocalize';
 import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
 import PhonePreviewBackdrop from 'containers/Admin/projects/_shared/components/PhonePreviewBackdrop';
+import EditWithAiBar from 'containers/Admin/projects/_shared/components/ProjectGenerator/EditWithAi/EditWithAiBar';
 
 import PagePreview from 'components/admin/PagePreview';
 import Modal from 'components/UI/Modal';
@@ -109,16 +110,21 @@ const ProjectPage = () => {
           </Text>
         </Box>
       </Modal>
-      <PagePreview
-        src={`/${locale}/projects/${slug}${search}`}
-        iframeTitle={formatMessage(messages.projectPagePreviewTitle)}
-        editPageContentAriaLabel={formatMessage(
-          messages.editProjectPageInContentBuilder
-        )}
-        onEdit={openContentBuilder}
-        dataCy="e2e-project-page-preview"
-        editPageContentClassName="intercom-product-tour-project-edit-project"
-      />
+      <Box display="flex" flexDirection="column" h="100%">
+        <Box flex="1" minHeight="0">
+          <PagePreview
+            src={`/${locale}/projects/${slug}${search}`}
+            iframeTitle={formatMessage(messages.projectPagePreviewTitle)}
+            editPageContentAriaLabel={formatMessage(
+              messages.editProjectPageInContentBuilder
+            )}
+            onEdit={openContentBuilder}
+            dataCy="e2e-project-page-preview"
+            editPageContentClassName="intercom-product-tour-project-edit-project"
+          />
+        </Box>
+        <EditWithAiBar project={project.data} />
+      </Box>
     </PhonePreviewBackdrop>
   );
 };
