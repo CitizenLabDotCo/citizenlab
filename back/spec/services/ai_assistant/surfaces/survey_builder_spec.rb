@@ -66,7 +66,7 @@ describe AIAssistant::Surfaces::SurveyBuilder do
         end
         create(:custom_form, participation_context: phase, fields_last_updated_at: form_age.ago) if form_age
 
-        result = surface.write_call_error(surface.tool('replace_form_fields'), conversation)
+        result = surface.write_call_error(surface.tool('replace_form_fields'), conversation, {})
 
         expect(result).to(error ? start_with(error) : be_nil)
       end

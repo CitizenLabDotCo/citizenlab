@@ -12,5 +12,4 @@ export type UpdateProjectArguments = {
   include_all_areas?: boolean;
   listed?: boolean;
   live_auto_input_topics_enabled?: boolean;
-  track_participation_location?: boolean;
 };
