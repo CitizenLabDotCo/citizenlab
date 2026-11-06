@@ -15,7 +15,6 @@ import SearchInput from 'components/UI/SearchInput';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 import messages from '../messages';
 import AnswerFilterBox from '../shared/Filters/AnswerFilterBox';
@@ -27,7 +26,7 @@ import ResetFiltersButton from './ResetFiltersButton';
 
 export interface InputFiltersProps {
   defaultValue?: string;
-  ideasFilterCounts: IIdeasFilterCounts | NilOrError;
+  ideasFilterCounts?: IIdeasFilterCounts;
   numberOfSearchResults: number;
   ideaQueryParameters: IIdeaQueryParameters;
   onSearch: (searchTerm: string) => void;
@@ -80,7 +79,7 @@ const InputFilters = ({
   return (
     <>
       <ScreenReaderOnly aria-live="polite">
-        {!isNilOrError(ideasFilterCounts) && (
+        {ideasFilterCounts && (
           <FormattedMessage
             {...messages.a11y_totalItems}
             values={{ ideasCount: ideasFilterCounts.data.attributes.total }}
