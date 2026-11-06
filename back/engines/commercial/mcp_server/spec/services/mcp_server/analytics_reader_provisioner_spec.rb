@@ -32,10 +32,8 @@ RSpec.describe McpServer::AnalyticsReaderProvisioner do
       # Membership is not enough: without set_option, SET ROLE is denied. Read
       # from the catalog because pg_has_role has no option for it.
       expect(conn.select_value(<<~SQL.squish)).to be true
-        SELECT am.set_option FROM pg_auth_members am
-        JOIN pg_roles r ON r.oid = am.roleid
-        JOIN pg_roles m ON m.oid = am.member
-        WHERE r.rolname = 'analytics_reader' AND m.rolname = current_user
+        SELECT set_option FROM pg_auth_members
+        WHERE roleid = 'analytics_reader'::regrole AND member = current_user::regrole
       SQL
     end
 
