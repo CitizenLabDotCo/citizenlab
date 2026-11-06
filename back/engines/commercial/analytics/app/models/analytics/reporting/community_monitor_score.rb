@@ -21,6 +21,11 @@ module Analytics
       self.table_name = 'reporting_community_monitor_scores'
       self.primary_key = nil
 
+      include ScopedView
+
+      # Only the community monitor project has scores, so only a report on it reads any.
+      def self.for_projects(project_ids) = where(phase_id: Phase.for_projects(project_ids).select(:id))
+
       def self.table_description
         <<~DOC.squish
           Community monitor scores as the community monitor dashboard computes

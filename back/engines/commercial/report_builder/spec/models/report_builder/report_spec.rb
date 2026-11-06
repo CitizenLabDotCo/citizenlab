@@ -60,6 +60,22 @@ RSpec.describe ReportBuilder::Report do
         expect(build(:report).reported_project).to be_nil
       end
     end
+
+    describe '#scope_project_ids' do
+      it 'is the project for a project report' do
+        project = create(:project)
+        expect(build(:report, project: project).scope_project_ids).to eq [project.id]
+      end
+
+      it "is the phase's project for a phase report" do
+        phase = create(:phase)
+        expect(build(:report, phase: phase).scope_project_ids).to eq [phase.project_id]
+      end
+
+      it 'is nothing for a global report, which is about neither' do
+        expect(build(:report).scope_project_ids).to be_nil
+      end
+    end
   end
 
   describe 'quarter' do

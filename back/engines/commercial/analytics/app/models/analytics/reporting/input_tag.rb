@@ -16,6 +16,10 @@ module Analytics
       self.table_name = 'reporting_input_tags'
       self.primary_key = :id
 
+      include ScopedView
+
+      def self.for_projects(project_ids) = where(input_id: Input.for_projects(project_ids).select(:id))
+
       def self.table_description
         <<~DOC.squish
           One row per tag on an input. Tags (also called topics) categorize

@@ -38,7 +38,9 @@ class McpServer::Tools::RunReportingSqlQuery < McpServer::BaseTool
 
   class Runner < McpServer::BaseTool::Runner
     def run
-      result = McpServer::ReportingQueryRunner.run(params[:query].to_s)
+      # Both MCP endpoints are for Go Vocal staff (super admins, or the internal
+      # gateway), who may read every row.
+      result = McpServer::ReportingQueryRunner.run(params[:query].to_s, scope: McpServer::QueryScope.all)
 
       response(
         "Returned #{result.rows.size} row(s)" \
