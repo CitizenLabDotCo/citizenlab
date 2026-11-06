@@ -16,7 +16,7 @@ import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
 import ProjectWorkspace from '..';
-import projectMessages from '../messages';
+import backofficeRedesignMessages from '../messages';
 
 import EventPreview from './EventPreview';
 import EventSetup from './EventSetup';
@@ -51,14 +51,14 @@ const EventWorkspace = ({ project, eventId, onCreate }: Props) => {
   const title = localize(form.attributes.title_multiloc);
   const fallbackTitle = form.event
     ? messages.untitledEvent
-    : projectMessages.newEvent;
+    : backofficeRedesignMessages.newEvent;
 
   return (
     <ProjectWorkspace
       project={project}
       draft={{
         label: title || formatMessage(fallbackTitle),
-        parentLabel: formatMessage(projectMessages.eventsSection),
+        parentLabel: formatMessage(backofficeRedesignMessages.eventsSection),
         saveLabel: formatMessage(
           form.event ? eventMessages.saveButtonLabel : messages.create
         ),
