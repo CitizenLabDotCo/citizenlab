@@ -2,6 +2,9 @@ import React from 'react';
 
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 
+import { IAiAssistantToolCallData } from 'api/ai_assistant_tool_calls/types';
+import { isToolCall } from 'api/ai_assistant_tool_calls/utils';
+
 import useLocalize from 'hooks/useLocalize';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -12,14 +15,17 @@ import messages from './messages';
 import { toOutline } from './utils';
 
 type Props = {
-  args: Record<string, unknown>;
+  toolCall: IAiAssistantToolCallData;
 };
 
 // Outline of the survey proposed by the replace_form_fields tool.
-const FormOutlinePreview = ({ args }: Props) => {
+const FormOutlinePreview = ({ toolCall }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
-  const outline = toOutline(args.fields);
+
+  if (!isToolCall(toolCall, 'replace_form_fields')) return null;
+
+  const outline = toOutline(toolCall.attributes.arguments.fields);
   const pageCount = outline.filter((item) => item.kind === 'page').length;
   const questionCount = outline.filter(
     (item) => item.kind === 'question'

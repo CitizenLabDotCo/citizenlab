@@ -13,6 +13,7 @@ import { MessageDescriptor } from 'react-intl';
 import { AiAssistantSurfaceKey } from 'api/ai_assistant_conversations/types';
 import useAddAiAssistantConversation from 'api/ai_assistant_conversations/useAddAiAssistantConversation';
 import useAddAiAssistantMessage from 'api/ai_assistant_messages/useAddAiAssistantMessage';
+import { AiAssistantToolName } from 'api/ai_assistant_tool_calls/types';
 import useAddFile from 'api/files/useAddFile';
 import useDeleteFile from 'api/files/useDeleteFile';
 
@@ -38,7 +39,7 @@ type Props = {
   projectId?: string;
   intro: MessageDescriptor;
   toolViews: AiAssistantToolViews;
-  onToolExecuted: (toolName: string) => void;
+  onToolExecuted: (toolName: AiAssistantToolName) => void;
 };
 
 const AssistantPanel = ({
