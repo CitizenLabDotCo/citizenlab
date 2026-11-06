@@ -2,7 +2,7 @@ import { AiAssistantSurfaceKey } from 'api/ai_assistant_conversations/types';
 import useAiAssistantConversation from 'api/ai_assistant_conversations/useAiAssistantConversation';
 import useAiAssistantConversations from 'api/ai_assistant_conversations/useAiAssistantConversations';
 
-type Parameters = { surfaceKey: AiAssistantSurfaceKey; subjectId: string };
+type Parameters = { surfaceKey: AiAssistantSurfaceKey; subjectId?: string };
 
 // The current user's latest conversation on a surface, refreshed while the assistant
 // works.
