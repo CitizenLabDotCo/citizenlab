@@ -11,12 +11,21 @@ module AuthToken
 
     attr_reader :token, :payload
 
-    def initialize(payload: {}, token: nil)
+    # `fingerprint` binds the token to client-specific context (e.g. a hash of the
+    # request IP/user-agent). When present on decode, it is checked against the
+    # fingerprint embedded at encode time, so a stolen token replayed from a
+    # different client context is rejected.
+    def initialize(payload: {}, token: nil, fingerprint: nil)
       if token.present?
         @payload, = JWT.decode token.to_s, TOKEN_PUBLIC_KEY, true, decode_token_options
+        if @payload['fgp'].present? && @payload['fgp'] != fingerprint
+          raise JWT::DecodeError, 'Token fingerprint mismatch'
+        end
+
         @token = token
       else
         @payload = { exp: TOKEN_DEFAULT_LIFETIME.from_now.to_i }.merge(payload)
+        @payload[:fgp] = fingerprint if fingerprint.present?
         @token = JWT.encode @payload, secret_key, TOKEN_SIGNATURE_ALGORITHM
       end
     end
