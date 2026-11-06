@@ -4,6 +4,9 @@ module AIAssistant
   module Surfaces
     # Drafts a new project with the user, one approved step at a time.
     class ProjectGenerator < Surface
+      # A date without a time, or with a time zone, can show in the draft as another day than the one that gets saved.
+      DATE_FORMAT = '%Y-%m-%dT%H:%M:%S'
+
       def self.key
         'project_generator'
       end
@@ -38,7 +41,24 @@ module AIAssistant
         ]
       end
 
+      def write_call_error(_tool, _conversation, arguments)
+        date_error(arguments)
+      end
+
       private
+
+      def date_error(arguments)
+        dates = arguments.merge(arguments['attributes'].to_h).slice('start_at', 'end_at').values.compact
+        return if dates.all? { |date| date_time?(date) }
+
+        'Write start_at and end_at as a date and a time without a time zone, like 2026-11-30T23:59:00.'
+      end
+
+      def date_time?(value)
+        DateTime.strptime(value.to_s, DATE_FORMAT).strftime(DATE_FORMAT) == value
+      rescue Date::Error
+        false
+      end
 
       def own_phase?(id)
         subject.phases.exists?(id:)

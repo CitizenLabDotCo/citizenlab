@@ -23,6 +23,30 @@ describe AIAssistant::Surfaces::ProjectGenerator do
     expect(surface.llm_tools(instance_double(AIAssistant::Turn)).map(&:name)).to include('ask_user')
   end
 
+  describe '#write_call_error' do
+    def error_for(arguments)
+      surface.write_call_error(surface.tool('update_resource'), nil, arguments)
+    end
+
+    it 'accepts a date with a time and without a time zone' do
+      expect(error_for({ 'start_at' => '2026-11-02T00:00:00', 'end_at' => '2026-11-30T23:59:00' })).to be_nil
+    end
+
+    it 'lets the model remove an end date' do
+      expect(error_for({ 'end_at' => nil })).to be_nil
+    end
+
+    it 'refuses any other date' do
+      ['2026-11-30', '2026-11-30T23:59:00Z', '2026-13-01T00:00:00', '2026-1-2T03:04:05', 'next monday'].each do |date|
+        expect(error_for({ 'end_at' => date })).to start_with('Write start_at and end_at'), date
+      end
+    end
+
+    it 'checks the dates of an update to an event' do
+      expect(error_for({ 'attributes' => { 'start_at' => 'next monday' } })).to start_with('Write start_at and end_at')
+    end
+  end
+
   describe 'records the model picks' do
     let(:phase) { create(:phase, project:) }
     let(:event) { create(:event, project:) }
