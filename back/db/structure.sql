@@ -731,11 +731,12 @@ DROP TABLE IF EXISTS public.schema_migrations;
 DROP VIEW IF EXISTS public.reporting_user_question_answers;
 DROP VIEW IF EXISTS public.reporting_users;
 DROP VIEW IF EXISTS public.reporting_staff_activities;
-DROP VIEW IF EXISTS public.reporting_sessions;
 DROP VIEW IF EXISTS public.reporting_reports;
 DROP VIEW IF EXISTS public.reporting_registrations;
 DROP VIEW IF EXISTS public.reporting_reference_distributions;
 DROP TABLE IF EXISTS public.user_custom_fields_representativeness_ref_distributions;
+DROP VIEW IF EXISTS public.reporting_platform_baselines;
+DROP VIEW IF EXISTS public.reporting_sessions;
 DROP VIEW IF EXISTS public.reporting_projects;
 DROP VIEW IF EXISTS public.reporting_phases;
 DROP VIEW IF EXISTS public.reporting_participants;
@@ -5042,6 +5043,108 @@ CREATE VIEW public.reporting_projects AS
 
 
 --
+-- Name: reporting_sessions; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_sessions AS
+ SELECT id,
+    created_at AS started_at,
+    user_id,
+    monthly_user_hash AS anonymous_id,
+    COALESCE((user_id)::text, (monthly_user_hash)::text) AS visitor_id,
+    highest_role,
+    device_type AS device,
+    referrer,
+    browser_name AS browser,
+    os_name AS os
+   FROM public.impact_tracking_sessions s;
+
+
+--
+-- Name: reporting_platform_baselines; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_platform_baselines AS
+ WITH projects AS (
+         SELECT p.id
+           FROM public.reporting_projects p
+          WHERE (((p.publication_status)::text <> 'draft'::text) AND (p.start_at <= now()))
+        ), contributions AS (
+         SELECT c.project_id,
+            count(DISTINCT c.participant_id) AS participants,
+            count(*) AS contributions
+           FROM public.reporting_contributions c
+          GROUP BY c.project_id
+        ), visitors AS (
+         SELECT pv.project_id,
+            count(DISTINCT s.visitor_id) AS visitors
+           FROM (public.reporting_pageviews pv
+             JOIN public.reporting_sessions s ON ((s.id = pv.session_id)))
+          WHERE ((pv.project_id IS NOT NULL) AND ((s.highest_role IS NULL) OR ((s.highest_role)::text = 'user'::text)))
+          GROUP BY pv.project_id
+        ), phase_counts AS (
+         SELECT ph.project_id,
+            count(*) AS phases
+           FROM public.reporting_phases ph
+          GROUP BY ph.project_id
+        ), survey_responses AS (
+         SELECT c.phase_id,
+            count(*) AS responses
+           FROM public.reporting_contributions c
+          WHERE ((c.participation_method)::text = 'native_survey'::text)
+          GROUP BY c.phase_id
+        ), samples AS (
+         SELECT 'participants_per_project'::text AS metric,
+            p.id AS project_id,
+            COALESCE(c.participants, (0)::bigint) AS value
+           FROM (projects p
+             LEFT JOIN contributions c ON ((c.project_id = p.id)))
+        UNION ALL
+         SELECT 'contributions_per_project'::text,
+            p.id,
+            COALESCE(c.contributions, (0)::bigint) AS "coalesce"
+           FROM (projects p
+             LEFT JOIN contributions c ON ((c.project_id = p.id)))
+        UNION ALL
+         SELECT 'visitors_per_project'::text,
+            p.id,
+            COALESCE(v.visitors, (0)::bigint) AS "coalesce"
+           FROM (projects p
+             LEFT JOIN visitors v ON ((v.project_id = p.id)))
+        UNION ALL
+         SELECT 'phases_per_project'::text,
+            p.id,
+            COALESCE(pc.phases, (0)::bigint) AS "coalesce"
+           FROM (projects p
+             LEFT JOIN phase_counts pc ON ((pc.project_id = p.id)))
+        UNION ALL
+         SELECT 'online_voters_per_voting_phase'::text,
+            ph.project_id,
+            COALESCE(ph.online_voters_count, 0) AS "coalesce"
+           FROM (public.reporting_phases ph
+             JOIN projects p ON ((p.id = ph.project_id)))
+          WHERE (((ph.participation_method)::text = 'voting'::text) AND (ph.start_at <= now()))
+        UNION ALL
+         SELECT 'survey_responses_per_survey_phase'::text,
+            ph.project_id,
+            COALESCE(sr.responses, (0)::bigint) AS "coalesce"
+           FROM ((public.reporting_phases ph
+             JOIN projects p ON ((p.id = ph.project_id)))
+             LEFT JOIN survey_responses sr ON ((sr.phase_id = ph.id)))
+          WHERE (((ph.participation_method)::text = 'native_survey'::text) AND (ph.start_at <= now()))
+        )
+ SELECT metric,
+    percentile_cont((0.5)::double precision) WITHIN GROUP (ORDER BY ((value)::double precision)) AS median,
+    (avg(value))::double precision AS mean,
+    percentile_cont((0.25)::double precision) WITHIN GROUP (ORDER BY ((value)::double precision)) AS p25,
+    percentile_cont((0.75)::double precision) WITHIN GROUP (ORDER BY ((value)::double precision)) AS p75,
+    (count(DISTINCT project_id))::integer AS projects_counted
+   FROM samples
+  GROUP BY metric
+ HAVING (count(DISTINCT project_id) >= 5);
+
+
+--
 -- Name: user_custom_fields_representativeness_ref_distributions; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -5177,24 +5280,6 @@ CREATE VIEW public.reporting_reports AS
     r.updated_at
    FROM (public.report_builder_reports r
      LEFT JOIN public.phases ph ON ((ph.id = r.phase_id)));
-
-
---
--- Name: reporting_sessions; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW public.reporting_sessions AS
- SELECT id,
-    created_at AS started_at,
-    user_id,
-    monthly_user_hash AS anonymous_id,
-    COALESCE((user_id)::text, (monthly_user_hash)::text) AS visitor_id,
-    highest_role,
-    device_type AS device,
-    referrer,
-    browser_name AS browser,
-    os_name AS os
-   FROM public.impact_tracking_sessions s;
 
 
 --
@@ -10862,6 +10947,8 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261106130200'),
+('20261106130100'),
 ('20261028180200'),
 ('20261028180100'),
 ('20261028170100'),

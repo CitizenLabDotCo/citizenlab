@@ -35,6 +35,7 @@ class McpServer::Tools::GetReportingSqlSchema < McpServer::BaseTool
     Analytics::Reporting::Registration,
     Analytics::Reporting::UserQuestionAnswer,
     Analytics::Reporting::ReferenceDistribution,
+    Analytics::Reporting::PlatformBaseline,
     Analytics::Reporting::InputQuestionAnswer,
     Analytics::Reporting::CommunityMonitorScore
   ].freeze
