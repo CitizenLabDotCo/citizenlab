@@ -98,7 +98,11 @@ const CustomFieldAnswers = ({ ideaId, project, compact }: Props) => {
                 <FormattedMessage {...messages.notAnswered} />
               </Text>
             ) : (
-              <AnswerValue field={field} answer={answer} />
+              <AnswerValue
+                // Shuffling counters position bias while answering, not here
+                field={{ ...field, random_option_ordering: false }}
+                answer={answer}
+              />
             )}
           </Box>
         ))}
