@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
 import phasesKeys from 'api/phases/keys';
+import projectsKeys from 'api/projects/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
@@ -22,6 +23,12 @@ export type AddReport =
   | {
       name: string;
       community_monitor: boolean;
+    }
+  | {
+      // The report about a whole project. It is named after the project, so it
+      // needs no name of its own.
+      project_id: string;
+      name?: null;
     };
 
 const addReport = async (requestBody: AddReport) =>
@@ -35,7 +42,7 @@ const useAddReport = () => {
   const queryClient = useQueryClient();
   return useMutation<ReportResponse, CLErrors, AddReport>({
     mutationFn: addReport,
-    onSuccess: (data) => {
+    onSuccess: (data, variables) => {
       queryClient.invalidateQueries({ queryKey: reportsKeys.lists() });
 
       const phaseId = data.data.relationships.phase?.data?.id;
@@ -43,6 +50,13 @@ const useAddReport = () => {
       if (phaseId) {
         queryClient.invalidateQueries({
           queryKey: phasesKeys.item({ phaseId }),
+        });
+      }
+
+      // The project carries the report as a relationship, so it goes stale too.
+      if ('project_id' in variables) {
+        queryClient.invalidateQueries({
+          queryKey: projectsKeys.item({ id: variables.project_id }),
         });
       }
     },
