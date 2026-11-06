@@ -80,6 +80,7 @@ type Props = {
   allowFiles: boolean;
   disabled: boolean;
   sending: boolean;
+  placeholder?: string;
   onPromptChange: (prompt: string) => void;
   onFilesChange: (files: File[]) => void;
   onSend: () => void;
@@ -91,11 +92,13 @@ const Composer = ({
   allowFiles,
   disabled,
   sending,
+  placeholder,
   onPromptChange,
   onFilesChange,
   onSend,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const promptPlaceholder = placeholder ?? formatMessage(messages.placeholder);
   const [filesRejected, setFilesRejected] = useState(false);
   const canAttachFiles = allowFiles && !disabled;
 
@@ -161,8 +164,8 @@ const Composer = ({
         <PromptInput
           value={prompt}
           onChange={(event) => onPromptChange(event.target.value)}
-          placeholder={formatMessage(messages.placeholder)}
-          aria-label={formatMessage(messages.placeholder)}
+          placeholder={promptPlaceholder}
+          aria-label={promptPlaceholder}
           minRows={3}
           maxRows={8}
           maxLength={MAX_CONTENT_LENGTH}
