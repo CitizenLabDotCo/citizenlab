@@ -50,7 +50,14 @@ module McpServer
           END $$;
         SQL
         # Let the app's login role assume analytics_reader via SET LOCAL ROLE.
-        execute("GRANT #{quoted_role} TO CURRENT_USER")
+        #
+        # The current user's name is interpolated instead of using CURRENT_USER, because
+        # Scaleway-managed databases don't allow special role specifiers in GRANT/REVOKE
+        # ROLE statements.
+        #
+        # The inherit and set options are spelled out explicitly so they don't depend on
+        # which role Postgres treats as the grantor, which varies by provider.
+        execute("GRANT #{quoted_role} TO #{quote_ident(current_db_user)} WITH SET TRUE, INHERIT TRUE")
       end
 
       # Relations missing from the schema are skipped rather than raised on:
@@ -111,6 +118,7 @@ module McpServer
       end
 
       def quoted_role = quote_ident(ROLE)
+      def current_db_user = connection.select_value('SELECT current_user')
       def quote_ident(name) = connection.quote_column_name(name)
       def quote_rel(schema, table) = "#{quote_ident(schema)}.#{quote_ident(table)}"
       def execute(sql) = connection.execute(sql)
