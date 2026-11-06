@@ -3,9 +3,10 @@
 -- of a measure across the platform's projects (or phases), so a report about
 -- one project can say how it compares without reading any other project's rows.
 --
--- Counts projects that are not drafts and whose first phase has started.
--- Projects with no participation count as 0, so the median is not lifted by
--- leaving them out.
+-- Counts projects that are not drafts, not hidden (the community monitor's
+-- project is hidden, and its quarterly surveys would skew every metric) and whose
+-- first phase has started. Projects with no participation count as 0, so the
+-- median is not lifted by leaving them out.
 --
 -- A metric is left out when fewer than 5 projects stand behind it: on a small
 -- platform, a "median" of two projects is the other project's figure. For the
@@ -18,6 +19,7 @@ WITH projects AS (
     SELECT p.id
     FROM reporting_projects p
     WHERE p.publication_status <> 'draft'
+        AND NOT p.hidden
         AND p.start_at <= now()
 ),
 contributions AS (
@@ -42,9 +44,11 @@ phase_counts AS (
     GROUP BY ph.project_id
 ),
 survey_responses AS (
+    -- Inputs only: a comment or reaction made while a survey phase runs takes
+    -- that phase's method in reporting_contributions, and is no response.
     SELECT c.phase_id, COUNT(*) AS responses
     FROM reporting_contributions c
-    WHERE c.participation_method = 'native_survey'
+    WHERE c.type = 'input' AND c.participation_method = 'native_survey'
     GROUP BY c.phase_id
 ),
 samples AS (

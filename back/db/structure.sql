@@ -5103,7 +5103,7 @@ CREATE VIEW public.reporting_platform_baselines AS
  WITH projects AS (
          SELECT p.id
            FROM public.reporting_projects p
-          WHERE (((p.publication_status)::text <> 'draft'::text) AND (p.start_at <= now()))
+          WHERE (((p.publication_status)::text <> 'draft'::text) AND (NOT p.hidden) AND (p.start_at <= now()))
         ), contributions AS (
          SELECT c.project_id,
             count(DISTINCT c.participant_id) AS participants,
@@ -5126,7 +5126,7 @@ CREATE VIEW public.reporting_platform_baselines AS
          SELECT c.phase_id,
             count(*) AS responses
            FROM public.reporting_contributions c
-          WHERE ((c.participation_method)::text = 'native_survey'::text)
+          WHERE ((c.type = 'input'::text) AND ((c.participation_method)::text = 'native_survey'::text))
           GROUP BY c.phase_id
         ), samples AS (
          SELECT 'participants_per_project'::text AS metric,
