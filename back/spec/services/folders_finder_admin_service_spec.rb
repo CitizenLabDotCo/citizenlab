@@ -86,4 +86,52 @@ describe FoldersFinderAdminService do
       expect(result.pluck(:id)).to match_array([p1, p2, p3].pluck(:id))
     end
   end
+
+  describe 'self.filter_top_level' do
+    let!(:space) { create(:space) }
+    let!(:folder_in_space) { create(:project_folder, space:) }
+    let!(:folder_without_space) { create(:project_folder) }
+
+    let(:users) do
+      {
+        admin: create(:admin),
+        space_moderator: create(:space_moderator, spaces: [space]),
+        folder_moderator: create(:project_folder_moderator, project_folders: [folder_in_space])
+      }
+    end
+
+    before { SettingsService.new.activate_feature!('spaces') }
+
+    where(:role, :level, :expected) do
+      [
+        [:admin, nil, %i[folder_without_space]],
+        [:admin, :space, %i[folder_in_space]],
+        [:space_moderator, nil, []],
+        [:space_moderator, :space, %i[folder_in_space]],
+        [:folder_moderator, nil, %i[folder_in_space]]
+      ]
+    end
+
+    with_them do
+      it 'returns the folders at the top of the level' do
+        user = users[role]
+        params = { top_level: 'true', space_ids: level && [send(level).id] }.compact
+        result = described_class.execute(UserRoleService.new.moderatable_folders(user), params, current_user: user)
+        expect(result.pluck(:id)).to match_array(expected.map { |name| send(name).id })
+      end
+    end
+  end
+
+  describe 'sort: arranged' do
+    let!(:folder1) { create(:project_folder) }
+    let!(:folder2) { create(:project_folder) }
+
+    it 'follows the front-office order' do
+      # New folders go to the top, so folder1 starts last.
+      folder1.admin_publication.insert_at(0)
+
+      result = described_class.execute(ProjectFolders::Folder.all, { sort: 'arranged' })
+      expect(result.pluck(:id)).to eq([folder1, folder2].map(&:id))
+    end
+  end
 end

@@ -33,7 +33,7 @@ class WebApi::V1::FoldersController < ApplicationController
     project_folders = UserRoleService.new.moderatable_folders(current_user)
     authorize project_folders
 
-    project_folders = FoldersFinderAdminService.execute(project_folders, params)
+    project_folders = FoldersFinderAdminService.execute(project_folders, params, current_user:)
     project_folders = paginate project_folders
     project_folders = project_folders.includes(:admin_publication, :images, :space)
 
@@ -41,15 +41,18 @@ class WebApi::V1::FoldersController < ApplicationController
       project_folders.pluck(:id)
     )
 
-    render json: linked_json(
-      project_folders,
-      WebApi::V1::FolderMiniSerializer,
-      params: jsonapi_serializer_params(
-        visible_children_count_by_parent_id: visible_children_count_by_parent_id,
-        moderators_per_folder: moderators_per_folder
+    render json: {
+      **linked_json(
+        project_folders,
+        WebApi::V1::FolderMiniSerializer,
+        params: jsonapi_serializer_params(
+          visible_children_count_by_parent_id: visible_children_count_by_parent_id,
+          moderators_per_folder: moderators_per_folder
+        ),
+        include: %i[moderators images]
       ),
-      include: %i[moderators images]
-    )
+      meta: { total: project_folders.total_count }
+    }
   end
 
   def show
