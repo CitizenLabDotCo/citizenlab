@@ -2,6 +2,12 @@ import { addMonths, format, subMonths } from 'date-fns';
 
 import { randomString } from '../../support/commands';
 
+// The spotlight surveys request only starts once the project page has loaded,
+// redirected to `project-page` and mounted the sidebar. `cy.wait()` bounds
+// time-to-request by `requestTimeout`, which this suite leaves at Cypress's 5s
+// default -- too short for that chain. The response phase keeps its default.
+const PAGE_DATA_REQUEST_TIMEOUT = 30000;
+
 describe('Moving a survey phase on and off the timeline', () => {
   let projectId = '';
   let surveyPhaseId = '';
@@ -98,7 +104,13 @@ describe('Moving a survey phase on and off the timeline', () => {
         `**/projects/${projectId}/phases?placement_type=standalone`
       ).as('spotlightSurveys');
       cy.visit(`/admin/projects/${projectId}?project_backoffice_redesign`);
-      cy.wait('@spotlightSurveys');
+      cy.location('pathname').should(
+        'include',
+        `/admin/projects/${projectId}/project-page`
+      );
+      cy.wait('@spotlightSurveys', {
+        requestTimeout: PAGE_DATA_REQUEST_TIMEOUT,
+      });
     });
 
     // A moved row only changes list once the spotlight surveys are refetched.
@@ -109,7 +121,9 @@ describe('Moving a survey phase on and off the timeline', () => {
       cy.wait('@updatePhase')
         .its('response.body.data.attributes.placement_type')
         .should('eq', placementType);
-      cy.wait('@spotlightSurveys');
+      cy.wait('@spotlightSurveys', {
+        requestTimeout: PAGE_DATA_REQUEST_TIMEOUT,
+      });
     };
 
     it('moves the survey from its menu in the sidebar', () => {
