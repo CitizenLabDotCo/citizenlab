@@ -49,7 +49,7 @@ module ContentBuilder
 
           refreshed = QuerySnapshot.transaction do
             layout.query_snapshots.map do |snapshot|
-              result = McpServer::ReportingQueryRunner.run(snapshot.sql)
+              result = McpServer::ReportingQueryRunner.run(snapshot.sql, scope: McpServer::QueryScope.all)
               snapshot.update!(data: result_data(result), executed_at: Time.current)
               snapshot
             end
@@ -117,7 +117,7 @@ module ContentBuilder
 
         def execute_and_store(query, layout)
           sql = normalized(query)
-          data = result_data(McpServer::ReportingQueryRunner.run(sql))
+          data = result_data(McpServer::ReportingQueryRunner.run(sql, scope: McpServer::QueryScope.all))
           executed_at = Time.current
 
           if layout
