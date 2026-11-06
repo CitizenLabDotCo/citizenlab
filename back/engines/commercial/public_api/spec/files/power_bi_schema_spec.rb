@@ -15,6 +15,11 @@ describe 'Power BI files' do # rubocop:disable RSpec/DescribeClass
       'baskets' => PublicApi::V2::BasketSerializer,
       'basket_ideas' => PublicApi::V2::BasketIdeaSerializer,
       'comments' => PublicApi::V2::CommentSerializer,
+      'custom_field_answers' => PublicApi::V2::CustomFieldAnswerSerializer,
+      'custom_field_answer_options' => PublicApi::V2::CustomFieldAnswerSerializer, # built in Power BI from custom_field_answers: one row per chosen option
+      'custom_field_matrix_statements' => PublicApi::V2::CustomFieldMatrixStatementSerializer,
+      'custom_field_options' => PublicApi::V2::CustomFieldOptionSerializer,
+      'custom_fields' => PublicApi::V2::CustomFieldSerializer,
       'email_campaigns' => PublicApi::V2::EmailCampaignSerializer,
       'email_campaign_deliveries' => PublicApi::V2::EmailCampaignDeliverySerializer,
       'event_attendances' => PublicApi::V2::EventAttendanceSerializer,
@@ -22,7 +27,7 @@ describe 'Power BI files' do # rubocop:disable RSpec/DescribeClass
       'idea_phases' => PublicApi::V2::IdeaPhaseSerializer,
       'idea_topics' => PublicApi::V2::IdeaTopicSerializer,
       'ideas' => PublicApi::V2::IdeaSerializer,
-      'ideas_custom_fields' => PublicApi::V2::IdeaSerializer, # dataflow only: flattens ideas.custom_field_values
+      'ideas_custom_fields' => PublicApi::V2::IdeaSerializer, # built in Power BI from ideas: flattens custom_field_values
       'phases' => PublicApi::V2::PhaseSerializer,
       'project_folders' => PublicApi::V2::ProjectFolders::FolderSerializer,
       'project_topics' => PublicApi::V2::ProjectTopicSerializer,
@@ -30,17 +35,18 @@ describe 'Power BI files' do # rubocop:disable RSpec/DescribeClass
       'reactions' => PublicApi::V2::ReactionSerializer,
       'topics' => PublicApi::V2::TopicSerializer,
       'users' => PublicApi::V2::UserSerializer,
-      'users_custom_fields' => PublicApi::V2::UserSerializer, # dataflow only: flattens users.custom_field_values
+      'users_custom_fields' => PublicApi::V2::UserSerializer, # built in Power BI from users: flattens custom_field_values
       'volunteering_causes' => PublicApi::V2::VolunteeringCauseSerializer,
       'volunteering_volunteers' => PublicApi::V2::VolunteeringVolunteerSerializer
     }
   end
 
   # Columns the queries build themselves, so they have no API counterpart:
-  # ApiGET stamps every row with data_refreshed_at, and the queries duplicate a
-  # timestamp into a date column for the Calendar relationships.
+  # ApiGET stamps every row with data_refreshed_at, the queries duplicate a
+  # timestamp into a date column for the Calendar relationships, and
+  # custom_field_answers splits the scalar answer values into typed columns.
   def local_columns
-    %w[data_refreshed_at created_at_date registration_completed_at_date]
+    %w[data_refreshed_at created_at_date registration_completed_at_date value_text value_number value_boolean]
   end
 
   def power_bi_dir

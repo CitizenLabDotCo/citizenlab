@@ -34,6 +34,21 @@ resource 'Users' do
       end
     end
 
+    context 'when paging through users created at the same time' do
+      let(:page_size) { 1 }
+
+      before { User.update_all(created_at: '2020-01-01') }
+
+      example 'Returns each user exactly once', document: false do
+        ids = (1..User.count).flat_map do |page_number|
+          do_request(page_number: page_number)
+          json_response_body[:users].pluck(:id)
+        end
+
+        expect(ids).to eq User.order(created_at: :desc, id: :desc).ids
+      end
+    end
+
     include_examples 'filtering_by_date', :user, :created_at
     include_examples 'filtering_by_date', :user, :updated_at
   end
