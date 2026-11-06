@@ -15,15 +15,12 @@ import { AiAssistantSurfaceKey } from 'api/ai_assistant_conversations/types';
 import useAddAiAssistantConversation from 'api/ai_assistant_conversations/useAddAiAssistantConversation';
 import useAddAiAssistantMessage from 'api/ai_assistant_messages/useAddAiAssistantMessage';
 import { AiAssistantToolName } from 'api/ai_assistant_tool_calls/types';
-import useAddFile from 'api/files/useAddFile';
-import useDeleteFile from 'api/files/useDeleteFile';
 
 import useLocale from 'hooks/useLocale';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { getBase64FromFile } from 'utils/fileUtils';
 
 import Composer from './Composer';
 import { getErrorMessage, getRequestErrorCode } from './errors';
@@ -32,6 +29,7 @@ import { hasOpenQuestions } from './questions';
 import Transcript from './Transcript';
 import { AiAssistantToolDisplays } from './types';
 import useLatestConversation from './useLatestConversation';
+import useUploadAssistantFiles from './useUploadAssistantFiles';
 
 type Props = {
   surfaceKey: AiAssistantSurfaceKey;
@@ -61,8 +59,7 @@ const AssistantPanel = ({
   const { mutateAsync: addConversation, isPending: creatingConversation } =
     useAddAiAssistantConversation();
   const { mutateAsync: addMessage } = useAddAiAssistantMessage();
-  const { mutateAsync: addFile } = useAddFile();
-  const { mutateAsync: deleteFile } = useDeleteFile();
+  const { uploadFiles, deleteUploads } = useUploadAssistantFiles();
 
   const [prompt, setPrompt] = useState('');
   const [files, setFiles] = useState<File[]>([]);
@@ -77,38 +74,6 @@ const AssistantPanel = ({
     ? hasOpenQuestions(getToolCalls(conversation))
     : false;
 
-  // Shares the attached files as project files the assistant may process.
-  const uploadFiles = async (): Promise<{
-    fileIds: string[];
-    failedFile?: File;
-  }> => {
-    const uploads = await Promise.allSettled(
-      files.map(async (file) =>
-        addFile({
-          content: await getBase64FromFile(file),
-          name: file.name,
-          project: projectId,
-          category: 'other',
-          ai_processing_allowed: true,
-        })
-      )
-    );
-    const failedIndex = uploads.findIndex(
-      (upload) => upload.status === 'rejected'
-    );
-
-    return {
-      fileIds: uploads.flatMap((upload) =>
-        upload.status === 'fulfilled' ? [upload.value.data.id] : []
-      ),
-      failedFile: failedIndex === -1 ? undefined : files[failedIndex],
-    };
-  };
-
-  // Files of a message that wasn't sent shouldn't stay in the project.
-  const deleteUploads = (fileIds: string[]) =>
-    Promise.allSettled(fileIds.map((fileId) => deleteFile(fileId)));
-
   const send = async () => {
     setSendError(undefined);
     setSending(true);
@@ -117,7 +82,7 @@ const AssistantPanel = ({
       const id =
         conversationId ??
         (await addConversation({ surfaceKey, subjectId, locale })).data.id;
-      const { fileIds, failedFile } = await uploadFiles();
+      const { fileIds, failedFile } = await uploadFiles(files, projectId);
       uploadedFileIds = fileIds;
       if (failedFile) {
         await deleteUploads(uploadedFileIds);
