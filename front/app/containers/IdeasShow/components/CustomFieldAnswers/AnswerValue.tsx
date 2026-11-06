@@ -12,6 +12,7 @@ import LinearScaleField from 'components/CustomFieldsForm/Fields/LinearScale';
 import { getLinearScaleLabel } from 'components/CustomFieldsForm/Fields/LinearScale/utils';
 import Matrix from 'components/CustomFieldsForm/Fields/MatrixField/Matrix';
 import MultiSelectField from 'components/CustomFieldsForm/Fields/MultiSelectField';
+import Ranking from 'components/CustomFieldsForm/Fields/RankingField/Ranking';
 import Rating from 'components/CustomFieldsForm/Fields/RatingField/Rating';
 import { MAXIMUM as SENTIMENT_SCALE_MAXIMUM } from 'components/CustomFieldsForm/Fields/SentimentScaleField/constants';
 import SentimentScale from 'components/CustomFieldsForm/Fields/SentimentScaleField/SentimentScale';
@@ -70,6 +71,20 @@ const AnswerValue = ({ field, answer }: Props) => {
           <Matrix
             question={field}
             value={answer as Record<string, number>}
+            onChange={() => {}}
+            disabled
+          />
+        </Box>
+      );
+    }
+    case 'ranking': {
+      if (!Array.isArray(answer)) return null;
+
+      return (
+        <Box style={{ pointerEvents: 'none' }}>
+          <Ranking
+            question={field}
+            value={answer}
             onChange={() => {}}
             disabled
           />
