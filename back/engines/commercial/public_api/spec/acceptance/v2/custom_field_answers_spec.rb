@@ -70,6 +70,20 @@ resource 'Custom field answers' do
       expect(answers[other_answer.id][:custom_field_option_ids]).to eq []
     end
 
+    context 'when answering the domicile question' do
+      let!(:domicile_field) { create(:custom_field_domicile) }
+      let!(:area) { create(:area) }
+      let!(:domicile_answer) do
+        create(:custom_field_answer, answerable: create(:user), custom_field: domicile_field, key: 'domicile', value: area.id)
+      end
+
+      example_request 'Links the answer to the option of its area', document: false do
+        assert_status 200
+        answer = json_response_body[:custom_field_answers].find { it[:id] == domicile_answer.id }
+        expect(answer[:custom_field_option_ids]).to eq [area.reload.custom_field_option_id]
+      end
+    end
+
     context 'when filtering by answerable type' do
       let(:answerable_type) { 'user' }
 

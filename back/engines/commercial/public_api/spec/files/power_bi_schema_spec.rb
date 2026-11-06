@@ -46,7 +46,7 @@ describe 'Power BI files' do # rubocop:disable RSpec/DescribeClass
   # timestamp into a date column for the Calendar relationships, and
   # custom_field_answers splits the scalar answer values into typed columns.
   def local_columns
-    %w[data_refreshed_at created_at_date registration_completed_at_date value_text value_number]
+    %w[data_refreshed_at created_at_date registration_completed_at_date value_text value_number value_boolean]
   end
 
   def power_bi_dir

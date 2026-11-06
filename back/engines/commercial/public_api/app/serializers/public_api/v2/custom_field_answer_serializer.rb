@@ -17,8 +17,9 @@ class PublicApi::V2::CustomFieldAnswerSerializer < PublicApi::V2::BaseSerializer
     field = object.custom_field
     next [] unless field&.supports_options? && own_answer?(field)
 
-    options_by_key = field.options.index_by(&:key)
-    Array.wrap(object.value).filter_map { options_by_key[it]&.id }
+    # answer_key, not key: domicile answers store the area id.
+    options_by_answer_key = field.options.index_by(&:answer_key)
+    Array.wrap(object.value).filter_map { options_by_answer_key[it]&.id }
   end
 
   # The _other and _follow_up companions reference the field too, but hold free

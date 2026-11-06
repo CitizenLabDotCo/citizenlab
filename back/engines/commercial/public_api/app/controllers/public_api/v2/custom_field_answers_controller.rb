@@ -5,7 +5,7 @@ module PublicApi
     ANSWERABLE_TYPES = %w[idea user].freeze
 
     def index
-      list_items(filter(CustomFieldAnswer.all), V2::CustomFieldAnswerSerializer, includes: [custom_field: :options])
+      list_items(filter(CustomFieldAnswer.all), V2::CustomFieldAnswerSerializer, includes: [custom_field: { options: :area }])
     end
 
     private
