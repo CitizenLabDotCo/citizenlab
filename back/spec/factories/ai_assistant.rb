@@ -6,6 +6,11 @@ FactoryBot.define do
     subject { association :native_survey_phase, project: association(:project, :draft) }
     surface_key { 'survey_builder' }
     locale { 'en' }
+
+    trait :project_generator do
+      subject { association :project, :draft }
+      surface_key { 'project_generator' }
+    end
   end
 
   factory :ai_assistant_message, class: 'AIAssistant::Message' do
