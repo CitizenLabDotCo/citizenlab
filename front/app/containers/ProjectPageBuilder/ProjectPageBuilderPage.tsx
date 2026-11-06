@@ -16,6 +16,10 @@ import { PROJECT_PAGE_BUILDER_PATH } from 'components/admin/ContentBuilder/const
 import { ContentBuilderLayoutProvider } from 'components/admin/ContentBuilder/context/ContentBuilderLayoutContext';
 import DropPlacementOverlay from 'components/admin/ContentBuilder/DropFeedback/DropPlacementOverlay';
 import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
+import {
+  getSaveError,
+  SaveError,
+} from 'components/admin/ContentBuilder/saveError';
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
 import DescriptionBuilderContent from 'components/DescriptionBuilder/DescriptionBuilderContent';
 import ContentBuilderSettings from 'components/DescriptionBuilder/Settings';
@@ -32,7 +36,6 @@ import ProjectPageBuilderTopBar from 'components/ProjectPageBuilder/TopBar';
 
 import { type TypedLinkProps } from 'utils/cl-router/Link';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
-import { isNilOrError } from 'utils/helperUtils';
 import { useLocation } from 'utils/router';
 
 type Props = {
@@ -64,7 +67,7 @@ const ProjectPageBuilderPage = ({
     useState<ContentBuilderErrors>({});
   const [imageUploading, setImageUploading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  const [saveError, setSaveError] = useState(false);
+  const [saveError, setSaveError] = useState<SaveError | null>(null);
 
   // Memoised so the frame doesn't re-deserialize on every render.
   const editorData = useMemo(
@@ -90,7 +93,7 @@ const ProjectPageBuilderPage = ({
     });
   }, []);
 
-  if (isNilOrError(locales) || !builderVisible || !layout) {
+  if (!locales || !builderVisible || !layout) {
     return null;
   }
 
@@ -103,7 +106,7 @@ const ProjectPageBuilderPage = ({
   const handleSave = async (nodes: SerializedNodes): Promise<boolean> => {
     if (isSaving) return false;
     setIsSaving(true);
-    setSaveError(false);
+    setSaveError(null);
 
     try {
       const drafts = extractProjectAttributeDrafts(nodes);
@@ -138,8 +141,8 @@ const ProjectPageBuilderPage = ({
       );
 
       return true;
-    } catch {
-      setSaveError(true);
+    } catch (error) {
+      setSaveError(getSaveError(error));
       return false;
     } finally {
       setIsSaving(false);
@@ -179,7 +182,7 @@ const ProjectPageBuilderPage = ({
             titleMultiloc={titleMultiloc}
             onSave={handleSave}
             isSaving={isSaving}
-            saveHasError={saveError}
+            saveError={saveError}
           />
           <Box
             mt={`${stylingConsts.menuHeight}px`}
