@@ -148,4 +148,187 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.shared.ProjectGenerator.refineProjectRequest',
     defaultMessage: 'Change the project setup: {request}',
   },
+
+  on: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.on',
+    defaultMessage: 'On',
+  },
+  off: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.off',
+    defaultMessage: 'Off',
+  },
+  unlimited: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.unlimited',
+    defaultMessage: 'Unlimited',
+  },
+  settingLikeLimit: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.settingLikeLimit',
+    defaultMessage: 'Likes per person',
+  },
+  presentationCard: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.presentationCard',
+    defaultMessage: 'Cards',
+  },
+  presentationMap: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.presentationMap',
+    defaultMessage: 'Map',
+  },
+  presentationFeed: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.presentationFeed',
+    defaultMessage: 'Feed',
+  },
+
+  requirementVerification: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.requirementVerification',
+    defaultMessage: 'Identity verification',
+  },
+  requirementName: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.requirementName',
+    defaultMessage: 'First and last name',
+  },
+  requirementPassword: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.requirementPassword',
+    defaultMessage: 'Password',
+  },
+  requirementEmail: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.requirementEmail',
+    defaultMessage: 'Confirmed email',
+  },
+  requirementPhone: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.requirementPhone',
+    defaultMessage: 'Confirmed phone number',
+  },
+
+  otherSettings: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.otherSettings',
+    defaultMessage: 'Other settings',
+  },
+  settingDisliking: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.settingDisliking',
+    defaultMessage: 'Disliking',
+  },
+  settingDislikeLimit: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.settingDislikeLimit',
+    defaultMessage: 'Dislikes per person',
+  },
+  settingMaxDislikes: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.settingMaxDislikes',
+    defaultMessage: 'Maximum dislikes',
+  },
+  settingAvailableViews: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.settingAvailableViews',
+    defaultMessage: 'Available views',
+  },
+  settingSorting: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.settingSorting',
+    defaultMessage: 'Default sorting',
+  },
+  settingInputTerm: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.settingInputTerm',
+    defaultMessage: 'Input term',
+  },
+  settingSimilarInputs: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.settingSimilarInputs',
+    defaultMessage: 'Similar input detection',
+  },
+  settingSimilarityTitle: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.settingSimilarityTitle',
+    defaultMessage: 'Similarity threshold (title)',
+  },
+  settingSimilarityBody: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.settingSimilarityBody',
+    defaultMessage: 'Similarity threshold (body)',
+  },
+  settingVoteTerm: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.settingVoteTerm',
+    defaultMessage: 'Vote term',
+  },
+  settingMinSelectedOptions: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.settingMinSelectedOptions',
+    defaultMessage: 'Minimum selected options',
+  },
+  settingVotingFiltering: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.settingVotingFiltering',
+    defaultMessage: 'Filtering during voting',
+  },
+  settingOfflineVoters: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.settingOfflineVoters',
+    defaultMessage: 'Offline voters',
+  },
+  settingEmailExpiry: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.settingEmailExpiry',
+    defaultMessage: 'Confirm email again after',
+  },
+  settingVerificationExpiry: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.settingVerificationExpiry',
+    defaultMessage: 'Verify again after',
+  },
+  settingPhoneExpiry: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.settingPhoneExpiry',
+    defaultMessage: 'Confirm phone again after',
+  },
+  settingRefusalMessage: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.settingRefusalMessage',
+    defaultMessage: 'Refusal message',
+  },
+  settingAddressDetails: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.settingAddressDetails',
+    defaultMessage: 'Address details',
+  },
+  settingAttendButton: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.settingAttendButton',
+    defaultMessage: 'Attend button text',
+  },
+  settingSignUpLink: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.settingSignUpLink',
+    defaultMessage: 'External sign-up link',
+  },
+  settingMaxAttendees: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.settingMaxAttendees',
+    defaultMessage: 'Maximum attendees',
+  },
+  settingAutomaticTags: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.settingAutomaticTags',
+    defaultMessage: 'Automatic input tags',
+  },
+  limited: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.limited',
+    defaultMessage: 'Limited',
+  },
+  never: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.never',
+    defaultMessage: 'Never',
+  },
+  thirtyMinutes: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.thirtyMinutes',
+    defaultMessage: '30 minutes',
+  },
+  nDays: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.nDays',
+    defaultMessage: '{days, plural, one {# day} other {# days}}',
+  },
+  sortTrending: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.sortTrending',
+    defaultMessage: 'Trending',
+  },
+  sortRandom: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.sortRandom',
+    defaultMessage: 'Random',
+  },
+  sortPopular: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.sortPopular',
+    defaultMessage: 'Most reactions',
+  },
+  sortNewest: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.sortNewest',
+    defaultMessage: 'Most recent',
+  },
+  sortOldest: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.sortOldest',
+    defaultMessage: 'Oldest',
+  },
+  sortMostDiscussed: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.sortMostDiscussed',
+    defaultMessage: 'Most discussed',
+  },
 });
