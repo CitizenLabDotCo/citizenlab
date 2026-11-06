@@ -10,6 +10,7 @@ import useLocalize from 'hooks/useLocalize';
 import ImageMultichoiceField from 'components/CustomFieldsForm/Fields/ImageMultichoiceField';
 import LinearScaleField from 'components/CustomFieldsForm/Fields/LinearScale';
 import { getLinearScaleLabel } from 'components/CustomFieldsForm/Fields/LinearScale/utils';
+import Matrix from 'components/CustomFieldsForm/Fields/MatrixField/Matrix';
 import MultiSelectField from 'components/CustomFieldsForm/Fields/MultiSelectField';
 import Rating from 'components/CustomFieldsForm/Fields/RatingField/Rating';
 import { MAXIMUM as SENTIMENT_SCALE_MAXIMUM } from 'components/CustomFieldsForm/Fields/SentimentScaleField/constants';
@@ -55,6 +56,26 @@ const AnswerValue = ({ field, answer }: Props) => {
       );
     case 'multiselect_image':
       return <ImageMultichoiceField question={field} disabled />;
+    case 'matrix_linear_scale': {
+      if (
+        typeof answer !== 'object' ||
+        answer === null ||
+        field.maximum === undefined
+      ) {
+        return null;
+      }
+
+      return (
+        <Box style={{ pointerEvents: 'none' }}>
+          <Matrix
+            question={field}
+            value={answer as Record<string, number>}
+            onChange={() => {}}
+            disabled
+          />
+        </Box>
+      );
+    }
     case 'linear_scale': {
       if (typeof answer !== 'number' || field.maximum === undefined) {
         return null;

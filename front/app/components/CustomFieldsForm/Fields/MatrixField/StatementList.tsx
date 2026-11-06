@@ -15,11 +15,19 @@ interface Props {
   columns: string[];
   value?: Record<string, number>;
   onChange: (value?: Record<string, number>) => void;
+  disabled: boolean;
 }
 
 // Alternative matrix layout for when the table doesn't fit horizontally:
 // every statement is rendered as its own list of radio options.
-const StatementList = ({ id, statements, columns, value, onChange }: Props) => {
+const StatementList = ({
+  id,
+  statements,
+  columns,
+  value,
+  onChange,
+  disabled,
+}: Props) => {
   const theme = useTheme();
   const localize = useLocalize();
 
@@ -51,6 +59,7 @@ const StatementList = ({ id, statements, columns, value, onChange }: Props) => {
                 currentValue={value ? value[statement.key] - 1 : undefined}
                 label={column}
                 buttonColor={theme.colors.tenantPrimary}
+                disabled={disabled}
                 onChange={(columnValue) => {
                   onChange({
                     ...value,

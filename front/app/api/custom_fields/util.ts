@@ -51,6 +51,7 @@ const PUBLIC_ANSWER_INPUT_TYPES: ICustomFieldInputType[] = [
   'sentiment_linear_scale',
   'rating',
   'multiselect_image',
+  'matrix_linear_scale',
 ];
 
 // Until every question shows its answers. Pages must stay excluded then,
