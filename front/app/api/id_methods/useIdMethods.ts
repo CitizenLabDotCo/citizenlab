@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
+import useIdConfigEnabled from 'hooks/useIdConfigEnabled';
+
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import idMethodsKeys from './keys';
@@ -13,9 +15,13 @@ const fetchIdMethods = () =>
   });
 
 const useIdMethods = () => {
+  const idConfigEnabled = useIdConfigEnabled();
+
   return useQuery<IdMethods, CLErrors, IdMethods, IdMethodsKeys>({
     queryKey: idMethodsKeys.list(),
     queryFn: () => fetchIdMethods(),
+    select: (idMethods) =>
+      idConfigEnabled ? idMethods : { ...idMethods, data: [] },
   });
 };
 

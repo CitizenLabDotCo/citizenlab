@@ -180,6 +180,7 @@ nl-BE:
       logic_no_further_questions: Op basis van uw antwoorden hoeft u <strong>geen</strong> verdere vragen meer te beantwoorden.
       logic_section: Sectie %{letter}
       matrix_print_description: Kruis in elke rij een cirkel aan om je voorkeur aan te geven.
+      multipoint_print_description: Zet een X op de onderstaande kaart voor elke locatie die je wilt toevoegen.
       optional: optioneel
       page: Pagina
       permission: Toestemming

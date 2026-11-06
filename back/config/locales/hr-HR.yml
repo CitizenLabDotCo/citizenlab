@@ -181,6 +181,7 @@ hr-HR:
       logic_no_further_questions: Na temelju vaših odgovora, <strong>ne trebate</strong> odgovarati na daljnja pitanja.
       logic_section: Odjeljak %{letter}
       matrix_print_description: Za svaki red označite jedan krug križićem kako biste naznačili svoju preferenciju.
+      multipoint_print_description: Molimo nacrtajte X na karti ispod za svaku lokaciju koju želite dodati.
       optional: neobavezan
       page: Stranica
       permission: Dopuštenje

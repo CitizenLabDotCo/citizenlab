@@ -4,7 +4,7 @@ import { createRequire } from "node:module";
 import type { Page } from "playwright";
 
 import { runChecks } from "./checks.ts";
-import { isAllowedRequest } from "./egress.ts";
+import { CONFIGURED_ORIGINS, isAllowedRequest } from "./egress.ts";
 import type { RenderPool } from "./pool.ts";
 import { describeStackPosition } from "./sourceMap.ts";
 import {
@@ -98,18 +98,29 @@ export const render = async (
   let harnessFacts: HarnessFacts | null = null;
 
   try {
-    // Generated code runs in this page. It may reach the app and the public web,
-    // never a file or anything on a private network.
+    // Generated code runs in this page, holding a token that reads this layout's
+    // data. It may reach the app and that app's API, and whatever the deployment
+    // has added to those; everything else is refused, host by host.
+    const allowedOrigins = [
+      input.appOrigin,
+      input.apiOrigin,
+      ...CONFIGURED_ORIGINS,
+    ];
     await page.route("**/*", (route) => {
-      if (
-        isAllowedRequest(route.request().url(), [
-          input.appOrigin,
-          input.apiOrigin,
-        ])
-      ) {
+      if (isAllowedRequest(route.request().url(), allowedOrigins)) {
         return route.continue();
       }
       return route.abort("blockedbyclient");
+    });
+
+    // page.route does not see sockets, so they are refused on their own, by the
+    // same list. Without this, one WebSocket would be a way around all of it.
+    await page.routeWebSocket("**", (socket) => {
+      if (isAllowedRequest(socket.url(), allowedOrigins)) {
+        socket.connectToServer();
+        return;
+      }
+      socket.close({ code: 1008, reason: "blocked by the renderer" });
     });
 
     // Locale-prefixed, like every route in this app, and deliberately not under
