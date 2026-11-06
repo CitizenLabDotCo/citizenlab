@@ -1,6 +1,11 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  title: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.title',
+    defaultMessage: 'Project assistant',
+  },
+
   areas: {
     id: 'app.containers.Admin.projects.shared.ProjectGenerator.areas',
     defaultMessage: 'Areas',
@@ -9,7 +14,35 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.shared.ProjectGenerator.topics',
     defaultMessage: 'Topic tags',
   },
+  projectSetup: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.projectSetup',
+    defaultMessage: 'Project setup',
+  },
 
+  draft: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.draft',
+    defaultMessage: 'Draft',
+  },
+  statusDrafting: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.statusDrafting',
+    defaultMessage: 'Drafting…',
+  },
+  statusReview: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.statusReview',
+    defaultMessage: 'Waiting for your review',
+  },
+  statusSaved: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.statusSaved',
+    defaultMessage: 'Saved as a draft',
+  },
+  emptyDraft: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.emptyDraft',
+    defaultMessage: 'Your draft appears here while the assistant works on it.',
+  },
+  cardPending: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.cardPending',
+    defaultMessage: 'The assistant drafts the project card first.',
+  },
   cardLabel: {
     id: 'app.containers.Admin.projects.shared.ProjectGenerator.cardLabel',
     defaultMessage: 'Project page and homepage card',
@@ -57,6 +90,14 @@ export default defineMessages({
   unlisted: {
     id: 'app.containers.Admin.projects.shared.ProjectGenerator.unlisted',
     defaultMessage: 'Only reachable with its link',
+  },
+  footerNote: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.footerNote',
+    defaultMessage: 'Nothing is visible to residents until you publish.',
+  },
+  openProject: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.openProject',
+    defaultMessage: 'Open project',
   },
 
   proposedChange: {

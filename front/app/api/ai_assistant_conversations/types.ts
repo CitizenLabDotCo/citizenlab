@@ -11,7 +11,7 @@ export type AiAssistantConversationsKeys = Keys<
   typeof aiAssistantConversationsKeys
 >;
 
-export type AiAssistantSurfaceKey = 'survey_builder';
+export type AiAssistantSurfaceKey = 'survey_builder' | 'project_generator';
 
 export type AiAssistantErrorCode =
   | 'llm_unavailable'
