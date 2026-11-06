@@ -195,7 +195,7 @@ module AIAssistant
 
     def request_approval(tool, arguments)
       pinned = tool.pinned.compact
-      error = @surface.write_call_error(tool, conversation) || tool.validation_error(@user, arguments.merge(pinned))
+      error = tool.validation_error(@user, arguments.merge(pinned)) || @surface.write_call_error(tool, conversation, arguments)
       return refuse_call(arguments, error) if error
 
       @current_tool_call.update!(status: 'awaiting_user', arguments:, pinned_arguments: pinned)

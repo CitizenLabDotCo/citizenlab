@@ -33,7 +33,7 @@ module AIAssistant
       end
 
       # A change must build on the current form, so the model reads it again once it changed.
-      def write_call_error(tool, conversation)
+      def write_call_error(tool, conversation, _arguments)
         return unless tool.name == 'replace_form_fields'
 
         last_read_at = conversation.tool_calls.auto_executed.where(name: 'get_form_fields').maximum(:created_at)

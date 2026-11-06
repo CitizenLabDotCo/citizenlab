@@ -61,7 +61,7 @@ module AIAssistant
     end
 
     # Why the model can't make this write call yet, or nil. The error goes back to the model.
-    def write_call_error(_tool, _conversation)
+    def write_call_error(_tool, _conversation, _arguments)
       nil
     end
 
