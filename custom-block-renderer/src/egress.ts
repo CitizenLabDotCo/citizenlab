@@ -1,13 +1,14 @@
 /**
  * What a render is allowed to fetch.
  *
- * The page runs code the model just wrote. It may talk to the app it was opened on,
- * and to the public hosts the app itself loads from (a CDN, a font host). It may not
- * open files, and it may not reach anything on a private network: the metadata
- * endpoint of the cloud host, a database on the same network, this service itself.
+ * The page runs code the model just wrote, and it holds a token that reads this
+ * layout's reporting data. So it may talk to the app it was opened on and to that
+ * app's API, and to nothing else unless an operator has listed it: a request to any
+ * other host can carry the token, or the rows it answered with, off the platform,
+ * and nothing in the request tells a font host apart from a collector.
  *
- * Gotenberg draws the same line with --chromium-deny-private-ips. This is the
- * request-level half; the container's network policy is the other.
+ * Gotenberg draws this line at private addresses with --chromium-deny-private-ips.
+ * This is the stricter, request-level half; the container's network policy is the other.
  */
 
 const PRIVATE_HOSTNAMES = new Set(["localhost", "metadata.google.internal"]);
@@ -48,39 +49,78 @@ export const isPrivateHost = (hostname: string): boolean => {
   return isPrivateIpv4(host) || isPrivateIpv6(host);
 };
 
-const originOf = (url: string | undefined): string | null => {
-  if (!url) return null;
+const parseUrl = (value: string | undefined): URL | null => {
+  if (!value) return null;
   try {
-    return new URL(url).origin;
+    return new URL(value);
   } catch {
     return null;
   }
 };
 
+const originOf = (url: string | undefined): string | null =>
+  parseUrl(url)?.origin ?? null;
+
+/**
+ * The origin to match a request against. `ws://host` is the same place as
+ * `http://host`, and a socket is a way out of this page like any other, so both
+ * schemes are compared against the one list of http(s) origins.
+ */
+const comparableOrigin = (target: URL): string => {
+  if (target.protocol === "ws:") return `http://${target.host}`;
+  if (target.protocol === "wss:") return `https://${target.host}`;
+  return target.origin;
+};
+
+/**
+ * Origins an operator has added by hand, comma-separated and matched exactly — a
+ * tile server, a CDN that serves the SPA's assets from its own domain. Empty by
+ * default. The app's own origins travel with each render request instead, which is
+ * why `localhost` in development needs nothing here.
+ *
+ * A private address is dropped rather than honoured: a slip in this one variable
+ * must not open a path to the cloud host's metadata endpoint or to a database on
+ * this network.
+ */
+export const parseAllowedOrigins = (value: string | undefined): string[] =>
+  (value ?? "")
+    .split(",")
+    .map((entry) => parseUrl(entry.trim()))
+    .filter(
+      (url): url is URL =>
+        url !== null &&
+        (url.protocol === "http:" || url.protocol === "https:") &&
+        !isPrivateHost(url.hostname)
+    )
+    .map((url) => url.origin);
+
+/** Read once: the environment does not change while the service runs. */
+export const CONFIGURED_ORIGINS = parseAllowedOrigins(
+  process.env.ALLOWED_EGRESS_ORIGINS
+);
+
 /**
  * Whether a request the page makes may go out.
  *
- * The app's own origins are always allowed, even when they are private: in
- * development the tenant is `localhost` and its API is `localhost` on another port,
- * and refusing them would be refusing the harness itself.
+ * An allowed origin is allowed even when it is a private host: in development the
+ * tenant is `localhost` and its API is `localhost` on another port, and refusing
+ * those would be refusing the harness itself. A request that names no readable
+ * origin at all grants nothing.
  */
 export const isAllowedRequest = (
   url: string,
-  ownOrigins: (string | undefined)[]
+  allowedOrigins: (string | undefined)[]
 ): boolean => {
-  let target: URL;
-  try {
-    target = new URL(url);
-  } catch {
-    return false;
-  }
+  const target = parseUrl(url);
+  if (!target) return false;
 
-  const own = ownOrigins.map(originOf).filter((origin) => origin !== null);
-  if (own.length === 0) return false;
-  if (own.includes(target.origin)) return true;
+  const allowed = allowedOrigins
+    .map(originOf)
+    .filter((origin) => origin !== null);
+  if (allowed.length === 0) return false;
+  if (allowed.includes(comparableOrigin(target))) return true;
   // The draft bundle and anything the app inlines.
   if (target.protocol === "blob:" || target.protocol === "data:") return true;
-  if (target.protocol !== "http:" && target.protocol !== "https:") return false;
 
-  return !isPrivateHost(target.hostname);
+  return false;
 };

@@ -38,5 +38,4 @@ export interface IIdeasFilterCountsQueryParameters
     'page[number]' | 'page[size]' | 'sort'
   > {
   sort?: Sort;
-  custom_field_ids?: string[];
 }

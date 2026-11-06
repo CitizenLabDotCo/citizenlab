@@ -63,6 +63,12 @@ class McpServer::BaseTool::Runner
     PUBLISHED_WRITABLE_LIFECYCLES.include?(AppConfiguration.instance.lifecycle_stage)
   end
 
+  # The refusal for tools limited to demo and trial platforms. +action+ names what was
+  # refused, e.g. 'Updating folders'.
+  def demo_only_error(action)
+    error("#{action} via MCP is only available on demo and trial platforms.")
+  end
+
   # Maps a record an MCP tool is about to mutate — a project or folder itself, or
   # anything living inside one (a phase, event, input, image, or a file attachment's
   # attachable) — to the project or folder whose admin_publication the draft rule

@@ -53,11 +53,10 @@ class McpServer::Tools::CreateDemoOfficialUpdates < McpServer::BaseTool
   end
 
   class Runner < McpServer::BaseTool::Runner
-    DEMO_ONLY_MESSAGE = 'Demo official updates can only be created on demo and trial platforms.'
     MAX_UPDATES_PER_IDEA = 5
 
     def run
-      return error(DEMO_ONLY_MESSAGE) unless published_writable_platform?
+      return demo_only_error('Creating demo official updates') unless published_writable_platform?
 
       ideas = Idea.where(id: params[:updates].pluck(:idea_id)).index_by(&:id)
       missing_idea_id = params[:updates].pluck(:idea_id).find { |id| !ideas[id] }
