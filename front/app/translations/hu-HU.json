@@ -1185,7 +1185,6 @@
   "app.components.formBuilder.supportArticleLinkText": "ezt az oldalt",
   "app.components.formBuilder.surveyAssistant.editingLocked2": "Amint az asszisztens végzett, vagy miután elfogadta vagy elutasította a javasolt módosítást, újra szerkesztheti a kérdőívet.",
   "app.components.formBuilder.surveyAssistant.endPage": "Záróoldal",
-  "app.components.formBuilder.surveyAssistant.intro": "Írja le, mit szeretne megtudni. Az asszisztens javaslatot tesz a kérdésekre, és semmi sem változik, amíg Ön jóvá nem hagyja.",
   "app.components.formBuilder.surveyAssistant.outlineSummary": "{pages, plural, one {# oldal} other {# oldal}}, {questions, plural, one {# kérdés} other {# kérdés}}",
   "app.components.formBuilder.surveyAssistant.pageNumber": "{number}. oldal",
   "app.components.formBuilder.surveyAssistant.readSurvey": "a jelenlegi kérdőív",

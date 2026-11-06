@@ -1185,7 +1185,6 @@
   "app.components.formBuilder.supportArticleLinkText": "šiame puslapyje",
   "app.components.formBuilder.surveyAssistant.editingLocked2": "Apklausą vėl galėsite redaguoti, kai asistentas baigs darbą arba kai patvirtinsite ar atmesite jo siūlomą pakeitimą.",
   "app.components.formBuilder.surveyAssistant.endPage": "Pabaigos puslapis",
-  "app.components.formBuilder.surveyAssistant.intro": "Aprašykite, ką norite sužinoti. Asistentas pasiūlys klausimus, o pakeitimai bus atlikti tik jums patvirtinus.",
   "app.components.formBuilder.surveyAssistant.outlineSummary": "{pages, plural, one {# puslapis} few {# puslapiai} other {# puslapių}}, {questions, plural, one {# klausimas} few {# klausimai} other {# klausimų}}",
   "app.components.formBuilder.surveyAssistant.pageNumber": "{number} puslapis",
   "app.components.formBuilder.surveyAssistant.readSurvey": "dabartinė apklausa",

@@ -1185,7 +1185,6 @@
   "app.components.formBuilder.supportArticleLinkText": "هذه الصفحة",
   "app.components.formBuilder.surveyAssistant.editingLocked2": "يمكنك تعديل الاستطلاع مرة أخرى بمجرد انتهاء المساعد، أو بمجرد قبولك أو رفضك للتغيير المقترح.",
   "app.components.formBuilder.surveyAssistant.endPage": "صفحة النهاية",
-  "app.components.formBuilder.surveyAssistant.intro": "صف ما تريد معرفته. سيقترح المساعد الأسئلة، ولن يتغير شيء حتى توافق.",
   "app.components.formBuilder.surveyAssistant.outlineSummary": "{pages, plural, one {# صفحة} other {# صفحات}}، {questions, plural, one {# سؤال} other {# أسئلة}}",
   "app.components.formBuilder.surveyAssistant.pageNumber": "الصفحة {number}",
   "app.components.formBuilder.surveyAssistant.readSurvey": "الاستطلاع الحالي",

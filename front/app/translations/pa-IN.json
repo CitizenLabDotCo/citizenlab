@@ -1185,7 +1185,6 @@
   "app.components.formBuilder.supportArticleLinkText": "ਇਹ ਪੰਨਾ",
   "app.components.formBuilder.surveyAssistant.editingLocked2": "ਸਹਾਇਕ ਦਾ ਕੰਮ ਪੂਰਾ ਹੋਣ ਤੋਂ ਬਾਅਦ, ਜਾਂ ਤੁਹਾਡੇ ਵੱਲੋਂ ਇਸਦੀ ਪ੍ਰਸਤਾਵਿਤ ਤਬਦੀਲੀ ਨੂੰ ਪ੍ਰਵਾਨ ਜਾਂ ਅਸਵੀਕਾਰ ਕਰਨ ਤੋਂ ਬਾਅਦ ਤੁਸੀਂ ਸਰਵੇਖਣ ਨੂੰ ਦੁਬਾਰਾ ਸੰਪਾਦਿਤ ਕਰ ਸਕਦੇ ਹੋ।",
   "app.components.formBuilder.surveyAssistant.endPage": "ਆਖਰੀ ਪੰਨਾ",
-  "app.components.formBuilder.surveyAssistant.intro": "ਦੱਸੋ ਕਿ ਤੁਸੀਂ ਕੀ ਜਾਣਨਾ ਚਾਹੁੰਦੇ ਹੋ। ਸਹਾਇਕ ਸਵਾਲਾਂ ਦਾ ਪ੍ਰਸਤਾਵ ਦੇਵੇਗਾ, ਅਤੇ ਜਦੋਂ ਤੱਕ ਤੁਸੀਂ ਮਨਜ਼ੂਰੀ ਨਹੀਂ ਦਿੰਦੇ ਉਦੋਂ ਤੱਕ ਕੁਝ ਵੀ ਨਹੀਂ ਬਦਲੇਗਾ।",
   "app.components.formBuilder.surveyAssistant.outlineSummary": "{pages, plural, one {# ਪੰਨਾ} other {# ਪੰਨੇ}}, {questions, plural, one {# ਸਵਾਲ} other {# ਸਵਾਲ}}",
   "app.components.formBuilder.surveyAssistant.pageNumber": "ਪੰਨਾ {number}",
   "app.components.formBuilder.surveyAssistant.readSurvey": "ਮੌਜੂਦਾ ਸਰਵੇਖਣ",
