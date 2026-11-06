@@ -70,6 +70,7 @@ const AnswerValue = ({ field, answer }: Props) => {
         <Box style={{ pointerEvents: 'none' }}>
           <Matrix
             question={field}
+            // Answers are validated on submit; typed answer guards are tracked on TAN-9005
             value={answer as Record<string, number>}
             onChange={() => {}}
             disabled

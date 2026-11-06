@@ -27,15 +27,15 @@ import { extractOptions } from '../../util';
 
 import emptyImageFile from './emptyImage.png';
 
-const HoverBox = styled(Box)<{ selected: boolean; $disabled?: boolean }>`
+const HoverBox = styled(Box)<{ selected: boolean; disabled?: boolean }>`
   cursor: pointer;
   &:hover {
     box-shadow: 0 0 0 1px
       ${({ selected }) => (selected ? 'undefined' : colors.borderDark)};
   }
 
-  ${({ $disabled }) =>
-    $disabled &&
+  ${({ disabled }) =>
+    disabled &&
     `
     &:hover {
       box-shadow: none;
@@ -141,7 +141,7 @@ const ImageMultichoiceField = ({
                           }`
                     }
                     selected={value?.includes(option.value)}
-                    $disabled={disabled}
+                    disabled={disabled}
                   >
                     <Box
                       as="label"
