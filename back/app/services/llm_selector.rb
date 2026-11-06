@@ -51,6 +51,24 @@ class LLMSelector
       default_model: ::Analysis::LLM::GPT54
     ),
     LLMUseCase.new(
+      key: 'sensemaking_comments_summarization',
+      description: 'Summarization of the comments on one input in sensemaking',
+      supported_models: [::Analysis::LLM::GPT54, ::Analysis::LLM::ClaudeOpus46, ::Analysis::LLM::Gemini3Pro],
+      default_model: ::Analysis::LLM::GPT54
+    ),
+    LLMUseCase.new(
+      key: 'wise_voice_detection',
+      description: 'Detection of authors with special knowledge (wise voices) in inputs and comments',
+      supported_models: [::Analysis::LLM::GPT54, ::Analysis::LLM::ClaudeSonnet46, ::Analysis::LLM::Gemini3Pro],
+      default_model: ::Analysis::LLM::GPT54
+    ),
+    LLMUseCase.new(
+      key: 'authoring_assistance_custom_prompt',
+      description: 'Answer to a custom prompt in the authoring assistance for an input',
+      supported_models: [::Analysis::LLM::GPT54, ::Analysis::LLM::ClaudeSonnet46, ::Analysis::LLM::Gemini3Pro],
+      default_model: ::Analysis::LLM::GPT54
+    ),
+    LLMUseCase.new(
       key: 'toxicity_detection',
       description: 'Detection of toxic content',
       supported_models: [::Analysis::LLM::ClaudeHaiku45, ::Analysis::LLM::GPT4oMini, ::Analysis::LLM::Gemini3Flash],
