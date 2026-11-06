@@ -45,6 +45,13 @@ module ContentBuilder
           minter_still_active?(payload['user_id'])
       end
 
+      # @return [User, nil] the person the token was minted for, whose queries it
+      #   runs. Check permits? first: this does not.
+      def user(token)
+        payload = decode(token)
+        payload && User.find_by(id: payload['user_id'])
+      end
+
       private
 
       # The token is minted for a person, so it stops working when they do: blocking

@@ -27,12 +27,16 @@ module ContentBuilder
           return render_result(snapshot.data, snapshot.executed_at, snapshot: true) if snapshot
 
           # The custom block renderer's browser has no session, only a token good
-          # for this one layout's data. Everyone else has to be an admin.
-          unless scoped_token_permits?(layout)
+          # for this one layout's data, which runs as the person it was minted for.
+          # Everyone else has to be an admin.
+          if scoped_token_permits?(layout)
+            asker = ScopedReportingToken.user(params[:reporting_token])
+          else
             authorize :reporting_query, policy_class: ReportingQueryPolicy
+            asker = current_user
           end
 
-          execute_and_store(query, layout)
+          execute_and_store(query, layout, query_scope(layout, asker))
         rescue McpServer::ReportingQueryRunner::Rejected => e
           render json: { errors: { query: [{ error: 'rejected', detail: e.message }] } },
             status: :unprocessable_entity
@@ -46,10 +50,11 @@ module ContentBuilder
         def refresh
           layout = Layout.find(params[:layout_id])
           authorize_editing(layout)
+          scope = query_scope(layout, current_user)
 
           refreshed = QuerySnapshot.transaction do
             layout.query_snapshots.map do |snapshot|
-              result = McpServer::ReportingQueryRunner.run(snapshot.sql, scope: McpServer::QueryScope.all)
+              result = McpServer::ReportingQueryRunner.run(snapshot.sql, scope: scope)
               snapshot.update!(data: result_data(result), executed_at: Time.current)
               snapshot
             end
@@ -84,6 +89,12 @@ module ContentBuilder
           report ? authorize(report, :write?) : authorize(layout, :update?)
         end
 
+        # A report about a project reads that project's rows whoever asks, so its
+        # answers are the same for everyone who works on it.
+        def query_scope(layout, asker)
+          McpServer::QueryScope.for(asker, within: report_for(layout)&.scope_project_ids)
+        end
+
         def scoped_token_permits?(layout)
           return false if layout.nil?
 
@@ -115,9 +126,9 @@ module ContentBuilder
           McpServer::ReportingQueryRunner.validate!(query)
         end
 
-        def execute_and_store(query, layout)
+        def execute_and_store(query, layout, scope)
           sql = normalized(query)
-          data = result_data(McpServer::ReportingQueryRunner.run(sql, scope: McpServer::QueryScope.all))
+          data = result_data(McpServer::ReportingQueryRunner.run(sql, scope: scope))
           executed_at = Time.current
 
           if layout

@@ -87,6 +87,13 @@ module ReportBuilder
       project || phase&.project
     end
 
+    # The projects whose rows this report's reporting queries read, whoever runs them,
+    # so that everyone working on the report sees the same data. Nil for a report
+    # about no project: its queries read whatever the person running them may read.
+    def scope_project_ids
+      [reported_project.id] if reported_project
+    end
+
     # The latest generation that ran to a stop without failing. A failed run is
     # skipped: it wrote nothing, so what the report holds is still the work of the
     # run before it, and that is what the "is this report whole" answer is about.

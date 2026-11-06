@@ -43,6 +43,26 @@ RSpec.describe McpServer::QueryScope do
     it 'gives no user no rows' do
       expect(described_class.for(nil).project_ids).to eq []
     end
+
+    describe 'within some projects' do
+      let(:other_project) { create(:project) }
+
+      it 'limits an admin to them' do
+        expect(described_class.for(create(:admin), within: [project.id]).project_ids).to eq [project.id]
+      end
+
+      it 'limits a moderator to the ones they moderate' do
+        moderator = create(:project_moderator, projects: [project, other_project])
+
+        expect(described_class.for(moderator, within: [project.id]).project_ids).to eq [project.id]
+      end
+
+      it 'gives a moderator of other projects no rows' do
+        moderator = create(:project_moderator, projects: [other_project])
+
+        expect(described_class.for(moderator, within: [project.id]).project_ids).to eq []
+      end
+    end
   end
 
   describe '#limited_to' do
