@@ -27,27 +27,31 @@ module Analytics
         <<~DOC.squish
           The platform as a baseline, one row per metric: the median, mean and
           quartiles of a measure across the platform's projects (or phases).
-          Use it to say how the project compares with the rest of the platform,
+          Use it to say how a project compares with the rest of the platform,
           for example "312 participants, against a platform median of 140". It
-          is the only view that reaches beyond this project, and it holds no
-          other project's figures. Counts projects that are not drafts and whose
-          first phase has started; projects with no participation count as 0. A
-          metric is missing when fewer than 5 projects stand behind it.
+          names no project. Counts projects that are not drafts, not hidden and
+          whose first phase has started; projects with no participation count
+          as 0. All time, not a phase's dates: compare it with a project's own
+          totals, not with a phase's. A metric is missing when fewer than 5
+          projects stand behind it.
         DOC
       end
 
       def self.field_descriptions
         {
           'metric' => <<~DOC.squish,
-            What is measured: 'participants_per_project', 'contributions_per_project',
+            What is measured: 'participants_per_project' (distinct participants),
+            'contributions_per_project' (every row of reporting_contributions: inputs,
+            comments, reactions, votes and the rest, so voting projects run high),
             'visitors_per_project' (distinct resident visitors, staff left out),
             'phases_per_project', 'online_voters_per_voting_phase' or
-            'survey_responses_per_survey_phase'.
+            'survey_responses_per_survey_phase' (inputs only, not comments made during
+            the survey).
           DOC
           'median' => 'The middle value across the projects (or phases).',
           'mean' => 'The average value across the projects (or phases).',
-          'p25' => 'The value a quarter of the projects (or phases) are at or below.',
-          'p75' => 'The value three quarters of the projects (or phases) are at or below.',
+          'p25' => 'The 25th percentile across the projects (or phases), interpolated.',
+          'p75' => 'The 75th percentile across the projects (or phases), interpolated.',
           'projects_counted' => <<~DOC.squish
             How many projects stand behind the figure. For the per-phase metrics,
             the projects the phases belong to.

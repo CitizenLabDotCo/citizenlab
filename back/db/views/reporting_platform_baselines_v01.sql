@@ -11,10 +11,13 @@
 -- A metric is left out when fewer than 5 projects stand behind it: on a small
 -- platform, a "median" of two projects is the other project's figure. For the
 -- per-phase metrics this counts the projects behind the phases, not the phases.
+-- The floor keeps projects unnamed; it does not make the figures unguessable,
+-- since a quartile of five values is one of them.
 --
--- Visitors are residents only (signed out, or highest role 'user'), the same
--- rule as reporting_phases.non_staff_visitors_count, and distinct per project:
--- summing per-phase counts would count a person once per phase.
+-- Visitors are residents only (signed out, or highest role 'user'), the role rule
+-- of reporting_phases.non_staff_visitors_count, but over all time rather than a
+-- phase's dates, and distinct per project: summing per-phase counts would count a
+-- person once per phase.
 WITH projects AS (
     SELECT p.id
     FROM reporting_projects p
