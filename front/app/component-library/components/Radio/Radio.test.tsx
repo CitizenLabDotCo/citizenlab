@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render, screen } from '../../utils/testUtils/rtl';
+import { render, screen, fireEvent } from '../../utils/testUtils/rtl';
 
 import Radio from '.';
 
@@ -28,5 +28,16 @@ describe('<Radio />', () => {
     expect(screen.queryByTestId('radio-container')).toHaveStyle(
       'padding: 20px'
     );
+  });
+  it('disables the input and ignores clicks when disabled', () => {
+    const onChange = jest.fn();
+    render(
+      <Radio label="label" value="1" name="1" onChange={onChange} disabled />
+    );
+
+    fireEvent.click(screen.getByText('label'));
+
+    expect(screen.getByRole('radio')).toBeDisabled();
+    expect(onChange).not.toHaveBeenCalled();
   });
 });
