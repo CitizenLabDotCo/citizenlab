@@ -81,6 +81,10 @@ module ReportBuilder
       !phase_id.nil?
     end
 
+    def project?
+      !project_id.nil?
+    end
+
     # The project the report is about, whether it is scoped to the whole project or
     # to one of its phases.
     def reported_project

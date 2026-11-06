@@ -24,6 +24,8 @@ module ReportBuilder
       elsif user.moderator?
         if record.phase?
           policy_for(record.phase).active_moderator?
+        elsif record.project?
+          policy_for(record.project).active_moderator?
         else
           record.owner == user
         end
@@ -42,6 +44,8 @@ module ReportBuilder
           else
             false
           end
+        elsif record.project?
+          policy_for(record.project).active_moderator? && access_to_data?
         else
           record.owner == user && access_to_data?
         end
@@ -58,6 +62,8 @@ module ReportBuilder
       elsif user.moderator?
         if record.phase?
           policy_for(record.phase).update? && access_to_data?
+        elsif record.project?
+          policy_for(record.project).update? && access_to_data?
         else
           record.owner == user && access_to_data?
         end

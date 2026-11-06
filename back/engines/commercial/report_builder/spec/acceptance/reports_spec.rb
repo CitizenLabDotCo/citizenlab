@@ -162,6 +162,28 @@ resource 'Reports' do
 
     include_examples 'not authorized to visitors'
     include_examples 'not authorized to normal users'
+
+    describe 'when the report is about a project' do
+      let(:project) { create(:project) }
+      let(:id) { create(:report, project: project, owner: create(:admin)).id }
+
+      example 'Get an admin\'s project report as a moderator of the project', document: false do
+        header_token_for create(:project_moderator, projects: [project])
+
+        do_request
+
+        assert_status 200
+        expect(response_data.dig(:attributes, :action_descriptors, :editing_report, :enabled)).to be true
+      end
+
+      example '[error] Get it as a moderator of another project', document: false do
+        header_token_for create(:project_moderator, projects: [create(:project)])
+
+        do_request
+
+        assert_status 401
+      end
+    end
   end
 
   post 'web_api/v1/reports/:id/copy' do
@@ -506,6 +528,21 @@ resource 'Reports' do
 
     include_examples 'not authorized to visitors'
     include_examples 'not authorized to normal users'
+
+    describe 'when the report is about a project' do
+      let(:project) { create(:project) }
+      let(:report) { create(:report, project: project, owner: create(:admin)) }
+      let(:id) { report.id }
+
+      example 'Rename an admin\'s project report as a moderator of the project', document: false do
+        header_token_for create(:project_moderator, projects: [project])
+
+        do_request(report: { name: 'by-the-moderator' })
+
+        assert_status 200
+        expect(report.reload.name).to eq 'by-the-moderator'
+      end
+    end
   end
 
   delete 'web_api/v1/reports/:id' do

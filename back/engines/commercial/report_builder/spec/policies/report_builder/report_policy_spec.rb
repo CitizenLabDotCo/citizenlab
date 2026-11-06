@@ -213,6 +213,48 @@ RSpec.describe ReportBuilder::ReportPolicy do
         end
       end
     end
+
+    # A project report is reached through its project, as a phase report is through
+    # its phase, so whoever moderates the project may work on it, whoever made it.
+    context 'when report belongs to a project' do
+      let_it_be(:report) { create(:report, project: project, owner: create(:admin)) }
+
+      context 'when user can moderate the project' do
+        let_it_be(:user) { create(:project_moderator, projects: [project]) }
+
+        it_behaves_like 'permitted everything'
+      end
+
+      context 'when user can moderate the project, but does not have access to all data in report' do
+        let_it_be(:reported) { create(:project) }
+        let_it_be(:user) { create(:project_moderator, projects: [reported]) }
+        let_it_be(:report) do
+          layout = create(:layout, craftjs_json: {
+            ROOT: { type: 'div', props: {} },
+            visitors_widget: { type: { resolvedName: 'VisitorsWidget' }, props: { projectId: another_project.id } }
+          })
+          create(:report, project: reported, owner: create(:admin), layout: layout)
+        end
+
+        it { is_expected.to permit(:show) }
+        it { is_expected.not_to permit(:layout) }
+        it { is_expected.not_to permit(:update) }
+      end
+
+      context 'when user cannot moderate the project' do
+        let_it_be(:user) { create(:project_moderator, projects: [another_project]) }
+
+        it_behaves_like 'not permitted anything'
+      end
+
+      context 'when user moderates the project through its folder' do
+        let_it_be(:folder) { create(:project_folder, projects: [create(:project)]) }
+        let_it_be(:user) { create(:project_folder_moderator, project_folders: [folder]) }
+        let_it_be(:report) { create(:report, project: folder.projects.first, owner: create(:admin)) }
+
+        it_behaves_like 'permitted everything'
+      end
+    end
   end
 
   context 'when user is a visitor' do
@@ -223,6 +265,12 @@ RSpec.describe ReportBuilder::ReportPolicy do
 
       it_behaves_like 'not permitted anything'
       it { expect { scope.resolve.count }.to raise_error(Pundit::NotAuthorizedError) }
+    end
+
+    context 'when report belongs to a project' do
+      let_it_be(:report) { create(:report, project: project) }
+
+      it_behaves_like 'not permitted anything'
     end
 
     context 'when visitors cannot see phase' do
