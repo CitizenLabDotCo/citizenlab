@@ -128,6 +128,16 @@ RSpec.describe McpServer::ReportingQueryRunner do
         .to raise_error(described_class::Rejected, /reporting_staff_activities/)
     end
 
+    it 'reads no rows of an admin-only view even when the sandbox lets the name through' do
+      create(:activity, item_type: 'User', item_id: create(:user).id, action: 'created', payload: { 'flow' => 'password' })
+      sql = 'SELECT count(*) AS n FROM reporting_registrations'
+      allow(McpServer::SqlSandboxer).to receive(:validate)
+        .and_return(McpServer::SqlSandboxer::Result.new(valid: true, error: nil, normalized_sql: sql))
+
+      expect(described_class.run(sql, scope: scope).rows).to eq([{ 'n' => 0 }])
+      expect(described_class.run(sql, scope: McpServer::QueryScope.all).rows).to eq([{ 'n' => 1 }])
+    end
+
     it 'keeps the scope inside a CTE that reuses a view name' do
       sql = 'WITH reporting_inputs AS (SELECT * FROM reporting_inputs) SELECT DISTINCT project_id FROM reporting_inputs'
 

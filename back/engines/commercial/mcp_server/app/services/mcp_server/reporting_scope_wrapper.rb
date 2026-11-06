@@ -19,10 +19,13 @@ module McpServer
     def wrap(sql)
       return sql if @scope.all?
 
-      ctes = Tools::GetReportingSqlSchema.tables_for(@scope).map do |model|
+      ctes = Tools::GetReportingSqlSchema::REPORTING_TABLES.map do |model|
         view = @connection.quote_table_name(model.table_name)
-        relation = model.for_projects(@scope.project_ids).from("#{schema}.#{view} #{view}")
-        "#{view} AS NOT MATERIALIZED (#{relation.to_sql})"
+        # An admin-only view gets a CTE with no rows. The sandbox already refuses its
+        # name for this scope; this keeps the name from reaching the real view if it
+        # ever gets past the sandbox.
+        relation = model.admin_only? ? model.where('false') : model.for_projects(@scope.project_ids)
+        "#{view} AS NOT MATERIALIZED (#{relation.from("#{schema}.#{view} #{view}").to_sql})"
       end
       "WITH #{ctes.join(",\n")}\n#{sql}"
     end
