@@ -5,6 +5,14 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.shared.ProjectGenerator.title',
     defaultMessage: 'Project assistant',
   },
+  editWithAi: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.editWithAi',
+    defaultMessage: 'Edit with AI',
+  },
+  chatToChange: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.chatToChange',
+    defaultMessage: 'Chat to change anything',
+  },
 
   areas: {
     id: 'app.containers.Admin.projects.shared.ProjectGenerator.areas',
