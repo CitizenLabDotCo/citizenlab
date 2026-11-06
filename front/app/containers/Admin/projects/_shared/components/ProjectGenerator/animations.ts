@@ -12,6 +12,15 @@ const enter = keyframes`
   }
 `;
 
+const grow = keyframes`
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+`;
+
 const pulse = keyframes`
   50% {
     opacity: 0.35;
@@ -28,6 +37,15 @@ export const motion = (rules: ReturnType<typeof css>) => css`
 export const Appear = styled(Box)`
   ${motion(css`
     animation: ${enter} 320ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  `)}
+`;
+
+export const GrowingBar = styled(Box)`
+  transform-origin: left center;
+  transition: left 300ms ease-out, width 300ms ease-out,
+    background-color 300ms ease-out;
+  ${motion(css`
+    animation: ${grow} 500ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
   `)}
 `;
 
