@@ -630,7 +630,7 @@
   "app.components.ProjectPageBuilder.Widgets.bannerEmptyNote": "Aún no hay imagen · solo los administradores y moderadores de este proyecto pueden ver esto",
   "app.components.ProjectPageBuilder.Widgets.bannerEmptyTitle": "Añadir una imagen del proyecto",
   "app.components.ProjectPageBuilder.Widgets.bannerWidgetTitle": "Imagen del proyecto",
-  "app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage": "Aún no hay eventos — los eventos añadidos en el editor del proyecto aparecen aquí automáticamente. Los visitantes no verán esta sección hasta entonces.",
+  "app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage2": "Aún no hay eventos. Los visitantes no verán esta sección mientras esté vacía, a menos que actives «Mostrar un mensaje cuando no haya eventos».",
   "app.components.ProjectPageBuilder.Widgets.eventsLinkText": "Eventos",
   "app.components.ProjectPageBuilder.Widgets.eventsManagedNote": "Los eventos se gestionan en el editor del proyecto, en {eventsLink}. Añádelos, edítalos o elimínalos allí; aparecerán aquí automáticamente.",
   "app.components.ProjectPageBuilder.Widgets.eventsWidgetTitle": "Eventos",

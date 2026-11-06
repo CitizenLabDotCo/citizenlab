@@ -630,7 +630,7 @@
   "app.components.ProjectPageBuilder.Widgets.bannerEmptyNote": "Még nincs kép · ezt csak a projekt adminisztrátorai és moderátorai láthatják",
   "app.components.ProjectPageBuilder.Widgets.bannerEmptyTitle": "Projektkép hozzáadása",
   "app.components.ProjectPageBuilder.Widgets.bannerWidgetTitle": "Projektkép",
-  "app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage": "Még nincsenek események — a projektszerkesztőben hozzáadott események automatikusan megjelennek itt. A látogatók addig nem fogják látni ezt a szakaszt.",
+  "app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage2": "Még nincsenek események. A látogatók nem fogják látni ezt a részt, amíg üres, hacsak be nem kapcsolja az „Üzenet megjelenítése, ha nincsenek események” opciót.",
   "app.components.ProjectPageBuilder.Widgets.eventsLinkText": "Események",
   "app.components.ProjectPageBuilder.Widgets.eventsManagedNote": "Az események a projektszerkesztőben, az {eventsLink} alatt kezelhetők. Itt adhatja hozzá, szerkesztheti vagy távolíthatja el őket – automatikusan meg fognak jelenni itt.",
   "app.components.ProjectPageBuilder.Widgets.eventsWidgetTitle": "Események",

@@ -1489,6 +1489,11 @@
     "verified_at": "2026-09-16T16:56:10.076710Z",
     "verified_by": "Luuc"
   },
+  "app.components.admin.ContentBuilder.Widgets.Events.noEventsToDisplay": {
+    "state": "verified",
+    "verified_at": "2026-11-06T18:18:07.640645Z",
+    "verified_by": "Luuc"
+  },
   "app.components.admin.ContentBuilder.Widgets.Events.pastEvents": {
     "state": "verified",
     "verified_at": "2026-09-16T16:56:10.076710Z",
@@ -1512,6 +1517,11 @@
   "app.components.admin.ContentBuilder.Widgets.Events.showAllPaginated2": {
     "state": "verified",
     "verified_at": "2026-09-16T16:56:10.076710Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.admin.ContentBuilder.Widgets.Events.showEmptyMessage": {
+    "state": "verified",
+    "verified_at": "2026-11-06T18:18:07.640645Z",
     "verified_by": "Luuc"
   },
   "app.components.admin.ContentBuilder.Widgets.Events.showLimited": {

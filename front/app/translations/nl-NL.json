@@ -630,7 +630,7 @@
   "app.components.ProjectPageBuilder.Widgets.bannerEmptyNote": "Nog geen afbeelding · alleen platformbeheerders en moderatoren van dit project kunnen dit zien",
   "app.components.ProjectPageBuilder.Widgets.bannerEmptyTitle": "Voeg een projectafbeelding toe",
   "app.components.ProjectPageBuilder.Widgets.bannerWidgetTitle": "Projectafbeelding",
-  "app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage": "Nog geen activiteiten — activiteiten die in de projecteditor worden toegevoegd, verschijnen hier automatisch. Bezoekers zien deze sectie tot die tijd niet.",
+  "app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage2": "Nog geen activiteiten. Bezoekers zien deze sectie niet zolang deze leeg is, tenzij je “Toon een bericht wanneer er geen activiteiten zijn” inschakelt.",
   "app.components.ProjectPageBuilder.Widgets.eventsLinkText": "Activiteiten",
   "app.components.ProjectPageBuilder.Widgets.eventsManagedNote": "Activiteiten worden beheerd in de projecteditor, onder {eventsLink}. Voeg ze daar toe, bewerk of verwijder ze — ze verschijnen hier automatisch.",
   "app.components.ProjectPageBuilder.Widgets.eventsWidgetTitle": "Activiteiten",

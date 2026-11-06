@@ -630,7 +630,7 @@
   "app.components.ProjectPageBuilder.Widgets.bannerEmptyNote": "Nach kee Bild · nëmmen Adminen a Moderatore vun dësem Projet kënnen dat gesinn",
   "app.components.ProjectPageBuilder.Widgets.bannerEmptyTitle": "E Projets-Bild dobäisetzen",
   "app.components.ProjectPageBuilder.Widgets.bannerWidgetTitle": "Projets-Bild",
-  "app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage": "Nach keng Eventer — Eventer, déi am Projet-Editor bäigefüügt ginn, erschéngen hei automatesch. Visiteure gesinn dës Sektioun bis dohinner net.",
+  "app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage2": "Nach keng Evenementer. D'Visiteure gesinn dës Sektioun net, soulaang se eidel ass, ausser Dir aktivéiert „Eng Noriicht uweisen, wann et keng Evenementer gëtt“.",
   "app.components.ProjectPageBuilder.Widgets.eventsLinkText": "Evenementer",
   "app.components.ProjectPageBuilder.Widgets.eventsManagedNote": "Evenementer ginn am Projets-Editor ënner {eventsLink} geréiert. Setzt se do dobäi, editéiert se oder läscht se – se erschéngen hei automatesch.",
   "app.components.ProjectPageBuilder.Widgets.eventsWidgetTitle": "Evenementer",

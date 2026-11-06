@@ -73,4 +73,12 @@ export default defineMessages({
     id: 'app.components.admin.ContentBuilder.Widgets.Events.heading',
     defaultMessage: 'Heading',
   },
+  showEmptyMessage: {
+    id: 'app.components.admin.ContentBuilder.Widgets.Events.showEmptyMessage',
+    defaultMessage: 'Show a message when there are no events',
+  },
+  noEventsToDisplay: {
+    id: 'app.components.admin.ContentBuilder.Widgets.Events.noEventsToDisplay',
+    defaultMessage: 'No events to display',
+  },
 });

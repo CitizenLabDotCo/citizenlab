@@ -1394,6 +1394,11 @@
     "verified_at": "2026-09-22T06:09:59.542944Z",
     "verified_by": "Jelena"
   },
+  "app.components.admin.ContentBuilder.Widgets.Events.noEventsToDisplay": {
+    "state": "verified",
+    "verified_at": "2026-11-05T14:23:57.976777Z",
+    "verified_by": "Jelena"
+  },
   "app.components.admin.ContentBuilder.Widgets.Events.pastEvents": {
     "state": "verified",
     "verified_at": "2026-09-22T06:09:59.542944Z",
@@ -1417,6 +1422,11 @@
   "app.components.admin.ContentBuilder.Widgets.Events.showAllPaginated2": {
     "state": "verified",
     "verified_at": "2026-09-22T06:09:59.542944Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ContentBuilder.Widgets.Events.showEmptyMessage": {
+    "state": "verified",
+    "verified_at": "2026-11-05T14:23:57.976777Z",
     "verified_by": "Jelena"
   },
   "app.components.admin.ContentBuilder.Widgets.Events.showLimited": {
