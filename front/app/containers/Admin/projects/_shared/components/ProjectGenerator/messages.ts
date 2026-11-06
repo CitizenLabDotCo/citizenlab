@@ -13,6 +13,62 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.shared.ProjectGenerator.chatToChange',
     defaultMessage: 'Chat to change anything',
   },
+  beta: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.beta',
+    defaultMessage: 'Beta',
+  },
+  startFromScratch: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.startFromScratch',
+    defaultMessage: 'Start from scratch',
+  },
+  close: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.close',
+    defaultMessage: 'Close',
+  },
+  introTitle: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.introTitle',
+    defaultMessage: 'What project do you want to create?',
+  },
+  introText: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.introText',
+    defaultMessage:
+      'Describe its goal, who it is for and when it should happen, and attach documents if you have them. The assistant drafts the project one step at a time, and you approve each step.',
+  },
+  editIntroTitle: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.editIntroTitle',
+    defaultMessage: 'What do you want to change?',
+  },
+  editIntroText: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.editIntroText',
+    defaultMessage:
+      'Ask the assistant to change the project, and approve each change in the draft.',
+  },
+  editPlaceholder: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.editPlaceholder',
+    defaultMessage: 'Describe what to change…',
+  },
+  briefPlaceholder: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.briefPlaceholder',
+    defaultMessage: 'Describe your project…',
+  },
+  refinePlaceholder: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.refinePlaceholder',
+    defaultMessage: 'Tell the assistant what to change…',
+  },
+  awaitingOneHint: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.awaitingOneHint',
+    defaultMessage:
+      'Approve the proposed change in the draft, or tell the assistant what to change.',
+  },
+  awaitingManyHint: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.awaitingManyHint',
+    defaultMessage:
+      'Approve or refine the proposed changes in the draft to continue.',
+  },
+  untitledProject: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.untitledProject',
+    defaultMessage: 'Untitled project',
+  },
 
   groups: {
     id: 'app.containers.Admin.projects.shared.ProjectGenerator.groups',
