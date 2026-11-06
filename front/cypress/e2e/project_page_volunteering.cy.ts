@@ -51,6 +51,8 @@ describe('Volunteering survey CTA', () => {
     cy.visit(`/en/projects/${projectSlug}`);
 
     cy.get('#e2e-show-volunteering-cta').should('exist');
+
+    cy.dockProjectCtaBar();
     cy.get('#e2e-participation-cta-volunteer').should('exist');
 
     // Shows the event CTA when there is an upcoming event
