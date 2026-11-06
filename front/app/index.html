@@ -4,6 +4,12 @@
     <title>Citizen engagement platform</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!--
+      Empty placeholder icon. The tenant's favicon is added at runtime (App/Meta),
+      and without an icon link in the initial HTML the browser requests
+      /favicon.ico, which falls through to this page.
+    -->
+    <link rel="icon" href="data:," />
 
     <!-- Plain links so Vite rewrites them to the hashed file names. -->
     <link
