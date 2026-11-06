@@ -34,6 +34,8 @@ type ConversationState =
       turn_started_at: string | null;
     };
 
+export type AiAssistantConversationStatus = ConversationState['status'];
+
 export interface IAiAssistantConversationData {
   id: string;
   type: 'ai_assistant_conversation';
