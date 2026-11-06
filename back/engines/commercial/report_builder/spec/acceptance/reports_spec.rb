@@ -543,6 +543,25 @@ resource 'Reports' do
         expect(report.reload.name).to eq 'by-the-moderator'
       end
     end
+
+    # A report's project is what its reporting queries read, so it is set when the
+    # report is created and never moved. Moving one to another project's phase would
+    # show answers read from the first project to the second project's moderators.
+    describe 'when the update names another phase' do
+      let(:phase) { create(:phase) }
+      let(:report) { create(:report, phase: phase) }
+      let(:id) { report.id }
+
+      example 'Keep a report in its phase', document: false do
+        other_phase = create(:phase)
+        header_token_for create(:project_moderator, projects: [phase.project, other_phase.project])
+
+        do_request(report: { phase_id: other_phase.id })
+
+        assert_status 200
+        expect(report.reload.phase_id).to eq phase.id
+      end
+    end
   end
 
   delete 'web_api/v1/reports/:id' do
