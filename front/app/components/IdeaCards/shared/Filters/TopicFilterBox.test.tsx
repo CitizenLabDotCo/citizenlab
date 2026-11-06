@@ -1,6 +1,7 @@
 import React from 'react';
 
 import useCustomFields from 'api/custom_fields/useCustomFields';
+import { mockInputTopic } from 'api/input_topics/__mocks__/data';
 import { IInputTopicData } from 'api/input_topics/types';
 
 import { render, screen } from 'utils/testUtils/rtl';
@@ -18,25 +19,6 @@ jest.mock('api/custom_fields/useCustomFields', () =>
 jest.mock('api/input_topics/useInputTopics', () =>
   jest.fn(() => ({ data: { data: mockTopics } }))
 );
-
-const topic: IInputTopicData = {
-  id: 'topic1',
-  type: 'input_topic',
-  attributes: {
-    title_multiloc: { en: 'Mobility' },
-    description_multiloc: {},
-    full_title_multiloc: { en: 'Mobility' },
-    icon: null,
-    parent_icon: null,
-    depth: 0,
-    lft: 1,
-    rgt: 2,
-    children_count: 0,
-  },
-  relationships: {
-    project: { data: { id: 'project1', type: 'project' } },
-  },
-};
 
 const renderTopicFilterBox = () =>
   render(
@@ -68,7 +50,7 @@ describe('TopicFilterBox', () => {
   });
 
   it('renders nothing when the tags field is disabled in the input form', () => {
-    mockTopics = [topic];
+    mockTopics = [mockInputTopic];
     mockTopicsFieldEnabled = false;
     renderTopicFilterBox();
 
@@ -77,14 +59,14 @@ describe('TopicFilterBox', () => {
   });
 
   it('lists the project tags that have inputs', () => {
-    mockTopics = [topic];
+    mockTopics = [mockInputTopic];
     renderTopicFilterBox();
 
     expect(screen.getByText('Mobility')).toBeInTheDocument();
   });
 
   it('reads the fields from the phase form', () => {
-    mockTopics = [topic];
+    mockTopics = [mockInputTopic];
     renderTopicFilterBox();
 
     expect(useCustomFields).toHaveBeenCalledWith({

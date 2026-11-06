@@ -193,14 +193,6 @@ const TopicsFilter = memo<Props>(
                 )}
               </Button>
             )}
-
-            <ScreenReaderOnly aria-live="polite">
-              {/* Pronounces numbers of selected topics + selected topic names */}
-              <FormattedMessage
-                {...messages.a11y_selectedTopicFilters}
-                values={{ numberOfSelectedTopics, selectedTopicNames }}
-              />
-            </ScreenReaderOnly>
           </Box>
         )}
 
