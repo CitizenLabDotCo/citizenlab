@@ -215,6 +215,50 @@ describe AIAssistant::Turn do
     expect(conversation.reload).to have_attributes(status: 'failed', last_error_code: 'tool_budget_exceeded')
   end
 
+  it 'stops the turn until the user answers its questions' do
+    questions = [{ 'question' => 'When should it start?', 'options' => ['This month', 'Next month'] }]
+    stub_bedrock(bedrock_tool_use({ id: 'ask_1', name: 'ask_user', input: { questions: } }, text: 'A few questions first.'))
+
+    turn.run
+
+    expect(AIAssistant::ToolCall.sole).to have_attributes(status: 'awaiting_user', arguments: { 'questions' => questions })
+    expect(bedrock_requests.size).to eq(1)
+    expect(conversation.reload.status).to eq('awaiting_user')
+  end
+
+  it 'sends malformed questions back to the model instead of asking the user' do
+    stub_bedrock(
+      bedrock_tool_use({ id: 'ask_1', name: 'ask_user', input: { questions: [{ question: 'No options' }] } }),
+      bedrock_text('Sorry, let me try again later.')
+    )
+
+    turn.run
+
+    expect(AIAssistant::ToolCall.find_by!(tool_use_id: 'ask_1')).to have_attributes(status: 'failed', result: start_with('Error:'))
+    expect(conversation.reload.status).to eq('idle')
+  end
+
+  it 'continues with the answers as the result of the questions' do
+    tool_message = create(:ai_assistant_message, conversation:, role: 'assistant', content: 'A few questions first.')
+    answers = [{ 'question' => 'When should it start?', 'answer' => 'Next month' }]
+    create(
+      :ai_assistant_tool_call,
+      message: tool_message,
+      tool_use_id: 'ask_1',
+      name: 'ask_user',
+      status: 'executed',
+      result: { answers: }.to_json
+    )
+    stub_bedrock(bedrock_text('Then the first phase starts next month.'))
+
+    turn.run
+
+    messages = last_request_messages
+    expect(messages.pluck('role')).to eq(%w[user assistant user])
+    expect(messages[2]['content'].sole['toolResult']['content'].sole['text']).to include('Next month')
+    expect(conversation.reload.status).to eq('idle')
+  end
+
   it 'fails when the surface is no longer available' do
     phase.update_columns(participation_method: 'information')
 

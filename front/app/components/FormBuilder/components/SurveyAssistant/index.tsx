@@ -8,12 +8,12 @@ import customFormKeys from 'api/custom_form/keys';
 import phasesKeys from 'api/phases/keys';
 
 import AssistantPanel from 'components/AiAssistant/AssistantPanel';
-import { AiAssistantToolViews } from 'components/AiAssistant/types';
+import { AiAssistantToolDisplays } from 'components/AiAssistant/types';
 
 import FormOutlinePreview from './FormOutlinePreview';
 import messages from './messages';
 
-const TOOL_VIEWS: AiAssistantToolViews = {
+const TOOL_DISPLAYS: AiAssistantToolDisplays = {
   get_form_fields: { label: messages.readSurvey },
   replace_form_fields: {
     label: messages.replaceSurvey,
@@ -49,7 +49,7 @@ const SurveyAssistant = ({ phaseId, projectId, onFormReplaced }: Props) => {
       subjectId={phaseId}
       projectId={projectId}
       intro={messages.intro2}
-      toolViews={TOOL_VIEWS}
+      toolDisplays={TOOL_DISPLAYS}
       onToolExecuted={handleToolExecuted}
     />
   );

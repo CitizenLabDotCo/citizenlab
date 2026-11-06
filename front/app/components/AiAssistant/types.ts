@@ -8,13 +8,13 @@ import {
 } from 'api/ai_assistant_tool_calls/types';
 
 // How a feature presents one of its tools in the assistant panel.
-export type AiAssistantToolView = {
+export type AiAssistantToolDisplay = {
   label: MessageDescriptor;
   // Shows what an approved call would do. Narrow it with isToolCall to read its arguments.
   Preview?: ComponentType<{ toolCall: IAiAssistantToolCallData }>;
   approveWarning?: MessageDescriptor;
 };
 
-export type AiAssistantToolViews = Partial<
-  Record<AiAssistantToolName, AiAssistantToolView>
+export type AiAssistantToolDisplays = Partial<
+  Record<AiAssistantToolName, AiAssistantToolDisplay>
 >;
