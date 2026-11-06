@@ -86,14 +86,15 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.filesSection',
     defaultMessage: '360 Input',
   },
-  filesDescription: {
-    id: 'app.containers.Admin.projects.project.filesDescription',
+  tagsRequiredInfo: {
+    id: 'app.containers.Admin.projects.project.tagsRequiredInfo',
     defaultMessage:
-      'Documents and recordings added to this project as extra input.',
+      "At least one tag is required. To skip tags, remove the 'Tags' item from any phase's form.",
   },
-  noAttachments: {
-    id: 'app.containers.Admin.projects.project.noAttachments',
-    defaultMessage: 'No attachments',
+  filesDescription: {
+    id: 'app.containers.Admin.projects.project.filesDescription2',
+    defaultMessage:
+      'Files about this project, such as reports, plans and images. Attach them to the project, its phases and events, or add them as context to AI analysis.',
   },
   filesCount: {
     id: 'app.containers.Admin.projects.project.filesCount',
@@ -102,6 +103,35 @@ export default defineMessages({
   addFiles: {
     id: 'app.containers.Admin.projects.project.addFiles',
     defaultMessage: 'Add files',
+  },
+  dropFilesHereOr: {
+    id: 'app.containers.Admin.projects.project.dropFilesHereOr',
+    defaultMessage: 'Drop files here or',
+  },
+  supportedFileTypes: {
+    id: 'app.containers.Admin.projects.project.supportedFileTypes',
+    defaultMessage:
+      'All file types are supported, such as audio (WAV, MP3), documents (PDF, DOCX, PPTX) and images (PNG, JPG).',
+  },
+  filesCountWithSize: {
+    id: 'app.containers.Admin.projects.project.filesCountWithSize',
+    defaultMessage: '{count, plural, one {# file} other {# files}} · {size}',
+  },
+  fileUploading: {
+    id: 'app.containers.Admin.projects.project.fileUploading',
+    defaultMessage: 'Uploading',
+  },
+  fileUploadFailed: {
+    id: 'app.containers.Admin.projects.project.fileUploadFailed',
+    defaultMessage: 'Upload failed',
+  },
+  removeFile: {
+    id: 'app.containers.Admin.projects.project.removeFile',
+    defaultMessage: 'Remove {fileName}',
+  },
+  fileActions: {
+    id: 'app.containers.Admin.projects.project.fileActions',
+    defaultMessage: 'Actions for {fileName}',
   },
   messagingSection: {
     id: 'app.containers.Admin.projects.project.messagingSection',
@@ -276,12 +306,16 @@ export default defineMessages({
     defaultMessage: 'Share a preview link',
   },
   settingsGeneral: {
-    id: 'app.containers.Admin.projects.project.settingsGeneral',
-    defaultMessage: 'General',
+    id: 'app.containers.Admin.projects.project.settingsGeneral2',
+    defaultMessage: 'General information',
   },
   settingsResources: {
     id: 'app.containers.Admin.projects.project.settingsResources',
     defaultMessage: 'Resources',
+  },
+  listing: {
+    id: 'app.containers.Admin.projects.project.listing',
+    defaultMessage: 'Listing',
   },
   settingsManagement: {
     id: 'app.containers.Admin.projects.project.settingsManagement',
@@ -291,9 +325,90 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.topicTags',
     defaultMessage: 'Topic tags',
   },
-  settingsCancel: {
-    id: 'app.containers.Admin.projects.project.settingsCancel',
-    defaultMessage: 'Cancel',
+  settingsTitle: {
+    id: 'app.containers.Admin.projects.project.settingsTitle',
+    defaultMessage: 'Settings',
+  },
+  settingsSave: {
+    id: 'app.containers.Admin.projects.project.settingsSave',
+    defaultMessage: 'Save',
+  },
+  settingsSaveFailed: {
+    id: 'app.containers.Admin.projects.project.settingsSaveFailed',
+    defaultMessage: "Some changes couldn't be saved. Click Save to try again.",
+  },
+  settingsProjectGroup: {
+    id: 'app.containers.Admin.projects.project.settingsProjectGroup',
+    defaultMessage: 'Project',
+  },
+  settingsInputsGroup: {
+    id: 'app.containers.Admin.projects.project.settingsInputsGroup',
+    defaultMessage: 'Inputs',
+  },
+  settingsTags: {
+    id: 'app.containers.Admin.projects.project.settingsTags',
+    defaultMessage: 'Tags',
+  },
+  settingsPerspectives: {
+    id: 'app.containers.Admin.projects.project.settingsPerspectives',
+    defaultMessage: 'Perspectives',
+  },
+  reorderTag: {
+    id: 'app.containers.Admin.projects.project.reorderTag',
+    defaultMessage: 'Drag to reorder {tagName}',
+  },
+  toggleSubtags: {
+    id: 'app.containers.Admin.projects.project.toggleSubtags',
+    defaultMessage: 'Show subtags of {tagName}',
+  },
+  settingsProjectName: {
+    id: 'app.containers.Admin.projects.project.settingsProjectName',
+    defaultMessage: 'Project name',
+  },
+  settingsProjectUrl: {
+    id: 'app.containers.Admin.projects.project.settingsProjectUrl',
+    defaultMessage: 'Project URL',
+  },
+  settingsProjectContext: {
+    id: 'app.containers.Admin.projects.project.settingsProjectContext',
+    defaultMessage: 'Project context',
+  },
+  settingsClearParticipationData: {
+    id: 'app.containers.Admin.projects.project.settingsClearParticipationData',
+    defaultMessage: 'Clear participation data',
+  },
+  settingsReset: {
+    id: 'app.containers.Admin.projects.project.settingsReset',
+    defaultMessage: 'Reset',
+  },
+  resetDataModalTitle: {
+    id: 'app.containers.Admin.projects.project.resetDataModalTitle',
+    defaultMessage: 'Reset all participation data?',
+  },
+  resetDataModalDescription: {
+    id: 'app.containers.Admin.projects.project.resetDataModalDescription',
+    defaultMessage:
+      'This permanently deletes all inputs, comments, votes, reactions, survey and poll responses, volunteers and event registrants from this project. This can’t be undone.',
+  },
+  resetDataConfirmationWord: {
+    id: 'app.containers.Admin.projects.project.resetDataConfirmationWord',
+    defaultMessage: 'Reset',
+  },
+  resetDataButton: {
+    id: 'app.containers.Admin.projects.project.resetDataButton',
+    defaultMessage: 'Reset data',
+  },
+  settingsCreateAndManageTags: {
+    id: 'app.containers.Admin.projects.project.settingsCreateAndManageTags',
+    defaultMessage: 'Create and manage',
+  },
+  settingsAddTag: {
+    id: 'app.containers.Admin.projects.project.settingsAddTag',
+    defaultMessage: 'Add tag',
+  },
+  manageFiles: {
+    id: 'app.containers.Admin.projects.project.manageFiles',
+    defaultMessage: 'Manage files',
   },
   settingsSaveChanges: {
     id: 'app.containers.Admin.projects.project.settingsSaveChanges',

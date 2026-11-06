@@ -19,14 +19,6 @@ module ReportBuilder
         DESC
       end
 
-      def self.allowed_by_default
-        false
-      end
-
-      def self.enabled_by_default
-        false
-      end
-
       def self.dependencies
         %w[report_builder]
       end

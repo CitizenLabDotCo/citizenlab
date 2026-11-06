@@ -3,18 +3,18 @@
 require 'rails_helper'
 
 RSpec.describe DecidimImporter::Links::Rewriter do
-  def text_node(html)
-    { 'type' => { 'resolvedName' => 'TextMultiloc' }, 'nodes' => [],
+  def text_node(html, resolved_name)
+    { 'type' => { 'resolvedName' => resolved_name }, 'nodes' => [],
       'props' => { 'text' => { 'en' => html } }, 'custom' => {}, 'hidden' => false,
       'parent' => 'ROOT', 'isCanvas' => false, 'displayName' => 'Text', 'linkedNodes' => {} }
   end
 
-  def layout_with(html)
+  def layout_with(html, resolved_name: 'TextMultiloc')
     craftjs = {
       'ROOT' => { 'type' => 'div', 'nodes' => %w[text-1], 'props' => { 'id' => 'e2e-content-builder-frame' },
                   'custom' => {}, 'hidden' => false, 'isCanvas' => true, 'displayName' => 'div',
                   'linkedNodes' => {} },
-      'text-1' => text_node(html)
+      'text-1' => text_node(html, resolved_name)
     }
     create(:layout, craftjs_json: craftjs)
   end
@@ -38,6 +38,15 @@ RSpec.describe DecidimImporter::Links::Rewriter do
     )
     # the container_url is the buildable's public page, so a reviewer can open it and fix the link
     expect(broken.first[:container_url]).to be_present
+  end
+
+  it 'rewrites a mapped link in a RichTextMultiloc bridge node' do
+    layout = layout_with('<p><a href="/processes/a">A</a></p>', resolved_name: 'RichTextMultiloc')
+    map = DecidimImporter::Links::Map.new({ '/processes/a' => '/projects/a' }, {}, [])
+
+    described_class.new(map).run
+
+    expect(layout_text(layout)).to include('/projects/a')
   end
 
   it 'resolves a file link to the imported file’s real content URL' do

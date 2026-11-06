@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ComponentProps } from 'react';
 
 import { IconNames } from '@citizenlab/cl2-component-library';
 import { IOption } from 'typings';
@@ -27,6 +27,7 @@ interface Params {
   folderId?: string | null;
   projectInRoot: boolean;
   onChange: (spaceAndFolderId: SpaceAndFolderId) => void;
+  size?: ComponentProps<typeof OptionPicker>['size'];
 }
 
 const useContextPickers = ({
@@ -34,6 +35,7 @@ const useContextPickers = ({
   folderId,
   projectInRoot,
   onChange,
+  size,
 }: Params) => {
   const { formatMessage } = useIntl();
   const projectContext = useProjectContext({
@@ -68,6 +70,7 @@ const useContextPickers = ({
       )}
       value={spaceId ?? NONE}
       onChange={handleSpaceChange}
+      size={size}
     />
   ) : null;
 
@@ -85,6 +88,7 @@ const useContextPickers = ({
       )}
       value={folderId ?? NONE}
       onChange={handleFolderChange}
+      size={size}
     />
   );
 

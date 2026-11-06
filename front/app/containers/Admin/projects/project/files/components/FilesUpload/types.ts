@@ -1,11 +1,6 @@
 import { FileCategory } from 'api/files/types';
 
-export type UploadStatus =
-  | 'queued'
-  | 'uploading'
-  | 'uploaded'
-  | 'error'
-  | 'too_large';
+import { UploadStatus } from 'containers/Admin/projects/_shared/fileUploads/types';
 
 export type FileWithMeta = {
   file: File;

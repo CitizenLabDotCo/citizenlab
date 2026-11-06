@@ -3,6 +3,7 @@ import React from 'react';
 import { Box, colors, Text } from '@citizenlab/cl2-component-library';
 import Frame from 'react-frame-component';
 import styled from 'styled-components';
+import { SupportedLocale } from 'typings';
 
 import useEmailCampaignPreview from 'api/campaigns/email/previews/useEmailCampaignPreview';
 
@@ -22,6 +23,7 @@ type Props = {
   children?: React.ReactNode;
   showHeaders?: boolean;
   height?: string;
+  locale?: SupportedLocale;
 };
 
 const PreviewFrame = ({
@@ -30,8 +32,9 @@ const PreviewFrame = ({
   children,
   showHeaders,
   height = '450px',
+  locale,
 }: Props) => {
-  const { data: previewData } = useEmailCampaignPreview(campaignId);
+  const { data: previewData } = useEmailCampaignPreview(campaignId, locale);
   const { to, from, reply_to, subject, html } =
     previewData?.data.attributes || {};
 
@@ -56,6 +59,8 @@ const PreviewFrame = ({
         </Box>
       )}
       <StyledFrame
+        // Frame only reads initialContent on mount, so remount it when the html changes (e.g. another locale).
+        key={html}
         height={height}
         id="e2e-email-preview-iframe"
         className={className}

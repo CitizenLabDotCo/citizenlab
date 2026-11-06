@@ -57,7 +57,7 @@ const getBuiltinFieldBadgeLabel = (key: string): MessageDescriptor => {
   }
 };
 
-const getCustomFieldBadgeLabel = (
+export const getCustomFieldBadgeLabel = (
   inputType: ICustomFieldInputType
 ): MessageDescriptor => {
   switch (inputType) {
@@ -90,6 +90,8 @@ const getCustomFieldBadgeLabel = (
       return messages.drawRoute;
     case 'polygon':
       return messages.drawArea;
+    case 'multipoint':
+      return messages.dropMultiplePins;
     case 'ranking':
       return messages.ranking;
     case 'matrix_linear_scale':

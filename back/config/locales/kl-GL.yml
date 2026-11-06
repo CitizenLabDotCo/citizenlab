@@ -209,6 +209,7 @@ kl-GL:
       logic_no_further_questions: Akissutitit tunngavigalugit, apeqqutinik allanik akissuteqaqqinnissat <strong>pisariaqanngilaq</strong>.
       logic_section: Immikkoortoq %{letter}
       matrix_print_description: Sanileriiaani tamani ammalortoq ataaseq sanningasuleruk tulluunnerpaatut isigisat nalunaarlugu.
+      multipoint_print_description: Nunap assingani ataaniittumi sumiiffiit ikkukkusutatit X-ilerlugit nalunaaqutsikkit.
       optional: piumasaqaataanngitsoq
       page: Qupperneq
       permission: Akuersissut

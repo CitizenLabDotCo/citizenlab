@@ -14,6 +14,7 @@ export const determineAnswerType = (
     pointResponses,
     lineResponses,
     polygonResponses,
+    multipointResponses,
     numberResponses,
     linear_scales,
   } = result;
@@ -47,6 +48,9 @@ export const determineAnswerType = (
   }
   if (polygonResponses && polygonResponses.length > 0) {
     return 'polygon';
+  }
+  if (multipointResponses && multipointResponses.length > 0) {
+    return 'multipoint';
   }
 
   return undefined;

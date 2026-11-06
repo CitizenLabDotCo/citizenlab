@@ -17,21 +17,6 @@ jest.mock('api/custom_fields/useCustomFields', () =>
 jest.mock('api/input_topics/useInputTopics', () =>
   jest.fn(() => ({ data: { data: mockTopics } }))
 );
-jest.mock('api/ideas_filter_counts/useIdeasFilterCounts', () =>
-  jest.fn(() => ({
-    data: {
-      data: {
-        type: 'filter_counts',
-        attributes: {
-          idea_status_id: {},
-          area_id: {},
-          input_topic_id: { topic1: 3 },
-          total: 3,
-        },
-      },
-    },
-  }))
-);
 
 const topic: IInputTopicData = {
   id: 'topic1',
@@ -57,7 +42,12 @@ const renderTopicFilterBox = () =>
     <TopicFilterBox
       projectId="project1"
       selectedTopicIds={null}
-      ideaQueryParameters={{}}
+      filterCounts={{
+        idea_status_id: {},
+        area_id: {},
+        input_topic_id: { topic1: 3 },
+        total: 3,
+      }}
       onChange={jest.fn()}
     />
   );
