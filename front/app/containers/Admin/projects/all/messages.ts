@@ -70,6 +70,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.NewProjectButton.useTemplateMenuItem',
     defaultMessage: 'Use a template',
   },
+  withAiMenuItem: {
+    id: 'app.containers.Admin.projects.all.NewProjectButton.withAiMenuItem',
+    defaultMessage: 'Create with AI',
+  },
   newProject: {
     id: 'app.containers.AdminPage.ProjectEdit.createProject',
     defaultMessage: 'New project',

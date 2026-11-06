@@ -57,7 +57,7 @@ export interface IAiAssistantConversation {
 
 export interface IAiAssistantConversationsParameters {
   surfaceKey: AiAssistantSurfaceKey;
-  subjectId: string;
+  subjectId?: string;
   pageSize?: number;
 }
 

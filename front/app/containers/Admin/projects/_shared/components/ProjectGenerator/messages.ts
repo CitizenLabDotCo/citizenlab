@@ -13,6 +13,123 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.shared.ProjectGenerator.chatToChange',
     defaultMessage: 'Chat to change anything',
   },
+  beta: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.beta',
+    defaultMessage: 'Beta',
+  },
+  startFromScratch: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.startFromScratch',
+    defaultMessage: 'Start from scratch',
+  },
+  close: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.close',
+    defaultMessage: 'Close',
+  },
+  introTitle: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.introTitle',
+    defaultMessage: 'What project do you want to create?',
+  },
+  introText: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.introText',
+    defaultMessage:
+      'Describe its goal, who it is for and when it should happen, and attach documents if you have them. The assistant drafts the project one step at a time, and you approve each step.',
+  },
+  editIntroTitle: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.editIntroTitle',
+    defaultMessage: 'What do you want to change?',
+  },
+  editIntroText: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.editIntroText',
+    defaultMessage:
+      'Ask the assistant to change the project, and approve each change in the draft.',
+  },
+  editPlaceholder: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.editPlaceholder',
+    defaultMessage: 'Describe what to change…',
+  },
+  briefPlaceholder: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.briefPlaceholder',
+    defaultMessage: 'Describe your project…',
+  },
+  refinePlaceholder: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.refinePlaceholder',
+    defaultMessage: 'Tell the assistant what to change…',
+  },
+  awaitingOneHint: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.awaitingOneHint',
+    defaultMessage:
+      'Approve the proposed change in the draft, or tell the assistant what to change.',
+  },
+  awaitingManyHint: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.awaitingManyHint',
+    defaultMessage:
+      'Approve or refine the proposed changes in the draft to continue.',
+  },
+  untitledProject: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.untitledProject',
+    defaultMessage: 'Untitled project',
+  },
+
+  groups: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.groups',
+    defaultMessage: 'User groups',
+  },
+  draftDetails: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.draftDetails',
+    defaultMessage: 'Draft details',
+  },
+  newPhase: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.newPhase',
+    defaultMessage: 'New phase',
+  },
+  phaseChange: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.phaseChange',
+    defaultMessage: 'Phase change',
+  },
+  accessRightsChange: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.accessRightsChange',
+    defaultMessage: 'Access rights change',
+  },
+  newEvent: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.newEvent',
+    defaultMessage: 'New event',
+  },
+  eventChange: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.eventChange',
+    defaultMessage: 'Event change',
+  },
+  removal: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.removal',
+    defaultMessage: 'Removal',
+  },
+  changeWaiting: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.changeWaiting',
+    defaultMessage: 'Waiting for your review',
+  },
+  reviewInDraft: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.reviewInDraft',
+    defaultMessage: 'Review in the draft',
+  },
+  changeApplying: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.changeApplying',
+    defaultMessage: 'Applying…',
+  },
+  changeApproved: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.changeApproved',
+    defaultMessage: 'Approved',
+  },
+  changeRefined: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.changeRefined',
+    defaultMessage: 'Changes requested',
+  },
+  changeFailed: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.changeFailed',
+    defaultMessage: "Couldn't be applied",
+  },
+  changeExpired: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.changeExpired',
+    defaultMessage: 'Expired',
+  },
 
   areas: {
     id: 'app.containers.Admin.projects.shared.ProjectGenerator.areas',

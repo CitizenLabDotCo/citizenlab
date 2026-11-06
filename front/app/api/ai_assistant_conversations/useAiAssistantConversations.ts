@@ -25,7 +25,8 @@ const fetchConversations = ({
     },
   });
 
-// The current user's conversations on the surface, newest first.
+// The current user's conversations on the surface, newest first. Nothing is fetched
+// before the subject exists.
 const useAiAssistantConversations = (
   parameters: IAiAssistantConversationsParameters,
   { enabled = true }: { enabled?: boolean } = {}
@@ -38,7 +39,7 @@ const useAiAssistantConversations = (
   >({
     queryKey: aiAssistantConversationsKeys.list(parameters),
     queryFn: () => fetchConversations(parameters),
-    enabled,
+    enabled: enabled && !!parameters.subjectId,
   });
 };
 

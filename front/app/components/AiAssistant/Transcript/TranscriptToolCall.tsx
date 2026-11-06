@@ -28,12 +28,25 @@ const TranscriptToolCall = ({
     return <AskUserCard toolCall={toolCall} conversation={conversation} />;
   }
 
+  const display = toolDisplays[toolCall.attributes.name];
+  const CustomCard = display?.CustomCard;
+
+  if (display && CustomCard) {
+    return (
+      <CustomCard
+        toolCall={toolCall}
+        conversation={conversation}
+        label={display.label}
+      />
+    );
+  }
+
   return (
     <ToolCallCard
       toolCall={toolCall}
       conversationId={conversation.data.id}
       decidable={conversation.data.attributes.status === 'awaiting_user'}
-      display={toolDisplays[toolCall.attributes.name]}
+      display={display}
       onExecuted={onToolExecuted}
     />
   );
