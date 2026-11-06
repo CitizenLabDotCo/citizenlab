@@ -108,6 +108,19 @@ export default defineMessages({
     defaultMessage: 'Open project',
   },
 
+  noSettings: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.noSettings',
+    defaultMessage: 'Nothing to set up for this method.',
+  },
+  defaultSettings: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.defaultSettings',
+    defaultMessage: 'Uses the default settings.',
+  },
+  accessRightsAfterApproval: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.accessRightsAfterApproval',
+    defaultMessage: 'Access rights can be changed once the phase is approved.',
+  },
+
   proposedChange: {
     id: 'app.containers.Admin.projects.shared.ProjectGenerator.proposedChange',
     defaultMessage: 'Proposed change',
@@ -161,9 +174,49 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.shared.ProjectGenerator.unlimited',
     defaultMessage: 'Unlimited',
   },
+  settingSubmission: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.settingSubmission',
+    defaultMessage: 'Submitting inputs',
+  },
+  settingCommenting: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.settingCommenting',
+    defaultMessage: 'Commenting',
+  },
+  settingReacting: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.settingReacting',
+    defaultMessage: 'Reacting',
+  },
   settingLikeLimit: {
     id: 'app.containers.Admin.projects.shared.ProjectGenerator.settingLikeLimit',
     defaultMessage: 'Likes per person',
+  },
+  settingAnonymous: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.settingAnonymous',
+    defaultMessage: 'Anonymous participation',
+  },
+  settingPrescreening: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.settingPrescreening',
+    defaultMessage: 'Screening before publication',
+  },
+  prescreeningAll: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.prescreeningAll',
+    defaultMessage: 'All inputs',
+  },
+  prescreeningFlaggedOnly: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.prescreeningFlaggedOnly',
+    defaultMessage: 'Flagged inputs only',
+  },
+  settingReactingThreshold: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.settingReactingThreshold',
+    defaultMessage: 'Likes needed',
+  },
+  settingExpireDays: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.settingExpireDays',
+    defaultMessage: 'Days to gather support',
+  },
+  settingPresentation: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.settingPresentation',
+    defaultMessage: 'Default view',
   },
   presentationCard: {
     id: 'app.containers.Admin.projects.shared.ProjectGenerator.presentationCard',
@@ -177,7 +230,80 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.shared.ProjectGenerator.presentationFeed',
     defaultMessage: 'Feed',
   },
+  settingVotingMethod: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.settingVotingMethod',
+    defaultMessage: 'Voting method',
+  },
+  votingSingle: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.votingSingle',
+    defaultMessage: 'One vote per option',
+  },
+  votingMultiple: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.votingMultiple',
+    defaultMessage: 'Several votes per option',
+  },
+  votingBudgeting: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.votingBudgeting',
+    defaultMessage: 'Budget',
+  },
+  settingVotingMax: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.settingVotingMax',
+    defaultMessage: 'Maximum per voter',
+  },
+  settingVotingMin: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.settingVotingMin',
+    defaultMessage: 'Minimum per voter',
+  },
+  settingVotesPerOption: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.settingVotesPerOption',
+    defaultMessage: 'Maximum per option',
+  },
+  settingAutoshare: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.settingAutoshare',
+    defaultMessage: 'Share results automatically',
+  },
+  settingSurveyTitle: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.settingSurveyTitle',
+    defaultMessage: 'Survey title',
+  },
+  settingSurveyButton: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.settingSurveyButton',
+    defaultMessage: 'Button text',
+  },
+  settingSurveyService: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.settingSurveyService',
+    defaultMessage: 'Survey tool',
+  },
+  settingSurveyUrl: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.settingSurveyUrl',
+    defaultMessage: 'Survey link',
+  },
+  settingPollAnonymous: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.settingPollAnonymous',
+    defaultMessage: 'Anonymous answers',
+  },
+  settingDocumentUrl: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.settingDocumentUrl',
+    defaultMessage: 'Document link',
+  },
 
+  permittedByEveryone: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.permittedByEveryone',
+    defaultMessage: 'Anyone',
+  },
+  permittedByUsers: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.permittedByUsers',
+    defaultMessage: 'Registered users',
+  },
+  permittedByAdmins: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.permittedByAdmins',
+    defaultMessage: 'Managers only',
+  },
+  permittedGroups: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.permittedGroups',
+    defaultMessage:
+      '{permittedBy} in {count, plural, one {# group} other {# groups}}',
+  },
   requirementVerification: {
     id: 'app.containers.Admin.projects.shared.ProjectGenerator.requirementVerification',
     defaultMessage: 'Identity verification',
@@ -202,6 +328,10 @@ export default defineMessages({
   otherSettings: {
     id: 'app.containers.Admin.projects.shared.ProjectGenerator.otherSettings',
     defaultMessage: 'Other settings',
+  },
+  otherSettingsFor: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.otherSettingsFor',
+    defaultMessage: 'Other settings: {action}',
   },
   settingDisliking: {
     id: 'app.containers.Admin.projects.shared.ProjectGenerator.settingDisliking',
