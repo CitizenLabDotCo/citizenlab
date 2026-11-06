@@ -21,6 +21,10 @@ module Analytics
       self.table_name = 'reporting_input_analysis_tags'
       self.primary_key = :id
 
+      include ScopedView
+
+      def self.for_projects(project_ids) = where(project_id: project_ids)
+
       def self.table_description
         <<~DOC.squish
           One row per tag the platform's AI analysis gave an input. Not the same

@@ -24,6 +24,10 @@ module Analytics
       self.table_name = 'reporting_phases'
       self.primary_key = :id
 
+      include ScopedView
+
+      def self.for_projects(project_ids) = where(project_id: project_ids)
+
       def self.table_description
         <<~DOC.squish
           A phase is a consecutive step in a project's

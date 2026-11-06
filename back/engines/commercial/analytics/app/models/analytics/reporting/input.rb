@@ -31,6 +31,10 @@ module Analytics
       self.table_name = 'reporting_inputs'
       self.primary_key = :id
 
+      include ScopedView
+
+      def self.for_projects(project_ids) = where(project_id: project_ids)
+
       def self.table_description
         <<~DOC.squish
           One row per input: the highest-level contribution, created by filling
