@@ -54,6 +54,28 @@ describe 'single_use:remap_copied_layout_file_ids' do
     expect { task.invoke('execute') }.not_to(change { layout.reload.craftjs_json })
   end
 
+  it 'reports a failing layout and goes on with the next ones' do
+    other_project = create(:project)
+    other_source_file = create(:file, name: 'minutes.pdf', projects: [source_project])
+    other_project_file = create(:file, name: 'minutes.pdf', size: other_source_file.size, projects: [other_project])
+    other_layout = create(:layout, content_buildable: other_project, code: 'project_page', craftjs_json: {
+      'ROOT' => { 'type' => { 'resolvedName' => 'Container' }, 'nodes' => ['file1'] },
+      'file1' => { 'type' => { 'resolvedName' => 'FileAttachment' }, 'props' => { 'fileId' => other_source_file.id } }
+    })
+    allow_any_instance_of(ContentBuilder::Layout).to receive(:remap_file_ids!).and_wrap_original do |original, *args|
+      raise 'boom' if original.receiver.id == layout.id
+
+      original.call(*args)
+    end
+
+    task.invoke('execute')
+
+    expect(other_layout.reload.referenced_file_ids).to eq [other_project_file.id]
+    expect(layout.reload.referenced_file_ids).to eq [source_file.id]
+    errors = JSON.parse(File.read('remap_copied_layout_file_ids.json'))['errors']
+    expect(errors).to include(a_hash_including('error' => 'RuntimeError: boom'))
+  end
+
   it 'leaves the widget alone when the project has several matching files' do
     create(:file, name: 'agenda.pdf', size: source_file.size, projects: [project])
 

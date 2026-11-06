@@ -983,8 +983,18 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
   # source files' IDs. Templates exported before +source_file_ids+ existed are left as is.
   def remap_layout_file_ids!(template, created_objects_ids)
     source_file_ids = template['source_file_ids']
+    return if source_file_ids.blank?
+
     copied_file_ids = created_objects_ids['Files::File']
-    return if source_file_ids.blank? || source_file_ids.size != copied_file_ids.size
+    if source_file_ids.size != copied_file_ids.size
+      # Source files are paired with their copies by position, so different counts mean the
+      # pairing can't be trusted. The copy goes ahead with the source files' IDs left in place.
+      ErrorReporter.report_msg(
+        'Project copy: file widgets not remapped, file counts differ',
+        extra: { source_file_count: source_file_ids.size, copied_file_count: copied_file_ids.size }
+      )
+      return
+    end
 
     file_id_mapping = source_file_ids.zip(copied_file_ids).to_h
     ContentBuilder::Layout.where(id: created_objects_ids['ContentBuilder::Layout']).find_each do |layout|

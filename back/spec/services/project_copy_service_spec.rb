@@ -73,6 +73,26 @@ describe ProjectCopyService do
       expect(project.content_builder_layouts.sole.referenced_file_ids).to eq [project.files.sole.id]
     end
 
+    it 'reports the copy and keeps the source file IDs when the file counts differ' do
+      source_file_id = nil
+      template = create(:tenant).switch do
+        project = create(:project)
+        source_file_id = create(:file, name: 'agenda.pdf', projects: [project]).id
+        create(:layout, content_buildable: project, code: 'project_page', craftjs_json: {
+          'ROOT' => { 'type' => { 'resolvedName' => 'Container' }, 'nodes' => ['file1'] },
+          'file1' => { 'type' => { 'resolvedName' => 'FileAttachment' }, 'props' => { 'fileId' => source_file_id } }
+        })
+        service.export(project)
+      end
+      template['source_file_ids'] << SecureRandom.uuid
+      expect(ErrorReporter).to receive(:report_msg)
+        .with(a_string_including('file counts differ'), extra: { source_file_count: 2, copied_file_count: 1 })
+
+      project = service.import(template)
+
+      expect(project.content_builder_layouts.sole.referenced_file_ids).to eq [source_file_id]
+    end
+
     it 'successfully copies over native surveys and responses' do
       create(:idea_status_proposed)
 

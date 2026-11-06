@@ -54,6 +54,9 @@ namespace :single_use do
           end
 
           layout.remap_file_ids!(file_id_mapping) if script.execute? && file_id_mapping.any?
+        rescue StandardError => e
+          # One failing layout must not stop the rest of the tenant's layouts.
+          script.reporter.add_error("#{e.class}: #{e.message}", context: { tenant: tenant.host, layout_id: layout.id })
         end
     end
   end
