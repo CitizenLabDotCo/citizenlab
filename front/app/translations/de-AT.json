@@ -641,7 +641,7 @@
   "app.components.ProjectPageBuilder.Widgets.extraSurveysBadgeUpcoming": "Demnächst",
   "app.components.ProjectPageBuilder.Widgets.extraSurveysButtonTextLabel": "Text des Buttons",
   "app.components.ProjectPageBuilder.Widgets.extraSurveysClosed": "Umfrage beendet",
-  "app.components.ProjectPageBuilder.Widgets.extraSurveysClosedTimeAgo": "Vor {timeAgo} geschlossen",
+  "app.components.ProjectPageBuilder.Widgets.extraSurveysClosedTimeAgo": "{timeAgo} geschlossen",
   "app.components.ProjectPageBuilder.Widgets.extraSurveysDefaultButtonText": "An der Umfrage teilnehmen",
   "app.components.ProjectPageBuilder.Widgets.extraSurveysFormatButton": "Button",
   "app.components.ProjectPageBuilder.Widgets.extraSurveysFormatCard": "Kartenansicht",
