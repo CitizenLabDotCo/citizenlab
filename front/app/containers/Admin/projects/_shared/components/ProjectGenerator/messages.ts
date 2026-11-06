@@ -14,6 +14,67 @@ export default defineMessages({
     defaultMessage: 'Chat to change anything',
   },
 
+  groups: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.groups',
+    defaultMessage: 'User groups',
+  },
+  draftDetails: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.draftDetails',
+    defaultMessage: 'Draft details',
+  },
+  newPhase: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.newPhase',
+    defaultMessage: 'New phase',
+  },
+  phaseChange: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.phaseChange',
+    defaultMessage: 'Phase change',
+  },
+  accessRightsChange: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.accessRightsChange',
+    defaultMessage: 'Access rights change',
+  },
+  newEvent: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.newEvent',
+    defaultMessage: 'New event',
+  },
+  eventChange: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.eventChange',
+    defaultMessage: 'Event change',
+  },
+  removal: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.removal',
+    defaultMessage: 'Removal',
+  },
+  changeWaiting: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.changeWaiting',
+    defaultMessage: 'Waiting for your review',
+  },
+  reviewInDraft: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.reviewInDraft',
+    defaultMessage: 'Review in the draft',
+  },
+  changeApplying: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.changeApplying',
+    defaultMessage: 'Applying…',
+  },
+  changeApproved: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.changeApproved',
+    defaultMessage: 'Approved',
+  },
+  changeRefined: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.changeRefined',
+    defaultMessage: 'Changes requested',
+  },
+  changeFailed: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.changeFailed',
+    defaultMessage: "Couldn't be applied",
+  },
+  changeExpired: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.changeExpired',
+    defaultMessage: 'Expired',
+  },
+
   areas: {
     id: 'app.containers.Admin.projects.shared.ProjectGenerator.areas',
     defaultMessage: 'Areas',
