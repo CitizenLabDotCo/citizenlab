@@ -90,6 +90,8 @@
   "app.components.Comments.seeOriginal": "Se original",
   "app.components.Comments.seeTranslation": "Se oversettelse",
   "app.components.Comments.yourComment": "Din kommentar",
+  "app.components.CommonGroundResults.allStatementsDescription1": "Alle påstander, fra de det er mest enighet om til de det er mest uenighet om. Påstander med bare «usikker»-stemmer eller ingen stemmer i det hele tatt er utelatt.",
+  "app.components.CommonGroundResults.allStatementsTitle": "Liste over uttalelser",
   "app.components.CommonGroundResults.closeCallsDescription": "Disse utsagnene utløste mest uenighet, med stemmer for enig eller uenig nærmest 50/50.",
   "app.components.CommonGroundResults.closeCallsTitle": "Nære samtaler",
   "app.components.CommonGroundResults.highestConsensusDescription": "Påstander med klar enighet - flertallet av dem som stemte, var enten enige eller uenige, valgte samme standpunkt.",

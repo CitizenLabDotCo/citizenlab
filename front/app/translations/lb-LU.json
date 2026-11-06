@@ -90,6 +90,8 @@
   "app.components.Comments.seeOriginal": "Original uweisen",
   "app.components.Comments.seeTranslation": "Iwwersetzung uweisen",
   "app.components.Comments.yourComment": "Äre Kommentar",
+  "app.components.CommonGroundResults.allStatementsDescription1": "All Aussoen, vun deenen mat der meeschter Zoustëmmung bis bei déi mat der meeschter Ofleenung. Aussoen, déi nëmmen onsécher Stëmmen oder guer keng Stëmme kritt hunn, ginn ausgelooss.",
+  "app.components.CommonGroundResults.allStatementsTitle": "Lëscht vun den Aussoen",
   "app.components.CommonGroundResults.closeCallsDescription": "Dës Aussoen hunn déi meescht Onenegkeet ausgeléist, mat Stëmme fir zoustëmmen oder net zoustëmmen, déi am nootste bei enger 50/50 Verdeelung louchen.",
   "app.components.CommonGroundResults.closeCallsTitle": "Zoumaache vun den Uruff",
   "app.components.CommonGroundResults.highestConsensusDescription": "Aussoen mat kloerer Zoustëmmung - d'Majoritéit vun deenen, déi gestëmmt hunn, hunn entweder zougestëmmt oder net zougestëmmt, hunn déiselwecht Positioun gewielt.",

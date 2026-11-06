@@ -90,6 +90,8 @@
   "app.components.Comments.seeOriginal": "Féach an bunleagan",
   "app.components.Comments.seeTranslation": "Féach ar an aistriúchán",
   "app.components.Comments.yourComment": "Do thrácht",
+  "app.components.CommonGroundResults.allStatementsDescription1": "Gach ráiteas, ón gceann is mó a n-aontaítear leis go dtí an ceann is mó a n-easaontaítear leis. Fágtar as an áireamh ráitis nach bhfuair ach vótaí 'neamhchinnte' nó nach bhfuair aon vóta ar bith.",
+  "app.components.CommonGroundResults.allStatementsTitle": "Liosta ráiteas",
   "app.components.CommonGroundResults.closeCallsDescription": "Ba iad na ráitis seo a spreag an easaontas is mó, agus bhí an líon vótaí i bhfabhar aontú nó easaontú níos gaire do scoilt 50/50.",
   "app.components.CommonGroundResults.closeCallsTitle": "Glaonna dúnta",
   "app.components.CommonGroundResults.highestConsensusDescription": "Ráitis a bhfuil comhaontú soiléir leo - roghnaigh formhór na ndaoine a vótáil an seasamh céanna, bíodh siad ag aontú nó ag easaontú.",

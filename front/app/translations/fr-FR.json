@@ -90,6 +90,8 @@
   "app.components.Comments.seeOriginal": "Afficher l'original",
   "app.components.Comments.seeTranslation": "Voir la traduction",
   "app.components.Comments.yourComment": "Votre commentaire",
+  "app.components.CommonGroundResults.allStatementsDescription1": "Toutes les affirmations, de la plus approuvée à la plus contestée. Les affirmations n'ayant reçu que des votes « indécis » ou aucun vote sont exclues.",
+  "app.components.CommonGroundResults.allStatementsTitle": "Liste des affirmations",
   "app.components.CommonGroundResults.closeCallsDescription": "Ces affirmations ont suscité le plus de désaccords, les votes d'accord ou de désaccord étant les plus proches d'une répartition 50/50.",
   "app.components.CommonGroundResults.closeCallsTitle": "Divergences",
   "app.components.CommonGroundResults.highestConsensusDescription": "Déclarations faisant l'objet d'un accord clair - la majorité des votants, qu'ils soient d'accord ou non, ont choisi la même position.",

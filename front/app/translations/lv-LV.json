@@ -90,6 +90,8 @@
   "app.components.Comments.seeOriginal": "Skatīt oriģinālu",
   "app.components.Comments.seeTranslation": "Skatīt tulkojumu",
   "app.components.Comments.yourComment": "Jūsu komentārs",
+  "app.components.CommonGroundResults.allStatementsDescription1": "Visi apgalvojumi — no tiem, kuriem visvairāk piekrīt, līdz tiem, kuriem visvairāk nepiekrīt. Apgalvojumi, par kuriem saņemtas tikai „neesmu pārliecināts” balsis vai nav saņemta neviena balss, netiek iekļauti.",
+  "app.components.CommonGroundResults.allStatementsTitle": "Apgalvojumu saraksts",
   "app.components.CommonGroundResults.closeCallsDescription": "Šie apgalvojumi izraisīja vislielākās domstarpības - balsis par piekrišanu vai nepiekrišanu bija sadalītas gandrīz 50/50.",
   "app.components.CommonGroundResults.closeCallsTitle": "Tuvi izsaukumi",
   "app.components.CommonGroundResults.highestConsensusDescription": "Izteikumi ar skaidru piekrišanu - vairums balsojušo vai nu piekrīt, vai nepiekrīt vienai un tai pašai nostājai.",

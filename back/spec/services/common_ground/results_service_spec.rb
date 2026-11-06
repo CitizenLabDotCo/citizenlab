@@ -23,11 +23,19 @@ describe CommonGround::ResultsService do
 
     let(:n) { 2 }
 
+    def idea_with_reactions(up: 0, down: 0)
+      create(:idea, project: phase.project, phases: [phase]).tap do |idea|
+        create_list(:reaction, up, reactable: idea, mode: 'up')
+        create_list(:reaction, down, reactable: idea, mode: 'down')
+      end
+    end
+
     context 'when there are no ideas' do
       it 'returns results with empty arrays and zero stats' do
         expect(results.phase_id).to eq(phase.id)
         expect(results.top_consensus_ideas).to be_empty
         expect(results.top_controversial_ideas).to be_empty
+        expect(results.ideas_by_agreement).to be_empty
         expect(results.stats[:num_participants]).to eq(0)
         expect(results.stats[:num_ideas]).to eq(0)
         expect(results.stats[:votes]).to eq({ up: 0, down: 0, neutral: 0 })
@@ -41,6 +49,7 @@ describe CommonGround::ResultsService do
         expect(results.phase_id).to eq(phase.id)
         expect(results.top_consensus_ideas).to be_empty
         expect(results.top_controversial_ideas).to be_empty
+        expect(results.ideas_by_agreement).to be_empty
         expect(results.stats[:num_participants]).to eq(0)
         expect(results.stats[:num_ideas]).to eq(3)
         expect(results.stats[:votes]).to eq({ up: 0, down: 0, neutral: 0 })
@@ -88,30 +97,84 @@ describe CommonGround::ResultsService do
         expect(results.phase_id).to eq(phase.id)
       end
 
-      it 'returns top consensus ideas ordered by consensus score (highest first)' do
-        expect(results.top_consensus_ideas).to eq [idea1, idea2]
+      it 'returns only the top consensus ideas that reach the consensus threshold' do
+        expect(results.top_consensus_ideas).to eq [idea1]
       end
 
       context 'when there are ties in consensus scores' do
-        let!(:idea5) do
-          idea = create(:idea, project: phase.project, phases: [phase])
-          create_list(:reaction, 5, reactable: idea, mode: 'up')
-          idea
-        end
+        let!(:idea5) { idea_with_reactions(up: 5) }
 
         it 'returns the idea with the highest number of votes first' do
           expect(results.top_consensus_ideas).to eq [idea5, idea1]
         end
       end
 
-      it 'returns top controversial ideas ordered by consensus score (lowest first)' do
-        expect(results.top_controversial_ideas).to eq [idea3, idea2]
+      it 'returns only the top controversial ideas that stay under the close call threshold' do
+        expect(results.top_controversial_ideas).to eq [idea3]
       end
 
-      it 'respects the limit parameter' do
-        limited_results = service.results(1)
-        expect(limited_results.top_consensus_ideas).to contain_exactly(idea1)
-        expect(limited_results.top_controversial_ideas).to contain_exactly(idea3)
+      it 'leaves the ideas between the two thresholds out of both lists' do
+        expect(results.top_consensus_ideas).not_to include(idea2)
+        expect(results.top_controversial_ideas).not_to include(idea2)
+      end
+
+      it 'returns every reacted idea ordered by net agreement (most agreed first)' do
+        expect(results.ideas_by_agreement).to eq [idea1, idea2, idea3]
+      end
+
+      it 'does not limit the ideas ordered by net agreement' do
+        expect(service.results(1).ideas_by_agreement).to eq [idea1, idea2, idea3]
+      end
+
+      context 'when an idea has more disagree than agree votes' do
+        let!(:disagreed_idea) { idea_with_reactions(up: 4, down: 46) }
+
+        it 'orders it after the ideas that lean towards agree' do
+          expect(results.ideas_by_agreement).to eq [idea1, idea2, idea3, disagreed_idea]
+        end
+
+        it 'counts it as a highest consensus idea, since the majority is clear' do
+          expect(results.top_consensus_ideas).to eq [idea1, disagreed_idea]
+        end
+      end
+
+      context 'when ideas tie on net agreement' do
+        let!(:most_agreed) { idea_with_reactions(up: 20) }
+        let!(:least_agreed) { idea_with_reactions(up: 1) }
+        let!(:least_disagreed) { idea_with_reactions(down: 1) }
+        let!(:most_disagreed) { idea_with_reactions(down: 20) }
+
+        it 'orders the tied ideas by their number of votes, in both directions' do
+          expect(results.ideas_by_agreement).to eq [
+            most_agreed, idea1, least_agreed, idea2, idea3, least_disagreed, most_disagreed
+          ]
+        end
+      end
+
+      context 'when many ideas tie on every ordering key' do
+        # An even split on idea3's vote count, so no other ordering key can separate them. The
+        # number of them matters: on a handful of rows Postgres returns them in id order anyway,
+        # and the example below would pass even without the id key.
+        let!(:tied_ideas) { Array.new(20) { idea_with_reactions(up: 1, down: 1) } }
+
+        it 'falls back on the idea id, so the order holds from one call to the next' do
+          expect(results.ideas_by_agreement.to_a.last(21)).to eq [idea3, *tied_ideas].sort_by(&:id)
+        end
+      end
+
+      context 'when more ideas pass the thresholds than the limit' do
+        # Both tie on consensus score with an idea of the base fixture, and win the tie on votes.
+        let!(:consensus_idea) { idea_with_reactions(up: 4) }
+        let!(:close_call_idea) { idea_with_reactions(up: 2, down: 2) }
+
+        it 'respects the limit parameter' do
+          expect(results.top_consensus_ideas).to eq [consensus_idea, idea1]
+          expect(results.top_controversial_ideas).to eq [close_call_idea, idea3]
+
+          limited_results = service.results(1)
+          expect(limited_results.top_consensus_ideas).to eq [consensus_idea]
+          expect(limited_results.top_controversial_ideas).to eq [close_call_idea]
+        end
       end
 
       it 'returns correct stats' do
@@ -127,8 +190,9 @@ describe CommonGround::ResultsService do
       it 'can be converted into a hash' do
         expect(results.to_h).to include(
           phase_id: phase.id,
-          top_consensus_ideas: [idea1, idea2],
-          top_controversial_ideas: [idea3, idea2],
+          top_consensus_ideas: [idea1],
+          top_controversial_ideas: [idea3],
+          ideas_by_agreement: [idea1, idea2, idea3],
           stats: {
             num_participants: 5,
             num_ideas: 4,
@@ -139,7 +203,7 @@ describe CommonGround::ResultsService do
 
       it 'returns the vote counts on the top ideas' do
         expect(results.top_consensus_ideas.map { |idea| [idea.likes_count, idea.dislikes_count, idea.neutral_reactions_count] })
-          .to eq([[3, 0, 1], [2, 1, 0]])
+          .to eq([[3, 0, 1]])
       end
 
       context 'with reactions of admins and moderators' do
@@ -153,9 +217,10 @@ describe CommonGround::ResultsService do
         end
 
         it 'includes them by default' do
-          expect(results.top_consensus_ideas).to eq [idea2, idea1]
-          expect(results.top_controversial_ideas).to eq [idea3, idea1]
-          expect(results.top_consensus_ideas.last.dislikes_count).to eq 5
+          expect(results.top_consensus_ideas).to be_empty
+          expect(results.top_controversial_ideas).to eq [idea3]
+          expect(results.ideas_by_agreement).to eq [idea2, idea3, idea1]
+          expect(results.ideas_by_agreement.last.dislikes_count).to eq 5
           expect(results.stats).to eq({ num_participants: 10, num_ideas: 4, votes: { up: 6, down: 7, neutral: 3 } })
         end
 
@@ -163,10 +228,11 @@ describe CommonGround::ResultsService do
           subject(:service) { described_class.new(phase, exclude_admins_and_moderators: true) }
 
           it 'leaves their reactions out of the rankings, the vote counts and the stats' do
-            expect(results.top_consensus_ideas).to eq [idea1, idea2]
-            expect(results.top_controversial_ideas).to eq [idea3, idea2]
+            expect(results.top_consensus_ideas).to eq [idea1]
+            expect(results.top_controversial_ideas).to eq [idea3]
+            expect(results.ideas_by_agreement).to eq [idea1, idea2, idea3]
             expect(results.top_consensus_ideas.map { |idea| [idea.likes_count, idea.dislikes_count, idea.neutral_reactions_count] })
-              .to eq([[3, 0, 1], [2, 1, 0]])
+              .to eq([[3, 0, 1]])
             expect(results.stats).to eq({ num_participants: 5, num_ideas: 4, votes: { up: 6, down: 2, neutral: 3 } })
           end
         end

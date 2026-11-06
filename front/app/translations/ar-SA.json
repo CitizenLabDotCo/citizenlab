@@ -90,6 +90,8 @@
   "app.components.Comments.seeOriginal": "رؤية الأصل",
   "app.components.Comments.seeTranslation": "رؤية الترجمة",
   "app.components.Comments.yourComment": "تعليقك",
+  "app.components.CommonGroundResults.allStatementsDescription1": "كافة العبارات، من الأكثر تأييداً إلى الأكثر معارضة. تم استبعاد العبارات التي حصلت على أصوات \"غير متأكد\" فقط أو التي لم تحصل على أي أصوات.",
+  "app.components.CommonGroundResults.allStatementsTitle": "قائمة العبارات",
   "app.components.CommonGroundResults.closeCallsDescription": "وأثارت هذه التصريحات أكبر قدر من الخلاف، حيث وصلت نسبة التصويت بالموافقة أو الرفض إلى ما يقرب من 50/50.",
   "app.components.CommonGroundResults.closeCallsTitle": "مكالمات قريبة",
   "app.components.CommonGroundResults.highestConsensusDescription": "تصريحات ذات اتفاق واضح - أغلبية الذين صوتوا إما بالموافقة أو الرفض اختاروا نفس الموقف.",
