@@ -1,4 +1,5 @@
-import moment = require('moment');
+import { addDays, format, subDays, subMonths } from 'date-fns';
+
 import { randomString, randomEmail } from '../support/commands';
 
 describe('Volunteering survey CTA', () => {
@@ -28,7 +29,7 @@ describe('Volunteering survey CTA', () => {
           cy.apiCreatePhase({
             projectId,
             title: 'volunteerPhaseTitle',
-            startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+            startAt: format(subMonths(new Date(), 9), 'dd/MM/yyyy'),
             participationMethod: 'volunteering',
             canPost: true,
             canComment: true,
@@ -40,8 +41,8 @@ describe('Volunteering survey CTA', () => {
             location: 'Event location',
             includeLocation: true,
             description: 'Event description',
-            startDate: moment().subtract(1, 'day').toDate(),
-            endDate: moment().add(1, 'day').toDate(),
+            startDate: subDays(new Date(), 1),
+            endDate: addDays(new Date(), 1),
           });
         });
       });
