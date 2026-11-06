@@ -31,21 +31,30 @@ module AIAssistant
           Tool.new(McpServer::Tools::ListPhasePermissions, allow: ->(args) { own_phase?(args['phase_id']) }),
           Tool.new(McpServer::Tools::GetResource, allow: ->(args) { own_project_phase_or_event?(args['type'], args['id']) }),
           # The administrator sets the header image and the folder in the project settings.
-          Tool.new(McpServer::Tools::UpdateProject, pinned: { project_id: subject.id }, omit: %w[remote_header_bg_url folder_id]),
+          # No screen shows location tracking, so nobody would notice the assistant turning it on.
+          Tool.new(McpServer::Tools::UpdateProject, pinned: { project_id: subject.id }, omit: %w[remote_header_bg_url folder_id track_participation_location]),
           Tool.new(McpServer::Tools::CreatePhase, pinned: { project_id: subject.id }),
           Tool.new(McpServer::Tools::UpdatePhase, allow: ->(args) { own_phase?(args['phase_id']) }),
-          Tool.new(McpServer::Tools::UpdatePhasePermission, allow: ->(args) { own_phase?(args['phase_id']) }),
-          Tool.new(McpServer::Tools::CreateEvent, pinned: { project_id: subject.id }),
+          # The draft can't explain these two: one is a list of ids, the other a point on a map.
+          Tool.new(McpServer::Tools::UpdatePhasePermission, allow: ->(args) { own_phase?(args['phase_id']) }, omit: %w[demographic_questions]),
+          Tool.new(McpServer::Tools::CreateEvent, pinned: { project_id: subject.id }, omit: %w[location_point_geojson]),
           Tool.new(McpServer::Tools::UpdateResource, allow: ->(args) { args['type'] == 'event' && own_event?(args['id']) }),
           Tool.new(McpServer::Tools::DestroyResource, allow: ->(args) { own_phase_or_event?(args['resource_type'], args['id']) })
         ]
       end
 
       def write_call_error(_tool, _conversation, arguments)
-        date_error(arguments)
+        map_location_error(arguments) || date_error(arguments)
       end
 
       private
+
+      # update_resource nests its fields, so this one can't be omitted from the tool.
+      def map_location_error(arguments)
+        return unless arguments['attributes'].to_h.key?('location_point_geojson')
+
+        'The administrator sets the point on the map in the project settings.'
+      end
 
       def date_error(arguments)
         dates = arguments.merge(arguments['attributes'].to_h).slice('start_at', 'end_at').values.compact
