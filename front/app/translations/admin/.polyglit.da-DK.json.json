@@ -1424,6 +1424,26 @@
     "verified_at": "2026-10-27T12:18:36.616436Z",
     "verified_by": "kielgast@govocal.com"
   },
+  "app.components.admin.ContentBuilder.CustomBlocks.blockDisabled": {
+    "state": "verified",
+    "verified_at": "2026-11-06T09:14:51.901598Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.admin.ContentBuilder.CustomBlocks.blockLoadError": {
+    "state": "verified",
+    "verified_at": "2026-11-06T09:14:51.901598Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.admin.ContentBuilder.CustomBlocks.customBlockTitle": {
+    "state": "verified",
+    "verified_at": "2026-11-06T09:14:51.901598Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.admin.ContentBuilder.CustomBlocks.noSettings": {
+    "state": "verified",
+    "verified_at": "2026-11-06T09:14:51.901598Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions3": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",

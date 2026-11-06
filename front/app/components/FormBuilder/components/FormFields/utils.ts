@@ -57,7 +57,7 @@ const getBuiltinFieldBadgeLabel = (key: string): MessageDescriptor => {
   }
 };
 
-const getCustomFieldBadgeLabel = (
+export const getCustomFieldBadgeLabel = (
   inputType: ICustomFieldInputType
 ): MessageDescriptor => {
   switch (inputType) {

@@ -45,8 +45,13 @@ A deployed instance needs:
   `http://custom_block_renderer:3100`.
 - Outbound HTTPS to the tenant's own front end and API. A render opens
   `<base_frontend_uri>/<locale>/block-harness`, and the page then reads its data from the
-  API. Those two origins are the only private hosts the page may reach; see
-  `src/egress.ts`.
+  API. Those two origins are the only hosts the page may reach at all: it carries a
+  token that reads the layout's reporting data, so everything else is refused rather
+  than sorted into safe and unsafe. See `src/egress.ts`.
+- `ALLOWED_EGRESS_ORIGINS` when a render genuinely needs a third host — a tile server,
+  the site a report's iframe widget embeds, a CDN serving the SPA's assets from its own
+  domain. Comma-separated exact origins, empty by default; a private address listed
+  there is ignored.
 - Memory for Chromium: `RENDER_POOL_SIZE` warm contexts, 3 by default, at 794x1123 @2x.
 
 Two compose settings are local only. The `gv-sdk.d.ts` bind-mount is a convenience for

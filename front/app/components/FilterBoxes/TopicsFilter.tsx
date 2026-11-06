@@ -8,7 +8,6 @@ import {
   Button,
   Text,
 } from '@citizenlab/cl2-component-library';
-import { includes, get } from 'lodash-es';
 import { darken } from 'polished';
 import styled from 'styled-components';
 
@@ -79,7 +78,7 @@ const Count = styled.span`
 `;
 
 interface Props {
-  topics?: IInputTopicData[];
+  topics: IInputTopicData[];
   selectedTopicIds: string[] | null | undefined;
   onChange: (arg: string[] | null) => void;
   className?: string;
@@ -102,7 +101,7 @@ const TopicsFilter = memo<Props>(
         const topicId = event.currentTarget.dataset.id as string;
         let output: string[] = [];
 
-        if (selectedTopicIds && includes(selectedTopicIds, topicId)) {
+        if (selectedTopicIds?.includes(topicId)) {
           output = selectedTopicIds.filter(
             (selectedTopicId) => selectedTopicId !== topicId
           );
@@ -113,18 +112,16 @@ const TopicsFilter = memo<Props>(
         onChange(output.length > 0 ? output : null);
         scrollToTopIdeasList();
       },
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      [selectedTopicIds]
+      [selectedTopicIds, onChange]
     );
 
-    const selectedTopics = topics?.filter((topic) =>
-      includes(selectedTopicIds, topic.id)
+    const selectedTopics = topics.filter((topic) =>
+      selectedTopicIds?.includes(topic.id)
     );
-    const numberOfSelectedTopics = selectedTopics?.length;
-    const selectedTopicNames =
-      selectedTopics && getSelectedTopicNames(selectedTopics, localize);
+    const numberOfSelectedTopics = selectedTopics.length;
+    const selectedTopicNames = getSelectedTopicNames(selectedTopics, localize);
 
-    const topicsWithIdeas = topics && getTopicsWithIdeas(topics, filterCounts);
+    const topicsWithIdeas = getTopicsWithIdeas(topics, filterCounts);
 
     return (
       <InputFilterCollapsible
@@ -133,7 +130,7 @@ const TopicsFilter = memo<Props>(
         }
         className={className}
       >
-        {!topicsWithIdeas || topicsWithIdeas.length < 1 ? (
+        {topicsWithIdeas.length < 1 ? (
           <Box display="flex" justifyContent="center">
             <Text color="textSecondary">
               {formatMessage(messages.noValuesFound)}
@@ -149,11 +146,7 @@ const TopicsFilter = memo<Props>(
               {topicsWithIdeas
                 .slice(0, showFullList ? undefined : 5) // We show only 5 topics by default with a "Show all" button.
                 .map((topic: IInputTopicData) => {
-                  const postCount = get(
-                    filterCounts,
-                    `input_topic_id.${topic.id}`,
-                    0
-                  );
+                  const postCount = filterCounts?.input_topic_id[topic.id] ?? 0;
 
                   const topicSelected = selectedTopicIds?.includes(topic.id);
 
@@ -200,14 +193,6 @@ const TopicsFilter = memo<Props>(
                 )}
               </Button>
             )}
-
-            <ScreenReaderOnly aria-live="polite">
-              {/* Pronounces numbers of selected topics + selected topic names */}
-              <FormattedMessage
-                {...messages.a11y_selectedTopicFilters}
-                values={{ numberOfSelectedTopics, selectedTopicNames }}
-              />
-            </ScreenReaderOnly>
           </Box>
         )}
 

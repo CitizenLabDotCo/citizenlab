@@ -5,7 +5,9 @@ import { render, screen } from 'utils/testUtils/rtl';
 import SlugInput, { Props } from '.';
 
 jest.mock('api/app_configuration/useAppConfiguration', () => () => ({
-  data: { data: { attributes: { name: 'orgName', host: 'localhost' } } },
+  data: {
+    data: { attributes: { name: 'orgName', host: 'localhost', settings: {} } },
+  },
 }));
 
 const slug = 'my-folder';

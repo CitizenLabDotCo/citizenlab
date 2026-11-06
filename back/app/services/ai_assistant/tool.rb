@@ -18,6 +18,11 @@ module AIAssistant
 
     delegate :name, :description, to: :definition
 
+    # Read-only tools run without approval, so a tool without annotations counts as a write tool.
+    def read_only?
+      definition.annotations&.dig(:read_only_hint) == true
+    end
+
     def llm_schema
       schema = definition.input_schema.deep_stringify_keys
       {
@@ -26,6 +31,14 @@ module AIAssistant
         'required' => Array(schema['required']) - pinned.keys,
         'additionalProperties' => false
       }
+    end
+
+    # Why the tool would refuse these arguments, or nil.
+    def validation_error(user, args)
+      tool(user).input_schema.validate_arguments(args)
+      McpServer::LocaleGuard.error_message(args)
+    rescue MCP::Tool::InputSchema::ValidationError => e
+      e.message
     end
 
     # Runs the tool as +user+, whose access to the subject is checked by the assistant's policies.

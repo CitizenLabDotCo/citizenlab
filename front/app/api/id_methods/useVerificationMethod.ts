@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
+import useIdConfigEnabled from 'hooks/useIdConfigEnabled';
+
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import idMethodsKeys from './keys';
@@ -13,11 +15,14 @@ const fetchVerificationMethod = () =>
   });
 
 const useVerificationMethod = () => {
-  return useQuery<IdMethod, CLErrors, IdMethod, IdMethodsKeys>({
+  const idConfigEnabled = useIdConfigEnabled();
+
+  return useQuery<IdMethod, CLErrors, IdMethod | undefined, IdMethodsKeys>({
     queryKey: idMethodsKeys.item({
       endpoint: 'first_enabled_verification_method',
     }),
     queryFn: () => fetchVerificationMethod(),
+    select: (method) => (idConfigEnabled ? method : undefined),
   });
 };
 
