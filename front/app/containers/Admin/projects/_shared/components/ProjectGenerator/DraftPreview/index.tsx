@@ -13,6 +13,7 @@ import messages from '../messages';
 import CardSkeleton from './CardSkeleton';
 import DraftStatus from './DraftStatus';
 import ProjectCard from './ProjectCard';
+import Timeline from './Timeline';
 import useDraft from './useDraft';
 
 type Props = {
@@ -30,11 +31,14 @@ const DraftPreview = ({
   onOpenProject,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const { status, projectSetUp, draftProject } = useDraft({
-    projectId,
-    isNewProject,
-    conversation,
-  });
+  const {
+    status,
+    projectSetUp,
+    draftProject,
+    draftPhases,
+    draftEvents,
+    timelineLoading,
+  } = useDraft({ projectId, isNewProject, conversation });
 
   return (
     <Box
@@ -87,6 +91,20 @@ const DraftPreview = ({
                 )}
               />
             )}
+          </Box>
+
+          <Box as="section" display="flex" flexDirection="column" gap="12px">
+            <Title variant="h4" as="h3" m="0px">
+              {formatMessage(messages.timeline)}
+            </Title>
+            <Timeline
+              phases={draftPhases}
+              events={draftEvents}
+              loading={timelineLoading}
+              projectSetUp={projectSetUp}
+              conversationId={conversation?.data.id}
+              status={status}
+            />
           </Box>
         </Box>
       </Box>

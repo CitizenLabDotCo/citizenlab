@@ -23,11 +23,23 @@ import ChangedText from '../Item/ChangedText';
 import ChangedValue from '../Item/ChangedValue';
 import DraftItem from '../Item/DraftItem';
 import ItemActions from '../Item/ItemActions';
+import OtherSettings from '../Item/OtherSettings';
 import ProposedChangeBadge from '../Item/ProposedChangeBadge';
 import SettingRow from '../Item/SettingRow';
 
 import ChangedChips from './ChangedChips';
 import useProjectLabels from './useProjectLabels';
+
+const ROW_KEYS = [
+  'title_multiloc',
+  'description_preview_multiloc',
+  'area_ids',
+  'include_all_areas',
+  'global_topic_ids',
+  'visible_to',
+  'group_ids',
+  'listed',
+];
 
 type Props = {
   projectId: string;
@@ -173,6 +185,8 @@ const ProjectCard = ({ projectId, draft, conversationId, status }: Props) => {
             </SettingRow>
           </Box>
         </CollapsibleContainer>
+
+        <OtherSettings values={draft.values} shownKeys={ROW_KEYS} />
 
         <ItemActions
           change={change}

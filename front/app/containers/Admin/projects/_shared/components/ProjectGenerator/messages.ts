@@ -108,6 +108,42 @@ export default defineMessages({
     defaultMessage: 'Open project',
   },
 
+  timeline: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.timeline',
+    defaultMessage: 'Timeline',
+  },
+  timelineEmpty: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.timelineEmpty',
+    defaultMessage: 'Phases appear here once the project setup is approved.',
+  },
+  timelinePending: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.timelinePending',
+    defaultMessage: 'The assistant proposes the phases one at a time.',
+  },
+  events: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.events',
+    defaultMessage: 'Events',
+  },
+  noEndDate: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.noEndDate',
+    defaultMessage: 'no end date',
+  },
+  standalone: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.standalone',
+    defaultMessage: 'Runs alongside the timeline',
+  },
+  details: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.details',
+    defaultMessage: 'Details',
+  },
+  description: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.description',
+    defaultMessage: 'Description',
+  },
+  participation: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.participation',
+    defaultMessage: 'Participation',
+  },
   noSettings: {
     id: 'app.containers.Admin.projects.shared.ProjectGenerator.noSettings',
     defaultMessage: 'Nothing to set up for this method.',
@@ -115,6 +151,10 @@ export default defineMessages({
   defaultSettings: {
     id: 'app.containers.Admin.projects.shared.ProjectGenerator.defaultSettings',
     defaultMessage: 'Uses the default settings.',
+  },
+  accessRights: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.accessRights',
+    defaultMessage: 'Access rights',
   },
   accessRightsAfterApproval: {
     id: 'app.containers.Admin.projects.shared.ProjectGenerator.accessRightsAfterApproval',
@@ -160,6 +200,14 @@ export default defineMessages({
   refineProjectRequest: {
     id: 'app.containers.Admin.projects.shared.ProjectGenerator.refineProjectRequest',
     defaultMessage: 'Change the project setup: {request}',
+  },
+  refinePhaseRequest: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.refinePhaseRequest',
+    defaultMessage: 'Change the phase "{title}": {request}',
+  },
+  refineEventRequest: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.refineEventRequest',
+    defaultMessage: 'Change the event "{title}": {request}',
   },
 
   on: {
@@ -460,5 +508,18 @@ export default defineMessages({
   sortMostDiscussed: {
     id: 'app.containers.Admin.projects.shared.ProjectGenerator.sortMostDiscussed',
     defaultMessage: 'Most discussed',
+  },
+
+  online: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.online',
+    defaultMessage: 'Online',
+  },
+  location: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.location',
+    defaultMessage: 'Location',
+  },
+  onlineLink: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.onlineLink',
+    defaultMessage: 'Online link',
   },
 });
