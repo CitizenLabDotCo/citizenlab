@@ -44,6 +44,12 @@ describe('Moving a survey phase on and off the timeline', () => {
 
   beforeEach(() => {
     cy.setAdminLoginCookie();
+    // The tests move this phase around, and a retry re-runs the body without
+    // re-running `before`, so put it back on the timeline first.
+    cy.apiEditPhase({
+      phaseId: surveyPhaseId,
+      placement_type: 'on_timeline',
+    });
     cy.intercept('PATCH', `**/phases/${surveyPhaseId}`).as('updatePhase');
   });
 
