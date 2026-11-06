@@ -144,6 +144,26 @@ RSpec.describe McpServer::ReportingQueryRunner do
       expect(described_class.run(sql, scope: scope).rows).to eq([{ 'project_id' => mine.id }])
     end
 
+    # The wrapper loads each view's columns the first time a process uses it. Done
+    # under the restricted role, that lookup would fail where the role has no grant,
+    # with an error that blames the view, and count against the query's timeout.
+    it 'builds the scoped SQL as the application user, before the role switch' do
+      role_at_wrap = nil
+      allow(McpServer::ReportingScopeWrapper).to receive(:new).and_wrap_original do |original, *args, **kwargs|
+        wrapper = original.call(*args, **kwargs)
+        allow(wrapper).to receive(:wrap).and_wrap_original do |wrap, sql|
+          role_at_wrap = ActiveRecord::Base.connection.select_value('SELECT current_user')
+          wrap.call(sql)
+        end
+        wrapper
+      end
+
+      described_class.run('SELECT 1 AS n', scope: scope)
+
+      expect(role_at_wrap).not_to be_nil
+      expect(role_at_wrap).not_to eq described_class::ANALYTICS_READER_ROLE
+    end
+
     it 'keeps the scope inside a subquery' do
       sql = 'SELECT DISTINCT project_id FROM (SELECT project_id FROM reporting_inputs) inputs'
 

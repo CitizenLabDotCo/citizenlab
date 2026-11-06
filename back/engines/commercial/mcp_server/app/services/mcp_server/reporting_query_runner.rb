@@ -76,14 +76,18 @@ module McpServer
       conn = ActiveRecord::Base.connection
       result = nil
 
+      # Built before the role switch: the wrapper reads each view's columns to write
+      # its SQL, which is our work, not the query's.
+      capped_sql = "SELECT * FROM (#{normalized_sql}) reporting_query LIMIT #{ROW_LIMIT + 1}"
+      sql = ReportingScopeWrapper.new(@scope, connection: conn).wrap(capped_sql)
+
       conn.transaction(requires_new: true) do
         conn.execute("SET LOCAL statement_timeout = #{conn.quote(STATEMENT_TIMEOUT)}")
         conn.execute("SET LOCAL lock_timeout = #{conn.quote(LOCK_TIMEOUT)}")
         conn.execute("SET LOCAL work_mem = #{conn.quote(WORK_MEM)}")
         conn.execute("SET LOCAL ROLE #{conn.quote_column_name(ANALYTICS_READER_ROLE)}")
 
-        capped_sql = "SELECT * FROM (#{normalized_sql}) reporting_query LIMIT #{ROW_LIMIT + 1}"
-        result = conn.exec_query(ReportingScopeWrapper.new(@scope, connection: conn).wrap(capped_sql))
+        result = conn.exec_query(sql)
         # Roll back rather than commit. Inside an outer transaction this block is only
         # a savepoint, and releasing one leaves the role and the timeouts in force for
         # whatever the caller runs next. The query reads, so nothing is lost.
