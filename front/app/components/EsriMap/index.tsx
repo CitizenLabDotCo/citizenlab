@@ -121,6 +121,13 @@ const EsriMap = ({
   const isMobileOrSmaller = useBreakpoint('phone');
   const { data: appConfig } = useAppConfiguration();
 
+  // LOCAL TEST ONLY (do not commit): Welsh-locale visitors get the OSM Cymru
+  // basemap; every other locale keeps the tenant-configured provider.
+  const tileProvider =
+    locale === 'cy-GB'
+      ? 'https://openstreetmap.cymru/osm_tiles/{z}/{x}/{y}.png'
+      : globalMapSettings.tile_provider;
+
   const [map, setMap] = useState<Map | WebMap | null>(null);
   const [mapView, setMapView] = useState<MapView | null>(null);
   const referenceLayersHandled = useRef(false);
@@ -155,7 +162,7 @@ const EsriMap = ({
     } else {
       map = new Map();
       map.basemap = new Basemap({
-        baseLayers: [getDefaultBasemap(globalMapSettings.tile_provider)],
+        baseLayers: [getDefaultBasemap(tileProvider)],
       });
     }
 
@@ -183,7 +190,7 @@ const EsriMap = ({
     return () => {
       mapView.destroy();
     };
-  }, [mapRefAvailable, webMapId, globalMapSettings.tile_provider]);
+  }, [mapRefAvailable, webMapId, tileProvider]);
 
   // If the webMapId changes, reset the initialized state
   useEffect(() => {
@@ -402,7 +409,7 @@ const EsriMap = ({
         ref={mapRef}
         width={width ? `${width}` : '100%'}
         height={height ? `${height}` : '400px'}
-        basemapType={getDefaultBasemapType(globalMapSettings.tile_provider)}
+        basemapType={getDefaultBasemapType(tileProvider)}
         style={{
           maxHeight: height || '400px',
           overflow: 'hidden',
