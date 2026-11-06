@@ -15,10 +15,12 @@ interface Props {
   data?: number;
   maximum: number;
   onSelect: (value: number | undefined) => void;
+  disabled: boolean;
 }
 
 const RadioOption = styled.div<{
   selected: boolean;
+  disabled: boolean;
   borderColor: string;
   selectedBorderColor: string;
   bgColor: string;
@@ -35,11 +37,11 @@ const RadioOption = styled.div<{
   border-radius: 3px;
   background-color: ${({ selected, bgColor, selectedBgColor }) =>
     selected ? selectedBgColor : bgColor};
-  cursor: pointer;
+  cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
 
   &:hover {
-    box-shadow: ${({ selected, borderColor }) =>
-      selected ? 'none' : `0 0 0 1px ${borderColor}`};
+    box-shadow: ${({ selected, disabled, borderColor }) =>
+      selected || disabled ? 'none' : `0 0 0 1px ${borderColor}`};
   }
 `;
 
@@ -49,6 +51,7 @@ const LinearScaleOption = ({
   data,
   maximum,
   onSelect,
+  disabled,
 }: Props) => {
   const theme = useTheme();
   const isSmallerThanPhone = useBreakpoint('phone');
@@ -68,6 +71,8 @@ const LinearScaleOption = ({
   const ariaLabel = label
     ? `${visualIndex} - ${localize(label)}`
     : `${visualIndex}`;
+  // One tab stop per group: the selected option, or the first if none is
+  const isTabStop = isSelected || (!data && visualIndex === 1);
 
   return (
     <Box
@@ -81,16 +86,22 @@ const LinearScaleOption = ({
         role="radio"
         aria-checked={isSelected}
         aria-label={ariaLabel}
-        tabIndex={isSelected || (!data && visualIndex === 1) ? 0 : -1}
+        aria-disabled={disabled}
+        tabIndex={disabled ? undefined : isTabStop ? 0 : -1}
         selected={isSelected}
+        disabled={disabled}
         borderColor={theme.colors.borderDark}
         selectedBorderColor={theme.colors.tenantPrimary}
         bgColor={theme.colors.white}
         selectedBgColor={theme.colors.tenantPrimary}
-        onClick={(e) => {
-          onSelect(isSelected ? undefined : visualIndex);
-          (e.currentTarget as HTMLElement).focus();
-        }}
+        onClick={
+          disabled
+            ? undefined
+            : (e) => {
+                onSelect(isSelected ? undefined : visualIndex);
+                (e.currentTarget as HTMLElement).focus();
+              }
+        }
       >
         <Text
           m="0px"
