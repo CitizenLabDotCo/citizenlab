@@ -30,3 +30,6 @@ export const constructTranscript = (
     };
   });
 };
+
+export const getToolCalls = (conversation: IAiAssistantConversation) =>
+  constructTranscript(conversation).flatMap(({ toolCalls }) => toolCalls);
