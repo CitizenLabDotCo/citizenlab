@@ -11,7 +11,7 @@ export type AiAssistantConversationsKeys = Keys<
   typeof aiAssistantConversationsKeys
 >;
 
-export type AiAssistantSurfaceKey = 'survey_builder';
+export type AiAssistantSurfaceKey = 'survey_builder' | 'project_generator';
 
 export type AiAssistantErrorCode =
   | 'llm_unavailable'
@@ -33,6 +33,8 @@ type ConversationState =
       last_error_code: AiAssistantErrorCode;
       turn_started_at: string | null;
     };
+
+export type AiAssistantConversationStatus = ConversationState['status'];
 
 export interface IAiAssistantConversationData {
   id: string;

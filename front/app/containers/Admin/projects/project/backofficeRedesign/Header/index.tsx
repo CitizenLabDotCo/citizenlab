@@ -8,6 +8,8 @@ import { IProjectData } from 'api/projects/types';
 
 import useLocalize from 'hooks/useLocalize';
 
+import EditWithAiButton from 'containers/Admin/projects/_shared/components/ProjectGenerator/EditWithAi/EditWithAiButton';
+
 import { usePageSave } from 'components/admin/PageSaveContext';
 import Breadcrumbs, { TBreadcrumbs } from 'components/UI/Breadcrumbs';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
@@ -167,6 +169,7 @@ const WorkspaceHeader = ({
           <SaveChangesButton key={phase?.id} label={saveButtonLabel} />
         ) : (
           <>
+            <EditWithAiButton project={project} />
             <Tooltip
               content={formatMessage(messages.previewProject)}
               theme="dark"

@@ -1,6 +1,7 @@
 import { AskUserArguments } from './tools/askUser';
 import { GetFormFieldsArguments } from './tools/getFormFields';
 import { ReplaceFormFieldsArguments } from './tools/replaceFormFields';
+import { UpdateProjectArguments } from './tools/updateProject';
 
 export type AiAssistantToolCallStatus =
   | 'pending'
@@ -19,6 +20,7 @@ export type AiAssistantToolArguments = {
   ask_user: AskUserArguments;
   get_form_fields: GetFormFieldsArguments;
   replace_form_fields: ReplaceFormFieldsArguments;
+  update_project: UpdateProjectArguments;
 };
 
 export type AiAssistantToolName = keyof AiAssistantToolArguments;
