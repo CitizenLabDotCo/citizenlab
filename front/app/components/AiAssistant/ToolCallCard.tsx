@@ -12,6 +12,7 @@ import { MessageDescriptor } from 'react-intl';
 
 import {
   AiAssistantToolCallStatus,
+  AiAssistantToolName,
   IAiAssistantToolCallData,
 } from 'api/ai_assistant_tool_calls/types';
 import useApproveAiAssistantToolCall from 'api/ai_assistant_tool_calls/useApproveAiAssistantToolCall';
@@ -33,7 +34,7 @@ type Props = {
   // Only calls awaiting the user in a conversation that waits for a decision can be decided on.
   decidable: boolean;
   view: AiAssistantToolView | undefined;
-  onExecuted: (toolName: string) => void;
+  onExecuted: (toolName: AiAssistantToolName) => void;
 };
 
 const statusLine = (
@@ -134,7 +135,7 @@ const ToolCallCard = ({
       </Text>
 
       {Preview ? (
-        <Preview args={args} />
+        <Preview toolCall={toolCall} />
       ) : (
         <Box>
           <ButtonWithLink
