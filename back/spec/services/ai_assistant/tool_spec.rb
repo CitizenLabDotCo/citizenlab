@@ -26,4 +26,23 @@ describe AIAssistant::Tool do
 
     expect(result).to have_attributes(error: true, text: start_with('Error: Invalid arguments'))
   end
+
+  it 'refuses the records it does not allow' do
+    user = create(:super_admin)
+    phase = create(:phase, project: create(:project, :draft))
+    tool = described_class.new(McpServer::Tools::UpdatePhase, allow: ->(args) { args['phase_id'] == 'another-phase' })
+    args = { 'phase_id' => phase.id, 'title_multiloc' => { 'en' => 'Renamed' } }
+
+    expect(tool.validation_error(user, args)).to eq(described_class::OUTSIDE_SUBJECT_TEXT)
+    expect(tool.call(user, args)).to have_attributes(error: true, text: "Error: #{described_class::OUTSIDE_SUBJECT_TEXT}")
+    expect(phase.reload.title_multiloc['en']).not_to eq('Renamed')
+  end
+
+  it 'hides the omitted properties from the model' do
+    tool = described_class.new(McpServer::Tools::UpdateProject, omit: %w[remote_header_bg_url])
+
+    expect(tool.llm_schema['properties']).to include('title_multiloc')
+    expect(tool.llm_schema['properties']).not_to include('remote_header_bg_url')
+    expect(tool.hidden_keys).to include('remote_header_bg_url')
+  end
 end

@@ -102,6 +102,13 @@ describe AIAssistant::Message do
       expect(message.errors.details[:file_ids]).to include(error: :not_in_project)
     end
 
+    it 'accepts files of the project being drafted' do
+      conversation = create(:ai_assistant_conversation, :project_generator)
+      file = create(:file, ai_processing_allowed: true, projects: [conversation.subject])
+
+      expect(build(:ai_assistant_message, conversation:, file_ids: [file.id])).to be_valid
+    end
+
     describe 'content matching the extension' do
       using RSpec::Parameterized::TableSyntax
 
