@@ -17,6 +17,28 @@ export default defineMessages({
     id: 'app.components.aiAssistant.send',
     defaultMessage: 'Send',
   },
+  attachFile: {
+    id: 'app.components.aiAssistant.attachFile',
+    defaultMessage: 'Attach a file',
+  },
+  removeFile: {
+    id: 'app.components.aiAssistant.removeFile',
+    defaultMessage: 'Remove {fileName}',
+  },
+  dropFiles: {
+    id: 'app.components.aiAssistant.dropFiles',
+    defaultMessage: 'Drop PDF, Markdown or text files here',
+  },
+  filesNotice: {
+    id: 'app.components.aiAssistant.filesNotice',
+    defaultMessage:
+      "Attached files are added to this project's files and shared with AI.",
+  },
+  filesRejected2: {
+    id: 'app.components.aiAssistant.filesRejected2',
+    defaultMessage:
+      'Only PDF files of up to {maxSizeMb} MB and Markdown (.md) or text (.txt) files of up to {maxTextSizeKb} KB can be attached, {maxFiles} at most.',
+  },
   awaitingApprovalHint: {
     id: 'app.components.aiAssistant.awaitingApprovalHint',
     defaultMessage: 'Approve or reject the proposed change to continue.',
@@ -124,9 +146,36 @@ export default defineMessages({
     id: 'app.components.aiAssistant.errorToolCallNotAwaitingApproval',
     defaultMessage: 'A decision was already made on this proposed change.',
   },
+  errorFileNotInProject: {
+    id: 'app.components.aiAssistant.errorFileNotInProject',
+    defaultMessage: 'Only files of this project can be attached.',
+  },
+  errorAiProcessingNotAllowed: {
+    id: 'app.components.aiAssistant.errorAiProcessingNotAllowed',
+    defaultMessage: 'One of the files may not be shared with AI.',
+  },
+  errorUnsupportedFileType2: {
+    id: 'app.components.aiAssistant.errorUnsupportedFileType2',
+    defaultMessage:
+      'Only PDF files of up to 4 MB and Markdown (.md) or text (.txt) files of up to 100 KB can be used.',
+  },
+  errorFileNotUtf8: {
+    id: 'app.components.aiAssistant.errorFileNotUtf8',
+    defaultMessage:
+      "One of the text files can't be read because of its encoding. Try attaching it in another format, such as PDF.",
+  },
+  errorTooManyConversationFiles: {
+    id: 'app.components.aiAssistant.errorTooManyConversationFiles',
+    defaultMessage:
+      'A chat can use 5 files at most. Start a new chat to attach more.',
+  },
   errorTooLong: {
     id: 'app.components.aiAssistant.errorTooLong',
     defaultMessage: 'Your message is too long.',
+  },
+  errorUpload: {
+    id: 'app.components.aiAssistant.errorUpload',
+    defaultMessage: '{fileName} could not be uploaded.',
   },
   errorGeneric: {
     id: 'app.components.aiAssistant.errorGeneric',

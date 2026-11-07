@@ -1187,7 +1187,6 @@
   "app.components.formBuilder.supportArticleLinkText": "dieser Seite",
   "app.components.formBuilder.surveyAssistant.editingLocked2": "Sie können die Umfrage wieder bearbeiten, sobald der Assistent fertig ist oder sobald Sie die vorgeschlagene Änderung freigeben oder ablehnen.",
   "app.components.formBuilder.surveyAssistant.endPage": "Endseite",
-  "app.components.formBuilder.surveyAssistant.intro": "Beschreiben Sie, was Sie wissen möchten. Der Assistent schlägt die Fragen vor, und nichts wird geändert, bis Sie es freigeben.",
   "app.components.formBuilder.surveyAssistant.outlineSummary": "{pages, plural, one {# Seite} other {# Seiten}}, {questions, plural, one {# Frage} other {# Fragen}}",
   "app.components.formBuilder.surveyAssistant.pageNumber": "Seite {number}",
   "app.components.formBuilder.surveyAssistant.readSurvey": "die aktuelle Umfrage",
