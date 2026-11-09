@@ -12,17 +12,17 @@ describe OpinionGroups::AnalysisService do
   let!(:male_option) { create(:custom_field_option, custom_field: gender_field, key: 'male', title_multiloc: { en: 'Male' }) }
   let!(:female_option) { create(:custom_field_option, custom_field: gender_field, key: 'female', title_multiloc: { en: 'Female' }) }
 
-  def users_with_gender(count, gender)
-    Array.new(count) do
-      create(:user, custom_field_answers: [build(:custom_field_answer, key: 'gender', value: gender)])
-    end
-  end
-
   # Two clearly separated camps: camp 1 likes the first half of the
   # statements and dislikes the second half, camp 2 does the opposite.
   let(:statements) { create_list(:idea, 8, project: phase.project, phases: [phase]) }
   let(:camp1) { users_with_gender(8, 'female') }
   let(:camp2) { users_with_gender(6, 'male') }
+
+  def users_with_gender(count, gender)
+    Array.new(count) do
+      create(:user, custom_field_answers: [build(:custom_field_answer, key: 'gender', value: gender)])
+    end
+  end
 
   before do
     # Every user skips one statement, so that no two users vote identically.

@@ -155,6 +155,12 @@ module OpinionGroups
         .each_with_object({}) { |(user_id, key, value), hash| (hash[user_id] ||= {})[key] = value }
     end
 
+    # The demographic categories of each user, in the order of `user_ids`.
+    def demographic_categories_of(user_ids)
+      values_by_user = custom_field_values_by_user(user_ids)
+      user_ids.map { |u| @demographics.categorize(values_by_user[u]) }
+    end
+
     def load_participant_demographics
       values_by_user = custom_field_values_by_user(@participant_ids)
       @categories_by_user = @participant_ids.index_with { |u| @demographics.categorize(values_by_user[u]) }
@@ -384,13 +390,8 @@ module OpinionGroups
     # Task 4.4: who takes part, compared with the registered user base. Flags
     # under- and over-represented demographic categories among the voters.
     def participation_balance
-      voter_values_by_user = custom_field_values_by_user(@all_voter_ids)
-      voter_values = @all_voter_ids.map { |u| voter_values_by_user[u] }
-      population_ids = User.active.pluck(:id)
-      population_values_by_user = custom_field_values_by_user(population_ids)
-      population_values = population_ids.map { |u| population_values_by_user[u] }
-      voter_categories = voter_values.map { |v| @demographics.categorize(v) }
-      population_categories = population_values.map { |v| @demographics.categorize(v) }
+      voter_categories = demographic_categories_of(@all_voter_ids)
+      population_categories = demographic_categories_of(User.active.pluck(:id))
 
       @demographics.fields.map do |field|
         voter_counts = voter_categories.map { |c| c[field.key] }.tally
