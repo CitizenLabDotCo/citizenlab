@@ -435,7 +435,7 @@ it-IT:
       location: Posizione
       longitude: Longitudine
       manual_votes: Voti offline
-      neutral_reactions_count: Incerto
+      neutral_reactions_count: Non saprei
       participants: Partecipanti
       picks: Voti
       project: Progetto
