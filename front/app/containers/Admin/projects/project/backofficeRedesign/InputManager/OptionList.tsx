@@ -74,7 +74,7 @@ const OptionList = ({
         <Box mb="4px">
           <Input
             type="text"
-            size="small"
+            variant="bo"
             value={search}
             onChange={setSearch}
             placeholder={formatMessage(messages.searchOptions)}

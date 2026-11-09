@@ -42,7 +42,7 @@ const SearchToggle = ({ label, searchTerm, onChange, resultCount }: Props) => {
         placeholder={label}
         ariaLabel={label}
         debounce={500}
-        size="small"
+        variant="bo"
         onChange={onChange}
         a11y_numberOfSearchResults={resultCount}
         setInputRef={(input) => input?.focus()}
