@@ -10,12 +10,18 @@ class CustomFieldValuesTransitionService
     answers = record.custom_field_answers.reject(&:marked_for_destruction?).index_by(&:key)
     fields = fields_by_key(record, values.keys)
 
+    new_keys = values.keys - answers.keys
+    keys_without_field = new_keys - fields.keys
+    raise ArgumentError, "No field for keys: #{keys_without_field.join(', ')}" if keys_without_field.any?
+
     (answers.keys - values.keys).each { |key| answers[key].mark_for_destruction }
     values.each do |key, value|
       field = fields[key]
       value = field.input_type_strategy.normalize_value(value) if field
       if (answer = answers[key])
-        answer.assign_attributes(value: value, custom_field: field)
+        answer.value = value
+        # A moved input keeps its answers to questions its new form does not have.
+        answer.custom_field = field if field
       else
         record.custom_field_answers.build(key: key, value: value, custom_field: field)
       end

@@ -7,15 +7,21 @@ RSpec.describe CustomFieldValuesTransitionService do
   let!(:field) { create(:custom_field, key: 'pet') }
 
   describe '#assign' do
-    it 'stages answers in-memory, persisted by the record save, without a custom field for unknown keys' do
+    it 'stages answers in-memory, persisted by the record save' do
       user = build(:user)
-      service.assign(user, { 'pet' => 'cat', 'unknown_key' => 'x' })
+      service.assign(user, { 'pet' => 'cat' })
       expect(CustomFieldAnswer.count).to eq 0
 
       user.save!
-      answers = user.custom_field_answers.index_by(&:key)
-      expect(answers['pet']).to have_attributes(custom_field_id: field.id, value: 'cat')
-      expect(answers['unknown_key']).to have_attributes(custom_field_id: nil, value: 'x')
+      expect(user.custom_field_answers.first).to have_attributes(custom_field_id: field.id, value: 'cat')
+    end
+
+    it 'refuses a key that resolves to no field' do
+      user = build(:user)
+
+      expect { service.assign(user, { 'pet' => 'cat', 'unknown_key' => 'x' }) }
+        .to raise_error(ArgumentError, /unknown_key/)
+      expect(user.custom_field_answers).to be_empty
     end
 
     it "normalizes values through the field's input type" do
@@ -36,6 +42,7 @@ RSpec.describe CustomFieldValuesTransitionService do
     end
 
     it 'updates and deletes existing answers' do
+      create(:custom_field, key: 'city')
       user = create(:user)
       service.assign(user, { 'pet' => 'cat', 'city' => 'Ghent' })
       user.save!
@@ -44,6 +51,45 @@ RSpec.describe CustomFieldValuesTransitionService do
       service.assign(user, { 'pet' => 'dog' })
       user.save!
       expect(user.custom_field_answers.pluck(:key, :value)).to eq [%w[pet dog]]
+    end
+
+    it 'keeps the field of an existing answer whose key no longer resolves' do
+      source_project = create(:project)
+      source_form = create(:custom_form, participation_context: source_project)
+      source_field = create(:custom_field, resource: source_form, key: 'only_here')
+      idea = create(:idea, project: source_project)
+      idea.custom_field_answers.create!(key: 'only_here', value: 'kept', custom_field: source_field)
+
+      idea.project = create(:project)
+      service.assign(idea, { 'only_here' => 'refreshed' })
+
+      expect(idea.answer_for_key('only_here'))
+        .to have_attributes(value: 'refreshed', custom_field_id: source_field.id)
+    end
+
+    it 'relinks an existing answer when its key resolves to another field' do
+      source_project = create(:project)
+      source_form = create(:custom_form, participation_context: source_project)
+      source_field = create(:custom_field, resource: source_form, key: 'shared')
+      idea = create(:idea, project: source_project)
+      idea.custom_field_answers.create!(key: 'shared', value: 'kept', custom_field: source_field)
+      destination_project = create(:project)
+      destination_form = create(:custom_form, participation_context: destination_project)
+      destination_field = create(:custom_field, resource: destination_form, key: 'shared')
+
+      idea.project = destination_project
+      service.assign(idea, { 'shared' => 'kept' })
+
+      expect(idea.answer_for_key('shared').custom_field_id).to eq destination_field.id
+    end
+
+    it 'still updates an existing answer that has no field' do
+      user = create(:user)
+      user.custom_field_answers.create!(key: 'retired', value: 'x')
+
+      service.assign(user, { 'retired' => 'y' })
+
+      expect(user.answer_for_key('retired')).to have_attributes(value: 'y', custom_field_id: nil)
     end
 
     it 'deletes all answers when assigning empty values' do
@@ -57,6 +103,7 @@ RSpec.describe CustomFieldValuesTransitionService do
     end
 
     it 'stores false answers and skips nil answers' do
+      create(:custom_field_checkbox, resource_type: 'User', key: 'attends')
       user = create(:user)
       service.assign(user, { 'pet' => nil, 'attends' => false })
       user.save!
@@ -78,7 +125,7 @@ RSpec.describe CustomFieldValuesTransitionService do
       form_field = create(:custom_field, resource: form, key: 'pet')
       idea = create(:idea, project: project)
       service.assign(idea, {
-        'pet' => 'cat', 'pet_follow_up' => 'why', 'u_pet' => 'dog', 'u_pet_other' => 'A hamster', 'u_unknown' => 'x'
+        'pet' => 'cat', 'pet_follow_up' => 'why', 'u_pet' => 'dog', 'u_pet_other' => 'A hamster'
       })
       idea.save!
 
@@ -87,7 +134,6 @@ RSpec.describe CustomFieldValuesTransitionService do
       expect(answers['pet_follow_up']).to have_attributes(custom_field_id: form_field.id, value: 'why')
       expect(answers['u_pet']).to have_attributes(custom_field_id: field.id, value: 'dog')
       expect(answers['u_pet_other']).to have_attributes(custom_field_id: field.id, value: 'A hamster')
-      expect(answers['u_unknown']).to have_attributes(custom_field_id: nil, value: 'x')
     end
   end
 

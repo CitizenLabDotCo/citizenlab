@@ -40,7 +40,7 @@ describe BulkImportIdeas::Importers::IdeaImporter do
     it 'imports multiple draft ideas with custom fields' do
       project = create(:project, title_multiloc: { 'fr-BE' => 'Projet un', 'en' => 'Project 1' })
       custom_form = create(:custom_form, :with_default_fields, participation_context: project)
-      create(:custom_field, resource: custom_form, key: 'custom_text_field', title_multiloc: { 'en' => 'Custom text field:' }, enabled: true)
+      create(:custom_field, resource: custom_form, key: 'text_field', title_multiloc: { 'en' => 'Custom text field:' }, enabled: true)
 
       idea_rows = [
         {
@@ -293,7 +293,7 @@ describe BulkImportIdeas::Importers::IdeaImporter do
           {
             title_multiloc: {},
             body_multiloc: {},
-            creation_phase_id: project.phases.first.id,
+            phase_id: project.phases.first.id,
             project_id: project.id,
             custom_field_values: {
               text_field: 'Some text',

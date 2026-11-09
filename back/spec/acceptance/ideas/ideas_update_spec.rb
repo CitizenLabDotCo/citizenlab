@@ -292,7 +292,7 @@ resource 'Ideas' do
           end
         end
 
-        example 'Move the idea to a project with another form, relinking the answers by key', document: false do
+        example 'Move the idea to a project with another form, keeping answers to questions the new form does not have', document: false do
           source_form = create(:custom_form, :with_default_fields, participation_context: project)
           shared_field = create(:custom_field_text, resource: source_form, key: 'shared')
           only_here_field = create(:custom_field_text, resource: source_form, key: 'only_here')
@@ -307,7 +307,7 @@ resource 'Ideas' do
           assert_status 200
           expect(input.reload.custom_field_answers.pluck(:key, :value, :custom_field_id)).to contain_exactly(
             ['shared', 'kept', destination_shared_field.id],
-            ['only_here', 'also kept', nil]
+            ['only_here', 'also kept', only_here_field.id]
           )
         end
 
