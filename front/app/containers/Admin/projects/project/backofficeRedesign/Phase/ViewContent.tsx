@@ -12,6 +12,7 @@ import { IProjectData } from 'api/projects/types';
 import { useIntl } from 'utils/cl-intl';
 
 import OfflineCollection from '../InputManager/SideColumn/OfflineCollection';
+import useInputTermLabels from '../InputManager/useInputTermLabels';
 
 import EmptyState from './EmptyState';
 import ManageLayout from './ManageLayout';
@@ -22,8 +23,8 @@ const SIDE_PANEL_WIDTH = 'clamp(320px, 30vw, 384px)';
 
 const EMPTY_COPY = {
   manage: {
-    title: messages.noInputsYet,
-    description: messages.noInputsYetDescription,
+    title: messages.noTermsYet,
+    description: messages.noTermsYetDescription,
   },
   insights: {
     title: messages.noInsightsYet,
@@ -73,6 +74,7 @@ interface Props {
 
 const ViewContent = ({ project, phase, view, children }: Props) => {
   const { formatMessage } = useIntl();
+  const { terms, capitalizedTerms } = useInputTermLabels();
   const onInsights = view === 'insights';
   const method = phase.attributes.participation_method;
   const checksCauses = onInsights && method === 'volunteering';
@@ -114,8 +116,8 @@ const ViewContent = ({ project, phase, view, children }: Props) => {
   const emptyState = (
     <EmptyState
       size="large"
-      title={formatMessage(copy.title)}
-      description={formatMessage(copy.description)}
+      title={formatMessage(copy.title, { terms })}
+      description={formatMessage(copy.description, { capitalizedTerms })}
     />
   );
 

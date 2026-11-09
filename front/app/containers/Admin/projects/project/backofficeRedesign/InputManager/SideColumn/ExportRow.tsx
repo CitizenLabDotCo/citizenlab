@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Button } from '@citizenlab/cl2-component-library';
+import { Box, Button } from '@citizenlab/cl2-component-library';
 
 import { ManagerType } from 'components/admin/PostManager';
 import ExportButtons from 'components/admin/PostManager/components/ExportMenu/ExportButtons';
@@ -16,6 +16,18 @@ interface Props {
   projectId: string;
   selectedIds: string[];
 }
+
+// Stable, so it only runs when the options open and not on every render.
+const scrollIntoColumn = (options: HTMLDivElement | null) => {
+  const reduceMotion = window.matchMedia(
+    '(prefers-reduced-motion: reduce)'
+  ).matches;
+
+  options?.scrollIntoView({
+    behavior: reduceMotion ? 'auto' : 'smooth',
+    block: 'nearest',
+  });
+};
 
 // The options open in place because the narrow column would clip a dropdown.
 const ExportRow = ({ type, projectId, selectedIds }: Props) => {
@@ -34,11 +46,13 @@ const ExportRow = ({ type, projectId, selectedIds }: Props) => {
         {formatMessage(messages.export)}
       </Button>
       {opened && (
-        <ExportButtons
-          type={type}
-          exportType={hasSelection ? 'selected_posts' : 'project'}
-          exportQueryParameter={hasSelection ? selectedIds : projectId}
-        />
+        <Box ref={scrollIntoColumn}>
+          <ExportButtons
+            type={type}
+            exportType={hasSelection ? 'selected_posts' : 'project'}
+            exportQueryParameter={hasSelection ? selectedIds : projectId}
+          />
+        </Box>
       )}
     </>
   );

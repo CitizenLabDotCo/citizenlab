@@ -11,6 +11,7 @@ import { UNASSIGNED } from 'components/admin/PostManager/useAssigneeOptions';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
+import useInputTermLabels from '../useInputTermLabels';
 import { ManagerFilters, SetFilters } from '../useManagerParams';
 import { PhaseCounts } from '../usePhaseCounts';
 
@@ -64,6 +65,7 @@ const InputStats = ({
   setFilters,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const { capitalizedTerms } = useInputTermLabels();
   const isVoting = phase.attributes.participation_method === 'voting';
   const isProposals = type === 'ProjectProposals';
   // A budgeting phase has no vote total: it counts the money allocated.
@@ -91,7 +93,7 @@ const InputStats = ({
     ? [
         {
           key: 'inputs',
-          label: formatMessage(messages.inputsTile),
+          label: capitalizedTerms,
           value: counts.total,
         },
       ]

@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import { chunk } from 'lodash-es';
+
 import { IIdeaData, IIdeaUpdate } from 'api/ideas/types';
 import useDeleteIdea from 'api/ideas/useDeleteIdea';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
@@ -10,6 +12,9 @@ import { UNASSIGNED } from 'components/admin/PostManager/useAssigneeOptions';
 import { trackEventByName } from 'utils/analytics';
 
 import { phaseIds, topicIds } from '../utils';
+
+// A selection can span every page, too many updates to send at once.
+const UPDATE_GROUP_SIZE = 10;
 
 const useBatchActions = ({
   ideas,
@@ -24,14 +29,17 @@ const useBatchActions = ({
   const { mutateAsync: deleteIdea } = useDeleteIdea();
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const updateEach = (requestBody: (idea: IIdeaData) => IIdeaUpdate) =>
-    Promise.allSettled(
-      ideas.map((idea) =>
-        updateIdea({ id: idea.id, requestBody: requestBody(idea) }).then(
-          (updated) => onUpdated(updated.data)
+  const updateEach = async (requestBody: (idea: IIdeaData) => IIdeaUpdate) => {
+    for (const group of chunk(ideas, UPDATE_GROUP_SIZE)) {
+      await Promise.allSettled(
+        group.map((idea) =>
+          updateIdea({ id: idea.id, requestBody: requestBody(idea) }).then(
+            (updated) => onUpdated(updated.data)
+          )
         )
-      )
-    );
+      );
+    }
+  };
 
   const setStatus = (statusId: string) => {
     updateEach(() => ({ idea_status_id: statusId }));

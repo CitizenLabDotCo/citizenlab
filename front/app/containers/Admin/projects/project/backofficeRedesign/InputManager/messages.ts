@@ -1,10 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  inputColumn: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.inputColumn',
-    defaultMessage: 'Input',
-  },
   statusColumn: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.statusColumn',
     defaultMessage: 'Status',
@@ -25,22 +21,22 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.addColumns',
     defaultMessage: 'Add columns',
   },
-  selectAll: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.selectAll',
-    defaultMessage: 'Select all inputs on this page',
+  selectAllOnPage: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.selectAllOnPage',
+    defaultMessage: 'Select all {terms} on this page',
   },
-  selectInput: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.selectInput',
-    defaultMessage: 'Select this input',
+  selectTerm: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.selectTerm',
+    defaultMessage: 'Select this {term}',
   },
   unassigned: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.unassigned',
     defaultMessage: 'Unassigned',
   },
 
-  searchInputs: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.searchInputs',
-    defaultMessage: 'Search inputs',
+  searchTerms: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.searchTerms',
+    defaultMessage: 'Search {terms}',
   },
   filter: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.filter',
@@ -86,10 +82,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.replyReplied',
     defaultMessage: 'Replied',
   },
-  inputCount: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.inputCount',
-    defaultMessage: '{count, plural, one {# input} other {# inputs}}',
-  },
   searchOptions: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.searchOptions',
     defaultMessage: 'Filter…',
@@ -123,6 +115,32 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.selectedCount',
     defaultMessage: '{count} selected',
   },
+  selectAllTerms: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.selectAllTerms',
+    defaultMessage: 'Select all {termCount}',
+  },
+  deleteTerms: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.deleteTerms',
+    defaultMessage: 'Delete {termCount}',
+  },
+  deleteTermTitle: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.deleteTermTitle',
+    defaultMessage: 'Are you sure you want to delete this {term}?',
+  },
+  deleteTermExplanation: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.deleteTermExplanation',
+    defaultMessage:
+      'This means you will lose all data associated with this {term}, like comments, reactions and votes. This action cannot be undone.',
+  },
+  deleteTermsTitle: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.deleteTermsTitle',
+    defaultMessage: 'Are you sure you want to delete these {terms}?',
+  },
+  deleteTermsExplanation: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.deleteTermsExplanation',
+    defaultMessage:
+      'This means you will lose all data associated with these {terms}, like comments, reactions and votes. This action cannot be undone.',
+  },
   batchStatus: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.batchStatus',
     defaultMessage: 'Status',
@@ -148,18 +166,18 @@ export default defineMessages({
     defaultMessage:
       'The authors and other contributors get a notification of the new status.',
   },
-  noOtherPhases: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.noOtherPhases',
-    defaultMessage: 'There is no other phase that can hold inputs.',
+  noOtherPhasesForTerms: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.noOtherPhasesForTerms',
+    defaultMessage: 'There is no other phase that can hold {terms}.',
   },
 
-  previousInput: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.previousInput',
-    defaultMessage: 'Previous input',
+  previousTerm: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.previousTerm',
+    defaultMessage: 'Previous {term}',
   },
-  nextInput: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.nextInput',
-    defaultMessage: 'Next input',
+  nextTerm: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.nextTerm',
+    defaultMessage: 'Next {term}',
   },
   position: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.position',
@@ -194,10 +212,6 @@ export default defineMessages({
     defaultMessage: 'Remove {tag}',
   },
 
-  inputsTile: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.inputsTile',
-    defaultMessage: 'Inputs',
-  },
   respondedTile: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.respondedTile',
     defaultMessage: 'Responded',
@@ -239,14 +253,18 @@ export default defineMessages({
     defaultMessage: 'Export',
   },
 
-  noInputsTitle: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.noInputsTitle',
-    defaultMessage: 'Inputs will appear here',
+  noTermsTitle: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.noTermsTitle',
+    defaultMessage: '{terms} will appear here',
   },
-  noInputsDescription: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.noInputsDescription',
+  noTermsDescription: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.noTermsDescription',
     defaultMessage:
-      'Once people take part, you can review and manage their inputs here.',
+      'Once people take part, you can review and manage their {terms} here.',
+  },
+  importPaperTerms: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.importPaperTerms',
+    defaultMessage: 'Import paper {terms}',
   },
   paperAndExcelForms: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.paperAndExcelForms',

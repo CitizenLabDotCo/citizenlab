@@ -35,14 +35,14 @@ export default defineMessages({
     defaultMessage:
       'You can specify who can take each action, and ask additional questions to participants to collect more information.',
   },
-  noInputsYet: {
-    id: 'app.containers.Admin.projects.project.noInputsYet',
-    defaultMessage: 'No inputs yet',
+  noTermsYet: {
+    id: 'app.containers.Admin.projects.project.noTermsYet',
+    defaultMessage: 'No {terms} yet',
   },
-  noInputsYetDescription: {
-    id: 'app.containers.Admin.projects.project.noInputsYetDescription',
+  noTermsYetDescription: {
+    id: 'app.containers.Admin.projects.project.noTermsYetDescription',
     defaultMessage:
-      'Inputs appear here as participants take part. You can follow each one and add the ones collected offline.',
+      '{capitalizedTerms} appear here as participants take part. You can follow each one and add the ones collected offline.',
   },
   noInsightsYet: {
     id: 'app.containers.Admin.projects.project.noInsightsYet',

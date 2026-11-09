@@ -5,11 +5,10 @@ import { IProjectData } from 'api/projects/types';
 
 import NewIdeaButton from 'containers/Admin/projects/_shared/components/NewIdeaButton';
 
-import ButtonWithLink from 'components/UI/ButtonWithLink';
-
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
+import useInputTermLabels from '../useInputTermLabels';
 
 import { actionRowProps } from './actionRowProps';
 import Card from './Card';
@@ -24,6 +23,7 @@ interface Props {
 
 const OfflineCollection = ({ project, phase, children }: Props) => {
   const { formatMessage } = useIntl();
+  const { terms } = useInputTermLabels();
 
   return (
     <Card fillHeight>
@@ -35,16 +35,10 @@ const OfflineCollection = ({ project, phase, children }: Props) => {
         search={{ phase_id: phase.id }}
         buttonProps={actionRowProps}
       />
-      <ButtonWithLink
-        {...actionRowProps}
-        to="/admin/projects/$projectId/phases/$phaseId/input-importer"
-        params={{ projectId: project.id, phaseId: phase.id }}
-        icon="upload-file"
-      >
-        {formatMessage(messages.importInputs)}
-      </ButtonWithLink>
       <OfflineFormsButton
         participationMethod={phase.attributes.participation_method}
+        label={formatMessage(messages.importPaperTerms, { terms })}
+        buttonProps={{ ...actionRowProps, icon: 'upload-file' }}
       />
       {children}
     </Card>

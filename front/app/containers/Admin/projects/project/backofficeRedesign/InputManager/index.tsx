@@ -32,6 +32,7 @@ import useManagerParams from './useManagerParams';
 import usePanelNavigation from './usePanelNavigation';
 import usePhaseCounts from './usePhaseCounts';
 import usePickerOptions from './usePickerOptions';
+import useSelectAll from './useSelectAll';
 
 const PAGE_SIZE = 20;
 
@@ -139,6 +140,11 @@ const InputManager = ({ project, phase }: Props) => {
     setSelection(next);
   };
 
+  const { selectAll, isSelectingAll } = useSelectAll(
+    filterParameters,
+    (allIdeas) => setSelection(new Map(allIdeas.map((idea) => [idea.id, idea])))
+  );
+
   const refreshSelected = (idea: IIdeaData) =>
     setSelection((current) =>
       current.has(idea.id) ? new Map(current).set(idea.id, idea) : current
@@ -174,6 +180,8 @@ const InputManager = ({ project, phase }: Props) => {
         onUpdated={refreshSelected}
         onEdit={(ideaId) => openPanel(ideaId, 'edit')}
         onClearSelection={() => setSelection(new Map())}
+        onSelectAll={selectAll}
+        isSelectingAll={isSelectingAll}
         searchTerm={searchTerm}
         onSearch={setSearchTerm}
         categories={categories}

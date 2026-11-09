@@ -11,18 +11,17 @@ import {
 import { IIdeaData } from 'api/ideas/types';
 
 import { ManagerType } from 'components/admin/PostManager';
-import actionBarMessages from 'components/admin/PostManager/components/ActionBar/messages';
 import useAssigneeOptions, {
   UNASSIGNED,
 } from 'components/admin/PostManager/useAssigneeOptions';
 import WarningModal from 'components/WarningModal';
-import warningModalMessages from 'components/WarningModal/messages';
 
 import { useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';
 
 import messages from '../messages';
 import OptionList from '../OptionList';
+import useInputTermLabels from '../useInputTermLabels';
 import usePickerOptions from '../usePickerOptions';
 import { phaseIds, topicIds } from '../utils';
 
@@ -33,9 +32,13 @@ interface Props {
   type: ManagerType;
   projectId: string;
   ideas: IIdeaData[];
+  /** How many inputs match the current filters, on every page. */
+  total: number | undefined;
   onUpdated: (idea: IIdeaData) => void;
   onEdit: (ideaId: string) => void;
   onClear: () => void;
+  onSelectAll: () => void;
+  isSelectingAll: boolean;
 }
 
 const shared = (ideas: IIdeaData[], values: (idea: IIdeaData) => string[]) =>
@@ -56,11 +59,15 @@ const BatchBar = ({
   type,
   projectId,
   ideas,
+  total,
   onUpdated,
   onEdit,
   onClear,
+  onSelectAll,
+  isSelectingAll,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const { term, terms, termCount } = useInputTermLabels();
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const { statusOptions, tagOptions, phaseOptions } = usePickerOptions(
     type,
@@ -93,6 +100,18 @@ const BatchBar = ({
       <Text variant="boSection" m="0" mr="4px">
         {formatMessage(messages.selectedCount, { count: ideas.length })}
       </Text>
+
+      {total !== undefined && ideas.length < total && (
+        <Button
+          buttonStyle="bo-text"
+          processing={isSelectingAll}
+          onClick={onSelectAll}
+        >
+          {formatMessage(messages.selectAllTerms, {
+            termCount: termCount(total),
+          })}
+        </Button>
+      )}
 
       <BatchMenuButton
         icon="check-circle"
@@ -164,7 +183,7 @@ const BatchBar = ({
               />
             ) : (
               <Text variant="boHelper" m="8px">
-                {formatMessage(messages.noOtherPhases)}
+                {formatMessage(messages.noOtherPhasesForTerms, { terms })}
               </Text>
             )
           }
@@ -188,8 +207,8 @@ const BatchBar = ({
       >
         {isSingle
           ? formatMessage(messages.delete)
-          : formatMessage(actionBarMessages.deleteAllSelectedInputs, {
-              count: ideas.length,
+          : formatMessage(messages.deleteTerms, {
+              termCount: termCount(ideas.length),
             })}
       </Button>
 
@@ -206,16 +225,16 @@ const BatchBar = ({
       <WarningModal
         open={deleteModalOpen}
         isLoading={isDeleting}
-        title={formatMessage(
+        title={
           isSingle
-            ? warningModalMessages.deleteInputTitle
-            : actionBarMessages.deleteInputsTitle
-        )}
-        explanation={formatMessage(
+            ? formatMessage(messages.deleteTermTitle, { term })
+            : formatMessage(messages.deleteTermsTitle, { terms })
+        }
+        explanation={
           isSingle
-            ? warningModalMessages.deleteInputExplanation
-            : actionBarMessages.deleteInputsExplanation
-        )}
+            ? formatMessage(messages.deleteTermExplanation, { term })
+            : formatMessage(messages.deleteTermsExplanation, { terms })
+        }
         onClose={() => setDeleteModalOpen(false)}
         onConfirm={deleteAll}
       />
