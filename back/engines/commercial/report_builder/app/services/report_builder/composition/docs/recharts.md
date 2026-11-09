@@ -43,9 +43,9 @@ column: `SELECT phase, SUM(...) FILTER (WHERE answer = 'agree') AS agree, ...`.
   <YAxis type="category" dataKey="label" width={160} tickLine={false} axisLine={false}
          stroke={colors.textSecondary} fontSize={12} />
   <Legend iconType="square" wrapperStyle={{ fontSize: 12 }} />
-  <Bar dataKey="agree" stackId="a" fill={theme.colors.tenantPrimary} isAnimationActive={false} />
-  <Bar dataKey="neutral" stackId="a" fill={colors.grey400} isAnimationActive={false} />
-  <Bar dataKey="disagree" stackId="a" fill={colors.grey200} isAnimationActive={false} />
+  <Bar dataKey="agree" name={msg('agree')} stackId="a" fill={theme.colors.tenantPrimary} isAnimationActive={false} />
+  <Bar dataKey="neutral" name={msg('neutral')} stackId="a" fill={colors.grey400} isAnimationActive={false} />
+  <Bar dataKey="disagree" name={msg('disagree')} stackId="a" fill={colors.grey200} isAnimationActive={false} />
 </BarChart>
 ```
 
@@ -55,7 +55,7 @@ from each `Bar`'s `name` prop — pass `name={msg('agree')}` so they are transla
 ## Change over time
 
 One `Line` per series; `Area` for a single series when the volume matters more than the
-trend. Format the x values in SQL (`to_char(date_trunc('month', contributed_at), 'Mon YYYY')`)
+trend. Format the x values in SQL (`to_char(date_trunc('month', contributed_at), 'YYYY-MM')`)
 so the axis reads as text and needs no formatter. Label the last point: that is the value
 the sentence above the chart is about.
 
@@ -85,7 +85,7 @@ or beside it; a pie that needs a tooltip is a table.
   <Pie data={rows} dataKey="count" nameKey="label" innerRadius={50} outerRadius={90}
        isAnimationActive={false} label={(entry: ReportingRow) => `${entry.label} ${entry.share}%`} labelLine={false}>
     {rows.map((row, index) => (
-      <Cell key={row.label} fill={index === 0 ? theme.colors.tenantPrimary : colors.grey400} />
+      <Cell key={String(row.label)} fill={index === 0 ? theme.colors.tenantPrimary : colors.grey400} />
     ))}
   </Pie>
 </PieChart>

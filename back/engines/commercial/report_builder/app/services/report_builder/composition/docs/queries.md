@@ -35,7 +35,7 @@ Truncate in SQL and format the label in SQL, so the axis needs no formatter in t
 block. Order by the real date, not the label.
 
 ```sql
-SELECT to_char(date_trunc('month', contributed_at), 'Mon YYYY') AS month,
+SELECT to_char(date_trunc('month', contributed_at), 'YYYY-MM') AS month,
        COUNT(DISTINCT participant_id) AS participants
 FROM reporting_contributions
 WHERE project_id = '...'
@@ -44,7 +44,9 @@ ORDER BY date_trunc('month', contributed_at)
 ```
 
 Use `week` for a project shorter than three months, `month` otherwise. A series with one
-point is a number, not a chart.
+point is a number, not a chart. Label a period with `YYYY-MM`: `Mon` writes English month
+names whatever the report's locale, and a month name is reader-visible text like any
+other, so if you want one it belongs in messages, read with msg() from a tickFormatter.
 
 ## Per phase
 
@@ -64,8 +66,9 @@ ORDER BY p.start_at
 ## What people chose or answered
 
 Votes and survey answers each have their own view. A survey answer row is one input's
-answer to one question: `selected` holds the option chosen, `value_text` and
-`value_numeric` a free answer, and `input_id` is the input it belongs to, which is how
+answer to one question: for a select question `value_label` holds the option as people
+saw it (`value_text` is its key); `value_text` and `value_numeric` hold a free answer;
+and `input_id` is the input it belongs to, which is how
 it is scoped to a project. The question ids are in the project context. Rank by count,
 keep the top ten for a bar chart with a readable axis, and compute a share in SQL when
 the chart shows one.
@@ -73,11 +76,11 @@ the chart shows one.
 ```sql
 SELECT label, count, ROUND(100.0 * count / SUM(count) OVER (), 0) AS share
 FROM (
-  SELECT a.selected AS label, COUNT(*) AS count
+  SELECT a.value_label AS label, COUNT(*) AS count
   FROM reporting_input_question_answers a
   JOIN reporting_inputs i ON i.id = a.input_id
   WHERE i.project_id = '...' AND a.question_id = '...'
-  GROUP BY a.selected
+  GROUP BY a.value_label
 ) answers
 ORDER BY count DESC
 LIMIT 10
@@ -92,7 +95,9 @@ scale value, and keep every step even when its count is zero.
 ## Visitors
 
 Sessions and pageviews are visits, not people. A visitor count is `COUNT(DISTINCT ...)`
-over sessions; a traffic source breakdown groups sessions by their referrer type.
+over sessions; a traffic source breakdown groups sessions by the host of their
+`referrer` (`substring(referrer from '^https?://([^/]+)')`), a NULL referrer being a
+direct visit.
 
 ## When a query returns nothing
 

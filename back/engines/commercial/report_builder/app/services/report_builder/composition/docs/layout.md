@@ -29,10 +29,10 @@ A `TwoColumn` has two slots, `left` and `right`, each a `Container`. The slots a
 ```json
 "twocol0001": { "type": {"resolvedName":"TwoColumn"}, "props": {"columnLayout":"1-1"},
                 "parent": "ROOT", "nodes": [], "linkedNodes": {"left":"colleft01","right":"colright1"} },
-"colleft01":  { "type": {"resolvedName":"Container"}, "props": {}, "parent": "twocol0001",
-                "nodes": ["chartaaaa1"], "linkedNodes": {} },
-"colright1":  { "type": {"resolvedName":"Container"}, "props": {}, "parent": "twocol0001",
-                "nodes": ["chartbbbb1"], "linkedNodes": {} }
+"colleft01":  { "type": {"resolvedName":"Container"}, "props": {}, "isCanvas": true,
+                "parent": "twocol0001", "nodes": ["chartaaaa1"], "linkedNodes": {} },
+"colright1":  { "type": {"resolvedName":"Container"}, "props": {}, "isCanvas": true,
+                "parent": "twocol0001", "nodes": ["chartbbbb1"], "linkedNodes": {} }
 ```
 
 A chart in a half column has half the width: keep its labels short, or give it the full
@@ -40,7 +40,8 @@ width instead. Two charts side by side only when they are read together.
 
 ## Headline numbers
 
-`KeyFigures` carries `figures`, an array of `{ value, label }`, each a short string. Three
+`KeyFigures` carries `figures`, an array of `{ value, label }`: `value` a short string,
+`label` a multiloc like every text prop. Three
 or four figures read as a band; more is a table. Every value must be a number you saw in
 a query result. It goes directly under a section's heading, before any paragraph.
 
