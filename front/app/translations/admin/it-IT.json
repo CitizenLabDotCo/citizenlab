@@ -3199,7 +3199,7 @@
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.subtitleVolunteeringTab": "Qui puoi impostare le cause per cui gli utenti possono offrirsi come volontari e scaricare la lista dei volontari.",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.titleVolunteeringTab": "Ricerca volontari",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.xVolunteers": "{x, plural, =0 {nessun partecipante} one {# partecipante} other {# partecipanti}}",
-  "app.containers.AdminPage.ProjectEdit.Voting.budgetAllocation2": "distribuzione del budget",
+  "app.containers.AdminPage.ProjectEdit.Voting.budgetAllocation2": "l'allocazione del budget",
   "app.containers.AdminPage.ProjectEdit.Voting.budgetingVotingMethodSubtitle": "Assegna un budget a ciascuna opzione e chiedi ai partecipanti di scegliere le loro preferite senza superare il budget totale.",
   "app.containers.AdminPage.ProjectEdit.Voting.budgetingVotingMethodSubtitle2": "I partecipanti scelgono le opzioni che rientrano in un budget totale",
   "app.containers.AdminPage.ProjectEdit.Voting.budgetingVotingMethodTitle2": "Allocazione del budget",
