@@ -874,6 +874,11 @@
     "verified_at": "2026-03-18T16:40:24.392927Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.campaign_type_description.merge_account_confirmation": {
+    "state": "verified",
+    "verified_at": "2026-11-09T21:50:12.641308Z",
+    "verified_by": "Roger"
+  },
   "email_campaigns.campaign_type_description.moderator_digest": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.392927Z",
@@ -904,6 +909,11 @@
     "verified_at": "2026-03-18T16:40:24.392927Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.campaign_type_description.new_phone_confirmation": {
+    "state": "verified",
+    "verified_at": "2026-11-09T21:50:12.641308Z",
+    "verified_by": "Roger"
+  },
   "email_campaigns.campaign_type_description.official_feedback_on_idea_you_follow": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.392927Z",
@@ -913,6 +923,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.392927Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.campaign_type_description.phone_confirmation": {
+    "state": "verified",
+    "verified_at": "2026-11-09T21:50:12.641308Z",
+    "verified_by": "Roger"
   },
   "email_campaigns.campaign_type_description.project_folder_moderation_rights_received": {
     "state": "verified",
@@ -928,6 +943,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.392927Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.campaign_type_description.project_phase_started": {
+    "state": "verified",
+    "verified_at": "2026-11-09T21:50:12.641308Z",
+    "verified_by": "Roger"
+  },
+  "email_campaigns.campaign_type_description.project_phase_upcoming": {
+    "state": "verified",
+    "verified_at": "2026-11-09T21:50:12.641308Z",
+    "verified_by": "Roger"
   },
   "email_campaigns.campaign_type_description.project_published": {
     "state": "verified",
