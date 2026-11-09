@@ -206,14 +206,25 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.acceptedTile',
     defaultMessage: 'Accepted',
   },
-  awaitingReply: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.awaitingReply',
-    defaultMessage:
-      '{count, plural, one {# input is waiting for your reply} other {# inputs are waiting for your reply}}',
+  waitingForReply: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.waitingForReply',
+    defaultMessage: 'Waiting for a reply',
   },
-  showAwaitingReply: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.showAwaitingReply',
-    defaultMessage: 'Show the inputs waiting for a reply',
+  waitingForResponse: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.waitingForResponse',
+    defaultMessage: 'Waiting for a response',
+  },
+  stillGatheringSupport: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.stillGatheringSupport',
+    defaultMessage: 'Still gathering support',
+  },
+  votes: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.votes',
+    defaultMessage: 'Votes',
+  },
+  offlineVotes: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.offlineVotes',
+    defaultMessage: 'Offline votes',
   },
   offlineCollection: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.offlineCollection',
@@ -223,9 +234,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.importInputs',
     defaultMessage: 'Import',
   },
-  exports: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.exports',
-    defaultMessage: 'Exports',
+  export: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.export',
+    defaultMessage: 'Export',
   },
 
   noInputsTitle: {

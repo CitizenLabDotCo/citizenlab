@@ -13,13 +13,12 @@ import Warning from 'components/UI/Warning';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
+import { ManagerFilters, SetFilters } from '../useManagerParams';
 import { PhaseCounts } from '../usePhaseCounts';
 
-import AwaitingReply from './AwaitingReply';
-import Card from './Card';
-import ExportsCard from './ExportsCard';
+import ExportRow from './ExportRow';
+import InputStats from './InputStats';
 import OfflineCollection from './OfflineCollection';
-import StatTiles from './StatTiles';
 
 interface Props {
   type: ManagerType;
@@ -28,7 +27,8 @@ interface Props {
   counts: PhaseCounts | undefined;
   statuses: IIdeaStatusData[];
   selectedIds: string[];
-  onShowAwaitingReply: () => void;
+  filters: ManagerFilters;
+  setFilters: SetFilters;
 }
 
 const SideColumn = ({
@@ -38,58 +38,50 @@ const SideColumn = ({
   counts,
   statuses,
   selectedIds,
-  onShowAwaitingReply,
+  filters,
+  setFilters,
 }: Props) => {
   const isVoting = phase.attributes.participation_method === 'voting';
 
   return (
     <>
-      {(counts || isVoting) && (
-        <Card>
-          {counts && (
-            <>
-              <StatTiles
-                counts={counts}
-                ideationStatuses={
-                  type === 'ProjectProposals' ? undefined : statuses
-                }
-              />
-              <AwaitingReply
-                count={counts.awaiting}
-                onShow={onShowAwaitingReply}
-              />
-            </>
-          )}
-          {isVoting && (
-            <Warning>
-              {phase.attributes.autoshare_results_enabled ? (
-                <Text color="teal700" m="0">
-                  <FormattedMessage
-                    {...projectMessages.votingShareResultsTurnedOn}
-                  />
-                </Text>
-              ) : (
-                <Text color="teal700" m="0">
-                  <b>
-                    <FormattedMessage
-                      {...projectMessages.votingShareResultsTurnedOff}
-                    />
-                  </b>{' '}
-                  <FormattedMessage
-                    {...projectMessages.votingShareResultsTurnedOff2}
-                  />
-                </Text>
-              )}
-            </Warning>
-          )}
-        </Card>
-      )}
-      <OfflineCollection project={project} phase={phase} />
-      <ExportsCard
+      <InputStats
         type={type}
-        projectId={project.id}
-        selectedIds={selectedIds}
+        phase={phase}
+        counts={counts}
+        statuses={statuses}
+        filters={filters}
+        setFilters={setFilters}
       />
+      <OfflineCollection project={project} phase={phase}>
+        <ExportRow
+          type={type}
+          projectId={project.id}
+          selectedIds={selectedIds}
+        />
+        {isVoting && (
+          <Warning>
+            {phase.attributes.autoshare_results_enabled ? (
+              <Text color="teal700" m="0">
+                <FormattedMessage
+                  {...projectMessages.votingShareResultsTurnedOn}
+                />
+              </Text>
+            ) : (
+              <Text color="teal700" m="0">
+                <b>
+                  <FormattedMessage
+                    {...projectMessages.votingShareResultsTurnedOff}
+                  />
+                </b>{' '}
+                <FormattedMessage
+                  {...projectMessages.votingShareResultsTurnedOff2}
+                />
+              </Text>
+            )}
+          </Warning>
+        )}
+      </OfflineCollection>
     </>
   );
 };

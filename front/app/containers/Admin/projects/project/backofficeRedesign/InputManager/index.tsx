@@ -160,7 +160,8 @@ const InputManager = ({ project, phase }: Props) => {
           counts={counts}
           statuses={statuses}
           selectedIds={[...selection.keys()]}
-          onShowAwaitingReply={() => setFilters({ reply: 'awaiting' })}
+          filters={filters}
+          setFilters={setFilters}
         />
       }
     >

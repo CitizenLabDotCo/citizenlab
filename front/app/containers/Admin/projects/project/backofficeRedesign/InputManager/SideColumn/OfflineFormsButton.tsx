@@ -14,6 +14,8 @@ import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
 import messages from '../messages';
 
+import { actionRowProps } from './actionRowProps';
+
 interface Props {
   participationMethod: ParticipationMethod;
 }
@@ -28,9 +30,8 @@ const OfflineFormsButton = ({ participationMethod }: Props) => {
   return (
     <>
       <Button
+        {...actionRowProps}
         icon="download"
-        buttonStyle="bo-secondary"
-        width="100%"
         onClick={() => setOpened(true)}
       >
         {label}

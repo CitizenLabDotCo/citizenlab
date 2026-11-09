@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { ButtonProps } from '@citizenlab/cl2-component-library';
+
 import { InputTerm, ParticipationMethod } from 'api/phases/types';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
@@ -17,6 +19,7 @@ interface Props extends TypedLinkProps {
   linkTo?: string;
   inputTerm: InputTerm;
   participationMethod: ParticipationMethod;
+  buttonProps?: Partial<ButtonProps>;
 }
 
 const NewIdeaButton = ({
@@ -26,6 +29,7 @@ const NewIdeaButton = ({
   linkTo,
   inputTerm,
   participationMethod,
+  buttonProps,
 }: Props) => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
@@ -68,6 +72,7 @@ const NewIdeaButton = ({
         });
       }}
       text={buttonText}
+      {...buttonProps}
     />
   );
 };
