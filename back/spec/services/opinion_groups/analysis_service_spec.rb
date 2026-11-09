@@ -12,11 +12,17 @@ describe OpinionGroups::AnalysisService do
   let!(:male_option) { create(:custom_field_option, custom_field: gender_field, key: 'male', title_multiloc: { en: 'Male' }) }
   let!(:female_option) { create(:custom_field_option, custom_field: gender_field, key: 'female', title_multiloc: { en: 'Female' }) }
 
+  def users_with_gender(count, gender)
+    Array.new(count) do
+      create(:user, custom_field_answers: [build(:custom_field_answer, key: 'gender', value: gender)])
+    end
+  end
+
   # Two clearly separated camps: camp 1 likes the first half of the
   # statements and dislikes the second half, camp 2 does the opposite.
   let(:statements) { create_list(:idea, 8, project: phase.project, phases: [phase]) }
-  let(:camp1) { create_list(:user, 8, custom_field_values: { gender: 'female' }) }
-  let(:camp2) { create_list(:user, 6, custom_field_values: { gender: 'male' }) }
+  let(:camp1) { users_with_gender(8, 'female') }
+  let(:camp2) { users_with_gender(6, 'male') }
 
   before do
     # Every user skips one statement, so that no two users vote identically.
@@ -88,7 +94,7 @@ describe OpinionGroups::AnalysisService do
   end
 
   it 'reports the participation balance against the registered users' do
-    create_list(:user, 6, custom_field_values: { gender: 'male' })
+    users_with_gender(6, 'male')
     gender = result.participation_balance.find { |b| b[:field_key] == 'gender' }
     male = gender[:categories].find { |c| c[:key] == 'male' }
     expect(male[:voters_count]).to eq 6

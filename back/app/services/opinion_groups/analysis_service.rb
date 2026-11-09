@@ -145,8 +145,18 @@ module OpinionGroups
       append_demographic_features if @options.include_demographics
     end
 
+    # The registration answers of the users, as { user_id => { key => value } }.
+    # Users without answers are not in the hash. The answers table is the
+    # source of truth (users.custom_field_values is a backup only).
+    def custom_field_values_by_user(user_ids)
+      CustomFieldAnswer
+        .where(answerable_type: 'User', answerable_id: user_ids)
+        .pluck(:answerable_id, :key, :value)
+        .each_with_object({}) { |(user_id, key, value), hash| (hash[user_id] ||= {})[key] = value }
+    end
+
     def load_participant_demographics
-      values_by_user = User.where(id: @participant_ids).pluck(:id, :custom_field_values).to_h
+      values_by_user = custom_field_values_by_user(@participant_ids)
       @categories_by_user = @participant_ids.index_with { |u| @demographics.categorize(values_by_user[u]) }
     end
 
@@ -374,8 +384,11 @@ module OpinionGroups
     # Task 4.4: who takes part, compared with the registered user base. Flags
     # under- and over-represented demographic categories among the voters.
     def participation_balance
-      voter_values = User.where(id: @all_voter_ids).pluck(:custom_field_values)
-      population_values = User.active.pluck(:custom_field_values)
+      voter_values_by_user = custom_field_values_by_user(@all_voter_ids)
+      voter_values = @all_voter_ids.map { |u| voter_values_by_user[u] }
+      population_ids = User.active.pluck(:id)
+      population_values_by_user = custom_field_values_by_user(population_ids)
+      population_values = population_ids.map { |u| population_values_by_user[u] }
       voter_categories = voter_values.map { |v| @demographics.categorize(v) }
       population_categories = population_values.map { |v| @demographics.categorize(v) }
 
