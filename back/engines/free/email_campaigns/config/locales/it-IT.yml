@@ -631,9 +631,9 @@ it-IT:
       event_description: "Ora puoi partecipare a '%{phaseTitle}' sulla piattaforma di %{organizationName}."
       new_phase: "Questo progetto è entrato nella fase '%{phaseTitle}'"
       preheader: "Ora puoi partecipare a '%{phaseTitle}'"
-      subject: "'%{phaseTitle}' è iniziata in %{projectName}"
+      subject: '%{projectName}: è iniziata la fase ‘%{phaseTitle}’'
       subtitle: "Informazioni su '%{projectName}'"
-      title: "C'è qualcosa di nuovo in '%{projectName}'"
+      title: "C'è una novità in '%{projectName}'"
     project_phase_upcoming:
       cta_button: Controlla la configurazione
       event_description: "'%{phaseTitle}' nel progetto '%{projectName}' inizia il %{startDate}. Prenditi un momento per verificare che tutto sia pronto: la descrizione è completa? Le date sono corrette? Vuoi informare la tua comunità attraverso una campagna email personalizzata?"
