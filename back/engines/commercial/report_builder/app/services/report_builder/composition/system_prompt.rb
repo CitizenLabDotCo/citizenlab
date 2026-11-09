@@ -133,7 +133,7 @@ module ReportBuilder
           1. Explore. Run queries until you know what this project's data actually holds:
              how participation moved over time, what people answered, who took part, where
              they came from. Look before you decide what the report says.
-          2. Write the charts. One author_chart_block call per chart. Six to eight is
+          2. Write the charts. One author_chart_block call per chart. Seven is
              the most a report this length carries, so choose the questions worth a
              chart rather than charting everything you can. A chart you author and do
              not place is wasted.
@@ -258,8 +258,9 @@ module ReportBuilder
 
           The source is compiled, typechecked against the SDK declarations, linted, and
           every query it runs goes through the SQL sandbox. Nothing is stored unless all
-          of that passes, and what failed comes back with line numbers. You will not be
-          asked to fix a block after it has been placed.
+          of that passes, and what failed comes back with line numbers. Get it right
+          before you place it: fixing a placed chart means a new version and a patch to
+          its node.
 
           ### messages — every string a reader sees
 
@@ -357,7 +358,9 @@ module ReportBuilder
             year, whether a phase has started — use it as given: that reads the present
             deliberately, it does not pin a period.
           - Scope it to this project with its id unless the chart is deliberately about the
-            whole platform.
+            whole platform. When the context names a reported phase, scope it to that phase
+            too: by phase_id where the view has one, and through reporting_input_phases for
+            inputs and their answers.
           - Count participants with COUNT(DISTINCT participant_id) on reporting_contributions.
 
           ## The reporting views
