@@ -12,7 +12,6 @@ import ProjectWorkspace from '..';
 import messages from '../messages';
 import PhasePreview from '../Phase/PhasePreview';
 import SelectMethodModal from '../ProjectSetupPanel/SelectMethodModal';
-import ProjectTimeline from '../ProjectTimeline';
 
 import NewPhaseWorkspace from './NewPhaseWorkspace';
 
@@ -44,10 +43,7 @@ const NewPhase = ({ project }: Props) => {
 
     return (
       <>
-        <ProjectWorkspace
-          project={project}
-          sidePanel={<ProjectTimeline projectId={project.id} />}
-        >
+        <ProjectWorkspace project={project}>
           <PhasePreview projectId={project.id} />
         </ProjectWorkspace>
         <SelectMethodModal
