@@ -12,7 +12,7 @@
   "app.components.Areas.topicUpdateError": "Si è verificato un errore durante il salvataggio dell'argomento. Riprova.",
   "app.components.Areas.unfollowedArea": "Area non seguita: {areaTitle}",
   "app.components.Areas.unfollowedTopic": "Argomento non seguito: {topicTitle}",
-  "app.components.AssignBudgetControl.a11y_price": "Prezzo:",
+  "app.components.AssignBudgetControl.a11y_price": "Costo:",
   "app.components.AssignBudgetControl.add": "Seleziona",
   "app.components.AssignBudgetControl.added": "Selezionato",
   "app.components.AssignMultipleVotesControl.addVote": "Aggiungi voto",
