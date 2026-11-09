@@ -12699,6 +12699,11 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+  "app.errors.bulk_import_pdf_parsing_timeout": {
+    "state": "verified",
+    "verified_at": "2026-11-09T21:59:51.651214Z",
+    "verified_by": "Roger"
+  },
   "app.errors.bulk_import_publication_date_invalid_format": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
@@ -12848,6 +12853,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
+  },
+  "app.errors.insufficient_sms_balance": {
+    "state": "verified",
+    "verified_at": "2026-11-09T21:59:51.651214Z",
+    "verified_by": "Roger"
   },
   "app.errors.invalid_email": {
     "state": "verified",
