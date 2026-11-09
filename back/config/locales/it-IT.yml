@@ -140,9 +140,15 @@ it-IT:
           title: Qual è il tuo argomento?
   errors:
     messages:
+      ai_processing_not_allowed: potrebbero non essere elaborati dall'IA
       in_the_past: deve essere nel futuro
       max_must_be_greater_than_min_characters: Il massimo deve essere maggiore del minimo.
       max_must_be_greater_than_or_equal_to_min_select_count: Il massimo deve essere maggiore o uguale al minimo.
+      not_found: non sono stati trovati
+      not_in_project: devono essere file di questo progetto
+      not_utf8: devono essere salvati in formato UTF-8
+      too_many_in_conversation: sono troppi per una singola conversazione
+      unsupported_file_type: devono essere file PDF di massimo 4 MB, oppure file Markdown o di testo di massimo 100 KB
   events:
     council_meeting_description: |
       <p>Durante questa riunione del consiglio, saranno presentate le iniziative dei cittadini che hanno ottenuto 100 voti in meno di 3 mesi.</p><p>Il consiglio condividerà poi la sua opinione su ogni idea.</p>
@@ -180,6 +186,7 @@ it-IT:
       logic_no_further_questions: In base alle tue risposte, <strong>non</strong> è necessario rispondere ad altre domande.
       logic_section: Sezione %{letter}
       matrix_print_description: Per ogni riga, segna un'opzione con una croce per indicare la tua preferenza.
+      multipoint_print_description: Segna con una X sulla mappa sottostante ogni posizione che desideri aggiungere.
       optional: opzionale
       page: Pagina
       permission: Permesso

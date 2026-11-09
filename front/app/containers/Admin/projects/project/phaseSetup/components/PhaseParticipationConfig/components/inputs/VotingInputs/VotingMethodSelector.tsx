@@ -9,6 +9,8 @@ import {
 
 import { VotingMethod } from 'api/phases/types';
 
+import ChoiceRadio from 'containers/Admin/projects/_shared/components/ChoiceRadio';
+
 import { SubSectionTitle } from 'components/admin/Section';
 
 import { useIntl } from 'utils/cl-intl';
@@ -19,15 +21,27 @@ import SingleVotingIcon from './CardIcons/SingleVotingIcon';
 import messages from './messages';
 
 const VOTING_METHODS = [
-  { method: 'single_voting', title: messages.singleVotingMethodTitle },
-  { method: 'multiple_voting', title: messages.multipleVotingMethodTitle },
-  { method: 'budgeting', title: messages.budgetingVotingMethodTitle },
+  {
+    method: 'single_voting',
+    title: messages.singleVotingMethodTitle,
+    subtitle: messages.singleVotingMethodSubtitle2,
+  },
+  {
+    method: 'multiple_voting',
+    title: messages.multipleVotingMethodTitle,
+    subtitle: messages.multipleVotingMethodSubtitle2,
+  },
+  {
+    method: 'budgeting',
+    title: messages.budgetingVotingMethodTitle,
+    subtitle: messages.budgetingVotingMethodSubtitle2,
+  },
 ] as const;
 
 type VotingMethodSelectorProps = {
   voting_method?: VotingMethod | null;
   handleVotingMethodOnChange: (voting_method: VotingMethod) => void;
-  /** 'panel' shows the methods as a narrow list of titles. */
+  /** 'panel' shows the methods as a narrow list of radios. */
   layout?: 'page' | 'panel';
 };
 
@@ -40,25 +54,18 @@ const VotingMethodSelector = ({
 
   if (layout === 'panel') {
     return (
-      <Box mb="24px">
-        <SubSectionTitle>
-          {formatMessage(messages.votingMethodSelectorTitle)}
-        </SubSectionTitle>
-        <Box display="flex" flexDirection="column" gap="12px">
-          {VOTING_METHODS.map(({ method, title }) => (
-            <CardButton
-              key={method}
-              width="100%"
-              minHeight="auto"
-              selected={voting_method === method}
-              onClick={(e) => {
-                e.preventDefault();
-                handleVotingMethodOnChange(method);
-              }}
-              title={formatMessage(title)}
-            />
-          ))}
-        </Box>
+      <Box display="flex" flexDirection="column" gap="20px">
+        {VOTING_METHODS.map(({ method, title, subtitle }) => (
+          <ChoiceRadio
+            key={method}
+            name="voting_method"
+            value={method}
+            currentValue={voting_method}
+            title={formatMessage(title)}
+            description={formatMessage(subtitle)}
+            onChange={() => handleVotingMethodOnChange(method)}
+          />
+        ))}
       </Box>
     );
   }

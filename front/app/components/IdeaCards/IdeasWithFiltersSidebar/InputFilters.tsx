@@ -111,15 +111,14 @@ const InputFilters = ({
           />
         </Box>
       )}
-      {projectId && (
-        <Box mb="20px">
-          <TopicFilterBox
-            projectId={projectId}
-            selectedTopicIds={ideaQueryParameters.input_topics}
-            filterCounts={counts}
-            onChange={onChangeTopics}
-          />
-        </Box>
+      {projectId && phaseId && (
+        <TopicFilterBox
+          projectId={projectId}
+          phaseId={phaseId}
+          selectedTopicIds={ideaQueryParameters.input_topics}
+          filterCounts={counts}
+          onChange={onChangeTopics}
+        />
       )}
       {answerFilterFields?.map((field) => (
         <Box key={field.id} mb="20px" data-cy="e2e-answer-filter-box">

@@ -140,9 +140,15 @@ ca-ES:
           title: Quin és el teu tema?
   errors:
     messages:
+      ai_processing_not_allowed: pot ser que no es processi per la IA
       in_the_past: ha de ser en el futur
       max_must_be_greater_than_min_characters: El màxim ha de ser més gran que el mínim.
       max_must_be_greater_than_or_equal_to_min_select_count: El màxim ha de ser més gran o igual que el mínim.
+      not_found: no s'han trobat
+      not_in_project: han de ser fitxers d'aquest projecte
+      not_utf8: s'han de desar com a UTF-8
+      too_many_in_conversation: són massa per a una sola conversa
+      unsupported_file_type: "han de ser fitxers PDF d'un màxim de 4 MB, o fitxers Markdown o de text d'un màxim de 100 KB"
   events:
     council_meeting_description: |
       <p>Durant aquest consell es presentaran aquelles iniciatives ciutadanes que hagin aconseguit 100 vots en menys de 3 mesos.</p><p>A continuació, el consistori compartirà la seva visió sobre cada idea.</p>
@@ -180,6 +186,7 @@ ca-ES:
       logic_no_further_questions: Segons les vostres respostes, <strong>no cal</strong> que respongueu cap més pregunta.
       logic_section: Secció %{letter}
       matrix_print_description: Per a cada fila, marqueu un cercle amb una creu per indicar la vostra preferència.
+      multipoint_print_description: Dibuixa una X al mapa següent per a cada ubicació que vulguis afegir.
       optional: opcional
       page: Pàgina
       permission: Permís

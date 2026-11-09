@@ -167,16 +167,19 @@ export interface UpdatePhaseObject extends IUpdatedPhaseProperties {
   }[];
 }
 
-export type TSurveyService =
-  | 'typeform'
-  | 'survey_xact'
-  | 'survey_monkey'
-  | 'google_forms'
-  | 'enalyzer'
-  | 'qualtrics'
-  | 'smart_survey'
-  | 'microsoft_forms'
-  | 'snap_survey';
+export const surveyServices = [
+  'typeform',
+  'survey_xact',
+  'survey_monkey',
+  'google_forms',
+  'enalyzer',
+  'qualtrics',
+  'smart_survey',
+  'microsoft_forms',
+  'snap_survey',
+] as const;
+
+export type TSurveyService = (typeof surveyServices)[number];
 
 export const participationMethods = [
   'ideation',

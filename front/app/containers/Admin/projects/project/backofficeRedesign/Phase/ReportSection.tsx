@@ -15,9 +15,8 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 
-import workspaceMessages from '../messages';
-
 import PanelField from './BuildPanel/PanelField';
+import phaseMessages from './messages';
 
 interface Props {
   projectId: string;
@@ -97,7 +96,7 @@ const ReportSection = ({ projectId, phase }: Props) => {
                 to="/admin/reporting/report-builder/$reportId/editor"
                 params={{ reportId }}
               >
-                {formatMessage(workspaceMessages.editReport)}
+                {formatMessage(phaseMessages.editReport)}
               </ButtonWithLink>
             </div>
           </Tooltip>

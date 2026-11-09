@@ -140,9 +140,15 @@ hr-HR:
           title: Koja je tvoja tema?
   errors:
     messages:
+      ai_processing_not_allowed: možda AI neće obraditi
       in_the_past: mora biti u budućnosti
       max_must_be_greater_than_min_characters: Maksimalna vrijednost mora biti veća od minimalne.
       max_must_be_greater_than_or_equal_to_min_select_count: Maksimalna vrijednost mora biti veća ili jednaka minimalnoj vrijednosti.
+      not_found: nisu pronađene
+      not_in_project: moraju biti datoteke ovog projekta
+      not_utf8: moraju biti spremljene kao UTF-8
+      too_many_in_conversation: ima ih previše za jedan razgovor
+      unsupported_file_type: moraju biti PDF datoteke od najviše 4 MB ili Markdown ili tekstualne datoteke od najviše 100 KB
   events:
     council_meeting_description: |
       <p>Tijekom ovog sastanka vijeća bit će predstavljene one inicijative građana koje su dobile 100 glasova u manje od 3 mjeseca.</p><p>Vijeće će zatim podijeliti svoje mišljenje o svakoj ideji.</p>
@@ -181,6 +187,7 @@ hr-HR:
       logic_no_further_questions: Na temelju vaših odgovora, <strong>ne trebate</strong> odgovarati na daljnja pitanja.
       logic_section: Odjeljak %{letter}
       matrix_print_description: Za svaki red označite jedan krug križićem kako biste naznačili svoju preferenciju.
+      multipoint_print_description: Molimo nacrtajte X na karti ispod za svaku lokaciju koju želite dodati.
       optional: neobavezan
       page: Stranica
       permission: Dopuštenje

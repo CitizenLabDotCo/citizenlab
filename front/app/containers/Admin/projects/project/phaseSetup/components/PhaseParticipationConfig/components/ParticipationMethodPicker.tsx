@@ -1,13 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import {
-  IconTooltip,
-  Box,
-  Badge,
-  Icon,
-  colors,
-  Tooltip,
-} from '@citizenlab/cl2-component-library';
+import { IconTooltip, Box } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
 import { ParticipationMethod } from 'api/phases/types';
@@ -22,16 +15,8 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from '../../../../messages';
 
-import commonGroundImage from './assets/common_ground.png';
-import documentImage from './assets/document.png';
-import ideationImage from './assets/ideation.png';
-import informationImage from './assets/information.png';
-import proposalsImage from './assets/proposals.png';
-import surveyImage from './assets/survey.png';
-import volunteeringImage from './assets/volunteering.png';
-import votingImage from './assets/voting.png';
 import messages2 from './messages';
-import ParticipationMethodChoice from './ParticipationMethodChoice';
+import ParticipationMethodChoices from './ParticipationMethodChoices';
 import SurveyMethodChoices from './SurveyMethodChoices';
 
 interface Props {
@@ -57,16 +42,6 @@ const ParticipationMethodPicker = ({
       participation_method === 'survey' ||
       participation_method === 'poll'
   );
-  const documentAnnotationAllowed = useFeatureFlag({
-    name: 'konveio_document_annotation',
-    onlyCheckAllowed: true,
-  });
-  const documentAnnotationEnabled = useFeatureFlag({
-    name: 'konveio_document_annotation',
-  });
-  const commonGroundEnabled = useFeatureFlag({
-    name: 'common_ground',
-  });
   const importPrintedFormsEnabled = useFeatureFlag({
     name: 'import_printed_forms',
   });
@@ -114,159 +89,14 @@ const ParticipationMethodPicker = ({
               gap: '16px',
             }}
           >
-            <ParticipationMethodChoice
-              key="ideation"
-              title={formatMessage(messages2.ideationTitle)}
-              subtitle={formatMessage(messages2.ideationDescription)}
-              onClick={(event) => handleMethodSelect(event, 'ideation')}
-              image={ideationImage}
-              selected={selectedMethod === 'ideation'}
-              participation_method="ideation"
+            <ParticipationMethodChoices
+              isSelected={(method) =>
+                method === 'native_survey'
+                  ? showSurveyOptions
+                  : selectedMethod === method
+              }
+              onSelect={handleMethodSelect}
             />
-
-            <ParticipationMethodChoice
-              key="proposals"
-              title={formatMessage(messages2.proposalsTitle)}
-              subtitle={formatMessage(messages2.proposalsDescription)}
-              onClick={(event) => handleMethodSelect(event, 'proposals')}
-              image={proposalsImage}
-              selected={selectedMethod === 'proposals'}
-              participation_method="proposals"
-            />
-
-            {commonGroundEnabled && (
-              <Box position="relative">
-                <ParticipationMethodChoice
-                  key="common_ground"
-                  title={formatMessage(messages2.commonGroundTitle)}
-                  subtitle={formatMessage(messages2.commonGroundDescription)}
-                  onClick={(event) =>
-                    handleMethodSelect(event, 'common_ground')
-                  }
-                  image={commonGroundImage}
-                  selected={selectedMethod === 'common_ground'}
-                  participation_method="common_ground"
-                />
-                <Box
-                  style={{ transform: 'translateX(-50%)' }}
-                  position="absolute"
-                  top="10%"
-                  left="50%"
-                >
-                  <Tooltip
-                    maxWidth="500px"
-                    placement="bottom"
-                    content={formatMessage(messages.betaTooltip)}
-                    hideOnClick={false}
-                  >
-                    <Badge color={colors.coolGrey600} className="inverse">
-                      <Box
-                        display="flex"
-                        justifyContent="center"
-                        alignItems="center"
-                        gap="6px"
-                      >
-                        {formatMessage(messages.beta)}
-                      </Box>
-                    </Badge>
-                  </Tooltip>
-                </Box>
-              </Box>
-            )}
-
-            <ParticipationMethodChoice
-              key="survey"
-              title={formatMessage(messages2.surveyTitle)}
-              subtitle={formatMessage(messages2.surveyDescription)}
-              onClick={(event) => handleMethodSelect(event, 'native_survey')}
-              image={surveyImage}
-              selected={showSurveyOptions}
-              participation_method="native_survey"
-            />
-
-            <ParticipationMethodChoice
-              key="voting"
-              title={formatMessage(messages2.votingTitle)}
-              subtitle={formatMessage(messages2.votingDescription)}
-              onClick={(event) => handleMethodSelect(event, 'voting')}
-              image={votingImage}
-              selected={selectedMethod === 'voting'}
-              participation_method="voting"
-            />
-
-            <ParticipationMethodChoice
-              key="information"
-              title={formatMessage(messages2.informationTitle)}
-              subtitle={formatMessage(messages2.reportingDescription)}
-              onClick={(event) => handleMethodSelect(event, 'information')}
-              image={informationImage}
-              selected={selectedMethod === 'information'}
-              participation_method="information"
-            />
-
-            <ParticipationMethodChoice
-              key="volunteering"
-              title={formatMessage(messages2.volunteeringTitle)}
-              subtitle={formatMessage(messages2.volunteeringDescription)}
-              onClick={(event) => handleMethodSelect(event, 'volunteering')}
-              image={volunteeringImage}
-              selected={selectedMethod === 'volunteering'}
-              participation_method="volunteering"
-            />
-            {documentAnnotationAllowed ? (
-              documentAnnotationEnabled && (
-                <Box position="relative">
-                  <ParticipationMethodChoice
-                    key="document"
-                    title={formatMessage(messages2.documentTitle)}
-                    subtitle={formatMessage(messages2.documentDescription)}
-                    onClick={(event) => {
-                      event.preventDefault();
-                      handleMethodSelect(event, 'document_annotation');
-                    }}
-                    image={documentImage}
-                    selected={selectedMethod === 'document_annotation'}
-                    participation_method="document_annotation"
-                  />
-                </Box>
-              )
-            ) : (
-              <Box position="relative">
-                <ParticipationMethodChoice
-                  key="document"
-                  title={formatMessage(messages2.documentTitle)}
-                  subtitle={formatMessage(messages2.documentDescription)}
-                  image={documentImage}
-                  selected={selectedMethod === 'document_annotation'}
-                  participation_method="document_annotation"
-                />
-                <Box
-                  style={{ transform: 'translateX(-50%)' }}
-                  position="absolute"
-                  top="20%"
-                  left="50%"
-                >
-                  <Tooltip
-                    maxWidth="250px"
-                    placement="bottom"
-                    content={formatMessage(messages.contactGovSuccessToAccess)}
-                    hideOnClick={false}
-                  >
-                    <Badge color={colors.coolGrey600} className="inverse">
-                      <Box
-                        display="flex"
-                        justifyContent="center"
-                        alignItems="center"
-                        gap="6px"
-                      >
-                        <Icon name="lock" fill="white" width="13px" />
-                        {formatMessage(messages2.addOn)}
-                      </Box>
-                    </Badge>
-                  </Tooltip>
-                </Box>
-              </Box>
-            )}
 
             {showSurveyOptions && (
               <>
