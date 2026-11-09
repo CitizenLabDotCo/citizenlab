@@ -2354,7 +2354,7 @@
   "app.containers.Projects.liveDataMessage": "Stai visualizzando i dati in tempo reale. I conteggi dei partecipanti sono continuamente aggiornati per gli amministratori. Gli utenti abituali visualizzano i dati nella cache, il che può comportare leggere differenze nei numeri.",
   "app.containers.Projects.location": "Posizione:",
   "app.containers.Projects.manageBasket": "Gestire il carrello",
-  "app.containers.Projects.meetMinBudgetRequirement": "Soddisfa il budget minimo per presentare il tuo carrello.",
+  "app.containers.Projects.meetMinBudgetRequirement": "Raggiungi il budget minimo per inviare il tuo voto.",
   "app.containers.Projects.meetMinSelectionRequirement": "Soddisfa la selezione richiesta per inviare il tuo carrello.",
   "app.containers.Projects.metaTitle1": "Progetto: {projectTitle} | {orgName}",
   "app.containers.Projects.minBudgetRequired": "Budget minimo richiesto",
