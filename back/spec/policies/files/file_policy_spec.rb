@@ -38,7 +38,7 @@ RSpec.describe Files::FilePolicy do
     context 'for project moderator' do
       let_it_be(:projects) { create_pair(:project) }
 
-      context 'when the file is not associated with any projects' do
+      context 'when the user does not moderate the project the file belongs to' do
         let(:user) { create(:project_moderator, projects: projects) }
         let(:file) { build(:file, uploader: user) }
 
