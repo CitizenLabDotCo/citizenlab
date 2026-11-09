@@ -58,8 +58,8 @@ const CommonGroundManager = ({ project, phase }: Props) => {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [importOpened, setImportOpened] = useState(false);
   const [addOpened, setAddOpened] = useState(false);
-  const { mutate: addIdea } = useAddIdea();
-  const { mutate: updateIdea } = useUpdateIdea();
+  const { mutateAsync: addIdea } = useAddIdea();
+  const { mutateAsync: updateIdea } = useUpdateIdea();
   const { mutate: copyInputs } = useCopyInputs();
 
   const { data: results } = useCommonGroundResults(phase.id);

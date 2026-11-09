@@ -71,4 +71,25 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.editForm',
     defaultMessage: 'Edit form',
   },
+  addAnInput: {
+    id: 'app.containers.Admin.projects.project.addAnInput',
+    defaultMessage: 'Add an input',
+  },
+  inputTitleLabel: {
+    id: 'app.containers.Admin.projects.project.inputTitleLabel',
+    defaultMessage: 'Title',
+  },
+  inputTitlePlaceholder: {
+    id: 'app.containers.Admin.projects.project.inputTitlePlaceholder',
+    defaultMessage: 'Write a short title',
+  },
+  emptyInputTitleError: {
+    id: 'app.containers.Admin.projects.project.emptyInputTitleError',
+    defaultMessage: 'Write the title in at least one language',
+  },
+  inputSaveFailed: {
+    id: 'app.containers.Admin.projects.project.inputSaveFailed',
+    defaultMessage:
+      'This could not be saved. Please try again. If the form has other required questions, add it from the project page instead.',
+  },
 });

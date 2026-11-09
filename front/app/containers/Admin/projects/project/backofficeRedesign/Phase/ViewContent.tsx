@@ -7,7 +7,6 @@ import useCauses from 'api/causes/useCauses';
 import { IPhaseData } from 'api/phases/types';
 import { IPollResponses } from 'api/poll_responses/types';
 import usePollResponses from 'api/poll_responses/usePollResponses';
-import { IProjectData } from 'api/projects/types';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -69,13 +68,12 @@ const isPhaseEmpty = (
 };
 
 interface Props {
-  project: IProjectData;
   phase: IPhaseData;
   view: Exclude<PhaseViewKey, 'build'>;
   children: ReactNode;
 }
 
-const ViewContent = ({ project, phase, view, children }: Props) => {
+const ViewContent = ({ phase, view, children }: Props) => {
   const { formatMessage } = useIntl();
   const { terms, capitalizedTerms } = useInputTermLabels();
   const onInsights = view === 'insights';
@@ -126,9 +124,7 @@ const ViewContent = ({ project, phase, view, children }: Props) => {
 
   if (view === 'manage') {
     return (
-      <ManageLayout
-        side={<OfflineCollection project={project} phase={phase} />}
-      >
+      <ManageLayout side={<OfflineCollection phase={phase} />}>
         {emptyState}
       </ManageLayout>
     );

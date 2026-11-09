@@ -1,12 +1,17 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useState } from 'react';
 
+import { Button } from '@citizenlab/cl2-component-library';
+
+import useAddIdea from 'api/ideas/useAddIdea';
 import { IPhaseData } from 'api/phases/types';
-import { IProjectData } from 'api/projects/types';
 
-import NewIdeaButton from 'containers/Admin/projects/_shared/components/NewIdeaButton';
+import tracks from 'containers/Admin/projects/_shared/components/NewIdeaButton/tracks';
 
+import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
+import { useLocation } from 'utils/router';
 
+import AddInputModal from '../../Phase/BuildPanel/BuildFields/MethodSection/AddInputModal';
 import messages from '../messages';
 import useInputTermLabels from '../useInputTermLabels';
 
@@ -15,7 +20,6 @@ import Card from './Card';
 import OfflineFormsButton from './OfflineFormsButton';
 
 interface Props {
-  project: IProjectData;
   phase: IPhaseData;
   /** Further actions, listed after the offline ones. */
   children?: ReactNode;
@@ -23,31 +27,48 @@ interface Props {
   fillHeight?: boolean;
 }
 
-const OfflineCollection = ({
-  project,
-  phase,
-  children,
-  fillHeight = true,
-}: Props) => {
+const OfflineCollection = ({ phase, children, fillHeight = true }: Props) => {
   const { formatMessage } = useIntl();
-  const { terms } = useInputTermLabels();
+  const { pathname } = useLocation();
+  const { term, terms } = useInputTermLabels();
+  const [addOpened, setAddOpened] = useState(false);
+  const { mutateAsync: addIdea } = useAddIdea();
+  const addLabel = formatMessage(messages.newTerm, { term });
 
   return (
     <Card fillHeight={fillHeight}>
-      <NewIdeaButton
-        participationMethod={phase.attributes.participation_method}
-        inputTerm={phase.attributes.input_term}
-        to="/projects/$slug/ideas/new"
-        params={{ slug: project.attributes.slug }}
-        search={{ phase_id: phase.id }}
-        buttonProps={actionRowProps}
-      />
+      <Button
+        {...actionRowProps}
+        icon="plus"
+        onClick={() => {
+          trackEventByName(tracks.clickNewIdea.name, {
+            pathnameFrom: pathname,
+          });
+          setAddOpened(true);
+        }}
+      >
+        {addLabel}
+      </Button>
       <OfflineFormsButton
         participationMethod={phase.attributes.participation_method}
         label={formatMessage(messages.importPaperTerms, { terms })}
         buttonProps={{ ...actionRowProps, icon: 'upload-file' }}
       />
       {children}
+      {addOpened && (
+        <AddInputModal
+          phaseId={phase.id}
+          kind="input"
+          header={addLabel}
+          onSubmit={(values) =>
+            addIdea({
+              phaseId: phase.id,
+              requestBody: { ...values, publication_status: 'published' },
+            })
+          }
+          onClose={() => setAddOpened(false)}
+        />
+      )}
     </Card>
   );
 };

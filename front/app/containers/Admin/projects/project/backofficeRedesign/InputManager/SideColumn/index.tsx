@@ -47,7 +47,7 @@ const SideColumn = ({
         filters={filters}
         setFilters={setFilters}
       />
-      <OfflineCollection project={project} phase={phase} fillHeight={!isVoting}>
+      <OfflineCollection phase={phase} fillHeight={!isVoting}>
         <ExportRow
           type={type}
           projectId={project.id}

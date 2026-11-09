@@ -281,6 +281,10 @@ export default defineMessages({
     defaultMessage:
       'Once people take part, you can review and manage their {terms} here.',
   },
+  newTerm: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.newTerm',
+    defaultMessage: 'New {term}',
+  },
   importPaperTerms: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.importPaperTerms',
     defaultMessage: 'Import paper {terms}',

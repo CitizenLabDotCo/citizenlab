@@ -275,7 +275,7 @@ const ProjectWorkspace = ({
         {inPhase && phaseSlot}
 
         {phase && activeView !== 'build' ? (
-          <ViewContent project={project} phase={phase} view={activeView}>
+          <ViewContent phase={phase} view={activeView}>
             {mainSlot}
           </ViewContent>
         ) : (

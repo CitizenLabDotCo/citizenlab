@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 
 import {
   Box,
@@ -16,6 +16,7 @@ import AuthorField from 'components/CustomFieldsForm/Fields/AuthorField';
 import fieldMessages from 'components/CustomFieldsForm/messages';
 import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import Error from 'components/UI/Error';
 import Modal, { MEDIUM_MODAL_WIDTH } from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
@@ -39,6 +40,13 @@ const COPY = {
     emptyError: messages.emptyOptionError,
     anonymousTooltip: messages.optionAnonymousTooltip,
   },
+  input: {
+    header: messages.addAnInput,
+    label: messages.inputTitleLabel,
+    placeholder: messages.inputTitlePlaceholder,
+    emptyError: messages.emptyInputTitleError,
+    anonymousTooltip: messages.optionAnonymousTooltip,
+  },
 };
 
 // The input forms fix these limits on the title.
@@ -48,7 +56,8 @@ const MAX_CHARACTERS = 120;
 interface Props {
   phaseId: string;
   kind: keyof typeof COPY;
-  onSubmit: (values: InputValues) => void;
+  /** A returned promise keeps the modal open until it settles. */
+  onSubmit: (values: InputValues) => void | Promise<unknown>;
   onClose: () => void;
   /** Fills the form to edit an existing input. */
   defaultValues?: InputValues;
@@ -66,6 +75,9 @@ const AddInputModal = ({
   submitLabel,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const [saveFailed, setSaveFailed] = useState(false);
+  // isSubmitting only updates after a render, so a double click needs this.
+  const submitting = useRef(false);
   const { data: phase } = usePhase(phaseId);
   const allowAnonymous = !!phase?.data.attributes.allow_anonymous_participation;
   const copy = COPY[kind];
@@ -100,9 +112,19 @@ const AddInputModal = ({
     defaultValues,
   });
 
-  const submit = methods.handleSubmit((values) => {
-    onSubmit(values);
-    onClose();
+  const submit = methods.handleSubmit(async (values) => {
+    if (submitting.current) return;
+
+    submitting.current = true;
+    setSaveFailed(false);
+    try {
+      await onSubmit(values);
+      onClose();
+    } catch {
+      setSaveFailed(true);
+    } finally {
+      submitting.current = false;
+    }
   });
 
   return (
@@ -117,7 +139,11 @@ const AddInputModal = ({
           <Button buttonStyle="bo-text" onClick={onClose}>
             {formatMessage(messages.statementCancel)}
           </Button>
-          <Button buttonStyle="bo-primary" onClick={submit}>
+          <Button
+            buttonStyle="bo-primary"
+            processing={methods.formState.isSubmitting}
+            onClick={submit}
+          >
             {submitLabel ?? formatMessage(messages.addStatement)}
           </Button>
         </Box>
@@ -167,6 +193,9 @@ const AddInputModal = ({
                 }
               />
             </Box>
+          )}
+          {saveFailed && (
+            <Error text={formatMessage(messages.inputSaveFailed)} />
           )}
         </Box>
       </FormProvider>
