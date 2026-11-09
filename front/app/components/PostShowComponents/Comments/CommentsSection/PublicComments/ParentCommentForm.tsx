@@ -27,6 +27,7 @@ import { useLocation } from 'utils/router';
 import { weglotTranslateSubmission } from 'utils/weglot';
 
 import Actions from '../../CommentForm/Actions';
+import { boCommentFormStyle, useIsBoComments } from '../../commentsVariant';
 import { commentAdded } from '../../events';
 import messages from '../../messages';
 import tracks from '../../tracks';
@@ -66,6 +67,8 @@ const Form = styled.form`
   &.focused {
     border: solid 2px ${(props) => props.theme.colors.tenantPrimary};
   }
+
+  ${boCommentFormStyle}
 `;
 
 const HiddenLabel = styled.span`
@@ -85,6 +88,7 @@ const ParentCommentForm = ({
   allowAnonymousParticipation,
 }: Props) => {
   const locale = useLocale();
+  const isBo = useIsBoComments();
   const { data: authUser } = useAuthUser();
   const { data: appConfiguration } = useAppConfiguration();
   const { formatMessage } = useIntl();
@@ -248,7 +252,7 @@ const ParentCommentForm = ({
         closeOnClickOutsideEnabled={false}
       >
         <Anchor id="submit-comment-anchor" />
-        <Form className={focused ? 'focused' : ''}>
+        <Form className={`${focused ? 'focused' : ''} ${isBo ? 'bo' : ''}`}>
           <label htmlFor="submit-comment">
             <HiddenLabel>
               <FormattedMessage {...messages.yourComment} />

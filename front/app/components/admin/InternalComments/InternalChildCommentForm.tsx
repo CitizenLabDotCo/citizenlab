@@ -14,6 +14,10 @@ import useAddInternalCommentToIdea from 'api/internal_comments/useAddInternalCom
 import useAuthUser from 'api/me/useAuthUser';
 
 import Avatar from 'components/Avatar';
+import {
+  boCommentFormStyle,
+  useIsBoComments,
+} from 'components/PostShowComponents/Comments/commentsVariant';
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
@@ -54,6 +58,8 @@ const Form = styled.form`
   &.focused {
     border: solid 2px ${(props) => props.theme.colors.tenantPrimary};
   }
+
+  ${boCommentFormStyle}
 `;
 
 const HiddenLabel = styled.span`
@@ -88,6 +94,8 @@ const InternalChildCommentForm = ({
   const { formatMessage } = useIntl();
   const { data: authUser } = useAuthUser();
   const smallerThanTablet = useBreakpoint('tablet');
+  const isBo = useIsBoComments();
+  const responsivePadding = smallerThanTablet && !isBo ? '6px 12px' : undefined;
 
   const {
     mutate: addCommentToIdeaComment,
@@ -257,7 +265,7 @@ const InternalChildCommentForm = ({
         >
           {/* TODO: Fix this the next time the file is edited. */}
           {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-          <Form className={focused ? 'focused' : ''}>
+          <Form className={`${focused ? 'focused' : ''} ${isBo ? 'bo' : ''}`}>
             <label>
               <HiddenLabel>
                 <FormattedMessage {...commentsMessages.replyToComment} />
@@ -275,7 +283,8 @@ const InternalChildCommentForm = ({
                 error={getErrorMessage()}
                 onChange={onChange}
                 onFocus={onFocus}
-                fontWeight="300"
+                fontWeight={isBo ? '400' : '300'}
+                fontSize={isBo ? '12px' : undefined}
                 padding="10px"
                 borderRadius="none"
                 border="none"
@@ -287,8 +296,8 @@ const InternalChildCommentForm = ({
                 <CancelButton
                   disabled={processing}
                   onClick={onCancel}
-                  buttonStyle="secondary-outlined"
-                  padding={smallerThanTablet ? '6px 12px' : undefined}
+                  buttonStyle={isBo ? 'bo-secondary' : 'secondary-outlined'}
+                  padding={responsivePadding}
                 >
                   <FormattedMessage {...commentsMessages.cancel} />
                 </CancelButton>
@@ -297,7 +306,8 @@ const InternalChildCommentForm = ({
                   processing={processing}
                   onClick={onSubmit}
                   disabled={!canSubmit}
-                  padding={smallerThanTablet ? '6px 12px' : undefined}
+                  buttonStyle={isBo ? 'bo-primary' : 'primary'}
+                  padding={responsivePadding}
                   icon="shield-check"
                 >
                   <FormattedMessage {...commentsMessages.postInternalComment} />

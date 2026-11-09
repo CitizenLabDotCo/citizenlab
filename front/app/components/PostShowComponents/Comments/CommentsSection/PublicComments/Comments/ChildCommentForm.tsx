@@ -25,6 +25,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 import { weglotTranslateSubmission } from 'utils/weglot';
 
+import { boCommentFormStyle, useIsBoComments } from '../../../commentsVariant';
 import { commentReplyButtonClicked$, commentAdded } from '../../../events';
 import messages from '../../../messages';
 import tracks from '../../../tracks';
@@ -55,6 +56,8 @@ const Form = styled.form`
   &.focused {
     border: solid 2px ${(props) => props.theme.colors.tenantPrimary};
   }
+
+  ${boCommentFormStyle}
 `;
 
 const HiddenLabel = styled.span`
@@ -77,6 +80,7 @@ const ChildCommentForm = ({
   allowAnonymousParticipation,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const isBo = useIsBoComments();
   const locale = useLocale();
   const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
@@ -287,7 +291,7 @@ const ChildCommentForm = ({
         >
           {/* TODO: Fix this the next time the file is edited. */}
           {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-          <Form className={focused ? 'focused' : ''}>
+          <Form className={`${focused ? 'focused' : ''} ${isBo ? 'bo' : ''}`}>
             <label>
               <HiddenLabel>
                 <FormattedMessage {...messages.replyToComment} />

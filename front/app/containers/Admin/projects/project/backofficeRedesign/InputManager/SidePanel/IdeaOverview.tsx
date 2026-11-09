@@ -18,6 +18,7 @@ import useLocalize from 'hooks/useLocalize';
 import { ManagerType } from 'components/admin/PostManager';
 import IdeaOfficialFeedbackModal from 'components/admin/PostManager/components/IdeaOfficialFeedbackModal';
 import CommentsSection from 'components/PostShowComponents/Comments/CommentsSection';
+import { CommentsVariantContext } from 'components/PostShowComponents/Comments/commentsVariant';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import UserName from 'components/UI/UserName';
 
@@ -137,13 +138,15 @@ const IdeaOverview = ({
       <Divider m="0" />
 
       <OfficialFeedback postId={idea.id} permissionToPost variant="bo" />
-      <CommentsSection
-        postId={idea.id}
-        allowAnonymousParticipation={
-          listedPhase?.attributes.allow_anonymous_participation
-        }
-        showInternalComments
-      />
+      <CommentsVariantContext.Provider value="bo">
+        <CommentsSection
+          postId={idea.id}
+          allowAnonymousParticipation={
+            listedPhase?.attributes.allow_anonymous_participation
+          }
+          showInternalComments
+        />
+      </CommentsVariantContext.Provider>
       <IdeaOfficialFeedbackModal ideaId={idea.id} />
     </Box>
   );
