@@ -3201,7 +3201,7 @@
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.xVolunteers": "{x, plural, =0 {nessun partecipante} one {# partecipante} other {# partecipanti}}",
   "app.containers.AdminPage.ProjectEdit.Voting.budgetAllocation2": "l'allocazione del budget",
   "app.containers.AdminPage.ProjectEdit.Voting.budgetingVotingMethodSubtitle": "Assegna un budget a ciascuna opzione e chiedi ai partecipanti di scegliere le loro preferite senza superare il budget totale.",
-  "app.containers.AdminPage.ProjectEdit.Voting.budgetingVotingMethodSubtitle2": "I partecipanti scelgono le opzioni che rientrano in un budget totale",
+  "app.containers.AdminPage.ProjectEdit.Voting.budgetingVotingMethodSubtitle2": "I partecipanti scelgono le opzioni senza superare il budget totale",
   "app.containers.AdminPage.ProjectEdit.Voting.budgetingVotingMethodTitle2": "Allocazione del budget",
   "app.containers.AdminPage.ProjectEdit.Voting.changeVotingMethodCancel": "Annulla",
   "app.containers.AdminPage.ProjectEdit.Voting.changeVotingMethodConfirm": "Cambia comunque",
