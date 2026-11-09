@@ -19,14 +19,21 @@ interface Props {
   phase: IPhaseData;
   /** Further actions, listed after the offline ones. */
   children?: ReactNode;
+  /** Off when another card follows and takes the remaining height. */
+  fillHeight?: boolean;
 }
 
-const OfflineCollection = ({ project, phase, children }: Props) => {
+const OfflineCollection = ({
+  project,
+  phase,
+  children,
+  fillHeight = true,
+}: Props) => {
   const { formatMessage } = useIntl();
   const { terms } = useInputTermLabels();
 
   return (
-    <Card fillHeight>
+    <Card fillHeight={fillHeight}>
       <NewIdeaButton
         participationMethod={phase.attributes.participation_method}
         inputTerm={phase.attributes.input_term}

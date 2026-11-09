@@ -12,7 +12,8 @@ interface Props {
 }
 
 // The frame every method's Manage view shares. Each column scrolls on its own,
-// so the cards stay in view while the list is scrolled.
+// so the cards stay in view while the list is scrolled. Both are positioned
+// so the hidden input of a toggle stays in its column when it gets focus.
 const ManageLayout = ({ side, children }: Props) => (
   <Box display="flex" gap={PANEL_GAP} flexGrow={1} minWidth="0" minHeight="0">
     <Box
@@ -20,6 +21,7 @@ const ManageLayout = ({ side, children }: Props) => (
       width={SIDE_WIDTH}
       minHeight="0"
       overflowY="auto"
+      position="relative"
       display="flex"
       flexDirection="column"
       gap={PANEL_GAP}

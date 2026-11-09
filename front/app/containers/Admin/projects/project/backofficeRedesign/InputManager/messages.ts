@@ -240,6 +240,25 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.offlineVotes',
     defaultMessage: 'Offline votes',
   },
+  autoShareResults: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.autoShareResults',
+    defaultMessage: 'Auto-share results',
+  },
+  autoShareNotice: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.autoShareNotice',
+    defaultMessage:
+      'Voting results are shared on the platform and via email to participants on {date}, when the phase ends.',
+  },
+  autoShareNoticeNoEndDate: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.autoShareNoticeNoEndDate',
+    defaultMessage:
+      'Voting results are shared on the platform and via email to participants when the phase ends.',
+  },
+  autoShareNoticeEnded: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.autoShareNoticeEnded',
+    defaultMessage:
+      'This phase has ended, so its voting results are public on the platform.',
+  },
   offlineCollection: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.offlineCollection',
     defaultMessage: 'Offline collection',
