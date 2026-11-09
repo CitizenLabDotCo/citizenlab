@@ -70,6 +70,17 @@ describe('PageSaveContext', () => {
     expect(saveSettings).not.toHaveBeenCalled();
   });
 
+  it('can save a clean panel when an action requires it', async () => {
+    const save = jest.fn().mockResolvedValue(undefined);
+    const { result } = renderPanels({ build: { dirty: false, save } });
+
+    await act(async () => {
+      await result.current?.saveAll('leave', 'build');
+    });
+
+    expect(save).toHaveBeenCalledWith('leave');
+  });
+
   it('reports a failure when one of the panels fails to save', async () => {
     const { result } = renderPanels({
       build: { dirty: true, save: jest.fn().mockResolvedValue(undefined) },

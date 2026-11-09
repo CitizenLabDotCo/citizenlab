@@ -1,10 +1,12 @@
 import React, { useRef, useState } from 'react';
 
+import { Box, Button } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
 import { IUpdatedPhaseProperties, ParticipationMethod } from 'api/phases/types';
 import useAddPhase from 'api/phases/useAddPhase';
 import usePhases from 'api/phases/usePhases';
+import useUpdatePhase from 'api/phases/useUpdatePhase';
 import { IProjectData } from 'api/projects/types';
 
 import usePhaseFileAttachments, {
@@ -15,18 +17,22 @@ import validate from 'containers/Admin/projects/project/phaseSetup/validate';
 
 import {
   SaveReason,
+  usePageSave,
   useRegisterPageSaver,
 } from 'components/admin/PageSaveContext';
+import ErrorMessage from 'components/UI/Error';
 
 import { useIntl } from 'utils/cl-intl';
-import clHistory from 'utils/cl-router/history';
+import Navigate from 'utils/cl-router/Navigate';
 
 import ProjectWorkspace from '..';
-import messages from './messages';
 import BuildFields from '../Phase/BuildPanel/BuildFields';
+import methodSectionMessages from '../Phase/BuildPanel/BuildFields/MethodSection/messages';
 import PlacementCard from '../Phase/BuildPanel/PlacementCard';
 import DraftMethodSettings from '../Phase/DraftMethodSettings';
 import PhasePreview from '../Phase/PhasePreview';
+
+import messages from './messages';
 
 interface Props {
   project: IProjectData;
@@ -49,6 +55,8 @@ const NewPhaseWorkspace = ({
   const projectId = project.id;
   const { data: phases } = usePhases(projectId);
   const { mutateAsync: addPhase } = useAddPhase();
+  const { mutateAsync: updatePhase } = useUpdatePhase();
+  const pageSave = usePageSave();
 
   const [participationMethod, setParticipationMethod] = useState(
     initialParticipationMethod
@@ -60,7 +68,15 @@ const NewPhaseWorkspace = ({
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>(
     {}
   );
-  const createdPhaseId = useRef<string>();
+  const savedPhase = useRef<{
+    id: string;
+    formData: IUpdatedPhaseProperties;
+  }>();
+  const [saveFailed, setSaveFailed] = useState(false);
+  const [destination, setDestination] = useState<{
+    phaseId: string;
+    addQuestions?: boolean;
+  }>();
 
   const files = usePhaseFileAttachments({
     projectId,
@@ -74,43 +90,79 @@ const NewPhaseWorkspace = ({
     setFormData((formData) => ({ ...formData, ...newData }));
   };
 
-  const createPhase = async () => {
-    if (createdPhaseId.current) return createdPhaseId.current;
+  const savePhase = async () => {
+    const previous = savedPhase.current;
+    if (!previous) {
+      const { data: phase } = await addPhase({ projectId, ...formData });
+      savedPhase.current = { id: phase.id, formData };
+      return phase.id;
+    }
 
-    const { data: phase } = await addPhase({ projectId, ...formData });
-    createdPhaseId.current = phase.id;
-    return phase.id;
+    // An attachment failure can leave the phase saved while the draft stays open.
+    if (previous.formData !== formData) {
+      await updatePhase({ ...formData, phaseId: previous.id });
+      savedPhase.current = { id: previous.id, formData };
+    }
+    return previous.id;
   };
 
   const save = async (reason: SaveReason) => {
-    if (!createdPhaseId.current) {
-      const { isValidated, errors } = validate(
-        formData,
-        phases,
-        formatMessage,
-        undefined,
-        standalone
-      );
+    setSaveFailed(false);
+    setErrors(null);
 
-      setValidationErrors(errors);
-      if (!isValidated) throw new Error('Invalid phase');
+    const { isValidated, errors } = validate(
+      formData,
+      phases,
+      formatMessage,
+      savedPhase.current?.id,
+      standalone
+    );
+
+    setValidationErrors(errors);
+    if (!isValidated) {
+      setSaveFailed(true);
+      throw new Error('Invalid phase');
     }
 
     try {
-      const phaseId = await createPhase();
+      const phaseId = await savePhase();
       await files.save(phaseId);
       setDirty(false);
 
       if (reason === 'button') {
-        clHistory.push(`/admin/projects/${projectId}/phases/${phaseId}/setup`);
+        pageSave?.leave();
+        setDestination({ phaseId });
       }
     } catch (error) {
+      setSaveFailed(true);
       setErrors(fileAttachmentErrors(error));
       throw error;
     }
   };
 
   useRegisterPageSaver('draft', { dirty, save });
+
+  const addQuestions = async () => {
+    if (!pageSave || pageSave.saving) return;
+
+    setDirty(true);
+    const failed = await pageSave.saveAll('leave', 'draft');
+    if (failed.length > 0 || !savedPhase.current) return;
+
+    pageSave.leave();
+    setDestination({ phaseId: savedPhase.current.id, addQuestions: true });
+  };
+
+  if (destination) {
+    return (
+      <Navigate
+        to="/admin/projects/$projectId/phases/$phaseId/setup"
+        params={{ projectId, phaseId: destination.phaseId }}
+        search={{ add_questions: destination.addQuestions }}
+        replace={destination.addQuestions}
+      />
+    );
+  }
 
   return (
     <ProjectWorkspace
@@ -138,6 +190,28 @@ const NewPhaseWorkspace = ({
           validationErrors={validationErrors}
           standalone={standalone}
           files={files}
+          draftQuestionsAction={
+            participationMethod === 'native_survey' && (
+              <Box>
+                <Button
+                  buttonStyle="bo-secondary"
+                  data-cy="add-draft-survey-questions"
+                  boSize="medium"
+                  width="100%"
+                  processing={pageSave?.saving}
+                  disabled={files.isUploadingFile}
+                  onClick={addQuestions}
+                >
+                  {formatMessage(methodSectionMessages.addQuestions)}
+                </Button>
+                {saveFailed && (
+                  <ErrorMessage
+                    text={formatMessage(messages.addQuestionsSaveError)}
+                  />
+                )}
+              </Box>
+            )
+          }
           surveyPlacement={
             // Only the platform's own survey can run outside the timeline.
             participationMethod === 'native_survey' && (

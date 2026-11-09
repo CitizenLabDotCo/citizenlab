@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box, Spinner, Text } from '@citizenlab/cl2-component-library';
 
+import useCustomFields from 'api/custom_fields/useCustomFields';
 import usePhase from 'api/phases/usePhase';
 import useSubmissionCount from 'api/submission_count/useSubmissionCount';
 
@@ -25,21 +26,21 @@ import NavCard from './NavCard';
 interface Props {
   projectId: string;
   phaseId: string;
-  hasQuestions: boolean;
   opened: boolean;
   onClose: () => void;
 }
 
-const SurveySetupModal = ({
-  projectId,
-  phaseId,
-  hasQuestions,
-  opened,
-  onClose,
-}: Props) => {
+const SurveySetupModal = ({ projectId, phaseId, opened, onClose }: Props) => {
   const { formatMessage } = useIntl();
   const [copyOpened, setCopyOpened] = useState(false);
   const [upload, setUpload] = useState<'pdf' | 'excel' | null>(null);
+  const { data: customFields, isPending: questionsPending } = useCustomFields({
+    projectId,
+    phaseId,
+  });
+  const hasQuestions = customFields?.some(
+    (field) => field.enabled && field.input_type !== 'page'
+  );
   const { data: phase } = usePhase(phaseId);
   const { data: submissionCount } = useSubmissionCount({ phaseId });
   const editFormLink = `/admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`;
@@ -65,7 +66,7 @@ const SurveySetupModal = ({
         close={onClose}
         width="720px"
         header={formatMessage(
-          hasQuestions
+          hasQuestions !== false
             ? formSectionMessages.surveyForm
             : methodSectionMessages.addQuestions
         )}
@@ -74,17 +75,21 @@ const SurveySetupModal = ({
           <Text variant="boHelper" m="0 0 6px">
             {formatMessage(messages.surveySetupLead)}
           </Text>
-          <NavCard
-            label={formatMessage(
-              hasQuestions
-                ? methodSectionMessages.editForm
-                : messages.startFromScratch
-            )}
-            onClick={() => {
-              onClose();
-              clHistory.push(editFormLink);
-            }}
-          />
+          {questionsPending ? (
+            <Spinner />
+          ) : (
+            <NavCard
+              label={formatMessage(
+                hasQuestions !== false
+                  ? methodSectionMessages.editForm
+                  : messages.startFromScratch
+              )}
+              onClick={() => {
+                onClose();
+                clHistory.push(editFormLink);
+              }}
+            />
+          )}
           {canCopy && (
             <NavCard
               label={formatMessage(messages.usePreviousSurvey)}
