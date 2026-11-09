@@ -4334,6 +4334,11 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+  "app.components.aiAssistant.errorToolBudgetExceeded": {
+    "state": "verified",
+    "verified_at": "2026-11-09T20:55:44.078702Z",
+    "verified_by": "Roger"
+  },
   "app.components.anonymousParticipationModal.anonymousParticipationWarning": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",

@@ -955,7 +955,7 @@
   "app.components.aiAssistant.errorSurfaceUnavailable": "L'assistente non è disponibile qui.",
   "app.components.aiAssistant.errorTooLong": "Il tuo messaggio è troppo lungo.",
   "app.components.aiAssistant.errorTooManyConversationFiles": "Una chat può utilizzare al massimo 5 file. Avvia una nuova chat per allegarne altri.",
-  "app.components.aiAssistant.errorToolBudgetExceeded": "L'assistente ha richiesto troppi passaggi per questa richiesta. Prova con una richiesta più semplice.",
+  "app.components.aiAssistant.errorToolBudgetExceeded": "L’assistente ha dovuto fare troppi passaggi per questa richiesta. Prova con una richiesta più semplice.",
   "app.components.aiAssistant.errorToolCallExpired2": "Questa modifica proposta è scaduta. Chiedi di nuovo all'assistente per ottenerne una nuova.",
   "app.components.aiAssistant.errorToolCallNotAwaitingApproval": "È già stata presa una decisione su questa modifica proposta.",
   "app.components.aiAssistant.errorTurnTimedOut": "L'assistente ha smesso di rispondere. Riprova o avvia una nuova chat.",
