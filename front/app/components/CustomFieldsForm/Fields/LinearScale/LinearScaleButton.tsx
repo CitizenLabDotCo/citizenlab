@@ -74,6 +74,12 @@ const LinearScaleOption = ({
   // One tab stop per group: the selected option, or the first if none is
   const isTabStop = isSelected || (!data && visualIndex === 1);
 
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (disabled) return;
+    onSelect(isSelected ? undefined : visualIndex);
+    e.currentTarget.focus();
+  };
+
   return (
     <Box
       flexBasis={100 / maximum}
@@ -94,14 +100,7 @@ const LinearScaleOption = ({
         selectedBorderColor={theme.colors.tenantPrimary}
         bgColor={theme.colors.white}
         selectedBgColor={theme.colors.tenantPrimary}
-        onClick={
-          disabled
-            ? undefined
-            : (e) => {
-                onSelect(isSelected ? undefined : visualIndex);
-                (e.currentTarget as HTMLElement).focus();
-              }
-        }
+        onClick={handleClick}
       >
         <Text
           m="0px"
