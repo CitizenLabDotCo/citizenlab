@@ -379,6 +379,11 @@
     "verified_at": "2026-03-18T15:41:17.432455Z",
     "verified_by": "Admin"
   },
+  "errors.messages.ai_processing_not_allowed": {
+    "state": "verified",
+    "verified_at": "2026-11-09T14:29:35.474506Z",
+    "verified_by": "Jelena"
+  },
   "errors.messages.in_the_past": {
     "state": "verified",
     "verified_at": "2026-03-20T08:23:22.882370Z",
@@ -393,6 +398,31 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.432455Z",
     "verified_by": "Admin"
+  },
+  "errors.messages.not_found": {
+    "state": "verified",
+    "verified_at": "2026-11-09T14:29:35.474506Z",
+    "verified_by": "Jelena"
+  },
+  "errors.messages.not_in_project": {
+    "state": "verified",
+    "verified_at": "2026-11-09T14:29:35.474506Z",
+    "verified_by": "Jelena"
+  },
+  "errors.messages.not_utf8": {
+    "state": "verified",
+    "verified_at": "2026-11-09T14:29:35.474506Z",
+    "verified_by": "Jelena"
+  },
+  "errors.messages.too_many_in_conversation": {
+    "state": "verified",
+    "verified_at": "2026-11-09T14:29:35.474506Z",
+    "verified_by": "Jelena"
+  },
+  "errors.messages.unsupported_file_type": {
+    "state": "verified",
+    "verified_at": "2026-11-09T14:29:35.474506Z",
+    "verified_by": "Jelena"
   },
   "events.council_meeting_description": {
     "state": "verified",
