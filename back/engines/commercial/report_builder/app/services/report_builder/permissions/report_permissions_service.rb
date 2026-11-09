@@ -33,19 +33,20 @@ class ReportBuilder::Permissions::ReportPermissionsService
       resolved_name = type.is_a?(Hash) ? type['resolvedName'] : next
       next unless ReportBuilder::QueryRepository::GRAPH_RESOLVED_NAMES_CLASSES.key?(resolved_name)
 
-      props = node_obj['props']
-      phase_id = props['phaseId']
+      props = ReportBuilder::QueryRepository.normalize_props(node_obj['props'])
+      phase_id = props['phase_id']
+      project_id = props['project_id']
 
+      # A widget whose phase was deleted falls back to its project.
       # see this discussion for details
       # https://github.com/CitizenLabDotCo/citizenlab/pull/6910/files#r1474778771
       phase = phase_id.present? ? Phase.find_by(id: phase_id) : nil
-      if phase
-        if project_ids.exclude?(phase.project_id)
-          return true
-        end
-      elsif props['projectId'].blank? || project_ids.exclude?(props['projectId'])
-        return true
-      end
+
+      return true if phase.nil? && project_id.blank?
+      return true if phase && project_ids.exclude?(phase.project_id)
+      # Each query reads only the ids it needs, so an id nobody checks is a way
+      # into another project's data.
+      return true if project_id.present? && project_ids.exclude?(project_id)
     end
 
     false

@@ -7,13 +7,15 @@ RSpec.describe ReportBuilder::Permissions::ReportPermissionsService do
   let(:phase_id) { phase.id }
   let(:project_id) { phase.project.id }
 
+  let(:props) { { 'phaseId' => phase_id, 'projectId' => project_id, 'questionId' => '' } }
+
   let(:report) do
     layout = build(:layout, craftjs_json: {
       ROOT: {},
       '5Hk6BOKxfJ' => {
         'type' => { 'resolvedName' => 'SurveyQuestionResultWidget' },
         'nodes' => [],
-        'props' => { 'phaseId' => phase_id, 'projectId' => project_id, 'questionId' => '' },
+        'props' => props,
         'custom' => {},
         'hidden' => false,
         'parent' => 'i6qbawCoDc',
@@ -72,6 +74,22 @@ RSpec.describe ReportBuilder::Permissions::ReportPermissionsService do
 
       context 'when project is not configured in widget' do
         let(:project_id) { nil }
+
+        it 'returns error' do
+          expect(described_class.new.editing_disabled_reason_for_report(report, user)).to eq('report_has_unauthorized_data')
+        end
+      end
+
+      context 'when a foreign phase is spelled phase_id' do
+        let(:props) { { 'projectId' => project_id, 'phase_id' => create(:phase).id } }
+
+        it 'returns error' do
+          expect(described_class.new.editing_disabled_reason_for_report(report, user)).to eq('report_has_unauthorized_data')
+        end
+      end
+
+      context 'when a foreign project sits next to a moderated phase' do
+        let(:props) { { 'phaseId' => phase_id, 'projectId' => create(:project).id } }
 
         it 'returns error' do
           expect(described_class.new.editing_disabled_reason_for_report(report, user)).to eq('report_has_unauthorized_data')
