@@ -406,7 +406,7 @@ GEM
     aws-sdk-cloudfront (1.160.0)
       aws-sdk-core (~> 3, >= 3.260.0)
       aws-sigv4 (~> 1.5)
-    aws-sdk-core (3.261.0)
+    aws-sdk-core (3.265.0)
       aws-eventstream (~> 1, >= 1.4.1)
       aws-partitions (~> 1, >= 1.992.0)
       aws-sigv4 (~> 1.9)
@@ -418,8 +418,8 @@ GEM
     aws-sdk-kms (1.118.0)
       aws-sdk-core (~> 3, >= 3.239.1)
       aws-sigv4 (~> 1.5)
-    aws-sdk-route53 (1.124.0)
-      aws-sdk-core (~> 3, >= 3.234.0)
+    aws-sdk-route53 (1.146.0)
+      aws-sdk-core (~> 3, >= 3.265.0)
       aws-sigv4 (~> 1.5)
     aws-sdk-s3 (1.235.0)
       aws-sdk-core (~> 3, >= 3.258.0)
@@ -483,7 +483,7 @@ GEM
     combine_pdf (1.0.31)
       matrix
       ruby-rc4 (>= 0.1.5)
-    concurrent-ruby (1.3.7)
+    concurrent-ruby (1.3.8)
     connection_pool (2.5.5)
     counter_culture (3.14.0)
       activerecord (>= 4.2)
@@ -492,7 +492,7 @@ GEM
       bigdecimal
       rexml
     crass (1.0.8)
-    crawler_detect (1.2.9)
+    crawler_detect (1.2.21)
       qonfig (>= 0.24)
     css_parser (3.3.0)
       addressable
@@ -523,7 +523,7 @@ GEM
     doorkeeper (5.9.9)
       railties (>= 5)
     drb (2.2.3)
-    easy_translate (0.5.1)
+    easy_translate (0.5.2)
       thread
       thread_safe
     erb (6.0.1.1)
@@ -646,7 +646,7 @@ GEM
     http-cookie (1.0.8)
       domain_name (~> 0.5)
     http-form_data (2.3.0)
-    httparty (0.24.0)
+    httparty (0.24.3)
       csv
       mini_mime (>= 1.0.0)
       multi_xml (>= 0.5.2)
@@ -712,12 +712,14 @@ GEM
       activerecord
       kaminari-core (= 1.3.0)
     kaminari-core (1.3.0)
-    koala (3.6.0)
+    koala (3.8.0)
       addressable
       base64
+      cgi
       faraday
       faraday-multipart
-      json (>= 1.8)
+      json (>= 2.0)
+      ostruct
       rexml
     language_server-protocol (3.17.0.3)
     license_finder (7.2.1)
@@ -754,7 +756,7 @@ GEM
       mini_mime
       zeitwerk
     marcel (1.0.4)
-    matrix (0.4.2)
+    matrix (0.4.3)
     mcp (1.8.2)
       json_schemer (>= 2.4)
     method_source (1.1.0)
@@ -780,7 +782,7 @@ GEM
     multipart-post (2.4.1)
     mustache (1.1.1)
     mutex_m (0.3.0)
-    nanoid (2.0.0)
+    nanoid (2.0.1)
     neighbor (0.5.0)
       activerecord (>= 7)
     net-http (0.6.0)
@@ -796,7 +798,7 @@ GEM
       net-protocol
     netrc (0.11.0)
     nio4r (2.7.5)
-    nkf (0.1.3)
+    nkf (0.3.0)
     nokogiri (1.19.6-aarch64-linux-gnu)
       racc (~> 1.4)
     nokogiri (1.19.6-arm64-darwin)
@@ -875,8 +877,8 @@ GEM
     pg (1.7.0-arm64-darwin)
     pg (1.7.0-x86_64-darwin)
     pg (1.7.0-x86_64-linux)
-    pg_query (6.2.2)
-      google-protobuf (>= 3.25.3)
+    pg_query (6.2.5)
+      google-protobuf (>= 4.34.0)
     pg_search (2.3.8)
       activerecord (>= 7.2)
       activesupport (>= 7.2)
@@ -904,9 +906,10 @@ GEM
       coderay
       parser
       unparser
-    pry (0.14.2)
+    pry (0.16.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
+      reline (>= 0.6.0)
     pry-byebug (3.12.0)
       byebug (~> 13.0)
       pry (>= 0.13, < 0.17)
@@ -1073,8 +1076,8 @@ GEM
       activesupport (>= 3.0.0)
       mustache (~> 1.0, >= 0.99.4)
       rspec (~> 3.0)
-    rspec_junit_formatter (0.6.0)
-      rspec-core (>= 2, < 4, != 2.12.0)
+    rspec_junit_formatter (0.8.0)
+      rspec-core (>= 3.13, < 4)
     rubocop (1.69.2)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
@@ -1206,10 +1209,10 @@ GEM
     thor (1.4.0)
     thread (0.2.2)
     thread_safe (0.3.6)
-    tiktoken_ruby (0.0.12-aarch64-linux)
-    tiktoken_ruby (0.0.12-arm64-darwin)
-    tiktoken_ruby (0.0.12-x86_64-darwin)
-    tiktoken_ruby (0.0.12-x86_64-linux)
+    tiktoken_ruby (0.0.18-aarch64-linux)
+    tiktoken_ruby (0.0.18-arm64-darwin)
+    tiktoken_ruby (0.0.18-x86_64-darwin)
+    tiktoken_ruby (0.0.18-x86_64-linux)
     timeout (0.6.1)
     tomlrb (2.0.3)
     trailblazer-option (0.1.2)

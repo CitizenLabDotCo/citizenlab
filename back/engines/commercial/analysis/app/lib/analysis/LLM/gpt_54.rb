@@ -19,14 +19,6 @@ module Analysis
         'gpt-5.4'
       end
 
-      # tiktoken_ruby doesn't know the gpt-5 series yet, so we can't derive the
-      # encoding from the model name. The gpt-5 series uses the same o200k_base
-      # encoding as gpt-4o/gpt-4.1.
-      def token_count(str)
-        enc = Tiktoken.get_encoding(:o200k_base)
-        enc.encode(str).size
-      end
-
       private
 
       # gpt-5.x reasoning models reject sampling parameters.
