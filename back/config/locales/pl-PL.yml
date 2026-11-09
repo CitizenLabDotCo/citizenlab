@@ -140,9 +140,15 @@ pl-PL:
           title: Jaki jest twój temat?
   errors:
     messages:
+      ai_processing_not_allowed: nie mogą być przetwarzane przez sztuczną inteligencję
       in_the_past: musi być w przyszłości
       max_must_be_greater_than_min_characters: Maksimum musi być większe niż minimum.
       max_must_be_greater_than_or_equal_to_min_select_count: Maksimum musi być większe lub równe minimum.
+      not_found: nie zostały znalezione
+      not_in_project: muszą być plikami tego projektu
+      not_utf8: muszą być zapisane w formacie UTF-8
+      too_many_in_conversation: jest ich zbyt wiele jak na jedną rozmowę
+      unsupported_file_type: muszą być plikami PDF o rozmiarze do 4 MB lub plikami Markdown lub tekstowymi o rozmiarze do 100 KB
   events:
     council_meeting_description: |
       <p>Podczas tego posiedzenia Rady zostaną przedstawione inicjatywy obywatelskie, które uzyskały 100 głosów w okresie krótszym niż 3 miesiące.</p><p>Rada wyrazi następnie swoje opinie o każdym z pomysłów.</p>

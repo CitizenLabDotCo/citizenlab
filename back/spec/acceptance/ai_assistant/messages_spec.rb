@@ -13,7 +13,8 @@ resource 'AI assistant messages' do
 
   post 'web_api/v1/ai_assistant_conversations/:ai_assistant_conversation_id/messages' do
     with_options scope: :ai_assistant_message do
-      parameter :content, 'The text of the message', required: true
+      parameter :content, 'The text of the message', required: false
+      parameter :file_ids, 'IDs of project files (PDF, Markdown or text) to share with the assistant', required: false, type: :array
     end
 
     let(:conversation) { create(:ai_assistant_conversation) }
@@ -45,6 +46,26 @@ resource 'AI assistant messages' do
 
         assert_status 422
         expect(json_response_body.dig(:errors, :content, 0, :error)).to eq 'blank'
+      end
+
+      example '[error] Share a file that may not be processed by AI', :active_job_que_adapter, document: false do
+        file = create(:file, projects: [conversation.subject.project], ai_processing_allowed: false)
+
+        do_request(ai_assistant_message: { content:, file_ids: [file.id] })
+
+        assert_status 422
+        expect(json_response_body.dig(:errors, :file_ids, 0, :error)).to eq 'ai_processing_not_allowed'
+      end
+
+      example '[error] Share a file the user may not see', :active_job_que_adapter, document: false do
+        file = create(:file, projects: [conversation.subject.project], ai_processing_allowed: true)
+        # Only super admins can use the assistant for now, and they may see every file.
+        allow_any_instance_of(Files::FilePolicy).to receive(:show?).and_return(false)
+
+        do_request(ai_assistant_message: { content:, file_ids: [file.id] })
+
+        assert_status 401
+        expect(conversation.messages).to be_empty
       end
     end
 

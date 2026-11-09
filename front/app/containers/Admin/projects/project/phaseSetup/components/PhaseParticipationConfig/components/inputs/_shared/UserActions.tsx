@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import {
   Box,
@@ -41,13 +41,16 @@ const UserActions = ({
   phaseId,
   layout = 'page',
   accessOnlyActions = [],
+  reactingSettings,
 }: {
   showCommentingToggle?: boolean;
   showReactingToggle?: boolean;
   phaseId?: string;
-  /** In the workspace panel the likes limit is shown by the caller, last. */
+  /** In the workspace panel the likes limit is shown by the caller. */
   layout?: 'page' | 'panel';
   accessOnlyActions?: AccessOnlyAction[];
+  /** Shown right below the reacting toggle, before the access-only actions. */
+  reactingSettings?: ReactNode;
   submission_enabled: boolean;
   commenting_enabled: boolean;
   reacting_enabled: boolean;
@@ -70,12 +73,14 @@ const UserActions = ({
   return (
     <>
       <ActionsField>
-        <SubSectionTitle>
-          <FormattedMessage {...messages.enabledActionsForUsers} />
-          <IconTooltip
-            content={<FormattedMessage {...messages.enabledActionsTooltip} />}
-          />
-        </SubSectionTitle>
+        {!panel && (
+          <SubSectionTitle>
+            <FormattedMessage {...messages.enabledActionsForUsers} />
+            <IconTooltip
+              content={<FormattedMessage {...messages.enabledActionsTooltip} />}
+            />
+          </SubSectionTitle>
+        )}
 
         <ActionToggleRow
           phaseId={phaseId}
@@ -126,6 +131,8 @@ const UserActions = ({
             />
           </ActionToggleRow>
         )}
+
+        {reactingSettings}
 
         {phaseId && (
           <Box>

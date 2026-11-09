@@ -464,6 +464,16 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.components.CommonGroundResults.allStatementsDescription1": {
+    "state": "verified",
+    "verified_at": "2026-11-04T09:56:33.718990Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.CommonGroundResults.allStatementsTitle": {
+    "state": "verified",
+    "verified_at": "2026-11-04T09:56:33.718990Z",
+    "verified_by": "Jelena"
+  },
   "app.components.CommonGroundResults.closeCallsDescription": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -7379,6 +7389,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.AdminPage.ProjectDescription.saveErrorUnauthorizedFile": {
+    "state": "verified",
+    "verified_at": "2026-10-29T16:59:25.568360Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.AdminPage.ProjectDescription.toggleLabel": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -8287,6 +8302,11 @@
   "app.containers.CustomPageBuilder.saveError": {
     "state": "verified",
     "verified_at": "2026-09-03T08:29:21.726036Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.CustomPageBuilder.saveErrorUnauthorizedFile": {
+    "state": "verified",
+    "verified_at": "2026-10-29T16:59:25.568360Z",
     "verified_by": "Jelena"
   },
   "app.containers.CustomPageShow.editPage": {
@@ -11822,6 +11842,11 @@
   "app.containers.ProjectPageBuilder.saveError": {
     "state": "verified",
     "verified_at": "2026-07-08T12:11:44.680180Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.ProjectPageBuilder.saveErrorUnauthorizedFile": {
+    "state": "verified",
+    "verified_at": "2026-10-29T16:59:25.568360Z",
     "verified_by": "Jelena"
   },
   "app.containers.ProjectPageBuilder.toolboxLockedNote": {

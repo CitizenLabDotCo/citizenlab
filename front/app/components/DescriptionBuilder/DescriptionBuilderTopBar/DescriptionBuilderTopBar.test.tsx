@@ -70,7 +70,7 @@ const defaultProps = {
   previewLink: { to: '/projects/preview' },
   onSave: () => {},
   isSaving: false,
-  saveHasError: false,
+  saveError: null,
 } as unknown as React.ComponentProps<typeof DescriptionBuilderTopBar>;
 
 describe('DescriptionBuilderTopBar', () => {
@@ -215,5 +215,47 @@ describe('DescriptionBuilderTopBar', () => {
     expect(screen.getByTestId('contentBuilderTopBarSaveButton')).toHaveClass(
       'disabled'
     );
+  });
+
+  it('shows no save error by default', () => {
+    render(
+      <Editor>
+        <DescriptionBuilderTopBar {...defaultProps} />
+      </Editor>
+    );
+    expect(
+      screen.queryByText(
+        'Something went wrong while saving the project description.'
+      )
+    ).not.toBeInTheDocument();
+  });
+
+  it('surfaces a generic save error', () => {
+    render(
+      <Editor>
+        <DescriptionBuilderTopBar {...defaultProps} saveError="generic" />
+      </Editor>
+    );
+    expect(
+      screen.getByText(
+        'Something went wrong while saving the project description.'
+      )
+    ).toBeInTheDocument();
+  });
+
+  it('explains a save refused because of a file', () => {
+    render(
+      <Editor>
+        <DescriptionBuilderTopBar
+          {...defaultProps}
+          saveError="unauthorizedFile"
+        />
+      </Editor>
+    );
+    expect(
+      screen.getByText(
+        "The description wasn't saved because you can't use one of the files you added. Remove it, or ask an admin to add it."
+      )
+    ).toBeInTheDocument();
   });
 });

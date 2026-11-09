@@ -1,11 +1,6 @@
 import React from 'react';
 
-import {
-  Box,
-  IconTooltip,
-  Text,
-  Toggle,
-} from '@citizenlab/cl2-component-library';
+import { Box, Text, Toggle, bo } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -52,7 +47,7 @@ const DislikingToggle = ({
 
   return (
     <>
-      <Box display="flex" alignItems="center" gap="4px" minHeight="36px">
+      <Box display="flex" alignItems="center" minHeight="42px">
         <Toggle
           variant="bo"
           checked={!!reacting_dislike_enabled}
@@ -61,31 +56,30 @@ const DislikingToggle = ({
           }
           label={
             <Text as="span" variant="boControl" m="0">
-              {formatMessage(messages.dislikingPosts)}
+              {formatMessage(messages.dislikingPosts2)}
             </Text>
           }
-        />
-        <IconTooltip
-          content={formatMessage(messages.disableDislikingTooltip)}
         />
       </Box>
       <Error apiErrors={apiErrors && apiErrors.reacting_dislike_enabled} />
       {reacting_dislike_enabled && (
-        <ReactionLimitSettings
-          name="dislikingmethod"
-          title={formatMessage(messages.dislikingMethodTitle)}
-          method={reacting_dislike_method}
-          max={reacting_dislike_limited_max}
-          maxLabel={formatMessage(messages.maxDislikes)}
-          onMethodChange={handleReactingDislikeMethodOnChange}
-          onMaxChange={handleDislikingLimitOnChange}
-          error={
-            <Error
-              text={noDislikingLimitError}
-              apiErrors={apiErrors && apiErrors.reacting_limit}
-            />
-          }
-        />
+        <Box pl={bo.toggleLabelIndent}>
+          <ReactionLimitSettings
+            name="dislikingmethod"
+            title={formatMessage(messages.dislikingMethodTitle)}
+            method={reacting_dislike_method}
+            max={reacting_dislike_limited_max}
+            maxLabel={formatMessage(messages.maxDislikes)}
+            onMethodChange={handleReactingDislikeMethodOnChange}
+            onMaxChange={handleDislikingLimitOnChange}
+            error={
+              <Error
+                text={noDislikingLimitError}
+                apiErrors={apiErrors && apiErrors.reacting_limit}
+              />
+            }
+          />
+        </Box>
       )}
     </>
   );
