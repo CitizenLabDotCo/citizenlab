@@ -21424,6 +21424,16 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
+  "app.modules.commercial.idea_assignment.admin.components.assignee": {
+    "state": "verified",
+    "verified_at": "2026-11-09T21:54:53.976548Z",
+    "verified_by": "Roger"
+  },
+  "app.modules.commercial.idea_assignment.admin.components.assigneeDescription": {
+    "state": "verified",
+    "verified_at": "2026-11-09T21:54:53.976548Z",
+    "verified_by": "Roger"
+  },
   "app.modules.commercial.report_builder.admin.components.TopBar.reportBuilder": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",

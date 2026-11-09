@@ -4755,7 +4755,7 @@
   "app.modules.commercial.flag_inappropriate_content.admin.components.userFlaggedWarningText": "Segnalato come inappropriato da un utente della piattaforma.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.warnings": "Avvertenze sul contenuto",
   "app.modules.commercial.idea_assignment.admin.components.assignee": "Assegnatario",
-  "app.modules.commercial.idea_assignment.admin.components.assigneeDescription": "Modera le nuove idee",
+  "app.modules.commercial.idea_assignment.admin.components.assigneeDescription": "Modera i nuovi contributi",
   "app.modules.commercial.report_builder.admin.components.TopBar.reportBuilder": "Generatore di report",
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.ai": "AI",
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.widgets": "Widget",

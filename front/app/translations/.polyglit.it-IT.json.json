@@ -12919,15 +12919,40 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+  "app.errors.new_phone_blank": {
+    "state": "verified",
+    "verified_at": "2026-11-09T21:54:53.897108Z",
+    "verified_by": "Roger"
+  },
+  "app.errors.new_phone_invalid": {
+    "state": "verified",
+    "verified_at": "2026-11-09T21:54:53.897108Z",
+    "verified_by": "Roger"
+  },
+  "app.errors.new_phone_taken": {
+    "state": "verified",
+    "verified_at": "2026-11-09T21:54:53.897108Z",
+    "verified_by": "Roger"
+  },
   "app.errors.no_invites_specified": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+  "app.errors.no_previewer_phone": {
+    "state": "verified",
+    "verified_at": "2026-11-09T21:54:53.897108Z",
+    "verified_by": "Roger"
+  },
   "app.errors.no_recipients": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
+  },
+  "app.errors.not_supported_in_standalone_phase": {
+    "state": "verified",
+    "verified_at": "2026-11-09T21:54:53.897108Z",
+    "verified_by": "Roger"
   },
   "app.errors.number_invalid": {
     "state": "verified",
@@ -12963,6 +12988,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
+  },
+  "app.errors.sms_not_configured": {
+    "state": "verified",
+    "verified_at": "2026-11-09T21:54:53.897108Z",
+    "verified_by": "Roger"
   },
   "app.errors.something_went_wrong": {
     "state": "verified",
@@ -13013,6 +13043,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
+  },
+  "app.errors.unexpected_invite_error": {
+    "state": "verified",
+    "verified_at": "2026-11-09T21:54:53.897108Z",
+    "verified_by": "Roger"
+  },
+  "app.errors.unexpected_seats_count_error": {
+    "state": "verified",
+    "verified_at": "2026-11-09T21:54:53.897108Z",
+    "verified_by": "Roger"
   },
   "app.errors.unknown_group": {
     "state": "verified",
@@ -14212,6 +14252,41 @@
   "containers.OAuthAuthorize.denyButton": {
     "state": "verified",
     "verified_at": "2026-07-01T13:49:11.797637Z",
+    "verified_by": "Roger"
+  },
+  "containers.OAuthAuthorize.inControlDetail2": {
+    "state": "verified",
+    "verified_at": "2026-11-09T21:54:53.897108Z",
+    "verified_by": "Roger"
+  },
+  "containers.OAuthAuthorize.inControlTitle": {
+    "state": "verified",
+    "verified_at": "2026-11-09T21:54:53.897108Z",
+    "verified_by": "Roger"
+  },
+  "containers.OAuthAuthorize.invalidRequestExplanation": {
+    "state": "verified",
+    "verified_at": "2026-11-09T21:54:53.897108Z",
+    "verified_by": "Roger"
+  },
+  "containers.OAuthAuthorize.invalidRequestHeading": {
+    "state": "verified",
+    "verified_at": "2026-11-09T21:54:53.897108Z",
+    "verified_by": "Roger"
+  },
+  "containers.OAuthAuthorize.pageTitle": {
+    "state": "verified",
+    "verified_at": "2026-11-09T21:54:53.897108Z",
+    "verified_by": "Roger"
+  },
+  "containers.OAuthAuthorize.scopeFallbackDetail2": {
+    "state": "verified",
+    "verified_at": "2026-11-09T21:54:53.897108Z",
+    "verified_by": "Roger"
+  },
+  "containers.OAuthAuthorize.scopeFallbackTitle2": {
+    "state": "verified",
+    "verified_at": "2026-11-09T21:54:53.897108Z",
     "verified_by": "Roger"
   },
   "containers.OAuthAuthorize.scopeMcpAccessDetail": {
