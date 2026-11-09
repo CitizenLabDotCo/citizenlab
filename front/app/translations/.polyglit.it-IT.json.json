@@ -14214,6 +14214,16 @@
     "verified_at": "2026-07-01T13:49:11.797637Z",
     "verified_by": "Roger"
   },
+  "containers.OAuthAuthorize.signInButton": {
+    "state": "verified",
+    "verified_at": "2026-11-09T21:51:24.358001Z",
+    "verified_by": "Roger"
+  },
+  "containers.OAuthAuthorize.signInPrompt": {
+    "state": "verified",
+    "verified_at": "2026-11-09T21:51:24.358001Z",
+    "verified_by": "Roger"
+  },
   "containers.SiteMap.allProjects": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",

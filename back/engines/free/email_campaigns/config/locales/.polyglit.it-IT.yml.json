@@ -154,6 +154,11 @@
     "verified_at": "2026-03-18T16:40:24.392927Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.admin_labels.recipient_segment.admin_who_generated_the_report": {
+    "state": "verified",
+    "verified_at": "2026-11-09T21:51:24.490469Z",
+    "verified_by": "Roger"
+  },
   "email_campaigns.admin_labels.recipient_segment.admins": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.392927Z",
@@ -349,10 +354,20 @@
     "verified_at": "2026-03-18T16:40:24.392927Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.admin_labels.trigger.3_days_after_invite_is_sent": {
+    "state": "verified",
+    "verified_at": "2026-11-09T21:51:24.490469Z",
+    "verified_by": "Roger"
+  },
   "email_campaigns.admin_labels.trigger.7_days_after_invite_is_sent": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.392927Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.admin_labels.trigger.7_days_before_phase_starts": {
+    "state": "verified",
+    "verified_at": "2026-11-09T21:51:24.490469Z",
+    "verified_by": "Roger"
   },
   "email_campaigns.admin_labels.trigger.7_days_before_the_project_changes_phase": {
     "state": "verified",
@@ -443,6 +458,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.392927Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.admin_labels.trigger.phase_starts": {
+    "state": "verified",
+    "verified_at": "2026-11-09T21:51:24.490469Z",
+    "verified_by": "Roger"
   },
   "email_campaigns.admin_labels.trigger.project_phase_changes": {
     "state": "verified",
