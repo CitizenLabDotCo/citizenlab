@@ -116,7 +116,7 @@ const ProjectWorkspace = ({
   const activeView = viewFromPathname(pathname);
 
   const inPhase = !!(phase || draft);
-  // An open phase email takes the whole width, like the other views.
+  // An open phase email takes the whole width.
   const editingEmail = /\/emails\/[^/]+\/edit$/.test(pathname);
   // The map configuration does the same, and keeps the phase panel mounted so
   // a phase that isn't saved yet keeps its edits.
@@ -158,7 +158,9 @@ const ProjectWorkspace = ({
     </Box>
   );
   const showParticipation =
-    withParticipation && !pending && (!inPhase || showPanels);
+    withParticipation &&
+    !pending &&
+    (!inPhase || (!editingEmail && !editingMap));
   const participationSlot = showParticipation && (
     <CollapsiblePanel
       collapsed={collapsed}
