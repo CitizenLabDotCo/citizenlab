@@ -4829,6 +4829,11 @@
     "verified_at": "2026-11-05T13:49:12.963809Z",
     "verified_by": "Jelena"
   },
+  "app.components.aiAssistant.attachFile": {
+    "state": "verified",
+    "verified_at": "2026-11-09T14:29:35.395887Z",
+    "verified_by": "Jelena"
+  },
   "app.components.aiAssistant.awaitingApprovalHint": {
     "state": "verified",
     "verified_at": "2026-11-05T13:49:12.963809Z",
@@ -4844,9 +4849,19 @@
     "verified_at": "2026-11-05T13:49:12.963809Z",
     "verified_by": "Jelena"
   },
+  "app.components.aiAssistant.dropFiles": {
+    "state": "verified",
+    "verified_at": "2026-11-09T14:29:35.395887Z",
+    "verified_by": "Jelena"
+  },
   "app.components.aiAssistant.elapsed": {
     "state": "verified",
     "verified_at": "2026-11-02T07:29:11.714511Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.aiAssistant.errorAiProcessingNotAllowed": {
+    "state": "verified",
+    "verified_at": "2026-11-09T14:29:35.395887Z",
     "verified_by": "Jelena"
   },
   "app.components.aiAssistant.errorContextTooLong": {
@@ -4857,6 +4872,16 @@
   "app.components.aiAssistant.errorConversationBusy": {
     "state": "verified",
     "verified_at": "2026-11-02T07:29:11.714511Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.aiAssistant.errorFileNotInProject": {
+    "state": "verified",
+    "verified_at": "2026-11-09T14:29:35.395887Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.aiAssistant.errorFileNotUtf8": {
+    "state": "verified",
+    "verified_at": "2026-11-09T14:29:35.395887Z",
     "verified_by": "Jelena"
   },
   "app.components.aiAssistant.errorGeneric": {
@@ -4884,6 +4909,11 @@
     "verified_at": "2026-11-02T07:29:11.714511Z",
     "verified_by": "Jelena"
   },
+  "app.components.aiAssistant.errorTooManyConversationFiles": {
+    "state": "verified",
+    "verified_at": "2026-11-09T14:29:35.395887Z",
+    "verified_by": "Jelena"
+  },
   "app.components.aiAssistant.errorToolBudgetExceeded": {
     "state": "verified",
     "verified_at": "2026-11-02T08:13:57.268481Z",
@@ -4902,6 +4932,26 @@
   "app.components.aiAssistant.errorTurnTimedOut": {
     "state": "verified",
     "verified_at": "2026-11-02T07:29:11.714511Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.aiAssistant.errorUnsupportedFileType2": {
+    "state": "verified",
+    "verified_at": "2026-11-09T14:29:35.395887Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.aiAssistant.errorUpload": {
+    "state": "verified",
+    "verified_at": "2026-11-09T14:29:35.395887Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.aiAssistant.filesNotice": {
+    "state": "verified",
+    "verified_at": "2026-11-09T14:29:35.395887Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.aiAssistant.filesRejected2": {
+    "state": "verified",
+    "verified_at": "2026-11-09T14:29:35.395887Z",
     "verified_by": "Jelena"
   },
   "app.components.aiAssistant.newChat": {
@@ -4927,6 +4977,11 @@
   "app.components.aiAssistant.rejectReasonLabel": {
     "state": "verified",
     "verified_at": "2026-11-05T13:49:12.963809Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.aiAssistant.removeFile": {
+    "state": "verified",
+    "verified_at": "2026-11-09T14:29:35.395887Z",
     "verified_by": "Jelena"
   },
   "app.components.aiAssistant.send": {
@@ -6102,6 +6157,11 @@
   "app.components.formBuilder.surveyAssistant.intro": {
     "state": "verified",
     "verified_at": "2026-11-02T07:29:11.714511Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.formBuilder.surveyAssistant.intro2": {
+    "state": "verified",
+    "verified_at": "2026-11-09T14:29:35.395887Z",
     "verified_by": "Jelena"
   },
   "app.components.formBuilder.surveyAssistant.outlineSummary": {
