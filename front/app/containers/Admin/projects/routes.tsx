@@ -552,7 +552,12 @@ const phaseSetupRoute = createRoute({
   path: '$phaseId/setup',
   validateSearch: (search: Record<string, unknown>) =>
     yup
-      .object({ add_questions: yup.boolean().optional() })
+      .object({
+        survey_action: yup
+          .mixed<'copy' | 'pdf' | 'excel'>()
+          .oneOf(['copy', 'pdf', 'excel'])
+          .optional(),
+      })
       .validateSync(search, {
         stripUnknown: true,
       }),

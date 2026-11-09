@@ -66,13 +66,8 @@ const BuildFields = ({
   onDatesChange,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const { add_questions } = useSearch({ strict: false });
-  const [surveySetupOpened, setSurveySetupOpened] = useState(!!add_questions);
-
-  const closeSurveySetup = () => {
-    setSurveySetupOpened(false);
-    if (add_questions) removeSearchParams(['add_questions']);
-  };
+  const { survey_action } = useSearch({ strict: false });
+  const [surveySetupOpened, setSurveySetupOpened] = useState(false);
 
   const surveyOptionsShown = !standalone && isSurveyMethod(participationMethod);
 
@@ -198,7 +193,11 @@ const BuildFields = ({
           projectId={projectId}
           phaseId={phaseId}
           opened={surveySetupOpened}
-          onClose={closeSurveySetup}
+          onClose={() => setSurveySetupOpened(false)}
+          initialAction={survey_action}
+          onCloseAction={() => {
+            if (survey_action) removeSearchParams(['survey_action']);
+          }}
         />
       )}
     </Box>

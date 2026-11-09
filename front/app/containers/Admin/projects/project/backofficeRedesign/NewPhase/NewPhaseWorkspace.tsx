@@ -29,6 +29,9 @@ import ProjectWorkspace from '..';
 import BuildFields from '../Phase/BuildPanel/BuildFields';
 import methodSectionMessages from '../Phase/BuildPanel/BuildFields/MethodSection/messages';
 import PlacementCard from '../Phase/BuildPanel/PlacementCard';
+import SurveySetupModal, {
+  SurveySetupAction,
+} from '../Phase/BuildPanel/SurveySetupModal';
 import DraftMethodSettings from '../Phase/DraftMethodSettings';
 import PhasePreview from '../Phase/PhasePreview';
 
@@ -73,9 +76,10 @@ const NewPhaseWorkspace = ({
     formData: IUpdatedPhaseProperties;
   }>();
   const [saveFailed, setSaveFailed] = useState(false);
+  const [surveySetupOpened, setSurveySetupOpened] = useState(false);
   const [destination, setDestination] = useState<{
     phaseId: string;
-    addQuestions?: boolean;
+    surveyAction?: SurveySetupAction;
   }>();
 
   const files = usePhaseFileAttachments({
@@ -142,24 +146,37 @@ const NewPhaseWorkspace = ({
 
   useRegisterPageSaver('draft', { dirty, save });
 
-  const addQuestions = async () => {
-    if (!pageSave || pageSave.saving) return;
+  const saveAndOpenSurvey = async (surveyAction: SurveySetupAction) => {
+    if (!pageSave || pageSave.saving || files.isUploadingFile) return;
 
     setDirty(true);
     const failed = await pageSave.saveAll('leave', 'draft');
+    setSurveySetupOpened(false);
     if (failed.length > 0 || !savedPhase.current) return;
 
     pageSave.leave();
-    setDestination({ phaseId: savedPhase.current.id, addQuestions: true });
+    setDestination({ phaseId: savedPhase.current.id, surveyAction });
   };
 
   if (destination) {
+    const params = { projectId, phaseId: destination.phaseId };
+
+    if (destination.surveyAction === 'edit') {
+      return (
+        <Navigate
+          to="/admin/projects/$projectId/phases/$phaseId/survey-form/edit"
+          params={params}
+          replace
+        />
+      );
+    }
+
     return (
       <Navigate
         to="/admin/projects/$projectId/phases/$phaseId/setup"
-        params={{ projectId, phaseId: destination.phaseId }}
-        search={{ add_questions: destination.addQuestions }}
-        replace={destination.addQuestions}
+        params={params}
+        search={{ survey_action: destination.surveyAction }}
+        replace={!!destination.surveyAction}
       />
     );
   }
@@ -198,9 +215,7 @@ const NewPhaseWorkspace = ({
                   data-cy="add-draft-survey-questions"
                   boSize="medium"
                   width="100%"
-                  processing={pageSave?.saving}
-                  disabled={files.isUploadingFile}
-                  onClick={addQuestions}
+                  onClick={() => setSurveySetupOpened(true)}
                 >
                   {formatMessage(methodSectionMessages.addQuestions)}
                 </Button>
@@ -244,6 +259,18 @@ const NewPhaseWorkspace = ({
       }
     >
       <PhasePreview projectId={projectId} />
+      {participationMethod === 'native_survey' && (
+        <SurveySetupModal
+          projectId={projectId}
+          opened={surveySetupOpened}
+          onClose={() => setSurveySetupOpened(false)}
+          draft={{
+            onChoose: saveAndOpenSurvey,
+            saving: !!pageSave?.saving,
+            uploading: files.isUploadingFile,
+          }}
+        />
+      )}
     </ProjectWorkspace>
   );
 };
