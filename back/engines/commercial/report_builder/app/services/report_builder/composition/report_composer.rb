@@ -345,7 +345,7 @@ module ReportBuilder
       end
 
       def author_block(input)
-        result = block_author.author(
+        result = block_writer.create(
           title: input['title'],
           source: input['source'],
           config_schema: input['config_schema'],
@@ -354,7 +354,7 @@ module ReportBuilder
         @authored_blocks << result.block_id
 
         { text: "Stored. Place it with #{placement(result)}." }
-      rescue ChartBlockAuthor::Rejected => e
+      rescue ChartBlockWriter::Rejected => e
         { error: true, text: e.message }
       end
 
@@ -366,10 +366,10 @@ module ReportBuilder
           return { error: true, text: "No block #{block_id} was authored in this run." }
         end
 
-        result = block_author.edit(block_id: block_id, find: input['find'].to_s, replace: input['replace'].to_s)
+        result = block_writer.edit(block_id: block_id, find: input['find'].to_s, replace: input['replace'].to_s)
 
         { text: "Edited. The chart is now #{placement(result)} — patch the node that places it." }
-      rescue ChartBlockAuthor::Rejected => e
+      rescue ChartBlockWriter::Rejected => e
         { error: true, text: e.message }
       end
 
@@ -377,8 +377,8 @@ module ReportBuilder
         %({"blockId":"#{result.block_id}","version":#{result.version_number}})
       end
 
-      def block_author
-        @block_author ||= ChartBlockAuthor.new(@author, locale: @locale, run_id: @run_record&.id)
+      def block_writer
+        @block_writer ||= ChartBlockWriter.new(@author, locale: @locale, run_id: @run_record&.id)
       end
 
       # Rendering the report, one part of it, or one chart, and reporting what the

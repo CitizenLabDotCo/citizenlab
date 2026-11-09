@@ -13,7 +13,7 @@ module ReportBuilder
     #
     # Nothing is stored half-built, so nothing has to be repaired later at the moment a
     # reader opens the report.
-    class ChartBlockAuthor
+    class ChartBlockWriter
       class Rejected < StandardError; end
 
       Result = Data.define(:block_id, :version_number)
@@ -54,7 +54,7 @@ module ReportBuilder
       # @param config_schema [Hash] a JSON Schema object describing the sidebar fields.
       # @param messages [Hash] locale => { key => text }, for every string the block shows.
       # @raise [Rejected] with a message the composer can correct itself from.
-      def author(title:, source:, config_schema: nil, messages: nil)
+      def create(title:, source:, config_schema: nil, messages: nil)
         raise Rejected, 'source is required.' if source.blank?
 
         schema = validate_config_schema!(config_schema)

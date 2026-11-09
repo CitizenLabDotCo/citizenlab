@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-describe ReportBuilder::Composition::ChartBlockAuthor do
-  subject(:chart_author) { described_class.new(author, locale: 'en') }
+describe ReportBuilder::Composition::ChartBlockWriter do
+  subject(:chart_writer) { described_class.new(author, locale: 'en') }
 
   # Layer 2's restricted role is cluster-global; provision it idempotently so the
   # authored query can be validated the way the composer validates it.
@@ -47,7 +47,7 @@ describe ReportBuilder::Composition::ChartBlockAuthor do
   end
 
   def author_with(config_schema = nil)
-    chart_author.author(
+    chart_writer.create(
       title: 'Chart', source: source, config_schema: config_schema, messages: messages
     )
   end
@@ -81,7 +81,7 @@ describe ReportBuilder::Composition::ChartBlockAuthor do
     end
 
     it 'refuses a source that is empty' do
-      expect { chart_author.author(title: 'Chart', source: ' ', messages: messages) }
+      expect { chart_writer.create(title: 'Chart', source: ' ', messages: messages) }
         .to raise_error described_class::Rejected, /source is required/
     end
   end
@@ -202,7 +202,7 @@ describe ReportBuilder::Composition::ChartBlockAuthor do
 
   describe 'messages' do
     it 'refuses a shape the renderer could not read' do
-      expect { chart_author.author(title: 'Chart', source: source, messages: { 'en' => 'Contributions' }) }
+      expect { chart_writer.create(title: 'Chart', source: source, messages: { 'en' => 'Contributions' }) }
         .to raise_error described_class::Rejected, /locale to key-value pairs/
     end
   end
@@ -213,7 +213,7 @@ describe ReportBuilder::Composition::ChartBlockAuthor do
     it 'writes the change as a new version and leaves the old one alone' do
       previous = stored_version(authored)
 
-      result = chart_author.edit(
+      result = chart_writer.edit(
         block_id: authored.block_id, find: "msg('total')", replace: "msg('heading')"
       )
 
@@ -227,13 +227,13 @@ describe ReportBuilder::Composition::ChartBlockAuthor do
       previous = stored_version(authored)
       before = { source: previous.source, bundle: previous.bundle, messages: previous.messages }
 
-      chart_author.edit(block_id: authored.block_id, find: "msg('total')", replace: "msg('heading')")
+      chart_writer.edit(block_id: authored.block_id, find: "msg('total')", replace: "msg('heading')")
 
       expect(previous.reload).to have_attributes(before)
     end
 
     it 'carries the catalogues over, so the edit does not silently drop them' do
-      result = chart_author.edit(
+      result = chart_writer.edit(
         block_id: authored.block_id, find: "msg('total')", replace: "msg('heading')"
       )
 
@@ -243,14 +243,14 @@ describe ReportBuilder::Composition::ChartBlockAuthor do
     # Silence here would be worse than an error: the model would go on to place a
     # version it believes it fixed.
     it 'refuses a passage that is not there, and changes nothing' do
-      expect { chart_author.edit(block_id: authored.block_id, find: 'not in the file', replace: 'x') }
+      expect { chart_writer.edit(block_id: authored.block_id, find: 'not in the file', replace: 'x') }
         .to raise_error(described_class::Rejected, /not in the source/)
 
       expect(ContentBuilder::CustomBlock.find(authored.block_id).versions.count).to eq 1
     end
 
     it 'refuses a passage that appears more than once, saying how many' do
-      expect { chart_author.edit(block_id: authored.block_id, find: 'const', replace: 'let') }
+      expect { chart_writer.edit(block_id: authored.block_id, find: 'const', replace: 'let') }
         .to raise_error(described_class::Rejected, /appears 2 times/)
     end
 
@@ -264,7 +264,7 @@ describe ReportBuilder::Composition::ChartBlockAuthor do
         headers: { 'Content-Type' => 'application/json' }
       )
 
-      expect { chart_author.edit(block_id: authored.block_id, find: "msg('total')", replace: 'nope(') }
+      expect { chart_writer.edit(block_id: authored.block_id, find: "msg('total')", replace: 'nope(') }
         .to raise_error(described_class::Rejected, /does not build/)
       expect(ContentBuilder::CustomBlock.find(authored.block_id).versions.count).to eq 1
     end
@@ -272,7 +272,7 @@ describe ReportBuilder::Composition::ChartBlockAuthor do
     # Generated source is full of backslashes; a replacement read as a backreference
     # would quietly corrupt the file.
     it 'puts the replacement in literally, backslashes and all' do
-      result = chart_author.edit(
+      result = chart_writer.edit(
         block_id: authored.block_id, find: "msg('total')", replace: 'String.raw`\\d+`'
       )
 
@@ -280,12 +280,12 @@ describe ReportBuilder::Composition::ChartBlockAuthor do
     end
 
     it 'refuses a block it does not know' do
-      expect { chart_author.edit(block_id: SecureRandom.uuid, find: 'a', replace: 'b') }
+      expect { chart_writer.edit(block_id: SecureRandom.uuid, find: 'a', replace: 'b') }
         .to raise_error(described_class::Rejected, /No block/)
     end
 
     it 'refuses an empty search' do
-      expect { chart_author.edit(block_id: authored.block_id, find: '', replace: 'b') }
+      expect { chart_writer.edit(block_id: authored.block_id, find: '', replace: 'b') }
         .to raise_error(described_class::Rejected, /find is required/)
     end
   end
