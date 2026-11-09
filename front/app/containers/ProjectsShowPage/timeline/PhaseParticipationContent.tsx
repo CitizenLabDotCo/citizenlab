@@ -10,6 +10,7 @@ import ParticipationPermission from 'containers/ProjectsShowPage/shared/Particip
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 
 import PreviewSkeleton from 'components/admin/PhasePreview/PreviewSkeleton';
+import SurveyCover from 'components/admin/PhasePreview/SurveyCover';
 import ContentContainer from 'components/ContentContainer';
 import StatusModule from 'components/StatusModule';
 
@@ -73,7 +74,7 @@ const PhaseParticipationContent = ({
   ) {
     return (
       <ContentContainer maxWidth={maxPageWidth}>
-        <PreviewSkeleton kind="form" />
+        <SurveyCover projectId={project.id} phaseId={phase.id} />
       </ContentContainer>
     );
   }
@@ -167,7 +168,13 @@ const PhaseParticipationContent = ({
     showVotingResults ||
     showCommonGround;
 
-  if (!hasContainedContent && !showReport) return null;
+  if (!hasContainedContent && !showReport) {
+    return getPhasePreview() && participationMethod === 'information' ? (
+      <ContentContainer maxWidth={maxPageWidth}>
+        <PreviewSkeleton />
+      </ContentContainer>
+    ) : null;
+  }
 
   return (
     <>

@@ -46,6 +46,7 @@ describe('Phase preview live edits', () => {
       )
       .then((phase) => {
         surveyPhaseId = phase.body.data.id;
+        return cy.apiCreateSurveyQuestions(surveyPhaseId, ['page', 'text']);
       });
   });
 
@@ -155,8 +156,56 @@ describe('Phase preview live edits', () => {
         cy.wrap(body)
           .contains('button', 'Answer future survey')
           .should('be.visible');
+        cy.wrap(body).contains('1 question').should('be.visible');
+        cy.wrap(body).contains('About 1 minute').should('be.visible');
         cy.wrap(body).find('#e2e-participation-cta-poll').should('not.exist');
       });
+  });
+
+  it('shows the Spotlight survey cover and keeps its completion local', () => {
+    cy.setAdminLoginCookie();
+    cy.apiCreatePhase({
+      projectId,
+      title: 'Spotlight cover',
+      startAt: '2091-01-01',
+      participationMethod: 'native_survey',
+      placementType: 'standalone',
+      allow_anonymous_participation: true,
+      nativeSurveyTitleMultiloc: { en: 'Spotlight form' },
+      nativeSurveyButtonMultiloc: { en: 'Take the Spotlight survey' },
+    }).then(({ body }) => {
+      const spotlightId = body.data.id;
+      cy.apiCreateSurveyQuestions(spotlightId, ['page', 'text']);
+      cy.intercept('POST', `**/phases/${spotlightId}/inputs`, () => {
+        throw new Error('Preview must not submit a survey to the server');
+      });
+      cy.visit(
+        `admin/projects/${projectId}/phases/${spotlightId}/setup?project_backoffice_redesign`
+      );
+
+      const phone = () =>
+        cy
+          .get('[data-cy="e2e-phase-preview"] iframe', { timeout: 60000 })
+          .its('0.contentDocument.body')
+          .should('not.be.empty')
+          .then((body) => cy.wrap(body));
+      phone().contains('Spotlight cover').should('be.visible');
+      phone().contains('1 question').should('be.visible');
+      phone().contains('Starts in').should('be.visible');
+      phone().contains('Take the Spotlight survey').should('not.exist');
+
+      cy.get('[role="group"][aria-label="Preview phase state"]')
+        .contains('button', 'Open')
+        .click();
+      phone().contains('button', 'Take the Spotlight survey').click();
+      phone().contains('Question: text').should('be.visible');
+      phone().contains('button', 'Submit').click();
+      phone()
+        .contains('Thank you for sharing your input!')
+        .should('be.visible');
+      phone().contains('Submission identifier').should('not.exist');
+      phone().contains('Send this code to my email').should('not.exist');
+    });
   });
 
   it('switches lifecycle locally without reloading the phone or losing answers', () => {

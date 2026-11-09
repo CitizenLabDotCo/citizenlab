@@ -47,14 +47,14 @@ export const previewDates = (
     };
   }
 
+  const duration = end - start;
+
   return {
     start_at: new Date(now - day).toISOString(),
     end_at:
       dates.end_at === null
         ? null
-        : Number.isFinite(end) && end > now
-        ? dates.end_at
-        : new Date(now + day).toISOString(),
+        : new Date(now + (duration > 0 ? duration : day)).toISOString(),
   };
 };
 

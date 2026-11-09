@@ -38,23 +38,16 @@ const PhasePreview = ({ projectId, phase, draft }: Props) => {
     phase ?? (draft ? createDraftPhase(projectId, draft) : undefined);
   const phaseIndex = phases.data.findIndex(({ id }) => id === phase?.id);
   const slug = project.data.attributes.slug;
-  const src =
-    phase?.attributes.placement_type === 'standalone'
-      ? router.buildLocation({
-          to: '/$locale/projects/$slug/surveys/new',
-          params: { locale, slug },
-          search: { phase_id: phase.id },
-        }).href
-      : router.buildLocation({
-          to: '/$locale/projects/$slug/$phaseNumber',
-          params: {
-            locale,
-            slug,
-            phaseNumber: String(
-              phaseIndex >= 0 ? phaseIndex + 1 : phases.data.length + 1
-            ),
-          },
-        }).href;
+  const src = router.buildLocation({
+    to: '/$locale/projects/$slug/$phaseNumber',
+    params: {
+      locale,
+      slug,
+      phaseNumber: String(
+        phaseIndex >= 0 ? phaseIndex + 1 : phases.data.length + 1
+      ),
+    },
+  }).href;
 
   return (
     <PhonePreviewBackdrop>

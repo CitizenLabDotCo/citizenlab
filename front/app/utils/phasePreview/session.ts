@@ -452,8 +452,10 @@ export class PreviewSession {
       data: Array.isArray(response.data)
         ? [
             ...response.data.map(patch),
-            ...(this.snapshot.unsaved &&
-            path === `/projects/${this.snapshot.project.id}/phases`
+            ...((this.snapshot.unsaved ||
+              this.snapshot.phase.attributes.placement_type === 'standalone') &&
+            path === `/projects/${this.snapshot.project.id}/phases` &&
+            !response.data.some((item) => object(item).id === this.phaseId)
               ? [this.phase()]
               : []),
           ]

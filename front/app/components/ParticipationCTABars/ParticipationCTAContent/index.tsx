@@ -8,6 +8,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled, { useTheme } from 'styled-components';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IPhaseData } from 'api/phases/types';
 
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
@@ -15,6 +16,7 @@ import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 import previewMessages from 'components/admin/PhasePreview/messages';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { getPeriodRemainingUntil } from 'utils/dateUtils';
 import { getPhasePreview } from 'utils/phasePreview/runtime';
 
 import TimeIndicator from './TimeIndicator';
@@ -41,12 +43,23 @@ const ParticipationCTAContent = ({
   participationState,
 }: Props) => {
   const theme = useTheme();
+  const { data: appConfiguration } = useAppConfiguration();
   const isSmallerThanPhone = useBreakpoint('phone');
   // This is the same condition we have in ProjectCTABar.
   const sticksToBottom = isSmallerThanPhone;
 
   const preview = getPhasePreview();
   if (preview) {
+    const configuredStart = {
+      ...preview.phase.attributes,
+      ...preview.draft,
+    }.start_at;
+    const timezone = appConfiguration?.data.attributes.settings.core.timezone;
+    const daysUntilStart =
+      preview.lifecycle === 'before' && configuredStart && timezone
+        ? getPeriodRemainingUntil(configuredStart, timezone, 'days')
+        : undefined;
+
     return (
       <Box
         data-cy="e2e-phase-preview-footer"
@@ -70,6 +83,14 @@ const ParticipationCTAContent = ({
             currentPhase={currentPhase}
             color="textSecondary"
           />
+        )}
+        {daysUntilStart !== undefined && daysUntilStart >= 0 && (
+          <Text color="textSecondary" fontSize="xs" fontWeight="bold" m="0">
+            <FormattedMessage
+              {...previewMessages.startsIn}
+              values={{ days: daysUntilStart }}
+            />
+          </Text>
         )}
         {(!preview.lifecycle || preview.lifecycle === 'open') && (
           <>

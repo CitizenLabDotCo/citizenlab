@@ -22,6 +22,16 @@ it('keeps configured dates when they already match the selected state', () => {
   expect(previewDates(dates, 'before', now)).toEqual(dates);
 });
 
+it('uses the configured duration when opening a future phase', () => {
+  expect(
+    previewDates(
+      { start_at: '2090-01-01T00:00:00Z', end_at: '2090-01-08T00:00:00Z' },
+      'open',
+      now
+    ).end_at
+  ).toBe('2026-11-01T12:00:00.000Z');
+});
+
 it('simulates temporal restrictions without granting eligibility or authentication', () => {
   const actions = {
     taking_poll: { enabled: false, disabled_reason: 'inactive_phase' },

@@ -15,26 +15,30 @@ import {
 import useHasEventsWidget from 'components/ProjectPageBuilder/Widgets/Events/useHasEventsWidget';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { getPhasePreview } from 'utils/phasePreview/runtime';
 import { scrollToElement } from 'utils/scroll';
 
 import messages from '../messages';
 
 const EventsCTABar = ({ phases, project }: CTABarProps) => {
+  const preview = getPhasePreview();
+  const currentPhase = getCTAPhase(phases);
+  const phase = preview
+    ? { ...preview.phase.attributes, ...preview.draft }
+    : currentPhase?.attributes;
   const { data: events } = useEvents({
     projectIds: [project.id],
-    currentAndFutureOnly: true,
+    currentAndFutureOnly: !preview,
     sort: 'start_at',
     ongoing_during: [
-      moment(getCTAPhase(phases)?.attributes.start_at).toString() || null,
-      moment(getCTAPhase(phases)?.attributes.end_at).add(1, 'day').toString() ||
-        null,
+      moment(phase?.start_at).toString() || null,
+      moment(phase?.end_at).add(1, 'day').toString() || null,
     ],
   });
   const theme = useTheme();
-  const currentPhase = getCTAPhase(phases);
   const hasEventsWidget = useHasEventsWidget(project.id);
 
-  const showCTABar = !!events?.data.length && hasEventsWidget;
+  const showCTABar = !!events?.data.length && (preview || hasEventsWidget);
 
   if (!showCTABar) return null;
 
@@ -44,7 +48,11 @@ const EventsCTABar = ({ phases, project }: CTABarProps) => {
       CTAButton={
         <Button
           id="e2e-cta-bar-see-events"
-          onClick={() => scrollToElement({ id: EVENTS_WIDGET_ANCHOR_ID })}
+          onClick={() =>
+            scrollToElement({
+              id: preview ? 'e2e-event-previews' : EVENTS_WIDGET_ANCHOR_ID,
+            })
+          }
           fontWeight="500"
           bgColor={theme.colors.white}
           textColor={theme.colors.tenantText}

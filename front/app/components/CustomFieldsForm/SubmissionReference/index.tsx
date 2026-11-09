@@ -16,6 +16,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { getPhasePreview } from 'utils/phasePreview/runtime';
 
 import messages from './messages';
 import SubmissionIdContainer from './SubmissionIdContainer';
@@ -36,7 +37,7 @@ const SubmissionReference = ({
   const hideSubmissionRemovalText = useFeatureFlag({
     name: 'hide_submission_removal_text',
   });
-  if (hideSubmissionRemovalText) return null;
+  if (hideSubmissionRemovalText || getPhasePreview()) return null;
 
   return (
     <Box

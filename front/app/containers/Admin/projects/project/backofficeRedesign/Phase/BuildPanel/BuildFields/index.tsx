@@ -98,17 +98,15 @@ const BuildFields = ({
           <Error apiErrors={errors?.title_multiloc} />
         </Box>
 
-        {phaseId && (
-          <DescriptionField
-            projectId={projectId}
-            phaseId={phaseId}
-            value={formData.description_multiloc}
-            errors={errors}
-            onChange={(description_multiloc) =>
-              onChange({ description_multiloc })
-            }
-          />
-        )}
+        <DescriptionField
+          projectId={projectId}
+          phaseId={phaseId}
+          value={formData.description_multiloc}
+          errors={errors}
+          onChange={(description_multiloc) =>
+            onChange({ description_multiloc })
+          }
+        />
       </Box>
 
       <Box display="flex" flexDirection="column" gap="10px">

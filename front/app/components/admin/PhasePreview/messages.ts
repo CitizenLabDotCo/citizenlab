@@ -29,6 +29,20 @@ export default defineMessages({
     id: 'app.components.PhasePreview.noDates',
     defaultMessage: 'Dates to be announced',
   },
+  surveyQuestionCount: {
+    id: 'app.components.PhasePreview.surveyQuestionCount',
+    defaultMessage: '{count, plural, one {# question} other {# questions}}',
+  },
+  surveyDuration: {
+    id: 'app.components.PhasePreview.surveyDuration',
+    defaultMessage:
+      '{minutes, plural, one {About # minute} other {About # minutes}}',
+  },
+  startsIn: {
+    id: 'app.components.PhasePreview.startsIn',
+    defaultMessage:
+      '{days, plural, =0 {Starts today} one {Starts in # day} other {Starts in # days}}',
+  },
   newPhase: {
     id: 'app.components.PhasePreview.savePhaseFirst',
     defaultMessage: 'Save this phase to preview its participation form.',

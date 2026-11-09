@@ -98,7 +98,12 @@ const PhaseDescription = ({ projectId, selectedPhaseId }: Props) => {
       }
     >
       <PhaseTitle
-        phaseNumber={phaseNumber}
+        phaseNumber={
+          getPhasePreview() &&
+          phase.data.attributes.placement_type === 'standalone'
+            ? null
+            : phaseNumber
+        }
         phaseId={selectedPhaseId}
         descriptionHasContent={descriptionHasContent}
       />
@@ -125,7 +130,7 @@ const PhaseDescription = ({ projectId, selectedPhaseId }: Props) => {
           )}
         </Box>
       )}
-      {isActivePhase && !getPhasePreview() && (
+      {isActivePhase && !getPhasePreview()?.unsaved && (
         <EventPreviews projectId={phase.data.relationships.project.data.id} />
       )}
     </Container>

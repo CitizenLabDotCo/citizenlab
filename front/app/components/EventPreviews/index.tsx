@@ -12,6 +12,7 @@ import HorizontalScroll from 'components/HorizontalScroll';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { getPhasePreview } from 'utils/phasePreview/runtime';
 import { useParams } from 'utils/router';
 
 import EventPreviewCard from './EventPreviewCard';
@@ -31,16 +32,19 @@ const EventPreviews = ({ projectId }: EventPreviewsProps) => {
   const { data: project } = useProjectBySlug(slug);
   const projectIdToUse = projectId || project?.data.id;
   const { data: phases } = usePhases(projectIdToUse);
+  const preview = getPhasePreview();
+  const phase = preview
+    ? { ...preview.phase.attributes, ...preview.draft }
+    : getCurrentPhase(phases?.data)?.attributes;
   const { data: events } = useEvents({
     projectIds: projectIdToUse ? [projectIdToUse] : undefined,
-    currentAndFutureOnly: true,
+    currentAndFutureOnly: !preview,
     sort: '-start_at',
     ongoing_during: [
-      moment(getCurrentPhase(phases?.data)?.attributes.start_at).toString() ||
-        null,
-      moment(getCurrentPhase(phases?.data)?.attributes.end_at)
-        .add(1, 'day')
-        .toString() || null,
+      preview && !phase?.start_at ? null : moment(phase?.start_at).toString(),
+      preview && !phase?.end_at
+        ? null
+        : moment(phase?.end_at).add(1, 'day').toString(),
     ],
   });
 

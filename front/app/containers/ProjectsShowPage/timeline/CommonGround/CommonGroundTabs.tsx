@@ -70,7 +70,7 @@ const CommonGroundTabs = ({ phase, project, isPastPhase }: Props) => {
   };
 
   const lifecycle = getPhasePreview()?.lifecycle;
-  if (lifecycle === 'before' || lifecycle === 'ended') {
+  if (lifecycle === 'before') {
     return (
       <ParticipationPermission
         action="reacting_idea"
@@ -97,7 +97,7 @@ const CommonGroundTabs = ({ phase, project, isPastPhase }: Props) => {
   // When the phase has ended, show the warning message and results only.
   // We pass enabled={true} so ParticipationPermission renders the children
   // (results) while still displaying the disabled warning message.
-  if (isPastPhase) {
+  if (lifecycle === 'ended' || isPastPhase) {
     return (
       <ParticipationPermission
         action="reacting_idea"
