@@ -21714,9 +21714,24 @@
     "verified_at": "2026-07-13T07:16:39.669771Z",
     "verified_by": "Roger"
   },
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.none": {
+    "state": "verified",
+    "verified_at": "2026-11-09T21:29:16.443176Z",
+    "verified_by": "Roger"
+  },
   "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordAvailableDescription2": {
     "state": "verified",
     "verified_at": "2026-08-26T08:59:50.277511Z",
+    "verified_by": "Roger"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordOnlyForEmailOrSMSLoginTooltip": {
+    "state": "verified",
+    "verified_at": "2026-11-09T21:29:16.443176Z",
+    "verified_by": "Roger"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordOnlyForEmailSignupTooltip2": {
+    "state": "verified",
+    "verified_at": "2026-11-09T21:29:16.443176Z",
     "verified_by": "Roger"
   },
   "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.securityChecks2": {
