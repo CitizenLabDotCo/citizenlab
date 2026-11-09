@@ -3364,7 +3364,7 @@
   "app.containers.AdminPage.ProjectEdit.maxLikes": "Numero massimo di \"Mi piace\"",
   "app.containers.AdminPage.ProjectEdit.maxVotesPerOptionErrorText": "Il numero massimo di voti per opzione deve essere inferiore o uguale al numero totale di voti",
   "app.containers.AdminPage.ProjectEdit.maximum": "Massimo",
-  "app.containers.AdminPage.ProjectEdit.maximumTooltip": "I partecipanti non possono superare questo budget quando presentano il loro carrello.",
+  "app.containers.AdminPage.ProjectEdit.maximumTooltip": "I partecipanti non possono superare questo budget quando presentano il loro voto.",
   "app.containers.AdminPage.ProjectEdit.microsoft_forms": "Microsoft Forms",
   "app.containers.AdminPage.ProjectEdit.minSelectedOptionsError": "Il numero minimo di opzioni selezionate deve essere inferiore al numero totale di voti",
   "app.containers.AdminPage.ProjectEdit.minimum": "Minimo",
