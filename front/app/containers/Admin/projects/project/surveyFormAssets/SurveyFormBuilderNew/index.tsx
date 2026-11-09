@@ -1,0 +1,68 @@
+import React from 'react';
+
+import useFormCustomFields from 'api/custom_fields/useCustomFields';
+import usePhase from 'api/phases/usePhase';
+import useProjectById from 'api/projects/useProjectById';
+
+import FormBuilderNew from 'components/FormBuilderNew';
+
+import { useParams, useSearch } from 'utils/router';
+
+import useFormBuilderGoBackUrl from '../../../_shared/useFormBuilderGoBackUrl';
+import { nativeSurveyConfig, clearOptionAndStatementIds } from '../utils';
+
+// Experimental redesign of the survey builder, mounted next to the current one
+// at survey-form/edit-new.
+const SurveyFormBuilderNew = ({
+  projectId,
+  phaseId,
+}: {
+  projectId: string;
+  phaseId: string;
+}) => {
+  const { copy_from: copyFrom } = useSearch({
+    from: '/$locale/admin/projects/$projectId/phases/$phaseId/survey-form/edit-new',
+  });
+  const { data: phase } = usePhase(phaseId);
+  const { data: project } = useProjectById(projectId);
+  const goBackUrl = useFormBuilderGoBackUrl(projectId, phaseId, 'survey-form');
+
+  const { data: formCustomFields } = useFormCustomFields({
+    projectId,
+    phaseId: copyFrom ? copyFrom : phaseId,
+    copy: copyFrom ? true : false,
+  });
+
+  if (!phase || !project || !formCustomFields) return null;
+
+  // Reset option and statement IDs if this is a new or copied form
+  const isFormPersisted = copyFrom
+    ? false
+    : phase.data.attributes.custom_form_persisted;
+  const newCustomFields = isFormPersisted
+    ? formCustomFields
+    : clearOptionAndStatementIds(formCustomFields);
+
+  return (
+    <FormBuilderNew
+      builderConfig={nativeSurveyConfig}
+      formCustomFields={newCustomFields}
+      goBackUrl={goBackUrl}
+      viewFormLink={{
+        to: '/projects/$slug/surveys/new',
+        params: { slug: project.data.attributes.slug },
+        search: { phase_id: phase.data.id },
+      }}
+    />
+  );
+};
+
+export default () => {
+  const { projectId, phaseId } = useParams({ strict: false });
+
+  if (typeof projectId !== 'string' || typeof phaseId !== 'string') {
+    return null;
+  }
+
+  return <SurveyFormBuilderNew projectId={projectId} phaseId={phaseId} />;
+};

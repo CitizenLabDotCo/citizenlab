@@ -24,6 +24,9 @@ const IdeaFormBuilder = lazy(
 const SurveyFormBuilder = lazy(
   () => import('./project/surveyFormAssets/SurveyFormBuilder')
 );
+const SurveyFormBuilderNew = lazy(
+  () => import('./project/surveyFormAssets/SurveyFormBuilderNew')
+);
 const ProjectMessaging = lazy(() => import('./project/messaging/All'));
 const ProjectMessagingNew = lazy(() => import('./project/messaging/New'));
 const ProjectMessagingEdit = lazy(() => import('./project/messaging/Edit'));
@@ -735,6 +738,21 @@ const phaseNativeSurveyFormEditRoute = createRoute({
   ),
 });
 
+// Experimental redesign of the survey builder
+const phaseNativeSurveyFormEditNewRoute = createRoute({
+  getParentRoute: () => projectPhasesRoute,
+  path: '$phaseId/survey-form/edit-new',
+  validateSearch: (
+    search: Record<string, unknown>
+  ): SurveyFormBuilderSearchParams =>
+    surveyFormBuilderSearchSchema.validateSync(search, { stripUnknown: true }),
+  component: () => (
+    <PageLoading>
+      <SurveyFormBuilderNew />
+    </PageLoading>
+  ),
+});
+
 const phaseVolunteeringCauseRoute = createRoute({
   getParentRoute: () => projectPhasesRoute,
   path: '$phaseId/volunteering/causes/$causeId',
@@ -838,6 +856,7 @@ const createAdminProjectsRoutes = (moduleRoutes: RouteConfiguration[] = []) => {
         phaseSurveyFormRoute,
         phaseIdeaFormEditRoute,
         phaseNativeSurveyFormEditRoute,
+        phaseNativeSurveyFormEditNewRoute,
         phaseVolunteeringCauseRoute,
         phaseInputImporterRoute,
         phaseReportRoute,
