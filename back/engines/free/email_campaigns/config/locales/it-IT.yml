@@ -635,7 +635,7 @@ it-IT:
       subtitle: "Informazioni su '%{projectName}'"
       title: "C'è qualcosa di nuovo in '%{projectName}'"
     project_phase_upcoming:
-      cta_button: Rivedi la configurazione
+      cta_button: Controlla la configurazione
       event_description: "'%{phaseTitle}' nel progetto '%{projectName}' inizia il %{startDate}. Prenditi un momento per verificare che tutto sia pronto: la descrizione è completa? Le date sono corrette? Vuoi informare la tua comunità attraverso una campagna email personalizzata?"
       new_phase: "Il progetto entrerà nella fase '%{phaseTitle}'"
       preheader: Assicurati che tutto sia pronto prima del %{startDate}
