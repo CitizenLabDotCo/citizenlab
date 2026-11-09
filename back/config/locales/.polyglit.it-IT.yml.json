@@ -224,6 +224,11 @@
     "verified_at": "2026-04-20T15:38:06.365179Z",
     "verified_by": "Roger"
   },
+  "custom_fields.ideas.budget.title": {
+    "state": "verified",
+    "verified_at": "2026-11-09T21:16:45.533576Z",
+    "verified_by": "Roger"
+  },
   "custom_fields.ideas.consponsor_ids.description": {
     "state": "verified",
     "verified_at": "2026-04-20T15:38:06.365179Z",

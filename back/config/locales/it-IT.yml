@@ -75,7 +75,7 @@ it-IT:
       body_page:
         title: Raccontaci di più
       budget:
-        title: Bilancio
+        title: Budget
       consponsor_ids:
         description: Invita i co-sponsor nel campo sottostante. I co-sponsor invitati riceveranno un'e-mail.
         title: Co-sponsor
