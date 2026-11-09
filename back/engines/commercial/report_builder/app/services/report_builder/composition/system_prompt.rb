@@ -386,9 +386,13 @@ module ReportBuilder
           'work in this run. Write the prose, lay the report out, and say so at the end.'
       end
 
+      # Without the declarations every report in the run comes out with no charts, and a
+      # mismatched secret or a wrong URL looks exactly like a model that chose not to draw
+      # any. Say so where someone will see it, not only in a transcript.
       def sdk_declarations
         @sdk_declarations ||= @client.sdk_declarations
-      rescue ContentBuilder::CustomBlocks::RendererClient::Unavailable
+      rescue ContentBuilder::CustomBlocks::RendererClient::Unavailable => e
+        ErrorReporter.report(e)
         nil
       end
     end

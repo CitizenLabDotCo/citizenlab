@@ -21,6 +21,18 @@ describe ReportBuilder::Composition::SystemPrompt do
     expect(prompt.text).to include 'cannot be read right now'
   end
 
+  # A chartless report reads as a model that chose not to draw any, so a renderer we
+  # cannot reach has to reach us some other way than a transcript.
+  it 'reports a renderer it cannot reach' do
+    error = ContentBuilder::CustomBlocks::RendererClient::Unavailable.new('down')
+    allow(client).to receive(:sdk_declarations).and_raise(error)
+    allow(ErrorReporter).to receive(:report)
+
+    prompt.text
+
+    expect(ErrorReporter).to have_received(:report).with(error)
+  end
+
   # The typechecker is strict, and an example the model copies that does not pass it is
   # a failed first attempt in every run.
   describe 'the golden examples' do
