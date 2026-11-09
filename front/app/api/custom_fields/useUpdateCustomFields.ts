@@ -50,12 +50,7 @@ const useUpdateCustomField = () => {
   return useMutation<ICustomField, CLErrors, IUpdateCustomFieldProperties>({
     mutationFn: updateCustomField,
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({
-        queryKey: customFieldsKeys.list({
-          projectId: variables.projectId,
-          phaseId: variables.phaseId,
-        }),
-      });
+      queryClient.invalidateQueries({ queryKey: customFieldsKeys.lists() });
 
       queryClient.invalidateQueries({
         queryKey: customFormKeys.item({

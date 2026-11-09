@@ -11,11 +11,7 @@ class WebApi::V1::IdeasController < ApplicationController
   after_action :verify_policy_scoped, only: %i[index index_mini]
 
   def index
-    ideas = IdeasFinder.new(
-      params,
-      scope: policy_scope(Idea).submitted_or_published,
-      current_user: current_user
-    ).find_records
+    ideas = find_ideas
 
     ideas = paginate SortByParamsService.new.sort_ideas(ideas, params, current_user)
 
@@ -26,12 +22,12 @@ class WebApi::V1::IdeasController < ApplicationController
       :input_topics,
       :idea_status,
       :manual_votes_last_updated_by,
-      :custom_field_answers,
       {
+        custom_field_answers: :custom_field,
         phases: { permissions: [:groups] },
         creation_phase: { permissions: [:groups] },
         project: [:phases, { phases: { permissions: [:groups] } }, { custom_form: [:custom_fields] }],
-        author: %i[unread_notifications custom_field_answers]
+        author: [:unread_notifications, { custom_field_answers: :custom_field }]
       }
     )
     ideas = ideas.includes(:idea_import) unless current_user&.normal_user? # defined through BulkImportIdeas engine
@@ -40,11 +36,7 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def index_mini
-    ideas = IdeasFinder.new(
-      params,
-      scope: policy_scope(Idea).submitted_or_published,
-      current_user: current_user
-    ).find_records
+    ideas = find_ideas
     ideas = paginate SortByParamsService.new.sort_ideas(ideas, params, current_user)
     ideas = ideas.includes(:idea_trending_info)
 
@@ -52,11 +44,7 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def index_idea_markers
-    ideas = IdeasFinder.new(
-      params,
-      scope: policy_scope(Idea).submitted_or_published,
-      current_user: current_user
-    ).find_records
+    ideas = find_ideas
     ideas = paginate SortByParamsService.new.sort_ideas(ideas, params, current_user)
     ideas = ideas.includes(:author, :input_topics, :project, :idea_status)
 
@@ -64,11 +52,7 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def index_xlsx
-    ideas = IdeasFinder.new(
-      params.merge(filter_can_moderate: true),
-      scope: policy_scope(Idea).submitted_or_published,
-      current_user: current_user
-    ).find_records
+    ideas = find_ideas(finder_params: params.merge(filter_can_moderate: true))
     ideas = SortByParamsService.new.sort_ideas(ideas, params, current_user)
     ideas = ideas.includes(:author, :input_topics, :project, :idea_status, :idea_files, :attached_files)
 
@@ -102,17 +86,10 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def filter_counts
-    ideas = IdeasFinder.new(
-      params,
-      scope: policy_scope(Idea),
-      current_user: current_user
-    ).find_records
-    ideas = SortByParamsService.new.sort_ideas(ideas, params, current_user)
-    ideas = ideas.includes(:idea_trending_info)
-
-    result = IdeasCountService.counts(ideas, filter_counts_attributes(ideas))
-    result['total'] = ideas.count
-    render json: raw_json(result)
+    scopes_by_facet = filter_count_facets.to_h.transform_values do |filter_path|
+      ideas_without_filter(filter_path)
+    end
+    render json: raw_json(Facets::CountsService.new.counts(filtered_ideas, scopes_by_facet))
   end
 
   def show
@@ -153,7 +130,9 @@ class WebApi::V1::IdeasController < ApplicationController
     end
     params_for_create = idea_params(form).except(:project_id, :phase_ids)
     files_params = extract_file_params(params_for_create)
-    custom_field_values = params_for_create.delete(:custom_field_values).to_h
+    # Blank answers mean unanswered, as in #update. Left in, an optional select
+    # sent as '' fails the publication validation for not being one of its options.
+    custom_field_values = CustomFieldService.new.compact_custom_field_values!(params_for_create.delete(:custom_field_values).to_h)
 
     input = Idea.new params_for_create
     input.project = phase.project
@@ -341,17 +320,15 @@ class WebApi::V1::IdeasController < ApplicationController
     idea.project_id = phase.project_id
     service = SimilarIdeasService.new(idea)
 
-    title_threshold = phase.similarity_threshold_title
-    body_threshold = phase.similarity_threshold_body
-    cache_key = "similar_ideas/#{{ id: idea.id, title_multiloc: idea.title_multiloc, body_multiloc: idea.body_multiloc, project_id: idea.project_id, title_threshold:, body_threshold: }}"
+    scope = policy_scope(Idea).where(project_id: idea.project_id)
+    results = service.similar_ideas(
+      scope:,
+      title_threshold: phase.similarity_threshold_title,
+      body_threshold: phase.similarity_threshold_body,
+      limit: SIMILARITIES_LIMIT
+    )
 
-    json_result = Rails.cache.fetch(cache_key, expires_in: 10.minutes) do
-      scope = policy_scope(Idea).where(project_id: idea.project_id)
-      results = service.similar_ideas(scope:, title_threshold:, body_threshold:, limit: SIMILARITIES_LIMIT)
-      WebApi::V1::IdeaSerializer.new(results, serialization_options_for(results)).serializable_hash
-    end
-
-    render json: json_result
+    render json: WebApi::V1::IdeaSerializer.new(results, serialization_options_for(results)).serializable_hash
   end
 
   def copy
@@ -379,8 +356,44 @@ class WebApi::V1::IdeasController < ApplicationController
 
   private
 
-  def filter_counts_attributes(_ideas)
-    IdeasCountService::DEFAULT_ATTRIBUTES
+  def find_ideas(scope: policy_scope(Idea).submitted_or_published, finder_params: params)
+    IdeasFinder.new(finder_params, scope:, current_user:).find_records
+  end
+
+  # Each facet with the request parameter it answers, as a key or a nested key path.
+  def filter_count_facets
+    [
+      [Facets::Column.new(:idea_status_id), :idea_status],
+      [Facets::IdeaInputTopic.new, :input_topics],
+      *answer_facets
+    ]
+  end
+
+  def answer_facets
+    filter_phase = Phase.find_by(id: params[:phase])
+    return [] if !filter_phase
+
+    form = filter_phase.pmethod.custom_form
+    fields = form.custom_fields.enabled.where(show_as_filter: true)
+    CustomFieldPolicy::Scope.new(pundit_user, fields, form).resolve
+      .map { |field| [Facets::IdeaCustomFieldAnswer.new(field), [:custom_field_answers, field.id]] }
+  end
+
+  def filtered_ideas
+    @filtered_ideas ||= find_ideas(scope: policy_scope(Idea))
+  end
+
+  # The ideas with every filter applied except the given one, so a facet
+  # counts what choosing one of its options would yield.
+  def ideas_without_filter(filter_path)
+    return filtered_ideas if params.dig(*Array(filter_path)).blank?
+
+    find_ideas(scope: policy_scope(Idea), finder_params: finder_params_without(filter_path))
+  end
+
+  def finder_params_without(filter_path)
+    *parents, key = Array(filter_path)
+    params.deep_dup.tap { |copy| (parents.empty? ? copy : copy.dig(*parents))&.delete(key) }
   end
 
   def phase

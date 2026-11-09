@@ -15,6 +15,27 @@ RSpec.describe Analytics::Reporting::Input do
     expect(row.comments_count).to eq idea.comments_count
   end
 
+  describe 'body' do
+    it 'exposes the body in the primary locale' do
+      idea = create(:idea, body_multiloc: { 'en' => '<p>Along the canal.</p>', 'nl-BE' => '<p>Langs het kanaal.</p>' })
+
+      expect(described_class.find(idea.id).body).to eq '<p>Along the canal.</p>'
+    end
+
+    it 'falls back to another locale when the primary locale is missing' do
+      idea = create(:idea, body_multiloc: { 'nl-BE' => '<p>Langs het kanaal.</p>' })
+
+      expect(described_class.find(idea.id).body).to eq '<p>Langs het kanaal.</p>'
+    end
+
+    it 'is NULL for survey responses, which have no body' do
+      create(:idea_status_proposed)
+      response = create(:native_survey_response, body_multiloc: {})
+
+      expect(described_class.find(response.id).body).to be_nil
+    end
+  end
+
   it 'includes submitted (pre-screening) inputs but excludes drafts' do
     submitted = create(:idea, publication_status: 'submitted', submitted_at: Time.zone.now)
     create(:idea, publication_status: 'draft')

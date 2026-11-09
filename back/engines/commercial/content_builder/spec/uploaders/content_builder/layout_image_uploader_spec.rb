@@ -34,4 +34,69 @@ RSpec.describe ContentBuilder::LayoutImageUploader do
 
     expect(uploader.file.extension).to eq 'jpg'
   end
+
+  describe 'size limit' do
+    include CarrierWave::Test::Matchers
+
+    let(:tmp_dir) { Dir.mktmpdir }
+
+    after { FileUtils.rm_rf(tmp_dir) }
+
+    def generate_image(name, width, height, frames: 1, quality: nil)
+      path = File.join(tmp_dir, name)
+      MiniMagick::Tool::Convert.new do |convert|
+        frames.times { |i| convert << '-size' << "#{width}x#{height}" << "xc:#{i.even? ? 'red' : 'blue'}" }
+        convert << '-quality' << quality.to_s if quality
+        convert << path
+      end
+      File.open(path)
+    end
+
+    it 'shrinks an original larger than the maximum size' do
+      uploader.store! generate_image('large.jpg', 3000, 2000)
+
+      expect(uploader).to have_dimensions(2400, 1600)
+    end
+
+    it 'lowers the quality of a JPEG it shrinks' do
+      uploader.store! generate_image('large.jpg', 3000, 2000, quality: 95)
+
+      expect(MiniMagick::Image.new(uploader.path)['%Q'].to_i).to eq described_class::JPEG_MAX_QUALITY
+    end
+
+    it 'does not raise the quality of a JPEG it shrinks' do
+      uploader.store! generate_image('large.jpg', 3000, 2000, quality: 60)
+
+      expect(MiniMagick::Image.new(uploader.path)['%Q'].to_i).to eq 60
+    end
+
+    it 'keeps the size of an original that already fits' do
+      uploader.store! Rails.root.join('spec/fixtures/image12.jpg').open
+
+      expect(uploader).to have_dimensions(1200, 900)
+    end
+
+    it 'keeps every frame of an animated GIF it shrinks' do
+      uploader.store! generate_image('animated.gif', 3000, 100, frames: 2)
+
+      image = MiniMagick::Image.new(uploader.path)
+      expect(image.frames.size).to eq 2
+      expect(image.width).to eq 2400
+    end
+
+    it 'stores only the changed part of each later frame of an animated GIF it shrinks' do
+      path = File.join(tmp_dir, 'animated.gif')
+      MiniMagick::Tool::Convert.new do |convert|
+        convert << '-size' << '3000x100' << 'xc:red'
+        convert << '(' << '+clone' << '-fill' << 'blue' << '-draw' << 'rectangle 0,0 30,30' << ')'
+        convert << path
+      end
+
+      uploader.store! File.open(path)
+
+      frame_widths = MiniMagick::Tool::Identify.new { |identify| identify.format('%w\n') << uploader.path }.split.map(&:to_i)
+      expect(frame_widths.first).to eq 2400
+      expect(frame_widths.last).to be < 100
+    end
+  end
 end

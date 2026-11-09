@@ -7,12 +7,23 @@ module EmailCampaigns
     before_action do
       @command, @campaign = params.values_at(:command, :campaign)
       @user = @command[:recipient]
+      # Set by DeliveryService#send_email_preview. Only changed in memory, never saved.
+      @user.locale = @command[:locale] if @user && @command[:locale]
+    end
+
+    # The bounce belongs to the user's current email. Mailers that send to
+    # another address override this.
+    def self.undeliverable_to?(recipient)
+      !!recipient&.email_bounced?
     end
 
     def campaign_mail
       I18n.with_locale(locale.locale_sym) do
         mail(default_config, &:mjml).tap do |message|
           message.mailgun_headers = mailgun_headers if self.class.delivery_method == :mailgun
+          # Still rendered, so previews work, but never sent. Also stops queued
+          # emails for users whose address bounced after the email was queued.
+          message.perform_deliveries = false if self.class.undeliverable_to?(recipient)
         end
       end
     end

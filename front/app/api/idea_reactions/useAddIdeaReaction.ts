@@ -3,6 +3,7 @@ import { CLErrors } from 'typings';
 
 import ideasKeys from 'api/ideas/keys';
 
+import { customerAnalyticsEvents, trackEventByName } from 'utils/analytics';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import { IIdeaReaction, INewReactionProperties } from './types';
@@ -25,6 +26,11 @@ const useAddIdeaReaction = () => {
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
         queryKey: ideasKeys.item({ id: variables.ideaId }),
+      });
+
+      trackEventByName(customerAnalyticsEvents.reactionAdded, {
+        idea_id: variables.ideaId,
+        mode: variables.mode,
       });
     },
   });

@@ -101,13 +101,6 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     end
   end
 
-  describe '#author_in_form?' do
-    it 'returns false for a moderator when idea_author_change is activated' do
-      SettingsService.new.activate_feature! 'idea_author_change'
-      expect(participation_method.author_in_form?(create(:admin))).to be false
-    end
-  end
-
   describe '#budget_in_form?' do
     it 'returns false for a moderator' do
       expect(participation_method.budget_in_form?(create(:admin))).to be false
@@ -172,6 +165,47 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     end
   end
 
+  describe '#fully_anonymous?' do
+    let(:permission) { phase.permissions.find_by(action: 'posting_idea') }
+
+    it 'follows the posting permission' do
+      permission.update!(user_data_collection: 'anonymous')
+      expect(participation_method.fully_anonymous?).to be true
+    end
+
+    it 'is false when the demographics are still collected' do
+      permission.update!(user_data_collection: 'demographics_only')
+      expect(participation_method.fully_anonymous?).to be false
+    end
+
+    it 'is false without a posting permission' do
+      expect(described_class.new(nil).fully_anonymous?).to be false
+    end
+  end
+
+  describe '#identifies_author?' do
+    let(:permission) { phase.permissions.find_by(action: 'posting_idea') }
+
+    it 'follows the posting permission' do
+      permission.update!(user_data_collection: 'all_data')
+      expect(participation_method.identifies_author?).to be true
+    end
+
+    it 'is false when only the demographics are collected' do
+      permission.update!(user_data_collection: 'demographics_only')
+      expect(participation_method.identifies_author?).to be false
+    end
+
+    it 'is false when the survey is fully anonymous' do
+      permission.update!(user_data_collection: 'anonymous')
+      expect(participation_method.identifies_author?).to be false
+    end
+
+    it 'is true without a posting permission' do
+      expect(described_class.new(nil).identifies_author?).to be true
+    end
+  end
+
   its(:additional_export_columns) { is_expected.to eq [] }
   its(:allowed_ideas_orders) { is_expected.to be_empty }
   its(:return_disabled_actions?) { is_expected.to be true }
@@ -194,7 +228,8 @@ RSpec.describe ParticipationMethod::NativeSurvey do
   its(:use_reactions_as_votes?) { is_expected.to be false }
   its(:transitive?) { is_expected.to be false }
   its(:destroy_ideas_on_phase_destroy?) { is_expected.to be true }
-  its(:form_logic_enabled?) { is_expected.to be true }
+  its(:supports_form_logic?) { is_expected.to be true }
+  its(:form_editable_after_responses?) { is_expected.to be false }
   its(:follow_idea_on_idea_submission?) { is_expected.to be false }
   its(:supports_custom_field_categories?) { is_expected.to be false }
   its(:supports_multiple_phase_reports?) { is_expected.to be false }

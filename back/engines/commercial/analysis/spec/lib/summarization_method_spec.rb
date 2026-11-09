@@ -5,12 +5,7 @@ require 'rails_helper'
 RSpec.describe Analysis::SummarizationMethod do
   describe 'Bogus summarization' do
     it 'generates a bogus summary from filtered ideas' do
-      analysis = create(:analysis, main_custom_field: create(
-        :custom_field,
-        :for_custom_form,
-        code: 'title_multiloc',
-        key: 'title_multiloc'
-      ))
+      analysis = create(:analysis, main_custom_field: create(:default_input_field))
 
       summarization_task = create(
         :summarization_task,
@@ -43,14 +38,7 @@ RSpec.describe Analysis::SummarizationMethod do
   end
 
   describe 'OnePassLLM summarization' do
-    let(:analysis) do
-      create(:analysis, main_custom_field: create(
-        :custom_field,
-        :for_custom_form,
-        code: 'title_multiloc',
-        key: 'title_multiloc'
-      ))
-    end
+    let(:analysis) { create(:analysis, main_custom_field: create(:default_input_field)) }
     let(:summary) { create(:summary, summary: nil, summarization_method: 'one_pass_llm', insight_attributes: { analysis: analysis, filters: { comments_from: 5 } }) }
     let(:summarization_task) { create(:summarization_task, analysis: analysis, state: 'queued', summary: summary) }
     let(:inputs) do

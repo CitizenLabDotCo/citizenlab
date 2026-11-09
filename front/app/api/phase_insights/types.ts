@@ -78,11 +78,17 @@ export interface VolunteeringMetrics {
 export interface PhaseInsightsParticipationMetrics {
   visitors: number;
   visitors_7_day_percent_change?: SevenDayChange;
-  participants: number;
+  /**
+   * null when the platform does not record who takes part in the phase, which
+   * is the case when participation happens in an embedded third party. The
+   * participation rate is then unknown too.
+   */
+  participants: number | null;
   participants_7_day_percent_change?: SevenDayChange;
   participation_rate_as_percent:
     | number
-    | 'participant_count_compared_with_zero_visitors';
+    | 'participant_count_compared_with_zero_visitors'
+    | null;
   participation_rate_7_day_percent_change?: SevenDayChange;
   ideation?: IdeationMetrics;
   proposals?: ProposalsMetrics;

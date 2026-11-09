@@ -63,10 +63,6 @@ module CustomIdMethods::Keycloak
       config[:issuer]
     end
 
-    def updateable_user_attrs
-      super + %i[first_name last_name]
-    end
-
     private
 
     # Proper case the returned capitalized name - capitalize first letter of each part, lowercase the rest

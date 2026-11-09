@@ -11,15 +11,7 @@ describe Export::Geojson::ValueVisitor do
 
   describe '#default' do
     context 'for a built-in field' do
-      let(:field) do
-        create(
-          :custom_field,
-          :for_custom_form,
-          input_type: 'number',
-          key: 'proposed_budget',
-          code: 'proposed_budget'
-        )
-      end
+      let(:field) { create(:default_input_field, code: 'proposed_budget') }
       let(:model) { instance_double Idea, proposed_budget: 1234 }
 
       it 'returns the field value from the model' do
@@ -361,6 +353,23 @@ describe Export::Geojson::ValueVisitor do
             'type' => 'Polygon',
             'coordinates' => [[11.11, 22.22], [11.33, 22.44], [12.33, 23.44], [11.11, 22.22]]
           })
+      end
+    end
+
+    describe '#visit_multipoint' do
+      let(:input_type) { 'multipoint' }
+      let(:value) do
+        {
+          'type' => 'MultiPoint',
+          'coordinates' => [[11.11, 22.22], [11.33, 22.44], [12.33, 23.44]]
+        }
+      end
+
+      it 'returns the GeoJSON value' do
+        expect(visitor.visit_multipoint(field)).to eq({
+          'type' => 'MultiPoint',
+          'coordinates' => [[11.11, 22.22], [11.33, 22.44], [12.33, 23.44]]
+        })
       end
     end
 

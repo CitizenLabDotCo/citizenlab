@@ -10,6 +10,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useNode, useEditor } from '@craftjs/core';
 
+import useCustomPageById from 'api/custom_pages/useCustomPageById';
 import useFileAttachments from 'api/file_attachments/useFileAttachments';
 import useFileById from 'api/files/useFileById';
 import useFiles from 'api/files/useFiles';
@@ -143,7 +144,14 @@ const FileAttachmentSettings = () => {
 
   const { formatMessage } = useIntl();
   const { query } = useEditor();
-  const { projectId, customPageId } = useParams({ strict: false });
+  const { projectId: routeProjectId, customPageId } = useParams({
+    strict: false,
+  });
+  // A project's page keeps its files in the project, so it offers and uploads the project's.
+  const { data: customPage, isLoading: isLoadingPage } =
+    useCustomPageById(customPageId);
+  const projectId =
+    routeProjectId ?? customPage?.data.attributes.project_id ?? undefined;
 
   // Scoped to where the layout lives, so a page cannot publish a file belonging to a project
   // the visitor has no access to. Uploading goes through the link below.
@@ -191,7 +199,7 @@ const FileAttachmentSettings = () => {
     : nothingUploadedMessage;
 
   // Full-panel spinner on initial load only; refetches keep the panel visible.
-  if (isLoadingFiles) {
+  if (isLoadingPage || isLoadingFiles) {
     return <Spinner />;
   }
 

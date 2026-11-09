@@ -1,6 +1,7 @@
 import 'cypress-file-upload';
 import './dnd';
 import './form-builder';
+import './input-form';
 import * as moment from 'moment';
 import { IUserUpdate } from '../../app/api/users/types';
 import { IUpdatedAppConfigurationProperties } from '../../app/api/app_configuration/types';
@@ -17,6 +18,11 @@ import {
   IPhasePermissionAction,
 } from '../../app/api/phase_permissions/types';
 import { TReactionMode } from '../../app/api/idea_reactions/types';
+import {
+  IdeaStatusParticipationMethod,
+  IIdeaStatusData,
+  InputStatusCode,
+} from '../../app/api/idea_statuses/types';
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
@@ -54,6 +60,7 @@ declare global {
       getArea: typeof getArea;
       apiCreateIdea: typeof apiCreateIdea;
       apiRemoveIdea: typeof apiRemoveIdea;
+      apiSetIdeaStatus: typeof apiSetIdeaStatus;
       apiReactToIdea: typeof apiReactToIdea;
       apiCreateOfficialFeedbackForIdea: typeof apiCreateOfficialFeedbackForIdea;
       apiAddComment: typeof apiAddComment;
@@ -119,6 +126,9 @@ declare global {
       dragToolboxItemTo(
         toolboxSelector: string,
         targetSelector: string
+      ): Chainable<JQuery<HTMLElement>>;
+      clickInputFormPageButton(
+        dataCy: 'e2e-next-page' | 'e2e-submit-form'
       ): Chainable<JQuery<HTMLElement>>;
       selectReactSelectOption: typeof selectReactSelectOption;
       apiCreateInputTopic: typeof apiCreateInputTopic;
@@ -238,7 +248,7 @@ function setModeratorLoginCookie() {
 function setConsentCookie() {
   cy.setCookie(
     'cl2_consent',
-    '{%22analytics%22:true%2C%22advertising%22:true%2C%22functional%22:true%2C%22savedChoices%22:{%22google_tag_manager%22:true%2C%22matomo%22:true%2C%22google_analytics%22:true%2C%22intercom%22:true%2C%22segment%22:true}}'
+    '{%22analytics%22:true%2C%22advertising%22:true%2C%22functional%22:true%2C%22savedChoices%22:{%22google_tag_manager%22:true%2C%22matomo%22:true%2C%22intercom%22:true%2C%22segment%22:true}}'
   );
 }
 
@@ -712,6 +722,7 @@ type IdeaType = {
   budget?: number;
   anonymous?: boolean;
   topicIds?: string[];
+  customFieldValues?: Record<string, unknown>;
 };
 
 function apiCreateIdea({
@@ -724,6 +735,7 @@ function apiCreateIdea({
   budget,
   anonymous,
   topicIds,
+  customFieldValues,
 }: IdeaType) {
   const doRequest = (jwt: string) =>
     cy.request({
@@ -749,6 +761,7 @@ function apiCreateIdea({
           budget,
           anonymous,
           topic_ids: topicIds,
+          ...customFieldValues,
         },
       },
     });
@@ -775,6 +788,48 @@ function apiRemoveIdea(ideaId: string) {
       method: 'DELETE',
       url: `web_api/v1/ideas/${ideaId}`,
     });
+  });
+}
+
+// Only statuses that `can_manually_transition_to?` are accepted by the API;
+// `threshold_reached` and `expired` are reached by the automated transitions only.
+function apiSetIdeaStatus({
+  ideaId,
+  statusCode,
+  participationMethod,
+}: {
+  ideaId: string;
+  statusCode: InputStatusCode;
+  participationMethod: IdeaStatusParticipationMethod;
+}) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy
+      .request({
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${adminJwt}`,
+        },
+        method: 'GET',
+        url: `web_api/v1/idea_statuses?participation_method=${participationMethod}`,
+      })
+      .then((statuses) => {
+        const status = statuses.body.data.find(
+          (ideaStatus: IIdeaStatusData) =>
+            ideaStatus.attributes.code === statusCode
+        );
+
+        return cy.request({
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${adminJwt}`,
+          },
+          method: 'PATCH',
+          url: `web_api/v1/ideas/${ideaId}`,
+          body: { idea: { idea_status_id: status.id } },
+        });
+      });
   });
 }
 
@@ -957,10 +1012,12 @@ function apiEditPhase({
   phaseId,
   submission_enabled,
   user_fields_in_form,
+  placement_type,
 }: {
   phaseId: string;
   submission_enabled?: boolean;
   user_fields_in_form?: boolean;
+  placement_type?: 'on_timeline' | 'standalone';
 }) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -976,6 +1033,7 @@ function apiEditPhase({
         phase: {
           submission_enabled,
           user_fields_in_form,
+          placement_type,
         },
       },
     });
@@ -1201,7 +1259,7 @@ function apiRemoveFolder(folderId: string) {
   });
 }
 
-function apiCreateCustomPage(title: string) {
+function apiCreateCustomPage(title: string, projectId?: string) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -1222,6 +1280,7 @@ function apiCreateCustomPage(title: string) {
             'nl-NL': title,
             'fr-BE': title,
           },
+          ...(projectId && { project_id: projectId }),
         },
       },
     });
@@ -1396,8 +1455,6 @@ function apiCreatePhase({
   nativeSurveyButtonMultiloc?: Multiloc;
   nativeSurveyTitleMultiloc?: Multiloc;
   reacting_dislike_enabled?: boolean;
-  // Only settable on creation: 'standalone' phases are extra surveys that run
-  // in parallel with the timeline.
   placementType?: 'on_timeline' | 'standalone';
 }) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
@@ -2559,6 +2616,7 @@ Cypress.Commands.add('getAdminAuthUser', getAdminAuthUser);
 Cypress.Commands.add('getArea', getArea);
 Cypress.Commands.add('apiCreateIdea', apiCreateIdea);
 Cypress.Commands.add('apiRemoveIdea', apiRemoveIdea);
+Cypress.Commands.add('apiSetIdeaStatus', apiSetIdeaStatus);
 Cypress.Commands.add('apiReactToIdea', apiReactToIdea);
 Cypress.Commands.add(
   'apiCreateOfficialFeedbackForIdea',

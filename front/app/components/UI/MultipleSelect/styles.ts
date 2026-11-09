@@ -1,4 +1,5 @@
 import {
+  bo,
   colors,
   stylingConsts,
   fontSizes,
@@ -8,11 +9,19 @@ import { DefaultTheme } from 'styled-components';
 interface Settings {
   fontSize?: number;
   minHeight?: number;
+  borderRadius?: string;
 }
+
+export const boSelectSettings: Settings = {
+  fontSize: fontSizes.xs,
+  minHeight: 36,
+  borderRadius: bo.borderRadius,
+};
 
 function getSelectStyles(theme: DefaultTheme, settings?: Settings) {
   const fontSize = settings?.fontSize || fontSizes.base;
   const minHeight = settings?.minHeight || stylingConsts.inputHeight;
+  const borderRadius = settings?.borderRadius || stylingConsts.borderRadius;
 
   return {
     valueContainer: (base) => ({
@@ -28,28 +37,39 @@ function getSelectStyles(theme: DefaultTheme, settings?: Settings) {
     input: (base) => ({
       ...base,
     }),
-    control: (base, { isFocused }) => ({
+    control: (base, { isFocused, isDisabled }) => ({
       ...base,
       fontSize: `${fontSize}px`,
       borderWidth: isFocused ? '2px' : '1px',
-      borderColor: isFocused
+      borderColor: isDisabled
+        ? colors.grey400
+        : isFocused
         ? theme.colors.tenantPrimary
         : `${colors.borderDark}`,
-      borderRadius: stylingConsts.borderRadius,
+      borderRadius,
       minHeight,
-      backgroundColor: '#fff',
+      // Matches the disabled style of defaultInputStyle (e.g. Input)
+      backgroundColor: isDisabled ? `${colors.grey100}` : '#fff',
       boxShadow: 'none',
       cursor: 'pointer',
       '&:hover': {
-        borderColor: `${theme.colors.tenantPrimary}`,
+        borderColor: isDisabled
+          ? colors.grey400
+          : `${theme.colors.tenantPrimary}`,
       },
+    }),
+    singleValue: (base, { isDisabled }) => ({
+      ...base,
+      color: isDisabled ? colors.grey700 : base.color,
     }),
     indicatorSeparator: () => ({
       display: 'none',
     }),
-    dropdownIndicator: (base, { isFocused }) => ({
+    dropdownIndicator: (base, { isFocused, isDisabled }) => ({
       ...base,
-      color: isFocused
+      color: isDisabled
+        ? colors.grey400
+        : isFocused
         ? `${theme.colors.tenantPrimary}`
         : `${colors.borderDark}`,
       '&:hover': {
@@ -66,9 +86,14 @@ function getSelectStyles(theme: DefaultTheme, settings?: Settings) {
       // question on the form (see TAN-4671).
       zIndex: 1001,
     }),
+    // Only a custom radius changes the menu, so other selects keep theirs.
+    menu: (base) =>
+      settings?.borderRadius
+        ? { ...base, borderRadius, overflow: 'hidden' }
+        : base,
     menuList: (base) => ({
       ...base,
-      borderRadius: stylingConsts.borderRadius,
+      borderRadius,
     }),
     option: (base, { isFocused }) => ({
       ...base,
@@ -92,7 +117,7 @@ function getSelectStyles(theme: DefaultTheme, settings?: Settings) {
       ...base,
       fontSize: `${fontSize}px`,
       ':hover': {
-        background: '#ccc',
+        background: colors.grey400,
       },
     }),
   };

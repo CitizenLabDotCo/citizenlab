@@ -60,5 +60,17 @@ describe Export::InputFields do
     it 'combines form and user fields in all' do
       expect(described_class.new(phase).all.map(&:key)).to include('q_survey', 'residence')
     end
+
+    context 'when the survey is fully anonymous' do
+      before { create(:permission, action: 'posting_idea', permission_scope: phase, user_data_collection: 'anonymous') }
+
+      it 'reports no user fields' do
+        expect(described_class.new(phase).user_fields).to be_empty
+      end
+
+      it 'still reports the form questions' do
+        expect(described_class.new(phase).all.map(&:key)).to eq ['q_survey']
+      end
+    end
   end
 end

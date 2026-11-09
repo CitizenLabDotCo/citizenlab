@@ -7,6 +7,7 @@ import useIdMethods from 'api/id_methods/useIdMethods';
 import {
   getAzureB2cConfig,
   getAzureConfig,
+  getOktaConfig,
   getPublikConfig,
 } from 'api/id_methods/utils';
 
@@ -37,6 +38,7 @@ const useIdMethodNames = () => {
   ) as IDKeycloakMethod | undefined;
 
   const publikMethod = getPublikConfig(idMethods);
+  const oktaConfig = getOktaConfig(idMethods);
 
   return {
     franceconnect: 'FranceConnect',
@@ -59,6 +61,7 @@ const useIdMethodNames = () => {
     etat_lu: 'Luxembourg IAM',
     // Publik is white-labelled, so each city configures its own button name.
     publik: publikMethod?.attributes.method_metadata?.name ?? '',
+    okta: oktaConfig?.attributes.login_mechanism_name || 'Okta',
   };
 };
 

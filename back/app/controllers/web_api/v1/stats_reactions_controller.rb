@@ -34,7 +34,7 @@ class WebApi::V1::StatsReactionsController < WebApi::V1::StatsController
       .limit(limit)
       .count('id')
 
-    IdeasCountService.aggregate_child_input_topic_counts(serie)
+    add_child_counts_to_parents(serie)
   end
 
   def reactions_by_topic

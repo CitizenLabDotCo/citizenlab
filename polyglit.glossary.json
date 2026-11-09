@@ -30,6 +30,9 @@
   "draft": {
     "nl-NL": "concept"
   },
+  "Communtiy Monitor": {
+    "de-DE": "Stimmungsbarometer"
+  },
   "content builder": {
     "nl-NL": "content builder"
   },
@@ -124,6 +127,7 @@
     "nl-NL": "gebied tekenen"
   },
   "survey": {
+    "fr-FR": "enquête",
     "nl-NL": "vragenlijst"
   },
   "survey responses": {
@@ -285,6 +289,7 @@
     "nl-NL": "initiatief"
   },
   "spotlight survey": {
+    "de-DE": "zusätzliche Umfrage",
     "nl-NL": "uitgelichte vragenlijst"
   },
   "early access": {
@@ -360,6 +365,9 @@
   },
   "sign in": {
     "nl-NL": "inloggen"
+  },
+  "visitors": {
+    "de-DE": "Besucher*innen"
   },
   "traffic sources": {
     "nl-NL": "kanalen"

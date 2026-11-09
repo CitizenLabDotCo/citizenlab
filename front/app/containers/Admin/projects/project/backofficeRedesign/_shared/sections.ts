@@ -1,22 +1,18 @@
-import messages from '../messages';
+import backofficeRedesignMessages from '../messages';
 
-export const LINKED_SECTIONS = [
+import messages from './messages';
+
+const SECTIONS = [
   {
     path: 'events',
-    label: messages.eventsSection,
+    label: backofficeRedesignMessages.eventsSection,
     to: '/admin/projects/$projectId/events',
   },
   {
     path: 'files',
-    label: messages.filesSection,
+    label: backofficeRedesignMessages.filesSection,
     to: '/admin/projects/$projectId/files',
   },
-] as const;
-
-// Messaging takes over the workspace like the sections above, but is reached
-// from the Next actions list instead of a link in the setup panel.
-const SECTIONS = [
-  ...LINKED_SECTIONS,
   {
     path: 'messaging',
     label: messages.messagingSection,

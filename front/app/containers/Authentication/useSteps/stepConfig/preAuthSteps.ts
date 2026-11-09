@@ -26,6 +26,7 @@ import {
   handleSubmitEmail,
   handleSubmitPhone,
   handleSSOClick,
+  trackAuthenticated,
 } from './utils';
 
 export const preAuthSteps = (
@@ -138,6 +139,7 @@ export const preAuthSteps = (
           tokenLifetime,
           claimTokens,
         });
+        trackAuthenticated('signin', phone ? 'phone' : 'email');
 
         const remainingStep = await getRemainingRequirementStep();
 
@@ -175,6 +177,7 @@ export const preAuthSteps = (
       },
       SUBMIT_CODE: async (email: string, code: string) => {
         await confirmCodeEmail(email, code);
+        trackAuthenticated(state.flow, 'email');
 
         setCurrentStep((await getRemainingRequirementStep()) ?? 'success');
       },
@@ -194,6 +197,7 @@ export const preAuthSteps = (
           state.phone ?? '',
           state.smsManualCampaignConsent
         );
+        trackAuthenticated(state.flow, 'phone');
 
         setCurrentStep((await getRemainingRequirementStep()) ?? 'success');
       },

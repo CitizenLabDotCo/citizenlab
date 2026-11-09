@@ -3,6 +3,7 @@ import { CLErrors } from 'typings';
 
 import projectsKeys from 'api/projects/keys';
 
+import { customerAnalyticsEvents, trackEventByName } from 'utils/analytics';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import pollResponsesKeys from './keys';
@@ -43,6 +44,11 @@ const useAddPollResponse = () => {
 
       queryClient.invalidateQueries({
         queryKey: projectsKeys.item({ id: variables.projectId }),
+      });
+
+      trackEventByName(customerAnalyticsEvents.pollSubmitted, {
+        project_id: variables.projectId,
+        phase_id: variables.phaseId,
       });
     },
   });

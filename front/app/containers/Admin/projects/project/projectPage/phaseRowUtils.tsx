@@ -1,13 +1,24 @@
 import React from 'react';
 
-import { Box, Text, colors } from '@citizenlab/cl2-component-library';
-import { format, isSameMonth } from 'date-fns';
+import {
+  Box,
+  Text,
+  bo,
+  colors,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
+import { Locale, format, isSameMonth } from 'date-fns';
 import styled from 'styled-components';
 
-import { IPhaseData } from 'api/phases/types';
+import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 import { getPhaseLandingTab } from 'api/phases/utils';
 
+import methodMessages from 'containers/Admin/inspirationHub/messages';
+
+import { MessageDescriptor } from 'utils/cl-intl';
 import { pastPresentOrFuture } from 'utils/dateUtils';
+
+import messages from './messages';
 
 export type PhaseLandingTab = ReturnType<typeof getPhaseLandingTab>;
 
@@ -30,28 +41,95 @@ export const PHASE_TAB_ROUTES: Record<PhaseLandingTab, PhaseTabTarget> = {
   volunteering: '/admin/projects/$projectId/phases/$phaseId/volunteering',
 };
 
+export const METHOD_LABELS: Record<ParticipationMethod, MessageDescriptor> = {
+  ideation: methodMessages.ideation,
+  proposals: methodMessages.proposals,
+  native_survey: methodMessages.survey,
+  community_monitor_survey: methodMessages.communityMonitorSurvey,
+  survey: methodMessages.externalSurvey,
+  information: methodMessages.information,
+  voting: methodMessages.voting,
+  poll: methodMessages.poll,
+  volunteering: methodMessages.volunteering,
+  common_ground: methodMessages.commonGround,
+  document_annotation: methodMessages.documentAnnotation,
+};
+
 export type PhaseStatus = 'past' | 'present' | 'future';
+
+export const STATUS_LABELS: Record<PhaseStatus, MessageDescriptor> = {
+  past: messages.phaseDone,
+  present: messages.phaseInProgress,
+  future: messages.phaseUpcoming,
+};
 
 export const phaseStatus = (phase: IPhaseData): PhaseStatus =>
   pastPresentOrFuture([phase.attributes.start_at, phase.attributes.end_at]);
 
+// Same-month ranges name the month once: "3 to 23 Oct".
+export const shortDateRange = (
+  startAt: string,
+  endAt: string,
+  locale: Locale
+) => {
+  const start = new Date(startAt);
+  const end = new Date(endAt);
+
+  return {
+    startDate: format(start, isSameMonth(start, end) ? 'd' : 'd MMM', {
+      locale,
+    }),
+    endDate: format(end, 'd MMM', { locale }),
+  };
+};
+
 export const formatDateRange = (
   startAt: string,
   endAt: string | null,
+  locale: Locale,
   noEndLabel?: string
 ): string => {
-  const start = new Date(startAt);
-
   if (!endAt) {
-    return `${format(start, 'd MMM')} – ${noEndLabel ?? ''}`;
+    return `${format(new Date(startAt), 'd MMM', { locale })} – ${
+      noEndLabel ?? ''
+    }`;
   }
 
-  const end = new Date(endAt);
+  const { startDate, endDate } = shortDateRange(startAt, endAt, locale);
 
-  return isSameMonth(start, end)
-    ? `${format(start, 'd')} – ${format(end, 'd MMM')}`
-    : `${format(start, 'd MMM')} – ${format(end, 'd MMM')}`;
+  return `${startDate} – ${endDate}`;
 };
+
+const STEP_DOT_COLORS: Record<PhaseStatus, string> = {
+  past: bo.colors.stepDoneDot,
+  present: bo.colors.stepLiveDot,
+  future: colors.grey300,
+};
+
+export const StepDot = ({ status }: { status: PhaseStatus }) => (
+  <Box
+    position="relative"
+    zIndex="1"
+    flex="0 0 auto"
+    w="8px"
+    h="8px"
+    mt="6px"
+    mr="12px"
+    borderRadius="50%"
+    background={STEP_DOT_COLORS[status]}
+  />
+);
+
+export const StepLine = ({ status }: { status: PhaseStatus }) => (
+  <Box
+    position="absolute"
+    top="18px"
+    bottom="-18px"
+    left="15.5px"
+    w="1px"
+    background={status === 'past' ? bo.colors.stepDoneLine : colors.grey200}
+  />
+);
 
 const dotBackground = (status: PhaseStatus) => {
   if (status === 'present') return colors.green500;
@@ -135,4 +213,42 @@ export const Row = styled.div<{ selected: boolean }>`
     background: ${({ selected }) =>
       selected ? colors.grey200 : colors.grey100};
   }
+`;
+
+export const StepRow = styled(Row)`
+  gap: 0;
+  padding: 8px 8px 8px 12px;
+  border-radius: ${bo.borderRadius};
+`;
+
+export const StepTitle = styled(Text)`
+  margin: 0;
+  font-size: ${fontSizes.xs}px;
+  font-weight: 500;
+  line-height: 16px;
+`;
+
+// No margin here: the gap above it depends on the row.
+export const StepMeta = styled(Text)`
+  font-size: ${fontSizes.xs}px;
+  line-height: 16px;
+
+  & > span {
+    font-size: inherit;
+    line-height: inherit;
+  }
+`;
+
+export const SectionLabel = styled(Text)`
+  margin: 0;
+  font-size: ${fontSizes.xs}px;
+  font-weight: 400;
+  line-height: 16px;
+  color: ${bo.colors.sectionLabel};
+`;
+
+export const EventRow = styled(Row)`
+  flex-direction: column;
+  gap: 2px;
+  border-radius: ${bo.borderRadius};
 `;

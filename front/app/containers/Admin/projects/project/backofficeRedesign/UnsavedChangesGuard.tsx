@@ -1,47 +1,45 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 
 import phaseSetupMessages from 'containers/Admin/projects/project/phaseSetup/messages';
 
-import Modal from 'components/UI/Modal';
+import { usePageSave } from 'components/admin/PageSaveContext';
+import Modal, { MEDIUM_MODAL_WIDTH } from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 import { useBlocker } from 'utils/router';
 
-import { usePhaseSave } from './_shared/PhaseSaveContext';
+import useReturnToPhaseAfterSave from './_shared/useReturnToPhaseAfterSave';
 import messages from './messages';
 
 const UnsavedChangesGuard = () => {
   const { formatMessage } = useIntl();
-  const phaseSave = usePhaseSave();
-  const dirty = !!phaseSave?.dirty;
-  const leaving = useRef(false);
-
-  useEffect(() => {
-    if (!dirty) leaving.current = false;
-  }, [dirty]);
+  const pageSave = usePageSave();
+  const returnToPhaseAfterSave = useReturnToPhaseAfterSave();
+  const dirty = !!pageSave?.dirty;
 
   const blocker = useBlocker({
     shouldBlockFn: ({ current, next }) =>
-      !leaving.current && dirty && current.pathname !== next.pathname,
+      !pageSave?.isLeaving() && dirty && current.pathname !== next.pathname,
     enableBeforeUnload: dirty,
     withResolver: true,
   });
 
-  if (!phaseSave || blocker.status !== 'blocked') return null;
+  if (!pageSave || blocker.status !== 'blocked') return null;
 
   const proceed = () => {
-    leaving.current = true;
+    pageSave.leave();
     blocker.proceed();
   };
 
   const handleSave = async () => {
-    const saved = await phaseSave.saveAll('leave');
-    if (saved) {
+    const failed = await pageSave.saveAll('leave');
+    if (failed.length === 0) {
       proceed();
     } else {
       blocker.reset();
+      returnToPhaseAfterSave(failed);
     }
   };
 
@@ -49,7 +47,7 @@ const UnsavedChangesGuard = () => {
     <Modal
       opened
       close={blocker.reset}
-      width={560}
+      width={MEDIUM_MODAL_WIDTH}
       header={formatMessage(messages.unsavedChangesTitle)}
       footer={
         <Box display="flex" justifyContent="flex-end" gap="8px" width="100%">
@@ -59,7 +57,7 @@ const UnsavedChangesGuard = () => {
           <Button
             buttonStyle="bo-secondary"
             onClick={() => {
-              phaseSave.discardAll();
+              pageSave.discardAll();
               proceed();
             }}
           >
@@ -67,7 +65,7 @@ const UnsavedChangesGuard = () => {
           </Button>
           <Button
             buttonStyle="bo-primary"
-            processing={phaseSave.saving}
+            processing={pageSave.saving}
             onClick={handleSave}
           >
             {formatMessage(phaseSetupMessages.saveChangesLabel)}
@@ -77,7 +75,7 @@ const UnsavedChangesGuard = () => {
     >
       <Box p="24px">
         <Text variant="boHelper">
-          {formatMessage(messages.unsavedChangesDescription)}
+          {formatMessage(messages.unsavedChangesDescription2)}
         </Text>
       </Box>
     </Modal>

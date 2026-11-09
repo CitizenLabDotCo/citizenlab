@@ -27,24 +27,57 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.moderationGroup',
     defaultMessage: 'Moderation',
   },
-  displayGroup: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.displayGroup',
-    defaultMessage: 'Display',
+  votingAction: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.votingAction',
+    defaultMessage: 'Voting',
   },
-  submissionNameGroup: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.submissionNameGroup',
-    defaultMessage: 'Submission name',
+  votingDisplayGroup: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.votingDisplayGroup',
+    defaultMessage: 'Filtering and results',
   },
   votingOnInputsAction: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.votingOnInputsAction',
     defaultMessage: 'Voting on inputs',
   },
-  volunteeringAction: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.volunteeringAction',
-    defaultMessage: 'Volunteering',
+  takingPollAction: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.takingPollAction',
+    defaultMessage: 'Taking the poll',
   },
-  votesGroup: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.votesGroup',
-    defaultMessage: 'Votes',
+  takingSurveyAction: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.takingSurveyAction',
+    defaultMessage: 'Taking the survey',
+  },
+  volunteeringAction2: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.volunteeringAction2',
+    defaultMessage: 'Signing up for a cause',
+  },
+  proposalRequirementsGroup: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.proposalRequirementsGroup',
+    defaultMessage: 'Proposal requirements',
+  },
+  proposalRequirementsNote: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.proposalRequirementsNote',
+    defaultMessage:
+      'Proposals that reach the minimum within the time limit get an official response; the rest expire.',
+  },
+  howIdeasAreShown: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.howIdeasAreShown',
+    defaultMessage: 'How ideas are shown',
+  },
+  howProposalsAreShown: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.howProposalsAreShown',
+    defaultMessage: 'How proposals are shown',
+  },
+  acceptNewResponses: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.acceptNewResponses',
+    defaultMessage: 'Accept new responses',
+  },
+  acceptNewResponsesDescription: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.acceptNewResponsesDescription',
+    defaultMessage: 'When off, participants can no longer submit the survey.',
+  },
+  settingsGroup: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.settingsGroup',
+    defaultMessage: 'Settings',
   },
 });

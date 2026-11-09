@@ -15,7 +15,7 @@ class McpServer::Serializers::LayoutOutline
         parent: { type: 'string', description: 'Absent on ROOT.' },
         depth: { type: 'integer' },
         canvas: { type: 'boolean', description: 'Present (true) when children can be placed inside this node.' },
-        locked: { type: 'boolean', description: "Present (true) on the fixed page-scaffold nodes, which must not be added, moved, deleted or edited — except the body node's `nodes` array, which is the page content." },
+        locked: { type: 'boolean', description: 'Present (true) on protected nodes that must not be moved or deleted; see the tool\'s widget reference for whether they can be edited.' },
         slot: { type: 'string', description: "The parent's linkedNodes slot this node fills (e.g. left, accordion-content)." },
         text: { type: 'string', description: 'Plain-text snippet of the node text or title.' }
       },
@@ -26,8 +26,19 @@ class McpServer::Serializers::LayoutOutline
   TEXT_SNIPPET_LENGTH = 120
   private_constant :TEXT_SNIPPET_LENGTH
 
-  def initialize(craftjs_json)
+  # Marks project-page scaffold nodes by widget type — the default, so callers that
+  # don't pass `protected:` keep the project-page behaviour. Based on the widget type,
+  # not the custom.locked/region markers the FE writes, so the outline matches what
+  # update_project_layout enforces.
+  DEFAULT_PROTECTED = lambda do |node|
+    ContentBuilder::ProjectPageLayoutService::SCAFFOLD_WIDGETS.include?(
+      ContentBuilder::Craftjs::Query.resolved_name(node)
+    )
+  end
+
+  def initialize(craftjs_json, protected: DEFAULT_PROTECTED)
     @json = craftjs_json
+    @protected = protected
   end
 
   # One entry per node, in visual order; keys with nil values are omitted:
@@ -48,16 +59,10 @@ class McpServer::Serializers::LayoutOutline
       parent: node['parent'],
       depth: depth,
       canvas: node['isCanvas'] ? true : nil,
-      locked: locked?(widget) ? true : nil,
+      locked: @protected.call(node) ? true : nil,
       slot: slot,
       text: text_snippet(node)
     }.compact
-  end
-
-  # Based on the widget type, not the custom.locked/custom.region markers the FE
-  # writes, so the outline always matches what update_project_layout enforces.
-  def locked?(widget)
-    ContentBuilder::ProjectPageLayoutService::SCAFFOLD_WIDGETS.include?(widget)
   end
 
   def text_snippet(node)

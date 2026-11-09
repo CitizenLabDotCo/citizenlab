@@ -91,6 +91,25 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
       expect(parsed_html.css('h1').text).to eq 'PROJECT - PHASE'
     end
 
+    context 'for an ideation phase' do
+      let(:phase) { create(:phase, project: project, title_multiloc: { en: 'PHASE' }) }
+      let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
+      let!(:text_field) { create(:custom_field_text, resource: custom_form, title_multiloc: { 'en' => 'Private question' }) }
+      let!(:multiline_field) do
+        create(:custom_field_multiline_text, resource: custom_form, title_multiloc: { 'en' => 'Public question' }, answers_visible_to: 'public')
+      end
+
+      it 'marks the questions whose answers are not public' do
+        disclaimer = 'This answer will only be shared with moderators, and not to the public.'
+        marked, unmarked = parsed_html.css('div#questions div.question').partition { |question| question.text.include?(disclaimer) }
+        expect(marked.map { |question| question.css('h3').text }).to include(a_string_including('Private question'))
+        expect(unmarked.map { |question| question.css('h3').text }).to include(
+          a_string_including('Public question'),
+          a_string_including('Title')
+        )
+      end
+    end
+
     context 'personal data not enabled' do
       it 'does not return a personal data section' do
         expect(parsed_html.css('div#personal-data')).to be_empty

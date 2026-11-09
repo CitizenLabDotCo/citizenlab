@@ -29,6 +29,8 @@ import Link, { typedStyled } from 'utils/cl-router/Link';
 import { useParams } from 'utils/router';
 import { stripHtml } from 'utils/textUtils';
 
+import useWidgetProjectId from '../../useWidgetProjectId';
+
 import messages from './messages';
 import PagePlaceholder from './PagePlaceholder';
 
@@ -167,7 +169,11 @@ const PageLinkSettings = () => {
 
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const { projectId } = useParams({ strict: false });
+  const { customPageId } = useParams({ strict: false });
+  const projectId = useWidgetProjectId();
+  // On a project's own page the project comes from the page, so wait for it
+  // before listing pages.
+  const { isLoading: isLoadingPage } = useCustomPageById(customPageId);
 
   const {
     data: pages,
@@ -180,14 +186,16 @@ const PageLinkSettings = () => {
   const pageOptions = useMemo(() => {
     if (!pages) return [];
 
-    return pages.data.map((page) => ({
-      value: page.id,
-      label: localize(page.attributes.title_multiloc),
-    }));
-  }, [pages, localize]);
+    return pages.data
+      .filter((page) => page.id !== customPageId)
+      .map((page) => ({
+        value: page.id,
+        label: localize(page.attributes.title_multiloc),
+      }));
+  }, [pages, localize, customPageId]);
 
   // Full-panel spinner on initial load only; refetches keep the panel visible.
-  if (!pages) {
+  if (isLoadingPage || !pages) {
     return <Spinner />;
   }
 

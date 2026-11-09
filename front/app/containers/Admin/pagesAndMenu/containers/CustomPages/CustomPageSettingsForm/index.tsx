@@ -12,7 +12,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
-import { array, object, string } from 'yup';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IAreaData } from 'api/areas/types';
@@ -42,10 +41,10 @@ import NewLabel from 'components/UI/NewLabel';
 
 import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
-import { slugRegEx } from 'utils/textUtils';
-import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 
 import messages from '../messages';
+
+import { getSchema } from './form';
 
 const LinkedProjectContainer = styled(Box)<{ disabled: boolean }>`
   &:hover {
@@ -75,15 +74,9 @@ interface Props {
   showNavBarItemTitle?: boolean;
   mode: TMode;
   hideSlug?: boolean;
+  hideLinkedItems?: boolean;
   onSubmit: (formValues: FormValues) => void | Promise<void>;
 }
-
-const projectsFilterTypesArray: ProjectsFilterTypes[] = [
-  'no_filter',
-  'global_topics',
-  'areas',
-  'spaces',
-];
 
 const fieldMarginBottom = '40px';
 
@@ -91,6 +84,7 @@ const CustomPageSettingsForm = ({
   showNavBarItemTitle,
   mode,
   hideSlug,
+  hideLinkedItems,
   onSubmit,
   defaultValues,
 }: Props) => {
@@ -103,6 +97,7 @@ const CustomPageSettingsForm = ({
   const isSpacesEnabled = useFeatureFlag({ name: 'spaces' });
   const showPlanUpgradeTease = !isFeatureAllowed;
   const showAdvancedCustomPages = showPlanUpgradeTease || isFeatureEnabled;
+  const showLinkedItems = showAdvancedCustomPages && !hideLinkedItems;
   const { data: areas } = useAreas({});
   const { data: appConfig } = useAppConfiguration();
   const locale = useLocale();
@@ -115,60 +110,11 @@ const CustomPageSettingsForm = ({
     ? configuredLocales.length > 1
     : false;
 
-  const schema = object({
-    title_multiloc: validateMultilocForEveryLocale(
-      formatMessage(
-        hasMultipleConfiguredLocales
-          ? messages.titleMultilocError
-          : messages.titleSinglelocError
-      )
-    ),
-    ...(showNavBarItemTitle && {
-      nav_bar_item_title_multiloc: validateMultilocForEveryLocale(
-        formatMessage(
-          hasMultipleConfiguredLocales
-            ? messages.titleMultilocError
-            : messages.titleSinglelocError
-        )
-      ),
-    }),
-    ...(mode === 'edit' && {
-      slug: string()
-        .matches(slugRegEx, formatMessage(messages.slugRegexError))
-        .required(formatMessage(messages.slugRequiredError)),
-    }),
-    projects_filter_type: string().oneOf(projectsFilterTypesArray).required(),
-    global_topic_ids: array()
-      .nullable()
-      .when('projects_filter_type', ([value]) => {
-        if (value === 'global_topics') {
-          return array()
-            .of(string())
-            .min(1, formatMessage(messages.atLeastOneTag));
-        }
-
-        return array();
-      }),
-    area_id: string()
-      .nullable()
-      .when('projects_filter_type', ([value]) => {
-        if (value === 'areas') {
-          return string().required(formatMessage(messages.selectAnArea));
-        }
-
-        return string().nullable();
-      }),
-    space_ids: array()
-      .nullable()
-      .when('projects_filter_type', ([value]) => {
-        if (value === 'spaces') {
-          return array()
-            .of(string())
-            .min(1, formatMessage(messages.selectASpace));
-        }
-
-        return array();
-      }),
+  const schema = getSchema(formatMessage, {
+    hasMultipleConfiguredLocales,
+    showNavBarItemTitle,
+    mode,
+    hideLinkedItems,
   });
 
   const methods = useForm<FormValues>({
@@ -288,7 +234,7 @@ const CustomPageSettingsForm = ({
               </Box>
             )}
 
-            {showAdvancedCustomPages && (
+            {showLinkedItems && (
               <Tooltip
                 placement="top-start"
                 content={formatMessage(messages.contactGovSuccessToAccess)}
@@ -345,7 +291,7 @@ const CustomPageSettingsForm = ({
                 </div>
               </Tooltip>
             )}
-            {showAdvancedCustomPages && (
+            {showLinkedItems && (
               <>
                 {methods.watch('projects_filter_type') === 'global_topics' && (
                   <SelectContainer mb="30px">

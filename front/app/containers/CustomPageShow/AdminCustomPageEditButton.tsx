@@ -10,6 +10,7 @@ import { adminCustomPageContentLink } from 'containers/Admin/pagesAndMenu/routes
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
+import checkIfFramed from 'utils/checkIfFramed';
 import { injectIntl } from 'utils/cl-intl';
 import { usePermission } from 'utils/permissions';
 
@@ -43,7 +44,8 @@ const AdminCustomPageEditButton = ({
     ? { linkTo: `/admin/projects/${projectId}/pages/${pageId}` }
     : adminCustomPageContentLink(pageId);
 
-  return userCanEditPage ? (
+  // An admin preview shows this page in a frame, where the button would open the admin inside it.
+  return userCanEditPage && !checkIfFramed() ? (
     <PositionWrapper>
       <ButtonWithLink
         icon="edit"

@@ -9,6 +9,8 @@ import usePhases from 'api/phases/usePhases';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
 import { isTimelinePhase } from 'api/phases/utils';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import usePhaseFileAttachments, {
   fileAttachmentErrors,
 } from 'containers/Admin/projects/_shared/usePhaseFileAttachments';
@@ -16,11 +18,15 @@ import { SurveyMethod } from 'containers/Admin/projects/project/phaseSetup/compo
 import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/typings';
 import { validateDates } from 'containers/Admin/projects/project/phaseSetup/validate';
 
+import {
+  usePageSave,
+  useRegisterPageSaver,
+} from 'components/admin/PageSaveContext';
+
 import { useIntl } from 'utils/cl-intl';
 
-import { useRegisterPhaseSaver } from '../../_shared/PhaseSaveContext';
-
 import BuildFields from './BuildFields';
+import SurveyPlacement from './SurveyPlacement';
 import SwitchSurveyMethodModal from './SwitchSurveyMethodModal';
 import useSurveyMethodLocks from './useSurveyMethodLocks';
 
@@ -34,6 +40,7 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
   const { formatMessage } = useIntl();
   const { data: phases } = usePhases(projectId);
   const { mutateAsync: updatePhase } = useUpdatePhase();
+  const pageSave = usePageSave();
 
   const [formData, setFormData] = useState<IUpdatedPhaseProperties>(
     phase.attributes
@@ -46,6 +53,9 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
   const [pendingSurveyMethod, setPendingSurveyMethod] =
     useState<SurveyMethod | null>(null);
   const surveyMethodLocks = useSurveyMethodLocks(phase);
+  const draftDescriptionEnabled = useFeatureFlag({
+    name: 'draft_phase_description',
+  });
 
   const files = usePhaseFileAttachments({
     projectId,
@@ -81,6 +91,24 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
         title_multiloc: formData.title_multiloc,
         start_at: formData.start_at,
         end_at: formData.end_at,
+        input_term: formData.input_term,
+        ...(phase.attributes.participation_method === 'survey'
+          ? {
+              survey_service: formData.survey_service,
+              survey_embed_url: formData.survey_embed_url,
+            }
+          : {}),
+        ...(phase.attributes.participation_method === 'document_annotation'
+          ? {
+              document_annotation_embed_url:
+                formData.document_annotation_embed_url,
+            }
+          : {}),
+        // A draft description publishes on its own; sending the loaded value
+        // would undo a publish made since.
+        ...(draftDescriptionEnabled
+          ? {}
+          : { description_multiloc: formData.description_multiloc }),
       });
       setFormData(response.data.attributes);
       await files.save(phase.id);
@@ -92,12 +120,19 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
     }
   };
 
-  useRegisterPhaseSaver('build', { dirty, save });
+  useRegisterPageSaver('build', { dirty, save });
 
   return (
     <Box display="flex" flexDirection="column" flexGrow={1} minHeight="0">
-      <Box flexGrow={1} p="20px">
+      <Box flexGrow={1}>
         <BuildFields
+          surveyPlacement={
+            <SurveyPlacement
+              phase={phase}
+              hasUnsavedChanges={dirty || !!pageSave?.dirty}
+              onMoved={(updatedPhase) => setFormData(updatedPhase.attributes)}
+            />
+          }
           projectId={projectId}
           phaseId={phase.id}
           participationMethod={phase.attributes.participation_method}

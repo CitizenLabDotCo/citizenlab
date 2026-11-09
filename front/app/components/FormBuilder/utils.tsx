@@ -21,23 +21,11 @@ import MultiselectSettings from './components/FormBuilderSettings/MultiselectSet
 import OptionsSettings from './components/FormBuilderSettings/OptionsSettings';
 import PageButtonSettings from './components/FormBuilderSettings/PageButtonSettings';
 import PageLayoutSettings from './components/FormBuilderSettings/PageLayoutSettings';
+import PinCountSettings from './components/FormBuilderSettings/PinCountSettings';
 import PointSettings from './components/FormBuilderSettings/PointSettings';
 import SentimentLinearScaleSettings from './components/FormBuilderSettings/SentimentLinearScaleSettings';
 import TopicsSettings from './components/FormBuilderSettings/TopicsSettings';
-import messages from './components/messages';
-
-export const builtInFieldKeys = [
-  'title_multiloc',
-  'body_multiloc',
-  'proposed_budget',
-  'topic_ids',
-  'location_description',
-  'idea_images_attributes',
-  'idea_files_attributes',
-  'cosponsor_ids',
-];
-
-export type BuiltInKeyType = (typeof builtInFieldKeys)[number];
+import { BuiltInKeyType } from './fieldLabels';
 
 export type FormType = 'survey' | 'input_form';
 export type FormBuilderConfig = {
@@ -51,19 +39,10 @@ export type FormBuilderConfig = {
   pagesLogicHelperText?: MessageDescriptor;
 
   toolboxFieldsToInclude: ICustomFieldInputType[];
-  formCustomFields: IFlatCustomField[] | undefined | Error;
 
   displayBuiltInFields: boolean;
   builtInFields: BuiltInKeyType[];
   showStatusBadge: boolean;
-  isLogicEnabled: boolean;
-  isParticipationPublic: boolean;
-  /* For Ideation, when you configure the form it gets applied to ALL ideation phases within a project,
-  however when you configure the form for surveys for example,
-  each survey phase within a project can have a different form */
-  isFormPhaseSpecific: boolean;
-
-  goBackUrl?: string;
 
   getDeletionNotice?: (projectId: string) => React.JSX.Element;
   getWarningNotice?: () => React.JSX.Element;
@@ -74,6 +53,26 @@ export type FormBuilderConfig = {
   ) => React.JSX.Element | null;
   getUserFieldsNotice?: () => React.ReactNode;
 };
+
+// A FormBuilderConfig is a constant per builder, written before any data is
+// loaded. These values depend on the phase, which the backend decides per
+// participation method, so they are only known once the phase has loaded.
+export type ResolvedFormBuilderConfig = FormBuilderConfig & {
+  goBackUrl: string;
+  isLogicEnabled: boolean;
+  isParticipationPublic: boolean;
+};
+
+export const resolveFormBuilderConfig = (
+  config: FormBuilderConfig,
+  phase: IPhaseData,
+  goBackUrl: string
+): ResolvedFormBuilderConfig => ({
+  ...config,
+  goBackUrl,
+  isLogicEnabled: phase.attributes.supports_form_logic,
+  isParticipationPublic: phase.attributes.supports_public_visibility,
+});
 
 export const getIsPostingEnabled = (
   phase?: IPhaseData | Error | null | undefined
@@ -211,6 +210,20 @@ export function getAdditionalSettings(
           field={field}
         />
       );
+    case 'multipoint':
+      return (
+        <>
+          <PointSettings
+            mapConfigIdName={`customFields.${field.index}.map_config_id`}
+            field={field}
+          />
+          <PinCountSettings
+            minimumSelectCountName={`customFields.${field.index}.minimum_select_count`}
+            maximumSelectCountName={`customFields.${field.index}.maximum_select_count`}
+            selectCountToggleName={`customFields.${field.index}.select_count_enabled`}
+          />
+        </>
+      );
     case 'text':
     case 'multiline_text':
     case 'text_multiloc':
@@ -233,113 +246,6 @@ export function getAdditionalSettings(
       return null;
   }
 }
-
-const getBuiltInFieldStringKey = (
-  key: string
-): MessageDescriptor | undefined => {
-  let translatedStringKey: MessageDescriptor | undefined;
-  switch (key) {
-    case 'title_multiloc':
-      translatedStringKey = messages.title;
-      break;
-    case 'body_multiloc':
-      translatedStringKey = messages.description;
-      break;
-    case 'location_description':
-      translatedStringKey = messages.locationDescription;
-      break;
-    case 'idea_images_attributes':
-      translatedStringKey = messages.imageFileUpload;
-      break;
-    case 'idea_files_attributes':
-      translatedStringKey = messages.fileUpload;
-      break;
-    case 'topic_ids':
-      translatedStringKey = messages.tags;
-      break;
-    case 'cosponsor_ids':
-      translatedStringKey = messages.cosponsors;
-      break;
-    case 'proposed_budget':
-      translatedStringKey = messages.proposedBudget;
-      break;
-  }
-
-  return translatedStringKey;
-};
-
-const getInputTypeStringKey = (
-  inputType: ICustomFieldInputType
-): MessageDescriptor | undefined => {
-  let translatedStringKey: MessageDescriptor | undefined;
-  switch (inputType) {
-    case 'title_multiloc':
-      translatedStringKey = messages.title;
-      break;
-    case 'text':
-      translatedStringKey = messages.shortAnswer;
-      break;
-    case 'multiline_text':
-      translatedStringKey = messages.longAnswer;
-      break;
-    case 'select':
-      translatedStringKey = messages.singleChoice;
-      break;
-    case 'multiselect':
-      translatedStringKey = messages.multipleChoice;
-      break;
-    case 'multiselect_image':
-      translatedStringKey = messages.multipleChoiceImage;
-      break;
-    case 'page':
-      translatedStringKey = messages.page;
-      break;
-    case 'number':
-      translatedStringKey = messages.number;
-      break;
-    case 'linear_scale':
-      translatedStringKey = messages.linearScale;
-      break;
-    case 'rating':
-      translatedStringKey = messages.rating;
-      break;
-    case 'file_upload':
-      translatedStringKey = messages.fileUpload;
-      break;
-    case 'shapefile_upload':
-      translatedStringKey = messages.shapefileUpload;
-      break;
-    case 'point':
-      translatedStringKey = messages.dropPin;
-      break;
-    case 'line':
-      translatedStringKey = messages.drawRoute;
-      break;
-    case 'polygon':
-      translatedStringKey = messages.drawArea;
-      break;
-    case 'ranking':
-      translatedStringKey = messages.ranking;
-      break;
-    case 'matrix_linear_scale':
-      translatedStringKey = messages.matrix;
-      break;
-    case 'sentiment_linear_scale':
-      translatedStringKey = messages.sentiment;
-      break;
-  }
-
-  return translatedStringKey;
-};
-
-export const getTranslatedStringKey = (
-  inputType: ICustomFieldInputType,
-  key: string
-): MessageDescriptor | undefined => {
-  return builtInFieldKeys.includes(key)
-    ? getBuiltInFieldStringKey(key)
-    : getInputTypeStringKey(inputType);
-};
 
 export const findNextPageAfterCurrentPage = (
   allFields: IFlatCustomField[],

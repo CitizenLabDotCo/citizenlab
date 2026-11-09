@@ -22,7 +22,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import DownloadPDFButtonWithModal from 'components/admin/FormSync/DownloadPDFButtonWithModal';
 import {
-  FormBuilderConfig,
+  ResolvedFormBuilderConfig,
   getIsPostingEnabled,
 } from 'components/FormBuilder/utils';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
@@ -35,6 +35,7 @@ import clHistory from 'utils/cl-router/history';
 import { type TypedLinkProps } from 'utils/cl-router/Link';
 import { useParams } from 'utils/router';
 
+import EditingLock from '../EditingLock';
 import messages from '../messages';
 import tracks from '../tracks';
 
@@ -48,12 +49,14 @@ const StyledStatusLabel = styled(StatusLabel)`
 
 type FormBuilderTopBarProps = {
   isSubmitting: boolean;
-  builderConfig: FormBuilderConfig;
+  builderConfig: ResolvedFormBuilderConfig;
   viewFormLink: TypedLinkProps;
   autosaveEnabled: boolean;
   setAutosaveEnabled: Dispatch<SetStateAction<boolean>>;
   phaseId: string;
   onFormSave?: () => void;
+  // Nothing can be saved meanwhile, e.g. while the AI assistant works on the form.
+  locked?: boolean;
 };
 
 const FormBuilderTopBar = ({
@@ -64,6 +67,7 @@ const FormBuilderTopBar = ({
   setAutosaveEnabled,
   phaseId,
   onFormSave,
+  locked = false,
 }: FormBuilderTopBarProps) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
@@ -182,13 +186,14 @@ const FormBuilderTopBar = ({
           formType={builderConfig.type}
           phaseId={phaseId}
         />
-        <EditSchemaButtonWithModal
-          customFields={customFields}
-          projectId={projectId}
-          phase={phase.data}
-          isFormPhaseSpecific={builderConfig.isFormPhaseSpecific}
-          onSaveSuccess={onFormSave}
-        />
+        <EditingLock locked={locked}>
+          <EditSchemaButtonWithModal
+            customFields={customFields}
+            projectId={projectId}
+            phase={phase.data}
+            onSaveSuccess={onFormSave}
+          />
+        </EditingLock>
         <ButtonWithLink
           buttonStyle="secondary-outlined"
           icon="eye"
@@ -203,7 +208,7 @@ const FormBuilderTopBar = ({
         <ButtonWithLink
           buttonStyle="admin-dark"
           processing={isSubmitting}
-          disabled={isSubmitting}
+          disabled={isSubmitting || locked}
           type="submit"
         >
           <FormattedMessage {...messages.save} />

@@ -3,7 +3,6 @@ import React, { useMemo } from 'react';
 import { Dates, Resolution } from 'components/admin/GraphCards/typings';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import LineChart from 'components/admin/Graphs/LineChart';
-import { colors } from 'components/admin/Graphs/styling';
 import {
   AccessibilityProps,
   Margin,
@@ -14,8 +13,8 @@ import { useIntl } from 'utils/cl-intl';
 import { toThreeLetterMonth } from 'utils/dateUtils';
 
 import { generateEmptyData } from './generateEmptyData';
-import messages from './messages';
 import renderTooltip from './renderTooltip';
+import { SERIES, SeriesKey } from './series';
 import { TimeSeries } from './useParticipants/typings';
 
 type Props = Dates &
@@ -24,22 +23,21 @@ type Props = Dates &
     innerRef?: React.RefObject<any>;
     margin?: Margin;
     yaxis?: YAxisProps;
+    showParticipants?: boolean;
     showVisitors?: boolean;
     isAnimationActive?: boolean;
   };
 
 const getLineConfig = (
   noData: boolean,
-  showVisitors: boolean,
+  series: SeriesKey[],
   isAnimationActive?: boolean
 ) => {
   if (noData) {
-    return { strokeWidths: showVisitors ? [0, 0] : [0] };
+    return { strokeWidths: series.map(() => 0) };
   }
   return {
-    strokes: showVisitors
-      ? [colors.categorical01, colors.categorical03]
-      : [colors.categorical01],
+    strokes: series.map((key) => SERIES[key].color),
     activeDot: { r: 4 },
     isAnimationActive,
   };
@@ -55,36 +53,27 @@ const Chart = ({
   yaxis,
   ariaLabel,
   ariaDescribedBy,
+  showParticipants = true,
   showVisitors = false,
   isAnimationActive,
 }: Props & AccessibilityProps) => {
   const { formatMessage } = useIntl();
+
+  const series: SeriesKey[] = [
+    ...(showParticipants ? (['participants'] as const) : []),
+    ...(showVisitors ? (['visitors'] as const) : []),
+  ];
 
   const emptyData = useMemo(
     () => generateEmptyData(startAtMoment, endAtMoment, resolution),
     [startAtMoment, endAtMoment, resolution]
   );
 
-  const legendItems: LegendItem[] = showVisitors
-    ? [
-        {
-          icon: 'circle',
-          color: colors.categorical01,
-          label: formatMessage(messages.participants),
-        },
-        {
-          icon: 'circle',
-          color: colors.categorical03,
-          label: formatMessage(messages.visitors),
-        },
-      ]
-    : [
-        {
-          icon: 'circle',
-          color: colors.categorical01,
-          label: formatMessage(messages.participants),
-        },
-      ];
+  const legendItems: LegendItem[] = series.map((key) => ({
+    icon: 'circle',
+    color: SERIES[key].color,
+    label: formatMessage(SERIES[key].label),
+  }));
 
   const formatTick = (date: string) => {
     return toThreeLetterMonth(date, resolution);
@@ -110,14 +99,14 @@ const Chart = ({
       data={noData ? emptyData : timeSeries}
       mapping={{
         x: 'date',
-        y: showVisitors ? ['participants', 'visitors'] : ['participants'],
+        y: series,
       }}
       margin={margin}
-      lines={getLineConfig(noData, showVisitors, isAnimationActive)}
+      lines={getLineConfig(noData, series, isAnimationActive)}
       grid={{ vertical: true }}
       xaxis={{ tickFormatter: formatTick }}
       yaxis={yaxis}
-      tooltip={noData ? undefined : renderTooltip(resolution, showVisitors)}
+      tooltip={noData ? undefined : renderTooltip(resolution, series)}
       legend={{
         marginTop: 16,
         items: legendItems,

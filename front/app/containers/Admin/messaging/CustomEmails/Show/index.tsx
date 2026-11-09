@@ -20,6 +20,8 @@ import useSendEmailCampaign from 'api/campaigns/email/useSendEmailCampaign';
 import useSendEmailCampaignPreview from 'api/campaigns/email/useSendEmailCampaignPreview';
 import { isEmailCampaignDraft } from 'api/campaigns/email/util';
 
+import useLocale from 'hooks/useLocale';
+
 import DraftCampaignDetails from 'components/admin/Email/DraftCampaignDetails';
 import EmailScheduling from 'components/admin/Email/Scheduling';
 import SentCampaignDetails from 'components/admin/Email/SentCampaignDetails';
@@ -102,6 +104,8 @@ const Show = () => {
   };
   const isLoading = isSendingCampaign || isSenndingCampaignPreview;
   const { formatMessage } = useIntl();
+  const locale = useLocale();
+  const [previewLocale, setPreviewLocale] = useState(locale);
 
   const [showSendConfirmationModal, setShowSendConfirmationModal] =
     useState(false);
@@ -118,11 +122,14 @@ const Show = () => {
   };
 
   const handleSendTestEmail = () => {
-    sendCampaignPreview(campaignId, {
-      onSuccess: () => {
-        setFeedbackType('sent');
-      },
-    });
+    sendCampaignPreview(
+      { id: campaignId, locale: previewLocale },
+      {
+        onSuccess: () => {
+          setFeedbackType('sent');
+        },
+      }
+    );
   };
 
   const openSendConfirmationModal = () => {
@@ -269,7 +276,11 @@ const Show = () => {
 
         {isEmailCampaignDraft(campaign.data) ||
         campaign.data.attributes.scheduled_at ? (
-          <DraftCampaignDetails campaign={campaign.data} />
+          <DraftCampaignDetails
+            campaign={campaign.data}
+            previewLocale={previewLocale}
+            onPreviewLocaleChange={setPreviewLocale}
+          />
         ) : (
           <SentCampaignDetails campaignId={campaign.data.id} />
         )}

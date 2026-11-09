@@ -67,11 +67,6 @@ export default defineMessages({
     id: 'app.containers.AccessibilityStatement.statusPageText',
     defaultMessage: 'status page',
   },
-  statusPageUrl: {
-    id: 'app.containers.AccessibilityStatement.statusPageUrl',
-    defaultMessage:
-      'https://toegankelijkheidsrapport.frameless.io/rapport/govocal-2026-06-26',
-  },
   feedbackProcessTitle: {
     id: 'app.containers.AccessibilityStatement.feedbackProcessTitle',
     defaultMessage: 'Feedback process',

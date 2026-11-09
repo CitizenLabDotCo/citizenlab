@@ -27,11 +27,22 @@ class CustomFieldAnswer < ApplicationRecord
   ANSWERABLE_TYPES = %w[Idea User].freeze
 
   belongs_to :answerable, polymorphic: true
+  # nil for legacy answers, for answers of an input moved to another project, and for
+  # unknown keys written by the MCP demo tools.
   belongs_to :custom_field, optional: true
 
   # Only the answers under the field's own key, not its _other and _follow_up
   # companions, which also reference the field.
   scope :main_for, ->(field) { where(custom_field: field, key: field.key) }
+
+  # One row per chosen option, for single and multiple choice answers alike.
+  scope :per_selection, lambda {
+    joins(<<~SQL.squish)
+      CROSS JOIN jsonb_array_elements_text(
+        CASE WHEN jsonb_typeof(value) = 'array' THEN value ELSE jsonb_build_array(value) END
+      ) AS selections(selection)
+    SQL
+  }
 
   validates :answerable_type, inclusion: { in: ANSWERABLE_TYPES }
   validates :key, presence: true

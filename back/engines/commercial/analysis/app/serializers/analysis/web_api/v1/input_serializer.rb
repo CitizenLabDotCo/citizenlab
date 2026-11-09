@@ -8,8 +8,11 @@ module Analysis
 
         attributes :title_multiloc, :body_multiloc, :published_at, :updated_at, :likes_count, :dislikes_count, :comments_count, :votes_count, :location_description
 
-        attribute :custom_field_values do |input|
-          CustomFieldValuesTransitionService.new.custom_field_values(input)
+        attribute :custom_field_values do |input, params|
+          user = current_user(params)
+          input.custom_field_answers
+            .select { |answer| CustomFieldAnswerPolicy.new(user, answer).show? }
+            .to_h { [it.key, it.value] }
         end
 
         belongs_to :author, serializer: ::Analysis::WebApi::V1::AnalysisUserSerializer

@@ -14,6 +14,7 @@ module Oauth
     def create
       application = Doorkeeper::Application.new(
         name: oauth_application_params[:client_name],
+        # Doorkeeper stores redirect URIs newline-separated and validates each one.
         redirect_uri: Array(oauth_application_params[:redirect_uris]).join("\n"),
         confidential: false
       )
@@ -26,8 +27,12 @@ module Oauth
           redirect_uris: application.redirect_uri.split
         }, status: :created
       else
+        # redirect_uri is validated by Doorkeeper (scheme allowlist, SSL, host,
+        # fragment, blankness) — see config/initializers/doorkeeper.rb. Map that
+        # failure onto the error code RFC 7591 expects for it.
+        error = application.errors.include?(:redirect_uri) ? 'invalid_redirect_uri' : 'invalid_client_metadata'
         render json: {
-          error: 'invalid_client_metadata',
+          error: error,
           error_description: application.errors.full_messages.join(', ')
         }, status: :bad_request
       end

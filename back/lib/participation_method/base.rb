@@ -53,10 +53,6 @@ module ParticipationMethod
       # Default is to do nothing.
     end
 
-    def author_in_form?(_user)
-      false
-    end
-
     def budget_in_form?(_user)
       false
     end
@@ -74,7 +70,15 @@ module ParticipationMethod
       context.custom_form || CustomForm.new(participation_context: context)
     end
 
-    def form_logic_enabled?
+    # Whether editing the form once responses exist is part of the method's normal
+    # operation (continuously-running methods). When false, automated channels (the
+    # MCP form tools) refuse such edits because they could destroy submitted answers;
+    # the admin UI is not bound by this and allows them behind an explicit warning.
+    def form_editable_after_responses?
+      false
+    end
+
+    def supports_form_logic?
       false
     end
 
@@ -107,10 +111,6 @@ module ParticipationMethod
       campaigns += %w[idea_published mention_in_official_feedback official_feedback_on_idea_you_follow] if supports_public_visibility?
       campaigns += %w[status_change_on_idea_you_follow] if supports_status?
       campaigns
-    end
-
-    def supports_answer_visible_to?
-      false
     end
 
     def supports_assignment?
@@ -247,13 +247,21 @@ module ParticipationMethod
       false
     end
 
-    def supports_input_topics?
-      false
-    end
-
     # Only implemented in native_survey and community monitor
     def user_data_collection
       'all_data'
+    end
+
+    # Distinct from 'demographics_only', which also drops the user id but keeps
+    # the demographic answers.
+    def fully_anonymous?
+      user_data_collection == 'anonymous'
+    end
+
+    # 'demographics_only' keeps the demographics but drops the respondent's
+    # identity, so only 'all_data' may name an author.
+    def identifies_author?
+      user_data_collection == 'all_data'
     end
 
     # Only implemented in native_survey, community monitor and ideation

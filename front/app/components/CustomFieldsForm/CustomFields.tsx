@@ -35,6 +35,7 @@ import SentimentScaleField from './Fields/SentimentScaleField';
 import SingleFileUploadField from './Fields/SingleFileUploadField';
 import SingleSelectField from './Fields/SingleSelectField';
 import InputIQ from './InputIQ';
+import ManagersOnlyAnswerNote from './ManagersOnlyAnswerNote';
 import messages from './messages';
 import { getInstructionMessage } from './util';
 
@@ -214,11 +215,12 @@ const renderField = ({
     case 'point':
     case 'line':
     case 'polygon':
+    case 'multipoint':
       return (
         <MapField
           question={
             question as IFlatCustomField & {
-              input_type: 'point' | 'polygon' | 'line';
+              input_type: 'point' | 'polygon' | 'line' | 'multipoint';
             }
           }
           projectId={projectId}
@@ -303,7 +305,7 @@ const CustomFields = ({
           };
 
           const answerNotPublic =
-            !question.visible_to_public &&
+            question.answers_visible_to !== 'public' &&
             participationMethod &&
             participationMethod !== 'native_survey';
           const inputIqFields = ['title_multiloc', 'body_multiloc'];
@@ -316,7 +318,8 @@ const CustomFields = ({
               data-question-id={question.id}
             >
               <FormLabel {...labelProps} />
-              <Text mt="4px" mb={answerNotPublic ? '4px' : '8px'} fontSize="s">
+              {answerNotPublic && <ManagersOnlyAnswerNote />}
+              <Text mt="4px" mb="8px" fontSize="s">
                 {getInstructionMessage({
                   minItems: question.minimum_select_count,
                   maxItems: question.maximum_select_count,
@@ -327,11 +330,6 @@ const CustomFields = ({
                   <FormattedMessage {...messages.uploadShapefileInstructions} />
                 )}
               </Text>
-              {answerNotPublic && (
-                <Text mt="0px" fontSize="s">
-                  <FormattedMessage {...messages.notPublic} />
-                </Text>
-              )}
               <Box display="flex" alignItems="center" gap="8px">
                 <Box w="100%">
                   {renderField({

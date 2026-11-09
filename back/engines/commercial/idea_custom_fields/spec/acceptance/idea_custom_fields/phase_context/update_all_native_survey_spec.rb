@@ -22,7 +22,9 @@ resource 'Idea Custom Fields' do
       logic: {},
       constraints: {},
       random_option_ordering: false,
-      include_in_printed_form: true
+      include_in_printed_form: true,
+      answers_visible_to: 'moderators',
+      show_as_filter: false
     }
   end
 
@@ -1621,7 +1623,9 @@ resource 'Idea Custom Fields' do
               logic: { next_page_id: 'TEMP-ID-1' },
               constraints: {},
               random_option_ordering: false,
-              include_in_printed_form: true
+              include_in_printed_form: true,
+              answers_visible_to: 'moderators',
+              show_as_filter: false
             },
             {
               id: page2.id,

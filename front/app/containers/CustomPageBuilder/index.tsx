@@ -1,12 +1,18 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 
-import useCustomPageLayout from 'api/custom_page_layout/useCustomPageLayout';
-import useUpsertCustomPageLayout from 'api/custom_page_layout/useUpsertCustomPageLayout';
 import useCustomPageById from 'api/custom_pages/useCustomPageById';
+import { isContentBuilderPage } from 'api/custom_pages/util';
+import useProjectById from 'api/projects/useProjectById';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import { useParams } from 'utils/router';
+import { adminCustomPageSettingsPath } from 'containers/Admin/pagesAndMenu/routes';
+import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
+
+import useEnsureCustomPageLayout from 'components/CustomPageBuilder/useEnsureCustomPageLayout';
+
+import { type TypedLinkProps } from 'utils/cl-router/Link';
+import { useLocation, useParams } from 'utils/router';
 
 import CustomPageBuilderPage from './CustomPageBuilderPage';
 
@@ -15,34 +21,43 @@ const CustomPageBuilder = () => {
     customPageId: string;
   };
   // The page is gated, not just the link to it: opening the builder provisions a layout, so
-  // a typed URL on a tenant without the feature would write data.
+  // a typed URL on a tenant without the feature, or for a page not on the builder, would write
+  // data.
   const featureEnabled = useFeatureFlag({ name: 'custom_page_builder' });
   const { data: customPage } = useCustomPageById(customPageId);
-  const { isError } = useCustomPageLayout(customPageId);
-  const { mutate: upsertCustomPageLayout } = useUpsertCustomPageLayout();
+  const projectId = customPage?.data.attributes.project_id;
+  const { data: project } = useProjectById(projectId);
+  useEnsureCustomPageLayout(customPageId);
+  const { searchStr } = useLocation();
 
-  // A page with no layout 404s; create one so the builder opens on the page's own content.
-  const bootstrappedPageId = useRef<string>();
-  useEffect(() => {
-    if (!featureEnabled) return;
-    if (isError && bootstrappedPageId.current !== customPageId) {
-      bootstrappedPageId.current = customPageId;
-      upsertCustomPageLayout({ staticPageId: customPageId });
-    }
-  }, [featureEnabled, isError, customPageId, upsertCustomPageLayout]);
+  if (
+    !featureEnabled ||
+    !customPage ||
+    !isContentBuilderPage(customPage.data)
+  ) {
+    return null;
+  }
+  // A project's page lives under the project, in the admin and on the site.
+  if (projectId && !project) return null;
 
-  if (!featureEnabled || !customPage) return null;
-
-  const backPath = `/admin/pages-menu/pages/${customPageId}/content${window.location.search}`;
+  const pageSlug = customPage.data.attributes.slug;
+  const backPath = `${
+    projectId
+      ? `${adminProjectsProjectPath(projectId)}/pages/${customPageId}`
+      : adminCustomPageSettingsPath(customPageId)
+  }${searchStr}`;
+  const previewLink: TypedLinkProps = project
+    ? {
+        to: '/projects/$slug/pages/$pageSlug',
+        params: { slug: project.data.attributes.slug, pageSlug },
+      }
+    : { to: '/pages/$slug', params: { slug: pageSlug } };
 
   return (
     <CustomPageBuilderPage
       staticPageId={customPageId}
       backPath={backPath}
-      previewLink={{
-        to: '/pages/$slug',
-        params: { slug: customPage.data.attributes.slug },
-      }}
+      previewLink={previewLink}
       titleMultiloc={customPage.data.attributes.title_multiloc}
     />
   );

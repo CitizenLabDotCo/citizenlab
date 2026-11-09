@@ -1,28 +1,52 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Button } from '@citizenlab/cl2-component-library';
 
 import phaseSetupMessages from 'containers/Admin/projects/project/phaseSetup/messages';
 
+import { usePageSave } from 'components/admin/PageSaveContext';
+
 import { useIntl } from 'utils/cl-intl';
 
-import { usePhaseSave } from '../_shared/PhaseSaveContext';
+import useReturnToPhaseAfterSave from '../_shared/useReturnToPhaseAfterSave';
 
-const SaveChangesButton = () => {
+import messages from './messages';
+
+interface Props {
+  label?: string;
+}
+
+const SaveChangesButton = ({ label }: Props) => {
   const { formatMessage } = useIntl();
-  const phaseSave = usePhaseSave();
+  const pageSave = usePageSave();
+  const returnToPhaseAfterSave = useReturnToPhaseAfterSave();
+  const [saved, setSaved] = useState(false);
 
-  if (!phaseSave) return null;
+  if (!pageSave) return null;
+
+  const handleClick = async () => {
+    setSaved(false);
+    const failed = await pageSave.saveAll('button');
+    setSaved(failed.length === 0);
+    returnToPhaseAfterSave(failed);
+  };
+
+  // A new edit makes the page dirty again, which brings the label back.
+  const showSaved = saved && !pageSave.dirty && !pageSave.saving;
 
   return (
     <Button
       buttonStyle="bo-primary"
+      boSize="medium"
       width="auto"
-      disabled={!phaseSave.dirty}
-      processing={phaseSave.saving}
-      onClick={() => phaseSave.saveAll('button')}
+      icon={showSaved ? 'check' : undefined}
+      disabled={!pageSave.dirty}
+      processing={pageSave.saving}
+      onClick={handleClick}
     >
-      {formatMessage(phaseSetupMessages.saveChangesLabel)}
+      {showSaved
+        ? formatMessage(messages.savedLabel)
+        : label ?? formatMessage(phaseSetupMessages.saveChangesLabel)}
     </Button>
   );
 };

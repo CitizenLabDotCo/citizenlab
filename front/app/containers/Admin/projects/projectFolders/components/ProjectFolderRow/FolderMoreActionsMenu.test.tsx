@@ -115,6 +115,7 @@ describe('FolderMoreActionsMenu', () => {
       mockUserData.attributes.roles = [
         { type: 'project_moderator', project_id: 'projectId' },
       ];
+      mockUserData.attributes.highest_role = 'project_moderator';
     });
 
     it('Does not have the more options menu', async () => {
@@ -130,6 +131,7 @@ describe('FolderMoreActionsMenu', () => {
       mockUserData.attributes.roles = [
         { type: 'project_folder_moderator', project_folder_id: props.folderId },
       ];
+      mockUserData.attributes.highest_role = 'project_folder_moderator';
     });
 
     // To be checked if a folder mod can't do this.

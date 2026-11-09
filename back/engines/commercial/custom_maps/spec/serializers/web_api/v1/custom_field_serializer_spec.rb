@@ -7,7 +7,7 @@ describe WebApi::V1::CustomFieldSerializer do
   let!(:map_config) { create(:map_config, mappable: field) }
 
   it 'serializes the relationship with a map_config related to the field' do
-    params = { params: { constraints: {}, supports_answer_visible_to: true } }
+    params = { params: { constraints: {} } }
     serialized_field = described_class.new(field, params).serializable_hash
     relationships = serialized_field[:data][:relationships]
 

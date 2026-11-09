@@ -119,6 +119,7 @@ module ParticipationMethod
           resource: custom_form,
           key: 'title_multiloc',
           code: 'title_multiloc',
+          answers_visible_to: 'public',
           input_type: 'text_multiloc',
           title_multiloc: multiloc_service.i18n_to_multiloc(
             'custom_fields.ideas.title.title',

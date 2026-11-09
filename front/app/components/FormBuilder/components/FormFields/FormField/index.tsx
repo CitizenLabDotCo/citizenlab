@@ -15,6 +15,7 @@ import styled from 'styled-components';
 
 import {
   ICreateMatrixStatementsType,
+  ICustomFieldInputType,
   ICustomFieldSettingsTab,
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
@@ -26,7 +27,7 @@ import useFormSubmissionsCount from 'api/submission_count/useSubmissionCount';
 import inputFormMessages from 'containers/Admin/projects/project/inputForm/messages';
 
 import { Conflict } from 'components/FormBuilder/edit/utils';
-import { FormBuilderConfig } from 'components/FormBuilder/utils';
+import { ResolvedFormBuilderConfig } from 'components/FormBuilder/utils';
 import Modal from 'components/UI/Modal';
 import MoreActionsMenu from 'components/UI/MoreActionsMenu';
 
@@ -52,11 +53,18 @@ const FormFieldsContainer = styled(Box)`
   }
 `;
 
+const MAPPING_INPUT_TYPES: ICustomFieldInputType[] = [
+  'point',
+  'line',
+  'polygon',
+  'multipoint',
+];
+
 type Props = {
   field: IFlatCustomField;
   onEditField: (field: IFlatCustomFieldWithIndex) => void;
   selectedFieldId?: string;
-  builderConfig: FormBuilderConfig;
+  builderConfig: ResolvedFormBuilderConfig;
   fieldNumbers: Record<string, number>;
   closeSettings: (triggerAutosave?: boolean) => void;
   conflicts?: Conflict[];
@@ -185,7 +193,7 @@ export const FormField = ({
 
     // Duplicate the map config if this is a mapping question
     if (
-      originalField.input_type === 'point' &&
+      MAPPING_INPUT_TYPES.includes(originalField.input_type) &&
       // TODO: Fix this the next time the file is edited.
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       originalField.map_config?.data?.id

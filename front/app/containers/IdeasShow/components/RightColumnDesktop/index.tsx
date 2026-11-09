@@ -107,7 +107,11 @@ const RightColumnDesktop = ({
             {participationMethod === 'voting' &&
               ideaIsInParticipationContext &&
               votingConfig && (
-                <Box pb="24px" mb="24px" borderBottom="solid 1px #ccc">
+                <Box
+                  pb="24px"
+                  mb="24px"
+                  borderBottom={`solid 1px ${colors.grey400}`}
+                >
                   {votingConfig.getIdeaPageVoteInput({
                     ideaId,
                     phase,

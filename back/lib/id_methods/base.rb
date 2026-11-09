@@ -69,10 +69,18 @@ module IdMethods
     end
 
     # @return [Array<Symbol>] Returns a list of user attributes that can be updated from the auth response hash
+    #
+    # Every locked attribute is updateable, and if there is at least 1 locked custom field,
+    # :custom_field_values will be included in the list of updateable attributes.
     def updateable_user_attrs
-      result = []
-      # If password_login is disabled, users cannot update their emails on UI,
-      # but we still want to keep their emails up to date.
+      result = respond_to?(:locked_attributes) ? locked_attributes.dup : []
+      result << :custom_field_values if respond_to?(:locked_custom_fields) && locked_custom_fields.any?
+
+      # :email is also the one attribute here that listing does not get written. Every
+      # other one lands as-is through the slice in UserService.update_in_sso!, whereas
+      # UserService#resolve_sso_email! takes the address from here and then decides for
+      # itself whether to write it, going by whether the SSO vouches for it and what the
+      # user already has.
       result << :email if !AppConfiguration.instance.feature_activated?('password_login')
       result
     end

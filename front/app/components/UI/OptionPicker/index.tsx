@@ -10,6 +10,7 @@ import {
   Text,
   bo,
   colors,
+  fontSizes,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
@@ -26,7 +27,19 @@ const Search = styled(Box)`
   }
 `;
 
+const TRIGGER_SIZES: Record<
+  'medium' | 'compact' | 'small',
+  { height?: string; fontSize?: string }
+> = {
+  medium: {},
+  compact: { height: '28px', fontSize: `${fontSizes.xs}px` },
+  small: { height: '22px', fontSize: `${fontSizes.xs}px` },
+};
+
 const GAP = 4;
+const MAX_HEIGHT = 320;
+const MIN_HEIGHT = 120;
+const DROPDOWN_MARGIN = 20;
 
 const TriggerContent = styled(Box)`
   min-width: 0;
@@ -47,36 +60,50 @@ const CLIPPING_OVERFLOW = ['auto', 'scroll', 'hidden', 'clip', 'overlay'];
 const getVisibleBounds = (element: HTMLElement) => {
   let top = 0;
   let bottom = window.innerHeight;
+  let right = window.innerWidth;
 
   for (
     let ancestor = element.parentElement;
     ancestor && ancestor !== document.body;
     ancestor = ancestor.parentElement
   ) {
-    if (CLIPPING_OVERFLOW.includes(getComputedStyle(ancestor).overflowY)) {
-      const rect = ancestor.getBoundingClientRect();
-      top = Math.max(top, rect.top);
-      bottom = Math.min(bottom, rect.bottom);
+    const { overflowX, overflowY } = getComputedStyle(ancestor);
+    const rect = ancestor.getBoundingClientRect();
+    const clientTop = rect.top + ancestor.clientTop;
+    const clientLeft = rect.left + ancestor.clientLeft;
+    if (CLIPPING_OVERFLOW.includes(overflowY)) {
+      top = Math.max(top, clientTop);
+      bottom = Math.min(bottom, clientTop + ancestor.clientHeight);
+    }
+    if (CLIPPING_OVERFLOW.includes(overflowX)) {
+      right = Math.min(right, clientLeft + ancestor.clientWidth);
     }
   }
 
-  return { top, bottom };
+  return { top, bottom, right };
 };
 
 export interface PickerOption<T extends string> {
   value: T;
   label: string;
   description?: string;
-  icon: IconNames;
+  icon?: IconNames;
 }
 
 interface Props<T extends string> {
   title: string;
   description: string;
   options: PickerOption<T>[];
-  value: T;
+  value?: T;
   onChange: (value: T) => void;
   searchPlaceholder?: string;
+  triggerLabel?: string;
+  triggerIcon?: IconNames;
+  keepOpenFor?: T;
+  onClose?: () => void;
+  /** 'small' matches the summary pills in card headers. */
+  size?: keyof typeof TRIGGER_SIZES;
+  children?: React.ReactNode;
 }
 
 const OptionPicker = <T extends string>({
@@ -86,20 +113,30 @@ const OptionPicker = <T extends string>({
   value,
   onChange,
   searchPlaceholder,
+  triggerLabel,
+  triggerIcon,
+  keepOpenFor,
+  onClose,
+  size = 'medium',
+  children,
 }: Props<T>) => {
   const { formatMessage } = useIntl();
   const triggerRef = useRef<HTMLButtonElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const [opened, setOpened] = useState(false);
   const [openUp, setOpenUp] = useState(false);
+  const [alignRight, setAlignRight] = useState(false);
+  const [maxHeight, setMaxHeight] = useState(MAX_HEIGHT);
   const [search, setSearch] = useState('');
 
   const close = () => {
+    if (!opened) return;
     setOpened(false);
+    setMaxHeight(MAX_HEIGHT);
     setSearch('');
+    onClose?.();
   };
 
-  // flip the dropdown to open upwards if there is not enough space below
   useLayoutEffect(() => {
     if (!opened) return;
 
@@ -111,9 +148,15 @@ const OptionPicker = <T extends string>({
     const bounds = getVisibleBounds(triggerElement);
     const spaceBelow = bounds.bottom - trigger.bottom - GAP;
     const spaceAbove = trigger.top - bounds.top - GAP;
-    setOpenUp(
-      panel.offsetHeight > spaceBelow && panel.offsetHeight <= spaceAbove
-    );
+    const fitsBelow = panel.offsetHeight <= spaceBelow;
+    const fitsAbove = panel.offsetHeight <= spaceAbove;
+    setOpenUp(!fitsBelow && (fitsAbove || spaceAbove > spaceBelow));
+    if (!fitsBelow && !fitsAbove) {
+      setMaxHeight(
+        Math.max(Math.max(spaceAbove, spaceBelow) - DROPDOWN_MARGIN, MIN_HEIGHT)
+      );
+    }
+    setAlignRight(trigger.left + panel.offsetWidth > bounds.right - GAP);
   }, [opened]);
 
   const dismiss = () => {
@@ -121,7 +164,9 @@ const OptionPicker = <T extends string>({
     triggerRef.current?.focus();
   };
 
+  const small = size === 'small';
   const selected = options.find((option) => option.value === value);
+  const icon = triggerIcon ?? selected?.icon;
 
   const query = search.trim().toLowerCase();
   const visibleOptions = options.filter((option) =>
@@ -134,7 +179,9 @@ const OptionPicker = <T extends string>({
       display="inline-block"
       maxWidth="100%"
       onKeyDown={(event: React.KeyboardEvent) => {
-        if (event.key === 'Escape' && opened) dismiss();
+        if (event.key !== 'Escape' || !opened) return;
+        event.stopPropagation();
+        dismiss();
       }}
     >
       <Button
@@ -143,7 +190,13 @@ const OptionPicker = <T extends string>({
         buttonStyle="bo-picker"
         width="auto"
         maxWidth="100%"
-        bgColor={opened ? colors.grey200 : undefined}
+        height={TRIGGER_SIZES[size].height}
+        fontSize={TRIGGER_SIZES[size].fontSize}
+        bgColor={opened || small ? colors.grey200 : undefined}
+        padding={small ? '0 8px 0 10px' : undefined}
+        fontWeight={small ? '500' : undefined}
+        textColor={small ? colors.coolGrey700 : undefined}
+        iconSize={small ? '12px' : undefined}
         icon="chevron-down"
         iconPos="right"
         ariaExpanded={opened}
@@ -151,15 +204,15 @@ const OptionPicker = <T extends string>({
         onClick={() => (opened ? close() : setOpened(true))}
       >
         <TriggerContent display="flex" alignItems="center" gap="8px">
-          {selected && (
+          {icon && (
             <Icon
-              name={selected.icon}
-              width="16px"
-              height="16px"
-              fill={colors.coolGrey500}
+              name={icon}
+              width={small ? '14px' : '16px'}
+              height={small ? '14px' : '16px'}
+              fill={small ? colors.coolGrey700 : colors.coolGrey500}
             />
           )}
-          <Label>{selected?.label}</Label>
+          <Label>{triggerLabel ?? selected?.label}</Label>
         </TriggerContent>
       </Button>
 
@@ -173,9 +226,10 @@ const OptionPicker = <T extends string>({
         }}
         top={openUp ? undefined : `calc(100% + ${GAP}px)`}
         bottom={openUp ? `calc(100% + ${GAP}px)` : undefined}
-        left="0px"
+        left={alignRight ? undefined : '0px'}
+        right={alignRight ? '0px' : undefined}
         width="288px"
-        maxHeight="320px"
+        maxHeight={`${maxHeight}px`}
         zIndex="1000"
         borderRadius={bo.borderRadius}
         content={
@@ -215,7 +269,7 @@ const OptionPicker = <T extends string>({
                   selected={option.value === value}
                   onClick={() => {
                     if (option.value !== value) onChange(option.value);
-                    dismiss();
+                    if (option.value !== keepOpenFor) dismiss();
                   }}
                 />
               ))}
@@ -225,6 +279,8 @@ const OptionPicker = <T extends string>({
                 </Text>
               )}
             </Box>
+
+            {children}
           </Box>
         }
       />

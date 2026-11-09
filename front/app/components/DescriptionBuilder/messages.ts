@@ -21,8 +21,4 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.default',
     defaultMessage: 'default',
   },
-  linkText: {
-    id: 'app.containers.AdminPage.ProjectDescription.linkText',
-    defaultMessage: 'Edit description in Content Builder',
-  },
 });

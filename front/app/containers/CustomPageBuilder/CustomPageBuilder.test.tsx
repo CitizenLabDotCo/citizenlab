@@ -14,13 +14,18 @@ jest.mock('utils/router', () => ({
   useParams: () => ({ customPageId: 'page-1' }),
 }));
 
+let pageCode = 'custom';
 jest.mock('api/custom_pages/useCustomPageById', () => ({
   __esModule: true,
   default: jest.fn(() => ({
     data: {
       data: {
         id: 'page-1',
-        attributes: { slug: 'about-us', title_multiloc: { en: 'About' } },
+        attributes: {
+          code: pageCode,
+          slug: 'about-us',
+          title_multiloc: { en: 'About' },
+        },
       },
     },
   })),
@@ -45,6 +50,7 @@ describe('CustomPageBuilder bootstrap', () => {
     jest.clearAllMocks();
     layoutIsError = false;
     featureEnabled = true;
+    pageCode = 'custom';
   });
 
   it('does not create a layout when one already exists', () => {
@@ -56,6 +62,16 @@ describe('CustomPageBuilder bootstrap', () => {
   // Gating only the link would let a typed URL reach the builder, which writes a layout.
   it('renders nothing and writes no layout when the feature is off', () => {
     featureEnabled = false;
+    layoutIsError = true;
+    render(<CustomPageBuilder />);
+
+    expect(screen.queryByTestId('builderPage')).not.toBeInTheDocument();
+    expect(mockUpsert).not.toHaveBeenCalled();
+  });
+
+  // A typed URL can name any page; a layout written for one off the builder is never shown.
+  it('renders nothing and writes no layout for a page not on the builder', () => {
+    pageCode = 'terms-and-conditions';
     layoutIsError = true;
     render(<CustomPageBuilder />);
 

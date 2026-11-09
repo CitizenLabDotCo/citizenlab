@@ -115,6 +115,202 @@ describe McpServer::Tools::ReplaceFormFields do
     end
   end
 
+  context 'with a community monitor phase' do
+    let(:cm_phase) { create(:community_monitor_survey_phase) }
+
+    def fetch_cm_fields
+      run_mcp_tool(
+        McpServer::Tools::GetFormFields,
+        params: { container_type: 'phase', container_id: cm_phase.id },
+        current_user:
+      ).structured_content[:fields]
+    end
+
+    def replace_cm(fields)
+      run(container_type: 'phase', container_id: cm_phase.id, fields:)
+    end
+
+    context 'on a demo platform' do
+      before { change_lifecycle_stage('demo') }
+
+      it 'adds a custom question on top, keeping the built-ins' do
+        fields = fetch_cm_fields
+        # Clone a built-in sentiment question so the custom one is structurally valid.
+        custom_question = fields.find { |field| field[:key] == 'place_to_live' }.dup
+        custom_question.delete(:id)
+        custom_question[:key] = 'strategic_goal_1'
+        custom_question[:title_multiloc] = { 'en' => 'How well are we meeting our strategic goal?' }
+        fields.insert(-2, custom_question) # before the form_end page
+
+        response = replace_cm(fields)
+
+        expect(response).not_to be_error
+        keys = response.structured_content[:fields].pluck(:key)
+        expect(keys).to include('strategic_goal_1', 'place_to_live', 'page_quality_of_life')
+      end
+
+      it 'allows removing a built-in question while no responses exist' do
+        fields = fetch_cm_fields.reject { |field| field[:key] == 'place_to_live' }
+
+        response = replace_cm(fields)
+
+        expect(response).not_to be_error
+        expect(response.structured_content[:fields].pluck(:key)).not_to include('place_to_live')
+      end
+
+      it 'allows removing a category page while no responses exist' do
+        fields = fetch_cm_fields.reject { |field| field[:key] == 'page_service_delivery' }
+
+        response = replace_cm(fields)
+
+        expect(response).not_to be_error
+        expect(response.structured_content[:fields].pluck(:key)).not_to include('page_service_delivery')
+      end
+
+      it 'refuses to remove a built-in question once responses exist' do
+        create(:idea, project: cm_phase.project, phases: [cm_phase], creation_phase: cm_phase)
+
+        fields = fetch_cm_fields.reject { |field| field[:key] == 'place_to_live' }
+        response = replace_cm(fields)
+
+        expect(response).to be_error
+        expect(response.content.sole[:text]).to include('permanently deletes its answers', 'place_to_live')
+      end
+
+      it 'allows editing after responses exist and preserves their answers (continuous monitor)' do
+        idea = create(:idea, project: cm_phase.project, phases: [cm_phase], creation_phase: cm_phase)
+        answer = create(:custom_field_answer, answerable: idea, key: 'place_to_live', custom_field: nil, value: 3)
+
+        response = replace_cm(fetch_cm_fields)
+
+        expect(response).not_to be_error
+        expect(CustomFieldAnswer.exists?(answer.id)).to be(true)
+      end
+
+      it 'updates persisted fields in place when payload ids are stale or missing' do
+        expect(replace_cm(fetch_cm_fields)).not_to be_error
+        persisted_ids = cm_phase.custom_form.custom_fields.pluck(:id)
+
+        fields = fetch_cm_fields.each { |field| field.delete(:id) }
+        response = replace_cm(fields)
+
+        expect(response).not_to be_error
+        expect(cm_phase.reload.custom_form.custom_fields.pluck(:id)).to match_array(persisted_ids)
+      end
+
+      it 'allows disabling a built-in question' do
+        fields = fetch_cm_fields
+        fields.find { |field| field[:key] == 'place_to_live' }[:enabled] = false
+
+        response = replace_cm(fields)
+
+        expect(response).not_to be_error
+        expect(cm_phase.custom_form.custom_fields.find_by(key: 'place_to_live').enabled).to be(false)
+      end
+
+      it 'treats a same-key field of a different type as a removal, not an update' do
+        expect(replace_cm(fetch_cm_fields)).not_to be_error
+        create(:idea, project: cm_phase.project, phases: [cm_phase], creation_phase: cm_phase)
+
+        fields = fetch_cm_fields.reject { |field| field[:key] == 'place_to_live' }
+        fields.insert(1, { input_type: 'page', page_layout: 'default', key: 'place_to_live', title_multiloc: { 'en' => 'Now a page' } })
+
+        response = replace_cm(fields)
+
+        expect(response).to be_error
+        expect(response.content.sole[:text]).to include('place_to_live')
+        expect(cm_phase.custom_form.custom_fields.find_by(key: 'place_to_live').input_type).to eq('sentiment_linear_scale')
+      end
+
+      it 'refuses a new field whose key collides with an existing field' do
+        fields = fetch_cm_fields
+        clashing = fields.find { |field| field[:key] == 'place_to_live' }.dup
+        clashing.delete(:id)
+        clashing[:title_multiloc] = { 'en' => 'Sneaky overwrite' }
+        fields.insert(-2, clashing)
+
+        response = replace_cm(fields)
+
+        expect(response).to be_error
+        expect(response.content.sole[:text]).to include('resolve to the same existing field', 'place_to_live')
+        title = cm_phase.custom_form.custom_fields.find_by(key: 'place_to_live').title_multiloc
+        expect(title).not_to eq('en' => 'Sneaky overwrite')
+      end
+
+      it 'allows removing a custom page even after responses exist' do
+        fields = fetch_cm_fields
+        fields.insert(-2, { input_type: 'page', page_layout: 'default', title_multiloc: { 'en' => 'Extra page' } })
+        expect(replace_cm(fields)).not_to be_error
+        create(:idea, project: cm_phase.project, phases: [cm_phase], creation_phase: cm_phase)
+
+        response = replace_cm(fetch_cm_fields.reject { |field| field[:title_multiloc]['en'] == 'Extra page' })
+
+        expect(response).not_to be_error
+        expect(cm_phase.custom_form.custom_fields.reload.map { |field| field.title_multiloc['en'] }).not_to include('Extra page')
+      end
+
+      it 'keeps an unset question_category NULL on a faithful echo' do
+        expect(replace_cm(fetch_cm_fields)).not_to be_error
+        expect(replace_cm(fetch_cm_fields)).not_to be_error
+
+        pages = cm_phase.custom_form.custom_fields.select(&:page?)
+        expect(pages.map { |field| field.read_attribute(:question_category) }).to all(be_nil)
+      end
+
+      context 'with a custom question on the form' do
+        def add_custom_question!
+          fields = fetch_cm_fields
+          custom_question = fields.find { |field| field[:key] == 'place_to_live' }.dup
+          custom_question.delete(:id)
+          custom_question[:key] = 'strategic_goal_1'
+          custom_question[:title_multiloc] = { 'en' => 'How well are we meeting our strategic goal?' }
+          fields.insert(-2, custom_question)
+          expect(replace_cm(fields)).not_to be_error
+        end
+
+        it 'allows removing it while no responses exist' do
+          add_custom_question!
+
+          response = replace_cm(fetch_cm_fields.reject { |field| field[:key] == 'strategic_goal_1' })
+
+          expect(response).not_to be_error
+          expect(CustomField.find_by(key: 'strategic_goal_1')).to be_nil
+        end
+
+        it 'refuses to remove it once responses exist' do
+          add_custom_question!
+          create(:idea, project: cm_phase.project, phases: [cm_phase], creation_phase: cm_phase)
+
+          response = replace_cm(fetch_cm_fields.reject { |field| field[:key] == 'strategic_goal_1' })
+
+          expect(response).to be_error
+          expect(response.content.sole[:text]).to include('permanently deletes its answers', 'strategic_goal_1')
+          expect(CustomField.find_by(key: 'strategic_goal_1')).to be_present
+        end
+
+        it 'refuses to change its key once responses exist' do
+          add_custom_question!
+          create(:idea, project: cm_phase.project, phases: [cm_phase], creation_phase: cm_phase)
+
+          fields = fetch_cm_fields
+          fields.find { |field| field[:key] == 'strategic_goal_1' }[:key] = 'strategic_goal_renamed'
+          response = replace_cm(fields)
+
+          expect(response).to be_error
+          expect(response.content.sole[:text]).to include('orphans its answers', 'strategic_goal_1')
+        end
+      end
+    end
+
+    it 'refuses on a non-demo/trial platform' do
+      change_lifecycle_stage('active')
+
+      response = replace_cm(fetch_cm_fields)
+
+      expect(response).to be_unauthorized_project
+    end
+  end
+
   it 'creates fields from scratch on an empty form' do
     response = run(
       container_type: 'phase',

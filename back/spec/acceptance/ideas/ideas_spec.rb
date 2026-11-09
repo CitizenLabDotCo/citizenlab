@@ -231,6 +231,7 @@ resource 'Ideas' do
         parameter :phase, 'Filter by project phase', required: false
         parameter :author, 'Filter by author (user id)', required: false
         parameter :idea_status, 'Filter by status (idea status id)', required: false
+        parameter :custom_field_answers, 'Filter by answers to public choice questions: { field_id: [option_key, ...] } (OR within a question, AND across questions)', required: false
         parameter :search, 'Filter by searching in title and body', required: false
         parameter :publication_status, 'Return only ideas with the specified publication status; returns all pusblished ideas by default', required: false
         parameter :project_publication_status, "Filter by project publication_status. One of #{AdminPublication::PUBLICATION_STATUSES.join(', ')}", required: false
@@ -252,14 +253,78 @@ resource 'Ideas' do
           expect(json_attributes[:total]).to eq 4
         end
 
-        example 'List idea counts per filter option on topic' do
-          do_request topics: [@t1.id], projects: nil
+        example 'Topic counts ignore the topic filter' do
+          do_request input_topics: [@t1.id]
+
           assert_status 200
+          json_attributes = json_parse(response_body).dig(:data, :attributes)
+          expect(json_attributes[:input_topic_id]).to eq({ @t1.id.to_sym => 2, @t2.id.to_sym => 2 })
+          expect(json_attributes[:idea_status_id]).to eq({ @s1.id.to_sym => 1, @s2.id.to_sym => 1 })
+          expect(json_attributes[:total]).to eq 2
         end
 
-        example 'List idea counts per filter option with a search string' do
-          do_request search: 'trees'
+        example 'Status counts ignore the status filter' do
+          do_request idea_status: @s2.id
+
           assert_status 200
+          json_attributes = json_parse(response_body).dig(:data, :attributes)
+          expect(json_attributes[:idea_status_id]).to eq({ @s1.id.to_sym => 1, @s2.id.to_sym => 3 })
+          expect(json_attributes[:input_topic_id]).to eq({ @t1.id.to_sym => 1, @t2.id.to_sym => 1 })
+          expect(json_attributes[:total]).to eq 3
+        end
+
+        describe 'answer counts' do
+          let(:form) { create(:custom_form, participation_context: @project) }
+          let(:phase) { @project.phases.first.id }
+
+          example 'List idea counts per answer option of the public choice questions of the phase' do
+            public_field = create(:custom_field_select, :with_options, resource: form, answers_visible_to: 'public', show_as_filter: true)
+            private_field = create(:custom_field_select, :with_options, resource: form)
+            disabled_field = create(:custom_field_select, :with_options, resource: form, answers_visible_to: 'public', show_as_filter: true, enabled: false)
+            create(:custom_field_answer, answerable: @i1, key: public_field.key, value: 'option1')
+            create(:custom_field_answer, answerable: @i2, key: public_field.key, value: 'option1')
+            create(:custom_field_answer, answerable: @i3, key: public_field.key, value: 'option2')
+            create(:custom_field_answer, answerable: @i4, key: private_field.key, value: 'option1')
+            create(:custom_field_answer, answerable: @i4, key: disabled_field.key, value: 'option1')
+
+            do_request
+
+            assert_status 200
+            answer_counts = json_parse(response_body).dig(:data, :attributes, :custom_field_answers)
+            expect(answer_counts).to eq({ public_field.id.to_sym => { option1: 2, option2: 1 } })
+          end
+
+          example 'Answer counts ignore the filter on their own question, not the one on other questions' do
+            multiselect = create(:custom_field_multiselect, :with_options, resource: form, answers_visible_to: 'public', show_as_filter: true)
+            select = create(:custom_field_select, :with_options, resource: form, answers_visible_to: 'public', show_as_filter: true)
+            create(:custom_field_answer, answerable: @i1, key: multiselect.key, value: %w[option1 option2])
+            create(:custom_field_answer, answerable: @i2, key: multiselect.key, value: ['option1'])
+            create(:custom_field_answer, answerable: @i3, key: multiselect.key, value: ['option1'])
+            create(:custom_field_answer, answerable: @i4, key: multiselect.key, value: ['option2'])
+            create(:custom_field_answer, answerable: @i1, key: select.key, value: 'option1')
+            create(:custom_field_answer, answerable: @i2, key: select.key, value: 'option1')
+            create(:custom_field_answer, answerable: @i3, key: select.key, value: 'option2')
+            create(:custom_field_answer, answerable: @i4, key: select.key, value: 'option2')
+
+            do_request custom_field_answers: { multiselect.id => ['option1'] }
+
+            assert_status 200
+            json_attributes = json_parse(response_body).dig(:data, :attributes)
+            expect(json_attributes[:custom_field_answers]).to eq({
+              multiselect.id.to_sym => { option1: 3, option2: 2 },
+              select.id.to_sym => { option1: 2, option2: 1 }
+            })
+            expect(json_attributes[:total]).to eq 3
+          end
+
+          example 'Without a phase there are no answer counts', document: false do
+            create(:custom_field_select, :with_options, resource: form, answers_visible_to: 'public', show_as_filter: true)
+
+            do_request phase: nil
+
+            assert_status 200
+            expect(json_parse(response_body).dig(:data, :attributes)).not_to have_key :custom_field_answers
+          end
         end
       end
     end
@@ -368,6 +433,30 @@ resource 'Ideas' do
       end
     end
 
+    get 'web_api/v1/ideas/:id' do
+      describe 'when the idea is a draft' do
+        let(:project) { create(:single_phase_ideation_project) }
+        let(:author) { @user }
+        let!(:idea) do
+          create(:idea, project: project, phases: project.phases, author: author, publication_status: 'draft')
+        end
+        let(:id) { idea.id }
+
+        example_request 'Get your own draft idea by id' do
+          assert_status 200
+          expect(response_data[:id]).to eq idea.id
+        end
+
+        context 'when the user is not the author' do
+          let(:author) { create(:user) }
+
+          example_request '[error] Get a draft idea of another resident', document: false do
+            assert_status 401
+          end
+        end
+      end
+    end
+
     get 'web_api/v1/ideas/by_slug/:slug' do
       let(:idea) { create(:idea) }
       let(:slug) { idea.slug }
@@ -396,9 +485,11 @@ resource 'Ideas' do
         permission.permissions_custom_fields = [
           create(:permissions_custom_field, custom_field: create(:custom_field, key: 'gender'))
         ]
+        create(:custom_field, resource: create(:custom_form, participation_context: phase), key: 'field')
 
         phase
       end
+
       let(:phase_id) { phase.id }
 
       context 'idea authored by user' do
@@ -510,12 +601,55 @@ resource 'Ideas' do
           expect(json_parse(response_body)[:data].pluck(:id)).to eq [idea_pizza.id]
         end
 
-        example 'Caches the request' do
-          expect_any_instance_of(SimilarIdeasService).to receive(:similar_ideas).once.and_call_original
+        example 'Caches the text embedding, but not the response', :clear_cache do
+          cohere = instance_double(CohereMultilingualEmbeddings)
+          allow(CohereMultilingualEmbeddings).to receive(:new).and_return(cohere)
+          expect(cohere).to receive(:embedding).once.and_return(embeddings['pizza'])
+
           do_request
           assert_status 200
+          expect(json_parse(response_body)[:data].pluck(:id)).to eq [idea_pizza.id]
+
+          idea_pizza2 = create(:embeddings_similarity, embedding: embeddings['pizza'], embeddable: create(:idea, project:)).embeddable
           do_request
           assert_status 200
+          expect(json_parse(response_body)[:data].pluck(:id)).to contain_exactly(idea_pizza.id, idea_pizza2.id)
+        end
+
+        example 'Does not serve the response of a signed-in user to a visitor', :clear_cache do
+          # A submitted (not yet published) idea is only visible to its author.
+          submitted_idea = create(:idea, project:, author: user, publication_status: 'submitted')
+          create(:embeddings_similarity, embedding: embeddings['pizza'], embeddable: submitted_idea)
+
+          # The author sees their submitted idea
+          do_request
+          assert_status 200
+          json_response = json_parse(response_body)
+          expect(json_response[:data].pluck(:id)).to include(submitted_idea.id)
+
+          # A visitor making the same request does not
+          header 'Authorization', nil
+          do_request
+          assert_status 200
+          json_response = json_parse(response_body)
+          expect(json_response[:data].pluck(:id)).not_to include(submitted_idea.id)
+          expect(json_response[:included].pluck(:id)).not_to include(user.id)
+        end
+
+        example 'Does not serve the response of an admin to a resident', :clear_cache do
+          header_token_for create(:admin)
+          do_request
+          assert_status 200
+          json_response = json_parse(response_body)
+          pizza_author = json_response[:included].find { |r| r[:type] == 'user' && r[:id] == idea_pizza.author_id }
+          expect(pizza_author[:attributes]).to include(:email)
+
+          header_token_for user
+          do_request
+          assert_status 200
+          json_response = json_parse(response_body)
+          pizza_author = json_response[:included].find { |r| r[:type] == 'user' && r[:id] == idea_pizza.author_id }
+          expect(pizza_author[:attributes]).not_to include(:email)
         end
 
         example 'Fetches the similarity thresholds from the corresponding phase' do

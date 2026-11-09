@@ -1,34 +1,31 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useRef, useState } from 'react';
 
-import { Box, Button } from '@citizenlab/cl2-component-library';
+import { Box, Button, Text, bo } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
-import { CLErrors, Multiloc, UploadFile } from 'typings';
+import { CLErrors } from 'typings';
 
-import useProjectImages from 'api/project_images/useProjectImages';
-import projectsKeys from 'api/projects/keys';
 import { IProjectData, IUpdatedProjectProperties } from 'api/projects/types';
 import useUpdateProject from 'api/projects/useUpdateProject';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { SpaceAndFolderId } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/types';
 import { useValidateProjectContext } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/utils';
-import useSyncProjectImages from 'containers/Admin/projects/_shared/useSyncProjectImages';
-import { getSelectedTopicIds } from 'containers/Admin/projects/_shared/utils/getSelectedTopicIds';
-import ProjectInputTopics from 'containers/Admin/projects/project/topics';
-
 import SettingsModal, {
   SettingsModalSection,
-} from 'components/UI/SettingsModal';
+} from 'containers/Admin/projects/project/backofficeRedesign/_shared/components/SettingsModal';
 
 import { useIntl } from 'utils/cl-intl';
-import { queryClient } from 'utils/cl-react-query/queryClient';
-import { convertUrlToUploadFile, isUploadFile } from 'utils/fileUtils';
 import { validateSlug } from 'utils/textUtils';
 
-import messages from '../../messages';
-
-import FrontOfficeSection from './FrontOfficeSection';
+import DiscardChangesModal from './DiscardChangesModal';
 import GeneralSection from './GeneralSection';
-import ResetSection from './ResetSection';
+import messages from './messages';
+import PerspectivesSection from './PerspectivesSection';
+import ResourcesSection from './ResourcesSection';
+import useFilesDraft from './ResourcesSection/useFilesDraft';
+import TagsSection from './TagsSection';
+import useTagsDraft from './TagsSection/useTagsDraft';
 
 interface Props {
   project: IProjectData;
@@ -40,61 +37,35 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
   const { formatMessage } = useIntl();
   const projectId = project.id;
 
-  const { data: remoteProjectImages } = useProjectImages(projectId);
   const { mutateAsync: updateProject } = useUpdateProject();
-  const syncProjectImages = useSyncProjectImages();
   const validateProjectContext = useValidateProjectContext();
+  const perspectivesActive = useFeatureFlag({
+    name: 'live_auto_input_topics',
+  });
+  const tagsDraft = useTagsDraft(projectId);
+  const filesDraft = useFilesDraft(projectId);
 
   const [processing, setProcessing] = useState(false);
+  // `processing` only updates on the next render, so a quick double click
+  // would otherwise save twice.
+  const savingRef = useRef(false);
   const [apiErrors, setApiErrors] = useState<CLErrors>({});
   const [projectAttributesDiff, setProjectAttributesDiff] =
     useState<IUpdatedProjectProperties>({});
   const [projectContextError, setProjectContextError] = useState(false);
+  const [saveFailed, setSaveFailed] = useState(false);
+  const [confirmingDiscard, setConfirmingDiscard] = useState(false);
 
   const [slug, setSlug] = useState(project.attributes.slug);
   const [showSlugErrorMessage, setShowSlugErrorMessage] = useState(false);
 
-  const [cardImage, setCardImage] = useState<UploadFile | null>(null);
-  const [cardImageAltText, setCardImageAltText] = useState<Multiloc | null>(
-    null
-  );
-  const [cardImageToRemove, setCardImageToRemove] = useState<UploadFile | null>(
-    null
-  );
-  const [croppedCardBase64, setCroppedCardBase64] = useState<string | null>(
-    null
-  );
-
   const projectInRoot =
     !project.attributes.space_id && !project.attributes.folder_id;
 
-  const loadRemoteCardImage = useCallback(async () => {
-    setCardImage(null);
-    setCardImageAltText(null);
-
-    for (const projectImage of remoteProjectImages?.data ?? []) {
-      const url = projectImage.attributes.versions.large;
-      if (!url) continue;
-
-      const uploadFile = await convertUrlToUploadFile(
-        url,
-        projectImage.id,
-        null
-      );
-      if (isUploadFile(uploadFile)) {
-        setCardImage(uploadFile);
-        setCardImageAltText(projectImage.attributes.alt_text_multiloc);
-        break;
-      }
-    }
-  }, [remoteProjectImages]);
-
-  useEffect(() => {
-    loadRemoteCardImage();
-  }, [loadRemoteCardImage]);
-
-  const applyDiff = (diff: IUpdatedProjectProperties) =>
+  const applyDiff = (diff: IUpdatedProjectProperties) => {
     setProjectAttributesDiff((current) => ({ ...current, ...diff }));
+    setApiErrors({});
+  };
 
   const handleSlugChange = (nextSlug: string) => {
     applyDiff({ slug: nextSlug });
@@ -107,21 +78,10 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
     setProjectContextError(false);
   };
 
-  const handleCardImageAdd = (images: UploadFile[]) => {
-    setCardImage(images[0]);
-    setCroppedCardBase64(images[0].base64);
-  };
-
-  const handleCardImageRemove = (image: UploadFile) => {
-    setCardImage(null);
-    setCroppedCardBase64(null);
-    if (image.remote) setCardImageToRemove(image);
-  };
-
   const projectAttrs = { ...project.attributes, ...projectAttributesDiff };
 
   const handleSave = async () => {
-    if (processing) return;
+    if (savingRef.current) return;
 
     if (
       !validateProjectContext({
@@ -136,131 +96,156 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
 
     if (showSlugErrorMessage) return;
 
+    savingRef.current = true;
+    setProcessing(true);
+    setSaveFailed(false);
     try {
-      setProcessing(true);
-
       if (!isEmpty(projectAttributesDiff)) {
         await updateProject({ projectId, ...projectAttributesDiff });
       }
 
-      await syncProjectImages({
-        croppedProjectCardBase64: croppedCardBase64,
-        projectCardImageAltText: cardImageAltText,
-        projectCardImageToUpdate: cardImage,
-        projectCardImageToRemove: cardImageToRemove,
-        projectId,
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: projectsKeys.item({ slug: project.attributes.slug }),
-      });
-
       setProjectAttributesDiff({});
-      setCardImageToRemove(null);
-      setCroppedCardBase64(null);
-      setProcessing(false);
-      onClose();
+      setApiErrors({});
+      setProjectContextError(false);
     } catch (errors) {
       setApiErrors((errors as { errors: CLErrors }).errors);
+      savingRef.current = false;
       setProcessing(false);
+      return;
+    }
+
+    const [tagsSaved, filesSaved] = await Promise.all([
+      tagsDraft.save(),
+      filesDraft.save(),
+    ]);
+
+    savingRef.current = false;
+    setProcessing(false);
+
+    if (tagsSaved && filesSaved) {
+      onClose();
+    } else {
+      setSaveFailed(true);
     }
   };
 
-  const handleCancel = () => {
+  const dirty =
+    !isEmpty(projectAttributesDiff) || tagsDraft.dirty || filesDraft.dirty;
+
+  const discard = () => {
     setProjectAttributesDiff({});
     setSlug(project.attributes.slug);
     setShowSlugErrorMessage(false);
     setProjectContextError(false);
     setApiErrors({});
-    setCardImageToRemove(null);
-    setCroppedCardBase64(null);
-    // The modal stays mounted between openings, so the card image the manager
-    // edited has to be read back from the server to undo it.
-    loadRemoteCardImage();
+    setSaveFailed(false);
+    tagsDraft.reset();
+    filesDraft.reset();
+    setConfirmingDiscard(false);
     onClose();
+  };
+
+  const handleClose = () => {
+    if (dirty) {
+      setConfirmingDiscard(true);
+    } else {
+      discard();
+    }
   };
 
   const sections: SettingsModalSection[] = [
     {
-      name: 'front-office',
-      label: messages.settingsFrontOffice,
-      icon: 'globe',
-      content: (
-        <FrontOfficeSection
-          selectedTopicIds={getSelectedTopicIds(projectAttributesDiff, project)}
-          areaIds={projectAttrs.area_ids}
-          cardImage={cardImage}
-          cardImageAltText={cardImageAltText}
-          cardImageShouldBeSaved={cardImage ? !cardImage.remote : false}
-          onTopicsChange={(global_topic_ids) => applyDiff({ global_topic_ids })}
-          onProjectAttributesDiffChange={applyDiff}
-          onCardImageAdd={handleCardImageAdd}
-          onCardImageRemove={handleCardImageRemove}
-          onCardImageCropped={setCroppedCardBase64}
-          onCardImageAltTextChange={setCardImageAltText}
-        />
-      ),
-    },
-    {
       name: 'general',
+      group: messages.settingsProjectGroup,
       label: messages.settingsGeneral,
-      icon: 'settings',
+      icon: 'cog',
       content: (
         <GeneralSection
-          spaceId={projectAttrs.space_id}
-          folderId={projectAttrs.folder_id}
+          projectId={projectId}
+          titleMultiloc={projectAttrs.title_multiloc}
+          spaceId={projectAttrs.space_id ?? null}
+          folderId={projectAttrs.folder_id ?? null}
           projectInRoot={projectInRoot}
           contextError={projectContextError}
           slug={slug}
           currentSlug={project.attributes.slug}
           showSlugErrorMessage={showSlugErrorMessage}
           apiErrors={apiErrors}
+          onTitleChange={(title_multiloc) => applyDiff({ title_multiloc })}
           onContextChange={handleContextChange}
           onSlugChange={handleSlugChange}
         />
       ),
     },
     {
-      name: 'idea-tags',
-      label: messages.settingsIdeaTags,
-      icon: 'label',
-      content: <ProjectInputTopics />,
+      name: 'resources',
+      group: messages.settingsProjectGroup,
+      label: messages.settingsResources,
+      icon: 'paperclip',
+      content: <ResourcesSection projectId={projectId} draft={filesDraft} />,
     },
     {
-      name: 'reset',
-      label: messages.settingsReset,
-      icon: 'refresh',
-      content: <ResetSection projectId={projectId} />,
+      name: 'tags',
+      group: messages.settingsInputsGroup,
+      label: messages.settingsTags,
+      icon: 'label',
+      content: <TagsSection draft={tagsDraft} />,
     },
+    ...(perspectivesActive
+      ? [
+          {
+            name: 'perspectives',
+            group: messages.settingsInputsGroup,
+            label: messages.settingsPerspectives,
+            icon: 'stars',
+            content: (
+              <PerspectivesSection
+                enabled={projectAttrs.live_auto_input_topics_enabled}
+                onChange={(live_auto_input_topics_enabled) =>
+                  applyDiff({ live_auto_input_topics_enabled })
+                }
+              />
+            ),
+          } satisfies SettingsModalSection,
+        ]
+      : []),
   ];
 
   return (
-    <SettingsModal
-      opened={opened}
-      close={handleCancel}
-      header={formatMessage(messages.projectSettings)}
-      sections={sections}
-      footer={
-        <Box display="flex" gap="8px">
-          <Button
-            buttonStyle="bo-secondary"
-            width="auto"
-            onClick={handleCancel}
-          >
-            {formatMessage(messages.settingsCancel)}
-          </Button>
-          <Button
-            buttonStyle="bo-primary"
-            width="auto"
-            processing={processing}
-            onClick={handleSave}
-            id="e2e-project-settings-save"
-          >
-            {formatMessage(messages.settingsSaveChanges)}
-          </Button>
-        </Box>
-      }
-    />
+    <>
+      <SettingsModal
+        opened={opened}
+        close={handleClose}
+        header={formatMessage(messages.settingsTitle)}
+        sections={sections}
+        footer={
+          <Box display="flex" alignItems="center" gap="12px">
+            {saveFailed && (
+              <Text variant="boMicro" color="red600" m="0px">
+                {formatMessage(messages.settingsSaveFailed)}
+              </Text>
+            )}
+            <Button
+              buttonStyle="bo-primary"
+              width="auto"
+              height={bo.buttonMedium.height}
+              padding={bo.buttonMedium.padding}
+              fontSize={bo.buttonMedium.fontSize}
+              processing={processing}
+              onClick={handleSave}
+              id="e2e-project-settings-save"
+            >
+              {formatMessage(messages.settingsSave)}
+            </Button>
+          </Box>
+        }
+      />
+      <DiscardChangesModal
+        opened={confirmingDiscard}
+        onKeepEditing={() => setConfirmingDiscard(false)}
+        onDiscard={discard}
+      />
+    </>
   );
 };
 

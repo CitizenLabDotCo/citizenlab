@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 
 import {
   Box,
-  Button,
   Title,
   Label,
   colors,
@@ -13,7 +12,6 @@ import { FormProvider, Resolver, useForm } from 'react-hook-form';
 import { Multiloc, UploadFile } from 'typings';
 import { mixed, object, string } from 'yup';
 
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { ICustomPageData } from 'api/custom_pages/types';
 import useAddCustomPage from 'api/custom_pages/useAddCustomPage';
 import useUpdateCustomPage from 'api/custom_pages/useUpdateCustomPage';
@@ -24,15 +22,15 @@ import { handleAddPageFiles, handleRemovePageFiles } from 'api/page_files/util';
 import { IProjectData } from 'api/projects/types';
 
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
-import useLocale from 'hooks/useLocale';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
+import PageWrapper from 'components/admin/PageWrapper';
 import { SectionField } from 'components/admin/Section';
+import StickyContainer from 'components/admin/StickyContainer';
 import Feedback from 'components/HookForm/Feedback';
 import FileUploader from 'components/HookForm/FileUploader';
-import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
-import SlugInput from 'components/HookForm/SlugInput';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import GoBackButton from 'components/UI/GoBackButton';
 
@@ -45,6 +43,8 @@ import { slugRegEx } from 'utils/textUtils';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 
 import messages from './messages';
+import SubmitButton from './SubmitButton';
+import TitleAndSlugFields from './TitleAndSlugFields';
 
 interface FormValues {
   title_multiloc: Multiloc;
@@ -62,8 +62,6 @@ interface Props {
 const ProjectPageForm = ({ project, page }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const locale = useLocale();
-  const { data: appConfiguration } = useAppConfiguration();
   const { data: remoteFiles } = usePageFiles(page?.id);
   const { width, containerRef } = useContainerWidthAndHeight();
   const isEditing = !!page;
@@ -72,6 +70,9 @@ const ProjectPageForm = ({ project, page }: Props) => {
   const { mutateAsync: addPageFile } = useAddPageFile();
   const { mutateAsync: deletePageFile } = useDeletePageFile();
   const [files, setFiles] = useState<UploadFile[]>([]);
+  const customPageBuilderEnabled = useFeatureFlag({
+    name: 'custom_page_builder',
+  });
 
   useEffect(() => {
     async function getFiles() {
@@ -119,13 +120,6 @@ const ProjectPageForm = ({ project, page }: Props) => {
     },
   });
 
-  const slug = methods.watch('slug');
-  const slugHasChanged = slug !== page?.attributes.slug;
-  const previewUrl =
-    slug && appConfiguration
-      ? `${appConfiguration.data.attributes.host}/${locale}/projects/${project.attributes.slug}/pages/${slug}`
-      : null;
-
   const onSubmit = async ({
     title_multiloc,
     slug,
@@ -151,7 +145,7 @@ const ProjectPageForm = ({ project, page }: Props) => {
             })
           ).data.id;
 
-      if (local_page_files) {
+      if (local_page_files && !customPageBuilderEnabled) {
         // Empty `files` on create, so this only adds; on edit it diffs.
         await Promise.all([
           handleAddPageFiles(pageId, local_page_files, files, addPageFile),
@@ -172,6 +166,30 @@ const ProjectPageForm = ({ project, page }: Props) => {
       handleHookFormSubmissionError(error, methods.setError);
     }
   };
+
+  // With the builder on, the body and files are authored there, and the surrounding page shows
+  // the breadcrumbs, title and view button: the form is the custom page settings card.
+  if (customPageBuilderEnabled) {
+    return (
+      <FormProvider {...methods}>
+        <form onSubmit={methods.handleSubmit(onSubmit)}>
+          <PageWrapper flatTopBorder>
+            <Feedback
+              successMessage={
+                isEditing ? formatMessage(messages.saveSuccess) : undefined
+              }
+            />
+            <TitleAndSlugFields project={project} page={page} />
+            <StickyContainer>
+              <Box display="flex">
+                <SubmitButton isEditing={isEditing} />
+              </Box>
+            </StickyContainer>
+          </PageWrapper>
+        </form>
+      </FormProvider>
+    );
+  }
 
   return (
     <Box mt="44px" mx="44px">
@@ -216,21 +234,7 @@ const ProjectPageForm = ({ project, page }: Props) => {
                   isEditing ? formatMessage(messages.saveSuccess) : undefined
                 }
               />
-              <SectionField>
-                <InputMultilocWithLocaleSwitcher
-                  name="title_multiloc"
-                  label={formatMessage(messages.titleLabel)}
-                />
-              </SectionField>
-              {isEditing && (
-                <SectionField>
-                  <SlugInput
-                    slug={slug}
-                    showWarningMessage={slugHasChanged}
-                    previewUrl={previewUrl}
-                  />
-                </SectionField>
-              )}
+              <TitleAndSlugFields project={project} page={page} />
               <SectionField>
                 <QuillMultilocWithLocaleSwitcher
                   name="top_info_section_multiloc"
@@ -253,21 +257,7 @@ const ProjectPageForm = ({ project, page }: Props) => {
                 justifyContent="flex-start"
               >
                 <Box py="8px" px={`${defaultAdminCardPadding}px`}>
-                  <Button
-                    type="submit"
-                    processing={methods.formState.isSubmitting}
-                    disabled={!methods.formState.isDirty}
-                    bgColor={colors.blue500}
-                    dataCy={
-                      isEditing
-                        ? 'e2e-save-project-page'
-                        : 'e2e-create-project-page'
-                    }
-                  >
-                    {isEditing
-                      ? formatMessage(messages.saveButton)
-                      : formatMessage(messages.createButton)}
-                  </Button>
+                  <SubmitButton isEditing={isEditing} />
                 </Box>
               </Box>
             </form>

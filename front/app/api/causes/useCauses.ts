@@ -18,6 +18,7 @@ const useCauses = ({ phaseId }: ICauseParameters) => {
       phaseId,
     }),
     queryFn: () => fetchCauses({ phaseId }),
+    enabled: !!phaseId,
   });
 };
 

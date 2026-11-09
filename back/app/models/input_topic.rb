@@ -53,7 +53,7 @@ class InputTopic < ApplicationRecord
   before_validation :sanitize_description_multiloc, if: :description_multiloc
 
   scope :order_ideas_count, lambda { |ideas, direction: :asc|
-    topics_counts = IdeasCountService.counts(ideas, ['input_topic_id'])['input_topic_id']
+    topics_counts = Facets::IdeaInputTopic.new.counts(ideas)
     sorted_ids = ids.sort_by do |id|
       count = topics_counts[id] || 0
       direction == :desc ? -count : count

@@ -75,6 +75,10 @@ class TestVisitor < FieldVisitorService
     'polygon from visitor'
   end
 
+  def visit_multipoint(_field)
+    'multipoint from visitor'
+  end
+
   def visit_linear_scale(_field)
     'linear_scale from visitor'
   end
@@ -431,45 +435,63 @@ RSpec.describe CustomField do
     end
   end
 
-  describe 'visible_to_public?' do
-    it 'returns true for a default input field' do
-      field = build(:custom_field, :for_custom_form, input_type: 'text_multiloc', code: 'title_multiloc')
-      expect(field.visible_to_public?).to be true
+  describe 'answers_visible_to' do
+    it 'defaults to moderators' do
+      field = create(:custom_field, :for_custom_form)
+      expect(field.answers_visible_to_moderators?).to be true
     end
 
-    it 'returns false for a custom input field' do
-      field = build(:custom_field, :for_custom_form, input_type: 'number')
-      expect(field.visible_to_public?).to be false
+    it 'can be set to public' do
+      field = create(:custom_field, :for_custom_form, answers_visible_to: 'public')
+      expect(field.reload.answers_visible_to_public?).to be true
     end
 
-    it 'returns true for a custom input page' do
-      field = build(:custom_field_page, :for_custom_form)
-      expect(field.visible_to_public?).to be true
+    it 'rejects unknown values' do
+      field = build(:custom_field, :for_custom_form, answers_visible_to: 'everyone')
+      expect(field).to be_invalid
+      expect(field.errors.details[:answers_visible_to]).to include(error: :inclusion, value: 'everyone')
     end
 
-    it 'returns true for a custom input end page' do
-      field = build(:custom_field_form_end_page, :for_custom_form)
-      expect(field.visible_to_public?).to be true
+    it 'must be public for a built-in input field' do
+      field = build(:default_input_field, answers_visible_to: 'moderators')
+      expect(field).to be_invalid
+      expect(field.errors.details[:answers_visible_to]).to include(error: :inclusion, value: 'moderators')
     end
 
-    it 'returns false for a default registration field' do
-      field = build(:custom_field_birthyear)
-      expect(field.visible_to_public?).to be false
+    it 'must be moderators for a registration field' do
+      field = build(:custom_field, :for_registration, answers_visible_to: 'public')
+      expect(field).to be_invalid
+      expect(field.errors.details[:answers_visible_to]).to include(error: :inclusion, value: 'public')
     end
 
-    it 'returns false for a custom registration field' do
-      field = build(:custom_field_select, :for_registration)
-      expect(field.visible_to_public?).to be false
+    it 'must be moderators for a page' do
+      field = build(:custom_field_page, :for_custom_form, answers_visible_to: 'public')
+      expect(field).to be_invalid
+      expect(field.errors.details[:answers_visible_to]).to include(error: :inclusion, value: 'public')
+    end
+  end
+
+  describe 'show_as_filter' do
+    it 'defaults to false' do
+      field = create(:custom_field_select, :for_custom_form)
+      expect(field.show_as_filter).to be false
     end
 
-    it 'returns true for a custom registration page' do
-      field = build(:custom_field_page, :for_registration)
-      expect(field.visible_to_public?).to be true
+    it 'can be set for a public choice question' do
+      field = create(:custom_field_select, :for_custom_form, answers_visible_to: 'public', show_as_filter: true)
+      expect(field.reload.show_as_filter).to be true
     end
 
-    it 'returns true for a custom registration end page' do
-      field = build(:custom_field_form_end_page, :for_registration)
-      expect(field.visible_to_public?).to be true
+    it 'cannot be set for a private choice question' do
+      field = build(:custom_field_select, :for_custom_form, answers_visible_to: 'moderators', show_as_filter: true)
+      expect(field).to be_invalid
+      expect(field.errors.details[:show_as_filter]).to include(error: :inclusion)
+    end
+
+    it 'cannot be set for a public text question' do
+      field = build(:custom_field_text, :for_custom_form, answers_visible_to: 'public', show_as_filter: true)
+      expect(field).to be_invalid
+      expect(field.errors.details[:show_as_filter]).to include(error: :inclusion)
     end
   end
 
@@ -555,6 +577,44 @@ RSpec.describe CustomField do
         field.minimum_select_count = nil
         field.maximum_select_count = nil
         expect(field.valid?).to be true
+      end
+    end
+  end
+
+  describe 'multipoint field with pin counts' do
+    let(:project) { create(:single_phase_native_survey_project) }
+    let(:custom_form) { create(:custom_form, participation_context: project.phases.first) }
+    let(:field) { create(:custom_field_multipoint, resource: custom_form, select_count_enabled: true) }
+
+    it 'supports select counts' do
+      expect(field.supports_select_count?).to be true
+    end
+
+    it 'accepts a minimum and maximum number of pins' do
+      field.minimum_select_count = 2
+      field.maximum_select_count = 5
+      expect(field.valid?).to be true
+    end
+
+    it 'cannot have maximum_select_count less than minimum_select_count' do
+      field.minimum_select_count = 5
+      field.maximum_select_count = 3
+      expect(field.valid?).to be false
+      expect(field.errors[:maximum_select_count]).to be_present
+    end
+
+    it 'cannot have minimum_select_count less than 0' do
+      field.minimum_select_count = -1
+      expect(field.valid?).to be false
+    end
+
+    context 'when select_count_enabled is false' do
+      before { field.select_count_enabled = false }
+
+      it 'cannot set the pin counts' do
+        field.minimum_select_count = 2
+        expect(field.valid?).to be false
+        expect(field.errors[:minimum_select_count]).to be_present
       end
     end
   end

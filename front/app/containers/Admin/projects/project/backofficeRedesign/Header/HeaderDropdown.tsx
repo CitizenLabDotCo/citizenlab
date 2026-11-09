@@ -9,7 +9,7 @@ import {
   bo,
 } from '@citizenlab/cl2-component-library';
 
-export type HeaderDropdownName = 'publish' | 'share';
+export type HeaderDropdownName = 'publish' | 'share' | 'review';
 
 interface Props {
   opened: boolean;
@@ -19,7 +19,9 @@ interface Props {
   icon?: IconNames;
   id: string;
   width: string;
+  maxHeight?: string;
   content: JSX.Element;
+  disabled?: boolean;
 }
 
 const HeaderDropdown = ({
@@ -30,7 +32,9 @@ const HeaderDropdown = ({
   icon,
   id,
   width,
+  maxHeight = 'none',
   content,
+  disabled,
 }: Props) => {
   const triggerRef = useRef<HTMLDivElement>(null);
 
@@ -44,10 +48,12 @@ const HeaderDropdown = ({
       <Box ref={triggerRef} display="inline-block">
         <Button
           buttonStyle={buttonStyle}
+          boSize="medium"
           icon={icon}
           iconPos="right"
           onClick={() => onOpenChange(!opened)}
           id={id}
+          disabled={disabled}
         >
           {label}
         </Button>
@@ -56,10 +62,10 @@ const HeaderDropdown = ({
       <Dropdown
         opened={opened}
         onClickOutside={handleClickOutside}
-        top="40px"
+        top="36px"
         right="0px"
         width={width}
-        maxHeight="none"
+        maxHeight={maxHeight}
         zIndex="2000"
         borderRadius={bo.borderRadius}
         content={content}

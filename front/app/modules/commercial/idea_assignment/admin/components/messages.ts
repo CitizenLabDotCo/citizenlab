@@ -5,8 +5,4 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.anyAssignment',
     defaultMessage: 'Any administrator',
   },
-  unassigned: {
-    id: 'app.containers.AdminPage.ProjectEdit.unassigned',
-    defaultMessage: 'Unassigned',
-  },
 });

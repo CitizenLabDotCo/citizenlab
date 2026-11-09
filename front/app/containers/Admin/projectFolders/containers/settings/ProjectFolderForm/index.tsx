@@ -35,8 +35,6 @@ import {
 import SlugInput from 'components/admin/SlugInput';
 import SpaceSelectSection from 'components/admin/SpaceSelectSection';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import DescriptionBuilderLink from 'components/DescriptionBuilder/DescriptionBuilderLink';
-import Highlighter from 'components/Highlighter';
 import FileUploader from 'components/UI/FileUploader';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
@@ -98,11 +96,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   const tenantLocales = useAppConfigurationLocales();
   const { mutateAsync: addProjectFolder } = useAddProjectFolder();
   const { mutateAsync: updateProjectFolder } = useUpdateProjectFolder();
-
-  // A folder must exist before its description can be authored in the Content
-  // Builder, so the builder link only shows once the folder is created (edit
-  // mode). At creation the description is left empty and added afterwards.
-  const showDescriptionBuilder = projectFolder;
 
   /*
     ==============
@@ -576,16 +569,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           />
         </SectionField>
         <SectionField>
-          {showDescriptionBuilder && (
-            <>
-              <SubSectionTitle>
-                <FormattedMessage {...messages.folderDescription} />
-              </SubSectionTitle>
-              <Highlighter fragmentId="description-builder">
-                <DescriptionBuilderLink />
-              </Highlighter>
-            </>
-          )}
           <Box mt="35px" data-cy="e2e-project-folder-short-description">
             <TextAreaMultilocWithLocaleSwitcher
               valueMultiloc={shortDescriptionMultiloc}

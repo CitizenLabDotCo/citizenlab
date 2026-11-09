@@ -95,17 +95,54 @@ resource 'Phases' do
   end
 
   get 'web_api/v1/phases/:id/submission_count' do
-    let(:phase) { create(:native_survey_phase) }
     let(:id) { phase.id }
 
-    before do
-      create(:idea_status_proposed)
-      create_list(:native_survey_response, 2, creation_phase: phase, project: phase.project, phases: [phase])
-      create_list(:idea, 3, project: phase.project, phases: [phase])
-    end
+    before { create(:idea_status_proposed) }
 
     context 'native survey' do
+      let(:phase) { create(:native_survey_phase) }
+
+      before do
+        create_list(:native_survey_response, 2, creation_phase: phase, project: phase.project, phases: [phase])
+        create_list(:idea, 3, project: phase.project, phases: [phase])
+      end
+
       example 'Get count when native survey phase (ignores ideas)' do
+        do_request
+        assert_status 200
+        expect(response_data[:attributes]).to eq({ totalSubmissions: 2 })
+      end
+    end
+
+    context 'proposals' do
+      let(:phase) { create(:proposals_phase) }
+
+      before do
+        create_list(:proposal, 2, project: phase.project, creation_phase: phase, phases: [phase])
+        create(:proposal, project: phase.project, creation_phase: phase, phases: [phase], publication_status: 'submitted')
+        create(:proposal, project: phase.project, creation_phase: phase, phases: [phase], publication_status: 'draft')
+      end
+
+      example 'Get count when proposals phase (counts screened proposals, ignores drafts)' do
+        do_request
+        assert_status 200
+        expect(response_data[:attributes]).to eq({ totalSubmissions: 3 })
+      end
+    end
+
+    context 'ideation' do
+      let(:project) { create(:project_with_two_past_ideation_phases) }
+      let(:ideation_phases) { project.phases.where(participation_method: 'ideation').order(:start_at) }
+      let(:phase) { ideation_phases.last }
+
+      before do
+        earlier_phase = ideation_phases.first
+        create_list(:idea, 2, project: project, phases: [earlier_phase])
+        survey_phase = create(:native_survey_phase, project: project, start_at: 10.days.ago, end_at: 5.days.ago)
+        create(:native_survey_response, project: project, creation_phase: survey_phase, phases: [survey_phase])
+      end
+
+      example 'Get count when ideation phase (counts the whole project form, ignores survey responses)' do
         do_request
         assert_status 200
         expect(response_data[:attributes]).to eq({ totalSubmissions: 2 })
@@ -592,6 +629,7 @@ resource 'Phases' do
             attributes: {
               top_consensus_ideas: be_an(Array),
               top_controversial_ideas: be_an(Array),
+              ideas_by_agreement: be_an(Array),
               stats: {
                 num_participants: 9, # each reaction is from a different user
                 num_ideas: 4,
@@ -600,8 +638,10 @@ resource 'Phases' do
             }
           )
 
-          expect(response_data.dig(:attributes, :top_consensus_ideas).pluck(:id)).to eq [i2.id, i1.id, i3.id]
-          expect(response_data.dig(:attributes, :top_controversial_ideas).pluck(:id)).to eq [i3.id, i1.id, i2.id]
+          expect(response_data.dig(:attributes, :top_consensus_ideas).pluck(:id)).to eq [i2.id]
+          expect(response_data.dig(:attributes, :top_controversial_ideas).pluck(:id)).to eq [i3.id]
+          # i1 sits between the two thresholds, so only the full list carries it
+          expect(response_data.dig(:attributes, :ideas_by_agreement).pluck(:id)).to eq [i1.id, i3.id, i2.id]
 
           top_controversial_idea = response_data.dig(:attributes, :top_controversial_ideas, 0)
           expect(top_controversial_idea.with_indifferent_access).to match(
@@ -636,9 +676,10 @@ resource 'Phases' do
               num_ideas: 4,
               votes: { up: 3, down: 3, neutral: 3 }
             })
-            expect(response_data.dig(:attributes, :top_consensus_ideas).pluck(:id)).to eq [i2.id, i1.id, i3.id]
-            expect(response_data.dig(:attributes, :top_controversial_ideas).pluck(:id)).to eq [i3.id, i1.id, i2.id]
-            expect(response_data.dig(:attributes, :top_consensus_ideas, 1, :votes)).to eq({ up: 2, down: 1, neutral: 0 })
+            expect(response_data.dig(:attributes, :top_consensus_ideas).pluck(:id)).to eq [i2.id]
+            expect(response_data.dig(:attributes, :top_controversial_ideas).pluck(:id)).to eq [i3.id]
+            expect(response_data.dig(:attributes, :ideas_by_agreement).pluck(:id)).to eq [i1.id, i3.id, i2.id]
+            expect(response_data.dig(:attributes, :ideas_by_agreement, 0, :votes)).to eq({ up: 2, down: 1, neutral: 0 })
           end
         end
 

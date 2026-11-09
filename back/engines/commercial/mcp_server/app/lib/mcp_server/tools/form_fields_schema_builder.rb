@@ -117,8 +117,9 @@ class McpServer::Tools::FormFieldsSchemaBuilder
       key: {
         type: %w[string null],
         description: <<~DESC.squish
-          Stable slug. Auto-generated from title if omitted on new fields. null for page
-          break fields.
+          Stable slug. Auto-generated from title if omitted on new fields; echo it back
+          unchanged on existing fields (community-monitor pages and the form_end page
+          carry keys). May be null on plain page breaks.
         DESC
       },
       input_type: {
@@ -129,10 +130,12 @@ class McpServer::Tools::FormFieldsSchemaBuilder
 
           - native_survey: page, number, linear_scale, rating, text, multiline_text,
             select, multiselect, multiselect_image, file_upload, shapefile_upload,
-            point, line, polygon, ranking, matrix_linear_scale, sentiment_linear_scale
+            point, line, polygon, multipoint, ranking, matrix_linear_scale,
+            sentiment_linear_scale
           - ideation: page, number, linear_scale, rating, text, multiline_text,
             select, multiselect, multiselect_image, ranking, sentiment_linear_scale,
             matrix_linear_scale
+          - community_monitor_survey: page, sentiment_linear_scale
 
           The types text_multiloc, html_multiloc, image_files, files, topic_ids, and
           cosponsor_ids are reserved for built-in fields (identified by a non-null
@@ -140,7 +143,7 @@ class McpServer::Tools::FormFieldsSchemaBuilder
         DESC
         enum: %w[
           page number linear_scale rating text multiline_text select multiselect
-          multiselect_image file_upload shapefile_upload point line polygon
+          multiselect_image file_upload shapefile_upload point line polygon multipoint
           ranking matrix_linear_scale sentiment_linear_scale
 
           text_multiloc html_multiloc image_files files topic_ids
@@ -214,6 +217,16 @@ class McpServer::Tools::FormFieldsSchemaBuilder
           follow-up input after selecting their sentiment.
         DESC
       },
+      question_category: {
+        type: %w[string null],
+        enum: [*CustomField::QUESTION_CATEGORIES, nil],
+        description: <<~DESC.squish
+          Community monitor only — any other participation method must omit it (validation
+          rejects it there). Reporting category the question is grouped under. Echo it back
+          unchanged for built-in questions; set it on a custom question to group it, or
+          omit it to report the question under 'Other'.
+        DESC
+      },
 
       # Scale family
       maximum: {
@@ -246,8 +259,8 @@ class McpServer::Tools::FormFieldsSchemaBuilder
       map_config_id: {
         type: %w[string null],
         description: <<~DESC.squish
-          Only for point / line / polygon, and for map-layout pages. UUID of an existing
-          CustomMaps::MapConfig. Must reference a MapConfig that already exists.
+          Only for point / line / polygon / multipoint, and for map-layout pages. UUID of
+          an existing CustomMaps::MapConfig. Must reference a MapConfig that already exists.
         DESC
       },
 

@@ -1,6 +1,6 @@
-import React, { lazy, Suspense, useState } from 'react';
+import React, { useState } from 'react';
 
-import { Spinner } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
 import {
@@ -12,37 +12,34 @@ import usePhase from 'api/phases/usePhase';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
 
 import { AccessOnlyAction } from 'containers/Admin/projects/_shared/components/PhaseActionAccessRow';
-import PanelRowModal from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelRowModal';
-import AdminPhaseEmailWrapper from 'containers/Admin/projects/project/admin_phase_email_wrapper';
+import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';
+import PanelHeading from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelHeading';
 import projectMessages from 'containers/Admin/projects/project/messages';
 import PhaseParticipationConfig from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig';
+import ModerationAssignee from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/components/inputs/_shared/ModerationAssignee';
 import configMessages from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/messages';
 import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/typings';
 import { validateParticipation } from 'containers/Admin/projects/project/phaseSetup/validate';
 
-import Centerer from 'components/UI/Centerer';
+import { useRegisterPageSaver } from 'components/admin/PageSaveContext';
 
 import { useIntl } from 'utils/cl-intl';
-import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { isCLErrorsWrapper } from 'utils/errorUtils';
 
-import { useRegisterPhaseSaver } from '../_shared/PhaseSaveContext';
-import messages from '../messages';
-
 import EditAccessButton from './EditAccessButton';
+import messages from './messages';
 import PanelSettings from './PanelSettings';
 import ParticipantActionsGroup from './ParticipantActionsGroup';
+import PhaseNotifications from './PhaseNotifications';
 
-// Lazy so ArcGIS stays out of the chunk every workspace page loads, and only
-// arrives once the map modal is opened.
-const CustomMapConfigPage = lazy(
-  () => import('containers/Admin/CustomMapConfigPage')
-);
-
-const METHODS_WITH_ACTION_TOGGLES: ParticipationMethod[] = [
+const METHODS_WITH_ACTION_ROWS: ParticipationMethod[] = [
   'ideation',
   'proposals',
   'common_ground',
+  'voting',
+  'native_survey',
+  'poll',
+  'survey',
 ];
 
 const ACCESS_ONLY_ACTIONS: Partial<
@@ -52,7 +49,11 @@ const ACCESS_ONLY_ACTIONS: Partial<
     { action: 'attending_event', label: projectMessages.attendingEventAction },
   ],
   volunteering: [
-    { action: 'volunteering', label: configMessages.volunteeringAction },
+    { action: 'volunteering', label: configMessages.volunteeringAction2 },
+    { action: 'attending_event', label: projectMessages.attendingEventAction },
+  ],
+  document_annotation: [
+    { action: 'annotating_document', label: messages.annotatingDocumentAction },
     { action: 'attending_event', label: projectMessages.attendingEventAction },
   ],
 };
@@ -105,18 +106,23 @@ const MethodSettings = ({ phase }: Props) => {
     }
   };
 
-  useRegisterPhaseSaver('settings', {
+  useRegisterPageSaver('settings', {
     dirty: Object.keys(changes).length > 0,
     save,
   });
 
   return (
-    <PanelSettings p="20px">
+    <PanelSettings p="0 18px 24px">
       {accessOnlyActions ? (
-        <ParticipantActionsGroup
-          phaseId={phase.id}
-          actions={accessOnlyActions}
-        />
+        <>
+          <Box mb="10px">
+            <PanelHeading label={formatMessage(configMessages.settingsGroup)} />
+          </Box>
+          <ParticipantActionsGroup
+            phaseId={phase.id}
+            actions={accessOnlyActions}
+          />
+        </>
       ) : (
         <PhaseParticipationConfig
           phase={phaseWithRelationships}
@@ -131,30 +137,22 @@ const MethodSettings = ({ phase }: Props) => {
       )}
 
       {!accessOnlyActions &&
-        !METHODS_WITH_ACTION_TOGGLES.includes(participationMethod) && (
+        !METHODS_WITH_ACTION_ROWS.includes(participationMethod) && (
           <EditAccessButton phaseId={phase.id} />
         )}
 
-      {getMethodConfig(participationMethod).supportsMapView && (
-        <PanelRowModal
-          label={formatMessage(messages.mapConfiguration)}
-          width="1100px"
-        >
-          <Suspense
-            fallback={
-              <Centerer height="500px">
-                <Spinner />
-              </Centerer>
-            }
-          >
-            <CustomMapConfigPage />
-          </Suspense>
-        </PanelRowModal>
-      )}
+      <PanelGroup label={formatMessage(messages.notifications)}>
+        <PhaseNotifications phase={phase} />
+      </PanelGroup>
 
-      <PanelRowModal label={formatMessage(messages.notifications)}>
-        <AdminPhaseEmailWrapper />
-      </PanelRowModal>
+      {participationMethod === 'voting' && (
+        <PanelGroup
+          label={formatMessage(configMessages.moderationGroup)}
+          defaultOpen
+        >
+          <ModerationAssignee phaseId={phase.id} />
+        </PanelGroup>
+      )}
     </PanelSettings>
   );
 };

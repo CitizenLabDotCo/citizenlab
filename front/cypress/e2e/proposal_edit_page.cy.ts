@@ -74,6 +74,8 @@ describe('Proposal edit page', () => {
 
     // Edit input form
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/form/edit`);
+    // A proposal has been published, so the builder warns about existing submissions
+    cy.get('#e2e-warning-notice').should('exist');
     // Delete the Details page
     cy.dataCy('e2e-form-fields')
       .contains('Details')

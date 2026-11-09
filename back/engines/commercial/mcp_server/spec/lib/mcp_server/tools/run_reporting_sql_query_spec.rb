@@ -24,6 +24,16 @@ RSpec.describe McpServer::Tools::RunReportingSqlQuery do
 
   describe 'layer 2 (execution under the restricted role)' do
     it 'runs the query as the analytics_reader role' do
+      # Layer 1 refuses `current_user`: it is a keyword, not an allowlisted
+      # function, which leaves no sandboxed query able to name the role. Layer 1 is
+      # stubbed past here so the question reaches layer 2, which is what is under
+      # test; sql_sandboxer_spec covers the refusal itself.
+      allow(McpServer::SqlSandboxer).to receive(:validate).and_return(
+        McpServer::SqlSandboxer::Result.new(
+          valid: true, error: nil, normalized_sql: 'SELECT current_user AS u'
+        )
+      )
+
       response = run('SELECT current_user AS u')
 
       expect(response.error?).to be false
@@ -37,6 +47,18 @@ RSpec.describe McpServer::Tools::RunReportingSqlQuery do
       expect(response.error?).to be false
       expect(response.structured_content[:columns]).to eq(['n'])
       expect(response.structured_content[:row_count]).to eq(1)
+    end
+
+    it 'reports the truncation when the query returns more rows than the cap' do
+      stub_const('McpServer::ReportingQueryRunner::ROW_LIMIT', 2)
+      stub_const('McpServer::Tools::RunReportingSqlQuery::ROW_LIMIT', 2)
+
+      response = run('SELECT unnest(ARRAY[1, 2, 3]) AS n')
+
+      expect(response.error?).to be false
+      expect(response.content.first[:text]).to match(/truncated to 2/)
+      expect(response.structured_content[:truncated]).to be true
+      expect(response.structured_content[:row_count]).to eq(2)
     end
   end
 
@@ -85,12 +107,11 @@ RSpec.describe McpServer::Tools::RunReportingSqlQuery do
 
   describe 'tenant-context guard' do
     it 'refuses to run a sandbox-valid query outside a real tenant (e.g. the public schema)' do
-      response = Apartment::Tenant.switch('public') do
-        run('SELECT count(*) AS n FROM reporting_contributions')
-      end
-
-      expect(response.error?).to be true
-      expect(response.content.first[:text]).to match(/No tenant context/)
+      expect do
+        Apartment::Tenant.switch('public') do
+          run('SELECT count(*) AS n FROM reporting_contributions')
+        end
+      end.to raise_error(/No tenant context/)
     end
   end
 end

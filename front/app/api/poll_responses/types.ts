@@ -7,10 +7,10 @@ export type PollResponsesKeys = Keys<typeof pollResponsesKeys>;
 export interface IPollResponses {
   data: {
     type: 'responses_count';
-    attributes: { series: { [key: string]: number } };
+    attributes: { series: { options: Record<string, number> } };
   };
 }
 
 export type IPollResponseParameters = {
-  phaseId: string;
+  phaseId: string | null;
 };

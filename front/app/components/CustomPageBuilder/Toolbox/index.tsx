@@ -1,5 +1,7 @@
 import React from 'react';
 
+import useCustomPageById from 'api/custom_pages/useCustomPageById';
+
 import useAppConfigurationLocales, {
   createMultiloc,
 } from 'hooks/useAppConfigurationLocales';
@@ -9,11 +11,21 @@ import heroBannerMessages from 'components/admin/BannerFields/messages';
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
 import Section from 'components/admin/ContentBuilder/Toolbox/Section';
+import AboutBox, {
+  aboutBoxTitle,
+} from 'components/admin/ContentBuilder/Widgets/AboutBox';
 import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
+import Areas, {
+  areasTitle,
+} from 'components/admin/ContentBuilder/Widgets/Areas';
 import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
 import CallToAction, {
   callToActionTitle,
 } from 'components/admin/ContentBuilder/Widgets/CallToAction';
+import CommunityMonitorCTA, {
+  communityMonitorCTATitle,
+} from 'components/admin/ContentBuilder/Widgets/CommunityMonitorCTA';
+import communityMonitorMessages from 'components/admin/ContentBuilder/Widgets/CommunityMonitorCTA/messages';
 import CustomPages, {
   customPagesTitle,
 } from 'components/admin/ContentBuilder/Widgets/CustomPages';
@@ -22,6 +34,10 @@ import eventsMessages from 'components/admin/ContentBuilder/Widgets/Events/messa
 import FileAttachment from 'components/admin/ContentBuilder/Widgets/FileAttachment';
 import FinishedOrArchived from 'components/admin/ContentBuilder/Widgets/FinishedOrArchived';
 import finishedOrArchivedMessages from 'components/admin/ContentBuilder/Widgets/FinishedOrArchived/messages';
+import FollowedItems, {
+  followedItemsTitle,
+} from 'components/admin/ContentBuilder/Widgets/FollowedItems';
+import followedItemsMessages from 'components/admin/ContentBuilder/Widgets/FollowedItems/messages';
 import HtmlBlockMultiloc from 'components/admin/ContentBuilder/Widgets/HtmlBlockMultiloc';
 import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
 import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
@@ -29,6 +45,7 @@ import ImageTextCards from 'components/admin/ContentBuilder/Widgets/ImageTextCar
 import OpenToParticipation, {
   openToParticipationTitle,
 } from 'components/admin/ContentBuilder/Widgets/OpenToParticipation';
+import PageLink from 'components/admin/ContentBuilder/Widgets/PageLink';
 import Published, {
   publishedTitle,
 } from 'components/admin/ContentBuilder/Widgets/Published';
@@ -58,15 +75,23 @@ import {
   useFormatMessageWithLocale,
   MessageDescriptor,
 } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 const CustomPageBuilderToolbox = () => {
+  const { customPageId } = useParams({ strict: false });
+  const { data: customPage } = useCustomPageById(customPageId);
+  // Page link, the Participation box and Info & accordions (which holds one) are about one
+  // project, so only a project's own page can offer them.
+  const isProjectPage = !!customPage?.data.attributes.project_id;
   const { formatMessage } = useIntl();
+  const followEnabled = useFeatureFlag({ name: 'follow' });
+  const communityMonitorEnabled = useFeatureFlag({
+    name: 'community_monitor',
+  });
   const isHtmlBlockMultilocEnabled = useFeatureFlag({
     name: 'html_block_in_content_builder',
   });
-  // The legacy project-list section is itself the paid capability, unlike events where only
-  // the filtering is, so the whole entry is gated.
-  const filteredProjectsEnabled = useFeatureFlag({
+  const advancedCustomPagesEnabled = useFeatureFlag({
     name: 'advanced_custom_pages',
   });
   const formatMessageWithLocale = useFormatMessageWithLocale();
@@ -103,16 +128,16 @@ const CustomPageBuilderToolbox = () => {
           icon="image"
           label={formatMessage(heroBannerMessages.bannerWidgetTitle)}
         />
-        {filteredProjectsEnabled && (
-          <DraggableElement
-            id="e2e-draggable-projects-by-filter"
-            component={<ProjectsByFilter />}
-            icon="projects"
-            label={formatMessage(projectsMessages.filteredProjects)}
-          />
-        )}
+        <DraggableElement
+          id="e2e-draggable-projects-by-filter"
+          disabled={!advancedCustomPagesEnabled}
+          component={<ProjectsByFilter />}
+          icon="projects"
+          label={formatMessage(projectsMessages.filteredProjects)}
+        />
         <DraggableElement
           id="e2e-draggable-selection"
+          disabled={!advancedCustomPagesEnabled}
           component={
             <Selection
               titleMultiloc={toMultiloc(selectionTitle)}
@@ -124,6 +149,7 @@ const CustomPageBuilderToolbox = () => {
         />
         <DraggableElement
           id="e2e-draggable-open-to-participation"
+          disabled={!advancedCustomPagesEnabled}
           component={
             <OpenToParticipation
               titleMultiloc={toMultiloc(openToParticipationTitle)}
@@ -134,6 +160,7 @@ const CustomPageBuilderToolbox = () => {
         />
         <DraggableElement
           id="e2e-draggable-finished-or-archived"
+          disabled={!advancedCustomPagesEnabled}
           component={
             <FinishedOrArchived
               titleMultiloc={toMultiloc(
@@ -148,13 +175,35 @@ const CustomPageBuilderToolbox = () => {
           )}
         />
         <DraggableElement
+          id="e2e-draggable-followed-items"
+          disabled={!advancedCustomPagesEnabled}
+          component={
+            <FollowedItems
+              titleMultiloc={toMultiloc(followedItemsMessages.defaultTitle)}
+            />
+          }
+          icon="notification"
+          label={formatMessage(followedItemsTitle)}
+        />
+        {followEnabled && (
+          <DraggableElement
+            id="e2e-draggable-areas"
+            disabled={!advancedCustomPagesEnabled}
+            component={<Areas titleMultiloc={toMultiloc(areasTitle)} />}
+            icon="home"
+            label={formatMessage(areasTitle)}
+          />
+        )}
+        <DraggableElement
           id="e2e-draggable-published"
+          disabled={!advancedCustomPagesEnabled}
           component={<Published titleMultiloc={toMultiloc(publishedTitle)} />}
           icon="check-circle"
           label={formatMessage(publishedTitle)}
         />
         <DraggableElement
           id="e2e-draggable-spotlight"
+          disabled={!advancedCustomPagesEnabled}
           component={
             <Spotlight
               buttonTextMultiloc={toMultiloc(buttonTextDefault)}
@@ -166,31 +215,63 @@ const CustomPageBuilderToolbox = () => {
         />
         <DraggableElement
           id="e2e-draggable-custom-pages"
+          disabled={!advancedCustomPagesEnabled}
           component={<CustomPages customPages={[]} />}
           icon="page"
           label={formatMessage(customPagesTitle)}
         />
         <DraggableElement
           id="e2e-draggable-events"
+          disabled={!advancedCustomPagesEnabled}
           component={
-            <EventsList
-              source="all"
-              timeFilters={['upcoming']}
-              limit={3}
-              projectPublicationStatuses={['published']}
-            />
+            // A project's page is about that project, as its project page is.
+            isProjectPage ? (
+              <EventsList
+                source="currentProject"
+                timeFilters={['upcoming', 'past']}
+                limit="all"
+              />
+            ) : (
+              <EventsList
+                source="all"
+                timeFilters={['upcoming']}
+                limit={3}
+                projectPublicationStatuses={['published']}
+              />
+            )
           }
           icon="calendar"
           label={formatMessage(eventsMessages.eventsListTitle)}
         />
         <DraggableElement
           id="e2e-draggable-call-to-action"
+          disabled={!advancedCustomPagesEnabled}
           component={
             <CallToAction primaryButtonText={{}} secondaryButtonText={{}} />
           }
           icon="button"
           label={formatMessage(callToActionTitle)}
         />
+        {communityMonitorEnabled && (
+          <DraggableElement
+            id="e2e-draggable-community-monitor-cta"
+            component={
+              <CommunityMonitorCTA
+                title={toMultiloc(
+                  communityMonitorMessages.communityMonitorCtaDefaultTitle
+                )}
+                description={toMultiloc(
+                  communityMonitorMessages.communityMonitorCtaDefaultDescription
+                )}
+                surveyButtonText={toMultiloc(
+                  communityMonitorMessages.communityMonitorCtaDefaultSurveyButtonText
+                )}
+              />
+            }
+            icon="survey"
+            label={formatMessage(communityMonitorCTATitle)}
+          />
+        )}
       </Section>
       <Section>
         <DraggableElement
@@ -259,6 +340,22 @@ const CustomPageBuilderToolbox = () => {
           icon="paperclip"
           label={formatMessage(FileAttachment.craft.custom.title)}
         />
+        {isProjectPage && (
+          <DraggableElement
+            id="e2e-draggable-page-link"
+            component={<PageLink />}
+            icon="file"
+            label={formatMessage(PageLink.craft.custom.title)}
+          />
+        )}
+        {isProjectPage && (
+          <DraggableElement
+            id="e2e-draggable-about-box"
+            component={<AboutBox />}
+            icon="info-solid"
+            label={formatMessage(aboutBoxTitle)}
+          />
+        )}
         <DraggableElement
           id="e2e-draggable-two-column"
           component={<TwoColumn columnLayout="1-1" />}
@@ -277,12 +374,14 @@ const CustomPageBuilderToolbox = () => {
           icon="accordion"
           label={formatMessage(AccordionMultiloc.craft.custom.title)}
         />
-        <DraggableElement
-          id="e2e-draggable-info-accordions"
-          component={<InfoWithAccordions />}
-          icon="section-info-accordion"
-          label={formatMessage(messages.infoWithAccordions)}
-        />
+        {isProjectPage && (
+          <DraggableElement
+            id="e2e-draggable-info-accordions"
+            component={<InfoWithAccordions />}
+            icon="section-info-accordion"
+            label={formatMessage(messages.infoWithAccordions)}
+          />
+        )}
         <DraggableElement
           id="e2e-draggable-image-text-cards"
           component={<ImageTextCards />}

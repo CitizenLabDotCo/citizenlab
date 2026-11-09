@@ -3,7 +3,7 @@ import React from 'react';
 import { Box, Toggle } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 
-import { ImageSettings } from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
+import ImageSettings from 'components/admin/ContentBuilder/Widgets/ImageMultiloc/Settings';
 
 import { useIntl } from 'utils/cl-intl';
 

@@ -89,10 +89,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            idea_author_change: {
-              enabled: true,
-              allowed: true
-            },
             machine_translations: {
               enabled: true,
               allowed: true
@@ -113,11 +109,6 @@ module MultiTenancy
               enabled: true,
               allowed: true,
               write_key: ENV.fetch('DEFAULT_SATISMETER_WRITE_KEY')
-            },
-            google_analytics: {
-              enabled: true,
-              allowed: true,
-              tracking_id: ENV.fetch('DEFAULT_GA_TRACKING_ID')
             },
             google_tag_manager: {
               enabled: true,
@@ -246,6 +237,10 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            input_form_answer_filters: {
+              enabled: true,
+              allowed: true
+            },
             report_builder: {
               enabled: true,
               allowed: true
@@ -365,10 +360,6 @@ module MultiTenancy
               allowed: true,
               project_id: ''
             },
-            user_fields_in_surveys: {
-              enabled: true,
-              allowed: true
-            },
             common_ground: {
               enabled: true,
               allowed: true
@@ -429,6 +420,10 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            llm_reporting: {
+              enabled: true,
+              allowed: true
+            },
             sms: {
               enabled: true,
               allowed: true,
@@ -452,6 +447,10 @@ module MultiTenancy
             },
             project_backoffice_redesign: {
               enabled: false,
+              allowed: true
+            },
+            ai_assistant: {
+              enabled: true,
               allowed: true
             }
           })

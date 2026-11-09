@@ -31,4 +31,12 @@ RSpec.describe Analytics::Reporting::Session do
     expect(row.device).to eq 'mobile'
     expect(row.referrer).to eq 'https://www.google.com/'
   end
+
+  it 'exposes the browser and operating system' do
+    session = create(:session, browser_name: 'Firefox', os_name: 'Windows')
+    row = described_class.find(session.id)
+
+    expect(row.browser).to eq 'Firefox'
+    expect(row.os).to eq 'Windows'
+  end
 end

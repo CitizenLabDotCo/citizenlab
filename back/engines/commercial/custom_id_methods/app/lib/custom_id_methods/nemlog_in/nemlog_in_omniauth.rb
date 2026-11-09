@@ -106,15 +106,11 @@ module CustomIdMethods::NemlogIn
       env['omniauth.strategy'].options.merge!(metadata)
     end
 
-    def updateable_user_attrs
-      super + %i[custom_field_values]
-    end
-
     def locked_custom_fields
       [
         :municipality_code,
-        config[:birthday_custom_field_key].presence,
-        config[:birthyear_custom_field_key].presence
+        config&.dig(:birthday_custom_field_key).presence,
+        config&.dig(:birthyear_custom_field_key).presence
       ].compact
     end
 

@@ -10,11 +10,13 @@ module MultiTenancy
 
       delegate :parse_yml, :parse_yml_file, to: :class
 
-      # The templates bucket lives on GoVocal's AWS (eu-central-1): keep targeting it
-      # even when the deployment points its S3 env vars at another provider.
-      # TODO: NB: on such deployments, template operations are still expected to fail,
-      #   since the ambient credentials belong to the other provider and won't be valid
-      #   for AWS.
+      # The templates bucket lives on GoVocal's AWS (eu-central-1). AWS deployments in
+      # other regions still point to it, hence the hardcoded region. Other providers are
+      # not supported: the ambient S3 credentials belong to that provider (they serve the
+      # tenant uploads) and are not valid against an AWS bucket.
+      #
+      # Such deployments must leave TEMPLATE_BUCKET unset, which makes the listing fall
+      # back to the internal templates only.
       def self.s3_client
         Aws::S3::Client.new(region: 'eu-central-1', ignore_configured_endpoint_urls: true)
       end
@@ -59,6 +61,8 @@ module MultiTenancy
       end
 
       def external_template_names(prefix: release_prefix, ignore_manifest: false)
+        return [] unless external_templates?
+
         unless ignore_manifest
           manifest = read_external_manifest(prefix: prefix)
           return manifest.keys if manifest
@@ -101,7 +105,13 @@ module MultiTenancy
         raise UnknownTemplateError, "Unknown template: '#{template_name}'."
       end
 
+      # @return [String, nil] nil when no templates bucket is configured, or when the
+      # bucket doesn't hold a release spec yet.
       def release_prefix
+        # The guard is needed because it's used as a default argument value in
+        # `template_manifest` and `template_names`.
+        return nil unless external_templates?
+
         content = @s3_client.get_object(bucket: template_bucket, key: RELEASE_SPEC_FILE).body.read
         JSON.parse(content)['release_prefix']
       rescue Aws::S3::Errors::NoSuchKey
@@ -138,6 +148,13 @@ module MultiTenancy
         prefix
       end
 
+      # Returns whether the external templates bucket has been configured. When it
+      # hasn't, only the internal templates are available.
+      def external_templates?
+        @template_bucket.present?
+      end
+
+      # @raise [ArgumentError] if no templates bucket was configured.
       def template_bucket
         @template_bucket ||= raise ArgumentError, 'template_bucket parameter has not been specified'
       end
@@ -152,6 +169,8 @@ module MultiTenancy
       end
 
       def external_manifest(prefix: release_prefix)
+        return {} unless external_templates?
+
         read_external_manifest(prefix: prefix) || compute_external_manifest(prefix: prefix)
       end
 

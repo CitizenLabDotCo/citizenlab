@@ -1,19 +1,31 @@
 import React, { ReactNode } from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import SetupCard from 'containers/Admin/projects/_shared/components/SetupCard';
+import { CardButton } from 'containers/Admin/projects/_shared/components/SetupCardButton';
 
 interface Props {
-  label: ReactNode;
-  children: ReactNode;
+  label: string;
+  labelTooltip?: JSX.Element;
+  action?: ReactNode;
+  button?: CardButton;
+  children?: ReactNode;
 }
 
-const PanelField = ({ label, children }: Props) => (
-  <Box mb="16px">
-    <Text variant="boSection" mb="8px">
-      {label}
-    </Text>
+const PanelField = ({
+  label,
+  labelTooltip,
+  action,
+  button,
+  children,
+}: Props) => (
+  <SetupCard
+    title={label}
+    titleTooltip={labelTooltip}
+    action={action}
+    button={button}
+  >
     {children}
-  </Box>
+  </SetupCard>
 );
 
 export default PanelField;

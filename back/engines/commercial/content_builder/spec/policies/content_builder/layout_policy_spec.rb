@@ -55,29 +55,61 @@ RSpec.describe ContentBuilder::LayoutPolicy do
 
       context 'when craftjs_json references files' do
         let(:file) { create(:file) }
-        let(:layout) do
-          create(:layout, craftjs_json: {
+        let(:craftjs_json_with_file) do
+          {
             'ROOT' => { 'type' => { 'resolvedName' => 'Container' }, 'nodes' => ['node1'] },
             'node1' => { 'type' => { 'resolvedName' => 'FileAttachment' }, 'props' => { 'fileId' => file.id } }
-          })
+          }
         end
 
-        context 'when user is authorized to use the file' do
-          before do
-            allow_any_instance_of(Files::FilePolicy).to receive(:update?).and_return(true)
+        context 'when the file is added to the layout' do
+          let(:layout) { create(:layout).tap { |layout| layout.craftjs_json = craftjs_json_with_file } }
+
+          context 'when user is authorized to use the file' do
+            before do
+              allow_any_instance_of(Files::FilePolicy).to receive(:update?).and_return(true)
+            end
+
+            it { is_expected.to permit(:upsert) }
+            it { is_expected.to permit(:update) }
           end
 
-          it { is_expected.to permit(:upsert) }
-          it { is_expected.to permit(:update) }
+          context 'when user is not authorized to use the file' do
+            before do
+              allow_any_instance_of(Files::FilePolicy).to receive(:update?).and_return(false)
+            end
+
+            it 'refuses with the unauthorized_file reason' do
+              %i[upsert? update?].each do |action|
+                expect { policy.public_send(action) }
+                  .to raise_error(Pundit::NotAuthorizedErrorWithReason) { |e| expect(e.reason).to eq 'unauthorized_file' }
+              end
+            end
+          end
         end
 
-        context 'when user is not authorized to use the file' do
+        context 'when a new layout references the file' do
+          let(:layout) { build(:layout, craftjs_json: craftjs_json_with_file) }
+
           before do
             allow_any_instance_of(Files::FilePolicy).to receive(:update?).and_return(false)
           end
 
-          it { is_expected.not_to permit(:upsert) }
-          it { is_expected.not_to permit(:update) }
+          it 'refuses with the unauthorized_file reason' do
+            expect { policy.upsert? }
+              .to raise_error(Pundit::NotAuthorizedErrorWithReason) { |e| expect(e.reason).to eq 'unauthorized_file' }
+          end
+        end
+
+        context 'when the file is already in the saved layout' do
+          let(:layout) { create(:layout, craftjs_json: craftjs_json_with_file) }
+
+          before do
+            allow_any_instance_of(Files::FilePolicy).to receive(:update?).and_return(false)
+          end
+
+          it { is_expected.to permit(:upsert) }
+          it { is_expected.to permit(:update) }
         end
 
         context 'when file does not exist' do
@@ -97,10 +129,8 @@ RSpec.describe ContentBuilder::LayoutPolicy do
     end
   end
 
-  # Unstubbed, unlike the contexts above: UserRoleService#can_moderate? has no StaticPage
-  # branch, so only admins get past it. That covers layouts only — the pages themselves follow
-  # StaticPagePolicy, which does let a moderator edit a project-scoped page. Those have no
-  # layout today, so the two never disagree.
+  # Unstubbed, unlike the contexts above, so these exercise UserRoleService#can_moderate?'s
+  # StaticPage branch: a global page's layout is admin-only.
   context 'for a custom page layout' do
     let(:layout) do
       create(:layout, content_buildable: create(:static_page), code: ContentBuilder::CustomPageLayoutService::CODE)
@@ -140,6 +170,56 @@ RSpec.describe ContentBuilder::LayoutPolicy do
       it { is_expected.to permit(:upsert) }
       it { is_expected.to permit(:update) }
       it { is_expected.to permit(:destroy) }
+    end
+  end
+
+  # A project's page follows its project, as StaticPagePolicy does for the page itself.
+  context 'for a project page layout' do
+    let(:project) { create(:project) }
+    let(:layout) do
+      create(
+        :layout,
+        content_buildable: create(:static_page, project: project),
+        code: ContentBuilder::CustomPageLayoutService::CODE
+      )
+    end
+
+    context 'for a moderator of the page\'s project' do
+      let(:user) { create(:project_moderator, projects: [project]) }
+
+      it { is_expected.to permit(:upsert) }
+      it { is_expected.to permit(:update) }
+      it { is_expected.to permit(:destroy) }
+    end
+
+    context 'for a moderator of another project' do
+      let(:user) { create(:project_moderator) }
+
+      it { is_expected.not_to permit(:upsert) }
+      it { is_expected.not_to permit(:update) }
+      it { is_expected.not_to permit(:destroy) }
+    end
+
+    context 'when the project is a draft' do
+      let(:project) { create(:project, :draft) }
+
+      context 'for a visitor' do
+        let(:user) { nil }
+
+        it { is_expected.not_to permit(:show) }
+      end
+
+      context 'for a moderator of the page\'s project' do
+        let(:user) { create(:project_moderator, projects: [project]) }
+
+        it { is_expected.to permit(:show) }
+      end
+
+      context 'for an admin' do
+        let(:user) { create(:admin) }
+
+        it { is_expected.to permit(:show) }
+      end
     end
   end
 

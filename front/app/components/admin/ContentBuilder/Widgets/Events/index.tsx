@@ -107,12 +107,6 @@ const EventsList: UserComponent<EventsProps> = ({
 
   const isProjectEvents = source === 'currentProject';
 
-  useEffect(() => {
-    if (isProjectEvents && hash === EVENTS_WIDGET_ANCHOR_ID) {
-      scrollToElement({ id: EVENTS_WIDGET_ANCHOR_ID });
-    }
-  }, [hash, isProjectEvents]);
-
   const showUpcoming = timeFilters.includes('upcoming');
   const showPast = timeFilters.includes('past');
   const paginated = limit === 'all';
@@ -145,6 +139,14 @@ const EventsList: UserComponent<EventsProps> = ({
   );
 
   const loading = waitingForProject || loadingUpcoming || loadingPast;
+
+  // The anchor only renders once the events have loaded, so the scroll waits for them.
+  useEffect(() => {
+    if (isProjectEvents && !loading && hash === EVENTS_WIDGET_ANCHOR_ID) {
+      scrollToElement({ id: EVENTS_WIDGET_ANCHOR_ID });
+    }
+  }, [hash, isProjectEvents, loading]);
+
   // Not loading and still no data: the request failed.
   if (!loading && showUpcoming && !upcomingEvents) return null;
   if (!loading && showPast && !pastEvents) return null;

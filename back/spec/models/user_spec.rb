@@ -425,6 +425,26 @@ RSpec.describe User do
     end
   end
 
+  describe 'email bounce' do
+    let(:user) { create(:user, email: 'bounced@example.com', email_bounced_at: 1.day.ago, email_bounce_reason: '550 No such user') }
+
+    it 'is cleared when the email changes' do
+      user.update_columns(new_email: 'fixed@example.com')
+      user.update!(email: 'fixed@example.com')
+      expect(user.reload).to have_attributes(email_bounced_at: nil, email_bounce_reason: nil)
+    end
+
+    it 'is kept when the email only changes case' do
+      user.update!(email: 'Bounced@Example.com')
+      expect(user.reload.email_bounced_at).to be_present
+    end
+
+    it 'is kept when other attributes change' do
+      user.update!(first_name: 'Someone')
+      expect(user.reload).to be_email_bounced
+    end
+  end
+
   describe 'new_email' do
     it 'is invalid when new record and the domain is on our blacklist' do
       user = build(:user, new_email: 'xwrknecgyq_1542135485@039b1ee.netsolhost.com')
@@ -1077,6 +1097,45 @@ RSpec.describe User do
       end
     end
 
+    describe '#offered_early_access_features' do
+      it 'does not offer a feature the platform already has on' do
+        allow(AppConfiguration::Settings).to receive(:early_access_tiers)
+          .and_return({ 'analysis' => 'general', 'general_feature' => 'general' })
+        SettingsService.new.activate_feature!('analysis')
+
+        expect(build(:admin).offered_early_access_features).to eq({ 'general_feature' => 'general' })
+      end
+
+      context 'when the platform upgrades the internal feature' do
+        before do
+          AppConfiguration.instance.settings['internal_feature'] = {
+            'allowed' => false, 'enabled' => false, 'early_access_upgrade' => true
+          }
+        end
+
+        it 'offers the feature to an admin as general' do
+          expect(build(:admin).offered_early_access_features)
+            .to eq({ 'general_feature' => 'general', 'internal_feature' => 'general' })
+        end
+
+        it 'accepts an opt-in from an admin' do
+          expect(build(:admin, early_access_opt_ins: ['internal_feature'])).to be_valid
+        end
+
+        it 'still offers nothing to a resident' do
+          expect(build(:user).offered_early_access_features).to be_empty
+        end
+      end
+
+      it 'ignores an upgrade on a general feature' do
+        AppConfiguration.instance.settings['general_feature'] = {
+          'allowed' => false, 'enabled' => false, 'early_access_upgrade' => true
+        }
+
+        expect(build(:admin).offered_early_access_features).to eq({ 'general_feature' => 'general' })
+      end
+    end
+
     describe '#early_access_overrides' do
       it 'returns what an admin opted into' do
         admin = build(:admin, early_access_opt_ins: ['general_feature'])
@@ -1093,6 +1152,13 @@ RSpec.describe User do
       it 'drops an internal feature an admin is no longer eligible for' do
         admin = build(:super_admin, early_access_opt_ins: ['internal_feature'])
         admin.email = 'someone@example.com'
+
+        expect(admin.early_access_overrides).to be_empty
+      end
+
+      it 'drops an internal feature when the platform removes its upgrade' do
+        admin = build(:admin, early_access_opt_ins: ['internal_feature'])
+        AppConfiguration.instance.settings['internal_feature'] = { 'early_access_upgrade' => false }
 
         expect(admin.early_access_overrides).to be_empty
       end

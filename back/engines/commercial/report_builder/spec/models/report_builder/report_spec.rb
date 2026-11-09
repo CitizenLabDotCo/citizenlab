@@ -30,6 +30,38 @@ RSpec.describe ReportBuilder::Report do
   it { is_expected.to belong_to(:owner).class_name('User').optional }
   it { is_expected.to have_one(:layout).class_name('ContentBuilder::Layout').dependent(:destroy) }
 
+  describe 'the project link' do
+    it 'cannot be about the same project as another report' do
+      other_report = create(:report, :with_project)
+      report.project = other_report.project
+      expect(report).not_to be_valid
+      expect(report.errors[:project_id]).to include('has already been taken')
+    end
+
+    it 'cannot be about a phase and a project at once' do
+      report.phase = create(:phase)
+      report.project = create(:project)
+      expect(report).not_to be_valid
+      expect(report.errors[:project_id]).to include('must be blank')
+    end
+
+    describe '#reported_project' do
+      it 'is the project itself for a project report' do
+        project = create(:project)
+        expect(build(:report, project: project).reported_project).to eq project
+      end
+
+      it "is the phase's project for a phase report" do
+        phase = create(:phase)
+        expect(build(:report, phase: phase).reported_project).to eq phase.project
+      end
+
+      it 'is nothing for a global report, which is about neither' do
+        expect(build(:report).reported_project).to be_nil
+      end
+    end
+  end
+
   describe 'quarter' do
     it 'is valid if nil' do
       report.quarter = nil

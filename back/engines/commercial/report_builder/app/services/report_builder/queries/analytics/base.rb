@@ -49,10 +49,4 @@ class ReportBuilder::Queries::Analytics::Base < ReportBuilder::Queries::Base
 
     { 'dimension_user.role': ['citizen', nil] }
   end
-
-  def visitor_filter(apply)
-    return {} unless apply
-
-    { 'dimension_user.has_visits': 'true' }
-  end
 end
