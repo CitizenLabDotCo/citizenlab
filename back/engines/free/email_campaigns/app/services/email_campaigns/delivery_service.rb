@@ -167,7 +167,8 @@ module EmailCampaigns
       return unless commands.any?
 
       commands.each do |command|
-        process_command(campaign, command)
+        # The mail job reloads the recipient, so the locale the preview was asked in has to travel with the command.
+        process_command(campaign, command.merge(locale: recipient.locale))
       end
     end
 

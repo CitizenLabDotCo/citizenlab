@@ -749,11 +749,15 @@ DROP VIEW IF EXISTS public.reporting_input_status_changes;
 DROP VIEW IF EXISTS public.reporting_input_reactions;
 DROP VIEW IF EXISTS public.reporting_input_phases;
 DROP VIEW IF EXISTS public.reporting_input_imports;
+DROP VIEW IF EXISTS public.reporting_input_analysis_tags;
 DROP VIEW IF EXISTS public.reporting_events;
 DROP VIEW IF EXISTS public.reporting_email_deliveries;
 DROP VIEW IF EXISTS public.reporting_contributions;
 DROP VIEW IF EXISTS public.reporting_community_monitor_scores;
 DROP VIEW IF EXISTS public.reporting_input_question_answers;
+DROP VIEW IF EXISTS public.reporting_comments;
+DROP VIEW IF EXISTS public.reporting_analysis_insights;
+DROP VIEW IF EXISTS public.reporting_analysis_heatmap_cells;
 DROP TABLE IF EXISTS public.report_builder_reports;
 DROP TABLE IF EXISTS public.report_builder_published_graph_data_units;
 DROP TABLE IF EXISTS public.report_builder_generation_transcripts;
@@ -3955,6 +3959,148 @@ CREATE TABLE public.report_builder_reports (
 
 
 --
+-- Name: reporting_analysis_heatmap_cells; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_analysis_heatmap_cells AS
+ SELECT c.id,
+    c.analysis_id,
+    COALESCE(a.project_id, ph.project_id) AS project_id,
+    a.phase_id,
+    c.unit,
+        CASE
+            WHEN (rt.id IS NOT NULL) THEN 'tag'::text
+            WHEN ((rq.resource_type)::text = 'User'::text) THEN 'registration_question'::text
+            ELSE 'form_question'::text
+        END AS row_kind,
+    rt.id AS row_tag_id,
+    rt.name AS row_tag_label,
+    rq.id AS row_question_id,
+    COALESCE(NULLIF((rq.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(rq.title_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS row_question_label,
+        CASE
+            WHEN (rb.id IS NULL) THEN NULL::text
+            WHEN ((rb.type)::text = 'CustomFieldBins::OptionBin'::text) THEN COALESCE(NULLIF((ro.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+               FROM public.app_configurations ac
+             LIMIT 1)), ''::text), ( SELECT t.value
+               FROM jsonb_each_text(ro.title_multiloc) t(key, value)
+              WHERE (t.value <> ''::text)
+              ORDER BY t.key
+             LIMIT 1))
+            WHEN ((rb.type)::text = 'CustomFieldBins::ValueBin'::text) THEN ( SELECT string_agg(v.value, ', '::text) AS string_agg
+               FROM jsonb_array_elements_text(rb."values") v(value))
+            WHEN (lower(rb.range) IS NULL) THEN (upper(rb.range) || ' or less'::text)
+            WHEN (upper(rb.range) IS NULL) THEN (lower(rb.range) || ' or more'::text)
+            ELSE ((lower(rb.range) || ' to '::text) || upper(rb.range))
+        END AS row_answer_label,
+        CASE
+            WHEN (ct.id IS NOT NULL) THEN 'tag'::text
+            WHEN ((cq.resource_type)::text = 'User'::text) THEN 'registration_question'::text
+            ELSE 'form_question'::text
+        END AS column_kind,
+    ct.id AS column_tag_id,
+    ct.name AS column_tag_label,
+    cq.id AS column_question_id,
+    COALESCE(NULLIF((cq.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(cq.title_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS column_question_label,
+        CASE
+            WHEN (cb.id IS NULL) THEN NULL::text
+            WHEN ((cb.type)::text = 'CustomFieldBins::OptionBin'::text) THEN COALESCE(NULLIF((co.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+               FROM public.app_configurations ac
+             LIMIT 1)), ''::text), ( SELECT t.value
+               FROM jsonb_each_text(co.title_multiloc) t(key, value)
+              WHERE (t.value <> ''::text)
+              ORDER BY t.key
+             LIMIT 1))
+            WHEN ((cb.type)::text = 'CustomFieldBins::ValueBin'::text) THEN ( SELECT string_agg(v.value, ', '::text) AS string_agg
+               FROM jsonb_array_elements_text(cb."values") v(value))
+            WHEN (lower(cb.range) IS NULL) THEN (upper(cb.range) || ' or less'::text)
+            WHEN (upper(cb.range) IS NULL) THEN (lower(cb.range) || ' or more'::text)
+            ELSE ((lower(cb.range) || ' to '::text) || upper(cb.range))
+        END AS column_answer_label,
+    c.count,
+    c.lift,
+    c.p_value,
+    c.created_at
+   FROM ((((((((((public.analysis_heatmap_cells c
+     JOIN public.analysis_analyses a ON ((a.id = c.analysis_id)))
+     LEFT JOIN public.phases ph ON ((ph.id = a.phase_id)))
+     LEFT JOIN public.analysis_tags rt ON ((((c.row_type)::text = 'Analysis::Tag'::text) AND (rt.id = c.row_id))))
+     LEFT JOIN public.custom_field_bins rb ON ((((c.row_type)::text = 'CustomFieldBin'::text) AND (rb.id = c.row_id))))
+     LEFT JOIN public.custom_fields rq ON ((rq.id = rb.custom_field_id)))
+     LEFT JOIN public.custom_field_options ro ON ((ro.id = rb.custom_field_option_id)))
+     LEFT JOIN public.analysis_tags ct ON ((((c.column_type)::text = 'Analysis::Tag'::text) AND (ct.id = c.column_id))))
+     LEFT JOIN public.custom_field_bins cb ON ((((c.column_type)::text = 'CustomFieldBin'::text) AND (cb.id = c.column_id))))
+     LEFT JOIN public.custom_fields cq ON ((cq.id = cb.custom_field_id)))
+     LEFT JOIN public.custom_field_options co ON ((co.id = cb.custom_field_option_id)))
+  WHERE (((rt.id IS NOT NULL) OR (rq.id IS NOT NULL)) AND ((ct.id IS NOT NULL) OR (cq.id IS NOT NULL)));
+
+
+--
+-- Name: reporting_analysis_insights; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_analysis_insights AS
+ SELECT ins.id,
+    ins.analysis_id,
+    COALESCE(a.project_id, ph.project_id) AS project_id,
+    a.phase_id,
+        CASE ins.insightable_type
+            WHEN 'Analysis::Summary'::text THEN 'summary'::text
+            WHEN 'Analysis::Question'::text THEN 'question'::text
+            ELSE NULL::text
+        END AS kind,
+    q.question,
+    COALESCE(s.summary, q.answer) AS body,
+    ins.filters,
+    ins.inputs_ids AS input_ids,
+    COALESCE(s.accuracy, q.accuracy) AS accuracy,
+    COALESCE(s.generated_at, q.generated_at) AS generated_at,
+    ins.created_at
+   FROM (((((public.analysis_insights ins
+     JOIN public.analysis_analyses a ON ((a.id = ins.analysis_id)))
+     LEFT JOIN public.phases ph ON ((ph.id = a.phase_id)))
+     LEFT JOIN public.analysis_summaries s ON ((((ins.insightable_type)::text = 'Analysis::Summary'::text) AND (s.id = ins.insightable_id))))
+     LEFT JOIN public.analysis_questions q ON ((((ins.insightable_type)::text = 'Analysis::Question'::text) AND (q.id = ins.insightable_id))))
+     JOIN public.analysis_background_tasks task ON ((task.id = COALESCE(s.background_task_id, q.background_task_id))))
+  WHERE ((NULLIF(COALESCE(s.summary, q.answer), ''::text) IS NOT NULL) AND ((task.state)::text <> 'in_progress'::text));
+
+
+--
+-- Name: reporting_comments; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_comments AS
+ SELECT c.id,
+    c.idea_id AS input_id,
+    c.parent_id,
+    c.author_id AS user_id,
+    regexp_replace(COALESCE(NULLIF((c.body_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(c.body_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)), '<span[^>]*class="cl-mention-user"[^>]*>(?:[^<]|<(?!/span>))*</span>'::text, '@mention'::text, 'g'::text) AS body,
+    c.likes_count,
+    c.dislikes_count,
+    c.created_at
+   FROM (public.comments c
+     JOIN public.ideas i ON ((i.id = c.idea_id)))
+  WHERE (((c.publication_status)::text = 'published'::text) AND ((i.publication_status)::text = ANY ((ARRAY['submitted'::character varying, 'published'::character varying])::text[])));
+
+
+--
 -- Name: reporting_input_question_answers; Type: VIEW; Schema: public; Owner: -
 --
 
@@ -3981,7 +4127,7 @@ CREATE VIEW public.reporting_input_question_answers AS
           ORDER BY t.key
          LIMIT 1)) AS question_label,
         CASE
-            WHEN ((q.input_type)::text = ANY ((ARRAY['number'::character varying, 'linear_scale'::character varying, 'rating'::character varying, 'sentiment_linear_scale'::character varying, 'file_upload'::character varying])::text[])) THEN NULL::text
+            WHEN ((q.input_type)::text = ANY ((ARRAY['number'::character varying, 'linear_scale'::character varying, 'rating'::character varying, 'sentiment_linear_scale'::character varying, 'file_upload'::character varying, 'shapefile_upload'::character varying, 'point'::character varying, 'line'::character varying, 'polygon'::character varying])::text[])) THEN NULL::text
             ELSE (a.value #>> '{}'::text[])
         END AS value_text,
         CASE
@@ -4000,9 +4146,13 @@ CREATE VIEW public.reporting_input_question_answers AS
             ELSE NULL::character varying
         END AS question_category,
     NULL::text AS statement_key,
-    NULL::text AS statement_label
+    NULL::text AS statement_label,
+        CASE
+            WHEN ((q.input_type)::text = ANY ((ARRAY['point'::character varying, 'line'::character varying, 'polygon'::character varying])::text[])) THEN a.value
+            ELSE NULL::jsonb
+        END AS value_geojson
    FROM (((form_inputs i
-     JOIN public.custom_fields q ON ((((q.resource_type)::text = 'CustomForm'::text) AND (q.resource_id = i.form_id) AND ((q.input_type)::text = ANY ((ARRAY['text'::character varying, 'multiline_text'::character varying, 'select'::character varying, 'select_image'::character varying, 'checkbox'::character varying, 'date'::character varying, 'number'::character varying, 'linear_scale'::character varying, 'rating'::character varying, 'sentiment_linear_scale'::character varying, 'file_upload'::character varying])::text[])))))
+     JOIN public.custom_fields q ON ((((q.resource_type)::text = 'CustomForm'::text) AND (q.resource_id = i.form_id) AND ((q.input_type)::text = ANY ((ARRAY['text'::character varying, 'multiline_text'::character varying, 'select'::character varying, 'select_image'::character varying, 'checkbox'::character varying, 'date'::character varying, 'number'::character varying, 'linear_scale'::character varying, 'rating'::character varying, 'sentiment_linear_scale'::character varying, 'file_upload'::character varying, 'shapefile_upload'::character varying, 'point'::character varying, 'line'::character varying, 'polygon'::character varying])::text[])))))
      JOIN public.custom_field_answers a ON ((((a.answerable_type)::text = 'Idea'::text) AND (a.answerable_id = i.id) AND ((a.key)::text = (q.key)::text))))
      CROSS JOIN LATERAL ( SELECT
                 CASE
@@ -4026,7 +4176,7 @@ CREATE VIEW public.reporting_input_question_answers AS
                     END
                     ELSE NULL::jsonb
                 END AS multiloc) label)
-  WHERE (((q.input_type)::text <> 'file_upload'::text) OR (EXISTS ( SELECT 1
+  WHERE (((q.input_type)::text <> ALL ((ARRAY['file_upload'::character varying, 'shapefile_upload'::character varying])::text[])) OR (EXISTS ( SELECT 1
            FROM public.file_attachments fa
           WHERE (fa.id =
                 CASE
@@ -4065,7 +4215,8 @@ UNION ALL
             ELSE NULL::character varying
         END AS question_category,
     NULL::text AS statement_key,
-    NULL::text AS statement_label
+    NULL::text AS statement_label,
+    NULL::jsonb AS value_geojson
    FROM ((((form_inputs i
      JOIN public.custom_fields q ON ((((q.resource_type)::text = 'CustomForm'::text) AND (q.resource_id = i.form_id) AND ((q.input_type)::text = ANY ((ARRAY['multiselect'::character varying, 'multiselect_image'::character varying])::text[])))))
      JOIN public.custom_field_answers a ON ((((a.answerable_type)::text = 'Idea'::text) AND (a.answerable_id = i.id) AND ((a.key)::text = (q.key)::text))))
@@ -4098,7 +4249,8 @@ UNION ALL
             ELSE NULL::character varying
         END AS question_category,
     NULL::text AS statement_key,
-    NULL::text AS statement_label
+    NULL::text AS statement_label,
+    NULL::jsonb AS value_geojson
    FROM ((((form_inputs i
      JOIN public.custom_fields q ON ((((q.resource_type)::text = 'CustomForm'::text) AND (q.resource_id = i.form_id) AND ((q.input_type)::text = 'ranking'::text))))
      JOIN public.custom_field_answers a ON ((((a.answerable_type)::text = 'Idea'::text) AND (a.answerable_id = i.id) AND ((a.key)::text = (q.key)::text))))
@@ -4140,7 +4292,8 @@ UNION ALL
            FROM jsonb_each_text(s.title_multiloc) t(key, value)
           WHERE (t.value <> ''::text)
           ORDER BY t.key
-         LIMIT 1)) AS statement_label
+         LIMIT 1)) AS statement_label,
+    NULL::jsonb AS value_geojson
    FROM (((((form_inputs i
      JOIN public.custom_fields q ON ((((q.resource_type)::text = 'CustomForm'::text) AND (q.resource_id = i.form_id) AND ((q.input_type)::text = 'matrix_linear_scale'::text))))
      JOIN public.custom_field_answers a ON ((((a.answerable_type)::text = 'Idea'::text) AND (a.answerable_id = i.id) AND ((a.key)::text = (q.key)::text))))
@@ -4445,6 +4598,29 @@ CREATE VIEW public.reporting_events AS
 
 
 --
+-- Name: reporting_input_analysis_tags; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_input_analysis_tags AS
+ SELECT tg.id,
+    tg.input_id,
+    a.id AS analysis_id,
+    COALESCE(a.project_id, ph.project_id) AS project_id,
+    a.phase_id,
+    t.id AS tag_id,
+    t.name AS tag_label,
+    t.tag_type,
+    (tg.background_task_id IS NOT NULL) AS auto_tagged,
+    tg.created_at
+   FROM ((((public.analysis_taggings tg
+     JOIN public.analysis_tags t ON ((t.id = tg.tag_id)))
+     JOIN public.analysis_analyses a ON ((a.id = t.analysis_id)))
+     LEFT JOIN public.phases ph ON ((ph.id = a.phase_id)))
+     JOIN public.ideas i ON ((i.id = tg.input_id)))
+  WHERE ((i.publication_status)::text = ANY ((ARRAY['submitted'::character varying, 'published'::character varying])::text[]));
+
+
+--
 -- Name: reporting_input_imports; Type: VIEW; Schema: public; Owner: -
 --
 
@@ -4633,11 +4809,18 @@ CREATE VIEW public.reporting_inputs AS
     i.dislikes_count,
     i.comments_count,
     i.votes_count,
-    COALESCE(i.manual_votes_amount, 0) AS offline_votes_count
+    COALESCE(i.manual_votes_amount, 0) AS offline_votes_count,
+    COALESCE(NULLIF((i.body_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(i.body_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS body
    FROM ((public.ideas i
      LEFT JOIN public.phases creation_ph ON ((creation_ph.id = i.creation_phase_id)))
      LEFT JOIN public.idea_statuses s ON ((s.id = i.idea_status_id)))
-  WHERE ((i.publication_status)::text = ANY (ARRAY[('submitted'::character varying)::text, ('published'::character varying)::text]));
+  WHERE ((i.publication_status)::text = ANY ((ARRAY['submitted'::character varying, 'published'::character varying])::text[]));
 
 
 --
@@ -4688,13 +4871,13 @@ CREATE VIEW public.reporting_invites AS
 CREATE VIEW public.reporting_official_feedbacks AS
  SELECT ofb.id,
     ofb.idea_id AS input_id,
-    COALESCE(NULLIF((ofb.body_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+    regexp_replace(COALESCE(NULLIF((ofb.body_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
            FROM public.app_configurations ac
          LIMIT 1)), ''::text), ( SELECT t.value
            FROM jsonb_each_text(ofb.body_multiloc) t(key, value)
           WHERE (t.value <> ''::text)
           ORDER BY t.key
-         LIMIT 1)) AS body,
+         LIMIT 1)), '<span[^>]*class="cl-mention-user"[^>]*>(?:[^<]|<(?!/span>))*</span>'::text, '@mention'::text, 'g'::text) AS body,
     COALESCE(NULLIF((ofb.author_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
            FROM public.app_configurations ac
          LIMIT 1)), ''::text), ( SELECT t.value
@@ -4707,7 +4890,7 @@ CREATE VIEW public.reporting_official_feedbacks AS
     ofb.updated_at
    FROM (public.official_feedbacks ofb
      JOIN public.ideas i ON ((i.id = ofb.idea_id)))
-  WHERE ((i.publication_status)::text = ANY (ARRAY[('submitted'::character varying)::text, ('published'::character varying)::text]));
+  WHERE ((i.publication_status)::text = ANY ((ARRAY['submitted'::character varying, 'published'::character varying])::text[]));
 
 
 --
@@ -10679,6 +10862,14 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261028180200'),
+('20261028180100'),
+('20261028170100'),
+('20261028160100'),
+('20261028150100'),
+('20261028141100'),
+('20261028140100'),
+('20261028130100'),
 ('20261027120000'),
 ('20261028120100'),
 ('20261027120100'),

@@ -173,6 +173,15 @@ RSpec.describe AppConfiguration do
         expect(described_class.instance.public_settings[feature]).to eq({ 'allowed' => true, 'enabled' => true })
       end
 
+      it 'does not share the early access upgrade with the front end' do
+        config.settings['project_backoffice_redesign'] = {
+          'allowed' => false, 'enabled' => false, 'early_access_upgrade' => true
+        }
+        config.save!
+
+        expect(described_class.instance.public_settings['project_backoffice_redesign']).not_to have_key('early_access_upgrade')
+      end
+
       it 'does not write the override to the persisted settings' do
         Current.early_access_overrides = Set.new([feature])
         config.public_settings

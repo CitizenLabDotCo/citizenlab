@@ -55,10 +55,8 @@ class McpServer::Tools::CreateDemoComments < McpServer::BaseTool
   end
 
   class Runner < McpServer::BaseTool::Runner
-    DEMO_ONLY_MESSAGE = 'Demo comments can only be created on demo and trial platforms.'
-
     def run
-      return error(DEMO_ONLY_MESSAGE) unless published_writable_platform?
+      return demo_only_error('Creating demo comments') unless published_writable_platform?
 
       ideas = Idea.where(id: params[:comments].pluck(:idea_id)).index_by(&:id)
       missing_idea_id = params[:comments].pluck(:idea_id).find { |id| !ideas[id] }

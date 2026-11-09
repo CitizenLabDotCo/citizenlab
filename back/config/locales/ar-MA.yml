@@ -184,6 +184,7 @@ ar-MA:
       logic_no_further_questions: على حساب الأجوبة ديالك، <strong>ما كاينش</strong> علاش تزيد تجاوب على أسئلة أخرى.
       logic_section: القسم %{letter}
       matrix_print_description: بالنسبة لكل صف، قم بوضع علامة على دائرة بعلامة X للإشارة إلى تفضيلاتك.
+      multipoint_print_description: يرجى رسم علامة X على الخريطة أدناه لكل موقع تريد إضافته.
       optional: خياري
       page: صفحة
       permission: إذن

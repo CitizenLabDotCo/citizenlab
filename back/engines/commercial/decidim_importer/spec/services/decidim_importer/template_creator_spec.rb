@@ -253,13 +253,17 @@ RSpec.describe DecidimImporter::TemplateCreator do
         expect(survey.start_at).to be < ideation.end_at
       end
 
-      it 'imports a Decidim page as a project-scoped static page carrying the page body' do
+      it 'imports a Decidim page as a project-scoped static page with the body in its layout' do
         page = StaticPage.find_by("title_multiloc->>'fr-FR' = 'La concertation'")
         expect(page).to be_present
         expect(page.project).to eq(project)
         expect(page.code).to eq('custom')
-        expect(page.top_info_section_enabled).to be(true)
-        expect(page.top_info_section_multiloc['fr-FR']).to include('Contenu de la page')
+        expect(page.top_info_section_enabled).to be(false)
+
+        layouts = ContentBuilder::Layout.where(content_buildable: page)
+        expect(layouts.map(&:code)).to eq(['custom_page'])
+        body = layouts.first.craftjs_json[ContentBuilder::CustomPageLayoutService::TOP_INFO_ID]
+        expect(body.dig('props', 'text', 'fr-FR')).to include('Contenu de la page')
       end
 
       it 'imports the project description as a two-column Content Builder layout linking the static page' do
@@ -597,7 +601,9 @@ RSpec.describe DecidimImporter::TemplateCreator do
       it 'imports a blog post as a project static page linked in the description’s Blog section' do
         page = StaticPage.find_by("title_multiloc->>'fr-FR' = 'Végétalisation du toit de la mairie'")
         expect(page.code).to eq('custom')
-        expect(page.top_info_section_multiloc['fr-FR']).to include('îlot de fraicheur')
+        page_layout = ContentBuilder::Layout.find_by(content_buildable: page, code: 'custom_page')
+        body = page_layout.craftjs_json[ContentBuilder::CustomPageLayoutService::TOP_INFO_ID]
+        expect(body.dig('props', 'text', 'fr-FR')).to include('îlot de fraicheur')
 
         project = Project.find_by("title_multiloc->>'fr-FR' = 'Budget participatif'")
         layout = ContentBuilder::Layout.find_by(content_buildable: project, code: 'project_page')
@@ -627,6 +633,23 @@ RSpec.describe DecidimImporter::TemplateCreator do
       create(:area) # pre-existing area occupying an ordering
       expect { described_class.from_directory(export_root, import_uploads: false).import }.not_to raise_error
       expect(Area.find_by("title_multiloc->>'en' = 'Schambergerton'")).to be_present
+    end
+  end
+
+  describe '#correctable_html_texts' do
+    # A page body holding media lands in the RichTextMultiloc bridge, whose links must be scanned too.
+    it 'includes the links in a static page body held in a bridge node' do
+      creator = described_class.new({})
+      project = DecidimImporter::Record.new('project', {})
+      creator.ref_map.register('process-1', project)
+      body = '{"fr":"<p><a href=\"/processes/a\">A</a></p><img src=\"https://example.com/a.png\">"}'
+      DecidimImporter::Extractors::BlogPostsExtractor.new(
+        [{ 'uid' => 'post-1', 'title' => '{"fr":"T"}', 'body' => body, 'published_at' => '2022-07-06',
+           'decidim_participatory_process' => 'process-1' }],
+        creator.ref_map, locale_mapper: DecidimImporter::LocaleMapper.new, primary_locale: 'fr-FR'
+      ).run
+
+      expect(creator.send(:correctable_html_texts)).to include(a_string_including('/processes/a'))
     end
   end
 end

@@ -262,11 +262,66 @@ RSpec.describe Analytics::Reporting::InputQuestionAnswer do
       expect(results_page_count).to eq 2
     end
 
-    it 'excludes mapping questions' do
-      point = create(:custom_field_point, resource: form)
-      response.custom_field_answers.create!(key: point.key, value: { 'type' => 'Point', 'coordinates' => [4.35, 50.85] })
+    describe 'mapping answers' do
+      where(:factory, :geometry) do
+        [
+          [:custom_field_point, { 'type' => 'Point', 'coordinates' => [4.35, 50.85] }],
+          [:custom_field_line, { 'type' => 'LineString', 'coordinates' => [[4.35, 50.85], [4.36, 50.86]] }],
+          [:custom_field_polygon, { 'type' => 'Polygon', 'coordinates' => [[[4.35, 50.85], [4.36, 50.85], [4.36, 50.86], [4.35, 50.85]]] }]
+        ]
+      end
 
-      expect(described_class.where(input_id: response.id)).to be_empty
+      with_them do
+        it 'gives the geometry as GeoJSON, with no text value' do
+          question = create(factory, resource: form)
+          response.custom_field_answers.create!(key: question.key, value: geometry)
+          row = described_class.find_by!(input_id: response.id)
+
+          expect(row.question_type).to eq question.input_type
+          expect(row.value_geojson).to eq geometry
+          expect(row.value_text).to be_nil
+        end
+      end
+    end
+
+    it 'counts the mapping answers the survey results page counts' do
+      point = create(:custom_field_point, resource: form)
+      create(:idea_status_proposed)
+      [[4.35, 50.85], [4.36, 50.86]].each do |coordinates|
+        create(:native_survey_response, project: project)
+          .custom_field_answers.create!(custom_field: point, key: point.key, value: { 'type' => 'Point', 'coordinates' => coordinates })
+      end
+      view_count = described_class.where(question_id: point.id).count
+      results_page_count = Surveys::ResultsGenerator.new(project.phases.first).generate_result_for_field(point.id)[:questionResponseCount]
+
+      expect(view_count).to eq results_page_count
+      expect(results_page_count).to eq 2
+    end
+
+    it 'records a shapefile upload answer like a file upload: no file name, no geometry' do
+      shapefile_upload = create(:custom_field_shapefile_upload, resource: form)
+      response.custom_field_answers.create!(key: shapefile_upload.key, value: { 'id' => create(:file_attachment).id, 'name' => 'jane_doe_garden.zip' })
+      row = described_class.find_by!(input_id: response.id)
+
+      expect(row.question_type).to eq 'shapefile_upload'
+      expect(row.value_geojson).to be_nil
+      expect(row.attributes.values).not_to include(a_string_including('jane_doe'))
+    end
+
+    it 'counts the shapefile uploads the survey results page counts' do
+      shapefile_upload = create(:custom_field_shapefile_upload, resource: form)
+      create(:idea_status_proposed)
+      kept, deleted = create_list(:file_attachment, 2)
+      [kept.id, deleted.id].each do |id|
+        create(:native_survey_response, project: project)
+          .custom_field_answers.create!(custom_field: shapefile_upload, key: shapefile_upload.key, value: { 'id' => id, 'name' => 'shapes.zip' })
+      end
+      deleted.destroy!
+      view_count = described_class.where(question_id: shapefile_upload.id).count
+      results_page_count = Surveys::ResultsGenerator.new(project.phases.first).generate_result_for_field(shapefile_upload.id)[:questionResponseCount]
+
+      expect(view_count).to eq results_page_count
+      expect(results_page_count).to eq 1
     end
   end
 end
