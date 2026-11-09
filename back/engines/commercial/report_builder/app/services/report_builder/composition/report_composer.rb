@@ -7,8 +7,9 @@ module ReportBuilder
     # for each thing worth showing, and lays the whole document out.
     #
     # The tools, all executed here (Tools::DEFINITIONS):
-    #   run_reporting_sql_query — real, sandboxed SQL, so charts are chosen after
-    #                             seeing the data rather than guessed at.
+    #   run_reporting_sql_query — real, sandboxed SQL, so the charts and everything the
+    #                             text says about the data come from what the model saw,
+    #                             not from guesses.
     #   author_chart_block / edit_source — one chart, built, then stored as a custom block.
     #   check                   — what a real browser made of a chart, or of the report.
     #   get_layout / patch_layout — the report itself, built up a patch at a time and
@@ -100,23 +101,25 @@ module ReportBuilder
         review(result[:layout])
       rescue StandardError
         # The charts were authored for a report that never got written — whether the
-        # model gave up or the provider threw. Leaving them would fill the block library,
-        # and now the toolbox, with orphans nothing can reach.
+        # model gave up or the provider threw. Nothing lists a block or can reach one
+        # without a report placing it, so they would only sit in the database.
         discard_authored_blocks
         raise
       end
 
       # The model stops when it believes the report is done. Believing is not seeing:
       # this renders what it wrote and, if something is actually broken, gives it one
-      # bounded round to fix it. One, because a model handed its own output
-      # indefinitely will keep polishing it.
+      # pass of at most REVIEW_ROUNDS rounds to fix it. One pass, with no second render,
+      # because a model handed its own output indefinitely will keep polishing it.
       REVIEW_ROUNDS = 5
 
       def review(layout)
         return layout if checker.nil?
 
         outcome = checker.check(checker.layout_target(layout))
-        return layout unless outcome[:error]
+        # A renderer that is down has said nothing about the report, so there is nothing
+        # to repair and a repair conversation is paid rounds spent on no information.
+        return layout if !outcome[:error] || outcome[:unavailable]
 
         # "Not worth fixing" is an answer here, not a model that stopped short: without
         # this the loop would nudge it to use the tools for every remaining round.
@@ -135,6 +138,11 @@ module ReportBuilder
         # the clock and the cancel flag are the only ways a review changes the verdict.
         @stopped_because = result[:stopped] if %w[timeout cancelled].include?(result[:stopped])
         result[:layout] || layout
+      rescue StandardError => e
+        # The report is written and valid by now. A provider that throws during this
+        # extra pass must not take it down, along with every chart it places.
+        ErrorReporter.report(e)
+        layout
       end
 
       # One turn of the chat: answer the admin, and change the report if that is what

@@ -656,6 +656,37 @@ describe ReportBuilder::Composition::ReportComposer do
         expect(checking_composer.compose.keys).to include 'textnode09'
       end
 
+      # A renderer that is down reports a failed check like any other, but it has said
+      # nothing about the report, so there is nothing for the model to repair.
+      it 'does not open a repair conversation when the renderer is down' do
+        stub_render
+        allow(renderer).to receive(:render)
+          .and_raise(ContentBuilder::CustomBlocks::RendererClient::Unavailable, 'down')
+        stub_converse(write_layout(text_layout), done)
+
+        expect(checking_composer.compose).to eq text_layout
+        # Two rounds to write it, and no third to repair what was never checked.
+        expect(client).to have_received(:converse).twice
+      end
+
+      # The review is an extra pass over a report that is already written and valid.
+      it 'keeps the finished report when the provider throws during the review' do
+        stub_render(checks: [{ 'id' => 'no_overflow', 'ok' => false, 'message' => 'Too wide.' }])
+        allow(ErrorReporter).to receive(:report)
+        rounds = 0
+        allow(client).to receive(:converse) do |args|
+          sent_messages << args[:messages].deep_dup
+          rounds += 1
+          raise StandardError, 'rate exceeded' if rounds > 2
+
+          rounds == 1 ? write_layout(text_layout) : done
+        end
+
+        expect(checking_composer.compose).to eq text_layout
+        expect(checking_composer.stopped_because).to eq 'done'
+        expect(ErrorReporter).to have_received(:report)
+      end
+
       it 'keeps the report when the model will not improve on it, and takes that for an answer' do
         stub_render(checks: [{ 'id' => 'no_overflow', 'ok' => false, 'message' => 'Too wide.' }])
         stub_converse(write_layout(text_layout), done, done('That is as good as it gets.'))

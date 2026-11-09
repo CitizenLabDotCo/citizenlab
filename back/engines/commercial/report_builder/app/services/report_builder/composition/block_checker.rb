@@ -64,8 +64,10 @@ module ReportBuilder
         ContentBuilder::ReportingQueryPolicy.new(@author, :reporting_query).create?
       end
 
+      # Flagged as well as failed: a caller that acts on a failed check — asking the
+      # model to repair the report — has nothing to act on when the renderer is down.
       def unavailable(text)
-        { error: true, text: text, screenshot: nil }
+        { error: true, unavailable: true, text: text, screenshot: nil }
       end
 
       def token
