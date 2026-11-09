@@ -4894,6 +4894,11 @@
     "verified_at": "2026-10-26T13:27:19.241589Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.Users.EmailBounces.emailBouncesStatus": {
+    "state": "verified",
+    "verified_at": "2026-11-09T09:18:09.769176Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.Users.GroupsHeader.deleteGroup": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
@@ -9684,14 +9689,14 @@
     "verified_at": "2026-10-30T12:38:52.986359Z",
     "verified_by": "Adrien"
   },
-  "app.containers.Admin.projects.project.hidePanel": {
-    "state": "verified",
-    "verified_at": "2026-11-05T08:40:24.711457Z",
-    "verified_by": "Adrien"
-  },
   "app.containers.Admin.projects.project.hideCauses": {
     "state": "verified",
     "verified_at": "2026-11-04T22:27:26.791367Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.hidePanel": {
+    "state": "verified",
+    "verified_at": "2026-11-05T08:40:24.711457Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.homepageCard": {
@@ -12199,6 +12204,11 @@
     "verified_at": "2026-09-16T19:26:50.578477Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Admin.projects.project.showCauses": {
+    "state": "verified",
+    "verified_at": "2026-11-04T22:59:43.837681Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.showPanel": {
     "state": "verified",
     "verified_at": "2026-11-05T08:40:24.711457Z",
@@ -12207,11 +12217,6 @@
   "app.containers.Admin.projects.project.spotlight": {
     "state": "verified",
     "verified_at": "2026-11-05T08:40:24.711457Z",
-    "verified_by": "Adrien"
-  },
-  "app.containers.Admin.projects.project.showCauses": {
-    "state": "verified",
-    "verified_at": "2026-11-04T22:59:43.837681Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.spreadsheetImportDescription": {
