@@ -148,7 +148,7 @@ it-IT:
       not_in_project: devono essere file di questo progetto
       not_utf8: devono essere salvati in formato UTF-8
       too_many_in_conversation: sono troppi per una singola conversazione
-      unsupported_file_type: devono essere file PDF di massimo 4 MB, oppure file Markdown o di testo di massimo 100 KB
+      unsupported_file_type: devono essere file PDF fino a 4 MB, oppure file Markdown o di testo fino a 100 KB
   events:
     council_meeting_description: |
       <p>Durante questa riunione del consiglio, saranno presentate le iniziative dei cittadini che hanno ottenuto 100 voti in meno di 3 mesi.</p><p>Il consiglio condividerà poi la sua opinione su ogni idea.</p>
@@ -186,7 +186,7 @@ it-IT:
       logic_no_further_questions: In base alle tue risposte, <strong>non</strong> è necessario rispondere ad altre domande.
       logic_section: Sezione %{letter}
       matrix_print_description: Per ogni riga, segna un'opzione con una croce per indicare la tua preferenza.
-      multipoint_print_description: Segna con una X sulla mappa sottostante ogni posizione che desideri aggiungere.
+      multipoint_print_description: Segna con una X sulla mappa sottostante ogni luogo che desideri aggiungere.
       optional: opzionale
       page: Pagina
       permission: Permesso

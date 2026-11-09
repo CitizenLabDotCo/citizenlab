@@ -2834,6 +2834,16 @@
     "verified_at": "2026-06-02T06:49:15.459537Z",
     "verified_by": "Roger"
   },
+  "email_campaigns.report_generated.subject": {
+    "state": "verified",
+    "verified_at": "2026-11-09T21:38:29.086978Z",
+    "verified_by": "Roger"
+  },
+  "email_campaigns.report_generated.title": {
+    "state": "verified",
+    "verified_at": "2026-11-09T21:38:29.086978Z",
+    "verified_by": "Roger"
+  },
   "email_campaigns.schedules.quarterly": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.392927Z",
