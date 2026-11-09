@@ -246,6 +246,7 @@ export interface IIdeaQueryParameters<FilterValue = string> {
   'page[number]'?: number;
   'page[size]'?: number;
   projects?: string[];
+  ideas?: string[];
   phase?: string;
   author?: string;
   search?: string;

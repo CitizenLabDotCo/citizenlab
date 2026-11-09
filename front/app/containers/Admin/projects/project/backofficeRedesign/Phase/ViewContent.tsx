@@ -50,6 +50,9 @@ const isPhaseEmpty = (
       return (
         attributes.total_votes_amount === 0 && !attributes.manual_voters_amount
       );
+    case 'common_ground':
+      // Its Manage view has its own empty state, with the way to import.
+      return view === 'insights' && attributes.ideas_count === 0;
     case 'volunteering':
       return (
         !!causes &&

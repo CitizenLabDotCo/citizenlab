@@ -50,9 +50,21 @@ interface Props {
   kind: keyof typeof COPY;
   onSubmit: (values: InputValues) => void;
   onClose: () => void;
+  /** Fills the form to edit an existing input. */
+  defaultValues?: InputValues;
+  header?: string;
+  submitLabel?: string;
 }
 
-const AddInputModal = ({ phaseId, kind, onSubmit, onClose }: Props) => {
+const AddInputModal = ({
+  phaseId,
+  kind,
+  onSubmit,
+  onClose,
+  defaultValues,
+  header,
+  submitLabel,
+}: Props) => {
   const { formatMessage } = useIntl();
   const { data: phase } = usePhase(phaseId);
   const allowAnonymous = !!phase?.data.attributes.allow_anonymous_participation;
@@ -85,6 +97,7 @@ const AddInputModal = ({ phaseId, kind, onSubmit, onClose }: Props) => {
   const methods = useForm<InputValues>({
     mode: 'onTouched',
     resolver: yupResolver(schema),
+    defaultValues,
   });
 
   const submit = methods.handleSubmit((values) => {
@@ -98,14 +111,14 @@ const AddInputModal = ({ phaseId, kind, onSubmit, onClose }: Props) => {
       close={onClose}
       width={MEDIUM_MODAL_WIDTH}
       variant="bo"
-      header={formatMessage(copy.header)}
+      header={header ?? formatMessage(copy.header)}
       footer={
         <Box display="flex" justifyContent="flex-end" gap="8px" width="100%">
           <Button buttonStyle="bo-text" onClick={onClose}>
             {formatMessage(messages.statementCancel)}
           </Button>
           <Button buttonStyle="bo-primary" onClick={submit}>
-            {formatMessage(messages.addStatement)}
+            {submitLabel ?? formatMessage(messages.addStatement)}
           </Button>
         </Box>
       }

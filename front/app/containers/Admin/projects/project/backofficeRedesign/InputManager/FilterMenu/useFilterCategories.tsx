@@ -32,7 +32,8 @@ export type FilterCategoryKey =
   | 'assignee'
   | 'tags'
   | 'reply'
-  | 'cause';
+  | 'cause'
+  | 'agreement';
 
 export interface FilterCategory {
   key: FilterCategoryKey;

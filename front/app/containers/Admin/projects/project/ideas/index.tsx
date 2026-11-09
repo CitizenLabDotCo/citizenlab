@@ -22,9 +22,8 @@ import { useParams } from 'utils/router';
 
 import AnalysisBanner from '../../_shared/components/AnalysisBanner';
 import NewIdeaButton from '../../_shared/components/NewIdeaButton';
+import CommonGroundManager from '../backofficeRedesign/CommonGroundManager';
 import InputManagerRedesign from '../backofficeRedesign/InputManager';
-import Card from '../backofficeRedesign/InputManager/SideColumn/Card';
-import ManageLayout from '../backofficeRedesign/Phase/ManageLayout';
 import messages from '../messages';
 
 import ownMessages from './messages';
@@ -55,41 +54,11 @@ const AdminProjectIdeas = () => {
 
   if (isBackofficeRedesignEnabled && phase && isCommonGround) {
     return (
-      <ManageLayout
-        side={
-          <Card>
-            <Button
-              buttonStyle="bo-secondary"
-              icon="page"
-              width="100%"
-              onClick={() => setShowPastInputsModal(true)}
-            >
-              <FormattedMessage {...ownMessages.importInputs} />
-            </Button>
-            <NewIdeaButton
-              participationMethod={phase.data.attributes.participation_method}
-              inputTerm={phase.data.attributes.input_term}
-              to="/projects/$slug/ideas/new"
-              params={{ slug: project.data.attributes.slug }}
-              search={{ phase_id: phaseId }}
-            />
-          </Card>
-        }
-      >
-        <CommonGroundInputManager
-          projectId={projectId}
-          phaseId={phaseId}
-          setShowPastInputsModal={setShowPastInputsModal}
-        />
-        <ImportInputsModal
-          showPastInputsModal={showPastInputsModal}
-          setShowPastInputsModal={setShowPastInputsModal}
-          currentPhaseid={phaseId}
-          onImport={(fromPhaseId) =>
-            copyInputs({ toPhaseId: phaseId, fromPhaseId })
-          }
-        />
-      </ManageLayout>
+      <CommonGroundManager
+        key={phaseId}
+        project={project.data}
+        phase={phase.data}
+      />
     );
   }
 
