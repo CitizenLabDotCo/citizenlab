@@ -1187,7 +1187,6 @@
   "app.components.formBuilder.supportArticleLinkText": "ta strona",
   "app.components.formBuilder.surveyAssistant.editingLocked2": "Będziesz mieć możliwość ponownej edycji ankiety, gdy asystent zakończy pracę lub gdy zatwierdzisz lub odrzucisz zaproponowaną przez niego zmianę.",
   "app.components.formBuilder.surveyAssistant.endPage": "Strona końcowa",
-  "app.components.formBuilder.surveyAssistant.intro": "Opisz, czego chcesz się dowiedzieć. Asystent zaproponuje pytania. Nic nie zmieni się bez Twojej zgody.",
   "app.components.formBuilder.surveyAssistant.outlineSummary": "{pages, plural, one {# strona} few {# strony} many {# stron} other {# strony}}, {questions, plural, one {# pytanie} few {# pytania} many {# pytań} other {# pytania}}",
   "app.components.formBuilder.surveyAssistant.pageNumber": "Strona {number}",
   "app.components.formBuilder.surveyAssistant.readSurvey": "aktualna ankieta",

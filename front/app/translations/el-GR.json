@@ -1187,7 +1187,6 @@
   "app.components.formBuilder.supportArticleLinkText": "αυτή τη σελίδα",
   "app.components.formBuilder.surveyAssistant.editingLocked2": "Θα μπορείτε να επεξεργαστείτε ξανά την έρευνα μόλις ο βοηθός ολοκληρώσει την εργασία του ή μόλις εγκρίνετε ή απορρίψετε την προτεινόμενη αλλαγή του.",
   "app.components.formBuilder.surveyAssistant.endPage": "Σελίδα τέλους",
-  "app.components.formBuilder.surveyAssistant.intro": "Περιγράψτε τι θέλετε να μάθετε. Ο βοηθός προτείνει τις ερωτήσεις και τίποτα δεν αλλάζει μέχρι να το εγκρίνετε.",
   "app.components.formBuilder.surveyAssistant.outlineSummary": "{pages, plural, one {# σελίδα} other {# σελίδες}}, {questions, plural, one {# ερώτηση} other {# ερωτήσεις}}",
   "app.components.formBuilder.surveyAssistant.pageNumber": "Σελίδα {number}",
   "app.components.formBuilder.surveyAssistant.readSurvey": "η τρέχουσα έρευνα",

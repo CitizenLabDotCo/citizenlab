@@ -21,7 +21,7 @@ describe('useAddAiAssistantMessage', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
-  it('sends the message', async () => {
+  it('sends the message with its files', async () => {
     let requestBody: unknown;
     server.use(
       http.post(apiPath, async ({ request }) => {
@@ -41,12 +41,16 @@ describe('useAddAiAssistantMessage', () => {
       result.current.mutate({
         conversationId: 'conversation-1',
         content: 'Create a survey',
+        fileIds: ['file-1'],
       });
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(requestBody).toEqual({
-      ai_assistant_message: { content: 'Create a survey' },
+      ai_assistant_message: {
+        content: 'Create a survey',
+        file_ids: ['file-1'],
+      },
     });
   });
 
@@ -68,6 +72,7 @@ describe('useAddAiAssistantMessage', () => {
       result.current.mutate({
         conversationId: 'conversation-1',
         content: 'Create a survey',
+        fileIds: [],
       });
     });
 

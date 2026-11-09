@@ -1187,7 +1187,6 @@
   "app.components.formBuilder.supportArticleLinkText": "dës Säit",
   "app.components.formBuilder.surveyAssistant.editingLocked2": "Dir kënnt d'Ëmfro nees beaarbechten, wann den Assistent fäerdeg ass oder wann Dir seng proposéiert Ännerung akzeptéiert oder ofgeleent hutt.",
   "app.components.formBuilder.surveyAssistant.endPage": "Ofschlosssäit",
-  "app.components.formBuilder.surveyAssistant.intro": "Beschreift, wat Dir gewuer gi wëllt. Den Assistent schléit d'Froe vir, an näischt ännert sech, bis Dir zoustëmmt.",
   "app.components.formBuilder.surveyAssistant.outlineSummary": "{pages, plural, one {# Säit} other {# Säiten}}, {questions, plural, one {# Fro} other {# Froen}}",
   "app.components.formBuilder.surveyAssistant.pageNumber": "Säit {number}",
   "app.components.formBuilder.surveyAssistant.readSurvey": "déi aktuell Ëmfro",

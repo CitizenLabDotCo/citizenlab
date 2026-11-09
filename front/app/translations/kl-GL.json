@@ -1187,7 +1187,6 @@
   "app.components.formBuilder.supportArticleLinkText": "this page",
   "app.components.formBuilder.surveyAssistant.editingLocked2": "Misissuineq aaqqissuteqqissinnaavat ikiorti naammassippat, imaluunniit siunnersuutaa akuerigukku itigartikkukkuluunniit.",
   "app.components.formBuilder.surveyAssistant.endPage": "Qupperneq naggataaq",
-  "app.components.formBuilder.surveyAssistant.intro": "Paasisaqarfigerusutatit nassuiakkit. Ikiortip apeqqutit siunnersuutigissavai, akuerereertinnagulu suut tamaasa allanngussanngillat.",
   "app.components.formBuilder.surveyAssistant.outlineSummary": "{pages, plural, one {qupperneq #} other {quppernerit #}}, {questions, plural, one {apeqqut #} other {apeqqutit #}}",
   "app.components.formBuilder.surveyAssistant.pageNumber": "Qupperneq {number}",
   "app.components.formBuilder.surveyAssistant.readSurvey": "misissuineq maannakkutittoq",

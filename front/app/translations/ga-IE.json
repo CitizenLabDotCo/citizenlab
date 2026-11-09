@@ -1187,7 +1187,6 @@
   "app.components.formBuilder.supportArticleLinkText": "an leathanach seo",
   "app.components.formBuilder.surveyAssistant.editingLocked2": "Is féidir leat an suirbhé a chur in eagar arís nuair a bheidh an cúntóir réidh, nó nuair a ghlacfaidh tú leis an athrú molta nó nuair a dhiúltóidh tú dó.",
   "app.components.formBuilder.surveyAssistant.endPage": "Leathanach deiridh",
-  "app.components.formBuilder.surveyAssistant.intro": "Déan cur síos ar na rudaí ar mhaith leat a fháil amach. Molfaidh an cúntóir na ceisteanna, agus ní athrófar aon rud go dtí go gceadóidh tú é.",
   "app.components.formBuilder.surveyAssistant.outlineSummary": "{pages, plural, one {# leathanach} other {# leathanach}}, {questions, plural, one {# cheist} other {# ceist}}",
   "app.components.formBuilder.surveyAssistant.pageNumber": "Leathanach {number}",
   "app.components.formBuilder.surveyAssistant.readSurvey": "an suirbhé reatha",
