@@ -147,7 +147,7 @@ const IdeaOverview = ({
           showInternalComments
         />
       </CommentsVariantContext.Provider>
-      <IdeaOfficialFeedbackModal ideaId={idea.id} />
+      <IdeaOfficialFeedbackModal ideaId={idea.id} variant="bo" />
     </Box>
   );
 };
