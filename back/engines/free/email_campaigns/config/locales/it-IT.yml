@@ -91,10 +91,10 @@ it-IT:
         input_is_updated: Il contributo viene aggiornato
         input_status_changes: Cambiamento di status del contributo
         internal_comment_is_posted_on_idea_assigned_to_user: Commento interno sul contributo assegnato all'utente
-        internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: "Il commento interno viene pubblicato sull'input del progetto o della cartella che l'utente gestisce"
+        internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: Commento interno su un contributo in un progetto o cartella gestiti dall’utente
         internal_comment_is_posted_on_idea_user_has_commented_internally_on: Commento interno sul contributo che l'utente ha commentato internamente
-        internal_comment_is_posted_on_idea_user_moderates: Il commento interno è pubblicato sul contributo che l'utente modera
-        internal_comment_is_posted_on_unassigned_unmoderated_idea: Viene pubblicato un commento interno su un contributo non assegnato in un progetto non gestito
+        internal_comment_is_posted_on_idea_user_moderates: Commento interno su un contributo moderato dall’utente
+        internal_comment_is_posted_on_unassigned_unmoderated_idea: Commento interno su un contributo non assegnato in un progetto non gestito
         new_input_awaits_screening: Un nuovo contributo in attesa di essere vagliato
         new_input_is_published: Viene pubblicato un nuovo contributo
         new_proposal_is_posted: La nuova proposta è pubblicata
