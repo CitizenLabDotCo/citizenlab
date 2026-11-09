@@ -254,7 +254,7 @@ it-IT:
       cta_button: Rispondi a %{commentAuthor}
       event_description: "%{authorNameFull} ha pubblicato un commento su '%{inputTitle}'. Clicca sul pulsante qui sotto per continuare la conversazione con %{authorName}."
       main_header:
-        comment: '%{authorName} ha commentato un commento che segue'
+        comment: '%{authorName} ha commentato un commento che segui'
         contribution: '%{authorName} ha commentato un contributo che segui'
         idea: "%{authorName} ha commentato un'idea che segui"
         initiative: "%{authorName} ha commentato un'iniziativa che segui"
@@ -269,7 +269,7 @@ it-IT:
         response: '%{authorName} ha commentato una risposta che segui'
         story: '%{authorName} ha commentato una storia che segui'
         suggestion: '%{authorName} ha commentato un suggerimento che segui'
-        topic: '%{authorName} ha commentato un argomento che segue'
+        topic: '%{authorName} ha commentato un argomento che segui'
       preheader: "%{authorName} ha lasciato un commento su un'idea per %{organizationName}"
       subject: C'è un nuovo commento su "%{input_title}"
       title: '%{authorName} ha commentato un contributo che segui'
