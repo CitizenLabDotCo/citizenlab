@@ -4815,7 +4815,7 @@
   "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.noFieldsReturned": "Questo metodo non restituisce alcun campo.",
   "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.seeWhichIdMethodsAreEnabled": "Vedi quali metodi di identificazione sono abilitati",
   "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.verification": "Verifica",
-  "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.verificationExplanation": "Verifica: il metodo può essere utilizzato per dimostrare l'identità di un partecipante attraverso un registro ufficiale.",
+  "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.verificationExplanation": "Verifica: il metodo può essere utilizzato per verificare l'identità di un partecipante attraverso un registro ufficiale.",
   "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.none": "Nessuno",
   "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordAvailableDescription2": "Se abilitata, gli utenti devono impostare una password prima di partecipare. Se disabilitata, agli utenti non verrà chiesto di impostare una password.",
   "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordOnlyForEmailOrSMSLoginTooltip": "Se abilitata, la password viene richiesta solo agli utenti che si registrano tramite e-mail o SMS. Agli utenti che si registrano tramite SSO non verrà mai chiesto di impostarne una.",
