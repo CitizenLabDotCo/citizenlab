@@ -13,6 +13,8 @@ import { calculateDynamicHeight } from 'containers/IdeasNewSurveyPage/IdeasNewSu
 // comfortable line length for questions and answers.
 export const FORM_CONTENT_MAX_WIDTH = '860px';
 const MAP_VIEW_MAX_WIDTH = '1100px';
+// Space between questions in this layout: roomier than the classic 24px.
+export const FORM_QUESTION_SPACING = '40px';
 
 type Props = {
   // The heading bar (title, close button). Give it no bottom border in the

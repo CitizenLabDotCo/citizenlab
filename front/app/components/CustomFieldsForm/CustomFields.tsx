@@ -256,6 +256,7 @@ const CustomFields = ({
   participationMethod,
   showQuestionNumbers,
   scrollErrorIntoView = true,
+  questionSpacing = '24px',
 }: {
   questions: IFlatCustomField[];
   projectId?: string;
@@ -264,6 +265,8 @@ const CustomFields = ({
   participationMethod?: ParticipationMethod;
   showQuestionNumbers?: boolean;
   scrollErrorIntoView?: boolean;
+  // Space below each question.
+  questionSpacing?: string;
 }) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
@@ -313,7 +316,7 @@ const CustomFields = ({
           return (
             <Box
               key={question.id}
-              mb="24px"
+              mb={questionSpacing}
               position="relative"
               data-question-id={question.id}
             >

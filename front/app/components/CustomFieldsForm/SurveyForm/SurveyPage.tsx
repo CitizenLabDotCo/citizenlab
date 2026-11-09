@@ -28,6 +28,7 @@ import CustomFields from '../CustomFields';
 import PageEsriDivider from '../Map/PageEsriDivider';
 import PageEsriMap from '../Map/PageEsriMap';
 import useEsriMapPage from '../Map/useEsriMapPage';
+import { FORM_QUESTION_SPACING } from '../Page/FormPageLayout';
 import PageFooter from '../Page/PageFooter';
 import PageTitle from '../Page/PageTitle';
 import PageTransition, { PageDirection } from '../Page/PageTransition';
@@ -359,6 +360,7 @@ const SurveyPage = ({
                   ideaId={ideaId}
                   phase={phase}
                   participationMethod={participationMethod}
+                  questionSpacing={FORM_QUESTION_SPACING}
                 />
                 {showPostParticipationSignup && project && (
                   <Box mb="24px">

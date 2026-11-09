@@ -11,6 +11,7 @@ import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
 import CustomFields from 'components/CustomFieldsForm/CustomFields';
+import { FORM_QUESTION_SPACING } from 'components/CustomFieldsForm/Page/FormPageLayout';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -162,6 +163,7 @@ const QuestionBlock = ({
             phase={phase}
             participationMethod={phase.attributes.participation_method}
             scrollErrorIntoView={false}
+            questionSpacing={FORM_QUESTION_SPACING}
           />
         </ErrorBoundary>
       </Box>

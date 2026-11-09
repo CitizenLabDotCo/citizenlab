@@ -18,7 +18,10 @@ import useLocalize from 'hooks/useLocalize';
 
 import CustomFields from 'components/CustomFieldsForm/CustomFields';
 import CustomFieldsSignupHelperText from 'components/CustomFieldsForm/CustomFieldsSignupHelperText';
-import { FORM_CONTENT_MAX_WIDTH } from 'components/CustomFieldsForm/Page/FormPageLayout';
+import {
+  FORM_CONTENT_MAX_WIDTH,
+  FORM_QUESTION_SPACING,
+} from 'components/CustomFieldsForm/Page/FormPageLayout';
 import PageTitle from 'components/CustomFieldsForm/Page/PageTitle';
 import PreviousPageButton from 'components/CustomFieldsForm/Page/PreviousPageButton';
 import ProgressFooter from 'components/CustomFieldsForm/Page/ProgressFooter';
@@ -164,9 +167,10 @@ const Canvas = ({ phase, projectId, top }: Props) => {
         maxWidth={FORM_CONTENT_MAX_WIDTH}
         mx="auto"
         bgColor={colors.white}
+        display="flex"
+        flexDirection="column"
         px="24px"
         pt="24px"
-        pb="80px"
       >
         {top}
 
@@ -189,6 +193,7 @@ const Canvas = ({ phase, projectId, top }: Props) => {
                 phase={phase}
                 participationMethod={phase.attributes.participation_method}
                 scrollErrorIntoView={false}
+                questionSpacing={FORM_QUESTION_SPACING}
               />
             </Box>
           ) : (
@@ -259,26 +264,35 @@ const Canvas = ({ phase, projectId, top }: Props) => {
             currentPageIndex={currentIndex}
           />
         </Box>
-      </Box>
 
-      {/* Not clickable here: its language switcher would change the admin's
-          own language. */}
-      <Box
-        position="sticky"
-        bottom="0"
-        zIndex="2"
-        ref={setInert}
-        pointerEvents="none"
-        aria-hidden
-      >
-        <ProgressFooter
-          position="relative"
-          formCompletionPercentage={
-            lastIndex > 0 ? Math.round((currentIndex / lastIndex) * 100) : 0
-          }
-          currentPage={currentIndex + 1}
-          totalPages={lastIndex}
-        />
+        {/* Same room below the page as participants get. */}
+        <Box flex="1" minHeight="80px" />
+
+        {/* The progress card, overlaying the bottom of the column like the
+            fixed card on the participant page: a zero-height anchor that
+            sticks to the bottom of the canvas, with the card drawn above it.
+            Not clickable here: its language switcher would change the
+            admin's own language. */}
+        <Box position="sticky" bottom="0" h="0px" mx="-24px" zIndex="2">
+          <Box
+            position="absolute"
+            left="0"
+            right="0"
+            bottom="0"
+            ref={setInert}
+            pointerEvents="none"
+            aria-hidden
+          >
+            <ProgressFooter
+              position="relative"
+              formCompletionPercentage={
+                lastIndex > 0 ? Math.round((currentIndex / lastIndex) * 100) : 0
+              }
+              currentPage={currentIndex + 1}
+              totalPages={lastIndex}
+            />
+          </Box>
+        </Box>
       </Box>
     </Box>
   );

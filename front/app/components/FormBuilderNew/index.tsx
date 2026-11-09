@@ -695,11 +695,12 @@ const FormEdit = ({
                   />
                 </EditingLock>
 
-                {/* Bottom right: save and the AI assistant bubble */}
+                {/* Bottom right, level with the Add page button: save and the
+                    AI assistant bubble */}
                 <Box
                   position="absolute"
-                  right="24px"
-                  bottom="104px"
+                  right="12px"
+                  bottom="12px"
                   zIndex="5"
                   display="flex"
                   alignItems="center"
@@ -723,8 +724,8 @@ const FormEdit = ({
                       aria-label={formatMessage(messages.openAssistant)}
                       title={formatMessage(messages.openAssistant)}
                       onClick={openAssistant}
-                      w="52px"
-                      h="52px"
+                      w="36px"
+                      h="36px"
                       p="0px"
                       border="none"
                       borderRadius="50%"
@@ -736,7 +737,12 @@ const FormEdit = ({
                       style={{ cursor: 'pointer' }}
                       data-cy="e2e-form-builder-new-assistant-bubble"
                     >
-                      <Icon name="stars" fill={colors.white} />
+                      <Icon
+                        name="stars"
+                        width="20px"
+                        height="20px"
+                        fill={colors.white}
+                      />
                     </Box>
                   )}
                 </Box>

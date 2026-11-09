@@ -35,6 +35,7 @@ import BudgetField from '../Fields/BudgetField';
 import PageEsriDivider from '../Map/PageEsriDivider';
 import PageEsriMap from '../Map/PageEsriMap';
 import useEsriMapPage from '../Map/useEsriMapPage';
+import { FORM_QUESTION_SPACING } from '../Page/FormPageLayout';
 import PageFooter from '../Page/PageFooter';
 import PageTitle from '../Page/PageTitle';
 import PageTransition, { usePageDirection } from '../Page/PageTransition';
@@ -296,6 +297,7 @@ const IdeationPage = ({
                   ideaId={ideaId}
                   phase={phase}
                   participationMethod={participationMethod}
+                  questionSpacing={FORM_QUESTION_SPACING}
                 />
 
                 {currentPageIndex === lastPageIndex - 1 &&

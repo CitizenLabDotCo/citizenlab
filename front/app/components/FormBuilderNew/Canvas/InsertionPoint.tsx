@@ -4,6 +4,8 @@ import { Box, colors, Icon, Text } from '@citizenlab/cl2-component-library';
 import { useDrop } from 'react-dnd';
 import styled, { keyframes } from 'styled-components';
 
+import { FORM_QUESTION_SPACING } from 'components/CustomFieldsForm/Page/FormPageLayout';
+
 import { useIntl } from 'utils/cl-intl';
 
 import { DND_QUESTION, DragItem, useBuilder } from '../context';
@@ -103,7 +105,12 @@ const InsertionPoint = ({ pageId, index, isDraggingQuestion }: Props) => {
         type="button"
         aria-label={formatMessage(messages.addQuestion)}
         position="absolute"
-        top="-24px"
+        // Centred in the gap between two questions (the bottom margin of the
+        // question above), clear of both questions' hover outlines. Above the
+        // first question the gap is the page title's margin instead.
+        top={
+          index === 0 ? '-24px' : `calc(-${FORM_QUESTION_SPACING} / 2 - 12px)`
+        }
         left="-16px"
         right="-16px"
         h="24px"
