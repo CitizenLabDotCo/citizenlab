@@ -1,6 +1,7 @@
 import React, { ReactNode, Suspense, lazy, useState } from 'react';
 
 import { Box, Spinner, bo, colors } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
@@ -15,10 +16,13 @@ import FeedbackNotice from '../earlyAccess/FeedbackNotice';
 import { sectionFromPathname } from './_shared/sections';
 import WorkspaceHeader from './Header';
 import { HeaderDropdownName } from './Header/HeaderDropdown';
+import PanelToggleButton from './PanelToggleButton';
+import { useParticipationPanel } from './ParticipationPanelContext';
 import MethodSettings from './Phase/MethodSettings';
 import { viewFromPathname } from './Phase/usePhaseViews';
 import ViewContent from './Phase/ViewContent';
 import ProjectSetupPanel from './ProjectSetupPanel';
+import ProjectTimeline from './ProjectTimeline';
 
 // Lazy so ArcGIS only loads once the map is opened.
 const CustomMapConfigPage = lazy(
@@ -26,8 +30,55 @@ const CustomMapConfigPage = lazy(
 );
 
 const PROJECT_PANEL_WIDTH = '332px';
+const SIDE_PANEL_WIDTH = '300px';
+const RAIL_WIDTH = '48px';
 const PHASE_PANEL_WIDTH = '560px';
 const PANEL_GAP = '8px';
+const COLLAPSE_DURATION = '0.48s';
+const COLLAPSE_EASING = 'cubic-bezier(0.65, 0, 0.35, 1)';
+
+const collapsedWidth = (rail: boolean) => (rail ? RAIL_WIDTH : '0px');
+const visibilityDelay = (collapsed: boolean) =>
+  collapsed ? COLLAPSE_DURATION : '0s';
+
+interface PanelStyleProps {
+  collapsed: boolean;
+  rail: boolean;
+  animate: boolean;
+}
+
+const panelWidth = ({ collapsed, rail }: PanelStyleProps) =>
+  collapsed ? collapsedWidth(rail) : SIDE_PANEL_WIDTH;
+
+const CollapsiblePanel = styled(Box)<PanelStyleProps>`
+  flex: 0 0 ${panelWidth};
+  width: ${panelWidth};
+  margin-right: ${({ collapsed, rail }) =>
+    collapsed && !rail ? `-${PANEL_GAP}` : '0'};
+  transition: ${({ animate }) =>
+    animate
+      ? `flex-basis ${COLLAPSE_DURATION} ${COLLAPSE_EASING}, width ${COLLAPSE_DURATION} ${COLLAPSE_EASING}, margin-right ${COLLAPSE_DURATION} ${COLLAPSE_EASING}`
+      : 'none'};
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+`;
+
+// Visibility flips once the panel has finished shrinking, so hidden content
+// can't be tabbed into.
+const PanelContent = styled(Box)<{ collapsed: boolean; animate: boolean }>`
+  opacity: ${({ collapsed }) => (collapsed ? 0 : 1)};
+  visibility: ${({ collapsed }) => (collapsed ? 'hidden' : 'visible')};
+  transition: ${({ collapsed, animate }) =>
+    animate
+      ? `opacity 0.32s, visibility 0s linear ${visibilityDelay(collapsed)}`
+      : 'none'};
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+`;
 
 interface Draft {
   label: string;
@@ -41,6 +92,7 @@ interface Props {
   phase?: IPhaseData;
   draft?: Draft;
   sidePanel?: ReactNode;
+  withParticipation?: boolean;
   children: ReactNode;
 }
 
@@ -49,8 +101,10 @@ const ProjectWorkspace = ({
   phase,
   draft,
   sidePanel,
+  withParticipation = true,
   children,
 }: Props) => {
+  const { pending, collapsed, animate } = useParticipationPanel();
   const { pathname } = useLocation();
   const { map_config } = useSearch({ strict: false });
   const [openDropdown, setOpenDropdown] = useState<HeaderDropdownName | null>(
@@ -103,18 +157,35 @@ const ProjectWorkspace = ({
       {settingsPanel}
     </Box>
   );
-  const timelineSlot = sidePanel && (
-    <Box
-      flex={`0 0 ${PROJECT_PANEL_WIDTH}`}
-      width={PROJECT_PANEL_WIDTH}
+  const showParticipation =
+    withParticipation && !pending && (!inPhase || showPanels);
+  const participationSlot = showParticipation && (
+    <CollapsiblePanel
+      collapsed={collapsed}
+      rail={inPhase}
+      animate={animate}
       minHeight="0"
-      overflowY="auto"
+      overflowX="hidden"
+      overflowY={collapsed ? 'hidden' : 'auto'}
       position="relative"
       borderRadius={bo.panelBorderRadius}
       background={colors.white}
     >
-      {sidePanel}
-    </Box>
+      {/* Keeps the content at full width while the panel animates. */}
+      <PanelContent
+        collapsed={collapsed}
+        animate={animate}
+        aria-hidden={collapsed}
+        width={SIDE_PANEL_WIDTH}
+      >
+        <ProjectTimeline projectId={project.id} withNewMethod={!draft} />
+      </PanelContent>
+      {inPhase && collapsed && (
+        <Box position="absolute" top="18px" left="8px">
+          <PanelToggleButton buttonStyle="bo-text" />
+        </Box>
+      )}
+    </CollapsiblePanel>
   );
   // A phase has a single panel: its build fields, then its settings.
   const phaseSlot = (
@@ -192,17 +263,34 @@ const ProjectWorkspace = ({
         minHeight="0"
         overflow="hidden"
       >
-        {inPhase ? phaseSlot : setupSlot}
+        {!inPhase && setupSlot}
+
+        {/* Always in this slot, so moving between the project and a phase
+            keeps the same panel instead of mounting a new one. */}
+        {participationSlot}
+
+        {inPhase && phaseSlot}
 
         {phase && activeView !== 'build' ? (
           <ViewContent project={project} phase={phase} view={activeView}>
             {mainSlot}
           </ViewContent>
         ) : (
-          mainSlot
+          <Box
+            position="relative"
+            display="flex"
+            flexGrow={1}
+            minWidth="0"
+            minHeight="0"
+          >
+            {mainSlot}
+            {showParticipation && !inPhase && collapsed && (
+              <Box position="absolute" top="8px" left="8px" zIndex="1">
+                <PanelToggleButton buttonStyle="bo-secondary" />
+              </Box>
+            )}
+          </Box>
         )}
-
-        {!inPhase && timelineSlot}
       </Box>
     </Box>
   );

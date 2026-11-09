@@ -38,6 +38,18 @@ export default defineMessages({
     defaultMessage:
       '\u2248 {count} recipients. Everyone who follows this project or has taken part will get it.',
   },
+  publishChooseGroups: {
+    id: 'app.containers.Admin.projects.project.publishChooseGroups',
+    defaultMessage: 'Choose which groups can open it',
+  },
+  publishGroupsSaveFailed: {
+    id: 'app.containers.Admin.projects.project.publishGroupsSaveFailed',
+    defaultMessage: "That change couldn't be saved. Please try again.",
+  },
+  publishNoGroups: {
+    id: 'app.containers.Admin.projects.project.publishNoGroups',
+    defaultMessage: 'There are no user groups yet. Create them under Users.',
+  },
   publishEmailUnavailable: {
     id: 'app.containers.Admin.projects.project.publishEmailUnavailable',
     defaultMessage: 'Make the project public to email people about it.',

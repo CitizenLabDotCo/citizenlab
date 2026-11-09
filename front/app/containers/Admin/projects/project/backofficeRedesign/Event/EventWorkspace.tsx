@@ -64,6 +64,7 @@ const EventWorkspace = ({ project, eventId, onCreate }: Props) => {
         ),
       }}
       sidePanel={<EventSetup projectId={project.id} form={form} />}
+      withParticipation={false}
     >
       <EventPreview project={project} form={form} />
     </ProjectWorkspace>

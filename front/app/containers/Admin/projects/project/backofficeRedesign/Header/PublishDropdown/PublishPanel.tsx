@@ -30,6 +30,7 @@ import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import backofficeRedesignMessages from '../../messages';
 
 import { ConfirmableStatus } from './ConfirmStatusChangeModal';
+import GroupsChecklist from './GroupsChecklist';
 import messages from './messages';
 import { MissingEssentialsIntent } from './MissingEssentialsModal';
 import getPublicationState, { PublicationState } from './publicationState';
@@ -166,6 +167,7 @@ const PublishPanel = ({
           />
         ))}
       </Box>
+      {visible_to === 'groups' && <GroupsChecklist projectId={project.id} />}
 
       <Divider />
 

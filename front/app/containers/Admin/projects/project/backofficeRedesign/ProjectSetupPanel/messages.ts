@@ -17,37 +17,25 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.collectingNow',
     defaultMessage: 'Collecting now',
   },
-  participation: {
-    id: 'app.containers.Admin.projects.project.participation',
-    defaultMessage: 'Participation',
-  },
   actionMessageParticipants: {
     id: 'app.containers.Admin.projects.project.actionMessageParticipants',
     defaultMessage: 'Message participants',
   },
-  selectMethodContinue: {
-    id: 'app.containers.Admin.projects.project.selectMethodContinue',
-    defaultMessage: 'Continue',
+  methodGroupGatherInput: {
+    id: 'app.containers.Admin.projects.project.methodGroupGatherInput',
+    defaultMessage: 'Gather input',
+  },
+  methodGroupShapeDecisions: {
+    id: 'app.containers.Admin.projects.project.methodGroupShapeDecisions',
+    defaultMessage: 'Shape decisions',
+  },
+  methodGroupInformAndRecruit: {
+    id: 'app.containers.Admin.projects.project.methodGroupInformAndRecruit',
+    defaultMessage: 'Inform and recruit',
   },
   topicTags: {
     id: 'app.containers.Admin.projects.project.topicTags',
     defaultMessage: 'Topic tags',
-  },
-  placementTimeline: {
-    id: 'app.containers.Admin.projects.project.placementTimeline',
-    defaultMessage: 'Timeline',
-  },
-  placementStandalone: {
-    id: 'app.containers.Admin.projects.project.placementStandalone',
-    defaultMessage: 'Standalone',
-  },
-  placementTimelineDescription: {
-    id: 'app.containers.Admin.projects.project.placementTimelineDescription',
-    defaultMessage: 'Runs as a phase, in the order you set.',
-  },
-  placementStandaloneDescription: {
-    id: 'app.containers.Admin.projects.project.placementStandaloneDescription',
-    defaultMessage: 'Runs on its own, outside the timeline.',
   },
   beforeYouPublish: {
     id: 'app.containers.Admin.projects.project.beforeYouPublish',

@@ -13,6 +13,7 @@ import { useIntl } from 'utils/cl-intl';
 import { usePermission } from 'utils/permissions';
 
 import backofficeRedesignMessages from '../messages';
+import { useParticipationPanel } from '../ParticipationPanelContext';
 
 import messages from './messages';
 import PanelHeading from './PanelHeading';
@@ -29,6 +30,7 @@ interface Props {
 
 const BeforeYouPublish = ({ project, onOpenSettings }: Props) => {
   const { formatMessage, formatDate } = useIntl();
+  const participationPanel = useParticipationPanel();
   const projectId = project.id;
   const { readiness } = useSetupReadiness(project);
   const [methodModalOpened, setMethodModalOpened] = useState(false);
@@ -94,14 +96,25 @@ const BeforeYouPublish = ({ project, onOpenSettings }: Props) => {
           id="e2e-setup-card-methods"
           title={formatMessage(backofficeRedesignMessages.participationMethods)}
           ready={readiness.methods}
-          behaviour={{
-            kind: 'action',
-            icon: 'plus',
-            actionLabel: formatMessage(
-              projectPageMessages.newParticipationMethod
-            ),
-            onClick: () => setMethodModalOpened(true),
-          }}
+          behaviour={
+            participationPanel.collapsed
+              ? {
+                  kind: 'action',
+                  icon: 'chevron-right',
+                  actionLabel: formatMessage(
+                    backofficeRedesignMessages.showPanel
+                  ),
+                  onClick: () => participationPanel.setCollapsed(false),
+                }
+              : {
+                  kind: 'action',
+                  icon: 'plus',
+                  actionLabel: formatMessage(
+                    projectPageMessages.newParticipationMethod
+                  ),
+                  onClick: () => setMethodModalOpened(true),
+                }
+          }
         />
       </Box>
 

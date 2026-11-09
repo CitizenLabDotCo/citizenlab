@@ -13,6 +13,18 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.newEvent',
     defaultMessage: 'New event',
   },
+  participation: {
+    id: 'app.containers.Admin.projects.project.participation',
+    defaultMessage: 'Participation',
+  },
+  hidePanel: {
+    id: 'app.containers.Admin.projects.project.hidePanel',
+    defaultMessage: 'Hide panel',
+  },
+  showPanel: {
+    id: 'app.containers.Admin.projects.project.showPanel',
+    defaultMessage: 'Show panel',
+  },
   filesSection: {
     id: 'app.containers.Admin.projects.project.filesSection',
     defaultMessage: '360 Input',
