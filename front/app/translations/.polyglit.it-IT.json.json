@@ -14214,6 +14214,16 @@
     "verified_at": "2026-07-01T13:49:11.797637Z",
     "verified_by": "Roger"
   },
+  "containers.OAuthAuthorize.scopeMcpAccessDetail": {
+    "state": "verified",
+    "verified_at": "2026-11-09T21:51:39.198198Z",
+    "verified_by": "Roger"
+  },
+  "containers.OAuthAuthorize.scopeMcpAccessTitle": {
+    "state": "verified",
+    "verified_at": "2026-11-09T21:51:39.198198Z",
+    "verified_by": "Roger"
+  },
   "containers.OAuthAuthorize.signInButton": {
     "state": "verified",
     "verified_at": "2026-11-09T21:51:24.358001Z",
