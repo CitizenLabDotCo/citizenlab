@@ -75,7 +75,10 @@ module MultiTenancy
           tenant_bucket,
           dest_s3_client: @tenant_s3_client,
           prefix: uploads_prefix,
-          copy_args: { acl: 'public-read' },
+          # Do not copy the object tags (e.g. the antivirus tags on template
+          # files). Copying them needs s3:GetObjectTagging and
+          # s3:PutObjectTagging, which the epic preview IAM user does not have.
+          copy_args: { acl: 'public-read', tagging_directive: 'REPLACE' },
           num_threads: num_threads
         ) do |key|
           key = key.delete_prefix(uploads_prefix)
