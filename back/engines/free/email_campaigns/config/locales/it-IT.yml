@@ -296,7 +296,7 @@ it-IT:
     email_confirmation:
       best_regards: Cordiali saluti,
       event_description: 'Grazie per la partecipazione. Inserisci questo codice di conferma nella finestra sulla piattaforma partecipativa di %{organizationName}:'
-      expire_code: Questo codice scadrà tra
+      expire_code: 'Questo codice scadrà tra '
       hours_24: 24 ore.
       ignore_email: Se non hai richiesto un codice, puoi ignorare questa email.
       preheader: Conferma il tuo indirizzo e-mail per %{organizationName}
@@ -485,7 +485,7 @@ it-IT:
     merge_account_confirmation:
       best_regards: Cordiali saluti,
       event_description: "Qualcuno ha effettuato l'accesso alla piattaforma partecipativa di %{organizationName} e ha chiesto di collegare tale accesso all'account associato a questo indirizzo email. Se la richiesta è tua, inserisci questo codice di conferma per continuare:"
-      expire_code: Questo codice scadrà tra
+      expire_code: 'Questo codice scadrà tra '
       hours_24: 24 ore.
       ignore_email: Se non sei stato tu, puoi ignorare tranquillamente questa email. Non è stato modificato nulla e nessuno può utilizzare questo codice senza avere accesso a questa casella di posta.
       preheader: Conferma il tuo indirizzo email per %{organizationName}
@@ -529,7 +529,7 @@ it-IT:
     new_email_confirmation:
       best_regards: Cordiali saluti,
       event_description: 'Inserisci questo codice di conferma nella finestra sulla piattaforma partecipativa di %{organizationName} per confermare il tuo nuovo indirizzo e-mail:'
-      expire_code: Questo codice scadrà tra
+      expire_code: 'Questo codice scadrà tra '
       hours_24: 24 ore.
       ignore_email: Se non hai richiesto un codice, puoi ignorare questa email.
       preheader: Conferma il tuo nuovo indirizzo email per %{organizationName}
