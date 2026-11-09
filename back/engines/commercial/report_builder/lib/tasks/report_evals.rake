@@ -35,10 +35,11 @@ class ReportEvalRun
 
   # List prices per million tokens, in USD, by the start of the Bedrock model id. An
   # estimate for comparing prompts against each other, not an invoice.
+  # A cache write is charged at a quarter more than plain input, a read at a tenth of it.
   PRICES_PER_MILLION_USD = {
-    'eu.anthropic.claude-opus' => { input: 15.0, output: 75.0, cache_read: 1.5 },
-    'eu.anthropic.claude-sonnet' => { input: 3.0, output: 15.0, cache_read: 0.3 },
-    'eu.anthropic.claude-haiku' => { input: 1.0, output: 5.0, cache_read: 0.1 }
+    'eu.anthropic.claude-opus' => { input: 15.0, output: 75.0, cache_write: 18.75, cache_read: 1.5 },
+    'eu.anthropic.claude-sonnet' => { input: 3.0, output: 15.0, cache_write: 3.75, cache_read: 0.3 },
+    'eu.anthropic.claude-haiku' => { input: 1.0, output: 5.0, cache_write: 1.25, cache_read: 0.1 }
   }.freeze
 
   def initialize(slug:, runs:)
@@ -143,9 +144,12 @@ class ReportEvalRun
     prices = PRICES_PER_MILLION_USD.find { |prefix, _| model.to_s.start_with?(prefix) }&.last
     return nil if prices.nil?
 
-    cached = usage['cache_read_input_tokens'].to_i
-    uncached = [usage['input_tokens'].to_i - cached, 0].max
-    total = (uncached * prices[:input]) + (cached * prices[:cache_read]) +
+    # Bedrock counts the three kinds of input separately: input_tokens is what was
+    # neither read from nor written to the cache, so each is paid for once at its own
+    # rate. Subtracting the reads again drove the input cost to nothing on a cached run.
+    total = (usage['input_tokens'].to_i * prices[:input]) +
+            (usage['cache_write_input_tokens'].to_i * prices[:cache_write]) +
+            (usage['cache_read_input_tokens'].to_i * prices[:cache_read]) +
             (usage['output_tokens'].to_i * prices[:output])
     (total / 1_000_000.0).round(3)
   end
