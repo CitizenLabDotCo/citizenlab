@@ -225,7 +225,7 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        input_form_answer_visibility: {
+        input_form_answer_filters: {
           enabled: true,
           allowed: true
         },

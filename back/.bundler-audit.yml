@@ -24,3 +24,45 @@ ignore:
   - GHSA-42r3-x6vx-x49x
   - GHSA-5m38-526f-3498
   - GHSA-57hg-jgw4-wcqw
+
+  # Rails 7.2.4: advisories whose only fixes are in Rails 8.0.5.2 / 8.1.4.1 (no 7.2.x
+  # backport). Upgrading Rails is tracked as its own piece of work. Each one was checked
+  # against the full advisory text and our code; none applies to us:
+  #
+  # Code that is not loaded: config/application.rb leaves out active_storage/engine and
+  # action_mailbox/engine (uploads go through Carrierwave).
+  - GHSA-5957-c7qm-m469 # actionmailbox: Mailgun ingress signature replay
+  - GHSA-3f4q-8x5m-76v8 # activestorage: file disclosure in video previews/analysis
+  - GHSA-3w93-6hmw-whh4 # activestorage: GCS direct uploads cache_control
+  - GHSA-f3w6-w445-fwh9 # activestorage: arbitrary file write/read in image analysis
+  - GHSA-hfr4-8rjc-97m2 # activestorage: GCS direct upload size limits
+  - GHSA-p2pm-g2h6-7j5j # activestorage: filename handling DoS
+  - GHSA-v924-7rp8-4mxh # activestorage: file read / RCE in video previews and image processing
+  - GHSA-x6mj-8jx9-qhqv # actionpack: session leak in Active Storage proxy mode
+  #
+  # Features we do not use: no ActionController::Live, and sessions use CookieStore
+  # (the two session advisories only concern the other session stores).
+  - GHSA-rwvh-fw6r-pwvp # actionpack: DoS in ActionController::Live streaming
+  - GHSA-2586-8ghr-69fj # actionpack: destroyed sessions restored in CacheStore
+  - GHSA-gmj8-hvj3-49mw # actionpack: missing SameSite on non-cookie session stores
+  #
+  # Conditions we do not meet:
+  #   - r9jg: needs a shared HTTP cache honouring Vary (Rack::Cache, Thruster) and
+  #     responses marked `public`. We have neither; caches_action is a server-side
+  #     Rails.cache store keyed by format. Does not cover a CDN in front of the API.
+  #   - wm3x: only exploitable if the return value of Parameters#each_key is passed to
+  #     mass assignment; no call site does that.
+  #   - 2p2f: needs Nokogiri < 1.19.5; we run 1.19.6.
+  #   - rq8q: strip_tags output is only dangerous inside an HTML attribute; all our
+  #     uses are element content in mail templates, or plain-text conversion in Ruby.
+  #   - 68p9, v6rj: we use neither the tag helpers with dynamic attribute names nor
+  #     the highlight helper.
+  #   - 8474: safe_constantize is only called on server-side values (stored campaign
+  #     types, fixed model names), never on request input.
+  - GHSA-r9jg-fmfx-2gv6
+  - GHSA-wm3x-v3qw-4jh3
+  - GHSA-2p2f-4rq4-gjwc
+  - GHSA-rq8q-p985-fjq7
+  - GHSA-68p9-83h6-5wpj
+  - GHSA-v6rj-xm57-3p59
+  - GHSA-8474-xrp6-wh69

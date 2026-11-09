@@ -52,10 +52,17 @@ const UserCustomFieldsForm = ({
       const transformedValues = {};
       valueKeys.forEach((key) => {
         const question = customFields?.find((q) => q.key === key);
+        const value = values[key];
+
+        if (question?.input_type !== 'number' || value === undefined) {
+          transformedValues[key] = value;
+          return;
+        }
+
+        // Send null for a cleared input (instead of Number('') === 0),
+        // so the API removes the stored value.
         transformedValues[key] =
-          question?.input_type === 'number' && values[key] !== undefined
-            ? Number(values[key])
-            : values[key];
+          value === '' || value === null ? null : Number(value);
       });
       onChange(transformedValues);
     });

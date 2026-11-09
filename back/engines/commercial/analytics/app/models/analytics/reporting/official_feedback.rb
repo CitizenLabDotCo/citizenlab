@@ -35,7 +35,10 @@ module Analytics
           'body' => <<~DOC.squish,
             The feedback text, resolved to the platform primary locale. Stored
             as sanitized HTML (paragraphs, lists, bold, ...): strip the tags
-            before quoting it.
+            before quoting it. Mentions of users read '@mention', without their
+            names, except a mention of a user who deleted their account before
+            the feedback was last edited: that one stays as plain text with the
+            name.
           DOC
           'author' => <<~DOC.squish,
             The signature shown to participants, resolved to the platform

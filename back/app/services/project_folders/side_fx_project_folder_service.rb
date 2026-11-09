@@ -16,6 +16,8 @@ module ProjectFolders
 
     def before_update(_folder, _user); end
 
+    def before_destroy(_folder, _user); end
+
     def after_update(folder, user)
       change = folder.saved_changes
 

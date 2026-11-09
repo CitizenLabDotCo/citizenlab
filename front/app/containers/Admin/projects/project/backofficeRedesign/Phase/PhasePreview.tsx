@@ -16,7 +16,7 @@ import { usePhasePreviewDraft } from 'components/admin/PhasePreview/DraftContext
 import { useIntl } from 'utils/cl-intl';
 import { createDraftPhase } from 'utils/phasePreview/draftPhase';
 
-import messages from '../messages';
+import messages from './messages';
 
 interface Props {
   projectId: string;

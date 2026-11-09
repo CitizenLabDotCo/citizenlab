@@ -25,6 +25,18 @@ RSpec.describe CustomFieldBins::OptionBin do
       it 'returns false for nil' do
         expect(bin.in_bin?(nil)).to be false
       end
+
+      it 'returns false for a key that contains the option key' do
+        expect(bin.in_bin?('option10')).to be false
+      end
+
+      context 'with the gender options' do
+        let(:option) { create(:custom_field_option, key: 'male') }
+
+        it 'does not count female answers as male' do
+          expect(bin.in_bin?('female')).to be false
+        end
+      end
     end
 
     context 'with a multi-select field' do
@@ -37,6 +49,10 @@ RSpec.describe CustomFieldBins::OptionBin do
 
       it 'returns false when the option key is not in the array' do
         expect(bin.in_bin?(%w[option2 option3])).to be false
+      end
+
+      it 'returns false when an element only contains the option key' do
+        expect(bin.in_bin?(%w[option10])).to be false
       end
     end
 
@@ -51,6 +67,10 @@ RSpec.describe CustomFieldBins::OptionBin do
 
       it 'returns false when the area ID is not in the array' do
         expect(bin.in_bin?([create(:area).id])).to be false
+      end
+
+      it 'returns true for a single area ID' do
+        expect(bin.in_bin?(area.id)).to be true
       end
     end
   end

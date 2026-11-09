@@ -62,10 +62,15 @@ const generateYupSchema = ({
   pageQuestions,
   formatMessage,
   localize,
+  otherTextOptional = false,
 }: {
   pageQuestions: IFlatCustomField[];
   formatMessage: FormatMessage;
   localize: Localize;
+  // When true, the "other" text is never required, even if "other" is selected.
+  // Used when reviewing imported (e.g. scanned paper) inputs, where a blank
+  // "please specify" answer is a legitimate, complete answer.
+  otherTextOptional?: boolean;
 }) => {
   const schema: Record<string, any> = {};
 
@@ -245,7 +250,7 @@ const generateYupSchema = ({
 
         // Other option
         const fieldSchemaOther = string().when(key, ([value], schema) => {
-          return value === 'other'
+          return value === 'other' && !otherTextOptional
             ? schema.required(formatMessage(messages.typeYourAnswerRequired))
             : schema.notRequired();
         });
@@ -290,7 +295,7 @@ const generateYupSchema = ({
         const fieldSchemaOther = string().when(key, ([value], schema) => {
           if (!Array.isArray(value)) return schema.notRequired();
 
-          return value.includes('other')
+          return value.includes('other') && !otherTextOptional
             ? schema.required(formatMessage(messages.typeYourAnswerRequired))
             : schema.notRequired();
         });
@@ -504,6 +509,61 @@ const generateYupSchema = ({
         schema[key] = required
           ? polygon.required(fieldRequired)
           : polygon.nullable();
+        break;
+      }
+
+      case 'multipoint': {
+        const pinsFor = (value: string | undefined) => {
+          if (!value) return undefined;
+          const converted = convertWKTToGeojson({ multipoint: value });
+          if (
+            !converted.multipoint ||
+            converted.multipoint.type !== 'MultiPoint' ||
+            !Array.isArray(converted.multipoint.coordinates)
+          ) {
+            return undefined;
+          }
+          return converted.multipoint.coordinates.length;
+        };
+
+        let multipoint = string().test({
+          message: formatMessage(messages.atLeastOnePinRequired),
+          test: (value) => {
+            if (!value) return true;
+            const pins = pinsFor(value);
+            return pins !== undefined && pins > 0;
+          },
+        });
+
+        if (minimum_select_count) {
+          multipoint = multipoint.test({
+            message: formatMessage(messages.minimumPinsRequired, {
+              minPins: minimum_select_count,
+            }),
+            test: (value) => {
+              if (!value) return true;
+              const pins = pinsFor(value);
+              return pins !== undefined && pins >= minimum_select_count;
+            },
+          });
+        }
+
+        if (maximum_select_count) {
+          multipoint = multipoint.test({
+            message: formatMessage(messages.maximumPinsAllowed, {
+              maxPins: maximum_select_count,
+            }),
+            test: (value) => {
+              if (!value) return true;
+              const pins = pinsFor(value);
+              return pins !== undefined && pins <= maximum_select_count;
+            },
+          });
+        }
+
+        schema[key] = required
+          ? multipoint.required(fieldRequired)
+          : multipoint.nullable();
         break;
       }
     }

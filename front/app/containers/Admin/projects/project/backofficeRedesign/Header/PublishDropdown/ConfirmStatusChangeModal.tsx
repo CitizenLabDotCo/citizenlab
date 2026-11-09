@@ -9,7 +9,9 @@ import Modal from 'components/UI/Modal';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
-import messages from '../../messages';
+import backofficeRedesignMessages from '../../messages';
+
+import messages from './messages';
 
 export type ConfirmableStatus = 'draft' | 'archived';
 
@@ -19,7 +21,7 @@ const COPY: Record<
 > = {
   draft: {
     title: messages.publishRestoreToDraftTitle,
-    confirm: messages.publishRestoreToDraft,
+    confirm: backofficeRedesignMessages.publishRestoreToDraft,
   },
   archived: {
     title: messages.publishArchiveTitle,
@@ -31,11 +33,11 @@ const getBodyMessage = (
   target: ConfirmableStatus,
   current: PublicationStatus
 ): MessageDescriptor => {
-  if (target === 'archived') return messages.publishArchiveBody;
+  if (target === 'archived') return messages.publishArchiveBody2;
 
   return current === 'archived'
     ? messages.publishRestoreToDraftFromArchiveBody
-    : messages.publishRestoreToDraftBody;
+    : messages.publishRestoreToDraftBody2;
 };
 
 interface Props {

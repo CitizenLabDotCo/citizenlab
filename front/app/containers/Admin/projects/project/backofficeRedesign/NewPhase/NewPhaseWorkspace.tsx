@@ -1,6 +1,5 @@
 import React, { useRef, useState } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
 import { IUpdatedPhaseProperties, ParticipationMethod } from 'api/phases/types';
@@ -14,19 +13,24 @@ import usePhaseFileAttachments, {
 import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/typings';
 import validate from 'containers/Admin/projects/project/phaseSetup/validate';
 
+import {
+  SaveReason,
+  useRegisterPageSaver,
+} from 'components/admin/PageSaveContext';
+
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
 import ProjectWorkspace from '..';
-import { SaveReason, useRegisterPageSaver } from '../_shared/PageSaveContext';
+import messages from './messages';
 import BuildFields from '../Phase/BuildPanel/BuildFields';
+import PlacementCard from '../Phase/BuildPanel/PlacementCard';
 import DraftMethodSettings from '../Phase/DraftMethodSettings';
 import PhasePreview from '../Phase/PhasePreview';
 
 interface Props {
   project: IProjectData;
   participationMethod: ParticipationMethod;
-  label: string;
   standalone: boolean;
   initialFormData: IUpdatedPhaseProperties;
   defaultsForMethod: (
@@ -37,8 +41,7 @@ interface Props {
 const NewPhaseWorkspace = ({
   project,
   participationMethod: initialParticipationMethod,
-  label,
-  standalone,
+  standalone: initialStandalone,
   initialFormData,
   defaultsForMethod,
 }: Props) => {
@@ -50,6 +53,7 @@ const NewPhaseWorkspace = ({
   const [participationMethod, setParticipationMethod] = useState(
     initialParticipationMethod
   );
+  const [standalone, setStandalone] = useState(initialStandalone);
   const [formData, setFormData] = useState(initialFormData);
   const [dirty, setDirty] = useState(false);
   const [errors, setErrors] = useState<CLErrors | null>(null);
@@ -112,7 +116,9 @@ const NewPhaseWorkspace = ({
     <ProjectWorkspace
       project={project}
       draft={{
-        label,
+        label: formatMessage(
+          standalone ? messages.newSurveyCrumb : messages.newPhaseCrumb
+        ),
         methodSettings: (
           <DraftMethodSettings
             formData={formData}
@@ -124,31 +130,43 @@ const NewPhaseWorkspace = ({
         ),
       }}
       sidePanel={
-        <Box p="20px">
-          <BuildFields
-            projectId={projectId}
-            participationMethod={participationMethod}
-            formData={formData}
-            errors={errors}
-            validationErrors={validationErrors}
-            standalone={standalone}
-            files={files}
-            surveyMethodSwitch={{
-              onSelect: (method) => {
-                setParticipationMethod(method);
-                updateFormData(defaultsForMethod(method));
-              },
-            }}
-            onChange={updateFormData}
-            onDatesChange={(dates) => {
-              setValidationErrors((errors) => ({
-                ...errors,
-                phaseDateError: undefined,
-              }));
-              updateFormData(dates);
-            }}
-          />
-        </Box>
+        <BuildFields
+          projectId={projectId}
+          participationMethod={participationMethod}
+          formData={formData}
+          errors={errors}
+          validationErrors={validationErrors}
+          standalone={standalone}
+          files={files}
+          surveyPlacement={
+            // Only the platform's own survey can run outside the timeline.
+            participationMethod === 'native_survey' && (
+              <PlacementCard
+                name="new-survey-placement"
+                value={standalone ? 'standalone' : 'on_timeline'}
+                onChange={(placement_type) => {
+                  setStandalone(placement_type === 'standalone');
+                  setValidationErrors({});
+                  updateFormData({ placement_type });
+                }}
+              />
+            )
+          }
+          surveyMethodSwitch={{
+            onSelect: (method) => {
+              setParticipationMethod(method);
+              updateFormData(defaultsForMethod(method));
+            },
+          }}
+          onChange={updateFormData}
+          onDatesChange={(dates) => {
+            setValidationErrors((errors) => ({
+              ...errors,
+              phaseDateError: undefined,
+            }));
+            updateFormData(dates);
+          }}
+        />
       }
     >
       <PhasePreview projectId={projectId} draft={formData} />

@@ -16,6 +16,7 @@ module CitizenLab
           'required' => %w[allowed enabled],
           'required-settings' => required_settings.presence,
           'early_access' => early_access,
+          'development' => development.presence,
           'properties' => {
             'allowed' => { 'type' => 'boolean', 'default' => allowed_by_default },
             'enabled' => { 'type' => 'boolean', 'default' => enabled_by_default }
@@ -48,7 +49,8 @@ module CitizenLab
       # tier it is offered in (see AppConfiguration::Settings::EARLY_ACCESS_TIERS):
       # - nil: not offered (the default).
       # - 'general': offered to every admin.
-      # - 'internal': offered to Go Vocal staff (super admins) only.
+      # - 'internal': offered to Go Vocal staff (super admins) only. Admin HQ can offer it to
+      #   the admins of one platform too, with the feature's "early_access_upgrade" setting.
       # Core features set the same tiers with an "early_access" key in their JSON schema.
       #
       # Only use this for features that have no toggle in the admin settings. An admin who
@@ -57,6 +59,15 @@ module CitizenLab
       # @return [String, nil]
       def early_access
         nil
+      end
+
+      # Marks the feature as still in development. Only Admin HQ uses it, to show the
+      # feature differently. Core features set it with a "development": true key in
+      # their JSON schema.
+      #
+      # @return [Boolean]
+      def development
+        false
       end
 
       # @return [Boolean]

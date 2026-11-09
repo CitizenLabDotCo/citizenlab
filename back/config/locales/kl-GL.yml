@@ -167,9 +167,15 @@ kl-GL:
           title: Suna sammivisiuk?
   errors:
     messages:
+      ai_processing_not_allowed: AI-mit suliarineqarsinnaanngillat
       in_the_past: siunissamiittariaqarpoq
       max_must_be_greater_than_min_characters: Annerpaaffissaa minnerpaaffissaaniit annerusariaqarpoq.
       max_must_be_greater_than_or_equal_to_min_select_count: Annerpaaffissaa minnerpaaffissaanut nallersuuttariaqarpoq imaluunniit annerusariaqarluni.
+      not_found: nassaarineqanngillat
+      not_in_project: suliniutip uuma fiiliisariaqarput
+      not_utf8: UTF-8-tut toqqorsimasariaqarput
+      too_many_in_conversation: oqaloqatigiinnermut ataatsimut amerlavallaarput
+      unsupported_file_type: PDF-fiiliussapput annerpaamik 4 MB, imaluunniit Markdown imaluunniit allatat annerpaamik 100 KB
   events:
     council_meeting_description: |
       Siunnersuisooqatigiit ataatsimiinneranni uani innuttaasut siunnersuutaat qaammatit pingasut qaangiutinngitsut 100-nik taasisoqareersimasut saqqummiunneqassapput. Tamanna pereerpat siunnersuisooqatigiit isumassarsiat ataasiakkaarlugit erseqqissaateqarfigissavaat.
@@ -209,6 +215,7 @@ kl-GL:
       logic_no_further_questions: Akissutitit tunngavigalugit, apeqqutinik allanik akissuteqaqqinnissat <strong>pisariaqanngilaq</strong>.
       logic_section: Immikkoortoq %{letter}
       matrix_print_description: Sanileriiaani tamani ammalortoq ataaseq sanningasuleruk tulluunnerpaatut isigisat nalunaarlugu.
+      multipoint_print_description: Nunap assingani ataaniittumi sumiiffiit ikkukkusutatit X-ilerlugit nalunaaqutsikkit.
       optional: piumasaqaataanngitsoq
       page: Qupperneq
       permission: Akuersissut

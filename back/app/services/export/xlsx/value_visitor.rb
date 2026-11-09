@@ -94,6 +94,10 @@ module Export
         visit_point(field)
       end
 
+      def visit_multipoint(field)
+        visit_point(field)
+      end
+
       def visit_page(_field)
         '' # The field does not capture data, so there is no value.
       end
