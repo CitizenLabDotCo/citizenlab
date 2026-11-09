@@ -259,14 +259,16 @@ module ReportBuilder
         layout.values.filter_map { |node| node.is_a?(Hash) ? node.dig('props', 'blockId') : nil }
       end
 
-      # Every chart written for this report, placed or not: a version records the run
-      # that wrote it, and the run records the report.
+      # Every chart an earlier run wrote for this report, placed or not: a version
+      # records the run that wrote it, and the run records the report. This run's own
+      # charts are left out, or the cleanup below could never reach them.
       def blocks_from_earlier_runs
         report_id = @run_record&.report_id
         return [] if report_id.blank?
 
+        earlier_runs = GenerationTranscript.where(report_id: report_id).where.not(id: @run_record.id)
         ContentBuilder::CustomBlockVersion
-          .where(generation_transcript_id: GenerationTranscript.where(report_id: report_id).select(:id))
+          .where(generation_transcript_id: earlier_runs.select(:id))
           .distinct
           .pluck(:custom_block_id)
       end
@@ -279,12 +281,12 @@ module ReportBuilder
 
       # A run often authors a chart it then improves on. Only what the layout points
       # at is part of the report; the rest would sit in the block library forever.
+      # A turn clears up after itself and no further: a copy of this report places the
+      # same block ids, so a chart this report has dropped may still be the one a copy
+      # shows. Nothing else deletes a block, so leaving those is the whole guarantee.
       def discard_unplaced_blocks(layout)
-        placed = layout.values.filter_map do |node|
-          node.is_a?(Hash) ? node.dig('props', 'blockId') : nil
-        end
-
-        ContentBuilder::CustomBlock.where(id: @authored_blocks - placed - block_ids_in(@current_layout)).destroy_all
+        kept = block_ids_in(layout) | block_ids_in(@current_layout) | blocks_from_earlier_runs
+        ContentBuilder::CustomBlock.where(id: @authored_blocks - kept).destroy_all
       end
 
       # A tool that fails on our side is a tool result, not an exception: the model is

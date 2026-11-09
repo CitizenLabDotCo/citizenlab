@@ -851,6 +851,24 @@ describe ReportBuilder::Composition::ReportComposer do
 
         expect(composer.stopped_because).to eq 'done'
       end
+
+      # A copy of a report places the same block ids, because Layout#duplicate! keeps
+      # them. So a chart this report has stopped placing may be the one a copy still
+      # shows, and destroying it would leave that copy with a hole nothing can fill.
+      it 'leaves a chart an earlier run wrote alone, even once the report stops placing it' do
+        report = create(:report, project: project)
+        earlier_run = create(:generation_transcript, report: report)
+        shared = create(:custom_block)
+        create(:custom_block_version, custom_block: shared, generation_transcript_id: earlier_run.id)
+        run = create(:generation_transcript, report: report, stopped_because: nil)
+        composer = described_class.new(project, locale: 'en', client: client, run_record: run)
+        # The turn patches the report into a layout that does not place the chart.
+        stub_converse(write_layout(text_layout), done('Removed it.'))
+
+        composer.revise(current_layout: text_layout, instruction: 'drop the chart', history: [])
+
+        expect(ContentBuilder::CustomBlock.exists?(shared.id)).to be true
+      end
     end
 
     describe 'get_layout' do
