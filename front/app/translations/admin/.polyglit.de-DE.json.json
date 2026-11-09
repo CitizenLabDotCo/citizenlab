@@ -1429,6 +1429,26 @@
     "verified_at": "2026-10-28T15:55:51.849357Z",
     "verified_by": "Jelena"
   },
+  "app.components.admin.ContentBuilder.CustomBlocks.blockDisabled": {
+    "state": "verified",
+    "verified_at": "2026-11-05T15:49:05.680905Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ContentBuilder.CustomBlocks.blockLoadError": {
+    "state": "verified",
+    "verified_at": "2026-11-05T15:49:05.680905Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ContentBuilder.CustomBlocks.customBlockTitle": {
+    "state": "verified",
+    "verified_at": "2026-11-05T15:49:05.680905Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ContentBuilder.CustomBlocks.noSettings": {
+    "state": "verified",
+    "verified_at": "2026-11-05T15:49:05.680905Z",
+    "verified_by": "Jelena"
+  },
   "app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions3": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
@@ -9879,6 +9899,11 @@
     "verified_at": "2026-10-06T13:48:15.497861Z",
     "verified_by": "Jelena"
   },
+  "app.containers.Admin.projects.project.earlyAccess.feedbackNoticeDescriptionWithoutSlack": {
+    "state": "verified",
+    "verified_at": "2026-11-05T15:49:05.680905Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.projects.project.earlyAccess.feedbackNoticeTitle": {
     "state": "verified",
     "verified_at": "2026-10-06T13:48:15.497861Z",
@@ -9892,6 +9917,11 @@
   "app.containers.Admin.projects.project.earlyAccess.turnOnNoticeDescription": {
     "state": "verified",
     "verified_at": "2026-10-06T13:48:15.497861Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.earlyAccess.turnOnNoticeDescriptionGeneral": {
+    "state": "verified",
+    "verified_at": "2026-11-05T15:49:05.680905Z",
     "verified_by": "Jelena"
   },
   "app.containers.Admin.projects.project.earlyAccess.turnOnNoticeTitle": {
@@ -24013,6 +24043,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
+  },
+  "app.containers.admin.ContentBuilder.IframeMultiloc.noUrlPrompt": {
+    "state": "verified",
+    "verified_at": "2026-11-05T15:49:05.680905Z",
+    "verified_by": "Jelena"
   },
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": {
     "state": "verified",

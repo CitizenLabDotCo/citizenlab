@@ -35,11 +35,11 @@ module ContentBuilder
     end
 
     def upsert?
-      moderator? && authorized_to_attach_files?
+      authorized_to_edit?
     end
 
     def update?
-      moderator? && authorized_to_attach_files?
+      authorized_to_edit?
     end
 
     def destroy?
@@ -52,13 +52,24 @@ module ContentBuilder
       user&.active? && (record.content_buildable ? user_role_service.can_moderate?(record.content_buildable, user) : user.admin?)
     end
 
+    # When a moderator is refused because of a file they added, the 401 carries the
+    # 'unauthorized_file' error code, so the front end can show a specific message.
+    def authorized_to_edit?
+      return false unless moderator?
+
+      authorized_to_attach_files? || raise_not_authorized('unauthorized_file')
+    end
+
     def user_role_service
       @user_role_service ||= UserRoleService.new
     end
 
-    # Checks that the user is authorized to use all files referenced in craftjs_json.
+    # Checks that the user is authorized to use the files that craftjs_json adds. Files
+    # already in the saved layout are not checked again: keeping them attaches nothing
+    # new, and a user who can edit the page should not be blocked by files someone else
+    # put there.
     def authorized_to_attach_files?
-      file_ids = record.referenced_file_ids
+      file_ids = record.added_file_ids
       return true if file_ids.empty?
 
       # Ideally, we would check `policy_for(file_attachment).create?`, but that causes a

@@ -459,6 +459,16 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.components.CommonGroundResults.allStatementsDescription1": {
+    "state": "verified",
+    "verified_at": "2026-11-06T13:10:47.313962Z",
+    "verified_by": "stephanie"
+  },
+  "app.components.CommonGroundResults.allStatementsTitle": {
+    "state": "verified",
+    "verified_at": "2026-11-06T13:10:47.313962Z",
+    "verified_by": "stephanie"
+  },
   "app.components.CommonGroundResults.closeCallsDescription": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -6924,6 +6934,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.ProjectDescription.saveErrorUnauthorizedFile": {
+    "state": "verified",
+    "verified_at": "2026-10-30T13:32:34.983563Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.AdminPage.ProjectDescription.toggleLabel": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -7778,6 +7793,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.containers.CustomPageBuilder.saveErrorUnauthorizedFile": {
+    "state": "verified",
+    "verified_at": "2026-10-30T13:32:34.983563Z",
+    "verified_by": "Adrien"
   },
   "app.containers.CustomPageShow.editPage": {
     "state": "verified",
@@ -11268,6 +11288,11 @@
     "state": "verified",
     "verified_at": "2026-07-17T08:20:45.182128Z",
     "verified_by": "Cindy EB"
+  },
+  "app.containers.ProjectPageBuilder.saveErrorUnauthorizedFile": {
+    "state": "verified",
+    "verified_at": "2026-10-30T13:32:34.983563Z",
+    "verified_by": "Adrien"
   },
   "app.containers.ProjectPageBuilder.toolboxLockedNote": {
     "state": "verified",

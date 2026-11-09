@@ -195,6 +195,7 @@ export interface IAppConfigurationSettings {
   customised_automated_context_emails?: AppConfigurationFeature;
   project_importer?: AppConfigurationFeature;
   idea_feed?: AppConfigurationFeature;
+  id_config?: AppConfigurationFeature;
   nested_input_topics?: AppConfigurationFeature;
   live_auto_input_topics?: AppConfigurationFeature;
   workshops?: AppConfigurationFeature;

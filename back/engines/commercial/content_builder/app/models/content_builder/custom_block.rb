@@ -4,12 +4,12 @@
 #
 # Table name: content_builder_custom_blocks
 #
-#  id                   :uuid             not null, primary key
-#  title_multiloc       :jsonb            not null
-#  status               :string           default("draft"), not null
-#  created_by_id        :uuid
-#  created_at           :datetime         not null
-#  updated_at           :datetime         not null
+#  id             :uuid             not null, primary key
+#  title_multiloc :jsonb            not null
+#  status         :string           default("draft"), not null
+#  created_by_id  :uuid
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
 #
 # Indexes
 #
