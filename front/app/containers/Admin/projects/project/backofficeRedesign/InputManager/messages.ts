@@ -179,6 +179,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.nextTerm',
     defaultMessage: 'Next {term}',
   },
+  postedBy: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.postedBy',
+    defaultMessage: 'Posted by {author}',
+  },
   position: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.position',
     defaultMessage: '{position} of {total}',

@@ -61,7 +61,11 @@ const IdeaContent = ({ idea }: Props) => {
           </Text>
         </Box>
       )}
-      <Body postId={idea.id} body={localize(attributes.body_multiloc)} />
+      <Body
+        postId={idea.id}
+        body={localize(attributes.body_multiloc)}
+        fontSize="s"
+      />
       {position && address && (
         <DropdownMap
           address={address}

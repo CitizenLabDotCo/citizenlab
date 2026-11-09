@@ -1,12 +1,12 @@
 import React from 'react';
 
 import {
+  bo,
   Box,
   colors,
   Divider,
   Icon,
   Text,
-  Title,
 } from '@citizenlab/cl2-component-library';
 import { FormattedDate } from 'react-intl';
 
@@ -20,6 +20,10 @@ import IdeaOfficialFeedbackModal from 'components/admin/PostManager/components/I
 import CommentsSection from 'components/PostShowComponents/Comments/CommentsSection';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import UserName from 'components/UI/UserName';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from '../messages';
 
 import AssigneeProperty from './AssigneeProperty';
 import IdeaContent from './IdeaContent';
@@ -50,21 +54,36 @@ const IdeaOverview = ({
   const isProposals = type === 'ProjectProposals';
 
   return (
-    <Box display="flex" flexDirection="column" gap="16px" p="24px">
-      <Box>
-        <Title variant="h3" as="h2" m="0" mb="8px" color="textPrimary">
+    <Box display="flex" flexDirection="column" gap="24px" p="16px 24px 24px">
+      <Box display="flex" flexDirection="column" gap="12px">
+        <Text
+          as="p"
+          variant="boControl"
+          fontWeight="semi-bold"
+          fontSize="s"
+          m="0"
+        >
           {localize(attributes.title_multiloc)}
-        </Title>
-        <Box display="flex" alignItems="center" gap="8px">
-          <Text variant="boHelper" m="0">
-            <UserName
-              userId={relationships.author?.data?.id ?? null}
-              anonymous={attributes.anonymous}
-              fontSize={14}
+        </Text>
+        <IdeaContent idea={idea} />
+        <Box display="flex" alignItems="center" gap="24px">
+          <Text variant="boHelper" fontSize="xs" m="0">
+            <FormattedMessage
+              {...messages.postedBy}
+              values={{
+                author: (
+                  <UserName
+                    userId={relationships.author?.data?.id ?? null}
+                    anonymous={attributes.anonymous}
+                    fontSize={12}
+                    color={bo.colors.textHeadingStrong}
+                  />
+                ),
+              }}
             />
           </Text>
           {attributes.published_at && (
-            <Text variant="boHelper" m="0">
+            <Text variant="boHelper" fontSize="xs" m="0">
               <FormattedDate
                 value={attributes.published_at}
                 year="numeric"
@@ -74,31 +93,40 @@ const IdeaOverview = ({
             </Text>
           )}
         </Box>
-      </Box>
-
-      <Box display="flex" alignItems="center" justifyContent="space-between">
-        <Box display="flex" alignItems="center" gap="12px">
-          <Box display="flex" alignItems="center" gap="4px">
-            <Icon name="vote-up" width="16px" fill={colors.coolGrey600} />
-            <Text variant="boLabel" m="0">
-              {attributes.likes_count}
-            </Text>
-          </Box>
-          {!isProposals && (
-            <Box display="flex" alignItems="center" gap="4px">
-              <Icon name="vote-down" width="16px" fill={colors.coolGrey600} />
-              <Text variant="boLabel" m="0">
-                {attributes.dislikes_count}
+        <Box display="flex" alignItems="center" justifyContent="space-between">
+          <Box display="flex" alignItems="center" gap="14px">
+            <Box display="flex" alignItems="center" gap="5px">
+              <Icon
+                name="thumb-up"
+                width="14px"
+                height="14px"
+                fill={colors.coolGrey500}
+              />
+              <Text variant="boHelper" fontSize="xs" m="0">
+                {attributes.likes_count}
               </Text>
             </Box>
-          )}
+            {!isProposals && (
+              <Box display="flex" alignItems="center" gap="5px">
+                <Icon
+                  name="thumb-down"
+                  width="14px"
+                  height="14px"
+                  fill={colors.coolGrey500}
+                />
+                <Text variant="boHelper" fontSize="xs" m="0">
+                  {attributes.dislikes_count}
+                </Text>
+              </Box>
+            )}
+          </Box>
+          <QuickActions idea={idea} onEdit={onEdit} onDeleted={onDeleted} />
         </Box>
-        <QuickActions idea={idea} onEdit={onEdit} onDeleted={onDeleted} />
       </Box>
 
       <Divider m="0" />
 
-      <Box display="flex" flexDirection="column" gap="8px">
+      <Box display="flex" flexDirection="column" gap="10px">
         <StatusProperty idea={idea} type={type} />
         <AssigneeProperty idea={idea} />
         <TagsProperty idea={idea} type={type} />
@@ -108,11 +136,7 @@ const IdeaOverview = ({
 
       <Divider m="0" />
 
-      <IdeaContent idea={idea} />
-
-      <Divider m="0" />
-
-      <OfficialFeedback postId={idea.id} permissionToPost />
+      <OfficialFeedback postId={idea.id} permissionToPost variant="bo" />
       <CommentsSection
         postId={idea.id}
         allowAnonymousParticipation={
