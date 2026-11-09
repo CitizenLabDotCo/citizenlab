@@ -17,6 +17,7 @@ import useOnQuerySuccess from 'hooks/useOnQuerySuccess';
 import { customerAnalyticsEvents, trackEventByName } from 'utils/analytics';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
+import { usePageDirection } from '../Page/PageTransition';
 import { FormValues } from '../Page/types';
 import { convertCustomFieldsToNestedPages } from '../util';
 
@@ -45,6 +46,8 @@ const SurveyForm = ({
   // is a no-op), so we accumulate their values here and feed them back as
   // defaultValues on each remount.
   const [accumulatedValues, setAccumulatedValues] = useState<FormValues>({});
+  // Next pages slide in from the right, previous ones from the left.
+  const enterDirection = usePageDirection(currentPageIndex);
 
   const { data: authUser } = useAuthUser();
   const { data: phase } = usePhase(phaseId);
@@ -176,6 +179,7 @@ const SurveyForm = ({
           }
           phase={phase.data}
           defaultValues={{ ...initialFormData, ...accumulatedValues }}
+          enterDirection={enterDirection}
         />
       )}
     </Box>

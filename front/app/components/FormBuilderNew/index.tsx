@@ -699,7 +699,7 @@ const FormEdit = ({
                 <Box
                   position="absolute"
                   right="24px"
-                  bottom="24px"
+                  bottom="104px"
                   zIndex="5"
                   display="flex"
                   alignItems="center"

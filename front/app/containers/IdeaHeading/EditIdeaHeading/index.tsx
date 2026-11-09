@@ -36,9 +36,16 @@ type Props = {
   idea: IIdeaData;
   projectId: string;
   titleText?: string | React.ReactNode;
+  // Off when a surrounding header bar draws the line.
+  bordered?: boolean;
 };
 
-const EditIdeaHeading = ({ titleText, idea, projectId }: Props) => {
+const EditIdeaHeading = ({
+  titleText,
+  idea,
+  projectId,
+  bordered = true,
+}: Props) => {
   const { data: project } = useProjectById(projectId);
   const { data: authUser } = useAuthUser();
 
@@ -76,7 +83,7 @@ const EditIdeaHeading = ({ titleText, idea, projectId }: Props) => {
             : stylingConsts.menuHeight
         }px`}
         px="24px"
-        borderBottom={`1px solid ${colors.divider}`}
+        borderBottom={bordered ? `1px solid ${colors.divider}` : undefined}
       >
         {titleText && (
           <StyledTitle

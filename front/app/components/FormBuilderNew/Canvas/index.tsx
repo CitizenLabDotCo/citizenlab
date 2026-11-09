@@ -18,8 +18,11 @@ import useLocalize from 'hooks/useLocalize';
 
 import CustomFields from 'components/CustomFieldsForm/CustomFields';
 import CustomFieldsSignupHelperText from 'components/CustomFieldsForm/CustomFieldsSignupHelperText';
-import PageFooter from 'components/CustomFieldsForm/Page/PageFooter';
+import { FORM_CONTENT_MAX_WIDTH } from 'components/CustomFieldsForm/Page/FormPageLayout';
 import PageTitle from 'components/CustomFieldsForm/Page/PageTitle';
+import PreviousPageButton from 'components/CustomFieldsForm/Page/PreviousPageButton';
+import ProgressFooter from 'components/CustomFieldsForm/Page/ProgressFooter';
+import PageControlButtons from 'components/CustomFieldsForm/PageControlButtons';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -110,6 +113,16 @@ const Canvas = ({ phase, projectId, top }: Props) => {
     ({ field }) => field.enabled !== false
   );
 
+  const isEnding = currentIndex === lastIndex;
+  const pageVariant = isEnding
+    ? 'after-submission'
+    : nextIsLast
+    ? 'submission'
+    : 'other';
+
+  // Same layout as the participant survey page: white page, sticky heading
+  // bar, the page in a centred column, buttons at the end of the content and
+  // the progress bar along the bottom.
   return (
     <Box
       ref={drop}
@@ -117,19 +130,24 @@ const Canvas = ({ phase, projectId, top }: Props) => {
       h="100vh"
       overflowY="auto"
       bgColor={colors.grey100}
+      display="flex"
+      flexDirection="column"
       data-cy="e2e-form-builder-new-canvas"
     >
-      <Box maxWidth="700px" mx="auto" pt="40px" pb="80px" px="16px">
-        {top}
-
-        {/* Same heading bar participants see above the survey */}
+      <Box
+        position="sticky"
+        top="0"
+        zIndex="3"
+        bgColor={colors.white}
+        borderBottom={`1px solid ${colors.divider}`}
+      >
         <Box
-          bgColor={colors.white}
+          maxWidth={FORM_CONTENT_MAX_WIDTH}
+          mx="auto"
           display="flex"
           alignItems="center"
           minHeight={`${stylingConsts.menuHeight}px`}
           px="24px"
-          borderBottom={`1px solid ${colors.divider}`}
         >
           <Text color="tenantText" fontSize="m" my="0px">
             {localize(phase.attributes.native_survey_title_multiloc)}
@@ -138,115 +156,129 @@ const Canvas = ({ phase, projectId, top }: Props) => {
             <Icon name="close" fill={colors.textSecondary} />
           </Box>
         </Box>
+      </Box>
 
-        <Box
-          bgColor={colors.white}
-          position="relative"
-          minHeight="calc(100vh - 260px)"
-          pb="140px"
-          // Makes the participant footer (position: fixed) stick to the
-          // bottom of this card instead of the viewport.
-          style={{ transform: 'translateZ(0)' }}
-        >
-          <FormProvider {...previewMethods}>
-            <Box p="24px">
-              {isDemographicsPage ? (
-                // Shown as participants see it; the questions come from the
-                // access rights settings and can't be edited here.
-                <>
-                  <Box ref={setInert} pointerEvents="none" aria-hidden>
-                    <PageTitle page={group.page} />
-                    <CustomFieldsSignupHelperText />
-                    <CustomFields
-                      questions={visibleQuestions.map(({ field }) => field)}
-                      projectId={projectId}
-                      phase={phase}
-                      participationMethod={
-                        phase.attributes.participation_method
-                      }
-                      scrollErrorIntoView={false}
-                    />
-                  </Box>
-                </>
+      <Box
+        flex="1"
+        w="100%"
+        maxWidth={FORM_CONTENT_MAX_WIDTH}
+        mx="auto"
+        bgColor={colors.white}
+        px="24px"
+        pt="24px"
+        pb="80px"
+      >
+        {top}
+
+        {currentIndex > 0 && !isEnding && (
+          <Box ref={setInert} pointerEvents="none" aria-hidden>
+            <PreviousPageButton onClick={noop} />
+          </Box>
+        )}
+
+        <FormProvider {...previewMethods}>
+          {isDemographicsPage ? (
+            // Shown as participants see it; the questions come from the
+            // access rights settings and can't be edited here.
+            <Box ref={setInert} pointerEvents="none" aria-hidden>
+              <PageTitle page={group.page} />
+              <CustomFieldsSignupHelperText />
+              <CustomFields
+                questions={visibleQuestions.map(({ field }) => field)}
+                projectId={projectId}
+                phase={phase}
+                participationMethod={phase.attributes.participation_method}
+                scrollErrorIntoView={false}
+              />
+            </Box>
+          ) : (
+            <PageHeaderBlock key={group.page.id} page={group.page} />
+          )}
+
+          {!isLocked && (
+            <>
+              {visibleQuestions.length === 0 ? (
+                <Box
+                  onClick={() =>
+                    openAddModal({ pageId: group.page.id, index: 0 })
+                  }
+                  style={{ cursor: 'pointer' }}
+                >
+                  <EmptyBlockHint>
+                    <Text color="textSecondary" m="0px">
+                      {formatMessage(messages.emptyPage)}
+                    </Text>
+                  </EmptyBlockHint>
+                </Box>
               ) : (
-                <PageHeaderBlock key={group.page.id} page={group.page} />
-              )}
-
-              {!isLocked && (
                 <>
-                  {visibleQuestions.length === 0 ? (
-                    <Box
-                      onClick={() =>
-                        openAddModal({ pageId: group.page.id, index: 0 })
-                      }
-                      style={{ cursor: 'pointer' }}
-                    >
-                      <EmptyBlockHint>
-                        <Text color="textSecondary" m="0px">
-                          {formatMessage(messages.emptyPage)}
-                        </Text>
-                      </EmptyBlockHint>
-                    </Box>
-                  ) : (
-                    <>
-                      <InsertionPoint
-                        pageId={group.page.id}
-                        index={0}
-                        isDraggingQuestion={isDraggingQuestion}
-                      />
-                      {group.questions.map(({ field }, position) =>
-                        field.enabled === false ? null : (
-                          <React.Fragment key={field.id}>
-                            <QuestionBlock
-                              question={field}
-                              pageId={group.page.id}
-                              position={position}
-                              projectId={projectId}
-                              phase={phase}
-                            />
-                            <InsertionPoint
-                              pageId={group.page.id}
-                              index={position + 1}
-                              isDraggingQuestion={isDraggingQuestion}
-                            />
-                          </React.Fragment>
-                        )
-                      )}
-                    </>
+                  <InsertionPoint
+                    pageId={group.page.id}
+                    index={0}
+                    isDraggingQuestion={isDraggingQuestion}
+                  />
+                  {group.questions.map(({ field }, position) =>
+                    field.enabled === false ? null : (
+                      <React.Fragment key={field.id}>
+                        <QuestionBlock
+                          question={field}
+                          pageId={group.page.id}
+                          position={position}
+                          projectId={projectId}
+                          phase={phase}
+                        />
+                        <InsertionPoint
+                          pageId={group.page.id}
+                          index={position + 1}
+                          isDraggingQuestion={isDraggingQuestion}
+                        />
+                      </React.Fragment>
+                    )
                   )}
                 </>
               )}
-            </Box>
-          </FormProvider>
+            </>
+          )}
+        </FormProvider>
 
-          <Box ref={setInert} pointerEvents="none" aria-hidden>
-            <PageFooter
-              variant={
-                currentIndex === lastIndex
-                  ? 'after-submission'
-                  : nextIsLast
-                  ? 'submission'
-                  : 'other'
-              }
-              hasPreviousPage={currentIndex > 0}
-              handleNextAndSubmit={noop}
-              handlePrevious={noop}
-              formCompletionPercentage={
-                lastIndex > 0 ? Math.round((currentIndex / lastIndex) * 100) : 0
-              }
-              pageButtonLabelMultiloc={group.page.page_button_label_multiloc}
-              pageButtonLink={group.page.page_button_link}
-              phase={phase}
-              project={project}
-              phases={phases}
-              isLoading={false}
-              isAdminPage
-              isMapPage={group.page.page_layout === 'map'}
-              pageQuestions={visibleQuestions.map(({ field }) => field)}
-              currentPageIndex={currentIndex}
-            />
-          </Box>
+        <Box ref={setInert} pointerEvents="none" aria-hidden>
+          <PageControlButtons
+            inline
+            showPrevious={false}
+            handleNextAndSubmit={noop}
+            handlePrevious={noop}
+            hasPreviousPage={currentIndex > 0}
+            isLoading={false}
+            pageVariant={pageVariant}
+            phases={phases?.data}
+            currentPhase={phase}
+            pageButtonLabelMultiloc={group.page.page_button_label_multiloc}
+            pageButtonLink={group.page.page_button_link}
+            project={project}
+            pageQuestions={visibleQuestions.map(({ field }) => field)}
+            currentPageIndex={currentIndex}
+          />
         </Box>
+      </Box>
+
+      {/* Not clickable here: its language switcher would change the admin's
+          own language. */}
+      <Box
+        position="sticky"
+        bottom="0"
+        zIndex="2"
+        ref={setInert}
+        pointerEvents="none"
+        aria-hidden
+      >
+        <ProgressFooter
+          position="relative"
+          formCompletionPercentage={
+            lastIndex > 0 ? Math.round((currentIndex / lastIndex) * 100) : 0
+          }
+          currentPage={currentIndex + 1}
+          totalPages={lastIndex}
+        />
       </Box>
     </Box>
   );

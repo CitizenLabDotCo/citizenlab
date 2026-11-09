@@ -42,9 +42,11 @@ const StyledSurveyTitle = styled(Text)`
 type Props = {
   titleText: string | React.ReactNode;
   phaseId: string;
+  // Off when a surrounding header bar draws the line.
+  bordered?: boolean;
 };
 
-const SurveyHeading = ({ titleText, phaseId }: Props) => {
+const SurveyHeading = ({ titleText, phaseId, bordered = true }: Props) => {
   const { slug: projectSlug } = useParams({
     from: '/$locale/projects/$slug/surveys/new',
   });
@@ -148,7 +150,7 @@ const SurveyHeading = ({ titleText, phaseId }: Props) => {
             : stylingConsts.menuHeight
         }px`}
         px="24px"
-        borderBottom={`1px solid ${colors.divider}`}
+        borderBottom={bordered ? `1px solid ${colors.divider}` : undefined}
       >
         <StyledSurveyTitle
           color={'tenantText'}
