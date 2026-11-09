@@ -484,7 +484,7 @@ it-IT:
       title: Sei stato menzionato
     merge_account_confirmation:
       best_regards: Cordiali saluti,
-      event_description: "Qualcuno ha effettuato l'accesso alla piattaforma di partecipazione di %{organizationName} e ha chiesto di collegare tale accesso all'account associato a questo indirizzo email. Se sei stato tu, inserisci questo codice di conferma per continuare:"
+      event_description: "Qualcuno ha effettuato l'accesso alla piattaforma partecipativa di %{organizationName} e ha chiesto di collegare tale accesso all'account associato a questo indirizzo email. Se sei stato tu, inserisci questo codice di conferma per continuare:"
       expire_code: Questo codice scadrà tra
       hours_24: 24 ore.
       ignore_email: Se non sei stato tu, puoi ignorare tranquillamente questa email. Non è stato modificato nulla e nessuno può utilizzare questo codice senza avere accesso a questa casella di posta.
