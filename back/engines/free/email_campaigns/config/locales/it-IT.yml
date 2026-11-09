@@ -489,7 +489,7 @@ it-IT:
       hours_24: 24 ore.
       ignore_email: Se non sei stato tu, puoi ignorare tranquillamente questa email. Non è stato modificato nulla e nessuno può utilizzare questo codice senza avere accesso a questa casella di posta.
       preheader: Conferma il tuo indirizzo email per %{organizationName}
-      subject: Conferma il tuo indirizzo email per la piattaforma di partecipazione di %{organizationName}
+      subject: Conferma il tuo indirizzo email per la piattaforma partecipativa di %{organizationName}
       title: Conferma il tuo indirizzo email
     moderator_digest:
       cta_button: Gestione del progetto
