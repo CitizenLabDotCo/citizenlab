@@ -90,4 +90,16 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.notOnProjectPage',
     defaultMessage: 'Not on the project page',
   },
+  spotlight: {
+    id: 'app.containers.Admin.projects.project.spotlight',
+    defaultMessage: 'Spotlight',
+  },
+  phaseDateRange: {
+    id: 'app.containers.Admin.projects.project.phaseDateRange',
+    defaultMessage: '{startDate} to {endDate}',
+  },
+  phaseOpenEnded: {
+    id: 'app.containers.Admin.projects.project.phaseOpenEnded',
+    defaultMessage: 'From {startDate}',
+  },
 });

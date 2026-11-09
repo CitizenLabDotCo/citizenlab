@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 
-import Modal from 'components/UI/Modal';
+import Modal, { MEDIUM_MODAL_WIDTH } from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -21,21 +21,24 @@ const VotingMethodChangeModal = ({ opened, onClose, onConfirm }: Props) => {
     <Modal
       opened={opened}
       close={onClose}
-      width={520}
+      width={MEDIUM_MODAL_WIDTH}
+      variant="bo"
       header={formatMessage(messages.changeVotingMethodTitle)}
       footer={
         <Box display="flex" justifyContent="flex-end" gap="8px" width="100%">
-          <Button buttonStyle="secondary-outlined" onClick={onClose}>
+          <Button buttonStyle="bo-secondary" onClick={onClose}>
             {formatMessage(messages.changeVotingMethodCancel)}
           </Button>
-          <Button buttonStyle="delete" onClick={onConfirm}>
+          <Button buttonStyle="bo-delete" onClick={onConfirm}>
             {formatMessage(messages.changeVotingMethodConfirm)}
           </Button>
         </Box>
       }
     >
       <Box p="24px">
-        <Text m="0">{formatMessage(messages.changeVotingMethodWarning)}</Text>
+        <Text variant="boLabel" m="0">
+          {formatMessage(messages.changeVotingMethodWarning)}
+        </Text>
       </Box>
     </Modal>
   );

@@ -12,7 +12,7 @@ import PhonePreview from 'components/admin/PhonePreview';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../messages';
+import messages from './messages';
 
 interface Props {
   projectId: string;

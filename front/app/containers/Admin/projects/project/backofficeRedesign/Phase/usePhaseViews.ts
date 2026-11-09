@@ -11,7 +11,7 @@ import { FeatureFlags, getTabs } from 'containers/Admin/projects/project/tabs';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
-import messages from '../messages';
+import messages from './messages';
 
 export type PhaseViewKey = 'build' | 'manage' | 'insights';
 

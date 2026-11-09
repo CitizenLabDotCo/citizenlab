@@ -521,6 +521,8 @@ const phasesSearchSchema = yup.object({
   // the timeline.
   placement: yup.string().oneOf(['standalone']).optional(),
   participation_method: yup.string().oneOf(participationMethods).optional(),
+  // Shows the project's map configuration in the redesigned workspace.
+  map_config: yup.boolean().optional(),
 });
 
 const projectPhasesRoute = createRoute({

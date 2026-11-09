@@ -138,14 +138,17 @@ const StyledToggleWrapper = styled.div<{
   }
 `;
 
-const LabelAndDescription = styled.div`
+const labelGap = (variant: Variant) =>
+  variant === 'bo' ? bo.toggleLabelGap : '10px';
+
+const LabelAndDescription = styled.div<{ variant: Variant }>`
   display: flex;
   flex-direction: column;
-  padding-left: 10px;
+  padding-left: ${({ variant }) => labelGap(variant)};
 
   ${isRtl`
     padding-left: 0;
-    padding-right: 10px;
+    padding-right: ${({ variant }: { variant: Variant }) => labelGap(variant)};
   `}
 `;
 
@@ -243,7 +246,7 @@ class Toggle extends PureComponent<Props> {
         </StyledToggleWrapper>
 
         {label && (
-          <LabelAndDescription>
+          <LabelAndDescription variant={variant}>
             <Label
               htmlFor={inputId}
               onClick={this.handleOnClick}

@@ -252,6 +252,18 @@ module ParticipationMethod
       'all_data'
     end
 
+    # Distinct from 'demographics_only', which also drops the user id but keeps
+    # the demographic answers.
+    def fully_anonymous?
+      user_data_collection == 'anonymous'
+    end
+
+    # 'demographics_only' keeps the demographics but drops the respondent's
+    # identity, so only 'all_data' may name an author.
+    def identifies_author?
+      user_data_collection == 'all_data'
+    end
+
     # Only implemented in native_survey, community monitor and ideation
     def user_fields_in_form_enabled?
       false

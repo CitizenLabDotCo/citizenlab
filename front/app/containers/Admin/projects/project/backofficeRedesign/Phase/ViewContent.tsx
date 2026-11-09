@@ -12,10 +12,10 @@ import { IProjectData } from 'api/projects/types';
 import { useIntl } from 'utils/cl-intl';
 
 import OfflineCollection from '../InputManager/SideColumn/OfflineCollection';
-import messages from '../messages';
 
 import EmptyState from './EmptyState';
 import ManageLayout from './ManageLayout';
+import messages from './messages';
 import { PhaseViewKey } from './usePhaseViews';
 
 const SIDE_PANEL_WIDTH = 'clamp(320px, 30vw, 384px)';
