@@ -3,20 +3,41 @@ import React, { ReactNode, useState } from 'react';
 import {
   Box,
   Checkbox,
+  colors,
   DropdownListItem,
+  Icon,
+  IconNames,
   Input,
   Text,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
+const OptionRow = styled(DropdownListItem)`
+  height: 32px;
+  padding: 0 8px;
+  margin-bottom: 0;
+`;
+
+const CheckSlot = styled.span<{ revealOnHover: boolean }>`
+  display: flex;
+  opacity: ${({ revealOnHover }) => (revealOnHover ? 0 : 1)};
+
+  ${OptionRow}:hover &,
+  ${OptionRow}:focus-visible & {
+    opacity: 1;
+  }
+`;
+
 export interface Option {
   value: string;
   label: string;
   color?: string;
+  icon?: IconNames;
   count?: number;
   disabled?: boolean;
   disabledReason?: ReactNode;
@@ -30,6 +51,7 @@ interface Props {
   selected: string[];
   onToggle: (value: string) => void;
   searchable?: boolean;
+  revealChecksOnHover?: boolean;
 }
 
 const OptionList = ({
@@ -37,6 +59,7 @@ const OptionList = ({
   selected,
   onToggle,
   searchable = options.length >= SEARCHABLE_FROM,
+  revealChecksOnHover = false,
 }: Props) => {
   const { formatMessage } = useIntl();
   const [search, setSearch] = useState('');
@@ -69,28 +92,33 @@ const OptionList = ({
             disabled={!option.disabled || !option.disabledReason}
             placement="left"
             theme="dark"
+            width="100%"
           >
-            <DropdownListItem
+            <OptionRow
               type="button"
               role="menuitemcheckbox"
               aria-checked={isSelected}
+              title={option.label}
               disabled={option.disabled}
               onClick={() => onToggle(option.value)}
             >
               <Box display="flex" alignItems="center" gap="8px" width="100%">
-                <Box
-                  display="flex"
+                <CheckSlot
+                  revealOnHover={
+                    revealChecksOnHover && !isSelected && !option.partial
+                  }
                   onClick={(event) => event.stopPropagation()}
                 >
                   <Checkbox
-                    size="18px"
+                    size="16px"
+                    checkedColor="primary"
                     checked={isSelected}
                     indeterminate={!isSelected && option.partial}
                     disabled={option.disabled}
                     onChange={() => onToggle(option.value)}
                     tabIndex={-1}
                   />
-                </Box>
+                </CheckSlot>
                 {option.color && (
                   <Box
                     flex="0 0 8px"
@@ -100,12 +128,23 @@ const OptionList = ({
                     background={option.color}
                   />
                 )}
-                <Box flexGrow={1}>
+                {option.icon && (
+                  <Icon
+                    name={option.icon}
+                    width="16px"
+                    height="16px"
+                    fill={colors.coolGrey500}
+                  />
+                )}
+                <Box flexGrow={1} minWidth="0">
                   <Text
                     variant="boLabel"
                     m="0"
                     color={option.disabled ? 'coolGrey500' : 'textPrimary'}
                     textAlign="left"
+                    whiteSpace="nowrap"
+                    overflow="hidden"
+                    textOverflow="ellipsis"
                   >
                     {option.label}
                   </Text>
@@ -116,7 +155,7 @@ const OptionList = ({
                   </Text>
                 )}
               </Box>
-            </DropdownListItem>
+            </OptionRow>
           </Tooltip>
         );
       })}

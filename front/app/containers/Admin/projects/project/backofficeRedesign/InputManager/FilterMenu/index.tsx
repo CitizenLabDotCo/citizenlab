@@ -71,6 +71,7 @@ const FilterMenu = ({ categories, onClearAll }: Props) => {
               selected={openCategory.selected}
               onToggle={openCategory.toggle}
               searchable={openCategory.searchable}
+              revealChecksOnHover
             />
           </Box>
         ) : (

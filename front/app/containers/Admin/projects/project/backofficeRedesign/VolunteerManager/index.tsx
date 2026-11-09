@@ -84,6 +84,7 @@ const VolunteerManager = ({ phase }: Props) => {
     options: causeData.map((cause) => ({
       value: cause.id,
       label: localize(cause.attributes.title_multiloc),
+      icon: 'label',
       count: cause.attributes.volunteers_count,
     })),
     selected: causeIds,
@@ -113,7 +114,7 @@ const VolunteerManager = ({ phase }: Props) => {
             selectedCauseIds={causeIds}
             onToggleCause={toggleOnlyCause}
           />
-          <Card>
+          <Card fillHeight>
             <SetupCard
               id="export-volunteers"
               title={formatMessage(volunteeringMessages.exportVolunteers)}
