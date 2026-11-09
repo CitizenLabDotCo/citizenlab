@@ -191,6 +191,14 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.edit',
     defaultMessage: 'Edit',
   },
+  editTerm: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.editTerm',
+    defaultMessage: 'Edit {term}',
+  },
+  save: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.save',
+    defaultMessage: 'Save',
+  },
   viewOnSite: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.viewOnSite',
     defaultMessage: 'View on the site',

@@ -13,7 +13,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import AnalysisBanner from 'containers/Admin/projects/_shared/components/AnalysisBanner';
 
-import { ManagerType, PreviewMode } from 'components/admin/PostManager';
+import { ManagerType } from 'components/admin/PostManager';
 import NoPost from 'components/admin/PostManager/components/PostTable/NoPost';
 
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
@@ -21,6 +21,7 @@ import { getPageNumberFromUrl } from 'utils/paginationUtils';
 import ManageLayout from '../Phase/ManageLayout';
 
 import { ColumnKey, getColumns } from './columns';
+import EditInputModal from './EditInputModal';
 import EmptyState from './EmptyState';
 import FilterChips from './FilterMenu/FilterChips';
 import useFilterCategories from './FilterMenu/useFilterCategories';
@@ -96,16 +97,13 @@ const InputManager = ({ project, phase }: Props) => {
 
   const [selection, setSelection] = useState<Map<string, IIdeaData>>(new Map());
   const [editingIdeaId, setEditingIdeaId] = useState<string>();
-  const panelMode: PreviewMode =
-    selectedIdeaId && editingIdeaId === selectedIdeaId ? 'edit' : 'view';
 
   const pageIdeas = ideas?.data ?? [];
   const lastPage = (ideas && getPageNumberFromUrl(ideas.links.last)) || 1;
   const filteredTotal = filteredCounts?.data.attributes.total;
 
-  const openPanel = (ideaId: string, mode: PreviewMode = 'view') => {
+  const openPanel = (ideaId: string) => {
     setSelection(new Map());
-    setEditingIdeaId(mode === 'edit' ? ideaId : undefined);
     setSelectedIdeaId(ideaId);
   };
 
@@ -178,7 +176,7 @@ const InputManager = ({ project, phase }: Props) => {
         count={filteredTotal}
         selectedIdeas={selectedIdeas}
         onUpdated={refreshSelected}
-        onEdit={(ideaId) => openPanel(ideaId, 'edit')}
+        onEdit={setEditingIdeaId}
         onClearSelection={() => setSelection(new Map())}
         onSelectAll={selectAll}
         isSelectingAll={isSelectingAll}
@@ -240,16 +238,21 @@ const InputManager = ({ project, phase }: Props) => {
       </Box>
       <SidePanel
         ideaId={selectedIdeaId}
-        mode={panelMode}
         type={type}
         context={localize(phase.attributes.title_multiloc)}
         listedPhase={listedPhase}
         navigation={navigation}
-        onChangeMode={(mode) =>
-          setEditingIdeaId(mode === 'edit' ? selectedIdeaId : undefined)
-        }
+        onEdit={setEditingIdeaId}
         onClose={() => setSelectedIdeaId(undefined)}
       />
+      {editingIdeaId && (
+        <EditInputModal
+          key={editingIdeaId}
+          ideaId={editingIdeaId}
+          phaseId={phase.id}
+          onClose={() => setEditingIdeaId(undefined)}
+        />
+      )}
     </ManageLayout>
   );
 };
