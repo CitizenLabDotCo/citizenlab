@@ -2,9 +2,9 @@
 
 The views and their columns are in the prompt under "The reporting views"; this is how
 they are usually put together. Every query is one SELECT, over the views named
-unqualified, with no `now()` and no parameter: it is stored with the chart and must give
-the same answer tomorrow. Aggregate in SQL and alias every column to the key the chart
-reads. At most 1000 rows come back, and a chart wants tens.
+unqualified, with no `now()` and no parameter: it is stored with the chart and re-run on
+every refresh, so it must always ask about the same dates. Aggregate in SQL and alias
+every column to the key the chart reads. At most 1000 rows come back, and a chart wants tens.
 
 Scope to the project: `WHERE project_id = '<the project id from the context>'`. The id is
 a literal in the query, not a config value — config cannot change what a chart reads.

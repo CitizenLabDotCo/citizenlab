@@ -351,8 +351,11 @@ module ReportBuilder
           - One statement, a single SELECT, over the reporting views below and nothing else.
             Name them unqualified.
           - Aggregate in SQL. At most 1000 rows come back, and a chart wants tens of rows.
-          - No now() or any moving value: the query is stored and must give the same answer
-            tomorrow. Write the dates out.
+          - No now() or any moving value in a period: the query is stored and re-run on
+            every refresh, so it must always ask about the same dates. Write them out.
+            Where a view's own note gives a formula that uses now() — an age from a birth
+            year, whether a phase has started — use it as given: that reads the present
+            deliberately, it does not pin a period.
           - Scope it to this project with its id unless the chart is deliberately about the
             whole platform.
           - Count participants with COUNT(DISTINCT participant_id) on reporting_contributions.
