@@ -15,16 +15,19 @@ import QuestionHeader from 'containers/Admin/projects/project/analysis/Insights/
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { useParams } from 'utils/router';
 
 import messages from '../../../messages';
 
 const Question = ({
   questionId,
   analysisId,
+  projectId,
+  phaseId,
 }: {
   questionId: string;
   analysisId: string;
+  projectId: string;
+  phaseId?: string;
 }) => {
   const { formatMessage } = useIntl();
 
@@ -34,10 +37,6 @@ const Question = ({
   });
 
   const { data } = useAnalysisQuestion({ analysisId, id: questionId });
-  const { projectId, phaseId } = useParams({ strict: false }) as {
-    projectId: string;
-    phaseId: string;
-  };
 
   const { mutate: regenerateQuestion, isPending: isLoadingRegenerateQuestion } =
     useRegenerateAnalysisQuestion();
@@ -86,9 +85,7 @@ const Question = ({
             projectId={projectId}
             phaseId={phaseId}
             generatedAt={generatedAt}
-            // TODO: Fix this the next time the file is edited.
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            backgroundTaskId={data?.data.relationships.background_task.data.id}
+            backgroundTaskId={data.data.relationships.background_task.data.id}
           />
         </Box>
         <InsightFooter
@@ -97,9 +94,7 @@ const Question = ({
           analysisId={analysisId}
           projectId={projectId}
           phaseId={phaseId}
-          // TODO: Fix this the next time the file is edited.
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-          customFieldIds={data?.data.attributes.custom_field_ids}
+          customFieldIds={data.data.attributes.custom_field_ids}
         />
         <Box display="flex" gap="16px">
           <ButtonWithLink
