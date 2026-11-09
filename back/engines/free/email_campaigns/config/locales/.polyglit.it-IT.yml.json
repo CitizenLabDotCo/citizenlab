@@ -2139,6 +2139,11 @@
     "verified_at": "2026-03-18T16:40:24.392927Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.merge_account_confirmation.title": {
+    "state": "verified",
+    "verified_at": "2026-11-09T21:44:58.229249Z",
+    "verified_by": "Roger"
+  },
   "email_campaigns.moderator_digest.cta_button": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.392927Z",
@@ -2424,6 +2429,11 @@
     "verified_at": "2026-03-18T16:40:24.392927Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.new_phone_confirmation.sms_body2": {
+    "state": "verified",
+    "verified_at": "2026-11-09T21:44:58.229249Z",
+    "verified_by": "Roger"
+  },
   "email_campaigns.official_feedback_on_idea_you_follow.cta_button": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.392927Z",
@@ -2472,6 +2482,11 @@
   "email_campaigns.password_reset.title": {
     "state": "verified",
     "verified_at": "2026-06-11T07:24:41.111194Z",
+    "verified_by": "Roger"
+  },
+  "email_campaigns.phone_confirmation.sms_body2": {
+    "state": "verified",
+    "verified_at": "2026-11-09T21:44:58.229249Z",
     "verified_by": "Roger"
   },
   "email_campaigns.preview_data.author_display_name": {
@@ -2558,6 +2573,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.392927Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.preview_data.phase_description": {
+    "state": "verified",
+    "verified_at": "2026-11-09T21:44:58.229249Z",
+    "verified_by": "Roger"
   },
   "email_campaigns.preview_data.phase_title": {
     "state": "verified",
