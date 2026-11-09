@@ -56,8 +56,8 @@ module Files
     def update?
       return false unless active?
       return true if admin?
-      # A file without projects (see #create?) can only be changed by its uploader.
-      return record.uploader_id == user.id if record.projects.empty?
+      # A file without projects (see #create?) can only be changed by its uploader while they still moderate something.
+      return record.uploader_id == user.id && user.moderator? if record.projects.empty?
 
       user_moderates_all_projects?(record.projects)
     end

@@ -33,6 +33,15 @@ RSpec.describe Files::FilePolicy do
         it { is_expected.not_to permit(:update) }
         it { is_expected.not_to permit(:destroy) }
       end
+
+      # A regular user cannot create such a file (see #create?), but a moderator who
+      # uploaded one stays its uploader after losing the role.
+      context 'when the file is not associated with any projects and was uploaded by the user' do
+        let(:file) { create(:global_file, uploader: user) }
+
+        it { is_expected.not_to permit(:update) }
+        it { is_expected.not_to permit(:destroy) }
+      end
     end
 
     context 'for project moderator' do
