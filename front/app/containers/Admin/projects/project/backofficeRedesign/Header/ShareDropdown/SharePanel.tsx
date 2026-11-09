@@ -23,9 +23,8 @@ import shareLinkTracks from 'containers/Admin/projects/project/projectHeader/Sha
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../../messages';
-
 import AccessPeopleRow from './AccessPeopleRow';
+import messages from './messages';
 
 const splitEmails = (value: string) =>
   value

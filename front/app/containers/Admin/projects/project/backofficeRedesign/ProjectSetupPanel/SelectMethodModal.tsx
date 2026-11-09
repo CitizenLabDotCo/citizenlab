@@ -14,7 +14,7 @@ import projectPageMessages from 'containers/Admin/projects/project/projectPage/m
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { useSearch } from 'utils/router';
 
-import messages from '../messages';
+import messages from './messages';
 
 const METHOD_GROUPS: {
   name: string;

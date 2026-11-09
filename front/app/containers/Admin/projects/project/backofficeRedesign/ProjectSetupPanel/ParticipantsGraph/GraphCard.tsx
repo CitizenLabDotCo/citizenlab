@@ -8,10 +8,10 @@ import useParticipants from 'components/admin/GraphCards/ParticipantsCard/usePar
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-import messages from '../../messages';
 import StatCardLink, { STAT_CARD_PADDING } from '../StatCardLink';
 
 import EmptyCard from './EmptyCard';
+import messages from './messages';
 import Sparkline from './Sparkline';
 
 const MIN_WEEKS = 2;

@@ -20,7 +20,7 @@ import CheckOption from 'components/UI/PillPicker/CheckOption';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../../messages';
+import messages from './messages';
 
 interface Props {
   projectId: string;

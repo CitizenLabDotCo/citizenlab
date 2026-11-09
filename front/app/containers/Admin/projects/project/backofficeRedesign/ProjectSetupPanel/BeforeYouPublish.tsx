@@ -12,9 +12,10 @@ import projectPageMessages from 'containers/Admin/projects/project/projectPage/m
 import { useIntl } from 'utils/cl-intl';
 import { usePermission } from 'utils/permissions';
 
-import messages from '../messages';
+import backofficeRedesignMessages from '../messages';
 import { useParticipationPanel } from '../ParticipationPanelContext';
 
+import messages from './messages';
 import PanelHeading from './PanelHeading';
 import SelectMethodModal from './SelectMethodModal';
 import SetupCard from './SetupCard';
@@ -93,14 +94,16 @@ const BeforeYouPublish = ({ project, onOpenSettings }: Props) => {
         />
         <SetupCard
           id="e2e-setup-card-methods"
-          title={formatMessage(messages.participationMethods)}
+          title={formatMessage(backofficeRedesignMessages.participationMethods)}
           ready={readiness.methods}
           behaviour={
             participationPanel.collapsed
               ? {
                   kind: 'action',
                   icon: 'chevron-right',
-                  actionLabel: formatMessage(messages.showPanel),
+                  actionLabel: formatMessage(
+                    backofficeRedesignMessages.showPanel
+                  ),
                   onClick: () => participationPanel.setCollapsed(false),
                 }
               : {
