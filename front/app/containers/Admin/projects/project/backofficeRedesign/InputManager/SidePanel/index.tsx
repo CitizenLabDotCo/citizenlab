@@ -36,30 +36,32 @@ const SidePanel = ({
   const { data: idea, isPlaceholderData } = useIdeaById(ideaId);
 
   return (
-    <SideModal opened={!!ideaId} close={onClose} width="640px">
+    <SideModal opened={!!ideaId} close={onClose} width="640px" variant="bo">
       {(!idea || isPlaceholderData) && !!ideaId && (
         <Box display="flex" justifyContent="center" py="80px">
           <Spinner />
         </Box>
       )}
       {idea && !isPlaceholderData && (
-        <>
+        <Box display="flex" flexDirection="column" height="100%">
           <PanelHeader context={context} navigation={navigation} />
-          {mode === 'edit' ? (
-            <AdminIdeaEdit
-              ideaId={idea.data.id}
-              goBack={() => onChangeMode('view')}
-            />
-          ) : (
-            <IdeaOverview
-              idea={idea.data}
-              type={type}
-              listedPhase={listedPhase}
-              onEdit={() => onChangeMode('edit')}
-              onDeleted={onClose}
-            />
-          )}
-        </>
+          <Box flex="1" minHeight="0" overflowY="auto">
+            {mode === 'edit' ? (
+              <AdminIdeaEdit
+                ideaId={idea.data.id}
+                goBack={() => onChangeMode('view')}
+              />
+            ) : (
+              <IdeaOverview
+                idea={idea.data}
+                type={type}
+                listedPhase={listedPhase}
+                onEdit={() => onChangeMode('edit')}
+                onDeleted={onClose}
+              />
+            )}
+          </Box>
+        </Box>
       )}
     </SideModal>
   );

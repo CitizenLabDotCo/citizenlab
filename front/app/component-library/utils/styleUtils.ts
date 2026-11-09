@@ -225,6 +225,8 @@ export const bo = {
   },
   borderRadius: '8px',
   panelBorderRadius: '12px',
+  drawerBorderRadius: '18px',
+  drawerInset: '16px',
   headerFontSize: BO_HEADER_FONT_SIZE,
   controlFontSize: BO_CONTROL_FONT_SIZE,
   toggleWidth: `${BO_TOGGLE_WIDTH}px`,

@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 
 import {
+  bo,
   Icon,
   ClickOutside,
   media,
@@ -11,7 +12,7 @@ import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import { Subscription } from 'rxjs';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import eventEmitter from 'utils/eventEmitter';
@@ -26,7 +27,9 @@ const easing = 'cubic-bezier(0.165, 0.84, 0.44, 1)';
 
 const ModalWrapper = styled(ClickOutside)``;
 
-const ModalContainer = styled.div<{ width: string }>`
+type Variant = 'default' | 'bo';
+
+const ModalContainer = styled.div<{ width: string; variant: Variant }>`
   width: ${({ width }) => width};
   height: 100vh;
   background: white;
@@ -38,6 +41,16 @@ const ModalContainer = styled.div<{ width: string }>`
   top: 0;
   right: 0;
   will-change: opacity, transform;
+
+  ${({ variant }) =>
+    variant === 'bo' &&
+    css`
+      top: ${bo.drawerInset};
+      right: ${bo.drawerInset};
+      height: calc(100vh - 2 * ${bo.drawerInset});
+      max-width: calc(100vw - 2 * ${bo.drawerInset});
+      border-radius: ${bo.drawerBorderRadius};
+    `}
 `;
 
 const CloseIcon = styled(Icon)`
@@ -46,10 +59,13 @@ const CloseIcon = styled(Icon)`
   z-index: 2;
 `;
 
-const CloseButton = styled.button`
+// Sits outside the container, so it has to follow the bo inset itself.
+const CloseButton = styled.button<{ variant: Variant }>`
   position: absolute;
-  top: 10px;
-  right: 35px;
+  top: ${({ variant }) =>
+    variant === 'bo' ? `calc(10px + ${bo.drawerInset})` : '10px'};
+  right: ${({ variant }) =>
+    variant === 'bo' ? `calc(35px + ${bo.drawerInset})` : '35px'};
   height: 30px;
   width: 30px;
   display: flex;
@@ -155,6 +171,7 @@ type Props = {
   label?: string;
   children?: any;
   width?: string;
+  variant?: Variant;
 };
 
 type State = {
@@ -219,7 +236,13 @@ export default class SideModal extends PureComponent<Props, State> {
   };
 
   render(): React.ReactNode {
-    const { children, opened, label, width = '940px' } = this.props;
+    const {
+      children,
+      opened,
+      label,
+      width = '940px',
+      variant = 'default',
+    } = this.props;
     // TODO: Fix this the next time the file is edited.
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const modalPortalElement = document?.getElementById('modal-portal');
@@ -237,6 +260,9 @@ export default class SideModal extends PureComponent<Props, State> {
           unmountOnExit={true}
           enter={true}
           exit={true}
+          // The close button only shows once the transition is done, which
+          // never happens for a panel that is already open on page load.
+          appear={variant === 'bo'}
         >
           <Overlay
             id="e2e-modal-container"
@@ -250,7 +276,7 @@ export default class SideModal extends PureComponent<Props, State> {
               closeOnClickOutsideEnabled={!this.state.innerModalOpened}
             >
               <FocusOn>
-                <ModalContainer width={width}>
+                <ModalContainer width={width} variant={variant}>
                   <ModalContent id="e2e-side-modal-content">
                     {children}
                   </ModalContent>
@@ -258,6 +284,7 @@ export default class SideModal extends PureComponent<Props, State> {
                 <CloseButton
                   className="e2e-modal-close-button"
                   onClick={this.clickCloseButton}
+                  variant={variant}
                 >
                   <HiddenSpan>
                     <FormattedMessage {...messages.closeButtonAria} />

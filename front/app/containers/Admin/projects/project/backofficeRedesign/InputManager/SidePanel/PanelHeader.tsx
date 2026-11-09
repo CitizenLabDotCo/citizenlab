@@ -38,10 +38,7 @@ const PanelHeader = ({ context, navigation }: Props) => {
       pr="80px"
       py="12px"
       borderBottom={`1px solid ${colors.divider}`}
-      position="sticky"
-      top="0"
-      background={colors.white}
-      zIndex="1"
+      flexShrink={0}
     >
       <Text variant="boHelper" m="0">
         {context}
