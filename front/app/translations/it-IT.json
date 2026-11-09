@@ -171,7 +171,7 @@
   "app.components.CustomFieldsForm.authorFieldPlaceholder": "Inizia a digitare per cercare l'email o il nome dell'utente...",
   "app.components.CustomFieldsForm.back": "Indietro",
   "app.components.CustomFieldsForm.blockedVerified": "Non è possibile modificare questo campo perché contiene informazioni verificate",
-  "app.components.CustomFieldsForm.budgetFieldLabel": "Bilancio",
+  "app.components.CustomFieldsForm.budgetFieldLabel": "Budget",
   "app.components.CustomFieldsForm.clickOnMapMultipleToAdd3": "Clicca sulla mappa per disegnare. Poi, trascina i punti per spostarli.",
   "app.components.CustomFieldsForm.clickOnMapToAddMultiplePins2": "Clicca sulla mappa per aggiungere posizioni. Quindi, trascina i punti per spostarli. Puoi rimuovere l'ultima posizione cliccando sul pulsante Annulla nell'angolo in alto a destra della mappa.",
   "app.components.CustomFieldsForm.clickOnMapToAddOrType": "Clicca sulla mappa o digita un indirizzo qui sotto per aggiungere la tua risposta.",
