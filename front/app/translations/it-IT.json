@@ -408,7 +408,7 @@
   "app.components.Pagination.next": "Pagina successiva",
   "app.components.ParticipationCTABars.VotingCTABar.budgetExceedsLimit": "Hai speso {votesCast}, che supera il limite di {votesLimit}. Deseleziona alcune opzioni e riprova.",
   "app.components.ParticipationCTABars.VotingCTABar.currencyLeft1": "{budgetLeft} / {totalBudget} rimanenti",
-  "app.components.ParticipationCTABars.VotingCTABar.minBudgetNotReached1": "Devi spendere un minimo di {votesMinimum} prima di poter inviare il tuo carrello.",
+  "app.components.ParticipationCTABars.VotingCTABar.minBudgetNotReached1": "Devi spendere almeno {votesMinimum} prima di poter inviare il tuo voto.",
   "app.components.ParticipationCTABars.VotingCTABar.noVotesCast4": "Devi selezionare almeno un'opzione prima di poter inviare il voto.",
   "app.components.ParticipationCTABars.VotingCTABar.nothingInBasket": "Devi aggiungere qualcosa al tuo carrello prima di poterlo inviare.",
   "app.components.ParticipationCTABars.VotingCTABar.numberOfCreditsLeft": "{votesLeft, plural, =0 {Nessun credito residuo} other {# su {totalNumberOfVotes, plural, one {1 credito} other {# crediti}} rimasti}}",
