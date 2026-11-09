@@ -1399,6 +1399,11 @@
     "verified_at": "2026-04-20T14:31:32.872123Z",
     "verified_by": "Roger"
   },
+  "xlsx_export.column_headers.budget": {
+    "state": "verified",
+    "verified_at": "2026-11-09T21:26:21.403115Z",
+    "verified_by": "Roger"
+  },
   "xlsx_export.column_headers.comments_count": {
     "state": "verified",
     "verified_at": "2026-04-20T14:31:32.872123Z",
