@@ -2139,6 +2139,21 @@
     "verified_at": "2026-03-18T16:40:24.392927Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.merge_account_confirmation.expire_code": {
+    "state": "verified",
+    "verified_at": "2026-11-09T21:46:20.736231Z",
+    "verified_by": "Roger"
+  },
+  "email_campaigns.merge_account_confirmation.hours_24": {
+    "state": "verified",
+    "verified_at": "2026-11-09T21:46:20.736231Z",
+    "verified_by": "Roger"
+  },
+  "email_campaigns.merge_account_confirmation.ignore_email": {
+    "state": "verified",
+    "verified_at": "2026-11-09T21:46:20.736231Z",
+    "verified_by": "Roger"
+  },
   "email_campaigns.merge_account_confirmation.preheader": {
     "state": "verified",
     "verified_at": "2026-11-09T21:45:29.442169Z",
