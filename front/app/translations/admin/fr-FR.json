@@ -248,7 +248,7 @@
   "app.components.admin.ContentBuilder.Widgets.Events.selectSpaces": "Espaces",
   "app.components.admin.ContentBuilder.Widgets.Events.selectTopics": "Étiquettes",
   "app.components.admin.ContentBuilder.Widgets.Events.showAllPaginated2": "Tous, sur toutes les pages",
-  "app.components.admin.ContentBuilder.Widgets.Events.showEmptyMessage": "Afficher un message lorsqu'il n'y a pas d'événements",
+  "app.components.admin.ContentBuilder.Widgets.Events.showEmptyMessage": "Afficher un message lorsqu’il n’y a aucun événement",
   "app.components.admin.ContentBuilder.Widgets.Events.showLimited": "Un nombre limité",
   "app.components.admin.ContentBuilder.Widgets.Events.upcomingEvents": "À venir et en cours",
   "app.components.admin.ContentBuilder.Widgets.Events.whichEvents2": "Inclure les événements qui sont",
