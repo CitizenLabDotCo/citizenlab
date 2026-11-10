@@ -955,7 +955,7 @@
   "app.components.aiAssistant.errorSurfaceUnavailable": "L'assistant n'est pas disponible ici.",
   "app.components.aiAssistant.errorTooLong": "Votre message est trop long.",
   "app.components.aiAssistant.errorTooManyConversationFiles": "Une discussion peut utiliser 5 fichiers au maximum. Commencez une nouvelle discussion pour en joindre davantage.",
-  "app.components.aiAssistant.errorToolBudgetExceeded": "L'assistant a nécessité trop d'étapes pour cette demande. Essayez une demande plus simple.",
+  "app.components.aiAssistant.errorToolBudgetExceeded": "Cette demande est trop complexe pour l’assistant. Essayez de la simplifier.",
   "app.components.aiAssistant.errorToolCallExpired2": "Cette modification proposée a expiré. Demandez à nouveau à l'assistant pour en obtenir une nouvelle.",
   "app.components.aiAssistant.errorToolCallNotAwaitingApproval": "Une décision a déjà été prise concernant cette modification proposée.",
   "app.components.aiAssistant.errorTurnTimedOut": "L’assistant n’a pas répondu à temps. Réessayez ou démarrez une nouvelle conversation.",

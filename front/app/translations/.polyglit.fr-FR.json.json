@@ -4599,6 +4599,11 @@
     "verified_at": "2026-10-30T15:07:42.380952Z",
     "verified_by": "Adrien"
   },
+  "app.components.aiAssistant.errorToolBudgetExceeded": {
+    "state": "verified",
+    "verified_at": "2026-11-10T09:00:46.644242Z",
+    "verified_by": "Adrien"
+  },
   "app.components.aiAssistant.errorTurnTimedOut": {
     "state": "verified",
     "verified_at": "2026-11-10T08:56:30.229592Z",
