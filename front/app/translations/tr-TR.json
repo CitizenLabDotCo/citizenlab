@@ -630,7 +630,7 @@
   "app.components.ProjectPageBuilder.Widgets.bannerEmptyNote": "Henüz görsel yok · bunu sadece bu projenin yöneticileri ve moderatörleri görebilir",
   "app.components.ProjectPageBuilder.Widgets.bannerEmptyTitle": "Bir proje görseli ekle",
   "app.components.ProjectPageBuilder.Widgets.bannerWidgetTitle": "Proje görseli",
-  "app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage": "Henüz etkinlik yok — proje düzenleyicide eklenen etkinlikler burada otomatik olarak görünür. Ziyaretçiler o zamana kadar bu bölümü görmeyecektir.",
+  "app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage2": "Henüz etkinlik yok. “Etkinlik olmadığında bir mesaj göster” ayarını açmadığınız sürece ziyaretçiler bu bölümü boşken görmeyecektir.",
   "app.components.ProjectPageBuilder.Widgets.eventsLinkText": "Etkinlikler",
   "app.components.ProjectPageBuilder.Widgets.eventsManagedNote": "Etkinlikler proje düzenleyicisinde, {eventsLink} altından yönetilir. Orada ekleyin, düzenleyin veya kaldırın — burada otomatik olarak görüneceklerdir.",
   "app.components.ProjectPageBuilder.Widgets.eventsWidgetTitle": "Etkinlikler",

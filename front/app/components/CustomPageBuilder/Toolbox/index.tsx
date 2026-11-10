@@ -230,6 +230,7 @@ const CustomPageBuilderToolbox = () => {
                 source="currentProject"
                 timeFilters={['upcoming', 'past']}
                 limit="all"
+                showEmptyMessage
               />
             ) : (
               <EventsList
@@ -237,6 +238,7 @@ const CustomPageBuilderToolbox = () => {
                 timeFilters={['upcoming']}
                 limit={3}
                 projectPublicationStatuses={['published']}
+                showEmptyMessage
               />
             )
           }

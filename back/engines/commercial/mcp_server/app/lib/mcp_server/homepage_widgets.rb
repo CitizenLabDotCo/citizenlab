@@ -77,10 +77,11 @@ class McpServer::HomepageWidgets
         imageUrl, existing = keep dataCode).
     DOC
     'EventsList' => <<~DOC,
-      EventsList — upcoming and past events from every project.
+      EventsList — upcoming events from every project.
         props: {"source":"all"}
         Renders the platform's events automatically. It cannot be filtered on the homepage: a new
-        or changed source other than "all" is refused.
+        or changed source other than "all" is refused. With no events it shows a message saying so;
+        "showEmptyMessage":false hides it instead.
     DOC
     'Spotlight' => <<~DOC
       Spotlight — highlights one project or folder.

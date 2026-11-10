@@ -201,7 +201,10 @@ module ContentBuilder
           'ids' => filter_ids(static_page),
           'timeFilters' => ['upcoming'],
           'limit' => 3,
-          'projectPublicationStatuses' => ['published']
+          'projectPublicationStatuses' => ['published'],
+          # An admin turned the page's events section on, so the events are part of what the page
+          # is for: when there are none, it says so rather than leaving a gap.
+          'showEmptyMessage' => true
         },
         BODY_ID
       )

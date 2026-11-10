@@ -316,7 +316,8 @@ describe ContentBuilder::CustomPageLayoutService do
           'ids' => [area.id],
           'timeFilters' => ['upcoming'],
           'limit' => 3,
-          'projectPublicationStatuses' => ['published']
+          'projectPublicationStatuses' => ['published'],
+          'showEmptyMessage' => true
         })
       end
 

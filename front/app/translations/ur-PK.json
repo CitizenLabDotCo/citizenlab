@@ -630,7 +630,7 @@
   "app.components.ProjectPageBuilder.Widgets.bannerEmptyNote": "ابھی تک کوئی تصویر نہیں ہے · صرف اس پراجیکٹ کے ایڈمنز اور ماڈریٹرز ہی اسے دیکھ سکتے ہیں",
   "app.components.ProjectPageBuilder.Widgets.bannerEmptyTitle": "پراجیکٹ کی تصویر شامل کریں",
   "app.components.ProjectPageBuilder.Widgets.bannerWidgetTitle": "پراجیکٹ کی تصویر",
-  "app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage": "ابھی تک کوئی ایونٹس نہیں ہیں — پروجیکٹ ایڈیٹر میں شامل کیے گئے ایونٹس یہاں خود بخود ظاہر ہوں گے۔ تب تک وزیٹرز کو یہ سیکشن نظر نہیں آئے گا۔",
+  "app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage2": "ابھی تک کوئی ایونٹس نہیں ہیں۔ جب تک یہ خالی ہے، وزٹرز کو یہ حصہ نظر نہیں آئے گا، جب تک کہ آپ ”ایونٹس نہ ہونے پر پیغام دکھائیں“ کو آن نہ کر دیں۔",
   "app.components.ProjectPageBuilder.Widgets.eventsLinkText": "ایونٹس",
   "app.components.ProjectPageBuilder.Widgets.eventsManagedNote": "ایونٹس کا انتظام پراجیکٹ ایڈیٹر میں {eventsLink} کے تحت کیا جاتا ہے۔ وہاں انہیں شامل کریں، ترمیم کریں یا حذف کریں — وہ یہاں خود بخود ظاہر ہو جائیں گے۔",
   "app.components.ProjectPageBuilder.Widgets.eventsWidgetTitle": "ایونٹس",

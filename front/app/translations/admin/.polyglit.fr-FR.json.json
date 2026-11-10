@@ -1294,9 +1294,19 @@
     "verified_at": "2026-10-26T13:27:19.241589Z",
     "verified_by": "Adrien"
   },
+  "app.components.admin.ContentBuilder.Widgets.Events.noEventsToDisplay": {
+    "state": "verified",
+    "verified_at": "2026-11-09T09:16:26.445200Z",
+    "verified_by": "Adrien"
+  },
   "app.components.admin.ContentBuilder.Widgets.Events.selectTopics": {
     "state": "verified",
     "verified_at": "2026-10-26T13:27:19.241589Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.admin.ContentBuilder.Widgets.Events.showEmptyMessage": {
+    "state": "verified",
+    "verified_at": "2026-11-09T09:16:26.445200Z",
     "verified_by": "Adrien"
   },
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": {
