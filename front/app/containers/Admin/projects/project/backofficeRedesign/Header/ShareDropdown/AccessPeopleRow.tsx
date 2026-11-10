@@ -9,7 +9,7 @@ import Avatar from 'components/Avatar';
 import { useIntl } from 'utils/cl-intl';
 import { isAdmin } from 'utils/permissions/roles';
 
-import messages from '../../messages';
+import messages from './messages';
 
 const getRoleMessage = (user: IUserData, isInvitePending: boolean) => {
   if (isInvitePending) return messages.shareRolePending;

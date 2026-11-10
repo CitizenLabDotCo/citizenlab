@@ -5,7 +5,7 @@ import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 import { IPhaseData } from 'api/phases/types';
 
 import Error from 'components/UI/Error';
-import Modal from 'components/UI/Modal';
+import Modal, { MEDIUM_MODAL_WIDTH } from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -39,7 +39,7 @@ const MovePhaseModal = ({
     <Modal
       opened
       close={close}
-      width={editingDates ? 760 : 560}
+      width={editingDates ? 760 : MEDIUM_MODAL_WIDTH}
       header={formatMessage(
         editingDates
           ? placementMessages.changeDatesButton

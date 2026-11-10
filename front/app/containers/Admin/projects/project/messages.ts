@@ -240,6 +240,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.dislikingPosts',
     defaultMessage: 'Enable disliking',
   },
+  dislikingPosts2: {
+    id: 'app.containers.AdminPage.ProjectEdit.dislikingPosts2',
+    defaultMessage: 'Disliking',
+  },
   disableDislikingTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.disableDislikingTooltip2',
     defaultMessage:
@@ -340,6 +344,10 @@ export default defineMessages({
   availableViews: {
     id: 'app.containers.AdminPage.ProjectEdit.availableViews',
     defaultMessage: 'Available views',
+  },
+  availableViewsSummary: {
+    id: 'app.containers.AdminPage.ProjectEdit.availableViewsSummary',
+    defaultMessage: '{defaultView} +{otherViewsCount}',
   },
   listViewTitle: {
     id: 'app.containers.AdminPage.ProjectEdit.listViewTitle',

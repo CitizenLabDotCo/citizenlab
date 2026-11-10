@@ -17,7 +17,6 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import SettingsSection from 'containers/Admin/projects/project/backofficeRedesign/_shared/components/SettingsModal/SettingsSection';
-import messages from 'containers/Admin/projects/project/backofficeRedesign/messages';
 import InputTopicModal, {
   InputTopicFormValues,
 } from 'containers/Admin/projects/project/topics/InputTopicModal';
@@ -29,6 +28,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { usePermission } from 'utils/permissions';
 
+import messages from './messages';
 import SortableTag, { ROOT_TAG_TYPE } from './SortableTag';
 import TagGroup from './TagGroup';
 import useSortableTags from './useSortableTags';

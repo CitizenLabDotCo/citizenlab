@@ -7,6 +7,7 @@ import {
   IconTooltip,
   Text,
   Toggle,
+  bo,
   colors,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
@@ -22,10 +23,6 @@ const Description = styled.span`
     text-decoration: underline;
   }
 `;
-
-// The back-office toggle plus the gap before its label, so the text under
-// the title lines up with it.
-const TEXT_INDENT = '36px';
 
 interface Props {
   title: string;
@@ -60,7 +57,7 @@ const ViewRow = ({
     <Box display="flex" flexDirection="column" gap="4px" py="12px">
       {alwaysEnabled ? (
         <Box display="flex" alignItems="center" gap="4px">
-          <Box width={TEXT_INDENT} display="flex">
+          <Box width={bo.toggleLabelIndent} display="flex">
             <Icon
               name="check"
               width="16px"
@@ -81,7 +78,12 @@ const ViewRow = ({
           label={titleText}
         />
       )}
-      <Box pl={TEXT_INDENT} display="flex" flexDirection="column" gap="8px">
+      <Box
+        pl={bo.toggleLabelIndent}
+        display="flex"
+        flexDirection="column"
+        gap="8px"
+      >
         <Text as="span" variant="boHelper" m="0">
           <Description>{description}</Description>
         </Text>

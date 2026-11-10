@@ -13,6 +13,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../messages';
+import { usePollStyles } from '../PollVariantContext';
 
 interface Props {
   titleMultiloc: Multiloc;
@@ -27,6 +28,8 @@ const QuestionFormRow = ({
   onSave,
   onCancel,
 }: Props) => {
+  const { buttonStyle, boSize, inputVariant } = usePollStyles();
+
   const locale = useLocale();
   const tenantLocales = useAppConfigurationLocales();
   const [selectedLocale, setSelectedLocale] = useState<SupportedLocale | null>(
@@ -62,6 +65,7 @@ const QuestionFormRow = ({
       <TextCell>
         {selectedLocale && (
           <LocaleSwitcher
+            variant={inputVariant}
             onSelectedLocaleChange={onChangeLocale}
             locales={!isNilOrError(tenantLocales) ? tenantLocales : []}
             selectedLocale={selectedLocale}
@@ -73,6 +77,7 @@ const QuestionFormRow = ({
       <TextCell className="expand">
         {selectedLocale && (
           <Input
+            variant={inputVariant}
             autoFocus
             value={titleMultiloc[selectedLocale]}
             locale={selectedLocale}
@@ -84,14 +89,16 @@ const QuestionFormRow = ({
 
       <ButtonWithLink
         className="e2e-form-question-save"
-        buttonStyle="admin-dark"
+        buttonStyle={buttonStyle('admin-dark')}
+        boSize={boSize}
         onClick={onSave}
       >
         <FormattedMessage {...messages.saveQuestion} />
       </ButtonWithLink>
       <ButtonWithLink
         className="e2e-form-question-cancel"
-        buttonStyle="secondary-outlined"
+        buttonStyle={buttonStyle('secondary-outlined')}
+        boSize={boSize}
         onClick={onCancel}
       >
         <FormattedMessage {...messages.cancelFormQuestion} />
