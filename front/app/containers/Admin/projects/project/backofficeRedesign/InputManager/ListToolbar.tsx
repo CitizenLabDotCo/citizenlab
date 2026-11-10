@@ -20,7 +20,7 @@ interface Props {
   projectId: string;
   count: number | undefined;
   selectedIdeas: IIdeaData[];
-  onUpdated: (idea: IIdeaData) => void;
+  onUpdated: (ideas: IIdeaData[]) => void;
   onEdit: (ideaId: string) => void;
   onClearSelection: () => void;
   onSelectAll: () => void;

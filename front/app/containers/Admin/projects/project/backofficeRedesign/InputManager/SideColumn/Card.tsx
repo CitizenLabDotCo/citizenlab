@@ -1,15 +1,13 @@
 import React, { ReactNode } from 'react';
 
-import { bo, Box, colors, Text } from '@citizenlab/cl2-component-library';
+import { bo, Box, colors } from '@citizenlab/cl2-component-library';
 
 interface Props {
-  title?: string;
   fillHeight?: boolean;
   children: ReactNode;
 }
 
-// One white panel in the Manage side column.
-const Card = ({ title, fillHeight = false, children }: Props) => (
+const Card = ({ fillHeight = false, children }: Props) => (
   <Box
     display="flex"
     flexDirection="column"
@@ -19,11 +17,6 @@ const Card = ({ title, fillHeight = false, children }: Props) => (
     borderRadius={bo.panelBorderRadius}
     background={colors.white}
   >
-    {title && (
-      <Text variant="boSection" m="0">
-        {title}
-      </Text>
-    )}
     {children}
   </Box>
 );

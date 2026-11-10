@@ -45,7 +45,6 @@ const StatementBatchBar = ({
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const { deleteAll, isDeleting } = useBatchActions({
     ideas,
-    onUpdated: () => undefined,
     onDeleted: () => {
       setDeleteModalOpen(false);
       onDeleted();

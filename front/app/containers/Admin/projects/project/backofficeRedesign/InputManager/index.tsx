@@ -37,6 +37,16 @@ import useSelectAll from './useSelectAll';
 
 const PAGE_SIZE = 20;
 
+const getListBody = (
+  phaseTotal: number | undefined,
+  hasFilters: boolean,
+  listedCount: number
+) => {
+  if (phaseTotal === 0 && !hasFilters) return 'empty';
+  if (listedCount === 0) return 'noMatches';
+  return 'table';
+};
+
 interface Props {
   project: IProjectData;
   phase: IPhaseData;
@@ -143,16 +153,21 @@ const InputManager = ({ project, phase }: Props) => {
     (allIdeas) => setSelection(new Map(allIdeas.map((idea) => [idea.id, idea])))
   );
 
-  const refreshSelected = (idea: IIdeaData) =>
-    setSelection((current) =>
-      current.has(idea.id) ? new Map(current).set(idea.id, idea) : current
-    );
+  const refreshSelected = (updated: IIdeaData[]) =>
+    setSelection((current) => {
+      const next = new Map(current);
+      updated.forEach((idea) => {
+        if (next.has(idea.id)) next.set(idea.id, idea);
+      });
+      return next;
+    });
 
   const selectedIdeas = [...selection.values()].map(
     (idea) => pageIdeas.find((pageIdea) => pageIdea.id === idea.id) ?? idea
   );
   const hasFilters =
     categories.some((category) => category.isActive) || !!searchTerm;
+  const listBody = getListBody(counts?.total, hasFilters, pageIdeas.length);
 
   return (
     <ManageLayout
@@ -194,11 +209,9 @@ const InputManager = ({ project, phase }: Props) => {
           </Box>
         ) : (
           <Box opacity={isChangingList ? 0.4 : 1}>
-            {counts?.total === 0 && !hasFilters ? (
-              <EmptyState />
-            ) : pageIdeas.length === 0 ? (
-              <NoPost handleSeeAll={clearFilters} />
-            ) : (
+            {listBody === 'empty' && <EmptyState />}
+            {listBody === 'noMatches' && <NoPost handleSeeAll={clearFilters} />}
+            {listBody === 'table' && (
               <IdeaTable
                 ideas={pageIdeas}
                 columns={columns}

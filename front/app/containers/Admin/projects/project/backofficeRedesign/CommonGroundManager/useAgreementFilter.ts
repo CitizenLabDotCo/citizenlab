@@ -5,6 +5,7 @@ import { CommonGroundResultItem } from 'api/common_ground/types';
 import { useIntl } from 'utils/cl-intl';
 
 import { FilterCategory } from '../InputManager/FilterMenu/useFilterCategories';
+import { toggled } from '../InputManager/utils';
 
 import messages from './messages';
 import { agreePercent, totalReactions, Votes } from './utils';
@@ -58,12 +59,7 @@ const useAgreementFilter = (
     selected,
     multiple: true,
     isActive: selected.length > 0,
-    toggle: (value) =>
-      change(
-        selected.includes(value)
-          ? selected.filter((item) => item !== value)
-          : [...selected, value]
-      ),
+    toggle: (value) => change(toggled(selected, value)),
     clear: () => change([]),
   };
 

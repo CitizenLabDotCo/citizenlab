@@ -35,7 +35,7 @@ interface Props {
   ideas: IIdeaData[];
   /** How many inputs match the current filters, on every page. */
   total: number | undefined;
-  onUpdated: (idea: IIdeaData) => void;
+  onUpdated: (ideas: IIdeaData[]) => void;
   onEdit: (ideaId: string) => void;
   onClear: () => void;
   onSelectAll: () => void;

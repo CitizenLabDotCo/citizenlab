@@ -24,6 +24,7 @@ import {
 } from '../useManagerParams';
 import { PhaseCounts } from '../usePhaseCounts';
 import usePickerOptions from '../usePickerOptions';
+import { toggled } from '../utils';
 
 export type FilterCategoryKey =
   | 'phase'
@@ -47,11 +48,6 @@ export interface FilterCategory {
   toggle: (value: string) => void;
   clear: () => void;
 }
-
-const toggled = (values: string[], value: string) =>
-  values.includes(value)
-    ? values.filter((item) => item !== value)
-    : [...values, value];
 
 interface Props {
   type: ManagerType;

@@ -5,7 +5,6 @@ import { useParams } from 'utils/router';
 
 import inputTermMessages from './inputTermMessages';
 
-// The words for an input in the current phase, from its naming option.
 const useInputTermLabels = () => {
   const { formatMessage } = useIntl();
   const { phaseId } = useParams({ strict: false });

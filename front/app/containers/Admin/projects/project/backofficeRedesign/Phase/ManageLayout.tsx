@@ -6,7 +6,6 @@ const SIDE_WIDTH = '308px';
 const PANEL_GAP = '8px';
 
 interface Props {
-  /** The cards next to the list: what needs attention, then actions. */
   side: ReactNode;
   children: ReactNode;
 }

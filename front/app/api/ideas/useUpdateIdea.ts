@@ -1,4 +1,8 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  QueryClient,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
 import analyticsKeys from 'api/analytics/keys';
@@ -15,64 +19,73 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import ideasKeys from './keys';
 import { IIdea, IIdeaUpdate } from './types';
 
-type IUpdateIdeaObject = {
+export type IUpdateIdeaObject = {
   id: string;
   requestBody: IIdeaUpdate;
   skipRefetchCounts?: boolean; // Variable so we don't invalidate cache unnecessarily
 };
 
-const updateIdea = ({ id, requestBody }: IUpdateIdeaObject) =>
+export const updateIdea = ({ id, requestBody }: IUpdateIdeaObject) =>
   fetcher<IIdea>({
     path: `/ideas/${id}`,
     action: 'patch',
     body: { idea: requestBody },
   });
 
+// Shared with batch updates, which refresh once for the whole batch.
+export const invalidateAfterIdeaUpdate = (
+  queryClient: QueryClient,
+  idea: IIdea,
+  variables: IUpdateIdeaObject
+) => {
+  queryClient.invalidateQueries({ queryKey: ideasKeys.lists() });
+  queryClient.invalidateQueries({ queryKey: ideaMarkersKeys.lists() });
+
+  if (!variables.skipRefetchCounts) {
+    queryClient.invalidateQueries({ queryKey: ideaFilterCountsKeys.all() });
+    queryClient.invalidateQueries({
+      queryKey: ideaFilterCountsKeys.items(),
+    });
+  }
+
+  queryClient.invalidateQueries({
+    queryKey: ideaImagesKeys.list({ ideaId: idea.data.id }),
+  });
+  queryClient.invalidateQueries({
+    queryKey: ideaImagesKeys.items(),
+  });
+  queryClient.invalidateQueries({
+    queryKey: meKeys.all(),
+  });
+
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  const projectId = idea.data.relationships?.project.data.id;
+
+  if (projectId) {
+    queryClient.invalidateQueries({
+      queryKey: projectsKeys.item({ id: projectId }),
+    });
+
+    if (variables.requestBody.publication_status === 'published') {
+      invalidateProjectPhases(queryClient, projectId);
+    }
+
+    queryClient.invalidateQueries({
+      queryKey: importedIdeasKeys.list({ projectId }),
+    });
+  }
+  queryClient.invalidateQueries({
+    queryKey: analyticsKeys.all(),
+  });
+};
+
 const useUpdateIdea = () => {
   const queryClient = useQueryClient();
   return useMutation<IIdea, CLErrors, IUpdateIdeaObject>({
     mutationFn: updateIdea,
     onSuccess: (idea, variables) => {
-      queryClient.invalidateQueries({ queryKey: ideasKeys.lists() });
-      queryClient.invalidateQueries({ queryKey: ideaMarkersKeys.lists() });
-
-      if (!variables.skipRefetchCounts) {
-        queryClient.invalidateQueries({ queryKey: ideaFilterCountsKeys.all() });
-        queryClient.invalidateQueries({
-          queryKey: ideaFilterCountsKeys.items(),
-        });
-      }
-
-      queryClient.invalidateQueries({
-        queryKey: ideaImagesKeys.list({ ideaId: idea.data.id }),
-      });
-      queryClient.invalidateQueries({
-        queryKey: ideaImagesKeys.items(),
-      });
-      queryClient.invalidateQueries({
-        queryKey: meKeys.all(),
-      });
-
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      const projectId = idea.data.relationships?.project.data.id;
-
-      if (projectId) {
-        queryClient.invalidateQueries({
-          queryKey: projectsKeys.item({ id: projectId }),
-        });
-
-        if (variables.requestBody.publication_status === 'published') {
-          invalidateProjectPhases(queryClient, projectId);
-        }
-
-        queryClient.invalidateQueries({
-          queryKey: importedIdeasKeys.list({ projectId }),
-        });
-      }
-      queryClient.invalidateQueries({
-        queryKey: analyticsKeys.all(),
-      });
+      invalidateAfterIdeaUpdate(queryClient, idea, variables);
     },
   });
 };

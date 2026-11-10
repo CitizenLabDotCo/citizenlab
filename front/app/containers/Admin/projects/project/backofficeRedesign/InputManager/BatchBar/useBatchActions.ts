@@ -3,10 +3,9 @@ import { useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { chunk } from 'lodash-es';
 
-import { IIdeaData, IIdeaUpdate } from 'api/ideas/types';
-import useDeleteIdea from 'api/ideas/useDeleteIdea';
-import useUpdateIdea from 'api/ideas/useUpdateIdea';
-import ideaFilterCountsKeys from 'api/ideas_filter_counts/keys';
+import { IIdea, IIdeaData, IIdeaUpdate } from 'api/ideas/types';
+import { deleteIdea, invalidateAfterIdeaDelete } from 'api/ideas/useDeleteIdea';
+import { invalidateAfterIdeaUpdate, updateIdea } from 'api/ideas/useUpdateIdea';
 
 import tracks from 'components/admin/PostManager/tracks';
 import { UNASSIGNED } from 'components/admin/PostManager/useAssigneeOptions';
@@ -24,28 +23,35 @@ const useBatchActions = ({
   onDeleted,
 }: {
   ideas: IIdeaData[];
-  onUpdated: (idea: IIdeaData) => void;
+  onUpdated?: (ideas: IIdeaData[]) => void;
   onDeleted: () => void;
 }) => {
   const queryClient = useQueryClient();
-  const { mutateAsync: updateIdea } = useUpdateIdea();
-  const { mutateAsync: deleteIdea } = useDeleteIdea();
   const [isDeleting, setIsDeleting] = useState(false);
 
+  // The requests go out without their mutation hooks, so the cache refreshes
+  // once for the whole batch rather than after every input.
   const updateEach = async (requestBody: (idea: IIdeaData) => IIdeaUpdate) => {
+    const updated: IIdea[] = [];
+
     for (const group of chunk(ideas, GROUP_SIZE)) {
-      await Promise.allSettled(
+      const results = await Promise.allSettled(
         group.map((idea) =>
-          updateIdea({
-            id: idea.id,
-            requestBody: requestBody(idea),
-            skipRefetchCounts: true,
-          }).then((updated) => onUpdated(updated.data))
+          updateIdea({ id: idea.id, requestBody: requestBody(idea) })
         )
       );
+      results.forEach((result) => {
+        if (result.status === 'fulfilled') updated.push(result.value);
+      });
     }
-    // Once for the whole batch rather than after every update.
-    queryClient.invalidateQueries({ queryKey: ideaFilterCountsKeys.all() });
+
+    if (updated.length === 0) return;
+
+    invalidateAfterIdeaUpdate(queryClient, updated[0], {
+      id: updated[0].data.id,
+      requestBody: {},
+    });
+    onUpdated?.(updated.map((idea) => idea.data));
   };
 
   const setStatus = (statusId: string) => {
@@ -89,6 +95,7 @@ const useBatchActions = ({
       await Promise.allSettled(group.map((idea) => deleteIdea(idea.id)));
     }
 
+    invalidateAfterIdeaDelete(queryClient, ideas[0].id);
     setIsDeleting(false);
     onDeleted();
   };

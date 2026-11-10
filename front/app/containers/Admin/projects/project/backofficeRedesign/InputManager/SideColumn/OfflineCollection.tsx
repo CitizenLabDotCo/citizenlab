@@ -23,7 +23,6 @@ import OfflineFormsButton from './OfflineFormsButton';
 
 interface Props {
   phase: IPhaseData;
-  /** Further actions, listed after the offline ones. */
   children?: ReactNode;
   /** Off when another card follows and takes the remaining height. */
   fillHeight?: boolean;

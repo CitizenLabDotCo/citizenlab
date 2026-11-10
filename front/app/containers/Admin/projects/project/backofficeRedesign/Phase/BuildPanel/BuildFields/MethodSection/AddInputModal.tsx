@@ -61,7 +61,6 @@ interface Props {
   /** A returned promise keeps the modal open until it settles. */
   onSubmit: (values: InputValues) => void | Promise<unknown>;
   onClose: () => void;
-  /** Fills the form to edit an existing input. */
   defaultValues?: InputValues;
   header?: string;
   submitLabel?: string;

@@ -19,6 +19,7 @@ import FilterChips from '../InputManager/FilterMenu/FilterChips';
 import { FilterCategory } from '../InputManager/FilterMenu/useFilterCategories';
 import SearchToggle from '../InputManager/SearchToggle';
 import Card from '../InputManager/SideColumn/Card';
+import { toggled } from '../InputManager/utils';
 import ManageLayout from '../Phase/ManageLayout';
 import SetupCard from '../ProjectSetupPanel/SetupCard';
 
@@ -83,19 +84,14 @@ const VolunteerManager = ({ phase }: Props) => {
     icon: 'label',
     options: causeData.map((cause) => ({
       value: cause.id,
-      label: localize(cause.attributes.title_multiloc),
+      label: causeTitles.get(cause.id) ?? '',
       icon: 'label',
       count: cause.attributes.volunteers_count,
     })),
     selected: causeIds,
     multiple: true,
     isActive: causeIds.length > 0,
-    toggle: (causeId) =>
-      changeCauses(
-        causeIds.includes(causeId)
-          ? causeIds.filter((id) => id !== causeId)
-          : [...causeIds, causeId]
-      ),
+    toggle: (causeId) => changeCauses(toggled(causeIds, causeId)),
     clear: () => changeCauses([]),
   };
   const toggleOnlyCause = (causeId: string) =>

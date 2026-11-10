@@ -21,7 +21,6 @@ interface Props {
   onClose: () => void;
   /** Runs after the input is deleted from the panel. Closes it by default. */
   onDeleted?: () => void;
-  /** True while the edit modal is open on top of the panel. */
   isEditing: boolean;
 }
 

@@ -80,6 +80,8 @@ const IdeaOfficialFeedbackModal = ({ ideaId, variant = 'default' }: Props) => {
     }
   };
   const submit = methods.handleSubmit(onFormSubmit);
+  // Links the submit button to the form, also from the modal footer.
+  const formId = `official-feedback-form-${ideaId}`;
 
   const actions = (
     <Box
@@ -98,8 +100,7 @@ const IdeaOfficialFeedbackModal = ({ ideaId, variant = 'default' }: Props) => {
       <Button
         buttonStyle={isBo ? 'bo-primary' : 'primary'}
         type="submit"
-        // In the footer the button sits outside the form.
-        onClick={isBo ? submit : undefined}
+        form={formId}
         processing={methods.formState.isSubmitting}
       >
         {formatMessage(messages.postFeedback)}
@@ -118,7 +119,7 @@ const IdeaOfficialFeedbackModal = ({ ideaId, variant = 'default' }: Props) => {
     >
       <Box p={isBo ? '24px' : '32px'}>
         <FormProvider {...methods}>
-          <form onSubmit={submit}>
+          <form id={formId} onSubmit={submit}>
             <Box display="flex" flexDirection="column" gap="24px">
               <Text variant={isBo ? 'boHelper' : undefined}>
                 {formatMessage(messages.description)}

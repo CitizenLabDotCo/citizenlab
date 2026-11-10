@@ -89,92 +89,85 @@ const InputStats = ({
     };
   };
 
-  const totalRows: Row[] = counts
-    ? [
-        {
-          key: 'inputs',
-          label: capitalizedTerms,
-          value: counts.total,
-        },
-      ]
-    : [];
-  const voteRows: Row[] = showVotes
-    ? [
-        { key: 'votes', label: formatMessage(messages.votes), value: votes },
-        {
-          key: 'offlineVotes',
-          label: formatMessage(messages.offlineVotes),
-          value: offlineVotes,
-        },
-      ]
-    : [];
-  const inputRows: Row[] = counts
-    ? [
-        ...(counts.byAssignee
-          ? [
-              {
-                key: 'unassigned',
-                label: formatMessage(messages.unassigned),
-                value: counts.byAssignee[UNASSIGNED],
-                filter: { assignees: [UNASSIGNED] },
-              },
-            ]
-          : []),
-        {
-          key: 'awaiting',
-          label: formatMessage(
-            isProposals ? messages.waitingForResponse : messages.waitingForReply
-          ),
-          value: counts.awaiting,
-          filter: { reply: 'awaiting' },
-        },
-        {
-          key: 'replied',
-          label: formatMessage(messages.respondedTile),
-          value: counts.replied,
-          filter: { reply: 'replied' },
-        },
-        isProposals
-          ? statusRow(
-              'gatheringSupport',
-              formatMessage(messages.stillGatheringSupport),
-              new Set(['proposed'])
-            )
-          : statusRow(
-              'accepted',
-              formatMessage(messages.acceptedTile),
-              ACCEPTED_CODES
-            ),
-      ]
-    : [];
+  const rows: Row[] = [];
+
+  if (counts) {
+    rows.push({ key: 'inputs', label: capitalizedTerms, value: counts.total });
+  }
+
+  if (showVotes) {
+    rows.push(
+      { key: 'votes', label: formatMessage(messages.votes), value: votes },
+      {
+        key: 'offlineVotes',
+        label: formatMessage(messages.offlineVotes),
+        value: offlineVotes,
+      }
+    );
+  }
+
+  if (counts) {
+    if (counts.byAssignee) {
+      rows.push({
+        key: 'unassigned',
+        label: formatMessage(messages.unassigned),
+        value: counts.byAssignee[UNASSIGNED],
+        filter: { assignees: [UNASSIGNED] },
+      });
+    }
+
+    rows.push(
+      {
+        key: 'awaiting',
+        label: formatMessage(
+          isProposals ? messages.waitingForResponse : messages.waitingForReply
+        ),
+        value: counts.awaiting,
+        filter: { reply: 'awaiting' },
+      },
+      {
+        key: 'replied',
+        label: formatMessage(messages.respondedTile),
+        value: counts.replied,
+        filter: { reply: 'replied' },
+      },
+      isProposals
+        ? statusRow(
+            'gatheringSupport',
+            formatMessage(messages.stillGatheringSupport),
+            new Set(['proposed'])
+          )
+        : statusRow(
+            'accepted',
+            formatMessage(messages.acceptedTile),
+            ACCEPTED_CODES
+          )
+    );
+  }
+
+  const toggleRow = (filter: RowFilter, active: boolean) =>
+    setFilters(
+      // The counts are for the listed phase, so keep it.
+      { ...(active ? {} : filter), phase: filters.phase },
+      { replace: true }
+    );
 
   return (
     <Box p="8px" borderRadius={bo.panelBorderRadius} background={colors.white}>
-      {[...totalRows, ...voteRows, ...inputRows].map(
-        ({ key, label, value, filter }) => {
-          const active = !!filter && isOnlyFilter(filters, filter);
-          const canFilter = !!filter && (value > 0 || active);
+      {rows.map(({ key, label, value, filter }) => {
+        const active = !!filter && isOnlyFilter(filters, filter);
+        const canFilter = !!filter && (value > 0 || active);
 
-          return (
-            <StatRow
-              key={key}
-              label={label}
-              value={value}
-              onClick={
-                canFilter
-                  ? () =>
-                      setFilters(
-                        // The counts are for the listed phase, so keep it.
-                        { ...(active ? {} : filter), phase: filters.phase },
-                        { replace: true }
-                      )
-                  : undefined
-              }
-              pressed={active}
-            />
-          );
-        }
-      )}
+        return (
+          <StatRow
+            key={key}
+            label={label}
+            value={value}
+            onClick={canFilter ? () => toggleRow(filter, active) : undefined}
+            pressed={active}
+          />
+        );
+      })}
     </Box>
   );
 };

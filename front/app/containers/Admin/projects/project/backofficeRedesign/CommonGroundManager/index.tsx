@@ -43,6 +43,7 @@ import StatementBatchBar from './StatementBatchBar';
 import StatementStats from './StatementStats';
 import StatementTable from './StatementTable';
 import useAgreementFilter from './useAgreementFilter';
+import { totalReactions } from './utils';
 
 const PAGE_SIZE = 20;
 
@@ -168,9 +169,7 @@ const CommonGroundManager = ({ project, phase }: Props) => {
           {stats && (
             <StatementStats
               statements={phaseTotal ?? stats.num_ideas}
-              reactions={
-                stats.votes.up + stats.votes.down + stats.votes.neutral
-              }
+              reactions={totalReactions(stats.votes)}
               participants={stats.num_participants}
             />
           )}

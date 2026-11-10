@@ -1,7 +1,5 @@
 import { ButtonProps, colors } from '@citizenlab/cl2-component-library';
 
-// The look of the action rows in the Manage side column: a label with its icon
-// at the far end.
 export const actionRowProps: Partial<ButtonProps> = {
   buttonStyle: 'bo-secondary',
   width: '100%',

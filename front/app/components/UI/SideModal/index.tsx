@@ -7,7 +7,6 @@ import {
   media,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { focusRingBorder } from 'global-styles';
 import { hideVisually } from 'polished';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
@@ -15,7 +14,9 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import { Subscription } from 'rxjs';
 import styled, { css } from 'styled-components';
 
-import CloseIconButton from 'components/UI/CloseIconButton';
+import CloseIconButton, {
+  closeIconButtonStyle,
+} from 'components/UI/CloseIconButton';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import eventEmitter from 'utils/eventEmitter';
@@ -96,21 +97,9 @@ const BoCloseButton = styled(CloseIconButton)`
   right: calc(20px + ${bo.drawerInset});
   width: 28px;
   height: 28px;
-  padding: 0;
-  border-radius: 8px;
-  border: solid 1px transparent;
-  outline: none !important;
   opacity: 0;
   z-index: 1001;
-  transition: background 100ms ease-out;
-
-  &:hover {
-    background: rgba(15, 20, 35, 0.05);
-  }
-
-  &.focus-visible {
-    ${focusRingBorder}
-  }
+  ${closeIconButtonStyle}
 `;
 
 const Overlay = styled.div`
