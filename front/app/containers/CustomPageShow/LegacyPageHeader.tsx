@@ -27,6 +27,11 @@ const PageTitle = styled.h1`
   text-align: left;
   margin: 0;
   padding: 0;
+  /* Long words (e.g. "Gebruiksvoorwaarden") must not cause horizontal
+    scrolling at 320px (WCAG 1.4.10). Hyphenate where the browser supports the
+    page language, otherwise break the word at the edge. */
+  hyphens: auto;
+  overflow-wrap: break-word;
 
   ${media.tablet`
     font-size: ${fontSizes.xxxl}px;
