@@ -14,6 +14,7 @@ import WarningModal from 'components/WarningModal';
 
 import { useIntl } from 'utils/cl-intl';
 
+import SelectAllButton from '../InputManager/BatchBar/SelectAllButton';
 import useBatchActions from '../InputManager/BatchBar/useBatchActions';
 import managerMessages from '../InputManager/messages';
 
@@ -27,6 +28,7 @@ interface Props {
   onDeleted: () => void;
   onSelectAll: () => void;
   isSelectingAll: boolean;
+  selectAllFailed: boolean;
 }
 
 const StatementBatchBar = ({
@@ -37,6 +39,7 @@ const StatementBatchBar = ({
   onDeleted,
   onSelectAll,
   isSelectingAll,
+  selectAllFailed,
 }: Props) => {
   const { formatMessage } = useIntl();
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -62,15 +65,14 @@ const StatementBatchBar = ({
       </Text>
 
       {total !== undefined && ideas.length < total && (
-        <Button
-          buttonStyle="bo-text"
-          processing={isSelectingAll}
-          onClick={onSelectAll}
-        >
-          {formatMessage(managerMessages.selectAllTerms, {
+        <SelectAllButton
+          label={formatMessage(managerMessages.selectAllTerms, {
             termCount: statementCount(total),
           })}
-        </Button>
+          processing={isSelectingAll}
+          failed={selectAllFailed}
+          onClick={onSelectAll}
+        />
       )}
 
       {isSingle && (

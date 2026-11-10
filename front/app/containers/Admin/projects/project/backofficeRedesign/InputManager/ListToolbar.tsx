@@ -25,6 +25,7 @@ interface Props {
   onClearSelection: () => void;
   onSelectAll: () => void;
   isSelectingAll: boolean;
+  selectAllFailed: boolean;
   searchTerm: string | undefined;
   onSearch: (term: string | null) => void;
   categories: FilterCategory[];
@@ -41,6 +42,7 @@ const ListToolbar = ({
   onClearSelection,
   onSelectAll,
   isSelectingAll,
+  selectAllFailed,
   searchTerm,
   onSearch,
   categories,
@@ -69,6 +71,7 @@ const ListToolbar = ({
           onClear={onClearSelection}
           onSelectAll={onSelectAll}
           isSelectingAll={isSelectingAll}
+          selectAllFailed={selectAllFailed}
         />
       ) : (
         <Text variant="boLabel" m="0">

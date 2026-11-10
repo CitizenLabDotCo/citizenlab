@@ -4,6 +4,7 @@ import { Button } from '@citizenlab/cl2-component-library';
 
 import useAddIdea from 'api/ideas/useAddIdea';
 import { IPhaseData } from 'api/phases/types';
+import useProjectById from 'api/projects/useProjectById';
 
 import tracks from 'containers/Admin/projects/_shared/components/NewIdeaButton/tracks';
 
@@ -12,6 +13,7 @@ import { useIntl } from 'utils/cl-intl';
 import { useLocation } from 'utils/router';
 
 import AddInputModal from '../../Phase/BuildPanel/BuildFields/MethodSection/AddInputModal';
+import FullFormLink from '../../Phase/BuildPanel/BuildFields/MethodSection/FullFormLink';
 import messages from '../messages';
 import useInputTermLabels from '../useInputTermLabels';
 
@@ -33,6 +35,7 @@ const OfflineCollection = ({ phase, children, fillHeight = true }: Props) => {
   const { term, terms } = useInputTermLabels();
   const [addOpened, setAddOpened] = useState(false);
   const { mutateAsync: addIdea } = useAddIdea();
+  const { data: project } = useProjectById(phase.relationships.project.data.id);
   const addLabel = formatMessage(messages.newTerm, { term });
 
   return (
@@ -60,6 +63,15 @@ const OfflineCollection = ({ phase, children, fillHeight = true }: Props) => {
           phaseId={phase.id}
           kind="input"
           header={addLabel}
+          fullFormLink={
+            project && (
+              <FullFormLink
+                to="/projects/$slug/ideas/new"
+                params={{ slug: project.data.attributes.slug }}
+                search={{ phase_id: phase.id }}
+              />
+            )
+          }
           onSubmit={(values) =>
             addIdea({
               phaseId: phase.id,

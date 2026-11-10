@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { ReactNode, useRef, useState } from 'react';
 
 import {
   Box,
@@ -8,7 +8,8 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
-import { boolean, ObjectSchema, object, string } from 'yup';
+import { Multiloc } from 'typings';
+import { boolean, mixed, ObjectSchema, object, string } from 'yup';
 
 import usePhase from 'api/phases/usePhase';
 
@@ -16,6 +17,7 @@ import AuthorField from 'components/CustomFieldsForm/Fields/AuthorField';
 import fieldMessages from 'components/CustomFieldsForm/messages';
 import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 import Error from 'components/UI/Error';
 import Modal, { MEDIUM_MODAL_WIDTH } from 'components/UI/Modal';
 
@@ -63,6 +65,8 @@ interface Props {
   defaultValues?: InputValues;
   header?: string;
   submitLabel?: string;
+  /** Leads to the input form, for the questions this modal leaves out. */
+  fullFormLink?: ReactNode;
 }
 
 const AddInputModal = ({
@@ -73,6 +77,7 @@ const AddInputModal = ({
   defaultValues,
   header,
   submitLabel,
+  fullFormLink,
 }: Props) => {
   const { formatMessage } = useIntl();
   const [saveFailed, setSaveFailed] = useState(false);
@@ -82,6 +87,7 @@ const AddInputModal = ({
   const allowAnonymous = !!phase?.data.attributes.allow_anonymous_participation;
   const copy = COPY[kind];
   const fieldName = formatMessage(copy.label);
+  const isInput = kind === 'input';
 
   const schema: ObjectSchema<InputValues> = object({
     title_multiloc: validateAtLeastOneLocale(formatMessage(copy.emptyError), {
@@ -102,6 +108,8 @@ const AddInputModal = ({
             })
           ),
     }),
+    // Whether it is required depends on the phase's form, so the API checks it.
+    body_multiloc: mixed<Multiloc>(),
     author_id: string().nullable(),
     anonymous: boolean(),
   });
@@ -135,17 +143,26 @@ const AddInputModal = ({
       variant="bo"
       header={header ?? formatMessage(copy.header)}
       footer={
-        <Box display="flex" justifyContent="flex-end" gap="8px" width="100%">
-          <Button buttonStyle="bo-text" onClick={onClose}>
-            {formatMessage(messages.statementCancel)}
-          </Button>
-          <Button
-            buttonStyle="bo-primary"
-            processing={methods.formState.isSubmitting}
-            onClick={submit}
-          >
-            {submitLabel ?? formatMessage(messages.addStatement)}
-          </Button>
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+          gap="8px"
+          width="100%"
+        >
+          <Box>{fullFormLink}</Box>
+          <Box display="flex" gap="8px">
+            <Button buttonStyle="bo-text" onClick={onClose}>
+              {formatMessage(messages.statementCancel)}
+            </Button>
+            <Button
+              buttonStyle="bo-primary"
+              processing={methods.formState.isSubmitting}
+              onClick={submit}
+            >
+              {submitLabel ?? formatMessage(messages.addStatement)}
+            </Button>
+          </Box>
         </Box>
       }
     >
@@ -168,6 +185,16 @@ const AddInputModal = ({
             placeholder={formatMessage(copy.placeholder)}
             maxCharCount={MAX_CHARACTERS}
           />
+          {isInput && (
+            <QuillMultilocWithLocaleSwitcher
+              id="add-input-description"
+              name="body_multiloc"
+              variant="bo"
+              label={formatMessage(messages.inputDescriptionLabel)}
+              noImages
+              noVideos
+            />
+          )}
           {allowAnonymous && (
             <Box>
               <Box display="flex" alignItems="center" gap="4px" mb="8px">
@@ -195,7 +222,13 @@ const AddInputModal = ({
             </Box>
           )}
           {saveFailed && (
-            <Error text={formatMessage(messages.inputSaveFailed)} />
+            <Error
+              text={formatMessage(
+                isInput
+                  ? messages.inputSaveFailedFullForm
+                  : messages.inputSaveFailed
+              )}
+            />
           )}
         </Box>
       </FormProvider>

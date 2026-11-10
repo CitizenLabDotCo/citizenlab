@@ -138,7 +138,7 @@ const InputManager = ({ project, phase }: Props) => {
     setSelection(next);
   };
 
-  const { selectAll, isSelectingAll } = useSelectAll(
+  const { selectAll, isSelectingAll, selectAllFailed } = useSelectAll(
     filterParameters,
     (allIdeas) => setSelection(new Map(allIdeas.map((idea) => [idea.id, idea])))
   );
@@ -180,6 +180,7 @@ const InputManager = ({ project, phase }: Props) => {
         onClearSelection={() => setSelection(new Map())}
         onSelectAll={selectAll}
         isSelectingAll={isSelectingAll}
+        selectAllFailed={selectAllFailed}
         searchTerm={searchTerm}
         onSearch={setSearchTerm}
         categories={categories}
@@ -244,6 +245,7 @@ const InputManager = ({ project, phase }: Props) => {
         navigation={navigation}
         onEdit={setEditingIdeaId}
         onClose={() => setSelectedIdeaId(undefined)}
+        isEditing={!!editingIdeaId}
       />
       {editingIdeaId && (
         <EditInputModal

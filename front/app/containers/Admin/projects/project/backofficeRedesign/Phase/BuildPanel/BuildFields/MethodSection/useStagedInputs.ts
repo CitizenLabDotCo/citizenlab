@@ -14,6 +14,7 @@ import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 export interface InputValues {
   title_multiloc: Multiloc;
+  body_multiloc?: Multiloc;
   author_id?: string | null;
   anonymous?: boolean;
 }

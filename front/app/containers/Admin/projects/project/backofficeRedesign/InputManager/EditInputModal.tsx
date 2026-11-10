@@ -6,6 +6,7 @@ import useUpdateIdea from 'api/ideas/useUpdateIdea';
 import { useIntl } from 'utils/cl-intl';
 
 import AddInputModal from '../Phase/BuildPanel/BuildFields/MethodSection/AddInputModal';
+import FullFormLink from '../Phase/BuildPanel/BuildFields/MethodSection/FullFormLink';
 
 import messages from './messages';
 import useInputTermLabels from './useInputTermLabels';
@@ -30,8 +31,12 @@ const EditInputModal = ({ ideaId, phaseId, onClose }: Props) => {
       kind="input"
       header={formatMessage(messages.editTerm, { term })}
       submitLabel={formatMessage(messages.save)}
+      fullFormLink={
+        <FullFormLink to="/ideas/edit/$ideaId" params={{ ideaId }} />
+      }
       defaultValues={{
         title_multiloc: idea.data.attributes.title_multiloc,
+        body_multiloc: idea.data.attributes.body_multiloc,
         author_id: idea.data.relationships.author?.data?.id ?? null,
         anonymous: idea.data.attributes.anonymous,
       }}

@@ -119,6 +119,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.selectAllTerms',
     defaultMessage: 'Select all {termCount}',
   },
+  selectAllFailed: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.selectAllFailed',
+    defaultMessage: 'Could not select them all. Please try again.',
+  },
   deleteTerms: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.deleteTerms',
     defaultMessage: 'Delete {termCount}',

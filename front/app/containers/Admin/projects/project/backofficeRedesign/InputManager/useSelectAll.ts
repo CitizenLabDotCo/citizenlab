@@ -8,6 +8,7 @@ const useSelectAll = (
   onSelect: (ideas: IIdeaData[]) => void
 ) => {
   const [isSelectingAll, setIsSelectingAll] = useState(false);
+  const [selectAllFailed, setSelectAllFailed] = useState(false);
   // The disabled state only arrives after a render, so two quick clicks
   // would both get through without this.
   const inFlight = useRef(false);
@@ -17,15 +18,18 @@ const useSelectAll = (
 
     inFlight.current = true;
     setIsSelectingAll(true);
+    setSelectAllFailed(false);
     try {
       onSelect(await fetchAllIdeas(queryParameters));
+    } catch {
+      setSelectAllFailed(true);
     } finally {
       inFlight.current = false;
       setIsSelectingAll(false);
     }
   };
 
-  return { selectAll, isSelectingAll };
+  return { selectAll, isSelectingAll, selectAllFailed };
 };
 
 export default useSelectAll;

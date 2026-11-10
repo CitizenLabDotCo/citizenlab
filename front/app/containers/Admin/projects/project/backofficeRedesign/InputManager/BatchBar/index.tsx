@@ -26,6 +26,7 @@ import usePickerOptions from '../usePickerOptions';
 import { phaseIds, topicIds } from '../utils';
 
 import BatchMenuButton from './BatchMenuButton';
+import SelectAllButton from './SelectAllButton';
 import useBatchActions from './useBatchActions';
 
 interface Props {
@@ -39,6 +40,7 @@ interface Props {
   onClear: () => void;
   onSelectAll: () => void;
   isSelectingAll: boolean;
+  selectAllFailed: boolean;
 }
 
 const shared = (ideas: IIdeaData[], values: (idea: IIdeaData) => string[]) =>
@@ -65,6 +67,7 @@ const BatchBar = ({
   onClear,
   onSelectAll,
   isSelectingAll,
+  selectAllFailed,
 }: Props) => {
   const { formatMessage } = useIntl();
   const { term, terms, termCount } = useInputTermLabels();
@@ -102,15 +105,14 @@ const BatchBar = ({
       </Text>
 
       {total !== undefined && ideas.length < total && (
-        <Button
-          buttonStyle="bo-text"
-          processing={isSelectingAll}
-          onClick={onSelectAll}
-        >
-          {formatMessage(messages.selectAllTerms, {
+        <SelectAllButton
+          label={formatMessage(messages.selectAllTerms, {
             termCount: termCount(total),
           })}
-        </Button>
+          processing={isSelectingAll}
+          failed={selectAllFailed}
+          onClick={onSelectAll}
+        />
       )}
 
       <BatchMenuButton

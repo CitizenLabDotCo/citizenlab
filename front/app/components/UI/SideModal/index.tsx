@@ -172,6 +172,8 @@ type Props = {
   children?: any;
   width?: string;
   variant?: Variant;
+  /** Off while a modal opened from outside this one sits on top of it. */
+  closeOnClickOutside?: boolean;
 };
 
 type State = {
@@ -210,6 +212,10 @@ export default class SideModal extends PureComponent<Props, State> {
         this.setState({ innerModalOpened: false });
       }),
     ];
+
+    if (this.props.variant === 'bo') {
+      window.addEventListener('keydown', this.handleKeyDown);
+    }
   }
 
   componentWillUnmount() {
@@ -223,7 +229,23 @@ export default class SideModal extends PureComponent<Props, State> {
     }
 
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    window.removeEventListener('keydown', this.handleKeyDown);
   }
+
+  // A modal on top closes on keydown. Handling Escape on keyup, as ClickOutside
+  // does, would then also close this panel with the same keypress.
+  handleKeyDown = (event: KeyboardEvent) => {
+    const { opened, closeOnClickOutside = true, close } = this.props;
+
+    if (
+      event.key === 'Escape' &&
+      opened &&
+      closeOnClickOutside &&
+      !this.state.innerModalOpened
+    ) {
+      close();
+    }
+  };
 
   clickOutsideModal = () => {
     this.props.close();
@@ -242,6 +264,7 @@ export default class SideModal extends PureComponent<Props, State> {
       label,
       width = '940px',
       variant = 'default',
+      closeOnClickOutside = true,
     } = this.props;
     // TODO: Fix this the next time the file is edited.
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -273,7 +296,10 @@ export default class SideModal extends PureComponent<Props, State> {
           >
             <ModalWrapper
               onClickOutside={this.clickOutsideModal}
-              closeOnClickOutsideEnabled={!this.state.innerModalOpened}
+              closeOnClickOutsideEnabled={
+                closeOnClickOutside && !this.state.innerModalOpened
+              }
+              isModal={variant === 'bo'}
             >
               <FocusOn>
                 <ModalContainer width={width} variant={variant}>

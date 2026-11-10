@@ -73,7 +73,7 @@ const InputStats = ({
 
   if (!counts && !showVotes) return null;
 
-  const { total_votes_amount: votes, votes_count: onlineVotes } =
+  const { total_votes_amount: votes, manual_votes_count: offlineVotes } =
     phase.attributes;
 
   const statusRow = (key: string, label: string, codes: Set<string>): Row => {
@@ -104,7 +104,7 @@ const InputStats = ({
         {
           key: 'offlineVotes',
           label: formatMessage(messages.offlineVotes),
-          value: votes - onlineVotes,
+          value: offlineVotes,
         },
       ]
     : [];
@@ -162,7 +162,12 @@ const InputStats = ({
               value={value}
               onClick={
                 canFilter
-                  ? () => setFilters(active ? {} : filter, { replace: true })
+                  ? () =>
+                      setFilters(
+                        // The counts are for the listed phase, so keep it.
+                        { ...(active ? {} : filter), phase: filters.phase },
+                        { replace: true }
+                      )
                   : undefined
               }
               pressed={active}

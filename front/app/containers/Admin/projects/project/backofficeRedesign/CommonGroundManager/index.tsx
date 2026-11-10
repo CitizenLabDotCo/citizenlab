@@ -84,8 +84,9 @@ const CommonGroundManager = ({ project, phase }: Props) => {
   const { data: allCounts } = useIdeasFilterCounts(scope);
   const { data: listedCounts } = useIdeasFilterCounts(listed);
   const { data: importJob } = useJobInProgressByPhase(phase.id);
-  const { selectAll, isSelectingAll } = useSelectAll(listed, (allIdeas) =>
-    setSelection(new Map(allIdeas.map((idea) => [idea.id, idea])))
+  const { selectAll, isSelectingAll, selectAllFailed } = useSelectAll(
+    listed,
+    (allIdeas) => setSelection(new Map(allIdeas.map((idea) => [idea.id, idea])))
   );
 
   const { progress: importedCount, total: totalToImport } =
@@ -94,10 +95,13 @@ const CommonGroundManager = ({ project, phase }: Props) => {
 
   const stats = results?.data.attributes.stats;
   const votesById = new Map(statements.map(({ id, votes }) => [id, votes]));
-  const listedTotal = listedCounts?.data.attributes.total;
-  const pageIdeas = ideas?.data ?? [];
+  // The API reads an empty id list as no filter at all, so it would list
+  // every statement.
+  const matchesNone = ideaIds?.length === 0;
+  const listedTotal = matchesNone ? 0 : listedCounts?.data.attributes.total;
+  const pageIdeas = matchesNone ? [] : ideas?.data ?? [];
+  const phaseTotal = allCounts?.data.attributes.total;
   const lastPage = (ideas && getPageNumberFromUrl(ideas.links.last)) || 1;
-  const hasFilters = !!search || agreementCategory.isActive;
   const selectedIdeas = [...selection.values()];
   // The listed version first: a selected one can predate an earlier edit.
   const editingIdea =
@@ -131,6 +135,8 @@ const CommonGroundManager = ({ project, phase }: Props) => {
 
   const handleDeleted = () => {
     setSelection(new Map());
+    // The current page may be gone after the delete.
+    setPage(1);
     queryClient.invalidateQueries({
       queryKey: commonGroundResultsKeys.all(),
     });
@@ -142,7 +148,7 @@ const CommonGroundManager = ({ project, phase }: Props) => {
         <>
           {stats && (
             <StatementStats
-              statements={allCounts?.data.attributes.total ?? stats.num_ideas}
+              statements={phaseTotal ?? stats.num_ideas}
               reactions={
                 stats.votes.up + stats.votes.down + stats.votes.neutral
               }
@@ -198,6 +204,7 @@ const CommonGroundManager = ({ project, phase }: Props) => {
             onDeleted={handleDeleted}
             onSelectAll={selectAll}
             isSelectingAll={isSelectingAll}
+            selectAllFailed={selectAllFailed}
           />
         ) : (
           <Text variant="boLabel" m="0">
@@ -225,7 +232,7 @@ const CommonGroundManager = ({ project, phase }: Props) => {
           <Spinner />
         </Box>
       )}
-      {ideas && pageIdeas.length === 0 && !hasFilters && (
+      {ideas && phaseTotal === 0 && (
         <NoInputsDisplay
           isJobInProgress={isImporting}
           importedCount={importedCount}
@@ -235,7 +242,7 @@ const CommonGroundManager = ({ project, phase }: Props) => {
           setShowPastInputsModal={setImportOpened}
         />
       )}
-      {ideas && pageIdeas.length === 0 && hasFilters && (
+      {ideas && pageIdeas.length === 0 && !!phaseTotal && (
         <NoPost handleSeeAll={clearFilters} />
       )}
       {pageIdeas.length > 0 && (

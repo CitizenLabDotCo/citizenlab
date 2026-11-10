@@ -92,4 +92,17 @@ export default defineMessages({
     defaultMessage:
       'This could not be saved. Please try again. If the form has other required questions, add it from the project page instead.',
   },
+  inputDescriptionLabel: {
+    id: 'app.containers.Admin.projects.project.inputDescriptionLabel',
+    defaultMessage: 'Description',
+  },
+  inputSaveFailedFullForm: {
+    id: 'app.containers.Admin.projects.project.inputSaveFailedFullForm',
+    defaultMessage:
+      'This could not be saved. Please try again. If the form has other required questions, use the full form.',
+  },
+  openFullForm: {
+    id: 'app.containers.Admin.projects.project.openFullForm',
+    defaultMessage: 'Open the full form',
+  },
 });

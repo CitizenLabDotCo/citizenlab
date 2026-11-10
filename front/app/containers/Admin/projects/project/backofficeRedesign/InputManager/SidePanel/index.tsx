@@ -19,6 +19,8 @@ interface Props {
   navigation: PanelNavigation | undefined;
   onEdit: (ideaId: string) => void;
   onClose: () => void;
+  /** True while the edit modal is open on top of the panel. */
+  isEditing: boolean;
 }
 
 const SidePanel = ({
@@ -29,11 +31,19 @@ const SidePanel = ({
   navigation,
   onEdit,
   onClose,
+  isEditing,
 }: Props) => {
   const { data: idea, isPlaceholderData } = useIdeaById(ideaId);
 
   return (
-    <SideModal opened={!!ideaId} close={onClose} width="640px" variant="bo">
+    <SideModal
+      opened={!!ideaId}
+      close={onClose}
+      width="640px"
+      variant="bo"
+      // Clicks in the edit modal land outside the panel and would close it.
+      closeOnClickOutside={!isEditing}
+    >
       {(!idea || isPlaceholderData) && !!ideaId && (
         <Box display="flex" justifyContent="center" py="80px">
           <Spinner />

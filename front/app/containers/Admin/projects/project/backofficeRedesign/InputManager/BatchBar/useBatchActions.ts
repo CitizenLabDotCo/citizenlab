@@ -1,10 +1,12 @@
 import { useState } from 'react';
 
+import { useQueryClient } from '@tanstack/react-query';
 import { chunk } from 'lodash-es';
 
 import { IIdeaData, IIdeaUpdate } from 'api/ideas/types';
 import useDeleteIdea from 'api/ideas/useDeleteIdea';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
+import ideaFilterCountsKeys from 'api/ideas_filter_counts/keys';
 
 import tracks from 'components/admin/PostManager/tracks';
 import { UNASSIGNED } from 'components/admin/PostManager/useAssigneeOptions';
@@ -13,8 +15,8 @@ import { trackEventByName } from 'utils/analytics';
 
 import { phaseIds, topicIds } from '../utils';
 
-// A selection can span every page, too many updates to send at once.
-const UPDATE_GROUP_SIZE = 10;
+// A selection can span every page, too many requests to send at once.
+const GROUP_SIZE = 10;
 
 const useBatchActions = ({
   ideas,
@@ -25,20 +27,25 @@ const useBatchActions = ({
   onUpdated: (idea: IIdeaData) => void;
   onDeleted: () => void;
 }) => {
+  const queryClient = useQueryClient();
   const { mutateAsync: updateIdea } = useUpdateIdea();
   const { mutateAsync: deleteIdea } = useDeleteIdea();
   const [isDeleting, setIsDeleting] = useState(false);
 
   const updateEach = async (requestBody: (idea: IIdeaData) => IIdeaUpdate) => {
-    for (const group of chunk(ideas, UPDATE_GROUP_SIZE)) {
+    for (const group of chunk(ideas, GROUP_SIZE)) {
       await Promise.allSettled(
         group.map((idea) =>
-          updateIdea({ id: idea.id, requestBody: requestBody(idea) }).then(
-            (updated) => onUpdated(updated.data)
-          )
+          updateIdea({
+            id: idea.id,
+            requestBody: requestBody(idea),
+            skipRefetchCounts: true,
+          }).then((updated) => onUpdated(updated.data))
         )
       );
     }
+    // Once for the whole batch rather than after every update.
+    queryClient.invalidateQueries({ queryKey: ideaFilterCountsKeys.all() });
   };
 
   const setStatus = (statusId: string) => {
@@ -77,12 +84,9 @@ const useBatchActions = ({
   const deleteAll = async () => {
     setIsDeleting(true);
 
-    for (const idea of ideas) {
-      try {
-        await deleteIdea(idea.id);
-      } catch {
-        // Inputs that failed to delete stay in the list.
-      }
+    // Inputs that failed to delete stay in the list.
+    for (const group of chunk(ideas, GROUP_SIZE)) {
+      await Promise.allSettled(group.map((idea) => deleteIdea(idea.id)));
     }
 
     setIsDeleting(false);
