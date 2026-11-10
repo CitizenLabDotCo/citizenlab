@@ -9949,6 +9949,11 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+  "app.containers.Navbar.confirmPhone": {
+    "state": "verified",
+    "verified_at": "2026-11-10T16:51:26.008298Z",
+    "verified_by": "Roger"
+  },
   "app.containers.Navbar.unverified": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
@@ -9968,6 +9973,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
+  },
+  "app.containers.NewAuthModal.changeYourEmail": {
+    "state": "verified",
+    "verified_at": "2026-11-10T16:51:26.008298Z",
+    "verified_by": "Roger"
   },
   "app.containers.NewAuthModal.completeYourProfile": {
     "state": "verified",
@@ -9998,6 +10008,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
+  },
+  "app.containers.NewAuthModal.steps.EmailConfirmation.codeMustHaveSixDigits": {
+    "state": "verified",
+    "verified_at": "2026-11-10T16:51:26.008298Z",
+    "verified_by": "Roger"
   },
   "app.containers.NewAuthModal.steps.EmailSignUp.SSOButtons.noAuthenticationMethodsEnabled": {
     "state": "verified",
