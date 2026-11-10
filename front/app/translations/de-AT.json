@@ -760,7 +760,7 @@
   "app.components.SmsConsent.phoneConfirmationDisclosureWithoutCampaignsEnabled": "Mit dem Absenden erklären Sie sich damit einverstanden, einen einmaligen Bestätigungscode per SMS von {orgName} zu erhalten. Es können Gebühren für Nachrichten und Daten anfallen. Antworten Sie mit HELP für Hilfe oder mit STOP, um sich abzumelden. Beachten Sie unsere {termsLink} und {privacyLink}.",
   "app.components.StatusModule.futurePhase": "Du befindest dich in einer Phase, die noch nicht begonnen hat. Du kannst teilnehmen, sobald die Phase beginnt.",
   "app.components.StatusModule.modifyYourSubmission1": "Einreichung ändern",
-  "app.components.StatusModule.submittedUntil3": "Es kann abgestimmt werden bis zum",
+  "app.components.StatusModule.submittedUntil3": "Abstimmung geöffnet bis zum:",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Ausgewählt {numberOfSelectedTopics, plural, =0 {keine Tags} one {ein Tag} other {# Tags}}. {selectedTopicNames}",
   "app.components.TypedConfirmationModal.cancel": "Abbrechen",
   "app.components.TypedConfirmationModal.confirmationWordDelete": "LÖSCHEN",

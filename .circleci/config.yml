@@ -450,6 +450,41 @@ jobs:
                 --prune
             EOF
 
+  # The Scaleway Kubernetes cluster is managed with GitOps and Argo CD, so deploying
+  # boils down to pinning the image tag in the kustomization. Argo CD picks that up
+  # automatically and reconciles the cluster. The migrations and the post-deploy tasks
+  # run there as Argo sync hooks
+  back-deploy-to-gitops:
+    resource_class: small
+    working_directory: ~/citizenlab
+    docker:
+      - image: cimg/base:2025.01
+    parameters:
+      image_tag:
+        type: string
+        default: << pipeline.parameters.image_tag >>
+    steps:
+      - echo_pipeline_parameters
+      - shallow-clone
+      - run:
+          name: Install kustomize
+          command: |
+            set -euo pipefail
+            archive="kustomize_v5.8.3_linux_amd64.tar.gz"
+            base="https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv5.8.3"
+            curl -fsSL -O "${base}/${archive}"
+            curl -fsSL -O "${base}/checksums.txt"
+            grep "$archive" checksums.txt | sha256sum -c -
+            sudo tar xz -C /usr/local/bin -f "$archive" kustomize
+      # Write access to the GitOps repo.
+      - add_ssh_keys:
+          fingerprints:
+            - SHA256:6uoyWl+I46oGOpqAnyv3Q8xWzEvL8Zmea9Dx4M3+DyI
+      - run:
+          name: Deploy to the Scaleway cluster
+          command: |
+            ./scripts/deploy_to_gitops.sh citizenlabdotco/back-ee "amd64-<< parameters.image_tag >>"
+
   back-generate-tenant-templates:
     resource_class: small
     docker:
@@ -1337,6 +1372,17 @@ workflows:
           stack_name: cl2
           env_file: ".env-web"
           cluster_name: "aus"
+      # Only needs the amd64 image, which is the tag it writes: the Scaleway
+      # nodes are amd64, so it does not wait for the multi-arch manifest.
+      - back-deploy-to-gitops:
+          name: Deploy to Europe (Scaleway)
+          requires:
+            - back-build-docker-image-amd64
+          filters:
+            branches:
+              only:
+                - production
+          image_tag: $CIRCLE_SHA1
       # Each requires only its own region's deploy, so regions stay independent.
       - back-run-post-deploy-tasks:
           name: Post-deploy tasks (Frankfurt)

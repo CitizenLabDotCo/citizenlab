@@ -36,6 +36,7 @@ module CustomIdMethods::Criipto
         method_name_for_hashing
         minimum_age
         enabled_for_verified_actions
+        only_show_for_verification
       ]
     end
 
@@ -92,6 +93,12 @@ module CustomIdMethods::Criipto
           private: true,
           type: 'boolean',
           description: 'Whether this verification method should be enabled for verified actions.'
+        },
+        only_show_for_verification: {
+          private: true,
+          type: 'boolean',
+          default: false,
+          description: 'Hide this method from the normal sign-in screen. It is then only offered when an action requires verification.'
         }
       }
     end
@@ -108,9 +115,7 @@ module CustomIdMethods::Criipto
     end
 
     def exposed_config_parameters
-      [
-        :ui_method_name
-      ]
+      %i[ui_method_name only_show_for_verification]
     end
 
     def profile_to_uid(auth)
