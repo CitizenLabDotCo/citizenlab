@@ -90,12 +90,12 @@ module DecidimImporter
       remove_craftjs_nodes!(craftjs, empty.keys + canvases)
     end
 
-    # Drops any `project_image` left without an image (pruned/stripped) — it would render as a broken card.
-    def prune_imageless_project_images!(template)
-      images = template.dig('models', 'project_image')
-      return unless images
-
-      images.reject! { |attrs| attrs['remote_image_url'].blank? && attrs['image'].blank? }
+    # Drops any project or idea image left without an image (pruned/stripped) — it would render as a broken
+    # card, since the deserializer skips their image presence validation.
+    def prune_imageless_images!(template)
+      %w[project_image idea_image].each do |model|
+        template.dig('models', model)&.reject! { |attrs| attrs['remote_image_url'].blank? && attrs['image'].blank? }
+      end
     end
 
     # Drops every `remote_*_url` attribute so the deserializer doesn't trigger a CarrierWave fetch.
