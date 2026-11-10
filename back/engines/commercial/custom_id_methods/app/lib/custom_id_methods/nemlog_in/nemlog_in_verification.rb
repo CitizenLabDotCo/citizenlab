@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module CustomIdMethods::NemlogIn
-  module NemlogInVerification
+  module NemlogInVerification # rubocop:disable Metrics/ModuleLength
     def verification_method_type
       :omniauth
     end
@@ -23,6 +23,7 @@ module CustomIdMethods::NemlogIn
         kki_password
         kki_custom_headers
         enabled_for_verified_actions
+        only_show_for_verification
       ]
     end
 
@@ -83,6 +84,12 @@ module CustomIdMethods::NemlogIn
           private: true,
           type: 'boolean',
           description: 'Whether this verification method should be enabled for verified actions.'
+        },
+        only_show_for_verification: {
+          private: true,
+          type: 'boolean',
+          default: false,
+          description: 'Hide this method from the normal sign-in screen. It is then only offered when an action requires verification.'
         }
       }
     end
@@ -103,6 +110,10 @@ module CustomIdMethods::NemlogIn
 
     def ui_method_name
       'NemLog-in'
+    end
+
+    def exposed_config_parameters
+      %i[only_show_for_verification]
     end
   end
 end
