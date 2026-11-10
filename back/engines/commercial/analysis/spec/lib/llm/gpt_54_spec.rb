@@ -6,8 +6,8 @@ RSpec.describe Analysis::LLM::GPT54 do
   let(:service) { described_class.new }
 
   describe 'token_count' do
-    it 'counts tokens even though tiktoken does not know the gpt-5 series' do
-      expect(Tiktoken.encoding_for_model(described_class.gpt_model)).to be_nil
+    it 'counts tokens with the o200k_base encoding' do
+      expect(Tiktoken.encoding_for_model(described_class.gpt_model).name).to eq :o200k_base
       expect(service.token_count('Hello, how are you?')).to be > 0
     end
   end
