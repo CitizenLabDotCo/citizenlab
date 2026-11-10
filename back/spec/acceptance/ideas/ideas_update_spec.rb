@@ -282,6 +282,7 @@ resource 'Ideas' do
           end
 
           let(:project_id) { create(:project, input_topics: [project.input_topics.first]).id }
+          let(:phase_ids) { [] }
 
           example_request 'Change the project' do
             assert_status 200
@@ -1032,6 +1033,7 @@ resource 'Ideas' do
           context 'Moving to a different project' do
             let(:new_project) { create(:single_phase_ideation_project) }
             let(:project_id) { new_project.id }
+            let(:phase_ids) { [] }
 
             example 'Move the idea to another (non-voting) project', document: false do
               do_request
