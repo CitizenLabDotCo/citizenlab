@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import { Box, Button, Text } from '@citizenlab/cl2-component-library';
+import { Box, Button, Text, colors } from '@citizenlab/cl2-component-library';
 
 import PhonePreview from 'components/admin/PhonePreview';
 
@@ -93,53 +93,81 @@ const PhasePreview = ({ src, title, snapshot }: Props) => {
           frameName={PREVIEW_FRAME_NAME}
           frameRef={frameRef}
           dataCy="e2e-phase-preview"
-          bottomSpace={snapshot.unsaved ? 142 : 92}
+          bottomSpace={snapshot.unsaved ? 88 : 56}
         />
       </Box>
       <Box
-        role="group"
-        aria-label={formatMessage(messages.lifecycle)}
         display="flex"
-        justifyContent="center"
+        justifyContent="space-between"
+        alignItems="center"
+        flexWrap="wrap"
         gap="8px"
-        p="8px"
-      >
-        {(Object.keys(lifecycleOptions) as PreviewLifecycle[]).map((value) => (
-          <Button
-            key={value}
-            buttonStyle={
-              lifecycle === value ? 'admin-dark' : 'secondary-outlined'
-            }
-            ariaPressed={lifecycle === value}
-            padding="8px 12px"
-            onClick={() => setLifecycle(value)}
-          >
-            {formatMessage(lifecycleOptions[value].label)}
-          </Button>
-        ))}
-      </Box>
-      <Text
-        aria-live="polite"
-        fontSize="s"
-        color="textSecondary"
-        textAlign="center"
-        m="0"
         px="12px"
-        pb="8px"
+        pb="12px"
       >
-        {formatMessage(lifecycleOptions[lifecycle].description)}
-      </Text>
-      {snapshot.unsaved && (
-        <Text
-          fontSize="s"
-          color="textSecondary"
-          textAlign="center"
-          m="0"
-          p="12px"
+        <Box
+          role="group"
+          aria-label={formatMessage(messages.lifecycle)}
+          display="flex"
+          alignItems="center"
+          background={colors.black}
+          borderRadius="999px"
+          p="2px"
         >
-          {formatMessage(messages.newPhase)}
-        </Text>
-      )}
+          {(['before', 'open', 'ended'] as const).map((value) => {
+            const selected = lifecycle === value;
+
+            return (
+              <Button
+                key={value}
+                buttonStyle="text"
+                ariaPressed={selected}
+                bgColor={selected ? colors.grey800 : colors.black}
+                bgHoverColor={colors.grey800}
+                textColor={selected ? colors.white : colors.coolGrey300}
+                textHoverColor={colors.white}
+                textDecorationHover="none"
+                borderRadius="999px"
+                height="20px"
+                padding="0 8px"
+                fontSize="11px"
+                onClick={() => setLifecycle(value)}
+              >
+                {formatMessage(lifecycleOptions[value].label)}
+              </Button>
+            );
+          })}
+        </Box>
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="flex-end"
+          ml="auto"
+          gap="4px"
+        >
+          <Box
+            background={colors.grey200}
+            borderRadius="6px"
+            px="10px"
+            py="4px"
+          >
+            <Text
+              aria-live="polite"
+              fontSize="s"
+              color="textSecondary"
+              textAlign="right"
+              m="0"
+            >
+              {formatMessage(lifecycleOptions[lifecycle].description)}
+            </Text>
+          </Box>
+          {snapshot.unsaved && (
+            <Text fontSize="s" color="textSecondary" textAlign="right" m="0">
+              {formatMessage(messages.newPhase)}
+            </Text>
+          )}
+        </Box>
+      </Box>
     </Box>
   );
 };
