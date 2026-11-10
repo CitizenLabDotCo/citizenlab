@@ -37,7 +37,9 @@ const EditInputModal = ({ ideaId, phaseId, onClose }: Props) => {
       defaultValues={{
         title_multiloc: idea.data.attributes.title_multiloc,
         body_multiloc: idea.data.attributes.body_multiloc,
-        author_id: idea.data.relationships.author?.data?.id ?? null,
+        // Left out, not null, without an author: the API reads null as
+        // removing the author, which inputs that need one refuse.
+        author_id: idea.data.relationships.author?.data?.id,
         anonymous: idea.data.attributes.anonymous,
       }}
       onSubmit={(values) => updateIdea({ id: ideaId, requestBody: values })}

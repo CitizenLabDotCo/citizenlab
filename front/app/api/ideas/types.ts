@@ -1,5 +1,6 @@
 import { ILinks, IRelationship, Multiloc } from 'typings';
 
+import { Agreement } from 'api/common_ground/types';
 import { IdeaSortMethod } from 'api/phases/types';
 import { PublicationStatus as ProjectPublicationStatus } from 'api/projects/types';
 
@@ -248,6 +249,8 @@ export interface IIdeaQueryParameters<FilterValue = string> {
   projects?: string[];
   ideas?: string[];
   phase?: string;
+  /** Common ground statements in these buckets. Needs `phase`. */
+  agreements?: Agreement[];
   author?: string;
   search?: string;
   input_topics?: string[];

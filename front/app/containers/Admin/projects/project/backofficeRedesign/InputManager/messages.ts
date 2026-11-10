@@ -248,9 +248,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.stillGatheringSupport',
     defaultMessage: 'Still gathering support',
   },
-  votes: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.votes',
-    defaultMessage: 'Votes',
+  onlineVotes: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.onlineVotes',
+    defaultMessage: 'Online votes',
   },
   offlineVotes: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.offlineVotes',

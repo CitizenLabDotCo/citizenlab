@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
 
-import { IIdeaData } from 'api/ideas/types';
 import useIdeas from 'api/ideas/useIdeas';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 import { IPhaseData } from 'api/phases/types';
@@ -33,7 +32,7 @@ import useManagerParams from './useManagerParams';
 import usePanelNavigation from './usePanelNavigation';
 import usePhaseCounts from './usePhaseCounts';
 import usePickerOptions from './usePickerOptions';
-import useSelectAll from './useSelectAll';
+import useSelection from './useSelection';
 
 const PAGE_SIZE = 20;
 
@@ -105,15 +104,15 @@ const InputManager = ({ project, phase }: Props) => {
     available.includes(column)
   );
 
-  const [selection, setSelection] = useState<Map<string, IIdeaData>>(new Map());
   const [editingIdeaId, setEditingIdeaId] = useState<string>();
 
   const pageIdeas = ideas?.data ?? [];
   const lastPage = (ideas && getPageNumberFromUrl(ideas.links.last)) || 1;
   const filteredTotal = filteredCounts?.data.attributes.total;
+  const selection = useSelection(pageIdeas, filterParameters);
 
   const openPanel = (ideaId: string) => {
-    setSelection(new Map());
+    selection.clear();
     setSelectedIdeaId(ideaId);
   };
 
@@ -129,42 +128,6 @@ const InputManager = ({ project, phase }: Props) => {
     onChangePage: setPage,
   });
 
-  const toggleSelect = (idea: IIdeaData) => {
-    const next = new Map(selection);
-    if (next.has(idea.id)) {
-      next.delete(idea.id);
-    } else {
-      next.set(idea.id, idea);
-    }
-    setSelection(next);
-  };
-
-  const toggleSelectPage = () => {
-    const next = new Map(selection);
-    const allSelected = pageIdeas.every((idea) => next.has(idea.id));
-    pageIdeas.forEach((idea) =>
-      allSelected ? next.delete(idea.id) : next.set(idea.id, idea)
-    );
-    setSelection(next);
-  };
-
-  const { selectAll, isSelectingAll, selectAllFailed } = useSelectAll(
-    filterParameters,
-    (allIdeas) => setSelection(new Map(allIdeas.map((idea) => [idea.id, idea])))
-  );
-
-  const refreshSelected = (updated: IIdeaData[]) =>
-    setSelection((current) => {
-      const next = new Map(current);
-      updated.forEach((idea) => {
-        if (next.has(idea.id)) next.set(idea.id, idea);
-      });
-      return next;
-    });
-
-  const selectedIdeas = [...selection.values()].map(
-    (idea) => pageIdeas.find((pageIdea) => pageIdea.id === idea.id) ?? idea
-  );
   const hasFilters =
     categories.some((category) => category.isActive) || !!searchTerm;
   const listBody = getListBody(counts?.total, hasFilters, pageIdeas.length);
@@ -178,7 +141,7 @@ const InputManager = ({ project, phase }: Props) => {
           phase={phase}
           counts={counts}
           statuses={statuses}
-          selectedIds={[...selection.keys()]}
+          selectedIds={selection.selectedIds}
           filters={filters}
           setFilters={setFilters}
         />
@@ -189,13 +152,13 @@ const InputManager = ({ project, phase }: Props) => {
         type={type}
         projectId={project.id}
         count={filteredTotal}
-        selectedIdeas={selectedIdeas}
-        onUpdated={refreshSelected}
+        selectedIdeas={selection.selectedIdeas}
+        onUpdated={selection.refresh}
         onEdit={setEditingIdeaId}
-        onClearSelection={() => setSelection(new Map())}
-        onSelectAll={selectAll}
-        isSelectingAll={isSelectingAll}
-        selectAllFailed={selectAllFailed}
+        onClearSelection={selection.clear}
+        onSelectAll={selection.selectAll}
+        isSelectingAll={selection.isSelectingAll}
+        selectAllFailed={selection.selectAllFailed}
         searchTerm={searchTerm}
         onSearch={setSearchTerm}
         categories={categories}
@@ -225,9 +188,9 @@ const InputManager = ({ project, phase }: Props) => {
                     tagOptions.map((option) => [option.value, option.label])
                   )
                 }
-                selectedIds={new Set(selection.keys())}
-                onToggleSelect={toggleSelect}
-                onToggleSelectPage={toggleSelectPage}
+                selectedIds={new Set(selection.selectedIds)}
+                onToggleSelect={selection.toggle}
+                onToggleSelectPage={selection.togglePage}
                 openIdeaId={selectedIdeaId}
                 onOpen={openPanel}
                 currentPage={page}

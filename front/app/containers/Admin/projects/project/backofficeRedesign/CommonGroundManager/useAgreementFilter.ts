@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { CommonGroundResultItem } from 'api/common_ground/types';
+import { Agreement, CommonGroundResultItem } from 'api/common_ground/types';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -8,37 +8,25 @@ import { FilterCategory } from '../InputManager/FilterMenu/useFilterCategories';
 import { toggled } from '../InputManager/utils';
 
 import messages from './messages';
-import { agreePercent, totalReactions, Votes } from './utils';
 
-const AGREEMENTS = [
+const AGREEMENTS: { value: Agreement; label: typeof messages.mostlyAgree }[] = [
   { value: 'agree', label: messages.mostlyAgree },
   { value: 'split', label: messages.divided },
   { value: 'disagree', label: messages.mostlyDisagree },
 ];
 
-// A statement nobody reacted to has no agreement to speak of.
-const agreementOf = (votes: Votes) => {
-  if (totalReactions(votes) === 0) return undefined;
-
-  const percent = agreePercent(votes);
-  if (percent >= 60) return 'agree';
-  return percent < 40 ? 'disagree' : 'split';
-};
+const isAgreement = (value: string): value is Agreement =>
+  AGREEMENTS.some((agreement) => agreement.value === value);
 
 const useAgreementFilter = (
   statements: CommonGroundResultItem[],
   onChange: () => void
 ) => {
   const { formatMessage } = useIntl();
-  const [selected, setSelected] = useState<string[]>([]);
-
-  const idsOf = (agreement: string) =>
-    statements
-      .filter(({ votes }) => agreementOf(votes) === agreement)
-      .map(({ id }) => id);
+  const [selected, setSelected] = useState<Agreement[]>([]);
 
   const change = (next: string[]) => {
-    setSelected(next);
+    setSelected(next.filter(isAgreement));
     onChange();
   };
 
@@ -47,7 +35,9 @@ const useAgreementFilter = (
     label: formatMessage(messages.agreementFilter),
     icon: 'check-circle',
     options: AGREEMENTS.map(({ value, label }) => {
-      const count = idsOf(value).length;
+      const count = statements.filter(
+        (statement) => statement.agreement === value
+      ).length;
 
       return {
         value,
@@ -65,7 +55,7 @@ const useAgreementFilter = (
 
   return {
     category,
-    ideaIds: selected.length > 0 ? selected.flatMap(idsOf) : undefined,
+    agreements: selected.length > 0 ? selected : undefined,
   };
 };
 

@@ -7,7 +7,6 @@ import commonGroundResultsKeys from 'api/common_ground/keys/commonGroundResultsK
 import useCommonGroundResults from 'api/common_ground/useCommonGroundResults';
 import useCopyInputs from 'api/copy_inputs/useCopyInputs';
 import useJobInProgressByPhase from 'api/copy_inputs/useJobInProgressByPhase';
-import { IIdeaData } from 'api/ideas/types';
 import useAddIdea from 'api/ideas/useAddIdea';
 import useIdeas from 'api/ideas/useIdeas';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
@@ -33,7 +32,7 @@ import Card from '../InputManager/SideColumn/Card';
 import ExportRow from '../InputManager/SideColumn/ExportRow';
 import SidePanel from '../InputManager/SidePanel';
 import usePanelNavigation from '../InputManager/usePanelNavigation';
-import useSelectAll from '../InputManager/useSelectAll';
+import useSelection from '../InputManager/useSelection';
 import AddInputModal from '../Phase/BuildPanel/BuildFields/MethodSection/AddInputModal';
 import ImportInputsModal from '../Phase/BuildPanel/BuildFields/MethodSection/CommonGroundSection/ImportInputsModal';
 import ManageLayout from '../Phase/ManageLayout';
@@ -58,7 +57,6 @@ const CommonGroundManager = ({ project, phase }: Props) => {
   const queryClient = useQueryClient();
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState<string>();
-  const [selection, setSelection] = useState<Map<string, IIdeaData>>(new Map());
   const [previewId, setPreviewId] = useState<string | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [importOpened, setImportOpened] = useState(false);
@@ -69,7 +67,7 @@ const CommonGroundManager = ({ project, phase }: Props) => {
 
   const { data: results } = useCommonGroundResults(phase.id);
   const statements = results?.data.attributes.ideas_by_agreement ?? [];
-  const { category: agreementCategory, ideaIds } = useAgreementFilter(
+  const { category: agreementCategory, agreements } = useAgreementFilter(
     statements,
     () => setPage(1)
   );
@@ -79,7 +77,7 @@ const CommonGroundManager = ({ project, phase }: Props) => {
     phase: phase.id,
     transitive: false,
   };
-  const listed = { ...scope, search, ideas: ideaIds };
+  const listed = { ...scope, search, agreements };
   const listParameters = {
     ...listed,
     sort: 'new' as const,
@@ -92,10 +90,6 @@ const CommonGroundManager = ({ project, phase }: Props) => {
   const { data: allCounts } = useIdeasFilterCounts(scope);
   const { data: listedCounts } = useIdeasFilterCounts(listed);
   const { data: importJob } = useJobInProgressByPhase(phase.id);
-  const { selectAll, isSelectingAll, selectAllFailed } = useSelectAll(
-    listed,
-    (allIdeas) => setSelection(new Map(allIdeas.map((idea) => [idea.id, idea])))
-  );
 
   const { progress: importedCount, total: totalToImport } =
     importJob?.data[0]?.attributes ?? {};
@@ -103,18 +97,14 @@ const CommonGroundManager = ({ project, phase }: Props) => {
 
   const stats = results?.data.attributes.stats;
   const votesById = new Map(statements.map(({ id, votes }) => [id, votes]));
-  // The API reads an empty id list as no filter at all, so it would list
-  // every statement.
-  const matchesNone = ideaIds?.length === 0;
-  const listedTotal = matchesNone ? 0 : listedCounts?.data.attributes.total;
-  const pageIdeas = matchesNone ? [] : ideas?.data ?? [];
+  const listedTotal = listedCounts?.data.attributes.total;
+  const pageIdeas = ideas?.data ?? [];
   const phaseTotal = allCounts?.data.attributes.total;
   const lastPage = (ideas && getPageNumberFromUrl(ideas.links.last)) || 1;
-  const selectedIdeas = [...selection.values()];
-  // The listed version first: a selected one can predate an earlier edit.
-  const editingIdea =
-    pageIdeas.find((idea) => idea.id === editingId) ??
-    (editingId ? selection.get(editingId) : undefined);
+  const selection = useSelection(pageIdeas, listed);
+  const editingIdea = [...pageIdeas, ...selection.selectedIdeas].find(
+    (idea) => idea.id === editingId
+  );
 
   const navigation = usePanelNavigation({
     openIdeaId: previewId ?? undefined,
@@ -138,28 +128,17 @@ const CommonGroundManager = ({ project, phase }: Props) => {
     changeSearch(null);
   };
 
-  const toggleSelect = (idea: IIdeaData) => {
-    const next = new Map(selection);
-    if (!next.delete(idea.id)) next.set(idea.id, idea);
-    setSelection(next);
-  };
-
-  const toggleSelectPage = () => {
-    const next = new Map(selection);
-    const allSelected = pageIdeas.every((idea) => next.has(idea.id));
-    pageIdeas.forEach((idea) =>
-      allSelected ? next.delete(idea.id) : next.set(idea.id, idea)
-    );
-    setSelection(next);
-  };
-
-  const handleDeleted = () => {
-    setSelection(new Map());
-    // The current page may be gone after the delete.
-    setPage(1);
+  // The agreement filter and the stats come from the results.
+  const refreshResults = () =>
     queryClient.invalidateQueries({
       queryKey: commonGroundResultsKeys.all(),
     });
+
+  const handleDeleted = () => {
+    selection.clear();
+    // The current page may be gone after the delete.
+    setPage(1);
+    refreshResults();
   };
 
   return (
@@ -191,7 +170,7 @@ const CommonGroundManager = ({ project, phase }: Props) => {
             <ExportRow
               type="ProjectProposals"
               projectId={project.id}
-              selectedIds={[...selection.keys()]}
+              selectedIds={selection.selectedIds}
             />
           </Card>
         </>
@@ -213,16 +192,16 @@ const CommonGroundManager = ({ project, phase }: Props) => {
         minHeight="40px"
         mb="12px"
       >
-        {selectedIdeas.length > 0 ? (
+        {selection.selectedIdeas.length > 0 ? (
           <StatementBatchBar
-            ideas={selectedIdeas}
+            ideas={selection.selectedIdeas}
             total={listedTotal}
             onEdit={setEditingId}
-            onClear={() => setSelection(new Map())}
+            onClear={selection.clear}
             onDeleted={handleDeleted}
-            onSelectAll={selectAll}
-            isSelectingAll={isSelectingAll}
-            selectAllFailed={selectAllFailed}
+            onSelectAll={selection.selectAll}
+            isSelectingAll={selection.isSelectingAll}
+            selectAllFailed={selection.selectAllFailed}
           />
         ) : (
           <Text variant="boLabel" m="0">
@@ -267,13 +246,13 @@ const CommonGroundManager = ({ project, phase }: Props) => {
         <StatementTable
           ideas={pageIdeas}
           votesById={votesById}
-          selectedIds={new Set(selection.keys())}
+          selectedIds={new Set(selection.selectedIds)}
           openId={previewId}
           dimmed={isChangingList}
           currentPage={page}
           lastPage={lastPage}
-          onToggleSelect={toggleSelect}
-          onToggleSelectPage={toggleSelectPage}
+          onToggleSelect={selection.toggle}
+          onToggleSelectPage={selection.togglePage}
           onOpen={setPreviewId}
           onChangePage={setPage}
         />
@@ -301,11 +280,13 @@ const CommonGroundManager = ({ project, phase }: Props) => {
           submitLabel={formatMessage(messages.saveStatement)}
           defaultValues={{
             title_multiloc: editingIdea.attributes.title_multiloc,
-            author_id: editingIdea.relationships.author?.data?.id ?? null,
+            author_id: editingIdea.relationships.author?.data?.id,
             anonymous: editingIdea.attributes.anonymous,
           }}
           onSubmit={(values) =>
-            updateIdea({ id: editingIdea.id, requestBody: values })
+            updateIdea({ id: editingIdea.id, requestBody: values }).then(
+              refreshResults
+            )
           }
           onClose={() => setEditingId(null)}
         />
@@ -318,7 +299,7 @@ const CommonGroundManager = ({ project, phase }: Props) => {
             addIdea({
               phaseId: phase.id,
               requestBody: { ...values, publication_status: 'published' },
-            })
+            }).then(refreshResults)
           }
           onClose={() => setAddOpened(false)}
         />

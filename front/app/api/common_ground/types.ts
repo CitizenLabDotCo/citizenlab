@@ -9,9 +9,12 @@ export type CommonGroundResultsKeys = Keys<typeof commonGroundResultsKeys>;
 
 export type CommonGroundProgressKeys = Keys<typeof commonGroundProgressKeys>;
 
+export type Agreement = 'agree' | 'split' | 'disagree';
+
 export interface CommonGroundResultItem {
   id: string;
   title_multiloc: Multiloc;
+  agreement: Agreement;
   votes: {
     up: number;
     down: number;

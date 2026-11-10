@@ -31,7 +31,8 @@ export type SetFilters = (
 export const DEFAULT_SORT: Sort = 'new';
 export const ALL_PHASES = 'all';
 
-const NO_FILTERS = {
+// Replacing the filters leaves the search alone: it has its own control.
+const NO_REPLACED_FILTERS = {
   page: undefined,
   status: undefined,
   assignee: undefined,
@@ -39,8 +40,9 @@ const NO_FILTERS = {
   feedback_needed: undefined,
   source: undefined,
   phase: undefined,
-  search: undefined,
 };
+
+const NO_FILTERS = { ...NO_REPLACED_FILTERS, search: undefined };
 
 const list = (value: string | string[] | undefined) =>
   (Array.isArray(value) ? value : value?.split(',') ?? []).filter(Boolean);
@@ -92,7 +94,7 @@ const useManagerParams = (phaseId: string) => {
   const setFilters: SetFilters = useCallback(
     (changes, { replace = false } = {}) => {
       const updates: Record<string, string | undefined> = replace
-        ? { ...NO_FILTERS }
+        ? { ...NO_REPLACED_FILTERS }
         : { page: undefined };
 
       if ('statuses' in changes) {

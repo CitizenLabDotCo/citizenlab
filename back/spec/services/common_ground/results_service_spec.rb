@@ -268,4 +268,42 @@ describe CommonGround::ResultsService do
       end
     end
   end
+
+  describe '#idea_ids_with_agreement' do
+    def idea_with_reactions(up: 0, down: 0, neutral: 0)
+      create(:idea, project: phase.project, phases: [phase]).tap do |idea|
+        create_list(:reaction, up, reactable: idea, mode: 'up')
+        create_list(:reaction, down, reactable: idea, mode: 'down')
+        create_list(:reaction, neutral, reactable: idea, mode: 'neutral')
+      end
+    end
+
+    # Neutral reactions count towards the share that agrees.
+    let_it_be(:agreed) { idea_with_reactions(up: 3, neutral: 2) } # 60%
+    let_it_be(:divided) { idea_with_reactions(up: 2, down: 2, neutral: 1) } # 40%
+    let_it_be(:disagreed) { idea_with_reactions(up: 1, down: 2) } # 33%
+    let_it_be(:neutral_only) { idea_with_reactions(neutral: 2) }
+
+    where(:agreements, :expected) do
+      [
+        [%w[agree], [ref(:agreed)]],
+        [%w[split], [ref(:divided)]],
+        [%w[disagree], [ref(:disagreed)]],
+        [%w[agree disagree], [ref(:agreed), ref(:disagreed)]],
+        [[], []]
+      ]
+    end
+
+    with_them do
+      it 'returns the ideas in those buckets' do
+        expect(Idea.where(id: service.idea_ids_with_agreement(agreements))).to match_array(expected)
+      end
+    end
+
+    it 'gives each listed idea its bucket' do
+      expect(service.results.ideas_by_agreement.to_h { |idea| [idea.id, idea.agreement] }).to eq(
+        agreed.id => 'agree', divided.id => 'split', disagreed.id => 'disagree'
+      )
+    end
+  end
 end

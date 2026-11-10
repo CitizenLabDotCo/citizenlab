@@ -4,6 +4,10 @@ module CommonGround
     HIGHEST_CONSENSUS_MIN_SCORE = 0.75 # e.g. at least 75/25 in one direction
     CLOSE_CALL_MAX_SCORE = 0.6         # e.g. between 40/60 and 60/40
 
+    # agreement buckets, by the percentage of reactions that agree
+    AGREE_MIN_PERCENT = 60
+    DISAGREE_MAX_PERCENT = 40 # exclusive
+
     # @param [Boolean] exclude_admins_and_moderators Leave out the reactions of users
     #   with an admin or moderator role. Reactions without a known user are kept.
     def initialize(phase, exclude_admins_and_moderators: false)
@@ -22,6 +26,14 @@ module CommonGround
         ideas_by_agreement: ideas_by_agreement,
         stats: stats
       )
+    end
+
+    # @param [Array<String>] agreements Any of 'agree', 'split' and 'disagree'
+    # @return [ActiveRecord::Relation] The ids of the reacted ideas in those buckets, as a subquery
+    def idea_ids_with_agreement(agreements)
+      ideas_with_reaction_counts
+        .where("#{agreement_sql} IN (?)", Array(agreements))
+        .reselect('ideas.id')
     end
 
     private
@@ -57,8 +69,28 @@ module CommonGround
 
       ideas
         .joins("INNER JOIN (#{reaction_counts_by_idea.to_sql}) reaction_counts ON reaction_counts.idea_id = ideas.id")
-        .select(*idea_columns, *reaction_count_columns)
+        .select(*idea_columns, *reaction_count_columns, "#{agreement_sql} AS agreement")
         .where('reaction_counts.likes_count + reaction_counts.dislikes_count > 0')
+    end
+
+    # Buckets an idea by the share of all its reactions, neutral ones included, that agree,
+    # rounded to a whole percent.
+    def agreement_sql
+      @agreement_sql ||= begin
+        agree_percent = <<~SQL.squish
+          ROUND(reaction_counts.likes_count * 100.0 / NULLIF(
+            reaction_counts.likes_count + reaction_counts.dislikes_count + reaction_counts.neutral_reactions_count, 0
+          ))
+        SQL
+
+        Arel.sql(<<~SQL.squish)
+          CASE
+            WHEN #{agree_percent} >= #{AGREE_MIN_PERCENT} THEN 'agree'
+            WHEN #{agree_percent} < #{DISAGREE_MAX_PERCENT} THEN 'disagree'
+            ELSE 'split'
+          END
+        SQL
+      end
     end
 
     # Runs from 1 (everyone who took a side agreed with each other) to 0.5 (a perfect split).

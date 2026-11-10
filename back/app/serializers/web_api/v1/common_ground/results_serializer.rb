@@ -23,6 +23,7 @@ class WebApi::V1::CommonGround::ResultsSerializer < WebApi::V1::BaseSerializer
       {
         id: idea.id,
         title_multiloc: idea.title_multiloc,
+        agreement: idea.agreement,
         votes: {
           up: idea.likes_count,
           down: idea.dislikes_count,

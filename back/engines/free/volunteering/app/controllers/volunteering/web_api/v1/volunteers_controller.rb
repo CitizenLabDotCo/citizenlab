@@ -26,6 +26,7 @@ module Volunteering
           authorize %i[volunteering volunteer], :index_by_phase?
 
           @volunteers = policy_scope(Volunteer)
+            .joins(:cause)
             .where(volunteering_causes: { phase_id: @phase })
             .includes(:user)
           @volunteers = @volunteers.where(cause_id: params[:causes]) if params[:causes].present?

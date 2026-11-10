@@ -73,7 +73,8 @@ const InputStats = ({
 
   if (!counts && !showVotes) return null;
 
-  const { total_votes_amount: votes, manual_votes_count: offlineVotes } =
+  // The online and offline counts add up to the phase's vote total.
+  const { votes_count: onlineVotes, manual_votes_count: offlineVotes } =
     phase.attributes;
 
   const statusRow = (key: string, label: string, codes: Set<string>): Row => {
@@ -97,7 +98,11 @@ const InputStats = ({
 
   if (showVotes) {
     rows.push(
-      { key: 'votes', label: formatMessage(messages.votes), value: votes },
+      {
+        key: 'onlineVotes',
+        label: formatMessage(messages.onlineVotes),
+        value: onlineVotes,
+      },
       {
         key: 'offlineVotes',
         label: formatMessage(messages.offlineVotes),
