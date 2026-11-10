@@ -221,6 +221,8 @@ describe('SurveyForm — anonymous multi-page persistence', () => {
         projectId="project-1"
         phaseId="phase-1"
         participationMethod="native_survey"
+        heading={null}
+        mainId="survey"
       />
     );
 
@@ -250,6 +252,8 @@ describe('SurveyForm — anonymous multi-page persistence', () => {
         projectId="project-1"
         phaseId="phase-1"
         participationMethod="native_survey"
+        heading={null}
+        mainId="survey"
       />
     );
 
@@ -311,6 +315,8 @@ describe('SurveyForm — anonymous multi-page persistence', () => {
         projectId="project-1"
         phaseId="phase-1"
         participationMethod="native_survey"
+        heading={null}
+        mainId="survey"
       />
     );
   };
@@ -371,6 +377,8 @@ describe('SurveyForm — anonymous multi-page persistence', () => {
         projectId="project-1"
         phaseId="phase-1"
         participationMethod="native_survey"
+        heading={null}
+        mainId="survey"
       />
     );
 
@@ -416,6 +424,8 @@ describe('SurveyForm — survey_started', () => {
         projectId="project-1"
         phaseId="phase-1"
         participationMethod="native_survey"
+        heading={null}
+        mainId="survey"
       />
     );
 
@@ -425,6 +435,8 @@ describe('SurveyForm — survey_started', () => {
         projectId="project-1"
         phaseId="phase-1"
         participationMethod="native_survey"
+        heading={null}
+        mainId="survey"
       />
     );
 
@@ -451,6 +463,8 @@ describe('SurveyForm — survey_started', () => {
         projectId="project-1"
         phaseId="phase-1"
         participationMethod="native_survey"
+        heading={null}
+        mainId="survey"
       />
     );
 

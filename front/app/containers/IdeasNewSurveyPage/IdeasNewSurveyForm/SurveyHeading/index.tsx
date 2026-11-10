@@ -6,16 +6,15 @@ import {
   useBreakpoint,
   IconButton,
   colors,
-  stylingConsts,
   Title,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 import ideasKeys from 'api/ideas/keys';
 import useAuthUser from 'api/me/useAuthUser';
 import usePhase from 'api/phases/usePhase';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 
+import SurveyHeadingBar from 'components/CustomFieldsForm/Page/SurveyHeadingBar';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Modal from 'components/UI/Modal';
 
@@ -31,20 +30,14 @@ import messages from './messages';
 
 const LEAVE_FALLBACK_TIMEOUT = 150;
 
-const StyledSurveyTitle = styled(Text)`
-  text-overflow: ellipsis;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-`;
-
 type Props = {
   titleText: string | React.ReactNode;
   phaseId: string;
+  // Off when a surrounding header bar draws the line.
+  bordered?: boolean;
 };
 
-const SurveyHeading = ({ titleText, phaseId }: Props) => {
+const SurveyHeading = ({ titleText, phaseId, bordered = true }: Props) => {
   const { slug: projectSlug } = useParams({
     from: '/$locale/projects/$slug/surveys/new',
   });
@@ -137,68 +130,47 @@ const SurveyHeading = ({ titleText, phaseId }: Props) => {
 
   return (
     <>
-      <Box
-        bgColor={colors.white}
-        display="flex"
-        alignItems="center"
-        // If we don't have an edit button, it still needs to look consistent
-        minHeight={`${
-          isSmallerThanPhone
-            ? stylingConsts.mobileTopBarHeight
-            : stylingConsts.menuHeight
-        }px`}
-        px="24px"
-        borderBottom={`1px solid ${colors.divider}`}
-      >
-        <StyledSurveyTitle
-          color={'tenantText'}
-          variant="bodyS"
-          fontSize="m"
-          my="0px"
-          textAlign="left"
-        >
-          {titleText}
-        </StyledSurveyTitle>
-        <Box
-          display="flex"
-          // Pushes buttons to the right
-          ml="auto"
-        >
-          {showEditSurveyButton && (
-            <ButtonWithLink
-              data-cy="e2e-edit-survey-link"
-              icon="edit"
-              to={linkToSurveyBuilder.to}
-              params={
-                linkToSurveyBuilder.params as Parameters<
-                  typeof ButtonWithLink
-                >[0]['params']
-              }
-              buttonStyle="primary-inverse"
-              textDecorationHover="underline"
-              mr="12px"
-            >
-              <FormattedMessage {...messages.editSurvey} />
-            </ButtonWithLink>
-          )}
-          <IconButton
-            iconName="close"
-            onClick={(event) => {
-              event?.preventDefault();
+      <SurveyHeadingBar
+        titleText={titleText}
+        bordered={bordered}
+        actions={
+          <>
+            {showEditSurveyButton && (
+              <ButtonWithLink
+                data-cy="e2e-edit-survey-link"
+                icon="edit"
+                to={linkToSurveyBuilder.to}
+                params={
+                  linkToSurveyBuilder.params as Parameters<
+                    typeof ButtonWithLink
+                  >[0]['params']
+                }
+                buttonStyle="primary-inverse"
+                textDecorationHover="underline"
+                mr="12px"
+              >
+                <FormattedMessage {...messages.editSurvey} />
+              </ButtonWithLink>
+            )}
+            <IconButton
+              iconName="close"
+              onClick={(event) => {
+                event?.preventDefault();
 
-              if (hasBeenSubmitted) {
-                leaveForm();
-              } else {
-                openModal();
-              }
-            }}
-            iconColor={colors.textSecondary}
-            iconColorOnHover={colors.black}
-            a11y_buttonActionMessage={formatMessage(messages.leaveSurvey)}
-            p="0px"
-          />
-        </Box>
-      </Box>
+                if (hasBeenSubmitted) {
+                  leaveForm();
+                } else {
+                  openModal();
+                }
+              }}
+              iconColor={colors.textSecondary}
+              iconColorOnHover={colors.black}
+              a11y_buttonActionMessage={formatMessage(messages.leaveSurvey)}
+              p="0px"
+            />
+          </>
+        }
+      />
       <Modal
         opened={showLeaveModal}
         close={closeModal}

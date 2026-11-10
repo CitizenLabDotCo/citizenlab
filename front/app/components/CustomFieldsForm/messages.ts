@@ -285,6 +285,10 @@ export default defineMessages({
     defaultMessage:
       "You can't edit this field because it contains verified information",
   },
+  pageProgress: {
+    id: 'app.components.CustomFieldsForm.pageProgress',
+    defaultMessage: '{current} / {total}',
+  },
   previous: {
     id: 'app.components.form.ErrorDisplay.previous',
     defaultMessage: 'Previous',

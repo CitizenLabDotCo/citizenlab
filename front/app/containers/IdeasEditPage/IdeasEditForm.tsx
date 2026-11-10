@@ -9,8 +9,8 @@ import useProjectById from 'api/projects/useProjectById';
 
 import EditIdeaHeading from 'containers/IdeaHeading/EditIdeaHeading';
 import InputDetailView from 'containers/IdeasNewPage/SimilarInputs/InputDetailView';
-import { calculateDynamicHeight } from 'containers/IdeasNewSurveyPage/IdeasNewSurveyForm/utils';
 
+import FormPageLayout from 'components/CustomFieldsForm/Page/FormPageLayout';
 import { FORM_PAGE_CHANGE_EVENT } from 'components/CustomFieldsForm/PageControlButtons/events';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -83,132 +83,92 @@ const IdeasEditForm = ({ ideaId }: Props) => {
       }[phase?.data.attributes.input_term || 'idea']}
     />
   );
-  const maxWidth = usingMapView ? '1100px' : '700px';
 
   const handleCloseDetail = () => {
     updateSearchParams({ selected_idea_id: null });
   };
 
+  const aside =
+    selectedIdeaId &&
+    (isSmallerThanPhone ? (
+      <Box
+        position="fixed"
+        top="0"
+        left="0"
+        width="100%"
+        height="100%"
+        bg="rgba(0,0,0,0.4)"
+        zIndex="2000"
+        onClick={handleCloseDetail}
+      >
+        <Box
+          position="absolute"
+          bottom="0"
+          width="100%"
+          height="75%"
+          bgColor={colors.white}
+          borderRadius="16px 16px 0 0"
+          overflowY="auto"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <Box
+            width="40px"
+            height="4px"
+            bgColor={colors.grey300}
+            borderRadius="2px"
+            m="8px auto"
+          />
+          <InputDetailView
+            ideaId={selectedIdeaId}
+            onClose={handleCloseDetail}
+          />
+        </Box>
+      </Box>
+    ) : (
+      <Box
+        width="375px"
+        minWidth="375px"
+        borderLeft={`1px solid ${colors.grey300}`}
+        overflowY="auto"
+        bgColor={colors.white}
+        {...(usingMapView
+          ? { position: 'relative', top: '40px', mb: '80px' }
+          : { position: 'sticky', top: '0', h: '100vh' })}
+      >
+        <InputDetailView ideaId={selectedIdeaId} onClose={handleCloseDetail} />
+      </Box>
+    ));
+
   return (
     <>
       {projectId && <IdeasEditMeta ideaId={ideaId} projectId={projectId} />}
-      <Box
-        w="100%"
-        bgColor={colors.grey100}
-        h="100vh"
-        position="fixed"
-        zIndex="1010"
-        overflow="hidden"
+      <FormPageLayout
+        usingMapView={usingMapView}
+        mainId="e2e-idea-edit-page"
+        aside={aside}
+        heading={
+          idea &&
+          projectId && (
+            <EditIdeaHeading
+              idea={idea.data}
+              titleText={titleText}
+              projectId={projectId}
+              bordered={usingMapView}
+            />
+          )
+        }
       >
-        <Box display="flex" flexDirection="row" h="100%" w="100%">
-          <Box
-            flex="1"
-            display="flex"
-            mx="auto"
-            justifyContent="center"
-            w="100%"
-          >
-            <Box w="100%" maxWidth={maxWidth}>
-              <Box
-                w="100%"
-                position="relative"
-                top={isSmallerThanPhone ? '0' : '40px'}
-              >
-                {idea && projectId && (
-                  <EditIdeaHeading
-                    idea={idea.data}
-                    titleText={titleText}
-                    projectId={projectId}
-                  />
-                )}
-              </Box>
-              <main id="e2e-idea-edit-page">
-                <Box
-                  display="flex"
-                  justifyContent="center"
-                  pt={isSmallerThanPhone ? '0' : '40px'}
-                >
-                  <Box
-                    background={colors.white}
-                    maxWidth={maxWidth}
-                    w="100%"
-                    // Height is recalculated on window resize via useWindowSize hook
-                    h={calculateDynamicHeight(isSmallerThanPhone)}
-                    pb={isSmallerThanPhone ? '0' : '80px'}
-                    overflowY="auto"
-                    display="flex"
-                  >
-                    {project && (
-                      <Suspense>
-                        <IdeationForm
-                          projectId={project.data.id}
-                          phaseId={phaseId}
-                          participationMethod={
-                            phase?.data.attributes.participation_method
-                          }
-                          idea={idea?.data}
-                        />
-                      </Suspense>
-                    )}
-                  </Box>
-                </Box>
-              </main>
-            </Box>
-            {selectedIdeaId &&
-              (isSmallerThanPhone ? (
-                <Box
-                  position="fixed"
-                  top="0"
-                  left="0"
-                  width="100%"
-                  height="100%"
-                  bg="rgba(0,0,0,0.4)"
-                  zIndex="2000"
-                  onClick={handleCloseDetail}
-                >
-                  <Box
-                    position="absolute"
-                    bottom="0"
-                    width="100%"
-                    height="75%"
-                    bgColor={colors.white}
-                    borderRadius="16px 16px 0 0"
-                    overflowY="auto"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <Box
-                      width="40px"
-                      height="4px"
-                      bgColor={colors.grey300}
-                      borderRadius="2px"
-                      m="8px auto"
-                    />
-                    <InputDetailView
-                      ideaId={selectedIdeaId}
-                      onClose={handleCloseDetail}
-                    />
-                  </Box>
-                </Box>
-              ) : (
-                <Box
-                  top="40px"
-                  width="375px"
-                  minWidth="375px"
-                  borderLeft={`1px solid ${colors.grey300}`}
-                  overflowY="auto"
-                  bgColor={colors.white}
-                  position="relative"
-                  mb="80px"
-                >
-                  <InputDetailView
-                    ideaId={selectedIdeaId}
-                    onClose={handleCloseDetail}
-                  />
-                </Box>
-              ))}
-          </Box>
-        </Box>
-      </Box>
+        {project && (
+          <Suspense>
+            <IdeationForm
+              projectId={project.data.id}
+              phaseId={phaseId}
+              participationMethod={phase?.data.attributes.participation_method}
+              idea={idea?.data}
+            />
+          </Suspense>
+        )}
+      </FormPageLayout>
     </>
   );
 };

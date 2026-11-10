@@ -19,15 +19,14 @@ import { IProject } from 'api/projects/types';
 
 import useLocalize from 'hooks/useLocalize';
 
-import LanguageSelector from 'containers/MainHeader/Components/LanguageSelector';
-
 import ButtonWithLink from 'components/UI/ButtonWithLink';
-import WeglotSwitcher from 'components/WeglotSwitcher';
 
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import messages from '../messages';
+
+import FormLanguageSwitchers from './FormLanguageSwitchers';
 
 type PageVariant = 'other' | 'submission' | 'after-submission';
 
@@ -81,6 +80,10 @@ interface Props {
   project: IProject | undefined;
   pageQuestions?: IFlatCustomField[];
   currentPageIndex?: number;
+  // Hide the Previous button (when it's shown at the top of the page).
+  showPrevious?: boolean;
+  // Shown at the end of the page content instead of in a footer bar.
+  inline?: boolean;
 }
 
 const PageControlButtons = ({
@@ -96,6 +99,8 @@ const PageControlButtons = ({
   project,
   pageQuestions = [],
   currentPageIndex,
+  showPrevious = true,
+  inline = false,
 }: Props) => {
   const theme = useTheme();
   const localize = useLocalize();
@@ -193,41 +198,31 @@ const PageControlButtons = ({
     <Box
       width="100%"
       display="flex"
-      justifyContent="space-between"
+      justifyContent={inline ? 'flex-end' : 'space-between'}
       alignItems="center"
-      bgColor={colors.white}
-      px={isSmallerThanPhone ? '16px' : '24px'}
-      py={'16px'}
+      bgColor={inline ? undefined : colors.white}
+      px={inline ? '0px' : isSmallerThanPhone ? '16px' : '24px'}
+      py={inline ? '24px' : '16px'}
+      mt={inline ? '16px' : undefined}
+      borderTop={inline ? `1px solid ${colors.divider}` : undefined}
     >
-      <Box display="flex" alignItems="center" gap="12px">
-        {/* We wrap it in a Box here to maintain the spacing and keep the next buttons right-aligned when the language selector is empty, preventing the need to move the locale check logic here. */}
-        <LanguageSelector
-          dropdownClassName={'open-upwards'}
-          useDefaultTop={false}
-          mobileRight="auto"
-          mobileLeft="auto"
-          right="auto"
-          afterSelection={() => {
-            window.location.reload();
-          }}
-        />
-        {/* These pages hide the navbar, so the switcher sits in the footer
-            beside the platform language selector instead. */}
-        <WeglotSwitcher openUpwards />
-      </Box>
+      {/* In the inline layout they live in the progress bar at the bottom. */}
+      {!inline && <FormLanguageSwitchers />}
       <Box display="flex" justifyContent="center" alignItems="center">
-        {hasPreviousPage && pageVariant !== 'after-submission' && (
-          <Button
-            type="button"
-            onClick={handlePrevious}
-            data-cy="e2e-previous-page"
-            icon="chevron-left"
-            buttonStyle="primary-outlined"
-            marginRight={isSmallerThanPhone ? '8px' : '16px'}
-          >
-            <FormattedMessage {...messages.previous} />
-          </Button>
-        )}
+        {showPrevious &&
+          hasPreviousPage &&
+          pageVariant !== 'after-submission' && (
+            <Button
+              type="button"
+              onClick={handlePrevious}
+              data-cy="e2e-previous-page"
+              icon="chevron-left"
+              buttonStyle="primary-outlined"
+              marginRight={isSmallerThanPhone ? '8px' : '16px'}
+            >
+              <FormattedMessage {...messages.previous} />
+            </Button>
+          )}
         {pageButtonLink ? (
           <ButtonWithLink
             data-cy={CY_DATA_VALUES[pageVariant]}

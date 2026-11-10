@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { Suspense, useRef, useState } from 'react';
 
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
 
@@ -17,6 +17,11 @@ import useOnQuerySuccess from 'hooks/useOnQuerySuccess';
 import { customerAnalyticsEvents, trackEventByName } from 'utils/analytics';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
+import FormPageLayout, {
+  FORM_MAP_PAGE_MAX_WIDTH,
+} from '../Page/FormPageLayout';
+import { usePageDirection } from '../Page/PageTransition';
+import ProgressFooter from '../Page/ProgressFooter';
 import { FormValues } from '../Page/types';
 import { convertCustomFieldsToNestedPages } from '../util';
 
@@ -27,7 +32,12 @@ const SurveyForm = ({
   projectId,
   phaseId,
   participationMethod,
+  heading,
+  mainId,
 }: {
+  // The bar at the top of the page, and the id of the page's main element.
+  heading: React.ReactNode;
+  mainId: string;
   projectId: string;
   phaseId?: string;
   participationMethod?: ParticipationMethod;
@@ -45,6 +55,12 @@ const SurveyForm = ({
   // is a no-op), so we accumulate their values here and feed them back as
   // defaultValues on each remount.
   const [accumulatedValues, setAccumulatedValues] = useState<FormValues>({});
+  // Next pages slide in from the right, previous ones from the left.
+  const enterDirection = usePageDirection(currentPageIndex);
+  // Reported by the open page. The progress card lives here rather than in
+  // the page, so it isn't remounted on every page change (and its bar
+  // animates from one page to the next), whichever layout the page uses.
+  const [formCompletionPercentage, setFormCompletionPercentage] = useState(0);
 
   const { data: authUser } = useAuthUser();
   const { data: phase } = usePhase(phaseId);
@@ -79,7 +95,20 @@ const SurveyForm = ({
 
   const lastPageIndex = nestedPagesData.length - 1;
 
-  if (!phase) return null;
+  // Renders the frame of the page itself, as it changes with the page: map
+  // pages get a wider column for the map next to the questions.
+  const renderFrame = (children: React.ReactNode, wide = false) => (
+    <FormPageLayout
+      usingMapView={false}
+      wide={wide}
+      mainId={mainId}
+      heading={heading}
+    >
+      {children}
+    </FormPageLayout>
+  );
+
+  if (!phase) return renderFrame(null);
 
   const onSubmit = async ({
     formValues,
@@ -148,37 +177,51 @@ const SurveyForm = ({
   // The options of a select question are part of this response, so a question
   // with thousands of them keeps the whole form waiting.
   if (isLoadingDraftIdea || isLoadingCustomFields) {
-    return (
+    return renderFrame(
       <Box mt="20px" display="flex" justifyContent="center" w="100%">
         <Spinner />
       </Box>
     );
   }
 
-  return (
+  const isMapPage =
+    nestedPagesData[currentPageIndex]?.page.page_layout === 'map';
+
+  return renderFrame(
     <Box w="100%">
-      {nestedPagesData[currentPageIndex] && (
-        <SurveyPage
-          key={currentPageIndex}
-          page={nestedPagesData[currentPageIndex].page}
-          pages={nestedPagesData}
-          pageQuestions={nestedPagesData[currentPageIndex].pageQuestions}
-          currentPageIndex={currentPageIndex}
-          lastPageIndex={lastPageIndex}
-          setCurrentPageIndex={setCurrentPageIndex}
-          userNavigationHistory={userNavigationHistory}
-          setUserNavigationHistory={setUserNavigationHistory}
-          participationMethod={participationMethod}
-          projectId={projectId}
-          onSubmit={onSubmit}
-          onCapturePageValues={(values) =>
-            setAccumulatedValues((prev) => ({ ...prev, ...values }))
-          }
-          phase={phase.data}
-          defaultValues={{ ...initialFormData, ...accumulatedValues }}
-        />
-      )}
-    </Box>
+      <Suspense>
+        {nestedPagesData[currentPageIndex] && (
+          <SurveyPage
+            key={currentPageIndex}
+            page={nestedPagesData[currentPageIndex].page}
+            pages={nestedPagesData}
+            pageQuestions={nestedPagesData[currentPageIndex].pageQuestions}
+            currentPageIndex={currentPageIndex}
+            lastPageIndex={lastPageIndex}
+            setCurrentPageIndex={setCurrentPageIndex}
+            userNavigationHistory={userNavigationHistory}
+            setUserNavigationHistory={setUserNavigationHistory}
+            participationMethod={participationMethod}
+            projectId={projectId}
+            onSubmit={onSubmit}
+            onCapturePageValues={(values) =>
+              setAccumulatedValues((prev) => ({ ...prev, ...values }))
+            }
+            phase={phase.data}
+            defaultValues={{ ...initialFormData, ...accumulatedValues }}
+            enterDirection={enterDirection}
+            onProgressChange={setFormCompletionPercentage}
+          />
+        )}
+      </Suspense>
+      <ProgressFooter
+        formCompletionPercentage={formCompletionPercentage}
+        currentPage={currentPageIndex + 1}
+        totalPages={lastPageIndex}
+        maxWidth={isMapPage ? FORM_MAP_PAGE_MAX_WIDTH : undefined}
+      />
+    </Box>,
+    isMapPage
   );
 };
 

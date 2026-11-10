@@ -36,9 +36,11 @@ const StyledTitle = styled(Text)`
 type Props = {
   phase: IPhaseData;
   titleText?: string | React.ReactNode;
+  // Off when a surrounding header bar draws the line.
+  bordered?: boolean;
 };
 
-const NewIdeaHeading = ({ phase, titleText }: Props) => {
+const NewIdeaHeading = ({ phase, titleText, bordered = true }: Props) => {
   const { slug: projectSlug } = useParams({
     from: '/$locale/projects/$slug/ideas/new',
   });
@@ -96,7 +98,7 @@ const NewIdeaHeading = ({ phase, titleText }: Props) => {
             : stylingConsts.menuHeight
         }px`}
         px="24px"
-        borderBottom={`1px solid ${colors.divider}`}
+        borderBottom={bordered ? `1px solid ${colors.divider}` : undefined}
       >
         {titleText && (
           <StyledTitle
