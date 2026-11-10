@@ -37,6 +37,9 @@ class ReportBuilder::Permissions::ReportPermissionsService
       phase_id = props['phase_id']
       project_id = props['project_id']
 
+      # A list of ids would authorize one record and query them all.
+      return true unless [phase_id, project_id].all? { |id| id.blank? || id.is_a?(String) }
+
       # A widget whose phase was deleted falls back to its project.
       # see this discussion for details
       # https://github.com/CitizenLabDotCo/citizenlab/pull/6910/files#r1474778771

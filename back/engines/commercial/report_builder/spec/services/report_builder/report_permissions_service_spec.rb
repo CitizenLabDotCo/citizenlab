@@ -95,6 +95,14 @@ RSpec.describe ReportBuilder::Permissions::ReportPermissionsService do
           expect(described_class.new.editing_disabled_reason_for_report(report, user)).to eq('report_has_unauthorized_data')
         end
       end
+
+      context 'when a foreign phase hides in a list of ids' do
+        let(:props) { { 'phaseId' => [phase_id, create(:phase).id] } }
+
+        it 'returns error' do
+          expect(described_class.new.editing_disabled_reason_for_report(report, user)).to eq('report_has_unauthorized_data')
+        end
+      end
     end
 
     context 'when user is moderator of another project' do
