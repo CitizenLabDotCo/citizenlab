@@ -1547,7 +1547,7 @@
   "app.containers.ChangePassword.passwordChangeSuccessMessage": "La password è stata aggiornata con successo",
   "app.containers.ChangePassword.passwordEmptyError": "Inserire la password",
   "app.containers.ChangePassword.passwordsDontMatch": "Conferma la nuova password",
-  "app.containers.ChangePassword.titleAddPassword": "Aggiungere una password",
+  "app.containers.ChangePassword.titleAddPassword": "Aggiungi una password",
   "app.containers.ChangePassword.titleChangePassword": "Cambia la tua password",
   "app.containers.Comments.a11y_commentDeleted": "Commento eliminato",
   "app.containers.Comments.a11y_commentPosted": "Commento inviato",
