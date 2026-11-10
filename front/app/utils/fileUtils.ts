@@ -114,7 +114,33 @@ export function getFilesToAdd(
   }
 }
 
-export function returnFileSize(size: number) {
+/**
+ * Human-readable file size. With a locale, the number and unit are formatted
+ * for that locale (e.g. "2,0 MB" in nl-NL, "2,0 Mo" in fr-FR). Without one,
+ * the legacy English-style output is returned (e.g. "2.0 MB").
+ */
+export function returnFileSize(size: number, locale?: string) {
+  if (locale) {
+    const format = (
+      value: number,
+      unit: string,
+      unitDisplay: 'short' | 'long'
+    ) =>
+      new Intl.NumberFormat(locale, {
+        style: 'unit',
+        unit,
+        unitDisplay,
+        ...(unit !== 'byte' && {
+          minimumFractionDigits: 1,
+          maximumFractionDigits: 1,
+        }),
+      }).format(value);
+
+    if (size < 1024) return format(size, 'byte', 'long');
+    if (size < 1048576) return format(size / 1024, 'kilobyte', 'short');
+    return format(size / 1048576, 'megabyte', 'short');
+  }
+
   if (size < 1024) {
     return `${size} bytes`;
   } else if (size >= 1024 && size < 1048576) {
