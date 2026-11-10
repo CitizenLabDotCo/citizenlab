@@ -35,22 +35,27 @@ export const updateIdea = ({ id, requestBody }: IUpdateIdeaObject) =>
 // Shared with batch updates, which refresh once for the whole batch.
 export const invalidateAfterIdeaUpdate = (
   queryClient: QueryClient,
-  idea: IIdea,
-  variables: IUpdateIdeaObject
+  ideas: IIdea[],
+  {
+    skipRefetchCounts = false,
+    published = false,
+  }: { skipRefetchCounts?: boolean; published?: boolean } = {}
 ) => {
   queryClient.invalidateQueries({ queryKey: ideasKeys.lists() });
   queryClient.invalidateQueries({ queryKey: ideaMarkersKeys.lists() });
 
-  if (!variables.skipRefetchCounts) {
+  if (!skipRefetchCounts) {
     queryClient.invalidateQueries({ queryKey: ideaFilterCountsKeys.all() });
     queryClient.invalidateQueries({
       queryKey: ideaFilterCountsKeys.items(),
     });
   }
 
-  queryClient.invalidateQueries({
-    queryKey: ideaImagesKeys.list({ ideaId: idea.data.id }),
-  });
+  ideas.forEach((idea) =>
+    queryClient.invalidateQueries({
+      queryKey: ideaImagesKeys.list({ ideaId: idea.data.id }),
+    })
+  );
   queryClient.invalidateQueries({
     queryKey: ideaImagesKeys.items(),
   });
@@ -58,23 +63,29 @@ export const invalidateAfterIdeaUpdate = (
     queryKey: meKeys.all(),
   });
 
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const projectId = idea.data.relationships?.project.data.id;
+  const projectIds = new Set(
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    ideas.map((idea) => idea.data.relationships?.project.data.id)
+  );
 
-  if (projectId) {
+  projectIds.forEach((projectId) => {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (!projectId) return;
+
     queryClient.invalidateQueries({
       queryKey: projectsKeys.item({ id: projectId }),
     });
 
-    if (variables.requestBody.publication_status === 'published') {
+    if (published) {
       invalidateProjectPhases(queryClient, projectId);
     }
 
     queryClient.invalidateQueries({
       queryKey: importedIdeasKeys.list({ projectId }),
     });
-  }
+  });
   queryClient.invalidateQueries({
     queryKey: analyticsKeys.all(),
   });
@@ -85,7 +96,10 @@ const useUpdateIdea = () => {
   return useMutation<IIdea, CLErrors, IUpdateIdeaObject>({
     mutationFn: updateIdea,
     onSuccess: (idea, variables) => {
-      invalidateAfterIdeaUpdate(queryClient, idea, variables);
+      invalidateAfterIdeaUpdate(queryClient, [idea], {
+        skipRefetchCounts: variables.skipRefetchCounts,
+        published: variables.requestBody.publication_status === 'published',
+      });
     },
   });
 };

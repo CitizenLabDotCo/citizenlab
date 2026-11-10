@@ -174,6 +174,11 @@ const ModalContent = styled.div`
   -webkit-overflow-scrolling: touch;
 `;
 
+const isEditable = (target: EventTarget | null): target is HTMLElement =>
+  target instanceof HTMLElement &&
+  (target.isContentEditable ||
+    ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName));
+
 const HiddenSpan = styled.span`
   ${hideVisually()}
 `;
@@ -252,13 +257,23 @@ export default class SideModal extends PureComponent<Props, State> {
     const { opened, closeOnClickOutside = true, close } = this.props;
 
     if (
-      event.key === 'Escape' &&
-      opened &&
-      closeOnClickOutside &&
-      !this.state.innerModalOpened
+      event.key !== 'Escape' ||
+      // Already handled, for example by a menu inside the panel.
+      event.defaultPrevented ||
+      !opened ||
+      !closeOnClickOutside ||
+      this.state.innerModalOpened
     ) {
-      close();
+      return;
     }
+
+    // Escape first leaves the field being typed in, so its text isn't lost.
+    if (isEditable(event.target)) {
+      event.target.blur();
+      return;
+    }
+
+    close();
   };
 
   clickOutsideModal = () => {

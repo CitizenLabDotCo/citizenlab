@@ -69,28 +69,30 @@ module CommonGround
 
       ideas
         .joins("INNER JOIN (#{reaction_counts_by_idea.to_sql}) reaction_counts ON reaction_counts.idea_id = ideas.id")
-        .select(*idea_columns, *reaction_count_columns, "#{agreement_sql} AS agreement")
+        .select(
+          *idea_columns, *reaction_count_columns,
+          "#{agree_percent_sql} AS agree_percent", "#{agreement_sql} AS agreement"
+        )
         .where('reaction_counts.likes_count + reaction_counts.dislikes_count > 0')
     end
 
-    # Buckets an idea by the share of all its reactions, neutral ones included, that agree,
-    # rounded to a whole percent.
-    def agreement_sql
-      @agreement_sql ||= begin
-        agree_percent = <<~SQL.squish
-          ROUND(reaction_counts.likes_count * 100.0 / NULLIF(
-            reaction_counts.likes_count + reaction_counts.dislikes_count + reaction_counts.neutral_reactions_count, 0
-          ))
-        SQL
+    # The share of all reactions, neutral ones included, that agree, rounded to a whole percent.
+    def agree_percent_sql
+      @agree_percent_sql ||= Arel.sql(<<~SQL.squish)
+        ROUND(reaction_counts.likes_count * 100.0 / NULLIF(
+          reaction_counts.likes_count + reaction_counts.dislikes_count + reaction_counts.neutral_reactions_count, 0
+        ))
+      SQL
+    end
 
-        Arel.sql(<<~SQL.squish)
-          CASE
-            WHEN #{agree_percent} >= #{AGREE_MIN_PERCENT} THEN 'agree'
-            WHEN #{agree_percent} < #{DISAGREE_MAX_PERCENT} THEN 'disagree'
-            ELSE 'split'
-          END
-        SQL
-      end
+    def agreement_sql
+      @agreement_sql ||= Arel.sql(<<~SQL.squish)
+        CASE
+          WHEN #{agree_percent_sql} >= #{AGREE_MIN_PERCENT} THEN 'agree'
+          WHEN #{agree_percent_sql} < #{DISAGREE_MAX_PERCENT} THEN 'disagree'
+          ELSE 'split'
+        END
+      SQL
     end
 
     # Runs from 1 (everyone who took a side agreed with each other) to 0.5 (a perfect split).

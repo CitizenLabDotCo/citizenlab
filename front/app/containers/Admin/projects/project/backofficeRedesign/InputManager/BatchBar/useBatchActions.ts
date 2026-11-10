@@ -47,10 +47,7 @@ const useBatchActions = ({
 
     if (updated.length === 0) return;
 
-    invalidateAfterIdeaUpdate(queryClient, updated[0], {
-      id: updated[0].data.id,
-      requestBody: {},
-    });
+    invalidateAfterIdeaUpdate(queryClient, updated);
     onUpdated?.(updated.map((idea) => idea.data));
   };
 
@@ -95,7 +92,10 @@ const useBatchActions = ({
       await Promise.allSettled(group.map((idea) => deleteIdea(idea.id)));
     }
 
-    invalidateAfterIdeaDelete(queryClient, ideas[0].id);
+    invalidateAfterIdeaDelete(
+      queryClient,
+      ideas.map((idea) => idea.id)
+    );
     setIsDeleting(false);
     onDeleted();
   };

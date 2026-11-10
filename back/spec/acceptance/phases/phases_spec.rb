@@ -647,7 +647,8 @@ resource 'Phases' do
           expect(top_controversial_idea.with_indifferent_access).to match(
             id: i3.id,
             title_multiloc: i3.title_multiloc,
-            agreement: 'disagree', # 1 of 3 reactions agrees
+            agree_percent: 33, # 1 of 3 reactions agrees
+            agreement: 'disagree',
             votes: { down: 1, neutral: 1, up: 1 }
           )
 
@@ -655,6 +656,7 @@ resource 'Phases' do
           expect(top_consensus_idea.with_indifferent_access).to match(
             id: i2.id,
             title_multiloc: i2.title_multiloc,
+            agree_percent: 0,
             agreement: 'disagree',
             votes: { down: 1, neutral: 1, up: 0 }
           )

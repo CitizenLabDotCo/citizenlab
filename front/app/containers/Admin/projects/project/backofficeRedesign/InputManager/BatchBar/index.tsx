@@ -38,6 +38,7 @@ interface Props {
   onUpdated: (ideas: IIdeaData[]) => void;
   onEdit: (ideaId: string) => void;
   onClear: () => void;
+  onDeleted: () => void;
   onSelectAll: () => void;
   isSelectingAll: boolean;
   selectAllFailed: boolean;
@@ -65,6 +66,7 @@ const BatchBar = ({
   onUpdated,
   onEdit,
   onClear,
+  onDeleted,
   onSelectAll,
   isSelectingAll,
   selectAllFailed,
@@ -83,7 +85,7 @@ const BatchBar = ({
       onUpdated,
       onDeleted: () => {
         setDeleteModalOpen(false);
-        onClear();
+        onDeleted();
       },
     });
 

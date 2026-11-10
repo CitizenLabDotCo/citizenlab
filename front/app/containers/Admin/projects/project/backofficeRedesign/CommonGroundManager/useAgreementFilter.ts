@@ -1,6 +1,8 @@
 import { useState } from 'react';
 
 import { Agreement, CommonGroundResultItem } from 'api/common_ground/types';
+import { IIdeasFilterCountsQueryParameters } from 'api/ideas_filter_counts/types';
+import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -18,12 +20,41 @@ const AGREEMENTS: { value: Agreement; label: typeof messages.mostlyAgree }[] = [
 const isAgreement = (value: string): value is Agreement =>
   AGREEMENTS.some((agreement) => agreement.value === value);
 
-const useAgreementFilter = (
-  statements: CommonGroundResultItem[],
-  onChange: () => void
-) => {
+const useAgreementFilter = ({
+  statements,
+  searched,
+  onChange,
+}: {
+  statements: CommonGroundResultItem[];
+  /** The listed statements when a search narrows them. */
+  searched: IIdeasFilterCountsQueryParameters | undefined;
+  onChange: () => void;
+}) => {
   const { formatMessage } = useIntl();
   const [selected, setSelected] = useState<Agreement[]>([]);
+
+  // The results know nothing of the search, so the API counts the matches.
+  const searchedCount = (agreement: Agreement) => ({
+    ...searched,
+    agreements: [agreement],
+  });
+  const { data: agreeCounts } = useIdeasFilterCounts(
+    searchedCount('agree'),
+    !!searched
+  );
+  const { data: splitCounts } = useIdeasFilterCounts(
+    searchedCount('split'),
+    !!searched
+  );
+  const { data: disagreeCounts } = useIdeasFilterCounts(
+    searchedCount('disagree'),
+    !!searched
+  );
+  const searchedTotals: Record<Agreement, number | undefined> = {
+    agree: agreeCounts?.data.attributes.total,
+    split: splitCounts?.data.attributes.total,
+    disagree: disagreeCounts?.data.attributes.total,
+  };
 
   const change = (next: string[]) => {
     setSelected(next.filter(isAgreement));
@@ -35,9 +66,9 @@ const useAgreementFilter = (
     label: formatMessage(messages.agreementFilter),
     icon: 'check-circle',
     options: AGREEMENTS.map(({ value, label }) => {
-      const count = statements.filter(
-        (statement) => statement.agreement === value
-      ).length;
+      const count =
+        (searched && searchedTotals[value]) ??
+        statements.filter((statement) => statement.agreement === value).length;
 
       return {
         value,

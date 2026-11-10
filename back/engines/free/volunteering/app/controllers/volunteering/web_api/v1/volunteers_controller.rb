@@ -31,7 +31,9 @@ module Volunteering
             .includes(:user)
           @volunteers = @volunteers.where(cause_id: params[:causes]) if params[:causes].present?
           @volunteers = @volunteers.where(user: User.search_by_all(params[:search])) if params[:search].present?
-          @volunteers = @volunteers.order(created_at: params[:sort] == 'created_at' ? :asc : :desc)
+          direction = params[:sort] == 'created_at' ? :asc : :desc
+          # The id keeps the order stable across pages when timestamps tie.
+          @volunteers = @volunteers.order(created_at: direction, id: direction)
           @volunteers = paginate @volunteers
 
           render json: {

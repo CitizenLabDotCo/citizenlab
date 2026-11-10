@@ -25,7 +25,7 @@ export const deleteIdea = (id: string) =>
 // Shared with batch deletes, which refresh once for the whole batch.
 export const invalidateAfterIdeaDelete = (
   queryClient: QueryClient,
-  ideaId: string
+  ideaIds: string[]
 ) => {
   queryClient.invalidateQueries({
     queryKey: ideasKeys.lists(),
@@ -34,9 +34,11 @@ export const invalidateAfterIdeaDelete = (
   queryClient.invalidateQueries({ queryKey: ideaFilterCountsKeys.all() });
   queryClient.invalidateQueries({ queryKey: ideaFilterCountsKeys.items() });
   queryClient.invalidateQueries({ queryKey: userIdeaCountKeys.items() });
-  queryClient.invalidateQueries({
-    queryKey: ideaImagesKeys.list({ ideaId }),
-  });
+  ideaIds.forEach((ideaId) =>
+    queryClient.invalidateQueries({
+      queryKey: ideaImagesKeys.list({ ideaId }),
+    })
+  );
   queryClient.invalidateQueries({
     queryKey: ideaImagesKeys.items(),
   });
@@ -55,7 +57,7 @@ const useDeleteIdea = () => {
   return useMutation({
     mutationFn: deleteIdea,
     onSuccess: (_data, ideaId) => {
-      invalidateAfterIdeaDelete(queryClient, ideaId);
+      invalidateAfterIdeaDelete(queryClient, [ideaId]);
     },
   });
 };

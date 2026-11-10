@@ -300,9 +300,9 @@ describe CommonGround::ResultsService do
       end
     end
 
-    it 'gives each listed idea its bucket' do
-      expect(service.results.ideas_by_agreement.to_h { |idea| [idea.id, idea.agreement] }).to eq(
-        agreed.id => 'agree', divided.id => 'split', disagreed.id => 'disagree'
+    it 'gives each listed idea its agree percentage and bucket' do
+      expect(service.results.ideas_by_agreement.to_h { |idea| [idea.id, [idea.agree_percent, idea.agreement]] }).to eq(
+        agreed.id => [60, 'agree'], divided.id => [40, 'split'], disagreed.id => [33, 'disagree']
       )
     end
   end

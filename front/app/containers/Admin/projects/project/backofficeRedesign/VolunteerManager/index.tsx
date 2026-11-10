@@ -10,8 +10,6 @@ import useVolunteers from 'api/volunteers/useVolunteers';
 
 import useLocalize from 'hooks/useLocalize';
 
-import volunteeringMessages from 'containers/Admin/projects/project/volunteering/messages';
-
 import { useIntl } from 'utils/cl-intl';
 
 import FilterMenu from '../InputManager/FilterMenu';
@@ -113,7 +111,7 @@ const VolunteerManager = ({ phase }: Props) => {
           <Card fillHeight>
             <SetupCard
               id="export-volunteers"
-              title={formatMessage(volunteeringMessages.exportVolunteers)}
+              title={formatMessage(messages.exportVolunteers)}
               behaviour={{
                 kind: 'action',
                 icon: 'download',

@@ -247,7 +247,6 @@ export interface IIdeaQueryParameters<FilterValue = string> {
   'page[number]'?: number;
   'page[size]'?: number;
   projects?: string[];
-  ideas?: string[];
   phase?: string;
   /** Common ground statements in these buckets. Needs `phase`. */
   agreements?: Agreement[];

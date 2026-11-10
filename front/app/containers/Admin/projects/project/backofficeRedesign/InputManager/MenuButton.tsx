@@ -1,4 +1,4 @@
-import React, { ReactNode, useRef, useState } from 'react';
+import React, { ReactNode, useEffect, useRef, useState } from 'react';
 
 import { Box, Dropdown } from '@citizenlab/cl2-component-library';
 
@@ -19,6 +19,22 @@ const MenuButton = ({
   const triggerRef = useRef<HTMLDivElement>(null);
 
   const close = () => setOpened(false);
+
+  // Closes on keydown and marks the key as handled, so a side panel around
+  // the menu, which closes on the same key, stays open.
+  useEffect(() => {
+    if (!opened) return;
+
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return;
+
+      event.preventDefault();
+      setOpened(false);
+    };
+
+    document.addEventListener('keydown', closeOnEscape, true);
+    return () => document.removeEventListener('keydown', closeOnEscape, true);
+  }, [opened]);
 
   const handleClickOutside = (event: { target: EventTarget | null }) => {
     if (

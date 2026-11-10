@@ -14,6 +14,8 @@ export type Agreement = 'agree' | 'split' | 'disagree';
 export interface CommonGroundResultItem {
   id: string;
   title_multiloc: Multiloc;
+  /** Of all reactions, neutral ones included. */
+  agree_percent: number;
   agreement: Agreement;
   votes: {
     up: number;

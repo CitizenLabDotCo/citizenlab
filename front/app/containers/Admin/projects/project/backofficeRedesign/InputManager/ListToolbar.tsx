@@ -23,6 +23,7 @@ interface Props {
   onUpdated: (ideas: IIdeaData[]) => void;
   onEdit: (ideaId: string) => void;
   onClearSelection: () => void;
+  onDeleted: () => void;
   onSelectAll: () => void;
   isSelectingAll: boolean;
   selectAllFailed: boolean;
@@ -40,6 +41,7 @@ const ListToolbar = ({
   onUpdated,
   onEdit,
   onClearSelection,
+  onDeleted,
   onSelectAll,
   isSelectingAll,
   selectAllFailed,
@@ -69,6 +71,7 @@ const ListToolbar = ({
           onUpdated={onUpdated}
           onEdit={onEdit}
           onClear={onClearSelection}
+          onDeleted={onDeleted}
           onSelectAll={onSelectAll}
           isSelectingAll={isSelectingAll}
           selectAllFailed={selectAllFailed}

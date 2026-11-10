@@ -156,6 +156,11 @@ const InputManager = ({ project, phase }: Props) => {
         onUpdated={selection.refresh}
         onEdit={setEditingIdeaId}
         onClearSelection={selection.clear}
+        onDeleted={() => {
+          selection.clear();
+          // The current page may be gone after the delete.
+          setPage(1);
+        }}
         onSelectAll={selection.selectAll}
         isSelectingAll={selection.isSelectingAll}
         selectAllFailed={selection.selectAllFailed}

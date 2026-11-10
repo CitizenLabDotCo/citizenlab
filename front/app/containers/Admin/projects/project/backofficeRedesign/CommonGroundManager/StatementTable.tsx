@@ -11,6 +11,7 @@ import {
   Tr,
 } from '@citizenlab/cl2-component-library';
 
+import { CommonGroundResultItem } from 'api/common_ground/types';
 import { IIdeaData } from 'api/ideas/types';
 
 import Pagination from 'components/Pagination';
@@ -19,11 +20,10 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 import StatementRow from './StatementRow';
-import { Votes } from './utils';
 
 interface Props {
   ideas: IIdeaData[];
-  votesById: Map<string, Votes>;
+  resultsById: Map<string, CommonGroundResultItem>;
   selectedIds: Set<string>;
   openId: string | null;
   dimmed: boolean;
@@ -37,7 +37,7 @@ interface Props {
 
 const StatementTable = ({
   ideas,
-  votesById,
+  resultsById,
   selectedIds,
   openId,
   dimmed,
@@ -76,7 +76,7 @@ const StatementTable = ({
             <StatementRow
               key={idea.id}
               idea={idea}
-              votes={votesById.get(idea.id)}
+              result={resultsById.get(idea.id)}
               selected={selectedIds.has(idea.id)}
               active={idea.id === openId}
               onToggleSelect={() => onToggleSelect(idea)}

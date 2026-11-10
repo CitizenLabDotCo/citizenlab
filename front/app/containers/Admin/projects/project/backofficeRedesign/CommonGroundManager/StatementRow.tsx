@@ -3,6 +3,7 @@ import React from 'react';
 import { Checkbox, colors, Td, Text } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import { CommonGroundResultItem } from 'api/common_ground/types';
 import { IIdeaData } from 'api/ideas/types';
 
 import useLocalize from 'hooks/useLocalize';
@@ -10,7 +11,7 @@ import useLocalize from 'hooks/useLocalize';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
-import { agreePercent, totalReactions, Votes } from './utils';
+import { totalReactions } from './utils';
 
 const Row = styled.tr<{ selected: boolean; active: boolean }>`
   cursor: pointer;
@@ -29,7 +30,8 @@ const cellProps = {
 
 interface Props {
   idea: IIdeaData;
-  votes: Votes | undefined;
+  /** Absent for a statement nobody took a side on. */
+  result: CommonGroundResultItem | undefined;
   selected: boolean;
   active: boolean;
   onToggleSelect: () => void;
@@ -38,7 +40,7 @@ interface Props {
 
 const StatementRow = ({
   idea,
-  votes,
+  result,
   selected,
   active,
   onToggleSelect,
@@ -73,12 +75,12 @@ const StatementRow = ({
       </Td>
       <Td {...cellProps} onClick={onOpen}>
         <Text variant="boLabel" as="span" m="0">
-          {agreePercent(votes)}%
+          {result?.agree_percent ?? 0}%
         </Text>
       </Td>
       <Td {...cellProps} onClick={onOpen}>
         <Text variant="boLabel" as="span" m="0">
-          {totalReactions(votes)}
+          {totalReactions(result?.votes)}
         </Text>
       </Td>
     </Row>

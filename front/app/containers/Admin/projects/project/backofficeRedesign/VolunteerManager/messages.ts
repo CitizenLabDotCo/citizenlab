@@ -9,6 +9,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.volunteerCount',
     defaultMessage: '{count, plural, one {# volunteer} other {# volunteers}}',
   },
+  exportVolunteers: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.exportVolunteers',
+    defaultMessage: 'Export volunteers',
+  },
   searchVolunteers: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.searchVolunteers',
     defaultMessage: 'Search volunteers',

@@ -67,16 +67,17 @@ const CommonGroundManager = ({ project, phase }: Props) => {
 
   const { data: results } = useCommonGroundResults(phase.id);
   const statements = results?.data.attributes.ideas_by_agreement ?? [];
-  const { category: agreementCategory, agreements } = useAgreementFilter(
-    statements,
-    () => setPage(1)
-  );
-
   const scope = {
     projects: [project.id],
     phase: phase.id,
     transitive: false,
   };
+  const { category: agreementCategory, agreements } = useAgreementFilter({
+    statements,
+    searched: search ? { ...scope, search } : undefined,
+    onChange: () => setPage(1),
+  });
+
   const listed = { ...scope, search, agreements };
   const listParameters = {
     ...listed,
@@ -96,7 +97,9 @@ const CommonGroundManager = ({ project, phase }: Props) => {
   const isImporting = importedCount !== undefined;
 
   const stats = results?.data.attributes.stats;
-  const votesById = new Map(statements.map(({ id, votes }) => [id, votes]));
+  const resultsById = new Map(
+    statements.map((statement) => [statement.id, statement])
+  );
   const listedTotal = listedCounts?.data.attributes.total;
   const pageIdeas = ideas?.data ?? [];
   const phaseTotal = allCounts?.data.attributes.total;
@@ -245,7 +248,7 @@ const CommonGroundManager = ({ project, phase }: Props) => {
       {pageIdeas.length > 0 && (
         <StatementTable
           ideas={pageIdeas}
-          votesById={votesById}
+          resultsById={resultsById}
           selectedIds={new Set(selection.selectedIds)}
           openId={previewId}
           dimmed={isChangingList}
