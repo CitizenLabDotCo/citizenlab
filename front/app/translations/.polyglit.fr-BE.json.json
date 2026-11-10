@@ -4569,6 +4569,11 @@
     "verified_at": "2026-11-10T07:43:38.867477Z",
     "verified_by": "Adrien"
   },
+  "app.components.aiAssistant.awaitingApprovalHint": {
+    "state": "verified",
+    "verified_at": "2026-11-10T07:57:08.424593Z",
+    "verified_by": "Adrien"
+  },
   "app.components.aiAssistant.cancel": {
     "state": "verified",
     "verified_at": "2026-11-09T09:18:09.937237Z",
@@ -5704,9 +5709,19 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
+  "app.components.formBuilder.surveyAssistant.intro2": {
+    "state": "verified",
+    "verified_at": "2026-11-10T07:57:08.424593Z",
+    "verified_by": "Adrien"
+  },
   "app.components.formBuilder.surveyAssistant.outlineSummary": {
     "state": "verified",
     "verified_at": "2026-11-10T07:11:34.688069Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.formBuilder.surveyAssistant.readSurvey": {
+    "state": "verified",
+    "verified_at": "2026-11-10T07:57:08.424593Z",
     "verified_by": "Adrien"
   },
   "app.components.formBuilder.tags": {
