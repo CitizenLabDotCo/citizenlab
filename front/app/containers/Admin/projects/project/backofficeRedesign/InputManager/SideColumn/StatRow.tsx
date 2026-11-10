@@ -23,7 +23,6 @@ const RowButton = styled.button`
 interface Props {
   label: string;
   value: number;
-  /** Makes the row a toggle, e.g. to filter the list by what it counts. */
   onClick?: () => void;
   pressed?: boolean;
 }

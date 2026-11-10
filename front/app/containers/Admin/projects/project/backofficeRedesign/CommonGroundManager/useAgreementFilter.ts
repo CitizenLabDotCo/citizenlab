@@ -26,7 +26,6 @@ const useAgreementFilter = ({
   onChange,
 }: {
   statements: CommonGroundResultItem[];
-  /** The listed statements when a search narrows them. */
   searched: IIdeasFilterCountsQueryParameters | undefined;
   onChange: () => void;
 }) => {

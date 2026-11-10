@@ -27,7 +27,11 @@ import { useLocation } from 'utils/router';
 import { weglotTranslateSubmission } from 'utils/weglot';
 
 import Actions from '../../CommentForm/Actions';
-import { boCommentFormStyle, useIsBoComments } from '../../commentsVariant';
+import {
+  boCommentFormStyle,
+  CommentsVariant,
+  useIsBoComments,
+} from '../../commentsVariant';
 import { commentAdded } from '../../events';
 import messages from '../../messages';
 import tracks from '../../tracks';
@@ -54,7 +58,7 @@ const Anchor = styled.div`
   left: 0px;
 `;
 
-const Form = styled.form`
+const Form = styled.form<{ variant: CommentsVariant }>`
   flex: 1;
   border: 1px solid ${colors.borderDark};
   border-radius: ${(props) => props.theme.borderRadius};
@@ -252,7 +256,10 @@ const ParentCommentForm = ({
         closeOnClickOutsideEnabled={false}
       >
         <Anchor id="submit-comment-anchor" />
-        <Form className={`${focused ? 'focused' : ''} ${isBo ? 'bo' : ''}`}>
+        <Form
+          className={focused ? 'focused' : ''}
+          variant={isBo ? 'bo' : 'default'}
+        >
           <label htmlFor="submit-comment">
             <HiddenLabel>
               <FormattedMessage {...messages.yourComment} />

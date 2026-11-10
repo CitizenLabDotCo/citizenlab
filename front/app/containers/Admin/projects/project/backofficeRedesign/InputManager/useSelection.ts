@@ -74,7 +74,6 @@ const useSelection = (
     }
   };
 
-  // Keeps the selected inputs in step with a batch update.
   const refresh = (updated: IIdeaData[]) =>
     setSelection((current) => {
       const next = new Map(current);

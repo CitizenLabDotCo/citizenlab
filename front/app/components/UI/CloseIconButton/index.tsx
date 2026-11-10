@@ -9,7 +9,6 @@ import { injectIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
-// The rounded hover and focus look the modal close buttons share.
 export const closeIconButtonStyle = css`
   border-radius: 8px;
   border: solid 1px transparent;

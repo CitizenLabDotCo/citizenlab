@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 import { useQueryClient } from '@tanstack/react-query';
 import { chunk } from 'lodash-es';
@@ -28,13 +28,18 @@ const useBatchActions = ({
 }) => {
   const queryClient = useQueryClient();
   const [isDeleting, setIsDeleting] = useState(false);
+  // isDeleting only updates after a render, so a double click needs this.
+  const deleting = useRef(false);
 
   // The requests go out without their mutation hooks, so the cache refreshes
   // once for the whole batch rather than after every input.
-  const updateEach = async (requestBody: (idea: IIdeaData) => IIdeaUpdate) => {
+  const updateEach = async (
+    targets: IIdeaData[],
+    requestBody: (idea: IIdeaData) => IIdeaUpdate
+  ) => {
     const updated: IIdea[] = [];
 
-    for (const group of chunk(ideas, GROUP_SIZE)) {
+    for (const group of chunk(targets, GROUP_SIZE)) {
       const results = await Promise.allSettled(
         group.map((idea) =>
           updateIdea({ id: idea.id, requestBody: requestBody(idea) })
@@ -52,7 +57,12 @@ const useBatchActions = ({
   };
 
   const setStatus = (statusId: string) => {
-    updateEach(() => ({ idea_status_id: statusId }));
+    const targets = ideas.filter(
+      (idea) => idea.relationships.idea_status.data?.id !== statusId
+    );
+    if (targets.length === 0) return;
+
+    updateEach(targets, () => ({ idea_status_id: statusId }));
     trackEventByName(tracks.ideaStatusChange, {
       location: 'Input manager',
       method: 'Batch action',
@@ -60,7 +70,13 @@ const useBatchActions = ({
   };
 
   const assign = (assigneeId: string) => {
-    updateEach(() => ({
+    const targets = ideas.filter(
+      (idea) =>
+        (idea.relationships.assignee?.data?.id ?? UNASSIGNED) !== assigneeId
+    );
+    if (targets.length === 0) return;
+
+    updateEach(targets, () => ({
       assignee_id: assigneeId === UNASSIGNED ? null : assigneeId,
     }));
     trackEventByName(tracks.changeIdeaAssignment, {
@@ -70,21 +86,29 @@ const useBatchActions = ({
   };
 
   const toggleTag = (tagId: string) => {
-    const allHaveTag = ideas.every((idea) => topicIds(idea).includes(tagId));
+    const withoutTag = ideas.filter((idea) => !topicIds(idea).includes(tagId));
 
-    updateEach((idea) => ({
-      topic_ids: allHaveTag
-        ? topicIds(idea).filter((id) => id !== tagId)
-        : [...new Set([...topicIds(idea), tagId])],
-    }));
+    if (withoutTag.length === 0) {
+      updateEach(ideas, (idea) => ({
+        topic_ids: topicIds(idea).filter((id) => id !== tagId),
+      }));
+    } else {
+      updateEach(withoutTag, (idea) => ({
+        topic_ids: [...topicIds(idea), tagId],
+      }));
+    }
   };
 
   const copyToPhase = (phaseId: string) =>
-    updateEach((idea) => ({
-      phase_ids: [...new Set([...phaseIds(idea), phaseId])],
-    }));
+    updateEach(
+      ideas.filter((idea) => !phaseIds(idea).includes(phaseId)),
+      (idea) => ({ phase_ids: [...phaseIds(idea), phaseId] })
+    );
 
   const deleteAll = async () => {
+    if (deleting.current) return;
+
+    deleting.current = true;
     setIsDeleting(true);
 
     // Inputs that failed to delete stay in the list.
@@ -96,6 +120,7 @@ const useBatchActions = ({
       queryClient,
       ideas.map((idea) => idea.id)
     );
+    deleting.current = false;
     setIsDeleting(false);
     onDeleted();
   };

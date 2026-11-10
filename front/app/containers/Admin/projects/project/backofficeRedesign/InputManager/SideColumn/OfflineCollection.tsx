@@ -7,13 +7,13 @@ import { IPhaseData } from 'api/phases/types';
 import useProjectById from 'api/projects/useProjectById';
 
 import tracks from 'containers/Admin/projects/_shared/components/NewIdeaButton/tracks';
+import AddInputModal from 'containers/Admin/projects/project/backofficeRedesign/Phase/BuildPanel/BuildFields/MethodSection/AddInputModal';
+import FullFormLink from 'containers/Admin/projects/project/backofficeRedesign/Phase/BuildPanel/BuildFields/MethodSection/FullFormLink';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { useLocation } from 'utils/router';
 
-import AddInputModal from '../../Phase/BuildPanel/BuildFields/MethodSection/AddInputModal';
-import FullFormLink from '../../Phase/BuildPanel/BuildFields/MethodSection/FullFormLink';
 import messages from '../messages';
 import useInputTermLabels from '../useInputTermLabels';
 

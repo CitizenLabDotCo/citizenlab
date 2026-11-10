@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 
-import { Box, Button, Spinner, Text } from '@citizenlab/cl2-component-library';
+import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import { useQueryClient } from '@tanstack/react-query';
 
 import commonGroundResultsKeys from 'api/common_ground/keys/commonGroundResultsKeys';
 import useCommonGroundResults from 'api/common_ground/useCommonGroundResults';
 import useCopyInputs from 'api/copy_inputs/useCopyInputs';
 import useJobInProgressByPhase from 'api/copy_inputs/useJobInProgressByPhase';
-import useAddIdea from 'api/ideas/useAddIdea';
 import useIdeas from 'api/ideas/useIdeas';
-import useUpdateIdea from 'api/ideas/useUpdateIdea';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
@@ -21,28 +19,22 @@ import NoInputsDisplay from 'components/admin/PostManager/CommonGroundInputManag
 import NoPost from 'components/admin/PostManager/components/PostTable/NoPost';
 import Warning from 'components/UI/Warning';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
-import FilterMenu from '../InputManager/FilterMenu';
 import FilterChips from '../InputManager/FilterMenu/FilterChips';
-import SearchToggle from '../InputManager/SearchToggle';
-import { actionRowProps } from '../InputManager/SideColumn/actionRowProps';
-import Card from '../InputManager/SideColumn/Card';
-import ExportRow from '../InputManager/SideColumn/ExportRow';
 import SidePanel from '../InputManager/SidePanel';
 import usePanelNavigation from '../InputManager/usePanelNavigation';
 import useSelection from '../InputManager/useSelection';
-import AddInputModal from '../Phase/BuildPanel/BuildFields/MethodSection/AddInputModal';
 import ImportInputsModal from '../Phase/BuildPanel/BuildFields/MethodSection/CommonGroundSection/ImportInputsModal';
 import ManageLayout from '../Phase/ManageLayout';
 
-import messages from './messages';
-import StatementBatchBar from './StatementBatchBar';
-import StatementStats from './StatementStats';
+import AddStatementModal from './AddStatementModal';
+import EditStatementModal from './EditStatementModal';
+import StatementSideColumn from './StatementSideColumn';
 import StatementTable from './StatementTable';
+import StatementToolbar from './StatementToolbar';
 import useAgreementFilter from './useAgreementFilter';
-import { totalReactions } from './utils';
 
 const PAGE_SIZE = 20;
 
@@ -52,7 +44,6 @@ interface Props {
 }
 
 const CommonGroundManager = ({ project, phase }: Props) => {
-  const { formatMessage } = useIntl();
   const localize = useLocalize();
   const queryClient = useQueryClient();
   const [page, setPage] = useState(1);
@@ -61,8 +52,6 @@ const CommonGroundManager = ({ project, phase }: Props) => {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [importOpened, setImportOpened] = useState(false);
   const [addOpened, setAddOpened] = useState(false);
-  const { mutateAsync: addIdea } = useAddIdea();
-  const { mutateAsync: updateIdea } = useUpdateIdea();
   const { mutate: copyInputs } = useCopyInputs();
 
   const { data: results } = useCommonGroundResults(phase.id);
@@ -147,36 +136,14 @@ const CommonGroundManager = ({ project, phase }: Props) => {
   return (
     <ManageLayout
       side={
-        <>
-          {stats && (
-            <StatementStats
-              statements={phaseTotal ?? stats.num_ideas}
-              reactions={totalReactions(stats.votes)}
-              participants={stats.num_participants}
-            />
-          )}
-          <Card fillHeight>
-            <Button
-              {...actionRowProps}
-              icon="plus"
-              onClick={() => setAddOpened(true)}
-            >
-              {formatMessage(messages.addStatement)}
-            </Button>
-            <Button
-              {...actionRowProps}
-              icon="upload-file"
-              onClick={() => setImportOpened(true)}
-            >
-              {formatMessage(messages.importInputs)}
-            </Button>
-            <ExportRow
-              type="ProjectProposals"
-              projectId={project.id}
-              selectedIds={selection.selectedIds}
-            />
-          </Card>
-        </>
+        <StatementSideColumn
+          projectId={project.id}
+          stats={stats}
+          phaseTotal={phaseTotal}
+          selectedIds={selection.selectedIds}
+          onAdd={() => setAddOpened(true)}
+          onImport={() => setImportOpened(true)}
+        />
       }
     >
       {isImporting && (
@@ -187,44 +154,20 @@ const CommonGroundManager = ({ project, phase }: Props) => {
           />
         </Warning>
       )}
-      <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-        gap="12px"
-        minHeight="40px"
-        mb="12px"
-      >
-        {selection.selectedIdeas.length > 0 ? (
-          <StatementBatchBar
-            ideas={selection.selectedIdeas}
-            total={listedTotal}
-            onEdit={setEditingId}
-            onClear={selection.clear}
-            onDeleted={handleDeleted}
-            onSelectAll={selection.selectAll}
-            isSelectingAll={selection.isSelectingAll}
-            selectAllFailed={selection.selectAllFailed}
-          />
-        ) : (
-          <Text variant="boLabel" m="0">
-            {listedTotal !== undefined &&
-              formatMessage(messages.statementCount, { count: listedTotal })}
-          </Text>
-        )}
-        <Box display="flex" alignItems="center" gap="8px">
-          <SearchToggle
-            label={formatMessage(messages.searchStatements)}
-            searchTerm={search}
-            onChange={changeSearch}
-            resultCount={listedTotal ?? 0}
-          />
-          <FilterMenu
-            categories={[agreementCategory]}
-            onClearAll={clearFilters}
-          />
-        </Box>
-      </Box>
+      <StatementToolbar
+        selectedIdeas={selection.selectedIdeas}
+        listedTotal={listedTotal}
+        onEdit={setEditingId}
+        onClearSelection={selection.clear}
+        onDeleted={handleDeleted}
+        onSelectAll={selection.selectAll}
+        isSelectingAll={selection.isSelectingAll}
+        selectAllFailed={selection.selectAllFailed}
+        search={search}
+        onSearch={changeSearch}
+        agreementCategory={agreementCategory}
+        onClearFilters={clearFilters}
+      />
       <FilterChips categories={[agreementCategory]} onClearAll={clearFilters} />
 
       {!ideas && (
@@ -276,34 +219,17 @@ const CommonGroundManager = ({ project, phase }: Props) => {
         isEditing={!!editingIdea}
       />
       {editingIdea && (
-        <AddInputModal
+        <EditStatementModal
+          idea={editingIdea}
           phaseId={phase.id}
-          kind="statement"
-          header={formatMessage(messages.editStatement)}
-          submitLabel={formatMessage(messages.saveStatement)}
-          defaultValues={{
-            title_multiloc: editingIdea.attributes.title_multiloc,
-            author_id: editingIdea.relationships.author?.data?.id,
-            anonymous: editingIdea.attributes.anonymous,
-          }}
-          onSubmit={(values) =>
-            updateIdea({ id: editingIdea.id, requestBody: values }).then(
-              refreshResults
-            )
-          }
+          onSaved={refreshResults}
           onClose={() => setEditingId(null)}
         />
       )}
       {addOpened && (
-        <AddInputModal
+        <AddStatementModal
           phaseId={phase.id}
-          kind="statement"
-          onSubmit={(values) =>
-            addIdea({
-              phaseId: phase.id,
-              requestBody: { ...values, publication_status: 'published' },
-            }).then(refreshResults)
-          }
+          onSaved={refreshResults}
           onClose={() => setAddOpened(false)}
         />
       )}

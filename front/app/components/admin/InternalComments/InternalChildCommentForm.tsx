@@ -16,6 +16,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import Avatar from 'components/Avatar';
 import {
   boCommentFormStyle,
+  CommentsVariant,
   useIsBoComments,
 } from 'components/PostShowComponents/Comments/commentsVariant';
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
@@ -45,7 +46,7 @@ const FormContainer = styled(ClickOutside)`
   align-items: stretch;
 `;
 
-const Form = styled.form`
+const Form = styled.form<{ variant: CommentsVariant }>`
   flex: 1;
   background: #fff;
   border: 1px solid ${colors.borderDark};
@@ -263,9 +264,12 @@ const InternalChildCommentForm = ({
           onClickOutside={onCancel}
           closeOnClickOutsideEnabled={false}
         >
-          {/* TODO: Fix this the next time the file is edited. */}
-          {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-          <Form className={`${focused ? 'focused' : ''} ${isBo ? 'bo' : ''}`}>
+          <Form
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+            className={focused ? 'focused' : ''}
+            variant={isBo ? 'bo' : 'default'}
+          >
             <label>
               <HiddenLabel>
                 <FormattedMessage {...commentsMessages.replyToComment} />

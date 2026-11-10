@@ -16,6 +16,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import Avatar from 'components/Avatar';
 import {
   boCommentFormStyle,
+  CommentsVariant,
   useIsBoComments,
 } from 'components/PostShowComponents/Comments/commentsVariant';
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
@@ -54,7 +55,7 @@ const Anchor = styled.div`
   left: 0px;
 `;
 
-const Form = styled.form`
+const Form = styled.form<{ variant: CommentsVariant }>`
   flex: 1;
   border: 1px solid ${colors.borderDark};
   border-radius: ${(props) => props.theme.borderRadius};
@@ -220,7 +221,10 @@ const InternalParentCommentForm = ({ ideaId, className }: Props) => {
         closeOnClickOutsideEnabled={false}
       >
         <Anchor id="submit-comment-anchor" />
-        <Form className={`${focused ? 'focused' : ''} ${isBo ? 'bo' : ''}`}>
+        <Form
+          className={focused ? 'focused' : ''}
+          variant={isBo ? 'bo' : 'default'}
+        >
           <label htmlFor="submit-comment">
             <HiddenLabel>
               <FormattedMessage {...commentsMessages.yourComment} />

@@ -4,7 +4,6 @@ module CommonGround
     HIGHEST_CONSENSUS_MIN_SCORE = 0.75 # e.g. at least 75/25 in one direction
     CLOSE_CALL_MAX_SCORE = 0.6         # e.g. between 40/60 and 60/40
 
-    # agreement buckets, by the percentage of reactions that agree
     AGREE_MIN_PERCENT = 60
     DISAGREE_MAX_PERCENT = 40 # exclusive
 
