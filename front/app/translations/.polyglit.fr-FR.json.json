@@ -4624,6 +4624,11 @@
     "verified_at": "2026-10-30T15:07:42.380952Z",
     "verified_by": "Adrien"
   },
+  "app.components.aiAssistant.errorLlmRequestRejected": {
+    "state": "verified",
+    "verified_at": "2026-11-10T09:41:21.710411Z",
+    "verified_by": "Adrien"
+  },
   "app.components.aiAssistant.errorLlmUnavailable": {
     "state": "verified",
     "verified_at": "2026-11-10T09:25:28.285518Z",

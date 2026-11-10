@@ -950,7 +950,7 @@
   "app.components.aiAssistant.errorFileNotInProject": "Vous ne pouvez joindre que des fichiers de ce projet.",
   "app.components.aiAssistant.errorFileNotUtf8": "L’un des fichiers texte ne peut pas être lu à cause de son encodage. Essayez de le convertir dans un autre format (PDF, par exemple).",
   "app.components.aiAssistant.errorGeneric": "Une erreur est survenue. Veuillez réessayer.",
-  "app.components.aiAssistant.errorLlmRequestRejected": "Le service d'IA n'a pas pu traiter cette demande. Essayez de la reformuler ou démarrez une nouvelle discussion.",
+  "app.components.aiAssistant.errorLlmRequestRejected": "L’assistant n’a pas pu traiter cette demande. Essayez de la reformuler ou démarrez une nouvelle conversation.",
   "app.components.aiAssistant.errorLlmUnavailable": "L’assistant est momentanément indisponible. Veuillez réessayer dans quelques minutes.",
   "app.components.aiAssistant.errorSurfaceUnavailable": "L'assistant n'est pas disponible ici.",
   "app.components.aiAssistant.errorTooLong": "Votre message est trop long.",
