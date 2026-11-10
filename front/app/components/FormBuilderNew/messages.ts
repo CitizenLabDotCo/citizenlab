@@ -38,6 +38,19 @@ export default defineMessages({
     id: 'app.components.FormBuilderNew.emptyPage3',
     defaultMessage: 'This page has no questions yet. Click here to add one.',
   },
+  pageMissingTitleAndDescription: {
+    id: 'app.components.FormBuilderNew.pageMissingTitleAndDescription',
+    defaultMessage:
+      'This page has no title or description yet. Click here to add them.',
+  },
+  pageMissingTitle: {
+    id: 'app.components.FormBuilderNew.pageMissingTitle',
+    defaultMessage: 'This page has no title yet. Click here to add one.',
+  },
+  pageMissingDescription: {
+    id: 'app.components.FormBuilderNew.pageMissingDescription',
+    defaultMessage: 'This page has no description yet. Click here to add one.',
+  },
   insertQuestionOn: {
     id: 'app.components.FormBuilderNew.insertQuestionOn',
     defaultMessage: 'Insert question on',

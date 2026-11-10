@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import { FormProvider } from 'react-hook-form';
 import styled from 'styled-components';
 
@@ -25,18 +25,11 @@ import { isPage } from 'utils/helperUtils';
 import { useLocation, useSearch } from 'utils/router';
 
 import CustomFields from '../CustomFields';
-import PageEsriDivider from '../Map/PageEsriDivider';
-import PageEsriMap from '../Map/PageEsriMap';
 import useEsriMapPage from '../Map/useEsriMapPage';
-import { FORM_QUESTION_SPACING } from '../Page/FormPageLayout';
-import PageFooter from '../Page/PageFooter';
 import PageTitle from '../Page/PageTitle';
-import PageTransition, { PageDirection } from '../Page/PageTransition';
-import PreviousPageButton from '../Page/PreviousPageButton';
-import ProgressFooter from '../Page/ProgressFooter';
+import { PageDirection } from '../Page/PageTransition';
 import { FormValues } from '../Page/types';
 import usePageForm from '../Page/usePageForm';
-import PageControlButtons from '../PageControlButtons';
 import PostParticipationBox from '../PostParticipationBox';
 import {
   getFormCompletionPercentage,
@@ -52,6 +45,10 @@ import {
   getSkippedPageIndices,
 } from './logic';
 import SubmitConfirmation from './SubmitConfirmation';
+import SurveyPageLayout, {
+  getQuestionSpacing,
+  SurveyPageLayoutVariant,
+} from './SurveyPageLayout';
 
 const StyledForm = styled.form`
   height: 100%;
@@ -91,6 +88,9 @@ type SurveyPage = {
   defaultValues?: FormValues;
   // Which side the page slides in from.
   enterDirection?: PageDirection;
+  // The progress card is shown by the parent, so it stays put across pages;
+  // this page reports how far along the participant is.
+  onProgressChange: (formCompletionPercentage: number) => void;
 };
 
 const SurveyPage = ({
@@ -110,6 +110,7 @@ const SurveyPage = ({
   phase,
   defaultValues,
   enterDirection = 'forward',
+  onProgressChange,
 }: SurveyPage) => {
   const pageRef = useRef<HTMLDivElement>(null);
 
@@ -120,7 +121,6 @@ const SurveyPage = ({
   const { pathname } = useLocation();
   const isAdminPage = isPage('admin', pathname);
   const isMapPage = page.page_layout === 'map';
-  const isMobileOrSmaller = useBreakpoint('phone');
   const { data: authUser } = useAuthUser();
 
   const searchParams = useSearch({ strict: false });
@@ -238,13 +238,28 @@ const SurveyPage = ({
   // on the success page.
   const showIdeaId = idea ? !idea.data.relationships.author?.data : false;
 
-  const formCompletionPercentage = getFormCompletionPercentage({
+  // Follows the answers on this page as they're given.
+  useEffect(() => {
+    const report = (formValues: FormValues) =>
+      onProgressChange(
+        getFormCompletionPercentage({
+          pageQuestions,
+          currentPageIndex,
+          lastPageIndex,
+          formValues,
+          userIsEditing: false,
+        })
+      );
+    report(methods.getValues());
+    const subscription = methods.watch((formValues) => report(formValues));
+    return () => subscription.unsubscribe();
+  }, [
+    methods,
     pageQuestions,
     currentPageIndex,
     lastPageIndex,
-    formValues: methods.getValues(),
-    userIsEditing: false,
-  });
+    onProgressChange,
+  ]);
 
   const handleNextAndSubmit = () => {
     pageRef.current?.scrollTo(0, 0);
@@ -332,228 +347,93 @@ const SurveyPage = ({
 
   // Map pages (and admin previews) keep the classic layout: a card with its
   // own scroll and the buttons in a footer. Other pages flow with the page.
-  if (!isMapPage && !isAdminPage) {
-    return (
-      <FormProvider {...methods}>
-        <StyledForm id="idea-form" onKeyDown={handleFormKeyDown}>
-          <Box
-            id="container"
-            w="100%"
-            // Room for the progress card floating at the bottom.
-            pb="80px"
-            data-cy={`e2e-page-number-${currentPageIndex + 1}`}
-          >
-            <PageTransition direction={enterDirection}>
-              <Box ref={pageRef}>
-                {currentPageIndex > 0 && !isLastPage && (
-                  <PreviousPageButton onClick={handlePrevious} />
-                )}
-                {showFormFeedback && <Feedback />}
-
-                <PageTitle page={page} />
-
-                {page.key === 'user_page' && <CustomFieldsSignupHelperText />}
-
-                <CustomFields
-                  questions={pageQuestions}
-                  projectId={projectId}
-                  ideaId={ideaId}
-                  phase={phase}
-                  participationMethod={participationMethod}
-                  questionSpacing={FORM_QUESTION_SPACING}
-                />
-                {showPostParticipationSignup && project && (
-                  <Box mb="24px">
-                    <PostParticipationBox
-                      onCreateAccount={() => {
-                        triggerPostParticipationFlow({
-                          name: 'followProjectAndRedirect',
-                          params: {
-                            projectId: project.data.id,
-                            // The community monitor project isn't meant to be
-                            // browsed by residents, so send them home instead.
-                            path:
-                              phase?.attributes.participation_method ===
-                              'community_monitor_survey'
-                                ? '/'
-                                : `/projects/${project.data.attributes.slug}`,
-                          },
-                        });
-                      }}
-                    />
-                  </Box>
-                )}
-                {showSubmissionReference && (
-                  <SubmissionReference
-                    inputId={idea.data.id}
-                    postParticipationSignUpVisible={showPostParticipationSignup}
-                  />
-                )}
-
-                {showSubmitConfirmation && (
-                  <SubmitConfirmation
-                    onContinueEditing={handleContinueEditing}
-                    onConfirmSubmit={handleNextAndSubmit}
-                  />
-                )}
-                <PageControlButtons
-                  inline
-                  showPrevious={false}
-                  handleNextAndSubmit={handleNextAndSubmit}
-                  handlePrevious={handlePrevious}
-                  hasPreviousPage={currentPageIndex > 0}
-                  isLoading={methods.formState.isSubmitting}
-                  pageVariant={footerVariant}
-                  phases={phases?.data}
-                  currentPhase={phase}
-                  pageButtonLabelMultiloc={page.page_button_label_multiloc}
-                  pageButtonLink={page.page_button_link}
-                  project={project}
-                  pageQuestions={pageQuestions}
-                  currentPageIndex={currentPageIndex}
-                />
-              </Box>
-            </PageTransition>
-          </Box>
-          <ProgressFooter
-            formCompletionPercentage={formCompletionPercentage}
-            currentPage={currentPageIndex + 1}
-            totalPages={lastPageIndex}
-          />
-        </StyledForm>
-      </FormProvider>
-    );
-  }
+  const layout: SurveyPageLayoutVariant =
+    isMapPage || isAdminPage ? 'classic' : 'regular';
 
   return (
     <FormProvider {...methods}>
       <StyledForm id="idea-form" onKeyDown={handleFormKeyDown}>
-        <Box
-          id="container"
-          display="flex"
-          flexDirection={isMobileOrSmaller ? 'column' : 'row'}
-          height="100%"
-          w="100%"
-          data-cy={`e2e-page-number-${currentPageIndex + 1}`}
-        >
-          {shouldShowMap && (
-            <PageEsriMap
-              currentPageIndex={currentPageIndex}
-              mapConfig={mapConfig}
-              mapLayers={mapLayers}
-              draggableDivRef={draggableDivRef}
+        <SurveyPageLayout
+          layout={layout}
+          currentPageIndex={currentPageIndex}
+          map={
+            shouldShowMap
+              ? { mapConfig, mapLayers, draggableDivRef, dragDividerRef }
+              : undefined
+          }
+          showPreviousButton={currentPageIndex > 0 && !isLastPage}
+          controls={{
+            variant: footerVariant,
+            hasPreviousPage: currentPageIndex > 0,
+            handleNextAndSubmit,
+            handlePrevious,
+            isLoading: methods.formState.isSubmitting,
+            phase,
+            phases,
+            project,
+            pageButtonLabelMultiloc: page.page_button_label_multiloc,
+            pageButtonLink: page.page_button_link,
+            pageQuestions,
+          }}
+          feedback={showFormFeedback && <Feedback />}
+          header={
+            <>
+              <PageTitle page={page} />
+              {page.key === 'user_page' && <CustomFieldsSignupHelperText />}
+            </>
+          }
+          questions={
+            <CustomFields
+              questions={pageQuestions}
+              projectId={projectId}
+              ideaId={ideaId}
+              phase={phase}
+              participationMethod={participationMethod}
+              questionSpacing={getQuestionSpacing(layout)}
             />
-          )}
-          <Box
-            flex={'1 1 auto'}
-            h={shouldShowMap && isMobileOrSmaller ? '80%' : '100%'}
-            position="relative"
-            overflow="hidden"
-            display="flex"
-            flexDirection="column"
-            justifyContent="space-between"
-          >
-            <Box
-              display="flex"
-              flexDirection="column"
-              height="100%"
-              overflowY="auto"
-              overflowX="hidden"
-              ref={pageRef}
-            >
-              {showFormFeedback && <Feedback />}
-
-              {shouldShowMap && isMobileOrSmaller && (
-                <PageEsriDivider dragDividerRef={dragDividerRef} />
-              )}
-              <Box
-                h="100%"
-                display="flex"
-                flexDirection="column"
-                mt={shouldShowMap && isMobileOrSmaller ? '20px' : undefined}
-                mb="40px"
-              >
-                <Box h="100%" display="flex" flexDirection="column">
-                  <Box p="24px" w="100%">
-                    <Box display="flex" flexDirection="column">
-                      <PageTitle page={page} />
-
-                      {page.key === 'user_page' && (
-                        <CustomFieldsSignupHelperText />
-                      )}
-
-                      <CustomFields
-                        questions={pageQuestions}
-                        projectId={projectId}
-                        ideaId={ideaId}
-                        phase={phase}
-                        participationMethod={participationMethod}
-                      />
-                      {showPostParticipationSignup && project && (
-                        <Box mb="24px">
-                          <PostParticipationBox
-                            onCreateAccount={() => {
-                              triggerPostParticipationFlow({
-                                name: 'followProjectAndRedirect',
-                                params: {
-                                  projectId: project.data.id,
-                                  // The community monitor project isn't meant to be
-                                  // browsed by residents, so send them home instead.
-                                  path:
-                                    phase?.attributes.participation_method ===
-                                    'community_monitor_survey'
-                                      ? '/'
-                                      : `/projects/${project.data.attributes.slug}`,
-                                },
-                              });
-                            }}
-                          />
-                        </Box>
-                      )}
-                      {showSubmissionReference && (
-                        <SubmissionReference
-                          inputId={idea.data.id}
-                          postParticipationSignUpVisible={
-                            showPostParticipationSignup
-                          }
-                        />
-                      )}
-                    </Box>
-                  </Box>
+          }
+          afterQuestions={
+            <>
+              {showPostParticipationSignup && project && (
+                <Box mb="24px">
+                  <PostParticipationBox
+                    onCreateAccount={() => {
+                      triggerPostParticipationFlow({
+                        name: 'followProjectAndRedirect',
+                        params: {
+                          projectId: project.data.id,
+                          // The community monitor project isn't meant to be
+                          // browsed by residents, so send them home instead.
+                          path:
+                            phase?.attributes.participation_method ===
+                            'community_monitor_survey'
+                              ? '/'
+                              : `/projects/${project.data.attributes.slug}`,
+                        },
+                      });
+                    }}
+                  />
                 </Box>
-              </Box>
-            </Box>
-            {showSubmitConfirmation && (
+              )}
+              {showSubmissionReference && (
+                <SubmissionReference
+                  inputId={idea.data.id}
+                  postParticipationSignUpVisible={showPostParticipationSignup}
+                />
+              )}
+            </>
+          }
+          submitConfirmation={
+            showSubmitConfirmation && (
               <SubmitConfirmation
                 onContinueEditing={handleContinueEditing}
                 onConfirmSubmit={handleNextAndSubmit}
               />
-            )}
-          </Box>
-          <PageFooter
-            variant={
-              currentPageIndex === lastPageIndex
-                ? 'after-submission'
-                : nextPageNumber === lastPageIndex
-                ? 'submission'
-                : 'other'
-            }
-            hasPreviousPage={currentPageIndex > 0}
-            handleNextAndSubmit={handleNextAndSubmit}
-            handlePrevious={handlePrevious}
-            formCompletionPercentage={formCompletionPercentage}
-            pageButtonLabelMultiloc={page.page_button_label_multiloc}
-            pageButtonLink={page.page_button_link}
-            phase={phase}
-            project={project}
-            phases={phases}
-            isLoading={methods.formState.isSubmitting}
-            isAdminPage={isAdminPage}
-            isMapPage={isMapPage}
-            pageQuestions={pageQuestions}
-            currentPageIndex={currentPageIndex}
-          />
-        </Box>
+            )
+          }
+          pageRef={pageRef}
+          enterDirection={enterDirection}
+        />
       </StyledForm>
     </FormProvider>
   );

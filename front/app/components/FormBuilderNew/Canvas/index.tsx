@@ -1,12 +1,6 @@
 import React from 'react';
 
-import {
-  Box,
-  colors,
-  Icon,
-  stylingConsts,
-  Text,
-} from '@citizenlab/cl2-component-library';
+import { Box, colors, Icon, Text } from '@citizenlab/cl2-component-library';
 import { useDragLayer, useDrop } from 'react-dnd';
 import { FormProvider, useForm } from 'react-hook-form';
 
@@ -18,14 +12,16 @@ import useLocalize from 'hooks/useLocalize';
 
 import CustomFields from 'components/CustomFieldsForm/CustomFields';
 import CustomFieldsSignupHelperText from 'components/CustomFieldsForm/CustomFieldsSignupHelperText';
-import {
-  FORM_CONTENT_MAX_WIDTH,
-  FORM_QUESTION_SPACING,
-} from 'components/CustomFieldsForm/Page/FormPageLayout';
+import useEsriMapPage from 'components/CustomFieldsForm/Map/useEsriMapPage';
+import FormPageLayout from 'components/CustomFieldsForm/Page/FormPageLayout';
 import PageTitle from 'components/CustomFieldsForm/Page/PageTitle';
-import PreviousPageButton from 'components/CustomFieldsForm/Page/PreviousPageButton';
+import { usePageDirection } from 'components/CustomFieldsForm/Page/PageTransition';
 import ProgressFooter from 'components/CustomFieldsForm/Page/ProgressFooter';
-import PageControlButtons from 'components/CustomFieldsForm/PageControlButtons';
+import SurveyHeadingBar from 'components/CustomFieldsForm/Page/SurveyHeadingBar';
+import SurveyPageLayout, {
+  getQuestionSpacing,
+  SurveyPageLayoutVariant,
+} from 'components/CustomFieldsForm/SurveyForm/SurveyPageLayout';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -55,9 +51,9 @@ type Props = {
   top?: React.ReactNode;
 };
 
-// Renders the open page the way participants see it on the survey page
-// (heading bar, white card, page title, questions, progress bar and buttons),
-// with editing affordances layered on top.
+// Renders the open page with the same components as the participant survey
+// (FormPageLayout and SurveyPageLayout), so the two always look the same.
+// Only the content differs: editable header and question blocks.
 const Canvas = ({ phase, projectId, top }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
@@ -85,11 +81,23 @@ const Canvas = ({ phase, projectId, top }: Props) => {
     0,
     groups.findIndex((group) => group.page.id === currentPageId)
   );
+  // Next pages slide in from the right, previous ones from the left.
+  const enterDirection = usePageDirection(currentIndex);
   const group = groups[currentIndex] as (typeof groups)[number] | undefined;
   const isEndPage = group ? isFormEndPage(group.page) : false;
   const isDemographicsPage = group ? isUserPage(group.page) : false;
   // Nothing can be added to or dropped on these pages.
   const isLocked = isEndPage || isDemographicsPage;
+  const isMapPage = group?.page.page_layout === 'map';
+  const layout: SurveyPageLayoutVariant = isMapPage ? 'classic' : 'regular';
+  const questionSpacing = getQuestionSpacing(layout);
+  const { mapConfig, mapLayers, draggableDivRef, dragDividerRef } =
+    useEsriMapPage({
+      project,
+      pages: groups,
+      currentPageIndex: currentIndex,
+      localize,
+    });
 
   // Hovering anywhere around the questions targets the end of the page;
   // the blocks and gaps inside narrow that down. All drops land here.
@@ -111,180 +119,141 @@ const Canvas = ({ phase, projectId, top }: Props) => {
   if (!group) return null;
 
   const lastIndex = groups.length - 1;
-  const nextIsLast = currentIndex + 1 === lastIndex;
   const visibleQuestions = group.questions.filter(
     ({ field }) => field.enabled !== false
   );
-
   const isEnding = currentIndex === lastIndex;
-  const pageVariant = isEnding
-    ? 'after-submission'
-    : nextIsLast
-    ? 'submission'
-    : 'other';
 
-  // Same layout as the participant survey page: white page, sticky heading
-  // bar, the page in a centred column, buttons at the end of the content and
-  // the progress bar along the bottom.
+  const header = isDemographicsPage ? (
+    // Shown as participants see it; the questions come from the access
+    // rights settings and can't be edited here.
+    <Box ref={setInert} pointerEvents="none" aria-hidden>
+      <PageTitle page={group.page} />
+      <CustomFieldsSignupHelperText />
+    </Box>
+  ) : (
+    <PageHeaderBlock page={group.page} />
+  );
+
+  const questions = (
+    <FormProvider {...previewMethods}>
+      {isDemographicsPage && (
+        <Box ref={setInert} pointerEvents="none" aria-hidden>
+          <CustomFields
+            questions={visibleQuestions.map(({ field }) => field)}
+            projectId={projectId}
+            phase={phase}
+            participationMethod={phase.attributes.participation_method}
+            scrollErrorIntoView={false}
+            questionSpacing={questionSpacing}
+          />
+        </Box>
+      )}
+
+      {!isLocked &&
+        (visibleQuestions.length === 0 ? (
+          <Box
+            onClick={() => openAddModal({ pageId: group.page.id, index: 0 })}
+            style={{ cursor: 'pointer' }}
+          >
+            <EmptyBlockHint>
+              <Text color="textSecondary" m="0px">
+                {formatMessage(messages.emptyPage)}
+              </Text>
+            </EmptyBlockHint>
+          </Box>
+        ) : (
+          <>
+            <InsertionPoint
+              pageId={group.page.id}
+              index={0}
+              isDraggingQuestion={isDraggingQuestion}
+            />
+            {group.questions.map(({ field }, position) =>
+              field.enabled === false ? null : (
+                <React.Fragment key={field.id}>
+                  <QuestionBlock
+                    question={field}
+                    pageId={group.page.id}
+                    position={position}
+                    projectId={projectId}
+                    phase={phase}
+                    questionSpacing={questionSpacing}
+                  />
+                  <InsertionPoint
+                    pageId={group.page.id}
+                    index={position + 1}
+                    isDraggingQuestion={isDraggingQuestion}
+                    questionSpacing={questionSpacing}
+                  />
+                </React.Fragment>
+              )
+            )}
+          </>
+        ))}
+    </FormProvider>
+  );
+
   return (
     <Box
       ref={drop}
       flex="1"
+      minWidth="0px"
       h="100vh"
-      overflowY="auto"
-      bgColor={colors.grey100}
-      display="flex"
-      flexDirection="column"
       data-cy="e2e-form-builder-new-canvas"
     >
-      <Box
-        position="sticky"
-        top="0"
-        zIndex="3"
-        bgColor={colors.white}
-        borderBottom={`1px solid ${colors.divider}`}
-      >
-        <Box
-          maxWidth={FORM_CONTENT_MAX_WIDTH}
-          mx="auto"
-          display="flex"
-          alignItems="center"
-          minHeight={`${stylingConsts.menuHeight}px`}
-          px="24px"
-        >
-          <Text color="tenantText" fontSize="m" my="0px">
-            {localize(phase.attributes.native_survey_title_multiloc)}
-          </Text>
-          <Box ml="auto" display="flex">
-            <Icon name="close" fill={colors.textSecondary} />
-          </Box>
-        </Box>
-      </Box>
-
-      <Box
-        flex="1"
-        w="100%"
-        maxWidth={FORM_CONTENT_MAX_WIDTH}
-        mx="auto"
-        bgColor={colors.white}
-        display="flex"
-        flexDirection="column"
-        px="24px"
-        pt="24px"
-      >
-        {top}
-
-        {currentIndex > 0 && !isEnding && (
-          <Box ref={setInert} pointerEvents="none" aria-hidden>
-            <PreviousPageButton onClick={noop} />
-          </Box>
-        )}
-
-        <FormProvider {...previewMethods}>
-          {isDemographicsPage ? (
-            // Shown as participants see it; the questions come from the
-            // access rights settings and can't be edited here.
-            <Box ref={setInert} pointerEvents="none" aria-hidden>
-              <PageTitle page={group.page} />
-              <CustomFieldsSignupHelperText />
-              <CustomFields
-                questions={visibleQuestions.map(({ field }) => field)}
-                projectId={projectId}
-                phase={phase}
-                participationMethod={phase.attributes.participation_method}
-                scrollErrorIntoView={false}
-                questionSpacing={FORM_QUESTION_SPACING}
-              />
-            </Box>
-          ) : (
-            <PageHeaderBlock key={group.page.id} page={group.page} />
-          )}
-
-          {!isLocked && (
-            <>
-              {visibleQuestions.length === 0 ? (
-                <Box
-                  onClick={() =>
-                    openAddModal({ pageId: group.page.id, index: 0 })
-                  }
-                  style={{ cursor: 'pointer' }}
-                >
-                  <EmptyBlockHint>
-                    <Text color="textSecondary" m="0px">
-                      {formatMessage(messages.emptyPage)}
-                    </Text>
-                  </EmptyBlockHint>
-                </Box>
-              ) : (
-                <>
-                  <InsertionPoint
-                    pageId={group.page.id}
-                    index={0}
-                    isDraggingQuestion={isDraggingQuestion}
-                  />
-                  {group.questions.map(({ field }, position) =>
-                    field.enabled === false ? null : (
-                      <React.Fragment key={field.id}>
-                        <QuestionBlock
-                          question={field}
-                          pageId={group.page.id}
-                          position={position}
-                          projectId={projectId}
-                          phase={phase}
-                        />
-                        <InsertionPoint
-                          pageId={group.page.id}
-                          index={position + 1}
-                          isDraggingQuestion={isDraggingQuestion}
-                        />
-                      </React.Fragment>
-                    )
-                  )}
-                </>
-              )}
-            </>
-          )}
-        </FormProvider>
-
-        <Box ref={setInert} pointerEvents="none" aria-hidden>
-          <PageControlButtons
-            inline
-            showPrevious={false}
-            handleNextAndSubmit={noop}
-            handlePrevious={noop}
-            hasPreviousPage={currentIndex > 0}
-            isLoading={false}
-            pageVariant={pageVariant}
-            phases={phases?.data}
-            currentPhase={phase}
-            pageButtonLabelMultiloc={group.page.page_button_label_multiloc}
-            pageButtonLink={group.page.page_button_link}
-            project={project}
-            pageQuestions={visibleQuestions.map(({ field }) => field)}
-            currentPageIndex={currentIndex}
+      <FormPageLayout
+        embedded
+        usingMapView={layout === 'classic'}
+        mainId="e2e-form-builder-new-preview"
+        heading={
+          <SurveyHeadingBar
+            titleText={localize(phase.attributes.native_survey_title_multiloc)}
+            bordered={layout === 'classic'}
+            actions={<Icon name="close" fill={colors.textSecondary} />}
           />
-        </Box>
-
-        {/* Same room below the page as participants get. */}
-        <Box flex="1" minHeight="80px" />
-
-        {/* The progress card, overlaying the bottom of the column like the
-            fixed card on the participant page: a zero-height anchor that
-            sticks to the bottom of the canvas, with the card drawn above it.
-            Not clickable here: its language switcher would change the
-            admin's own language. */}
-        <Box position="sticky" bottom="0" h="0px" mx="-24px" zIndex="2">
-          <Box
-            position="absolute"
-            left="0"
-            right="0"
-            bottom="0"
-            ref={setInert}
-            pointerEvents="none"
-            aria-hidden
-          >
+        }
+      >
+        <Box w="100%">
+          <SurveyPageLayout
+            // A new page remounts, so it slides in like for participants.
+            key={group.page.id}
+            layout={layout}
+            currentPageIndex={currentIndex}
+            map={
+              isMapPage
+                ? { mapConfig, mapLayers, draggableDivRef, dragDividerRef }
+                : undefined
+            }
+            showPreviousButton={currentIndex > 0 && !isEnding}
+            controls={{
+              variant: isEnding
+                ? 'after-submission'
+                : currentIndex + 1 === lastIndex
+                ? 'submission'
+                : 'other',
+              hasPreviousPage: currentIndex > 0,
+              handleNextAndSubmit: noop,
+              handlePrevious: noop,
+              isLoading: false,
+              phase,
+              phases,
+              project,
+              pageButtonLabelMultiloc: group.page.page_button_label_multiloc,
+              pageButtonLink: group.page.page_button_link,
+              pageQuestions: visibleQuestions.map(({ field }) => field),
+            }}
+            feedback={top}
+            header={header}
+            questions={questions}
+            enterDirection={enterDirection}
+            inertControls
+          />
+          {/* Outside the page, like in the survey, so it stays put across
+              pages. Not usable here: its language switcher would change the
+              admin's own language. */}
+          <Box ref={setInert} pointerEvents="none" aria-hidden>
             <ProgressFooter
-              position="relative"
               formCompletionPercentage={
                 lastIndex > 0 ? Math.round((currentIndex / lastIndex) * 100) : 0
               }
@@ -293,7 +262,7 @@ const Canvas = ({ phase, projectId, top }: Props) => {
             />
           </Box>
         </Box>
-      </Box>
+      </FormPageLayout>
     </Box>
   );
 };

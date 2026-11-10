@@ -53,7 +53,7 @@ const PageCard = ({ group, pageIndex }: Props) => {
     dropPage,
     erroredFieldIds,
     selectedFieldId,
-    selectField,
+    closeSettings,
     deleteField,
     duplicatePage,
     getPageBlocker,
@@ -122,11 +122,12 @@ const PageCard = ({ group, pageIndex }: Props) => {
     ? colors.primary
     : colors.grey300;
 
-  // Opens the page in the canvas with its settings (empty for the
-  // demographics page).
+  // Only shows the page in the canvas; its settings open from the page
+  // header there. Settings that are open for something else are closed (and
+  // autosaved), like with their X.
   const openPage = () => {
     showPage(page.id);
-    selectField(page.id);
+    if (selectedFieldId) closeSettings(true);
   };
 
   const blockerMessages: Record<

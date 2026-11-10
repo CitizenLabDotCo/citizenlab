@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 import { useDrop } from 'react-dnd';
+import styled from 'styled-components';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 
@@ -16,13 +17,23 @@ import messages from '../messages';
 import { isFormEndPage } from '../utils';
 
 import BlockToolbar, { getBlockOutline } from './BlockToolbar';
+import { EmptyBlockHint } from './QuestionBlock';
+
+// The page title and description (and the hint) bring their own bottom
+// margins; the last one's is moved outside the outlined block, so the outline
+// wraps only the content and doesn't reach into the first question.
+const Content = styled.div`
+  & > :last-child {
+    margin-bottom: 0;
+  }
+`;
 
 type Props = {
   page: IFlatCustomField;
 };
 
-// The page title and description, as participants see them. Clicking opens the
-// page settings.
+// The page title and description, as participants see them, with a hint on
+// top when either is missing. Clicking opens the page settings.
 const PageHeaderBlock = ({ page }: Props) => {
   const [hovered, setHovered] = useState(false);
   const { formatMessage } = useIntl();
@@ -46,19 +57,34 @@ const PageHeaderBlock = ({ page }: Props) => {
 
   const selected = selectedFieldId === page.id;
   const hasError = erroredFieldIds.has(page.id);
-  const isEmpty =
-    localize(page.title_multiloc) === '' &&
-    localize(page.description_multiloc) === '';
+  const hasTitle = localize(page.title_multiloc) !== '';
+  const hasDescription = localize(page.description_multiloc) !== '';
+  const missingMessage =
+    !hasTitle && !hasDescription
+      ? messages.pageMissingTitleAndDescription
+      : !hasTitle
+      ? messages.pageMissingTitle
+      : !hasDescription
+      ? messages.pageMissingDescription
+      : null;
+  const missingHint = missingMessage && (
+    <EmptyBlockHint>
+      <Text color="textSecondary" m="0px">
+        {formatMessage(missingMessage)}
+      </Text>
+    </EmptyBlockHint>
+  );
 
-  // Like for participants, a page without title or description has no
-  // header. Its settings open from the page list.
-  if (isEmpty) return null;
+  // Same as the margin removed from the last element: the description's, or
+  // the hint's when it comes last.
+  const bottomSpacing = hasDescription ? '48px' : '24px';
 
   return (
     <Box
       ref={drop}
       position="relative"
       borderRadius="3px"
+      mb={bottomSpacing}
       style={{
         outline: getBlockOutline({ selected, hasError, hovered }),
         outlineOffset: '8px',
@@ -80,7 +106,21 @@ const PageHeaderBlock = ({ page }: Props) => {
           ]}
         />
       )}
-      <PageTitle page={page} />
+      {/* The hint sits where the missing part would go: below the title when
+          only the description is missing, otherwise at the top. */}
+      <Content>
+        {hasTitle ? (
+          <>
+            <PageTitle page={page} />
+            {missingHint}
+          </>
+        ) : (
+          <>
+            {missingHint}
+            <PageTitle page={page} />
+          </>
+        )}
+      </Content>
     </Box>
   );
 };

@@ -6,7 +6,6 @@ import {
   colors,
   Icon,
   Spinner,
-  Title,
 } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { DndProvider } from 'react-dnd';
@@ -34,8 +33,6 @@ import useLatestConversation from 'components/AiAssistant/useLatestConversation'
 import EditingLock from 'components/FormBuilder/components/EditingLock';
 import FormBuilderSettings from 'components/FormBuilder/components/FormBuilderSettings';
 import fieldMessages from 'components/FormBuilder/components/FormFields/FormField/messages';
-import FormStatus from 'components/FormBuilder/components/FormStatus';
-import formBuilderComponentMessages from 'components/FormBuilder/components/messages';
 import SurveyAssistant from 'components/FormBuilder/components/SurveyAssistant';
 import surveyAssistantMessages from 'components/FormBuilder/components/SurveyAssistant/messages';
 import {
@@ -67,6 +64,7 @@ import { BuilderContext } from './context';
 import DeletePageModal from './DeletePageModal';
 import messages from './messages';
 import PageList from './PageList';
+import SaveStatusToast from './SaveStatusToast';
 import ShareDndManager from './ShareDndManager';
 import SidebarHeader from './SidebarHeader';
 import {
@@ -226,6 +224,10 @@ const FormEdit = ({
 
   // --- Saving ---
   const [successMessageIsVisible, setSuccessMessageIsVisible] = useState(false);
+  const hideSuccessMessage = useCallback(
+    () => setSuccessMessageIsVisible(false),
+    []
+  );
   const [isUpdatingForm, setIsUpdatingForm] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   // Synchronous guard against double-clicks and autosave during a manual save.
@@ -573,14 +575,8 @@ const FormEdit = ({
       : getDuplicatePageBlocker(fields, page);
   };
 
-  // The demographics page isn't in the form, so it has no settings. It still
-  // opens the (empty) panel, so clicking through the pages doesn't make the
-  // panel jump open and closed.
-  const isDemographicsSelected =
-    !!userPage && selectedFieldId === userPage.page.id;
   const panelOpen =
-    panel === 'assistant' ||
-    (panel === 'settings' && (!!selectedField || isDemographicsSelected));
+    panel === 'assistant' || (panel === 'settings' && !!selectedField);
 
   return (
     <Box
@@ -667,22 +663,10 @@ const FormEdit = ({
                     projectId={projectId}
                     top={
                       <>
-                        <FormStatus
-                          successMessageIsVisible={successMessageIsVisible}
-                          setSuccessMessageIsVisible={
-                            setSuccessMessageIsVisible
-                          }
-                          isSubmitting={isSubmitting}
-                          // Hide the access rights notice; only save status,
-                          // errors and warnings are shown here.
-                          builderConfig={{
-                            ...builderConfig,
-                            getAccessRightsNotice: undefined,
-                          }}
-                          projectId={projectId}
-                          phaseId={phaseId}
-                          showDragAndDropHint={false}
-                        />
+                        {/* The save status is a toast (see below); only
+                            the notice about existing submissions stays here. */}
+                        {totalSubmissions > 0 &&
+                          builderConfig.getWarningNotice?.()}
                         {lockedByAssistant && (
                           <Warning mb="16px">
                             {formatMessage(
@@ -694,6 +678,13 @@ const FormEdit = ({
                     }
                   />
                 </EditingLock>
+
+                <SaveStatusToast
+                  successMessage={builderConfig.formSavedSuccessMessage}
+                  isSubmitting={isSubmitting}
+                  successIsVisible={successMessageIsVisible}
+                  onDismissSuccess={hideSuccessMessage}
+                />
 
                 {/* Bottom right, level with the Add page button: save and the
                     AI assistant bubble */}
@@ -759,28 +750,6 @@ const FormEdit = ({
                   borderLeft={`1px solid ${colors.borderLight}`}
                   display={panelOpen ? 'block' : 'none'}
                 >
-                  {panel === 'settings' && isDemographicsSelected && (
-                    <Box
-                      h="100vh"
-                      p="20px"
-                      position="relative"
-                      data-cy="e2e-form-builder-new-demographics-settings"
-                    >
-                      <Box position="absolute" right="10px">
-                        <CloseIconButton
-                          a11y_buttonActionMessage={
-                            formBuilderComponentMessages.close
-                          }
-                          onClick={() => closeSettings(true)}
-                          iconColor={colors.textSecondary}
-                          iconColorOnHover={'#000'}
-                        />
-                      </Box>
-                      <Title variant="h4" as="h2" mb="8px">
-                        {formatMessage(formBuilderComponentMessages.page)}
-                      </Title>
-                    </Box>
-                  )}
                   {panel === 'settings' && selectedField && (
                     <Box h="100vh" overflowY="auto">
                       <FormBuilderSettings

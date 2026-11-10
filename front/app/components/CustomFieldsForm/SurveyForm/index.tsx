@@ -18,6 +18,7 @@ import { customerAnalyticsEvents, trackEventByName } from 'utils/analytics';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 import { usePageDirection } from '../Page/PageTransition';
+import ProgressFooter from '../Page/ProgressFooter';
 import { FormValues } from '../Page/types';
 import { convertCustomFieldsToNestedPages } from '../util';
 
@@ -48,6 +49,10 @@ const SurveyForm = ({
   const [accumulatedValues, setAccumulatedValues] = useState<FormValues>({});
   // Next pages slide in from the right, previous ones from the left.
   const enterDirection = usePageDirection(currentPageIndex);
+  // Reported by the open page. The progress card lives here rather than in
+  // the page, so it isn't remounted on every page change (and its bar
+  // animates from one page to the next), whichever layout the page uses.
+  const [formCompletionPercentage, setFormCompletionPercentage] = useState(0);
 
   const { data: authUser } = useAuthUser();
   const { data: phase } = usePhase(phaseId);
@@ -180,8 +185,14 @@ const SurveyForm = ({
           phase={phase.data}
           defaultValues={{ ...initialFormData, ...accumulatedValues }}
           enterDirection={enterDirection}
+          onProgressChange={setFormCompletionPercentage}
         />
       )}
+      <ProgressFooter
+        formCompletionPercentage={formCompletionPercentage}
+        currentPage={currentPageIndex + 1}
+        totalPages={lastPageIndex}
+      />
     </Box>
   );
 };

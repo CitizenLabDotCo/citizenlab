@@ -33,6 +33,8 @@ type Props = {
   position: number;
   projectId: string;
   phase: IPhaseData;
+  // Space below the question: differs between the regular and map layouts.
+  questionSpacing?: string;
 };
 
 const QuestionBlock = ({
@@ -41,6 +43,7 @@ const QuestionBlock = ({
   position,
   projectId,
   phase,
+  questionSpacing = FORM_QUESTION_SPACING,
 }: Props) => {
   const ref = useRef<HTMLDivElement | null>(null);
   const [hovered, setHovered] = useState(false);
@@ -107,6 +110,10 @@ const QuestionBlock = ({
       ref={setRefs}
       position="relative"
       borderRadius="3px"
+      // The gap to the next question lives here rather than inside the
+      // preview, so the selection outline wraps only the question itself and
+      // doesn't reach into the next one.
+      mb={questionSpacing}
       opacity={isDragging ? 0.4 : 1}
       style={{
         outline: getBlockOutline({ selected, hasError, hovered }),
@@ -147,7 +154,7 @@ const QuestionBlock = ({
       <Box ref={setInert} pointerEvents="none" aria-hidden>
         <ErrorBoundary
           fallback={
-            <Box mb="24px">
+            <Box>
               <Text fontWeight="bold" m="0px">
                 {localize(previewQuestion.title_multiloc)}
               </Text>
@@ -163,7 +170,7 @@ const QuestionBlock = ({
             phase={phase}
             participationMethod={phase.attributes.participation_method}
             scrollErrorIntoView={false}
-            questionSpacing={FORM_QUESTION_SPACING}
+            questionSpacing="0px"
           />
         </ErrorBoundary>
       </Box>

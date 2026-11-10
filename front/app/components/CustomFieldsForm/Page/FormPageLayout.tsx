@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useLayoutEffect, useRef } from 'react';
 
 import {
   Box,
@@ -12,7 +12,10 @@ import { calculateDynamicHeight } from 'containers/IdeasNewSurveyPage/IdeasNewSu
 // Width of the form column. Wider than the old 700px card, but still a
 // comfortable line length for questions and answers.
 export const FORM_CONTENT_MAX_WIDTH = '860px';
-const MAP_VIEW_MAX_WIDTH = '1100px';
+// Map pages keep the classic layout. Shared with the survey builder, which
+// shows pages the way participants see them.
+export const MAP_VIEW_MAX_WIDTH = '1100px';
+export const MAP_VIEW_QUESTION_SPACING = '24px';
 // Space between questions in this layout: roomier than the classic 24px.
 export const FORM_QUESTION_SPACING = '40px';
 
@@ -26,6 +29,10 @@ type Props = {
   mainId: string;
   // E.g. the details panel of a similar input, next to the form.
   aside?: React.ReactNode;
+  // Fills its container instead of the screen (the survey builder's
+  // preview). The parts pinned to the screen (the footers) then stay inside
+  // it.
+  embedded?: boolean;
   children: React.ReactNode;
 };
 
@@ -38,6 +45,7 @@ const FormPageLayout = ({
   usingMapView,
   mainId,
   aside,
+  embedded = false,
   children,
 }: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
@@ -45,12 +53,22 @@ const FormPageLayout = ({
   useWindowSize();
   const classic = usingMapView;
 
-  return (
+  // The map layout doesn't scroll as a whole, so a scroll position left over
+  // from a long regular page would hide part of it.
+  const scrollRef = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    if (classic) scrollRef.current?.scrollTo({ top: 0 });
+  }, [classic]);
+
+  const page = (
     <Box
+      ref={scrollRef}
       w="100%"
-      h="100vh"
-      position="fixed"
-      zIndex="1010"
+      h={embedded ? '100%' : '100vh'}
+      position={embedded ? 'absolute' : 'fixed'}
+      top={embedded ? '0' : undefined}
+      left={embedded ? '0' : undefined}
+      zIndex={embedded ? undefined : '1010'}
       // Grey on both sides of the white form column.
       bgColor={colors.grey100}
       overflowY={classic ? 'hidden' : 'auto'}
@@ -116,6 +134,23 @@ const FormPageLayout = ({
         </Box>
         {aside}
       </Box>
+    </Box>
+  );
+
+  if (!embedded) return page;
+
+  // The transform makes this box, rather than the screen, the frame of the
+  // fixed footers. It doesn't scroll itself, so they stay put while the page
+  // inside scrolls.
+  return (
+    <Box
+      position="relative"
+      w="100%"
+      h="100%"
+      overflow="hidden"
+      style={{ transform: 'translateZ(0)' }}
+    >
+      {page}
     </Box>
   );
 };

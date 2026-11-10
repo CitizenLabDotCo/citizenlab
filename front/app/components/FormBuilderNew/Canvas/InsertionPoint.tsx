@@ -75,13 +75,20 @@ type Props = {
   pageId: string;
   index: number;
   isDraggingQuestion: boolean;
+  // The gap it sits in: differs between the regular and map layouts.
+  questionSpacing?: string;
 };
 
 // Sits in the gap between two questions (the gap is the bottom margin of the
 // question above, so the preview spacing stays exactly as participants see
 // it). The whole line is a button that adds a question in that spot; while
 // dragging, it shows where the question will land.
-const InsertionPoint = ({ pageId, index, isDraggingQuestion }: Props) => {
+const InsertionPoint = ({
+  pageId,
+  index,
+  isDraggingQuestion,
+  questionSpacing = FORM_QUESTION_SPACING,
+}: Props) => {
   const [active, setActive] = useState(false);
   const { formatMessage } = useIntl();
   const { dropTarget, setDropTarget, openAddModal } = useBuilder();
@@ -108,9 +115,7 @@ const InsertionPoint = ({ pageId, index, isDraggingQuestion }: Props) => {
         // Centred in the gap between two questions (the bottom margin of the
         // question above), clear of both questions' hover outlines. Above the
         // first question the gap is the page title's margin instead.
-        top={
-          index === 0 ? '-24px' : `calc(-${FORM_QUESTION_SPACING} / 2 - 12px)`
-        }
+        top={index === 0 ? '-24px' : `calc(-${questionSpacing} / 2 - 12px)`}
         left="-16px"
         right="-16px"
         h="24px"
