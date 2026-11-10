@@ -4584,14 +4584,29 @@
     "verified_at": "2026-11-10T09:10:49.483632Z",
     "verified_by": "Adrien"
   },
+  "app.components.aiAssistant.dropFiles": {
+    "state": "verified",
+    "verified_at": "2026-11-10T09:29:14.093736Z",
+    "verified_by": "Adrien"
+  },
   "app.components.aiAssistant.elapsed": {
     "state": "verified",
     "verified_at": "2026-11-10T07:11:34.688069Z",
     "verified_by": "Adrien"
   },
+  "app.components.aiAssistant.errorAiProcessingNotAllowed": {
+    "state": "verified",
+    "verified_at": "2026-11-10T09:29:14.093736Z",
+    "verified_by": "Adrien"
+  },
   "app.components.aiAssistant.errorContextTooLong": {
     "state": "verified",
     "verified_at": "2026-11-10T08:56:30.399875Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.aiAssistant.errorFileNotInProject": {
+    "state": "verified",
+    "verified_at": "2026-11-10T09:29:14.093736Z",
     "verified_by": "Adrien"
   },
   "app.components.aiAssistant.errorGeneric": {
