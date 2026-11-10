@@ -139,7 +139,7 @@ const Spotlight = ({
             >
               <Image
                 src={imgSrc}
-                alt="placeholder"
+                alt=""
                 borderRadius={stylingConsts.borderRadius}
                 objectFit="cover"
                 w="100%"
