@@ -7,9 +7,34 @@ RSpec.describe CustomFieldValuesTransitionService do
   let!(:field) { create(:custom_field, key: 'pet') }
 
   describe '#assign' do
+    it 'stages the values that have a field, with their companions, and drops the others' do
+      user = build(:user)
+
+      all_staged = service.assign(user, { 'pet' => 'other', 'pet_other' => 'A ferret', 'unknown_key' => 'x' })
+
+      expect(all_staged).to be false
+      expect(user.custom_field_answers.to_h { [it.key, it.value] }).to eq('pet' => 'other', 'pet_other' => 'A ferret')
+    end
+
+    it 'returns true when every value has a field' do
+      user = build(:user)
+
+      expect(service.assign(user, { 'pet' => 'cat' })).to be true
+    end
+
+    it 'still updates an existing answer that has no field' do
+      user = create(:user)
+      user.custom_field_answers.create!(key: 'retired', value: 'x')
+
+      expect(service.assign(user, { 'retired' => 'y' })).to be true
+      expect(user.answer_for_key('retired')).to have_attributes(value: 'y', custom_field_id: nil)
+    end
+  end
+
+  describe '#assign!' do
     it 'stages answers in-memory, persisted by the record save' do
       user = build(:user)
-      service.assign(user, { 'pet' => 'cat' })
+      service.assign!(user, { 'pet' => 'cat' })
       expect(CustomFieldAnswer.count).to eq 0
 
       user.save!
@@ -19,7 +44,7 @@ RSpec.describe CustomFieldValuesTransitionService do
     it 'refuses a key that resolves to no field' do
       user = build(:user)
 
-      expect { service.assign(user, { 'pet' => 'cat', 'unknown_key' => 'x' }) }
+      expect { service.assign!(user, { 'pet' => 'cat', 'unknown_key' => 'x' }) }
         .to raise_error(ArgumentError, /unknown_key/)
       expect(user.custom_field_answers).to be_empty
     end
@@ -27,14 +52,14 @@ RSpec.describe CustomFieldValuesTransitionService do
     it "normalizes values through the field's input type" do
       create(:custom_field_point, resource_type: 'User', key: 'location')
       user = build(:user)
-      service.assign(user, { 'location' => 'POINT (4.31 50.85)' })
+      service.assign!(user, { 'location' => 'POINT (4.31 50.85)' })
 
       expect(user.answer_for_key('location').value).to eq('type' => 'Point', 'coordinates' => [4.31, 50.85])
     end
 
     it 'links _other and _follow_up companion keys to their parent field' do
       user = build(:user)
-      service.assign(user, { 'pet' => 'other', 'pet_other' => 'A ferret' })
+      service.assign!(user, { 'pet' => 'other', 'pet_other' => 'A ferret' })
       user.save!
 
       expect(user.custom_field_answers.find_by(key: 'pet_other'))
@@ -44,11 +69,11 @@ RSpec.describe CustomFieldValuesTransitionService do
     it 'updates and deletes existing answers' do
       create(:custom_field, key: 'city')
       user = create(:user)
-      service.assign(user, { 'pet' => 'cat', 'city' => 'Ghent' })
+      service.assign!(user, { 'pet' => 'cat', 'city' => 'Ghent' })
       user.save!
       expect(user.custom_field_answers.pluck(:key, :value)).to contain_exactly(%w[pet cat], %w[city Ghent])
 
-      service.assign(user, { 'pet' => 'dog' })
+      service.assign!(user, { 'pet' => 'dog' })
       user.save!
       expect(user.custom_field_answers.pluck(:key, :value)).to eq [%w[pet dog]]
     end
@@ -61,7 +86,7 @@ RSpec.describe CustomFieldValuesTransitionService do
       idea.custom_field_answers.create!(key: 'only_here', value: 'kept', custom_field: source_field)
 
       idea.project = create(:project)
-      service.assign(idea, { 'only_here' => 'refreshed' })
+      service.assign!(idea, { 'only_here' => 'refreshed' })
 
       expect(idea.answer_for_key('only_here'))
         .to have_attributes(value: 'refreshed', custom_field_id: source_field.id)
@@ -78,7 +103,7 @@ RSpec.describe CustomFieldValuesTransitionService do
       destination_field = create(:custom_field, resource: destination_form, key: 'shared')
 
       idea.project = destination_project
-      service.assign(idea, { 'shared' => 'kept' })
+      service.assign!(idea, { 'shared' => 'kept' })
 
       expect(idea.answer_for_key('shared').custom_field_id).to eq destination_field.id
     end
@@ -87,17 +112,17 @@ RSpec.describe CustomFieldValuesTransitionService do
       user = create(:user)
       user.custom_field_answers.create!(key: 'retired', value: 'x')
 
-      service.assign(user, { 'retired' => 'y' })
+      service.assign!(user, { 'retired' => 'y' })
 
       expect(user.answer_for_key('retired')).to have_attributes(value: 'y', custom_field_id: nil)
     end
 
     it 'deletes all answers when assigning empty values' do
       user = create(:user)
-      service.assign(user, { 'pet' => 'cat' })
+      service.assign!(user, { 'pet' => 'cat' })
       user.save!
 
-      service.assign(user, {})
+      service.assign!(user, {})
       user.save!
       expect(user.custom_field_answers).to be_empty
     end
@@ -105,7 +130,7 @@ RSpec.describe CustomFieldValuesTransitionService do
     it 'stores false answers and skips nil answers' do
       create(:custom_field_checkbox, resource_type: 'User', key: 'attends')
       user = create(:user)
-      service.assign(user, { 'pet' => nil, 'attends' => false })
+      service.assign!(user, { 'pet' => nil, 'attends' => false })
       user.save!
 
       expect(user.custom_field_answers.pluck(:key, :value)).to eq [['attends', false]]
@@ -113,7 +138,7 @@ RSpec.describe CustomFieldValuesTransitionService do
 
     it 'stores keys and values as JSON serializes them' do
       user = create(:user)
-      service.assign(user, { pet: :cat })
+      service.assign!(user, { pet: :cat })
       user.save!
 
       expect(user.custom_field_answers.pluck(:key, :value)).to eq [%w[pet cat]]
@@ -124,7 +149,7 @@ RSpec.describe CustomFieldValuesTransitionService do
       form = create(:custom_form, participation_context: project)
       form_field = create(:custom_field, resource: form, key: 'pet')
       idea = create(:idea, project: project)
-      service.assign(idea, {
+      service.assign!(idea, {
         'pet' => 'cat', 'pet_follow_up' => 'why', 'u_pet' => 'dog', 'u_pet_other' => 'A hamster'
       })
       idea.save!

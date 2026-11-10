@@ -4,15 +4,48 @@
 # custom_field_answers association (persisted by the record's save). To be
 # deleted once the API and the importers speak answers directly.
 class CustomFieldValuesTransitionService
-  # nil values count as absent answers.
+  # Stages the values that have a field and drops the others, for values from a source
+  # we don't control, like an identity provider. Returns whether all were staged.
   def assign(record, values)
-    values = (values || {}).as_json.compact
+    values = normalize(values)
+    dropped = keys_without_field(record, values)
+    stage(record, values.except(*dropped))
+    dropped.empty?
+  end
+
+  # Raises when a value has no field: in our own code that is a bug.
+  def assign!(record, values)
+    values = normalize(values)
+    dropped = keys_without_field(record, values)
+    raise ArgumentError, "No field for keys: #{dropped.join(', ')}" if dropped.any?
+
+    stage(record, values)
+  end
+
+  def custom_field_values(record)
+    return {} if !record
+
+    record.custom_field_answers.reject(&:marked_for_destruction?).to_h { [it.key, it.value] }
+  end
+
+  private
+
+  # nil values count as absent answers.
+  def normalize(values)
+    (values || {}).as_json.compact
+  end
+
+  # The keys that would start an answer without a field. An existing answer keeps
+  # its key, with or without a field.
+  def keys_without_field(record, values)
+    stored_keys = record.custom_field_answers.reject(&:marked_for_destruction?).map(&:key)
+    new_keys = values.keys - stored_keys
+    new_keys - fields_by_key(record, new_keys).keys
+  end
+
+  def stage(record, values)
     answers = record.custom_field_answers.reject(&:marked_for_destruction?).index_by(&:key)
     fields = fields_by_key(record, values.keys)
-
-    new_keys = values.keys - answers.keys
-    keys_without_field = new_keys - fields.keys
-    raise ArgumentError, "No field for keys: #{keys_without_field.join(', ')}" if keys_without_field.any?
 
     (answers.keys - values.keys).each { |key| answers[key].mark_for_destruction }
     values.each do |key, value|
@@ -27,14 +60,6 @@ class CustomFieldValuesTransitionService
       end
     end
   end
-
-  def custom_field_values(record)
-    return {} if !record
-
-    record.custom_field_answers.reject(&:marked_for_destruction?).to_h { [it.key, it.value] }
-  end
-
-  private
 
   def fields_by_key(record, keys)
     return {} if keys.empty?

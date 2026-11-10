@@ -166,7 +166,7 @@ class McpServer::Tools::CreateDemoInputs < McpServer::BaseTool
         location_description: location&.dig(:description),
         location_point_geojson: location && { 'type' => 'Point', 'coordinates' => [location[:lng], location[:lat]] }
       )
-      CustomFieldValuesTransitionService.new.assign(idea, attributes[:custom_field_values])
+      CustomFieldValuesTransitionService.new.assign!(idea, attributes[:custom_field_values])
       idea
     end
 

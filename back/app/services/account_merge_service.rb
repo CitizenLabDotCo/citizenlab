@@ -266,6 +266,7 @@ class AccountMergeService
       .merge(transition_service.custom_field_values(target))
       .merge(source_values.slice(*locked_keys))
 
+    # Not assign!: the source can hold answers to fields this platform no longer has.
     transition_service.assign(target, merged)
     target.save!
   end
