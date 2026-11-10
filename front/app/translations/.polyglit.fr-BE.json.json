@@ -4609,6 +4609,11 @@
     "verified_at": "2026-11-10T08:56:30.399875Z",
     "verified_by": "Adrien"
   },
+  "app.components.aiAssistant.errorConversationBusy": {
+    "state": "verified",
+    "verified_at": "2026-11-10T09:50:14.593285Z",
+    "verified_by": "Adrien"
+  },
   "app.components.aiAssistant.errorFileNotInProject": {
     "state": "verified",
     "verified_at": "2026-11-10T09:29:14.093736Z",
@@ -4694,6 +4699,11 @@
     "verified_at": "2026-10-30T15:07:42.517367Z",
     "verified_by": "Adrien"
   },
+  "app.components.aiAssistant.placeholder": {
+    "state": "verified",
+    "verified_at": "2026-11-10T09:50:14.593285Z",
+    "verified_by": "Adrien"
+  },
   "app.components.aiAssistant.proposedChange": {
     "state": "verified",
     "verified_at": "2026-11-10T08:51:31.369978Z",
@@ -4707,6 +4717,11 @@
   "app.components.aiAssistant.rejectReasonLabel": {
     "state": "verified",
     "verified_at": "2026-11-10T09:10:49.483632Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.aiAssistant.removeFile": {
+    "state": "verified",
+    "verified_at": "2026-11-10T09:50:14.593285Z",
     "verified_by": "Adrien"
   },
   "app.components.aiAssistant.send": {
@@ -4747,6 +4762,11 @@
   "app.components.aiAssistant.title": {
     "state": "verified",
     "verified_at": "2026-11-10T07:03:53.092440Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.aiAssistant.working": {
+    "state": "verified",
+    "verified_at": "2026-11-10T09:50:14.593285Z",
     "verified_by": "Adrien"
   },
   "app.components.anonymousParticipationModal.anonymousParticipationWarning": {
