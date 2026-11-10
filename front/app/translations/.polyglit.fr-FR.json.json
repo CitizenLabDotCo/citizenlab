@@ -4599,6 +4599,16 @@
     "verified_at": "2026-10-30T15:07:42.380952Z",
     "verified_by": "Adrien"
   },
+  "app.components.aiAssistant.errorLlmUnavailable": {
+    "state": "verified",
+    "verified_at": "2026-11-10T09:25:28.285518Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.aiAssistant.errorSurfaceUnavailable": {
+    "state": "verified",
+    "verified_at": "2026-11-10T09:25:28.285518Z",
+    "verified_by": "Adrien"
+  },
   "app.components.aiAssistant.errorTooLong": {
     "state": "verified",
     "verified_at": "2026-10-30T15:07:42.380952Z",
@@ -4607,6 +4617,11 @@
   "app.components.aiAssistant.errorToolBudgetExceeded": {
     "state": "verified",
     "verified_at": "2026-11-10T09:00:46.644242Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.aiAssistant.errorToolCallNotAwaitingApproval": {
+    "state": "verified",
+    "verified_at": "2026-11-10T09:25:28.285518Z",
     "verified_by": "Adrien"
   },
   "app.components.aiAssistant.errorTurnTimedOut": {
@@ -5777,6 +5792,11 @@
   "app.components.formBuilder.surveyAssistant.editingLocked2": {
     "state": "verified",
     "verified_at": "2026-11-10T09:20:41.231689Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.formBuilder.surveyAssistant.endPage": {
+    "state": "verified",
+    "verified_at": "2026-11-10T09:25:28.285518Z",
     "verified_by": "Adrien"
   },
   "app.components.formBuilder.surveyAssistant.intro2": {
