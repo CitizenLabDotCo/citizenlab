@@ -476,7 +476,7 @@ jobs:
             curl -fsSL -O "${base}/checksums.txt"
             grep "$archive" checksums.txt | sha256sum -c -
             sudo tar xz -C /usr/local/bin -f "$archive" kustomize
-      # Write access to the GitOps repo.
+      # Write access to cl2-deployment (deploy key, ED25519).
       - add_ssh_keys:
           fingerprints:
             - SHA256:6uoyWl+I46oGOpqAnyv3Q8xWzEvL8Zmea9Dx4M3+DyI
