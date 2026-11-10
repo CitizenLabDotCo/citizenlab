@@ -4659,6 +4659,21 @@
     "verified_at": "2026-11-10T08:56:30.229592Z",
     "verified_by": "Adrien"
   },
+  "app.components.aiAssistant.errorUnsupportedFileType2": {
+    "state": "verified",
+    "verified_at": "2026-11-10T09:37:27.833210Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.aiAssistant.filesNotice": {
+    "state": "verified",
+    "verified_at": "2026-11-10T09:37:27.833210Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.aiAssistant.filesRejected2": {
+    "state": "verified",
+    "verified_at": "2026-11-10T09:37:27.833210Z",
+    "verified_by": "Adrien"
+  },
   "app.components.aiAssistant.newChat": {
     "state": "verified",
     "verified_at": "2026-10-30T15:07:42.380952Z",
