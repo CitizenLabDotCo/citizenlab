@@ -36,7 +36,7 @@ const NumberSettingRow = ({
           variant="bo"
           type="number"
           min={min}
-          value={value ? value.toString() : null}
+          value={typeof value === 'number' ? value.toString() : null}
           onChange={onChange}
         />
       </Box>

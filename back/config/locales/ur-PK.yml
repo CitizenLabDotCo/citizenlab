@@ -140,9 +140,15 @@ ur-PK:
           title: آپ کا موضوع کیا ہے؟
   errors:
     messages:
+      ai_processing_not_allowed: ہو سکتا ہے AI کے ذریعے پروسیس نہ کی جائیں
       in_the_past: مستقبل میں ہونا چاہئے
       max_must_be_greater_than_min_characters: زیادہ سے زیادہ کم از کم سے زیادہ ہونا چاہیے۔
       max_must_be_greater_than_or_equal_to_min_select_count: زیادہ سے زیادہ کم سے کم سے زیادہ یا اس کے برابر ہونا چاہیے۔
+      not_found: نہیں ملیں
+      not_in_project: اس پروجیکٹ کی فائلیں ہونی چاہئیں
+      not_utf8: UTF-8 کے طور پر محفوظ ہونی چاہئیں
+      too_many_in_conversation: ایک گفتگو کے لیے بہت زیادہ ہیں
+      unsupported_file_type: زیادہ سے زیادہ 4 MB کی PDF فائلیں، یا زیادہ سے زیادہ 100 KB کی مارک ڈاؤن یا ٹیکسٹ فائلیں ہونی چاہئیں
   events:
     council_meeting_description: |
       <p>اس کونسل کے اجلاس کے دوران، وہ شہری اقدامات پیش کیے جائیں گے جنہوں نے 3 ماہ سے بھی کم عرصے میں 100 ووٹ حاصل کیے تھے۔</p><p>اس کے بعد کونسل ہر آئیڈیا پر اپنا نظریہ بتائے گی۔</p>

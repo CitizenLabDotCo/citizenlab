@@ -120,6 +120,44 @@ resource 'Id methods' do
         }
       )
     end
+
+    context 'when methods are set to only show for verification' do
+      before do
+        configuration = AppConfiguration.instance
+        configuration.settings['id_config']['id_methods'] = [
+          { name: 'nemlog_in', only_show_for_verification: true },
+          { name: 'criipto', only_show_for_verification: true }
+        ]
+        configuration.save!
+      end
+
+      example 'Exposes only_show_for_verification for NemLog-in and Criipto' do
+        do_request
+        expect(status).to eq(200)
+        attributes_by_name = response_data.to_h { |method| [method[:attributes][:name], method[:attributes]] }
+        expect(attributes_by_name['nemlog_in'][:only_show_for_verification]).to be true
+        expect(attributes_by_name['criipto'][:only_show_for_verification]).to be true
+      end
+    end
+
+    context 'when only_show_for_verification is not set' do
+      before do
+        configuration = AppConfiguration.instance
+        configuration.settings['id_config']['id_methods'] = [
+          { name: 'nemlog_in' },
+          { name: 'criipto', only_show_for_verification: false }
+        ]
+        configuration.save!
+      end
+
+      example 'Does not expose only_show_for_verification' do
+        do_request
+        expect(status).to eq(200)
+        response_data.each do |method|
+          expect(method[:attributes]).not_to have_key(:only_show_for_verification)
+        end
+      end
+    end
   end
 
   get 'web_api/v1/id_methods/first_enabled_verification_method' do

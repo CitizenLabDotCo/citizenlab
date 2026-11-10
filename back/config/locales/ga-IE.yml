@@ -140,9 +140,15 @@ ga-IE:
           title: Cad é do thopaic?
   errors:
     messages:
+      ai_processing_not_allowed: seans nach bpróiseálfaidh an AI iad
       in_the_past: caithfidh sé a bheith sa todhchaí
       max_must_be_greater_than_min_characters: Caithfidh an t-uasmhéid a bheith níos mó ná an t-íosmhéid.
       max_must_be_greater_than_or_equal_to_min_select_count: Caithfidh an t-uasmhéid a bheith níos mó ná an t-íosmhéid nó cothrom leis.
+      not_found: níor aimsíodh iad
+      not_in_project: caithfidh gur comhaid de chuid an tionscadail seo iad
+      not_utf8: caithfear iad a shábháil mar UTF-8
+      too_many_in_conversation: tá an iomarca ann do chomhrá amháin
+      unsupported_file_type: caithfidh gur comhaid PDF 4 MB ar a mhéad iad, nó comhaid Markdown nó téacs 100 KB ar a mhéad
   events:
     council_meeting_description: |
       <p>Le linn chruinniú na comhairle seo, cuirfear i láthair na tionscnaimh saoránach sin a fuair 100 vóta i níos lú ná 3 mhí.</p><p>Ansin, roinnfidh an chomhairle a dtuairimí ar gach smaoineamh.</p>

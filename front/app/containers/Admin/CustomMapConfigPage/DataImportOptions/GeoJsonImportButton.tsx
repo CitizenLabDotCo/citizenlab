@@ -60,9 +60,10 @@ const fileAccept = [
 interface Props {
   mapConfig: IMapConfig;
   className?: string;
+  variant?: 'default' | 'bo';
 }
 
-const GeoJsonImportButton = memo<Props>(({ mapConfig, className }) => {
+const GeoJsonImportButton = memo<Props>(({ mapConfig, className, variant }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const { projectId } = useParams({ strict: false }) as {
@@ -144,7 +145,9 @@ const GeoJsonImportButton = memo<Props>(({ mapConfig, className }) => {
           <div>
             <StyledButton
               icon="upload-file"
-              buttonStyle="secondary-outlined"
+              buttonStyle={
+                variant === 'bo' ? 'bo-secondary' : 'secondary-outlined'
+              }
               disabled={geoJsonImportDisabled}
               processing={isLoading}
             >

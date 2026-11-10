@@ -15,7 +15,6 @@ import SearchInput from 'components/UI/SearchInput';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 import messages from '../messages';
 import AnswerFilterBox from '../shared/Filters/AnswerFilterBox';
@@ -27,7 +26,7 @@ import ResetFiltersButton from './ResetFiltersButton';
 
 export interface InputFiltersProps {
   defaultValue?: string;
-  ideasFilterCounts: IIdeasFilterCounts | NilOrError;
+  ideasFilterCounts?: IIdeasFilterCounts;
   numberOfSearchResults: number;
   ideaQueryParameters: IIdeaQueryParameters;
   onSearch: (searchTerm: string) => void;
@@ -76,9 +75,7 @@ const InputFilters = ({
   const isProposalsOrIdeation =
     participationMethod === 'ideation' || participationMethod === 'proposals';
   const isVoting = participationMethod === 'voting';
-  const counts = isNilOrError(ideasFilterCounts)
-    ? undefined
-    : ideasFilterCounts.data.attributes;
+  const counts = ideasFilterCounts?.data.attributes;
 
   return (
     <>
@@ -111,15 +108,14 @@ const InputFilters = ({
           />
         </Box>
       )}
-      {projectId && (
-        <Box mb="20px">
-          <TopicFilterBox
-            projectId={projectId}
-            selectedTopicIds={ideaQueryParameters.input_topics}
-            filterCounts={counts}
-            onChange={onChangeTopics}
-          />
-        </Box>
+      {projectId && phaseId && (
+        <TopicFilterBox
+          projectId={projectId}
+          phaseId={phaseId}
+          selectedTopicIds={ideaQueryParameters.input_topics}
+          filterCounts={counts}
+          onChange={onChangeTopics}
+        />
       )}
       {answerFilterFields?.map((field) => (
         <Box key={field.id} mb="20px" data-cy="e2e-answer-filter-box">

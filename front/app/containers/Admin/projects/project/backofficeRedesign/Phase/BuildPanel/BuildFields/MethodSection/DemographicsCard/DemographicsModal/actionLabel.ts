@@ -1,0 +1,32 @@
+import { IPhasePermissionAction } from 'api/permissions/types';
+
+import phaseMessages from 'containers/Admin/projects/project/backofficeRedesign/Phase/messages';
+import projectMessages from 'containers/Admin/projects/project/messages';
+import configMessages from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/messages';
+
+import messages from './messages';
+
+const actionLabel = (action: IPhasePermissionAction) => {
+  switch (action) {
+    case 'posting_idea':
+      return projectMessages.inputPostingEnabled;
+    case 'commenting_idea':
+      return projectMessages.inputCommentingEnabled;
+    case 'reacting_idea':
+      return projectMessages.inputReactingEnabled;
+    case 'attending_event':
+      return projectMessages.attendingEventAction;
+    case 'voting':
+      return configMessages.votingOnInputsAction;
+    case 'volunteering':
+      return configMessages.volunteeringAction2;
+    case 'taking_survey':
+      return messages.takingSurveyAction;
+    case 'taking_poll':
+      return messages.takingPollAction;
+    case 'annotating_document':
+      return phaseMessages.annotatingDocumentAction;
+  }
+};
+
+export default actionLabel;
