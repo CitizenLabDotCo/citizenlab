@@ -10389,6 +10389,16 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+  "app.containers.NotificationMenu.reportGenerated": {
+    "state": "verified",
+    "verified_at": "2026-11-10T16:42:57.115420Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.NotificationMenu.reportGeneratedStoppedEarly": {
+    "state": "verified",
+    "verified_at": "2026-11-10T16:42:57.115420Z",
+    "verified_by": "Roger"
+  },
   "app.containers.NotificationMenu.spaceModerationRightsReceived": {
     "state": "verified",
     "verified_at": "2026-04-20T15:02:01.635768Z",
@@ -10638,6 +10648,26 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
+  },
+  "app.containers.PhoneChange.backToProfile": {
+    "state": "verified",
+    "verified_at": "2026-11-10T16:42:57.115420Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.PhoneChange.confirmationModalTitle": {
+    "state": "verified",
+    "verified_at": "2026-11-10T16:42:57.115420Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.PhoneChange.currentPhone": {
+    "state": "verified",
+    "verified_at": "2026-11-10T16:42:57.115420Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.PhoneChange.helmetDescription": {
+    "state": "verified",
+    "verified_at": "2026-11-10T16:42:57.115420Z",
+    "verified_by": "Roger"
   },
   "app.containers.PhoneChange.helmetTitle": {
     "state": "verified",
