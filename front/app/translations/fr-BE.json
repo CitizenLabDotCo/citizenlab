@@ -1196,7 +1196,7 @@
   "app.components.formBuilder.stronglyAgree": "Tout à fait d'accord",
   "app.components.formBuilder.stronglyDisagree": "Pas du tout d'accord",
   "app.components.formBuilder.supportArticleLinkText": "cette page",
-  "app.components.formBuilder.surveyAssistant.editingLocked2": "Vous pourrez à nouveau modifier le sondage une fois que l'assistant aura terminé, ou une fois que vous aurez approuvé ou rejeté la modification proposée.",
+  "app.components.formBuilder.surveyAssistant.editingLocked2": "Vous pourrez de nouveau modifier l’enquête lorsque l’assistant aura terminé ou que vous aurez accepté ou refusé sa proposition.",
   "app.components.formBuilder.surveyAssistant.endPage": "Page de fin",
   "app.components.formBuilder.surveyAssistant.intro2": "Décrivez l'enquête à créer ou les modifications à apporter, ou joignez un document. L'assistant proposera une nouvelle version de l'enquête que vous pourrez accepter ou refuser.",
   "app.components.formBuilder.surveyAssistant.outlineSummary": "{pages, plural, one {# page} other {# pages}}, {questions, plural, one {# question} other {# questions}}",
