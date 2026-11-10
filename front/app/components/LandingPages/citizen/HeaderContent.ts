@@ -61,8 +61,7 @@ export const HeaderTitle = styled(Title)<{
   margin-bottom: 10px;
 
   ${media.phone`
-    font-size: ${({ variant }) =>
-      variant === 'h2' ? fontSizes.l : fontSizes.xl}px;
+    ${({ variant }) => variant !== 'h2' && `font-size: ${fontSizes.xxl}px;`}
     margin-bottom: 12px;
   `}
 `;
