@@ -21,11 +21,11 @@ import Feedback from 'components/HookForm/Feedback';
 
 import clHistory from 'utils/cl-router/history';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
-import { isPage } from 'utils/helperUtils';
-import { useLocation, useSearch } from 'utils/router';
+import { useSearch } from 'utils/router';
 
 import CustomFields from '../CustomFields';
 import useEsriMapPage from '../Map/useEsriMapPage';
+import { FORM_QUESTION_SPACING } from '../Page/FormPageLayout';
 import PageTitle from '../Page/PageTitle';
 import { PageDirection } from '../Page/PageTransition';
 import { FormValues } from '../Page/types';
@@ -45,10 +45,7 @@ import {
   getSkippedPageIndices,
 } from './logic';
 import SubmitConfirmation from './SubmitConfirmation';
-import SurveyPageLayout, {
-  getQuestionSpacing,
-  SurveyPageLayoutVariant,
-} from './SurveyPageLayout';
+import SurveyPageLayout from './SurveyPageLayout';
 
 const StyledForm = styled.form`
   height: 100%;
@@ -118,8 +115,6 @@ const SurveyPage = ({
   const { data: project } = useProjectById(projectId);
 
   const localize = useLocalize();
-  const { pathname } = useLocation();
-  const isAdminPage = isPage('admin', pathname);
   const isMapPage = page.page_layout === 'map';
   const { data: authUser } = useAuthUser();
 
@@ -133,14 +128,12 @@ const SurveyPage = ({
   });
 
   // Map logic
-  const shouldShowMap = !isAdminPage && isMapPage;
-  const { mapConfig, mapLayers, draggableDivRef, dragDividerRef } =
-    useEsriMapPage({
-      project,
-      pages,
-      currentPageIndex,
-      localize,
-    });
+  const { mapConfig, mapLayers } = useEsriMapPage({
+    project,
+    pages,
+    currentPageIndex,
+    localize,
+  });
 
   const previousPageNumber = determinePreviousPageNumber({
     userNavigationHistory,
@@ -345,22 +338,12 @@ const SurveyPage = ({
       ? 'submission'
       : 'other';
 
-  // Map pages (and admin previews) keep the classic layout: a card with its
-  // own scroll and the buttons in a footer. Other pages flow with the page.
-  const layout: SurveyPageLayoutVariant =
-    isMapPage || isAdminPage ? 'classic' : 'regular';
-
   return (
     <FormProvider {...methods}>
       <StyledForm id="idea-form" onKeyDown={handleFormKeyDown}>
         <SurveyPageLayout
-          layout={layout}
           currentPageIndex={currentPageIndex}
-          map={
-            shouldShowMap
-              ? { mapConfig, mapLayers, draggableDivRef, dragDividerRef }
-              : undefined
-          }
+          map={isMapPage ? { mapConfig, mapLayers } : undefined}
           showPreviousButton={currentPageIndex > 0 && !isLastPage}
           controls={{
             variant: footerVariant,
@@ -389,7 +372,7 @@ const SurveyPage = ({
               ideaId={ideaId}
               phase={phase}
               participationMethod={participationMethod}
-              questionSpacing={getQuestionSpacing(layout)}
+              questionSpacing={FORM_QUESTION_SPACING}
             />
           }
           afterQuestions={

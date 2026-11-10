@@ -26,6 +26,8 @@ type Props = {
   // 'fixed' floats above the bottom of the screen. 'relative' leaves the
   // positioning to a wrapper (used for the form builder preview).
   position?: 'fixed' | 'relative';
+  // As wide as the form column.
+  maxWidth?: string;
 };
 
 // Card floating just above the bottom of the screen, as wide as the form:
@@ -35,6 +37,7 @@ const ProgressFooter = ({
   currentPage,
   totalPages,
   position = 'fixed',
+  maxWidth = FORM_CONTENT_MAX_WIDTH,
 }: Props) => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
@@ -57,7 +60,7 @@ const ProgressFooter = ({
       pointerEvents="none"
     >
       <Box
-        maxWidth={FORM_CONTENT_MAX_WIDTH}
+        maxWidth={maxWidth}
         mx="auto"
         px={isSmallerThanPhone ? '12px' : '24px'}
         pb={isSmallerThanPhone ? '12px' : '20px'}

@@ -12,10 +12,9 @@ import { calculateDynamicHeight } from 'containers/IdeasNewSurveyPage/IdeasNewSu
 // Width of the form column. Wider than the old 700px card, but still a
 // comfortable line length for questions and answers.
 export const FORM_CONTENT_MAX_WIDTH = '860px';
-// Map pages keep the classic layout. Shared with the survey builder, which
-// shows pages the way participants see them.
-export const MAP_VIEW_MAX_WIDTH = '1100px';
-export const MAP_VIEW_QUESTION_SPACING = '24px';
+// Survey map pages: the map next to the questions needs a wider column.
+export const FORM_MAP_PAGE_MAX_WIDTH = '1400px';
+const MAP_VIEW_MAX_WIDTH = '1100px';
 // Space between questions in this layout: roomier than the classic 24px.
 export const FORM_QUESTION_SPACING = '40px';
 
@@ -29,6 +28,8 @@ type Props = {
   mainId: string;
   // E.g. the details panel of a similar input, next to the form.
   aside?: React.ReactNode;
+  // A wider column, for a survey map page.
+  wide?: boolean;
   // Fills its container instead of the screen (the survey builder's
   // preview). The parts pinned to the screen (the footers) then stay inside
   // it.
@@ -46,8 +47,12 @@ const FormPageLayout = ({
   mainId,
   aside,
   embedded = false,
+  wide = false,
   children,
 }: Props) => {
+  const columnMaxWidth = wide
+    ? FORM_MAP_PAGE_MAX_WIDTH
+    : FORM_CONTENT_MAX_WIDTH;
   const isSmallerThanPhone = useBreakpoint('phone');
   // Re-renders on resize, for the classic layout's computed card height.
   useWindowSize();
@@ -100,7 +105,7 @@ const FormPageLayout = ({
           >
             <Box
               w="100%"
-              maxWidth={classic ? undefined : FORM_CONTENT_MAX_WIDTH}
+              maxWidth={classic ? undefined : columnMaxWidth}
               mx="auto"
             >
               {heading}
@@ -119,7 +124,7 @@ const FormPageLayout = ({
             <Box
               w="100%"
               display="flex"
-              maxWidth={classic ? MAP_VIEW_MAX_WIDTH : FORM_CONTENT_MAX_WIDTH}
+              maxWidth={classic ? MAP_VIEW_MAX_WIDTH : columnMaxWidth}
               bgColor={colors.white}
               h={
                 classic ? calculateDynamicHeight(isSmallerThanPhone) : undefined

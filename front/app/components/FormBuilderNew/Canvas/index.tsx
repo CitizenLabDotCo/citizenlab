@@ -13,15 +13,15 @@ import useLocalize from 'hooks/useLocalize';
 import CustomFields from 'components/CustomFieldsForm/CustomFields';
 import CustomFieldsSignupHelperText from 'components/CustomFieldsForm/CustomFieldsSignupHelperText';
 import useEsriMapPage from 'components/CustomFieldsForm/Map/useEsriMapPage';
-import FormPageLayout from 'components/CustomFieldsForm/Page/FormPageLayout';
+import FormPageLayout, {
+  FORM_MAP_PAGE_MAX_WIDTH,
+  FORM_QUESTION_SPACING,
+} from 'components/CustomFieldsForm/Page/FormPageLayout';
 import PageTitle from 'components/CustomFieldsForm/Page/PageTitle';
 import { usePageDirection } from 'components/CustomFieldsForm/Page/PageTransition';
 import ProgressFooter from 'components/CustomFieldsForm/Page/ProgressFooter';
 import SurveyHeadingBar from 'components/CustomFieldsForm/Page/SurveyHeadingBar';
-import SurveyPageLayout, {
-  getQuestionSpacing,
-  SurveyPageLayoutVariant,
-} from 'components/CustomFieldsForm/SurveyForm/SurveyPageLayout';
+import SurveyPageLayout from 'components/CustomFieldsForm/SurveyForm/SurveyPageLayout';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -89,15 +89,12 @@ const Canvas = ({ phase, projectId, top }: Props) => {
   // Nothing can be added to or dropped on these pages.
   const isLocked = isEndPage || isDemographicsPage;
   const isMapPage = group?.page.page_layout === 'map';
-  const layout: SurveyPageLayoutVariant = isMapPage ? 'classic' : 'regular';
-  const questionSpacing = getQuestionSpacing(layout);
-  const { mapConfig, mapLayers, draggableDivRef, dragDividerRef } =
-    useEsriMapPage({
-      project,
-      pages: groups,
-      currentPageIndex: currentIndex,
-      localize,
-    });
+  const { mapConfig, mapLayers } = useEsriMapPage({
+    project,
+    pages: groups,
+    currentPageIndex: currentIndex,
+    localize,
+  });
 
   // Hovering anywhere around the questions targets the end of the page;
   // the blocks and gaps inside narrow that down. All drops land here.
@@ -145,7 +142,7 @@ const Canvas = ({ phase, projectId, top }: Props) => {
             phase={phase}
             participationMethod={phase.attributes.participation_method}
             scrollErrorIntoView={false}
-            questionSpacing={questionSpacing}
+            questionSpacing={FORM_QUESTION_SPACING}
           />
         </Box>
       )}
@@ -178,13 +175,13 @@ const Canvas = ({ phase, projectId, top }: Props) => {
                     position={position}
                     projectId={projectId}
                     phase={phase}
-                    questionSpacing={questionSpacing}
+                    questionSpacing={FORM_QUESTION_SPACING}
                   />
                   <InsertionPoint
                     pageId={group.page.id}
                     index={position + 1}
                     isDraggingQuestion={isDraggingQuestion}
-                    questionSpacing={questionSpacing}
+                    questionSpacing={FORM_QUESTION_SPACING}
                   />
                 </React.Fragment>
               )
@@ -204,12 +201,14 @@ const Canvas = ({ phase, projectId, top }: Props) => {
     >
       <FormPageLayout
         embedded
-        usingMapView={layout === 'classic'}
+        usingMapView={false}
+        // Room for the map next to the questions, like for participants.
+        wide={isMapPage}
         mainId="e2e-form-builder-new-preview"
         heading={
           <SurveyHeadingBar
             titleText={localize(phase.attributes.native_survey_title_multiloc)}
-            bordered={layout === 'classic'}
+            bordered={false}
             actions={<Icon name="close" fill={colors.textSecondary} />}
           />
         }
@@ -218,13 +217,8 @@ const Canvas = ({ phase, projectId, top }: Props) => {
           <SurveyPageLayout
             // A new page remounts, so it slides in like for participants.
             key={group.page.id}
-            layout={layout}
             currentPageIndex={currentIndex}
-            map={
-              isMapPage
-                ? { mapConfig, mapLayers, draggableDivRef, dragDividerRef }
-                : undefined
-            }
+            map={isMapPage ? { mapConfig, mapLayers } : undefined}
             showPreviousButton={currentIndex > 0 && !isEnding}
             controls={{
               variant: isEnding
@@ -259,6 +253,7 @@ const Canvas = ({ phase, projectId, top }: Props) => {
               }
               currentPage={currentIndex + 1}
               totalPages={lastIndex}
+              maxWidth={isMapPage ? FORM_MAP_PAGE_MAX_WIDTH : undefined}
             />
           </Box>
         </Box>

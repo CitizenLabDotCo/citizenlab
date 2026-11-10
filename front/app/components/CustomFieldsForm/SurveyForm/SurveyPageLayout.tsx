@@ -1,6 +1,10 @@
 import React from 'react';
 
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  stylingConsts,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
@@ -8,28 +12,14 @@ import { IMapConfig } from 'api/map_config/types';
 import { IPhaseData, IPhases } from 'api/phases/types';
 import { IProject } from 'api/projects/types';
 
-import PageEsriDivider from '../Map/PageEsriDivider';
 import PageEsriMap from '../Map/PageEsriMap';
-import {
-  FORM_QUESTION_SPACING,
-  MAP_VIEW_QUESTION_SPACING,
-} from '../Page/FormPageLayout';
 import PageTransition, { PageDirection } from '../Page/PageTransition';
 import PreviousPageButton from '../Page/PreviousPageButton';
 import PageControlButtons from '../PageControlButtons';
 
-// 'regular' flows with the page; 'classic' is a card of a fixed height with
-// its own scroll (map pages, admin previews).
-export type SurveyPageLayoutVariant = 'regular' | 'classic';
-
-export const getQuestionSpacing = (layout: SurveyPageLayoutVariant) =>
-  layout === 'classic' ? MAP_VIEW_QUESTION_SPACING : FORM_QUESTION_SPACING;
-
 export type SurveyPageMap = {
   mapConfig: IMapConfig | null | undefined;
   mapLayers: __esri.Layer[];
-  draggableDivRef: React.RefObject<HTMLDivElement>;
-  dragDividerRef: React.RefObject<HTMLDivElement>;
 };
 
 export type SurveyPageControls = {
@@ -47,19 +37,17 @@ export type SurveyPageControls = {
 };
 
 type Props = {
-  layout: SurveyPageLayoutVariant;
   currentPageIndex: number;
-  // Shown next to the page (classic layout only).
+  // A map page: the map next to the page (above it on phones). Give the
+  // surrounding FormPageLayout `wide` for the room.
   map?: SurveyPageMap;
-  // The Previous button above the page (regular layout only; in the classic
-  // layout it's next to the other buttons).
   showPreviousButton: boolean;
   controls: SurveyPageControls;
   // Above the page, e.g. the form's error feedback.
   feedback?: React.ReactNode;
   // The page title and description.
   header: React.ReactNode;
-  // The questions, spaced with getQuestionSpacing(layout).
+  // The questions, spaced with FORM_QUESTION_SPACING.
   questions: React.ReactNode;
   // After the questions, e.g. the submission reference.
   afterQuestions?: React.ReactNode;
@@ -79,12 +67,11 @@ const setInert = (element: HTMLElement | null) => {
 // One survey page as participants see it, used by the survey itself and by
 // the survey builder's preview, so both always look the same. The caller
 // fills in the content: the survey with the real questions, the builder with
-// editable ones.
+// editable ones. Map pages are laid out like any other page, with the map
+// next to the content, staying in view while the page scrolls.
 // The progress card (ProgressFooter) isn't part of it: the caller renders it
-// once, around all pages, so it stays put (and animates) across page changes
-// and layouts.
+// once, around all pages, so it stays put (and animates) across page changes.
 const SurveyPageLayout = ({
-  layout,
   currentPageIndex,
   map,
   showPreviousButton,
@@ -98,8 +85,7 @@ const SurveyPageLayout = ({
   enterDirection,
   inertControls = false,
 }: Props) => {
-  const isMobileOrSmaller = useBreakpoint('phone');
-
+  const isPhone = useBreakpoint('phone');
   const wrapControls = (node: React.ReactNode) =>
     inertControls ? (
       <Box ref={setInert} pointerEvents="none" aria-hidden>
@@ -109,116 +95,83 @@ const SurveyPageLayout = ({
       node
     );
 
-  // At the end of the page content in both layouts.
-  const buttons = wrapControls(
-    <PageControlButtons
-      inline
-      showPrevious={layout === 'classic'}
-      handleNextAndSubmit={controls.handleNextAndSubmit}
-      handlePrevious={controls.handlePrevious}
-      hasPreviousPage={controls.hasPreviousPage}
-      isLoading={controls.isLoading}
-      pageVariant={controls.variant}
-      phases={controls.phases?.data}
-      currentPhase={controls.phase}
-      pageButtonLabelMultiloc={controls.pageButtonLabelMultiloc}
-      pageButtonLink={controls.pageButtonLink}
-      project={controls.project}
-      pageQuestions={controls.pageQuestions}
-      currentPageIndex={currentPageIndex}
-    />
+  const page = (
+    <Box ref={pageRef}>
+      {showPreviousButton &&
+        wrapControls(<PreviousPageButton onClick={controls.handlePrevious} />)}
+      {feedback}
+      {header}
+      {questions}
+      {afterQuestions}
+      {submitConfirmation}
+      {wrapControls(
+        <PageControlButtons
+          inline
+          showPrevious={false}
+          handleNextAndSubmit={controls.handleNextAndSubmit}
+          handlePrevious={controls.handlePrevious}
+          hasPreviousPage={controls.hasPreviousPage}
+          isLoading={controls.isLoading}
+          pageVariant={controls.variant}
+          phases={controls.phases?.data}
+          currentPhase={controls.phase}
+          pageButtonLabelMultiloc={controls.pageButtonLabelMultiloc}
+          pageButtonLink={controls.pageButtonLink}
+          project={controls.project}
+          pageQuestions={controls.pageQuestions}
+          currentPageIndex={currentPageIndex}
+        />
+      )}
+    </Box>
   );
 
-  if (layout === 'regular') {
-    return (
-      <Box
-        id="container"
-        w="100%"
-        // Room for the progress card floating at the bottom.
-        pb="80px"
-        data-cy={`e2e-page-number-${currentPageIndex + 1}`}
-      >
-        <PageTransition direction={enterDirection}>
-          <Box ref={pageRef}>
-            {showPreviousButton &&
-              wrapControls(
-                <PreviousPageButton onClick={controls.handlePrevious} />
-              )}
-            {feedback}
-            {header}
-            {questions}
-            {afterQuestions}
-            {submitConfirmation}
-            {buttons}
-          </Box>
-        </PageTransition>
-      </Box>
-    );
-  }
+  const mapElement = map && (
+    <PageEsriMap
+      variant="block"
+      currentPageIndex={currentPageIndex}
+      mapConfig={map.mapConfig}
+      mapLayers={map.mapLayers}
+    />
+  );
 
   return (
     <Box
       id="container"
-      display="flex"
-      flexDirection={isMobileOrSmaller ? 'column' : 'row'}
-      height="100%"
       w="100%"
+      // Room for the progress card floating at the bottom.
+      pb="80px"
       data-cy={`e2e-page-number-${currentPageIndex + 1}`}
     >
-      {map && (
-        <PageEsriMap
-          currentPageIndex={currentPageIndex}
-          mapConfig={map.mapConfig}
-          mapLayers={map.mapLayers}
-          draggableDivRef={map.draggableDivRef}
-        />
-      )}
-      <Box
-        flex={'1 1 auto'}
-        h={map && isMobileOrSmaller ? '80%' : '100%'}
-        position="relative"
-        overflow="hidden"
-        display="flex"
-        flexDirection="column"
-        justifyContent="space-between"
-      >
-        <Box
-          display="flex"
-          flexDirection="column"
-          height="100%"
-          overflowY="auto"
-          overflowX="hidden"
-          ref={pageRef}
-        >
-          {feedback}
-
-          {map && isMobileOrSmaller && (
-            <PageEsriDivider dragDividerRef={map.dragDividerRef} />
-          )}
-          <Box
-            h="100%"
-            display="flex"
-            flexDirection="column"
-            mt={map && isMobileOrSmaller ? '20px' : undefined}
-            mb="40px"
-          >
-            <Box h="100%" display="flex" flexDirection="column">
-              {/* Only the page content slides in; the map stays put. */}
-              <PageTransition direction={enterDirection}>
-                <Box p="24px" w="100%">
-                  <Box display="flex" flexDirection="column">
-                    {header}
-                    {questions}
-                    {afterQuestions}
-                    {buttons}
-                  </Box>
-                </Box>
-              </PageTransition>
+      <PageTransition direction={enterDirection}>
+        {!mapElement ? (
+          page
+        ) : isPhone ? (
+          <>
+            <Box h="320px" mb="40px">
+              {mapElement}
+            </Box>
+            {page}
+          </>
+        ) : (
+          <Box display="flex" alignItems="flex-start" gap="40px">
+            {/* Stays in view below the sticky heading bar while the page
+                scrolls, clear of the progress card at the bottom. */}
+            <Box
+              flex="3 1 0"
+              minWidth="0px"
+              position="sticky"
+              top={`${stylingConsts.menuHeight + 24}px`}
+              h={`calc(100vh - ${stylingConsts.menuHeight}px - 128px)`}
+              minHeight="320px"
+            >
+              {mapElement}
+            </Box>
+            <Box flex="2 1 0" minWidth="360px">
+              {page}
             </Box>
           </Box>
-        </Box>
-        {submitConfirmation}
-      </Box>
+        )}
+      </PageTransition>
     </Box>
   );
 };
