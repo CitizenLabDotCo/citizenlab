@@ -14,7 +14,7 @@ import messages from './messages';
 interface Props {
   onClick: (event: FormEvent) => void;
   ideaQueryParameters: InputFiltersProps['ideaQueryParameters'];
-  ideasFilterCounts: InputFiltersProps['ideasFilterCounts'];
+  ideasFilterCounts?: InputFiltersProps['ideasFilterCounts'];
 }
 
 const BottomBar = ({
