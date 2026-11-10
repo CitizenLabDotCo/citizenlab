@@ -4654,6 +4654,11 @@
     "verified_at": "2026-11-10T09:00:46.644242Z",
     "verified_by": "Adrien"
   },
+  "app.components.aiAssistant.errorToolCallExpired2": {
+    "state": "verified",
+    "verified_at": "2026-11-10T09:45:57.764943Z",
+    "verified_by": "Adrien"
+  },
   "app.components.aiAssistant.errorToolCallNotAwaitingApproval": {
     "state": "verified",
     "verified_at": "2026-11-10T09:25:28.285518Z",
