@@ -11,7 +11,7 @@ module Analysis
       @comments_summary = comments_summary
       @task = comments_summary.background_task
       @analysis = comments_summary.analysis
-      @llm = kwargs[:llm] || LLM::GPT54.new
+      @llm = kwargs[:llm] || LLMSelector.new.llm_class_for_use_case('sensemaking_comments_summarization').new
     end
 
     def execute

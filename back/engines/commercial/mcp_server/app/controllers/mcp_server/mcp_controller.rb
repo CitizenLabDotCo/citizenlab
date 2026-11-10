@@ -37,6 +37,11 @@ module McpServer
         server,
         stateless: true,
         enable_json_response: true,
+        # A subscriptions/listen request opens a long-lived stream, which this controller
+        # cannot hold open, and a stateless transport could never send a notification on
+        # it anyway. With this off, the method is answered as unsupported, and the server
+        # stops telling clients it supports listen streams.
+        serve_subscriptions_listen: false,
         # mcp >= 0.23 validates the request Host header for DNS-rebinding protection,
         # defaulting to loopback hosts only. Allow this tenant's canonical host so
         # requests to the hosted endpoint aren't rejected. In production the endpoint
@@ -155,6 +160,7 @@ module McpServer
       McpServer::Tools::ListAttachedImages,
       McpServer::Tools::ListFileAttachments,
       McpServer::Tools::ListProjectFiles,
+      McpServer::Tools::GetFileTranscript,
 
       McpServer::Tools::GetReportingSqlSchema,
       McpServer::Tools::RunReportingSqlQuery

@@ -11,13 +11,14 @@ import generalMessages from 'containers/Admin/projects/project/general/messages'
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
-import messages from '../../messages';
+import projectSetupPanelMessages from '../messages';
 import SetupCard from '../SetupCard';
 import { getDraftValues, useSetupDraft } from '../SetupDraftContext';
 
 import AreaFlyout from './AreaFlyout';
 import AreaTypeRow from './AreaTypeRow';
 import MenuPopover, { focusAnchor } from './MenuPopover';
+import messages from './messages';
 
 type AreaType = 'none' | 'all' | 'selection';
 
@@ -118,7 +119,7 @@ const AreaCard = ({ project, ready }: Props) => {
     <Box ref={cardRef}>
       <SetupCard
         id="e2e-setup-card-area"
-        title={formatMessage(messages.areaItem)}
+        title={formatMessage(projectSetupPanelMessages.areaItem)}
         ready={ready}
         summary={getSummary()}
         behaviour={{

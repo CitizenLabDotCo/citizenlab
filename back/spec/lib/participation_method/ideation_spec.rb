@@ -250,6 +250,7 @@ RSpec.describe ParticipationMethod::Ideation do
   its(:additional_export_columns) { is_expected.to eq %w[manual_votes] }
   its(:allowed_ideas_orders) { is_expected.to eq %w[trending random popular -new new comments_count] }
   its(:return_disabled_actions?) { is_expected.to be false }
+  its(:identifies_author?) { is_expected.to be true }
   its(:supports_assignment?) { is_expected.to be true }
   its(:built_in_title_required?) { is_expected.to be(true) }
   its(:supports_commenting?) { is_expected.to be true }

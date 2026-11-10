@@ -189,13 +189,13 @@ export interface IAppConfigurationSettings {
   };
   data_repository_transcription?: AppConfigurationFeature;
   data_repository_ai_analysis?: AppConfigurationFeature;
-  user_fields_in_surveys?: AppConfigurationFeature;
   project_planning_calendar?: AppConfigurationFeature;
   common_ground?: AppConfigurationFeature;
   customised_automated_emails?: AppConfigurationFeature;
   customised_automated_context_emails?: AppConfigurationFeature;
   project_importer?: AppConfigurationFeature;
   idea_feed?: AppConfigurationFeature;
+  id_config?: AppConfigurationFeature;
   nested_input_topics?: AppConfigurationFeature;
   live_auto_input_topics?: AppConfigurationFeature;
   workshops?: AppConfigurationFeature;

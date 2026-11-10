@@ -145,6 +145,9 @@ const ShortInputFieldValue = ({
     case 'polygon': {
       return null;
     }
+    case 'multipoint': {
+      return null;
+    }
     case 'ranking': {
       return null;
     }

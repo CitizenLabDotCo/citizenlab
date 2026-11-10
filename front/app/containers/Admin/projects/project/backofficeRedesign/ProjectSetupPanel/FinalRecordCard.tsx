@@ -6,8 +6,7 @@ import { IProjectData } from 'api/projects/types';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
-import messages from '../messages';
-
+import messages from './messages';
 import StatCardLink from './StatCardLink';
 import usePhaseResults from './usePhaseResults';
 

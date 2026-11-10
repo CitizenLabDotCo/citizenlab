@@ -13,9 +13,15 @@ interface Props {
   value?: number;
   question: IFlatCustomField;
   onChange: (value: number | undefined) => void;
+  disabled?: boolean;
 }
 
-const LinearScale = ({ value: data, question, onChange }: Props) => {
+const LinearScale = ({
+  value: data,
+  question,
+  onChange,
+  disabled = false,
+}: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
   const groupRef = useRef<HTMLDivElement>(null);
 
@@ -24,6 +30,8 @@ const LinearScale = ({ value: data, question, onChange }: Props) => {
   const name = question.key;
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (disabled) return;
+
     const value = data || minimum;
     let newValue = value;
 
@@ -83,6 +91,7 @@ const LinearScale = ({ value: data, question, onChange }: Props) => {
                 data={data}
                 maximum={maximum}
                 onSelect={onChange}
+                disabled={disabled}
               />
             );
           })}

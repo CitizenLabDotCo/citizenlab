@@ -13,7 +13,7 @@ import NewProjectForm, {
 import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 
 import Outlet from 'components/Outlet';
-import Modal from 'components/UI/Modal';
+import Modal, { MEDIUM_MODAL_WIDTH } from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
@@ -96,7 +96,7 @@ const NewProjectModal = ({ mode, onClose }: Props) => {
       <Modal
         opened={mode === 'scratch'}
         close={close}
-        width={560}
+        width={MEDIUM_MODAL_WIDTH}
         variant="bo"
         header={formatMessage(messages.newProject)}
         footer={
