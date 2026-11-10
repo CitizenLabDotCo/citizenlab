@@ -9,6 +9,7 @@ import useDismissOnboardingCampaign from 'api/onboarding_campaigns/useDismissOnb
 
 import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/HomepageBanner';
 
+import { TitleVariant } from 'components/admin/ContentBuilder/Widgets/_shared/TitleVariantSetting';
 import { homepageBannerLayoutHeights } from 'components/LandingPages/citizen/constants';
 import {
   Container,
@@ -64,9 +65,11 @@ const Header = styled.div<{
 const SignedInHeader = ({
   homepageSettings,
   isContentBuilderDisplay,
+  titleVariant,
 }: {
   homepageSettings: Partial<IHomepageBannerSettings>;
   isContentBuilderDisplay?: boolean;
+  titleVariant?: TitleVariant;
 }) => {
   const { data: currentOnboardingCampaign, isLoading } =
     useCurrentOnboardingCampaign();
@@ -190,6 +193,7 @@ const SignedInHeader = ({
               <FallbackStep
                 currentOnboardingCampaignName={onboardingCampaignName}
                 homepageSettings={homepageSettings}
+                titleVariant={titleVariant}
               />
             </Suspense>
           </Box>
