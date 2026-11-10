@@ -42,7 +42,6 @@ const Accordion = ({ title, openByDefault = false }: AccordionProps) => {
       isOpenByDefault={openByDefault}
       title={
         <Box className="e2e-accordion" display="flex">
-          {/* Don't render an empty heading when no title was set */}
           {localizedTitle && (
             <Title variant="h3" color="tenantText">
               {localizedTitle}

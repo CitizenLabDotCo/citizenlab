@@ -76,8 +76,6 @@ const FileDisplay = ({ file, className }: Props) => {
     return (
       <Container className={className}>
         <Paperclip name="paperclip" />
-        {/* The size is part of the link text (and visible on all screen
-          sizes), so the link's accessible name is exactly what is on screen. */}
         <FileDownloadLink
           href={url}
           download={name}
