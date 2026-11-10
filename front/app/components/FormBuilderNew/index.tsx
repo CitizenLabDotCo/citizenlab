@@ -778,6 +778,7 @@ const FormEdit = ({
                       </Box>
                       <SurveyAssistant
                         phaseId={phaseId}
+                        projectId={projectId}
                         onFormReplaced={() => {
                           resetCopyFrom();
                           setSelectedFieldId(undefined);
