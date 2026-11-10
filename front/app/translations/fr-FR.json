@@ -946,7 +946,7 @@
   "app.components.aiAssistant.elapsed": "{seconds, plural, one {# seconde} other {# secondes}}",
   "app.components.aiAssistant.errorAiProcessingNotAllowed": "L’analyse par l’IA n’est pas autorisée pour l’un des fichiers.",
   "app.components.aiAssistant.errorContextTooLong": "Cette conversation est trop longue. Démarrez une nouvelle conversation pour continuer.",
-  "app.components.aiAssistant.errorConversationBusy": "L’assistant travaille encore ou attend votre décision sur sa proposition.",
+  "app.components.aiAssistant.errorConversationBusy": "L’assistant travaille encore ou attend votre décision sur sa dernière proposition.",
   "app.components.aiAssistant.errorFileNotInProject": "Vous ne pouvez joindre que des fichiers de ce projet.",
   "app.components.aiAssistant.errorFileNotUtf8": "L’un des fichiers texte ne peut pas être lu à cause de son encodage. Essayez de le convertir dans un autre format (PDF, par exemple).",
   "app.components.aiAssistant.errorGeneric": "Une erreur est survenue. Veuillez réessayer.",
