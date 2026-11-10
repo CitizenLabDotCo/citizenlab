@@ -2049,7 +2049,7 @@
   "app.containers.IdeasShow.issueTwitterMessage1": "Supporta questa segnalazione: {postTitle}",
   "app.containers.IdeasShow.issueWhatsAppMessage1": "Supporta questa segnalazione: {postTitle}",
   "app.containers.IdeasShow.metaTitle": "Ingresso: {inputTitle} | {orgName}",
-  "app.containers.IdeasShow.moreFromThisSubmission": "Altro da questo contributo",
+  "app.containers.IdeasShow.moreFromThisSubmission": "Altri dettagli",
   "app.containers.IdeasShow.notAnswered": "Nessuna risposta",
   "app.containers.IdeasShow.observationEmailSharingBody": "Sostieni questa osservazione '{ideaTitle}' su {ideaUrl}!",
   "app.containers.IdeasShow.observationEmailSharingSubject": "Sostieni questa osservazione: {ideaTitle}",
