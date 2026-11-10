@@ -40,6 +40,7 @@ const VotingDetails = ({ idea, phase }: Props) => {
             />
           </Text>
           <IconTooltip
+            iconSize="16px"
             content={
               <FormattedMessage {...postManagerMessages.pbItemCountTooltip} />
             }
@@ -51,6 +52,7 @@ const VotingDetails = ({ idea, phase }: Props) => {
           ideaId={idea.id}
           phaseId={phase.id}
           votingMethod={votingMethod}
+          variant="bo"
         />
       )}
     </Box>

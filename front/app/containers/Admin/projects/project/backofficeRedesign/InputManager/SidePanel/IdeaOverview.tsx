@@ -53,6 +53,10 @@ const IdeaOverview = ({
   const localize = useLocalize();
   const { attributes, relationships } = idea;
   const isProposals = type === 'ProjectProposals';
+  // Statements can't move into other phases, which only list idea phases.
+  const showPhases =
+    !isProposals &&
+    listedPhase?.attributes.participation_method !== 'common_ground';
 
   return (
     <Box display="flex" flexDirection="column" gap="24px" p="16px 24px 24px">
@@ -131,7 +135,7 @@ const IdeaOverview = ({
         <StatusProperty idea={idea} type={type} />
         <AssigneeProperty idea={idea} />
         <TagsProperty idea={idea} type={type} />
-        {!isProposals && <PhasesProperty idea={idea} />}
+        {showPhases && <PhasesProperty idea={idea} />}
         <VotingDetails idea={idea} phase={listedPhase} />
       </Box>
 

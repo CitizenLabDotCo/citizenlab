@@ -7,12 +7,15 @@ import {
   media,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { focusRingBorder } from 'global-styles';
 import { hideVisually } from 'polished';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import { Subscription } from 'rxjs';
 import styled, { css } from 'styled-components';
+
+import CloseIconButton from 'components/UI/CloseIconButton';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import eventEmitter from 'utils/eventEmitter';
@@ -59,13 +62,10 @@ const CloseIcon = styled(Icon)`
   z-index: 2;
 `;
 
-// Sits outside the container, so it has to follow the bo inset itself.
-const CloseButton = styled.button<{ variant: Variant }>`
+const CloseButton = styled.button`
   position: absolute;
-  top: ${({ variant }) =>
-    variant === 'bo' ? `calc(10px + ${bo.drawerInset})` : '10px'};
-  right: ${({ variant }) =>
-    variant === 'bo' ? `calc(35px + ${bo.drawerInset})` : '35px'};
+  top: 10px;
+  right: 35px;
   height: 30px;
   width: 30px;
   display: flex;
@@ -86,6 +86,31 @@ const CloseButton = styled.button<{ variant: Variant }>`
     height: 18px;
     width: 18px;
   `}
+`;
+
+// Matches the close button of the bo modal, centred in the panel header. It
+// sits outside the container, so it follows the bo inset itself.
+const BoCloseButton = styled(CloseIconButton)`
+  position: absolute;
+  top: calc(12px + ${bo.drawerInset});
+  right: calc(20px + ${bo.drawerInset});
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border-radius: 8px;
+  border: solid 1px transparent;
+  outline: none !important;
+  opacity: 0;
+  z-index: 1001;
+  transition: background 100ms ease-out;
+
+  &:hover {
+    background: rgba(15, 20, 35, 0.05);
+  }
+
+  &.focus-visible {
+    ${focusRingBorder}
+  }
 `;
 
 const Overlay = styled.div`
@@ -122,7 +147,7 @@ const Overlay = styled.div`
   }
 
   &.modal-enter-done {
-    ${CloseButton} {
+    ${CloseButton}, ${BoCloseButton} {
       opacity: 1;
     }
   }
@@ -135,7 +160,7 @@ const Overlay = styled.div`
       transform: translateX(0px);
     }
 
-    ${CloseButton} {
+    ${CloseButton}, ${BoCloseButton} {
       opacity: 0;
     }
 
@@ -307,16 +332,27 @@ export default class SideModal extends PureComponent<Props, State> {
                     {children}
                   </ModalContent>
                 </ModalContainer>
-                <CloseButton
-                  className="e2e-modal-close-button"
-                  onClick={this.clickCloseButton}
-                  variant={variant}
-                >
-                  <HiddenSpan>
-                    <FormattedMessage {...messages.closeButtonAria} />
-                  </HiddenSpan>
-                  <CloseIcon name="close" />
-                </CloseButton>
+                {variant === 'bo' ? (
+                  <BoCloseButton
+                    className="e2e-modal-close-button"
+                    onClick={this.clickCloseButton}
+                    iconColor={colors.textSecondary}
+                    iconColorOnHover={colors.textSecondary}
+                    iconWidth="20px"
+                    iconHeight="20px"
+                    a11y_buttonActionMessage={messages.closeButtonAria}
+                  />
+                ) : (
+                  <CloseButton
+                    className="e2e-modal-close-button"
+                    onClick={this.clickCloseButton}
+                  >
+                    <HiddenSpan>
+                      <FormattedMessage {...messages.closeButtonAria} />
+                    </HiddenSpan>
+                    <CloseIcon name="close" />
+                  </CloseButton>
+                )}
               </FocusOn>
             </ModalWrapper>
           </Overlay>

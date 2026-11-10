@@ -15,9 +15,10 @@ import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 
+import useLocalize from 'hooks/useLocalize';
+
 import inputManagerMessages from 'components/admin/PostManager/CommonGroundInputManager/messages';
 import NoInputsDisplay from 'components/admin/PostManager/CommonGroundInputManager/NoInputsDisplay';
-import PostPreview from 'components/admin/PostManager/components/PostPreview';
 import NoPost from 'components/admin/PostManager/components/PostTable/NoPost';
 import Warning from 'components/UI/Warning';
 
@@ -30,6 +31,8 @@ import SearchToggle from '../InputManager/SearchToggle';
 import { actionRowProps } from '../InputManager/SideColumn/actionRowProps';
 import Card from '../InputManager/SideColumn/Card';
 import ExportRow from '../InputManager/SideColumn/ExportRow';
+import SidePanel from '../InputManager/SidePanel';
+import usePanelNavigation from '../InputManager/usePanelNavigation';
 import useSelectAll from '../InputManager/useSelectAll';
 import AddInputModal from '../Phase/BuildPanel/BuildFields/MethodSection/AddInputModal';
 import ImportInputsModal from '../Phase/BuildPanel/BuildFields/MethodSection/CommonGroundSection/ImportInputsModal';
@@ -50,6 +53,7 @@ interface Props {
 
 const CommonGroundManager = ({ project, phase }: Props) => {
   const { formatMessage } = useIntl();
+  const localize = useLocalize();
   const queryClient = useQueryClient();
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState<string>();
@@ -75,10 +79,13 @@ const CommonGroundManager = ({ project, phase }: Props) => {
     transitive: false,
   };
   const listed = { ...scope, search, ideas: ideaIds };
-  const { data: ideas, isPlaceholderData: isChangingList } = useIdeas({
+  const listParameters = {
     ...listed,
-    sort: 'new',
+    sort: 'new' as const,
     'page[size]': PAGE_SIZE,
+  };
+  const { data: ideas, isPlaceholderData: isChangingList } = useIdeas({
+    ...listParameters,
     'page[number]': page,
   });
   const { data: allCounts } = useIdeasFilterCounts(scope);
@@ -107,6 +114,18 @@ const CommonGroundManager = ({ project, phase }: Props) => {
   const editingIdea =
     pageIdeas.find((idea) => idea.id === editingId) ??
     (editingId ? selection.get(editingId) : undefined);
+
+  const navigation = usePanelNavigation({
+    openIdeaId: previewId ?? undefined,
+    pageIdeas,
+    listParameters,
+    page,
+    pageSize: PAGE_SIZE,
+    lastPage,
+    total: listedTotal,
+    onOpen: setPreviewId,
+    onChangePage: setPage,
+  });
 
   const changeSearch = (term: string | null) => {
     setSearch(term || undefined);
@@ -261,13 +280,19 @@ const CommonGroundManager = ({ project, phase }: Props) => {
         />
       )}
 
-      <PostPreview
+      <SidePanel
+        ideaId={previewId ?? undefined}
         type="ProjectIdeas"
-        postId={previewId}
-        selectedPhaseId={phase.id}
-        mode="view"
+        context={localize(phase.attributes.title_multiloc)}
+        listedPhase={phase}
+        navigation={navigation}
+        onEdit={setEditingId}
+        onDeleted={() => {
+          setPreviewId(null);
+          handleDeleted();
+        }}
         onClose={() => setPreviewId(null)}
-        onSwitchPreviewMode={() => setEditingId(previewId)}
+        isEditing={!!editingIdea}
       />
       {editingIdea && (
         <AddInputModal

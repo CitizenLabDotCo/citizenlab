@@ -19,6 +19,8 @@ interface Props {
   navigation: PanelNavigation | undefined;
   onEdit: (ideaId: string) => void;
   onClose: () => void;
+  /** Runs after the input is deleted from the panel. Closes it by default. */
+  onDeleted?: () => void;
   /** True while the edit modal is open on top of the panel. */
   isEditing: boolean;
 }
@@ -31,6 +33,7 @@ const SidePanel = ({
   navigation,
   onEdit,
   onClose,
+  onDeleted = onClose,
   isEditing,
 }: Props) => {
   const { data: idea, isPlaceholderData } = useIdeaById(ideaId);
@@ -58,7 +61,7 @@ const SidePanel = ({
               type={type}
               listedPhase={listedPhase}
               onEdit={() => onEdit(idea.data.id)}
-              onDeleted={onClose}
+              onDeleted={onDeleted}
             />
           </Box>
         </Box>

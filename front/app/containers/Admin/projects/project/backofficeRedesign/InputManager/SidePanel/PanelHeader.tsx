@@ -37,6 +37,9 @@ const PanelHeader = ({ context, navigation }: Props) => {
       pl="24px"
       pr="80px"
       py="12px"
+      // Keeps the close button, which SideModal places, centred with or
+      // without the navigation.
+      minHeight="52px"
       borderBottom={`1px solid ${colors.divider}`}
       flexShrink={0}
     >
