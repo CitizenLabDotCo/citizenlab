@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
-# .githooks/pre-commit — privacy guard for the citizenlab-claude overlay.
+# .githooks/pre-commit — privacy guard for the citizenlab-claude overlay and
+# the private LLM skills.
 #
-# Activated by setting `git config core.hooksPath .githooks` (done by bin/setup-claude).
+# Activated by setting `git config core.hooksPath .githooks` (done by
+# bin/setup-claude and bin/setup-llm-skills).
 # Bypassable with `git commit --no-verify` only when truly intentional.
 
 set -e
@@ -45,7 +47,19 @@ if [ -n "$MCP_CHANGES" ]; then
   exit 1
 fi
 
-# 4. Chain to existing .git/hooks/pre-commit (e.g. husky's prettier check) so we don't disable it.
+# 4. Block the LLM skills link (back/vendor/llm_skills) and anything under
+#    that path. It's a gitignored symlink to a private repo, made by
+#    bin/setup-llm-skills; a copy put in its place would leak that repo.
+LLM_SKILLS_CHANGES="$(echo "$STAGED" | grep -E '^back/vendor/llm_skills(/|$)' || true)"
+if [ -n "$LLM_SKILLS_CHANGES" ]; then
+  echo "ERROR: refusing to commit the private LLM skills:" >&2
+  echo "$LLM_SKILLS_CHANGES" | sed 's/^/  /' >&2
+  echo "back/vendor/llm_skills is a gitignored symlink managed by bin/setup-llm-skills." >&2
+  echo "Bypass with --no-verify only if you really mean it." >&2
+  exit 1
+fi
+
+# 5. Chain to existing .git/hooks/pre-commit (e.g. husky's prettier check) so we don't disable it.
 if [ -x .git/hooks/pre-commit ]; then
   exec .git/hooks/pre-commit "$@"
 fi

@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# bin/check-claude-privacy — privacy guard for the citizenlab-claude overlay.
+# bin/check-claude-privacy — privacy guard for the citizenlab-claude overlay
+# and the private LLM skills.
 #
 # Runs in CI (and can be run locally). Exits non-zero if anything looks like a leak.
 # Pre-commit hook at .githooks/pre-commit catches the same cases on commit.
@@ -31,6 +32,15 @@ TRACKED_MCP="$(git ls-files .mcp.json 2>/dev/null || true)"
 if [ -n "$TRACKED_MCP" ]; then
   echo "ERROR: tracked .mcp.json (should be a gitignored symlink instead):" >&2
   echo "$TRACKED_MCP" | sed 's/^/  /' >&2
+  errors=$((errors + 1))
+fi
+
+# 4. The LLM skills link should never be tracked, nor anything under its
+#    path. It's a gitignored symlink to a private repo (bin/setup-llm-skills).
+TRACKED_LLM_SKILLS="$(git ls-files back/vendor/llm_skills 2>/dev/null || true)"
+if [ -n "$TRACKED_LLM_SKILLS" ]; then
+  echo "ERROR: tracked private LLM skills (should be a gitignored symlink instead):" >&2
+  echo "$TRACKED_LLM_SKILLS" | sed 's/^/  /' >&2
   errors=$((errors + 1))
 fi
 

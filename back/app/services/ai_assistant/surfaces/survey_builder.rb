@@ -27,6 +27,10 @@ module AIAssistant
         ]
       end
 
+      def skill_name
+        'govocal-project-setup'
+      end
+
       # A form created after the call has no pinned version, so the tool's own stale check misses it.
       def stale?(tool_call)
         tool_call.pinned_arguments['fields_last_updated_at'].nil? && CustomForm.exists?(participation_context: subject)
@@ -60,7 +64,9 @@ module AIAssistant
           project_title: multiloc_service.t(subject.project.title_multiloc, locale),
           responses_count: subject.ideas_count.to_i,
           writable: writable?,
-          platform_locales: AppConfiguration.instance.settings('core', 'locales')
+          platform_locales: AppConfiguration.instance.settings('core', 'locales'),
+          # The skill gives its own design advice, which ours would contradict.
+          with_skill: skill.present?
         )
       end
 

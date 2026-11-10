@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+# bin/setup-llm-skills — clone or update the team's private skills repo next
+# to this repo (../citizenlab-llm-skills) and link it at back/vendor/llm_skills.
+# These skills are for the app's AI features (read by AIAssistant::Skill in
+# local development), not for coding. The link is gitignored, and the privacy
+# guards (.githooks/pre-commit, bin/check-claude-privacy) refuse to commit it.
+#
+# The containers only mount back/, so docker-compose.yml also mounts the clone
+# where the link points to inside them.
+#
+# Cloning needs LLM_SKILLS_GIT_REMOTE, the git remote of the skills repo, which
+# stays out of this public repo. Set it in your host shell or in
+# env_files/back-secret.env (ask the team for the value).
+
+set -euo pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+SKILLS_DIR="$(dirname "$REPO_ROOT")/citizenlab-llm-skills"
+SECRET_ENV="$REPO_ROOT/env_files/back-secret.env"
+
+if [ -d "$SKILLS_DIR/.git" ]; then
+  echo "Updating LLM skills at $SKILLS_DIR ..."
+  # A branch with no upstream, e.g. a skill you're writing, is left as it is.
+  if git -C "$SKILLS_DIR" rev-parse --abbrev-ref --symbolic-full-name '@{u}' >/dev/null 2>&1; then
+    git -C "$SKILLS_DIR" pull --ff-only
+  else
+    echo "  (current branch has no upstream — skipping pull)"
+  fi
+else
+  # Reads only this variable from the file, as bin/setup-claude does, because
+  # the docker-compose env file isn't safe to source in bash.
+  if [ -z "${LLM_SKILLS_GIT_REMOTE:-}" ] && [ -f "$SECRET_ENV" ]; then
+    line="$(grep -E '^(export[[:space:]]+)?LLM_SKILLS_GIT_REMOTE=' "$SECRET_ENV" | tail -n 1 || true)"
+    value="${line#*=}"
+    value="${value#\"}"; value="${value%\"}"
+    value="${value#\'}"; value="${value%\'}"
+    LLM_SKILLS_GIT_REMOTE="$value"
+  fi
+  if [ -z "${LLM_SKILLS_GIT_REMOTE:-}" ]; then
+    echo "Error: LLM_SKILLS_GIT_REMOTE is not set." >&2
+    echo "Set it in your host shell, or in env_files/back-secret.env (ask the team for the value)." >&2
+    exit 1
+  fi
+  echo "Cloning LLM skills into $SKILLS_DIR ..."
+  git clone "$LLM_SKILLS_GIT_REMOTE" "$SKILLS_DIR"
+fi
+
+mkdir -p "$REPO_ROOT/back/vendor"
+# Relative, so it resolves both on the host and in the containers.
+ln -sfn ../../../citizenlab-llm-skills "$REPO_ROOT/back/vendor/llm_skills"
+
+# Turns on the privacy guard hooks, which refuse to commit the link.
+if [ -d "$REPO_ROOT/.githooks" ] && [ "$(git -C "$REPO_ROOT" config --get core.hooksPath || true)" != ".githooks" ]; then
+  git -C "$REPO_ROOT" config core.hooksPath .githooks
+  echo "Set git core.hooksPath to .githooks (versioned hooks)."
+fi
