@@ -9,8 +9,8 @@ import { IProjectData } from 'api/projects/types';
 import ParticipationPermission from 'containers/ProjectsShowPage/shared/ParticipationPermission';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 
+import DraftIdeasPreview from 'components/admin/PhasePreview/DraftIdeasPreview';
 import PreviewSkeleton from 'components/admin/PhasePreview/PreviewSkeleton';
-import SurveyCover from 'components/admin/PhasePreview/SurveyCover';
 import ContentContainer from 'components/ContentContainer';
 import StatusModule from 'components/StatusModule';
 
@@ -41,22 +41,6 @@ const PhaseParticipationContent = ({
   children,
   wrapReportInSuspense = false,
 }: Props) => {
-  if (getPhasePreview()?.unsaved) {
-    return (
-      <Box p="20px">
-        <PreviewSkeleton
-          kind={
-            ['native_survey', 'poll', 'survey'].includes(
-              phase.attributes.participation_method
-            )
-              ? 'form'
-              : 'cards'
-          }
-        />
-      </Box>
-    );
-  }
-
   const projectId = project.id;
   const phaseId = phase.id;
   const {
@@ -67,22 +51,41 @@ const PhaseParticipationContent = ({
     document_annotation_embed_url: documentUrl,
   } = phase.attributes;
 
-  if (
-    getPhasePreview() &&
-    participationMethod === 'native_survey' &&
-    !children
-  ) {
+  const preview = getPhasePreview();
+  if (preview?.unsaved) {
+    if (
+      participationMethod === 'native_survey' ||
+      participationMethod === 'information'
+    ) {
+      return null;
+    }
+
+    if (['ideation', 'proposals', 'voting'].includes(participationMethod)) {
+      return (
+        <DraftIdeasPreview
+          key={phase.attributes.presentation_mode}
+          phase={phase}
+        />
+      );
+    }
+
     return (
-      <ContentContainer maxWidth={maxPageWidth}>
-        <SurveyCover projectId={project.id} phaseId={phase.id} />
-      </ContentContainer>
+      <Box p="20px">
+        <PreviewSkeleton
+          kind={
+            participationMethod === 'poll' || participationMethod === 'survey'
+              ? 'form'
+              : 'cards'
+          }
+        />
+      </Box>
     );
   }
 
   // Provider embeds cannot run inside the isolated preview. Show their shape
   // without loading third-party scripts or allowing provider-side submissions.
   if (
-    getPhasePreview() &&
+    preview &&
     ['survey', 'document_annotation'].includes(participationMethod)
   ) {
     const action =
@@ -90,7 +93,7 @@ const PhaseParticipationContent = ({
         ? 'annotating_document'
         : 'taking_survey';
     const { disabled_reason } = getPhaseActionDescriptor(phase, action);
-    const lifecycle = getPhasePreview()?.lifecycle;
+    const { lifecycle } = preview;
     if (
       (lifecycle === 'before' || lifecycle === 'ended') &&
       (documentUrl || surveyEmbedUrl)
@@ -169,11 +172,7 @@ const PhaseParticipationContent = ({
     showCommonGround;
 
   if (!hasContainedContent && !showReport) {
-    return getPhasePreview() && participationMethod === 'information' ? (
-      <ContentContainer maxWidth={maxPageWidth}>
-        <PreviewSkeleton />
-      </ContentContainer>
-    ) : null;
+    return null;
   }
 
   return (

@@ -32,6 +32,47 @@ const setup = () => {
   return { network, blocked, request, session, fetch };
 };
 
+it('previews newly enabled views without editing the default view', async () => {
+  const phase: PreviewSnapshot['phase'] = {
+    ...snapshot.phase,
+    attributes: {
+      ...snapshot.phase.attributes,
+      available_views: ['card'],
+      presentation_mode: 'card',
+    },
+  };
+  const { request, session } = setup();
+  const getView = async () => {
+    const response = await request(`/phases/${phaseId}`, 'GET');
+    return (await response.json()).data.attributes.presentation_mode;
+  };
+
+  session.updateSnapshot({ ...snapshot, phase });
+  expect(await getView()).toBe('card');
+
+  const mapDraft: PreviewSnapshot['draft'] = {
+    available_views: ['card', 'map'],
+  };
+  session.updateSnapshot({ ...snapshot, phase, draft: mapDraft });
+  expect(await getView()).toBe('map');
+
+  const feedDraft: PreviewSnapshot['draft'] = {
+    available_views: ['card', 'map', 'feed'],
+  };
+  session.updateSnapshot({ ...snapshot, phase, draft: feedDraft });
+  expect(await getView()).toBe('feed');
+
+  session.updateSnapshot({
+    ...snapshot,
+    phase,
+    draft: mapDraft,
+    lifecycle: 'ended',
+  });
+  expect(await getView()).toBe('card');
+  expect(session.snapshot.draft).toEqual(mapDraft);
+  expect(phase.attributes.presentation_mode).toBe('card');
+});
+
 it.each(['POST', 'PUT', 'PATCH', 'DELETE'])(
   'blocks unknown %s requests without contacting the server',
   async (method) => {

@@ -29,14 +29,17 @@ export default defineMessages({
     id: 'app.components.PhasePreview.noDates',
     defaultMessage: 'Dates to be announced',
   },
-  surveyQuestionCount: {
-    id: 'app.components.PhasePreview.surveyQuestionCount',
-    defaultMessage: '{count, plural, one {# question} other {# questions}}',
+  viewBefore: {
+    id: 'app.components.PhasePreview.viewBefore',
+    defaultMessage: 'What residents see before the phase starts',
   },
-  surveyDuration: {
-    id: 'app.components.PhasePreview.surveyDuration',
-    defaultMessage:
-      '{minutes, plural, one {About # minute} other {About # minutes}}',
+  viewOpen: {
+    id: 'app.components.PhasePreview.viewOpen',
+    defaultMessage: 'What residents see while the phase is open',
+  },
+  viewEnded: {
+    id: 'app.components.PhasePreview.viewEnded',
+    defaultMessage: 'What residents see after the phase ends',
   },
   startsIn: {
     id: 'app.components.PhasePreview.startsIn',

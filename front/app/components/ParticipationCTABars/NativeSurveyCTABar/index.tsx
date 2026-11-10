@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
 import useCustomFields from 'api/custom_fields/useCustomFields';
 import useAuthUser from 'api/me/useAuthUser';
-import { IPhaseData } from 'api/phases/types';
-import usePhases from 'api/phases/usePhases';
 
 import IdeaButton from 'components/IdeaButton';
 import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
@@ -18,16 +16,11 @@ import {
 import { getIdeaPostingRules } from 'utils/actionTakingRules';
 import { getPhasePreview } from 'utils/phasePreview/runtime';
 
-const NativeSurveyCTABar = ({ project }: CTABarProps) => {
+const NativeSurveyCTABar = ({ project, phases }: CTABarProps) => {
   const theme = useTheme();
   const { data: authUser } = useAuthUser();
-  const { data: phases } = usePhases(project.id);
   const isSmallerThanPhone = useBreakpoint('phone');
-  const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
-
-  useEffect(() => {
-    setCurrentPhase(getCTAPhase(phases?.data));
-  }, [phases, project]);
+  const currentPhase = getCTAPhase(phases);
 
   const preview = getPhasePreview();
   const { data: fields } = useCustomFields({
@@ -46,7 +39,7 @@ const NativeSurveyCTABar = ({ project }: CTABarProps) => {
   });
   const hasUserParticipated = disabledReason === 'posting_limited_max_reached';
 
-  if (preview && !hasQuestions) return null;
+  if (preview && (!hasQuestions || preview.lifecycle === 'ended')) return null;
 
   return (
     <ParticipationCTAContent

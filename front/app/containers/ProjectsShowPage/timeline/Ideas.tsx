@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useMemo } from 'react';
+import React, { lazy, Suspense, useEffect, useMemo, useRef } from 'react';
 
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
 
@@ -18,6 +18,7 @@ import IdeaListScrollAnchor from 'components/IdeaListScrollAnchor';
 
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+import { getPhasePreview } from 'utils/phasePreview/runtime';
 import { useParams, useSearch } from 'utils/router';
 
 interface InnerProps {
@@ -55,6 +56,15 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
     idea_status?: string;
     answers?: Record<string, string[]>;
   };
+  const defaultView = phase.attributes.presentation_mode;
+  const previousDefaultView = useRef(defaultView);
+  useEffect(() => {
+    if (getPhasePreview() && previousDefaultView.current !== defaultView) {
+      updateSearchParams({ view: undefined, idea_map_id: undefined });
+    }
+    previousDefaultView.current = defaultView;
+  }, [defaultView]);
+
   const config = getMethodConfig(phase.attributes.participation_method, {
     showIdeaFilters: phase.attributes.voting_filtering_enabled,
   });
@@ -84,7 +94,7 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
     projectId,
     phaseId: phase.id,
     projectSlug: slug,
-    defaultView: phase.attributes.presentation_mode,
+    defaultView,
   };
   const sidebarFiltersEnabled = config.showIdeaFilters === true;
 

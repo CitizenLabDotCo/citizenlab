@@ -24,6 +24,7 @@ import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { getInputTermMessage } from 'utils/i18n';
+import { getPhasePreview } from 'utils/phasePreview/runtime';
 
 import messages from './messages';
 import TippyContent from './TippyContent';
@@ -58,6 +59,7 @@ const IdeaButton = memo<Props>(
     const { data: authUser } = useAuthUser();
     const localize = useLocalize();
     const isNativeSurvey = participationMethod === 'native_survey';
+    const isUnsavedPreview = getPhasePreview()?.unsaved;
 
     const postingRules =
       project && phase
@@ -69,7 +71,7 @@ const IdeaButton = memo<Props>(
         : undefined;
 
     const customAccessDeniedMessage = useCustomAccessDeniedMessage({
-      phaseId: phase?.id,
+      phaseId: isUnsavedPreview ? undefined : phase?.id,
       action: 'posting_idea',
       disabledReason: postingRules?.disabledReason,
     });
@@ -155,7 +157,7 @@ const IdeaButton = memo<Props>(
         );
       };
 
-    const tippyEnabled = !enabled && !!disabledReason;
+    const tippyEnabled = !isUnsavedPreview && !enabled && !!disabledReason;
 
     // TODO: Fix this the next time the file is edited.
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition

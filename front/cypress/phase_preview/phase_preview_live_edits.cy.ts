@@ -108,7 +108,7 @@ describe('Phase preview live edits', () => {
           .should('be.visible');
         cy.wrap(body).contains('Dates to be announced').should('not.exist');
         cy.wrap(body)
-          .find('#e2e-ideation-see-ideas-button')
+          .find('#e2e-ideation-cta-button')
           .find('button')
           .should('be.disabled');
       });
@@ -156,13 +156,13 @@ describe('Phase preview live edits', () => {
         cy.wrap(body)
           .contains('button', 'Answer future survey')
           .should('be.visible');
-        cy.wrap(body).contains('1 question').should('be.visible');
-        cy.wrap(body).contains('About 1 minute').should('be.visible');
+        cy.wrap(body).contains('1 question').should('not.exist');
+        cy.wrap(body).contains('About 1 minute').should('not.exist');
         cy.wrap(body).find('#e2e-participation-cta-poll').should('not.exist');
       });
   });
 
-  it('shows the Spotlight survey cover and keeps its completion local', () => {
+  it('shows the Spotlight survey entry point and keeps its completion local', () => {
     cy.setAdminLoginCookie();
     cy.apiCreatePhase({
       projectId,
@@ -190,14 +190,19 @@ describe('Phase preview live edits', () => {
           .should('not.be.empty')
           .then((body) => cy.wrap(body));
       phone().contains('Spotlight cover').should('be.visible');
-      phone().contains('1 question').should('be.visible');
+      phone().contains('1 question').should('not.exist');
       phone().contains('Starts in').should('be.visible');
-      phone().contains('Take the Spotlight survey').should('not.exist');
+      phone()
+        .contains('button', 'Take the Spotlight survey')
+        .should('be.disabled');
 
       cy.get('[role="group"][aria-label="Preview phase state"]')
         .contains('button', 'Open')
         .click();
-      phone().contains('button', 'Take the Spotlight survey').click();
+      phone()
+        .contains('button', 'Take the Spotlight survey')
+        .should('have.attr', 'aria-disabled', 'false')
+        .click();
       phone().contains('Question: text').should('be.visible');
       phone().contains('button', 'Submit').click();
       phone()

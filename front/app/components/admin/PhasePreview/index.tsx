@@ -14,6 +14,15 @@ import {
 
 import messages from './messages';
 
+const lifecycleOptions = {
+  before: { label: messages.before, description: messages.viewBefore },
+  open: { label: messages.open, description: messages.viewOpen },
+  ended: { label: messages.ended, description: messages.viewEnded },
+} satisfies Record<
+  PreviewLifecycle,
+  { label: typeof messages.before; description: typeof messages.viewBefore }
+>;
+
 interface Props {
   src: string;
   title: string;
@@ -84,7 +93,7 @@ const PhasePreview = ({ src, title, snapshot }: Props) => {
           frameName={PREVIEW_FRAME_NAME}
           frameRef={frameRef}
           dataCy="e2e-phase-preview"
-          bottomSpace={snapshot.unsaved ? 110 : 60}
+          bottomSpace={snapshot.unsaved ? 142 : 92}
         />
       </Box>
       <Box
@@ -95,13 +104,7 @@ const PhasePreview = ({ src, title, snapshot }: Props) => {
         gap="8px"
         p="8px"
       >
-        {(
-          [
-            { value: 'before', label: messages.before },
-            { value: 'open', label: messages.open },
-            { value: 'ended', label: messages.ended },
-          ] as const
-        ).map(({ value, label }) => (
+        {(Object.keys(lifecycleOptions) as PreviewLifecycle[]).map((value) => (
           <Button
             key={value}
             buttonStyle={
@@ -111,10 +114,21 @@ const PhasePreview = ({ src, title, snapshot }: Props) => {
             padding="8px 12px"
             onClick={() => setLifecycle(value)}
           >
-            {formatMessage(label)}
+            {formatMessage(lifecycleOptions[value].label)}
           </Button>
         ))}
       </Box>
+      <Text
+        aria-live="polite"
+        fontSize="s"
+        color="textSecondary"
+        textAlign="center"
+        m="0"
+        px="12px"
+        pb="8px"
+      >
+        {formatMessage(lifecycleOptions[lifecycle].description)}
+      </Text>
       {snapshot.unsaved && (
         <Text
           fontSize="s"

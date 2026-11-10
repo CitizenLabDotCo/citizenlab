@@ -142,16 +142,16 @@ describe('PhaseParticipationContent', () => {
     ).not.toBeInTheDocument();
   });
 
-  it('shows a skeleton for an information preview without a public report', () => {
-    const phase = buildPhase('information');
-    mockPreview.mockReturnValue({ project: project1, phase, draft: {} });
-    renderPhase(phase);
+  it.each(['information', 'native_survey'] as const)(
+    'leaves the participation body empty for a %s phase without a report',
+    (method) => {
+      const phase = buildPhase(method);
+      mockPreview.mockReturnValue({ project: project1, phase, draft: {} });
+      renderPhase(phase);
 
-    expect(
-      document.querySelector('[data-cy="e2e-phase-preview-skeleton"]')
-    ).toBeInTheDocument();
-    expect(screen.queryByTestId('phase-content')).not.toBeInTheDocument();
-  });
+      expect(screen.getByTestId('host')).toBeEmptyDOMElement();
+    }
+  );
 
   it.each(withContent)('renders content for %s', async (_, phase) => {
     renderPhase(phase);

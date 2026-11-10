@@ -5,8 +5,10 @@ import { Box, colors, stylingConsts } from '@citizenlab/cl2-component-library';
 import SkeletonBar from 'components/ProjectPageBuilder/Widgets/EmptyState/SkeletonBar';
 
 interface Props {
-  kind?: 'text' | 'cards' | 'form' | 'document';
+  kind?: 'text' | 'cards' | 'form' | 'document' | 'perspectives';
 }
+
+const perspectiveColors = [colors.teal75, colors.orange100, colors.blue10];
 
 const PreviewSkeleton = ({ kind = 'cards' }: Props) => (
   <Box
@@ -28,7 +30,9 @@ const PreviewSkeleton = ({ kind = 'cards' }: Props) => (
         <Box
           key={index}
           p="20px"
-          background={colors.white}
+          background={
+            kind === 'perspectives' ? perspectiveColors[index] : colors.white
+          }
           borderRadius={stylingConsts.borderRadius}
           display="flex"
           flexDirection="column"

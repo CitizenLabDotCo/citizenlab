@@ -60,6 +60,13 @@ const ParticipationCTAContent = ({
         ? getPeriodRemainingUntil(configuredStart, timezone, 'days')
         : undefined;
 
+    const method = currentPhase?.attributes.participation_method;
+    const showDisabledCTA =
+      preview.lifecycle === 'before' &&
+      (method === 'native_survey' ||
+        ((method === 'ideation' || method === 'proposals') &&
+          currentPhase?.attributes.submission_enabled));
+
     return (
       <Box
         data-cy="e2e-phase-preview-footer"
@@ -91,6 +98,14 @@ const ParticipationCTAContent = ({
               values={{ days: daysUntilStart }}
             />
           </Text>
+        )}
+        {showDisabledCTA && (
+          <fieldset
+            disabled
+            style={{ border: 0, margin: 0, padding: 0, minWidth: 0 }}
+          >
+            {CTAButton}
+          </fieldset>
         )}
         {(!preview.lifecycle || preview.lifecycle === 'open') && (
           <>

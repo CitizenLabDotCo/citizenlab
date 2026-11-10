@@ -1,3 +1,5 @@
+import type { PresentationMode } from 'api/phases/types';
+
 import { previewActions, previewDates } from './lifecycle';
 import { Json, JsonObject, object, PreviewSnapshot, relation } from './types';
 
@@ -16,6 +18,7 @@ export class PreviewSession {
   private attendances = new Map<string, string>();
   private reactions = new Map<string, string>();
   private input?: JsonObject;
+  private previewView?: PresentationMode;
   private submitted = false;
   private pollSubmitted = false;
   private statements: JsonObject[] = [];
@@ -43,8 +46,32 @@ export class PreviewSession {
       return false;
     }
 
+    const previous = this.phaseViews(this.snapshot);
+    const next = this.phaseViews(snapshot);
+    const enabledView = next.available
+      .filter((view) => !previous.available.includes(view))
+      .at(-1);
+
+    if (enabledView) {
+      this.previewView = enabledView;
+    } else if (
+      previous.defaultView !== next.defaultView ||
+      (this.previewView && !next.available.includes(this.previewView))
+    ) {
+      this.previewView = undefined;
+    }
+
     this.snapshot = snapshot;
     return true;
+  }
+
+  private phaseViews({ phase, draft }: PreviewSnapshot) {
+    return {
+      available: draft.available_views ??
+        phase.attributes.available_views ?? ['card'],
+      defaultView:
+        draft.presentation_mode ?? phase.attributes.presentation_mode,
+    };
   }
 
   attendingEvents() {
@@ -63,6 +90,8 @@ export class PreviewSession {
       ...object(phase.attributes),
       ...JSON.parse(JSON.stringify(this.snapshot.draft)),
     };
+    if (this.previewView) attributes.presentation_mode = this.previewView;
+
     const draftDescription = attributes.draft_description_multiloc;
     if (draftDescription && Object.keys(object(draftDescription)).length) {
       attributes.description_multiloc = draftDescription;
