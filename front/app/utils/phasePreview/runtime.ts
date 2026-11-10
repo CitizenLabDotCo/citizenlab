@@ -242,16 +242,16 @@ export const initializePhasePreview = async () => {
             void queryClient.invalidateQueries({ queryKey: ideasKeys.all() });
           }
           if (participationChanged) {
-            for (const keys of [
-              causesKeys,
-              commonGroundResultsKeys,
-              ideaFeedKeys,
-              ideaMarkersKeys,
-              ideaFilterCountsKeys,
-              pollResponsesKeys,
-              projectsKeys,
+            for (const queryKey of [
+              causesKeys.all(),
+              commonGroundResultsKeys.all(),
+              ideaFeedKeys.all(),
+              ideaMarkersKeys.all(),
+              ideaFilterCountsKeys.items(),
+              pollResponsesKeys.all(),
+              projectsKeys.all(),
             ]) {
-              void queryClient.invalidateQueries({ queryKey: keys.all() });
+              void queryClient.invalidateQueries({ queryKey });
             }
           }
         }
