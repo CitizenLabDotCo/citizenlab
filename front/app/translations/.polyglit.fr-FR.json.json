@@ -4579,6 +4579,11 @@
     "verified_at": "2026-11-09T09:18:09.715033Z",
     "verified_by": "Adrien"
   },
+  "app.components.aiAssistant.confirmReject": {
+    "state": "verified",
+    "verified_at": "2026-11-10T09:10:49.310627Z",
+    "verified_by": "Adrien"
+  },
   "app.components.aiAssistant.elapsed": {
     "state": "verified",
     "verified_at": "2026-11-10T07:11:34.524335Z",
@@ -4622,6 +4627,11 @@
   "app.components.aiAssistant.reject": {
     "state": "verified",
     "verified_at": "2026-11-10T08:51:31.219369Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.aiAssistant.rejectReasonLabel": {
+    "state": "verified",
+    "verified_at": "2026-11-10T09:10:49.310627Z",
     "verified_by": "Adrien"
   },
   "app.components.aiAssistant.send": {

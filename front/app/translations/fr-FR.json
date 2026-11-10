@@ -941,7 +941,7 @@
   "app.components.aiAssistant.attachFile": "Joindre un fichier",
   "app.components.aiAssistant.awaitingApprovalHint": "Acceptez ou refusez la modification pour continuer.",
   "app.components.aiAssistant.cancel": "Annuler",
-  "app.components.aiAssistant.confirmReject": "Rejeter et informer l'assistant",
+  "app.components.aiAssistant.confirmReject": "Refuser et réessayer",
   "app.components.aiAssistant.dropFiles": "Déposez les fichiers PDF, Markdown ou texte ici",
   "app.components.aiAssistant.elapsed": "{seconds, plural, one {# seconde} other {# secondes}}",
   "app.components.aiAssistant.errorAiProcessingNotAllowed": "L'un des fichiers ne peut pas être partagé avec l'IA.",
