@@ -140,6 +140,25 @@ resource 'Id methods' do
       end
     end
 
+    context 'when methods share a parameter name that is public for only one of them' do
+      before do
+        configuration = AppConfiguration.instance
+        configuration.settings['id_config']['id_methods'] = [
+          { name: 'criipto', ui_method_name: 'MitID' },
+          { name: 'publik', ui_method_name: 'Connexion Meyzieu' }
+        ]
+        configuration.save!
+      end
+
+      example 'Only exposes the parameter for the method where it is public' do
+        do_request
+        expect(status).to eq(200)
+        attributes_by_name = response_data.to_h { |method| [method[:attributes][:name], method[:attributes]] }
+        expect(attributes_by_name['criipto'][:ui_method_name]).to eq 'MitID'
+        expect(attributes_by_name['publik']).not_to have_key(:ui_method_name)
+      end
+    end
+
     context 'when only_show_for_verification is not set' do
       before do
         configuration = AppConfiguration.instance

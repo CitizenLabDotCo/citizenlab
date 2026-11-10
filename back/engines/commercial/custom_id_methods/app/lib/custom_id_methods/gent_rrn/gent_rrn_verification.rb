@@ -22,12 +22,12 @@ module CustomIdMethods::GentRrn
       '8a6d6f7e-a451-41ea-8e0a-0021439923a0'
     end
 
-    def config_parameters
-      %i[api_key environment custom_field_key wijk_mapping]
-    end
-
     def config_parameters_schema
       {
+        api_key: {
+          private: true,
+          type: 'string'
+        },
         environment: {
           type: 'string',
           enum: %w[dv qa production],
