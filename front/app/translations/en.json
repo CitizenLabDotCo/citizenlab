@@ -193,6 +193,7 @@
   "app.components.CustomFieldsForm.minimumCoordinates2": "A minimum of {numPoints} map points is required.",
   "app.components.CustomFieldsForm.minimumPinsRequired": "Add at least {minPins} locations.",
   "app.components.CustomFieldsForm.otherArea": "Somewhere else",
+  "app.components.CustomFieldsForm.pageProgress": "{current} / {total}",
   "app.components.CustomFieldsForm.progressBarLabel": "Progress",
   "app.components.CustomFieldsForm.removeAnswer": "Remove answer",
   "app.components.CustomFieldsForm.selectAsManyAsYouLike": "*Select as many as you like",
