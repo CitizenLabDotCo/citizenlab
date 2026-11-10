@@ -14,7 +14,8 @@ resource 'Custom fields' do
   include_context 'common_auth'
 
   let_it_be(:project) { create(:project) }
-  let_it_be(:survey_phase) { create(:native_survey_phase, project: project) }
+  let_it_be(:ideation_phase) { create(:phase, project: project, start_at: '2026-01-01', end_at: '2026-01-31') }
+  let_it_be(:survey_phase) { create(:native_survey_phase, project: project, start_at: '2026-02-01', end_at: '2026-02-28') }
   let_it_be(:project_form) { create(:custom_form, participation_context: project) }
   let_it_be(:survey_form) { create(:custom_form, participation_context: survey_phase) }
 
@@ -37,7 +38,10 @@ resource 'Custom fields' do
       List only the registration questions ("user") or only the input form questions ("custom-form").
     DESC
     parameter(:project_id, 'List only the questions of the input forms of a project.', required: false, in: 'query', type: 'string')
-    parameter(:phase_id, 'List only the questions of the survey form of a phase.', required: false, in: 'query', type: 'string')
+    parameter(:phase_id, <<~DESC.squish, required: false, in: 'query', type: 'string')
+      List only the questions of the form a phase collects inputs with: the survey form of a
+      survey phase, or the ideation form of an ideation or voting phase.
+    DESC
 
     example_request 'List all custom fields' do
       assert_status 200
@@ -90,6 +94,24 @@ resource 'Custom fields' do
       example_request 'List only the questions of the survey form of the phase', document: false do
         assert_status 200
         expect(json_response_body[:custom_fields].pluck(:id)).to eq [survey_field.id]
+      end
+    end
+
+    context 'when filtering by an ideation phase' do
+      let(:phase_id) { ideation_phase.id }
+
+      example_request 'List only the questions of the ideation form of the project', document: false do
+        assert_status 200
+        expect(json_response_body[:custom_fields].pluck(:id)).to eq [project_field.id]
+      end
+    end
+
+    context 'when filtering by a phase without a form' do
+      let(:phase_id) { create(:phase, project: project, participation_method: 'information', start_at: '2026-03-01', end_at: nil).id }
+
+      example_request 'List no questions', document: false do
+        assert_status 200
+        expect(json_response_body[:custom_fields]).to be_empty
       end
     end
   end

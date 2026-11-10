@@ -27,7 +27,6 @@ describe 'Power BI files' do # rubocop:disable RSpec/DescribeClass
       'idea_phases' => PublicApi::V2::IdeaPhaseSerializer,
       'idea_topics' => PublicApi::V2::IdeaTopicSerializer,
       'ideas' => PublicApi::V2::IdeaSerializer,
-      'ideas_custom_fields' => PublicApi::V2::IdeaSerializer, # built in Power BI from ideas: flattens custom_field_values
       'phases' => PublicApi::V2::PhaseSerializer,
       'project_folders' => PublicApi::V2::ProjectFolders::FolderSerializer,
       'project_topics' => PublicApi::V2::ProjectTopicSerializer,
@@ -35,7 +34,6 @@ describe 'Power BI files' do # rubocop:disable RSpec/DescribeClass
       'reactions' => PublicApi::V2::ReactionSerializer,
       'topics' => PublicApi::V2::TopicSerializer,
       'users' => PublicApi::V2::UserSerializer,
-      'users_custom_fields' => PublicApi::V2::UserSerializer, # built in Power BI from users: flattens custom_field_values
       'volunteering_causes' => PublicApi::V2::VolunteeringCauseSerializer,
       'volunteering_volunteers' => PublicApi::V2::VolunteeringVolunteerSerializer
     }

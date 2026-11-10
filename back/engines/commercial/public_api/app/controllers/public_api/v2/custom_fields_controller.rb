@@ -26,7 +26,7 @@ module PublicApi
 
     def filter(scope)
       if (resource_type = params[:resource_type])
-        unless RESOURCE_TYPES.include?(resource_type)
+        if RESOURCE_TYPES.exclude?(resource_type)
           raise InvalidEnumParameterValueError.new('resource_type', resource_type, RESOURCE_TYPES)
         end
 
@@ -36,7 +36,7 @@ module PublicApi
       # Only the project's own form fields. Registration questions asked in its
       # forms are user fields, so their u_ answers point to fields not listed here.
       scope = scope.where(resource_type: 'CustomForm', resource_id: project_forms(params[:project_id])) if params[:project_id]
-      scope = scope.where(resource_type: 'CustomForm', resource_id: phase_forms(params[:phase_id]).select(:id)) if params[:phase_id]
+      scope = scope.where(resource_type: 'CustomForm', resource_id: phase_form_id(params[:phase_id])) if params[:phase_id]
       scope
     end
 
@@ -49,6 +49,14 @@ module PublicApi
 
     def phase_forms(phase_ids)
       CustomForm.where(participation_context_type: 'Phase', participation_context_id: phase_ids)
+    end
+
+    # The form the phase collects inputs with: its own for surveys, the project's
+    # for ideation and voting. Asking the phase's participation method keeps this
+    # right if forms move from projects to phases.
+    def phase_form_id(phase_id)
+      form = Phase.find_by(id: phase_id)&.pmethod&.custom_form
+      form.id if form&.persisted?
     end
   end
 end

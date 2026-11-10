@@ -16,6 +16,8 @@ resource 'Users' do
     route_description <<~DESC.squish
       Retrieve a paginated list of all the users in the platform, with the most recently
       created ones first.
+      The custom_field_values attribute is deprecated and will be removed in a future
+      version. Use the custom field answers endpoint (/api/v2/custom_field_answers) instead.
     DESC
 
     include_context 'common_list_params'
@@ -55,7 +57,11 @@ resource 'Users' do
 
   get '/api/v2/users/:id' do
     route_summary 'Get user'
-    route_description 'Retrieve a single user by its ID.'
+    route_description <<~DESC.squish
+      Retrieve a single user by its ID.
+      The custom_field_values attribute is deprecated and will be removed in a future
+      version. Use the custom field answers endpoint (/api/v2/custom_field_answers) instead.
+    DESC
 
     include_context 'common_item_params'
 

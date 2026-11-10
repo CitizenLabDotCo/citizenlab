@@ -12,7 +12,7 @@ module PublicApi
 
     def filter(scope)
       if (answerable_type = params[:answerable_type])
-        unless ANSWERABLE_TYPES.include?(answerable_type)
+        if ANSWERABLE_TYPES.exclude?(answerable_type)
           raise InvalidEnumParameterValueError.new('answerable_type', answerable_type, ANSWERABLE_TYPES)
         end
 
