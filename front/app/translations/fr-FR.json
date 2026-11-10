@@ -977,7 +977,7 @@
   "app.components.aiAssistant.statusFailed": "Échec : {tool}",
   "app.components.aiAssistant.statusInProgress": "En cours : {tool}",
   "app.components.aiAssistant.statusRejected": "Rejeté : {tool}",
-  "app.components.aiAssistant.title": "Créer avec l'IA",
+  "app.components.aiAssistant.title": "Assistant IA",
   "app.components.aiAssistant.working": "Traitement en cours…",
   "app.components.anonymousParticipationModal.anonymousParticipationWarning": "Vous ne recevrez pas de notifications concernant vos contributions anonymes",
   "app.components.anonymousParticipationModal.cancel": "Annuler",
