@@ -6,7 +6,10 @@ import { IPhaseData, PresentationMode } from 'api/phases/types';
 import { getSelectedView } from 'api/phases/utils';
 
 import IdeasView from 'components/IdeaCards/shared/IdeasView';
+import EmptyIdeas from 'components/IdeaCards/shared/IdeasView/EmptyIdeas';
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
+
+import { getPhasePreview } from 'utils/phasePreview/runtime';
 
 import PreviewSkeleton from './PreviewSkeleton';
 
@@ -39,7 +42,13 @@ const DraftIdeasPreview = ({ phase }: { phase: IPhaseData }) => {
         />
       ) : (
         <Box id={view === 'feed' ? 'view-panel-3' : 'view-panel-1'}>
-          <PreviewSkeleton kind={view === 'feed' ? 'perspectives' : 'cards'} />
+          {getPhasePreview()?.lifecycle === 'open' ? (
+            <EmptyIdeas />
+          ) : (
+            <PreviewSkeleton
+              kind={view === 'feed' ? 'perspectives' : 'cards'}
+            />
+          )}
         </Box>
       )}
     </Box>

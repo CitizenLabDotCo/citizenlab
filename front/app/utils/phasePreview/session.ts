@@ -131,6 +131,8 @@ export class PreviewSession {
       attributes.votes_count = 0;
       attributes.baskets_count = 0;
       attributes.total_votes_amount = 0;
+      attributes.manual_votes_count = 0;
+      attributes.manual_voters_amount = 0;
       if (this.hidesSubmittedIdeas) attributes.ideas_count = 0;
     }
 

@@ -112,6 +112,9 @@ describe('Phase preview live edits', () => {
           .find('button')
           .should('be.disabled');
       });
+    cy.get('[role="group"][aria-label="Preview phase state"]')
+      .contains('button', 'Participation')
+      .should('not.exist');
     cy.contains('Save this phase to preview its participation form.').should(
       'be.visible'
     );
@@ -294,6 +297,69 @@ describe('Phase preview live edits', () => {
     });
   });
 
+  it('shows Participation only after the phase receives a published idea', () => {
+    cy.setAdminLoginCookie();
+    cy.apiCreatePhase({
+      projectId,
+      title: 'Idea collection preview',
+      startAt: '2095-01-01',
+      participationMethod: 'ideation',
+      canPost: true,
+    }).then(({ body }) => {
+      const ideaPhaseId = body.data.id;
+      const route = `admin/projects/${projectId}/phases/${ideaPhaseId}/setup?project_backoffice_redesign`;
+      const switcher = '[role="group"][aria-label="Preview phase state"]';
+      const savedIdea = 'A new bench by the park entrance';
+      const phone = () =>
+        cy
+          .get('[data-cy="e2e-phase-preview"] iframe', { timeout: 60000 })
+          .its('0.contentDocument.body')
+          .should('not.be.empty')
+          .then((body) => cy.wrap(body));
+
+      cy.visit(route);
+      cy.get(switcher).contains('button', 'Open').click();
+      phone().contains('0 ideas').should('be.visible');
+      phone().contains('No results found.').should('be.visible');
+      cy.get(switcher).contains('button', 'Participation').should('not.exist');
+
+      cy.apiCreateIdea({
+        phaseId: ideaPhaseId,
+        ideaTitle: savedIdea,
+        ideaContent: 'A place to rest near the park entrance.',
+      });
+      cy.reload();
+      cy.get(switcher).contains('button', 'Participation').click();
+      phone().contains(savedIdea).should('be.visible');
+      cy.get(switcher).contains('button', 'Open').click();
+      phone().contains('0 ideas').should('be.visible');
+      phone().contains(savedIdea).should('not.exist');
+    });
+  });
+
+  it('shows the Information phase preview without a lifecycle selector', () => {
+    cy.setAdminLoginCookie();
+    cy.apiCreatePhase({
+      projectId,
+      title: 'Information preview',
+      startAt: '2095-06-01',
+      participationMethod: 'information',
+    }).then(({ body }) => {
+      cy.visit(
+        `admin/projects/${projectId}/phases/${body.data.id}/setup?project_backoffice_redesign`
+      );
+      cy.get('[data-cy="e2e-phase-preview"] iframe', { timeout: 60000 })
+        .its('0.contentDocument.body')
+        .should('not.be.empty')
+        .then((body) => cy.wrap(body))
+        .contains('h3', 'Information preview')
+        .should('be.visible');
+      cy.get('[role="group"][aria-label="Preview phase state"]').should(
+        'not.exist'
+      );
+    });
+  });
+
   it('refreshes voting option permissions when opening the phase and retains local votes', () => {
     cy.setAdminLoginCookie();
     cy.apiCreatePhase({
@@ -326,6 +392,9 @@ describe('Phase preview live edits', () => {
             .contains('This phase has not started yet')
             .should('be.visible');
           cy.wrap(body).contains('Preview voting option').should('exist');
+          cy.get('[role="group"][aria-label="Preview phase state"]')
+            .contains('button', 'Participation')
+            .should('not.exist');
           cy.get('[role="group"][aria-label="Preview phase state"]')
             .contains('button', 'Open')
             .click();

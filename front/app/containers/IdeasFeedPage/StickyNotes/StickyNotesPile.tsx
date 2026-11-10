@@ -157,7 +157,10 @@ const StickyNotesPile = ({ phaseId, slug }: Props) => {
   }
 
   if (!displayedIdeas || displayedIdeas.length === 0) {
-    if (getPhasePreview()) return <PreviewSkeleton kind="perspectives" />;
+    const preview = getPhasePreview();
+    if (preview && preview.lifecycle !== 'open') {
+      return <PreviewSkeleton kind="perspectives" />;
+    }
 
     return (
       <Box display="flex" justifyContent="center" py="64px">

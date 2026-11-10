@@ -60,7 +60,8 @@ const EmptyMessageMainLine = styled.div`
 `;
 
 const EmptyIdeas = () => {
-  if (getPhasePreview()) return <PreviewSkeleton />;
+  const preview = getPhasePreview();
+  if (preview && preview.lifecycle !== 'open') return <PreviewSkeleton />;
 
   return (
     <EmptyContainer>
