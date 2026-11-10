@@ -1,5 +1,12 @@
+import causesKeys from 'api/causes/keys';
+import commonGroundResultsKeys from 'api/common_ground/keys/commonGroundResultsKeys';
+import ideaFeedKeys from 'api/idea_feed/keys';
+import ideaMarkersKeys from 'api/idea_markers/keys';
 import ideasKeys from 'api/ideas/keys';
+import ideaFilterCountsKeys from 'api/ideas_filter_counts/keys';
 import phasesKeys from 'api/phases/keys';
+import pollResponsesKeys from 'api/poll_responses/keys';
+import projectsKeys from 'api/projects/keys';
 
 import { queryClient } from 'utils/cl-react-query/queryClient';
 
@@ -74,7 +81,7 @@ export const createPreviewFetch =
         return jsonResponse(preview.attendingEvents());
       }
 
-      const local = preview.read(path);
+      const local = preview.read(path, url.searchParams);
       if (local) return jsonResponse(local);
 
       // Draft project inputs are readable to the manager, but public list hooks
@@ -84,10 +91,16 @@ export const createPreviewFetch =
       }
     }
 
+    const showParticipation = preview.snapshot.showParticipation;
     const response = await originalFetch(
       input instanceof Request ? new Request(url, input) : url,
       init
     );
+    if (isApi && showParticipation !== preview.snapshot.showParticipation) {
+      const local = preview.read(path, url.searchParams);
+      if (local) return jsonResponse(local);
+    }
+
     if (
       isApi &&
       path === `/phases/${preview.phaseId}/progress` &&
@@ -213,6 +226,8 @@ export const initializePhasePreview = async () => {
       if (session) {
         const lifecycleChanged =
           session.snapshot.lifecycle !== snapshot.lifecycle;
+        const participationChanged =
+          session.snapshot.showParticipation !== snapshot.showParticipation;
         if (session.updateSnapshot(snapshot)) {
           // Refresh phase data without remounting forms or clearing local answers.
           void queryClient.invalidateQueries({
@@ -221,10 +236,23 @@ export const initializePhasePreview = async () => {
           void queryClient.invalidateQueries({
             queryKey: phasesKeys.list({ projectId: snapshot.project.id }),
           });
-          if (lifecycleChanged) {
+          if (lifecycleChanged || participationChanged) {
             // Option cards cache their own action descriptors, independently of
             // the phase. Re-read them when simulated participation opens/closes.
             void queryClient.invalidateQueries({ queryKey: ideasKeys.all() });
+          }
+          if (participationChanged) {
+            for (const keys of [
+              causesKeys,
+              commonGroundResultsKeys,
+              ideaFeedKeys,
+              ideaMarkersKeys,
+              ideaFilterCountsKeys,
+              pollResponsesKeys,
+              projectsKeys,
+            ]) {
+              void queryClient.invalidateQueries({ queryKey: keys.all() });
+            }
           }
         }
         return;

@@ -1,6 +1,8 @@
 import { phasesData } from 'api/phases/__mocks__/_mockServer';
 import { project1 } from 'api/projects/__mocks__/_mockServer';
 
+import { getPageNumberFromUrl } from 'utils/paginationUtils';
+
 import { createPreviewFetch } from './runtime';
 import { PreviewSession } from './session';
 import { PreviewSnapshot } from './types';
@@ -71,6 +73,77 @@ it('previews newly enabled views without editing the default view', async () => 
   expect(await getView()).toBe('card');
   expect(session.snapshot.draft).toEqual(mapDraft);
   expect(phase.attributes.presentation_mode).toBe('card');
+});
+
+it('hides submitted ideas and their counts until participation is shown', async () => {
+  const { network, request, session } = setup();
+  const phase: PreviewSnapshot['phase'] = {
+    ...snapshot.phase,
+    attributes: {
+      ...snapshot.phase.attributes,
+      participation_method: 'ideation',
+      ideas_count: 1,
+    },
+  };
+  const open = { ...snapshot, phase, lifecycle: 'open' } as const;
+  const savedIdeas = { data: [{ id: 'idea-1', type: 'idea' }] };
+  network.mockImplementation(
+    async () =>
+      new Response(JSON.stringify(savedIdeas), {
+        headers: { 'Content-Type': 'application/json' },
+      })
+  );
+
+  session.updateSnapshot({ ...open, showParticipation: false });
+  const read = async (path: string) => (await request(path, 'GET')).json();
+  const listPath = `/ideas?phase=${phaseId}&page%5Bnumber%5D=1`;
+  const emptyPage = await read(listPath);
+  expect(emptyPage.data).toEqual([]);
+  expect(getPageNumberFromUrl(emptyPage.links.self)).toBe(1);
+  expect(emptyPage.links.next).toBeUndefined();
+  expect((await read(`/ideas/as_markers?phase=${phaseId}`)).data).toEqual([]);
+  expect((await read(`/phases/${phaseId}/idea_feed/ideas`)).data).toEqual([]);
+  expect(
+    (await read(`/ideas/filter_counts?phase=${phaseId}`)).data.attributes.total
+  ).toBe(0);
+  expect((await read(`/phases/${phaseId}`)).data.attributes.ideas_count).toBe(
+    0
+  );
+  expect(network).not.toHaveBeenCalled();
+  expect((await read('/ideas?phase=other-phase')).data).toHaveLength(1);
+
+  session.updateSnapshot({ ...open, showParticipation: true });
+  expect((await read(listPath)).data).toHaveLength(1);
+  expect((await read(`/phases/${phaseId}`)).data.attributes.ideas_count).toBe(
+    1
+  );
+  const response = await request(`/phases/${phaseId}/inputs`, 'POST', {
+    idea: { title_multiloc: { en: 'Temporary idea' } },
+  });
+  expect(response.ok).toBe(true);
+  expect(network).toHaveBeenCalledTimes(2);
+});
+
+it('keeps voting options available before anyone has voted', async () => {
+  const { network, request, session } = setup();
+  const phase: PreviewSnapshot['phase'] = {
+    ...snapshot.phase,
+    attributes: {
+      ...snapshot.phase.attributes,
+      participation_method: 'voting',
+      votes_count: 3,
+    },
+  };
+  session.updateSnapshot({
+    ...snapshot,
+    phase,
+    lifecycle: 'open',
+    showParticipation: false,
+  });
+  await request(`/ideas?phase=${phaseId}`, 'GET');
+  expect(network).toHaveBeenCalledTimes(1);
+  const result = await (await request(`/phases/${phaseId}`, 'GET')).json();
+  expect(result.data.attributes.votes_count).toBe(0);
 });
 
 it.each(['POST', 'PUT', 'PATCH', 'DELETE'])(

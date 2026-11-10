@@ -10,6 +10,7 @@ export interface PreviewSnapshot {
   draft: IUpdatedPhaseProperties;
   unsaved?: boolean;
   lifecycle?: PreviewLifecycle;
+  showParticipation?: boolean;
 }
 
 export type Json = null | boolean | number | string | Json[] | JsonObject;
@@ -32,6 +33,8 @@ export const isPreviewSnapshot = (value: unknown): value is PreviewSnapshot =>
   isRecord(value.project.attributes) &&
   isRecord(value.draft) &&
   (value.unsaved === undefined || typeof value.unsaved === 'boolean') &&
+  (value.showParticipation === undefined ||
+    typeof value.showParticipation === 'boolean') &&
   (value.lifecycle === undefined ||
     value.lifecycle === 'before' ||
     value.lifecycle === 'open' ||

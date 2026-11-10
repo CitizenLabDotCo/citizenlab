@@ -1,6 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import { Box, Button, Text, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Button,
+  Text,
+  Tooltip,
+  colors,
+} from '@citizenlab/cl2-component-library';
 
 import PhonePreview from 'components/admin/PhonePreview';
 
@@ -14,13 +20,36 @@ import {
 
 import messages from './messages';
 
+type PreviewState = PreviewLifecycle | 'participation';
+
 const lifecycleOptions = {
-  before: { label: messages.before, description: messages.viewBefore },
-  open: { label: messages.open, description: messages.viewOpen },
-  ended: { label: messages.ended, description: messages.viewEnded },
+  before: {
+    label: messages.before,
+    description: messages.viewBefore,
+    tooltip: messages.beforeTooltip,
+  },
+  open: {
+    label: messages.open,
+    description: messages.viewOpen,
+    tooltip: messages.openTooltip,
+  },
+  participation: {
+    label: messages.participation,
+    description: messages.viewParticipation,
+    tooltip: messages.participationTooltip,
+  },
+  ended: {
+    label: messages.ended,
+    description: messages.viewEnded,
+    tooltip: messages.endedTooltip,
+  },
 } satisfies Record<
-  PreviewLifecycle,
-  { label: typeof messages.before; description: typeof messages.viewBefore }
+  PreviewState,
+  {
+    label: typeof messages.before;
+    description: typeof messages.viewBefore;
+    tooltip: typeof messages.beforeTooltip;
+  }
 >;
 
 interface Props {
@@ -34,10 +63,14 @@ interface Props {
 const PhasePreview = ({ src, title, snapshot }: Props) => {
   const { formatMessage } = useIntl();
   const frameRef = useRef<HTMLIFrameElement>(null);
-  const [lifecycle, setLifecycle] = useState<PreviewLifecycle>(() =>
+  const [state, setState] = useState<PreviewState>(() =>
     getPreviewLifecycle({ ...snapshot.phase?.attributes, ...snapshot.draft })
   );
-  const payload = JSON.stringify({ ...snapshot, lifecycle });
+  const payload = JSON.stringify({
+    ...snapshot,
+    lifecycle: state === 'participation' ? 'open' : state,
+    showParticipation: state === 'participation' || state === 'ended',
+  });
   const payloadRef = useRef(payload);
   payloadRef.current = payload;
 
@@ -114,29 +147,39 @@ const PhasePreview = ({ src, title, snapshot }: Props) => {
           borderRadius="999px"
           p="2px"
         >
-          {(['before', 'open', 'ended'] as const).map((value) => {
-            const selected = lifecycle === value;
+          {(['before', 'open', 'participation', 'ended'] as const).map(
+            (value) => {
+              const selected = state === value;
+              const { label, tooltip } = lifecycleOptions[value];
 
-            return (
-              <Button
-                key={value}
-                buttonStyle="text"
-                ariaPressed={selected}
-                bgColor={selected ? colors.grey800 : colors.black}
-                bgHoverColor={colors.grey800}
-                textColor={selected ? colors.white : colors.coolGrey300}
-                textHoverColor={colors.white}
-                textDecorationHover="none"
-                borderRadius="999px"
-                height="20px"
-                padding="0 8px"
-                fontSize="11px"
-                onClick={() => setLifecycle(value)}
-              >
-                {formatMessage(lifecycleOptions[value].label)}
-              </Button>
-            );
-          })}
+              return (
+                <Tooltip
+                  key={value}
+                  content={formatMessage(tooltip)}
+                  placement="top"
+                  theme="dark"
+                  useContentWrapper={false}
+                >
+                  <Button
+                    buttonStyle="text"
+                    ariaPressed={selected}
+                    bgColor={selected ? colors.grey800 : colors.black}
+                    bgHoverColor={colors.grey800}
+                    textColor={selected ? colors.white : colors.coolGrey300}
+                    textHoverColor={colors.white}
+                    textDecorationHover="none"
+                    borderRadius="999px"
+                    height="20px"
+                    padding="0 8px"
+                    fontSize="11px"
+                    onClick={() => setState(value)}
+                  >
+                    {formatMessage(label)}
+                  </Button>
+                </Tooltip>
+              );
+            }
+          )}
         </Box>
         <Box
           display="flex"
@@ -158,7 +201,7 @@ const PhasePreview = ({ src, title, snapshot }: Props) => {
               textAlign="right"
               m="0"
             >
-              {formatMessage(lifecycleOptions[lifecycle].description)}
+              {formatMessage(lifecycleOptions[state].description)}
             </Text>
           </Box>
           {snapshot.unsaved && (

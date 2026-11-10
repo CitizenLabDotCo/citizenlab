@@ -17,6 +17,30 @@ export default defineMessages({
     id: 'app.components.PhasePreview.ended',
     defaultMessage: 'Ended',
   },
+  participation: {
+    id: 'app.components.PhasePreview.participation',
+    defaultMessage: 'Participation',
+  },
+  beforeTooltip: {
+    id: 'app.components.PhasePreview.beforeTooltip',
+    defaultMessage: 'Before the phase starts',
+  },
+  openTooltip: {
+    id: 'app.components.PhasePreview.openTooltip',
+    defaultMessage: 'Open, nobody has taken part yet',
+  },
+  participationTooltip: {
+    id: 'app.components.PhasePreview.participationTooltip',
+    defaultMessage: 'Open, with participation',
+  },
+  endedTooltip: {
+    id: 'app.components.PhasePreview.endedTooltip',
+    defaultMessage: 'After it ends, with results',
+  },
+  viewParticipation: {
+    id: 'app.components.PhasePreview.viewParticipation',
+    defaultMessage: 'What residents see once people take part',
+  },
   beforeStarts: {
     id: 'app.components.PhasePreview.beforeStarts',
     defaultMessage: 'This phase has not started yet',

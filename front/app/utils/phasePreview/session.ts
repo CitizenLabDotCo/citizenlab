@@ -127,6 +127,13 @@ export class PreviewSession {
     }
     attributes.action_descriptors = actions;
 
+    if (this.snapshot.showParticipation === false) {
+      attributes.votes_count = 0;
+      attributes.baskets_count = 0;
+      attributes.total_votes_amount = 0;
+      if (this.hidesSubmittedIdeas) attributes.ideas_count = 0;
+    }
+
     phase.attributes = attributes;
     phase.relationships = {
       ...object(phase.relationships),
@@ -157,7 +164,72 @@ export class PreviewSession {
     };
   }
 
-  read(path: string): JsonObject | undefined {
+  private get hidesSubmittedIdeas() {
+    return (
+      this.snapshot.showParticipation === false &&
+      ['ideation', 'proposals'].includes(
+        this.snapshot.phase.attributes.participation_method
+      )
+    );
+  }
+
+  read(path: string, params?: URLSearchParams): JsonObject | undefined {
+    if (this.hidesSubmittedIdeas) {
+      if (params?.get('phase') === this.phaseId) {
+        if (path === '/ideas') {
+          return { data: [], links: { self: `${path}?${params}` } };
+        }
+        if (path === '/ideas/as_markers') {
+          return { data: [] };
+        }
+        if (path === '/ideas/filter_counts') {
+          return {
+            data: {
+              type: 'filter_counts',
+              attributes: {
+                idea_status_id: {},
+                area_id: {},
+                input_topic_id: {},
+                total: 0,
+              },
+            },
+          };
+        }
+      }
+      if (path === `/phases/${this.phaseId}/idea_feed/ideas`) {
+        return { data: [] };
+      }
+    }
+
+    if (this.snapshot.showParticipation === false) {
+      if (path === `/phases/${this.phaseId}/poll_responses/responses_count`) {
+        return {
+          data: {
+            type: 'responses_count',
+            attributes: { series: { options: {} } },
+          },
+        };
+      }
+      if (path === `/phases/${this.phaseId}/common_ground_results`) {
+        return {
+          data: {
+            id: this.phaseId,
+            type: 'common_ground_results',
+            attributes: {
+              stats: {
+                num_participants: 0,
+                num_ideas: this.snapshot.phase.attributes.ideas_count,
+                votes: { up: 0, down: 0, neutral: 0 },
+              },
+              top_consensus_ideas: [],
+              top_controversial_ideas: [],
+              ideas_by_agreement: [],
+            },
+          },
+        };
+      }
+    }
+
     if (path === `/phases/${this.phaseId}`) return { data: this.phase() };
     if (path === `/ideas/draft/${this.phaseId}`) {
       return {
@@ -406,7 +478,13 @@ export class PreviewSession {
         return {
           ...item,
           attributes: this.snapshot.lifecycle
-            ? { ...attributes, publication_status: 'published' }
+            ? {
+                ...attributes,
+                publication_status: 'published',
+                ...(this.snapshot.showParticipation === false && {
+                  baskets_count: 0,
+                }),
+              }
             : attributes,
           relationships: {
             ...relationships,
@@ -422,6 +500,11 @@ export class PreviewSession {
             this.snapshot.lifecycle && attributes.action_descriptors
               ? {
                   ...attributes,
+                  ...(this.snapshot.showParticipation === false && {
+                    votes_count: 0,
+                    manual_votes_amount: 0,
+                    total_votes: 0,
+                  }),
                   action_descriptors: previewActions(
                     object(attributes.action_descriptors),
                     this.snapshot.lifecycle
@@ -440,6 +523,10 @@ export class PreviewSession {
       if (item.type === 'cause') {
         return {
           ...item,
+          attributes:
+            this.snapshot.showParticipation === false
+              ? { ...attributes, volunteers_count: 0 }
+              : attributes,
           relationships: {
             ...relationships,
             user_volunteer: this.volunteers.has(id)
