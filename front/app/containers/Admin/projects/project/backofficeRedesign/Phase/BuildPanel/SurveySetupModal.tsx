@@ -17,7 +17,6 @@ import Modal from 'components/UI/Modal';
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
-import formSectionMessages from './BuildFields/MethodSection/FormSection/messages';
 import methodSectionMessages from './BuildFields/MethodSection/messages';
 import messages from './messages';
 import NavCard from './NavCard';
@@ -66,7 +65,7 @@ const SurveySetupModal = ({
         width="720px"
         header={formatMessage(
           hasQuestions
-            ? formSectionMessages.surveyForm
+            ? methodSectionMessages.editSurvey
             : methodSectionMessages.addQuestions
         )}
       >
