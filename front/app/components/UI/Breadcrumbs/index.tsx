@@ -68,6 +68,13 @@ const HeaderCrumb = styled.span`
   font-weight: 400;
   line-height: 1.5;
   color: ${colors.textSecondary};
+
+  a:hover {
+    border-bottom: 0;
+    margin-bottom: 0;
+    text-decoration: none;
+    color: ${bo.colors.textHeadingStrong};
+  }
 `;
 
 const HeaderCurrentCrumb = styled(HeaderCrumb)`

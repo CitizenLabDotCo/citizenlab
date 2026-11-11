@@ -201,8 +201,8 @@ describe('Redesigned phase Insights', () => {
       });
       visitInsights();
       cy.get('[data-cy="e2e-insights-demographic-tabs"]').within(() => {
+        cy.contains('button', 'Demographic question 8').scrollIntoView();
         cy.contains('button', 'Demographic question 8')
-          .scrollIntoView()
           .click()
           .should('have.attr', 'aria-selected', 'true');
       });

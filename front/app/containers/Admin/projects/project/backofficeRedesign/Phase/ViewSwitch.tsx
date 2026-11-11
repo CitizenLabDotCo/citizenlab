@@ -1,23 +1,26 @@
 import React from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  bo,
+  colors,
+  defaultStyles,
+} from '@citizenlab/cl2-component-library';
 
 import Link, { typedStyled } from 'utils/cl-router/Link';
 
 import { PhaseView } from './usePhaseViews';
 
-// A pill, so the radius is a shape rather than the card radius in
-// stylingConsts. The active segment is styled off aria-current so the state
-// lives in one place for both assistive tech and the eye.
+// The active segment is styled off aria-current so its state stays in one place.
 const Segment = typedStyled(Link)`
   display: inline-flex;
   align-items: center;
   padding: 5px 14px;
-  border-radius: 999px;
-  font-size: 12.5px;
-  font-weight: 600;
+  border-radius: ${bo.borderRadius};
+  font-size: ${bo.controlFontSize}px;
+  font-weight: 500;
   white-space: nowrap;
-  color: ${colors.coolGrey600};
+  color: ${colors.coolGrey700};
 
   &:hover {
     color: ${colors.textPrimary};
@@ -25,6 +28,7 @@ const Segment = typedStyled(Link)`
 
   &[aria-current='page'] {
     background: ${colors.white};
+    box-shadow: ${defaultStyles.boxShadow};
     color: ${colors.textPrimary};
   }
 `;
@@ -45,7 +49,7 @@ const ViewSwitch = ({ views, activeView, projectId, phaseId }: Props) => {
       alignItems="center"
       gap="2px"
       p="3px"
-      borderRadius="999px"
+      borderRadius={bo.borderRadius}
       background={colors.grey100}
     >
       {views.map((view) => (

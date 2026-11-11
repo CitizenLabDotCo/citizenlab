@@ -87,6 +87,7 @@ declare global {
       apiCreateCause: typeof apiCreateCause;
       apiVerifyBogus: typeof apiVerifyBogus;
       apiCreateEvent: typeof apiCreateEvent;
+      apiAttendEvent: typeof apiAttendEvent;
       apiRemoveEvent: typeof apiRemoveEvent;
       apiCreateReportBuilder: typeof apiCreateReportBuilder;
       apiRemoveReportBuilder: typeof apiRemoveReportBuilder;
@@ -1603,6 +1604,17 @@ function apiVerifyBogus(jwt: string, error?: string) {
   });
 }
 
+function apiAttendEvent(eventId: string, jwt: string) {
+  return cy.request({
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${jwt}`,
+    },
+    method: 'POST',
+    url: `web_api/v1/events/${eventId}/attendances`,
+  });
+}
+
 function apiCreateEvent({
   projectId,
   title,
@@ -1612,6 +1624,7 @@ function apiCreateEvent({
   startDate,
   endDate,
   onlineLink,
+  maximumAttendees,
 }: {
   projectId: string;
   title: string;
@@ -1621,6 +1634,7 @@ function apiCreateEvent({
   endDate: Date;
   includeLocation?: boolean;
   onlineLink?: string;
+  maximumAttendees?: number;
 }) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -1653,6 +1667,7 @@ function apiCreateEvent({
           start_at: startDate.toJSON(),
           end_at: endDate.toJSON(),
           online_link: onlineLink,
+          maximum_attendees: maximumAttendees,
         },
       },
     });
@@ -2653,6 +2668,7 @@ Cypress.Commands.add('setConsentCookie', setConsentCookie);
 Cypress.Commands.add('setLoginCookie', setLoginCookie);
 Cypress.Commands.add('apiVerifyBogus', apiVerifyBogus);
 Cypress.Commands.add('apiCreateEvent', apiCreateEvent);
+Cypress.Commands.add('apiAttendEvent', apiAttendEvent);
 Cypress.Commands.add('apiRemoveEvent', apiRemoveEvent);
 Cypress.Commands.add('apiCreateReportBuilder', apiCreateReportBuilder);
 Cypress.Commands.add('apiRemoveReportBuilder', apiRemoveReportBuilder);

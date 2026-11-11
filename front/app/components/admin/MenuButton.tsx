@@ -6,8 +6,23 @@ import React, {
   useState,
 } from 'react';
 
-import { Box, Dropdown } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Dropdown,
+  DropdownListItem,
+  bo,
+} from '@citizenlab/cl2-component-library';
 import { createPortal } from 'react-dom';
+import styled from 'styled-components';
+
+const MenuContent = styled.div`
+  ${DropdownListItem} {
+    font-size: ${bo.controlFontSize}px;
+    line-height: 20px;
+    padding: 8px 12px;
+    border-radius: ${bo.borderRadius};
+  }
+`;
 
 interface Props {
   trigger: (props: { opened: boolean; toggle: () => void }) => ReactNode;
@@ -114,9 +129,10 @@ const MenuButton = ({
       left={portal || align === 'left' ? '0px' : undefined}
       right={!portal && align === 'right' ? '0px' : undefined}
       width={width}
+      borderRadius={bo.borderRadius}
       maxHeight={portal ? `${position.maxHeight}px` : undefined}
       zIndex="2000"
-      content={<>{children(close)}</>}
+      content={<MenuContent>{children(close)}</MenuContent>}
     />
   );
 

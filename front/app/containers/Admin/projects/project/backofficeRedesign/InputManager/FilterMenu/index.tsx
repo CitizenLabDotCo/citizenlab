@@ -63,7 +63,7 @@ const FilterMenu = ({ categories, onClearAll }: Props) => {
                   width="16px"
                   fill={colors.coolGrey600}
                 />
-                <Text variant="boSection" fontWeight="bold" as="span" m="0">
+                <Text variant="boSection" as="span" m="0">
                   {openCategory.label}
                 </Text>
               </Box>
@@ -81,6 +81,7 @@ const FilterMenu = ({ categories, onClearAll }: Props) => {
             {categories.map((category) => (
               <DropdownListItem
                 key={category.key}
+                data-cy={`e2e-manage-filter-${category.key}`}
                 type="button"
                 onClick={() => setOpenCategoryKey(category.key)}
               >

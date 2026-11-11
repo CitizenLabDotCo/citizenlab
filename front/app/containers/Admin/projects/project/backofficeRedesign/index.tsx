@@ -19,7 +19,7 @@ import { HeaderDropdownName } from './Header/HeaderDropdown';
 import PanelToggleButton from './PanelToggleButton';
 import { useParticipationPanel } from './ParticipationPanelContext';
 import MethodSettings from './Phase/MethodSettings';
-import { viewFromPathname } from './Phase/usePhaseViews';
+import { viewFromPathname, PhaseViewKey } from './Phase/usePhaseViews';
 import ViewContent from './Phase/ViewContent';
 import ProjectSetupPanel from './ProjectSetupPanel';
 import ProjectTimeline from './ProjectTimeline';
@@ -93,6 +93,8 @@ interface Props {
   draft?: Draft;
   sidePanel?: ReactNode;
   withParticipation?: boolean;
+  activeView?: PhaseViewKey;
+  viewSwitch?: ReactNode;
   children: ReactNode;
 }
 
@@ -102,6 +104,8 @@ const ProjectWorkspace = ({
   draft,
   sidePanel,
   withParticipation = true,
+  activeView: providedActiveView,
+  viewSwitch,
   children,
 }: Props) => {
   const { pending, collapsed, animate } = useParticipationPanel();
@@ -113,7 +117,7 @@ const ProjectWorkspace = ({
   const pageSave = usePageSave();
 
   const section = sectionFromPathname(pathname, project.id);
-  const activeView = viewFromPathname(pathname);
+  const activeView = providedActiveView ?? viewFromPathname(pathname);
 
   const inPhase = !!(phase || draft);
   // An open phase email takes the whole width.
@@ -121,8 +125,7 @@ const ProjectWorkspace = ({
   // The map configuration does the same, and keeps the phase panel mounted so
   // a phase that isn't saved yet keeps its edits.
   const editingMap = inPhase && !!map_config;
-  const showPanels =
-    (!phase || activeView === 'build') && !editingEmail && !editingMap;
+  const showPanels = activeView === 'build' && !editingEmail && !editingMap;
   // Once opened, the map stays mounted, so its unsaved edits wait for the
   // page's save button like the rest of the phase.
   const [mapOpened, setMapOpened] = useState(false);
@@ -217,7 +220,7 @@ const ProjectWorkspace = ({
       flexDirection="column"
       borderRadius={bo.panelBorderRadius}
       // Manage and Insights bring their own white panels.
-      background={phase && activeView !== 'build' ? undefined : colors.grey100}
+      background={activeView !== 'build' ? undefined : colors.grey100}
     >
       {mapOpened && (
         <Box display={editingMap ? 'block' : 'none'} h="100%">
@@ -253,6 +256,7 @@ const ProjectWorkspace = ({
         draftParentLabel={draft?.parentLabel}
         saveLabel={draft?.saveLabel}
         activeView={activeView}
+        viewSwitch={viewSwitch}
         editingMap={editingMap}
         section={section}
         openDropdown={openDropdown}
