@@ -14,6 +14,7 @@ import {
 import { CommonGroundResultItem } from 'api/common_ground/types';
 import { IIdeaData } from 'api/ideas/types';
 
+import postManagerMessages from 'components/admin/PostManager/messages';
 import Pagination from 'components/Pagination';
 
 import { useIntl } from 'utils/cl-intl';
@@ -23,6 +24,7 @@ import StatementRow from './StatementRow';
 
 interface Props {
   ideas: IIdeaData[];
+  showModeration: boolean;
   resultsById: Map<string, CommonGroundResultItem>;
   selectedIds: Set<string>;
   openId: string | null;
@@ -37,6 +39,7 @@ interface Props {
 
 const StatementTable = ({
   ideas,
+  showModeration,
   resultsById,
   selectedIds,
   openId,
@@ -67,6 +70,12 @@ const StatementTable = ({
               />
             </Th>
             <Th>{formatMessage(messages.statementColumn)}</Th>
+            {showModeration && (
+              <>
+                <Th>{formatMessage(postManagerMessages.assignee)}</Th>
+                <Th>{formatMessage(postManagerMessages.likes)}</Th>
+              </>
+            )}
             <Th>{formatMessage(messages.agreeColumn)}</Th>
             <Th>{formatMessage(messages.reactions)}</Th>
           </Tr>
@@ -76,6 +85,7 @@ const StatementTable = ({
             <StatementRow
               key={idea.id}
               idea={idea}
+              showModeration={showModeration}
               result={resultsById.get(idea.id)}
               selected={selectedIds.has(idea.id)}
               active={idea.id === openId}

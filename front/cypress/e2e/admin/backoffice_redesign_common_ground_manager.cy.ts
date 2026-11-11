@@ -51,6 +51,17 @@ describe('Redesigned Common Ground manager', () => {
   });
 
   afterEach(() => {
+    cy.location('pathname').then((path) => {
+      if (!path.includes(projectId) || !path.includes(phaseId)) return;
+      cy.get('body').then((body) => {
+        const ids = Array.from(body.find('[data-cy^="e2e-statement-row-"]'))
+          .map((row) =>
+            row.getAttribute('data-cy')?.replace('e2e-statement-row-', '')
+          )
+          .filter((id): id is string => !!id);
+        ids.forEach((id) => cy.apiRemoveIdea(id));
+      });
+    });
     cy.apiRemoveProject(projectId);
     if (userId) cy.apiRemoveUser(userId);
   });
@@ -78,10 +89,31 @@ describe('Redesigned Common Ground manager', () => {
           `admin/projects/${projectId}/phases/${phaseId}/ideas?project_backoffice_redesign`
         );
         cy.get(`[data-cy="e2e-statement-row-${statementId}"]`).within(() => {
-          cy.get('td').eq(2).should('have.text', '0%');
-          cy.get('td').eq(3).should('have.text', '1');
+          cy.get('td').eq(4).should('have.text', '0%');
+          cy.get('td').eq(5).should('have.text', '1');
+          cy.contains(firstTitle).click();
         });
+        cy.get('[data-cy="e2e-common-ground-reactions"]')
+          .should('contain.text', 'Unsure')
+          .and('contain.text', '100%');
       });
+  });
+
+  it('hides participant moderation columns when statement submission is off', () => {
+    cy.apiEditPhase({ phaseId, submission_enabled: false });
+    cy.apiCreateIdea({
+      phaseId,
+      ideaTitle: firstTitle,
+      ideaContent: randomString(30),
+    }).then(() => {
+      cy.visit(
+        `admin/projects/${projectId}/phases/${phaseId}/ideas?project_backoffice_redesign`
+      );
+      cy.get('thead')
+        .should('contain.text', 'Agree')
+        .and('not.contain.text', 'Assignee')
+        .and('not.contain.text', 'Likes');
+    });
   });
 
   it('refreshes the empty state and counts after importing statements', () => {

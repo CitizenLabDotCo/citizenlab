@@ -191,6 +191,7 @@ const CommonGroundManager = ({ project, phase }: Props) => {
       {pageIdeas.length > 0 && (
         <StatementTable
           ideas={pageIdeas}
+          showModeration={phase.attributes.submission_enabled}
           resultsById={resultsById}
           selectedIds={new Set(selection.selectedIds)}
           openId={previewId}

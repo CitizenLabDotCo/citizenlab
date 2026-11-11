@@ -109,11 +109,12 @@ const WorkspaceHeader = ({
   return (
     <Box
       as="header"
+      data-project-workspace-header=""
       display="flex"
       alignItems="center"
       flex={`0 0 ${HEADER_HEIGHT}`}
       height={HEADER_HEIGHT}
-      pl="26px"
+      pl="56px"
       pr="20px"
       background={colors.white}
       borderRadius={bo.panelBorderRadius}

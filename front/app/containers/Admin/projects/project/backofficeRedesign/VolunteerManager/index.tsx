@@ -38,6 +38,7 @@ const VolunteerManager = ({ phase }: Props) => {
   const [search, setSearch] = useState<string>();
   const [sort, setSort] = useState<VolunteersSort>('-created_at');
   const [page, setPage] = useState(1);
+  const [signedUp, setSignedUp] = useState<'this_week' | 'earlier'>();
 
   const { data: causes } = useCauses({ phaseId: phase.id });
   const { data: volunteers, isPlaceholderData: isChangingList } = useVolunteers(
@@ -46,6 +47,7 @@ const VolunteerManager = ({ phase }: Props) => {
       causes: causeIds,
       search,
       sort,
+      signed_up: signedUp,
       'page[number]': page,
       'page[size]': PAGE_SIZE,
     }
@@ -67,6 +69,7 @@ const VolunteerManager = ({ phase }: Props) => {
   const clearFilters = () => {
     changeCauses([]);
     changeSearch(null);
+    setSignedUp(undefined);
   };
 
   const causeData = causes?.data ?? [];
@@ -97,6 +100,28 @@ const VolunteerManager = ({ phase }: Props) => {
       causeIds.length === 1 && causeIds[0] === causeId ? [] : [causeId]
     );
 
+  const dateFilter: FilterCategory = {
+    key: 'signedUp',
+    label: formatMessage(messages.signedUpColumn),
+    icon: 'calendar',
+    options: [
+      { value: 'this_week', label: formatMessage(messages.thisWeek) },
+      { value: 'earlier', label: formatMessage(messages.earlier) },
+    ],
+    selected: signedUp ? [signedUp] : [],
+    multiple: false,
+    isActive: !!signedUp,
+    toggle: (value) => {
+      if (value !== 'this_week' && value !== 'earlier') return;
+      setSignedUp(signedUp === value ? undefined : value);
+      setPage(1);
+    },
+    clear: () => {
+      setSignedUp(undefined);
+      setPage(1);
+    },
+  };
+  const categories = [causeFilter, dateFilter];
   const total = volunteers?.meta.total;
 
   return (
@@ -141,14 +166,14 @@ const VolunteerManager = ({ phase }: Props) => {
             onChange={changeSearch}
             resultCount={total ?? 0}
           />
-          <FilterMenu categories={[causeFilter]} onClearAll={clearFilters} />
+          <FilterMenu categories={categories} onClearAll={clearFilters} />
         </Box>
       </Box>
-      <FilterChips categories={[causeFilter]} onClearAll={clearFilters} />
+      <FilterChips categories={categories} onClearAll={clearFilters} />
       <VolunteerList
         volunteers={volunteers}
         isChangingList={isChangingList}
-        hasFilters={causeIds.length > 0 || !!search}
+        hasFilters={causeIds.length > 0 || !!search || !!signedUp}
         causeTitles={causeTitles}
         sort={sort}
         onSort={changeSort}

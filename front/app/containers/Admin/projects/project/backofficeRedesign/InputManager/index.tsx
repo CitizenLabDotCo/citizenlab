@@ -10,8 +10,6 @@ import { IProjectData } from 'api/projects/types';
 
 import useLocalize from 'hooks/useLocalize';
 
-import AnalysisBanner from 'containers/Admin/projects/_shared/components/AnalysisBanner';
-
 import { ManagerType } from 'components/admin/PostManager';
 import NoPost from 'components/admin/PostManager/components/PostTable/NoPost';
 
@@ -97,7 +95,10 @@ const InputManager = ({ project, phase }: Props) => {
     counts,
   });
 
-  const listedPhase = phases?.data.find((item) => item.id === listedPhaseId);
+  const listedPhase =
+    listedPhaseId === phase.id
+      ? phase
+      : phases?.data.find((item) => item.id === listedPhaseId);
   const { available, initial } = getColumns(listedPhase, isProposals);
   const [chosenColumns, setChosenColumns] = useState<ColumnKey[] | null>(null);
   const columns = (chosenColumns ?? initial).filter((column) =>
@@ -147,7 +148,6 @@ const InputManager = ({ project, phase }: Props) => {
         />
       }
     >
-      <AnalysisBanner projectId={project.id} phaseId={phase.id} />
       <ListToolbar
         type={type}
         projectId={project.id}

@@ -1,6 +1,39 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  exportAllInputs2: {
+    id: 'app.components.admin.PostManager.exportAllInputs2',
+    defaultMessage: 'Export all inputs to Excel',
+  },
+  exportInputsProjects2: {
+    id: 'app.components.admin.PostManager.exportInputsProjects2',
+    defaultMessage: 'Export all project inputs to Excel',
+  },
+  exportSelectedInputs2: {
+    id: 'app.components.admin.PostManager.exportSelectedInputs2',
+    defaultMessage: 'Export selected inputs to Excel',
+  },
+  exportIdeasComments2: {
+    id: 'app.components.admin.PostManager.exportIdeasComments2',
+    defaultMessage: 'Export all comments to Excel',
+  },
+  exportIdeasCommentsProjects2: {
+    id: 'app.components.admin.PostManager.exportIdeasCommentsProjects2',
+    defaultMessage: 'Export all project comments to Excel',
+  },
+  exportSelectedInputsComments2: {
+    id: 'app.components.admin.PostManager.exportSelectedInputsComments2',
+    defaultMessage: 'Export comments for selected inputs to Excel',
+  },
+  exportVotesByUser2: {
+    id: 'app.components.admin.PostManager.exportVotesByUser2',
+    defaultMessage: 'Export votes by participant to Excel',
+  },
+  exportVotesByInput2: {
+    id: 'app.components.admin.PostManager.exportVotesByInput2',
+    defaultMessage: 'Export votes by option to Excel',
+  },
+
   assignedToMe: {
     id: 'app.components.admin.PostManager.assignedToMe',
     defaultMessage: 'Assigned to me',

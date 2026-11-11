@@ -15,6 +15,7 @@ export interface IVolunteersParameters {
   causes?: string[];
   search?: string;
   sort?: VolunteersSort;
+  signed_up?: 'this_week' | 'earlier';
   'page[number]'?: number;
   'page[size]'?: number;
 }

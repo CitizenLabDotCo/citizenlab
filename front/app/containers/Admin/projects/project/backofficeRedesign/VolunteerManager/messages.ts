@@ -1,6 +1,15 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  thisWeek: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.thisWeek',
+    defaultMessage: 'This week',
+  },
+  earlier: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.earlier',
+    defaultMessage: 'Earlier',
+  },
+
   volunteers: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.volunteers',
     defaultMessage: 'Volunteers',

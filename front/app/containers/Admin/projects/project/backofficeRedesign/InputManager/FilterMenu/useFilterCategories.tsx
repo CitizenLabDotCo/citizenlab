@@ -33,6 +33,7 @@ export type FilterCategoryKey =
   | 'assignee'
   | 'tags'
   | 'reply'
+  | 'signedUp'
   | 'cause'
   | 'agreement';
 

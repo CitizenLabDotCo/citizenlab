@@ -33,6 +33,7 @@ const FilterMenu = ({ categories, onClearAll }: Props) => {
 
   return (
     <MenuButton
+      portal
       align="right"
       width="280px"
       trigger={({ opened, toggle }) => (

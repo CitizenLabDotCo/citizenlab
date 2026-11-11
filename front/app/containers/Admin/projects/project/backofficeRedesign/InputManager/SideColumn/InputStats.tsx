@@ -17,9 +17,6 @@ import { PhaseCounts } from '../usePhaseCounts';
 
 import StatRow from './StatRow';
 
-// Ideation statuses that mean the input was taken on.
-const ACCEPTED_CODES = new Set(['accepted', 'implemented']);
-
 type RowFilter = Pick<
   Partial<ManagerFilters>,
   'statuses' | 'assignees' | 'reply'
@@ -92,16 +89,12 @@ const InputStats = ({
 
   const rows: Row[] = [];
 
-  if (counts) {
-    rows.push({ key: 'inputs', label: capitalizedTerms, value: counts.total });
-  }
-
   if (showVotes) {
     rows.push(
       {
-        key: 'onlineVotes',
-        label: formatMessage(messages.onlineVotes),
-        value: onlineVotes,
+        key: 'votes',
+        label: formatMessage(messages.totalVotesColumn),
+        value: onlineVotes + offlineVotes,
       },
       {
         key: 'offlineVotes',
@@ -111,43 +104,39 @@ const InputStats = ({
     );
   }
 
-  if (counts) {
-    if (counts.byAssignee) {
-      rows.push({
-        key: 'unassigned',
-        label: formatMessage(messages.unassigned),
-        value: counts.byAssignee[UNASSIGNED],
-        filter: { assignees: [UNASSIGNED] },
-      });
-    }
-
-    rows.push(
-      {
-        key: 'awaiting',
-        label: formatMessage(
-          isProposals ? messages.waitingForResponse : messages.waitingForReply
+  if (counts && !isVoting) {
+    if (isProposals) {
+      rows.push(
+        statusRow(
+          'awaiting',
+          formatMessage(messages.waitingForResponse),
+          new Set(['threshold_reached'])
         ),
+        statusRow(
+          'gatheringSupport',
+          formatMessage(messages.stillGatheringSupport),
+          new Set(['proposed'])
+        )
+      );
+    } else {
+      rows.push({
+        key: 'awaiting',
+        label: formatMessage(messages.waitingForReply),
         value: counts.awaiting,
         filter: { reply: 'awaiting' },
-      },
-      {
-        key: 'replied',
-        label: formatMessage(messages.respondedTile),
-        value: counts.replied,
-        filter: { reply: 'replied' },
-      },
-      isProposals
-        ? statusRow(
-            'gatheringSupport',
-            formatMessage(messages.stillGatheringSupport),
-            new Set(['proposed'])
-          )
-        : statusRow(
-            'accepted',
-            formatMessage(messages.acceptedTile),
-            ACCEPTED_CODES
-          )
-    );
+      });
+      if (counts.byAssignee) {
+        rows.push({
+          key: 'unassigned',
+          label: formatMessage(messages.unassigned),
+          value: counts.byAssignee[UNASSIGNED],
+          filter: { assignees: [UNASSIGNED] },
+        });
+      }
+    }
+  }
+  if (counts && isVoting && !showVotes) {
+    rows.push({ key: 'inputs', label: capitalizedTerms, value: counts.total });
   }
 
   const toggleRow = (filter: RowFilter, active: boolean) =>

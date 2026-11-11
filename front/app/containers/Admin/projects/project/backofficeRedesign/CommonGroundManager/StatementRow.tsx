@@ -10,6 +10,8 @@ import useLocalize from 'hooks/useLocalize';
 
 import { useIntl } from 'utils/cl-intl';
 
+import AssigneeMark from '../InputManager/IdeaTable/AssigneeMark';
+
 import messages from './messages';
 import { totalReactions } from './utils';
 
@@ -30,6 +32,7 @@ const cellProps = {
 
 interface Props {
   idea: IIdeaData;
+  showModeration: boolean;
   /** Absent for a statement without reactions. */
   result: CommonGroundResultItem | undefined;
   selected: boolean;
@@ -40,6 +43,7 @@ interface Props {
 
 const StatementRow = ({
   idea,
+  showModeration,
   result,
   selected,
   active,
@@ -77,6 +81,18 @@ const StatementRow = ({
           {localize(idea.attributes.title_multiloc)}
         </Text>
       </Td>
+      {showModeration && (
+        <>
+          <Td {...cellProps} onClick={onOpen}>
+            <AssigneeMark assigneeId={idea.relationships.assignee?.data?.id} />
+          </Td>
+          <Td {...cellProps} onClick={onOpen}>
+            <Text variant="boLabel" as="span" m="0">
+              {idea.attributes.likes_count}
+            </Text>
+          </Td>
+        </>
+      )}
       <Td {...cellProps} onClick={onOpen}>
         <Text variant="boLabel" as="span" m="0">
           {result?.agree_percent ?? 0}%

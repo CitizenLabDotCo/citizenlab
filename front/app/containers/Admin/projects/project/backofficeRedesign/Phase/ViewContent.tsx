@@ -43,6 +43,15 @@ const isPhaseEmpty = (
   view: Props['view'],
   { causes, pollResponses }: Responses
 ) => {
+  if (
+    view === 'manage' &&
+    ['ideation', 'proposals', 'voting'].includes(
+      attributes.participation_method
+    )
+  ) {
+    return false;
+  }
+
   switch (attributes.participation_method) {
     case 'voting':
       if (view === 'manage') return attributes.ideas_count === 0;

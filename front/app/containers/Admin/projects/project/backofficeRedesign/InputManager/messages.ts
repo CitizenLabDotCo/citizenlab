@@ -1,6 +1,75 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  removeOne: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.removeOne',
+    defaultMessage: 'Remove one',
+  },
+  addOne: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.addOne',
+    defaultMessage: 'Add one',
+  },
+
+  importOptions: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.importOptions',
+    defaultMessage: 'Import options',
+  },
+
+  totalVotesColumn: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.totalVotesColumn',
+    defaultMessage: 'Votes',
+  },
+  onlineColumn: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.onlineColumn',
+    defaultMessage: 'Online',
+  },
+  offlineColumn: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.offlineColumn',
+    defaultMessage: 'Offline',
+  },
+
+  offlineVotesHelp: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.offlineVotesHelp',
+    defaultMessage: 'Add votes collected on paper or in person.',
+  },
+  offlineParticipants: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.offlineParticipants',
+    defaultMessage: 'Offline participants',
+  },
+  offlineVotesSaveError: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.offlineVotesSaveError',
+    defaultMessage: 'The offline votes could not be saved. Please try again.',
+  },
+  saveOfflineVotes: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.saveOfflineVotes',
+    defaultMessage: 'Save offline votes',
+  },
+
+  addOfflineVotes: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.addOfflineVotes',
+    defaultMessage: 'Add offline votes',
+  },
+  exportParticipationData: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.exportParticipationData',
+    defaultMessage: 'Export participation data.',
+  },
+  proposalVotes: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.proposalVotes',
+    defaultMessage: 'Votes',
+  },
+  timeLeft: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.timeLeft',
+    defaultMessage: 'Time left',
+  },
+  closed: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.closed',
+    defaultMessage: 'Closed',
+  },
+  daysLeft: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.daysLeft',
+    defaultMessage: '{days, plural, one {# day left} other {# days left}}',
+  },
+
   statusColumn: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.statusColumn',
     defaultMessage: 'Status',

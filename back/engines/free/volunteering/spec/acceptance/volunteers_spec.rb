@@ -144,6 +144,7 @@ resource 'Volunteering Volunteers' do
       parameter :causes, 'Filter by cause ids', type: :array, required: false
       parameter :search, 'Filter by the volunteer\'s name or email', required: false
       parameter :sort, 'Either created_at or -created_at (default)', required: false
+      parameter :signed_up, 'Either this_week or earlier, relative to the start of the current week', required: false
 
       let(:phase_id) { @phase.id }
       let(:phase_volunteers) { [@volunteer1, *@other_volunteers, *@volunteers2] }
@@ -170,6 +171,32 @@ resource 'Volunteering Volunteers' do
         json_response = json_parse(response_body)
         expect(json_response[:data].pluck(:id)).to eq [@volunteer1.id]
         expect(json_response.dig(:meta, :total)).to eq 1
+      end
+
+      example 'Filter signups this week before paginating' do
+        travel_to Time.zone.local(2026, 11, 11, 12) do
+          phase_volunteers.each { |volunteer| volunteer.update!(created_at: 2.weeks.ago) }
+          @volunteer1.update!(created_at: Time.zone.now.beginning_of_week)
+
+          do_request(signed_up: 'this_week', page: { size: 1 })
+
+          assert_status 200
+          expect(json_parse(response_body)[:data].pluck(:id)).to eq [@volunteer1.id]
+          expect(json_parse(response_body).dig(:meta, :total)).to eq 1
+        end
+      end
+
+      example 'Earlier signups exclude the week boundary and respect cause filtering' do
+        travel_to Time.zone.local(2026, 11, 11, 12) do
+          phase_volunteers.each { |volunteer| volunteer.update!(created_at: 2.weeks.ago) }
+          @volunteer1.update!(created_at: Time.zone.now.beginning_of_week)
+
+          do_request(signed_up: 'earlier', causes: [@cause1.id])
+
+          assert_status 200
+          expect(json_parse(response_body)[:data].pluck(:id)).to match_array @other_volunteers.map(&:id)
+          expect(json_parse(response_body).dig(:meta, :total)).to eq @other_volunteers.size
+        end
       end
 
       describe 'when resident' do

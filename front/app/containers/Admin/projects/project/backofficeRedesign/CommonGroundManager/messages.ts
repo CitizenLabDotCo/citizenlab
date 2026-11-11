@@ -1,6 +1,23 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  agree: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.agree',
+    defaultMessage: 'Agree',
+  },
+  disagree: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.disagree',
+    defaultMessage: 'Disagree',
+  },
+  unsure: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.unsure',
+    defaultMessage: 'Unsure',
+  },
+  notSeenYet: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.notSeenYet',
+    defaultMessage: 'Not seen yet',
+  },
+
   statements: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.statements',
     defaultMessage: 'Statements',

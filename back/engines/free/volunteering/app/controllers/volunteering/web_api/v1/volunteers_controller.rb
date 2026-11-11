@@ -31,6 +31,14 @@ module Volunteering
             .includes(:user)
           @volunteers = @volunteers.where(cause_id: params[:causes]) if params[:causes].present?
           @volunteers = @volunteers.where(user: User.search_by_all(params[:search])) if params[:search].present?
+          week_start = Time.zone.now.beginning_of_week
+          case params[:signed_up]
+          when 'this_week'
+            @volunteers = @volunteers.where(created_at: week_start..)
+          when 'earlier'
+            @volunteers = @volunteers.where(created_at: ...week_start)
+          end
+
           direction = params[:sort] == 'created_at' ? :asc : :desc
           # The id keeps the order stable across pages when timestamps tie.
           @volunteers = @volunteers.order(created_at: direction, id: direction)

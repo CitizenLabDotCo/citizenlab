@@ -8,6 +8,8 @@ import { MessageDescriptor } from 'utils/cl-intl';
 import messages from './messages';
 
 export type ColumnKey =
+  | 'support'
+  | 'timeLeft'
   | 'status'
   | 'assignee'
   | 'tags'
@@ -15,6 +17,7 @@ export type ColumnKey =
   | 'dislikes'
   | 'comments'
   | 'published'
+  | 'totalVotes'
   | 'votes'
   | 'offlineVotes'
   | 'picks'
@@ -31,6 +34,8 @@ interface Column {
 }
 
 export const COLUMNS: Record<ColumnKey, Column> = {
+  support: { label: messages.proposalVotes, sort: 'likes_count' },
+  timeLeft: { label: messages.timeLeft },
   status: { label: messages.statusColumn, sort: 'status' },
   assignee: { label: postManagerMessages.assignee, sort: 'assignee' },
   tags: { label: messages.tagsColumn },
@@ -38,9 +43,10 @@ export const COLUMNS: Record<ColumnKey, Column> = {
   dislikes: { label: postManagerMessages.dislikes, sort: 'dislikes_count' },
   comments: { label: postManagerMessages.comments, sort: 'comments_count' },
   published: { label: messages.publishedColumn, sort: 'new' },
-  votes: { label: postManagerMessages.onlineVotes, sort: 'votes_count' },
+  totalVotes: { label: messages.totalVotesColumn, sort: 'total_votes' },
+  votes: { label: messages.onlineColumn, sort: 'votes_count' },
   offlineVotes: {
-    label: postManagerMessages.offlineVotes,
+    label: messages.offlineColumn,
     sort: 'manual_votes_amount',
   },
   picks: {
@@ -61,9 +67,11 @@ export const COLUMNS: Record<ColumnKey, Column> = {
 };
 
 const COLUMN_ORDER: ColumnKey[] = [
+  'support',
   'status',
   'assignee',
   'tags',
+  'totalVotes',
   'votes',
   'offlineVotes',
   'picks',
@@ -73,6 +81,7 @@ const COLUMN_ORDER: ColumnKey[] = [
   'likes',
   'dislikes',
   'comments',
+  'timeLeft',
   'published',
   'replied',
   'imported',
@@ -92,8 +101,14 @@ const GENERAL_COLUMNS: ColumnKey[] = [
 
 const VOTING_COLUMNS: Record<string, ColumnKey[]> = {
   budgeting: ['picks', 'offlinePicks', 'budget', 'comments'],
-  multiple_voting: ['votes', 'offlineVotes', 'participants', 'comments'],
-  single_voting: ['votes', 'offlineVotes', 'comments'],
+  multiple_voting: [
+    'totalVotes',
+    'votes',
+    'offlineVotes',
+    'participants',
+    'comments',
+  ],
+  single_voting: ['totalVotes', 'votes', 'offlineVotes', 'comments'],
 };
 
 export const orderColumns = (columns: ColumnKey[]) =>
@@ -104,8 +119,15 @@ export const getColumns = (
   isProposals: boolean
 ): { available: ColumnKey[]; initial: ColumnKey[] } => {
   if (isProposals) {
-    const available = GENERAL_COLUMNS.filter((column) => column !== 'dislikes');
-    return { available, initial: ['status', 'assignee', 'imported'] };
+    const available = orderColumns([
+      ...GENERAL_COLUMNS.filter((column) => column !== 'dislikes'),
+      'support',
+      'timeLeft',
+    ]);
+    return {
+      available,
+      initial: ['support', 'status', 'comments', 'timeLeft'],
+    };
   }
 
   const votingMethod = phase?.attributes.voting_method;
@@ -113,6 +135,6 @@ export const getColumns = (
 
   return {
     available: orderColumns([...GENERAL_COLUMNS, ...votingColumns]),
-    initial: orderColumns(['status', 'assignee', 'imported', ...votingColumns]),
+    initial: votingMethod ? votingColumns : ['status', 'imported'],
   };
 };

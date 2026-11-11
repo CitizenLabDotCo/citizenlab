@@ -27,6 +27,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 import AssigneeProperty from './AssigneeProperty';
+import CommonGroundReactions from './CommonGroundReactions';
 import IdeaContent from './IdeaContent';
 import PhasesProperty from './PhasesProperty';
 import QuickActions from './QuickActions';
@@ -128,6 +129,8 @@ const IdeaOverview = ({
           <QuickActions idea={idea} onEdit={onEdit} onDeleted={onDeleted} />
         </Box>
       </Box>
+
+      <CommonGroundReactions phase={listedPhase} ideaId={idea.id} />
 
       <Divider m="0" />
 
