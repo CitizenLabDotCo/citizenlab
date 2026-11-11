@@ -9,6 +9,7 @@ RSpec.describe Reaction do
   end
 
   it_behaves_like 'location_trackable_participation'
+  it_behaves_like 'device_trackable_participation'
 
   context 'Default factory' do
     it 'is valid' do

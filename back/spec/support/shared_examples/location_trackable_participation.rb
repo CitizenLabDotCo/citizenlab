@@ -7,6 +7,11 @@ RSpec.shared_examples 'location_trackable_participation' do |factory_name: nil|
     factory_name ||= described_class.model_name.singular.to_sym
     instance = build(factory_name)
     instance.project.update!(track_participation_location: true)
+    # Nothing is tracked outside a phase.
+    unless TimelineService.new.current_phase_not_archived(instance.project)
+      create(:phase, project: instance.project, start_at: 1.week.ago, end_at: 1.week.from_now)
+      instance.project.phases.reload
+    end
     instance
   end
 

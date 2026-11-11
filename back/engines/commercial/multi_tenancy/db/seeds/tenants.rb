@@ -408,6 +408,10 @@ module MultiTenancy
               enabled: false,
               allowed: false
             },
+            participation_device_tracking: {
+              enabled: false,
+              allowed: false
+            },
             spaces: {
               enabled: false,
               allowed: false

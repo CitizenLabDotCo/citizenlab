@@ -5,7 +5,7 @@ module LocationTrackableParticipation
 
   included do
     has_one :participation_location, as: :trackable, dependent: :destroy, inverse_of: :trackable
-    after_create :track_participation_location
+    after_save :track_participation_location
   end
 
   # The value of one ParticipationLocation::EXPORT_COLUMNS attribute for

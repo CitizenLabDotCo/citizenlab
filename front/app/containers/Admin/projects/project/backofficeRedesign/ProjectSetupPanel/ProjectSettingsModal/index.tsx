@@ -8,6 +8,7 @@ import projectsKeys from 'api/projects/keys';
 import { IProjectData, IUpdatedProjectProperties } from 'api/projects/types';
 import useUpdateProject from 'api/projects/useUpdateProject';
 
+import ParticipationDeviceToggle from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ParticipationDeviceToggle';
 import ParticipationLocationToggle from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ParticipationLocationToggle';
 import { SpaceAndFolderId } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/types';
 import { useValidateProjectContext } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/utils';
@@ -136,6 +137,10 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
           />
           <ParticipationLocationToggle
             checked={projectAttrs.track_participation_location}
+            onChange={applyDiff}
+          />
+          <ParticipationDeviceToggle
+            checked={projectAttrs.track_participation_device}
             onChange={applyDiff}
           />
           <Divider />

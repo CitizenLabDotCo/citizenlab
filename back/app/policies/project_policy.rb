@@ -180,6 +180,10 @@ class ProjectPolicy < ApplicationPolicy
       shared += %i[track_participation_location]
     end
 
+    if AppConfiguration.instance.feature_activated? 'participation_device_tracking'
+      shared += %i[track_participation_device]
+    end
+
     shared
   end
 

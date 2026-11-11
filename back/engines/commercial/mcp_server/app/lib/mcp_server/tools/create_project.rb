@@ -30,6 +30,7 @@ class McpServer::Tools::CreateProject < McpServer::BaseTool
         include_all_areas: { type: 'boolean', description: 'Whether the project is associated with all areas.' },
         listed: { type: 'boolean', description: 'Whether the project is listed/discoverable (vs accessible by link only).' },
         track_participation_location: { type: 'boolean', description: "Whether to track participants' location (requires the participation-location feature)." },
+        track_participation_device: { type: 'boolean', description: "Whether to track participants' device (requires the participation-device feature)." },
         remote_header_bg_url: { type: %w[string null], format: 'uri', description: <<~DESC.squish }
           Public URL of the image to download and use as the header background.
           Pass null to remove the existing header background when updating.

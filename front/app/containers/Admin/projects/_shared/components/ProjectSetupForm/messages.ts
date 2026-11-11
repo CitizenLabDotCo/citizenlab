@@ -52,4 +52,13 @@ export default defineMessages({
     defaultMessage:
       'Record the approximate location (city, region and country) of participants when they take part in this project. IP addresses are not stored.',
   },
+  participationDeviceTitle: {
+    id: 'app.containers.Admin.projects.project.general.components.ParticipationDeviceToggle.participationDeviceTitle',
+    defaultMessage: 'Participant device',
+  },
+  participationDeviceLabel: {
+    id: 'app.containers.Admin.projects.project.general.components.ParticipationDeviceToggle.participationDeviceLabel',
+    defaultMessage:
+      'Record the device, browser and operating system participants use when they take part in this project, with a device ID that is the same for one device within the project. This helps spot one person taking part several times. IP addresses are not stored.',
+  },
 });

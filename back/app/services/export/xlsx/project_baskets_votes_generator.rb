@@ -18,7 +18,7 @@ module Export
       private
 
       def generate_phase_baskets_votes_sheet(workbook, sheet_name, phase)
-        baskets = Basket.where(phase: phase).where.not(submitted_at: nil).includes(:baskets_ideas, :participation_location, user: :custom_field_answers)
+        baskets = Basket.where(phase: phase).where.not(submitted_at: nil).includes(:baskets_ideas, :participation_location, :participation_device, user: :custom_field_answers)
         columns = xlsx_service.user_custom_field_columns(:user)
         ideas = phase.ideas
         ideas_to_titles = add_suffix_to_duplicate_titles(ideas) # avoid losing columns with duplicate headers
@@ -37,6 +37,7 @@ module Export
         }
 
         columns += xlsx_service.participation_location_columns if ParticipationLocationService.enabled_for?(phase.project)
+        columns += xlsx_service.participation_device_columns if ParticipationDeviceService.enabled_for?(phase.project)
 
         xlsx_service.generate_sheet workbook, sheet_name, columns, baskets
       end

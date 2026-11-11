@@ -95,15 +95,20 @@ describe Export::InputReportFields do
           participation_location_latitude participation_location_longitude
         ]
       end
+      let(:device_keys) do
+        %w[participation_device_hash participation_device_type participation_device_browser participation_device_os]
+      end
 
       before do
         create(:idea_status_proposed)
         SettingsService.new.activate_feature!('participation_location_tracking')
-        phase.project.update!(track_participation_location: true)
+        SettingsService.new.activate_feature!('participation_device_tracking')
+        phase.project.update!(track_participation_location: true, track_participation_device: true)
       end
 
-      it 'are the last columns when tracking is on for the project' do
-        expect(keys_of(described_class.new(phase).all).last(location_keys.size)).to eq location_keys
+      it 'come last, followed by the device columns, when tracking is on for the project' do
+        keys = keys_of(described_class.new(phase).all)
+        expect(keys.last(location_keys.size + device_keys.size)).to eq location_keys + device_keys
       end
 
       it 'read the location recorded for the input' do
@@ -156,14 +161,36 @@ describe Export::InputReportFields do
         expect(city_field.value_from(input)).to be_nil
       end
 
-      it 'are excluded when the feature is off' do
+      it 'leave out only the location columns when the location feature is off' do
         SettingsService.new.deactivate_feature!('participation_location_tracking')
-        expect(keys_of(described_class.new(phase).all)).not_to include(*location_keys)
+        keys = keys_of(described_class.new(phase).all)
+
+        expect(keys.last(device_keys.size)).to eq device_keys
+        expect(keys).not_to include(*location_keys)
       end
 
-      it 'are excluded when the project does not track location' do
+      it 'leave out only the device columns when the device feature is off' do
+        SettingsService.new.deactivate_feature!('participation_device_tracking')
+        keys = keys_of(described_class.new(phase).all)
+
+        expect(keys.last(location_keys.size)).to eq location_keys
+        expect(keys).not_to include(*device_keys)
+      end
+
+      it 'leave out only the location columns when the project does not track location' do
         phase.project.update!(track_participation_location: false)
-        expect(keys_of(described_class.new(phase).all)).not_to include(*location_keys)
+        keys = keys_of(described_class.new(phase).all)
+
+        expect(keys).not_to include(*location_keys)
+        expect(keys).to include(*device_keys)
+      end
+
+      it 'leave out only the device columns when the project does not track devices' do
+        phase.project.update!(track_participation_device: false)
+        keys = keys_of(described_class.new(phase).all)
+
+        expect(keys).to include(*location_keys)
+        expect(keys).not_to include(*device_keys)
       end
 
       it 'are excluded when private attributes are left out of exports' do
@@ -174,11 +201,21 @@ describe Export::InputReportFields do
         expect(keys_of(described_class.new(phase).all)).not_to include(*location_keys)
       end
 
-      it 'flag the city and coordinates as personal data for review' do
+      it 'flag the city, coordinates and device ID as personal data for review' do
         by_key = described_class.new(phase).reviewable_fields.index_by(&:key)
         expect(by_key['participation_location_city'].personal_data).to be true
         expect(by_key['participation_location_latitude'].personal_data).to be true
+        expect(by_key['participation_device_hash'].personal_data).to be true
         expect(by_key['participation_location_country'].personal_data).to be false
+        expect(by_key['participation_device_browser'].personal_data).to be false
+      end
+
+      it 'leave the device blank for an input posted anonymously' do
+        input = create(:native_survey_response, project: phase.project, creation_phase: phase, anonymous: true)
+        create(:participation_device, trackable: input, browser_name: 'Firefox')
+        browser_field = described_class.new(phase).all.find { |field| field.key == 'participation_device_browser' }
+
+        expect(browser_field.value_from(input.reload)).to be_nil
       end
     end
   end

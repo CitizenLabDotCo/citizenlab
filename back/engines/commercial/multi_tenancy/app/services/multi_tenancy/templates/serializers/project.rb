@@ -15,6 +15,7 @@ module MultiTenancy
           listed
           live_auto_input_topics_enabled
           title_multiloc
+          track_participation_device
           track_participation_location
           visible_to
         ]

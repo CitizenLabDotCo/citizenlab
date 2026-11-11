@@ -51,6 +51,7 @@ export const project1: IProjectData = {
     publication_email_enabled: true,
     global_publication_email_enabled: true,
     track_participation_location: false,
+    track_participation_device: false,
   },
   relationships: {
     admin_publication: {
@@ -155,6 +156,7 @@ export const project2: IProjectData = {
     publication_email_enabled: true,
     global_publication_email_enabled: true,
     track_participation_location: false,
+    track_participation_device: false,
   },
   relationships: {
     admin_publication: {
@@ -260,6 +262,7 @@ const votingProject: IProject = {
       publication_email_enabled: true,
       global_publication_email_enabled: true,
       track_participation_location: false,
+      track_participation_device: false,
     },
     relationships: {
       admin_publication: {

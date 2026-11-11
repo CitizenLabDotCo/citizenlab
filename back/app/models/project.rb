@@ -28,6 +28,7 @@
 #  live_auto_input_topics_enabled :boolean          default(FALSE), not null
 #  space_id                       :uuid
 #  completed_setup_steps          :jsonb            not null
+#  track_participation_device     :boolean          default(FALSE), not null
 #
 # Indexes
 #

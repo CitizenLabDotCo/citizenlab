@@ -39,6 +39,7 @@
 class Comment < ApplicationRecord
   include AnonymousParticipation
   include LocationTrackableParticipation
+  include DeviceTrackableParticipation
 
   # `SanitizationService` features allowed in the body, shared with anything that re-sanitizes a
   # stored body (e.g. machine translations). `:link` is safe only because `sanitize_comment_body`

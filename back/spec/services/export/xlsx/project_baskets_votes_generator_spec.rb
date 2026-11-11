@@ -70,18 +70,32 @@ describe Export::Xlsx::ProjectBasketsVotesGenerator do
       expect(workbook.worksheets[0].sheet_data.size).to eq(2) # Header row + 1 voter
     end
 
-    it 'adds participant location columns last when the project tracks location' do
+    it 'adds participant location and device columns last when the project tracks location' do
       SettingsService.new.activate_feature!('participation_location_tracking')
-      project.update!(track_participation_location: true)
+      SettingsService.new.activate_feature!('participation_device_tracking')
+      project.update!(track_participation_location: true, track_participation_device: true)
       create(:participation_location, trackable: basket3, city: 'Brussels')
+      create(:participation_device, trackable: basket3, browser_name: 'Safari')
 
       header_row = workbook.worksheets[1][0].cells.map(&:value)
       user_row = workbook.worksheets[1][1].cells.map(&:value)
 
-      expect(header_row.last(5)).to eq [
-        'Participant country', 'Participant region', 'Participant city', 'Participant latitude', 'Participant longitude'
+      expect(header_row.last(9)).to eq [
+        'Participant country', 'Participant region', 'Participant city', 'Participant latitude', 'Participant longitude',
+        'Participant device ID', 'Participant device type', 'Participant browser', 'Participant operating system'
       ]
       expect(user_row[header_row.index('Participant city')]).to eq 'Brussels'
+      expect(user_row[header_row.index('Participant browser')]).to eq 'Safari'
+    end
+
+    it 'leaves out the device columns when the device feature is off' do
+      SettingsService.new.activate_feature!('participation_location_tracking')
+      project.update!(track_participation_location: true)
+
+      header_row = workbook.worksheets[1][0].cells.map(&:value)
+
+      expect(header_row).to include('Participant city')
+      expect(header_row).not_to include('Participant device ID')
     end
 
     it 'contains one column for each idea in a phase, on each respective worksheet' do

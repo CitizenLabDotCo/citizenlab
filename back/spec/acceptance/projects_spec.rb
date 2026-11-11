@@ -1268,17 +1268,19 @@ resource 'Projects' do
       describe 'when the project tracks participant location' do
         before do
           SettingsService.new.activate_feature!('participation_location_tracking')
-          project.update!(track_participation_location: true)
+          SettingsService.new.activate_feature!('participation_device_tracking')
+          project.update!(track_participation_location: true, track_participation_device: true)
           create(:participation_location, trackable: survey_response, city: 'Brussels')
         end
 
-        example 'Adds the participant location as the last columns', document: false do
+        example 'Adds the participant location and device as the last columns', document: false do
           do_request
           assert_status 200
           survey_sheet = xlsx_contents(response_body).find { |sheet| sheet[:sheet_name] == 'Phase 2 Native survey' }
 
-          expect(survey_sheet[:column_headers].last(5)).to eq [
-            'Participant country', 'Participant region', 'Participant city', 'Participant latitude', 'Participant longitude'
+          expect(survey_sheet[:column_headers].last(9)).to eq [
+            'Participant country', 'Participant region', 'Participant city', 'Participant latitude', 'Participant longitude',
+            'Participant device ID', 'Participant device type', 'Participant browser', 'Participant operating system'
           ]
           expect(survey_sheet[:rows].first[survey_sheet[:column_headers].index('Participant city')]).to eq 'Brussels'
         end

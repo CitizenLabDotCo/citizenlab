@@ -961,6 +961,18 @@
         }
       },
 
+      "participation_device_tracking": {
+        "type": "object",
+        "title": "Participation device tracking",
+        "description": "Also records the device of participants when they submit ideas, comments, reactions, or votes: a device ID, the browser, the operating system and the device type. The device ID is a one-way hash of the IP address and browser, which is the same for one device within a project. IP addresses are not stored.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "anonymous_participation": {
         "type": "object",
         "title": "Anonymous participation",

@@ -207,7 +207,10 @@ class XlsxService
     ]
     columns.concat user_custom_field_columns(:author)
     columns.reject! { |c| %w[author_name author_email author_id].include?(c[:header]) } unless view_private_attributes
-    columns.concat participation_location_columns if view_private_attributes && ParticipationLocationService.enabled_for?(project)
+    if view_private_attributes
+      columns.concat participation_location_columns if ParticipationLocationService.enabled_for?(project)
+      columns.concat participation_device_columns if ParticipationDeviceService.enabled_for?(project)
+    end
     generate_xlsx 'Comments', columns, comments
   end
 
@@ -239,13 +242,23 @@ class XlsxService
     end
   end
 
-  # Where the participant was when they created each record (a comment,
+  # Where the participant was when they submitted each record (a comment,
   # basket, ...).
   def participation_location_columns
     ParticipationLocation::EXPORT_COLUMNS.map do |key, attribute|
       {
         header: I18n.t(key, scope: 'xlsx_export.column_headers'),
         f: ->(record) { record.participation_location_for_export(attribute) }
+      }
+    end
+  end
+
+  # The device each record (a comment, basket, ...) was submitted from.
+  def participation_device_columns
+    ParticipationDevice::EXPORT_COLUMNS.map do |key, attribute|
+      {
+        header: I18n.t(key, scope: 'xlsx_export.column_headers'),
+        f: ->(record) { record.participation_device_for_export(attribute) }
       }
     end
   end

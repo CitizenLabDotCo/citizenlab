@@ -15,7 +15,8 @@ class ParticipationLocationService
     end
 
     def track(trackable, location_attrs)
-      return unless should_track?(trackable)
+      return unless enabled_for?(trackable.project) && ParticipationTrackingService.track?(trackable)
+      return if trackable.participation_location
 
       attrs = location_attrs&.compact_blank
       if attrs.blank?
@@ -26,7 +27,7 @@ class ParticipationLocationService
         return
       end
 
-      ParticipationLocation.create!(trackable: trackable, **attrs)
+      trackable.create_participation_location!(**attrs)
     end
 
     def enabled_for?(project)
@@ -35,12 +36,6 @@ class ParticipationLocationService
     end
 
     private
-
-    # Participants who choose to post anonymously are not located, since the
-    # location could identify them.
-    def should_track?(trackable)
-      enabled_for?(trackable.project) && !trackable.try(:anonymous?)
-    end
 
     def parse_decimal(value)
       BigDecimal(value.to_s, exception: false)
