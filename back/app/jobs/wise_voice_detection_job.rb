@@ -39,6 +39,6 @@ class WiseVoiceDetectionJob < ApplicationJob
   end
 
   def llm
-    Analysis::LLM::GPT54.new
+    LLMSelector.new.llm_class_for_use_case('wise_voice_detection').new
   end
 end

@@ -140,9 +140,15 @@ sv-SE:
           title: Vad är ditt ämne?
   errors:
     messages:
+      ai_processing_not_allowed: får inte behandlas av AI
       in_the_past: måste ligga i framtiden
       max_must_be_greater_than_min_characters: Maxvärdet måste vara större än minvärdet.
       max_must_be_greater_than_or_equal_to_min_select_count: Maxvärdet måste vara större än eller lika med minimivärdet.
+      not_found: hittades inte
+      not_in_project: måste vara filer från det här projektet
+      not_utf8: måste sparas som UTF-8
+      too_many_in_conversation: är för många för en konversation
+      unsupported_file_type: måste vara PDF-filer på högst 4 MB, eller Markdown- eller textfiler på högst 100 KB
   events:
     council_meeting_description: |
       <p>Under det här rådsmötet presenteras medborgarinitiativen som fick 100 röster på mindre än 3 månader.</p><p>Rådet delar sedan med sig av sin syn på respektive idé.</p>
@@ -180,6 +186,7 @@ sv-SE:
       logic_no_further_questions: Baserat på dina svar behöver du <strong>inte</strong> besvara fler frågor.
       logic_section: Avsnitt %{letter}
       matrix_print_description: För varje rad markerar du en cirkel med ett kryss för att ange din preferens.
+      multipoint_print_description: Vänligen rita ett X på kartan nedan för varje plats du vill lägga till.
       optional: valfri
       page: Sida
       permission: Tillstånd

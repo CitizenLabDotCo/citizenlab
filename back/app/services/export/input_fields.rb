@@ -6,7 +6,8 @@ module Export
   #   - form_fields: the form questions, plus any user/registration fields that
   #     are embedded in the form (answered on, and read from, the input);
   #   - user_fields: registration fields collected out-of-form (answered on, and
-  #     read from, the author) — empty when the form already embeds them.
+  #     read from, the author) — empty when the form already embeds them, or
+  #     when the survey is fully anonymous.
   # `pmethod.custom_form` resolves the form from the right context per method
   # (the phase for surveys/proposals, the project for ideation).
   class InputFields
@@ -23,7 +24,8 @@ module Export
     end
 
     def user_fields
-      return [] if @pmethod.user_fields_in_form_enabled?
+      # A fully anonymous survey reports no demographics
+      return [] if @pmethod.user_fields_in_form_enabled? || @pmethod.fully_anonymous?
 
       @user_fields ||= CustomField.registration.includes(:options).order(:ordering).to_a
     end

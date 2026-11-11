@@ -532,6 +532,32 @@ RSpec.describe Idea do
     end
   end
 
+  describe 'order_status_priority' do
+    let(:proposed) { create(:proposals_status, code: 'proposed', ordering: 0) }
+    let(:expired) { create(:proposal_status_expired, ordering: 1) }
+
+    it 'sorts from low status to high status' do
+      expired_idea = create(:proposal, idea_status: expired)
+      proposed_idea = create(:proposal, idea_status: proposed)
+
+      expect(described_class.order_status_priority.map(&:id)).to eq [proposed_idea.id, expired_idea.id]
+    end
+
+    it 'sorts the newest first within a status' do
+      older = create(:proposal, idea_status: proposed, published_at: 2.days.ago)
+      newer = create(:proposal, idea_status: proposed, published_at: 1.hour.ago)
+
+      expect(described_class.order_status_priority.map(&:id)).to eq [newer.id, older.id]
+    end
+
+    it 'puts inputs without a published_at last within a status' do
+      published = create(:proposal, idea_status: proposed, published_at: 2.days.ago)
+      submitted = create(:proposal, idea_status: proposed, publication_status: 'submitted', published_at: nil)
+
+      expect(described_class.order_status_priority.map(&:id)).to eq [published.id, submitted.id]
+    end
+  end
+
   describe 'activity_after' do
     let_it_be(:recent_idea) { create(:idea).tap { |idea| idea.update!(updated_at: 1.day.ago) } }
     let_it_be(:old_idea) { create(:idea).tap { |idea| idea.update!(updated_at: 30.days.ago) } }

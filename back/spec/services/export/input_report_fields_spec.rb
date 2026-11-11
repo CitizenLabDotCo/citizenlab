@@ -181,6 +181,48 @@ describe Export::InputReportFields do
         expect(by_key['participation_location_country'].personal_data).to be false
       end
     end
+
+    context 'when the survey is fully anonymous' do
+      before do
+        create(:permission, action: 'posting_idea', permission_scope: phase, user_data_collection: 'anonymous')
+        config = AppConfiguration.instance
+        config.settings['core']['private_attributes_in_export'] = true
+        config.save!
+      end
+
+      it 'reports the questions without the author columns or the user fields' do
+        keys = keys_of(described_class.new(phase).all)
+        expect(keys).to include('input_id', 'q_select')
+        expect(keys).not_to include('author_fullname', 'author_email', 'author_id', 'residence')
+      end
+
+      it 'lists neither the author columns nor the user fields for review' do
+        keys = described_class.new(phase).reviewable_fields.map(&:key)
+        expect(keys).to include('q_select')
+        expect(keys).not_to include('author_fullname', 'author_email', 'author_id', 'residence')
+      end
+    end
+
+    context 'when the survey collects demographics only' do
+      before do
+        create(:permission, action: 'posting_idea', permission_scope: phase, user_data_collection: 'demographics_only')
+        config = AppConfiguration.instance
+        config.settings['core']['private_attributes_in_export'] = true
+        config.save!
+      end
+
+      it 'reports the user fields but not the author columns' do
+        keys = keys_of(described_class.new(phase).all)
+        expect(keys).to include('input_id', 'q_select', 'residence')
+        expect(keys).not_to include('author_fullname', 'author_email', 'author_id')
+      end
+
+      it 'lists the user fields but not the author columns for review' do
+        keys = described_class.new(phase).reviewable_fields.map(&:key)
+        expect(keys).to include('q_select', 'residence')
+        expect(keys).not_to include('author_fullname', 'author_email', 'author_id')
+      end
+    end
   end
 
   describe 'for an ideation phase' do

@@ -6,6 +6,22 @@ RSpec.describe ReportBuilder::QueryRepository do
   let(:query_repository) { described_class.new(build(:user)) }
   let(:props) { {} }
 
+  describe '.normalize_props' do
+    it 'snakecases camelCase keys' do
+      expect(described_class.normalize_props({ 'phaseId' => 'an-id' })).to eq({ 'phase_id' => 'an-id' })
+    end
+
+    it 'leaves snake_case keys untouched' do
+      expect(described_class.normalize_props({ 'phase_id' => 'an-id' })).to eq({ 'phase_id' => 'an-id' })
+    end
+
+    it 'keeps the last value when both spellings of a key are given' do
+      props = { 'project_id' => 'first', 'projectId' => 'last' }
+
+      expect(described_class.normalize_props(props)).to eq({ 'project_id' => 'last' })
+    end
+  end
+
   describe '#data_by_graph' do
     context 'when graph_resolved_name is valid' do
       let(:graph_resolved_name) { 'VisitorsWidget' }

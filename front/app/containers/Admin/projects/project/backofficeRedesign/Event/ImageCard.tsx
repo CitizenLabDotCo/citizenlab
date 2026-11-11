@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { UploadFile } from 'typings';
 
+import SetupCard from 'containers/Admin/projects/_shared/components/SetupCard';
 import { EventForm } from 'containers/Admin/projects/_shared/events/useEventForm';
 
 import ImagesDropzone from 'components/UI/ImagesDropzone';
@@ -12,7 +13,6 @@ import { useIntl } from 'utils/cl-intl';
 import ImageCropModal from './ImageCropModal';
 import ImageFileRow from './ImageFileRow';
 import messages from './messages';
-import SetupCard from './SetupCard';
 
 interface Props {
   form: EventForm;
@@ -61,6 +61,8 @@ const ImageCard = ({ form }: Props) => {
       )}
       <ImageCropModal
         opened={cropOpen && form.imageNeedsCrop}
+        aspectRatioWidth={3}
+        aspectRatioHeight={1}
         image={form.image}
         onCrop={form.cropImage}
         onRemove={form.removeImage}

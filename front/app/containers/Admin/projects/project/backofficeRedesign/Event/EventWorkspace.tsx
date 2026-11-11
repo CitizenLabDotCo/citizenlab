@@ -7,12 +7,16 @@ import useLocalize from 'hooks/useLocalize';
 import useEventForm from 'containers/Admin/projects/_shared/events/useEventForm';
 import eventMessages from 'containers/Admin/projects/project/events/messages';
 
+import {
+  usePageSave,
+  useRegisterPageSaver,
+} from 'components/admin/PageSaveContext';
+
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
 import ProjectWorkspace from '..';
-import { usePageSave, useRegisterPageSaver } from '../_shared/PageSaveContext';
-import projectMessages from '../messages';
+import backofficeRedesignMessages from '../messages';
 
 import EventPreview from './EventPreview';
 import EventSetup from './EventSetup';
@@ -47,19 +51,20 @@ const EventWorkspace = ({ project, eventId, onCreate }: Props) => {
   const title = localize(form.attributes.title_multiloc);
   const fallbackTitle = form.event
     ? messages.untitledEvent
-    : projectMessages.newEvent;
+    : backofficeRedesignMessages.newEvent;
 
   return (
     <ProjectWorkspace
       project={project}
       draft={{
         label: title || formatMessage(fallbackTitle),
-        parentLabel: formatMessage(projectMessages.eventsSection),
+        parentLabel: formatMessage(backofficeRedesignMessages.eventsSection),
         saveLabel: formatMessage(
           form.event ? eventMessages.saveButtonLabel : messages.create
         ),
       }}
       sidePanel={<EventSetup projectId={project.id} form={form} />}
+      withParticipation={false}
     >
       <EventPreview project={project} form={form} />
     </ProjectWorkspace>

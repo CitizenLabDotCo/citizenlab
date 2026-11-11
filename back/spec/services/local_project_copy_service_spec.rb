@@ -452,6 +452,24 @@ describe LocalProjectCopyService do
           }
         })
       end
+
+      it 'points file widgets at the copied files' do
+        source_project = layout.content_buildable
+        files = %w[agenda.pdf minutes.pdf].map { |name| create(:file, name: name, projects: [source_project]) }
+        layout.update!(craftjs_json: {
+          'ROOT' => { 'type' => { 'resolvedName' => 'Container' }, 'nodes' => %w[file0 file1] },
+          'file0' => { 'type' => { 'resolvedName' => 'FileAttachment' }, 'props' => { 'fileId' => files[0].id } },
+          'file1' => { 'type' => { 'resolvedName' => 'FileAttachment' }, 'props' => { 'fileId' => files[1].id } }
+        })
+
+        copied_layout = service.copy(source_project).content_builder_layouts.first
+        copied_file_names = Files::File.where(id: copied_layout.referenced_file_ids).pluck(:id, :name).to_h
+
+        expect(copied_file_names.keys).not_to include(*files.map(&:id))
+        expect(copied_file_names[copied_layout.craftjs_json.dig('file0', 'props', 'fileId')]).to eq 'agenda.pdf'
+        expect(copied_file_names[copied_layout.craftjs_json.dig('file1', 'props', 'fileId')]).to eq 'minutes.pdf'
+        expect(copied_layout.file_attachments.pluck(:file_id)).to match_array(copied_file_names.keys)
+      end
     end
 
     describe 'when source project has non-zero baskets_count or votes_count' do

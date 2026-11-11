@@ -219,6 +219,7 @@ const Radio = ({
         onFocus={handleOnFocus}
         onBlur={handleOnBlur}
         required={isRequired}
+        disabled={disabled}
         readOnly
         onKeyDown={onKeyDown}
         autoFocus={autoFocus}

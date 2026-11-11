@@ -240,6 +240,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.dislikingPosts',
     defaultMessage: 'Enable disliking',
   },
+  dislikingPosts2: {
+    id: 'app.containers.AdminPage.ProjectEdit.dislikingPosts2',
+    defaultMessage: 'Disliking',
+  },
   disableDislikingTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.disableDislikingTooltip2',
     defaultMessage:
@@ -340,6 +344,10 @@ export default defineMessages({
   availableViews: {
     id: 'app.containers.AdminPage.ProjectEdit.availableViews',
     defaultMessage: 'Available views',
+  },
+  availableViewsSummary: {
+    id: 'app.containers.AdminPage.ProjectEdit.availableViewsSummary',
+    defaultMessage: '{defaultView} +{otherViewsCount}',
   },
   listViewTitle: {
     id: 'app.containers.AdminPage.ProjectEdit.listViewTitle',
@@ -530,6 +538,10 @@ export default defineMessages({
   subtitleInputProjectProposals: {
     id: 'app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputProjectProposals',
     defaultMessage: 'Manage proposals, give feedback and assign topics.',
+  },
+  status_prioritySortingMethod: {
+    id: 'app.containers.AdminPage.ProjectEdit.statusPrioritySortingMethod',
+    defaultMessage: 'Status (proposed first)',
   },
   hiddenFieldsTip2: {
     id: 'app.components.admin.PostManager.hiddenFieldsTip2',
@@ -733,5 +745,9 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.betaTooltip',
     defaultMessage:
       "This participation method is in beta. We're gradually rolling it out to gather feedback and improve the experience.",
+  },
+  configureMap: {
+    id: 'app.containers.AdminPage.ProjectEdit.configureMap',
+    defaultMessage: 'Configure map',
   },
 });
