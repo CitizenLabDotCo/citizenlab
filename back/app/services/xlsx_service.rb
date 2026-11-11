@@ -245,7 +245,9 @@ class XlsxService
     ParticipationLocation::EXPORT_COLUMNS.map do |key, attribute|
       {
         header: I18n.t(key, scope: 'xlsx_export.column_headers'),
-        f: ->(record) { record.participation_location_for_export(attribute) }
+        f: ->(record) { record.participation_location_for_export(attribute) },
+        # Formula escaping would turn negative coordinates into text.
+        skip_sanitization: ParticipationLocation::NUMERIC_EXPORT_ATTRIBUTES.include?(attribute)
       }
     end
   end

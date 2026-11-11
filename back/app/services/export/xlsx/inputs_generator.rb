@@ -50,7 +50,7 @@ module Export
 
       def generate_for_timeline_project(workbook, project, idea_ids: nil)
         phases = project.phases.select { |phase| phase.pmethod.supports_exports? }
-        phases_to_titles = add_suffix_to_duplicate_titles(phases) # avoid ArgumentError due to duplicate sheet names
+        phases_to_titles = unique_sheet_names(phases)
 
         phases.each do |phase|
           generate_phase_sheet(workbook, phase, idea_ids: idea_ids, sheet_name: phases_to_titles[phase.id])
@@ -60,6 +60,8 @@ module Export
       def generate_phase_sheet(workbook, phase, redacted_field_keys: [], idea_ids: nil, sheet_name: nil)
         inputs = phase.inputs_for_export
         inputs = inputs.where(id: idea_ids) if idea_ids
+        tracking_includes = ParticipationTrackingService.export_includes(phase.project)
+        inputs = inputs.includes(*tracking_includes) if tracking_includes.any?
         generate_sheet(workbook, eager_load_inputs(inputs), phase, redacted_field_keys: redacted_field_keys, sheet_name: sheet_name)
       end
 

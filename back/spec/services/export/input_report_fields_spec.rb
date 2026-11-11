@@ -180,6 +180,12 @@ describe Export::InputReportFields do
         expect(by_key['participation_location_latitude'].personal_data).to be true
         expect(by_key['participation_location_country'].personal_data).to be false
       end
+
+      it 'are excluded, like the author columns, when the survey does not identify authors' do
+        create(:permission, action: 'posting_idea', permission_scope: phase, user_data_collection: 'demographics_only')
+
+        expect(keys_of(described_class.new(phase.reload).all)).not_to include(*location_keys)
+      end
     end
 
     context 'when the survey is fully anonymous' do

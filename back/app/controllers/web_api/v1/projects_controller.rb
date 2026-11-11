@@ -329,7 +329,8 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def index_xlsx
     I18n.with_locale(current_user.locale) do
-      xlsx = Export::Xlsx::InputsGenerator.new.generate_inputs_for_project(@project.id, idea_ids: params[:ideas])
+      idea_ids = Array(params[:ideas]).compact_blank.presence
+      xlsx = Export::Xlsx::InputsGenerator.new.generate_inputs_for_project(@project.id, idea_ids: idea_ids)
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'inputs.xlsx'
     end
   end

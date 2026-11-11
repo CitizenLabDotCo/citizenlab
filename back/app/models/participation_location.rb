@@ -33,6 +33,9 @@ class ParticipationLocation < ApplicationRecord
     'participation_location_longitude' => :longitude
   }.freeze
 
+  # Export attributes written as numbers rather than text.
+  NUMERIC_EXPORT_ATTRIBUTES = %i[latitude longitude].freeze
+
   belongs_to :trackable, polymorphic: true
 
   validates :trackable, presence: true

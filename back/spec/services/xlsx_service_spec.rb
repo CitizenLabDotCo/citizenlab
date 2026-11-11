@@ -281,6 +281,14 @@ describe XlsxService do
         expect(city_of_row.call(1)).to eq 'Brussels'
       end
 
+      it 'write coordinates as numbers, negative ones included' do
+        create(:participation_location, trackable: comments.second, latitude: BigDecimal('40.7128'), longitude: BigDecimal('-74.006'))
+        row = worksheet[2].cells.map(&:value)
+
+        expect(row[headers.index('Participant latitude')]).to eq 40.7128
+        expect(row[headers.index('Participant longitude')]).to eq(-74.006)
+      end
+
       it 'are blank for an anonymous comment' do
         comments.first.update!(anonymous: true)
         expect(city_of_row.call(1)).to be_blank
