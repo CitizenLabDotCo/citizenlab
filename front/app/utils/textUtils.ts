@@ -37,6 +37,20 @@ export function stripHtml(html: string, maxLength?: number) {
   return truncate(text, maxLength);
 }
 
+const HTML_ESCAPES: Readonly<Record<string, string>> = {
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
+  "'": '&#39;',
+};
+
+// Escapes text so it can be put into HTML (element content or a quoted
+// attribute) and still read as plain text, never as markup.
+export function escapeHtml(text: string) {
+  return text.replace(/[&<>"']/g, (char) => HTML_ESCAPES[char]);
+}
+
 // Default slug rules including arabic character ranges
 export const slugRegEx = RegExp(
   /^[a-z0-9\u0600-\u06FF\u0750-\u077F]+(?:-[a-z0-9\u0600-\u06FF\u0750-\u077F]+)*$/
