@@ -589,6 +589,96 @@
     "verified_at": "2026-04-15T14:48:15.170123Z",
     "verified_by": "Jelena"
   },
+  "app.components.PhasePreview.before": {
+    "state": "verified",
+    "verified_at": "2026-11-11T09:12:26.658007Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.PhasePreview.beforeStarts": {
+    "state": "verified",
+    "verified_at": "2026-11-11T09:12:26.658007Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.PhasePreview.beforeTooltip": {
+    "state": "verified",
+    "verified_at": "2026-11-11T09:12:26.658007Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.PhasePreview.ended": {
+    "state": "verified",
+    "verified_at": "2026-11-11T09:12:26.658007Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.PhasePreview.endedTooltip": {
+    "state": "verified",
+    "verified_at": "2026-11-11T09:12:26.658007Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.PhasePreview.lifecycle": {
+    "state": "verified",
+    "verified_at": "2026-11-11T09:12:26.658007Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.PhasePreview.noDates": {
+    "state": "verified",
+    "verified_at": "2026-11-11T09:12:26.658007Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.PhasePreview.open": {
+    "state": "verified",
+    "verified_at": "2026-11-11T09:12:26.658007Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.PhasePreview.openTooltip": {
+    "state": "verified",
+    "verified_at": "2026-11-11T09:12:26.658007Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.PhasePreview.participation": {
+    "state": "verified",
+    "verified_at": "2026-11-11T09:12:26.658007Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.PhasePreview.participationTooltip": {
+    "state": "verified",
+    "verified_at": "2026-11-11T09:12:26.658007Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.PhasePreview.phaseEnded": {
+    "state": "verified",
+    "verified_at": "2026-11-11T09:12:26.658007Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.PhasePreview.savePhaseFirst": {
+    "state": "verified",
+    "verified_at": "2026-11-11T09:12:26.658007Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.PhasePreview.startsIn": {
+    "state": "verified",
+    "verified_at": "2026-11-11T09:12:26.658007Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.PhasePreview.viewBefore": {
+    "state": "verified",
+    "verified_at": "2026-11-11T09:12:26.658007Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.PhasePreview.viewEnded": {
+    "state": "verified",
+    "verified_at": "2026-11-11T09:12:26.658007Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.PhasePreview.viewOpen": {
+    "state": "verified",
+    "verified_at": "2026-11-11T09:12:26.658007Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.PhasePreview.viewParticipation": {
+    "state": "verified",
+    "verified_at": "2026-11-11T09:12:26.658007Z",
+    "verified_by": "Jelena"
+  },
   "app.components.ProjectPageBuilder.DropFeedback.cannotDropBelowPageContent": {
     "state": "verified",
     "verified_at": "2026-10-16T09:16:50.116753Z",
@@ -10374,14 +10464,14 @@
     "verified_at": "2026-10-16T09:16:50.116753Z",
     "verified_by": "Jelena"
   },
-  "app.containers.Admin.projects.project.hidePanel": {
-    "state": "verified",
-    "verified_at": "2026-11-04T10:01:41.168417Z",
-    "verified_by": "Jelena"
-  },
   "app.containers.Admin.projects.project.hideCauses": {
     "state": "verified",
     "verified_at": "2026-10-29T14:22:25.900232Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.hidePanel": {
+    "state": "verified",
+    "verified_at": "2026-11-04T10:01:41.168417Z",
     "verified_by": "Jelena"
   },
   "app.containers.Admin.projects.project.homepageCard": {
@@ -13059,6 +13149,11 @@
     "verified_at": "2026-09-17T11:58:59.316498Z",
     "verified_by": "eva@govocal.com"
   },
+  "app.containers.Admin.projects.project.showCauses": {
+    "state": "verified",
+    "verified_at": "2026-10-29T14:22:25.900232Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.projects.project.showPanel": {
     "state": "verified",
     "verified_at": "2026-11-04T10:01:41.168417Z",
@@ -13067,11 +13162,6 @@
   "app.containers.Admin.projects.project.spotlight": {
     "state": "verified",
     "verified_at": "2026-11-04T10:01:41.168417Z",
-    "verified_by": "Jelena"
-  },
-  "app.containers.Admin.projects.project.showCauses": {
-    "state": "verified",
-    "verified_at": "2026-10-29T14:22:25.900232Z",
     "verified_by": "Jelena"
   },
   "app.containers.Admin.projects.project.spreadsheetImportDescription": {
