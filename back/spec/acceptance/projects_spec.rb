@@ -1272,6 +1272,18 @@ resource 'Projects' do
           expect(sheets['Phase 2 Native survey'][:rows].map(&:first)).to eq [survey_response.id]
           expect(sheets['Phase 2 Native survey'][:column_headers]).to include(linear_scale_field.title_multiloc['en'])
         end
+
+        describe 'when the selection is empty' do
+          let(:ideas) { [''] }
+
+          example 'Downloads all inputs', document: false do
+            do_request
+            assert_status 200
+            survey_sheet = xlsx_contents(response_body).find { |sheet| sheet[:sheet_name] == 'Phase 2 Native survey' }
+
+            expect(survey_sheet[:rows].map(&:first)).to include(survey_response.id)
+          end
+        end
       end
 
       describe 'when the project tracks participant location' do

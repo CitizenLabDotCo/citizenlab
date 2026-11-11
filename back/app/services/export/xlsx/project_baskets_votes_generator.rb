@@ -3,7 +3,7 @@ module Export
     class ProjectBasketsVotesGenerator < Generator
       def generate_project_baskets_votes_xlsx(project)
         phases = project.phases.where(participation_method: 'voting').includes([:ideas])
-        phases_to_titles = add_suffix_to_duplicate_titles(phases) # avoid ArgumentError due to duplicate sheet names
+        phases_to_titles = unique_sheet_names(phases)
 
         pa = Axlsx::Package.new
 
@@ -18,7 +18,8 @@ module Export
       private
 
       def generate_phase_baskets_votes_sheet(workbook, sheet_name, phase)
-        baskets = Basket.where(phase: phase).where.not(submitted_at: nil).includes(:baskets_ideas, :participation_location, :participation_device, user: :custom_field_answers)
+        baskets = Basket.where(phase: phase).where.not(submitted_at: nil)
+          .includes(:baskets_ideas, *ParticipationTrackingService.export_includes(phase.project), user: :custom_field_answers)
         columns = xlsx_service.user_custom_field_columns(:user)
         ideas = phase.ideas
         ideas_to_titles = add_suffix_to_duplicate_titles(ideas) # avoid losing columns with duplicate headers

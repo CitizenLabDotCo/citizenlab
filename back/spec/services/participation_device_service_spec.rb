@@ -4,14 +4,17 @@ require 'rails_helper'
 
 RSpec.describe ParticipationDeviceService do
   describe '.track' do
-    let(:project) { create(:project_with_active_ideation_phase, track_participation_device: true) }
+    let(:project) { create(:project, track_participation_device: true) }
     let(:idea) { create(:idea, project: project) }
     let(:iphone) do
       'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 ' \
         '(KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1'
     end
 
-    before { SettingsService.new.activate_feature!('participation_device_tracking') }
+    before do
+      SettingsService.new.activate_feature!('participation_device_tracking')
+      Current.request_user_id = idea.author_id
+    end
 
     it 'records the device hash and the browser details, without location tracking' do
       expect(ParticipationLocationService.enabled_for?(project)).to be false

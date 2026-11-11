@@ -42,7 +42,7 @@ module Export
       def inputs
         @inputs ||= phase.inputs_for_export
           .order(created_at: :asc)
-          .includes(*Export::InputReportFields::EAGER_LOADS)
+          .includes(*Export::InputReportFields::EAGER_LOADS, *ParticipationTrackingService.export_includes(phase.project))
           .to_a
       end
 

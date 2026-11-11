@@ -22,7 +22,7 @@
 #  index_participation_locations_on_trackable  (trackable_type,trackable_id) UNIQUE
 #
 class ParticipationLocation < ApplicationRecord
-  TRACKABLE_TYPES = %w[Idea Comment Reaction Basket].freeze
+  TRACKABLE_TYPES = %w[Idea Comment Basket].freeze
 
   # Export column key => the attribute it reads, in column order.
   EXPORT_COLUMNS = {
@@ -32,6 +32,9 @@ class ParticipationLocation < ApplicationRecord
     'participation_location_latitude' => :latitude,
     'participation_location_longitude' => :longitude
   }.freeze
+
+  # Export attributes written as numbers rather than text.
+  NUMERIC_EXPORT_ATTRIBUTES = %i[latitude longitude].freeze
 
   belongs_to :trackable, polymorphic: true
 

@@ -8,7 +8,6 @@ RSpec.describe Reaction do
     it { is_expected.to belong_to(:reactable) }
   end
 
-  it_behaves_like 'location_trackable_participation'
   it_behaves_like 'device_trackable_participation'
 
   context 'Default factory' do

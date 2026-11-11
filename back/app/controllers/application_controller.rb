@@ -13,6 +13,7 @@ class ApplicationController < ActionController::API
   before_action :set_policy_context
   before_action :set_current_location_headers
   before_action :set_current_device_details
+  before_action :set_current_request_user
 
   after_action :verify_authorized, except: :index
   after_action :verify_policy_scoped, only: :index
@@ -222,6 +223,10 @@ class ApplicationController < ActionController::API
   def set_current_device_details
     Current.remote_ip = request.remote_ip
     Current.user_agent = request.user_agent
+  end
+
+  def set_current_request_user
+    Current.request_user_id = current_user&.id
   end
 end
 

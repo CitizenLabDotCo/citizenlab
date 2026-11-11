@@ -24,10 +24,11 @@ module Export
   # author_email) are rejected by their own key.
   class InputReportFields
     # Everything the report field procs and the value visitor read per input;
-    # callers eager-load these to avoid N+1 queries.
+    # callers eager-load these to avoid N+1 queries, plus
+    # ParticipationTrackingService.export_includes for the participant columns.
     EAGER_LOADS = [
       :project, :ideas_input_topics, :input_topics, :idea_files, :attached_files,
-      :idea_status, :assignee, :custom_field_answers, :participation_location, :participation_device,
+      :idea_status, :assignee, :custom_field_answers,
       { author: :custom_field_answers, file_attachments: :file }
     ].freeze
 
@@ -174,11 +175,13 @@ module Export
       end
     end
 
-    # Approximate location of the participant when the input was submitted,
-    # from the CDN's IP geolocation (see ParticipationLocationService). It is personal data, so
-    # it follows the same rule as the author columns.
+    # Approximate location of the participant when the input was created
+    # (a draft or survey response may be submitted later), from the CDN's IP
+    # geolocation (see ParticipationLocationService). It is personal data, so
+    # it follows the same rules as the author columns.
     def participation_location_report_fields
-      return [] unless include_private_attributes && ParticipationLocationService.enabled_for?(phase.project)
+      return [] unless include_private_attributes && participation_method.identifies_author?
+      return [] unless ParticipationLocationService.enabled_for?(phase.project)
 
       ParticipationLocation::EXPORT_COLUMNS.map do |key, attribute|
         ComputedFieldForReport.new(

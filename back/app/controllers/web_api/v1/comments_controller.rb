@@ -77,7 +77,7 @@ class WebApi::V1::CommentsController < ApplicationController
     authorize(project || :comment, :index_xlsx?)
 
     @comments = policy_scope(Comment)
-      .includes(:author, :idea, :participation_location, :participation_device)
+      .includes(:author, :idea, *ParticipationTrackingService.export_includes(project))
       .order(:lft)
     @comments = @comments.where(ideas: { project_id: UserRoleService.new.moderatable_projects(current_user) })
     @comments = @comments.where(ideas: { project_id: project.id }) if project

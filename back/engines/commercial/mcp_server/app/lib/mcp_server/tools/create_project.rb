@@ -41,9 +41,19 @@ class McpServer::Tools::CreateProject < McpServer::BaseTool
     }
   end
 
+  # Tracking settings and the feature each needs. Like the web API (see
+  # ProjectPolicy), a setting is ignored while its feature is off.
+  TRACKING_SETTINGS = { track_participation_location: 'participation_location_tracking' }.freeze
+
+  def self.without_inactive_tracking_settings(params)
+    inactive = TRACKING_SETTINGS.reject { |_, feature| AppConfiguration.instance.feature_activated?(feature) }
+    params.except(*inactive.keys)
+  end
+
   class Runner < McpServer::BaseTool::Runner
     def run
-      project = Project.new(**params, admin_publication_attributes: { publication_status: 'draft' })
+      project_params = McpServer::Tools::CreateProject.without_inactive_tracking_settings(params)
+      project = Project.new(**project_params, admin_publication_attributes: { publication_status: 'draft' })
       authorize(project, :create?)
 
       SideFxProjectService.new.before_create(project, current_user)

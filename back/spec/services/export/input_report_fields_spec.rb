@@ -217,6 +217,12 @@ describe Export::InputReportFields do
 
         expect(browser_field.value_from(input.reload)).to be_nil
       end
+
+      it 'are excluded, like the author columns, when the survey does not identify authors' do
+        create(:permission, action: 'posting_idea', permission_scope: phase, user_data_collection: 'demographics_only')
+
+        expect(keys_of(described_class.new(phase.reload).all)).not_to include(*location_keys)
+      end
     end
 
     context 'when the survey is fully anonymous' do

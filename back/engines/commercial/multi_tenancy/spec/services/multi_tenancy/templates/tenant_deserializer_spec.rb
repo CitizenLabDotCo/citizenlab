@@ -205,8 +205,8 @@ describe MultiTenancy::Templates::TenantDeserializer do
         # associations are resolved to ids and the counter caches are recomputed afterwards.
         framework = /\A(autosave_associated_records_for_|_update_counts_|normalize_changed_in_place_attributes\z|generate_slug\z)/
         allowed = {
-          # No-ops when applying a template: there's no location or device data to track.
-          'Reaction' => %i[track_participation_location track_participation_device]
+          # No-op when applying a template: there's no device data to track.
+          'Reaction' => %i[track_participation_device]
         }
 
         callback_kinds = %i[validation save create commit]

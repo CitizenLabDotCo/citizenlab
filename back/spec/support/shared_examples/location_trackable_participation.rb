@@ -3,15 +3,14 @@
 # Shared examples for testing the LocationTrackableParticipation concern.
 # Usage: it_behaves_like 'location_trackable_participation'
 RSpec.shared_examples 'location_trackable_participation' do |factory_name: nil|
+  let(:trackable_factory) { factory_name || described_class.model_name.singular.to_sym }
   let(:trackable) do
-    factory_name ||= described_class.model_name.singular.to_sym
-    instance = build(factory_name)
+    instance = build(trackable_factory)
     instance.project.update!(track_participation_location: true)
-    # Nothing is tracked outside a phase.
-    unless TimelineService.new.current_phase_not_archived(instance.project)
-      create(:phase, project: instance.project, start_at: 1.week.ago, end_at: 1.week.from_now)
-      instance.project.phases.reload
-    end
+    # Only the participant's own request is tracked.
+    participant = instance.try(:author) || instance.try(:user)
+    participant&.save!
+    Current.request_user_id = participant&.id
     instance
   end
 
@@ -34,6 +33,17 @@ RSpec.shared_examples 'location_trackable_participation' do |factory_name: nil|
       )
     end
 
+    it 'does not track a participation posted by someone else' do
+      SettingsService.new.activate_feature!('participation_location_tracking')
+      Current.location_headers = { country_code: 'BE', city: 'Brussels' }
+      trackable
+      Current.request_user_id = create(:admin).id
+
+      trackable.save!
+
+      expect(trackable.reload.participation_location).to be_nil
+    end
+
     if described_class.column_names.include?('anonymous')
       it 'deletes the ParticipationLocation when the participation is made anonymous' do
         SettingsService.new.activate_feature!('participation_location_tracking')
@@ -52,7 +62,7 @@ RSpec.shared_examples 'location_trackable_participation' do |factory_name: nil|
       allow(ParticipationLocationService).to receive(:track).and_raise(StandardError.new('test error'))
       allow(ErrorReporter).to receive(:report)
 
-      expect { create(factory_name) }.to change(described_class, :count).by(1)
+      expect { create(trackable_factory) }.to change(described_class, :count).by(1)
     end
   end
 end
