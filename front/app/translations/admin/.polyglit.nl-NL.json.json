@@ -9274,6 +9274,11 @@
     "verified_at": "2026-09-23T16:57:15.518005Z",
     "verified_by": "Luuc"
   },
+  "app.containers.Admin.projects.project.addQuestionsSaveError": {
+    "state": "verified",
+    "verified_at": "2026-11-11T17:41:49.771859Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.project.addStatement": {
     "state": "verified",
     "verified_at": "2026-11-02T08:57:12.676513Z",
@@ -10299,14 +10304,14 @@
     "verified_at": "2026-10-15T20:02:07.871065Z",
     "verified_by": "Luuc"
   },
-  "app.containers.Admin.projects.project.hidePanel": {
-    "state": "verified",
-    "verified_at": "2026-11-03T16:10:55.912741Z",
-    "verified_by": "Luuc"
-  },
   "app.containers.Admin.projects.project.hideCauses": {
     "state": "verified",
     "verified_at": "2026-11-02T08:57:12.676513Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.hidePanel": {
+    "state": "verified",
+    "verified_at": "2026-11-03T16:10:55.912741Z",
     "verified_by": "Luuc"
   },
   "app.containers.Admin.projects.project.homepageCard": {
@@ -12804,6 +12809,11 @@
     "verified_at": "2026-10-20T11:54:17.158479Z",
     "verified_by": "Luuc"
   },
+  "app.containers.Admin.projects.project.savingAndOpeningSurvey": {
+    "state": "verified",
+    "verified_at": "2026-11-11T17:41:49.771859Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.project.scheduledToPublish": {
     "state": "verified",
     "verified_at": "2026-10-27T13:59:00.973581Z",
@@ -12984,6 +12994,11 @@
     "verified_at": "2026-09-15T12:47:12.461673Z",
     "verified_by": "Luuc"
   },
+  "app.containers.Admin.projects.project.showCauses": {
+    "state": "verified",
+    "verified_at": "2026-11-02T08:57:12.676513Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.project.showPanel": {
     "state": "verified",
     "verified_at": "2026-11-03T16:10:55.912741Z",
@@ -12992,11 +13007,6 @@
   "app.containers.Admin.projects.project.spotlight": {
     "state": "verified",
     "verified_at": "2026-11-03T16:10:55.912741Z",
-    "verified_by": "Luuc"
-  },
-  "app.containers.Admin.projects.project.showCauses": {
-    "state": "verified",
-    "verified_at": "2026-11-02T08:57:12.676513Z",
     "verified_by": "Luuc"
   },
   "app.containers.Admin.projects.project.spreadsheetImportDescription": {
@@ -13772,6 +13782,11 @@
   "app.containers.Admin.projects.project.votingSetup": {
     "state": "verified",
     "verified_at": "2026-10-27T14:09:52.075408Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.waitingForSurveyAttachment": {
+    "state": "verified",
+    "verified_at": "2026-11-11T17:41:49.771859Z",
     "verified_by": "Luuc"
   },
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.adminsOnly": {
