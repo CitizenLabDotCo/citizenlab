@@ -38,6 +38,7 @@ module Export
         }
 
         columns += xlsx_service.participation_location_columns if ParticipationLocationService.enabled_for?(phase.project)
+        columns += xlsx_service.participation_device_columns if ParticipationDeviceService.enabled_for?(phase.project)
 
         xlsx_service.generate_sheet workbook, sheet_name, columns, baskets
       end

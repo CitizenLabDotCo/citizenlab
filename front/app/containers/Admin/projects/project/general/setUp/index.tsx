@@ -46,6 +46,7 @@ import { validateSlug } from 'utils/textUtils';
 
 import { TOnProjectAttributesDiffChangeFunction } from '..';
 import GeographicAreaInputs from '../../../_shared/components/ProjectSetupForm/GeographicAreaInputs';
+import ParticipationDeviceToggle from '../../../_shared/components/ProjectSetupForm/ParticipationDeviceToggle';
 import ParticipationLocationToggle from '../../../_shared/components/ProjectSetupForm/ParticipationLocationToggle';
 import ProjectCardImageDropzone from '../../../_shared/components/ProjectSetupForm/ProjectCardImageDropzone';
 import ProjectCardImageTooltip from '../../../_shared/components/ProjectSetupForm/ProjectCardImageTooltip';
@@ -373,6 +374,11 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
 
           <ParticipationLocationToggle
             checked={projectAttrs.track_participation_location}
+            onChange={handleProjectAttributeDiffOnChange}
+          />
+
+          <ParticipationDeviceToggle
+            checked={projectAttrs.track_participation_device}
             onChange={handleProjectAttributeDiffOnChange}
           />
 

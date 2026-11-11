@@ -37,6 +37,7 @@ module Export
     STRUCTURAL_PII_KEYS = %w[
       author_fullname author_email author_id assignee_fullname assignee_email
       participation_location_city participation_location_latitude participation_location_longitude
+      participation_device_hash
     ].freeze
 
     # One entry of the field-review UI: a localized title and, for form/user
@@ -57,7 +58,8 @@ module Export
     # Every column of the export, in sheet order: the input id, the form
     # questions (with latitude/longitude ahead of the location answer), author
     # identification, method-specific meta columns, out-of-form user fields
-    # and, last, where the participant was when the input was created.
+    # and, last, where the participant was and which device they used when
+    # the input was created.
     def all
       @all ||= reject_redacted(
         [input_id_report_field] +
@@ -65,7 +67,8 @@ module Export
         author_report_fields +
         meta_report_fields +
         user_report_fields +
-        participation_location_report_fields
+        participation_location_report_fields +
+        participation_device_report_fields
       )
     end
 
@@ -78,7 +81,7 @@ module Export
         *reviewable_custom_fields(question_fields),
         *reviewable_computed_fields(author_report_fields + meta_report_fields),
         *reviewable_custom_fields(@input_fields.user_fields),
-        *reviewable_computed_fields(participation_location_report_fields)
+        *reviewable_computed_fields(participation_location_report_fields + participation_device_report_fields)
       ]
     end
 
@@ -184,6 +187,22 @@ module Export
         ComputedFieldForReport.new(
           column_header_for(key),
           ->(input) { input.participation_location_for_export(attribute) },
+          key: key
+        )
+      end
+    end
+
+    # The device the input was created on (see ParticipationDevice). It has its
+    # own feature and project setting, and follows the same rules as the
+    # location.
+    def participation_device_report_fields
+      return [] unless include_private_attributes && participation_method.identifies_author?
+      return [] unless ParticipationDeviceService.enabled_for?(phase.project)
+
+      ParticipationDevice::EXPORT_COLUMNS.map do |key, attribute|
+        ComputedFieldForReport.new(
+          column_header_for(key),
+          ->(input) { input.participation_device_for_export(attribute) },
           key: key
         )
       end

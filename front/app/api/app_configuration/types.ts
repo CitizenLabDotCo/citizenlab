@@ -200,6 +200,7 @@ export interface IAppConfigurationSettings {
   live_auto_input_topics?: AppConfigurationFeature;
   workshops?: AppConfigurationFeature;
   participation_location_tracking?: AppConfigurationFeature;
+  participation_device_tracking?: AppConfigurationFeature;
   spaces?: AppConfigurationFeature;
   project_scheduling?: AppConfigurationFeature;
   draft_phase_description?: AppConfigurationFeature;

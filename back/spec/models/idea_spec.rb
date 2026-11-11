@@ -11,6 +11,7 @@ RSpec.describe Idea do
 
   it_behaves_like 'claimable_participation'
   it_behaves_like 'location_trackable_participation'
+  it_behaves_like 'device_trackable_participation'
   it_behaves_like 'a plain text multiloc', factory: :idea
 
   describe 'title validation' do

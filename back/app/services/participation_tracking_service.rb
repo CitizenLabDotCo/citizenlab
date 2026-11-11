@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
-# When a participation may be tracked (see ParticipationLocationService).
-# Tracking also needs its own feature and project setting to be on.
+# When a participation may be tracked (see ParticipationLocationService and
+# ParticipationDeviceService). Each also needs its own feature and project
+# setting to be on.
 class ParticipationTrackingService
   class << self
     def track?(trackable)
@@ -11,7 +12,10 @@ class ParticipationTrackingService
     # The tracking associations worth preloading for an export of the
     # project: only those whose columns the export can include.
     def export_includes(project)
-      ParticipationLocationService.enabled_for?(project) ? [:participation_location] : []
+      [
+        (:participation_location if ParticipationLocationService.enabled_for?(project)),
+        (:participation_device if ParticipationDeviceService.enabled_for?(project))
+      ].compact
     end
 
     private

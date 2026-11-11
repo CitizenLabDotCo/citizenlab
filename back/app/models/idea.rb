@@ -70,6 +70,7 @@ class Idea < ApplicationRecord
   include Files::FileAttachable
   include ClaimableParticipation
   include LocationTrackableParticipation
+  include DeviceTrackableParticipation
   include Answerable
   extend OrderAsSpecified
 

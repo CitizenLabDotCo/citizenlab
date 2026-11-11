@@ -14,6 +14,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import ContextSection from './ContextSection';
 import messages from './messages';
+import ParticipationDeviceSection from './ParticipationDeviceSection';
 import ParticipationLocationSection from './ParticipationLocationSection';
 import ResetSection from './ResetSection';
 
@@ -29,10 +30,12 @@ interface Props {
   showSlugErrorMessage: boolean;
   apiErrors: CLErrors;
   trackParticipationLocation: boolean;
+  trackParticipationDevice: boolean;
   onTitleChange: (titleMultiloc: Multiloc) => void;
   onContextChange: (spaceAndFolderId: SpaceAndFolderId) => void;
   onSlugChange: (slug: string) => void;
   onTrackParticipationLocationChange: (enabled: boolean) => void;
+  onTrackParticipationDeviceChange: (enabled: boolean) => void;
 }
 
 const GeneralSection = ({
@@ -47,10 +50,12 @@ const GeneralSection = ({
   showSlugErrorMessage,
   apiErrors,
   trackParticipationLocation,
+  trackParticipationDevice,
   onTitleChange,
   onContextChange,
   onSlugChange,
   onTrackParticipationLocationChange,
+  onTrackParticipationDeviceChange,
 }: Props) => {
   const { formatMessage } = useIntl();
 
@@ -87,6 +92,10 @@ const GeneralSection = ({
       <ParticipationLocationSection
         enabled={trackParticipationLocation}
         onChange={onTrackParticipationLocationChange}
+      />
+      <ParticipationDeviceSection
+        enabled={trackParticipationDevice}
+        onChange={onTrackParticipationDeviceChange}
       />
       <ResetSection projectId={projectId} />
     </SettingsSections>

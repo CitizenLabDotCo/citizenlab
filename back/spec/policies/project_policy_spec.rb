@@ -1007,6 +1007,14 @@ describe ProjectPolicy do
 
       it_behaves_like 'permits folder_id'
       it_behaves_like 'permits space_id'
+
+      it 'permits each tracking setting only when its feature is on' do
+        SettingsService.new.activate_feature!('participation_device_tracking')
+        SettingsService.new.deactivate_feature!('participation_location_tracking')
+
+        expect(policy.shared_permitted_attributes.flatten).to include(:track_participation_device)
+        expect(policy.shared_permitted_attributes.flatten).not_to include(:track_participation_location)
+      end
     end
 
     context 'for a space moderator' do

@@ -30,6 +30,7 @@ class McpServer::Tools::CreateProject < McpServer::BaseTool
         include_all_areas: { type: 'boolean', description: 'Whether the project is associated with all areas.' },
         listed: { type: 'boolean', description: 'Whether the project is listed/discoverable (vs accessible by link only).' },
         track_participation_location: { type: 'boolean', description: "Whether to track participants' location (requires the participation-location feature)." },
+        track_participation_device: { type: 'boolean', description: "Whether to track participants' device (requires the participation-device feature)." },
         remote_header_bg_url: { type: %w[string null], format: 'uri', description: <<~DESC.squish }
           Public URL of the image to download and use as the header background.
           Pass null to remove the existing header background when updating.
@@ -42,7 +43,10 @@ class McpServer::Tools::CreateProject < McpServer::BaseTool
 
   # Tracking settings and the feature each needs. Like the web API (see
   # ProjectPolicy), a setting is ignored while its feature is off.
-  TRACKING_SETTINGS = { track_participation_location: 'participation_location_tracking' }.freeze
+  TRACKING_SETTINGS = {
+    track_participation_location: 'participation_location_tracking',
+    track_participation_device: 'participation_device_tracking'
+  }.freeze
 
   def self.without_inactive_tracking_settings(params)
     inactive = TRACKING_SETTINGS.reject { |_, feature| AppConfiguration.instance.feature_activated?(feature) }

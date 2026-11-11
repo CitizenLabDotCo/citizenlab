@@ -155,6 +155,7 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
         ImpactTracking::Salt
         ImpactTracking::Session
         MachineTranslations::MachineTranslation
+        ParticipationDevice
         ParticipationLocation
         ReportBuilder::PublishedGraphDataUnit
         Webhooks::Delivery

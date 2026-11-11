@@ -46,6 +46,17 @@ describe McpServer::Tools::CreateProject do
       expect(response).not_to be_error
       expect(Project.find(response.structured_content[:id]).track_participation_location).to be false
     end
+
+    it 'ignores the device setting while its feature is off' do
+      SettingsService.new.activate_feature!('participation_location_tracking')
+      SettingsService.new.deactivate_feature!('participation_device_tracking')
+
+      response = run(params.merge(track_participation_location: true, track_participation_device: true))
+
+      project = Project.find(response.structured_content[:id])
+      expect(project.track_participation_location).to be true
+      expect(project.track_participation_device).to be false
+    end
   end
 
   it 'creates a project visible to specific groups' do

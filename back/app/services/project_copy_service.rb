@@ -324,6 +324,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
       'internal_role' => @project.internal_role,
       'listed' => @project.listed,
       'track_participation_location' => @project.track_participation_location,
+      'track_participation_device' => @project.track_participation_device,
       'space_id' => @local_copy ? @project.space_id : nil
     }
     yml_project['slug'] = new_slug if new_slug.present?

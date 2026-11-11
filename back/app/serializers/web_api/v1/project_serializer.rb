@@ -16,6 +16,7 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     :header_bg_alt_text_multiloc,
     :listed,
     :track_participation_location,
+    :track_participation_device,
     :live_auto_input_topics_enabled,
     :space_id
   )

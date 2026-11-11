@@ -303,6 +303,10 @@ namespace :cl2_back do
           enabled: false,
           allowed: false
         },
+        participation_device_tracking: {
+          enabled: false,
+          allowed: false
+        },
         spaces: {
           enabled: true,
           allowed: true

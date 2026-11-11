@@ -272,12 +272,16 @@ describe XlsxService do
 
       before do
         SettingsService.new.activate_feature!('participation_location_tracking')
-        project.update!(track_participation_location: true)
+        SettingsService.new.activate_feature!('participation_device_tracking')
+        project.update!(track_participation_location: true, track_participation_device: true)
         create(:participation_location, trackable: comments.first, city: 'Brussels')
       end
 
-      it 'are the last columns, filled from the recorded location' do
-        expect(headers.last(location_headers.size)).to eq location_headers
+      it 'come last, followed by the device columns, filled from the recorded location' do
+        expect(headers.last(9)).to eq [
+          *location_headers,
+          'Participant device ID', 'Participant device type', 'Participant browser', 'Participant operating system'
+        ]
         expect(city_of_row.call(1)).to eq 'Brussels'
       end
 
@@ -289,9 +293,22 @@ describe XlsxService do
         expect(row[headers.index('Participant longitude')]).to eq(-74.006)
       end
 
-      it 'are blank for an anonymous comment' do
+      it 'are blank for an anonymous comment, device included' do
+        create(:participation_device, trackable: comments.first)
         comments.first.update!(anonymous: true)
+        device_id = worksheet[1].cells.map(&:value)[headers.index('Participant device ID')]
+
         expect(city_of_row.call(1)).to be_blank
+        expect(device_id).to be_blank
+      end
+
+      describe 'when the device feature is off' do
+        before { SettingsService.new.deactivate_feature!('participation_device_tracking') }
+
+        it 'keep the location but leave out the device' do
+          expect(headers.last(location_headers.size)).to eq location_headers
+          expect(headers).not_to include('Participant device ID')
+        end
       end
 
       describe 'without a project' do

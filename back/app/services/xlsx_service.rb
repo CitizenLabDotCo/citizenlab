@@ -207,7 +207,10 @@ class XlsxService
     ]
     columns.concat user_custom_field_columns(:author)
     columns.reject! { |c| %w[author_name author_email author_id].include?(c[:header]) } unless view_private_attributes
-    columns.concat participation_location_columns if view_private_attributes && ParticipationLocationService.enabled_for?(project)
+    if view_private_attributes
+      columns.concat participation_location_columns if ParticipationLocationService.enabled_for?(project)
+      columns.concat participation_device_columns if ParticipationDeviceService.enabled_for?(project)
+    end
     generate_xlsx 'Comments', columns, comments
   end
 
@@ -248,6 +251,16 @@ class XlsxService
         f: ->(record) { record.participation_location_for_export(attribute) },
         # Formula escaping would turn negative coordinates into text.
         skip_sanitization: ParticipationLocation::NUMERIC_EXPORT_ATTRIBUTES.include?(attribute)
+      }
+    end
+  end
+
+  # The device each record (a comment, basket, ...) was created on.
+  def participation_device_columns
+    ParticipationDevice::EXPORT_COLUMNS.map do |key, attribute|
+      {
+        header: I18n.t(key, scope: 'xlsx_export.column_headers'),
+        f: ->(record) { record.participation_device_for_export(attribute) }
       }
     end
   end

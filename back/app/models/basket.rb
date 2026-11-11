@@ -24,6 +24,7 @@
 #
 class Basket < ApplicationRecord
   include LocationTrackableParticipation
+  include DeviceTrackableParticipation
   belongs_to :phase
 
   belongs_to :user, optional: true

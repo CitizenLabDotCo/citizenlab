@@ -3,6 +3,8 @@
 class Current < ActiveSupport::CurrentAttributes
   attribute :tenant, :app_configuration
   attribute :location_headers
+  # The request's IP and user agent, read by DeviceTrackableParticipation.
+  attribute :remote_ip, :user_agent
   # The signed-in user of the request, read by ParticipationTrackingService.
   attribute :request_user_id
 

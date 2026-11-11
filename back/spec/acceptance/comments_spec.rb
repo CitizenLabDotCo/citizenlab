@@ -174,19 +174,20 @@ resource 'Comments' do
       describe 'when the project tracks participant location' do
         before do
           SettingsService.new.activate_feature!('participation_location_tracking')
-          @project.update!(track_participation_location: true)
+          SettingsService.new.activate_feature!('participation_device_tracking')
+          @project.update!(track_participation_location: true, track_participation_device: true)
         end
 
-        example 'XLSX export includes the participant location', document: false do
+        example 'XLSX export includes the participant location and device', document: false do
           do_request
           headers = RubyXL::Parser.parse_buffer(response_body).worksheets[0][0].cells.map(&:value)
-          expect(headers).to include('Participant city')
+          expect(headers).to include('Participant city', 'Participant device ID')
         end
 
         example 'XLSX export without a project leaves the participant location out', document: false do
           do_request(project: nil)
           headers = RubyXL::Parser.parse_buffer(response_body).worksheets[0][0].cells.map(&:value)
-          expect(headers).not_to include('Participant city')
+          expect(headers).not_to include('Participant city', 'Participant device ID')
         end
       end
     end
@@ -348,6 +349,24 @@ resource 'Comments' do
         expect(json_response.dig(:data, :relationships, :parent, :data)).to be_nil
         expect(json_response.dig(:data, :relationships, :idea, :data, :id)).to eq idea_id
         expect(@idea.reload.comments_count).to eq 1
+      end
+
+      describe 'when the project tracks participant location' do
+        before do
+          SettingsService.new.activate_feature!('participation_location_tracking')
+          SettingsService.new.activate_feature!('participation_device_tracking')
+          @idea.project.update!(track_participation_location: true, track_participation_device: true)
+          header 'User-Agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0'
+        end
+
+        example 'Records the device the comment was posted from', document: false do
+          do_request
+          assert_status 201
+          device = Comment.find(json_parse(response_body).dig(:data, :id)).participation_device
+
+          expect(device).to have_attributes(browser_name: 'Firefox', device_type: 'desktop_or_other')
+          expect(device.device_hash).to be_present
+        end
       end
 
       describe 'comments on comments' do
