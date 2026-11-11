@@ -70,7 +70,11 @@ const IdeaCell = ({ column, idea, status, tagLabels }: Props) => {
     daysLeft === undefined ||
     (attributes.expires_at !== undefined &&
       Date.parse(attributes.expires_at) <= Date.now()) ||
-    (status && status.attributes.code !== 'proposed');
+    // Reaching the support threshold does not stop further support.
+    (status &&
+      !['proposed', 'threshold_reached', 'custom'].includes(
+        status.attributes.code
+      ));
 
   const values: Record<ColumnKey, ReactNode> = {
     support: (

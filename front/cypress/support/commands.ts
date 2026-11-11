@@ -1427,6 +1427,8 @@ function apiCreatePhase({
   nativeSurveyTitleMultiloc,
   presentation_mode,
   reacting_dislike_enabled,
+  reactingThreshold,
+  expireDaysLimit,
   available_views = ['card', 'map'],
   placementType,
 }: {
@@ -1452,6 +1454,8 @@ function apiCreatePhase({
   nativeSurveyButtonMultiloc?: Multiloc;
   nativeSurveyTitleMultiloc?: Multiloc;
   reacting_dislike_enabled?: boolean;
+  reactingThreshold?: number;
+  expireDaysLimit?: number;
   placementType?: 'on_timeline' | 'standalone';
 }) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
@@ -1476,6 +1480,8 @@ function apiCreatePhase({
           voting_method: votingMethod,
           submission_enabled: canPost,
           reacting_enabled: canReact,
+          reacting_threshold: reactingThreshold,
+          expire_days_limit: expireDaysLimit,
           commenting_enabled: canComment,
           presentation_mode,
           available_views,

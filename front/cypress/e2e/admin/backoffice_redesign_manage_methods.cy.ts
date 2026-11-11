@@ -1,10 +1,13 @@
 import { format, subMonths } from 'date-fns';
 
+import { IIdeaData } from '../../../app/api/ideas/types';
+
 import { randomString } from '../../support/commands';
 
 describe('Redesigned method-specific Manage views', () => {
   let projectId: string;
   let phaseId: string;
+  let supporterId: string | undefined;
   const optionTitle = randomString();
 
   beforeEach(() => {
@@ -12,6 +15,8 @@ describe('Redesigned method-specific Manage views', () => {
   });
   afterEach(() => {
     if (projectId) cy.apiRemoveProject(projectId);
+    if (supporterId) cy.apiRemoveUser(supporterId);
+    supporterId = undefined;
   });
 
   const createMethod = (method: 'voting' | 'proposals' | 'volunteering') =>
@@ -31,6 +36,8 @@ describe('Redesigned method-specific Manage views', () => {
           votingMethod: method === 'voting' ? 'single_voting' : undefined,
           canPost: true,
           canReact: true,
+          reactingThreshold: method === 'proposals' ? 2 : undefined,
+          expireDaysLimit: method === 'proposals' ? 30 : undefined,
         });
       })
       .then((phase) => {
@@ -105,6 +112,91 @@ describe('Redesigned method-specific Manage views', () => {
           .and('contain.text', 'Comments')
           .and('contain.text', 'Time left');
         cy.contains('button', 'Import paper').should('not.exist');
+      });
+  });
+
+  it('keeps the countdown after reaching the proposal threshold', () => {
+    const supporterEmail = `${randomString()}@example.com`;
+    const supporterPassword = randomString(16);
+    let proposalId: string;
+    let expired = false;
+
+    cy.intercept('GET', '**/web_api/v1/ideas?*', (request) => {
+      request.continue((response) => {
+        if (!expired) return;
+
+        const proposal = response.body.data.find(
+          (idea: IIdeaData) => idea.id === proposalId
+        );
+        if (proposal) {
+          proposal.attributes.expires_at = new Date(0).toISOString();
+        }
+      });
+    });
+
+    createMethod('proposals')
+      .then(() =>
+        cy.apiCreateIdea({
+          phaseId,
+          ideaTitle: optionTitle,
+          ideaContent: randomString(30),
+        })
+      )
+      .then((idea) => {
+        proposalId = idea.body.data.id;
+        return cy.apiSignup(
+          'Proposal',
+          'Supporter',
+          supporterEmail,
+          supporterPassword
+        );
+      })
+      .then((supporter) => {
+        supporterId = supporter.body.data.id;
+        return cy.apiReactToIdea(
+          supporterEmail,
+          supporterPassword,
+          proposalId,
+          'up'
+        );
+      })
+      .then(() => {
+        cy.visit(
+          `admin/projects/${projectId}/phases/${phaseId}/proposals?project_backoffice_redesign`
+        );
+        cy.get(`[data-cy="e2e-idea-row-${proposalId}"]`)
+          .should('contain.text', 'threshold reached')
+          .and('contain.text', '2 / 2')
+          .and('contain.text', 'days left')
+          .and('not.contain.text', 'Closed');
+
+        cy.then(() => {
+          expired = true;
+        });
+        cy.reload();
+        cy.get(`[data-cy="e2e-idea-row-${proposalId}"]`).should(
+          'contain.text',
+          'Closed'
+        );
+        cy.then(() => {
+          expired = false;
+        });
+        cy.reload();
+        cy.get(`[data-cy="e2e-idea-row-${proposalId}"]`).should(
+          'contain.text',
+          'days left'
+        );
+
+        cy.apiSetIdeaStatus({
+          ideaId: proposalId,
+          statusCode: 'answered',
+          participationMethod: 'proposals',
+        });
+        cy.reload();
+        cy.get(`[data-cy="e2e-idea-row-${proposalId}"]`).should(
+          'contain.text',
+          'Closed'
+        );
       });
   });
 
