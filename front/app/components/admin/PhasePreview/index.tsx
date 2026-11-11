@@ -19,6 +19,7 @@ import PhonePreview from 'components/admin/PhonePreview';
 import { useIntl } from 'utils/cl-intl';
 import { getPreviewLifecycle } from 'utils/phasePreview/lifecycle';
 import {
+  getPreviewPhaseAttributes,
   PREVIEW_FRAME_NAME,
   PreviewSnapshot,
   PreviewLifecycle,
@@ -106,11 +107,22 @@ const PhasePreview = ({ src, title, snapshot }: Props) => {
           attributes.votes_count > 0 ||
           attributes.baskets_count > 0 ||
           (attributes.manual_voters_amount ?? 0) > 0)));
-  const configuredLifecycle = getPreviewLifecycle({
-    ...attributes,
-    ...snapshot.draft,
-  });
-  const [selectedState, setState] = useState<PreviewState>(configuredLifecycle);
+  const configuredLifecycle = getPreviewLifecycle(
+    getPreviewPhaseAttributes(snapshot)
+  );
+  // A manual choice holds until the edited dates move the phase to another
+  // lifecycle; the preview then follows the dates again.
+  const [selection, setSelection] = useState<{
+    state: PreviewState;
+    configured: PreviewLifecycle;
+  }>();
+  if (selection && selection.configured !== configuredLifecycle) {
+    setSelection(undefined);
+  }
+  const selectedState =
+    selection?.configured === configuredLifecycle
+      ? selection.state
+      : configuredLifecycle;
   const state = isInformation
     ? configuredLifecycle
     : selectedState === 'participation' && !hasParticipation
@@ -225,7 +237,12 @@ const PhasePreview = ({ src, title, snapshot }: Props) => {
                       height="20px"
                       padding="0 8px"
                       fontSize="11px"
-                      onClick={() => setState(value)}
+                      onClick={() =>
+                        setSelection({
+                          state: value,
+                          configured: configuredLifecycle,
+                        })
+                      }
                     >
                       {formatMessage(label)}
                     </Button>

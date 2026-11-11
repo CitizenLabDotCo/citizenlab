@@ -69,10 +69,10 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
   // open-ended.
   const standalone = !isTimelinePhase(phase);
 
-  const publishPreview = usePhasePreviewPublisher('build', phase.id);
+  const preview = usePhasePreviewPublisher('build', phase.id);
 
   const updateFormData = (newData: Partial<IUpdatedPhaseProperties>) => {
-    publishPreview(newData);
+    preview.publish(newData);
     setDirty(true);
     setFormData((formData) => ({ ...formData, ...newData }));
   };
@@ -115,6 +115,7 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
           : { description_multiloc: formData.description_multiloc }),
       });
       setFormData(response.data.attributes);
+      preview.clear();
       await files.save(phase.id);
       setErrors(null);
       setDirty(false);

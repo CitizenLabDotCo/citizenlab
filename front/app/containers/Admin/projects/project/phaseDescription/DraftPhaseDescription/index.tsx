@@ -70,16 +70,16 @@ const DraftPhaseDescription = ({
     },
   });
 
-  const publishPreview = usePhasePreviewPublisher('description', phaseId);
+  const preview = usePhasePreviewPublisher('description', phaseId);
   React.useEffect(() => {
     const subscription = methods.watch(() =>
-      publishPreview({
+      preview.publish({
         description_multiloc: methods.getValues('draft_description_multiloc'),
         draft_description_multiloc: {},
       })
     );
     return () => subscription.unsubscribe();
-  }, [methods, publishPreview]);
+  }, [methods, preview]);
 
   const debouncedSaveDraft = useMemo(
     () =>
@@ -93,18 +93,12 @@ const DraftPhaseDescription = ({
     [updateDraftPhaseDescription, phaseId]
   );
 
-  React.useEffect(() => {
-    const subscription = methods.watch(() => {
-      if (!isEditing) return;
+  methods.watch((data) => {
+    if (isEditing && data.draft_description_multiloc) {
       setHasPendingChanges(true);
-      debouncedSaveDraft(methods.getValues('draft_description_multiloc'));
-    });
-    return () => {
-      subscription.unsubscribe();
-      debouncedSaveDraft.flush();
-      debouncedSaveDraft.cancel();
-    };
-  }, [methods, isEditing, debouncedSaveDraft]);
+      debouncedSaveDraft(data.draft_description_multiloc as Multiloc);
+    }
+  });
 
   const handleClickToEdit = () => {
     if (!hasSavedDraft) {
@@ -126,7 +120,12 @@ const DraftPhaseDescription = ({
         description_multiloc: methods.getValues('draft_description_multiloc'),
         draft_description_multiloc: {},
       },
-      { onSuccess: () => setIsEditing(false) }
+      {
+        onSuccess: () => {
+          preview.clear();
+          setIsEditing(false);
+        },
+      }
     );
   };
 
@@ -139,6 +138,7 @@ const DraftPhaseDescription = ({
         onSuccess: () => {
           methods.reset({ draft_description_multiloc: descriptionMultiloc });
           debouncedSaveDraft.cancel();
+          preview.clear();
           setIsEditing(false);
         },
       }

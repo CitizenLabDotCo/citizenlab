@@ -62,16 +62,21 @@ export const PhasePreviewDraftProvider = ({
   );
 };
 
-// Editors publish changes from their event handlers. Unmounting an editor
-// clears its preview patch on discard, method switch or navigation.
+// Editors publish changes from their event handlers and clear them once saved,
+// so the preview shows the saved phase again. Unmounting an editor clears its
+// preview patch on discard, method switch or navigation.
 export const usePhasePreviewPublisher = (source: string, phaseId: string) => {
   const context = useContext(DraftContext);
   const publish = context?.publish;
   const remove = context?.remove;
   useEffect(() => () => remove?.(source, phaseId), [remove, source, phaseId]);
-  return useCallback(
-    (fields: PhasePreviewDraft) => publish?.(source, { phaseId, fields }),
-    [publish, source, phaseId]
+  return useMemo(
+    () => ({
+      publish: (fields: PhasePreviewDraft) =>
+        publish?.(source, { phaseId, fields }),
+      clear: () => remove?.(source, phaseId),
+    }),
+    [publish, remove, source, phaseId]
   );
 };
 

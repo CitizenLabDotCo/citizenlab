@@ -39,16 +39,16 @@ const SimplePhaseDescription = ({ phaseId, descriptionMultiloc }: Props) => {
     },
   });
 
-  const publishPreview = usePhasePreviewPublisher('description', phaseId);
+  const preview = usePhasePreviewPublisher('description', phaseId);
   React.useEffect(() => {
     const subscription = methods.watch(() =>
-      publishPreview({
+      preview.publish({
         description_multiloc: methods.getValues('description_multiloc'),
         draft_description_multiloc: {},
       })
     );
     return () => subscription.unsubscribe();
-  }, [methods, publishPreview]);
+  }, [methods, preview]);
 
   const onFormSubmit = async (formValues: FormValues) => {
     try {
@@ -56,6 +56,7 @@ const SimplePhaseDescription = ({ phaseId, descriptionMultiloc }: Props) => {
         phaseId,
         ...formValues,
       });
+      preview.clear();
     } catch (error) {
       handleHookFormSubmissionError(error, methods.setError);
     }

@@ -77,7 +77,7 @@ const MethodSettings = ({ phase }: Props) => {
     {}
   );
 
-  const publishPreview = usePhasePreviewPublisher('settings', phase.id);
+  const preview = usePhasePreviewPublisher('settings', phase.id);
 
   const participationMethod = phase.attributes.participation_method;
   const accessOnlyActions = ACCESS_ONLY_ACTIONS[participationMethod];
@@ -86,7 +86,7 @@ const MethodSettings = ({ phase }: Props) => {
     config: IUpdatedPhaseProperties,
     changedFields: Partial<IUpdatedPhaseProperties>
   ) => {
-    publishPreview(changedFields);
+    preview.publish(changedFields);
     setChanges((changes) => ({ ...changes, ...changedFields }));
     setFormData(config);
   };
@@ -102,6 +102,7 @@ const MethodSettings = ({ phase }: Props) => {
 
     try {
       await updatePhase({ phaseId: phase.id, ...changes });
+      preview.clear();
       setChanges({});
       setErrors(null);
     } catch (error) {

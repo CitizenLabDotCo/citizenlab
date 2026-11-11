@@ -9,7 +9,7 @@ import IdeasView from 'components/IdeaCards/shared/IdeasView';
 import EmptyIdeas from 'components/IdeaCards/shared/IdeasView/EmptyIdeas';
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 
-import { getPhasePreview } from 'utils/phasePreview/runtime';
+import { usePhasePreview } from 'utils/phasePreview/runtime';
 
 import PreviewSkeleton from './PreviewSkeleton';
 
@@ -18,6 +18,7 @@ const DraftIdeasPreview = ({ phase }: { phase: IPhaseData }) => {
   const { available_views: availableViews, presentation_mode: defaultView } =
     phase.attributes;
   const view = getSelectedView({ requestedView, availableViews, defaultView });
+  const preview = usePhasePreview();
 
   return (
     <Box p="20px" display="flex" flexDirection="column" gap="12px">
@@ -42,7 +43,7 @@ const DraftIdeasPreview = ({ phase }: { phase: IPhaseData }) => {
         />
       ) : (
         <Box id={view === 'feed' ? 'view-panel-3' : 'view-panel-1'}>
-          {getPhasePreview()?.lifecycle === 'open' ? (
+          {preview?.lifecycle === 'open' ? (
             <EmptyIdeas />
           ) : (
             <PreviewSkeleton
