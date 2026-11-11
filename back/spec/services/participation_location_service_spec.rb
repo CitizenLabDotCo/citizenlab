@@ -54,7 +54,7 @@ RSpec.describe ParticipationLocationService do
   end
 
   describe '.track' do
-    let(:project) { create(:project_with_active_ideation_phase, track_participation_location: true) }
+    let(:project) { create(:project, track_participation_location: true) }
     let(:idea) { create(:idea, project: project) }
     let(:location_attrs) do
       {
@@ -67,6 +67,8 @@ RSpec.describe ParticipationLocationService do
         asn: 12_345
       }
     end
+
+    before { Current.request_user_id = idea.author_id }
 
     context 'when tracking is enabled' do
       before { SettingsService.new.activate_feature!('participation_location_tracking') }

@@ -204,10 +204,7 @@ describe MultiTenancy::Templates::TenantDeserializer do
         # Callbacks added by Rails and gems, which are covered by the bulk insertion: the
         # associations are resolved to ids and the counter caches are recomputed afterwards.
         framework = /\A(autosave_associated_records_for_|_update_counts_|normalize_changed_in_place_attributes\z|generate_slug\z)/
-        allowed = {
-          # No-op when applying a template: there's no location data to track.
-          'Reaction' => %i[track_participation_location]
-        }
+        allowed = {}
 
         callback_kinds = %i[validation save create commit]
 

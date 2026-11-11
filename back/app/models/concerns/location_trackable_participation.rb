@@ -8,7 +8,7 @@ module LocationTrackableParticipation
     after_create :track_participation_location
     # Where the phase allows it, participants can make an idea or comment
     # anonymous after posting it. The location could identify them.
-    after_update :forget_participation_location, if: :made_anonymous?
+    after_update :forget_participation_location, if: -> { try(:made_anonymous?) }
   end
 
   private
@@ -23,9 +23,5 @@ module LocationTrackableParticipation
 
   def forget_participation_location
     participation_location&.destroy!
-  end
-
-  def made_anonymous?
-    has_attribute?(:anonymous) && saved_change_to_anonymous?(to: true)
   end
 end

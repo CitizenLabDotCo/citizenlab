@@ -12,6 +12,7 @@ class ApplicationController < ActionController::API
   before_action :set_early_access_overrides
   before_action :set_policy_context
   before_action :set_current_location_headers
+  before_action :set_current_request_user
 
   after_action :verify_authorized, except: :index
   after_action :verify_policy_scoped, only: :index
@@ -216,6 +217,10 @@ class ApplicationController < ActionController::API
 
   def set_current_location_headers
     Current.location_headers = ParticipationLocationService.extract_location_headers(request.headers)
+  end
+
+  def set_current_request_user
+    Current.request_user_id = current_user&.id
   end
 end
 
