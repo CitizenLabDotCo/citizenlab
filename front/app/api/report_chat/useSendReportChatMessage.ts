@@ -32,6 +32,13 @@ const useSendReportChatMessage = () => {
     onSuccess: (chat, { reportId }) => {
       queryClient.setQueryData(reportChatKeys.item({ reportId }), chat);
     },
+    // Refused because a turn is already running, which another admin may have
+    // started: reading the chat again shows it, and polls until it is answered.
+    onError: (_error, { reportId }) => {
+      queryClient.invalidateQueries({
+        queryKey: reportChatKeys.item({ reportId }),
+      });
+    },
   });
 };
 

@@ -41,12 +41,14 @@ module ReportBuilder
     # never both.
     belongs_to :project, optional: true
     has_many :published_graph_data_units, dependent: :destroy
-    has_one :chat, class_name: 'ReportBuilder::ReportChat', dependent: :destroy, inverse_of: :report
-    # delete_all, not destroy: a transcript holds a run's whole message history and
-    # has no callbacks, so loading every one of them to delete them one at a time
-    # buys nothing. The foreign key cascades anyway.
-    has_many :generation_transcripts, class_name: 'ReportBuilder::GenerationTranscript',
-      dependent: :delete_all, inverse_of: :report
+    # The conversation in which the model wrote and revised the report. One per report,
+    # shared by everyone who may edit it, so it has no owner. Its runs are in Run.
+    #
+    # delete, not destroy: a conversation holds every message of every run, and the
+    # foreign keys take its messages, tool calls and runs with it. Loading them all
+    # to delete them one at a time buys nothing.
+    has_one :chat, -> { where(surface_key: CHAT_SURFACE_KEY) },
+      class_name: '::AIAssistant::Conversation', as: :subject, dependent: :delete
 
     # The "your report is ready" notification points at the report, so deleting one
     # would otherwise be refused by the foreign key. Nullifying is tried first and
@@ -65,6 +67,15 @@ module ReportBuilder
     accepts_nested_attributes_for :layout
 
     scope :global, -> { where(phase_id: nil) }
+
+    CHAT_SURFACE_KEY = 'report_builder'
+
+    # How long a run is believed to be still going. A run's own clock stops it after
+    # an hour, read between rounds, so this leaves room for the round under way and
+    # for time spent waiting in the queue. Past it, the job is taken to be lost.
+    RUN_ASSUMED_LOST_AFTER = 90.minutes
+
+    FAILED_TURN_REPLY = 'Something went wrong on my side. Please try again.'
 
     # How long an unfinished run is believed to be still running. Past that the
     # report is listed again even with the tracker open, so a worker that died
@@ -123,11 +134,45 @@ module ReportBuilder
       project || phase&.project
     end
 
+    # @param locale [String] only used when the chat does not exist yet.
+    def chat!(locale:)
+      chat || create_chat!(locale: locale)
+    rescue ActiveRecord::RecordNotUnique
+      # Another request created it first: there is one chat per report.
+      reload_chat
+    end
+
+    def runs
+      Run.where(conversation_id: ::AIAssistant::Conversation.where(subject: self, surface_key: CHAT_SURFACE_KEY).select(:id))
+    end
+
+    # Ends the chat turn the model still owes an answer to, telling the admin it
+    # failed so they can ask again.
+    def fail_chat_turn!(error_code)
+      return if chat.nil?
+
+      chat.with_lock do
+        next unless chat.running?
+
+        chat.messages.create!(role: 'assistant', content: FAILED_TURN_REPLY, replayed: false)
+        chat.fail_turn!(error_code)
+      end
+    end
+
+    # A worker that dies without failing its job leaves a run that never stops, and
+    # a chat that waits for it forever: the admin could neither ask again nor stop it.
+    def recover_lost_runs!
+      runs.running.where(created_at: ...RUN_ASSUMED_LOST_AFTER.ago).update_all(stopped_because: 'failed', updated_at: Time.current)
+
+      turn_started_at = chat&.running? && chat.turn_started_at
+      fail_chat_turn!('turn_timed_out') if turn_started_at && turn_started_at < RUN_ASSUMED_LOST_AFTER.ago
+    end
+
     # The run that wrote what the report holds now, if a model wrote it. A run that
     # stopped without saving is not it, however it stopped: what the report holds is
     # still the work of the last run that did save.
     def last_generation
-      generation_transcripts.generations.saved_the_report.newest_first.first
+      runs.generations.saved_the_report.newest_first.first
     end
 
     def public?

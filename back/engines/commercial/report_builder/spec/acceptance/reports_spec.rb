@@ -657,7 +657,7 @@ resource 'Reports' do
     DESC
 
     let_it_be(:phase) { create(:phase) }
-    let_it_be(:report) { create(:report, phase: phase) }
+    let_it_be(:report, reload: true) { create(:report, phase: phase) }
     let(:id) { report.id }
 
     before { SettingsService.new.activate_feature!('llm_reporting') }
@@ -668,7 +668,7 @@ resource 'Reports' do
       before { header_token_for current_user }
 
       example 'Stop the run in progress' do
-        run = create(:generation_transcript, report: report, stopped_because: nil)
+        run = create(:report_run, report: report, stopped_because: nil)
 
         do_request
 
@@ -678,14 +678,22 @@ resource 'Reports' do
       end
 
       example 'Asking twice changes nothing', document: false do
-        run = create(:generation_transcript, report: report, stopped_because: nil, cancel_requested_at: 1.minute.ago)
+        run = create(:report_run, report: report, stopped_because: nil, cancel_requested_at: 1.minute.ago)
 
         expect { do_request }.not_to change { run.reload.cancel_requested_at }
         assert_status 202
       end
 
+      example '[error] Nothing is running, once a lost run is given up on', document: false do
+        create(:report_run, report: report, stopped_because: nil, created_at: 2.hours.ago)
+
+        do_request
+
+        assert_status 404
+      end
+
       example '[error] Nothing is running' do
-        create(:generation_transcript, report: report, stopped_because: 'done')
+        create(:report_run, report: report, stopped_because: 'done')
 
         do_request
 
@@ -701,7 +709,7 @@ resource 'Reports' do
   get 'web_api/v1/reports/:id/chat' do
     route_description 'The conversation in which an admin asks for changes to the report.'
 
-    let_it_be(:report) { create(:report, phase: create(:phase)) }
+    let_it_be(:report, reload: true) { create(:report, phase: create(:phase)) }
     let(:id) { report.id }
 
     before { SettingsService.new.activate_feature!('llm_reporting') }
@@ -715,24 +723,48 @@ resource 'Reports' do
       end
 
       example 'Read the report chat' do
-        create(:report_chat, report: report, transcript: [
-          { 'role' => 'user', 'text' => 'shorter please', 'at' => Time.current.iso8601 },
-          { 'role' => 'assistant', 'text' => 'Done.', 'at' => Time.current.iso8601 }
-        ])
+        report.chat!(locale: 'en').messages.create!(role: 'user', content: 'shorter please', replayed: false)
+        run = create(:report_run, report: report, kind: 'revision', report_saved_at: Time.current)
+        run.append_message!(role: 'user', content: 'The full prompt.', displayed: false)
+        run.append_message!(role: 'assistant', content: 'Done.', replayed: false)
 
         do_request
         assert_status 200
-        expect(response_data[:attributes][:turns].map { |turn| turn[:role] }).to eq %w[user assistant]
+        expect(response_data[:attributes][:turns].map { |turn| turn.slice(:role, :text) }).to eq [
+          { role: 'user', text: 'shorter please' },
+          { role: 'assistant', text: 'Done.' }
+        ]
+        expect(response_data[:attributes][:turns].last[:changed_layout]).to be true
         expect(response_data[:attributes][:pending]).to be false
       end
 
+      example 'An answer from a run that saved nothing did not change the layout', document: false do
+        run = create(:report_run, report: report, kind: 'revision')
+        run.append_message!(role: 'assistant', content: 'It shows weekly participants.', replayed: false)
+
+        do_request
+        expect(response_data[:attributes][:turns].last[:changed_layout]).to be false
+      end
+
       example 'A turn the model still owes an answer to is pending', document: false do
-        create(:report_chat, report: report, transcript: [
-          { 'role' => 'user', 'text' => 'shorter please', 'at' => Time.current.iso8601 }
-        ])
+        chat = report.chat!(locale: 'en')
+        chat.messages.create!(role: 'user', content: 'shorter please', replayed: false)
+        chat.update!(status: 'running', turn_started_at: Time.current)
 
         do_request
         expect(response_data[:attributes][:pending]).to be true
+      end
+
+      example 'A turn whose job never came back is answered as failed', document: false do
+        chat = report.chat!(locale: 'en')
+        chat.messages.create!(role: 'user', content: 'shorter please', replayed: false)
+        chat.update!(status: 'running', turn_started_at: 2.hours.ago)
+
+        do_request
+        expect(response_data[:attributes][:pending]).to be false
+        expect(response_data[:attributes][:turns].last).to include(
+          role: 'assistant', text: ReportBuilder::Report::FAILED_TURN_REPLY
+        )
       end
     end
 
@@ -749,7 +781,7 @@ resource 'Reports' do
     parameter :message, 'What to change about the report.', required: true
     parameter :craftjs_json, 'The layout as it stands in the editor, unsaved edits included.', required: false
 
-    let_it_be(:report) { create(:report, phase: create(:phase)) }
+    let_it_be(:report, reload: true) { create(:report, phase: create(:phase)) }
     let(:id) { report.id }
     let(:message) { 'Make the summary shorter.' }
 
@@ -765,6 +797,8 @@ resource 'Reports' do
         assert_status 201
         expect(response_data[:attributes][:turns].last).to include(role: 'user', text: message)
         expect(response_data[:attributes][:pending]).to be true
+        # The model gets the admin's words inside a prompt the run writes itself.
+        expect(report.chat.messages.sole).to have_attributes(content: message, displayed: true, replayed: false)
       end
 
       example 'The unsaved editor layout is what gets revised', :active_job_que_adapter, document: false do
@@ -779,11 +813,39 @@ resource 'Reports' do
         expect(enqueued.args.to_json).to include 'only-in-the-editor'
       end
 
+      example '[error] Ask while a turn is running', :active_job_que_adapter do
+        report.chat!(locale: 'en').update!(status: 'running', turn_started_at: Time.current)
+
+        expect { do_request }
+          .not_to change { QueJob.by_job_class(ReportBuilder::ReviseReportJob).count }
+
+        assert_status 409
+        expect(json_response_body.dig(:errors, :base).first[:error]).to eq 'conversation_busy'
+        expect(report.chat.messages).to be_empty
+      end
+
+      example 'Ask again after a turn failed', :active_job_que_adapter, document: false do
+        report.chat!(locale: 'en').update!(status: 'failed', last_error_code: 'turn_failed')
+
+        do_request
+        assert_status 201
+        expect(report.chat.reload).to have_attributes(status: 'running', last_error_code: nil)
+      end
+
       example '[error] Ask for nothing', :active_job_que_adapter do
         expect { do_request(message: '  ') }
           .not_to change { QueJob.by_job_class(ReportBuilder::ReviseReportJob).count }
 
         assert_status 422
+        expect(json_response_body.dig(:errors, :message).first[:error]).to eq 'blank'
+      end
+
+      example '[error] Ask for too much at once', :active_job_que_adapter, document: false do
+        expect { do_request(message: 'a' * (AIAssistant::Message::MAX_CONTENT_LENGTH + 1)) }
+          .not_to change { QueJob.by_job_class(ReportBuilder::ReviseReportJob).count }
+
+        assert_status 422
+        expect(json_response_body.dig(:errors, :message).first[:error]).to eq 'too_long'
       end
 
       example '[error] Ask for a change with the feature deactivated', document: false do
