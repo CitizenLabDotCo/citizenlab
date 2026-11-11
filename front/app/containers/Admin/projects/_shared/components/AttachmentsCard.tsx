@@ -12,6 +12,7 @@ import fileMessages from 'components/UI/FileRepositorySelectAndUpload/components
 import { useIntl } from 'utils/cl-intl';
 
 import SetupCard from './SetupCard';
+import SummaryPill from './SummaryPill';
 
 const MAX_SIZE_MB = 10;
 
@@ -48,8 +49,19 @@ const AttachmentsCard = ({
     <>
       <SetupCard
         title={title}
+        action={
+          files.attachments.length > 0 && (
+            <SummaryPill
+              active
+              icon="paperclip"
+              label={formatMessage(fileMessages.attachmentCount, {
+                count: files.attachments.length,
+              })}
+            />
+          )
+        }
         button={{
-          icon: 'plus',
+          icon: files.attachments.length > 0 ? 'edit' : 'plus',
           actionLabel: formatMessage(fileMessages.addFile),
           disabled: files.isUploadingFile || disabled,
           onClick: () => setOpened(true),
@@ -74,6 +86,7 @@ const AttachmentsCard = ({
       </SetupCard>
       <FileSelectModal
         opened={opened}
+        variant="bo"
         onClose={() => setOpened(false)}
         fileAttachments={files.attachments}
         onFileAdd={files.uploadFile}
