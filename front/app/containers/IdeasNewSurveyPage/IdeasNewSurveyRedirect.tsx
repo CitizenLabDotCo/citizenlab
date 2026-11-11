@@ -29,7 +29,7 @@ const IdeasNewSurveyRedirect = () => {
   } = useProjectBySlug(phase_id ? undefined : slug);
 
   const phaseId =
-    phase_id ?? project?.data.relationships.current_phase?.data?.id;
+    phase_id || project?.data.relationships.current_phase?.data?.id;
 
   if (phaseId) {
     return (

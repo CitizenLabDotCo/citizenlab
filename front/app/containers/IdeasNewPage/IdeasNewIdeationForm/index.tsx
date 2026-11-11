@@ -7,10 +7,9 @@ import {
   useWindowSize,
 } from '@citizenlab/cl2-component-library';
 
-import { IPhases, IPhaseData, ParticipationMethod } from 'api/phases/types';
+import { ParticipationMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 import usePhases from 'api/phases/usePhases';
-import { getCurrentPhase } from 'api/phases/utils';
 import { IProject } from 'api/projects/types';
 
 import useOnQuerySuccess from 'hooks/useOnQuerySuccess';
@@ -33,21 +32,9 @@ const IdeationForm = React.lazy(
   () => import('components/CustomFieldsForm/IdeationForm')
 );
 
-const getConfig = (
-  phaseFromUrl: IPhaseData | undefined,
-  phases: IPhases | undefined
-) => {
-  const participationMethod = phaseFromUrl
-    ? phaseFromUrl.attributes.participation_method
-    : getCurrentPhase(phases?.data)?.attributes.participation_method;
-
-  if (!participationMethod) return;
-  return getMethodConfig(participationMethod);
-};
-
 interface Props {
   project: IProject;
-  phaseId: string | undefined;
+  phaseId: string;
   participationMethod?: ParticipationMethod;
 }
 
@@ -65,7 +52,6 @@ const IdeasNewIdeationForm = ({
     from: '/$locale/projects/$slug/ideas/new/$phaseId',
   });
   const selectedIdeaId = searchParams.selected_idea_id;
-  const participationMethodConfig = getConfig(phase?.data, phases);
 
   const hasTrackedStart = useRef(false);
   useOnQuerySuccess(phaseQuery, () => {
@@ -98,10 +84,13 @@ const IdeasNewIdeationForm = ({
     };
   }, []);
 
-  if (!participationMethodConfig || !phase) {
+  if (!phase) {
     return null;
   }
 
+  const participationMethodConfig = getMethodConfig(
+    phase.data.attributes.participation_method
+  );
   const titleText = participationMethodConfig.getFormTitle?.({
     project: project.data,
     phases: phases?.data,
@@ -135,9 +124,7 @@ const IdeasNewIdeationForm = ({
                 position="relative"
                 top={isSmallerThanPhone ? '0' : '40px'}
               >
-                {phaseId && (
-                  <NewIdeaHeading phase={phase.data} titleText={titleText} />
-                )}
+                <NewIdeaHeading phase={phase.data} titleText={titleText} />
               </Box>
               <Box
                 as="main"

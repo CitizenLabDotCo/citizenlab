@@ -4,7 +4,6 @@ import { Spinner } from '@citizenlab/cl2-component-library';
 
 import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
-import { getCurrentPhase } from 'api/phases/utils';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
@@ -15,9 +14,8 @@ import VerticalCenterer from 'components/VerticalCenterer';
 
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import { getIdeaPostingRules } from 'utils/actionTakingRules';
-import { getParticipationMethod } from 'utils/configs/participationMethodConfig';
+import Navigate from 'utils/cl-router/Navigate';
 import { isUnauthorizedRQ } from 'utils/errorUtils';
-import { isNilOrError } from 'utils/helperUtils';
 import { useParams } from 'utils/router';
 
 import IdeasNewIdeationForm from './IdeasNewIdeationForm';
@@ -58,22 +56,33 @@ const IdeasNewPage = () => {
     return null;
   }
 
-  const currentPhase = getCurrentPhase(phases.data);
-  const participationMethod = getParticipationMethod(
-    project.data,
-    phases.data,
-    phaseId
-  );
+  const phase = phases.data.find((phase) => phase.id === phaseId);
+
+  if (!phase) {
+    return <PageNotFound />;
+  }
+
+  const participationMethod = phase.attributes.participation_method;
+
+  // Survey phases have their own route and form.
+  if (participationMethod === 'native_survey') {
+    return (
+      <Navigate
+        to="/projects/$slug/surveys/new/$phaseId"
+        params={{ slug, phaseId }}
+        replace
+      />
+    );
+  }
+
   const { enabled, disabledReason, authenticationRequirements } =
     getIdeaPostingRules({
       project: project.data,
-      phase: currentPhase,
+      phase,
       authUser: authUser?.data,
     });
 
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  if ((enabled === 'maybe' && authenticationRequirements) || disabledReason) {
+  if (enabled === 'maybe' || disabledReason) {
     const triggerAuthFlow = () => {
       triggerAuthenticationFlow({
         context: {
@@ -87,9 +96,8 @@ const IdeasNewPage = () => {
     return (
       <Unauthorized
         fixableByAuthentication={
-          !isNilOrError(authenticationRequirements) ||
-          (disabledReason && isFixableByAuthentication(disabledReason)) ||
-          false
+          authenticationRequirements !== null ||
+          isFixableByAuthentication(disabledReason)
         }
         triggerAuthFlow={triggerAuthFlow}
       />

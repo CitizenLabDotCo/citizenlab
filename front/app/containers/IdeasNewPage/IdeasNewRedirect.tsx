@@ -3,7 +3,6 @@ import React from 'react';
 import { Spinner } from '@citizenlab/cl2-component-library';
 
 import usePhases from 'api/phases/usePhases';
-import { getCurrentPhase } from 'api/phases/utils';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import PageNotFound from 'components/PageNotFound';
@@ -43,7 +42,8 @@ const IdeasNewRedirect = () => {
     );
   }
 
-  const phaseId = phase_id ?? getCurrentPhase(phases.data)?.id;
+  const phaseId =
+    phase_id || project.data.relationships.current_phase?.data?.id;
 
   if (!phaseId) {
     return <PageNotFound />;

@@ -15,7 +15,6 @@ import VerticalCenterer from 'components/VerticalCenterer';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import { getIdeaPostingRules } from 'utils/actionTakingRules';
 import { isUnauthorizedRQ } from 'utils/errorUtils';
-import { isNilOrError } from 'utils/helperUtils';
 import { useParams, useSearch } from 'utils/router';
 
 import IdeasNewSurveyForm from './IdeasNewSurveyForm';
@@ -83,9 +82,7 @@ const IdeasNewSurveyPage = () => {
       return <SurveyNotActiveNotice project={project.data} />;
     }
 
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if ((enabled === 'maybe' && authenticationRequirements) || disabledReason) {
+    if (enabled === 'maybe' || disabledReason) {
       const triggerAuthFlow = () => {
         triggerAuthenticationFlow({
           context: {
@@ -97,9 +94,8 @@ const IdeasNewSurveyPage = () => {
       };
 
       const fixableByAuthentication =
-        !isNilOrError(authenticationRequirements) ||
-        (disabledReason && isFixableByAuthentication(disabledReason)) ||
-        false;
+        authenticationRequirements !== null ||
+        isFixableByAuthentication(disabledReason);
 
       // By default, trigger the modal right away if relevant for better UX.
       if (fixableByAuthentication) {
