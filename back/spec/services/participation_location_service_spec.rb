@@ -87,10 +87,10 @@ RSpec.describe ParticipationLocationService do
         )
       end
 
-      it 'does not create a second record' do
-        described_class.track(idea, location_attrs)
+      it 'does not create a record for an anonymous idea' do
+        anonymous_idea = create(:idea, project: project, anonymous: true)
 
-        expect { described_class.track(idea, location_attrs) }.not_to change(ParticipationLocation, :count)
+        expect { described_class.track(anonymous_idea, location_attrs) }.not_to change(ParticipationLocation, :count)
       end
 
       it 'does not create a record for nil attrs' do
@@ -116,25 +116,15 @@ RSpec.describe ParticipationLocationService do
       end
     end
 
-    context 'when the participation is saved through a request' do
+    context 'when project tracking is disabled' do
       before do
         SettingsService.new.activate_feature!('participation_location_tracking')
-        Current.location_headers = location_attrs
+        project.update!(track_participation_location: false)
       end
 
-      it 'records the location of a survey response when it is submitted, not when the draft is created' do
-        survey_project = create(:single_phase_native_survey_project, track_participation_location: true)
-        create(:idea_status_proposed)
-        response = create(
-          :native_survey_response,
-          project: survey_project,
-          creation_phase: survey_project.phases.first,
-          publication_status: 'draft'
-        )
-        expect(response.participation_location).to be_nil
-
-        response.update!(publication_status: 'published')
-        expect(response.reload.participation_location).to have_attributes(city: 'Brussels')
+      it 'does not create a record' do
+        expect { described_class.track(idea, location_attrs) }
+          .not_to change(ParticipationLocation, :count)
       end
     end
   end

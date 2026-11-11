@@ -15,8 +15,7 @@ class ParticipationLocationService
     end
 
     def track(trackable, location_attrs)
-      return unless enabled_for?(trackable.project) && ParticipationTrackingService.track?(trackable)
-      return if trackable.participation_location
+      return unless should_track?(trackable)
 
       attrs = location_attrs&.compact_blank
       if attrs.blank?
@@ -27,7 +26,7 @@ class ParticipationLocationService
         return
       end
 
-      trackable.create_participation_location!(**attrs)
+      ParticipationLocation.create!(trackable: trackable, **attrs)
     end
 
     def enabled_for?(project)
@@ -36,6 +35,10 @@ class ParticipationLocationService
     end
 
     private
+
+    def should_track?(trackable)
+      enabled_for?(trackable.project) && ParticipationTrackingService.track?(trackable)
+    end
 
     def parse_decimal(value)
       BigDecimal(value.to_s, exception: false)

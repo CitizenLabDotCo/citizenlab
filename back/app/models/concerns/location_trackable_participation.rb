@@ -5,7 +5,10 @@ module LocationTrackableParticipation
 
   included do
     has_one :participation_location, as: :trackable, dependent: :destroy, inverse_of: :trackable
-    after_save :track_participation_location
+    after_create :track_participation_location
+    # Where the phase allows it, participants can make an idea or comment
+    # anonymous after posting it. The location could identify them.
+    after_update :forget_participation_location, if: :made_anonymous?
   end
 
   # The value of one ParticipationLocation::EXPORT_COLUMNS attribute for
@@ -25,5 +28,13 @@ module LocationTrackableParticipation
     # A tracking error should not prevent the creation of the participation.
     Rails.logger.error("Failed to track participation location: #{e.message}")
     ErrorReporter.report(e)
+  end
+
+  def forget_participation_location
+    participation_location&.destroy!
+  end
+
+  def made_anonymous?
+    has_attribute?(:anonymous) && saved_change_to_anonymous?(to: true)
   end
 end

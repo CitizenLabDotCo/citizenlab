@@ -34,6 +34,20 @@ RSpec.shared_examples 'location_trackable_participation' do |factory_name: nil|
       )
     end
 
+    if described_class.column_names.include?('anonymous')
+      it 'deletes the ParticipationLocation when the participation is made anonymous' do
+        SettingsService.new.activate_feature!('participation_location_tracking')
+        Current.location_headers = { country_code: 'BE', city: 'Brussels' }
+        trackable.save!
+        expect(trackable.reload.participation_location).to be_present
+
+        trackable.update!(anonymous: true)
+
+        expect(trackable.reload.participation_location).to be_nil
+        expect(ParticipationLocation.where(trackable: trackable)).to be_empty
+      end
+    end
+
     it 'does not prevent creation when tracking fails' do
       allow(ParticipationLocationService).to receive(:track).and_raise(StandardError.new('test error'))
       allow(ErrorReporter).to receive(:report)
