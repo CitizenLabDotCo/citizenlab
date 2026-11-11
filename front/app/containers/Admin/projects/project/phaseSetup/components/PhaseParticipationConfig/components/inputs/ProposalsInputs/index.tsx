@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import {
   Box,
@@ -40,6 +40,7 @@ import SortingPicker from '../_shared/SortingPicker';
 import UserActions from '../_shared/UserActions';
 
 interface Props {
+  moderationAction?: ReactNode;
   input_term: InputTerm | undefined;
   handleInputTermChange: (option: IOption) => void;
   submission_enabled?: boolean | null;
@@ -91,6 +92,7 @@ interface Props {
 }
 
 const ProposalsInputs = ({
+  moderationAction,
   input_term,
   handleInputTermChange,
   submission_enabled,
@@ -343,17 +345,20 @@ const ProposalsInputs = ({
           {userActions}
         </PanelGroup>
         {requirements}
-        <PanelGroup
-          label={formatMessage(configMessages.moderationGroup)}
-          defaultOpen
-        >
-          <Box display="flex" flexDirection="column" gap="16px">
-            <ModerationAssignee phaseId={phaseId} />
-            {screening}
-            {anonymity}
-            {similarity}
-          </Box>
-        </PanelGroup>
+        <Box id="phase-moderation-settings">
+          <PanelGroup
+            label={formatMessage(configMessages.moderationGroup)}
+            defaultOpen
+          >
+            <Box display="flex" flexDirection="column" gap="16px">
+              {!phaseId && moderationAction}
+              <ModerationAssignee phaseId={phaseId} />
+              {screening}
+              {anonymity}
+              {similarity}
+            </Box>
+          </PanelGroup>
+        </Box>
       </>
     );
   }

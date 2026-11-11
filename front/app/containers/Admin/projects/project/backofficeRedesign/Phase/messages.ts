@@ -46,11 +46,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.notifications',
     defaultMessage: 'Notifications',
   },
-  saveToEditSettings: {
-    id: 'app.containers.Admin.projects.project.saveToEditSettings',
-    defaultMessage:
-      'Access rights, notifications and other settings become available once you save the phase.',
-  },
   editAccess: {
     id: 'app.containers.Admin.projects.project.editAccess',
     defaultMessage: 'Edit access',

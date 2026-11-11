@@ -32,7 +32,9 @@ import PlacementCard from '../Phase/BuildPanel/PlacementCard';
 import SurveySetupModal, {
   SurveySetupAction,
 } from '../Phase/BuildPanel/SurveySetupModal';
-import DraftMethodSettings from '../Phase/DraftMethodSettings';
+import DraftMethodSettings, {
+  SetupSettingsAction,
+} from '../Phase/DraftMethodSettings';
 import PhasePreview from '../Phase/PhasePreview';
 
 import messages from './messages';
@@ -80,7 +82,7 @@ const NewPhaseWorkspace = ({
   const [surveySetupOpened, setSurveySetupOpened] = useState(false);
   const [destination, setDestination] = useState<{
     phaseId: string;
-    action?: SurveySetupAction | 'input';
+    action?: SurveySetupAction | 'input' | SetupSettingsAction;
   }>();
 
   const files = usePhaseFileAttachments({
@@ -147,7 +149,9 @@ const NewPhaseWorkspace = ({
 
   useRegisterPageSaver('draft', { dirty, save });
 
-  const saveAndOpenForm = async (action: SurveySetupAction | 'input') => {
+  const saveAndOpenAction = async (
+    action: SurveySetupAction | 'input' | SetupSettingsAction
+  ) => {
     if (!pageSave || pageSave.saving || files.isUploadingFile) return;
 
     setDirty(true);
@@ -178,6 +182,21 @@ const NewPhaseWorkspace = ({
       );
     }
 
+    if (
+      destination.action === 'access' ||
+      destination.action === 'notifications' ||
+      destination.action === 'moderation'
+    ) {
+      return (
+        <Navigate
+          to="/admin/projects/$projectId/phases/$phaseId/setup"
+          params={params}
+          search={{ setup_action: destination.action }}
+          replace
+        />
+      );
+    }
+
     return (
       <Navigate
         to="/admin/projects/$projectId/phases/$phaseId/setup"
@@ -197,6 +216,14 @@ const NewPhaseWorkspace = ({
         ),
         methodSettings: (
           <DraftMethodSettings
+            onOpenSetting={saveAndOpenAction}
+            saving={!!pageSave?.saving}
+            uploading={files.isUploadingFile}
+            saveError={
+              saveFailed
+                ? formatMessage(messages.addQuestionsSaveError)
+                : undefined
+            }
             formData={formData}
             validationErrors={validationErrors}
             apiErrors={errors}
@@ -240,7 +267,7 @@ const NewPhaseWorkspace = ({
                     if (participationMethod === 'native_survey') {
                       setSurveySetupOpened(true);
                     } else {
-                      saveAndOpenForm('input');
+                      saveAndOpenAction('input');
                     }
                   }}
                 >
@@ -292,7 +319,7 @@ const NewPhaseWorkspace = ({
           opened={surveySetupOpened}
           onClose={() => setSurveySetupOpened(false)}
           draft={{
-            onChoose: saveAndOpenForm,
+            onChoose: saveAndOpenAction,
             saving: !!pageSave?.saving,
             uploading: files.isUploadingFile,
           }}

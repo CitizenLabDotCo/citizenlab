@@ -553,6 +553,10 @@ const phaseSetupRoute = createRoute({
   validateSearch: (search: Record<string, unknown>) =>
     yup
       .object({
+        setup_action: yup
+          .mixed<'access' | 'notifications' | 'moderation'>()
+          .oneOf(['access', 'notifications', 'moderation'])
+          .optional(),
         survey_action: yup
           .mixed<'copy' | 'pdf' | 'excel'>()
           .oneOf(['copy', 'pdf', 'excel'])
