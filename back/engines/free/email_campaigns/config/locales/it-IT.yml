@@ -77,6 +77,7 @@ it-IT:
         users_who_follow_the_project: Utenti che seguono il progetto
         users_who_follow_the_proposal: Gli utenti che seguono la proposta
       trigger:
+        3_days_after_invite_is_sent: "3 giorni dopo l'invio dell'invito"
         7_days_after_invite_is_sent: "7 giorni dopo l'invio dell'invito"
         7_days_before_phase_starts: 7 giorni prima dell'inizio di una fase
         7_days_before_the_project_changes_phase: 7 giorni prima che il progetto cambi fase
@@ -90,10 +91,10 @@ it-IT:
         input_is_updated: Il contributo viene aggiornato
         input_status_changes: Cambiamento di status del contributo
         internal_comment_is_posted_on_idea_assigned_to_user: Commento interno sul contributo assegnato all'utente
-        internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: "Il commento interno viene pubblicato sull'input del progetto o della cartella che l'utente gestisce"
+        internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: Commento interno su un contributo in un progetto o cartella gestiti dall’utente
         internal_comment_is_posted_on_idea_user_has_commented_internally_on: Commento interno sul contributo che l'utente ha commentato internamente
-        internal_comment_is_posted_on_idea_user_moderates: Il commento interno è pubblicato sul contributo che l'utente modera
-        internal_comment_is_posted_on_unassigned_unmoderated_idea: Viene pubblicato un commento interno su un contributo non assegnato in un progetto non gestito
+        internal_comment_is_posted_on_idea_user_moderates: Commento interno su un contributo moderato dall’utente
+        internal_comment_is_posted_on_unassigned_unmoderated_idea: Commento interno su un contributo non assegnato in un progetto non gestito
         new_input_awaits_screening: Un nuovo contributo in attesa di essere vagliato
         new_input_is_published: Viene pubblicato un nuovo contributo
         new_proposal_is_posted: La nuova proposta è pubblicata
@@ -253,7 +254,7 @@ it-IT:
       cta_button: Rispondi a %{commentAuthor}
       event_description: "%{authorNameFull} ha pubblicato un commento su '%{inputTitle}'. Clicca sul pulsante qui sotto per continuare la conversazione con %{authorName}."
       main_header:
-        comment: '%{authorName} ha commentato un commento che segue'
+        comment: '%{authorName} ha commentato un commento che segui'
         contribution: '%{authorName} ha commentato un contributo che segui'
         idea: "%{authorName} ha commentato un'idea che segui"
         initiative: "%{authorName} ha commentato un'iniziativa che segui"
@@ -268,7 +269,7 @@ it-IT:
         response: '%{authorName} ha commentato una risposta che segui'
         story: '%{authorName} ha commentato una storia che segui'
         suggestion: '%{authorName} ha commentato un suggerimento che segui'
-        topic: '%{authorName} ha commentato un argomento che segue'
+        topic: '%{authorName} ha commentato un argomento che segui'
       preheader: "%{authorName} ha lasciato un commento su un'idea per %{organizationName}"
       subject: C'è un nuovo commento su "%{input_title}"
       title: '%{authorName} ha commentato un contributo che segui'
@@ -295,7 +296,7 @@ it-IT:
     email_confirmation:
       best_regards: Cordiali saluti,
       event_description: 'Grazie per la partecipazione. Inserisci questo codice di conferma nella finestra sulla piattaforma partecipativa di %{organizationName}:'
-      expire_code: Questo codice scadrà tra
+      expire_code: 'Questo codice scadrà tra '
       hours_24: 24 ore.
       ignore_email: Se non hai richiesto un codice, puoi ignorare questa email.
       preheader: Conferma il tuo indirizzo e-mail per %{organizationName}
@@ -483,12 +484,12 @@ it-IT:
       title: Sei stato menzionato
     merge_account_confirmation:
       best_regards: Cordiali saluti,
-      event_description: "Qualcuno ha effettuato l'accesso alla piattaforma di partecipazione di %{organizationName} e ha chiesto di collegare tale accesso all'account associato a questo indirizzo email. Se sei stato tu, inserisci questo codice di conferma per continuare:"
-      expire_code: Questo codice scadrà tra
+      event_description: "Qualcuno ha effettuato l'accesso alla piattaforma partecipativa di %{organizationName} e ha chiesto di collegare tale accesso all'account associato a questo indirizzo email. Se la richiesta è tua, inserisci questo codice di conferma per continuare:"
+      expire_code: 'Questo codice scadrà tra '
       hours_24: 24 ore.
       ignore_email: Se non sei stato tu, puoi ignorare tranquillamente questa email. Non è stato modificato nulla e nessuno può utilizzare questo codice senza avere accesso a questa casella di posta.
       preheader: Conferma il tuo indirizzo email per %{organizationName}
-      subject: Conferma il tuo indirizzo email per la piattaforma di partecipazione di %{organizationName}
+      subject: Conferma il tuo indirizzo email per la piattaforma partecipativa di %{organizationName}
       title: Conferma il tuo indirizzo email
     moderator_digest:
       cta_button: Gestione del progetto
@@ -528,7 +529,7 @@ it-IT:
     new_email_confirmation:
       best_regards: Cordiali saluti,
       event_description: 'Inserisci questo codice di conferma nella finestra sulla piattaforma partecipativa di %{organizationName} per confermare il tuo nuovo indirizzo e-mail:'
-      expire_code: Questo codice scadrà tra
+      expire_code: 'Questo codice scadrà tra '
       hours_24: 24 ore.
       ignore_email: Se non hai richiesto un codice, puoi ignorare questa email.
       preheader: Conferma il tuo nuovo indirizzo email per %{organizationName}
@@ -630,11 +631,11 @@ it-IT:
       event_description: "Ora puoi partecipare a '%{phaseTitle}' sulla piattaforma di %{organizationName}."
       new_phase: "Questo progetto è entrato nella fase '%{phaseTitle}'"
       preheader: "Ora puoi partecipare a '%{phaseTitle}'"
-      subject: "'%{phaseTitle}' è iniziata in %{projectName}"
+      subject: '%{projectName}: è iniziata la fase ‘%{phaseTitle}’'
       subtitle: "Informazioni su '%{projectName}'"
-      title: "C'è qualcosa di nuovo in '%{projectName}'"
+      title: "C'è una novità in '%{projectName}'"
     project_phase_upcoming:
-      cta_button: Rivedi la configurazione
+      cta_button: Controlla la configurazione
       event_description: "'%{phaseTitle}' nel progetto '%{projectName}' inizia il %{startDate}. Prenditi un momento per verificare che tutto sia pronto: la descrizione è completa? Le date sono corrette? Vuoi informare la tua comunità attraverso una campagna email personalizzata?"
       new_phase: "Il progetto entrerà nella fase '%{phaseTitle}'"
       preheader: Assicurati che tutto sia pronto prima del %{startDate}

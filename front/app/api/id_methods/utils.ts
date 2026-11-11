@@ -2,7 +2,9 @@ import {
   IdMethods,
   IDAzureAdMethod,
   IDAzureAdB2cMethod,
+  IDCriiptoMethod,
   IDFacebookMethod,
+  IDNemlogInMethod,
   IDOktaMethod,
   IDPublikMethod,
   IdMethodName,
@@ -74,3 +76,13 @@ export function isLastIdMethod(
     idMethods.length - 1
   );
 }
+
+const canBeOnlyShownForVerification = (
+  method: IdMethodData
+): method is IDCriiptoMethod | IDNemlogInMethod =>
+  method.attributes.name === 'criipto' ||
+  method.attributes.name === 'nemlog_in';
+
+export const isOnlyShownForVerification = (method: IdMethodData) =>
+  canBeOnlyShownForVerification(method) &&
+  method.attributes.only_show_for_verification === true;

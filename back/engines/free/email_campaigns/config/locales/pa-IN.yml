@@ -77,6 +77,7 @@ pa-IN:
         users_who_follow_the_project: ਪ੍ਰੋਜੈਕਟ ਦੀ ਪਾਲਣਾ ਕਰਨ ਵਾਲੇ ਉਪਭੋਗਤਾ
         users_who_follow_the_proposal: ਪ੍ਰਸਤਾਵ ਦੀ ਪਾਲਣਾ ਕਰਨ ਵਾਲੇ ਉਪਭੋਗਤਾ
       trigger:
+        3_days_after_invite_is_sent: ਸੱਦਾ ਭੇਜੇ ਜਾਣ ਦੇ 3 ਦਿਨ ਬਾਅਦ
         7_days_after_invite_is_sent: ਸੱਦਾ ਭੇਜਣ ਤੋਂ 7 ਦਿਨ ਬਾਅਦ
         7_days_before_phase_starts: ਇੱਕ ਪੜਾਅ ਸ਼ੁਰੂ ਹੋਣ ਤੋਂ 7 ਦਿਨ ਪਹਿਲਾਂ
         7_days_before_the_project_changes_phase: ਪ੍ਰੋਜੈਕਟ ਬਦਲਣ ਦੇ ਪੜਾਅ ਤੋਂ 7 ਦਿਨ ਪਹਿਲਾਂ

@@ -140,9 +140,15 @@ hu-HU:
           title: Mi a témád?
   errors:
     messages:
+      ai_processing_not_allowed: nem dolgozható fel az MI által
       in_the_past: a jövőben kell lennie
       max_must_be_greater_than_min_characters: A maximumnak nagyobbnak kell lennie a minimumnál.
       max_must_be_greater_than_or_equal_to_min_select_count: A maximumnak nagyobbnak vagy egyenlőnek kell lennie a minimummal.
+      not_found: nem találhatók
+      not_in_project: a projekthez tartozó fájloknak kell lenniük
+      not_utf8: UTF-8 kódolással kell menteni
+      too_many_in_conversation: túl sok egy beszélgetéshez
+      unsupported_file_type: legfeljebb 4 MB-os PDF-fájloknak, vagy legfeljebb 100 KB-os Markdown vagy szöveges fájloknak kell lenniük
   events:
     council_meeting_description: |
       <p>Ezen a tanácsülésen bemutatásra kerülnek azok az állampolgári kezdeményezések, amelyek kevesebb mint 3 hónap alatt 100 szavazatot szereztek.</p><p>A tanács ezután megosztja véleményét az egyes ötletekről.</p>
@@ -180,6 +186,7 @@ hu-HU:
       logic_no_further_questions: A válaszai alapján <strong>nem kell</strong> további kérdésekre válaszolnia.
       logic_section: '%{letter}. szakasz'
       matrix_print_description: Minden sorban jelöljön meg egy kört egy kereszttel a preferenciája jelzésére.
+      multipoint_print_description: Kérjük, rajzoljon egy X-et az alábbi térképre minden egyes hozzáadni kívánt helyszínhez.
       optional: választható
       page: oldal
       permission: Engedély

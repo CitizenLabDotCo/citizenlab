@@ -77,6 +77,7 @@ ca-ES:
         users_who_follow_the_project: Usuaris que segueixen el projecte
         users_who_follow_the_proposal: Usuaris que segueixen la proposta
       trigger:
+        3_days_after_invite_is_sent: 3 dies després d'enviar la invitació
         7_days_after_invite_is_sent: 7 dies després de l'enviament de la invitació
         7_days_before_phase_starts: 7 dies abans que s'iniciï una etapa
         7_days_before_the_project_changes_phase: 7 dies abans del canvi de fase del projecte

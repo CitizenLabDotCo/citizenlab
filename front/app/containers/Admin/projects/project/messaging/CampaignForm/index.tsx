@@ -254,6 +254,7 @@ const CampaignForm = ({
             id="e2e-campaign-form-save-button"
             type="submit"
             processing={isLoading}
+            disabled={!methods.formState.isDirty}
           >
             {isScheduledSavedCampaign
               ? formatMessage(messages.save)

@@ -32,33 +32,24 @@ module Verification
         "dna"
       end
 
-      # A list of configuration parameters. 
-      # These are considered private and won't be exposed to
-      # non-admins through the API. Use them to hold any values that are
-      # needed to perform verification. By default, the values you'll receive are
-      # strings. In case you don't need any parameters, return an empty array.
-      def config_parameters
-        [:dna_database_login, :dna_database_password]
-      end
-
-      # An optional method which lets you define custom JSON Schema
-      # definitions for some or all of the config_parameters. Config
-      # parameters without a specified schema default to type string.
+      # The configuration parameters, as JSON Schema definitions. Use them to
+      # hold any values that are needed to perform verification. The keys are
+      # the parameter names (also available as `config_parameters`), and their
+      # order is the order of the fields in AdminHQ. Parameters are included in
+      # the API response that lists the verification methods, for a front-end
+      # to use, unless marked `private: true`. Leave it out if you don't need
+      # any parameters.
       def config_parameters_schema
         {
+          dna_database_login: {
+            type: 'string'
+          },
           dna_database_password: {
             private: true,
             type: 'string',
             minLength: 8,
           }
         }
-      end
-
-      # An optional method which lets you expose some of the
-      # config_parameters. They will be included in the API response that
-      # lists the verification methods, for a front-end to use.
-      def exposed_config_parameters
-        [:dna_database_login]
       end
 
       # A list of verification parameters. Their values will be provided by the

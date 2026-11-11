@@ -22,10 +22,6 @@ module CustomIdMethods::Hoplr
       '115a0b5a-073d-45a5-9ca5-657b02c1c771'
     end
 
-    def config_parameters
-      %i[environment client_id client_secret neighbourhood_custom_field_key]
-    end
-
     def config_parameters_schema
       {
         environment: {

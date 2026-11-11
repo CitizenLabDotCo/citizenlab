@@ -18,9 +18,15 @@ interface Props {
   value?: number;
   question: IFlatCustomField;
   onChange: (value?: number) => void;
+  disabled?: boolean;
 }
 
-const SentimentScale = ({ value: data, question, onChange }: Props) => {
+const SentimentScale = ({
+  value: data,
+  question,
+  onChange,
+  disabled = false,
+}: Props) => {
   const sliderRef = useRef<HTMLDivElement>(null);
   const { formatMessage } = useIntl();
   const localize = useLocalize();
@@ -54,6 +60,8 @@ const SentimentScale = ({ value: data, question, onChange }: Props) => {
 
   // Handle keyboard input for the slider
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (disabled) return;
+
     const value = data || MINIMUM;
     let newValue = value;
     newValue = handleKeyboardKeyChange(event, value);
@@ -77,13 +85,14 @@ const SentimentScale = ({ value: data, question, onChange }: Props) => {
       aria-valuemin={MINIMUM}
       aria-valuemax={MAXIMUM}
       aria-labelledby={`${sanitizeForClassname(id)}-label`}
+      aria-disabled={disabled}
       onKeyDown={(event) => {
         if (event.key !== 'Tab' && !event.metaKey) {
           // Don't override the default tab behaviour or meta key (E.g. Mac command key)
           handleKeyDown(event);
         }
       }}
-      tabIndex={0}
+      tabIndex={disabled ? undefined : 0}
     >
       <Box>
         <Table style={{ tableLayout: 'fixed' }}>
@@ -95,6 +104,7 @@ const SentimentScale = ({ value: data, question, onChange }: Props) => {
             onFocusSliderRef={() => {
               sliderRef.current?.focus();
             }}
+            disabled={disabled}
           />
           <TableBody question={question} getAriaLabel={getAriaLabel} />
         </Table>

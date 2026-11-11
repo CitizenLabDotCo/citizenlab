@@ -29,24 +29,40 @@ describe('useEarlyAccess', () => {
       'project_backoffice_redesign',
     ]);
 
-    expect(renderIt()).toEqual({ offered: true, optedIn: true });
+    expect(renderIt()).toEqual({
+      offered: true,
+      tier: 'internal',
+      optedIn: true,
+    });
   });
 
   it('reports an offered feature the user has not opted into', () => {
     mockAuthUser = buildUser({ project_backoffice_redesign: 'internal' }, []);
 
-    expect(renderIt()).toEqual({ offered: true, optedIn: false });
+    expect(renderIt()).toEqual({
+      offered: true,
+      tier: 'internal',
+      optedIn: false,
+    });
   });
 
   it('ignores a stored opt-in for a feature that is no longer offered', () => {
     mockAuthUser = buildUser({}, ['project_backoffice_redesign']);
 
-    expect(renderIt()).toEqual({ offered: false, optedIn: false });
+    expect(renderIt()).toEqual({
+      offered: false,
+      tier: undefined,
+      optedIn: false,
+    });
   });
 
   it('reports nothing when nobody is signed in', () => {
     mockAuthUser = undefined;
 
-    expect(renderIt()).toEqual({ offered: false, optedIn: false });
+    expect(renderIt()).toEqual({
+      offered: false,
+      tier: undefined,
+      optedIn: false,
+    });
   });
 });

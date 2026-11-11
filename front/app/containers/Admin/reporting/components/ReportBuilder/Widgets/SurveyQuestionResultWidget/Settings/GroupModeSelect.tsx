@@ -23,10 +23,11 @@ type Option = { value: GroupMode | ''; label: string };
 
 interface Props {
   mode?: GroupMode;
+  allowUserField: boolean;
   onChange: (mode?: GroupMode) => void;
 }
 
-const GroupModeSelect = ({ mode, onChange }: Props) => {
+const GroupModeSelect = ({ mode, allowUserField, onChange }: Props) => {
   const { formatMessage } = useIntl();
   const isGroupingEnabled = useFeatureFlag({ name: 'report_data_grouping' });
 
@@ -39,6 +40,10 @@ const GroupModeSelect = ({ mode, onChange }: Props) => {
     { value: 'user_field', label: formatMessage(messages.demographicQuestion) },
     { value: 'survey_question', label: formatMessage(messages.surveyQuestion) },
   ];
+
+  const availableOptions = allowUserField
+    ? options
+    : options.filter((option) => option.value !== 'user_field');
 
   const label = formatMessage(messages.groupMode);
   const groupModeTooltip = formatMessage(messages.groupModeTooltip);
@@ -53,7 +58,7 @@ const GroupModeSelect = ({ mode, onChange }: Props) => {
           labelTooltipText={groupModeTooltip}
           labelTooltipPlacement="auto"
           value={mode ?? ''}
-          options={options}
+          options={availableOptions}
           onChange={handleChange}
         />
       ) : (
