@@ -13,7 +13,7 @@ jest.mock('hooks/useFeatureFlag', () => ({
   default: jest.fn(),
 }));
 
-const mockFeatureFlag = useFeatureFlag as jest.Mock;
+const mockFeatureFlag = jest.mocked(useFeatureFlag);
 
 describe('ParticipationLocationToggle', () => {
   it('renders nothing when the feature flag is off', () => {

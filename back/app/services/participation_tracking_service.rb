@@ -5,24 +5,27 @@
 class ParticipationTrackingService
   class << self
     def track?(trackable)
-      !trackable.try(:anonymous?) && !anonymous_survey?(phase_of(trackable))
+      posted_by_participant?(trackable) && !trackable.try(:anonymous?) && !anonymous_survey?(trackable)
     end
 
     private
 
-    # Surveys that don't collect all user data make every response anonymous
-    # when it is submitted, after the draft was created. Fails closed when the
-    # phase can't be found.
-    def anonymous_survey?(phase)
-      return true unless phase
-
-      phase.pmethod.user_data_collection != 'all_data'
+    # The request is only the participant's own when they post themselves: not
+    # when a moderator posts on someone's behalf (e.g. typing up paper
+    # submissions) or a tool such as the MCP server creates it.
+    def posted_by_participant?(trackable)
+      Current.activity_channel.nil? && participant_id(trackable) == Current.request_user_id
     end
 
-    def phase_of(trackable)
-      trackable.try(:creation_phase) ||
-        trackable.try(:phase) ||
-        TimelineService.new.current_phase_not_archived(trackable.project)
+    def participant_id(trackable)
+      trackable.respond_to?(:author_id) ? trackable.author_id : trackable.user_id
+    end
+
+    # Surveys that don't collect all user data make every response anonymous
+    # when it is submitted, after the draft was created.
+    def anonymous_survey?(trackable)
+      phase = trackable.try(:creation_phase) || trackable.try(:phase)
+      phase.present? && !phase.pmethod.identifies_author?
     end
   end
 end
