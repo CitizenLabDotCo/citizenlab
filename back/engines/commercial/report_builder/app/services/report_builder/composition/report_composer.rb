@@ -107,10 +107,11 @@ module ReportBuilder
         raise
       end
 
-      # The model stops when it believes the report is done. Believing is not seeing:
-      # this renders what it wrote and, if something is actually broken, gives it one
-      # pass of at most REVIEW_ROUNDS rounds to fix it. One pass, with no second render,
-      # because a model handed its own output indefinitely will keep polishing it.
+      # What has been checked so far proves the report is well-formed, not that it shows
+      # anything: a chart can compile, typecheck and query successfully yet come out
+      # blank, because nothing has drawn it. Only rendering finds that, so the report
+      # is rendered once, and if something really is broken the model gets a bounded
+      # chance to fix it.
       REVIEW_ROUNDS = 5
 
       def review(layout)
@@ -139,8 +140,9 @@ module ReportBuilder
         @stopped_because = result[:stopped] if %w[timeout cancelled].include?(result[:stopped])
         result[:layout] || layout
       rescue StandardError => e
-        # The report is written and valid by now. A provider that throws during this
-        # extra pass must not take it down, along with every chart it places.
+        # What failed is this pass, not the report: most likely a provider error, since
+        # the client does not retry. The report was written and validated before it, so
+        # it is kept and the run is still done. Nothing else would surface the error.
         ErrorReporter.report(e)
         layout
       end
