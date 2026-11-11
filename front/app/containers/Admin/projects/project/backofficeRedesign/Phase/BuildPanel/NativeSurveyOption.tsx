@@ -12,7 +12,6 @@ import actionFormMessages from 'components/admin/ActionForm/messages';
 import { useIntl } from 'utils/cl-intl';
 
 import methodSectionMessages from './BuildFields/MethodSection/messages';
-
 import SurveySetupModal from './SurveySetupModal';
 
 interface Props {
@@ -66,7 +65,11 @@ const NativeSurveyOption = ({
           width="100%"
           onClick={() => setOpened(true)}
         >
-          {formatMessage(methodSectionMessages.addQuestions)}
+          {formatMessage(
+            hasQuestions
+              ? methodSectionMessages.editSurvey
+              : methodSectionMessages.addQuestions
+          )}
         </Button>
       )}
       <SurveySetupModal
