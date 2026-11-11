@@ -21,32 +21,8 @@ module CustomIdMethods::Criipto
       config[:method_name_for_hashing].presence || config[:identity_source].presence || super
     end
 
-    def config_parameters
-      %i[
-        identity_source
-        birthday_custom_field_key
-        birthyear_custom_field_key
-        municipality_code_custom_field_key
-        postal_code_custom_field_key
-        domain
-        client_id
-        client_secret
-        ui_method_name
-        uid_field_pattern
-        method_name_for_hashing
-        minimum_age
-        enabled_for_verified_actions
-        only_show_for_verification
-      ]
-    end
-
     def config_parameters_schema
       {
-        ui_method_name: {
-          type: 'string',
-          description: 'The name this verification method will have in the UI',
-          default: 'MitID'
-        },
         identity_source: {
           private: true,
           type: 'string',
@@ -73,6 +49,23 @@ module CustomIdMethods::Criipto
           type: 'string',
           description: 'Only for MitID: The `key` attribute of the custom field where the postal code should be stored. Leave empty to not store the postal code. We don\'t lock this field, assuming it is a hidden field.'
         },
+        domain: {
+          private: true,
+          type: 'string'
+        },
+        client_id: {
+          private: true,
+          type: 'string'
+        },
+        client_secret: {
+          private: true,
+          type: 'string'
+        },
+        ui_method_name: {
+          type: 'string',
+          description: 'The name this verification method will have in the UI',
+          default: 'MitID'
+        },
         uid_field_pattern: {
           private: true,
           type: 'string',
@@ -95,7 +88,6 @@ module CustomIdMethods::Criipto
           description: 'Whether this verification method should be enabled for verified actions.'
         },
         only_show_for_verification: {
-          private: true,
           type: 'boolean',
           default: false,
           description: 'Hide this method from the normal sign-in screen. It is then only offered when an action requires verification.'
@@ -112,10 +104,6 @@ module CustomIdMethods::Criipto
       raise Verification::VerificationService::NotEntitledError, 'under_minimum_age' if age < minimum_age
 
       true
-    end
-
-    def exposed_config_parameters
-      %i[ui_method_name only_show_for_verification]
     end
 
     def profile_to_uid(auth)

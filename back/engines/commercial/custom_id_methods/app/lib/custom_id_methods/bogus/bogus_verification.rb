@@ -23,10 +23,6 @@ module CustomIdMethods::Bogus
       '380cc6e1-6978-4a3d-8ad0-d72552b55d20'
     end
 
-    def config_parameters
-      []
-    end
-
     def verification_parameters
       [:desired_error]
     end

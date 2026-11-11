@@ -35,8 +35,21 @@ module CustomIdMethods::Cow
       '7ccd453d-0eaf-412a-94a2-ae703b1b3e3f'
     end
 
-    def config_parameters
-      %i[api_username api_password rut_empresa]
+    def config_parameters_schema
+      {
+        api_username: {
+          private: true,
+          type: 'string'
+        },
+        api_password: {
+          private: true,
+          type: 'string'
+        },
+        rut_empresa: {
+          private: true,
+          type: 'string'
+        }
+      }
     end
 
     def verification_parameters
