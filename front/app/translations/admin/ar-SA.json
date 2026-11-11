@@ -2311,7 +2311,6 @@
   "app.containers.Admin.projects.project.responseFormTitle": "نموذج الرد",
   "app.containers.Admin.projects.project.saveProjectSetup": "حفظ",
   "app.containers.Admin.projects.project.saveToEditForm": "احفظ المرحلة لإضافة أسئلة واستيراد المدخلات غير المتصلة بالإنترنت.",
-  "app.containers.Admin.projects.project.saveToEditSettings": "ستصبح صلاحيات الوصول والإشعارات والإعدادات الأخرى متاحة بمجرد حفظ المرحلة.",
   "app.containers.Admin.projects.project.savedLabel": "تم الحفظ",
   "app.containers.Admin.projects.project.savingAndOpeningSurvey": "جاري حفظ المرحلة وفتح اختيارك...",
   "app.containers.Admin.projects.project.scheduledToPublish": "من المقرر نشره في {date}",

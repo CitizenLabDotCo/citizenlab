@@ -2311,7 +2311,6 @@
   "app.containers.Admin.projects.project.responseFormTitle": "Vastauslomake",
   "app.containers.Admin.projects.project.saveProjectSetup": "Tallenna",
   "app.containers.Admin.projects.project.saveToEditForm": "Tallenna vaihe lisätäksesi kysymyksiä ja tuodaksesi offline-syötteitä.",
-  "app.containers.Admin.projects.project.saveToEditSettings": "Käyttöoikeudet, ilmoitukset ja muut asetukset tulevat saataville, kun tallennat vaiheen.",
   "app.containers.Admin.projects.project.savedLabel": "Tallennettu",
   "app.containers.Admin.projects.project.savingAndOpeningSurvey": "Tallennetaan vaihetta ja avataan valintaasi…",
   "app.containers.Admin.projects.project.scheduledToPublish": "Julkaisu ajastettu päivälle {date}",

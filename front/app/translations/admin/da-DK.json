@@ -2311,7 +2311,6 @@
   "app.containers.Admin.projects.project.responseFormTitle": "Svarskema",
   "app.containers.Admin.projects.project.saveProjectSetup": "Gem",
   "app.containers.Admin.projects.project.saveToEditForm": "Gem fasen for at tilføje spørgsmål og importere offline input.",
-  "app.containers.Admin.projects.project.saveToEditSettings": "Adgangsrettigheder, notifikationer og andre indstillinger bliver tilgængelige, når du gemmer fasen.",
   "app.containers.Admin.projects.project.savedLabel": "Gemt",
   "app.containers.Admin.projects.project.savingAndOpeningSurvey": "Gemmer fasen og åbner dit valg…",
   "app.containers.Admin.projects.project.scheduledToPublish": "Planlagt til udgivelse den {date}",

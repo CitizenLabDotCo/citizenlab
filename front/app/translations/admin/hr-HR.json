@@ -2311,7 +2311,6 @@
   "app.containers.Admin.projects.project.responseFormTitle": "Obrazac za odgovor",
   "app.containers.Admin.projects.project.saveProjectSetup": "Spremi",
   "app.containers.Admin.projects.project.saveToEditForm": "Spremite fazu kako biste dodali pitanja i uvezli izvanmrežne unose.",
-  "app.containers.Admin.projects.project.saveToEditSettings": "Prava pristupa, obavijesti i ostale postavke postat će dostupni nakon što spremite fazu.",
   "app.containers.Admin.projects.project.savedLabel": "Spremljeno",
   "app.containers.Admin.projects.project.savingAndOpeningSurvey": "Spremanje faze i otvaranje vašeg odabira…",
   "app.containers.Admin.projects.project.scheduledToPublish": "Zakazano za objavu {date}",

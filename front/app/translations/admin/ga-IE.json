@@ -2311,7 +2311,6 @@
   "app.containers.Admin.projects.project.responseFormTitle": "Foirm freagartha",
   "app.containers.Admin.projects.project.saveProjectSetup": "Sábháil",
   "app.containers.Admin.projects.project.saveToEditForm": "Sábháil an chéim chun ceisteanna a chur leis agus ionchur as líne a iompórtáil.",
-  "app.containers.Admin.projects.project.saveToEditSettings": "Beidh cearta rochtana, fógraí agus socruithe eile ar fáil nuair a shábhálann tú an chéim.",
   "app.containers.Admin.projects.project.savedLabel": "Sábháilte",
   "app.containers.Admin.projects.project.savingAndOpeningSurvey": "Ag sábháil na céime agus ag oscailt do rogha…",
   "app.containers.Admin.projects.project.scheduledToPublish": "Sceidealta le foilsiú ar {date}",

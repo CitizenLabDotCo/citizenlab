@@ -2311,7 +2311,6 @@
   "app.containers.Admin.projects.project.responseFormTitle": "جوابی فارم",
   "app.containers.Admin.projects.project.saveProjectSetup": "محفوظ کریں",
   "app.containers.Admin.projects.project.saveToEditForm": "سوالات شامل کرنے اور آف لائن ان پٹ درآمد کرنے کے لیے مرحلے کو محفوظ کریں۔",
-  "app.containers.Admin.projects.project.saveToEditSettings": "مرحلے کو محفوظ کرنے کے بعد رسائی کے حقوق، اطلاعات اور دیگر سیٹنگز دستیاب ہو جائیں گی۔",
   "app.containers.Admin.projects.project.savedLabel": "محفوظ کر لیا گیا",
   "app.containers.Admin.projects.project.savingAndOpeningSurvey": "مرحلہ محفوظ کیا جا رہا ہے اور آپ کا انتخاب کھولا جا رہا ہے…",
   "app.containers.Admin.projects.project.scheduledToPublish": "{date} کو شائع کرنے کے لیے شیڈول کیا گیا ہے",

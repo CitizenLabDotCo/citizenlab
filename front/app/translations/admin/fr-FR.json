@@ -2311,7 +2311,6 @@
   "app.containers.Admin.projects.project.responseFormTitle": "Formulaire de réponse",
   "app.containers.Admin.projects.project.saveProjectSetup": "Enregistrer",
   "app.containers.Admin.projects.project.saveToEditForm": "Enregistrez la phase pour ajouter des questions et importer des contributions hors ligne.",
-  "app.containers.Admin.projects.project.saveToEditSettings": "Les droits d'accès, les notifications et les autres paramètres seront disponibles une fois que vous aurez enregistré la phase.",
   "app.containers.Admin.projects.project.savedLabel": "Enregistré",
   "app.containers.Admin.projects.project.savingAndOpeningSurvey": "Enregistrement de la phase et ouverture de votre sélection…",
   "app.containers.Admin.projects.project.scheduledToPublish": "Publication programmée le {date}",

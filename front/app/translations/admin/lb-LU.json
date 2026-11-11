@@ -2311,7 +2311,6 @@
   "app.containers.Admin.projects.project.responseFormTitle": "Äntwertformular",
   "app.containers.Admin.projects.project.saveProjectSetup": "Späicheren",
   "app.containers.Admin.projects.project.saveToEditForm": "Späichert d'Phas, fir Froen derbäizefügen an offline Input z'importéieren.",
-  "app.containers.Admin.projects.project.saveToEditSettings": "Zougangsrechter, Notifikatiounen an aner Astellunge ginn disponibel, wann Dir d'Phas gespäichert hutt.",
   "app.containers.Admin.projects.project.savedLabel": "Gespäichert",
   "app.containers.Admin.projects.project.savingAndOpeningSurvey": "D'Phas gëtt gespäichert an Är Auswiel gëtt opgemaach…",
   "app.containers.Admin.projects.project.scheduledToPublish": "Geplangt fir d'Verëffentlechung den {date}",

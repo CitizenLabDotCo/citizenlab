@@ -2311,7 +2311,6 @@
   "app.containers.Admin.projects.project.responseFormTitle": "Svarskjema",
   "app.containers.Admin.projects.project.saveProjectSetup": "Lagre",
   "app.containers.Admin.projects.project.saveToEditForm": "Lagre fasen for å legge til spørsmål og importere offline-innspill.",
-  "app.containers.Admin.projects.project.saveToEditSettings": "Tilgangsrettigheter, varslinger og andre innstillinger blir tilgjengelige når du lagrer fasen.",
   "app.containers.Admin.projects.project.savedLabel": "Lagret",
   "app.containers.Admin.projects.project.savingAndOpeningSurvey": "Lagrer fasen og åpner valget ditt…",
   "app.containers.Admin.projects.project.scheduledToPublish": "Planlagt publisert {date}",

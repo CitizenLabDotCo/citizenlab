@@ -2311,7 +2311,6 @@
   "app.containers.Admin.projects.project.responseFormTitle": "Atbilžu veidlapa",
   "app.containers.Admin.projects.project.saveProjectSetup": "Saglabāt",
   "app.containers.Admin.projects.project.saveToEditForm": "Saglabājiet posmu, lai pievienotu jautājumus un importētu bezsaistes ievadi.",
-  "app.containers.Admin.projects.project.saveToEditSettings": "Piekļuves tiesības, paziņojumi un citi iestatījumi kļūs pieejami, kad saglabāsiet posmu.",
   "app.containers.Admin.projects.project.savedLabel": "Saglabāts",
   "app.containers.Admin.projects.project.savingAndOpeningSurvey": "Notiek posma saglabāšana un jūsu izvēles atvēršana…",
   "app.containers.Admin.projects.project.scheduledToPublish": "Plānots publicēt {date}",

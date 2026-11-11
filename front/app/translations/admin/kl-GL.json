@@ -2311,7 +2311,6 @@
   "app.containers.Admin.projects.project.responseFormTitle": "Akissuteqarnermi immersugassaq",
   "app.containers.Admin.projects.project.saveProjectSetup": "Toqqoruk",
   "app.containers.Admin.projects.project.saveToEditForm": "Immikkoortoq toqqoruk apeqqutinik ilanngussiniarlutit kiisalu internetikkut avataatigut ilanngussanik eqqussiniarlutit.",
-  "app.containers.Admin.projects.project.saveToEditSettings": "Isissutissat, nalunaarutit aaqqissuussinerillu allat immikkoortoq toqqoreerukku aatsaat atorneqarsinnaalissapput.",
   "app.containers.Admin.projects.project.savedLabel": "Toqqorneqarpoq",
   "app.containers.Admin.projects.project.savingAndOpeningSurvey": "Immikkoortoq toqqorterneqarpoq toqqakkallu ammarneqarluni...",
   "app.containers.Admin.projects.project.scheduledToPublish": "{date}-mi saqqummiunneqartussatut pilersaarutaavoq",

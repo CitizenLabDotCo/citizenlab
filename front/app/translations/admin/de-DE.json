@@ -2311,7 +2311,6 @@
   "app.containers.Admin.projects.project.responseFormTitle": "Antwortformular",
   "app.containers.Admin.projects.project.saveProjectSetup": "Speichern",
   "app.containers.Admin.projects.project.saveToEditForm": "Speichere die Phase, um Fragen hinzuzufügen und Offline-Beiträge zu importieren.",
-  "app.containers.Admin.projects.project.saveToEditSettings": "Zugriffsrechte, Benachrichtigungen und andere Einstellungen werden verfügbar, sobald Sie die Phase speichern.",
   "app.containers.Admin.projects.project.savedLabel": "Gespeichert",
   "app.containers.Admin.projects.project.savingAndOpeningSurvey": "Die Phase wird gespeichert und Ihre Auswahl wird geöffnet …",
   "app.containers.Admin.projects.project.scheduledToPublish": "Veröffentlichung geplant für {date}",

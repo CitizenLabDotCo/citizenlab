@@ -2311,7 +2311,6 @@
   "app.containers.Admin.projects.project.responseFormTitle": "Antwoordformulier",
   "app.containers.Admin.projects.project.saveProjectSetup": "Opslaan",
   "app.containers.Admin.projects.project.saveToEditForm": "Sla de fase op om vragen toe te voegen en offline bijdragen te importeren.",
-  "app.containers.Admin.projects.project.saveToEditSettings": "Toegangsrechten, meldingen en andere instellingen worden beschikbaar zodra je de fase opslaat.",
   "app.containers.Admin.projects.project.savedLabel": "Opgeslagen",
   "app.containers.Admin.projects.project.savingAndOpeningSurvey": "De fase wordt opgeslagen en je selectie wordt geopend…",
   "app.containers.Admin.projects.project.scheduledToPublish": "Gepland voor publicatie op {date}",

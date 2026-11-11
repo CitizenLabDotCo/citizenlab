@@ -2311,7 +2311,6 @@
   "app.containers.Admin.projects.project.responseFormTitle": "Válaszadási űrlap",
   "app.containers.Admin.projects.project.saveProjectSetup": "Mentés",
   "app.containers.Admin.projects.project.saveToEditForm": "Mentse el a fázist kérdések hozzáadásához és offline bevitel importálásához.",
-  "app.containers.Admin.projects.project.saveToEditSettings": "A hozzáférési jogok, értesítések és egyéb beállítások a szakasz mentése után válnak elérhetővé.",
   "app.containers.Admin.projects.project.savedLabel": "Mentve",
   "app.containers.Admin.projects.project.savingAndOpeningSurvey": "A szakasz mentése és a kiválasztott elem megnyitása…",
   "app.containers.Admin.projects.project.scheduledToPublish": "Közzététel ütemezve: {date}",

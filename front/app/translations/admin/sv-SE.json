@@ -2311,7 +2311,6 @@
   "app.containers.Admin.projects.project.responseFormTitle": "Svarsformulär",
   "app.containers.Admin.projects.project.saveProjectSetup": "Spara",
   "app.containers.Admin.projects.project.saveToEditForm": "Spara fasen för att lägga till frågor och importera offline-indata.",
-  "app.containers.Admin.projects.project.saveToEditSettings": "Åtkomsträttigheter, aviseringar och andra inställningar blir tillgängliga när du sparar fasen.",
   "app.containers.Admin.projects.project.savedLabel": "Sparad",
   "app.containers.Admin.projects.project.savingAndOpeningSurvey": "Sparar fasen och öppnar ditt val…",
   "app.containers.Admin.projects.project.scheduledToPublish": "Schemalagd att publiceras {date}",

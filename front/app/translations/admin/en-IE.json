@@ -2311,7 +2311,6 @@
   "app.containers.Admin.projects.project.responseFormTitle": "Response form",
   "app.containers.Admin.projects.project.saveProjectSetup": "Save",
   "app.containers.Admin.projects.project.saveToEditForm": "Save the phase to add questions and import offline input.",
-  "app.containers.Admin.projects.project.saveToEditSettings": "Access rights, notifications and other settings become available once you save the phase.",
   "app.containers.Admin.projects.project.savedLabel": "Saved",
   "app.containers.Admin.projects.project.savingAndOpeningSurvey": "Saving the phase and opening your selection…",
   "app.containers.Admin.projects.project.scheduledToPublish": "Scheduled to publish on {date}",

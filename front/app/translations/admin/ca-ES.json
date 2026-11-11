@@ -2311,7 +2311,6 @@
   "app.containers.Admin.projects.project.responseFormTitle": "Formulari de resposta",
   "app.containers.Admin.projects.project.saveProjectSetup": "Desa",
   "app.containers.Admin.projects.project.saveToEditForm": "Desa la fase per afegir preguntes i importar aportacions fora de línia.",
-  "app.containers.Admin.projects.project.saveToEditSettings": "Els drets d'accés, les notificacions i altres paràmetres estaran disponibles un cop desis la fase.",
   "app.containers.Admin.projects.project.savedLabel": "Desat",
   "app.containers.Admin.projects.project.savingAndOpeningSurvey": "Desant la fase i obrint la teva selecció…",
   "app.containers.Admin.projects.project.scheduledToPublish": "Programat per publicar-se el {date}",

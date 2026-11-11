@@ -2311,7 +2311,6 @@
   "app.containers.Admin.projects.project.responseFormTitle": "Yanıt formu",
   "app.containers.Admin.projects.project.saveProjectSetup": "Kaydet",
   "app.containers.Admin.projects.project.saveToEditForm": "Soru eklemek ve çevrimdışı girdileri içe aktarmak için aşamayı kaydedin.",
-  "app.containers.Admin.projects.project.saveToEditSettings": "Erişim hakları, bildirimler ve diğer ayarlar aşamayı kaydettiğinizde kullanılabilir hale gelir.",
   "app.containers.Admin.projects.project.savedLabel": "Kaydedildi",
   "app.containers.Admin.projects.project.savingAndOpeningSurvey": "Aşama kaydediliyor ve seçiminiz açılıyor…",
   "app.containers.Admin.projects.project.scheduledToPublish": "{date} tarihinde yayınlanmak üzere planlandı",

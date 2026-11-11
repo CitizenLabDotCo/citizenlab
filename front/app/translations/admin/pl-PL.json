@@ -2311,7 +2311,6 @@
   "app.containers.Admin.projects.project.responseFormTitle": "Formularz odpowiedzi",
   "app.containers.Admin.projects.project.saveProjectSetup": "Zapisz",
   "app.containers.Admin.projects.project.saveToEditForm": "Zapisz etap, aby dodać pytania i zaimportować dane zebrane offline.",
-  "app.containers.Admin.projects.project.saveToEditSettings": "Prawa dostępu, powiadomienia i inne ustawienia staną się dostępne po zapisaniu fazy.",
   "app.containers.Admin.projects.project.savedLabel": "Zapisano",
   "app.containers.Admin.projects.project.savingAndOpeningSurvey": "Zapisywanie etapu i otwieranie wybranej opcji…",
   "app.containers.Admin.projects.project.scheduledToPublish": "Zaplanowano publikację na {date}",

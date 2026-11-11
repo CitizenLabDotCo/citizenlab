@@ -2311,7 +2311,6 @@
   "app.containers.Admin.projects.project.responseFormTitle": "Φόρμα απάντησης",
   "app.containers.Admin.projects.project.saveProjectSetup": "Αποθήκευση",
   "app.containers.Admin.projects.project.saveToEditForm": "Αποθηκεύστε τη φάση για να προσθέσετε ερωτήσεις και να εισαγάγετε δεδομένα εκτός σύνδεσης.",
-  "app.containers.Admin.projects.project.saveToEditSettings": "Τα δικαιώματα πρόσβασης, οι ειδοποιήσεις και άλλες ρυθμίσεις γίνονται διαθέσιμα μόλις αποθηκεύσετε τη φάση.",
   "app.containers.Admin.projects.project.savedLabel": "Αποθηκεύτηκε",
   "app.containers.Admin.projects.project.savingAndOpeningSurvey": "Αποθήκευση της φάσης και άνοιγμα της επιλογής σας…",
   "app.containers.Admin.projects.project.scheduledToPublish": "Προγραμματισμένο για δημοσίευση στις {date}",

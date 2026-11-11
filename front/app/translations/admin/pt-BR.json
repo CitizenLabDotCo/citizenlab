@@ -2311,7 +2311,6 @@
   "app.containers.Admin.projects.project.responseFormTitle": "Formulário de resposta",
   "app.containers.Admin.projects.project.saveProjectSetup": "Salvar",
   "app.containers.Admin.projects.project.saveToEditForm": "Salve a fase para adicionar perguntas e importar contribuições offline.",
-  "app.containers.Admin.projects.project.saveToEditSettings": "Direitos de acesso, notificações e outras configurações ficarão disponíveis assim que você salvar a fase.",
   "app.containers.Admin.projects.project.savedLabel": "Salvo",
   "app.containers.Admin.projects.project.savingAndOpeningSurvey": "Salvando a fase e abrindo sua seleção…",
   "app.containers.Admin.projects.project.scheduledToPublish": "Publicação agendada para {date}",
