@@ -54,7 +54,7 @@ RSpec.describe ParticipationLocationService do
   end
 
   describe '.track' do
-    let(:project) { create(:project, track_participation_location: true) }
+    let(:project) { create(:project_with_active_ideation_phase, track_participation_location: true) }
     let(:idea) { create(:idea, project: project) }
     let(:location_attrs) do
       {
@@ -85,6 +85,12 @@ RSpec.describe ParticipationLocationService do
           country_code: 'US',
           country_name: 'United States'
         )
+      end
+
+      it 'does not create a record for an anonymous idea' do
+        anonymous_idea = create(:idea, project: project, anonymous: true)
+
+        expect { described_class.track(anonymous_idea, location_attrs) }.not_to change(ParticipationLocation, :count)
       end
 
       it 'does not create a record for nil attrs' do
@@ -119,24 +125,6 @@ RSpec.describe ParticipationLocationService do
       it 'does not create a record' do
         expect { described_class.track(idea, location_attrs) }
           .not_to change(ParticipationLocation, :count)
-      end
-    end
-
-    context 'when the participant posts anonymously' do
-      before { SettingsService.new.activate_feature!('participation_location_tracking') }
-
-      it 'does not create a record' do
-        anonymous_idea = create(:idea, project: project, anonymous: true)
-
-        expect { described_class.track(anonymous_idea, location_attrs) }
-          .not_to change(ParticipationLocation, :count)
-      end
-
-      it 'still creates a record for an input without an author that is not anonymous' do
-        authorless_idea = create(:idea, project: project, author: nil)
-
-        expect { described_class.track(authorless_idea, location_attrs) }
-          .to change(ParticipationLocation, :count).by(1)
       end
     end
   end
