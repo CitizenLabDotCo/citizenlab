@@ -121,7 +121,7 @@
   "app.components.PhasePreview.beforeTooltip": "Før fasen starter",
   "app.components.PhasePreview.ended": "Afsluttet",
   "app.components.PhasePreview.endedTooltip": "Efter den er slut, med resultater",
-  "app.components.PhasePreview.lifecycle": "Forhåndsvis fasetilstand",
+  "app.components.PhasePreview.lifecycle": "Forhåndsvisning fasetilstand",
   "app.components.PhasePreview.noDates": "Datoer vil blive annonceret",
   "app.components.PhasePreview.open": "Åben",
   "app.components.PhasePreview.openTooltip": "Åben, ingen har deltaget endnu",
