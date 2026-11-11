@@ -11,6 +11,7 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import { useIntl } from 'utils/cl-intl';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
+import getOgUrl from 'utils/cl-router/getOgUrl';
 
 interface Props {
   titleMessage: MessageDescriptor;
@@ -22,7 +23,6 @@ const PageMeta = React.memo<Props>(({ titleMessage, descriptionMessage }) => {
   const { data: authUser } = useAuthUser();
   const tenantLocales = useAppConfigurationLocales();
 
-  const { location } = window;
   const ideasIndexTitle = formatMessage(titleMessage);
   const ideasIndexDescription = formatMessage(descriptionMessage);
 
@@ -45,7 +45,7 @@ const PageMeta = React.memo<Props>(({ titleMessage, descriptionMessage }) => {
       <meta property="og:title" content={ideasIndexTitle} />
       <meta name="description" content={ideasIndexDescription} />
       <meta property="og:description" content={ideasIndexDescription} />
-      <meta property="og:url" content={location.href} />
+      <meta property="og:url" content={getOgUrl()} />
     </Helmet>
   );
 });
