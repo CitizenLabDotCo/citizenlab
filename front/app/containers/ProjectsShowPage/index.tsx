@@ -184,22 +184,18 @@ const ProjectsShowPageWrapper = () => {
 
   if (!project) return null;
 
-  const previewPhase = phases?.data.find(
-    ({ id }) => id === getPhasePreview()?.phase.id
-  );
+  const preview = getPhasePreview();
+  const previewPhase = phases?.data.find(({ id }) => id === preview?.phase.id);
+  const votingPhaseId =
+    previewPhase?.id ??
+    (phaseIndex
+      ? phases?.data[phaseIndex]?.id
+      : phases?.data && getLatestRelevantPhase(phases.data)?.id);
 
   return (
     <>
       <ProjectShowPageMeta project={project.data} />
-      <VotingContext
-        projectId={project.data.id}
-        phaseId={
-          phaseIndex !== undefined && phaseIndex >= 0
-            ? // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-              phases?.data?.[phaseIndex]?.id
-            : phases?.data && getLatestRelevantPhase(phases.data)?.id
-        }
-      >
+      <VotingContext projectId={project.data.id} phaseId={votingPhaseId}>
         {previewPhase ? (
           <PhasePreviewPage project={project.data} phase={previewPhase} />
         ) : (

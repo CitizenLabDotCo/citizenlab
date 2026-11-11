@@ -101,6 +101,7 @@ const DraftPhaseDescription = ({
     });
     return () => {
       subscription.unsubscribe();
+      debouncedSaveDraft.flush();
       debouncedSaveDraft.cancel();
     };
   }, [methods, isEditing, debouncedSaveDraft]);

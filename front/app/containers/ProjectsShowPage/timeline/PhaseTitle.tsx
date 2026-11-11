@@ -18,7 +18,6 @@ import useLocalize from 'hooks/useLocalize';
 
 import messages from 'containers/ProjectsShowPage/messages';
 
-import previewMessages from 'components/admin/PhasePreview/messages';
 import SkeletonBar from 'components/ProjectPageBuilder/Widgets/EmptyState/SkeletonBar';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -176,8 +175,6 @@ const PhaseTitle = ({
           <PhaseDate className={phaseStatus}>
             {!startDate && getPhasePreview() ? (
               <SkeletonBar width="150px" />
-            ) : !startDate ? (
-              <FormattedMessage {...previewMessages.noDates} />
             ) : isOneDayPhase ? (
               startDate
             ) : (
