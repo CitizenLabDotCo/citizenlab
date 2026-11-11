@@ -16,7 +16,8 @@ export interface CommonGroundResultItem {
   title_multiloc: Multiloc;
   /** Of all reactions, neutral ones included. */
   agree_percent: number;
-  agreement: Agreement;
+  /** No agreement bucket when all reactions are neutral. */
+  agreement: Agreement | null;
   votes: {
     up: number;
     down: number;

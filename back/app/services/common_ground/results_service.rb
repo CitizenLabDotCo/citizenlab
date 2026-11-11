@@ -40,7 +40,7 @@ module CommonGround
     REACTION_COUNT_COLUMNS = %w[likes_count dislikes_count neutral_reactions_count].freeze
 
     def top_consensus_ideas(n, reverse: false, min_score: nil, max_score: nil)
-      query = ideas_with_reaction_counts
+      query = ideas_with_reaction_counts.where('reaction_counts.likes_count + reaction_counts.dislikes_count > 0')
       query = query.where("#{consensus_score_sql} >= ?", min_score) if min_score
       query = query.where("#{consensus_score_sql} <= ?", max_score) if max_score
 
@@ -54,7 +54,7 @@ module CommonGround
     # even split, so the vote count decides there.
     def ideas_by_agreement
       ideas_with_reaction_counts.order(
-        net_agreement_sql.desc, vote_margin_sql.desc, votes_count_sql.desc, :id
+        net_agreement_sql.desc.nulls_last, vote_margin_sql.desc, votes_count_sql.desc, :id
       )
     end
 
@@ -72,7 +72,6 @@ module CommonGround
           *idea_columns, *reaction_count_columns,
           "#{agree_percent_sql} AS agree_percent", "#{agreement_sql} AS agreement"
         )
-        .where('reaction_counts.likes_count + reaction_counts.dislikes_count > 0')
     end
 
     # The share of all reactions, neutral ones included, that agree, rounded to a whole percent.
@@ -87,6 +86,7 @@ module CommonGround
     def agreement_sql
       @agreement_sql ||= Arel.sql(<<~SQL.squish)
         CASE
+          WHEN #{votes_count_sql} = 0 THEN NULL
           WHEN #{agree_percent_sql} >= #{AGREE_MIN_PERCENT} THEN 'agree'
           WHEN #{agree_percent_sql} < #{DISAGREE_MAX_PERCENT} THEN 'disagree'
           ELSE 'split'
@@ -96,7 +96,7 @@ module CommonGround
 
     # Runs from 1 (everyone who took a side agreed with each other) to 0.5 (a perfect split).
     # NULLIF guards the division: this fragment also lands in a WHERE clause, and Postgres does not
-    # guarantee that the "took a side" filter of ideas_with_reaction_counts is evaluated first.
+    # guarantee that the "took a side" filter of top_consensus_ideas is evaluated first.
     def consensus_score_sql
       @consensus_score_sql ||= Arel.sql(<<~SQL.squish)
         greatest(reaction_counts.likes_count, reaction_counts.dislikes_count) * 1.0

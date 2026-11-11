@@ -837,7 +837,7 @@ function apiReactToIdea(
   email: string,
   password: string,
   ideaId: string,
-  mode: TReactionMode
+  mode: TReactionMode | 'neutral'
 ) {
   return cy.apiLogin(email, password).then((response) => {
     const jwt = response.body.jwt;

@@ -30,7 +30,7 @@ const cellProps = {
 
 interface Props {
   idea: IIdeaData;
-  /** Absent for a statement nobody took a side on. */
+  /** Absent for a statement without reactions. */
   result: CommonGroundResultItem | undefined;
   selected: boolean;
   active: boolean;
@@ -50,7 +50,11 @@ const StatementRow = ({
   const localize = useLocalize();
 
   return (
-    <Row selected={selected} active={active}>
+    <Row
+      selected={selected}
+      active={active}
+      data-cy={`e2e-statement-row-${idea.id}`}
+    >
       <Td {...cellProps} width="40px" pr="0">
         <Checkbox
           size="18px"

@@ -614,11 +614,7 @@ resource 'Phases' do
         let!(:i1) { create_idea(phase, 1, 0, 2) }
         let!(:i2) { create_idea(phase, 1, 1, 0) }
         let!(:i3) { create_idea(phase, 1, 1, 1) }
-
-        before do
-          # idea with only neutral reactions that should not be included in results
-          create_idea(phase, 0, 1, 0)
-        end
+        let!(:i4) { create_idea(phase, 0, 1, 0) }
 
         example_request 'Get common ground results' do
           assert_status 200
@@ -641,7 +637,15 @@ resource 'Phases' do
           expect(response_data.dig(:attributes, :top_consensus_ideas).pluck(:id)).to eq [i2.id]
           expect(response_data.dig(:attributes, :top_controversial_ideas).pluck(:id)).to eq [i3.id]
           # i1 sits between the two thresholds, so only the full list carries it
-          expect(response_data.dig(:attributes, :ideas_by_agreement).pluck(:id)).to eq [i1.id, i3.id, i2.id]
+          expect(response_data.dig(:attributes, :ideas_by_agreement).pluck(:id)).to eq [i1.id, i3.id, i2.id, i4.id]
+
+          neutral_idea = response_data.dig(:attributes, :ideas_by_agreement).last
+          expect(neutral_idea).to include(
+            id: i4.id,
+            agree_percent: 0,
+            agreement: nil,
+            votes: { down: 0, neutral: 1, up: 0 }
+          )
 
           top_controversial_idea = response_data.dig(:attributes, :top_controversial_ideas, 0)
           expect(top_controversial_idea.with_indifferent_access).to match(
@@ -682,7 +686,7 @@ resource 'Phases' do
             })
             expect(response_data.dig(:attributes, :top_consensus_ideas).pluck(:id)).to eq [i2.id]
             expect(response_data.dig(:attributes, :top_controversial_ideas).pluck(:id)).to eq [i3.id]
-            expect(response_data.dig(:attributes, :ideas_by_agreement).pluck(:id)).to eq [i1.id, i3.id, i2.id]
+            expect(response_data.dig(:attributes, :ideas_by_agreement).pluck(:id)).to eq [i1.id, i3.id, i2.id, i4.id]
             expect(response_data.dig(:attributes, :ideas_by_agreement, 0, :votes)).to eq({ up: 2, down: 1, neutral: 0 })
           end
         end
