@@ -2,7 +2,8 @@
 
 require 'rails_helper'
 
-RSpec.describe UrlValidator do
+# `url: true` resolves to the validate_url gem's validator, not an app class.
+RSpec.describe ActiveModel::Validations::UrlValidator do
   subject(:record) { Klass.new }
 
   before do
