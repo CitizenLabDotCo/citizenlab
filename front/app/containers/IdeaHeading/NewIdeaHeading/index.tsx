@@ -40,7 +40,7 @@ type Props = {
 
 const NewIdeaHeading = ({ phase, titleText }: Props) => {
   const { slug: projectSlug } = useParams({
-    from: '/$locale/projects/$slug/ideas/new',
+    from: '/$locale/projects/$slug/ideas/new/$phaseId',
   });
   const { data: project } = useProjectBySlug(projectSlug);
   const { data: authUser } = useAuthUser();
@@ -50,7 +50,7 @@ const NewIdeaHeading = ({ phase, titleText }: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
   const [showLeaveModal, setShowLeaveModal] = useState(false);
   const searchParams = useSearch({
-    from: '/$locale/projects/$slug/ideas/new',
+    from: '/$locale/projects/$slug/ideas/new/$phaseId',
   });
   const ideaSubmitted = searchParams.idea_id !== undefined;
 

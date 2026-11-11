@@ -53,9 +53,8 @@ const NoInputsDisplay = ({
         <Button
           buttonStyle="secondary-outlined"
           width="auto"
-          to={slug ? '/projects/$slug/ideas/new' : undefined}
-          params={slug ? { slug } : undefined}
-          search={{ phase_id: phaseId }}
+          to={slug ? '/projects/$slug/ideas/new/$phaseId' : undefined}
+          params={slug ? { slug, phaseId } : undefined}
           disabled={!slug}
         >
           <FormattedMessage {...messages.createInput} />

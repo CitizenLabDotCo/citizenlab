@@ -90,6 +90,24 @@ describe('isPage', () => {
     });
   });
 
+  describe('idea_form', () => {
+    it('returns true for the idea form, with or without the phase', () => {
+      expect(
+        isPage('idea_form', '/en/projects/my-project/ideas/new/phase-1')
+      ).toBe(true);
+      expect(isPage('idea_form', '/en/projects/my-project/ideas/new')).toBe(
+        true
+      );
+    });
+
+    it('returns false for other project pages', () => {
+      expect(isPage('idea_form', '/en/projects/my-project')).toBe(false);
+      expect(
+        isPage('idea_form', '/en/projects/my-project/ideas/new/phase-1/2')
+      ).toBe(false);
+    });
+  });
+
   describe('native_survey', () => {
     it('returns true for the survey form, with or without the phase', () => {
       expect(

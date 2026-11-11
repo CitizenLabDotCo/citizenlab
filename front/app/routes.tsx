@@ -37,6 +37,9 @@ const IdeasEditPage = lazy(() => import('containers/IdeasEditPage'));
 const IdeasIndexPage = lazy(() => import('containers/IdeasIndexPage'));
 const IdeasShowPage = lazy(() => import('containers/IdeasShowPage'));
 const IdeasNewPage = lazy(() => import('containers/IdeasNewPage'));
+const IdeasNewRedirect = lazy(
+  () => import('containers/IdeasNewPage/IdeasNewRedirect')
+);
 const IdeasNewSurveyPage = lazy(() => import('containers/IdeasNewSurveyPage'));
 const IdeasNewSurveyRedirect = lazy(
   () => import('containers/IdeasNewSurveyPage/IdeasNewSurveyRedirect')
@@ -361,7 +364,6 @@ const ideasShowRoute = createRoute({
 
 // Project idea/survey new routes
 const projectIdeaNewSearchSchema = yup.object({
-  phase_id: yup.string().optional(),
   idea_id: yup.string().optional(),
   selected_idea_id: yup.string().optional(),
   lat: yup.number().optional(),
@@ -370,12 +372,31 @@ const projectIdeaNewSearchSchema = yup.object({
 
 const projectIdeaNewRoute = createRoute({
   getParentRoute: () => localeRoute,
-  path: 'projects/$slug/ideas/new',
+  path: 'projects/$slug/ideas/new/$phaseId',
   validateSearch: (search: Record<string, unknown>) =>
     projectIdeaNewSearchSchema.validateSync(search, { stripUnknown: true }),
   component: () => (
     <PageLoading>
       <IdeasNewPage />
+    </PageLoading>
+  ),
+});
+
+// Idea links shared before the phase moved into the path.
+const projectIdeaNewRedirectSearchSchema = projectIdeaNewSearchSchema.shape({
+  phase_id: yup.string().optional(),
+});
+
+const projectIdeaNewRedirectRoute = createRoute({
+  getParentRoute: () => localeRoute,
+  path: 'projects/$slug/ideas/new',
+  validateSearch: (search: Record<string, unknown>) =>
+    projectIdeaNewRedirectSearchSchema.validateSync(search, {
+      stripUnknown: true,
+    }),
+  component: () => (
+    <PageLoading>
+      <IdeasNewRedirect />
     </PageLoading>
   ),
 });
@@ -736,6 +757,7 @@ const buildRouteTree = (moduleRoutes: Partial<Routes> = {}) =>
       ideasIndexRoute,
       ideasShowRoute,
       projectIdeaNewRoute,
+      projectIdeaNewRedirectRoute,
       projectSurveyNewRoute,
       projectSurveyNewRedirectRoute,
       projectPreviewRoute.addChildren([projectPreviewTokenRoute]),

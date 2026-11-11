@@ -39,9 +39,8 @@ const OfflineCollection = ({ project, phase }: Props) => {
         <NewIdeaButton
           participationMethod={phase.attributes.participation_method}
           inputTerm={phase.attributes.input_term}
-          to="/projects/$slug/ideas/new"
-          params={{ slug: project.attributes.slug }}
-          search={{ phase_id: phase.id }}
+          to="/projects/$slug/ideas/new/$phaseId"
+          params={{ slug: project.attributes.slug, phaseId: phase.id }}
         />
         <OfflineFormsButton
           participationMethod={phase.attributes.participation_method}

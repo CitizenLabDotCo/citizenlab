@@ -42,14 +42,8 @@ export const redirectToIdeaForm =
         phase.attributes.participation_method === 'native_survey'
           ? `/projects/${project.attributes.slug}/surveys/new/${phaseId}`
           : {
-              pathname: `/projects/${project.attributes.slug}/ideas/new`,
-              search: stringify(
-                {
-                  ...positionParams,
-                  phase_id: phaseId,
-                },
-                { addQueryPrefix: true }
-              ),
+              pathname: `/projects/${project.attributes.slug}/ideas/new/${phaseId}`,
+              search: stringify(positionParams, { addQueryPrefix: true }),
             },
         { scrollToTop: true }
       );

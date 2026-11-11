@@ -62,7 +62,7 @@ const IdeasNewIdeationForm = ({
   const isSmallerThanPhone = useBreakpoint('phone');
   const [usingMapView, setUsingMapView] = useState(false);
   const searchParams = useSearch({
-    from: '/$locale/projects/$slug/ideas/new',
+    from: '/$locale/projects/$slug/ideas/new/$phaseId',
   });
   const selectedIdeaId = searchParams.selected_idea_id;
   const participationMethodConfig = getConfig(phase?.data, phases);

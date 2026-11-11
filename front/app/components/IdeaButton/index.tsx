@@ -98,14 +98,8 @@ const IdeaButton = memo<Props>(
         isNativeSurvey
           ? `/projects/${project.data.attributes.slug}/surveys/new/${phase.id}`
           : {
-              pathname: `/projects/${project.data.attributes.slug}/ideas/new`,
-              search: stringify(
-                {
-                  ...positionParams,
-                  phase_id: phase.id,
-                },
-                { addQueryPrefix: true }
-              ),
+              pathname: `/projects/${project.data.attributes.slug}/ideas/new/${phase.id}`,
+              search: stringify(positionParams, { addQueryPrefix: true }),
             },
         { scrollToTop: true }
       );

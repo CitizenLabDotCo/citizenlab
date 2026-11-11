@@ -48,7 +48,7 @@ export default async function signOut() {
         TODO: Could probably be removed now that we have the Unauthorized component
         that renders if the user is not authenticated
       */
-      if (pathname && endsWith(pathname, '/ideas/new')) {
+      if (pathname && /\/ideas\/new(\/[^/]+)?$/.test(pathname)) {
         clHistory.push(pathname.split('/ideas/new')[0]);
       }
     }

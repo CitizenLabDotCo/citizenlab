@@ -44,13 +44,9 @@ const AddIdeaButton = ({ projectSlug, phaseId }: Props) => {
   });
 
   const redirectToIdeaForm = () => {
-    clHistory.push(
-      {
-        pathname: `/projects/${projectSlug}/ideas/new`,
-        search: `?phase_id=${phaseId}`,
-      },
-      { scrollToTop: true }
-    );
+    clHistory.push(`/projects/${projectSlug}/ideas/new/${phaseId}`, {
+      scrollToTop: true,
+    });
   };
 
   const handleClick = () => {
