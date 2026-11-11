@@ -124,7 +124,7 @@
   "app.components.PhasePreview.lifecycle": "Visualizar estado da fase",
   "app.components.PhasePreview.noDates": "Datas a anunciar",
   "app.components.PhasePreview.open": "Aberta",
-  "app.components.PhasePreview.openTooltip2": "Enquanto estiver aberto",
+  "app.components.PhasePreview.openTooltip2": "Enquanto estiver aberta",
   "app.components.PhasePreview.phaseEnded": "Fase encerrada",
   "app.components.PhasePreview.savePhaseFirst": "Salve esta fase para visualizar o formulário de participação.",
   "app.components.PhasePreview.startsIn": "{days, plural, =0 {Começa hoje} one {Começa em # dia} other {Começa em # dias}}",

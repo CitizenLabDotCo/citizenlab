@@ -124,7 +124,7 @@
   "app.components.PhasePreview.lifecycle": "Rhagolwg o gyflwr y cam",
   "app.components.PhasePreview.noDates": "Dyddiadau i'w cyhoeddi",
   "app.components.PhasePreview.open": "Ar agor",
-  "app.components.PhasePreview.openTooltip2": "Tra bydd ar agor",
+  "app.components.PhasePreview.openTooltip2": "Tra mae’n agored",
   "app.components.PhasePreview.phaseEnded": "Cam wedi dod i ben",
   "app.components.PhasePreview.savePhaseFirst": "Cadwch y cam hwn i weld rhagolwg o'i ffurflen gyfranogi.",
   "app.components.PhasePreview.startsIn": "{days, plural, =0 {Dechrau heddiw} one {Dechrau ymhen # diwrnod} other {Dechrau ymhen # diwrnod}}",

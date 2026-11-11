@@ -120,7 +120,7 @@
   "app.components.PhasePreview.beforeStarts": "Questa fase non è ancora iniziata",
   "app.components.PhasePreview.beforeTooltip2": "Prima dell'inizio",
   "app.components.PhasePreview.ended": "Terminata",
-  "app.components.PhasePreview.endedTooltip2": "Al termine",
+  "app.components.PhasePreview.endedTooltip2": "Dopo la fine",
   "app.components.PhasePreview.lifecycle": "Anteprima dello stato della fase",
   "app.components.PhasePreview.noDates": "Date da annunciare",
   "app.components.PhasePreview.open": "Aperta",
