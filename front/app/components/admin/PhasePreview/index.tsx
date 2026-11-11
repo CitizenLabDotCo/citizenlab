@@ -7,12 +7,8 @@ import {
   Tooltip,
   colors,
   stylingConsts,
+  defaultStyles,
 } from '@citizenlab/cl2-component-library';
-
-import useCauses from 'api/causes/useCauses';
-import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
-import usePollResponses from 'api/poll_responses/usePollResponses';
-import useSubmissionCount from 'api/submission_count/useSubmissionCount';
 
 import PhonePreview from 'components/admin/PhonePreview';
 
@@ -27,35 +23,24 @@ import {
 
 import messages from './messages';
 
-type PreviewState = PreviewLifecycle | 'participation';
-
 const lifecycleOptions = {
   before: {
     label: messages.before,
-    description: messages.viewBefore,
-    tooltip: messages.beforeTooltip,
+    tooltip: messages.beforeTooltip2,
   },
   open: {
     label: messages.open,
-    description: messages.viewOpen,
-    tooltip: messages.openTooltip,
-  },
-  participation: {
-    label: messages.participation,
-    description: messages.viewParticipation,
-    tooltip: messages.participationTooltip,
+    tooltip: messages.openTooltip2,
   },
   ended: {
     label: messages.ended,
-    description: messages.viewEnded,
-    tooltip: messages.endedTooltip,
+    tooltip: messages.endedTooltip2,
   },
 } satisfies Record<
-  PreviewState,
+  PreviewLifecycle,
   {
     label: typeof messages.before;
-    description: typeof messages.viewBefore;
-    tooltip: typeof messages.beforeTooltip;
+    tooltip: typeof messages.beforeTooltip2;
   }
 >;
 
@@ -72,48 +57,14 @@ const PhasePreview = ({ src, title, snapshot }: Props) => {
   const frameRef = useRef<HTMLIFrameElement>(null);
   const attributes = snapshot.phase?.attributes;
   const method = attributes?.participation_method;
-  const phaseId = snapshot.unsaved ? undefined : snapshot.phase?.id;
   const isInformation = method === 'information';
-  const hasInputList =
-    method === 'ideation' ||
-    method === 'proposals' ||
-    method === 'common_ground';
-  const isNativeSurvey =
-    method === 'native_survey' || method === 'community_monitor_survey';
-  const { data: inputs } = useIdeasFilterCounts(
-    { phase: phaseId, publication_status: 'published' },
-    !!phaseId && hasInputList
-  );
-  const { data: submissions } = useSubmissionCount({
-    phaseId: isNativeSurvey ? phaseId : undefined,
-  });
-  const { data: poll } = usePollResponses({
-    phaseId: method === 'poll' ? phaseId ?? null : null,
-  });
-  const { data: causes } = useCauses({
-    phaseId: method === 'volunteering' ? phaseId ?? null : null,
-  });
-
-  const hasParticipation =
-    !!phaseId &&
-    ((inputs?.data.attributes.total ?? 0) > 0 ||
-      (submissions?.data.attributes.totalSubmissions ?? 0) > 0 ||
-      Object.values(poll?.data.attributes.series.options ?? {}).some(
-        (count) => count > 0
-      ) ||
-      causes?.data.some((cause) => cause.attributes.volunteers_count > 0) ||
-      (attributes?.participation_method === 'voting' &&
-        (attributes.total_votes_amount > 0 ||
-          attributes.votes_count > 0 ||
-          attributes.baskets_count > 0 ||
-          (attributes.manual_voters_amount ?? 0) > 0)));
   const configuredLifecycle = getPreviewLifecycle(
     getPreviewPhaseAttributes(snapshot)
   );
   // A manual choice holds until the edited dates move the phase to another
   // lifecycle; the preview then follows the dates again.
   const [selection, setSelection] = useState<{
-    state: PreviewState;
+    state: PreviewLifecycle;
     configured: PreviewLifecycle;
   }>();
   if (selection && selection.configured !== configuredLifecycle) {
@@ -123,15 +74,11 @@ const PhasePreview = ({ src, title, snapshot }: Props) => {
     selection?.configured === configuredLifecycle
       ? selection.state
       : configuredLifecycle;
-  const state = isInformation
-    ? configuredLifecycle
-    : selectedState === 'participation' && !hasParticipation
-    ? 'open'
-    : selectedState;
+  const state = isInformation ? configuredLifecycle : selectedState;
   const payload = JSON.stringify({
     ...snapshot,
-    lifecycle: state === 'participation' ? 'open' : state,
-    showParticipation: state === 'participation' || state === 'ended',
+    lifecycle: state,
+    showParticipation: state !== 'before',
   });
   const payloadRef = useRef(payload);
   payloadRef.current = payload;
@@ -194,91 +141,67 @@ const PhasePreview = ({ src, title, snapshot }: Props) => {
       {!isInformation && (
         <Box
           display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          flexWrap="wrap"
+          flexDirection="column"
+          alignItems="flex-end"
           gap="8px"
-          px="12px"
-          pb="12px"
+          px="16px"
+          pb="16px"
         >
+          {snapshot.unsaved && (
+            <Text fontSize="s" color="textSecondary" textAlign="right" m="0">
+              {formatMessage(messages.newPhase)}
+            </Text>
+          )}
           <Box
             role="group"
             aria-label={formatMessage(messages.lifecycle)}
             display="flex"
             alignItems="center"
-            background={colors.black}
-            borderRadius={stylingConsts.borderRadiusPill}
-            p="2px"
+            background={colors.grey200}
+            borderRadius={stylingConsts.borderRadius}
+            gap="2px"
+            p="3px"
           >
-            {(['before', 'open', 'participation', 'ended'] as const).map(
-              (value) => {
-                if (value === 'participation' && !hasParticipation) return null;
+            {(['before', 'open', 'ended'] as const).map((value) => {
+              const selected = state === value;
+              const { label, tooltip } = lifecycleOptions[value];
 
-                const selected = state === value;
-                const { label, tooltip } = lifecycleOptions[value];
-
-                return (
-                  <Tooltip
-                    key={value}
-                    content={formatMessage(tooltip)}
-                    placement="top"
-                    theme="dark"
-                    useContentWrapper={false}
+              return (
+                <Tooltip
+                  key={value}
+                  content={formatMessage(tooltip)}
+                  placement="top"
+                  theme="dark"
+                  useContentWrapper={false}
+                >
+                  <Button
+                    buttonStyle="text"
+                    ariaPressed={selected}
+                    bgColor={selected ? colors.white : colors.grey200}
+                    bgHoverColor={selected ? colors.white : colors.grey300}
+                    textColor={
+                      selected ? colors.textPrimary : colors.textSecondary
+                    }
+                    textHoverColor={colors.textPrimary}
+                    textDecorationHover="none"
+                    borderRadius={stylingConsts.borderRadius}
+                    height="25px"
+                    padding="3px 12px"
+                    fontSize="12px"
+                    fontWeight="500"
+                    boxShadow={selected ? defaultStyles.boxShadow : 'none'}
+                    onClick={() =>
+                      setSelection({
+                        state: value,
+                        configured: configuredLifecycle,
+                      })
+                    }
                   >
-                    <Button
-                      buttonStyle="text"
-                      ariaPressed={selected}
-                      bgColor={selected ? colors.grey800 : colors.black}
-                      bgHoverColor={colors.grey800}
-                      textColor={selected ? colors.white : colors.coolGrey300}
-                      textHoverColor={colors.white}
-                      textDecorationHover="none"
-                      borderRadius={stylingConsts.borderRadiusPill}
-                      height="20px"
-                      padding="0 8px"
-                      fontSize="11px"
-                      onClick={() =>
-                        setSelection({
-                          state: value,
-                          configured: configuredLifecycle,
-                        })
-                      }
-                    >
-                      {formatMessage(label)}
-                    </Button>
-                  </Tooltip>
-                );
-              }
-            )}
-          </Box>
-          <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="flex-end"
-            ml="auto"
-            gap="4px"
-          >
-            <Box
-              background={colors.grey200}
-              borderRadius={stylingConsts.borderRadius}
-              px="10px"
-              py="4px"
-            >
-              <Text
-                aria-live="polite"
-                fontSize="s"
-                color="textSecondary"
-                textAlign="right"
-                m="0"
-              >
-                {formatMessage(lifecycleOptions[state].description)}
-              </Text>
-            </Box>
-            {snapshot.unsaved && (
-              <Text fontSize="s" color="textSecondary" textAlign="right" m="0">
-                {formatMessage(messages.newPhase)}
-              </Text>
-            )}
+                    {formatMessage(label)}
+                  </Button>
+                </Tooltip>
+              );
+            })}
           </Box>
         </Box>
       )}

@@ -297,7 +297,7 @@ describe('Phase preview live edits', () => {
     });
   });
 
-  it('shows Participation only after the phase receives a published idea', () => {
+  it('shows saved ideas in Open without a separate Participation state', () => {
     cy.setAdminLoginCookie();
     cy.apiCreatePhase({
       projectId,
@@ -329,11 +329,13 @@ describe('Phase preview live edits', () => {
         ideaContent: 'A place to rest near the park entrance.',
       });
       cy.reload();
-      cy.get(switcher).contains('button', 'Participation').click();
-      phone().contains(savedIdea).should('be.visible');
       cy.get(switcher).contains('button', 'Open').click();
-      phone().contains('0 ideas').should('be.visible');
-      phone().contains(savedIdea).should('not.exist');
+      phone().contains(savedIdea).should('be.visible');
+      cy.get(switcher).find('button').should('have.length', 3);
+      cy.get(switcher).contains('button', 'Participation').should('not.exist');
+      cy.get(switcher).contains('button', 'Ended').click();
+      phone().contains('Phase ended').should('be.visible');
+      phone().contains(savedIdea).should('be.visible');
     });
   });
 

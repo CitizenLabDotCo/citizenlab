@@ -56,7 +56,7 @@ describe('Phase preview permissions and feature boundary', () => {
       cy.contains('label', 'Submitting inputs').scrollIntoView().click();
       phone().find('#e2e-ideation-cta-button').should('not.exist');
       cy.get('[role="group"][aria-label="Preview phase state"]')
-        .contains('button', 'Participation')
+        .contains('button', 'Open')
         .click();
       phone().contains('Live reaction option').should('be.visible');
       phone().find('.e2e-ideacard-like-button').should('not.exist');

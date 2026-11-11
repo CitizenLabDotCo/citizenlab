@@ -17,29 +17,17 @@ export default defineMessages({
     id: 'app.components.PhasePreview.ended',
     defaultMessage: 'Ended',
   },
-  participation: {
-    id: 'app.components.PhasePreview.participation',
-    defaultMessage: 'Participation',
+  beforeTooltip2: {
+    id: 'app.components.PhasePreview.beforeTooltip2',
+    defaultMessage: 'Before it starts',
   },
-  beforeTooltip: {
-    id: 'app.components.PhasePreview.beforeTooltip',
-    defaultMessage: 'Before the phase starts',
+  openTooltip2: {
+    id: 'app.components.PhasePreview.openTooltip2',
+    defaultMessage: 'While it’s open',
   },
-  openTooltip: {
-    id: 'app.components.PhasePreview.openTooltip',
-    defaultMessage: 'Open, nobody has taken part yet',
-  },
-  participationTooltip: {
-    id: 'app.components.PhasePreview.participationTooltip',
-    defaultMessage: 'Open, with participation',
-  },
-  endedTooltip: {
-    id: 'app.components.PhasePreview.endedTooltip',
-    defaultMessage: 'After it ends, with results',
-  },
-  viewParticipation: {
-    id: 'app.components.PhasePreview.viewParticipation',
-    defaultMessage: 'What residents see once people take part',
+  endedTooltip2: {
+    id: 'app.components.PhasePreview.endedTooltip2',
+    defaultMessage: 'After it ends',
   },
   beforeStarts: {
     id: 'app.components.PhasePreview.beforeStarts',
@@ -52,18 +40,6 @@ export default defineMessages({
   noDates: {
     id: 'app.components.PhasePreview.noDates',
     defaultMessage: 'Dates to be announced',
-  },
-  viewBefore: {
-    id: 'app.components.PhasePreview.viewBefore',
-    defaultMessage: 'What residents see before the phase starts',
-  },
-  viewOpen: {
-    id: 'app.components.PhasePreview.viewOpen',
-    defaultMessage: 'What residents see while the phase is open',
-  },
-  viewEnded: {
-    id: 'app.components.PhasePreview.viewEnded',
-    defaultMessage: 'What residents see after the phase ends',
   },
   startsIn: {
     id: 'app.components.PhasePreview.startsIn',
