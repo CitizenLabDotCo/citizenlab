@@ -160,7 +160,6 @@ const SurveySettings = () => {
             </ButtonWithLink>
             <DropdownSettings
               haveSubmissionsComeIn={haveSubmissionsComeIn}
-              handleDownloadResults={handleDownloadResults}
               handleExportPdf={inputResponseExport.openPdfExportModal}
               handleExportXlsx={inputResponseExport.openXlsxExportModal}
               setDropdownOpened={setDropdownOpened}
