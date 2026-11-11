@@ -1816,6 +1816,7 @@
   "app.containers.Admin.projects.project.editProjectPage": "Edit project page",
   "app.containers.Admin.projects.project.editProjectPageInContentBuilder": "Edit the project page in the content builder",
   "app.containers.Admin.projects.project.editReport": "Edit report",
+  "app.containers.Admin.projects.project.editSurvey": "Edit survey",
   "app.containers.Admin.projects.project.emptyOptionError": "Write the title in at least one language",
   "app.containers.Admin.projects.project.emptyStatementError": "Write the statement in at least one language",
   "app.containers.Admin.projects.project.event.addDescription": "Add a description",
