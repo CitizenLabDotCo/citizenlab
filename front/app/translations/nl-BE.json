@@ -1198,7 +1198,7 @@
   "app.components.formBuilder.supportArticleLinkText": "deze pagina",
   "app.components.formBuilder.surveyAssistant.editingLocked2": "Je kunt de vragenlijst weer bewerken zodra de assistent klaar is, of zodra je de voorgestelde wijziging goedkeurt of afwijst.",
   "app.components.formBuilder.surveyAssistant.endPage": "Eindpagina",
-  "app.components.formBuilder.surveyAssistant.intro2": "Beschrijf wat je wilt leren of voeg een document bij. De assistent stelt de vragen voor en er verandert niets totdat je dit gaat Goedkeuren.",
+  "app.components.formBuilder.surveyAssistant.intro2": "Beschrijf wat je wilt leren of voeg een document bij. De assistent stelt de vragen voor en er verandert niets totdat je dit goedkeurt.",
   "app.components.formBuilder.surveyAssistant.outlineSummary": "{pages, plural, one {# pagina} other {# pagina's}}, {questions, plural, one {# vraag} other {# vragen}}",
   "app.components.formBuilder.surveyAssistant.pageNumber": "Pagina {number}",
   "app.components.formBuilder.surveyAssistant.readSurvey": "de huidige vragenlijst",

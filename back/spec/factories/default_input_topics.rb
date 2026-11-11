@@ -9,6 +9,6 @@ FactoryBot.define do
     sequence(:title_multiloc) { |n| locales.index_with { |l| "Default Input Topic #{n} (#{l})" } }
     sequence(:description_multiloc) { |n| locales.index_with { |l| "Default Input Topic-#{n} description (#{l})" } }
 
-    icon { 'medical' }
+    icon { '🏥' }
   end
 end

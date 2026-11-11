@@ -1434,6 +1434,26 @@
     "verified_at": "2026-10-27T14:09:52.266727Z",
     "verified_by": "Luuc"
   },
+  "app.components.admin.ContentBuilder.CustomBlocks.blockDisabled": {
+    "state": "verified",
+    "verified_at": "2026-11-11T17:44:58.880727Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.admin.ContentBuilder.CustomBlocks.blockLoadError": {
+    "state": "verified",
+    "verified_at": "2026-11-11T17:44:58.880727Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.admin.ContentBuilder.CustomBlocks.customBlockTitle": {
+    "state": "verified",
+    "verified_at": "2026-11-11T17:44:58.880727Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.admin.ContentBuilder.CustomBlocks.noSettings": {
+    "state": "verified",
+    "verified_at": "2026-11-11T17:44:58.880727Z",
+    "verified_by": "Luuc"
+  },
   "app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions3": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
@@ -9834,6 +9854,11 @@
     "verified_at": "2026-10-08T07:46:41.213873Z",
     "verified_by": "Pauline"
   },
+  "app.containers.Admin.projects.project.earlyAccess.feedbackNoticeDescriptionWithoutSlack": {
+    "state": "verified",
+    "verified_at": "2026-11-11T17:44:58.880727Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.project.earlyAccess.feedbackNoticeTitle": {
     "state": "verified",
     "verified_at": "2026-10-08T07:46:41.213873Z",
@@ -9848,6 +9873,11 @@
     "state": "verified",
     "verified_at": "2026-10-08T07:46:41.213873Z",
     "verified_by": "Pauline"
+  },
+  "app.containers.Admin.projects.project.earlyAccess.turnOnNoticeDescriptionGeneral": {
+    "state": "verified",
+    "verified_at": "2026-11-11T17:44:58.880727Z",
+    "verified_by": "Luuc"
   },
   "app.containers.Admin.projects.project.earlyAccess.turnOnNoticeTitle": {
     "state": "verified",
@@ -10299,14 +10329,14 @@
     "verified_at": "2026-10-15T20:02:08.118112Z",
     "verified_by": "Luuc"
   },
-  "app.containers.Admin.projects.project.hidePanel": {
-    "state": "verified",
-    "verified_at": "2026-11-03T16:10:58.861264Z",
-    "verified_by": "Luuc"
-  },
   "app.containers.Admin.projects.project.hideCauses": {
     "state": "verified",
     "verified_at": "2026-11-02T08:57:12.904211Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.hidePanel": {
+    "state": "verified",
+    "verified_at": "2026-11-03T16:10:58.861264Z",
     "verified_by": "Luuc"
   },
   "app.containers.Admin.projects.project.homepageCard": {
@@ -12984,6 +13014,11 @@
     "verified_at": "2026-09-15T12:47:12.657839Z",
     "verified_by": "Luuc"
   },
+  "app.containers.Admin.projects.project.showCauses": {
+    "state": "verified",
+    "verified_at": "2026-11-02T08:57:12.904211Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.project.showPanel": {
     "state": "verified",
     "verified_at": "2026-11-03T16:10:58.861264Z",
@@ -12992,11 +13027,6 @@
   "app.containers.Admin.projects.project.spotlight": {
     "state": "verified",
     "verified_at": "2026-11-03T16:10:58.861264Z",
-    "verified_by": "Luuc"
-  },
-  "app.containers.Admin.projects.project.showCauses": {
-    "state": "verified",
-    "verified_at": "2026-11-02T08:57:12.904211Z",
     "verified_by": "Luuc"
   },
   "app.containers.Admin.projects.project.spreadsheetImportDescription": {
@@ -24018,6 +24048,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
+  },
+  "app.containers.admin.ContentBuilder.IframeMultiloc.noUrlPrompt": {
+    "state": "verified",
+    "verified_at": "2026-11-11T17:44:58.880727Z",
+    "verified_by": "Luuc"
   },
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": {
     "state": "verified",
