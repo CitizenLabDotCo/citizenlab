@@ -11,11 +11,13 @@ import {
 import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
 
+import DisabledFieldset from 'components/admin/PhasePreview/DisabledFieldset';
+
 import {
   getMethodConfig,
   getParticipationMethod,
 } from 'utils/configs/participationMethodConfig';
-import { getPhasePreview } from 'utils/phasePreview/runtime';
+import { usePhasePreview } from 'utils/phasePreview/runtime';
 
 import { getVerticalPositionProps } from './utils';
 
@@ -30,13 +32,10 @@ const ProjectCTABar = ({ projectId, className }: ProjectCTABarProps) => {
 
   const { data: phases } = usePhases(projectId);
   const { data: project } = useProjectById(projectId);
+  const preview = usePhasePreview();
 
   const participationMethod = project
-    ? getParticipationMethod(
-        project.data,
-        phases?.data,
-        getPhasePreview()?.phase.id
-      )
+    ? getParticipationMethod(project.data, phases?.data, preview?.phase.id)
     : undefined;
 
   if (
@@ -57,19 +56,14 @@ const ProjectCTABar = ({ projectId, className }: ProjectCTABarProps) => {
     zIndex: '1000',
     background: colors.white,
   };
-  const verticalPositionProps: BoxProps = getPhasePreview()
+  const verticalPositionProps: BoxProps = preview
     ? { position: 'fixed', bottom: '0px' }
     : getVerticalPositionProps({ isSmallerThanTablet, windowHeight });
 
   return (
     <Box className={className} {...sharedProps} {...verticalPositionProps}>
-      {getPhasePreview()?.unsaved ? (
-        <fieldset
-          disabled
-          style={{ border: 0, margin: 0, padding: 0, minWidth: 0 }}
-        >
-          {BarContents}
-        </fieldset>
+      {preview?.unsaved ? (
+        <DisabledFieldset>{BarContents}</DisabledFieldset>
       ) : (
         BarContents
       )}

@@ -24,7 +24,7 @@ import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { getInputTermMessage } from 'utils/i18n';
-import { getPhasePreview } from 'utils/phasePreview/runtime';
+import { usePhasePreview } from 'utils/phasePreview/runtime';
 
 import messages from './messages';
 import TippyContent from './TippyContent';
@@ -59,7 +59,8 @@ const IdeaButton = memo<Props>(
     const { data: authUser } = useAuthUser();
     const localize = useLocalize();
     const isNativeSurvey = participationMethod === 'native_survey';
-    const isUnsavedPreview = getPhasePreview()?.unsaved;
+    const preview = usePhasePreview();
+    const isUnsavedPreview = preview?.unsaved;
 
     const postingRules =
       project && phase
@@ -210,24 +211,27 @@ const IdeaButton = memo<Props>(
                 <>{localize(phase.attributes.native_survey_button_multiloc)}</>
               ) : (
                 <FormattedMessage
-                  {...getInputTermMessage(getInputTerm(phases?.data), {
-                    idea: messages.submitYourIdea,
-                    option: messages.addAnOption,
-                    project: messages.addAProject,
-                    question: messages.addAQuestion,
-                    issue: messages.submitAnIssue1,
-                    contribution: messages.addAContribution,
-                    proposal: messages.addAProposal,
-                    initiative: messages.addAnInitiative,
-                    petition: messages.addAPetition,
-                    comment: messages.addAComment,
-                    response: messages.addAResponse,
-                    suggestion: messages.addASuggestion,
-                    topic: messages.addATopic,
-                    post: messages.addAPost,
-                    story: messages.addAStory,
-                    observation: messages.addAnObservation,
-                  })}
+                  {...getInputTermMessage(
+                    getInputTerm(phases?.data, preview ? phase : undefined),
+                    {
+                      idea: messages.submitYourIdea,
+                      option: messages.addAnOption,
+                      project: messages.addAProject,
+                      question: messages.addAQuestion,
+                      issue: messages.submitAnIssue1,
+                      contribution: messages.addAContribution,
+                      proposal: messages.addAProposal,
+                      initiative: messages.addAnInitiative,
+                      petition: messages.addAPetition,
+                      comment: messages.addAComment,
+                      response: messages.addAResponse,
+                      suggestion: messages.addASuggestion,
+                      topic: messages.addATopic,
+                      post: messages.addAPost,
+                      story: messages.addAStory,
+                      observation: messages.addAnObservation,
+                    }
+                  )}
                 />
               )}
             </ButtonWithLink>

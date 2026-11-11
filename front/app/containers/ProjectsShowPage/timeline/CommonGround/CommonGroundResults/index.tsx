@@ -8,7 +8,7 @@ import useCommonGroundResults from 'api/common_ground/useCommonGroundResults';
 import PreviewSkeleton from 'components/admin/PhasePreview/PreviewSkeleton';
 
 import { useIntl } from 'utils/cl-intl';
-import { getPhasePreview } from 'utils/phasePreview/runtime';
+import { usePhasePreview } from 'utils/phasePreview/runtime';
 
 import messages from '../messages';
 
@@ -23,6 +23,7 @@ interface Props {
 const CommonGroundResults = ({ phaseId }: Props) => {
   const { formatMessage } = useIntl();
   const { data: results, isLoading } = useCommonGroundResults(phaseId);
+  const preview = usePhasePreview();
 
   if (isLoading) {
     return (
@@ -32,7 +33,7 @@ const CommonGroundResults = ({ phaseId }: Props) => {
     );
   }
 
-  if (!results && getPhasePreview()) return <PreviewSkeleton />;
+  if (!results && preview) return <PreviewSkeleton />;
 
   if (!results) {
     return (

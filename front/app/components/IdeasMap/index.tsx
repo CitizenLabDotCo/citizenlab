@@ -52,7 +52,7 @@ import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { projectPointToWebMercator } from 'utils/mapUtils/map';
 import { isAdmin } from 'utils/permissions/roles';
-import { getPhasePreview } from 'utils/phasePreview/runtime';
+import { usePhasePreview } from 'utils/phasePreview/runtime';
 import { useLocation, useSearch } from 'utils/router';
 
 import IdeaMapOverlay from './desktop/IdeaMapOverlay';
@@ -253,6 +253,9 @@ const IdeasMap = memo<Props>(
       if (graphics) {
         return new FeatureLayer({
           source: graphics, // Array of idea graphics
+          // Stated rather than inferred, so a phase without pins still gets a
+          // valid (empty) point layer instead of an unrenderable table layer.
+          geometryType: 'point',
           title: formatMessage(messages.userInputs),
           id: 'ideasLayer',
           outFields: ['*'],
@@ -320,7 +323,7 @@ const IdeasMap = memo<Props>(
       [esriMapView, selectedIdeaId, ideaMarkers]
     );
 
-    const preview = getPhasePreview();
+    const preview = usePhasePreview();
     const canPreviewSubmission =
       !preview || (!preview.unsaved && preview.lifecycle === 'open');
 

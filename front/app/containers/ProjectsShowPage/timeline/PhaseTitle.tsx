@@ -26,7 +26,8 @@ import {
   getLocalisedDateString,
   pastPresentOrFuture,
 } from 'utils/dateUtils';
-import { getPhasePreview } from 'utils/phasePreview/runtime';
+import { usePhasePreview } from 'utils/phasePreview/runtime';
+import { getPreviewPhaseAttributes } from 'utils/phasePreview/types';
 
 const Container = styled.div<{ descriptionHasContent: boolean }>`
   display: flex;
@@ -115,6 +116,7 @@ const PhaseTitle = ({
   const localize = useLocalize();
   const smallerThanSmallTablet = windowWidth <= viewportWidths.tablet;
   const { formatMessage } = useIntl();
+  const preview = usePhasePreview();
 
   if (phase) {
     let phaseTitle = localize(phase.data.attributes.title_multiloc);
@@ -122,18 +124,17 @@ const PhaseTitle = ({
       phase.data.attributes.start_at,
       phase.data.attributes.end_at,
     ]);
-    const preview = getPhasePreview();
     const dates = preview
-      ? { ...preview.phase.attributes, ...preview.draft }
+      ? getPreviewPhaseAttributes(preview)
       : phase.data.attributes;
     const startDate = dates.start_at
       ? getLocalisedDateString(
-          getPhasePreview() ? getIsoDate(dates.start_at) : dates.start_at
+          preview ? getIsoDate(dates.start_at) : dates.start_at
         )
       : undefined;
     const endDate = dates.end_at
       ? getLocalisedDateString(
-          getPhasePreview() ? getIsoDate(dates.end_at) : dates.end_at
+          preview ? getIsoDate(dates.end_at) : dates.end_at
         )
       : formatMessage(messages.noEndDate);
 
@@ -153,12 +154,12 @@ const PhaseTitle = ({
         </PhaseNumber>
         <HeaderTitleWrapper>
           <Title
-            id={getPhasePreview() ? 'phase-preview-title' : undefined}
+            id={preview ? 'phase-preview-title' : undefined}
             variant="h3"
             className={`e2e-phase-title ${phaseStatus}`}
             m="0"
             color={
-              getPhasePreview()
+              preview
                 ? 'tenantText'
                 : phaseStatus === 'present'
                 ? 'success'
@@ -166,14 +167,14 @@ const PhaseTitle = ({
             }
           >
             {phaseTitle ||
-              (getPhasePreview() ? (
+              (preview ? (
                 <SkeletonBar width="200px" height="22px" />
               ) : (
                 <FormattedMessage {...messages.noPhaseSelected} />
               ))}
           </Title>
           <PhaseDate className={phaseStatus}>
-            {!startDate && getPhasePreview() ? (
+            {!startDate && preview ? (
               <SkeletonBar width="150px" />
             ) : isOneDayPhase ? (
               startDate

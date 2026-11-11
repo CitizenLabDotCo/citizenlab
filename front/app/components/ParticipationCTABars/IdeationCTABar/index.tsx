@@ -17,7 +17,7 @@ import {
 import { getIdeaPostingRules } from 'utils/actionTakingRules';
 import { FormattedMessage } from 'utils/cl-intl';
 import { getInputTermMessage } from 'utils/i18n';
-import { getPhasePreview } from 'utils/phasePreview/runtime';
+import { usePhasePreview } from 'utils/phasePreview/runtime';
 
 import messages from '../messages';
 
@@ -27,6 +27,7 @@ const IdeationCTABar = ({ phases, project }: CTABarProps) => {
   const currentPhase = getCTAPhase(phases);
   const isSmallerThanPhone = useBreakpoint('phone');
   const scrollToPhaseElement = useScrollToCurrentPhaseElement(project, phases);
+  const preview = usePhasePreview();
 
   const { enabled } = getIdeaPostingRules({
     project,
@@ -34,7 +35,6 @@ const IdeationCTABar = ({ phases, project }: CTABarProps) => {
     authUser: authUser?.data,
   });
 
-  const preview = getPhasePreview();
   const showDisabledSubmission =
     (preview?.unsaved || preview?.lifecycle === 'before') &&
     currentPhase?.attributes.submission_enabled;

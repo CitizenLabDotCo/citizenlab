@@ -8,7 +8,7 @@ import { IPhaseData } from 'api/phases/types';
 
 import PreviewSkeleton from 'components/admin/PhasePreview/PreviewSkeleton';
 
-import { getPhasePreview } from 'utils/phasePreview/runtime';
+import { usePhasePreview } from 'utils/phasePreview/runtime';
 
 import CauseCard from './CauseCard';
 
@@ -25,9 +25,10 @@ const Volunteering = memo<Props>(({ phase, className }) => {
   const { data: causes } = useCauses({
     phaseId: phase.id,
   });
+  const preview = usePhasePreview();
 
   if (causes) {
-    if (getPhasePreview() && causes.data.length === 0) {
+    if (preview && causes.data.length === 0) {
       return (
         <Box id="volunteering">
           <PreviewSkeleton />

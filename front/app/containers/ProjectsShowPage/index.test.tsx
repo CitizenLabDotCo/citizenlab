@@ -3,7 +3,7 @@ import React from 'react';
 import { phasesData } from 'api/phases/__mocks__/_mockServer';
 import { project1 } from 'api/projects/__mocks__/_mockServer';
 
-import { getPhasePreview } from 'utils/phasePreview/runtime';
+import { usePhasePreview } from 'utils/phasePreview/runtime';
 import { useParams } from 'utils/router';
 import { render, screen } from 'utils/testUtils/rtl';
 
@@ -25,7 +25,10 @@ jest.mock('api/baskets_ideas/useVoting', () => ({
     <div data-testid="voting-phase">{phaseId}</div>
   ),
 }));
-jest.mock('utils/phasePreview/runtime', () => ({ getPhasePreview: jest.fn() }));
+jest.mock('utils/phasePreview/runtime', () => ({
+  ...jest.requireActual('utils/phasePreview/runtime'),
+  usePhasePreview: jest.fn(),
+}));
 jest.mock('utils/router', () => ({ useParams: jest.fn() }));
 jest.mock('./shared/header/ProjectHeader', () => () => null);
 jest.mock('./shared/header/ProjectShowPageMeta', () => () => null);
@@ -53,7 +56,7 @@ const mockCurrentPhase = {
 
 beforeEach(() => {
   jest.mocked(useParams).mockReturnValue({ slug: 'test', phaseNumber: '1' });
-  jest.mocked(getPhasePreview).mockReturnValue(undefined);
+  jest.mocked(usePhasePreview).mockReturnValue(undefined);
 });
 
 it('preserves the public first-phase voting context when preview is inactive', () => {
@@ -63,7 +66,7 @@ it('preserves the public first-phase voting context when preview is inactive', (
 });
 
 it('uses the first phase being edited inside the preview', () => {
-  jest.mocked(getPhasePreview).mockReturnValue({
+  jest.mocked(usePhasePreview).mockReturnValue({
     project: project1,
     phase: mockFirstPhase,
     draft: {},

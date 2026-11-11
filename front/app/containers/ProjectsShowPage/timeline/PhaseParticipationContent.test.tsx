@@ -4,16 +4,17 @@ import { phasesData } from 'api/phases/__mocks__/_mockServer';
 import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 import { project1 } from 'api/projects/__mocks__/_mockServer';
 
-import { getPhasePreview } from 'utils/phasePreview/runtime';
+import { usePhasePreview } from 'utils/phasePreview/runtime';
 import { render, screen, waitFor } from 'utils/testUtils/rtl';
 
 import PhaseParticipationContent from './PhaseParticipationContent';
 
 jest.mock('utils/phasePreview/runtime', () => ({
-  getPhasePreview: jest.fn(),
+  ...jest.requireActual('utils/phasePreview/runtime'),
+  usePhasePreview: jest.fn(),
 }));
 
-const mockPreview = jest.mocked(getPhasePreview);
+const mockPreview = jest.mocked(usePhasePreview);
 
 beforeEach(() => mockPreview.mockReturnValue(undefined));
 

@@ -17,7 +17,7 @@ import Tabs, { TabData } from 'components/UI/FilterTabs';
 import { getPermissionsDisabledMessage } from 'utils/actionDescriptors';
 import { FormattedMessage } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { getPhasePreview } from 'utils/phasePreview/runtime';
+import { usePhasePreview } from 'utils/phasePreview/runtime';
 import { useSearch } from 'utils/router';
 
 import CommonGroundResults from './CommonGroundResults';
@@ -39,6 +39,7 @@ const CommonGroundTabs = ({ phase, project, isPastPhase }: Props) => {
   const searchParams = useSearch({ strict: false });
   const localize = useLocalize();
   const { data: progressData } = useCommonGroundProgress(phaseId);
+  const preview = usePhasePreview();
 
   const { enabled, disabled_reason } = getPhaseActionDescriptor(
     phase,
@@ -69,7 +70,7 @@ const CommonGroundTabs = ({ phase, project, isPastPhase }: Props) => {
     updateSearchParams({ tab });
   };
 
-  const lifecycle = getPhasePreview()?.lifecycle;
+  const lifecycle = preview?.lifecycle;
   if (lifecycle === 'before') {
     return (
       <ParticipationPermission
@@ -86,7 +87,7 @@ const CommonGroundTabs = ({ phase, project, isPastPhase }: Props) => {
     );
   }
 
-  if (getPhasePreview() && progressData?.data.attributes.num_ideas === 0) {
+  if (preview && progressData?.data.attributes.num_ideas === 0) {
     return (
       <Box id="common-ground-tabs">
         <PreviewSkeleton />

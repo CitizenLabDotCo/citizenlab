@@ -22,7 +22,7 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 import { isAdmin } from 'utils/permissions/roles';
-import { getPhasePreview } from 'utils/phasePreview/runtime';
+import { usePhasePreview } from 'utils/phasePreview/runtime';
 import { useLocation, useParams } from 'utils/router';
 
 import { excludeHidden, groupSpotlightSurveys } from '../participationOptions';
@@ -79,6 +79,7 @@ const ProjectActionButtons = ({
   });
   const hasEventsWidget = useHasEventsWidget(projectId);
   const pageHasEventsWidget = useCustomPageHasEventsWidget(pageSlug);
+  const preview = usePhasePreview();
 
   useEffect(() => {
     const element = document.getElementById(divId);
@@ -87,7 +88,7 @@ const ProjectActionButtons = ({
     }
   }, [divId]);
 
-  if (!project || getPhasePreview()?.unsaved) {
+  if (!project || preview?.unsaved) {
     return null;
   }
 
@@ -176,7 +177,7 @@ const ProjectActionButtons = ({
             phase={visiblePhase}
             inputTerm={getInputTerm(
               phases?.data,
-              getPhasePreview() ? visiblePhase : undefined
+              preview ? visiblePhase : undefined
             )}
             projectSlug={projectSlug}
             eventsAreOnProjectPage={!!pageSlug && !pageHasEventsWidget}
@@ -212,7 +213,7 @@ const ProjectActionButtons = ({
           phase={visiblePhase}
           inputTerm={getInputTerm(
             phases?.data,
-            getPhasePreview() ? visiblePhase : undefined
+            preview ? visiblePhase : undefined
           )}
           projectSlug={projectSlug}
           eventsAreOnProjectPage={!!pageSlug && !pageHasEventsWidget}

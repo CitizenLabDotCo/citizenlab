@@ -14,7 +14,7 @@ import {
 } from 'components/ParticipationCTABars/utils';
 
 import { getIdeaPostingRules } from 'utils/actionTakingRules';
-import { getPhasePreview } from 'utils/phasePreview/runtime';
+import { usePhasePreview } from 'utils/phasePreview/runtime';
 
 const NativeSurveyCTABar = ({ project, phases }: CTABarProps) => {
   const theme = useTheme();
@@ -22,7 +22,7 @@ const NativeSurveyCTABar = ({ project, phases }: CTABarProps) => {
   const isSmallerThanPhone = useBreakpoint('phone');
   const currentPhase = getCTAPhase(phases);
 
-  const preview = getPhasePreview();
+  const preview = usePhasePreview();
   const { data: fields } = useCustomFields({
     projectId: preview && !preview.unsaved ? project.id : undefined,
     phaseId: preview && !preview.unsaved ? preview.phase.id : undefined,

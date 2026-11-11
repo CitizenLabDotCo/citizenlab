@@ -9,7 +9,7 @@ import { VotingMethod } from 'api/phases/types';
 import PreviewSkeleton from 'components/admin/PhasePreview/PreviewSkeleton';
 
 import { useIntl } from 'utils/cl-intl';
-import { getPhasePreview } from 'utils/phasePreview/runtime';
+import { usePhasePreview } from 'utils/phasePreview/runtime';
 
 import messages from './messages';
 import VotingResultCard from './VotingResultCard';
@@ -34,10 +34,11 @@ const VotingResults = ({ phaseId, votingMethod }: Props) => {
   });
 
   const smallerThanPhone = useBreakpoint('phone');
+  const preview = usePhasePreview();
 
   const ideasList = ideas?.pages.map((page) => page.data).flat();
   if (!ideasList) return null;
-  if (getPhasePreview() && ideasList.length === 0) return <PreviewSkeleton />;
+  if (preview && ideasList.length === 0) return <PreviewSkeleton />;
 
   const getMx = (i: number) =>
     smallerThanPhone ? {} : i % 2 ? { ml: '8px' } : { mr: '8px' };

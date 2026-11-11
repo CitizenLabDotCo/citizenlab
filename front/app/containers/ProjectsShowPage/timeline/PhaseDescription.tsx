@@ -23,7 +23,7 @@ import FileAttachments from 'components/UI/FileAttachments';
 
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
-import { getPhasePreview } from 'utils/phasePreview/runtime';
+import { usePhasePreview } from 'utils/phasePreview/runtime';
 
 import PhaseTitle from './PhaseTitle';
 
@@ -63,6 +63,7 @@ const PhaseDescription = ({ projectId, selectedPhaseId }: Props) => {
   const { data: phases } = usePhases(projectId);
   const { data: phase } = usePhase(selectedPhaseId);
   const { data: phaseFiles } = usePhaseFiles(selectedPhaseId);
+  const preview = usePhasePreview();
 
   const isActivePhase =
     phase?.data &&
@@ -85,11 +86,11 @@ const PhaseDescription = ({ projectId, selectedPhaseId }: Props) => {
   return (
     <Container
       className="e2e-phase-description"
-      role={getPhasePreview() ? 'region' : 'tabpanel'}
+      role={preview ? 'region' : 'tabpanel'}
       tabIndex={0}
       id={`phase-description-panel-${phaseNumber}`}
       aria-labelledby={
-        getPhasePreview() ? 'phase-preview-title' : `phase-tab-${phaseNumber}`
+        preview ? 'phase-preview-title' : `phase-tab-${phaseNumber}`
       }
       hasBottomMargin={
         !['information', 'common_ground'].includes(
@@ -99,15 +100,14 @@ const PhaseDescription = ({ projectId, selectedPhaseId }: Props) => {
     >
       <PhaseTitle
         phaseNumber={
-          getPhasePreview() &&
-          phase.data.attributes.placement_type === 'standalone'
+          preview && phase.data.attributes.placement_type === 'standalone'
             ? null
             : phaseNumber
         }
         phaseId={selectedPhaseId}
         descriptionHasContent={descriptionHasContent}
       />
-      {getPhasePreview() && contentIsEmpty && (
+      {preview && contentIsEmpty && (
         <Box mt="20px">
           <PreviewSkeleton kind="text" />
         </Box>
@@ -130,7 +130,7 @@ const PhaseDescription = ({ projectId, selectedPhaseId }: Props) => {
           )}
         </Box>
       )}
-      {isActivePhase && !getPhasePreview()?.unsaved && (
+      {isActivePhase && !preview?.unsaved && (
         <EventPreviews projectId={phase.data.relationships.project.data.id} />
       )}
     </Container>

@@ -16,7 +16,7 @@ import StatusModule from 'components/StatusModule';
 
 import { getPermissionsDisabledMessage } from 'utils/actionDescriptors';
 import { pastPresentOrFuture } from 'utils/dateUtils';
-import { getPhasePreview } from 'utils/phasePreview/runtime';
+import { usePhasePreview } from 'utils/phasePreview/runtime';
 
 import CommonGroundTabs from './CommonGround/CommonGroundTabs';
 import PhaseIdeas from './Ideas';
@@ -51,7 +51,7 @@ const PhaseParticipationContent = ({
     document_annotation_embed_url: documentUrl,
   } = phase.attributes;
 
-  const preview = getPhasePreview();
+  const preview = usePhasePreview();
   if (preview?.unsaved) {
     if (
       participationMethod === 'native_survey' ||

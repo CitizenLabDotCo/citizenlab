@@ -21,7 +21,7 @@ import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { getInputTermMessage } from 'utils/i18n';
-import { getPhasePreview } from 'utils/phasePreview/runtime';
+import { usePhasePreview } from 'utils/phasePreview/runtime';
 
 import messages from '../messages';
 import { getTopicColor } from '../topicsColor';
@@ -104,6 +104,7 @@ const StickyNotesPile = ({ phaseId, slug }: Props) => {
   const isTablet = useBreakpoint('tablet');
   const localize = useLocalize();
   const { data: phase } = usePhase(phaseId);
+  const preview = usePhasePreview();
   const { data, isLoading } = useInfiniteIdeaFeedIdeas({
     phaseId,
     'page[size]': 15,
@@ -157,7 +158,6 @@ const StickyNotesPile = ({ phaseId, slug }: Props) => {
   }
 
   if (!displayedIdeas || displayedIdeas.length === 0) {
-    const preview = getPhasePreview();
     if (preview && preview.lifecycle !== 'open') {
       return <PreviewSkeleton kind="perspectives" />;
     }

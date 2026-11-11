@@ -18,7 +18,7 @@ import IdeaListScrollAnchor from 'components/IdeaListScrollAnchor';
 
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
-import { getPhasePreview } from 'utils/phasePreview/runtime';
+import { isPhasePreviewFrame } from 'utils/phasePreview/runtime';
 import { useParams, useSearch } from 'utils/router';
 
 interface InnerProps {
@@ -59,7 +59,7 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
   const defaultView = phase.attributes.presentation_mode;
   const previousDefaultView = useRef(defaultView);
   useEffect(() => {
-    if (getPhasePreview() && previousDefaultView.current !== defaultView) {
+    if (isPhasePreviewFrame() && previousDefaultView.current !== defaultView) {
       updateSearchParams({ view: undefined, idea_map_id: undefined });
     }
     previousDefaultView.current = defaultView;

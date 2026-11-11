@@ -14,7 +14,7 @@ import {
 
 import { useIntl } from 'utils/cl-intl';
 import useFormatCurrency from 'utils/currency/useFormatCurrency';
-import { getPhasePreview } from 'utils/phasePreview/runtime';
+import { usePhasePreview } from 'utils/phasePreview/runtime';
 
 import CTAButton from './CTAButton';
 import { getOptionSelectionCounter, getVotesCounter } from './utils';
@@ -24,6 +24,7 @@ const VotingCTABar = ({ phases, project }: CTABarProps) => {
   const { numberOfVotesCast, numberOfOptionsSelected, basketId } = useVoting();
   const { formatMessage } = useIntl();
   const formatCurrency = useFormatCurrency();
+  const preview = usePhasePreview();
 
   const currentPhase = useMemo(() => {
     return getCTAPhase(phases);
@@ -51,7 +52,7 @@ const VotingCTABar = ({ phases, project }: CTABarProps) => {
 
   const submittedAt = basket?.data.attributes.submitted_at || null;
   const hasUserParticipated = !!submittedAt;
-  const counterColor = getPhasePreview() ? 'textSecondary' : 'white';
+  const counterColor = preview ? 'textSecondary' : 'white';
 
   return (
     <>

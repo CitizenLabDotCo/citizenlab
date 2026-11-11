@@ -24,7 +24,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
 import useFormatCurrency from 'utils/currency/useFormatCurrency';
 import { getLocalisedDateString, pastPresentOrFuture } from 'utils/dateUtils';
-import { getPhasePreview } from 'utils/phasePreview/runtime';
+import { usePhasePreview } from 'utils/phasePreview/runtime';
 
 import ConfettiSvg from './ConfettiSvg';
 import messages from './messages';
@@ -64,6 +64,7 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
   // basket
   const { data: basket } = useBasket(phase.relationships.user_basket?.data?.id);
   const { mutate: updateBasket } = useUpdateBasket();
+  const preview = usePhasePreview();
   const basketStatus = phaseHasEnded
     ? 'submissionEnded'
     : // TODO: Fix this the next time the file is edited.
@@ -76,7 +77,7 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
     phase.attributes.baskets_count || project.attributes.baskets_count;
 
   if (
-    getPhasePreview() &&
+    preview &&
     config &&
     !phaseHasNotStartedYet &&
     basketStatus === 'hasNotSubmitted'

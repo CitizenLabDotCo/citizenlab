@@ -14,7 +14,7 @@ import {
   isFixableByAuthentication,
 } from 'utils/actionDescriptors';
 import { isNilOrError } from 'utils/helperUtils';
-import { getPhasePreview } from 'utils/phasePreview/runtime';
+import { usePhasePreview } from 'utils/phasePreview/runtime';
 
 import FormCompleted from './FormCompleted';
 import messages from './messages';
@@ -46,12 +46,13 @@ const Poll = ({ projectId, phaseId }: Props) => {
   const { data: pollQuestions } = usePollQuestions({
     phaseId,
   });
+  const preview = usePhasePreview();
 
   if (isNilOrError(pollQuestions) || !phase) {
     return null;
   }
 
-  if (getPhasePreview() && pollQuestions.data.length === 0) {
+  if (preview && pollQuestions.data.length === 0) {
     return (
       <Box id="project-poll">
         <PreviewSkeleton kind="form" />

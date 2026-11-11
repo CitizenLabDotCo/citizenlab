@@ -29,7 +29,7 @@ import Navigate from 'utils/cl-router/Navigate';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 import { anyIsUndefined } from 'utils/helperUtils';
-import { getPhasePreview } from 'utils/phasePreview/runtime';
+import { usePhasePreview } from 'utils/phasePreview/runtime';
 import { useParams, useSearch } from 'utils/router';
 import { scrollToElement } from 'utils/scroll';
 
@@ -147,6 +147,7 @@ const ProjectsShowPageWrapper = () => {
   const phaseIndex = phaseNumber ? parseInt(phaseNumber, 10) - 1 : undefined;
 
   const { data: user, isLoading: isUserLoading } = useAuthUser();
+  const preview = usePhasePreview();
   const pending =
     isInitialProjectLoading || isUserLoading || isInitialPhasesLoading;
 
@@ -184,7 +185,6 @@ const ProjectsShowPageWrapper = () => {
 
   if (!project) return null;
 
-  const preview = getPhasePreview();
   const previewPhase = phases?.data.find(({ id }) => id === preview?.phase.id);
   const votingPhaseId =
     previewPhase?.id ??

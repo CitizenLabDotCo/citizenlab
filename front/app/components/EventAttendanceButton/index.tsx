@@ -31,7 +31,7 @@ import {
   isFixableByAuthentication,
 } from 'utils/actionDescriptors';
 import { useIntl } from 'utils/cl-intl';
-import { getPhasePreview } from 'utils/phasePreview/runtime';
+import { isPhasePreviewFrame } from 'utils/phasePreview/runtime';
 
 import ConfirmationModal from './ConfirmationModal';
 import messages from './messages';
@@ -162,7 +162,7 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
     // Clear so a re-register -> unregister round-trip announces again.
     setScreenReaderAnnouncement('');
     addEventAttendance({ eventId: event.id, attendeeId: userData.id });
-    if (!getPhasePreview()) {
+    if (!isPhasePreviewFrame()) {
       addFollower({
         followableId: event.relationships.project.data.id,
         followableType: 'projects',
