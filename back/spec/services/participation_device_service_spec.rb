@@ -25,12 +25,6 @@ RSpec.describe ParticipationDeviceService do
       )
     end
 
-    it 'does not create a second record' do
-      described_class.track(idea, '1.2.3.4', iphone)
-
-      expect { described_class.track(idea, '1.2.3.4', iphone) }.not_to change(ParticipationDevice, :count)
-    end
-
     it 'does nothing for an anonymous post' do
       comment = create(:comment, idea: idea, anonymous: true)
 

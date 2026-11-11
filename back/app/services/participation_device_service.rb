@@ -5,10 +5,10 @@ class ParticipationDeviceService
     def track(trackable, remote_ip, user_agent)
       return if remote_ip.blank?
       return unless enabled_for?(trackable.project) && ParticipationTrackingService.track?(trackable)
-      return if trackable.participation_device
 
       browser = Browser.new(user_agent.to_s)
-      trackable.create_participation_device!(
+      ParticipationDevice.create!(
+        trackable: trackable,
         device_hash: ParticipationDevice.hash_device(trackable.project.id, remote_ip, user_agent),
         device_type: device_type(browser),
         browser_name: browser.name,

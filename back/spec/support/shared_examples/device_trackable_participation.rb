@@ -32,6 +32,21 @@ RSpec.shared_examples 'device_trackable_participation' do |factory_name: nil|
       expect(trackable.reload.participation_device).to have_attributes(browser_name: 'Firefox')
     end
 
+    if described_class.column_names.include?('anonymous')
+      it 'deletes the ParticipationDevice when the participation is made anonymous' do
+        SettingsService.new.activate_feature!('participation_device_tracking')
+        Current.remote_ip = '1.2.3.4'
+        Current.user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0'
+        trackable.save!
+        expect(trackable.reload.participation_device).to be_present
+
+        trackable.update!(anonymous: true)
+
+        expect(trackable.reload.participation_device).to be_nil
+        expect(ParticipationDevice.where(trackable: trackable)).to be_empty
+      end
+    end
+
     it 'does not prevent creation when tracking fails' do
       allow(ParticipationDeviceService).to receive(:track).and_raise(StandardError.new('test error'))
       allow(ErrorReporter).to receive(:report)
