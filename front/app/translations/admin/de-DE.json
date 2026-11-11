@@ -129,7 +129,7 @@
   "app.components.PhasePreview.participationTooltip": "Offen, mit Beteiligung",
   "app.components.PhasePreview.phaseEnded": "Phase beendet",
   "app.components.PhasePreview.savePhaseFirst": "Speichern Sie diese Phase, um eine Vorschau des Beteiligungsformulars zu sehen.",
-  "app.components.PhasePreview.startsIn": "{days, plural, =0 {Beginnt heute} one {Beginnt in # Tag} other {Beginnt in # Tagen}}",
+  "app.components.PhasePreview.startsIn": "{days, plural, =0 {Beginnt heute} one {Beginnt in einem Tag} other {Beginnt in # Tagen}}",
   "app.components.PhasePreview.viewBefore": "Was Bürger*innen sehen, bevor die Phase beginnt",
   "app.components.PhasePreview.viewEnded": "Was Bürger*innen nach Ende der Phase sehen",
   "app.components.PhasePreview.viewOpen": "Was Bürger*innen sehen, während die Phase offen ist",
