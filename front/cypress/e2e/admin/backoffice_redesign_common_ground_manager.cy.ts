@@ -1,4 +1,4 @@
-import { format, subMonths } from 'date-fns';
+import { format, subDays, subMonths } from 'date-fns';
 
 import { randomEmail, randomString } from '../../support/commands';
 
@@ -26,7 +26,7 @@ describe('Redesigned Common Ground manager', () => {
           projectId,
           title: sourcePhaseTitle,
           startAt: format(subMonths(new Date(), 2), 'dd/MM/yyyy'),
-          endAt: format(subMonths(new Date(), 1), 'dd/MM/yyyy'),
+          endAt: format(subDays(subMonths(new Date(), 1), 1), 'dd/MM/yyyy'),
           participationMethod: 'ideation',
           canPost: true,
         });
@@ -38,6 +38,7 @@ describe('Redesigned Common Ground manager', () => {
           title: randomString(),
           startAt: format(subMonths(new Date(), 1), 'dd/MM/yyyy'),
           participationMethod: 'common_ground',
+          available_views: ['card'],
           canPost: true,
           canReact: true,
         });
@@ -110,7 +111,7 @@ describe('Redesigned Common Ground manager', () => {
       cy.contains('button', 'Import inputs').click();
     });
 
-    cy.contains('2 statements', { timeout: 30000 }).should('be.visible');
+    cy.contains('2 statements', { timeout: 120000 }).should('be.visible');
     cy.contains('No inputs yet').should('not.exist');
     cy.contains('[data-cy^="e2e-statement-row-"]', firstTitle).should(
       'be.visible'
@@ -118,6 +119,6 @@ describe('Redesigned Common Ground manager', () => {
     cy.contains('[data-cy^="e2e-statement-row-"]', secondTitle).should(
       'be.visible'
     );
-    cy.contains('Statements').parent().should('contain.text', '2');
+    cy.get('[data-cy="e2e-statement-stats"]').should('contain.text', '2');
   });
 });

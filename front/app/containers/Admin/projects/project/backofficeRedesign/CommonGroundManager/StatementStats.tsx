@@ -18,7 +18,12 @@ const StatementStats = ({ statements, reactions, participants }: Props) => {
   const { formatMessage } = useIntl();
 
   return (
-    <Box p="8px" borderRadius={bo.panelBorderRadius} background={colors.white}>
+    <Box
+      p="8px"
+      borderRadius={bo.panelBorderRadius}
+      background={colors.white}
+      data-cy="e2e-statement-stats"
+    >
       <StatRow label={formatMessage(messages.statements)} value={statements} />
       <StatRow label={formatMessage(messages.reactions)} value={reactions} />
       <StatRow
