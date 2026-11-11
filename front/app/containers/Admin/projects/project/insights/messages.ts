@@ -173,10 +173,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.aiAnalysis',
     defaultMessage: 'AI analysis',
   },
-  downloadSurveyResults: {
-    id: 'app.containers.Admin.projects.project.insights.downloadSurveyResults',
-    defaultMessage: 'Download survey results',
-  },
   deleteSurveyResults: {
     id: 'app.containers.Admin.projects.project.insights.deleteSurveyResults',
     defaultMessage: 'Delete survey results',
