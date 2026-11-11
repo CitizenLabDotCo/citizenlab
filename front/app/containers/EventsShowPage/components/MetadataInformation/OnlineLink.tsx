@@ -31,7 +31,7 @@ const OnlineLink = ({ link }: Props) => {
             p="0px"
             buttonStyle="text"
             onClick={() => {
-              window.open(link, '_blank');
+              window.open(link, '_blank', 'noopener,noreferrer');
             }}
             pl="0px"
             fontSize="m"
