@@ -41,6 +41,7 @@ module ReportBuilder
     # never both.
     belongs_to :project, optional: true
     has_many :published_graph_data_units, dependent: :destroy
+    has_one :chat, class_name: 'ReportBuilder::ReportChat', dependent: :destroy, inverse_of: :report
     # delete_all, not destroy: a transcript holds a run's whole message history and
     # has no callbacks, so loading every one of them to delete them one at a time
     # buys nothing. The foreign key cascades anyway.
@@ -65,6 +66,41 @@ module ReportBuilder
 
     scope :global, -> { where(phase_id: nil) }
 
+    # How long an unfinished run is believed to be still running. Past that the
+    # report is listed again even with the tracker open, so a worker that died
+    # without completing its tracker cannot hide a report for good.
+    GENERATION_ASSUMED_STALE_AFTER = 1.hour
+
+    # A report about a whole project is created as an empty shell the moment an
+    # admin asks for one, and the composer only fills it minutes later. Listing
+    # the shell offers a report that opens onto nothing, so it waits out the run.
+    #
+    # It is listed again the moment the run is over, with or without content: a run
+    # that failed leaves a report the admin still has to be able to open, generate
+    # again or delete, and a report nobody can see is a report nobody can delete.
+    scope :listable, lambda {
+      where(
+        <<~SQL.squish,
+          report_builder_reports.project_id IS NULL
+          OR EXISTS (
+            SELECT 1 FROM content_builder_layouts
+            WHERE content_builder_layouts.content_buildable_type = 'ReportBuilder::Report'
+              AND content_builder_layouts.content_buildable_id = report_builder_reports.id
+              AND content_builder_layouts.craftjs_json <> '{}'::jsonb
+          )
+          OR NOT EXISTS (
+            SELECT 1 FROM jobs_trackers
+            WHERE jobs_trackers.root_job_type = :job
+              AND jobs_trackers.completed_at IS NULL
+              AND jobs_trackers.created_at > :since
+              AND jobs_trackers.context_type = 'Project'
+              AND jobs_trackers.context_id = report_builder_reports.project_id
+          )
+        SQL
+        job: ReportBuilder::GenerateReportJob.name,
+        since: GENERATION_ASSUMED_STALE_AFTER.ago
+      )
+    }
     pg_search_scope :search_name, against: :name_tsvector, using: {
       tsearch: { tsvector_column: 'name_tsvector', prefix: true }
     }
@@ -87,11 +123,11 @@ module ReportBuilder
       project || phase&.project
     end
 
-    # The latest generation that ran to a stop without failing. A failed run is
-    # skipped: it wrote nothing, so what the report holds is still the work of the
-    # run before it, and that is what the "is this report whole" answer is about.
+    # The run that wrote what the report holds now, if a model wrote it. A run that
+    # stopped without saving is not it, however it stopped: what the report holds is
+    # still the work of the last run that did save.
     def last_generation
-      generation_transcripts.generations.finished.not_failed.newest_first.first
+      generation_transcripts.generations.saved_the_report.newest_first.first
     end
 
     def public?

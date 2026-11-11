@@ -79,10 +79,12 @@ RSpec.describe ReportBuilder::GenerationTranscript do
   end
 
   describe '.session_runs_for' do
-    def run(kind, stopped: 'done', messages: 2, at: Time.current)
+    # saved: whether this run's work reached the report. Only a generation that did
+    # can open a session.
+    def run(kind, stopped: 'done', saved: true, messages: 2, at: Time.current)
       create(:generation_transcript, report: report, kind: kind, stopped_because: stopped,
         messages: Array.new(messages) { |i| { 'role' => i.even? ? 'user' : 'assistant', 'content' => [] } },
-        created_at: at)
+        report_saved_at: saved ? at : nil, created_at: at)
     end
 
     it 'is the latest finished generation and the turns after it, oldest first' do
@@ -110,9 +112,26 @@ RSpec.describe ReportBuilder::GenerationTranscript do
     it 'starts at the generation that wrote the report, not a later one that failed' do
       generation = run('generation', at: 3.hours.ago)
       turn = run('revision', at: 2.hours.ago)
-      run('generation', stopped: 'failed', at: 1.hour.ago)
+      run('generation', stopped: 'failed', saved: false, at: 1.hour.ago)
 
       expect(described_class.session_runs_for(report)).to eq [generation, turn]
+    end
+
+    # A run can stop for a respectable reason and still write nothing: the round cap
+    # falls mid-edit, or the save itself fails. stopped_because cannot tell that from
+    # a run that saved, which is why the job marks the one that did.
+    it 'starts at the generation that saved, not a later one that stopped without saving' do
+      generation = run('generation', at: 3.hours.ago)
+      turn = run('revision', at: 2.hours.ago)
+      run('generation', stopped: 'round_cap', saved: false, at: 1.hour.ago)
+
+      expect(described_class.session_runs_for(report)).to eq [generation, turn]
+    end
+
+    it 'is empty while the only generation has saved nothing' do
+      run('generation', stopped: 'round_cap', saved: false, at: 1.hour.ago)
+
+      expect(described_class.session_runs_for(report)).to eq []
     end
 
     it 'drops the oldest turns once the conversation would not fit, never the generation' do
