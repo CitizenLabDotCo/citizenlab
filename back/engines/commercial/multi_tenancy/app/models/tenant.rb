@@ -4,17 +4,18 @@
 #
 # Table name: public.tenants
 #
-#  id                    :uuid             not null, primary key
-#  name                  :string
-#  host                  :string
-#  settings              :jsonb
-#  created_at            :datetime         not null
-#  updated_at            :datetime         not null
-#  logo                  :string
-#  favicon               :string
-#  style                 :jsonb
-#  deleted_at            :datetime
-#  creation_finalized_at :datetime
+#  id                              :uuid             not null, primary key
+#  name                            :string
+#  host                            :string
+#  settings                        :jsonb
+#  created_at                      :datetime         not null
+#  updated_at                      :datetime         not null
+#  logo                            :string
+#  favicon                         :string
+#  style                           :jsonb
+#  deleted_at                      :datetime
+#  creation_finalized_at           :datetime
+#  template_application_started_at :datetime
 #
 # Indexes
 #

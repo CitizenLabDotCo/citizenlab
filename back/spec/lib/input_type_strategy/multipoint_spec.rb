@@ -1,0 +1,53 @@
+# frozen_string_literal: true
+
+require 'rails_helper'
+
+RSpec.describe InputTypeStrategy::Multipoint do
+  subject(:input_type_strategy) { described_class.new(custom_field) }
+
+  let(:custom_field) { build(:custom_field, input_type: 'multipoint') }
+
+  its(:page?) { is_expected.to be false }
+  its(:supports_submission?) { is_expected.to be true }
+  its(:supports_average?) { is_expected.to be false }
+  its(:supports_options?) { is_expected.to be false }
+  its(:supports_other_option?) { is_expected.to be false }
+  its(:supports_option_images?) { is_expected.to be false }
+  its(:supports_follow_up?) { is_expected.to be false }
+  its(:supports_text?) { is_expected.to be false }
+  its(:supports_linear_scale?) { is_expected.to be false }
+  its(:supports_linear_scale_labels?) { is_expected.to be false }
+  its(:supports_matrix_statements?) { is_expected.to be false }
+  its(:supports_single_selection?) { is_expected.to be false }
+  its(:supports_multiple_selection?) { is_expected.to be false }
+  its(:supports_selection?) { is_expected.to be false }
+  its(:supports_select_count?) { is_expected.to be true }
+  its(:supports_dropdown_layout?) { is_expected.to be false }
+  its(:supports_xlsx_export?) { is_expected.to be true }
+  its(:supports_geojson?) { is_expected.to be true }
+  its(:supports_printing?) { is_expected.to be true }
+  its(:supports_pdf_import?) { is_expected.to be false }
+  its(:supports_xlsx_import?) { is_expected.to be false }
+  its(:supports_reference_distribution?) { is_expected.to be false }
+  its(:supports_file_upload?) { is_expected.to be false }
+  its(:supports_logic?) { is_expected.to be false }
+
+  describe '#normalize_value' do
+    it 'converts a WKT string to GeoJSON' do
+      expect(input_type_strategy.normalize_value('MULTIPOINT (4.35 50.85, 4.36 50.86, 4.37 50.87)')).to eq(
+        'type' => 'MultiPoint', 'coordinates' => [[4.35, 50.85], [4.36, 50.86], [4.37, 50.87]]
+      )
+    end
+
+    it 'keeps a single pin as a MultiPoint' do
+      expect(input_type_strategy.normalize_value('MULTIPOINT (4.35 50.85)')).to eq(
+        'type' => 'MultiPoint', 'coordinates' => [[4.35, 50.85]]
+      )
+    end
+
+    it 'leaves other values unchanged' do
+      geojson = { 'type' => 'MultiPoint', 'coordinates' => [[4.35, 50.85]] }
+      expect(input_type_strategy.normalize_value(geojson)).to eq(geojson)
+    end
+  end
+end

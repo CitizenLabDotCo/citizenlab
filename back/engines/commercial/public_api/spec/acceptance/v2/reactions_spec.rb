@@ -79,6 +79,19 @@ resource 'Reactions' do
       end
     end
 
+    context 'when paging through reactions created at the same time' do
+      let(:page_size) { 1 }
+
+      example 'Returns each reaction exactly once', document: false do
+        ids = (1..Reaction.count).flat_map do |page_number|
+          do_request(page_number: page_number)
+          json_response_body[:reactions].pluck(:id)
+        end
+
+        expect(ids).to eq Reaction.order(created_at: :desc, id: :desc).ids
+      end
+    end
+
     context 'when reactable_type value is invalid' do
       let(:reactable_type) { 'invalid-type' }
 

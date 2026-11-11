@@ -10,6 +10,8 @@ import { object, boolean, string } from 'yup';
 import { IUserCustomFieldInputType } from 'api/user_custom_fields/types';
 
 import { Section, SectionField } from 'components/admin/Section';
+import CharacterLimitSettings from 'components/FormBuilder/components/FormBuilderSettings/CharacterLimitSettings';
+import { nullableNumber } from 'components/FormBuilder/edit/utils';
 import Feedback from 'components/HookForm/Feedback';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import Select from 'components/HookForm/Select';
@@ -28,6 +30,8 @@ export interface FormValues {
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
   required: boolean;
+  min_characters: number | null | undefined;
+  max_characters: number | null | undefined;
 }
 
 type Props = {
@@ -52,6 +56,9 @@ export const fieldTypeValidator = string().oneOf(fieldTypes);
 
 export type FieldType = (typeof fieldTypes)[number];
 
+const supportsCharacterLimits = (inputType?: IUserCustomFieldInputType) =>
+  inputType === 'text' || inputType === 'multiline_text';
+
 const RegistrationCustomFieldForm = ({
   intl: { formatMessage },
   defaultValues,
@@ -68,6 +75,9 @@ const RegistrationCustomFieldForm = ({
     ),
     description_multiloc: object(),
     required: boolean().required(),
+    // The inputs' own min attributes keep max above min.
+    min_characters: nullableNumber,
+    max_characters: nullableNumber,
   });
   const methods = useForm({
     mode: 'onBlur',
@@ -82,9 +92,23 @@ const RegistrationCustomFieldForm = ({
     }));
   };
 
+  const inputType = methods.watch('input_type');
+  const showCharacterLimits =
+    !builtInField && supportsCharacterLimits(inputType);
+
   const onFormSubmit = async (formValues: FormValues) => {
     try {
-      await onSubmit(formValues);
+      // Only text questions have character limits; leave them out for the
+      // other types so a limit typed before switching type isn't stored.
+      await onSubmit(
+        supportsCharacterLimits(formValues.input_type)
+          ? formValues
+          : {
+              ...formValues,
+              min_characters: undefined,
+              max_characters: undefined,
+            }
+      );
     } catch (error) {
       handleHookFormSubmissionError(error, methods.setError);
     }
@@ -125,6 +149,14 @@ const RegistrationCustomFieldForm = ({
               label={formatMessage(messages.isQuestionRequired)}
             />
           </SectionField>
+          {showCharacterLimits && (
+            <SectionField>
+              <CharacterLimitSettings
+                minCharactersName="min_characters"
+                maxCharactersName="max_characters"
+              />
+            </SectionField>
+          )}
         </Section>
         <Box display="flex">
           <Button type="submit" processing={methods.formState.isSubmitting}>

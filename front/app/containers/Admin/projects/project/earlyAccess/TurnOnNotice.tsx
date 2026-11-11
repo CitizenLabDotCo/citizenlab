@@ -11,7 +11,9 @@ import messages from './messages';
 import ProfileSettingsLink from './ProfileSettingsLink';
 
 const TurnOnNotice = () => {
-  const { offered, optedIn } = useEarlyAccess('project_backoffice_redesign');
+  const { offered, tier, optedIn } = useEarlyAccess(
+    'project_backoffice_redesign'
+  );
   const { dismissed, dismiss } = useDismissed(
     'project_backoffice_redesign_turn_on_notice_dismissed'
   );
@@ -24,7 +26,9 @@ const TurnOnNotice = () => {
       title={<FormattedMessage {...messages.turnOnNoticeTitle} />}
       description={
         <FormattedMessage
-          {...messages.turnOnNoticeDescription}
+          {...(tier === 'internal'
+            ? messages.turnOnNoticeDescription
+            : messages.turnOnNoticeDescriptionGeneral)}
           values={{ profileSettingsLink: <ProfileSettingsLink /> }}
         />
       }

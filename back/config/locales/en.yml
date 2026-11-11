@@ -362,6 +362,7 @@ en:
       point_print_description: 'Please draw an X on the map below to show the location or write the address instead.'
       line_print_description: 'Please draw a route on the map below.'
       polygon_print_description: 'Please draw a shape on the map below.'
+      multipoint_print_description: 'Please draw an X on the map below for each location you want to add.'
       select_print_description: 'Only choose one option.'
       date_print_description: 'Please write a date in the format YYYY-MM-DD.'
       logic_section: 'Section %{letter}'
@@ -390,3 +391,9 @@ en:
       in_the_past: "must be in the future"
       max_must_be_greater_than_min_characters: "The maximum must be greater than the minimum."
       max_must_be_greater_than_or_equal_to_min_select_count: "The maximum must be greater than or equal to the minimum."
+      not_found: "were not found"
+      not_in_project: "must be files of this project"
+      ai_processing_not_allowed: "may not be processed by AI"
+      unsupported_file_type: "must be PDF files of at most 4 MB, or Markdown or text files of at most 100 KB"
+      not_utf8: "must be saved as UTF-8"
+      too_many_in_conversation: "are too many for one conversation"

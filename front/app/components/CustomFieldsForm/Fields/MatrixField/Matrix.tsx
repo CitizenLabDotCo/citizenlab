@@ -79,9 +79,15 @@ interface Props {
   value?: Record<string, number>;
   question: IFlatCustomField;
   onChange: (value?: Record<string, number>) => void;
+  disabled?: boolean;
 }
 
-const Matrix = ({ value: data, question, onChange }: Props) => {
+const Matrix = ({
+  value: data,
+  question,
+  onChange,
+  disabled = false,
+}: Props) => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
   const localize = useLocalize();
@@ -270,6 +276,7 @@ const Matrix = ({ value: data, question, onChange }: Props) => {
                             <Radio
                               mx="auto"
                               onKeyDown={(e) => {
+                                if (disabled) return;
                                 if (e.key === 'Enter') {
                                   e.preventDefault();
                                   onChange({
@@ -294,6 +301,7 @@ const Matrix = ({ value: data, question, onChange }: Props) => {
                               name={`radio-group-${statement.key}-${id}`}
                               id={`${id}-${index}-${columnIndex}-radio`}
                               buttonColor={theme.colors.tenantPrimary}
+                              disabled={disabled}
                               onChange={(value) => {
                                 onChange({
                                   ...data,
@@ -318,9 +326,10 @@ const Matrix = ({ value: data, question, onChange }: Props) => {
           columns={columnsFromSchema}
           value={data}
           onChange={onChange}
+          disabled={disabled}
         />
       )}
-      {data !== undefined && (
+      {data !== undefined && !disabled && (
         <Box display="flex">
           <Button
             type="button"

@@ -4,17 +4,19 @@ import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 
 import phaseSetupMessages from 'containers/Admin/projects/project/phaseSetup/messages';
 
-import Modal from 'components/UI/Modal';
+import { usePageSave } from 'components/admin/PageSaveContext';
+import Modal, { MEDIUM_MODAL_WIDTH } from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 import { useBlocker } from 'utils/router';
 
-import { usePageSave } from './_shared/PageSaveContext';
+import useReturnToPhaseAfterSave from './_shared/useReturnToPhaseAfterSave';
 import messages from './messages';
 
 const UnsavedChangesGuard = () => {
   const { formatMessage } = useIntl();
   const pageSave = usePageSave();
+  const returnToPhaseAfterSave = useReturnToPhaseAfterSave();
   const dirty = !!pageSave?.dirty;
 
   const blocker = useBlocker({
@@ -32,11 +34,12 @@ const UnsavedChangesGuard = () => {
   };
 
   const handleSave = async () => {
-    const saved = await pageSave.saveAll('leave');
-    if (saved) {
+    const failed = await pageSave.saveAll('leave');
+    if (failed.length === 0) {
       proceed();
     } else {
       blocker.reset();
+      returnToPhaseAfterSave(failed);
     }
   };
 
@@ -44,7 +47,7 @@ const UnsavedChangesGuard = () => {
     <Modal
       opened
       close={blocker.reset}
-      width={560}
+      width={MEDIUM_MODAL_WIDTH}
       header={formatMessage(messages.unsavedChangesTitle)}
       footer={
         <Box display="flex" justifyContent="flex-end" gap="8px" width="100%">

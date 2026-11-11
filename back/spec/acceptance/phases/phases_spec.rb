@@ -629,6 +629,7 @@ resource 'Phases' do
             attributes: {
               top_consensus_ideas: be_an(Array),
               top_controversial_ideas: be_an(Array),
+              ideas_by_agreement: be_an(Array),
               stats: {
                 num_participants: 9, # each reaction is from a different user
                 num_ideas: 4,
@@ -637,8 +638,10 @@ resource 'Phases' do
             }
           )
 
-          expect(response_data.dig(:attributes, :top_consensus_ideas).pluck(:id)).to eq [i2.id, i1.id, i3.id]
-          expect(response_data.dig(:attributes, :top_controversial_ideas).pluck(:id)).to eq [i3.id, i1.id, i2.id]
+          expect(response_data.dig(:attributes, :top_consensus_ideas).pluck(:id)).to eq [i2.id]
+          expect(response_data.dig(:attributes, :top_controversial_ideas).pluck(:id)).to eq [i3.id]
+          # i1 sits between the two thresholds, so only the full list carries it
+          expect(response_data.dig(:attributes, :ideas_by_agreement).pluck(:id)).to eq [i1.id, i3.id, i2.id]
 
           top_controversial_idea = response_data.dig(:attributes, :top_controversial_ideas, 0)
           expect(top_controversial_idea.with_indifferent_access).to match(
@@ -673,9 +676,10 @@ resource 'Phases' do
               num_ideas: 4,
               votes: { up: 3, down: 3, neutral: 3 }
             })
-            expect(response_data.dig(:attributes, :top_consensus_ideas).pluck(:id)).to eq [i2.id, i1.id, i3.id]
-            expect(response_data.dig(:attributes, :top_controversial_ideas).pluck(:id)).to eq [i3.id, i1.id, i2.id]
-            expect(response_data.dig(:attributes, :top_consensus_ideas, 1, :votes)).to eq({ up: 2, down: 1, neutral: 0 })
+            expect(response_data.dig(:attributes, :top_consensus_ideas).pluck(:id)).to eq [i2.id]
+            expect(response_data.dig(:attributes, :top_controversial_ideas).pluck(:id)).to eq [i3.id]
+            expect(response_data.dig(:attributes, :ideas_by_agreement).pluck(:id)).to eq [i1.id, i3.id, i2.id]
+            expect(response_data.dig(:attributes, :ideas_by_agreement, 0, :votes)).to eq({ up: 2, down: 1, neutral: 0 })
           end
         end
 

@@ -11,21 +11,27 @@ interface Props {
   value?: number;
   question: IFlatCustomField;
   onChange: (value: number) => void;
+  disabled?: boolean;
 }
 
 const StyledIcon = styled(Icon)`
-  :hover {
+  &:not(.disabled):hover {
     fill: ${(props) => props.theme.colors.grey800};
   }
 `;
 
-const OptionTarget = styled.div`
-  cursor: pointer;
+const OptionTarget = styled.div<{ disabled: boolean }>`
+  cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
   padding: 12px 0;
   width: 100%;
 `;
 
-const Rating = ({ value: data, question, onChange }: Props) => {
+const Rating = ({
+  value: data,
+  question,
+  onChange,
+  disabled = false,
+}: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
   const theme = useTheme();
 
@@ -45,6 +51,8 @@ const Rating = ({ value: data, question, onChange }: Props) => {
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (disabled) return;
+
     const value = data || minimum;
     let newValue = value;
     switch (event.key) {
@@ -87,7 +95,8 @@ const Rating = ({ value: data, question, onChange }: Props) => {
         aria-valuemax={maximum}
         aria-valuenow={data || minimum}
         aria-labelledby={labelId}
-        tabIndex={0}
+        aria-disabled={disabled}
+        tabIndex={disabled ? undefined : 0}
         onKeyDown={handleKeyDown}
       >
         <Box
@@ -108,7 +117,8 @@ const Rating = ({ value: data, question, onChange }: Props) => {
               >
                 <OptionTarget
                   id={`${inputId}-option-${visualIndex}`}
-                  onClick={() => onChange(visualIndex)}
+                  onClick={disabled ? undefined : () => onChange(visualIndex)}
+                  disabled={disabled}
                   aria-hidden
                 >
                   <Box
@@ -118,6 +128,7 @@ const Rating = ({ value: data, question, onChange }: Props) => {
                     gap="4px"
                   >
                     <StyledIcon
+                      className={disabled ? 'disabled' : undefined}
                       name={selectedIndex ? 'ratingFilled' : 'rating'}
                       height="40px"
                       width="40px"

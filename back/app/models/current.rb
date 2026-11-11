@@ -6,7 +6,7 @@ class Current < ActiveSupport::CurrentAttributes
   # The request's IP and user agent, read by DeviceTrackableParticipation.
   attribute :remote_ip, :user_agent
 
-  # Request origin ('mcp' during an MCP tool run, else nil). Read by LogActivityJob.
+  # Request origin ('mcp' or 'ai_assistant' during a tool run, else nil). Read by LogActivityJob.
   attribute :activity_channel
 
   # Per-request cache of the global 'visiting' permission, which every inherited

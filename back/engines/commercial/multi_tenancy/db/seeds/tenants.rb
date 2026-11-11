@@ -237,7 +237,7 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            input_form_answer_visibility: {
+            input_form_answer_filters: {
               enabled: true,
               allowed: true
             },
@@ -360,10 +360,6 @@ module MultiTenancy
               allowed: true,
               project_id: ''
             },
-            user_fields_in_surveys: {
-              enabled: true,
-              allowed: true
-            },
             common_ground: {
               enabled: true,
               allowed: true
@@ -455,6 +451,10 @@ module MultiTenancy
             },
             project_backoffice_redesign: {
               enabled: false,
+              allowed: true
+            },
+            ai_assistant: {
+              enabled: true,
               allowed: true
             }
           })

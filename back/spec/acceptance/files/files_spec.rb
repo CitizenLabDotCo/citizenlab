@@ -355,6 +355,19 @@ resource 'Files' do
         expect { Files::File.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
+
+    context 'when regular user and the file has no project' do
+      let(:file) { create(:global_file, uploader: create(:admin)) }
+
+      before { resident_header_token }
+
+      example '[ERROR] A file without project cannot be deleted', document: false do
+        do_request
+
+        assert_status 401
+        expect { Files::File.find(id) }.not_to raise_error
+      end
+    end
   end
 
   patch '/web_api/v1/files/:id' do
@@ -430,6 +443,17 @@ resource 'Files' do
       before { resident_header_token }
 
       include_examples 'unauthorized'
+    end
+
+    context 'when regular user and the file has no project' do
+      let(:file) { create(:global_file, uploader: create(:admin)) }
+
+      before { resident_header_token }
+
+      example '[ERROR] A file without project cannot be renamed', document: false do
+        expect { do_request }.not_to change { file.reload.name }
+        assert_status 401
+      end
     end
 
     context 'when visitor' do

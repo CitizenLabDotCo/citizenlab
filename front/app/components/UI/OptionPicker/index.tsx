@@ -10,6 +10,7 @@ import {
   Text,
   bo,
   colors,
+  fontSizes,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
@@ -25,6 +26,15 @@ const Search = styled(Box)`
     border-radius: ${bo.borderRadius};
   }
 `;
+
+const TRIGGER_SIZES: Record<
+  'medium' | 'compact' | 'small',
+  { height?: string; fontSize?: string }
+> = {
+  medium: {},
+  compact: { height: '28px', fontSize: `${fontSizes.xs}px` },
+  small: { height: '22px', fontSize: `${fontSizes.xs}px` },
+};
 
 const GAP = 4;
 const MAX_HEIGHT = 320;
@@ -77,7 +87,7 @@ export interface PickerOption<T extends string> {
   value: T;
   label: string;
   description?: string;
-  icon: IconNames;
+  icon?: IconNames;
 }
 
 interface Props<T extends string> {
@@ -91,6 +101,8 @@ interface Props<T extends string> {
   triggerIcon?: IconNames;
   keepOpenFor?: T;
   onClose?: () => void;
+  /** 'small' matches the summary pills in card headers. */
+  size?: keyof typeof TRIGGER_SIZES;
   children?: React.ReactNode;
 }
 
@@ -105,6 +117,7 @@ const OptionPicker = <T extends string>({
   triggerIcon,
   keepOpenFor,
   onClose,
+  size = 'medium',
   children,
 }: Props<T>) => {
   const { formatMessage } = useIntl();
@@ -151,6 +164,7 @@ const OptionPicker = <T extends string>({
     triggerRef.current?.focus();
   };
 
+  const small = size === 'small';
   const selected = options.find((option) => option.value === value);
   const icon = triggerIcon ?? selected?.icon;
 
@@ -176,7 +190,13 @@ const OptionPicker = <T extends string>({
         buttonStyle="bo-picker"
         width="auto"
         maxWidth="100%"
-        bgColor={opened ? colors.grey200 : undefined}
+        height={TRIGGER_SIZES[size].height}
+        fontSize={TRIGGER_SIZES[size].fontSize}
+        bgColor={opened || small ? colors.grey200 : undefined}
+        padding={small ? '0 8px 0 10px' : undefined}
+        fontWeight={small ? '500' : undefined}
+        textColor={small ? colors.coolGrey700 : undefined}
+        iconSize={small ? '12px' : undefined}
         icon="chevron-down"
         iconPos="right"
         ariaExpanded={opened}
@@ -187,9 +207,9 @@ const OptionPicker = <T extends string>({
           {icon && (
             <Icon
               name={icon}
-              width="16px"
-              height="16px"
-              fill={colors.coolGrey500}
+              width={small ? '14px' : '16px'}
+              height={small ? '14px' : '16px'}
+              fill={small ? colors.coolGrey700 : colors.coolGrey500}
             />
           )}
           <Label>{triggerLabel ?? selected?.label}</Label>

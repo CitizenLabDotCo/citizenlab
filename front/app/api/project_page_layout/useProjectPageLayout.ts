@@ -3,7 +3,7 @@ import { CLErrors } from 'typings';
 
 import { IContentBuilderLayout } from 'api/content_builder/types';
 
-import fetcher from 'utils/cl-react-query/fetcher';
+import fetcher, { HttpError } from 'utils/cl-react-query/fetcher';
 
 import projectPageLayoutKeys from './keys';
 import { ProjectPageLayoutKeys } from './types';
@@ -17,7 +17,7 @@ const fetchProjectPageLayout = (projectId: string) =>
 const useProjectPageLayout = (projectId: string, enabled = true) =>
   useQuery<
     IContentBuilderLayout,
-    CLErrors,
+    CLErrors | HttpError,
     IContentBuilderLayout,
     ProjectPageLayoutKeys
   >({

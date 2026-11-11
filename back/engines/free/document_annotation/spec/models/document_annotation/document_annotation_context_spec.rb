@@ -50,5 +50,18 @@ describe DocumentAnnotation::DocumentAnnotationPhase do
       )
       expect(pc).to be_invalid
     end
+
+    it 'invalidates URLs whose host is not on a konveio domain' do
+      [
+        'https://evil.example/x.konveio.com/node/5',
+        'https://evil.example?x.konveio.com/node/5',
+        'https://x.konveio.com@evil.example/node/5',
+        'https://x.konveio.com.evil.example/node/5',
+        "javascript:alert(1)//\nhttps://x.konveio.com/node/5"
+      ].each do |url|
+        pc = build(:document_annotation_phase, document_annotation_embed_url: url)
+        expect(pc).to be_invalid, "expected #{url.inspect} to be invalid"
+      end
+    end
   end
 end

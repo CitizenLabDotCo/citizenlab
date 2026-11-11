@@ -3,6 +3,7 @@ import React from 'react';
 import { Input, Text, Toggle } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
 
+import SetupCard from 'containers/Admin/projects/_shared/components/SetupCard';
 import { EventForm } from 'containers/Admin/projects/_shared/events/useEventForm';
 import eventMessages from 'containers/Admin/projects/project/events/messages';
 
@@ -12,7 +13,6 @@ import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLoca
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
-import SetupCard from './SetupCard';
 
 interface Props {
   form: EventForm;

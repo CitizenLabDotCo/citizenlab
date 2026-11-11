@@ -68,8 +68,9 @@ export interface IEmailCampaignData {
     scheduled_at?: string | null;
   };
   relationships: {
+    // Null once the author's account is deleted
     author: {
-      data: IRelationship;
+      data: IRelationship | null;
     };
     context?: {
       data?: IRelationship;
