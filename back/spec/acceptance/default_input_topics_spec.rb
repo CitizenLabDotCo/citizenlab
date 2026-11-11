@@ -67,7 +67,7 @@ resource 'DefaultInputTopics' do
       with_options scope: :default_input_topic do
         parameter :title_multiloc, 'The title of the default input topic, as a multiloc string', required: true
         parameter :description_multiloc, 'The description of the default input topic, as a multiloc string', required: false
-        parameter :icon, 'The icon name', required: false
+        parameter :icon, 'A single emoji', required: false
       end
       ValidationErrorHelper.new.error_fields(self, DefaultInputTopic)
 
@@ -86,7 +86,7 @@ resource 'DefaultInputTopics' do
       with_options scope: :default_input_topic do
         parameter :title_multiloc, 'The title of the default input topic, as a multiloc string'
         parameter :description_multiloc, 'The description of the default input topic, as a multiloc string'
-        parameter :icon, 'The icon name'
+        parameter :icon, 'A single emoji'
       end
       ValidationErrorHelper.new.error_fields(self, DefaultInputTopic)
 

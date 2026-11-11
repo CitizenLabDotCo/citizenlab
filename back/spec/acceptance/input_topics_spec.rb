@@ -109,7 +109,7 @@ resource 'InputTopics' do
       with_options scope: :input_topic do
         parameter :title_multiloc, 'The title of the input topic, as a multiloc string', required: true
         parameter :description_multiloc, 'The description of the input topic, as a multiloc string', required: false
-        parameter :icon, 'The icon name', required: false
+        parameter :icon, 'A single emoji', required: false
         parameter :parent_id, 'The parent topic ID (for creating subtopics)', required: false
       end
       ValidationErrorHelper.new.error_fields(self, InputTopic)
@@ -144,7 +144,7 @@ resource 'InputTopics' do
       with_options scope: :input_topic do
         parameter :title_multiloc, 'The title of the input topic, as a multiloc string'
         parameter :description_multiloc, 'The description of the input topic, as a multiloc string'
-        parameter :icon, 'The icon name'
+        parameter :icon, 'A single emoji'
       end
       ValidationErrorHelper.new.error_fields(self, InputTopic)
 
@@ -240,6 +240,7 @@ resource 'InputTopics' do
     patch 'web_api/v1/input_topics/:id' do
       with_options scope: :input_topic do
         parameter :title_multiloc, 'The title of the input topic, as a multiloc string'
+        parameter :icon, 'A single emoji'
       end
 
       let(:input_topic) { create(:input_topic, project: project) }
@@ -249,6 +250,16 @@ resource 'InputTopics' do
       example_request 'Update an input topic as project moderator' do
         assert_status(200)
         expect(response_data.dig(:attributes, :title_multiloc).stringify_keys).to match title_multiloc
+      end
+
+      describe 'with markup as the icon' do
+        let(:icon) { '<img src=x onerror=alert(1)>' }
+
+        example_request '[error] Cannot store markup as the icon' do
+          assert_status(422)
+          expect(json_response_body.dig(:errors, :icon)).to eq [{ error: 'invalid' }]
+          expect(input_topic.reload.icon).to eq '🏥'
+        end
       end
     end
 

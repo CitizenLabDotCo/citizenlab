@@ -27,6 +27,21 @@ interface Props {
   decorative?: boolean;
 }
 
+const HTML_ESCAPES: Record<string, string> = {
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
+  "'": '&#39;',
+};
+
+// twemoji.parse on a string only swaps emoji for <img> tags and passes all
+// other text through untouched, and its output goes into innerHTML. Escaping
+// first keeps anything that isn't an emoji as plain text. None of these
+// characters is part of an emoji, so twemoji still finds every emoji.
+const escapeHtml = (text: string) =>
+  text.replace(/[&<>"']/g, (char) => HTML_ESCAPES[char]);
+
 const Emoji: React.FC<Props> = ({
   emoji,
   size = '1em',
@@ -37,7 +52,7 @@ const Emoji: React.FC<Props> = ({
   // CDN (set at build time, see .circleci/config.yml) so immutable SVGs can
   // be cached aggressively. Locally it's unset and Vite serves them from
   // app/public/twemoji/ at /twemoji/.
-  const parsed = twemoji.parse(emoji, {
+  const parsed = twemoji.parse(escapeHtml(emoji), {
     folder: 'svg',
     ext: '.svg',
     base: process.env.TWEMOJI_BASE_URL || '/twemoji/',
