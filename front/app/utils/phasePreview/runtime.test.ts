@@ -533,3 +533,41 @@ it('blocks malformed attachments and uploads to real ideas', async () => {
   ).toBe(422);
   expect(network).not.toHaveBeenCalled();
 });
+
+it('keeps the real common-ground progress when statements fail to load', async () => {
+  const progress = {
+    data: {
+      id: phaseId,
+      type: 'common_ground_progress',
+      attributes: { num_ideas: 3, num_reacted_ideas: 0 },
+    },
+  };
+  const network = jest.fn(async (input: RequestInfo | URL) =>
+    String(input).includes('/progress')
+      ? new Response(JSON.stringify(progress), {
+          headers: { 'Content-Type': 'application/json' },
+        })
+      : new Response(JSON.stringify({ errors: {} }), {
+          status: 500,
+          headers: { 'Content-Type': 'application/json' },
+        })
+  );
+  const fetch = createPreviewFetch(
+    new PreviewSession(snapshot),
+    network,
+    origin,
+    jest.fn()
+  );
+
+  const response = await fetch(
+    `${origin}/web_api/v1/phases/${phaseId}/progress`
+  );
+
+  expect(response.status).toBe(200);
+  expect(await response.json()).toMatchObject({
+    data: {
+      type: 'common_ground_progress',
+      attributes: { num_ideas: 3, num_reacted_ideas: 0 },
+    },
+  });
+});

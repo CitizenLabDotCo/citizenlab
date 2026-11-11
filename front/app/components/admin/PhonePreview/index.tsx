@@ -39,6 +39,10 @@ const PhonePreview = ({
         as="iframe"
         ref={frameRef}
         name={frameName}
+        // The phase preview needs the same origin to read the session and talk to
+        // the editor, so this sandbox cannot isolate it from the parent page.
+        // It only blocks popups, downloads, dialogs and top-level navigation.
+        // Writes are blocked inside the frame by utils/phasePreview/runtime.
         sandbox={
           frameName ? 'allow-scripts allow-same-origin allow-forms' : undefined
         }

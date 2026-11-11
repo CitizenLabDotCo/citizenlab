@@ -7,7 +7,7 @@ import { HighestRole, IUser } from 'api/users/types';
 import { getJwt, decode } from 'utils/auth/jwt';
 import fetcher from 'utils/cl-react-query/fetcher';
 import { rolesExceedHighestRole } from 'utils/permissions/roles';
-import { getPhasePreview } from 'utils/phasePreview/runtime';
+import { isPhasePreviewFrame } from 'utils/phasePreview/runtime';
 
 import meKeys from './keys';
 import { MeKeys } from './types';
@@ -49,7 +49,7 @@ export const fetchMe = async () => {
     return null;
   }
 
-  if (getPhasePreview()) {
+  if (isPhasePreviewFrame()) {
     return {
       ...data,
       data: {

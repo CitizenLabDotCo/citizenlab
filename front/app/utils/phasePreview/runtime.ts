@@ -1,3 +1,5 @@
+import { useSyncExternalStore } from 'react';
+
 import { isEqual } from 'lodash-es';
 
 import causesKeys from 'api/causes/keys';
@@ -19,12 +21,55 @@ import {
   JsonObject,
   object,
   PREVIEW_FRAME_NAME,
+  PreviewSnapshot,
   isPreviewSnapshot,
 } from './types';
 
+// Mirrors the video hosts the back end allows in sanitized descriptions.
+const VIDEO_EMBED_SOURCES = [
+  'https://www.youtube.com',
+  'https://youtube.com',
+  'https://youtu.be',
+  'https://player.vimeo.com',
+  'https://wistia.com',
+  'https://*.wistia.com',
+  'https://wi.st',
+  'https://*.wi.st',
+  'https://www.dailymotion.com',
+  'https://dailymotion.com',
+  'https://media.videotool.dk',
+  'https://www.dreambroker.com',
+  'https://dreambroker.com',
+  'https://www.videoask.com',
+  'https://videoask.com',
+].join(' ');
+
 let session: PreviewSession | undefined;
+let ready: Promise<void> | undefined;
+const listeners = new Set<() => void>();
+
+const isPreviewFrame =
+  window.name === PREVIEW_FRAME_NAME && window.parent !== window;
+
+// True from the first line of app code, before the editor has sent a snapshot.
+export const isPhasePreviewFrame = () => isPreviewFrame;
 
 export const getPhasePreview = () => session?.snapshot;
+
+// Resolves once the first snapshot is in place. Undefined outside the preview.
+export const phasePreviewReady = () => ready;
+
+const subscribe = (listener: () => void) => {
+  listeners.add(listener);
+  return () => {
+    listeners.delete(listener);
+  };
+};
+
+// Components read the snapshot through this hook so lifecycle and draft
+// changes re-render them, even when no query data changes.
+export const usePhasePreview = () =>
+  useSyncExternalStore(subscribe, getPhasePreview);
 
 const jsonResponse = (body: JsonObject, status = 200) =>
   new Response(JSON.stringify(body), {
@@ -120,20 +165,22 @@ export const createPreviewFetch =
       statementsUrl.searchParams.set('sort', '-new');
 
       const statements = await originalFetch(statementsUrl, init);
-      if (!statements.ok) return statements;
-      preview.setStatements(await statements.json());
-      if (preview.snapshot.lifecycle) {
-        return jsonResponse(
-          preview.transform({
-            data: {
-              id: preview.phaseId,
-              type: 'common_ground_progress',
-              attributes: {
-                num_ideas: preview.snapshot.phase.attributes.ideas_count,
+      // Without statements, fall back to the real progress response.
+      if (statements.ok) {
+        preview.setStatements(await statements.json());
+        if (preview.snapshot.lifecycle) {
+          return jsonResponse(
+            preview.transform({
+              data: {
+                id: preview.phaseId,
+                type: 'common_ground_progress',
+                attributes: {
+                  num_ideas: preview.snapshot.phase.attributes.ideas_count,
+                },
               },
-            },
-          })
-        );
+            })
+          );
+        }
       }
     }
 
@@ -150,21 +197,31 @@ export const createPreviewFetch =
     return jsonResponse(transformed);
   };
 
-export const initializePhasePreview = async () => {
-  if (window.name !== PREVIEW_FRAME_NAME || window.parent === window) return;
+// Called synchronously before any other app module runs (see ./install.ts),
+// so no request leaves the frame before the write barrier is in place.
+export const installPhasePreview = () => {
+  if (!isPreviewFrame || ready) return;
 
-  // Install the write barrier before importing any application modules. It stays
-  // active during route changes and is reinstalled before app startup on reload.
   isolatePreviewStorage();
 
   const originalFetch = window.fetch.bind(window);
-  window.fetch = async () =>
-    jsonResponse({ errors: { base: [{ error: 'preview_not_ready' }] } }, 423);
   const blocked = () =>
     window.parent.postMessage(
       { type: 'phase-preview-blocked' },
       window.location.origin
     );
+
+  let resolveReady = () => {};
+  ready = new Promise<void>((resolve) => {
+    resolveReady = resolve;
+  });
+
+  // Requests made before the first snapshot wait for the preview fetch.
+  window.fetch = async (input, init) => {
+    await ready;
+    return window.fetch(input, init);
+  };
+
   const originalOpen = XMLHttpRequest.prototype.open;
   XMLHttpRequest.prototype.open = function (
     method: string,
@@ -185,10 +242,18 @@ export const initializePhasePreview = async () => {
     return null;
   };
 
+  // Same-origin frames would load the app without these patches, so frames are
+  // limited to the video hosts the back end allows in descriptions. Map workers
+  // load their scripts from the ArcGIS CDN.
   const policy = document.createElement('meta');
   policy.httpEquiv = 'Content-Security-Policy';
-  policy.content =
-    "form-action 'none'; frame-src 'none'; object-src 'none'; worker-src 'none'; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob:";
+  policy.content = [
+    "form-action 'none'",
+    `frame-src ${VIDEO_EMBED_SOURCES}`,
+    "object-src 'none'",
+    "worker-src 'self' blob:",
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https://js.arcgis.com",
+  ].join('; ');
   document.head.appendChild(policy);
 
   document.addEventListener(
@@ -213,58 +278,19 @@ export const initializePhasePreview = async () => {
     true
   );
 
-  await new Promise<void>((resolve) => {
-    const receive = (event: MessageEvent) => {
-      if (
-        event.origin !== window.location.origin ||
-        event.source !== window.parent ||
-        event.data?.type !== 'phase-preview-snapshot'
-      ) {
-        return;
-      }
-      // This protocol accepts snapshots only from the embedding same-origin editor.
-      const snapshot: unknown = event.data.snapshot;
-      if (!isPreviewSnapshot(snapshot)) return;
+  window.addEventListener('message', (event: MessageEvent) => {
+    if (
+      event.origin !== window.location.origin ||
+      event.source !== window.parent ||
+      event.data?.type !== 'phase-preview-snapshot'
+    ) {
+      return;
+    }
+    // This protocol accepts snapshots only from the embedding same-origin editor.
+    const snapshot: unknown = event.data.snapshot;
+    if (!isPreviewSnapshot(snapshot)) return;
 
-      if (session) {
-        const lifecycleChanged =
-          session.snapshot.lifecycle !== snapshot.lifecycle;
-        const participationChanged =
-          session.snapshot.showParticipation !== snapshot.showParticipation;
-        const settingsChanged = !isEqual(
-          getPreviewActionSettings(session.snapshot),
-          getPreviewActionSettings(snapshot)
-        );
-        if (session.updateSnapshot(snapshot)) {
-          // Refresh phase data without remounting forms or clearing local answers.
-          void queryClient.invalidateQueries({
-            queryKey: phasesKeys.item({ phaseId: session.phaseId }),
-          });
-          void queryClient.invalidateQueries({
-            queryKey: phasesKeys.list({ projectId: snapshot.project.id }),
-          });
-          if (lifecycleChanged || participationChanged || settingsChanged) {
-            // Option cards cache their own action descriptors, independently of
-            // the phase. Re-read them when their settings or lifecycle change.
-            void queryClient.invalidateQueries({ queryKey: ideasKeys.all() });
-          }
-          if (participationChanged) {
-            for (const queryKey of [
-              causesKeys.all(),
-              commonGroundResultsKeys.all(),
-              ideaFeedKeys.all(),
-              ideaMarkersKeys.all(),
-              ideaFilterCountsKeys.items(),
-              pollResponsesKeys.all(),
-              projectsKeys.all(),
-            ]) {
-              void queryClient.invalidateQueries({ queryKey });
-            }
-          }
-        }
-        return;
-      }
-
+    if (!session) {
       session = new PreviewSession(snapshot);
       window.fetch = createPreviewFetch(
         session,
@@ -272,12 +298,59 @@ export const initializePhasePreview = async () => {
         window.location.origin,
         blocked
       );
-      resolve();
-    };
-    window.addEventListener('message', receive);
-    window.parent.postMessage(
-      { type: 'phase-preview-ready' },
-      window.location.origin
-    );
+      resolveReady();
+      return;
+    }
+
+    const previous = session.snapshot;
+    if (!session.updateSnapshot(snapshot)) return;
+
+    listeners.forEach((listener) => listener());
+    refreshPreviewQueries(previous, snapshot, session.phaseId);
   });
+
+  window.parent.postMessage(
+    { type: 'phase-preview-ready' },
+    window.location.origin
+  );
+};
+
+// Refresh phase data without remounting forms or clearing local answers.
+const refreshPreviewQueries = (
+  previous: PreviewSnapshot,
+  next: PreviewSnapshot,
+  phaseId: string
+) => {
+  const lifecycleChanged = previous.lifecycle !== next.lifecycle;
+  const participationChanged =
+    previous.showParticipation !== next.showParticipation;
+  const settingsChanged = !isEqual(
+    getPreviewActionSettings(previous),
+    getPreviewActionSettings(next)
+  );
+
+  void queryClient.invalidateQueries({
+    queryKey: phasesKeys.item({ phaseId }),
+  });
+  void queryClient.invalidateQueries({
+    queryKey: phasesKeys.list({ projectId: next.project.id }),
+  });
+  if (lifecycleChanged || participationChanged || settingsChanged) {
+    // Option cards cache their own action descriptors, independently of the
+    // phase. Re-read them when their settings or lifecycle change.
+    void queryClient.invalidateQueries({ queryKey: ideasKeys.all() });
+  }
+  if (participationChanged) {
+    for (const queryKey of [
+      causesKeys.all(),
+      commonGroundResultsKeys.all(),
+      ideaFeedKeys.all(),
+      ideaMarkersKeys.all(),
+      ideaFilterCountsKeys.items(),
+      pollResponsesKeys.all(),
+      projectsKeys.all(),
+    ]) {
+      void queryClient.invalidateQueries({ queryKey });
+    }
+  }
 };

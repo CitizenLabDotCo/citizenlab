@@ -44,3 +44,12 @@ export const isPreviewSnapshot = (value: unknown): value is PreviewSnapshot =>
   isRecord(value.phase) &&
   typeof value.phase.id === 'string' &&
   isRecord(value.phase.attributes);
+
+// The phase as the manager is editing it: saved attributes with unsaved edits on top.
+export const getPreviewPhaseAttributes = ({
+  phase,
+  draft,
+}: {
+  phase?: IPhaseData;
+  draft: IUpdatedPhaseProperties;
+}) => ({ ...phase?.attributes, ...draft });
