@@ -10,7 +10,7 @@ class ParticipationDeviceService
       ParticipationDevice.create!(
         trackable: trackable,
         device_hash: ParticipationDevice.hash_device(trackable.project.id, remote_ip, user_agent),
-        device_type: device_type(browser),
+        device_type: DeviceTypeService.device_type(browser),
         browser_name: browser.name,
         os_name: browser.platform.name
       )
@@ -19,16 +19,6 @@ class ParticipationDeviceService
     def enabled_for?(project)
       AppConfiguration.instance.feature_activated?('participation_device_tracking') &&
         !!project&.track_participation_device
-    end
-
-    private
-
-    # Same categories as impact tracking sessions.
-    def device_type(browser)
-      return 'mobile' if browser.device.mobile?
-      return 'tablet' if browser.device.tablet?
-
-      'desktop_or_other'
     end
   end
 end

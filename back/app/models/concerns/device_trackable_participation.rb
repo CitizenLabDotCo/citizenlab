@@ -8,7 +8,7 @@ module DeviceTrackableParticipation
     after_create :track_participation_device
     # Where the phase allows it, participants can make an idea or comment
     # anonymous after posting it. The device ID could identify them.
-    after_update :forget_participation_device, if: :made_anonymous?
+    after_update :forget_participation_device, if: -> { try(:made_anonymous?) }
   end
 
   # The value of one ParticipationDevice::EXPORT_COLUMNS attribute for
@@ -32,9 +32,5 @@ module DeviceTrackableParticipation
 
   def forget_participation_device
     participation_device&.destroy!
-  end
-
-  def made_anonymous?
-    has_attribute?(:anonymous) && saved_change_to_anonymous?(to: true)
   end
 end

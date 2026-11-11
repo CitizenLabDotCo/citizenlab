@@ -84,5 +84,16 @@ RSpec.describe ParticipationTrackingService do
 
       expect(described_class.export_includes(project)).to eq []
     end
+
+    it 'includes the device when the project tracks it, with or without the location' do
+      SettingsService.new.activate_feature!('participation_device_tracking')
+      project.update!(track_participation_device: true)
+
+      SettingsService.new.activate_feature!('participation_location_tracking')
+      expect(described_class.export_includes(project)).to eq %i[participation_location participation_device]
+
+      SettingsService.new.deactivate_feature!('participation_location_tracking')
+      expect(described_class.export_includes(project)).to eq [:participation_device]
+    end
   end
 end

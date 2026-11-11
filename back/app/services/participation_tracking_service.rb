@@ -12,7 +12,10 @@ class ParticipationTrackingService
     # The tracking associations worth preloading for an export of the
     # project: only those whose columns the export can include.
     def export_includes(project)
-      ParticipationLocationService.enabled_for?(project) ? [:participation_location] : []
+      [
+        (:participation_location if ParticipationLocationService.enabled_for?(project)),
+        (:participation_device if ParticipationDeviceService.enabled_for?(project))
+      ].compact
     end
 
     private

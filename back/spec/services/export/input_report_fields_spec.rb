@@ -221,7 +221,7 @@ describe Export::InputReportFields do
       it 'are excluded, like the author columns, when the survey does not identify authors' do
         create(:permission, action: 'posting_idea', permission_scope: phase, user_data_collection: 'demographics_only')
 
-        expect(keys_of(described_class.new(phase.reload).all)).not_to include(*location_keys)
+        expect(keys_of(described_class.new(phase.reload).all)).not_to include(*location_keys, *device_keys)
       end
     end
 

@@ -11,7 +11,7 @@ module ImpactTracking
 
       def create
         browser = Browser.new(request.user_agent)
-        device_type = get_device_type(browser)
+        device_type = DeviceTypeService.device_type(browser)
         browser_name = browser.name
         os_name = browser.platform.name
 
@@ -87,13 +87,6 @@ module ImpactTracking
 
       def side_fx_session_service
         @side_fx_session_service ||= SideFxSessionService.new
-      end
-
-      def get_device_type(browser)
-        return 'mobile' if browser.device.mobile?
-        return 'tablet' if browser.device.tablet?
-
-        'desktop_or_other'
       end
     end
   end

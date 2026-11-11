@@ -59,7 +59,7 @@ module Export
     # questions (with latitude/longitude ahead of the location answer), author
     # identification, method-specific meta columns, out-of-form user fields
     # and, last, where the participant was and which device they used when
-    # the input was submitted.
+    # the input was created.
     def all
       @all ||= reject_redacted(
         [input_id_report_field] +
@@ -192,11 +192,12 @@ module Export
       end
     end
 
-    # The device the input was submitted from (see ParticipationDevice). It has
-    # its own feature and project setting, and is personal data like the
+    # The device the input was created on (see ParticipationDevice). It has its
+    # own feature and project setting, and follows the same rules as the
     # location.
     def participation_device_report_fields
-      return [] unless include_private_attributes && ParticipationDeviceService.enabled_for?(phase.project)
+      return [] unless include_private_attributes && participation_method.identifies_author?
+      return [] unless ParticipationDeviceService.enabled_for?(phase.project)
 
       ParticipationDevice::EXPORT_COLUMNS.map do |key, attribute|
         ComputedFieldForReport.new(

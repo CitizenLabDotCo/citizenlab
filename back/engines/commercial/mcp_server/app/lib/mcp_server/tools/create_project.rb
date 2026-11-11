@@ -43,7 +43,10 @@ class McpServer::Tools::CreateProject < McpServer::BaseTool
 
   # Tracking settings and the feature each needs. Like the web API (see
   # ProjectPolicy), a setting is ignored while its feature is off.
-  TRACKING_SETTINGS = { track_participation_location: 'participation_location_tracking' }.freeze
+  TRACKING_SETTINGS = {
+    track_participation_location: 'participation_location_tracking',
+    track_participation_device: 'participation_device_tracking'
+  }.freeze
 
   def self.without_inactive_tracking_settings(params)
     inactive = TRACKING_SETTINGS.reject { |_, feature| AppConfiguration.instance.feature_activated?(feature) }

@@ -242,7 +242,7 @@ class XlsxService
     end
   end
 
-  # Where the participant was when they submitted each record (a comment,
+  # Where the participant was when they created each record (a comment,
   # basket, ...).
   def participation_location_columns
     ParticipationLocation::EXPORT_COLUMNS.map do |key, attribute|
@@ -255,7 +255,7 @@ class XlsxService
     end
   end
 
-  # The device each record (a comment, basket, ...) was submitted from.
+  # The device each record (a comment, basket, ...) was created on.
   def participation_device_columns
     ParticipationDevice::EXPORT_COLUMNS.map do |key, attribute|
       {

@@ -19,7 +19,7 @@
 #  index_participation_devices_on_trackable  (trackable_type,trackable_id) UNIQUE
 #
 class ParticipationDevice < ApplicationRecord
-  TRACKABLE_TYPES = %w[Idea Comment Reaction Basket].freeze
+  TRACKABLE_TYPES = %w[Idea Comment Basket].freeze
 
   # Export column key => the attribute it reads, in column order.
   EXPORT_COLUMNS = {

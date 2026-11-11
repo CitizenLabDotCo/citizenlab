@@ -23,7 +23,6 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Reaction < ApplicationRecord
-  include DeviceTrackableParticipation
   # Neutral mode is only valid for ideas. Also, currently, it only makes sense the context
   # of "Common Ground" participation. However, we don't make it a hard constraint, since
   # the participation method can be changed and this could result to invalid reactions.
