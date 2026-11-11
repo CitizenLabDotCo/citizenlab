@@ -2,7 +2,10 @@
 
 # @see UrlValidator#validate_each
 class UrlValidator < ActiveModel::EachValidator
-  URL_PATTERN = %r{^(http(s)?://.+)}
+  # Anchored to the whole string (`\A`/`\z`, not `^`, which matches after any
+  # line break), and no whitespace or control characters anywhere: browsers strip
+  # those from URLs, so `"javascript:alert(1)//\nhttps://x"` would otherwise pass.
+  URL_PATTERN = %r{\Ahttps?://[^[:space:][:cntrl:]]+\z}
 
   # Validates that the attribute is a valid URL. Allowed are URLs starting with `https://` or `http://`.
   def validate_each(record, attribute, value)
