@@ -2,12 +2,12 @@ import React from 'react';
 
 import { Box, Button } from '@citizenlab/cl2-component-library';
 
+import MenuButton from 'components/admin/MenuButton';
 import { ManagerType } from 'components/admin/PostManager';
 import ExportButtons from 'components/admin/PostManager/components/ExportMenu/ExportButtons';
 
 import { useIntl } from 'utils/cl-intl';
 
-import MenuButton from '../MenuButton';
 import messages from '../messages';
 
 interface Props {

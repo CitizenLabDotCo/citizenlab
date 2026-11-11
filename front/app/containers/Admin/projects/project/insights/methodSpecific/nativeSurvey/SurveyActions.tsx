@@ -23,10 +23,12 @@ import useDeleteSurveyResults from 'api/survey_results/useDeleteSurveyResults';
 import { downloadSurveyResults } from 'api/survey_results/utils';
 
 import useLocale from 'hooks/useLocale';
+import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
 import projectFilesMessages from 'containers/Admin/projects/project/files/components/messages';
 import useInputResponseExport from 'containers/Admin/projects/project/inputResponseExport/useInputResponseExport';
 
+import MenuButton from 'components/admin/MenuButton';
 import DeleteModal from 'components/admin/SurveyDeleteModal/SurveyDeleteModal';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
@@ -48,6 +50,7 @@ interface Props {
 
 const SurveyActions = ({ phase }: Props) => {
   const locale = useLocale();
+  const redesigned = useProjectBackofficeRedesign();
   const { formatMessage } = useIntl();
   const projectId = phase.relationships.project.data.id;
   const phaseId = phase.id;
@@ -244,21 +247,77 @@ const SurveyActions = ({ phase }: Props) => {
     !isAnyDownloading &&
     (pdfSkippedSections.length > 0 || captureWarnings.length > 0);
 
+  const exportOptions = (
+    <Box style={{ whiteSpace: 'nowrap' }}>
+      <ExportDropdownItem
+        label={formatMessage(messages.exportResponsesToPdf)}
+        onClick={() => {
+          setDropdownOpened(false);
+          openPdfExportModal();
+        }}
+        data-cy="e2e-export-responses-pdf"
+      />
+      <ExportDropdownItem
+        label={formatMessage(messages.exportResponsesToXlsx)}
+        onClick={() => {
+          setDropdownOpened(false);
+          openXlsxExportModal();
+        }}
+        data-cy="e2e-export-responses-xlsx"
+      />
+      {!redesigned && (
+        <>
+          <ExportDropdownItem
+            label={formatMessage(messages.downloadInsightsPdf)}
+            onClick={async () => {
+              setDropdownOpened(false);
+              await captureAllMapScreenshots();
+              downloadPdf();
+            }}
+          />
+          <ExportDropdownItem
+            label={formatMessage(messages.downloadWord)}
+            onClick={async () => {
+              setDropdownOpened(false);
+              await captureAllMapScreenshots();
+              downloadWord();
+            }}
+            badge={
+              <Badge color={colors.coolGrey600} className="inverse">
+                {formatMessage(projectFilesMessages.beta)}
+              </Badge>
+            }
+          />
+        </>
+      )}
+      <ExportDropdownItem
+        label={`${formatMessage(messages.downloadSurveyResults)} (.xlsx)`}
+        onClick={handleDownloadXlsx}
+        data-cy="e2e-download-survey-results"
+      />
+    </Box>
+  );
+
   return (
     <>
       <Box
         display="flex"
         flexDirection="column"
         gap="4px"
-        alignItems="flex-end"
+        alignItems={redesigned ? 'stretch' : 'flex-end'}
         data-pdf-exclude="true"
       >
-        <Box display="flex" alignItems="center" gap="8px">
+        <Box
+          display="flex"
+          alignItems={redesigned ? 'stretch' : 'center'}
+          flexDirection={redesigned ? 'column' : 'row'}
+          gap="8px"
+        >
           {isAnyDownloading && <Spinner size="24px" />}
           <ButtonWithLink
             linkTo={`/projects/${project.data.attributes.slug}/surveys/new?phase_id=${phaseId}`}
-            buttonStyle="text"
-            width="auto"
+            buttonStyle={redesigned ? 'bo-text' : 'text'}
+            width={redesigned ? '100%' : 'auto'}
             openLinkInNewTab
           >
             {formatMessage(messages.newSubmission)}
@@ -267,52 +326,93 @@ const SurveyActions = ({ phase }: Props) => {
             {...inputImporterLink}
             icon="page"
             iconSize="20px"
-            buttonStyle="secondary-outlined"
-            width="auto"
+            buttonStyle={redesigned ? 'bo-secondary' : 'secondary-outlined'}
+            width={redesigned ? '100%' : 'auto'}
           >
             {formatMessage(messages.import)}
           </ButtonWithLink>
-          <Box position="relative">
-            <Button
-              icon="download"
-              iconSize="20px"
-              buttonStyle="secondary-outlined"
-              width="auto"
-              data-cy="e2e-survey-export-button"
-              onClick={toggleDropdown}
+          {redesigned ? (
+            <MenuButton
+              portal
+              width="280px"
+              triggerWidth="100%"
+              trigger={({ opened, toggle }) => (
+                <Button
+                  buttonStyle="bo-secondary"
+                  width="100%"
+                  justify="space-between"
+                  icon="download"
+                  iconPos="right"
+                  data-cy="e2e-survey-export-button"
+                  ariaExpanded={opened}
+                  onClick={toggle}
+                >
+                  {formatMessage(messages.exportButton)}
+                </Button>
+              )}
             >
-              {formatMessage(messages.exportButton)}
-            </Button>
-            <Dropdown
-              opened={isDropdownOpened}
-              onClickOutside={closeDropdown}
-              className="dropdown"
-              width="max-content"
-              right="0px"
-              top="45px"
-              zIndex="10000"
-              content={
-                <Box style={{ whiteSpace: 'nowrap' }}>
-                  <ExportDropdownItem
-                    label={formatMessage(messages.exportResponsesToPdf)}
-                    onClick={() => {
-                      setDropdownOpened(false);
-                      openPdfExportModal();
-                    }}
-                    data-cy="e2e-export-responses-pdf"
-                  />
-                  <ExportDropdownItem
-                    label={formatMessage(messages.exportResponsesToXlsx)}
-                    onClick={() => {
-                      setDropdownOpened(false);
-                      openXlsxExportModal();
-                    }}
-                    data-cy="e2e-export-responses-xlsx"
-                  />
+              {(close) => <Box onClick={close}>{exportOptions}</Box>}
+            </MenuButton>
+          ) : (
+            <Box position="relative">
+              <Button
+                icon="download"
+                iconSize="20px"
+                buttonStyle="secondary-outlined"
+                width="auto"
+                data-cy="e2e-survey-export-button"
+                onClick={toggleDropdown}
+              >
+                {formatMessage(messages.exportButton)}
+              </Button>
+              <Dropdown
+                opened={isDropdownOpened}
+                onClickOutside={closeDropdown}
+                className="dropdown"
+                width="max-content"
+                right="0px"
+                top="45px"
+                zIndex="10000"
+                content={exportOptions}
+              />
+            </Box>
+          )}
+
+          <Button
+            buttonStyle={redesigned ? 'bo-secondary' : 'primary'}
+            icon="stars"
+            onClick={goToAnalysis}
+            processing={isAddLoading || isUpdateLoading}
+          >
+            {formatMessage(
+              redesigned ? messages.aiSensemaking : messages.aiAnalysis
+            )}
+          </Button>
+          {redesigned && (
+            <MenuButton
+              portal
+              triggerWidth="100%"
+              trigger={({ opened, toggle }) => (
+                <Button
+                  buttonStyle="bo-secondary"
+                  width="100%"
+                  justify="space-between"
+                  icon="download"
+                  iconPos="right"
+                  ariaExpanded={opened}
+                  processing={isDownloadingPdf || isDownloadingWord}
+                  onClick={toggle}
+                >
+                  {formatMessage(messages.downloadInsights)}
+                </Button>
+              )}
+            >
+              {(close) => (
+                <Box role="menu">
                   <ExportDropdownItem
                     label={formatMessage(messages.downloadInsightsPdf)}
                     onClick={async () => {
-                      setDropdownOpened(false);
+                      close();
                       await captureAllMapScreenshots();
                       downloadPdf();
                     }}
@@ -320,40 +420,20 @@ const SurveyActions = ({ phase }: Props) => {
                   <ExportDropdownItem
                     label={formatMessage(messages.downloadWord)}
                     onClick={async () => {
-                      setDropdownOpened(false);
+                      close();
                       await captureAllMapScreenshots();
                       downloadWord();
                     }}
-                    badge={
-                      <Badge color={colors.coolGrey600} className="inverse">
-                        {formatMessage(projectFilesMessages.beta)}
-                      </Badge>
-                    }
-                  />
-                  <ExportDropdownItem
-                    label={`${formatMessage(
-                      messages.downloadSurveyResults
-                    )} (.xlsx)`}
-                    onClick={handleDownloadXlsx}
-                    data-cy="e2e-download-survey-results"
                   />
                 </Box>
-              }
-            />
-          </Box>
-          <Button
-            buttonStyle="primary"
-            icon="stars"
-            onClick={goToAnalysis}
-            processing={isAddLoading || isUpdateLoading}
-          >
-            {formatMessage(messages.aiAnalysis)}
-          </Button>
+              )}
+            </MenuButton>
+          )}
           {haveSubmissionsComeIn && (
             <Button
-              buttonStyle="admin-dark-outlined"
+              buttonStyle={redesigned ? 'bo-text' : 'admin-dark-outlined'}
               icon="delete"
-              width="auto"
+              width={redesigned ? '100%' : 'auto'}
               onClick={openDeleteModal}
               data-cy="e2e-delete-survey-results"
             >

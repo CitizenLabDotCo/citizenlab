@@ -14,13 +14,19 @@ const fetchPhaseInsights = (phaseId: string) =>
 
 interface UsePhaseInsightsParams {
   phaseId: string;
+  enabled?: boolean;
 }
 
-const usePhaseInsights = ({ phaseId }: UsePhaseInsightsParams) => {
+const usePhaseInsights = ({
+  phaseId,
+  enabled = true,
+}: UsePhaseInsightsParams) => {
   return useQuery<IPhaseInsights, CLErrors, IPhaseInsights>({
     queryKey: phaseInsightsKeys.item({ phaseId }),
     queryFn: () => fetchPhaseInsights(phaseId),
-    enabled: !!phaseId,
+    enabled: enabled && !!phaseId,
+    // Participation can change while managers are on another tab.
+    staleTime: 0,
   });
 };
 

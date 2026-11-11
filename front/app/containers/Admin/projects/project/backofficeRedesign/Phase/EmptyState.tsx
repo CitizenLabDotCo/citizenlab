@@ -17,7 +17,7 @@ const SIZES = {
 
 interface Props {
   title?: string;
-  description: string;
+  description?: string;
   size: 'large' | 'small';
 }
 
@@ -53,16 +53,18 @@ const EmptyState = ({ title, description, size }: Props) => {
           {title}
         </Text>
       )}
-      <Text
-        m="0"
-        maxWidth={textWidth}
-        fontSize="s"
-        lineHeight="20px"
-        color="textSecondary"
-        textAlign="center"
-      >
-        {description}
-      </Text>
+      {description && (
+        <Text
+          m="0"
+          maxWidth={textWidth}
+          fontSize="s"
+          lineHeight="20px"
+          color="textSecondary"
+          textAlign="center"
+        >
+          {description}
+        </Text>
+      )}
     </Box>
   );
 };

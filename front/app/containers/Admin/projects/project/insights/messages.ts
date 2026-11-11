@@ -1,6 +1,43 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  recommendedActions: {
+    id: 'app.containers.Admin.projects.project.insights.recommendedActions',
+    defaultMessage: 'Recommended actions',
+  },
+  addReport: {
+    id: 'app.containers.Admin.projects.project.insights.addReport',
+    defaultMessage: 'Add a report',
+  },
+  reportCreationFailed: {
+    id: 'app.containers.Admin.projects.project.insights.reportCreationFailed',
+    defaultMessage: 'The report could not be created. Please try again.',
+  },
+  shareResults: {
+    id: 'app.containers.Admin.projects.project.insights.shareResults',
+    defaultMessage: 'Share results with participants',
+  },
+  goToMessaging: {
+    id: 'app.containers.Admin.projects.project.insights.goToMessaging',
+    defaultMessage: 'Go to Messaging',
+  },
+  editProjectHomepage: {
+    id: 'app.containers.Admin.projects.project.insights.editProjectHomepage',
+    defaultMessage: 'Edit the project homepage',
+  },
+  createInformationPhase: {
+    id: 'app.containers.Admin.projects.project.insights.createInformationPhase',
+    defaultMessage: 'Create an information phase',
+  },
+  downloadInsights: {
+    id: 'app.containers.Admin.projects.project.insights.downloadInsights',
+    defaultMessage: 'Download insights',
+  },
+  aiSensemaking: {
+    id: 'app.containers.Admin.projects.project.insights.aiSensemaking',
+    defaultMessage: 'Get an AI Sensemaking summary',
+  },
+
   insights: {
     id: 'app.containers.Admin.projects.project.insights',
     defaultMessage: 'Insights',

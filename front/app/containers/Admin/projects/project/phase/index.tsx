@@ -68,12 +68,14 @@ const AdminProjectPhaseIndex = ({ project, selectedPhase }: DataProps) => {
   const showPhasePreview =
     isBackofficeRedesignEnabled && !!selectedPhase && onPhaseSetupRoute;
 
-  // Manage views lay out their own panels.
-  if (
-    isBackofficeRedesignEnabled &&
-    selectedPhase &&
-    viewFromPathname(pathname) === 'manage'
-  ) {
+  // External surveys keep their own results page.
+  const view = viewFromPathname(pathname);
+  const hasOwnPanels =
+    view === 'manage' ||
+    (view === 'insights' &&
+      selectedPhase?.attributes.participation_method !== 'survey');
+
+  if (isBackofficeRedesignEnabled && selectedPhase && hasOwnPanels) {
     return (
       <Box display="flex" flexDirection="column" flexGrow={1} minHeight="0">
         <RouterOutlet />

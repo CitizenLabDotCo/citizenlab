@@ -216,8 +216,8 @@ const ProjectWorkspace = ({
       display="flex"
       flexDirection="column"
       borderRadius={bo.panelBorderRadius}
-      // Manage views bring their own white panels.
-      background={phase && activeView === 'manage' ? undefined : colors.grey100}
+      // Manage and Insights bring their own white panels.
+      background={phase && activeView !== 'build' ? undefined : colors.grey100}
     >
       {mapOpened && (
         <Box display={editingMap ? 'block' : 'none'} h="100%">

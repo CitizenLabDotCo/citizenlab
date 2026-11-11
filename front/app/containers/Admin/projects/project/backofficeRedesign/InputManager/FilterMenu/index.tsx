@@ -8,9 +8,10 @@ import {
   Text,
 } from '@citizenlab/cl2-component-library';
 
+import MenuButton from 'components/admin/MenuButton';
+
 import { useIntl } from 'utils/cl-intl';
 
-import MenuButton from '../MenuButton';
 import messages from '../messages';
 import OptionList from '../OptionList';
 import ToolbarIconButton from '../ToolbarIconButton';

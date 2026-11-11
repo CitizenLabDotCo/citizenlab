@@ -8,7 +8,7 @@ import {
   IconNames,
 } from '@citizenlab/cl2-component-library';
 
-import MenuButton from '../MenuButton';
+import MenuButton from 'components/admin/MenuButton';
 
 const APPEARANCES: Record<'pill' | 'link', Partial<ButtonProps>> = {
   pill: {

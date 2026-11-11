@@ -1,6 +1,15 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  insightsWillAppear: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsWillAppear',
+    defaultMessage: 'Insights will appear here',
+  },
+  insightsPurpose: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsPurpose',
+    defaultMessage:
+      'Once the project is live, insights will help you turn participation into clear results',
+  },
   buildView: {
     id: 'app.containers.Admin.projects.project.buildView',
     defaultMessage: 'Build',
@@ -47,16 +56,6 @@ export default defineMessages({
   noInsightsYet: {
     id: 'app.containers.Admin.projects.project.noInsightsYet',
     defaultMessage: 'No insights yet',
-  },
-  noInsightsYetDescription: {
-    id: 'app.containers.Admin.projects.project.noInsightsYetDescription',
-    defaultMessage:
-      'As participants take part, this page shows participation over time, demographics and a summary of their input.',
-  },
-  recommendedActionsHint: {
-    id: 'app.containers.Admin.projects.project.recommendedActionsHint',
-    defaultMessage:
-      'Recommended actions appear here once participants take part.',
   },
   editReport: {
     id: 'app.containers.Admin.projects.project.editReport',
