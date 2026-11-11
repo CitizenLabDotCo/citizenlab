@@ -36,6 +36,7 @@ import DraftMethodSettings from '../Phase/DraftMethodSettings';
 import PhasePreview from '../Phase/PhasePreview';
 
 import messages from './messages';
+import SavedInputForm from './SavedInputForm';
 
 interface Props {
   project: IProjectData;
@@ -79,7 +80,7 @@ const NewPhaseWorkspace = ({
   const [surveySetupOpened, setSurveySetupOpened] = useState(false);
   const [destination, setDestination] = useState<{
     phaseId: string;
-    surveyAction?: SurveySetupAction;
+    action?: SurveySetupAction | 'input';
   }>();
 
   const files = usePhaseFileAttachments({
@@ -146,7 +147,7 @@ const NewPhaseWorkspace = ({
 
   useRegisterPageSaver('draft', { dirty, save });
 
-  const saveAndOpenSurvey = async (surveyAction: SurveySetupAction) => {
+  const saveAndOpenForm = async (action: SurveySetupAction | 'input') => {
     if (!pageSave || pageSave.saving || files.isUploadingFile) return;
 
     setDirty(true);
@@ -155,13 +156,19 @@ const NewPhaseWorkspace = ({
     if (failed.length > 0 || !savedPhase.current) return;
 
     pageSave.leave();
-    setDestination({ phaseId: savedPhase.current.id, surveyAction });
+    setDestination({ phaseId: savedPhase.current.id, action });
   };
 
   if (destination) {
     const params = { projectId, phaseId: destination.phaseId };
 
-    if (destination.surveyAction === 'edit') {
+    if (destination.action === 'input') {
+      return (
+        <SavedInputForm projectId={projectId} phaseId={destination.phaseId} />
+      );
+    }
+
+    if (destination.action === 'edit') {
       return (
         <Navigate
           to="/admin/projects/$projectId/phases/$phaseId/survey-form/edit"
@@ -175,8 +182,8 @@ const NewPhaseWorkspace = ({
       <Navigate
         to="/admin/projects/$projectId/phases/$phaseId/setup"
         params={params}
-        search={{ survey_action: destination.surveyAction }}
-        replace={!!destination.surveyAction}
+        search={{ survey_action: destination.action }}
+        replace={!!destination.action}
       />
     );
   }
@@ -208,14 +215,34 @@ const NewPhaseWorkspace = ({
           standalone={standalone}
           files={files}
           draftQuestionsAction={
-            participationMethod === 'native_survey' && (
+            ['native_survey', 'ideation', 'proposals'].includes(
+              participationMethod
+            ) && (
               <Box>
                 <Button
                   buttonStyle="bo-secondary"
-                  data-cy="add-draft-survey-questions"
+                  data-cy={
+                    participationMethod === 'native_survey'
+                      ? 'add-draft-survey-questions'
+                      : 'add-draft-input-questions'
+                  }
                   boSize="medium"
                   width="100%"
-                  onClick={() => setSurveySetupOpened(true)}
+                  processing={
+                    participationMethod !== 'native_survey' &&
+                    !!pageSave?.saving
+                  }
+                  disabled={
+                    participationMethod !== 'native_survey' &&
+                    files.isUploadingFile
+                  }
+                  onClick={() => {
+                    if (participationMethod === 'native_survey') {
+                      setSurveySetupOpened(true);
+                    } else {
+                      saveAndOpenForm('input');
+                    }
+                  }}
                 >
                   {formatMessage(methodSectionMessages.addQuestions)}
                 </Button>
@@ -265,7 +292,7 @@ const NewPhaseWorkspace = ({
           opened={surveySetupOpened}
           onClose={() => setSurveySetupOpened(false)}
           draft={{
-            onChoose: saveAndOpenSurvey,
+            onChoose: saveAndOpenForm,
             saving: !!pageSave?.saving,
             uploading: files.isUploadingFile,
           }}
