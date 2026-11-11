@@ -2,7 +2,8 @@
 
 require 'rails_helper'
 
-# `url: true` resolves to the validate_url gem's validator, not an app class.
+# `url: true` resolves to the validator of the validate_url gem (a direct
+# dependency in the Gemfile), not to an app class.
 RSpec.describe ActiveModel::Validations::UrlValidator do
   subject(:record) { Klass.new }
 
