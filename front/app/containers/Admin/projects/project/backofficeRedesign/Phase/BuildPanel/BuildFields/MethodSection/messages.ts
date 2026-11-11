@@ -5,6 +5,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.addQuestions',
     defaultMessage: 'Add questions',
   },
+  editSurvey: {
+    id: 'app.containers.Admin.projects.project.editSurvey',
+    defaultMessage: 'Edit survey',
+  },
   pollQuestions: {
     id: 'app.containers.Admin.projects.project.pollQuestions',
     defaultMessage: 'Poll questions',
