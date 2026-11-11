@@ -77,6 +77,7 @@ pl-PL:
         users_who_follow_the_project: Użytkownicy, którzy śledzą projekt
         users_who_follow_the_proposal: Użytkownicy, którzy śledzą propozycję
       trigger:
+        3_days_after_invite_is_sent: 3 dni po wysłaniu zaproszenia
         7_days_after_invite_is_sent: 7 dni po wysłaniu zaproszenia
         7_days_before_phase_starts: 7 dni przed rozpoczęciem fazy
         7_days_before_the_project_changes_phase: 7 dni przed zmianą fazy projektu

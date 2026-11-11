@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 
-import { Button, bo } from '@citizenlab/cl2-component-library';
+import { Button } from '@citizenlab/cl2-component-library';
 
 import phaseSetupMessages from 'containers/Admin/projects/project/phaseSetup/messages';
 
+import { usePageSave } from 'components/admin/PageSaveContext';
+
 import { useIntl } from 'utils/cl-intl';
 
-import { usePageSave } from '../_shared/PageSaveContext';
-import messages from '../messages';
+import useReturnToPhaseAfterSave from '../_shared/useReturnToPhaseAfterSave';
+
+import messages from './messages';
 
 interface Props {
   label?: string;
@@ -16,13 +19,16 @@ interface Props {
 const SaveChangesButton = ({ label }: Props) => {
   const { formatMessage } = useIntl();
   const pageSave = usePageSave();
+  const returnToPhaseAfterSave = useReturnToPhaseAfterSave();
   const [saved, setSaved] = useState(false);
 
   if (!pageSave) return null;
 
   const handleClick = async () => {
     setSaved(false);
-    setSaved(await pageSave.saveAll('button'));
+    const failed = await pageSave.saveAll('button');
+    setSaved(failed.length === 0);
+    returnToPhaseAfterSave(failed);
   };
 
   // A new edit makes the page dirty again, which brings the label back.
@@ -31,9 +37,7 @@ const SaveChangesButton = ({ label }: Props) => {
   return (
     <Button
       buttonStyle="bo-primary"
-      height={bo.buttonMedium.height}
-      padding={bo.buttonMedium.padding}
-      fontSize={bo.buttonMedium.fontSize}
+      boSize="medium"
       width="auto"
       icon={showSaved ? 'check' : undefined}
       disabled={!pageSave.dirty}

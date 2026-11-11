@@ -44,6 +44,7 @@ export type IdMethodName =
   | 'id_card_lookup'
   | 'keycloak'
   | 'nemlog_in'
+  | 'okta'
   | 'oostende_rrn'
   | 'publik'
   | 'twoday'
@@ -91,14 +92,17 @@ export type IDAuth0Method = TGenericMethod<
   { method_name_multiloc: Multiloc }
 >;
 
+// Attributes of the methods that city staff sign in with.
+type EmployeeSsoAttributes = {
+  logo_url?: string;
+  login_mechanism_name?: string;
+  visibility?: 'show' | 'link' | 'hide';
+  enforced_email_domain_error_multiloc?: Multiloc;
+};
+
 export type IDAzureAdMethod = TGenericMethod<
   'azureactivedirectory',
-  {
-    logo_url?: string;
-    login_mechanism_name?: string;
-    visibility?: 'show' | 'link' | 'hide';
-    enforced_email_domain_error_multiloc?: Multiloc;
-  }
+  EmployeeSsoAttributes
 >;
 
 export type IDAzureAdB2cMethod = TGenericMethod<
@@ -106,9 +110,15 @@ export type IDAzureAdB2cMethod = TGenericMethod<
   { logo_url?: string; login_mechanism_name?: string }
 >;
 
+// When true, the method is left out of the normal sign-in screen and only
+// offered when an action requires verification.
+type OnlyShowForVerificationAttributes = {
+  only_show_for_verification?: boolean;
+};
+
 export type IDCriiptoMethod = TGenericMethod<
   'criipto',
-  { ui_method_name: string }
+  { ui_method_name: string } & OnlyShowForVerificationAttributes
 >;
 
 export type IDFacebookMethod = TGenericMethod<'facebook', { app_id?: string }>;
@@ -134,6 +144,13 @@ export type IDKeycloakMethod = TGenericMethod<
   { ui_method_name: string; provider: IconNames }
 >;
 
+export type IDNemlogInMethod = TGenericMethod<
+  'nemlog_in',
+  OnlyShowForVerificationAttributes
+>;
+
+export type IDOktaMethod = TGenericMethod<'okta', EmployeeSsoAttributes>;
+
 export type IDPublikMethod = TGenericMethod<'publik', { logo_url?: string }>;
 
 export type IDTwodayMethod = TGenericMethod<
@@ -153,6 +170,8 @@ type TOtherMethodName = Exclude<
   | 'id_austria'
   | 'id_card_lookup'
   | 'keycloak'
+  | 'nemlog_in'
+  | 'okta'
   | 'publik'
   | 'twoday'
 >;
@@ -169,6 +188,8 @@ export type IdMethodData =
   | IDIdAustriaMethod
   | IDKeycloakMethod
   | IDLookupMethod
+  | IDNemlogInMethod
+  | IDOktaMethod
   | IDPublikMethod
   | IDTwodayMethod
   | IDOtherMethod;

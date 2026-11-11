@@ -34,6 +34,9 @@ module ContentBuilder
   # extraction) runs before the record is created, so there is no partially built state
   # to render around: if a row exists, its bundle runs.
   class CustomBlockVersion < ApplicationRecord
+    # What the settings sidebar can render a control for.
+    CONFIG_FIELD_TYPES = %w[string number integer boolean].freeze
+
     belongs_to :custom_block, class_name: 'ContentBuilder::CustomBlock', inverse_of: :versions
 
     before_validation :set_number, on: :create
@@ -89,9 +92,32 @@ module ContentBuilder
         return
       end
 
-      return if schema['properties'].nil? || schema['properties'].is_a?(Hash)
+      if !schema['properties'].nil? && !schema['properties'].is_a?(Hash)
+        errors.add :manifest, :config_schema_invalid, message: 'config_schema properties must be an object'
+        return
+      end
 
-      errors.add :manifest, :config_schema_invalid, message: 'config_schema properties must be an object'
+      (schema['properties'] || {}).each { |key, field| validate_config_field(key, field) }
+    end
+
+    # The shape the settings sidebar reads without checking. ChartBlockWriter rejects
+    # more than this, earlier and with messages written for the model; these are the
+    # few the stored row has to guarantee whatever wrote it.
+    def validate_config_field(key, field)
+      unless field.is_a?(Hash)
+        errors.add :manifest, :config_schema_invalid, message: "config_schema field #{key} must be an object"
+        return
+      end
+
+      unless CONFIG_FIELD_TYPES.include?(field['type'].to_s)
+        errors.add :manifest, :config_schema_invalid,
+          message: "config_schema field #{key} has an unsupported type"
+      end
+
+      return if field['enum'].nil? || (field['enum'].is_a?(Array) && field['enum'].all?(String))
+
+      errors.add :manifest, :config_schema_invalid,
+        message: "config_schema field #{key} enum must be an array of strings"
     end
 
     def validate_queries

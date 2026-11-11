@@ -1,6 +1,12 @@
 import React from 'react';
 
-import { Input, IOption } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Input,
+  IOption,
+  Text,
+  bo,
+} from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
 import {
@@ -13,6 +19,7 @@ import {
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';
+import PanelHeading from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelHeading';
 import messages from 'containers/Admin/projects/project/messages';
 
 import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle';
@@ -25,7 +32,10 @@ import configMessages from '../../../messages';
 import CustomFieldPicker from '../../shared/CustomFieldPicker';
 import SimilarityDetectionConfig from '../../shared/SimilarityDetectionConfig';
 import ViewSelector from '../../shared/ViewSelector';
+import ModerationAssignee from '../_shared/ModerationAssignee';
+import NumberSettingRow from '../_shared/NumberSettingRow';
 import PrescreeningModeSelector from '../_shared/PrescreeningModeSelector';
+import ReactionLimitSettings from '../_shared/ReactionLimitSettings';
 import SortingPicker from '../_shared/SortingPicker';
 import UserActions from '../_shared/UserActions';
 
@@ -172,8 +182,46 @@ const ProposalsInputs = ({
     </SectionField>
   );
 
+  const requirements = (
+    <PanelGroup
+      label={formatMessage(configMessages.proposalRequirementsGroup)}
+      defaultOpen
+    >
+      <NumberSettingRow
+        id="reacting_threshold"
+        label={formatMessage(messages.reactingThreshold)}
+        value={reacting_threshold}
+        min="2"
+        onChange={handleReactingThresholdChange}
+        error={
+          <Error
+            text={reactingThresholdError}
+            apiErrors={apiErrors && apiErrors.reacting_threshold}
+          />
+        }
+      />
+      <NumberSettingRow
+        id="expire_days_limit"
+        label={formatMessage(messages.expireDaysLimit)}
+        value={expire_days_limit}
+        min="1"
+        onChange={handleDaysLimitChange}
+        error={
+          <Error
+            text={expireDateLimitError}
+            apiErrors={apiErrors && apiErrors.expire_days_limit}
+          />
+        }
+      />
+      <Text variant="boHelper" fontSize="xs" m="0">
+        {formatMessage(configMessages.proposalRequirementsNote)}
+      </Text>
+    </PanelGroup>
+  );
+
   const anonymity = (
     <AnonymousPostingToggle
+      variant={layout === 'panel' ? 'panel' : undefined}
       allow_anonymous_participation={allow_anonymous_participation}
       handleAllowAnonymousParticipationOnChange={
         handleAllowAnonymousParticipationOnChange
@@ -184,10 +232,32 @@ const ProposalsInputs = ({
 
   const screening = prescreeningFeatureEnabled ? (
     <PrescreeningModeSelector
+      variant={layout === 'panel' ? 'panel' : undefined}
       prescreening_mode={prescreening_mode}
       onPrescreeningModeChange={onPrescreeningModeChange}
     />
   ) : null;
+
+  const likes = reacting_enabled && (
+    <ReactionLimitSettings
+      name="likingmethod"
+      title={formatMessage(messages.likingMethodTitle)}
+      method={reacting_like_method}
+      max={reacting_like_limited_max}
+      maxLabel={formatMessage(messages.maxLikes)}
+      onMethodChange={handleReactingLikeMethodOnChange}
+      onMaxChange={handleLikingLimitOnChange}
+      error={
+        <>
+          <Error apiErrors={apiErrors && apiErrors.reacting_method} />
+          <Error
+            text={noLikingLimitError}
+            apiErrors={apiErrors && apiErrors.reacting_limit}
+          />
+        </>
+      }
+    />
+  );
 
   const userActions = (
     <UserActions
@@ -204,11 +274,16 @@ const ProposalsInputs = ({
       handleReactingLikeMethodOnChange={handleReactingLikeMethodOnChange}
       handleLikingLimitOnChange={handleLikingLimitOnChange}
       phaseId={phaseId}
+      layout={layout}
+      reactingSettings={
+        layout === 'panel' && <Box pl={bo.toggleLabelIndent}>{likes}</Box>
+      }
     />
   );
 
   const similarity = (
     <SimilarityDetectionConfig
+      variant={layout === 'panel' ? 'panel' : undefined}
       apiErrors={apiErrors}
       similarity_enabled={similarity_enabled}
       similarity_threshold_title={similarity_threshold_title}
@@ -220,6 +295,7 @@ const ProposalsInputs = ({
 
   const views = (
     <ViewSelector
+      variant={layout === 'panel' ? 'panel' : undefined}
       presentation_mode={presentation_mode}
       available_views={available_views}
       apiErrors={apiErrors}
@@ -231,6 +307,7 @@ const ProposalsInputs = ({
 
   const sorting = (
     <SortingPicker
+      variant={layout === 'panel' ? 'panel' : undefined}
       options={[
         { key: 'trending', value: 'trending' },
         { key: 'comments_count', value: 'comments_count' },
@@ -238,6 +315,7 @@ const ProposalsInputs = ({
         { key: 'popular', value: 'popular' },
         { key: 'newest', value: 'new' },
         { key: 'oldest', value: '-new' },
+        { key: 'status_priority', value: 'status_priority' },
       ]}
       ideas_order={ideas_order}
       apiErrors={apiErrors}
@@ -248,39 +326,33 @@ const ProposalsInputs = ({
   if (layout === 'panel') {
     return (
       <>
+        <Box mb="10px">
+          <PanelHeading
+            label={formatMessage(configMessages.howProposalsAreShown)}
+          />
+        </Box>
+        {views}
+        {sorting}
+        <Box mb="10px">
+          <PanelHeading label={formatMessage(configMessages.settingsGroup)} />
+        </Box>
         <PanelGroup
           label={formatMessage(configMessages.participantActionsGroup)}
           defaultOpen
         >
           {userActions}
         </PanelGroup>
-        <PanelGroup
-          label={formatMessage(configMessages.votesGroup)}
-          defaultOpen
-        >
-          {expiry}
-          {threshold}
-        </PanelGroup>
+        {requirements}
         <PanelGroup
           label={formatMessage(configMessages.moderationGroup)}
           defaultOpen
         >
-          {anonymity}
-          {screening}
-          {similarity}
-        </PanelGroup>
-        <PanelGroup
-          label={formatMessage(configMessages.displayGroup)}
-          defaultOpen
-        >
-          {views}
-          {sorting}
-        </PanelGroup>
-        <PanelGroup
-          label={formatMessage(configMessages.submissionNameGroup)}
-          defaultOpen
-        >
-          {inputTerm}
+          <Box display="flex" flexDirection="column" gap="16px">
+            <ModerationAssignee phaseId={phaseId} />
+            {screening}
+            {anonymity}
+            {similarity}
+          </Box>
         </PanelGroup>
       </>
     );

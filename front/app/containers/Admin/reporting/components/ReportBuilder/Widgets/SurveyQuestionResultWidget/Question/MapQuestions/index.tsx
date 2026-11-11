@@ -7,6 +7,7 @@ import { useReportContext } from 'containers/Admin/reporting/context/ReportConte
 import StaticMapScreenshot from 'components/admin/FormResults/FormResultsQuestion/MappingQuestions/StaticMapScreenshot';
 
 import LineLocationQuestion from './LineLocationQuestion';
+import MultipointLocationQuestion from './MultipointLocationQuestion';
 import PointLocationQuestion from './PointLocationQuestion';
 import PolygonLocationQuestion from './PolygonLocationQuestion';
 
@@ -57,6 +58,15 @@ const MapQuestion = ({
           customFieldId={customFieldId}
           projectId={projectId}
           mapConfigId={attributes.mapConfigId}
+        />
+      )}
+      {!attributes.grouped && attributes.multipointResponses && (
+        <MultipointLocationQuestion
+          multipointResponses={attributes.multipointResponses}
+          customFieldId={customFieldId}
+          projectId={projectId}
+          mapConfigId={attributes.mapConfigId}
+          heatmap={heatmap}
         />
       )}
     </div>

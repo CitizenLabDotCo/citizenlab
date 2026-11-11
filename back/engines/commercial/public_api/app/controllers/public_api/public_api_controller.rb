@@ -32,7 +32,7 @@ module PublicApi
 
     def list_items(base_query, serializer, includes: [], root_key: nil)
       @items = base_query
-        .order(created_at: :desc)
+        .order(created_at: :desc, id: :desc) # id orders rows with the same created_at the same way on every page
         .page(params[:page_number])
         .per(num_per_page)
       @items = common_date_filters @items

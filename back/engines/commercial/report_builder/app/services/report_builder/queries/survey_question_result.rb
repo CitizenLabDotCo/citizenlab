@@ -15,6 +15,12 @@ module ReportBuilder
 
       phase = Phase.find(phase_id)
 
+      # A fully anonymous survey must not be sliced by its respondents' demographics
+      if group_mode == 'user_field' && phase.pmethod.fully_anonymous?
+        group_mode = nil
+        group_field_id = nil
+      end
+
       service = if group_field_id && group_mode
         Surveys::ResultsWithGroupGenerator.new(
           phase,

@@ -52,6 +52,11 @@ const FORBIDDEN_IDENTIFIERS: Record<string, { rule: string; message: string }> =
 
 const MESSAGE_LOOKUP = "msg";
 
+/** `x as const` narrows a literal; it asserts nothing about a value's type. */
+const isAsConst = (node: ts.AsExpression, sourceFile: ts.SourceFile): boolean =>
+  ts.isTypeReferenceNode(node.type) &&
+  node.type.typeName.getText(sourceFile) === "const";
+
 const isJsxText = (node: ts.Node): node is ts.JsxText => ts.isJsxText(node);
 
 export interface LintResult {
@@ -171,6 +176,19 @@ export const lint = (
         `Visible text must come from msg(): found ${JSON.stringify(
           node.expression.text
         )}.`
+      );
+      return;
+    }
+
+    // A block declares the types it expects, so an assertion adds nothing a
+    // declaration cannot. It only lets the source claim a value is something it is
+    // not, and throw at render when it is not. `as const` makes no such claim.
+    if (ts.isAsExpression(node) && !isAsConst(node, sourceFile)) {
+      report(
+        node,
+        "no-type-assertion",
+        "A type assertion is not allowed. Narrow the value instead, e.g. " +
+          "typeof x === 'string' ? x : ''."
       );
       return;
     }

@@ -2,8 +2,6 @@ import React, { FormEvent } from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
-import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
-
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -16,11 +14,14 @@ import messages from './messages';
 interface Props {
   onClick: (event: FormEvent) => void;
   ideaQueryParameters: InputFiltersProps['ideaQueryParameters'];
+  ideasFilterCounts?: InputFiltersProps['ideasFilterCounts'];
 }
 
-const BottomBar = ({ onClick, ideaQueryParameters }: Props) => {
-  const { data: ideasFilterCounts } = useIdeasFilterCounts(ideaQueryParameters);
-
+const BottomBar = ({
+  onClick,
+  ideaQueryParameters,
+  ideasFilterCounts,
+}: Props) => {
   if (!ideasFilterCounts) return null;
 
   return (

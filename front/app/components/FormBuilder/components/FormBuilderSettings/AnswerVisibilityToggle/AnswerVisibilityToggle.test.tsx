@@ -10,8 +10,6 @@ import { render, screen } from 'utils/testUtils/rtl';
 
 import AnswerVisibilityToggle from '.';
 
-jest.mock('hooks/useFeatureFlag', () => jest.fn(() => true));
-
 jest.mock('api/submission_count/useSubmissionCount', () =>
   jest.fn(() => ({
     data: { data: { attributes: { totalSubmissions: 0 } } },

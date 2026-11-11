@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 
 import { Box, Text, Button } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+import { SupportedLocale } from 'typings';
 
 import { IEmailCampaignData } from 'api/campaigns/email/types';
 import useDeleteEmailCampaign from 'api/campaigns/email/useDeleteEmailCampaign';
 
-import PreviewFrame from 'components/admin/Email/PreviewFrame';
+import PreviewFrameWithLocaleSwitcher from 'components/admin/Email/PreviewFrameWithLocaleSwitcher';
 import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
@@ -23,9 +24,15 @@ const ButtonWrapper = styled.div`
 
 interface Props {
   campaign: IEmailCampaignData;
+  previewLocale: SupportedLocale;
+  onPreviewLocaleChange: (locale: SupportedLocale) => void;
 }
 
-const DraftCampaignDetails = ({ campaign }: Props) => {
+const DraftCampaignDetails = ({
+  campaign,
+  previewLocale,
+  onPreviewLocaleChange,
+}: Props) => {
   const { projectId } = useParams({ strict: false });
   const { formatMessage } = useIntl();
   const { mutate: deleteCampaign, isPending } = useDeleteEmailCampaign();
@@ -46,7 +53,11 @@ const DraftCampaignDetails = ({ campaign }: Props) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   return (
     <>
-      <PreviewFrame campaignId={campaign.id} />
+      <PreviewFrameWithLocaleSwitcher
+        campaignId={campaign.id}
+        locale={previewLocale}
+        onLocaleChange={onPreviewLocaleChange}
+      />
       <ButtonWrapper>
         <Button
           buttonStyle="delete"

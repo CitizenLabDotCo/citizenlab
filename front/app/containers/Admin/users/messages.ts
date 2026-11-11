@@ -221,6 +221,10 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.UserTableRow.userInvitationPending',
     defaultMessage: 'Invitation pending',
   },
+  registrationNotCompleted: {
+    id: 'app.containers.Admin.Users.UserTableRow.registrationNotCompleted',
+    defaultMessage: 'Registration not completed',
+  },
   blockedUsers: {
     id: 'app.containers.Admin.Users.BlockedUsers.blockedUsers',
     defaultMessage: 'Blocked users',
