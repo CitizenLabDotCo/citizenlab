@@ -47,9 +47,8 @@ const SurveyFormBuilder = ({
       formCustomFields={newCustomFields}
       goBackUrl={goBackUrl}
       viewFormLink={{
-        to: '/projects/$slug/surveys/new',
-        params: { slug: project.data.attributes.slug },
-        search: { phase_id: phase.data.id },
+        to: '/projects/$slug/surveys/new/$phaseId',
+        params: { slug: project.data.attributes.slug, phaseId: phase.data.id },
       }}
     />
   );

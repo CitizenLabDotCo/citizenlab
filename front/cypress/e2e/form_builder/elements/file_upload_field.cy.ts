@@ -66,7 +66,7 @@ describe('Form builder file upload field', () => {
     cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
 
     // Try filling in the survey
-    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/surveys/new/${phaseId}`);
 
     cy.contains(questionTitle).should('exist');
 
@@ -79,7 +79,7 @@ describe('Form builder file upload field', () => {
       'eq',
       `${
         Cypress.config().baseUrl
-      }/en/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`
+      }/en/projects/${projectSlug}/surveys/new/${phaseId}`
     );
 
     // Upload a file

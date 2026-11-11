@@ -19,11 +19,13 @@ import { createNativeSurveyProjectWithPermission } from './utils';
 // confirm satisfies the requirement, and nothing is asked about the other one.
 describe('Sign up - either email or SMS', () => {
   let projectId = '';
+  let phaseId = '';
   const projectTitle = randomString();
 
   // A second project whose action does require an email address, used to check
   // what happens to a participant who signed up with a phone number only.
   let emailOnlyProjectId = '';
+  let emailOnlyPhaseId = '';
   const emailOnlyProjectTitle = randomString();
 
   const startFlow = (title: string = projectTitle) => {
@@ -33,8 +35,14 @@ describe('Sign up - either email or SMS', () => {
     cy.get('.e2e-idea-button').first().find('button').click({ force: true });
   };
 
-  const expectSurveyOpened = (title: string = projectTitle) => {
-    cy.location('pathname').should('eq', `/en/projects/${title}/surveys/new`);
+  const expectSurveyOpened = (
+    title: string = projectTitle,
+    surveyPhaseId: string = phaseId
+  ) => {
+    cy.location('pathname').should(
+      'eq',
+      `/en/projects/${title}/surveys/new/${surveyPhaseId}`
+    );
   };
 
   before(() => {
@@ -45,8 +53,9 @@ describe('Sign up - either email or SMS', () => {
         require_confirmed_email: false,
         require_confirmed_phone_number: false,
       },
-    }).then(({ projectId: id }) => {
+    }).then(({ projectId: id, phaseId: pId }) => {
       projectId = id;
+      phaseId = pId;
     });
     createNativeSurveyProjectWithPermission({
       projectTitle: emailOnlyProjectTitle,
@@ -54,8 +63,9 @@ describe('Sign up - either email or SMS', () => {
         permitted_by: 'users',
         require_confirmed_email: true,
       },
-    }).then(({ projectId: id }) => {
+    }).then(({ projectId: id, phaseId: pId }) => {
       emailOnlyProjectId = id;
+      emailOnlyPhaseId = pId;
     });
   });
 
@@ -223,7 +233,7 @@ describe('Sign up - either email or SMS', () => {
 
     cy.get('#e2e-success-continue-button').click();
 
-    expectSurveyOpened(emailOnlyProjectTitle);
+    expectSurveyOpened(emailOnlyProjectTitle, emailOnlyPhaseId);
     cy.logout();
   });
 

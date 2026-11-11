@@ -108,15 +108,14 @@ const IdeasNewPage = () => {
   /*
     We arrive in this component via the /ideas/new route, which in the past
     was also used to render the survey form. In order for old links to surveys not to break,
-    we are redirecting /ideas/new requests to the new /surveys/new URL. This code can be removed
+    we are redirecting /ideas/new requests to the /surveys/new/$phaseId URL. This code can be removed
     once we've verified all surveys started before the date this got merged have been completed.
   */
   if (participationMethod === 'native_survey' && typeof phaseId === 'string') {
     return (
       <Navigate
-        to="/projects/$slug/surveys/new"
-        params={{ slug }}
-        search={{ phase_id: phaseId }}
+        to="/projects/$slug/surveys/new/$phaseId"
+        params={{ slug, phaseId }}
         replace
       />
     );

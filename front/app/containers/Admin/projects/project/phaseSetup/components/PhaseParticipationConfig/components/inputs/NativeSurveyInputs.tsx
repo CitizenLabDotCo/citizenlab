@@ -60,7 +60,7 @@ const NativeSurveyInputs = ({
   const openSurveyPreview = (event: React.MouseEvent) => {
     if (phase) {
       window.open(
-        `/projects/${project?.data.attributes.slug}/surveys/new?phase_id=${phase.data.id}`,
+        `/projects/${project?.data.attributes.slug}/surveys/new/${phase.data.id}`,
         '_blank'
       );
     }

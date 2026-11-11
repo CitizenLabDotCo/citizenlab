@@ -89,6 +89,24 @@ describe('isPage', () => {
       ).toBe(false);
     });
   });
+
+  describe('native_survey', () => {
+    it('returns true for the survey form, with or without the phase', () => {
+      expect(
+        isPage('native_survey', '/en/projects/my-project/surveys/new/phase-1')
+      ).toBe(true);
+      expect(
+        isPage('native_survey', '/en/projects/my-project/surveys/new')
+      ).toBe(true);
+    });
+
+    it('returns false for other project pages', () => {
+      expect(isPage('native_survey', '/en/projects/my-project')).toBe(false);
+      expect(
+        isPage('native_survey', '/en/projects/my-project/surveys/new/phase-1/2')
+      ).toBe(false);
+    });
+  });
 });
 
 describe('isTopBarNavActive', () => {

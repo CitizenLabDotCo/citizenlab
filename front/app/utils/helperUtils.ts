@@ -73,7 +73,7 @@ export function isPage(pageKey: pageKeys, pathName: string) {
     case 'idea_edit':
       return pathnameWithoutLocale.startsWith('/ideas/edit/');
     case 'native_survey':
-      return pathnameWithoutLocale.endsWith('/surveys/new');
+      return /\/surveys\/new(\/[^/]+)?$/.test(pathnameWithoutLocale);
     case 'sign_in':
       return pathnameWithoutLocale.startsWith('/sign-in');
     case 'sign_up':

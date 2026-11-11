@@ -23,7 +23,9 @@ import SurveyNotActiveNotice from './SurveyNotActiveNotice';
 import SurveySubmittedNotice from './SurveySubmittedNotice';
 
 const IdeasNewSurveyPage = () => {
-  const { slug } = useParams({ from: '/$locale/projects/$slug/surveys/new' });
+  const { slug, phaseId } = useParams({
+    from: '/$locale/projects/$slug/surveys/new/$phaseId',
+  });
   const {
     data: project,
     status: projectStatus,
@@ -31,7 +33,7 @@ const IdeasNewSurveyPage = () => {
   } = useProjectBySlug(slug);
   const { data: authUser } = useAuthUser();
   const searchParams = useSearch({
-    from: '/$locale/projects/$slug/surveys/new',
+    from: '/$locale/projects/$slug/surveys/new/$phaseId',
   });
 
   // If idea_id is present in the URL when this component first mounts,
@@ -41,12 +43,6 @@ const IdeasNewSurveyPage = () => {
   const [hadIdeaIdOnMount] = useState(() => !!searchParams.idea_id);
   const [hasEntered, setHasEntered] = useState(false);
 
-  // If we reach this component by hitting surveys/new directly, without a phase_id,
-  // we fall back to the project's current phase.
-  const phaseIdFromSearchParams = searchParams.phase_id;
-  const phaseId =
-    phaseIdFromSearchParams ||
-    project?.data.relationships.current_phase?.data?.id; // TODO: This can be deleted in a few months, as URLs now always include the phase_id.
   const { data: phase, isLoading: phaseIsLoading } = usePhase(phaseId);
 
   /*
@@ -95,7 +91,7 @@ const IdeasNewSurveyPage = () => {
           context: {
             type: 'phase',
             action: 'posting_idea',
-            id: phaseId || '',
+            id: phaseId,
           },
         });
       };

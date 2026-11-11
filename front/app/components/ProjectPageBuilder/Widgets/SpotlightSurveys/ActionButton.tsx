@@ -47,9 +47,8 @@ const ActionButton = ({ phase, buttonStyle, buttonTextMultiloc }: Props) => {
     return (
       <ButtonWithLink
         className="e2e-extra-survey-button"
-        to="/projects/$slug/surveys/new"
-        params={{ slug }}
-        search={{ phase_id: phase.id }}
+        to="/projects/$slug/surveys/new/$phaseId"
+        params={{ slug, phaseId: phase.id }}
         buttonStyle={buttonStyle}
         width="100%"
       >

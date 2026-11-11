@@ -100,7 +100,7 @@ describe('Survey Builder - Logic and Advanced Features', () => {
     cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
 
     // Try filling in the survey
-    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/surveys/new/${phaseId}`);
 
     cy.contains(questionTitle).should('exist');
 
@@ -228,7 +228,7 @@ describe('Survey Builder - Logic and Advanced Features', () => {
     cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
 
     // Try filling in the survey
-    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/surveys/new/${phaseId}`);
 
     cy.wait(2000);
     cy.contains(questionTitle).should('exist');
@@ -454,7 +454,7 @@ describe('Survey Builder - Logic and Advanced Features', () => {
     cy.get('form').submit();
 
     // Try filling in the survey
-    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/surveys/new/${phaseId}`);
 
     // First page
     cy.contains(questionTitle).should('exist');
@@ -559,7 +559,7 @@ describe('Survey Builder - Logic and Advanced Features', () => {
     cy.get('form').submit();
 
     // Try filling in the survey
-    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/surveys/new/${phaseId}`);
 
     // First page
     cy.contains(questionTitle).should('exist');

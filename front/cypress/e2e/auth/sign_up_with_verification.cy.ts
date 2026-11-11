@@ -48,7 +48,7 @@ describe('Sign up - verification required (bogus)', () => {
 
     cy.location('pathname').should(
       'eq',
-      `/en/projects/${projectTitle}/surveys/new`
+      `/en/projects/${projectTitle}/surveys/new/${phaseId}`
     );
   });
 
@@ -85,7 +85,7 @@ describe('Sign up - verification required (bogus)', () => {
 
       cy.location('pathname').should(
         'eq',
-        `/en/projects/${projectTitle}/surveys/new`
+        `/en/projects/${projectTitle}/surveys/new/${phaseId}`
       );
     });
   });
@@ -129,7 +129,7 @@ describe('Sign up - verification required (bogus)', () => {
 
       cy.location('pathname').should(
         'eq',
-        `/en/projects/${projectTitle}/surveys/new`
+        `/en/projects/${projectTitle}/surveys/new/${phaseId}`
       );
     });
   });
@@ -169,7 +169,7 @@ describe('Sign up - verification required (SSO)', () => {
 
     cy.location('pathname').should(
       'eq',
-      `/en/projects/${projectTitle}/surveys/new`
+      `/en/projects/${projectTitle}/surveys/new/${phaseId}`
     );
   });
 
@@ -199,7 +199,7 @@ describe('Sign up - verification required (SSO)', () => {
 
       cy.location('pathname').should(
         'eq',
-        `/en/projects/${projectTitle}/surveys/new`
+        `/en/projects/${projectTitle}/surveys/new/${phaseId}`
       );
     });
   });
@@ -230,7 +230,7 @@ describe('Sign up - verification required (SSO)', () => {
 
       cy.location('pathname').should(
         'eq',
-        `/en/projects/${projectTitle}/surveys/new`
+        `/en/projects/${projectTitle}/surveys/new/${phaseId}`
       );
     });
   });
@@ -262,7 +262,7 @@ describe('Sign up - verification required (SSO)', () => {
 
       cy.location('pathname').should(
         'eq',
-        `/en/projects/${projectTitle}/surveys/new`
+        `/en/projects/${projectTitle}/surveys/new/${phaseId}`
       );
     });
   });
@@ -290,17 +290,23 @@ describe('Sign up - verification and smart group required (SSO)', () => {
             },
           },
         },
-      }).then(({ projectId }) => ({ projectId, smartGroupId }))
+      }).then(({ projectId, phaseId }) => ({
+        projectId,
+        phaseId,
+        smartGroupId,
+      }))
     );
 
   describe('User matches the smart group', () => {
     let projectId = '';
+    let phaseId = '';
     let smartGroupId = '';
     const projectTitle = randomString();
 
     before(() => {
       setUpProjectForPostalCode('1212', projectTitle).then((ids) => {
         projectId = ids.projectId;
+        phaseId = ids.phaseId;
         smartGroupId = ids.smartGroupId;
       });
     });
@@ -322,7 +328,7 @@ describe('Sign up - verification and smart group required (SSO)', () => {
 
       cy.location('pathname').should(
         'eq',
-        `/en/projects/${projectTitle}/surveys/new`
+        `/en/projects/${projectTitle}/surveys/new/${phaseId}`
       );
     });
   });

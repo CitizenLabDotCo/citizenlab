@@ -38,6 +38,9 @@ const IdeasIndexPage = lazy(() => import('containers/IdeasIndexPage'));
 const IdeasShowPage = lazy(() => import('containers/IdeasShowPage'));
 const IdeasNewPage = lazy(() => import('containers/IdeasNewPage'));
 const IdeasNewSurveyPage = lazy(() => import('containers/IdeasNewSurveyPage'));
+const IdeasNewSurveyRedirect = lazy(
+  () => import('containers/IdeasNewSurveyPage/IdeasNewSurveyRedirect')
+);
 const ProjectsIndexPage = lazy(() => import('containers/ProjectsIndexPage'));
 const ProjectsShowPage = lazy(() => import('containers/ProjectsShowPage'));
 const ProjectFolderShowPage = lazy(
@@ -378,7 +381,6 @@ const projectIdeaNewRoute = createRoute({
 });
 
 const projectSurveyNewSearchSchema = yup.object({
-  phase_id: yup.string().optional(),
   idea_id: yup.string().optional(),
   go_back: yup.string().optional(),
 });
@@ -389,7 +391,7 @@ type ProjectSurveyNewSearchParams = yup.InferType<
 
 const projectSurveyNewRoute = createRoute({
   getParentRoute: () => localeRoute,
-  path: 'projects/$slug/surveys/new',
+  path: 'projects/$slug/surveys/new/$phaseId',
   validateSearch: (
     search: Record<string, unknown>
   ): ProjectSurveyNewSearchParams =>
@@ -397,6 +399,33 @@ const projectSurveyNewRoute = createRoute({
   component: () => (
     <PageLoading>
       <IdeasNewSurveyPage />
+    </PageLoading>
+  ),
+});
+
+// Survey links shared before the phase moved into the path.
+const projectSurveyNewRedirectSearchSchema = projectSurveyNewSearchSchema.shape(
+  {
+    phase_id: yup.string().optional(),
+  }
+);
+
+type ProjectSurveyNewRedirectSearchParams = yup.InferType<
+  typeof projectSurveyNewRedirectSearchSchema
+>;
+
+const projectSurveyNewRedirectRoute = createRoute({
+  getParentRoute: () => localeRoute,
+  path: 'projects/$slug/surveys/new',
+  validateSearch: (
+    search: Record<string, unknown>
+  ): ProjectSurveyNewRedirectSearchParams =>
+    projectSurveyNewRedirectSearchSchema.validateSync(search, {
+      stripUnknown: true,
+    }),
+  component: () => (
+    <PageLoading>
+      <IdeasNewSurveyRedirect />
     </PageLoading>
   ),
 });
@@ -708,6 +737,7 @@ const buildRouteTree = (moduleRoutes: Partial<Routes> = {}) =>
       ideasShowRoute,
       projectIdeaNewRoute,
       projectSurveyNewRoute,
+      projectSurveyNewRedirectRoute,
       projectPreviewRoute.addChildren([projectPreviewTokenRoute]),
       projectsIndexRoute,
       projectShowRoute.addChildren([

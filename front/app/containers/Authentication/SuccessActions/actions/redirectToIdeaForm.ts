@@ -39,19 +39,18 @@ export const redirectToIdeaForm =
         ? { lat: latLng.coordinates[1], lng: latLng.coordinates[0] }
         : {};
       clHistory.push(
-        {
-          pathname:
-            phase.attributes.participation_method === 'native_survey'
-              ? `/projects/${project.attributes.slug}/surveys/new`
-              : `/projects/${project.attributes.slug}/ideas/new`,
-          search: stringify(
-            {
-              ...positionParams,
-              phase_id: phaseId,
+        phase.attributes.participation_method === 'native_survey'
+          ? `/projects/${project.attributes.slug}/surveys/new/${phaseId}`
+          : {
+              pathname: `/projects/${project.attributes.slug}/ideas/new`,
+              search: stringify(
+                {
+                  ...positionParams,
+                  phase_id: phaseId,
+                },
+                { addQueryPrefix: true }
+              ),
             },
-            { addQueryPrefix: true }
-          ),
-        },
         { scrollToTop: true }
       );
     }

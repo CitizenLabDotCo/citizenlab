@@ -4,6 +4,7 @@ import { createNativeSurveyProjectWithPermission } from './utils';
 
 describe('Sign up - email only', () => {
   let projectId = '';
+  let phaseId = '';
   const projectTitle = randomString();
 
   before(() => {
@@ -14,8 +15,9 @@ describe('Sign up - email only', () => {
         require_name: false,
         require_password: false,
       },
-    }).then(({ projectId: id }) => {
+    }).then(({ projectId: id, phaseId: pId }) => {
       projectId = id;
+      phaseId = pId;
     });
   });
 
@@ -33,7 +35,7 @@ describe('Sign up - email only', () => {
 
     cy.location('pathname').should(
       'eq',
-      `/en/projects/${projectTitle}/surveys/new`
+      `/en/projects/${projectTitle}/surveys/new/${phaseId}`
     );
     cy.logout();
   });
@@ -50,7 +52,7 @@ describe('Sign up - email only', () => {
 
     cy.location('pathname').should(
       'eq',
-      `/en/projects/${projectTitle}/surveys/new`
+      `/en/projects/${projectTitle}/surveys/new/${phaseId}`
     );
     cy.logout();
   });

@@ -95,18 +95,18 @@ const IdeaButton = memo<Props>(
         : {};
 
       clHistory.push(
-        {
-          pathname: isNativeSurvey
-            ? `/projects/${project.data.attributes.slug}/surveys/new`
-            : `/projects/${project.data.attributes.slug}/ideas/new`,
-          search: stringify(
-            {
-              ...positionParams,
-              phase_id: phase.id,
+        isNativeSurvey
+          ? `/projects/${project.data.attributes.slug}/surveys/new/${phase.id}`
+          : {
+              pathname: `/projects/${project.data.attributes.slug}/ideas/new`,
+              search: stringify(
+                {
+                  ...positionParams,
+                  phase_id: phase.id,
+                },
+                { addQueryPrefix: true }
+              ),
             },
-            { addQueryPrefix: true }
-          ),
-        },
         { scrollToTop: true }
       );
     };
