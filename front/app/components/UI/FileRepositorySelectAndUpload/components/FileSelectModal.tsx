@@ -17,6 +17,7 @@ import FileInput from '../../FileUploader/FileInput';
 import messages from './messages';
 
 interface Props {
+  variant?: 'default' | 'bo';
   opened: boolean;
   onClose: () => void;
   onFileAdd: (fileToAdd: UploadFile) => void;
@@ -27,6 +28,7 @@ interface Props {
 }
 
 const FileSelectModal = ({
+  variant = 'default',
   opened,
   onClose,
   onFileAdd,
@@ -66,12 +68,16 @@ const FileSelectModal = ({
 
   return (
     <Modal
+      variant={variant}
+      width={variant === 'bo' ? 400 : undefined}
       closeOnClickOutside={true}
       close={onClose}
       opened={opened}
-      header={formatMessage(messages.selectFile)}
+      header={formatMessage(
+        variant === 'bo' ? messages.attachments : messages.selectFile
+      )}
     >
-      <Box mt="0px" p="24px">
+      <Box mt="0px" p={variant === 'bo' ? '16px' : '24px'}>
         {filteredFileOptions.length > 0 && (
           <Box>
             <Select
@@ -96,6 +102,7 @@ const FileSelectModal = ({
         )}
 
         <FileInput
+          variant={variant}
           onAdd={handleFileOnAdd}
           id={'e2e-file-upload-input'}
           multiple={false}
