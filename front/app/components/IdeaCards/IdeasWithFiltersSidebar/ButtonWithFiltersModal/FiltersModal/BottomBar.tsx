@@ -5,7 +5,6 @@ import { Box, colors } from '@citizenlab/cl2-component-library';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
 
 import { InputFiltersProps } from '../../InputFilters';
 import ResetFiltersButton from '../../ResetFiltersButton';
@@ -15,7 +14,7 @@ import messages from './messages';
 interface Props {
   onClick: (event: FormEvent) => void;
   ideaQueryParameters: InputFiltersProps['ideaQueryParameters'];
-  ideasFilterCounts: InputFiltersProps['ideasFilterCounts'];
+  ideasFilterCounts?: InputFiltersProps['ideasFilterCounts'];
 }
 
 const BottomBar = ({
@@ -23,7 +22,7 @@ const BottomBar = ({
   ideaQueryParameters,
   ideasFilterCounts,
 }: Props) => {
-  if (isNilOrError(ideasFilterCounts)) return null;
+  if (!ideasFilterCounts) return null;
 
   return (
     <Box

@@ -11,6 +11,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { getPermissionsDisabledMessage } from 'utils/actionDescriptors';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
+import { isSafeRedirectUrl } from 'utils/urlUtils';
 
 import ParticipationPermission from '../ParticipationPermission';
 
@@ -55,6 +56,11 @@ const Survey = ({ phase, surveyEmbedUrl, surveyService, className }: Props) => {
       ? authUser.data.attributes.email
       : null;
   const userId = !isNilOrError(authUser) ? authUser.data.id : null;
+
+  // The embed URL ends up as an iframe or script src. The backend validates it
+  // per survey service, but never render anything that is not an http(s) URL
+  // (e.g. `javascript:`), so a weak backend check cannot turn into XSS.
+  if (!isSafeRedirectUrl(surveyEmbedUrl)) return null;
 
   return (
     <ParticipationPermission

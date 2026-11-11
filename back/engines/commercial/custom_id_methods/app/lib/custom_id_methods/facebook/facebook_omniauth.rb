@@ -22,12 +22,10 @@ module CustomIdMethods::Facebook
       'd6158130-5752-483f-83fb-ccf24beceaf5'
     end
 
-    def config_parameters
-      %i[app_id app_secret]
-    end
-
     def config_parameters_schema
       {
+        # Not private: app_id is public information anyway (it appears in the
+        # OpenGraph `fb:app_id` meta tag and Messenger share links).
         app_id: {
           title: 'App ID',
           type: 'string'
@@ -38,13 +36,6 @@ module CustomIdMethods::Facebook
           private: true
         }
       }
-    end
-
-    # Exposed publicly via the /id_methods endpoint. app_id is public
-    # information (it appears in the OpenGraph `fb:app_id` meta tag and Messenger
-    # share links); app_secret is intentionally not exposed.
-    def exposed_config_parameters
-      %i[app_id]
     end
 
     # @param [AppConfiguration] configuration

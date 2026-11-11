@@ -31,13 +31,12 @@ export const AUDIO_MIMETYPES = new Set([
   'audio/x-wav',
 ]);
 
+// XML files are served as downloads (see BaseFileUploader), so an iframe can't show them.
 export const IFRAME_MIMETYPES = new Set([
   'application/pdf',
   'text/plain',
   'text/javascript',
   'application/json',
-  'application/xml',
-  'text/xml',
   'application/x-yaml',
   'text/x-yaml',
   'text/html',

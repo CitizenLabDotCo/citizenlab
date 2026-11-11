@@ -1,34 +1,27 @@
 import React from 'react';
 
-import { SSOProviderWithoutVienna } from 'containers/Authentication/typings';
+import { IdMethodData } from 'api/id_methods/types';
 
-import useVisibleIdMethodsExceptFC from '../../useVisibleIdMethodsExceptFC';
+import { SSOProviderWithoutVienna } from 'containers/Authentication/typings';
 
 import SSOButton from './SSOButton';
 
 interface Props {
+  methods: IdMethodData[];
   onClickSSO: (ssoProvider: SSOProviderWithoutVienna) => void;
 }
 
-// Renders all enabled SSO providers (except FranceConnect), in display order.
-const SSOButtonsExceptFC = ({ onClickSSO }: Props) => {
-  const visibleIdMethodsExceptFC = useVisibleIdMethodsExceptFC();
-
-  const authenticationMethodsExceptFC = visibleIdMethodsExceptFC.filter(
-    (method) => method.attributes.authentication_method
-  );
-
-  return (
-    <>
-      {authenticationMethodsExceptFC.map((method) => (
-        <SSOButton
-          key={method.id}
-          provider={method.attributes.name}
-          onClickSSO={onClickSSO}
-        />
-      ))}
-    </>
-  );
-};
+// Renders a button for each given SSO method, in the order given.
+const SSOButtonsExceptFC = ({ methods, onClickSSO }: Props) => (
+  <>
+    {methods.map((method) => (
+      <SSOButton
+        key={method.id}
+        provider={method.attributes.name}
+        onClickSSO={onClickSSO}
+      />
+    ))}
+  </>
+);
 
 export default SSOButtonsExceptFC;
