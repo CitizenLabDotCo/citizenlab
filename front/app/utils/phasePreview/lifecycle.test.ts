@@ -135,3 +135,147 @@ it('uses the selected lifecycle only within the preview session', () => {
   expect(JSON.stringify(snapshot)).toBe(original);
   expect(isPreviewSnapshot({ ...snapshot, lifecycle: 'invalid' })).toBe(false);
 });
+
+it.each([
+  ['posting_idea', 'posting_disabled', 'submission_enabled'],
+  ['commenting_idea', 'commenting_disabled', 'commenting_enabled'],
+  ['comment_reacting_idea', 'commenting_disabled', 'commenting_enabled'],
+  ['reacting_idea', 'reacting_disabled', 'reacting_enabled'],
+] as const)(
+  'applies live %s settings in both directions',
+  (action, reason, setting) => {
+    const disabled = { [action]: { enabled: false, disabled_reason: reason } };
+    const enabled = { [action]: { enabled: true, disabled_reason: null } };
+    expect(previewActions(disabled, 'open', { [setting]: true })).toEqual(
+      enabled
+    );
+    expect(previewActions(enabled, 'open', { [setting]: false })).toEqual(
+      disabled
+    );
+    expect(
+      previewActions(disabled, 'before', { [setting]: true })
+    ).toMatchObject({
+      [action]: { enabled: false, disabled_reason: 'inactive_phase' },
+    });
+    expect(
+      previewActions(disabled, 'ended', { [setting]: true })
+    ).toMatchObject({
+      [action]: { enabled: false, disabled_reason: 'inactive_phase' },
+    });
+  }
+);
+
+it('keeps dislikes disabled when reactions are enabled and clears stale future dates', () => {
+  expect(
+    previewActions(
+      {
+        reacting_idea: {
+          enabled: false,
+          disabled_reason: 'reacting_disabled',
+          up: {
+            enabled: false,
+            disabled_reason: 'reacting_disabled',
+            future_enabled_at: '2090-01-01',
+          },
+          down: { enabled: false, disabled_reason: 'reacting_disabled' },
+        },
+      },
+      'open',
+      { reacting_enabled: true, reacting_dislike_enabled: false }
+    )
+  ).toEqual({
+    reacting_idea: {
+      enabled: true,
+      disabled_reason: null,
+      up: { enabled: true, disabled_reason: null, future_enabled_at: null },
+      down: { enabled: false, disabled_reason: 'reacting_dislike_disabled' },
+    },
+  });
+});
+
+it.each([
+  'user_not_signed_in',
+  'user_not_permitted',
+  'posting_limited_max_reached',
+  'posting_not_supported',
+])('preserves %s despite live settings', (reason) => {
+  const actions = { posting_idea: { enabled: false, disabled_reason: reason } };
+  expect(previewActions(actions, 'open', { submission_enabled: true })).toEqual(
+    actions
+  );
+});
+
+it('updates the phase descriptor when a disabled action is enabled in the draft', () => {
+  const phase = {
+    ...phasesData[0],
+    attributes: {
+      ...phasesData[0].attributes,
+      submission_enabled: false,
+      action_descriptors: {
+        ...phasesData[0].attributes.action_descriptors,
+        posting_idea: { enabled: false, disabled_reason: 'posting_disabled' },
+      },
+    },
+  } as const;
+  const session = new PreviewSession({
+    project: project1,
+    phase,
+    draft: { submission_enabled: true },
+    lifecycle: 'open',
+  });
+  expect(session.read(`/phases/${phase.id}`)).toMatchObject({
+    data: {
+      attributes: {
+        submission_enabled: true,
+        action_descriptors: {
+          posting_idea: { enabled: true, disabled_reason: null },
+        },
+      },
+    },
+  });
+});
+
+it('applies draft settings only to ideas in the previewed phase', () => {
+  const session = new PreviewSession({
+    project: project1,
+    phase: phasesData[0],
+    draft: { commenting_enabled: true },
+    lifecycle: 'open',
+  });
+  const idea = (phaseId: string) => ({
+    id: phaseId,
+    type: 'idea',
+    attributes: {
+      action_descriptors: {
+        commenting_idea: {
+          enabled: false,
+          disabled_reason: 'commenting_disabled',
+        },
+      },
+    },
+    relationships: { phases: { data: [{ id: phaseId, type: 'phase' }] } },
+  });
+  expect(
+    session.transform({ data: [idea(session.phaseId), idea('another-phase')] })
+  ).toMatchObject({
+    data: [
+      {
+        attributes: {
+          action_descriptors: {
+            commenting_idea: { enabled: true, disabled_reason: null },
+          },
+        },
+      },
+      {
+        attributes: {
+          action_descriptors: {
+            commenting_idea: {
+              enabled: false,
+              disabled_reason: 'commenting_disabled',
+            },
+          },
+        },
+      },
+    ],
+  });
+});

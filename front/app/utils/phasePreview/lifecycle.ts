@@ -1,4 +1,6 @@
-import { JsonObject, object, PreviewLifecycle } from './types';
+import type { IUpdatedPhaseProperties } from 'api/phases/types';
+
+import { JsonObject, object, PreviewLifecycle, PreviewSnapshot } from './types';
 
 const day = 24 * 60 * 60 * 1000;
 
@@ -58,28 +60,85 @@ export const previewDates = (
   };
 };
 
-// Only time/publication restrictions are simulated. Identity and eligibility
-// restrictions remain in force, and the iframe's write barrier stays installed.
+type ActionSettings = Pick<
+  IUpdatedPhaseProperties,
+  | 'submission_enabled'
+  | 'commenting_enabled'
+  | 'reacting_enabled'
+  | 'reacting_dislike_enabled'
+>;
+
+export const getPreviewActionSettings = ({
+  phase,
+  draft,
+}: PreviewSnapshot): ActionSettings => ({
+  submission_enabled:
+    draft.submission_enabled ?? phase.attributes.submission_enabled,
+  commenting_enabled:
+    draft.commenting_enabled ?? phase.attributes.commenting_enabled,
+  reacting_enabled: draft.reacting_enabled ?? phase.attributes.reacting_enabled,
+  reacting_dislike_enabled:
+    draft.reacting_dislike_enabled ?? phase.attributes.reacting_dislike_enabled,
+});
+
+const settingsForAction = (name: string, settings: ActionSettings) => {
+  switch (name) {
+    case 'posting_idea':
+      return { posting_disabled: settings.submission_enabled };
+    case 'commenting_idea':
+    case 'comment_reacting_idea':
+      return { commenting_disabled: settings.commenting_enabled };
+    case 'reacting_idea':
+    case 'up':
+      return { reacting_disabled: settings.reacting_enabled };
+    case 'down':
+      return {
+        reacting_disabled: settings.reacting_enabled,
+        reacting_dislike_disabled: settings.reacting_dislike_enabled,
+      };
+    default:
+      return {};
+  }
+};
+
+// Simulate dates and editable settings, while retaining eligibility and quota restrictions.
 export const previewActions = (
   actions: JsonObject,
-  lifecycle: PreviewLifecycle
+  lifecycle: PreviewLifecycle,
+  settings: ActionSettings = {}
 ): JsonObject =>
   Object.fromEntries(
     Object.entries(actions).map(([name, value]) => {
       const descriptor = object(value);
       if (!Object.keys(descriptor).length) return [name, value];
 
+      const options = Object.entries(settingsForAction(name, settings));
       const temporal = ['project_inactive', 'inactive_phase'].includes(
         String(descriptor.disabled_reason)
       );
+      const configurable = options.some(
+        ([reason, enabled]) =>
+          reason === descriptor.disabled_reason && enabled === true
+      );
+      const disabledSetting = options.find(
+        ([, enabled]) => enabled === false
+      )?.[0];
+      const canSimulate =
+        temporal || configurable || descriptor.enabled === true;
+      const disabledReason =
+        lifecycle !== 'open' ? 'inactive_phase' : disabledSetting;
+
       return [
         name,
         {
-          ...previewActions(descriptor, lifecycle),
-          ...(temporal || descriptor.enabled === true
+          ...previewActions(descriptor, lifecycle, settings),
+          ...(canSimulate
             ? {
-                enabled: lifecycle === 'open',
-                disabled_reason: lifecycle === 'open' ? null : 'inactive_phase',
+                enabled: !disabledReason,
+                disabled_reason: disabledReason ?? null,
+                ...('future_enabled_at' in descriptor && {
+                  future_enabled_at: null,
+                }),
               }
             : {}),
         },

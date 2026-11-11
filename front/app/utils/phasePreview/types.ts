@@ -21,7 +21,9 @@ export interface JsonObject {
 export const object = (value: Json | undefined): JsonObject =>
   value && typeof value === 'object' && !Array.isArray(value) ? value : {};
 
-export const relation = (id: string, type: string) => ({ data: { id, type } });
+export const relation = <T extends string>(id: string, type: T) => ({
+  data: { id, type },
+});
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null && !Array.isArray(value);

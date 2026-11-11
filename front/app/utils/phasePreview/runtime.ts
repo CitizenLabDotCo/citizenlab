@@ -1,3 +1,5 @@
+import { isEqual } from 'lodash-es';
+
 import causesKeys from 'api/causes/keys';
 import commonGroundResultsKeys from 'api/common_ground/keys/commonGroundResultsKeys';
 import ideaFeedKeys from 'api/idea_feed/keys';
@@ -10,6 +12,7 @@ import projectsKeys from 'api/projects/keys';
 
 import { queryClient } from 'utils/cl-react-query/queryClient';
 
+import { getPreviewActionSettings } from './lifecycle';
 import { PreviewSession } from './session';
 import { isolatePreviewStorage } from './storage';
 import {
@@ -228,6 +231,10 @@ export const initializePhasePreview = async () => {
           session.snapshot.lifecycle !== snapshot.lifecycle;
         const participationChanged =
           session.snapshot.showParticipation !== snapshot.showParticipation;
+        const settingsChanged = !isEqual(
+          getPreviewActionSettings(session.snapshot),
+          getPreviewActionSettings(snapshot)
+        );
         if (session.updateSnapshot(snapshot)) {
           // Refresh phase data without remounting forms or clearing local answers.
           void queryClient.invalidateQueries({
@@ -236,9 +243,9 @@ export const initializePhasePreview = async () => {
           void queryClient.invalidateQueries({
             queryKey: phasesKeys.list({ projectId: snapshot.project.id }),
           });
-          if (lifecycleChanged || participationChanged) {
+          if (lifecycleChanged || participationChanged || settingsChanged) {
             // Option cards cache their own action descriptors, independently of
-            // the phase. Re-read them when simulated participation opens/closes.
+            // the phase. Re-read them when their settings or lifecycle change.
             void queryClient.invalidateQueries({ queryKey: ideasKeys.all() });
           }
           if (participationChanged) {

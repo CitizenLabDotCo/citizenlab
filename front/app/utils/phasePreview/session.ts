@@ -1,6 +1,16 @@
+import type { IBasketData } from 'api/baskets/types';
+import type { IBasketsIdeaData } from 'api/baskets_ideas/types';
+import type { IVolunteer } from 'api/causes/types';
+import type { IEventAttendanceData } from 'api/event_attendance/types';
+import type { IIdeaFileData } from 'api/idea_files/types';
 import type { PresentationMode } from 'api/phases/types';
 
-import { previewActions, previewDates } from './lifecycle';
+import { createPreviewInput } from './input';
+import {
+  getPreviewActionSettings,
+  previewActions,
+  previewDates,
+} from './lifecycle';
 import { Json, JsonObject, object, PreviewSnapshot, relation } from './types';
 
 const unavailable = (reason: string) => ({
@@ -17,7 +27,8 @@ export class PreviewSession {
   private events = new Map<string, JsonObject>();
   private attendances = new Map<string, string>();
   private reactions = new Map<string, string>();
-  private input?: JsonObject;
+  private input?: ReturnType<typeof createPreviewInput>;
+  private files = new Map<string, ReturnType<PreviewSession['createFile']>>();
   private previewView?: PresentationMode;
   private submitted = false;
   private pollSubmitted = false;
@@ -86,10 +97,8 @@ export class PreviewSession {
   private phase() {
     // The message comes from our same-origin editor; JSON removes undefined fields.
     const phase: JsonObject = JSON.parse(JSON.stringify(this.snapshot.phase));
-    const attributes = {
-      ...object(phase.attributes),
-      ...JSON.parse(JSON.stringify(this.snapshot.draft)),
-    };
+    const draft: JsonObject = JSON.parse(JSON.stringify(this.snapshot.draft));
+    const attributes: JsonObject = { ...object(phase.attributes), ...draft };
     if (this.previewView) attributes.presentation_mode = this.previewView;
 
     const draftDescription = attributes.draft_description_multiloc;
@@ -119,7 +128,8 @@ export class PreviewSession {
       this.snapshot.lifecycle && !this.snapshot.unsaved
         ? previewActions(
             object(attributes.action_descriptors),
-            this.snapshot.lifecycle
+            this.snapshot.lifecycle,
+            getPreviewActionSettings(this.snapshot)
           )
         : object(attributes.action_descriptors);
     if (this.pollSubmitted) {
@@ -146,7 +156,7 @@ export class PreviewSession {
     return phase;
   }
 
-  private basket(): JsonObject {
+  private basket() {
     return {
       id: this.basketId,
       type: 'basket',
@@ -159,11 +169,12 @@ export class PreviewSession {
       },
       relationships: {
         phase: relation(this.phaseId, 'phase'),
+        user: relation('preview-user', 'user'),
         ideas: {
           data: [...this.votes.keys()].map((id) => ({ id, type: 'idea' })),
         },
       },
-    };
+    } satisfies IBasketData;
   }
 
   private get hidesSubmittedIdeas() {
@@ -234,8 +245,10 @@ export class PreviewSession {
 
     if (path === `/phases/${this.phaseId}`) return { data: this.phase() };
     if (path === `/ideas/draft/${this.phaseId}`) {
+      if (this.input) return this.transform({ data: this.input });
+
       return {
-        data: this.input ?? {
+        data: {
           type: 'idea',
           attributes: {
             custom_field_values: {},
@@ -263,14 +276,11 @@ export class PreviewSession {
       };
     }
 
-    if (
-      this.input &&
-      [
-        `/ideas/${this.input.id}/images`,
-        `/ideas/${this.input.id}/files`,
-      ].includes(path)
-    ) {
+    if (this.input && path === `/ideas/${this.input.id}/images`) {
       return { data: [], links: {} };
+    }
+    if (this.input && path === `/ideas/${this.input.id}/files`) {
+      return { data: [...this.files.values()] };
     }
 
     if (path === '/ideas/survey_submissions') return { data: [] };
@@ -279,7 +289,7 @@ export class PreviewSession {
         path === '/ideas/by_slug/preview-input') &&
       this.input
     ) {
-      return { data: this.input };
+      return this.transform({ data: this.input });
     }
     if (
       this.snapshot.unsaved &&
@@ -291,7 +301,7 @@ export class PreviewSession {
     return undefined;
   }
 
-  private basketIdea(id: string, votes: number): JsonObject {
+  private basketIdea(id: string, votes: number) {
     return {
       id: `preview-${id}`,
       type: 'baskets_idea',
@@ -300,7 +310,25 @@ export class PreviewSession {
         idea: relation(id, 'idea'),
         basket: relation(this.basketId, 'basket'),
       },
-    };
+    } satisfies IBasketsIdeaData;
+  }
+
+  private createFile(name: string, content: string) {
+    const now = new Date().toISOString();
+    const encoded = content.slice(content.indexOf(',') + 1);
+
+    return {
+      id: `preview-${crypto.randomUUID()}`,
+      type: 'file',
+      attributes: {
+        file: { url: content },
+        name,
+        size: atob(encoded).length,
+        ordering: this.files.size,
+        created_at: now,
+        updated_at: now,
+      },
+    } satisfies IIdeaFileData;
   }
 
   write(
@@ -318,45 +346,39 @@ export class PreviewSession {
     const parts = path.split('/').filter(Boolean);
 
     if (path === `/phases/${this.phaseId}/inputs` && method === 'POST') {
-      this.input = {
-        id: `preview-${crypto.randomUUID()}`,
-        type: 'idea',
-        attributes: {
-          slug: 'preview-input',
-          title_multiloc: {},
-          body_multiloc: {},
-          custom_field_values: {},
-          comments_count: 0,
-          likes_count: 0,
-          dislikes_count: 0,
-          followers_count: 0,
-          anonymous: true,
-          author_hash: 'preview',
-          supports_public_visibility: true,
-          publication_status: 'published',
-          action_descriptors: {
-            ...object(object(this.phase().attributes).action_descriptors),
-            editing_idea: unavailable('not_author'),
-          },
-          created_at: new Date().toISOString(),
-          published_at: new Date().toISOString(),
-          ...object(body.idea),
-        },
-        relationships: {
-          author: { data: null },
-          idea_status: { data: null },
-          user_follower: { data: null },
-          user_reaction: { data: null },
-          ideas_phases: { data: [] },
-          project: relation(this.snapshot.project.id, 'project'),
-          creation_phase: relation(this.phaseId, 'phase'),
-          phases: { data: [{ id: this.phaseId, type: 'phase' }] },
-          idea_images: { data: [] },
-          idea_files: { data: [] },
-          input_topics: { data: [] },
-        },
-      };
-      return { data: this.input };
+      this.files.clear();
+      this.input = createPreviewInput(this.snapshot, body);
+      return this.transform({ data: this.input });
+    }
+
+    if (
+      this.input &&
+      parts[0] === 'ideas' &&
+      parts[1] === this.input.id &&
+      parts[2] === 'files'
+    ) {
+      if (method === 'POST' && parts.length === 3) {
+        const file = object(body.file);
+        if (
+          typeof file.name !== 'string' ||
+          typeof file.file !== 'string' ||
+          !/^data:[^,]*;base64,/.test(file.file)
+        ) {
+          return undefined;
+        }
+
+        const resource = this.createFile(file.name, file.file);
+        this.files.set(resource.id, resource);
+        return { data: resource };
+      }
+      if (
+        method === 'DELETE' &&
+        parts.length === 4 &&
+        this.files.delete(parts[3])
+      ) {
+        return { data: null };
+      }
+      return undefined;
     }
 
     if (
@@ -365,10 +387,10 @@ export class PreviewSession {
       this.input
     ) {
       this.input.attributes = {
-        ...object(this.input.attributes),
+        ...this.input.attributes,
         ...object(body.idea),
       };
-      return { data: this.input };
+      return this.transform({ data: this.input });
     }
 
     if (
@@ -403,7 +425,20 @@ export class PreviewSession {
       if (method === 'POST') this.volunteers.set(parts[1], id);
       else if (method === 'DELETE') this.volunteers.delete(parts[1]);
       else return undefined;
-      return { data: { id, type: 'volunteer', attributes: {} } };
+      return {
+        data: {
+          id,
+          type: 'volunteer',
+          attributes: {
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          },
+          relationships: {
+            user: relation('preview-user', 'user'),
+            cause: relation(parts[1], 'cause'),
+          },
+        },
+      } satisfies IVolunteer;
     }
 
     if (
@@ -417,9 +452,9 @@ export class PreviewSession {
         data: {
           id,
           type: 'attendance',
-          attributes: {},
-          relationships: { event: relation(parts[1], 'event') },
-        },
+          attributes: { created_at: new Date().toISOString() },
+          relationships: { attendee: relation('preview-user', 'user') },
+        } satisfies IEventAttendanceData,
       };
     }
 
@@ -496,6 +531,11 @@ export class PreviewSession {
       }
 
       if (item.type === 'idea') {
+        const phases = object(relationships.phases).data;
+        const belongsToPhase =
+          Array.isArray(phases) &&
+          phases.some((phase) => object(phase).id === this.phaseId);
+
         return {
           ...item,
           attributes:
@@ -509,7 +549,10 @@ export class PreviewSession {
                   }),
                   action_descriptors: previewActions(
                     object(attributes.action_descriptors),
-                    this.snapshot.lifecycle
+                    this.snapshot.lifecycle,
+                    belongsToPhase
+                      ? getPreviewActionSettings(this.snapshot)
+                      : {}
                   ),
                 }
               : attributes,

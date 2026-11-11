@@ -340,7 +340,7 @@ it('keeps event attendance and cancellation isolated from the real account', asy
   expect(network).not.toHaveBeenCalled();
 });
 
-it('returns poll completion through the same included phase contract as the public API', async () => {
+it('updates the cached phase after a simulated poll response', async () => {
   const { request } = setup();
   const result = await (
     await request(`/phases/${phaseId}/poll_responses`, 'POST')
@@ -459,4 +459,77 @@ it('ignores duplicate snapshots and rejects another phase or project', () => {
     })
   ).toBe(false);
   expect(session.snapshot).toEqual(snapshot);
+});
+
+it('keeps required single-file answers inside the simulated form response', async () => {
+  const { request, network } = setup();
+  const file = {
+    content: 'data:text/plain;base64,aGVsbG8=',
+    name: 'answer.txt',
+  };
+  const response = await request(`/phases/${phaseId}/inputs`, 'POST', {
+    idea: { custom_field_values: { evidence: file } },
+  });
+  const input = await response.json();
+  expect(input.data.attributes.custom_field_values.evidence).toEqual(file);
+  const saved = await request(`/ideas/${input.data.id}`, 'PATCH', {
+    idea: { publication_status: 'published' },
+  });
+  expect(
+    (await saved.json()).data.attributes.custom_field_values.evidence
+  ).toEqual(file);
+  expect(network).not.toHaveBeenCalled();
+});
+
+it('uploads, refetches and deletes draft attachments without server writes', async () => {
+  const { request, network, blocked } = setup();
+  const input = await (
+    await request(`/phases/${phaseId}/inputs`, 'POST', {
+      idea: { publication_status: 'draft' },
+    })
+  ).json();
+  const path = `/ideas/${input.data.id}/files`;
+  const content = 'data:text/plain;base64,aGVsbG8=';
+  const response = await request(path, 'POST', {
+    file: { name: 'evidence.txt', file: content },
+  });
+  expect(response.status).toBe(200);
+  const file = (await response.json()).data;
+  expect(file.attributes).toMatchObject({
+    name: 'evidence.txt',
+    size: 5,
+    file: { url: content },
+  });
+  expect(await (await request(path, 'GET')).json()).toEqual({ data: [file] });
+  expect((await request(`${path}/${file.id}`, 'DELETE')).status).toBe(200);
+  expect(await (await request(path, 'GET')).json()).toEqual({ data: [] });
+  expect(network).not.toHaveBeenCalled();
+  expect(blocked).not.toHaveBeenCalled();
+});
+
+it('blocks malformed attachments and uploads to real ideas', async () => {
+  const { request, network } = setup();
+  const input = await (
+    await request(`/phases/${phaseId}/inputs`, 'POST')
+  ).json();
+  for (const file of [
+    'https://example.com/private.pdf',
+    'data:text/plain;base64,%%%',
+  ]) {
+    expect(
+      (
+        await request(`/ideas/${input.data.id}/files`, 'POST', {
+          file: { name: 'bad.txt', file },
+        })
+      ).status
+    ).toBe(422);
+  }
+  expect(
+    (
+      await request('/ideas/real-idea/files', 'POST', {
+        file: { name: 'evidence.txt', file: 'data:text/plain;base64,aGVsbG8=' },
+      })
+    ).status
+  ).toBe(422);
+  expect(network).not.toHaveBeenCalled();
 });

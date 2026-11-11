@@ -6,6 +6,7 @@ import {
   Text,
   Tooltip,
   colors,
+  stylingConsts,
 } from '@citizenlab/cl2-component-library';
 
 import useCauses from 'api/causes/useCauses';
@@ -194,7 +195,7 @@ const PhasePreview = ({ src, title, snapshot }: Props) => {
             display="flex"
             alignItems="center"
             background={colors.black}
-            borderRadius="999px"
+            borderRadius={stylingConsts.borderRadiusPill}
             p="2px"
           >
             {(['before', 'open', 'participation', 'ended'] as const).map(
@@ -220,7 +221,7 @@ const PhasePreview = ({ src, title, snapshot }: Props) => {
                       textColor={selected ? colors.white : colors.coolGrey300}
                       textHoverColor={colors.white}
                       textDecorationHover="none"
-                      borderRadius="999px"
+                      borderRadius={stylingConsts.borderRadiusPill}
                       height="20px"
                       padding="0 8px"
                       fontSize="11px"
@@ -242,7 +243,7 @@ const PhasePreview = ({ src, title, snapshot }: Props) => {
           >
             <Box
               background={colors.grey200}
-              borderRadius="6px"
+              borderRadius={stylingConsts.borderRadius}
               px="10px"
               py="4px"
             >
