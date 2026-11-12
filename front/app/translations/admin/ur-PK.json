@@ -1520,8 +1520,6 @@
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.projectContext": "منصوبے کا سیاق و سباق",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceLabel": "سپیس",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceTooltip": "ایک فولڈر ہمیشہ اپنی سپیس میں رہتا ہے، اس لیے فولڈر منتخب کرنے سے سپیس بھی سیٹ ہو جاتی ہے۔ سپیس تبدیل کرنے سے منتخب کردہ فولڈر ختم ہو جاتا ہے۔",
-  "app.containers.Admin.projects.all.NewProjectButton.fromScratchMenuItem": "شروع سے",
-  "app.containers.Admin.projects.all.NewProjectButton.useTemplateMenuItem": "ٹیمپلیٹ استعمال کریں",
   "app.containers.Admin.projects.all.NewProjectModal.fromTemplate": "ٹیمپلیٹ سے شروع کریں",
   "app.containers.Admin.projects.all.Spaces.Table.deleteSpaceButton": "جگہ کو حذف کریں۔",
   "app.containers.Admin.projects.all.Spaces.Table.noSpacesFound": "کوئی سپیسز نہیں ملیں",

@@ -1520,8 +1520,6 @@
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.projectContext": "Hankkeen asiayhteys",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceLabel": "Tila",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceTooltip": "Kansio pysyy aina omassa tilassaan, joten kansion valitseminen asettaa myös tilan. Tilan vaihtaminen poistaa kansion valinnan.",
-  "app.containers.Admin.projects.all.NewProjectButton.fromScratchMenuItem": "Tyhjästä",
-  "app.containers.Admin.projects.all.NewProjectButton.useTemplateMenuItem": "Käytä mallia",
   "app.containers.Admin.projects.all.NewProjectModal.fromTemplate": "Aloita mallipohjasta",
   "app.containers.Admin.projects.all.Spaces.Table.deleteSpaceButton": "Poista tila",
   "app.containers.Admin.projects.all.Spaces.Table.noSpacesFound": "Tiloja ei löytynyt",

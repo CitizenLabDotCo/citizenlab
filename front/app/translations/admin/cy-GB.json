@@ -1520,8 +1520,6 @@
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.projectContext": "Cyd-destun y prosiect",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceLabel": "Gofod",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceTooltip": "Mae ffolder bob amser yn aros yn ei gofod ei hun, felly mae dewis ffolder hefyd yn gosod y gofod. Mae newid y gofod yn clirio'r ffolder a ddewiswyd.",
-  "app.containers.Admin.projects.all.NewProjectButton.fromScratchMenuItem": "O'r dechrau",
-  "app.containers.Admin.projects.all.NewProjectButton.useTemplateMenuItem": "Defnyddio templed",
   "app.containers.Admin.projects.all.NewProjectModal.fromTemplate": "Dechrau o dempled",
   "app.containers.Admin.projects.all.Spaces.Table.deleteSpaceButton": "Dileu gofod",
   "app.containers.Admin.projects.all.Spaces.Table.noSpacesFound": "Ni chafwyd hyd i unrhyw ofodau",

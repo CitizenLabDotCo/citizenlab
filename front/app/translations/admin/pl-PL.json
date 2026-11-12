@@ -1520,8 +1520,6 @@
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.projectContext": "Kontekst projektu",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceLabel": "Przestrzeń",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceTooltip": "Folder zawsze znajduje się w swojej przestrzeni, więc wybranie folderu ustawia również przestrzeń. Zmiana przestrzeni usuwa wybrany folder.",
-  "app.containers.Admin.projects.all.NewProjectButton.fromScratchMenuItem": "Od podstaw",
-  "app.containers.Admin.projects.all.NewProjectButton.useTemplateMenuItem": "Użyj szablonu",
   "app.containers.Admin.projects.all.NewProjectModal.fromTemplate": "Zacznij od szablonu",
   "app.containers.Admin.projects.all.Spaces.Table.deleteSpaceButton": "Usuń miejsce",
   "app.containers.Admin.projects.all.Spaces.Table.noSpacesFound": "Nie znaleziono przestrzeni",

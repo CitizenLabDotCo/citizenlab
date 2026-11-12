@@ -1520,8 +1520,6 @@
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.projectContext": "ਪ੍ਰੋਜੈਕਟ ਦਾ ਸੰਦਰਭ",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceLabel": "ਸਪੇਸ",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceTooltip": "ਇੱਕ ਫ਼ੋਲਡਰ ਹਮੇਸ਼ਾ ਆਪਣੀ ਖੁਦ ਦੀ ਸਪੇਸ ਵਿੱਚ ਰਹਿੰਦਾ ਹੈ, ਇਸ ਲਈ ਇੱਕ ਫ਼ੋਲਡਰ ਚੁਣਨ ਨਾਲ ਸਪੇਸ ਵੀ ਸੈੱਟ ਹੋ ਜਾਂਦੀ ਹੈ। ਸਪੇਸ ਬਦਲਣ ਨਾਲ ਚੁਣਿਆ ਹੋਇਆ ਫ਼ੋਲਡਰ ਹਟ ਜਾਂਦਾ ਹੈ।",
-  "app.containers.Admin.projects.all.NewProjectButton.fromScratchMenuItem": "ਸ਼ੁਰੂ ਤੋਂ",
-  "app.containers.Admin.projects.all.NewProjectButton.useTemplateMenuItem": "ਟੈਂਪਲੇਟ ਦੀ ਵਰਤੋਂ ਕਰੋ",
   "app.containers.Admin.projects.all.NewProjectModal.fromTemplate": "ਟੈਂਪਲੇਟ ਤੋਂ ਸ਼ੁਰੂ ਕਰੋ",
   "app.containers.Admin.projects.all.Spaces.Table.deleteSpaceButton": "ਸਪੇਸ ਮਿਟਾਓ",
   "app.containers.Admin.projects.all.Spaces.Table.noSpacesFound": "ਕੋਈ ਸਪੇਸ ਨਹੀਂ ਮਿਲੀ",

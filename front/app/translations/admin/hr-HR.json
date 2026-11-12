@@ -1520,8 +1520,6 @@
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.projectContext": "Kontekst projekta",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceLabel": "Prostor",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceTooltip": "Mapa uvijek ostaje u vlastitom prostoru, pa odabir mape ujedno postavlja i prostor. Promjena prostora uklanja odabranu mapu.",
-  "app.containers.Admin.projects.all.NewProjectButton.fromScratchMenuItem": "Od nule",
-  "app.containers.Admin.projects.all.NewProjectButton.useTemplateMenuItem": "Upotrijebi predložak",
   "app.containers.Admin.projects.all.NewProjectModal.fromTemplate": "Kreni od predloška",
   "app.containers.Admin.projects.all.Spaces.Table.deleteSpaceButton": "Izbriši prostor",
   "app.containers.Admin.projects.all.Spaces.Table.noSpacesFound": "Nisu pronađeni prostori",

@@ -1520,8 +1520,6 @@
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.projectContext": "Projektsammanhang",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceLabel": "Yta",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceTooltip": "En mapp tillhör alltid en specifik yta, så när du väljer en mapp ställs även ytan in. Om du byter yta rensas den valda mappen.",
-  "app.containers.Admin.projects.all.NewProjectButton.fromScratchMenuItem": "Från grunden",
-  "app.containers.Admin.projects.all.NewProjectButton.useTemplateMenuItem": "Använd en mall",
   "app.containers.Admin.projects.all.NewProjectModal.fromTemplate": "Börja från en mall",
   "app.containers.Admin.projects.all.Spaces.Table.deleteSpaceButton": "Ta bort utrymme",
   "app.containers.Admin.projects.all.Spaces.Table.noSpacesFound": "Inga ytor hittades",

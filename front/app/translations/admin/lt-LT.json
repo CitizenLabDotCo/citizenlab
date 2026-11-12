@@ -1520,8 +1520,6 @@
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.projectContext": "Projekto kontekstas",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceLabel": "Erdvė",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceTooltip": "Aplankas visada lieka savo erdvėje, todėl pasirinkus aplanką kartu nustatoma ir erdvė. Pakeitus erdvę, pasirinktas aplankas bus išvalytas.",
-  "app.containers.Admin.projects.all.NewProjectButton.fromScratchMenuItem": "Nuo nulio",
-  "app.containers.Admin.projects.all.NewProjectButton.useTemplateMenuItem": "Naudoti šabloną",
   "app.containers.Admin.projects.all.NewProjectModal.fromTemplate": "Pradėti nuo šablono",
   "app.containers.Admin.projects.all.Spaces.Table.deleteSpaceButton": "Ištrinti vietą",
   "app.containers.Admin.projects.all.Spaces.Table.noSpacesFound": "Nerasta jokių erdvių",

@@ -1520,8 +1520,6 @@
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.projectContext": "Projekt kontextusa",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceLabel": "Tér",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceTooltip": "Egy mappa mindig a saját terében marad, így a mappa kiválasztása a teret is beállítja. A tér módosítása törli a kiválasztott mappát.",
-  "app.containers.Admin.projects.all.NewProjectButton.fromScratchMenuItem": "Az alapoktól",
-  "app.containers.Admin.projects.all.NewProjectButton.useTemplateMenuItem": "Sablon használata",
   "app.containers.Admin.projects.all.NewProjectModal.fromTemplate": "Kezdés sablonból",
   "app.containers.Admin.projects.all.Spaces.Table.deleteSpaceButton": "Tér törlése",
   "app.containers.Admin.projects.all.Spaces.Table.noSpacesFound": "Nem található tér",

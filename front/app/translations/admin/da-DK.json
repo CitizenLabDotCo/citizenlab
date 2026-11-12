@@ -1520,8 +1520,6 @@
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.projectContext": "Projektkontekst",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceLabel": "Rum",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceTooltip": "En mappe bliver altid i sit eget rum, så valg af en mappe indstiller også rum. Ændring af rum rydder den valgte mappe.",
-  "app.containers.Admin.projects.all.NewProjectButton.fromScratchMenuItem": "Fra bunden",
-  "app.containers.Admin.projects.all.NewProjectButton.useTemplateMenuItem": "Brug en skabelon",
   "app.containers.Admin.projects.all.NewProjectModal.fromTemplate": "Start fra en skabelon",
   "app.containers.Admin.projects.all.Spaces.Table.deleteSpaceButton": "Slet mellemrum",
   "app.containers.Admin.projects.all.Spaces.Table.noSpacesFound": "Ingen rum fundet",
