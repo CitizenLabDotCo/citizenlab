@@ -847,8 +847,8 @@ describe 'Rack::Attack' do
   describe 'report chat turns' do
     let(:path) { "/web_api/v1/reports/#{SecureRandom.uuid}/chat" }
 
-    def ask(token: nil, ip: '1.2.3.4')
-      post(path, params: '{ "message": "shorter" }', headers: json_headers(token: token, ip: ip))
+    def ask(token: nil, ip: '1.2.3.4', suffix: '')
+      post("#{path}#{suffix}", params: '{ "message": "shorter" }', headers: json_headers(token: token, ip: ip))
     end
 
     it 'limits turns for the same user to 30 in an hour, whatever the IP' do
@@ -875,6 +875,16 @@ describe 'Rack::Attack' do
         expect(status).not_to eq(429)
 
         ask
+        expect(status).to eq(429)
+      end
+    end
+
+    it 'counts requests with a format suffix too' do
+      freeze_time do
+        60.times { ask(suffix: '.json') }
+        expect(status).not_to eq(429)
+
+        ask(suffix: '.json')
         expect(status).to eq(429)
       end
     end
