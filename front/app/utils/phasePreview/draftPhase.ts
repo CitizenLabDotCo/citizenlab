@@ -46,6 +46,7 @@ export const createDraftPhase = (
     native_survey_button_multiloc: draft.native_survey_button_multiloc,
     ideas_count: 0,
     votes_count: 0,
+    manual_votes_count: 0,
     baskets_count: 0,
     total_votes_amount: 0,
     report_public: false,

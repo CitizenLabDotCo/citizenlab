@@ -10,15 +10,7 @@ jest.mock('api/custom_fields/useCustomFields', () => () => ({
   data: mockFields,
 }));
 
-jest.mock('./SurveySetupModal', () => ({
-  __esModule: true,
-  default: ({ opened, onClose }: { opened: boolean; onClose: () => void }) =>
-    opened ? (
-      <div role="dialog" aria-label="Survey setup">
-        <button onClick={onClose}>Close survey setup</button>
-      </div>
-    ) : null,
-}));
+const onAddQuestions = jest.fn();
 
 const renderOption = () =>
   render(
@@ -28,23 +20,19 @@ const renderOption = () =>
       name="survey-method"
       title="Survey"
       description="Survey description"
+      onAddQuestions={onAddQuestions}
     />
   );
 
 describe('NativeSurveyOption', () => {
-  it('labels a configured survey Edit survey and preserves the setup dialog', async () => {
+  beforeEach(() => onAddQuestions.mockClear());
+
+  it('labels a configured survey Edit survey and opens the setup', async () => {
     mockFields = [{ enabled: true, input_type: 'text' }];
     renderOption();
 
     await userEvent.click(screen.getByRole('button', { name: 'Edit survey' }));
-    expect(
-      screen.getByRole('dialog', { name: 'Survey setup' })
-    ).toBeInTheDocument();
-
-    await userEvent.click(
-      screen.getByRole('button', { name: 'Close survey setup' })
-    );
-    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(onAddQuestions).toHaveBeenCalledTimes(1);
   });
 
   it('offers Add questions when there are no enabled questions', async () => {
@@ -60,9 +48,7 @@ describe('NativeSurveyOption', () => {
     await userEvent.click(
       screen.getByRole('button', { name: 'Add questions' })
     );
-    expect(
-      screen.getByRole('dialog', { name: 'Survey setup' })
-    ).toBeInTheDocument();
+    expect(onAddQuestions).toHaveBeenCalledTimes(1);
   });
 
   it('does not offer a form action before questions have loaded', () => {
