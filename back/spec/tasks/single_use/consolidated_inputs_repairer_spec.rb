@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require Rails.root.join('lib/tasks/single_use/services/consolidated_inputs_comment_copier')
+require Rails.root.join('lib/tasks/single_use/services/consolidated_inputs_repairer')
 
-describe Tasks::SingleUse::Services::ConsolidatedInputsCommentCopier do
+describe Tasks::SingleUse::Services::ConsolidatedInputsRepairer do
   subject(:copier) { described_class.new(map, reporter: reporter, execute: execute) }
 
   let(:reporter) { ScriptReporter.new }

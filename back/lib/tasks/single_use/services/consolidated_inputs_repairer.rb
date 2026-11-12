@@ -14,7 +14,7 @@ module Tasks
       # Comments and reactions are created without their SideFx services: this is old participation
       # moving house, so nobody must be notified and no activity logged. Re-running the copier skips
       # what an earlier run already created.
-      class ConsolidatedInputsCommentCopier
+      class ConsolidatedInputsRepairer
         COPIED_COMMENT_ATTRIBUTES = %w[
           author_id author_hash anonymous body_multiloc publication_status created_at updated_at body_updated_at
         ].freeze

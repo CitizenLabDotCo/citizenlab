@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
-require_relative 'services/consolidated_inputs_comment_copier'
+require_relative 'services/consolidated_inputs_repairer'
 
 # Cape Town merged its old Staff and Resident ideas phases into one new phase per audience by
 # importing the inputs, which left their comments behind (TAN-9037). This copies the comments,
 # replies and comment likes/dislikes of each old input onto its imported copy, without notifying
-# anyone. See ConsolidatedInputsCommentCopier for how copies are matched to their source.
+# anyone. See ConsolidatedInputsRepairer for how copies are matched to their source.
 #
-#     rake 'single_use:copy_comments_to_consolidated_inputs[,capetown.govocal.com]'         # dry run
-#     rake 'single_use:copy_comments_to_consolidated_inputs[execute,capetown.govocal.com]'  # write
+#     rake 'single_use:repair_consolidated_inputs[,capetown.govocal.com]'         # dry run
+#     rake 'single_use:repair_consolidated_inputs[execute,capetown.govocal.com]'  # write
 namespace :single_use do
   desc "Copy the comments of Cape Town's old ideas onto their imported copies. Dry run unless passed 'execute'."
-  task :copy_comments_to_consolidated_inputs, %i[execute host] => [:environment] do |_t, args|
+  task :repair_consolidated_inputs, %i[execute host] => [:environment] do |_t, args|
     host = 'capetown.govocal.com'
     map = {
       # cct-staff-ideas <= the 2 old staff phases
@@ -22,13 +22,13 @@ namespace :single_use do
     counts = Hash.new(0)
 
     TenantScript.run(
-      'copy_comments_to_consolidated_inputs',
+      'repair_consolidated_inputs',
       args: args,
       description: 'copying the comments of old inputs onto their imported copies',
       tenants: Tenant.where(host: host),
       summary: ->(_script) { puts "   Pairs matched: #{counts[:pairs]}, skipped: #{counts[:skipped]}, comments: #{counts[:comments]}, reactions: #{counts[:reactions]}" }
     ) do |_tenant, script|
-      copier = Tasks::SingleUse::Services::ConsolidatedInputsCommentCopier.new(map, reporter: script.reporter, execute: script.execute?)
+      copier = Tasks::SingleUse::Services::ConsolidatedInputsRepairer.new(map, reporter: script.reporter, execute: script.execute?)
       counts = copier.run
     end
   end
