@@ -171,9 +171,7 @@ const FileInput = ({
   const [unsupportedFileNames, setUnsupportedFileNames] = useState<string[]>(
     []
   );
-  const [tooLargeMaxSizeMb, setTooLargeMaxSizeMb] = useState<
-    number | undefined
-  >(undefined);
+  const [hasTooLargeFile, setHasTooLargeFile] = useState(false);
   const latestPickRef = useRef(0);
 
   const onClick = (event: FormEvent<any>) => {
@@ -188,7 +186,7 @@ const FileInput = ({
     if (files && files.length > 0) {
       // Reset any error state
       setUnsupportedFileNames([]);
-      setTooLargeMaxSizeMb(undefined);
+      setHasTooLargeFile(false);
       latestPickRef.current += 1;
       const pick = latestPickRef.current;
 
@@ -205,7 +203,7 @@ const FileInput = ({
 
         if (maxSizeMb && file.size / 1000000 > maxSizeMb) {
           file.error = ['file_too_large'];
-          if (isLatestPick) setTooLargeMaxSizeMb(maxSizeMb);
+          if (isLatestPick) setHasTooLargeFile(true);
         } else if (!fileAccept.includes(file.extension)) {
           file.error = ['incorrect_extension'];
           if (isLatestPick) {
@@ -244,12 +242,8 @@ const FileInput = ({
           text={formatMessage(messages.incorrect_extension, { fileName })}
         />
       ))}
-      {tooLargeMaxSizeMb !== undefined && (
-        <Error
-          text={formatMessage(messages.file_too_large, {
-            maxSizeMb: tooLargeMaxSizeMb,
-          })}
-        />
+      {hasTooLargeFile && maxSizeMb !== undefined && (
+        <Error text={formatMessage(messages.file_too_large, { maxSizeMb })} />
       )}
     </Container>
   );
