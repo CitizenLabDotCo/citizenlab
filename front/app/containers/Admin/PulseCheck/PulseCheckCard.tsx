@@ -9,12 +9,12 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 import {
-  IFeedbackPrompt,
-  IFeedbackPromptAnswer,
-  IFeedbackPromptData,
-} from 'api/feedback_prompts/types';
-import useAnswerFeedbackPrompt from 'api/feedback_prompts/useAnswerFeedbackPrompt';
-import useDismissFeedbackPrompt from 'api/feedback_prompts/useDismissFeedbackPrompt';
+  IPulseCheck,
+  IPulseCheckAnswer,
+  IPulseCheckData,
+} from 'api/pulse_checks/types';
+import useAnswerPulseCheck from 'api/pulse_checks/useAnswerPulseCheck';
+import useDismissPulseCheck from 'api/pulse_checks/useDismissPulseCheck';
 
 import CloseIconButton from 'components/UI/CloseIconButton';
 import TextArea from 'components/UI/TextArea';
@@ -28,40 +28,40 @@ import questions from './questions';
 const SCORES = [1, 2, 3, 4, 5, 6, 7];
 
 interface Props {
-  prompt: IFeedbackPromptData;
+  pulseCheck: IPulseCheckData;
   onClose: () => void;
 }
 
-const PromptCard = ({ prompt, onClose }: Props) => {
+const PulseCheckCard = ({ pulseCheck, onClose }: Props) => {
   const { formatMessage } = useIntl();
   const [score, setScore] = useState<number>();
   const [comment, setComment] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const hasSavedScore = useRef(false);
-  const saveRequest = useRef<Promise<IFeedbackPrompt> | null>(null);
+  const saveRequest = useRef<Promise<IPulseCheck> | null>(null);
   const {
     mutateAsync: answer,
     isPending: isSending,
     isError,
-  } = useAnswerFeedbackPrompt();
-  const { mutate: dismiss } = useDismissFeedbackPrompt();
+  } = useAnswerPulseCheck();
+  const { mutate: dismiss } = useDismissPulseCheck();
 
-  const question = formatMessage(questions[prompt.attributes.key]);
-  const scoreId = `feedback-prompt-score-${prompt.id}`;
+  const question = formatMessage(questions[pulseCheck.attributes.key]);
+  const scoreId = `pulse-check-score-${pulseCheck.id}`;
 
   const handleClose = () => {
     if (!hasSavedScore.current) {
       if (saveRequest.current) {
         // A close during saving must become a dismissal if that save fails.
-        saveRequest.current.catch(() => dismiss(prompt.id));
+        saveRequest.current.catch(() => dismiss(pulseCheck.id));
       } else {
-        dismiss(prompt.id);
+        dismiss(pulseCheck.id);
       }
     }
     onClose();
   };
 
-  const saveAnswer = (body: IFeedbackPromptAnswer, onSuccess?: () => void) => {
+  const saveAnswer = (body: IPulseCheckAnswer, onSuccess?: () => void) => {
     if (saveRequest.current) return;
 
     const request = answer(body);
@@ -82,7 +82,7 @@ const PromptCard = ({ prompt, onClose }: Props) => {
     if (score === value && hasSavedScore.current && !isError) return;
 
     setScore(value);
-    saveAnswer({ id: prompt.id, score: value });
+    saveAnswer({ id: pulseCheck.id, score: value });
   };
 
   const handleKeyDown = (
@@ -113,7 +113,7 @@ const PromptCard = ({ prompt, onClose }: Props) => {
   const handleSend = () => {
     if (score === undefined) return;
     saveAnswer(
-      { id: prompt.id, score, comment: comment.trim() || undefined },
+      { id: pulseCheck.id, score, comment: comment.trim() || undefined },
       () => setIsSubmitted(true)
     );
   };
@@ -121,7 +121,7 @@ const PromptCard = ({ prompt, onClose }: Props) => {
   return (
     <Box
       as="section"
-      data-cy="feedback-prompt"
+      data-cy="pulse-check"
       aria-label={question}
       position="fixed"
       bottom="24px"
@@ -134,7 +134,12 @@ const PromptCard = ({ prompt, onClose }: Props) => {
       borderRadius={stylingConsts.borderRadius}
       border={`1px solid ${colors.grey200}`}
     >
-      <Box data-cy="feedback-close" position="absolute" top="12px" right="12px">
+      <Box
+        data-cy="pulse-check-close"
+        position="absolute"
+        top="12px"
+        right="12px"
+      >
         <CloseIconButton
           onClick={handleClose}
           a11y_buttonActionMessage={messages.close}
@@ -161,7 +166,7 @@ const PromptCard = ({ prompt, onClose }: Props) => {
               {SCORES.map((value) => (
                 <Button
                   key={value}
-                  dataCy={`feedback-score-${value}`}
+                  dataCy={`pulse-check-score-${value}`}
                   id={`${scoreId}-${value}`}
                   type="button"
                   buttonStyle="secondary-outlined"
@@ -216,7 +221,7 @@ const PromptCard = ({ prompt, onClose }: Props) => {
                 borderTop={`1px solid ${colors.grey200}`}
               >
                 <TextArea
-                  id={`feedback-prompt-comment-${prompt.id}`}
+                  id={`pulse-check-comment-${pulseCheck.id}`}
                   label={formatMessage(messages.commentLabel)}
                   value={comment}
                   onChange={setComment}
@@ -226,7 +231,7 @@ const PromptCard = ({ prompt, onClose }: Props) => {
                   <Button
                     buttonStyle="admin-dark"
                     type="button"
-                    dataCy="feedback-send"
+                    dataCy="pulse-check-send"
                     onClick={handleSend}
                     processing={isSending}
                   >
@@ -242,4 +247,4 @@ const PromptCard = ({ prompt, onClose }: Props) => {
   );
 };
 
-export default PromptCard;
+export default PulseCheckCard;
