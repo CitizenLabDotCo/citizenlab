@@ -2395,7 +2395,7 @@
   "app.containers.Admin.projects.project.survey.deleteAnalysis": "Elimina",
   "app.containers.Admin.projects.project.survey.deleteAnalysisConfirmation": "Vuoi davvero eliminare questa analisi? Questa azione non può essere annullata.",
   "app.containers.Admin.projects.project.survey.explore": "Esplora",
-  "app.containers.Admin.projects.project.survey.followUpResponses": "Risposte aggiuntive",
+  "app.containers.Admin.projects.project.survey.followUpResponses": "Motivazioni",
   "app.containers.Admin.projects.project.survey.formResults.averageRank": "<b>#{averageRank}</b> media",
   "app.containers.Admin.projects.project.survey.formResults.averageRankAccessible": "#{averageRank} media",
   "app.containers.Admin.projects.project.survey.formResults.exportGeoJSON": "Esporta come GeoJSON",
