@@ -375,7 +375,7 @@ Rails.application.routes.draw do
 
       resources :experiments, only: %i[index create]
 
-      resources :feedback_prompts, only: [] do
+      resources :pulse_checks, only: [] do
         post :show_next, on: :collection
         patch :answer, on: :member
         patch :dismiss, on: :member
