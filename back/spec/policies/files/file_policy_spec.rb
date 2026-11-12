@@ -26,12 +26,28 @@ RSpec.describe Files::FilePolicy do
       it { is_expected.not_to permit(:create) }
       it { is_expected.not_to permit(:update) }
       it { is_expected.not_to permit(:destroy) }
+
+      context 'when the file is not associated with any projects' do
+        let(:file) { create(:global_file) }
+
+        it { is_expected.not_to permit(:update) }
+        it { is_expected.not_to permit(:destroy) }
+      end
+
+      # A regular user cannot create such a file (see #create?), but a moderator who
+      # uploaded one stays its uploader after losing the role.
+      context 'when the file is not associated with any projects and was uploaded by the user' do
+        let(:file) { create(:global_file, uploader: user) }
+
+        it { is_expected.not_to permit(:update) }
+        it { is_expected.not_to permit(:destroy) }
+      end
     end
 
     context 'for project moderator' do
       let_it_be(:projects) { create_pair(:project) }
 
-      context 'when the file is not associated with any projects' do
+      context 'when the user does not moderate the project the file belongs to' do
         let(:user) { create(:project_moderator, projects: projects) }
         let(:file) { build(:file, uploader: user) }
 
@@ -44,6 +60,22 @@ RSpec.describe Files::FilePolicy do
           it { is_expected.not_to permit(:update) }
           it { is_expected.not_to permit(:destroy) }
         end
+      end
+
+      context 'when a saved file without projects was uploaded by the user' do
+        let(:user) { create(:project_moderator, projects: projects) }
+        let(:file) { create(:global_file, uploader: user) }
+
+        it { is_expected.to permit(:update) }
+        it { is_expected.to permit(:destroy) }
+      end
+
+      context 'when a saved file without projects was uploaded by someone else' do
+        let(:user) { create(:project_moderator, projects: projects) }
+        let(:file) { create(:global_file) }
+
+        it { is_expected.not_to permit(:update) }
+        it { is_expected.not_to permit(:destroy) }
       end
 
       context 'when the user moderates the project the file belongs to' do

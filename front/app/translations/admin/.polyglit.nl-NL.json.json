@@ -1434,6 +1434,30 @@
     "verified_at": "2026-10-27T14:09:52.075408Z",
     "verified_by": "Luuc"
   },
+
+  "app.components.admin.ContentBuilder.CustomBlocks.blockDisabled": {
+    "state": "verified",
+    "verified_at": "2026-11-11T17:44:58.635177Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.components.admin.ContentBuilder.CustomBlocks.blockLoadError": {
+    "state": "verified",
+    "verified_at": "2026-11-11T17:44:58.635177Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.components.admin.ContentBuilder.CustomBlocks.customBlockTitle": {
+    "state": "verified",
+    "verified_at": "2026-11-11T17:44:58.635177Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.components.admin.ContentBuilder.CustomBlocks.noSettings": {
+    "state": "verified",
+    "verified_at": "2026-11-11T17:44:58.635177Z",
+    "verified_by": "Luuc"
+  },
   "app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions3": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.383601Z",
@@ -3863,6 +3887,66 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.383601Z",
     "verified_by": "Admin"
+  },
+
+  "app.containers.Admin.FeedbackPrompt.close": {
+    "state": "verified",
+    "verified_at": "2026-10-13T15:16:27.528754Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.Admin.FeedbackPrompt.commentLabel": {
+    "state": "verified",
+    "verified_at": "2026-10-13T15:16:27.528754Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.Admin.FeedbackPrompt.projectSetupEaseQuestion": {
+    "state": "verified",
+    "verified_at": "2026-10-13T15:16:27.528754Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.Admin.FeedbackPrompt.returnFindabilityQuestion2": {
+    "state": "verified",
+    "verified_at": "2026-10-13T15:16:27.528754Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.Admin.FeedbackPrompt.saveError": {
+    "state": "verified",
+    "verified_at": "2026-10-15T19:48:41.004325Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.Admin.FeedbackPrompt.scaleHint": {
+    "state": "verified",
+    "verified_at": "2026-10-13T15:16:27.528754Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.Admin.FeedbackPrompt.send": {
+    "state": "verified",
+    "verified_at": "2026-10-13T15:16:27.528754Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.Admin.FeedbackPrompt.thanks": {
+    "state": "verified",
+    "verified_at": "2026-10-13T15:16:27.528754Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.Admin.FeedbackPrompt.veryEasy": {
+    "state": "verified",
+    "verified_at": "2026-10-13T15:16:27.528754Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.Admin.FeedbackPrompt.veryHard": {
+    "state": "verified",
+    "verified_at": "2026-10-13T15:16:27.528754Z",
+    "verified_by": "Luuc"
   },
   "app.containers.Admin.Insights.tabReports": {
     "state": "verified",
@@ -9839,6 +9923,12 @@
     "verified_at": "2026-10-08T07:46:40.731334Z",
     "verified_by": "Pauline"
   },
+
+  "app.containers.Admin.projects.project.earlyAccess.feedbackNoticeDescriptionWithoutSlack": {
+    "state": "verified",
+    "verified_at": "2026-11-11T17:44:58.635177Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.project.earlyAccess.feedbackNoticeTitle": {
     "state": "verified",
     "verified_at": "2026-10-08T07:46:40.731334Z",
@@ -9853,6 +9943,12 @@
     "state": "verified",
     "verified_at": "2026-10-08T07:46:40.731334Z",
     "verified_by": "Pauline"
+  },
+
+  "app.containers.Admin.projects.project.earlyAccess.turnOnNoticeDescriptionGeneral": {
+    "state": "verified",
+    "verified_at": "2026-11-11T17:44:58.635177Z",
+    "verified_by": "Luuc"
   },
   "app.containers.Admin.projects.project.earlyAccess.turnOnNoticeTitle": {
     "state": "verified",
@@ -24033,6 +24129,12 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.383601Z",
     "verified_by": "Admin"
+  },
+
+  "app.containers.admin.ContentBuilder.IframeMultiloc.noUrlPrompt": {
+    "state": "verified",
+    "verified_at": "2026-11-11T17:44:58.635177Z",
+    "verified_by": "Luuc"
   },
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": {
     "state": "verified",

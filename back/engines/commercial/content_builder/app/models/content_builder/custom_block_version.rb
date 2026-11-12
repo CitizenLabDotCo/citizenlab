@@ -100,7 +100,7 @@ module ContentBuilder
       (schema['properties'] || {}).each { |key, field| validate_config_field(key, field) }
     end
 
-    # The shape the settings sidebar reads without checking. ChartBlockAuthor rejects
+    # The shape the settings sidebar reads without checking. ChartBlockWriter rejects
     # more than this, earlier and with messages written for the model; these are the
     # few the stored row has to guarantee whatever wrote it.
     def validate_config_field(key, field)

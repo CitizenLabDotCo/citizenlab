@@ -24,10 +24,6 @@ module CustomIdMethods::Publik
       'd20e0325-f11b-488c-983e-1f3144bf2a42'
     end
 
-    def config_parameters
-      %i[issuer client_id client_secret ui_method_name logo_url]
-    end
-
     def config_parameters_schema
       {
         issuer: {
@@ -47,6 +43,7 @@ module CustomIdMethods::Publik
           title: 'Client Secret'
         },
         ui_method_name: {
+          private: true,
           type: 'string',
           title: 'Method name',
           description: 'Name of the login button, e.g. "Connexion Meyzieu". Each city brands Publik as its own.'
@@ -58,11 +55,6 @@ module CustomIdMethods::Publik
           description: 'The full URL to the logo image that is shown on the authentication button. Logo should be approx. 25px in height.'
         }
       }
-    end
-
-    # Read by the frontend to render the login button.
-    def exposed_config_parameters
-      %i[logo_url]
     end
 
     def ui_method_name
