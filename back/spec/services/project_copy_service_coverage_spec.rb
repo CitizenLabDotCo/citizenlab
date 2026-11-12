@@ -169,7 +169,7 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
 
       # Per-user runtime objects regenerated through normal use.
       user_runtime: %w[
-        FeedbackPrompt
+        PulseCheck
         Notification
         Onboarding::CampaignDismissal
       ],
