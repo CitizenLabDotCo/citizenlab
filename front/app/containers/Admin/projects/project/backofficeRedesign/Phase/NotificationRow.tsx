@@ -2,6 +2,7 @@ import React, { useCallback, useMemo, useState } from 'react';
 
 import {
   Box,
+  colors,
   Button,
   Text,
   Toggle,
@@ -55,6 +56,7 @@ const NotificationRow = ({ campaign, projectId, phaseId }: Props) => {
       buttonStyle="bo-text"
       icon="chevron-right"
       iconSize="16px"
+      iconColor={colors.coolGrey500}
       width="28px"
       height="28px"
       padding="0"
@@ -74,8 +76,14 @@ const NotificationRow = ({ campaign, projectId, phaseId }: Props) => {
           disabled={!canBeDisabled}
         />
       </Box>
-      <Box display="flex" flexDirection="column" gap="4px" flexGrow={1}>
-        <Text as="span" variant="boControl" m="0">
+      <Box
+        display="flex"
+        flexDirection="column"
+        gap="2px"
+        flexGrow={1}
+        minWidth="0"
+      >
+        <Text as="span" variant="boControl" lineHeight="20px" m="0">
           {campaign.campaign_description}
         </Text>
         {campaign.recipient_segment && (

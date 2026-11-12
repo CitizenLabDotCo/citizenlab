@@ -51,7 +51,13 @@ const SetupCard = ({
         p="8px 8px 8px 12px"
       >
         <Box as="h3" m="0" display="flex" alignItems="center" gap="4px">
-          <Text as="span" variant="boControl" fontSize="xs" m="0">
+          <Text
+            as="span"
+            variant="boControl"
+            fontSize="xs"
+            lineHeight="20px"
+            m="0"
+          >
             {title}
           </Text>
           {titleTooltip && <IconTooltip content={titleTooltip} />}

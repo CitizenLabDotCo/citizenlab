@@ -1,6 +1,14 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  attachmentCount: {
+    id: 'app.components.FileRepositorySelectAndUpload.attachmentCount',
+    defaultMessage: '{count, plural, one {# file} other {# files}}',
+  },
+  attachments: {
+    id: 'app.components.FileRepositorySelectAndUpload.attachments',
+    defaultMessage: 'Attachments',
+  },
   addFile: {
     id: 'app.components.FileRepositorySelectAndUpload.addFile2',
     defaultMessage: 'Select a file',

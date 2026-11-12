@@ -63,118 +63,121 @@ const BuildFields = ({
   const surveyOptionsShown = !standalone && isSurveyMethod(participationMethod);
 
   return (
-    <Box display="flex" flexDirection="column" gap="10px" p="16px 18px 10px">
-      <Box display="flex" alignItems="center" minHeight="32px" mb="6px">
-        <Text variant="boSection" fontSize="m" m="0">
+    <Box display="flex" flexDirection="column" p="16px 18px 10px">
+      <Box display="flex" alignItems="center" minHeight="32px" mb="16px">
+        <Text variant="boSection" fontSize="s" m="0">
           {formatMessage(setupTitle(participationMethod))}
         </Text>
       </Box>
 
-      {surveyPlacement}
+      <Box display="flex" flexDirection="column" gap="32px">
+        {surveyPlacement}
 
-      <PhaseDates
-        participationMethod={participationMethod}
-        formData={formData}
-        errors={errors}
-        validationErrors={validationErrors}
-        standalone={standalone}
-        onChange={onDatesChange}
-      />
+        <PhaseDates
+          participationMethod={participationMethod}
+          formData={formData}
+          errors={errors}
+          validationErrors={validationErrors}
+          standalone={standalone}
+          onChange={onDatesChange}
+        />
 
-      <Box display="flex" flexDirection="column" gap="10px">
-        <Box>
-          <InputMultilocWithLocaleSwitcher
-            id="phase-build-panel-title"
-            type="text"
-            variant="bo"
-            ariaLabel={formatMessage(phaseSetupMessages.titleLabel)}
-            placeholder={formatMessage(messages.phaseTitle)}
-            valueMultiloc={formData.title_multiloc}
-            onChange={(title_multiloc: Multiloc) =>
-              onChange({ title_multiloc })
-            }
-            className="intercom-admin-phase-name"
+        <Box display="flex" flexDirection="column" gap="14px">
+          <Box display="flex" flexDirection="column" gap="10px">
+            <Box>
+              <InputMultilocWithLocaleSwitcher
+                id="phase-build-panel-title"
+                type="text"
+                variant="bo"
+                ariaLabel={formatMessage(phaseSetupMessages.titleLabel)}
+                placeholder={formatMessage(messages.phaseTitle)}
+                valueMultiloc={formData.title_multiloc}
+                onChange={(title_multiloc: Multiloc) =>
+                  onChange({ title_multiloc })
+                }
+                className="intercom-admin-phase-name"
+              />
+              <Error apiErrors={errors?.title_multiloc} />
+            </Box>
+
+            {phaseId && (
+              <DescriptionField
+                projectId={projectId}
+                phaseId={phaseId}
+                value={formData.description_multiloc}
+                errors={errors}
+                onChange={(description_multiloc) =>
+                  onChange({ description_multiloc })
+                }
+              />
+            )}
+          </Box>
+          <AttachmentsCard
+            id="phase-build-panel-file-uploader"
+            title={formatMessage(messages.attachments)}
+            files={files}
+            errors={errors}
           />
-          <Error apiErrors={errors?.title_multiloc} />
         </Box>
 
-        {phaseId && (
-          <DescriptionField
-            projectId={projectId}
-            phaseId={phaseId}
-            value={formData.description_multiloc}
-            errors={errors}
-            onChange={(description_multiloc) =>
-              onChange({ description_multiloc })
-            }
-          />
-        )}
-      </Box>
+        <Box display="flex" flexDirection="column" gap="10px">
+          {USES_INPUT_TERM.includes(participationMethod) && (
+            <>
+              <PanelHeading
+                label={formatMessage(
+                  participationMethod === 'proposals'
+                    ? messages.proposalsAndParticipantData
+                    : messages.ideasAndParticipantData
+                )}
+              />
+              <InputTermCard
+                value={formData.input_term}
+                onChange={(input_term) => onChange({ input_term })}
+              />
+            </>
+          )}
 
-      <Box display="flex" flexDirection="column" gap="10px">
-        <AttachmentsCard
-          id="phase-build-panel-file-uploader"
-          title={formatMessage(messages.attachments)}
-          files={files}
-          errors={errors}
-        />
-
-        {USES_INPUT_TERM.includes(participationMethod) && (
-          <>
+          {participationMethod === 'voting' && phaseId && (
             <PanelHeading
-              label={formatMessage(
-                participationMethod === 'proposals'
-                  ? messages.proposalsAndParticipantData
-                  : messages.ideasAndParticipantData
-              )}
+              label={formatMessage(messages.optionsAndParticipantData)}
             />
-            <InputTermCard
-              value={formData.input_term}
-              onChange={(input_term) => onChange({ input_term })}
+          )}
+
+          {participationMethod === 'document_annotation' && (
+            <DocumentUrlCard
+              value={formData.document_annotation_embed_url}
+              errors={errors}
+              onChange={(document_annotation_embed_url) =>
+                onChange({ document_annotation_embed_url })
+              }
             />
-          </>
-        )}
+          )}
 
-        {participationMethod === 'voting' && phaseId && (
-          <PanelHeading
-            label={formatMessage(messages.optionsAndParticipantData)}
-          />
-        )}
+          {surveyOptionsShown && (
+            <SurveyMethodSection
+              projectId={projectId}
+              phaseId={phaseId}
+              selected={participationMethod}
+              surveyService={formData.survey_service}
+              surveyEmbedUrl={formData.survey_embed_url}
+              errors={errors}
+              onExternalSurveyChange={onChange}
+              disabledReasons={surveyMethodSwitch.disabledReasons}
+              onSelect={surveyMethodSwitch.onSelect}
+            />
+          )}
 
-        {participationMethod === 'document_annotation' && (
-          <DocumentUrlCard
-            value={formData.document_annotation_embed_url}
-            errors={errors}
-            onChange={(document_annotation_embed_url) =>
-              onChange({ document_annotation_embed_url })
-            }
-          />
-        )}
-
-        {surveyOptionsShown && (
-          <SurveyMethodSection
+          <MethodSection
             projectId={projectId}
+            participationMethod={participationMethod}
             phaseId={phaseId}
-            selected={participationMethod}
-            surveyService={formData.survey_service}
-            surveyEmbedUrl={formData.survey_embed_url}
-            errors={errors}
-            onExternalSurveyChange={onChange}
-            disabledReasons={surveyMethodSwitch.disabledReasons}
-            onSelect={surveyMethodSwitch.onSelect}
+            inputTerm={formData.input_term}
+            formInSurveyOptions={surveyOptionsShown}
           />
-        )}
+        </Box>
 
-        <MethodSection
-          projectId={projectId}
-          participationMethod={participationMethod}
-          phaseId={phaseId}
-          inputTerm={formData.input_term}
-          formInSurveyOptions={surveyOptionsShown}
-        />
+        <Error apiErrors={errors?.base} />
       </Box>
-
-      <Error apiErrors={errors?.base} />
     </Box>
   );
 };

@@ -42,14 +42,14 @@ const ChoiceRadio = ({
         disabled={disabled || !!disabledReason}
         onChange={onChange}
         label={
-          <Box>
+          <Box display="flex" flexDirection="column" gap="2px" minWidth="0">
             <Box display="flex" alignItems="center" gap="8px">
               <Text variant="boControl" fontSize="xs" lineHeight="16px" m="0">
                 {title}
               </Text>
               {titleAdornment}
             </Box>
-            <Text variant="boMicro" m="0" color="coolGrey500">
+            <Text variant="boMicro" m="0" color="coolGrey500" lineHeight="16px">
               {description}
             </Text>
           </Box>

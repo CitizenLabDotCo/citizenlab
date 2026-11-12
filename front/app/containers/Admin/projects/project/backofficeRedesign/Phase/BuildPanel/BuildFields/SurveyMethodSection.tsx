@@ -13,12 +13,13 @@ import { SurveyMethod } from 'containers/Admin/projects/project/phaseSetup/compo
 
 import { useIntl } from 'utils/cl-intl';
 
-import formSectionMessages from './MethodSection/FormSection/messages';
-import messages from './messages';
 import ExternalSurveyFields from '../ExternalSurveyFields';
 import NativeSurveyOption from '../NativeSurveyOption';
 import PanelField from '../PanelField';
 import PollOption from '../PollOption';
+
+import messages from './messages';
+import formSectionMessages from './MethodSection/FormSection/messages';
 
 const NAME = 'survey-method';
 
@@ -80,7 +81,7 @@ const SurveyMethodSection = ({
 
   return (
     <PanelField label={formatMessage(pickerMessages.surveyOptions)}>
-      <Box display="flex" flexDirection="column" gap="20px">
+      <Box display="flex" flexDirection="column" gap="20px" pt="8px">
         {options
           .filter(({ shown }) => shown)
           .map(({ method, title, description }) => {
