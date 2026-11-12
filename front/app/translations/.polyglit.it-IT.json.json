@@ -6864,6 +6864,11 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+  "app.containers.Authentication.steps.Policies.byContinuingPhoneWithoutCampaignsEnabled": {
+    "state": "verified",
+    "verified_at": "2026-11-12T13:14:44.456767Z",
+    "verified_by": "Roger"
+  },
   "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": {
     "state": "verified",
     "verified_at": "2026-11-12T13:10:27.023216Z",
