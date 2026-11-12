@@ -4,6 +4,8 @@ import { useEditor, ROOT_NODE, SerializedNodes } from '@craftjs/core';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
+
 import SettingsWrapper from 'components/admin/ContentBuilder/Settings';
 
 import ChatPanel from '../ChatPanel';
@@ -29,11 +31,14 @@ const useHasWidgetSelected = () =>
     };
   }).selected;
 
+// The chat is only for a report about a whole project. A phase report is written
+// by hand, so the rail stays the widget settings there.
 const ReportBuilderSettings = ({ reportId, setSaved }: Props) => {
   const hasWidgetSelected = useHasWidgetSelected();
   const llmReportingEnabled = useFeatureFlag({ name: 'llm_reporting' });
+  const { phaseId } = useReportContext();
 
-  if (hasWidgetSelected || !llmReportingEnabled) {
+  if (hasWidgetSelected || !llmReportingEnabled || phaseId) {
     return <SettingsWrapper titles={WIDGET_TITLES} />;
   }
 
