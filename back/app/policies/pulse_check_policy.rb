@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-class FeedbackPromptPolicy < ApplicationPolicy
+class PulseCheckPolicy < ApplicationPolicy
   def show_next?
-    FeedbackPrompt::PROMPTS.keys.any? { |key| FeedbackPrompt.askable?(key, user) }
+    PulseCheck::CHECKS.keys.any? { |key| PulseCheck.askable?(key, user) }
   end
 
   def answer?
