@@ -5,10 +5,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.shared.ProjectGenerator.title',
     defaultMessage: 'Project assistant',
   },
-  editWithAi: {
-    id: 'app.containers.Admin.projects.shared.ProjectGenerator.editWithAi',
-    defaultMessage: 'Edit with AI',
-  },
   chatToChange: {
     id: 'app.containers.Admin.projects.shared.ProjectGenerator.chatToChange',
     defaultMessage: 'Chat to change anything',
@@ -20,6 +16,10 @@ export default defineMessages({
   startFromScratch: {
     id: 'app.containers.Admin.projects.shared.ProjectGenerator.startFromScratch',
     defaultMessage: 'Start from scratch',
+  },
+  startFromTemplate: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.startFromTemplate',
+    defaultMessage: 'Start from a template',
   },
   close: {
     id: 'app.containers.Admin.projects.shared.ProjectGenerator.close',
@@ -237,9 +237,29 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.shared.ProjectGenerator.online',
     defaultMessage: 'Online',
   },
-  autoApprove: {
-    id: 'app.containers.Admin.projects.shared.ProjectGenerator.autoApprove',
-    defaultMessage: 'Apply changes without asking',
+  approvalModeTitle: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.approvalModeTitle',
+    defaultMessage: 'When the assistant makes a change',
+  },
+  approvalModeDescription: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.approvalModeDescription',
+    defaultMessage: 'Choose whether you approve each change first.',
+  },
+  askBeforeApplying: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.askBeforeApplying',
+    defaultMessage: 'Ask before applying',
+  },
+  askBeforeApplyingDescription: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.askBeforeApplyingDescription',
+    defaultMessage: 'You approve or refine each change in the draft.',
+  },
+  applyAutomatically: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.applyAutomatically',
+    defaultMessage: 'Apply automatically',
+  },
+  applyAutomaticallyDescription: {
+    id: 'app.containers.Admin.projects.shared.ProjectGenerator.applyAutomaticallyDescription',
+    defaultMessage: 'Changes are saved to the draft right away.',
   },
   changeApplied: {
     id: 'app.containers.Admin.projects.shared.ProjectGenerator.changeApplied',

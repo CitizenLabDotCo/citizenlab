@@ -1,12 +1,6 @@
 import React from 'react';
 
-import {
-  Box,
-  Text,
-  Title,
-  Toggle,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import { Box, Text, Title, colors } from '@citizenlab/cl2-component-library';
 
 import { IAiAssistantConversation } from 'api/ai_assistant_conversations/types';
 
@@ -19,7 +13,9 @@ import { Appear } from '../animations';
 import messages from '../messages';
 import useRefreshDraft from '../useRefreshDraft';
 
+import ApprovalModePicker from './ApprovalModePicker';
 import ChatHeader from './ChatHeader';
+import StartOptions from './StartOptions';
 import { TOOL_DISPLAYS } from './toolDisplays';
 import useAutoApprove from './useAutoApprove';
 import useGeneratorChat from './useGeneratorChat';
@@ -31,6 +27,7 @@ type Props = {
   titleId: string;
   onProjectCreated: (projectId: string) => void;
   onStartFromScratch?: () => void;
+  onStartFromTemplate?: () => void;
   onClose: () => void;
 };
 
@@ -41,6 +38,7 @@ const GeneratorChat = ({
   titleId,
   onProjectCreated,
   onStartFromScratch,
+  onStartFromTemplate,
   onClose,
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -69,18 +67,12 @@ const GeneratorChat = ({
 
   return (
     <Box
-      width="420px"
-      flexShrink={0}
+      width="100%"
       display="flex"
       flexDirection="column"
-      borderRight={`1px solid ${colors.grey200}`}
       bgColor={colors.white}
     >
-      <ChatHeader
-        titleId={titleId}
-        onStartFromScratch={projectId ? undefined : onStartFromScratch}
-        onClose={onClose}
-      />
+      <ChatHeader titleId={titleId} onClose={onClose} />
 
       <Box flex="1" overflowY="auto" px="20px" py="16px">
         {conversation && hasMessages ? (
@@ -128,18 +120,25 @@ const GeneratorChat = ({
           onPromptChange={setPrompt}
           onFilesChange={setFiles}
           onSend={send}
+          actions={
+            <ApprovalModePicker
+              autoApprove={autoApprove}
+              onChange={setAutoApprove}
+            />
+          }
         />
         {sendError && (
           <Text m="0px" color="error">
             {sendError}
           </Text>
         )}
-        <Toggle
-          variant="bo"
-          checked={autoApprove}
-          label={formatMessage(messages.autoApprove)}
-          onChange={() => setAutoApprove(!autoApprove)}
-        />
+        {/* A new project has no draft until the first message. */}
+        {!projectId && onStartFromScratch && onStartFromTemplate && (
+          <StartOptions
+            onStartFromScratch={onStartFromScratch}
+            onStartFromTemplate={onStartFromTemplate}
+          />
+        )}
       </Box>
     </Box>
   );

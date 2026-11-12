@@ -20,6 +20,7 @@ import {
   getDraftPhases,
   getDraftProject,
   getProposedChanges,
+  hasAnyChange,
 } from './draft';
 
 const call = (id: string) => ({ id, type: 'ai_assistant_tool_call' } as const);
@@ -314,5 +315,15 @@ describe('getAppliedChanges', () => {
       'call-1',
       'create-phase',
     ]);
+  });
+});
+
+describe('hasAnyChange', () => {
+  it('waits for the first change, which counts even once rejected', () => {
+    const rejectedChange = updateProject({});
+    rejectedChange.attributes.status = 'rejected';
+
+    expect(hasAnyChange([askUser])).toBe(false);
+    expect(hasAnyChange([askUser, rejectedChange])).toBe(true);
   });
 });

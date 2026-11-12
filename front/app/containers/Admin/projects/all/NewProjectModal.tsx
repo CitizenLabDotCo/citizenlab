@@ -25,10 +25,11 @@ export type NewProjectMode = 'scratch' | 'template';
 
 interface Props {
   mode: NewProjectMode | null;
+  onUseTemplate: () => void;
   onClose: () => void;
 }
 
-const NewProjectModal = ({ mode, onClose }: Props) => {
+const NewProjectModal = ({ mode, onUseTemplate, onClose }: Props) => {
   const { formatMessage } = useIntl();
   const formId = useId();
   const { mutateAsync: addProject } = useAddProject();
@@ -100,7 +101,21 @@ const NewProjectModal = ({ mode, onClose }: Props) => {
         variant="bo"
         header={formatMessage(messages.newProject)}
         footer={
-          <Box w="100%" display="flex" justifyContent="flex-end">
+          <Box
+            w="100%"
+            display="flex"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <Button
+              buttonStyle="bo-text"
+              boSize="medium"
+              padding="0"
+              icon="grid"
+              onClick={onUseTemplate}
+            >
+              {formatMessage(messages.fromTemplate)}
+            </Button>
             <Button
               buttonStyle="bo-primary"
               boSize="medium"

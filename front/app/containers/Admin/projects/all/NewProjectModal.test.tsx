@@ -57,7 +57,13 @@ jest.mock('utils/cl-router/history', () => ({
 }));
 
 const submit = async () => {
-  render(<NewProjectModal mode="scratch" onClose={jest.fn()} />);
+  render(
+    <NewProjectModal
+      mode="scratch"
+      onUseTemplate={jest.fn()}
+      onClose={jest.fn()}
+    />
+  );
   await userEvent.click(screen.getByRole('button', { name: 'Submit' }));
 };
 

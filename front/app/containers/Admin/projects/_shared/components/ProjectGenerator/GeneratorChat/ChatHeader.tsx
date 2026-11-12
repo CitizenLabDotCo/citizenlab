@@ -9,19 +9,16 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
-import ButtonWithLink from 'components/UI/ButtonWithLink';
-
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 
 type Props = {
   titleId: string;
-  onStartFromScratch?: () => void;
   onClose: () => void;
 };
 
-const ChatHeader = ({ titleId, onStartFromScratch, onClose }: Props) => {
+const ChatHeader = ({ titleId, onClose }: Props) => {
   const { formatMessage } = useIntl();
 
   return (
@@ -45,26 +42,14 @@ const ChatHeader = ({ titleId, onStartFromScratch, onClose }: Props) => {
           </Text>
         </Box>
       </Box>
-      <Box display="flex" alignItems="center" gap="4px">
-        {onStartFromScratch && (
-          <ButtonWithLink
-            type="button"
-            buttonStyle="bo-text"
-            boSize="medium"
-            onClick={onStartFromScratch}
-          >
-            {formatMessage(messages.startFromScratch)}
-          </ButtonWithLink>
-        )}
-        <IconButton
-          iconName="close"
-          buttonType="button"
-          iconColor={colors.coolGrey600}
-          iconColorOnHover={colors.textPrimary}
-          a11y_buttonActionMessage={formatMessage(messages.close)}
-          onClick={onClose}
-        />
-      </Box>
+      <IconButton
+        iconName="close"
+        buttonType="button"
+        iconColor={colors.coolGrey600}
+        iconColorOnHover={colors.textPrimary}
+        a11y_buttonActionMessage={formatMessage(messages.close)}
+        onClick={onClose}
+      />
     </Box>
   );
 };

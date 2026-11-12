@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
+import { getToolCalls } from 'api/ai_assistant_conversations/constructTranscript';
+
 import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 
 import useLatestConversation from 'components/AiAssistant/useLatestConversation';
@@ -9,6 +11,7 @@ import Modal from 'components/UI/Modal';
 
 import clHistory from 'utils/cl-router/history';
 
+import { hasAnyChange } from './draft';
 import DraftPreview from './DraftPreview';
 import GeneratorChat from './GeneratorChat';
 import useRefreshDraftOnChanges from './useRefreshDraftOnChanges';
@@ -21,6 +24,7 @@ type Props = {
   projectId?: string;
   onClose: () => void;
   onStartFromScratch?: () => void;
+  onStartFromTemplate?: () => void;
 };
 
 const ProjectGenerator = ({
@@ -28,6 +32,7 @@ const ProjectGenerator = ({
   projectId: draftProjectId,
   onClose,
   onStartFromScratch,
+  onStartFromTemplate,
 }: Props) => {
   const [createdProjectId, setCreatedProjectId] = useState<string>();
   const projectId = draftProjectId ?? createdProjectId;
@@ -38,6 +43,10 @@ const ProjectGenerator = ({
     { enabled: opened }
   );
   useRefreshDraftOnChanges(conversation);
+  // A new project's draft is empty until the assistant proposes its first change.
+  const showDraft =
+    !isNewProject ||
+    (!!conversation && hasAnyChange(getToolCalls(conversation)));
 
   const close = () => {
     setCreatedProjectId(undefined);
@@ -54,7 +63,7 @@ const ProjectGenerator = ({
       opened={opened}
       close={close}
       variant="bo"
-      width={1240}
+      width={showDraft ? 1240 : 640}
       padding="0"
       fillContent
       hideCloseButton
@@ -62,21 +71,26 @@ const ProjectGenerator = ({
       ariaLabelledBy={TITLE_ID}
     >
       <Box display="flex" width="100%" height="85vh">
-        <GeneratorChat
-          projectId={projectId}
-          isNewProject={isNewProject}
-          conversation={conversation}
-          titleId={TITLE_ID}
-          onProjectCreated={setCreatedProjectId}
-          onStartFromScratch={onStartFromScratch}
-          onClose={close}
-        />
-        <DraftPreview
-          projectId={projectId}
-          isNewProject={isNewProject}
-          conversation={conversation}
-          onOpenProject={openProject}
-        />
+        <Box display="flex" width={showDraft ? '420px' : '100%'} flexShrink={0}>
+          <GeneratorChat
+            projectId={projectId}
+            isNewProject={isNewProject}
+            conversation={conversation}
+            titleId={TITLE_ID}
+            onProjectCreated={setCreatedProjectId}
+            onStartFromScratch={onStartFromScratch}
+            onStartFromTemplate={onStartFromTemplate}
+            onClose={close}
+          />
+        </Box>
+        {showDraft && (
+          <DraftPreview
+            projectId={projectId}
+            isNewProject={isNewProject}
+            conversation={conversation}
+            onOpenProject={openProject}
+          />
+        )}
       </Box>
     </Modal>
   );

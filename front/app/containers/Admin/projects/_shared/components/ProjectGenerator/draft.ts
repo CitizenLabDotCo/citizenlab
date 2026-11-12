@@ -74,6 +74,10 @@ export const getAppliedChanges = (toolCalls: ToolCall[]) =>
       CHANGE_TOOLS.includes(attributes.name)
   );
 
+// Stays true once the assistant proposes a change, so refining it doesn't hide the draft.
+export const hasAnyChange = (toolCalls: ToolCall[]) =>
+  toolCalls.some(({ attributes }) => CHANGE_TOOLS.includes(attributes.name));
+
 // Multilocs are updated per locale.
 const mergeMultiloc = (current: Multiloc, proposed: Multiloc | undefined) =>
   proposed ? { ...current, ...proposed } : current;

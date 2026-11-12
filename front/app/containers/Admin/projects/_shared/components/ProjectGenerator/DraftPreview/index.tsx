@@ -8,6 +8,7 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 
+import { Appear } from '../animations';
 import messages from '../messages';
 
 import DraftSection from './DraftSection';
@@ -39,12 +40,13 @@ const DraftPreview = ({
   const conversationId = conversation?.data.id;
 
   return (
-    <Box
+    <Appear
       flex="1"
       minWidth="0"
       display="flex"
       flexDirection="column"
       bgColor={colors.grey100}
+      borderLeft={`1px solid ${colors.grey200}`}
     >
       <Box flex="1" overflowY="auto" px="32px" py="24px">
         <Box
@@ -93,7 +95,7 @@ const DraftPreview = ({
           )}
         </ButtonWithLink>
       </Box>
-    </Box>
+    </Appear>
   );
 };
 

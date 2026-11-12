@@ -58,21 +58,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.all.createProjectFolder',
     defaultMessage: 'New folder',
   },
-  fromScratchMenuItem: {
-    id: 'app.containers.Admin.projects.all.NewProjectButton.fromScratchMenuItem',
-    defaultMessage: 'From scratch',
-  },
   fromTemplate: {
     id: 'app.containers.Admin.projects.all.NewProjectModal.fromTemplate',
     defaultMessage: 'Start from a template',
-  },
-  useTemplateMenuItem: {
-    id: 'app.containers.Admin.projects.all.NewProjectButton.useTemplateMenuItem',
-    defaultMessage: 'Use a template',
-  },
-  withAiMenuItem: {
-    id: 'app.containers.Admin.projects.all.NewProjectButton.withAiMenuItem',
-    defaultMessage: 'Create with AI',
   },
   newProject: {
     id: 'app.containers.AdminPage.ProjectEdit.createProject',

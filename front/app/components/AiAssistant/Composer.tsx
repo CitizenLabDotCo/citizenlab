@@ -60,7 +60,7 @@ const PromptInput = styled(TextareaAutosize)`
   background: transparent;
   color: ${bo.colors.textHeadingStrong};
   font-family: inherit;
-  font-size: ${fontSizes.xs}px;
+  font-size: ${fontSizes.base}px;
   line-height: 1.5;
 
   &::placeholder {
@@ -87,6 +87,8 @@ type Props = {
   disabled: boolean;
   sending: boolean;
   placeholder?: string;
+  // Shown next to the file button, like the mode of the chat.
+  actions?: React.ReactNode;
   onPromptChange: (prompt: string) => void;
   onFilesChange: (files: File[]) => void;
   onSend: () => void;
@@ -99,6 +101,7 @@ const Composer = ({
   disabled,
   sending,
   placeholder,
+  actions,
   onPromptChange,
   onFilesChange,
   onSend,
@@ -195,7 +198,7 @@ const Composer = ({
           justifyContent="space-between"
           p="8px"
         >
-          <Box>
+          <Box display="flex" alignItems="center" gap="8px">
             {allowFiles && (
               <IconButton
                 iconName="paperclip"
@@ -207,18 +210,20 @@ const Composer = ({
                 disabled={disabled}
               />
             )}
+            {actions}
           </Box>
           <ButtonWithLink
             type="button"
             buttonStyle="bo-primary"
-            boSize="medium"
-            icon="stars"
+            icon="arrow-up"
+            width="36px"
+            padding="0"
+            borderRadius="999px"
+            ariaLabel={formatMessage(messages.send)}
             onClick={onSend}
             disabled={!canSend}
             processing={sending}
-          >
-            <FormattedMessage {...messages.send} />
-          </ButtonWithLink>
+          />
         </Box>
       </Frame>
       {filesRejected && (
