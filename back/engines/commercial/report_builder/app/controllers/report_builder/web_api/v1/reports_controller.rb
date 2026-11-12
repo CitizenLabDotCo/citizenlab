@@ -127,7 +127,7 @@ module ReportBuilder
           # The lock makes the in-progress check + enqueue atomic across concurrent requests.
           tracker = begin
             ::CitizenLab::LockManager.try_with_transaction_lock("generate_report/#{report.id}") do
-              enqueue_generate_report_job.tracker unless in_progress_generation_tracker
+              enqueue_generate_report_job.tracker unless in_progress_generation_tracker || report.chat&.running?
             end
           rescue ::CitizenLab::LockManager::FailedToLock
             nil
@@ -174,9 +174,9 @@ module ReportBuilder
         # Adds the admin's turn and starts the model's. The turn itself runs in the
         # background; the panel follows it by polling #chat.
         #
-        # Refuses with 409 while a turn is running, which another admin of the report
-        # may have started: two turns would revise the same layout at once, and both
-        # are paid model calls.
+        # Refuses with 409 while the model is already working on this report — another
+        # admin's turn, or a generation: two runs would write the same layout at once,
+        # and both are paid model calls.
         #
         # The panel sends the layout as it stands in the editor, unsaved edits and all,
         # and that is what the model revises. Without it a turn would silently discard
@@ -193,15 +193,15 @@ module ReportBuilder
           return render json: { errors: { message: [{ error: error }] } }, status: :unprocessable_entity if error
 
           started = chat.with_lock do
-            next false if chat.running?
+            next false if chat.running? || in_progress_generation_tracker
 
             # Shown in the panel only. The model is sent the admin's words inside a
             # prompt that carries the report, which the run records itself.
-            chat.messages.create!(role: 'user', content: message, replayed: false, author: current_user)
+            turn = chat.messages.create!(role: 'user', content: message, replayed: false, author: current_user)
             chat.update!(status: 'running', last_error_code: nil, turn_started_at: Time.current)
             # In the same transaction, so a turn is never marked running without a
             # job to end it.
-            enqueue_revise_report_job(message)
+            enqueue_revise_report_job(message, turn)
             true
           end
 
@@ -223,9 +223,10 @@ module ReportBuilder
         end
 
         # The chat as the panel shows it: a turn is a role, a line of text and a
-        # timestamp. `pending` is true while the model still owes an answer, and
-        # `changed_layout` tells the panel to pull the new layout into the editor —
-        # only then, or it would overwrite edits the admin has not saved.
+        # timestamp. `pending` is true while the model is at work on the report, a
+        # generation included, so the panel does not offer a turn that would be
+        # refused. `changed_layout` tells the panel to pull the new layout into the
+        # editor — only then, or it would overwrite edits the admin has not saved.
         def chat_json(chat)
           {
             data: {
@@ -233,20 +234,23 @@ module ReportBuilder
               type: 'report_chat',
               attributes: {
                 turns: chat_turns(chat),
-                pending: chat&.running? || false
+                pending: chat&.running? || in_progress_generation_tracker.present?
               }
             }
           }
         end
 
-        def enqueue_revise_report_job(message)
+        def enqueue_revise_report_job(message, turn)
           ReportBuilder::ReviseReportJob
             .with_tracking(owner: current_user)
             .perform_later(
               report,
               instruction: message,
               locale: current_user.locale.to_s,
-              craftjs_json: params[:craftjs_json]&.to_unsafe_h
+              craftjs_json: params[:craftjs_json]&.to_unsafe_h,
+              # Which turn this job answers: by the time it runs, the chat may have
+              # given up on it and moved on to a newer question.
+              turn_id: turn.id
             )
         end
 
@@ -268,9 +272,14 @@ module ReportBuilder
         # the time window is a safety valve against trackers orphaned by e.g. a dev
         # environment without a running worker.
         def in_progress_generation_tracker
+          context = report.phase || report.project
+          # A report about neither cannot be generated, and `context: nil` would match
+          # trackers that have none.
+          return nil if context.nil?
+
           ::Jobs::Tracker
             .where(
-              context: report.phase || report.project,
+              context: context,
               root_job_type: ReportBuilder::GenerateReportJob.name,
               completed_at: nil
             )

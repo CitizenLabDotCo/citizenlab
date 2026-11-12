@@ -14,18 +14,22 @@ module ReportBuilder
     # attempt, and each attempt is a paid model call.
     MAX_RETRY_COUNT = 1
 
+    # @param turn_id [String] the admin's message this job answers.
     # @param craftjs_json [Hash, nil] the layout as it stands in the admin's editor,
     #   which is what gets revised. It can be ahead of what is stored: they do not
     #   have to save before asking for a change. Falls back to the stored layout for
     #   a caller that has no editor open.
-    def run(report, instruction:, locale:, craftjs_json: nil)
-      # The turn was given up on while this job waited (see Report#recover_lost_runs!),
-      # and the admin has been told it failed. Running it now would answer a question
-      # they may have asked again since.
-      return mark_as_complete! unless report.chat&.running?
+    def run(report, instruction:, locale:, turn_id:, craftjs_json: nil)
+      # The turn was given up on while this job waited (see Report#recover_lost_runs!)
+      # and the admin told it failed. Answering now would answer a question they may
+      # have replaced since, and would end a turn this job does not own.
+      return mark_as_complete! unless report.current_chat_turn?(turn_id)
 
+      # Each attempt gets the whole window. The clock is what tells the panel a turn
+      # was lost, and a turn being retried is not lost.
+      report.chat.update!(turn_started_at: Time.current)
       tracker.update!(progress: 0, error_count: 0)
-      run_record = Run.create!(conversation: report.chat!(locale: locale), kind: 'revision')
+      run_record = Run.create!(conversation: report.chat, kind: 'revision')
       composer = Composition::ReportComposer.new(
         report.reported_project,
         locale: locale,
@@ -52,12 +56,19 @@ module ReportBuilder
       end
 
       save_layout!(report, result[:layout], run_record) if result[:layout].present?
-      # Part of the run, so the panel can tell from the run whether this answer came
-      # with a new layout to pull into the editor.
-      run_record.append_message!(
-        role: 'assistant', content: reply_for(result, composer.stopped_because), replayed: false
-      )
-      report.chat.update!(status: 'idle', last_error_code: nil)
+
+      report.chat.with_lock do
+        # A run long enough to be given up on can come back to a turn that is no longer
+        # the one being waited for, and answering it would end that newer turn instead.
+        next unless report.current_chat_turn?(turn_id)
+
+        # Part of the run, so the panel can tell from the run whether this answer came
+        # with a new layout to pull into the editor.
+        run_record.append_message!(
+          role: 'assistant', content: reply_for(result, composer.stopped_because), replayed: false
+        )
+        report.chat.update!(status: 'idle', last_error_code: nil)
+      end
 
       track_progress
       mark_as_complete!

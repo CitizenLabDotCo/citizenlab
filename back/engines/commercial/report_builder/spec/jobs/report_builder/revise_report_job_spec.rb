@@ -6,7 +6,7 @@ RSpec.describe ReportBuilder::ReviseReportJob do
   subject(:enqueue_job) do
     described_class
       .with_tracking(owner: owner)
-      .perform_later(report, instruction: 'make it shorter', locale: 'en', craftjs_json: nil)
+      .perform_later(report, instruction: 'make it shorter', locale: 'en', craftjs_json: nil, turn_id: turn.id)
   end
 
   let(:owner) { create(:admin) }
@@ -14,11 +14,9 @@ RSpec.describe ReportBuilder::ReviseReportJob do
   let(:report) { create(:report, phase: phase) }
   # As the controller leaves it: the admin's words, for the panel only, and a turn running.
   let!(:chat) do
-    report.chat!(locale: 'en').tap do |chat|
-      chat.messages.create!(role: 'user', content: 'make it shorter', replayed: false)
-      chat.update!(status: 'running', turn_started_at: Time.current)
-    end
+    report.chat!(locale: 'en').tap { |chat| chat.update!(status: 'running', turn_started_at: Time.current) }
   end
+  let!(:turn) { chat.messages.create!(role: 'user', content: 'make it shorter', replayed: false) }
   let(:revised_layout) do
     {
       'ROOT' => {
@@ -92,7 +90,7 @@ RSpec.describe ReportBuilder::ReviseReportJob do
 
       described_class
         .with_tracking(owner: owner)
-        .perform_later(report, instruction: 'x', locale: 'en', craftjs_json: editor_layout)
+        .perform_later(report, instruction: 'x', locale: 'en', craftjs_json: editor_layout, turn_id: turn.id)
         .perform_now
     end
 
@@ -115,8 +113,9 @@ RSpec.describe ReportBuilder::ReviseReportJob do
 
       stub_revision({ layout: nil, reply: 'It shows weekly participants.' })
       chat.update!(status: 'running')
+      next_turn = chat.messages.create!(role: 'user', content: 'what is that', replayed: false)
       described_class.with_tracking(owner: owner)
-        .perform_later(report, instruction: 'what is that', locale: 'en', craftjs_json: nil)
+        .perform_later(report, instruction: 'what is that', locale: 'en', craftjs_json: nil, turn_id: next_turn.id)
         .perform_now
       unchanged = ReportBuilder::Run.newest_first.first
       expect(unchanged).not_to be_saved_the_report
@@ -181,14 +180,43 @@ RSpec.describe ReportBuilder::ReviseReportJob do
       expect(ReportBuilder::Run.newest_first.first).to be_saved_the_report
     end
 
-    it 'keeps the turn the admin wrote after the job was enqueued' do
+    # Its turn was given up on and the admin asked again, so the chat is running for
+    # the newer question. Answering the old one would also end the newer turn.
+    it 'does nothing for a turn the chat has moved on from' do
       stub_revision({ layout: nil, reply: 'ok' })
       job = enqueue_job
+      chat.fail_turn!('turn_timed_out')
       chat.messages.create!(role: 'user', content: 'and add a chart', replayed: false)
+      chat.update!(status: 'running', turn_started_at: Time.current)
 
-      job.perform_now
+      expect { job.perform_now }.not_to change(ReportBuilder::Run, :count)
 
-      expect(shown.map(&:content)).to eq ['make it shorter', 'and add a chart', 'ok']
+      expect(shown.map(&:content)).to end_with 'and add a chart'
+      expect(chat.reload).to be_running
+      expect(job.tracker.reload).to be_completed
+    end
+
+    it 'leaves a newer turn alone when the chat moves on while it is working' do
+      allow_any_instance_of(ReportBuilder::Composition::ReportComposer).to receive(:revise) do
+        chat.messages.create!(role: 'user', content: 'and add a chart', replayed: false)
+        { layout: nil, reply: 'ok' }
+      end
+      allow_any_instance_of(ReportBuilder::Composition::ReportComposer)
+        .to receive(:stopped_because).and_return('done')
+
+      enqueue_job.perform_now
+
+      expect(shown.map(&:content)).not_to include 'ok'
+      expect(chat.reload).to be_running
+    end
+
+    # The clock is what tells the panel a turn was lost, and a retry is not a turn
+    # that was lost.
+    it 'gives each attempt the whole window' do
+      stub_revision({ layout: nil, reply: 'ok' })
+      chat.update!(turn_started_at: 50.minutes.ago)
+
+      expect { enqueue_job.perform_now }.to(change { chat.reload.turn_started_at })
     end
   end
 

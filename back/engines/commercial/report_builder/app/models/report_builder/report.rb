@@ -146,6 +146,15 @@ module ReportBuilder
       Run.where(conversation_id: ::AIAssistant::Conversation.where(subject: self, surface_key: CHAT_SURFACE_KEY).select(:id))
     end
 
+    # Is the chat still waiting on this turn? A job that sat in the queue can wake up
+    # to find its turn given up on (see #recover_lost_runs!) and a newer question in
+    # its place.
+    def current_chat_turn?(turn_id)
+      return false unless chat&.running?
+
+      chat.messages.where(role: 'user', displayed: true).order(:position).last&.id == turn_id
+    end
+
     # Ends the chat turn the model still owes an answer to, telling the admin it
     # failed so they can ask again.
     def fail_chat_turn!(error_code)

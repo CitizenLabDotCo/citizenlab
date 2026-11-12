@@ -623,6 +623,15 @@ resource 'Reports' do
         expect(json_response_body.dig(:errors, :base).first[:error]).to eq 'generation_in_progress'
       end
 
+      example '[error] Generate a report while a chat turn is running', :active_job_que_adapter do
+        report.chat!(locale: 'en').update!(status: 'running', turn_started_at: Time.current)
+
+        expect { do_request }
+          .not_to change { QueJob.by_job_class(ReportBuilder::GenerateReportJob).count }
+
+        assert_status 409
+      end
+
       example 'Generate the report of a whole project', :active_job_que_adapter do
         project_report = create(:report, project: create(:project))
 
@@ -804,6 +813,22 @@ resource 'Reports' do
         expect(report.chat.messages.sole).to have_attributes(
           content: message, displayed: true, replayed: false, author_id: current_user.id
         )
+      end
+
+      # Two runs would write the same layout at once, and both are paid model calls.
+      example '[error] Ask for a change while the report is being generated', :active_job_que_adapter do
+        create(
+          :jobs_tracker,
+          context: report.phase,
+          root_job_type: ReportBuilder::GenerateReportJob.name,
+          project: report.phase.project
+        )
+
+        expect { do_request }
+          .not_to change { QueJob.by_job_class(ReportBuilder::ReviseReportJob).count }
+
+        assert_status 409
+        expect(report.chat.messages).to be_empty
       end
 
       example 'The unsaved editor layout is what gets revised', :active_job_que_adapter, document: false do

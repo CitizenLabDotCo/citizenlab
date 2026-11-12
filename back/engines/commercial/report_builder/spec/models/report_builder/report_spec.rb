@@ -258,6 +258,36 @@ RSpec.describe ReportBuilder::Report do
     end
   end
 
+  describe '#current_chat_turn?' do
+    let(:report) { create(:report) }
+    let(:chat) { report.chat!(locale: 'en') }
+    let(:turn) { chat.messages.create!(role: 'user', content: 'shorter please', replayed: false) }
+
+    it 'is true for the turn the chat is waiting on' do
+      chat.update!(status: 'running', turn_started_at: Time.current)
+
+      expect(report.current_chat_turn?(turn.id)).to be true
+    end
+
+    # What a job that waited out the queue comes back to: its turn was given up on and
+    # the admin asked again.
+    it 'is false once a newer turn has taken its place' do
+      turn
+      chat.messages.create!(role: 'user', content: 'and add a chart', replayed: false)
+      chat.update!(status: 'running', turn_started_at: Time.current)
+
+      expect(report.current_chat_turn?(turn.id)).to be false
+    end
+
+    it 'is false while nothing is waiting for an answer' do
+      expect(report.current_chat_turn?(turn.id)).to be false
+    end
+
+    it 'is false for a report nobody has chatted about' do
+      expect(report.current_chat_turn?(SecureRandom.uuid)).to be false
+    end
+  end
+
   describe 'deletion' do
     it 'takes its ready notifications with it, rather than being refused by the foreign key' do
       report = create(:report, :with_phase)
