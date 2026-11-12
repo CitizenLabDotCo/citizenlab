@@ -65,6 +65,25 @@ module ParticipationMethod
       # Default is to do nothing.
     end
 
+    def ensure_default_form!
+      form = custom_form
+
+      if form.new_record?
+        form = create_default_form!
+        form&.participation_context&.reload_custom_form
+      elsif !form.custom_fields.exists?
+        ActiveRecord::Base.transaction do
+          default_fields(form).reverse_each do |field|
+            field.save!
+            field.move_to_top
+          end
+        end
+        form.custom_fields.reload
+      end
+
+      form
+    end
+
     def custom_form
       context = transitive? ? phase.project : phase
       context.custom_form || CustomForm.new(participation_context: context)
