@@ -53,6 +53,7 @@ const ActionButton = ({ phase, buttonStyle, buttonTextMultiloc }: Props) => {
         buttonStyle={buttonStyle}
         width="100%"
         whiteSpace="normal"
+        textAlign="center"
       >
         {buttonText}
       </ButtonWithLink>

@@ -58,6 +58,7 @@ const MethodCTAButton = ({
           projectId={projectId}
           fontWeight="500"
           whiteSpace="normal"
+          textAlign="center"
           phase={phase}
           participationMethod="native_survey"
         />
