@@ -6839,6 +6839,21 @@
     "verified_at": "2026-07-13T07:16:39.593099Z",
     "verified_by": "Roger"
   },
+  "app.containers.Authentication.steps.FlowStart.signInWithEmployeeAccount": {
+    "state": "verified",
+    "verified_at": "2026-11-12T13:17:14.015260Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Authentication.steps.FlowStart.useEmailInstead": {
+    "state": "verified",
+    "verified_at": "2026-11-12T13:17:14.015260Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Authentication.steps.FlowStart.usePhoneNumberInstead": {
+    "state": "verified",
+    "verified_at": "2026-11-12T13:17:14.015260Z",
+    "verified_by": "Roger"
+  },
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
