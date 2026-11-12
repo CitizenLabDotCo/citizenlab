@@ -6684,6 +6684,11 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.Users.UsersGroup.emailListTooLongError": {
+    "state": "verified",
+    "verified_at": "2026-11-12T13:40:16.604229Z",
+    "verified_by": "Roger"
+  },
   "app.containers.AdminPage.Users.UsersGroup.rulesError": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
@@ -6794,10 +6799,35 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+  "app.containers.Authentication.accountMergeNotAllowed": {
+    "state": "verified",
+    "verified_at": "2026-11-12T13:40:16.604229Z",
+    "verified_by": "Roger"
+  },
   "app.containers.Authentication.authenticationDialog": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Authentication.confirmYourPhoneNumber": {
+    "state": "verified",
+    "verified_at": "2026-11-12T13:40:16.604229Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Authentication.enterYourPhoneNumber": {
+    "state": "verified",
+    "verified_at": "2026-11-12T13:40:16.604229Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Authentication.linkYourAccount": {
+    "state": "verified",
+    "verified_at": "2026-11-12T13:40:16.604229Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Authentication.phoneConfirmationCodeInvalid": {
+    "state": "verified",
+    "verified_at": "2026-11-12T13:40:16.604229Z",
+    "verified_by": "Roger"
   },
   "app.containers.Authentication.signUpOrLogIn": {
     "state": "verified",
@@ -6887,6 +6917,11 @@
   "app.containers.Authentication.steps.Phone.phoneNumber": {
     "state": "verified",
     "verified_at": "2026-11-12T13:15:30.929415Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Authentication.steps.Phone.phoneNumberFormatError": {
+    "state": "verified",
+    "verified_at": "2026-11-12T13:40:16.604229Z",
     "verified_by": "Roger"
   },
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": {
