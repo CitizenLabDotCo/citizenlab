@@ -6864,6 +6864,26 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+  "app.containers.Authentication.steps.Phone.enterYourPhoneNumber": {
+    "state": "verified",
+    "verified_at": "2026-11-12T13:15:30.929415Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Authentication.steps.Phone.phoneNumber": {
+    "state": "verified",
+    "verified_at": "2026-11-12T13:15:30.929415Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Authentication.steps.Phone.phoneNumberMissingError": {
+    "state": "verified",
+    "verified_at": "2026-11-12T13:15:30.929415Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Authentication.steps.Policies.byContinuingPhone3": {
+    "state": "verified",
+    "verified_at": "2026-11-12T13:15:30.929415Z",
+    "verified_by": "Roger"
+  },
   "app.containers.Authentication.steps.Policies.byContinuingPhoneWithoutCampaignsEnabled": {
     "state": "verified",
     "verified_at": "2026-11-12T13:14:44.456767Z",
