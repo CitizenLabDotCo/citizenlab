@@ -57,7 +57,6 @@ ALTER TABLE IF EXISTS ONLY public.invites_imports DROP CONSTRAINT IF EXISTS fk_r
 ALTER TABLE IF EXISTS ONLY public.custom_field_matrix_statements DROP CONSTRAINT IF EXISTS fk_rails_c379cdcd80;
 ALTER TABLE IF EXISTS ONLY public.idea_images DROP CONSTRAINT IF EXISTS fk_rails_c349bb4ac3;
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_c32c787647;
-ALTER TABLE IF EXISTS ONLY public.feedback_prompts DROP CONSTRAINT IF EXISTS fk_rails_c0d6588e82;
 ALTER TABLE IF EXISTS ONLY public.jobs_trackers DROP CONSTRAINT IF EXISTS fk_rails_bede8fb214;
 ALTER TABLE IF EXISTS ONLY public.analysis_background_tasks DROP CONSTRAINT IF EXISTS fk_rails_bde9116e72;
 ALTER TABLE IF EXISTS ONLY public.ideas_phases DROP CONSTRAINT IF EXISTS fk_rails_bd36415a82;
@@ -99,6 +98,7 @@ ALTER TABLE IF EXISTS ONLY public.files_transcripts DROP CONSTRAINT IF EXISTS fk
 ALTER TABLE IF EXISTS ONLY public.static_pages DROP CONSTRAINT IF EXISTS fk_rails_938fbf3a5d;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_9268535f02;
 ALTER TABLE IF EXISTS ONLY public.content_builder_query_snapshots DROP CONSTRAINT IF EXISTS fk_rails_90d94ea8e1;
+ALTER TABLE IF EXISTS ONLY public.pulse_checks DROP CONSTRAINT IF EXISTS fk_rails_90d5040a30;
 ALTER TABLE IF EXISTS ONLY public.ai_assistant_tool_calls DROP CONSTRAINT IF EXISTS fk_rails_9096d5810e;
 ALTER TABLE IF EXISTS ONLY public.areas DROP CONSTRAINT IF EXISTS fk_rails_901fc7a65b;
 ALTER TABLE IF EXISTS ONLY public.areas_projects DROP CONSTRAINT IF EXISTS fk_rails_8fb43a173d;
@@ -254,6 +254,8 @@ DROP INDEX IF EXISTS public.index_reactions_on_user_id;
 DROP INDEX IF EXISTS public.index_reactions_on_reactable_type_and_reactable_id_and_user_id;
 DROP INDEX IF EXISTS public.index_reactions_on_reactable_type_and_reactable_id;
 DROP INDEX IF EXISTS public.index_query_snapshots_on_layout_id_and_query_hash;
+DROP INDEX IF EXISTS public.index_pulse_checks_on_user_id;
+DROP INDEX IF EXISTS public.index_pulse_checks_on_key_and_subject;
 DROP INDEX IF EXISTS public.index_projects_on_space_id;
 DROP INDEX IF EXISTS public.index_projects_on_slug;
 DROP INDEX IF EXISTS public.index_projects_global_topics_on_project_id;
@@ -414,8 +416,6 @@ DROP INDEX IF EXISTS public.index_files_on_category;
 DROP INDEX IF EXISTS public.index_file_attachments_on_file_id;
 DROP INDEX IF EXISTS public.index_file_attachments_on_file_and_attachable;
 DROP INDEX IF EXISTS public.index_file_attachments_on_attachable;
-DROP INDEX IF EXISTS public.index_feedback_prompts_on_user_id;
-DROP INDEX IF EXISTS public.index_feedback_prompts_on_key_and_subject;
 DROP INDEX IF EXISTS public.index_export_result_files_on_jobs_tracker_id;
 DROP INDEX IF EXISTS public.index_export_result_files_on_expires_at;
 DROP INDEX IF EXISTS public.index_events_on_project_id;
@@ -587,6 +587,7 @@ ALTER TABLE IF EXISTS ONLY public.report_builder_generation_transcripts DROP CON
 ALTER TABLE IF EXISTS ONLY public.que_values DROP CONSTRAINT IF EXISTS que_values_pkey;
 ALTER TABLE IF EXISTS ONLY public.que_lockers DROP CONSTRAINT IF EXISTS que_lockers_pkey;
 ALTER TABLE IF EXISTS ONLY public.que_jobs DROP CONSTRAINT IF EXISTS que_jobs_pkey;
+ALTER TABLE IF EXISTS ONLY public.pulse_checks DROP CONSTRAINT IF EXISTS pulse_checks_pkey;
 ALTER TABLE IF EXISTS ONLY public.public_api_api_clients DROP CONSTRAINT IF EXISTS public_api_api_clients_pkey;
 ALTER TABLE IF EXISTS ONLY public.projects DROP CONSTRAINT IF EXISTS projects_pkey;
 ALTER TABLE IF EXISTS ONLY public.projects_global_topics DROP CONSTRAINT IF EXISTS projects_global_topics_pkey;
@@ -651,7 +652,6 @@ ALTER TABLE IF EXISTS ONLY public.files_projects DROP CONSTRAINT IF EXISTS files
 ALTER TABLE IF EXISTS ONLY public.files_previews DROP CONSTRAINT IF EXISTS files_previews_pkey;
 ALTER TABLE IF EXISTS ONLY public.files DROP CONSTRAINT IF EXISTS files_pkey;
 ALTER TABLE IF EXISTS ONLY public.file_attachments DROP CONSTRAINT IF EXISTS file_attachments_pkey;
-ALTER TABLE IF EXISTS ONLY public.feedback_prompts DROP CONSTRAINT IF EXISTS feedback_prompts_pkey;
 ALTER TABLE IF EXISTS ONLY public.export_result_files DROP CONSTRAINT IF EXISTS export_result_files_pkey;
 ALTER TABLE IF EXISTS ONLY public.experiments DROP CONSTRAINT IF EXISTS experiments_pkey;
 ALTER TABLE IF EXISTS ONLY public.events DROP CONSTRAINT IF EXISTS events_pkey;
@@ -768,6 +768,7 @@ DROP TABLE IF EXISTS public.report_builder_generation_transcripts;
 DROP TABLE IF EXISTS public.que_values;
 DROP TABLE IF EXISTS public.que_lockers;
 DROP SEQUENCE IF EXISTS public.que_jobs_id_seq;
+DROP TABLE IF EXISTS public.pulse_checks;
 DROP TABLE IF EXISTS public.public_api_api_clients;
 DROP TABLE IF EXISTS public.projects_global_topics;
 DROP TABLE IF EXISTS public.project_reviews;
@@ -824,7 +825,6 @@ DROP TABLE IF EXISTS public.files_projects;
 DROP TABLE IF EXISTS public.files_previews;
 DROP TABLE IF EXISTS public.files;
 DROP TABLE IF EXISTS public.file_attachments;
-DROP TABLE IF EXISTS public.feedback_prompts;
 DROP TABLE IF EXISTS public.export_result_files;
 DROP TABLE IF EXISTS public.experiments;
 DROP TABLE IF EXISTS public.event_images;
@@ -2855,35 +2855,6 @@ CREATE TABLE public.export_result_files (
 
 
 --
--- Name: feedback_prompts; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.feedback_prompts (
-    id uuid DEFAULT gen_random_uuid() NOT NULL,
-    user_id uuid NOT NULL,
-    key character varying NOT NULL,
-    subject_type character varying,
-    subject_id uuid,
-    status character varying DEFAULT 'pending'::character varying NOT NULL,
-    shown_at timestamp(6) without time zone,
-    responded_at timestamp(6) without time zone,
-    score integer,
-    comment text,
-    trigger character varying,
-    admin_area character varying,
-    ui_version character varying,
-    staff boolean DEFAULT false NOT NULL,
-    role character varying,
-    locale character varying,
-    days_since_last_active integer,
-    project_origin character varying,
-    previously_shown_count integer,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
 -- Name: file_attachments; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -3888,6 +3859,35 @@ CREATE TABLE public.public_api_api_clients (
     secret_digest character varying NOT NULL,
     secret_postfix character varying NOT NULL,
     last_user_agent character varying
+);
+
+
+--
+-- Name: pulse_checks; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.pulse_checks (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    user_id uuid NOT NULL,
+    key character varying NOT NULL,
+    subject_type character varying,
+    subject_id uuid,
+    status character varying DEFAULT 'pending'::character varying NOT NULL,
+    shown_at timestamp(6) without time zone,
+    responded_at timestamp(6) without time zone,
+    score integer,
+    comment text,
+    trigger character varying,
+    admin_area character varying,
+    ui_version character varying,
+    staff boolean DEFAULT false NOT NULL,
+    role character varying,
+    locale character varying,
+    days_since_last_active integer,
+    project_origin character varying,
+    previously_shown_count integer,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -6148,14 +6148,6 @@ ALTER TABLE ONLY public.export_result_files
 
 
 --
--- Name: feedback_prompts feedback_prompts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.feedback_prompts
-    ADD CONSTRAINT feedback_prompts_pkey PRIMARY KEY (id);
-
-
---
 -- Name: file_attachments file_attachments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6665,6 +6657,14 @@ ALTER TABLE ONLY public.projects
 
 ALTER TABLE ONLY public.public_api_api_clients
     ADD CONSTRAINT public_api_api_clients_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: pulse_checks pulse_checks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.pulse_checks
+    ADD CONSTRAINT pulse_checks_pkey PRIMARY KEY (id);
 
 
 --
@@ -7891,20 +7891,6 @@ CREATE INDEX index_export_result_files_on_jobs_tracker_id ON public.export_resul
 
 
 --
--- Name: index_feedback_prompts_on_key_and_subject; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_feedback_prompts_on_key_and_subject ON public.feedback_prompts USING btree (key, subject_type, subject_id) WHERE (subject_id IS NOT NULL);
-
-
---
--- Name: index_feedback_prompts_on_user_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_feedback_prompts_on_user_id ON public.feedback_prompts USING btree (user_id);
-
-
---
 -- Name: index_file_attachments_on_attachable; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -9022,6 +9008,20 @@ CREATE UNIQUE INDEX index_projects_on_slug ON public.projects USING btree (slug)
 --
 
 CREATE INDEX index_projects_on_space_id ON public.projects USING btree (space_id);
+
+
+--
+-- Name: index_pulse_checks_on_key_and_subject; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_pulse_checks_on_key_and_subject ON public.pulse_checks USING btree (key, subject_type, subject_id) WHERE (subject_id IS NOT NULL);
+
+
+--
+-- Name: index_pulse_checks_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_pulse_checks_on_user_id ON public.pulse_checks USING btree (user_id);
 
 
 --
@@ -10200,6 +10200,14 @@ ALTER TABLE ONLY public.ai_assistant_tool_calls
 
 
 --
+-- Name: pulse_checks fk_rails_90d5040a30; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.pulse_checks
+    ADD CONSTRAINT fk_rails_90d5040a30 FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
 -- Name: content_builder_query_snapshots fk_rails_90d94ea8e1; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -10525,14 +10533,6 @@ ALTER TABLE ONLY public.analysis_background_tasks
 
 ALTER TABLE ONLY public.jobs_trackers
     ADD CONSTRAINT fk_rails_bede8fb214 FOREIGN KEY (owner_id) REFERENCES public.users(id);
-
-
---
--- Name: feedback_prompts fk_rails_c0d6588e82; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.feedback_prompts
-    ADD CONSTRAINT fk_rails_c0d6588e82 FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
 
 
 --
