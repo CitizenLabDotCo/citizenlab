@@ -16,6 +16,8 @@ resource 'Users' do
     route_description <<~DESC.squish
       Retrieve a paginated list of all the users in the platform, with the most recently
       created ones first.
+      The custom_field_values attribute is deprecated and will be removed in a future
+      version. Use the custom field answers endpoint (/api/v2/custom_field_answers) instead.
     DESC
 
     include_context 'common_list_params'
@@ -34,13 +36,32 @@ resource 'Users' do
       end
     end
 
+    context 'when paging through users created at the same time' do
+      let(:page_size) { 1 }
+
+      before { User.update_all(created_at: '2020-01-01') }
+
+      example 'Returns each user exactly once', document: false do
+        ids = (1..User.count).flat_map do |page_number|
+          do_request(page_number: page_number)
+          json_response_body[:users].pluck(:id)
+        end
+
+        expect(ids).to eq User.order(created_at: :desc, id: :desc).ids
+      end
+    end
+
     include_examples 'filtering_by_date', :user, :created_at
     include_examples 'filtering_by_date', :user, :updated_at
   end
 
   get '/api/v2/users/:id' do
     route_summary 'Get user'
-    route_description 'Retrieve a single user by its ID.'
+    route_description <<~DESC.squish
+      Retrieve a single user by its ID.
+      The custom_field_values attribute is deprecated and will be removed in a future
+      version. Use the custom field answers endpoint (/api/v2/custom_field_answers) instead.
+    DESC
 
     include_context 'common_item_params'
 

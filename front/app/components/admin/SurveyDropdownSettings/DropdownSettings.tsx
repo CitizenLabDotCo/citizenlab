@@ -16,7 +16,6 @@ import messages from './messages';
 
 type Props = {
   haveSubmissionsComeIn: boolean;
-  handleDownloadResults: () => void;
   handleExportPdf: () => void;
   handleExportXlsx: () => void;
   isDropdownOpened: boolean;
@@ -26,7 +25,6 @@ type Props = {
 
 const DropdownSettings = ({
   haveSubmissionsComeIn,
-  handleDownloadResults,
   handleExportPdf,
   handleExportXlsx,
   isDropdownOpened,
@@ -91,13 +89,6 @@ const DropdownSettings = ({
               <Text my="0px">
                 {formatMessage(messages.exportResponsesToXlsx)}
               </Text>
-            </DropdownListItem>
-            <DropdownListItem
-              onClick={handleDownloadResults}
-              data-cy="e2e-download-survey-results"
-            >
-              <Icon name="download" fill={colors.coolGrey600} mr="4px" />
-              <Text my="0px">{formatMessage(messages.downloadResults)}</Text>
             </DropdownListItem>
             {haveSubmissionsComeIn && (
               <DropdownListItem

@@ -27,10 +27,6 @@ module CustomIdMethods::Okta
       '3838ec01-d774-4818-a7ec-ac84fd4bbdd3'
     end
 
-    def config_parameters
-      %i[issuer client_id client_secret] + EMPLOYEE_SSO_CONFIG_PARAMETERS
-    end
-
     def config_parameters_schema
       {
         issuer: {

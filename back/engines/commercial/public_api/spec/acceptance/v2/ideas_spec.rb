@@ -55,6 +55,8 @@ resource 'Posts' do
     route_description <<~DESC.squish
       Retrieve a paginated list of all the ideas in the platform, with the most recent
       ones appearing first.
+      The custom_field_values attribute is deprecated and will be removed in a future
+      version. Use the custom field answers endpoint (/api/v2/custom_field_answers) instead.
     DESC
 
     include_context 'common_list_params'
@@ -194,7 +196,11 @@ resource 'Posts' do
 
   get '/api/v2/ideas/:id' do
     route_summary 'Get idea'
-    route_description 'Retrieve a single idea by its ID.'
+    route_description <<~DESC.squish
+      Retrieve a single idea by its ID.
+      The custom_field_values attribute is deprecated and will be removed in a future
+      version. Use the custom field answers endpoint (/api/v2/custom_field_answers) instead.
+    DESC
 
     include_context 'common_item_params'
 
