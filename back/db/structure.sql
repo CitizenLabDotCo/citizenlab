@@ -98,6 +98,7 @@ ALTER TABLE IF EXISTS ONLY public.files_transcripts DROP CONSTRAINT IF EXISTS fk
 ALTER TABLE IF EXISTS ONLY public.static_pages DROP CONSTRAINT IF EXISTS fk_rails_938fbf3a5d;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_9268535f02;
 ALTER TABLE IF EXISTS ONLY public.content_builder_query_snapshots DROP CONSTRAINT IF EXISTS fk_rails_90d94ea8e1;
+ALTER TABLE IF EXISTS ONLY public.pulse_checks DROP CONSTRAINT IF EXISTS fk_rails_90d5040a30;
 ALTER TABLE IF EXISTS ONLY public.ai_assistant_tool_calls DROP CONSTRAINT IF EXISTS fk_rails_9096d5810e;
 ALTER TABLE IF EXISTS ONLY public.areas DROP CONSTRAINT IF EXISTS fk_rails_901fc7a65b;
 ALTER TABLE IF EXISTS ONLY public.areas_projects DROP CONSTRAINT IF EXISTS fk_rails_8fb43a173d;
@@ -253,6 +254,8 @@ DROP INDEX IF EXISTS public.index_reactions_on_user_id;
 DROP INDEX IF EXISTS public.index_reactions_on_reactable_type_and_reactable_id_and_user_id;
 DROP INDEX IF EXISTS public.index_reactions_on_reactable_type_and_reactable_id;
 DROP INDEX IF EXISTS public.index_query_snapshots_on_layout_id_and_query_hash;
+DROP INDEX IF EXISTS public.index_pulse_checks_on_user_id;
+DROP INDEX IF EXISTS public.index_pulse_checks_on_key_and_subject;
 DROP INDEX IF EXISTS public.index_projects_on_space_id;
 DROP INDEX IF EXISTS public.index_projects_on_slug;
 DROP INDEX IF EXISTS public.index_projects_global_topics_on_project_id;
@@ -584,6 +587,7 @@ ALTER TABLE IF EXISTS ONLY public.report_builder_generation_transcripts DROP CON
 ALTER TABLE IF EXISTS ONLY public.que_values DROP CONSTRAINT IF EXISTS que_values_pkey;
 ALTER TABLE IF EXISTS ONLY public.que_lockers DROP CONSTRAINT IF EXISTS que_lockers_pkey;
 ALTER TABLE IF EXISTS ONLY public.que_jobs DROP CONSTRAINT IF EXISTS que_jobs_pkey;
+ALTER TABLE IF EXISTS ONLY public.pulse_checks DROP CONSTRAINT IF EXISTS pulse_checks_pkey;
 ALTER TABLE IF EXISTS ONLY public.public_api_api_clients DROP CONSTRAINT IF EXISTS public_api_api_clients_pkey;
 ALTER TABLE IF EXISTS ONLY public.projects DROP CONSTRAINT IF EXISTS projects_pkey;
 ALTER TABLE IF EXISTS ONLY public.projects_global_topics DROP CONSTRAINT IF EXISTS projects_global_topics_pkey;
@@ -764,6 +768,7 @@ DROP TABLE IF EXISTS public.report_builder_generation_transcripts;
 DROP TABLE IF EXISTS public.que_values;
 DROP TABLE IF EXISTS public.que_lockers;
 DROP SEQUENCE IF EXISTS public.que_jobs_id_seq;
+DROP TABLE IF EXISTS public.pulse_checks;
 DROP TABLE IF EXISTS public.public_api_api_clients;
 DROP TABLE IF EXISTS public.projects_global_topics;
 DROP TABLE IF EXISTS public.project_reviews;
@@ -3858,6 +3863,35 @@ CREATE TABLE public.public_api_api_clients (
 
 
 --
+-- Name: pulse_checks; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.pulse_checks (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    user_id uuid NOT NULL,
+    key character varying NOT NULL,
+    subject_type character varying,
+    subject_id uuid,
+    status character varying DEFAULT 'pending'::character varying NOT NULL,
+    shown_at timestamp(6) without time zone,
+    responded_at timestamp(6) without time zone,
+    score integer,
+    comment text,
+    trigger character varying,
+    admin_area character varying,
+    ui_version character varying,
+    staff boolean DEFAULT false NOT NULL,
+    role character varying,
+    locale character varying,
+    days_since_last_active integer,
+    project_origin character varying,
+    previously_shown_count integer,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: que_jobs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -6626,6 +6660,14 @@ ALTER TABLE ONLY public.public_api_api_clients
 
 
 --
+-- Name: pulse_checks pulse_checks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.pulse_checks
+    ADD CONSTRAINT pulse_checks_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: que_jobs que_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -8969,6 +9011,20 @@ CREATE INDEX index_projects_on_space_id ON public.projects USING btree (space_id
 
 
 --
+-- Name: index_pulse_checks_on_key_and_subject; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_pulse_checks_on_key_and_subject ON public.pulse_checks USING btree (key, subject_type, subject_id) WHERE (subject_id IS NOT NULL);
+
+
+--
+-- Name: index_pulse_checks_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_pulse_checks_on_user_id ON public.pulse_checks USING btree (user_id);
+
+
+--
 -- Name: index_query_snapshots_on_layout_id_and_query_hash; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -10144,6 +10200,14 @@ ALTER TABLE ONLY public.ai_assistant_tool_calls
 
 
 --
+-- Name: pulse_checks fk_rails_90d5040a30; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.pulse_checks
+    ADD CONSTRAINT fk_rails_90d5040a30 FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
 -- Name: content_builder_query_snapshots fk_rails_90d94ea8e1; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -10879,6 +10943,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20261014120100'),
 ('20261014110100'),
 ('20261014100100'),
+('20261013120000'),
 ('20261012130100'),
 ('20261012120000'),
 ('20261012100100'),

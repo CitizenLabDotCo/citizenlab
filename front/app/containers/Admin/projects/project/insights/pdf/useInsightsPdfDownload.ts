@@ -3,7 +3,7 @@ import { useState, useCallback, useRef, useEffect } from 'react';
 import { colors } from '@citizenlab/cl2-component-library';
 
 interface UseInsightsPdfDownloadOptions {
-  filename?: string;
+  filename: string;
   hiddenContainerId?: string;
   errorMessage: string;
 }
@@ -143,7 +143,7 @@ const waitForLayout = (container: HTMLElement, maxMs: number): Promise<void> =>
  */
 export default function useInsightsPdfDownload({
   errorMessage,
-  filename = 'insights',
+  filename,
   hiddenContainerId = 'insights-pdf-hidden-container',
 }: UseInsightsPdfDownloadOptions): UseInsightsPdfDownloadReturn {
   const [isDownloading, setIsDownloading] = useState(false);

@@ -1435,6 +1435,7 @@ DEPENDENCIES
   tzinfo (~> 2.0)
   tzinfo-data (~> 1.2024)
   user_custom_fields!
+  validate_url (~> 1.0.15)
   vcr (~> 6.2)
   volunteering!
   webhooks!

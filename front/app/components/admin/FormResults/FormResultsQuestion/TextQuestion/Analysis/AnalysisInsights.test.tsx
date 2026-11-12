@@ -26,6 +26,71 @@ jest.mock('api/analysis_summary_pre_check/useAddAnalysisSummaryPreCheck', () =>
   jest.fn(() => ({ mutate: mockPreCheck, isPending: false }))
 );
 jest.mock('hooks/useFeatureFlag', () => jest.fn(() => false));
+jest.mock('api/analysis_summaries/useAnalysisSummary', () =>
+  jest.fn(() => ({
+    data: {
+      data: {
+        attributes: {
+          summary: 'A summary',
+          filters: { input_follow_up_not_empty: true },
+          missing_inputs_count: 0,
+        },
+        relationships: { background_task: { data: { id: 'bt1' } } },
+      },
+    },
+  }))
+);
+jest.mock('api/analysis_questions/useAnalysisQuestion', () =>
+  jest.fn(() => ({
+    data: {
+      data: {
+        attributes: {
+          question: 'A question',
+          answer: 'An answer',
+          filters: { input_follow_up_not_empty: true },
+          missing_inputs_count: 0,
+        },
+        relationships: { background_task: { data: { id: 'bt2' } } },
+      },
+    },
+  }))
+);
+jest.mock('api/analysis_background_tasks/useAnalysisBackgroundTask', () =>
+  jest.fn(() => ({ data: undefined }))
+);
+jest.mock('api/analysis_inputs/useInfiniteAnalysisInputs', () =>
+  jest.fn(() => ({ data: undefined }))
+);
+jest.mock('api/analysis_summaries/useRegenerateAnalysisSummary', () =>
+  jest.fn(() => ({ mutate: jest.fn(), isPending: false }))
+);
+jest.mock('api/analysis_questions/useRegenerateAnalysisQuestion', () =>
+  jest.fn(() => ({ mutate: jest.fn(), isPending: false }))
+);
+jest.mock(
+  'containers/Admin/projects/project/analysis/Insights/InsightBody',
+  () => () => null
+);
+jest.mock(
+  'containers/Admin/projects/project/analysis/Insights/InsightFooter',
+  () => () => null
+);
+jest.mock(
+  'containers/Admin/projects/project/analysis/Insights/SummaryHeader',
+  () => () => null
+);
+jest.mock(
+  'containers/Admin/projects/project/analysis/Insights/QuestionHeader',
+  () => () => null
+);
+// The Link mock ignores `search`, so the button is stubbed to read its props.
+const mockButtonWithLink = jest.fn(
+  ({ children }: { children?: React.ReactNode }) => children
+);
+jest.mock(
+  'components/UI/ButtonWithLink',
+  () => (props: { children?: React.ReactNode }) => mockButtonWithLink(props)
+);
 jest.mock('utils/router', () => ({
   ...jest.requireActual('utils/router'),
   useSearch: () => ({}),
@@ -63,6 +128,7 @@ describe('<AnalysisInsights /> auto-summary threshold', () => {
         analysis={analysis}
         insights={noInsights}
         textResponsesCount={10}
+        projectId="projectId"
       />
     );
 
@@ -78,6 +144,7 @@ describe('<AnalysisInsights /> auto-summary threshold', () => {
         analysis={analysis}
         insights={noInsights}
         textResponsesCount={11}
+        projectId="projectId"
       />
     );
 
@@ -95,6 +162,7 @@ describe('<AnalysisInsights /> auto-summary threshold', () => {
         analysis={analysis}
         insights={noInsights}
         textResponsesCount={11}
+        projectId="projectId"
         textResponseSource="other_option"
       />
     );
@@ -112,6 +180,7 @@ describe('<AnalysisInsights /> auto-summary threshold', () => {
         analysis={analysis}
         insights={noInsights}
         textResponsesCount={11}
+        projectId="projectId"
         textResponseSource="free_text"
       />
     );
@@ -122,4 +191,50 @@ describe('<AnalysisInsights /> auto-summary threshold', () => {
     const { filters } = mockAddSummary.mock.calls[0][0];
     expect(filters).not.toHaveProperty(OTHER_FILTER_KEY);
   });
+});
+
+// The Community Monitor live monitor URL carries no $projectId/$phaseId, so the
+// Explore link must use the ids passed down as props, not the route params.
+describe('<AnalysisInsights /> Explore link', () => {
+  const insightOfType = (
+    type: 'summary' | 'analysis_question'
+  ): IInsights => ({
+    data: [
+      {
+        id: 'i1',
+        type: 'insight',
+        relationships: {
+          background_task: { data: { id: 'bt1', type: 'background_task' } },
+          insightable: { data: { id: 'ins1', type } },
+        },
+      },
+    ],
+  });
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it.each(['summary', 'analysis_question'] as const)(
+    'targets the given project and phase for a %s',
+    (type) => {
+      render(
+        <AnalysisInsights
+          analysis={analysis}
+          insights={insightOfType(type)}
+          textResponsesCount={11}
+          projectId="cmProjectId"
+          phaseId="cmPhaseId"
+        />
+      );
+
+      expect(mockButtonWithLink).toHaveBeenCalledWith(
+        expect.objectContaining({
+          to: '/admin/projects/$projectId/analysis/$analysisId',
+          params: { projectId: 'cmProjectId', analysisId: 'a1' },
+          search: { input_follow_up_not_empty: true, phase_id: 'cmPhaseId' },
+        })
+      );
+    }
+  );
 });
