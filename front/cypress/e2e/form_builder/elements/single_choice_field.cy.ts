@@ -51,7 +51,7 @@ describe('Form builder single choice field', () => {
     cy.get('#e2e-title-multiloc').type('Question title', { force: true });
     cy.get('#e2e-option-input-0').type('Option 1', { force: true });
     cy.contains('Save').click();
-    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/surveys/new/${phaseId}`);
     cy.contains('Question title').should('exist');
     cy.contains('Option 1').should('exist');
     cy.contains('Survey').should('exist');
@@ -70,7 +70,7 @@ describe('Form builder single choice field', () => {
     cy.contains('Save').click();
 
     // Go to survey
-    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/surveys/new/${phaseId}`);
     cy.contains(questionTitle).should('exist');
 
     // Save survey response
@@ -103,7 +103,7 @@ describe('Form builder single choice field', () => {
     cy.contains('Save').click();
 
     // Go to survey
-    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/surveys/new/${phaseId}`);
     cy.contains(questionTitle).should('exist');
     cy.wait(2000);
     cy.contains(otherText).click({ force: true });
@@ -119,7 +119,7 @@ describe('Form builder single choice field', () => {
       'eq',
       `${
         Cypress.config().baseUrl
-      }/en/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`
+      }/en/projects/${projectSlug}/surveys/new/${phaseId}`
     );
 
     cy.get(`[id^="${questionTitle}"]:not([id$="-label"])`)

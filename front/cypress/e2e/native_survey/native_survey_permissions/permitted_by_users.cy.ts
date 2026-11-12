@@ -103,7 +103,7 @@ describe('Native survey permitted by: users', () => {
     // Confirm we're in the survey now
     cy.location('pathname').should(
       'eq',
-      `/en/projects/${projectSlug}/surveys/new`
+      `/en/projects/${projectSlug}/surveys/new/${phaseId}`
     );
 
     // Answer question
@@ -131,7 +131,7 @@ describe('Native survey permitted by: users', () => {
     // Confirm we're in the survey now
     cy.location('pathname').should(
       'eq',
-      `/en/projects/${projectSlug}/surveys/new`
+      `/en/projects/${projectSlug}/surveys/new/${phaseId}`
     );
 
     // Answer question and go to next page

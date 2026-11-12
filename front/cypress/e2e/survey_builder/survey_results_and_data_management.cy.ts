@@ -66,7 +66,7 @@ describe('Survey Builder - Results and Data Management', () => {
     cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
 
     // Navigate to the survey page
-    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/surveys/new/${phaseId}`);
 
     cy.contains(multipleChoiceChooseOneTitle).should('exist');
     cy.contains(multipleChoiceChooseManyTitle).should('exist');
@@ -90,7 +90,7 @@ describe('Survey Builder - Results and Data Management', () => {
     cy.dataCy('e2e-page-number-1').should('exist');
     cy.dataCy('e2e-after-submission').should('exist');
 
-    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/surveys/new/${phaseId}`);
     cy.contains(chooseOneOption2).click();
     cy.contains(chooseManyOption1).click({
       force: true,
@@ -138,7 +138,7 @@ describe('Survey Builder - Results and Data Management', () => {
     cy.get('#e2e-title-multiloc').should('exist');
 
     // Navigate to the survey page
-    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/surveys/new/${phaseId}`);
 
     cy.contains(questionTitle).should('exist');
 
@@ -176,7 +176,7 @@ describe('Survey Builder - Results and Data Management', () => {
     cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
 
     // Submit one response
-    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/surveys/new/${phaseId}`);
     cy.contains(questionTitle).should('exist');
     cy.get(`*[id^="${questionTitle}"]:not([id$="-label"])`).type(answer, {
       force: true,

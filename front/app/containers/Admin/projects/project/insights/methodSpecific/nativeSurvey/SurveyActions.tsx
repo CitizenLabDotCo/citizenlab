@@ -238,7 +238,7 @@ const SurveyActions = ({ phase }: Props) => {
         <Box display="flex" alignItems="center" gap="8px">
           {isAnyDownloading && <Spinner size="24px" />}
           <ButtonWithLink
-            linkTo={`/projects/${project.data.attributes.slug}/surveys/new?phase_id=${phaseId}`}
+            linkTo={`/projects/${project.data.attributes.slug}/surveys/new/${phaseId}`}
             buttonStyle="text"
             width="auto"
             openLinkInNewTab

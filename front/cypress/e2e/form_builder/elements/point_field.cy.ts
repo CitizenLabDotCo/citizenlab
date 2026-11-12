@@ -51,7 +51,7 @@ describe('Form builder point field', () => {
     cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
 
     // Confirm in front office that default map is shown if the map was never configured
-    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/surveys/new/${phaseId}`);
     cy.contains(questionTitle).should('exist');
     checkMapInputWorks();
 
@@ -70,7 +70,7 @@ describe('Form builder point field', () => {
     cy.wait(2000);
 
     // Try filling in the survey
-    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/surveys/new/${phaseId}`);
 
     cy.contains(questionTitle).should('exist');
     cy.contains('Lava Flow Hazard Zones').should('exist');
@@ -84,7 +84,7 @@ describe('Form builder point field', () => {
       'eq',
       `${
         Cypress.config().baseUrl
-      }/en/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`
+      }/en/projects/${projectSlug}/surveys/new/${phaseId}`
     );
 
     // Enter an address by clicking on the map

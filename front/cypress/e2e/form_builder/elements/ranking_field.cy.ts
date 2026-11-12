@@ -54,7 +54,7 @@ describe('Form builder ranking component', () => {
     cy.get('form').submit();
 
     // Visit the survey front office
-    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/surveys/new/${phaseId}`);
 
     // Verify that the ranking question is displayed
     cy.contains('Question title 2').should('exist');
@@ -70,7 +70,7 @@ describe('Form builder ranking component', () => {
       'eq',
       `${
         Cypress.config().baseUrl
-      }/en/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`
+      }/en/projects/${projectSlug}/surveys/new/${phaseId}`
     );
   });
 

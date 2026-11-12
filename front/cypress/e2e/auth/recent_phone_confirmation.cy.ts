@@ -33,7 +33,7 @@ describe('Sign up - phone only', () => {
 
       cy.location('pathname').should(
         'eq',
-        `/en/projects/${projectTitle}/surveys/new`
+        `/en/projects/${projectTitle}/surveys/new/${phaseId}`
       );
     });
   });
@@ -58,7 +58,7 @@ describe('Sign up - phone only', () => {
 
       cy.location('pathname').should(
         'eq',
-        `/en/projects/${projectTitle}/surveys/new`
+        `/en/projects/${projectTitle}/surveys/new/${phaseId}`
       );
     });
   });

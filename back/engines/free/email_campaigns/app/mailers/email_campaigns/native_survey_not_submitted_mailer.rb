@@ -22,7 +22,7 @@ module EmailCampaigns
       {
         recipient: recipient,
         event_payload: {
-          survey_url: context ? "#{context_project_url}/ideas/new?phase_id=#{context.id}" : data.phase.url,
+          survey_url: context ? "#{context_project_url}/surveys/new/#{context.id}" : data.phase.url,
           phase_title_multiloc: context&.title_multiloc || data.phase.title_multiloc,
           phase_end_at: 10.days.from_now.beginning_of_day
         }

@@ -15,7 +15,6 @@ import VerticalCenterer from 'components/VerticalCenterer';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import { getIdeaPostingRules } from 'utils/actionTakingRules';
 import { isUnauthorizedRQ } from 'utils/errorUtils';
-import { isNilOrError } from 'utils/helperUtils';
 import { useParams, useSearch } from 'utils/router';
 
 import IdeasNewSurveyForm from './IdeasNewSurveyForm';
@@ -23,7 +22,9 @@ import SurveyNotActiveNotice from './SurveyNotActiveNotice';
 import SurveySubmittedNotice from './SurveySubmittedNotice';
 
 const IdeasNewSurveyPage = () => {
-  const { slug } = useParams({ from: '/$locale/projects/$slug/surveys/new' });
+  const { slug, phaseId } = useParams({
+    from: '/$locale/projects/$slug/surveys/new/$phaseId',
+  });
   const {
     data: project,
     status: projectStatus,
@@ -31,7 +32,7 @@ const IdeasNewSurveyPage = () => {
   } = useProjectBySlug(slug);
   const { data: authUser } = useAuthUser();
   const searchParams = useSearch({
-    from: '/$locale/projects/$slug/surveys/new',
+    from: '/$locale/projects/$slug/surveys/new/$phaseId',
   });
 
   // If idea_id is present in the URL when this component first mounts,
@@ -41,13 +42,12 @@ const IdeasNewSurveyPage = () => {
   const [hadIdeaIdOnMount] = useState(() => !!searchParams.idea_id);
   const [hasEntered, setHasEntered] = useState(false);
 
-  // If we reach this component by hitting surveys/new directly, without a phase_id,
-  // we fall back to the project's current phase.
-  const phaseIdFromSearchParams = searchParams.phase_id;
-  const phaseId =
-    phaseIdFromSearchParams ||
-    project?.data.relationships.current_phase?.data?.id; // TODO: This can be deleted in a few months, as URLs now always include the phase_id.
   const { data: phase, isLoading: phaseIsLoading } = usePhase(phaseId);
+
+  const participationMethod = phase?.data.attributes.participation_method;
+  const isSurveyPhase =
+    participationMethod === 'native_survey' ||
+    participationMethod === 'community_monitor_survey';
 
   /*
     TO DO: simplify these loading & auth checks, then if possible abstract and use the same the IdeasNewPage
@@ -76,6 +76,15 @@ const IdeasNewSurveyPage = () => {
     });
 
   if (!hasEntered) {
+    // Only the survey participation methods have a survey to fill in here. A link
+    // to a phase that has since become something else (or to a project whose
+    // current phase is) would otherwise fall through to the authentication gate
+    // below, which offers a sign-in for a posting_idea permission that cannot
+    // exist on such a phase, and so dead-ends on a failed requirements fetch.
+    if (phase && !isSurveyPhase) {
+      return <SurveyNotActiveNotice project={project.data} />;
+    }
+
     if (disabledReason === 'posting_limited_max_reached' || hadIdeaIdOnMount) {
       return <SurveySubmittedNotice project={project.data} />;
     }
@@ -87,23 +96,20 @@ const IdeasNewSurveyPage = () => {
       return <SurveyNotActiveNotice project={project.data} />;
     }
 
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if ((enabled === 'maybe' && authenticationRequirements) || disabledReason) {
+    if (enabled === 'maybe' || disabledReason) {
       const triggerAuthFlow = () => {
         triggerAuthenticationFlow({
           context: {
             type: 'phase',
             action: 'posting_idea',
-            id: phaseId || '',
+            id: phaseId,
           },
         });
       };
 
       const fixableByAuthentication =
-        !isNilOrError(authenticationRequirements) ||
-        (disabledReason && isFixableByAuthentication(disabledReason)) ||
-        false;
+        authenticationRequirements !== null ||
+        isFixableByAuthentication(disabledReason);
 
       // By default, trigger the modal right away if relevant for better UX.
       if (fixableByAuthentication) {

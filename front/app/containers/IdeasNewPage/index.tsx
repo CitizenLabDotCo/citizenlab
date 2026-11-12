@@ -4,7 +4,6 @@ import { Spinner } from '@citizenlab/cl2-component-library';
 
 import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
-import { getCurrentPhase } from 'api/phases/utils';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
@@ -16,15 +15,15 @@ import VerticalCenterer from 'components/VerticalCenterer';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import { getIdeaPostingRules } from 'utils/actionTakingRules';
 import Navigate from 'utils/cl-router/Navigate';
-import { getParticipationMethod } from 'utils/configs/participationMethodConfig';
 import { isUnauthorizedRQ } from 'utils/errorUtils';
-import { isNilOrError } from 'utils/helperUtils';
-import { useParams, useSearch } from 'utils/router';
+import { useParams } from 'utils/router';
 
 import IdeasNewIdeationForm from './IdeasNewIdeationForm';
 
 const IdeasNewPage = () => {
-  const { slug } = useParams({ from: '/$locale/projects/$slug/ideas/new' });
+  const { slug, phaseId } = useParams({
+    from: '/$locale/projects/$slug/ideas/new/$phaseId',
+  });
   const {
     data: project,
     status: projectStatus,
@@ -32,13 +31,6 @@ const IdeasNewPage = () => {
   } = useProjectBySlug(slug);
   const { data: authUser } = useAuthUser();
   const { data: phases, status: phasesStatus } = usePhases(project?.data.id);
-  const searchParams = useSearch({
-    from: '/$locale/projects/$slug/ideas/new',
-  });
-  const phaseIdFromSearchParams = searchParams.phase_id;
-  // If we reach this component by hitting ideas/new directly, without a phase_id,
-  // we'll still get to this component, so we try to get the phase id from getCurrentPhase.
-  const phaseId = phaseIdFromSearchParams || getCurrentPhase(phases?.data)?.id;
 
   /*
     TO DO: simplify these loading & auth checks, then if possible abstract and use the same the IdeasNewSurveyPage
@@ -64,31 +56,39 @@ const IdeasNewPage = () => {
     return null;
   }
 
-  const currentPhase = getCurrentPhase(phases.data);
-  const participationMethod = getParticipationMethod(
-    project.data,
-    phases.data,
-    // No particular reason why this needs to be phaseIdFromSearchParams,
-    // I just wanted to keep this part as it was while refactoring some other parts
-    // to reduce the chances of introducing bugs. But it could probably be phaseId instead.
-    phaseIdFromSearchParams || undefined
-  );
+  const phase = phases.data.find((phase) => phase.id === phaseId);
+
+  if (!phase) {
+    return <PageNotFound />;
+  }
+
+  const participationMethod = phase.attributes.participation_method;
+
+  // Survey phases have their own route and form.
+  if (participationMethod === 'native_survey') {
+    return (
+      <Navigate
+        to="/projects/$slug/surveys/new/$phaseId"
+        params={{ slug, phaseId }}
+        replace
+      />
+    );
+  }
+
   const { enabled, disabledReason, authenticationRequirements } =
     getIdeaPostingRules({
       project: project.data,
-      phase: currentPhase,
+      phase,
       authUser: authUser?.data,
     });
 
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  if ((enabled === 'maybe' && authenticationRequirements) || disabledReason) {
+  if (enabled === 'maybe' || disabledReason) {
     const triggerAuthFlow = () => {
       triggerAuthenticationFlow({
         context: {
           type: 'phase',
           action: 'posting_idea',
-          id: phaseId || '',
+          id: phaseId,
         },
       });
     };
@@ -96,28 +96,10 @@ const IdeasNewPage = () => {
     return (
       <Unauthorized
         fixableByAuthentication={
-          !isNilOrError(authenticationRequirements) ||
-          (disabledReason && isFixableByAuthentication(disabledReason)) ||
-          false
+          authenticationRequirements !== null ||
+          isFixableByAuthentication(disabledReason)
         }
         triggerAuthFlow={triggerAuthFlow}
-      />
-    );
-  }
-
-  /*
-    We arrive in this component via the /ideas/new route, which in the past
-    was also used to render the survey form. In order for old links to surveys not to break,
-    we are redirecting /ideas/new requests to the new /surveys/new URL. This code can be removed
-    once we've verified all surveys started before the date this got merged have been completed.
-  */
-  if (participationMethod === 'native_survey' && typeof phaseId === 'string') {
-    return (
-      <Navigate
-        to="/projects/$slug/surveys/new"
-        params={{ slug }}
-        search={{ phase_id: phaseId }}
-        replace
       />
     );
   }

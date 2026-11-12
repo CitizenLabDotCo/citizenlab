@@ -47,7 +47,7 @@ describe('Input form builder', () => {
     cy.visit(`/projects/${projectSlug}`);
 
     // Check that the tags field is present on the idea form before turning it off
-    cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/ideas/new/${phaseId}`);
 
     // Fill in the title since it is required
     cy.get('#title_multiloc ').type(title, { delay: 0 });
@@ -107,7 +107,7 @@ describe('Input form builder', () => {
     cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
 
     // Fill in the form
-    cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/ideas/new/${phaseId}`);
 
     // Fill in the title and description since these are required
     cy.get('#title_multiloc ').type(title, { delay: 0 });
@@ -147,7 +147,7 @@ describe('Input form builder', () => {
     cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
 
     // Fill in the form
-    cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/ideas/new/${phaseId}`);
 
     cy.get('#title_multiloc ').type(title, { delay: 0 });
     cy.get('#title_multiloc ').should('contain.value', title);

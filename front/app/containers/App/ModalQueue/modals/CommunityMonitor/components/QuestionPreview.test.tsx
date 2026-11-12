@@ -46,7 +46,7 @@ describe('QuestionPreview', () => {
 
     await waitFor(() => {
       expect(clHistory.push).toHaveBeenCalledWith(
-        '/projects/community-monitor/surveys/new?phase_id=phase-1&go_back=true'
+        '/projects/community-monitor/surveys/new/phase-1?go_back=true'
       );
     });
   });

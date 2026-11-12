@@ -71,7 +71,7 @@ describe('Native survey permitted by: everyone', () => {
       // Confirm we're in the survey now
       cy.location('pathname').should(
         'eq',
-        `/en/projects/${projectSlug}/surveys/new`
+        `/en/projects/${projectSlug}/surveys/new/${phaseId}`
       );
 
       // Answer question and go to next page
@@ -139,7 +139,7 @@ describe('Native survey permitted by: everyone', () => {
       // Confirm we're in the survey now
       cy.location('pathname').should(
         'eq',
-        `/en/projects/${projectSlug}/surveys/new`
+        `/en/projects/${projectSlug}/surveys/new/${phaseId}`
       );
 
       // Answer question and go to next page
