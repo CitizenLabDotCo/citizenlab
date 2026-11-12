@@ -94,7 +94,7 @@ module DecidimImporter
       restore_update_timestamps(template, created)
       reconcile_permissions!
       provision_project_pages!(created)
-      store_static_page_images!(created)
+      store_layout_text_images!(created)
       created
     end
 
@@ -181,14 +181,15 @@ module DecidimImporter
       end
     end
 
-    # Stores the inline images in **this import's** static page layouts as `TextImage`s of the page,
-    # replacing each `<img>` with a reference, as the builder does when it saves a layout. The deserializer
-    # bypasses that save path, so without this the images would stay linked to the Decidim site.
-    def self.store_static_page_images!(created_object_ids)
-      ids = created_object_ids['StaticPage'] || []
+    # Stores the inline images in **this import's** layouts (static pages and project descriptions) as
+    # `TextImage`s of their page or project, replacing each `<img>` with a reference, as the builder does
+    # when it saves a layout. The deserializer bypasses that save path, so without this the images would
+    # stay linked to the Decidim site. Only `RichTextMultiloc` bridge nodes hold images to store.
+    def self.store_layout_text_images!(created_object_ids)
+      ids = created_object_ids['ContentBuilder::Layout'] || []
       return if ids.empty?
 
-      ContentBuilder::Layout.where(content_buildable_type: 'StaticPage', content_buildable_id: ids).find_each do |layout|
+      ContentBuilder::Layout.where(id: ids).find_each do |layout|
         layout.craftjs_json = ContentBuilder::LayoutTextImageService.new.swap_data_images(
           layout.craftjs_json, imageable: layout.content_buildable
         )
