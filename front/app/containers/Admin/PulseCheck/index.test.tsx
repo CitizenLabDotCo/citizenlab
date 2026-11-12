@@ -4,12 +4,12 @@ import { pageChanges$ } from 'utils/analytics';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import { act, render } from 'utils/testUtils/rtl';
 
-import FeedbackPrompt from './index';
+import PulseCheck from './index';
 
 const mockShowNext = jest.fn();
 let mockIsRedesign = false;
 
-jest.mock('api/feedback_prompts/useShowNextFeedbackPrompt', () => () => ({
+jest.mock('api/pulse_checks/useShowNextPulseCheck', () => () => ({
   mutateAsync: mockShowNext,
 }));
 jest.mock('hooks/useProjectBackofficeRedesign', () => () => mockIsRedesign);
@@ -24,7 +24,7 @@ jest.mock('utils/getRoutePattern', () => ({
       : '/:locale/admin/projects',
 }));
 
-describe('FeedbackPrompt triggers', () => {
+describe('PulseCheck triggers', () => {
   beforeEach(() => {
     jest.useFakeTimers();
     jest.setSystemTime(new Date('2026-10-14T00:00:00Z'));
@@ -40,12 +40,12 @@ describe('FeedbackPrompt triggers', () => {
 
   it('preserves the visit duration when the back-office version changes', async () => {
     window.history.replaceState({}, '', '/en/admin/projects/p1/general');
-    const { rerender } = render(<FeedbackPrompt />);
+    const { rerender } = render(<PulseCheck />);
     act(() => {
       jest.advanceTimersByTime(20000);
     });
     mockIsRedesign = true;
-    rerender(<FeedbackPrompt />);
+    rerender(<PulseCheck />);
     act(() => {
       jest.advanceTimersByTime(15000);
     });
@@ -63,7 +63,7 @@ describe('FeedbackPrompt triggers', () => {
 
   it('does not check feedback after a save outside a project', async () => {
     window.history.replaceState({}, '', '/en/admin/projects');
-    render(<FeedbackPrompt />);
+    render(<PulseCheck />);
     await act(async () => {
       await queryClient
         .getMutationCache()
@@ -75,7 +75,7 @@ describe('FeedbackPrompt triggers', () => {
 
   it('includes the current project when checking after a save', async () => {
     window.history.replaceState({}, '', '/en/admin/projects/p1/general');
-    render(<FeedbackPrompt />);
+    render(<PulseCheck />);
     await act(async () => {
       await queryClient
         .getMutationCache()
