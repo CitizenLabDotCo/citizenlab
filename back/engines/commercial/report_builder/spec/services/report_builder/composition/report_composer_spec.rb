@@ -787,10 +787,10 @@ describe ReportBuilder::Composition::ReportComposer do
 
         brief, patch, reply = run.messages.to_a
         expect([brief, patch, reply].map(&:role)).to eq %w[user assistant assistant]
-        expect(brief.content).to include 'Generate the report.'
+        expect(brief.model_text).to include 'Generate the report.'
         expect(patch).to have_attributes(input_tokens: 100, output_tokens: 20)
         expect(patch.tool_calls.sole).to have_attributes(name: 'patch_layout', status: 'auto_executed')
-        expect(reply.content).to eq 'Wrote the report.'
+        expect(reply.model_text).to eq 'Wrote the report.'
       end
 
       it 'fails a cancelled run that had written nothing, and says why' do
@@ -890,7 +890,7 @@ describe ReportBuilder::Composition::ReportComposer do
 
         expect(composer.transcript.size).to eq 4
         expect(run.messages.map(&:role)).to eq %w[user assistant]
-        expect(run.messages.first.content).to include 'hello'
+        expect(run.messages.first.model_text).to include 'hello'
       end
 
       it 'says the turn finished' do
@@ -910,7 +910,7 @@ describe ReportBuilder::Composition::ReportComposer do
         # charts the ones before it wrote.
         earlier_run = create(:report_run, report: report)
         shared = create(:custom_block)
-        create(:custom_block_version, custom_block: shared, report_run_id: earlier_run.id)
+        create(:custom_block_version, custom_block: shared, run_id: earlier_run.id)
         run = create(:report_run, report: report, stopped_because: nil)
         composer = described_class.new(project, locale: 'en', client: client, run_record: run)
         # The turn patches the report into a layout that does not place the chart.

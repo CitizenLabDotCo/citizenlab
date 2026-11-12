@@ -29,14 +29,16 @@ module ReportBuilder
       # was lost, and a turn being retried is not lost.
       report.chat.update!(turn_started_at: Time.current)
       tracker.update!(progress: 0, error_count: 0)
-      run_record = Run.create!(conversation: report.chat, kind: 'revision')
+      run_record = ::AIAssistant::Run.create!(conversation: report.chat, kind: Report::REVISION_KIND)
       composer = Composition::ReportComposer.new(
         report.reported_project,
         locale: locale,
         phase: report.phase,
         author: tracker.owner,
         layout_record: report.layout,
-        run_record: run_record
+        run_record: run_record,
+        # The prompt is written around the admin's question, and is kept on it.
+        turn_id: turn_id
       )
 
       begin
@@ -48,7 +50,7 @@ module ReportBuilder
           # The whole conversation so far, tool calls included: the model remembers the
           # chart it wrote rather than re-reading it.
           history: Composition::Messages.history(
-            Run.session_runs_for(report).flat_map { |run| run.messages.to_a }
+            Composition::Session.runs_for(report).flat_map { |run| run.messages.to_a }
           )
         )
       ensure
@@ -62,11 +64,7 @@ module ReportBuilder
         # the one being waited for, and answering it would end that newer turn instead.
         next unless report.current_chat_turn?(turn_id)
 
-        # Part of the run, so the panel can tell from the run whether this answer came
-        # with a new layout to pull into the editor.
-        run_record.append_message!(
-          role: 'assistant', content: reply_for(result, composer.stopped_because), replayed: false
-        )
+        answer!(run_record, reply_for(result, composer.stopped_because))
         report.chat.update!(status: 'idle', last_error_code: nil)
       end
 
@@ -80,11 +78,22 @@ module ReportBuilder
 
     private
 
+    # The panel's version of what the model last said. It goes on the message that
+    # said it, so the model is not sent its own closing sentence twice, and so the
+    # panel can read from that message's run whether there is a new layout to pull
+    # into the editor.
+    def answer!(run_record, reply)
+      last_word = run_record.messages.where(role: 'assistant').last
+      return last_word.update!(content: reply) if last_word
+
+      run_record.append_message!(role: 'assistant', content: reply, author: tracker.owner)
+    end
+
     def save_layout!(report, craftjs_json, run_record)
       report.layout.craftjs_json = craftjs_json
       raise ActiveRecord::RecordInvalid, report unless ReportSaver.new(report, tracker.owner).save
 
-      run_record.report_saved!
+      run_record.applied!
     end
 
     # The model's own closing sentence when it finished; a plain account of what

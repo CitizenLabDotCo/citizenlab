@@ -16,7 +16,7 @@ RSpec.describe ReportBuilder::ReviseReportJob do
   let!(:chat) do
     report.chat!(locale: 'en').tap { |chat| chat.update!(status: 'running', turn_started_at: Time.current) }
   end
-  let!(:turn) { chat.messages.create!(role: 'user', content: 'make it shorter', replayed: false) }
+  let!(:turn) { chat.messages.create!(role: 'user', content: 'make it shorter') }
   let(:revised_layout) do
     {
       'ROOT' => {
@@ -43,7 +43,7 @@ RSpec.describe ReportBuilder::ReviseReportJob do
     }
   end
 
-  def shown = chat.reload.messages.where(displayed: true).to_a
+  def shown = chat.reload.messages.displayed.to_a
 
   def stub_revision(result, stopped: 'done')
     allow_any_instance_of(ReportBuilder::Composition::ReportComposer)
@@ -60,7 +60,7 @@ RSpec.describe ReportBuilder::ReviseReportJob do
       job.perform_now
 
       expect(report.reload.layout.craftjs_json).to eq revised_layout
-      expect(shown.last).to have_attributes(role: 'assistant', content: 'Trimmed the summary.', replayed: false)
+      expect(shown.last).to have_attributes(role: 'assistant', content: 'Trimmed the summary.')
       expect(job.tracker.reload).to be_completed
     end
 
@@ -107,31 +107,31 @@ RSpec.describe ReportBuilder::ReviseReportJob do
     it 'records the reply as part of a run that saved the report only when it changed it' do
       stub_revision({ layout: revised_layout, reply: 'Trimmed it.' })
       enqueue_job.perform_now
-      changed = ReportBuilder::Run.newest_first.first
-      expect(changed).to be_saved_the_report
-      expect(changed.last_position).to eq shown.last.position
+      changed = AIAssistant::Run.newest_first.first
+      expect(changed).to be_applied
+      expect(shown.last.run_id).to eq changed.id
 
       stub_revision({ layout: nil, reply: 'It shows weekly participants.' })
       chat.update!(status: 'running')
-      next_turn = chat.messages.create!(role: 'user', content: 'what is that', replayed: false)
+      next_turn = chat.messages.create!(role: 'user', content: 'what is that')
       described_class.with_tracking(owner: owner)
         .perform_later(report, instruction: 'what is that', locale: 'en', craftjs_json: nil, turn_id: next_turn.id)
         .perform_now
-      unchanged = ReportBuilder::Run.newest_first.first
-      expect(unchanged).not_to be_saved_the_report
-      expect(unchanged.last_position).to eq shown.last.position
+      unchanged = AIAssistant::Run.newest_first.first
+      expect(unchanged).not_to be_applied
+      expect(shown.last.run_id).to eq unchanged.id
     end
 
     it 'passes the conversation so far, tool calls included, so a turn continues the last one' do
-      # report_saved_at is what marks this run as the one the report holds, and so
+      # applied_at is what marks this run as the one the report holds, and so
       # the one the conversation continues from.
       generation = create(:report_run, report: report, kind: 'generation', stopped_because: 'done',
-        report_saved_at: Time.current)
-      generation.append_message!(role: 'user', content: 'Generate the report.', displayed: false)
-      generation.append_message!(role: 'assistant', displayed: false).tool_calls.create!(
+        applied_at: Time.current)
+      generation.append_message!(role: 'user', model_text: 'Generate the report.')
+      generation.append_message!(role: 'assistant').tool_calls.create!(
         tool_use_id: 't1', name: 'get_layout', arguments: {}, status: 'auto_executed', result: 'empty'
       )
-      generation.append_message!(role: 'assistant', content: 'Wrote it.', displayed: false)
+      generation.append_message!(role: 'assistant', model_text: 'Wrote it.')
       expect_any_instance_of(ReportBuilder::Composition::ReportComposer)
         .to receive(:revise)
         .with(hash_including(instruction: 'make it shorter', history: [
@@ -158,16 +158,16 @@ RSpec.describe ReportBuilder::ReviseReportJob do
       chat.fail_turn!('turn_timed_out')
       job = enqueue_job
 
-      expect { job.perform_now }.not_to change(ReportBuilder::Run, :count)
+      expect { job.perform_now }.not_to change(AIAssistant::Run, :count)
       expect(job.tracker.reload).to be_completed
     end
 
     it 'records the turn as a run of its own, so the next turn can continue it' do
       stub_revision({ layout: revised_layout, reply: 'Trimmed it.' })
 
-      expect { enqueue_job.perform_now }.to change(ReportBuilder::Run, :count).by(1)
+      expect { enqueue_job.perform_now }.to change(AIAssistant::Run, :count).by(1)
 
-      run = ReportBuilder::Run.newest_first.first
+      run = AIAssistant::Run.newest_first.first
       expect(run).to have_attributes(conversation: chat, kind: 'revision', stopped_because: 'done')
     end
 
@@ -177,7 +177,7 @@ RSpec.describe ReportBuilder::ReviseReportJob do
       enqueue_job.perform_now
 
       expect(shown.last.content).to include 'Stopped'
-      expect(ReportBuilder::Run.newest_first.first).to be_saved_the_report
+      expect(AIAssistant::Run.newest_first.first).to be_applied
     end
 
     # Its turn was given up on and the admin asked again, so the chat is running for
@@ -186,10 +186,10 @@ RSpec.describe ReportBuilder::ReviseReportJob do
       stub_revision({ layout: nil, reply: 'ok' })
       job = enqueue_job
       chat.fail_turn!('turn_timed_out')
-      chat.messages.create!(role: 'user', content: 'and add a chart', replayed: false)
+      chat.messages.create!(role: 'user', content: 'and add a chart')
       chat.update!(status: 'running', turn_started_at: Time.current)
 
-      expect { job.perform_now }.not_to change(ReportBuilder::Run, :count)
+      expect { job.perform_now }.not_to change(AIAssistant::Run, :count)
 
       expect(shown.map(&:content)).to end_with 'and add a chart'
       expect(chat.reload).to be_running
@@ -198,7 +198,7 @@ RSpec.describe ReportBuilder::ReviseReportJob do
 
     it 'leaves a newer turn alone when the chat moves on while it is working' do
       allow_any_instance_of(ReportBuilder::Composition::ReportComposer).to receive(:revise) do
-        chat.messages.create!(role: 'user', content: 'and add a chart', replayed: false)
+        chat.messages.create!(role: 'user', content: 'and add a chart')
         { layout: nil, reply: 'ok' }
       end
       allow_any_instance_of(ReportBuilder::Composition::ReportComposer)
@@ -226,7 +226,7 @@ RSpec.describe ReportBuilder::ReviseReportJob do
 
       job.send(:expire)
 
-      expect(shown.last).to have_attributes(role: 'assistant', replayed: false)
+      expect(shown.last).to have_attributes(role: 'assistant', run_id: nil)
       expect(chat.reload).to have_attributes(status: 'failed', last_error_code: 'turn_failed')
       expect(job.tracker).to be_completed
     end

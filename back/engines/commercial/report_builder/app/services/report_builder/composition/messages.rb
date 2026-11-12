@@ -97,8 +97,8 @@ module ReportBuilder
       # (a run stopped on tool results, then the next turn) are merged, because turns
       # must alternate.
       #
-      # @param rows [Array<AIAssistant::Message>] replayed messages, oldest first, with
-      #   their tool calls.
+      # @param rows [Array<AIAssistant::Message>] the runs' messages, oldest first,
+      #   with their tool calls. Each is read as the model was sent it.
       # @return [Array<Hash>] starting on a user turn, roles alternating.
       def history(rows)
         shaped = from_rows(rows)
@@ -120,11 +120,11 @@ module ReportBuilder
 
       def from_rows(rows)
         rows.flat_map do |row|
-          next [{ role: 'user', content: [{ text: row.content }] }] if row.user?
+          next [{ role: 'user', content: [{ text: row.for_model }] }] if row.user?
 
           calls = row.tool_calls.to_a
           content = []
-          content << { text: row.content } if row.content.present?
+          content << { text: row.for_model } if row.for_model.present?
           content += calls.map do |call|
             { tool_use: { tool_use_id: call.tool_use_id, name: call.name, input: call.arguments } }
           end

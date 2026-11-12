@@ -73,7 +73,7 @@ module ReportBuilder
           messages: catalogues,
           toolchain: built.toolchain,
           sdk_version: built.manifest['sdk_version'].presence || 'v1',
-          report_run_id: @run_id
+          run_id: @run_id
         )
         block.update!(status: 'published')
 
@@ -117,7 +117,7 @@ module ReportBuilder
           messages: previous.messages,
           toolchain: built.toolchain,
           sdk_version: built.manifest['sdk_version'].presence || 'v1',
-          report_run_id: @run_id
+          run_id: @run_id
         )
 
         Result.new(block_id: block.id, version_number: version.number)

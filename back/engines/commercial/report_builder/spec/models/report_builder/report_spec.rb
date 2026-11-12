@@ -170,7 +170,7 @@ RSpec.describe ReportBuilder::Report do
   describe '#last_generation' do
     def generation(stopped:, saved:, at:)
       create(:report_run, report: report, kind: 'generation',
-        stopped_because: stopped, report_saved_at: saved ? at : nil, created_at: at)
+        stopped_because: stopped, applied_at: saved ? at : nil, created_at: at)
     end
 
     let(:report) { create(:report) }
@@ -209,7 +209,7 @@ RSpec.describe ReportBuilder::Report do
 
       expect(chat.reload).to have_attributes(status: 'failed', last_error_code: 'turn_failed')
       expect(chat.messages.last).to have_attributes(
-        role: 'assistant', content: described_class::FAILED_TURN_REPLY, displayed: true, replayed: false
+        role: 'assistant', content: described_class::FAILED_TURN_REPLY, run_id: nil
       )
     end
 
@@ -261,7 +261,7 @@ RSpec.describe ReportBuilder::Report do
   describe '#current_chat_turn?' do
     let(:report) { create(:report) }
     let(:chat) { report.chat!(locale: 'en') }
-    let(:turn) { chat.messages.create!(role: 'user', content: 'shorter please', replayed: false) }
+    let(:turn) { chat.messages.create!(role: 'user', content: 'shorter please') }
 
     it 'is true for the turn the chat is waiting on' do
       chat.update!(status: 'running', turn_started_at: Time.current)
@@ -273,7 +273,7 @@ RSpec.describe ReportBuilder::Report do
     # the admin asked again.
     it 'is false once a newer turn has taken its place' do
       turn
-      chat.messages.create!(role: 'user', content: 'and add a chart', replayed: false)
+      chat.messages.create!(role: 'user', content: 'and add a chart')
       chat.update!(status: 'running', turn_started_at: Time.current)
 
       expect(report.current_chat_turn?(turn.id)).to be false
@@ -289,6 +289,17 @@ RSpec.describe ReportBuilder::Report do
   end
 
   describe 'deletion' do
+    it 'takes the runs and the conversation they wrote with it' do
+      report = create(:report)
+      run = create(:report_run, report: report)
+      run.append_message!(role: 'user', model_text: 'Generate the report.')
+
+      expect { report.destroy! }
+        .to change(AIAssistant::Run, :count).by(-1)
+        .and change(AIAssistant::Conversation, :count).by(-1)
+        .and change(AIAssistant::Message, :count).by(-1)
+    end
+
     it 'takes its ready notifications with it, rather than being refused by the foreign key' do
       report = create(:report, :with_phase)
       notification = Notifications::ReportGenerated.create!(

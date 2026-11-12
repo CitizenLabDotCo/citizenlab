@@ -13,7 +13,7 @@
 #  manifest        :jsonb            not null
 #  messages        :jsonb            not null
 #  toolchain       :jsonb            not null
-#  report_run_id   :uuid
+#  run_id          :uuid
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #

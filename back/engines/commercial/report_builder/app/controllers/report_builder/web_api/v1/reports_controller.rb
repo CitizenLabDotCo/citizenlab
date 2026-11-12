@@ -195,9 +195,10 @@ module ReportBuilder
           started = chat.with_lock do
             next false if chat.running? || in_progress_generation_tracker
 
-            # Shown in the panel only. The model is sent the admin's words inside a
-            # prompt that carries the report, which the run records itself.
-            turn = chat.messages.create!(role: 'user', content: message, replayed: false, author: current_user)
+            # The run writes the prompt it builds around these words onto this same
+            # message, as its context: the panel shows the question, the model is sent
+            # the question with the report.
+            turn = chat.messages.create!(role: 'user', content: message, author: current_user)
             chat.update!(status: 'running', last_error_code: nil, turn_started_at: Time.current)
             # In the same transaction, so a turn is never marked running without a
             # job to end it.
@@ -257,13 +258,11 @@ module ReportBuilder
         def chat_turns(chat)
           return [] if chat.nil?
 
-          runs = report.runs.where.not(first_position: nil).to_a
-          chat.messages.where(displayed: true).map do |message|
+          chat.messages.displayed.includes(:run).map do |message|
             turn = { 'role' => message.role, 'text' => message.content, 'at' => message.created_at.iso8601 }
             next turn if message.user?
 
-            run = runs.find { |r| (r.first_position..r.last_position).cover?(message.position) }
-            turn.merge('changed_layout' => run&.saved_the_report? || false)
+            turn.merge('changed_layout' => message.run&.applied? || false)
           end
         end
 

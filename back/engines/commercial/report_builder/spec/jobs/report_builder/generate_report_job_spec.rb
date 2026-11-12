@@ -72,9 +72,9 @@ RSpec.describe ReportBuilder::GenerateReportJob do
 
     describe 'the record of the run' do
       it 'writes which model ran, in the report conversation, and that it finished' do
-        expect { enqueue_job.perform_now }.to change(ReportBuilder::Run, :count).by(1)
+        expect { enqueue_job.perform_now }.to change(AIAssistant::Run, :count).by(1)
 
-        run = ReportBuilder::Run.last
+        run = AIAssistant::Run.last
         expect(run.conversation).to eq report.chat
         expect(run.model).to be_present
         expect(run.kind).to eq 'generation'
@@ -99,22 +99,22 @@ RSpec.describe ReportBuilder::GenerateReportJob do
           .to receive(:compose).and_raise(ReportBuilder::Composition::ReportComposer::ComposeError, 'nope')
 
         expect { suppress(StandardError) { enqueue_job.perform_now } }
-          .to change(ReportBuilder::Run, :count).by(1)
-        expect(ReportBuilder::Run.last.stopped_because).to eq 'failed'
+          .to change(AIAssistant::Run, :count).by(1)
+        expect(AIAssistant::Run.last.stopped_because).to eq 'failed'
       end
 
       it 'marks the run as the one the report holds, once it is actually saved' do
         enqueue_job.perform_now
 
-        expect(ReportBuilder::Run.last.report_saved_at).to be_present
+        expect(AIAssistant::Run.last.applied_at).to be_present
       end
 
       # The report is already saved by then: failing here would rerun minutes of
       # paid work to fix a bookkeeping row.
       it 'does not take the run down if it cannot be marked as saved' do
-        allow_any_instance_of(ReportBuilder::Run).to receive(:update!).and_call_original
-        allow_any_instance_of(ReportBuilder::Run)
-          .to receive(:update!).with(hash_including(:report_saved_at))
+        allow_any_instance_of(AIAssistant::Run).to receive(:update!).and_call_original
+        allow_any_instance_of(AIAssistant::Run)
+          .to receive(:update!).with(hash_including(:applied_at))
           .and_raise(ActiveRecord::RecordInvalid)
 
         expect { enqueue_job.perform_now }.not_to raise_error
@@ -122,7 +122,7 @@ RSpec.describe ReportBuilder::GenerateReportJob do
       end
 
       it 'does not take the run down if the record cannot be filled in' do
-        allow_any_instance_of(ReportBuilder::Run).to receive(:update!).and_raise(ActiveRecord::RecordInvalid)
+        allow_any_instance_of(AIAssistant::Run).to receive(:update!).and_raise(ActiveRecord::RecordInvalid)
 
         expect { enqueue_job.perform_now }.not_to raise_error
         expect(report.reload.layout.craftjs_json).to eq composed_layout
@@ -140,7 +140,7 @@ RSpec.describe ReportBuilder::GenerateReportJob do
       expect(ReportBuilder::Composition::ReportComposer)
         .to receive(:new)
         .with(phase.project, locale: 'en', phase: phase, author: owner, layout_record: report.layout,
-          run_record: kind_of(ReportBuilder::Run))
+          run_record: kind_of(AIAssistant::Run))
         .and_call_original
 
       enqueue_job.perform_now
@@ -153,7 +153,7 @@ RSpec.describe ReportBuilder::GenerateReportJob do
         expect(ReportBuilder::Composition::ReportComposer)
           .to receive(:new)
           .with(phase.project, locale: 'en', phase: nil, author: owner, layout_record: report.layout,
-            run_record: kind_of(ReportBuilder::Run))
+            run_record: kind_of(AIAssistant::Run))
           .and_call_original
 
         job = enqueue_job

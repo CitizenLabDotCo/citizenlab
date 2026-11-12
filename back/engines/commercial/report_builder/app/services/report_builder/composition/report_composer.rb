@@ -50,10 +50,13 @@ module ReportBuilder
       # @param locale [String] the locale the report text is written in.
       # @param phase [Phase, nil] the one phase to report on, for a phase report.
       # @param author [User, nil] who the authored blocks are attributed to.
-      # @param run_record [Run, nil] this run's row. Its messages are written to the
-      #   report's conversation as they happen, the versions it writes point back at
-      #   it, and it carries the cancel flag the loop reads.
-      def initialize(project, locale:, phase: nil, author: nil, client: nil, layout_record: nil, run_record: nil)
+      # @param run_record [AIAssistant::Run, nil] this run's row. Its messages are
+      #   written to the report's conversation as they happen, the versions it writes
+      #   point back at it, and it carries the cancel flag the loop reads.
+      # @param turn_id [String, nil] the admin's message this run answers, which the
+      #   first prompt is written around.
+      def initialize(project, locale:, phase: nil, author: nil, client: nil, layout_record: nil, run_record: nil,
+        turn_id: nil)
         @project = project
         @locale = locale
         @phase = phase
@@ -63,7 +66,7 @@ module ReportBuilder
         # to scope its data token to.
         @layout_record = layout_record
         @run_record = run_record
-        @recorder = Recorder.new(run_record)
+        @recorder = Recorder.new(run_record, author: author, turn_id: turn_id)
         @authored_blocks = []
         # What the report held when this run started, and the graph as it stands now.
         @current_layout = nil
@@ -171,7 +174,7 @@ module ReportBuilder
       # @param messages [Array<Hash>] the conversation so far, ending on the prompt
       #   this loop answers. Only that prompt is new: anything before it is on record.
       # @return [Hash] { layout:, reply:, stopped: } — stopped is one of
-      #   Run::STOP_REASONS; the caller decides what it means.
+      #   AIAssistant::Run::STOP_REASONS; the caller decides what it means.
       def run_loop(messages, allow_answer_only: false, max_rounds: MAX_ROUNDS)
         reply = nil
         patched = false
@@ -263,7 +266,7 @@ module ReportBuilder
 
         # A run cut short had not finished choosing what to place, and the next turn
         # continues from its charts. Only a run that ended of its own accord tidies up.
-        discard_unplaced_blocks(@layout) unless Run::STOPPED_EARLY.include?(stopped)
+        discard_unplaced_blocks(@layout) unless ::AIAssistant::Run::STOPPED_EARLY.include?(stopped)
         { layout: @layout, reply: reply, stopped: stopped }
       end
 
@@ -279,9 +282,10 @@ module ReportBuilder
       def blocks_from_earlier_runs
         return [] if @run_record.nil?
 
-        earlier_runs = Run.where(conversation_id: @run_record.conversation_id).where.not(id: @run_record.id)
+        earlier_runs = ::AIAssistant::Run.where(conversation_id: @run_record.conversation_id)
+          .where.not(id: @run_record.id)
         ContentBuilder::CustomBlockVersion
-          .where(report_run_id: earlier_runs.select(:id))
+          .where(run_id: earlier_runs.select(:id))
           .distinct
           .pluck(:custom_block_id)
       end

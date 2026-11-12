@@ -54,8 +54,10 @@ describe ReportBuilder::Composition::Messages do
   describe '.history' do
     let(:conversation) { create(:report).chat!(locale: 'en') }
 
+    # What the model was sent is the context; the panel's half of a message is not
+    # replayed.
     def message(role, text = nil)
-      conversation.messages.create!(role: role, content: text, displayed: false)
+      conversation.messages.create!(role: role, model_text: text)
     end
 
     def call(message, id, name, status: 'auto_executed', result: 'ok', input: {})

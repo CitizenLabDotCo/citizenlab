@@ -115,6 +115,7 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
       ai_assistant: %w[
         AIAssistant::Conversation
         AIAssistant::Message
+        AIAssistant::Run
         AIAssistant::ToolCall
       ],
 
@@ -265,13 +266,11 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
       ],
 
       # AI-authored page builder blocks are tenant-wide CMS content, not scoped to
-      # a project. A query snapshot is a cached answer, rebuilt on demand. A run
-      # records how a report was written, not the report.
+      # a project. A query snapshot is a cached answer, rebuilt on demand.
       llm_reporting: %w[
         ContentBuilder::CustomBlock
         ContentBuilder::CustomBlockVersion
         ContentBuilder::QuerySnapshot
-        ReportBuilder::Run
       ],
 
       # Per-tenant admin moderation runtime (internal comments on ideas — not

@@ -8,31 +8,36 @@
 #  conversation_id :uuid             not null
 #  position        :integer          not null
 #  role            :string           not null
-#  content         :text
 #  file_ids        :uuid             default([]), not null, is an Array
 #  input_tokens    :integer
 #  output_tokens   :integer
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
-#  displayed       :boolean          default(TRUE), not null
-#  replayed        :boolean          default(TRUE), not null
+#  context         :jsonb            not null
 #  author_id       :uuid
+#  run_id          :uuid
 #
 # Indexes
 #
 #  index_ai_assistant_messages_on_author_id                     (author_id)
 #  index_ai_assistant_messages_on_conversation_id_and_position  (conversation_id,position) UNIQUE
+#  index_ai_assistant_messages_on_run_id                        (run_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (author_id => users.id) ON DELETE => nullify
 #  fk_rails_...  (conversation_id => ai_assistant_conversations.id) ON DELETE => cascade
+#  fk_rails_...  (run_id => ai_assistant_runs.id) ON DELETE => nullify
 #
 module AIAssistant
-  # One message of a conversation. Most are both shown in the chat and sent back to the
-  # model on the next turn. The report builder splits the two: the chat shows what the
-  # admin typed and the closing reply, while the model is sent the full prompts and
-  # every step of the run.
+  # One message of a conversation. Its text lives in +context+, under a key per reader:
+  # +content+ is what the chat shows, +model_text+ what the model is sent in its place.
+  #
+  # Most messages have only content, and both read it. A message the app writes around
+  # what a person typed keeps their words in content and the whole prompt in model_text,
+  # so the chat shows the question and the model is sent the report with it. A step of
+  # a long run has model_text alone: the model needs it and the chat has nothing to
+  # show for it.
   class Message < ApplicationRecord
     ROLES = %w[user assistant].freeze
     MAX_CONTENT_LENGTH = 5000
@@ -47,19 +52,29 @@ module AIAssistant
     # Touches the conversation, so a running turn shows its progress.
     belongs_to :conversation, class_name: 'AIAssistant::Conversation', inverse_of: :messages, touch: true
     has_many :tool_calls, -> { order(:created_at, :id) }, class_name: 'AIAssistant::ToolCall', dependent: :destroy, inverse_of: :message
-    # Who typed it: a shared conversation has no owner to ask. Nil for what the app
-    # or the model wrote.
+    # Who it belongs to: the person who typed it, or the one whose run wrote it. A
+    # shared conversation has no owner to ask, and a version history of what the model
+    # wrote has to name someone.
     belongs_to :author, class_name: 'User', optional: true
+    # The run that wrote it, if a run did. Nil for what a person typed.
+    belongs_to :run, class_name: 'AIAssistant::Run', optional: true, inverse_of: :messages
 
     enum :role, ROLES.index_by(&:itself)
 
-    # Only text a person typed. A prompt the app writes carries context and can be much longer.
-    validates :content, length: { maximum: MAX_CONTENT_LENGTH }, if: -> { user? && displayed? }
+    # Read and written as if each were a column of its own. Together they are the
+    # message, which is why they are stored as one.
+    store_accessor :context, :content, :model_text
+
+    # A message the chat has something to show for.
+    scope :displayed, -> { where("context->>'content' IS NOT NULL") }
+
+    # Only text a person typed. The prompt written around it is model_text, which
+    # carries the report and is much longer.
+    validates :content, length: { maximum: MAX_CONTENT_LENGTH }, if: :user?
     validates :file_ids, length: { maximum: MAX_FILES }
     validate :content_or_files_present, if: :user?
     validate :files_usable, on: :create, if: -> { file_ids.present? }
     validate :conversation_files_within_limit, on: :create, if: -> { file_ids.present? }
-    validate :validate_has_an_audience
 
     before_validation :assign_position, on: :create
 
@@ -67,20 +82,18 @@ module AIAssistant
       Files::File.where(id: file_ids)
     end
 
+    # What the model is sent for this message. Its own text where there is one;
+    # without it, what the chat shows.
+    def for_model = model_text.presence || content
+
     private
-
-    def validate_has_an_audience
-      return if displayed? || replayed?
-
-      errors.add :base, :no_audience, message: 'a message must be displayed, replayed or both'
-    end
 
     def assign_position
       self.position ||= (conversation.messages.maximum(:position) || 0) + 1
     end
 
     def content_or_files_present
-      errors.add(:content, :blank) if content.blank? && file_ids.blank?
+      errors.add(:content, :blank) if content.blank? && model_text.blank? && file_ids.blank?
     end
 
     def conversation_files_within_limit

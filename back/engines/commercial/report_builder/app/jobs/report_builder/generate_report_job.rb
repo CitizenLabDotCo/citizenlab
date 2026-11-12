@@ -31,7 +31,7 @@ module ReportBuilder
       # The record exists before the first model call: the run writes its messages
       # through it, the versions it writes point at it, and the cancel endpoint marks
       # it while the run is going.
-      run_record = Run.create!(conversation: report.chat!(locale: locale), kind: 'generation')
+      run_record = ::AIAssistant::Run.create!(conversation: report.chat!(locale: locale), kind: Report::GENERATION_KIND)
       composer = Composition::ReportComposer.new(
         report.reported_project,
         locale: locale,
@@ -54,7 +54,7 @@ module ReportBuilder
 
       # Only now is this run what the report holds — which is the question the chat
       # history and the "is it whole" notice both ask.
-      run_record.report_saved!
+      run_record.applied!
 
       SideFxReportService.new.after_generate(report, tracker.owner)
       track_progress

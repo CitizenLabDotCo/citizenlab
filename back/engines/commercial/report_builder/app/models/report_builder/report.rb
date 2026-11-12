@@ -42,7 +42,8 @@ module ReportBuilder
     belongs_to :project, optional: true
     has_many :published_graph_data_units, dependent: :destroy
     # The conversation in which the model wrote and revised the report. One per report,
-    # shared by everyone who may edit it, so it has no owner. Its runs are in Run.
+    # shared by everyone who may edit it, so it has no owner. Its runs are
+    # AIAssistant::Run rows.
     #
     # delete, not destroy: a conversation holds every message of every run, and the
     # foreign keys take its messages, tool calls and runs with it. Loading them all
@@ -69,6 +70,9 @@ module ReportBuilder
     scope :global, -> { where(phase_id: nil) }
 
     CHAT_SURFACE_KEY = 'report_builder'
+    # A run that wrote the whole report, as opposed to a chat turn that changed it.
+    GENERATION_KIND = 'generation'
+    REVISION_KIND = 'revision'
 
     # How long a run is believed to be still going. A run's own clock stops it after
     # an hour, read between rounds, so this leaves room for the round under way and
@@ -143,7 +147,9 @@ module ReportBuilder
     end
 
     def runs
-      Run.where(conversation_id: ::AIAssistant::Conversation.where(subject: self, surface_key: CHAT_SURFACE_KEY).select(:id))
+      ::AIAssistant::Run.where(
+        conversation_id: ::AIAssistant::Conversation.where(subject: self, surface_key: CHAT_SURFACE_KEY).select(:id)
+      )
     end
 
     # Is the chat still waiting on this turn? A job that sat in the queue can wake up
@@ -152,7 +158,7 @@ module ReportBuilder
     def current_chat_turn?(turn_id)
       return false unless chat&.running?
 
-      chat.messages.where(role: 'user', displayed: true).order(:position).last&.id == turn_id
+      latest_question&.id == turn_id
     end
 
     # Ends the chat turn the model still owes an answer to, telling the admin it
@@ -163,7 +169,9 @@ module ReportBuilder
       chat.with_lock do
         next unless chat.running?
 
-        chat.messages.create!(role: 'assistant', content: FAILED_TURN_REPLY, replayed: false)
+        # No run wrote it, so it is not replayed to the model; it is the admin's
+        # answer, and it is theirs because their question is what went unanswered.
+        chat.messages.create!(role: 'assistant', content: FAILED_TURN_REPLY, author_id: latest_question&.author_id)
         chat.fail_turn!(error_code)
       end
     end
@@ -181,7 +189,7 @@ module ReportBuilder
     # stopped without saving is not it, however it stopped: what the report holds is
     # still the work of the last run that did save.
     def last_generation
-      runs.generations.saved_the_report.newest_first.first
+      runs.where(kind: GENERATION_KIND).applied.newest_first.first
     end
 
     def public?
@@ -189,6 +197,12 @@ module ReportBuilder
     end
 
     private
+
+    # The last question an admin asked: the turn the chat is on, and whose author a
+    # run of it belongs to.
+    def latest_question
+      chat.messages.where(role: 'user').displayed.order(:position).last
+    end
 
     def remove_notifications
       notifications.each do |notification|

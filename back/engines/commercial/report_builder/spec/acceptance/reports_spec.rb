@@ -732,10 +732,9 @@ resource 'Reports' do
       end
 
       example 'Read the report chat' do
-        report.chat!(locale: 'en').messages.create!(role: 'user', content: 'shorter please', replayed: false)
-        run = create(:report_run, report: report, kind: 'revision', report_saved_at: Time.current)
-        run.append_message!(role: 'user', content: 'The full prompt.', displayed: false)
-        run.append_message!(role: 'assistant', content: 'Done.', replayed: false)
+        run = create(:report_run, report: report, kind: 'revision', applied_at: Time.current)
+        run.append_message!(role: 'user', content: 'shorter please', model_text: 'shorter please. The report reads:')
+        run.append_message!(role: 'assistant', content: 'Done.', model_text: 'Patched it.')
 
         do_request
         assert_status 200
@@ -749,7 +748,7 @@ resource 'Reports' do
 
       example 'An answer from a run that saved nothing did not change the layout', document: false do
         run = create(:report_run, report: report, kind: 'revision')
-        run.append_message!(role: 'assistant', content: 'It shows weekly participants.', replayed: false)
+        run.append_message!(role: 'assistant', content: 'It shows weekly participants.')
 
         do_request
         expect(response_data[:attributes][:turns].last[:changed_layout]).to be false
@@ -757,7 +756,7 @@ resource 'Reports' do
 
       example 'A turn the model still owes an answer to is pending', document: false do
         chat = report.chat!(locale: 'en')
-        chat.messages.create!(role: 'user', content: 'shorter please', replayed: false)
+        chat.messages.create!(role: 'user', content: 'shorter please')
         chat.update!(status: 'running', turn_started_at: Time.current)
 
         do_request
@@ -766,7 +765,7 @@ resource 'Reports' do
 
       example 'A turn whose job never came back is answered as failed', document: false do
         chat = report.chat!(locale: 'en')
-        chat.messages.create!(role: 'user', content: 'shorter please', replayed: false)
+        chat.messages.create!(role: 'user', content: 'shorter please')
         chat.update!(status: 'running', turn_started_at: 2.hours.ago)
 
         do_request
@@ -811,7 +810,7 @@ resource 'Reports' do
         # The model gets the admin's words inside a prompt the run writes itself.
         # A report's chat is shared, so who asked is only recorded on the message.
         expect(report.chat.messages.sole).to have_attributes(
-          content: message, displayed: true, replayed: false, author_id: current_user.id
+          content: message, model_text: nil, author_id: current_user.id
         )
       end
 
