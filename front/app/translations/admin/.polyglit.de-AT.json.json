@@ -604,6 +604,11 @@
     "verified_at": "2026-11-11T09:12:26.831804Z",
     "verified_by": "Jelena"
   },
+  "app.components.PhasePreview.beforeTooltip2": {
+    "state": "verified",
+    "verified_at": "2026-11-12T09:23:53.014931Z",
+    "verified_by": "Jelena"
+  },
   "app.components.PhasePreview.ended": {
     "state": "verified",
     "verified_at": "2026-11-11T09:12:26.831804Z",
@@ -612,6 +617,11 @@
   "app.components.PhasePreview.endedTooltip": {
     "state": "verified",
     "verified_at": "2026-11-11T09:12:26.831804Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.PhasePreview.endedTooltip2": {
+    "state": "verified",
+    "verified_at": "2026-11-12T09:23:53.014931Z",
     "verified_by": "Jelena"
   },
   "app.components.PhasePreview.lifecycle": {
@@ -632,6 +642,11 @@
   "app.components.PhasePreview.openTooltip": {
     "state": "verified",
     "verified_at": "2026-11-11T09:12:26.831804Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.PhasePreview.openTooltip2": {
+    "state": "verified",
+    "verified_at": "2026-11-12T09:23:53.014931Z",
     "verified_by": "Jelena"
   },
   "app.components.PhasePreview.participation": {
