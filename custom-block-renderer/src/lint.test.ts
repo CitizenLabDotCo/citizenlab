@@ -41,3 +41,14 @@ test("narrowing is how a block reads its config", () => {
 
   assert.ok(!rules(source).includes("no-type-assertion"));
 });
+
+test("a block cannot open a WebRTC connection", () => {
+  const source = `
+    export default function Block() {
+      const connection = new RTCPeerConnection();
+      return null;
+    }
+  `;
+
+  assert.ok(rules(source).includes("no-network"));
+});
