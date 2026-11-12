@@ -14,7 +14,7 @@ gem 'strong_migrations', '~> 2.5'
 gem 'puma', '~> 7.2.1'
 gem 'bcrypt', '~> 3.1.20' # Use ActiveModel has_secure_password
 gem 'zxcvbn-ruby', '~> 2.0', require: 'zxcvbn' # Password strength estimation (NCSC-aligned), v4-compatible with the FE meter
-gem 'csv', '~> 3.3.0'
+gem 'csv', '~> 3.3.7'
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem 'rack-cors', '2.0.2'
@@ -44,7 +44,7 @@ group :development, :test do
   gem 'rspec-parameterized'
   gem 'rspec-sqlimit'
   gem 'rspec-its'
-  gem 'rubocop', '~> 1.69', require: false
+  gem 'rubocop', '~> 1.92', require: false
   gem 'rubocop-ast', require: false
   gem 'rubocop-performance', require: false
   gem 'rubocop-rails', require: false
@@ -75,7 +75,7 @@ group :test do
   gem 'capybara', '~> 3.40'
   gem 'rspec-html-matchers', '~> 0.10'
   # gem 'bullet'
-  gem 'vcr', '~> 6.2'
+  gem 'vcr', '~> 6.4'
 end
 
 gem 'pundit', '~> 2.5.2'
@@ -87,14 +87,14 @@ gem 'que', '~> 2.4.1'
 gem 'activerecord-import', '~> 1.7'
 gem 'json-schema', '~> 4.3'
 gem 'activerecord-postgis-adapter', '~> 10.0.1'
-gem 'phonelib', '~> 0.10'
+gem 'phonelib', '~> 0.11'
 
 gem 'carrierwave', '~> 3.1.3'
 gem 'carrierwave-base64', '~> 2.11'
 gem 'fog-aws', '~> 3.33'
 
 gem 'api-pagination', '~> 6.0.0'
-gem 'kaminari', '~> 1.2'
+gem 'kaminari', '~> 1.3'
 gem 'rails-i18n', '~> 7.0.9'
 
 gem 'awesome_nested_set', '~> 3.9.0'
@@ -108,7 +108,7 @@ gem 'interactor'
 gem 'interactor-rails'
 gem 'liquid', '~> 5.8'
 gem 'mini_magick', '~> 4.13'
-gem 'nokogiri', '~> 1.19.4'
+gem 'nokogiri', '~> 1.19.7'
 gem 'pg_search', '~> 2.3.7'
 gem 'premailer-rails', '~> 1.12.0'
 gem 'rest-client'
@@ -157,7 +157,7 @@ gem 'ruby_llm', '~> 1.16'
 # exception.
 gem 'aws-sdk-s3', '~> 1'
 gem 'aws-sdk-bedrockruntime', '~> 1'
-gem 'aws-sdk-cloudfront', '~> 1.160.0'
+gem 'aws-sdk-cloudfront', '~> 1.162.0'
 gem 'bootsnap', '~> 1', require: false
 gem 'dalli', '~> 3.2.13'
 # Pin connection_pool to < 3: connection_pool 3.0 made ConnectionPool#initialize
@@ -205,7 +205,7 @@ gem 'mutex_m'
 
 # Explicitly adding timezone data to make sure all timezones listed in the timezone service (e.g. Asia/Choibalsan) are supported.
 gem 'tzinfo', '~> 2.0'
-gem 'tzinfo-data', '~> 1.2024'
+gem 'tzinfo-data', '~> 1.2026'
 
 free_engines = %w[
   document_annotation
@@ -223,7 +223,7 @@ free_engines.each do |engine_name|
   gem engine_name, path: path if File.directory?(path)
 end
 
-gem 'ros-apartment', '~> 3.2', require: 'apartment'
+gem 'ros-apartment', '~> 3.4', require: 'apartment'
 
 commercial_engines = [
   'multi_tenancy',
