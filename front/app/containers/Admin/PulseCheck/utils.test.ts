@@ -67,7 +67,7 @@ describe('takeProjectExit', () => {
   });
 
   it('ignores a malformed value', () => {
-    sessionStorage.setItem('feedback_prompt_project_exit', '{"projectId":1}');
+    sessionStorage.setItem('pulse_check_project_exit', '{"projectId":1}');
     expect(takeProjectExit()).toBeNull();
   });
 });
