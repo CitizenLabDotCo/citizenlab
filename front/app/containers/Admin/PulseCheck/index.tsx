@@ -3,17 +3,17 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 
 import {
-  FeedbackPromptTrigger,
-  FeedbackPromptUiVersion,
-  IFeedbackPromptData,
-} from 'api/feedback_prompts/types';
-import useShowNextFeedbackPrompt from 'api/feedback_prompts/useShowNextFeedbackPrompt';
+  PulseCheckTrigger,
+  PulseCheckUiVersion,
+  IPulseCheckData,
+} from 'api/pulse_checks/types';
+import useShowNextPulseCheck from 'api/pulse_checks/useShowNextPulseCheck';
 
 import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
 import { pageChanges$ } from 'utils/analytics';
 
-import PromptCard from './PromptCard';
+import PulseCheckCard from './PulseCheckCard';
 import {
   MIN_PROJECT_VISIT_MS,
   ProjectPage,
@@ -27,15 +27,15 @@ interface ProjectVisit extends ProjectPage {
   startedAt: number;
 }
 
-const FeedbackPrompt = () => {
+const PulseCheck = () => {
   const queryClient = useQueryClient();
   const isBackofficeRedesign = useProjectBackofficeRedesign();
-  const { mutateAsync: showNext } = useShowNextFeedbackPrompt();
-  const [prompt, setPrompt] = useState<IFeedbackPromptData | null>(null);
+  const { mutateAsync: showNext } = useShowNextPulseCheck();
+  const [pulseCheck, setPulseCheck] = useState<IPulseCheckData | null>(null);
   const busy = useRef(false);
   const projectPage = useRef(getProjectPage(window.location.pathname));
 
-  const uiVersion: FeedbackPromptUiVersion = isBackofficeRedesign
+  const uiVersion: PulseCheckUiVersion = isBackofficeRedesign
     ? 'project_backoffice_v2'
     : 'project_backoffice_v1';
 
@@ -45,15 +45,16 @@ const FeedbackPrompt = () => {
   }, [uiVersion]);
 
   useEffect(() => {
-    const requestPrompt = (
-      trigger: FeedbackPromptTrigger,
+    const requestPulseCheck = (
+      trigger: PulseCheckTrigger,
       page: ProjectPage
     ) => {
       if (busy.current) return;
 
       busy.current = true;
       // mutate's call-site callbacks are dropped when the observer unsubscribes
-      // (e.g. StrictMode's remount), losing a prompt the server marked as shown.
+      // (e.g. StrictMode's remount), losing a pulse check the server marked as
+      // shown.
       showNext({
         trigger,
         uiVersion: uiVersionRef.current,
@@ -62,7 +63,7 @@ const FeedbackPrompt = () => {
       })
         .then((response) => {
           if (response) {
-            setPrompt(response.data);
+            setPulseCheck(response.data);
           } else {
             busy.current = false;
           }
@@ -82,7 +83,7 @@ const FeedbackPrompt = () => {
     const currentPage = getProjectPage(window.location.pathname);
     const exit = takeProjectExit();
     if (exit && exit.projectId !== currentPage?.projectId) {
-      requestPrompt('project_exit', exit);
+      requestPulseCheck('project_exit', exit);
     }
     startVisit(currentPage);
 
@@ -92,9 +93,9 @@ const FeedbackPrompt = () => {
         if (event.type !== 'updated' || event.action.type !== 'success') {
           return;
         }
-        if (event.mutation.options.meta?.feedbackPrompt) return;
+        if (event.mutation.options.meta?.pulseCheck) return;
 
-        if (projectPage.current) requestPrompt('save', projectPage.current);
+        if (projectPage.current) requestPulseCheck('save', projectPage.current);
       });
 
     const pageChanges = pageChanges$.subscribe(({ path }) => {
@@ -107,11 +108,12 @@ const FeedbackPrompt = () => {
       }
 
       // Leaving the back office unmounts this component, either before or just
-      // after this event, which would drop a prompt the server already marked
-      // as shown. So such an exit is checked on the next back office visit.
+      // after this event, which would drop a pulse check the server already
+      // marked as shown. So such an exit is checked on the next back office
+      // visit.
       if (isLongVisit(visit)) {
         if (getAdminArea(path)) {
-          requestPrompt('project_exit', visit);
+          requestPulseCheck('project_exit', visit);
         } else {
           saveProjectExit(visit);
         }
@@ -126,18 +128,18 @@ const FeedbackPrompt = () => {
     };
   }, [queryClient, showNext]);
 
-  if (!prompt) return null;
+  if (!pulseCheck) return null;
 
   return (
-    <PromptCard
-      key={prompt.id}
-      prompt={prompt}
+    <PulseCheckCard
+      key={pulseCheck.id}
+      pulseCheck={pulseCheck}
       onClose={() => {
-        setPrompt(null);
+        setPulseCheck(null);
         busy.current = false;
       }}
     />
   );
 };
 
-export default FeedbackPrompt;
+export default PulseCheck;
