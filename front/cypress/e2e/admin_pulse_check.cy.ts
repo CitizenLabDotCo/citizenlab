@@ -134,7 +134,7 @@ describe('Admin pulse check with the real API', () => {
     );
     cy.visit(`/admin/projects/${projectId}?project_backoffice_redesign`);
     cy.get('#e2e-publish-dropdown-toggle').click();
-    cy.get('#e2e-publish-now').click();
+    cy.get('#e2e-publish-now').should('not.have.class', 'processing').click();
     cy.get('#e2e-publish-anyway').click();
     cy.wait('@publishProject', { timeout: 30000 })
       .its('response.statusCode')
