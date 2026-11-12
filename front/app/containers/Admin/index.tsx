@@ -17,12 +17,9 @@ import clHistory from 'utils/cl-router/history';
 import { usePermission } from 'utils/permissions';
 import { Outlet as RouterOutlet, useLocation } from 'utils/router';
 
+import PulseCheck from './PulseCheck';
 import Sidebar from './sideBar/';
 import CollapsibleSidebar from './sideBar/CollapsibleSidebar';
-
-import PulseCheck from './PulseCheck';
-
-} from 'components/admin/ContentBuilder/constants';
 
 const Container = styled.div`
   display: flex;
