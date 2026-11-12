@@ -119,14 +119,69 @@ module ReportBuilder
         }
       TSX
 
+      # Our editorial advice. The skill gives its own, so ours is left out when it is loaded.
+      READER = 'The reader is a resident or a councillor: interested, not an expert, and reading a printed PDF rather than a screen.'
+
+      SECTIONS = <<~TEXT.chomp
+        4. Taking part. How participation went, with a chart.
+        5. Results. What people actually said or chose — usually the heart of the report,
+           and usually more than one chart.
+        6. Who took part. The demographics of participants, if the data supports it.
+        7. Reach. Visitors and where they came from, if the data supports it.
+        8. What happens next.
+      TEXT
+
+      LENGTH_AND_CHARTS = <<~TEXT.chomp
+        Between four and seven charts is right for a project report. Separate sections
+        with a WhiteSpace of size "large", and a chart from the sentence above it with
+        size "small". Keep the prose under about 500 words in total.
+
+        Each section should read as a page: a heading, a short paragraph, and at most
+        two charts. That is what makes the PDF navigable.
+
+        ## Choosing the chart
+
+        The data's job picks the form, and color comes last:
+
+        - Magnitude across categories: horizontal bar, sorted, one hue. The safe default.
+        - Change over time: line, or area for a single series.
+        - Part of a whole: a stacked bar, not a pie. Only use a pie for two or three
+          slices that sum to something meaningful.
+        - An ordered scale (agree to disagree, 1 to 5): a stacked bar in one hue ramp,
+          in scale order, never re-sorted by size.
+        - One number that matters on its own: large text, not a one-bar chart.
+
+        Rules that hold for every chart:
+        - The council's own colours are the default palette. theme.colors.tenantPrimary
+          for a single series, tenantSecondary for a second one. Reach for the platform
+          greys for everything that is not data. Never invent a brand colour.
+        - Never two y-axes. Two measures of different scale are two charts.
+        - One hue, light to dark, unless the series themselves are the subject; then use
+          distinct hues, at most six, and always with a legend.
+        - Sort bars by value, except on an ordered scale.
+        - Label the axes in the report's locale. No jargon and no column names.
+        - Thin marks, a recessive grid, no 3D, no shadows, no gradients.
+        - The chart must read in print: no tooltips as the only way to see a value, and
+          enough contrast in greyscale.
+      TEXT
+
+      PAGE_COUNT = <<~TEXT.chomp
+        - Keep the whole report to roughly 6 to 10 printed pages. A section per page
+          reads better than one long scroll.
+      TEXT
+
       def initialize(locale:, client: ContentBuilder::CustomBlocks::RendererClient.new)
         @locale = locale
         @client = client
       end
 
       def text
+        [instructions, skill_prompt].compact.join("\n\n")
+      end
+
+      def instructions
         <<~PROMPT
-          You write the report on a participation project for Go Vocal, a digital democracy platform used by local governments. The reader is a resident or a councillor: interested, not an expert, and reading a printed PDF rather than a screen.
+          You write the report on a participation project for Go Vocal, a digital democracy platform used by local governments. #{skill ? 'The skill below says who reads it.' : READER}
 
           You have the platform's reporting data and you write your own charts. A run
           gets #{ReportComposer::MAX_ROUNDS} rounds of tool calls in all, and what you
@@ -175,12 +230,7 @@ module ReportBuilder
              with the finding itself in <b>, then the evidence for it. This is the only
              part some readers will read, so it carries the whole argument — and every
              number in it must be one you saw in a query result.
-          4. Taking part. How participation went, with a chart.
-          5. Results. What people actually said or chose — usually the heart of the report,
-             and usually more than one chart.
-          6. Who took part. The demographics of participants, if the data supports it.
-          7. Reach. Visitors and where they came from, if the data supports it.
-          8. What happens next.
+          #{skill ? '4. Then the other sections, as the skill below sets them out.' : SECTIONS}
 
           Every section from 3 onwards opens the same way: a Divider with variant
           "section", then a TextMultiloc whose first tag is the <h2> naming the section.
@@ -193,37 +243,7 @@ module ReportBuilder
           sentence that lists them. Two or three sections usually deserve one; a section
           whose point is a shape or a trend does not, that is what the chart is for.
 
-          Between four and seven charts is right for a project report. Separate sections
-          with a WhiteSpace of size "large", and a chart from the sentence above it with
-          size "small". Keep the prose under about 500 words in total.
-
-          Each section should read as a page: a heading, a short paragraph, and at most
-          two charts. That is what makes the PDF navigable.
-
-          ## Choosing the chart
-
-          The data's job picks the form, and color comes last:
-
-          - Magnitude across categories: horizontal bar, sorted, one hue. The safe default.
-          - Change over time: line, or area for a single series.
-          - Part of a whole: a stacked bar, not a pie. Only use a pie for two or three
-            slices that sum to something meaningful.
-          - An ordered scale (agree to disagree, 1 to 5): a stacked bar in one hue ramp,
-            in scale order, never re-sorted by size.
-          - One number that matters on its own: large text, not a one-bar chart.
-
-          Rules that hold for every chart:
-          - The council's own colours are the default palette. theme.colors.tenantPrimary
-            for a single series, tenantSecondary for a second one. Reach for the platform
-            greys for everything that is not data. Never invent a brand colour.
-          - Never two y-axes. Two measures of different scale are two charts.
-          - One hue, light to dark, unless the series themselves are the subject; then use
-            distinct hues, at most six, and always with a legend.
-          - Sort bars by value, except on an ordered scale.
-          - Label the axes in the report's locale. No jargon and no column names.
-          - Thin marks, a recessive grid, no 3D, no shadows, no gradients.
-          - The chart must read in print: no tooltips as the only way to see a value, and
-            enough contrast in greyscale.
+          #{skill ? 'Separate sections with a WhiteSpace of size "large".' : LENGTH_AND_CHARTS}
 
           Every chart block is laid out the same way, so a run of them reads as one
           document: a heading, the chart filling the full width of the column, then one
@@ -251,8 +271,7 @@ module ReportBuilder
             series apart, by order, by label, or by lightness.
           - Never a fixed pixel width wider than about 700, and never a viewport unit
             (vw, vh): the page is not the screen.
-          - Keep the whole report to roughly 6 to 10 printed pages. A section per page
-            reads better than one long scroll.
+          #{skill ? '- Keep the report to the length the skill below gives.' : PAGE_COUNT}
 
           ## Writing a chart block
 
@@ -378,6 +397,15 @@ module ReportBuilder
 
           #{TenantContext.new(locale: @locale).to_prompt_text}
         PROMPT
+      end
+
+      # Only in development for now (see AIAssistant::Skill).
+      def skill
+        AIAssistant::Skill.find('project-report') if AIAssistant::Skill.available?
+      end
+
+      def skill_prompt
+        ::Analysis::LLM::Prompt.new.fetch('ai_assistant_skill', skill:) if skill
       end
 
       # The one description of the SDK, read from where the typechecker reads it. When
