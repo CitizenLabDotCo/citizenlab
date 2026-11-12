@@ -2656,7 +2656,7 @@
   "app.containers.eventspage.events": "Eventi",
   "app.containers.eventspage.eventsPageDescription": "Mostra tutti gli eventi pubblicati sulla piattaforma di partecipazione di {orgName}.",
   "app.containers.eventspage.eventsPageTitle1": "Eventi | {orgName}",
-  "app.containers.eventspage.filterDropdownTitle": "Progetto",
+  "app.containers.eventspage.filterDropdownTitle": "Progetti",
   "app.containers.eventspage.noPastEvents": "Nessun evento passato da visualizzare",
   "app.containers.eventspage.noUpcomingOrOngoingEvents": "Al momento non sono programmati eventi imminenti o in corso.",
   "app.containers.eventspage.pastEvents": "Eventi passati",
