@@ -26,6 +26,14 @@ const FORBIDDEN_IDENTIFIERS: Record<string, { rule: string; message: string }> =
     },
     WebSocket: { rule: "no-network", message: "WebSocket is not allowed." },
     EventSource: { rule: "no-network", message: "EventSource is not allowed." },
+    RTCPeerConnection: {
+      rule: "no-network",
+      message: "RTCPeerConnection is not allowed.",
+    },
+    RTCDataChannel: {
+      rule: "no-network",
+      message: "RTCDataChannel is not allowed.",
+    },
     eval: { rule: "no-eval", message: "eval is not allowed." },
     Function: {
       rule: "no-eval",

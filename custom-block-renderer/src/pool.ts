@@ -8,6 +8,32 @@ const RENDERS_PER_CONTEXT = 50;
 /** The A4 content width reports are laid out for; charts size themselves to it. */
 const VIEWPORT = { width: 794, height: 1123 };
 
+/**
+ * WebRTC opens connections that page.route and routeWebSocket never see: a block
+ * could hand a TURN server of its choosing the rows it read, past every check in
+ * egress.ts. Nothing a block renders needs it, so it is taken out of every
+ * document before the document's own scripts run.
+ */
+const WEBRTC_GLOBALS = [
+  "RTCPeerConnection",
+  "webkitRTCPeerConnection",
+  "RTCDataChannel",
+  "RTCIceTransport",
+  "RTCSctpTransport",
+];
+
+const removeWebRtc = (names: string[]): void => {
+  for (const name of names) {
+    // Not just deleted: a non-writable, non-configurable undefined cannot be put
+    // back by the page.
+    Object.defineProperty(globalThis, name, {
+      value: undefined,
+      writable: false,
+      configurable: false,
+    });
+  }
+};
+
 interface Slot {
   context: BrowserContext;
   uses: number;
@@ -97,7 +123,14 @@ export class RenderPool {
       // Nothing is signed in here; the block's only credential is the scoped token
       // the harness injects per run.
       storageState: undefined,
+      // A service worker's own requests do not pass page.route, so egress.ts would
+      // not see them. Blocked, register() still resolves but the worker never
+      // starts. The harness does not need one.
+      serviceWorkers: "block",
     });
+    // Runs in every frame of every page in this context, ahead of the page's own
+    // scripts, so neither the harness nor a frame a block creates has WebRTC.
+    await context.addInitScript(removeWebRtc, WEBRTC_GLOBALS);
     return { context, uses: 0 };
   }
 }
