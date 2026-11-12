@@ -8,6 +8,7 @@ import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMulti
 
 import { useIntl } from 'utils/cl-intl';
 
+import TitleVariantSetting from '../../_shared/TitleVariantSetting';
 import messages from '../messages';
 
 import PublicationSelect from './PublicationSelect';
@@ -64,6 +65,9 @@ const Settings = () => {
             setProp((props) => (props.titleMultiloc = valueMultiloc))
           }
         />
+      </Box>
+      <Box mb="20px">
+        <TitleVariantSetting name="spotlight-title-variant" />
       </Box>
       <Box mb="20px">
         <QuillMutilocWithLocaleSwitcher
