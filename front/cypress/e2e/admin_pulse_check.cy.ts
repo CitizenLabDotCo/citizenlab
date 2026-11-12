@@ -1,37 +1,37 @@
 import { randomEmail, randomString } from '../support/commands';
 
-describe('Admin feedback prompt', () => {
-  const prompt = {
+describe('Admin pulse check', () => {
+  const pulseCheck = {
     id: '11111111-1111-4111-8111-111111111111',
-    type: 'feedback_prompt',
+    type: 'pulse_check',
     attributes: { key: 'return_findability', status: 'shown' },
   };
 
   beforeEach(() => {
     cy.setAdminLoginCookie();
-    cy.intercept('POST', '**/web_api/v1/feedback_prompts/show_next', {
-      body: { data: prompt },
+    cy.intercept('POST', '**/web_api/v1/pulse_checks/show_next', {
+      body: { data: pulseCheck },
     });
     cy.intercept(
       'PATCH',
-      `**/web_api/v1/feedback_prompts/${prompt.id}/answer`,
+      `**/web_api/v1/pulse_checks/${pulseCheck.id}/answer`,
       {
         body: {
           data: {
-            ...prompt,
-            attributes: { ...prompt.attributes, status: 'answered' },
+            ...pulseCheck,
+            attributes: { ...pulseCheck.attributes, status: 'answered' },
           },
         },
       }
     ).as('answer');
     cy.intercept(
       'PATCH',
-      `**/web_api/v1/feedback_prompts/${prompt.id}/dismiss`,
+      `**/web_api/v1/pulse_checks/${pulseCheck.id}/dismiss`,
       {
         body: {
           data: {
-            ...prompt,
-            attributes: { ...prompt.attributes, status: 'dismissed' },
+            ...pulseCheck,
+            attributes: { ...pulseCheck.attributes, status: 'dismissed' },
           },
         },
       }
@@ -39,7 +39,7 @@ describe('Admin feedback prompt', () => {
     cy.visit('/admin/projects', {
       onBeforeLoad(win) {
         win.sessionStorage.setItem(
-          'feedback_prompt_project_exit',
+          'pulse_check_project_exit',
           JSON.stringify({
             projectId: '22222222-2222-4222-8222-222222222222',
             adminArea: '/:locale/admin/projects/:projectId/general',
@@ -47,64 +47,62 @@ describe('Admin feedback prompt', () => {
         );
       },
     });
-    cy.get('[data-cy="feedback-prompt"]').should('be.visible');
+    cy.get('[data-cy="pulse-check"]').should('be.visible');
   });
 
   it('saves on selection and keeps the answer when closed', () => {
-    cy.get('[data-cy="feedback-score-6"]').click();
+    cy.get('[data-cy="pulse-check-score-6"]').click();
     cy.wait('@answer')
       .its('request.body')
       .should('deep.equal', {
-        feedback_prompt: { score: 6 },
+        pulse_check: { score: 6 },
       });
-    cy.get('[data-cy="feedback-score-6"]').should(
+    cy.get('[data-cy="pulse-check-score-6"]').should(
       'have.attr',
       'aria-pressed',
       'true'
     );
-    cy.get('[data-cy="feedback-prompt"] textarea').should('be.visible');
-    cy.get('[data-cy="feedback-prompt"] [data-cy="feedback-close"]').click();
-    cy.get('[data-cy="feedback-prompt"]').should('not.exist');
+    cy.get('[data-cy="pulse-check"] textarea').should('be.visible');
+    cy.get('[data-cy="pulse-check"] [data-cy="pulse-check-close"]').click();
+    cy.get('[data-cy="pulse-check"]').should('not.exist');
     cy.get('@dismiss.all').should('have.length', 0);
   });
 
   it('dismisses after a save fails even if the card was already closed', () => {
     cy.intercept(
       'PATCH',
-      `**/web_api/v1/feedback_prompts/${prompt.id}/answer`,
+      `**/web_api/v1/pulse_checks/${pulseCheck.id}/answer`,
       {
         statusCode: 500,
         delay: 1500,
         body: { errors: {} },
       }
     ).as('failedAnswer');
-    cy.get('[data-cy="feedback-score-6"]').click();
-    cy.get('[data-cy="feedback-close"]').click();
-    cy.get('[data-cy="feedback-prompt"]').should('not.exist');
+    cy.get('[data-cy="pulse-check-score-6"]').click();
+    cy.get('[data-cy="pulse-check-close"]').click();
+    cy.get('[data-cy="pulse-check"]').should('not.exist');
     cy.wait('@failedAnswer');
     cy.wait('@dismiss').its('request.method').should('eq', 'PATCH');
   });
 
   it('adds a comment to the saved answer and shows thanks after Send', () => {
-    cy.get('[data-cy="feedback-score-6"]').click();
+    cy.get('[data-cy="pulse-check-score-6"]').click();
     cy.wait('@answer');
-    cy.get('[data-cy="feedback-prompt"] textarea').type(
-      'The checklist helped.'
-    );
-    cy.get('[data-cy="feedback-send"]').click();
+    cy.get('[data-cy="pulse-check"] textarea').type('The checklist helped.');
+    cy.get('[data-cy="pulse-check-send"]').click();
     cy.wait('@answer')
       .its('request.body')
       .should('deep.equal', {
-        feedback_prompt: { score: 6, comment: 'The checklist helped.' },
+        pulse_check: { score: 6, comment: 'The checklist helped.' },
       });
-    cy.get('[data-cy="feedback-prompt"]').should(
+    cy.get('[data-cy="pulse-check"]').should(
       'contain.text',
       'Thank you for your feedback!'
     );
   });
 });
 
-describe('Admin feedback prompt with the real API', () => {
+describe('Admin pulse check with the real API', () => {
   const email = randomEmail();
   const password = randomString();
   let userId: string;
@@ -129,18 +127,15 @@ describe('Admin feedback prompt with the real API', () => {
 
   it('shows setup feedback after first publication and updates the same response', () => {
     cy.setLoginCookie(email, password);
-    cy.intercept('POST', '**/web_api/v1/feedback_prompts/show_next').as(
-      'showNext'
-    );
-    cy.intercept('PATCH', '**/web_api/v1/feedback_prompts/*/answer').as(
-      'answer'
-    );
+    cy.intercept('POST', '**/web_api/v1/pulse_checks/show_next').as('showNext');
+    cy.intercept('PATCH', '**/web_api/v1/pulse_checks/*/answer').as('answer');
     cy.intercept('PATCH', `**/web_api/v1/projects/${projectId}`).as(
       'publishProject'
     );
     cy.visit(`/admin/projects/${projectId}?project_backoffice_redesign`);
     cy.get('#e2e-publish-dropdown-toggle').click();
     cy.get('#e2e-publish-now').click();
+    cy.get('#e2e-publish-anyway').click();
     cy.wait('@publishProject', { timeout: 30000 })
       .its('response.statusCode')
       .should('eq', 200);
@@ -149,19 +144,17 @@ describe('Admin feedback prompt with the real API', () => {
       expect(response?.statusCode).to.eq(200);
       expect(response?.body.data.attributes.key).to.eq('project_setup_ease');
     });
-    cy.get('[data-cy="feedback-prompt"]').should(
+    cy.get('[data-cy="pulse-check"]').should(
       'contain.text',
       'How easy was it to set up this project?'
     );
-    cy.get('[data-cy="feedback-score-6"]').click();
+    cy.get('[data-cy="pulse-check-score-6"]').click();
     cy.wait('@answer').then(({ request, response }) => {
       expect(response?.statusCode).to.eq(200);
       const answerUrl = request.url;
       const responseId = response?.body.data.id;
-      cy.get('[data-cy="feedback-prompt"] textarea').type(
-        'The checklist helped.'
-      );
-      cy.get('[data-cy="feedback-send"]').click();
+      cy.get('[data-cy="pulse-check"] textarea').type('The checklist helped.');
+      cy.get('[data-cy="pulse-check-send"]').click();
       cy.wait('@answer').then(
         ({ request: commentRequest, response: commentResponse }) => {
           expect(commentRequest.url).to.eq(answerUrl);
@@ -170,7 +163,7 @@ describe('Admin feedback prompt with the real API', () => {
         }
       );
     });
-    cy.get('[data-cy="feedback-prompt"]').should(
+    cy.get('[data-cy="pulse-check"]').should(
       'contain.text',
       'Thank you for your feedback!'
     );
