@@ -79,7 +79,7 @@ module DecidimImporter
       resolve_area_orderings!(template)
       TemplateCleaner.prepare_uploads!(template, import_uploads: import_uploads)
       TemplateCleaner.prune_fileless_attachments!(template)
-      TemplateCleaner.prune_imageless_project_images!(template)
+      TemplateCleaner.prune_imageless_images!(template)
       # Suppress `touch: true` callbacks during the bulk load so imported records keep their template dates.
       created = ActiveRecord::Base.no_touching do
         MultiTenancy::Templates::TenantDeserializer.new.deserialize(

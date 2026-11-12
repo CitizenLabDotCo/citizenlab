@@ -20,6 +20,10 @@ import { Outlet as RouterOutlet, useLocation } from 'utils/router';
 import Sidebar from './sideBar/';
 import CollapsibleSidebar from './sideBar/CollapsibleSidebar';
 
+import PulseCheck from './PulseCheck';
+
+} from 'components/admin/ContentBuilder/constants';
+
 const Container = styled.div`
   display: flex;
   background: ${colors.background};
@@ -185,6 +189,7 @@ const AdminPage = memo<Props>(({ className }) => {
       >
         <RouterOutlet />
       </RightColumn>
+      <PulseCheck />
     </Container>
   );
 });
