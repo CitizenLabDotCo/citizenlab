@@ -19,7 +19,7 @@ import { configureQuill, setEmbeddedVideoTitle } from './configureQuill';
 import { createQuill, detachQuillFromToolbar } from './createQuill';
 import ImageTooLargeModal from './ImageTooLargeModal';
 import messages from './messages';
-import StyleContainer from './StyleContainer';
+import StyleContainer, { QuillVariant } from './StyleContainer';
 import Toolbar from './Toolbar';
 import { getHTML, setHTML, getQuillPlainTextLength } from './utils';
 
@@ -45,6 +45,9 @@ export interface Props {
   ariaLabelledBy?: string;
   ariaDescribedBy?: string;
   ariaInvalid?: boolean;
+  ariaLabel?: string;
+  placeholder?: string;
+  variant?: QuillVariant;
 }
 
 configureQuill();
@@ -71,6 +74,9 @@ const QuillEditor = ({
   ariaLabelledBy,
   ariaDescribedBy,
   ariaInvalid,
+  ariaLabel,
+  placeholder,
+  variant,
 }: Props) => {
   const { formatMessage } = useIntl();
   const [editor, setEditor] = useState<Quill | null>(null);
@@ -121,6 +127,8 @@ const QuillEditor = ({
       altTextLabel: formatMessage(messages.altTextLabel),
       imageTitleLabel: formatMessage(messages.imageTitleLabel),
       ariaLabelledBy,
+      ariaLabel,
+      placeholder,
     });
 
     setHTML(quill, value);
@@ -245,6 +253,7 @@ const QuillEditor = ({
       maxHeight={maxHeight}
       minHeight={minHeight}
       className={className}
+      variant={variant}
       onMouseLeave={saveLatestContent}
     >
       {label && (

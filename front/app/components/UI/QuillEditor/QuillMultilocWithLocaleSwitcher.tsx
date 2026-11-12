@@ -4,8 +4,11 @@ import {
   IconTooltip,
   LocaleSwitcher,
   Label,
+  colors,
+  fontSizes,
+  boInputLabelStyle,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { SupportedLocale, Multiloc } from 'typings';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
@@ -20,17 +23,27 @@ import { sanitizeForClassname } from 'utils/JSONFormUtils';
 
 const Container = styled.div``;
 
-const LabelContainer = styled.div`
+const LabelContainer = styled.div<{ variant: QuillEditorProps['variant'] }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin-bottom: ${({ variant }) => (variant === 'bo' ? '4px' : '10px')};
   flex-wrap: wrap;
   gap: 16px;
+
+  ${({ variant }) => variant === 'bo' && boInputLabelStyle}
 `;
 
-const StyledLabel = styled(Label)`
+const boLabelStyle = css`
+  font-size: ${fontSizes.xs}px;
+  line-height: 1.4;
+  color: ${colors.coolGrey600};
+`;
+
+const StyledLabel = styled(Label)<{ variant: QuillEditorProps['variant'] }>`
   margin-bottom: 0px;
+
+  ${({ variant }) => variant === 'bo' && boLabelStyle}
 `;
 
 const StyledIconTooltip = styled(IconTooltip)``;
@@ -109,11 +122,12 @@ const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
 
   return (
     <Container id={props.id} ref={containerRef}>
-      <LabelContainer>
+      <LabelContainer variant={quillProps.variant}>
         {label && (
           <StyledLabel
             id={`${sanitizeForClassname(props.id)}-label`}
             htmlFor={id}
+            variant={quillProps.variant}
           >
             <span>{label}</span>
             {labelTooltipText && (
@@ -134,6 +148,7 @@ const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
             locales={!isNilOrError(tenantLocales) ? tenantLocales : []}
             selectedLocale={selectedLocale}
             values={{ valueMultiloc }}
+            variant={quillProps.variant}
           />
         )}
       </LabelContainer>
@@ -141,7 +156,9 @@ const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
       <QuillEditor
         {...quillProps}
         id={id}
-        ariaLabelledBy={`${sanitizeForClassname(props.id)}-label`}
+        ariaLabelledBy={
+          label ? `${sanitizeForClassname(props.id)}-label` : undefined
+        }
         ariaDescribedBy={ariaDescribedBy}
         ariaInvalid={ariaInvalid}
         value={valueMultiloc?.[selectedLocale]}

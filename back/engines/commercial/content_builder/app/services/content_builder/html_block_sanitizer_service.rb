@@ -13,11 +13,9 @@ module ContentBuilder
         attributes: custom_attributes
       )
 
-      if sanitized == html
-        sanitized
-      else
-        sanitize(sanitized)
-      end
+      # Sanitize until the output is stable: one pass can leave markup that only
+      # becomes dangerous once the next pass has rewritten it.
+      return sanitize(sanitized) unless sanitized == html
 
       force_noopener(sanitized)
     end

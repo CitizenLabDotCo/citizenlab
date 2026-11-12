@@ -16,6 +16,8 @@ const question: IFlatCustomField = {
   description_multiloc: {},
   input_type: 'linear_scale',
   required: false,
+  answers_visible_to: 'moderators',
+  show_as_filter: false,
   enabled: true,
   ordering: 0,
   created_at: '',
@@ -24,13 +26,16 @@ const question: IFlatCustomField = {
   maximum: 5,
 };
 
-const renderComponent = (defaultValues: Record<string, unknown>) => {
+const renderComponent = (
+  defaultValues: Record<string, unknown>,
+  disabled = false
+) => {
   const Wrapper = () => {
     const methods = useForm({ defaultValues });
 
     return (
       <FormProvider {...methods}>
-        <LinearScaleField question={question} />
+        <LinearScaleField question={question} disabled={disabled} />
       </FormProvider>
     );
   };
@@ -51,5 +56,20 @@ describe('LinearScaleField', () => {
     await userEvent.click(option(3));
 
     expect(option(3)).toHaveAttribute('aria-checked', 'false');
+  });
+
+  it('ignores clicks and arrow keys when disabled', async () => {
+    renderComponent({ [question.key]: 3 }, true);
+
+    await userEvent.click(option(3));
+    expect(option(3)).toHaveAttribute('aria-checked', 'true');
+
+    await userEvent.click(option(4));
+    option(3).focus();
+    await userEvent.keyboard('{ArrowRight}');
+
+    expect(option(3)).toHaveAttribute('aria-checked', 'true');
+    expect(option(4)).toHaveAttribute('aria-checked', 'false');
+    expect(option(3)).not.toHaveAttribute('tabindex');
   });
 });

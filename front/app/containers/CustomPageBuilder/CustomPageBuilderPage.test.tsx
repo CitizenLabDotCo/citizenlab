@@ -16,6 +16,7 @@ const EDITED_NODES = {
     hidden: false,
     nodes: ['CUSTOM_PAGE_BODY'],
     linkedNodes: {},
+    parent: null,
   },
   CUSTOM_PAGE_BODY: {
     type: { resolvedName: 'CustomPageBody' },
@@ -50,14 +51,23 @@ const EDITED_NODES = {
     displayName: 'TextMultiloc',
     linkedNodes: {},
   },
-} as unknown as SerializedNodes;
+} satisfies SerializedNodes;
 
 jest.mock('components/CustomPageBuilder/TopBar', () => ({
   __esModule: true,
-  default: ({ onSave }: { onSave: (nodes: SerializedNodes) => void }) => (
-    <button data-testid="mockSaveButton" onClick={() => onSave(EDITED_NODES)}>
-      save
-    </button>
+  default: ({
+    onSave,
+    saveError,
+  }: {
+    onSave: (nodes: SerializedNodes) => void;
+    saveError: string | null;
+  }) => (
+    <>
+      <button data-testid="mockSaveButton" onClick={() => onSave(EDITED_NODES)}>
+        save
+      </button>
+      <span data-testid="mockSaveError">{saveError}</span>
+    </>
   ),
 }));
 jest.mock('components/CustomPageBuilder/Toolbox', () => ({
@@ -102,7 +112,9 @@ jest.mock('utils/router', () => ({
   }),
 }));
 
-const mockUpsertCustomPageLayout = jest.fn(() => Promise.resolve());
+const mockUpsertCustomPageLayout = jest.fn<Promise<void>, unknown[]>(() =>
+  Promise.resolve()
+);
 jest.mock('api/custom_page_layout/useUpsertCustomPageLayout', () =>
   jest.fn(() => ({ mutateAsync: mockUpsertCustomPageLayout }))
 );
@@ -147,5 +159,31 @@ describe('CustomPageBuilderPage save contract', () => {
       staticPageId: 'page-1',
       craftjs_json: EDITED_NODES,
     });
+  });
+
+  it('tells the top bar when a save is refused because of a file', async () => {
+    mockUpsertCustomPageLayout.mockRejectedValueOnce({
+      errors: { base: [{ error: 'unauthorized_file' }] },
+    });
+    render(<CustomPageBuilderPage {...defaultProps} />);
+    fireEvent.click(screen.getByTestId('mockSaveButton'));
+
+    await waitFor(() =>
+      expect(screen.getByTestId('mockSaveError')).toHaveTextContent(
+        'unauthorizedFile'
+      )
+    );
+  });
+
+  it('tells the top bar about any other failed save', async () => {
+    mockUpsertCustomPageLayout.mockRejectedValueOnce(
+      new Error('Network error')
+    );
+    render(<CustomPageBuilderPage {...defaultProps} />);
+    fireEvent.click(screen.getByTestId('mockSaveButton'));
+
+    await waitFor(() =>
+      expect(screen.getByTestId('mockSaveError')).toHaveTextContent('generic')
+    );
   });
 });

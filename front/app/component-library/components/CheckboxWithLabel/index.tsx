@@ -45,8 +45,16 @@ const CheckboxWithLabel = ({
   const uuid = useInstanceId();
   const inputId = id ?? uuid;
 
-  const handleLabelClick = (event: React.MouseEvent) => {
+  const handleContainerClick = (event: React.MouseEvent) => {
     stopLabelPropagation && event.stopPropagation();
+
+    // Toggle on clicks in the container's padding too. Clicks on the checkbox
+    // or label already toggle it.
+    if (!disabled && event.target === event.currentTarget) {
+      onChange({
+        target: { checked: !checked },
+      } as React.ChangeEvent<HTMLInputElement>);
+    }
   };
 
   return (
@@ -55,7 +63,7 @@ const CheckboxWithLabel = ({
       display="flex"
       flex="1"
       alignItems="center"
-      onClick={handleLabelClick}
+      onClick={handleContainerClick}
       data-testid={dataTestId || `${testEnv('check-mark-label')}`}
       style={{ cursor: 'pointer' }}
       data-cy={dataCy}

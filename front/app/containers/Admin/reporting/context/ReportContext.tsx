@@ -3,6 +3,11 @@ import React, { createContext, useContext } from 'react';
 import { SupportedLocale } from 'typings';
 
 import usePhase from 'api/phases/usePhase';
+import useReportLayout from 'api/report_layout/useReportLayout';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import BlockDataProvider from 'components/admin/ContentBuilder/CustomBlocks/runtime/BlockDataContext';
 
 type ReportWidth = 'phone' | 'tablet' | 'desktop' | 'pdf';
 
@@ -11,6 +16,9 @@ interface ReportContextBase {
   reportId?: string;
   phaseId?: string;
   contentBuilderLocale?: SupportedLocale;
+  // Set once the PDF path has screenshotted every live map, after which a map is
+  // rendered as that screenshot. See MapQuestions.
+  mapsCaptured?: boolean;
 }
 
 export interface ReportContextProps extends ReportContextBase {
@@ -32,10 +40,18 @@ export const ReportContextProvider = ({
   reportId,
   phaseId,
   contentBuilderLocale,
+  mapsCaptured,
   children,
 }: ReportContextProps) => {
   const { data: phase } = usePhase(phaseId);
   const projectId = phase?.data.relationships.project.data.id;
+  const llmReportingEnabled = useFeatureFlag({ name: 'llm_reporting' });
+  // The blocks on this report answer their queries against its layout, so that a
+  // reader sees the stored answer rather than running SQL of their own. Only
+  // blocks need it, so only the feature that places them pays for the request.
+  const { data: layout } = useReportLayout(
+    llmReportingEnabled ? reportId : undefined
+  );
 
   // If report has phase relation: also wait for project id to be available
   if (phaseId && !projectId) return null;
@@ -48,9 +64,16 @@ export const ReportContextProvider = ({
         projectId,
         phaseId,
         contentBuilderLocale,
+        mapsCaptured,
       }}
     >
-      {children}
+      {llmReportingEnabled ? (
+        <BlockDataProvider layoutId={layout?.data.id}>
+          {children}
+        </BlockDataProvider>
+      ) : (
+        children
+      )}
     </Context.Provider>
   );
 };

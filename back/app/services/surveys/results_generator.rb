@@ -138,6 +138,10 @@ module Surveys
       responses_to_geographic_input_type(field)
     end
 
+    def visit_multipoint(field)
+      responses_to_geographic_input_type(field)
+    end
+
     def visit_page(field)
       core_field_attributes(field, response_count: 0) # Response count gets updated later by looking at all the results
     end
@@ -275,19 +279,15 @@ module Surveys
     # How many times each value was answered, with a nil count for the inputs
     # that did not answer. Multiple selections count once per selected option.
     def counts_by_value(field)
-      answers = CustomFieldAnswer.main_for(field).where(answerable_id: inputs(field))
+      raise "Unsupported field type: #{field.input_type}" if !field.supports_selection?
 
+      answers = CustomFieldAnswer.main_for(field).where(answerable_id: inputs(field))
       if field.supports_multiple_selection?
-        counts = answers
-          .joins(%(CROSS JOIN jsonb_array_elements(CASE WHEN jsonb_typeof(value) = 'array' THEN value ELSE '[null]'::jsonb END) AS selections(selection)))
-          .group("selections.selection #>> '{}'")
-          .count
+        counts = answers.per_selection.group('selections.selection').count
         counts[nil] = (counts[nil] || 0) + field_seen_count(field) - answered_count(field)
-      elsif field.supports_single_selection?
+      else
         counts = answers.group(:value).count
         counts[nil] = (counts[nil] || 0) + field_seen_count(field) - counts.values.sum
-      else
-        raise "Unsupported field type: #{field.input_type}"
       end
       counts
     end

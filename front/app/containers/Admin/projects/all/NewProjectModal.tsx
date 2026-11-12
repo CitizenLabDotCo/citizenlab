@@ -1,6 +1,6 @@
 import React, { useId, useState } from 'react';
 
-import { Box, Button, bo } from '@citizenlab/cl2-component-library';
+import { Box, Button } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
 import useAddProjectGroup from 'api/project_groups/useAddProjectGroup';
@@ -13,7 +13,7 @@ import NewProjectForm, {
 import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 
 import Outlet from 'components/Outlet';
-import Modal from 'components/UI/Modal';
+import Modal, { MEDIUM_MODAL_WIDTH } from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
@@ -96,16 +96,14 @@ const NewProjectModal = ({ mode, onClose }: Props) => {
       <Modal
         opened={mode === 'scratch'}
         close={close}
-        width={560}
+        width={MEDIUM_MODAL_WIDTH}
         variant="bo"
         header={formatMessage(messages.newProject)}
         footer={
           <Box w="100%" display="flex" justifyContent="flex-end">
             <Button
               buttonStyle="bo-primary"
-              height={bo.buttonMedium.height}
-              padding={bo.buttonMedium.padding}
-              fontSize={bo.buttonMedium.fontSize}
+              boSize="medium"
               type="submit"
               form={formId}
               processing={processing}

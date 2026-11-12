@@ -50,6 +50,8 @@ describe SideFxStaticPageService do
     end
 
     it 'provisions no layout while the feature is off (content_builder patch)' do
+      SettingsService.new.deactivate_feature!('custom_page_builder')
+
       service.after_create(page, user)
 
       expect(ContentBuilder::Layout.find_by(content_buildable: page)).to be_nil

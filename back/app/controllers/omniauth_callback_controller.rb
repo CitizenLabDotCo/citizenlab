@@ -110,7 +110,9 @@ class OmniauthCallbackController < ApplicationController
     email_confirmed_authver = authver_method.email_confirmed?(auth)
 
     if @user
-      user_email_matches_email_from_authver = user_attrs[:email].present? && user_attrs[:email] == @user.email
+      # Letter-case is ignored, as when the user was looked up by this address.
+      user_email_matches_email_from_authver = user_attrs[:email].present? && @user.email.present? &&
+                                              user_attrs[:email].casecmp?(@user.email)
       user_has_email_confirmed_by_authver = email_confirmed_authver && user_email_matches_email_from_authver
 
       if @user.invite_pending? && !user_has_email_confirmed_by_authver

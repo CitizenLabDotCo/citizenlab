@@ -1,12 +1,6 @@
 import React from 'react';
 
-import {
-  Box,
-  Icon,
-  Text,
-  Tooltip,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import { Box, Tooltip, bo } from '@citizenlab/cl2-component-library';
 import { Locale, format, isSameDay, isThisYear } from 'date-fns';
 
 import useEvents from 'api/events/useEvents';
@@ -15,7 +9,11 @@ import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
 import {
-  Row,
+  EventRow,
+  STATUS_LABELS,
+  SectionLabel,
+  StepMeta,
+  StepTitle,
   formatDateRange,
 } from 'containers/Admin/projects/project/projectPage/phaseRowUtils';
 
@@ -67,20 +65,19 @@ const TimelineEvents = ({ projectId }: Props) => {
         display="flex"
         alignItems="center"
         justifyContent="space-between"
-        pl="12px"
-        mb="12px"
+        pl="10px"
+        mb="4px"
       >
-        <Link to="/admin/projects/$projectId/events" params={{ projectId }}>
-          <Box as="h4" m="0">
-            <Text as="span" variant="boSection" m="0">
-              {formatMessage(messages.eventsSection)}
-            </Text>
-          </Box>
-        </Link>
+        <Box as="h4" m="0">
+          <SectionLabel as="span">
+            {formatMessage(messages.eventsSection)}
+          </SectionLabel>
+        </Box>
         <Tooltip
           content={formatMessage(messages.newEvent)}
           theme="dark"
           placement="bottom"
+          appendTo={() => document.body}
         >
           <ButtonWithLink
             to="/admin/projects/$projectId/events/new"
@@ -95,7 +92,8 @@ const TimelineEvents = ({ projectId }: Props) => {
         </Tooltip>
       </Box>
 
-      <Box display="flex" flexDirection="column">
+      {/* Inset 2px so the text lines up with the section label. */}
+      <Box display="flex" flexDirection="column" mx="2px">
         {events.data.map((event) => {
           const { start_at, end_at, title_multiloc } = event.attributes;
           const status = pastPresentOrFuture([start_at, end_at]);
@@ -106,34 +104,15 @@ const TimelineEvents = ({ projectId }: Props) => {
               to="/admin/projects/$projectId/events/$id"
               params={{ projectId, id: event.id }}
             >
-              <Row selected={event.id === selectedEventId}>
-                <Box flexGrow={1} pb="4px">
-                  <Box display="flex" alignItems="center" gap="10px">
-                    <Icon
-                      name="calendar"
-                      width="16px"
-                      height="16px"
-                      fill={
-                        status === 'past' ? colors.coolGrey500 : colors.primary
-                      }
-                    />
-                    <Text
-                      as="span"
-                      m="0"
-                      fontSize="s"
-                      color={
-                        status === 'past' ? 'textSecondary' : 'textPrimary'
-                      }
-                    >
-                      {localize(title_multiloc)}
-                    </Text>
-                  </Box>
-                  {/* 26px = 16px icon + 10px gap, so the date lines up with the title */}
-                  <Text m="2px 0 0 26px" fontSize="xs" color="textSecondary">
-                    {formatEventDate(start_at, end_at, dateLocale)}
-                  </Text>
-                </Box>
-              </Row>
+              <EventRow selected={event.id === selectedEventId}>
+                <StepTitle style={{ color: bo.colors.textHeadingStrong }}>
+                  {localize(title_multiloc)}
+                </StepTitle>
+                <StepMeta m="0" color="textSecondary">
+                  {formatMessage(STATUS_LABELS[status])} ·{' '}
+                  {formatEventDate(start_at, end_at, dateLocale)}
+                </StepMeta>
+              </EventRow>
             </Link>
           );
         })}

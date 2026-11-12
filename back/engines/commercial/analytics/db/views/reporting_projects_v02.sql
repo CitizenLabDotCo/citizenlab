@@ -33,8 +33,9 @@ SELECT
         WHERE EXISTS (SELECT 1 FROM projects_global_topics pgt WHERE pgt.project_id = p.id AND pgt.global_topic_id = gt.id)
         ORDER BY gt.ordering
     ) AS topics,
-    -- A project marked "all areas" matches every area, as in the product's
-    -- project filters.
+    -- Must match the product's area filter (ProjectsFilteringService), where a
+    -- project marked "all areas" matches every area, or a report filtered by
+    -- area will list different projects from the platform.
     ARRAY(
         SELECT COALESCE(
             NULLIF(a.title_multiloc ->> (SELECT ac.settings -> 'core' -> 'locales' ->> 0 FROM app_configurations ac LIMIT 1), ''),

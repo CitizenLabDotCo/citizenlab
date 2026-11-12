@@ -20,15 +20,21 @@ import {
   OPEN_OPTIONS,
 } from 'containers/Admin/projects/_shared/visibilityOptions';
 import visibilityMessages from 'containers/Admin/projects/_shared/visibilityOptions/messages';
+import { getMissingItems } from 'containers/Admin/projects/project/backofficeRedesign/ProjectSetupPanel/setupItems';
+import useSetupReadiness from 'containers/Admin/projects/project/backofficeRedesign/ProjectSetupPanel/useSetupReadiness';
 
 import OptionRow from 'components/UI/OptionRow';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
-import messages from '../../messages';
+import backofficeRedesignMessages from '../../messages';
 
 import { ConfirmableStatus } from './ConfirmStatusChangeModal';
+import GroupsChecklist from './GroupsChecklist';
+import messages from './messages';
+import { MissingEssentialsIntent } from './MissingEssentialsModal';
 import getPublicationState, { PublicationState } from './publicationState';
+import usePublishNow from './usePublishNow';
 
 const HEADER_MESSAGES: Record<PublicationState, MessageDescriptor> = {
   published: messages.publishStatePublished,
@@ -41,6 +47,7 @@ interface Props {
   project: IProjectData;
   onSchedule: () => void;
   onConfirmStatusChange: (status: ConfirmableStatus) => void;
+  onMissingEssentials: (intent: MissingEssentialsIntent) => void;
   onDone: () => void;
 }
 
@@ -48,10 +55,14 @@ const PublishPanel = ({
   project,
   onSchedule,
   onConfirmStatusChange,
+  onMissingEssentials,
   onDone,
 }: Props) => {
   const { formatMessage, formatDate, formatTime } = useIntl();
-  const { mutate: updateProject, isPending } = useUpdateProject();
+  const { mutate: updateProject } = useUpdateProject();
+  const { publishNow, isPending } = usePublishNow(project);
+  const { readiness, isLoading: readinessLoading } = useSetupReadiness(project);
+  const hasMissingItems = getMissingItems(readiness).length > 0;
   const { data: recipientCount } = useProjectPublicationRecipientCount(
     project.id
   );
@@ -107,15 +118,11 @@ const PublishPanel = ({
       publication_email_enabled: enabled,
     });
 
-  const publishNow = () =>
-    updateProject(
-      {
-        projectId: project.id,
-        admin_publication_attributes: { publication_status: 'published' },
-        publication_email_enabled,
-      },
-      { onSuccess: onDone }
-    );
+  const handlePublishNow = () =>
+    hasMissingItems ? onMissingEssentials('publish') : publishNow(onDone);
+
+  const handleSchedule = () =>
+    hasMissingItems ? onMissingEssentials('schedule') : onSchedule();
 
   const count = recipientCount?.data.attributes.count;
 
@@ -146,7 +153,7 @@ const PublishPanel = ({
       </Box>
 
       <Text variant="boSection" mt="12px" mb="4px">
-        {formatMessage(visibilityMessages.publishWhoCanOpen)}
+        {formatMessage(visibilityMessages.publishWhoCanSee)}
       </Text>
       <Box role="radiogroup" display="flex" flexDirection="column">
         {OPEN_OPTIONS.map((option) => (
@@ -160,6 +167,7 @@ const PublishPanel = ({
           />
         ))}
       </Box>
+      {visible_to === 'groups' && <GroupsChecklist projectId={project.id} />}
 
       <Divider />
 
@@ -205,7 +213,9 @@ const PublishPanel = ({
                 width="100%"
                 onClick={() => onConfirmStatusChange('draft')}
               >
-                {formatMessage(messages.publishRestoreToDraft)}
+                {formatMessage(
+                  backofficeRedesignMessages.publishRestoreToDraft
+                )}
               </Button>
             </Box>
             <Box flex="1">
@@ -227,7 +237,7 @@ const PublishPanel = ({
               width="100%"
               onClick={() => onConfirmStatusChange('draft')}
             >
-              {formatMessage(messages.publishRestoreToDraft)}
+              {formatMessage(backofficeRedesignMessages.publishRestoreToDraft)}
             </Button>
           </Box>
         )}
@@ -239,7 +249,8 @@ const PublishPanel = ({
                 buttonStyle="bo-secondary"
                 width="100%"
                 icon="calendar"
-                onClick={onSchedule}
+                onClick={handleSchedule}
+                processing={readinessLoading}
               >
                 {formatMessage(messages.publishSchedule)}
               </Button>
@@ -249,8 +260,8 @@ const PublishPanel = ({
                 buttonStyle="bo-primary"
                 width="100%"
                 icon="send"
-                onClick={publishNow}
-                processing={isPending}
+                onClick={handlePublishNow}
+                processing={isPending || readinessLoading}
                 id="e2e-publish-now"
               >
                 {formatMessage(messages.publishNow)}

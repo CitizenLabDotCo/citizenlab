@@ -5,11 +5,11 @@ import { Box, Dropdown, bo } from '@citizenlab/cl2-component-library';
 import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
 import Button from 'components/UI/ButtonWithLink';
+import DropdownMenuItem from 'components/UI/DropdownMenuItem';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
-import NewProjectMenuItem from './NewProjectMenuItem';
 import NewProjectModal, { NewProjectMode } from './NewProjectModal';
 
 const NewProjectButton = () => {
@@ -60,12 +60,12 @@ const NewProjectButton = () => {
         borderRadius={bo.borderRadius}
         content={
           <Box role="menu">
-            <NewProjectMenuItem
+            <DropdownMenuItem
               icon="page"
               label={formatMessage(messages.fromScratchMenuItem)}
               onClick={() => openModal('scratch')}
             />
-            <NewProjectMenuItem
+            <DropdownMenuItem
               icon="grid"
               label={formatMessage(messages.useTemplateMenuItem)}
               onClick={() => openModal('template')}

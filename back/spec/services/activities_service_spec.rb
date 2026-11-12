@@ -58,8 +58,33 @@ describe ActivitiesService do
       it "doesn't log a new upcoming-phase activity if there's already one for the same phase" do
         now = phase.start_at - 4.days
 
-        # acted_at doesn't matter for this test
-        Activity.create(item: phase, action: 'upcoming', acted_at: Time.now)
+        Activity.create(item: phase, action: 'upcoming', acted_at: now - 1.day)
+
+        expect { service.create_periodic_activities(now: now) }
+          .not_to have_enqueued_job(LogActivityJob)
+          .with(phase, 'upcoming', anything, anything, anything)
+      end
+
+      it 'logs a new upcoming-phase activity when the phase was postponed after the previous one' do
+        phase = create(:phase)
+        Activity.create(item: phase, action: 'upcoming', acted_at: phase.start_at - 7.days)
+
+        new_start_at = phase.start_at + 3.weeks
+        phase.update!(start_at: new_start_at, end_at: new_start_at + 60.days)
+        now = phase.start_at - 7.days
+
+        expect { service.create_periodic_activities(now: now) }
+          .to have_enqueued_job(LogActivityJob)
+          .with(phase, 'upcoming', nil, now, project_id: phase.project_id)
+      end
+
+      it "doesn't log a new upcoming-phase activity when the previous one falls within the current window" do
+        phase = create(:phase)
+        Activity.create(item: phase, action: 'upcoming', acted_at: phase.start_at - 6.days)
+
+        new_start_at = phase.start_at + 1.day
+        phase.update!(start_at: new_start_at, end_at: new_start_at + 60.days)
+        now = phase.start_at - 5.days
 
         expect { service.create_periodic_activities(now: now) }
           .not_to have_enqueued_job(LogActivityJob)

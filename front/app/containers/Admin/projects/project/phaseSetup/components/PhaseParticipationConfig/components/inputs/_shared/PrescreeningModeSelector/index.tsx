@@ -1,6 +1,13 @@
 import React from 'react';
 
-import { Box, Select, Text, Toggle } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Radio,
+  Select,
+  Text,
+  Toggle,
+  bo,
+} from '@citizenlab/cl2-component-library';
 import { MessageDescriptor } from 'react-intl';
 import { IOption } from 'typings';
 
@@ -9,6 +16,7 @@ import { PrescreeningMode } from 'api/phases/types';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
+import SettingToggleRow from 'components/admin/SettingToggleRow';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
@@ -17,6 +25,7 @@ import messages from './messages';
 interface Props {
   prescreening_mode: PrescreeningMode | null | undefined;
   onPrescreeningModeChange: (mode: PrescreeningMode | null) => void;
+  variant?: 'default' | 'panel';
 }
 
 const descriptionMessages: Record<string, MessageDescriptor> = {
@@ -84,7 +93,9 @@ const PrescreeningToggle = ({ isEnabled, onChange }: ToggleProps) => (
 const PrescreeningModeSelector = ({
   prescreening_mode,
   onPrescreeningModeChange,
+  variant = 'default',
 }: Props) => {
+  const { formatMessage } = useIntl();
   const flagInappropriateContentEnabled = useFeatureFlag({
     name: 'flag_inappropriate_content',
   });
@@ -95,6 +106,64 @@ const PrescreeningModeSelector = ({
 
   const showFlaggedOnlyOption =
     flagInappropriateContentEnabled && prescreeningFlaggedOnlyEnabled;
+
+  if (variant === 'panel') {
+    // Without flagging, 'flagged_only' screens nothing, as on the full page.
+    const screening =
+      prescreening_mode === 'all' ||
+      (showFlaggedOnlyOption && prescreening_mode === 'flagged_only');
+
+    return (
+      <Box display="flex" flexDirection="column" gap="10px">
+        <SettingToggleRow
+          title={formatMessage(messages.contentScreeningTitle)}
+          description={formatMessage(messages.contentScreeningDescription)}
+          checked={screening}
+          onChange={() => onPrescreeningModeChange(screening ? null : 'all')}
+        />
+        {screening && showFlaggedOnlyOption && (
+          <Box
+            display="flex"
+            flexDirection="column"
+            gap="8px"
+            pl={bo.toggleLabelIndent}
+          >
+            <Box display="flex" gap="24px">
+              <Radio
+                variant="bo"
+                name="prescreening_mode"
+                id="prescreening_mode-flagged_only"
+                value="flagged_only"
+                currentValue={prescreening_mode}
+                onChange={onPrescreeningModeChange}
+                label={
+                  <Text as="span" variant="boControl" m="0">
+                    {formatMessage(messages.prescreeningModeFlaggedOnly)}
+                  </Text>
+                }
+              />
+              <Radio
+                variant="bo"
+                name="prescreening_mode"
+                id="prescreening_mode-all"
+                value="all"
+                currentValue={prescreening_mode}
+                onChange={onPrescreeningModeChange}
+                label={
+                  <Text as="span" variant="boControl" m="0">
+                    {formatMessage(messages.prescreeningModeAll)}
+                  </Text>
+                }
+              />
+            </Box>
+            <Text variant="boHelper" fontSize="xs" m="0">
+              {formatMessage(descriptionMessages[prescreening_mode])}
+            </Text>
+          </Box>
+        )}
+      </Box>
+    );
+  }
 
   const settings = (() => {
     if (showFlaggedOnlyOption) {

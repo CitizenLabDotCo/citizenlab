@@ -103,6 +103,7 @@ const IconContainer = styled(Box)<{ variant: Variant }>`
 export interface Props {
   id?: string;
   defaultValue?: string;
+  value?: string | null;
   placeholder: string;
   ariaLabel: string;
   debounce?: number;
@@ -121,6 +122,7 @@ export interface Props {
 const SearchInput = ({
   id,
   defaultValue,
+  value,
   placeholder,
   ariaLabel,
   debounce = 500,
@@ -135,8 +137,17 @@ const SearchInput = ({
   variant = 'default',
 }: Props) => {
   const [internalSearchTerm, setInternalSearchTerm] = useState(
-    defaultValue ?? null
+    value ?? defaultValue ?? null
   );
+  const [prevValue, setPrevValue] = useState(value);
+
+  if (value !== prevValue) {
+    setPrevValue(value);
+
+    if (value !== undefined) {
+      setInternalSearchTerm(value);
+    }
+  }
   const [isFocused, setIsFocused] = useState(false);
 
   const debouncedOnChange = useMemo(

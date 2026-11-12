@@ -37,10 +37,14 @@ class ActivitiesService
   def create_phase_upcoming_activities(now, _last_time)
     upcoming_phases = Phase.published.where(start_at: now..(now + 1.week))
 
-    # Exclude phases for which an upcoming activity has already been created to avoid
-    # duplicate notifications.
+    # Exclude phases for which an upcoming activity was already logged within the current
+    # 7-day window before the phase starts, to avoid duplicate notifications. Activities
+    # logged before that window (e.g. the phase start was postponed after the reminder was
+    # sent) are ignored, so the reminder is sent again.
     excluded_phases = Activity
+      .joins('INNER JOIN phases ON phases.id = activities.item_id')
       .where(item_id: upcoming_phases, action: 'upcoming')
+      .where("activities.acted_at >= phases.start_at - INTERVAL '7 days'")
       .select(:item_id)
 
     upcoming_phases.where.not(id: excluded_phases).each do |phase|

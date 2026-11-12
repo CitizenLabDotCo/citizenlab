@@ -127,6 +127,7 @@
     "nl-NL": "gebied tekenen"
   },
   "survey": {
+    "fr-FR": "enquête",
     "nl-NL": "vragenlijst"
   },
   "survey responses": {
@@ -364,6 +365,9 @@
   },
   "sign in": {
     "nl-NL": "inloggen"
+  },
+  "visitors": {
+    "de-DE": "Besucher*innen"
   },
   "traffic sources": {
     "nl-NL": "kanalen"

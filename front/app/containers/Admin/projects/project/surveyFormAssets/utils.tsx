@@ -52,11 +52,11 @@ export const nativeSurveyConfig: FormBuilderConfig = {
     'point',
     'line',
     'polygon',
+    'multipoint',
   ],
   displayBuiltInFields: false,
   builtInFields: [],
   showStatusBadge: true,
-  isFormPhaseSpecific: true,
   getWarningNotice: () => {
     return (
       <Box id="e2e-warning-notice" mb="16px">

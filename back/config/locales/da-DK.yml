@@ -140,9 +140,15 @@ da-DK:
           title: Hvad er dit emne?
   errors:
     messages:
+      ai_processing_not_allowed: kan muligvis ikke behandles af AI
       in_the_past: må være i fremtiden
       max_must_be_greater_than_min_characters: Maksimum skal være større end minimum.
       max_must_be_greater_than_or_equal_to_min_select_count: Maksimum skal være større end eller lig med minimum.
+      not_found: blev ikke fundet
+      not_in_project: skal være filer fra dette projekt
+      not_utf8: skal være gemt som UTF-8
+      too_many_in_conversation: er for mange til én samtale
+      unsupported_file_type: skal være PDF-filer på højst 4 MB, eller Markdown- eller tekstfiler på højst 100 KB
   events:
     council_meeting_description: |
       <p>Under dette rådsmøde vil de forslag, der har samlet 100 stemmer på mindre end 3 måneder, blive præsenteret.</p><p> Rådet vil så belyse deres perspektiv på hver idé.</p>
@@ -180,6 +186,7 @@ da-DK:
       logic_no_further_questions: Baseret på dine svar behøver du <strong>ikke</strong> besvare flere spørgsmål.
       logic_section: Afsnit %{letter}
       matrix_print_description: Marker en cirkel for hver række med et kryds for at angive din præference.
+      multipoint_print_description: Sæt venligst et kryds på kortet herunder for hver lokation, du ønsker at tilføje.
       optional: valgfrit
       page: Side
       permission: Tilladelse

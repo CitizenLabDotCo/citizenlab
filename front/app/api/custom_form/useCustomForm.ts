@@ -5,18 +5,14 @@ import { IPhaseData } from 'api/phases/types';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import getApiEndpoint from './getApiEndpoint';
 import customFormKeys from './keys';
 import { CustomFormKeys, ICustomForm } from './types';
 
-const fetchCustomForm = (phase: IPhaseData) => {
-  const apiEndpoint = getApiEndpoint(phase);
-
-  return fetcher<ICustomForm>({
-    path: `/${apiEndpoint}`,
+const fetchCustomForm = (phase: IPhaseData) =>
+  fetcher<ICustomForm>({
+    path: `/phases/${phase.id}/custom_form`,
     action: 'get',
   });
-};
 
 const useCustomForm = (phase: IPhaseData) => {
   return useQuery<ICustomForm, CLErrors, ICustomForm, CustomFormKeys>({

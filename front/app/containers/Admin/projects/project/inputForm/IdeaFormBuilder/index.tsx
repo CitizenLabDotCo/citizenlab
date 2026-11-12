@@ -37,7 +37,7 @@ const IdeaFormBuilder = ({
 
   const { data: formCustomFields } = useFormCustomFields({
     projectId,
-    phaseId: config.isFormPhaseSpecific ? phaseId : undefined,
+    phaseId,
   });
 
   const goBackUrl = useFormBuilderGoBackUrl(projectId, phaseId, 'form');

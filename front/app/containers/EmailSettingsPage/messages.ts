@@ -5,6 +5,10 @@ export default defineMessages({
     id: 'EmailSettingsPage.initialUnsubscribeSuccess',
     defaultMessage: 'You successfully unsubscribed from {campaignTitle}.',
   },
+  initialUnsubscribeSuccessWithoutCampaign: {
+    id: 'EmailSettingsPage.initialUnsubscribeSuccessWithoutCampaign',
+    defaultMessage: 'You have successfully unsubscribed.',
+  },
   initialUnsubscribeError: {
     id: 'EmailSettingsPage.initialUnsubscribeError',
     defaultMessage:

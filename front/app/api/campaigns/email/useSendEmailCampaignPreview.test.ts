@@ -25,7 +25,7 @@ describe('useSendEmailCampaignPreview', () => {
     });
 
     act(() => {
-      result.current.mutate('campaignId');
+      result.current.mutate({ id: 'campaignId', locale: 'en' });
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
@@ -44,7 +44,7 @@ describe('useSendEmailCampaignPreview', () => {
     });
 
     act(() => {
-      result.current.mutate('campaignId');
+      result.current.mutate({ id: 'campaignId', locale: 'en' });
     });
     await waitFor(() => expect(result.current.isError).toBe(true));
     expect(result.current.error).toBeDefined();

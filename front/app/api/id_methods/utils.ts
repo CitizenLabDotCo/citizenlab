@@ -2,7 +2,10 @@ import {
   IdMethods,
   IDAzureAdMethod,
   IDAzureAdB2cMethod,
+  IDCriiptoMethod,
   IDFacebookMethod,
+  IDNemlogInMethod,
+  IDOktaMethod,
   IDPublikMethod,
   IdMethodName,
   IdMethodData,
@@ -32,6 +35,29 @@ export const getPublikConfig = (idMethods?: IdMethods) => {
   return publikConfig;
 };
 
+export const getOktaConfig = (idMethods?: IdMethods) => {
+  const oktaConfig = idMethods?.data.find(
+    (method): method is IDOktaMethod => method.attributes.name === 'okta'
+  );
+
+  return oktaConfig;
+};
+
+// The methods city staff sign in with. They can be hidden from residents and
+// can force staff email domains to use them.
+export const isEmployeeSsoMethod = (
+  method: IdMethodData
+): method is IDAzureAdMethod | IDOktaMethod =>
+  method.attributes.name === 'azureactivedirectory' ||
+  method.attributes.name === 'okta';
+
+// Callers treat these methods as one group: the enforced-domain error message
+// and the SSO link don't know which method enforces the user's domain. We
+// accept this on purpose, as a platform with both Azure AD and Okta enabled is
+// very unlikely.
+export const getEmployeeSsoConfigs = (idMethods?: IdMethods) =>
+  idMethods?.data.filter(isEmployeeSsoMethod) ?? [];
+
 export const getFacebookConfig = (idMethods?: IdMethods) => {
   const facebookConfig = idMethods?.data.find(
     (method): method is IDFacebookMethod =>
@@ -50,3 +76,13 @@ export function isLastIdMethod(
     idMethods.length - 1
   );
 }
+
+const canBeOnlyShownForVerification = (
+  method: IdMethodData
+): method is IDCriiptoMethod | IDNemlogInMethod =>
+  method.attributes.name === 'criipto' ||
+  method.attributes.name === 'nemlog_in';
+
+export const isOnlyShownForVerification = (method: IdMethodData) =>
+  canBeOnlyShownForVerification(method) &&
+  method.attributes.only_show_for_verification === true;

@@ -1,3 +1,6 @@
+import CustomBlock, {
+  customBlockTitle,
+} from 'components/admin/ContentBuilder/CustomBlocks/Widget';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import whiteSpaceMessages from 'components/admin/ContentBuilder/Widgets/WhiteSpace/messages';
 
@@ -31,12 +34,16 @@ import VisitorsWidget, { visitorsTitle } from './ChartWidgets/VisitorsWidget';
 import CommunityMonitorHealthScoreWidget, {
   communityMonitorHealthScoreTitle,
 } from './CommunityMonitorHealthScoreWidget';
+import Cover, { coverTitle } from './Cover';
+import Divider, { dividerTitle } from './Divider';
 import IframeMultiloc, { iframeMultilocTitle } from './IframeMultiloc';
 import ImageMultiloc, { imageMultilocTitle } from './ImageMultiloc';
+import KeyFigures, { keyFiguresTitle } from './KeyFigures';
 import messages from './messages';
 import MostReactedIdeasWidget, {
   mostReactedIdeasTitle,
 } from './MostReactedIdeasWidget';
+import PageBreak, { pageBreakTitle } from './PageBreak';
 import ProjectsTimelineWidget, {
   projectsTimelineTitle,
 } from './ProjectsTimelineWidget';
@@ -45,14 +52,21 @@ import SingleIdeaWidget, { singleIdeaTitle } from './SingleIdeaWidget';
 import SurveyQuestionResultWidget, {
   surveyQuestionResultTitle,
 } from './SurveyQuestionResultWidget';
+import TableOfContents, { tableOfContentsTitle } from './TableOfContents';
 import TextMultiloc, { textMultilocTitle } from './TextMultiloc';
 import TwoColumn, { twoColumnTitle } from './TwoColumn';
 
 export const WIDGETS = {
   TwoColumn,
   TextMultiloc,
+  Cover,
+  Divider,
+  KeyFigures,
   ImageMultiloc,
   WhiteSpace,
+  PageBreak,
+  TableOfContents,
+  CustomBlock,
   SurveyQuestionResultWidget,
   CommunityMonitorHealthScoreWidget,
   VisitorsWidget,
@@ -95,9 +109,15 @@ export const CUSTOM_TEMPLATE_WIDGET_TITLES: Record<string, MessageDescriptor> =
 
 export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   WhiteSpace: whiteSpaceMessages.whiteSpace,
+  Cover: coverTitle,
+  Divider: dividerTitle,
+  KeyFigures: keyFiguresTitle,
+  PageBreak: pageBreakTitle,
+  TableOfContents: tableOfContentsTitle,
   TextMultiloc: textMultilocTitle,
   TwoColumn: twoColumnTitle,
   ImageMultiloc: imageMultilocTitle,
+  CustomBlock: customBlockTitle,
   SurveyQuestionResultWidget: surveyQuestionResultTitle,
   CommunityMonitorHealthScoreWidget: communityMonitorHealthScoreTitle,
   MostReactedIdeasWidget: mostReactedIdeasTitle,
@@ -130,6 +150,7 @@ export const hasChildren = (nodeName: string) => {
 };
 
 const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
+  'CustomBlock',
   'VisitorsTrafficSourcesWidget',
   'VisitorsWidget',
   'SurveyQuestionResultWidget',

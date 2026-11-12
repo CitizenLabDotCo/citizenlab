@@ -7,8 +7,6 @@ import { Multiloc } from 'typings';
 import { object } from 'yup';
 
 import { IInputTopicData } from 'api/input_topics/types';
-import useAddInputTopic from 'api/input_topics/useAddInputTopic';
-import useUpdateInputTopic from 'api/input_topics/useUpdateInputTopic';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -34,24 +32,30 @@ interface FormValues {
   icon?: string | null;
 }
 
+export interface InputTopicFormValues {
+  title_multiloc: Multiloc;
+  description_multiloc: Multiloc;
+  icon?: string | null;
+}
+
 interface Props {
-  projectId: string;
   topic: IInputTopicData | null;
   parentId?: string;
   opened: boolean;
   close: () => void;
+  onSubmit: (values: InputTopicFormValues) => Promise<void> | void;
+  variant?: 'default' | 'bo';
 }
 
 const InputTopicModal = ({
-  projectId,
   topic,
   parentId,
   opened,
   close,
+  onSubmit,
+  variant = 'default',
 }: Props) => {
   const { formatMessage } = useIntl();
-  const { mutateAsync: addInputTopic } = useAddInputTopic();
-  const { mutateAsync: updateInputTopic } = useUpdateInputTopic();
   const nestedTopicsEnabled = useFeatureFlag({ name: 'nested_input_topics' });
 
   const isEditing = topic !== null;
@@ -90,29 +94,43 @@ const InputTopicModal = ({
 
   const onFormSubmit = async (formValues: FormValues) => {
     try {
-      if (isEditing) {
-        await updateInputTopic({
-          projectId,
-          id: topic.id,
-          title_multiloc: formValues.title_multiloc,
-          description_multiloc: formValues.description_multiloc,
-          // Only send icon for root topics
-          ...(isSubtopic ? {} : { icon: formValues.icon }),
-        });
-      } else {
-        await addInputTopic({
-          projectId,
-          title_multiloc: formValues.title_multiloc,
-          description_multiloc: formValues.description_multiloc || {},
-          icon: isSubtopic ? undefined : formValues.icon,
-          parent_id: parentId,
-        });
-      }
+      await onSubmit({
+        title_multiloc: formValues.title_multiloc,
+        description_multiloc: formValues.description_multiloc || {},
+        // Only root topics have an icon
+        ...(isSubtopic ? {} : { icon: formValues.icon }),
+      });
       close();
     } catch (error) {
       handleHookFormSubmissionError(error, methods.setError);
     }
   };
+
+  const isBo = variant === 'bo';
+  const submit = methods.handleSubmit(onFormSubmit);
+
+  const cancelButton = (
+    <Button
+      buttonStyle={isBo ? 'bo-secondary' : 'secondary-outlined'}
+      width={isBo ? 'auto' : undefined}
+      onClick={close}
+    >
+      <FormattedMessage {...messages.cancel} />
+    </Button>
+  );
+
+  const saveButton = (
+    <Button
+      type="submit"
+      buttonStyle={isBo ? 'bo-primary' : 'primary'}
+      width={isBo ? 'auto' : undefined}
+      processing={methods.formState.isSubmitting}
+      onClick={isBo ? submit : undefined}
+      id="e2e-submit-input-topic-button"
+    >
+      {formatMessage(messages.save)}
+    </Button>
+  );
 
   const getHeaderMessage = () => {
     if (isEditing) {
@@ -125,24 +143,36 @@ const InputTopicModal = ({
   };
 
   return (
-    <Modal opened={opened} close={close} header={getHeaderMessage()}>
+    <Modal
+      variant={variant}
+      opened={opened}
+      close={close}
+      header={getHeaderMessage()}
+      footer={
+        isBo ? (
+          <Box display="flex" justifyContent="flex-end" gap="8px" w="100%">
+            {cancelButton}
+            {saveButton}
+          </Box>
+        ) : undefined
+      }
+    >
       <ModalContentContainer>
         <FormProvider {...methods}>
-          <form
-            onSubmit={methods.handleSubmit(onFormSubmit)}
-            data-testid="inputTopicForm"
-          >
+          <form onSubmit={submit} data-testid="inputTopicForm">
             <SectionField>
               <Feedback />
               <Box display="flex" gap="16px" alignItems="flex-end">
                 <InputMultilocWithLocaleSwitcher
                   name="title_multiloc"
                   label={formatMessage(messages.fieldTopicTitle)}
+                  variant={variant}
                 />
                 {!isSubtopic && nestedTopicsEnabled && (
                   <EmojiPicker
                     name="icon"
                     label={formatMessage(messages.fieldTopicEmoji)}
+                    variant={variant}
                   />
                 )}
               </Box>
@@ -151,6 +181,7 @@ const InputTopicModal = ({
               <QuillMultilocWithLocaleSwitcher
                 name="description_multiloc"
                 label={formatMessage(messages.fieldTopicDescription)}
+                variant={variant}
                 noImages
                 noLinks
                 noVideos
@@ -159,18 +190,12 @@ const InputTopicModal = ({
               />
             </SectionField>
 
-            <ButtonsWrapper>
-              <Button buttonStyle="secondary-outlined" onClick={close}>
-                <FormattedMessage {...messages.cancel} />
-              </Button>
-              <Button
-                type="submit"
-                processing={methods.formState.isSubmitting}
-                id="e2e-submit-input-topic-button"
-              >
-                {formatMessage(messages.save)}
-              </Button>
-            </ButtonsWrapper>
+            {!isBo && (
+              <ButtonsWrapper>
+                {cancelButton}
+                {saveButton}
+              </ButtonsWrapper>
+            )}
           </form>
         </FormProvider>
       </ModalContentContainer>

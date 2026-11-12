@@ -1,57 +1,6 @@
 import { snakeCase } from 'lodash-es';
 import { randomString } from '../../support/commands';
-import moment = require('moment');
-
-const waitForCustomFormFields = () => {
-  cy.intercept('**/phases/**/custom_fields**').as('customFields');
-  cy.wait('@customFields', { timeout: 10000 });
-  cy.wait(1000);
-};
-
-// Add a toolbox item to the survey's default page with a real mouse drag.
-// The keyboard-based addItemToFormBuilder derives its arrow-key step count
-// from DOM sibling indexes, which intermittently computes zero steps and
-// lifts + drops the item in place — nothing gets added and the field
-// settings panel never opens. Dragging to the page's explicit drop zone
-// removes that failure mode. A fresh native survey's default page always
-// has the key `page1`, which gives the drop zone its stable selector.
-//
-// The drag itself can still be silently swallowed: a late custom_fields
-// refetch re-renders the droppable mid-drag and @hello-pangea/dnd abandons
-// the drop (full-suite failure screenshots show the complete mouse sequence
-// dispatched with the canvas unchanged). That refetch is one-shot per page
-// load, so a re-drag after the canvas settles lands on a stable DOM. The
-// retry is bounded so a genuinely broken form builder still fails loudly.
-const addSurveyField = (toolboxSelector: string) => {
-  cy.dataCy('e2e-field-row')
-    .its('length')
-    .then((initialCount) => {
-      const attemptDrag = (attemptsLeft: number) => {
-        cy.dragToolboxItemTo(
-          toolboxSelector,
-          '[data-cy="e2e-page-drop-page1"]'
-        );
-        // Give a slow-but-successful drop time to render its field row —
-        // re-dragging after a drop that did register would add a duplicate.
-        cy.wait(500);
-        cy.dataCy('e2e-field-row').then(($rows) => {
-          if ($rows.length === initialCount) {
-            expect(
-              attemptsLeft,
-              'drag attempts before a new field row appeared'
-            ).to.be.greaterThan(0);
-            attemptDrag(attemptsLeft - 1);
-          }
-        });
-      };
-      attemptDrag(4);
-    });
-
-  // The newly added field's settings panel opens with an empty title.
-  // Asserting emptiness both proves the drop registered and guards against
-  // typing into the panel of a previously added field.
-  cy.get('#e2e-title-multiloc').should('be.visible').should('have.value', '');
-};
+import { addSurveyField, waitForCustomFormFields } from './utils';
 
 describe('Survey Builder - Results and Data Management', () => {
   const phaseTitle = randomString();
@@ -214,57 +163,6 @@ describe('Survey Builder - Results and Data Management', () => {
     cy.dataCy('e2e-confirm-delete-survey-results').click();
 
     cy.dataCy('e2e-form-delete-results-notice').should('not.exist');
-  });
-
-  it('allows export of survey results', () => {
-    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
-    waitForCustomFormFields();
-    addSurveyField('#toolbox_multiline_text');
-    cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
-
-    // Save the survey
-    cy.get('form').submit();
-    // Should show success message on saving
-    cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
-
-    // Check that the user can access the settings to edit
-    cy.contains(questionTitle).should('exist').click();
-    cy.get('#e2e-title-multiloc').should('exist');
-
-    // Navigate to the survey page
-    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
-
-    cy.contains(questionTitle).should('exist');
-
-    cy.get(`*[id^="${questionTitle}"]:not([id$="-label"])`).type(answer, {
-      force: true,
-    });
-
-    // Save survey response
-    cy.dataCy('e2e-submit-form').should('be.visible');
-
-    cy.wait(1000);
-    cy.dataCy('e2e-submit-form').click();
-    cy.dataCy('e2e-page-number-1').should('be.visible');
-    cy.dataCy('e2e-after-submission').should('be.visible');
-
-    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/insights`);
-
-    // Open the export dropdown
-    cy.dataCy('e2e-survey-export-button').click();
-
-    // Click button to export survey results
-    cy.dataCy('e2e-download-survey-results').click();
-
-    // Check that file is downloaded
-    const downloadsFolder = Cypress.config('downloadsFolder');
-    const fileName = `${snakeCase(phaseTitle)}_${moment().format(
-      'YYYY-MM-DD'
-    )}.xlsx`;
-    cy.readFile(`${downloadsFolder}/${fileName}`).should('exist');
-
-    // Delete the downloads folder and its contents
-    cy.task('deleteFolder', downloadsFolder);
   });
 
   it('allows export of survey responses through the PII review modal', () => {

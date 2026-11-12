@@ -5,7 +5,6 @@ import { IPhaseData } from 'api/phases/types';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import getApiEndpoint from './getApiEndpoint';
 import customFormKeys from './keys';
 import { ICustomForm } from './types';
 
@@ -60,7 +59,7 @@ const updateCustomForm = async ({
  */
 const useUpdateCustomForm = (phase: IPhaseData) => {
   const queryClient = useQueryClient();
-  const apiEndpoint = getApiEndpoint(phase);
+  const apiEndpoint = `phases/${phase.id}/custom_form`;
 
   return useMutation<ICustomForm, CLErrors, UpdateCustomFormProperties>({
     mutationFn: (formValues) =>

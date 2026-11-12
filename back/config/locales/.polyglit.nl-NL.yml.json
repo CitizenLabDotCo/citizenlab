@@ -379,6 +379,11 @@
     "verified_at": "2026-03-18T11:49:32.439428Z",
     "verified_by": "Admin"
   },
+  "errors.messages.ai_processing_not_allowed": {
+    "state": "verified",
+    "verified_at": "2026-11-11T17:44:58.738401Z",
+    "verified_by": "Luuc"
+  },
   "errors.messages.in_the_past": {
     "state": "verified",
     "verified_at": "2026-03-19T12:42:32.556168Z",
@@ -393,6 +398,31 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.439428Z",
     "verified_by": "Admin"
+  },
+  "errors.messages.not_found": {
+    "state": "verified",
+    "verified_at": "2026-11-11T17:44:58.738401Z",
+    "verified_by": "Luuc"
+  },
+  "errors.messages.not_in_project": {
+    "state": "verified",
+    "verified_at": "2026-11-11T17:44:58.738401Z",
+    "verified_by": "Luuc"
+  },
+  "errors.messages.not_utf8": {
+    "state": "verified",
+    "verified_at": "2026-11-11T17:44:58.738401Z",
+    "verified_by": "Luuc"
+  },
+  "errors.messages.too_many_in_conversation": {
+    "state": "verified",
+    "verified_at": "2026-11-11T17:44:58.738401Z",
+    "verified_by": "Luuc"
+  },
+  "errors.messages.unsupported_file_type": {
+    "state": "verified",
+    "verified_at": "2026-11-11T17:44:58.738401Z",
+    "verified_by": "Luuc"
   },
   "events.council_meeting_description": {
     "state": "verified",
@@ -538,6 +568,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.439428Z",
     "verified_by": "Admin"
+  },
+  "form_builder.pdf_export.multipoint_print_description": {
+    "state": "verified",
+    "verified_at": "2026-10-01T15:04:20.197686Z",
+    "verified_by": "Pauline"
   },
   "form_builder.pdf_export.optional": {
     "state": "verified",
@@ -964,7 +999,6 @@
     "verified_at": "2026-07-20T21:19:29.107567Z",
     "verified_by": "Luuc"
   },
-
   "pdf_export.input_responses.report_label": {
     "state": "verified",
     "verified_at": "2026-07-29T21:15:23.181657Z",
