@@ -1,7 +1,7 @@
 import { getRoutePattern } from 'utils/getRoutePattern';
 
 export const MIN_PROJECT_VISIT_MS = 30 * 1000;
-const PROJECT_EXIT_KEY = 'feedback_prompt_project_exit';
+const PROJECT_EXIT_KEY = 'pulse_check_project_exit';
 
 export interface ProjectPage {
   projectId: string;
