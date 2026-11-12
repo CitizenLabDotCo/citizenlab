@@ -65,67 +65,63 @@ const Question = ({
   }
 
   return (
-    <>
-      {(!question || !answer) && <Spinner />}
-
-      <Box
-        flexDirection="column"
-        justifyContent="space-between"
-        h="460px"
-        gap="16px"
-        display={!question || !answer ? 'none' : 'flex'}
-      >
-        <Box overflowY="auto" h="100%">
-          <QuestionHeader question={question} />
-          <InsightBody
-            text={answer}
-            filters={filters}
-            fileIds={fileIds}
-            analysisId={analysisId}
-            projectId={projectId}
-            phaseId={phaseId}
-            generatedAt={generatedAt}
-            backgroundTaskId={data.data.relationships.background_task.data.id}
-          />
-        </Box>
-        <InsightFooter
+    <Box
+      flexDirection="column"
+      justifyContent="space-between"
+      h="460px"
+      gap="16px"
+      display="flex"
+    >
+      <Box overflowY="auto" h="100%">
+        <QuestionHeader question={question} />
+        <InsightBody
+          text={answer}
           filters={filters}
-          generatedAt={generatedAt}
+          fileIds={fileIds}
           analysisId={analysisId}
           projectId={projectId}
           phaseId={phaseId}
-          customFieldIds={data.data.attributes.custom_field_ids}
+          generatedAt={generatedAt}
+          backgroundTaskId={data.data.relationships.background_task.data.id}
         />
-        <Box display="flex" gap="16px">
-          <ButtonWithLink
-            disabled={refreshDisabled}
-            buttonStyle="secondary-outlined"
-            icon="refresh"
-            onClick={() => {
-              regenerateQuestion({ analysisId, questionId });
-            }}
-            processing={isLoadingRegenerateQuestion}
-          >
-            <FormattedMessage
-              {...messages.refresh}
-              values={{ count: missingInputsCount }}
-            />
-          </ButtonWithLink>
-          <ButtonWithLink
-            buttonStyle="secondary-outlined"
-            icon="eye"
-            to="/admin/projects/$projectId/analysis/$analysisId"
-            params={{ projectId, analysisId }}
-            search={{
-              ...filters,
-              phase_id: phaseId,
-            }}
-          >
-            {formatMessage(messages.explore)}
-          </ButtonWithLink>
-        </Box>
       </Box>
-    </>
+      <InsightFooter
+        filters={filters}
+        generatedAt={generatedAt}
+        analysisId={analysisId}
+        projectId={projectId}
+        phaseId={phaseId}
+        customFieldIds={data.data.attributes.custom_field_ids}
+      />
+      <Box display="flex" gap="16px">
+        <ButtonWithLink
+          disabled={refreshDisabled}
+          buttonStyle="secondary-outlined"
+          icon="refresh"
+          onClick={() => {
+            regenerateQuestion({ analysisId, questionId });
+          }}
+          processing={isLoadingRegenerateQuestion}
+        >
+          <FormattedMessage
+            {...messages.refresh}
+            values={{ count: missingInputsCount }}
+          />
+        </ButtonWithLink>
+        <ButtonWithLink
+          buttonStyle="secondary-outlined"
+          icon="eye"
+          to="/admin/projects/$projectId/analysis/$analysisId"
+          params={{ projectId, analysisId }}
+          search={{
+            ...filters,
+            phase_id: phaseId,
+          }}
+        >
+          {formatMessage(messages.explore)}
+        </ButtonWithLink>
+      </Box>
+    </Box>
   );
 };
 
