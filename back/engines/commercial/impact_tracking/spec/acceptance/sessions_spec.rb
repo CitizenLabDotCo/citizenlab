@@ -55,11 +55,11 @@ resource 'Impact tracking session' do
       expect(user.reload.last_active_at.to_i).to be > last_active_at.to_i
     end
 
-    example 'Creating a session for an admin returning after 60+ days queues a feedback prompt', document: false do
+    example 'Creating a session for an admin returning after 60+ days queues a pulse check', document: false do
       user = create(:admin, last_active_at: 61.days.ago)
       header_token_for(user)
       do_request
-      expect(user.feedback_prompts.sole).to have_attributes(key: 'return_findability', status: 'pending')
+      expect(user.pulse_checks.sole).to have_attributes(key: 'return_findability', status: 'pending')
     end
 
     example 'Don\'t track the session start of a crawler', document: false do
