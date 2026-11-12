@@ -16074,6 +16074,26 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.ProjectPages.pagesTitle2": {
+    "state": "verified",
+    "verified_at": "2026-11-12T13:54:04.054769Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.AdminPage.ProjectPages.saveButton": {
+    "state": "verified",
+    "verified_at": "2026-11-12T13:54:04.054769Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.AdminPage.ProjectPages.saveSuccess": {
+    "state": "verified",
+    "verified_at": "2026-11-12T13:54:04.054769Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.AdminPage.ProjectPages.slugRegexError": {
+    "state": "verified",
+    "verified_at": "2026-11-12T13:54:04.054769Z",
+    "verified_by": "Roger"
+  },
   "app.containers.AdminPage.ProjectPages.slugRequiredError": {
     "state": "verified",
     "verified_at": "2026-11-12T13:52:39.650805Z",
@@ -16087,6 +16107,11 @@
   "app.containers.AdminPage.ProjectPages.titleLabel": {
     "state": "verified",
     "verified_at": "2026-11-12T13:52:39.650805Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.AdminPage.ProjectPages.viewPage": {
+    "state": "verified",
+    "verified_at": "2026-11-12T13:54:04.054769Z",
     "verified_by": "Roger"
   },
   "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesDescription": {
