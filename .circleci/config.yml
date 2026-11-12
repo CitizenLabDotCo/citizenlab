@@ -610,6 +610,61 @@ jobs:
           docker login -u $DOCKER_USER -p $DOCKER_PASS
           docker push citizenlabdotco/custom-block-renderer:amd64-$CIRCLE_SHA1
 
+  # Points the branch tag (master, production) at this build: it is the tag the
+  # swarm stacks run. amd64 only, unlike back-ee: every swarm node is amd64
+  # (cl2-deployment, aws/swarm.tf).
+  custom-block-renderer-push-deployment-docker-image:
+    resource_class: small
+    docker:
+      - image: cimg/base:2025.01
+    steps:
+      - setup_remote_docker
+      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - run: |
+          docker manifest create citizenlabdotco/custom-block-renderer:$CIRCLE_BRANCH \
+            citizenlabdotco/custom-block-renderer:amd64-$CIRCLE_SHA1
+          docker manifest push citizenlabdotco/custom-block-renderer:$CIRCLE_BRANCH
+
+  # Rolls one cluster's renderer service onto the image the branch tag now points
+  # at. A back-end deploy (docker stack deploy) picks the tag up as well, but only
+  # runs when the back end changed; this is what ships a renderer-only change.
+  custom-block-renderer-deploy-to-swarm:
+    resource_class: small
+    docker:
+      - image: buildo/alpine-ssh
+    parameters:
+      # The suffix of the CITIZENLAB_CLUSTER_IP_ADDRESS_* variable of the
+      # cluster's leader, e.g. STAGING or EUROPE.
+      cluster:
+        type: string
+      ssh_user:
+        type: string
+        default: ubuntu
+    steps:
+      - run:
+          name: Update the renderer service
+          # The stack name differs per cluster, so the service is found by its
+          # name within the stack. A cluster whose stack does not have it yet, or
+          # that has no renderer node (its task is pending), is skipped rather than
+          # failed: the next stack deploy brings it in line.
+          command: |
+            ssh << parameters.ssh_user >>@$CITIZENLAB_CLUSTER_IP_ADDRESS_<< parameters.cluster >> -o StrictHostKeyChecking=no \<<EOF
+            set -e
+            service=\$(docker service ls | awk '{print \$2}' | grep '_custom_block_renderer\$' || true)
+            if [ -z "\$service" ]; then
+              echo "No custom_block_renderer service on this cluster yet; skipping."
+              exit 0
+            fi
+            if ! docker service ps "\$service" --filter desired-state=running | grep -q ' Running '; then
+              echo "\$service has no running task (no renderer node?); updating without waiting."
+              docker service update --detach --with-registry-auth --image citizenlabdotco/custom-block-renderer:$CIRCLE_BRANCH "\$service"
+              exit 0
+            fi
+            # Waits until the new task is healthy (the image's healthcheck); a task
+            # that never gets healthy fails the job.
+            docker service update --with-registry-auth --image citizenlabdotco/custom-block-renderer:$CIRCLE_BRANCH "\$service"
+            EOF
+
   front-detect-deadcode:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
@@ -1468,18 +1523,49 @@ workflows:
   # CUSTOM BLOCK RENDERER
   # Named after the package in monorepo.json, like the back and front workflows:
   # monorepo.sh finds a package's last successful build by workflow name.
+  #
+  # Unlike the back end, building and deploying are one workflow, on master
+  # (staging) and production alike: there are no migrations or post-deploy tasks
+  # to order around, and a failed deploy fails the workflow, so monorepo.sh sees
+  # the package as changed again on the next push.
   custom_block_renderer:
     when:
       and:
         - << pipeline.parameters.custom_block_renderer >>
         - not: <<pipeline.parameters.run_deploy>>
-        - not:
-            equal: ["production", << pipeline.git.branch >>]
     jobs:
       - custom-block-renderer-test
       - custom-block-renderer-build-docker-image-amd64:
           context:
             - docker-hub-access
+      - custom-block-renderer-push-deployment-docker-image:
+          context: docker-hub-access
+          requires:
+            - custom-block-renderer-test
+            - custom-block-renderer-build-docker-image-amd64
+          filters:
+            branches:
+              only:
+                - master
+                - production
+      - custom-block-renderer-deploy-to-swarm:
+          name: Deploy the renderer to staging
+          requires:
+            - custom-block-renderer-push-deployment-docker-image
+          filters:
+            branches:
+              only: master
+          cluster: STAGING
+      - custom-block-renderer-deploy-to-swarm:
+          name: Deploy the renderer to << matrix.cluster >>
+          requires:
+            - custom-block-renderer-push-deployment-docker-image
+          filters:
+            branches:
+              only: production
+          matrix:
+            parameters:
+              cluster: [EUROPE, PARIS, STOCKHOLM, CAN, SAM, USW, UK, AUS]
 
   # FRONT-END
   front:

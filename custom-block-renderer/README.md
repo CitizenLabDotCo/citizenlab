@@ -53,6 +53,9 @@ A deployed instance needs:
   domain. Comma-separated exact origins, empty by default; a private address listed
   there is ignored.
 - Memory for Chromium: `RENDER_POOL_SIZE` warm contexts, 3 by default, at 794x1123 @2x.
+- `CHROMIUM_SANDBOX=true` to run Chromium with its own sandbox. It only starts when the
+  container is given Playwright's seccomp profile, which the production node does;
+  without it, leave the variable unset.
 
 Two compose settings are local only. The `gv-sdk.d.ts` bind-mount is a convenience for
 editing the contract — the image already has the file. `RENDER_HOST_RESOLVER_RULES`
