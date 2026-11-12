@@ -2,11 +2,11 @@
 
 require 'rails_helper'
 
-describe FeedbackPromptPolicy do
-  subject { described_class.new(user, prompt) }
+describe PulseCheckPolicy do
+  subject { described_class.new(user, pulse_check) }
 
   let(:owner) { create(:admin) }
-  let(:prompt) { create(:feedback_prompt, :shown, user: owner) }
+  let(:pulse_check) { create(:pulse_check, :shown, user: owner) }
 
   context 'for a visitor' do
     let(:user) { nil }
@@ -28,7 +28,7 @@ describe FeedbackPromptPolicy do
     it { is_expected.to permit(:show_next) }
   end
 
-  context 'for the owner of a shown prompt' do
+  context 'for the owner of a shown pulse check' do
     let(:user) { owner }
 
     it { is_expected.to permit(:show_next) }
@@ -36,25 +36,25 @@ describe FeedbackPromptPolicy do
     it { is_expected.to permit(:dismiss) }
   end
 
-  context 'for the owner of a prompt that was not shown' do
+  context 'for the owner of a pulse check that was not shown' do
     let(:user) { owner }
-    let(:prompt) { create(:feedback_prompt, user: owner) }
+    let(:pulse_check) { create(:pulse_check, user: owner) }
 
     it { is_expected.not_to permit(:answer) }
     it { is_expected.not_to permit(:dismiss) }
   end
 
-  context 'for the owner of an answered prompt' do
+  context 'for the owner of an answered pulse check' do
     let(:user) { owner }
-    let(:prompt) { create(:feedback_prompt, :shown, user: owner, status: 'answered', score: 5) }
+    let(:pulse_check) { create(:pulse_check, :shown, user: owner, status: 'answered', score: 5) }
 
     it { is_expected.to permit(:answer) }
     it { is_expected.not_to permit(:dismiss) }
   end
 
-  context 'for the owner of a dismissed prompt' do
+  context 'for the owner of a dismissed pulse check' do
     let(:user) { owner }
-    let(:prompt) { create(:feedback_prompt, :shown, user: owner, status: 'dismissed') }
+    let(:pulse_check) { create(:pulse_check, :shown, user: owner, status: 'dismissed') }
 
     it { is_expected.not_to permit(:answer) }
     it { is_expected.not_to permit(:dismiss) }
@@ -67,9 +67,9 @@ describe FeedbackPromptPolicy do
     it { is_expected.not_to permit(:dismiss) }
   end
 
-  context 'for another admin viewing an answered prompt' do
+  context 'for another admin viewing an answered pulse check' do
     let(:user) { create(:admin) }
-    let(:prompt) { create(:feedback_prompt, :shown, user: owner, status: 'answered', score: 5) }
+    let(:pulse_check) { create(:pulse_check, :shown, user: owner, status: 'answered', score: 5) }
 
     it { is_expected.not_to permit(:answer) }
   end
