@@ -1520,8 +1520,6 @@
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.projectContext": "Proje bağlamı",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceLabel": "Alan",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceTooltip": "Bir klasör her zaman kendi alanında kalır, bu nedenle bir klasör seçmek alanı da belirler. Alanı değiştirmek seçilen klasörü temizler.",
-  "app.containers.Admin.projects.all.NewProjectButton.fromScratchMenuItem": "Sıfırdan",
-  "app.containers.Admin.projects.all.NewProjectButton.useTemplateMenuItem": "Şablon kullan",
   "app.containers.Admin.projects.all.NewProjectModal.fromTemplate": "Bir şablondan başla",
   "app.containers.Admin.projects.all.Spaces.Table.deleteSpaceButton": "Alanı sil",
   "app.containers.Admin.projects.all.Spaces.Table.noSpacesFound": "Alan bulunamadı",

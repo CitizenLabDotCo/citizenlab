@@ -1520,8 +1520,6 @@
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.projectContext": "Contesto del progetto",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceLabel": "Spazio",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceTooltip": "Una cartella rimane sempre nel proprio spazio, quindi la scelta di una cartella imposta anche lo spazio. Cambiando lo spazio, la cartella selezionata verrà rimossa.",
-  "app.containers.Admin.projects.all.NewProjectButton.fromScratchMenuItem": "Da zero",
-  "app.containers.Admin.projects.all.NewProjectButton.useTemplateMenuItem": "Usa un modello",
   "app.containers.Admin.projects.all.NewProjectModal.fromTemplate": "Inizia da un modello",
   "app.containers.Admin.projects.all.Spaces.Table.deleteSpaceButton": "Elimina lo spazio",
   "app.containers.Admin.projects.all.Spaces.Table.noSpacesFound": "Nessuno spazio trovato",

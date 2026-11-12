@@ -1520,8 +1520,6 @@
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.projectContext": "Project context",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceLabel": "Space",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceTooltip": "A folder always stays in its own space, so picking a folder also sets the space. Changing the space clears the selected folder.",
-  "app.containers.Admin.projects.all.NewProjectButton.fromScratchMenuItem": "From scratch",
-  "app.containers.Admin.projects.all.NewProjectButton.useTemplateMenuItem": "Use a template",
   "app.containers.Admin.projects.all.NewProjectModal.fromTemplate": "Start from a template",
   "app.containers.Admin.projects.all.Spaces.Table.deleteSpaceButton": "Delete space",
   "app.containers.Admin.projects.all.Spaces.Table.noSpacesFound": "No spaces found",

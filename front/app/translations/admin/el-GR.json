@@ -1520,8 +1520,6 @@
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.projectContext": "Πλαίσιο έργου",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceLabel": "Χώρος",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceTooltip": "Ένας φάκελος παραμένει πάντα στον δικό του χώρο, επομένως η επιλογή ενός φακέλου ορίζει επίσης τον χώρο. Η αλλαγή του χώρου εκκαθαρίζει τον επιλεγμένο φάκελο.",
-  "app.containers.Admin.projects.all.NewProjectButton.fromScratchMenuItem": "Από την αρχή",
-  "app.containers.Admin.projects.all.NewProjectButton.useTemplateMenuItem": "Χρήση προτύπου",
   "app.containers.Admin.projects.all.NewProjectModal.fromTemplate": "Ξεκινήστε από ένα πρότυπο",
   "app.containers.Admin.projects.all.Spaces.Table.deleteSpaceButton": "Διαγραφή χώρου",
   "app.containers.Admin.projects.all.Spaces.Table.noSpacesFound": "Δεν βρέθηκαν χώροι",

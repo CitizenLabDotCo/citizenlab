@@ -1520,8 +1520,6 @@
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.projectContext": "Pilersaarummut tunngasut",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceLabel": "Inissisimaffik",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceTooltip": "Mappa nammineq inissisimaffimminiittuaannarpoq, taamaattumik mappamik toqqaanermi inissisimaffik aamma toqqarneqartarpoq. Inissisimaffik allanngortikkaanni mappa toqqarneqarsimasoq peerneqartarpoq.",
-  "app.containers.Admin.projects.all.NewProjectButton.fromScratchMenuItem": "Aallaqqaataaniit",
-  "app.containers.Admin.projects.all.NewProjectButton.useTemplateMenuItem": "Ilisserut atoruk",
   "app.containers.Admin.projects.all.NewProjectModal.fromTemplate": "Ilisserummit aallartigit",
   "app.containers.Admin.projects.all.Spaces.Table.deleteSpaceButton": "Inissiaq piiaruk",
   "app.containers.Admin.projects.all.Spaces.Table.noSpacesFound": "Ininik nassaartoqanngilaq",

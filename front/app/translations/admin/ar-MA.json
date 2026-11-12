@@ -1520,8 +1520,6 @@
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.projectContext": "سياق المشروع",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceLabel": "فضاء",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceTooltip": "المجلد ديما كيبقى فالفضاء ديالو، داكشي علاش فاش كتختار مجلد راه كيتحدد حتى الفضاء. إلا بدلتي الفضاء غادي يتحيد المجلد اللي ختاريتي.",
-  "app.containers.Admin.projects.all.NewProjectButton.fromScratchMenuItem": "من الصفر",
-  "app.containers.Admin.projects.all.NewProjectButton.useTemplateMenuItem": "استخدام نموذج",
   "app.containers.Admin.projects.all.NewProjectModal.fromTemplate": "بدا من نموذج",
   "app.containers.Admin.projects.all.Spaces.Table.deleteSpaceButton": "حذف الفضاء",
   "app.containers.Admin.projects.all.Spaces.Table.noSpacesFound": "لم يتم العثور على أي فضاءات",

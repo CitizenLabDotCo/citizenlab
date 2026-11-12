@@ -1520,8 +1520,6 @@
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.projectContext": "Contexto del proyecto",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceLabel": "Espacio",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceTooltip": "Una carpeta siempre permanece en su propio espacio, por lo que al elegir una carpeta también se establece el espacio. Al cambiar el espacio se borra la carpeta seleccionada.",
-  "app.containers.Admin.projects.all.NewProjectButton.fromScratchMenuItem": "Desde cero",
-  "app.containers.Admin.projects.all.NewProjectButton.useTemplateMenuItem": "Usar una plantilla",
   "app.containers.Admin.projects.all.NewProjectModal.fromTemplate": "Empezar desde una plantilla",
   "app.containers.Admin.projects.all.Spaces.Table.deleteSpaceButton": "Borrar espacio",
   "app.containers.Admin.projects.all.Spaces.Table.noSpacesFound": "No se han encontrado espacios",

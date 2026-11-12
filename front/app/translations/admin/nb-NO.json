@@ -1520,8 +1520,6 @@
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.projectContext": "Prosjektkontekst",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceLabel": "Område",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceTooltip": "En mappe tilhører alltid et bestemt område, så ved å velge en mappe velger du også området. Hvis du endrer område, fjernes den valgte mappen.",
-  "app.containers.Admin.projects.all.NewProjectButton.fromScratchMenuItem": "Fra bunnen av",
-  "app.containers.Admin.projects.all.NewProjectButton.useTemplateMenuItem": "Bruk en mal",
   "app.containers.Admin.projects.all.NewProjectModal.fromTemplate": "Start fra en mal",
   "app.containers.Admin.projects.all.Spaces.Table.deleteSpaceButton": "Slett plass",
   "app.containers.Admin.projects.all.Spaces.Table.noSpacesFound": "Ingen områder funnet",

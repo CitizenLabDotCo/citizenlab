@@ -1520,8 +1520,6 @@
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.projectContext": "Projet-Kontext",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceLabel": "Beräich",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceTooltip": "En Dossier bleift ëmmer a sengem eegene Beräich, dofir gëtt duerch d'Auswiele vun engem Dossier och de Beräich festgeluecht. Wann de Beräich geännert gëtt, gëtt de gewielten Dossier geläscht.",
-  "app.containers.Admin.projects.all.NewProjectButton.fromScratchMenuItem": "Vun Null un",
-  "app.containers.Admin.projects.all.NewProjectButton.useTemplateMenuItem": "Eng Virlag benotzen",
   "app.containers.Admin.projects.all.NewProjectModal.fromTemplate": "Mat enger Virlag ufänken",
   "app.containers.Admin.projects.all.Spaces.Table.deleteSpaceButton": "Beräich läschen",
   "app.containers.Admin.projects.all.Spaces.Table.noSpacesFound": "Keng Beräicher fonnt",

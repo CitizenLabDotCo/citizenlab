@@ -1520,8 +1520,6 @@
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.projectContext": "Context del projecte",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceLabel": "Espai",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceTooltip": "Una carpeta sempre es troba en el seu propi espai, de manera que en triar una carpeta també s'estableix l'espai. Canviar l'espai desmarca la carpeta seleccionada.",
-  "app.containers.Admin.projects.all.NewProjectButton.fromScratchMenuItem": "Des de zero",
-  "app.containers.Admin.projects.all.NewProjectButton.useTemplateMenuItem": "Utilitza una plantilla",
   "app.containers.Admin.projects.all.NewProjectModal.fromTemplate": "Comença des d'una plantilla",
   "app.containers.Admin.projects.all.Spaces.Table.deleteSpaceButton": "Suprimeix l'espai",
   "app.containers.Admin.projects.all.Spaces.Table.noSpacesFound": "No s'han trobat espais",
