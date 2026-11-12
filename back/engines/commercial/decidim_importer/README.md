@@ -82,7 +82,10 @@ against the source.
 extractors in dependency order so cross-record refs resolve (users → scopes → folders → projects →
 categories → phases → proposals → … → description layouts), absolutizes root-relative `<img>` srcs onto
 the source domain, then writes these artifacts beside the export (plus a `.create.log` of per-model
-counts and every skipped record):
+counts and every skipped record). Files over the 100 MB upload limit are left out of the template at
+this step (one ranged GET per file, so it needs the network), and listed in `.create.log` with their
+source URL and Decidim page: a template built this way also imports with a deployed importer that
+doesn't check sizes.
 
 - **`<base>.template.yml`** — the record graph, the main artifact.
 - **`<base>.app_config.json`** — the small `AppConfiguration` patch the import applies: just the export's
@@ -113,7 +116,8 @@ there (its own `.import.log`/`.broken_links.csv` are written beside the zip). Fi
 never dropping the tenant's own, so the template's multilocs have every locale they reference) and
 allows+enables the import's feature flags (`project_static_pages`), leaving the
 rest of the tenant's app config untouched. Then deserializes the template — resolving idea statuses and area orderings,
-letting **TemplateCleaner** drop uploads it can't fetch (and the file/image/craftjs nodes they'd
+letting **TemplateCleaner** drop uploads it can't fetch or store — unreachable, mislabelled, a file type
+not on the allowlist, or a file over the 100 MB upload limit — (and the file/image/craftjs nodes they'd
 orphan), then bulk-inserting under `no_touching` so source dates survive — and backfills
 what the deserializer bypasses (voting counts, permissions, each project's `project_page` layout). It
 then runs the **post-import pass**: rewrite embedded Decidim links from `<base>.url_mapping.csv`
@@ -123,7 +127,9 @@ to Home + Consultations + Assemblies — and finally grant **project-moderator**
 `<base>.moderators.csv` (matching users by `unique_code` and projects by `slug`, since the role can't
 travel in the template). The post-import pass is idempotent; the deserialize is **not**
 transactional, so a mid-run failure leaves partial data — always import into a fresh tenant. Logs
-created counts to `<base>.import.log`.
+created counts to `<base>.import.log`, plus each dropped upload with its source URL and the Decidim
+page showing it, so it can be fixed at the source (e.g. compress a file over the size limit) before
+the next export.
 
 **Reuse (always on)** — `import` always reuses a record the tenant already holds instead of inserting a
 duplicate, resolving the template's refs to the existing record. This keeps an import from aborting on a

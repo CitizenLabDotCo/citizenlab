@@ -42,9 +42,14 @@ namespace :decidim_importer do
 
     with_report_log(log_path(path, 'create')) do
       yaml_path = output_path(path, 'template.yml')
-      File.write(yaml_path, builder.to_yaml)
+      # Files over the upload size limit are left out here rather than at import, so that a template built
+      # with this version also imports with a deployed importer that doesn't check sizes.
+      template = YAML.load(builder.to_yaml, aliases: true)
+      dropped = DecidimImporter::TemplateCleaner.prune_oversized_files!(template)
+      File.write(yaml_path, dropped.any? ? template.to_yaml : builder.to_yaml)
       report_line "Wrote #{yaml_path} (users #{production ? 'untouched (production)' : 'anonymised'})"
       log_model_summary(builder)
+      report_dropped_uploads(dropped)
       log_custom_statuses(creator)
       creator.skipped_components.each { |s| report_warn "  skipped component #{s[:component]}: #{s[:reason]}" }
       creator.skipped_categories.each { |s| report_warn "  skipped category #{s[:uid]}: #{s[:reason]}" }
@@ -104,8 +109,16 @@ namespace :decidim_importer do
           added = DecidimImporter::Importer.apply_import_app_config_file(app_config_sibling(file))
           report_line "  added locales #{added.join(', ')}" if added.any?
 
-          created = DecidimImporter::Importer.apply_template_file(file, import_uploads: import_uploads)
-          created.each { |klass, ids| report_line "  created #{ids.size} #{klass}" }
+          dropped = []
+          begin
+            created = DecidimImporter::Importer.apply_template_file(
+              file, import_uploads: import_uploads, dropped_uploads: dropped
+            )
+            created.each { |klass, ids| report_line "  created #{ids.size} #{klass}" }
+          ensure
+            # Also on failure: a later step may abort the run, and the drops still need fixing at the source.
+            report_dropped_uploads(dropped)
+          end
 
           broken = finalize_import!(file)
         end
@@ -385,5 +398,18 @@ namespace :decidim_importer do
   def report_warn(message)
     Rails.logger.warn(message)
     @report_log&.puts(message)
+  end
+
+  # One entry per upload the import left out, with its source URL and the Decidim page showing it on
+  # their own lines, so it can be fixed at the source (e.g. a file over the upload size limit).
+  def report_dropped_uploads(dropped)
+    return if dropped.empty?
+
+    report_warn "  dropped #{dropped.size} upload(s):"
+    dropped.each do |upload|
+      report_warn "  - #{upload[:name]}: #{upload[:reason]}"
+      report_warn "      source: #{upload[:url]}"
+      report_warn "      page:   #{upload[:page]}" if upload[:page]
+    end
   end
 end
