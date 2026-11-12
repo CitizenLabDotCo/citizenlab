@@ -76,6 +76,7 @@ const conversationWith = (
       turn_started_at: null,
       surface_key: 'project_generator',
       locale: 'en',
+      auto_approve: false,
       created_at: '2026-10-15T10:00:00Z',
       updated_at: '2026-10-15T10:00:00Z',
     },
@@ -114,6 +115,7 @@ const renderChat = (
   const { result } = renderHook(() =>
     useGeneratorChat({
       isNewProject: false,
+      autoApprove: false,
       onProjectCreated,
       ...parameters,
     })
@@ -146,6 +148,7 @@ describe('useGeneratorChat', () => {
       surfaceKey: 'project_generator',
       subjectId: 'project-1',
       locale: 'en',
+      autoApprove: false,
     });
     expect(mockAddMessage).toHaveBeenCalledWith({
       conversationId: 'conversation-1',
@@ -153,6 +156,19 @@ describe('useGeneratorChat', () => {
       fileIds: [],
     });
     expect(result.current.prompt).toBe('');
+  });
+
+  it('starts the conversation in the chosen approval mode', async () => {
+    const { result } = renderChat({
+      projectId: 'project-2',
+      autoApprove: true,
+    });
+
+    await write(result, 'Add a workshop in December.');
+
+    expect(mockAddConversation).toHaveBeenCalledWith(
+      expect.objectContaining({ autoApprove: true })
+    );
   });
 
   it('starts a conversation about an existing project', async () => {

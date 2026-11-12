@@ -40,6 +40,7 @@ import IconTooltip, {
 import Image, { ImageProps } from './components/Image';
 import Input, {
   InputProps,
+  boFocusRing,
   boInputLabelStyle,
   boInputStyle,
   boLabelStyle,
@@ -151,6 +152,7 @@ export type {
 };
 
 export {
+  boFocusRing,
   boInputLabelStyle,
   boInputStyle,
   boLabelStyle,

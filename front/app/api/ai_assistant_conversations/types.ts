@@ -42,6 +42,8 @@ export interface IAiAssistantConversationData {
   attributes: ConversationState & {
     surface_key: AiAssistantSurfaceKey;
     locale: SupportedLocale;
+    // Whether the assistant applies its changes without asking for approval.
+    auto_approve: boolean;
     created_at: string;
     updated_at: string;
   };
@@ -70,4 +72,10 @@ export interface IAiAssistantConversationAdd {
   surfaceKey: AiAssistantSurfaceKey;
   subjectId: string;
   locale: SupportedLocale;
+  autoApprove?: boolean;
+}
+
+export interface IAiAssistantConversationUpdate {
+  id: string;
+  autoApprove: boolean;
 }

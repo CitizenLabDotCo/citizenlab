@@ -6,7 +6,7 @@ import { indexById } from 'utils/cl-react-query/indexById';
 
 import { IAiAssistantConversation } from './types';
 
-type TranscriptEntry = {
+export type TranscriptEntry = {
   message: IAiAssistantMessageData;
   toolCalls: IAiAssistantToolCallData[];
 };

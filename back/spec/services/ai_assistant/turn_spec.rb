@@ -259,6 +259,53 @@ describe AIAssistant::Turn do
     expect(conversation.reload.status).to eq('idle')
   end
 
+  context 'when the user auto-approves changes' do
+    let(:conversation) { create(:ai_assistant_conversation, status: 'running', auto_approve: true) }
+
+    it 'runs write tools right away and continues the turn' do
+      stub_bedrock(
+        bedrock_tool_use(
+          { id: 'read_1', name: 'get_form_fields' },
+          { id: 'write_1', name: 'replace_form_fields', input: { fields: valid_fields } }
+        ),
+        bedrock_text('The survey has one question now.')
+      )
+
+      expect { turn.run }.to change { phase.reload.custom_form }.from(nil)
+
+      tool_call = AIAssistant::ToolCall.find_by!(tool_use_id: 'write_1')
+      expect(tool_call).to have_attributes(status: 'auto_executed', decided_by: nil, result: be_present)
+      expect(tool_call.pinned_arguments).to include('container_type' => 'phase', 'container_id' => phase.id)
+      expect(bedrock_requests.size).to eq(2)
+      expect(bedrock_requests.first['system'].first['text']).to include('also run immediately')
+      expect(conversation.reload.status).to eq('idle')
+    end
+
+    it 'still sends invalid write calls back to the model' do
+      stub_bedrock(
+        bedrock_tool_use({ id: 'write_1', name: 'replace_form_fields', input: { fields: valid_fields } }),
+        bedrock_text('Let me read the survey first.')
+      )
+
+      turn.run
+
+      expect(AIAssistant::ToolCall.sole).to have_attributes(status: 'failed', result: include('Call get_form_fields first'))
+      expect(phase.reload.custom_form).to be_nil
+    end
+
+    it 'allows more tool calls in one turn' do
+      stub_const("#{described_class}::MAX_TOOL_CALLS", 1)
+      stub_bedrock(
+        bedrock_tool_use({ id: 'read_1', name: 'get_form_fields' }, { id: 'read_2', name: 'get_form_fields' }),
+        bedrock_text('The survey has no questions yet.')
+      )
+
+      turn.run
+
+      expect(conversation.reload).to have_attributes(status: 'idle', last_error_code: nil)
+    end
+  end
+
   it 'fails when the surface is no longer available' do
     phase.update_columns(participation_method: 'information')
 

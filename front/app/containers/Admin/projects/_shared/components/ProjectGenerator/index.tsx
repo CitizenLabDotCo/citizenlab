@@ -11,6 +11,7 @@ import clHistory from 'utils/cl-router/history';
 
 import DraftPreview from './DraftPreview';
 import GeneratorChat from './GeneratorChat';
+import useRefreshDraftOnChanges from './useRefreshDraftOnChanges';
 
 const TITLE_ID = 'project-generator-title';
 
@@ -36,6 +37,7 @@ const ProjectGenerator = ({
     { surfaceKey: 'project_generator', subjectId: projectId },
     { enabled: opened }
   );
+  useRefreshDraftOnChanges(conversation);
 
   const close = () => {
     setCreatedProjectId(undefined);
@@ -51,6 +53,7 @@ const ProjectGenerator = ({
     <Modal
       opened={opened}
       close={close}
+      variant="bo"
       width={1240}
       padding="0"
       fillContent

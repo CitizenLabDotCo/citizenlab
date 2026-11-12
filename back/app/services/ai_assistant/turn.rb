@@ -4,11 +4,16 @@ module AIAssistant
   # One turn of a conversation: replays the stored messages to the model, lets it call tools,
   # and stores what it does. The turn ends with a reply, or with calls that wait for the
   # user's decision.
+  #
+  # The conversation's approval mode is read once, when the turn starts. In manual mode
+  # every change ends the turn, so switching modes applies from the next change.
   class Turn
     # Stops RubyLLM's loop from a callback, which has no other way to end it.
     class ToolBudgetExceededError < StandardError; end
 
     MAX_TOOL_CALLS = 10
+    # Without approvals, one turn makes all the changes that would otherwise take a turn each.
+    MAX_AUTO_APPROVED_TOOL_CALLS = 40
     MAX_OUTPUT_TOKENS = 16_000
     AWAITING_APPROVAL_TEXT = 'Sent to the user, who will approve or reject it.'
     BUDGET_TEXT = { error: 'Too many tool calls in one turn. Stop and summarise for the user.' }.to_json
@@ -24,6 +29,7 @@ module AIAssistant
       @conversation = conversation
       @user = conversation.user
       @surface = Surface.for(conversation)
+      @auto_approve = conversation.auto_approve?
       @tool_call_count = 0
       @tool_calls_by_use_id = {}
     end
@@ -44,16 +50,16 @@ module AIAssistant
       conversation.fail_turn!('tool_budget_exceeded')
     end
 
-    # Read-only tools run right away, as the conversation's user. Write tools never run here:
-    # the call is stored to await approval and the turn stops, until the user approves or
-    # rejects it (see ToolCallDecider).
+    # Tools run as the conversation's user. Read-only tools run right away, and so do write
+    # tools when the user chose to auto-approve. Otherwise a write call is stored to await
+    # approval and the turn stops, until the user approves or rejects it (see ToolCallDecider).
     def handle_tool_call(tool, args)
       arguments = args.except(*tool.hidden_keys)
 
       if tool.read_only?
         run_read_tool(tool, arguments)
       else
-        request_approval(tool, arguments)
+        handle_write_call(tool, arguments)
       end
     end
 
@@ -82,7 +88,7 @@ module AIAssistant
 
       llm.chat_context
         .chat(model: llm.model, **llm.chat_options)
-        .with_instructions(@surface.system_prompt(locale: conversation.locale))
+        .with_instructions(@surface.system_prompt(locale: conversation.locale, auto_approve: @auto_approve))
         .with_tools(*@surface.llm_tools(self))
         .with_params(inferenceConfig: { maxTokens: MAX_OUTPUT_TOKENS })
         .after_message { |message| persist(message) }
@@ -181,7 +187,7 @@ module AIAssistant
     def count_tool_call!(tool_call)
       @tool_call_count += 1
       @current_tool_call = @tool_calls_by_use_id.fetch(tool_call.id)
-      return if @tool_call_count <= MAX_TOOL_CALLS
+      return if @tool_call_count <= max_tool_calls
 
       @current_tool_call.update!(status: 'failed', result: BUDGET_TEXT)
       raise ToolBudgetExceededError
@@ -193,11 +199,29 @@ module AIAssistant
       result.text
     end
 
-    def request_approval(tool, arguments)
+    def max_tool_calls
+      @auto_approve ? MAX_AUTO_APPROVED_TOOL_CALLS : MAX_TOOL_CALLS
+    end
+
+    def handle_write_call(tool, arguments)
       pinned = tool.pinned.compact
       error = tool.validation_error(@user, arguments.merge(pinned)) || @surface.write_call_error(tool, conversation, arguments)
       return refuse_call(arguments, error) if error
 
+      if @auto_approve
+        run_write_tool(tool, arguments, pinned)
+      else
+        request_approval(arguments, pinned)
+      end
+    end
+
+    def run_write_tool(tool, arguments, pinned)
+      result = tool.call(@user, arguments.merge(pinned))
+      @current_tool_call.update!(status: result.error ? 'failed' : 'auto_executed', arguments:, pinned_arguments: pinned, result: result.text)
+      result.text
+    end
+
+    def request_approval(arguments, pinned)
       @current_tool_call.update!(status: 'awaiting_user', arguments:, pinned_arguments: pinned)
       RubyLLM::Tool::Halt.new(AWAITING_APPROVAL_TEXT)
     end

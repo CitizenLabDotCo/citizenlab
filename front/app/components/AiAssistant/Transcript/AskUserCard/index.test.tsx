@@ -57,6 +57,7 @@ const conversation = (
       last_error_code: null,
       turn_started_at: '2026-10-15T08:00:00.000Z',
       surface_key: 'survey_builder',
+      auto_approve: false,
       locale: 'en',
       created_at: '2026-10-15T08:00:00.000Z',
       updated_at: '2026-10-15T08:00:00.000Z',
@@ -69,7 +70,7 @@ const conversation = (
 describe('AskUserCard', () => {
   beforeEach(() => mockAnswer.mockReset());
 
-  it('sends the picked and written answers as the answer to the questions', () => {
+  it('sends the picked and written answers of every question together', () => {
     render(
       <AskUserCard
         toolCall={toolCall()}
@@ -80,7 +81,7 @@ describe('AskUserCard', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Next month' }));
     fireEvent.click(screen.getByRole('button', { name: 'Residents' }));
     fireEvent.click(screen.getByRole('button', { name: 'Businesses' }));
-    fireEvent.change(screen.getAllByRole('textbox')[1], {
+    fireEvent.change(screen.getByRole('textbox'), {
       target: { value: 'Schools' },
     });
     fireEvent.click(screen.getByRole('button', { name: 'Send answers' }));

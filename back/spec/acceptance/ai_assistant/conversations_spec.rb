@@ -126,6 +126,7 @@ resource 'AI assistant conversations' do
       parameter :surface_key, 'Where the assistant is used, e.g. survey_builder', required: true
       parameter :subject_id, 'The record the conversation is about', required: true
       parameter :locale, 'The language of the conversation', required: true
+      parameter :auto_approve, 'Whether the assistant applies changes without asking for approval. Defaults to false.', required: false
     end
 
     let(:surface_key) { 'survey_builder' }
@@ -140,8 +141,15 @@ resource 'AI assistant conversations' do
 
         assert_status 201
         expect(AIAssistant::Conversation.find(response_data[:id])).to have_attributes(
-          user: super_admin, subject: phase, surface_key: 'survey_builder', locale: 'en', status: 'idle'
+          user: super_admin, subject: phase, surface_key: 'survey_builder', locale: 'en', status: 'idle', auto_approve: false
         )
+      end
+
+      example 'Start a conversation that applies changes without approval', document: false do
+        do_request(ai_assistant_conversation: { surface_key:, subject_id:, locale:, auto_approve: true })
+
+        assert_status 201
+        expect(response_data.dig(:attributes, :auto_approve)).to be true
       end
 
       example 'Expire the calls awaiting the user in the previous conversation', document: false do
@@ -198,6 +206,45 @@ resource 'AI assistant conversations' do
       example '[error] Start a conversation', document: false do
         do_request
         assert_status 401
+      end
+    end
+  end
+
+  patch 'web_api/v1/ai_assistant_conversations/:id' do
+    with_options scope: :ai_assistant_conversation do
+      parameter :auto_approve, 'Whether the assistant applies changes without asking for approval', required: true
+    end
+
+    let(:conversation) { create(:ai_assistant_conversation, user: super_admin, subject: phase) }
+    let(:id) { conversation.id }
+    let(:auto_approve) { true }
+
+    context 'when the user of the conversation' do
+      before { header_token_for(super_admin) }
+
+      example 'Switch the approval mode' do
+        do_request
+
+        assert_status 200
+        expect(response_data.dig(:attributes, :auto_approve)).to be true
+        expect(conversation.reload.auto_approve).to be true
+      end
+
+      example 'Only change the approval mode', document: false do
+        do_request(ai_assistant_conversation: { auto_approve:, status: 'running', locale: 'nl-BE' })
+
+        assert_status 200
+        expect(conversation.reload).to have_attributes(auto_approve: true, status: 'idle', locale: 'en')
+      end
+    end
+
+    context 'when another super admin' do
+      before { header_token_for(create(:super_admin)) }
+
+      example '[error] Switch the approval mode', document: false do
+        do_request
+        assert_status 401
+        expect(conversation.reload.auto_approve).to be false
       end
     end
   end

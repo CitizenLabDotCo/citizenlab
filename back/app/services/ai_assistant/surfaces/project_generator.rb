@@ -2,7 +2,7 @@
 
 module AIAssistant
   module Surfaces
-    # Drafts a new project with the user, one approved step at a time.
+    # Drafts a new project with the user, one step at a time.
     class ProjectGenerator < Surface
       # A date without a time, or with a time zone, can show in the draft as another day than the one that gets saved.
       DATE_FORMAT = '%Y-%m-%dT%H:%M:%S'

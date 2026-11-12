@@ -139,8 +139,8 @@ const AssistantPanel = ({
         {hasMessages && (
           <ButtonWithLink
             type="button"
-            buttonStyle="secondary-outlined"
-            size="s"
+            buttonStyle="bo-secondary"
+            boSize="medium"
             icon="plus-circle"
             disabled={sending}
             processing={creatingConversation}

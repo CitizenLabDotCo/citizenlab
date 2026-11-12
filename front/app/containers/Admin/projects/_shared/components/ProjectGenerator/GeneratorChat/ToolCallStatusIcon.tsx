@@ -17,6 +17,7 @@ const ToolCallStatusIcon = ({ status }: Props) => {
     case 'approved':
       return <Spinner size="14px" />;
     case 'executed':
+    case 'auto_executed':
       return <Icon name="check-circle" width="16px" fill={colors.green500} />;
     case 'failed':
       return <Icon name="alert-circle" width="16px" fill={colors.error} />;

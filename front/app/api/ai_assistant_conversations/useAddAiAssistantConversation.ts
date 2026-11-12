@@ -10,6 +10,7 @@ const addConversation = ({
   surfaceKey,
   subjectId,
   locale,
+  autoApprove,
 }: IAiAssistantConversationAdd) =>
   fetcher<IAiAssistantConversation>({
     path: '/ai_assistant_conversations',
@@ -19,6 +20,7 @@ const addConversation = ({
         surface_key: surfaceKey,
         subject_id: subjectId,
         locale,
+        auto_approve: autoApprove,
       },
     },
   });

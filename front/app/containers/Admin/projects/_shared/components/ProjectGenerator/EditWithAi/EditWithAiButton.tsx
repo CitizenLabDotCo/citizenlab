@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import { bo } from '@citizenlab/cl2-component-library';
-
 import { IProjectData } from 'api/projects/types';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
@@ -29,10 +27,7 @@ const EditWithAiButton = ({ project }: Props) => {
       <ButtonWithLink
         type="button"
         buttonStyle="bo-secondary"
-        height={bo.buttonMedium.height}
-        padding={bo.buttonMedium.padding}
-        fontSize={bo.buttonMedium.fontSize}
-        iconSize={bo.buttonMedium.iconSize}
+        boSize="medium"
         icon="stars"
         onClick={() => setOpened(true)}
       >

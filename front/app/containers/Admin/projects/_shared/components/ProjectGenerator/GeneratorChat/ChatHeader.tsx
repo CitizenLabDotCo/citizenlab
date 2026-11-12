@@ -50,8 +50,7 @@ const ChatHeader = ({ titleId, onStartFromScratch, onClose }: Props) => {
           <ButtonWithLink
             type="button"
             buttonStyle="bo-text"
-            height="30px"
-            padding="0 8px"
+            boSize="medium"
             onClick={onStartFromScratch}
           >
             {formatMessage(messages.startFromScratch)}

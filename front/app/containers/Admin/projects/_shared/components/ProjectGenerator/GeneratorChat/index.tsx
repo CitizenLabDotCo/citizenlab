@@ -1,6 +1,12 @@
 import React from 'react';
 
-import { Box, Text, Title, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Text,
+  Title,
+  Toggle,
+  colors,
+} from '@citizenlab/cl2-component-library';
 
 import { IAiAssistantConversation } from 'api/ai_assistant_conversations/types';
 
@@ -15,6 +21,7 @@ import useRefreshDraft from '../useRefreshDraft';
 
 import ChatHeader from './ChatHeader';
 import { TOOL_DISPLAYS } from './toolDisplays';
+import useAutoApprove from './useAutoApprove';
 import useGeneratorChat from './useGeneratorChat';
 
 type Props = {
@@ -38,6 +45,7 @@ const GeneratorChat = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const refreshDraft = useRefreshDraft();
+  const { autoApprove, setAutoApprove } = useAutoApprove(conversation);
   const {
     prompt,
     setPrompt,
@@ -55,6 +63,7 @@ const GeneratorChat = ({
     projectId,
     isNewProject,
     conversation,
+    autoApprove,
     onProjectCreated,
   });
 
@@ -125,6 +134,12 @@ const GeneratorChat = ({
             {sendError}
           </Text>
         )}
+        <Toggle
+          variant="bo"
+          checked={autoApprove}
+          label={formatMessage(messages.autoApprove)}
+          onChange={() => setAutoApprove(!autoApprove)}
+        />
       </Box>
     </Box>
   );

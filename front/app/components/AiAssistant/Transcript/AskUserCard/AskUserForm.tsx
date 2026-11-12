@@ -21,10 +21,20 @@ type Props = {
   conversationId: string;
 };
 
+// One question at a time; the answers are sent together after the last one.
 const AskUserForm = ({ questions, toolCallId, conversationId }: Props) => {
   const { formatMessage } = useIntl();
-  const { entryFor, togglePick, setWritten, answers } =
-    useAskUserForm(questions);
+  const {
+    current,
+    entry,
+    index,
+    isLastQuestion,
+    goBack,
+    goNext,
+    togglePick,
+    setWritten,
+    answers,
+  } = useAskUserForm(questions);
   const {
     mutate: sendAnswers,
     isPending,
@@ -33,48 +43,74 @@ const AskUserForm = ({ questions, toolCallId, conversationId }: Props) => {
 
   return (
     <>
-      {questions.map(({ question, options }) => {
-        const { picks, written } = entryFor(question);
-
-        return (
-          <Box key={question} display="flex" flexDirection="column" gap="8px">
-            <Text m="0px" fontWeight="semi-bold" fontSize="s">
-              {question}
-            </Text>
-            <Box display="flex" flexWrap="wrap" gap="6px">
-              {options.map((option) => (
-                <OptionButton
-                  key={option}
-                  label={option}
-                  selected={picks.includes(option)}
-                  onClick={() => togglePick(question, option)}
-                />
-              ))}
-            </Box>
-            <Input
-              type="text"
-              size="small"
-              value={written}
-              placeholder={formatMessage(messages.otherAnswer)}
-              ariaLabel={formatMessage(messages.otherAnswer)}
-              onChange={(text) => setWritten(question, text)}
+      <Box display="flex" flexDirection="column" gap="8px">
+        <Text m="0px" fontWeight="semi-bold" fontSize="s">
+          {current.question}
+        </Text>
+        <Box display="flex" flexWrap="wrap" gap="6px">
+          {current.options.map((option) => (
+            <OptionButton
+              key={option}
+              label={option}
+              selected={entry.picks.includes(option)}
+              onClick={() => togglePick(option)}
             />
-          </Box>
-        );
-      })}
-      <Box display="flex" justifyContent="flex-end">
-        <ButtonWithLink
-          type="button"
-          buttonStyle="bo-primary"
-          icon="send"
-          disabled={answers.length === 0}
-          processing={isPending}
-          onClick={() =>
-            sendAnswers({ id: toolCallId, conversationId, answers })
-          }
-        >
-          {formatMessage(messages.sendAnswers)}
-        </ButtonWithLink>
+          ))}
+        </Box>
+        <Input
+          type="text"
+          variant="bo"
+          value={entry.written}
+          placeholder={formatMessage(messages.otherAnswer)}
+          ariaLabel={formatMessage(messages.otherAnswer)}
+          onChange={setWritten}
+        />
+      </Box>
+      <Box display="flex" alignItems="center" gap="8px">
+        {questions.length > 1 && (
+          <Text m="0px" variant="boMicro">
+            {formatMessage(messages.questionProgress, {
+              current: index + 1,
+              total: questions.length,
+            })}
+          </Text>
+        )}
+        <Box display="flex" gap="8px" ml="auto">
+          {index > 0 && (
+            <ButtonWithLink
+              type="button"
+              buttonStyle="bo-text"
+              boSize="medium"
+              onClick={goBack}
+            >
+              {formatMessage(messages.previousQuestion)}
+            </ButtonWithLink>
+          )}
+          {isLastQuestion ? (
+            <ButtonWithLink
+              type="button"
+              buttonStyle="bo-primary"
+              boSize="medium"
+              icon="send"
+              disabled={answers.length === 0}
+              processing={isPending}
+              onClick={() =>
+                sendAnswers({ id: toolCallId, conversationId, answers })
+              }
+            >
+              {formatMessage(messages.sendAnswers)}
+            </ButtonWithLink>
+          ) : (
+            <ButtonWithLink
+              type="button"
+              buttonStyle="bo-primary"
+              boSize="medium"
+              onClick={goNext}
+            >
+              {formatMessage(messages.nextQuestion)}
+            </ButtonWithLink>
+          )}
+        </Box>
       </Box>
       {error && (
         <Text m="0px" fontSize="s" color="error">

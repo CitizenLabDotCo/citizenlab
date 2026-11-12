@@ -15,6 +15,7 @@
 #  turn_started_at :datetime
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  auto_approve    :boolean          default(FALSE), not null
 #
 # Indexes
 #

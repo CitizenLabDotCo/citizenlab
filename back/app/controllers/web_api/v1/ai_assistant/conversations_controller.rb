@@ -30,7 +30,8 @@ class WebApi::V1::AIAssistant::ConversationsController < ApplicationController
       user: current_user,
       subject:,
       surface_key: surface_class.key,
-      locale: conversation_params[:locale]
+      locale: conversation_params[:locale],
+      auto_approve: conversation_params[:auto_approve] || false
     )
     authorize(conversation)
 
@@ -50,10 +51,17 @@ class WebApi::V1::AIAssistant::ConversationsController < ApplicationController
     render json: { errors: { surface_key: [{ error: 'inclusion' }] } }, status: :unprocessable_entity
   end
 
+  # Only the approval mode can change. A running turn keeps the mode it started with.
+  def update
+    conversation = authorize(::AIAssistant::Conversation.find(params[:id]))
+    conversation.update!(params.require(:ai_assistant_conversation).permit(:auto_approve))
+    render json: serialize(::AIAssistant::Conversation.includes(messages: :tool_calls).find(conversation.id))
+  end
+
   private
 
   def conversation_params
-    params.require(:ai_assistant_conversation).permit(:surface_key, :subject_id, :locale)
+    params.require(:ai_assistant_conversation).permit(:surface_key, :subject_id, :locale, :auto_approve)
   end
 
   def previous_conversations(conversation)

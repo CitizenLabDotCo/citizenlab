@@ -13,6 +13,7 @@ import { AiAssistantToolDisplays } from '../types';
 
 import AssistantMessage from './AssistantMessage';
 import TranscriptToolCall from './TranscriptToolCall';
+import { getTurnStartId } from './turnStart';
 import UserMessage from './UserMessage';
 import WorkingIndicator from './WorkingIndicator';
 
@@ -24,40 +25,52 @@ type Props = {
 
 const Transcript = ({ conversation, toolDisplays, onToolExecuted }: Props) => {
   const { formatMessage } = useIntl();
-  const endRef = useRef<HTMLDivElement>(null);
+  const turnStartRef = useRef<HTMLDivElement>(null);
   const { attributes } = conversation.data;
   const transcript = constructTranscript(conversation);
+  const turnStartId = getTurnStartId(transcript);
 
+  // Shows each turn from its start, and leaves the scrolling to the admin while it goes on.
   useEffect(() => {
-    endRef.current?.scrollIntoView({ block: 'end', behavior: 'smooth' });
-  }, [transcript.length, attributes.status]);
+    turnStartRef.current?.scrollIntoView({
+      block: 'start',
+      behavior: 'smooth',
+    });
+  }, [turnStartId]);
 
   return (
     <Box display="flex" flexDirection="column" gap="12px">
-      {transcript.map(({ message, toolCalls }) =>
-        message.attributes.role === 'user' ? (
-          <UserMessage
-            key={message.id}
-            content={message.attributes.content}
-            fileIds={message.attributes.file_ids}
-          />
-        ) : (
-          <Box key={message.id} display="flex" flexDirection="column" gap="8px">
-            {message.attributes.content && (
-              <AssistantMessage content={message.attributes.content} />
-            )}
-            {toolCalls.map((toolCall) => (
-              <TranscriptToolCall
-                key={toolCall.id}
-                toolCall={toolCall}
-                conversation={conversation}
-                toolDisplays={toolDisplays}
-                onToolExecuted={onToolExecuted}
-              />
-            ))}
-          </Box>
-        )
-      )}
+      {transcript.map(({ message, toolCalls }) => (
+        <Box
+          key={message.id}
+          ref={message.id === turnStartId ? turnStartRef : undefined}
+          display="flex"
+          flexDirection="column"
+          gap="8px"
+        >
+          {message.attributes.role === 'user' ? (
+            <UserMessage
+              content={message.attributes.content}
+              fileIds={message.attributes.file_ids}
+            />
+          ) : (
+            <>
+              {message.attributes.content && (
+                <AssistantMessage content={message.attributes.content} />
+              )}
+              {toolCalls.map((toolCall) => (
+                <TranscriptToolCall
+                  key={toolCall.id}
+                  toolCall={toolCall}
+                  conversation={conversation}
+                  toolDisplays={toolDisplays}
+                  onToolExecuted={onToolExecuted}
+                />
+              ))}
+            </>
+          )}
+        </Box>
+      ))}
       {attributes.status === 'running' && (
         <WorkingIndicator startedAt={attributes.turn_started_at} />
       )}
@@ -66,7 +79,6 @@ const Transcript = ({ conversation, toolDisplays, onToolExecuted }: Props) => {
           {formatMessage(getErrorMessage(attributes.last_error_code))}
         </Text>
       )}
-      <div ref={endRef} />
     </Box>
   );
 };

@@ -4,9 +4,10 @@ import {
   Box,
   IconButton,
   Text,
+  bo,
+  boFocusRing,
   colors,
   fontSizes,
-  stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import { ErrorCode, useDropzone } from 'react-dropzone';
 import TextareaAutosize from 'react-textarea-autosize';
@@ -38,13 +39,14 @@ const validateTextFileSize = (file: File) =>
 
 // A chat-style input: one border around the text, the files and the actions.
 const Frame = styled.div`
-  border: 1px solid ${colors.borderDark};
-  border-radius: ${stylingConsts.borderRadius};
+  border: 1px solid ${colors.grey300};
+  border-radius: ${bo.borderRadius};
   background: ${colors.white};
+  transition: border-color 100ms ease-out, box-shadow 100ms ease-out;
 
   &:focus-within {
     border-color: ${({ theme }) => theme.colors.tenantPrimary};
-    box-shadow: 0 0 0 1px ${({ theme }) => theme.colors.tenantPrimary};
+    box-shadow: ${({ theme }) => boFocusRing(theme.colors.tenantPrimary)};
   }
 `;
 
@@ -56,10 +58,14 @@ const PromptInput = styled(TextareaAutosize)`
   outline: none;
   resize: none;
   background: transparent;
-  color: ${colors.textPrimary};
+  color: ${bo.colors.textHeadingStrong};
   font-family: inherit;
-  font-size: ${fontSizes.base}px;
+  font-size: ${fontSizes.xs}px;
   line-height: 1.5;
+
+  &::placeholder {
+    color: ${colors.coolGrey500};
+  }
 
   // The Frame shows focus instead; the global white ring would hide its border.
   &.focus-visible,
@@ -153,7 +159,7 @@ const Composer = ({
           justifyContent="center"
           bgColor={colors.teal50}
           border={`2px dashed ${colors.teal400}`}
-          borderRadius={stylingConsts.borderRadius}
+          borderRadius={bo.borderRadius}
         >
           <Text m="0px" color="teal700">
             <FormattedMessage {...messages.dropFiles} />
@@ -204,8 +210,9 @@ const Composer = ({
           </Box>
           <ButtonWithLink
             type="button"
+            buttonStyle="bo-primary"
+            boSize="medium"
             icon="stars"
-            size="s"
             onClick={onSend}
             disabled={!canSend}
             processing={sending}

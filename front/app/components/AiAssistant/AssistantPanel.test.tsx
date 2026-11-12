@@ -116,6 +116,7 @@ const conversation = (
 
 const baseAttributes = {
   surface_key: 'survey_builder',
+  auto_approve: false,
   locale: 'en',
   turn_started_at: '2026-10-01T08:00:00.000Z',
   created_at: '2026-10-01T08:00:00.000Z',

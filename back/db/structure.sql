@@ -1278,7 +1278,8 @@ CREATE TABLE public.ai_assistant_conversations (
     last_error_code character varying,
     turn_started_at timestamp(6) without time zone,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    auto_approve boolean DEFAULT false NOT NULL
 );
 
 
@@ -10862,6 +10863,7 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261111100000'),
 ('20261028180200'),
 ('20261028180100'),
 ('20261028170100'),

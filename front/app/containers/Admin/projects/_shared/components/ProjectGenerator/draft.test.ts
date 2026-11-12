@@ -5,13 +5,17 @@ import { UpdatePhaseArguments } from 'api/ai_assistant_tool_calls/tools/updatePh
 import { UpdatePhasePermissionArguments } from 'api/ai_assistant_tool_calls/tools/updatePhasePermission';
 import { UpdateProjectArguments } from 'api/ai_assistant_tool_calls/tools/updateProject';
 import { UpdateResourceArguments } from 'api/ai_assistant_tool_calls/tools/updateResource';
-import { IAiAssistantToolCallData } from 'api/ai_assistant_tool_calls/types';
+import {
+  AiAssistantToolCallStatus,
+  IAiAssistantToolCallData,
+} from 'api/ai_assistant_tool_calls/types';
 import { IEventData } from 'api/events/types';
 import { phasesData } from 'api/phases/__mocks__/_mockServer';
 import { IPhaseData } from 'api/phases/types';
 import { project1 } from 'api/projects/__mocks__/_mockServer';
 
 import {
+  getAppliedChanges,
   getDraftEvents,
   getDraftPhases,
   getDraftProject,
@@ -115,30 +119,25 @@ const event: IEventData = {
 };
 
 describe('getDraftProject', () => {
-  it('applies the proposed settings and lists what they change', () => {
+  it('applies the proposed setup on top of the saved project', () => {
     const draft = getDraftProject(project1, [
-      updateProject({
-        title_multiloc: { en: 'Reimagining Mercier Street' },
-        listed: false,
-      }),
+      updateProject({ title_multiloc: { en: 'Reimagining Mercier Street' } }),
     ]);
 
     expect(draft.title).toEqual({
       ...project1.attributes.title_multiloc,
       en: 'Reimagining Mercier Street',
     });
-    expect(draft.listed).toBe(false);
-    expect(draft.changed).toEqual(['title_multiloc', 'listed']);
+    expect(draft.descriptionPreview).toEqual(
+      project1.attributes.description_preview_multiloc
+    );
     expect(draft.change?.kind).toBe('update');
-    expect(draft.previous?.title).toEqual(project1.attributes.title_multiloc);
-    expect(draft.previous?.listed).toBe(project1.attributes.listed);
   });
 
   it('shows the saved project without a proposed change', () => {
     const draft = getDraftProject(project1, []);
 
     expect(draft.title).toEqual(project1.attributes.title_multiloc);
-    expect(draft.changed).toEqual([]);
     expect(draft.change).toBeUndefined();
   });
 });
@@ -170,46 +169,33 @@ describe('getDraftPhases', () => {
     });
   });
 
-  it('applies changes, removals and access rights to the right phase', () => {
+  it('applies changes and removals to the right phase', () => {
     const phases = getDraftPhases(saved, [
       updatePhase({ phase_id: 'phase-1', end_at: '2026-11-25' }),
       destroyResource({ resource_type: 'phase', id: 'phase-2' }),
-      updatePhasePermission({
-        phase_id: 'phase-1',
-        action: 'posting_idea',
-        permitted_by: 'everyone',
-      }),
     ]);
 
     expect(phases[0]).toMatchObject({
       endAt: '2026-11-25',
-      changed: ['end_at'],
       change: { kind: 'update' },
     });
-    expect(phases[0].permissionChange?.toolCall.id).toBe('update-permission');
     expect(phases[1].change?.kind).toBe('remove');
-    expect(phases[1].permissionChange).toBeUndefined();
   });
 
-  it('keeps a removal for last, because approving it removes the row', () => {
+  it('offers one decision at a time, with a removal last because approving it removes the phase', () => {
     const removal = destroyResource({ resource_type: 'phase', id: 'phase-1' });
     const update = updatePhase({ phase_id: 'phase-1', end_at: '2026-11-25' });
-    const permissionUpdate = updatePhasePermission({
+    const accessRightsUpdate = updatePhasePermission({
       phase_id: 'phase-1',
       action: 'posting_idea',
       permitted_by: 'everyone',
     });
 
-    const decisionOf = (proposedChanges: IAiAssistantToolCallData[]) => {
-      const [{ change, permissionChange }] = getDraftPhases(
-        saved,
-        proposedChanges
-      );
-      return (change ?? permissionChange)?.toolCall.id;
-    };
+    const decisionOf = (proposedChanges: IAiAssistantToolCallData[]) =>
+      getDraftPhases(saved, proposedChanges)[0].change?.toolCall.id;
 
     expect(decisionOf([removal, update])).toBe('update-phase');
-    expect(decisionOf([removal, permissionUpdate])).toBe('update-permission');
+    expect(decisionOf([removal, accessRightsUpdate])).toBe('update-permission');
     expect(decisionOf([removal])).toBe('destroy-resource');
   });
 
@@ -219,20 +205,6 @@ describe('getDraftPhases', () => {
     ]);
 
     expect(phases[0].endAt).toBeNull();
-  });
-
-  it('keeps the saved version of an updated phase to compare with', () => {
-    const phases = getDraftPhases(saved, [
-      updatePhase({ phase_id: 'phase-1', end_at: '2026-11-25' }),
-      createPhase({ title_multiloc: {}, start_at: '2026-12-12' }),
-    ]);
-
-    expect(phases[0].previous).toMatchObject({
-      endAt: '2026-11-20',
-      changed: [],
-    });
-    expect(phases[1].previous).toBeUndefined();
-    expect(phases[2].previous).toBeUndefined();
   });
 });
 
@@ -267,9 +239,7 @@ describe('getDraftEvents', () => {
 
     expect(draft).toMatchObject({
       address: 'Community centre',
-      changed: ['address_1'],
       change: { kind: 'update' },
-      previous: { address: 'Town hall' },
     });
   });
 
@@ -286,7 +256,6 @@ describe('getDraftEvents', () => {
     );
 
     expect(draft.address).toBeNull();
-    expect(draft.previous?.address).toBe('Town hall');
   });
 
   it('marks a proposed removal, after any other change to the event', () => {
@@ -309,5 +278,41 @@ describe('getProposedChanges', () => {
     const proposedChanges = getProposedChanges([askUser, updateProject({})]);
 
     expect(proposedChanges.map(({ id }) => id)).toEqual(['call-1']);
+  });
+});
+
+describe('getAppliedChanges', () => {
+  const withStatus = (
+    toolCall: IAiAssistantToolCallData,
+    status: AiAssistantToolCallStatus
+  ) => {
+    toolCall.attributes.status = status;
+    return toolCall;
+  };
+
+  const listAreas: IAiAssistantToolCallData = {
+    ...call('list-areas'),
+    attributes: { name: 'list_areas', arguments: {}, ...metadata },
+  };
+
+  it('lists the changes that ran, right away or once approved', () => {
+    const appliedChanges = getAppliedChanges([
+      withStatus(updateProject({}), 'executed'),
+      withStatus(
+        createPhase({ title_multiloc: {}, start_at: '2026-12-12' }),
+        'auto_executed'
+      ),
+      withStatus(listAreas, 'auto_executed'),
+      createEvent({
+        title_multiloc: {},
+        start_at: '2026-10-30T17:00:00Z',
+        end_at: '2026-10-30T19:00:00Z',
+      }),
+    ]);
+
+    expect(appliedChanges.map(({ id }) => id)).toEqual([
+      'call-1',
+      'create-phase',
+    ]);
   });
 });

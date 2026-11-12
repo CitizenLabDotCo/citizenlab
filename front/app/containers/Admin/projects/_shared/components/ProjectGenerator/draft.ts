@@ -4,16 +4,13 @@ import { UpdatePhaseArguments } from 'api/ai_assistant_tool_calls/tools/updatePh
 import { UpdateProjectArguments } from 'api/ai_assistant_tool_calls/tools/updateProject';
 import {
   AiAssistantToolCall,
+  AiAssistantToolName,
   IAiAssistantToolCallData,
 } from 'api/ai_assistant_tool_calls/types';
 import { isToolCall } from 'api/ai_assistant_tool_calls/utils';
 import { IEventData } from 'api/events/types';
-import {
-  IPhaseData,
-  IUpdatedPhaseProperties,
-  ParticipationMethod,
-} from 'api/phases/types';
-import { IProjectData, Visibility } from 'api/projects/types';
+import { IPhaseData, ParticipationMethod } from 'api/phases/types';
+import { IProjectData } from 'api/projects/types';
 
 // The saved project, phases and events, with the proposed changes applied on top.
 
@@ -24,73 +21,57 @@ export type ProposedChange = {
   kind: 'create' | 'update' | 'remove';
 };
 
-export type PermissionChange = {
-  toolCall: AiAssistantToolCall<'update_phase_permission'>;
-  kind: 'update';
-};
-
-// What a proposal sets, next to the saved values of what it updates.
-export type ProposedValues = {
-  proposed: object;
-  saved?: object;
-};
-
 export type DraftProject = {
   title: Multiloc;
   descriptionPreview: Multiloc;
-  areaIds: string[];
-  includeAllAreas: boolean;
-  topicIds: string[];
-  visibleTo: Visibility;
-  // Only known when proposed: saved visibility groups are fetched separately.
-  proposedGroupIds?: string[];
-  listed: boolean;
   headerImageUrl: string | null;
-  values: ProposedValues;
-  changed: string[];
   change?: ProposedChange;
-  // The saved project, when a proposed change updates it.
-  previous?: DraftProject;
 };
 
 export type DraftPhase = {
   key: string;
-  phaseId?: string;
   title: Multiloc;
   description: Multiloc;
   method: ParticipationMethod;
   startAt: string;
   endAt: string | null;
-  settings: IUpdatedPhaseProperties;
-  values: ProposedValues;
-  changed: string[];
   change?: ProposedChange;
-  permissionChange?: PermissionChange;
-  // The saved phase, when a proposed change updates it.
-  previous?: DraftPhase;
 };
 
 export type DraftEvent = {
   key: string;
   title: Multiloc;
-  description: Multiloc;
   location: Multiloc;
   address: string | null;
   onlineLink: string | null;
   startAt: string;
   endAt: string;
-  values: ProposedValues;
-  changed: string[];
   change?: ProposedChange;
-  // The saved event, when a proposed change updates it.
-  previous?: DraftEvent;
 };
+
+export const CHANGE_TOOLS: AiAssistantToolName[] = [
+  'update_project',
+  'create_phase',
+  'update_phase',
+  'update_phase_permission',
+  'create_event',
+  'update_resource',
+  'destroy_resource',
+];
 
 // Questions also wait for the admin, but they are answered in the chat, not in the draft.
 export const getProposedChanges = (toolCalls: ToolCall[]) =>
   toolCalls.filter(
     ({ attributes }) =>
       attributes.status === 'awaiting_user' && attributes.name !== 'ask_user'
+  );
+
+// The changes that ran, right away or once approved.
+export const getAppliedChanges = (toolCalls: ToolCall[]) =>
+  toolCalls.filter(
+    ({ attributes }) =>
+      ['executed', 'auto_executed'].includes(attributes.status) &&
+      CHANGE_TOOLS.includes(attributes.name)
   );
 
 // Multilocs are updated per locale.
@@ -116,7 +97,7 @@ export const getDraftProject = (
   project: IProjectData,
   proposedChanges: ToolCall[]
 ): DraftProject => {
-  const { attributes, relationships } = project;
+  const { attributes } = project;
   const toolCall = proposedChanges.find((proposedChange) =>
     isToolCall(proposedChange, 'update_project')
   );
@@ -128,19 +109,8 @@ export const getDraftProject = (
       attributes.description_preview_multiloc,
       args.description_preview_multiloc
     ),
-    areaIds: args.area_ids ?? relationships.areas.data.map(({ id }) => id),
-    includeAllAreas: args.include_all_areas ?? attributes.include_all_areas,
-    topicIds:
-      args.global_topic_ids ??
-      relationships.global_topics.data.map(({ id }) => id),
-    visibleTo: args.visible_to ?? attributes.visible_to,
-    proposedGroupIds: args.group_ids,
-    listed: args.listed ?? attributes.listed,
     headerImageUrl: attributes.header_bg.large,
-    values: { proposed: args, saved: attributes },
-    changed: Object.keys(args),
     change: toolCall && { toolCall, kind: 'update' },
-    previous: toolCall && getDraftProject(project, []),
   };
 };
 
@@ -156,8 +126,8 @@ const removalOf = (
         args.resource_type === resourceType && args.id === id
     );
 
-// A row offers one decision at a time, and a removal comes last: approving it removes the row.
-const firstDecision = (
+// An item offers one decision at a time, and a removal comes last: approving it removes the item.
+const firstChange = (
   update: ToolCall | undefined,
   removal: ToolCall | undefined
 ): ProposedChange | undefined => {
@@ -177,9 +147,6 @@ const proposedPhase = (
     method: args.participation_method ?? 'ideation',
     startAt: args.start_at,
     endAt: args.end_at ?? null,
-    settings: args,
-    values: { proposed: args },
-    changed: Object.keys(args),
     change: { toolCall, kind: 'create' },
   };
 };
@@ -192,8 +159,7 @@ const savedPhase = (
   const update = proposedChanges
     .filter((toolCall) => isToolCall(toolCall, 'update_phase'))
     .find((toolCall) => toolCall.attributes.arguments.phase_id === phase.id);
-  const removal = removalOf(proposedChanges, 'phase', phase.id);
-  const permissionUpdate = proposedChanges
+  const accessRightsUpdate = proposedChanges
     .filter((toolCall) => isToolCall(toolCall, 'update_phase_permission'))
     .find((toolCall) => toolCall.attributes.arguments.phase_id === phase.id);
   const args: Partial<UpdatePhaseArguments> =
@@ -201,7 +167,6 @@ const savedPhase = (
 
   return {
     key: phase.id,
-    phaseId: phase.id,
     title: mergeMultiloc(attributes.title_multiloc, args.title_multiloc),
     description: mergeMultiloc(
       attributes.description_multiloc,
@@ -210,15 +175,10 @@ const savedPhase = (
     method: args.participation_method ?? attributes.participation_method,
     startAt: args.start_at ?? attributes.start_at,
     endAt: proposedOrSaved(args.end_at, attributes.end_at),
-    settings: { ...attributes, ...args },
-    values: { proposed: args, saved: attributes },
-    changed: Object.keys(args).filter((key) => key !== 'phase_id'),
-    change: firstDecision(update, permissionUpdate ? undefined : removal),
-    previous: update && savedPhase(phase, []),
-    permissionChange: permissionUpdate && {
-      toolCall: permissionUpdate,
-      kind: 'update',
-    },
+    change: firstChange(
+      update ?? accessRightsUpdate,
+      removalOf(proposedChanges, 'phase', phase.id)
+    ),
   };
 };
 
@@ -244,14 +204,11 @@ const proposedEvent = (
   return {
     key: toolCall.id,
     title: args.title_multiloc,
-    description: args.description_multiloc ?? {},
     location: args.location_multiloc ?? {},
     address: args.address_1 ?? null,
     onlineLink: args.online_link ?? null,
     startAt: args.start_at,
     endAt: args.end_at,
-    values: { proposed: args },
-    changed: Object.keys(args),
     change: { toolCall, kind: 'create' },
   };
 };
@@ -264,16 +221,11 @@ const savedEvent = (
   const update = proposedChanges
     .filter((toolCall) => isToolCall(toolCall, 'update_resource'))
     .find((toolCall) => toolCall.attributes.arguments.id === event.id);
-  const removal = removalOf(proposedChanges, 'event', event.id);
   const args = update?.attributes.arguments.attributes ?? {};
 
   return {
     key: event.id,
     title: mergeMultiloc(attributes.title_multiloc, args.title_multiloc),
-    description: mergeMultiloc(
-      attributes.description_multiloc,
-      args.description_multiloc
-    ),
     location: mergeMultiloc(
       attributes.location_multiloc,
       args.location_multiloc
@@ -285,10 +237,7 @@ const savedEvent = (
     ),
     startAt: args.start_at ?? attributes.start_at,
     endAt: args.end_at ?? attributes.end_at,
-    values: { proposed: args, saved: attributes },
-    changed: Object.keys(args),
-    change: firstDecision(update, removal),
-    previous: update && savedEvent(event, []),
+    change: firstChange(update, removalOf(proposedChanges, 'event', event.id)),
   };
 };
 

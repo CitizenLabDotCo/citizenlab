@@ -451,7 +451,7 @@ Rails.application.routes.draw do
 
       resources :file_attachments, controller: 'files/file_attachments'
 
-      resources :ai_assistant_conversations, only: %i[index show create], controller: 'ai_assistant/conversations' do
+      resources :ai_assistant_conversations, only: %i[index show create update], controller: 'ai_assistant/conversations' do
         resources :messages, only: %i[create], controller: 'ai_assistant/messages'
       end
       resources :ai_assistant_tool_calls, only: [], controller: 'ai_assistant/tool_calls' do

@@ -28,6 +28,7 @@ const STATUS_MESSAGES: Partial<
   awaiting_user: messages.changeWaiting,
   approved: messages.changeApplying,
   executed: messages.changeApproved,
+  auto_executed: messages.changeApplied,
   rejected: messages.changeRefined,
   failed: messages.changeFailed,
   expired: messages.changeExpired,

@@ -26,6 +26,7 @@ type Parameters = {
   projectId?: string;
   isNewProject: boolean;
   conversation?: IAiAssistantConversation;
+  autoApprove: boolean;
   onProjectCreated: (projectId: string) => void;
 };
 
@@ -34,6 +35,7 @@ const useGeneratorChat = ({
   projectId,
   isNewProject,
   conversation,
+  autoApprove,
   onProjectCreated,
 }: Parameters) => {
   const locale = useLocale();
@@ -98,6 +100,7 @@ const useGeneratorChat = ({
           surfaceKey: 'project_generator',
           subjectId: draftProjectId,
           locale,
+          autoApprove,
         })
       ).data.id;
 

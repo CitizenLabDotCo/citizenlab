@@ -52,6 +52,7 @@ describe('constructTranscript', () => {
           last_error_code: null,
           turn_started_at: null,
           surface_key: 'survey_builder',
+          auto_approve: false,
           locale: 'en',
           created_at: '2026-10-01T08:00:00.000Z',
           updated_at: '2026-10-01T08:00:00.000Z',

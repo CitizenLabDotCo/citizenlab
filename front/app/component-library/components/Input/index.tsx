@@ -25,7 +25,7 @@ interface ContainerProps {
   variant: Variant;
 }
 
-const ringColor = (color: string) =>
+export const boFocusRing = (color: string) =>
   `0 0 0 3px color-mix(in srgb, ${color} 16%, transparent)`;
 
 export const boLabelStyle = css`
@@ -63,12 +63,12 @@ export const boInputStyle = css`
 
   &:focus {
     border-color: ${({ theme }) => theme.colors.tenantPrimary};
-    box-shadow: ${({ theme }) => ringColor(theme.colors.tenantPrimary)};
+    box-shadow: ${({ theme }) => boFocusRing(theme.colors.tenantPrimary)};
   }
 
   &.error {
     border-color: ${colors.red600};
-    box-shadow: ${ringColor(colors.red600)};
+    box-shadow: ${boFocusRing(colors.red600)};
   }
 
   &:disabled,

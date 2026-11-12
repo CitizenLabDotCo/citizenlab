@@ -1,3 +1,5 @@
+import { useCallback } from 'react';
+
 import { useQueryClient } from '@tanstack/react-query';
 
 import eventsKeys from 'api/events/keys';
@@ -9,16 +11,19 @@ import projectsKeys from 'api/projects/keys';
 const useRefreshDraft = () => {
   const queryClient = useQueryClient();
 
-  return () =>
-    Promise.all(
-      [
-        projectsKeys.all(),
-        phasesKeys.all(),
-        phasePermissionKeys.all(),
-        eventsKeys.all(),
-        projectGroupsKeys.all(),
-      ].map((queryKey) => queryClient.invalidateQueries({ queryKey }))
-    );
+  return useCallback(
+    () =>
+      Promise.all(
+        [
+          projectsKeys.all(),
+          phasesKeys.all(),
+          phasePermissionKeys.all(),
+          eventsKeys.all(),
+          projectGroupsKeys.all(),
+        ].map((queryKey) => queryClient.invalidateQueries({ queryKey }))
+      ),
+    [queryClient]
+  );
 };
 
 export default useRefreshDraft;

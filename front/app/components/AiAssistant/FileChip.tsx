@@ -5,8 +5,8 @@ import {
   Icon,
   IconButton,
   Text,
+  bo,
   colors,
-  stylingConsts,
 } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
@@ -29,7 +29,7 @@ const FileChip = ({ fileName, onRemove, disabled }: Props) => {
       gap="4px"
       pl="8px"
       bgColor={colors.grey100}
-      borderRadius={stylingConsts.borderRadius}
+      borderRadius={bo.borderRadius}
       maxWidth="100%"
     >
       <Icon name="file" width="14px" height="14px" fill={colors.grey700} />

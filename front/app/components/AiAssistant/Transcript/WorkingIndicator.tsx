@@ -4,8 +4,8 @@ import {
   Box,
   Spinner,
   Text,
+  bo,
   colors,
-  stylingConsts,
 } from '@citizenlab/cl2-component-library';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -39,7 +39,7 @@ const WorkingIndicator = ({ startedAt }: Props) => {
       p="12px"
       bgColor={colors.white}
       border={`1px solid ${colors.borderLight}`}
-      borderRadius={stylingConsts.borderRadius}
+      borderRadius={bo.borderRadius}
     >
       <Box width="20px" flexShrink={0}>
         <Spinner size="20px" />

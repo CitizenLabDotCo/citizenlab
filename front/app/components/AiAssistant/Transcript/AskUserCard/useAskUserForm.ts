@@ -12,40 +12,56 @@ const toAnswer = ({ picks, written }: Entry) => {
   return [...picks, ...(ownAnswer ? [ownAnswer] : [])].join(', ');
 };
 
+// The questions are answered one at a time.
 const useAskUserForm = (questions: AskUserQuestion[]) => {
   const [entries, setEntries] = useState<Partial<Record<string, Entry>>>({});
+  const [index, setIndex] = useState(0);
 
   const entryFor = (question: string) => entries[question] ?? EMPTY_ENTRY;
 
-  const updateEntry = (question: string, changes: Partial<Entry>) =>
-    setEntries({
-      ...entries,
-      [question]: { ...entryFor(question), ...changes },
-    });
+  const current = questions[index];
+  const entry = entryFor(current.question);
+  const isLastQuestion = index === questions.length - 1;
 
-  const togglePick = (question: string, option: string) => {
-    const { picks } = entryFor(question);
-    if (picks.includes(option)) {
-      updateEntry(question, { picks: picks.filter((pick) => pick !== option) });
+  const updateEntry = (changes: Partial<Entry>) =>
+    setEntries({ ...entries, [current.question]: { ...entry, ...changes } });
+
+  const goBack = () => setIndex(index - 1);
+  const goNext = () => setIndex(index + 1);
+
+  const togglePick = (option: string) => {
+    if (entry.picks.includes(option)) {
+      updateEntry({ picks: entry.picks.filter((pick) => pick !== option) });
       return;
     }
 
-    const multiSelect = questions.find(
-      (other) => other.question === question
-    )?.multi_select;
-    updateEntry(question, {
-      picks: multiSelect ? [...picks, option] : [option],
-    });
+    if (current.multi_select) {
+      updateEntry({ picks: [...entry.picks, option] });
+      return;
+    }
+
+    updateEntry({ picks: [option] });
+    // A single choice answers the question, unless the user is also writing their own answer.
+    if (!isLastQuestion && entry.written.trim() === '') goNext();
   };
 
-  const setWritten = (question: string, written: string) =>
-    updateEntry(question, { written });
+  const setWritten = (written: string) => updateEntry({ written });
 
   const answers = questions
     .map(({ question }) => ({ question, answer: toAnswer(entryFor(question)) }))
     .filter(({ answer }) => answer !== '');
 
-  return { entryFor, togglePick, setWritten, answers };
+  return {
+    current,
+    entry,
+    index,
+    isLastQuestion,
+    goBack,
+    goNext,
+    togglePick,
+    setWritten,
+    answers,
+  };
 };
 
 export default useAskUserForm;

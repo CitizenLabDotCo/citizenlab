@@ -51,6 +51,18 @@ export default defineMessages({
     id: 'app.components.aiAssistant.sendAnswers',
     defaultMessage: 'Send answers',
   },
+  questionProgress: {
+    id: 'app.components.aiAssistant.questionProgress',
+    defaultMessage: 'Question {current} of {total}',
+  },
+  previousQuestion: {
+    id: 'app.components.aiAssistant.previousQuestion',
+    defaultMessage: 'Back',
+  },
+  nextQuestion: {
+    id: 'app.components.aiAssistant.nextQuestion',
+    defaultMessage: 'Next',
+  },
   awaitingApprovalHint: {
     id: 'app.components.aiAssistant.awaitingApprovalHint',
     defaultMessage: 'Approve or reject the proposed change to continue.',

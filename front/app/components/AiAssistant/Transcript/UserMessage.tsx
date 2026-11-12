@@ -1,11 +1,6 @@
 import React from 'react';
 
-import {
-  Box,
-  Text,
-  colors,
-  stylingConsts,
-} from '@citizenlab/cl2-component-library';
+import { Box, Text, bo, colors } from '@citizenlab/cl2-component-library';
 
 import AttachedFileName from './AttachedFileName';
 
@@ -20,7 +15,7 @@ const UserMessage = ({ content, fileIds }: Props) => (
     maxWidth="90%"
     p="12px"
     bgColor={colors.grey100}
-    borderRadius={stylingConsts.borderRadius}
+    borderRadius={bo.borderRadius}
   >
     {content && (
       <Text m="0px" whiteSpace="pre-wrap">

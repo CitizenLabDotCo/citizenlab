@@ -5,8 +5,8 @@ import {
   Icon,
   IconNames,
   Text,
+  bo,
   colors,
-  stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import { MessageDescriptor } from 'react-intl';
 
@@ -125,7 +125,7 @@ const ToolCallCard = ({
       p="12px"
       bgColor={colors.white}
       border={`1px solid ${colors.teal400}`}
-      borderRadius={stylingConsts.borderRadius}
+      borderRadius={bo.borderRadius}
       display="flex"
       flexDirection="column"
       gap="12px"
@@ -140,7 +140,7 @@ const ToolCallCard = ({
         <Box>
           <ButtonWithLink
             type="button"
-            buttonStyle="text"
+            buttonStyle="bo-text"
             padding="0"
             onClick={() => setShowDetails(!showDetails)}
           >
@@ -155,7 +155,7 @@ const ToolCallCard = ({
       )}
 
       {display?.approveWarning && (
-        <Warning>
+        <Warning variant="bo">
           <FormattedMessage {...display.approveWarning} />
         </Warning>
       )}
@@ -163,6 +163,7 @@ const ToolCallCard = ({
       {rejecting ? (
         <Box display="flex" flexDirection="column" gap="8px">
           <TextArea
+            variant="bo"
             label={formatMessage(messages.rejectReasonLabel)}
             value={reason}
             onChange={setReason}
@@ -171,15 +172,16 @@ const ToolCallCard = ({
           <Box display="flex" gap="8px" justifyContent="flex-end">
             <ButtonWithLink
               type="button"
-              buttonStyle="secondary-outlined"
-              size="s"
+              buttonStyle="bo-secondary"
+              boSize="medium"
               onClick={() => setRejecting(false)}
             >
               <FormattedMessage {...messages.cancel} />
             </ButtonWithLink>
             <ButtonWithLink
               type="button"
-              size="s"
+              buttonStyle="bo-primary"
+              boSize="medium"
               processing={rejectPending}
               onClick={() =>
                 reject({ id: toolCall.id, conversationId, reason })
@@ -193,8 +195,8 @@ const ToolCallCard = ({
         <Box display="flex" gap="8px" justifyContent="flex-end">
           <ButtonWithLink
             type="button"
-            buttonStyle="secondary-outlined"
-            size="s"
+            buttonStyle="bo-secondary"
+            boSize="medium"
             disabled={approving}
             onClick={() => setRejecting(true)}
           >
@@ -202,7 +204,8 @@ const ToolCallCard = ({
           </ButtonWithLink>
           <ButtonWithLink
             type="button"
-            size="s"
+            buttonStyle="bo-primary"
+            boSize="medium"
             icon="check"
             processing={approving}
             onClick={() =>

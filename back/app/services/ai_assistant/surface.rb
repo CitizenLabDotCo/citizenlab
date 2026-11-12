@@ -65,9 +65,9 @@ module AIAssistant
       nil
     end
 
-    def system_prompt(locale:)
+    def system_prompt(locale:, auto_approve: false)
       [
-        ::Analysis::LLM::Prompt.new.fetch('ai_assistant_base', locale:),
+        ::Analysis::LLM::Prompt.new.fetch('ai_assistant_base', locale:, auto_approve:),
         surface_prompt(locale:)
       ].join("\n\n")
     end
