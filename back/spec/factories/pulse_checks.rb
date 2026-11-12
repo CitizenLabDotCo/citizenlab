@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :feedback_prompt do
+  factory :pulse_check do
     user factory: :admin
     key { 'return_findability' }
 
