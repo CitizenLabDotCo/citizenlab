@@ -13,7 +13,7 @@ module AIAssistant
         'questions' => {
           'type' => 'array',
           'minItems' => 1,
-          'maxItems' => 4,
+          'maxItems' => 8,
           'items' => {
             'type' => 'object',
             'properties' => {
