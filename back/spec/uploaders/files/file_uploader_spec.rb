@@ -49,6 +49,37 @@ RSpec.describe Files::FileUploader do
     end
   end
 
+  describe '#fog_attributes' do
+    it 'serves a PDF inline' do
+      uploader.cache!(file_fixture('minimal_pdf.pdf').open)
+      expect(uploader.fog_attributes['Content-Disposition']).to start_with('inline;')
+    end
+
+    context 'with XML content, whatever the extension' do
+      using RSpec::Parameterized::TableSyntax
+
+      xhtml_script = '<?xml version="1.0"?><x:script xmlns:x="http://www.w3.org/1999/xhtml">alert(1)</x:script>'
+      svg_script = '<?xml version="1.0"?><s:svg xmlns:s="http://www.w3.org/2000/svg"><s:script>alert(1)</s:script></s:svg>'
+
+      where(:filename, :content) do
+        'budget.csv' | xhtml_script
+        'data.json'  | xhtml_script
+        'notes.txt'  | xhtml_script
+        'route.gpx'  | xhtml_script
+        'map.kml'    | xhtml_script
+        'shape.txt'  | svg_script
+      end
+
+      with_them do
+        it 'serves the file as a download' do
+          uploader.cache!(tempfile_with(filename, content))
+
+          expect(uploader.fog_attributes['Content-Disposition']).to start_with('attachment;')
+        end
+      end
+    end
+  end
+
   describe 'AD1 bypass attempts' do
     it 'rejects the literal pentest payload (eicar.txt.exe)' do
       file = file_fixture('keylogger.exe').open

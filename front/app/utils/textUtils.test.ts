@@ -1,5 +1,6 @@
 import {
   capitalize,
+  escapeHtml,
   htmlToPlainText,
   stripHtml,
   withoutSpacing,
@@ -81,5 +82,30 @@ describe('capitalize', () => {
     expect(capitalize('!@#')).toEqual('!@#');
     expect(capitalize('')).toEqual('');
     expect(capitalize('a')).toEqual('A');
+  });
+});
+
+describe('escapeHtml', () => {
+  it('escapes every character that is special in HTML', () => {
+    expect(escapeHtml(`<a href="x" title='y'>&</a>`)).toBe(
+      '&lt;a href=&quot;x&quot; title=&#39;y&#39;&gt;&amp;&lt;/a&gt;'
+    );
+  });
+
+  it('escapes an existing entity again, so it shows as typed', () => {
+    expect(escapeHtml('&lt;')).toBe('&amp;lt;');
+  });
+
+  it('leaves other text, including emoji, unchanged', () => {
+    expect(escapeHtml('Bike lanes 🚲 👩‍👩‍👧‍👦')).toBe('Bike lanes 🚲 👩‍👩‍👧‍👦');
+  });
+
+  it('is read back as the original text when parsed as HTML', () => {
+    const text = '<img src=x onerror="alert(1)"> & \'quotes\'';
+    const element = document.createElement('div');
+    element.innerHTML = escapeHtml(text);
+
+    expect(element.querySelector('img')).toBeNull();
+    expect(element.textContent).toBe(text);
   });
 });

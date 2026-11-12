@@ -22,6 +22,7 @@ describe('StatementList', () => {
         statements={statements}
         columns={columns}
         onChange={jest.fn()}
+        disabled={false}
       />
     );
 
@@ -41,12 +42,33 @@ describe('StatementList', () => {
         columns={columns}
         value={{ statement_1: 1 }}
         onChange={onChange}
+        disabled={false}
       />
     );
 
     await userEvent.click(screen.getAllByLabelText('Agree')[1]);
 
     expect(onChange).toHaveBeenCalledWith({ statement_1: 1, statement_2: 3 });
+  });
+
+  it('ignores clicks when disabled', async () => {
+    const onChange = jest.fn();
+    render(
+      <StatementList
+        id="matrix"
+        statements={statements}
+        columns={columns}
+        value={{ statement_1: 1 }}
+        onChange={onChange}
+        disabled
+      />
+    );
+
+    const agree = screen.getAllByLabelText('Agree')[1];
+    await userEvent.click(agree);
+
+    expect(onChange).not.toHaveBeenCalled();
+    expect(agree).toBeDisabled();
   });
 
   it('checks the radio matching the current value', () => {
@@ -57,6 +79,7 @@ describe('StatementList', () => {
         columns={columns}
         value={{ statement_1: 2 }}
         onChange={jest.fn()}
+        disabled={false}
       />
     );
 
@@ -73,6 +96,7 @@ describe('StatementList', () => {
         statements={statements}
         columns={columns}
         onChange={onChange}
+        disabled={false}
       />
     );
 

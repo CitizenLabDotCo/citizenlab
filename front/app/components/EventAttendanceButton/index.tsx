@@ -104,7 +104,7 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
 
   const handleClick = () => {
     if (event.attributes.using_url) {
-      window.open(event.attributes.using_url);
+      window.open(event.attributes.using_url, '_blank', 'noopener,noreferrer');
       return;
     }
 

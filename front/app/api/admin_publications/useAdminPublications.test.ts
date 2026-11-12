@@ -82,6 +82,39 @@ describe('useAdminPublications', () => {
     expect(result.current.hasNextPage).toBe(false);
   });
 
+  it('makes one request when callers pass nil filters differently', async () => {
+    let requestCount = 0;
+    server.use(
+      http.get(apiPath, () => {
+        requestCount += 1;
+        return HttpResponse.json(
+          { data: mockFolderChildAdminPublicationsList, links },
+          { status: 200 }
+        );
+      })
+    );
+
+    const { result } = renderHook(
+      () => [
+        useAdminPublications({ pageSize: 6 }),
+        useAdminPublications({
+          pageSize: 6,
+          globalTopics: null,
+          areaIds: null,
+          search: null,
+        }),
+      ],
+      {
+        wrapper: createQueryClientWrapper(),
+      }
+    );
+
+    await waitFor(() =>
+      expect(result.current.every((query) => query.isSuccess)).toBe(true)
+    );
+    expect(requestCount).toBe(1);
+  });
+
   it('returns error correctly', async () => {
     server.use(
       http.get(apiPath, () => {

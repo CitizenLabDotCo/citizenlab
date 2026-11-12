@@ -16,7 +16,7 @@ class PublicApi::V2::UserSerializer < PublicApi::V2::BaseSerializer
     :email_confirmed_at,
     :email_confirmation_code_sent_at,
     :confirmation_required,
-    :custom_field_values,
+    :custom_field_values, # Deprecated: use the custom_field_answers endpoint
     :status
 
   def status
