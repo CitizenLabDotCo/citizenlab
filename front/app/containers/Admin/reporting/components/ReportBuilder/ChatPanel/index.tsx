@@ -1,11 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import { Box, Title, stylingConsts } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Text,
+  Title,
+  stylingConsts,
+} from '@citizenlab/cl2-component-library';
 import { useEditor, SerializedNodes } from '@craftjs/core';
 import styled from 'styled-components';
 
 import useReportChat from 'api/report_chat/useReportChat';
-import useSendReportChatMessage from 'api/report_chat/useSendReportChatMessage';
+import useSendReportChatMessage, {
+  isConversationBusy,
+} from 'api/report_chat/useSendReportChatMessage';
 import useCancelReportGeneration from 'api/report_generation/useCancelReportGeneration';
 import useReportLayout from 'api/report_layout/useReportLayout';
 
@@ -44,8 +51,11 @@ const ChatPanel = ({ reportId, setSaved }: Props) => {
   const { data: chat } = useReportChat(reportId, {
     enabled: llmReportingEnabled,
   });
-  const { mutate: sendMessage, isPending: sending } =
-    useSendReportChatMessage();
+  const {
+    mutate: sendMessage,
+    isPending: sending,
+    error: sendError,
+  } = useSendReportChatMessage();
   const { mutate: cancelTurn, isPending: stopping } =
     useCancelReportGeneration();
   const { refetch: refetchLayout } = useReportLayout(reportId);
@@ -133,6 +143,11 @@ const ChatPanel = ({ reportId, setSaved }: Props) => {
           onChange={setDraft}
         />
       </Box>
+      {sendError && !isConversationBusy(sendError) && (
+        <Text my="8px" fontSize="s" color="red600">
+          <FormattedMessage {...messages.sendFailed} />
+        </Text>
+      )}
       <Box mt="8px" display="flex" alignItems="center" gap="8px">
         <ButtonWithLink
           buttonStyle="primary"
