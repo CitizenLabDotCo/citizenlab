@@ -250,6 +250,7 @@ export const stylingConsts = {
   pageWidth: 1150,
   textWidth: 720,
   borderRadius: '3px',
+  borderRadiusPill: '999px',
   border: `1px solid ${colors.divider}`,
 };
 

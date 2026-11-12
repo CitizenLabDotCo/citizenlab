@@ -22,6 +22,7 @@ import {
   usePageSave,
   useRegisterPageSaver,
 } from 'components/admin/PageSaveContext';
+import { usePhasePreviewPublisher } from 'components/admin/PhasePreview/DraftContext';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -68,7 +69,10 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
   // open-ended.
   const standalone = !isTimelinePhase(phase);
 
+  const preview = usePhasePreviewPublisher('build', phase.id);
+
   const updateFormData = (newData: Partial<IUpdatedPhaseProperties>) => {
+    preview.publish(newData);
     setDirty(true);
     setFormData((formData) => ({ ...formData, ...newData }));
   };
@@ -111,6 +115,7 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
           : { description_multiloc: formData.description_multiloc }),
       });
       setFormData(response.data.attributes);
+      preview.clear();
       await files.save(phase.id);
       setErrors(null);
       setDirty(false);

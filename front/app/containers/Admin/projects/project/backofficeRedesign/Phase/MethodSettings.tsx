@@ -22,6 +22,7 @@ import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/t
 import { validateParticipation } from 'containers/Admin/projects/project/phaseSetup/validate';
 
 import { useRegisterPageSaver } from 'components/admin/PageSaveContext';
+import { usePhasePreviewPublisher } from 'components/admin/PhasePreview/DraftContext';
 
 import { useIntl } from 'utils/cl-intl';
 import { isCLErrorsWrapper } from 'utils/errorUtils';
@@ -76,6 +77,8 @@ const MethodSettings = ({ phase }: Props) => {
     {}
   );
 
+  const preview = usePhasePreviewPublisher('settings', phase.id);
+
   const participationMethod = phase.attributes.participation_method;
   const accessOnlyActions = ACCESS_ONLY_ACTIONS[participationMethod];
 
@@ -83,6 +86,7 @@ const MethodSettings = ({ phase }: Props) => {
     config: IUpdatedPhaseProperties,
     changedFields: Partial<IUpdatedPhaseProperties>
   ) => {
+    preview.publish(changedFields);
     setChanges((changes) => ({ ...changes, ...changedFields }));
     setFormData(config);
   };
@@ -98,6 +102,7 @@ const MethodSettings = ({ phase }: Props) => {
 
     try {
       await updatePhase({ phaseId: phase.id, ...changes });
+      preview.clear();
       setChanges({});
       setErrors(null);
     } catch (error) {

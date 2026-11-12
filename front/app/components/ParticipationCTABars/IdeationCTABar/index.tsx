@@ -1,41 +1,43 @@
-import React, { useEffect, useState, FormEvent } from 'react';
+import React, { FormEvent } from 'react';
 
 import { Box, Button, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
-import { IPhaseData } from 'api/phases/types';
-import { getCurrentPhase, getInputTerm } from 'api/phases/utils';
+import { getInputTerm } from 'api/phases/utils';
 
 import IdeaButton from 'components/IdeaButton';
 import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
 import {
   CTABarProps,
+  getCTAPhase,
   useScrollToCurrentPhaseElement,
 } from 'components/ParticipationCTABars/utils';
 
 import { getIdeaPostingRules } from 'utils/actionTakingRules';
 import { FormattedMessage } from 'utils/cl-intl';
 import { getInputTermMessage } from 'utils/i18n';
+import { usePhasePreview } from 'utils/phasePreview/runtime';
 
 import messages from '../messages';
 
 const IdeationCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
   const { data: authUser } = useAuthUser();
-  const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
+  const currentPhase = getCTAPhase(phases);
   const isSmallerThanPhone = useBreakpoint('phone');
   const scrollToPhaseElement = useScrollToCurrentPhaseElement(project, phases);
-
-  useEffect(() => {
-    setCurrentPhase(getCurrentPhase(phases));
-  }, [phases]);
+  const preview = usePhasePreview();
 
   const { enabled } = getIdeaPostingRules({
     project,
     phase: currentPhase,
     authUser: authUser?.data,
   });
+
+  const showDisabledSubmission =
+    (preview?.unsaved || preview?.lifecycle === 'before') &&
+    currentPhase?.attributes.submission_enabled;
 
   const scrollToIdeas = (event: FormEvent) => {
     event.preventDefault();
@@ -47,7 +49,7 @@ const IdeationCTABar = ({ phases, project }: CTABarProps) => {
     <ParticipationCTAContent
       currentPhase={currentPhase}
       CTAButton={
-        enabled ? (
+        enabled || showDisabledSubmission ? (
           <Box width="100%">
             <IdeaButton
               dataCy="e2e-ideation-start-idea-button"
@@ -81,7 +83,7 @@ const IdeationCTABar = ({ phases, project }: CTABarProps) => {
             fontSize="14px"
           >
             <FormattedMessage
-              {...getInputTermMessage(getInputTerm(phases), {
+              {...getInputTermMessage(getInputTerm(phases, currentPhase), {
                 idea: messages.seeIdeas,
                 option: messages.seeOptions,
                 project: messages.seeProjects,

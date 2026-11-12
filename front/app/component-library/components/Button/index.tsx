@@ -6,6 +6,7 @@ import styled from 'styled-components';
 
 import {
   bo,
+  stylingConsts,
   colors,
   invisibleA11yText,
   fontSizes,
@@ -84,7 +85,7 @@ const BO_PICKER_GEOMETRY = {
   ...BO_GEOMETRY,
   height: '30px',
   padding: '0 10px 0 12px',
-  borderRadius: '999px',
+  borderRadius: stylingConsts.borderRadiusPill,
   fontWeight: '400',
 };
 

@@ -24,6 +24,7 @@ import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { getInputTermMessage } from 'utils/i18n';
+import { usePhasePreview } from 'utils/phasePreview/runtime';
 
 import messages from './messages';
 import TippyContent from './TippyContent';
@@ -58,6 +59,8 @@ const IdeaButton = memo<Props>(
     const { data: authUser } = useAuthUser();
     const localize = useLocalize();
     const isNativeSurvey = participationMethod === 'native_survey';
+    const preview = usePhasePreview();
+    const isUnsavedPreview = preview?.unsaved;
 
     const postingRules =
       project && phase
@@ -69,7 +72,7 @@ const IdeaButton = memo<Props>(
         : undefined;
 
     const customAccessDeniedMessage = useCustomAccessDeniedMessage({
-      phaseId: phase?.id,
+      phaseId: isUnsavedPreview ? undefined : phase?.id,
       action: 'posting_idea',
       disabledReason: postingRules?.disabledReason,
     });
@@ -155,7 +158,7 @@ const IdeaButton = memo<Props>(
         );
       };
 
-    const tippyEnabled = !enabled && !!disabledReason;
+    const tippyEnabled = !isUnsavedPreview && !enabled && !!disabledReason;
 
     // TODO: Fix this the next time the file is edited.
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -208,24 +211,27 @@ const IdeaButton = memo<Props>(
                 <>{localize(phase.attributes.native_survey_button_multiloc)}</>
               ) : (
                 <FormattedMessage
-                  {...getInputTermMessage(getInputTerm(phases?.data), {
-                    idea: messages.submitYourIdea,
-                    option: messages.addAnOption,
-                    project: messages.addAProject,
-                    question: messages.addAQuestion,
-                    issue: messages.submitAnIssue1,
-                    contribution: messages.addAContribution,
-                    proposal: messages.addAProposal,
-                    initiative: messages.addAnInitiative,
-                    petition: messages.addAPetition,
-                    comment: messages.addAComment,
-                    response: messages.addAResponse,
-                    suggestion: messages.addASuggestion,
-                    topic: messages.addATopic,
-                    post: messages.addAPost,
-                    story: messages.addAStory,
-                    observation: messages.addAnObservation,
-                  })}
+                  {...getInputTermMessage(
+                    getInputTerm(phases?.data, preview ? phase : undefined),
+                    {
+                      idea: messages.submitYourIdea,
+                      option: messages.addAnOption,
+                      project: messages.addAProject,
+                      question: messages.addAQuestion,
+                      issue: messages.submitAnIssue1,
+                      contribution: messages.addAContribution,
+                      proposal: messages.addAProposal,
+                      initiative: messages.addAnInitiative,
+                      petition: messages.addAPetition,
+                      comment: messages.addAComment,
+                      response: messages.addAResponse,
+                      suggestion: messages.addASuggestion,
+                      topic: messages.addATopic,
+                      post: messages.addAPost,
+                      story: messages.addAStory,
+                      observation: messages.addAnObservation,
+                    }
+                  )}
                 />
               )}
             </ButtonWithLink>
