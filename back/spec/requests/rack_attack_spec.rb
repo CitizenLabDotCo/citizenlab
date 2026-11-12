@@ -251,6 +251,19 @@ describe 'Rack::Attack' do
     end
   end
 
+  it 'does not fail requests whose form body cannot be parsed' do
+    # Bots probing for Next.js server actions send multipart POSTs with no body.
+    multipart = { 'CONTENT_TYPE' => 'multipart/form-data; boundary=----bound', 'CONTENT_LENGTH' => '5494' }
+    urlencoded = { 'CONTENT_TYPE' => 'application/x-www-form-urlencoded' }
+    path = '/web_api/v1/user/request_reconfirm_code_email'
+
+    # Tests raise instead of rendering errors, so these show the request got past
+    # Rack::Attack to Rails, which answers 404 and 400 in production.
+    expect { post '/api/auth/callback', headers: multipart }.to raise_error(ActionController::RoutingError)
+    expect { post path, headers: multipart }.to raise_error(ActionController::BadRequest)
+    expect { post path, params: 'a[]=1&a[b]=2', headers: urlencoded }.to raise_error(ActionController::BadRequest)
+  end
+
   it 'limits invite acceptance requests from same IP to 10 in 20 seconds' do
     freeze_time do
       10.times do
@@ -474,6 +487,32 @@ describe 'Rack::Attack' do
         expect(status).to eq(200) # OK
 
         post(path, params: params, headers: json_headers(token: token, ip: '1.2.3.2'))
+        expect(status).to eq(429) # Too many requests
+      end
+    end
+
+    it 'counts a token passed in a form body against the same user' do
+      # Rails reads params[:token] from a form body too, so the throttle has to.
+      path = '/web_api/v1/user/request_reconfirm_code_email'
+
+      freeze_at_window_start do
+        post(path, params: { token: token, request_code: { only_if_first_time: false } }, headers: { 'REMOTE_ADDR' => '1.2.3.1' })
+        expect(status).to eq(200) # OK
+
+        post(path, params: '{ "request_code": { "only_if_first_time": false } }', headers: json_headers(token: token, ip: '1.2.3.2'))
+        expect(status).to eq(429) # Too many requests
+      end
+    end
+
+    it 'counts a query param token when the form body cannot be parsed' do
+      path = '/web_api/v1/user/request_reconfirm_code_email'
+      urlencoded = { 'CONTENT_TYPE' => 'application/x-www-form-urlencoded', 'REMOTE_ADDR' => '1.2.3.1' }
+
+      freeze_at_window_start do
+        expect { post("#{path}?token=#{token}", params: 'a[]=1&a[b]=2', headers: urlencoded) }
+          .to raise_error(ActionController::BadRequest)
+
+        post(path, params: '{ "request_code": { "only_if_first_time": false } }', headers: json_headers(token: token, ip: '1.2.3.2'))
         expect(status).to eq(429) # Too many requests
       end
     end

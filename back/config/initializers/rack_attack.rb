@@ -13,6 +13,27 @@ class Rack::Attack
     def remote_ip
       @remote_ip ||= ActionDispatch::Request.new(env).remote_ip
     end
+
+    # The errors Rails turns into a 400 when it parses params (see
+    # ActionDispatch::Request#GET and #POST).
+    PARSE_ERRORS = [
+      EOFError, Rack::Utils::ParameterTypeError, Rack::Utils::InvalidParameterError,
+      Rack::QueryParser::ParamsTooDeepError
+    ].freeze
+
+    # Rack raises when it can't parse the query string or a form body, which
+    # bots send often. Raised here, that 500s the request before it is routed.
+    # Rails answers the same requests with a 400 when it parses their params.
+    # A bad body still leaves the query string, so its keys (like `token`) count.
+    def params
+      super
+    rescue *PARSE_ERRORS
+      @params = begin
+        self.GET
+      rescue *PARSE_ERRORS
+        {}
+      end
+    end
   end
 end
 
