@@ -12,6 +12,10 @@ describe('getExportFilename', () => {
     expect(getExportFilename('Опитування', 'abc')).toBe('опитування');
   });
 
+  it('keeps the zero-width non-joiner Persian words need', () => {
+    expect(getExportFilename('می‌خواهیم', 'abc')).toBe('می‌خواهیم');
+  });
+
   it('cuts long titles to 60 characters', () => {
     const title = 'Опитування '.repeat(10);
 
@@ -24,5 +28,6 @@ describe('getExportFilename', () => {
   it('falls back to the phase id when nothing usable is left', () => {
     expect(getExportFilename('🎉 !!', 'abc')).toBe('phase-abc');
     expect(getExportFilename('', 'abc')).toBe('phase-abc');
+    expect(getExportFilename('👨‍👩‍👧', 'abc')).toBe('phase-abc');
   });
 });
