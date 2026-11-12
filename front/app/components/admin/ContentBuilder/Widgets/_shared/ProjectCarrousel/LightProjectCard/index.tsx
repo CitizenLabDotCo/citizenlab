@@ -63,11 +63,11 @@ const LightProjectCard = ({ project, ml, mr, onKeyDown, onFocus }: Props) => {
       onFocus={onFocus}
       data-cy="e2e-light-project-card"
     >
-      <CardContainer w={`${CARD_WIDTH}px`} ml={ml} mr={mr} display="block">
-        <CardImage imageUrl={imageUrl ?? undefined} alt={imageAltText} />
+      <CardContainer w={`${CARD_WIDTH}px`} ml={ml} mr={mr}>
         <Title variant="h3" fontSize="m" mt="8px" mb="0px" color="tenantText">
           {title}
         </Title>
+        <CardImage imageUrl={imageUrl ?? undefined} alt={imageAltText} />
         <Box mt="8px">
           <TimeIndicator
             currentPhaseEndsAt={phase?.data.attributes.end_at}
