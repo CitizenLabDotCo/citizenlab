@@ -197,7 +197,7 @@ module ReportBuilder
 
             # Shown in the panel only. The model is sent the admin's words inside a
             # prompt that carries the report, which the run records itself.
-            chat.messages.create!(role: 'user', content: message, replayed: false)
+            chat.messages.create!(role: 'user', content: message, replayed: false, author: current_user)
             chat.update!(status: 'running', last_error_code: nil, turn_started_at: Time.current)
             # In the same transaction, so a turn is never marked running without a
             # job to end it.

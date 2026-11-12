@@ -788,7 +788,9 @@ resource 'Reports' do
     before { SettingsService.new.activate_feature!('llm_reporting') }
 
     describe 'when authorized' do
-      before { admin_header_token }
+      let(:current_user) { create(:admin) }
+
+      before { header_token_for current_user }
 
       example 'Ask for a change', :active_job_que_adapter do
         expect { do_request }
@@ -798,7 +800,10 @@ resource 'Reports' do
         expect(response_data[:attributes][:turns].last).to include(role: 'user', text: message)
         expect(response_data[:attributes][:pending]).to be true
         # The model gets the admin's words inside a prompt the run writes itself.
-        expect(report.chat.messages.sole).to have_attributes(content: message, displayed: true, replayed: false)
+        # A report's chat is shared, so who asked is only recorded on the message.
+        expect(report.chat.messages.sole).to have_attributes(
+          content: message, displayed: true, replayed: false, author_id: current_user.id
+        )
       end
 
       example 'The unsaved editor layout is what gets revised', :active_job_que_adapter, document: false do

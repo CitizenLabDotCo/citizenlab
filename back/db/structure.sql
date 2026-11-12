@@ -103,6 +103,7 @@ ALTER TABLE IF EXISTS ONLY public.areas_projects DROP CONSTRAINT IF EXISTS fk_ra
 ALTER TABLE IF EXISTS ONLY public.phase_files DROP CONSTRAINT IF EXISTS fk_rails_8f9b3b56d6;
 ALTER TABLE IF EXISTS ONLY public.static_pages_global_topics DROP CONSTRAINT IF EXISTS fk_rails_8e3f01dacd;
 ALTER TABLE IF EXISTS ONLY public.user_custom_fields_representativeness_ref_distributions DROP CONSTRAINT IF EXISTS fk_rails_8cabeff294;
+ALTER TABLE IF EXISTS ONLY public.ai_assistant_messages DROP CONSTRAINT IF EXISTS fk_rails_8cab434751;
 ALTER TABLE IF EXISTS ONLY public.static_pages_spaces DROP CONSTRAINT IF EXISTS fk_rails_8c48617ba6;
 ALTER TABLE IF EXISTS ONLY public.idea_relations DROP CONSTRAINT IF EXISTS fk_rails_8a385cdad7;
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_campaigns DROP CONSTRAINT IF EXISTS fk_rails_87e592c9f5;
@@ -525,6 +526,7 @@ DROP INDEX IF EXISTS public.index_analysis_additional_custom_fields_on_analysis_
 DROP INDEX IF EXISTS public.index_ai_assistant_tool_calls_on_message_id;
 DROP INDEX IF EXISTS public.index_ai_assistant_tool_calls_on_decided_by_id;
 DROP INDEX IF EXISTS public.index_ai_assistant_messages_on_conversation_id_and_position;
+DROP INDEX IF EXISTS public.index_ai_assistant_messages_on_author_id;
 DROP INDEX IF EXISTS public.index_ai_assistant_conversations_shared_on_subject;
 DROP INDEX IF EXISTS public.index_ai_assistant_conversations_on_user_id;
 DROP INDEX IF EXISTS public.index_ai_assistant_conversations_on_subject;
@@ -1299,7 +1301,8 @@ CREATE TABLE public.ai_assistant_messages (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     displayed boolean DEFAULT true NOT NULL,
-    replayed boolean DEFAULT true NOT NULL
+    replayed boolean DEFAULT true NOT NULL,
+    author_id uuid
 );
 
 
@@ -7074,6 +7077,13 @@ CREATE UNIQUE INDEX index_ai_assistant_conversations_shared_on_subject ON public
 
 
 --
+-- Name: index_ai_assistant_messages_on_author_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ai_assistant_messages_on_author_id ON public.ai_assistant_messages USING btree (author_id);
+
+
+--
 -- Name: index_ai_assistant_messages_on_conversation_id_and_position; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -10110,6 +10120,14 @@ ALTER TABLE ONLY public.idea_relations
 
 ALTER TABLE ONLY public.static_pages_spaces
     ADD CONSTRAINT fk_rails_8c48617ba6 FOREIGN KEY (static_page_id) REFERENCES public.static_pages(id);
+
+
+--
+-- Name: ai_assistant_messages fk_rails_8cab434751; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ai_assistant_messages
+    ADD CONSTRAINT fk_rails_8cab434751 FOREIGN KEY (author_id) REFERENCES public.users(id) ON DELETE SET NULL;
 
 
 --

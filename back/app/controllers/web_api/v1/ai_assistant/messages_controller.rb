@@ -6,7 +6,7 @@ class WebApi::V1::AIAssistant::MessagesController < ApplicationController
   # Adds the user's message and starts the assistant's turn.
   def create
     conversation = ::AIAssistant::Conversation.find(params[:ai_assistant_conversation_id])
-    message = conversation.messages.new(role: 'user', **message_params)
+    message = conversation.messages.new(role: 'user', author: current_user, **message_params)
     authorize(message)
     message.files.each { |file| authorize(file, :show?) }
 

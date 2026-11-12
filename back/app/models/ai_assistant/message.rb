@@ -16,13 +16,16 @@
 #  updated_at      :datetime         not null
 #  displayed       :boolean          default(TRUE), not null
 #  replayed        :boolean          default(TRUE), not null
+#  author_id       :uuid
 #
 # Indexes
 #
+#  index_ai_assistant_messages_on_author_id                     (author_id)
 #  index_ai_assistant_messages_on_conversation_id_and_position  (conversation_id,position) UNIQUE
 #
 # Foreign Keys
 #
+#  fk_rails_...  (author_id => users.id) ON DELETE => nullify
 #  fk_rails_...  (conversation_id => ai_assistant_conversations.id) ON DELETE => cascade
 #
 module AIAssistant
@@ -44,6 +47,9 @@ module AIAssistant
     # Touches the conversation, so a running turn shows its progress.
     belongs_to :conversation, class_name: 'AIAssistant::Conversation', inverse_of: :messages, touch: true
     has_many :tool_calls, -> { order(:created_at, :id) }, class_name: 'AIAssistant::ToolCall', dependent: :destroy, inverse_of: :message
+    # Who typed it: a shared conversation has no owner to ask. Nil for what the app
+    # or the model wrote.
+    belongs_to :author, class_name: 'User', optional: true
 
     enum :role, ROLES.index_by(&:itself)
 

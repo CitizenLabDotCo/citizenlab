@@ -11,6 +11,7 @@ class ShareAIAssistantConversations < ActiveRecord::Migration[7.2]
       # has not, so it goes — with its messages, tool calls and runs.
       dir.down { execute 'DELETE FROM ai_assistant_conversations WHERE user_id IS NULL' }
     end
+
     # A shared conversation is the one chat about its subject, so a second one would
     # split its history in two.
     add_index :ai_assistant_conversations, %i[subject_type subject_id surface_key],
@@ -20,5 +21,12 @@ class ShareAIAssistantConversations < ActiveRecord::Migration[7.2]
     # or for the model only (prompt scaffolding, the steps of a long run).
     add_column :ai_assistant_messages, :displayed, :boolean, null: false, default: true
     add_column :ai_assistant_messages, :replayed, :boolean, null: false, default: true
+
+    # Who wrote it. A shared conversation has no owner, so this is the only record of
+    # who said what. Nullified rather than cascaded, because a report's history
+    # outlives an admin's account; indexed because that nullify runs on every user
+    # deletion.
+    add_reference :ai_assistant_messages, :author, type: :uuid, null: true,
+      foreign_key: { to_table: :users, on_delete: :nullify }
   end
 end
