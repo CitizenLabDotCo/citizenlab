@@ -18,89 +18,78 @@ describe 'single_use:repair_custom_field_answers_without_field' do
   after { task.reenable }
 
   let(:task) { Rake::Task['single_use:repair_custom_field_answers_without_field'] }
-  let(:project) { create(:single_phase_ideation_project) }
-  let(:form) { create(:custom_form, participation_context: project) }
-  let(:idea) { create(:idea, project: project, phases: project.phases) }
+  let(:project) { create(:single_phase_ideation_project, created_at: 3.days.ago) }
+  let(:idea) { create(:idea, project: project, phases: project.phases, created_at: 2.days.ago) }
 
   def answer_without_field(record, key, value: 'x')
     record.custom_field_answers.create!(key: key, value: value)
   end
 
-  def form_field(project, key)
-    form = CustomForm.find_by(participation_context: project) || create(:custom_form, participation_context: project)
-    create(:custom_field_text, resource: form, key: key)
+  def project_with_question(key, created_at:)
+    project = create(:single_phase_ideation_project, created_at: created_at)
+    create(:custom_field_text, resource: create(:custom_form, participation_context: project), key: key)
   end
 
-  def log_move(idea, from:, at: Time.zone.now)
-    create(:idea_changed_activity, item: idea, acted_at: at, payload: { change: { project_id: [from.id, idea.project_id] } })
+  def log_move(idea, from:)
+    create(:idea_changed_activity, item: idea, payload: { change: { project_id: [from.id, idea.project_id] } })
   end
 
-  describe 'an answer whose question is in the form of its record' do
-    it 're-attaches the answer of an input' do
-      field = create(:custom_field_text, resource: form, key: 'pet')
-      answer = answer_without_field(idea, 'pet')
+  describe 'an answer of an input that moved project' do
+    it 're-attaches the answer when the input is older than its project' do
+      field = project_with_question('only_there', created_at: 3.days.ago)
+      project.update!(created_at: 1.day.ago)
+      answer = answer_without_field(idea, 'only_there')
 
       run
 
       expect(answer.reload).to have_attributes(custom_field_id: field.id, value: 'x')
     end
 
+    it 're-attaches the answer when the move is logged' do
+      field = project_with_question('only_there', created_at: 3.days.ago)
+      answer = answer_without_field(idea, 'only_there')
+      log_move(idea, from: field.resource.participation_context)
+
+      run
+
+      expect(answer.reload.custom_field_id).to eq field.id
+    end
+
     it 're-attaches an _other answer to its parent question' do
-      field = create(:custom_field_text, resource: form, key: 'pet')
-      answer = answer_without_field(idea, 'pet_other')
+      field = project_with_question('only_there', created_at: 3.days.ago)
+      answer = answer_without_field(idea, 'only_there_other')
+      log_move(idea, from: field.resource.participation_context)
 
       run
 
       expect(answer.reload.custom_field_id).to eq field.id
     end
 
-    it 're-attaches a u_ answer to the registration question' do
-      field = create(:custom_field, key: 'pet')
-      answer = answer_without_field(idea, 'u_pet')
+    it 'deletes the answer when two projects that existed at its creation have the question' do
+      field = project_with_question('only_there', created_at: 3.days.ago)
+      project_with_question('only_there', created_at: 4.days.ago)
+      answer = answer_without_field(idea, 'only_there')
+      log_move(idea, from: field.resource.participation_context)
 
       run
 
-      expect(answer.reload.custom_field_id).to eq field.id
+      expect(CustomFieldAnswer.where(id: answer.id)).not_to exist
     end
 
-    it 're-attaches the answer of a user' do
-      field = create(:custom_field, key: 'pet')
-      answer = answer_without_field(create(:user), 'pet')
+    it 'deletes the answer when the project with the question was created after the input' do
+      field = project_with_question('only_there', created_at: 1.day.ago)
+      answer = answer_without_field(idea, 'only_there')
+      log_move(idea, from: field.resource.participation_context)
 
       run
 
-      expect(answer.reload.custom_field_id).to eq field.id
+      expect(CustomFieldAnswer.where(id: answer.id)).not_to exist
     end
   end
 
-  describe 'an answer of an input that moved project' do
-    let(:previous_project) { create(:single_phase_ideation_project) }
-
-    it 're-attaches the answer to the question of a project the input was in' do
-      field = form_field(previous_project, 'only_there')
-      answer = answer_without_field(idea, 'only_there')
-      log_move(idea, from: previous_project)
-
-      run
-
-      expect(answer.reload.custom_field_id).to eq field.id
-    end
-
-    it 'prefers the project the input left most recently' do
-      earlier_project = create(:single_phase_ideation_project)
-      form_field(earlier_project, 'only_there')
-      field = form_field(previous_project, 'only_there')
-      answer = answer_without_field(idea, 'only_there')
-      log_move(idea, from: earlier_project, at: 2.days.ago)
-      log_move(idea, from: previous_project, at: 1.day.ago)
-
-      run
-
-      expect(answer.reload.custom_field_id).to eq field.id
-    end
-
-    it 'deletes the answer when the question is in a project the input was never in' do
-      form_field(previous_project, 'only_there')
+  describe 'an answer of a record that did not move' do
+    it 'deletes the answer of an input, also when another project has the question' do
+      project_with_question('only_there', created_at: 3.days.ago)
       answer = answer_without_field(idea, 'only_there')
 
       run
@@ -111,20 +100,9 @@ describe 'single_use:repair_custom_field_answers_without_field' do
     it 'deletes the answer of a survey response, which cannot have moved' do
       create(:idea_status_proposed)
       response = create(:native_survey_response)
-      form_field(previous_project, 'only_there')
+      field = project_with_question('only_there', created_at: 3.days.ago)
       answer = answer_without_field(response, 'only_there')
-      log_move(response, from: previous_project)
-
-      run
-
-      expect(CustomFieldAnswer.where(id: answer.id)).not_to exist
-    end
-  end
-
-  describe 'an answer whose question is nowhere' do
-    it 'deletes the answer of an input' do
-      form
-      answer = answer_without_field(idea, 'gone')
+      log_move(response, from: field.resource.participation_context)
 
       run
 
@@ -132,7 +110,8 @@ describe 'single_use:repair_custom_field_answers_without_field' do
     end
 
     it 'deletes the answer of a user' do
-      answer = answer_without_field(create(:user), 'gone')
+      create(:custom_field, key: 'pet')
+      answer = answer_without_field(create(:user), 'pet')
 
       run
 
@@ -149,18 +128,8 @@ describe 'single_use:repair_custom_field_answers_without_field' do
     end
   end
 
-  it 'deletes an answer whose value its question refuses, and reports why' do
-    create(:custom_field_gender)
-    answer = answer_without_field(create(:user), 'gender', value: 'not a gender')
-
-    run
-
-    expect(CustomFieldAnswer.where(id: answer.id)).not_to exist
-    expect(File.read('repair_custom_field_answers_without_field.json')).to include('not re-attached')
-  end
-
   it 'leaves answers that have a field alone' do
-    field = create(:custom_field_text, resource: form, key: 'pet')
+    field = create(:custom_field_text, resource: create(:custom_form, participation_context: project), key: 'pet')
     answer = idea.custom_field_answers.create!(key: 'pet', value: 'cat', custom_field: field)
 
     expect { run }.not_to(change { answer.reload.attributes })

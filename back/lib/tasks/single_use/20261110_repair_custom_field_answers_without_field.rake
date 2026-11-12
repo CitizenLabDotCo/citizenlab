@@ -6,9 +6,9 @@
 # also deleted its answers, or because its input moved to a project whose form does not have
 # the question. An input that holds such an answer cannot be edited.
 #
-# First pass: re-attach an answer when its question still exists, in the form its record is in
-# or, for an input that moved, in the form of a project it was in before. Second pass: delete
-# the answers that are still without a field.
+# First pass: re-attach the answers of an input that moved, when exactly one project that existed
+# when the input was created has a question with the answer's key. Second pass: delete the
+# answers that are still without a field.
 #
 # There is no dry run: try it on a sandbox copy of the database.
 #
@@ -58,40 +58,28 @@ def rake_20261110_delete_answers_without_field(tenant, reporter)
   end
 end
 
+# Only an input that moved can have a question outside the form it is in. Its question is then
+# in a project that already existed when the input was created. If several do, we cannot tell.
 def rake_20261110_field_for(answer)
-  record = answer.answerable
-  return if !record
-  return rake_20261110_find_field(CustomField.registration, answer.key) if record.is_a?(User)
+  idea = answer.answerable
+  return if !idea.is_a?(Idea) || idea.creation_phase_id || !rake_20261110_moved?(idea)
 
-  field = rake_20261110_find_field(record.custom_form.custom_fields, answer.key)
-  return field if field
-
-  prefix = UserFieldsInFormService.prefix
-  if answer.key.start_with?(prefix)
-    rake_20261110_find_field(CustomField.registration, answer.key.delete_prefix(prefix))
-  elsif !record.creation_phase_id
-    rake_20261110_field_in_previous_project(record, answer.key)
-  end
+  fields = rake_20261110_fields_at_creation(idea, answer.key).to_a
+  fields.first if fields.one?
 end
 
-# Newest move first: an answer followed its key into every project whose form had the question,
-# so it last belonged to the question of the most recent one.
-def rake_20261110_field_in_previous_project(idea, key)
-  moves = Activity.where(item: idea, action: 'changed').where("payload->'change' ? 'project_id'")
-
-  moves.order(acted_at: :desc).each do |move|
-    previous_project_id = move.payload.dig('change', 'project_id', 0)
-    form = CustomForm.find_by(participation_context_type: 'Project', participation_context_id: previous_project_id)
-    field = form && rake_20261110_find_field(form.custom_fields, key)
-    return field if field
-  end
-  nil
+# Moves are only logged since May 2024. An older move shows in the input predating its project.
+def rake_20261110_moved?(idea)
+  idea.created_at < idea.project.created_at ||
+    Activity.where(item: idea, action: 'changed').where("payload->'change' ? 'project_id'").exists?
 end
 
 # An _other or _follow_up answer belongs to the question of its base key.
-def rake_20261110_find_field(fields, key)
+def rake_20261110_fields_at_creation(idea, key)
   base_key = key.delete_suffix('_other').delete_suffix('_follow_up')
-  fields.find_by(key: key) || fields.find_by(key: base_key)
+  projects = Project.where(created_at: ..idea.created_at)
+  forms = CustomForm.where(participation_context_type: 'Project', participation_context_id: projects.select(:id))
+  CustomField.where(resource: forms, key: base_key)
 end
 
 # Without the value, which can be personal data.
