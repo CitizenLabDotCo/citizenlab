@@ -1,16 +1,16 @@
 import React from 'react';
 
-import { IFeedbackPromptData } from 'api/feedback_prompts/types';
+import { IPulseCheckData } from 'api/pulse_checks/types';
 
 import { act, fireEvent, render, screen, userEvent } from 'utils/testUtils/rtl';
 
-import PromptCard from './PromptCard';
+import PulseCheckCard from './PulseCheckCard';
 
 const mockAnswer = jest.fn();
 const mockDismiss = jest.fn();
 let mockIsError = false;
 
-jest.mock('api/feedback_prompts/useAnswerFeedbackPrompt', () =>
+jest.mock('api/pulse_checks/useAnswerPulseCheck', () =>
   jest.fn(() => ({
     mutateAsync: mockAnswer,
     isPending: false,
@@ -18,26 +18,26 @@ jest.mock('api/feedback_prompts/useAnswerFeedbackPrompt', () =>
   }))
 );
 
-jest.mock('api/feedback_prompts/useDismissFeedbackPrompt', () =>
+jest.mock('api/pulse_checks/useDismissPulseCheck', () =>
   jest.fn(() => ({ mutate: mockDismiss }))
 );
 
-const prompt: IFeedbackPromptData = {
-  id: 'prompt-1',
-  type: 'feedback_prompt',
+const pulseCheck: IPulseCheckData = {
+  id: 'pulse-check-1',
+  type: 'pulse_check',
   attributes: { key: 'project_setup_ease', status: 'shown' },
 };
 
-describe('PromptCard', () => {
+describe('PulseCheckCard', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockIsError = false;
-    mockAnswer.mockResolvedValue({ data: prompt });
+    mockAnswer.mockResolvedValue({ data: pulseCheck });
   });
 
   it('shows the comment box once a score is picked, and sends the answer', async () => {
     const user = userEvent.setup();
-    render(<PromptCard prompt={prompt} onClose={jest.fn()} />);
+    render(<PulseCheckCard pulseCheck={pulseCheck} onClose={jest.fn()} />);
 
     expect(
       screen.getByRole('group', { name: /How easy was it to set up/ })
@@ -45,7 +45,7 @@ describe('PromptCard', () => {
     expect(screen.queryByRole('textbox')).not.toBeInTheDocument();
 
     await user.click(screen.getByRole('button', { name: '6' }));
-    expect(mockAnswer).toHaveBeenCalledWith({ id: 'prompt-1', score: 6 });
+    expect(mockAnswer).toHaveBeenCalledWith({ id: 'pulse-check-1', score: 6 });
     expect(
       screen.queryByText('Thank you for your feedback!')
     ).not.toBeInTheDocument();
@@ -53,7 +53,7 @@ describe('PromptCard', () => {
     await user.click(screen.getByRole('button', { name: 'Send' }));
 
     expect(mockAnswer).toHaveBeenLastCalledWith({
-      id: 'prompt-1',
+      id: 'pulse-check-1',
       score: 6,
       comment: 'Smooth',
     });
@@ -64,7 +64,7 @@ describe('PromptCard', () => {
 
   it('changes the score with the arrow keys', async () => {
     const user = userEvent.setup();
-    render(<PromptCard prompt={prompt} onClose={jest.fn()} />);
+    render(<PulseCheckCard pulseCheck={pulseCheck} onClose={jest.fn()} />);
 
     await user.click(screen.getByText('3'));
     const thirdButton = screen.getByRole('button', { name: '3' });
@@ -85,31 +85,31 @@ describe('PromptCard', () => {
   });
 
   it('moves from the focused score when none has been selected', () => {
-    render(<PromptCard prompt={prompt} onClose={jest.fn()} />);
+    render(<PulseCheckCard pulseCheck={pulseCheck} onClose={jest.fn()} />);
     const thirdButton = screen.getByRole('button', { name: '3' });
     thirdButton.focus();
     fireEvent.keyDown(thirdButton, { key: 'ArrowRight' });
     expect(screen.getByRole('button', { name: '4' })).toHaveFocus();
-    expect(mockAnswer).toHaveBeenCalledWith({ id: 'prompt-1', score: 4 });
+    expect(mockAnswer).toHaveBeenCalledWith({ id: 'pulse-check-1', score: 4 });
   });
 
-  it('dismisses the prompt when closed before answering', async () => {
+  it('dismisses the pulse check when closed before answering', async () => {
     const user = userEvent.setup();
     const onClose = jest.fn();
-    render(<PromptCard prompt={prompt} onClose={onClose} />);
+    render(<PulseCheckCard pulseCheck={pulseCheck} onClose={onClose} />);
 
     await user.click(
       screen.getByRole('button', { name: 'Close this question' })
     );
 
-    expect(mockDismiss).toHaveBeenCalledWith('prompt-1');
+    expect(mockDismiss).toHaveBeenCalledWith('pulse-check-1');
     expect(onClose).toHaveBeenCalled();
   });
 
   it('keeps a saved score when closed without sending a comment', async () => {
     const user = userEvent.setup();
     const onClose = jest.fn();
-    render(<PromptCard prompt={prompt} onClose={onClose} />);
+    render(<PulseCheckCard pulseCheck={pulseCheck} onClose={onClose} />);
     await user.click(screen.getByRole('button', { name: '6' }));
     await user.click(
       screen.getByRole('button', { name: 'Close this question' })
@@ -123,7 +123,7 @@ describe('PromptCard', () => {
     mockAnswer.mockRejectedValueOnce(new Error('Save failed'));
     const user = userEvent.setup();
     const onClose = jest.fn();
-    render(<PromptCard prompt={prompt} onClose={onClose} />);
+    render(<PulseCheckCard pulseCheck={pulseCheck} onClose={onClose} />);
     expect(screen.getByRole('alert')).toHaveTextContent(
       'Your feedback could not be saved. Please try again.'
     );
@@ -149,7 +149,7 @@ describe('PromptCard', () => {
     );
     const user = userEvent.setup();
     const { unmount } = render(
-      <PromptCard prompt={prompt} onClose={jest.fn()} />
+      <PulseCheckCard pulseCheck={pulseCheck} onClose={jest.fn()} />
     );
     await user.click(screen.getByRole('button', { name: '6' }));
     await user.click(
@@ -160,17 +160,17 @@ describe('PromptCard', () => {
     await act(async () => {
       rejectSave(new Error('Save failed'));
     });
-    expect(mockDismiss).toHaveBeenCalledWith('prompt-1');
+    expect(mockDismiss).toHaveBeenCalledWith('pulse-check-1');
   });
 
   it('keeps focus on the selected score during a pending save', async () => {
     mockAnswer.mockImplementationOnce(() => new Promise(() => {}));
     const user = userEvent.setup();
-    render(<PromptCard prompt={prompt} onClose={jest.fn()} />);
+    render(<PulseCheckCard pulseCheck={pulseCheck} onClose={jest.fn()} />);
     screen.getByRole('button', { name: '3' }).focus();
     await user.keyboard('{ArrowRight}{ArrowRight}');
     expect(screen.getByRole('button', { name: '4' })).toHaveFocus();
     expect(mockAnswer).toHaveBeenCalledTimes(1);
-    expect(mockAnswer).toHaveBeenCalledWith({ id: 'prompt-1', score: 4 });
+    expect(mockAnswer).toHaveBeenCalledWith({ id: 'pulse-check-1', score: 4 });
   });
 });
