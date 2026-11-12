@@ -177,3 +177,52 @@ describe('Native survey CTA bar', () => {
     }
   });
 });
+
+describe('Native survey CTA with a long label on a phone', () => {
+  const longLabel = 'Anmeldung Kinder- und Jugendparlament 2026/27';
+  let projectId: string;
+  let projectSlug: string;
+
+  before(() => {
+    cy.createProjectWithNativeSurveyPhase({
+      nativeSurveyButtonMultiloc: { en: longLabel },
+    }).then((result) => {
+      projectId = result.projectId;
+      projectSlug = result.projectSlug;
+    });
+  });
+
+  beforeEach(() => {
+    cy.viewport(375, 812);
+    cy.visit(`/en/projects/${projectSlug}`);
+  });
+
+  it('keeps the page columns and the CTA label within the screen', () => {
+    cy.get('#project-survey-button').should('contain', longLabel);
+
+    cy.document().then((doc) => {
+      const screenWidth = doc.documentElement.clientWidth;
+
+      cy.get('#project-survey-button')
+        .closest('.e2e-two-column')
+        .children()
+        .each(($column) => {
+          expect($column[0].getBoundingClientRect().right).to.be.at.most(
+            screenWidth
+          );
+        });
+
+      cy.get('#project-survey-button')
+        .find('*')
+        .each(($el) => {
+          const { left, right } = $el[0].getBoundingClientRect();
+          expect(left).to.be.at.least(0);
+          expect(right).to.be.at.most(screenWidth);
+        });
+    });
+  });
+
+  after(() => {
+    cy.apiRemoveProject(projectId);
+  });
+});

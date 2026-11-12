@@ -52,6 +52,7 @@ const ActionButton = ({ phase, buttonStyle, buttonTextMultiloc }: Props) => {
         search={{ phase_id: phase.id }}
         buttonStyle={buttonStyle}
         width="100%"
+        whiteSpace="normal"
       >
         {buttonText}
       </ButtonWithLink>
