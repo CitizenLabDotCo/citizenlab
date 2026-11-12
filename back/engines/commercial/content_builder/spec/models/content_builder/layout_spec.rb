@@ -336,6 +336,58 @@ RSpec.describe ContentBuilder::Layout do
     end
   end
 
+  describe 'query snapshot pruning on save' do
+    let(:placed_sql) { 'SELECT count(*) AS contributions FROM reporting_contributions' }
+    let(:other_sql) { 'SELECT count(*) AS inputs FROM reporting_inputs' }
+    let(:block_version) { create(:custom_block_version) }
+    let(:layout) { create(:layout, craftjs_json: craftjson_placing(block_version)) }
+
+    let!(:placed_snapshot) { create(:query_snapshot, layout: layout, sql: placed_sql) }
+    let!(:other_snapshot) { create(:query_snapshot, layout: layout, sql: other_sql) }
+
+    it 'keeps the snapshot of a query a placed block runs' do
+      layout.save!
+
+      expect(placed_snapshot.reload).to be_present
+    end
+
+    it 'deletes a snapshot whose query no placed block runs' do
+      layout.save!
+
+      expect { other_snapshot.reload }.to raise_error ActiveRecord::RecordNotFound
+    end
+
+    it 'deletes the snapshots of a block once its node is removed' do
+      layout.update!(craftjs_json: {
+        'ROOT' => { 'type' => 'div', 'isCanvas' => true, 'nodes' => [] }
+      })
+
+      expect(layout.query_snapshots).to be_empty
+    end
+
+    it 'keeps only the queries of the placed version' do
+      create(:custom_block_version, custom_block: block_version.custom_block, manifest: block_version.manifest.merge(
+        'queries' => [other_sql]
+      ))
+
+      layout.save!
+
+      expect(layout.query_snapshots).to contain_exactly(placed_snapshot)
+    end
+  end
+
+  def craftjson_placing(block_version)
+    {
+      'ROOT' => { 'type' => 'div', 'isCanvas' => true, 'nodes' => ['block1'] },
+      'block1' => {
+        'type' => { 'resolvedName' => 'CustomBlock' },
+        'props' => { 'blockId' => block_version.custom_block_id, 'version' => block_version.number },
+        'parent' => 'ROOT',
+        'nodes' => []
+      }
+    }
+  end
+
   def craftjson_with_iframe_url(url)
     {
       'ROOT' => {

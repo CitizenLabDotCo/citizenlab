@@ -33,7 +33,7 @@ module ContentBuilder
 
     before_validation :swap_data_images, on: :create
     before_validation :set_craftjs_json, :sanitize_craftjs_json
-    after_save :sync_file_attachments
+    after_save :sync_file_attachments, :prune_query_snapshots
 
     validates :code, presence: true
     validate :validate_iframe_urls
@@ -106,6 +106,33 @@ module ContentBuilder
     end
 
     private
+
+    # A snapshot is served to anyone who can read the layout and asks its query, so one
+    # whose block was removed, or was only ever a draft checked during a run, would keep
+    # serving its data.
+    def prune_query_snapshots
+      query_snapshots.where.not(query_hash: placed_query_hashes).delete_all
+    end
+
+    # A version's queries and a snapshot's key are normalized by the same SQL sandbox
+    # from the same string, so hashing the stored query gives the snapshot's key.
+    def placed_query_hashes
+      return [] if craftjs_json.blank?
+
+      placements = craftjs_json.each_value.filter_map do |node|
+        next unless node.is_a?(Hash) && Craftjs::Query.resolved_name(node) == 'CustomBlock'
+
+        [node.dig('props', 'blockId'), node.dig('props', 'version')]
+      end
+      return [] if placements.empty?
+
+      CustomBlockVersion
+        .where(custom_block_id: placements.map(&:first))
+        .pluck(:custom_block_id, :number, :manifest)
+        .select { |block_id, number, _manifest| placements.include?([block_id, number]) }
+        .flat_map { |_block_id, _number, manifest| manifest['queries'] || [] }
+        .map { |sql| QuerySnapshot.hash_for(sql) }
+    end
 
     def file_attachment_widget?(node)
       node.is_a?(Hash) && Craftjs::Query.resolved_name(node) == 'FileAttachment'
