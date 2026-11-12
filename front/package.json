@@ -244,7 +244,7 @@
     "http-proxy-middleware": "^3.0.7",
     "husky": "4.3.8",
     "jest": "30.4.2",
-    "jest-cli": "30.4.2",
+    "jest-cli": "30.5.2",
     "jest-environment-jsdom": "30.4.1",
     "jest-junit": "17.0.0",
     "msw": "2.3.1",
