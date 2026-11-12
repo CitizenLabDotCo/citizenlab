@@ -315,6 +315,8 @@ const Analysis = ({
             insights={displayedInsights}
             textResponseSource={textResponseSource}
             textResponsesCount={textResponsesCount}
+            projectId={projectId}
+            phaseId={phaseId}
           />
         </>
       )}
