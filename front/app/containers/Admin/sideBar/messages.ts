@@ -1,6 +1,10 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  platformNavigation: {
+    id: 'app.containers.AdminPage.SideBar.platformNavigation',
+    defaultMessage: 'Platform navigation',
+  },
   dashboard: {
     id: 'app.containers.AdminPage.SideBar.dashboard',
     defaultMessage: 'Dashboard',

@@ -14,6 +14,7 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import OptionList from '../OptionList';
 import TagChip from '../TagChip';
+import useInputTermLabels from '../useInputTermLabels';
 import usePickerOptions from '../usePickerOptions';
 import { phaseIds } from '../utils';
 
@@ -26,6 +27,7 @@ interface Props {
 
 const PhasesProperty = ({ idea }: Props) => {
   const { formatMessage } = useIntl();
+  const { terms } = useInputTermLabels();
   const { phaseOptions } = usePickerOptions(
     'ProjectIdeas',
     idea.relationships.project.data.id
@@ -63,13 +65,17 @@ const PhasesProperty = ({ idea }: Props) => {
           <TagChip
             key={option.value}
             label={option.label}
+            outlined
             onRemove={() => requestRemoval(option.value)}
             removeLabel={formatMessage(messages.removeFromPhase, {
               phase: option.label,
             })}
           />
         ))}
-      <PropertyMenu label={formatMessage(messages.copyToPhase)} icon="plus">
+      <PropertyMenu
+        label={formatMessage(messages.copyToPhase)}
+        appearance="link"
+      >
         {(close) =>
           otherPhases.length > 0 ? (
             <OptionList
@@ -82,7 +88,7 @@ const PhasesProperty = ({ idea }: Props) => {
             />
           ) : (
             <Text variant="boHelper" m="8px">
-              {formatMessage(messages.noOtherPhases)}
+              {formatMessage(messages.noOtherPhasesForTerms, { terms })}
             </Text>
           )
         }

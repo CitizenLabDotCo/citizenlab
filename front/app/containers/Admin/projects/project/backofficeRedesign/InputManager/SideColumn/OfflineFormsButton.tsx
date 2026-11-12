@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, Button } from '@citizenlab/cl2-component-library';
+import { Box, Button, ButtonProps } from '@citizenlab/cl2-component-library';
 
 import { ParticipationMethod } from 'api/phases/types';
 
@@ -16,12 +16,18 @@ import messages from '../messages';
 
 interface Props {
   participationMethod: ParticipationMethod;
+  label?: string;
+  buttonProps?: Partial<ButtonProps>;
 }
 
-const OfflineFormsButton = ({ participationMethod }: Props) => {
+const OfflineFormsButton = ({
+  participationMethod,
+  label,
+  buttonProps,
+}: Props) => {
   const { formatMessage } = useIntl();
   const [opened, setOpened] = useState(false);
-  const label = formatMessage(messages.paperAndExcelForms);
+  const title = label ?? formatMessage(messages.paperAndExcelForms);
   const survey =
     getMethodConfig(participationMethod).formEditor === 'surveyEditor';
 
@@ -32,10 +38,11 @@ const OfflineFormsButton = ({ participationMethod }: Props) => {
         buttonStyle="bo-secondary"
         width="100%"
         onClick={() => setOpened(true)}
+        {...buttonProps}
       >
-        {label}
+        {title}
       </Button>
-      <Modal opened={opened} close={() => setOpened(false)} header={label}>
+      <Modal opened={opened} close={() => setOpened(false)} header={title}>
         <Box p="24px">
           <ImportInputsSection
             formType={survey ? 'survey' : 'input_form'}

@@ -87,6 +87,7 @@ declare global {
       apiCreateCause: typeof apiCreateCause;
       apiVerifyBogus: typeof apiVerifyBogus;
       apiCreateEvent: typeof apiCreateEvent;
+      apiAttendEvent: typeof apiAttendEvent;
       apiRemoveEvent: typeof apiRemoveEvent;
       apiCreateReportBuilder: typeof apiCreateReportBuilder;
       apiRemoveReportBuilder: typeof apiRemoveReportBuilder;
@@ -837,7 +838,7 @@ function apiReactToIdea(
   email: string,
   password: string,
   ideaId: string,
-  mode: TReactionMode
+  mode: TReactionMode | 'neutral'
 ) {
   return cy.apiLogin(email, password).then((response) => {
     const jwt = response.body.jwt;
@@ -1431,6 +1432,8 @@ function apiCreatePhase({
   nativeSurveyTitleMultiloc,
   presentation_mode,
   reacting_dislike_enabled,
+  reactingThreshold,
+  expireDaysLimit,
   available_views = ['card', 'map'],
   placementType,
 }: {
@@ -1457,6 +1460,8 @@ function apiCreatePhase({
   nativeSurveyButtonMultiloc?: Multiloc;
   nativeSurveyTitleMultiloc?: Multiloc;
   reacting_dislike_enabled?: boolean;
+  reactingThreshold?: number;
+  expireDaysLimit?: number;
   placementType?: 'on_timeline' | 'standalone';
 }) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
@@ -1481,6 +1486,8 @@ function apiCreatePhase({
           voting_method: votingMethod,
           submission_enabled: canPost,
           reacting_enabled: canReact,
+          reacting_threshold: reactingThreshold,
+          expire_days_limit: expireDaysLimit,
           commenting_enabled: canComment,
           presentation_mode,
           available_views,
@@ -1603,6 +1610,17 @@ function apiVerifyBogus(jwt: string, error?: string) {
   });
 }
 
+function apiAttendEvent(eventId: string, jwt: string) {
+  return cy.request({
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${jwt}`,
+    },
+    method: 'POST',
+    url: `web_api/v1/events/${eventId}/attendances`,
+  });
+}
+
 function apiCreateEvent({
   projectId,
   title,
@@ -1612,6 +1630,7 @@ function apiCreateEvent({
   startDate,
   endDate,
   onlineLink,
+  maximumAttendees,
 }: {
   projectId: string;
   title: string;
@@ -1621,6 +1640,7 @@ function apiCreateEvent({
   endDate: Date;
   includeLocation?: boolean;
   onlineLink?: string;
+  maximumAttendees?: number;
 }) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -1653,6 +1673,7 @@ function apiCreateEvent({
           start_at: startDate.toJSON(),
           end_at: endDate.toJSON(),
           online_link: onlineLink,
+          maximum_attendees: maximumAttendees,
         },
       },
     });
@@ -2653,6 +2674,7 @@ Cypress.Commands.add('setConsentCookie', setConsentCookie);
 Cypress.Commands.add('setLoginCookie', setLoginCookie);
 Cypress.Commands.add('apiVerifyBogus', apiVerifyBogus);
 Cypress.Commands.add('apiCreateEvent', apiCreateEvent);
+Cypress.Commands.add('apiAttendEvent', apiAttendEvent);
 Cypress.Commands.add('apiRemoveEvent', apiRemoveEvent);
 Cypress.Commands.add('apiCreateReportBuilder', apiCreateReportBuilder);
 Cypress.Commands.add('apiRemoveReportBuilder', apiRemoveReportBuilder);

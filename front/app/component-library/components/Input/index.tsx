@@ -264,6 +264,7 @@ class Input extends PureComponent<InputProps> {
               <IconTooltip
                 content={labelTooltipText}
                 placement={labelTooltipPlacement}
+                iconSize={variant === 'bo' ? '16px' : undefined}
               />
             )}
           </Label>

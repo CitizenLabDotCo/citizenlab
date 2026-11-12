@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 
 import { Button, IconNames } from '@citizenlab/cl2-component-library';
 
-import MenuButton from '../MenuButton';
+import MenuButton from 'components/admin/MenuButton';
 
 interface Props {
   icon: IconNames;

@@ -21,7 +21,7 @@ const VotingProgressBar = ({ phase, idea }: Props) => {
   const { formatMessage } = useIntl();
 
   const onlineIdeaVotes = idea.attributes.votes_count;
-  const offlineIdeaVotes = idea.attributes.manual_votes_amount;
+  const offlineIdeaVotes = idea.attributes.manual_votes_amount ?? 0;
   const totalIdeaVotes = idea.attributes.total_votes;
   const totalPhaseVotes = phase.data.attributes.total_votes_amount;
 

@@ -1,6 +1,15 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  insightsWillAppear: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsWillAppear',
+    defaultMessage: 'Insights will appear here',
+  },
+  insightsPurpose: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsPurpose',
+    defaultMessage:
+      'Once the project is live, insights will help you turn participation into clear results',
+  },
   buildView: {
     id: 'app.containers.Admin.projects.project.buildView',
     defaultMessage: 'Build',
@@ -16,31 +25,6 @@ export default defineMessages({
   phasePreviewTitle: {
     id: 'app.containers.Admin.projects.project.phasePreviewTitle',
     defaultMessage: 'Preview of this phase',
-  },
-  noInputToManage: {
-    id: 'app.containers.Admin.projects.project.noInputToManage',
-    defaultMessage:
-      'This phase collects no input, so there is nothing to manage.',
-  },
-  noInputToAnalyse: {
-    id: 'app.containers.Admin.projects.project.noInputToAnalyse',
-    defaultMessage:
-      'This phase collects no input, so there is nothing to analyse.',
-  },
-  surveyResponsesInInsights: {
-    id: 'app.containers.Admin.projects.project.surveyResponsesInInsights',
-    defaultMessage:
-      'Survey responses are not managed here. Open Insights to see them.',
-  },
-  externalToolToManage: {
-    id: 'app.containers.Admin.projects.project.externalToolToManage',
-    defaultMessage:
-      'Responses are collected in the external tool you linked, so they cannot be managed here.',
-  },
-  externalToolToAnalyse: {
-    id: 'app.containers.Admin.projects.project.externalToolToAnalyse',
-    defaultMessage:
-      'Results are collected in the external tool you linked, so they cannot be analysed here.',
   },
   notifications: {
     id: 'app.containers.Admin.projects.project.notifications',
@@ -60,28 +44,18 @@ export default defineMessages({
     defaultMessage:
       'You can specify who can take each action, and ask additional questions to participants to collect more information.',
   },
-  noInputsYet: {
-    id: 'app.containers.Admin.projects.project.noInputsYet',
-    defaultMessage: 'No inputs yet',
+  noTermsYet: {
+    id: 'app.containers.Admin.projects.project.noTermsYet',
+    defaultMessage: 'No {terms} yet',
   },
-  noInputsYetDescription: {
-    id: 'app.containers.Admin.projects.project.noInputsYetDescription',
+  noTermsYetDescription: {
+    id: 'app.containers.Admin.projects.project.noTermsYetDescription',
     defaultMessage:
-      'Inputs appear here as participants take part. You can follow each one and add the ones collected offline.',
+      '{capitalizedTerms} appear here as participants take part. You can follow each one and add the ones collected offline.',
   },
   noInsightsYet: {
     id: 'app.containers.Admin.projects.project.noInsightsYet',
     defaultMessage: 'No insights yet',
-  },
-  noInsightsYetDescription: {
-    id: 'app.containers.Admin.projects.project.noInsightsYetDescription',
-    defaultMessage:
-      'As participants take part, this page shows participation over time, demographics and a summary of their input.',
-  },
-  recommendedActionsHint: {
-    id: 'app.containers.Admin.projects.project.recommendedActionsHint',
-    defaultMessage:
-      'Recommended actions appear here once participants take part.',
   },
   editReport: {
     id: 'app.containers.Admin.projects.project.editReport',

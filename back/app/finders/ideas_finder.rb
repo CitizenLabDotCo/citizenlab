@@ -57,6 +57,19 @@ class IdeasFinder < ApplicationFinder
     scope(:in_phase, phase) if phase.present?
   end
 
+  # Common ground statements in the given agreement buckets, read from the results of the
+  # `phase` param. Lists nothing without a common ground phase to read them from.
+  def agreements_condition(agreements)
+    return if agreements.blank?
+
+    phase = Phase.find_by(id: params[:phase])
+    return records.none unless phase&.participation_method == ParticipationMethod::CommonGround.method_str
+
+    exclude = StatisticsRoleExclusion.new.exclude_admins_and_moderators?
+    service = CommonGround::ResultsService.new(phase, exclude_admins_and_moderators: exclude)
+    where(id: service.idea_ids_with_agreement(agreements))
+  end
+
   def idea_status_condition(idea_status)
     where(idea_status_id: idea_status)
   end

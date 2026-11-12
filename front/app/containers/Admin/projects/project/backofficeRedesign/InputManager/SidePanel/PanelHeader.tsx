@@ -10,6 +10,7 @@ import {
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
+import useInputTermLabels from '../useInputTermLabels';
 
 export interface PanelNavigation {
   position: number;
@@ -25,6 +26,7 @@ interface Props {
 
 const PanelHeader = ({ context, navigation }: Props) => {
   const { formatMessage } = useIntl();
+  const { term } = useInputTermLabels();
 
   return (
     <Box
@@ -35,11 +37,11 @@ const PanelHeader = ({ context, navigation }: Props) => {
       pl="24px"
       pr="80px"
       py="12px"
+      // Keeps the close button, which SideModal places, centred with or
+      // without the navigation.
+      minHeight="52px"
       borderBottom={`1px solid ${colors.divider}`}
-      position="sticky"
-      top="0"
-      background={colors.white}
-      zIndex="1"
+      flexShrink={0}
     >
       <Text variant="boHelper" m="0">
         {context}
@@ -50,7 +52,9 @@ const PanelHeader = ({ context, navigation }: Props) => {
             iconName="chevron-left"
             iconColor={colors.coolGrey600}
             iconColorOnHover={colors.textPrimary}
-            a11y_buttonActionMessage={formatMessage(messages.previousInput)}
+            a11y_buttonActionMessage={formatMessage(messages.previousTerm, {
+              term,
+            })}
             onClick={() => navigation.onPrevious?.()}
             disabled={!navigation.onPrevious}
           />
@@ -64,7 +68,9 @@ const PanelHeader = ({ context, navigation }: Props) => {
             iconName="chevron-right"
             iconColor={colors.coolGrey600}
             iconColorOnHover={colors.textPrimary}
-            a11y_buttonActionMessage={formatMessage(messages.nextInput)}
+            a11y_buttonActionMessage={formatMessage(messages.nextTerm, {
+              term,
+            })}
             onClick={() => navigation.onNext?.()}
             disabled={!navigation.onNext}
           />
