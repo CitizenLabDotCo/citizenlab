@@ -43,8 +43,11 @@ class ErrorReporter
     # 3. You may use specific method for controller or add specific controller `extra` fields (e.g. `extra: { params: params }`)
     # https://github.com/getsentry/sentry-ruby/blob/4.7.2/sentry-rails/lib/sentry/rails/controller_methods.rb
 
-    def report_msg(msg, extra: {})
-      Sentry::Rails.capture_message(msg, extra: extra) # it sends the backtrace to Sentry.
+    # 4. Pass `fingerprint` to control how Sentry groups events into issues, e.g.
+    # one issue per SSO provider instead of one issue for all of them.
+
+    def report_msg(msg, extra: {}, fingerprint: nil)
+      Sentry::Rails.capture_message(msg, **sentry_options(extra, fingerprint)) # it sends the backtrace to Sentry.
 
       # It's considered as an exceptional situation, so printing the entire backtrace to make it visible.
       Rails.logger.error(
@@ -57,13 +60,21 @@ class ErrorReporter
     # (though it would work), because it does not contain the backtrace, so it will be harder to debug.
     # Use `ErrorReporter.report_msg('message')` instead.
     # Look for `Sentry.set_tags` in the code to see the reported tags.
-    def report(error, extra: {})
-      Sentry::Rails.capture_exception(error, extra: extra)
+    def report(error, extra: {}, fingerprint: nil)
+      Sentry::Rails.capture_exception(error, **sentry_options(extra, fingerprint))
       Rails.logger.error(
         "Reported error: #{error.message} (#{error.class})\n" +
         (error.backtrace&.join("\n") || ''),
         extra
       )
+    end
+
+    private
+
+    def sentry_options(extra, fingerprint)
+      options = { extra: extra }
+      options[:fingerprint] = fingerprint if fingerprint
+      options
     end
   end
 end
