@@ -16074,6 +16074,21 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.ProjectPages.slugRequiredError": {
+    "state": "verified",
+    "verified_at": "2026-11-12T13:52:39.650805Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.AdminPage.ProjectPages.titleError": {
+    "state": "verified",
+    "verified_at": "2026-11-12T13:52:39.650805Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.AdminPage.ProjectPages.titleLabel": {
+    "state": "verified",
+    "verified_at": "2026-11-12T13:52:39.650805Z",
+    "verified_by": "Roger"
+  },
   "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesDescription": {
     "state": "verified",
     "verified_at": "2026-08-19T10:08:05.215811Z",
@@ -16204,6 +16219,31 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.ProjectTimeline.moveCancelButton": {
+    "state": "verified",
+    "verified_at": "2026-11-12T13:52:39.650805Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.AdminPage.ProjectTimeline.moveConfirmButton": {
+    "state": "verified",
+    "verified_at": "2026-11-12T13:52:39.650805Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.AdminPage.ProjectTimeline.movePreviousPhaseError": {
+    "state": "verified",
+    "verified_at": "2026-11-12T13:52:39.650805Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.AdminPage.ProjectTimeline.moveSaveChangesFirst": {
+    "state": "verified",
+    "verified_at": "2026-11-12T13:52:39.650805Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.AdminPage.ProjectTimeline.moveWarningWidgetRemoved": {
+    "state": "verified",
+    "verified_at": "2026-11-12T13:52:39.650805Z",
+    "verified_by": "Roger"
+  },
   "app.containers.AdminPage.ProjectTimeline.newPhaseTitle": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
@@ -16238,6 +16278,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AdminPage.ProjectTimeline.placementLabel2": {
+    "state": "verified",
+    "verified_at": "2026-11-12T13:52:39.650805Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.AdminPage.ProjectTimeline.placementOnTimelineDescription2": {
+    "state": "verified",
+    "verified_at": "2026-11-12T13:52:39.650805Z",
+    "verified_by": "Roger"
   },
   "app.containers.AdminPage.ProjectTimeline.placementSpotlightDescription": {
     "state": "verified",
