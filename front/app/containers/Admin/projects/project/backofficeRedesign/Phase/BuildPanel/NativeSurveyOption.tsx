@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Box, Button } from '@citizenlab/cl2-component-library';
 
@@ -12,7 +12,6 @@ import actionFormMessages from 'components/admin/ActionForm/messages';
 import { useIntl } from 'utils/cl-intl';
 
 import methodSectionMessages from './BuildFields/MethodSection/messages';
-import SurveySetupModal from './SurveySetupModal';
 
 interface Props {
   projectId: string;
@@ -20,6 +19,7 @@ interface Props {
   name: string;
   title: string;
   description: string;
+  onAddQuestions: () => void;
 }
 
 const NativeSurveyOption = ({
@@ -28,9 +28,9 @@ const NativeSurveyOption = ({
   name,
   title,
   description,
+  onAddQuestions,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const [opened, setOpened] = useState(false);
   const { data: customFields } = useCustomFields({ projectId, phaseId });
 
   const nQuestions = (customFields ?? []).filter(
@@ -63,7 +63,7 @@ const NativeSurveyOption = ({
           buttonStyle="bo-secondary"
           boSize="medium"
           width="100%"
-          onClick={() => setOpened(true)}
+          onClick={onAddQuestions}
         >
           {formatMessage(
             hasQuestions
@@ -72,13 +72,6 @@ const NativeSurveyOption = ({
           )}
         </Button>
       )}
-      <SurveySetupModal
-        projectId={projectId}
-        phaseId={phaseId}
-        hasQuestions={hasQuestions}
-        opened={opened}
-        onClose={() => setOpened(false)}
-      />
     </Box>
   );
 };

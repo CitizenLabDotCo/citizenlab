@@ -9504,6 +9504,11 @@
     "verified_at": "2026-09-22T06:06:23.538085Z",
     "verified_by": "Jelena"
   },
+  "app.containers.Admin.projects.project.addQuestionsSaveError": {
+    "state": "verified",
+    "verified_at": "2026-11-11T12:30:41.403702Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.projects.project.addStatement": {
     "state": "verified",
     "verified_at": "2026-10-29T14:22:25.900232Z",
@@ -13044,6 +13049,11 @@
     "verified_at": "2026-10-20T15:53:01.405647Z",
     "verified_by": "Jelena"
   },
+  "app.containers.Admin.projects.project.savingAndOpeningSurvey": {
+    "state": "verified",
+    "verified_at": "2026-11-11T12:30:41.403702Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.projects.project.scheduledToPublish": {
     "state": "verified",
     "verified_at": "2026-10-28T11:24:27.355954Z",
@@ -14012,6 +14022,11 @@
   "app.containers.Admin.projects.project.votingSetup": {
     "state": "verified",
     "verified_at": "2026-10-28T15:55:51.849357Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.waitingForSurveyAttachment": {
+    "state": "verified",
+    "verified_at": "2026-11-11T12:30:41.403702Z",
     "verified_by": "Jelena"
   },
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.adminsOnly": {

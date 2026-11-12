@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
@@ -41,6 +41,8 @@ interface Props extends SurveyMethodSwitch {
   surveyEmbedUrl: string | null | undefined;
   errors: CLErrors | null;
   onExternalSurveyChange: (changes: ExternalSurveyChanges) => void;
+  draftQuestionsAction?: ReactNode;
+  onAddQuestions: () => void;
 }
 
 const SurveyMethodSection = ({
@@ -53,6 +55,8 @@ const SurveyMethodSection = ({
   surveyEmbedUrl,
   errors,
   onExternalSurveyChange,
+  draftQuestionsAction,
+  onAddQuestions,
 }: Props) => {
   const { formatMessage } = useIntl();
   const surveysEnabled = useFeatureFlag({ name: 'surveys' });
@@ -94,6 +98,7 @@ const SurveyMethodSection = ({
                   name={NAME}
                   title={title}
                   description={description}
+                  onAddQuestions={onAddQuestions}
                 />
               );
             }
@@ -128,7 +133,10 @@ const SurveyMethodSection = ({
                     if (method !== selected) onSelect(method);
                   }}
                 />
-                {method === selected && method !== 'survey' && (
+                {method === selected &&
+                  method === 'native_survey' &&
+                  draftQuestionsAction}
+                {method === selected && method === 'poll' && (
                   <Text variant="boHelper" m="0">
                     {formatMessage(formSectionMessages.saveToEditForm)}
                   </Text>

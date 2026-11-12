@@ -47,6 +47,15 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.switchConfirm',
     defaultMessage: 'Change',
   },
+  savingAndOpening: {
+    id: 'app.containers.Admin.projects.project.savingAndOpeningSurvey',
+    defaultMessage: 'Saving the phase and opening your selection…',
+  },
+  waitingForAttachment: {
+    id: 'app.containers.Admin.projects.project.waitingForSurveyAttachment',
+    defaultMessage:
+      'Wait for the attachment to finish uploading before continuing.',
+  },
   surveySetupLead: {
     id: 'app.containers.Admin.projects.project.surveySetupLead',
     defaultMessage:

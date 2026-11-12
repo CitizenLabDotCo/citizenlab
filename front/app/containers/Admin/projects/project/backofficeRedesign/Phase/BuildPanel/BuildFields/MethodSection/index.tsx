@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { InputTerm, ParticipationMethod } from 'api/phases/types';
 
@@ -15,6 +15,7 @@ interface Props {
   phaseId?: string;
   inputTerm?: InputTerm;
   formInSurveyOptions: boolean;
+  draftQuestionsAction?: ReactNode;
 }
 
 const MethodSection = ({
@@ -23,6 +24,7 @@ const MethodSection = ({
   phaseId,
   inputTerm,
   formInSurveyOptions,
+  draftQuestionsAction,
 }: Props) => {
   switch (participationMethod) {
     case 'poll':
@@ -53,6 +55,7 @@ const MethodSection = ({
           phaseId={phaseId}
           inputTerm={inputTerm}
           formInSurveyOptions={formInSurveyOptions}
+          draftQuestionsAction={draftQuestionsAction}
         />
       );
   }

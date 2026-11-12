@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { Text } from '@citizenlab/cl2-component-library';
 
@@ -30,6 +30,7 @@ interface Props {
   inputTerm?: InputTerm;
   /** Survey options already shows the form and offline collection. */
   formInSurveyOptions: boolean;
+  draftQuestionsAction?: ReactNode;
 }
 
 const FormSection = ({
@@ -38,6 +39,7 @@ const FormSection = ({
   phaseId,
   inputTerm,
   formInSurveyOptions,
+  draftQuestionsAction,
 }: Props) => {
   const { formatMessage } = useIntl();
 
@@ -64,9 +66,11 @@ const FormSection = ({
         />
       ) : (
         <PanelField label={title}>
-          <Text variant="boHelper" m="0">
-            {formatMessage(messages.saveToEditForm)}
-          </Text>
+          {draftQuestionsAction || (
+            <Text variant="boHelper" m="0">
+              {formatMessage(messages.saveToEditForm)}
+            </Text>
+          )}
         </PanelField>
       )}
 

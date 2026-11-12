@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useState } from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import { CLErrors, Multiloc } from 'typings';
@@ -17,6 +17,10 @@ import Error from 'components/UI/Error';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 import { useIntl } from 'utils/cl-intl';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { useSearch } from 'utils/router';
+
+import SurveySetupModal from '../SurveySetupModal';
 
 import DescriptionField from './DescriptionField';
 import DocumentUrlCard from './DocumentUrlCard';
@@ -41,6 +45,7 @@ interface Props {
   files: ReturnType<typeof usePhaseFileAttachments>;
   surveyMethodSwitch: SurveyMethodSwitch;
   surveyPlacement?: ReactNode;
+  draftQuestionsAction?: ReactNode;
   onChange: (newData: Partial<IUpdatedPhaseProperties>) => void;
   onDatesChange: (dates: Dates) => void;
 }
@@ -56,10 +61,14 @@ const BuildFields = ({
   files,
   surveyMethodSwitch,
   surveyPlacement,
+  draftQuestionsAction,
   onChange,
   onDatesChange,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const { survey_action } = useSearch({ strict: false });
+  const [surveySetupOpened, setSurveySetupOpened] = useState(false);
+
   const surveyOptionsShown = !standalone && isSurveyMethod(participationMethod);
 
   return (
@@ -162,6 +171,8 @@ const BuildFields = ({
               onExternalSurveyChange={onChange}
               disabledReasons={surveyMethodSwitch.disabledReasons}
               onSelect={surveyMethodSwitch.onSelect}
+              draftQuestionsAction={draftQuestionsAction}
+              onAddQuestions={() => setSurveySetupOpened(true)}
             />
           )}
 
@@ -171,11 +182,25 @@ const BuildFields = ({
             phaseId={phaseId}
             inputTerm={formData.input_term}
             formInSurveyOptions={surveyOptionsShown}
+            draftQuestionsAction={draftQuestionsAction}
           />
         </Box>
 
         <Error apiErrors={errors?.base} />
       </Box>
+
+      {phaseId && participationMethod === 'native_survey' && (
+        <SurveySetupModal
+          projectId={projectId}
+          phaseId={phaseId}
+          opened={surveySetupOpened}
+          onClose={() => setSurveySetupOpened(false)}
+          initialAction={survey_action}
+          onCloseAction={() => {
+            if (survey_action) removeSearchParams(['survey_action']);
+          }}
+        />
+      )}
     </Box>
   );
 };
