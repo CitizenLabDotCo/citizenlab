@@ -50,8 +50,10 @@ export const HeaderTitle = styled(Title)<{
         : theme.colors.tenantPrimary
       : theme.colors.tenantPrimary;
   }};
-  font-size: ${({ theme }) =>
-    theme.signedOutHeaderTitleFontSize || fontSizes.xxxl}px;
+  font-size: ${({ theme, variant }) =>
+    variant === 'h2'
+      ? fontSizes.xxl
+      : theme.signedOutHeaderTitleFontSize || fontSizes.xxxl}px;
   ${HeadingFontStyle};
   text-align: ${({ align }) => align};
   padding: 0;
@@ -59,7 +61,7 @@ export const HeaderTitle = styled(Title)<{
   margin-bottom: 10px;
 
   ${media.phone`
-    font-size: ${fontSizes.xl}px;
+    ${({ variant }) => variant !== 'h2' && `font-size: ${fontSizes.xxl}px;`}
     margin-bottom: 12px;
   `}
 `;

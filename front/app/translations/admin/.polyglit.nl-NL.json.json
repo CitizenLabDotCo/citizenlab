@@ -1524,25 +1524,21 @@
     "verified_at": "2026-10-27T14:09:52.075408Z",
     "verified_by": "Luuc"
   },
-
   "app.components.admin.ContentBuilder.CustomBlocks.blockDisabled": {
     "state": "verified",
     "verified_at": "2026-11-11T17:44:58.635177Z",
     "verified_by": "Luuc"
   },
-
   "app.components.admin.ContentBuilder.CustomBlocks.blockLoadError": {
     "state": "verified",
     "verified_at": "2026-11-11T17:44:58.635177Z",
     "verified_by": "Luuc"
   },
-
   "app.components.admin.ContentBuilder.CustomBlocks.customBlockTitle": {
     "state": "verified",
     "verified_at": "2026-11-11T17:44:58.635177Z",
     "verified_by": "Luuc"
   },
-
   "app.components.admin.ContentBuilder.CustomBlocks.noSettings": {
     "state": "verified",
     "verified_at": "2026-11-11T17:44:58.635177Z",
@@ -7298,6 +7294,30 @@
     "verified_at": "2026-03-18T11:49:32.383601Z",
     "verified_by": "Admin"
   },
+
+  "app.containers.Admin.pagesAndMenu.ContentBuilder.CraftComponents.shared.headingLevel1": {
+    "state": "verified",
+    "verified_at": "2026-11-12T14:44:58.960191Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.Admin.pagesAndMenu.ContentBuilder.CraftComponents.shared.headingLevel2": {
+    "state": "verified",
+    "verified_at": "2026-11-12T14:44:58.960191Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.Admin.pagesAndMenu.ContentBuilder.CraftComponents.shared.titleHeadingLevel": {
+    "state": "verified",
+    "verified_at": "2026-11-12T14:44:58.960191Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.Admin.pagesAndMenu.ContentBuilder.CraftComponents.shared.titleHeadingLevelDescription": {
+    "state": "verified",
+    "verified_at": "2026-11-12T14:44:58.960191Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.pagesAndMenu.ContentBuilder.FollowedItems.defaultTitle": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.383601Z",
@@ -10013,7 +10033,6 @@
     "verified_at": "2026-10-08T07:46:40.731334Z",
     "verified_by": "Pauline"
   },
-
   "app.containers.Admin.projects.project.earlyAccess.feedbackNoticeDescriptionWithoutSlack": {
     "state": "verified",
     "verified_at": "2026-11-11T17:44:58.635177Z",
@@ -10034,7 +10053,6 @@
     "verified_at": "2026-10-08T07:46:40.731334Z",
     "verified_by": "Pauline"
   },
-
   "app.containers.Admin.projects.project.earlyAccess.turnOnNoticeDescriptionGeneral": {
     "state": "verified",
     "verified_at": "2026-11-11T17:44:58.635177Z",
@@ -24220,7 +24238,6 @@
     "verified_at": "2026-03-18T11:49:32.383601Z",
     "verified_by": "Admin"
   },
-
   "app.containers.admin.ContentBuilder.IframeMultiloc.noUrlPrompt": {
     "state": "verified",
     "verified_at": "2026-11-11T17:44:58.635177Z",
