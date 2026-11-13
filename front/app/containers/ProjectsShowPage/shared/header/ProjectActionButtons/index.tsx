@@ -147,6 +147,8 @@ const ProjectActionButtons = ({
         <ButtonWithLink
           onClick={() => setModalOpened(true)}
           fontWeight="500"
+          whiteSpace="normal"
+          textAlign="center"
           icon="chevron-up"
           iconPos="right"
         >

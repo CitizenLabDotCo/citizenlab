@@ -20,7 +20,7 @@ interface Props {
 }
 
 export const ParticipationPanelProvider = ({ projectId, children }: Props) => {
-  const { data: phases, isPlaceholderData } = usePhases(projectId);
+  const { data: phases, isPlaceholderData } = usePhases(projectId, 'all');
   const [choice, setChoice] = useState<{
     projectId: string;
     collapsed: boolean;

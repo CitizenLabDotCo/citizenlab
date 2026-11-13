@@ -136,6 +136,20 @@ resource 'Analyses' do
     end
 
     describe do
+      let(:project) { create(:project_with_active_ideation_phase) }
+      let!(:custom_form) { create(:custom_form, participation_context: project) }
+      let(:project_id) { project.id }
+
+      example_request 'Create a project analysis (ideation phase) when the custom_form exists without any custom fields' do
+        expect(response_status).to eq 201
+        additional_custom_field_ids = response_data.dig(:relationships, :additional_custom_fields, :data).pluck(:id)
+        expect(CustomField.where(id: additional_custom_field_ids, resource: custom_form).count).to eq additional_custom_field_ids.size
+        included_additional_fields = json_response_body[:included].select { |d| additional_custom_field_ids.include? d[:id] }
+        expect(included_additional_fields.map { |d| d[:attributes][:code] }).to match_array(%w[title_multiloc body_multiloc location_description])
+      end
+    end
+
+    describe do
       let(:project) { create(:single_phase_native_survey_project) }
       let!(:custom_form) { create(:custom_form, participation_context: project.phases.first) }
       let(:project_id) { project.id }

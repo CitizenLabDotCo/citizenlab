@@ -95,22 +95,23 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
         MSG
       end
 
-      custom_form = CustomForm.find_or_initialize_by(participation_context: container)
-      custom_form.save! if custom_form.new_record?
+      custom_form = nil
+      guard_error = nil
+      result = nil
 
-      if pmethod.form_editable_after_responses?
-        guard_error = guard_live_form(pmethod, custom_form, responses_count)
-        return guard_error if guard_error
+      ActiveRecord::Base.transaction do
+        custom_form = CustomForm.find_or_initialize_by(participation_context: container)
+        custom_form.save! if custom_form.new_record?
+
+        if pmethod.form_editable_after_responses?
+          guard_error = guard_live_form(pmethod, custom_form, responses_count)
+        end
+
+        result = update_all_fields(custom_form) unless guard_error
+        raise ActiveRecord::Rollback unless result&.success?
       end
 
-      result = IdeaCustomFields::UpdateAllService.new(
-        custom_form,
-        current_user,
-        custom_fields: normalized_fields,
-        fields_last_updated_at: params[:fields_last_updated_at],
-        form_save_type: 'manual',
-        form_opened_at: nil
-      ).update_all
+      return guard_error if guard_error
 
       if result.success?
         custom_form.reload
@@ -135,6 +136,17 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
     end
 
     private
+
+    def update_all_fields(custom_form)
+      IdeaCustomFields::UpdateAllService.new(
+        custom_form,
+        current_user,
+        custom_fields: normalized_fields,
+        fields_last_updated_at: params[:fields_last_updated_at],
+        form_save_type: 'manual',
+        form_opened_at: nil
+      ).update_all
+    end
 
     # A live form's fields carry submitted answers, and UpdateAllService hard-deletes the
     # answers of any persisted field whose id is missing from the payload. Persist the
