@@ -288,6 +288,16 @@ describe ProjectsFinderAdminService do
       result = described_class.filter_participation_states(Project.all, { participation_states: %w[not_started collecting_data informing past] })
       expect(result.pluck(:id).sort).to match_array([not_started_project.id, project_without_phases.id, collecting_data_project.id, information_phase_project.id, past_project.id].sort)
     end
+
+    it 'returns starting_soon projects, including one between two phases' do
+      result = described_class.filter_participation_states(Project.all, { participation_states: ['starting_soon'] })
+      expect(result.pluck(:id)).to contain_exactly(not_started_project.id, gap_project.id)
+    end
+
+    it 'returns no_phases projects' do
+      result = described_class.filter_participation_states(Project.all, { participation_states: ['no_phases'] })
+      expect(result.pluck(:id)).to eq([project_without_phases.id])
+    end
   end
 
   describe 'self.filter_by_folder_ids' do
@@ -770,6 +780,190 @@ describe ProjectsFinderAdminService do
 
         expect(result.pluck(:id)).to contain_exactly(project_in_folder.id, project_outside_folder.id)
       end
+    end
+  end
+
+  describe 'display statuses' do
+    def project_with_status(status, approved_at: nil, review: false)
+      create(:project).tap do |project|
+        project.admin_publication.update!(publication_status: status)
+        create(:project_review, project:, approved_at:) if review
+      end
+    end
+
+    let!(:published) { project_with_status('published') }
+    let!(:pending) { project_with_status('draft', review: true) }
+    let!(:draft) { project_with_status('draft') }
+    let!(:approved_draft) { project_with_status('draft', review: true, approved_at: Time.zone.now) }
+    let!(:archived) { project_with_status('archived') }
+
+    describe 'self.filter_display_status' do
+      where(:statuses, :expected) do
+        [
+          [%w[published], %i[published]],
+          [%w[pending], %i[pending]],
+          [%w[draft], %i[draft approved_draft]],
+          [%w[archived], %i[archived]],
+          [%w[published pending], %i[published pending]],
+          [%w[pending draft], %i[pending draft approved_draft]],
+          [[], %i[published pending draft approved_draft archived]]
+        ]
+      end
+
+      with_them do
+        it 'returns the projects with the selected statuses' do
+          result = described_class.filter_display_status(Project.all, { display_status: statuses })
+          expect(result.pluck(:id)).to match_array(expected.map { |name| send(name).id })
+        end
+      end
+    end
+
+    describe 'sort: status' do
+      # Drafts tie on status, so they keep their creation order.
+      it 'orders published, pending approval, draft, archived' do
+        result = described_class.execute(Project.all, { sort: 'status_asc' }, current_user: create(:admin))
+        expect(result.pluck(:id)).to eq([published, pending, draft, approved_draft, archived].map(&:id))
+      end
+
+      it 'reverses the order' do
+        result = described_class.execute(Project.all, { sort: 'status_desc' }, current_user: create(:admin))
+        expect(result.pluck(:id)).to eq([archived, draft, approved_draft, pending, published].map(&:id))
+      end
+    end
+  end
+
+  describe 'self.filter_top_level' do
+    let!(:space1) { create(:space) }
+    let!(:space2) { create(:space) }
+    let!(:folder_in_space1) { create(:project_folder, space: space1) }
+    let!(:folder_without_space) { create(:project_folder) }
+    let!(:in_folder_in_space1) { create(:project, space: space1, folder: folder_in_space1) }
+    let!(:loose_in_space1) { create(:project, space: space1) }
+    let!(:in_space2) { create(:project, space: space2) }
+    let!(:in_folder_without_space) { create(:project, folder: folder_without_space) }
+    let!(:loose) { create(:project) }
+
+    let(:users) do
+      {
+        admin: create(:admin),
+        space_moderator: create(:space_moderator, spaces: [space1]),
+        space_moderator_with_projects: create(:space_moderator, spaces: [space1]).tap do |user|
+          user.add_role('project_moderator', project_id: in_space2.id)
+          user.add_role('project_moderator', project_id: loose.id)
+          user.save!
+        end,
+        folder_moderator: create(:project_folder_moderator, project_folders: [folder_in_space1]).tap do |user|
+          user.add_role('project_moderator', project_id: in_space2.id)
+          user.save!
+        end,
+        project_moderator: create(:project_moderator, projects: [in_folder_in_space1])
+      }
+    end
+
+    where(:role, :spaces_enabled, :level, :expected) do
+      [
+        [:admin, true, nil, %i[loose]],
+        [:admin, true, :space1, %i[loose_in_space1]],
+        [:admin, false, nil, %i[loose_in_space1 in_space2 loose]],
+        [:space_moderator, true, nil, []],
+        [:space_moderator, true, :space1, %i[loose_in_space1]],
+        [:space_moderator_with_projects, true, nil, %i[in_space2 loose]],
+        [:folder_moderator, true, nil, %i[in_space2]],
+        [:project_moderator, true, nil, %i[in_folder_in_space1]]
+      ]
+    end
+
+    with_them do
+      before do
+        if spaces_enabled
+          SettingsService.new.activate_feature!('spaces')
+        else
+          SettingsService.new.deactivate_feature!('spaces')
+        end
+      end
+
+      it 'returns the projects at the top of the level' do
+        params = { top_level: 'true', space_ids: level && [send(level).id] }.compact
+        result = described_class.execute(Project.all, params, current_user: users[role])
+        expect(result.pluck(:id)).to match_array(expected.map { |name| send(name).id })
+      end
+    end
+
+    it 'keeps all projects without the top_level param' do
+      result = described_class.execute(Project.all, {}, current_user: users[:admin])
+      expect(result.count).to eq 5
+    end
+  end
+
+  describe 'sorting by column value' do
+    let(:admin) { create(:admin) }
+
+    let!(:active) do
+      create(:project, created_at: 4.days.ago).tap do |project|
+        create(:phase, project:, start_at: 5.days.ago, end_at: 5.days.from_now)
+      end
+    end
+    let!(:upcoming) do
+      create(:project, created_at: 3.days.ago).tap do |project|
+        create(:volunteering_phase, project:, start_at: 10.days.from_now, end_at: 20.days.from_now)
+      end
+    end
+    let!(:without_phases) { create(:project, created_at: 2.days.ago) }
+    let!(:ended) do
+      create(:project, created_at: 1.day.ago).tap do |project|
+        create(:information_phase, project:, start_at: 30.days.ago, end_at: 20.days.ago)
+      end
+    end
+
+    def sorted(sort)
+      described_class.execute(Project.all, { sort: }, current_user: admin).pluck(:id)
+    end
+
+    where(:sort, :expected) do
+      [
+        ['phase_asc', %i[active upcoming without_phases ended]],
+        ['phase_desc', %i[ended without_phases upcoming active]],
+        ['participation_method_asc', %i[active ended upcoming without_phases]],
+        ['participation_method_desc', %i[upcoming ended active without_phases]],
+        ['start_date_asc', %i[ended active upcoming without_phases]],
+        ['start_date_desc', %i[upcoming active ended without_phases]],
+        ['end_date_asc', %i[ended active upcoming without_phases]],
+        ['end_date_desc', %i[upcoming active ended without_phases]]
+      ]
+    end
+
+    with_them do
+      it 'orders by the column, with projects without a value last' do
+        expect(sorted(sort)).to eq(expected.map { |name| send(name).id })
+      end
+    end
+
+    it 'gives an open-ended project no end date' do
+      open_ended = create(:project).tap { |project| create(:phase, project:, start_at: 1.day.ago, end_at: nil) }
+      expect(sorted('end_date_asc').last(2)).to contain_exactly(without_phases.id, open_ended.id)
+    end
+
+    it 'orders by the name of the first manager' do
+      create(:project_moderator, projects: [active], first_name: 'Zoe', last_name: 'Adams')
+      create(:project_moderator, projects: [ended], first_name: 'anna', last_name: 'Brown')
+
+      expect(sorted('managers_asc').first(2)).to eq([ended.id, active.id])
+      expect(sorted('managers_desc').first(2)).to eq([active.id, ended.id])
+    end
+  end
+
+  describe 'sort: arranged' do
+    let(:admin) { create(:admin) }
+    let!(:project1) { create(:project) }
+    let!(:project2) { create(:project) }
+    let!(:project3) { create(:project) }
+
+    it 'follows the front-office order' do
+      # New projects go to the top, so project1 starts last.
+      project1.admin_publication.insert_at(0)
+
+      result = described_class.execute(Project.all, { sort: 'arranged' }, current_user: admin)
+      expect(result.pluck(:id)).to eq([project1, project3, project2].map(&:id))
     end
   end
 

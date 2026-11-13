@@ -4,21 +4,23 @@ class WebApi::V1::SpacesController < ApplicationController
   def index
     authorize :space, :index?
     @spaces = policy_scope(Space)
-    @spaces = paginate @spaces
-
-    if params[:search].present?
-      @spaces = @spaces.search_by_title(params[:search])
+    # A search orders by relevance; otherwise the oldest spaces come first.
+    @spaces = if params[:search].present?
+      @spaces.search_by_title(params[:search])
+    else
+      @spaces.order(:created_at, :id)
     end
 
-    moderators_per_space = UserRoleService.new.moderators_per_space(
-      @spaces.pluck(:id)
-    )
+    @spaces = paginate @spaces
+    space_ids = @spaces.pluck(:id)
 
     render json: linked_json(
       @spaces,
       WebApi::V1::SpaceSerializer,
       params: jsonapi_serializer_params(
-        moderators_per_space:
+        moderators_per_space: UserRoleService.new.moderators_per_space(space_ids),
+        folders_count_per_space: ProjectFolders::Folder.where(space_id: space_ids).group(:space_id).count,
+        projects_count_per_space: Project.not_hidden.where(space_id: space_ids).group(:space_id).count
       ),
       include: %i[moderators]
     )
