@@ -145,13 +145,12 @@ class OmniauthCallbackController < ApplicationController
     end
   end
 
-  # A user rejected by our email rules (blocked domain, banned email) is the
-  # rules working, not a bug, so it is not reported. Blocked domains are tracked
-  # as an activity, as on email sign-up. Anything else is reported, grouped per
-  # provider and validation error so each cause gets its own issue.
+  # Users rejected by our email rules (blocked domain, banned email) are expected,
+  # so they are not reported. Any other validation error may mean the SSO method
+  # is misconfigured, so it is reported, grouped per provider and error.
   def report_invalid_record(error, authver_method)
     record = error.record
-    if record.is_a?(User) && record.rejected_only_by_email_rules?
+    if record.is_a?(User) && record.only_blocked_email_errors?
       SideFxUserService.new.after_error(record, request.remote_ip)
       return
     end
@@ -167,8 +166,7 @@ class OmniauthCallbackController < ApplicationController
     )
   end
 
-  # JsonValidator adds a Hash (with a message that can hold the value) instead
-  # of a symbol; only its error name is safe and stable enough to group on.
+  # JsonValidator adds a Hash whose message can hold the value; group on its error name only.
   def validation_error_key(error)
     error.is_a?(Hash) ? error[:error] : error
   end

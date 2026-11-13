@@ -43,8 +43,7 @@ class ErrorReporter
     # 3. You may use specific method for controller or add specific controller `extra` fields (e.g. `extra: { params: params }`)
     # https://github.com/getsentry/sentry-ruby/blob/4.7.2/sentry-rails/lib/sentry/rails/controller_methods.rb
 
-    # 4. Pass `fingerprint` to control how Sentry groups events into issues, e.g.
-    # one issue per SSO provider instead of one issue for all of them.
+    # 4. Pass `fingerprint` to control how Sentry groups events into issues.
 
     def report_msg(msg, extra: {}, fingerprint: nil)
       Sentry::Rails.capture_message(msg, **sentry_options(extra, fingerprint)) # it sends the backtrace to Sentry.

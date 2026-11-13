@@ -1639,7 +1639,7 @@ RSpec.describe User do
     end
   end
 
-  describe '#rejected_only_by_email_rules?' do
+  describe '#only_blocked_email_errors?' do
     using RSpec::Parameterized::TableSyntax
 
     blocked_email = "someone@#{described_class::EMAIL_DOMAIN_BLACKLIST.first}"
@@ -1656,7 +1656,7 @@ RSpec.describe User do
         user = build(:user, email: email, locale: locale)
         user.validate
 
-        expect(user.rejected_only_by_email_rules?).to be expected
+        expect(user.only_blocked_email_errors?).to be expected
       end
     end
 
@@ -1665,7 +1665,7 @@ RSpec.describe User do
       user = build(:user, email: 'banned@example.com')
       user.validate
 
-      expect(user.rejected_only_by_email_rules?).to be true
+      expect(user.only_blocked_email_errors?).to be true
     end
   end
 end

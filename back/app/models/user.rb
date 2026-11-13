@@ -73,6 +73,7 @@ class User < ApplicationRecord
   EMAIL_DOMAIN_BLACKLIST = EmailDomainBlacklist.load
   EMAIL_DOMAIN_BLOCKED_ERROR_CODE = 'zrb-42'
   EMAIL_BANNED_ERROR_CODE = 'zrb-43'
+  BLOCKED_EMAIL_ERROR_CODES = [EMAIL_DOMAIN_BLOCKED_ERROR_CODE, EMAIL_BANNED_ERROR_CODE].freeze
 
   # NOTE: Apr 2026 - Slug is still generated but no longer used in the codebase.
   # It will be removed in the near future when we are sure there is no further use for it.
@@ -453,13 +454,10 @@ class User < ApplicationRecord
     merge_target_email.present?
   end
 
-  # True when the only validation errors come from the blocked email domain
-  # and banned email rules, i.e. the user was turned away on purpose.
-  def rejected_only_by_email_rules?
+  # True when the user is invalid only because their email is blocked or banned.
+  def only_blocked_email_errors?
     details = errors.details.values.flatten
-    details.any? && details.all? do |detail|
-      detail[:code].in?([EMAIL_DOMAIN_BLOCKED_ERROR_CODE, EMAIL_BANNED_ERROR_CODE])
-    end
+    details.any? && details.all? { |detail| detail[:code].in?(BLOCKED_EMAIL_ERROR_CODES) }
   end
 
   private
