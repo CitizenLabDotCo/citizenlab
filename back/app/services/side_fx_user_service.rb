@@ -89,6 +89,8 @@ class SideFxUserService
   def after_error(user, remote_ip)
     %i[email new_email].each do |field|
       error_codes = user.errors.details[field].pluck(:code)
+      next if error_codes.empty?
+
       log_rejected_email(user.public_send(field), error_codes, remote_ip)
     end
   end

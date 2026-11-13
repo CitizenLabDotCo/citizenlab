@@ -3,7 +3,10 @@ import React, { useState } from 'react';
 import { Box, Success } from '@citizenlab/cl2-component-library';
 import { FormProvider, UseFormReturn } from 'react-hook-form';
 
-import { requestCodeForEmail } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
+import {
+  isEmailRefused,
+  requestCodeForEmail,
+} from 'api/authentication/confirm_email/requestEmailConfirmationCode';
 import { IUser } from 'api/users/types';
 import { invalidateCacheAfterUpdateUser } from 'api/users/useUpdateUser';
 
@@ -17,6 +20,7 @@ import {
   LabelContainer,
 } from 'components/smallForm';
 import Error from 'components/UI/Error';
+import errorMessages from 'components/UI/Error/messages';
 import { FormLabel } from 'components/UI/FormComponents';
 import Warning from 'components/UI/Warning';
 
@@ -43,7 +47,9 @@ const UpdateEmailForm = ({
   user,
 }: UpdateEmailFormProps) => {
   const { formatMessage } = useIntl();
-  const [error, setError] = useState<'taken' | undefined>(undefined);
+  const [error, setError] = useState<
+    'taken' | 'something_went_wrong' | undefined
+  >(undefined);
   const currentEmail = user.data.attributes.email;
 
   const onFormSubmit = async (formValues: FormValues) => {
@@ -63,8 +69,10 @@ const UpdateEmailForm = ({
 
           setOpenConfirmationModal(true);
         })
-        .catch(() => {
-          setError('taken');
+        .catch((requestError) => {
+          setError(
+            isEmailRefused(requestError) ? 'something_went_wrong' : 'taken'
+          );
         });
     } catch (error) {
       handleHookFormSubmissionError(error, methods.setError);
@@ -110,6 +118,12 @@ const UpdateEmailForm = ({
           />
           {error === 'taken' && (
             <Error marginTop="4px" text={formatMessage(messages.emailTaken)} />
+          )}
+          {error === 'something_went_wrong' && (
+            <Error
+              marginTop="4px"
+              text={formatMessage(errorMessages.something_went_wrong)}
+            />
           )}
           <StyledButton
             type="submit"

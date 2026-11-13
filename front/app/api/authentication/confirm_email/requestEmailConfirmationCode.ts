@@ -54,10 +54,18 @@ export const requestCodeMergeAccount = async (merge_target_email?: string) => {
   });
 };
 
-const isEmailTaken = (error: unknown) =>
+const hasNewEmailError = (error: unknown, errorKey: string) =>
   isCLErrorsWrapper(error) &&
   Array.isArray(error.errors.new_email) &&
-  error.errors.new_email.some(({ error }) => error === 'is already taken');
+  error.errors.new_email.some(({ error }) => error === errorKey);
+
+const isEmailTaken = (error: unknown) =>
+  hasNewEmailError(error, 'is already taken');
+
+// A blocked or banned address. The error is deliberately vague, as on sign-up,
+// so it does not reveal which addresses are refused.
+export const isEmailRefused = (error: unknown) =>
+  hasNewEmailError(error, 'something_went_wrong');
 
 // Starts a code for an address the signed-in user wants as their email. When another
 // account owns it, that is usually the same person's older account, so a merge into

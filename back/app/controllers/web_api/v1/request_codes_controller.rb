@@ -56,7 +56,7 @@ class WebApi::V1::RequestCodesController < ApplicationController
         new_email: new_email_with_fallback
       )
     rescue ActiveRecord::RecordInvalid => e
-      SideFxUserService.new.after_error(e.record, request.remote_ip)
+      SideFxUserService.new.after_error(e.record, request.remote_ip) if e.record.is_a?(User)
       render json: { errors: e.record.errors.details }, status: :unprocessable_entity
       return
     end
