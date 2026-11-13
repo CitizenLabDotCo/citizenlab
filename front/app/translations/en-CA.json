@@ -280,6 +280,7 @@
   "app.components.FileRepositorySelectAndUpload.addFile2": "Select a file",
   "app.components.FileRepositorySelectAndUpload.attachmentCount": "{count, plural, one {# file} other {# files}}",
   "app.components.FileRepositorySelectAndUpload.attachments": "Attachments",
+  "app.components.FileRepositorySelectAndUpload.done": "Done",
   "app.components.FileRepositorySelectAndUpload.or": "or",
   "app.components.FileRepositorySelectAndUpload.removeFile": "Remove",
   "app.components.FileRepositorySelectAndUpload.removeFileAriaLabel": "Remove {fileName}",

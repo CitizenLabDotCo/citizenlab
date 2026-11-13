@@ -280,6 +280,7 @@
   "app.components.FileRepositorySelectAndUpload.addFile2": "Odaberite datoteku",
   "app.components.FileRepositorySelectAndUpload.attachmentCount": "{count, plural, one {# datoteka} few {# datoteke} other {# datoteka}}",
   "app.components.FileRepositorySelectAndUpload.attachments": "Prilozi",
+  "app.components.FileRepositorySelectAndUpload.done": "Gotovo",
   "app.components.FileRepositorySelectAndUpload.or": "ili",
   "app.components.FileRepositorySelectAndUpload.removeFile": "Ukloni",
   "app.components.FileRepositorySelectAndUpload.removeFileAriaLabel": "Ukloni {fileName}",

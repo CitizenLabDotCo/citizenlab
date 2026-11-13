@@ -280,6 +280,7 @@
   "app.components.FileRepositorySelectAndUpload.addFile2": "ਇੱਕ ਫਾਈਲ ਚੁਣੋ",
   "app.components.FileRepositorySelectAndUpload.attachmentCount": "{count, plural, one {# ਫ਼ਾਈਲ} other {# ਫ਼ਾਈਲਾਂ}}",
   "app.components.FileRepositorySelectAndUpload.attachments": "ਅਟੈਚਮੈਂਟਾਂ",
+  "app.components.FileRepositorySelectAndUpload.done": "ਹੋ ਗਿਆ",
   "app.components.FileRepositorySelectAndUpload.or": "ਜਾਂ",
   "app.components.FileRepositorySelectAndUpload.removeFile": "ਹਟਾਓ",
   "app.components.FileRepositorySelectAndUpload.removeFileAriaLabel": "{fileName} ਹਟਾਓ",

@@ -280,6 +280,7 @@
   "app.components.FileRepositorySelectAndUpload.addFile2": "Dewiswch ffeil",
   "app.components.FileRepositorySelectAndUpload.attachmentCount": "{count, plural, one {# ffeil} other {# ffeil}}",
   "app.components.FileRepositorySelectAndUpload.attachments": "Atodiadau",
+  "app.components.FileRepositorySelectAndUpload.done": "Wedi gorffen",
   "app.components.FileRepositorySelectAndUpload.or": "neu",
   "app.components.FileRepositorySelectAndUpload.removeFile": "Dileu",
   "app.components.FileRepositorySelectAndUpload.removeFileAriaLabel": "Dileu {fileName}",

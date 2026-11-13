@@ -280,6 +280,7 @@
   "app.components.FileRepositorySelectAndUpload.addFile2": "Roghnaigh comhad",
   "app.components.FileRepositorySelectAndUpload.attachmentCount": "{count, plural, one {# chomhad} other {# comhad}}",
   "app.components.FileRepositorySelectAndUpload.attachments": "Iatáin",
+  "app.components.FileRepositorySelectAndUpload.done": "Déanta",
   "app.components.FileRepositorySelectAndUpload.or": "nó",
   "app.components.FileRepositorySelectAndUpload.removeFile": "Bain",
   "app.components.FileRepositorySelectAndUpload.removeFileAriaLabel": "Bain {fileName}",

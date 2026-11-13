@@ -280,6 +280,7 @@
   "app.components.FileRepositorySelectAndUpload.addFile2": "Selecciona un fitxer",
   "app.components.FileRepositorySelectAndUpload.attachmentCount": "{count, plural, one {# fitxer} other {# fitxers}}",
   "app.components.FileRepositorySelectAndUpload.attachments": "Fitxers adjunts",
+  "app.components.FileRepositorySelectAndUpload.done": "Fet",
   "app.components.FileRepositorySelectAndUpload.or": "o",
   "app.components.FileRepositorySelectAndUpload.removeFile": "Elimina",
   "app.components.FileRepositorySelectAndUpload.removeFileAriaLabel": "Elimina {fileName}",
