@@ -57,7 +57,11 @@ const SurveySetupModal = ({
   const hasQuestions = customFields?.some(
     (field) => field.enabled && field.input_type !== 'page'
   );
-  const { data: phase } = usePhase(phaseId);
+  const {
+    data: phase,
+    isFetching: phaseFetching,
+    isPlaceholderData: phasePlaceholder,
+  } = usePhase(phaseId);
   const { data: submissionCount } = useSubmissionCount({ phaseId });
   // Copying replaces the questions, which would orphan existing responses.
   const canCopy =
@@ -160,6 +164,8 @@ const SurveySetupModal = ({
               if (!open) closeAction();
             }}
             surveyFormPersisted={!!phase?.data.attributes.custom_form_persisted}
+            surveyFormLoading={!phase || phaseFetching || phasePlaceholder}
+            variant="bo"
           />
           <ImportPdfModal
             projectId={projectId}

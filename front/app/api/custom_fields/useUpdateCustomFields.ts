@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
 import customFormKeys from 'api/custom_form/keys';
+import phasesKeys from 'api/phases/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
@@ -49,7 +50,7 @@ const useUpdateCustomField = () => {
   const queryClient = useQueryClient();
   return useMutation<ICustomField, CLErrors, IUpdateCustomFieldProperties>({
     mutationFn: updateCustomField,
-    onSuccess: (_, variables) => {
+    onSuccess: async (_, variables) => {
       queryClient.invalidateQueries({ queryKey: customFieldsKeys.lists() });
 
       queryClient.invalidateQueries({
@@ -64,6 +65,10 @@ const useUpdateCustomField = () => {
             projectId: variables.projectId,
             phaseId: variables.phaseId,
           }),
+        });
+
+        await queryClient.invalidateQueries({
+          queryKey: phasesKeys.item({ phaseId: variables.phaseId }),
         });
       }
     },

@@ -13,6 +13,7 @@ import { DefaultTheme, useTheme } from 'styled-components';
 import { IOption } from 'typings';
 
 import useAuthUser from 'api/me/useAuthUser';
+import { ParticipationMethod } from 'api/phases/types';
 import { IProjectData, PublicationStatus } from 'api/projects/types';
 import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
 import useInfiniteProjectsMiniAdmin from 'api/projects_mini_admin/useInfiniteProjectsMiniAdmin';
@@ -41,6 +42,7 @@ interface Option {
 
 interface Props {
   selectedProjectId?: string;
+  participationMethods?: ParticipationMethod[];
   excludeProjectId?: string;
   emptyOptionMessage?: MessageDescriptor;
   placeholder?: string;
@@ -80,6 +82,7 @@ const getBorderColor = (
 
 const ProjectFilter = ({
   selectedProjectId,
+  participationMethods,
   excludeProjectId,
   emptyOptionMessage,
   placeholder,
@@ -101,6 +104,7 @@ const ProjectFilter = ({
     {
       status: PUBLICATION_STATUSES,
       sort: 'alphabetically_asc',
+      participation_methods: participationMethods,
       search: debouncedSearchValue,
       discoverability: includeHiddenProjects
         ? ['listed', 'unlisted']

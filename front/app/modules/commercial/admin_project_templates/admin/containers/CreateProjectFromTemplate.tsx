@@ -1,5 +1,6 @@
 import React, { ReactElement, memo, useState, useCallback } from 'react';
 
+import { Box, Button } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import useGraphqlTenantLocales from 'modules/commercial/admin_project_templates/admin/api/useGraphqlTenantLocales';
 
@@ -7,7 +8,10 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
+import Error from 'components/UI/Error';
+
 import { trackEventByName } from 'utils/analytics';
+import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import tracks from '../../tracks';
@@ -15,6 +19,9 @@ import { Templates } from '../../types';
 import usePublishedProjectTemplates from '../api/usePublishedProjectTemplates';
 import ProjectTemplateCards from '../components/ProjectTemplateCards';
 import UseTemplateModal from '../components/UseTemplateModal';
+
+import messages from './messages';
+
 interface Props {
   className?: string;
   graphqlTenantLocales: string[];
@@ -29,6 +36,7 @@ const CreateProjectFromTemplate = memo(
     onDone,
     variant,
   }: Props): ReactElement => {
+    const { formatMessage } = useIntl();
     const { data: appConfig } = useAppConfiguration();
     const [namedTemplate, setNamedTemplate] = useState<{
       id: string;
@@ -52,6 +60,9 @@ const CreateProjectFromTemplate = memo(
     const {
       data,
       isLoading: loading,
+      isError,
+      refetch,
+      isFetching,
       fetchNextPage,
       isFetchingNextPage,
     } = usePublishedProjectTemplates({
@@ -152,6 +163,21 @@ const CreateProjectFromTemplate = memo(
         onDone?.();
       }
     }, [created, namedTemplate, onDone]);
+
+    if (isError) {
+      return (
+        <Box role="alert" p="24px">
+          <Error text={formatMessage(messages.templatesLoadFailed)} />
+          <Button
+            buttonStyle={variant === 'bo' ? 'bo-secondary' : 'admin-dark'}
+            onClick={() => refetch()}
+            processing={isFetching}
+          >
+            {formatMessage(messages.retryTemplates)}
+          </Button>
+        </Box>
+      );
+    }
 
     return (
       <>

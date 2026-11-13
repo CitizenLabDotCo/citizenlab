@@ -123,7 +123,9 @@ describe('Redesigned phase Insights', () => {
   it('shows the empty state without recommended actions before participation', () => {
     createPhase('ideation').then(() => {
       visitInsights();
-      cy.contains('Insights will appear here').should('be.visible');
+      cy.contains('No activity in this phase’s date range').should(
+        'be.visible'
+      );
       cy.contains('No insights yet').should('be.visible');
       cy.get('aside[aria-label="Recommended actions"]').should('not.exist');
     });
@@ -143,7 +145,7 @@ describe('Redesigned phase Insights', () => {
       cy.get('[aria-label="Phase Insights"]')
         .should('contain.text', 'Visitors')
         .and('contain.text', '8');
-      cy.contains('Insights will appear here').should('not.exist');
+      cy.contains('No activity in this phase’s date range').should('not.exist');
       cy.get('aside[aria-label="Recommended actions"]').should('be.visible');
       cy.contains('button', 'Get an AI Sensemaking summary').should(
         'not.exist'
@@ -162,7 +164,9 @@ describe('Redesigned phase Insights', () => {
         });
       });
       visitInsights();
-      cy.contains('Insights will appear here').should('be.visible');
+      cy.contains('No activity in this phase’s date range').should(
+        'be.visible'
+      );
       cy.contains('a', /^Manage$/).click();
       cy.location('pathname').should('include', '/volunteering');
       cy.then(() => {

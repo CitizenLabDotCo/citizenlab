@@ -1,14 +1,14 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  insightsWillAppear: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsWillAppear',
-    defaultMessage: 'Insights will appear here',
+  noActivityInDateRange: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.Phase.noActivityInDateRange',
+    defaultMessage: 'No activity in this phase’s date range',
   },
-  insightsPurpose: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsPurpose',
+  insightsDateRange: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsDateRange',
     defaultMessage:
-      'Once the project is live, insights will help you turn participation into clear results',
+      'These insights include visits and participation recorded during this phase. Activity outside its start and end dates isn’t included.',
   },
   buildView: {
     id: 'app.containers.Admin.projects.project.buildView',

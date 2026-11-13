@@ -24,8 +24,8 @@ const EMPTY_COPY = {
     description: messages.noTermsYetDescription,
   },
   insights: {
-    title: messages.insightsWillAppear,
-    description: messages.insightsPurpose,
+    title: messages.noActivityInDateRange,
+    description: messages.insightsDateRange,
   },
 };
 
