@@ -7,7 +7,7 @@ module AIAssistant
     class UnknownKeyError < StandardError; end
 
     def self.all
-      [Surfaces::SurveyBuilder]
+      [Surfaces::SurveyBuilder, Surfaces::ProjectGenerator]
     end
 
     def self.find!(key)
