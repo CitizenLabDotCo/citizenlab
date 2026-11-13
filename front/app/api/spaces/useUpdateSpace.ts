@@ -1,6 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
+import { invalidateAdminSearchIfShownChanged } from 'api/admin_search/utils';
+
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import spacesKeys from './keys';
@@ -20,6 +22,10 @@ const useUpdateSpace = () => {
   return useMutation<Space, CLErrors, SpaceUpdate>({
     mutationFn: updateSpace,
     onSuccess: (variables) => {
+      invalidateAdminSearchIfShownChanged(queryClient, {
+        id: variables.data.id,
+        titleMultiloc: variables.data.attributes.title_multiloc,
+      });
       queryClient.invalidateQueries({ queryKey: spacesKeys.lists() });
       queryClient.invalidateQueries({
         queryKey: spacesKeys.item({ id: variables.data.id }),

@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+import adminSearchKeys from 'api/admin_search/keys';
 import contentBuilderKeys from 'api/content_builder/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
@@ -23,6 +24,7 @@ const useDeleteProjectFolder = () => {
     mutationFn: deleteProjectFolder,
     onSuccess: async () => {
       invalidateOnCRUD();
+      queryClient.invalidateQueries({ queryKey: adminSearchKeys.all() });
       queryClient.invalidateQueries({
         queryKey: contentBuilderKeys.all(),
       });

@@ -1,6 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
+import adminSearchKeys from 'api/admin_search/keys';
+
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import spacesKeys from './keys';
@@ -20,6 +22,7 @@ const useAddSpace = () => {
   return useMutation<Space, CLErrors, RequestBody>({
     mutationFn: addSpace,
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: adminSearchKeys.all() });
       queryClient.invalidateQueries({ queryKey: spacesKeys.lists() });
     },
   });

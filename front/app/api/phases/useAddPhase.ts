@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
+import adminSearchKeys from 'api/admin_search/keys';
 import projectsKeys from 'api/projects/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
@@ -27,6 +28,7 @@ const useAddPhase = () => {
       queryClient.invalidateQueries({
         queryKey: phasesKeys.list({ projectId }),
       });
+      queryClient.invalidateQueries({ queryKey: adminSearchKeys.all() });
     },
   });
 };

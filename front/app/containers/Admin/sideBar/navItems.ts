@@ -2,11 +2,13 @@ import { IconNames } from '@citizenlab/cl2-component-library';
 
 import { TAppConfigurationSetting } from 'api/app_configuration/types';
 
+import { WrapperTo } from 'utils/cl-router/Link';
+
 import messages from './messages';
 
 export type NavItem = {
   name: string;
-  link: string;
+  link: NonNullable<WrapperTo>;
   iconName: IconNames;
   message: keyof typeof messages;
   featureNames?: TAppConfigurationSetting[];

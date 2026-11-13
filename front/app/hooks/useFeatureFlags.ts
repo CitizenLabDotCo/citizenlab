@@ -1,4 +1,7 @@
-import { TAppConfigurationSetting } from 'api/app_configuration/types';
+import {
+  IAppConfigurationSettings,
+  TAppConfigurationSetting,
+} from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 type Parameters = {
@@ -6,13 +9,11 @@ type Parameters = {
   onlyCheckAllowed?: boolean;
 };
 
-export default function useFeatureFlags({
-  names,
-  onlyCheckAllowed = false,
-}: Parameters) {
-  const { data: appConfiguration } = useAppConfiguration();
-  const tenantSettings = appConfiguration?.data.attributes.settings;
-
+// Non-hook version of useFeatureFlags, for checking many items at once.
+export const areFeaturesActive = (
+  tenantSettings: IAppConfigurationSettings | undefined,
+  { names, onlyCheckAllowed = false }: Parameters
+) => {
   const isFeatureActive = (featureName: TAppConfigurationSetting) => {
     const setting = tenantSettings && tenantSettings[featureName];
     const isEnabled =
@@ -24,4 +25,13 @@ export default function useFeatureFlags({
   };
 
   return names.length === 0 || names.some(isFeatureActive);
+};
+
+export default function useFeatureFlags(parameters: Parameters) {
+  const { data: appConfiguration } = useAppConfiguration();
+
+  return areFeaturesActive(
+    appConfiguration?.data.attributes.settings,
+    parameters
+  );
 }

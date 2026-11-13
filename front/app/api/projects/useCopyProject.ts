@@ -1,7 +1,10 @@
 import { useMutation } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
+import adminSearchKeys from 'api/admin_search/keys';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+import { queryClient } from 'utils/cl-react-query/queryClient';
 
 import { IProject } from './types';
 import { invalidateOnCRUD } from './utils';
@@ -18,6 +21,7 @@ const useCopyProject = () => {
     mutationFn: copyProject,
     onSuccess: () => {
       invalidateOnCRUD();
+      queryClient.invalidateQueries({ queryKey: adminSearchKeys.all() });
     },
   });
 };
