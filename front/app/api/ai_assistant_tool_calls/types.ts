@@ -1,3 +1,4 @@
+import { AskUserArguments } from './tools/askUser';
 import { GetFormFieldsArguments } from './tools/getFormFields';
 import { ReplaceFormFieldsArguments } from './tools/replaceFormFields';
 
@@ -11,8 +12,11 @@ export type AiAssistantToolCallStatus =
   | 'rejected'
   | 'expired';
 
+export type AiAssistantAnswer = { question: string; answer: string };
+
 // The arguments of each tool, as stored once the backend validated them.
 export type AiAssistantToolArguments = {
+  ask_user: AskUserArguments;
   get_form_fields: GetFormFieldsArguments;
   replace_form_fields: ReplaceFormFieldsArguments;
 };
@@ -29,6 +33,8 @@ type ToolCall<Name extends AiAssistantToolName> = {
     reason: string | null;
     decided_at: string | null;
     created_at: string;
+    // The user's answers, once they answered the assistant's questions.
+    answers?: AiAssistantAnswer[] | null;
   };
 };
 

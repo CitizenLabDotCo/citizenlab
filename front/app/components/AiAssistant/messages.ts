@@ -39,6 +39,18 @@ export default defineMessages({
     defaultMessage:
       'Only PDF files of up to {maxSizeMb} MB and Markdown (.md) or text (.txt) files of up to {maxTextSizeKb} KB can be attached, {maxFiles} at most.',
   },
+  awaitingAnswersHint: {
+    id: 'app.components.aiAssistant.awaitingAnswersHint',
+    defaultMessage: "Answer the assistant's questions above to continue.",
+  },
+  otherAnswer: {
+    id: 'app.components.aiAssistant.otherAnswer',
+    defaultMessage: 'Something else…',
+  },
+  sendAnswers: {
+    id: 'app.components.aiAssistant.sendAnswers',
+    defaultMessage: 'Send answers',
+  },
   awaitingApprovalHint: {
     id: 'app.components.aiAssistant.awaitingApprovalHint',
     defaultMessage: 'Approve or reject the proposed change to continue.',

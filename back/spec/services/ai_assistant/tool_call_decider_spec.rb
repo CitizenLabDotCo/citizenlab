@@ -104,4 +104,41 @@ describe AIAssistant::ToolCallDecider do
       expect(phase.reload.custom_form).to be_nil
     end
   end
+
+  describe '#answer!' do
+    let(:question) do
+      create(
+        :ai_assistant_tool_call,
+        message: assistant_message,
+        name: 'ask_user',
+        arguments: { 'questions' => [{ 'question' => 'When should it start?', 'options' => %w[Soon Later] }] }
+      )
+    end
+    let(:answers) { [{ 'question' => 'When should it start?', 'answer' => 'Soon' }] }
+
+    before { tool_call.update!(status: 'executed') }
+
+    it 'stores the answers as the result of the questions and continues the conversation' do
+      expect { expect(described_class.new(question, user).answer!(answers)).to eq(:ok) }
+        .to have_enqueued_job(AIAssistant::TurnJob).with(conversation)
+        .and have_enqueued_job(LogActivityJob).with(question, 'answered', user, anything, hash_including(channel: 'ai_assistant'))
+
+      expect(question.reload).to have_attributes(status: 'executed', decided_by: user)
+      expect(JSON.parse(question.result)).to eq('answers' => answers)
+    end
+
+    it 'refuses to mark a change as done with answers' do
+      tool_call.update!(status: 'awaiting_user')
+
+      expect(described_class.new(tool_call, user).answer!(answers)).to eq(:not_a_question)
+      expect(tool_call.reload.status).to eq('awaiting_user')
+    end
+
+    it 'refuses answers longer than a message' do
+      long_answers = [{ 'question' => 'Why?', 'answer' => 'a' * AIAssistant::Message::MAX_CONTENT_LENGTH }]
+
+      expect(described_class.new(question, user).answer!(long_answers)).to eq(:too_long)
+      expect(question.reload.status).to eq('awaiting_user')
+    end
+  end
 end
