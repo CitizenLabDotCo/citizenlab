@@ -5,10 +5,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SideBar.QuickSearch.quickSearch',
     defaultMessage: 'Quick search',
   },
-  find: {
-    id: 'app.containers.AdminPage.SideBar.QuickSearch.find',
-    defaultMessage: 'Find',
-  },
   placeholder: {
     id: 'app.containers.AdminPage.SideBar.QuickSearch.placeholder',
     defaultMessage: 'Find settings, projects and phases',

@@ -1,13 +1,14 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
-import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
+import { Icon, Text, colors } from '@citizenlab/cl2-component-library';
 
 import Modal from 'components/UI/Modal';
 
+import { ScreenReaderOnly } from 'utils/a11y';
 import { useIntl } from 'utils/cl-intl';
 
 import RailTooltip from '../RailTooltip';
-import { StyledBox, StyledText } from '../styles';
+import { StyledBox } from '../styles';
 import useSidebarCollapsed from '../useSidebarCollapsed';
 
 import messages from './messages';
@@ -18,6 +19,7 @@ import useRecents from './useRecents';
 // Cmd+K on Mac and Ctrl+K elsewhere, as in most apps with a quick search.
 const isMac = /Mac|iPhone|iPad/.test(navigator.userAgent);
 const shortcutLabel = isMac ? '⌘K' : 'Ctrl K';
+const TITLE_ID = 'quick-search-title';
 
 type Props = {
   userId: string;
@@ -33,7 +35,8 @@ const QuickSearch = ({ userId }: Props) => {
   const entries = useQuickSearchEntries();
   const { recentKeys, currentKey } = useRecents(userId, entries);
 
-  // Line the modal up with the Find item, and keep it there as results change.
+  // Line the modal up with the Quick search item, and keep it there as
+  // results change.
   const open = useCallback(() => {
     setModalTop(buttonRef.current?.getBoundingClientRect().top);
     setOpened(true);
@@ -69,18 +72,28 @@ const QuickSearch = ({ userId }: Props) => {
           width={collapsed ? '56px' : '100%'}
           display="flex"
           alignItems="center"
-          p={collapsed ? '10px 0' : '10px 8px 10px 16px'}
+          // Smaller and set apart from the menu below, as it's a tool rather
+          // than a section.
+          mb="12px"
+          p={collapsed ? '6px 0' : '6px 16px'}
           justifyContent={collapsed ? 'center' : 'flex-start'}
           onClick={open}
           aria-label={formatMessage(messages.quickSearch)}
           aria-keyshortcuts="Meta+K Control+K"
           data-cy="e2e-quick-search-button"
         >
-          <Icon name="search" fill={colors.coolGrey300} height="20px" />
+          <Icon name="search" fill={colors.coolGrey300} height="16px" />
           {!collapsed && (
-            <StyledText color="white" ml="15px" my="0px" textAlign="left">
+            <Text
+              color="grey400"
+              fontSize="s"
+              fontStyle="italic"
+              ml="15px"
+              my="0px"
+              textAlign="left"
+            >
               {formatMessage(messages.quickSearch)}
-            </StyledText>
+            </Text>
           )}
           {!collapsed && (
             <Text
@@ -96,22 +109,27 @@ const QuickSearch = ({ userId }: Props) => {
           )}
         </StyledBox>
       </RailTooltip>
+      {/* No visible header or close button: Escape or a click outside
+          closes it. The hidden title gives the dialog its name. */}
       <Modal
         opened={opened}
         close={close}
-        header={formatMessage(messages.find)}
+        ariaLabelledBy={TITLE_ID}
+        hideCloseButton
         variant="bo"
         width={560}
+        padding="32px 24px 24px"
         fixedTop={modalTop}
       >
-        <Box p="16px 24px 24px">
-          <QuickSearchPanel
-            entries={entries}
-            recentKeys={recentKeys}
-            currentKey={currentKey}
-            onSelect={close}
-          />
-        </Box>
+        <ScreenReaderOnly id={TITLE_ID}>
+          {formatMessage(messages.quickSearch)}
+        </ScreenReaderOnly>
+        <QuickSearchPanel
+          entries={entries}
+          recentKeys={recentKeys}
+          currentKey={currentKey}
+          onSelect={close}
+        />
       </Modal>
     </>
   );
