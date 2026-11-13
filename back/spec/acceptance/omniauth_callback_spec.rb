@@ -645,8 +645,8 @@ resource 'Omniauth Callback', document: false do
       OmniAuth.config.test_mode = false
     end
 
-    def mock_sso_email(email)
-      auth = get_auth_hash(email_confirmed: true)
+    def mock_sso_email(email, email_confirmed: true)
+      auth = get_auth_hash(email_confirmed: email_confirmed)
       auth.info.email = email
       OmniAuth.config.mock_auth[:fake_sso] = auth
     end
@@ -673,6 +673,18 @@ resource 'Omniauth Callback', document: false do
         expect { do_request }
           .to have_enqueued_job(LogActivityJob)
           .with(ban, 'banned_email_used', nil, anything, payload: hash_including(:remote_ip))
+
+        assert_status(302)
+        expect(User.count).to eq 0
+      end
+
+      example 'Tracks, but does not report, an unconfirmed SSO email whose domain is blocked' do
+        mock_sso_email("billy_fixed@#{User::EMAIL_DOMAIN_BLACKLIST.first}", email_confirmed: false)
+        expect(ErrorReporter).not_to receive(:report)
+
+        expect { do_request }
+          .to have_enqueued_job(LogActivityJob)
+          .with(AppConfiguration.instance, 'blacklisted_email_domain_used', nil, anything, payload: hash_including(:remote_ip))
 
         assert_status(302)
         expect(User.count).to eq 0

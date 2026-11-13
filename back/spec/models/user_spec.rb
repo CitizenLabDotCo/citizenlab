@@ -1667,5 +1667,13 @@ RSpec.describe User do
 
       expect(user.only_blocked_email_errors?).to be true
     end
+
+    it 'is true when the new email is blocked' do
+      user = create(:user)
+      user.new_email = "someone@#{described_class::EMAIL_DOMAIN_BLACKLIST.first}"
+      user.validate
+
+      expect(user.only_blocked_email_errors?).to be true
+    end
   end
 end

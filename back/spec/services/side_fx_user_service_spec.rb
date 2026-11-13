@@ -363,6 +363,15 @@ describe SideFxUserService do
         .with(ban, 'banned_email_used', nil, anything, payload: { remote_ip: '1.2.3.4' })
     end
 
+    it 'logs the activity for a blocked new email too' do
+      user.new_email = "someone@#{User::EMAIL_DOMAIN_BLACKLIST.first}"
+      user.validate
+
+      expect { service.after_error(user, '1.2.3.4') }
+        .to have_enqueued_job(LogActivityJob)
+        .with(AppConfiguration.instance, 'blacklisted_email_domain_used', nil, anything, payload: { email: user.new_email, remote_ip: '1.2.3.4' })
+    end
+
     it 'logs nothing for other validation errors' do
       expect { service.after_error(invalid_user('not-an-email'), '1.2.3.4') }
         .not_to have_enqueued_job(LogActivityJob)
