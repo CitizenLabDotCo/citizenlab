@@ -2089,7 +2089,7 @@
   "app.containers.Admin.projects.project.insights.addReport": "Tilføj en rapport",
   "app.containers.Admin.projects.project.insights.age": "Alder",
   "app.containers.Admin.projects.project.insights.aiAnalysis": "AI-analyse",
-  "app.containers.Admin.projects.project.insights.aiSensemaking": "Få et AI Sensemaking-resumé",
+  "app.containers.Admin.projects.project.insights.aiSensemaking": "Få et AI Sensemaking resumé",
   "app.containers.Admin.projects.project.insights.areas": "Områder",
   "app.containers.Admin.projects.project.insights.associatedIdeas": "Associerede ideer",
   "app.containers.Admin.projects.project.insights.cannotCalculateCompletionRateNoSurveyResponses": "Kan ikke beregne gennemførelsesprocent, når der ikke findes nogen svar på undersøgelsen",
