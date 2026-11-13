@@ -102,15 +102,16 @@ module DecidimImporter
           .transform_values { |text| "<h2>#{text}</h2>" }
       end
 
-      # The main section. Left: subtitle (`H2`), short and full description, each a `TextMultiloc`. Right:
+      # The main section. Left: subtitle (`H2`), short and full description, each a text block (see
+      # {#text_leaf}). Right:
       # participation `AboutBox` (only with a participation phase), a `PageLink` per page, then — with
       # `include_source_url` — the import-source link. With content on the right these sit in a `2-1`
       # `TwoColumn`; with nothing on the right the left content spans full width.
       def append_main_section(blocks, subtitle, short_description, description, source, page_ids, participation)
         left = []
         left << leaf('subtitle', 'TextMultiloc', { 'text' => subtitle }) if subtitle.present?
-        left << leaf('short-description', 'TextMultiloc', { 'text' => short_description }) if short_description.present?
-        left << leaf('description', 'TextMultiloc', { 'text' => description }) if description.present?
+        left << text_leaf('short-description', short_description) if short_description.present?
+        left << text_leaf('description', description) if description.present?
 
         right = []
         right << leaf('about', 'AboutBox', {}) if participation
@@ -176,17 +177,28 @@ module DecidimImporter
         i18n_multiloc('documents_to_consult', locales: locales).transform_values { |text| "<h2>#{text}</h2>" }
       end
 
-      # An accordion's content: the collection description (`TextMultiloc`, when present) then a
+      # An accordion's content: the collection description (a text block, when present) then a
       # `FileAttachment` per file.
       def accordion_children(collection, file_ids, index)
         children = []
-        children << leaf("accordion#{index}-desc", 'TextMultiloc', { 'text' => collection[:description] }) if collection[:description].present?
+        children << text_leaf("accordion#{index}-desc", collection[:description]) if collection[:description].present?
         file_ids.each_with_index { |id, fi| children << leaf("accordion#{index}-file#{fi}", 'FileAttachment', { 'fileId' => id }) }
         children
       end
 
       def leaf(id, component, props)
         { id: id, component: component, props: props }
+      end
+
+      # A block of Decidim rich text, in the widget a custom page would give it: the `RichTextMultiloc`
+      # bridge when it holds media (images, videos), since only the bridge's images get stored in Go
+      # Vocal on import ({Importer.store_layout_text_images!}); a `TextMultiloc` otherwise. The node is
+      # taken from the layout a custom page with this body starts with, so both follow the same rule.
+      def text_leaf(id, multiloc)
+        node = ContentBuilder::CustomPageLayoutService.new.craftjs_json_for_body(multiloc)
+          .fetch(ContentBuilder::CustomPageLayoutService::TOP_INFO_ID, {})
+        component = node.dig('type', 'resolvedName') || 'TextMultiloc'
+        leaf(id, component, { 'text' => multiloc }).merge(custom: node.fetch('custom', {}))
       end
 
       # The imported blocks, wrapped in the canonical project page (banner, title, body, phases, events).
@@ -248,7 +260,7 @@ module DecidimImporter
       def component_node(block, parent)
         {
           'type' => { 'resolvedName' => block[:component] }, 'nodes' => [], 'props' => block[:props],
-          'custom' => {}, 'hidden' => false, 'parent' => parent, 'isCanvas' => false,
+          'custom' => block[:custom] || {}, 'hidden' => false, 'parent' => parent, 'isCanvas' => false,
           'displayName' => block[:component], 'linkedNodes' => {}
         }
       end

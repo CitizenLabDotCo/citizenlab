@@ -265,7 +265,7 @@ RSpec.describe DecidimImporter::Importer do
     end
   end
 
-  describe '.store_static_page_images!' do
+  describe '.store_layout_text_images!' do
     let(:png) { 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==' }
 
     def page_with_image
@@ -285,8 +285,9 @@ RSpec.describe DecidimImporter::Importer do
     it 'stores the images in an imported page body as text images of the page' do
       imported = page_with_image
       other = page_with_image # e.g. a page from an earlier import, not part of this one
+      layout = ContentBuilder::Layout.find_by(content_buildable: imported)
 
-      described_class.store_static_page_images!('StaticPage' => [imported.id])
+      described_class.store_layout_text_images!('ContentBuilder::Layout' => [layout.id])
 
       expect(imported.text_images.count).to eq(1)
       expect(body_html(imported)).to include('data-cl2-text-image-text-reference')
@@ -306,8 +307,23 @@ RSpec.describe DecidimImporter::Importer do
       expect(page.text_images.count).to eq(1)
     end
 
-    it 'is a no-op when the import created no static pages' do
-      expect { described_class.store_static_page_images!({}) }.not_to raise_error
+    it 'stores the images in an imported project description bridge node as text images of the project' do
+      project = create(:project)
+      craftjs = { 'ROOT' => { 'type' => 'div', 'nodes' => ['desc'], 'props' => {}, 'isCanvas' => true },
+                  'desc' => { 'type' => { 'resolvedName' => 'RichTextMultiloc' }, 'parent' => 'ROOT', 'nodes' => [],
+                              'props' => { 'text' => { 'fr-FR' => "<p>Texte</p><img src=\"#{png}\">" } } } }
+      layout = ContentBuilder::Layout.create!(
+        content_buildable: project, code: 'project_description', enabled: true, craftjs_json: craftjs
+      )
+
+      described_class.store_layout_text_images!('ContentBuilder::Layout' => [layout.id])
+
+      expect(project.text_images.count).to eq(1)
+      expect(layout.reload.craftjs_json['desc']['props']['text']['fr-FR']).to include('data-cl2-text-image-text-reference')
+    end
+
+    it 'is a no-op when the import created no layouts' do
+      expect { described_class.store_layout_text_images!({}) }.not_to raise_error
     end
   end
 

@@ -4,8 +4,9 @@ require 'net/http'
 
 module DecidimImporter
   # Cleans a loaded template hash before deserialize: prunes uploads the import can't fetch or store —
-  # unreachable images, and files whose extension the upload allowlist rejects — (or strips them all when
-  # fetching is off) and removes the file/craftjs nodes left dangling as a result.
+  # unreachable images, and files whose extension the upload allowlist rejects or that are over the upload
+  # size limit — (or strips them all when fetching is off) and removes the file/craftjs nodes left dangling
+  # as a result.
   #
   # rubocop:disable Metrics/ModuleLength -- the image/craftjs pruning passes are one cohesive concern.
   module TemplateCleaner
@@ -18,16 +19,47 @@ module DecidimImporter
     # Prepares the template's uploads (both `remote_*_url` attachments and embedded `<img>` tags). With
     # fetching off, drop them all so no HTTP happens. With fetching on, probe each once (shared cache) and
     # drop the ones that would abort the import: a since-deleted image that would 404, and a file whose
-    # extension isn't on the upload allowlist.
+    # extension isn't on the upload allowlist or whose size is over the upload limit. Returns the dropped
+    # uploads (see {.dropped_upload}) for the run report; none when fetching is off, as that drop is asked for.
     def prepare_uploads!(template, import_uploads:)
+      dropped = []
       if import_uploads
         importable = {}
-        prune_unreachable_remote_urls!(template, importable)
-        prune_unreachable_embedded_images!(template, importable)
+        prune_unreachable_remote_urls!(template, importable, dropped)
+        prune_unreachable_embedded_images!(template, importable, dropped)
       else
         strip_remote_upload_urls!(template)
         strip_embedded_images!(template)
       end
+      dropped
+    end
+
+    # Drops the content of every `Files::File` over the upload size limit, then the file and what points
+    # at it ({.prune_fileless_attachments!}). Run while the template is built: an importer without the size
+    # check (e.g. an older deployed version) aborts the whole template on such a file, so it must not reach
+    # the template. Adds each drop to `dropped` (see {.dropped_upload}) and returns it. A file whose size
+    # can't be read is kept; the import checks it again.
+    def prune_oversized_files!(template, dropped = [])
+      max_size = Files::FileUploader.new.size_range.max
+      template.dig('models', 'files/file')&.each do |attrs|
+        url = attrs[FILE_CONTENT_URL_KEY]
+        next unless url.is_a?(String)
+
+        _reachable, _bytes, size = probe_image(url)
+        next unless size && size > max_size
+
+        reason = too_large_reason(max_size)
+        label = attrs['name'].presence || FILE_CONTENT_URL_KEY
+        Rails.logger.warn "Decidim import: dropping #{label} because #{reason} (#{url})"
+        dropped << dropped_upload(template, attrs, label, url, reason)
+        attrs.delete(FILE_CONTENT_URL_KEY)
+      end
+      prune_fileless_attachments!(template)
+      dropped
+    end
+
+    def too_large_reason(max_size)
+      "it is larger than the #{max_size / 1.megabyte} MB upload limit"
     end
 
     # Drops any `Files::File` left without content (pruned/stripped) — plus its dependent `files_project`
@@ -111,16 +143,20 @@ module DecidimImporter
     end
 
     # Drops each `remote_*_url` attachment the import can't safely fetch or store (see {.prune_reason}),
-    # keeping the good ones for CarrierWave. Every drop is logged, since a silently missing attachment is
-    # otherwise indistinguishable from one Decidim never had.
-    def prune_unreachable_remote_urls!(template, importable = {})
+    # keeping the good ones for CarrierWave. Every drop is logged and added to `dropped`, since a silently
+    # missing attachment is otherwise indistinguishable from one Decidim never had.
+    def prune_unreachable_remote_urls!(template, importable = {}, dropped = [])
       template['models'].each_value do |records|
         records.each do |attrs|
           attrs.reject! do |key, value|
             next false unless remote_upload_url?(key) && value.is_a?(String)
 
             reason = prune_reason(key, value, importable)
-            log_pruned_upload(attrs, key, value, reason) if reason
+            if reason
+              label = attrs['name'].presence || key
+              Rails.logger.warn "Decidim import: dropping #{label} because #{reason} (#{value})"
+              dropped << dropped_upload(template, attrs, label, value, reason)
+            end
             reason.present?
           end
         end
@@ -132,7 +168,8 @@ module DecidimImporter
     # A `Files::File`'s content is checked against the upload allowlist *first* — CarrierWave rejects a
     # disallowed extension on save, and the deserializer re-raises that validation error, aborting the
     # entire template application over one unsupported attachment (e.g. a Decidim `.emf`). Checking the
-    # extension before the network probe also saves a pointless request. Everything else just has to be
+    # extension before the network probe also saves a pointless request. A file over the uploader's size
+    # limit fails the same way, so the probe checks its size too. Everything else just has to be
     # fetchable, and to match its own extension if it's a recognised raster image.
     def prune_reason(key, url, importable)
       if key == FILE_CONTENT_URL_KEY && !allowed_file_extension?(url)
@@ -140,7 +177,8 @@ module DecidimImporter
         return "#{ext.present? ? ".#{ext}" : 'a missing extension'} is not on the upload allowlist"
       end
 
-      importable[url] = image_prune_reason(url) unless importable.key?(url)
+      limits = key == FILE_CONTENT_URL_KEY ? { max_size: Files::FileUploader.new.size_range.max } : {}
+      importable[url] = image_prune_reason(url, **limits) unless importable.key?(url)
       importable[url]
     end
 
@@ -157,10 +195,54 @@ module DecidimImporter
       ''
     end
 
-    # Records a dropped upload against the record's name where it has one (files do), else the attribute.
-    def log_pruned_upload(attrs, key, url, reason)
-      label = attrs['name'].presence || key
-      Rails.logger.warn "Decidim import: dropping #{label} because #{reason} (#{url})"
+    # A dropped upload for the run report: `{ name:, reason:, url:, page: }`. The name is the record's
+    # (files have one) or the attribute; `page` says where it was shown (see {.upload_page}).
+    def dropped_upload(template, attrs, name, url, reason)
+      { name: name, reason: reason, url: url, page: upload_page(template, attrs, url) }
+    end
+
+    # Where a dropped upload was shown, so it can be found and fixed on Decidim: the Decidim page of its
+    # project (its slug is the Decidim one), with the project's and, for an idea's image, the idea's title.
+    # Nil when the record leads to no project.
+    def upload_page(template, attrs, url)
+      project = owning_project(template, attrs)
+      return nil unless project
+
+      space = assembly?(template, project) ? 'assemblies' : 'processes'
+      # Decidim serves its uploads from its own host; other hosts (e.g. an image embedded from elsewhere)
+      # say nothing about it, so the page path is then left without one.
+      origin = url[%r{\Ahttps?://[^/]+(?=/rails/active_storage/)}]
+      page = "#{origin}/#{space}/#{project['slug']} (project \"#{first_value(project['title_multiloc'])}\""
+      idea = attrs['idea_ref']
+      page += ", idea \"#{first_value(idea['title_multiloc'])}\"" if idea
+      "#{page})"
+    end
+
+    # The project record an upload-holding record belongs to: the project itself, a record pointing at it
+    # (an idea's image through the idea, a layout through its buildable), or a file through its
+    # `files_project` join. Matched by object identity, as refs share the target's attribute hash.
+    def owning_project(template, attrs)
+      return attrs if template.dig('models', 'project')&.any? { |project| project.equal?(attrs) }
+
+      ref = attrs['project_ref'] || attrs.dig('idea_ref', 'project_ref') || attrs['content_buildable_ref']
+      return ref if ref&.key?('slug')
+
+      template.dig('models', 'files/files_project')&.find { |join| join['file_ref'].equal?(attrs) }&.dig('project_ref')
+    end
+
+    # Assemblies are imported as projects under the one folder titled {ExportReader::ASSEMBLIES_FOLDER_TITLE}.
+    def assembly?(template, project)
+      parent = project.dig('admin_publication_attributes', 'parent_attributes_ref')
+      return false unless parent
+
+      folder = template.dig('models', 'project_folders/folder')&.find do |candidate|
+        candidate['admin_publication_attributes'].equal?(parent)
+      end
+      folder.present? && folder['title_multiloc'].to_h.value?(ExportReader::ASSEMBLIES_FOLDER_TITLE)
+    end
+
+    def first_value(multiloc)
+      multiloc.to_h.values.compact_blank.first
     end
 
     def remote_upload_url?(key)
@@ -170,19 +252,24 @@ module DecidimImporter
     # Drops embedded `<img>` tags the import can't fetch, keeping the rest (and the text). `data:` images
     # are kept; a src that isn't `http(s)` (e.g. a root-relative `/rails/...` path) is dropped, since the
     # rich-text handler can't download it. Each distinct URL is probed once (cache shared with attachments)
-    # and every drop is logged with its reason, distinguishing not-found from a format conflict.
-    def prune_unreachable_embedded_images!(template, importable = {})
-      rewrite_multiloc_html!(template) do |html|
+    # and every drop is logged and added to `dropped` with its reason, distinguishing not-found from a
+    # format conflict.
+    def prune_unreachable_embedded_images!(template, importable = {}, dropped = [])
+      rewrite_multiloc_html!(template) do |html, attrs|
         html.gsub(/<img\b[^>]*>/i) do |tag|
           src = tag[/\bsrc\s*=\s*["']?([^"' >]+)/i, 1]
           next tag if src.nil? || src.start_with?('data:')
-          next '' unless src.match?(%r{\Ahttps?://}i)
 
-          importable[src] = image_prune_reason(src) unless importable.key?(src)
-          reason = importable[src]
+          if src.match?(%r{\Ahttps?://}i)
+            importable[src] = image_prune_reason(src) unless importable.key?(src)
+            reason = importable[src]
+          else
+            reason = 'its source is not an http(s) URL'
+          end
           next tag unless reason
 
           Rails.logger.warn "Decidim import: dropping embedded image because #{reason} (#{src})"
+          dropped << dropped_upload(template, attrs, 'embedded image', src, reason)
           ''
         end
       end
@@ -192,18 +279,21 @@ module DecidimImporter
     # apart so the log says which it was: the image can't be found (unreachable — 404, connection error or
     # timeout), or it's reachable but its content type disagrees with its filename extension. Decidim
     # sometimes serves e.g. a JPEG named `.png`, which Go Vocal's exiftool then rejects, aborting the whole
-    # import; such images are dropped too.
-    def image_prune_reason(url)
-      reachable, bytes = probe_image(url)
+    # import; such images are dropped too. With `max_size`, a body larger than that (in bytes) is dropped
+    # as well; an unknown size is let through.
+    def image_prune_reason(url, max_size: nil)
+      reachable, bytes, size = probe_image(url)
       return 'it could not be found' unless reachable
+      return too_large_reason(max_size) if max_size && size && size > max_size
       return 'its content conflicts with its extension' if image_format_conflict?(url, bytes)
 
       nil
     end
 
-    # A single ranged GET (following redirects): `[reachable?, leading_bytes_of_body]`. Ranged GET not
-    # HEAD, because Active Storage's presigned S3 redirects are signed GET-only and 403 a HEAD probe;
-    # the first bytes are enough to sniff the format (see {.detect_image_format}).
+    # A single ranged GET (following redirects): `[reachable?, leading_bytes_of_body, total_size]`. Ranged
+    # GET not HEAD, because Active Storage's presigned S3 redirects are signed GET-only and 403 a HEAD
+    # probe; the first bytes are enough to sniff the format (see {.detect_image_format}). The total size
+    # is nil when the server sends neither a `Content-Range` total nor a full-body `Content-Length`.
     def probe_image(url, redirects_left = 5)
       uri = URI.parse(url)
       return [false, ''] unless uri.is_a?(URI::HTTP)
@@ -216,13 +306,23 @@ module DecidimImporter
         response = http.request(request)
       end
       case response
-      when Net::HTTPSuccess then [true, response.body.to_s]
+      when Net::HTTPSuccess then [true, response.body.to_s, total_size(response)]
       when Net::HTTPRedirection
         redirects_left.positive? ? probe_image(URI.join(url, response['location']).to_s, redirects_left - 1) : [false, '']
       else [false, '']
       end
     rescue StandardError
       [false, '']
+    end
+
+    # A 206 answer gives the full size as the `Content-Range` total (`bytes 0-31/112844653`); a server that
+    # ignores the range answers 200 with the whole body, sized by `Content-Length`.
+    def total_size(response)
+      total = response['Content-Range'].to_s[%r{/(\d+)\z}, 1]
+      return total.to_i if total
+      return response.content_length if response.is_a?(Net::HTTPOK)
+
+      nil
     end
 
     # True when `bytes` sniff to a known image format that disagrees with the URL's filename extension.
@@ -248,14 +348,15 @@ module DecidimImporter
 
     # Rewrites every rich-text `*_multiloc` HTML string through the block, including the text nodes
     # inside a layout's `craftjs_json` (the project description is a craft block, not a top-level multiloc).
-    def rewrite_multiloc_html!(template, &block)
+    # The block also gets the record holding the HTML.
+    def rewrite_multiloc_html!(template)
       template['models'].each_value do |records|
         records.each do |attrs|
           attrs.each do |key, value|
             if key.is_a?(String) && key.end_with?('_multiloc') && value.is_a?(Hash)
-              value.transform_values! { |html| html.is_a?(String) ? yield(html) : html }
+              value.transform_values! { |html| html.is_a?(String) ? yield(html, attrs) : html }
             elsif key == 'craftjs_json' && value.is_a?(Hash)
-              rewrite_craftjs_text!(value, &block)
+              rewrite_craftjs_text!(value) { |html| yield(html, attrs) }
             end
           end
         end

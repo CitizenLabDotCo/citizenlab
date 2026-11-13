@@ -59,6 +59,119 @@ RSpec.describe DecidimImporter::TemplateCleaner do
     end
   end
 
+  describe '.prepare_uploads!' do
+    let(:blob) { 'https://decidim.example/rails/active_storage/blobs/redirect/abc' }
+    let(:assemblies_folder) do
+      { 'title_multiloc' => { 'fr-FR' => DecidimImporter::ExportReader::ASSEMBLIES_FOLDER_TITLE },
+        'admin_publication_attributes' => { 'publication_status' => 'published' } }
+    end
+    let(:process) { { 'title_multiloc' => { 'fr-FR' => 'Entre en gare' }, 'slug' => 'entre-en-gare' } }
+    let(:assembly) do
+      { 'title_multiloc' => { 'fr-FR' => 'Conseil' }, 'slug' => 'conseil',
+        'admin_publication_attributes' => { 'parent_attributes_ref' => assemblies_folder['admin_publication_attributes'] } }
+    end
+
+    before { allow(described_class).to receive(:image_prune_reason).and_return('it could not be found') }
+
+    it 'returns each dropped upload with its source url and the Decidim page of its project' do
+      file = { 'name' => 'etude.pdf', 'remote_content_url' => "#{blob}/etude.pdf" }
+      idea = { 'title_multiloc' => { 'fr-FR' => 'Plus de vélos' }, 'project_ref' => assembly }
+      template = { 'models' => {
+        'project_folders/folder' => [assemblies_folder],
+        'project' => [process, assembly],
+        'files/file' => [file],
+        'files/files_project' => [{ 'file_ref' => file, 'project_ref' => process }],
+        'idea' => [idea],
+        'idea_image' => [{ 'idea_ref' => idea, 'remote_image_url' => "#{blob}/velo.png" }]
+      } }
+
+      dropped = described_class.prepare_uploads!(template, import_uploads: true)
+
+      expect(dropped).to contain_exactly(
+        { name: 'etude.pdf', reason: 'it could not be found', url: "#{blob}/etude.pdf",
+          page: 'https://decidim.example/processes/entre-en-gare (project "Entre en gare")' },
+        { name: 'remote_image_url', reason: 'it could not be found', url: "#{blob}/velo.png",
+          page: 'https://decidim.example/assemblies/conseil (project "Conseil", idea "Plus de vélos")' }
+      )
+    end
+
+    it 'reports embedded images too, with the page of the record holding them' do
+      template = { 'models' => {
+        'project' => [process],
+        'static_page' => [{ 'project_ref' => process, 'top_info_multiloc' => {
+          'fr-FR' => %(<img src="#{blob}/plan.png"><img src="/rails/plan.png">)
+        } }]
+      } }
+
+      dropped = described_class.prepare_uploads!(template, import_uploads: true)
+
+      expect(dropped.pluck(:reason)).to eq(['it could not be found', 'its source is not an http(s) URL'])
+      # A relative src doesn't name the Decidim host, so its page path has none either.
+      expect(dropped.pluck(:page)).to eq([
+        'https://decidim.example/processes/entre-en-gare (project "Entre en gare")',
+        '/processes/entre-en-gare (project "Entre en gare")'
+      ])
+    end
+
+    it 'reports nothing when fetching is off' do
+      template = { 'models' => { 'project' => [process.merge('remote_header_bg_url' => "#{blob}/hero.png")] } }
+
+      expect(described_class.prepare_uploads!(template, import_uploads: false)).to eq([])
+    end
+  end
+
+  describe '.prune_oversized_files!' do
+    let(:limit) { Files::FileUploader.new.size_range.max }
+    let(:project) { { 'title_multiloc' => { 'fr-FR' => 'Entre en gare' }, 'slug' => 'entre-en-gare' } }
+    let(:blob) { 'https://decidim.example/rails/active_storage/blobs/redirect/abc' }
+
+    def file(name, id)
+      { 'id' => id, 'name' => name, 'remote_content_url' => "#{blob}/#{name}" }
+    end
+
+    it 'drops a file over the upload limit with its join and layout node, and reports it' do
+      big = file('etude.pdf', 'f-big')
+      small = file('avis.pdf', 'f-small')
+      craftjs = {
+        'ROOT' => { 'type' => 'div', 'nodes' => %w[file0 file1] },
+        'file0' => { 'type' => { 'resolvedName' => 'FileAttachment' }, 'props' => { 'fileId' => 'f-big' } },
+        'file1' => { 'type' => { 'resolvedName' => 'FileAttachment' }, 'props' => { 'fileId' => 'f-small' } }
+      }
+      template = { 'models' => {
+        'project' => [project],
+        'files/file' => [big, small],
+        'files/files_project' => [{ 'file_ref' => big, 'project_ref' => project },
+          { 'file_ref' => small, 'project_ref' => project }],
+        'content_builder/layout' => [{ 'craftjs_json' => craftjs, 'content_buildable_ref' => project }]
+      } }
+      allow(described_class).to receive(:probe_image).with("#{blob}/etude.pdf").and_return([true, '', limit + 1])
+      allow(described_class).to receive(:probe_image).with("#{blob}/avis.pdf").and_return([true, '', limit])
+
+      dropped = described_class.prune_oversized_files!(template)
+
+      expect(template['models']['files/file']).to eq([small])
+      expect(template['models']['files/files_project'].map { |join| join['file_ref'] }).to eq([small])
+      expect(craftjs.keys).to contain_exactly('ROOT', 'file1')
+      expect(dropped).to eq([{
+        name: 'etude.pdf', reason: "it is larger than the #{limit / 1.megabyte} MB upload limit",
+        url: "#{blob}/etude.pdf", page: 'https://decidim.example/processes/entre-en-gare (project "Entre en gare")'
+      }])
+    end
+
+    it 'keeps a file whose size the probe could not read' do
+      unknown = file('plan.pdf', 'f-unknown')
+      template = { 'models' => { 'files/file' => [unknown] } }
+      allow(described_class).to receive(:probe_image).and_return([false, ''])
+
+      expect(described_class.prune_oversized_files!(template)).to eq([])
+      expect(template['models']['files/file']).to eq([unknown])
+    end
+
+    it 'is a no-op when the template has no files' do
+      expect(described_class.prune_oversized_files!({ 'models' => {} })).to eq([])
+    end
+  end
+
   describe '.prune_fileless_attachments!' do
     it 'drops content-less files and their dependent join/attachment records, keeping the rest' do
       kept = { 'name' => 'kept.pdf', 'remote_content_url' => 'http://x/y.pdf' }
@@ -172,6 +285,26 @@ RSpec.describe DecidimImporter::TemplateCleaner do
 
       expect(described_class.image_prune_reason('https://s3.example/photo.jpg')).to be_nil
     end
+
+    context 'with a max_size' do
+      using RSpec::Parameterized::TableSyntax
+
+      where(:status, :headers, :body, :expected) do
+        206 | { 'Content-Range' => 'bytes 0-31/3000000' } | '%PDF' | 'it is larger than the 2 MB upload limit'
+        206 | { 'Content-Range' => 'bytes 0-31/1000' }    | '%PDF' | nil
+        206 | {}                                          | '%PDF' | nil
+        200 | { 'Content-Length' => '3000000' }           | '%PDF' | 'it is larger than the 2 MB upload limit'
+      end
+
+      with_them do
+        it 'drops a body over the limit, read from the Content-Range total or a full-body Content-Length' do
+          stub_request(:get, 'https://s3.example/report.pdf').to_return(status: status, headers: headers, body: body)
+
+          expect(described_class.image_prune_reason('https://s3.example/report.pdf', max_size: 2.megabytes))
+            .to eq(expected)
+        end
+      end
+    end
   end
 
   describe '.prune_unreachable_remote_urls!' do
@@ -256,6 +389,21 @@ RSpec.describe DecidimImporter::TemplateCleaner do
         described_class.prune_unreachable_remote_urls!(template)
 
         expect(template['models']['files/file'].first).not_to have_key('remote_content_url')
+      end
+
+      it 'probes file content against the file uploader size limit, and drops and logs a file over it' do
+        allow(Rails.logger).to receive(:warn)
+        allow(described_class).to receive(:image_prune_reason)
+          .with('https://x/plan-guide.pdf', max_size: Files::FileUploader.new.size_range.max)
+          .and_return('it is larger than the 100 MB upload limit')
+        template = { 'models' => { 'files/file' => [
+          { 'name' => 'plan-guide.pdf', 'remote_content_url' => 'https://x/plan-guide.pdf' }
+        ] } }
+
+        described_class.prune_unreachable_remote_urls!(template)
+
+        expect(template['models']['files/file'].first).not_to have_key('remote_content_url')
+        expect(Rails.logger).to have_received(:warn).with(/plan-guide\.pdf.*larger than the 100 MB upload limit/)
       end
 
       it 'leaves non-file uploads to the reachability check, whatever their extension' do
