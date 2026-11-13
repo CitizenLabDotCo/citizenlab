@@ -262,7 +262,7 @@ resource 'Ideas' do
 
       example 'Changing the project keeps the assignee valid', document: false do
         @idea.update! assignee: create(:project_moderator, projects: [@project])
-        do_request project_id: create(:project).id
+        do_request idea: { project_id: create(:project).id, phase_ids: [] }
 
         expect(status).to be 200
         expect(@idea.reload).to be_valid

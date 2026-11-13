@@ -13,7 +13,7 @@ class UserService
       add_custom_field_values_schema_errors(new_or_existing_user, custom_field_values)
       return false if new_or_existing_user.errors.any?
 
-      CustomFieldValuesTransitionService.new.assign(new_or_existing_user, custom_field_values) if custom_field_values
+      CustomFieldValuesTransitionService.new.assign!(new_or_existing_user, custom_field_values) if custom_field_values
       # `on: :create` and `on: :update` callbacks/validations are not called
       new_or_existing_user.save(context: :form_submission)
     end
@@ -22,7 +22,7 @@ class UserService
       custom_field_values = user_params.delete(:custom_field_values)
       user = User.new(user_params)
       user.locale ||= AppConfiguration.instance.settings('core', 'locales').first
-      CustomFieldValuesTransitionService.new.assign(user, custom_field_values) if custom_field_values
+      CustomFieldValuesTransitionService.new.assign!(user, custom_field_values) if custom_field_values
       build_user_confirmation(user) if confirm_user
       user.save
 
@@ -32,7 +32,7 @@ class UserService
     def update_in_admin_api(user, user_params, confirm_user)
       custom_field_values = user_params.delete(:custom_field_values)
       build_user_confirmation(user) if confirm_user
-      CustomFieldValuesTransitionService.new.assign(user, custom_field_values) if custom_field_values
+      CustomFieldValuesTransitionService.new.assign!(user, custom_field_values) if custom_field_values
       user.update(user_params)
     end
 
@@ -47,7 +47,7 @@ class UserService
         user_params = user_params.except(:email).merge(pending => email)
       end
 
-      user = assign_merging_custom_fields(User.new, with_known_custom_field_values(user_params))
+      user = assign_merging_custom_fields(User.new, user_params)
       user.locale = locale
 
       build_user_confirmation(user) if confirm_user && user.email.present?
@@ -62,7 +62,7 @@ class UserService
     def update_in_sso!(user, auth, authver_method)
       attrs = authver_method.updateable_user_attrs
       sso_user_attrs = authver_method.profile_to_user_attrs(auth)
-      user_params = with_known_custom_field_values(sso_user_attrs.slice(*attrs).compact)
+      user_params = sso_user_attrs.slice(*attrs).compact
       user_params.delete(:remote_avatar_url) if user.avatar.present? # don't overwrite avatar if already present
 
       resolve_sso_email!(user, user_params, sso_user_attrs[:email], authver_method.email_confirmed?(auth))
@@ -75,6 +75,7 @@ class UserService
       incoming_values = (attributes.delete('custom_field_values') || {})
         .merge(attributes.extract!('gender', 'birthyear', 'domicile').compact)
       transition_service = CustomFieldValuesTransitionService.new
+      # Not assign!: an identity provider can return values for fields this platform does not have.
       transition_service.assign(user, transition_service.custom_field_values(user).merge(incoming_values))
       user.assign_attributes(attributes)
       user
@@ -95,7 +96,7 @@ class UserService
     def build_in_input_importer(user_params, new_user = User.new)
       custom_field_values = user_params.delete(:custom_field_values)
       new_user.assign_attributes(user_params)
-      CustomFieldValuesTransitionService.new.assign(new_user, custom_field_values) if custom_field_values
+      CustomFieldValuesTransitionService.new.assign!(new_user, custom_field_values) if custom_field_values
       if new_user.email.blank?
         new_user.unique_code = SecureRandom.uuid
       end
@@ -178,15 +179,6 @@ class UserService
     def build_user_confirmation(user)
       user.email_confirmed_at = Time.zone.now
       user.confirmation_required = false
-    end
-
-    # An identity provider can return values for fields this platform does not have.
-    def with_known_custom_field_values(user_params)
-      return user_params unless user_params.key?(:custom_field_values)
-
-      user_params.merge(
-        custom_field_values: CustomFieldService.remove_unknown_registration_custom_fields(user_params[:custom_field_values])
-      )
     end
 
     def add_custom_field_values_schema_errors(user, values)

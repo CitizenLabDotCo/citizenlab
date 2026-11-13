@@ -206,21 +206,21 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
       end
 
       it 'returns the correct next_page_id from linear scale logic' do
-        CustomFieldValuesTransitionService.new.assign(input, { linear_scale_field.key => 2 })
+        CustomFieldValuesTransitionService.new.assign!(input, { linear_scale_field.key => 2 })
         input.save!
         logic_next_page_id = generator.send(:next_page_id_from_logic, linear_scale_field, input, page_ids)
         expect(logic_next_page_id).to eq mid_page_field2.id
       end
 
       it 'returns the correct next_page_id from no answer logic' do
-        CustomFieldValuesTransitionService.new.assign(input, {})
+        CustomFieldValuesTransitionService.new.assign!(input, {})
         input.save!
         logic_next_page_id = generator.send(:next_page_id_from_logic, linear_scale_field, input, page_ids)
         expect(logic_next_page_id).to eq last_page_field.id
       end
 
       it 'returns no next_page_id when no logic present for the answer' do
-        CustomFieldValuesTransitionService.new.assign(input, { linear_scale_field.key => 3 })
+        CustomFieldValuesTransitionService.new.assign!(input, { linear_scale_field.key => 3 })
         input.save!
         logic_next_page_id = generator.send(:next_page_id_from_logic, linear_scale_field, input, page_ids)
         expect(logic_next_page_id).to be_nil
@@ -240,21 +240,21 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
       end
 
       it 'returns the correct next_page_id from a single selection' do
-        CustomFieldValuesTransitionService.new.assign(input, { select_field.key => 'la' })
+        CustomFieldValuesTransitionService.new.assign!(input, { select_field.key => 'la' })
         input.save!
         logic_next_page_id = generator.send(:next_page_id_from_logic, select_field, input, page_ids)
         expect(logic_next_page_id).to eq mid_page_field1.id
       end
 
       it 'returns the correct next_page_id when there is no answer' do
-        CustomFieldValuesTransitionService.new.assign(input, {})
+        CustomFieldValuesTransitionService.new.assign!(input, {})
         input.save!
         logic_next_page_id = generator.send(:next_page_id_from_logic, select_field, input, page_ids)
         expect(logic_next_page_id).to eq last_page_field.id
       end
 
       it 'returns the correct next_page_id for any other answer' do
-        CustomFieldValuesTransitionService.new.assign(input, { select_field.key => 'ny' })
+        CustomFieldValuesTransitionService.new.assign!(input, { select_field.key => 'ny' })
         input.save!
         logic_next_page_id = generator.send(:next_page_id_from_logic, select_field, input, page_ids)
         expect(logic_next_page_id).to eq mid_page_field2.id
@@ -275,28 +275,28 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
       end
 
       it 'returns the correct next_page_id from a single selection' do
-        CustomFieldValuesTransitionService.new.assign(input, { multiselect_field.key => ['cat'] })
+        CustomFieldValuesTransitionService.new.assign!(input, { multiselect_field.key => ['cat'] })
         input.save!
         logic_next_page_id = generator.send(:next_page_id_from_logic, multiselect_field, input, page_ids)
         expect(logic_next_page_id).to eq mid_page_field1.id
       end
 
       it 'returns the correct next_page_id from a multiple selection' do
-        CustomFieldValuesTransitionService.new.assign(input, { multiselect_field.key => %w[cat dog] })
+        CustomFieldValuesTransitionService.new.assign!(input, { multiselect_field.key => %w[cat dog] })
         input.save!
         logic_next_page_id = generator.send(:next_page_id_from_logic, multiselect_field, input, page_ids)
         expect(logic_next_page_id).to eq mid_page_field2.id
       end
 
       it 'returns the correct next_page_id when there is no answer' do
-        CustomFieldValuesTransitionService.new.assign(input, {})
+        CustomFieldValuesTransitionService.new.assign!(input, {})
         input.save!
         logic_next_page_id = generator.send(:next_page_id_from_logic, multiselect_field, input, page_ids)
         expect(logic_next_page_id).to eq last_page_field.id
       end
 
       it 'returns no next_page_id when no logic present for the answer' do
-        CustomFieldValuesTransitionService.new.assign(input, { multiselect_field.key => ['cow'] })
+        CustomFieldValuesTransitionService.new.assign!(input, { multiselect_field.key => ['cow'] })
         input.save!
         logic_next_page_id = generator.send(:next_page_id_from_logic, multiselect_field, input, page_ids)
         expect(logic_next_page_id).to be_nil

@@ -282,6 +282,7 @@ resource 'Ideas' do
           end
 
           let(:project_id) { create(:project, input_topics: [project.input_topics.first]).id }
+          let(:phase_ids) { [] }
 
           example_request 'Change the project' do
             assert_status 200
@@ -292,7 +293,7 @@ resource 'Ideas' do
           end
         end
 
-        example 'Move the idea to a project with another form, relinking the answers by key', document: false do
+        example 'Move the idea to a project with another form and edit it, keeping answers to questions the new form does not have', document: false do
           source_form = create(:custom_form, :with_default_fields, participation_context: project)
           shared_field = create(:custom_field_text, resource: source_form, key: 'shared')
           only_here_field = create(:custom_field_text, resource: source_form, key: 'only_here')
@@ -302,13 +303,60 @@ resource 'Ideas' do
           destination_form = create(:custom_form, :with_default_fields, participation_context: destination_project)
           destination_shared_field = create(:custom_field_text, resource: destination_form, key: 'shared')
 
-          do_request idea: { project_id: destination_project.id }
+          do_request idea: { project_id: destination_project.id, phase_ids: [] }
 
           assert_status 200
           expect(input.reload.custom_field_answers.pluck(:key, :value, :custom_field_id)).to contain_exactly(
             ['shared', 'kept', destination_shared_field.id],
-            ['only_here', 'also kept', nil]
+            ['only_here', 'also kept', only_here_field.id]
           )
+
+          do_request idea: { title_multiloc: { 'en' => 'Changed title' }, publication_status: 'published' }
+
+          assert_status 200
+          expect(response_data.dig(:attributes, :title_multiloc, :en)).to eq 'Changed title'
+          expect(response_data.dig(:attributes, :only_here)).to eq 'also kept'
+          expect(input.reload.answer_for_key('only_here').custom_field_id).to eq only_here_field.id
+        end
+
+        context 'when the idea was moved from a project with another form' do
+          let(:source_project) { create(:single_phase_ideation_project) }
+          let(:source_form) { create(:custom_form, :with_default_fields, participation_context: source_project) }
+          let(:source_field) { create(:custom_field_text, resource: source_form, key: 'only_there') }
+          let(:answer) { input.answer_for_key('only_there') }
+
+          before do
+            create(:custom_form, :with_default_fields, participation_context: project)
+            input.custom_field_answers.create!(key: 'only_there', value: 'kept', custom_field: source_field)
+          end
+
+          example 'Change the status of the idea', document: false do
+            do_request idea: { idea_status_id: create(:idea_status).id }
+
+            assert_status 200
+            expect(answer.reload).to have_attributes(value: 'kept', custom_field_id: source_field.id)
+          end
+
+          example 'Move the idea back and edit it', document: false do
+            do_request idea: { project_id: source_project.id, phase_ids: [] }
+            assert_status 200
+
+            do_request idea: { title_multiloc: { 'en' => 'Changed title' }, publication_status: 'published' }
+
+            assert_status 200
+            expect(answer.reload).to have_attributes(value: 'kept', custom_field_id: source_field.id)
+          end
+        end
+
+        example '[error] Edit an idea that stores an answer without a field', document: false do
+          create(:custom_form, :with_default_fields, participation_context: project)
+          input.custom_field_answers.create!(key: 'orphan', value: 'x')
+
+          do_request idea: { title_multiloc: { 'en' => 'Changed title' }, publication_status: 'published' }
+
+          assert_status 422
+          error = json_response_body.dig(:errors, :custom_field_values, 0, :error)
+          expect(error).to include(error: 'AdditionalProperties', human_message: include('orphan'))
         end
 
         example 'Removing the author of a published idea', document: false do
@@ -985,6 +1033,7 @@ resource 'Ideas' do
           context 'Moving to a different project' do
             let(:new_project) { create(:single_phase_ideation_project) }
             let(:project_id) { new_project.id }
+            let(:phase_ids) { [] }
 
             example 'Move the idea to another (non-voting) project', document: false do
               do_request

@@ -162,6 +162,8 @@ resource 'Omniauth Callback', document: false do
         expect(db_user).not_to be_nil
         expect(db_user.confirmation_required?).to be false
         expect(db_user.email_confirmed_at).to be_present
+        # The provider's gender and birthyear have no field on this platform.
+        expect(db_user.custom_field_answers).to be_empty
       end
 
       context 'with claim_tokens' do

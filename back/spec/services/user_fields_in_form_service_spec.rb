@@ -312,6 +312,7 @@ describe UserFieldsInFormService do
 
   describe '#merge_user_fields_from_idea_into_user!' do
     it 'merges user fields from idea into user' do
+      create(:custom_field, key: 'age')
       user = build(:user, custom_field_answers: [build(:custom_field_answer, key: 'city', value: 'New York')])
       idea = build(:idea, custom_field_answers: [
         build(:custom_field_answer, key: 'satisfaction', value: 'high'),
@@ -334,6 +335,7 @@ describe UserFieldsInFormService do
     end
 
     it 'merges other text values from idea into user' do
+      create(:custom_field, key: 'pet')
       user = build(:user)
       idea = build(:idea, custom_field_answers: [
         build(:custom_field_answer, key: 'u_pet', value: 'other'),
@@ -343,6 +345,15 @@ describe UserFieldsInFormService do
       described_class.merge_user_fields_from_idea_into_user!(idea, user)
 
       expect(user.custom_field_answers.to_h { [it.key, it.value] }).to eq({ 'pet' => 'other', 'pet_other' => 'A ferret' })
+    end
+
+    it 'does not copy values of fields the platform does not have' do
+      user = build(:user)
+      idea = build(:idea, custom_field_answers: [build(:custom_field_answer, key: 'u_age', value: 30)])
+
+      described_class.merge_user_fields_from_idea_into_user!(idea, user)
+
+      expect(user.custom_field_answers).to be_empty
     end
   end
 
