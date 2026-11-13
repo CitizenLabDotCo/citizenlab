@@ -223,6 +223,7 @@ describe McpServer::Tools::ReplaceFormFields do
       end
 
       it 'refuses a new field whose key collides with an existing field' do
+        expect(replace_cm(fetch_cm_fields)).not_to be_error
         fields = fetch_cm_fields
         clashing = fields.find { |field| field[:key] == 'place_to_live' }.dup
         clashing.delete(:id)
@@ -349,6 +350,40 @@ describe McpServer::Tools::ReplaceFormFields do
     expect(response).to be_error
     expect(response.content.sole[:text]).to include('A locked built-in field is missing')
     expect(response.structured_content[:errors]).to eq(form: [{ error: 'locked_deletion' }])
+  end
+
+  it 'leaves no form behind when replacing the fields of a project without a form fails' do
+    project = create(
+      :project_with_active_ideation_phase,
+      admin_publication_attributes: { publication_status: 'draft' }
+    )
+
+    response = run(
+      container_type: 'project',
+      container_id: project.id,
+      fields: [
+        { input_type: 'page', page_layout: 'default', title_multiloc: {} },
+        { input_type: 'text', title_multiloc: { 'en' => 'Only question' }, required: false, enabled: true },
+        { input_type: 'page', page_layout: 'default', key: 'form_end', title_multiloc: {} }
+      ]
+    )
+
+    expect(response).to be_error
+    expect(CustomForm.exists?(participation_context: project)).to be(false)
+  end
+
+  it 'rolls back the default fields materialized for a community monitor when the replace fails' do
+    change_lifecycle_stage('demo')
+    cm_phase = create(:community_monitor_survey_phase)
+
+    response = run(
+      container_type: 'phase',
+      container_id: cm_phase.id,
+      fields: [{ input_type: 'text', title_multiloc: { 'en' => 'Q' }, required: false, enabled: true }]
+    )
+
+    expect(response).to be_error
+    expect(CustomForm.exists?(participation_context: cm_phase)).to be(false)
   end
 
   it 'returns an error for an unsupported participation method' do
