@@ -513,7 +513,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.howProposalsAreShown": "Come vengono mostrate le proposte",
   "app.components.app.containers.AdminPage.ProjectEdit.ideaTerm": "Idea",
   "app.components.app.containers.AdminPage.ProjectEdit.initiativeTerm": "Iniziativa",
-  "app.components.app.containers.AdminPage.ProjectEdit.inputScreeningToggle": "Selezione dell'ingresso",
+  "app.components.app.containers.AdminPage.ProjectEdit.inputScreeningToggle": "Screening dei contributi",
   "app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel": "Come dovrebbe essere chiamato un contributo?",
   "app.components.app.containers.AdminPage.ProjectEdit.insights": "Approfondimenti",
   "app.components.app.containers.AdminPage.ProjectEdit.issueTerm1": "Segnalazione",
