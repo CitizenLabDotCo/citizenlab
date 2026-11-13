@@ -9864,9 +9864,64 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects.project.phaseTitle": {
+    "state": "verified",
+    "verified_at": "2026-11-13T09:58:02.870950Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.phaseUnitInputs": {
+    "state": "verified",
+    "verified_at": "2026-11-13T09:58:02.870950Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.phaseUnitResponses": {
+    "state": "verified",
+    "verified_at": "2026-11-13T09:58:02.870950Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.phaseUnitVotes": {
+    "state": "verified",
+    "verified_at": "2026-11-13T09:58:02.870950Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.phaseUpcoming": {
+    "state": "verified",
+    "verified_at": "2026-11-13T09:58:02.870950Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.pollQuestions": {
+    "state": "verified",
+    "verified_at": "2026-11-13T09:58:02.870950Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.postFormTitle": {
+    "state": "verified",
+    "verified_at": "2026-11-13T09:58:02.870950Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.previewProject": {
+    "state": "verified",
+    "verified_at": "2026-11-13T09:58:02.870950Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.projectDetails": {
+    "state": "verified",
+    "verified_at": "2026-11-13T09:58:02.870950Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.projectFormTitle": {
+    "state": "verified",
+    "verified_at": "2026-11-13T09:58:02.870950Z",
+    "verified_by": "Roger"
+  },
   "app.containers.Admin.projects.project.projectHomepage": {
     "state": "verified",
     "verified_at": "2026-07-27T08:44:11.605205Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.projectPageItem": {
+    "state": "verified",
+    "verified_at": "2026-11-13T09:58:02.870950Z",
     "verified_by": "Roger"
   },
   "app.containers.Admin.projects.project.projectPageNav": {
@@ -9877,6 +9932,26 @@
   "app.containers.Admin.projects.project.projectPagePreviewTitle": {
     "state": "verified",
     "verified_at": "2026-07-01T13:49:11.860727Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.projectSettings": {
+    "state": "verified",
+    "verified_at": "2026-11-13T09:58:02.870950Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.projectSetupPanel": {
+    "state": "verified",
+    "verified_at": "2026-11-13T09:58:02.870950Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.projectsCrumb": {
+    "state": "verified",
+    "verified_at": "2026-11-13T09:58:02.870950Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.proposalFormTitle": {
+    "state": "verified",
+    "verified_at": "2026-11-13T09:58:02.870950Z",
     "verified_by": "Roger"
   },
   "app.containers.Admin.projects.project.proposalsAndParticipantData": {
