@@ -27,9 +27,13 @@ export class RenderPool {
 
   async start(): Promise<void> {
     this.browser = await chromium.launch({
+      // This process runs model-generated JavaScript, so Chromium's own sandbox
+      // is wanted wherever it can work. It needs syscalls Docker's default seccomp
+      // profile refuses: the production node gives the container Playwright's
+      // profile and sets CHROMIUM_SANDBOX (cl2-deployment). Off otherwise, which
+      // is Playwright's default and what local Docker needs.
+      chromiumSandbox: process.env.CHROMIUM_SANDBOX === "true",
       args: [
-        // This process runs model-generated JavaScript.
-        "--no-sandbox",
         "--disable-dev-shm-usage",
         // No pop-ups; what a page may fetch is decided per request in render.ts.
         "--block-new-web-contents",
