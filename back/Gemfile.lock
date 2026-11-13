@@ -773,7 +773,7 @@ GEM
     mrml (1.10.0-arm64-darwin)
     mrml (1.10.0-x86_64-darwin)
     mrml (1.10.0-x86_64-linux)
-    msgpack (1.8.3)
+    msgpack (1.8.7)
     multi_json (1.21.1)
     multi_xml (0.8.1)
       bigdecimal (>= 3.1, < 5)
