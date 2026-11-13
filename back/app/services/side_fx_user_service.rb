@@ -87,20 +87,35 @@ class SideFxUserService
   end
 
   def after_error(user, remote_ip)
-    return unless user.errors.details[:email].any? { |e| e[:code] == 'zrb-42' }
+    %i[email new_email].each do |field|
+      error_codes = user.errors.details[field].pluck(:code)
+      next if error_codes.empty?
 
-    # We pass AppConfiguration.instance as item (required)
-    # because the user is not saved and has no ID.
-    LogActivityJob.perform_later(
-      AppConfiguration.instance,
-      'blacklisted_email_domain_used',
-      nil,
-      Time.current,
-      payload: { email: user.email, remote_ip: remote_ip }
-    )
+      log_rejected_email(user.public_send(field), error_codes, remote_ip)
+    end
   end
 
   private
+
+  def log_rejected_email(email, error_codes, remote_ip)
+    if error_codes.include?(User::EMAIL_DOMAIN_BLOCKED_ERROR_CODE)
+      # We pass AppConfiguration.instance as item (required)
+      # because the user may not be saved and have no ID.
+      LogActivityJob.perform_later(
+        AppConfiguration.instance,
+        'blacklisted_email_domain_used',
+        nil,
+        Time.current,
+        payload: { email: email, remote_ip: remote_ip }
+      )
+    end
+
+    if error_codes.include?(User::EMAIL_BANNED_ERROR_CODE)
+      # The ban is the item, and the email is left out because we only store hashes of banned emails.
+      ban = EmailBan.find_for(email)
+      LogActivityJob.perform_later(ban, 'banned_email_used', nil, Time.current, payload: { remote_ip: remote_ip }) if ban
+    end
+  end
 
   def after_roles_changed(current_user, user)
     gained_roles(user).each { |role| role_created_side_fx(role, user, current_user) }

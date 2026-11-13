@@ -23,16 +23,8 @@ class OmniauthCallbackController < ApplicationController
     end
   end
 
+  # Failures are reported by OmniauthFailureService before OmniAuth redirects here.
   def failure
-    omniauth_error = request.env['omniauth.error']
-    if omniauth_error
-      ErrorReporter.report(omniauth_error, extra: omniauth_failure_extra(omniauth_error))
-    else
-      ErrorReporter.report_msg(
-        "OmniAuth failure: #{request.env['omniauth.error.type'] || 'unknown'}",
-        extra: { strategy: request.env['omniauth.error.strategy']&.name }
-      )
-    end
     signin_failure_redirect
   end
 
@@ -48,28 +40,6 @@ class OmniauthCallbackController < ApplicationController
 
   def omniauth_params
     request.env['omniauth.params']
-  end
-
-  # When omniauth fails inside an HTTP exchange (e.g. Rack::OAuth2::Client::Error
-  # when the IDP/WAF returns HTML instead of JSON for the token request), the
-  # exception's #message is often just "Unknown :: <html>…</html>". Surface the
-  # status, response body and underlying cause so Sentry shows what actually
-  # came back from the IDP.
-  def omniauth_failure_extra(error)
-    extra = {
-      error_type: request.env['omniauth.error.type'],
-      strategy: request.env['omniauth.error.strategy']&.name
-    }
-    extra[:http_status] = error.status if error.respond_to?(:status)
-    if error.respond_to?(:response) && error.response.is_a?(Hash)
-      response_body = error.response[:error_description] || error.response[:body]
-      extra[:response_body] = response_body.to_s.first(2000) if response_body.present?
-    end
-    if error.cause
-      extra[:cause_class] = error.cause.class.name
-      extra[:cause_message] = error.cause.message
-    end
-    extra
   end
 
   def find_existing_user(authver_method, auth, user_attrs, verify:)
@@ -141,7 +111,7 @@ class OmniauthCallbackController < ApplicationController
           SideFxInviteService.new.after_accept(@invite, claim_tokens:)
           verify_and_sign_in(auth, @user, verify, sign_up: true)
         rescue ActiveRecord::RecordInvalid => e
-          ErrorReporter.report(e)
+          report_invalid_record(e, authver_method)
           signin_failure_redirect
         end
 
@@ -152,7 +122,7 @@ class OmniauthCallbackController < ApplicationController
           SideFxUserService.new.after_update(@user, nil)
           ClaimTokenService.claim(@user, claim_tokens)
         rescue ActiveRecord::RecordInvalid => e
-          ErrorReporter.report(e)
+          report_invalid_record(e, authver_method)
           signin_failure_redirect
           return
         end
@@ -169,11 +139,36 @@ class OmniauthCallbackController < ApplicationController
         SideFxUserService.new.after_create(@user, nil, claim_tokens:)
         verify_and_sign_in(auth, @user, verify, sign_up: true, user_created: true)
       rescue ActiveRecord::RecordInvalid => e
-        Rails.logger.info "Social signup failed: #{e.message}"
-        ErrorReporter.report(e)
+        report_invalid_record(e, authver_method)
         signin_failure_redirect
       end
     end
+  end
+
+  # Users rejected by our email rules (blocked domain, banned email) are expected,
+  # so they are not reported. Any other validation error may mean the SSO method
+  # is misconfigured, so it is reported, grouped per provider and error.
+  def report_invalid_record(error, authver_method)
+    record = error.record
+    if record.is_a?(User) && record.only_blocked_email_errors?
+      SideFxUserService.new.after_error(record, request.remote_ip)
+      return
+    end
+
+    validation_errors = record.errors.details.flat_map do |attribute, details|
+      details.map { |detail| "#{attribute}.#{validation_error_key(detail[:error])}" }
+    end.uniq.sort
+
+    ErrorReporter.report(
+      error,
+      extra: { provider: authver_method.name, record: record.class.name, validation_errors: validation_errors },
+      fingerprint: ['omniauth-invalid-record', authver_method.name, record.class.name, *validation_errors]
+    )
+  end
+
+  # JsonValidator adds a Hash whose message can hold the value; group on its error name only.
+  def validation_error_key(error)
+    error.is_a?(Hash) ? error[:error] : error
   end
 
   def verify_and_sign_in(auth, user, verify, sign_up: true, user_created: false)

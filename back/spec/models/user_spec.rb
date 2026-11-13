@@ -1638,4 +1638,42 @@ RSpec.describe User do
       expect(user).to be_valid
     end
   end
+
+  describe '#only_blocked_email_errors?' do
+    using RSpec::Parameterized::TableSyntax
+
+    blocked_email = "someone@#{described_class::EMAIL_DOMAIN_BLACKLIST.first}"
+
+    where(:case_name, :email, :locale, :expected) do
+      'the email domain is blocked'            | blocked_email       | 'en' | true
+      'there are other errors as well'         | blocked_email       | 'xx' | false
+      'there are only other validation errors' | 'not-an-email'      | 'en' | false
+      'the user is valid'                      | 'valid@example.com' | 'en' | false
+    end
+
+    with_them do
+      it 'returns the expected value' do
+        user = build(:user, email: email, locale: locale)
+        user.validate
+
+        expect(user.only_blocked_email_errors?).to be expected
+      end
+    end
+
+    it 'is true when the email is banned' do
+      EmailBan.ban!('banned@example.com')
+      user = build(:user, email: 'banned@example.com')
+      user.validate
+
+      expect(user.only_blocked_email_errors?).to be true
+    end
+
+    it 'is true when the new email is blocked' do
+      user = create(:user)
+      user.new_email = "someone@#{described_class::EMAIL_DOMAIN_BLACKLIST.first}"
+      user.validate
+
+      expect(user.only_blocked_email_errors?).to be true
+    end
+  end
 end

@@ -58,6 +58,48 @@ resource 'Omniauth Callback', document: false do
       assert_status(302)
       expect(response_headers['Location']).to include('authentication_error=true')
     end
+
+    example 'Does not report a visit without an OmniAuth failure (e.g. a bot)' do
+      expect(ErrorReporter).not_to receive(:report)
+      expect(ErrorReporter).not_to receive(:report_msg)
+
+      do_request
+    end
+  end
+
+  context 'when the OmniAuth strategy fails' do
+    before do
+      AppConfiguration.instance.settings['id_config'] = {
+        allowed: true,
+        enabled: true,
+        id_methods: [{ name: 'facebook' }]
+      }
+      AppConfiguration.instance.save!
+
+      OmniAuth.config.test_mode = true
+      OmniAuth.config.mock_auth[:facebook] = :invalid_credentials
+    end
+
+    after do
+      OmniAuth.config.test_mode = false
+      OmniAuth.config.mock_auth.delete(:facebook)
+    end
+
+    get '/auth/facebook/callback' do
+      example 'Reports the failure with its strategy and type, then redirects to the failure URL' do
+        expect(ErrorReporter).to receive(:report_msg).with(
+          'OmniAuth failure: invalid_credentials',
+          extra: { error_type: 'invalid_credentials', strategy: 'facebook', host: 'example.org' },
+          fingerprint: %w[omniauth-failure facebook none]
+        )
+
+        do_request
+
+        assert_status(302)
+        expect(response_headers['Location']).to include('/auth/failure?message=invalid_credentials')
+        expect(response_headers['Location']).to include('strategy=facebook')
+      end
+    end
   end
 
   context 'when the user is logged in' do
@@ -584,6 +626,82 @@ resource 'Omniauth Callback', document: false do
           expect(existing_user.email).to eq 'billy_fixed@example.com'
           expect(existing_user.identities).to be_empty
         end
+      end
+    end
+  end
+
+  context 'when the user returned by SSO cannot be saved' do
+    before do
+      AppConfiguration.instance.settings['id_config'] = {
+        allowed: true,
+        enabled: true,
+        id_methods: [{ name: 'fake_sso' }]
+      }
+      AppConfiguration.instance.save!
+      OmniAuth.config.test_mode = true
+    end
+
+    after do
+      OmniAuth.config.test_mode = false
+    end
+
+    def mock_sso_email(email, email_confirmed: true)
+      auth = get_auth_hash(email_confirmed: email_confirmed)
+      auth.info.email = email
+      OmniAuth.config.mock_auth[:fake_sso] = auth
+    end
+
+    get '/auth/fake_sso/callback' do
+      example 'Tracks, but does not report, a user rejected because the email domain is blocked' do
+        mock_sso_email("billy_fixed@#{User::EMAIL_DOMAIN_BLACKLIST.first}")
+        expect(ErrorReporter).not_to receive(:report)
+
+        expect { do_request }
+          .to have_enqueued_job(LogActivityJob)
+          .with(AppConfiguration.instance, 'blacklisted_email_domain_used', nil, anything, payload: hash_including(:remote_ip))
+
+        assert_status(302)
+        expect(response_headers['Location']).to include('authentication_error=true')
+        expect(User.count).to eq 0
+      end
+
+      example 'Tracks, but does not report, a user rejected because the email is banned' do
+        ban = EmailBan.ban!('billy_fixed@example.com')
+        mock_sso_email('billy_fixed@example.com')
+        expect(ErrorReporter).not_to receive(:report)
+
+        expect { do_request }
+          .to have_enqueued_job(LogActivityJob)
+          .with(ban, 'banned_email_used', nil, anything, payload: hash_including(:remote_ip))
+
+        assert_status(302)
+        expect(User.count).to eq 0
+      end
+
+      example 'Tracks, but does not report, an unconfirmed SSO email whose domain is blocked' do
+        mock_sso_email("billy_fixed@#{User::EMAIL_DOMAIN_BLACKLIST.first}", email_confirmed: false)
+        expect(ErrorReporter).not_to receive(:report)
+
+        expect { do_request }
+          .to have_enqueued_job(LogActivityJob)
+          .with(AppConfiguration.instance, 'blacklisted_email_domain_used', nil, anything, payload: hash_including(:remote_ip))
+
+        assert_status(302)
+        expect(User.count).to eq 0
+      end
+
+      example 'Reports other validation errors, grouped by provider and error' do
+        mock_sso_email('not-an-email')
+        expect(ErrorReporter).to receive(:report).with(
+          instance_of(ActiveRecord::RecordInvalid),
+          extra: { provider: 'fake_sso', record: 'User', validation_errors: ['email.invalid'] },
+          fingerprint: %w[omniauth-invalid-record fake_sso User email.invalid]
+        )
+
+        do_request
+
+        assert_status(302)
+        expect(response_headers['Location']).to include('authentication_error=true')
       end
     end
   end

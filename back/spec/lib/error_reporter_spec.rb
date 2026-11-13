@@ -48,6 +48,11 @@ RSpec.describe ErrorReporter do
       expect(Rails.logger).to receive(:error).with(instance_of(String), extra_fields).and_call_original
       described_class.report_msg('test msg', extra: extra_fields)
     end
+
+    it 'passes the fingerprint to Sentry' do
+      expect(Sentry::Rails).to receive(:capture_message).with('test msg', extra: {}, fingerprint: %w[a b]).and_call_original
+      described_class.report_msg('test msg', fingerprint: %w[a b])
+    end
   end
 
   describe '.report' do
@@ -76,6 +81,12 @@ RSpec.describe ErrorReporter do
       expect(Sentry::Rails).to receive(:capture_exception).with(StandardError.new, extra: extra_fields).and_call_original
       expect(Rails.logger).to receive(:error).with(instance_of(String), extra_fields).and_call_original
       described_class.report(StandardError.new, extra: extra_fields)
+    end
+
+    it 'passes the fingerprint to Sentry' do
+      error = StandardError.new
+      expect(Sentry::Rails).to receive(:capture_exception).with(error, extra: {}, fingerprint: %w[a b]).and_call_original
+      described_class.report(error, fingerprint: %w[a b])
     end
   end
 end

@@ -71,6 +71,8 @@ class User < ApplicationRecord
   INVITE_STATUSES = %w[pending accepted].freeze
   EMAIL_REGEX = /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
   EMAIL_DOMAIN_BLACKLIST = EmailDomainBlacklist.load
+  EMAIL_DOMAIN_BLOCKED_ERROR_CODE = 'zrb-42'
+  EMAIL_BANNED_ERROR_CODE = 'zrb-43'
 
   # NOTE: Apr 2026 - Slug is still generated but no longer used in the codebase.
   # It will be removed in the near future when we are sure there is no further use for it.
@@ -452,6 +454,12 @@ class User < ApplicationRecord
     merge_target_email.present?
   end
 
+  # True when the user is invalid only because their email is blocked or banned.
+  def only_blocked_email_errors?
+    details = errors.details.values.flatten
+    details.any? && details.all? { |detail| detail[:code].in?([EMAIL_DOMAIN_BLOCKED_ERROR_CODE, EMAIL_BANNED_ERROR_CODE]) }
+  end
+
   private
 
   # Concurrent requests race here; the savepoint lets the caller's transaction survive the losing insert.
@@ -607,7 +615,7 @@ class User < ApplicationRecord
       # Mild obfuscation of error message to make a spammers life a little more difficult,
       # especially avoiding leaking info about which domains are blacklisted.
       # Error is a string, not a symbol, as it is translated on FE, not BE.
-      errors.add(field, 'something_went_wrong', code: 'zrb-42')
+      errors.add(field, 'something_went_wrong', code: EMAIL_DOMAIN_BLOCKED_ERROR_CODE)
       Rails.logger.info "Validation error! Email domain blacklisted: #{domain}" # Clearer message in the logs
     end
   end
@@ -622,7 +630,7 @@ class User < ApplicationRecord
     return if value.blank?
     return unless EmailBan.banned?(value)
 
-    errors.add(field, 'something_went_wrong', code: 'zrb-43')
+    errors.add(field, 'something_went_wrong', code: EMAIL_BANNED_ERROR_CODE)
     Rails.logger.info "Validation error! Email banned: #{value.split('@')&.last}"
   end
 
