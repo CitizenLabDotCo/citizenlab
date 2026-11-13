@@ -2436,7 +2436,6 @@
   "app.containers.Admin.projects.project.questionFormTitle": "Modulo della domanda",
   "app.containers.Admin.projects.project.readyForReview": "Pronto per la revisione",
   "app.containers.Admin.projects.project.readyToPublish": "Pronto per la pubblicazione",
-  "app.containers.Admin.projects.project.recommendedActionsHint": "Le azioni consigliate compariranno qui non appena qualcuno avrà partecipato.",
   "app.containers.Admin.projects.project.removeFile": "Rimuovi {fileName}",
   "app.containers.Admin.projects.project.reorderTag": "Trascina per riordinare {tagName}",
   "app.containers.Admin.projects.project.reportNotVisible": "Non visibile",
