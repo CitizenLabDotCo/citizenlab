@@ -1881,8 +1881,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.viewOnSite": "Peržiūrėti svetainėje",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.waitingForReply": "Laukiama atsakymo",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.waitingForResponse": "Laukiama atsakymo",
-  "app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsPurpose": "Kai projektas bus paskelbtas, įžvalgos padės paversti dalyvavimą aiškiais rezultatais",
-  "app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsWillAppear": "Įžvalgos bus rodomos čia",
   "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.cause": "Priežastis",
   "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.earlier": "Anksčiau",
   "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.emailColumn": "El. paštas",

@@ -1881,8 +1881,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.viewOnSite": "Ver en el sitio",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.waitingForReply": "Esperando una respuesta",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.waitingForResponse": "Esperando una respuesta",
-  "app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsPurpose": "Una vez que el proyecto esté activo, las estadísticas te ayudarán a convertir la participación en resultados claros.",
-  "app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsWillAppear": "Las estadísticas aparecerán aquí",
   "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.cause": "Causa",
   "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.earlier": "Anteriormente",
   "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.emailColumn": "Correo",

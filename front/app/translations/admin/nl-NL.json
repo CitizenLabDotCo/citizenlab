@@ -1881,8 +1881,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.viewOnSite": "Bekijk op de site",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.waitingForReply": "Wachten op een antwoord",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.waitingForResponse": "Wachten op een reactie",
-  "app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsPurpose": "Zodra het project live is, helpen inzichten je om deelname om te zetten in duidelijke resultaten",
-  "app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsWillAppear": "Inzichten verschijnen hier",
   "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.cause": "Oorzaak",
   "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.earlier": "Eerder",
   "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.emailColumn": "E-mail",

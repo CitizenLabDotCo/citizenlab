@@ -1881,8 +1881,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.viewOnSite": "Pogledaj na stranici",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.waitingForReply": "Čeka se odgovor",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.waitingForResponse": "Čeka se odgovor",
-  "app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsPurpose": "Kada projekt postane aktivan, uvidi će vam pomoći da sudjelovanje pretvorite u jasne rezultate",
-  "app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsWillAppear": "Ovdje će se pojaviti uvidi",
   "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.cause": "Cilj",
   "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.earlier": "Ranije",
   "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.emailColumn": "E-pošta",

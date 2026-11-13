@@ -1881,8 +1881,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.viewOnSite": "Veure al lloc web",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.waitingForReply": "Esperant una resposta",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.waitingForResponse": "Esperant una resposta",
-  "app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsPurpose": "Quan el projecte estigui actiu, les dades t'ajudaran a convertir la participació en resultats clars.",
-  "app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsWillAppear": "Les estadístiques apareixeran aquí",
   "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.cause": "Causa",
   "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.earlier": "Anteriorment",
   "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.emailColumn": "Correu electrònic",

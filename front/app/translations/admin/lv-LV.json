@@ -1881,8 +1881,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.viewOnSite": "Skatīt vietnē",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.waitingForReply": "Gaida atbildi",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.waitingForResponse": "Gaida atbildi",
-  "app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsPurpose": "Kad projekts būs aktīvs, ieskati palīdzēs pārvērst līdzdalību skaidros rezultātos",
-  "app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsWillAppear": "Šeit parādīsies ieskati",
   "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.cause": "Cēlonis",
   "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.earlier": "Agrāk",
   "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.emailColumn": "E-pasts",

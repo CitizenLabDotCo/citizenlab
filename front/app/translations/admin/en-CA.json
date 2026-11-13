@@ -1881,8 +1881,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.viewOnSite": "View on the site",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.waitingForReply": "Waiting for a reply",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.waitingForResponse": "Waiting for a response",
-  "app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsPurpose": "Once the project is live, insights will help you turn participation into clear results",
-  "app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsWillAppear": "Insights will appear here",
   "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.cause": "Cause",
   "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.earlier": "Earlier",
   "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.emailColumn": "Email",

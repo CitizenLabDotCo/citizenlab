@@ -1881,8 +1881,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.viewOnSite": "Megtekintés az oldalon",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.waitingForReply": "Válaszra vár",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.waitingForResponse": "Válaszra vár",
-  "app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsPurpose": "Amint a projekt elindul, az elemzések segítenek majd a részvételt egyértelmű eredményekké alakítani.",
-  "app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsWillAppear": "Az elemzések itt fognak megjelenni",
   "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.cause": "Ügy",
   "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.earlier": "Korábban",
   "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.emailColumn": "E-mail",

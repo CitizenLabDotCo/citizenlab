@@ -1881,8 +1881,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.viewOnSite": "Gweld ar y wefan",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.waitingForReply": "Yn aros am ateb",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.waitingForResponse": "Yn aros am ymateb",
-  "app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsPurpose": "Unwaith y bydd y prosiect yn fyw, bydd mewnwelediadau yn eich helpu i droi cyfranogiad yn ganlyniadau clir",
-  "app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsWillAppear": "Bydd mewnwelediadau yn ymddangos yma",
   "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.cause": "Achos",
   "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.earlier": "Yn gynharach",
   "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.emailColumn": "E-bost",

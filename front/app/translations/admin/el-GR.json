@@ -1881,8 +1881,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.viewOnSite": "Προβολή στον ιστότοπο",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.waitingForReply": "Αναμονή για απάντηση",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.waitingForResponse": "Αναμονή για απάντηση",
-  "app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsPurpose": "Μόλις το έργο δημοσιευτεί, τα στατιστικά στοιχεία θα σας βοηθήσουν να μετατρέψετε τη συμμετοχή σε σαφή αποτελέσματα",
-  "app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsWillAppear": "Τα στατιστικά στοιχεία θα εμφανίζονται εδώ",
   "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.cause": "Αιτία",
   "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.earlier": "Νωρίτερα",
   "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.emailColumn": "Email",

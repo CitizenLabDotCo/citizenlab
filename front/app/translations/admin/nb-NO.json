@@ -1881,8 +1881,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.viewOnSite": "Se på nettstedet",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.waitingForReply": "Venter på svar",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.waitingForResponse": "Venter på svar",
-  "app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsPurpose": "Når prosjektet er publisert, vil innsikt hjelpe deg med å gjøre deltakelse om til tydelige resultater",
-  "app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsWillAppear": "Innsikt vil vises her",
   "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.cause": "Årsak",
   "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.earlier": "Tidligere",
   "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.emailColumn": "E-post",

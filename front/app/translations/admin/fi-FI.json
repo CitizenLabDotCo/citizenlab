@@ -1881,8 +1881,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.viewOnSite": "Näytä sivustolla",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.waitingForReply": "Odottaa vastausta",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.waitingForResponse": "Odottaa vastausta",
-  "app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsPurpose": "Kun projekti on julkaistu, tilastot auttavat muuttamaan osallistumisen selkeiksi tuloksiksi",
-  "app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsWillAppear": "Analyysit ilmestyvät tähän",
   "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.cause": "Syy",
   "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.earlier": "Aikaisemmin",
   "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.emailColumn": "Sähköposti",

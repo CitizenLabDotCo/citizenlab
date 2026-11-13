@@ -1881,8 +1881,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.viewOnSite": "عرض على الموقع",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.waitingForReply": "في انتظار الرد",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.waitingForResponse": "في انتظار الرد",
-  "app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsPurpose": "بمجرد إطلاق المشروع، ستساعدك الرؤى على تحويل المشاركة إلى نتائج واضحة",
-  "app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsWillAppear": "ستظهر الرؤى هنا",
   "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.cause": "القضية",
   "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.earlier": "في وقت سابق",
   "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.emailColumn": "البريد الإلكتروني",

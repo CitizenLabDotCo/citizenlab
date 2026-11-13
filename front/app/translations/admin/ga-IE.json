@@ -1881,8 +1881,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.viewOnSite": "Féach ar an suíomh",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.waitingForReply": "Ag fanacht ar fhreagra",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.waitingForResponse": "Ag fanacht ar fhreagra",
-  "app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsPurpose": "Nuair a bheidh an tionscadal beo, cabhróidh léargais leat rannpháirtíocht a thiontú ina dtorthaí soiléire",
-  "app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsWillAppear": "Beidh léargais le feiceáil anseo",
   "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.cause": "Cúis",
   "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.earlier": "Níos luaithe",
   "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.emailColumn": "Ríomhphost",

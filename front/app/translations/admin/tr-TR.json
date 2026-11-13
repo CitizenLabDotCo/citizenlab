@@ -1881,8 +1881,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.viewOnSite": "Sitede görüntüle",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.waitingForReply": "Cevap bekleniyor",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.waitingForResponse": "Yanıt bekleniyor",
-  "app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsPurpose": "Proje yayına girdiğinde, içgörüler katılımı net sonuçlara dönüştürmenize yardımcı olacak",
-  "app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsWillAppear": "Analizler burada görünecek",
   "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.cause": "Neden",
   "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.earlier": "Daha önce",
   "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.emailColumn": "E-posta",
