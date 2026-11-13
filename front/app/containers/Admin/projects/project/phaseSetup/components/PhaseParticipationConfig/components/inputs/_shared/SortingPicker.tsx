@@ -47,6 +47,7 @@ export default ({
     return (
       <Box mb="10px">
         <SetupCard
+          reviewKey="sorting"
           title={title}
           action={
             <OptionPicker
@@ -63,7 +64,11 @@ export default ({
           }
         >
           {apiErrors?.ideas_order && (
-            <Error apiErrors={apiErrors.ideas_order} />
+            <Error
+              showBackground={false}
+              showIcon={false}
+              apiErrors={apiErrors.ideas_order}
+            />
           )}
         </SetupCard>
       </Box>

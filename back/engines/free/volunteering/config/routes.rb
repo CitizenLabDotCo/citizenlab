@@ -4,6 +4,7 @@ Volunteering::Engine.routes.draw do
   namespace :web_api, defaults: { format: :json } do
     namespace :v1 do
       get 'phases/:phase_id/causes' => 'causes#index'
+      get 'phases/:phase_id/volunteers' => 'volunteers#index_by_phase'
       get 'phases/:phase_id/volunteers/as_xlsx' => 'volunteers#index_xlsx'
       resources :causes, only: %i[create show update destroy], controller: :causes do
         patch :reorder, on: :member

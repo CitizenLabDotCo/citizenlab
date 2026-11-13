@@ -1429,6 +1429,21 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+  "app.components.FileRepositorySelectAndUpload.attachmentCount": {
+    "state": "verified",
+    "verified_at": "2026-11-13T10:17:43.177735Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.FileRepositorySelectAndUpload.attachments": {
+    "state": "verified",
+    "verified_at": "2026-11-13T10:17:43.177735Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.FileRepositorySelectAndUpload.done": {
+    "state": "verified",
+    "verified_at": "2026-11-13T12:43:58.925462Z",
+    "verified_by": "Jelena"
+  },
   "app.components.FileRepositorySelectAndUpload.or": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",

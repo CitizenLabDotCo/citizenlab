@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import {
   Box,
@@ -53,6 +53,7 @@ import useSurveyProviders from './useSurveyProviders';
 import { defaultConfigForMethod } from './utils/participationMethodConfigs';
 
 interface Props {
+  moderationAction?: ReactNode;
   phase?: IPhase;
   formData: IUpdatedPhaseProperties;
   validationErrors: ValidationErrors;
@@ -74,6 +75,7 @@ const MAX_VOTES_PER_VOTING_METHOD: Record<VotingMethod, number> = {
 };
 
 const PhaseParticipationConfig = ({
+  moderationAction,
   phase,
   formData,
   validationErrors,
@@ -533,6 +535,7 @@ const PhaseParticipationConfig = ({
 
         {participation_method === 'ideation' && (
           <IdeationInputs
+            moderationAction={moderationAction}
             input_term={input_term}
             handleInputTermChange={handleInputTermChange}
             submission_enabled={submission_enabled}
@@ -587,6 +590,7 @@ const PhaseParticipationConfig = ({
 
         {participation_method === 'proposals' && (
           <ProposalsInputs
+            moderationAction={moderationAction}
             input_term={input_term}
             handleInputTermChange={handleInputTermChange}
             submission_enabled={submission_enabled}

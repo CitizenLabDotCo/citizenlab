@@ -34,7 +34,18 @@ export interface IPhaseData {
   };
 }
 
+export type SetupReviewCard =
+  | 'input_term'
+  | 'demographics'
+  | 'form'
+  | 'survey_method'
+  | 'survey_placement'
+  | 'voting_method'
+  | 'views'
+  | 'sorting';
+
 export interface IPhaseAttributes {
+  reviewed_setup_cards?: SetupReviewCard[];
   voting_filtering_enabled: boolean;
   placement_type: PhasePlacementType;
   title_multiloc: Multiloc;
@@ -76,6 +87,7 @@ export interface IPhaseAttributes {
   /** For budgeting it's: for each idea multiply price of the idea
    * with the idea's baskets_count, then sum all those to get the total idea votes for the phase  */
   votes_count: number;
+  manual_votes_count: number;
   total_votes_amount: number;
   report_public: boolean;
   native_survey_title_multiloc?: Multiloc;
@@ -108,6 +120,7 @@ export interface IPhase {
 }
 
 export interface IUpdatedPhaseProperties {
+  reviewed_setup_cards?: SetupReviewCard[];
   project_id?: string;
   placement_type?: PhasePlacementType;
   title_multiloc?: Multiloc;

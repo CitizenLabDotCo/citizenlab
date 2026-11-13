@@ -57,6 +57,7 @@ const SetupCardButton = ({ title, titleTooltip, action, button }: Props) => {
           as="span"
           variant="boControl"
           fontSize="xs"
+          lineHeight="20px"
           m="0"
           textAlign="left"
         >

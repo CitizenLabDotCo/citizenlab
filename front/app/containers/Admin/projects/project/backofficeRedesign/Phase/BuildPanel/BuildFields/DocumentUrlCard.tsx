@@ -69,7 +69,7 @@ const DocumentUrlCard = ({ value, errors, onChange }: Props) => {
           value={value}
           onChange={onChange}
         />
-        <Error apiErrors={apiErrors} />
+        <Error showBackground={false} showIcon={false} apiErrors={apiErrors} />
       </Box>
     </PanelField>
   );

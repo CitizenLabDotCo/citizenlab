@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
@@ -22,9 +22,12 @@ import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/t
 import { validateParticipation } from 'containers/Admin/projects/project/phaseSetup/validate';
 
 import { useRegisterPageSaver } from 'components/admin/PageSaveContext';
+import { usePhasePreviewPublisher } from 'components/admin/PhasePreview/DraftContext';
 
 import { useIntl } from 'utils/cl-intl';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { isCLErrorsWrapper } from 'utils/errorUtils';
+import { useSearch } from 'utils/router';
 
 import EditAccessButton from './EditAccessButton';
 import messages from './messages';
@@ -64,6 +67,18 @@ interface Props {
 
 const MethodSettings = ({ phase }: Props) => {
   const { formatMessage } = useIntl();
+  const { setup_action } = useSearch({ strict: false });
+  const openedSection = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (setup_action) {
+      const section =
+        setup_action === 'moderation'
+          ? document.getElementById('phase-moderation-settings')
+          : openedSection.current;
+      section?.scrollIntoView({ block: 'nearest' });
+    }
+  }, [setup_action]);
   const { data: phaseWithRelationships } = usePhase(phase.id);
   const { mutateAsync: updatePhase } = useUpdatePhase();
 
@@ -76,6 +91,8 @@ const MethodSettings = ({ phase }: Props) => {
     {}
   );
 
+  const preview = usePhasePreviewPublisher('settings', phase.id);
+
   const participationMethod = phase.attributes.participation_method;
   const accessOnlyActions = ACCESS_ONLY_ACTIONS[participationMethod];
 
@@ -83,6 +100,16 @@ const MethodSettings = ({ phase }: Props) => {
     config: IUpdatedPhaseProperties,
     changedFields: Partial<IUpdatedPhaseProperties>
   ) => {
+    setErrors((errors) =>
+      errors
+        ? Object.fromEntries(
+            Object.entries(errors).filter(
+              ([field]) => !(field in changedFields)
+            )
+          )
+        : null
+    );
+    preview.publish(changedFields);
     setChanges((changes) => ({ ...changes, ...changedFields }));
     setFormData(config);
   };
@@ -98,6 +125,7 @@ const MethodSettings = ({ phase }: Props) => {
 
     try {
       await updatePhase({ phaseId: phase.id, ...changes });
+      preview.clear();
       setChanges({});
       setErrors(null);
     } catch (error) {
@@ -136,22 +164,36 @@ const MethodSettings = ({ phase }: Props) => {
         />
       )}
 
-      {!accessOnlyActions &&
-        !METHODS_WITH_ACTION_ROWS.includes(participationMethod) && (
-          <EditAccessButton phaseId={phase.id} />
-        )}
+      <EditAccessButton
+        phaseId={phase.id}
+        initialOpened={setup_action === 'access'}
+        showButton={
+          !accessOnlyActions &&
+          !METHODS_WITH_ACTION_ROWS.includes(participationMethod)
+        }
+        onClose={() => {
+          if (setup_action === 'access') removeSearchParams(['setup_action']);
+        }}
+      />
 
-      <PanelGroup label={formatMessage(messages.notifications)}>
-        <PhaseNotifications phase={phase} />
-      </PanelGroup>
+      <Box ref={setup_action === 'notifications' ? openedSection : undefined}>
+        <PanelGroup
+          label={formatMessage(messages.participantEmails)}
+          defaultOpen={setup_action === 'notifications'}
+        >
+          <PhaseNotifications phase={phase} />
+        </PanelGroup>
+      </Box>
 
       {participationMethod === 'voting' && (
-        <PanelGroup
-          label={formatMessage(configMessages.moderationGroup)}
-          defaultOpen
-        >
-          <ModerationAssignee phaseId={phase.id} />
-        </PanelGroup>
+        <Box id="phase-moderation-settings">
+          <PanelGroup
+            label={formatMessage(configMessages.moderationGroup)}
+            defaultOpen
+          >
+            <ModerationAssignee phaseId={phase.id} />
+          </PanelGroup>
+        </Box>
       )}
     </PanelSettings>
   );

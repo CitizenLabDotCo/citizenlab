@@ -43,7 +43,7 @@ const ImportInputsSection = ({
   const { formatMessage } = useIntl();
   const { projectId, phaseId } = useParams({ strict: false }) as {
     projectId: string;
-    phaseId: string;
+    phaseId?: string;
   };
   const [exportModalOpen, setExportModalOpen] = useState(false);
 
@@ -55,7 +55,9 @@ const ImportInputsSection = ({
     onlyCheckAllowed: true,
   });
 
-  const importerPath = `/admin/projects/${projectId}/phases/${phaseId}/input-importer`;
+  const importerPath = phaseId
+    ? `/admin/projects/${projectId}/phases/${phaseId}/input-importer`
+    : undefined;
 
   return (
     <Box>
@@ -100,13 +102,15 @@ const ImportInputsSection = ({
               </Text>
             </Box>
             <Box display="flex" alignItems="center" gap="8px">
-              <Button
-                icon="download"
-                onClick={() => setExportModalOpen(true)}
-                buttonStyle="text"
-              >
-                <FormattedMessage {...messages.downloadPDF} />
-              </Button>
+              {phaseId && (
+                <Button
+                  icon="download"
+                  onClick={() => setExportModalOpen(true)}
+                  buttonStyle="text"
+                >
+                  <FormattedMessage {...messages.downloadPDF} />
+                </Button>
+              )}
               <PDFImportButton
                 printedFormsEnabled={printedFormsEnabled}
                 onClickPDFImport={onClickPDFImport}
@@ -142,7 +146,7 @@ const ImportInputsSection = ({
             </Text>
           </Box>
           <Box display="flex" alignItems="center" gap="8px">
-            <ExcelDownloadButton phaseId={phaseId} />
+            {phaseId && <ExcelDownloadButton phaseId={phaseId} />}
             <UpsellTooltip disabled={inputImporterAllowed} theme="dark">
               <ExcelImportButton
                 onClickExcelImport={onClickExcelImport}
@@ -154,7 +158,7 @@ const ImportInputsSection = ({
         </Box>
       </Box>
 
-      {pdfImportSupported && (
+      {pdfImportSupported && phaseId && (
         <PDFExportModal
           open={exportModalOpen}
           formType={formType}

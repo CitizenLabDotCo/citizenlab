@@ -1,16 +1,16 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { Text } from '@citizenlab/cl2-component-library';
 
 import { InputTerm, ParticipationMethod } from 'api/phases/types';
 
+import inputManagerMessages from 'containers/Admin/projects/project/backofficeRedesign/InputManager/messages';
+import OfflineFormsButton from 'containers/Admin/projects/project/backofficeRedesign/InputManager/SideColumn/OfflineFormsButton';
 import inputFormMessages from 'containers/Admin/projects/project/inputForm/messages';
 
 import { useIntl } from 'utils/cl-intl';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
-import inputManagerMessages from '../../../../../InputManager/messages';
-import OfflineFormsButton from '../../../../../InputManager/RightColumn/OfflineFormsButton';
 import PanelField from '../../../PanelField';
 import DemographicsCard from '../DemographicsCard';
 
@@ -30,6 +30,7 @@ interface Props {
   inputTerm?: InputTerm;
   /** Survey options already shows the form and offline collection. */
   formInSurveyOptions: boolean;
+  draftQuestionsAction?: ReactNode;
 }
 
 const FormSection = ({
@@ -38,6 +39,7 @@ const FormSection = ({
   phaseId,
   inputTerm,
   formInSurveyOptions,
+  draftQuestionsAction,
 }: Props) => {
   const { formatMessage } = useIntl();
 
@@ -50,7 +52,7 @@ const FormSection = ({
   const title = formatMessage(getFormTitle(survey, inputTerm));
 
   if (formInSurveyOptions) {
-    return phaseId ? <DemographicsCard phaseId={phaseId} /> : null;
+    return null;
   }
 
   return (
@@ -64,13 +66,17 @@ const FormSection = ({
         />
       ) : (
         <PanelField label={title}>
-          <Text variant="boHelper" m="0">
-            {formatMessage(messages.saveToEditForm)}
-          </Text>
+          {draftQuestionsAction || (
+            <Text variant="boHelper" m="0">
+              {formatMessage(messages.saveToEditForm)}
+            </Text>
+          )}
         </PanelField>
       )}
 
-      {phaseId && <DemographicsCard phaseId={phaseId} />}
+      {phaseId && !survey && (
+        <DemographicsCard projectId={projectId} phaseId={phaseId} />
+      )}
 
       {/* Survey responses aren't managed in Manage, so their offline forms
           stay here. */}

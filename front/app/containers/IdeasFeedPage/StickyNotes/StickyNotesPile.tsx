@@ -15,10 +15,13 @@ import usePhase from 'api/phases/usePhase';
 
 import useLocalize from 'hooks/useLocalize';
 
+import PreviewSkeleton from 'components/admin/PhasePreview/PreviewSkeleton';
+
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { getInputTermMessage } from 'utils/i18n';
+import { usePhasePreview } from 'utils/phasePreview/runtime';
 
 import messages from '../messages';
 import { getTopicColor } from '../topicsColor';
@@ -101,6 +104,7 @@ const StickyNotesPile = ({ phaseId, slug }: Props) => {
   const isTablet = useBreakpoint('tablet');
   const localize = useLocalize();
   const { data: phase } = usePhase(phaseId);
+  const preview = usePhasePreview();
   const { data, isLoading } = useInfiniteIdeaFeedIdeas({
     phaseId,
     'page[size]': 15,
@@ -154,6 +158,10 @@ const StickyNotesPile = ({ phaseId, slug }: Props) => {
   }
 
   if (!displayedIdeas || displayedIdeas.length === 0) {
+    if (preview && preview.lifecycle !== 'open') {
+      return <PreviewSkeleton kind="perspectives" />;
+    }
+
     return (
       <Box display="flex" justifyContent="center" py="64px">
         <Text color="textSecondary">

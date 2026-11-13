@@ -13,15 +13,20 @@ import FilterMenu from './FilterMenu';
 import { FilterCategory } from './FilterMenu/useFilterCategories';
 import messages from './messages';
 import SearchToggle from './SearchToggle';
+import useInputTermLabels from './useInputTermLabels';
 
 interface Props {
   type: ManagerType;
   projectId: string;
   count: number | undefined;
   selectedIdeas: IIdeaData[];
-  onUpdated: (idea: IIdeaData) => void;
+  onUpdated: (ideas: IIdeaData[]) => void;
   onEdit: (ideaId: string) => void;
   onClearSelection: () => void;
+  onDeleted: () => void;
+  onSelectAll: () => void;
+  isSelectingAll: boolean;
+  selectAllFailed: boolean;
   searchTerm: string | undefined;
   onSearch: (term: string | null) => void;
   categories: FilterCategory[];
@@ -36,12 +41,17 @@ const ListToolbar = ({
   onUpdated,
   onEdit,
   onClearSelection,
+  onDeleted,
+  onSelectAll,
+  isSelectingAll,
+  selectAllFailed,
   searchTerm,
   onSearch,
   categories,
   onClearFilters,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const { terms, termCount } = useInputTermLabels();
 
   return (
     <Box
@@ -57,17 +67,23 @@ const ListToolbar = ({
           type={type}
           projectId={projectId}
           ideas={selectedIdeas}
+          total={count}
           onUpdated={onUpdated}
           onEdit={onEdit}
           onClear={onClearSelection}
+          onDeleted={onDeleted}
+          onSelectAll={onSelectAll}
+          isSelectingAll={isSelectingAll}
+          selectAllFailed={selectAllFailed}
         />
       ) : (
         <Text variant="boLabel" m="0">
-          {count !== undefined && formatMessage(messages.inputCount, { count })}
+          {count !== undefined && termCount(count)}
         </Text>
       )}
       <Box display="flex" alignItems="center" gap="8px">
         <SearchToggle
+          label={formatMessage(messages.searchTerms, { terms })}
           searchTerm={searchTerm}
           onChange={onSearch}
           resultCount={count ?? 0}

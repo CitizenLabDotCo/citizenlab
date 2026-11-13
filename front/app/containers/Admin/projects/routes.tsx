@@ -550,6 +550,21 @@ const phasesSetupRoute = createRoute({
 const phaseSetupRoute = createRoute({
   getParentRoute: () => projectPhasesRoute,
   path: '$phaseId/setup',
+  validateSearch: (search: Record<string, unknown>) =>
+    yup
+      .object({
+        setup_action: yup
+          .mixed<'access' | 'notifications' | 'moderation'>()
+          .oneOf(['access', 'notifications', 'moderation'])
+          .optional(),
+        survey_action: yup
+          .mixed<'copy' | 'pdf' | 'excel'>()
+          .oneOf(['copy', 'pdf', 'excel'])
+          .optional(),
+      })
+      .validateSync(search, {
+        stripUnknown: true,
+      }),
   component: () => (
     <PageLoading>
       {/* We use the key here to make sure that the component is treated as a different instance

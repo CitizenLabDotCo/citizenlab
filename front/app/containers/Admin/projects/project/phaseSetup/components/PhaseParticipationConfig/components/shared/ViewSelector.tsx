@@ -145,6 +145,7 @@ const ViewSelector = ({
 
     return (
       <PanelGroup
+        reviewKey="views"
         label={formatMessage(title || messages.availableViews)}
         summary={
           defaultViewName && otherViewsCount > 0
@@ -180,7 +181,11 @@ const ViewSelector = ({
             </Box>
           ))}
         </Box>
-        <Error apiErrors={apiErrors && apiErrors.presentation_mode} />
+        <Error
+          showBackground={false}
+          showIcon={false}
+          apiErrors={apiErrors && apiErrors.presentation_mode}
+        />
       </PanelGroup>
     );
   }

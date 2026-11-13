@@ -9,9 +9,15 @@ export type CommonGroundResultsKeys = Keys<typeof commonGroundResultsKeys>;
 
 export type CommonGroundProgressKeys = Keys<typeof commonGroundProgressKeys>;
 
+export type Agreement = 'agree' | 'split' | 'disagree';
+
 export interface CommonGroundResultItem {
   id: string;
   title_multiloc: Multiloc;
+  /** Of all reactions, neutral ones included. */
+  agree_percent: number;
+  /** No agreement bucket when all reactions are neutral. */
+  agreement: Agreement | null;
   votes: {
     up: number;
     down: number;

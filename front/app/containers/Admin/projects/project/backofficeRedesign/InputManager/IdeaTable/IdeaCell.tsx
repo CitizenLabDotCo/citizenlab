@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
+import { differenceInCalendarDays } from 'date-fns';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IIdeaData } from 'api/ideas/types';
@@ -8,10 +9,12 @@ import { IIdeaData } from 'api/ideas/types';
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
+import { useIntl } from 'utils/cl-intl';
 import FormattedBudget from 'utils/currency/FormattedBudget';
 import { timeAgo } from 'utils/dateUtils';
 
 import { ColumnKey } from '../columns';
+import messages from '../messages';
 import { topicIds } from '../utils';
 
 import AssigneeMark from './AssigneeMark';
@@ -26,6 +29,7 @@ interface Props {
 
 const IdeaCell = ({ column, idea, status, tagLabels }: Props) => {
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
   const locale = useLocale();
   const { attributes, relationships } = idea;
 
@@ -59,7 +63,34 @@ const IdeaCell = ({ column, idea, status, tagLabels }: Props) => {
     );
   }
 
+  const daysLeft = attributes.expires_at
+    ? differenceInCalendarDays(new Date(attributes.expires_at), new Date())
+    : undefined;
+  const isClosed =
+    daysLeft === undefined ||
+    (attributes.expires_at !== undefined &&
+      Date.parse(attributes.expires_at) <= Date.now()) ||
+    // Reaching the support threshold does not stop further support.
+    (status &&
+      !['proposed', 'threshold_reached', 'custom'].includes(
+        status.attributes.code
+      ));
+
   const values: Record<ColumnKey, ReactNode> = {
+    support: (
+      <>
+        {attributes.likes_count}
+        {attributes.reacting_threshold !== undefined && (
+          <Text as="span" variant="boHelper" m="0">
+            {' '}
+            / {attributes.reacting_threshold}
+          </Text>
+        )}
+      </>
+    ),
+    timeLeft: isClosed
+      ? formatMessage(messages.closed)
+      : formatMessage(messages.daysLeft, { days: daysLeft }),
     status: null,
     assignee: null,
     tags: null,
@@ -71,6 +102,7 @@ const IdeaCell = ({ column, idea, status, tagLabels }: Props) => {
     published: attributes.published_at
       ? timeAgo(Date.parse(attributes.published_at), locale)
       : null,
+    totalVotes: attributes.total_votes,
     votes: attributes.votes_count,
     offlineVotes: attributes.manual_votes_amount || 0,
     offlinePicks: attributes.manual_votes_amount || 0,

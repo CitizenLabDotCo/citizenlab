@@ -4,19 +4,16 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 import SearchInput from 'components/UI/SearchInput';
 
-import { useIntl } from 'utils/cl-intl';
-
-import messages from './messages';
 import ToolbarIconButton from './ToolbarIconButton';
 
 interface Props {
+  label: string;
   searchTerm: string | undefined;
   onChange: (term: string | null) => void;
   resultCount: number;
 }
 
-const SearchToggle = ({ searchTerm, onChange, resultCount }: Props) => {
-  const { formatMessage } = useIntl();
+const SearchToggle = ({ label, searchTerm, onChange, resultCount }: Props) => {
   const [isOpen, setIsOpen] = useState(!!searchTerm);
   const [appliedTerm, setAppliedTerm] = useState(searchTerm);
   const [inputKey, setInputKey] = useState(0);
@@ -30,7 +27,7 @@ const SearchToggle = ({ searchTerm, onChange, resultCount }: Props) => {
     return (
       <ToolbarIconButton
         icon="search"
-        label={formatMessage(messages.searchInputs)}
+        label={label}
         onClick={() => setIsOpen(true)}
         dataCy="e2e-input-manager-search-toggle"
       />
@@ -42,10 +39,10 @@ const SearchToggle = ({ searchTerm, onChange, resultCount }: Props) => {
       <SearchInput
         key={inputKey}
         defaultValue={searchTerm}
-        placeholder={formatMessage(messages.searchInputs)}
-        ariaLabel={formatMessage(messages.searchInputs)}
+        placeholder={label}
+        ariaLabel={label}
         debounce={500}
-        size="small"
+        variant="bo"
         onChange={onChange}
         a11y_numberOfSearchResults={resultCount}
         setInputRef={(input) => input?.focus()}

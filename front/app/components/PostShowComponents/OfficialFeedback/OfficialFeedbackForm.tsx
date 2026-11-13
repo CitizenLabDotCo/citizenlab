@@ -1,7 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
 import {
+  bo,
   Box,
+  ButtonProps,
   Input,
   LocaleSwitcher,
   colors,
@@ -68,10 +70,6 @@ const SuccessMessage = styled.div`
   margin-left: 14px;
 `;
 
-const ButtonContainer = styled.div`
-  display: flex;
-`;
-
 const SubmitButton = styled(ButtonWithLink)``;
 
 const CancelButton = styled(ButtonWithLink)`
@@ -89,6 +87,7 @@ interface Props {
   feedback?: IIdeaOfficialFeedbackData;
   className?: string;
   onClose?: () => void;
+  variant?: 'default' | 'bo';
 }
 
 const OfficialFeedbackForm = ({
@@ -97,8 +96,10 @@ const OfficialFeedbackForm = ({
   postId,
   onClose,
   className,
+  variant = 'default',
 }: Props) => {
   const { formatMessage } = useIntl();
+  const isBo = variant === 'bo';
   const { data: appConfiguration } = useAppConfiguration();
   const locale = useLocale();
   const tenantLocales = useAppConfigurationLocales();
@@ -305,6 +306,14 @@ const OfficialFeedbackForm = ({
     }
   };
 
+  const submitButtonProps: Partial<ButtonProps> = isBo
+    ? { buttonStyle: 'bo-secondary' }
+    : {
+        bgColor: formType === 'edit' ? colors.primary : colors.error,
+        icon: 'pen',
+        textColor: 'white',
+        fullWidth: formType === 'new',
+      };
   const errorMessage = error ? formatMessage(messages.updateButtonError) : null;
   const successMessage = success
     ? formatMessage(messages.updateMessageSuccess)
@@ -326,7 +335,7 @@ const OfficialFeedbackForm = ({
               justifyContent="space-between"
             >
               <Box my="auto">
-                {formType === 'new' && (
+                {formType === 'new' && !isBo && (
                   <Title variant="h2" fontSize="m" color="tenantText" m="0">
                     <FormattedMessage {...messages.addOfficalUpdate} />
                   </Title>
@@ -338,6 +347,7 @@ const OfficialFeedbackForm = ({
                   selectedLocale={selectedLocale}
                   onSelectedLocaleChange={handleOnLocaleChange}
                   values={formValues as any}
+                  variant={variant}
                 />
               </Box>
             </Box>
@@ -351,10 +361,14 @@ const OfficialFeedbackForm = ({
             // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             value={formValues.bodyMultiloc?.[selectedLocale] || ''}
             onChange={handleBodyOnChange}
-            placeholder={formatMessage(messages.textAreaPlaceholder)}
-            rows={8}
+            placeholder={formatMessage(
+              isBo ? messages.addOfficalUpdate : messages.textAreaPlaceholder
+            )}
+            rows={isBo ? 3 : 8}
+            border={isBo ? `1px solid ${colors.grey300}` : undefined}
+            borderRadius={isBo ? bo.borderRadius : undefined}
             padding="12px"
-            fontSize={`${fontSizes.base}px`}
+            fontSize={`${isBo ? fontSizes.xs : fontSizes.base}px`}
             background="#fff"
           />
 
@@ -367,18 +381,16 @@ const OfficialFeedbackForm = ({
             onChange={handleAuthorOnChange}
             placeholder={formatMessage(messages.officialNamePlaceholder)}
             ariaLabel={formatMessage(messages.officialUpdateAuthor)}
+            variant={variant}
           />
         </Section>
 
         <StyledError text={errorMessage} marginTop="0px" />
 
-        <ButtonContainer>
+        <Box display="flex" justifyContent={isBo ? 'flex-end' : undefined}>
           <SubmitButton
             className="e2e-official-feedback-form-submit-button"
-            bgColor={formType === 'edit' ? colors.primary : colors.error}
-            icon="pen"
-            textColor="white"
-            fullWidth={formType === 'new'}
+            {...submitButtonProps}
             onClick={handleOnSubmit}
             disabled={!validate()}
             processing={processing}
@@ -401,7 +413,7 @@ const OfficialFeedbackForm = ({
               <FormattedMessage {...messages.cancel} />
             </CancelButton>
           )}
-        </ButtonContainer>
+        </Box>
       </Container>
     );
   }

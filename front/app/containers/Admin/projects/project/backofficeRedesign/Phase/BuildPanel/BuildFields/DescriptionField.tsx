@@ -22,7 +22,7 @@ import messages from './messages';
 
 interface Props {
   projectId: string;
-  phaseId: string;
+  phaseId?: string;
   value: Multiloc | undefined;
   errors: CLErrors | null;
   onChange: (description_multiloc: Multiloc) => void;
@@ -43,7 +43,7 @@ const DescriptionField = ({
   });
 
   // Draft descriptions publish on their own, so they keep their own editor.
-  if (draftDescriptionEnabled) {
+  if (draftDescriptionEnabled && phaseId) {
     if (!phase) return null;
 
     return (
@@ -83,7 +83,11 @@ const DescriptionField = ({
         onChange={onChange}
         withCTAButton
       />
-      <Error apiErrors={errors?.description_multiloc} />
+      <Error
+        showBackground={false}
+        showIcon={false}
+        apiErrors={errors?.description_multiloc}
+      />
     </Box>
   );
 };

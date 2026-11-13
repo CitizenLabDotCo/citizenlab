@@ -20,7 +20,7 @@ const BudgetingProgressBar = ({ phase, idea }: Props) => {
   const { formatMessage } = useIntl();
   const totalBasketsIdeaIsIn = idea.attributes.total_votes;
   const numberOnlinePicks = idea.attributes.baskets_count;
-  const numberOfflinePicks = idea.attributes.manual_votes_amount;
+  const numberOfflinePicks = idea.attributes.manual_votes_amount ?? 0;
   const totalOnlineBasketsInPhase = phase.data.attributes.baskets_count;
   const manualVotersAmount = phase.data.attributes.manual_voters_amount || 0;
   const totalBasketsInPhase = totalOnlineBasketsInPhase + manualVotersAmount;

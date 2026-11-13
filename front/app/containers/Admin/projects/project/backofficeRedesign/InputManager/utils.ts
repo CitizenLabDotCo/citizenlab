@@ -5,3 +5,8 @@ export const topicIds = (idea: IIdeaData) =>
 
 export const phaseIds = (idea: IIdeaData) =>
   idea.relationships.phases.data.map((phase) => phase.id);
+
+export const toggled = (values: string[], value: string) =>
+  values.includes(value)
+    ? values.filter((item) => item !== value)
+    : [...values, value];

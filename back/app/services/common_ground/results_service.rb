@@ -4,6 +4,9 @@ module CommonGround
     HIGHEST_CONSENSUS_MIN_SCORE = 0.75 # e.g. at least 75/25 in one direction
     CLOSE_CALL_MAX_SCORE = 0.6         # e.g. between 40/60 and 60/40
 
+    AGREE_MIN_PERCENT = 60
+    DISAGREE_MAX_PERCENT = 40 # exclusive
+
     # @param [Boolean] exclude_admins_and_moderators Leave out the reactions of users
     #   with an admin or moderator role. Reactions without a known user are kept.
     def initialize(phase, exclude_admins_and_moderators: false)
@@ -24,12 +27,20 @@ module CommonGround
       )
     end
 
+    # @param [Array<String>] agreements Any of 'agree', 'split' and 'disagree'
+    # @return [ActiveRecord::Relation] The ids of the reacted ideas in those buckets, as a subquery
+    def idea_ids_with_agreement(agreements)
+      ideas_with_reaction_counts
+        .where("#{agreement_sql} IN (?)", Array(agreements))
+        .reselect('ideas.id')
+    end
+
     private
 
     REACTION_COUNT_COLUMNS = %w[likes_count dislikes_count neutral_reactions_count].freeze
 
     def top_consensus_ideas(n, reverse: false, min_score: nil, max_score: nil)
-      query = ideas_with_reaction_counts
+      query = ideas_with_reaction_counts.where('reaction_counts.likes_count + reaction_counts.dislikes_count > 0')
       query = query.where("#{consensus_score_sql} >= ?", min_score) if min_score
       query = query.where("#{consensus_score_sql} <= ?", max_score) if max_score
 
@@ -43,7 +54,7 @@ module CommonGround
     # even split, so the vote count decides there.
     def ideas_by_agreement
       ideas_with_reaction_counts.order(
-        net_agreement_sql.desc, vote_margin_sql.desc, votes_count_sql.desc, :id
+        net_agreement_sql.desc.nulls_last, vote_margin_sql.desc, votes_count_sql.desc, :id
       )
     end
 
@@ -57,13 +68,35 @@ module CommonGround
 
       ideas
         .joins("INNER JOIN (#{reaction_counts_by_idea.to_sql}) reaction_counts ON reaction_counts.idea_id = ideas.id")
-        .select(*idea_columns, *reaction_count_columns)
-        .where('reaction_counts.likes_count + reaction_counts.dislikes_count > 0')
+        .select(
+          *idea_columns, *reaction_count_columns,
+          "#{agree_percent_sql} AS agree_percent", "#{agreement_sql} AS agreement"
+        )
+    end
+
+    # The share of all reactions, neutral ones included, that agree, rounded to a whole percent.
+    def agree_percent_sql
+      @agree_percent_sql ||= Arel.sql(<<~SQL.squish)
+        ROUND(reaction_counts.likes_count * 100.0 / NULLIF(
+          reaction_counts.likes_count + reaction_counts.dislikes_count + reaction_counts.neutral_reactions_count, 0
+        ))
+      SQL
+    end
+
+    def agreement_sql
+      @agreement_sql ||= Arel.sql(<<~SQL.squish)
+        CASE
+          WHEN #{votes_count_sql} = 0 THEN NULL
+          WHEN #{agree_percent_sql} >= #{AGREE_MIN_PERCENT} THEN 'agree'
+          WHEN #{agree_percent_sql} < #{DISAGREE_MAX_PERCENT} THEN 'disagree'
+          ELSE 'split'
+        END
+      SQL
     end
 
     # Runs from 1 (everyone who took a side agreed with each other) to 0.5 (a perfect split).
     # NULLIF guards the division: this fragment also lands in a WHERE clause, and Postgres does not
-    # guarantee that the "took a side" filter of ideas_with_reaction_counts is evaluated first.
+    # guarantee that the "took a side" filter of top_consensus_ideas is evaluated first.
     def consensus_score_sql
       @consensus_score_sql ||= Arel.sql(<<~SQL.squish)
         greatest(reaction_counts.likes_count, reaction_counts.dislikes_count) * 1.0

@@ -13,7 +13,7 @@ const MAX_SCALE = 1;
  * so the fit is measured again whenever the node attaches, which is what makes
  * it work for callers that render a spinner first.
  */
-const useFitPhonePreview = () => {
+const useFitPhonePreview = (bottomSpace = 0) => {
   const [scale, setScale] = useState(DEFAULT_SCALE);
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
@@ -24,7 +24,7 @@ const useFitPhonePreview = () => {
       const { top, width } = container.getBoundingClientRect();
       const availableWidth = width - 2 * PHONE_PREVIEW_PADDING;
       const availableHeight =
-        window.innerHeight - top - 2 * PHONE_PREVIEW_PADDING;
+        window.innerHeight - top - 2 * PHONE_PREVIEW_PADDING - bottomSpace;
 
       setScale(
         Math.max(
@@ -49,7 +49,7 @@ const useFitPhonePreview = () => {
       observer.disconnect();
       window.removeEventListener('resize', computeScale);
     };
-  }, [container]);
+  }, [container, bottomSpace]);
 
   return { scale, containerRef: setContainer };
 };

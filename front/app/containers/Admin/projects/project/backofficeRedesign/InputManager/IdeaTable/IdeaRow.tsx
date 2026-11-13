@@ -20,6 +20,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import { ColumnKey, COLUMNS } from '../columns';
 import messages from '../messages';
+import useInputTermLabels from '../useInputTermLabels';
 
 import IdeaCell from './IdeaCell';
 
@@ -61,6 +62,7 @@ const IdeaRow = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
+  const { term } = useInputTermLabels();
   const { attributes, relationships } = idea;
   const status = statuses.find(
     (status) => status.id === relationships.idea_status.data?.id
@@ -80,7 +82,7 @@ const IdeaRow = ({
           size="18px"
           checked={selected}
           onChange={onToggleSelect}
-          ariaLabel={formatMessage(messages.selectInput)}
+          ariaLabel={formatMessage(messages.selectTerm, { term })}
         />
       </Td>
       <Td {...cellProps} onClick={onOpen} maxWidth="0" width="100%">

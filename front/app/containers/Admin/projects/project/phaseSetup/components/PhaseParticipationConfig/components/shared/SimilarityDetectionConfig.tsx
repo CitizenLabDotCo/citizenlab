@@ -64,6 +64,7 @@ const SimilarityDetectionConfig = ({
   const thresholds = allowConfiguringThreshold && similarity_enabled && (
     <>
       <Input
+        variant={variant === 'panel' ? 'bo' : undefined}
         type="number"
         min="0"
         max="1"
@@ -90,9 +91,14 @@ const SimilarityDetectionConfig = ({
           </Box>
         }
       />
-      <Error apiErrors={apiErrors?.similarity_threshold_title} />
+      <Error
+        showBackground={variant !== 'panel'}
+        showIcon={variant !== 'panel'}
+        apiErrors={apiErrors?.similarity_threshold_title}
+      />
 
       <Input
+        variant={variant === 'panel' ? 'bo' : undefined}
         type="number"
         min="0"
         max="1"
@@ -119,7 +125,11 @@ const SimilarityDetectionConfig = ({
           </Box>
         }
       />
-      <Error apiErrors={apiErrors?.similarity_threshold_body} />
+      <Error
+        showBackground={variant !== 'panel'}
+        showIcon={variant !== 'panel'}
+        apiErrors={apiErrors?.similarity_threshold_body}
+      />
     </>
   );
 
@@ -138,7 +148,11 @@ const SimilarityDetectionConfig = ({
             onChange={() => handleSimilarityEnabledChange(!similarity_enabled)}
           />
         </UpsellTooltip>
-        <Error apiErrors={apiErrors?.similarity_enabled} />
+        <Error
+          showBackground={false}
+          showIcon={false}
+          apiErrors={apiErrors?.similarity_enabled}
+        />
         {thresholds}
       </Box>
     );

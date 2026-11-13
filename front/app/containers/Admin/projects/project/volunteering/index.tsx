@@ -6,10 +6,14 @@ import styled from 'styled-components';
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 
+import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
+
 import { SectionDescription } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { useParams } from 'utils/router';
+
+import VolunteerManager from '../backofficeRedesign/VolunteerManager';
 
 import AllCauses from './AllCauses';
 import ExportVolunteersButton from './ExportVolunteersButton';
@@ -27,11 +31,16 @@ const AdminProjectVolunteering = () => {
   });
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
+  const isBackofficeRedesignEnabled = useProjectBackofficeRedesign();
 
   if (!project) return null;
 
   if (!phase || phase.data.attributes.participation_method !== 'volunteering') {
     return null;
+  }
+
+  if (isBackofficeRedesignEnabled) {
+    return <VolunteerManager key={phase.data.id} phase={phase.data} />;
   }
 
   return (

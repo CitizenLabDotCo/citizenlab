@@ -1,7 +1,9 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
+import commonGroundResultsKeys from 'api/common_ground/keys/commonGroundResultsKeys';
 import ideasKeys from 'api/ideas/keys';
+import ideaFilterCountsKeys from 'api/ideas_filter_counts/keys';
 import { IJobs } from 'api/jobs/types';
 
 import useOnQuerySuccess from 'hooks/useOnQuerySuccess';
@@ -47,6 +49,12 @@ const useJobInProgressByPhase = (phaseId: string) => {
       // Ideally, we should only invalidate the ideas list for the current phase,
       // but since the ideas list is not filtered by phase, we invalidate all ideas for now.
       queryKey: ideasKeys.lists(),
+    });
+    queryClient.invalidateQueries({
+      queryKey: ideaFilterCountsKeys.items(),
+    });
+    queryClient.invalidateQueries({
+      queryKey: commonGroundResultsKeys.list({ phaseId }),
     });
   });
 

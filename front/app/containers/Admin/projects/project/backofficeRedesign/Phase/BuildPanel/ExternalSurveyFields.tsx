@@ -34,7 +34,11 @@ const ExternalSurveyFields = ({
     <Box display="flex" flexDirection="column" gap="12px">
       <Box>
         <SurveyServiceSelect value={service} onChange={onServiceChange} />
-        <Error apiErrors={errors?.survey_service} />
+        <Error
+          showBackground={false}
+          showIcon={false}
+          apiErrors={errors?.survey_service}
+        />
       </Box>
       <Box>
         <Input
@@ -45,7 +49,11 @@ const ExternalSurveyFields = ({
           value={embedUrl ?? ''}
           onChange={onEmbedUrlChange}
         />
-        <Error apiErrors={errors?.survey_embed_url} />
+        <Error
+          showBackground={false}
+          showIcon={false}
+          apiErrors={errors?.survey_embed_url}
+        />
       </Box>
     </Box>
   );

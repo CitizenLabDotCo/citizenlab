@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 import {
   Box,
@@ -24,9 +24,18 @@ const ToolbarIconButton = ({
   active = false,
   showDot = false,
   dataCy,
-}: Props) => (
-  <Tooltip content={label} placement="bottom" theme="dark">
-    <Box position="relative">
+}: Props) => {
+  const triggerRef = useRef<HTMLDivElement>(null);
+
+  return (
+    <Box position="relative" ref={triggerRef}>
+      <Tooltip
+        reference={triggerRef}
+        trigger="mouseenter focusin"
+        content={label}
+        placement="bottom"
+        theme="dark"
+      />
       <Button
         buttonStyle="bo-secondary"
         icon={icon}
@@ -51,7 +60,7 @@ const ToolbarIconButton = ({
         />
       )}
     </Box>
-  </Tooltip>
-);
+  );
+};
 
 export default ToolbarIconButton;

@@ -27,12 +27,9 @@ export const ParticipationPanelProvider = ({ projectId, children }: Props) => {
   }>();
   const chosen = choice?.projectId === projectId ? choice : undefined;
 
-  // Until the admin toggles it, the panel stays closed while the project has
-  // no methods, and opens on its own once the first one is added. Spotlight
-  // surveys count as methods: the panel lists them too.
   // Placeholder data still belongs to the previous project.
   const pending = !chosen && (isPlaceholderData || !phases);
-  const collapsed = chosen ? chosen.collapsed : phases?.data.length === 0;
+  const collapsed = chosen?.collapsed ?? false;
 
   return (
     <ParticipationPanelContext.Provider

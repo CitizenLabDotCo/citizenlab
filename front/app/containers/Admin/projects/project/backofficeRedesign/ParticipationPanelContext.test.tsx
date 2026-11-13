@@ -41,9 +41,9 @@ const wrapper = ({ children }: { children: ReactNode }) => (
 const renderPanel = () =>
   renderHook(() => useParticipationPanel(), { wrapper }).result.current;
 
-it('starts collapsed when the project has no phases', () => {
+it('starts open when the project has no phases', () => {
   mockPhases = [];
-  expect(renderPanel().collapsed).toBe(true);
+  expect(renderPanel().collapsed).toBe(false);
 });
 
 it('starts open when the project only has spotlight surveys', () => {

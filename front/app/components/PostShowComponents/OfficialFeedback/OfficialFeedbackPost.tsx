@@ -105,6 +105,20 @@ const DatesPostedEdited = styled.span`
  `}
 `;
 
+const BoPostContainer = styled(PostContainer)`
+  background: ${colors.grey100};
+  padding: 12px;
+  margin-bottom: 8px;
+
+  ${Body} {
+    margin-bottom: 8px;
+  }
+
+  ${Author}, ${DatesPostedEdited} {
+    font-size: ${fontSizes.xs}px;
+  }
+`;
+
 const DatePosted = styled.span``;
 
 const DatesSpacer = styled.span`
@@ -148,6 +162,7 @@ interface Props {
 
   className?: string;
   a11y_pronounceLatestOfficialFeedbackPost?: boolean;
+  variant?: 'default' | 'bo';
 }
 
 const OfficialFeedbackPost = ({
@@ -155,8 +170,11 @@ const OfficialFeedbackPost = ({
   editingAllowed,
   className,
   a11y_pronounceLatestOfficialFeedbackPost,
+  variant = 'default',
 }: Props) => {
   const { formatMessage } = useIntl();
+  const isBo = variant === 'bo';
+  const Post = isBo ? BoPostContainer : PostContainer;
   const localize = useLocalize();
   const { mutate: deleteOfficialFeedbackFromIdea } =
     useDeleteIdeaOfficialFeedback();
@@ -205,6 +223,7 @@ const OfficialFeedbackPost = ({
           formType="edit"
           feedback={officialFeedbackPost}
           onClose={closeEditForm}
+          variant={variant}
         />
       </EditFormContainer>
     );
@@ -229,7 +248,7 @@ const OfficialFeedbackPost = ({
   );
 
   return (
-    <PostContainer
+    <Post
       key={officialFeedbackPost.id}
       className={`e2e-official-feedback-post ${className || ''}`}
     >
@@ -242,7 +261,7 @@ const OfficialFeedbackPost = ({
           getPostBodyText(body_multiloc)}
       </ScreenReaderOnly>
 
-      <QuillEditedContent fontWeight={400}>
+      <QuillEditedContent fontWeight={400} fontSize={isBo ? 's' : undefined}>
         <Body className="e2e-official-feedback-post-body">
           <div
             dangerouslySetInnerHTML={{
@@ -276,7 +295,7 @@ const OfficialFeedbackPost = ({
           </DatesPostedEdited>
         </Footer>
       </QuillEditedContent>
-    </PostContainer>
+    </Post>
   );
 };
 

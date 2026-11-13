@@ -11,7 +11,7 @@ import useAddIdeaOfficialFeedback from 'api/idea_official_feedback/useAddIdeaOff
 import Feedback from 'components/HookForm/Feedback';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import TextAreaMultilocWithLocaleSwitcher from 'components/HookForm/TextAreaMultilocWithLocaleSwitcher';
-import Modal from 'components/UI/Modal';
+import Modal, { MEDIUM_MODAL_WIDTH } from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
@@ -22,6 +22,7 @@ import messages from './messages';
 
 type Props = {
   ideaId: string;
+  variant?: 'default' | 'bo';
 };
 
 type FormValues = {
@@ -32,7 +33,8 @@ export const getIdeaOfficialFeedbackModalEventName = (ideaId: string) => {
   return `openIdeaOfficialFeedbackModal-${ideaId}`;
 };
 
-const IdeaOfficialFeedbackModal = ({ ideaId }: Props) => {
+const IdeaOfficialFeedbackModal = ({ ideaId, variant = 'default' }: Props) => {
+  const isBo = variant === 'bo';
   const [ideaOfficialFeedbackModalIsOpen, setIdeaOfficialFeedbackModalIsOpen] =
     useState(false);
 
@@ -77,17 +79,51 @@ const IdeaOfficialFeedbackModal = ({ ideaId }: Props) => {
       onCloseModal();
     }
   };
+  const submit = methods.handleSubmit(onFormSubmit);
+  // Links the submit button to the form, also from the modal footer.
+  const formId = `official-feedback-form-${ideaId}`;
+
+  const actions = (
+    <Box
+      display="flex"
+      justifyContent="flex-end"
+      gap={isBo ? '8px' : undefined}
+      width="100%"
+    >
+      <Button
+        buttonStyle={isBo ? 'bo-text' : 'text'}
+        onClick={onCloseModal}
+        disabled={methods.formState.isSubmitting}
+      >
+        {formatMessage(messages.skip)}
+      </Button>
+      <Button
+        buttonStyle={isBo ? 'bo-primary' : 'primary'}
+        type="submit"
+        form={formId}
+        processing={methods.formState.isSubmitting}
+      >
+        {formatMessage(messages.postFeedback)}
+      </Button>
+    </Box>
+  );
+
   return (
     <Modal
       opened={ideaOfficialFeedbackModalIsOpen}
       close={onCloseModal}
       header={formatMessage(messages.title)}
+      variant={variant}
+      width={isBo ? MEDIUM_MODAL_WIDTH : undefined}
+      footer={isBo ? actions : undefined}
     >
-      <Box p="32px">
+      <Box p={isBo ? '24px' : '32px'}>
         <FormProvider {...methods}>
-          <form onSubmit={methods.handleSubmit(onFormSubmit)}>
+          <form id={formId} onSubmit={submit}>
             <Box display="flex" flexDirection="column" gap="24px">
-              <Text>{formatMessage(messages.description)}</Text>
+              <Text variant={isBo ? 'boHelper' : undefined}>
+                {formatMessage(messages.description)}
+              </Text>
               <Feedback />
               <TextAreaMultilocWithLocaleSwitcher
                 name="body_multiloc"
@@ -96,27 +132,15 @@ const IdeaOfficialFeedbackModal = ({ ideaId }: Props) => {
                   messages.officialFeedbackPlaceholder
                 )}
                 minRows={4}
+                variant={variant}
               />
               <InputMultilocWithLocaleSwitcher
                 name="author_multiloc"
                 label={formatMessage(messages.author)}
                 placeholder={formatMessage(messages.authorPlaceholder)}
+                variant={variant}
               />
-              <Box display="flex" justifyContent="flex-end">
-                <Button
-                  buttonStyle="text"
-                  onClick={onCloseModal}
-                  disabled={methods.formState.isSubmitting}
-                >
-                  {formatMessage(messages.skip)}
-                </Button>
-                <Button
-                  type="submit"
-                  processing={methods.formState.isSubmitting}
-                >
-                  {formatMessage(messages.postFeedback)}
-                </Button>
-              </Box>
+              {!isBo && actions}
             </Box>
           </form>
         </FormProvider>
