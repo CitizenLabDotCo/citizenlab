@@ -278,7 +278,7 @@
   "app.components.EventPreviews.eventPreviewContinuousTitle2": "الأحداث القادمة والجارية في هذا المشروع",
   "app.components.EventPreviews.eventPreviewTimelineTitle3": "الأحداث القادمة والمستمرة في هذه المرحلة",
   "app.components.FileRepositorySelectAndUpload.addFile2": "حدد ملف",
-  "app.components.FileRepositorySelectAndUpload.attachmentCount": "{count, plural, one {# ملف} other {# ملفات}}",
+  "app.components.FileRepositorySelectAndUpload.attachmentCount": "{count, plural, zero {# ملف} one {ملف واحد} two {ملفان} few {# ملفات} many {# ملفاً} other {# ملف}}",
   "app.components.FileRepositorySelectAndUpload.attachments": "المرفقات",
   "app.components.FileRepositorySelectAndUpload.or": "أو",
   "app.components.FileRepositorySelectAndUpload.removeFile": "إزالة",

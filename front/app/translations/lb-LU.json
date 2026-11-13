@@ -278,7 +278,7 @@
   "app.components.EventPreviews.eventPreviewContinuousTitle2": "Upëff a lafend Eventer an dësem Projet",
   "app.components.EventPreviews.eventPreviewTimelineTitle3": "Zukünfteg a lafend Eventer an dëser Phase",
   "app.components.FileRepositorySelectAndUpload.addFile2": "Eng Datei auswielen",
-  "app.components.FileRepositorySelectAndUpload.attachmentCount": "{count, plural, one {# Fichier} other {# Fichieren}}",
+  "app.components.FileRepositorySelectAndUpload.attachmentCount": "{count, plural, one {# Datei} other {# Dateien}}",
   "app.components.FileRepositorySelectAndUpload.attachments": "Unhäng",
   "app.components.FileRepositorySelectAndUpload.or": "oder",
   "app.components.FileRepositorySelectAndUpload.removeFile": "Ewechhuelen",

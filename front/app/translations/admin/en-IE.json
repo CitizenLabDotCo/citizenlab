@@ -1790,7 +1790,7 @@
   "app.containers.Admin.projects.project.backofficeRedesign.Event.remainingSpots": "{remaining} of {total}",
   "app.containers.Admin.projects.project.backofficeRedesign.Event.retryRegistrants": "Try again",
   "app.containers.Admin.projects.project.backofficeRedesign.Event.searchRegistrants": "Search registrants",
-  "app.containers.Admin.projects.project.backofficeRedesign.Event.spotsLeft": "Spots left",
+  "app.containers.Admin.projects.project.backofficeRedesign.Event.spotsLeft": "Places left",
   "app.containers.Admin.projects.project.backofficeRedesign.Event.thisWeek": "This week",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.acceptedTile": "Accepted",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.addColumns": "Add columns",
