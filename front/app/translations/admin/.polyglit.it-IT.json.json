@@ -9259,6 +9259,26 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects.project.nobodySignedUpYet": {
+    "state": "verified",
+    "verified_at": "2026-11-13T10:32:25.803034Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.notOnProjectPage": {
+    "state": "verified",
+    "verified_at": "2026-11-13T10:32:25.803034Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.notifications": {
+    "state": "verified",
+    "verified_at": "2026-11-13T10:32:25.803034Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.observationFormTitle": {
+    "state": "verified",
+    "verified_at": "2026-11-13T10:32:25.803034Z",
+    "verified_by": "Roger"
+  },
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.addToPhase": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
@@ -9369,6 +9389,11 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.allInputsApprovedHint": {
+    "state": "verified",
+    "verified_at": "2026-11-13T10:32:25.803034Z",
+    "verified_by": "Roger"
+  },
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approve": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
@@ -9384,6 +9409,16 @@
     "verified_at": "2026-03-26T16:52:34.112148Z",
     "verified_by": "Roger"
   },
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approvedReadOnlyNotice": {
+    "state": "verified",
+    "verified_at": "2026-11-13T10:32:25.803034Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approvedTab": {
+    "state": "verified",
+    "verified_at": "2026-11-13T10:32:25.803034Z",
+    "verified_by": "Roger"
+  },
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
@@ -9397,6 +9432,16 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanation": {
     "state": "verified",
     "verified_at": "2026-04-20T14:18:53.097340Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanationCommunityMonitor": {
+    "state": "verified",
+    "verified_at": "2026-11-13T10:32:25.803034Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanationInsights": {
+    "state": "verified",
+    "verified_at": "2026-11-13T10:32:25.803034Z",
     "verified_by": "Roger"
   },
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAll": {
@@ -9499,6 +9544,11 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noApprovedInputsYet": {
+    "state": "verified",
+    "verified_at": "2026-11-13T10:32:25.803034Z",
+    "verified_by": "Roger"
+  },
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet3": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
@@ -9549,9 +9599,24 @@
     "verified_at": "2026-03-26T16:52:34.112148Z",
     "verified_by": "Roger"
   },
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.showMoreApprovedInputs": {
+    "state": "verified",
+    "verified_at": "2026-11-13T10:32:25.803034Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.toReviewTab": {
+    "state": "verified",
+    "verified_at": "2026-11-13T10:32:25.803034Z",
+    "verified_by": "Roger"
+  },
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": {
     "state": "verified",
     "verified_at": "2026-04-21T10:00:15.964102Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApprovalDisabledEngagement": {
+    "state": "verified",
+    "verified_at": "2026-11-13T10:32:25.803034Z",
     "verified_by": "Roger"
   },
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoLastApproval": {
@@ -9574,9 +9639,64 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects.project.ongoing": {
+    "state": "verified",
+    "verified_at": "2026-11-13T10:32:25.803034Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.optionAnonymousTooltip": {
+    "state": "verified",
+    "verified_at": "2026-11-13T10:32:25.803034Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.optionFormTitle": {
+    "state": "verified",
+    "verified_at": "2026-11-13T10:32:25.803034Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.optionLabel": {
+    "state": "verified",
+    "verified_at": "2026-11-13T10:32:25.803034Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.optionPlaceholder": {
+    "state": "verified",
+    "verified_at": "2026-11-13T10:32:25.803034Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.optionsAndParticipantData": {
+    "state": "verified",
+    "verified_at": "2026-11-13T10:32:25.803034Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.paperForms": {
+    "state": "verified",
+    "verified_at": "2026-11-13T10:32:25.803034Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.paperFormsDescription": {
+    "state": "verified",
+    "verified_at": "2026-11-13T10:32:25.803034Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.participantsEmpty": {
+    "state": "verified",
+    "verified_at": "2026-11-13T10:32:25.803034Z",
+    "verified_by": "Roger"
+  },
   "app.containers.Admin.projects.project.participantsGraphLabel": {
     "state": "verified",
     "verified_at": "2026-11-13T10:09:33.130767Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.participantsGraphLastPeriod": {
+    "state": "verified",
+    "verified_at": "2026-11-13T10:32:25.803034Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.participantsGraphScale": {
+    "state": "verified",
+    "verified_at": "2026-11-13T10:32:25.803034Z",
     "verified_by": "Roger"
   },
   "app.containers.Admin.projects.project.participation": {
@@ -9638,6 +9758,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.projects.project.participationMethods": {
+    "state": "verified",
+    "verified_at": "2026-11-13T10:32:25.803034Z",
+    "verified_by": "Roger"
   },
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.EmailModal.required": {
     "state": "verified",
