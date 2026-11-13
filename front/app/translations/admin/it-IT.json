@@ -3347,7 +3347,7 @@
   "app.containers.AdminPage.ProjectEdit.information.new1": "NUOVO",
   "app.containers.AdminPage.ProjectEdit.information.provideInformation": "Fornisci informazioni agli utenti o utilizza il generatore di report per condividere i risultati delle fasi precedenti.",
   "app.containers.AdminPage.ProjectEdit.information.shareInformationOrResults": "Condividere informazioni o risultati",
-  "app.containers.AdminPage.ProjectEdit.inputAndFeedback": "Raccogliere input e feedback",
+  "app.containers.AdminPage.ProjectEdit.inputAndFeedback": "Raccogli contributi e feedback",
   "app.containers.AdminPage.ProjectEdit.inputAndFeedbackDescription2": "Crea o raccogli contributi, reazioni e/o commenti. Scegli tra diversi tipi di contributi: raccolta di idee, analisi di opzioni, domande e risposte, identificazione di problemi e altro ancora.",
   "app.containers.AdminPage.ProjectEdit.inputAssignmentSectionTitle": "Chi è responsabile dell'elaborazione dei post?",
   "app.containers.AdminPage.ProjectEdit.inputAssignmentTooltipText2": "Tutti i nuovi contributi di questo progetto saranno assegnati a questa persona. L'assegnatario può essere cambiato nella pagina {globalInputManagerLink} o nella gestione dei contributi a livello di fase (solo per le fasi di ideazione e proposta).",
