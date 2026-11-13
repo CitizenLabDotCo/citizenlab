@@ -8209,6 +8209,11 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects.project.commonGroundSetup": {
+    "state": "verified",
+    "verified_at": "2026-11-13T09:39:58.004345Z",
+    "verified_by": "Roger"
+  },
   "app.containers.Admin.projects.project.editPageContent": {
     "state": "verified",
     "verified_at": "2026-08-19T12:45:55.426544Z",
