@@ -3084,7 +3084,7 @@
   "app.containers.AdminPage.Project.general.projectDescriptionSectionDescription": "Decidi il messaggio che vuoi trasmettere al tuo pubblico. Modifica il tuo progetto e arricchiscilo con immagini, video, file allegati, ecc. Queste informazioni aiutano i visitatori a capire di cosa tratta il progetto.",
   "app.containers.AdminPage.Project.general.projectDescriptionSectionTitle": "Descrizione del progetto",
   "app.containers.AdminPage.Project.general.setUp": "Configurazione",
-  "app.containers.AdminPage.Project.resetParticipationData": "Resetta tutti i dati di partecipazione",
+  "app.containers.AdminPage.Project.resetParticipationData": "Cancella tutti i dati di partecipazione",
   "app.containers.AdminPage.ProjectDashboard.helmetDescription": "Elenco dei progetti della piattaforma",
   "app.containers.AdminPage.ProjectDashboard.helmetTitle": "Cruscotto dei progetti",
   "app.containers.AdminPage.ProjectDashboard.overviewPageTitle": "Progetti",
