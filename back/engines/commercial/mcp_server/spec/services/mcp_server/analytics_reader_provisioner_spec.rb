@@ -29,6 +29,12 @@ RSpec.describe McpServer::AnalyticsReaderProvisioner do
 
     it 'lets the app login role assume it via SET ROLE' do
       expect(conn.select_value("SELECT pg_has_role(current_user, 'analytics_reader', 'MEMBER')")).to be true
+      # Membership is not enough: without set_option, SET ROLE is denied. Read
+      # from the catalog because pg_has_role has no option for it.
+      expect(conn.select_value(<<~SQL.squish)).to be true
+        SELECT set_option FROM pg_auth_members
+        WHERE roleid = 'analytics_reader'::regrole AND member = current_user::regrole
+      SQL
     end
 
     it 'grants USAGE on the tenant schema' do
