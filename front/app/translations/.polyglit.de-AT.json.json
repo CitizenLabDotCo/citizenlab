@@ -1429,6 +1429,16 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.components.FileRepositorySelectAndUpload.attachmentCount": {
+    "state": "verified",
+    "verified_at": "2026-11-13T10:17:43.402264Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.FileRepositorySelectAndUpload.attachments": {
+    "state": "verified",
+    "verified_at": "2026-11-13T10:17:43.402264Z",
+    "verified_by": "Jelena"
+  },
   "app.components.FileRepositorySelectAndUpload.or": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
