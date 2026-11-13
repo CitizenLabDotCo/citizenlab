@@ -3,7 +3,7 @@ module Export
     class ProjectIdeasVotesGenerator < Generator
       def generate_project_ideas_votes_xlsx(project)
         phases = project.phases.where(participation_method: 'voting')
-        phases_to_titles = add_suffix_to_duplicate_titles(phases) # avoid ArgumentError due to duplicate sheet names
+        phases_to_titles = unique_sheet_names(phases)
 
         pa = Axlsx::Package.new
 

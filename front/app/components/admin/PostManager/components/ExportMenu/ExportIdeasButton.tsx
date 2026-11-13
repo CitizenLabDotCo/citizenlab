@@ -21,6 +21,9 @@ import { exportType } from '../ExportMenu';
 interface Props {
   exportQueryParameter: 'all' | string | string[];
   exportType: exportType;
+  // Set when exporting from inside a project, so a selection is exported in
+  // the same format as the whole project.
+  projectId?: string;
 }
 
 interface State {
@@ -41,6 +44,7 @@ class ExportIdeasButton extends React.PureComponent<
   handleExportIdeas = async () => {
     const {
       exportQueryParameter,
+      projectId,
       intl: { formatDate, formatMessage },
     } = this.props;
 
@@ -59,6 +63,12 @@ class ExportIdeasButton extends React.PureComponent<
         blob = await requestBlob(
           `${API_PATH}/projects/${exportQueryParameter}/as_xlsx`,
           'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        );
+      } else if (exportType === 'selected_posts' && projectId) {
+        blob = await requestBlob(
+          `${API_PATH}/projects/${projectId}/as_xlsx`,
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          queryParametersObject
         );
       } else {
         blob = await requestBlob(

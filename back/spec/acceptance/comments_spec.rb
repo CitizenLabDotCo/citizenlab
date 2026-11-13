@@ -170,6 +170,25 @@ resource 'Comments' do
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet.count).to eq(@comments.size + 1)
       end
+
+      describe 'when the project tracks participant location' do
+        before do
+          SettingsService.new.activate_feature!('participation_location_tracking')
+          @project.update!(track_participation_location: true)
+        end
+
+        example 'XLSX export includes the participant location', document: false do
+          do_request
+          headers = RubyXL::Parser.parse_buffer(response_body).worksheets[0][0].cells.map(&:value)
+          expect(headers).to include('Participant city')
+        end
+
+        example 'XLSX export without a project leaves the participant location out', document: false do
+          do_request(project: nil)
+          headers = RubyXL::Parser.parse_buffer(response_body).worksheets[0][0].cells.map(&:value)
+          expect(headers).not_to include('Participant city')
+        end
+      end
     end
 
     describe 'by idea' do
