@@ -589,6 +589,96 @@
     "verified_at": "2026-04-15T15:12:08.955484Z",
     "verified_by": "Luuc"
   },
+  "app.components.PhasePreview.before": {
+    "state": "verified",
+    "verified_at": "2026-11-11T17:40:54.912664Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.PhasePreview.beforeStarts": {
+    "state": "verified",
+    "verified_at": "2026-11-11T17:40:54.912664Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.PhasePreview.beforeTooltip": {
+    "state": "verified",
+    "verified_at": "2026-11-11T17:40:54.912664Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.PhasePreview.ended": {
+    "state": "verified",
+    "verified_at": "2026-11-11T17:40:54.912664Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.PhasePreview.endedTooltip": {
+    "state": "verified",
+    "verified_at": "2026-11-11T17:40:54.912664Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.PhasePreview.lifecycle": {
+    "state": "verified",
+    "verified_at": "2026-11-11T17:40:54.912664Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.PhasePreview.noDates": {
+    "state": "verified",
+    "verified_at": "2026-11-11T17:40:54.912664Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.PhasePreview.open": {
+    "state": "verified",
+    "verified_at": "2026-11-11T17:40:54.912664Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.PhasePreview.openTooltip": {
+    "state": "verified",
+    "verified_at": "2026-11-11T17:40:54.912664Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.PhasePreview.participation": {
+    "state": "verified",
+    "verified_at": "2026-11-11T17:40:54.912664Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.PhasePreview.participationTooltip": {
+    "state": "verified",
+    "verified_at": "2026-11-11T17:40:54.912664Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.PhasePreview.phaseEnded": {
+    "state": "verified",
+    "verified_at": "2026-11-11T17:40:54.912664Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.PhasePreview.savePhaseFirst": {
+    "state": "verified",
+    "verified_at": "2026-11-11T17:40:54.912664Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.PhasePreview.startsIn": {
+    "state": "verified",
+    "verified_at": "2026-11-11T17:40:54.912664Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.PhasePreview.viewBefore": {
+    "state": "verified",
+    "verified_at": "2026-11-11T17:40:54.912664Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.PhasePreview.viewEnded": {
+    "state": "verified",
+    "verified_at": "2026-11-11T17:40:54.912664Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.PhasePreview.viewOpen": {
+    "state": "verified",
+    "verified_at": "2026-11-11T17:40:54.912664Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.PhasePreview.viewParticipation": {
+    "state": "verified",
+    "verified_at": "2026-11-11T17:40:54.912664Z",
+    "verified_by": "Luuc"
+  },
   "app.components.ProjectPageBuilder.DropFeedback.cannotDropBelowPageContent": {
     "state": "verified",
     "verified_at": "2026-10-01T15:12:00.130919Z",
