@@ -114,10 +114,11 @@ resource 'Omniauth Callback', document: false do
 
         assert_status(302) # Redirect code
 
-        cookie_header = response_headers['Set-Cookie']
-        expect(cookie_header).to match(/cl2_jwt=[^;]+/)
-        expect(cookie_header).to include('SameSite=Lax')
-        expect(cookie_header.include?('Secure')).to be(false) # No HTTPS in the test environment
+        cookie_header = auth_cookie_header
+        expect(cookie_header).to match(/#{AuthToken::Cookie::NAME}=[^;]+/o)
+        expect(cookie_header).to match(/httponly/i)
+        expect(cookie_header).to match(/samesite=lax/i)
+        expect(cookie_header).not_to match(/secure/i) # No HTTPS in the test environment
         expect(cookie_header).to match(/expires=.+GMT/i)
       end
     end

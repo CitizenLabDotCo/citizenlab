@@ -77,8 +77,7 @@ describe('preAuthSteps tracking', () => {
     // A taken email moves from the signup flow to the password step.
     await getSteps('signup')['pre-auth:password'].SUBMIT_PASSWORD(
       'password',
-      false,
-      1
+      false
     );
 
     expect(trackEventByName).toHaveBeenCalledWith('login', {

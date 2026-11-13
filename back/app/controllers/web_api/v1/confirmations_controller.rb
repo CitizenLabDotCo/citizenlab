@@ -23,7 +23,8 @@ class WebApi::V1::ConfirmationsController < ApplicationController
       SideFxUserService.new.after_update(user, user)
       IdeaExposureTransferService.new.transfer_from_request(user: user, request: request)
 
-      render json: raw_json({ auth_token: short_lived_auth_token(user) })
+      sign_in(user)
+      head :ok
     else
       render json: { errors: result.errors.details }, status: :unprocessable_entity
     end
@@ -32,7 +33,7 @@ class WebApi::V1::ConfirmationsController < ApplicationController
   # Re-confirmation of the signed-in user's own `email` after its
   # confirmed_email_expiry window has elapsed. EmailConfirmation#confirm!
   # refreshes email_confirmed_at, which is what resets that window. The caller
-  # already holds a token, so none is returned.
+  # is already signed in, so their auth cookie is left alone.
   def reconfirm_code_email
     result = user_confirmation_service.validate_and_reconfirm_email!(
       current_user,
@@ -66,8 +67,8 @@ class WebApi::V1::ConfirmationsController < ApplicationController
   end
 
   # On success the caller's account no longer exists, so its JWT is dead
-  # (from_token_payload looks the user up by id). A token for the survivor is returned
-  # instead, as confirm_code_email does. reset_jwt_cookie would be wrong: it is built
+  # (from_token_payload looks the user up by id). The caller is signed in as the
+  # survivor instead, as confirm_code_email does. reset_jwt_cookie would be wrong: it is built
   # around current_user, i.e. the deleted account.
   def confirm_code_merge_account
     result = user_confirmation_service.validate_and_confirm_merge_account!(
@@ -77,7 +78,8 @@ class WebApi::V1::ConfirmationsController < ApplicationController
 
     if result.success?
       target = result.user
-      render json: raw_json({ auth_token: short_lived_auth_token(target) })
+      sign_in(target)
+      head :ok
     else
       render json: { errors: result.errors.details }, status: :unprocessable_entity
     end
@@ -100,7 +102,8 @@ class WebApi::V1::ConfirmationsController < ApplicationController
       IdeaExposureTransferService.new.transfer_from_request(user: user, request: request)
       record_sms_manual_campaign_consent(user, confirm_code_phone_params[:sms_manual_campaign_consent])
 
-      render json: raw_json({ auth_token: short_lived_auth_token(user) })
+      sign_in(user)
+      head :ok
     else
       render json: { errors: result.errors.details }, status: :unprocessable_entity
     end
@@ -168,11 +171,13 @@ class WebApi::V1::ConfirmationsController < ApplicationController
     params.require(:confirmation).permit(:phone, :code, :sms_manual_campaign_consent)
   end
 
-  def short_lived_auth_token(user)
+  # Signs the user in with a short-lived token.
+  def sign_in(user)
+    expires_at = AuthToken::AuthToken::TOKEN_SHORT_LIFETIME.from_now
     payload = user.to_token_payload
-    payload[:exp] = AuthToken::AuthToken::TOKEN_SHORT_LIFETIME.from_now.to_i
+    payload[:exp] = expires_at.to_i
 
-    AuthToken::AuthToken.new payload: payload
+    AuthToken::Cookie.write(response, AuthToken::AuthToken.new(payload: payload).token, expires: expires_at)
   end
 
   def confirm_code_params

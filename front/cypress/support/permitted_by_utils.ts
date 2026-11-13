@@ -101,10 +101,9 @@ export const updatePermission = ({
   permission?: IPhasePermissionAction;
 } & Partial<IPermissionUpdate>) => {
   const makeRequest = (adminJwt: string) => {
-    return cy.request({
+    return cy.requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'PATCH',
       url: `web_api/v1/phases/${phaseId}/permissions/${permission}`,
@@ -132,10 +131,9 @@ export const addPermissionsCustomField = ({
   permission?: IPhasePermissionAction;
 }) => {
   const makeRequest = (adminJwt: string) => {
-    return cy.request({
+    return cy.requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'POST',
       url: `web_api/v1/phases/${phaseId}/permissions/${permission}/permissions_custom_fields`,

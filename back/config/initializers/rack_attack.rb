@@ -24,9 +24,9 @@ class Rack::Attack
     safelist_ip(safe_ip)
   end
 
-  # The user ID a request authenticates as, reading params[:token] before the header like AuthToken::Authenticable#token.
+  # The user ID a request authenticates as, read from the auth cookie like AuthToken::Authenticable#token.
   USER_ID_FROM_JWT = lambda do |req|
-    jwt = req.params['token'].presence || req.env['HTTP_AUTHORIZATION']&.split&.last
+    jwt = AuthToken::Cookie.read(req)
     JWT.decode(jwt, nil, false, algorithm: 'RS256').first['sub'] # sub is the user ID
   rescue JWT::DecodeError
     nil

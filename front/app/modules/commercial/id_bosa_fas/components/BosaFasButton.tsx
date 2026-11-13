@@ -6,7 +6,6 @@ import { AUTH_PATH } from 'containers/App/constants';
 
 import VerificationMethodButton from 'components/UI/VerificationMethodButton';
 
-import { getJwt } from 'utils/auth/jwt';
 import { FormattedMessage } from 'utils/cl-intl';
 import { removeUrlLocale } from 'utils/removeUrlLocale';
 
@@ -22,8 +21,7 @@ const BosaFasButton = ({ method, last, onClick }: Props) => {
   const handleOnClick = () => {
     onClick(method);
 
-    const jwt = getJwt();
-    window.location.href = `${AUTH_PATH}/bosa_fas?token=${jwt}&verification_pathname=${removeUrlLocale(
+    window.location.href = `${AUTH_PATH}/bosa_fas?verification=true&verification_pathname=${removeUrlLocale(
       window.location.pathname
     )}`;
   };

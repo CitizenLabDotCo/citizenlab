@@ -115,7 +115,7 @@ context 'hoplr authentication' do
       locale: 'en'
     })
     expect(user.custom_field_answers.pluck(:key, :value)).to eq [%w[neighbourhood 2133]]
-    expect(cookies[:cl2_jwt]).to be_present
+    expect(cookies[AuthToken::Cookie::NAME]).to be_present
 
     expect(user.confirmation_required?).to be(true)
   end

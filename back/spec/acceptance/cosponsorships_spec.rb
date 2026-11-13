@@ -36,7 +36,7 @@ resource 'Cosponsorships' do
   context 'when the user is the invited user' do
     patch 'web_api/v1/ideas/:idea_id/cosponsorships/:cosponsorship_id/accept' do
       before do
-        header 'Authorization', authorization_header(@user)
+        header_token_for(@user)
       end
 
       example_request 'Accept a cosponsorship when the user is the invited user' do

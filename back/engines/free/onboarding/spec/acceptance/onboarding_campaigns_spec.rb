@@ -49,7 +49,7 @@ resource 'Onboarding campaigns' do
 
     context 'for a not signed-in user' do
       before do
-        header 'Authorization', nil
+        header 'Cookie', nil
       end
 
       example_request '[error] returns 401 Unauthorized response' do

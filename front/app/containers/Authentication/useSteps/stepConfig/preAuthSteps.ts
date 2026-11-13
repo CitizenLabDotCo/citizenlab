@@ -127,7 +127,6 @@ export const preAuthSteps = (
       SUBMIT_PASSWORD: async (
         password: string,
         rememberMe: boolean,
-        tokenLifetime: number,
         claimTokens?: string[]
       ) => {
         const { email, phone } = state;
@@ -136,7 +135,6 @@ export const preAuthSteps = (
           ...(phone ? { phone } : { email: email as string }),
           password,
           rememberMe,
-          tokenLifetime,
           claimTokens,
         });
         trackAuthenticated('signin', phone ? 'phone' : 'email');

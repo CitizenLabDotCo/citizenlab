@@ -129,6 +129,7 @@ Rails.application.routes.draw do
 
       # auth
       post 'user_token' => 'user_token#create'
+      delete 'user_token' => 'user_token#destroy'
       post 'user_token_phone' => 'user_token#create_phone'
 
       resources :users, only: %i[index create update destroy] do

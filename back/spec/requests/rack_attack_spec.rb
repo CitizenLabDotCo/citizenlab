@@ -21,7 +21,7 @@ describe 'Rack::Attack' do
   # Throttles key off the IP and the JWT, so examples vary one and hold the other fixed.
   def json_headers(token: nil, ip: nil)
     headers = { 'CONTENT_TYPE' => 'application/json' }
-    headers['Authorization'] = "Bearer #{token}" if token
+    headers['Cookie'] = "#{AuthToken::Cookie::NAME}=#{token}" if token
     headers['REMOTE_ADDR'] = ip if ip
     headers
   end
@@ -460,21 +460,6 @@ describe 'Rack::Attack' do
             expect(status).not_to eq(429)
           end
         end
-      end
-    end
-
-    it 'counts a token passed as a query param against the same user' do
-      # AuthToken reads params[:token] before the Authorization header, so a caller
-      # can't escape the per-user limit by moving the token from one to the other.
-      path = '/web_api/v1/user/request_reconfirm_code_email'
-      params = '{ "request_code": { "only_if_first_time": false } }'
-
-      freeze_at_window_start do
-        post("#{path}?token=#{token}", params: params, headers: json_headers(ip: '1.2.3.1'))
-        expect(status).to eq(200) # OK
-
-        post(path, params: params, headers: json_headers(token: token, ip: '1.2.3.2'))
-        expect(status).to eq(429) # Too many requests
       end
     end
   end

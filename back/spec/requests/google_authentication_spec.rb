@@ -98,7 +98,7 @@ describe 'google authentication' do
       provider: 'google',
       user_id: user.id
     })
-    expect(cookies[:cl2_jwt]).to be_present
+    expect(cookies[AuthToken::Cookie::NAME]).to be_present
   end
 
   it 'does not update the avatar when re-authenticating an existing user with an avatar' do
@@ -160,7 +160,7 @@ describe 'google authentication' do
         provider: 'google',
         user_id: user.id
       })
-      expect(cookies[:cl2_jwt]).to be_present
+      expect(cookies[AuthToken::Cookie::NAME]).to be_present
 
       expect(LogActivityJob).to have_been_enqueued.with(
         user,
@@ -253,7 +253,7 @@ describe 'google authentication' do
       provider: 'google',
       user_id: user.id
     })
-    expect(cookies[:cl2_jwt]).to be_present
+    expect(cookies[AuthToken::Cookie::NAME]).to be_present
 
     expect(LogActivityJob).to have_been_enqueued.with(
       user,

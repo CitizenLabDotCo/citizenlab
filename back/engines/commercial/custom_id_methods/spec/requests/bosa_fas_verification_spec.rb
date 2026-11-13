@@ -55,7 +55,8 @@ context 'bosa_fas verification' do
   end
 
   it 'successfully verifies a user' do
-    get "/auth/bosa_fas?token=#{@token}&random-passthrough-param=somevalue&verification_pathname=/yipie"
+    cookies[AuthToken::Cookie::NAME] = @token
+    get '/auth/bosa_fas?verification=true&random-passthrough-param=somevalue&verification_pathname=/yipie'
     follow_redirect!
 
     expect(response).to redirect_to('/en/yipie?random-passthrough-param=somevalue&verification_success=true')
@@ -76,7 +77,8 @@ context 'bosa_fas verification' do
   it "successfully verifies a user that hasn't completed her registration" do
     @user.update!(registration_completed_at: nil)
 
-    get "/auth/bosa_fas?token=#{@token}&verification_pathname=/yipie"
+    cookies[AuthToken::Cookie::NAME] = @token
+    get '/auth/bosa_fas?verification=true&verification_pathname=/yipie'
     follow_redirect!
 
     expect(response).to redirect_to('/en/yipie?verification_success=true')
@@ -86,7 +88,8 @@ context 'bosa_fas verification' do
   end
 
   it 'redirect to a path without an ending slash when no pathname is passed' do
-    get "/auth/bosa_fas?token=#{@token}"
+    cookies[AuthToken::Cookie::NAME] = @token
+    get '/auth/bosa_fas?verification=true'
     follow_redirect!
     expect(response).to redirect_to('/en?verification_success=true')
   end
@@ -98,7 +101,8 @@ context 'bosa_fas verification' do
       hashed_uid: Verification::VerificationService.new.send(:hashed_uid, '93051822361', 'bosa_fas')
     )
 
-    get "/auth/bosa_fas?token=#{@token}&verification_pathname=/some-page"
+    cookies[AuthToken::Cookie::NAME] = @token
+    get '/auth/bosa_fas?verification=true&verification_pathname=/some-page'
     follow_redirect!
 
     expect(response).to redirect_to('/some-page?verification_error=true&error_code=taken')

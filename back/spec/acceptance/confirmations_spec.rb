@@ -26,13 +26,12 @@ resource 'Confirmations' do
       ).exactly(1).times
     end
 
-    example 'returns an auth token when passing the right code' do
+    example 'signs the user in when passing the right code' do
       do_request(confirmation: { email: user.email, code: user.email_confirmation.code })
       assert_status 200
-      json_response = json_parse response_body
-      expect(json_response[:data][:attributes]).to have_key(:auth_token)
-      token = json_response[:data][:attributes][:auth_token][:token]
-      expect(token[0..2]).to eq 'eyJ' # JWTs start with 'eyJ'
+      expect(response_body).to be_blank # The token is only ever sent in the HttpOnly cookie
+      token = auth_token_from_response_cookie
+      expect(JWT.decode(token, nil, false).first['sub']).to eq user.id
     end
 
     example 'deletes the confirmation upon successful confirmation' do
@@ -75,6 +74,7 @@ resource 'Confirmations' do
       code = user.email_confirmation.code
       do_request(confirmation: { email: user.email, code: code })
       assert_status 200
+      sign_out_client
 
       do_request(confirmation: { email: user.email, code: code })
       assert_status 422
@@ -84,6 +84,7 @@ resource 'Confirmations' do
       code = user.email_confirmation.code
       do_request(confirmation: { email: user.email, code: code })
       assert_status 200
+      sign_out_client
 
       RequestEmailConfirmationCodeJob.perform_now user.reload
       code = user.email_confirmation.code
@@ -142,6 +143,7 @@ resource 'Confirmations' do
         code = user_with_password.reload.email_confirmation.code
         do_request(confirmation: { email: user_with_password.email, code: })
         expect(user_with_password.reload).not_to be_confirmation_required
+        sign_out_client
 
         RequestEmailConfirmationCodeJob.perform_now user_with_password
         expect(user_with_password.reload).not_to be_confirmation_required
@@ -291,7 +293,7 @@ resource 'Confirmations' do
         do_request(confirmation: { code: user.new_email_confirmation.code })
         assert_status 200
 
-        expect(CGI.unescape(response_headers['Set-Cookie'])).to include('cl2_jwt=')
+        expect(auth_token_from_response_cookie).to be_present
         expect(user.reload.token_expiry_key).not_to be_nil # It generates a new token expiry code to invalidate old tokens after email change
       end
 
@@ -358,10 +360,10 @@ resource 'Confirmations' do
         expect(target.reload.identities.pluck(:uid)).to eq ['11111']
         expect(target.verified).to be true
 
-        # The caller's account is gone and its JWT with it, so the response has to
-        # hand back a token for the survivor.
-        token = response_data[:attributes][:auth_token]
-        expect(token[:payload][:sub]).to eq target.id
+        # The caller's account is gone and its JWT with it, so the caller has to be
+        # signed in as the survivor.
+        token = auth_token_from_response_cookie
+        expect(JWT.decode(token, nil, false).first['sub']).to eq target.id
       end
 
       example 'returns a code.invalid error when the code is wrong' do
@@ -404,14 +406,13 @@ resource 'Confirmations' do
         RequestPhoneConfirmationCodeJob.perform_now(user)
       end
 
-      example 'confirms the phone number and returns an auth token' do
+      example 'confirms the phone number and signs the user in' do
         do_request(confirmation: { phone: user.phone, code: user.phone_confirmation.code })
         assert_status 200
 
         expect(user.reload.phone_confirmed_at).to be_present
-        json_response = json_parse response_body
-        token = json_response.dig(:data, :attributes, :auth_token, :token)
-        expect(token[0..2]).to eq 'eyJ' # JWTs start with 'eyJ'
+        expect(response_body).to be_blank # The token is only ever sent in the HttpOnly cookie
+        token = auth_token_from_response_cookie
         expect(JWT.decode(token, nil, false).first['sub']).to eq user.id
       end
 

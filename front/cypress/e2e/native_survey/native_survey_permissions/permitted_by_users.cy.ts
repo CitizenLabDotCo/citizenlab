@@ -171,10 +171,9 @@ describe('Native survey permitted by: users', () => {
       const adminJwt = response.body.jwt;
 
       return cy
-        .request({
+        .requestAs(adminJwt, {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${adminJwt}`,
           },
           method: 'GET',
           url: `web_api/v1/ideas/${ideaId}`,
@@ -292,10 +291,9 @@ describe('Native survey permitted by: users', () => {
           const adminJwt = response.body.jwt;
 
           return cy
-            .request({
+            .requestAs(adminJwt, {
               headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${adminJwt}`,
               },
               method: 'GET',
               url: `web_api/v1/ideas/${ideaId}`,

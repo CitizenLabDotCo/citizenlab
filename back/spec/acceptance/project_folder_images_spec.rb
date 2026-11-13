@@ -55,7 +55,7 @@ resource 'ProjectFolderImage' do
     end
 
     example 'Unauthorized (401) when not signed in', document: false do
-      header 'Authorization', nil
+      header 'Cookie', nil
 
       expect { do_request }.not_to change(ProjectFolders::Image, :count)
       assert_status 401

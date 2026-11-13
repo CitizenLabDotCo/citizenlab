@@ -77,6 +77,6 @@ context 'Azure AD B2C authentication' do
     expect(response).to redirect_to('/en/?random-passthrough-param=somevalue&sso_flow=signup&sso_success=true')
 
     expect_user_to_have_attributes(User.last)
-    expect(cookies[:cl2_jwt]).to be_present
+    expect(cookies[AuthToken::Cookie::NAME]).to be_present
   end
 end

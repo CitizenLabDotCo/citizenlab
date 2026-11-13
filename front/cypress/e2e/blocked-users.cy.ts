@@ -12,10 +12,9 @@ describe('Blocked user', () => {
       userId = response.body.data.id;
       cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
         const adminJwt = response.body.jwt;
-        cy.request({
+        cy.requestAs(adminJwt, {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${adminJwt}`,
           },
           method: 'PATCH',
           url: `web_api/v1/app_configuration`,
@@ -28,10 +27,9 @@ describe('Blocked user', () => {
             },
           },
         });
-        cy.request({
+        cy.requestAs(adminJwt, {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${adminJwt}`,
           },
           method: 'PATCH',
           url: `web_api/v1/users/${userId}/block`,
