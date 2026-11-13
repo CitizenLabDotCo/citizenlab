@@ -1439,6 +1439,11 @@
     "verified_at": "2026-11-13T10:17:43.402264Z",
     "verified_by": "Jelena"
   },
+  "app.components.FileRepositorySelectAndUpload.done": {
+    "state": "verified",
+    "verified_at": "2026-11-13T12:43:59.160829Z",
+    "verified_by": "Jelena"
+  },
   "app.components.FileRepositorySelectAndUpload.or": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",

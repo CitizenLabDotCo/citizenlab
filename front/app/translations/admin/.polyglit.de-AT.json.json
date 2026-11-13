@@ -12719,6 +12719,16 @@
     "verified_at": "2026-09-17T11:58:59.483714Z",
     "verified_by": "eva@govocal.com"
   },
+  "app.containers.Admin.projects.project.participantEmails": {
+    "state": "verified",
+    "verified_at": "2026-11-13T12:43:59.241371Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.participantEmailsDescription": {
+    "state": "verified",
+    "verified_at": "2026-11-13T12:43:59.241371Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.projects.project.participantsEmpty": {
     "state": "verified",
     "verified_at": "2026-10-28T11:24:27.570676Z",
@@ -13674,6 +13684,31 @@
     "verified_at": "2026-10-28T09:59:35.685131Z",
     "verified_by": "Jelena"
   },
+  "app.containers.Admin.projects.project.setupCards.areaTooltip": {
+    "state": "verified",
+    "verified_at": "2026-11-13T12:43:59.241371Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.setupCards.generalTooltip": {
+    "state": "verified",
+    "verified_at": "2026-11-13T12:43:59.241371Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.setupCards.homepageCardTooltip": {
+    "state": "verified",
+    "verified_at": "2026-11-13T12:43:59.241371Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.setupCards.methodsTooltip": {
+    "state": "verified",
+    "verified_at": "2026-11-13T12:43:59.241371Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.setupCards.projectPageTooltip": {
+    "state": "verified",
+    "verified_at": "2026-11-13T12:43:59.241371Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.projects.project.shareInvite": {
     "state": "verified",
     "verified_at": "2026-09-17T11:58:59.483714Z",
@@ -14204,6 +14239,11 @@
     "verified_at": "2026-11-04T09:59:35.669807Z",
     "verified_by": "Jelena"
   },
+  "app.containers.Admin.projects.project.surveyDemographicQuestions": {
+    "state": "verified",
+    "verified_at": "2026-11-13T12:43:59.241371Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.projects.project.surveyForm": {
     "state": "verified",
     "verified_at": "2026-09-17T11:58:59.483714Z",
@@ -14434,6 +14474,11 @@
     "verified_at": "2026-10-28T11:24:27.570676Z",
     "verified_by": "Jelena"
   },
+  "app.containers.Admin.projects.project.topicTagsDescription": {
+    "state": "verified",
+    "verified_at": "2026-11-13T12:43:59.241371Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.projects.project.topicTagsNoMatch": {
     "state": "verified",
     "verified_at": "2026-10-28T11:24:27.570676Z",
@@ -14647,6 +14692,26 @@
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.whoCanFindProject2": {
     "state": "verified",
     "verified_at": "2026-05-04T08:18:03.872039Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.setupReview.failed": {
+    "state": "verified",
+    "verified_at": "2026-11-13T12:43:59.241371Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.setupReview.reviewed": {
+    "state": "verified",
+    "verified_at": "2026-11-13T12:43:59.241371Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.setupReview.toReview": {
+    "state": "verified",
+    "verified_at": "2026-11-13T12:43:59.241371Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.setupReview.toSet": {
+    "state": "verified",
+    "verified_at": "2026-11-13T12:43:59.241371Z",
     "verified_by": "Jelena"
   },
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReport": {

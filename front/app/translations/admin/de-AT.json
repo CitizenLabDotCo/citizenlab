@@ -2467,7 +2467,7 @@
   "app.containers.Admin.projects.project.settingsSaveFailed": "Einige Änderungen konnten nicht gespeichert werden. Klicken Sie auf Speichern, um es erneut zu versuchen.",
   "app.containers.Admin.projects.project.settingsTags": "Tags",
   "app.containers.Admin.projects.project.settingsTitle": "Einstellungen",
-  "app.containers.Admin.projects.project.setupCards.areaTooltip": "Teilnehmende können Projekte auf der Homepage nach Gebiet filtern. Wähle aus, wo dieses Projekt gilt.",
+  "app.containers.Admin.projects.project.setupCards.areaTooltip": "Teilnehmende können Projekte auf der Homepage nach Gebiet filtern. Wähle aus, wo dieses Projekt verortet ist.",
   "app.containers.Admin.projects.project.setupCards.generalTooltip": "Der Projektname sowie der Space und der Ordner, zu denen es gehört",
   "app.containers.Admin.projects.project.setupCards.homepageCardTooltip": "Wird überall dort angezeigt, wo das Projekt aufgelistet ist: Homepage, Ordner, Spaces und Seiten",
   "app.containers.Admin.projects.project.setupCards.methodsTooltip": "Die Arten der Teilnahme, nacheinander",
