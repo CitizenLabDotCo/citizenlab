@@ -68,6 +68,8 @@ RSpec.describe ParticipationLocationService do
       }
     end
 
+    before { Current.request_user_id = idea.author_id }
+
     context 'when tracking is enabled' do
       before { SettingsService.new.activate_feature!('participation_location_tracking') }
 
@@ -85,6 +87,12 @@ RSpec.describe ParticipationLocationService do
           country_code: 'US',
           country_name: 'United States'
         )
+      end
+
+      it 'does not create a record for an anonymous idea' do
+        anonymous_idea = create(:idea, project: project, anonymous: true)
+
+        expect { described_class.track(anonymous_idea, location_attrs) }.not_to change(ParticipationLocation, :count)
       end
 
       it 'does not create a record for nil attrs' do

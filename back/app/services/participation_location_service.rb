@@ -33,7 +33,8 @@ class ParticipationLocationService
 
     def should_track?(trackable)
       AppConfiguration.instance.feature_activated?('participation_location_tracking') &&
-        trackable.project&.track_participation_location
+        trackable.project&.track_participation_location &&
+        ParticipationTrackingService.track?(trackable)
     end
 
     def parse_decimal(value)

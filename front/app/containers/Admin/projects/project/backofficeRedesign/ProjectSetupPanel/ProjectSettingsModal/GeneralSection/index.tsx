@@ -14,6 +14,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import ContextSection from './ContextSection';
 import messages from './messages';
+import ParticipationLocationSection from './ParticipationLocationSection';
 import ResetSection from './ResetSection';
 
 interface Props {
@@ -27,9 +28,11 @@ interface Props {
   currentSlug: string;
   showSlugErrorMessage: boolean;
   apiErrors: CLErrors;
+  trackParticipationLocation: boolean;
   onTitleChange: (titleMultiloc: Multiloc) => void;
   onContextChange: (spaceAndFolderId: SpaceAndFolderId) => void;
   onSlugChange: (slug: string) => void;
+  onTrackParticipationLocationChange: (enabled: boolean) => void;
 }
 
 const GeneralSection = ({
@@ -43,9 +46,11 @@ const GeneralSection = ({
   currentSlug,
   showSlugErrorMessage,
   apiErrors,
+  trackParticipationLocation,
   onTitleChange,
   onContextChange,
   onSlugChange,
+  onTrackParticipationLocationChange,
 }: Props) => {
   const { formatMessage } = useIntl();
 
@@ -78,6 +83,10 @@ const GeneralSection = ({
         projectInRoot={projectInRoot}
         error={contextError}
         onChange={onContextChange}
+      />
+      <ParticipationLocationSection
+        enabled={trackParticipationLocation}
+        onChange={onTrackParticipationLocationChange}
       />
       <ResetSection projectId={projectId} />
     </SettingsSections>

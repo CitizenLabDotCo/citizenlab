@@ -22,7 +22,7 @@
 #  index_participation_locations_on_trackable  (trackable_type,trackable_id) UNIQUE
 #
 class ParticipationLocation < ApplicationRecord
-  TRACKABLE_TYPES = %w[Idea Comment Reaction Basket].freeze
+  TRACKABLE_TYPES = %w[Idea Comment Basket].freeze
 
   belongs_to :trackable, polymorphic: true
 

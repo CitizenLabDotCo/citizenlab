@@ -171,9 +171,13 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
           currentSlug={project.attributes.slug}
           showSlugErrorMessage={showSlugErrorMessage}
           apiErrors={apiErrors}
+          trackParticipationLocation={projectAttrs.track_participation_location}
           onTitleChange={(title_multiloc) => applyDiff({ title_multiloc })}
           onContextChange={handleContextChange}
           onSlugChange={handleSlugChange}
+          onTrackParticipationLocationChange={(track_participation_location) =>
+            applyDiff({ track_participation_location })
+          }
         />
       ),
     },

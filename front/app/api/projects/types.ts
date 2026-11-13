@@ -102,6 +102,7 @@ export interface IProjectAttributes {
   publication_email_enabled: boolean;
   global_publication_email_enabled: boolean;
   space_id?: string | null;
+  track_participation_location: boolean;
   // Only serialized for users who can moderate the project.
   completed_setup_steps?: ProjectSetupStep[];
 }
@@ -230,5 +231,6 @@ export interface IUpdatedProjectProperties {
   space_id?: string | null;
   scheduled_at?: string | null;
   publication_email_enabled?: boolean;
+  track_participation_location?: boolean;
   completed_setup_steps?: ProjectSetupStep[];
 }

@@ -43,4 +43,13 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.general.components.UnlistedInput.onlyAccessible',
     defaultMessage: 'Only accessible via direct URL',
   },
+  participationLocationTitle: {
+    id: 'app.containers.Admin.projects.project.general.components.ParticipationLocationToggle.participationLocationTitle',
+    defaultMessage: 'Participant location',
+  },
+  participationLocationLabel: {
+    id: 'app.containers.Admin.projects.project.general.components.ParticipationLocationToggle.participationLocationLabel',
+    defaultMessage:
+      'Record the approximate location (city, region and country) of participants when they take part in this project. IP addresses are not stored.',
+  },
 });

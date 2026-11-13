@@ -51,7 +51,7 @@ class McpServer::Tools::UpdateProject < McpServer::BaseTool
       end
 
       prior_project = Project.find(project.id)
-      attributes = params.except(:project_id)
+      attributes = McpServer::Tools::CreateProject.without_inactive_tracking_settings(params.except(:project_id))
       # A null remote_<uploader>_url is a no-op on assignment; clear_uploaders! below
       # turns it into a removal.
       project.assign_attributes(merge_multilocs(project, attributes))
