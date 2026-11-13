@@ -14,7 +14,7 @@ import { WrapperTo } from 'utils/cl-router/Link';
 import sidebarMessages from '../messages';
 import defaultNavItems from '../navItems';
 
-export type StaticEntry = {
+type StaticEntry = {
   name: string;
   to: NonNullable<WrapperTo>;
   message: MessageDescriptor;

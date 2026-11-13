@@ -41,6 +41,7 @@ export const boInputLabelStyle = css`
     margin-bottom: 4px;
   }
 `;
+
 export const boInputStyle = css`
   height: 36px;
   padding: 0 11px;

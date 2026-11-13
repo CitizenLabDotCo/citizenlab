@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import { Icon, Text, colors } from '@citizenlab/cl2-component-library';
 
-import Modal from 'components/UI/Modal';
+import Modal, { MEDIUM_MODAL_WIDTH } from 'components/UI/Modal';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { useIntl } from 'utils/cl-intl';
@@ -50,7 +50,10 @@ const QuickSearch = ({ userId }: Props) => {
       // as handled when they do.
       if (event.defaultPrevented) return;
 
-      if (event.key.toLowerCase() === 'k' && (event.metaKey || event.ctrlKey)) {
+      // Compared directly rather than lowercased: some key events (e.g. from
+      // browser autofill) arrive without a key.
+      const isK = event.key === 'k' || event.key === 'K';
+      if (isK && (event.metaKey || event.ctrlKey)) {
         event.preventDefault();
         open();
       }
@@ -117,7 +120,7 @@ const QuickSearch = ({ userId }: Props) => {
         ariaLabelledBy={TITLE_ID}
         hideCloseButton
         variant="bo"
-        width={560}
+        width={MEDIUM_MODAL_WIDTH}
         padding="32px 24px 24px"
         fixedTop={modalTop}
       >

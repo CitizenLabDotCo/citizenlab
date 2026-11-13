@@ -2,6 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import { Multiloc } from 'typings';
 
 import adminPublicationsKeys from 'api/admin_publications/keys';
+import adminSearchKeys from 'api/admin_search/keys';
 import meKeys from 'api/me/keys';
 import projectsKeys from 'api/projects/keys';
 
@@ -47,6 +48,7 @@ const useApplyProjectTemplate = () => {
         queryKey: adminPublicationsKeys.lists(),
       });
       queryClient.invalidateQueries({ queryKey: meKeys.all() });
+      queryClient.invalidateQueries({ queryKey: adminSearchKeys.all() });
     },
   });
 };

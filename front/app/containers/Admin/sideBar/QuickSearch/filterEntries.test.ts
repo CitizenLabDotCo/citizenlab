@@ -65,6 +65,50 @@ describe('filterEntries', () => {
     expect(ids(results)).toContain('project-1');
   });
 
+  it('puts entries whose own name matches before entries matched through a parent', () => {
+    const riverside: QuickSearchEntry[] = [
+      {
+        id: 'phase-of-riverside',
+        group: 'phases',
+        breadcrumbs: ['Projects', 'Riverside', 'Survey'],
+        link: { to: '/admin/projects' },
+      },
+      {
+        id: 'riverside-phase',
+        group: 'phases',
+        breadcrumbs: ['Projects', 'Parks', 'Riverside walk'],
+        link: { to: '/admin/projects' },
+      },
+    ];
+
+    expect(ids(filterEntries(riverside, 'riverside'))).toEqual([
+      'riverside-phase',
+      'phase-of-riverside',
+    ]);
+  });
+
+  it('keeps the closest matches when a group is capped', () => {
+    const viaParent: QuickSearchEntry[] = Array.from(
+      { length: 20 },
+      (_, i) => ({
+        id: `phase-${i}`,
+        group: 'phases',
+        breadcrumbs: ['Projects', 'Riverside', `Phase ${i}`],
+        link: { to: '/admin/projects' },
+      })
+    );
+    const byName: QuickSearchEntry = {
+      id: 'riverside-walk',
+      group: 'phases',
+      breadcrumbs: ['Projects', 'Parks', 'Riverside walk'],
+      link: { to: '/admin/projects' },
+    };
+
+    expect(ids(filterEntries([...viaParent, byName], 'riverside'))).toContain(
+      'riverside-walk'
+    );
+  });
+
   it('requires every word to match, in any order', () => {
     expect(ids(filterEntries(entries, 'quartiers vote'))).toEqual(['phase-1']);
     expect(filterEntries(entries, 'branding vote')).toEqual([]);

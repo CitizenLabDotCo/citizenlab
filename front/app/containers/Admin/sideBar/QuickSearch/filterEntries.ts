@@ -1,11 +1,6 @@
 import { TypedLinkProps, WrapperTo } from 'utils/cl-router/Link';
 
-export type QuickSearchGroup =
-  | 'pages'
-  | 'spaces'
-  | 'folders'
-  | 'projects'
-  | 'phases';
+type QuickSearchGroup = 'pages' | 'spaces' | 'folders' | 'projects' | 'phases';
 
 export type QuickSearchEntry = {
   id: string;
@@ -28,18 +23,30 @@ const normalize = (text: string) =>
     .toLowerCase();
 
 // Every word of the query must appear somewhere in the entry, in any order.
+// Entries whose own name matches come first, ahead of entries that only match
+// through their parents (e.g. every phase of a matching project), so the cap
+// doesn't drop the closest matches.
 const filterEntries = (entries: QuickSearchEntry[], query: string) => {
   const words = normalize(query).split(/\s+/).filter(Boolean);
   if (words.length === 0) return [];
 
+  const matchesAll = (text: string) => {
+    const normalized = normalize(text);
+    return words.every((word) => normalized.includes(word));
+  };
+
+  const nameMatches: QuickSearchEntry[] = [];
+  const otherMatches: QuickSearchEntry[] = [];
+  entries.forEach((entry) => {
+    if (!matchesAll([...entry.breadcrumbs, entry.keywords].join(' '))) return;
+
+    const name = entry.breadcrumbs.slice(-1).join(' ');
+    (matchesAll(name) ? nameMatches : otherMatches).push(entry);
+  });
+
   const countPerGroup: Partial<Record<QuickSearchGroup, number>> = {};
 
-  return entries.filter((entry) => {
-    const haystack = normalize(
-      [...entry.breadcrumbs, entry.keywords].join(' ')
-    );
-    if (!words.every((word) => haystack.includes(word))) return false;
-
+  return [...nameMatches, ...otherMatches].filter((entry) => {
     const count = countPerGroup[entry.group] ?? 0;
     countPerGroup[entry.group] = count + 1;
     return count < MAX_RESULTS_PER_GROUP;

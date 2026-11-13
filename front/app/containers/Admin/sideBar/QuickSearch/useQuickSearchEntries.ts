@@ -1,5 +1,7 @@
 import { useMemo } from 'react';
 
+import { Multiloc } from 'typings';
+
 import {
   AdminSearchFolder,
   AdminSearchItem,
@@ -10,6 +12,7 @@ import useAdminSearch from 'api/admin_search/useAdminSearch';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import { areFeaturesActive } from 'hooks/useFeatureFlags';
+import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
 import projectsMessages from 'containers/Admin/projects/all/messages';
@@ -32,6 +35,7 @@ const isSpace = (item: AdminSearchItem): item is AdminSearchSpace =>
 const useQuickSearchEntries = () => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
+  const locale = useLocale();
   const can = usePermissionCheck();
   const { data: appConfiguration } = useAppConfiguration();
 
@@ -62,10 +66,20 @@ const useQuickSearchEntries = () => {
       }));
 
     const items = data?.data ?? [];
+    // Alphabetical, so the same search always gives the same results.
+    const byTitle = (
+      a: { attributes: { title_multiloc: Multiloc } },
+      b: { attributes: { title_multiloc: Multiloc } }
+    ) =>
+      localize(a.attributes.title_multiloc).localeCompare(
+        localize(b.attributes.title_multiloc),
+        locale
+      );
     const projectsLabel = formatMessage(sidebarMessages.projects);
 
     const spaceEntries: QuickSearchEntry[] = items
       .filter(isSpace)
+      .sort(byTitle)
       .map((space) => ({
         id: space.id,
         group: 'spaces',
@@ -81,6 +95,7 @@ const useQuickSearchEntries = () => {
 
     const folderEntries: QuickSearchEntry[] = items
       .filter(isFolder)
+      .sort(byTitle)
       .map((folder) => ({
         id: folder.id,
         group: 'folders',
@@ -94,7 +109,7 @@ const useQuickSearchEntries = () => {
         },
       }));
 
-    const projects = items.filter(isProject);
+    const projects = items.filter(isProject).sort(byTitle);
 
     const projectEntries: QuickSearchEntry[] = [];
     const phaseEntries: QuickSearchEntry[] = [];
@@ -136,7 +151,7 @@ const useQuickSearchEntries = () => {
       ...projectEntries,
       ...phaseEntries,
     ];
-  }, [data, can, appConfiguration, formatMessage, localize]);
+  }, [data, can, appConfiguration, formatMessage, localize, locale]);
 };
 
 export default useQuickSearchEntries;

@@ -34,6 +34,7 @@ const QuickSearchPanel = ({
   const [activeIndex, setActiveIndex] = useState(0);
   const resultRefs = useRef<(HTMLAnchorElement | null)[]>([]);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const hasFocusedInput = useRef(false);
 
   const recentEntries = useMemo(
     () => getRecentEntries(recentKeys, entries, currentKey),
@@ -47,9 +48,15 @@ const QuickSearchPanel = ({
     setActiveIndex(0);
   }, []);
 
+  // SearchInput passes us its input again on every render, so focus it only
+  // the first time. Otherwise each render (e.g. on blur) pulls focus back from
+  // the clear button.
   const setInput = useCallback((input: HTMLInputElement | null) => {
     inputRef.current = input;
-    input?.focus();
+    if (input && !hasFocusedInput.current) {
+      hasFocusedInput.current = true;
+      input.focus();
+    }
   }, []);
 
   const moveActive = (index: number) => {
@@ -73,6 +80,10 @@ const QuickSearchPanel = ({
   };
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
+    // Only keys typed in the search input, so Enter on the clear button
+    // still clears it.
+    if (event.target !== inputRef.current) return;
+
     if (event.key === 'Enter') {
       event.preventDefault();
       selectActive();

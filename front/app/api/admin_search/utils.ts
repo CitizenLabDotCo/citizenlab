@@ -35,7 +35,7 @@ const findShown = (search: IAdminSearch, id: string) => {
 
 // Refreshes the admin search after an update only when it changed something
 // search shows: the title, or a project's folder. Most saves (e.g. phase
-// settings) change neither, and the search list is costly to reload.
+// settings) change neither, so reloading on every save would be wasted.
 export const invalidateAdminSearchIfShownChanged = (
   queryClient: QueryClient,
   { id, titleMultiloc, folderId }: UpdatedRecord
