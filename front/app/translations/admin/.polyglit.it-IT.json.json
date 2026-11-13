@@ -9574,6 +9574,16 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects.project.participantsGraphLabel": {
+    "state": "verified",
+    "verified_at": "2026-11-13T10:09:33.130767Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.participation": {
+    "state": "verified",
+    "verified_at": "2026-11-13T10:09:33.130767Z",
+    "verified_by": "Roger"
+  },
   "app.containers.Admin.projects.project.participation.comments": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
@@ -9863,6 +9873,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.projects.project.petitionFormTitle": {
+    "state": "verified",
+    "verified_at": "2026-11-13T10:09:33.130767Z",
+    "verified_by": "Roger"
   },
   "app.containers.Admin.projects.project.phaseDateRange": {
     "state": "verified",
