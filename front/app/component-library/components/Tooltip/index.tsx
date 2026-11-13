@@ -12,6 +12,8 @@ export type TooltipProps = Omit<
 > & {
   width?: string;
   useContentWrapper?: boolean;
+  /** Mouse clicks keep hover behaviour; only keyboard focus holds the tooltip open. */
+  keyboardOnlyFocus?: boolean;
 };
 
 const useActiveElement = () => {
@@ -51,6 +53,7 @@ const Tooltip = ({
   // This prop is used to determine if the native Tippy component content should be wrapped in a Box component
   useContentWrapper = true,
   role = 'tooltip',
+  keyboardOnlyFocus = false,
   ...rest
 }: TooltipProps) => {
   const tooltipId = useRef(
@@ -71,6 +74,15 @@ const Tooltip = ({
     const tooltip = document.getElementById(tooltipId.current);
     const tooltipContent = document.querySelector('.tippy-content');
     if (tooltip && tooltip.contains(activeElement)) {
+      // Pointer focus must leave hover visibility under Tippy's control.
+      if (
+        keyboardOnlyFocus &&
+        activeElement instanceof Element &&
+        !activeElement.matches(':focus-visible')
+      ) {
+        setIsFocused(undefined);
+        return;
+      }
       if (!manuallyHiddenRef.current) {
         setIsFocused(true);
       }
@@ -85,9 +97,9 @@ const Tooltip = ({
       }
       manuallyHiddenRef.current = false;
     }
-  }, [activeElement, isFocused]);
+  }, [activeElement, isFocused, keyboardOnlyFocus]);
 
-  // Handle click (Space/Enter on button) to toggle tooltip visibility, and
+  // By default, click (Space/Enter on button) toggles tooltip visibility, and
   // Escape to close. Uses native listeners on the wrapper element.
   // Click does NOT use stopPropagation, so clicks on interactive children
   // (buttons, inputs) inside the tooltip wrapper propagate normally.
@@ -98,6 +110,11 @@ const Tooltip = ({
     if (!tooltip) return;
 
     const handleClick = () => {
+      if (keyboardOnlyFocus) {
+        manuallyHiddenRef.current = false;
+        setIsFocused(undefined);
+        return;
+      }
       if (manuallyHiddenRef.current) {
         manuallyHiddenRef.current = false;
         setIsFocused(true);
@@ -121,7 +138,7 @@ const Tooltip = ({
       tooltip.removeEventListener('click', handleClick);
       tooltip.removeEventListener('keydown', handleKeyDown);
     };
-  }, [key]);
+  }, [key, keyboardOnlyFocus]);
 
   // This component sometimes crashes because of re-renders.
   // This useCallback slightly improves the situation (i.e. it makes it

@@ -52,7 +52,7 @@ const FormSection = ({
   const title = formatMessage(getFormTitle(survey, inputTerm));
 
   if (formInSurveyOptions) {
-    return phaseId ? <DemographicsCard phaseId={phaseId} /> : null;
+    return null;
   }
 
   return (
@@ -74,7 +74,9 @@ const FormSection = ({
         </PanelField>
       )}
 
-      {phaseId && <DemographicsCard phaseId={phaseId} />}
+      {phaseId && !survey && (
+        <DemographicsCard projectId={projectId} phaseId={phaseId} />
+      )}
 
       {/* Survey responses aren't managed in Manage, so their offline forms
           stay here. */}

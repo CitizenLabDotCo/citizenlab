@@ -35,9 +35,7 @@ describe('Adding survey questions before saving a phase', () => {
 
     cy.get('[data-cy="add-draft-survey-questions"]').click();
     cy.get('[role="dialog"]').contains('button', 'Start from scratch').click();
-    cy.contains('The phase could not be saved.')
-      .scrollIntoView()
-      .should('be.visible');
+    cy.contains('The phase could not be saved.').should('not.exist');
     cy.contains('Missing start date').should('exist');
     cy.location('pathname').should('include', draftPath);
 
@@ -49,9 +47,7 @@ describe('Adding survey questions before saving a phase', () => {
     cy.get('[role="dialog"]').contains('button', 'Start from scratch').click();
     cy.wait('@createPhase').its('response.statusCode').should('eq', 422);
     cy.contains('This cannot be empty.').should('exist');
-    cy.contains('The phase could not be saved.')
-      .scrollIntoView()
-      .should('be.visible');
+    cy.contains('The phase could not be saved.').should('not.exist');
     cy.location('pathname').should('include', draftPath);
     cy.get('[role="dialog"]').should('not.exist');
 

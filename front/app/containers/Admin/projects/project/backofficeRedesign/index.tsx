@@ -1,4 +1,11 @@
-import React, { ReactNode, Suspense, lazy, useState } from 'react';
+import React, {
+  ReactNode,
+  Suspense,
+  lazy,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import { Box, Spinner, bo, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
@@ -120,6 +127,25 @@ const ProjectWorkspace = ({
   const activeView = providedActiveView ?? viewFromPathname(pathname);
 
   const inPhase = !!(phase || draft);
+  const workspaceRef = useRef<HTMLDivElement>(null);
+  const wasSaving = useRef(false);
+  const saving = pageSave?.saving ?? false;
+
+  useEffect(() => {
+    const finishedSaving = wasSaving.current && !saving;
+    wasSaving.current = saving;
+    if (!finishedSaving || !inPhase) return;
+
+    // Wait for field errors to mount after every save attempt, including retries.
+    const frame = requestAnimationFrame(() => {
+      const error = workspaceRef.current?.querySelector<HTMLElement>(
+        '.e2e-error-message:not(.error-exit):not(.error-exit-active)'
+      );
+      error?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [saving, inPhase]);
+
   // An open phase email takes the whole width.
   const editingEmail = /\/emails\/[^/]+\/edit$/.test(pathname);
   // The map configuration does the same, and keeps the phase panel mounted so
@@ -240,6 +266,7 @@ const ProjectWorkspace = ({
 
   return (
     <Box
+      ref={workspaceRef}
       display="flex"
       flexDirection="column"
       gap={PANEL_GAP}

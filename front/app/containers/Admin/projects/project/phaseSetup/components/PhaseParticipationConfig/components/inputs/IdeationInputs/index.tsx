@@ -175,8 +175,14 @@ const IdeationInputs = ({
       onMaxChange={handleLikingLimitOnChange}
       error={
         <>
-          <Error apiErrors={apiErrors && apiErrors.reacting_method} />
           <Error
+            showBackground={layout !== 'panel'}
+            showIcon={layout !== 'panel'}
+            apiErrors={apiErrors && apiErrors.reacting_method}
+          />
+          <Error
+            showBackground={layout !== 'panel'}
+            showIcon={layout !== 'panel'}
             text={noLikingLimitError}
             apiErrors={apiErrors && apiErrors.reacting_limit}
           />

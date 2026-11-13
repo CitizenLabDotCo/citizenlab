@@ -100,6 +100,15 @@ const MethodSettings = ({ phase }: Props) => {
     config: IUpdatedPhaseProperties,
     changedFields: Partial<IUpdatedPhaseProperties>
   ) => {
+    setErrors((errors) =>
+      errors
+        ? Object.fromEntries(
+            Object.entries(errors).filter(
+              ([field]) => !(field in changedFields)
+            )
+          )
+        : null
+    );
     preview.publish(changedFields);
     setChanges((changes) => ({ ...changes, ...changedFields }));
     setFormData(config);
@@ -169,7 +178,7 @@ const MethodSettings = ({ phase }: Props) => {
 
       <Box ref={setup_action === 'notifications' ? openedSection : undefined}>
         <PanelGroup
-          label={formatMessage(messages.notifications)}
+          label={formatMessage(messages.participantEmails)}
           defaultOpen={setup_action === 'notifications'}
         >
           <PhaseNotifications phase={phase} />

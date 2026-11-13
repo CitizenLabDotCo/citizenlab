@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
-import { Box, Select, Text } from '@citizenlab/cl2-component-library';
+import { Box, Button, Select, Text } from '@citizenlab/cl2-component-library';
 import { UploadFile } from 'typings';
 
 import { IFileAttachmentData } from 'api/file_attachments/types';
@@ -25,6 +25,8 @@ interface Props {
   fileAttachments?: IFileAttachmentData[];
   maxSizeMb?: number;
   dataCy?: string;
+  children?: ReactNode;
+  isUploadingFile?: boolean;
 }
 
 const FileSelectModal = ({
@@ -36,6 +38,8 @@ const FileSelectModal = ({
   fileAttachments,
   maxSizeMb,
   dataCy,
+  children,
+  isUploadingFile = false,
 }: Props) => {
   const { formatMessage } = useIntl();
   const { projectId } = useParams({ strict: false });
@@ -63,7 +67,7 @@ const FileSelectModal = ({
 
   const handleFileOnAdd = (fileToAdd: UploadFile) => {
     onFileAdd(fileToAdd);
-    onClose();
+    if (variant !== 'bo') onClose();
   };
 
   return (
@@ -73,6 +77,17 @@ const FileSelectModal = ({
       closeOnClickOutside={true}
       close={onClose}
       opened={opened}
+      footer={
+        variant === 'bo' ? (
+          <Button
+            buttonStyle="bo-primary"
+            disabled={isUploadingFile}
+            onClick={onClose}
+          >
+            {formatMessage(messages.done)}
+          </Button>
+        ) : undefined
+      }
       header={formatMessage(
         variant === 'bo' ? messages.attachments : messages.selectFile
       )}
@@ -81,7 +96,7 @@ const FileSelectModal = ({
         {filteredFileOptions.length > 0 && (
           <Box>
             <Select
-              value={''} // Since onChange we close the modal, we don't need to worry about setting this value.
+              value={''} // Attached files disappear from the available options.
               onChange={(option) => {
                 const fileToAttach = files?.data.find(
                   (file) => file.id === option.value
@@ -89,7 +104,7 @@ const FileSelectModal = ({
 
                 if (fileToAttach) {
                   onFileAttach?.(fileToAttach);
-                  onClose();
+                  if (variant !== 'bo') onClose();
                 }
               }}
               placeholder={formatMessage(messages.selectExistingFile)}
@@ -101,6 +116,7 @@ const FileSelectModal = ({
           </Box>
         )}
 
+        {children}
         <FileInput
           variant={variant}
           onAdd={handleFileOnAdd}

@@ -5,6 +5,10 @@ export default defineMessages({
     id: 'app.components.FileRepositorySelectAndUpload.attachmentCount',
     defaultMessage: '{count, plural, one {# file} other {# files}}',
   },
+  done: {
+    id: 'app.components.FileRepositorySelectAndUpload.done',
+    defaultMessage: 'Done',
+  },
   attachments: {
     id: 'app.components.FileRepositorySelectAndUpload.attachments',
     defaultMessage: 'Attachments',

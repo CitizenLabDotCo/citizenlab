@@ -7,6 +7,7 @@ import { randomString } from '../../support/commands';
 describe('Redesigned method-specific Manage views', () => {
   let projectId: string;
   let phaseId: string;
+  let inputTerm: string;
   let supporterId: string | undefined;
   const optionTitle = randomString();
 
@@ -42,6 +43,7 @@ describe('Redesigned method-specific Manage views', () => {
       })
       .then((phase) => {
         phaseId = phase.body.data.id;
+        inputTerm = phase.body.data.attributes.input_term;
       });
 
   it('saves offline votes through the voting action', () => {
@@ -111,7 +113,11 @@ describe('Redesigned method-specific Manage views', () => {
           .should('contain.text', 'Votes')
           .and('contain.text', 'Comments')
           .and('contain.text', 'Time left');
-        cy.contains('button', 'Import paper').should('not.exist');
+        cy.contains('button', 'Import paper').click();
+        cy.get('[role="dialog"]').should('contain.text', 'Spreadsheet');
+        cy.get('[role="dialog"] .e2e-modal-close-button').click();
+        cy.contains('button', `New ${inputTerm}`).click();
+        cy.get('[role="dialog"]').should('contain.text', 'Title');
       });
   });
 

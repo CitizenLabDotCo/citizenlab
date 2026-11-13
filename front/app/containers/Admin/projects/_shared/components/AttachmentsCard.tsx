@@ -5,6 +5,7 @@ import { CLErrors, UploadFile } from 'typings';
 import { IFileAttachmentData } from 'api/file_attachments/types';
 import { IFileData } from 'api/files/types';
 
+import Error from 'components/UI/Error';
 import FileRepositorySelectAndUpload from 'components/UI/FileRepositorySelectAndUpload';
 import FileSelectModal from 'components/UI/FileRepositorySelectAndUpload/components/FileSelectModal';
 import fileMessages from 'components/UI/FileRepositorySelectAndUpload/components/messages';
@@ -67,6 +68,24 @@ const AttachmentsCard = ({
           onClick: () => setOpened(true),
         }}
       >
+        {!opened && errors?.file && (
+          <Error
+            apiErrors={errors.file}
+            showBackground={false}
+            showIcon={false}
+          />
+        )}
+      </SetupCard>
+      <FileSelectModal
+        opened={opened}
+        variant="bo"
+        onClose={() => setOpened(false)}
+        fileAttachments={files.attachments}
+        onFileAdd={files.uploadFile}
+        onFileAttach={files.attachFile}
+        maxSizeMb={MAX_SIZE_MB}
+        isUploadingFile={files.isUploadingFile}
+      >
         {hasBody && (
           <FileRepositorySelectAndUpload
             id={id}
@@ -83,16 +102,7 @@ const AttachmentsCard = ({
             hideTrigger
           />
         )}
-      </SetupCard>
-      <FileSelectModal
-        opened={opened}
-        variant="bo"
-        onClose={() => setOpened(false)}
-        fileAttachments={files.attachments}
-        onFileAdd={files.uploadFile}
-        onFileAttach={files.attachFile}
-        maxSizeMb={MAX_SIZE_MB}
-      />
+      </FileSelectModal>
     </>
   );
 };

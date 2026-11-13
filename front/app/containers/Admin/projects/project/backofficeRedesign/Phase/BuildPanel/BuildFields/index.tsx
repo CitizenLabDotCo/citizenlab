@@ -106,7 +106,11 @@ const BuildFields = ({
                 }
                 className="intercom-admin-phase-name"
               />
-              <Error apiErrors={errors?.title_multiloc} />
+              <Error
+                showBackground={false}
+                showIcon={false}
+                apiErrors={errors?.title_multiloc}
+              />
             </Box>
 
             <DescriptionField
@@ -186,7 +190,11 @@ const BuildFields = ({
           />
         </Box>
 
-        <Error apiErrors={errors?.base} />
+        <Error
+          showBackground={false}
+          showIcon={false}
+          apiErrors={errors?.base}
+        />
       </Box>
 
       {phaseId && participationMethod === 'native_survey' && (

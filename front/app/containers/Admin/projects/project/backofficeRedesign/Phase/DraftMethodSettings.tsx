@@ -11,7 +11,6 @@ import configMessages from 'containers/Admin/projects/project/phaseSetup/compone
 import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/typings';
 
 import assigneeMessages from 'components/admin/ProjectAssignee/messages';
-import ErrorMessage from 'components/UI/Error';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -31,7 +30,6 @@ interface Props {
   onOpenSetting: (action: SetupSettingsAction) => Promise<void>;
   saving: boolean;
   uploading: boolean;
-  saveError?: string;
   formData: IUpdatedPhaseProperties;
   validationErrors: ValidationErrors;
   apiErrors: CLErrors | null;
@@ -43,7 +41,6 @@ const DraftMethodSettings = ({
   onOpenSetting,
   saving,
   uploading,
-  saveError,
   formData,
   validationErrors,
   apiErrors,
@@ -105,7 +102,10 @@ const DraftMethodSettings = ({
         >
           {formatMessage(messages.editAccess)}
         </Button>
-        <PanelGroup label={formatMessage(messages.notifications)} defaultOpen>
+        <PanelGroup
+          label={formatMessage(messages.participantEmails)}
+          defaultOpen
+        >
           <Button
             buttonStyle="bo-secondary"
             width="100%"
@@ -114,7 +114,7 @@ const DraftMethodSettings = ({
             processing={opening === 'notifications'}
             onClick={() => open('notifications')}
           >
-            {formatMessage(messages.notifications)}
+            {formatMessage(messages.participantEmails)}
           </Button>
         </PanelGroup>
         {formData.participation_method === 'voting' && (
@@ -125,7 +125,6 @@ const DraftMethodSettings = ({
             {moderationAction}
           </PanelGroup>
         )}
-        {saveError && <ErrorMessage text={saveError} />}
       </Box>
     </PanelSettings>
   );

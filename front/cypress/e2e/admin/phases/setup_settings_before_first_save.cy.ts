@@ -36,7 +36,7 @@ describe('Opening setup settings before saving a phase', () => {
       'Access rights, notifications and other settings become available'
     ).should('not.exist');
     cy.get('[data-cy="draft-access-settings"]').scrollIntoView().click();
-    cy.contains('The phase could not be saved.').should('exist');
+    cy.contains('The phase could not be saved.').should('not.exist');
     cy.contains('Missing start date').should('exist');
     cy.location('pathname').should('include', draftPath);
     cy.get('@createPhase.all').should('have.length', 0);
@@ -98,7 +98,7 @@ describe('Opening setup settings before saving a phase', () => {
       if (action === 'access') {
         cy.get('[role="dialog"]').contains('Edit access').should('be.visible');
       } else if (action === 'notification') {
-        cy.contains('button', 'Notifications').should(
+        cy.contains('button', 'Emails to participants').should(
           'have.attr',
           'aria-expanded',
           'true'

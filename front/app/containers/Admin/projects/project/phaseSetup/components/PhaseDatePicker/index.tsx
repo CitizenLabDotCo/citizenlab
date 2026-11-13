@@ -53,9 +53,21 @@ const PhaseDatePicker = ({
         className="intercom-admin-phase-date-setup"
         variant={variant}
       />
-      <Error apiErrors={errors?.start_at} />
-      <Error apiErrors={errors?.end_at} />
-      <Error text={validationErrors.phaseDateError} />
+      <Error
+        showBackground={variant !== 'bo'}
+        showIcon={variant !== 'bo'}
+        apiErrors={errors?.start_at}
+      />
+      <Error
+        showBackground={variant !== 'bo'}
+        showIcon={variant !== 'bo'}
+        apiErrors={errors?.end_at}
+      />
+      <Error
+        showBackground={variant !== 'bo'}
+        showIcon={variant !== 'bo'}
+        text={validationErrors.phaseDateError}
+      />
 
       {isSelectedRangeOpenEnded(selectedRange, disabledRanges) && (
         <Box mt={variant === 'bo' ? '12px' : '24px'}>

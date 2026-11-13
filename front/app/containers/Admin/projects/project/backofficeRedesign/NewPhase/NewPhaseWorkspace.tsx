@@ -9,6 +9,7 @@ import usePhases from 'api/phases/usePhases';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
 import { IProjectData } from 'api/projects/types';
 
+import { DraftSetupReviewContext } from 'containers/Admin/projects/_shared/components/SetupReview';
 import usePhaseFileAttachments, {
   fileAttachmentErrors,
 } from 'containers/Admin/projects/_shared/usePhaseFileAttachments';
@@ -20,7 +21,6 @@ import {
   usePageSave,
   useRegisterPageSaver,
 } from 'components/admin/PageSaveContext';
-import ErrorMessage from 'components/UI/Error';
 
 import { useIntl } from 'utils/cl-intl';
 import Navigate from 'utils/cl-router/Navigate';
@@ -78,7 +78,6 @@ const NewPhaseWorkspace = ({
     id: string;
     formData: IUpdatedPhaseProperties;
   }>();
-  const [saveFailed, setSaveFailed] = useState(false);
   const [surveySetupOpened, setSurveySetupOpened] = useState(false);
   const [destination, setDestination] = useState<{
     phaseId: string;
@@ -94,6 +93,13 @@ const NewPhaseWorkspace = ({
 
   const updateFormData = (newData: Partial<IUpdatedPhaseProperties>) => {
     setDirty(true);
+    setErrors((errors) =>
+      errors
+        ? Object.fromEntries(
+            Object.entries(errors).filter(([field]) => !(field in newData))
+          )
+        : null
+    );
     setFormData((formData) => ({ ...formData, ...newData }));
   };
 
@@ -114,7 +120,6 @@ const NewPhaseWorkspace = ({
   };
 
   const save = async (reason: SaveReason) => {
-    setSaveFailed(false);
     setErrors(null);
 
     const { isValidated, errors } = validate(
@@ -127,7 +132,6 @@ const NewPhaseWorkspace = ({
 
     setValidationErrors(errors);
     if (!isValidated) {
-      setSaveFailed(true);
       throw new Error('Invalid phase');
     }
 
@@ -141,7 +145,6 @@ const NewPhaseWorkspace = ({
         setDestination({ phaseId });
       }
     } catch (error) {
-      setSaveFailed(true);
       setErrors(fileAttachmentErrors(error));
       throw error;
     }
@@ -208,124 +211,129 @@ const NewPhaseWorkspace = ({
   }
 
   return (
-    <ProjectWorkspace
-      project={project}
-      draft={{
-        label: formatMessage(
-          standalone ? messages.newSurveyCrumb : messages.newPhaseCrumb
-        ),
-        methodSettings: (
-          <DraftMethodSettings
-            onOpenSetting={saveAndOpenAction}
-            saving={!!pageSave?.saving}
-            uploading={files.isUploadingFile}
-            saveError={
-              saveFailed
-                ? formatMessage(messages.addQuestionsSaveError)
-                : undefined
-            }
-            formData={formData}
-            validationErrors={validationErrors}
-            apiErrors={errors}
-            onChange={updateFormData}
-            setValidationErrors={setValidationErrors}
-          />
-        ),
+    <DraftSetupReviewContext.Provider
+      value={{
+        reviewed: formData.reviewed_setup_cards ?? [],
+        onReview: (card) => {
+          setDirty(true);
+          setFormData((data) => ({
+            ...data,
+            reviewed_setup_cards: [
+              ...new Set([...(data.reviewed_setup_cards ?? []), card]),
+            ],
+          }));
+        },
       }}
-      sidePanel={
-        <BuildFields
-          projectId={projectId}
-          participationMethod={participationMethod}
-          formData={formData}
-          errors={errors}
-          validationErrors={validationErrors}
-          standalone={standalone}
-          files={files}
-          draftQuestionsAction={
-            ['native_survey', 'ideation', 'proposals'].includes(
-              participationMethod
-            ) && (
-              <Box>
-                <Button
-                  buttonStyle="bo-secondary"
-                  data-cy={
-                    participationMethod === 'native_survey'
-                      ? 'add-draft-survey-questions'
-                      : 'add-draft-input-questions'
-                  }
-                  boSize="medium"
-                  width="100%"
-                  processing={
-                    participationMethod !== 'native_survey' &&
-                    !!pageSave?.saving
-                  }
-                  disabled={
-                    participationMethod !== 'native_survey' &&
-                    files.isUploadingFile
-                  }
-                  onClick={() => {
-                    if (participationMethod === 'native_survey') {
-                      setSurveySetupOpened(true);
-                    } else {
-                      saveAndOpenAction('input');
-                    }
-                  }}
-                >
-                  {formatMessage(methodSectionMessages.addQuestions)}
-                </Button>
-                {saveFailed && (
-                  <ErrorMessage
-                    text={formatMessage(messages.addQuestionsSaveError)}
-                  />
-                )}
-              </Box>
-            )
-          }
-          surveyPlacement={
-            // Only the platform's own survey can run outside the timeline.
-            participationMethod === 'native_survey' && (
-              <PlacementCard
-                name="new-survey-placement"
-                value={standalone ? 'standalone' : 'on_timeline'}
-                onChange={(placement_type) => {
-                  setStandalone(placement_type === 'standalone');
-                  setValidationErrors({});
-                  updateFormData({ placement_type });
-                }}
-              />
-            )
-          }
-          surveyMethodSwitch={{
-            onSelect: (method) => {
-              setParticipationMethod(method);
-              updateFormData(defaultsForMethod(method));
-            },
-          }}
-          onChange={updateFormData}
-          onDatesChange={(dates) => {
-            setValidationErrors((errors) => ({
-              ...errors,
-              phaseDateError: undefined,
-            }));
-            updateFormData(dates);
-          }}
-        />
-      }
     >
-      <PhasePreview projectId={projectId} draft={formData} />
-      {participationMethod === 'native_survey' && (
-        <SurveySetupModal
-          projectId={projectId}
-          opened={surveySetupOpened}
-          onClose={() => setSurveySetupOpened(false)}
-          draft={{
-            onChoose: saveAndOpenAction,
-            saving: !!pageSave?.saving,
-            uploading: files.isUploadingFile,
-          }}
-        />
-      )}
-    </ProjectWorkspace>
+      <ProjectWorkspace
+        project={project}
+        draft={{
+          label: formatMessage(
+            standalone ? messages.newSurveyCrumb : messages.newPhaseCrumb
+          ),
+          methodSettings: (
+            <DraftMethodSettings
+              onOpenSetting={saveAndOpenAction}
+              saving={!!pageSave?.saving}
+              uploading={files.isUploadingFile}
+              formData={formData}
+              validationErrors={validationErrors}
+              apiErrors={errors}
+              onChange={updateFormData}
+              setValidationErrors={setValidationErrors}
+            />
+          ),
+        }}
+        sidePanel={
+          <BuildFields
+            projectId={projectId}
+            participationMethod={participationMethod}
+            formData={formData}
+            errors={errors}
+            validationErrors={validationErrors}
+            standalone={standalone}
+            files={files}
+            draftQuestionsAction={
+              ['native_survey', 'ideation', 'proposals'].includes(
+                participationMethod
+              ) && (
+                <Box>
+                  <Button
+                    buttonStyle="bo-secondary"
+                    data-cy={
+                      participationMethod === 'native_survey'
+                        ? 'add-draft-survey-questions'
+                        : 'add-draft-input-questions'
+                    }
+                    boSize="medium"
+                    width="100%"
+                    processing={
+                      participationMethod !== 'native_survey' &&
+                      !!pageSave?.saving
+                    }
+                    disabled={
+                      participationMethod !== 'native_survey' &&
+                      files.isUploadingFile
+                    }
+                    onClick={() => {
+                      if (participationMethod === 'native_survey') {
+                        setSurveySetupOpened(true);
+                      } else {
+                        saveAndOpenAction('input');
+                      }
+                    }}
+                  >
+                    {formatMessage(methodSectionMessages.addQuestions)}
+                  </Button>
+                </Box>
+              )
+            }
+            surveyPlacement={
+              // Only the platform's own survey can run outside the timeline.
+              participationMethod === 'native_survey' && (
+                <PlacementCard
+                  name="new-survey-placement"
+                  value={standalone ? 'standalone' : 'on_timeline'}
+                  onChange={(placement_type) => {
+                    setStandalone(placement_type === 'standalone');
+                    setValidationErrors({});
+                    updateFormData({ placement_type });
+                  }}
+                />
+              )
+            }
+            surveyMethodSwitch={{
+              onSelect: (method) => {
+                setParticipationMethod(method);
+                updateFormData(defaultsForMethod(method));
+              },
+            }}
+            onChange={updateFormData}
+            onDatesChange={(dates) => {
+              setValidationErrors((errors) => ({
+                ...errors,
+                phaseDateError: undefined,
+              }));
+              updateFormData(dates);
+            }}
+          />
+        }
+      >
+        <PhasePreview projectId={projectId} draft={formData} />
+        {participationMethod === 'native_survey' && (
+          <SurveySetupModal
+            projectId={projectId}
+            opened={surveySetupOpened}
+            onClose={() => setSurveySetupOpened(false)}
+            draft={{
+              onChoose: saveAndOpenAction,
+              saving: !!pageSave?.saving,
+              uploading: files.isUploadingFile,
+            }}
+          />
+        )}
+      </ProjectWorkspace>
+    </DraftSetupReviewContext.Provider>
   );
 };
 

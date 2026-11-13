@@ -43,6 +43,7 @@ const FormQuestionsCard = ({ projectId, phaseId, title, survey }: Props) => {
   return (
     <>
       <PanelField
+        reviewKey={nQuestions > 0 ? 'form' : undefined}
         label={title}
         action={
           customFields &&

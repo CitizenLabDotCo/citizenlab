@@ -74,6 +74,13 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
   const updateFormData = (newData: Partial<IUpdatedPhaseProperties>) => {
     preview.publish(newData);
     setDirty(true);
+    setErrors((errors) =>
+      errors
+        ? Object.fromEntries(
+            Object.entries(errors).filter(([field]) => !(field in newData))
+          )
+        : null
+    );
     setFormData((formData) => ({ ...formData, ...newData }));
   };
 

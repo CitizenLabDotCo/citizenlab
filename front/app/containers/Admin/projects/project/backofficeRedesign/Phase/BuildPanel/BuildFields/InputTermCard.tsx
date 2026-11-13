@@ -45,6 +45,7 @@ const InputTermCard = ({ value, onChange }: Props) => {
 
   return (
     <PanelField
+      reviewKey="input_term"
       label={title}
       action={
         <OptionPicker<InputTerm>

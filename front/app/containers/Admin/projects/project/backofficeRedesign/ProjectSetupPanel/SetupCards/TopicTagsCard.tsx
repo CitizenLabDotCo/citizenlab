@@ -62,6 +62,7 @@ const TopicTagsCard = ({ project, ready }: Props) => {
       <Box ref={cardRef} position="relative" onKeyDown={handleKeyDown}>
         <SetupCard
           id="e2e-setup-card-topics"
+          tooltip={formatMessage(messages.topicTagsDescription)}
           title={topicsTerm ? `${title} (${topicsTerm})` : title}
           ready={ready}
           summary={

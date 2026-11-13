@@ -85,7 +85,11 @@ const NativeSurveyInputs = ({
             checked={!!formData.submission_enabled}
             onChange={toggleSubmissionEnabled}
           />
-          <Error apiErrors={apiErrors && apiErrors.submission_enabled} />
+          <Error
+            showBackground={false}
+            showIcon={false}
+            apiErrors={apiErrors && apiErrors.submission_enabled}
+          />
           <SettingToggleRow
             title={formatMessage(parentMessages.allowMultipleResponsesLabel)}
             description={formatMessage(
@@ -94,7 +98,11 @@ const NativeSurveyInputs = ({
             checked={!!formData.allow_multiple_responses}
             onChange={toggleAllowMultipleResponses}
           />
-          <Error apiErrors={apiErrors && apiErrors.allow_multiple_responses} />
+          <Error
+            showBackground={false}
+            showIcon={false}
+            apiErrors={apiErrors && apiErrors.allow_multiple_responses}
+          />
           {phase && (
             <PhaseActionAccessRow
               phaseId={phase.data.id}
@@ -126,6 +134,8 @@ const NativeSurveyInputs = ({
                 onChange={handleSurveyTitleChange}
               />
               <Error
+                showBackground={false}
+                showIcon={false}
                 apiErrors={apiErrors && apiErrors.native_survey_title_multiloc}
               />
             </Box>
@@ -139,6 +149,8 @@ const NativeSurveyInputs = ({
                 onChange={handleSurveyCTAChange}
               />
               <Error
+                showBackground={false}
+                showIcon={false}
                 apiErrors={apiErrors && apiErrors.native_survey_button_multiloc}
               />
             </Box>

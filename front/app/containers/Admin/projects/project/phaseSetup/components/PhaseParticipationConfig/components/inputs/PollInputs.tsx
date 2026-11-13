@@ -33,7 +33,13 @@ const PollInputs = ({
   phaseId,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const error = <Error apiErrors={apiErrors && apiErrors.poll_anonymous} />;
+  const error = (
+    <Error
+      showBackground={layout !== 'panel'}
+      showIcon={layout !== 'panel'}
+      apiErrors={apiErrors && apiErrors.poll_anonymous}
+    />
+  );
 
   if (layout === 'panel') {
     return (

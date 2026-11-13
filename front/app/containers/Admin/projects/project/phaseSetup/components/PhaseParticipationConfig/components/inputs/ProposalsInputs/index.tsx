@@ -158,6 +158,8 @@ const ProposalsInputs = ({
         onChange={handleDaysLimitChange}
       />
       <Error
+        showBackground={layout !== 'panel'}
+        showIcon={layout !== 'panel'}
         text={expireDateLimitError}
         apiErrors={apiErrors && apiErrors.expire_days_limit}
       />
@@ -178,6 +180,8 @@ const ProposalsInputs = ({
         onChange={handleReactingThresholdChange}
       />
       <Error
+        showBackground={layout !== 'panel'}
+        showIcon={layout !== 'panel'}
         text={reactingThresholdError}
         apiErrors={apiErrors && apiErrors.reacting_threshold}
       />
@@ -197,6 +201,8 @@ const ProposalsInputs = ({
         onChange={handleReactingThresholdChange}
         error={
           <Error
+            showBackground={layout !== 'panel'}
+            showIcon={layout !== 'panel'}
             text={reactingThresholdError}
             apiErrors={apiErrors && apiErrors.reacting_threshold}
           />
@@ -210,6 +216,8 @@ const ProposalsInputs = ({
         onChange={handleDaysLimitChange}
         error={
           <Error
+            showBackground={layout !== 'panel'}
+            showIcon={layout !== 'panel'}
             text={expireDateLimitError}
             apiErrors={apiErrors && apiErrors.expire_days_limit}
           />
@@ -251,8 +259,14 @@ const ProposalsInputs = ({
       onMaxChange={handleLikingLimitOnChange}
       error={
         <>
-          <Error apiErrors={apiErrors && apiErrors.reacting_method} />
           <Error
+            showBackground={layout !== 'panel'}
+            showIcon={layout !== 'panel'}
+            apiErrors={apiErrors && apiErrors.reacting_method}
+          />
+          <Error
+            showBackground={layout !== 'panel'}
+            showIcon={layout !== 'panel'}
             text={noLikingLimitError}
             apiErrors={apiErrors && apiErrors.reacting_limit}
           />

@@ -6,7 +6,7 @@ class WebApi::V1::PhasesController < ApplicationController
   before_action :set_phase, only: %i[
     show show_mini update destroy survey_results input_responses_pdf input_responses_pdf_result
     input_responses_xlsx input_response_fields sentiment_by_quarter submission_count index_xlsx
-    delete_inputs show_progress common_ground_results
+    delete_inputs show_progress common_ground_results review_setup_card
   ]
   before_action :ensure_input_export_review, only: %i[
     input_responses_pdf input_responses_pdf_result input_responses_xlsx input_response_fields
@@ -49,6 +49,18 @@ class WebApi::V1::PhasesController < ApplicationController
     save_or_raise!(@phase)
     sidefx.after_create(@phase, current_user)
     render json: WebApi::V1::PhaseSerializer.new(@phase, params: phase_serializer_params).serializable_hash, status: :created
+  end
+
+  def review_setup_card
+    authorize @phase, :update?
+    card = params.require(:card)
+
+    @phase.with_lock do
+      @phase.reviewed_setup_cards |= [card]
+      save_or_raise!(@phase)
+    end
+
+    render json: WebApi::V1::PhaseSerializer.new(@phase, params: phase_serializer_params).serializable_hash
   end
 
   def update
@@ -297,7 +309,7 @@ class WebApi::V1::PhasesController < ApplicationController
   end
 
   def phase_params_for_create
-    params.require(:phase).permit(:placement_type, *shared_phase_params)
+    params.require(:phase).permit(:placement_type, *shared_phase_params, reviewed_setup_cards: [])
   end
 
   def phase_params_for_update

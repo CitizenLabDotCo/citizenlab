@@ -29,7 +29,7 @@ describe('Adding input questions before saving a phase', () => {
       );
 
       cy.get('[data-cy="add-draft-input-questions"]').click();
-      cy.contains('The phase could not be saved.').should('exist');
+      cy.contains('The phase could not be saved.').should('not.exist');
       cy.contains('Missing start date').should('exist');
       cy.location('pathname').should('include', draftPath);
       cy.get('@createPhase.all').should('have.length', 0);
@@ -42,10 +42,17 @@ describe('Adding input questions before saving a phase', () => {
       cy.contains('This cannot be empty.').should('exist');
       cy.location('pathname').should('include', draftPath);
 
+      cy.get('[data-review-card="input_term"]')
+        .contains('What should an input be called?')
+        .click();
+      cy.get('[data-review-card="input_term"]').should('contain', 'Reviewed');
       cy.get('#phase-build-panel-title').type('Input collection');
       cy.get('[data-cy="add-draft-input-questions"]').scrollIntoView().click();
       cy.wait('@createPhase').then(({ response }) => {
         expect(response?.statusCode).to.eq(201);
+        expect(response?.body.data.attributes.reviewed_setup_cards).to.include(
+          'input_term'
+        );
         cy.location('pathname').should(
           'include',
           `/phases/${response?.body.data.id}/form/edit`

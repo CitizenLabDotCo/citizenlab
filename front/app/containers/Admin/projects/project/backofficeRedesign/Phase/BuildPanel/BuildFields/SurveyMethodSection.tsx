@@ -84,7 +84,10 @@ const SurveyMethodSection = ({
   ];
 
   return (
-    <PanelField label={formatMessage(pickerMessages.surveyOptions)}>
+    <PanelField
+      reviewKey="survey_method"
+      label={formatMessage(pickerMessages.surveyOptions)}
+    >
       <Box display="flex" flexDirection="column" gap="20px" pt="8px">
         {options
           .filter(({ shown }) => shown)

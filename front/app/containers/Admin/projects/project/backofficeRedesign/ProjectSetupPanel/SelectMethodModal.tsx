@@ -11,6 +11,8 @@ import SettingsModal from 'containers/Admin/projects/project/backofficeRedesign/
 import ParticipationMethodChoices from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/components/ParticipationMethodChoices';
 import projectPageMessages from 'containers/Admin/projects/project/projectPage/messages';
 
+import { usePageSave } from 'components/admin/PageSaveContext';
+
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { useSearch } from 'utils/router';
 
@@ -49,6 +51,7 @@ interface Props {
 const SelectMethodModal = ({ projectId, opened, onClose }: Props) => {
   const { formatMessage } = useIntl();
   const locale = useLocale();
+  const pageSave = usePageSave();
   const { participation_method } = useSearch({ strict: false });
 
   return (
@@ -71,19 +74,30 @@ const SelectMethodModal = ({ projectId, opened, onClose }: Props) => {
             <ParticipationMethodChoices
               variant="bo"
               methods={methods}
-              onSelect={(_event, method) =>
-                method === participation_method
-                  ? onClose()
-                  : // Through the router, so unsaved changes block it.
-                    router.navigate({
-                      to: '/$locale/admin/projects/$projectId/phases/new',
-                      params: { locale, projectId },
-                      search: ({ project_backoffice_redesign }) => ({
-                        project_backoffice_redesign,
-                        participation_method: method,
-                      }),
-                    })
-              }
+              onSelect={async (_event, method) => {
+                if (method === participation_method) {
+                  onClose();
+                  return;
+                }
+                if (pageSave?.saving) return;
+
+                onClose();
+
+                if (pageSave?.dirty) {
+                  const failed = await pageSave.saveAll('leave');
+                  if (failed.length > 0) return;
+                  pageSave.leave();
+                }
+
+                router.navigate({
+                  to: '/$locale/admin/projects/$projectId/phases/new',
+                  params: { locale, projectId },
+                  search: ({ project_backoffice_redesign }) => ({
+                    project_backoffice_redesign,
+                    participation_method: method,
+                  }),
+                });
+              }}
             />
           </Box>
         ),

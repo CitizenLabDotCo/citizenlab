@@ -26,6 +26,15 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.phasePreviewTitle',
     defaultMessage: 'Preview of this phase',
   },
+  participantEmails: {
+    id: 'app.containers.Admin.projects.project.participantEmails',
+    defaultMessage: 'Emails to participants',
+  },
+  participantEmailsDescription: {
+    id: 'app.containers.Admin.projects.project.participantEmailsDescription',
+    defaultMessage:
+      'Sent automatically when one of these happens. Turn off the ones you don’t want to send.',
+  },
   notifications: {
     id: 'app.containers.Admin.projects.project.notifications',
     defaultMessage: 'Notifications',

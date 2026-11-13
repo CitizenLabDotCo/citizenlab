@@ -199,12 +199,15 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
             label: messages.settingsPerspectives,
             icon: 'stars',
             content: (
-              <PerspectivesSection
-                enabled={projectAttrs.live_auto_input_topics_enabled}
-                onChange={(live_auto_input_topics_enabled) =>
-                  applyDiff({ live_auto_input_topics_enabled })
-                }
-              />
+              <Box display="flex" flexDirection="column" gap="24px">
+                <PerspectivesSection
+                  enabled={projectAttrs.live_auto_input_topics_enabled}
+                  onChange={(live_auto_input_topics_enabled) =>
+                    applyDiff({ live_auto_input_topics_enabled })
+                  }
+                />
+                <TagsSection draft={tagsDraft} />
+              </Box>
             ),
           } satisfies SettingsModalSection,
         ]

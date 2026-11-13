@@ -83,7 +83,11 @@ const DescriptionField = ({
         onChange={onChange}
         withCTAButton
       />
-      <Error apiErrors={errors?.description_multiloc} />
+      <Error
+        showBackground={false}
+        showIcon={false}
+        apiErrors={errors?.description_multiloc}
+      />
     </Box>
   );
 };

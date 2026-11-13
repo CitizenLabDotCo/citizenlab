@@ -44,7 +44,6 @@ const SideColumn = ({
   setFilters,
 }: Props) => {
   const isVoting = phase.attributes.participation_method === 'voting';
-  const isProposals = type === 'ProjectProposals';
   const { formatMessage } = useIntl();
   const [offlineOpened, setOfflineOpened] = useState(false);
   const [importOpened, setImportOpened] = useState(false);
@@ -62,34 +61,30 @@ const SideColumn = ({
         filters={filters}
         setFilters={setFilters}
       />
-      {isVoting || isProposals ? (
-        <Card fillHeight={!isVoting}>
-          {isVoting && (
-            <Button
-              buttonStyle="bo-secondary"
-              width="100%"
-              height="44px"
-              justify="space-between"
-              icon="plus"
-              iconPos="right"
-              onClick={() => setOfflineOpened(true)}
-            >
-              {formatMessage(messages.addOfflineVotes)}
-            </Button>
-          )}
-          {isVoting && (
-            <Button
-              buttonStyle="bo-secondary"
-              width="100%"
-              height="44px"
-              justify="space-between"
-              icon="upload-file"
-              iconPos="right"
-              onClick={() => setImportOpened(true)}
-            >
-              {formatMessage(messages.importOptions)}
-            </Button>
-          )}
+      {isVoting ? (
+        <Card fillHeight={false}>
+          <Button
+            buttonStyle="bo-secondary"
+            width="100%"
+            height="44px"
+            justify="space-between"
+            icon="plus"
+            iconPos="right"
+            onClick={() => setOfflineOpened(true)}
+          >
+            {formatMessage(messages.addOfflineVotes)}
+          </Button>
+          <Button
+            buttonStyle="bo-secondary"
+            width="100%"
+            height="44px"
+            justify="space-between"
+            icon="upload-file"
+            iconPos="right"
+            onClick={() => setImportOpened(true)}
+          >
+            {formatMessage(messages.importOptions)}
+          </Button>
           {exports}
         </Card>
       ) : (

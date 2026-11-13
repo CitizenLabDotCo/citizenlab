@@ -1,6 +1,29 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  generalTooltip: {
+    id: 'app.containers.Admin.projects.project.setupCards.generalTooltip',
+    defaultMessage: 'The project name, and the space and folder it belongs to',
+  },
+  homepageCardTooltip: {
+    id: 'app.containers.Admin.projects.project.setupCards.homepageCardTooltip',
+    defaultMessage:
+      'Shown wherever the project is listed: homepage, folders, spaces and pages',
+  },
+  projectPageTooltip: {
+    id: 'app.containers.Admin.projects.project.setupCards.projectPageTooltip',
+    defaultMessage: 'The page participants see when they open the project',
+  },
+  areaTooltip: {
+    id: 'app.containers.Admin.projects.project.setupCards.areaTooltip',
+    defaultMessage:
+      'Participants can filter projects by area on the homepage. Choose where this project applies.',
+  },
+  methodsTooltip: {
+    id: 'app.containers.Admin.projects.project.setupCards.methodsTooltip',
+    defaultMessage: 'The ways participants take part, one after the other',
+  },
+
   areaFilterAllAreas: {
     id: 'app.containers.Admin.projects.project.areaFilterAllAreas',
     defaultMessage: 'All areas',
@@ -37,6 +60,11 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.areasSelectedCount',
     defaultMessage:
       '{count, plural, one {# area selected} other {# areas selected}}',
+  },
+  topicTagsDescription: {
+    id: 'app.containers.Admin.projects.project.topicTagsDescription',
+    defaultMessage:
+      'Participants can filter projects by topic on the homepage.',
   },
   topicTagsSearch: {
     id: 'app.containers.Admin.projects.project.topicTagsSearch',

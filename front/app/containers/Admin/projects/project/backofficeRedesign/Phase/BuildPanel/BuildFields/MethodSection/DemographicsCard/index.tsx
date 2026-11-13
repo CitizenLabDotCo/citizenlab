@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import useEvents from 'api/events/useEvents';
 import { Action, IPhasePermissionAction } from 'api/permissions/types';
 import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
 
@@ -27,25 +28,42 @@ const isOrderedAction = (action: Action): action is IPhasePermissionAction =>
   ACTION_ORDER.some((ordered) => ordered === action);
 
 interface Props {
+  projectId: string;
   phaseId: string;
+  surveyForm?: boolean;
 }
 
-const DemographicsCard = ({ phaseId }: Props) => {
+const DemographicsCard = ({
+  projectId,
+  phaseId,
+  surveyForm = false,
+}: Props) => {
   const { formatMessage } = useIntl();
   const [opened, setOpened] = useState(false);
   const { data: permissions } = usePhasePermissions({ phaseId });
+  const { data: events } = useEvents(
+    { projectIds: [projectId], pageSize: 1 },
+    { enabled: !surveyForm }
+  );
+  const hasEvents = (events?.data.length ?? 0) > 0;
+
   const actions = (permissions?.data ?? [])
     .map(({ attributes }) => attributes.action)
     .filter(isOrderedAction)
+    .filter((action) => !surveyForm || action === 'posting_idea')
+    .filter((action) => action !== 'attending_event' || hasEvents)
     .sort((a, b) => ACTION_ORDER.indexOf(a) - ACTION_ORDER.indexOf(b));
 
   if (actions.length === 0) return null;
 
-  const label = formatMessage(messages.collectDemographicData);
+  const label = formatMessage(
+    surveyForm ? messages.demographicQuestions : messages.collectDemographicData
+  );
 
   return (
     <>
       <PanelField
+        reviewKey="demographics"
         label={label}
         // The summary follows the phase's main action, sorted first.
         action={<DemographicsSummary phaseId={phaseId} action={actions[0]} />}

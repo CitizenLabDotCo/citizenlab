@@ -2,6 +2,8 @@ import React, { ReactNode, useState } from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
+import { SetupReviewCard } from 'api/phases/types';
+
 import SetupCard from 'containers/Admin/projects/_shared/components/SetupCard';
 import SummaryPill from 'containers/Admin/projects/_shared/components/SummaryPill';
 
@@ -9,6 +11,8 @@ import PanelRowButton from './PanelRowButton';
 
 interface Props {
   label: string;
+  reviewKey?: SetupReviewCard;
+  reviewNeedsChoice?: boolean;
   defaultOpen?: boolean;
   variant?: 'card' | 'row';
   /** Shown as a pill in the card header while the group is closed. */
@@ -18,6 +22,8 @@ interface Props {
 
 const PanelGroup = ({
   label,
+  reviewKey,
+  reviewNeedsChoice,
   defaultOpen = false,
   variant = 'card',
   summary,
@@ -44,6 +50,8 @@ const PanelGroup = ({
     <Box mb="10px">
       <SetupCard
         title={label}
+        reviewKey={reviewKey}
+        reviewNeedsChoice={reviewNeedsChoice}
         action={summary && !open && <SummaryPill label={summary} />}
         button={{
           icon: open ? 'chevron-up' : 'chevron-down',

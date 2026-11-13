@@ -38,7 +38,7 @@ const MethodSection = ({
       return phaseId ? (
         <>
           <VotingOptionsSection projectId={projectId} phaseId={phaseId} />
-          <DemographicsCard phaseId={phaseId} />
+          <DemographicsCard projectId={projectId} phaseId={phaseId} />
         </>
       ) : null;
     case 'volunteering':

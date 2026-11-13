@@ -28,6 +28,7 @@ module MultiTenancy
           reacting_like_limited_max
           reacting_like_method
           reacting_threshold
+          reviewed_setup_cards
           similarity_enabled
           similarity_threshold_body
           similarity_threshold_title

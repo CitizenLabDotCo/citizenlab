@@ -27,6 +27,7 @@ const SetupCards = ({ project, readiness, onOpenSettings }: Props) => {
     <>
       <SetupCard
         id="e2e-setup-card-general"
+        tooltip={formatMessage(messages.generalTooltip)}
         title={formatMessage(projectSetupPanelMessages.generalInformation)}
         ready={readiness?.general}
         behaviour={{
@@ -37,7 +38,20 @@ const SetupCards = ({ project, readiness, onOpenSettings }: Props) => {
         }}
       />
       <SetupCard
+        id="e2e-setup-card-homepage-card"
+        tooltip={formatMessage(messages.homepageCardTooltip)}
+        title={formatMessage(projectSetupPanelMessages.homepageCard)}
+        ready={readiness?.homepageCard}
+        behaviour={{
+          kind: 'expand',
+          children: <HomepageCardFields project={project} />,
+        }}
+      />
+      <AreaCard project={project} ready={readiness?.area} />
+      <TopicTagsCard project={project} ready={readiness?.topics} />
+      <SetupCard
         id="e2e-setup-card-project-page"
+        tooltip={formatMessage(messages.projectPageTooltip)}
         title={formatMessage(projectSetupPanelMessages.projectPageItem)}
         ready={readiness?.page}
         behaviour={{
@@ -50,17 +64,6 @@ const SetupCards = ({ project, readiness, onOpenSettings }: Props) => {
             ),
         }}
       />
-      <SetupCard
-        id="e2e-setup-card-homepage-card"
-        title={formatMessage(projectSetupPanelMessages.homepageCard)}
-        ready={readiness?.homepageCard}
-        behaviour={{
-          kind: 'expand',
-          children: <HomepageCardFields project={project} />,
-        }}
-      />
-      <AreaCard project={project} ready={readiness?.area} />
-      <TopicTagsCard project={project} ready={readiness?.topics} />
     </>
   );
 };

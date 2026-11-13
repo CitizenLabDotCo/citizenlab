@@ -42,7 +42,10 @@ const PlacementCard = ({
   const { formatMessage } = useIntl();
 
   return (
-    <PanelField label={formatMessage(messages.surveyPlacement)}>
+    <PanelField
+      reviewKey="survey_placement"
+      label={formatMessage(messages.surveyPlacement)}
+    >
       <Box
         display="flex"
         flexWrap="wrap"
