@@ -24,13 +24,10 @@ module CustomIdMethods::Google
       '1ea7ec6a-2647-4f85-bc40-dba704cc82e2'
     end
 
-    def config_parameters
-      %i[client_id client_secret]
-    end
-
     def config_parameters_schema
       {
         client_id: {
+          private: true,
           title: 'Client ID',
           type: 'string'
         },

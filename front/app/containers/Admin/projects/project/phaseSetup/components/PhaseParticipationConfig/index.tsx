@@ -24,6 +24,8 @@ import {
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';
+import PanelHeading from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelHeading';
 import projectMessages from 'containers/Admin/projects/project/general/messages';
 
 import anonymousMessages from 'components/admin/AnonymousPostingToggle/messages';
@@ -47,6 +49,7 @@ import VotingInputs from './components/inputs/VotingInputs';
 import ParticipationMethodPicker from './components/ParticipationMethodPicker';
 import { Container, StyledSection } from './components/shared/styling';
 import messages from './messages';
+import useSurveyProviders from './useSurveyProviders';
 import { defaultConfigForMethod } from './utils/participationMethodConfigs';
 
 interface Props {
@@ -81,19 +84,7 @@ const PhaseParticipationConfig = ({
   layout = 'page',
 }: Props) => {
   const surveys_enabled = useFeatureFlag({ name: 'surveys' });
-  const typeform_enabled = useFeatureFlag({ name: 'typeform_surveys' });
-  const google_forms_enabled = useFeatureFlag({ name: 'google_forms_surveys' });
-  const survey_monkey_enabled = useFeatureFlag({
-    name: 'surveymonkey_surveys',
-  });
-  const enalyzer_enabled = useFeatureFlag({ name: 'enalyzer_surveys' });
-  const survey_xact_enabled = useFeatureFlag({ name: 'survey_xact_surveys' });
-  const qualtrics_enabled = useFeatureFlag({ name: 'qualtrics_surveys' });
-  const smartsurvey_enabled = useFeatureFlag({ name: 'smart_survey_surveys' });
-  const snap_survey_enabled = useFeatureFlag({ name: 'snap_survey_surveys' });
-  const microsoft_forms_enabled = useFeatureFlag({
-    name: 'microsoft_forms_surveys',
-  });
+  const surveyProviders = useSurveyProviders();
   const project_library_enabled = useFeatureFlag({ name: 'project_library' });
   const { formatMessage } = useIntl();
   const panelPhaseId = layout === 'panel' ? phase?.data.id : undefined;
@@ -385,18 +376,6 @@ const PhaseParticipationConfig = ({
     });
   };
 
-  const surveyProviders = {
-    typeform: typeform_enabled,
-    enalyzer: enalyzer_enabled,
-    survey_xact: survey_xact_enabled,
-    qualtrics: qualtrics_enabled,
-    smart_survey: smartsurvey_enabled,
-    microsoft_forms: microsoft_forms_enabled,
-    survey_monkey: survey_monkey_enabled,
-    snap_survey: snap_survey_enabled,
-    google_forms: google_forms_enabled,
-  };
-
   const {
     participation_method,
     submission_enabled,
@@ -440,6 +419,33 @@ const PhaseParticipationConfig = ({
     return null;
   }
 
+  const commonGroundActions = (
+    <UserActions
+      submission_enabled={submission_enabled || false}
+      commenting_enabled={commenting_enabled || false}
+      reacting_enabled={false} // The ability to configure number of likes is irrelevant for common ground
+      togglePostingEnabled={togglePostingEnabled}
+      toggleCommentingEnabled={toggleCommentingEnabled}
+      toggleReactingEnabled={toggleReactingEnabled}
+      apiErrors={apiErrors}
+      reacting_like_method={reacting_like_method}
+      reacting_like_limited_max={reacting_like_limited_max}
+      noLikingLimitError={validationErrors.noLikingLimitError}
+      handleReactingLikeMethodOnChange={handleReactingLikeMethodOnChange}
+      handleLikingLimitOnChange={handleLikingLimitOnChange}
+      showCommentingToggle={false}
+      showReactingToggle={false}
+      phaseId={panelPhaseId}
+      layout={layout}
+      accessOnlyActions={[
+        {
+          action: 'reacting_idea',
+          label: messages.votingOnInputsAction,
+        },
+      ]}
+    />
+  );
+
   return (
     <Container>
       <StyledSection>
@@ -473,31 +479,22 @@ const PhaseParticipationConfig = ({
             />
           </Box>
         )}
-        {participation_method === 'common_ground' && (
-          <UserActions
-            submission_enabled={submission_enabled || false}
-            commenting_enabled={commenting_enabled || false}
-            reacting_enabled={false} // The ability to configure number of likes is irrelevant for common ground
-            togglePostingEnabled={togglePostingEnabled}
-            toggleCommentingEnabled={toggleCommentingEnabled}
-            toggleReactingEnabled={toggleReactingEnabled}
-            apiErrors={apiErrors}
-            reacting_like_method={reacting_like_method}
-            reacting_like_limited_max={reacting_like_limited_max}
-            noLikingLimitError={validationErrors.noLikingLimitError}
-            handleReactingLikeMethodOnChange={handleReactingLikeMethodOnChange}
-            handleLikingLimitOnChange={handleLikingLimitOnChange}
-            showCommentingToggle={false}
-            showReactingToggle={false}
-            phaseId={panelPhaseId}
-            accessOnlyActions={[
-              {
-                action: 'reacting_idea',
-                label: messages.votingOnInputsAction,
-              },
-            ]}
-          />
-        )}
+        {participation_method === 'common_ground' &&
+          (layout === 'panel' ? (
+            <>
+              <Box mb="10px">
+                <PanelHeading label={formatMessage(messages.settingsGroup)} />
+              </Box>
+              <PanelGroup
+                label={formatMessage(messages.participantActionsGroup)}
+                defaultOpen
+              >
+                {commonGroundActions}
+              </PanelGroup>
+            </>
+          ) : (
+            commonGroundActions
+          ))}
 
         {participation_method === 'voting' && (
           <VotingInputs
@@ -642,6 +639,8 @@ const PhaseParticipationConfig = ({
             poll_anonymous={poll_anonymous}
             apiErrors={apiErrors}
             togglePollAnonymous={togglePollAnonymous}
+            layout={layout}
+            phaseId={panelPhaseId}
           />
         )}
 
@@ -693,6 +692,8 @@ const PhaseParticipationConfig = ({
             handleAllowMultipleResponsesChange={
               handleAllowMultipleResponsesChange
             }
+            toggleSubmissionEnabled={togglePostingEnabled}
+            layout={layout}
           />
         )}
         {participation_method === 'survey' && (
@@ -703,6 +704,8 @@ const PhaseParticipationConfig = ({
             surveyProviders={surveyProviders}
             handleSurveyProviderChange={handleSurveyProviderChange}
             handleSurveyEmbedUrlChange={handleSurveyEmbedUrlChange}
+            layout={layout}
+            phaseId={panelPhaseId}
           />
         )}
       </StyledSection>

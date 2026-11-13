@@ -1,6 +1,27 @@
 import { randomString } from '../../../support/commands';
 
 describe('Admin: can', () => {
+  let builderWasEnabled = false;
+
+  const setBuilderFeature = (enabled: boolean) =>
+    cy.apiUpdateAppConfiguration({
+      settings: { custom_page_builder: { allowed: true, enabled } },
+    });
+
+  // These examples cover the section editors, which only show with the builder off.
+  before(() => {
+    cy.apiGetAppConfiguration().then((config) => {
+      builderWasEnabled =
+        config.body.data.attributes.settings.custom_page_builder?.enabled ===
+        true;
+    });
+    setBuilderFeature(false);
+  });
+
+  after(() => {
+    setBuilderFeature(builderWasEnabled);
+  });
+
   beforeEach(() => {
     cy.setAdminLoginCookie();
     cy.visit('/admin/pages-menu/pages');

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Preview } from '@storybook/react';
 import contexts from './contexts';
-import { initialize, mswDecorator } from 'msw-storybook-addon';
+import { setupWorker } from 'msw/browser';
+import type { RequestHandler } from 'msw';
 import mockServer from './mockServer';
 import { reactIntl } from './reactIntl';
 import { MemoryRouter } from 'utils/router';
@@ -10,7 +11,23 @@ import { MINIMAL_VIEWPORTS } from 'storybook/viewport';
 import { IntlProvider } from 'react-intl';
 import { JSX } from 'react/jsx-runtime';
 
-initialize();
+// Some app modules (e.g. appConfigurationStream) fetch as soon as they are
+// imported, before any loader runs. Starting the worker here, with the default
+// handlers, makes Storybook wait for it before it imports any stories file.
+const worker = setupWorker(...Object.values(mockServer));
+await worker.start({ quiet: true, onUnhandledRequest: 'bypass' });
+
+// Stories override the default handlers with `parameters.msw`
+// (see utils/storybook/mockEndpoints).
+const mswLoader = async ({
+  parameters,
+}: {
+  parameters: { msw?: RequestHandler[] };
+}) => {
+  worker.resetHandlers();
+  if (parameters.msw) worker.use(...parameters.msw);
+  return {};
+};
 
 const routerDecorator = (Story: () => JSX.Element) => (
   <MemoryRouter>
@@ -35,7 +52,6 @@ const preview: Preview = {
         date: /Date$/i,
       },
     },
-    msw: Object.values(mockServer),
     reactIntl,
     chromatic: {
       modes: {
@@ -49,7 +65,8 @@ const preview: Preview = {
       },
     },
   },
-  decorators: [mswDecorator, routerDecorator, contexts],
+  loaders: [mswLoader],
+  decorators: [routerDecorator, contexts],
 };
 
 export default preview;

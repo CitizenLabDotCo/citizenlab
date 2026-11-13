@@ -13,6 +13,8 @@ const createField = (
   type: '',
   title_multiloc: {},
   required: false,
+  answers_visible_to: 'moderators',
+  show_as_filter: false,
   ordering: 0,
   enabled: true,
   created_at: '',

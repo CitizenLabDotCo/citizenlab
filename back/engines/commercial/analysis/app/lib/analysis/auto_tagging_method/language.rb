@@ -30,7 +30,7 @@ module Analysis
 
     def language_for_text(input_text)
       prompt = LLM::Prompt.new.fetch('language_detection', input_text:)
-      lang = gpt4mini.chat(prompt).strip
+      lang = classification_llm.chat(prompt).strip
       lang if lang.size == 2
     end
 

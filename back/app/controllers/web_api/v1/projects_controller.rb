@@ -278,6 +278,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     process_due_status_transition(@project)
     policy_context[:prior_record] = Project.find(@project.id)
     @project.assign_attributes(update_params)
+    keep_completed_setup_steps(@project)
     remove_image_if_requested!(@project, update_params, :header_bg)
 
     # Authorize again here (in addition to the :authorize_project before_action)
@@ -463,6 +464,13 @@ class WebApi::V1::ProjectsController < ApplicationController
         assign_scheduled_by(admin_pub_attrs) if admin_pub_attrs
       end
     end
+  end
+
+  # Merge, so a client with a stale copy can't drop steps the server added.
+  def keep_completed_setup_steps(project)
+    return unless project.completed_setup_steps_changed?
+
+    project.completed_setup_steps = project.completed_setup_steps_was | project.completed_setup_steps
   end
 
   def assign_scheduled_by(admin_publication_attrs)

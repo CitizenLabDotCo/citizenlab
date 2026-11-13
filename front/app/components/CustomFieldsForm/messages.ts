@@ -138,6 +138,10 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.tapOnMapMultipleToAdd3',
     defaultMessage: 'Tap on the map to add your answer.',
   },
+  tapOnMapToAddMultiplePins: {
+    id: 'app.components.CustomFieldsForm.tapOnMapToAddMultiplePins',
+    defaultMessage: 'Tap on the map to add locations.',
+  },
   tapOnFullscreenMapToAddPoint: {
     id: 'app.components.CustomFieldsForm.tapOnFullscreenMapToAddPoint',
     defaultMessage: 'Tap on the map to draw.',
@@ -156,6 +160,11 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.clickOnMapMultipleToAdd3',
     defaultMessage:
       'Click on the map to draw. Then, drag on points to move them.',
+  },
+  clickOnMapToAddMultiplePins2: {
+    id: 'app.components.CustomFieldsForm.clickOnMapToAddMultiplePins2',
+    defaultMessage:
+      'Click on the map to add locations. Then, drag on points to move them. You can remove your last location by clicking on the Undo button in the top right corner of the map.',
   },
   minimumCoordinates: {
     id: 'app.components.CustomFieldsForm.minimumCoordinates2',
@@ -181,6 +190,10 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.tapToAddAnArea',
     defaultMessage: 'Tap to add an area',
   },
+  tapToAddPins: {
+    id: 'app.components.CustomFieldsForm.tapToAddPins',
+    defaultMessage: 'Tap to add locations',
+  },
   back: {
     id: 'app.components.CustomFieldsForm.back',
     defaultMessage: 'Back',
@@ -200,6 +213,30 @@ export default defineMessages({
   atLeastThreePointsRequired: {
     id: 'app.components.CustomFieldsForm.atLeastThreePointsRequired',
     defaultMessage: 'At least three points are required for a polygon.',
+  },
+  atLeastOnePinRequired: {
+    id: 'app.components.CustomFieldsForm.atLeastOnePinRequired',
+    defaultMessage: 'At least one location is required.',
+  },
+  minimumPinsRequired: {
+    id: 'app.components.CustomFieldsForm.minimumPinsRequired',
+    defaultMessage:
+      'Add at least {minPins, plural, one {# location} other {# locations}}.',
+  },
+  maximumPinsAllowed: {
+    id: 'app.components.CustomFieldsForm.maximumPinsAllowed',
+    defaultMessage:
+      'Add no more than {maxPins, plural, one {# location} other {# locations}}.',
+  },
+  maximumPinsReachedClick: {
+    id: 'app.components.CustomFieldsForm.maximumPinsReachedClick',
+    defaultMessage:
+      'You have added all {maxPins, plural, one {# location} other {# locations}}. To add another, remove one by clicking on the Undo button in the top right corner of the map.',
+  },
+  maximumPinsReachedTap: {
+    id: 'app.components.CustomFieldsForm.maximumPinsReachedTap',
+    defaultMessage:
+      'You have added all {maxPins, plural, one {# location} other {# locations}}. To add another, remove one with the Undo button.',
   },
   fileSizeLimit: {
     id: 'app.components.CustomFieldsForm.fileSizeLimit',

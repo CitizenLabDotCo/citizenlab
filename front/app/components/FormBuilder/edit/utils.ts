@@ -360,6 +360,8 @@ export const createNewField = (
     description_multiloc: {},
     input_type: type,
     required: false,
+    answers_visible_to: 'moderators' as const,
+    show_as_filter: false,
     title_multiloc: {
       [locale]: '',
     },
@@ -447,6 +449,7 @@ export const transformFieldForSubmission = (
     required: field.required,
     enabled: field.enabled,
     answers_visible_to: field.answers_visible_to,
+    show_as_filter: field.show_as_filter,
     // TODO: Fix this the next time the file is edited.
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     title_multiloc: field.title_multiloc || {},
@@ -489,7 +492,7 @@ export const transformFieldForSubmission = (
         field.dropdown_layout ||
         isDropdownLayoutForced(field.input_type, field.options?.length ?? 0),
     }),
-    ...(field.input_type === 'topic_ids' && {
+    ...(['topic_ids', 'multipoint'].includes(field.input_type) && {
       maximum_select_count: field.select_count_enabled
         ? field.maximum_select_count
         : null,

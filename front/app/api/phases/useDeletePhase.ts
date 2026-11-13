@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+import projectPageLayoutKeys from 'api/project_page_layout/keys';
 import adminSearchKeys from 'api/admin_search/keys';
 import projectsKeys from 'api/projects/keys';
 
@@ -28,6 +29,11 @@ const useDeletePhase = () => {
       });
       queryClient.invalidateQueries({
         queryKey: phasesKeys.list({ projectId: variables.projectId }),
+      });
+      queryClient.invalidateQueries({
+        queryKey: projectPageLayoutKeys.item({
+          projectId: variables.projectId,
+        }),
       });
       queryClient.invalidateQueries({ queryKey: adminSearchKeys.all() });
     },

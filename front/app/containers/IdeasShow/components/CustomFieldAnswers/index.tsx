@@ -81,7 +81,13 @@ const CustomFieldAnswers = ({ ideaId, project, compact }: Props) => {
             borderTop={`1px solid ${colors.divider}`}
             data-cy="e2e-custom-field-answer"
           >
-            <Text m="0px" mb="4px" fontSize="s" color="textSecondary">
+            <Text
+              m="0px"
+              mb="4px"
+              fontSize="s"
+              fontWeight="semi-bold"
+              color="textSecondary"
+            >
               {localize(field.title_multiloc)}
             </Text>
             {field.answers_visible_to !== 'public' && (
@@ -92,7 +98,11 @@ const CustomFieldAnswers = ({ ideaId, project, compact }: Props) => {
                 <FormattedMessage {...messages.notAnswered} />
               </Text>
             ) : (
-              <AnswerValue field={field} answer={answer} />
+              <AnswerValue
+                // Shuffling counters position bias while answering, not here
+                field={{ ...field, random_option_ordering: false }}
+                answer={answer}
+              />
             )}
           </Box>
         ))}

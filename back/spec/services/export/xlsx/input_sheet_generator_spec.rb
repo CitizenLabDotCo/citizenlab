@@ -730,6 +730,82 @@ describe Export::Xlsx::InputSheetGenerator do
           ])
         end
       end
+
+      context 'when the survey is fully anonymous' do
+        before do
+          config = AppConfiguration.instance
+          config.settings['core']['private_attributes_in_export'] = true
+          config.save!
+          create(:custom_field_gender, :with_options, title_multiloc: { 'en' => 'Gender' })
+          create(:custom_field_birthyear, title_multiloc: { 'en' => 'Birth year' })
+          phase.permissions.find_by(action: 'posting_idea').update!(user_data_collection: 'anonymous')
+        end
+
+        # survey_response1 was submitted before the setting was turned on, so it
+        # still has an author whose profile carries the demographics.
+        it 'Generates a sheet without the author columns or the demographics' do
+          expect(xlsx.first[:column_headers]).to match([
+            'ID',
+            'What are your favourite pets?',
+            'Rank your favourite means of public transport',
+            'We should send more animals into space',
+            'We should ride our bicycles more often',
+            'Submitted at',
+            'Project',
+            'Imported'
+          ])
+          expect(xlsx.first[:rows].first).to match([
+            survey_response1.id,
+            'Cat;Dog',
+            'By train;By bike',
+            nil,
+            nil,
+            an_instance_of(DateTime), # created_at
+            phase.project.title_multiloc['en'],
+            'false'
+          ])
+        end
+      end
+
+      context 'when the survey collects demographics only' do
+        before do
+          config = AppConfiguration.instance
+          config.settings['core']['private_attributes_in_export'] = true
+          config.save!
+          create(:custom_field_gender, :with_options, title_multiloc: { 'en' => 'Gender' })
+          create(:custom_field_birthyear, title_multiloc: { 'en' => 'Birth year' })
+          phase.permissions.find_by(action: 'posting_idea').update!(user_data_collection: 'demographics_only')
+        end
+
+        # survey_response1 was submitted before the setting was turned on, so it
+        # still has an author whose profile carries the demographics.
+        it 'Generates a sheet with the demographics but without the author columns' do
+          expect(xlsx.first[:column_headers]).to match([
+            'ID',
+            'What are your favourite pets?',
+            'Rank your favourite means of public transport',
+            'We should send more animals into space',
+            'We should ride our bicycles more often',
+            'Submitted at',
+            'Project',
+            'Imported',
+            'Gender',
+            'Birth year'
+          ])
+          expect(xlsx.first[:rows].first).to match([
+            survey_response1.id,
+            'Cat;Dog',
+            'By train;By bike',
+            nil,
+            nil,
+            an_instance_of(DateTime), # created_at
+            phase.project.title_multiloc['en'],
+            'false',
+            'Female',
+            1999
+          ])
+        end
+      end
     end
 
     context 'for a voting context' do

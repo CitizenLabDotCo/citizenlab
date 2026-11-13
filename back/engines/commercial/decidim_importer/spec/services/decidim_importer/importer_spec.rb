@@ -265,6 +265,52 @@ RSpec.describe DecidimImporter::Importer do
     end
   end
 
+  describe '.store_static_page_images!' do
+    let(:png) { 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==' }
+
+    def page_with_image
+      page = create(:static_page)
+      craftjs = ContentBuilder::CustomPageLayoutService.new.craftjs_json_for_body('fr-FR' => "<p>Texte</p><img src=\"#{png}\">")
+      ContentBuilder::Layout.create!(content_buildable: page, code: 'custom_page', enabled: true, craftjs_json: craftjs)
+      page
+    end
+
+    def body_html(page)
+      ContentBuilder::Layout.find_by(content_buildable: page, code: 'custom_page')
+        .craftjs_json[ContentBuilder::CustomPageLayoutService::TOP_INFO_ID]['props']['text']['fr-FR']
+    end
+
+    # The deserializer saves the layout without the builder's save path, which stores inline images,
+    # so the import stores them itself.
+    it 'stores the images in an imported page body as text images of the page' do
+      imported = page_with_image
+      other = page_with_image # e.g. a page from an earlier import, not part of this one
+
+      described_class.store_static_page_images!('StaticPage' => [imported.id])
+
+      expect(imported.text_images.count).to eq(1)
+      expect(body_html(imported)).to include('data-cl2-text-image-text-reference')
+      expect(body_html(imported)).not_to include('data:image')
+      expect(other.text_images.count).to eq(0)
+    end
+
+    it 'runs as part of applying a template' do
+      template = YAML.load(DecidimImporter::TemplateCreator.from_directory(export_root).to_yaml, aliases: true)
+      page_layout = template['models']['content_builder/layout'].find { |l| l['code'] == 'custom_page' }
+      page_layout['craftjs_json'] = ContentBuilder::CustomPageLayoutService.new
+        .craftjs_json_for_body('fr-FR' => "<p>Texte</p><img src=\"#{png}\">")
+
+      described_class.apply_template(template, import_uploads: true)
+
+      page = StaticPage.find(page_layout['content_buildable_ref']['id'])
+      expect(page.text_images.count).to eq(1)
+    end
+
+    it 'is a no-op when the import created no static pages' do
+      expect { described_class.store_static_page_images!({}) }.not_to raise_error
+    end
+  end
+
   describe '.apply_import_app_config_file' do
     def app_config_json(settings)
       file = Tempfile.new(['decidim', '.app_config.json'])

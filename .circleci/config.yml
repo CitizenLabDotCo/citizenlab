@@ -450,6 +450,41 @@ jobs:
                 --prune
             EOF
 
+  # The Scaleway Kubernetes cluster is managed with GitOps and Argo CD, so deploying
+  # boils down to pinning the image tag in the kustomization. Argo CD picks that up
+  # automatically and reconciles the cluster. The migrations and the post-deploy tasks
+  # run there as Argo sync hooks
+  back-deploy-to-gitops:
+    resource_class: small
+    working_directory: ~/citizenlab
+    docker:
+      - image: cimg/base:2025.01
+    parameters:
+      image_tag:
+        type: string
+        default: << pipeline.parameters.image_tag >>
+    steps:
+      - echo_pipeline_parameters
+      - shallow-clone
+      - run:
+          name: Install kustomize
+          command: |
+            set -euo pipefail
+            archive="kustomize_v5.8.3_linux_amd64.tar.gz"
+            base="https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv5.8.3"
+            curl -fsSL -O "${base}/${archive}"
+            curl -fsSL -O "${base}/checksums.txt"
+            grep "$archive" checksums.txt | sha256sum -c -
+            sudo tar xz -C /usr/local/bin -f "$archive" kustomize
+      # Write access to cl2-deployment (deploy key, ED25519).
+      - add_ssh_keys:
+          fingerprints:
+            - SHA256:6uoyWl+I46oGOpqAnyv3Q8xWzEvL8Zmea9Dx4M3+DyI
+      - run:
+          name: Deploy to the Scaleway cluster
+          command: |
+            ./scripts/deploy_to_gitops.sh citizenlabdotco/back-ee "amd64-<< parameters.image_tag >>"
+
   back-generate-tenant-templates:
     resource_class: small
     docker:
@@ -798,24 +833,8 @@ jobs:
             rm -f build/*.map
             rm -f build/assets/*.map
       - run:
-          # 1. Only upload ~4k Twemoji if anything changes.
-          # 2. Upload the build to assets/, shared by all releases. Use `cp`, not
-          #    `sync`: `cp` re-uploads every file, refreshing its date, so the S3
-          #    lifecycle rule (expire 60 days after upload) only removes files no
-          #    recent release uses. `sync` also lists the whole folder first.
-          # 3. Upload index.html last: the switch to the new release.
           name: Deploy to S3 if tests pass and branch is Master
-          command: |
-            # Assigned outside the `if` so that a failed call (e.g. missing
-            # s3:ListBucket) aborts the job instead of silently skipping the upload.
-            TWEMOJI_KEY_COUNT=$(aws s3api list-objects-v2 --bucket cl2-front-staging --prefix "${TWEMOJI_BASE_URL#/}" --max-keys 1 --query 'KeyCount' --output text)
-            if [ "$TWEMOJI_KEY_COUNT" = "0" ]; then
-              aws s3 sync app/public/twemoji/ "s3://cl2-front-staging${TWEMOJI_BASE_URL}" --acl public-read --cache-control "public, max-age=31536000, immutable"
-            fi
-            rm -rf build/twemoji
-            aws s3 cp build/assets/ "s3://cl2-front-staging/assets/" --recursive --acl public-read --cache-control "public, max-age=31536000, immutable"
-            aws s3 cp build/index.html s3://cl2-front-staging/index.html --acl public-read --cache-control no-cache
-            aws s3 cp .well-known/security.txt s3://cl2-front-staging/.well-known/security.txt --acl public-read --content-type text/plain --cache-control "public, max-age=2592000"
+          command: ../.circleci/deploy-front.sh cl2-front-staging
 
   front-deploy-production:
     docker:
@@ -845,22 +864,15 @@ jobs:
             rm -f build/*.map
             rm -f build/assets/*.map
       - run:
-          # 1. Only upload ~4k Twemoji if anything changes.
-          # 2. Upload the build to assets/, shared by all releases. Use `cp`, not
-          #    `sync`: `cp` re-uploads every file, refreshing its date, so the S3
-          #    lifecycle rule (expire 60 days after upload) only removes files no
-          #    recent release uses. `sync` also lists the whole folder first.
-          # 3. Upload index.html last: the switch to the new release.
-          name: Deploy production version
+          name: Deploy production version (AWS)
+          command: ../.circleci/deploy-front.sh cl2-front-production-benelux
+      - run:
+          name: Deploy production version (Scaleway)
           command: |
-            TWEMOJI_KEY_COUNT=$(aws s3api list-objects-v2 --bucket cl2-front-production-benelux --prefix "${TWEMOJI_BASE_URL#/}" --max-keys 1 --query 'KeyCount' --output text)
-            if [ "$TWEMOJI_KEY_COUNT" = "0" ]; then
-              aws s3 sync app/public/twemoji/ "s3://cl2-front-production-benelux${TWEMOJI_BASE_URL}" --acl public-read --cache-control "public, max-age=31536000, immutable"
-            fi
-            rm -rf build/twemoji
-            aws s3 cp build/assets/ "s3://cl2-front-production-benelux/assets/" --recursive --acl public-read --cache-control "public, max-age=31536000, immutable"
-            aws s3 cp build/index.html s3://cl2-front-production-benelux/index.html --acl public-read --cache-control no-cache
-            aws s3 cp .well-known/security.txt s3://cl2-front-production-benelux/.well-known/security.txt --acl public-read --content-type text/plain --cache-control "public, max-age=2592000"
+            AWS_ACCESS_KEY_ID="$SCW_FRONT_BUCKET_ACCESS_KEY_ID" \
+            AWS_SECRET_ACCESS_KEY="$SCW_FRONT_BUCKET_SECRET_ACCESS_KEY" \
+            AWS_DEFAULT_REGION=fr-par \
+              ../.circleci/deploy-front.sh govocal-front-production --endpoint-url https://s3.fr-par.scw.cloud
 
   front-test-lighthouse:
     docker:
@@ -1337,6 +1349,17 @@ workflows:
           stack_name: cl2
           env_file: ".env-web"
           cluster_name: "aus"
+      # Only needs the amd64 image, which is the tag it writes: the Scaleway
+      # nodes are amd64, so it does not wait for the multi-arch manifest.
+      - back-deploy-to-gitops:
+          name: Deploy to Europe (Scaleway)
+          requires:
+            - back-build-docker-image-amd64
+          filters:
+            branches:
+              only:
+                - production
+          image_tag: $CIRCLE_SHA1
       # Each requires only its own region's deploy, so regions stay independent.
       - back-run-post-deploy-tasks:
           name: Post-deploy tasks (Frankfurt)

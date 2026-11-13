@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Text, bo, colors } from '@citizenlab/cl2-component-library';
+import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 
 import usePhases from 'api/phases/usePhases';
 import { getPhaseLandingTab } from 'api/phases/utils';
@@ -10,6 +10,7 @@ import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
 import { getLocale } from 'components/admin/DatePickers/_shared/locales';
+import { linkedSurveyPhaseIds } from 'components/ProjectPageBuilder/Widgets/SpotlightSurveys/linkedSurveyPhaseIds';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
@@ -21,23 +22,25 @@ import {
   PHASE_TAB_ROUTES,
   PhaseDot,
   Row,
-  SurveyDot,
-  SurveyMeta,
-  SurveyRow,
-  SurveyTitle,
-  formatDatePair,
+  SectionLabel,
   formatDateRange,
   phaseStatus,
 } from '../phaseRowUtils';
-
-import { linkedSurveyPhaseIds } from './linkedSurveyPhaseIds';
+import PhaseOptionsMenu from '../TimelinePhases/PhaseOptionsMenu';
+import PhaseRowWithOptions from '../TimelinePhases/PhaseRowWithOptions';
+import PhaseStep from '../TimelinePhases/PhaseStep';
 
 interface Props {
   projectId: string;
+  withPhaseOptions?: boolean;
   variant?: 'sidebar' | 'backofficeRedesign';
 }
 
-const SpotlightSurveys = ({ projectId, variant = 'sidebar' }: Props) => {
+const SpotlightSurveys = ({
+  projectId,
+  withPhaseOptions = false,
+  variant = 'sidebar',
+}: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const dateLocale = getLocale(useLocale());
@@ -54,8 +57,6 @@ const SpotlightSurveys = ({ projectId, variant = 'sidebar' }: Props) => {
   );
 
   const redesign = variant === 'backofficeRedesign';
-  const RowElement = redesign ? SurveyRow : Row;
-  const MetaElement = redesign ? SurveyMeta : Text;
   const formatSidebarDates = (startAt: string, endAt: string | null) =>
     endAt
       ? formatDateRange(startAt, endAt, dateLocale)
@@ -70,11 +71,12 @@ const SpotlightSurveys = ({ projectId, variant = 'sidebar' }: Props) => {
       borderTop={redesign ? 'none' : `1px solid ${colors.grey200}`}
     >
       {redesign ? (
-        <Box px="12px" mt="32px" mb="12px">
-          <Box as="h4" m="0">
-            <Text as="span" variant="boSection" m="0">
-              {formatMessage(messages.extras)}
-            </Text>
+        <Box px="10px">
+          <Box mt="12px" mb="16px" borderTop={`1px solid ${colors.grey200}`} />
+          <Box as="h4" m="0 0 8px 0">
+            <SectionLabel as="span">
+              {formatMessage(messages.spotlight)}
+            </SectionLabel>
           </Box>
         </Box>
       ) : (
@@ -93,43 +95,44 @@ const SpotlightSurveys = ({ projectId, variant = 'sidebar' }: Props) => {
         {sortedPhases.map((phase) => {
           const status = phaseStatus(phase);
           const { start_at, end_at } = phase.attributes;
-          const dateText = redesign
-            ? formatDatePair(
-                start_at,
-                end_at,
-                'd MMM yyyy',
-                dateLocale,
-                formatMessage(messages.ongoing)
-              )
-            : formatSidebarDates(start_at, end_at);
           const onProjectPage = linkedPhaseIds.has(phase.id);
-          const title = localize(phase.attributes.title_multiloc);
+          const notOnProjectPage = !onProjectPage && (
+            <>
+              {' · '}
+              <Text
+                as="span"
+                m="0"
+                fontSize="xs"
+                color="textSecondary"
+                style={{ textDecoration: 'underline dotted' }}
+              >
+                {formatMessage(messages.notOnProjectPage)}
+              </Text>
+            </>
+          );
 
-          return (
+          const row = (
             <Link
-              key={phase.id}
               to={PHASE_TAB_ROUTES[getPhaseLandingTab(phase)]}
               params={{ projectId, phaseId: phase.id }}
             >
-              <RowElement selected={phase.id === phaseId}>
-                {redesign ? (
-                  <SurveyDot status={status} />
-                ) : (
+              {redesign ? (
+                <PhaseStep
+                  phase={phase}
+                  placement="spotlight"
+                  selected={phase.id === phaseId}
+                  withLine={false}
+                  withOptions={withPhaseOptions}
+                  extraMeta={notOnProjectPage}
+                />
+              ) : (
+                <Row selected={phase.id === phaseId}>
                   <PhaseDot status={status} />
-                )}
-                <Box flexGrow={1} pb={redesign ? '0' : '4px'}>
-                  {redesign ? (
-                    <SurveyTitle
-                      style={{
-                        color:
-                          status === 'past'
-                            ? colors.coolGrey600
-                            : bo.colors.textHeadingStrong,
-                      }}
-                    >
-                      {title}
-                    </SurveyTitle>
-                  ) : (
+                  <Box
+                    flexGrow={1}
+                    pb="4px"
+                    pr={withPhaseOptions ? '24px' : undefined}
+                  >
                     <Text
                       as="span"
                       m="0"
@@ -138,33 +141,27 @@ const SpotlightSurveys = ({ projectId, variant = 'sidebar' }: Props) => {
                         status === 'past' ? 'textSecondary' : 'textPrimary'
                       }
                     >
-                      {title}
+                      {localize(phase.attributes.title_multiloc)}
                     </Text>
-                  )}
-                  <MetaElement
-                    m="2px 0 0 0"
-                    fontSize="xs"
-                    color="textSecondary"
-                  >
-                    {dateText}
-                    {!onProjectPage && (
-                      <>
-                        {' · '}
-                        <Text
-                          as="span"
-                          m="0"
-                          fontSize="xs"
-                          color="textSecondary"
-                          style={{ textDecoration: 'underline dotted' }}
-                        >
-                          {formatMessage(messages.notOnProjectPage)}
-                        </Text>
-                      </>
-                    )}
-                  </MetaElement>
-                </Box>
-              </RowElement>
+                    <Text m="2px 0 0 0" fontSize="xs" color="textSecondary">
+                      {formatSidebarDates(start_at, end_at)}
+                      {notOnProjectPage}
+                    </Text>
+                  </Box>
+                </Row>
+              )}
             </Link>
+          );
+
+          return withPhaseOptions ? (
+            <PhaseRowWithOptions
+              key={phase.id}
+              options={<PhaseOptionsMenu projectId={projectId} phase={phase} />}
+            >
+              {row}
+            </PhaseRowWithOptions>
+          ) : (
+            <React.Fragment key={phase.id}>{row}</React.Fragment>
           );
         })}
       </Box>

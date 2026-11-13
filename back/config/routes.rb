@@ -377,6 +377,12 @@ Rails.application.routes.draw do
 
       resources :experiments, only: %i[index create]
 
+      resources :pulse_checks, only: [] do
+        post :show_next, on: :collection
+        patch :answer, on: :member
+        patch :dismiss, on: :member
+      end
+
       scope 'stats' do
         with_options controller: 'stats_users' do
           get 'users_count'
@@ -452,6 +458,14 @@ Rails.application.routes.draw do
       end
 
       resources :file_attachments, controller: 'files/file_attachments'
+
+      resources :ai_assistant_conversations, only: %i[index show create], controller: 'ai_assistant/conversations' do
+        resources :messages, only: %i[create], controller: 'ai_assistant/messages'
+      end
+      resources :ai_assistant_tool_calls, only: [], controller: 'ai_assistant/tool_calls' do
+        post :approve, on: :member
+        post :reject, on: :member
+      end
     end
   end
 

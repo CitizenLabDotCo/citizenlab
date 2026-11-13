@@ -59,7 +59,7 @@ module IdeaCustomFields
     def as_geojson
       raise_error_if_not_geographic_field
 
-      @phase = Phase.find(params[:phase_id])
+      @phase = @custom_field.resource.participation_context
       geojson = I18n.with_locale(current_user.locale) do
         geojson_generator.generate_geojson
       end
@@ -126,6 +126,7 @@ module IdeaCustomFields
         :question_category,
         :include_in_printed_form,
         :answers_visible_to,
+        :show_as_filter,
         :min_characters,
         :max_characters,
         { title_multiloc: CL2_SUPPORTED_LOCALES,

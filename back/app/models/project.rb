@@ -82,6 +82,7 @@ class Project < ApplicationRecord
   # https://citizenlabco.slack.com/archives/C015M14HYSF/p1674228018666059
   has_many :project_images, -> { order(:ordering) }, dependent: :destroy
   has_many :project_files, -> { order(:ordering) }, dependent: :destroy
+  has_many :pulse_checks, as: :subject, dependent: :nullify
   has_many :followers, as: :followable, dependent: :destroy
   has_many :impact_tracking_pageviews, class_name: 'ImpactTracking::Pageview', dependent: :nullify
   has_many :jobs_trackers, class_name: 'Jobs::Tracker', dependent: :destroy
@@ -109,9 +110,9 @@ class Project < ApplicationRecord
   after_commit :clear_folder_changes, if: :folder_changed?
 
   INTERNAL_ROLES = %w[open_idea_box community_monitor].freeze
-  # Steps of the admin setup checklist that have no signal of their own, so
-  # opening them is what marks them done.
-  SETUP_STEPS = %w[settings share].freeze
+  # Steps of the admin setup checklist that have no signal of their own, so an
+  # admin action marks them done: opening them, or saving the project page.
+  SETUP_STEPS = %w[settings share page].freeze
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_preview_multiloc, multiloc: { presence: false }

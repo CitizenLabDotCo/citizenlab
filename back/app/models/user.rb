@@ -201,6 +201,7 @@ class User < ApplicationRecord
 
   has_many :ideas, -> { order(:project_id) }, foreign_key: :author_id, dependent: :nullify
   has_many :idea_exposures, dependent: :destroy
+  has_many :pulse_checks, dependent: :destroy
   has_many :email_bans, foreign_key: :banned_by_id, dependent: :nullify
   has_many :manual_votes_last_updated_ideas, class_name: 'Idea', foreign_key: :manual_votes_last_updated_by_id, dependent: :nullify
   has_many :manual_voters_last_updated_phases, class_name: 'Phase', foreign_key: :manual_voters_last_updated_by_id, dependent: :nullify
@@ -356,9 +357,12 @@ class User < ApplicationRecord
     return {} if tiers.empty?
 
     config = AppConfiguration.instance
-    AppConfiguration::Settings.early_access_tiers.select do |name, tier|
-      tiers.include?(tier) && !config.feature_activated_on_platform?(name)
-    end
+    AppConfiguration::Settings.early_access_tiers.filter_map do |name, tier|
+      next if config.feature_activated_on_platform?(name)
+
+      tier = 'general' if tier == 'internal' && config.settings(name, 'early_access_upgrade')
+      [name, tier] if tiers.include?(tier)
+    end.to_h
   end
 
   # The opt-ins that still apply: a feature can stop being offered after the user opted in.

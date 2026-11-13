@@ -26,6 +26,11 @@ import Skeleton from 'components/AvatarBubbles/Skeleton';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
+import {
+  DEFAULT_TITLE_VARIANT,
+  TitleVariant,
+} from '../_shared/TitleVariantSetting';
+
 interface Props {
   title: string;
   imgSrc?: string;
@@ -36,6 +41,7 @@ interface Props {
   avatarIds?: string[];
   hideAvatars?: boolean;
   userCount?: number;
+  titleVariant?: TitleVariant;
 }
 
 const Spotlight = ({
@@ -48,6 +54,7 @@ const Spotlight = ({
   avatarIds,
   hideAvatars,
   userCount,
+  titleVariant = DEFAULT_TITLE_VARIANT,
 }: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
   const craftComponentDefaultPadding = useCraftComponentDefaultPadding();
@@ -78,7 +85,7 @@ const Spotlight = ({
           w={isSmallerThanPhone ? undefined : '50%'}
           maxWidth={isSmallerThanPhone ? undefined : '400px'}
         >
-          <Title mt="0px" color="tenantText">
+          <Title variant={titleVariant} mt="0px" color="tenantText">
             {title}
           </Title>
           {description && (
@@ -132,7 +139,7 @@ const Spotlight = ({
             >
               <Image
                 src={imgSrc}
-                alt="placeholder"
+                alt=""
                 borderRadius={stylingConsts.borderRadius}
                 objectFit="cover"
                 w="100%"

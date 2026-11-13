@@ -267,6 +267,16 @@ be-up-azure:
 fe-up-azure:
 	cd front && npm start
 
+# Okta. A free developer org at developer.okta.com accepts
+# http://localhost:4000/auth/okta/callback, so no HTTPS or /etc/hosts setup is needed.
+be-up-okta:
+	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[okta]'
+	docker compose up
+
+fe-up-okta:
+	cd front && npm start
+
 # Reset the /etc/hosts overrides that were added for sso local testing
 sso-reset:
 	docker compose run --rm web bundle exec rake 'dev:enable_id_method[fake_sso]'

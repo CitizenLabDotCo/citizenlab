@@ -9,10 +9,6 @@ export default defineMessages({
     id: 'app.components.admin.ProjectEdit.survey.exportResponsesToXlsx',
     defaultMessage: 'Export responses to Excel',
   },
-  downloadResults: {
-    id: 'app.components.admin.ProjectEdit.survey.downloadResults2',
-    defaultMessage: 'Download survey results',
-  },
   deleteSurveyResults: {
     id: 'app.components.admin.ProjectEdit.survey.deleteSurveyResults2',
     defaultMessage: 'Delete survey results',

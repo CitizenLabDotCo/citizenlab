@@ -7,6 +7,8 @@ module EmailCampaigns
     before_action do
       @command, @campaign = params.values_at(:command, :campaign)
       @user = @command[:recipient]
+      # Set by DeliveryService#send_email_preview. Only changed in memory, never saved.
+      @user.locale = @command[:locale] if @user && @command[:locale]
     end
 
     # The bounce belongs to the user's current email. Mailers that send to

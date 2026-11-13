@@ -233,14 +233,12 @@ const EventInformation = ({ event }: Props) => {
             to="/events/$eventId"
             params={{ eventId: event.id }}
             scrollToTop
-            // For accessibility, we need to add an aria-label to the button
-            // to provide context for screen readers. Using the same "Read more" text
-            // for multiple links/buttons is not accessible because it doesn't convey
-            // the unique purpose of each link. Screen readers will not differentiate
-            // between the links, making it difficult for users to navigate.
-            ariaLabel={formatMessage(messages.a11y_readMore, {
-              eventTitle: localize(event.attributes.title_multiloc),
-            })}
+            // The event title gives each "Read more" link a unique name (WCAG
+            // 2.4.9). The name starts with the exact visible text, so voice
+            // control users can activate it by saying what they see (WCAG 2.5.3).
+            ariaLabel={`${formatMessage(messages.readMore)}: ${localize(
+              event.attributes.title_multiloc
+            )}`}
           >
             {formatMessage(messages.readMore)}
           </ButtonWithLink>

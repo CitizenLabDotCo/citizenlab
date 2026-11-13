@@ -79,7 +79,7 @@ module DecidimImporter
       resolve_area_orderings!(template)
       TemplateCleaner.prepare_uploads!(template, import_uploads: import_uploads)
       TemplateCleaner.prune_fileless_attachments!(template)
-      TemplateCleaner.prune_imageless_project_images!(template)
+      TemplateCleaner.prune_imageless_images!(template)
       # Suppress `touch: true` callbacks during the bulk load so imported records keep their template dates.
       created = ActiveRecord::Base.no_touching do
         MultiTenancy::Templates::TenantDeserializer.new.deserialize(
@@ -91,6 +91,7 @@ module DecidimImporter
       restore_update_timestamps(template, created)
       reconcile_permissions!
       provision_project_pages!(created)
+      store_static_page_images!(created)
       created
     end
 
@@ -174,6 +175,21 @@ module DecidimImporter
 
       Project.where(id: ids).find_each do |project|
         ContentBuilder::LayoutProvisioningService.new.provision_for(project)
+      end
+    end
+
+    # Stores the inline images in **this import's** static page layouts as `TextImage`s of the page,
+    # replacing each `<img>` with a reference, as the builder does when it saves a layout. The deserializer
+    # bypasses that save path, so without this the images would stay linked to the Decidim site.
+    def self.store_static_page_images!(created_object_ids)
+      ids = created_object_ids['StaticPage'] || []
+      return if ids.empty?
+
+      ContentBuilder::Layout.where(content_buildable_type: 'StaticPage', content_buildable_id: ids).find_each do |layout|
+        layout.craftjs_json = ContentBuilder::LayoutTextImageService.new.swap_data_images(
+          layout.craftjs_json, imageable: layout.content_buildable
+        )
+        layout.save!
       end
     end
 
