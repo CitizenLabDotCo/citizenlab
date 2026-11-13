@@ -28,6 +28,19 @@ install-front-dependencies: &install-front-dependencies
         cd ~/citizenlab/front
         npm ci
 
+# Every production cluster, as "<cl2_cluster_name> <AWS region>". The
+# cl2_cluster_name is the one in cl2-deployment's Scalr workspaces. Used by the
+# matrix jobs that deploy to each cluster.
+production-clusters: &production-clusters
+  - production-benelux eu-central-1
+  - prd-paris eu-west-3
+  - prd-stockholm eu-north-1
+  - prd-can ca-central-1
+  - prd-sam sa-east-1
+  - prd-usw us-west-2
+  - prd-uk eu-west-2
+  - prd-aus ap-southeast-2
+
 parameters:
   # This parameter is used to trigger the main workflow
   trigger:
@@ -637,11 +650,11 @@ jobs:
     docker:
       - image: cimg/aws:2024.03
     parameters:
-      # cl2_cluster_name in cl2-deployment, e.g. staging or prd-paris.
+      # "<cl2_cluster_name> <AWS region>", as in the production-clusters list at
+      # the top of this file, e.g. "prd-paris eu-west-3".
       cluster:
         type: string
     environment:
-      ECS_CLUSTER: cl2-<< parameters.cluster >>-custom-block-renderer
       ECS_SERVICE: custom-block-renderer
     steps:
       - run:
@@ -650,21 +663,18 @@ jobs:
           # custom-block-renderer-deploy context. CircleCI only issues the OIDC
           # token to jobs that use a context, so the context is needed either way.
           command: |
-            case "<< parameters.cluster >>" in
-              staging|production-benelux) region=eu-central-1 ;;
-              prd-paris) region=eu-west-3 ;;
-              prd-stockholm) region=eu-north-1 ;;
-              prd-uk) region=eu-west-2 ;;
-              prd-can) region=ca-central-1 ;;
-              prd-sam) region=sa-east-1 ;;
-              prd-usw) region=us-west-2 ;;
-              prd-aus) region=ap-southeast-2 ;;
-              *) echo "Unknown cluster << parameters.cluster >>"; exit 1 ;;
-            esac
+            set -- << parameters.cluster >>
+            cluster_name=$1
+            region=$2
+            if [ -z "$cluster_name" ] || [ -z "$region" ]; then
+              echo "Expected \"<cl2_cluster_name> <AWS region>\", got \"<< parameters.cluster >>\""
+              exit 1
+            fi
+            ecs_cluster="cl2-${cluster_name}-custom-block-renderer"
 
             read -r key secret token \<<< "$(aws sts assume-role-with-web-identity \
               --region "$region" \
-              --role-arn "arn:aws:iam::${CUSTOM_BLOCK_RENDERER_AWS_ACCOUNT_ID}:role/${ECS_CLUSTER}-deploy" \
+              --role-arn "arn:aws:iam::${CUSTOM_BLOCK_RENDERER_AWS_ACCOUNT_ID}:role/${ecs_cluster}-deploy" \
               --role-session-name "circleci-${CIRCLE_BUILD_NUM}" \
               --web-identity-token "${CIRCLE_OIDC_TOKEN_V2}" \
               --duration-seconds 900 \
@@ -672,6 +682,7 @@ jobs:
               --output text)"
 
             {
+              echo "export ECS_CLUSTER=$ecs_cluster"
               echo "export AWS_DEFAULT_REGION=$region"
               echo "export AWS_ACCESS_KEY_ID=$key"
               echo "export AWS_SECRET_ACCESS_KEY=$secret"
@@ -1589,7 +1600,7 @@ workflows:
           filters:
             branches:
               only: master
-          cluster: staging
+          cluster: staging eu-central-1
       - custom-block-renderer-deploy-to-ecs:
           name: Deploy the renderer to << matrix.cluster >>
           context: custom-block-renderer-deploy
@@ -1600,15 +1611,7 @@ workflows:
               only: production
           matrix:
             parameters:
-              cluster:
-                - production-benelux
-                - prd-paris
-                - prd-stockholm
-                - prd-can
-                - prd-sam
-                - prd-usw
-                - prd-uk
-                - prd-aus
+              cluster: *production-clusters
 
   # FRONT-END
   front:
