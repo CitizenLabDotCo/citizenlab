@@ -2361,7 +2361,7 @@
   "app.containers.Projects.navSurvey": "Sondaggio",
   "app.containers.Projects.newPhase": "Nuova fase",
   "app.containers.Projects.nextPhase": "Fase successiva",
-  "app.containers.Projects.noEndDate": "Nessuna data di scadenza",
+  "app.containers.Projects.noEndDate": "Sempre attivo",
   "app.containers.Projects.noItems": "Non hai ancora selezionato nessun articolo",
   "app.containers.Projects.noPastEvents": "Nessun evento passato da visualizzare",
   "app.containers.Projects.noPhaseSelected": "Nessuna fase selezionata",
