@@ -9864,6 +9864,51 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects.project.phaseDateRange": {
+    "state": "verified",
+    "verified_at": "2026-11-13T10:08:51.403284Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.phaseDone": {
+    "state": "verified",
+    "verified_at": "2026-11-13T10:08:51.403284Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.phaseInProgress": {
+    "state": "verified",
+    "verified_at": "2026-11-13T10:08:51.403284Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.phaseNoEndDate": {
+    "state": "verified",
+    "verified_at": "2026-11-13T10:08:51.403284Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.phaseOpenEnded": {
+    "state": "verified",
+    "verified_at": "2026-11-13T10:08:51.403284Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.phasePreviewTitle": {
+    "state": "verified",
+    "verified_at": "2026-11-13T10:08:51.403284Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.phaseSetup.contentScreeningDescription": {
+    "state": "verified",
+    "verified_at": "2026-11-13T10:08:51.403284Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.phaseSetup.similarIdeaDetection": {
+    "state": "verified",
+    "verified_at": "2026-11-13T10:08:51.403284Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.phaseSetup.similarIdeaDetectionDescription": {
+    "state": "verified",
+    "verified_at": "2026-11-13T10:08:51.403284Z",
+    "verified_by": "Roger"
+  },
   "app.containers.Admin.projects.project.phaseTitle": {
     "state": "verified",
     "verified_at": "2026-11-13T09:58:02.870950Z",
