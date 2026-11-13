@@ -10409,6 +10409,11 @@
     "verified_at": "2026-11-13T09:36:53.632827Z",
     "verified_by": "Roger"
   },
+  "app.containers.Admin.projects.project.supportedFileTypes": {
+    "state": "verified",
+    "verified_at": "2026-11-13T09:54:02.785492Z",
+    "verified_by": "Roger"
+  },
   "app.containers.Admin.projects.project.survey.aiAnalysis2": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
