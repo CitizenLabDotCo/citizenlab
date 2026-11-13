@@ -278,6 +278,8 @@
   "app.components.EventPreviews.eventPreviewContinuousTitle2": "Nadchodzące i trwające wydarzenia w ramach tego projektu",
   "app.components.EventPreviews.eventPreviewTimelineTitle3": "Nadchodzące i trwające wydarzenia w tej fazie",
   "app.components.FileRepositorySelectAndUpload.addFile2": "Wybierz plik",
+  "app.components.FileRepositorySelectAndUpload.attachmentCount": "{count, plural, one {# plik} few {# pliki} many {# plików} other {# plików}}",
+  "app.components.FileRepositorySelectAndUpload.attachments": "Załączniki",
   "app.components.FileRepositorySelectAndUpload.or": "lub",
   "app.components.FileRepositorySelectAndUpload.removeFile": "Usuń",
   "app.components.FileRepositorySelectAndUpload.removeFileAriaLabel": "Usuń {fileName}",

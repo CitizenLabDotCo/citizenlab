@@ -278,6 +278,8 @@
   "app.components.EventPreviews.eventPreviewContinuousTitle2": "Επόμενες και τρέχουσες εκδηλώσεις στο πλαίσιο αυτού του έργου",
   "app.components.EventPreviews.eventPreviewTimelineTitle3": "Προσεχείς και τρέχουσες εκδηλώσεις σε αυτή τη φάση",
   "app.components.FileRepositorySelectAndUpload.addFile2": "Επιλέξτε ένα αρχείο",
+  "app.components.FileRepositorySelectAndUpload.attachmentCount": "{count, plural, one {# αρχείο} other {# αρχεία}}",
+  "app.components.FileRepositorySelectAndUpload.attachments": "Συνημμένα",
   "app.components.FileRepositorySelectAndUpload.or": "ή",
   "app.components.FileRepositorySelectAndUpload.removeFile": "Αφαίρεση",
   "app.components.FileRepositorySelectAndUpload.removeFileAriaLabel": "Αφαίρεση {fileName}",

@@ -278,6 +278,8 @@
   "app.components.EventPreviews.eventPreviewContinuousTitle2": "Esdeveniments propers i en curs d'aquest projecte",
   "app.components.EventPreviews.eventPreviewTimelineTitle3": "Esdeveniments propers i en curs en aquesta fase",
   "app.components.FileRepositorySelectAndUpload.addFile2": "Selecciona un fitxer",
+  "app.components.FileRepositorySelectAndUpload.attachmentCount": "{count, plural, one {# fitxer} other {# fitxers}}",
+  "app.components.FileRepositorySelectAndUpload.attachments": "Fitxers adjunts",
   "app.components.FileRepositorySelectAndUpload.or": "o",
   "app.components.FileRepositorySelectAndUpload.removeFile": "Elimina",
   "app.components.FileRepositorySelectAndUpload.removeFileAriaLabel": "Elimina {fileName}",

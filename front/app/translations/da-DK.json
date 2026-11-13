@@ -278,6 +278,8 @@
   "app.components.EventPreviews.eventPreviewContinuousTitle2": "Kommende og igangværende begivenheder i dette projekt",
   "app.components.EventPreviews.eventPreviewTimelineTitle3": "Kommende og igangværende begivenheder i denne fase",
   "app.components.FileRepositorySelectAndUpload.addFile2": "Klik for at vælge en fil",
+  "app.components.FileRepositorySelectAndUpload.attachmentCount": "{count, plural, one {# fil} other {# filer}}",
+  "app.components.FileRepositorySelectAndUpload.attachments": "Vedhæftede filer",
   "app.components.FileRepositorySelectAndUpload.or": "eller",
   "app.components.FileRepositorySelectAndUpload.removeFile": "Fjern",
   "app.components.FileRepositorySelectAndUpload.removeFileAriaLabel": "Fjern {fileName}",

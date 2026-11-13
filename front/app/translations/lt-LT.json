@@ -278,6 +278,8 @@
   "app.components.EventPreviews.eventPreviewContinuousTitle2": "Artėjantys ir vykstantys šio projekto renginiai",
   "app.components.EventPreviews.eventPreviewTimelineTitle3": "Būsimi ir vykstantys šio etapo renginiai",
   "app.components.FileRepositorySelectAndUpload.addFile2": "Pasirinkite failą",
+  "app.components.FileRepositorySelectAndUpload.attachmentCount": "{count, plural, one {# failas} few {# failai} other {# failų}}",
+  "app.components.FileRepositorySelectAndUpload.attachments": "Priedai",
   "app.components.FileRepositorySelectAndUpload.or": "arba",
   "app.components.FileRepositorySelectAndUpload.removeFile": "Pašalinti",
   "app.components.FileRepositorySelectAndUpload.removeFileAriaLabel": "Pašalinti {fileName}",

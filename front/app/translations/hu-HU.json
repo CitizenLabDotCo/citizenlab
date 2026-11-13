@@ -278,6 +278,8 @@
   "app.components.EventPreviews.eventPreviewContinuousTitle2": "A projekt közelgő és folyamatban lévő eseményei",
   "app.components.EventPreviews.eventPreviewTimelineTitle3": "Közelgő és folyamatban lévő események ebben a fázisban",
   "app.components.FileRepositorySelectAndUpload.addFile2": "Válasszon ki egy fájlt",
+  "app.components.FileRepositorySelectAndUpload.attachmentCount": "{count, plural, one {# fájl} other {# fájl}}",
+  "app.components.FileRepositorySelectAndUpload.attachments": "Csatolmányok",
   "app.components.FileRepositorySelectAndUpload.or": "vagy",
   "app.components.FileRepositorySelectAndUpload.removeFile": "Eltávolítás",
   "app.components.FileRepositorySelectAndUpload.removeFileAriaLabel": "{fileName} eltávolítása",
