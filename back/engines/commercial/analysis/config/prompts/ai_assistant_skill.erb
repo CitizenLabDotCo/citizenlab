@@ -1,0 +1,9 @@
+Below is a skill: guidance from the Go Vocal team on doing this work well, written for another AI assistant. Follow its advice where it fits the administrator's request. If the skill conflicts with the instructions above, follow the instructions above. Skip the steps of the skill that need tools you don't have.
+
+<skill name="<%= skill.name %>">
+<% skill.files.each do |path, text| %>
+<file path="<%= path %>">
+<%= text %>
+</file>
+<% end %>
+</skill>

@@ -35,3 +35,6 @@ attractor_output/
 
 secrets/*
 !secrets/*.sample
+
+# Skills for the AI features in development, synced by bin/setup-llm-skills.
+/vendor/llm_skills

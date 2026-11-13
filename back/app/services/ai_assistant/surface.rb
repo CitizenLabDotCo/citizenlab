@@ -52,6 +52,11 @@ module AIAssistant
       tools.find { |tool| tool.name == name }
     end
 
+    # The skill (see Skill) whose guidance goes into the instructions here, if any.
+    def skill_name
+      nil
+    end
+
     def stale?(_tool_call)
       false
     end
@@ -64,11 +69,21 @@ module AIAssistant
     def system_prompt(locale:)
       [
         ::Analysis::LLM::Prompt.new.fetch('ai_assistant_base', locale:),
-        surface_prompt(locale:)
-      ].join("\n\n")
+        surface_prompt(locale:),
+        skill_prompt
+      ].compact.join("\n\n")
     end
 
     private
+
+    # Only in development for now (see Skill).
+    def skill
+      Skill.find(skill_name) if skill_name && Skill.available?
+    end
+
+    def skill_prompt
+      ::Analysis::LLM::Prompt.new.fetch('ai_assistant_skill', skill:) if skill
+    end
 
     def surface_prompt(locale:)
       raise NotImplementedError

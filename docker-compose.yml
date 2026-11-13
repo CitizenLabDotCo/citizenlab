@@ -35,6 +35,8 @@ services:
       - "4000:4000"
     volumes:
       - "./back:/citizenlab/back"
+      # The skills repo that back/vendor/llm_skills links to (see bin/setup-llm-skills).
+      - "../citizenlab-llm-skills:/citizenlab-llm-skills:ro"
       - bundle:/bundle
     env_file:
       - "env_files/back-safe.env"
@@ -64,6 +66,8 @@ services:
     command: bundle exec que
     volumes:
       - "./back:/citizenlab/back"
+      # The skills repo that back/vendor/llm_skills links to (see bin/setup-llm-skills).
+      - "../citizenlab-llm-skills:/citizenlab-llm-skills:ro"
       - bundle:/bundle
     env_file:
       - "env_files/back-safe.env"

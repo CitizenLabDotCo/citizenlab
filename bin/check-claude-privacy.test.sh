@@ -162,6 +162,36 @@ assert_exit_code "$(run_check_in "$REPO")" "1" "fails when a tracked .mcp.json e
 
 
 # ----------------------------------------------------------------------------
+# Test: fails when the LLM skills link is tracked. The link points to a
+# private repo (see bin/setup-llm-skills).
+# ----------------------------------------------------------------------------
+setup_test_repo
+mkdir -p "$REPO/back/vendor"
+ln -s ../../../private-skills "$REPO/back/vendor/llm_skills"
+(
+  cd "$REPO"
+  git add -f back/vendor/llm_skills
+  git -c user.email=t@t -c user.name=t commit -q -m "llm skills link leak"
+)
+assert_exit_code "$(run_check_in "$REPO")" "1" "fails when the LLM skills link is tracked"
+
+
+# ----------------------------------------------------------------------------
+# Test: fails when a file under back/vendor/llm_skills is tracked, e.g. a
+# copy of the private skills put in place of the link.
+# ----------------------------------------------------------------------------
+setup_test_repo
+mkdir -p "$REPO/back/vendor/llm_skills/plugins"
+echo "private skill" > "$REPO/back/vendor/llm_skills/plugins/SKILL.md"
+(
+  cd "$REPO"
+  git add -f back/vendor/llm_skills/plugins/SKILL.md
+  git -c user.email=t@t -c user.name=t commit -q -m "llm skills copy leak"
+)
+assert_exit_code "$(run_check_in "$REPO")" "1" "fails when a file under back/vendor/llm_skills is tracked"
+
+
+# ----------------------------------------------------------------------------
 # Test: passes when a CLAUDE.md exists on disk but is NOT tracked by git.
 # This is the normal post-`make claude-setup` state in citizenlab —
 # CLAUDE.md files exist as gitignored symlinks. The check has to look

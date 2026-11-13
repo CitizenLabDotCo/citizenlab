@@ -1,4 +1,4 @@
-.PHONY: build reset-dev-env claude-setup configure-worktree migrate be-up be-up-debug be-up-fake-sso fe-up fe-only up up-fake-sso c rails-console rails-console-exec e2e-setup e2e-setup-and-up e2e-setup-and-up-fake-sso e2e-run-test e2e-ci-env-setup e2e-ci-env-setup-and-up e2e-ci-env-run-test ci-regenerate-templates ci-trigger-build ci-run-e2e release_pr
+.PHONY: build reset-dev-env claude-setup llm-skills-setup configure-worktree migrate be-up be-up-debug be-up-fake-sso fe-up fe-only up up-fake-sso c rails-console rails-console-exec e2e-setup e2e-setup-and-up e2e-setup-and-up-fake-sso e2e-run-test e2e-ci-env-setup e2e-ci-env-setup-and-up e2e-ci-env-run-test ci-regenerate-templates ci-trigger-build ci-run-e2e release_pr
 
 # You can run this file with `make` command:
 # make reset-dev-env
@@ -22,6 +22,8 @@ build:
 reset-dev-env:
 	# Best-effort: install the Claude private overlay if the dev has access. Fall through silently otherwise.
 	-@bin/setup-claude || echo "Skipping Claude private overlay (no access or setup failed). Continuing."
+	# Best-effort: sync the skills that the AI features read in development, if the dev has access.
+	-@bin/setup-llm-skills || echo "Skipping LLM skills (no access or sync failed). Continuing."
 	# -v removes volumes with all the data inside https://docs.docker.com/compose/reference/down/
 	docker compose down -v || true # do not exit on error (some networks may be present, volumes may be used, which is often fine)
 	make build
@@ -31,6 +33,9 @@ reset-dev-env:
 
 claude-setup:
 	@bin/setup-claude
+
+llm-skills-setup:
+	@bin/setup-llm-skills
 
 # For git worktrees: seed the gitignored *-secret.env files from the main checkout, install
 # front-end deps, write a root .env with WORKTREE_PREFIX (derived from this worktree's folder

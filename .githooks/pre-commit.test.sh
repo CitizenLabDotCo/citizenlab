@@ -151,6 +151,28 @@ assert_exit_code "$(attempt_commit)" "1" "blocks commit when .mcp.json is staged
 
 
 # ----------------------------------------------------------------------------
+# Test: blocks commit when the LLM skills link is staged. The link points
+# to a private repo (see bin/setup-llm-skills).
+# ----------------------------------------------------------------------------
+setup_test_repo
+mkdir -p "$REPO/back/vendor"
+ln -s ../../../private-skills "$REPO/back/vendor/llm_skills"
+( cd "$REPO" && git add -f back/vendor/llm_skills )
+assert_exit_code "$(attempt_commit)" "1" "blocks commit when the LLM skills link is staged"
+
+
+# ----------------------------------------------------------------------------
+# Test: blocks commit when a file under back/vendor/llm_skills is staged,
+# e.g. a copy of the private skills put in place of the link.
+# ----------------------------------------------------------------------------
+setup_test_repo
+mkdir -p "$REPO/back/vendor/llm_skills/plugins"
+echo "private skill" > "$REPO/back/vendor/llm_skills/plugins/SKILL.md"
+( cd "$REPO" && git add -f back/vendor/llm_skills/plugins/SKILL.md )
+assert_exit_code "$(attempt_commit)" "1" "blocks commit when a file under back/vendor/llm_skills is staged"
+
+
+# ----------------------------------------------------------------------------
 # Test: `git commit --no-verify` bypasses the hook. We test this not
 # because we want to encourage it but because it's a documented escape
 # valve for genuine emergencies and we want to confirm it still works
