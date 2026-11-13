@@ -451,7 +451,8 @@ function getButtonStyle(
       font-weight: ${fontWeight};
       text-decoration: ${textDecoration};
       white-space: ${whiteSpace};
-      text-align: left;
+      overflow-wrap: anywhere;
+      text-align: ${props.textAlign || 'left'};
       margin: 0;
       margin-top: -1px;
       padding: 0;
@@ -624,6 +625,7 @@ export type ButtonContainerProps = {
   textDecoration?: string;
   textDecorationHover?: string;
   whiteSpace?: string;
+  textAlign?: 'left' | 'center' | 'right';
   minWidth?: string;
   fontSize?: string;
   opacityDisabled?: string;
@@ -719,6 +721,7 @@ const Button = forwardRef<Ref, Props>((props, ref) => {
     textDecoration,
     textDecorationHover,
     whiteSpace,
+    textAlign,
     fullWidth,
     role,
     ariaLabel,
@@ -824,6 +827,7 @@ const Button = forwardRef<Ref, Props>((props, ref) => {
       textDecoration={textDecoration}
       textDecorationHover={textDecorationHover}
       whiteSpace={whiteSpace}
+      textAlign={textAlign}
       fontSize={fontSize}
       opacityDisabled={opacityDisabled}
       {...rest}

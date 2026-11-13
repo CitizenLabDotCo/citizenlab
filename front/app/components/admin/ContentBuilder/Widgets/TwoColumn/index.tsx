@@ -26,6 +26,9 @@ type TwoColumnProps = {
   children?: React.ReactNode;
 };
 
+// minmax(0, ...) rather than a plain fr: the implicit minimum of an fr track is
+// the min-content of its widest child, so a nowrap button would widen the
+// column past the screen and the text beside it would be clipped.
 export const TwoColumnWrapper = styled(Box)`
   min-height: 40px;
   width: 100%;
@@ -33,15 +36,15 @@ export const TwoColumnWrapper = styled(Box)`
   display: grid;
 
   ${media.tablet`
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   `}
 
   grid-template-columns: ${(props: TwoColumnProps) =>
     props.columnLayout === '1-1'
-      ? '1fr 1fr'
+      ? 'minmax(0, 1fr) minmax(0, 1fr)'
       : props.columnLayout === '2-1'
-      ? '2fr 1fr'
-      : '1fr 2fr'};
+      ? 'minmax(0, 2fr) minmax(0, 1fr)'
+      : 'minmax(0, 1fr) minmax(0, 2fr)'};
 `;
 
 export const TwoColumn = ({ columnLayout, children }: TwoColumnProps) => {
