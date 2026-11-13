@@ -665,12 +665,14 @@ resource 'Omniauth Callback', document: false do
         expect(User.count).to eq 0
       end
 
-      example 'Does not report a user rejected because the email is banned' do
-        EmailBan.ban!('billy_fixed@example.com')
+      example 'Tracks, but does not report, a user rejected because the email is banned' do
+        ban = EmailBan.ban!('billy_fixed@example.com')
         mock_sso_email('billy_fixed@example.com')
         expect(ErrorReporter).not_to receive(:report)
 
-        do_request
+        expect { do_request }
+          .to have_enqueued_job(LogActivityJob)
+          .with(ban, 'banned_email_used', nil, anything, payload: hash_including(:remote_ip))
 
         assert_status(302)
         expect(User.count).to eq 0

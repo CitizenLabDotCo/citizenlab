@@ -87,17 +87,25 @@ class SideFxUserService
   end
 
   def after_error(user, remote_ip)
-    return unless user.errors.details[:email].any? { |e| e[:code] == 'zrb-42' }
+    error_codes = user.errors.details[:email].pluck(:code)
 
-    # We pass AppConfiguration.instance as item (required)
-    # because the user is not saved and has no ID.
-    LogActivityJob.perform_later(
-      AppConfiguration.instance,
-      'blacklisted_email_domain_used',
-      nil,
-      Time.current,
-      payload: { email: user.email, remote_ip: remote_ip }
-    )
+    if error_codes.include?(User::EMAIL_DOMAIN_BLOCKED_ERROR_CODE)
+      # We pass AppConfiguration.instance as item (required)
+      # because the user is not saved and has no ID.
+      LogActivityJob.perform_later(
+        AppConfiguration.instance,
+        'blacklisted_email_domain_used',
+        nil,
+        Time.current,
+        payload: { email: user.email, remote_ip: remote_ip }
+      )
+    end
+
+    return unless error_codes.include?(User::EMAIL_BANNED_ERROR_CODE)
+
+    # The ban is the item, and the email is left out because we only store hashes of banned emails.
+    ban = EmailBan.find_for(user.email)
+    LogActivityJob.perform_later(ban, 'banned_email_used', nil, Time.current, payload: { remote_ip: remote_ip }) if ban
   end
 
   private
