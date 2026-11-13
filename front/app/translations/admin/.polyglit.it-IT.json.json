@@ -9879,6 +9879,16 @@
     "verified_at": "2026-07-01T13:49:11.860727Z",
     "verified_by": "Roger"
   },
+  "app.containers.Admin.projects.project.proposalsAndParticipantData": {
+    "state": "verified",
+    "verified_at": "2026-11-13T09:55:01.046237Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.proposalsSetup": {
+    "state": "verified",
+    "verified_at": "2026-11-13T09:55:01.046237Z",
+    "verified_by": "Roger"
+  },
   "app.containers.Admin.projects.project.publishArchiveBody2": {
     "state": "verified",
     "verified_at": "2026-11-13T09:36:53.632827Z",
