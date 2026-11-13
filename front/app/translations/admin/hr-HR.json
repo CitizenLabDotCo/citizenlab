@@ -2467,7 +2467,7 @@
   "app.containers.Admin.projects.project.settingsSaveFailed": "Neke promjene nije bilo moguće spremiti. Kliknite Spremi za ponovni pokušaj.",
   "app.containers.Admin.projects.project.settingsTags": "Oznake",
   "app.containers.Admin.projects.project.settingsTitle": "Postavke",
-  "app.containers.Admin.projects.project.setupCards.areaTooltip": "Sudionici mogu filtrirati projekte prema području na početnoj stranici. Odaberite na što se ovaj projekt odnosi.",
+  "app.containers.Admin.projects.project.setupCards.areaTooltip": "Sudionici mogu filtrirati projekte prema području na početnoj stranici. Odaberite na koje se područje ovaj projekt odnosi.",
   "app.containers.Admin.projects.project.setupCards.generalTooltip": "Naziv projekta te prostor i mapa kojima pripada",
   "app.containers.Admin.projects.project.setupCards.homepageCardTooltip": "Prikazuje se svugdje gdje je projekt naveden: početna stranica, mape, prostori i stranice",
   "app.containers.Admin.projects.project.setupCards.methodsTooltip": "Načini na koje sudionici sudjeluju, jedan za drugim",

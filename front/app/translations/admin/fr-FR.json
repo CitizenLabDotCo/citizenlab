@@ -2467,7 +2467,7 @@
   "app.containers.Admin.projects.project.settingsSaveFailed": "Certaines modifications n'ont pas pu être enregistrées. Cliquez sur Enregistrer pour réessayer.",
   "app.containers.Admin.projects.project.settingsTags": "Étiquettes",
   "app.containers.Admin.projects.project.settingsTitle": "Paramètres",
-  "app.containers.Admin.projects.project.setupCards.areaTooltip": "Les participants peuvent filtrer les projets par zone sur la page d'accueil. Choisissez où ce projet s'applique.",
+  "app.containers.Admin.projects.project.setupCards.areaTooltip": "Les participants peuvent filtrer les projets par zone sur la page d'accueil. Choisissez l'endroit où ce projet s'applique.",
   "app.containers.Admin.projects.project.setupCards.generalTooltip": "Le nom du projet, ainsi que l'espace et le dossier auxquels il appartient",
   "app.containers.Admin.projects.project.setupCards.homepageCardTooltip": "Affiché partout où le projet est répertorié : page d'accueil, dossiers, espaces et pages",
   "app.containers.Admin.projects.project.setupCards.methodsTooltip": "Les modes de participation, les uns après les autres",

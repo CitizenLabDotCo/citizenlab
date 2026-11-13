@@ -2470,7 +2470,7 @@
   "app.containers.Admin.projects.project.setupCards.areaTooltip": "Els participants poden filtrar els projectes per àrea a la pàgina d'inici. Tria on s'aplica aquest projecte.",
   "app.containers.Admin.projects.project.setupCards.generalTooltip": "El nom del projecte, i l'espai i la carpeta als quals pertany",
   "app.containers.Admin.projects.project.setupCards.homepageCardTooltip": "Es mostra allà on aparegui el projecte: pàgina d'inici, carpetes, espais i pàgines",
-  "app.containers.Admin.projects.project.setupCards.methodsTooltip": "Les maneres en què participen els participants, una rere l'altra",
+  "app.containers.Admin.projects.project.setupCards.methodsTooltip": "Les maneres en què els participants hi participen, una rere l'altra",
   "app.containers.Admin.projects.project.setupCards.projectPageTooltip": "La pàgina que veuen els participants quan obren el projecte",
   "app.containers.Admin.projects.project.shareInvite": "Convida",
   "app.containers.Admin.projects.project.shareInvitePeople": "Convida persones",

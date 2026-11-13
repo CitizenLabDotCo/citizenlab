@@ -2470,7 +2470,7 @@
   "app.containers.Admin.projects.project.setupCards.areaTooltip": "Katılımcılar ana sayfadaki projeleri bölgeye göre filtreleyebilir. Bu projenin hangi bölge için geçerli olduğunu seçin.",
   "app.containers.Admin.projects.project.setupCards.generalTooltip": "Proje adı ve ait olduğu alan ile klasör",
   "app.containers.Admin.projects.project.setupCards.homepageCardTooltip": "Projenin listelendiği her yerde gösterilir: ana sayfa, klasörler, alanlar ve sayfalar",
-  "app.containers.Admin.projects.project.setupCards.methodsTooltip": "Katılımcıların birbiri ardına katılım sağlama yöntemleri",
+  "app.containers.Admin.projects.project.setupCards.methodsTooltip": "Katılımcıların sırayla katılım sağlama yöntemleri",
   "app.containers.Admin.projects.project.setupCards.projectPageTooltip": "Katılımcıların projeyi açtıklarında gördükleri sayfa",
   "app.containers.Admin.projects.project.shareInvite": "Davet et",
   "app.containers.Admin.projects.project.shareInvitePeople": "Kişileri davet et",

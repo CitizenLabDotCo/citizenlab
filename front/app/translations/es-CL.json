@@ -280,7 +280,7 @@
   "app.components.FileRepositorySelectAndUpload.addFile2": "Haga clic para seleccionar un archivo",
   "app.components.FileRepositorySelectAndUpload.attachmentCount": "{count, plural, one {# archivo} other {# archivos}}",
   "app.components.FileRepositorySelectAndUpload.attachments": "Adjuntos",
-  "app.components.FileRepositorySelectAndUpload.done": "Listo",
+  "app.components.FileRepositorySelectAndUpload.done": "Hecho",
   "app.components.FileRepositorySelectAndUpload.or": "o",
   "app.components.FileRepositorySelectAndUpload.removeFile": "Eliminar",
   "app.components.FileRepositorySelectAndUpload.removeFileAriaLabel": "Eliminar {fileName}",
