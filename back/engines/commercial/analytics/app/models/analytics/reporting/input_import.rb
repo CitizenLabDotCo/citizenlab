@@ -20,6 +20,10 @@ module Analytics
       self.table_name = 'reporting_input_imports'
       self.primary_key = :id
 
+      include ScopedView
+
+      def self.for_projects(project_ids) = where(input_id: Input.for_projects(project_ids).select(:id))
+
       def self.table_description
         <<~DOC.squish
           One row per imported input: an input an administrator brought in

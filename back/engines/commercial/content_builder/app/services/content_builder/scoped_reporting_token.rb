@@ -45,6 +45,14 @@ module ContentBuilder
           minter_still_active?(payload['user_id'])
       end
 
+      # @return [User, nil] the person the token was minted for. Verifies only the
+      #   signature and expiry, not the layout, tenant, or whether the person is still
+      #   active, so call permits? first.
+      def user(token)
+        payload = decode(token)
+        payload && User.find_by(id: payload['user_id'])
+      end
+
       private
 
       # The token is minted for a person, so it stops working when they do: blocking

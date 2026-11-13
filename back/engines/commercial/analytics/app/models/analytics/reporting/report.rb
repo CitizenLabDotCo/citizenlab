@@ -21,6 +21,11 @@ module Analytics
       self.table_name = 'reporting_reports'
       self.primary_key = :id
 
+      include ScopedView
+
+      # Reports without a phase have no project_id, so they drop out.
+      def self.for_projects(project_ids) = where(project_id: project_ids)
+
       def self.table_description
         <<~DOC.squish
           One row per report built in the platform's report builder. Reports

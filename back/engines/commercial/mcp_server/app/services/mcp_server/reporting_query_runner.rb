@@ -16,6 +16,11 @@ module McpServer
   #   function allowlist is also what stops a query resetting the role through
   #   `set_config`. The settings are `SET LOCAL`, so the block rolls back to drop them
   #   when it returns, rather than leaving them on a caller's transaction.
+  #
+  # Every query runs with a McpServer::QueryScope. One that is not every row reads only
+  # the views its scope allows, each limited to its projects by
+  # McpServer::ReportingScopeWrapper. That limit also rests on layer 1's ban on
+  # qualified names.
   class ReportingQueryRunner
     class Rejected < StandardError; end
 
@@ -31,28 +36,33 @@ module McpServer
     #   message is written for the model that wrote the query.
     # @raise [ActiveRecord::StatementInvalid] if Postgres refuses to run it.
     # @raise [RuntimeError] if there is no tenant to run it in.
-    def self.run(query)
-      new(query).run
+    # @param scope [McpServer::QueryScope] the rows the query may read. Required, so
+    #   that every caller decides it.
+    def self.run(query, scope:)
+      new(query, scope).run
     end
 
-    # Validates without running, for callers that store a query to run later.
+    # Validates without running, for callers that store a query to run later. The
+    # scope that applies is only known when it runs, so this accepts every table.
     # @return [String] the normalized SQL.
     # @raise [Rejected]
-    def self.validate!(query)
+    def self.validate!(query, scope: QueryScope.all)
       raise Rejected, 'A non-empty query is required.' if query.blank?
 
-      validation = SqlSandboxer.validate(query)
+      tables = Tools::GetReportingSqlSchema.tables_for(scope).map(&:table_name)
+      validation = SqlSandboxer.validate(query, tables: tables)
       raise Rejected, "Query rejected: #{validation.error}" unless validation.valid?
 
       validation.normalized_sql
     end
 
-    def initialize(query)
+    def initialize(query, scope)
       @query = query
+      @scope = scope
     end
 
     def run
-      result = execute(self.class.validate!(@query))
+      result = execute(self.class.validate!(@query, scope: @scope))
       rows = result.to_a
       truncated = rows.size > ROW_LIMIT
 
@@ -66,14 +76,18 @@ module McpServer
       conn = ActiveRecord::Base.connection
       result = nil
 
+      # Built before the role switch: the wrapper reads each view's columns to write
+      # its SQL, which is our work, not the query's.
+      capped_sql = "SELECT * FROM (#{normalized_sql}) reporting_query LIMIT #{ROW_LIMIT + 1}"
+      sql = ReportingScopeWrapper.new(@scope, connection: conn).wrap(capped_sql)
+
       conn.transaction(requires_new: true) do
         conn.execute("SET LOCAL statement_timeout = #{conn.quote(STATEMENT_TIMEOUT)}")
         conn.execute("SET LOCAL lock_timeout = #{conn.quote(LOCK_TIMEOUT)}")
         conn.execute("SET LOCAL work_mem = #{conn.quote(WORK_MEM)}")
         conn.execute("SET LOCAL ROLE #{conn.quote_column_name(ANALYTICS_READER_ROLE)}")
 
-        capped_sql = "SELECT * FROM (#{normalized_sql}) reporting_query LIMIT #{ROW_LIMIT + 1}"
-        result = conn.exec_query(capped_sql)
+        result = conn.exec_query(sql)
         # Roll back rather than commit. Inside an outer transaction this block is only
         # a savepoint, and releasing one leaves the role and the timeouts in force for
         # whatever the caller runs next. The query reads, so nothing is lost.

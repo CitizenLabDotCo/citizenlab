@@ -18,6 +18,10 @@ module Analytics
       self.table_name = 'reporting_user_question_answers'
       self.primary_key = nil
 
+      include ScopedView
+
+      def self.for_projects(project_ids) = where(user_id: User.for_projects(project_ids).select(:id))
+
       def self.table_description
         <<~DOC.squish
           One row per answer an active user gave to an enabled registration
