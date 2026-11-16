@@ -3579,6 +3579,16 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.components.ReactSelect.filterResultsForTerm": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:39:37.152664Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.ReactSelect.focusedOptionSelectedDisabled": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:39:37.152664Z",
+    "verified_by": "Adrien"
+  },
   "app.components.ReactSelect.focusedValue": {
     "state": "verified",
     "verified_at": "2026-11-16T22:35:12.808951Z",
@@ -3602,6 +3612,21 @@
   "app.components.ReactSelect.guidanceMenuTabSelects": {
     "state": "verified",
     "verified_at": "2026-11-16T22:35:12.808951Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.ReactSelect.guidanceValue": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:39:37.152664Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.ReactSelect.noOptions": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:39:37.152664Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.ReactSelect.optionSelected": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:39:37.152664Z",
     "verified_by": "Adrien"
   },
   "app.components.ReactSelect.optionsAlreadySelected": {
