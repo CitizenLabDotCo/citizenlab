@@ -7,12 +7,15 @@ import { IVolunteers, VolunteersSort } from 'api/volunteers/types';
 import { useIntl } from 'utils/cl-intl';
 
 import EmptyState from '../Phase/EmptyState';
+import ListLoadError from '../Phase/ListLoadError';
 
 import messages from './messages';
 import VolunteerTable from './VolunteerTable';
 
 interface Props {
   volunteers: IVolunteers | undefined;
+  isError: boolean;
+  onRetry: () => void;
   isChangingList: boolean;
   hasFilters: boolean;
   causeTitles: Map<string, string>;
@@ -24,6 +27,8 @@ interface Props {
 
 const VolunteerList = ({
   volunteers,
+  isError,
+  onRetry,
   isChangingList,
   hasFilters,
   causeTitles,
@@ -33,6 +38,8 @@ const VolunteerList = ({
   onChangePage,
 }: Props) => {
   const { formatMessage } = useIntl();
+
+  if (isError) return <ListLoadError onRetry={onRetry} />;
 
   if (!volunteers) {
     return (
