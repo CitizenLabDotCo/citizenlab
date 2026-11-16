@@ -687,7 +687,7 @@ it-IT:
       event_description: Questi contributi devono essere approvati prima di essere visibili al pubblico. Puoi esaminarli nella pagina Gestione contributi della piattaforma o nella Gestione contributi di ogni singola fase.
       inputs_awaiting_screening: contributi da esaminare
       preheader: Esamina i contributi per %{organizationName}
-      subject: '%{count} input in attesa di revisione'
+      subject: '%{count} contributi in attesa di revisione'
       title: '%{firstName}, i contributi sono in attesa di essere esaminati'
     space_moderation_rights_received:
       cta_button: Gestisci questo spazio
