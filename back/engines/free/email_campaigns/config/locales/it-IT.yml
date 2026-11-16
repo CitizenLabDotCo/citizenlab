@@ -487,7 +487,7 @@ it-IT:
       event_description: "Qualcuno ha effettuato l'accesso alla piattaforma partecipativa di %{organizationName} e ha chiesto di collegare tale accesso all'account associato a questo indirizzo email. Se la richiesta è tua, inserisci questo codice di conferma per continuare:"
       expire_code: 'Questo codice scadrà tra '
       hours_24: 24 ore.
-      ignore_email: Se non sei stato tu, puoi ignorare tranquillamente questa email. Non è stato modificato nulla e nessuno può utilizzare questo codice senza avere accesso a questa casella di posta.
+      ignore_email: Se non hai fatto tu questa richiesta, puoi ignorare tranquillamente questa email. Non è stato modificato nulla e nessuno può utilizzare questo codice senza avere accesso a questa casella di posta.
       preheader: Conferma il tuo indirizzo email per %{organizationName}
       subject: Conferma il tuo indirizzo email per la piattaforma partecipativa di %{organizationName}
       title: Conferma il tuo indirizzo email
