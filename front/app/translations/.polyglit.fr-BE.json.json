@@ -3149,6 +3149,11 @@
     "verified_at": "2026-07-17T08:20:45.379636Z",
     "verified_by": "Cindy EB"
   },
+  "app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage2": {
+    "state": "verified",
+    "verified_at": "2026-11-09T09:16:26.628779Z",
+    "verified_by": "Adrien"
+  },
   "app.components.ProjectPageBuilder.Widgets.eventsLinkText": {
     "state": "verified",
     "verified_at": "2026-07-16T16:00:17.744995Z",
