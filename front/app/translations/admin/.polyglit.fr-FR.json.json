@@ -12114,10 +12114,20 @@
     "verified_at": "2026-09-16T19:26:50.578477Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Admin.projects.project.publishWhoCanFindDescription": {
+    "state": "verified",
+    "verified_at": "2026-11-16T23:42:58.468319Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.publishWhoCanOpen": {
     "state": "verified",
     "verified_at": "2026-09-16T19:26:50.578477Z",
     "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.publishWhoCanOpenDescription": {
+    "state": "verified",
+    "verified_at": "2026-11-16T23:42:58.468319Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.publishWhoCanSee": {
     "state": "verified",
@@ -12263,6 +12273,11 @@
     "state": "verified",
     "verified_at": "2026-10-28T13:21:28.391277Z",
     "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.settingsManagement": {
+    "state": "verified",
+    "verified_at": "2026-11-16T23:42:58.468319Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.settingsNav": {
     "state": "verified",
