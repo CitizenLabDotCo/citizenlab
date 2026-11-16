@@ -8,7 +8,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import PreviewSkeleton from 'components/admin/PhasePreview/PreviewSkeleton';
+import PreviewSkeleton from 'components/PhasePreview/PreviewSkeleton';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { usePhasePreview } from 'utils/phasePreview/runtime';
