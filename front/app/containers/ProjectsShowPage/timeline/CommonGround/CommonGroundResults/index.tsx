@@ -5,7 +5,7 @@ import Text from 'component-library/components/Text';
 
 import useCommonGroundResults from 'api/common_ground/useCommonGroundResults';
 
-import PreviewSkeleton from 'components/admin/PhasePreview/PreviewSkeleton';
+import PreviewSkeleton from 'components/PhasePreview/PreviewSkeleton';
 
 import { useIntl } from 'utils/cl-intl';
 import { usePhasePreview } from 'utils/phasePreview/runtime';
