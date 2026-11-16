@@ -7504,6 +7504,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": {
+    "state": "verified",
+    "verified_at": "2026-11-16T21:45:55.860365Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.CampaignsConsentForm.ally_categoryLabel": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -12717,6 +12722,11 @@
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessSaveError": {
     "state": "verified",
     "verified_at": "2026-11-16T21:36:11.008825Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessSubtitle": {
+    "state": "verified",
+    "verified_at": "2026-11-16T21:45:55.860365Z",
     "verified_by": "Adrien"
   },
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessTitle": {
