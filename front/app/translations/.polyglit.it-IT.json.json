@@ -3864,6 +3864,11 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+  "app.components.admin.UserFilterConditions.emailListPlaceholder": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:33:03.727812Z",
+    "verified_by": "Roger"
+  },
   "app.components.admin.UserFilterConditions.field_email": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
@@ -4333,6 +4338,91 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
+  },
+  "app.components.aiAssistant.approve": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:33:03.727812Z",
+    "verified_by": "Roger"
+  },
+  "app.components.aiAssistant.attachFile": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:33:03.727812Z",
+    "verified_by": "Roger"
+  },
+  "app.components.aiAssistant.awaitingApprovalHint": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:33:03.727812Z",
+    "verified_by": "Roger"
+  },
+  "app.components.aiAssistant.cancel": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:33:03.727812Z",
+    "verified_by": "Roger"
+  },
+  "app.components.aiAssistant.confirmReject": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:33:03.727812Z",
+    "verified_by": "Roger"
+  },
+  "app.components.aiAssistant.dropFiles": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:33:03.727812Z",
+    "verified_by": "Roger"
+  },
+  "app.components.aiAssistant.elapsed": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:33:03.727812Z",
+    "verified_by": "Roger"
+  },
+  "app.components.aiAssistant.errorAiProcessingNotAllowed": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:33:03.727812Z",
+    "verified_by": "Roger"
+  },
+  "app.components.aiAssistant.errorContextTooLong": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:33:03.727812Z",
+    "verified_by": "Roger"
+  },
+  "app.components.aiAssistant.errorConversationBusy": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:33:03.727812Z",
+    "verified_by": "Roger"
+  },
+  "app.components.aiAssistant.errorFileNotInProject": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:33:03.727812Z",
+    "verified_by": "Roger"
+  },
+  "app.components.aiAssistant.errorFileNotUtf8": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:33:03.727812Z",
+    "verified_by": "Roger"
+  },
+  "app.components.aiAssistant.errorGeneric": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:33:03.727812Z",
+    "verified_by": "Roger"
+  },
+  "app.components.aiAssistant.errorLlmRequestRejected": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:33:03.727812Z",
+    "verified_by": "Roger"
+  },
+  "app.components.aiAssistant.errorLlmUnavailable": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:33:03.727812Z",
+    "verified_by": "Roger"
+  },
+  "app.components.aiAssistant.errorSurfaceUnavailable": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:33:03.727812Z",
+    "verified_by": "Roger"
+  },
+  "app.components.aiAssistant.errorTooLong": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:33:03.727812Z",
+    "verified_by": "Roger"
   },
   "app.components.aiAssistant.errorToolBudgetExceeded": {
     "state": "verified",
