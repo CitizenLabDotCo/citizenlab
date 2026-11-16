@@ -14,18 +14,16 @@ module CustomIdMethods::IdAustria
       config[:ui_method_name].presence || name
     end
 
-    def config_parameters
-      %i[
-        client_id
-        client_secret
-        ui_method_name
-        enabled_for_verified_actions
-        hide_from_profile
-      ]
-    end
-
     def config_parameters_schema
       {
+        client_id: {
+          private: true,
+          type: 'string'
+        },
+        client_secret: {
+          private: true,
+          type: 'string'
+        },
         ui_method_name: {
           type: 'string',
           description: 'The name this verification method will have in the UI'
@@ -45,10 +43,6 @@ module CustomIdMethods::IdAustria
 
     def entitled?(_auth)
       true
-    end
-
-    def exposed_config_parameters
-      [:ui_method_name]
     end
 
     def locked_attributes

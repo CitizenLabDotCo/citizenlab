@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, IOption } from '@citizenlab/cl2-component-library';
+import { Box, IOption, bo } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
 import {
@@ -162,25 +162,6 @@ const IdeationInputs = ({
     />
   ) : null;
 
-  const userActions = (
-    <UserActions
-      submission_enabled={submission_enabled || false}
-      commenting_enabled={commenting_enabled || false}
-      reacting_enabled={reacting_enabled || false}
-      togglePostingEnabled={togglePostingEnabled}
-      toggleCommentingEnabled={toggleCommentingEnabled}
-      toggleReactingEnabled={toggleReactingEnabled}
-      apiErrors={apiErrors}
-      reacting_like_method={reacting_like_method}
-      reacting_like_limited_max={reacting_like_limited_max}
-      noLikingLimitError={noLikingLimitError}
-      handleReactingLikeMethodOnChange={handleReactingLikeMethodOnChange}
-      handleLikingLimitOnChange={handleLikingLimitOnChange}
-      phaseId={phaseId}
-      layout={layout}
-    />
-  );
-
   const likes = reacting_enabled && (
     <ReactionLimitSettings
       name="likingmethod"
@@ -215,6 +196,33 @@ const IdeationInputs = ({
       }
       handleReactingDislikeMethodOnChange={handleReactingDislikeMethodOnChange}
       handleDislikingLimitOnChange={handleDislikingLimitOnChange}
+    />
+  );
+
+  const userActions = (
+    <UserActions
+      submission_enabled={submission_enabled || false}
+      commenting_enabled={commenting_enabled || false}
+      reacting_enabled={reacting_enabled || false}
+      togglePostingEnabled={togglePostingEnabled}
+      toggleCommentingEnabled={toggleCommentingEnabled}
+      toggleReactingEnabled={toggleReactingEnabled}
+      apiErrors={apiErrors}
+      reacting_like_method={reacting_like_method}
+      reacting_like_limited_max={reacting_like_limited_max}
+      noLikingLimitError={noLikingLimitError}
+      handleReactingLikeMethodOnChange={handleReactingLikeMethodOnChange}
+      handleLikingLimitOnChange={handleLikingLimitOnChange}
+      phaseId={phaseId}
+      layout={layout}
+      reactingSettings={
+        layout === 'panel' && (
+          <>
+            <Box pl={bo.toggleLabelIndent}>{likes}</Box>
+            {dislikingToggle}
+          </>
+        )
+      }
     />
   );
 
@@ -285,15 +293,13 @@ const IdeationInputs = ({
         {views}
         {sorting}
         <Box mb="10px">
-          <PanelHeading label={formatMessage(configMessages.rulesGroup)} />
+          <PanelHeading label={formatMessage(configMessages.settingsGroup)} />
         </Box>
         <PanelGroup
           label={formatMessage(configMessages.participantActionsGroup)}
           defaultOpen
         >
           {userActions}
-          {dislikingToggle}
-          {likes}
         </PanelGroup>
         <PanelGroup
           label={formatMessage(configMessages.moderationGroup)}

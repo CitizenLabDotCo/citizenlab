@@ -13,13 +13,13 @@ import { IInputTopicData } from 'api/input_topics/types';
 
 import useLocalize from 'hooks/useLocalize';
 
-import messages from 'containers/Admin/projects/project/backofficeRedesign/messages';
 import topicsMessages from 'containers/Admin/projects/project/topics/messages';
 
 import T from 'components/T';
 
 import { useIntl } from 'utils/cl-intl';
 
+import tagsSectionMessages from '../messages';
 import SortableTag, {
   ROOT_TAG_TYPE,
   SortableTagRenderProps,
@@ -27,6 +27,8 @@ import SortableTag, {
 import TagActions from '../TagActions';
 import useSortableTags from '../useSortableTags';
 import { getSiblings } from '../utils';
+
+import messages from './messages';
 
 interface Props {
   topic: IInputTopicData;
@@ -136,7 +138,7 @@ const TagGroup = ({
               id={subtopic.id}
               index={index}
               type={`tag-${topic.id}`}
-              dragLabel={formatMessage(messages.reorderTag, {
+              dragLabel={formatMessage(tagsSectionMessages.reorderTag, {
                 tagName: localize(subtopic.attributes.title_multiloc),
               })}
               moveRow={moveRow}

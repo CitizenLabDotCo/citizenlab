@@ -1012,10 +1012,12 @@ function apiEditPhase({
   phaseId,
   submission_enabled,
   user_fields_in_form,
+  placement_type,
 }: {
   phaseId: string;
   submission_enabled?: boolean;
   user_fields_in_form?: boolean;
+  placement_type?: 'on_timeline' | 'standalone';
 }) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -1031,6 +1033,7 @@ function apiEditPhase({
         phase: {
           submission_enabled,
           user_fields_in_form,
+          placement_type,
         },
       },
     });

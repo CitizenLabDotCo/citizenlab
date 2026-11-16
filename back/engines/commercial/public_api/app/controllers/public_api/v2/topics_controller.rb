@@ -59,7 +59,7 @@ module PublicApi
     def fetch_and_combine(global_topics, input_topics)
       # Fetch all records and combine them, sorted by created_at desc
       all_records = global_topics.to_a + input_topics.to_a
-      all_records.sort_by { |record| -record.created_at.to_i }
+      all_records.sort { |a, b| [b.created_at, b.id] <=> [a.created_at, a.id] }
     end
   end
 end

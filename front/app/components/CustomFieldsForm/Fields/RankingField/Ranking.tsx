@@ -31,6 +31,7 @@ interface Props {
   value?: string[];
   question: IFlatCustomField;
   onChange: (value?: string[]) => void;
+  disabled?: boolean;
 }
 
 const getOptionsFromData = (data: string[], options: IOption[]): IOption[] => {
@@ -41,7 +42,12 @@ const getOptionsFromData = (data: string[], options: IOption[]): IOption[] => {
     .filter((value): value is IOption => !!value);
 };
 
-const Ranking = ({ value: data, question, onChange }: Props) => {
+const Ranking = ({
+  value: data,
+  question,
+  onChange,
+  disabled = false,
+}: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const theme = useTheme();
@@ -104,9 +110,11 @@ const Ranking = ({ value: data, question, onChange }: Props) => {
           }}
         >
           <Drop id="droppable" type="rankOptions">
-            <Text m="0px" aria-hidden color="textPrimary">
-              {formatMessage(messages.rankingInstructions)}
-            </Text>
+            {!disabled && (
+              <Text m="0px" aria-hidden color="textPrimary">
+                {formatMessage(messages.rankingInstructions)}
+              </Text>
+            )}
             <Ul aria-labelledby={`${sanitizeForClassname(question.key)}-label`}>
               {options.map((option: IOption, index: number) => (
                 <RankingOption
@@ -116,12 +124,13 @@ const Ranking = ({ value: data, question, onChange }: Props) => {
                   options={options}
                   index={index}
                   moveOptionInArray={moveOptionInArray}
+                  disabled={disabled}
                 />
               ))}
             </Ul>
           </Drop>
         </DragAndDrop>
-        {data !== undefined && (
+        {data !== undefined && !disabled && (
           <Box display="flex">
             <Button
               type="button"

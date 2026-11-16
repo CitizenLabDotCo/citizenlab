@@ -3,6 +3,8 @@ import appConfigurationEndpoints from '../app/api/app_configuration/__mocks__/_m
 import usersMeEndpoints from '../app/api/me/__mocks__/_mockServer';
 import usersEndpoints from '../app/api/users/__mocks__/_mockServer';
 import authenticationRequirementsEndpoints from '../app/api/authentication/authentication_requirements/__mocks__/_mockServer';
+import idMethodsEndpoints from '../app/api/id_methods/__mocks__/_mockServer';
+import accessDeniedExplanationEndpoints from '../app/api/access_denied_explanation/__mocks__/_mockServer';
 
 // ideas mock data
 import ideasEndpoints from '../app/api/ideas/__mocks__/_mockServer';
@@ -12,6 +14,7 @@ import ideaImagesEndpoints from '../app/api/idea_images/__mocks__/_mockServer';
 // projects mock data
 import projectsEndpoints from '../app/api/projects/__mocks__/_mockServer';
 import projectImagesEndpoints from '../app/api/project_images/__mocks__/_mockServer';
+import projectFoldersEndpoints from '../app/api/project_folders/__mocks__/_mockServer';
 
 // phases mock data
 import phasesEndpoints from '../app/api/phases/__mocks__/_mockServer';
@@ -43,6 +46,8 @@ const endpoints = {
   ...usersMeEndpoints,
   ...usersEndpoints,
   ...authenticationRequirementsEndpoints,
+  ...idMethodsEndpoints,
+  ...accessDeniedExplanationEndpoints,
 
   ...ideasEndpoints,
   ...ideaStatusesEndpoints,
@@ -50,6 +55,7 @@ const endpoints = {
 
   ...projectsEndpoints,
   ...projectImagesEndpoints,
+  ...projectFoldersEndpoints,
 
   ...phasesEndpoints,
 

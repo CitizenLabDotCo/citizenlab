@@ -353,6 +353,48 @@ resource 'Omniauth Callback', document: false do
           expect(CustomFieldValuesTransitionService.new.custom_field_values(user)).to include('gender' => 'male', 'birthyear' => 1980)
         end
       end
+
+      # Signed up through POST /web_api/v1/users with the address in other letter-case than the
+      # SSO returns it, never entered the code, then logged in with the SSO. The SSO vouches for
+      # the address and the account is found by it case-insensitively, so it must be confirmed:
+      # otherwise the user is signed in holding an unconfirmed email.
+      context 'when a user signed up with email in other letter-case and never confirmed it' do
+        example 'confirms the email', document: false do
+          client.post(
+            '/web_api/v1/users',
+            { user: { email: 'Billy_Fixed@Example.com', locale: 'en' } }.to_json,
+            headers
+          )
+          expect(client.status).to eq 201
+
+          do_request
+
+          assert_status(302)
+          expect(User.count).to eq(1)
+
+          user = User.sole
+          expect(user.identities.pluck(:provider)).to eq ['fake_sso']
+          expect(user.confirmation_required?).to be false
+          expect(user.email_confirmed_at).to be_present
+          expect(user.email).to eq 'Billy_Fixed@Example.com'
+        end
+      end
+
+      context 'when there is a pending invite for the email in other letter-case' do
+        let!(:invited_user) { create(:invited_user, email: 'Billy_Fixed@Example.com') }
+
+        example 'accepts the invite and confirms the email', document: false do
+          do_request
+
+          assert_status(302)
+          expect(response_headers['Location']).not_to include('authentication_error')
+
+          invited_user.reload
+          expect(invited_user.invite_status).to eq 'accepted'
+          expect(invited_user.confirmation_required?).to be false
+          expect(invited_user.email_confirmed_at).to be_present
+        end
+      end
     end
   end
 

@@ -105,6 +105,7 @@ const CopySurveyModal = ({
             disabled={!phaseId}
             onClick={() => {
               const url = `${editFormLink}?copy_from=${phaseId}`;
+              setShowCopySurveyModal(false);
               clHistory.push(url);
             }}
             data-cy="e2e-copy-survey-modal-duplicate"

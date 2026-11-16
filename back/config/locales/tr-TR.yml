@@ -140,9 +140,15 @@ tr-TR:
           title: Konunuz nedir?
   errors:
     messages:
+      ai_processing_not_allowed: yapay zeka tarafından işlenmeyebilir
       in_the_past: gelecekte olmalı
       max_must_be_greater_than_min_characters: Maksimum değer minimum değerden büyük olmalıdır.
       max_must_be_greater_than_or_equal_to_min_select_count: Maksimum değer minimum değerden büyük veya eşit olmalıdır.
+      not_found: bulunamadı
+      not_in_project: bu projenin dosyaları olmalıdır
+      not_utf8: UTF-8 olarak kaydedilmelidir
+      too_many_in_conversation: bir sohbet için çok fazla
+      unsupported_file_type: en fazla 4 MB boyutunda PDF dosyaları veya en fazla 100 KB boyutunda Markdown veya metin dosyaları olmalıdır
   events:
     council_meeting_description: |
       <p>Bu kurul toplantısında, 3 aydan kısa bir süre içinde 100 oy alan vatandaş girişimleri sunulacaktır.</p><p>Kurul daha sonra her bir fikir hakkındaki görüşlerini paylaşacaktır.</p>

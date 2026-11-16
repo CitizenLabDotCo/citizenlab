@@ -1,7 +1,8 @@
 import { MessageDescriptor } from 'utils/cl-intl';
 
-import messages from '../messages';
+import backofficeRedesignMessages from '../messages';
 
+import messages from './messages';
 import { SetupReadiness } from './useSetupReadiness';
 
 export const SETUP_ITEMS: {
@@ -13,7 +14,7 @@ export const SETUP_ITEMS: {
   { key: 'homepageCard', label: messages.homepageCard },
   { key: 'area', label: messages.areaItem },
   { key: 'topics', label: messages.topicTags },
-  { key: 'methods', label: messages.participationMethods },
+  { key: 'methods', label: backofficeRedesignMessages.participationMethods },
 ];
 
 export const getMissingItems = (readiness: SetupReadiness) =>

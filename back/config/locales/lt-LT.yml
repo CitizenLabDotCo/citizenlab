@@ -140,9 +140,15 @@ lt-LT:
           title: Kokia jūsų tema?
   errors:
     messages:
+      ai_processing_not_allowed: negali būti apdorojami DI
       in_the_past: turi būti ateityje
       max_must_be_greater_than_min_characters: Didžiausia reikšmė turi būti didesnė už mažiausią.
       max_must_be_greater_than_or_equal_to_min_select_count: Didžiausia reikšmė turi būti didesnė arba lygi mažiausiai reikšmei.
+      not_found: nerasta
+      not_in_project: turi būti šio projekto failai
+      not_utf8: turi būti išsaugoti UTF-8 koduote
+      too_many_in_conversation: jų yra per daug vienam pokalbiui
+      unsupported_file_type: turi būti ne didesni kaip 4 MB PDF failai arba ne didesni kaip 100 KB „Markdown“ ar tekstiniai failai
   events:
     council_meeting_description: |
       <p>Šiame tarybos posėdyje bus pristatytos piliečių iniciatyvos, kurios per mažiau nei 3 mėnesius surinko 100 balsų.</p><p>Tada taryba pasidalys savo nuomone apie kiekvieną idėją.</p>

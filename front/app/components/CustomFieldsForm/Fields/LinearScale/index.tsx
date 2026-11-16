@@ -12,9 +12,14 @@ import LinearScale from './LinearScale';
 interface Props {
   question: IFlatCustomField;
   scrollErrorIntoView?: boolean;
+  disabled?: boolean;
 }
 
-const LinearScaleField = ({ question, scrollErrorIntoView }: Props) => {
+const LinearScaleField = ({
+  question,
+  scrollErrorIntoView,
+  disabled,
+}: Props) => {
   const {
     control,
     watch,
@@ -37,7 +42,14 @@ const LinearScaleField = ({ question, scrollErrorIntoView }: Props) => {
         name={name}
         control={control}
         render={({ field: { ref: _ref, ...field } }) => {
-          return <LinearScale question={question} {...field} value={value} />;
+          return (
+            <LinearScale
+              question={question}
+              {...field}
+              value={value}
+              disabled={disabled}
+            />
+          );
         }}
       />
       {validationError && (

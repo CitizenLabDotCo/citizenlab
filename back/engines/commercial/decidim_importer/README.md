@@ -46,6 +46,7 @@ Building blocks used along the way:
 | `blogs` components                                     | project-level static pages, linked in a "Blog" section of the description layout |
 | `meetings` components                                  | project events (with map pin + attachments)                                      |
 | attachments (space + proposal + meeting)               | files                                                                            |
+| a proposal's card photo (its first image attachment)   | also the idea image (shown on the idea card)                                     |
 
 `awesome_iframe` (fullscreen-iframe / awesome-map) components have no extractor and are currently
 ignored. A debate's `instructions`/`information_updates`/`conclusions` are folded into the idea body;

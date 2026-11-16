@@ -68,7 +68,11 @@ const SimilarityDetectionConfig = ({
         min="0"
         max="1"
         step="0.01"
-        value={similarity_threshold_title?.toString() ?? ''}
+        value={
+          typeof similarity_threshold_title === 'number'
+            ? similarity_threshold_title.toString()
+            : null
+        }
         onChange={(value) =>
           handleThresholdChange('similarity_threshold_title', parseFloat(value))
         }
@@ -93,7 +97,11 @@ const SimilarityDetectionConfig = ({
         min="0"
         max="1"
         step="0.01"
-        value={similarity_threshold_body?.toString() ?? ''}
+        value={
+          typeof similarity_threshold_body === 'number'
+            ? similarity_threshold_body.toString()
+            : null
+        }
         onChange={(value) =>
           handleThresholdChange('similarity_threshold_body', parseFloat(value))
         }

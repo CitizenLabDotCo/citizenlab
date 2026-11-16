@@ -83,6 +83,67 @@ resource 'Graph data units' do
       end
     end
 
+    describe 'when a moderator mixes prop key spellings' do
+      let(:other_project) { create(:single_phase_ideation_project) }
+      let(:other_phase) { other_project.phases.first }
+
+      let(:resolved_name) { 'MostReactedIdeasWidget' }
+      let(:props) { { project_id: project.id, phaseId: other_phase.id } }
+
+      before do
+        create(:idea, project: other_project, phases: [other_phase])
+        header_token_for create(:project_moderator, projects: [project])
+      end
+
+      example 'returns 401 (Unauthorized)', document: false do
+        do_request
+        assert_status 401
+      end
+    end
+
+    describe 'when a moderator sends both spellings of the same id' do
+      let(:other_project) { create(:project) }
+
+      let(:resolved_name) { 'VisitorsWidget' }
+      let(:props) { { project_id: project.id, projectId: other_project.id } }
+
+      before { header_token_for create(:project_moderator, projects: [project]) }
+
+      example 'returns 401 (Unauthorized)', document: false do
+        do_request
+        assert_status 401
+      end
+    end
+
+    describe 'when a moderator adds a foreign id the widget does not read' do
+      let(:other_project) { create(:project) }
+      let(:own_phase) { create(:phase, project: project) }
+
+      let(:resolved_name) { 'VisitorsWidget' }
+      let(:props) { { phase_id: own_phase.id, project_id: other_project.id } }
+
+      before { header_token_for create(:project_moderator, projects: [project]) }
+
+      example 'returns 401 (Unauthorized)', document: false do
+        do_request
+        assert_status 401
+      end
+    end
+
+    describe 'when a moderator sends a list of ids' do
+      let(:other_project) { create(:project) }
+
+      let(:resolved_name) { 'VisitorsWidget' }
+      let(:props) { { project_id: [project.id, other_project.id] } }
+
+      before { header_token_for create(:project_moderator, projects: [project]) }
+
+      example 'returns 401 (Unauthorized)', document: false do
+        do_request
+        assert_status 401
+      end
+    end
+
     include_examples 'not authorized to visitors'
     include_examples 'not authorized to normal users'
   end

@@ -26,10 +26,14 @@ const AccessSection = ({
 }: AccessSectionProps) => {
   const { formatMessage } = useIntl();
   const hasAccount = requiresAccount(permission);
-  const signInMethods = useSignInMethods();
+  const signInMethods = useSignInMethods(
+    permission.attributes.verification_enabled
+  );
 
-  // Nothing to list means nobody can get an account at all — a platform
+  // Nothing to list means nobody can get an account for this action — a
   // misconfiguration the admin should see rather than an empty description.
+  // Usually platform-wide, but it can also be a method set to only show for
+  // verification on a permission that does not require verification.
   const noSignInMethod = signInMethods.length === 0;
 
   return (

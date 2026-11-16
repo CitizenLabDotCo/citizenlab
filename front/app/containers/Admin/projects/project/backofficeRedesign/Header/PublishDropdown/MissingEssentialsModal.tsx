@@ -15,8 +15,7 @@ import Modal from 'components/UI/Modal';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
-import messages from '../../messages';
-
+import messages from './messages';
 import usePublishNow from './usePublishNow';
 
 export type MissingEssentialsIntent = 'publish' | 'schedule';

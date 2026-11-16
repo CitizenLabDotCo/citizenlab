@@ -21,6 +21,7 @@ export interface Props {
   isNotFolderModeratorOfFolderId?: string;
   isNotSpaceModeratorOfFolderId?: string;
   onChange: (user?: IUserData) => void;
+  variant?: 'bo';
 }
 
 const UserSelect = ({
@@ -32,6 +33,7 @@ const UserSelect = ({
   isNotFolderModeratorOfFolderId,
   isNotSpaceModeratorOfFolderId,
   onChange,
+  variant,
 }: Props) => {
   const [searchValue, setSearchValue] = useState('');
   const {
@@ -86,6 +88,7 @@ const UserSelect = ({
       }}
       onChange={handleChange}
       onMenuOpen={handleChange}
+      variant={variant}
     />
   );
 };

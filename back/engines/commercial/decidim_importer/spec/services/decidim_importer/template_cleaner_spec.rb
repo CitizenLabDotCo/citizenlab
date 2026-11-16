@@ -101,20 +101,27 @@ RSpec.describe DecidimImporter::TemplateCleaner do
     end
   end
 
-  describe '.prune_imageless_project_images!' do
-    it 'drops project images whose image url was stripped/pruned, keeping the rest' do
-      template = { 'models' => { 'project_image' => [
-        { 'ordering' => 0, 'remote_image_url' => 'http://x/hero.png' },
-        { 'ordering' => 0 } # its image URL was stripped/pruned
-      ] } }
+  describe '.prune_imageless_images!' do
+    it 'drops project and idea images whose image url was stripped/pruned, keeping the rest' do
+      template = { 'models' => {
+        'project_image' => [
+          { 'ordering' => 0, 'remote_image_url' => 'http://x/hero.png' },
+          { 'ordering' => 0 } # its image URL was stripped/pruned
+        ],
+        'idea_image' => [
+          { 'ordering' => 0, 'remote_image_url' => 'http://x/photo.jpg' },
+          { 'ordering' => 0 }
+        ]
+      } }
 
-      described_class.prune_imageless_project_images!(template)
+      described_class.prune_imageless_images!(template)
 
       expect(template['models']['project_image'].map { |i| i['remote_image_url'] }).to eq(['http://x/hero.png'])
+      expect(template['models']['idea_image'].map { |i| i['remote_image_url'] }).to eq(['http://x/photo.jpg'])
     end
 
-    it 'is a no-op when the template has no project images' do
-      expect { described_class.prune_imageless_project_images!({ 'models' => {} }) }.not_to raise_error
+    it 'is a no-op when the template has no images' do
+      expect { described_class.prune_imageless_images!({ 'models' => {} }) }.not_to raise_error
     end
   end
 

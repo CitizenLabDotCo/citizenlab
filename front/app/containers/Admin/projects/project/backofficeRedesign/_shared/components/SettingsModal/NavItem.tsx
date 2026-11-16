@@ -48,7 +48,7 @@ interface Props {
   tabId: string;
   panelId: string;
   label: MessageDescriptor;
-  icon: IconNames;
+  icon?: IconNames;
   selected: boolean;
   onSelect: () => void;
 }
@@ -85,9 +85,11 @@ const NavItem = ({
       background={selected ? colors.grey100 : 'transparent'}
       cursor="pointer"
     >
-      <Box display="flex" flexShrink={0}>
-        <Icon name={icon} width="16px" height="16px" />
-      </Box>
+      {icon && (
+        <Box display="flex" flexShrink={0}>
+          <Icon name={icon} width="16px" height="16px" />
+        </Box>
+      )}
       <Text
         className="label"
         as="span"

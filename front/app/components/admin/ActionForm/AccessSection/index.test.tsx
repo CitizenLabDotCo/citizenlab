@@ -54,6 +54,17 @@ const buildIdMethod = (name: string, authentication: boolean): IdMethodData =>
     },
   } as IdMethodData);
 
+const buildOnlyForVerificationMethod = (): IdMethodData => ({
+  id: 'method-nemlog_in',
+  type: 'id_method',
+  attributes: {
+    name: 'nemlog_in',
+    authentication_method: true,
+    verification_method: true,
+    only_show_for_verification: true,
+  },
+});
+
 const buildPermission = (
   attributes: Partial<IPermissionData['attributes']> = {}
 ): IPermissionData =>
@@ -73,6 +84,7 @@ const buildPermission = (
       require_name: true,
       require_password: true,
       require_verification: false,
+      verification_enabled: false,
       permitted_by_everyone_allowed: false,
       ...attributes,
     },
@@ -163,6 +175,31 @@ describe('<AccessSection />', () => {
       renderSection();
       expect(
         screen.getByText('Participants sign in with email, SMS.')
+      ).toBeInTheDocument();
+    });
+
+    it('leaves out methods set to only show for verification when verification is off', () => {
+      mockIdMethods = [buildOnlyForVerificationMethod()];
+      renderSection();
+      expect(
+        screen.getByText('Participants sign in with email, SMS.')
+      ).toBeInTheDocument();
+    });
+
+    it('warns when the only sign-in method is set to only show for verification and verification is off', () => {
+      mockPasswordLoginEnabled = false;
+      mockIdMethods = [buildOnlyForVerificationMethod()];
+      renderSection();
+      expect(
+        screen.getByText('No sign-in method is enabled on this platform.')
+      ).toBeInTheDocument();
+    });
+
+    it('names methods set to only show for verification when verification is on', () => {
+      mockIdMethods = [buildOnlyForVerificationMethod()];
+      renderSection({ verification_enabled: true });
+      expect(
+        screen.getByText(/^Participants sign in with email, SMS, MitID/)
       ).toBeInTheDocument();
     });
 

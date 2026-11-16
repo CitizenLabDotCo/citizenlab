@@ -41,14 +41,21 @@ export const isNewCustomFieldObject = (
 ): element is IFlatCustomFieldWithIndex =>
   doesObjectHaveProperties(element, properties);
 
+// The types AnswerValue can show
 const PUBLIC_ANSWER_INPUT_TYPES: ICustomFieldInputType[] = [
   'text',
+  'multiline_text',
   'select',
   'multiselect',
+  'linear_scale',
+  'number',
+  'sentiment_linear_scale',
+  'rating',
+  'multiselect_image',
+  'matrix_linear_scale',
+  'ranking',
 ];
 
-// Until every question shows its answers. Pages must stay excluded then,
-// since they take no answer and have no key.
 export const supportsPublicAnswers = (inputType: ICustomFieldInputType) =>
   PUBLIC_ANSWER_INPUT_TYPES.includes(inputType);
 

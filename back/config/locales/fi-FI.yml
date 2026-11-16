@@ -140,9 +140,15 @@ fi-FI:
           title: Mikä on aiheesi?
   errors:
     messages:
+      ai_processing_not_allowed: ei ehkä voida käsitellä tekoälyllä
       in_the_past: täytyy olla tulevaisuudessa
       max_must_be_greater_than_min_characters: Maksimin on oltava suurempi kuin minimin.
       max_must_be_greater_than_or_equal_to_min_select_count: Maksimin on oltava suurempi tai yhtä suuri kuin minimi.
+      not_found: ei löytynyt
+      not_in_project: täytyy olla tämän projektin tiedostoja
+      not_utf8: täytyy tallentaa UTF-8-muodossa
+      too_many_in_conversation: on liian monta yhteen keskusteluun
+      unsupported_file_type: täytyy olla enintään 4 megatavun PDF-tiedostoja tai enintään 100 kilotavun Markdown- tai tekstitiedostoja
   events:
     council_meeting_description: |
       <p>Tässä valtuuston kokouksessa esitellään alle 3 kuukaudessa 100 ääntä saaneet kansalaisaloitteet.</p><p>Neuvosto jakaa sitten näkemyksensä kustakin ideasta.</p>
