@@ -1850,7 +1850,7 @@
   "app.containers.Admin.projects.project.event.deleteImage": "Elimina immagine",
   "app.containers.Admin.projects.project.event.done": "Fatto",
   "app.containers.Admin.projects.project.event.dropImage": "Trascina un'immagine o clicca per caricarla",
-  "app.containers.Admin.projects.project.event.eventSetup": "Configurazione evento",
+  "app.containers.Admin.projects.project.event.eventSetup": "Configurazione dell'evento",
   "app.containers.Admin.projects.project.event.fromProject": "Da \"{project}\"",
   "app.containers.Admin.projects.project.event.goToProject": "Vai al progetto",
   "app.containers.Admin.projects.project.event.image": "Immagine",
