@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 
 import { Box, Button } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
@@ -27,6 +27,7 @@ const METHODS_WITHOUT_SETTINGS: ParticipationMethod[] = [
 export type SetupSettingsAction = 'access' | 'notifications' | 'moderation';
 
 interface Props {
+  surveyPlacement?: ReactNode;
   onOpenSetting: (action: SetupSettingsAction) => Promise<void>;
   saving: boolean;
   uploading: boolean;
@@ -38,6 +39,7 @@ interface Props {
 }
 
 const DraftMethodSettings = ({
+  surveyPlacement,
   onOpenSetting,
   saving,
   uploading,
@@ -88,6 +90,7 @@ const DraftMethodSettings = ({
           setValidationErrors={setValidationErrors}
           hideMethodPicker
           layout="panel"
+          surveyPlacement={surveyPlacement}
         />
       )}
 
@@ -103,7 +106,7 @@ const DraftMethodSettings = ({
           {formatMessage(messages.editAccess)}
         </Button>
         <PanelGroup
-          label={formatMessage(messages.participantEmails)}
+          label={formatMessage(messages.participantCommunications)}
           defaultOpen
         >
           <Button
@@ -114,7 +117,7 @@ const DraftMethodSettings = ({
             processing={opening === 'notifications'}
             onClick={() => open('notifications')}
           >
-            {formatMessage(messages.participantEmails)}
+            {formatMessage(messages.participantCommunications)}
           </Button>
         </PanelGroup>
         {formData.participation_method === 'voting' && (

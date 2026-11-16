@@ -1,6 +1,15 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  participantCommunications: {
+    id: 'app.containers.Admin.projects.project.participantCommunications',
+    defaultMessage: 'Emails and notifications',
+  },
+  participantCommunicationsDescription: {
+    id: 'app.containers.Admin.projects.project.participantCommunicationsDescription',
+    defaultMessage:
+      'Participants get an email and a notification when any of these happens.',
+  },
   noActivityInDateRange: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.Phase.noActivityInDateRange',
     defaultMessage: 'No activity in this phase’s date range',

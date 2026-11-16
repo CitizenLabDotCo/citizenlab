@@ -6,6 +6,7 @@ import { InputTerm, ParticipationMethod } from 'api/phases/types';
 
 import inputManagerMessages from 'containers/Admin/projects/project/backofficeRedesign/InputManager/messages';
 import OfflineFormsButton from 'containers/Admin/projects/project/backofficeRedesign/InputManager/SideColumn/OfflineFormsButton';
+import InputTagsCard from 'containers/Admin/projects/project/backofficeRedesign/InputTags/InputTagsCard';
 import inputFormMessages from 'containers/Admin/projects/project/inputForm/messages';
 
 import { useIntl } from 'utils/cl-intl';
@@ -74,6 +75,7 @@ const FormSection = ({
         </PanelField>
       )}
 
+      {!survey && <InputTagsCard projectId={projectId} inputTerm={inputTerm} />}
       {phaseId && !survey && (
         <DemographicsCard projectId={projectId} phaseId={phaseId} />
       )}

@@ -10,7 +10,7 @@ import React, {
 import { Box, Spinner, bo, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import { IPhaseData } from 'api/phases/types';
+import { IPhaseData, InputTerm } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 
 import { usePageSave } from 'components/admin/PageSaveContext';
@@ -30,6 +30,8 @@ import { viewFromPathname, PhaseViewKey } from './Phase/usePhaseViews';
 import ViewContent from './Phase/ViewContent';
 import ProjectSetupPanel from './ProjectSetupPanel';
 import ProjectTimeline from './ProjectTimeline';
+
+const InputTags = lazy(() => import('./InputTags'));
 
 // Lazy so ArcGIS only loads once the map is opened.
 const CustomMapConfigPage = lazy(
@@ -88,6 +90,7 @@ const PanelContent = styled(Box)<{ collapsed: boolean; animate: boolean }>`
 `;
 
 interface Draft {
+  inputTerm?: InputTerm;
   label: string;
   parentLabel?: string;
   saveLabel?: string;
@@ -117,7 +120,7 @@ const ProjectWorkspace = ({
 }: Props) => {
   const { pending, collapsed, animate } = useParticipationPanel();
   const { pathname } = useLocation();
-  const { map_config } = useSearch({ strict: false });
+  const { map_config, input_tags } = useSearch({ strict: false });
   const [openDropdown, setOpenDropdown] = useState<HeaderDropdownName | null>(
     null
   );
@@ -151,6 +154,9 @@ const ProjectWorkspace = ({
   // The map configuration does the same, and keeps the phase panel mounted so
   // a phase that isn't saved yet keeps its edits.
   const editingMap = inPhase && !!map_config;
+  const editingTags = inPhase && !!input_tags;
+  const [tagsOpened, setTagsOpened] = useState(false);
+  if (editingTags && !tagsOpened) setTagsOpened(true);
   const showPanels = activeView === 'build' && !editingEmail && !editingMap;
   // Once opened, the map stays mounted, so its unsaved edits wait for the
   // page's save button like the rest of the phase.
@@ -230,8 +236,24 @@ const ProjectWorkspace = ({
       borderRadius={bo.panelBorderRadius}
       background={colors.white}
     >
-      {sidePanel}
-      {settingsPanel}
+      <Box display={editingTags ? 'none' : 'block'}>
+        {sidePanel}
+        {settingsPanel}
+      </Box>
+      {tagsOpened && (
+        <Box display={editingTags ? 'block' : 'none'}>
+          <Suspense fallback={<Spinner />}>
+            <InputTags
+              key={`${project.id}-${phase?.id}-${pageSave?.revision}`}
+              project={project}
+              phase={phase}
+              inputTerm={
+                phase?.attributes.input_term ?? draft?.inputTerm ?? 'idea'
+              }
+            />
+          </Suspense>
+        </Box>
+      )}
     </Box>
   );
 

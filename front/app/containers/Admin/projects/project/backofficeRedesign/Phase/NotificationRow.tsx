@@ -18,7 +18,7 @@ import UpsellTooltip from 'components/UpsellTooltip';
 
 import { useIntl } from 'utils/cl-intl';
 
-import NotificationDetail from './NotificationDetail';
+import useNotificationDescription from './useNotificationDescription';
 
 interface Props {
   campaign: CampaignData;
@@ -42,6 +42,9 @@ const NotificationRow = ({ campaign, projectId, phaseId }: Props) => {
     isEditable,
     canBeDisabled,
   } = useCampaignRow({ campaign, context, editPath });
+  const description = useNotificationDescription(
+    campaign.attributes.campaign_name
+  );
   const when = campaign.trigger || campaign.schedule;
   const savedEnabled = !!campaign.attributes.enabled;
   const [enabled, setEnabled] = useState(savedEnabled);
@@ -55,15 +58,35 @@ const NotificationRow = ({ campaign, projectId, phaseId }: Props) => {
     <Button
       buttonStyle="bo-text"
       icon="chevron-right"
+      iconPos="right"
       iconSize="16px"
       iconColor={colors.coolGrey500}
-      width="28px"
-      height="28px"
+      width="100%"
+      height="auto"
+      justify="space-between"
+      whiteSpace="normal"
+      textAlign="left"
       padding="0"
       ariaLabel={formatMessage(messagingMessages.editButtonLabel)}
-      disabled={!isEditable}
+      disabled={!isEditable || !enabled}
       onClick={openEditor}
-    />
+    >
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="flex-start"
+        gap="4px"
+        py="4px"
+      >
+        <Text as="span" variant="boControl" lineHeight="20px" m="0">
+          {campaign.campaign_description}
+        </Text>
+        <Text as="span" variant="boHelper" lineHeight="18px" m="0">
+          {description ??
+            [campaign.recipient_segment, when].filter(Boolean).join(' · ')}
+        </Text>
+      </Box>
+    </Button>
   );
 
   return (
@@ -76,41 +99,18 @@ const NotificationRow = ({ campaign, projectId, phaseId }: Props) => {
           disabled={!canBeDisabled}
         />
       </Box>
-      <Box
-        display="flex"
-        flexDirection="column"
-        gap="2px"
-        flexGrow={1}
-        minWidth="0"
-      >
-        <Text as="span" variant="boControl" lineHeight="20px" m="0">
-          {campaign.campaign_description}
-        </Text>
-        {campaign.recipient_segment && (
-          <NotificationDetail
-            icon="user"
-            label={formatMessage(messagingMessages.automatedEmailsRecipients)}
-            text={campaign.recipient_segment}
-          />
-        )}
-        {when && (
-          <NotificationDetail
-            icon="clock"
-            label={formatMessage(messagingMessages.automatedEmailsTriggers)}
-            text={when}
-          />
+      <Box flexGrow={1} minWidth="0">
+        {isOutsidePlan ? (
+          <UpsellTooltip disabled={false}>{editButton}</UpsellTooltip>
+        ) : (
+          <Tooltip
+            disabled={!isComingSoon}
+            content={formatMessage(messagingMessages.editDisabledTooltip)}
+          >
+            <div>{editButton}</div>
+          </Tooltip>
         )}
       </Box>
-      {isOutsidePlan ? (
-        <UpsellTooltip disabled={false}>{editButton}</UpsellTooltip>
-      ) : (
-        <Tooltip
-          disabled={!isComingSoon}
-          content={formatMessage(messagingMessages.editDisabledTooltip)}
-        >
-          <div>{editButton}</div>
-        </Tooltip>
-      )}
     </Box>
   );
 };

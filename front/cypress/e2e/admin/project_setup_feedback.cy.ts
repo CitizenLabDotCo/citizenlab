@@ -285,7 +285,7 @@ describe('Project setup feedback', () => {
       cy.contains('Edit Phase').should('be.visible');
       cy.get('[data-review-card]').should('not.exist');
       cy.contains('Upload attachments').scrollIntoView().should('be.visible');
-      cy.contains('Emails to participants').should('not.exist');
+      cy.contains('Emails and notifications').should('not.exist');
       cy.contains('button', 'Collect demographic data').should('not.exist');
       cy.contains('button', 'Select a file').click();
       cy.get('[role="dialog"]').should('contain', 'Select file');

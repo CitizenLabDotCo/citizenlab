@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 
-import { Box, Spinner, Text } from '@citizenlab/cl2-component-library';
+import { Box, Button, Spinner, Text } from '@citizenlab/cl2-component-library';
 
+import { IFlatCustomField } from 'api/custom_fields/types';
 import useCustomFields from 'api/custom_fields/useCustomFields';
+import useUpdateCustomFields from 'api/custom_fields/useUpdateCustomFields';
 import usePhase from 'api/phases/usePhase';
 import useSubmissionCount from 'api/submission_count/useSubmissionCount';
 
@@ -13,6 +15,8 @@ import CopySurveyModal from 'containers/Admin/projects/project/surveyFormAssets/
 import ImportInputsSection from 'components/admin/FormSync/ImportInputsSection';
 import ImportExcelModal from 'components/admin/InputImporterModals/ImportExcelModal';
 import ImportPdfModal from 'components/admin/InputImporterModals/ImportPdfModal';
+import { transformFieldForSubmission } from 'components/FormBuilder/edit/utils';
+import Error from 'components/UI/Error';
 import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
@@ -49,6 +53,11 @@ const SurveySetupModal = ({
   draft,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const { mutateAsync: updateQuestions, isPending: updatingQuestions } =
+    useUpdateCustomFields();
+  const [deletedQuestions, setDeletedQuestions] =
+    useState<IFlatCustomField[]>();
+  const [questionsFailed, setQuestionsFailed] = useState(false);
   const [action, setAction] = useState(initialAction);
   const { data: customFields, isPending: questionsPending } = useCustomFields({
     projectId: phaseId ? projectId : undefined,
@@ -63,11 +72,58 @@ const SurveySetupModal = ({
     isPlaceholderData: phasePlaceholder,
   } = usePhase(phaseId);
   const { data: submissionCount } = useSubmissionCount({ phaseId });
-  // Copying replaces the questions, which would orphan existing responses.
-  const canCopy =
-    !!draft || submissionCount?.data.attributes.totalSubmissions === 0;
+  const hasSavedQuestions =
+    !!phase?.data.attributes.custom_form_persisted && !!hasQuestions;
+  const noResponses = submissionCount?.data.attributes.totalSubmissions === 0;
+  const canCopy = !!draft || (noResponses && !hasSavedQuestions);
+  const canDelete =
+    noResponses &&
+    customFields?.every(
+      (field) =>
+        field.input_type === 'page' ||
+        !field.enabled ||
+        (field.isEnabledEditable !== false &&
+          !field.constraints?.locks?.deletion)
+    );
+
+  const saveQuestions = async (fields: IFlatCustomField[]) => {
+    if (!phaseId || !noResponses || updatingQuestions) return false;
+    setQuestionsFailed(false);
+    try {
+      await updateQuestions({
+        projectId,
+        phaseId,
+        customFields: fields.map((field) =>
+          transformFieldForSubmission(field, fields)
+        ),
+        customForm: { saveType: 'manual' },
+      });
+      return true;
+    } catch {
+      setQuestionsFailed(true);
+      return false;
+    }
+  };
+
+  const clearQuestions = async () => {
+    if (!canDelete || !customFields) return;
+    // Retain inactive fields so Undo restores their IDs, choices and branching.
+    const cleared = customFields.map((field) => ({
+      ...field,
+      enabled: field.input_type === 'page' ? field.enabled : false,
+    }));
+    if (await saveQuestions(cleared)) setDeletedQuestions(customFields);
+  };
+
+  const undoDelete = async () => {
+    if (deletedQuestions && (await saveQuestions(deletedQuestions))) {
+      setDeletedQuestions(undefined);
+    }
+  };
 
   const choose = (choice: SurveySetupAction) => {
+    if (updatingQuestions || (choice === 'copy' && !canCopy)) return;
+    setDeletedQuestions(undefined);
     if (draft) {
       draft.onChoose(choice);
       return;
@@ -136,12 +192,59 @@ const SurveySetupModal = ({
                   onClick={() => choose('edit')}
                 />
               )}
-              {canCopy && (
-                <NavCard
-                  label={formatMessage(messages.usePreviousSurvey)}
-                  tooltip={formatMessage(messages.usePreviousSurveyTooltip)}
-                  onClick={() => choose('copy')}
-                />
+              {hasSavedQuestions && (
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="space-between"
+                  gap="12px"
+                >
+                  <Text variant="boHelper" m="0">
+                    {formatMessage(messages.savedSurveyQuestions)}
+                  </Text>
+                  <Button
+                    buttonStyle="bo-text"
+                    icon="delete"
+                    ariaLabel={formatMessage(messages.deleteSurveyQuestions)}
+                    disabled={!canDelete || updatingQuestions}
+                    processing={updatingQuestions}
+                    onClick={clearQuestions}
+                  >
+                    {formatMessage(messages.deleteSurveyQuestions)}
+                  </Button>
+                </Box>
+              )}
+              {deletedQuestions && !hasSavedQuestions && (
+                <Box
+                  role="status"
+                  display="flex"
+                  alignItems="center"
+                  gap="12px"
+                >
+                  <Text variant="boHelper" m="0">
+                    {formatMessage(messages.surveyQuestionsDeleted)}
+                  </Text>
+                  <Button
+                    buttonStyle="bo-text"
+                    onClick={undoDelete}
+                    disabled={!noResponses || updatingQuestions}
+                  >
+                    {formatMessage(messages.undoDeleteQuestions)}
+                  </Button>
+                </Box>
+              )}
+              <NavCard
+                label={formatMessage(messages.usePreviousSurvey)}
+                tooltip={
+                  hasSavedQuestions
+                    ? formatMessage(messages.deleteQuestionsToReuse)
+                    : formatMessage(messages.usePreviousSurveyTooltip)
+                }
+                disabled={!canCopy || updatingQuestions}
+                onClick={() => choose('copy')}
+              />
+              {questionsFailed && (
+                <Error text={formatMessage(messages.questionsUpdateFailed)} />
               )}
               <PanelGroup label={formatMessage(messages.importResponses)}>
                 <ImportInputsSection
@@ -163,7 +266,7 @@ const SurveySetupModal = ({
             setShowCopySurveyModal={(open) => {
               if (!open) closeAction();
             }}
-            surveyFormPersisted={!!phase?.data.attributes.custom_form_persisted}
+            surveyFormPersisted={hasSavedQuestions}
             surveyFormLoading={!phase || phaseFetching || phasePlaceholder}
             variant="bo"
           />

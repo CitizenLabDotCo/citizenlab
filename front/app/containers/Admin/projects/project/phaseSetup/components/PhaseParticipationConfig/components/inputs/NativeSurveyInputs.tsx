@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { Box, Text, Toggle } from '@citizenlab/cl2-component-library';
 import { CLErrors, Multiloc } from 'typings';
@@ -25,6 +25,7 @@ import parentMessages from '../../../../messages';
 import configMessages from '../../messages';
 
 interface Props {
+  surveyPlacement?: ReactNode;
   apiErrors: CLErrors | null;
   phase?: IPhase;
   formData: IUpdatedPhaseProperties;
@@ -39,6 +40,7 @@ interface Props {
 }
 
 const NativeSurveyInputs = ({
+  surveyPlacement,
   apiErrors,
   phase,
   formData,
@@ -73,6 +75,7 @@ const NativeSurveyInputs = ({
         <Box mb="10px">
           <PanelHeading label={formatMessage(configMessages.settingsGroup)} />
         </Box>
+        {surveyPlacement}
         <PanelGroup
           label={formatMessage(configMessages.participantActionsGroup)}
           defaultOpen
@@ -153,19 +156,6 @@ const NativeSurveyInputs = ({
                 showIcon={false}
                 apiErrors={apiErrors && apiErrors.native_survey_button_multiloc}
               />
-            </Box>
-            <Box display="flex" flexDirection="column" gap="4px">
-              <Text variant="boMicro" m="0">
-                {formatMessage(parentMessages.previewSurveyCTALabel)}
-              </Text>
-              <ButtonWithLink
-                buttonStyle="bo-secondary"
-                boSize="medium"
-                width="fit-content"
-                onClick={openSurveyPreview}
-              >
-                {localize(formData.native_survey_button_multiloc)}
-              </ButtonWithLink>
             </Box>
           </Box>
         </PanelGroup>

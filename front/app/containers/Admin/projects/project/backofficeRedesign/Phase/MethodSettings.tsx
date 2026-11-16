@@ -21,7 +21,10 @@ import configMessages from 'containers/Admin/projects/project/phaseSetup/compone
 import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/typings';
 import { validateParticipation } from 'containers/Admin/projects/project/phaseSetup/validate';
 
-import { useRegisterPageSaver } from 'components/admin/PageSaveContext';
+import {
+  usePageSave,
+  useRegisterPageSaver,
+} from 'components/admin/PageSaveContext';
 import { usePhasePreviewPublisher } from 'components/admin/PhasePreview/DraftContext';
 
 import { useIntl } from 'utils/cl-intl';
@@ -29,6 +32,7 @@ import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { isCLErrorsWrapper } from 'utils/errorUtils';
 import { useSearch } from 'utils/router';
 
+import SurveyPlacement from './BuildPanel/SurveyPlacement';
 import EditAccessButton from './EditAccessButton';
 import messages from './messages';
 import PanelSettings from './PanelSettings';
@@ -67,6 +71,7 @@ interface Props {
 
 const MethodSettings = ({ phase }: Props) => {
   const { formatMessage } = useIntl();
+  const pageSave = usePageSave();
   const { setup_action } = useSearch({ strict: false });
   const openedSection = useRef<HTMLDivElement>(null);
 
@@ -161,6 +166,13 @@ const MethodSettings = ({ phase }: Props) => {
           setValidationErrors={setValidationErrors}
           hideMethodPicker
           layout="panel"
+          surveyPlacement={
+            <SurveyPlacement
+              phase={phase}
+              hasUnsavedChanges={!!pageSave?.dirty}
+              onMoved={(updated) => setFormData(updated.attributes)}
+            />
+          }
         />
       )}
 
@@ -178,7 +190,7 @@ const MethodSettings = ({ phase }: Props) => {
 
       <Box ref={setup_action === 'notifications' ? openedSection : undefined}>
         <PanelGroup
-          label={formatMessage(messages.participantEmails)}
+          label={formatMessage(messages.participantCommunications)}
           defaultOpen={setup_action === 'notifications'}
         >
           <PhaseNotifications phase={phase} />

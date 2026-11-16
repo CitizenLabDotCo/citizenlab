@@ -111,7 +111,7 @@ describe('Survey reuse feedback', () => {
     cy.contains('[role="option"]', ideaTitle).should('not.exist');
   });
 
-  it('shows the replacement warning immediately after the first form save without reloading', () => {
+  it('requires clearing configured questions before reuse and can undo the deletion', () => {
     visitSetup();
     cy.contains('button', 'Edit survey').click();
     cy.contains('Edit form').click();
@@ -143,11 +143,36 @@ describe('Survey reuse feedback', () => {
           cy.contains('Yes, I want to leave').click();
         }
       });
-    openReuse();
-    cy.get('[role="dialog"]').should(
+    cy.contains('button', 'Edit survey').click();
+    cy.contains('button', 'Use a previous survey').should('be.disabled');
+    cy.intercept(
+      'PATCH',
+      `**/phases/${targetPhaseId}/custom_fields/update_all`
+    ).as('clearQuestions');
+    cy.contains('button', 'Delete questions').click();
+    cy.wait('@clearQuestions').its('response.statusCode').should('eq', 200);
+    cy.contains('button', 'Use a previous survey').should('not.be.disabled');
+    cy.contains('button', 'Undo').click();
+    cy.wait('@clearQuestions').its('response.statusCode').should('eq', 200);
+    cy.contains('button', 'Use a previous survey').should('be.disabled');
+    cy.get('[role="dialog"]').contains('button', 'Close window').click();
+    cy.contains('button', 'Edit survey').click();
+    cy.contains('Edit form').click();
+    cy.get('[data-cy="e2e-field-row"]').should(
       'contain',
-      'You have already saved changes to this survey'
+      'Saved manual question'
     );
+    cy.contains('button', 'Go back').click();
+    cy.contains('button', 'Edit survey').click();
+    cy.contains('button', 'Delete questions').click();
+    cy.wait('@clearQuestions').its('response.statusCode').should('eq', 200);
+    cy.contains('button', 'Use a previous survey').click();
+    chooseProject(surveyTitle);
+    cy.get('#e2e-phase-filter').select(sourcePhaseId);
+    cy.dataCy('e2e-copy-survey-modal-duplicate').find('button').click();
+    cy.get('[data-cy="e2e-field-row"]')
+      .should('contain', 'Your question')
+      .and('not.contain', 'Saved manual question');
   });
 
   it('validates a draft and opens reuse before its first explicit save', () => {
@@ -215,6 +240,7 @@ describe('Survey reuse feedback', () => {
     cy.contains('button', 'Edit survey').click();
     cy.get('[role="dialog"]')
       .should('contain', 'Edit form')
-      .and('not.contain', 'Use a previous survey');
+      .and('contain', 'Use a previous survey');
+    cy.contains('button', 'Use a previous survey').should('be.disabled');
   });
 });

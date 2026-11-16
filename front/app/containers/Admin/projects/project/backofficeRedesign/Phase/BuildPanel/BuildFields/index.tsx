@@ -44,7 +44,6 @@ interface Props {
   standalone: boolean;
   files: ReturnType<typeof usePhaseFileAttachments>;
   surveyMethodSwitch: SurveyMethodSwitch;
-  surveyPlacement?: ReactNode;
   draftQuestionsAction?: ReactNode;
   onChange: (newData: Partial<IUpdatedPhaseProperties>) => void;
   onDatesChange: (dates: Dates) => void;
@@ -60,7 +59,6 @@ const BuildFields = ({
   standalone,
   files,
   surveyMethodSwitch,
-  surveyPlacement,
   draftQuestionsAction,
   onChange,
   onDatesChange,
@@ -80,8 +78,6 @@ const BuildFields = ({
       </Box>
 
       <Box display="flex" flexDirection="column" gap="32px">
-        {surveyPlacement}
-
         <PhaseDates
           participationMethod={participationMethod}
           formData={formData}

@@ -24,7 +24,7 @@ const PhaseNotifications = ({ phase }: Props) => {
   return (
     <Box display="flex" flexDirection="column" gap="16px">
       <Text variant="boHelper" m="0">
-        {formatMessage(messages.participantEmailsDescription)}
+        {formatMessage(messages.participantCommunicationsDescription)}
       </Text>
       {campaigns.map((campaign) => (
         <NotificationRow

@@ -228,11 +228,26 @@ const NewPhaseWorkspace = ({
       <ProjectWorkspace
         project={project}
         draft={{
+          inputTerm: formData.input_term,
           label: formatMessage(
             standalone ? messages.newSurveyCrumb : messages.newPhaseCrumb
           ),
           methodSettings: (
             <DraftMethodSettings
+              surveyPlacement={
+                // Only the platform's own survey can run outside the timeline.
+                participationMethod === 'native_survey' && (
+                  <PlacementCard
+                    name="new-survey-placement"
+                    value={standalone ? 'standalone' : 'on_timeline'}
+                    onChange={(placement_type) => {
+                      setStandalone(placement_type === 'standalone');
+                      setValidationErrors({});
+                      updateFormData({ placement_type });
+                    }}
+                  />
+                )
+              }
               onOpenSetting={saveAndOpenAction}
               saving={!!pageSave?.saving}
               uploading={files.isUploadingFile}
@@ -286,20 +301,6 @@ const NewPhaseWorkspace = ({
                     {formatMessage(methodSectionMessages.addQuestions)}
                   </Button>
                 </Box>
-              )
-            }
-            surveyPlacement={
-              // Only the platform's own survey can run outside the timeline.
-              participationMethod === 'native_survey' && (
-                <PlacementCard
-                  name="new-survey-placement"
-                  value={standalone ? 'standalone' : 'on_timeline'}
-                  onChange={(placement_type) => {
-                    setStandalone(placement_type === 'standalone');
-                    setValidationErrors({});
-                    updateFormData({ placement_type });
-                  }}
-                />
               )
             }
             surveyMethodSwitch={{

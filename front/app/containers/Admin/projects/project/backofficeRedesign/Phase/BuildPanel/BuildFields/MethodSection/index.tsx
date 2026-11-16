@@ -2,6 +2,8 @@ import React, { ReactNode } from 'react';
 
 import { InputTerm, ParticipationMethod } from 'api/phases/types';
 
+import InputTagsCard from '../../../../InputTags/InputTagsCard';
+
 import CausesSection from './CausesSection';
 import CommonGroundSection from './CommonGroundSection';
 import DemographicsCard from './DemographicsCard';
@@ -38,6 +40,7 @@ const MethodSection = ({
       return phaseId ? (
         <>
           <VotingOptionsSection projectId={projectId} phaseId={phaseId} />
+          <InputTagsCard projectId={projectId} inputTerm={inputTerm} />
           <DemographicsCard projectId={projectId} phaseId={phaseId} />
         </>
       ) : null;

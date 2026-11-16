@@ -1,6 +1,14 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  searchTags: {
+    id: 'app.containers.Admin.projects.project.searchInputTags',
+    defaultMessage: 'Search tags',
+  },
+  addTagPlaceholder: {
+    id: 'app.containers.Admin.projects.project.addInputTagPlaceholder',
+    defaultMessage: 'Add a tag',
+  },
   tagsRequiredInfo: {
     id: 'app.containers.Admin.projects.project.tagsRequiredInfo',
     defaultMessage:

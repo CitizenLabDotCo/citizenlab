@@ -1,6 +1,30 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  savedSurveyQuestions: {
+    id: 'app.containers.Admin.projects.project.savedSurveyQuestions',
+    defaultMessage: 'Questions added',
+  },
+  deleteSurveyQuestions: {
+    id: 'app.containers.Admin.projects.project.deleteSurveyQuestions',
+    defaultMessage: 'Delete questions',
+  },
+  deleteQuestionsToReuse: {
+    id: 'app.containers.Admin.projects.project.deleteQuestionsToReuse',
+    defaultMessage: 'Delete the questions to use a previous survey',
+  },
+  surveyQuestionsDeleted: {
+    id: 'app.containers.Admin.projects.project.surveyQuestionsDeleted',
+    defaultMessage: 'Questions deleted',
+  },
+  undoDeleteQuestions: {
+    id: 'app.containers.Admin.projects.project.undoDeleteQuestions',
+    defaultMessage: 'Undo',
+  },
+  questionsUpdateFailed: {
+    id: 'app.containers.Admin.projects.project.questionsUpdateFailed',
+    defaultMessage: 'The questions could not be updated. Please try again.',
+  },
   switchLockedResponses: {
     id: 'app.containers.Admin.projects.project.switchLockedResponses',
     defaultMessage:

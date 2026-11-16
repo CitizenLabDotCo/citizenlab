@@ -54,6 +54,7 @@ import { defaultConfigForMethod } from './utils/participationMethodConfigs';
 
 interface Props {
   moderationAction?: ReactNode;
+  surveyPlacement?: ReactNode;
   phase?: IPhase;
   formData: IUpdatedPhaseProperties;
   validationErrors: ValidationErrors;
@@ -76,6 +77,7 @@ const MAX_VOTES_PER_VOTING_METHOD: Record<VotingMethod, number> = {
 
 const PhaseParticipationConfig = ({
   moderationAction,
+  surveyPlacement,
   phase,
   formData,
   validationErrors,
@@ -688,6 +690,7 @@ const PhaseParticipationConfig = ({
 
         {participation_method === 'native_survey' && (
           <NativeSurveyInputs
+            surveyPlacement={surveyPlacement}
             apiErrors={apiErrors}
             phase={phase}
             formData={formData}

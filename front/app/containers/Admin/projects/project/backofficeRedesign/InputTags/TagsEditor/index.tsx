@@ -4,8 +4,8 @@ import {
   Box,
   Button,
   Icon,
+  Input,
   Text,
-  bo,
   colors,
 } from '@citizenlab/cl2-component-library';
 import { DndProvider } from 'react-dnd';
@@ -14,6 +14,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { IInputTopicData } from 'api/input_topics/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
 import SettingsSection from 'containers/Admin/projects/project/backofficeRedesign/_shared/components/SettingsModal/SettingsSection';
@@ -46,6 +47,17 @@ type Editing = { topic: IInputTopicData } | { topic: null; parentId?: string };
 
 const TagsSection = ({ draft }: Props) => {
   const { formatMessage } = useIntl();
+  const locale = useLocale();
+  const [search, setSearch] = useState('');
+  const [name, setName] = useState('');
+  const add = () => {
+    if (!name.trim()) return;
+    draft.addTag({
+      title_multiloc: { [locale]: name.trim() },
+      description_multiloc: {},
+    });
+    setName('');
+  };
   const canAccessTopicsSettings = usePermission({
     action: 'access',
     item: { type: 'route', path: TOPICS_SETTINGS_PATH },
@@ -114,21 +126,6 @@ const TagsSection = ({ draft }: Props) => {
             )}
           </>
         }
-        action={
-          <Button
-            buttonStyle="bo-secondary"
-            icon="plus"
-            iconSize={bo.buttonMedium.iconSize}
-            width="auto"
-            height={bo.buttonMedium.height}
-            padding={bo.buttonMedium.padding}
-            fontSize={bo.buttonMedium.fontSize}
-            onClick={() => setEditing({ topic: null })}
-            id="e2e-add-input-topic-button"
-          >
-            {formatMessage(messages.settingsAddTag)}
-          </Button>
-        }
       >
         <Box display="flex" alignItems="center" gap="8px" mb="8px">
           <Icon
@@ -141,39 +138,93 @@ const TagsSection = ({ draft }: Props) => {
             {formatMessage(messages.tagsRequiredInfo)}
           </Text>
         </Box>
+        <Box mb="12px">
+          <Input
+            type="search"
+            variant="bo"
+            value={search}
+            onChange={setSearch}
+            ariaLabel={formatMessage(messages.searchTags)}
+            placeholder={formatMessage(messages.searchTags)}
+          />
+        </Box>
         <DndProvider backend={HTML5Backend}>
-          {ordered.map((topic, index) => (
-            <SortableTag
-              key={topic.id}
-              id={topic.id}
-              index={index}
-              type={ROOT_TAG_TYPE}
-              dragLabel={formatMessage(messages.reorderTag, {
-                tagName: localize(topic.attributes.title_multiloc),
-              })}
-              moveRow={moveRow}
-              dropRow={dropRow}
-              cancelDrag={cancelDrag}
-            >
-              {(drag) => (
-                <TagGroup
-                  topic={topic}
-                  allTopics={tags}
-                  drag={drag}
-                  canAddSubtopics={nestedInputTopicsActive}
-                  deleteDisabled={isLastRootTopic}
-                  isFirst={index === 0}
-                  onAddSubtopic={() =>
-                    setEditing({ topic: null, parentId: topic.id })
-                  }
-                  onEdit={(topic) => setEditing({ topic })}
-                  onDelete={setTopicToDelete}
-                  onReorder={draft.reorder}
-                />
-              )}
-            </SortableTag>
-          ))}
+          {ordered.map((topic, index) => {
+            const matches = [topic, ...getSiblings(tags, topic.id)].some(
+              (tag) =>
+                localize(tag.attributes.title_multiloc)
+                  .toLocaleLowerCase()
+                  .includes(search.toLocaleLowerCase())
+            );
+            if (!matches) return null;
+            return (
+              <SortableTag
+                key={topic.id}
+                id={topic.id}
+                index={index}
+                type={ROOT_TAG_TYPE}
+                dragLabel={formatMessage(messages.reorderTag, {
+                  tagName: localize(topic.attributes.title_multiloc),
+                })}
+                moveRow={moveRow}
+                dropRow={dropRow}
+                cancelDrag={cancelDrag}
+              >
+                {(drag) => (
+                  <TagGroup
+                    topic={topic}
+                    allTopics={tags}
+                    drag={drag}
+                    canAddSubtopics={nestedInputTopicsActive}
+                    deleteDisabled={isLastRootTopic}
+                    isFirst={index === 0}
+                    onAddSubtopic={() =>
+                      setEditing({ topic: null, parentId: topic.id })
+                    }
+                    onEdit={(topic) => setEditing({ topic })}
+                    onDelete={setTopicToDelete}
+                    onReorder={draft.reorder}
+                  />
+                )}
+              </SortableTag>
+            );
+          })}
         </DndProvider>
+        <Box
+          position="sticky"
+          bottom="0"
+          background={colors.white}
+          pt="12px"
+          pb="8px"
+          display="flex"
+          gap="8px"
+        >
+          <Box flexGrow={1}>
+            <Input
+              id="phase-add-input-tag"
+              type="text"
+              variant="bo"
+              value={name}
+              onChange={setName}
+              placeholder={formatMessage(messages.addTagPlaceholder)}
+              ariaLabel={formatMessage(messages.addTagPlaceholder)}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter') {
+                  event.preventDefault();
+                  add();
+                }
+              }}
+            />
+          </Box>
+          <Button
+            buttonStyle="bo-secondary"
+            icon="plus"
+            disabled={!name.trim()}
+            onClick={add}
+          >
+            {formatMessage(messages.settingsAddTag)}
+          </Button>
+        </Box>
       </SettingsSection>
       <Modal
         variant="bo"

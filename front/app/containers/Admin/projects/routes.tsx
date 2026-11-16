@@ -523,6 +523,7 @@ const phasesSearchSchema = yup.object({
   participation_method: yup.string().oneOf(participationMethods).optional(),
   // Shows the project's map configuration in the redesigned workspace.
   map_config: yup.boolean().optional(),
+  input_tags: yup.boolean().optional(),
 });
 
 const projectPhasesRoute = createRoute({
