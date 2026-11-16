@@ -11,7 +11,7 @@ import {
 import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
 
-import DisabledFieldset from 'components/admin/PhasePreview/DisabledFieldset';
+import DisabledFieldset from 'components/PhasePreview/DisabledFieldset';
 
 import {
   getMethodConfig,
