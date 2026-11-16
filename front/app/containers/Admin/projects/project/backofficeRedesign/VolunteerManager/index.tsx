@@ -41,17 +41,20 @@ const VolunteerManager = ({ phase }: Props) => {
   const [signedUp, setSignedUp] = useState<'this_week' | 'earlier'>();
 
   const { data: causes } = useCauses({ phaseId: phase.id });
-  const { data: volunteers, isPlaceholderData: isChangingList } = useVolunteers(
-    {
-      phaseId: phase.id,
-      causes: causeIds,
-      search,
-      sort,
-      signed_up: signedUp,
-      'page[number]': page,
-      'page[size]': PAGE_SIZE,
-    }
-  );
+  const {
+    data: volunteers,
+    isPlaceholderData: isChangingList,
+    isError,
+    refetch,
+  } = useVolunteers({
+    phaseId: phase.id,
+    causes: causeIds,
+    search,
+    sort,
+    signed_up: signedUp,
+    'page[number]': page,
+    'page[size]': PAGE_SIZE,
+  });
 
   // Any change to what's listed starts again from the first page.
   const changeCauses = (next: string[]) => {
@@ -172,6 +175,8 @@ const VolunteerManager = ({ phase }: Props) => {
       <FilterChips categories={categories} onClearAll={clearFilters} />
       <VolunteerList
         volunteers={volunteers}
+        isError={isError}
+        onRetry={() => refetch()}
         isChangingList={isChangingList}
         hasFilters={causeIds.length > 0 || !!search || !!signedUp}
         causeTitles={causeTitles}
