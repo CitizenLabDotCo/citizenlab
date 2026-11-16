@@ -9304,6 +9304,11 @@
     "verified_at": "2026-10-29T22:45:59.785934Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects.project.contextSpaceDescription": {
+    "state": "verified",
+    "verified_at": "2026-11-16T23:38:02.215251Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.continueToTheForm": {
     "state": "verified",
     "verified_at": "2026-10-28T14:58:12.335665Z",
@@ -12972,6 +12977,16 @@
   "app.containers.Admin.projects.project.unsavedChangesCancel": {
     "state": "verified",
     "verified_at": "2026-10-26T13:27:19.241589Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.unsavedChangesDescription2": {
+    "state": "verified",
+    "verified_at": "2026-11-16T23:38:02.215251Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.unsavedChangesTitle": {
+    "state": "verified",
+    "verified_at": "2026-11-16T23:38:02.215251Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.usePreviousSurvey": {
