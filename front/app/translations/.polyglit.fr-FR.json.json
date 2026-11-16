@@ -1214,6 +1214,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.components.ErrorBoundary.reloadPage": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:14:48.850215Z",
+    "verified_by": "Adrien"
+  },
   "app.components.ErrorToast.budgetExceededError": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -1433,6 +1438,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.components.FilterBoxes.a11y_selectedOption": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:14:48.850215Z",
+    "verified_by": "Adrien"
   },
   "app.components.FilterBoxes.a11y_selectedTopicFilters": {
     "state": "verified",
@@ -8204,6 +8214,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.containers.EventsShow.metaTitle1": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:14:48.850215Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.EventsShow.online2": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -10264,6 +10279,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.containers.IdeasShow.metaTitle1": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:14:48.850215Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.IdeasShow.moreFromThisSubmission": {
     "state": "verified",
     "verified_at": "2026-10-16T09:27:28.428851Z",
@@ -11584,6 +11604,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.containers.ProjectFolderShowPage.metaTitle2": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:14:48.850215Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.ProjectFolderShowPage.projectFolderTwitterMessage": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -11863,6 +11888,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Projects.metaTitle2": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:14:48.850215Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Projects.minBudgetRequired": {
     "state": "verified",

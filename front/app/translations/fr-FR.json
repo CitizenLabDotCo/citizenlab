@@ -294,7 +294,7 @@
   "app.components.FilterBoxes.a11y_allSelected": "Filtre sélectionné pour {filter} : tous",
   "app.components.FilterBoxes.a11y_numberOfInputs": "{inputsCount, plural, no {# contributions} one {# contribution} other {# contributions}}",
   "app.components.FilterBoxes.a11y_removeFilter": "Enlever le filtre",
-  "app.components.FilterBoxes.a11y_selectedOption": "Filtre {filter} sélectionné : {option}",
+  "app.components.FilterBoxes.a11y_selectedOption": "Filtre sélectionné pour {filter} : {option}",
   "app.components.FilterBoxes.a11y_selectedTopicFilters": "Sélectionné {numberOfSelectedTopics, plural, =0 {zéro filtre de sujet} one {un filtre de sujet} other {# Filtres de sujet}}. {selectedTopicNames}",
   "app.components.FilterBoxes.all": "Tous",
   "app.components.FilterBoxes.areas": "Trier par lieux",
