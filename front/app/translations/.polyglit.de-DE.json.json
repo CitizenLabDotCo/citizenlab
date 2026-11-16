@@ -2429,6 +2429,21 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+  "app.components.PhasePreview.beforeStarts": {
+    "state": "verified",
+    "verified_at": "2026-11-16T10:26:08.201836Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.PhasePreview.phaseEnded": {
+    "state": "verified",
+    "verified_at": "2026-11-16T10:26:08.201836Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.PhasePreview.startsIn": {
+    "state": "verified",
+    "verified_at": "2026-11-16T10:26:08.201836Z",
+    "verified_by": "Jelena"
+  },
   "app.components.PostCardsComponents.feed": {
     "state": "verified",
     "verified_at": "2026-04-22T11:27:40.387033Z",
@@ -3274,7 +3289,6 @@
     "verified_at": "2026-07-09T13:46:09.862763Z",
     "verified_by": "Jelena"
   },
-
   "app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage2": {
     "state": "verified",
     "verified_at": "2026-11-05T14:23:57.645106Z",
