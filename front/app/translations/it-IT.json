@@ -2969,7 +2969,7 @@
   "app.utils.participationMethodConfig.voting.votingNotSignedIn2": "Per votare devi effettuare il login o registrarti.",
   "app.utils.participationMethodConfig.voting.votingNotVerified": "Devi verificare il tuo account prima di poter votare.",
   "app.utils.projectInactive": "Partecipare a questo progetto non è più possibile.",
-  "app.utils.votingMethodUtils.budgetParticipationEnded1": "<b>La presentazione dei bilanci si è chiusa il {endDate}.</b> I partecipanti avevano a disposizione un totale di <b>{maxBudget} ciascuno da distribuire tra {optionCount} opzioni.</b>",
+  "app.utils.votingMethodUtils.budgetParticipationEnded1": "<b>La fase di presentazione del budget si è chiusa il {endDate}.</b> I partecipanti avevano a disposizione un totale di <b>{maxBudget} ciascuno da distribuire tra {optionCount} opzioni.</b>",
   "app.utils.votingMethodUtils.budgetSubmitted": "Budget presentato",
   "app.utils.votingMethodUtils.budgetSubmittedWithIcon": "Budget presentato 🎉",
   "app.utils.votingMethodUtils.budgetingNotInGroup": "Non hai i requisiti per distribuire il budget.",
