@@ -3539,6 +3539,11 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.FeedbackPrompt.close": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:23:02.660515Z",
+    "verified_by": "Roger"
+  },
   "app.containers.Admin.FeedbackPrompt.commentLabel": {
     "state": "verified",
     "verified_at": "2026-11-16T12:21:45.857010Z",
@@ -4709,6 +4714,11 @@
     "verified_at": "2026-11-16T12:21:45.857010Z",
     "verified_by": "Roger"
   },
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.howDoTheyParticipate": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:23:02.660515Z",
+    "verified_by": "Roger"
+  },
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.imageInclusionLabel": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
@@ -4739,6 +4749,11 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.internalOrganization2": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:23:02.660515Z",
+    "verified_by": "Roger"
+  },
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.participants": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
@@ -4749,10 +4764,20 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.participationIndicators2": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:23:02.660515Z",
+    "verified_by": "Roger"
+  },
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.participationIndicatorsDescription": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.participationIndicatorsDescription2": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:23:02.660515Z",
+    "verified_by": "Roger"
   },
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.projectManagers": {
     "state": "verified",
@@ -4778,6 +4803,21 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.whatHappensToInput": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:23:02.660515Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.whatHappensToInputDescription": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:23:02.660515Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.whoParticipated": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:23:02.660515Z",
+    "verified_by": "Roger"
   },
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.yourProjects": {
     "state": "verified",
@@ -4859,9 +4899,34 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.Users.EmailBounces.emailBounces": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:23:02.660515Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.Users.EmailBounces.emailBouncesBouncedAt": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:23:02.660515Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.Users.EmailBounces.emailBouncesDelete": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:23:02.660515Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.Users.EmailBounces.emailBouncesDescription": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:23:02.660515Z",
+    "verified_by": "Roger"
+  },
   "app.containers.Admin.Users.EmailBounces.emailBouncesName": {
     "state": "verified",
     "verified_at": "2026-11-16T11:51:34.291643Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.Users.EmailBounces.emailBouncesNone": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:23:02.660515Z",
     "verified_by": "Roger"
   },
   "app.containers.Admin.Users.EmailBounces.emailBouncesReason": {
