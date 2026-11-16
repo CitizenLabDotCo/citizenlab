@@ -10989,9 +10989,19 @@
     "verified_at": "2026-07-17T08:20:45.230747Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Admin.projects.project.newPhaseCrumb": {
+    "state": "verified",
+    "verified_at": "2026-11-16T23:44:41.423186Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.newSurvey": {
     "state": "verified",
     "verified_at": "2026-07-22T19:53:51.208622Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.newSurveyCrumb": {
+    "state": "verified",
+    "verified_at": "2026-11-16T23:44:41.423186Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.nextActions": {
@@ -12208,6 +12218,11 @@
     "state": "verified",
     "verified_at": "2026-10-28T13:09:38.034320Z",
     "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.saveToEditSettings": {
+    "state": "verified",
+    "verified_at": "2026-11-16T23:44:41.423186Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.savedLabel": {
     "state": "verified",
