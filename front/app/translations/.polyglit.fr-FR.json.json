@@ -3699,6 +3699,11 @@
     "verified_at": "2026-08-24T07:55:36.331011Z",
     "verified_by": "Cindy EB"
   },
+  "app.components.SmsConsent.phoneConfirmationDisclosureWithoutCampaignsEnabled": {
+    "state": "verified",
+    "verified_at": "2026-11-16T21:36:11.008825Z",
+    "verified_by": "Adrien"
+  },
   "app.components.SmsConsent.smsConfirmationDisclosure": {
     "state": "verified",
     "verified_at": "2026-08-05T12:46:18.882983Z",
@@ -7334,6 +7339,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.containers.Authentication.accountMergeNotAllowed": {
+    "state": "verified",
+    "verified_at": "2026-11-16T21:36:11.008825Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Authentication.authenticationDialog": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -7347,6 +7357,11 @@
   "app.containers.Authentication.enterYourPhoneNumber": {
     "state": "verified",
     "verified_at": "2026-07-22T11:55:53.713766Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Authentication.linkYourAccount": {
+    "state": "verified",
+    "verified_at": "2026-11-16T21:36:11.008825Z",
     "verified_by": "Adrien"
   },
   "app.containers.Authentication.phoneConfirmationCodeInvalid": {
@@ -10629,6 +10644,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.containers.Navbar.confirmPhone": {
+    "state": "verified",
+    "verified_at": "2026-11-16T21:36:11.008825Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Navbar.unverified": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -10648,6 +10668,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.containers.NewAuthModal.changeYourEmail": {
+    "state": "verified",
+    "verified_at": "2026-11-16T21:36:11.008825Z",
+    "verified_by": "Adrien"
   },
   "app.containers.NewAuthModal.completeYourProfile": {
     "state": "verified",
@@ -11084,6 +11109,16 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.containers.NotificationMenu.reportGenerated": {
+    "state": "verified",
+    "verified_at": "2026-11-16T21:36:11.008825Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.NotificationMenu.reportGeneratedStoppedEarly": {
+    "state": "verified",
+    "verified_at": "2026-11-16T21:36:11.008825Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.NotificationMenu.spaceModerationRightsReceived": {
     "state": "verified",
     "verified_at": "2026-04-13T14:12:08.732776Z",
@@ -11409,6 +11444,11 @@
     "verified_at": "2026-07-17T08:13:45.230201Z",
     "verified_by": "Adrien"
   },
+  "app.containers.PhoneChange.privacyLinkText": {
+    "state": "verified",
+    "verified_at": "2026-11-16T21:36:11.008825Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.PhoneChange.smsManualCampaignConsentLabel2": {
     "state": "verified",
     "verified_at": "2026-08-24T07:55:36.331011Z",
@@ -11417,6 +11457,11 @@
   "app.containers.PhoneChange.submitButton": {
     "state": "verified",
     "verified_at": "2026-07-16T21:48:43.456670Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.PhoneChange.termsLinkText": {
+    "state": "verified",
+    "verified_at": "2026-11-16T21:36:11.008825Z",
     "verified_by": "Adrien"
   },
   "app.containers.PhoneChange.titleAddPhone": {
@@ -11472,6 +11517,11 @@
   "app.containers.PhoneConfirmation.sendNewCode": {
     "state": "verified",
     "verified_at": "2026-07-16T20:33:09.844499Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.PhoneConfirmation.sendNewCodeIn": {
+    "state": "verified",
+    "verified_at": "2026-11-16T21:36:11.008825Z",
     "verified_by": "Adrien"
   },
   "app.containers.PhoneConfirmation.verifyAndContinue": {
@@ -12424,6 +12474,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.containers.SignIn.signInError2": {
+    "state": "verified",
+    "verified_at": "2026-11-16T21:36:11.008825Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.SignIn.useFranceConnectToLoginCreateOrVerifyYourAccount": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -12659,9 +12714,19 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessSaveError": {
+    "state": "verified",
+    "verified_at": "2026-11-16T21:36:11.008825Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessTitle": {
     "state": "verified",
     "verified_at": "2026-10-29T22:41:18.598322Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.UsersEditPage.EarlyAccess.projectBackofficeRedesignDescription2": {
+    "state": "verified",
+    "verified_at": "2026-11-16T21:36:11.008825Z",
     "verified_by": "Adrien"
   },
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": {
