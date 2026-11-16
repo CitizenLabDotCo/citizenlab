@@ -192,6 +192,14 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.selectAllFailed',
     defaultMessage: 'Could not select them all. Please try again.',
   },
+  batchUpdateFailed: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.batchUpdateFailed',
+    defaultMessage: 'Could not update {failed} of {total}. Please try again.',
+  },
+  batchDeleteFailed: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.batchDeleteFailed',
+    defaultMessage: 'Could not delete {failed} of {total}. Please try again.',
+  },
   deleteTerms: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.deleteTerms',
     defaultMessage: 'Delete {termCount}',
@@ -205,9 +213,9 @@ export default defineMessages({
     defaultMessage:
       'This means you will lose all data associated with this {term}, like comments, reactions and votes. This action cannot be undone.',
   },
-  deleteTermsTitle: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.deleteTermsTitle',
-    defaultMessage: 'Are you sure you want to delete these {terms}?',
+  deleteTermsTitle2: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.deleteTermsTitle2',
+    defaultMessage: 'Are you sure you want to delete {termCount}?',
   },
   deleteTermsExplanation: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.deleteTermsExplanation',
