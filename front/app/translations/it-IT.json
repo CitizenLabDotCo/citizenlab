@@ -93,7 +93,7 @@
   "app.components.CommonGroundResults.allStatementsDescription1": "Tutte le affermazioni, da quella con il maggior consenso a quella con il maggior dissenso. Le affermazioni con soli voti incerti o senza alcun voto sono escluse.",
   "app.components.CommonGroundResults.allStatementsTitle": "Elenco delle affermazioni",
   "app.components.CommonGroundResults.closeCallsDescription": "Queste affermazioni hanno suscitato il maggior disaccordo, con i voti che si sono avvicinati di più a un 50/50.",
-  "app.components.CommonGroundResults.closeCallsTitle": "Chiamate ravvicinate",
+  "app.components.CommonGroundResults.closeCallsTitle": "Testa a testa",
   "app.components.CommonGroundResults.highestConsensusDescription": "Affermazioni con un chiaro accordo - la maggioranza di coloro che hanno votato hanno scelto la stessa posizione.",
   "app.components.CommonGroundResults.highestConsensusTitle": "Il consenso più alto",
   "app.components.CommonGroundResults.participantLabel": "partecipante",
