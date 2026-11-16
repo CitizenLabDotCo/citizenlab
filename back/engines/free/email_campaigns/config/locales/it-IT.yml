@@ -549,7 +549,7 @@ it-IT:
       cta_button: Dai un riscontro a %{authorName}
       days_ago: '%{numberOfDays} giorni fa'
       event_description: '%{authorName} ha inviato un nuovo contributo sulla tua piattaforma. Guardalo subito, dai un riscontro o cambia il suo status!'
-      preheader: '%{authorName} ha pubblicato un nuovo input sulla tua piattaforma'
+      preheader: '%{authorName} ha pubblicato un nuovo contributo sulla tua piattaforma'
       subject: È stato pubblicato un nuovo contributo sulla tua piattaforma
       title: È stato pubblicato un nuovo contributo sulla tua piattaforma
       today: Oggi
