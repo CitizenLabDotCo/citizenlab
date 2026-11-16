@@ -39,6 +39,38 @@ export function authTokenFromResponse(response: Cypress.Response<unknown>) {
 }
 
 /*
+  Removes every auth cookie from the browser. There can be more than one: cookies
+  with the same name but a different domain (host-only `e2e.front` vs `.e2e.front`)
+  coexist, and the browser sends all of them.
+*/
+function clearAuthCookie(attemptsLeft = 5): Cypress.Chainable<null> {
+  return cy.getCookie(AUTH_COOKIE, { log: false }).then((cookie) => {
+    if (!cookie) return cy.wrap(null, { log: false });
+    if (attemptsLeft === 0) {
+      throw new Error(`Could not clear the ${AUTH_COOKIE} cookie`);
+    }
+    return cy
+      .clearCookie(AUTH_COOKIE, { domain: cookie.domain, log: false })
+      .then(() => clearAuthCookie(attemptsLeft - 1));
+  });
+}
+
+/*
+  Signs the browser in with `jwt`. Like the API's own Set-Cookie, the cookie is
+  host-only. Otherwise it would sit next to a cookie the API set, instead of
+  replacing it.
+*/
+function setAuthCookie(jwt: string) {
+  return clearAuthCookie().then(() =>
+    cy.setCookie(AUTH_COOKIE, jwt, {
+      httpOnly: true,
+      hostOnly: true,
+      sameSite: 'lax',
+    })
+  );
+}
+
+/*
   cy.request stores the cookies a response sets in the browser, including the auth
   cookie the API sets when signing someone in. Runs `request` without that side
   effect: afterwards, the browser is signed in as the same user as before (if any).
@@ -49,13 +81,11 @@ function preservingAuthCookie<T>(
   return cy.getCookie(AUTH_COOKIE).then((previous) =>
     request().then((result) => {
       if (previous) {
-        return cy
-          .setCookie(AUTH_COOKIE, previous.value, { httpOnly: true })
-          .then(() => cy.wrap(result, { log: false }));
+        return setAuthCookie(previous.value).then(() =>
+          cy.wrap(result, { log: false })
+        );
       }
-      return cy
-        .clearCookie(AUTH_COOKIE)
-        .then(() => cy.wrap(result, { log: false }));
+      return clearAuthCookie().then(() => cy.wrap(result, { log: false }));
     })
   );
 }
@@ -66,9 +96,19 @@ function requestAs<T = any>(
   options: Partial<Cypress.RequestOptions>
 ): Cypress.Chainable<Cypress.Response<T>> {
   return preservingAuthCookie(() =>
-    cy
-      .setCookie(AUTH_COOKIE, jwt, { httpOnly: true })
-      .then(() => cy.request<T>(options))
+    setAuthCookie(jwt).then(() => cy.request<T>(options))
+  );
+}
+
+/*
+  Makes an API request as a visitor who isn't signed in, whoever the browser is
+  signed in as. Some endpoints, such as confirm_code_email, reject signed-in callers.
+*/
+function requestAnonymously<T = any>(
+  options: Partial<Cypress.RequestOptions>
+): Cypress.Chainable<Cypress.Response<T>> {
+  return preservingAuthCookie(() =>
+    clearAuthCookie().then(() => cy.request<T>(options))
   );
 }
 
@@ -291,7 +331,7 @@ function apiLogin(
 
 function setLoginCookie(email: string, password: string) {
   return cy.apiLogin(email, password).then((res) => {
-    cy.setCookie(AUTH_COOKIE, res.body.jwt, { httpOnly: true });
+    setAuthCookie(res.body.jwt);
   });
 }
 
@@ -316,8 +356,9 @@ function setConsentAndAdminLoginCookies() {
   cy.setAdminLoginCookie();
 }
 
+// Creates the account as a visitor would, even when the browser is signed in.
 function emailSignup(email: string) {
-  return cy.request({
+  return requestAnonymously({
     headers: {
       'Content-Type': 'application/json',
     },
@@ -332,22 +373,23 @@ function emailSignup(email: string) {
   });
 }
 
-// Confirms the email, without signing the browser in.
+/*
+  Confirms the email, without signing the browser in. The endpoint rejects signed-in
+  callers, so the request is made as a visitor even when the browser is signed in.
+*/
 function emailConfirmation(
   email: string
 ): Cypress.Chainable<Cypress.Response<unknown>> {
-  return preservingAuthCookie(() =>
-    cy.request({
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      method: 'POST',
-      url: 'web_api/v1/user/confirm_code_email',
-      body: {
-        confirmation: { email, code: '123456' },
-      },
-    })
-  );
+  return requestAnonymously({
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    method: 'POST',
+    url: 'web_api/v1/user/confirm_code_email',
+    body: {
+      confirmation: { email, code: '123456' },
+    },
+  });
 }
 
 function updateProfile(
