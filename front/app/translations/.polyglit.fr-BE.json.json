@@ -3579,6 +3579,11 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
+  "app.components.ReactSelect.focusedValue": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:35:12.945328Z",
+    "verified_by": "Adrien"
+  },
   "app.components.ReactSelect.guidanceInput": {
     "state": "verified",
     "verified_at": "2026-11-16T22:31:13.913461Z",
@@ -3589,6 +3594,16 @@
     "verified_at": "2026-11-16T22:26:45.183094Z",
     "verified_by": "Adrien"
   },
+  "app.components.ReactSelect.guidanceMenu": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:35:12.945328Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.ReactSelect.guidanceMenuTabSelects": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:35:12.945328Z",
+    "verified_by": "Adrien"
+  },
   "app.components.ReactSelect.optionsAlreadySelected": {
     "state": "verified",
     "verified_at": "2026-11-16T22:21:40.995903Z",
@@ -3597,6 +3612,11 @@
   "app.components.ReactSelect.resultsAvailable": {
     "state": "verified",
     "verified_at": "2026-11-16T22:31:13.913461Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.ReactSelect.selectLabel": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:35:12.945328Z",
     "verified_by": "Adrien"
   },
   "app.components.ReactionControl.completeProfileToReact": {
