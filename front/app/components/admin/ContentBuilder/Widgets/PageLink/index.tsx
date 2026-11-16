@@ -6,8 +6,6 @@ import {
   fontSizes,
   Icon,
   IconButton,
-  Label,
-  Radio,
   Select,
   Spinner,
   Text,
@@ -27,22 +25,15 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link, { typedStyled } from 'utils/cl-router/Link';
 import { useParams } from 'utils/router';
-import { stripHtml } from 'utils/textUtils';
 
 import useWidgetProjectId from '../../useWidgetProjectId';
 
 import messages from './messages';
 import PagePlaceholder from './PagePlaceholder';
 
-type DisplayType = 'link' | 'preview';
-
 type PageLinkProps = {
   pageId?: string;
-  displayType?: DisplayType;
 };
-
-// Characters of the (HTML-stripped) top info section shown in preview mode.
-const PREVIEW_MAX_LENGTH = 300;
 
 const PageLinkRow = typedStyled(Link)`
   display: flex;
@@ -68,21 +59,7 @@ const RowIcon = styled(Icon)`
   flex-shrink: 0;
 `;
 
-const PreviewTitleLink = typedStyled(Link)`
-  display: inline-block;
-  color: ${({ theme }) => theme.colors.tenantText};
-  font-size: ${fontSizes.l}px;
-  font-weight: 600;
-  line-height: 1.3;
-  text-decoration: none;
-
-  &:hover {
-    color: ${({ theme }) => theme.colors.tenantText};
-    text-decoration: underline;
-  }
-`;
-
-const PageLink = ({ pageId, displayType = 'link' }: PageLinkProps) => {
+const PageLink = ({ pageId }: PageLinkProps) => {
   const localize = useLocalize();
   const { enabled } = useEditor((state) => ({
     enabled: state.options.enabled,
@@ -103,28 +80,6 @@ const PageLink = ({ pageId, displayType = 'link' }: PageLinkProps) => {
       },
     } as const;
     const title = localize(page.data.attributes.title_multiloc);
-
-    if (displayType === 'preview') {
-      const previewText = stripHtml(
-        localize(page.data.attributes.top_info_section_multiloc),
-        PREVIEW_MAX_LENGTH
-      );
-
-      return (
-        <Box
-          id="e2e-page-link"
-          maxWidth={BUILDER_CONTENT_MAX_WIDTH}
-          pointerEvents={enabled ? 'none' : 'auto'}
-        >
-          <PreviewTitleLink {...linkParams}>{title}</PreviewTitleLink>
-          {previewText && (
-            <Text mt="8px" mb="0px" color="textSecondary">
-              {previewText}
-            </Text>
-          )}
-        </Box>
-      );
-    }
 
     return (
       <Box
@@ -161,10 +116,8 @@ const PageLinkSettings = () => {
   const {
     actions: { setProp },
     pageId,
-    displayType = 'link',
   } = useNode((node) => ({
     pageId: node.data.props.pageId,
-    displayType: node.data.props.displayType,
   }));
 
   const { formatMessage } = useIntl();
@@ -207,34 +160,6 @@ const PageLinkSettings = () => {
       flexDirection="column"
       gap="12px"
     >
-      <Box>
-        <Label>{formatMessage(messages.displayTypeLabel)}</Label>
-        <Radio
-          onChange={(value: DisplayType) => {
-            setProp((props: PageLinkProps) => {
-              props.displayType = value;
-            });
-          }}
-          currentValue={displayType}
-          id="page-link-display-link"
-          name="page-link-display-type"
-          value="link"
-          label={formatMessage(messages.displayTypeLink)}
-        />
-        <Radio
-          onChange={(value: DisplayType) => {
-            setProp((props: PageLinkProps) => {
-              props.displayType = value;
-            });
-          }}
-          currentValue={displayType}
-          id="page-link-display-preview"
-          name="page-link-display-type"
-          value="preview"
-          label={formatMessage(messages.displayTypePreview)}
-        />
-      </Box>
-
       {pageOptions.length === 0 ? (
         <Text m="0px">{formatMessage(messages.noPagesAvailable)}</Text>
       ) : (
