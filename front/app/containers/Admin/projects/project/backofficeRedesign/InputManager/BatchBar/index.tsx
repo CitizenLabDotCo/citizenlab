@@ -25,9 +25,10 @@ import useInputTermLabels from '../useInputTermLabels';
 import usePickerOptions from '../usePickerOptions';
 import { phaseIds, topicIds } from '../utils';
 
+import BatchFailureAlert from './BatchFailureAlert';
 import BatchMenuButton from './BatchMenuButton';
 import SelectAllButton from './SelectAllButton';
-import useBatchActions from './useBatchActions';
+import useBatchActions, { BatchAttribute } from './useBatchActions';
 
 interface Props {
   type: ManagerType;
@@ -35,10 +36,10 @@ interface Props {
   ideas: IIdeaData[];
   /** How many inputs match the current filters, on every page. */
   total: number | undefined;
-  onUpdated: (ideas: IIdeaData[]) => void;
+  onUpdated: (ideas: IIdeaData[], attribute: BatchAttribute) => void;
   onEdit: (ideaId: string) => void;
   onClear: () => void;
-  onDeleted: () => void;
+  onDeleted: (ideaIds: string[]) => void;
   onSelectAll: () => void;
   isSelectingAll: boolean;
   selectAllFailed: boolean;
@@ -79,15 +80,22 @@ const BatchBar = ({
     projectId
   );
   const assigneeOptions = useAssigneeOptions(projectId, getFullName);
-  const { setStatus, assign, toggleTag, copyToPhase, deleteAll, isDeleting } =
-    useBatchActions({
-      ideas,
-      onUpdated,
-      onDeleted: () => {
-        setDeleteModalOpen(false);
-        onDeleted();
-      },
-    });
+  const {
+    setStatus,
+    assign,
+    toggleTag,
+    copyToPhase,
+    deleteAll,
+    isDeleting,
+    failure,
+  } = useBatchActions({
+    ideas,
+    onUpdated,
+    onDeleted: (ideaIds) => {
+      setDeleteModalOpen(false);
+      onDeleted(ideaIds);
+    },
+  });
 
   const statusIds = (idea: IIdeaData) => {
     const id = idea.relationships.idea_status.data?.id;
@@ -226,13 +234,17 @@ const BatchBar = ({
         onClick={onClear}
       />
 
+      <BatchFailureAlert failure={failure} />
+
       <WarningModal
         open={deleteModalOpen}
         isLoading={isDeleting}
         title={
           isSingle
             ? formatMessage(messages.deleteTermTitle, { term })
-            : formatMessage(messages.deleteTermsTitle, { terms })
+            : formatMessage(messages.deleteTermsTitle2, {
+                termCount: termCount(ideas.length),
+              })
         }
         explanation={
           isSingle
