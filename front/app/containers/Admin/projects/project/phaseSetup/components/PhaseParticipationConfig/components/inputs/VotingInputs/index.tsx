@@ -17,6 +17,7 @@ import PhaseActionAccessRow from 'containers/Admin/projects/_shared/components/P
 import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';
 import PanelHeading from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelHeading';
 
+import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 import {
   SectionDescription,
   SectionField,
@@ -26,6 +27,10 @@ import {
 import SettingToggleRow from 'components/admin/SettingToggleRow';
 import Error from 'components/UI/Error';
 import Warning from 'components/UI/Warning';
+
+import Banner from 'design-system/Banner';
+import Switch from 'design-system/Switch';
+import 'design-system/tokens.css';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
@@ -40,6 +45,7 @@ import ViewSelector from '../../shared/ViewSelector';
 import ActionToggleRow from '../_shared/ActionToggleRow';
 
 import votingMessages from './messages';
+import styles from './VotingInputs.module.css';
 import VotingMethodChangeModal from './VotingMethodChangeModal';
 import BudgetingInputs from './votingMethodInputs/BudgetingInputs';
 import shareMessages from './votingMethodInputs/messages';
@@ -132,6 +138,7 @@ const VotingInputs = ({
   layout = 'page',
 }: VotingInputsProps) => {
   const { formatMessage } = useIntl();
+  const getApiErrorMessage = useApiErrorText();
   const { projectId, phaseId } = useParams({ strict: false });
   const { data: phase } = usePhase(phaseId);
   const [pendingVotingMethod, setPendingVotingMethod] =
@@ -213,25 +220,20 @@ const VotingInputs = ({
   );
 
   if (panel) {
+    const commentingError = getApiErrorMessage(apiErrors?.commenting_enabled);
+
     return (
       <>
-        <Box mb="10px">
+        <div className={styles.heading}>
           <PanelHeading label={formatMessage(configMessages.settingsGroup)} />
-        </Box>
+        </div>
         <PanelGroup
           label={formatMessage(votingMessages.votingMethodSelectorTitle)}
           defaultOpen
         >
           {methodSelector}
           {voting_method && (
-            <Box
-              mt="16px"
-              pt="16px"
-              borderTop={`1px solid ${colors.grey200}`}
-              display="flex"
-              flexDirection="column"
-              gap="4px"
-            >
+            <div className={styles.methodSettings}>
               {/* Remounts per method, as switching resets the vote limits. */}
               <VotingMethodPanelSettings
                 key={voting_method}
@@ -251,7 +253,7 @@ const VotingInputs = ({
                 handleMinVotingOptionsChange={handleMinVotingOptionsChange}
                 handleVoteTermChange={handleVoteTermChange}
               />
-            </Box>
+            </div>
           )}
         </PanelGroup>
         <PanelGroup
@@ -269,15 +271,18 @@ const VotingInputs = ({
             phaseId={phaseId}
             action="commenting_idea"
             error={
-              <Error apiErrors={apiErrors && apiErrors.commenting_enabled} />
+              commentingError && <Banner tone="error">{commentingError}</Banner>
             }
           >
-            <Toggle
-              variant="bo"
-              checked={!!commenting_enabled}
-              onChange={toggleCommentingEnabled}
-              label={formatMessage(messages.inputCommentingEnabled)}
-            />
+            <Switch
+              size={26}
+              isSelected={!!commenting_enabled}
+              onChange={() => toggleCommentingEnabled()}
+            >
+              <span className={styles.switchLabel}>
+                {formatMessage(messages.inputCommentingEnabled)}
+              </span>
+            </Switch>
           </ActionToggleRow>
           {phaseId && (
             <PhaseActionAccessRow
@@ -291,7 +296,7 @@ const VotingInputs = ({
           label={formatMessage(configMessages.votingDisplayGroup)}
           defaultOpen
         >
-          <Box display="flex" flexDirection="column" gap="16px">
+          <div className={styles.displaySettings}>
             <SettingToggleRow
               title={formatMessage(messages.enabledVotingFiltering)}
               description={formatMessage(messages.votingFilteringEnabled)}
@@ -307,7 +312,7 @@ const VotingInputs = ({
               onChange={toggleAutoshareResultsEnabled}
             />
             {similarity}
-          </Box>
+          </div>
         </PanelGroup>
         {views}
         {changeModal}

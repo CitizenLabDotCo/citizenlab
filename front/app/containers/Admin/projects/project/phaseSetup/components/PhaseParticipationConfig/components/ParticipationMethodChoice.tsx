@@ -1,17 +1,22 @@
-import React, { useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 
 import {
   Box,
-  Color,
-  bo,
   colors,
   Title,
   Text,
   Image,
-  Tooltip,
 } from '@citizenlab/cl2-component-library';
+import { PressEvent } from 'react-aria-components';
 
-type Props = {
+import MethodCard from 'design-system/MethodCard';
+import Tooltip from 'design-system/Tooltip';
+import 'design-system/tokens.css';
+
+import styles from './ParticipationMethodChoice.module.css';
+
+type DefaultProps = {
+  variant?: 'default';
   selected: boolean;
   title: string;
   subtitle?: string;
@@ -20,52 +25,25 @@ type Props = {
   children?: JSX.Element;
   participation_method: string;
   width?: string;
+};
+
+// A menu of actions, so no card looks selected.
+type BoProps = {
+  variant: 'panel';
+  title: string;
+  subtitle: string;
+  image: string;
+  onPress?: (event: PressEvent) => void;
+  participation_method: string;
+  /** Badges with use="note", shown under the description. */
+  notes?: ReactNode;
+  /** Shown on hover. */
+  tooltip?: string;
   /** Shown on hover when the method can't be picked. */
   disabledReason?: string;
-  /** `bo`: a menu of actions, so no card looks selected or greyed out. */
-  variant?: 'default' | 'bo';
 };
 
-interface Look {
-  width: string;
-  border: string;
-  background: string;
-  borderRadius: string;
-  muted: boolean;
-  titleColor: Color;
-  subtitleColor: Color;
-}
-
-const getLook = (
-  variant: 'default' | 'bo',
-  width: string,
-  selected: boolean,
-  highlighted: boolean
-): Look => {
-  if (variant === 'bo') {
-    return {
-      width: '100%',
-      border: highlighted ? bo.colors.sectionLabel : colors.grey200,
-      background: highlighted ? colors.grey50 : colors.white,
-      borderRadius: bo.panelBorderRadius,
-      muted: false,
-      titleColor: 'textPrimary',
-      subtitleColor: 'textSecondary',
-    };
-  }
-
-  const textColor = selected ? 'primary' : 'coolGrey500';
-
-  return {
-    width,
-    border: highlighted ? colors.primary : colors.borderLight,
-    background: highlighted ? colors.teal50 : colors.white,
-    borderRadius: '3px',
-    muted: !selected,
-    titleColor: textColor,
-    subtitleColor: textColor,
-  };
-};
+type Props = DefaultProps | BoProps;
 
 interface ChildTextProps {
   selected: boolean;
@@ -85,32 +63,70 @@ export const ChildText = ({ selected, children }: ChildTextProps) => (
   </Text>
 );
 
-const ParticipationMethodChoice = ({
-  selected,
-  title,
-  subtitle,
-  image,
-  onClick,
-  children,
-  participation_method,
-  width = '240px',
-  disabledReason,
-  variant = 'default',
-}: Props) => {
+const ParticipationMethodChoice = (props: Props) => {
   const [isHover, setIsHover] = useState(false);
-  const disabled = !!disabledReason;
-  const highlighted = selected || (isHover && !disabled);
-  const look = getLook(variant, width, selected, highlighted);
 
-  const card = (
+  if (props.variant === 'panel') {
+    const {
+      title,
+      subtitle,
+      image,
+      onPress,
+      participation_method,
+      notes,
+      tooltip,
+      disabledReason,
+    } = props;
+    const tooltipContent = disabledReason ?? tooltip;
+
+    const card = (
+      <MethodCard
+        title={title}
+        description={subtitle}
+        art={<img className={styles.art} src={image} alt="" />}
+        notes={notes}
+        onPress={disabledReason ? undefined : onPress}
+      />
+    );
+
+    return (
+      <div
+        id={`e2e-participation-method-choice-${participation_method}`}
+        className={
+          disabledReason ? `${styles.cell} ${styles.unavailable}` : styles.cell
+        }
+      >
+        {tooltipContent ? (
+          <Tooltip content={tooltipContent}>{card}</Tooltip>
+        ) : (
+          card
+        )}
+      </div>
+    );
+  }
+
+  const {
+    selected,
+    title,
+    subtitle,
+    image,
+    onClick,
+    children,
+    participation_method,
+    width = '240px',
+  } = props;
+  const highlighted = selected || isHover;
+  const textColor = selected ? 'primary' : 'coolGrey500';
+
+  return (
     <Box
       display="flex"
-      width={look.width}
+      width={width}
       flexDirection="column"
-      borderRadius={look.borderRadius}
-      border={`1px solid ${look.border}`}
-      background={look.background}
-      opacity={disabled ? 0.6 : 1}
+      borderRadius="3px"
+      border={`1px solid ${highlighted ? colors.primary : colors.borderLight}`}
+      background={highlighted ? colors.teal50 : colors.white}
+      opacity={1}
       padding="16px"
       gap="8px"
       flex="1 0 0"
@@ -122,9 +138,9 @@ const ParticipationMethodChoice = ({
       onMouseLeave={() => {
         setIsHover(false);
       }}
-      onClick={disabled ? undefined : onClick}
-      aria-disabled={disabled}
-      style={{ cursor: disabled ? 'not-allowed' : 'pointer' }}
+      onClick={onClick}
+      aria-disabled={false}
+      style={{ cursor: 'pointer' }}
       height="100%"
       id={`e2e-participation-method-choice-${participation_method}`}
     >
@@ -135,9 +151,7 @@ const ParticipationMethodChoice = ({
           alt={'Ideation'}
           w="100%"
           style={{
-            ...(look.muted
-              ? { filter: 'grayscale(100%)', opacity: '50%' }
-              : {}),
+            ...(!selected ? { filter: 'grayscale(100%)', opacity: '50%' } : {}),
           }}
         />
       )}
@@ -145,7 +159,7 @@ const ParticipationMethodChoice = ({
         <Title
           my="0px"
           variant="h6"
-          color={look.titleColor}
+          color={textColor}
           textAlign="left"
           width="100%"
           style={{ overflowWrap: 'break-word', wordWrap: 'break-word' }}
@@ -158,7 +172,7 @@ const ParticipationMethodChoice = ({
         <Text
           my="0px"
           variant="bodyS"
-          color={look.subtitleColor}
+          color={textColor}
           textAlign="left"
           width="100%"
           style={{ overflowWrap: 'break-word', wordWrap: 'break-word' }}
@@ -167,21 +181,6 @@ const ParticipationMethodChoice = ({
         </Text>
       )}
     </Box>
-  );
-
-  // Only a disabled card is wrapped: the tooltip's wrapper would otherwise stop
-  // the card from filling its grid cell.
-  if (!disabled) return card;
-
-  return (
-    <Tooltip
-      content={disabledReason}
-      placement="top"
-      theme="dark"
-      width={look.width}
-    >
-      {card}
-    </Tooltip>
   );
 };
 

@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import { Box, Spinner } from '@citizenlab/cl2-component-library';
-
 import { IIdeaData } from 'api/ideas/types';
 import useIdeas from 'api/ideas/useIdeas';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
@@ -16,10 +14,14 @@ import AnalysisBanner from 'containers/Admin/projects/_shared/components/Analysi
 import { ManagerType, PreviewMode } from 'components/admin/PostManager';
 import NoPost from 'components/admin/PostManager/components/PostTable/NoPost';
 
+import Spinner from 'design-system/Spinner';
+import 'design-system/tokens.css';
+
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 import { ColumnKey, getColumns } from './columns';
 import EmptyState from './EmptyState';
+import styles from './InputManager.module.css';
 import FilterChips from './FilterMenu/FilterChips';
 import useFilterCategories from './FilterMenu/useFilterCategories';
 import IdeaTable from './IdeaTable';
@@ -149,8 +151,8 @@ const InputManager = ({ project, phase }: Props) => {
     categories.some((category) => category.isActive) || !!searchTerm;
 
   return (
-    <Box display="flex" gap="24px" alignItems="flex-start">
-      <Box flex="1 1 auto" minWidth="0">
+    <div className={styles.layout}>
+      <div className={styles.main}>
         <AnalysisBanner projectId={project.id} phaseId={phase.id} />
         <ListToolbar
           type={type}
@@ -165,14 +167,18 @@ const InputManager = ({ project, phase }: Props) => {
           categories={categories}
           onClearFilters={clearFilters}
         />
-        <FilterChips categories={categories} onClearAll={clearFilters} />
-        <Box position="relative">
+        <FilterChips
+          categories={categories}
+          count={filteredTotal}
+          onClearAll={clearFilters}
+        />
+        <div className={styles.list}>
           {!ideas ? (
-            <Box display="flex" justifyContent="center" py="80px">
+            <div className={styles.loading}>
               <Spinner />
-            </Box>
+            </div>
           ) : (
-            <Box opacity={isChangingList ? 0.4 : 1}>
+            <div className={isChangingList ? styles.changing : undefined}>
               {counts?.total === 0 && !hasFilters ? (
                 <EmptyState />
               ) : pageIdeas.length === 0 ? (
@@ -194,30 +200,22 @@ const InputManager = ({ project, phase }: Props) => {
                   selectedIds={new Set(selection.keys())}
                   onToggleSelect={toggleSelect}
                   onToggleSelectPage={toggleSelectPage}
-                  openIdeaId={selectedIdeaId}
                   onOpen={openPanel}
                   currentPage={page}
                   lastPage={lastPage}
                   onChangePage={setPage}
                 />
               )}
-            </Box>
+            </div>
           )}
           {ideas && isChangingList && (
-            <Box
-              position="absolute"
-              top="80px"
-              left="0"
-              right="0"
-              display="flex"
-              justifyContent="center"
-            >
+            <div className={styles.changingSpinner}>
               <Spinner />
-            </Box>
+            </div>
           )}
-        </Box>
-      </Box>
-      <Box flex="0 0 340px" width="340px" position="sticky" top="0">
+        </div>
+      </div>
+      <div className={styles.side}>
         <RightColumn
           type={type}
           project={project}
@@ -227,7 +225,7 @@ const InputManager = ({ project, phase }: Props) => {
           selectedIds={[...selection.keys()]}
           onShowAwaitingReply={() => setFilters({ reply: 'awaiting' })}
         />
-      </Box>
+      </div>
       <SidePanel
         ideaId={selectedIdeaId}
         mode={panelMode}
@@ -240,7 +238,7 @@ const InputManager = ({ project, phase }: Props) => {
         }
         onClose={() => setSelectedIdeaId(undefined)}
       />
-    </Box>
+    </div>
   );
 };
 

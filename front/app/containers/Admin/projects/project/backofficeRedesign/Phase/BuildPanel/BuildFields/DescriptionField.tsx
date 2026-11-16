@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
 import { CLErrors, Multiloc } from 'typings';
 
 import usePhase from 'api/phases/usePhase';
@@ -11,13 +10,15 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import DraftPhaseDescription from 'containers/Admin/projects/project/phaseDescription/DraftPhaseDescription';
 import descriptionMessages from 'containers/Admin/projects/project/phaseDescription/messages';
 
-import Error from 'components/UI/Error';
-import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-import Warning from 'components/UI/Warning';
+import MultilocRichTextField from 'components/admin/MultilocFields/MultilocRichTextField';
+import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
+
+import Banner from 'design-system/Banner';
 
 import { useIntl } from 'utils/cl-intl';
 import { isEmptyMultiloc } from 'utils/helperUtils';
 
+import styles from './BuildFields.module.css';
 import messages from './messages';
 
 interface Props {
@@ -36,6 +37,7 @@ const DescriptionField = ({
   onChange,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const apiErrorText = useApiErrorText();
   const { data: phases } = usePhases(projectId);
   const { data: phase } = usePhase(phaseId);
   const draftDescriptionEnabled = useFeatureFlag({
@@ -47,10 +49,10 @@ const DescriptionField = ({
     if (!phase) return null;
 
     return (
-      <Box mt="8px">
+      <div className={styles.draftDescription}>
         <DraftPhaseDescription
           key={phaseId}
-          variant="bo"
+          variant="panel"
           phaseId={phaseId}
           descriptionMultiloc={phase.data.attributes.description_multiloc}
           draftDescriptionMultiloc={
@@ -58,33 +60,31 @@ const DescriptionField = ({
           }
           placeholder={formatMessage(messages.addDescription)}
         />
-      </Box>
+      </div>
     );
   }
 
+  const errorText = apiErrorText(errors?.description_multiloc);
+
   return (
-    <Box>
+    <div className={styles.descriptionField}>
       {phases &&
         phases.data.length < 2 &&
         (!value || isEmptyMultiloc(value)) && (
-          <Box mb="8px">
-            <Warning variant="bo">
-              {formatMessage(descriptionMessages.emptyDescriptionWarning)}
-            </Warning>
-          </Box>
+          <Banner tone="info">
+            {formatMessage(descriptionMessages.emptyDescriptionWarning)}
+          </Banner>
         )}
-      <QuillMultilocWithLocaleSwitcher
+      <MultilocRichTextField
         id="phase-description"
-        variant="bo"
-        minHeight="74px"
-        ariaLabel={formatMessage(descriptionMessages.descriptionLabel)}
+        aria-label={formatMessage(descriptionMessages.descriptionLabel)}
         placeholder={formatMessage(messages.addDescription)}
         valueMultiloc={value}
         onChange={onChange}
+        errorMessage={errorText}
         withCTAButton
       />
-      <Error apiErrors={errors?.description_multiloc} />
-    </Box>
+    </div>
   );
 };
 

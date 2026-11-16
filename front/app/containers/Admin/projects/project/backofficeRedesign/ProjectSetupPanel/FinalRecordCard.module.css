@@ -1,0 +1,36 @@
+.head {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--gv-space-8);
+}
+
+.caption {
+  composes: small from '../../../../../../design-system/typography.module.css';
+  color: var(--gv-text-secondary);
+}
+
+.chevron {
+  color: var(--gv-icon-secondary);
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--gv-space-8);
+  padding: var(--gv-space-8) 0;
+  border-bottom: var(--gv-border-width-1) dashed var(--gv-border-control);
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.label {
+  composes: ui from '../../../../../../design-system/typography.module.css';
+  color: var(--gv-text-secondary);
+}
+
+.value {
+  composes: uiStrong from '../../../../../../design-system/typography.module.css';
+  color: var(--gv-text-primary);
+}

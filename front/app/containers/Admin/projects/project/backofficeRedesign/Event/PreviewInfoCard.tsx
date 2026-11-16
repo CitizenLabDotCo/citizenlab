@@ -1,15 +1,10 @@
 import React from 'react';
 
-import {
-  Box,
-  Button,
-  Text,
-  colors,
-  stylingConsts,
-} from '@citizenlab/cl2-component-library';
+// The preview copies the citizen event page and keeps its button icon.
+import { Icon } from '@citizenlab/cl2-component-library';
 import { format, isSameDay } from 'date-fns';
+import 'design-system/tokens.css';
 import moment from 'moment-timezone';
-import { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -26,6 +21,7 @@ import eventCardMessages from 'components/EventCards/messages';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
+import styles from './PreviewInfoCard.module.css';
 import PreviewDateBlock from './PreviewDateBlock';
 import PreviewInfoRow from './PreviewInfoRow';
 
@@ -55,12 +51,15 @@ const PreviewInfoCard = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const theme = useTheme();
   const locale = useLocale();
+  // The same rule the app uses to pick its right-to-left theme.
+  const isRtl = locale.startsWith('ar');
   const dateLocale = getLocale(locale);
   const { data: appConfig } = useAppConfiguration();
   const platformTimezone =
     appConfig?.data.attributes.settings.core.timezone ?? '';
+  const tenantColor =
+    appConfig?.data.attributes.settings.core.color_main ?? undefined;
   // Shows the dates as the platform's wall clock, like the event page does.
   const startAtDate = toPlatformWallClock(startAt, platformTimezone);
   const endAtDate = toPlatformWallClock(endAt, platformTimezone);
@@ -98,20 +97,10 @@ const PreviewInfoCard = ({
   const addressDetails = localize(address2Multiloc);
 
   return (
-    <Box
-      p="20px"
-      borderRadius={stylingConsts.borderRadius}
-      background={colors.background}
-    >
-      <Box p="8px" background={colors.white}>
-        <Box
-          display="flex"
-          flexDirection="column"
-          gap="16px"
-          px="20px"
-          py="12px"
-        >
-          <Box display="flex" justifyContent="center">
+    <div className={styles.card}>
+      <div className={styles.inner}>
+        <div className={styles.content}>
+          <div className={styles.dates}>
             <PreviewDateBlock
               {...dateBlock(startAtDate)}
               time={
@@ -122,93 +111,83 @@ const PreviewInfoCard = ({
             />
             {multiDay && (
               <>
-                <Box mx="16px" my="auto">
-                  <Text m="0" fontWeight="bold" fontSize="xxl">
-                    {theme.isRtl ? '←' : '→'}
-                  </Text>
-                </Box>
+                <div className={styles.arrow}>
+                  <p className={styles.arrowText}>{isRtl ? '←' : '→'}</p>
+                </div>
                 <PreviewDateBlock
                   {...dateBlock(endAtDate)}
                   time={withTimezone(time(endAtDate))}
                 />
               </>
             )}
-          </Box>
+          </div>
 
           {!isPast && (
-            <Box mt="12px" pointerEvents="none">
-              <Button
-                bgColor={theme.colors.tenantPrimary}
-                width="100%"
-                icon={showButtonIcon ? 'plus-circle' : undefined}
-                iconSize="20px"
-                tabIndex={-1}
-              >
-                {buttonText}
-              </Button>
-            </Box>
+            <div
+              className={styles.button}
+              style={{ backgroundColor: tenantColor }}
+            >
+              {showButtonIcon && (
+                <Icon
+                  name="plus-circle"
+                  width="20px"
+                  height="20px"
+                  fill="currentColor"
+                />
+              )}
+              <span>{buttonText}</span>
+            </div>
           )}
 
           {attendeesCount > 0 && (
             <PreviewInfoRow icon="user">
-              <Text my="4px" fontSize="s" color="coolGrey600">
+              <p className={styles.infoText}>
                 {formatMessage(eventCardMessages.registrantCount, {
                   attendeesCount,
                 })}
-              </Text>
+              </p>
             </PreviewInfoRow>
           )}
-          <Box borderBottom={`1px solid ${colors.divider}`} />
+          <div className={styles.divider} />
 
-          <Box pb="16px" borderBottom={`1px solid ${colors.divider}`}>
+          <div className={styles.section}>
             <PreviewInfoRow icon="position" empty={!address1}>
-              <Text
-                my="4px"
-                fontSize="s"
-                color={address1 ? 'coolGrey600' : 'coolGrey300'}
-                textDecoration={hasLocationPoint ? 'underline' : undefined}
+              <p
+                className={[
+                  address1 ? styles.infoText : styles.infoTextEmpty,
+                  hasLocationPoint ? styles.underline : '',
+                ].join(' ')}
               >
                 {locationName || formatMessage(messages.previewLocation)}
-              </Text>
+              </p>
               {address1 && addressDetails && (
-                <Text my="4px" fontSize="s" color="coolGrey600">
-                  {addressDetails}
-                </Text>
+                <p className={styles.infoText}>{addressDetails}</p>
               )}
             </PreviewInfoRow>
-          </Box>
+          </div>
 
           {onlineLink && (
-            <Box pb="16px" borderBottom={`1px solid ${colors.divider}`}>
+            <div className={styles.section}>
               <PreviewInfoRow icon="link">
-                <Text
-                  my="4px"
-                  fontSize="s"
-                  color="coolGrey600"
-                  textDecoration="underline"
-                >
+                <p className={`${styles.infoText} ${styles.underline}`}>
                   {formatMessage(messages.linkToOnlineEvent)}
-                </Text>
+                </p>
               </PreviewInfoRow>
-            </Box>
+            </div>
           )}
 
           <PreviewInfoRow icon="calendar">
-            <Text my="4px" fontSize="s" color="coolGrey600">
-              {dateLine}
-            </Text>
-            <Text
-              m="0"
-              fontSize="s"
-              color="tenantPrimary"
-              textDecoration="underline"
+            <p className={styles.infoText}>{dateLine}</p>
+            <p
+              className={`${styles.calendarLink} ${styles.underline}`}
+              style={{ color: tenantColor }}
             >
               {formatMessage(calendarMessages.addToCalendar)}
-            </Text>
+            </p>
           </PreviewInfoRow>
-        </Box>
-      </Box>
-    </Box>
+        </div>
+      </div>
+    </div>
   );
 };
 

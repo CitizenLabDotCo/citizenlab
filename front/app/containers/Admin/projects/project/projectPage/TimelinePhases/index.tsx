@@ -33,7 +33,7 @@ import PhaseStep from './PhaseStep';
 
 interface Props {
   projectId: string;
-  variant?: 'sidebar' | 'backofficeRedesign';
+  variant?: 'sidebar' | 'panel';
   heading?: React.ReactNode;
   withPhaseOptions?: boolean;
 }
@@ -58,7 +58,7 @@ const TimelinePhases = ({
     a.attributes.start_at.localeCompare(b.attributes.start_at)
   );
   const noEndLabel = formatMessage(messages.phaseNoEndDate);
-  const redesign = variant === 'backofficeRedesign';
+  const redesign = variant === 'panel';
 
   return (
     <Box>
@@ -141,7 +141,13 @@ const TimelinePhases = ({
           return withPhaseOptions ? (
             <PhaseRowWithOptions
               key={phase.id}
-              options={<PhaseOptionsMenu projectId={projectId} phase={phase} />}
+              options={
+                <PhaseOptionsMenu
+                  projectId={projectId}
+                  phase={phase}
+                  variant={variant}
+                />
+              }
             >
               {row}
             </PhaseRowWithOptions>

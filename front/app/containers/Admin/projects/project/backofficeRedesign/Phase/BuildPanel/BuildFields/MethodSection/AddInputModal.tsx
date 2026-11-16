@@ -1,27 +1,24 @@
 import React from 'react';
 
-import {
-  Box,
-  Button,
-  IconTooltip,
-  Text,
-} from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { boolean, ObjectSchema, object, string } from 'yup';
 
 import usePhase from 'api/phases/usePhase';
 
+import FormMultilocTextField from 'components/admin/MultilocFields/FormMultilocTextField';
 import AuthorField from 'components/CustomFieldsForm/Fields/AuthorField';
 import fieldMessages from 'components/CustomFieldsForm/messages';
 import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
-import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
-import Modal, { MEDIUM_MODAL_WIDTH } from 'components/UI/Modal';
+
+import IconButton from 'design-system/IconButton';
+import Modal from 'design-system/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 
 import messages from './messages';
+import styles from './MethodSection.module.css';
 import { InputValues } from './useStagedInputs';
 
 const COPY = {
@@ -94,68 +91,56 @@ const AddInputModal = ({ phaseId, kind, onSubmit, onClose }: Props) => {
 
   return (
     <Modal
-      opened
-      close={onClose}
-      width={MEDIUM_MODAL_WIDTH}
-      variant="bo"
-      header={formatMessage(copy.header)}
-      footer={
-        <Box display="flex" justifyContent="flex-end" gap="8px" width="100%">
-          <Button buttonStyle="bo-text" onClick={onClose}>
-            {formatMessage(messages.statementCancel)}
-          </Button>
-          <Button buttonStyle="bo-primary" onClick={submit}>
-            {formatMessage(messages.addStatement)}
-          </Button>
-        </Box>
-      }
+      isOpen
+      onOpenChange={(isOpen) => {
+        if (!isOpen) onClose();
+      }}
+      size={560}
+      title={formatMessage(copy.header)}
+      secondaryAction={{
+        label: formatMessage(messages.statementCancel),
+        onPress: onClose,
+      }}
+      primaryAction={{
+        label: formatMessage(messages.addStatement),
+        onPress: () => submit(),
+      }}
     >
       <FormProvider {...methods}>
-        <Box
-          as="form"
-          p="24px"
-          display="flex"
-          flexDirection="column"
-          gap="24px"
-          onSubmit={submit}
-        >
-          <Box>
-            <AuthorField name="author_id" variant="bo" />
-          </Box>
-          <InputMultilocWithLocaleSwitcher
+        <form className={styles.form} onSubmit={submit}>
+          <div>
+            <AuthorField name="author_id" variant="panel" />
+          </div>
+          <FormMultilocTextField
             name="title_multiloc"
-            variant="bo"
             label={fieldName}
             placeholder={formatMessage(copy.placeholder)}
             maxCharCount={MAX_CHARACTERS}
           />
           {allowAnonymous && (
-            <Box>
-              <Box display="flex" alignItems="center" gap="4px" mb="8px">
-                <Text as="span" variant="boHelper" fontSize="xs" m="0">
+            <div>
+              <div className={styles.visibilityLabel}>
+                <span className={styles.helper}>
                   {formatMessage(messages.statementProfileVisibility)}
-                </Text>
-                <IconTooltip
-                  content={
-                    <Text color="white" fontSize="s" m="0">
-                      {formatMessage(copy.anonymousTooltip)}
-                    </Text>
-                  }
-                  placement="top-start"
+                </span>
+                <IconButton
+                  icon="info-16"
+                  size={24}
+                  aria-label={formatMessage(copy.anonymousTooltip)}
                 />
-              </Box>
+              </div>
               <CheckboxWithLabel
                 name="anonymous"
                 size="20px"
                 label={
-                  <Text as="span" variant="boControl" m="0">
+                  <span className={styles.control}>
                     {formatMessage(messages.statementPostAnonymously)}
-                  </Text>
+                  </span>
                 }
               />
-            </Box>
+            </div>
           )}
-        </Box>
+        </form>
       </FormProvider>
     </Modal>
   );

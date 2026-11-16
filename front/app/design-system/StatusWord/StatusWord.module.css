@@ -1,0 +1,30 @@
+.statusWord {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.label {
+  composes: ui from '../typography.module.css';
+}
+
+.sub {
+  composes: small from '../typography.module.css';
+  color: var(--gv-text-tertiary);
+}
+
+.published {
+  color: var(--gv-text-success-strong);
+}
+
+.draft {
+  color: var(--gv-text-secondary);
+}
+
+.pendingApproval {
+  color: var(--gv-text-danger);
+}
+
+.archived {
+  color: var(--gv-text-tertiary);
+}

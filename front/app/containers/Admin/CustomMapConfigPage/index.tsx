@@ -1,14 +1,7 @@
 import React, { memo, useEffect, useState } from 'react';
 
 import MapView from '@arcgis/core/views/MapView';
-import {
-  Box,
-  Button,
-  Spinner,
-  Text,
-  bo,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -16,6 +9,10 @@ import { IMapConfig } from 'api/map_config/types';
 import useAddProjectMapConfig from 'api/map_config/useAddProjectMapConfig';
 import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
 import useUpdateMapConfig from 'api/map_config/useUpdateMapConfig';
+
+import IconButton from 'design-system/IconButton';
+import DSSpinner from 'design-system/Spinner';
+import 'design-system/tokens.css';
 
 import { useRegisterPageSaver } from 'components/admin/PageSaveContext';
 import { MAP_CONFIG_SAVER_KEY } from 'components/admin/PageSaveContext/constants';
@@ -28,6 +25,7 @@ import { useIntl } from 'utils/cl-intl';
 import { getCenter, getZoomLevel } from 'utils/mapUtils/map';
 import { useParams } from 'utils/router';
 
+import styles from './CustomMapConfigPage.module.css';
 import FeatureLayerUpload from './DataImportOptions/FeatureLayerUpload';
 import WebMapUpload from './DataImportOptions/WebMapUpload';
 import MapConfigOverview from './MapConfiguration/MapConfigOverview';
@@ -59,12 +57,13 @@ interface Props {
   className?: string;
   passedMapConfig?: IMapConfig;
   /** `bo` lays the settings and the map out as back-office workspace panels. */
-  variant?: 'default' | 'bo';
+  variant?: 'default' | 'panel';
   onBack?: () => void;
 }
 
 const CustomMapConfigPage = memo<Props>((props) => {
   const { className, passedMapConfig, variant = 'default', onBack } = props;
+  const isPanel = variant === 'panel';
   const { formatMessage } = useIntl();
   const { projectId } = useParams({ strict: false }) as {
     projectId: string;
@@ -164,54 +163,79 @@ const CustomMapConfigPage = memo<Props>((props) => {
   // TODO: Fix this the next time the file is edited.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (projectId && mapConfig?.data?.id) {
+    const featureLayerUpload = (
+      <FeatureLayerUpload
+        setView={setView}
+        variant={variant}
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        mapConfigId={mapConfig?.data.id}
+      />
+    );
+    const webMapUpload = (
+      <WebMapUpload
+        setView={setView}
+        variant={variant}
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        mapConfigId={mapConfig?.data.id}
+      />
+    );
     const settings = (
       <>
         {/* TODO: Fix this the next time the file is edited. */}
         {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-        {view === 'main' && mapConfig && (
-          <StyledMapConfigOverview
-            setView={setView}
-            mapView={mapView}
-            mapConfig={mapConfig}
-            variant={variant}
-            centerAndZoom={
-              variant === 'bo' ? (
+        {view === 'main' &&
+          mapConfig &&
+          (isPanel ? (
+            <MapConfigOverview
+              className={styles.settingsColumn}
+              setView={setView}
+              mapView={mapView}
+              mapConfig={mapConfig}
+              variant={variant}
+              centerAndZoom={
                 <StagedCenterAndZoom
                   mapConfig={mapConfig}
                   staged={staged}
                   invalid={stagedInvalid}
                   onChange={stageTyped}
                 />
-              ) : undefined
-            }
-          />
-        )}
-        {view === 'featureLayerUpload' && (
-          <Box flex="0 0 520px" width="520px">
-            <FeatureLayerUpload
-              setView={setView}
-              // TODO: Fix this the next time the file is edited.
-              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-              mapConfigId={mapConfig?.data.id}
+              }
             />
-          </Box>
-        )}
-        {view === 'webMapUpload' && (
-          <Box flex="0 0 520px" width="520px">
-            {/* TODO: Fix this the next time the file is edited. */}
-            {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-            <WebMapUpload setView={setView} mapConfigId={mapConfig?.data.id} />
-          </Box>
-        )}
+          ) : (
+            <StyledMapConfigOverview
+              setView={setView}
+              mapView={mapView}
+              mapConfig={mapConfig}
+              variant={variant}
+            />
+          ))}
+        {view === 'featureLayerUpload' &&
+          (isPanel ? (
+            <div className={styles.settingsColumn}>{featureLayerUpload}</div>
+          ) : (
+            <Box flex="0 0 520px" width="520px">
+              {featureLayerUpload}
+            </Box>
+          ))}
+        {view === 'webMapUpload' &&
+          (isPanel ? (
+            <div className={styles.settingsColumn}>{webMapUpload}</div>
+          ) : (
+            <Box flex="0 0 520px" width="520px">
+              {webMapUpload}
+            </Box>
+          ))}
       </>
     );
     const map = (
       <ConfigurationMap
         mapConfig={mapConfig}
         setParentMapView={setMapView}
-        height={variant === 'bo' ? '100%' : undefined}
+        height={isPanel ? '100%' : undefined}
         onSaveZoom={
-          variant === 'bo'
+          isPanel
             ? ({ lat, lng, zoom }) => {
                 setStaged({ lat: lat.toString(), lng: lng.toString(), zoom });
                 setStagedInvalid(false);
@@ -221,53 +245,28 @@ const CustomMapConfigPage = memo<Props>((props) => {
       />
     );
 
-    if (variant === 'bo') {
+    if (isPanel) {
       return (
-        <Box display="flex" gap="8px" h="100%" background={colors.background}>
-          {/* Fits the 520px settings column, its padding and a scrollbar. */}
-          <Box
-            flex="0 0 580px"
-            overflowY="auto"
-            p="16px 18px"
-            borderRadius={bo.panelBorderRadius}
-            background={colors.white}
-          >
-            <Box display="flex" alignItems="center" gap="8px" mb="8px">
+        <div className={styles.workspace}>
+          <div className={styles.settingsPanel}>
+            <div className={styles.settingsHeader}>
               {onBack && (
-                <Button
-                  buttonStyle="bo-text"
-                  icon="arrow-left"
-                  iconSize="16px"
-                  width="28px"
-                  height="28px"
-                  padding="0"
-                  ariaLabel={formatMessage(goBackMessages.goBack)}
-                  onClick={onBack}
+                <IconButton
+                  icon="arrow-left-16"
+                  aria-label={formatMessage(goBackMessages.goBack)}
+                  onPress={onBack}
                 />
               )}
-              <Text variant="boSection" fontSize="m" m="0">
+              <h2 className={styles.settingsTitle}>
                 {formatMessage(messages.mapConfigurationTitle)}
-              </Text>
-            </Box>
+              </h2>
+            </div>
             {settings}
-          </Box>
-          <Box
-            flexGrow={1}
-            p="16px"
-            borderRadius={bo.panelBorderRadius}
-            background={colors.grey100}
-          >
-            <Box
-              position="relative"
-              h="100%"
-              overflow="hidden"
-              borderRadius={bo.panelBorderRadius}
-              border={`1px solid ${colors.grey300}`}
-            >
-              {map}
-            </Box>
-          </Box>
-        </Box>
+          </div>
+          <div className={styles.mapPanel}>
+            <div className={styles.mapFrame}>{map}</div>
+          </div>
+        </div>
       );
     }
 
@@ -276,6 +275,14 @@ const CustomMapConfigPage = memo<Props>((props) => {
         {settings}
         <MapWrapper>{map}</MapWrapper>
       </Container>
+    );
+  }
+
+  if (isPanel) {
+    return (
+      <div className={styles.loading}>
+        <DSSpinner />
+      </div>
     );
   }
 

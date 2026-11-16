@@ -1,0 +1,63 @@
+.fileRow {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-4);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-12);
+}
+
+.thumbnail {
+  flex: 0 0 96px;
+  height: 54px;
+  overflow: hidden;
+  /* The old 3 px radius has no token; 4 is the nearest. */
+  border-radius: var(--gv-radius-4);
+  background: var(--gv-surface-control-subtle);
+}
+
+.thumbnailImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.details {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--gv-space-2);
+  min-width: 0;
+}
+
+.name {
+  composes: small from '../../../../../../design-system/typography.module.css';
+  overflow: hidden;
+  color: var(--gv-text-primary);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.meta {
+  composes: small from '../../../../../../design-system/typography.module.css';
+  color: var(--gv-text-secondary);
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.actions {
+  display: flex;
+  gap: var(--gv-space-4);
+  margin-right: calc(-1 * var(--gv-space-4));
+}
+
+.stackedActions {
+  display: flex;
+  gap: var(--gv-space-4);
+  margin-left: calc(-1 * var(--gv-space-4));
+}

@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { Box, Button, Text } from '@citizenlab/cl2-component-library';
-
-import Modal, { MEDIUM_MODAL_WIDTH } from 'components/UI/Modal';
+import AlertDialog from 'design-system/AlertDialog';
+import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -18,29 +17,17 @@ const VotingMethodChangeModal = ({ opened, onClose, onConfirm }: Props) => {
   const { formatMessage } = useIntl();
 
   return (
-    <Modal
-      opened={opened}
-      close={onClose}
-      width={MEDIUM_MODAL_WIDTH}
-      variant="bo"
-      header={formatMessage(messages.changeVotingMethodTitle)}
-      footer={
-        <Box display="flex" justifyContent="flex-end" gap="8px" width="100%">
-          <Button buttonStyle="bo-secondary" onClick={onClose}>
-            {formatMessage(messages.changeVotingMethodCancel)}
-          </Button>
-          <Button buttonStyle="bo-delete" onClick={onConfirm}>
-            {formatMessage(messages.changeVotingMethodConfirm)}
-          </Button>
-        </Box>
-      }
+    <AlertDialog
+      isOpen={opened}
+      onOpenChange={(isOpen) => {
+        if (!isOpen) onClose();
+      }}
+      title={formatMessage(messages.changeVotingMethodTitle)}
+      confirmLabel={formatMessage(messages.changeVotingMethodConfirm)}
+      onConfirm={() => onConfirm()}
     >
-      <Box p="24px">
-        <Text variant="boLabel" m="0">
-          {formatMessage(messages.changeVotingMethodWarning)}
-        </Text>
-      </Box>
-    </Modal>
+      {formatMessage(messages.changeVotingMethodWarning)}
+    </AlertDialog>
   );
 };
 

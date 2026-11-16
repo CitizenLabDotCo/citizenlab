@@ -1,0 +1,33 @@
+import React from 'react';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import Icon from '../Icon';
+import '../tokens.css';
+
+import messages from './messages';
+import styles from './ReviewStatus.module.css';
+
+export type ReviewStatusStatus = 'toReview' | 'toSet' | 'reviewed';
+
+export type ReviewStatusProps = {
+  status?: ReviewStatusStatus;
+};
+
+const ReviewStatus = ({ status = 'toReview' }: ReviewStatusProps) => {
+  const isReviewed = status === 'reviewed';
+
+  return (
+    <span className={`${styles.reviewStatus} ${styles[status]}`}>
+      <Icon
+        name={isReviewed ? 'circle-check-filled-16' : 'circle-dashed-14'}
+        className={styles.icon}
+      />
+      <span className={styles.label}>
+        <FormattedMessage {...messages[status]} />
+      </span>
+    </span>
+  );
+};
+
+export default ReviewStatus;

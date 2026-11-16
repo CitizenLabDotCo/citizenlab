@@ -1,0 +1,35 @@
+.splitButton {
+  display: inline-flex;
+  align-items: stretch;
+}
+
+/* The two halves meet: their inner corners are square. */
+.splitButton > :first-child {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.splitButton > :last-child {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+/* 1 px white line at 24%, as drawn. */
+.separator {
+  flex-shrink: 0;
+  width: var(--gv-border-width-1);
+  background: var(--gv-surface-panel);
+  opacity: 0.24;
+}
+
+/* Secondary overlaps the two borders; the active half draws on top. */
+.secondary > :last-child {
+  margin-left: calc(-1 * var(--gv-border-width-1));
+}
+
+.secondary > [data-hovered],
+.secondary > [data-pressed],
+.secondary > [data-focus-visible] {
+  position: relative;
+  z-index: 1;
+}

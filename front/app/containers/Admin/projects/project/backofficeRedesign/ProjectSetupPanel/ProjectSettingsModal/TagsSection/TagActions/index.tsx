@@ -1,12 +1,13 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
-
 import topicsMessages from 'containers/Admin/projects/project/topics/messages';
 
-import IconAction from 'components/UI/IconAction';
+import IconButton from 'design-system/IconButton';
+import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
+
+import styles from './TagActions.module.css';
 
 interface Props {
   deleteDisabled?: boolean;
@@ -16,27 +17,23 @@ interface Props {
 
 const TagActions = ({ deleteDisabled, onEdit, onDelete }: Props) => {
   const { formatMessage } = useIntl();
-  const editLabel = formatMessage(topicsMessages.edit);
-  const deleteLabel = formatMessage(topicsMessages.delete);
 
   return (
-    <Box display="flex" alignItems="center" gap="6px" flexShrink={0}>
-      <IconAction
-        buttonStyle="bo-secondary"
-        icon="edit"
-        tooltip={editLabel}
-        ariaLabel={editLabel}
-        onClick={onEdit}
+    <div className={styles.actions}>
+      <IconButton
+        variant="bordered"
+        icon="pencil-14"
+        aria-label={formatMessage(topicsMessages.edit)}
+        onPress={onEdit}
       />
-      <IconAction
-        buttonStyle="bo-secondary"
-        icon="delete"
-        tooltip={deleteLabel}
-        ariaLabel={deleteLabel}
-        disabled={deleteDisabled}
-        onClick={onDelete}
+      <IconButton
+        variant="bordered"
+        icon="trash-2-16"
+        aria-label={formatMessage(topicsMessages.delete)}
+        isDisabled={deleteDisabled}
+        onPress={onDelete}
       />
-    </Box>
+    </div>
   );
 };
 

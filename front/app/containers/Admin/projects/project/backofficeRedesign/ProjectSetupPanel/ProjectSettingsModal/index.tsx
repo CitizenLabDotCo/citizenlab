@@ -1,6 +1,5 @@
 import React, { useRef, useState } from 'react';
 
-import { Box, Button, Text, bo } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import { CLErrors } from 'typings';
 
@@ -14,6 +13,9 @@ import { useValidateProjectContext } from 'containers/Admin/projects/_shared/com
 import SettingsModal, {
   SettingsModalSection,
 } from 'containers/Admin/projects/project/backofficeRedesign/_shared/components/SettingsModal';
+
+import Banner from 'design-system/Banner';
+import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 import { validateSlug } from 'utils/textUtils';
@@ -158,7 +160,7 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
       name: 'general',
       group: messages.settingsProjectGroup,
       label: messages.settingsGeneral,
-      icon: 'cog',
+      icon: 'settings-16',
       content: (
         <GeneralSection
           projectId={projectId}
@@ -181,14 +183,14 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
       name: 'resources',
       group: messages.settingsProjectGroup,
       label: messages.settingsResources,
-      icon: 'paperclip',
+      icon: 'paperclip-16',
       content: <ResourcesSection projectId={projectId} draft={filesDraft} />,
     },
     {
       name: 'tags',
       group: messages.settingsInputsGroup,
       label: messages.settingsTags,
-      icon: 'label',
+      icon: 'tag-16',
       content: <TagsSection draft={tagsDraft} />,
     },
     ...(perspectivesActive
@@ -197,7 +199,7 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
             name: 'perspectives',
             group: messages.settingsInputsGroup,
             label: messages.settingsPerspectives,
-            icon: 'stars',
+            icon: 'sparkles-16',
             content: (
               <PerspectivesSection
                 enabled={projectAttrs.live_auto_input_topics_enabled}
@@ -218,27 +220,19 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
         close={handleClose}
         header={formatMessage(messages.settingsTitle)}
         sections={sections}
-        footer={
-          <Box display="flex" alignItems="center" gap="12px">
-            {saveFailed && (
-              <Text variant="boMicro" color="red600" m="0px">
-                {formatMessage(messages.settingsSaveFailed)}
-              </Text>
-            )}
-            <Button
-              buttonStyle="bo-primary"
-              width="auto"
-              height={bo.buttonMedium.height}
-              padding={bo.buttonMedium.padding}
-              fontSize={bo.buttonMedium.fontSize}
-              processing={processing}
-              onClick={handleSave}
-              id="e2e-project-settings-save"
-            >
-              {formatMessage(messages.settingsSave)}
-            </Button>
-          </Box>
+        notice={
+          saveFailed && (
+            <Banner tone="error">
+              {formatMessage(messages.settingsSaveFailed)}
+            </Banner>
+          )
         }
+        primaryAction={{
+          label: formatMessage(messages.settingsSave),
+          onPress: handleSave,
+          isPending: processing,
+          id: 'e2e-project-settings-save',
+        }}
       />
       <DiscardChangesModal
         opened={confirmingDiscard}

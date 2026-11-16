@@ -12,6 +12,9 @@ import useDeletePollQuestion from 'api/poll_questions/useDeletePollQuestion';
 import useReorderPollQuestion from 'api/poll_questions/useReorderPollQuestion';
 import useUpdatePollQuestion from 'api/poll_questions/useUpdatePollQuestion';
 
+import Button from 'design-system/Button';
+import 'design-system/tokens.css';
+
 import { List } from 'components/admin/ResourceList';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
@@ -19,13 +22,14 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import messages from './messages';
+import styles from './Poll.module.css';
 import OptionForm from './PollAnswerOptions/OptionForm';
 import QuestionFormRow from './PollQuestions/QuestionFormRow';
 import QuestionRow from './PollQuestions/QuestionRow';
 import {
   PollVariant,
   PollVariantContext,
-  usePollStyles,
+  useIsPanelPoll,
 } from './PollVariantContext';
 
 const StyledList = styled(List)`
@@ -39,7 +43,7 @@ interface Props {
 }
 
 const PollAdminForm = ({ phaseId, pollQuestions }: Props) => {
-  const { buttonStyle, boSize } = usePollStyles();
+  const isPanel = useIsPanelPoll();
   const { mutate: addPollQuestion } = useAddPollQuestion();
   const { mutate: deletePollQuestion } = useDeletePollQuestion();
   const { mutate: updatePollQuestion } = useUpdatePollQuestion();
@@ -175,64 +179,75 @@ const PollAdminForm = ({ phaseId, pollQuestions }: Props) => {
 
   const listItems = getListItems() || [];
 
+  const listKey = listItems.length + (newQuestionTitle ? 1 : 0);
+  const rows = (
+    <>
+      {!isNilOrError(listItems) &&
+        listItems.map((question, index) => (
+          <Fragment key={question.id}>
+            {editingQuestionId === question.id && editingQuestionTitle ? (
+              <QuestionFormRow
+                titleMultiloc={editingQuestionTitle}
+                onChange={changeEditingQuestion}
+                onSave={saveEditingQuestion}
+                onCancel={cancelEditQuestion}
+              />
+            ) : editingOptionsId === question.id ? (
+              <OptionForm question={question} collapse={closeEditingOptions} />
+            ) : (
+              <QuestionRow
+                question={question}
+                isLastItem={index === listItems.length - 1 && !newQuestionTitle}
+                index={index}
+                onDelete={deleteQuestion(question.id)}
+                onEdit={editQuestion(
+                  question.id,
+                  question.attributes.title_multiloc
+                )}
+                onEditOptions={editOptions(question.id)}
+                handleDragRow={handleDragRow}
+                handleDropRow={handleDropRow}
+              />
+            )}
+          </Fragment>
+        ))}
+      {newQuestionTitle && (
+        <QuestionFormRow
+          key="new"
+          titleMultiloc={newQuestionTitle}
+          onChange={changeNewQuestion}
+          onSave={saveNewQuestion}
+          onCancel={cancelNewQuestion}
+        />
+      )}
+    </>
+  );
+
   return (
     <>
-      <StyledList key={listItems.length + (newQuestionTitle ? 1 : 0)}>
-        {!isNilOrError(listItems) &&
-          listItems.map((question, index) => (
-            <Fragment key={question.id}>
-              {editingQuestionId === question.id && editingQuestionTitle ? (
-                <QuestionFormRow
-                  titleMultiloc={editingQuestionTitle}
-                  onChange={changeEditingQuestion}
-                  onSave={saveEditingQuestion}
-                  onCancel={cancelEditQuestion}
-                />
-              ) : editingOptionsId === question.id ? (
-                <OptionForm
-                  question={question}
-                  collapse={closeEditingOptions}
-                />
-              ) : (
-                <QuestionRow
-                  question={question}
-                  isLastItem={
-                    index === listItems.length - 1 && !newQuestionTitle
-                  }
-                  index={index}
-                  onDelete={deleteQuestion(question.id)}
-                  onEdit={editQuestion(
-                    question.id,
-                    question.attributes.title_multiloc
-                  )}
-                  onEditOptions={editOptions(question.id)}
-                  handleDragRow={handleDragRow}
-                  handleDropRow={handleDropRow}
-                />
-              )}
-            </Fragment>
-          ))}
-        {newQuestionTitle && (
-          <QuestionFormRow
-            key="new"
-            titleMultiloc={newQuestionTitle}
-            onChange={changeNewQuestion}
-            onSave={saveNewQuestion}
-            onCancel={cancelNewQuestion}
-          />
-        )}
-      </StyledList>
-      {!newQuestionTitle && !editingOptionsId && (
-        <ButtonWithLink
-          className="e2e-add-question-btn"
-          buttonStyle={buttonStyle('admin-dark')}
-          boSize={boSize}
-          icon="plus-circle"
-          onClick={startNewQuestion}
-        >
-          <FormattedMessage {...messages.addPollQuestion} />
-        </ButtonWithLink>
+      {isPanel ? (
+        <List key={listKey} className={styles.list}>
+          {rows}
+        </List>
+      ) : (
+        <StyledList key={listKey}>{rows}</StyledList>
       )}
+      {!newQuestionTitle &&
+        !editingOptionsId &&
+        (isPanel ? (
+          <Button variant="primary" icon="plus-16" onPress={startNewQuestion}>
+            <FormattedMessage {...messages.addPollQuestion} />
+          </Button>
+        ) : (
+          <ButtonWithLink
+            className="e2e-add-question-btn"
+            buttonStyle="admin-dark"
+            icon="plus-circle"
+            onClick={startNewQuestion}
+          >
+            <FormattedMessage {...messages.addPollQuestion} />
+          </ButtonWithLink>
+        ))}
     </>
   );
 };

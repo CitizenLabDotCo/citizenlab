@@ -1,15 +1,13 @@
 import React from 'react';
 
-import {
-  Box,
-  Icon,
-  Text,
-  colors,
-  stylingConsts,
-} from '@citizenlab/cl2-component-library';
+// The preview copies the citizen event page and keeps its icon.
+import { Icon } from '@citizenlab/cl2-component-library';
+import 'design-system/tokens.css';
 
 import { IFileAttachmentData } from 'api/file_attachments/types';
 import useFileById from 'api/files/useFileById';
+
+import styles from './PreviewAttachment.module.css';
 
 interface Props {
   attachment: IFileAttachmentData;
@@ -21,30 +19,16 @@ const PreviewAttachment = ({ attachment }: Props) => {
   if (!file) return null;
 
   return (
-    <Box
-      display="flex"
-      alignItems="center"
-      gap="16px"
-      p="14px 16px"
-      border={`1px solid ${colors.divider}`}
-      borderRadius={stylingConsts.borderRadius}
-    >
+    <div className={styles.attachment}>
       <Icon
         name="paperclip"
         width="18px"
         height="18px"
-        fill={colors.coolGrey600}
+        fill="currentColor"
+        className={styles.icon}
       />
-      <Text
-        m="0"
-        fontSize="s"
-        lineHeight="20px"
-        color="coolGrey700"
-        textDecoration="underline"
-      >
-        {file.data.attributes.name}
-      </Text>
-    </Box>
+      <p className={styles.name}>{file.data.attributes.name}</p>
+    </div>
   );
 };
 

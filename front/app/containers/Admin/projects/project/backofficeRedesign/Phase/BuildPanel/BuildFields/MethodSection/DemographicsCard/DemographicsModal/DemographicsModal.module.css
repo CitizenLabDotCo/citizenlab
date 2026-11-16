@@ -1,0 +1,10 @@
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-20);
+}
+
+.helper {
+  composes: ui from '../../../../../../../../../../../design-system/typography.module.css';
+  color: var(--gv-text-secondary);
+}

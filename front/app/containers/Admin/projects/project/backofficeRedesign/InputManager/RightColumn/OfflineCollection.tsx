@@ -1,20 +1,21 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import Button from 'design-system/Button';
+import 'design-system/tokens.css';
 
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 
 import NewIdeaButton from 'containers/Admin/projects/_shared/components/NewIdeaButton';
 
-import ButtonWithLink from 'components/UI/ButtonWithLink';
-
 import { useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 
 import messages from '../messages';
 
 import Card from './Card';
 import OfflineFormsButton from './OfflineFormsButton';
+import styles from './RightColumn.module.css';
 
 interface Props {
   project: IProjectData;
@@ -26,16 +27,18 @@ const OfflineCollection = ({ project, phase }: Props) => {
 
   return (
     <Card title={formatMessage(messages.offlineCollection)}>
-      <Box display="flex" flexDirection="column" gap="8px">
-        <ButtonWithLink
-          to="/admin/projects/$projectId/phases/$phaseId/input-importer"
-          params={{ projectId: project.id, phaseId: phase.id }}
-          icon="page"
-          buttonStyle="bo-secondary"
-          width="100%"
+      <div className={styles.actions}>
+        <Button
+          size={28}
+          icon="file-16"
+          onPress={() =>
+            clHistory.push(
+              `/admin/projects/${project.id}/phases/${phase.id}/input-importer`
+            )
+          }
         >
           {formatMessage(messages.importInputs)}
-        </ButtonWithLink>
+        </Button>
         <NewIdeaButton
           participationMethod={phase.attributes.participation_method}
           inputTerm={phase.attributes.input_term}
@@ -46,7 +49,7 @@ const OfflineCollection = ({ project, phase }: Props) => {
         <OfflineFormsButton
           participationMethod={phase.attributes.participation_method}
         />
-      </Box>
+      </div>
     </Card>
   );
 };

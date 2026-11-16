@@ -1,0 +1,32 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-24);
+}
+
+.titleField {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-4);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-12);
+}
+
+/* Same look as a design-system field label, for sections that hold more than one field. */
+.sectionLabel {
+  composes: body from '../../../../../../design-system/typography.module.css';
+  color: var(--gv-text-primary);
+}
+
+/* 28 px lines the picker up with the option text: an 18 px radio plus its 10 px gap. */
+.groupsPicker {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-4);
+  margin-left: var(--gv-space-28);
+  scroll-margin-bottom: var(--gv-space-24);
+}

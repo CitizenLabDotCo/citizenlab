@@ -1,12 +1,10 @@
 import React from 'react';
 
-import {
-  Box,
-  Icon,
-  Text,
-  Tooltip,
-  colors,
-} from '@citizenlab/cl2-component-library';
+// The design-system icon set has no globe.
+import { Icon } from '@citizenlab/cl2-component-library';
+import 'design-system/tokens.css';
+import Tooltip from 'design-system/Tooltip';
+import { Focusable } from 'react-aria-components';
 
 import dateTimeMessages from 'containers/Admin/projects/project/events/components/DateTimeSelection/messages';
 
@@ -14,6 +12,7 @@ import { useIntl } from 'utils/cl-intl';
 import { getGmtOffset } from 'utils/dateUtils';
 
 import messages from './messages';
+import styles from './PlatformTimeNote.module.css';
 
 interface Props {
   timezone: string;
@@ -29,19 +28,22 @@ const PlatformTimeNote = ({ timezone, now }: Props) => {
         timezone: timezone.replace(/_/g, ' '),
         gmtOffset: getGmtOffset(timezone, now),
       })}
-      theme="dark"
     >
-      <Box display="flex" alignItems="center" gap="6px" tabIndex={0}>
-        <Icon
-          name="globe"
-          width="14px"
-          height="14px"
-          fill={colors.coolGrey600}
-        />
-        <Text as="span" m="0" fontSize="xs" color="coolGrey600">
-          {formatMessage(messages.platformTime, { timezone })}
-        </Text>
-      </Box>
+      {/* Focusable lets the tooltip open on keyboard focus of plain text. */}
+      <Focusable>
+        <span className={styles.note} tabIndex={0}>
+          <Icon
+            name="globe"
+            width="14px"
+            height="14px"
+            fill="currentColor"
+            className={styles.icon}
+          />
+          <span className={styles.text}>
+            {formatMessage(messages.platformTime, { timezone })}
+          </span>
+        </span>
+      </Focusable>
     </Tooltip>
   );
 };

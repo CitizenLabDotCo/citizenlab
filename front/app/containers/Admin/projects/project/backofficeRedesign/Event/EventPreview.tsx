@@ -1,14 +1,9 @@
 import React from 'react';
 
-import {
-  Box,
-  Icon,
-  Image,
-  Text,
-  Title,
-  colors,
-} from '@citizenlab/cl2-component-library';
-import { useTheme } from 'styled-components';
+// The preview copies the citizen event page, whose icons the design-system
+// set doesn't have.
+import { Icon } from '@citizenlab/cl2-component-library';
+import 'design-system/tokens.css';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IProjectData } from 'api/projects/types';
@@ -27,6 +22,7 @@ import { useIntl } from 'utils/cl-intl';
 import { stripHtml } from 'utils/textUtils';
 
 import AdminOnlyPlaceholder from './AdminOnlyPlaceholder';
+import styles from './EventPreview.module.css';
 import messages from './messages';
 import PreviewAttachment from './PreviewAttachment';
 import PreviewInfoCard from './PreviewInfoCard';
@@ -39,9 +35,10 @@ interface Props {
 const EventPreview = ({ project, form }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const theme = useTheme();
   const { data: appConfig } = useAppConfiguration();
   const logo = appConfig?.data.attributes.logo?.medium;
+  const tenantColor =
+    appConfig?.data.attributes.settings.core.color_main ?? undefined;
   const { attributes, image } = form;
 
   const title = localize(attributes.title_multiloc);
@@ -51,80 +48,51 @@ const EventPreview = ({ project, form }: Props) => {
     <PhonePreviewBackdrop>
       <PhonePreviewFrame
         screen={
-          <Box
-            h="100%"
-            display="flex"
-            flexDirection="column"
-            background={colors.white}
-            aria-hidden
-          >
-            <Box
-              flex="0 0 56px"
-              display="flex"
-              alignItems="center"
-              justifyContent="space-between"
-              px="16px"
-              borderBottom={`1px solid ${colors.divider}`}
-            >
-              {logo ? <Image src={logo} alt="" height="28px" /> : <span />}
-              <Icon name="menu" fill={colors.textPrimary} />
-            </Box>
+          <div className={styles.screen} aria-hidden>
+            <div className={styles.navBar}>
+              {logo ? (
+                <img src={logo} alt="" className={styles.logo} />
+              ) : (
+                <span />
+              )}
+              <Icon
+                name="menu"
+                fill="currentColor"
+                className={styles.menuIcon}
+              />
+            </div>
 
-            <Box
-              flexGrow={1}
-              overflowY="auto"
-              display="flex"
-              flexDirection="column"
-              gap="16px"
-              p="20px 16px 24px"
-            >
-              <Title
-                variant="h2"
-                m="0"
-                color={title ? 'textPrimary' : 'coolGrey300'}
-              >
+            <div className={styles.content}>
+              <h2 className={title ? styles.title : styles.titlePlaceholder}>
                 {title || formatMessage(messages.previewEventName)}
-              </Title>
+              </h2>
 
-              <Box display="flex" gap="10px" alignItems="flex-start">
-                <Box
-                  flex="0 0 32px"
-                  height="32px"
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                  borderRadius="50%"
-                  background={colors.grey100}
-                >
+              <div className={styles.project}>
+                <div className={styles.projectIcon}>
                   <Icon
                     name="calendar"
                     width="16px"
                     height="16px"
-                    fill={theme.colors.tenantPrimary}
+                    fill={tenantColor}
                   />
-                </Box>
-                <Box>
-                  <Text m="0" fontSize="s" color="textPrimary">
+                </div>
+                <div>
+                  <p className={styles.projectName}>
                     {formatMessage(messages.fromProject, {
                       project: localize(project.attributes.title_multiloc),
                     })}
-                  </Text>
-                  <Text
-                    m="0"
-                    fontSize="xs"
-                    color="coolGrey600"
-                    textDecoration="underline"
-                  >
+                  </p>
+                  <p className={styles.projectLink}>
                     {formatMessage(messages.goToProject)}
-                  </Text>
-                </Box>
-              </Box>
+                  </p>
+                </div>
+              </div>
 
               {image ? (
-                <Image
+                <img
                   src={form.croppedImage ?? image.base64}
                   alt=""
-                  width="100%"
+                  className={styles.image}
                 />
               ) : (
                 <AdminOnlyPlaceholder
@@ -166,8 +134,8 @@ const EventPreview = ({ project, form }: Props) => {
                   showButtonIcon={!form.customButtonOn}
                 />
               )}
-            </Box>
-          </Box>
+            </div>
+          </div>
         }
       />
     </PhonePreviewBackdrop>

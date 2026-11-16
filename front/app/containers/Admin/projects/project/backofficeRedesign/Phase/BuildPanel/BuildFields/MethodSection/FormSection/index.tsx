@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { Text } from '@citizenlab/cl2-component-library';
-
 import { InputTerm, ParticipationMethod } from 'api/phases/types';
 
 import inputFormMessages from 'containers/Admin/projects/project/inputForm/messages';
@@ -15,6 +13,7 @@ import PanelField from '../../../PanelField';
 import DemographicsCard from '../DemographicsCard';
 
 import FormQuestionsCard from './FormQuestionsCard';
+import styles from './FormSection.module.css';
 import formTitle from './formTitle';
 import messages from './messages';
 
@@ -64,9 +63,9 @@ const FormSection = ({
         />
       ) : (
         <PanelField label={title}>
-          <Text variant="boHelper" m="0">
+          <p className={styles.helper}>
             {formatMessage(messages.saveToEditForm)}
-          </Text>
+          </p>
         </PanelField>
       )}
 

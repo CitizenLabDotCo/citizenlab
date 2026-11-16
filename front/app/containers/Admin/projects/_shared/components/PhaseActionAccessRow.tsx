@@ -1,11 +1,13 @@
 import React from 'react';
 
-import { Box, Icon, Text, bo, colors } from '@citizenlab/cl2-component-library';
+import Icon from 'design-system/Icon';
+import 'design-system/tokens.css';
 
 import { IPhasePermissionAction } from 'api/permissions/types';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
+import styles from './PhaseActionAccessRow.module.css';
 import ToggleActionAccess from './ToggleActionAccess';
 
 export interface AccessOnlyAction {
@@ -22,25 +24,13 @@ const PhaseActionAccessRow = ({ phaseId, action, label }: Props) => {
 
   return (
     <ToggleActionAccess phaseId={phaseId} action={action}>
-      <Box display="flex" alignItems="center" gap={bo.toggleLabelGap}>
-        <Box
-          display="flex"
-          justifyContent="center"
-          width={bo.toggleWidth}
-          flexShrink={0}
-        >
-          <Icon
-            name="check"
-            width="16px"
-            height="16px"
-            fill={colors.coolGrey600}
-            ariaHidden
-          />
-        </Box>
-        <Text as="span" variant="boControl" m="0">
-          {formatMessage(label)}
-        </Text>
-      </Box>
+      <span className={styles.row}>
+        {/* Sits where a 26 px switch sits in the toggle rows above. */}
+        <span className={styles.iconBox}>
+          <Icon name="check-14" className={styles.icon} />
+        </span>
+        <span className={styles.label}>{formatMessage(label)}</span>
+      </span>
     </ToggleActionAccess>
   );
 };

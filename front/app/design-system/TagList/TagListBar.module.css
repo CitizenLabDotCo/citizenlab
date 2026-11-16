@@ -1,0 +1,24 @@
+.bar {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-8);
+  height: var(--gv-size-32);
+  padding: 0 var(--gv-space-4);
+}
+
+.checkboxSlot {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: var(--gv-size-24);
+  height: var(--gv-size-24);
+}
+
+.label {
+  composes: small from '../typography.module.css';
+  flex: 1 1 auto;
+  min-width: 0;
+  color: var(--gv-text-secondary);
+}

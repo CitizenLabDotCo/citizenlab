@@ -1,11 +1,11 @@
-import React, { useId } from 'react';
-
-import { Box, Toggle } from '@citizenlab/cl2-component-library';
+import React from 'react';
 
 import SettingsSection from 'containers/Admin/projects/project/backofficeRedesign/_shared/components/SettingsModal/SettingsSection';
 import topicsMessages from 'containers/Admin/projects/project/topics/messages';
 
-import { ScreenReaderOnly } from 'utils/a11y';
+import Switch from 'design-system/Switch';
+import 'design-system/tokens.css';
+
 import { useIntl } from 'utils/cl-intl';
 
 interface Props {
@@ -15,7 +15,6 @@ interface Props {
 
 const PerspectivesSection = ({ enabled, onChange }: Props) => {
   const { formatMessage } = useIntl();
-  const toggleId = useId();
 
   const title = formatMessage(topicsMessages.perspectives);
 
@@ -25,17 +24,12 @@ const PerspectivesSection = ({ enabled, onChange }: Props) => {
       titleVariant="label"
       description={formatMessage(topicsMessages.liveAutoInputTopicsDescription)}
       action={
-        <Box>
-          <label htmlFor={toggleId}>
-            <ScreenReaderOnly>{title}</ScreenReaderOnly>
-          </label>
-          <Toggle
-            id={toggleId}
-            size="small"
-            checked={enabled}
-            onChange={() => onChange(!enabled)}
-          />
-        </Box>
+        <Switch
+          size={36}
+          aria-label={title}
+          isSelected={enabled}
+          onChange={onChange}
+        />
       }
     />
   );

@@ -10,6 +10,11 @@ import { IInputTopicData } from 'api/input_topics/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import DSModal from 'design-system/Modal';
+import 'design-system/tokens.css';
+
+import FormMultilocRichTextField from 'components/admin/MultilocFields/FormMultilocRichTextField';
+import FormMultilocTextField from 'components/admin/MultilocFields/FormMultilocTextField';
 import { SectionField } from 'components/admin/Section';
 import EmojiPicker from 'components/HookForm/EmojiPicker';
 import Feedback from 'components/HookForm/Feedback';
@@ -24,7 +29,9 @@ import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 
+import styles from './InputTopicModal.module.css';
 import messages from './messages';
+import TopicEmojiField from './TopicEmojiField';
 
 interface FormValues {
   title_multiloc: Multiloc;
@@ -44,7 +51,7 @@ interface Props {
   opened: boolean;
   close: () => void;
   onSubmit: (values: InputTopicFormValues) => Promise<void> | void;
-  variant?: 'default' | 'bo';
+  variant?: 'default' | 'panel';
 }
 
 const InputTopicModal = ({
@@ -106,31 +113,8 @@ const InputTopicModal = ({
     }
   };
 
-  const isBo = variant === 'bo';
+  const isPanel = variant === 'panel';
   const submit = methods.handleSubmit(onFormSubmit);
-
-  const cancelButton = (
-    <Button
-      buttonStyle={isBo ? 'bo-secondary' : 'secondary-outlined'}
-      width={isBo ? 'auto' : undefined}
-      onClick={close}
-    >
-      <FormattedMessage {...messages.cancel} />
-    </Button>
-  );
-
-  const saveButton = (
-    <Button
-      type="submit"
-      buttonStyle={isBo ? 'bo-primary' : 'primary'}
-      width={isBo ? 'auto' : undefined}
-      processing={methods.formState.isSubmitting}
-      onClick={isBo ? submit : undefined}
-      id="e2e-submit-input-topic-button"
-    >
-      {formatMessage(messages.save)}
-    </Button>
-  );
 
   const getHeaderMessage = () => {
     if (isEditing) {
@@ -142,21 +126,64 @@ const InputTopicModal = ({
     return <FormattedMessage {...messages.addInputTopic} />;
   };
 
+  const showEmojiField = !isSubtopic && nestedTopicsEnabled;
+
+  if (isPanel) {
+    return (
+      <DSModal
+        isOpen={opened}
+        onOpenChange={(isOpen) => {
+          if (!isOpen) close();
+        }}
+        title={getHeaderMessage()}
+        size={560}
+        primaryAction={{
+          label: formatMessage(messages.save),
+          onPress: () => submit(),
+          isPending: methods.formState.isSubmitting,
+          id: 'e2e-submit-input-topic-button',
+        }}
+        secondaryAction={{
+          label: <FormattedMessage {...messages.cancel} />,
+          onPress: close,
+        }}
+      >
+        <FormProvider {...methods}>
+          <form
+            onSubmit={submit}
+            data-testid="inputTopicForm"
+            className={styles.form}
+          >
+            <Feedback />
+            <div className={styles.titleRow}>
+              <FormMultilocTextField
+                name="title_multiloc"
+                label={formatMessage(messages.fieldTopicTitle)}
+              />
+              {showEmojiField && (
+                <TopicEmojiField
+                  label={formatMessage(messages.fieldTopicEmoji)}
+                />
+              )}
+            </div>
+            <FormMultilocRichTextField
+              name="description_multiloc"
+              label={formatMessage(messages.fieldTopicDescription)}
+              aria-label={formatMessage(messages.fieldTopicDescription)}
+              noImages
+              noLinks
+              noVideos
+              noAlign
+              limitedTextFormatting
+            />
+          </form>
+        </FormProvider>
+      </DSModal>
+    );
+  }
+
   return (
-    <Modal
-      variant={variant}
-      opened={opened}
-      close={close}
-      header={getHeaderMessage()}
-      footer={
-        isBo ? (
-          <Box display="flex" justifyContent="flex-end" gap="8px" w="100%">
-            {cancelButton}
-            {saveButton}
-          </Box>
-        ) : undefined
-      }
-    >
+    <Modal opened={opened} close={close} header={getHeaderMessage()}>
       <ModalContentContainer>
         <FormProvider {...methods}>
           <form onSubmit={submit} data-testid="inputTopicForm">
@@ -166,13 +193,11 @@ const InputTopicModal = ({
                 <InputMultilocWithLocaleSwitcher
                   name="title_multiloc"
                   label={formatMessage(messages.fieldTopicTitle)}
-                  variant={variant}
                 />
-                {!isSubtopic && nestedTopicsEnabled && (
+                {showEmojiField && (
                   <EmojiPicker
                     name="icon"
                     label={formatMessage(messages.fieldTopicEmoji)}
-                    variant={variant}
                   />
                 )}
               </Box>
@@ -181,7 +206,6 @@ const InputTopicModal = ({
               <QuillMultilocWithLocaleSwitcher
                 name="description_multiloc"
                 label={formatMessage(messages.fieldTopicDescription)}
-                variant={variant}
                 noImages
                 noLinks
                 noVideos
@@ -190,12 +214,19 @@ const InputTopicModal = ({
               />
             </SectionField>
 
-            {!isBo && (
-              <ButtonsWrapper>
-                {cancelButton}
-                {saveButton}
-              </ButtonsWrapper>
-            )}
+            <ButtonsWrapper>
+              <Button buttonStyle="secondary-outlined" onClick={close}>
+                <FormattedMessage {...messages.cancel} />
+              </Button>
+              <Button
+                type="submit"
+                buttonStyle="primary"
+                processing={methods.formState.isSubmitting}
+                id="e2e-submit-input-topic-button"
+              >
+                {formatMessage(messages.save)}
+              </Button>
+            </ButtonsWrapper>
           </form>
         </FormProvider>
       </ModalContentContainer>

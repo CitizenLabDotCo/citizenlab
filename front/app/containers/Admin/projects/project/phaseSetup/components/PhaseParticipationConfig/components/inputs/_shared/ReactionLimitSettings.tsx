@@ -1,12 +1,20 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 
-import { Box, Input, Radio, Text } from '@citizenlab/cl2-component-library';
+import Banner from 'design-system/Banner';
+import NumberField from 'design-system/NumberField';
+import RadioGroup, { Radio } from 'design-system/RadioGroup';
+import 'design-system/tokens.css';
 
 import messages from 'containers/Admin/projects/project/messages';
 
 import { useIntl } from 'utils/cl-intl';
 
+import styles from './ReactionLimitSettings.module.css';
+
 type Method = 'unlimited' | 'limited';
+
+const isMethod = (value: string): value is Method =>
+  value === 'unlimited' || value === 'limited';
 
 interface Props {
   name: string;
@@ -15,7 +23,8 @@ interface Props {
   max: number | null | undefined;
   maxLabel: string;
   limitedLabel?: string;
-  error?: ReactNode;
+  methodError?: string;
+  maxError?: string;
   onMethodChange: (method: Method) => void;
   onMaxChange: (max: string) => void;
 }
@@ -27,70 +36,45 @@ const ReactionLimitSettings = ({
   max,
   maxLabel,
   limitedLabel,
-  error,
+  methodError,
+  maxError,
   onMethodChange,
   onMaxChange,
 }: Props) => {
   const { formatMessage } = useIntl();
 
   return (
-    <Box display="flex" flexDirection="column" gap="6px" py="6px">
-      <Text as="span" variant="boControl" m="0">
-        {title}
-      </Text>
-      <Box display="flex" gap="24px">
-        <Radio
-          variant="bo"
-          name={name}
-          id={`${name}-unlimited`}
-          value="unlimited"
-          currentValue={method}
-          onChange={onMethodChange}
-          label={
-            <Text as="span" variant="boControl" m="0">
-              {formatMessage(messages.unlimited)}
-            </Text>
-          }
-        />
-        <Radio
-          variant="bo"
-          name={name}
-          id={`${name}-limited`}
-          value="limited"
-          currentValue={method}
-          onChange={onMethodChange}
-          label={
-            <Text as="span" variant="boControl" m="0">
-              {limitedLabel ?? formatMessage(messages.limited)}
-            </Text>
-          }
-        />
-      </Box>
+    <div className={styles.settings}>
+      <RadioGroup
+        label={title}
+        name={name}
+        value={method ?? null}
+        onChange={(value) => {
+          if (isMethod(value)) onMethodChange(value);
+        }}
+      >
+        <Radio value="unlimited">{formatMessage(messages.unlimited)}</Radio>
+        <Radio value="limited">
+          {limitedLabel ?? formatMessage(messages.limited)}
+        </Radio>
+      </RadioGroup>
       {method === 'limited' && (
-        <Box
-          display="flex"
-          alignItems="center"
-          justifyContent="space-between"
-          gap="12px"
-        >
-          <Text as="span" variant="boControl" m="0">
-            {maxLabel}
-          </Text>
-          <Box width="72px">
-            <Input
-              id={`${name}-max`}
-              ariaLabel={maxLabel}
-              variant="bo"
-              type="number"
-              min="1"
-              value={max ? max.toString() : null}
-              onChange={onMaxChange}
-            />
-          </Box>
-        </Box>
+        <NumberField
+          id={`${name}-max`}
+          label={maxLabel}
+          size={32}
+          // NaN is how React Aria shows an empty field and keeps it controlled.
+          value={max || NaN}
+          minValue={1}
+          onChange={(number) =>
+            onMaxChange(Number.isNaN(number) ? '' : `${number}`)
+          }
+          isInvalid={!!maxError}
+          errorMessage={maxError}
+        />
       )}
-      {error}
-    </Box>
+      {methodError && <Banner tone="error">{methodError}</Banner>}
+    </div>
   );
 };
 

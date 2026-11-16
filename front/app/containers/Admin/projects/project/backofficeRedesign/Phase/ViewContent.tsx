@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 
-import { Box, Spinner, bo, colors } from '@citizenlab/cl2-component-library';
+import Spinner from 'design-system/Spinner';
+import 'design-system/tokens.css';
 
 import { ICauses } from 'api/causes/types';
 import useCauses from 'api/causes/useCauses';
@@ -16,8 +17,7 @@ import OfflineCollection from '../InputManager/RightColumn/OfflineCollection';
 import EmptyState from './EmptyState';
 import messages from './messages';
 import { PhaseViewKey } from './usePhaseViews';
-
-const SIDE_PANEL_WIDTH = 'clamp(320px, 30vw, 384px)';
+import styles from './ViewContent.module.css';
 
 const EMPTY_COPY = {
   manage: {
@@ -89,14 +89,9 @@ const ViewContent = ({ project, phase, view, children }: Props) => {
 
   if (isPending) {
     return (
-      <Box
-        flexGrow={1}
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-      >
+      <div className={styles.loading}>
         <Spinner />
-      </Box>
+      </div>
     );
   }
 
@@ -113,39 +108,25 @@ const ViewContent = ({ project, phase, view, children }: Props) => {
 
   return (
     <>
-      <Box
-        flexGrow={1}
-        minWidth="0"
-        minHeight="0"
-        overflowY="auto"
-        borderRadius={bo.panelBorderRadius}
-        background={colors.white}
-      >
+      <div className={styles.main}>
         <EmptyState
           size="large"
           title={formatMessage(copy.title)}
           description={formatMessage(copy.description)}
         />
-      </Box>
-      <Box
-        flex={`0 0 ${SIDE_PANEL_WIDTH}`}
-        width={SIDE_PANEL_WIDTH}
-        minHeight="0"
-        overflowY="auto"
-        borderRadius={bo.panelBorderRadius}
-        background={colors.white}
-      >
+      </div>
+      <div className={styles.sidePanel}>
         {view === 'manage' ? (
-          <Box p="16px">
+          <div className={styles.offlineCollection}>
             <OfflineCollection project={project} phase={phase} />
-          </Box>
+          </div>
         ) : (
           <EmptyState
             size="small"
             description={formatMessage(messages.recommendedActionsHint)}
           />
         )}
-      </Box>
+      </div>
     </>
   );
 };

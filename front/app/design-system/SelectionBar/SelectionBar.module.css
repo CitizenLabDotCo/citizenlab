@@ -1,0 +1,12 @@
+.selectionBar {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-6);
+}
+
+.count {
+  composes: uiStrong from '../typography.module.css';
+  padding-right: var(--gv-space-4);
+  color: var(--gv-text-primary);
+  white-space: nowrap;
+}

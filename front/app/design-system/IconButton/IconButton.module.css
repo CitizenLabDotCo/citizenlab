@@ -1,0 +1,123 @@
+.iconButton {
+  composes: ringOutside from '../focus.module.css';
+  position: relative;
+  box-sizing: border-box;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  border-radius: var(--gv-radius-8);
+  background: transparent;
+  cursor: pointer;
+  transition-property: background-color, border-color, color;
+  transition-duration: var(--gv-motion-duration-fast);
+  transition-timing-function: var(--gv-motion-easing-standard);
+}
+
+.size28 {
+  width: var(--gv-size-control-28);
+  height: var(--gv-size-control-28);
+}
+
+.size24 {
+  width: var(--gv-size-control-24);
+  height: var(--gv-size-control-24);
+}
+
+/* React Aria marks a pending button disabled too; Pending stays at full strength. */
+.iconButton[data-disabled]:not([data-pending]),
+.iconButton[aria-disabled='true'] {
+  opacity: var(--gv-opacity-disabled);
+  cursor: default;
+}
+
+.iconButton[data-pending] {
+  cursor: default;
+}
+
+.icon {
+  flex-shrink: 0;
+}
+
+/* Ghost */
+.ghost.default .icon {
+  color: var(--gv-icon-tertiary);
+}
+
+.ghost.strong .icon {
+  color: var(--gv-icon-secondary);
+}
+
+.ghost[data-hovered]:not([aria-disabled='true']),
+.ghost[data-pressed]:not([aria-disabled='true']) {
+  background: var(--gv-surface-pressed);
+}
+
+.ghost[data-hovered]:not([aria-disabled='true']) .icon,
+.ghost[data-pressed]:not([aria-disabled='true']) .icon {
+  color: var(--gv-icon-primary);
+}
+
+/* Bordered */
+.bordered {
+  background: var(--gv-surface-panel);
+  border: var(--gv-border-width-1) solid var(--gv-border-control);
+}
+
+.bordered .icon {
+  color: var(--gv-icon-secondary);
+}
+
+.bordered[data-hovered]:not([aria-disabled='true']) {
+  border-color: var(--gv-border-control-hovered);
+}
+
+.bordered[data-pressed]:not([aria-disabled='true']) {
+  background: var(--gv-surface-pressed);
+  border-color: var(--gv-border-control-hovered);
+}
+
+.bordered[data-hovered]:not([aria-disabled='true']) .icon,
+.bordered[data-pressed]:not([aria-disabled='true']) .icon {
+  color: var(--gv-icon-primary);
+}
+
+.bordered[data-selected] {
+  border-color: var(--gv-border-selected);
+}
+
+/*
+ * 7 px with a 1.5 px edge, 3 px past the corner: off the scale, kept as drawn.
+ * Offsets count from the padding box, so they add the border.
+ */
+.selectedDot {
+  position: absolute;
+  top: calc(-3px - var(--gv-border-width-1));
+  right: calc(-3px - var(--gv-border-width-1));
+  box-sizing: border-box;
+  width: 7px;
+  height: 7px;
+  border-radius: var(--gv-radius-full);
+  background: var(--gv-surface-brand-strong);
+  border: 1.5px solid var(--gv-border-inverse);
+}
+
+/* Primary */
+.primary {
+  border-radius: var(--gv-radius-full);
+  background: var(--gv-surface-brand-strong);
+}
+
+.primary .icon {
+  color: var(--gv-icon-inverse);
+}
+
+.primary[data-hovered]:not([aria-disabled='true']) {
+  background: var(--gv-surface-brand-strong-hovered);
+}
+
+.primary[data-pressed]:not([aria-disabled='true']) {
+  background: var(--gv-surface-brand-strong-pressed);
+}

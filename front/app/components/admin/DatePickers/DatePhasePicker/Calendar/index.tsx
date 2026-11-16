@@ -23,10 +23,14 @@ import { Props } from '../typings';
 
 import { generateModifiers } from './utils/generateModifiers';
 import { getEndMonth, getStartMonth } from './utils/getStartEndMonth';
-import { getUpdatedRange } from './utils/getUpdatedRange';
+import {
+  getDisplayTimes,
+  getRangeAfterDayClick,
+  isSingleDayRange,
+  withTime,
+} from './utils/timeSelection';
 import {
   isDayBlocked,
-  adjustRangeTimes,
   getStartTimeMinTime,
   getEndTimeMaxTime,
 } from './utils/utils';
@@ -249,11 +253,7 @@ const Calendar = ({
     defaultMonth,
   });
 
-  const isSingleDaySelection =
-    selectedRange.from &&
-    selectedRange.to &&
-    selectedRange.to.getTime() - selectedRange.from.getTime() ===
-      24 * 60 * 60 * 1000;
+  const isSingleDaySelection = isSingleDayRange(selectedRange);
 
   const locale = useLocale();
 
@@ -266,17 +266,13 @@ const Calendar = ({
   const [selectedStartTime, setSelectedStartTime] = useState<Date | null>(null);
   const [selectedEndTime, setSelectedEndTime] = useState<Date | null>(null);
 
-  const displayStartTime =
-    selectedStartTime ||
-    startTimeMinTime ||
-    selectedRange.from ||
-    new Date(new Date().setHours(0, 0, 0, 0));
-
-  const displayEndTime =
-    selectedEndTime ||
-    endTimeMaxTime ||
-    selectedRange.to ||
-    new Date(new Date().setHours(23, 59, 0, 0));
+  const { startTime: displayStartTime, endTime: displayEndTime } =
+    getDisplayTimes({
+      selectedRange,
+      disabledRanges,
+      selectedStartTime,
+      selectedEndTime,
+    });
 
   const modifiers = useMemo(
     () =>
@@ -293,12 +289,8 @@ const Calendar = ({
     if (!selectedRange.from) {
       return;
     }
-    const newDate = new Date(selectedRange.from);
-    newDate.setHours(time.getHours());
-    newDate.setMinutes(time.getMinutes());
-
     onUpdateRange({
-      from: newDate,
+      from: withTime(selectedRange.from, time),
       to: selectedRange.to,
     });
   };
@@ -310,13 +302,9 @@ const Calendar = ({
       return;
     }
 
-    const newDate = new Date(selectedRange.to);
-    newDate.setHours(time.getHours());
-    newDate.setMinutes(time.getMinutes());
-
     onUpdateRange({
       from: selectedRange.from,
-      to: newDate,
+      to: withTime(selectedRange.to, time),
     });
   };
 
@@ -336,39 +324,18 @@ const Calendar = ({
       return;
     }
 
-    const updatedRange = getUpdatedRange({
+    const { range, startTime, endTime } = getRangeAfterDayClick({
       selectedRange,
       disabledRanges,
       clickedDate: day,
+      startTime: displayStartTime,
+      endTime: displayEndTime,
     });
 
-    const { from: newFrom, to: newTo } = adjustRangeTimes({
-      from: updatedRange.from,
-      to: updatedRange.to,
-      selectedStartTime: displayStartTime,
-      selectedEndTime: displayEndTime,
-    });
+    if (startTime) setSelectedStartTime(startTime);
+    if (endTime) setSelectedEndTime(endTime);
 
-    const finalFrom = newFrom ? new Date(newFrom) : null;
-    const finalTo = newTo ? new Date(newTo) : null;
-
-    if (finalFrom) {
-      const minTime = getStartTimeMinTime(finalFrom, disabledRanges);
-      if (minTime) {
-        finalFrom.setHours(minTime.getHours(), minTime.getMinutes());
-        setSelectedStartTime(minTime);
-      }
-    }
-
-    if (finalTo) {
-      const maxTime = getEndTimeMaxTime(finalTo, disabledRanges);
-      if (maxTime) {
-        finalTo.setHours(maxTime.getHours(), maxTime.getMinutes());
-        setSelectedEndTime(maxTime);
-      }
-    }
-
-    onUpdateRange({ from: finalFrom || undefined, to: finalTo || undefined });
+    onUpdateRange(range);
   };
 
   return (

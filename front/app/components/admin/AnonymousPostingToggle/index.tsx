@@ -13,8 +13,12 @@ import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import SettingToggleRow from 'components/admin/SettingToggleRow';
 import Warning from 'components/UI/Warning';
 
+import Banner from 'design-system/Banner';
+import 'design-system/tokens.css';
+
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
+import styles from './AnonymousPostingToggle.module.css';
 import messages from './messages';
 
 interface AnonymousPostingToggleProps {
@@ -43,7 +47,7 @@ const AnonymousPostingToggle = ({
 
   if (variant === 'panel') {
     return (
-      <Box display="flex" flexDirection="column" gap="8px">
+      <div className={styles.panel}>
         <SettingToggleRow
           title={formatMessage(messages.anonymousParticipation)}
           description={formatMessage(
@@ -57,8 +61,8 @@ const AnonymousPostingToggle = ({
             )
           }
         />
-        {disabledReason && <Warning variant="bo">{disabledReason}</Warning>}
-      </Box>
+        {disabledReason && <Banner tone="info">{disabledReason}</Banner>}
+      </div>
     );
   }
 

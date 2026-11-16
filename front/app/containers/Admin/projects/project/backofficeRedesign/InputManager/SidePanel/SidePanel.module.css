@@ -1,0 +1,143 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-16);
+}
+
+/* 80 px has no spacing token; it centres the spinner where the input will appear. */
+.loading {
+  display: flex;
+  justify-content: center;
+  padding: 80px 0;
+}
+
+.navigation {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--gv-space-8);
+}
+
+.position {
+  composes: ui from '../../../../../../../design-system/typography.module.css';
+  color: var(--gv-text-secondary);
+}
+
+.overview {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-16);
+}
+
+.title {
+  composes: pageTitle from '../../../../../../../design-system/typography.module.css';
+  margin-bottom: var(--gv-space-8);
+  color: var(--gv-text-primary);
+}
+
+.byline {
+  composes: ui from '../../../../../../../design-system/typography.module.css';
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-8);
+  color: var(--gv-text-secondary);
+}
+
+.reactionsRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.reactions {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-12);
+}
+
+.reaction {
+  composes: ui from '../../../../../../../design-system/typography.module.css';
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gv-space-4);
+  color: var(--gv-text-secondary);
+}
+
+.reactionIcon {
+  color: var(--gv-icon-secondary);
+}
+
+.quickActions {
+  display: flex;
+  gap: var(--gv-space-6);
+}
+
+.properties {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-8);
+}
+
+.property {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--gv-space-12);
+  min-height: var(--gv-size-32);
+}
+
+/* The label column keeps today's 96 px; there is no size token for it. */
+.propertyLabel {
+  composes: ui from '../../../../../../../design-system/typography.module.css';
+  flex: 0 0 96px;
+  padding-top: var(--gv-space-6);
+  color: var(--gv-text-secondary);
+}
+
+.propertyValue {
+  display: flex;
+  flex-grow: 1;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--gv-space-6);
+  min-height: var(--gv-size-32);
+}
+
+.menuLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gv-space-6);
+}
+
+/* The tags flow in the row next to the add control. */
+.tagGroup,
+.tagList {
+  display: contents;
+}
+
+.budget {
+  composes: uiStrong from '../../../../../../../design-system/typography.module.css';
+  color: var(--gv-text-primary);
+}
+
+.secondary {
+  composes: ui from '../../../../../../../design-system/typography.module.css';
+  color: var(--gv-text-secondary);
+}
+
+.infoIcon {
+  color: var(--gv-icon-tertiary);
+}
+
+.ideaContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-16);
+}
+
+/* #E0E0E0 hairline: --gv-border-control is the token with that value. */
+.image {
+  box-sizing: border-box;
+  width: 100%;
+  border: var(--gv-border-width-1) solid var(--gv-border-control);
+  border-radius: var(--gv-radius-8);
+}

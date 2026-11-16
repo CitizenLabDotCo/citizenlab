@@ -84,7 +84,8 @@ const PhaseDates = ({
           errors={errors}
           validationErrors={validationErrors}
           onChange={handleChange}
-          variant="bo"
+          variant="panel"
+          label={label}
         />
       )}
     </PanelField>

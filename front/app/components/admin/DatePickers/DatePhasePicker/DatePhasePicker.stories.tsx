@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 
+import { I18nProvider } from 'react-aria-components';
+
 import { DateRange } from '../_shared/typings';
 
+import DesignSystemPicker from './DesignSystemPicker';
 import { patchDisabledRanges } from './patchDisabledRanges';
 
 import DatePhasePicker from '.';
@@ -77,4 +80,68 @@ export const OpenEndedDisabledRanges = {
   render: () => {
     return <WrapperOpenEndedDisabledRanges />;
   },
+};
+
+type DesignSystemWrapperProps = {
+  disabledRanges?: DateRange[];
+  defaultMonth?: Date;
+  initialRange?: Partial<DateRange>;
+};
+
+const DesignSystemWrapper = ({
+  disabledRanges = [],
+  defaultMonth,
+  initialRange = {},
+}: DesignSystemWrapperProps) => {
+  const [selectedRange, setSelectedRange] =
+    useState<Partial<DateRange>>(initialRange);
+
+  return (
+    <I18nProvider locale="en-GB">
+      <DesignSystemPicker
+        label="Phase dates"
+        selectedRange={selectedRange}
+        disabledRanges={patchDisabledRanges(selectedRange, disabledRanges)}
+        defaultMonth={defaultMonth}
+        onUpdateRange={setSelectedRange}
+      />
+    </I18nProvider>
+  );
+};
+
+export const DesignSystemStandard = {
+  render: () => <DesignSystemWrapper />,
+};
+
+export const DesignSystemDisabledRanges = {
+  render: () => (
+    <DesignSystemWrapper
+      disabledRanges={[
+        { from: new Date(2024, 7, 1), to: new Date(2024, 8, 5, 12) },
+        { from: new Date(2024, 8, 21, 14), to: new Date(2024, 9, 20) },
+      ]}
+      defaultMonth={new Date(2024, 8, 1)}
+    />
+  ),
+};
+
+export const DesignSystemOpenEndedDisabledRanges = {
+  render: () => (
+    <DesignSystemWrapper
+      disabledRanges={[
+        { from: new Date(2024, 7, 1), to: new Date(2024, 8, 5) },
+        { from: new Date(2024, 8, 21) },
+      ]}
+      defaultMonth={new Date(2024, 8, 1)}
+    />
+  ),
+};
+
+export const DesignSystemSingleDay = {
+  render: () => (
+    <DesignSystemWrapper
+      initialRange={{ from: new Date(2024, 8, 10), to: new Date(2024, 8, 11) }}
+      defaultMonth={new Date(2024, 8, 1)}
+    />
+  ),
 };

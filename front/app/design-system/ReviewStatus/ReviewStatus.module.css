@@ -1,0 +1,27 @@
+.reviewStatus {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--gv-space-4);
+  white-space: nowrap;
+}
+
+.icon {
+  flex-shrink: 0;
+}
+
+.toReview,
+.toSet {
+  composes: small from '../typography.module.css';
+  color: var(--gv-text-tertiary);
+}
+
+.toReview .icon,
+.toSet .icon {
+  color: var(--gv-icon-tertiary);
+}
+
+.reviewed {
+  composes: smallStrong from '../typography.module.css';
+  color: var(--gv-text-success);
+}

@@ -1,31 +1,41 @@
 import React from 'react';
 
-import { Box, Tooltip } from '@citizenlab/cl2-component-library';
+import { TagGroup, TagList } from 'react-aria-components';
 
-import TagChip from '../TagChip';
+import { Tag } from 'design-system/TagGroup';
+
+import TooltipMark from '../TooltipMark';
+
+import styles from './IdeaTable.module.css';
 
 const VISIBLE_TAGS = 2;
 
 interface Props {
+  label: string;
   labels: string[];
 }
 
-const TagChips = ({ labels }: Props) => {
+// The design-system TagGroup always shows its label, which a table cell has in its column head.
+const TagChips = ({ label, labels }: Props) => {
   const hidden = labels.slice(VISIBLE_TAGS);
 
   return (
-    <Box display="flex" alignItems="center" gap="4px">
-      {labels.slice(0, VISIBLE_TAGS).map((label) => (
-        <TagChip key={label} label={label} />
-      ))}
+    <span className={styles.tags}>
+      <TagGroup aria-label={label} className={styles.tagGroup}>
+        <TagList className={styles.tagList}>
+          {labels.slice(0, VISIBLE_TAGS).map((tag) => (
+            <Tag key={tag} id={tag}>
+              {tag}
+            </Tag>
+          ))}
+        </TagList>
+      </TagGroup>
       {hidden.length > 0 && (
-        <Tooltip content={hidden.join(', ')} theme="dark">
-          <Box>
-            <TagChip label={`+${hidden.length}`} />
-          </Box>
-        </Tooltip>
+        <TooltipMark label={hidden.join(', ')}>
+          <span className={styles.more}>{`+${hidden.length}`}</span>
+        </TooltipMark>
       )}
-    </Box>
+    </span>
   );
 };
 

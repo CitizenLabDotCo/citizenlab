@@ -19,7 +19,7 @@ interface Props {
   className?: string;
   graphqlTenantLocales: string[];
   onDone?: () => void;
-  variant?: 'default' | 'bo';
+  variant?: 'default' | 'panel';
 }
 
 const CreateProjectFromTemplate = memo(
@@ -168,7 +168,6 @@ const CreateProjectFromTemplate = memo(
             handleParticipationLevelFilterOnChange
           }
           onUseTemplate={handleUseTemplate}
-          variant={variant}
         />
 
         {namedTemplate && (

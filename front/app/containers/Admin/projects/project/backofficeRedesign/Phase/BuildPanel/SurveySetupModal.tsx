@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
-
 import usePhase from 'api/phases/usePhase';
 import useSubmissionCount from 'api/submission_count/useSubmissionCount';
 
@@ -12,13 +10,15 @@ import CopySurveyModal from 'containers/Admin/projects/project/surveyFormAssets/
 import ImportInputsSection from 'components/admin/FormSync/ImportInputsSection';
 import ImportExcelModal from 'components/admin/InputImporterModals/ImportExcelModal';
 import ImportPdfModal from 'components/admin/InputImporterModals/ImportPdfModal';
-import Modal from 'components/UI/Modal';
+
+import Modal from 'design-system/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
 import formSectionMessages from './BuildFields/MethodSection/FormSection/messages';
 import methodSectionMessages from './BuildFields/MethodSection/messages';
+import styles from './BuildPanel.module.css';
 import messages from './messages';
 import NavCard from './NavCard';
 
@@ -61,19 +61,21 @@ const SurveySetupModal = ({
   return (
     <>
       <Modal
-        opened={opened}
-        close={onClose}
-        width="720px"
-        header={formatMessage(
+        isOpen={opened}
+        onOpenChange={(isOpen) => {
+          if (!isOpen) onClose();
+        }}
+        size={866}
+        title={formatMessage(
           hasQuestions
             ? formSectionMessages.surveyForm
             : methodSectionMessages.addQuestions
         )}
       >
-        <Box p="24px" display="flex" flexDirection="column" gap="10px">
-          <Text variant="boHelper" m="0 0 6px">
+        <div className={styles.setupBody}>
+          <p className={styles.setupLead}>
             {formatMessage(messages.surveySetupLead)}
-          </Text>
+          </p>
           <NavCard
             label={formatMessage(
               hasQuestions
@@ -103,7 +105,7 @@ const SurveySetupModal = ({
               onClickExcelImport={() => openUpload('excel')}
             />
           </PanelGroup>
-        </Box>
+        </div>
       </Modal>
       <CopySurveyModal
         editFormLink={editFormLink}

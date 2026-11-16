@@ -152,10 +152,6 @@ export default defineMessages({
     defaultMessage:
       'People have already voted in this phase. Their votes are kept as numbers but read by the new method: a budget amount becomes a number of votes, or the other way round. The results will no longer be correct.',
   },
-  changeVotingMethodCancel: {
-    id: 'app.containers.AdminPage.ProjectEdit.Voting.changeVotingMethodCancel',
-    defaultMessage: 'Cancel',
-  },
   changeVotingMethodConfirm: {
     id: 'app.containers.AdminPage.ProjectEdit.Voting.changeVotingMethodConfirm',
     defaultMessage: 'Change anyway',

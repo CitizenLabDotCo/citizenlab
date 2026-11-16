@@ -10,14 +10,21 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
-import { useForm, FormProvider } from 'react-hook-form';
+import { Controller, useForm, FormProvider } from 'react-hook-form';
 import { Multiloc } from 'typings';
 
 import usePhases from 'api/phases/usePhases';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
 
+import Banner from 'design-system/Banner';
+import DSButton from 'design-system/Button';
+import DSIcon from 'design-system/Icon';
+import IconButton from 'design-system/IconButton';
+import DSSpinner from 'design-system/Spinner';
+import 'design-system/tokens.css';
+
+import MultilocRichTextField from 'components/admin/MultilocFields/MultilocRichTextField';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
-import { QuillVariant } from 'components/UI/QuillEditor/StyleContainer';
 import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
@@ -26,6 +33,7 @@ import { useParams } from 'utils/router';
 
 import messages from '../messages';
 
+import styles from './DraftPhaseDescription.module.css';
 import StatusBadges from './StatusBadges';
 
 const AUTOSAVE_DEBOUNCE_MS = 1000;
@@ -38,7 +46,7 @@ interface Props {
   phaseId: string;
   descriptionMultiloc: Multiloc;
   draftDescriptionMultiloc: Multiloc | undefined;
-  variant?: QuillVariant;
+  variant?: 'default' | 'panel';
   placeholder?: string;
 }
 
@@ -50,7 +58,7 @@ const DraftPhaseDescription = ({
   placeholder,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const isBo = variant === 'bo';
+  const isPanel = variant === 'panel';
   const { projectId } = useParams({ strict: false }) as { projectId: string };
   const { data: phases } = usePhases(projectId);
   const { mutate: updatePhase, isPending } = useUpdatePhase();
@@ -133,40 +141,103 @@ const DraftPhaseDescription = ({
       : messages.draftDescriptionPublishedTooltip
   );
 
+  const showEmptyWarning =
+    phases && phases.data.length < 2 && isEmptyMultiloc(descriptionMultiloc);
+
+  if (isPanel) {
+    return (
+      <FormProvider {...methods}>
+        <div>
+          {showEmptyWarning && (
+            <div className={styles.warning}>
+              <Banner tone="info">
+                {formatMessage(messages.emptyDescriptionWarning)}
+              </Banner>
+            </div>
+          )}
+          <Controller
+            name="draft_description_multiloc"
+            control={methods.control}
+            render={({ field }) => (
+              <MultilocRichTextField
+                id="draft_description_multiloc"
+                label={
+                  <span className={styles.badges}>
+                    <StatusBadges isEditing={!!isEditing} isPanel />
+                    <IconButton
+                      icon="info-16"
+                      size={24}
+                      aria-label={statusTooltip}
+                    />
+                  </span>
+                }
+                aria-label={formatMessage(messages.descriptionLabel)}
+                placeholder={placeholder}
+                valueMultiloc={field.value}
+                onChange={field.onChange}
+                onBlur={field.onBlur}
+                onFocus={isEditing ? undefined : handleClickToEdit}
+                withCTAButton
+              />
+            )}
+          />
+          {isEditing && (
+            <div className={styles.footer}>
+              <DSButton
+                variant="quiet"
+                onPress={handleDiscard}
+                isDisabled={isPending}
+              >
+                {formatMessage(messages.draftDescriptionDiscardChanges)}
+              </DSButton>
+              <div className={styles.saveGroup}>
+                {isDraftLoading ? (
+                  <div className={styles.saveState}>
+                    <DSSpinner />
+                    <span className={styles.saveStateText}>
+                      {formatMessage(messages.draftDescriptionSaving)}
+                    </span>
+                  </div>
+                ) : !hasPendingChanges ? (
+                  <div className={styles.saveState}>
+                    <DSIcon name="check-14" className={styles.savedIcon} />
+                    <span className={styles.saveStateText}>
+                      {formatMessage(messages.draftDescriptionSaved)}
+                    </span>
+                  </div>
+                ) : null}
+                <DSButton
+                  variant="primary"
+                  onPress={handlePublish}
+                  isDisabled={isPending}
+                >
+                  {formatMessage(messages.draftDescriptionPublish)}
+                </DSButton>
+              </div>
+            </div>
+          )}
+        </div>
+      </FormProvider>
+    );
+  }
+
   return (
     <FormProvider {...methods}>
       <Box>
-        {!isBo && (
-          <Box display="flex" alignItems="center" gap="8px">
-            <Text fontWeight="bold" m="0px">
-              {formatMessage(messages.descriptionLabel)}
-            </Text>
-            <IconTooltip content={statusTooltip} />
-            <StatusBadges isEditing={!!isEditing} variant={variant} />
+        <Box display="flex" alignItems="center" gap="8px">
+          <Text fontWeight="bold" m="0px">
+            {formatMessage(messages.descriptionLabel)}
+          </Text>
+          <IconTooltip content={statusTooltip} />
+          <StatusBadges isEditing={!!isEditing} isPanel={false} />
+        </Box>
+        {showEmptyWarning && (
+          <Box mt="16px" mb="16px">
+            <Warning>{formatMessage(messages.emptyDescriptionWarning)}</Warning>
           </Box>
         )}
-        {phases &&
-          phases.data.length < 2 &&
-          isEmptyMultiloc(descriptionMultiloc) && (
-            <Box mt={isBo ? '0px' : '16px'} mb={isBo ? '8px' : '16px'}>
-              <Warning variant={variant}>
-                {formatMessage(messages.emptyDescriptionWarning)}
-              </Warning>
-            </Box>
-          )}
         <QuillMultilocWithLocaleSwitcher
           name="draft_description_multiloc"
-          variant={variant}
-          minHeight={isBo ? '74px' : undefined}
-          label={
-            isBo ? (
-              <StatusBadges isEditing={!!isEditing} variant={variant} />
-            ) : undefined
-          }
-          labelTooltipText={isBo ? statusTooltip : undefined}
-          ariaLabel={
-            isBo ? formatMessage(messages.descriptionLabel) : undefined
-          }
           placeholder={placeholder}
           withCTAButton
           onFocus={isEditing ? undefined : handleClickToEdit}
@@ -181,9 +252,7 @@ const DraftPhaseDescription = ({
             mt="8px"
           >
             <Button
-              buttonStyle={isBo ? 'bo-text' : 'text'}
-              boSize={isBo ? 'medium' : undefined}
-              textDecoration={isBo ? 'underline' : undefined}
+              buttonStyle="text"
               onClick={handleDiscard}
               padding="0px"
               disabled={isPending}
@@ -207,8 +276,7 @@ const DraftPhaseDescription = ({
                 </Box>
               ) : null}
               <Button
-                buttonStyle={isBo ? 'bo-primary' : 'admin-dark'}
-                boSize={isBo ? 'medium' : undefined}
+                buttonStyle="admin-dark"
                 onClick={handlePublish}
                 disabled={isPending}
               >

@@ -1,13 +1,16 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 
-import { Box, Input, Text } from '@citizenlab/cl2-component-library';
+import NumberField from 'design-system/NumberField';
+import 'design-system/tokens.css';
+
+import styles from './NumberSettingRow.module.css';
 
 interface Props {
   id: string;
   label: string;
   value: number | null | undefined;
-  min: string;
-  error?: ReactNode;
+  min: number;
+  errorMessage?: string;
   onChange: (value: string) => void;
 }
 
@@ -16,33 +19,22 @@ const NumberSettingRow = ({
   label,
   value,
   min,
-  error,
+  errorMessage,
   onChange,
 }: Props) => (
-  <Box py="5px">
-    <Box
-      display="flex"
-      alignItems="center"
-      justifyContent="space-between"
-      gap="12px"
-    >
-      <Text as="span" variant="boControl" m="0">
-        {label}
-      </Text>
-      <Box width="88px" flexShrink={0}>
-        <Input
-          id={id}
-          ariaLabel={label}
-          variant="bo"
-          type="number"
-          min={min}
-          value={typeof value === 'number' ? value.toString() : null}
-          onChange={onChange}
-        />
-      </Box>
-    </Box>
-    {error}
-  </Box>
+  <div className={styles.row}>
+    <NumberField
+      id={id}
+      label={label}
+      size={32}
+      // NaN is how React Aria shows an empty field and keeps it controlled.
+      value={typeof value === 'number' ? value : NaN}
+      minValue={min}
+      onChange={(number) => onChange(Number.isNaN(number) ? '' : `${number}`)}
+      isInvalid={!!errorMessage}
+      errorMessage={errorMessage}
+    />
+  </div>
 );
 
 export default NumberSettingRow;

@@ -1,40 +1,26 @@
 import React, { lazy, Suspense } from 'react';
 
-import {
-  Box,
-  IconTooltip,
-  Input,
-  Label,
-  Text,
-  colors,
-  fontSizes,
-} from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
+import TextField from 'design-system/TextField';
+import 'design-system/tokens.css';
 import { Multiloc } from 'typings';
 
 import SetupCard from 'containers/Admin/projects/_shared/components/SetupCard';
 import { EventForm } from 'containers/Admin/projects/_shared/events/useEventForm';
 import eventMessages from 'containers/Admin/projects/project/events/messages';
 
-import Error from 'components/UI/Error';
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import LocationInput, { Option } from 'components/UI/LocationInput';
+import MultilocTextField from 'components/admin/MultilocFields/MultilocTextField';
+import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 
 import { useIntl } from 'utils/cl-intl';
 
+import styles from './LocationCard.module.css';
+import LocationComboBox from './LocationComboBox';
 import messages from './messages';
 
 // Lazy so ArcGIS only loads once the event has a place on the map.
 const EventMap = lazy(
   () => import('containers/Admin/projects/project/events/components/EventMap')
 );
-
-const AddressLabel = styled(Label)`
-  margin-bottom: 4px;
-  font-size: ${fontSizes.xs}px;
-  line-height: 1.4;
-  color: ${colors.coolGrey600};
-`;
 
 interface Props {
   form: EventForm;
@@ -43,55 +29,36 @@ interface Props {
 const LocationCard = ({ form }: Props) => {
   const { formatMessage } = useIntl();
   const { attributes, errors } = form;
+  const apiErrorText = useApiErrorText();
+  const onlineLinkError = apiErrorText(errors?.online_link);
+  const addressError = apiErrorText(errors?.address_1);
 
   return (
     <SetupCard title={formatMessage(eventMessages.eventLocation)}>
-      <Box>
-        <Input
-          id="event-online-link"
-          variant="bo"
-          label={formatMessage(eventMessages.onlineEventLinkLabel)}
-          labelTooltipText={formatMessage(eventMessages.onlineEventLinkTooltip)}
-          type="text"
-          value={attributes.online_link}
-          placeholder="https://..."
-          onChange={(online_link: string) =>
-            form.updateAttributes({ online_link })
-          }
-        />
-        <Error apiErrors={errors?.online_link} />
-      </Box>
+      <TextField
+        id="event-online-link"
+        label={formatMessage(eventMessages.onlineEventLinkLabel)}
+        description={formatMessage(eventMessages.onlineEventLinkTooltip)}
+        value={attributes.online_link ?? ''}
+        placeholder="https://..."
+        onChange={(online_link) => form.updateAttributes({ online_link })}
+        isInvalid={!!onlineLinkError}
+        errorMessage={onlineLinkError}
+      />
 
-      <Box>
-        <AddressLabel htmlFor="event-location-picker">
-          {formatMessage(messages.address)}
-          <IconTooltip
-            content={formatMessage(eventMessages.addressOneTooltip)}
-          />
-        </AddressLabel>
-        <LocationInput
-          id="event-location-picker"
-          className="e2e-event-location-input"
-          variant="bo"
-          value={
-            attributes.address_1
-              ? { value: attributes.address_1, label: attributes.address_1 }
-              : null
-          }
-          onChange={(option: Option | null) =>
-            form.updateAttributes({ address_1: option?.value ?? '' })
-          }
-          placeholder={formatMessage(eventMessages.searchForLocation)}
-        />
-        <Error apiErrors={errors?.address_1} />
-      </Box>
+      <LocationComboBox
+        label={formatMessage(messages.address)}
+        placeholder={formatMessage(eventMessages.searchForLocation)}
+        description={formatMessage(eventMessages.addressOneTooltip)}
+        errorMessage={addressError}
+        value={attributes.address_1 ?? ''}
+        onChange={(address_1) => form.updateAttributes({ address_1 })}
+      />
 
-      <InputMultilocWithLocaleSwitcher
+      <MultilocTextField
         id="event-address-2"
-        type="text"
-        variant="bo"
         label={formatMessage(messages.addressDetails)}
-        labelTooltipText={formatMessage(eventMessages.addressTwoTooltip)}
+        description={formatMessage(eventMessages.addressTwoTooltip)}
         placeholder={formatMessage(eventMessages.addressTwoPlaceholder)}
         valueMultiloc={attributes.address_2_multiloc}
         onChange={(address_2_multiloc: Multiloc) =>
@@ -100,15 +67,15 @@ const LocationCard = ({ form }: Props) => {
       />
 
       {form.hasLocationPoint && (
-        <Box>
-          <Box display="flex" alignItems="center" gap="4px" mb="4px">
-            <Text as="span" m="0" color="coolGrey600" fontSize="xs">
+        <div className={styles.field}>
+          <div>
+            <p className={styles.label}>
               {formatMessage(eventMessages.refineOnMap)}
-            </Text>
-            <IconTooltip
-              content={formatMessage(eventMessages.refineOnMapInstructions)}
-            />
-          </Box>
+            </p>
+            <p className={styles.description}>
+              {formatMessage(eventMessages.refineOnMapInstructions)}
+            </p>
+          </div>
           <Suspense fallback={null}>
             <EventMap
               mapHeight="230px"
@@ -116,7 +83,7 @@ const LocationCard = ({ form }: Props) => {
               setLocationPoint={form.moveLocationPoint}
             />
           </Suspense>
-        </Box>
+        </div>
       )}
     </SetupCard>
   );

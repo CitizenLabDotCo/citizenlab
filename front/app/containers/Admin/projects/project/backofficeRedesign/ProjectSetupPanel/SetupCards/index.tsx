@@ -31,7 +31,7 @@ const SetupCards = ({ project, readiness, onOpenSettings }: Props) => {
         ready={readiness?.general}
         behaviour={{
           kind: 'action',
-          icon: 'chevron-right',
+          icon: 'chevron-right-16',
           actionLabel: formatMessage(projectSetupPanelMessages.projectSettings),
           onClick: onOpenSettings,
         }}
@@ -42,7 +42,7 @@ const SetupCards = ({ project, readiness, onOpenSettings }: Props) => {
         ready={readiness?.page}
         behaviour={{
           kind: 'action',
-          icon: 'chevron-right',
+          icon: 'chevron-right-16',
           actionLabel: formatMessage(messages.editProjectPage),
           onClick: () =>
             clHistory.push(

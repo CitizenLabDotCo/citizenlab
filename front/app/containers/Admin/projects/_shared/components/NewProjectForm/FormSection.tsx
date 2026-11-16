@@ -1,6 +1,8 @@
 import React, { useId } from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import 'design-system/tokens.css';
+
+import styles from './NewProjectForm.module.css';
 
 interface Props {
   label: string;
@@ -11,24 +13,12 @@ const FormSection = ({ label, children }: Props) => {
   const labelId = useId();
 
   return (
-    <Box
-      role="group"
-      aria-labelledby={labelId}
-      display="flex"
-      flexDirection="column"
-      gap="12px"
-    >
-      <Text
-        id={labelId}
-        variant="boMicro"
-        color="coolGrey500"
-        lineHeight="1.5"
-        m="0px"
-      >
+    <div role="group" aria-labelledby={labelId} className={styles.section}>
+      <p id={labelId} className={styles.sectionLabel}>
         {label}
-      </Text>
+      </p>
       {children}
-    </Box>
+    </div>
   );
 };
 

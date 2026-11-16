@@ -38,12 +38,4 @@ export default defineMessages({
     defaultMessage:
       '{count, plural, one {# area selected} other {# areas selected}}',
   },
-  topicTagsSearch: {
-    id: 'app.containers.Admin.projects.project.topicTagsSearch',
-    defaultMessage: 'Search tags...',
-  },
-  topicTagsNoMatch: {
-    id: 'app.containers.Admin.projects.project.topicTagsNoMatch',
-    defaultMessage: 'No matching tags',
-  },
 });

@@ -1,0 +1,65 @@
+.row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-4);
+  padding: var(--gv-space-12) 0;
+}
+
+.title {
+  composes: uiStrong from '../../../../../../../../../design-system/typography.module.css';
+  color: var(--gv-text-primary);
+}
+
+.alwaysEnabled {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-4);
+}
+
+/* As wide as the switch and its gap, so the title lines up with the switch labels. */
+.checkSlot {
+  display: flex;
+  width: calc(var(--gv-size-26) + var(--gv-space-10));
+}
+
+.alwaysEnabledCheck {
+  color: var(--gv-icon-accent);
+}
+
+.infoButton {
+  composes: ringOutside from '../../../../../../../../../design-system/focus.module.css';
+  display: inline-flex;
+  flex-shrink: 0;
+  padding: 0;
+  border: none;
+  border-radius: var(--gv-radius-4);
+  background: transparent;
+  color: var(--gv-icon-secondary);
+  cursor: default;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-8);
+  padding-left: calc(var(--gv-size-26) + var(--gv-space-10));
+}
+
+.description {
+  composes: body from '../../../../../../../../../design-system/typography.module.css';
+  color: var(--gv-text-secondary);
+}
+
+/* Links inside the description read as part of the text, as in the design. */
+.description a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.defaultMark {
+  composes: ui from '../../../../../../../../../design-system/typography.module.css';
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-6);
+  color: var(--gv-text-info);
+}

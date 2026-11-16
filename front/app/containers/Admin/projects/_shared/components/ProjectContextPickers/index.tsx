@@ -1,12 +1,10 @@
 import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import 'design-system/tokens.css';
 
-import { useIntl } from 'utils/cl-intl';
-
-import contextMessages from '../ProjectSetupForm/ProjectContextSection/messages';
 import { SpaceAndFolderId } from '../ProjectSetupForm/ProjectContextSection/types';
 
+import styles from './ProjectContextPickers.module.css';
 import useContextPickers from './useContextPickers';
 
 interface Props {
@@ -22,7 +20,6 @@ const ProjectContextPickers = ({
   projectInRoot,
   onChange,
 }: Props) => {
-  const { formatMessage } = useIntl();
   const pickers = useContextPickers({
     spaceId,
     folderId,
@@ -35,27 +32,14 @@ const ProjectContextPickers = ({
   const { spacePicker, folderPicker, approvalWarning } = pickers;
 
   return (
-    <Box display="flex" flexDirection="column" gap="12px">
-      <Box display="flex" flexWrap="wrap" alignItems="center" gap="24px">
-        {spacePicker && (
-          <Box display="flex" alignItems="center" gap="12px" minWidth="0">
-            <Text as="span" variant="boControl" lineHeight="1.35" m="0px">
-              {formatMessage(contextMessages.spaceLabel)}
-            </Text>
-            {spacePicker}
-          </Box>
-        )}
-
-        <Box display="flex" alignItems="center" gap="12px" minWidth="0">
-          <Text as="span" variant="boControl" lineHeight="1.35" m="0px">
-            {formatMessage(contextMessages.folderLabel)}
-          </Text>
-          {folderPicker}
-        </Box>
-      </Box>
+    <div className={styles.pickers}>
+      <div className={styles.row}>
+        {spacePicker && <div className={styles.picker}>{spacePicker}</div>}
+        <div className={styles.picker}>{folderPicker}</div>
+      </div>
 
       {approvalWarning}
-    </Box>
+    </div>
   );
 };
 

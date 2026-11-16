@@ -1,15 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import {
-  Box,
-  Button,
-  Divider,
-  Input,
-  Text,
-  Tooltip,
-  colors,
-} from '@citizenlab/cl2-component-library';
-
 import useAuthUser from 'api/me/useAuthUser';
 import useAddProjectModerator from 'api/project_moderators/useAddProjectModerator';
 import useProjectModerators from 'api/project_moderators/useProjectModerators';
@@ -20,11 +10,17 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import projectHeaderMessages from 'containers/Admin/projects/project/projectHeader/messages';
 import shareLinkTracks from 'containers/Admin/projects/project/projectHeader/ShareLink/tracks';
 
+import Button from 'design-system/Button';
+import Divider from 'design-system/Divider';
+import TextField from 'design-system/TextField';
+import 'design-system/tokens.css';
+
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 
 import AccessPeopleRow from './AccessPeopleRow';
 import messages from './messages';
+import styles from './ShareDropdown.module.css';
 
 const splitEmails = (value: string) =>
   value
@@ -82,45 +78,36 @@ const SharePanel = ({ project, linkCopied, onLinkCopied }: Props) => {
   };
 
   return (
-    <Box>
-      <Text variant="boSection" mb="16px">
+    <div className={styles.panel}>
+      <h2 className={styles.title}>
         {formatMessage(projectHeaderMessages.shareTitle)}
-      </Text>
+      </h2>
 
-      <Text variant="boSection" mb="4px">
-        {formatMessage(messages.shareInvitePeople)}
-      </Text>
-      <Box display="flex" gap="8px" alignItems="flex-start">
-        <Box flex="1 1 auto" minWidth="0">
-          <Input
-            type="text"
+      <div className={styles.inviteRow}>
+        <div className={styles.inviteField}>
+          <TextField
+            label={formatMessage(messages.shareInvitePeople)}
+            size={32}
             value={invitees}
             onChange={setInvitees}
             placeholder={formatMessage(messages.shareInvitePlaceholder)}
-            aria-label={formatMessage(messages.shareInvitePeople)}
           />
-        </Box>
+        </div>
         <Button
-          buttonStyle="bo-primary"
-          onClick={handleInvite}
-          processing={isInviting}
-          disabled={splitEmails(invitees).length === 0}
+          variant="primary"
+          size={32}
+          onPress={handleInvite}
+          isPending={isInviting}
+          isDisabled={splitEmails(invitees).length === 0}
         >
           {formatMessage(messages.shareInvite)}
         </Button>
-      </Box>
+      </div>
 
-      <Text variant="boSection" mt="16px">
+      <h3 className={styles.sectionTitle}>
         {formatMessage(messages.sharePeopleWithAccess)}
-      </Text>
-      <Box
-        ref={peopleListRef}
-        display="flex"
-        flexDirection="column"
-        maxHeight="300px"
-        overflowY="auto"
-        pr="12px"
-      >
+      </h3>
+      <div ref={peopleListRef} className={styles.peopleList}>
         {moderators?.data.map((moderator) => (
           <AccessPeopleRow
             key={moderator.id}
@@ -128,26 +115,28 @@ const SharePanel = ({ project, linkCopied, onLinkCopied }: Props) => {
             isAuthUser={moderator.id === authUser?.data.id}
           />
         ))}
-      </Box>
+      </div>
 
-      <Divider />
+      <div className={styles.divider}>
+        <Divider />
+      </div>
 
-      <Text variant="boHelper" mb="12px">
+      <p className={styles.helper}>
         {formatMessage(messages.sharePreviewExplanation)}
-      </Text>
-      <Tooltip
-        content={formatMessage(projectHeaderMessages.shareLinkUpsellTooltip)}
-        disabled={isPreviewLinkEnabled}
-        width="100%"
-      >
+      </p>
+      <div className={styles.fullWidth}>
         <Button
-          buttonStyle="bo-secondary"
-          icon={linkCopied ? 'check-circle' : 'link'}
-          iconColor={linkCopied ? colors.success : undefined}
-          onClick={handleCopyPreviewLink}
-          disabled={!isPreviewLinkEnabled}
-          width="100%"
           id="e2e-share-preview-link"
+          variant="secondary"
+          size={32}
+          icon={linkCopied ? 'circle-check-filled-16' : 'link-16'}
+          onPress={handleCopyPreviewLink}
+          isDisabled={!isPreviewLinkEnabled}
+          disabledReason={
+            isPreviewLinkEnabled
+              ? undefined
+              : formatMessage(projectHeaderMessages.shareLinkUpsellTooltip)
+          }
         >
           {formatMessage(
             linkCopied
@@ -155,8 +144,8 @@ const SharePanel = ({ project, linkCopied, onLinkCopied }: Props) => {
               : messages.sharePreviewLink
           )}
         </Button>
-      </Tooltip>
-    </Box>
+      </div>
+    </div>
   );
 };
 

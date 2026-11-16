@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
-
 import { IPhasePermissionAction } from 'api/permissions/types';
 
 import PhaseActionForm from 'containers/Admin/projects/_shared/components/PhaseActionForm';
 
-import Modal from 'components/UI/Modal';
+import Modal from 'design-system/Modal';
+import Tabs, { TabPanel } from 'design-system/Tabs';
 
 import { useIntl } from 'utils/cl-intl';
 
 import demographicsCardMessages from '../messages';
 
 import ActionTabs from './ActionTabs';
+import styles from './DemographicsModal.module.css';
 import messages from './messages';
 
 interface Props {
@@ -26,35 +26,46 @@ const DemographicsModal = ({ phaseId, actions, opened, onClose }: Props) => {
   const { formatMessage } = useIntl();
   const [picked, setPicked] = useState<IPhasePermissionAction>();
   const selected = picked && actions.includes(picked) ? picked : actions[0];
+  const title = formatMessage(demographicsCardMessages.collectDemographicData);
+
+  const form = (
+    <PhaseActionForm
+      // A new action starts from its own saved permission.
+      key={selected}
+      phaseId={phaseId}
+      action={selected}
+      variant="data"
+    />
+  );
 
   return (
     <Modal
-      opened={opened}
-      close={onClose}
-      width="720px"
-      header={formatMessage(demographicsCardMessages.collectDemographicData)}
+      isOpen={opened}
+      onOpenChange={(isOpen) => {
+        if (!isOpen) onClose();
+      }}
+      size={866}
+      title={title}
     >
-      <Box p="24px" display="flex" flexDirection="column" gap="20px">
-        <Text variant="boHelper" m="0">
+      <div className={styles.body}>
+        <p className={styles.helper}>
           {formatMessage(messages.collectDemographicDataDescription)}
-        </Text>
-        {actions.length > 1 && (
-          <Box>
-            <ActionTabs
-              actions={actions}
-              selected={selected}
-              onSelect={setPicked}
-            />
-          </Box>
+        </p>
+        {actions.length > 1 ? (
+          <Tabs
+            selectedKey={selected}
+            onSelectionChange={(key) => {
+              const action = actions.find((action) => action === key);
+              if (action) setPicked(action);
+            }}
+          >
+            <ActionTabs actions={actions} aria-label={title} />
+            <TabPanel id={selected}>{form}</TabPanel>
+          </Tabs>
+        ) : (
+          form
         )}
-        <PhaseActionForm
-          // A new action starts from its own saved permission.
-          key={selected}
-          phaseId={phaseId}
-          action={selected}
-          variant="data"
-        />
-      </Box>
+      </div>
     </Modal>
   );
 };

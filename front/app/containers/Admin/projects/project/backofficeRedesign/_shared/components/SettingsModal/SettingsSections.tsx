@@ -1,16 +1,15 @@
-import { colors } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
+import React from 'react';
 
-// A sibling selector, so a section that renders nothing leaves no stray divider.
-const SettingsSections = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
+import 'design-system/tokens.css';
 
-  > * + * {
-    padding-top: 24px;
-    border-top: 1px solid ${colors.grey200};
-  }
-`;
+import styles from './SettingsSections.module.css';
+
+interface Props {
+  children: React.ReactNode;
+}
+
+const SettingsSections = ({ children }: Props) => (
+  <div className={styles.sections}>{children}</div>
+);
 
 export default SettingsSections;

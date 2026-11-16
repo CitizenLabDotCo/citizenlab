@@ -21,7 +21,7 @@ const DatesSummary = ({ startAt, endAt }: Props) => {
 
   return (
     <SummaryPill
-      icon="calendar"
+      icon="calendar-14"
       label={formatDateRange(
         startAt,
         endAt ?? null,

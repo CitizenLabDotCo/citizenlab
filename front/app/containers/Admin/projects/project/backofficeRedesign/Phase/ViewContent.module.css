@@ -1,0 +1,29 @@
+.loading {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
+}
+
+.panel {
+  min-height: 0;
+  overflow-y: auto;
+  border-radius: var(--gv-radius-12);
+  background: var(--gv-surface-panel);
+}
+
+.main {
+  composes: panel;
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.sidePanel {
+  composes: panel;
+  flex: 0 0 clamp(320px, 30vw, 384px);
+  width: clamp(320px, 30vw, 384px);
+}
+
+.offlineCollection {
+  padding: var(--gv-space-16);
+}

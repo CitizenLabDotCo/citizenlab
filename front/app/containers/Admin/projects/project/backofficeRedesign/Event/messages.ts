@@ -69,10 +69,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.event.previewEventImage',
     defaultMessage: 'Event image',
   },
-  crop: {
-    id: 'app.containers.Admin.projects.project.event.crop',
-    defaultMessage: 'Crop',
-  },
   cropImage: {
     id: 'app.containers.Admin.projects.project.event.cropImage',
     defaultMessage: 'Crop image',

@@ -1,0 +1,22 @@
+.attachment {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-16);
+  padding: var(--gv-space-14) var(--gv-space-16);
+  border: var(--gv-border-width-1) solid var(--gv-border-control);
+  /* The citizen card radius is 3 px; 4 is the nearest token. */
+  border-radius: var(--gv-radius-4);
+}
+
+.icon {
+  flex-shrink: 0;
+  color: var(--gv-icon-secondary);
+}
+
+.name {
+  margin: 0;
+  font-size: var(--gv-font-size-14);
+  line-height: var(--gv-font-line-height-20);
+  color: var(--gv-text-toolbar);
+  text-decoration: underline;
+}

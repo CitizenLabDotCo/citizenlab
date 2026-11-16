@@ -1,0 +1,55 @@
+.dividerTop {
+  margin-bottom: var(--gv-space-20);
+}
+
+.dividerBetween {
+  margin: var(--gv-space-24) 0;
+}
+
+.revert {
+  margin-top: var(--gv-space-24);
+}
+
+.helper {
+  composes: ui from '../../../design-system/typography.module.css';
+  color: var(--gv-text-secondary);
+}
+
+.defaultsRow {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-12);
+  margin-bottom: var(--gv-space-16);
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+/* Inherited settings are inert under a grey wash; only the expander toggles
+   stay usable, since they only show and hide information. */
+.readOnly {
+  position: relative;
+}
+
+.readOnly > * {
+  pointer-events: none;
+}
+
+.readOnly [data-expander-toggle] {
+  position: relative;
+  z-index: 2;
+  pointer-events: auto;
+}
+
+.readOnly::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-color: color-mix(
+    in srgb,
+    var(--gv-surface-neutral) 35%,
+    transparent
+  );
+}

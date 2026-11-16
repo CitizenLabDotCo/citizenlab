@@ -1,30 +1,27 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 
-import {
-  Box,
-  Button,
-  Icon,
-  Tooltip,
-  bo,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import { CalendarDate, Time } from '@internationalized/date';
 import { addMinutes, isSameDay } from 'date-fns';
+import Button from 'design-system/Button';
+import DatePicker from 'design-system/DatePicker';
+import IconButton from 'design-system/IconButton';
+import TimeField from 'design-system/TimeField';
+import 'design-system/tokens.css';
 import { CLErrors } from 'typings';
 
 import { IEventProperties } from 'api/events/types';
 
 import SetupCard from 'containers/Admin/projects/_shared/components/SetupCard';
 import useEventDateTimes from 'containers/Admin/projects/_shared/events/useEventDateTimes';
+import dateTimeMessages from 'containers/Admin/projects/project/events/components/DateTimeSelection/messages';
 import eventMessages from 'containers/Admin/projects/project/events/messages';
+import phaseSetupMessages from 'containers/Admin/projects/project/phaseSetup/messages';
 
-import DateSinglePicker from 'components/admin/DatePickers/DateSinglePicker';
-import TimeInput from 'components/admin/TimeSelection/TimeInput';
-import Error from 'components/UI/Error';
+import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 
 import { useIntl } from 'utils/cl-intl';
 
-import DateFieldRow from './DateFieldRow';
-import DateFieldSegment from './DateFieldSegment';
+import styles from './EventDates.module.css';
 import messages from './messages';
 import PlatformTimeNote from './PlatformTimeNote';
 
@@ -34,14 +31,21 @@ const withTimeOf = (date: Date, time: Date) => {
   return result;
 };
 
-const Arrow = () => (
-  <Icon
-    name="arrow-right"
-    width="14px"
-    height="14px"
-    fill={bo.colors.crumbSeparator}
-  />
-);
+// The pickers work on @internationalized/date values; the form keeps the
+// platform wall-clock Dates, so values are converted only here.
+const toCalendarDate = (date: Date) =>
+  new CalendarDate(date.getFullYear(), date.getMonth() + 1, date.getDate());
+
+const toTime = (date: Date) => new Time(date.getHours(), date.getMinutes());
+
+const fromCalendarDate = (day: CalendarDate) =>
+  new Date(day.year, day.month - 1, day.day);
+
+const withPickedTime = (date: Date, time: Time) => {
+  const result = new Date(date);
+  result.setHours(time.hour, time.minute);
+  return result;
+};
 
 interface Props {
   startAt: string;
@@ -51,14 +55,7 @@ interface Props {
 }
 
 const EventDates = ({ startAt, endAt, errors, setAttributeDiff }: Props) => {
-  const { formatMessage, formatDate } = useIntl();
-  const formatLongDate = (date: Date) =>
-    formatDate(date, {
-      weekday: 'short',
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
-    });
+  const { formatMessage } = useIntl();
   const {
     platformTimezone,
     startAtDate,
@@ -68,6 +65,9 @@ const EventDates = ({ startAt, endAt, errors, setAttributeDiff }: Props) => {
     updateEndAt,
   } = useEventDateTimes({ startAt, endAt, setAttributeDiff });
   const [endDateAdded, setEndDateAdded] = useState(false);
+  const apiErrorText = useApiErrorText();
+  const startError = apiErrorText(errors?.start_at);
+  const endError = apiErrorText(errors?.end_at);
   // A time change can push the end past midnight, which shows the end date too.
   const multiDay = endDateAdded || !isSameDay(startAtDate, endAtDate);
 
@@ -81,72 +81,74 @@ const EventDates = ({ startAt, endAt, errors, setAttributeDiff }: Props) => {
 
   return (
     <SetupCard title={formatMessage(eventMessages.eventDates)}>
-      <DateFieldRow icon="calendar">
-        <DateFieldSegment>
-          <DateSinglePicker
-            id="event-start-date"
-            selectedDate={startAtDate}
-            formatDate={formatLongDate}
-            onChange={(date) => updateStartAt(withTimeOf(date, startAtDate))}
-          />
-        </DateFieldSegment>
-        {multiDay && (
-          <>
-            <Arrow />
-            <DateFieldSegment>
-              <DateSinglePicker
+      <div className={styles.grid}>
+        <DatePicker
+          id="event-start-date"
+          label={formatMessage(phaseSetupMessages.startDate)}
+          value={toCalendarDate(startAtDate)}
+          onChange={(day) => {
+            if (day) {
+              updateStartAt(withTimeOf(fromCalendarDate(day), startAtDate));
+            }
+          }}
+          isInvalid={!!startError}
+          errorMessage={startError}
+        />
+        {multiDay ? (
+          <div className={styles.endDate}>
+            <div className={styles.endDatePicker}>
+              <DatePicker
                 id="event-end-date"
-                selectedDate={endAtDate}
-                formatDate={formatLongDate}
-                onChange={(date) => updateEndAt(withTimeOf(date, endAtDate))}
+                label={formatMessage(phaseSetupMessages.endDate)}
+                value={toCalendarDate(endAtDate)}
+                onChange={(day) => {
+                  if (day) {
+                    updateEndAt(withTimeOf(fromCalendarDate(day), endAtDate));
+                  }
+                }}
+                isInvalid={!!endError}
+                errorMessage={endError}
               />
-            </DateFieldSegment>
-            <Box ml="auto">
-              <Tooltip
-                content={formatMessage(messages.removeEndDate)}
-                theme="dark"
-              >
-                <Button
-                  buttonStyle="bo-text"
-                  icon="close"
-                  iconSize="14px"
-                  width="24px"
-                  height="24px"
-                  padding="0"
-                  ariaLabel={formatMessage(messages.removeEndDate)}
-                  onClick={removeEndDate}
-                />
-              </Tooltip>
-            </Box>
-          </>
+            </div>
+            <div className={styles.removeEndDate}>
+              <IconButton
+                icon="x-14"
+                size={24}
+                aria-label={formatMessage(messages.removeEndDate)}
+                onPress={removeEndDate}
+              />
+            </div>
+          </div>
+        ) : (
+          <span />
         )}
-      </DateFieldRow>
 
-      <DateFieldRow icon="clock">
-        <DateFieldSegment>
-          <TimeInput selectedTime={startAtDate} onChange={updateStartAt} />
-        </DateFieldSegment>
-        <Arrow />
-        <DateFieldSegment>
-          <TimeInput selectedTime={endAtDate} onChange={updateEndAt} />
-        </DateFieldSegment>
-      </DateFieldRow>
-      <Error apiErrors={errors?.start_at} />
-      <Error apiErrors={errors?.end_at} />
+        <TimeField
+          label={formatMessage(dateTimeMessages.dateStartLabel)}
+          value={toTime(startAtDate)}
+          onChange={(time) => {
+            if (time) updateStartAt(withPickedTime(startAtDate, time));
+          }}
+        />
+        <TimeField
+          label={formatMessage(dateTimeMessages.datesEndLabel)}
+          value={toTime(endAtDate)}
+          onChange={(time) => {
+            if (time) updateEndAt(withPickedTime(endAtDate, time));
+          }}
+          isInvalid={!multiDay && !!endError}
+          errorMessage={multiDay ? undefined : endError}
+        />
+      </div>
 
-      <Box display="flex" alignItems="center" justifyContent="space-between">
+      <div className={styles.footer}>
         {multiDay ? (
           <span />
         ) : (
           <Button
-            buttonStyle="bo-text"
-            padding="2px"
-            height="auto"
-            fontSize={`${bo.controlFontSize}px`}
-            fontWeight="400"
-            textColor={colors.coolGrey600}
-            textHoverColor={bo.colors.textHeadingStrong}
-            onClick={() => setEndDateAdded(true)}
+            variant="quiet"
+            size={28}
+            onPress={() => setEndDateAdded(true)}
           >
             {formatMessage(messages.addEndDate)}
           </Button>
@@ -154,7 +156,7 @@ const EventDates = ({ startAt, endAt, errors, setAttributeDiff }: Props) => {
         {platformTimezone && (
           <PlatformTimeNote timezone={platformTimezone} now={tenantTimeNow} />
         )}
-      </Box>
+      </div>
     </SetupCard>
   );
 };

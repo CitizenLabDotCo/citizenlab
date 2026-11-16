@@ -1,11 +1,10 @@
 import React, { ReactNode } from 'react';
 
-import {
-  Box,
-  Icon,
-  IconNames,
-  colors,
-} from '@citizenlab/cl2-component-library';
+// The preview copies the citizen event page and keeps its icons.
+import { Icon, IconNames } from '@citizenlab/cl2-component-library';
+import 'design-system/tokens.css';
+
+import styles from './PreviewInfoRow.module.css';
 
 interface Props {
   icon: IconNames;
@@ -14,19 +13,18 @@ interface Props {
 }
 
 const PreviewInfoRow = ({ icon, empty = false, children }: Props) => (
-  <Box display="flex" alignItems="flex-start" gap="8px">
-    <Box flex="0 0 24px" mt="2px" display="flex">
+  <div className={styles.row}>
+    <div className={styles.iconBox}>
       <Icon
         name={icon}
         width="24px"
         height="24px"
-        fill={empty ? colors.coolGrey300 : colors.coolGrey600}
+        fill="currentColor"
+        className={empty ? styles.iconEmpty : styles.icon}
       />
-    </Box>
-    <Box flex="1" minWidth="0">
-      {children}
-    </Box>
-  </Box>
+    </div>
+    <div className={styles.content}>{children}</div>
+  </div>
 );
 
 export default PreviewInfoRow;

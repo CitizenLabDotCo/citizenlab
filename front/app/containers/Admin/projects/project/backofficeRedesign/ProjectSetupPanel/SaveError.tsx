@@ -2,7 +2,7 @@ import React from 'react';
 
 import generalMessages from 'containers/Admin/projects/project/general/messages';
 
-import Error from 'components/UI/Error';
+import Banner from 'design-system/Banner';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -14,7 +14,11 @@ const SaveError = () => {
 
   if (!saveFailed) return null;
 
-  return <Error text={formatMessage(generalMessages.saveErrorMessage)} />;
+  return (
+    <Banner tone="error">
+      {formatMessage(generalMessages.saveErrorMessage)}
+    </Banner>
+  );
 };
 
 export default SaveError;

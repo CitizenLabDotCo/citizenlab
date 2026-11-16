@@ -1,0 +1,40 @@
+.statusBadge {
+  composes: smallStrong from '../typography.module.css';
+  box-sizing: border-box;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  border-radius: var(--gv-radius-full);
+  white-space: nowrap;
+}
+
+.size18 {
+  height: 18px;
+  padding: 0 var(--gv-space-6);
+}
+
+.size20 {
+  height: var(--gv-size-20);
+  padding: 0 var(--gv-space-8);
+}
+
+.draft {
+  background: var(--gv-surface-tertiary);
+  color: var(--gv-text-neutral);
+}
+
+.live,
+.published {
+  background: var(--gv-surface-success);
+  color: var(--gv-text-success-strong);
+}
+
+.pendingApproval {
+  background: var(--gv-surface-danger-subtle);
+  color: var(--gv-text-danger);
+}
+
+.archived {
+  background: var(--gv-surface-hovered);
+  color: var(--gv-text-secondary);
+}

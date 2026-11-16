@@ -1,16 +1,20 @@
 import React from 'react';
 
-import { Box, Table, Tbody } from '@citizenlab/cl2-component-library';
+import Pagination from 'design-system/Pagination';
+import Table, { TableBody } from 'design-system/Table';
+import 'design-system/tokens.css';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IIdeaData, Sort } from 'api/ideas/types';
 
-import Pagination from 'components/Pagination';
+import { useIntl } from 'utils/cl-intl';
 
 import { ColumnKey } from '../columns';
+import messages from '../messages';
 
 import HeaderRow from './HeaderRow';
 import IdeaRow from './IdeaRow';
+import styles from './IdeaTable.module.css';
 
 interface Props {
   ideas: IIdeaData[];
@@ -24,7 +28,6 @@ interface Props {
   selectedIds: Set<string>;
   onToggleSelect: (idea: IIdeaData) => void;
   onToggleSelectPage: () => void;
-  openIdeaId: string | undefined;
   onOpen: (ideaId: string) => void;
   currentPage: number;
   lastPage: number;
@@ -43,17 +46,20 @@ const IdeaTable = ({
   selectedIds,
   onToggleSelect,
   onToggleSelectPage,
-  openIdeaId,
   onOpen,
   currentPage,
   lastPage,
   onChangePage,
 }: Props) => {
+  const { formatMessage } = useIntl();
   const selectedOnPage = ideas.filter((idea) => selectedIds.has(idea.id));
 
   return (
-    <Box overflowX="auto">
-      <Table>
+    <div>
+      <Table
+        aria-label={formatMessage(messages.inputsTile)}
+        keyboardNavigationBehavior="tab"
+      >
         <HeaderRow
           columns={columns}
           availableColumns={availableColumns}
@@ -66,7 +72,7 @@ const IdeaTable = ({
           someSelected={selectedOnPage.length > 0}
           onToggleSelectAll={onToggleSelectPage}
         />
-        <Tbody>
+        <TableBody>
           {ideas.map((idea) => (
             <IdeaRow
               key={idea.id}
@@ -75,23 +81,22 @@ const IdeaTable = ({
               statuses={statuses}
               tagLabels={tagLabels}
               selected={selectedIds.has(idea.id)}
-              active={idea.id === openIdeaId}
               onToggleSelect={() => onToggleSelect(idea)}
               onOpen={() => onOpen(idea.id)}
             />
           ))}
-        </Tbody>
+        </TableBody>
       </Table>
       {lastPage > 1 && (
-        <Box display="flex" justifyContent="center" py="16px">
+        <div className={styles.pagination}>
           <Pagination
-            currentPage={currentPage}
-            totalPages={lastPage}
-            loadPage={onChangePage}
+            page={currentPage}
+            pageCount={lastPage}
+            onChange={onChangePage}
           />
-        </Box>
+        </div>
       )}
-    </Box>
+    </div>
   );
 };
 

@@ -1,0 +1,32 @@
+.row {
+  composes: ui from '../typography.module.css';
+  composes: ringInside from '../focus.module.css';
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-16);
+  height: var(--gv-size-control-32);
+  padding: 0 var(--gv-space-8);
+  border-radius: var(--gv-radius-8);
+  color: var(--gv-text-primary);
+  cursor: pointer;
+  transition: background-color var(--gv-motion-duration-fast)
+    var(--gv-motion-easing-standard);
+}
+
+.row[data-hovered],
+.row[data-focused],
+.row[data-focus-visible] {
+  background: var(--gv-surface-hovered);
+}
+
+.row[data-disabled],
+.withReason {
+  color: var(--gv-text-disabled);
+  cursor: default;
+}
+
+.label {
+  flex: 1;
+  min-width: 0;
+}

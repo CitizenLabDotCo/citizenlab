@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { IconNames } from '@citizenlab/cl2-component-library';
-
 import { IPhaseData } from 'api/phases/types';
 
 import useLocalize from 'hooks/useLocalize';
+
+import { IconName } from 'design-system/Icon';
 
 import { ManagerType } from 'components/admin/PostManager';
 import usePrescreeningStatusFilter from 'components/admin/PostManager/components/FilterSidebar/statuses/usePrescreeningStatusFilter';
@@ -36,11 +36,10 @@ export type FilterCategoryKey =
 export interface FilterCategory {
   key: FilterCategoryKey;
   label: string;
-  icon: IconNames;
+  icon: IconName;
   options: Option[];
   selected: string[];
   multiple: boolean;
-  searchable?: boolean;
   isActive: boolean;
   toggle: (value: string) => void;
   clear: () => void;
@@ -102,7 +101,7 @@ const useFilterCategories = ({
     {
       key: 'source',
       label: formatMessage(messages.filterSource),
-      icon: 'download',
+      icon: 'download-16',
       options: [
         {
           value: 'online',
@@ -127,7 +126,7 @@ const useFilterCategories = ({
     {
       key: 'status',
       label: formatMessage(messages.filterStatus),
-      icon: 'check-circle',
+      icon: 'status-16',
       options: statusOptions,
       selected: filters.statuses,
       multiple: true,
@@ -139,7 +138,7 @@ const useFilterCategories = ({
     {
       key: 'assignee',
       label: formatMessage(messages.filterAssignee),
-      icon: 'user',
+      icon: 'user-16',
       options: assigneeOptions.map((option) => ({
         ...option,
         count: counts?.byAssignee && (counts.byAssignee[option.value] ?? 0),
@@ -154,14 +153,13 @@ const useFilterCategories = ({
     {
       key: 'tags',
       label: formatMessage(messages.filterTags),
-      icon: 'label',
+      icon: 'tag-16',
       options: tagOptions.map((option) => ({
         ...option,
         count: counts?.byTopic[option.value] ?? 0,
       })),
       selected: filters.topics,
       multiple: true,
-      searchable: true,
       isActive: filters.topics.length > 0,
       toggle: (value) => setFilters({ topics: toggled(filters.topics, value) }),
       clear: () => setFilters({ topics: [] }),
@@ -169,7 +167,7 @@ const useFilterCategories = ({
     {
       key: 'reply',
       label: formatMessage(messages.filterReply),
-      icon: 'chat-bubble',
+      icon: 'message-square-16',
       options: [
         {
           value: 'awaiting',
@@ -199,7 +197,7 @@ const useFilterCategories = ({
   const phaseCategory: FilterCategory = {
     key: 'phase',
     label: formatMessage(messages.filterPhase),
-    icon: 'timeline',
+    icon: 'calendar-16',
     options: [
       {
         value: ALL_PHASES,

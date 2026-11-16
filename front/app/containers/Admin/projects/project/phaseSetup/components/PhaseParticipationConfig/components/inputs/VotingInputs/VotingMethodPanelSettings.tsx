@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 
-import { Box, Select, Text } from '@citizenlab/cl2-component-library';
-import { CLErrors, IOption } from 'typings';
+import { CLError, CLErrors, IOption } from 'typings';
 
 import { VoteTerm, VotingMethod } from 'api/phases/types';
 
 import projectMessages from 'containers/Admin/projects/project/messages';
 
-import Error from 'components/UI/Error';
+import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
+
+import { ListBoxOption } from 'design-system/ListBox';
+import Select from 'design-system/Select';
+import 'design-system/tokens.css';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
@@ -16,6 +19,7 @@ import NumberSettingRow from '../_shared/NumberSettingRow';
 import ReactionLimitSettings from '../_shared/ReactionLimitSettings';
 
 import messages from './messages';
+import styles from './VotingMethodPanelSettings.module.css';
 
 const VOTE_TERMS: Record<VoteTerm, MessageDescriptor> = {
   vote: messages.voteTerm,
@@ -57,33 +61,41 @@ const VotingMethodPanelSettings = ({
   handleVoteTermChange,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const getApiErrorMessage = useApiErrorText();
   // Kept apart from the value, so clearing the amount doesn't switch to
   // unlimited.
   const [maxVotesType, setMaxVotesType] = useState<'limited' | 'unlimited'>(
     voting_max_total ? 'limited' : 'unlimited'
   );
 
+  const errorText = (
+    validationError: string | undefined,
+    apiError: CLError[] | undefined
+  ) =>
+    [validationError, getApiErrorMessage(apiError)].filter(Boolean).join(' ') ||
+    undefined;
+
   const minOptions = (
     <NumberSettingRow
       id="voting_min_selected_options"
       label={formatMessage(messages.minimumOptions2)}
       value={voting_min_selected_options}
-      min="0"
+      min={0}
       onChange={handleMinVotingOptionsChange}
-      error={
-        <Error
-          text={validationErrors.minSelectedOptionsError}
-          apiErrors={apiErrors && apiErrors.voting_min_selected_options}
-        />
-      }
+      errorMessage={errorText(
+        validationErrors.minSelectedOptionsError,
+        apiErrors?.voting_min_selected_options
+      )}
     />
   );
 
-  const maxTotalError = (
-    <Error
-      text={validationErrors.maxTotalVotesError}
-      apiErrors={apiErrors && apiErrors.voting_max_total}
-    />
+  const maxTotalError = errorText(
+    validationErrors.maxTotalVotesError,
+    apiErrors?.voting_max_total
+  );
+
+  const voteTermOptions: IOption[] = Object.entries(VOTE_TERMS).map(
+    ([value, label]) => ({ value, label: formatMessage(label) })
   );
 
   if (voting_method === 'single_voting') {
@@ -101,7 +113,7 @@ const VotingMethodPanelSettings = ({
             handleVotingMaxTotalChange(method === 'limited' ? '1' : null);
           }}
           onMaxChange={handleVotingMaxTotalChange}
-          error={maxTotalError}
+          maxError={maxTotalError}
         />
         {minOptions}
       </>
@@ -111,40 +123,43 @@ const VotingMethodPanelSettings = ({
   if (voting_method === 'multiple_voting') {
     return (
       <>
-        <Box pb="5px">
+        <div className={styles.voteTerm}>
           <Select
             id="vote_term"
-            variant="bo"
             label={formatMessage(messages.voteCalled2)}
-            labelTooltipText={formatMessage(messages.ifLeftEmpty)}
-            value={voteTerm}
-            options={Object.entries(VOTE_TERMS).map(([value, label]) => ({
-              value,
-              label: formatMessage(label),
-            }))}
-            onChange={handleVoteTermChange}
-          />
-        </Box>
+            description={formatMessage(messages.ifLeftEmpty)}
+            size={32}
+            value={voteTerm ?? null}
+            onChange={(key) => {
+              const option = voteTermOptions.find(({ value }) => value === key);
+              if (option) handleVoteTermChange(option);
+            }}
+          >
+            {voteTermOptions.map(({ value, label }) => (
+              <ListBoxOption key={value} id={value}>
+                {label}
+              </ListBoxOption>
+            ))}
+          </Select>
+        </div>
         <NumberSettingRow
           id="voting_max_total"
           label={formatMessage(messages.numberVotesPerUser2)}
           value={voting_max_total}
-          min="1"
+          min={1}
           onChange={handleVotingMaxTotalChange}
-          error={maxTotalError}
+          errorMessage={maxTotalError}
         />
         <NumberSettingRow
           id="voting_max_votes_per_idea"
           label={formatMessage(messages.maxVotesPerOption2)}
           value={voting_max_votes_per_idea}
-          min="1"
+          min={1}
           onChange={handleMaxVotesPerOptionAmountChange}
-          error={
-            <Error
-              text={validationErrors.maxVotesPerOptionError}
-              apiErrors={apiErrors && apiErrors.voting_max_votes_per_idea}
-            />
-          }
+          errorMessage={errorText(
+            validationErrors.maxVotesPerOptionError,
+            apiErrors?.voting_max_votes_per_idea
+          )}
         />
         {minOptions}
       </>
@@ -154,29 +169,27 @@ const VotingMethodPanelSettings = ({
   if (voting_method === 'budgeting') {
     return (
       <>
-        <Text as="span" variant="boHelper" fontSize="xs" m="0">
+        <span className={styles.helper}>
           {formatMessage(projectMessages.totalBudget)}
-        </Text>
+        </span>
         <NumberSettingRow
           id="voting_min_total"
           label={formatMessage(projectMessages.minimum)}
           value={voting_min_total}
-          min="0"
+          min={0}
           onChange={handleVotingMinTotalChange}
-          error={
-            <Error
-              text={validationErrors.minTotalVotesError}
-              apiErrors={apiErrors && apiErrors.voting_min_total}
-            />
-          }
+          errorMessage={errorText(
+            validationErrors.minTotalVotesError,
+            apiErrors?.voting_min_total
+          )}
         />
         <NumberSettingRow
           id="voting_max_total"
           label={formatMessage(projectMessages.maximum)}
           value={voting_max_total}
-          min="1"
+          min={1}
           onChange={handleVotingMaxTotalChange}
-          error={maxTotalError}
+          errorMessage={maxTotalError}
         />
       </>
     );

@@ -1,0 +1,76 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-height: 0;
+}
+
+.fields {
+  flex-grow: 1;
+}
+
+/* A survey option with the button that opens its questions. */
+.option {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-12);
+}
+
+/* Full-width button: the design-system Button has no width option. */
+.fullWidth {
+  display: flex;
+  flex-direction: column;
+}
+
+.helper {
+  composes: ui from '../../../../../../../design-system/typography.module.css';
+  color: var(--gv-text-secondary);
+}
+
+.setupBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-10);
+}
+
+.setupLead {
+  composes: helper;
+  margin-bottom: var(--gv-space-6);
+}
+
+.switchBody {
+  display: flex;
+  flex-direction: column;
+}
+
+.switchIntro {
+  composes: helper;
+  margin-bottom: var(--gv-space-12);
+}
+
+.consequences {
+  margin: 0;
+  padding-left: var(--gv-space-20);
+}
+
+.consequence {
+  composes: helper;
+  margin: var(--gv-space-4) 0;
+}
+
+.externalFields {
+  margin-top: var(--gv-space-20);
+}
+
+.errors {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-8);
+  margin-top: var(--gv-space-16);
+}
+
+.surveyFields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-12);
+}

@@ -1,23 +1,20 @@
 import React, { useCallback, useMemo, useState } from 'react';
 
-import {
-  Box,
-  Button,
-  Text,
-  Toggle,
-  Tooltip,
-} from '@citizenlab/cl2-component-library';
+import IconButton from 'design-system/IconButton';
+import Switch from 'design-system/Switch';
+import 'design-system/tokens.css';
 
 import { CampaignData } from 'containers/Admin/messaging/AutomatedEmails/types';
 import useCampaignRow from 'containers/Admin/messaging/AutomatedEmails/useCampaignRow';
 import messagingMessages from 'containers/Admin/messaging/messages';
 
 import { useRegisterPageSaver } from 'components/admin/PageSaveContext';
-import UpsellTooltip from 'components/UpsellTooltip';
+import upsellMessages from 'components/UpsellTooltip/messages';
 
 import { useIntl } from 'utils/cl-intl';
 
 import NotificationDetail from './NotificationDetail';
+import styles from './NotificationRow.module.css';
 
 interface Props {
   campaign: CampaignData;
@@ -50,34 +47,28 @@ const NotificationRow = ({ campaign, projectId, phaseId }: Props) => {
     save: () => saveEnabled(enabled),
   });
 
-  const editButton = (
-    <Button
-      buttonStyle="bo-text"
-      icon="chevron-right"
-      iconSize="16px"
-      width="28px"
-      height="28px"
-      padding="0"
-      ariaLabel={formatMessage(messagingMessages.editButtonLabel)}
-      disabled={!isEditable}
-      onClick={openEditor}
-    />
-  );
+  const editLabel = formatMessage(messagingMessages.editButtonLabel);
+  const disabledReason = isOutsidePlan
+    ? formatMessage(upsellMessages.tooltipContent)
+    : isComingSoon
+    ? formatMessage(messagingMessages.editDisabledTooltip)
+    : undefined;
 
   return (
-    <Box display="flex" alignItems="center" gap="12px">
-      <Box alignSelf="flex-start" pt="2px">
-        <Toggle
-          variant="bo"
-          checked={enabled}
-          onChange={() => setEnabled((enabled) => !enabled)}
-          disabled={!canBeDisabled}
+    <div className={styles.row}>
+      <div className={styles.switch}>
+        <Switch
+          size={26}
+          aria-label={campaign.campaign_description}
+          isSelected={enabled}
+          onChange={setEnabled}
+          isDisabled={!canBeDisabled}
         />
-      </Box>
-      <Box display="flex" flexDirection="column" gap="4px" flexGrow={1}>
-        <Text as="span" variant="boControl" m="0">
+      </div>
+      <div className={styles.content}>
+        <span className={styles.description}>
           {campaign.campaign_description}
-        </Text>
+        </span>
         {campaign.recipient_segment && (
           <NotificationDetail
             icon="user"
@@ -92,18 +83,15 @@ const NotificationRow = ({ campaign, projectId, phaseId }: Props) => {
             text={when}
           />
         )}
-      </Box>
-      {isOutsidePlan ? (
-        <UpsellTooltip disabled={false}>{editButton}</UpsellTooltip>
-      ) : (
-        <Tooltip
-          disabled={!isComingSoon}
-          content={formatMessage(messagingMessages.editDisabledTooltip)}
-        >
-          <div>{editButton}</div>
-        </Tooltip>
-      )}
-    </Box>
+      </div>
+      <IconButton
+        icon="chevron-right-16"
+        aria-label={editLabel}
+        isDisabled={!isEditable}
+        disabledReason={disabledReason}
+        onPress={openEditor}
+      />
+    </div>
   );
 };
 

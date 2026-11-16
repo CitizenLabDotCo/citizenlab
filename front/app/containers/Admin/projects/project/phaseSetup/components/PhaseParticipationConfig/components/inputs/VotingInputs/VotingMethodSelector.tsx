@@ -13,6 +13,9 @@ import ChoiceRadio from 'containers/Admin/projects/_shared/components/ChoiceRadi
 
 import { SubSectionTitle } from 'components/admin/Section';
 
+import RadioGroup from 'design-system/RadioGroup';
+import 'design-system/tokens.css';
+
 import { useIntl } from 'utils/cl-intl';
 
 import BudgetingIcon from './CardIcons/BudgetingIcon';
@@ -54,19 +57,24 @@ const VotingMethodSelector = ({
 
   if (layout === 'panel') {
     return (
-      <Box display="flex" flexDirection="column" gap="20px">
+      <RadioGroup
+        aria-label={formatMessage(messages.votingMethodSelectorTitle)}
+        name="voting_method"
+        value={voting_method ?? null}
+        onChange={(value) => {
+          const option = VOTING_METHODS.find(({ method }) => method === value);
+          if (option) handleVotingMethodOnChange(option.method);
+        }}
+      >
         {VOTING_METHODS.map(({ method, title, subtitle }) => (
           <ChoiceRadio
             key={method}
-            name="voting_method"
             value={method}
-            currentValue={voting_method}
             title={formatMessage(title)}
             description={formatMessage(subtitle)}
-            onChange={() => handleVotingMethodOnChange(method)}
           />
         ))}
-      </Box>
+      </RadioGroup>
     );
   }
 

@@ -1,13 +1,13 @@
 import React, { ReactNode } from 'react';
 
-import {
-  Box,
-  IconTooltip,
-  Text,
-  bo,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import { Button as AriaButton } from 'react-aria-components';
 
+import Disclosure from 'design-system/Disclosure';
+import Icon from 'design-system/Icon';
+import Tooltip from 'design-system/Tooltip';
+import 'design-system/tokens.css';
+
+import styles from './SetupCard.module.css';
 import SetupCardButton, { CardButton } from './SetupCardButton';
 
 interface Props {
@@ -24,47 +24,42 @@ const SetupCard = ({
   action,
   button,
   children,
-}: Props) => (
-  <Box
-    as="section"
-    display="flex"
-    flexDirection="column"
-    border={`1px solid ${colors.grey200}`}
-    borderRadius={bo.borderRadius}
-  >
-    {button ? (
-      <Box as="h3" m="0">
-        <SetupCardButton
-          title={title}
-          titleTooltip={titleTooltip}
-          action={action}
-          button={button}
-        />
-      </Box>
-    ) : (
-      <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-        gap="10px"
-        minHeight="44px"
-        p="8px 8px 8px 12px"
+}: Props) => {
+  if (button) {
+    return (
+      <SetupCardButton
+        title={title}
+        titleTooltip={titleTooltip}
+        action={action}
+        button={button}
       >
-        <Box as="h3" m="0" display="flex" alignItems="center" gap="4px">
-          <Text as="span" variant="boControl" fontSize="xs" m="0">
-            {title}
-          </Text>
-          {titleTooltip && <IconTooltip content={titleTooltip} />}
-        </Box>
-        {action}
-      </Box>
-    )}
-    {children && (
-      <Box display="flex" flexDirection="column" gap="12px" p="2px 12px 14px">
         {children}
-      </Box>
-    )}
-  </Box>
-);
+      </SetupCardButton>
+    );
+  }
+
+  return (
+    <Disclosure
+      header="static"
+      title={
+        titleTooltip ? (
+          <span className={styles.titleRow}>
+            {title}
+            <Tooltip content={titleTooltip}>
+              <AriaButton className={styles.infoButton} aria-label={title}>
+                <Icon name="info-16" />
+              </AriaButton>
+            </Tooltip>
+          </span>
+        ) : (
+          title
+        )
+      }
+      actions={action}
+    >
+      {children}
+    </Disclosure>
+  );
+};
 
 export default SetupCard;

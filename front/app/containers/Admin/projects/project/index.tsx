@@ -7,10 +7,14 @@ import usePhase from 'api/phases/usePhase';
 import { IProjectData } from 'api/projects/types';
 import useProjectById from 'api/projects/useProjectById';
 
+import useLocale from 'hooks/useLocale';
 import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
 import { PageSaveProvider } from 'components/admin/PageSaveContext';
 
+import DesignSystemProvider from 'design-system/Provider';
+
+import clHistory from 'utils/cl-router/history';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 import { Outlet as RouterOutlet, useMatchRoute, useParams } from 'utils/router';
 
@@ -40,6 +44,7 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
   const { phaseId } = useParams({ strict: false });
   const { data: phase } = usePhase(phaseId);
   const workspaceEnabled = useProjectBackofficeRedesign();
+  const locale = useLocale();
   const matchRoute = useMatchRoute();
   const onNewPhaseRoute = !!matchRoute({
     to: '/$locale/admin/projects/$projectId/phases/new',
@@ -59,28 +64,35 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
   if (workspaceEnabled) {
     return (
       <ParticipationPanelProvider projectId={projectId}>
-        <PageSaveProvider>
-          <UnsavedChangesGuard />
-          {page === 'newPhase' && <NewPhase project={project} />}
-          {page === 'event' && <Event project={project} />}
-          {page === 'project' && (
-            <ProjectWorkspace
-              project={project}
-              phase={selectedPhase}
-              sidePanel={
-                selectedPhase && (
-                  <PhaseSetup
-                    key={selectedPhase.id}
-                    projectId={projectId}
-                    phase={selectedPhase}
-                  />
-                )
-              }
-            >
-              <RouterOutlet />
-            </ProjectWorkspace>
-          )}
-        </PageSaveProvider>
+        {/* The guard and the method picker of a new phase render outside the
+            workspace, so they need the provider here too. */}
+        <DesignSystemProvider
+          locale={locale}
+          navigate={(path) => clHistory.push(path)}
+        >
+          <PageSaveProvider>
+            <UnsavedChangesGuard />
+            {page === 'newPhase' && <NewPhase project={project} />}
+            {page === 'event' && <Event project={project} />}
+            {page === 'project' && (
+              <ProjectWorkspace
+                project={project}
+                phase={selectedPhase}
+                sidePanel={
+                  selectedPhase && (
+                    <PhaseSetup
+                      key={selectedPhase.id}
+                      projectId={projectId}
+                      phase={selectedPhase}
+                    />
+                  )
+                }
+              >
+                <RouterOutlet />
+              </ProjectWorkspace>
+            )}
+          </PageSaveProvider>
+        </DesignSystemProvider>
       </ParticipationPanelProvider>
     );
   }

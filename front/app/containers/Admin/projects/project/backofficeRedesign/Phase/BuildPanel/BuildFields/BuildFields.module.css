@@ -1,0 +1,52 @@
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-10);
+  padding: var(--gv-space-16) var(--gv-space-18) var(--gv-space-10);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  min-height: var(--gv-size-control-32);
+  margin-bottom: var(--gv-space-6);
+}
+
+.title {
+  composes: uiStrong from '../../../../../../../../design-system/typography.module.css';
+  color: var(--gv-text-primary);
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-10);
+}
+
+.descriptionField {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-8);
+}
+
+.draftDescription {
+  margin-top: var(--gv-space-8);
+}
+
+.choices {
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  gap: var(--gv-space-20);
+}
+
+.choice {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-12);
+}
+
+.helper {
+  composes: ui from '../../../../../../../../design-system/typography.module.css';
+  color: var(--gv-text-secondary);
+}

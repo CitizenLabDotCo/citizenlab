@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 
-import { bo, Box, colors, Text } from '@citizenlab/cl2-component-library';
+import styles from './RightColumn.module.css';
 
 interface Props {
   title: string;
@@ -8,16 +8,10 @@ interface Props {
 }
 
 const Card = ({ title, children }: Props) => (
-  <Box
-    border={`1px solid ${colors.grey300}`}
-    borderRadius={bo.panelBorderRadius}
-    p="16px"
-  >
-    <Text variant="boSection" m="0" mb="12px">
-      {title}
-    </Text>
+  <section className={styles.card}>
+    <h3 className={styles.cardTitle}>{title}</h3>
     {children}
-  </Box>
+  </section>
 );
 
 export default Card;

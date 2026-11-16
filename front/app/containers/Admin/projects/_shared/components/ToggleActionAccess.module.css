@@ -1,0 +1,8 @@
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gv-space-12);
+  /* 42px has no size token; kept as it is today. */
+  min-height: 42px;
+}

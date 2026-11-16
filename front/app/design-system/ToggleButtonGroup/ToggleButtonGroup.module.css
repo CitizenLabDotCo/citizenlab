@@ -1,0 +1,9 @@
+.group {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  padding: var(--gv-space-2);
+  gap: var(--gv-space-2);
+  border-radius: var(--gv-radius-full);
+  background: var(--gv-surface-neutral);
+}

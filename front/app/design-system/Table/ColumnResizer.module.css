@@ -1,0 +1,30 @@
+.resizer {
+  composes: ringInside from '../focus.module.css';
+  box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: var(--gv-space-8);
+  height: 100%;
+  border-radius: var(--gv-radius-4);
+  cursor: col-resize;
+  touch-action: none;
+}
+
+/* Drawn 1 px past the column edge, so it straddles the line between two heads. */
+.resizer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: calc(-1 * var(--gv-border-width-1));
+  width: var(--gv-border-width-2);
+  height: 100%;
+  background: var(--gv-border-resize);
+  visibility: hidden;
+}
+
+.resizer[data-hovered]::after,
+.resizer[data-focus-visible]::after,
+.resizer[data-resizing]::after {
+  visibility: visible;
+}

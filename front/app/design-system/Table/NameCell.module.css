@@ -1,0 +1,105 @@
+.cell {
+  composes: ringInside from '../focus.module.css';
+  min-width: 0;
+}
+
+.content {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  height: var(--gv-size-40);
+  min-width: 0;
+  gap: var(--gv-space-8);
+  padding: 0 var(--gv-space-12);
+  white-space: nowrap;
+}
+
+/* The name starts at 12 + 20 per level. */
+.content[data-level='2'] {
+  padding-left: calc(var(--gv-space-12) + var(--gv-space-20));
+}
+
+.content[data-level='3'] {
+  padding-left: calc(var(--gv-space-12) + 2 * var(--gv-space-20));
+}
+
+.content[data-level='4'] {
+  padding-left: calc(var(--gv-space-12) + 3 * var(--gv-space-20));
+}
+
+.content[data-level='5'] {
+  padding-left: calc(var(--gv-space-12) + 4 * var(--gv-space-20));
+}
+
+.flat {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: var(--gv-space-4);
+}
+
+.toggleSpace {
+  flex-shrink: 0;
+  width: var(--gv-size-16);
+  height: var(--gv-size-16);
+}
+
+.typeIcon {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: var(--gv-size-24);
+  height: var(--gv-size-24);
+}
+
+.icon {
+  color: var(--gv-icon-secondary);
+}
+
+.name {
+  composes: ui from '../typography.module.css';
+  overflow: hidden;
+  min-width: 0;
+  max-width: 100%;
+  color: var(--gv-text-primary);
+  text-overflow: ellipsis;
+}
+
+/* On a container the name underlines while the row is hovered. */
+.container .name {
+  flex-shrink: 0;
+  /* 3 px, as the prototype draws it; there is no token for it. */
+  text-underline-offset: 3px;
+}
+
+[data-hovered] .container .name {
+  text-decoration: underline;
+}
+
+.metaGroup,
+.spacePath,
+.path {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: var(--gv-space-4);
+}
+
+.meta,
+.pathText {
+  composes: small from '../typography.module.css';
+  overflow: hidden;
+  color: var(--gv-text-tertiary);
+  text-overflow: ellipsis;
+}
+
+.separator {
+  composes: small from '../typography.module.css';
+  color: var(--gv-icon-quiet);
+}
+
+.pathIcon {
+  flex-shrink: 0;
+  color: var(--gv-icon-tertiary);
+}

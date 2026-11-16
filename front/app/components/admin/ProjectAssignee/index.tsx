@@ -1,9 +1,10 @@
 import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
-
 import { UNASSIGNED } from 'components/admin/PostManager/useAssigneeOptions';
-import OptionPicker from 'components/UI/OptionPicker';
+
+import ComboBox from 'design-system/ComboBox';
+import { ListBoxOption } from 'design-system/ListBox';
+import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -22,36 +23,25 @@ const ProjectAssignee = ({ projectId, assignee, onAssigneeChange }: Props) => {
 
   if (!loaded) return null;
 
-  const title = formatMessage(messages.assignee);
-  const description = formatMessage(messages.assigneeDescription);
-
   return (
-    <Box
-      display="flex"
-      alignItems="flex-start"
-      justifyContent="space-between"
-      gap="12px"
+    <ComboBox
+      label={formatMessage(messages.assignee)}
+      description={formatMessage(messages.assigneeDescription)}
+      size={32}
+      defaultItems={options.map(({ value, label }) => ({ id: value, label }))}
+      value={(assignee === undefined ? savedAssignee : assignee) ?? UNASSIGNED}
+      onChange={(value) =>
+        onAssigneeChange(
+          typeof value === 'string' && value !== UNASSIGNED ? value : null
+        )
+      }
     >
-      <Box display="flex" flexDirection="column" gap="3px">
-        <Text as="span" variant="boControl" m="0">
-          {title}
-        </Text>
-        <Text as="span" variant="boMicro" m="0">
-          {description}
-        </Text>
-      </Box>
-      <OptionPicker
-        title={title}
-        description={description}
-        options={options.map((option) => ({ ...option, icon: 'user' }))}
-        value={
-          (assignee === undefined ? savedAssignee : assignee) ?? UNASSIGNED
-        }
-        onChange={(value) =>
-          onAssigneeChange(value === UNASSIGNED ? null : value)
-        }
-      />
-    </Box>
+      {(option: { id: string; label: string }) => (
+        <ListBoxOption id={option.id} icon="user-16">
+          {option.label}
+        </ListBoxOption>
+      )}
+    </ComboBox>
   );
 };
 

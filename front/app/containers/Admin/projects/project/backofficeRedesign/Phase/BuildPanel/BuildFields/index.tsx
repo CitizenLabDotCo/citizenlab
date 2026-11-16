@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
-import { CLErrors, Multiloc } from 'typings';
+import { CLErrors } from 'typings';
 
 import { IUpdatedPhaseProperties, ParticipationMethod } from 'api/phases/types';
 
@@ -13,11 +12,14 @@ import { isSurveyMethod } from 'containers/Admin/projects/project/phaseSetup/com
 import phaseSetupMessages from 'containers/Admin/projects/project/phaseSetup/messages';
 import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/typings';
 
-import Error from 'components/UI/Error';
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+import MultilocTextField from 'components/admin/MultilocFields/MultilocTextField';
+import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
+
+import Banner from 'design-system/Banner';
 
 import { useIntl } from 'utils/cl-intl';
 
+import styles from './BuildFields.module.css';
 import DescriptionField from './DescriptionField';
 import DocumentUrlCard from './DocumentUrlCard';
 import InputTermCard from './InputTermCard';
@@ -60,15 +62,17 @@ const BuildFields = ({
   onDatesChange,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const apiErrorText = useApiErrorText();
+  const baseError = apiErrorText(errors?.base);
   const surveyOptionsShown = !standalone && isSurveyMethod(participationMethod);
 
   return (
-    <Box display="flex" flexDirection="column" gap="10px" p="16px 18px 10px">
-      <Box display="flex" alignItems="center" minHeight="32px" mb="6px">
-        <Text variant="boSection" fontSize="m" m="0">
+    <div className={styles.fields}>
+      <div className={styles.header}>
+        <h2 className={styles.title}>
           {formatMessage(setupTitle(participationMethod))}
-        </Text>
-      </Box>
+        </h2>
+      </div>
 
       {surveyPlacement}
 
@@ -81,22 +85,17 @@ const BuildFields = ({
         onChange={onDatesChange}
       />
 
-      <Box display="flex" flexDirection="column" gap="10px">
-        <Box>
-          <InputMultilocWithLocaleSwitcher
+      <div className={styles.group}>
+        <div className="intercom-admin-phase-name">
+          <MultilocTextField
             id="phase-build-panel-title"
-            type="text"
-            variant="bo"
-            ariaLabel={formatMessage(phaseSetupMessages.titleLabel)}
+            aria-label={formatMessage(phaseSetupMessages.titleLabel)}
             placeholder={formatMessage(messages.phaseTitle)}
             valueMultiloc={formData.title_multiloc}
-            onChange={(title_multiloc: Multiloc) =>
-              onChange({ title_multiloc })
-            }
-            className="intercom-admin-phase-name"
+            onChange={(title_multiloc) => onChange({ title_multiloc })}
+            errorMessage={apiErrorText(errors?.title_multiloc)}
           />
-          <Error apiErrors={errors?.title_multiloc} />
-        </Box>
+        </div>
 
         {phaseId && (
           <DescriptionField
@@ -109,9 +108,9 @@ const BuildFields = ({
             }
           />
         )}
-      </Box>
+      </div>
 
-      <Box display="flex" flexDirection="column" gap="10px">
+      <div className={styles.group}>
         <AttachmentsCard
           id="phase-build-panel-file-uploader"
           title={formatMessage(messages.attachments)}
@@ -172,10 +171,10 @@ const BuildFields = ({
           inputTerm={formData.input_term}
           formInSurveyOptions={surveyOptionsShown}
         />
-      </Box>
+      </div>
 
-      <Error apiErrors={errors?.base} />
-    </Box>
+      {baseError && <Banner tone="error">{baseError}</Banner>}
+    </div>
   );
 };
 

@@ -1,0 +1,22 @@
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-12);
+}
+
+.switch {
+  align-self: flex-start;
+  padding-top: var(--gv-space-2);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: var(--gv-space-4);
+}
+
+.description {
+  composes: ui from '../../../../../../design-system/typography.module.css';
+  color: var(--gv-text-primary);
+}

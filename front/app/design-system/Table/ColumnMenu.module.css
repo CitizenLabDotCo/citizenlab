@@ -1,0 +1,59 @@
+/* The search field sits between Hide column and the values it filters: the menu
+ * lays its parts straight into the popover so the field can be ordered among them. */
+.popover {
+  display: flex;
+  flex-direction: column;
+  width: 260px;
+  padding: var(--gv-space-6);
+  overflow: auto;
+}
+
+.menu {
+  display: contents;
+  outline: none;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+}
+
+.separator {
+  flex-shrink: 0;
+  height: var(--gv-border-width-1);
+  margin: var(--gv-space-6) var(--gv-space-4);
+  border: none;
+  background: var(--gv-border-divider);
+}
+
+.search {
+  order: 1;
+  margin-bottom: var(--gv-space-4);
+}
+
+.values {
+  order: 2;
+}
+
+.input {
+  composes: ui from '../typography.module.css';
+  box-sizing: border-box;
+  width: 100%;
+  height: var(--gv-size-32);
+  margin: 0;
+  padding: 0 var(--gv-space-8);
+  border: none;
+  border-bottom: var(--gv-border-width-1) solid var(--gv-border-divider);
+  border-radius: 0;
+  background: transparent;
+  color: var(--gv-text-primary);
+  outline: none;
+}
+
+.input::placeholder {
+  color: var(--gv-text-placeholder);
+}
+
+.input::-webkit-search-cancel-button {
+  display: none;
+}

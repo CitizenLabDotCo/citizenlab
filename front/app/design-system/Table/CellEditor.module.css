@@ -1,0 +1,66 @@
+.editor {
+  composes: ringInside from '../focus.module.css';
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+  max-width: 100%;
+  gap: var(--gv-space-4);
+  margin: 0;
+  padding: 0 var(--gv-space-6);
+  border: none;
+  border-radius: var(--gv-radius-6);
+  background: transparent;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+  transition-property: background-color;
+  transition-duration: var(--gv-motion-duration-fast);
+  transition-timing-function: var(--gv-motion-easing-standard);
+}
+
+.status {
+  height: var(--gv-size-28);
+}
+
+.person {
+  height: var(--gv-size-32);
+}
+
+.editor[data-hovered],
+.editor[aria-expanded='true'] {
+  background: var(--gv-surface-hovered);
+}
+
+/* The Avatar sits 2 px in and the name 10 after it. */
+.personGroup {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: var(--gv-space-10);
+  padding-left: var(--gv-space-2);
+}
+
+.name {
+  composes: ui from '../typography.module.css';
+  overflow: hidden;
+  min-width: 0;
+  color: var(--gv-text-cell);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Plain text until the row is hovered. */
+.chevron {
+  display: none;
+  flex-shrink: 0;
+  color: var(--gv-icon-tertiary);
+}
+
+[data-hovered] > td .chevron,
+.editor[data-hovered] .chevron,
+.editor[data-focus-visible] .chevron,
+.editor[aria-expanded='true'] .chevron,
+.editor[data-show-chevron] .chevron {
+  display: block;
+}

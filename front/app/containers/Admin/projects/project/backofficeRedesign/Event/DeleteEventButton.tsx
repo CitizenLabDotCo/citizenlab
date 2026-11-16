@@ -1,11 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import {
-  Box,
-  Button,
-  colors,
-  fontSizes,
-} from '@citizenlab/cl2-component-library';
+import AlertDialog from 'design-system/AlertDialog';
+import Button from 'design-system/Button';
+import 'design-system/tokens.css';
 
 import useDeleteEvent from 'api/events/useDeleteEvent';
 
@@ -16,6 +13,7 @@ import { usePageSave } from 'components/admin/PageSaveContext';
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
+import styles from './DeleteEventButton.module.css';
 import messages from './messages';
 
 interface Props {
@@ -27,14 +25,12 @@ const DeleteEventButton = ({ projectId, eventId }: Props) => {
   const { formatMessage } = useIntl();
   const pageSave = usePageSave();
   const { mutate: deleteEvent, isPending } = useDeleteEvent();
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
   const handleDelete = () => {
-    if (!window.confirm(formatMessage(eventMessages.deleteConfirmationModal))) {
-      return;
-    }
-
     deleteEvent(eventId, {
       onSuccess: () => {
+        setConfirmOpen(false);
         pageSave?.leave();
         clHistory.push(`/admin/projects/${projectId}`);
       },
@@ -42,32 +38,21 @@ const DeleteEventButton = ({ projectId, eventId }: Props) => {
   };
 
   return (
-    <Box
-      position="sticky"
-      bottom="0"
-      zIndex="1"
-      display="flex"
-      mt="auto"
-      mx="-18px"
-      px="18px"
-      py="12px"
-      bgColor={colors.grey50}
-      borderTop={`1px solid ${colors.grey200}`}
-    >
-      <Button
-        buttonStyle="bo-text"
-        textColor={colors.red600}
-        textHoverColor={colors.red600}
-        fontSize={`${fontSizes.xs}px`}
-        fontWeight="600"
-        padding="6px"
-        width="auto"
-        processing={isPending}
-        onClick={handleDelete}
-      >
+    <div className={styles.footer}>
+      <Button variant="danger" size={32} onPress={() => setConfirmOpen(true)}>
         {formatMessage(messages.deleteEvent)}
       </Button>
-    </Box>
+      <AlertDialog
+        isOpen={confirmOpen}
+        onOpenChange={setConfirmOpen}
+        title={formatMessage(messages.deleteEvent)}
+        confirmLabel={formatMessage(messages.deleteEvent)}
+        onConfirm={handleDelete}
+        isPending={isPending}
+      >
+        {formatMessage(eventMessages.deleteConfirmationModal)}
+      </AlertDialog>
+    </div>
   );
 };
 

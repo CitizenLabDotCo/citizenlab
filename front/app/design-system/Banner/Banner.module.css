@@ -1,0 +1,75 @@
+.banner {
+  composes: ui from '../typography.module.css';
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-start;
+  padding: var(--gv-space-16);
+  gap: var(--gv-space-12);
+  border-radius: var(--gv-radius-12);
+  color: var(--gv-text-primary);
+}
+
+.iconWrapper {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.message {
+  flex: 1;
+  min-width: 0;
+}
+
+.description {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  min-width: 0;
+  column-gap: var(--gv-space-4);
+}
+
+.link {
+  composes: ringOutside from '../focus.module.css';
+  color: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.info {
+  background: var(--gv-surface-info);
+}
+
+.info .icon {
+  color: var(--gv-icon-info);
+}
+
+.warning {
+  background: var(--gv-surface-warning);
+}
+
+.warning .icon {
+  color: var(--gv-icon-warning);
+}
+
+.error {
+  background: var(--gv-surface-danger);
+}
+
+.error .icon {
+  color: var(--gv-text-danger);
+}
+
+.neutral {
+  padding: var(--gv-space-12);
+  gap: var(--gv-space-8);
+  border-radius: var(--gv-radius-8);
+  background: var(--gv-surface-control-subtle);
+  color: var(--gv-text-cell);
+}
+
+.neutral .iconWrapper {
+  padding-top: var(--gv-space-2);
+}
+
+.neutral .icon {
+  color: var(--gv-icon-tertiary);
+}

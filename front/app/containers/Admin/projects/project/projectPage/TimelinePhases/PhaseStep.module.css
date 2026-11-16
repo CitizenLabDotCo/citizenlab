@@ -1,0 +1,105 @@
+.row {
+  position: relative;
+  display: flex;
+  padding: var(--gv-space-8) var(--gv-space-8) var(--gv-space-8)
+    var(--gv-space-12);
+  border-radius: var(--gv-radius-8);
+  cursor: pointer;
+  text-decoration: none;
+  background: transparent;
+  transition: background var(--gv-motion-duration-instant)
+    var(--gv-motion-easing-enter);
+}
+
+.row:hover {
+  background: var(--gv-surface-control-subtle);
+}
+
+.selected,
+.selected:hover {
+  background: var(--gv-surface-neutral-hovered);
+}
+
+/* Runs from under this dot to the next row's dot. 15.5 px centres the 1 px line on the 8 px dot. */
+.line {
+  position: absolute;
+  top: var(--gv-space-18);
+  bottom: calc(-1 * var(--gv-space-18));
+  left: 15.5px;
+  width: var(--gv-border-width-1);
+  background: var(--gv-border-divider);
+}
+
+.linePast {
+  background: var(--gv-border-step-done);
+}
+
+.dot {
+  position: relative;
+  z-index: 1;
+  flex: 0 0 auto;
+  width: var(--gv-space-8);
+  height: var(--gv-space-8);
+  margin: var(--gv-space-6) var(--gv-space-12) 0 0;
+  border-radius: var(--gv-radius-full);
+}
+
+.dotPast {
+  background: var(--gv-surface-step-done);
+}
+
+.dotPresent {
+  background: var(--gv-border-step-done);
+}
+
+.dotFuture {
+  background: var(--gv-surface-neutral-strong);
+}
+
+.body {
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.withOptions {
+  padding-right: var(--gv-space-24);
+}
+
+.title {
+  composes: smallStrong from '../../../../../../design-system/typography.module.css';
+  color: var(--gv-text-primary);
+}
+
+.titleFuture {
+  color: var(--gv-text-neutral);
+}
+
+.meta {
+  composes: small from '../../../../../../design-system/typography.module.css';
+  margin-top: var(--gv-space-8);
+  color: var(--gv-text-secondary);
+}
+
+.metaFuture {
+  margin-top: var(--gv-space-2);
+}
+
+.status {
+  color: var(--gv-text-secondary);
+}
+
+.statusPresent {
+  font-weight: var(--gv-font-weight-medium);
+}
+
+.timelineDone {
+  color: var(--gv-text-success);
+}
+
+.spotlightPast {
+  color: var(--gv-text-success);
+}
+
+.spotlightPresent {
+  color: var(--gv-text-link);
+}

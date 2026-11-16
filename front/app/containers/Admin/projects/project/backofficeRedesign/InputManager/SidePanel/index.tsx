@@ -1,16 +1,18 @@
 import React from 'react';
 
-import { Box, Spinner } from '@citizenlab/cl2-component-library';
+import DesignSystemSidePanel from 'design-system/SidePanel';
+import Spinner from 'design-system/Spinner';
+import 'design-system/tokens.css';
 
 import useIdeaById from 'api/ideas/useIdeaById';
 import { IPhaseData } from 'api/phases/types';
 
 import { ManagerType, PreviewMode } from 'components/admin/PostManager';
 import AdminIdeaEdit from 'components/admin/PostManager/components/PostPreview/Idea/AdminIdeaEdit';
-import SideModal from 'components/UI/SideModal';
 
 import IdeaOverview from './IdeaOverview';
 import PanelHeader, { PanelNavigation } from './PanelHeader';
+import styles from './SidePanel.module.css';
 
 interface Props {
   ideaId: string | undefined;
@@ -34,34 +36,43 @@ const SidePanel = ({
   onClose,
 }: Props) => {
   const { data: idea, isPlaceholderData } = useIdeaById(ideaId);
+  const isLoaded = !!idea && !isPlaceholderData;
 
   return (
-    <SideModal opened={!!ideaId} close={onClose} width="640px">
-      {(!idea || isPlaceholderData) && !!ideaId && (
-        <Box display="flex" justifyContent="center" py="80px">
-          <Spinner />
-        </Box>
-      )}
-      {idea && !isPlaceholderData && (
-        <>
-          <PanelHeader context={context} navigation={navigation} />
-          {mode === 'edit' ? (
-            <AdminIdeaEdit
-              ideaId={idea.data.id}
-              goBack={() => onChangeMode('view')}
-            />
-          ) : (
-            <IdeaOverview
-              idea={idea.data}
-              type={type}
-              listedPhase={listedPhase}
-              onEdit={() => onChangeMode('edit')}
-              onDeleted={onClose}
-            />
-          )}
-        </>
-      )}
-    </SideModal>
+    <DesignSystemSidePanel
+      isOpen={!!ideaId}
+      onOpenChange={(isOpen) => {
+        if (!isOpen) onClose();
+      }}
+      title={context}
+    >
+      <div id="e2e-side-modal-content" className={styles.content}>
+        {!isLoaded && !!ideaId && (
+          <div className={styles.loading}>
+            <Spinner />
+          </div>
+        )}
+        {idea && isLoaded && (
+          <>
+            {navigation && <PanelHeader navigation={navigation} />}
+            {mode === 'edit' ? (
+              <AdminIdeaEdit
+                ideaId={idea.data.id}
+                goBack={() => onChangeMode('view')}
+              />
+            ) : (
+              <IdeaOverview
+                idea={idea.data}
+                type={type}
+                listedPhase={listedPhase}
+                onEdit={() => onChangeMode('edit')}
+                onDeleted={onClose}
+              />
+            )}
+          </>
+        )}
+      </div>
+    </DesignSystemSidePanel>
   );
 };
 

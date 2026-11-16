@@ -1,10 +1,12 @@
 import React, { memo, ReactNode, useState } from 'react';
 
 import MapView from '@arcgis/core/views/MapView';
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Text } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { IMapConfig } from 'api/map_config/types';
+
+import Banner from 'design-system/Banner';
 
 import { SectionTitle } from 'components/admin/Section';
 import Warning from 'components/UI/Warning';
@@ -17,6 +19,7 @@ import MapLayersList from '../LayerConfiguration/MapLayersList';
 import messages from '../messages';
 
 import MapCenterAndZoomConfig from './MapCenterAndZoomConfig';
+import styles from './MapConfiguration.module.css';
 
 const Container = styled.div``;
 
@@ -50,8 +53,8 @@ interface Props {
   mapConfig: IMapConfig;
   className?: string;
   setView: (view: ViewOptions) => void;
-  variant?: 'default' | 'bo';
-  /** Replaces the center and zoom form, which saves on its own. */
+  variant?: 'default' | 'panel';
+  /** Replaces the center and zoom form, which saves on its own. The bo variant always passes it. */
   centerAndZoom?: ReactNode;
 }
 
@@ -78,36 +81,60 @@ const MapConfigOverview = memo<Props>(
 
     const isProjectMapPage = window.location.pathname.endsWith('/map');
 
+    if (variant === 'panel') {
+      return (
+        <div className={className}>
+          <div className={styles.intro}>
+            <p className={styles.description}>
+              <FormattedMessage {...messages.mapConfigurationDescription} />
+            </p>
+            <Banner tone="warning">
+              <FormattedMessage {...messages.mapLocationWarning} />
+            </Banner>
+          </div>
+
+          {!editedMapLayerId ? (
+            <>
+              <MapLayersList
+                className={styles.layersList}
+                onEditLayer={openLayerConfig}
+                setView={setView}
+                mapConfig={mapConfig}
+                variant={variant}
+              />
+              {centerAndZoom}
+            </>
+          ) : (
+            <MapLayerConfig
+              mapLayerId={editedMapLayerId}
+              onClose={closeLayerConfig}
+              mapConfig={mapConfig}
+              variant={variant}
+            />
+          )}
+        </div>
+      );
+    }
+
     return (
       <Container className={className || ''}>
-        {variant === 'bo' ? (
-          <Box display="flex" flexDirection="column" gap="8px" mb="24px">
-            <Text variant="boHelper" m="0">
-              <FormattedMessage {...messages.mapConfigurationDescription} />
-            </Text>
-            <Warning variant="bo">
+        <Header>
+          {isProjectMapPage && ( // Show only on project map configuration
+            <TitleContainer>
+              <StyledSectionTitle>
+                <FormattedMessage {...messages.mapConfigurationTitle} />
+              </StyledSectionTitle>
+            </TitleContainer>
+          )}
+          <Text color="textSecondary">
+            <FormattedMessage {...messages.mapConfigurationDescription} />
+          </Text>
+          {isProjectMapPage && ( // Show only on project map configuration
+            <Warning>
               <FormattedMessage {...messages.mapLocationWarning} />
             </Warning>
-          </Box>
-        ) : (
-          <Header>
-            {isProjectMapPage && ( // Show only on project map configuration
-              <TitleContainer>
-                <StyledSectionTitle>
-                  <FormattedMessage {...messages.mapConfigurationTitle} />
-                </StyledSectionTitle>
-              </TitleContainer>
-            )}
-            <Text color="textSecondary">
-              <FormattedMessage {...messages.mapConfigurationDescription} />
-            </Text>
-            {isProjectMapPage && ( // Show only on project map configuration
-              <Warning>
-                <FormattedMessage {...messages.mapLocationWarning} />
-              </Warning>
-            )}
-          </Header>
-        )}
+          )}
+        </Header>
 
         {!editedMapLayerId ? (
           <>

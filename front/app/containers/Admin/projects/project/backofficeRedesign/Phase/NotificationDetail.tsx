@@ -1,12 +1,11 @@
 import React from 'react';
 
-import {
-  Box,
-  Icon,
-  IconNames,
-  Text,
-  colors,
-} from '@citizenlab/cl2-component-library';
+// The design-system icon set has no clock, so both details keep the old icons.
+import { Icon, IconNames } from '@citizenlab/cl2-component-library';
+
+import 'design-system/tokens.css';
+
+import styles from './NotificationDetail.module.css';
 
 interface Props {
   icon: IconNames;
@@ -15,18 +14,17 @@ interface Props {
 }
 
 const NotificationDetail = ({ icon, label, text }: Props) => (
-  <Box display="flex" alignItems="center" gap="6px">
+  <span className={styles.detail}>
     <Icon
       name={icon}
       width="14px"
       height="14px"
-      fill={colors.coolGrey600}
+      fill="currentColor"
+      className={styles.icon}
       title={label}
     />
-    <Text as="span" variant="boHelper" m="0">
-      {text}
-    </Text>
-  </Box>
+    <span className={styles.text}>{text}</span>
+  </span>
 );
 
 export default NotificationDetail;

@@ -1,0 +1,27 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: var(--gv-space-40);
+}
+
+.imageLabel {
+  composes: small from '../../../../../../../design-system/typography.module.css';
+  margin-bottom: var(--gv-space-4);
+  color: var(--gv-text-secondary);
+}
+
+.imageFields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-12);
+}
+
+.localeSwitch {
+  align-self: flex-end;
+  margin-bottom: var(--gv-space-4);
+}
+
+.multiloc {
+  display: flex;
+  flex-direction: column;
+}

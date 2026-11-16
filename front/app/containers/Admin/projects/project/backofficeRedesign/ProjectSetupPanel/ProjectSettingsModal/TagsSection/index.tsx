@@ -1,13 +1,5 @@
 import React, { useMemo, useState } from 'react';
 
-import {
-  Box,
-  Button,
-  Icon,
-  Text,
-  bo,
-  colors,
-} from '@citizenlab/cl2-component-library';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
@@ -22,7 +14,10 @@ import InputTopicModal, {
 } from 'containers/Admin/projects/project/topics/InputTopicModal';
 import topicsMessages from 'containers/Admin/projects/project/topics/messages';
 
-import Modal from 'components/UI/Modal';
+import AlertDialog from 'design-system/AlertDialog';
+import Button from 'design-system/Button';
+import Icon from 'design-system/Icon';
+import 'design-system/tokens.css';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
@@ -31,6 +26,7 @@ import { usePermission } from 'utils/permissions';
 import messages from './messages';
 import SortableTag, { ROOT_TAG_TYPE } from './SortableTag';
 import TagGroup from './TagGroup';
+import styles from './TagsSection.module.css';
 import useSortableTags from './useSortableTags';
 import { TagsDraft } from './useTagsDraft';
 import { getSiblings } from './utils';
@@ -116,31 +112,21 @@ const TagsSection = ({ draft }: Props) => {
         }
         action={
           <Button
-            buttonStyle="bo-secondary"
-            icon="plus"
-            iconSize={bo.buttonMedium.iconSize}
-            width="auto"
-            height={bo.buttonMedium.height}
-            padding={bo.buttonMedium.padding}
-            fontSize={bo.buttonMedium.fontSize}
-            onClick={() => setEditing({ topic: null })}
+            variant="secondary"
+            icon="plus-14"
+            onPress={() => setEditing({ topic: null })}
             id="e2e-add-input-topic-button"
           >
             {formatMessage(messages.settingsAddTag)}
           </Button>
         }
       >
-        <Box display="flex" alignItems="center" gap="8px" mb="8px">
-          <Icon
-            name="info-outline"
-            width="14px"
-            height="14px"
-            fill={colors.coolGrey500}
-          />
-          <Text variant="boMicro" color="coolGrey500" lineHeight="1.5" m="0px">
+        <div className={styles.info}>
+          <Icon name="info-16" className={styles.infoIcon} />
+          <p className={styles.infoText}>
             {formatMessage(messages.tagsRequiredInfo)}
-          </Text>
-        </Box>
+          </p>
+        </div>
         <DndProvider backend={HTML5Backend}>
           {ordered.map((topic, index) => (
             <SortableTag
@@ -175,49 +161,29 @@ const TagsSection = ({ draft }: Props) => {
           ))}
         </DndProvider>
       </SettingsSection>
-      <Modal
-        variant="bo"
-        opened={!!topicToDelete}
-        close={() => setTopicToDelete(null)}
-        width={540}
-        header={<FormattedMessage {...topicsMessages.confirmHeader} />}
-        footer={
-          <Box display="flex" justifyContent="flex-end" gap="8px" w="100%">
-            <Button
-              buttonStyle="bo-secondary"
-              width="auto"
-              onClick={() => setTopicToDelete(null)}
-            >
-              <FormattedMessage {...topicsMessages.cancel} />
-            </Button>
-            <Button
-              buttonStyle="bo-delete"
-              width="auto"
-              onClick={confirmDelete}
-              id="e2e-input-topic-delete-confirmation-button"
-            >
-              <FormattedMessage {...topicsMessages.delete} />
-            </Button>
-          </Box>
-        }
+      <AlertDialog
+        isOpen={!!topicToDelete}
+        onOpenChange={(isOpen) => {
+          if (!isOpen) setTopicToDelete(null);
+        }}
+        title={<FormattedMessage {...topicsMessages.confirmHeader} />}
+        confirmLabel={<FormattedMessage {...topicsMessages.delete} />}
+        onConfirm={confirmDelete}
+        confirmId="e2e-input-topic-delete-confirmation-button"
       >
-        <Box p="24px">
-          <Text variant="boControl" m="0px">
-            <FormattedMessage
-              {...(deleteHasSubtags
-                ? topicsMessages.deleteInputTopicWithChildrenConfirmation
-                : topicsMessages.deleteInputTopicConfirmation)}
-            />
-          </Text>
-        </Box>
-      </Modal>
+        <FormattedMessage
+          {...(deleteHasSubtags
+            ? topicsMessages.deleteInputTopicWithChildrenConfirmation
+            : topicsMessages.deleteInputTopicConfirmation)}
+        />
+      </AlertDialog>
       <InputTopicModal
         topic={editing?.topic ?? null}
         parentId={editing && !editing.topic ? editing.parentId : undefined}
         opened={!!editing}
         close={() => setEditing(null)}
         onSubmit={saveTopic}
-        variant="bo"
+        variant="panel"
       />
     </>
   );

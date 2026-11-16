@@ -1,0 +1,56 @@
+/* 240 wide as drawn for a toolbar. */
+.searchField {
+  width: 240px;
+}
+
+.group {
+  composes: input from '../TextField/input.module.css';
+  gap: var(--gv-space-6);
+}
+
+.searchIcon {
+  flex-shrink: 0;
+  color: var(--gv-text-placeholder);
+}
+
+.input {
+  composes: innerInput from '../TextField/input.module.css';
+}
+
+/* Hide the browser's own clear button; ours replaces it. */
+.input::-webkit-search-cancel-button,
+.input::-webkit-search-decoration {
+  appearance: none;
+}
+
+/* The clear button is a Ghost · Default · 24 Icon button. */
+.clear {
+  composes: iconButton ghost default size24 from '../IconButton/IconButton.module.css';
+}
+
+.clearIcon {
+  composes: icon from '../IconButton/IconButton.module.css';
+}
+
+.searchField[data-empty] .clear {
+  display: none;
+}
+
+/* With a value the clear button sits 4 from the edge. */
+.searchField:not([data-empty]) .group {
+  padding-right: var(--gv-space-4);
+}
+
+/* A search is a filter, not a form value: the focus border stays grey. */
+.searchField .group[data-focus-within] {
+  border-color: var(--gv-border-control-active);
+}
+
+.searchField .group[data-disabled] {
+  background: var(--gv-surface-disabled);
+  border-color: var(--gv-border-disabled);
+}
+
+.searchField .group[data-disabled] .searchIcon {
+  color: var(--gv-icon-disabled);
+}

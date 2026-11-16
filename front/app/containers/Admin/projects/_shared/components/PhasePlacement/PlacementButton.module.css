@@ -1,0 +1,77 @@
+/* Literal values on purpose: the old flow keeps the look it has today. */
+
+.button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  margin: 0;
+  padding: 0 16px;
+  border: 0 solid transparent;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 80ms ease-out, border-color 80ms ease-out,
+    box-shadow 125ms ease-in-out 0s;
+}
+
+.button:focus-visible {
+  outline: 2px solid #000000;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px #ffffff;
+}
+
+.button[aria-disabled='true'] {
+  opacity: 0.37;
+  cursor: not-allowed;
+}
+
+.text {
+  margin-top: -1px;
+}
+
+.processing .text {
+  opacity: 0;
+}
+
+.spinner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.primary {
+  background: #044d6c;
+  color: #ffffff;
+}
+
+.primary:not([aria-disabled='true']):hover {
+  background: #022331;
+}
+
+.primary:not([aria-disabled='true']):active {
+  background: #000000;
+}
+
+.secondary {
+  border-width: 1px;
+  border-color: #e0e0e0;
+  background: #ffffff;
+  color: #1e1e1e;
+}
+
+.secondary:not([aria-disabled='true']):hover {
+  border-color: #84939e;
+  background: #fcfcfc;
+}
+
+.secondary:not([aria-disabled='true']):active {
+  background: #dddddd;
+}

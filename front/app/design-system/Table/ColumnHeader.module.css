@@ -1,0 +1,164 @@
+.column {
+  composes: ringInside from '../focus.module.css';
+  position: relative;
+  padding: 0;
+  font-weight: inherit;
+  text-align: start;
+  vertical-align: middle;
+}
+
+.cell {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  border-radius: var(--gv-radius-6);
+  transition-property: background-color;
+  transition-duration: var(--gv-motion-duration-fast);
+  transition-timing-function: var(--gv-motion-easing-standard);
+}
+
+.size36 .cell {
+  height: var(--gv-size-36);
+  --gv-column-padding: var(--gv-space-12);
+}
+
+.size32 .cell {
+  height: var(--gv-size-32);
+  --gv-column-padding: var(--gv-space-8);
+}
+
+.trigger {
+  composes: ringInside from '../focus.module.css';
+  box-sizing: border-box;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  align-self: stretch;
+  min-width: 0;
+  gap: var(--gv-space-8);
+  margin: 0;
+  padding: 0 var(--gv-column-padding);
+  border: none;
+  border-radius: var(--gv-radius-6);
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+}
+
+span.trigger {
+  cursor: default;
+}
+
+/* The head gap sits between the expand-all control and the label. */
+.afterExpandAll {
+  padding-left: var(--gv-space-8);
+}
+
+.cell[data-align='end'] .trigger {
+  justify-content: flex-end;
+}
+
+.labelGroup {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: var(--gv-space-4);
+}
+
+.label {
+  composes: small from '../typography.module.css';
+  overflow: hidden;
+  color: var(--gv-text-secondary);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.arrow {
+  flex-shrink: 0;
+  color: var(--gv-icon-tertiary);
+}
+
+.filter {
+  flex-shrink: 0;
+  color: var(--gv-text-filter-chip);
+}
+
+.chevron {
+  flex-shrink: 0;
+  color: var(--gv-icon-quiet);
+}
+
+/* Hovered, pressed or open: the head lights up. */
+.column[data-hovered] .cell,
+.cell:has(.trigger[aria-expanded='true']) {
+  background: var(--gv-surface-secondary);
+}
+
+.cell:has(.trigger[data-pressed]) {
+  background: var(--gv-surface-pressed);
+}
+
+.column[data-hovered] .label,
+.trigger[data-pressed] .label,
+.trigger[aria-expanded='true'] .label,
+.cell[data-on] .label {
+  color: var(--gv-text-primary);
+}
+
+.column[data-hovered] .chevron,
+.trigger[data-pressed] .chevron,
+.trigger[aria-expanded='true'] .chevron,
+.cell[data-on] .chevron {
+  color: var(--gv-icon-primary);
+}
+
+/* Sorted or filtered: the label reads Small strong. */
+.cell[data-on] .label {
+  font-weight: var(--gv-font-weight-medium);
+}
+
+/* The ring is drawn around the whole head, not only the button. */
+.trigger[data-focus-visible] {
+  outline: none;
+}
+
+.cell:has(.trigger[data-focus-visible]) {
+  outline: var(--gv-border-width-focus) solid var(--gv-border-focused);
+  outline-offset: calc(-1 * var(--gv-border-width-focus));
+}
+
+/* Expand all */
+.expandAll {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  padding: 0 var(--gv-space-4) 0 var(--gv-column-padding);
+}
+
+.expandToggle {
+  composes: ringInside from '../focus.module.css';
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--gv-size-16);
+  height: var(--gv-size-16);
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: var(--gv-radius-4);
+  background: transparent;
+  cursor: pointer;
+}
+
+.expandIcon {
+  color: var(--gv-icon-tertiary);
+}
+
+.expandToggle[data-hovered] {
+  background: var(--gv-border-divider);
+}
+
+.expandToggle[data-hovered] .expandIcon {
+  color: var(--gv-icon-primary);
+}

@@ -1,0 +1,56 @@
+/* No gap after a prefix: the URL reads as one string. */
+.prefixGroup {
+  composes: input from '../TextField/input.module.css';
+  gap: 0;
+}
+
+/* A suffix is a unit, 4 after the value. */
+.suffixGroup {
+  composes: input from '../TextField/input.module.css';
+  gap: var(--gv-space-4);
+}
+
+.affix {
+  flex-shrink: 0;
+  color: var(--gv-text-secondary);
+  white-space: nowrap;
+}
+
+.suffixGroup .affix {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+[data-disabled] > .affix {
+  color: var(--gv-text-disabled);
+}
+
+.input {
+  composes: innerInput from '../TextField/input.module.css';
+}
+
+/* A hidden copy of the value gives the input its width. */
+.sizer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-shrink: 1;
+  min-width: 0;
+  height: 100%;
+}
+
+.sizer::after {
+  content: attr(data-value);
+  visibility: hidden;
+  white-space: pre;
+  overflow: hidden;
+}
+
+.sizedInput {
+  composes: innerInput from '../TextField/input.module.css';
+  position: absolute;
+  inset: 0;
+  width: 100%;
+}

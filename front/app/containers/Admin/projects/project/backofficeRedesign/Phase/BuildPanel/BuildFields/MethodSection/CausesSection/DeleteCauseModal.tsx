@@ -1,8 +1,6 @@
 import React from 'react';
 
-import { Box, Button, Text } from '@citizenlab/cl2-component-library';
-
-import Modal from 'components/UI/Modal';
+import AlertDialog from 'design-system/AlertDialog';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -17,35 +15,20 @@ const DeleteCauseModal = ({ onConfirm, onClose }: Props) => {
   const { formatMessage } = useIntl();
 
   return (
-    <Modal
-      opened
-      close={onClose}
-      width={480}
-      variant="bo"
-      header={formatMessage(messages.deleteCauseTitle)}
-      footer={
-        <Box display="flex" justifyContent="flex-end" gap="8px" width="100%">
-          <Button buttonStyle="bo-text" onClick={onClose}>
-            {formatMessage(messages.causeCancel)}
-          </Button>
-          <Button
-            buttonStyle="bo-primary"
-            onClick={() => {
-              onConfirm();
-              onClose();
-            }}
-          >
-            {formatMessage(messages.deleteCause)}
-          </Button>
-        </Box>
-      }
+    <AlertDialog
+      isOpen
+      onOpenChange={(isOpen) => {
+        if (!isOpen) onClose();
+      }}
+      title={formatMessage(messages.deleteCauseTitle)}
+      confirmLabel={formatMessage(messages.deleteCause)}
+      onConfirm={() => {
+        onConfirm();
+        onClose();
+      }}
     >
-      <Box p="24px">
-        <Text variant="boHelper" m="0">
-          {formatMessage(messages.deleteCauseDescription)}
-        </Text>
-      </Box>
-    </Modal>
+      {formatMessage(messages.deleteCauseDescription)}
+    </AlertDialog>
   );
 };
 

@@ -1,14 +1,9 @@
 import React from 'react';
 
-import {
-  Box,
-  colors,
-  Divider,
-  Icon,
-  Text,
-  Title,
-} from '@citizenlab/cl2-component-library';
 import { FormattedDate } from 'react-intl';
+
+import Divider from 'design-system/Divider';
+import Icon from 'design-system/Icon';
 
 import { IIdeaData } from 'api/ideas/types';
 import { IPhaseData } from 'api/phases/types';
@@ -25,6 +20,7 @@ import AssigneeProperty from './AssigneeProperty';
 import IdeaContent from './IdeaContent';
 import PhasesProperty from './PhasesProperty';
 import QuickActions from './QuickActions';
+import styles from './SidePanel.module.css';
 import StatusProperty from './StatusProperty';
 import TagsProperty from './TagsProperty';
 import VotingDetails from './VotingDetails';
@@ -50,67 +46,63 @@ const IdeaOverview = ({
   const isProposals = type === 'ProjectProposals';
 
   return (
-    <Box display="flex" flexDirection="column" gap="16px" p="24px">
-      <Box>
-        <Title variant="h3" as="h2" m="0" mb="8px" color="textPrimary">
-          {localize(attributes.title_multiloc)}
-        </Title>
-        <Box display="flex" alignItems="center" gap="8px">
-          <Text variant="boHelper" m="0">
+    <div className={styles.overview}>
+      <div>
+        <h2 className={styles.title}>{localize(attributes.title_multiloc)}</h2>
+        <div className={styles.byline}>
+          <span>
+            {/* UserName draws its own text, so it gets the size and colour of the line. */}
             <UserName
               userId={relationships.author?.data?.id ?? null}
               anonymous={attributes.anonymous}
-              fontSize={14}
+              fontSize={13}
+              color="var(--gv-text-secondary)"
             />
-          </Text>
+          </span>
           {attributes.published_at && (
-            <Text variant="boHelper" m="0">
+            <span>
               <FormattedDate
                 value={attributes.published_at}
                 year="numeric"
                 month="long"
                 day="numeric"
               />
-            </Text>
+            </span>
           )}
-        </Box>
-      </Box>
+        </div>
+      </div>
 
-      <Box display="flex" alignItems="center" justifyContent="space-between">
-        <Box display="flex" alignItems="center" gap="12px">
-          <Box display="flex" alignItems="center" gap="4px">
-            <Icon name="vote-up" width="16px" fill={colors.coolGrey600} />
-            <Text variant="boLabel" m="0">
-              {attributes.likes_count}
-            </Text>
-          </Box>
+      <div className={styles.reactionsRow}>
+        <div className={styles.reactions}>
+          <span className={styles.reaction}>
+            <Icon name="arrow-up-16" className={styles.reactionIcon} />
+            {attributes.likes_count}
+          </span>
           {!isProposals && (
-            <Box display="flex" alignItems="center" gap="4px">
-              <Icon name="vote-down" width="16px" fill={colors.coolGrey600} />
-              <Text variant="boLabel" m="0">
-                {attributes.dislikes_count}
-              </Text>
-            </Box>
+            <span className={styles.reaction}>
+              <Icon name="arrow-down-16" className={styles.reactionIcon} />
+              {attributes.dislikes_count}
+            </span>
           )}
-        </Box>
+        </div>
         <QuickActions idea={idea} onEdit={onEdit} onDeleted={onDeleted} />
-      </Box>
+      </div>
 
-      <Divider m="0" />
+      <Divider />
 
-      <Box display="flex" flexDirection="column" gap="8px">
+      <div className={styles.properties}>
         <StatusProperty idea={idea} type={type} />
         <AssigneeProperty idea={idea} />
         <TagsProperty idea={idea} type={type} />
         {!isProposals && <PhasesProperty idea={idea} />}
         <VotingDetails idea={idea} phase={listedPhase} />
-      </Box>
+      </div>
 
-      <Divider m="0" />
+      <Divider />
 
       <IdeaContent idea={idea} />
 
-      <Divider m="0" />
+      <Divider />
 
       <OfficialFeedback postId={idea.id} permissionToPost />
       <CommentsSection
@@ -121,7 +113,7 @@ const IdeaOverview = ({
         showInternalComments
       />
       <IdeaOfficialFeedbackModal ideaId={idea.id} />
-    </Box>
+    </div>
   );
 };
 

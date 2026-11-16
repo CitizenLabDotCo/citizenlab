@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 
-import { Box, Button } from '@citizenlab/cl2-component-library';
+import Button from 'design-system/Button';
+import Modal from 'design-system/Modal';
+import 'design-system/tokens.css';
 
 import { ParticipationMethod } from 'api/phases/types';
 
 import { isPDFUploadSupported } from 'containers/Admin/projects/project/inputImporter/ReviewSection/utils';
 
 import ImportInputsSection from 'components/admin/FormSync/ImportInputsSection';
-import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
@@ -27,21 +28,14 @@ const OfflineFormsButton = ({ participationMethod }: Props) => {
 
   return (
     <>
-      <Button
-        icon="download"
-        buttonStyle="bo-secondary"
-        width="100%"
-        onClick={() => setOpened(true)}
-      >
+      <Button size={28} icon="download-16" onPress={() => setOpened(true)}>
         {label}
       </Button>
-      <Modal opened={opened} close={() => setOpened(false)} header={label}>
-        <Box p="24px">
-          <ImportInputsSection
-            formType={survey ? 'survey' : 'input_form'}
-            pdfImportSupported={isPDFUploadSupported(participationMethod)}
-          />
-        </Box>
+      <Modal isOpen={opened} onOpenChange={setOpened} title={label}>
+        <ImportInputsSection
+          formType={survey ? 'survey' : 'input_form'}
+          pdfImportSupported={isPDFUploadSupported(participationMethod)}
+        />
       </Modal>
     </>
   );

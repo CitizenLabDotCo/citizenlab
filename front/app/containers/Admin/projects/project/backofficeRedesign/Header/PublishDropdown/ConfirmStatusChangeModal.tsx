@@ -1,17 +1,17 @@
 import React from 'react';
 
-import { Box, Button, Text } from '@citizenlab/cl2-component-library';
-
 import { IProjectData, PublicationStatus } from 'api/projects/types';
 import useUpdateProject from 'api/projects/useUpdateProject';
 
-import Modal from 'components/UI/Modal';
+import Modal from 'design-system/Modal';
+import 'design-system/tokens.css';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import backofficeRedesignMessages from '../../messages';
 
 import messages from './messages';
+import styles from './PublishDropdown.module.css';
 
 export type ConfirmableStatus = 'draft' | 'archived';
 
@@ -70,31 +70,24 @@ const ConfirmStatusChangeModal = ({
 
   return (
     <Modal
-      opened={opened}
-      close={onClose}
-      header={formatMessage(copy.title)}
-      footer={
-        <Box display="flex" justifyContent="flex-end" gap="8px" w="100%">
-          <Button
-            buttonStyle="bo-secondary"
-            onClick={onClose}
-            disabled={isPending}
-          >
-            {formatMessage(messages.publishCancel)}
-          </Button>
-          <Button
-            buttonStyle="bo-primary"
-            onClick={confirm}
-            processing={isPending}
-          >
-            {formatMessage(copy.confirm)}
-          </Button>
-        </Box>
-      }
+      size={560}
+      isOpen={opened}
+      onOpenChange={(isOpen) => {
+        if (!isOpen) onClose();
+      }}
+      title={formatMessage(copy.title)}
+      secondaryAction={{
+        label: formatMessage(messages.publishCancel),
+        onPress: onClose,
+        isDisabled: isPending,
+      }}
+      primaryAction={{
+        label: formatMessage(copy.confirm),
+        onPress: confirm,
+        isPending,
+      }}
     >
-      <Box p="28px">
-        <Text variant="boHelper">{formatMessage(body)}</Text>
-      </Box>
+      <p className={styles.modalText}>{formatMessage(body)}</p>
     </Modal>
   );
 };

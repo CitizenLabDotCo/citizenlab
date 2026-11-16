@@ -1,0 +1,56 @@
+.pill {
+  composes: ringOutside from '../focus.module.css';
+  box-sizing: border-box;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  height: var(--gv-size-control-32);
+  gap: var(--gv-space-6);
+  margin: 0;
+  padding: 0 var(--gv-space-10) 0 var(--gv-space-12);
+  border: none;
+  border-radius: var(--gv-radius-full);
+  white-space: nowrap;
+  cursor: pointer;
+  transition-property: background-color;
+  transition-duration: var(--gv-motion-duration-fast);
+  transition-timing-function: var(--gv-motion-easing-standard);
+}
+
+.icon {
+  flex-shrink: 0;
+}
+
+.label {
+  composes: ui from '../typography.module.css';
+}
+
+.default {
+  background: var(--gv-surface-control-subtle);
+}
+
+.default .icon {
+  color: var(--gv-icon-primary);
+}
+
+.default .label {
+  color: var(--gv-text-primary);
+}
+
+.default[data-hovered],
+.default[aria-expanded='true'] {
+  background: var(--gv-surface-neutral-hovered);
+}
+
+/* Selected does not change on hover or open. */
+.selected {
+  background: var(--gv-surface-filter-chip);
+}
+
+.selected .icon {
+  color: var(--gv-icon-info);
+}
+
+.selected .label {
+  color: var(--gv-text-filter-chip);
+}

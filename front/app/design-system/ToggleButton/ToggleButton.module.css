@@ -1,0 +1,70 @@
+.toggleButton {
+  composes: ui from '../typography.module.css';
+  composes: ringInside from '../focus.module.css';
+  position: relative;
+  box-sizing: border-box;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  height: var(--gv-size-control-28);
+  padding: 0 var(--gv-space-12);
+  gap: var(--gv-space-6);
+  border: none;
+  border-radius: var(--gv-radius-full);
+  background: transparent;
+  color: var(--gv-text-secondary);
+  white-space: nowrap;
+  cursor: pointer;
+  transition-property: background-color, color;
+  transition-duration: var(--gv-motion-duration-fast);
+  transition-timing-function: var(--gv-motion-easing-standard);
+}
+
+/* The hairline sits inside the box so selecting does not change the width. */
+.toggleButton::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: var(--gv-border-width-1) solid transparent;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.icon {
+  flex-shrink: 0;
+  color: var(--gv-icon-secondary);
+}
+
+.toggleButton[data-hovered]:not([aria-disabled='true']),
+.toggleButton[data-pressed]:not([aria-disabled='true']) {
+  color: var(--gv-text-primary);
+}
+
+.toggleButton[data-pressed]:not([aria-disabled='true']) {
+  background: var(--gv-surface-neutral-hovered);
+}
+
+.toggleButton[data-hovered]:not([aria-disabled='true']) .icon,
+.toggleButton[data-pressed]:not([aria-disabled='true']) .icon {
+  color: var(--gv-icon-primary);
+}
+
+.toggleButton[data-selected] {
+  background: var(--gv-surface-panel);
+  color: var(--gv-text-primary);
+  font-weight: var(--gv-font-weight-medium);
+}
+
+.toggleButton[data-selected]::before {
+  border-color: var(--gv-border-control);
+}
+
+.toggleButton[data-selected] .icon {
+  color: var(--gv-icon-primary);
+}
+
+.toggleButton[data-disabled],
+.toggleButton[aria-disabled='true'] {
+  opacity: var(--gv-opacity-disabled);
+  cursor: default;
+}

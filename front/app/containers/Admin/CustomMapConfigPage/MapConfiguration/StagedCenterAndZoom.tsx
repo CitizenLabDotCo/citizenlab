@@ -1,21 +1,18 @@
 import React from 'react';
 
-import {
-  Box,
-  IconTooltip,
-  Input,
-  Text,
-} from '@citizenlab/cl2-component-library';
-
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IMapConfig } from 'api/map_config/types';
 
-import Error from 'components/UI/Error';
+import Banner from 'design-system/Banner';
+import IconButton from 'design-system/IconButton';
+import TextField from 'design-system/TextField';
 
 import { useIntl } from 'utils/cl-intl';
 import { getCenter, getZoomLevel } from 'utils/mapUtils/map';
 
 import messages from '../messages';
+
+import styles from './MapConfiguration.module.css';
 
 export type CenterAndZoomValues = Record<'lat' | 'lng' | 'zoom', string>;
 
@@ -62,31 +59,40 @@ const StagedCenterAndZoom = ({
   ] as const;
 
   return (
-    <Box display="flex" flexDirection="column" gap="16px">
-      <Box as="h3" display="flex" alignItems="center" gap="4px" m="0">
-        <Text as="span" variant="boLabel" color="coolGrey600" m="0">
+    <div className={styles.centerAndZoom}>
+      <h3 className={styles.centerAndZoomHeading}>
+        <span className={styles.centerAndZoomTitle}>
           {formatMessage(messages.mapCenterAndZoom)}
-        </Text>
-        <IconTooltip
-          content={formatMessage(messages.mapCenterAndZoomTooltip, {
+        </span>
+        <IconButton
+          icon="info-16"
+          size={24}
+          aria-label={formatMessage(messages.mapCenterAndZoomTooltip, {
             button: formatMessage(messages.saveZoom),
           })}
         />
-      </Box>
+      </h3>
       {fields.map(({ key, label, tooltip }) => (
-        <Input
+        <TextField
           key={key}
-          id={`map-config-${key}`}
-          type="text"
-          variant="bo"
+          label={
+            <span className={styles.fieldLabel}>
+              {formatMessage(label)}
+              <IconButton
+                icon="info-16"
+                size={24}
+                aria-label={formatMessage(tooltip)}
+              />
+            </span>
+          }
           value={values[key]}
-          label={formatMessage(label)}
-          labelTooltipText={formatMessage(tooltip)}
           onChange={(value) => onChange({ ...values, [key]: value })}
         />
       ))}
-      {invalid && <Error text={formatMessage(messages.errorMessage)} />}
-    </Box>
+      {invalid && (
+        <Banner tone="error">{formatMessage(messages.errorMessage)}</Banner>
+      )}
+    </div>
   );
 };
 

@@ -1,0 +1,48 @@
+.field {
+  composes: field from '../TextField/input.module.css';
+}
+
+/* The Text field frame drawn on a Group, so it holds the Input and the chevron Button. */
+.frame {
+  composes: input from '../TextField/input.module.css';
+}
+
+.size36 {
+  composes: size36 from '../TextField/input.module.css';
+}
+
+.size32 {
+  composes: size32 from '../TextField/input.module.css';
+}
+
+.input {
+  composes: innerInput from '../TextField/input.module.css';
+}
+
+.button {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--gv-icon-primary);
+  outline: none;
+  cursor: pointer;
+}
+
+.field[data-disabled] .button {
+  color: var(--gv-icon-disabled);
+  cursor: default;
+}
+
+.chevron {
+  transition: transform var(--gv-motion-duration-fast)
+    var(--gv-motion-easing-standard);
+}
+
+.field[data-open] .chevron {
+  transform: rotate(180deg);
+}

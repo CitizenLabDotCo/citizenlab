@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
-
 import { IIdeaData } from 'api/ideas/types';
 
 import { ManagerType } from 'components/admin/PostManager';
@@ -11,6 +9,7 @@ import { useIntl } from 'utils/cl-intl';
 import BatchBar from './BatchBar';
 import FilterMenu from './FilterMenu';
 import { FilterCategory } from './FilterMenu/useFilterCategories';
+import styles from './ListToolbar.module.css';
 import messages from './messages';
 import SearchToggle from './SearchToggle';
 
@@ -44,14 +43,7 @@ const ListToolbar = ({
   const { formatMessage } = useIntl();
 
   return (
-    <Box
-      display="flex"
-      alignItems="center"
-      justifyContent="space-between"
-      gap="12px"
-      minHeight="40px"
-      mb="12px"
-    >
+    <div className={styles.toolbar}>
       {selectedIdeas.length > 0 ? (
         <BatchBar
           type={type}
@@ -62,19 +54,19 @@ const ListToolbar = ({
           onClear={onClearSelection}
         />
       ) : (
-        <Text variant="boLabel" m="0">
+        <p className={styles.count}>
           {count !== undefined && formatMessage(messages.inputCount, { count })}
-        </Text>
+        </p>
       )}
-      <Box display="flex" alignItems="center" gap="8px">
+      <div className={styles.display}>
         <SearchToggle
           searchTerm={searchTerm}
           onChange={onSearch}
           resultCount={count ?? 0}
         />
         <FilterMenu categories={categories} onClearAll={onClearFilters} />
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 };
 

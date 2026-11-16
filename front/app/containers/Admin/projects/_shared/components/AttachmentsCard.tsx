@@ -58,7 +58,7 @@ const AttachmentsCard = ({
         {hasBody && (
           <FileRepositorySelectAndUpload
             id={id}
-            variant="bo"
+            variant="panel"
             onFileAdd={files.uploadFile}
             onFileRemove={files.removeFile}
             onFileReorder={files.reorderFiles}

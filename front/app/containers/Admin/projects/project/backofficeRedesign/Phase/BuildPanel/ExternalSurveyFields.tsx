@@ -1,16 +1,18 @@
 import React from 'react';
 
-import { Box, Input } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
 import { TSurveyService } from 'api/phases/types';
 
 import projectMessages from 'containers/Admin/projects/project/messages';
 
-import Error from 'components/UI/Error';
+import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
+
+import TextField from 'design-system/TextField';
 
 import { useIntl } from 'utils/cl-intl';
 
+import styles from './BuildPanel.module.css';
 import SurveyServiceSelect from './SurveyServiceSelect';
 
 interface Props {
@@ -29,25 +31,25 @@ const ExternalSurveyFields = ({
   onEmbedUrlChange,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const apiErrorText = useApiErrorText();
+  const embedUrlError = apiErrorText(errors?.survey_embed_url);
 
   return (
-    <Box display="flex" flexDirection="column" gap="12px">
-      <Box>
-        <SurveyServiceSelect value={service} onChange={onServiceChange} />
-        <Error apiErrors={errors?.survey_service} />
-      </Box>
-      <Box>
-        <Input
-          variant="bo"
-          type="text"
-          label={formatMessage(projectMessages.surveyEmbedUrl)}
-          placeholder="https://"
-          value={embedUrl ?? ''}
-          onChange={onEmbedUrlChange}
-        />
-        <Error apiErrors={errors?.survey_embed_url} />
-      </Box>
-    </Box>
+    <div className={styles.surveyFields}>
+      <SurveyServiceSelect
+        value={service}
+        errorMessage={apiErrorText(errors?.survey_service)}
+        onChange={onServiceChange}
+      />
+      <TextField
+        label={formatMessage(projectMessages.surveyEmbedUrl)}
+        placeholder="https://"
+        value={embedUrl ?? ''}
+        isInvalid={!!embedUrlError}
+        errorMessage={embedUrlError}
+        onChange={onEmbedUrlChange}
+      />
+    </div>
   );
 };
 

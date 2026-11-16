@@ -1,0 +1,91 @@
+.tabs {
+  display: flex;
+  flex-direction: column;
+}
+
+.tabList {
+  display: flex;
+  gap: var(--gv-space-24);
+  border-bottom: var(--gv-border-width-1) solid var(--gv-border-subtle);
+}
+
+.tab {
+  composes: ui from '../typography.module.css';
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  padding: var(--gv-space-8) 0;
+  /* Transparent until selected so the label does not jump when the line appears. */
+  border-bottom: 3px solid transparent;
+  outline: none;
+  color: var(--gv-text-secondary);
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color var(--gv-motion-duration-fast)
+    var(--gv-motion-easing-standard);
+}
+
+.content {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-6);
+}
+
+/* The ring wraps the label row 4 px out with radius 4, not the full 39 px tab. */
+.tab[data-focus-visible] .content::after {
+  content: '';
+  position: absolute;
+  inset: calc(
+    -1 * (var(--gv-focus-ring-offset) + var(--gv-border-width-focus))
+  );
+  border: var(--gv-border-width-focus) solid var(--gv-border-focused);
+  border-radius: var(--gv-radius-4);
+  pointer-events: none;
+}
+
+.count {
+  color: var(--gv-text-tertiary);
+}
+
+.tab[data-hovered]:not([data-selected]):not([aria-disabled='true']) {
+  color: var(--gv-text-link);
+}
+
+.tab[data-pressed]:not([data-selected]):not([aria-disabled='true']) {
+  color: var(--gv-text-link-pressed);
+}
+
+.tab[data-selected] {
+  color: var(--gv-text-link);
+}
+
+.tab[data-disabled],
+.tab[aria-disabled='true'] {
+  color: var(--gv-text-disabled);
+  cursor: default;
+}
+
+.tab[data-disabled] .count,
+.tab[aria-disabled='true'] .count {
+  color: var(--gv-text-disabled);
+}
+
+.indicator {
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 100%;
+  height: 3px;
+  background: var(--gv-border-accent);
+  transition-property: translate, width;
+  transition-duration: var(--gv-motion-duration-medium);
+  transition-timing-function: var(--gv-motion-easing-move);
+}
+
+.tabPanel {
+  composes: ringInside from '../focus.module.css';
+}

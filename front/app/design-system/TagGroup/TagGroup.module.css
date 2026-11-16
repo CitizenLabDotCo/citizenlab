@@ -1,0 +1,150 @@
+.group {
+  composes: field from '../Field/Field.module.css';
+}
+
+/* The tags and the Add tag pill wrap as one row; the TagList itself draws no box. */
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.tagList {
+  display: contents;
+}
+
+/* Tag. Padding and gap are D's off-scale values, kept as drawn. */
+.tag {
+  composes: ui from '../typography.module.css';
+  composes: ringOutside from '../focus.module.css';
+  box-sizing: border-box;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 5px;
+  height: var(--gv-size-26);
+  padding: 0 11px;
+  border: var(--gv-border-width-1) solid var(--gv-border-chip-selected);
+  border-radius: var(--gv-radius-full);
+  background: var(--gv-surface-chip-selected);
+  color: var(--gv-text-chip-selected);
+  white-space: nowrap;
+  cursor: default;
+}
+
+.tag[data-allows-removing] {
+  padding: 0 5px 0 11px;
+}
+
+.tag[data-disabled] {
+  border-color: var(--gv-border-disabled);
+  background: var(--gv-surface-disabled);
+  color: var(--gv-text-disabled);
+}
+
+.remove {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: var(--gv-size-16);
+  height: var(--gv-size-16);
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: var(--gv-radius-full);
+  background: transparent;
+  color: var(--gv-icon-chip-selected);
+  outline: none;
+  cursor: pointer;
+  transition-property: background-color;
+  transition-duration: var(--gv-motion-duration-fast);
+  transition-timing-function: var(--gv-motion-easing-standard);
+}
+
+.remove[data-hovered] {
+  background: var(--gv-surface-selected);
+}
+
+.remove[data-disabled] {
+  color: var(--gv-icon-disabled);
+  cursor: default;
+}
+
+/* Tag add: a dashed pill. Gap 5 is D's off-scale value, kept as drawn. */
+.add {
+  composes: ui from '../typography.module.css';
+  composes: ringOutside from '../focus.module.css';
+  position: relative;
+  box-sizing: border-box;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 5px;
+  height: var(--gv-size-26);
+  margin: 0;
+  padding: 0 var(--gv-space-12) 0 var(--gv-space-10);
+  border: none;
+  border-radius: var(--gv-radius-full);
+  background: transparent;
+  color: var(--gv-text-secondary);
+  white-space: nowrap;
+  cursor: pointer;
+  transition-property: color;
+  transition-duration: var(--gv-motion-duration-fast);
+  transition-timing-function: var(--gv-motion-easing-standard);
+  --gv-tag-add-border: var(--gv-border-control);
+  --gv-tag-add-icon: var(--gv-icon-secondary);
+}
+
+.add[data-hovered] {
+  color: var(--gv-text-link);
+  --gv-tag-add-border: var(--gv-border-selected);
+  --gv-tag-add-icon: var(--gv-border-selected);
+}
+
+.add[data-disabled] {
+  color: var(--gv-text-disabled);
+  cursor: default;
+  --gv-tag-add-border: var(--gv-border-disabled);
+  --gv-tag-add-icon: var(--gv-icon-disabled);
+}
+
+/* A CSS dashed border cannot set its dash, so the 3 2 dash Figma draws is an SVG rect. */
+.dash {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.dash rect {
+  x: 0.5px;
+  y: 0.5px;
+  width: calc(100% - 1px);
+  height: calc(100% - 1px);
+  rx: var(--gv-radius-full);
+  fill: none;
+  stroke: var(--gv-tag-add-border);
+  stroke-width: var(--gv-border-width-1);
+  stroke-dasharray: 3 2;
+  transition: stroke var(--gv-motion-duration-fast)
+    var(--gv-motion-easing-standard);
+}
+
+/* plus-16 drawn at 14 px keeps the 1.17 stroke Figma draws (1.17 × 16 / 14 in icon units). */
+.addIcon {
+  flex-shrink: 0;
+  width: var(--gv-size-icon-14);
+  height: var(--gv-size-icon-14);
+  color: var(--gv-tag-add-icon);
+  transition: color var(--gv-motion-duration-fast)
+    var(--gv-motion-easing-standard);
+}
+
+.addIcon path {
+  stroke-width: calc(1.16667 * 16 / 14);
+}

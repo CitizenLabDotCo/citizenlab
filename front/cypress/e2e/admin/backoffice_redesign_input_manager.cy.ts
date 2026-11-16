@@ -71,7 +71,7 @@ describe('Redesigned input manager', () => {
     cy.reload();
     cy.get('#e2e-side-modal-content').contains('h2', firstTitle);
 
-    cy.get('.e2e-modal-close-button').click();
+    cy.get('[data-cy="e2e-modal-close-button"]').click();
     cy.location('search').should('not.include', 'selected_idea_id');
   });
 

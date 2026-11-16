@@ -1,0 +1,43 @@
+.layout {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--gv-space-24);
+}
+
+.main {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.list {
+  position: relative;
+}
+
+/* 80 px has no spacing token; it keeps the spinner where the first rows will appear. */
+.loading {
+  display: flex;
+  justify-content: center;
+  padding: 80px 0;
+}
+
+/* 0.4 is today's dimming of the stale list while the next page loads; no opacity token matches. */
+.changing {
+  opacity: 0.4;
+}
+
+.changingSpinner {
+  position: absolute;
+  top: 80px;
+  right: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+}
+
+/* The right column keeps today's 340 px width; there is no size token for it. */
+.side {
+  position: sticky;
+  top: 0;
+  flex: 0 0 340px;
+  width: 340px;
+}

@@ -1,0 +1,146 @@
+/* The ListBox popover of Select and ComboBox: the dropdown surface, 240 wide. */
+.popover {
+  display: flex;
+  flex-direction: column;
+  width: 240px;
+}
+
+.listBox {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  outline: none;
+}
+
+.popover .listBox {
+  padding: var(--gv-space-6);
+}
+
+.option {
+  composes: ringInside from '../focus.module.css';
+  box-sizing: border-box;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--gv-space-10);
+  padding: var(--gv-space-6) var(--gv-space-8);
+  border-radius: var(--gv-radius-8);
+  cursor: default;
+  transition-property: background-color;
+  transition-duration: var(--gv-motion-duration-fast);
+  transition-timing-function: var(--gv-motion-easing-standard);
+}
+
+.option[data-hovered],
+.option[data-focus-visible] {
+  background: var(--gv-surface-hovered);
+}
+
+.icon {
+  flex-shrink: 0;
+  color: var(--gv-icon-tertiary);
+}
+
+.text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.label {
+  composes: ui from '../typography.module.css';
+  color: var(--gv-text-primary);
+}
+
+/* Check mark: the selected option turns UI strong, which differs from UI only in weight. */
+.option[data-selection-mode='single'][data-selected]:not([data-disabled]):not(
+    [aria-disabled='true']
+  )
+  .label {
+  font-weight: var(--gv-font-weight-medium);
+}
+
+.description {
+  composes: small from '../typography.module.css';
+  color: var(--gv-text-secondary);
+}
+
+.count {
+  composes: small from '../typography.module.css';
+  flex-shrink: 0;
+  color: var(--gv-text-placeholder);
+}
+
+.check {
+  flex-shrink: 0;
+  color: var(--gv-icon-primary);
+}
+
+/* Disabled: the colours change, the row keeps its strength. */
+.option[data-disabled] .label,
+.option[aria-disabled='true'] .label,
+.option[data-disabled] .description,
+.option[aria-disabled='true'] .description,
+.option[data-disabled] .count,
+.option[aria-disabled='true'] .count {
+  color: var(--gv-text-disabled);
+}
+
+.option[data-disabled] .check,
+.option[aria-disabled='true'] .check {
+  color: var(--gv-icon-disabled);
+}
+
+/* Checkbox mark: hidden until the row is hovered, focused or checked. */
+.checkbox {
+  box-sizing: border-box;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 15px;
+  height: 15px;
+  border: var(--gv-border-width-1) solid var(--gv-border-control);
+  border-radius: var(--gv-radius-4);
+  background: var(--gv-surface-panel);
+  opacity: 0;
+  transition-property: background-color, border-color, opacity;
+  transition-duration: var(--gv-motion-duration-fast);
+  transition-timing-function: var(--gv-motion-easing-standard);
+}
+
+.option[data-hovered] .checkbox,
+.option[data-focus-visible] .checkbox,
+.option[data-selected] .checkbox {
+  opacity: 1;
+}
+
+.option[data-selected] .checkbox {
+  border-color: var(--gv-border-checked);
+  background: var(--gv-surface-checked);
+}
+
+.option[data-disabled]:not([data-selected]) .checkbox,
+.option[aria-disabled='true']:not([data-selected]) .checkbox {
+  opacity: 0;
+}
+
+.option[data-disabled][data-selected] .checkbox,
+.option[aria-disabled='true'][data-selected] .checkbox {
+  opacity: var(--gv-opacity-disabled);
+}
+
+/* The 14 px check drawn at 11 px with the 1.5 stroke Figma sets on it (1.5 × 14 / 11 in icon units). */
+.checkboxIcon {
+  width: 11px;
+  height: 11px;
+  color: var(--gv-icon-inverse);
+}
+
+.checkboxIcon path {
+  stroke-width: calc(1.5 * 14 / 11);
+}

@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 
-import { Box, Button, Text } from '@citizenlab/cl2-component-library';
-import { IOption } from 'typings';
-
 import useCopyInputs from 'api/copy_inputs/useCopyInputs';
 import usePhase from 'api/phases/usePhase';
 
 import inputManagerMessages from 'components/admin/PostManager/CommonGroundInputManager/messages';
-import Modal, { MEDIUM_MODAL_WIDTH } from 'components/UI/Modal';
-import PhaseFilter from 'components/UI/PhaseFilter';
-import ProjectFilter from 'components/UI/ProjectFilter';
+
+import Modal from 'design-system/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 
+import PhaseSelect from '../PhaseSelect';
+
+import styles from './CommonGroundSection.module.css';
 import messages from './messages';
+import ProjectComboBox from './ProjectComboBox';
 
 interface Props {
   projectId: string;
@@ -37,14 +37,14 @@ const ImportInputsModal = ({
 
   const phaseStartDate = phase?.data.attributes.start_at;
 
-  const handleProjectFilter = ({ value }: IOption) => {
+  const handleProjectChange = (value: string | undefined) => {
     setFromProjectId(value);
     setFromPhaseId(undefined);
     setCount(undefined);
   };
 
   // A dry run of the copy is how the API reports how many inputs would move.
-  const handlePhaseFilter = ({ value }: IOption) => {
+  const handlePhaseChange = (value: string) => {
     setFromPhaseId(value);
     setCount(undefined);
     copyInputs(
@@ -65,67 +65,61 @@ const ImportInputsModal = ({
 
   return (
     <Modal
-      opened
-      close={onClose}
-      width={MEDIUM_MODAL_WIDTH}
-      variant="bo"
-      header={formatMessage(inputManagerMessages.importInputs)}
-      footer={
-        <Box display="flex" justifyContent="flex-end" gap="8px" width="100%">
-          <Button buttonStyle="bo-secondary" onClick={onClose}>
-            {formatMessage(inputManagerMessages.cancel)}
-          </Button>
-          <Button
-            buttonStyle="bo-primary"
-            disabled={!fromPhaseId || counting || !count}
-            onClick={handleImport}
-          >
-            {formatMessage(inputManagerMessages.importInputs)}
-          </Button>
-        </Box>
-      }
+      isOpen
+      onOpenChange={(isOpen) => {
+        if (!isOpen) onClose();
+      }}
+      size={560}
+      title={formatMessage(inputManagerMessages.importInputs)}
+      secondaryAction={{
+        label: formatMessage(inputManagerMessages.cancel),
+        onPress: onClose,
+      }}
+      primaryAction={{
+        label: formatMessage(inputManagerMessages.importInputs),
+        isDisabled: !fromPhaseId || counting || !count,
+        onPress: handleImport,
+      }}
     >
-      <Box p="24px">
-        <Text variant="boLabel" m="0" mb="16px">
+      <div>
+        <p className={styles.lead}>
           {formatMessage(inputManagerMessages.createInputsDescription)}
-        </Text>
-        <Box mb="24px">
-          <Text variant="boHelper" fontSize="xs" m="0" mb="4px">
-            {formatMessage(messages.importProjectLabel)}
-          </Text>
-          <ProjectFilter
-            selectedProjectId={fromProjectId}
-            emptyOptionMessage={inputManagerMessages.noProject}
-            onProjectFilter={handleProjectFilter}
+        </p>
+        <div className={styles.projectField}>
+          <ProjectComboBox
+            label={formatMessage(messages.importProjectLabel)}
             placeholder={formatMessage(inputManagerMessages.selectAProject)}
-            variant="bo"
+            noProjectLabel={formatMessage(inputManagerMessages.noProject)}
+            value={fromProjectId}
+            onChange={handleProjectChange}
           />
-        </Box>
+        </div>
         {fromProjectId && (
-          <PhaseFilter
-            label={formatMessage(messages.importPhaseLabel)}
-            projectId={fromProjectId}
-            phaseId={fromPhaseId}
-            participationMethods={['ideation', 'voting', 'common_ground']}
-            onPhaseFilter={handlePhaseFilter}
-            customPhaseFilter={
-              fromProjectId === projectId && phaseStartDate
-                ? (phases) =>
-                    phases.filter(
-                      (candidate) =>
-                        candidate.attributes.start_at < phaseStartDate
-                    )
-                : undefined
-            }
-            variant="bo"
-          />
+          <div className={styles.phaseField}>
+            <PhaseSelect
+              label={formatMessage(messages.importPhaseLabel)}
+              projectId={fromProjectId}
+              phaseId={fromPhaseId}
+              participationMethods={['ideation', 'voting', 'common_ground']}
+              onChange={handlePhaseChange}
+              filterPhases={
+                fromProjectId === projectId && phaseStartDate
+                  ? (phases) =>
+                      phases.filter(
+                        (candidate) =>
+                          candidate.attributes.start_at < phaseStartDate
+                      )
+                  : undefined
+              }
+            />
+          </div>
         )}
         {fromPhaseId && count !== undefined && (
-          <Text variant="boHelper" m="0">
+          <p className={styles.helper}>
             {formatMessage(inputManagerMessages.noOfInputsToImport, { count })}
-          </Text>
+          </p>
         )}
-      </Box>
+      </div>
     </Modal>
   );
 };

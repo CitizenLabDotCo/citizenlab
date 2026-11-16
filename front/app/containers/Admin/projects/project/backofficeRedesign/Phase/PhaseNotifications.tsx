@@ -1,12 +1,14 @@
 import React from 'react';
 
-import { Box, Spinner } from '@citizenlab/cl2-component-library';
+import Spinner from 'design-system/Spinner';
+import 'design-system/tokens.css';
 
 import { IPhaseData } from 'api/phases/types';
 
 import usePhaseEmailCampaigns from 'containers/Admin/projects/project/admin_phase_email_wrapper/usePhaseEmailCampaigns';
 
 import NotificationRow from './NotificationRow';
+import styles from './PhaseNotifications.module.css';
 
 interface Props {
   phase: IPhaseData;
@@ -15,10 +17,10 @@ interface Props {
 const PhaseNotifications = ({ phase }: Props) => {
   const { campaigns, loading } = usePhaseEmailCampaigns(phase.id);
 
-  if (loading) return <Spinner size="20px" />;
+  if (loading) return <Spinner />;
 
   return (
-    <Box display="flex" flexDirection="column" gap="16px">
+    <div className={styles.list}>
       {campaigns.map((campaign) => (
         <NotificationRow
           key={campaign.id}
@@ -27,7 +29,7 @@ const PhaseNotifications = ({ phase }: Props) => {
           phaseId={phase.id}
         />
       ))}
-    </Box>
+    </div>
   );
 };
 

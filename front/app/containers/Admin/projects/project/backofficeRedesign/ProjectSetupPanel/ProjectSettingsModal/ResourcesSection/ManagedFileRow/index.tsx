@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 
-import { Box, Button, Text, colors } from '@citizenlab/cl2-component-library';
-
 import { IFileData } from 'api/files/types';
 
 import filesMessages from 'containers/Admin/projects/project/files/components/messages';
 
-import Modal from 'components/UI/Modal';
 import UserName from 'components/UI/UserName';
+
+import AlertDialog from 'design-system/AlertDialog';
+import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 import { saveFileToDisk } from 'utils/fileUtils';
@@ -15,6 +15,7 @@ import { saveFileToDisk } from 'utils/fileUtils';
 import FileActionsMenu, { FileAction } from '../FileActionsMenu';
 import FileRow from '../FileRow';
 
+import styles from './ManagedFileRow.module.css';
 import messages from './messages';
 
 interface Props {
@@ -54,8 +55,8 @@ const ManagedFileRow = ({ file, onDelete }: Props) => {
         name={name}
         mimeType={mime_type}
         meta={
-          <Box display="flex" alignItems="center" gap="4px">
-            <Text variant="boMicro" color="coolGrey500" m="0px">
+          <div className={styles.meta}>
+            <span>
               {formatDate(created_at, {
                 day: 'numeric',
                 month: 'long',
@@ -64,15 +65,15 @@ const ManagedFileRow = ({ file, onDelete }: Props) => {
               {' · '}
               {formatMessage(filesMessages[category])}
               {uploaderId && ' · '}
-            </Text>
+            </span>
             {uploaderId && (
               <UserName
                 userId={uploaderId}
                 fontSize={12}
-                color={colors.coolGrey500}
+                color="var(--gv-text-secondary)"
               />
             )}
-          </Box>
+          </div>
         }
         actions={
           <FileActionsMenu
@@ -81,46 +82,24 @@ const ManagedFileRow = ({ file, onDelete }: Props) => {
           />
         }
       />
-      <Modal
-        variant="bo"
-        opened={deleteModalOpened}
-        close={() => setDeleteModalOpened(false)}
-        width={540}
-        header={formatMessage(filesMessages.deleteFile)}
-        footer={
-          <Box display="flex" justifyContent="flex-end" gap="8px" w="100%">
-            <Button
-              buttonStyle="bo-secondary"
-              width="auto"
-              onClick={() => setDeleteModalOpened(false)}
-            >
-              {formatMessage(filesMessages.cancel)}
-            </Button>
-            <Button
-              buttonStyle="bo-delete"
-              width="auto"
-              onClick={() => {
-                setDeleteModalOpened(false);
-                onDelete();
-              }}
-            >
-              {formatMessage(filesMessages.deleteFile)}
-            </Button>
-          </Box>
-        }
+      <AlertDialog
+        isOpen={deleteModalOpened}
+        onOpenChange={setDeleteModalOpened}
+        title={formatMessage(filesMessages.deleteFile)}
+        confirmLabel={formatMessage(filesMessages.deleteFile)}
+        onConfirm={() => {
+          setDeleteModalOpened(false);
+          onDelete();
+        }}
       >
-        <Box p="24px">
-          <Text variant="boControl" m="0px">
-            {formatMessage(filesMessages.confirmDelete)}
-          </Text>
-          {usedAsAttachment && (
-            <Text variant="boControl" color="coolGrey600" mt="8px" mb="0px">
-              {formatMessage(filesMessages.fileBeingUsed)}{' '}
-              {formatMessage(filesMessages.willRemoveFromAllLocations)}
-            </Text>
-          )}
-        </Box>
-      </Modal>
+        {formatMessage(filesMessages.confirmDelete)}
+        {usedAsAttachment && (
+          <span className={styles.attachmentNote}>
+            {formatMessage(filesMessages.fileBeingUsed)}{' '}
+            {formatMessage(filesMessages.willRemoveFromAllLocations)}
+          </span>
+        )}
+      </AlertDialog>
     </>
   );
 };

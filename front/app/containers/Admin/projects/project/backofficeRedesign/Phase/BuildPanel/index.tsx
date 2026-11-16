@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
 import { IFileAttachmentData } from 'api/file_attachments/types';
@@ -23,8 +22,11 @@ import {
   useRegisterPageSaver,
 } from 'components/admin/PageSaveContext';
 
+import 'design-system/tokens.css';
+
 import { useIntl } from 'utils/cl-intl';
 
+import styles from './BuildPanel.module.css';
 import BuildFields from './BuildFields';
 import SurveyPlacement from './SurveyPlacement';
 import SwitchSurveyMethodModal from './SwitchSurveyMethodModal';
@@ -123,8 +125,8 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
   useRegisterPageSaver('build', { dirty, save });
 
   return (
-    <Box display="flex" flexDirection="column" flexGrow={1} minHeight="0">
-      <Box flexGrow={1}>
+    <div className={styles.panel}>
+      <div className={styles.fields}>
         <BuildFields
           surveyPlacement={
             <SurveyPlacement
@@ -154,14 +156,14 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
             updateFormData(dates);
           }}
         />
-      </Box>
+      </div>
 
       <SwitchSurveyMethodModal
         phase={phase}
         method={pendingSurveyMethod}
         onClose={() => setPendingSurveyMethod(null)}
       />
-    </Box>
+    </div>
   );
 };
 

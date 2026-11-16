@@ -1,0 +1,41 @@
+.addFilter {
+  composes: ringOutside from '../focus.module.css';
+  box-sizing: border-box;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  height: var(--gv-size-control-28);
+  gap: var(--gv-space-4);
+  margin: 0;
+  padding: 0 var(--gv-space-8);
+  border: none;
+  border-radius: var(--gv-radius-8);
+  background: transparent;
+  white-space: nowrap;
+  cursor: pointer;
+  transition-property: background-color;
+  transition-duration: var(--gv-motion-duration-fast);
+  transition-timing-function: var(--gv-motion-easing-standard);
+}
+
+.icon {
+  flex-shrink: 0;
+  color: var(--gv-icon-secondary);
+}
+
+.label {
+  composes: ui from '../typography.module.css';
+  color: var(--gv-text-secondary);
+}
+
+.addFilter[data-hovered] {
+  background: var(--gv-surface-control-subtle);
+}
+
+.addFilter[data-hovered] .icon {
+  color: var(--gv-icon-primary);
+}
+
+.addFilter[data-hovered] .label {
+  color: var(--gv-text-primary);
+}

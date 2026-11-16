@@ -1,16 +1,11 @@
 import React, { useState } from 'react';
 
-import {
-  Box,
-  Button,
-  Icon,
-  Text,
-  bo,
-  colors,
-} from '@citizenlab/cl2-component-library';
-
 import SettingsSection from 'containers/Admin/projects/project/backofficeRedesign/_shared/components/SettingsModal/SettingsSection';
 import backofficeRedesignMessages from 'containers/Admin/projects/project/backofficeRedesign/messages';
+
+import Badge from 'design-system/Badge';
+import Button from 'design-system/Button';
+import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -41,12 +36,8 @@ const ResourcesSection = ({ projectId, draft }: Props) => {
       description={formatMessage(messages.filesDescription)}
       action={
         <Button
-          buttonStyle="bo-secondary"
-          width="auto"
-          height={bo.buttonMedium.height}
-          padding={bo.buttonMedium.padding}
-          fontSize={bo.buttonMedium.fontSize}
-          onClick={() =>
+          variant="secondary"
+          onPress={() =>
             count > 0 ? setManageModalOpened(true) : setAddModalOpened(true)
           }
         >
@@ -55,25 +46,9 @@ const ResourcesSection = ({ projectId, draft }: Props) => {
       }
     >
       {count > 0 && (
-        <Box
-          display="inline-flex"
-          alignItems="center"
-          gap="4px"
-          h="24px"
-          px="8px"
-          borderRadius="999px"
-          background={colors.teal75}
-        >
-          <Icon
-            name="paperclip"
-            width="14px"
-            height="14px"
-            fill={colors.teal700}
-          />
-          <Text variant="boMicro" color="teal700" lineHeight="16px" m="0px">
-            {formatMessage(messages.filesCount, { count })}
-          </Text>
-        </Box>
+        <Badge tone="selected" icon="paperclip-16">
+          {formatMessage(messages.filesCount, { count })}
+        </Badge>
       )}
       <ManageFilesModal
         projectId={projectId}

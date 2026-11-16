@@ -1,30 +1,24 @@
 import React from 'react';
 
-import { Box, colors, Icon, Text } from '@citizenlab/cl2-component-library';
+import DesignSystemEmptyState from 'design-system/EmptyState';
 
 import { useIntl } from 'utils/cl-intl';
 
+import styles from './EmptyState.module.css';
 import messages from './messages';
 
 const EmptyState = () => {
   const { formatMessage } = useIntl();
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      py="80px"
-      gap="8px"
-    >
-      <Icon name="idea" width="48px" height="48px" fill={colors.grey400} />
-      <Text m="0" fontWeight="semi-bold" textAlign="center">
-        {formatMessage(messages.noInputsTitle)}
-      </Text>
-      <Text variant="boHelper" m="0" textAlign="center">
-        {formatMessage(messages.noInputsDescription)}
-      </Text>
-    </Box>
+    <DesignSystemEmptyState>
+      <span className={styles.content}>
+        <span className={styles.title}>
+          {formatMessage(messages.noInputsTitle)}
+        </span>
+        <span>{formatMessage(messages.noInputsDescription)}</span>
+      </span>
+    </DesignSystemEmptyState>
   );
 };
 

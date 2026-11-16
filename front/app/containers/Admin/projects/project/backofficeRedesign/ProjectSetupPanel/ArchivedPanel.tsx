@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
-
 import { IProjectData } from 'api/projects/types';
 
 import ConfirmStatusChangeModal from 'containers/Admin/projects/project/backofficeRedesign/Header/PublishDropdown/ConfirmStatusChangeModal';
@@ -10,6 +8,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import backofficeRedesignMessages from '../messages';
 
+import styles from './ArchivedPanel.module.css';
 import FinalRecordCard from './FinalRecordCard';
 import messages from './messages';
 import SetupCard from './SetupCard';
@@ -23,17 +22,17 @@ const ArchivedPanel = ({ project }: Props) => {
   const [restoreOpened, setRestoreOpened] = useState(false);
 
   return (
-    <Box>
-      <Text variant="boHelper" m="0">
+    <div>
+      <p className={styles.explanation}>
         {formatMessage(messages.archivedExplanation)}
-      </Text>
+      </p>
       <FinalRecordCard project={project} />
       <SetupCard
         id="e2e-next-action-restore-draft"
         title={formatMessage(backofficeRedesignMessages.publishRestoreToDraft)}
         behaviour={{
           kind: 'action',
-          icon: 'chevron-right',
+          icon: 'chevron-right-16',
           onClick: () => setRestoreOpened(true),
         }}
       />
@@ -44,7 +43,7 @@ const ArchivedPanel = ({ project }: Props) => {
         project={project}
         onClose={() => setRestoreOpened(false)}
       />
-    </Box>
+    </div>
   );
 };
 

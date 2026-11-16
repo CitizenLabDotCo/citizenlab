@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, IconTooltip, Text } from '@citizenlab/cl2-component-library';
+import Icon from 'design-system/Icon';
 
 import { IIdeaData } from 'api/ideas/types';
 import { IPhaseData } from 'api/phases/types';
@@ -12,7 +12,10 @@ import postManagerMessages from 'components/admin/PostManager/messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import FormattedBudget from 'utils/currency/FormattedBudget';
 
+import TooltipMark from '../TooltipMark';
+
 import PropertyRow from './PropertyRow';
+import styles from './SidePanel.module.css';
 
 interface Props {
   idea: IIdeaData;
@@ -27,23 +30,23 @@ const VotingDetails = ({ idea, phase }: Props) => {
   if (!budget && !votingMethod) return null;
 
   return (
-    <Box display="flex" flexDirection="column" gap="8px">
+    <div className={styles.properties}>
       {budget && (
         <PropertyRow label={formatMessage(postManagerMessages.cost)}>
-          <Text variant="boSection" fontWeight="bold" m="0">
+          <span className={styles.budget}>
             <FormattedBudget value={budget} />
-          </Text>
-          <Text variant="boHelper" m="0">
+          </span>
+          <span className={styles.secondary}>
             <FormattedMessage
               {...previewMessages.picks}
               values={{ picksNumber: baskets_count }}
             />
-          </Text>
-          <IconTooltip
-            content={
-              <FormattedMessage {...postManagerMessages.pbItemCountTooltip} />
-            }
-          />
+          </span>
+          <TooltipMark
+            label={formatMessage(postManagerMessages.pbItemCountTooltip)}
+          >
+            <Icon name="info-16" className={styles.infoIcon} />
+          </TooltipMark>
         </PropertyRow>
       )}
       {phase && votingMethod && (
@@ -53,7 +56,7 @@ const VotingDetails = ({ idea, phase }: Props) => {
           votingMethod={votingMethod}
         />
       )}
-    </Box>
+    </div>
   );
 };
 

@@ -1,4 +1,4 @@
-import React, { FormEvent } from 'react';
+import React from 'react';
 
 import {
   Toggle,
@@ -112,7 +112,7 @@ const ViewSelector = ({
       : []),
   ];
 
-  const handleToggle = (view: PresentationMode) => (_event: FormEvent) => {
+  const handleToggle = (view: PresentationMode) => () => {
     const isEnabled = currentAvailableViews.includes(view);
 
     if (isEnabled) {

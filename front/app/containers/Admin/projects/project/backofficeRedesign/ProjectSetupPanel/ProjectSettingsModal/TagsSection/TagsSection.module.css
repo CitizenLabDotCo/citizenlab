@@ -1,0 +1,16 @@
+.info {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-8);
+  margin-bottom: var(--gv-space-8);
+}
+
+.infoIcon {
+  flex-shrink: 0;
+  color: var(--gv-icon-tertiary);
+}
+
+.infoText {
+  composes: small from '../../../../../../../../design-system/typography.module.css';
+  color: var(--gv-text-secondary);
+}

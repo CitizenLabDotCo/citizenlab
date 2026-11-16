@@ -12,7 +12,10 @@ import { List } from 'components/admin/ResourceList';
 import SortableRow from 'components/admin/ResourceList/SortableRow';
 import Error from 'components/UI/Error';
 
-import BoFileAttachmentDisplay from './BoFileAttachmentDisplay';
+import DSSpinner from 'design-system/Spinner';
+
+import PanelFileAttachmentDisplay from './PanelFileAttachmentDisplay';
+import panelStyles from './PanelFileAttachmentDisplay.module.css';
 import FileSelectOrUploadModal from './components/FileSelectOrUploadModal';
 import ScreenReaderFilesList from './components/ScreenReaderFilesList';
 import FileAttachmentDisplay from './FileAttachmentDisplay';
@@ -32,7 +35,7 @@ export interface Props {
   isUploadingFile?: boolean;
   disabled?: boolean;
   hideTrigger?: boolean;
-  variant?: 'default' | 'bo';
+  variant?: 'default' | 'panel';
 }
 
 const FileRepositorySelectAndUpload = ({
@@ -144,20 +147,20 @@ const FileRepositorySelectAndUpload = ({
 
       <Error fieldName="file" apiErrors={apiErrors?.file} />
 
-      {variant === 'bo' ? (
-        <Box display="flex" flexDirection="column" gap="12px">
+      {variant === 'panel' ? (
+        <div className={panelStyles.list}>
           {fileAttachments?.map((fileAttachment, index) => (
-            <BoFileAttachmentDisplay
+            <PanelFileAttachmentDisplay
               key={fileAttachment.id}
               fileAttachment={fileAttachment}
               index={index}
               moveRow={handleDragRow}
               dropRow={handleDragEnd}
-              onDeleteClick={handleFileOnRemove(fileAttachment)}
+              onRemove={() => onFileRemove?.(fileAttachment)}
               disabled={disabled}
             />
           ))}
-        </Box>
+        </div>
       ) : (
         <List
           key={fileAttachments?.length}
@@ -193,15 +196,13 @@ const FileRepositorySelectAndUpload = ({
           )}
         </List>
       )}
-      {isUploadingFile && (
-        <Spinner size={variant === 'bo' ? '20px' : undefined} />
-      )}
+      {isUploadingFile && (variant === 'panel' ? <DSSpinner /> : <Spinner />)}
 
       <ScreenReaderFilesList fileAttachments={fileAttachments} />
     </Box>
   );
 
-  return enableDragAndDrop || variant === 'bo' ? (
+  return enableDragAndDrop || variant === 'panel' ? (
     <DndProvider backend={HTML5Backend}>{content}</DndProvider>
   ) : (
     content

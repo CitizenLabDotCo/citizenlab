@@ -1,20 +1,22 @@
 import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import Banner from 'design-system/Banner';
+import 'design-system/tokens.css';
 import { Multiloc } from 'typings';
 
 import AttachmentsCard from 'containers/Admin/projects/_shared/components/AttachmentsCard';
 import { EventForm } from 'containers/Admin/projects/_shared/events/useEventForm';
 import eventMessages from 'containers/Admin/projects/project/events/messages';
 
-import Error from 'components/UI/Error';
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
+import MultilocRichTextField from 'components/admin/MultilocFields/MultilocRichTextField';
+import MultilocTextField from 'components/admin/MultilocFields/MultilocTextField';
+import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 
 import { useIntl } from 'utils/cl-intl';
 
 import DeleteEventButton from './DeleteEventButton';
 import EventDates from './EventDates';
+import styles from './EventSetup.module.css';
 import ImageCard from './ImageCard';
 import LocationCard from './LocationCard';
 import messages from './messages';
@@ -28,53 +30,44 @@ interface Props {
 const EventSetup = ({ projectId, form }: Props) => {
   const { formatMessage } = useIntl();
   const { attributes, errors } = form;
+  const apiErrorText = useApiErrorText();
+  const titleError = apiErrorText(errors?.title_multiloc, 'title_multiloc');
+  const descriptionError = apiErrorText(
+    errors?.description_multiloc,
+    'description_multiloc'
+  );
+  const baseError = apiErrorText(errors?.base, 'base');
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      gap="16px"
-      minHeight="100%"
-      p="24px 18px 0"
-    >
-      <Text variant="boSection" m="0" mb="4px">
-        {formatMessage(messages.eventSetup)}
-      </Text>
+    <div className={styles.setup}>
+      <h2 className={styles.title}>{formatMessage(messages.eventSetup)}</h2>
 
-      <Box display="flex" flexDirection="column" gap="8px">
-        <Box>
-          <InputMultilocWithLocaleSwitcher
-            id="event-title"
-            type="text"
-            variant="bo"
-            ariaLabel={formatMessage(eventMessages.titleLabel)}
-            placeholder={formatMessage(messages.addEventName)}
-            valueMultiloc={attributes.title_multiloc}
-            onChange={(title_multiloc: Multiloc) =>
-              form.updateAttributes({ title_multiloc })
-            }
-          />
-          <Error apiErrors={errors?.title_multiloc} />
-        </Box>
+      <div className={styles.texts}>
+        <MultilocTextField
+          id="event-title"
+          aria-label={formatMessage(eventMessages.titleLabel)}
+          placeholder={formatMessage(messages.addEventName)}
+          valueMultiloc={attributes.title_multiloc}
+          onChange={(title_multiloc: Multiloc) =>
+            form.updateAttributes({ title_multiloc })
+          }
+          errorMessage={titleError}
+        />
 
-        <Box>
-          <QuillMultilocWithLocaleSwitcher
-            id="event-description"
-            variant="bo"
-            minHeight="74px"
-            ariaLabel={formatMessage(eventMessages.descriptionLabel)}
-            placeholder={formatMessage(messages.addDescription)}
-            valueMultiloc={attributes.description_multiloc}
-            onChange={(description_multiloc: Multiloc) =>
-              form.updateAttributes({ description_multiloc })
-            }
-            withCTAButton
-          />
-          <Error apiErrors={errors?.description_multiloc} />
-        </Box>
-      </Box>
+        <MultilocRichTextField
+          id="event-description"
+          aria-label={formatMessage(eventMessages.descriptionLabel)}
+          placeholder={formatMessage(messages.addDescription)}
+          valueMultiloc={attributes.description_multiloc}
+          onChange={(description_multiloc: Multiloc) =>
+            form.updateAttributes({ description_multiloc })
+          }
+          errorMessage={descriptionError}
+          withCTAButton
+        />
+      </div>
 
-      <Box display="flex" flexDirection="column" gap="12px">
+      <div className={styles.cards}>
         <AttachmentsCard
           id="event-file-uploader"
           title={formatMessage(messages.attachments)}
@@ -97,16 +90,16 @@ const EventSetup = ({ projectId, form }: Props) => {
         <LocationCard form={form} />
 
         <RegistrationCard form={form} />
-      </Box>
+      </div>
 
-      <Error apiErrors={errors?.base} />
+      {baseError && <Banner tone="error">{baseError}</Banner>}
 
       {form.event ? (
         <DeleteEventButton projectId={projectId} eventId={form.event.id} />
       ) : (
-        <Box h="8px" />
+        <div className={styles.bottomSpace} />
       )}
-    </Box>
+    </div>
   );
 };
 

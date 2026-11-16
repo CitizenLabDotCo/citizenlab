@@ -1,17 +1,17 @@
 import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
-
 import useContextPickers from 'containers/Admin/projects/_shared/components/ProjectContextPickers/useContextPickers';
 import contextMessages from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/messages';
 import { SpaceAndFolderId } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/types';
 import { useCanEditProjectContext } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/utils';
 import SettingsSection from 'containers/Admin/projects/project/backofficeRedesign/_shared/components/SettingsModal/SettingsSection';
 
-import Error from 'components/UI/Error';
+import Banner from 'design-system/Banner';
+import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 
+import styles from './ContextSection.module.css';
 import messages from './messages';
 
 interface Props {
@@ -43,41 +43,22 @@ const ContextSection = ({
 
   const { spacePicker, folderPicker, approvalWarning } = pickers;
 
-  const rows = [
-    { label: contextMessages.spaceLabel, picker: spacePicker },
-    { label: contextMessages.folderLabel, picker: folderPicker },
-  ];
-
   return (
     <SettingsSection title={formatMessage(messages.settingsProjectContext)}>
-      <Box display="flex" flexDirection="column" gap="8px">
-        {rows.map(
-          ({ label, picker }) =>
-            picker && (
-              <Box
-                key={label.id}
-                display="flex"
-                alignItems="center"
-                justifyContent="space-between"
-                gap="16px"
-                minHeight="28px"
-              >
-                <Text variant="boControl" fontSize="xs" m="0px">
-                  {formatMessage(label)}
-                </Text>
-                {picker}
-              </Box>
-            )
-        )}
-      </Box>
+      <div className={styles.rows}>
+        {spacePicker}
+        {folderPicker}
+      </div>
       {error && (
-        <Error
-          text={formatMessage(
-            spacePicker
-              ? contextMessages.canOnlyMoveToManagedSpaceOrFolder
-              : contextMessages.canOnlyMoveToManagedFolder
-          )}
-        />
+        <div className={styles.error}>
+          <Banner tone="error">
+            {formatMessage(
+              spacePicker
+                ? contextMessages.canOnlyMoveToManagedSpaceOrFolder
+                : contextMessages.canOnlyMoveToManagedFolder
+            )}
+          </Banner>
+        </div>
       )}
       {approvalWarning}
     </SettingsSection>

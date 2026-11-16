@@ -1,24 +1,20 @@
 import React, { useState } from 'react';
 
-import {
-  Box,
-  Button,
-  Text,
-  Tooltip,
-  colors,
-} from '@citizenlab/cl2-component-library';
-
 import usePhases from 'api/phases/usePhases';
 
 import projectPageMessages from 'containers/Admin/projects/project/projectPage/messages';
-import { SectionLabel } from 'containers/Admin/projects/project/projectPage/phaseRowUtils';
 import SpotlightSurveys from 'containers/Admin/projects/project/projectPage/SpotlightSurveys';
 import TimelinePhases from 'containers/Admin/projects/project/projectPage/TimelinePhases';
+
+import Divider from 'design-system/Divider';
+import IconButton from 'design-system/IconButton';
+import PanelGroupHeader from 'design-system/PanelGroupHeader';
 
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 import PanelToggleButton from './PanelToggleButton';
+import styles from './ProjectTimeline.module.css';
 import SelectMethodModal from './ProjectSetupPanel/SelectMethodModal';
 import TimelineEvents from './TimelineEvents';
 
@@ -34,87 +30,60 @@ const ProjectTimeline = ({ projectId, withNewMethod }: Props) => {
   const hasPhases = !!phases && phases.data.length > 0;
 
   return (
-    <Box pt="18px" pb="24px" px="8px">
-      <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-        h="32px"
-        pl="10px"
-        mb="17px"
-      >
-        <Box as="h4" m="0">
-          <Text
-            as="span"
-            variant="boSection"
-            fontSize="xs"
-            lineHeight="16px"
-            m="0"
-          >
-            {formatMessage(messages.participation)}
-          </Text>
-        </Box>
-        <Box display="flex" gap="4px">
-          <PanelToggleButton buttonStyle="bo-text" />
+    <div className={styles.timeline}>
+      <div className={styles.header}>
+        <h4 className={styles.title}>
+          {formatMessage(messages.participation)}
+        </h4>
+        <div className={styles.actions}>
+          <PanelToggleButton variant="ghost" />
           {withNewMethod && (
-            <Tooltip
-              content={formatMessage(
-                projectPageMessages.newParticipationMethod
-              )}
-              theme="dark"
-              placement="bottom"
-              appendTo={() => document.body}
-            >
-              <Button
-                className="intercom-product-tour-project-timeline-new-phase"
-                buttonStyle="bo-text"
-                icon="plus"
-                width="32px"
-                height="32px"
-                padding="0"
-                ariaLabel={formatMessage(
+            // IconButton takes no class, so the product tour anchors on this wrapper.
+            <span className="intercom-product-tour-project-timeline-new-phase">
+              <IconButton
+                icon="plus-16"
+                aria-label={formatMessage(
                   projectPageMessages.newParticipationMethod
                 )}
-                onClick={() => setMethodModalOpened(true)}
+                onPress={() => setMethodModalOpened(true)}
               />
-            </Tooltip>
+            </span>
           )}
-        </Box>
-      </Box>
-      <Box className="intercom-product-tour-project-timeline">
+        </div>
+      </div>
+      <div className="intercom-product-tour-project-timeline">
         <TimelinePhases
           projectId={projectId}
-          variant="backofficeRedesign"
+          variant="panel"
           heading={
             hasPhases && (
-              <Box as="h4" px="10px" m="0 0 12px 0">
-                <SectionLabel as="span">
-                  {formatMessage(projectPageMessages.timeline)}
-                </SectionLabel>
-              </Box>
+              <div className={styles.groupHeader}>
+                <PanelGroupHeader
+                  context="rail"
+                  level={4}
+                  label={formatMessage(projectPageMessages.timeline)}
+                />
+              </div>
             )
           }
           withPhaseOptions
         />
-      </Box>
+      </div>
       <SpotlightSurveys
         projectId={projectId}
-        variant="backofficeRedesign"
+        variant="panel"
         withPhaseOptions
       />
-      <Box
-        mx="10px"
-        mt="12px"
-        mb="8px"
-        borderTop={`1px solid ${colors.grey200}`}
-      />
+      <div className={styles.divider}>
+        <Divider />
+      </div>
       <TimelineEvents projectId={projectId} />
       <SelectMethodModal
         projectId={projectId}
         opened={methodModalOpened}
         onClose={() => setMethodModalOpened(false)}
       />
-    </Box>
+    </div>
   );
 };
 

@@ -1,0 +1,23 @@
+.titleField {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* The right padding keeps the text clear of the Required marker. */
+.input {
+  composes: input size36 from '../TextField/input.module.css';
+  composes: small from '../typography.module.css';
+  padding: var(--gv-space-8) var(--gv-space-104) var(--gv-space-8)
+    var(--gv-space-12);
+}
+
+.marker {
+  position: absolute;
+  top: 0;
+  right: var(--gv-space-12);
+  display: flex;
+  align-items: center;
+  height: 100%;
+  pointer-events: none;
+}

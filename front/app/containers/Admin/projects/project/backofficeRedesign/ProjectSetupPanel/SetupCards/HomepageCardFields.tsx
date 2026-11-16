@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
 import { Multiloc, UploadFile } from 'typings';
 
 import useProjectImages, {
@@ -10,21 +9,23 @@ import useProjectImages, {
 } from 'api/project_images/useProjectImages';
 import { IProjectData } from 'api/projects/types';
 
-import { StyledSectionField } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/styling';
 import ImageCropModal from 'containers/Admin/projects/project/backofficeRedesign/Event/ImageCropModal';
 import ImageFileRow from 'containers/Admin/projects/project/backofficeRedesign/Event/ImageFileRow';
 import eventMessages from 'containers/Admin/projects/project/backofficeRedesign/Event/messages';
-import PanelSettings from 'containers/Admin/projects/project/backofficeRedesign/Phase/PanelSettings';
 
+import LocaleSwitcher from 'components/admin/MultilocFields/LocaleSwitcher';
+import MultilocTextField from 'components/admin/MultilocFields/MultilocTextField';
+import useSelectedLocale from 'components/admin/MultilocFields/useSelectedLocale';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
+
+import TextArea from 'design-system/TextArea';
 
 import { useIntl } from 'utils/cl-intl';
 import { convertUrlToUploadFile, isUploadFile } from 'utils/fileUtils';
 
 import { useSetupDraft } from '../SetupDraftContext';
 
+import styles from './HomepageCardFields.module.css';
 import messages from './messages';
 
 interface Props {
@@ -41,6 +42,11 @@ const HomepageCardFields = ({ project }: Props) => {
   const [savedImage, setSavedImage] = useState<UploadFile | null>(null);
   const [savedAltText, setSavedAltText] = useState<Multiloc | null>(null);
   const [cropOpened, setCropOpened] = useState(false);
+  const {
+    locales,
+    selectedLocale: descriptionLocale,
+    setSelectedLocale: setDescriptionLocale,
+  } = useSelectedLocale();
 
   const loadRemoteCardImage = useCallback(async () => {
     setSavedImage(null);
@@ -95,14 +101,21 @@ const HomepageCardFields = ({ project }: Props) => {
     }
   };
 
+  if (!descriptionLocale) return null;
+
+  const altText = imageChanges.altText ?? savedAltText;
+  const description =
+    changes.description_preview_multiloc ??
+    project.attributes.description_preview_multiloc;
+
   return (
-    <PanelSettings>
-      <StyledSectionField>
-        <Text as="p" m="0" mb="4px" fontSize="xs" color="coolGrey600">
+    <div>
+      <div className={styles.field}>
+        <p className={styles.imageLabel}>
           {formatMessage(messages.homepageCardImage)}
-        </Text>
+        </p>
         {cardImage ? (
-          <Box display="flex" flexDirection="column" gap="12px">
+          <div className={styles.imageFields}>
             <ImageFileRow
               image={cardImage}
               thumbnail={pickedImage?.cropped ?? cardImage.base64}
@@ -111,17 +124,14 @@ const HomepageCardFields = ({ project }: Props) => {
               onRemove={removeImage}
               stackActions
             />
-            <InputMultilocWithLocaleSwitcher
+            <MultilocTextField
               id="homepage-card-image-alt-text"
-              type="text"
-              variant="bo"
-              stackedLabel
-              valueMultiloc={imageChanges.altText ?? savedAltText}
               label={formatMessage(eventMessages.altText)}
               placeholder={formatMessage(eventMessages.altTextPlaceholder)}
+              valueMultiloc={altText}
               onChange={(altText) => changeImage({ altText })}
             />
-          </Box>
+          </div>
         ) : (
           <ImagesDropzone
             images={[]}
@@ -144,28 +154,38 @@ const HomepageCardFields = ({ project }: Props) => {
           onRemove={resetImage}
           onClose={() => setCropOpened(false)}
         />
-      </StyledSectionField>
+      </div>
 
-      <StyledSectionField>
-        <TextAreaMultilocWithLocaleSwitcher
+      <div className={`${styles.field} ${styles.multiloc}`}>
+        {locales.length > 1 && (
+          <div className={styles.localeSwitch}>
+            <LocaleSwitcher
+              aria-label={formatMessage(messages.homepageCardDescription)}
+              locales={locales}
+              selectedLocale={descriptionLocale}
+              onChange={setDescriptionLocale}
+              valueMultiloc={description}
+            />
+          </div>
+        )}
+        <TextArea
           id="homepage-card-description"
-          variant="bo"
-          stackedLabel
-          minRows={4}
-          valueMultiloc={
-            changes.description_preview_multiloc ??
-            project.attributes.description_preview_multiloc
-          }
-          onChange={(description_preview_multiloc) =>
-            changeProject({ description_preview_multiloc })
-          }
           label={formatMessage(messages.homepageCardDescription)}
           placeholder={formatMessage(
             messages.homepageCardDescriptionPlaceholder
           )}
+          value={description[descriptionLocale] ?? ''}
+          onChange={(value) =>
+            changeProject({
+              description_preview_multiloc: {
+                ...description,
+                [descriptionLocale]: value,
+              },
+            })
+          }
         />
-      </StyledSectionField>
-    </PanelSettings>
+      </div>
+    </div>
   );
 };
 

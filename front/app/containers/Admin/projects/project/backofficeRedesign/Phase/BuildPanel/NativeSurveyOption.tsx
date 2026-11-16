@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import { Box, Button } from '@citizenlab/cl2-component-library';
-
 import useCustomFields from 'api/custom_fields/useCustomFields';
 
 import ChoiceRadio from 'containers/Admin/projects/_shared/components/ChoiceRadio';
@@ -9,16 +7,17 @@ import SummaryPill from 'containers/Admin/projects/_shared/components/SummaryPil
 
 import actionFormMessages from 'components/admin/ActionForm/messages';
 
+import Button from 'design-system/Button';
+
 import { useIntl } from 'utils/cl-intl';
 
 import methodSectionMessages from './BuildFields/MethodSection/messages';
-
+import styles from './BuildPanel.module.css';
 import SurveySetupModal from './SurveySetupModal';
 
 interface Props {
   projectId: string;
   phaseId: string;
-  name: string;
   title: string;
   description: string;
 }
@@ -26,7 +25,6 @@ interface Props {
 const NativeSurveyOption = ({
   projectId,
   phaseId,
-  name,
   title,
   description,
 }: Props) => {
@@ -40,11 +38,9 @@ const NativeSurveyOption = ({
   const hasQuestions = nQuestions > 0;
 
   return (
-    <Box display="flex" flexDirection="column" gap="12px">
+    <div className={styles.option}>
       <ChoiceRadio
-        name={name}
         value="native_survey"
-        currentValue="native_survey"
         title={title}
         titleAdornment={
           hasQuestions && (
@@ -57,17 +53,13 @@ const NativeSurveyOption = ({
           )
         }
         description={description}
-        onChange={() => {}}
       />
       {customFields && (
-        <Button
-          buttonStyle="bo-secondary"
-          boSize="medium"
-          width="100%"
-          onClick={() => setOpened(true)}
-        >
-          {formatMessage(methodSectionMessages.addQuestions)}
-        </Button>
+        <div className={styles.fullWidth}>
+          <Button variant="secondary" size={28} onPress={() => setOpened(true)}>
+            {formatMessage(methodSectionMessages.addQuestions)}
+          </Button>
+        </div>
       )}
       <SurveySetupModal
         projectId={projectId}
@@ -76,7 +68,7 @@ const NativeSurveyOption = ({
         opened={opened}
         onClose={() => setOpened(false)}
       />
-    </Box>
+    </div>
   );
 };
 

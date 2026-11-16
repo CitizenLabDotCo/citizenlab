@@ -1,0 +1,95 @@
+.switch {
+  composes: body from '../typography.module.css';
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gv-space-10);
+  color: var(--gv-text-body);
+  cursor: pointer;
+}
+
+.switch[data-disabled],
+.withReason {
+  opacity: var(--gv-opacity-disabled);
+  cursor: default;
+}
+
+.switch[data-readonly] {
+  cursor: default;
+}
+
+.track {
+  composes: ringOutside from '../focus.module.css';
+  box-sizing: border-box;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  width: var(--switch-width);
+  height: var(--switch-height);
+  padding: var(--gv-space-2);
+  border-radius: var(--gv-radius-full);
+  background: var(--gv-surface-neutral-strong);
+  transition: background-color var(--gv-motion-duration-fast)
+    var(--gv-motion-easing-standard);
+}
+
+.track[data-disabled] {
+  opacity: var(--gv-opacity-disabled);
+}
+
+.size36 {
+  --switch-width: 36px;
+  --switch-height: 20px;
+  --switch-thumb: 16px;
+  --switch-on: var(--gv-surface-inverse);
+  --switch-on-pressed: var(--gv-surface-inverse-pressed);
+}
+
+.size28 {
+  --switch-width: 28px;
+  --switch-height: 16px;
+  --switch-thumb: 12px;
+  --switch-on: var(--gv-surface-inverse);
+  --switch-on-pressed: var(--gv-surface-inverse-pressed);
+}
+
+/* The side panel switch: a neutral dark grey when on, not an accent. */
+.size26 {
+  --switch-width: 26px;
+  --switch-height: 16px;
+  --switch-thumb: 12px;
+  --switch-on: var(--gv-surface-switch-on-panel);
+  --switch-on-pressed: var(--gv-surface-switch-on-panel-pressed);
+}
+
+.thumb {
+  flex-shrink: 0;
+  width: var(--switch-thumb);
+  height: var(--switch-thumb);
+  border-radius: var(--gv-radius-full);
+  background: var(--gv-surface-panel);
+  transition: transform var(--gv-motion-duration-medium)
+    var(--gv-motion-easing-move);
+}
+
+.track[data-selected] {
+  background: var(--switch-on);
+}
+
+.track[data-selected] .thumb {
+  transform: translateX(
+    calc(var(--switch-width) - var(--switch-thumb) - 2 * var(--gv-space-2))
+  );
+}
+
+/* Hover darkens the off track; the on track keeps its colour until pressed. */
+.switch[data-hovered]:not(.withReason) .track:not([data-selected]) {
+  background: var(--gv-border-strong);
+}
+
+.switch[data-pressed]:not(.withReason) .track:not([data-selected]) {
+  background: var(--gv-surface-switch-off-pressed);
+}
+
+.switch[data-pressed]:not(.withReason) .track[data-selected] {
+  background: var(--switch-on-pressed);
+}

@@ -1,62 +1,39 @@
 import React, { ReactNode } from 'react';
 
-import { Box, Radio, Text, Tooltip } from '@citizenlab/cl2-component-library';
+import { Radio } from 'design-system/RadioGroup';
+import 'design-system/tokens.css';
+
+import styles from './ChoiceRadio.module.css';
 
 interface Props {
-  name: string;
   value: string;
-  currentValue?: string | null;
   title: string;
   /** Shown next to the title, like a summary pill. */
   titleAdornment?: ReactNode;
   description: string;
   disabled?: boolean;
-  /** Shown in a tooltip and disables the option. */
+  /** Disables the option; it stays focusable and its tooltip says why. */
   disabledReason?: string;
-  onChange: () => void;
 }
 
+// One option of a design-system RadioGroup, which owns the value.
 const ChoiceRadio = ({
-  name,
   value,
-  currentValue,
   title,
   titleAdornment,
   description,
   disabled,
   disabledReason,
-  onChange,
 }: Props) => (
-  <Tooltip
-    content={disabledReason}
-    disabled={!disabledReason}
-    placement="top-start"
-    theme="dark"
-  >
-    <Box>
-      <Radio
-        variant="bo"
-        name={name}
-        value={value}
-        currentValue={currentValue}
-        disabled={disabled || !!disabledReason}
-        onChange={onChange}
-        label={
-          <Box>
-            <Box display="flex" alignItems="center" gap="8px">
-              <Text variant="boControl" fontSize="xs" lineHeight="16px" m="0">
-                {title}
-              </Text>
-              {titleAdornment}
-            </Box>
-            <Text variant="boMicro" m="0" color="coolGrey500">
-              {description}
-            </Text>
-          </Box>
-        }
-      />
-    </Box>
-  </Tooltip>
+  <Radio value={value} isDisabled={disabled} disabledReason={disabledReason}>
+    <span className={styles.text}>
+      <span className={styles.titleRow}>
+        <span className={styles.title}>{title}</span>
+        {titleAdornment}
+      </span>
+      <span className={styles.description}>{description}</span>
+    </span>
+  </Radio>
 );
 
 export default ChoiceRadio;

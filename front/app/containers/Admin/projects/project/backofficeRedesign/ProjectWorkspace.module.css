@@ -1,0 +1,135 @@
+.workspace {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-8);
+  height: 100vh;
+  padding: var(--gv-space-8);
+  overflow: hidden;
+  background: var(--gv-surface-app);
+}
+
+.columns {
+  display: flex;
+  flex-grow: 1;
+  gap: var(--gv-space-8);
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Each column is positioned so the visually hidden inputs of switches and
+   radios inside it are placed, and scrolled, within the column. Otherwise
+   they hang below the page, and focusing one scrolls the whole workspace. */
+.panel {
+  position: relative;
+  min-height: 0;
+  overflow-y: auto;
+  border-radius: var(--gv-radius-12);
+  background: var(--gv-surface-panel);
+}
+
+.setupSlot {
+  composes: panel;
+  flex: 0 0 332px;
+  width: 332px;
+}
+
+.phaseSlot {
+  composes: panel;
+  flex: 0 0 560px;
+  width: 560px;
+}
+
+.hidden {
+  display: none;
+}
+
+.participationSlot {
+  composes: panel;
+  flex: 0 0 300px;
+  width: 300px;
+  margin-right: 0;
+  overflow-x: hidden;
+}
+
+.participationSlot[data-collapsed] {
+  flex-basis: 0;
+  width: 0;
+  margin-right: calc(-1 * var(--gv-space-8));
+  overflow-y: hidden;
+}
+
+.participationSlot[data-collapsed][data-rail] {
+  flex-basis: var(--gv-size-48);
+  width: var(--gv-size-48);
+  margin-right: 0;
+}
+
+.participationSlot[data-animate] {
+  transition-property: flex-basis, width, margin-right;
+  transition-duration: 0.48s;
+  transition-timing-function: var(--gv-motion-easing-move);
+}
+
+/* Keeps the content at full width while the panel animates. Visibility flips
+   once the panel has finished shrinking, so hidden content can't be tabbed into. */
+.panelContent {
+  width: 300px;
+  opacity: 1;
+  visibility: visible;
+}
+
+.panelContent[data-collapsed] {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.panelContent[data-animate] {
+  transition: opacity 0.32s, visibility 0s linear 0s;
+}
+
+.panelContent[data-animate][data-collapsed] {
+  transition: opacity 0.32s, visibility 0s linear 0.48s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .participationSlot[data-animate],
+  .panelContent[data-animate],
+  .panelContent[data-animate][data-collapsed] {
+    transition: none;
+  }
+}
+
+.railToggle {
+  position: absolute;
+  top: var(--gv-space-18);
+  left: var(--gv-space-8);
+}
+
+.mainColumn {
+  position: relative;
+  display: flex;
+  flex-grow: 1;
+  min-width: 0;
+  min-height: 0;
+}
+
+.mainSlot {
+  composes: panel;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-width: 0;
+  background: var(--gv-surface-control-subtle);
+}
+
+.mapSlot {
+  height: 100%;
+}
+
+.floatingToggle {
+  position: absolute;
+  top: var(--gv-space-8);
+  left: var(--gv-space-8);
+  z-index: 1;
+}

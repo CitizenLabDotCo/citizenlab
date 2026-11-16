@@ -1,0 +1,48 @@
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-12);
+  min-height: var(--gv-size-48);
+  padding: 0 var(--gv-space-4) 0 var(--gv-space-8);
+  border-radius: var(--gv-radius-8);
+}
+
+.row + .row {
+  border-top: var(--gv-border-width-1) solid var(--gv-border-subtle);
+}
+
+.row:hover,
+.row:focus-within,
+.row:has([aria-expanded='true']) {
+  background: var(--gv-surface-hovered);
+}
+
+.icon {
+  flex-shrink: 0;
+  color: var(--gv-icon-tertiary);
+}
+
+.text {
+  flex: 1;
+  min-width: 0;
+}
+
+.name {
+  composes: ui from '../../../../../../../../../design-system/typography.module.css';
+  overflow: hidden;
+  color: var(--gv-text-primary);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.actions {
+  flex-shrink: 0;
+  width: var(--gv-size-28);
+  opacity: 0;
+}
+
+.row:hover .actions,
+.row:focus-within .actions,
+.row:has([aria-expanded='true']) .actions {
+  opacity: 1;
+}

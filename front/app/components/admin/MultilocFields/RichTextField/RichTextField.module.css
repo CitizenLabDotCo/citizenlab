@@ -1,0 +1,182 @@
+/*
+ * Quill renders the editing body inside the design-system RichTextEditor frame.
+ * The frame shows focus and errors with the colours a text field uses.
+ */
+.field > div:not([hidden]) {
+  transition: border-color var(--gv-motion-duration-fast)
+    var(--gv-motion-easing-standard);
+}
+
+.field:has(:global(.ql-editor):focus) > div:not([hidden]) {
+  border-color: var(--gv-border-focused);
+}
+
+.field[data-invalid] > div:not([hidden]) {
+  border-color: var(--gv-border-danger);
+}
+
+/* createQuill puts an inline border on its container, so only !important removes it. */
+.field :global(.ql-container.ql-snow) {
+  border: none !important;
+  font-family: var(--gv-font-family);
+  font-size: var(--gv-font-size-12);
+}
+
+/* Fills the 74 px body of the frame, so a click anywhere in it starts typing. */
+.field :global(.ql-editor) {
+  min-height: calc(74px - 2 * var(--gv-space-8));
+  padding: 0;
+  font-family: var(--gv-font-family);
+  font-size: var(--gv-font-size-12);
+  line-height: var(--gv-font-line-height-16);
+  letter-spacing: var(--gv-font-letter-spacing-0);
+  color: var(--gv-text-primary);
+  overflow-wrap: break-word;
+  word-break: break-word;
+  cursor: text;
+}
+
+/* As the old editor did for right-to-left platform locales. */
+.field[data-rtl] :global(.ql-editor) {
+  direction: rtl;
+  text-align: right;
+}
+
+/* The frame shows focus, so the app's global focus ring stays off the body. */
+.field :global(.ql-editor):focus-visible,
+.field :global(.ql-editor.focus-visible) {
+  outline: none;
+  box-shadow: none;
+}
+
+.field :global(.ql-editor.ql-blank)::before {
+  left: 0;
+  right: 0;
+  font-style: normal;
+  color: var(--gv-text-placeholder);
+}
+
+.field :global(.ql-editor) p {
+  margin: 0 0 var(--gv-space-16);
+}
+
+.field :global(.ql-editor) p:last-child {
+  margin-bottom: 0;
+}
+
+/* Title and Subtitle from the heading picker. */
+.field :global(.ql-editor) h2 {
+  margin: 0 0 var(--gv-space-16);
+  font-size: var(--gv-font-size-16);
+  line-height: var(--gv-font-line-height-24);
+  font-weight: var(--gv-font-weight-medium);
+}
+
+.field :global(.ql-editor) h3 {
+  margin: 0 0 var(--gv-space-16);
+  font-size: var(--gv-font-size-14);
+  line-height: var(--gv-font-line-height-20);
+  font-weight: var(--gv-font-weight-medium);
+}
+
+/* Quill draws the list markers itself, so only the spacing is set here. */
+.field :global(.ql-editor) ol,
+.field :global(.ql-editor) ul {
+  margin: 0 0 var(--gv-space-16);
+}
+
+.field :global(.ql-editor) li {
+  padding-top: var(--gv-space-8);
+}
+
+.field :global(.ql-editor) a {
+  color: var(--gv-text-link);
+  text-decoration: underline;
+}
+
+.field :global(.ql-editor) :global(.custom-button) {
+  display: inline-block;
+  padding: var(--gv-space-10) var(--gv-space-18);
+  border-radius: var(--gv-radius-4);
+  background: var(--gv-surface-brand-strong);
+  color: var(--gv-text-inverse);
+  text-decoration: none;
+}
+
+.field :global(.ql-editor) :global(.ql-align-center) {
+  text-align: center;
+}
+
+.field :global(.ql-editor) :global(.ql-align-right) {
+  text-align: right;
+}
+
+.field :global(.ql-editor) img,
+.field :global(.ql-editor) iframe {
+  max-width: 100%;
+}
+
+/* Image and video alignment, as the published text shows it. */
+.field :global(.ql-editor) :global([class^='ql-image-align-']),
+.field :global(.ql-editor) :global([class^='ql-iframe-align-']) {
+  display: block;
+  width: var(--resize-width, auto);
+  max-width: 100%;
+}
+
+.field :global(.ql-editor) :global([class^='ql-image-align-']) > img {
+  width: 100%;
+  height: auto;
+}
+
+.field :global(.ql-editor) :global(.ql-image-align-left),
+.field :global(.ql-editor) :global(.ql-iframe-align-left) {
+  float: left;
+  margin: 0 var(--gv-space-16) var(--gv-space-16) 0;
+}
+
+.field :global(.ql-editor) :global(.ql-image-align-center),
+.field :global(.ql-editor) :global(.ql-iframe-align-center) {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.field :global(.ql-editor) :global(.ql-image-align-right),
+.field :global(.ql-editor) :global(.ql-iframe-align-right) {
+  float: right;
+  margin: 0 0 var(--gv-space-16) var(--gv-space-16);
+}
+
+/* Quill's link and video tooltip; its words come from the translations. */
+.field :global(.ql-tooltip) {
+  left: 0 !important;
+}
+
+.field :global(.ql-tooltip)::before {
+  content: var(--rich-text-visit-prompt) !important;
+}
+
+.field :global(.ql-tooltip[data-mode='link'])::before {
+  content: var(--rich-text-link-prompt) !important;
+}
+
+.field :global(.ql-tooltip[data-mode='video'])::before {
+  content: var(--rich-text-video-prompt) !important;
+}
+
+.field :global(.ql-tooltip a.ql-action)::after {
+  content: var(--rich-text-edit) !important;
+}
+
+.field :global(.ql-tooltip.ql-editing a.ql-action)::after {
+  content: var(--rich-text-save) !important;
+}
+
+.field :global(.ql-tooltip a.ql-remove)::before {
+  content: var(--rich-text-remove) !important;
+}
+
+.modalText {
+  composes: body from '../../../../design-system/typography.module.css';
+  color: var(--gv-text-body);
+}

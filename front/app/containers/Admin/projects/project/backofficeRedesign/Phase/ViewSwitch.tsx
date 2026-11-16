@@ -1,89 +1,67 @@
 import React from 'react';
 
-import { Box, colors, Tooltip } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
+import SegmentedTabs, {
+  SegmentedTab,
+  SegmentedTabList,
+} from 'design-system/SegmentedTabs';
+import 'design-system/tokens.css';
 
-import Link, { typedStyled } from 'utils/cl-router/Link';
+import clHistory from 'utils/cl-router/history';
 
 import { PhaseView } from './usePhaseViews';
 
-// A pill, so the radius is a shape rather than the card radius in
-// stylingConsts. The active segment is styled off aria-current so the state
-// lives in one place for both assistive tech and the eye.
-const segment = `
-  display: inline-flex;
-  align-items: center;
-  padding: 5px 14px;
-  border-radius: 999px;
-  font-size: 12.5px;
-  font-weight: 600;
-  white-space: nowrap;
-`;
-
-const Segment = typedStyled(Link)`
-  ${segment}
-  color: ${colors.coolGrey600};
-
-  &:hover {
-    color: ${colors.textPrimary};
-  }
-
-  &[aria-current='page'] {
-    background: ${colors.white};
-    color: ${colors.textPrimary};
-  }
-`;
-
-// A view the phase has no tab for. Not a <button disabled> so it stays part of
-// the reading order rather than being skipped over.
-const LockedSegment = styled.span`
-  ${segment}
-  color: ${colors.coolGrey500};
-  cursor: default;
-`;
-
 interface Props {
+  label: string;
   views: PhaseView[];
   activeView: string;
   projectId: string;
   phaseId: string;
 }
 
-const ViewSwitch = ({ views, activeView, projectId, phaseId }: Props) => {
+const ViewSwitch = ({
+  label,
+  views,
+  activeView,
+  projectId,
+  phaseId,
+}: Props) => {
   if (views.length < 2) return null;
 
+  // A view the phase has no tab for cannot be reached. With a reason it stays
+  // focusable and says why in its tooltip; without one it is plainly disabled.
+  const lockedKeys = views
+    .filter((view) => !view.to && !view.lockedReason)
+    .map((view) => view.key);
+
+  const handleSelectionChange = (key: React.Key) => {
+    if (key === activeView) return;
+
+    const to = views.find((view) => view.key === key)?.to;
+    if (!to) return;
+
+    clHistory.push(
+      to.replace('$projectId', projectId).replace('$phaseId', phaseId)
+    );
+  };
+
   return (
-    <Box
-      display="inline-flex"
-      alignItems="center"
-      gap="2px"
-      p="3px"
-      borderRadius="999px"
-      background={colors.grey100}
+    <SegmentedTabs
+      selectedKey={activeView}
+      onSelectionChange={handleSelectionChange}
+      disabledKeys={lockedKeys}
     >
-      {views.map((view) =>
-        view.to ? (
-          <Segment
+      <SegmentedTabList aria-label={label}>
+        {views.map((view) => (
+          <SegmentedTab
             key={view.key}
-            to={view.to}
-            params={{ projectId, phaseId }}
-            aria-current={view.key === activeView ? 'page' : undefined}
+            id={view.key}
+            disabledReason={view.to ? undefined : view.lockedReason}
           >
             {view.label}
-          </Segment>
-        ) : (
-          <Tooltip
-            key={view.key}
-            content={view.lockedReason}
-            disabled={!view.lockedReason}
-            theme="dark"
-            appendTo={() => document.body}
-          >
-            <LockedSegment aria-disabled="true">{view.label}</LockedSegment>
-          </Tooltip>
-        )
-      )}
-    </Box>
+          </SegmentedTab>
+        ))}
+      </SegmentedTabList>
+    </SegmentedTabs>
   );
 };
 

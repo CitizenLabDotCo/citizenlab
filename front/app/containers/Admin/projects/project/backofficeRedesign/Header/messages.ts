@@ -21,4 +21,8 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.saveProjectSetup',
     defaultMessage: 'Save',
   },
+  phaseViewSwitch: {
+    id: 'app.containers.Admin.projects.project.phaseViewSwitch',
+    defaultMessage: 'Phase view',
+  },
 });

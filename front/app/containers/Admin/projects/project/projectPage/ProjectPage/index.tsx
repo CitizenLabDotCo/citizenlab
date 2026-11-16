@@ -1,12 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import {
-  Box,
-  Button,
-  Spinner,
-  Text,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import { Box, Spinner, colors } from '@citizenlab/cl2-component-library';
 
 import useGroupsByIds from 'api/groups/useGroupsByIds';
 import useProjectById from 'api/projects/useProjectById';
@@ -18,7 +12,9 @@ import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 import PhonePreviewBackdrop from 'containers/Admin/projects/_shared/components/PhonePreviewBackdrop';
 
 import PagePreview from 'components/admin/PagePreview';
-import Modal from 'components/UI/Modal';
+
+import Modal from 'design-system/Modal';
+import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
@@ -26,6 +22,8 @@ import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { useParams, useSearch } from 'utils/router';
 
 import messages from '../messages';
+
+import styles from './ProjectPage.module.css';
 
 const ProjectPage = () => {
   const { formatMessage, formatList } = useIntl();
@@ -81,33 +79,27 @@ const ProjectPage = () => {
     );
   };
 
+  const groupsFailedOpen =
+    failedGroupIds.length > 0 && failedGroups.every(Boolean);
+  const groupsNotAddedText = formatMessage(messages.groupsNotAdded2, {
+    groups: formatList(failedGroupTitles, { type: 'conjunction' }),
+  });
+
   return (
     <PhonePreviewBackdrop>
       <Modal
-        opened={failedGroupIds.length > 0 && failedGroups.every(Boolean)}
-        close={closeGroupsFailed}
-        width={480}
-        variant="bo"
-        header={formatMessage(messages.groupsNotAddedTitle)}
-        footer={
-          <Box w="100%" display="flex" justifyContent="flex-end">
-            <Button
-              buttonStyle="bo-primary"
-              boSize="medium"
-              onClick={closeGroupsFailed}
-            >
-              {formatMessage(messages.groupsNotAddedOk)}
-            </Button>
-          </Box>
-        }
+        size={440}
+        isOpen={groupsFailedOpen}
+        onOpenChange={(isOpen) => {
+          if (!isOpen) closeGroupsFailed();
+        }}
+        title={formatMessage(messages.groupsNotAddedTitle)}
+        primaryAction={{
+          label: formatMessage(messages.groupsNotAddedOk),
+          onPress: closeGroupsFailed,
+        }}
       >
-        <Box p="24px">
-          <Text m="0" fontSize="s" color="coolGrey600">
-            {formatMessage(messages.groupsNotAdded2, {
-              groups: formatList(failedGroupTitles, { type: 'conjunction' }),
-            })}
-          </Text>
-        </Box>
+        <p className={styles.groupsNotAdded}>{groupsNotAddedText}</p>
       </Modal>
       <PagePreview
         src={`/${locale}/projects/${slug}${search}`}

@@ -90,14 +90,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.inputCount',
     defaultMessage: '{count, plural, one {# input} other {# inputs}}',
   },
-  searchOptions: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.searchOptions',
-    defaultMessage: 'Filter…',
-  },
-  noMatchingOptions: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.noMatchingOptions',
-    defaultMessage: 'Nothing matches your search',
-  },
   clearAllFilters: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.clearAllFilters',
     defaultMessage: 'Clear all filters',
@@ -180,10 +172,6 @@ export default defineMessages({
   phases: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.phases',
     defaultMessage: 'Phases',
-  },
-  removeFromPhase: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.removeFromPhase',
-    defaultMessage: 'Remove from {phase}',
   },
   addTag: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.addTag',

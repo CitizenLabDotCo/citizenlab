@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { Box, Button } from '@citizenlab/cl2-component-library';
+import Modal from 'design-system/Modal';
+import 'design-system/tokens.css';
 import { UploadFile } from 'typings';
 
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
-import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -33,30 +33,27 @@ const ImageCropModal = ({
 
   return (
     <Modal
-      variant="bo"
-      opened={opened}
-      close={onClose}
-      header={formatMessage(messages.cropImage)}
-      footer={
-        <Box display="flex" justifyContent="flex-end" w="100%">
-          <Button buttonStyle="bo-primary" onClick={onClose}>
-            {formatMessage(messages.done)}
-          </Button>
-        </Box>
-      }
+      isOpen={opened}
+      onOpenChange={(isOpen) => {
+        if (!isOpen) onClose();
+      }}
+      size={560}
+      title={formatMessage(messages.cropImage)}
+      primaryAction={{
+        label: formatMessage(messages.done),
+        onPress: onClose,
+      }}
     >
-      <Box p="24px">
-        <ImageCropperContainer
-          image={image}
-          onComplete={onCrop}
-          aspectRatioWidth={aspectRatioWidth}
-          aspectRatioHeight={aspectRatioHeight}
-          onRemove={() => {
-            onRemove();
-            onClose();
-          }}
-        />
-      </Box>
+      <ImageCropperContainer
+        image={image}
+        onComplete={onCrop}
+        aspectRatioWidth={aspectRatioWidth}
+        aspectRatioHeight={aspectRatioHeight}
+        onRemove={() => {
+          onRemove();
+          onClose();
+        }}
+      />
     </Modal>
   );
 };

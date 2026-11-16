@@ -1,13 +1,10 @@
-import React, { ReactNode, useRef } from 'react';
+import React, { ReactNode } from 'react';
 
-import {
-  Box,
-  Button,
-  ButtonStyles,
-  Dropdown,
-  IconNames,
-  bo,
-} from '@citizenlab/cl2-component-library';
+import Button, { ButtonVariant } from 'design-system/Button';
+import Popover, { DialogTrigger } from 'design-system/Popover';
+import 'design-system/tokens.css';
+
+import styles from './HeaderDropdown.module.css';
 
 export type HeaderDropdownName = 'publish' | 'share' | 'review';
 
@@ -15,63 +12,53 @@ interface Props {
   opened: boolean;
   onOpenChange: (opened: boolean) => void;
   label: ReactNode;
-  buttonStyle: ButtonStyles;
-  icon?: IconNames;
+  // Names the panel, which has no title of its own.
+  panelLabel: string;
+  variant: ButtonVariant;
+  hasMenu?: boolean;
   id: string;
-  width: string;
-  maxHeight?: string;
+  panelWidth: 'publish' | 'share';
   content: JSX.Element;
   disabled?: boolean;
+  disabledReason?: ReactNode;
 }
 
 const HeaderDropdown = ({
   opened,
   onOpenChange,
   label,
-  buttonStyle,
-  icon,
+  panelLabel,
+  variant,
+  hasMenu = true,
   id,
-  width,
-  maxHeight = 'none',
+  panelWidth,
   content,
   disabled,
-}: Props) => {
-  const triggerRef = useRef<HTMLDivElement>(null);
-
-  const handleClickOutside = (event: { target: EventTarget | null }) => {
-    if (triggerRef.current?.contains(event.target as Node)) return;
-    onOpenChange(false);
-  };
-
-  return (
-    <>
-      <Box ref={triggerRef} display="inline-block">
-        <Button
-          buttonStyle={buttonStyle}
-          boSize="medium"
-          icon={icon}
-          iconPos="right"
-          onClick={() => onOpenChange(!opened)}
-          id={id}
-          disabled={disabled}
-        >
-          {label}
-        </Button>
-      </Box>
-
-      <Dropdown
-        opened={opened}
-        onClickOutside={handleClickOutside}
-        top="36px"
-        right="0px"
-        width={width}
-        maxHeight={maxHeight}
-        zIndex="2000"
-        borderRadius={bo.borderRadius}
-        content={content}
-      />
-    </>
-  );
-};
+  disabledReason,
+}: Props) => (
+  <DialogTrigger
+    isOpen={opened}
+    // A button with a disabled reason stays pressable for its tooltip, so the
+    // trigger would still open the panel without this guard.
+    onOpenChange={(nextOpened) => {
+      if (disabled && nextOpened) return;
+      onOpenChange(nextOpened);
+    }}
+  >
+    <Button
+      id={id}
+      variant={variant}
+      size={32}
+      hasMenu={hasMenu}
+      isDisabled={disabled}
+      disabledReason={disabled ? disabledReason : undefined}
+    >
+      {label}
+    </Button>
+    <Popover aria-label={panelLabel} width="hug">
+      <div className={styles[panelWidth]}>{content}</div>
+    </Popover>
+  </DialogTrigger>
+);
 
 export default HeaderDropdown;

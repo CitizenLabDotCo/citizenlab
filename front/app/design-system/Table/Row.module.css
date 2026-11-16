@@ -1,0 +1,145 @@
+/*
+ * Every row is 40 of content plus a 1 px bottom edge, so the list steps by 41.
+ * The edge is transparent in the nested view and a hairline in the flat list.
+ */
+.row {
+  composes: ringInside from '../focus.module.css';
+  position: relative;
+  border-radius: var(--gv-radius-8);
+  color: var(--gv-text-cell);
+  cursor: default;
+}
+
+.row > td {
+  padding: 0;
+  border-bottom: var(--gv-border-width-1) solid transparent;
+  vertical-align: middle;
+  transition-property: background-color;
+  transition-duration: var(--gv-motion-duration-fast);
+  transition-timing-function: var(--gv-motion-easing-standard);
+}
+
+.flat > td {
+  border-bottom-color: var(--gv-border-divider);
+}
+
+/* Container and nested rows have rounded ends; the flat list runs edge to edge. */
+.container > td:first-child,
+.nested > td:first-child {
+  border-top-left-radius: var(--gv-radius-8);
+  border-bottom-left-radius: var(--gv-radius-8);
+}
+
+.container > td:last-child,
+.nested > td:last-child {
+  border-top-right-radius: var(--gv-radius-8);
+  border-bottom-right-radius: var(--gv-radius-8);
+}
+
+.row[data-href],
+.row[data-hovered] {
+  cursor: pointer;
+}
+
+.row[data-hovered] > td {
+  background: var(--gv-surface-secondary);
+}
+
+.row[data-pressed] > td {
+  background: var(--gv-surface-pressed);
+}
+
+.row[data-selected] > td {
+  background: var(--gv-surface-row-selected);
+}
+
+/* Picked rows next to each other form one block with rounded ends. */
+.row[data-selected] + .row[data-selected] > td {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.row[data-selected]:has(+ .row[data-selected]) > td {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.row[data-disabled] {
+  opacity: var(--gv-opacity-disabled);
+  cursor: default;
+}
+
+/* The source row while it is dragged; 35% is off the opacity scale, as the prototype draws it. */
+.row[data-dragging] {
+  opacity: 0.35;
+}
+
+/* Where the dragged row lands: a 2 px line on its top edge. */
+.row[data-drop-target] > td {
+  background-image: linear-gradient(
+    var(--gv-border-selected),
+    var(--gv-border-selected)
+  );
+  background-repeat: no-repeat;
+  background-size: 100% var(--gv-border-width-2);
+}
+
+/* The row you just made sits on a grey band that fades out. */
+.row[data-created] > td {
+  animation: row-created var(--gv-motion-duration-loop)
+    var(--gv-motion-easing-standard) forwards;
+}
+
+@keyframes row-created {
+  from {
+    background-color: var(--gv-surface-control-subtle);
+  }
+}
+
+/* Actions slot: 28 square, the row menu in its corner. */
+.actionsCell {
+  width: var(--gv-size-28);
+}
+
+.actions {
+  display: flex;
+  width: var(--gv-size-28);
+  height: var(--gv-size-28);
+  visibility: hidden;
+}
+
+.row[data-hovered] .actions,
+.row[data-dragging] .actions,
+.row[data-focus-visible] .actions,
+.row[data-focus-visible-within] .actions,
+.actions:has([aria-expanded='true']) {
+  visibility: visible;
+}
+
+/* The grip sits on the left edge of the row and shows only while dragging. */
+.grip {
+  composes: ringInside from '../focus.module.css';
+  position: absolute;
+  top: 50%;
+  left: calc(-1 * var(--gv-space-2));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--gv-space-12);
+  height: var(--gv-size-24);
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  transform: translateY(-50%);
+  visibility: hidden;
+}
+
+.row[data-dragging] .grip,
+.grip[data-focus-visible] {
+  visibility: visible;
+}
+
+.gripIcon {
+  color: var(--gv-icon-tertiary);
+}

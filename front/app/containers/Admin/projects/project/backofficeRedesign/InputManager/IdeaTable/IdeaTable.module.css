@@ -1,0 +1,43 @@
+.pagination {
+  display: flex;
+  justify-content: center;
+  padding: var(--gv-space-16) 0;
+}
+
+.selectColumn {
+  box-sizing: border-box;
+  padding: 0 var(--gv-space-12);
+  vertical-align: middle;
+}
+
+.title {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--gv-text-body);
+  text-overflow: ellipsis;
+}
+
+.markIcon {
+  color: var(--gv-icon-tertiary);
+}
+
+.tags {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-4);
+}
+
+.tagGroup {
+  display: contents;
+}
+
+.tagList {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-4);
+}
+
+.more {
+  composes: ui from '../../../../../../../design-system/typography.module.css';
+  color: var(--gv-text-secondary);
+}

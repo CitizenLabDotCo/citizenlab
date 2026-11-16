@@ -45,16 +45,15 @@ const StatusProperty = ({ idea, type }: Props) => {
   return (
     <PropertyRow label={formatMessage(messages.filterStatus)}>
       <PropertyMenu label={current?.label} color={current?.color}>
-        {(close) => (
-          <OptionList
-            options={statusOptions}
-            selected={statusId ? [statusId] : []}
-            onToggle={(newStatusId) => {
-              if (newStatusId !== statusId) changeStatus(newStatusId);
-              close();
-            }}
-          />
-        )}
+        <OptionList
+          aria-label={formatMessage(messages.filterStatus)}
+          options={statusOptions}
+          selected={statusId ? [statusId] : []}
+          onToggle={(newStatusId) => {
+            if (newStatusId !== statusId) changeStatus(newStatusId);
+          }}
+          selectionMode="single"
+        />
       </PropertyMenu>
     </PropertyRow>
   );

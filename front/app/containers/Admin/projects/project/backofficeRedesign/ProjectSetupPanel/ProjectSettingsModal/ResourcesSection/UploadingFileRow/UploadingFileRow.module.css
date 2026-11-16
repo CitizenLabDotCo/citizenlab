@@ -1,0 +1,20 @@
+.status {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--gv-space-8);
+}
+
+.categorySelect {
+  width: 180px;
+}
+
+.note {
+  composes: small from '../../../../../../../../../design-system/typography.module.css';
+  color: var(--gv-text-secondary);
+}
+
+.error {
+  composes: small from '../../../../../../../../../design-system/typography.module.css';
+  color: var(--gv-text-danger);
+}

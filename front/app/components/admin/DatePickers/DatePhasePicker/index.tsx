@@ -4,7 +4,6 @@ import { Tooltip, Box } from '@citizenlab/cl2-component-library';
 
 import ClickOutsideContainer from '../_shared/ClickOutsideContainer';
 
-import BoInput from './BoInput';
 import Calendar from './Calendar';
 import Input from './Input';
 import { isSelectedRangeOpenEnded } from './isSelectedRangeOpenEnded';
@@ -20,7 +19,6 @@ const DatePhasePicker = ({
   defaultMonth,
   onUpdateRange,
   className,
-  variant = 'default',
 }: Props) => {
   const [calendarOpen, setCalendarOpen] = useState(false);
 
@@ -55,22 +53,12 @@ const DatePhasePicker = ({
         visible={calendarOpen}
         width="1200px"
       >
-        {variant === 'bo' ? (
-          <BoInput
-            selectedRange={selectedRange}
-            selectedRangeIsOpenEnded={selectedRangeIsOpenEnded}
-            calendarOpen={calendarOpen}
-            onClick={toggleCalendar}
-            className={className}
-          />
-        ) : (
-          <Input
-            selectedRange={selectedRange}
-            selectedRangeIsOpenEnded={selectedRangeIsOpenEnded}
-            onClick={toggleCalendar}
-            className={className}
-          />
-        )}
+        <Input
+          selectedRange={selectedRange}
+          selectedRangeIsOpenEnded={selectedRangeIsOpenEnded}
+          onClick={toggleCalendar}
+          className={className}
+        />
       </Tooltip>
     </ClickOutsideContainer>
   );

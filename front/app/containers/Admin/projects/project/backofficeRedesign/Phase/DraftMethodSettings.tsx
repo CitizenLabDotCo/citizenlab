@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Text } from '@citizenlab/cl2-component-library';
+import 'design-system/tokens.css';
 import { CLErrors } from 'typings';
 
 import { IUpdatedPhaseProperties, ParticipationMethod } from 'api/phases/types';
@@ -10,8 +10,8 @@ import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/t
 
 import { useIntl } from 'utils/cl-intl';
 
+import styles from './DraftMethodSettings.module.css';
 import messages from './messages';
-import PanelSettings from './PanelSettings';
 
 // Information has nothing to set here, and document annotation's Konveio link
 // sits in the build panel.
@@ -38,7 +38,7 @@ const DraftMethodSettings = ({
   const { formatMessage } = useIntl();
 
   return (
-    <PanelSettings p="0 18px 24px">
+    <div className={styles.panel}>
       {!METHODS_WITHOUT_SETTINGS.some(
         (method) => method === formData.participation_method
       ) && (
@@ -53,10 +53,10 @@ const DraftMethodSettings = ({
         />
       )}
 
-      <Text variant="boHelper">
+      <p className={styles.hint}>
         {formatMessage(messages.saveToEditSettings)}
-      </Text>
-    </PanelSettings>
+      </p>
+    </div>
   );
 };
 

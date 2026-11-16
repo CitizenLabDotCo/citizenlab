@@ -1,25 +1,23 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 
-import {
-  Box,
-  Image,
-  Text,
-  colors,
-  stylingConsts,
-} from '@citizenlab/cl2-component-library';
+import Banner from 'design-system/Banner';
+import IconButton from 'design-system/IconButton';
+import 'design-system/tokens.css';
 import { UploadFile } from 'typings';
 
-import Error from 'components/UI/Error';
-import IconAction from 'components/UI/IconAction';
 import imagesDropzoneMessages from 'components/UI/ImagesDropzone/messages';
 
 import { useIntl } from 'utils/cl-intl';
-import { getBase64FromFile, returnFileSize } from 'utils/fileUtils';
+import { returnFileSize } from 'utils/fileUtils';
 
+import styles from './ImageFileRow.module.css';
+import {
+  ACCEPTED_IMAGE_TYPES,
+  isImageTooLarge,
+  MAX_IMAGE_FILE_SIZE_MB,
+  toUploadFile,
+} from './imageUpload';
 import messages from './messages';
-
-const MAX_FILE_SIZE_MB = 10;
-const ACCEPTED_TYPES = 'image/jpeg,image/png';
 
 interface Dimensions {
   width: number;
@@ -63,123 +61,75 @@ const ImageFileRow = ({
     event.target.value = '';
     if (!file) return;
 
-    const isTooLarge = file.size > MAX_FILE_SIZE_MB * 1000000;
+    const isTooLarge = isImageTooLarge(file);
     setTooLarge(isTooLarge);
     if (isTooLarge) return;
 
-    const base64 = await getBase64FromFile(file);
-    onReplace(
-      Object.assign(file, {
-        base64,
-        url: base64,
-        remote: false,
-        filename: file.name,
-      })
-    );
+    onReplace(await toUploadFile(file));
   };
 
   const actions = (
-    <Box
-      display="flex"
-      gap="4px"
-      ml={stackActions ? '-4px' : undefined}
-      mr={stackActions ? undefined : '-4px'}
-    >
+    <div className={stackActions ? styles.stackedActions : styles.actions}>
       {onCrop && (
-        <IconAction
-          icon="edit"
-          tooltip={formatMessage(messages.crop)}
-          ariaLabel={formatMessage(messages.cropImage)}
-          onClick={onCrop}
+        <IconButton
+          icon="pencil-14"
+          aria-label={formatMessage(messages.cropImage)}
+          onPress={onCrop}
         />
       )}
-      <IconAction
-        icon="upload-file"
-        tooltip={formatMessage(messages.replace)}
-        ariaLabel={formatMessage(messages.replaceImage)}
-        onClick={() => inputRef.current?.click()}
+      <IconButton
+        icon="upload-16"
+        aria-label={formatMessage(messages.replaceImage)}
+        onPress={() => inputRef.current?.click()}
       />
-      <IconAction
-        icon="delete"
-        tooltip={formatMessage(messages.delete)}
-        ariaLabel={formatMessage(messages.deleteImage)}
-        onClick={onRemove}
+      <IconButton
+        icon="trash-2-16"
+        aria-label={formatMessage(messages.deleteImage)}
+        onPress={onRemove}
       />
-    </Box>
+    </div>
   );
 
   return (
-    <Box display="flex" flexDirection="column" gap="4px">
-      <Box display="flex" alignItems="center" gap="12px">
-        <Box
-          flex="0 0 96px"
-          height="54px"
-          overflow="hidden"
-          borderRadius={stylingConsts.borderRadius}
-          background={colors.grey100}
-        >
-          <Image
-            src={thumbnail}
-            alt=""
-            width="100%"
-            height="100%"
-            style={{ objectFit: 'cover' }}
-          />
-        </Box>
-        <Box
-          flex="1"
-          minWidth="0"
-          display="flex"
-          flexDirection="column"
-          gap="2px"
-        >
-          <Text
-            variant="boControl"
-            fontSize="xs"
-            lineHeight="16px"
-            m="0"
-            overflow="hidden"
-            textOverflow="ellipsis"
-            whiteSpace="nowrap"
-            title={image.name}
-          >
+    <div className={styles.fileRow}>
+      <div className={styles.row}>
+        <div className={styles.thumbnail}>
+          <img src={thumbnail} alt="" className={styles.thumbnailImage} />
+        </div>
+        <div className={styles.details}>
+          <p className={styles.name} title={image.name}>
             {image.name}
-          </Text>
-          <Text m="0" fontSize="xs" lineHeight="16px" color="coolGrey600">
-            <Text as="span" m="0" fontSize="xs" whiteSpace="nowrap">
-              {returnFileSize(image.size)}
-            </Text>
+          </p>
+          <p className={styles.meta}>
+            <span className={styles.nowrap}>{returnFileSize(image.size)}</span>
             {dimensions && (
               <>
                 {' · '}
-                <Text as="span" m="0" fontSize="xs" whiteSpace="nowrap">
+                <span className={styles.nowrap}>
                   {`${dimensions.width} × ${dimensions.height}`}
-                </Text>
+                </span>
               </>
             )}
-          </Text>
+          </p>
           {stackActions && actions}
-        </Box>
+        </div>
         {!stackActions && actions}
         <input
           ref={inputRef}
           type="file"
-          accept={ACCEPTED_TYPES}
+          accept={ACCEPTED_IMAGE_TYPES.join(',')}
           hidden
           onChange={handleFileChange}
         />
-      </Box>
+      </div>
       {tooLarge && (
-        <Error
-          text={formatMessage(
-            imagesDropzoneMessages.errorImageMaxSizeExceeded,
-            {
-              maxFileSize: MAX_FILE_SIZE_MB,
-            }
-          )}
-        />
+        <Banner tone="error">
+          {formatMessage(imagesDropzoneMessages.errorImageMaxSizeExceeded, {
+            maxFileSize: MAX_IMAGE_FILE_SIZE_MB,
+          })}
+        </Banner>
       )}
-    </Box>
+    </div>
   );
 };
 

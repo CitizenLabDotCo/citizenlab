@@ -1,0 +1,54 @@
+.statRow {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--gv-space-16);
+  width: 100%;
+  padding: var(--gv-space-8);
+  border: none;
+  border-radius: var(--gv-radius-8);
+  background: transparent;
+  text-align: start;
+  text-decoration: none;
+}
+
+.pressable {
+  composes: ringInside from '../focus.module.css';
+  cursor: pointer;
+  transition-property: background-color;
+  transition-duration: var(--gv-motion-duration-fast);
+  transition-timing-function: var(--gv-motion-easing-standard);
+}
+
+.pressable[data-hovered] {
+  background: var(--gv-surface-hovered);
+}
+
+.label {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-6);
+}
+
+.labelText {
+  composes: body from '../typography.module.css';
+  color: var(--gv-text-secondary);
+}
+
+.valueRow {
+  display: flex;
+  align-items: baseline;
+  gap: var(--gv-space-6);
+}
+
+.value {
+  composes: stat from '../typography.module.css';
+  flex-grow: 1;
+  color: var(--gv-text-primary);
+}
+
+.chevron {
+  flex-shrink: 0;
+  color: var(--gv-icon-quiet);
+}

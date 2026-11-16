@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 
-import { Box, Button } from '@citizenlab/cl2-component-library';
-
 import { exportVolunteers } from 'api/causes/util';
 
 import SummaryPill from 'containers/Admin/projects/_shared/components/SummaryPill';
 
-import IconAction from 'components/UI/IconAction';
+import Button from 'design-system/Button';
+import IconButton from 'design-system/IconButton';
 
 import { useIntl } from 'utils/cl-intl';
 
 import PanelField from '../../../PanelField';
 
 import CauseModal from './CauseModal';
+import styles from './CausesSection.module.css';
 import CauseRow from './CauseRow';
 import DeleteCauseModal from './DeleteCauseModal';
 import messages from './messages';
@@ -61,34 +61,30 @@ const CausesSection = ({ phaseId }: Props) => {
         <PanelField
           label={label}
           action={
-            <Box display="flex" alignItems="center" gap="4px">
-              <IconAction
-                icon="list"
-                tooltip={formatMessage(
+            <div className={styles.actions}>
+              <IconButton
+                icon="list-14"
+                aria-label={formatMessage(
                   open ? messages.hideCauses : messages.showCauses
                 )}
-                ariaLabel={formatMessage(
-                  open ? messages.hideCauses : messages.showCauses
-                )}
-                ariaExpanded={open}
-                onClick={() => setOpen((open) => !open)}
+                aria-expanded={open}
+                onPress={() => setOpen((open) => !open)}
               />
-              <IconAction
-                icon="plus"
-                tooltip={addLabel}
-                ariaLabel={addLabel}
-                onClick={openAdd}
+              <IconButton
+                icon="plus-16"
+                aria-label={addLabel}
+                onPress={openAdd}
               />
-              <IconAction
-                icon="download"
-                tooltip={
+              <IconButton
+                icon="download-16"
+                aria-label={downloadLabel}
+                isDisabled={exporting}
+                disabledReason={
                   hasSignUps
-                    ? downloadLabel
+                    ? undefined
                     : formatMessage(messages.nobodySignedUpYet)
                 }
-                ariaLabel={downloadLabel}
-                disabled={!hasSignUps || exporting}
-                onClick={download}
+                onPress={download}
               />
               {!open && (
                 <SummaryPill
@@ -97,11 +93,11 @@ const CausesSection = ({ phaseId }: Props) => {
                   })}
                 />
               )}
-            </Box>
+            </div>
           }
         >
           {open && (
-            <Box as="ul" m="0" p="0" style={{ listStyle: 'none' }}>
+            <ul className={styles.list}>
               {causeList.map((cause) => (
                 <CauseRow
                   key={cause.key}
@@ -114,29 +110,23 @@ const CausesSection = ({ phaseId }: Props) => {
                   onDelete={() => setToDelete(cause)}
                 />
               ))}
-            </Box>
+            </ul>
           )}
         </PanelField>
       ) : (
         <PanelField label={label}>
-          <Box display="flex" justifyContent="flex-end" gap="8px">
+          <div className={styles.emptyActions}>
             <Button
-              buttonStyle="bo-secondary"
-              boSize="medium"
-              width="auto"
-              disabled
+              variant="secondary"
+              size={28}
+              disabledReason={formatMessage(messages.nobodySignedUpYet)}
             >
               {downloadLabel}
             </Button>
-            <Button
-              buttonStyle="bo-primary"
-              boSize="medium"
-              width="auto"
-              onClick={openAdd}
-            >
+            <Button variant="primary" size={28} onPress={openAdd}>
               {addLabel}
             </Button>
-          </Box>
+          </div>
         </PanelField>
       )}
 

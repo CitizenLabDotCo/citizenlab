@@ -1,0 +1,20 @@
+.card {
+  box-sizing: border-box;
+  position: relative;
+  display: block;
+  margin: var(--gv-space-10) 0 var(--gv-space-12);
+  padding: var(--gv-space-12);
+  border: var(--gv-border-width-1) solid var(--gv-border-divider);
+  border-radius: 3px;
+  background: var(--gv-surface-secondary);
+}
+
+.link {
+  composes: card;
+  text-decoration: none;
+  transition: background var(--gv-motion-duration-instant) ease-out;
+}
+
+.link:hover {
+  background: var(--gv-surface-control-subtle);
+}

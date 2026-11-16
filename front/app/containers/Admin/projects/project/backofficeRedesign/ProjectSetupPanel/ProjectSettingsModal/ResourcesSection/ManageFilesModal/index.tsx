@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 
-import { Box, Button, Text } from '@citizenlab/cl2-component-library';
-
 import useFiles from 'api/files/useFiles';
+
+import useDebouncedValue from 'hooks/useDebouncedValue';
 
 import filesMessages from 'containers/Admin/projects/project/files/components/messages';
 
-import Pagination from 'components/Pagination';
-import Modal, { MEDIUM_MODAL_WIDTH } from 'components/UI/Modal';
-import SearchInput from 'components/UI/SearchInput';
+import Button from 'design-system/Button';
+import Modal from 'design-system/Modal';
+import Pagination from 'design-system/Pagination';
+import SearchField from 'design-system/SearchField';
+import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -17,9 +19,11 @@ import messages from '../messages';
 import UploadingFileRow from '../UploadingFileRow';
 import useFilesCount from '../useFilesCount';
 import { FilesDraft } from '../useFilesDraft';
-import { FILE_MODAL_HEIGHT } from '../utils';
+
+import styles from './ManageFilesModal.module.css';
 
 const PAGE_SIZE = 20;
+const SEARCH_DEBOUNCE = 500;
 
 interface Props {
   projectId: string;
@@ -37,7 +41,8 @@ const ManageFilesModal = ({
   onAddFiles,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const [search, setSearch] = useState<string | undefined>();
+  const [searchText, setSearchText] = useState('');
+  const search = useDebouncedValue(searchText, SEARCH_DEBOUNCE) || undefined;
   const [pageNumber, setPageNumber] = useState(1);
   const savedCount = useFilesCount(projectId, search) ?? 0;
   const lastPage = Math.max(1, Math.ceil(savedCount / PAGE_SIZE));
@@ -62,40 +67,42 @@ const ManageFilesModal = ({
   const count = savedCount + newFiles.length - removedCount;
 
   const handleSearchChange = (value: string) => {
-    setSearch(value || undefined);
+    setSearchText(value);
     setPageNumber(1);
   };
 
+  const searchLabel = formatMessage(filesMessages.searchFiles);
+
   return (
     <Modal
-      variant="bo"
-      opened={opened}
-      close={onClose}
-      width={MEDIUM_MODAL_WIDTH}
-      height={FILE_MODAL_HEIGHT}
-      header={formatMessage(messages.manageFiles)}
+      isOpen={opened}
+      onOpenChange={(isOpen) => {
+        if (!isOpen) onClose();
+      }}
+      title={formatMessage(messages.manageFiles)}
+      size={560}
     >
-      <Box p="24px">
-        <Box display="flex" alignItems="center" gap="8px">
-          <Box flex="1">
-            <SearchInput
-              placeholder={formatMessage(filesMessages.searchFiles)}
+      <div>
+        <div className={styles.toolbar}>
+          <div className={styles.search}>
+            <SearchField
+              aria-label={searchLabel}
+              placeholder={searchLabel}
+              value={searchText}
               onChange={handleSearchChange}
-              a11y_numberOfSearchResults={count}
-              variant="bo"
-              hideLabel
             />
-          </Box>
-          <Button buttonStyle="bo-secondary" width="auto" onClick={onAddFiles}>
+          </div>
+          <Button variant="secondary" onPress={onAddFiles}>
             {formatMessage(messages.addFiles)}
           </Button>
-        </Box>
-        <Text variant="boMicro" color="coolGrey500" mt="16px" mb="4px">
+        </div>
+        {/* Live, so screen readers hear how many files the search found. */}
+        <p className={styles.count} aria-live="polite">
           {count > 0
             ? formatMessage(messages.filesCount, { count })
             : formatMessage(filesMessages.noFilesFound)}
-        </Text>
-        <Box mx="-8px">
+        </p>
+        <div className={styles.files}>
           {newFiles.map(({ key, file, status, category }) => (
             <UploadingFileRow
               key={key}
@@ -113,17 +120,17 @@ const ManageFilesModal = ({
               onDelete={() => draft.removeFile(file.id)}
             />
           ))}
-        </Box>
+        </div>
         {lastPage > 1 && (
-          <Box display="flex" justifyContent="center" mt="16px">
+          <div className={styles.pagination}>
             <Pagination
-              currentPage={currentPage}
-              totalPages={lastPage}
-              loadPage={setPageNumber}
+              page={currentPage}
+              pageCount={lastPage}
+              onChange={setPageNumber}
             />
-          </Box>
+          </div>
         )}
-      </Box>
+      </div>
     </Modal>
   );
 };

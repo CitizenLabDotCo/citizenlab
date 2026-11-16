@@ -1,0 +1,15 @@
+/* Only holds the key guard; the Tree is the list. */
+.wrapper {
+  min-width: 0;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  outline: none;
+}
+
+.disabled {
+  opacity: var(--gv-opacity-disabled);
+}

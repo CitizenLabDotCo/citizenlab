@@ -1,11 +1,6 @@
 import React from 'react';
 
-import {
-  Box,
-  colors,
-  IconTooltip,
-  Text,
-} from '@citizenlab/cl2-component-library';
+import { Box, colors, IconTooltip } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 import { Controller, useFormContext } from 'react-hook-form';
 import { CLError, RHFErrors } from 'typings';
@@ -13,15 +8,22 @@ import { CLError, RHFErrors } from 'typings';
 import Error, { TFieldName } from 'components/UI/Error';
 import { FormLabel } from 'components/UI/FormComponents';
 import formMessages from 'components/UI/FormComponents/messages';
-import UserSelect, { Props as UserSelectProps } from 'components/UI/UserSelect';
+import UserSelect from 'components/UI/UserSelect';
+
+import IconButton from 'design-system/IconButton';
+import 'design-system/tokens.css';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 
-interface Props extends Omit<UserSelectProps, 'onChange' | 'selectedUserId'> {
+import AuthorComboBox from './AuthorComboBox';
+import styles from './AuthorField.module.css';
+
+interface Props {
   name: string;
   id?: string;
+  variant?: 'default' | 'panel';
 }
 
 const AuthorField = ({ name, id, variant }: Props) => {
@@ -36,39 +38,63 @@ const AuthorField = ({ name, id, variant }: Props) => {
 
   // If an API error with a matching name has been returned from the API response, apiError is set to an array with the error message as the only item
   const apiError = errors?.error && ([errors] as CLError[]);
-  const adminTooltip = (
-    <IconTooltip
-      iconColor={colors.grey800}
-      marginLeft="4px"
-      icon="shield-checkered"
-      content={<FormattedMessage {...messages.adminFieldTooltip} />}
+  const apiErrorMessage = apiError && (
+    <Error
+      fieldName={name as TFieldName}
+      apiErrors={apiError}
+      marginTop="8px"
+      marginBottom="8px"
+      scrollIntoView={false}
     />
   );
+
+  if (variant === 'panel') {
+    return (
+      <>
+        <Controller
+          name={name}
+          control={control}
+          render={({ field }) => (
+            <AuthorComboBox
+              label={
+                <span className={styles.label}>
+                  {formatMessage(messages.authorFieldLabel)}
+                  <IconButton
+                    icon="info-16"
+                    size={24}
+                    aria-label={formatMessage(messages.adminFieldTooltip)}
+                  />
+                  ({formatMessage(formMessages.optional)})
+                </span>
+              }
+              placeholder={formatMessage(messages.authorFieldPlaceholder)}
+              value={field.value ?? null}
+              errorMessage={validationError}
+              onChange={(userId) => setValue(name, userId)}
+            />
+          )}
+        />
+        {apiErrorMessage}
+      </>
+    );
+  }
 
   return (
     <>
       <FormLabel
         htmlFor={name}
         labelValue={
-          variant === 'bo' ? (
-            <Box display="flex" alignItems="center" gap="4px">
-              <Text as="span" variant="boHelper" fontSize="xs" m="0">
-                {formatMessage(messages.authorFieldLabel)}
-              </Text>
-              {adminTooltip}
-              <Text as="span" variant="boHelper" fontSize="xs" m="0">
-                ({formatMessage(formMessages.optional)})
-              </Text>
-            </Box>
-          ) : (
-            <Box display="flex">
-              {formatMessage(messages.authorFieldLabel)}
-              {adminTooltip}
-            </Box>
-          )
+          <Box display="flex">
+            {formatMessage(messages.authorFieldLabel)}
+            <IconTooltip
+              iconColor={colors.grey800}
+              marginLeft="4px"
+              icon="shield-checkered"
+              content={<FormattedMessage {...messages.adminFieldTooltip} />}
+            />
+          </Box>
         }
-        // The back-office label carries its own optional hint, in its type size.
-        optional={variant !== 'bo'}
+        optional
       />
       <Controller
         name={name}
@@ -83,7 +109,6 @@ const AuthorField = ({ name, id, variant }: Props) => {
                 setValue(name, userOption?.id || null);
               }}
               placeholder={formatMessage(messages.authorFieldPlaceholder)}
-              variant={variant}
             />
           );
         }}
@@ -96,15 +121,7 @@ const AuthorField = ({ name, id, variant }: Props) => {
           scrollIntoView={false}
         />
       )}
-      {apiError && (
-        <Error
-          fieldName={name as TFieldName}
-          apiErrors={apiError}
-          marginTop="8px"
-          marginBottom="8px"
-          scrollIntoView={false}
-        />
-      )}
+      {apiErrorMessage}
     </>
   );
 };

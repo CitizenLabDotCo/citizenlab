@@ -1,0 +1,28 @@
+.button {
+  composes: ringOutside from '../focus.module.css';
+  box-sizing: border-box;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: var(--gv-size-control-32);
+  height: var(--gv-size-control-32);
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: var(--gv-radius-full);
+  background: var(--gv-surface-control-subtle);
+  cursor: pointer;
+  transition-property: background-color;
+  transition-duration: var(--gv-motion-duration-fast);
+  transition-timing-function: var(--gv-motion-easing-standard);
+}
+
+/* The icon keeps its grey on hover. */
+.icon {
+  color: var(--gv-icon-tertiary);
+}
+
+.button[data-hovered] {
+  background: var(--gv-surface-neutral-hovered);
+}

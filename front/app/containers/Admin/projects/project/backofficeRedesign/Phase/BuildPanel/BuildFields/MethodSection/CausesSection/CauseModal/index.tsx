@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { Box, Button } from '@citizenlab/cl2-component-library';
 import { FormProvider } from 'react-hook-form';
 
 import volunteeringMessages from 'containers/Admin/projects/project/volunteering/messages';
@@ -8,10 +7,11 @@ import useCauseForm, {
   CauseFormValues,
 } from 'containers/Admin/projects/project/volunteering/useCauseForm';
 
+import FormMultilocRichTextField from 'components/admin/MultilocFields/FormMultilocRichTextField';
+import FormMultilocTextField from 'components/admin/MultilocFields/FormMultilocTextField';
 import Feedback from 'components/HookForm/Feedback';
-import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
-import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
-import Modal, { MEDIUM_MODAL_WIDTH } from 'components/UI/Modal';
+
+import Modal from 'design-system/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -19,6 +19,7 @@ import causesSectionMessages from '../messages';
 import { StagedCause } from '../useStagedCauses';
 
 import CauseImageField from './CauseImageField';
+import styles from './CauseModal.module.css';
 import messages from './messages';
 
 interface Props {
@@ -48,61 +49,50 @@ const CauseModal = ({ cause, onSubmit, onClose }: Props) => {
 
   return (
     <Modal
-      opened
-      close={onClose}
-      width={MEDIUM_MODAL_WIDTH}
-      variant="bo"
-      header={formatMessage(
+      isOpen
+      onOpenChange={(isOpen) => {
+        if (!isOpen) onClose();
+      }}
+      size={560}
+      title={formatMessage(
         cause
           ? volunteeringMessages.editCauseTitle
           : causesSectionMessages.addACause
       )}
-      footer={
-        <Box display="flex" justifyContent="flex-end" gap="8px" width="100%">
-          <Button buttonStyle="bo-text" onClick={onClose}>
-            {formatMessage(causesSectionMessages.causeCancel)}
-          </Button>
-          <Button
-            buttonStyle="bo-primary"
-            processing={methods.formState.isSubmitting}
-            onClick={submit}
-          >
-            {formatMessage(
-              cause
-                ? messages.causeSaveChanges
-                : volunteeringMessages.addCauseButton
-            )}
-          </Button>
-        </Box>
-      }
+      secondaryAction={{
+        label: formatMessage(causesSectionMessages.causeCancel),
+        onPress: onClose,
+      }}
+      primaryAction={{
+        label: formatMessage(
+          cause
+            ? messages.causeSaveChanges
+            : volunteeringMessages.addCauseButton
+        ),
+        isPending: methods.formState.isSubmitting,
+        onPress: () => submit(),
+      }}
     >
       <FormProvider {...methods}>
-        <Box
-          as="form"
-          p="24px"
-          display="flex"
-          flexDirection="column"
-          gap="24px"
-          onSubmit={submit}
-        >
+        <form className={styles.form} onSubmit={submit}>
           <Feedback />
-          <InputMultilocWithLocaleSwitcher
+          <FormMultilocTextField
             name="title_multiloc"
-            variant="bo"
             label={formatMessage(volunteeringMessages.causeTitleLabel)}
             placeholder={formatMessage(messages.causeTitlePlaceholder)}
           />
-          <QuillMultilocWithLocaleSwitcher
+          <FormMultilocRichTextField
             name="description_multiloc"
-            variant="bo"
             noVideos
             limitedTextFormatting
-            minHeight="74px"
             label={formatMessage(volunteeringMessages.causeDescriptionLabel)}
+            aria-label={formatMessage(
+              volunteeringMessages.causeDescriptionLabel
+            )}
             placeholder={formatMessage(messages.causeDescriptionPlaceholder)}
           />
           <CauseImageField />
-        </Box>
+        </form>
       </FormProvider>
     </Modal>
   );

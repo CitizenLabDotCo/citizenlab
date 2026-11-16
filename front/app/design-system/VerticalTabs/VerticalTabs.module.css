@@ -1,0 +1,103 @@
+.tabs {
+  display: flex;
+}
+
+.tabList {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.settingsColumn {
+  width: 210px;
+  padding: var(--gv-space-16) var(--gv-space-12);
+  gap: var(--gv-space-4);
+  border-right: var(--gv-border-width-1) solid var(--gv-border-default);
+  background: var(--gv-surface-tertiary);
+}
+
+.tab {
+  composes: ui from '../typography.module.css';
+  composes: ringInside from '../focus.module.css';
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  padding: var(--gv-space-8) var(--gv-space-12);
+  gap: var(--gv-space-10);
+  border-radius: var(--gv-radius-8);
+  color: var(--gv-text-cell);
+  text-decoration: none;
+  cursor: pointer;
+  transition-property: background-color, color;
+  transition-duration: var(--gv-motion-duration-fast);
+  transition-timing-function: var(--gv-motion-easing-standard);
+}
+
+.icon {
+  flex-shrink: 0;
+  color: var(--gv-icon-secondary);
+}
+
+.label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.count {
+  flex-shrink: 0;
+  color: var(--gv-text-tertiary);
+}
+
+.tab[data-hovered]:not([data-selected]):not([aria-disabled='true']) {
+  background: var(--gv-surface-hovered);
+  color: var(--gv-text-primary);
+}
+
+.tab[data-pressed]:not([data-selected]):not([aria-disabled='true']) {
+  background: var(--gv-surface-pressed);
+  color: var(--gv-text-primary);
+}
+
+.tab[data-hovered]:not([aria-disabled='true']) .icon,
+.tab[data-pressed]:not([aria-disabled='true']) .icon,
+.tab[data-selected] .icon {
+  color: var(--gv-icon-primary);
+}
+
+.tab[data-selected] {
+  color: var(--gv-text-primary);
+  font-weight: var(--gv-font-weight-medium);
+}
+
+.settings[data-selected] {
+  background: var(--gv-surface-tab-selected);
+}
+
+.rail[data-selected] {
+  background: var(--gv-surface-control-subtle);
+}
+
+/* The count stays regular on the selected tab. */
+.tab[data-selected] .count {
+  font-weight: var(--gv-font-weight-regular);
+}
+
+.tab[data-disabled],
+.tab[aria-disabled='true'] {
+  color: var(--gv-text-disabled);
+  cursor: default;
+}
+
+.tab[data-disabled] .icon,
+.tab[aria-disabled='true'] .icon {
+  color: var(--gv-icon-disabled);
+}
+
+.tab[data-disabled] .count,
+.tab[aria-disabled='true'] .count {
+  color: var(--gv-text-disabled);
+}

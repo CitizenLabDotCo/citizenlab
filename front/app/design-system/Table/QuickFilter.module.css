@@ -1,0 +1,66 @@
+.quickFilter {
+  composes: ringOutside from '../focus.module.css';
+  box-sizing: border-box;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  height: var(--gv-size-control-28);
+  gap: var(--gv-space-6);
+  margin: 0;
+  padding: 0 var(--gv-space-10);
+  border: var(--gv-border-width-1) solid var(--gv-border-control);
+  border-radius: var(--gv-radius-full);
+  background: transparent;
+  white-space: nowrap;
+  cursor: pointer;
+  transition-property: background-color, border-color;
+  transition-duration: var(--gv-motion-duration-fast);
+  transition-timing-function: var(--gv-motion-easing-standard);
+}
+
+.quickFilter[data-hovered]:not([data-selected]) {
+  background: var(--gv-surface-control-subtle);
+}
+
+/* On: the border turns transparent so the pill keeps the size of the bordered one. */
+.quickFilter[data-selected] {
+  padding-right: var(--gv-space-4);
+  border-color: transparent;
+  background: var(--gv-surface-filter-on);
+}
+
+.dot {
+  flex-shrink: 0;
+  width: var(--gv-space-6);
+  height: var(--gv-space-6);
+  border-radius: var(--gv-radius-full);
+  background: var(--gv-surface-danger-strong);
+}
+
+.label {
+  composes: ui from '../typography.module.css';
+  color: var(--gv-text-danger);
+}
+
+.count {
+  composes: uiStrong from '../typography.module.css';
+  color: var(--gv-text-danger);
+}
+
+.quickFilter[data-selected] .label,
+.quickFilter[data-selected] .count {
+  color: var(--gv-text-filter-chip);
+}
+
+.remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--gv-size-20);
+  height: var(--gv-size-20);
+  border-radius: var(--gv-radius-full);
+}
+
+.removeIcon {
+  color: var(--gv-icon-info);
+}

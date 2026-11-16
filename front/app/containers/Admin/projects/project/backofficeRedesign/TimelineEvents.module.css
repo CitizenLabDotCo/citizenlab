@@ -1,0 +1,41 @@
+.header {
+  margin-bottom: var(--gv-space-4);
+  padding-left: var(--gv-space-10);
+}
+
+.events {
+  display: flex;
+  flex-direction: column;
+  /* Inset 2px so the text lines up with the group label. */
+  margin: 0 var(--gv-space-2);
+}
+
+.eventRow {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-2);
+  padding: var(--gv-space-8);
+  border-radius: var(--gv-radius-8);
+  text-decoration: none;
+  background: transparent;
+  transition: background var(--gv-motion-duration-instant) ease-out;
+}
+
+.eventRow:hover {
+  background: var(--gv-surface-control-subtle);
+}
+
+.eventRow[data-selected],
+.eventRow[data-selected]:hover {
+  background: var(--gv-surface-neutral-hovered);
+}
+
+.eventTitle {
+  composes: smallStrong from '../../../../../design-system/typography.module.css';
+  color: var(--gv-text-primary);
+}
+
+.eventMeta {
+  composes: small from '../../../../../design-system/typography.module.css';
+  color: var(--gv-text-secondary);
+}

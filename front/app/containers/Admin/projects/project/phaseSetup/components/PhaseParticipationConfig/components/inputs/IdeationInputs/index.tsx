@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, IOption, bo } from '@citizenlab/cl2-component-library';
+import { IOption } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
 import {
@@ -17,7 +17,9 @@ import PanelHeading from 'containers/Admin/projects/_shared/components/SettingsP
 import projectMessages from 'containers/Admin/projects/project/messages';
 
 import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle';
-import Error from 'components/UI/Error';
+import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
+
+import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -33,6 +35,7 @@ import UserActions from '../_shared/UserActions';
 
 import DislikingSettings from './DislikingSettings';
 import DislikingToggle from './DislikingToggle';
+import styles from './IdeationInputs.module.css';
 
 interface Props {
   input_term: InputTerm | undefined;
@@ -132,6 +135,7 @@ const IdeationInputs = ({
   phaseId,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const getApiErrorMessage = useApiErrorText();
   const prescreeningIdeationEnabled = useFeatureFlag({
     name: 'prescreening_ideation',
   });
@@ -171,14 +175,11 @@ const IdeationInputs = ({
       maxLabel={formatMessage(projectMessages.maxLikes)}
       onMethodChange={handleReactingLikeMethodOnChange}
       onMaxChange={handleLikingLimitOnChange}
-      error={
-        <>
-          <Error apiErrors={apiErrors && apiErrors.reacting_method} />
-          <Error
-            text={noLikingLimitError}
-            apiErrors={apiErrors && apiErrors.reacting_limit}
-          />
-        </>
+      methodError={getApiErrorMessage(apiErrors?.reacting_method)}
+      maxError={
+        [noLikingLimitError, getApiErrorMessage(apiErrors?.reacting_limit)]
+          .filter(Boolean)
+          .join(' ') || undefined
       }
     />
   );
@@ -218,7 +219,7 @@ const IdeationInputs = ({
       reactingSettings={
         layout === 'panel' && (
           <>
-            <Box pl={bo.toggleLabelIndent}>{likes}</Box>
+            <div className={styles.reactingSettings}>{likes}</div>
             {dislikingToggle}
           </>
         )
@@ -285,16 +286,16 @@ const IdeationInputs = ({
   if (layout === 'panel') {
     return (
       <>
-        <Box mb="10px">
+        <div className={styles.heading}>
           <PanelHeading
             label={formatMessage(configMessages.howIdeasAreShown)}
           />
-        </Box>
+        </div>
         {views}
         {sorting}
-        <Box mb="10px">
+        <div className={styles.heading}>
           <PanelHeading label={formatMessage(configMessages.settingsGroup)} />
-        </Box>
+        </div>
         <PanelGroup
           label={formatMessage(configMessages.participantActionsGroup)}
           defaultOpen
@@ -305,12 +306,12 @@ const IdeationInputs = ({
           label={formatMessage(configMessages.moderationGroup)}
           defaultOpen
         >
-          <Box display="flex" flexDirection="column" gap="16px">
+          <div className={styles.moderation}>
             <ModerationAssignee phaseId={phaseId} />
             {screening}
             {anonymity}
             {similarity}
-          </Box>
+          </div>
         </PanelGroup>
       </>
     );

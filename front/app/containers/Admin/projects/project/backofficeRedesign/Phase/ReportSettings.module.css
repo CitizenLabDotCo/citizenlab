@@ -1,0 +1,14 @@
+.switchLabel {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  composes: ui from '../../../../../../design-system/typography.module.css';
+  color: var(--gv-text-primary);
+}
+
+.helper {
+  composes: ui from '../../../../../../design-system/typography.module.css';
+  color: var(--gv-text-secondary);
+}

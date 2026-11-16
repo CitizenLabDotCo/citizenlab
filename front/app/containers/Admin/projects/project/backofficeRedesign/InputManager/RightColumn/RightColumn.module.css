@@ -1,0 +1,34 @@
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-16);
+}
+
+.tiles {
+  display: flex;
+  gap: var(--gv-space-8);
+}
+
+.tiles > * {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+/* #E0E0E0 hairline: --gv-border-control is the token with that value. */
+.card {
+  padding: var(--gv-space-16);
+  border: var(--gv-border-width-1) solid var(--gv-border-control);
+  border-radius: var(--gv-radius-12);
+}
+
+.cardTitle {
+  composes: small from '../../../../../../../design-system/typography.module.css';
+  margin-bottom: var(--gv-space-12);
+  color: var(--gv-text-primary);
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-8);
+}

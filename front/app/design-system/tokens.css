@@ -1,0 +1,333 @@
+/* Generated from the Go Vocal Design System Figma file (Foundations). Do not edit by hand. */
+:root {
+  /* Colour primitives: only semantic tokens below may point at these. */
+  --gv-neutral-0: #ffffff;
+  --gv-neutral-25: #fcfcfc;
+  --gv-neutral-200: #e0e0e0;
+  --gv-neutral-800: #333333;
+  --gv-neutral-900: #1e1e1e;
+  --gv-neutral-1000: #000000;
+  --gv-slate-50: #f5f7f8;
+  --gv-slate-100: #edeff0;
+  --gv-slate-150: #e6e8ea;
+  --gv-slate-200: #e4e6eb;
+  --gv-slate-300: #b8c5d0;
+  --gv-slate-400: #8d9eac;
+  --gv-slate-500: #84939e;
+  --gv-slate-600: #596b7a;
+  --gv-slate-650: #5a686f;
+  --gv-slate-700: #44565f;
+  --gv-slate-750: #43515d;
+  --gv-slate-800: #414f56;
+  --gv-navy-650: #044d6c;
+  --gv-navy-700: #04496c;
+  --gv-navy-900: #003349;
+  --gv-teal-50: #edf8fa;
+  --gv-teal-400: #01a1b1;
+  --gv-teal-500: #147985;
+  --gv-teal-700: #0a5159;
+  --gv-green-600: #096f03;
+  --gv-green-900: #024d2b;
+  --gv-red-500: #e52516;
+  --gv-amber-600: #b8860b;
+  --gv-amber-50: #fef8e1;
+  --gv-alpha-black-70: rgba(0, 0, 0, 0.7);
+  --gv-alpha-backdrop: rgba(15, 20, 35, 0.45);
+  --gv-alpha-green-12: rgba(8, 131, 58, 0.12);
+  --gv-alpha-amber-30: rgba(212, 146, 16, 0.3);
+  --gv-alpha-red-12: rgba(229, 37, 22, 0.12);
+  --gv-alpha-red-6: rgba(214, 22, 7, 0.06);
+  --gv-alpha-navy-10: rgba(4, 77, 108, 0.1);
+  --gv-alpha-blue-10: rgba(65, 131, 196, 0.1);
+  --gv-slate-250: #cbd5e1;
+  --gv-slate-25: #f7f9fa;
+  --gv-slate-225: #d3dbde;
+  --gv-slate-125: #ebedef;
+  --gv-green-500: #04884c;
+  --gv-green-400: #4a9e6a;
+  --gv-red-450: #d6473a;
+  --gv-red-600: #d61607;
+  --gv-teal-75: #e5f5f7;
+  --gv-blue-300: #6aa3d6;
+  --gv-blue-400: #4a86c4;
+  --gv-blue-500: #3a6ea3;
+  --gv-blue-600: #2f5a86;
+  --gv-blue-700: #274a6e;
+  --gv-blue-25: #f7fafd;
+  --gv-blue-150: #c3dcf6;
+  --gv-blue-900: #1c477b;
+  --gv-blue-450: #4183c4;
+  --gv-blue-50: #e5f1f7;
+  --gv-blue-100: #cbdee4;
+  --gv-olive-500: #a2a24a;
+  --gv-orange-400: #e08a4e;
+  --gv-orange-500: #cc7a55;
+  --gv-brand-950: #0f1423;
+  --gv-red-800: #9b1005;
+  --gv-amber-500: #d49210;
+  --gv-brown-500: #8c680d;
+  --gv-navy-600: #00577c;
+  --gv-green-550: #08833a;
+  --gv-red-100: #fde9e8;
+  --gv-neutral-400: #cbcbcb;
+  --gv-alpha-black-35: rgba(0, 0, 0, 0.35);
+  --gv-green-300: #62c462;
+  --gv-slate-40: #f4f6f8;
+  --gv-blue-10: #e6eef1;
+  --gv-navy-950: #00202e;
+  --gv-red-900: #740c04;
+  --gv-slate-850: #2c373d;
+
+  /* surface */
+  --gv-surface-app: var(--gv-slate-100);
+  --gv-surface-panel: var(--gv-neutral-0);
+  --gv-surface-tertiary: var(--gv-slate-50);
+  --gv-surface-secondary: var(--gv-neutral-25);
+  --gv-surface-hovered: var(--gv-slate-50);
+  --gv-surface-pressed: var(--gv-slate-100);
+  --gv-surface-info: var(--gv-teal-50);
+  --gv-surface-backdrop: var(--gv-alpha-backdrop);
+  --gv-surface-neutral: var(--gv-slate-100);
+  --gv-surface-accent-strong: var(--gv-teal-500);
+  --gv-surface-success: var(--gv-alpha-green-12);
+  --gv-surface-brand-strong: var(--gv-navy-700);
+  --gv-surface-brand-strong-hovered: var(--gv-navy-900);
+  --gv-surface-selected-strong: var(--gv-navy-650);
+  --gv-surface-inverse: var(--gv-neutral-900);
+  --gv-surface-neutral-strong: var(--gv-neutral-200);
+  --gv-surface-danger-strong: var(--gv-red-500);
+  --gv-surface-chip-neutral: var(--gv-slate-25);
+  --gv-surface-chip-selected: var(--gv-blue-25);
+  --gv-surface-tooltip: var(--gv-neutral-800);
+  --gv-surface-danger-hovered: var(--gv-alpha-red-6);
+  --gv-surface-filter-chip: var(--gv-blue-50);
+  --gv-surface-filter-chip-hovered: var(--gv-blue-100);
+  --gv-surface-neutral-hovered: var(--gv-slate-125);
+  --gv-surface-checked: var(--gv-blue-450);
+  --gv-surface-row-selected: var(--gv-alpha-blue-10);
+  --gv-surface-warning: var(--gv-amber-50);
+  --gv-surface-danger: var(--gv-alpha-red-12);
+  --gv-surface-selected: var(--gv-alpha-navy-10);
+  --gv-surface-disabled: var(--gv-neutral-25);
+  --gv-surface-danger-strong-hovered: var(--gv-red-800);
+  --gv-surface-progress: var(--gv-green-550);
+  --gv-surface-track: var(--gv-slate-125);
+  --gv-surface-danger-subtle: var(--gv-red-100);
+  --gv-surface-tab-selected: var(--gv-slate-200);
+  --gv-surface-step-done: var(--gv-green-500);
+  --gv-surface-control-subtle: var(--gv-slate-40);
+  --gv-surface-search-match: var(--gv-teal-75);
+  --gv-surface-filter-on: var(--gv-teal-75);
+  --gv-surface-row-new: var(--gv-blue-10);
+  --gv-surface-switch-on-panel: var(--gv-slate-750);
+  --gv-surface-brand-strong-pressed: var(--gv-navy-950);
+  --gv-surface-danger-strong-pressed: var(--gv-red-900);
+  --gv-surface-switch-off-pressed: var(--gv-slate-300);
+  --gv-surface-inverse-pressed: var(--gv-neutral-1000);
+  --gv-surface-switch-on-panel-pressed: var(--gv-slate-850);
+
+  /* side-nav */
+  --gv-side-nav-surface: var(--gv-navy-900);
+  --gv-side-nav-surface-current: var(--gv-alpha-black-70);
+  --gv-side-nav-surface-hovered: var(--gv-alpha-black-35);
+  --gv-side-nav-icon: var(--gv-slate-300);
+  --gv-side-nav-icon-current: var(--gv-teal-400);
+
+  /* text */
+  --gv-text-primary: var(--gv-neutral-900);
+  --gv-text-body: var(--gv-neutral-800);
+  --gv-text-secondary: var(--gv-slate-600);
+  --gv-text-tertiary: var(--gv-slate-500);
+  --gv-text-disabled: var(--gv-slate-400);
+  --gv-text-neutral: var(--gv-slate-700);
+  --gv-text-success-strong: var(--gv-green-900);
+  --gv-text-success: var(--gv-green-600);
+  --gv-text-inverse: var(--gv-neutral-0);
+  --gv-text-placeholder: var(--gv-slate-500);
+  --gv-text-link: var(--gv-navy-650);
+  --gv-text-chip-selected: var(--gv-blue-900);
+  --gv-text-danger: var(--gv-red-600);
+  --gv-text-filter-chip: var(--gv-teal-700);
+  --gv-text-toolbar: var(--gv-slate-750);
+  --gv-text-warning: var(--gv-amber-600);
+  --gv-text-info: var(--gv-teal-700);
+  --gv-text-link-hovered: var(--gv-navy-900);
+  --gv-text-link-pressed: var(--gv-navy-700);
+  --gv-text-cell: var(--gv-slate-750);
+
+  /* border */
+  --gv-border-control: var(--gv-neutral-200);
+  --gv-border-control-hovered: var(--gv-slate-400);
+  --gv-border-default: var(--gv-slate-200);
+  --gv-border-subtle: var(--gv-slate-100);
+  --gv-border-row: var(--gv-slate-50);
+  --gv-border-selected: var(--gv-navy-650);
+  --gv-border-focused: var(--gv-navy-650);
+  --gv-border-inverse: var(--gv-neutral-0);
+  --gv-border-strong: var(--gv-slate-250);
+  --gv-border-chip-neutral: var(--gv-slate-225);
+  --gv-border-chip-selected: var(--gv-blue-150);
+  --gv-border-danger: var(--gv-red-600);
+  --gv-border-control-active: var(--gv-slate-500);
+  --gv-border-checked: var(--gv-blue-450);
+  --gv-border-warning: var(--gv-alpha-amber-30);
+  --gv-border-accent: var(--gv-teal-500);
+  --gv-border-disabled: var(--gv-slate-100);
+  --gv-border-divider: var(--gv-slate-125);
+  --gv-border-resize: var(--gv-navy-600);
+  --gv-border-placeholder: var(--gv-neutral-400);
+  --gv-border-step-done: var(--gv-green-300);
+
+  /* icon */
+  --gv-icon-tertiary: var(--gv-slate-500);
+  --gv-icon-secondary: var(--gv-slate-600);
+  --gv-icon-quiet: var(--gv-slate-400);
+  --gv-icon-primary: var(--gv-neutral-900);
+  --gv-icon-neutral: var(--gv-slate-700);
+  --gv-icon-info: var(--gv-teal-700);
+  --gv-icon-warning: var(--gv-amber-600);
+  --gv-icon-success: var(--gv-green-600);
+  --gv-icon-inverse: var(--gv-neutral-0);
+  --gv-icon-chip-selected: var(--gv-blue-900);
+  --gv-icon-accent: var(--gv-teal-500);
+  --gv-icon-disabled: var(--gv-slate-400);
+  --gv-icon-selected: var(--gv-navy-650);
+
+  /* chart */
+  --gv-chart-agree: var(--gv-green-500);
+  --gv-chart-disagree: var(--gv-red-450);
+  --gv-chart-pass: var(--gv-slate-300);
+  --gv-chart-bar: var(--gv-navy-650);
+  --gv-chart-line-primary: var(--gv-navy-650);
+  --gv-chart-line-secondary: var(--gv-orange-400);
+  --gv-chart-grid: var(--gv-slate-100);
+  --gv-chart-axis: var(--gv-slate-500);
+  --gv-chart-blue-1: var(--gv-blue-300);
+  --gv-chart-blue-2: var(--gv-blue-400);
+  --gv-chart-blue-3: var(--gv-blue-500);
+  --gv-chart-blue-4: var(--gv-blue-600);
+  --gv-chart-blue-5: var(--gv-blue-700);
+  --gv-chart-green: var(--gv-green-400);
+  --gv-chart-olive: var(--gv-olive-500);
+  --gv-chart-terracotta: var(--gv-orange-500);
+
+  /* Spacing */
+  --gv-space-0: 0px;
+  --gv-space-2: 2px;
+  --gv-space-4: 4px;
+  --gv-space-6: 6px;
+  --gv-space-8: 8px;
+  --gv-space-10: 10px;
+  --gv-space-12: 12px;
+  --gv-space-14: 14px;
+  --gv-space-16: 16px;
+  --gv-space-18: 18px;
+  --gv-space-20: 20px;
+  --gv-space-24: 24px;
+  --gv-space-28: 28px;
+  --gv-space-32: 32px;
+  --gv-space-40: 40px;
+  --gv-space-48: 48px;
+  --gv-space-56: 56px;
+  --gv-space-104: 104px;
+
+  /* Radius */
+  --gv-radius-2: 2px;
+  --gv-radius-4: 4px;
+  --gv-radius-6: 6px;
+  --gv-radius-8: 8px;
+  --gv-radius-10: 10px;
+  --gv-radius-12: 12px;
+  --gv-radius-14: 14px;
+  --gv-radius-22: 22px;
+  --gv-radius-full: 999px;
+
+  /* Size */
+  --gv-size-control-24: 24px;
+  --gv-size-control-28: 28px;
+  --gv-size-control-32: 32px;
+  --gv-size-control-36: 36px;
+  --gv-size-icon-14: 14px;
+  --gv-size-16: 16px;
+  --gv-size-20: 20px;
+  --gv-size-24: 24px;
+  --gv-size-26: 26px;
+  --gv-size-28: 28px;
+  --gv-size-32: 32px;
+  --gv-size-36: 36px;
+  --gv-size-40: 40px;
+  --gv-size-48: 48px;
+
+  /* Border width */
+  --gv-border-width-1: 1px;
+  --gv-border-width-2: 2px;
+  --gv-border-width-focus: 2px;
+  --gv-focus-ring-offset: 2px;
+
+  /* Opacity */
+  --gv-opacity-disabled: 0.45;
+
+  /* Typography */
+  --gv-font-family: 'Public Sans', 'Helvetica Neue', Helvetica, Arial,
+    sans-serif;
+  --gv-font-weight-regular: 400;
+  --gv-font-weight-medium: 500;
+  --gv-font-size-12: 12px;
+  --gv-font-size-13: 13px;
+  --gv-font-size-14: 14px;
+  --gv-font-size-16: 16px;
+  --gv-font-size-20: 20px;
+  --gv-font-size-28: 28px;
+  --gv-font-line-height-16: 16px;
+  --gv-font-line-height-20: 20px;
+  --gv-font-line-height-24: 24px;
+  --gv-font-line-height-28: 28px;
+  --gv-font-line-height-32: 32px;
+  --gv-font-letter-spacing-0: 0;
+
+  /* Shadow: menus, submenus and listbox popovers only */
+  --gv-shadow-dropdown: 0 1px 2px rgba(15, 15, 15, 0.04),
+    0 6px 16px -2px rgba(15, 15, 15, 0.08);
+
+  /* Motion */
+  --gv-motion-duration-instant: 80ms;
+  --gv-motion-duration-fast: 120ms;
+  --gv-motion-duration-medium: 200ms;
+  --gv-motion-duration-slow: 300ms;
+  --gv-motion-duration-panel: 360ms;
+  --gv-motion-duration-loop: 1600ms;
+  --gv-motion-offset-near: 4px;
+  --gv-motion-offset-mid: 8px;
+  --gv-motion-offset-far: 12px;
+  --gv-motion-scale-in: 0.98;
+  --gv-motion-stagger: 24ms;
+  --gv-motion-easing-standard: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --gv-motion-easing-enter: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --gv-motion-easing-exit: cubic-bezier(0.42, 0, 1, 1);
+  --gv-motion-easing-move: cubic-bezier(0.65, 0, 0.35, 1);
+  --gv-motion-easing-silk: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --gv-motion-offset-near: 0px;
+    --gv-motion-offset-mid: 0px;
+    --gv-motion-offset-far: 0px;
+    --gv-motion-scale-in: 1;
+    --gv-motion-duration-medium: 0ms;
+    --gv-motion-duration-slow: 0ms;
+    --gv-motion-duration-panel: 0ms;
+  }
+}
+
+/*
+ * The app's global stylesheet draws its own ring (black outline + white shadow) on every
+ * focused element, through :focus-visible and the polyfill's .focus-visible class.
+ * React Aria elements opt out: their focus look comes from the component itself
+ * (focus.module.css rings, or a field's border), and focus is never a shadow.
+ */
+[data-rac]:focus-visible,
+[data-rac].focus-visible {
+  outline: none;
+  box-shadow: none;
+}

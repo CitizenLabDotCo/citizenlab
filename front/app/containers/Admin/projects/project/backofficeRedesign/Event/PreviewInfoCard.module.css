@@ -1,0 +1,82 @@
+/* Copies the citizen event page: its sizes and font, with token colours. */
+.card {
+  padding: var(--gv-space-20);
+  /* The citizen card radius is 3 px; 4 is the nearest token. */
+  border-radius: var(--gv-radius-4);
+  background: var(--gv-surface-app);
+}
+
+.inner {
+  padding: var(--gv-space-8);
+  background: var(--gv-surface-panel);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-16);
+  padding: var(--gv-space-12) var(--gv-space-20);
+}
+
+.dates {
+  display: flex;
+  justify-content: center;
+}
+
+.arrow {
+  margin: auto var(--gv-space-16);
+}
+
+.arrowText {
+  margin: 0;
+  font-size: 25px;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--gv-text-body);
+}
+
+/* A picture of the register button: the preview is not interactive. */
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gv-space-8);
+  margin-top: var(--gv-space-12);
+  padding: 9px var(--gv-space-18);
+  border-radius: var(--gv-radius-4);
+  font-size: var(--gv-font-size-16);
+  line-height: var(--gv-font-line-height-24);
+  color: var(--gv-text-inverse);
+  pointer-events: none;
+}
+
+.infoText {
+  margin: var(--gv-space-4) 0;
+  font-size: var(--gv-font-size-14);
+  line-height: 1.5;
+  color: var(--gv-text-secondary);
+}
+
+.infoTextEmpty {
+  composes: infoText;
+  color: var(--gv-text-placeholder);
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+.calendarLink {
+  margin: 0;
+  font-size: var(--gv-font-size-14);
+  line-height: 1.5;
+}
+
+.divider {
+  border-bottom: var(--gv-border-width-1) solid var(--gv-border-control);
+}
+
+.section {
+  padding-bottom: var(--gv-space-16);
+  border-bottom: var(--gv-border-width-1) solid var(--gv-border-control);
+}

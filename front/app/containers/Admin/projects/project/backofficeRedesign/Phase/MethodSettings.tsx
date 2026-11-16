@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import 'design-system/tokens.css';
 import { CLErrors } from 'typings';
 
 import {
@@ -28,7 +28,7 @@ import { isCLErrorsWrapper } from 'utils/errorUtils';
 
 import EditAccessButton from './EditAccessButton';
 import messages from './messages';
-import PanelSettings from './PanelSettings';
+import styles from './MethodSettings.module.css';
 import ParticipantActionsGroup from './ParticipantActionsGroup';
 import PhaseNotifications from './PhaseNotifications';
 
@@ -112,12 +112,12 @@ const MethodSettings = ({ phase }: Props) => {
   });
 
   return (
-    <PanelSettings p="0 18px 24px">
+    <div className={styles.panel}>
       {accessOnlyActions ? (
         <>
-          <Box mb="10px">
+          <div className={styles.heading}>
             <PanelHeading label={formatMessage(configMessages.settingsGroup)} />
-          </Box>
+          </div>
           <ParticipantActionsGroup
             phaseId={phase.id}
             actions={accessOnlyActions}
@@ -153,7 +153,7 @@ const MethodSettings = ({ phase }: Props) => {
           <ModerationAssignee phaseId={phase.id} />
         </PanelGroup>
       )}
-    </PanelSettings>
+    </div>
   );
 };
 

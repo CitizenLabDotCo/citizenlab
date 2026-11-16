@@ -1,0 +1,32 @@
+.tooltip {
+  composes: small from '../typography.module.css';
+  box-sizing: border-box;
+  max-width: 320px;
+  padding: var(--gv-space-4) var(--gv-space-8);
+  border-radius: var(--gv-radius-4);
+  background: var(--gv-surface-tooltip);
+  color: var(--gv-text-inverse);
+  overflow-wrap: break-word;
+}
+
+.tooltip[data-entering] {
+  animation: fade-in var(--gv-motion-duration-fast)
+    var(--gv-motion-easing-standard);
+}
+
+.tooltip[data-exiting] {
+  animation: fade-out var(--gv-motion-duration-instant)
+    var(--gv-motion-easing-exit);
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
+}

@@ -1,15 +1,15 @@
 import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
-
 import { IUserData } from 'api/users/types';
 
-import Avatar from 'components/Avatar';
+import Avatar from 'design-system/Avatar';
+import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 import { isAdmin } from 'utils/permissions/roles';
 
 import messages from './messages';
+import styles from './ShareDropdown.module.css';
 
 const getRoleMessage = (user: IUserData, isInvitePending: boolean) => {
   if (isInvitePending) return messages.shareRolePending;
@@ -26,27 +26,38 @@ interface Props {
 
 const AccessPeopleRow = ({ user, isAuthUser }: Props) => {
   const { formatMessage } = useIntl();
-  const { first_name, last_name, email, invite_status } = user.attributes;
+  const { first_name, last_name, email, invite_status, avatar } =
+    user.attributes;
   const isInvitePending = invite_status === 'pending';
   const name = [first_name, last_name].filter(Boolean).join(' ');
+  const shownName = isInvitePending ? email : name;
+  const avatarSrc = avatar?.small;
 
   const roleMessage = getRoleMessage(user, isInvitePending);
 
   return (
-    <Box display="flex" alignItems="center" gap="12px" py="8px">
-      <Avatar userId={user.id} size={36} />
-      <Box flex="1 1 auto" minWidth="0">
-        <Text variant="boLabel">
-          {isInvitePending ? email : name}
-          {isAuthUser && (
-            <Text variant="boHelper" as="span" ml="4px">
-              {formatMessage(messages.shareYou)}
-            </Text>
-          )}
-        </Text>
-      </Box>
-      <Text variant="boHelper">{formatMessage(roleMessage)}</Text>
-    </Box>
+    <div className={styles.personRow}>
+      {avatarSrc ? (
+        // The name sits right next to the photo, so the photo needs no alt.
+        <Avatar content="image" src={avatarSrc} alt="" />
+      ) : (
+        <Avatar
+          initials={name
+            .split(' ')
+            .slice(0, 2)
+            .map((part) => part.charAt(0))
+            .join('')
+            .toUpperCase()}
+        />
+      )}
+      <p className={styles.personName}>
+        {shownName}
+        {isAuthUser && (
+          <span className={styles.you}>{formatMessage(messages.shareYou)}</span>
+        )}
+      </p>
+      <span className={styles.role}>{formatMessage(roleMessage)}</span>
+    </div>
   );
 };
 

@@ -1,0 +1,42 @@
+/* Starts 60 from the row edge, under the subtag names. Off the scale, as drawn. */
+.item {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  height: var(--gv-size-32);
+  padding-left: 60px;
+  outline: none;
+  cursor: pointer;
+}
+
+.button {
+  composes: ui from '../typography.module.css';
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gv-space-8);
+  border-radius: var(--gv-radius-4);
+  color: var(--gv-text-secondary);
+  transition-property: color;
+  transition-duration: var(--gv-motion-duration-fast);
+  transition-timing-function: var(--gv-motion-easing-standard);
+}
+
+.icon {
+  flex-shrink: 0;
+  color: var(--gv-icon-secondary);
+}
+
+.item[data-hovered] .button,
+.item[data-focus-visible] .button {
+  color: var(--gv-text-primary);
+}
+
+.item[data-hovered] .icon,
+.item[data-focus-visible] .icon {
+  color: var(--gv-icon-primary);
+}
+
+/* Figma strokes the button itself, 2 px outside with no gap. */
+.item[data-focus-visible] .button {
+  outline: var(--gv-border-width-focus) solid var(--gv-border-focused);
+}

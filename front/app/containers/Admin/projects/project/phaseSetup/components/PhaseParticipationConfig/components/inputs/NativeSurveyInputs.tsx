@@ -12,17 +12,25 @@ import PhaseActionAccessRow from 'containers/Admin/projects/_shared/components/P
 import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';
 import PanelHeading from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelHeading';
 
+import MultilocTextField from 'components/admin/MultilocFields/MultilocTextField';
+import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import SettingToggleRow from 'components/admin/SettingToggleRow';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
+import Banner from 'design-system/Banner';
+import Button from 'design-system/Button';
+import 'design-system/tokens.css';
+
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import projectMessages from '../../../../../messages';
 import parentMessages from '../../../../messages';
 import configMessages from '../../messages';
+
+import styles from './NativeSurveyInputs.module.css';
 
 interface Props {
   apiErrors: CLErrors | null;
@@ -50,6 +58,7 @@ const NativeSurveyInputs = ({
 }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
+  const getApiErrorMessage = useApiErrorText();
   const { data: project } = useProjectById(
     phase?.data.relationships.project.data.id
   );
@@ -57,22 +66,32 @@ const NativeSurveyInputs = ({
   const toggleAllowMultipleResponses = () =>
     handleAllowMultipleResponsesChange(!formData.allow_multiple_responses);
 
-  const openSurveyPreview = (event: React.MouseEvent) => {
+  const openSurveyPreview = () => {
     if (phase) {
       window.open(
         `/projects/${project?.data.attributes.slug}/surveys/new?phase_id=${phase.data.id}`,
         '_blank'
       );
     }
-    event.preventDefault();
   };
 
   if (layout === 'panel') {
+    const submissionError = getApiErrorMessage(apiErrors?.submission_enabled);
+    const multipleResponsesError = getApiErrorMessage(
+      apiErrors?.allow_multiple_responses
+    );
+    const titleError = getApiErrorMessage(
+      apiErrors?.native_survey_title_multiloc
+    );
+    const ctaError = getApiErrorMessage(
+      apiErrors?.native_survey_button_multiloc
+    );
+
     return (
       <>
-        <Box mb="10px">
+        <div className={styles.heading}>
           <PanelHeading label={formatMessage(configMessages.settingsGroup)} />
-        </Box>
+        </div>
         <PanelGroup
           label={formatMessage(configMessages.participantActionsGroup)}
           defaultOpen
@@ -85,7 +104,7 @@ const NativeSurveyInputs = ({
             checked={!!formData.submission_enabled}
             onChange={toggleSubmissionEnabled}
           />
-          <Error apiErrors={apiErrors && apiErrors.submission_enabled} />
+          {submissionError && <Banner tone="error">{submissionError}</Banner>}
           <SettingToggleRow
             title={formatMessage(parentMessages.allowMultipleResponsesLabel)}
             description={formatMessage(
@@ -94,7 +113,9 @@ const NativeSurveyInputs = ({
             checked={!!formData.allow_multiple_responses}
             onChange={toggleAllowMultipleResponses}
           />
-          <Error apiErrors={apiErrors && apiErrors.allow_multiple_responses} />
+          {multipleResponsesError && (
+            <Banner tone="error">{multipleResponsesError}</Banner>
+          )}
           {phase && (
             <PhaseActionAccessRow
               phaseId={phase.data.id}
@@ -115,47 +136,32 @@ const NativeSurveyInputs = ({
           label={formatMessage(parentMessages.surveyTitleAndButtonGroup)}
           defaultOpen
         >
-          <Box display="flex" flexDirection="column" gap="16px">
-            <Box>
-              <InputMultilocWithLocaleSwitcher
-                id="native-survey-title"
-                type="text"
-                variant="bo"
-                label={formatMessage(parentMessages.surveyTitleLabel)}
-                valueMultiloc={formData.native_survey_title_multiloc}
-                onChange={handleSurveyTitleChange}
-              />
-              <Error
-                apiErrors={apiErrors && apiErrors.native_survey_title_multiloc}
-              />
-            </Box>
-            <Box>
-              <InputMultilocWithLocaleSwitcher
-                id="native-survey-button"
-                type="text"
-                variant="bo"
-                label={formatMessage(parentMessages.surveyCTALabel)}
-                valueMultiloc={formData.native_survey_button_multiloc}
-                onChange={handleSurveyCTAChange}
-              />
-              <Error
-                apiErrors={apiErrors && apiErrors.native_survey_button_multiloc}
-              />
-            </Box>
-            <Box display="flex" flexDirection="column" gap="4px">
-              <Text variant="boMicro" m="0">
+          <div className={styles.fields}>
+            <MultilocTextField
+              id="native-survey-title"
+              label={formatMessage(parentMessages.surveyTitleLabel)}
+              size={32}
+              valueMultiloc={formData.native_survey_title_multiloc}
+              onChange={handleSurveyTitleChange}
+              errorMessage={titleError}
+            />
+            <MultilocTextField
+              id="native-survey-button"
+              label={formatMessage(parentMessages.surveyCTALabel)}
+              size={32}
+              valueMultiloc={formData.native_survey_button_multiloc}
+              onChange={handleSurveyCTAChange}
+              errorMessage={ctaError}
+            />
+            <div className={styles.preview}>
+              <span className={styles.previewLabel}>
                 {formatMessage(parentMessages.previewSurveyCTALabel)}
-              </Text>
-              <ButtonWithLink
-                buttonStyle="bo-secondary"
-                boSize="medium"
-                width="fit-content"
-                onClick={openSurveyPreview}
-              >
+              </span>
+              <Button variant="secondary" size={32} onPress={openSurveyPreview}>
                 {localize(formData.native_survey_button_multiloc)}
-              </ButtonWithLink>
-            </Box>
-          </Box>
+              </Button>
+            </div>
+          </div>
         </PanelGroup>
       </>
     );
@@ -216,7 +222,13 @@ const NativeSurveyInputs = ({
         <SubSectionTitle>
           <FormattedMessage {...parentMessages.previewSurveyCTALabel} />
         </SubSectionTitle>
-        <ButtonWithLink width="fit-content" onClick={openSurveyPreview}>
+        <ButtonWithLink
+          width="fit-content"
+          onClick={(event: React.MouseEvent) => {
+            openSurveyPreview();
+            event.preventDefault();
+          }}
+        >
           {localize(formData.native_survey_button_multiloc)}
         </ButtonWithLink>
       </SectionField>

@@ -1,6 +1,5 @@
 import React, { FormEvent, useState } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
 import { CLErrors, Multiloc } from 'typings';
 
 import { Visibility } from 'api/projects/types';
@@ -9,21 +8,26 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 import generalMessages from 'containers/Admin/projects/project/general/messages';
 
-import Error from 'components/UI/Error';
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+import MultilocTitleField from 'components/admin/MultilocFields/MultilocTitleField';
+import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
+
+import Banner from 'design-system/Banner';
+import RadioGroup from 'design-system/RadioGroup';
+import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 import validateTitle from 'utils/validateTitle';
 
 import { FIND_OPTIONS, Listed, OPEN_OPTIONS } from '../../visibilityOptions';
 import visibilityMessages from '../../visibilityOptions/messages';
+import ChoiceRadio from '../ChoiceRadio';
 import ProjectContextPickers from '../ProjectContextPickers';
 import { SpaceAndFolderId } from '../ProjectSetupForm/ProjectContextSection/types';
 
-import ChoiceRadio from './ChoiceRadio';
 import FormSection from './FormSection';
 import GroupsPicker from './GroupsPicker';
 import messages from './messages';
+import styles from './NewProjectForm.module.css';
 
 export interface NewProjectValues extends SpaceAndFolderId {
   title_multiloc: Multiloc;
@@ -42,6 +46,7 @@ interface Props {
 const NewProjectForm = ({ id, failed, apiErrors, onSubmit }: Props) => {
   const { formatMessage } = useIntl();
   const locales = useAppConfigurationLocales();
+  const apiErrorText = useApiErrorText();
 
   const [titleMultiloc, setTitleMultiloc] = useState<Multiloc>({});
   const [titleError, setTitleError] = useState<Multiloc | null>(null);
@@ -65,6 +70,21 @@ const NewProjectForm = ({ id, failed, apiErrors, onSubmit }: Props) => {
     setGroupIds(groupIds);
     setGroupsError(false);
   };
+
+  const handleListedChange = (value: string) => {
+    const option = FIND_OPTIONS.find((option) => option.value === value);
+    if (option) setListed(option.value);
+  };
+
+  const handleVisibleToChange = (value: string) => {
+    const option = OPEN_OPTIONS.find((option) => option.value === value);
+    if (option) setVisibleTo(option.value);
+  };
+
+  const titleApiErrorText = apiErrorText(
+    apiErrors.title_multiloc,
+    'title_multiloc'
+  );
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
@@ -95,32 +115,22 @@ const NewProjectForm = ({ id, failed, apiErrors, onSubmit }: Props) => {
   };
 
   return (
-    <Box
-      as="form"
+    <form
       id={id}
       onSubmit={handleSubmit}
-      display="flex"
-      flexDirection="column"
-      gap="24px"
-      className="intercom-projects-new-project-name"
+      className={`intercom-projects-new-project-name ${styles.form}`}
     >
-      <Box>
-        <InputMultilocWithLocaleSwitcher
+      <div className={styles.titleField}>
+        <MultilocTitleField
           id="e2e-project-title-setting-field"
-          type="text"
-          variant="bo"
           valueMultiloc={titleMultiloc}
           onChange={handleTitleChange}
           placeholder={formatMessage(messages.titlePlaceholder)}
-          ariaLabel={formatMessage(generalMessages.projectName)}
+          aria-label={formatMessage(generalMessages.projectName)}
           errorMultiloc={titleError}
-          autoFocus
         />
-        <Error
-          fieldName="title_multiloc"
-          apiErrors={apiErrors.title_multiloc}
-        />
-      </Box>
+        {titleApiErrorText && <Banner tone="error">{titleApiErrorText}</Banner>}
+      </div>
 
       <FormSection label={formatMessage(messages.context)}>
         <ProjectContextPickers
@@ -131,28 +141,38 @@ const NewProjectForm = ({ id, failed, apiErrors, onSubmit }: Props) => {
         />
       </FormSection>
 
-      <FormSection label={formatMessage(visibilityMessages.publishWhoCanFind)}>
+      <RadioGroup
+        label={formatMessage(visibilityMessages.publishWhoCanFind)}
+        name="new-project-find"
+        value={listed}
+        onChange={handleListedChange}
+      >
         {FIND_OPTIONS.map((option) => (
-          <ChoiceRadio<Listed>
+          <ChoiceRadio
             key={option.value}
-            name="new-project-find"
-            option={option}
-            currentValue={listed}
-            onChange={setListed}
+            value={option.value}
+            title={formatMessage(option.label)}
+            description={formatMessage(option.description)}
           />
         ))}
-      </FormSection>
+      </RadioGroup>
 
-      <FormSection label={formatMessage(visibilityMessages.publishWhoCanSee)}>
-        {OPEN_OPTIONS.map((option) => (
-          <ChoiceRadio<Visibility>
-            key={option.value}
-            name="new-project-open"
-            option={option}
-            currentValue={visibleTo}
-            onChange={setVisibleTo}
-          />
-        ))}
+      <div className={styles.section}>
+        <RadioGroup
+          label={formatMessage(visibilityMessages.publishWhoCanSee)}
+          name="new-project-open"
+          value={visibleTo}
+          onChange={handleVisibleToChange}
+        >
+          {OPEN_OPTIONS.map((option) => (
+            <ChoiceRadio
+              key={option.value}
+              value={option.value}
+              title={formatMessage(option.label)}
+              description={formatMessage(option.description)}
+            />
+          ))}
+        </RadioGroup>
         {visibleTo === 'groups' && (
           <GroupsPicker
             groupIds={groupIds}
@@ -160,10 +180,12 @@ const NewProjectForm = ({ id, failed, apiErrors, onSubmit }: Props) => {
             onChange={handleGroupsChange}
           />
         )}
-      </FormSection>
+      </div>
 
-      {failed && <Error text={formatMessage(messages.createError)} />}
-    </Box>
+      {failed && (
+        <Banner tone="error">{formatMessage(messages.createError)}</Banner>
+      )}
+    </form>
   );
 };
 

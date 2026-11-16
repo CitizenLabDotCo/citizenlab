@@ -1,11 +1,12 @@
 import React from 'react';
 
-import { Select } from '@citizenlab/cl2-component-library';
-
 import { surveyServices, TSurveyService } from 'api/phases/types';
 
 import projectMessages from 'containers/Admin/projects/project/messages';
 import useSurveyProviders from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/useSurveyProviders';
+
+import { ListBoxOption } from 'design-system/ListBox';
+import Select from 'design-system/Select';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
@@ -29,24 +30,31 @@ export const useEnabledSurveyServices = () => {
 
 interface Props {
   value: TSurveyService | null | undefined;
+  errorMessage?: string;
   onChange: (service: TSurveyService) => void;
 }
 
-const SurveyServiceSelect = ({ value, onChange }: Props) => {
+const SurveyServiceSelect = ({ value, errorMessage, onChange }: Props) => {
   const { formatMessage } = useIntl();
   const services = useEnabledSurveyServices();
 
   return (
     <Select
-      variant="bo"
       label={formatMessage(projectMessages.surveyService)}
-      value={value}
-      options={services.map((service) => ({
-        value: service,
-        label: formatMessage(SURVEY_SERVICE_LABELS[service]),
-      }))}
-      onChange={(option) => onChange(option.value)}
-    />
+      value={value ?? null}
+      isInvalid={!!errorMessage}
+      errorMessage={errorMessage}
+      onChange={(key) => {
+        const service = services.find((service) => service === key);
+        if (service) onChange(service);
+      }}
+    >
+      {services.map((service) => (
+        <ListBoxOption key={service} id={service}>
+          {formatMessage(SURVEY_SERVICE_LABELS[service])}
+        </ListBoxOption>
+      ))}
+    </Select>
   );
 };
 

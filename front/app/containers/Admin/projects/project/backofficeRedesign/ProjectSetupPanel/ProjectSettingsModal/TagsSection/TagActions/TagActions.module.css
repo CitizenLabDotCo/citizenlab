@@ -1,0 +1,6 @@
+.actions {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--gv-space-6);
+}
