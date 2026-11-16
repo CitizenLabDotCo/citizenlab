@@ -12,11 +12,25 @@ module AuthToken
     # TODO: Remove once all such cookies have expired (max. token lifetime after release).
     LEGACY_NAME = 'cl2_jwt'
 
+    # Values of the Sec-Fetch-Site request header for which we trust the cookie. The browser
+    # sets this header and pages can't change it. `same-origin`: the request comes from our
+    # own page. `none`: the user typed the address or used a bookmark. No header at all: a
+    # client that isn't a browser, or an old browser.
+    TRUSTED_FETCH_SITES = [nil, 'same-origin', 'none'].freeze
+
     module_function
 
+    # Protection against CSRF. A page on another website, or on another subdomain of ours
+    # (`same-site`, which the cookie's SameSite setting doesn't stop), can make the user's
+    # browser send a request here, and the browser then attaches this cookie automatically.
+    # We ignore the cookie on such requests: they still go through, but as from a visitor
+    # who isn't signed in.
+    #
     # @param request [ActionDispatch::Request, Rack::Request]
     # @return [String, nil]
     def read(request)
+      return unless TRUSTED_FETCH_SITES.include?(request.get_header('HTTP_SEC_FETCH_SITE'))
+
       request.cookies[NAME].presence
     end
 
