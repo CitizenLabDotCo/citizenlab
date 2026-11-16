@@ -540,7 +540,7 @@ it-IT:
       days_ago: '%{numberOfDays} giorni fa'
       event_description: '%{authorName} ha inviato un nuovo contributo sulla tua piattaforma.'
       input_not_visible: <b>Il contributo non sarà visibile</b> finché non modificherai il suo status.
-      preheader: '%{authorName} ha pubblicato un nuovo input sulla tua piattaforma'
+      preheader: '%{authorName} ha pubblicato un nuovo contributo sulla tua piattaforma'
       subject: Un contributo richiede la tua revisione
       title: Un contributo richiede la tua revisione
       today: Oggi
