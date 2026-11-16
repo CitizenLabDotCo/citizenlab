@@ -233,7 +233,7 @@
   "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.filterBySpaces": "Uno di questi spazi",
   "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.filterByTags": "Uno di questi tag",
   "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.filteredProjects": "Progetti filtrati",
-  "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.notAvailable": "Gli elenchi di progetti filtrati non sono disponibili su questa piattaforma, pertanto non vengono mostrati ai residenti.",
+  "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.notAvailable": "Gli elenchi di progetti filtrati non sono disponibili su questa piattaforma, pertanto non vengono mostrati ai cittadini.",
   "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.nothingSelected": "Seleziona almeno un elemento per mostrare qui i progetti.",
   "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.selectionLabel": "Selezione",
   "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.titleLabel": "Titolo",
