@@ -8969,6 +8969,11 @@
     "verified_at": "2026-10-28T13:09:38.242718Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Admin.projects.project.areaFilterAllAreas": {
+    "state": "verified",
+    "verified_at": "2026-11-16T23:14:20.602125Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.areaItem": {
     "state": "verified",
     "verified_at": "2026-10-28T13:09:38.242718Z",
@@ -11438,6 +11443,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.projects.project.participationMethods": {
+    "state": "verified",
+    "verified_at": "2026-11-16T23:14:20.602125Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.EmailModal.required": {
     "state": "verified",
