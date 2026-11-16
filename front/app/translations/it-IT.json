@@ -2279,7 +2279,7 @@
   "app.containers.PhoneChange.helmetTitle": "Cambia il tuo numero di telefono",
   "app.containers.PhoneChange.newPhoneLabel2": "Nuovo numero di telefono",
   "app.containers.PhoneChange.phoneEmptyError": "Inserisci un numero di telefono",
-  "app.containers.PhoneChange.phoneInvalid3": "Fornisci un numero di telefono valido.",
+  "app.containers.PhoneChange.phoneInvalid3": "Inserisci un numero di telefono valido.",
   "app.containers.PhoneChange.phoneTaken": "Questo numero di telefono è già in uso.",
   "app.containers.PhoneChange.phoneUnknownError": "Qualcosa è andato storto. Riprova.",
   "app.containers.PhoneChange.phoneUnsupportedCountry": "Non è possibile inviare SMS a questo Paese.",
