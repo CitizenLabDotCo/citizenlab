@@ -14,6 +14,7 @@ import WarningModal from 'components/WarningModal';
 
 import { useIntl } from 'utils/cl-intl';
 
+import BatchFailureAlert from '../InputManager/BatchBar/BatchFailureAlert';
 import SelectAllButton from '../InputManager/BatchBar/SelectAllButton';
 import useBatchActions from '../InputManager/BatchBar/useBatchActions';
 import managerMessages from '../InputManager/messages';
@@ -25,7 +26,7 @@ interface Props {
   total: number | undefined;
   onEdit: (ideaId: string) => void;
   onClear: () => void;
-  onDeleted: () => void;
+  onDeleted: (ideaIds: string[]) => void;
   onSelectAll: () => void;
   isSelectingAll: boolean;
   selectAllFailed: boolean;
@@ -43,11 +44,11 @@ const StatementBatchBar = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const { deleteAll, isDeleting } = useBatchActions({
+  const { deleteAll, isDeleting, failure } = useBatchActions({
     ideas,
-    onDeleted: () => {
+    onDeleted: (ideaIds) => {
       setDeleteModalOpen(false);
-      onDeleted();
+      onDeleted(ideaIds);
     },
   });
 
@@ -106,13 +107,17 @@ const StatementBatchBar = ({
         onClick={onClear}
       />
 
+      <BatchFailureAlert failure={failure} />
+
       <WarningModal
         open={deleteModalOpen}
         isLoading={isDeleting}
         title={
           isSingle
             ? formatMessage(managerMessages.deleteTermTitle, { term })
-            : formatMessage(managerMessages.deleteTermsTitle, { terms })
+            : formatMessage(managerMessages.deleteTermsTitle2, {
+                termCount: statementCount(ideas.length),
+              })
         }
         explanation={
           isSingle
