@@ -286,7 +286,7 @@
   "app.components.admin.GraphsCards.CommentsByTime.hooks.useCommentsByTime.timeSeries": "Commenti nel tempo",
   "app.components.admin.GraphsCards.PostsByTime.hooks.usePostsByTime.timeSeries": "Messaggi nel tempo",
   "app.components.admin.GraphsCards.ReactionsByTime.hooks.useReactionsByTime.timeSeries": "Reazioni nel tempo",
-  "app.components.admin.InputManager.onePost": "1 post",
+  "app.components.admin.InputManager.onePost": "1 contributo",
   "app.components.admin.PostManager.PostPreview.OfflineVoteSettings.manualPickAdjustment2": "Conteggio voti offline",
   "app.components.admin.PostManager.PostPreview.OfflineVoteSettings.manualVoteAdjustment3": "Numero voti offline",
   "app.components.admin.PostManager.PostPreview.OfflineVoteSettings.manualVoteAdjustmentTooltip": "Questa opzione ti permette di includere i dati di partecipazione provenienti da altre fonti, come le votazioni svolte di persona o quelle cartacee:",
