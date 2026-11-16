@@ -1915,7 +1915,7 @@
   "app.containers.Admin.projects.project.ideas.analysisText2": "Esplora i riepiloghi basati sull'intelligenza artificiale e visualizza i singoli contributi.",
   "app.containers.Admin.projects.project.ideas.importInputs": "Importa",
   "app.containers.Admin.projects.project.ideasAndParticipantData": "Idee e dati dei partecipanti",
-  "app.containers.Admin.projects.project.ideationSetup": "Configurazione ideazione",
+  "app.containers.Admin.projects.project.ideationSetup": "Configurazione dell'ideazione",
   "app.containers.Admin.projects.project.importFromPreviousPhase": "Importa da una fase precedente",
   "app.containers.Admin.projects.project.importPhaseLabel": "Fase",
   "app.containers.Admin.projects.project.importProjectLabel": "Progetto",
