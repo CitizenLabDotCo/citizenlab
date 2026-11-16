@@ -168,6 +168,7 @@ const CreateProjectFromTemplate = memo(
             handleParticipationLevelFilterOnChange
           }
           onUseTemplate={handleUseTemplate}
+          variant={variant}
         />
 
         {namedTemplate && (

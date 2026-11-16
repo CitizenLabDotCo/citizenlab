@@ -3,7 +3,6 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Multiloc, UploadFile } from 'typings';
 
 import useProjectImages, {
-  CARD_IMAGE_ASPECT_RATIO,
   CARD_IMAGE_ASPECT_RATIO_HEIGHT,
   CARD_IMAGE_ASPECT_RATIO_WIDTH,
 } from 'api/project_images/useProjectImages';
@@ -11,13 +10,20 @@ import { IProjectData } from 'api/projects/types';
 
 import ImageCropModal from 'containers/Admin/projects/project/backofficeRedesign/Event/ImageCropModal';
 import ImageFileRow from 'containers/Admin/projects/project/backofficeRedesign/Event/ImageFileRow';
+import {
+  isImageTooLarge,
+  MAX_IMAGE_FILE_SIZE_MB,
+  toUploadFile,
+} from 'containers/Admin/projects/project/backofficeRedesign/Event/imageUpload';
 import eventMessages from 'containers/Admin/projects/project/backofficeRedesign/Event/messages';
 
 import LocaleSwitcher from 'components/admin/MultilocFields/LocaleSwitcher';
 import MultilocTextField from 'components/admin/MultilocFields/MultilocTextField';
 import useSelectedLocale from 'components/admin/MultilocFields/useSelectedLocale';
-import ImagesDropzone from 'components/UI/ImagesDropzone';
+import imagesDropzoneMessages from 'components/UI/ImagesDropzone/messages';
 
+import Banner from 'design-system/Banner';
+import DropZone from 'design-system/DropZone';
 import TextArea from 'design-system/TextArea';
 
 import { useIntl } from 'utils/cl-intl';
@@ -32,6 +38,9 @@ interface Props {
   project: IProjectData;
 }
 
+// The card image types the old dropzone accepted.
+const ACCEPTED_CARD_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/gif'];
+
 const HomepageCardFields = ({ project }: Props) => {
   const projectId = project.id;
   const { formatMessage } = useIntl();
@@ -42,6 +51,7 @@ const HomepageCardFields = ({ project }: Props) => {
   const [savedImage, setSavedImage] = useState<UploadFile | null>(null);
   const [savedAltText, setSavedAltText] = useState<Multiloc | null>(null);
   const [cropOpened, setCropOpened] = useState(false);
+  const [imageTooLarge, setImageTooLarge] = useState(false);
   const {
     locales,
     selectedLocale: descriptionLocale,
@@ -93,6 +103,16 @@ const HomepageCardFields = ({ project }: Props) => {
     }
   };
 
+  const selectImage = async ([file]: File[]) => {
+    if (!file) return;
+
+    const isTooLarge = isImageTooLarge(file);
+    setImageTooLarge(isTooLarge);
+    if (isTooLarge) return;
+
+    pickImage([await toUploadFile(file)]);
+  };
+
   const removeImage = () => {
     if (savedImage) {
       changeImage({ image: null });
@@ -133,17 +153,23 @@ const HomepageCardFields = ({ project }: Props) => {
             />
           </div>
         ) : (
-          <ImagesDropzone
-            images={[]}
-            imagePreviewRatio={1 / CARD_IMAGE_ASPECT_RATIO}
-            acceptedFileTypes={{
-              'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
-            }}
-            onAdd={pickImage}
-            onRemove={removeImage}
-            label={formatMessage(eventMessages.dropImage)}
-            compact
-          />
+          <>
+            <DropZone
+              aria-label={formatMessage(eventMessages.dropImage)}
+              acceptedFileTypes={ACCEPTED_CARD_IMAGE_TYPES}
+              onSelect={selectImage}
+            />
+            {imageTooLarge && (
+              <Banner tone="error">
+                {formatMessage(
+                  imagesDropzoneMessages.errorImageMaxSizeExceeded,
+                  {
+                    maxFileSize: MAX_IMAGE_FILE_SIZE_MB,
+                  }
+                )}
+              </Banner>
+            )}
+          </>
         )}
         <ImageCropModal
           opened={cropOpened && !!pickedImage}
