@@ -15,7 +15,7 @@ import usePhase from 'api/phases/usePhase';
 
 import useLocalize from 'hooks/useLocalize';
 
-import PreviewSkeleton from 'components/admin/PhasePreview/PreviewSkeleton';
+import PreviewSkeleton from 'components/PhasePreview/PreviewSkeleton';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
