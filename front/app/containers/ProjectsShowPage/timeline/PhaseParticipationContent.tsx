@@ -9,9 +9,9 @@ import { IProjectData } from 'api/projects/types';
 import ParticipationPermission from 'containers/ProjectsShowPage/shared/ParticipationPermission';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 
-import DraftIdeasPreview from 'components/admin/PhasePreview/DraftIdeasPreview';
-import PreviewSkeleton from 'components/admin/PhasePreview/PreviewSkeleton';
 import ContentContainer from 'components/ContentContainer';
+import DraftIdeasPreview from 'components/PhasePreview/DraftIdeasPreview';
+import PreviewSkeleton from 'components/PhasePreview/PreviewSkeleton';
 import StatusModule from 'components/StatusModule';
 
 import { getPermissionsDisabledMessage } from 'utils/actionDescriptors';
