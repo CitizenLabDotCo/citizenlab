@@ -296,13 +296,14 @@ describe CommonGround::ResultsService do
     let_it_be(:agreed) { idea_with_reactions(up: 3, neutral: 2) } # 60%
     let_it_be(:divided) { idea_with_reactions(up: 2, down: 2, neutral: 1) } # 40%
     let_it_be(:disagreed) { idea_with_reactions(up: 1, down: 2) } # 33%
+    let_it_be(:mostly_neutral) { idea_with_reactions(up: 1, neutral: 4) } # 20% agree, 0% disagree
     let_it_be(:neutral_only) { idea_with_reactions(neutral: 2) }
     let_it_be(:unreacted) { idea_with_reactions }
 
     where(:agreements, :expected) do
       [
         [%w[agree], [ref(:agreed)]],
-        [%w[split], [ref(:divided)]],
+        [%w[split], [ref(:divided), ref(:mostly_neutral)]],
         [%w[disagree], [ref(:disagreed)]],
         [%w[agree disagree], [ref(:agreed), ref(:disagreed)]],
         [[], []]
@@ -318,7 +319,7 @@ describe CommonGround::ResultsService do
     it 'gives each listed idea its agree percentage and bucket' do
       expect(service.results.ideas_by_agreement.to_h { |idea| [idea.id, [idea.agree_percent, idea.agreement]] }).to eq(
         agreed.id => [60, 'agree'], divided.id => [40, 'split'], disagreed.id => [33, 'disagree'],
-        neutral_only.id => [0, nil]
+        mostly_neutral.id => [20, 'split'], neutral_only.id => [0, nil]
       )
     end
 
