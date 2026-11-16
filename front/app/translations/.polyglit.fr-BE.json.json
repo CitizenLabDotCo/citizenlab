@@ -3584,6 +3584,11 @@
     "verified_at": "2026-11-16T22:39:37.315639Z",
     "verified_by": "Adrien"
   },
+  "app.components.ReactSelect.focusedOptionDisabled": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:43:57.679068Z",
+    "verified_by": "Adrien"
+  },
   "app.components.ReactSelect.focusedOptionSelectedDisabled": {
     "state": "verified",
     "verified_at": "2026-11-16T22:39:37.315639Z",
@@ -3599,9 +3604,19 @@
     "verified_at": "2026-11-16T22:31:13.913461Z",
     "verified_by": "Adrien"
   },
+  "app.components.ReactSelect.guidanceInputMulti": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:43:57.679068Z",
+    "verified_by": "Adrien"
+  },
   "app.components.ReactSelect.guidanceInputSearchable": {
     "state": "verified",
     "verified_at": "2026-11-16T22:26:45.183094Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.ReactSelect.guidanceInputSearchableMulti": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:43:57.679068Z",
     "verified_by": "Adrien"
   },
   "app.components.ReactSelect.guidanceMenu": {
@@ -3624,6 +3639,16 @@
     "verified_at": "2026-11-16T22:39:37.315639Z",
     "verified_by": "Adrien"
   },
+  "app.components.ReactSelect.optionDeselected": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:43:57.679068Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.ReactSelect.optionDisabled": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:43:57.679068Z",
+    "verified_by": "Adrien"
+  },
   "app.components.ReactSelect.optionSelected": {
     "state": "verified",
     "verified_at": "2026-11-16T22:39:37.315639Z",
@@ -3642,6 +3667,11 @@
   "app.components.ReactSelect.selectLabel": {
     "state": "verified",
     "verified_at": "2026-11-16T22:35:12.945328Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.ReactSelect.selectionCleared": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:43:57.679068Z",
     "verified_by": "Adrien"
   },
   "app.components.ReactionControl.completeProfileToReact": {
@@ -3888,6 +3918,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
+  },
+  "app.components.UI.OptionPicker.noResults": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:43:57.679068Z",
+    "verified_by": "Adrien"
   },
   "app.components.UI.PhaseFilter.noAppropriatePhases": {
     "state": "verified",
