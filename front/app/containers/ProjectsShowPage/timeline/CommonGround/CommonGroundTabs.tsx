@@ -11,7 +11,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import ParticipationPermission from 'containers/ProjectsShowPage/shared/ParticipationPermission';
 
-import PreviewSkeleton from 'components/admin/PhasePreview/PreviewSkeleton';
+import PreviewSkeleton from 'components/PhasePreview/PreviewSkeleton';
 import Tabs, { TabData } from 'components/UI/FilterTabs';
 
 import { getPermissionsDisabledMessage } from 'utils/actionDescriptors';
