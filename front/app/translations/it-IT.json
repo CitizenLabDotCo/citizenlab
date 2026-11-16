@@ -1819,7 +1819,7 @@
   "app.containers.IdeasFeedPage.showAllTopics": "Mostra i temi",
   "app.containers.IdeasFeedPage.topicsPanel": "Pannello degli argomenti",
   "app.containers.IdeasIndexPage.a11y_IdeasListTitle1": "Tutti i contributi pubblicati",
-  "app.containers.IdeasIndexPage.inputsIndexMetaDescription": "Esplora tutti gli input pubblicati sulla piattaforma di partecipazione di {orgName}.",
+  "app.containers.IdeasIndexPage.inputsIndexMetaDescription": "Esplora tutti i contributi pubblicati sulla piattaforma partecipativa di {orgName}.",
   "app.containers.IdeasIndexPage.inputsIndexMetaTitle1": "Messaggi | {orgName}",
   "app.containers.IdeasIndexPage.inputsPageTitle": "Messaggi",
   "app.containers.IdeasIndexPage.loadMore": "Carica di più...",
