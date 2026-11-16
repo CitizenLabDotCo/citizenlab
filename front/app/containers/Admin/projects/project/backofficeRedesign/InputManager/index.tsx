@@ -15,8 +15,10 @@ import NoPost from 'components/admin/PostManager/components/PostTable/NoPost';
 
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
+import ListLoadError from '../Phase/ListLoadError';
 import ManageLayout from '../Phase/ManageLayout';
 
+import { BatchAttribute } from './BatchBar/useBatchActions';
 import { ColumnKey, getColumns } from './columns';
 import EditInputModal from './EditInputModal';
 import EmptyState from './EmptyState';
@@ -78,7 +80,12 @@ const InputManager = ({ project, phase }: Props) => {
   const filterParameters = { ...queryParameters, ...scope };
   const listParameters = { ...filterParameters, 'page[size]': PAGE_SIZE };
 
-  const { data: ideas, isPlaceholderData: isChangingList } = useIdeas({
+  const {
+    data: ideas,
+    isPlaceholderData: isChangingList,
+    isError,
+    refetch,
+  } = useIdeas({
     ...listParameters,
     'page[number]': page,
   });
@@ -111,6 +118,15 @@ const InputManager = ({ project, phase }: Props) => {
   const lastPage = (ideas && getPageNumberFromUrl(ideas.links.last)) || 1;
   const filteredTotal = filteredCounts?.data.attributes.total;
   const selection = useSelection(pageIdeas, filterParameters);
+
+  // Editing an attribute the list is filtered on can take inputs off the
+  // list. Left selected, a later batch action would reach unlisted inputs.
+  const filteredOn: Record<BatchAttribute, boolean> = {
+    status: filters.statuses.length > 0 || filters.reply === 'awaiting',
+    assignee: filters.assignees.length > 0,
+    tags: filters.topics.length > 0,
+    phases: false,
+  };
 
   const openPanel = (ideaId: string) => {
     selection.clear();
@@ -153,11 +169,15 @@ const InputManager = ({ project, phase }: Props) => {
         projectId={project.id}
         count={filteredTotal}
         selectedIdeas={selection.selectedIdeas}
-        onUpdated={selection.refresh}
+        onUpdated={(updatedIdeas, attribute) =>
+          filteredOn[attribute]
+            ? selection.deselect(updatedIdeas.map((idea) => idea.id))
+            : selection.refresh(updatedIdeas)
+        }
         onEdit={setEditingIdeaId}
         onClearSelection={selection.clear}
-        onDeleted={() => {
-          selection.clear();
+        onDeleted={(ideaIds) => {
+          selection.deselect(ideaIds);
           // The current page may be gone after the delete.
           setPage(1);
         }}
@@ -171,7 +191,9 @@ const InputManager = ({ project, phase }: Props) => {
       />
       <FilterChips categories={categories} onClearAll={clearFilters} />
       <Box position="relative">
-        {!ideas ? (
+        {isError ? (
+          <ListLoadError onRetry={() => refetch()} />
+        ) : !ideas ? (
           <Box display="flex" justifyContent="center" py="80px">
             <Spinner />
           </Box>
