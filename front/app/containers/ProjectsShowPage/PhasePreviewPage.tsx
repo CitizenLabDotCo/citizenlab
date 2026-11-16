@@ -15,13 +15,7 @@ interface Props {
 }
 
 const PhasePreviewPage = ({ project, phase }: Props) => (
-  <Box
-    data-cy="e2e-phase-preview-page"
-    background={colors.background}
-    minHeight="100vh"
-    pt="20px"
-    pb="140px"
-  >
+  <Box background={colors.background} minHeight="100vh" pt="20px" pb="140px">
     <Box px="16px">
       <PhaseDescription projectId={project.id} selectedPhaseId={phase.id} />
     </Box>
