@@ -11,6 +11,7 @@ import useLocalize from 'hooks/useLocalize';
 import { useIntl } from 'utils/cl-intl';
 
 import AssigneeMark from '../InputManager/IdeaTable/AssigneeMark';
+import RowTitleButton from '../InputManager/IdeaTable/RowTitleButton';
 
 import messages from './messages';
 import { totalReactions } from './utils';
@@ -68,18 +69,10 @@ const StatementRow = ({
         />
       </Td>
       <Td {...cellProps} onClick={onOpen} maxWidth="0" width="100%">
-        <Text
-          variant="boLabel"
-          color="textPrimary"
-          as="span"
-          display="block"
-          m="0"
-          whiteSpace="nowrap"
-          overflow="hidden"
-          textOverflow="ellipsis"
-        >
-          {localize(idea.attributes.title_multiloc)}
-        </Text>
+        <RowTitleButton
+          title={localize(idea.attributes.title_multiloc)}
+          onOpen={onOpen}
+        />
       </Td>
       {showModeration && (
         <>
