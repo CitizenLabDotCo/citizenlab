@@ -9014,6 +9014,11 @@
     "verified_at": "2026-11-16T23:14:20.414839Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects.project.areaFilterSelectedAreas": {
+    "state": "verified",
+    "verified_at": "2026-11-16T23:18:40.694104Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.areaItem": {
     "state": "verified",
     "verified_at": "2026-10-28T13:09:38.034320Z",
@@ -9258,6 +9263,11 @@
     "state": "verified",
     "verified_at": "2026-10-28T13:19:05.930261Z",
     "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.collectingNow": {
+    "state": "verified",
+    "verified_at": "2026-11-16T23:18:40.694104Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.commentFormTitle": {
     "state": "verified",
@@ -10957,6 +10967,11 @@
   "app.containers.Admin.projects.project.nativeSurveyOptionDescription": {
     "state": "verified",
     "verified_at": "2026-11-04T20:50:15.349490Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.newParticipationMethod": {
+    "state": "verified",
+    "verified_at": "2026-11-16T23:18:40.694104Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.newPhase": {
