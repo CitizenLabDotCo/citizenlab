@@ -723,7 +723,7 @@
   "app.components.ReactSelect.optionDeselected": "option {label}, désélectionnée.",
   "app.components.ReactSelect.optionDisabled": "l'option {label} est désactivée. Sélectionnez une autre option.",
   "app.components.ReactSelect.optionSelected": "option {label}, sélectionnée.",
-  "app.components.ReactSelect.optionsAlreadySelected": "{count, plural, one {option} other {options}} {labels}, sélectionnée(s).",
+  "app.components.ReactSelect.optionsAlreadySelected": "{count, plural, one {Option sélectionnée} other {Options sélectionnées}} : {labels}.",
   "app.components.ReactSelect.resultsAvailable": "{count, plural, one {# résultat disponible} other {# résultats disponibles}}",
   "app.components.ReactSelect.selectLabel": "Sélectionner",
   "app.components.ReactSelect.selectionCleared": "Toutes les options sélectionnées ont été effacées.",
