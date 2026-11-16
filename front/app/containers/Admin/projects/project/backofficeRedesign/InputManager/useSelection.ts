@@ -83,6 +83,13 @@ const useSelection = (
       return next;
     });
 
+  const deselect = (ideaIds: string[]) =>
+    setSelection((current) => {
+      const next = new Map(current);
+      ideaIds.forEach((ideaId) => next.delete(ideaId));
+      return next;
+    });
+
   // The listed version first: a selected one can predate an edit.
   const pageIdeasById = new Map(pageIdeas.map((idea) => [idea.id, idea]));
   const selectedIdeas = [...selection.values()].map(
@@ -96,6 +103,7 @@ const useSelection = (
     togglePage,
     clear,
     refresh,
+    deselect,
     selectAll,
     isSelectingAll,
     selectAllFailed,
