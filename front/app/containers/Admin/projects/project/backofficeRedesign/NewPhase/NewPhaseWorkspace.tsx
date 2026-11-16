@@ -3,9 +3,14 @@ import React, { useRef, useState } from 'react';
 import { Box, Button } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
-import { IUpdatedPhaseProperties, ParticipationMethod } from 'api/phases/types';
+import {
+  IUpdatedPhaseProperties,
+  ParticipationMethod,
+  SetupReviewCard,
+} from 'api/phases/types';
 import useAddPhase from 'api/phases/useAddPhase';
 import usePhases from 'api/phases/usePhases';
+import useReviewSetupCard from 'api/phases/useReviewSetupCard';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
 import { IProjectData } from 'api/projects/types';
 
@@ -62,6 +67,7 @@ const NewPhaseWorkspace = ({
   const { data: phases } = usePhases(projectId);
   const { mutateAsync: addPhase } = useAddPhase();
   const { mutateAsync: updatePhase } = useUpdatePhase();
+  const { mutateAsync: reviewSetupCard } = useReviewSetupCard();
   const pageSave = usePageSave();
 
   const [participationMethod, setParticipationMethod] = useState(
@@ -69,6 +75,7 @@ const NewPhaseWorkspace = ({
   );
   const [standalone, setStandalone] = useState(initialStandalone);
   const [formData, setFormData] = useState(initialFormData);
+  const [reviewedCards, setReviewedCards] = useState<SetupReviewCard[]>([]);
   const [dirty, setDirty] = useState(false);
   const [errors, setErrors] = useState<CLErrors | null>(null);
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>(
@@ -77,6 +84,7 @@ const NewPhaseWorkspace = ({
   const savedPhase = useRef<{
     id: string;
     formData: IUpdatedPhaseProperties;
+    reviewedCards: SetupReviewCard[];
   }>();
   const [surveySetupOpened, setSurveySetupOpened] = useState(false);
   const [destination, setDestination] = useState<{
@@ -106,16 +114,26 @@ const NewPhaseWorkspace = ({
   const savePhase = async () => {
     const previous = savedPhase.current;
     if (!previous) {
-      const { data: phase } = await addPhase({ projectId, ...formData });
-      savedPhase.current = { id: phase.id, formData };
+      const { data: phase } = await addPhase({
+        projectId,
+        ...formData,
+        reviewed_setup_cards: reviewedCards,
+      });
+      savedPhase.current = { id: phase.id, formData, reviewedCards };
       return phase.id;
     }
 
     // An attachment failure can leave the phase saved while the draft stays open.
     if (previous.formData !== formData) {
       await updatePhase({ ...formData, phaseId: previous.id });
-      savedPhase.current = { id: previous.id, formData };
     }
+    // Updating a phase doesn't take reviewed cards.
+    for (const card of reviewedCards) {
+      if (!previous.reviewedCards.includes(card)) {
+        await reviewSetupCard({ phaseId: previous.id, card });
+      }
+    }
+    savedPhase.current = { id: previous.id, formData, reviewedCards };
     return previous.id;
   };
 
@@ -140,10 +158,7 @@ const NewPhaseWorkspace = ({
       await files.save(phaseId);
       setDirty(false);
 
-      if (reason === 'button') {
-        pageSave?.leave();
-        setDestination({ phaseId });
-      }
+      if (reason === 'button') setDestination({ phaseId });
     } catch (error) {
       setErrors(fileAttachmentErrors(error));
       throw error;
@@ -166,7 +181,11 @@ const NewPhaseWorkspace = ({
     setDestination({ phaseId: savedPhase.current.id, action });
   };
 
-  if (destination) {
+  // The header button also saves the other panels. The saved phase only opens
+  // once none of them has changes left, so a failed one keeps its edits.
+  const settled = !pageSave?.dirty && !pageSave?.saving;
+
+  if (destination && (destination.action || settled)) {
     const params = { projectId, phaseId: destination.phaseId };
 
     if (destination.action === 'input') {
@@ -213,15 +232,10 @@ const NewPhaseWorkspace = ({
   return (
     <DraftSetupReviewContext.Provider
       value={{
-        reviewed: formData.reviewed_setup_cards ?? [],
+        reviewed: reviewedCards,
         onReview: (card) => {
           setDirty(true);
-          setFormData((data) => ({
-            ...data,
-            reviewed_setup_cards: [
-              ...new Set([...(data.reviewed_setup_cards ?? []), card]),
-            ],
-          }));
+          setReviewedCards((cards) => [...new Set([...cards, card])]);
         },
       }}
     >
