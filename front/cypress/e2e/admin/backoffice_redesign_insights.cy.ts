@@ -62,14 +62,15 @@ describe('Redesigned phase Insights', () => {
       `admin/projects/${projectId}/phases/${phaseId}/insights?project_backoffice_redesign`
     );
 
-  it('shows real participation alongside report, sharing, AI and download actions', () => {
-    createPhase('ideation').then(() => {
-      cy.apiSignup(
+  const addParticipantIdea = () =>
+    cy
+      .apiSignup(
         'Insights',
         'Participant',
         `${randomString()}@example.com`,
         randomString(16)
-      ).then((participant) => {
+      )
+      .then((participant) => {
         participantId = participant.body.data.id;
         return cy.apiCreateIdea({
           phaseId,
@@ -78,6 +79,10 @@ describe('Redesigned phase Insights', () => {
           jwt: participant._jwt,
         });
       });
+
+  it('shows real participation alongside report, sharing, AI and download actions', () => {
+    createPhase('ideation').then(() => {
+      addParticipantIdea();
       visitInsights();
       cy.get('aside[aria-label="Recommended actions"]').within(() => {
         cy.contains('button', 'Add a report').should('be.visible');
@@ -180,6 +185,27 @@ describe('Redesigned phase Insights', () => {
     });
   });
 
+  it('does not reload the insights when the window regains focus', () => {
+    createPhase('volunteering').then(() => {
+      cy.intercept('GET', `**/phases/${phaseId}/insights`).as('insights');
+      visitInsights();
+      cy.wait('@insights');
+      cy.contains('No activity in this phase’s date range').should(
+        'be.visible'
+      );
+      cy.window().then((win) => {
+        win.dispatchEvent(new win.Event('visibilitychange'));
+      });
+      cy.contains('a', /^Manage$/).click();
+      cy.location('pathname').should('include', '/volunteering');
+      cy.contains('a', /^Insights$/).click();
+      cy.contains('No activity in this phase’s date range').should(
+        'be.visible'
+      );
+      cy.get('@insights.all').should('have.length', 2);
+    });
+  });
+
   it('keeps demographic fields accessible with the timeline expanded', () => {
     createPhase('ideation').then(() => {
       cy.intercept('GET', `**/phases/${phaseId}/insights`, (request) => {
@@ -219,6 +245,45 @@ describe('Redesigned phase Insights', () => {
       cy.get('[aria-label="Phase Insights"]').then(($region) => {
         expect($region[0].scrollWidth).to.be.at.most($region[0].clientWidth);
       });
+    });
+  });
+
+  it('adds a second report for a phase that already has one', () => {
+    const reportIds: string[] = [];
+    const addReport = () => {
+      cy.get('aside[aria-label="Recommended actions"]')
+        .contains('button', 'Add a report')
+        .click();
+      cy.location('pathname')
+        .should('match', /report-builder\/[\w-]+\/editor/)
+        .then((pathname) => {
+          reportIds.push(pathname.split('/report-builder/')[1].split('/')[0]);
+        });
+    };
+
+    createPhase('ideation').then(() => {
+      addParticipantIdea();
+      visitInsights();
+      addReport();
+      visitInsights();
+      addReport();
+      cy.then(() => {
+        expect(reportIds[0]).not.to.eq(reportIds[1]);
+        reportIds.forEach((reportId) => cy.apiRemoveReportBuilder(reportId));
+      });
+    });
+  });
+
+  it('leaves the page before Insights reachable with the back button', () => {
+    createPhase('survey').then(() => {
+      cy.visit(
+        `admin/projects/${projectId}/phases/${phaseId}/setup?project_backoffice_redesign`
+      );
+      cy.location('pathname').should('include', '/setup');
+      visitInsights();
+      cy.location('pathname').should('include', '/survey-results');
+      cy.go('back');
+      cy.location('pathname').should('include', '/setup');
     });
   });
 
