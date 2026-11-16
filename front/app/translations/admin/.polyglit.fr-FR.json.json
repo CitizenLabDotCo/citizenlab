@@ -9349,6 +9349,21 @@
     "verified_at": "2026-10-28T13:21:28.391277Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Admin.projects.project.earlyAccess.feedbackNoticeTitle": {
+    "state": "verified",
+    "verified_at": "2026-11-16T23:03:53.190638Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.earlyAccess.turnOnNoticeDescription": {
+    "state": "verified",
+    "verified_at": "2026-11-16T23:03:53.190638Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.earlyAccess.turnOnNoticeDescriptionGeneral": {
+    "state": "verified",
+    "verified_at": "2026-11-16T23:03:53.190638Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.earlyAccess.turnOnNoticeTitle": {
     "state": "verified",
     "verified_at": "2026-11-16T23:00:01.366881Z",
