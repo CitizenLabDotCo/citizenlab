@@ -65,6 +65,10 @@ const FileSelectModal = ({
       )
     : fileOptions;
 
+  const closeUnlessUploading = () => {
+    if (!isUploadingFile) onClose();
+  };
+
   const handleFileOnAdd = (fileToAdd: UploadFile) => {
     onFileAdd(fileToAdd);
     if (variant !== 'bo') onClose();
@@ -75,7 +79,7 @@ const FileSelectModal = ({
       variant={variant}
       width={variant === 'bo' ? 400 : undefined}
       closeOnClickOutside={true}
-      close={onClose}
+      close={closeUnlessUploading}
       opened={opened}
       footer={
         variant === 'bo' ? (
