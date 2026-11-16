@@ -2467,7 +2467,7 @@
   "app.containers.ReactionControl.voted": "Votato",
   "app.containers.SearchInput.a11y_cancelledPostingComment": "Commento cancellato.",
   "app.containers.SearchInput.a11y_commentsHaveChanged": "{sortOder} i commenti sono stati caricati.",
-  "app.containers.SearchInput.a11y_eventsHaveChanged1": "{numberOfEvents, plural, =0 {# gli eventi sono stati caricati} one {# gli eventi sono stati caricati} other {# gli eventi sono stati caricati}}.",
+  "app.containers.SearchInput.a11y_eventsHaveChanged1": "{numberOfEvents, plural, =0 {Nessun evento caricato} one {# evento caricato} other {# eventi caricati}}.",
   "app.containers.SearchInput.a11y_filtersAppliedCount": "{numberOfFilters, plural, =0 {Nessun filtro applicato} one {# filtro applicato} other {# filtri applicati}}.",
   "app.containers.SearchInput.a11y_projectsAvailable": "{numberOfProjects, plural, =0 {Non ci sono progetti disponibili} one {C'è # progetto disponibile} other {Ci sono # progetti disponibili}}.",
   "app.containers.SearchInput.a11y_projectsHaveChanged1": "{numberOfFilteredResults, plural, =0 {# i risultati sono stati caricati} one {# i risultati sono stati caricati} other {# i risultati sono stati caricati}}.",
