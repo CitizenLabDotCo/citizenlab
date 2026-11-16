@@ -40,7 +40,7 @@ module ContentBuilder
           }
         },
         'ImageMultiloc' => { 'multilocs' => %w[alt] },
-        'PageLink' => { 'enums' => { 'displayType' => %w[link preview] } },
+        'PageLink' => {},
         'IframeMultiloc' => {
           'multilocs' => %w[title],
           'enums' => {
