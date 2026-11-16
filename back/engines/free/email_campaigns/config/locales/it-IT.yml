@@ -501,7 +501,7 @@ it-IT:
       subject: Report settimanale del project manager di %{project_title}
       title: '%{firstName}: Il tuo report settimanale'
       title_inputs_past_week: Nuovi contributi nell'ultima settimana
-      title_no_inputs_past_week: Nessun nuovo ingresso nell'ultima settimana
+      title_no_inputs_past_week: Nessun nuovo contributo nell'ultima settimana
       title_threshold_reached: Soglia raggiunta nell'ultima settimana
       today_by_author: Oggi da %{author}
       x_days_ago_by_author: '%{x} giorni fa da %{author}'
