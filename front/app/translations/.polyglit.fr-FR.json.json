@@ -19,6 +19,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "EmailSettingsPage.initialUnsubscribeSuccessWithoutCampaign": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:05:41.931109Z",
+    "verified_by": "Adrien"
+  },
   "UI.FormComponents.optional": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -759,6 +764,11 @@
     "verified_at": "2026-10-16T09:27:28.428851Z",
     "verified_by": "Cindy EB"
   },
+  "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.preferToStayAnonymous": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:05:41.931109Z",
+    "verified_by": "Adrien"
+  },
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.saveThisCode": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -1093,6 +1103,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.components.CustomFieldsForm.typeToSearch": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:05:41.931109Z",
+    "verified_by": "Adrien"
   },
   "app.components.CustomFieldsForm.typeYourAnswer": {
     "state": "verified",
@@ -13813,6 +13828,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.errors.file_too_large": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:05:41.931109Z",
+    "verified_by": "Adrien"
   },
   "app.errors.first_name_blank": {
     "state": "verified",
