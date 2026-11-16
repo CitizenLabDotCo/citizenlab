@@ -6384,9 +6384,39 @@
     "verified_at": "2026-11-16T11:51:34.291643Z",
     "verified_by": "Roger"
   },
+  "app.containers.Admin.messaging.confirmSendSmsCreditsLabel": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:52:36.256516Z",
+    "verified_by": "Roger"
+  },
   "app.containers.Admin.messaging.confirmSendSmsHeader": {
     "state": "verified",
     "verified_at": "2026-07-27T08:39:28.129953Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.messaging.confirmSendSmsHeader2": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:52:36.256516Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.messaging.confirmSendSmsInsufficientBalance": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:52:36.256516Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.messaging.confirmSendSmsNoRecipients": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:52:36.256516Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.messaging.confirmSendSmsRecipientsLabel": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:52:36.256516Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.messaging.confirmSendSmsRecipientsTooltip2": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:52:36.256516Z",
     "verified_by": "Roger"
   },
   "app.containers.Admin.messaging.deleteSmsButton": {
@@ -6414,6 +6444,11 @@
     "verified_at": "2026-07-27T08:39:28.129953Z",
     "verified_by": "Roger"
   },
+  "app.containers.Admin.messaging.fieldSmsBodyTooManySegmentsError": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:52:36.256516Z",
+    "verified_by": "Roger"
+  },
   "app.containers.Admin.messaging.fieldSmsLabel": {
     "state": "verified",
     "verified_at": "2026-07-27T08:39:28.129953Z",
@@ -6434,6 +6469,11 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.messaging.manageButtonLabel": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:52:36.256516Z",
+    "verified_by": "Roger"
+  },
   "app.containers.Admin.messaging.noSmsCampaignsDescription": {
     "state": "verified",
     "verified_at": "2026-07-27T08:39:28.129953Z",
@@ -6449,9 +6489,54 @@
     "verified_at": "2026-07-27T08:39:28.129953Z",
     "verified_by": "Roger"
   },
+  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltip": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:52:36.256516Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltipLink": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:52:36.256516Z",
+    "verified_by": "Roger"
+  },
   "app.containers.Admin.messaging.sendSmsPreviewTooltip": {
     "state": "verified",
     "verified_at": "2026-07-27T08:39:28.129953Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.messaging.smsBalanceLowWarning": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:52:36.256516Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.messaging.smsBalanceOfPurchased": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:52:36.256516Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.messaging.smsBalancePurchaseHint": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:52:36.256516Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.messaging.smsBalanceTitle": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:52:36.256516Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.messaging.smsBalanceUsedManual": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:52:36.256516Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.messaging.smsBalanceUsedOther": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:52:36.256516Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.messaging.smsBalanceUsedTotal": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:52:36.256516Z",
     "verified_by": "Roger"
   },
   "app.containers.Admin.messaging.smsCampaignsDescription": {
@@ -6497,6 +6582,21 @@
   "app.containers.Admin.messaging.smsRecipientsTitle": {
     "state": "verified",
     "verified_at": "2026-07-27T08:39:28.129953Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.messaging.smsSegmentCost": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:52:36.256516Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.messaging.smsSegmentCostOverLimit": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:52:36.256516Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.messaging.smsSegmentEncodingWarning": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:52:36.256516Z",
     "verified_by": "Roger"
   },
   "app.containers.Admin.messaging.smsSegmentPill": {
