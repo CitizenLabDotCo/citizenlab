@@ -1,5 +1,4 @@
-import { chunk, range } from 'lodash-es';
-
+import { inGroupsOf } from 'utils/helperUtils';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 import { IIdeaQueryParameters } from './types';
@@ -22,8 +21,12 @@ const fetchAllIdeas = async (
   const firstPage = await fetchPage(1);
   const lastPage = getPageNumberFromUrl(firstPage.links.last) ?? 1;
   const pages = [firstPage];
+  const remainingPages = Array.from(
+    { length: lastPage - 1 },
+    (_, index) => index + 2
+  );
 
-  for (const group of chunk(range(2, lastPage + 1), PARALLEL_PAGES)) {
+  for (const group of inGroupsOf(remainingPages, PARALLEL_PAGES)) {
     pages.push(...(await Promise.all(group.map(fetchPage))));
   }
 
