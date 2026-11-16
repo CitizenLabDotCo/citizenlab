@@ -8954,6 +8954,11 @@
     "verified_at": "2026-10-28T15:04:19.830183Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects.project.addQuestions": {
+    "state": "verified",
+    "verified_at": "2026-11-16T23:49:13.780896Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.addStatement": {
     "state": "verified",
     "verified_at": "2026-11-04T20:50:15.349490Z",
@@ -9412,6 +9417,11 @@
   "app.containers.Admin.projects.project.edit": {
     "state": "verified",
     "verified_at": "2026-07-16T21:08:16.209520Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.editAccess": {
+    "state": "verified",
+    "verified_at": "2026-11-16T23:49:13.780896Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.editForm": {
@@ -11029,6 +11039,11 @@
     "verified_at": "2026-10-28T14:58:12.335665Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects.project.noInsightsYet": {
+    "state": "verified",
+    "verified_at": "2026-11-16T23:49:13.780896Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.noParticipantsYet": {
     "state": "verified",
     "verified_at": "2026-09-16T19:26:50.578477Z",
@@ -12218,6 +12233,11 @@
     "state": "verified",
     "verified_at": "2026-10-28T13:09:38.034320Z",
     "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.saveToEditForm": {
+    "state": "verified",
+    "verified_at": "2026-11-16T23:49:13.780896Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.saveToEditSettings": {
     "state": "verified",
