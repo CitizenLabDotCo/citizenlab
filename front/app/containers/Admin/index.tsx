@@ -20,6 +20,7 @@ import { Outlet as RouterOutlet, useLocation } from 'utils/router';
 import PulseCheck from './PulseCheck';
 import Sidebar from './sideBar/';
 import CollapsibleSidebar from './sideBar/CollapsibleSidebar';
+import { WorkspaceHeaderProvider } from './sideBar/WorkspaceHeaderContext';
 
 const Container = styled.div`
   display: flex;
@@ -174,20 +175,22 @@ const AdminPage = memo<Props>(({ className }) => {
     !sidebarRendered;
 
   return (
-    <Container className={className}>
-      {sidebarRendered &&
-        (isProjectPage && redesigned ? <CollapsibleSidebar /> : <Sidebar />)}
-      <RightColumn
-        className={`
-          ${fullWidth ? 'fullWidth' : ''}
-          ${noPadding ? 'noPadding' : ''}
-          ${isProjectPage ? 'projectPage' : ''}
-        `}
-      >
-        <RouterOutlet />
-      </RightColumn>
-      <PulseCheck />
-    </Container>
+    <WorkspaceHeaderProvider>
+      <Container className={className}>
+        {sidebarRendered &&
+          (isProjectPage && redesigned ? <CollapsibleSidebar /> : <Sidebar />)}
+        <RightColumn
+          className={`
+            ${fullWidth ? 'fullWidth' : ''}
+            ${noPadding ? 'noPadding' : ''}
+            ${isProjectPage ? 'projectPage' : ''}
+          `}
+        >
+          <RouterOutlet />
+        </RightColumn>
+        <PulseCheck />
+      </Container>
+    </WorkspaceHeaderProvider>
   );
 });
 
