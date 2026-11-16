@@ -960,7 +960,7 @@
   "app.components.aiAssistant.errorUnsupportedFileType2": "Possono essere utilizzati solo file PDF fino a 4 MB e file Markdown (.md) o di testo (.txt) fino a 100 KB.",
   "app.components.aiAssistant.errorUpload": "Non è stato possibile caricare {fileName}.",
   "app.components.aiAssistant.filesNotice": "I file allegati vengono aggiunti ai file di questo progetto e condivisi con l'IA.",
-  "app.components.aiAssistant.filesRejected2": "Possono essere allegati solo file PDF fino a {maxSizeMb} MB e file Markdown (.md) o di testo (.txt) fino a {maxTextSizeKb} KB, per un massimo di {maxFiles}.",
+  "app.components.aiAssistant.filesRejected2": "Possono essere allegati solo file PDF fino a {maxSizeMb} MB e file Markdown (.md) o di testo (.txt) fino a {maxTextSizeKb} KB, per un massimo di {maxFiles} file.",
   "app.components.aiAssistant.newChat": "Nuova chat",
   "app.components.aiAssistant.placeholder": "Chiedi una modifica…",
   "app.components.aiAssistant.proposedChange": "Modifica proposta",
