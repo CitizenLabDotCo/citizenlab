@@ -5,8 +5,8 @@ import { Box, colors, Text } from '@citizenlab/cl2-component-library';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IPhaseData } from 'api/phases/types';
 
-import DisabledFieldset from 'components/admin/PhasePreview/DisabledFieldset';
-import previewMessages from 'components/admin/PhasePreview/messages';
+import DisabledFieldset from 'components/PhasePreview/DisabledFieldset';
+import previewMessages from 'components/PhasePreview/messages';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { getPeriodRemainingUntil } from 'utils/dateUtils';
