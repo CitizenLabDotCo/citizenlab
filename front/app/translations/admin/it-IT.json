@@ -2444,7 +2444,7 @@
   "app.containers.Admin.projects.project.survey.viewAnalysis": "Vedi",
   "app.containers.Admin.projects.project.surveyDates": "Date del sondaggio",
   "app.containers.Admin.projects.project.surveyForm": "Modulo del sondaggio",
-  "app.containers.Admin.projects.project.surveyResponsesInInsights": "Le risposte al sondaggio non sono gestite qui. Apri Approfondimenti per visualizzarle.",
+  "app.containers.Admin.projects.project.surveyResponsesInInsights": "Le risposte al sondaggio non sono gestite qui. Apri la scheda \"Analizza\" per visualizzarle.",
   "app.containers.Admin.projects.project.surveySetup": "Configurazione del sondaggio",
   "app.containers.Admin.projects.project.surveySetupLead": "Crea il sondaggio o importa le risposte raccolte offline.",
   "app.containers.Admin.projects.project.switchCancel": "Annulla",
