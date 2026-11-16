@@ -1770,7 +1770,7 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.removeFilter": "Rimuovi questo filtro",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.removeFromPhase": "Rimuovi da {phase}",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.removeTag": "Rimuovi {tag}",
-  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.repliedMark": "Risposto",
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.repliedMark": "Risposta inviata",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.replyAwaiting": "In attesa di risposta",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.replyReplied": "Con risposta",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.respondedTile": "Con risposta",
