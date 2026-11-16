@@ -99,6 +99,8 @@ const MenuButton = ({
       if (event.key !== 'Escape') return;
       event.preventDefault();
       setOpened(false);
+      // The focused menu item is about to unmount.
+      triggerRef.current?.querySelector<HTMLElement>('button')?.focus();
     };
     document.addEventListener('keydown', closeOnEscape, true);
     return () => document.removeEventListener('keydown', closeOnEscape, true);
