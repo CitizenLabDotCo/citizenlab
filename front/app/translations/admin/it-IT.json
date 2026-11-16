@@ -2166,7 +2166,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.uploadPdfFile1": "Carica un <b>file PDF di moduli scansionati</b>. Devi utilizzare un modulo stampato in questa fase. {hereLink}",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.AuthorInput.addANewUser2": "Usa questa email per il nuovo utente",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.AuthorInput.enterAValidEmail": "Inserisci un'email valida per creare un nuovo account",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.aNewAccountWillBeCreated2": "Verrà creato un nuovo account per l'autore con questi dati. Questo input verrà aggiunto al nuovo account.",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.aNewAccountWillBeCreated2": "Verrà creato un nuovo account per l'autore con questi dati. Questo contributo verrà aggiunto al nuovo account.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.firstName": "Nome",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.lastName": "Cognome",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.pleaseEnterValidUser": "Inserisci un indirizzo e-mail e/o un nome e cognome per assegnare questo contributo a un autore. Oppure deseleziona la casella di consenso.",
