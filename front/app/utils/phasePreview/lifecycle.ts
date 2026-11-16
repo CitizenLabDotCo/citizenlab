@@ -101,7 +101,9 @@ const settingsForAction = (name: string, settings: ActionSettings) => {
   }
 };
 
-// Simulate dates and editable settings, while retaining eligibility and quota restrictions.
+// Simulates dates and editable settings only. Every other restriction stays as
+// the API computed it for the signed-in manager, who passes all checks on who
+// may take part. Group, verification and admin-only limits never show here.
 export const previewActions = (
   actions: JsonObject,
   lifecycle: PreviewLifecycle,
