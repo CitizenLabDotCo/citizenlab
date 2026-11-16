@@ -2477,7 +2477,7 @@
   "app.containers.Admin.projects.project.unsavedChangesTitle": "Modifiche non salvate",
   "app.containers.Admin.projects.project.usePreviousSurvey": "Usa un sondaggio precedente",
   "app.containers.Admin.projects.project.usePreviousSurveyTooltip": "Riutilizza le domande di un sondaggio precedente",
-  "app.containers.Admin.projects.project.volunteeringSetup": "Configurazione ricerca volontari",
+  "app.containers.Admin.projects.project.volunteeringSetup": "Configurazione della ricerca volontari",
   "app.containers.Admin.projects.project.votingOptionsSection": "Opzioni da votare",
   "app.containers.Admin.projects.project.votingSetup": "Configurazione del voto",
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.adminsOnly": "Solo amministratori",
