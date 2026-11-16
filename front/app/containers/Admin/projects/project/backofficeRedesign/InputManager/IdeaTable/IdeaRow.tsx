@@ -6,7 +6,6 @@ import {
   colors,
   Icon,
   Td,
-  Text,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
@@ -23,6 +22,7 @@ import messages from '../messages';
 import useInputTermLabels from '../useInputTermLabels';
 
 import IdeaCell from './IdeaCell';
+import RowTitleButton from './RowTitleButton';
 
 const Row = styled.tr<{ selected: boolean; active: boolean }>`
   cursor: pointer;
@@ -87,17 +87,10 @@ const IdeaRow = ({
       </Td>
       <Td {...cellProps} onClick={onOpen} maxWidth="0" width="100%">
         <Box display="flex" alignItems="center" gap="8px">
-          <Text
-            variant="boLabel"
-            color="textPrimary"
-            as="span"
-            m="0"
-            overflow="hidden"
-            whiteSpace="nowrap"
-            textOverflow="ellipsis"
-          >
-            {localize(attributes.title_multiloc)}
-          </Text>
+          <RowTitleButton
+            title={localize(attributes.title_multiloc)}
+            onOpen={onOpen}
+          />
           {showsMark('replied') && hasReply && (
             <Tooltip content={formatMessage(messages.repliedMark)} theme="dark">
               <Icon name="chat-bubble" width="16px" fill={colors.coolGrey500} />
