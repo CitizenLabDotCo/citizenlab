@@ -149,6 +149,9 @@ describe('Project page builder', () => {
     cy.get('#events-limit-all').should('exist');
     cy.get('label[for="events-source-all"]').should('not.exist');
     cy.contains('Include events from archived projects').should('not.exist');
+    cy.dataCy('e2e-events-show-empty-message')
+      .find('input')
+      .should('be.checked');
     cy.dataCy('e2e-events-widget')
       .should('contain', eventTitle)
       .and('not.contain', otherEventTitle);
