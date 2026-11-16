@@ -4,8 +4,8 @@ module CommonGround
     HIGHEST_CONSENSUS_MIN_SCORE = 0.75 # e.g. at least 75/25 in one direction
     CLOSE_CALL_MAX_SCORE = 0.6         # e.g. between 40/60 and 60/40
 
-    AGREE_MIN_PERCENT = 60
-    DISAGREE_MAX_PERCENT = 40 # exclusive
+    # The share of all reactions a side needs for a statement to count as agreed or disagreed
+    MAJORITY_MIN_PERCENT = 60
 
     # @param [Boolean] exclude_admins_and_moderators Leave out the reactions of users
     #   with an admin or moderator role. Reactions without a known user are kept.
@@ -74,10 +74,18 @@ module CommonGround
         )
     end
 
-    # The share of all reactions, neutral ones included, that agree, rounded to a whole percent.
     def agree_percent_sql
-      @agree_percent_sql ||= Arel.sql(<<~SQL.squish)
-        ROUND(reaction_counts.likes_count * 100.0 / NULLIF(
+      @agree_percent_sql ||= reaction_percent_sql('likes_count')
+    end
+
+    def disagree_percent_sql
+      @disagree_percent_sql ||= reaction_percent_sql('dislikes_count')
+    end
+
+    # The share of all reactions, neutral ones included, in the given count, rounded to a whole percent.
+    def reaction_percent_sql(count_column)
+      Arel.sql(<<~SQL.squish)
+        ROUND(reaction_counts.#{count_column} * 100.0 / NULLIF(
           reaction_counts.likes_count + reaction_counts.dislikes_count + reaction_counts.neutral_reactions_count, 0
         ))
       SQL
@@ -87,8 +95,8 @@ module CommonGround
       @agreement_sql ||= Arel.sql(<<~SQL.squish)
         CASE
           WHEN #{votes_count_sql} = 0 THEN NULL
-          WHEN #{agree_percent_sql} >= #{AGREE_MIN_PERCENT} THEN 'agree'
-          WHEN #{agree_percent_sql} < #{DISAGREE_MAX_PERCENT} THEN 'disagree'
+          WHEN #{agree_percent_sql} >= #{MAJORITY_MIN_PERCENT} THEN 'agree'
+          WHEN #{disagree_percent_sql} >= #{MAJORITY_MIN_PERCENT} THEN 'disagree'
           ELSE 'split'
         END
       SQL
