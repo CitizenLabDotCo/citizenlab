@@ -15,6 +15,8 @@ import useReportBuilderEnabled from 'api/reports/useReportBuilderEnabled';
 
 import useLocalize from 'hooks/useLocalize';
 
+import reportTitleIsTaken from 'containers/Admin/reporting/utils/reportTitleIsTaken';
+
 import MenuButton from 'components/admin/MenuButton';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
@@ -22,6 +24,8 @@ import { useIntl } from 'utils/cl-intl';
 import Navigate from 'utils/cl-router/Navigate';
 
 import messages from './messages';
+
+const MAX_REPORT_NAME_ATTEMPTS = 10;
 
 interface Props {
   phase: IPhaseData;
@@ -33,7 +37,7 @@ const RecommendedActions = ({ phase, children }: Props) => {
   const localize = useLocalize();
   const reportBuilderEnabled = useReportBuilderEnabled();
   const {
-    mutate: addReport,
+    mutateAsync: addReport,
     data: report,
     isPending,
     isError,
@@ -42,6 +46,23 @@ const RecommendedActions = ({ phase, children }: Props) => {
   const supportsPhaseTemplate = PHASE_REPORT_TEMPLATE_METHODS.includes(
     phase.attributes.participation_method
   );
+
+  // Report names are unique across the platform, and several reports can
+  // cover the same phase.
+  const addPhaseReport = async () => {
+    const title = localize(phase.attributes.title_multiloc);
+
+    for (let attempt = 1; attempt <= MAX_REPORT_NAME_ATTEMPTS; attempt++) {
+      try {
+        await addReport({
+          name: attempt === 1 ? title : `${title} (${attempt})`,
+        });
+        return;
+      } catch (error) {
+        if (!reportTitleIsTaken(error)) return;
+      }
+    }
+  };
 
   if (report) {
     return (
@@ -78,9 +99,7 @@ const RecommendedActions = ({ phase, children }: Props) => {
           icon="reports"
           iconPos="right"
           processing={isPending}
-          onClick={() =>
-            addReport({ name: localize(phase.attributes.title_multiloc) })
-          }
+          onClick={addPhaseReport}
         >
           {formatMessage(messages.addReport)}
         </Button>
