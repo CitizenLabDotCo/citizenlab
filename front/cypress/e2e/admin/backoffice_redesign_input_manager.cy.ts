@@ -1,5 +1,7 @@
 import { format, subMonths } from 'date-fns';
 
+import { IIdeaStatusData } from '../../../app/api/idea_statuses/types';
+
 import { randomString } from '../../support/commands';
 
 describe('Redesigned input manager', () => {
@@ -122,6 +124,15 @@ describe('Redesigned input manager', () => {
       .and('contain.text', 'Export all project inputs');
   });
 
+  it('opens an input from its title button', () => {
+    cy.get(`[data-cy="e2e-idea-row-${firstIdeaId}"]`)
+      .contains('button', firstTitle)
+      .click();
+
+    cy.location('search').should('include', `selected_idea_id=${firstIdeaId}`);
+    cy.get('#e2e-side-modal-content').contains(firstTitle);
+  });
+
   it('filters the inputs with the search', () => {
     cy.get(`[data-cy="e2e-idea-row-${secondIdeaId}"]`).should('exist');
 
@@ -131,5 +142,91 @@ describe('Redesigned input manager', () => {
     cy.location('search').should('include', `search=${firstTitle}`);
     cy.get(`[data-cy="e2e-idea-row-${firstIdeaId}"]`).should('exist');
     cy.get(`[data-cy="e2e-idea-row-${secondIdeaId}"]`).should('not.exist');
+  });
+
+  describe('batch actions', () => {
+    let statuses: IIdeaStatusData[];
+
+    const statusWithCode = (code: IIdeaStatusData['attributes']['code']) => {
+      const status = statuses.find((status) => status.attributes.code === code);
+      if (!status) throw new Error(`No ${code} status`);
+      return status;
+    };
+
+    const setStatusOfSelection = (status: IIdeaStatusData) => {
+      cy.contains('button', 'Status').click();
+      cy.contains(
+        '[role="menuitemcheckbox"]',
+        status.attributes.title_multiloc.en
+      ).click();
+    };
+
+    beforeEach(() => {
+      cy.intercept({
+        method: 'GET',
+        pathname: '/web_api/v1/idea_statuses',
+        query: { participation_method: 'ideation' },
+      }).as('statuses');
+      cy.reload();
+      cy.wait('@statuses').then(({ response }) => {
+        statuses = response?.body.data;
+      });
+    });
+
+    it('deselects the inputs that a status change removes from the filtered list', () => {
+      cy.visit(
+        `admin/projects/${projectId}/phases/${phaseId}/ideas?project_backoffice_redesign&status=${
+          statusWithCode('proposed').id
+        }`
+      );
+      cy.get('thead .e2e-checkbox').click();
+      cy.contains('2 selected');
+
+      cy.intercept('PATCH', '**/web_api/v1/ideas/*').as('updateIdea');
+      setStatusOfSelection(statusWithCode('accepted'));
+      cy.wait(['@updateIdea', '@updateIdea']);
+
+      cy.get(`[data-cy="e2e-idea-row-${firstIdeaId}"]`).should('not.exist');
+      cy.get(`[data-cy="e2e-idea-row-${secondIdeaId}"]`).should('not.exist');
+      cy.contains(/\d+ selected/).should('not.exist');
+    });
+
+    it('reports the inputs that a batch action could not update and keeps them selected', () => {
+      cy.intercept('PATCH', `**/web_api/v1/ideas/${firstIdeaId}`, {
+        statusCode: 500,
+        body: {},
+      }).as('failedUpdate');
+      cy.get('thead .e2e-checkbox').click();
+      cy.contains('2 selected');
+
+      setStatusOfSelection(statusWithCode('rejected'));
+      cy.wait('@failedUpdate');
+
+      cy.get('[role="alert"]').should(
+        'contain.text',
+        'Could not update 1 of 2'
+      );
+      cy.contains('2 selected');
+    });
+
+    it('reports the inputs that could not be deleted and keeps them selected', () => {
+      cy.intercept('DELETE', `**/web_api/v1/ideas/${firstIdeaId}`, {
+        statusCode: 500,
+        body: {},
+      }).as('failedDelete');
+      cy.get('thead .e2e-checkbox').click();
+      cy.contains('2 selected');
+      cy.contains('button', 'Delete 2').click();
+      cy.get('[role="dialog"]').contains('button', 'Confirm').click();
+      cy.wait('@failedDelete');
+
+      cy.get('[role="alert"]').should(
+        'contain.text',
+        'Could not delete 1 of 2'
+      );
+      cy.get(`[data-cy="e2e-idea-row-${firstIdeaId}"]`).should('exist');
+      cy.get(`[data-cy="e2e-idea-row-${secondIdeaId}"]`).should('not.exist');
+      cy.contains('1 selected');
+    });
   });
 });
