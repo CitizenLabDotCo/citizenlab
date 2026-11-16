@@ -7349,6 +7349,11 @@
     "verified_at": "2026-07-22T11:55:53.957306Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Authentication.phoneConfirmationCodeInvalid": {
+    "state": "verified",
+    "verified_at": "2026-11-16T21:13:27.505913Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Authentication.signUpOrLogIn": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
@@ -7398,6 +7403,16 @@
     "state": "verified",
     "verified_at": "2026-10-28T13:22:22.055417Z",
     "verified_by": "Cindy EB"
+  },
+  "app.containers.Authentication.steps.FlowStart.useEmailInstead": {
+    "state": "verified",
+    "verified_at": "2026-11-16T21:13:27.505913Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Authentication.steps.FlowStart.usePhoneNumberInstead": {
+    "state": "verified",
+    "verified_at": "2026-11-16T21:13:27.505913Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": {
     "state": "verified",
@@ -7453,6 +7468,16 @@
     "state": "verified",
     "verified_at": "2026-08-26T10:01:07.217972Z",
     "verified_by": "Cindy EB"
+  },
+  "app.containers.Authentication.steps.Policies.byContinuingPhoneWithoutCampaignsEnabled": {
+    "state": "verified",
+    "verified_at": "2026-11-16T21:13:27.505913Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": {
+    "state": "verified",
+    "verified_at": "2026-11-16T21:13:27.505913Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Authentication.steps.SSOVerification.alreadyHaveAnAccount": {
     "state": "verified",
