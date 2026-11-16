@@ -1856,7 +1856,7 @@
   "app.containers.Admin.projects.project.event.image": "Immagine",
   "app.containers.Admin.projects.project.event.linkToOnlineEvent": "Link all'evento online",
   "app.containers.Admin.projects.project.event.onlyAdminsSeeThis": "Visibile solo agli amministratori",
-  "app.containers.Admin.projects.project.event.platformTime": "Orario {timezone}",
+  "app.containers.Admin.projects.project.event.platformTime": "Fuso orario: {timezone}",
   "app.containers.Admin.projects.project.event.previewDescription": "Descrizione evento",
   "app.containers.Admin.projects.project.event.previewEventImage": "Immagine dell'evento",
   "app.containers.Admin.projects.project.event.previewEventName": "Nome dell'evento",
