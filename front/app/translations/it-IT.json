@@ -1525,7 +1525,7 @@
   "app.containers.ChangeEmail.emailRequired": "Inserisci un indirizzo e-mail.",
   "app.containers.ChangeEmail.emailTaken": "Questa e-mail è già in uso.",
   "app.containers.ChangeEmail.emailUpdateCancelled": "L'aggiornamento dell’e-mail è stato annullato.",
-  "app.containers.ChangeEmail.emailUpdateCancelledDescription": "Per aggiornare l'e-mail, riavviare il processo.",
+  "app.containers.ChangeEmail.emailUpdateCancelledDescription": "Per aggiornare l'e-mail, ripeti la procedura.",
   "app.containers.ChangeEmail.helmetDescription": "Pagina di modifica dell'e-mail",
   "app.containers.ChangeEmail.helmetTitle": "Cambia la tua e-mail",
   "app.containers.ChangeEmail.newEmailLabel": "Nuova e-mail",
