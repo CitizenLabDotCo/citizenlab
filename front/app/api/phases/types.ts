@@ -120,7 +120,6 @@ export interface IPhase {
 }
 
 export interface IUpdatedPhaseProperties {
-  reviewed_setup_cards?: SetupReviewCard[];
   project_id?: string;
   placement_type?: PhasePlacementType;
   title_multiloc?: Multiloc;
@@ -169,6 +168,7 @@ export interface IUpdatedPhaseProperties {
 
 export interface AddPhaseObject extends IUpdatedPhaseProperties {
   projectId: string;
+  reviewed_setup_cards?: SetupReviewCard[];
 }
 
 export interface UpdatePhaseObject extends IUpdatedPhaseProperties {
