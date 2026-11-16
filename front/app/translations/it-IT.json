@@ -1059,7 +1059,7 @@
   "app.components.formBuilder.drawArea": "Disegna l'area",
   "app.components.formBuilder.drawRoute": "Traccia un percorso",
   "app.components.formBuilder.dropMultiplePins1": "Segna più punti",
-  "app.components.formBuilder.dropPin": "Segnaposto",
+  "app.components.formBuilder.dropPin": "Segna un punto",
   "app.components.formBuilder.editButtonLabel": "Modifica",
   "app.components.formBuilder.emptyImageOptionError": "Fornisci almeno 1 risposta. Ricorda che ogni risposta deve avere un titolo.",
   "app.components.formBuilder.emptyOptionError": "Fornisci almeno 1 risposta",
