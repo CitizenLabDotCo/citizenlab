@@ -6,6 +6,7 @@ import useUpdateProject from 'api/projects/useUpdateProject';
 import { useRegisterPageSaver } from 'components/admin/PageSaveContext';
 import ProjectAssignee from 'components/admin/ProjectAssignee';
 
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { useSearch } from 'utils/router';
 
 interface Props {
@@ -33,6 +34,9 @@ const ModerationAssignee = ({ phaseId }: Props) => {
   return (
     <ProjectAssignee
       defaultOpen={setup_action === 'moderation'}
+      onClose={() => {
+        if (setup_action === 'moderation') removeSearchParams(['setup_action']);
+      }}
       projectId={projectId}
       assignee={assignee}
       onAssigneeChange={setAssignee}
