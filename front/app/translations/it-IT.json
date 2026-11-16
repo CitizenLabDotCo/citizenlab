@@ -1532,7 +1532,7 @@
   "app.containers.ChangeEmail.noEmail": "Al momento non hai alcun indirizzo email salvato.",
   "app.containers.ChangeEmail.submitButton": "Invia",
   "app.containers.ChangeEmail.titleAddEmail": "Aggiungi il tuo indirizzo e-mail",
-  "app.containers.ChangeEmail.titleChangeEmail": "Cambiare l'e-mail",
+  "app.containers.ChangeEmail.titleChangeEmail": "Cambia la tua e-mail",
   "app.containers.ChangeEmail.updateSuccessful": "L'e-mail è stata aggiornata con successo.",
   "app.containers.ChangePassword.adminPasswordChangeWarning2": "La modifica della password comporterà la disconnessione dagli altri browser in cui hai effettuato l'accesso. Perderai tutte le modifiche non salvate.",
   "app.containers.ChangePassword.currentPasswordLabel": "Password attuale",
