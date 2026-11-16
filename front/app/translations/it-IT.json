@@ -160,7 +160,7 @@
   "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions3": "Partecipa alle discussioni e ricevi le notifiche quando gli altri si interessano ai tuoi contributi",
   "app.components.CustomFieldsForm.PostParticipationBox.participateInOtherProjects": "Partecipa ad altri progetti e conversazioni",
   "app.components.CustomFieldsForm.PostParticipationBox.stayConnected": "Rimani connesso",
-  "app.components.CustomFieldsForm.addressInputAriaLabel": "Indirizzo di ingresso",
+  "app.components.CustomFieldsForm.addressInputAriaLabel": "Campo indirizzo",
   "app.components.CustomFieldsForm.addressInputPlaceholder6": "Inserisci un indirizzo...",
   "app.components.CustomFieldsForm.adminFieldTooltip": "Campo visibile solo agli amministratori",
   "app.components.CustomFieldsForm.atLeastOnePinRequired": "È richiesta almeno una posizione.",
