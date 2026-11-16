@@ -99,6 +99,22 @@ describe('Redesigned Common Ground manager', () => {
       });
   });
 
+  it('opens a statement from its title button', () => {
+    cy.apiCreateIdea({
+      phaseId,
+      ideaTitle: firstTitle,
+      ideaContent: randomString(30),
+    }).then((idea) => {
+      cy.visit(
+        `admin/projects/${projectId}/phases/${phaseId}/ideas?project_backoffice_redesign`
+      );
+      cy.get(`[data-cy="e2e-statement-row-${idea.body.data.id}"]`)
+        .contains('button', firstTitle)
+        .click();
+      cy.get('[data-cy="e2e-common-ground-reactions"]').should('be.visible');
+    });
+  });
+
   it('hides participant moderation columns when statement submission is off', () => {
     cy.apiEditPhase({ phaseId, submission_enabled: false });
     cy.apiCreateIdea({
