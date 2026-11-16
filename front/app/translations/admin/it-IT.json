@@ -2046,7 +2046,7 @@
   "app.containers.Admin.projects.project.insights.sevenDayChange": "Variazione di 7 giorni",
   "app.containers.Admin.projects.project.insights.sevenDayChangeDefaultTooltip": "La percentuale di variazione del valore di questa metrica rispetto al valore di 7 giorni fa.",
   "app.containers.Admin.projects.project.insights.shared.aiPowered1": "Potenziato dall'intelligenza artificiale",
-  "app.containers.Admin.projects.project.insights.shared.aiTopicClusteringDescription11": "Organizza automaticamente tutti gli input in temi significativi, anche quando i partecipanti non li taggano.",
+  "app.containers.Admin.projects.project.insights.shared.aiTopicClusteringDescription11": "Organizza automaticamente tutti i contributi in temi significativi, anche quando i partecipanti non li taggano.",
   "app.containers.Admin.projects.project.insights.shared.aiTopicDistribution1": "Distribuzione degli argomenti dell'AI",
   "app.containers.Admin.projects.project.insights.shared.aiTopicsSummary1": "{inputsCount} contributi - {topicsCount} argomenti",
   "app.containers.Admin.projects.project.insights.shared.manualTagsByParticipants1": "Tag assegnati dai partecipanti",
