@@ -103,3 +103,29 @@ it('includes saved participation in Open and Ended snapshots', () => {
 
   postMessage.mockRestore();
 });
+
+it('tells the manager when the preview blocks an action', () => {
+  render(renderPreview({ start_at: inDays(-1), end_at: inDays(5) }));
+  const frame = screen.getByTitle('Phase preview');
+
+  if (!(frame instanceof HTMLIFrameElement) || !frame.contentWindow) {
+    throw new Error('Preview iframe is missing');
+  }
+
+  expect(screen.getByRole('status')).toBeEmptyDOMElement();
+
+  const source = frame.contentWindow;
+  act(() => {
+    window.dispatchEvent(
+      new MessageEvent('message', {
+        origin: window.location.origin,
+        source,
+        data: { type: 'phase-preview-blocked' },
+      })
+    );
+  });
+
+  expect(screen.getByRole('status')).toHaveTextContent(
+    'This action is not available in the preview. Nothing was saved.'
+  );
+});
