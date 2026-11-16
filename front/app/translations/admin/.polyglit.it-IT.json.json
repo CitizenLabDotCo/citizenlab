@@ -4689,6 +4689,41 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.Users.EmailBounces.emailBouncesName": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:51:34.291643Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.Users.EmailBounces.emailBouncesReason": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:51:34.291643Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.Users.EmailBounces.emailBouncesStatus": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:51:34.291643Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.Users.EmailBounces.emailBouncesStatusAwaitingConfirmation": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:51:34.291643Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.Users.EmailBounces.emailBouncesStatusPendingInvite": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:51:34.291643Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.Users.EmailBounces.emailBouncesStatusRegistered": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:51:34.291643Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.Users.EmailBounces.emailBouncesStatusRegistrationIncomplete": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:51:34.291643Z",
+    "verified_by": "Roger"
+  },
   "app.containers.Admin.Users.GroupsHeader.deleteGroup": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
@@ -4782,6 +4817,11 @@
   "app.containers.Admin.Users.SeatsOverview.unknown": {
     "state": "verified",
     "verified_at": "2026-04-07T15:07:16.976609Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.Users.UserTableRow.registrationNotCompleted": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:51:34.291643Z",
     "verified_by": "Roger"
   },
   "app.containers.Admin.Users.UserTableRow.userInvitationPending": {
@@ -6299,6 +6339,16 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.internalEarlyAccessLabel": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:51:34.291643Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.internalEarlyAccessLabelExplanation": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:51:34.291643Z",
+    "verified_by": "Roger"
+  },
   "app.containers.Admin.messaging.addSmsCampaignButton": {
     "state": "verified",
     "verified_at": "2026-07-27T08:14:50.305904Z",
@@ -6322,6 +6372,16 @@
   "app.containers.Admin.messaging.cancelButton": {
     "state": "verified",
     "verified_at": "2026-07-27T08:14:50.305904Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.messaging.confirmSendSmsBalanceLabel": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:51:34.291643Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.messaging.confirmSendSmsCreditsHint": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:51:34.291643Z",
     "verified_by": "Roger"
   },
   "app.containers.Admin.messaging.confirmSendSmsHeader": {
