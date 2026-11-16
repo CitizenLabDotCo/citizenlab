@@ -27,6 +27,7 @@ const usePhaseInsights = ({
     enabled: enabled && !!phaseId,
     // Participation can change while managers are on another tab.
     staleTime: 0,
+    refetchOnWindowFocus: false,
   });
 };
 
