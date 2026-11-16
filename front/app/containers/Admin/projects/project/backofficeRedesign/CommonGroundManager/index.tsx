@@ -27,6 +27,7 @@ import SidePanel from '../InputManager/SidePanel';
 import usePanelNavigation from '../InputManager/usePanelNavigation';
 import useSelection from '../InputManager/useSelection';
 import ImportInputsModal from '../Phase/BuildPanel/BuildFields/MethodSection/CommonGroundSection/ImportInputsModal';
+import ListLoadError from '../Phase/ListLoadError';
 import ManageLayout from '../Phase/ManageLayout';
 
 import AddStatementModal from './AddStatementModal';
@@ -73,7 +74,12 @@ const CommonGroundManager = ({ project, phase }: Props) => {
     sort: 'new' as const,
     'page[size]': PAGE_SIZE,
   };
-  const { data: ideas, isPlaceholderData: isChangingList } = useIdeas({
+  const {
+    data: ideas,
+    isPlaceholderData: isChangingList,
+    isError,
+    refetch,
+  } = useIdeas({
     ...listParameters,
     'page[number]': page,
   });
@@ -126,8 +132,7 @@ const CommonGroundManager = ({ project, phase }: Props) => {
       queryKey: commonGroundResultsKeys.all(),
     });
 
-  const handleDeleted = () => {
-    selection.clear();
+  const refreshAfterDelete = () => {
     // The current page may be gone after the delete.
     setPage(1);
     refreshResults();
@@ -159,7 +164,10 @@ const CommonGroundManager = ({ project, phase }: Props) => {
         listedTotal={listedTotal}
         onEdit={setEditingId}
         onClearSelection={selection.clear}
-        onDeleted={handleDeleted}
+        onDeleted={(ideaIds) => {
+          selection.deselect(ideaIds);
+          refreshAfterDelete();
+        }}
         onSelectAll={selection.selectAll}
         isSelectingAll={selection.isSelectingAll}
         selectAllFailed={selection.selectAllFailed}
@@ -170,7 +178,8 @@ const CommonGroundManager = ({ project, phase }: Props) => {
       />
       <FilterChips categories={[agreementCategory]} onClearAll={clearFilters} />
 
-      {!ideas && (
+      {isError && <ListLoadError onRetry={() => refetch()} />}
+      {!ideas && !isError && (
         <Box display="flex" justifyContent="center" py="80px">
           <Spinner />
         </Box>
@@ -214,7 +223,8 @@ const CommonGroundManager = ({ project, phase }: Props) => {
         onEdit={setEditingId}
         onDeleted={() => {
           setPreviewId(null);
-          handleDeleted();
+          selection.clear();
+          refreshAfterDelete();
         }}
         onClose={() => setPreviewId(null)}
         isEditing={!!editingIdea}
