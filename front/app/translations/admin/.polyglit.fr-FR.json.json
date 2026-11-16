@@ -11439,6 +11439,16 @@
     "verified_at": "2026-10-26T13:30:56.217722Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects.project.participantsGraphLastPeriod": {
+    "state": "verified",
+    "verified_at": "2026-11-16T23:22:53.290062Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.participantsGraphScale": {
+    "state": "verified",
+    "verified_at": "2026-11-16T23:22:53.290062Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.participation": {
     "state": "verified",
     "verified_at": "2026-10-28T13:09:38.034320Z",
