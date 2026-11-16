@@ -4424,6 +4424,11 @@
     "verified_at": "2026-11-16T12:33:03.727812Z",
     "verified_by": "Roger"
   },
+  "app.components.aiAssistant.errorTooManyConversationFiles": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:33:55.395838Z",
+    "verified_by": "Roger"
+  },
   "app.components.aiAssistant.errorToolBudgetExceeded": {
     "state": "verified",
     "verified_at": "2026-11-09T20:55:44.078702Z",
@@ -4432,6 +4437,116 @@
   "app.components.aiAssistant.errorToolCallExpired2": {
     "state": "verified",
     "verified_at": "2026-11-16T12:33:10.436845Z",
+    "verified_by": "Roger"
+  },
+  "app.components.aiAssistant.errorToolCallNotAwaitingApproval": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:33:55.395838Z",
+    "verified_by": "Roger"
+  },
+  "app.components.aiAssistant.errorTurnTimedOut": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:33:55.395838Z",
+    "verified_by": "Roger"
+  },
+  "app.components.aiAssistant.errorUnsupportedFileType2": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:33:55.395838Z",
+    "verified_by": "Roger"
+  },
+  "app.components.aiAssistant.errorUpload": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:33:55.395838Z",
+    "verified_by": "Roger"
+  },
+  "app.components.aiAssistant.filesNotice": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:33:55.395838Z",
+    "verified_by": "Roger"
+  },
+  "app.components.aiAssistant.filesRejected2": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:33:55.395838Z",
+    "verified_by": "Roger"
+  },
+  "app.components.aiAssistant.newChat": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:33:55.395838Z",
+    "verified_by": "Roger"
+  },
+  "app.components.aiAssistant.placeholder": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:33:55.395838Z",
+    "verified_by": "Roger"
+  },
+  "app.components.aiAssistant.proposedChange": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:33:55.395838Z",
+    "verified_by": "Roger"
+  },
+  "app.components.aiAssistant.reject": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:33:55.395838Z",
+    "verified_by": "Roger"
+  },
+  "app.components.aiAssistant.rejectReasonLabel": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:33:55.395838Z",
+    "verified_by": "Roger"
+  },
+  "app.components.aiAssistant.removeFile": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:33:55.395838Z",
+    "verified_by": "Roger"
+  },
+  "app.components.aiAssistant.send": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:33:55.395838Z",
+    "verified_by": "Roger"
+  },
+  "app.components.aiAssistant.showDetails": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:33:55.395838Z",
+    "verified_by": "Roger"
+  },
+  "app.components.aiAssistant.statusAutoExecuted": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:33:55.395838Z",
+    "verified_by": "Roger"
+  },
+  "app.components.aiAssistant.statusExecuted": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:33:55.395838Z",
+    "verified_by": "Roger"
+  },
+  "app.components.aiAssistant.statusExpired": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:33:55.395838Z",
+    "verified_by": "Roger"
+  },
+  "app.components.aiAssistant.statusFailed": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:33:55.395838Z",
+    "verified_by": "Roger"
+  },
+  "app.components.aiAssistant.statusInProgress": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:33:55.395838Z",
+    "verified_by": "Roger"
+  },
+  "app.components.aiAssistant.statusRejected": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:33:55.395838Z",
+    "verified_by": "Roger"
+  },
+  "app.components.aiAssistant.title": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:33:55.395838Z",
+    "verified_by": "Roger"
+  },
+  "app.components.aiAssistant.working": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:33:55.395838Z",
     "verified_by": "Roger"
   },
   "app.components.anonymousParticipationModal.anonymousParticipationWarning": {
