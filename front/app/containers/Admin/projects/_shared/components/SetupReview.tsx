@@ -19,7 +19,7 @@ export const useSetupReview = (card: SetupReviewCard | undefined) => {
   const draft = useContext(DraftSetupReviewContext);
   const { phaseId } = useParams({ strict: false });
   const { data: phase } = usePhase(enabled && !draft ? phaseId : undefined);
-  const { mutate, isPending, isError } = useReviewSetupCard(phaseId);
+  const { mutate, isPending, isError } = useReviewSetupCard();
   const reviewed = (
     draft?.reviewed ??
     phase?.data.attributes.reviewed_setup_cards ??
@@ -35,7 +35,7 @@ export const useSetupReview = (card: SetupReviewCard | undefined) => {
       if (draft) {
         draft.onReview(card);
       } else if (phase) {
-        mutate(card);
+        mutate({ phaseId: phase.data.id, card });
       }
     },
   };
