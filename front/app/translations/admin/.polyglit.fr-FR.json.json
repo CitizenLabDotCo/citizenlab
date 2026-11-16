@@ -9279,6 +9279,11 @@
     "verified_at": "2026-10-28T13:19:05.930261Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Admin.projects.project.contextFolderDescription": {
+    "state": "verified",
+    "verified_at": "2026-11-16T23:32:57.595465Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.contextNoFolder": {
     "state": "verified",
     "verified_at": "2026-10-29T22:45:59.785934Z",
@@ -12923,6 +12928,11 @@
     "state": "verified",
     "verified_at": "2026-10-28T13:19:05.930261Z",
     "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.topicTags": {
+    "state": "verified",
+    "verified_at": "2026-11-16T23:32:57.595465Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.topicTagsCount": {
     "state": "verified",
