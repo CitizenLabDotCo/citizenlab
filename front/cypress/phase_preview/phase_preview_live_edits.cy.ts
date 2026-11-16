@@ -339,6 +339,48 @@ describe('Phase preview live edits', () => {
     });
   });
 
+  it('tells the manager when the preview blocks an action it does not simulate', () => {
+    cy.setAdminLoginCookie();
+    cy.apiCreatePhase({
+      projectId,
+      title: 'Blocked action preview',
+      startAt: '2095-03-01',
+      participationMethod: 'ideation',
+      canPost: true,
+    }).then(({ body }) => {
+      const ideaPhaseId = body.data.id;
+      const savedIdea = 'More bike parking at the station';
+      const notice =
+        'This action is not available in the preview. Nothing was saved.';
+      const phone = () =>
+        cy
+          .get('[data-cy="e2e-phase-preview"] iframe', { timeout: 60000 })
+          .its('0.contentDocument.body')
+          .should('not.be.empty')
+          .then((body) => cy.wrap(body));
+
+      cy.apiCreateIdea({
+        phaseId: ideaPhaseId,
+        ideaTitle: savedIdea,
+        ideaContent: 'Racks fill up before nine in the morning.',
+      });
+      cy.intercept('DELETE', '**/followers/**', () => {
+        throw new Error('Preview must not unfollow an idea on the server');
+      });
+      cy.visit(
+        `admin/projects/${projectId}/phases/${ideaPhaseId}/setup?project_backoffice_redesign`
+      );
+      cy.get('[role="group"][aria-label="Preview phase state"]')
+        .contains('button', 'Open')
+        .click();
+      phone().contains(savedIdea).click();
+      cy.contains(notice).should('not.exist');
+      phone().find('[data-cy="e2e-unfollow-button"]').click();
+      cy.contains('[role="status"]', notice).should('be.visible');
+      phone().find('[data-cy="e2e-unfollow-button"]').should('be.visible');
+    });
+  });
+
   it('shows the Information phase preview without a lifecycle selector', () => {
     cy.setAdminLoginCookie();
     cy.apiCreatePhase({
