@@ -105,7 +105,7 @@ module IdeaFeed
             },
             icon: {
               type: 'string',
-              description: 'An emoji representing the topic'
+              description: 'A single emoji representing the topic'
             },
             problems: {
               type: 'array',
@@ -245,12 +245,16 @@ module IdeaFeed
       new_topics_by_id
         .reject { |new_topic_id, _| in_count(mapping, new_topic_id) == 1 }
         .each_value do |new_topic|
+          # The schema cannot force the LLM to return a single emoji, and `InputTopic` rejects
+          # anything else, so drop an unusable icon rather than fail the whole rebalancing.
+          icon = new_topic['icon'] if EmojiValidator.emoji?(new_topic['icon'])
+
           InputTopic.transaction do
             topic = InputTopic.create!(
               project: @project,
               title_multiloc: new_topic['title_multiloc'],
               description_multiloc: new_topic['description_multiloc'],
-              icon: new_topic['icon']
+              icon:
             )
 
             SideFxInputTopicService.new.after_create(topic, nil)
@@ -258,7 +262,7 @@ module IdeaFeed
               topic_id: topic.id,
               title_multiloc: new_topic['title_multiloc'],
               description_multiloc: new_topic['description_multiloc'],
-              icon: new_topic['icon']
+              icon:
             }
 
             (new_topic['problems'] || []).each do |subtopic|

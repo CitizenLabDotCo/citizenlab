@@ -51,6 +51,8 @@ const ActionButton = ({ phase, buttonStyle, buttonTextMultiloc }: Props) => {
         params={{ slug, phaseId: phase.id }}
         buttonStyle={buttonStyle}
         width="100%"
+        whiteSpace="normal"
+        textAlign="center"
       >
         {buttonText}
       </ButtonWithLink>

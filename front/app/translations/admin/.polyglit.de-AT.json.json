@@ -1394,6 +1394,11 @@
     "verified_at": "2026-09-22T06:09:59.542944Z",
     "verified_by": "Jelena"
   },
+  "app.components.admin.ContentBuilder.Widgets.Events.noEventsToDisplay": {
+    "state": "verified",
+    "verified_at": "2026-11-05T14:23:57.976777Z",
+    "verified_by": "Jelena"
+  },
   "app.components.admin.ContentBuilder.Widgets.Events.pastEvents": {
     "state": "verified",
     "verified_at": "2026-09-22T06:09:59.542944Z",
@@ -1417,6 +1422,11 @@
   "app.components.admin.ContentBuilder.Widgets.Events.showAllPaginated2": {
     "state": "verified",
     "verified_at": "2026-09-22T06:09:59.542944Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ContentBuilder.Widgets.Events.showEmptyMessage": {
+    "state": "verified",
+    "verified_at": "2026-11-05T14:23:57.976777Z",
     "verified_by": "Jelena"
   },
   "app.components.admin.ContentBuilder.Widgets.Events.showLimited": {
@@ -3758,6 +3768,56 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.Admin.FeedbackPrompt.close": {
+    "state": "verified",
+    "verified_at": "2026-10-13T09:36:14.610250Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.FeedbackPrompt.commentLabel": {
+    "state": "verified",
+    "verified_at": "2026-10-13T09:36:14.610250Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.FeedbackPrompt.projectSetupEaseQuestion": {
+    "state": "verified",
+    "verified_at": "2026-10-13T09:36:14.610250Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.FeedbackPrompt.returnFindabilityQuestion2": {
+    "state": "verified",
+    "verified_at": "2026-10-13T09:36:14.610250Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.FeedbackPrompt.saveError": {
+    "state": "verified",
+    "verified_at": "2026-10-14T14:08:22.726011Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.FeedbackPrompt.scaleHint": {
+    "state": "verified",
+    "verified_at": "2026-10-13T09:36:14.610250Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.FeedbackPrompt.send": {
+    "state": "verified",
+    "verified_at": "2026-10-13T09:36:14.610250Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.FeedbackPrompt.thanks": {
+    "state": "verified",
+    "verified_at": "2026-10-13T09:36:14.610250Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.FeedbackPrompt.veryEasy": {
+    "state": "verified",
+    "verified_at": "2026-10-13T09:36:14.610250Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.FeedbackPrompt.veryHard": {
+    "state": "verified",
+    "verified_at": "2026-10-13T09:36:14.610250Z",
+    "verified_by": "Jelena"
   },
   "app.containers.Admin.Insights.tabReports": {
     "state": "verified",
@@ -7019,6 +7079,26 @@
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.Admin.pagesAndMenu.ContentBuilder.CraftComponents.shared.headingLevel1": {
+    "state": "verified",
+    "verified_at": "2026-11-11T12:29:57.294039Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.pagesAndMenu.ContentBuilder.CraftComponents.shared.headingLevel2": {
+    "state": "verified",
+    "verified_at": "2026-11-11T12:29:57.294039Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.pagesAndMenu.ContentBuilder.CraftComponents.shared.titleHeadingLevel": {
+    "state": "verified",
+    "verified_at": "2026-11-11T12:29:57.294039Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.pagesAndMenu.ContentBuilder.CraftComponents.shared.titleHeadingLevelDescription": {
+    "state": "verified",
+    "verified_at": "2026-11-11T12:29:57.294039Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.pagesAndMenu.ContentBuilder.FollowedItems.defaultTitle": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
@@ -10209,14 +10289,14 @@
     "verified_at": "2026-10-16T09:16:50.388595Z",
     "verified_by": "Jelena"
   },
-  "app.containers.Admin.projects.project.hidePanel": {
-    "state": "verified",
-    "verified_at": "2026-11-04T10:01:41.366786Z",
-    "verified_by": "Jelena"
-  },
   "app.containers.Admin.projects.project.hideCauses": {
     "state": "verified",
     "verified_at": "2026-10-29T14:22:26.100027Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.hidePanel": {
+    "state": "verified",
+    "verified_at": "2026-11-04T10:01:41.366786Z",
     "verified_by": "Jelena"
   },
   "app.containers.Admin.projects.project.homepageCard": {
@@ -12879,6 +12959,11 @@
     "verified_at": "2026-09-17T11:58:59.483714Z",
     "verified_by": "eva@govocal.com"
   },
+  "app.containers.Admin.projects.project.showCauses": {
+    "state": "verified",
+    "verified_at": "2026-10-29T14:22:26.100027Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.projects.project.showPanel": {
     "state": "verified",
     "verified_at": "2026-11-04T10:01:41.366786Z",
@@ -12887,11 +12972,6 @@
   "app.containers.Admin.projects.project.spotlight": {
     "state": "verified",
     "verified_at": "2026-11-04T10:01:41.366786Z",
-    "verified_by": "Jelena"
-  },
-  "app.containers.Admin.projects.project.showCauses": {
-    "state": "verified",
-    "verified_at": "2026-10-29T14:22:26.100027Z",
     "verified_by": "Jelena"
   },
   "app.containers.Admin.projects.project.spreadsheetImportDescription": {

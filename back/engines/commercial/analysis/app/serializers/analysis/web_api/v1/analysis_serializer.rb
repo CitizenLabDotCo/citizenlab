@@ -13,13 +13,8 @@ class Analysis::WebApi::V1::AnalysisSerializer < WebApi::V1::BaseSerializer
   has_many :files, serializer: ::WebApi::V1::FileSerializer, &:attached_files
 
   has_many :all_custom_fields, serializer: ::WebApi::V1::CustomFieldSerializer do |analysis|
-    participation_method = analysis.participation_context.pmethod
-    if analysis.participation_context.custom_form.nil?
-      participation_method.create_default_form!
-      analysis.participation_context.reload
-    end
-
-    IdeaCustomFieldsService.new(analysis.participation_context.custom_form).all_fields.filter(&:supports_submission?)
+    custom_form = analysis.participation_context.pmethod.ensure_default_form!
+    IdeaCustomFieldsService.new(custom_form).all_fields.filter(&:supports_submission?)
   end
 
   has_many :insightables do |analysis|

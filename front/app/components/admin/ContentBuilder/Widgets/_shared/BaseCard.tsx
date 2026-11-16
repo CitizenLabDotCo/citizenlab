@@ -29,7 +29,16 @@ export const CardLink = typedStyled(Link)`
   }
 `;
 
+// The title comes first in the DOM, so screen readers announce it before the
+// image. Elements that are shown above the title use a negative CSS `order`
+// (see CARD_IMAGE_ORDER), which keeps the visual order: image, then title.
+export const CARD_IMAGE_ORDER = -2;
+export const CARD_ABOVE_TITLE_ORDER = -1;
+
 export const CardContainer = styled(Box)`
+  display: flex;
+  flex-direction: column;
+
   &:focus-visible {
     margin-left: 12px;
     margin-top: 2px;
@@ -68,7 +77,7 @@ interface Props {
 
 export const CardImage = ({ imageUrl, alt }: Props) => {
   return (
-    <Box>
+    <Box order={CARD_IMAGE_ORDER}>
       <ProjectImageContainer className="project-image-container">
         {imageUrl ? (
           <Image

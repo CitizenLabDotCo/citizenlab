@@ -9,18 +9,16 @@ import {
 import { lighten } from 'polished';
 import styled from 'styled-components';
 
-import { useIntl } from 'utils/cl-intl';
+import useLocale from 'hooks/useLocale';
+
 import { returnFileSize } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
 import { IAttachedFileData } from '../types';
 
-import messages from './messages';
-
 const Container = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
   color: ${colors.textSecondary};
   border: 1px solid ${lighten(0.4, colors.textSecondary)};
   border-radius: ${(props) => props.theme.borderRadius};
@@ -57,17 +55,8 @@ const FileDownloadLink = styled.a`
   `}
 `;
 
-const Spacer = styled.div`
-  flex: 1;
-`;
-
 const FileSize = styled.span`
-  margin-left: 20px;
   white-space: nowrap;
-
-  ${media.phone`
-    display: none;
-  `}
 `;
 
 interface Props {
@@ -76,7 +65,7 @@ interface Props {
 }
 
 const FileDisplay = ({ file, className }: Props) => {
-  const { formatMessage } = useIntl();
+  const locale = useLocale();
   if (!isNilOrError(file)) {
     const {
       file: { url },
@@ -92,15 +81,15 @@ const FileDisplay = ({ file, className }: Props) => {
           download={name}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label={formatMessage(messages.ariaLabel, {
-            fileName: name,
-            ...(size > 0 && { fileSize: returnFileSize(size) }),
-          })}
         >
           {name}
+          {size > 0 && (
+            <>
+              {' '}
+              <FileSize>({returnFileSize(size, locale)})</FileSize>
+            </>
+          )}
         </FileDownloadLink>
-        <Spacer />
-        {size > 0 && <FileSize>({returnFileSize(size)})</FileSize>}
       </Container>
     );
   }

@@ -9,6 +9,10 @@ import useLocalize from 'hooks/useLocalize';
 import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/HomepageBanner';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
+import {
+  DEFAULT_TITLE_VARIANT,
+  TitleVariant,
+} from 'components/admin/ContentBuilder/Widgets/_shared/TitleVariantSetting';
 import AvatarBubbles from 'components/AvatarBubbles';
 import {
   Container,
@@ -40,6 +44,7 @@ interface Props {
   fontColors: 'light' | 'dark';
   align?: TAlign;
   homepageSettings: Partial<IHomepageBannerSettings>;
+  titleVariant?: TitleVariant;
 }
 
 export const getButtonStyle = (fontColors: 'light' | 'dark') => {
@@ -56,6 +61,7 @@ const HeaderContent = ({
   fontColors,
   intl: { formatMessage },
   homepageSettings,
+  titleVariant = DEFAULT_TITLE_VARIANT,
 }: Props & WrappedComponentProps) => {
   const localize = useLocalize();
   const isSmallerThanTablet = useBreakpoint('tablet');
@@ -97,6 +103,7 @@ const HeaderContent = ({
         align={align}
       >
         <HeaderTitle
+          variant={titleVariant}
           hasHeader={!!headerImage}
           fontColors={fontColors}
           align={align}
