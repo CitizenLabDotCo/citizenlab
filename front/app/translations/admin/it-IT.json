@@ -655,7 +655,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.timelineTab": "Timeline",
   "app.components.app.containers.AdminPage.ProjectEdit.topicTerm": "Tema",
   "app.components.app.containers.AdminPage.ProjectEdit.trafficTab": "Traffico",
-  "app.components.app.containers.AdminPage.ProjectEdit.volunteeringAction2": "Candidarsi per una causa",
+  "app.components.app.containers.AdminPage.ProjectEdit.volunteeringAction2": "Iscrizione a una causa",
   "app.components.app.containers.AdminPage.ProjectEdit.votingAction": "Votazione",
   "app.components.app.containers.AdminPage.ProjectEdit.votingDisplayGroup": "Filtri e risultati",
   "app.components.app.containers.AdminPage.ProjectEdit.votingOnInputsAction": "Votazione sui contributi",
