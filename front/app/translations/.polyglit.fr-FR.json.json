@@ -3929,6 +3929,26 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.components.UI.PillPicker.clearSearch": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:48:19.555781Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.UI.PillPicker.done": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:48:19.555781Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.UI.PillPicker.remove": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:48:19.555781Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.UI.PillPicker.selectedCount": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:48:19.555781Z",
+    "verified_by": "Adrien"
+  },
   "app.components.UI.RemoveImageButton.a11y_removeImage": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
