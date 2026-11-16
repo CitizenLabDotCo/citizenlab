@@ -9309,6 +9309,16 @@
     "verified_at": "2026-10-28T13:21:28.635652Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Admin.projects.project.earlyAccess.feedbackNoticeDescription": {
+    "state": "verified",
+    "verified_at": "2026-11-16T23:07:33.020618Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.earlyAccess.feedbackNoticeDescriptionWithoutSlack": {
+    "state": "verified",
+    "verified_at": "2026-11-16T23:07:33.020618Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.earlyAccess.feedbackNoticeTitle": {
     "state": "verified",
     "verified_at": "2026-11-16T23:03:53.387387Z",
@@ -11744,6 +11754,11 @@
     "verified_at": "2026-10-28T13:19:15.868690Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Admin.projects.project.previewProject": {
+    "state": "verified",
+    "verified_at": "2026-11-16T23:07:33.020618Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.projectDetails": {
     "state": "verified",
     "verified_at": "2026-10-28T13:09:38.242718Z",
@@ -11949,10 +11964,20 @@
     "verified_at": "2026-09-16T19:26:50.773492Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Admin.projects.project.publishRestoreToDraft": {
+    "state": "verified",
+    "verified_at": "2026-11-16T23:07:33.020618Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.publishRestoreToDraftBody2": {
     "state": "verified",
     "verified_at": "2026-10-28T13:09:38.242718Z",
     "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.publishRestoreToDraftTitle": {
+    "state": "verified",
+    "verified_at": "2026-11-16T23:07:33.020618Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.publishSchedule": {
     "state": "verified",
