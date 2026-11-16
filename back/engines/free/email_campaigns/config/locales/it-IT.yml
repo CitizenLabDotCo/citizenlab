@@ -116,7 +116,7 @@ it-IT:
         user_accepts_invitation_to_cosponsor_a_proposal: "L'utente accetta l'invito a co-sponsorizzare una proposta"
         user_changes_email: L'utente modifica il proprio indirizzo email
         user_comments: Commenti degli utenti
-        user_comments_on_input: Commenti degli utenti sull'input
+        user_comments_on_input: Commenti degli utenti sul contributo
         user_comments_on_proposal: Commenti degli utenti sulla proposta
         user_confirms_email: L'utente conferma il proprio indirizzo email
         user_is_blocked: "L'account dell'utente è bloccato"
