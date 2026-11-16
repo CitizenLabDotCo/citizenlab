@@ -17,11 +17,10 @@ export const graphqlFetcher = async <TData = any>({
   const response = await fetch(ADMIN_TEMPLATES_GRAPHQL_PATH, {
     method: 'POST',
     headers: {
+      // Required: as protection against CSRF, the templates service only accepts
+      // the auth cookie on JSON requests.
       'Content-Type': 'application/json',
-      Origin: '*',
-      'Access-Control-Allow-Origin': '*',
     },
-    mode: 'cors',
     // The auth cookie authenticates the request
     credentials: 'include',
     body: JSON.stringify({
