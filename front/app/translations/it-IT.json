@@ -2626,7 +2626,7 @@
   "app.containers.UsersShowPage.surveyResponses": "Risposte ({responses})",
   "app.containers.UsersShowPage.topics": "Argomenti",
   "app.containers.UsersShowPage.tryAgain": "Si è verificato un errore, si prega di riprovare più tardi.",
-  "app.containers.UsersShowPage.userShowPageMetaDescription": "Questa è la pagina del profilo di {firstName} {lastName} sulla piattaforma di partecipazione online di {orgName}. Ecco una panoramica di tutti i loro contributi.",
+  "app.containers.UsersShowPage.userShowPageMetaDescription": "Questa è la pagina del profilo di {firstName} {lastName} sulla piattaforma di partecipazione online di {orgName}. Ecco una panoramica di tutti i suoi contributi.",
   "app.containers.VoteControl.close": "Chiudere",
   "app.containers.VoteControl.voteErrorTitle": "Qualcosa è andato storto",
   "app.containers.admin.ContentBuilder.default": "predefinito",
