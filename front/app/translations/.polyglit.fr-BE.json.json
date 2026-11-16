@@ -1364,6 +1364,16 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
+  "app.components.FileRepositorySelectAndUpload.removeFile": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:53:16.346679Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.FileRepositorySelectAndUpload.removeFileAriaLabel": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:53:16.346679Z",
+    "verified_by": "Adrien"
+  },
   "app.components.FileRepositorySelectAndUpload.selectExistingFile": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
@@ -3882,6 +3892,11 @@
   "app.components.UI.EmojiPicker.clear": {
     "state": "verified",
     "verified_at": "2026-07-16T16:14:31.681484Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.UI.FeatureCallout.dismiss": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:53:16.346679Z",
     "verified_by": "Adrien"
   },
   "app.components.UI.FileAttachments.FileDisplay.ariaLabel": {
