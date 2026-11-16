@@ -1755,7 +1755,7 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.inputCount": "{count, plural, one {# contributo} other {# contributi}}",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.inputsTile": "Contributi",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.is": "è",
-  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.isAnyOf": "è uno di",
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.isAnyOf": "è tra",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.nextInput": "Contributo successivo",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.noInputsDescription": "Una volta che le persone avranno partecipato, potrai revisionare e gestire i loro contributi qui.",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.noInputsTitle": "I contributi appariranno qui",
