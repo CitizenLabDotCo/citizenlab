@@ -15,8 +15,8 @@ import usePhases from 'api/phases/usePhases';
 
 import useLocalize from 'hooks/useLocalize';
 
-import PreviewSkeleton from 'components/admin/PhasePreview/PreviewSkeleton';
 import EventPreviews from 'components/EventPreviews';
+import PreviewSkeleton from 'components/PhasePreview/PreviewSkeleton';
 import ReadMoreWrapper from 'components/ReadMoreWrapper/ReadMoreWrapper';
 import T from 'components/T';
 import FileAttachments from 'components/UI/FileAttachments';
