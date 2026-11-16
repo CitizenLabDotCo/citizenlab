@@ -42,3 +42,36 @@ it('keeps preview storage and cookie changes out of the real session', () => {
     document.cookie = 'preview_test_cookie=; max-age=0; path=/';
   }
 });
+
+it('starts with empty storage when the browser blocks storage access', () => {
+  const descriptors = (['localStorage', 'sessionStorage'] as const).map(
+    (name) => ({
+      name,
+      descriptor: Object.getOwnPropertyDescriptor(window, name),
+    })
+  );
+
+  for (const { name } of descriptors) {
+    Object.defineProperty(window, name, {
+      configurable: true,
+      get: () => {
+        throw new DOMException('The operation is insecure.', 'SecurityError');
+      },
+    });
+  }
+
+  try {
+    isolatePreviewStorage();
+    window.localStorage.setItem('preview-test-key', 'value');
+
+    expect(window.localStorage.getItem('preview-test-key')).toBe('value');
+    expect(window.sessionStorage).toHaveLength(0);
+  } finally {
+    for (const { name, descriptor } of descriptors) {
+      if (descriptor) Object.defineProperty(window, name, descriptor);
+      else Reflect.deleteProperty(window, name);
+    }
+
+    Reflect.deleteProperty(document, 'cookie');
+  }
+});
