@@ -6,7 +6,7 @@ import { IIdeaData } from 'api/ideas/types';
 import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
 import { VotingMethod } from 'api/phases/types';
 
-import PreviewSkeleton from 'components/admin/PhasePreview/PreviewSkeleton';
+import PreviewSkeleton from 'components/PhasePreview/PreviewSkeleton';
 
 import { useIntl } from 'utils/cl-intl';
 import { usePhasePreview } from 'utils/phasePreview/runtime';
