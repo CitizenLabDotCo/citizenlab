@@ -80,7 +80,9 @@ const SetupCard = ({
     <Box
       as="section"
       data-review-card={review.enabled ? reviewKey : undefined}
-      onClickCapture={review.enabled ? review.onReview : undefined}
+      onClickCapture={
+        review.enabled && !reviewNeedsChoice ? review.onReview : undefined
+      }
       display="flex"
       flexDirection="column"
       border={`1px solid ${colors.grey200}`}
