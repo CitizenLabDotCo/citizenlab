@@ -6439,6 +6439,11 @@
     "verified_at": "2026-07-27T08:39:28.129953Z",
     "verified_by": "Roger"
   },
+  "app.containers.Admin.messaging.smsSegmentPill": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
   "app.containers.Admin.messaging.smsStatsTitle": {
     "state": "verified",
     "verified_at": "2026-07-27T08:39:28.129953Z",
@@ -6473,6 +6478,26 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.pagesAndMenu.ContentBuilder.CraftComponents.shared.headingLevel1": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.ContentBuilder.CraftComponents.shared.headingLevel2": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.ContentBuilder.CraftComponents.shared.titleHeadingLevel": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.ContentBuilder.CraftComponents.shared.titleHeadingLevelDescription": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
   },
   "app.containers.Admin.pagesAndMenu.ContentBuilder.FollowedItems.defaultTitle": {
     "state": "verified",
@@ -6603,6 +6628,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorCTADescription2": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
   },
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorCTATitle2": {
     "state": "verified",
@@ -6892,6 +6922,11 @@
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.noItemsAvailable": {
     "state": "verified",
     "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.page": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
     "verified_by": "Roger"
   },
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.pageTag": {
@@ -7319,6 +7354,221 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects.NewProjectForm.chooseGroups": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.NewProjectForm.context": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.NewProjectForm.createError": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.NewProjectForm.groupsRequired": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.NewProjectForm.noGroupsMatch": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.NewProjectForm.searchGroups": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.NewProjectForm.titlePlaceholder": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.NewProjectForm.titleRequired2": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.NewProjectForm.titleRequiredSingleLocale": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.PhasePlacement.changeDatesButton": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.PhasePlacement.durationTooShort": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.PhasePlacement.editTimelineDates": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.PhasePlacement.endBeforeStart": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.PhasePlacement.endInvalid": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.PhasePlacement.endRequired2": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.PhasePlacement.endedSurveyHidden": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.PhasePlacement.laterPhasesRenumbered": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.PhasePlacement.loadFailed": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveys": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveysExplanation": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveysTitle": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.PhasePlacement.moveToTimeline": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.PhasePlacement.moveToTimelineExplanation": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.PhasePlacement.moveToTimelineTitle": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.PhasePlacement.newLastPhase": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.PhasePlacement.overlapEndBefore": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.PhasePlacement.overlapOpenEnded": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.PhasePlacement.overlapStartAfter": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.PhasePlacement.phaseUpdateFailed": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.PhasePlacement.resolveDateConflicts": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.PhasePlacement.retryLoading": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.PhasePlacement.spotlight": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.PhasePlacement.spotlightDescription": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.PhasePlacement.startRequired": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.PhasePlacement.surveyPlacement": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.PhasePlacement.timeline": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.PhasePlacement.timelineDescription": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.PhasePlacement.timelineGap": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.PhasePlacement.timelinePageRemoved": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithSpaces2": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithoutSpaces2": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.canOnlyMoveToManagedFolder": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.canOnlyMoveToManagedSpaceOrFolder": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folder": {
     "state": "verified",
     "verified_at": "2026-05-05T08:22:42.159441Z",
@@ -7332,6 +7582,26 @@
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderError": {
     "state": "verified",
     "verified_at": "2026-05-05T08:22:42.159441Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderInSpaceOption": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderLabel": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.noFolder": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.noSpace": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
     "verified_by": "Roger"
   },
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.projectContext": {
@@ -7377,6 +7647,31 @@
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceError": {
     "state": "verified",
     "verified_at": "2026-05-05T08:22:42.159441Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceLabel": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceTooltip": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.all.NewProjectButton.fromScratchMenuItem": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.all.NewProjectButton.useTemplateMenuItem": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.all.NewProjectModal.fromTemplate": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
     "verified_by": "Roger"
   },
   "app.containers.Admin.projects.all.Spaces.Table.deleteSpaceButton": {
@@ -8462,6 +8757,16 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.inputsTile": {
     "state": "verified",
     "verified_at": "2026-11-16T11:10:29.468129Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.is": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.isAnyOf": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:36:52.969724Z",
     "verified_by": "Roger"
   },
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.nextInput": {
