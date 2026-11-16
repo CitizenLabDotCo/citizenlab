@@ -52,7 +52,6 @@ class WebApi::V1::PhasesController < ApplicationController
   end
 
   def review_setup_card
-    authorize @phase, :update?
     card = params.require(:card)
 
     @phase.with_lock do
