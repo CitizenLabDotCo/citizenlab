@@ -2359,7 +2359,7 @@
   "app.containers.Admin.projects.project.participantEmail.officialFeedback": "Aan deelnemers die de {term} volgen, wanneer deze officiële feedback ontvangt",
   "app.containers.Admin.projects.project.participantEmail.phaseStarted": "Aan deelnemers die het project volgen of hebben deelgenomen, wanneer een fase start",
   "app.containers.Admin.projects.project.participantEmail.screening": "Aan de auteur, wanneer hun {term} wacht op screening",
-  "app.containers.Admin.projects.project.participantEmail.statusChanged": "Aan deelnemers die de {term} volgen, wanneer de status ervan verandert",
+  "app.containers.Admin.projects.project.participantEmail.statusChanged": "Aan deelnemers die de {term} volgen, wanneer de status ervan wijzigt",
   "app.containers.Admin.projects.project.participantEmail.surveySubmitted": "Aan de respondent, wanneer hun vragenlijst is ingestuurd",
   "app.containers.Admin.projects.project.participantEmail.unfinishedSurvey": "Aan deelnemers die de vragenlijst zijn gestart maar niet hebben ingestuurd, 1 dag nadat ze deze voor het laatst hebben opgeslagen",
   "app.containers.Admin.projects.project.participantEmail.unfinishedVote": "Aan deelnemers die hun stemmen nog niet hebben ingestuurd, 1 dag nadat ze voor het laatst hebben gestemd",
