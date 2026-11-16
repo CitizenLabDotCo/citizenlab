@@ -1728,7 +1728,7 @@
   "app.containers.Admin.projects.project.areasCount": "{count, plural, one {# area} other {# aree}}",
   "app.containers.Admin.projects.project.areasSelectedCount": "{count, plural, one {# area selezionata} other {# aree selezionate}}",
   "app.containers.Admin.projects.project.attachments": "Allegati",
-  "app.containers.Admin.projects.project.backToProjectSetup": "Configurazione progetto",
+  "app.containers.Admin.projects.project.backToProjectSetup": "Configurazione del progetto",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.acceptedTile": "Accettati",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.addColumns": "Aggiungi colonne",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.addTag": "Aggiungi tag",
