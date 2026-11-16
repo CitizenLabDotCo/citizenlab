@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
+import { useWorkspaceHeader } from './WorkspaceHeaderContext';
 
 import Sidebar from './index';
 
@@ -25,10 +26,10 @@ const CollapsibleSidebar = () => {
   const [opened, setOpened] = useState(false);
   const { formatMessage } = useIntl();
   const [position, setPosition] = useState({ top: 8, left: 8 });
+  const header = useWorkspaceHeader()?.element;
 
   // The navigation lives outside the workspace; notices can shift its header.
   useLayoutEffect(() => {
-    let header: Element | null = null;
     const place = () => {
       const rect = header?.getBoundingClientRect();
       const top = rect?.top ?? 8;
@@ -40,28 +41,20 @@ const CollapsibleSidebar = () => {
       );
     };
     const resize = new ResizeObserver(place);
-    const syncHeader = () => {
-      const next = document.querySelector('[data-project-workspace-header]');
-      if (next === header) return;
-      header = next;
-      resize.disconnect();
-      if (header?.parentElement) {
-        Array.from(header.parentElement.children).forEach((element) =>
-          resize.observe(element)
-        );
-      }
-      place();
-    };
-    const mutation = new MutationObserver(syncHeader);
-    mutation.observe(document.body, { childList: true, subtree: true });
+
+    if (header?.parentElement) {
+      Array.from(header.parentElement.children).forEach((element) =>
+        resize.observe(element)
+      );
+    }
     window.addEventListener('resize', place);
-    syncHeader();
+    place();
+
     return () => {
-      mutation.disconnect();
       resize.disconnect();
       window.removeEventListener('resize', place);
     };
-  }, []);
+  }, [header]);
 
   return (
     <Box
