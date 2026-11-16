@@ -17,6 +17,7 @@ interface Props {
   variant?: 'card' | 'row';
   /** Shown as a pill in the card header while the group is closed. */
   summary?: string;
+  onClose?: () => void;
   children: ReactNode;
 }
 
@@ -27,10 +28,14 @@ const PanelGroup = ({
   defaultOpen = false,
   variant = 'card',
   summary,
+  onClose,
   children,
 }: Props) => {
   const [open, setOpen] = useState(defaultOpen);
-  const toggle = () => setOpen((open) => !open);
+  const toggle = () => {
+    if (open) onClose?.();
+    setOpen(!open);
+  };
 
   if (variant === 'row') {
     return (
