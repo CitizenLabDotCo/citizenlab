@@ -19,9 +19,8 @@ import useConfirmDeleteReport from 'containers/Admin/reporting/components/Report
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../messages';
-
 import PanelField from './BuildPanel/PanelField';
+import messages from './messages';
 
 interface Props {
   phase: IPhaseData;

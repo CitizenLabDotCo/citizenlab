@@ -1,7 +1,7 @@
-import React, { memo, useState } from 'react';
+import React, { memo, ReactNode, useState } from 'react';
 
 import MapView from '@arcgis/core/views/MapView';
-import { Text } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { IMapConfig } from 'api/map_config/types';
@@ -50,10 +50,20 @@ interface Props {
   mapConfig: IMapConfig;
   className?: string;
   setView: (view: ViewOptions) => void;
+  variant?: 'default' | 'bo';
+  /** Replaces the center and zoom form, which saves on its own. */
+  centerAndZoom?: ReactNode;
 }
 
 const MapConfigOverview = memo<Props>(
-  ({ className, mapConfig, setView, mapView }) => {
+  ({
+    className,
+    mapConfig,
+    setView,
+    mapView,
+    variant = 'default',
+    centerAndZoom,
+  }) => {
     const [editedMapLayerId, setEditedMapLayerId] = useState<string | null>(
       null
     );
@@ -70,23 +80,34 @@ const MapConfigOverview = memo<Props>(
 
     return (
       <Container className={className || ''}>
-        <Header>
-          {isProjectMapPage && ( // Show only on project map configuration
-            <TitleContainer>
-              <StyledSectionTitle>
-                <FormattedMessage {...messages.mapConfigurationTitle} />
-              </StyledSectionTitle>
-            </TitleContainer>
-          )}
-          <Text color="textSecondary">
-            <FormattedMessage {...messages.mapConfigurationDescription} />
-          </Text>
-          {isProjectMapPage && ( // Show only on project map configuration
-            <Warning>
+        {variant === 'bo' ? (
+          <Box display="flex" flexDirection="column" gap="8px" mb="24px">
+            <Text variant="boHelper" m="0">
+              <FormattedMessage {...messages.mapConfigurationDescription} />
+            </Text>
+            <Warning variant="bo">
               <FormattedMessage {...messages.mapLocationWarning} />
             </Warning>
-          )}
-        </Header>
+          </Box>
+        ) : (
+          <Header>
+            {isProjectMapPage && ( // Show only on project map configuration
+              <TitleContainer>
+                <StyledSectionTitle>
+                  <FormattedMessage {...messages.mapConfigurationTitle} />
+                </StyledSectionTitle>
+              </TitleContainer>
+            )}
+            <Text color="textSecondary">
+              <FormattedMessage {...messages.mapConfigurationDescription} />
+            </Text>
+            {isProjectMapPage && ( // Show only on project map configuration
+              <Warning>
+                <FormattedMessage {...messages.mapLocationWarning} />
+              </Warning>
+            )}
+          </Header>
+        )}
 
         {!editedMapLayerId ? (
           <>
@@ -94,11 +115,14 @@ const MapConfigOverview = memo<Props>(
               onEditLayer={openLayerConfig}
               setView={setView}
               mapConfig={mapConfig}
+              variant={variant}
             />
-            <StyledMapCenterAndZoomConfig
-              mapView={mapView}
-              mapConfig={mapConfig}
-            />
+            {centerAndZoom ?? (
+              <StyledMapCenterAndZoomConfig
+                mapView={mapView}
+                mapConfig={mapConfig}
+              />
+            )}
           </>
         ) : (
           <MapLayerConfig

@@ -8,6 +8,7 @@ import useAnalyses from 'api/analyses/useAnalyses';
 import { ICustomFields } from 'api/custom_fields/types';
 import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
 import { GroupMode } from 'api/graph_data_units/requestTypes';
+import usePhase from 'api/phases/usePhase';
 
 import useLocale from 'hooks/useLocale';
 
@@ -70,6 +71,7 @@ const Settings = () => {
   const { data: analyses } = useAnalyses({
     phaseId,
   });
+  const { data: phase } = usePhase(phaseId);
 
   const selectedQuestion =
     questions && questionId ? findQuestion(questions, questionId) : undefined;
@@ -78,6 +80,11 @@ const Settings = () => {
     questionId &&
     selectedQuestion &&
     !FieldsHideGroupBy.includes(selectedQuestion.attributes.input_type);
+
+  // Defaults to anonymous until the phase lands, so the option never flashes in.
+  const fullyAnonymous =
+    (phase?.data.attributes.user_data_collection ?? 'anonymous') ===
+    'anonymous';
 
   const showHeatmapSettings =
     questionId &&
@@ -215,9 +222,17 @@ const Settings = () => {
 
       {showGroupingSettings && (
         <>
-          <GroupModeSelect mode={groupMode} onChange={handleGroupMode} />
+          <GroupModeSelect
+            mode={
+              fullyAnonymous && groupMode === 'user_field'
+                ? undefined
+                : groupMode
+            }
+            allowUserField={!fullyAnonymous}
+            onChange={handleGroupMode}
+          />
 
-          {groupMode === 'user_field' && (
+          {!fullyAnonymous && groupMode === 'user_field' && (
             <UserFieldSelect
               userFieldId={groupFieldId}
               onChange={handleGroupField}

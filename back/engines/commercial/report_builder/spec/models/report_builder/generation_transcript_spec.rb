@@ -129,13 +129,29 @@ RSpec.describe ReportBuilder::GenerationTranscript do
       expect(described_class.session_runs_for(report)).not_to include oldest_turn
     end
 
+    # A screenshot is stored in full as base64 but replayed as a one-line
+    # placeholder. Counted as stored, one picture can exceed the whole budget, and
+    # the run holding it would push every earlier turn out of the conversation.
+    it 'does not let a stored screenshot spend budget the prompt never pays' do
+      generation = run('generation', at: 3.hours.ago)
+      shot = create(:generation_transcript, report: report, kind: 'revision',
+        stopped_because: 'done', created_at: 2.hours.ago,
+        messages: [{ 'role' => 'user',
+                     'content' => [{ 'image' => { 'format' => 'png',
+                                                  'source' => { 'bytes' => 'A' * 450_000 } } }] }])
+      newest = run('revision', at: 1.hour.ago)
+
+      expect(shot.size_in_chars).to be < 1_000
+      expect(described_class.session_runs_for(report)).to eq [generation, shot, newest]
+    end
+
     # The budget is characters because a turn that patches a layout is worth many
     # ordinary turns; counting messages would let one of them blow the prompt.
     it 'measures a turn by its size, not by how many messages it holds' do
       short = run('revision', messages: 2)
       long = create(:generation_transcript, report: report, kind: 'revision',
         stopped_because: 'done',
-        messages: [{ 'role' => 'user', 'content' => 'x' * 10_000 }])
+        messages: [{ 'role' => 'user', 'content' => [{ 'text' => 'x' * 10_000 }] }])
 
       expect(long.size_in_chars).to be > short.size_in_chars
     end

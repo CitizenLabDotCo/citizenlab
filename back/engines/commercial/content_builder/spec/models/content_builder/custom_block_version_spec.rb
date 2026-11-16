@@ -48,6 +48,51 @@ RSpec.describe ContentBuilder::CustomBlockVersion do
       expect(version.errors.details[:manifest]).to include(hash_including(error: :config_schema_invalid))
     end
 
+    # The settings sidebar renders these without checking them again.
+    it 'rejects a config_schema field that is not an object' do
+      version = build(:custom_block_version, manifest: {
+        'config_schema' => { 'type' => 'object', 'properties' => { 'title' => 'a string' } }
+      })
+
+      expect(version).to be_invalid
+      expect(version.errors.details[:manifest]).to include(hash_including(error: :config_schema_invalid))
+    end
+
+    it 'rejects a config_schema field the sidebar has no control for' do
+      version = build(:custom_block_version, manifest: {
+        'config_schema' => { 'type' => 'object', 'properties' => { 'rows' => { 'type' => 'array' } } }
+      })
+
+      expect(version).to be_invalid
+      expect(version.errors.details[:manifest]).to include(hash_including(error: :config_schema_invalid))
+    end
+
+    it 'rejects an enum that is not an array of strings' do
+      version = build(:custom_block_version, manifest: {
+        'config_schema' => {
+          'type' => 'object', 'properties' => { 'mode' => { 'type' => 'string', 'enum' => 'bars' } }
+        }
+      })
+
+      expect(version).to be_invalid
+      expect(version.errors.details[:manifest]).to include(hash_including(error: :config_schema_invalid))
+    end
+
+    it 'accepts the fields the sidebar can render' do
+      version = build(:custom_block_version, manifest: {
+        'config_schema' => {
+          'type' => 'object',
+          'properties' => {
+            'title' => { 'type' => 'string', 'x-multiloc' => true },
+            'mode' => { 'type' => 'string', 'enum' => %w[bars lines] },
+            'showValues' => { 'type' => 'boolean' }
+          }
+        }
+      })
+
+      expect(version).to be_valid
+    end
+
     it 'accepts a manifest with no config_schema' do
       expect(build(:custom_block_version, manifest: { 'targets' => ['report'] })).to be_valid
     end

@@ -14,6 +14,10 @@ class WebApi::V1::CommonGround::ResultsSerializer < WebApi::V1::BaseSerializer
     serialize_ideas(object.top_controversial_ideas)
   end
 
+  attributes :ideas_by_agreement do |object|
+    serialize_ideas(object.ideas_by_agreement)
+  end
+
   private_class_method def self.serialize_ideas(ideas)
     ideas.map do |idea|
       {

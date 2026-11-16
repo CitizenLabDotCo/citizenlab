@@ -15,6 +15,10 @@ import { CUSTOM_PAGE_BUILDER_PATH } from 'components/admin/ContentBuilder/consta
 import { ContentBuilderLayoutProvider } from 'components/admin/ContentBuilder/context/ContentBuilderLayoutContext';
 import DropPlacementOverlay from 'components/admin/ContentBuilder/DropFeedback/DropPlacementOverlay';
 import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
+import {
+  getSaveError,
+  SaveError,
+} from 'components/admin/ContentBuilder/saveError';
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
 import { normalizeCustomPageLayout } from 'components/CustomPageBuilder/defaultLayout';
 import CustomPageBuilderEditModePreview from 'components/CustomPageBuilder/EditModePreview';
@@ -60,7 +64,7 @@ const CustomPageBuilderPage = ({
     useState<ContentBuilderErrors>({});
   const [imageUploading, setImageUploading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  const [saveError, setSaveError] = useState(false);
+  const [saveError, setSaveError] = useState<SaveError | null>(null);
 
   // Memoised so the frame doesn't re-deserialize on every render.
   const editorData = useMemo(
@@ -99,7 +103,7 @@ const CustomPageBuilderPage = ({
   const handleSave = async (nodes: SerializedNodes): Promise<void> => {
     if (isSaving) return;
     setIsSaving(true);
-    setSaveError(false);
+    setSaveError(null);
 
     try {
       const title = getTitleDraft(nodes);
@@ -115,8 +119,8 @@ const CustomPageBuilderPage = ({
         { layoutSaved: true },
         window.location.href
       );
-    } catch {
-      setSaveError(true);
+    } catch (error) {
+      setSaveError(getSaveError(error));
     } finally {
       setIsSaving(false);
     }
@@ -155,7 +159,7 @@ const CustomPageBuilderPage = ({
             titleMultiloc={titleMultiloc}
             onSave={handleSave}
             isSaving={isSaving}
-            saveHasError={saveError}
+            saveError={saveError}
           />
           <Box
             mt={`${stylingConsts.menuHeight}px`}

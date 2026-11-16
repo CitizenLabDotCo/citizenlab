@@ -19,6 +19,7 @@ interface Props {
   icon?: IconNames;
   id: string;
   width: string;
+  maxHeight?: string;
   content: JSX.Element;
   disabled?: boolean;
 }
@@ -31,6 +32,7 @@ const HeaderDropdown = ({
   icon,
   id,
   width,
+  maxHeight = 'none',
   content,
   disabled,
 }: Props) => {
@@ -63,7 +65,7 @@ const HeaderDropdown = ({
         top="36px"
         right="0px"
         width={width}
-        maxHeight="none"
+        maxHeight={maxHeight}
         zIndex="2000"
         borderRadius={bo.borderRadius}
         content={content}

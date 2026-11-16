@@ -13,9 +13,11 @@ import PillPickerPopover from 'components/UI/PillPicker/PillPickerPopover';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../../messages';
+import projectSetupPanelMessages from '../messages';
 import SetupCard from '../SetupCard';
 import { getDraftValues, useSetupDraft } from '../SetupDraftContext';
+
+import messages from './messages';
 
 interface Props {
   project: IProjectData;
@@ -36,7 +38,7 @@ const TopicTagsCard = ({ project, ready }: Props) => {
   const topicsTerm =
     appConfiguration &&
     localize(coreSettings(appConfiguration.data).topics_term);
-  const title = formatMessage(messages.topicTags);
+  const title = formatMessage(projectSetupPanelMessages.topicTags);
 
   const toggleTopic = (topicId: string) => {
     changeProject({

@@ -14,6 +14,34 @@ RSpec.describe InputTopic do
   it_behaves_like 'a plain text multiloc', factory: :input_topic
   it_behaves_like 'a decoration-only description', factory: :input_topic
 
+  describe 'icon' do
+    it 'accepts a single emoji' do
+      expect(build(:input_topic, icon: '🚲')).to be_valid
+    end
+
+    it 'accepts no icon' do
+      expect(build(:input_topic, icon: nil)).to be_valid
+      expect(build(:input_topic, icon: '')).to be_valid
+    end
+
+    it 'rejects markup' do
+      topic = build(:input_topic, icon: '<img src=x onerror=alert(1)>')
+      expect(topic).not_to be_valid
+      expect(topic.errors.details[:icon]).to include(error: :invalid)
+    end
+
+    it 'rejects more than one emoji' do
+      expect(build(:input_topic, icon: '🚲🚗')).not_to be_valid
+    end
+
+    it 'still lets a stored legacy icon be saved when the icon itself is not changed' do
+      topic = create(:input_topic)
+      topic.update_column(:icon, 'medical')
+
+      expect(topic.reload.update(title_multiloc: { 'en' => 'Renamed' })).to be true
+    end
+  end
+
   describe 'order_ideas_count' do
     # topic 0: ideas 1, 3, 6 (3)
     # topic 1: / (0)

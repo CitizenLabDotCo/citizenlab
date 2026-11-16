@@ -107,8 +107,9 @@ module ReportBuilder
       messages.count { |message| message['role'] == 'assistant' }
     end
 
-    # What this run adds to a prompt that replays it, near enough to budget by.
-    def size_in_chars = messages.to_json.size
+    # What this run adds to a prompt that replays it. Asked of the code that does the
+    # replaying, so that what is budgeted for and what is sent cannot drift apart.
+    def size_in_chars = Composition::Messages.replayed_size(messages)
 
     # What the run cost, once the provider's cache is taken into account. A cache read
     # figure of zero on a multi-round run means the prompt is not stable and every

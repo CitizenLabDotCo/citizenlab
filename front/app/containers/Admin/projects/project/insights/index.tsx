@@ -30,6 +30,7 @@ import { useParams } from 'utils/router';
 import { getAnalysisScope } from '../../_shared/components/AnalysisBanner/utils';
 
 import DemographicsSection from './demographics/DemographicsSection';
+import getExportFilename from './getExportFilename';
 import messages from './messages';
 import MethodSpecificInsights from './methodSpecific/MethodSpecificInsights';
 import SurveyActions from './methodSpecific/nativeSurvey/SurveyActions';
@@ -37,6 +38,7 @@ import ParticipantsTimeline from './ParticipantsTimeline';
 import ParticipationMetrics from './participationMetrics/ParticipationMetrics';
 import InsightsPdfContent from './pdf/InsightsPdfContent';
 import { PdfExportProvider, usePdfExportContext } from './pdf/PdfExportContext';
+import PdfRenderModeProvider from './pdf/PdfRenderModeProvider';
 import wordMessages from './word/messages';
 import {
   WordExportProvider,
@@ -370,9 +372,9 @@ const InsightsContent = () => {
 
       {isDownloadingPdf && (
         <div style={hiddenContainerStyle}>
-          <PdfExportProvider isPdfRenderMode>
+          <PdfRenderModeProvider>
             <InsightsPdfContent phase={phase.data} />
-          </PdfExportProvider>
+          </PdfRenderModeProvider>
         </div>
       )}
     </>
@@ -394,11 +396,7 @@ const AdminPhaseInsights = () => {
     ? localize(phaseTitle) || `phase-${phaseId}`
     : `phase-${phaseId}`;
 
-  // Sanitize filename: replace spaces and special characters
-  const sanitizedPhaseName = phaseName
-    .replace(/[^a-zA-Z0-9\s-]/g, '')
-    .replace(/\s+/g, '-')
-    .toLowerCase();
+  const sanitizedPhaseName = getExportFilename(phaseName, phaseId);
 
   const participationMethod = phase?.data.attributes.participation_method;
 

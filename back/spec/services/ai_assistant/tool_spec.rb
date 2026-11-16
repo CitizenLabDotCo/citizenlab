@@ -3,6 +3,12 @@
 require 'rails_helper'
 
 describe AIAssistant::Tool do
+  it 'is not read-only without an explicit read_only_hint' do
+    tool_class = Class.new(McpServer::Tools::GetFormFields) { def annotations = nil }
+
+    expect(described_class.new(tool_class)).not_to be_read_only
+  end
+
   it 'tags the activities of the tools it runs with the assistant channel' do
     phase = create(:native_survey_phase, project: create(:project, :draft))
     tool = described_class.new(McpServer::Tools::ReplaceFormFields)

@@ -6,7 +6,7 @@ import {
   IFlatCustomField,
 } from 'api/custom_fields/types';
 
-import { builtInFieldKeys } from 'components/FormBuilder/utils';
+import { builtInFieldKeys } from 'components/FormBuilder/fieldLabels';
 
 import { MessageDescriptor } from 'utils/cl-intl';
 
@@ -57,7 +57,7 @@ const getBuiltinFieldBadgeLabel = (key: string): MessageDescriptor => {
   }
 };
 
-const getCustomFieldBadgeLabel = (
+export const getCustomFieldBadgeLabel = (
   inputType: ICustomFieldInputType
 ): MessageDescriptor => {
   switch (inputType) {

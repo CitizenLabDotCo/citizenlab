@@ -30,6 +30,20 @@ export const getErrorMessage = (
       return messages.errorToolBudgetExceeded;
     case 'conversation_busy':
       return messages.errorConversationBusy;
+    case 'tool_call_expired':
+      return messages.errorToolCallExpired2;
+    case 'tool_call_not_awaiting_user':
+      return messages.errorToolCallNotAwaitingApproval;
+    case 'not_in_project':
+      return messages.errorFileNotInProject;
+    case 'ai_processing_not_allowed':
+      return messages.errorAiProcessingNotAllowed;
+    case 'unsupported_file_type':
+      return messages.errorUnsupportedFileType2;
+    case 'not_utf8':
+      return messages.errorFileNotUtf8;
+    case 'too_many_in_conversation':
+      return messages.errorTooManyConversationFiles;
     case 'too_long':
       return messages.errorTooLong;
     default:

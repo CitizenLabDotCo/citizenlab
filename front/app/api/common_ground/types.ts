@@ -36,6 +36,7 @@ export interface CommonGroundResultsData {
     stats: Stats;
     top_consensus_ideas: CommonGroundResultItem[];
     top_controversial_ideas: CommonGroundResultItem[];
+    ideas_by_agreement: CommonGroundResultItem[];
   };
 }
 

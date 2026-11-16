@@ -11,12 +11,13 @@ import {
 import { FILE_CATEGORIES, FileCategory } from 'api/files/types';
 
 import { UploadStatus } from 'containers/Admin/projects/_shared/fileUploads/types';
-import messages from 'containers/Admin/projects/project/backofficeRedesign/messages';
 import filesMessages from 'containers/Admin/projects/project/files/components/messages';
 
 import { useIntl } from 'utils/cl-intl';
 
 import FileRow from '../FileRow';
+
+import messages from './messages';
 
 interface Props {
   file: File;

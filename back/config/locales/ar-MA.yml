@@ -140,9 +140,15 @@ ar-MA:
           title: ما هو موضوعك؟
   errors:
     messages:
+      ai_processing_not_allowed: يقدر ما يتعالجش من طرف الذكاء الاصطناعي
       in_the_past: يجب أن يكون ذلك في المستقبل
       max_must_be_greater_than_min_characters: يجب أن يكون الحد الأقصى أكبر من الحد الأدنى.
       max_must_be_greater_than_or_equal_to_min_select_count: يجب أن يكون الحد الأقصى أكبر من أو يساوي الحد الأدنى.
+      not_found: ما تلقاوش
+      not_in_project: خاصها تكون ملفات ديال هاد المشروع
+      not_utf8: خاصها تكون محفوظة بصيغة UTF-8
+      too_many_in_conversation: كثار بزاف على محادثة وحدة
+      unsupported_file_type: خاصها تكون ملفات PDF بحد أقصى 4 ميجابايت، أو ملفات Markdown أو نص بحد أقصى 100 كيلوبايت
   events:
     council_meeting_description: |
       <p> في اجتماع المجلس هذا، سيتم تقديم مبادرات المواطنين التي حصلت على 100 صوت في أقل من 3 أشهر. </p><p>سيتبادل أعضاء المجلس وجهات النظر حول كل فكرة.</p>

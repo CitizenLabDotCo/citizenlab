@@ -14,13 +14,13 @@ import { useValidateProjectContext } from 'containers/Admin/projects/_shared/com
 import SettingsModal, {
   SettingsModalSection,
 } from 'containers/Admin/projects/project/backofficeRedesign/_shared/components/SettingsModal';
-import messages from 'containers/Admin/projects/project/backofficeRedesign/messages';
 
 import { useIntl } from 'utils/cl-intl';
 import { validateSlug } from 'utils/textUtils';
 
 import DiscardChangesModal from './DiscardChangesModal';
 import GeneralSection from './GeneralSection';
+import messages from './messages';
 import PerspectivesSection from './PerspectivesSection';
 import ResourcesSection from './ResourcesSection';
 import useFilesDraft from './ResourcesSection/useFilesDraft';

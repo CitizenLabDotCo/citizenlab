@@ -289,5 +289,21 @@ resource 'Idea Custom Fields' do
         assert_status 401
       end
     end
+
+    context 'when project moderator passes a phase_id from another project' do
+      let(:own_project) { create(:single_phase_native_survey_project) }
+      let(:own_form) { create(:custom_form, participation_context: own_project.phases.first) }
+      let(:own_custom_field_point) { create(:custom_field_point, resource: own_form) }
+
+      # The moderator moderates own_project, not the project the phase_id points to.
+      let(:custom_field_id) { own_custom_field_point.id }
+
+      before { header_token_for create(:project_moderator, projects: [own_project]) }
+
+      example_request 'Does not leak responses from the project in the phase_id' do
+        assert_status 200
+        expect(response_body).not_to include idea1.author.email
+      end
+    end
   end
 end

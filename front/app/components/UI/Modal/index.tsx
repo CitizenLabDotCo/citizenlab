@@ -290,6 +290,8 @@ const ModalContentContainerSwitch = ({
   return <StyledFocusOn width={width}>{children}</StyledFocusOn>;
 };
 
+export const MEDIUM_MODAL_WIDTH = 560;
+
 interface BaseProps {
   'data-testid'?: string;
   variant?: Variant;

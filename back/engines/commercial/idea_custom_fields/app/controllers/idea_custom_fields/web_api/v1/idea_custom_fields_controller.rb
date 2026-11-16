@@ -59,7 +59,7 @@ module IdeaCustomFields
     def as_geojson
       raise_error_if_not_geographic_field
 
-      @phase = Phase.find(params[:phase_id])
+      @phase = @custom_field.resource.participation_context
       geojson = I18n.with_locale(current_user.locale) do
         geojson_generator.generate_geojson
       end

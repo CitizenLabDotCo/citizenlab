@@ -7,11 +7,14 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 
+import AttachedFileName from './AttachedFileName';
+
 type Props = {
   content: string | null;
+  fileIds: string[];
 };
 
-const UserMessage = ({ content }: Props) => (
+const UserMessage = ({ content, fileIds }: Props) => (
   <Box
     alignSelf="flex-end"
     maxWidth="90%"
@@ -24,6 +27,9 @@ const UserMessage = ({ content }: Props) => (
         {content}
       </Text>
     )}
+    {fileIds.map((fileId) => (
+      <AttachedFileName key={fileId} fileId={fileId} />
+    ))}
   </Box>
 );
 

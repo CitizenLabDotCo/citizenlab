@@ -143,7 +143,11 @@ module ParticipationMethod
       false
     end
 
-    delegate :user_data_collection, to: :posting_permission
+    def user_data_collection
+      return 'all_data' if posting_permission.nil?
+
+      posting_permission.user_data_collection
+    end
 
     def user_fields_in_form_enabled?
       return false if posting_permission.nil?

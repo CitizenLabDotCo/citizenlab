@@ -13,9 +13,7 @@ module ContentBuilder
     # the type error and the rejected query in the same answer, and fixes both in one
     # edit. No database is touched — validation is a parse.
     class BlockBuilder
-      Result = Data.define(:ok, :bundle, :manifest, :diagnostics, :toolchain) do
-        def ok? = ok
-
+      Result = Data.define(:succeeded, :bundle, :manifest, :diagnostics, :toolchain) do
         # One block of text, which is what a tool result is.
         def diagnostics_text
           diagnostics.map { |d| "- #{d}" }.join("\n")
@@ -61,11 +59,11 @@ module ContentBuilder
         queries, sql_diagnostics = validate_queries(response.dig('manifest', 'queries'))
         diagnostics += sql_diagnostics
 
-        ok = response['ok'] && sql_diagnostics.empty?
+        succeeded = response['ok'] && sql_diagnostics.empty?
 
         Result.new(
-          ok: ok,
-          bundle: ok ? response['bundle'] : nil,
+          succeeded: succeeded,
+          bundle: succeeded ? response['bundle'] : nil,
           manifest: manifest.merge('queries' => queries),
           diagnostics: diagnostics,
           toolchain: response['toolchain'] || {}

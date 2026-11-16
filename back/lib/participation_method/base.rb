@@ -65,6 +65,25 @@ module ParticipationMethod
       # Default is to do nothing.
     end
 
+    def ensure_default_form!
+      form = custom_form
+
+      if form.new_record?
+        form = create_default_form!
+        form&.participation_context&.reload_custom_form
+      elsif !form.custom_fields.exists?
+        ActiveRecord::Base.transaction do
+          default_fields(form).reverse_each do |field|
+            field.save!
+            field.move_to_top
+          end
+        end
+        form.custom_fields.reload
+      end
+
+      form
+    end
+
     def custom_form
       context = transitive? ? phase.project : phase
       context.custom_form || CustomForm.new(participation_context: context)
@@ -250,6 +269,18 @@ module ParticipationMethod
     # Only implemented in native_survey and community monitor
     def user_data_collection
       'all_data'
+    end
+
+    # Distinct from 'demographics_only', which also drops the user id but keeps
+    # the demographic answers.
+    def fully_anonymous?
+      user_data_collection == 'anonymous'
+    end
+
+    # 'demographics_only' keeps the demographics but drops the respondent's
+    # identity, so only 'all_data' may name an author.
+    def identifies_author?
+      user_data_collection == 'all_data'
     end
 
     # Only implemented in native_survey, community monitor and ideation

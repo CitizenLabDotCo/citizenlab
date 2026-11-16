@@ -40,12 +40,25 @@ module AIAssistant
       Pundit.policy!(user, subject).update?
     end
 
+    def project_id
+      subject.try(:project_id)
+    end
+
     def tools
       raise NotImplementedError
     end
 
     def tool(name)
       tools.find { |tool| tool.name == name }
+    end
+
+    def stale?(_tool_call)
+      false
+    end
+
+    # Why the model can't make this write call yet, or nil. The error goes back to the model.
+    def write_call_error(_tool, _conversation)
+      nil
     end
 
     def system_prompt(locale:)

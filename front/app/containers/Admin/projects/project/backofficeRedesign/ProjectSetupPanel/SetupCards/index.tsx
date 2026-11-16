@@ -5,12 +5,13 @@ import { IProjectData } from 'api/projects/types';
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
-import messages from '../../messages';
+import projectSetupPanelMessages from '../messages';
 import SetupCard from '../SetupCard';
 import { SetupReadiness } from '../useSetupReadiness';
 
 import AreaCard from './AreaCard';
 import HomepageCardFields from './HomepageCardFields';
+import messages from './messages';
 import TopicTagsCard from './TopicTagsCard';
 
 interface Props {
@@ -26,18 +27,18 @@ const SetupCards = ({ project, readiness, onOpenSettings }: Props) => {
     <>
       <SetupCard
         id="e2e-setup-card-general"
-        title={formatMessage(messages.generalInformation)}
+        title={formatMessage(projectSetupPanelMessages.generalInformation)}
         ready={readiness?.general}
         behaviour={{
           kind: 'action',
           icon: 'chevron-right',
-          actionLabel: formatMessage(messages.projectSettings),
+          actionLabel: formatMessage(projectSetupPanelMessages.projectSettings),
           onClick: onOpenSettings,
         }}
       />
       <SetupCard
         id="e2e-setup-card-project-page"
-        title={formatMessage(messages.projectPageItem)}
+        title={formatMessage(projectSetupPanelMessages.projectPageItem)}
         ready={readiness?.page}
         behaviour={{
           kind: 'action',
@@ -51,7 +52,7 @@ const SetupCards = ({ project, readiness, onOpenSettings }: Props) => {
       />
       <SetupCard
         id="e2e-setup-card-homepage-card"
-        title={formatMessage(messages.homepageCard)}
+        title={formatMessage(projectSetupPanelMessages.homepageCard)}
         ready={readiness?.homepageCard}
         behaviour={{
           kind: 'expand',

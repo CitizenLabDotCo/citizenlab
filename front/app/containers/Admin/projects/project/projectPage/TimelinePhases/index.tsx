@@ -2,25 +2,23 @@ import React from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
 
-import { ParticipationMethod } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
 import { getPhaseLandingTab } from 'api/phases/utils';
 
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
-import methodMessages from 'containers/Admin/inspirationHub/messages';
-
 import { getLocale } from 'components/admin/DatePickers/_shared/locales';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
-import { MessageDescriptor, useIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { useParams } from 'utils/router';
 
 import messages from '../messages';
 import {
   Connector,
+  METHOD_LABELS,
   PHASE_TAB_ROUTES,
   PhaseDot,
   Row,
@@ -32,20 +30,6 @@ import EmptyState from './EmptyState';
 import PhaseOptionsMenu from './PhaseOptionsMenu';
 import PhaseRowWithOptions from './PhaseRowWithOptions';
 import PhaseStep from './PhaseStep';
-
-const METHOD_LABELS: Record<ParticipationMethod, MessageDescriptor> = {
-  ideation: methodMessages.ideation,
-  proposals: methodMessages.proposals,
-  native_survey: methodMessages.survey,
-  community_monitor_survey: methodMessages.communityMonitorSurvey,
-  survey: methodMessages.externalSurvey,
-  information: methodMessages.information,
-  voting: methodMessages.voting,
-  poll: methodMessages.poll,
-  volunteering: methodMessages.volunteering,
-  common_ground: methodMessages.commonGround,
-  document_annotation: methodMessages.documentAnnotation,
-};
 
 interface Props {
   projectId: string;
@@ -119,8 +103,9 @@ const TimelinePhases = ({
               {redesign ? (
                 <PhaseStep
                   phase={phase}
+                  placement="timeline"
                   selected={isSelected}
-                  isLast={isLast}
+                  withLine={!isLast}
                   withOptions={withPhaseOptions}
                 />
               ) : (

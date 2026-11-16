@@ -20,9 +20,6 @@ import useUpdatePhase from 'api/phases/useUpdatePhase';
 import useProjectById from 'api/projects/useProjectById';
 import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
 import useDeleteSurveyResults from 'api/survey_results/useDeleteSurveyResults';
-import { downloadSurveyResults } from 'api/survey_results/utils';
-
-import useLocale from 'hooks/useLocale';
 
 import projectFilesMessages from 'containers/Admin/projects/project/files/components/messages';
 import useInputResponseExport from 'containers/Admin/projects/project/inputResponseExport/useInputResponseExport';
@@ -47,7 +44,6 @@ interface Props {
 }
 
 const SurveyActions = ({ phase }: Props) => {
-  const locale = useLocale();
   const { formatMessage } = useIntl();
   const projectId = phase.relationships.project.data.id;
   const phaseId = phase.id;
@@ -91,7 +87,6 @@ const SurveyActions = ({ phase }: Props) => {
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isDropdownOpened, setDropdownOpened] = useState(false);
-  const [isDownloadingXlsx, setIsDownloadingXlsx] = useState(false);
 
   if (!project || !submissionCount) {
     return null;
@@ -137,18 +132,6 @@ const SurveyActions = ({ phase }: Props) => {
         },
       }
     );
-  };
-
-  const handleDownloadXlsx = async () => {
-    try {
-      setIsDownloadingXlsx(true);
-      setDropdownOpened(false);
-      await downloadSurveyResults(locale, phase);
-    } catch (error) {
-      // eslint-disable-next-line no-empty
-    } finally {
-      setIsDownloadingXlsx(false);
-    }
   };
 
   const openAnalysis = (analysisId: string) => {
@@ -234,8 +217,7 @@ const SurveyActions = ({ phase }: Props) => {
     }
   };
 
-  const isAnyDownloading =
-    isDownloadingXlsx || isDownloadingPdf || isDownloadingWord;
+  const isAnyDownloading = isDownloadingPdf || isDownloadingWord;
   const exportStatusText =
     (isDownloadingPdf && getPdfStatusText()) ||
     (isDownloadingWord && getWordStatusText()) ||
@@ -329,13 +311,6 @@ const SurveyActions = ({ phase }: Props) => {
                         {formatMessage(projectFilesMessages.beta)}
                       </Badge>
                     }
-                  />
-                  <ExportDropdownItem
-                    label={`${formatMessage(
-                      messages.downloadSurveyResults
-                    )} (.xlsx)`}
-                    onClick={handleDownloadXlsx}
-                    data-cy="e2e-download-survey-results"
                   />
                 </Box>
               }

@@ -131,6 +131,7 @@ class AdminPublication < ApplicationRecord
   def archived? = effective_publication_status == 'archived'
   def published? = effective_publication_status == 'published'
   def draft? = effective_publication_status == 'draft'
+  def scheduled_for_publication? = scheduled_status == 'published'
 
   def ever_published?
     # `published?` allows for a due schedule to count as published.

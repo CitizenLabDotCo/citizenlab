@@ -23,8 +23,9 @@ import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWi
 import { useIntl } from 'utils/cl-intl';
 import { convertUrlToUploadFile, isUploadFile } from 'utils/fileUtils';
 
-import messages from '../../messages';
 import { useSetupDraft } from '../SetupDraftContext';
+
+import messages from './messages';
 
 interface Props {
   project: IProjectData;

@@ -15,16 +15,19 @@ import QuestionHeader from 'containers/Admin/projects/project/analysis/Insights/
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { useParams } from 'utils/router';
 
 import messages from '../../../messages';
 
 const Question = ({
   questionId,
   analysisId,
+  projectId,
+  phaseId,
 }: {
   questionId: string;
   analysisId: string;
+  projectId: string;
+  phaseId?: string;
 }) => {
   const { formatMessage } = useIntl();
 
@@ -34,10 +37,6 @@ const Question = ({
   });
 
   const { data } = useAnalysisQuestion({ analysisId, id: questionId });
-  const { projectId, phaseId } = useParams({ strict: false }) as {
-    projectId: string;
-    phaseId: string;
-  };
 
   const { mutate: regenerateQuestion, isPending: isLoadingRegenerateQuestion } =
     useRegenerateAnalysisQuestion();
@@ -66,71 +65,63 @@ const Question = ({
   }
 
   return (
-    <>
-      {(!question || !answer) && <Spinner />}
-
-      <Box
-        flexDirection="column"
-        justifyContent="space-between"
-        h="460px"
-        gap="16px"
-        display={!question || !answer ? 'none' : 'flex'}
-      >
-        <Box overflowY="auto" h="100%">
-          <QuestionHeader question={question} />
-          <InsightBody
-            text={answer}
-            filters={filters}
-            fileIds={fileIds}
-            analysisId={analysisId}
-            projectId={projectId}
-            phaseId={phaseId}
-            generatedAt={generatedAt}
-            // TODO: Fix this the next time the file is edited.
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            backgroundTaskId={data?.data.relationships.background_task.data.id}
-          />
-        </Box>
-        <InsightFooter
+    <Box
+      flexDirection="column"
+      justifyContent="space-between"
+      h="460px"
+      gap="16px"
+      display="flex"
+    >
+      <Box overflowY="auto" h="100%">
+        <QuestionHeader question={question} />
+        <InsightBody
+          text={answer}
           filters={filters}
-          generatedAt={generatedAt}
+          fileIds={fileIds}
           analysisId={analysisId}
           projectId={projectId}
           phaseId={phaseId}
-          // TODO: Fix this the next time the file is edited.
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-          customFieldIds={data?.data.attributes.custom_field_ids}
+          generatedAt={generatedAt}
+          backgroundTaskId={data.data.relationships.background_task.data.id}
         />
-        <Box display="flex" gap="16px">
-          <ButtonWithLink
-            disabled={refreshDisabled}
-            buttonStyle="secondary-outlined"
-            icon="refresh"
-            onClick={() => {
-              regenerateQuestion({ analysisId, questionId });
-            }}
-            processing={isLoadingRegenerateQuestion}
-          >
-            <FormattedMessage
-              {...messages.refresh}
-              values={{ count: missingInputsCount }}
-            />
-          </ButtonWithLink>
-          <ButtonWithLink
-            buttonStyle="secondary-outlined"
-            icon="eye"
-            to="/admin/projects/$projectId/analysis/$analysisId"
-            params={{ projectId, analysisId }}
-            search={{
-              ...filters,
-              phase_id: phaseId,
-            }}
-          >
-            {formatMessage(messages.explore)}
-          </ButtonWithLink>
-        </Box>
       </Box>
-    </>
+      <InsightFooter
+        filters={filters}
+        generatedAt={generatedAt}
+        analysisId={analysisId}
+        projectId={projectId}
+        phaseId={phaseId}
+        customFieldIds={data.data.attributes.custom_field_ids}
+      />
+      <Box display="flex" gap="16px">
+        <ButtonWithLink
+          disabled={refreshDisabled}
+          buttonStyle="secondary-outlined"
+          icon="refresh"
+          onClick={() => {
+            regenerateQuestion({ analysisId, questionId });
+          }}
+          processing={isLoadingRegenerateQuestion}
+        >
+          <FormattedMessage
+            {...messages.refresh}
+            values={{ count: missingInputsCount }}
+          />
+        </ButtonWithLink>
+        <ButtonWithLink
+          buttonStyle="secondary-outlined"
+          icon="eye"
+          to="/admin/projects/$projectId/analysis/$analysisId"
+          params={{ projectId, analysisId }}
+          search={{
+            ...filters,
+            phase_id: phaseId,
+          }}
+        >
+          {formatMessage(messages.explore)}
+        </ButtonWithLink>
+      </Box>
+    </Box>
   );
 };
 

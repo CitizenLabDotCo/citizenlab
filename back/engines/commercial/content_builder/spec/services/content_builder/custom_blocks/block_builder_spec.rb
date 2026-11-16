@@ -39,7 +39,7 @@ describe ContentBuilder::CustomBlocks::BlockBuilder do
     it 'is ok, with the bundle and the toolchain that produced it' do
       result = build
 
-      expect(result).to be_ok
+      expect(result.succeeded).to be true
       expect(result.bundle).to eq 'export default () => null;'
       expect(result.toolchain).to eq('esbuild' => '0.28.2')
       expect(result.diagnostics).to be_empty
@@ -68,7 +68,7 @@ describe ContentBuilder::CustomBlocks::BlockBuilder do
     it 'is not ok and has no bundle' do
       result = build
 
-      expect(result).not_to be_ok
+      expect(result.succeeded).to be false
       expect(result.bundle).to be_nil
     end
 
@@ -90,7 +90,7 @@ describe ContentBuilder::CustomBlocks::BlockBuilder do
     end
 
     it 'is not ok even though the source itself compiled' do
-      expect(build).not_to be_ok
+      expect(build.succeeded).to be false
     end
 
     it 'says which query was refused and why' do

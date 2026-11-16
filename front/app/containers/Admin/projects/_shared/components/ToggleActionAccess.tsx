@@ -18,7 +18,7 @@ const ToggleActionAccess = ({ phaseId, action, children }: Props) => (
     alignItems="center"
     justifyContent="space-between"
     gap="12px"
-    minHeight="36px"
+    minHeight="42px"
   >
     {children}
     <PhaseActionAccess phaseId={phaseId} action={action} />

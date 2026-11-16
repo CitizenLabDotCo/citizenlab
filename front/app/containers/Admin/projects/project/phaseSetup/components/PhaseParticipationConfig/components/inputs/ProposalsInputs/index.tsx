@@ -1,6 +1,12 @@
 import React from 'react';
 
-import { Box, Input, IOption, Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Input,
+  IOption,
+  Text,
+  bo,
+} from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
 import {
@@ -13,6 +19,7 @@ import {
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';
+import PanelHeading from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelHeading';
 import messages from 'containers/Admin/projects/project/messages';
 
 import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle';
@@ -231,25 +238,6 @@ const ProposalsInputs = ({
     />
   ) : null;
 
-  const userActions = (
-    <UserActions
-      submission_enabled={submission_enabled || false}
-      commenting_enabled={commenting_enabled || false}
-      reacting_enabled={reacting_enabled || false}
-      togglePostingEnabled={togglePostingEnabled}
-      toggleCommentingEnabled={toggleCommentingEnabled}
-      toggleReactingEnabled={toggleReactingEnabled}
-      apiErrors={apiErrors}
-      reacting_like_method={reacting_like_method}
-      reacting_like_limited_max={reacting_like_limited_max}
-      noLikingLimitError={noLikingLimitError}
-      handleReactingLikeMethodOnChange={handleReactingLikeMethodOnChange}
-      handleLikingLimitOnChange={handleLikingLimitOnChange}
-      phaseId={phaseId}
-      layout={layout}
-    />
-  );
-
   const likes = reacting_enabled && (
     <ReactionLimitSettings
       name="likingmethod"
@@ -267,6 +255,28 @@ const ProposalsInputs = ({
             apiErrors={apiErrors && apiErrors.reacting_limit}
           />
         </>
+      }
+    />
+  );
+
+  const userActions = (
+    <UserActions
+      submission_enabled={submission_enabled || false}
+      commenting_enabled={commenting_enabled || false}
+      reacting_enabled={reacting_enabled || false}
+      togglePostingEnabled={togglePostingEnabled}
+      toggleCommentingEnabled={toggleCommentingEnabled}
+      toggleReactingEnabled={toggleReactingEnabled}
+      apiErrors={apiErrors}
+      reacting_like_method={reacting_like_method}
+      reacting_like_limited_max={reacting_like_limited_max}
+      noLikingLimitError={noLikingLimitError}
+      handleReactingLikeMethodOnChange={handleReactingLikeMethodOnChange}
+      handleLikingLimitOnChange={handleLikingLimitOnChange}
+      phaseId={phaseId}
+      layout={layout}
+      reactingSettings={
+        layout === 'panel' && <Box pl={bo.toggleLabelIndent}>{likes}</Box>
       }
     />
   );
@@ -316,15 +326,22 @@ const ProposalsInputs = ({
   if (layout === 'panel') {
     return (
       <>
-        <Box pt="22px">
-          <PanelGroup
-            label={formatMessage(configMessages.participantActionsGroup)}
-            defaultOpen
-          >
-            {userActions}
-            {likes}
-          </PanelGroup>
+        <Box mb="10px">
+          <PanelHeading
+            label={formatMessage(configMessages.howProposalsAreShown)}
+          />
         </Box>
+        {views}
+        {sorting}
+        <Box mb="10px">
+          <PanelHeading label={formatMessage(configMessages.settingsGroup)} />
+        </Box>
+        <PanelGroup
+          label={formatMessage(configMessages.participantActionsGroup)}
+          defaultOpen
+        >
+          {userActions}
+        </PanelGroup>
         {requirements}
         <PanelGroup
           label={formatMessage(configMessages.moderationGroup)}
@@ -337,8 +354,6 @@ const ProposalsInputs = ({
             {similarity}
           </Box>
         </PanelGroup>
-        {views}
-        {sorting}
       </>
     );
   }

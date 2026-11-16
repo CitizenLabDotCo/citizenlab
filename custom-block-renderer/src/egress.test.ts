@@ -1,7 +1,11 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 
-import { isAllowedRequest, isPrivateHost } from "./egress.ts";
+import {
+  isAllowedRequest,
+  isPrivateHost,
+  parseAllowedOrigins,
+} from "./egress.ts";
 
 const APP = "https://riverside.govocal.com";
 const OWN = [APP];
@@ -33,11 +37,59 @@ test("an origin that is missing or unreadable grants nothing", () => {
   );
 });
 
-test("public web hosts are allowed, for the CDN and the fonts the app loads", () => {
-  assert.equal(isAllowedRequest("https://cdn.example.com/app.js", OWN), true);
+test("a public host nobody listed is refused", () => {
+  // The page holds a token that reads this layout's data, and a collector looks
+  // exactly like a font host from here.
+  assert.equal(isAllowedRequest("https://cdn.example.com/app.js", OWN), false);
   assert.equal(
-    isAllowedRequest("https://fonts.gstatic.com/s/a.woff2", OWN),
+    isAllowedRequest("https://attacker.example/collect?t=ey.J", OWN),
+    false
+  );
+});
+
+test("a deployment can add an origin, matched exactly", () => {
+  const allowed = [APP, ...parseAllowedOrigins("https://tiles.example.com")];
+
+  assert.equal(
+    isAllowedRequest("https://tiles.example.com/1/2/3.png", allowed),
     true
+  );
+  assert.equal(isAllowedRequest("https://other.example.com/", allowed), false);
+  // A host that merely ends in the listed one is a different host.
+  assert.equal(
+    isAllowedRequest("https://tiles.example.com.evil.test/", allowed),
+    false
+  );
+  // And so is the same host on another scheme or port.
+  assert.equal(isAllowedRequest("http://tiles.example.com/", allowed), false);
+  assert.equal(
+    isAllowedRequest("https://tiles.example.com:8443/", allowed),
+    false
+  );
+});
+
+test("the configured list drops what cannot be an origin, and what is private", () => {
+  assert.deepEqual(parseAllowedOrigins(undefined), []);
+  assert.deepEqual(
+    parseAllowedOrigins(
+      "https://tiles.example.com/styles/x.json, http://169.254.169.254," +
+        " http://db.internal, file:///etc/passwd, not an origin, "
+    ),
+    ["https://tiles.example.com"]
+  );
+});
+
+test("a socket is held to the same list as a request", () => {
+  assert.equal(isAllowedRequest("wss://riverside.govocal.com/x", OWN), true);
+  assert.equal(isAllowedRequest("wss://attacker.example/x", OWN), false);
+  // Vite's reload socket in development, on the front end's own port.
+  assert.equal(
+    isAllowedRequest("ws://localhost:3000/", ["http://localhost:3000"]),
+    true
+  );
+  assert.equal(
+    isAllowedRequest("ws://localhost:5000/", ["http://localhost:3000"]),
+    false
   );
 });
 

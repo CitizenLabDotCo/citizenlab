@@ -204,6 +204,9 @@
   "events": {
     "de-DE": "Veranstaltungen"
   },
+  "AI Sensemaking": {
+    "de-DE": "KI-Analyse"
+  },
   "manager": {
     "da-DK": "projektleder",
     "de-DE": "Manager*innen",
@@ -365,6 +368,9 @@
   },
   "sign in": {
     "nl-NL": "inloggen"
+  },
+  "visitors": {
+    "de-DE": "Besucher*innen"
   },
   "traffic sources": {
     "nl-NL": "kanalen"

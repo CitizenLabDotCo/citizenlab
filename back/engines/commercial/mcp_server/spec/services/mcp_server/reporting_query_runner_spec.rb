@@ -43,6 +43,16 @@ RSpec.describe McpServer::ReportingQueryRunner do
     end
 
     it 'runs as the analytics_reader role, not as the application user' do
+      # Layer 1 refuses `current_user`: it is a keyword, not an allowlisted
+      # function, which leaves no sandboxed query able to name the role. Layer 1 is
+      # stubbed past here so the question reaches layer 2, which is what is under
+      # test; sql_sandboxer_spec covers the refusal itself.
+      allow(McpServer::SqlSandboxer).to receive(:validate).and_return(
+        McpServer::SqlSandboxer::Result.new(
+          valid: true, error: nil, normalized_sql: 'SELECT current_user AS u'
+        )
+      )
+
       result = described_class.run('SELECT current_user AS u')
 
       expect(result.rows).to eq([{ 'u' => 'analytics_reader' }])

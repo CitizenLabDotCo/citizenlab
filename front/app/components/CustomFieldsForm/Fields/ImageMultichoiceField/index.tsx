@@ -27,12 +27,27 @@ import { extractOptions } from '../../util';
 
 import emptyImageFile from './emptyImage.png';
 
-const HoverBox = styled(Box)<{ selected: boolean }>`
+const HoverBox = styled(Box)<{ selected: boolean; disabled?: boolean }>`
   cursor: pointer;
   &:hover {
     box-shadow: 0 0 0 1px
       ${({ selected }) => (selected ? 'undefined' : colors.borderDark)};
   }
+
+  ${({ disabled }) =>
+    disabled &&
+    `
+    cursor: default;
+
+    &:hover {
+      box-shadow: none;
+    }
+
+    /* The checkbox shows not-allowed when disabled */
+    .disabled {
+      cursor: default;
+    }
+  `}
 `;
 
 const StyledGrid = styled(Box)<{ isSmallerThanPhone: boolean }>`
@@ -50,9 +65,11 @@ const StyledGrid = styled(Box)<{ isSmallerThanPhone: boolean }>`
 const ImageMultichoiceField = ({
   question,
   scrollErrorIntoView,
+  disabled,
 }: {
   question: IFlatCustomField;
   scrollErrorIntoView?: boolean;
+  disabled?: boolean;
 }) => {
   const isSmallerThanPhone = useBreakpoint('phone');
   const theme = useTheme();
@@ -79,6 +96,9 @@ const ImageMultichoiceField = ({
   const apiError = errors?.error && ([errors] as CLError[]);
 
   const onChange = (option) => {
+    // Checkbox still calls onChange on click when disabled
+    if (disabled) return;
+
     if (value?.includes(option.value)) {
       setValue(
         name,
@@ -112,15 +132,22 @@ const ImageMultichoiceField = ({
                     borderRadius="3px"
                     border={
                       value?.includes(option.value)
-                        ? `2px solid ${theme.colors.tenantPrimary}`
-                        : `1px solid ${theme.colors.borderDark}`
+                        ? `2px solid ${
+                            disabled
+                              ? colors.grey400
+                              : theme.colors.tenantPrimary
+                          }`
+                        : `1px solid ${
+                            disabled ? colors.grey400 : theme.colors.borderDark
+                          }`
                     }
                     selected={value?.includes(option.value)}
+                    disabled={disabled}
                   >
                     <Box
                       as="label"
                       htmlFor={`${name}-checkbox-${index}`}
-                      style={{ cursor: 'pointer' }}
+                      style={{ cursor: disabled ? 'default' : 'pointer' }}
                     >
                       <Box p="16px" pb="0">
                         {option.value === 'other' ? (
@@ -152,6 +179,7 @@ const ImageMultichoiceField = ({
                           data-cy="e2e-image-multichoice-control-checkbox"
                           onChange={() => onChange(option)}
                           checked={value?.includes(option.value)}
+                          disabled={disabled}
                           mr="8px"
                         />
                         <Text color="textPrimary" m="0">
@@ -172,6 +200,7 @@ const ImageMultichoiceField = ({
           name={`${name}_other`}
           type="text"
           placeholder={formatMessage(messages.typeYourAnswer)}
+          disabled={disabled}
         />
       )}
       {validationError && (
