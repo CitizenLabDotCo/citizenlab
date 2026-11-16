@@ -18,7 +18,7 @@ interface Props {
   listedTotal: number | undefined;
   onEdit: (ideaId: string) => void;
   onClearSelection: () => void;
-  onDeleted: () => void;
+  onDeleted: (ideaIds: string[]) => void;
   onSelectAll: () => void;
   isSelectingAll: boolean;
   selectAllFailed: boolean;
