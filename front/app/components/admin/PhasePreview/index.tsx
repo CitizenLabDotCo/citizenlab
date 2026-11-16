@@ -55,6 +55,7 @@ interface Props {
 const PhasePreview = ({ src, title, snapshot }: Props) => {
   const { formatMessage } = useIntl();
   const frameRef = useRef<HTMLIFrameElement>(null);
+  const [blocked, setBlocked] = useState(false);
   const attributes = snapshot.phase?.attributes;
   const method = attributes?.participation_method;
   const isInformation = method === 'information';
@@ -101,6 +102,8 @@ const PhasePreview = ({ src, title, snapshot }: Props) => {
           window.location.origin
         );
       }
+
+      if (event.data?.type === 'phase-preview-blocked') setBlocked(true);
     };
 
     window.addEventListener('message', receive);
@@ -135,8 +138,24 @@ const PhasePreview = ({ src, title, snapshot }: Props) => {
           frameName={PREVIEW_FRAME_NAME}
           frameRef={frameRef}
           dataCy="e2e-phase-preview"
-          bottomSpace={isInformation ? 0 : snapshot.unsaved ? 88 : 56}
+          bottomSpace={
+            (isInformation ? 0 : snapshot.unsaved ? 88 : 56) +
+            (blocked ? 32 : 0)
+          }
         />
+      </Box>
+      <Box role="status" px="16px">
+        {blocked && (
+          <Text
+            fontSize="s"
+            color="textSecondary"
+            textAlign="right"
+            m="0"
+            mb={isInformation ? '16px' : '8px'}
+          >
+            {formatMessage(messages.blocked)}
+          </Text>
+        )}
       </Box>
       {!isInformation && (
         <Box
