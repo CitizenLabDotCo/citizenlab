@@ -14,6 +14,8 @@ import { IProjectData } from 'api/projects/types';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { useWorkspaceHeader } from 'containers/Admin/sideBar/WorkspaceHeaderContext';
+
 import { usePageSave } from 'components/admin/PageSaveContext';
 import Breadcrumbs, { TBreadcrumbs } from 'components/UI/Breadcrumbs';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
@@ -72,6 +74,7 @@ const WorkspaceHeader = ({
   const { formatMessage } = useIntl();
   const pageSave = usePageSave();
   const localize = useLocalize();
+  const workspaceHeader = useWorkspaceHeader();
   const views = usePhaseViews(phase);
   const inPhase = !!(phase || draftLabel);
   const saveButtonLabel = inPhase
@@ -111,6 +114,7 @@ const WorkspaceHeader = ({
   return (
     <Box
       as="header"
+      ref={workspaceHeader?.setElement}
       data-project-workspace-header=""
       display="flex"
       alignItems="center"
