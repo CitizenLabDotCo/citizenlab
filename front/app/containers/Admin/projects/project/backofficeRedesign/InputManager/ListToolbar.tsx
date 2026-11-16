@@ -9,6 +9,7 @@ import { ManagerType } from 'components/admin/PostManager';
 import { useIntl } from 'utils/cl-intl';
 
 import BatchBar from './BatchBar';
+import { BatchAttribute } from './BatchBar/useBatchActions';
 import FilterMenu from './FilterMenu';
 import { FilterCategory } from './FilterMenu/useFilterCategories';
 import messages from './messages';
@@ -20,10 +21,10 @@ interface Props {
   projectId: string;
   count: number | undefined;
   selectedIdeas: IIdeaData[];
-  onUpdated: (ideas: IIdeaData[]) => void;
+  onUpdated: (ideas: IIdeaData[], attribute: BatchAttribute) => void;
   onEdit: (ideaId: string) => void;
   onClearSelection: () => void;
-  onDeleted: () => void;
+  onDeleted: (ideaIds: string[]) => void;
   onSelectAll: () => void;
   isSelectingAll: boolean;
   selectAllFailed: boolean;
