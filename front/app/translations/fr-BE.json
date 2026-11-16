@@ -712,7 +712,7 @@
   "app.components.ReactSelect.focusedOptionSelected": "{label} sélectionné, {index} sur {total}.",
   "app.components.ReactSelect.focusedOptionSelectedDisabled": "{label} sélectionné désactivé, {index} sur {total}.",
   "app.components.ReactSelect.focusedValue": "valeur {label} mise en évidence, {index} sur {total}.",
-  "app.components.ReactSelect.guidanceInput": "{label} est mis en évidence, appuyez sur Bas pour ouvrir le menu.",
+  "app.components.ReactSelect.guidanceInput": "{label} a le focus. Appuyez sur la flèche bas pour ouvrir le menu.",
   "app.components.ReactSelect.guidanceInputMulti": "{label} est mis en évidence, appuyez sur Bas pour ouvrir le menu, appuyez sur Gauche pour mettre en évidence les valeurs sélectionnées.",
   "app.components.ReactSelect.guidanceInputSearchable": "{label} a le focus. Écrivez pour filtrer la liste, appuyez sur la flèche bas pour ouvrir le menu.",
   "app.components.ReactSelect.guidanceInputSearchableMulti": "{label} est mis en évidence, tapez pour affiner la liste, appuyez sur Bas pour ouvrir le menu, appuyez sur Gauche pour mettre en évidence les valeurs sélectionnées.",
