@@ -7,7 +7,7 @@ import usePhase from 'api/phases/usePhase';
 import { getPhaseActionDescriptor } from 'api/phases/utils';
 import usePollQuestions from 'api/poll_questions/usePollQuestions';
 
-import PreviewSkeleton from 'components/admin/PhasePreview/PreviewSkeleton';
+import PreviewSkeleton from 'components/PhasePreview/PreviewSkeleton';
 
 import {
   getPermissionsDisabledMessage,
