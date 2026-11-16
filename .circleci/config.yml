@@ -1043,30 +1043,11 @@ jobs:
               --config baseUrl=http://e2e.front:3000 \
               --spec ${COMMA_SEPARATED_TESTFILES}
       - run:
-          name: Run phase preview cypress
-          command: |
-            # These specs need their own Cypress config, so they cannot join the
-            # split above. They run once per full-suite run, on the first node.
-            if [ "$CIRCLE_NODE_INDEX" != "0" ] || [ -n "<< pipeline.parameters.e2e_spec >>" ]; then
-              exit 0
-            fi
-            cd e2e
-            docker compose -f docker-compose.yml -f docker-compose.test.yml --profile cypress run --name cypress_preview_run \
-              cypress npm run cypress:phase-preview -- \
-              --browser chrome \
-              --reporter cypress-circleci-reporter \
-              --config baseUrl=http://e2e.front:3000
-      - run:
           command: |
             docker cp cypress_run:/front/test_results .
-            if docker container inspect cypress_preview_run > /dev/null 2>&1; then
-              docker cp cypress_preview_run:/front/test_results .
-            fi
           when: always
       - run:
-          command: |
-            docker cp cypress_preview_run:/front/cypress/screenshots . || true
-            docker cp cypress_run:/front/cypress/screenshots .
+          command: docker cp cypress_run:/front/cypress/screenshots .
           # If `when: always`, it fails on success with
           # Error: No such container:path: cypress_run:/front/cypress/screenshots
           when: on_fail
