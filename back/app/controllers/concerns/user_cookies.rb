@@ -5,6 +5,21 @@ module UserCookies
 
   private
 
+  # The URL to sign the user out at the SSO provider they signed in with, if that
+  # provider supports it. Needs the user, so look it up before deleting them.
+  def sso_logout_url
+    token = AuthToken::Cookie.read(request)
+    return unless token
+
+    payload = AuthToken::AuthToken.new(token: token).payload
+    return unless payload['logout_supported'] && payload['provider']
+
+    user = User.find_by(id: payload['sub'])
+    AuthenticationService.new.logout_url(payload['provider'], user) if user
+  rescue JWT::DecodeError
+    nil
+  end
+
   # Reset the current user's JWT token after certain actions, such as password change or email change, to invalidate existing sessions.
   def reset_jwt_cookie
     return unless current_user

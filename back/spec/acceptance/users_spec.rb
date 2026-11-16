@@ -2429,6 +2429,48 @@ resource 'Users' do
             expect(EmailBan.banned?(@subject_user.email)).to be true
           end
         end
+
+        example 'Deleting another user keeps the admin signed in', document: false do
+          do_request
+
+          expect(response_status).to eq 200
+          expect(auth_cookie_header).to be_nil
+        end
+      end
+
+      delete 'web_api/v1/users/:id' do
+        let(:id) { @user.id }
+
+        example 'Delete your own account' do
+          do_request
+
+          expect(response_status).to eq 200
+          expect { User.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+          expect(auth_cookie_header).to match(/\A#{AuthToken::Cookie::NAME}=;/o)
+        end
+
+        context 'when signed in through an SSO provider that supports logout' do
+          let(:logout_url) { 'https://sso.example.com/logout' }
+
+          before do
+            token = AuthToken::AuthToken.new(
+              payload: @user.to_token_payload.merge(provider: 'franceconnect', logout_supported: true)
+            ).token
+            header 'Cookie', "#{AuthToken::Cookie::NAME}=#{token}"
+
+            allow_any_instance_of(AuthenticationService)
+              .to receive(:logout_url).with('franceconnect', @user).and_return(logout_url)
+          end
+
+          example 'Delete your own account and get the URL to sign out at the SSO provider' do
+            do_request
+
+            expect(response_status).to eq 200
+            expect(json_response_body[:logout_url]).to eq(logout_url)
+            expect { User.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+            expect(auth_cookie_header).to match(/\A#{AuthToken::Cookie::NAME}=;/o)
+          end
+        end
       end
 
       get 'web_api/v1/users/:id/ideas_count' do

@@ -5,6 +5,7 @@
 class WebApi::V1::UserTokenController < ActionController::API
   include ActionController::Cookies
   include EnforceUserSso
+  include UserCookies
 
   before_action :sso_enforced?, only: %i[create]
 
@@ -58,19 +59,6 @@ class WebApi::V1::UserTokenController < ActionController::API
     # The cookie lives as long as the token: 1 day, or longer with remember_me.
     AuthToken::Cookie.write(response, token, expires: expires_at)
     head :created
-  end
-
-  def sso_logout_url
-    token = AuthToken::Cookie.read(request)
-    return unless token
-
-    payload = AuthToken::AuthToken.new(token: token).payload
-    return unless payload['logout_supported'] && payload['provider']
-
-    user = User.find_by(id: payload['sub'])
-    AuthenticationService.new.logout_url(payload['provider'], user) if user
-  rescue JWT::DecodeError
-    nil
   end
 
   def handle_successful_authentication_sidefx(user)

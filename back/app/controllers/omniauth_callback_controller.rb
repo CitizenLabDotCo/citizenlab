@@ -36,14 +36,6 @@ class OmniauthCallbackController < ApplicationController
     signin_failure_redirect
   end
 
-  def logout_data
-    provider = params[:provider]
-    user_id = params[:user_id]
-    user = User.find_by(id: user_id)
-    url = user ? authentication_service.logout_url(provider, user) : Frontend::UrlService.new.home_url
-    render json: { url: url }
-  end
-
   private
 
   def omniauth_params

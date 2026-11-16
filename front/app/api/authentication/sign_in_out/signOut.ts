@@ -27,6 +27,20 @@ const hasLogoutUrl = (body: unknown): body is { logout_url: string } =>
   typeof body.logout_url === 'string';
 
 /*
+  Reads the URL to sign out at the user's SSO provider from an API response that
+  signed the user out. Not every such response has one, or even a body.
+*/
+export async function logoutUrlFrom(
+  response: Response
+): Promise<string | null> {
+  const text = await response.text();
+  if (!text) return null;
+
+  const body: unknown = JSON.parse(text);
+  return hasLogoutUrl(body) ? body.logout_url : null;
+}
+
+/*
   Clears the HttpOnly auth cookie, which only the API can do.
   Returns the URL to sign out at the SSO provider the user signed in with,
   if that provider supports it.
@@ -39,8 +53,7 @@ export async function signOutOnServer(): Promise<string | null> {
     });
     if (response.status !== 200) return null;
 
-    const body: unknown = await response.json();
-    return hasLogoutUrl(body) ? body.logout_url : null;
+    return await logoutUrlFrom(response);
   } catch (error) {
     console.error('Sign out failed:', error);
     return null;
