@@ -128,7 +128,7 @@
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Crea un progetto basato sul modello ''{templateTitle}''",
   "app.components.ProjectTemplatePreview.findItInProjectsList": "Puoi trovarlo nell'elenco dei progetti.",
   "app.components.ProjectTemplatePreview.goBack": "Torna indietro",
-  "app.components.ProjectTemplatePreview.goBackTo": "Torna al {goBackLink}.",
+  "app.components.ProjectTemplatePreview.goBackTo": "Torna alla {goBackLink}.",
   "app.components.ProjectTemplatePreview.govocalExpert": "Esperto Go Vocal",
   "app.components.ProjectTemplatePreview.infoboxLine1": "Vuoi usare questo modello per il tuo progetto di partecipazione?",
   "app.components.ProjectTemplatePreview.infoboxLine2": "Rivolgiti alla persona responsabile nell'amministrazione della tua città, o contatta un {link}.",
