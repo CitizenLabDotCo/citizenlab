@@ -12,6 +12,7 @@ import ParticipationMethodChoices from 'containers/Admin/projects/project/phaseS
 import projectPageMessages from 'containers/Admin/projects/project/projectPage/messages';
 
 import { usePageSave } from 'components/admin/PageSaveContext';
+import { PROJECT_SETUP_SAVER_KEY } from 'components/admin/PageSaveContext/constants';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { useSearch } from 'utils/router';
@@ -83,10 +84,14 @@ const SelectMethodModal = ({ projectId, opened, onClose }: Props) => {
 
                 onClose();
 
-                if (pageSave?.dirty) {
-                  const failed = await pageSave.saveAll('leave');
+                if (pageSave?.dirtyKeys.includes(PROJECT_SETUP_SAVER_KEY)) {
+                  const failed = await pageSave.save(
+                    [PROJECT_SETUP_SAVER_KEY],
+                    'leave'
+                  );
                   if (failed.length > 0) return;
-                  pageSave.leave();
+                  // Other unsaved changes are left to the guard, which asks.
+                  if (pageSave.dirtyKeys.length === 1) pageSave.leave();
                 }
 
                 router.navigate({
