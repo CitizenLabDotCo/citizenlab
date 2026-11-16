@@ -192,6 +192,11 @@ const MethodSettings = ({ phase }: Props) => {
         <PanelGroup
           label={formatMessage(messages.participantCommunications)}
           defaultOpen={setup_action === 'notifications'}
+          onClose={() => {
+            if (setup_action === 'notifications') {
+              removeSearchParams(['setup_action']);
+            }
+          }}
         >
           <PhaseNotifications phase={phase} />
         </PanelGroup>
