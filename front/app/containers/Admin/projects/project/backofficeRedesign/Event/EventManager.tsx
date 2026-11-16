@@ -29,6 +29,7 @@ import FilterChips from '../InputManager/FilterMenu/FilterChips';
 import { FilterCategory } from '../InputManager/FilterMenu/useFilterCategories';
 import SearchToggle from '../InputManager/SearchToggle';
 import EmptyState from '../Phase/EmptyState';
+import ListLoadError from '../Phase/ListLoadError';
 import ManageLayout from '../Phase/ManageLayout';
 
 import EventRegistrantTable from './EventRegistrantTable';
@@ -238,14 +239,11 @@ const EventManager = ({ event }: Props) => {
       </Box>
       <FilterChips categories={[category]} onClearAll={clearFilters} />
       {isError ? (
-        <Box role="alert">
-          <Text variant="boHelper">
-            {formatMessage(messages.registrantsLoadError)}
-          </Text>
-          <Button buttonStyle="bo-secondary" onClick={() => refetch()}>
-            {formatMessage(messages.retryRegistrants)}
-          </Button>
-        </Box>
+        <ListLoadError
+          message={formatMessage(messages.registrantsLoadError)}
+          retryLabel={formatMessage(messages.retryRegistrants)}
+          onRetry={() => refetch()}
+        />
       ) : isLoading ? (
         <Box display="flex" justifyContent="center" py="80px">
           <Spinner />
