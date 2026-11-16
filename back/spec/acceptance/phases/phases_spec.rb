@@ -652,7 +652,7 @@ resource 'Phases' do
             id: i3.id,
             title_multiloc: i3.title_multiloc,
             agree_percent: 33, # 1 of 3 reactions agrees
-            agreement: 'disagree',
+            agreement: 'split',
             votes: { down: 1, neutral: 1, up: 1 }
           )
 
@@ -661,7 +661,7 @@ resource 'Phases' do
             id: i2.id,
             title_multiloc: i2.title_multiloc,
             agree_percent: 0,
-            agreement: 'disagree',
+            agreement: 'split', # 1 of 2 reactions disagrees
             votes: { down: 1, neutral: 1, up: 0 }
           )
         end
