@@ -1201,7 +1201,7 @@
   "app.components.formBuilder.surveyAssistant.pageNumber": "Pagina {number}",
   "app.components.formBuilder.surveyAssistant.readSurvey": "il sondaggio attuale",
   "app.components.formBuilder.surveyAssistant.replaceSurvey": "nuove domande del sondaggio",
-  "app.components.formBuilder.surveyAssistant.replaceWarning": "L'approvazione sostituisce tutte le domande attuali e salva il sondaggio. Le modifiche non salvate nell'editor andranno perse.",
+  "app.components.formBuilder.surveyAssistant.replaceWarning": "Se approvi, tutte le domande attuali verranno sostituite e il sondaggio verrà salvato. Le modifiche non salvate nell’editor andranno perse.",
   "app.components.formBuilder.surveyAssistant.required": "Obbligatoria",
   "app.components.formBuilder.surveyAssistant.untitled": "Senza titolo",
   "app.components.formBuilder.tags": "Tag",
