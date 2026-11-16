@@ -3864,6 +3864,16 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+  "app.components.admin.UserFilterConditions.emailListCount": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:40:49.291366Z",
+    "verified_by": "Roger"
+  },
+  "app.components.admin.UserFilterConditions.emailListInvalid": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:40:49.291366Z",
+    "verified_by": "Roger"
+  },
   "app.components.admin.UserFilterConditions.emailListPlaceholder": {
     "state": "verified",
     "verified_at": "2026-11-16T12:33:03.727812Z",
