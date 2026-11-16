@@ -479,6 +479,7 @@ const AdminPhaseInsights = () => {
             : '/admin/projects/$projectId/phases/$phaseId/setup'
         }
         params={{ projectId, phaseId }}
+        replace
       />
     );
   }
