@@ -2319,7 +2319,7 @@
   "app.containers.Admin.projects.project.reportVisibleToParticipants": "Visibile ai partecipanti",
   "app.containers.Admin.projects.project.resetDataButton": "Azzera i dati",
   "app.containers.Admin.projects.project.resetDataConfirmationWord": "Azzera",
-  "app.containers.Admin.projects.project.resetDataModalDescription": "Questa operazione eliminerà in modo permanente tutti i contributi, i commenti, i voti, le reazioni, le risposte a questionari e sondaggi, i volontari e gli iscritti agli eventi di questo progetto. L'azione non può essere annullata.",
+  "app.containers.Admin.projects.project.resetDataModalDescription": "Questa operazione eliminerà in modo permanente tutti i contributi, i commenti, i voti, le reazioni, le risposte a sondaggi e consultazioni, i volontari e gli iscritti agli eventi di questo progetto. L'azione non può essere annullata.",
   "app.containers.Admin.projects.project.resetDataModalTitle": "Vuoi azzerare tutti i dati di partecipazione?",
   "app.containers.Admin.projects.project.responseFormTitle": "Modulo del parere",
   "app.containers.Admin.projects.project.saveProjectSetup": "Salva",
