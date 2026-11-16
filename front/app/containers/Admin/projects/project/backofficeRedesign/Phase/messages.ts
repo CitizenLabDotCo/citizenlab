@@ -35,15 +35,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.phasePreviewTitle',
     defaultMessage: 'Preview of this phase',
   },
-  participantEmails: {
-    id: 'app.containers.Admin.projects.project.participantEmails',
-    defaultMessage: 'Emails to participants',
-  },
-  participantEmailsDescription: {
-    id: 'app.containers.Admin.projects.project.participantEmailsDescription',
-    defaultMessage:
-      'Sent automatically when one of these happens. Turn off the ones you don’t want to send.',
-  },
   notifications: {
     id: 'app.containers.Admin.projects.project.notifications',
     defaultMessage: 'Notifications',
@@ -97,5 +88,13 @@ export default defineMessages({
   annotatingDocumentAction: {
     id: 'app.containers.Admin.projects.project.annotatingDocumentAction',
     defaultMessage: 'Annotating the document',
+  },
+  listLoadFailed: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.Phase.listLoadFailed',
+    defaultMessage: 'Could not load this list.',
+  },
+  retryListLoad: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.Phase.retryListLoad',
+    defaultMessage: 'Try again',
   },
 });
