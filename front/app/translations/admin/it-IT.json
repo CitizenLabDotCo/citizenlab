@@ -170,7 +170,7 @@
   "app.components.admin.ActionForm.AccessSections.RecencyControl.reverifyLabel2": "Verifica nuovamente se l'ultima verifica risale a più di:",
   "app.components.admin.ActionForm.AccessSections.RecencyControl.thirtyMinutes": "30 minuti",
   "app.components.admin.ActionForm.DataSection.AnonymitySection.allDataLabel": "Collega i contributi al profilo del partecipante (consigliato)",
-  "app.components.admin.ActionForm.DataSection.AnonymitySection.anonymityExplanation2": "Indipendentemente da ciò che chiedi di seguito: puoi raccogliere un nome mantenendo comunque l'invio non collegato al profilo del partecipante.",
+  "app.components.admin.ActionForm.DataSection.AnonymitySection.anonymityExplanation2": "Questa impostazione è indipendente dalle domande qui sotto: puoi raccogliere un nome mantenendo comunque l'invio non collegato al profilo del partecipante.",
   "app.components.admin.ActionForm.DataSection.AnonymitySection.anonymityInResults": "Anonimato nei risultati",
   "app.components.admin.ActionForm.DataSection.AnonymitySection.anonymousLabel": "Completamente anonimo — scollega le informazioni personali e i dati demografici",
   "app.components.admin.ActionForm.DataSection.AnonymitySection.anonymousWarning": "Né le informazioni personali né i dati demografici saranno memorizzati con i contributi, e non potranno essere recuperati in seguito.",
