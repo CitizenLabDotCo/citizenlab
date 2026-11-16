@@ -9324,6 +9324,11 @@
     "verified_at": "2026-11-16T23:03:53.387387Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects.project.earlyAccess.profileSettingsLink": {
+    "state": "verified",
+    "verified_at": "2026-11-16T23:11:39.562832Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.earlyAccess.turnOnNoticeDescription": {
     "state": "verified",
     "verified_at": "2026-11-16T23:03:53.387387Z",
@@ -11973,6 +11978,11 @@
     "state": "verified",
     "verified_at": "2026-10-28T13:09:38.242718Z",
     "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.publishRestoreToDraftFromArchiveBody": {
+    "state": "verified",
+    "verified_at": "2026-11-16T23:11:39.562832Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.publishRestoreToDraftTitle": {
     "state": "verified",
