@@ -5,17 +5,22 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import phasesKeys from './keys';
 import { IPhase, SetupReviewCard } from './types';
 
-const useReviewSetupCard = (phaseId: string | undefined) => {
+interface ReviewSetupCard {
+  phaseId: string;
+  card: SetupReviewCard;
+}
+
+const useReviewSetupCard = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (card: SetupReviewCard) =>
+    mutationFn: ({ phaseId, card }: ReviewSetupCard) =>
       fetcher<IPhase>({
         path: `/phases/${phaseId}/review_setup_card`,
         action: 'post',
         body: { card },
       }),
-    onSuccess: () => {
+    onSuccess: (_phase, { phaseId }) => {
       queryClient.invalidateQueries({ queryKey: phasesKeys.item({ phaseId }) });
       queryClient.invalidateQueries({ queryKey: phasesKeys.lists() });
     },
