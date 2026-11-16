@@ -1780,7 +1780,7 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.selectInput": "Seleziona questo contributo",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.selectedCount": "{count, plural, one {# selezionato} other {# selezionati}}",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.showAwaitingReply": "Mostra i contributi in attesa di risposta",
-  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.sourceImported": "Importato",
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.sourceImported": "Importati",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.sourceOnline": "Online",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.statusChangeNotifies": "Gli autori e gli altri partecipanti riceveranno una notifica del nuovo stato.",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.statusColumn": "Stato",
