@@ -1,7 +1,9 @@
 class PreviewStorage implements Storage {
   private values = new Map<string, string>();
 
-  constructor(source: Storage) {
+  constructor(source?: Storage) {
+    if (!source) return;
+
     for (let index = 0; index < source.length; index++) {
       const key = source.key(index);
       if (key !== null) {
@@ -31,11 +33,20 @@ class PreviewStorage implements Storage {
   }
 }
 
+// Browsers that block site data throw when the real storage is read.
+const copyStorage = (name: 'localStorage' | 'sessionStorage') => {
+  try {
+    return new PreviewStorage(window[name]);
+  } catch {
+    return new PreviewStorage();
+  }
+};
+
 export const isolatePreviewStorage = () => {
   for (const name of ['localStorage', 'sessionStorage'] as const) {
     Object.defineProperty(window, name, {
       configurable: true,
-      value: new PreviewStorage(window[name]),
+      value: copyStorage(name),
     });
   }
 
