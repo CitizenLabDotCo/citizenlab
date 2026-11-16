@@ -1614,6 +1614,11 @@
     "verified_at": "2026-11-16T16:59:26.558002Z",
     "verified_by": "Roger"
   },
+  "app.components.FormBuilder.components.AnswerVisibilityToggle.confirmSubmissions": {
+    "state": "verified",
+    "verified_at": "2026-11-16T17:13:37.347388Z",
+    "verified_by": "Roger"
+  },
   "app.components.FormBuilder.components.AnswerVisibilityToggle.confirmTitle": {
     "state": "verified",
     "verified_at": "2026-11-16T16:59:26.558002Z",
@@ -11279,6 +11284,16 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+  "app.containers.NotificationMenu.projectPhaseStarted": {
+    "state": "verified",
+    "verified_at": "2026-11-16T17:13:37.347388Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.NotificationMenu.projectPhaseUpcoming": {
+    "state": "verified",
+    "verified_at": "2026-11-16T17:13:37.347388Z",
+    "verified_by": "Roger"
+  },
   "app.containers.NotificationMenu.projectPublished": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
@@ -12069,6 +12084,11 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+  "app.containers.Projects.openNowInTotal": {
+    "state": "verified",
+    "verified_at": "2026-11-16T17:13:37.347388Z",
+    "verified_by": "Roger"
+  },
   "app.containers.Projects.options": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
@@ -12323,6 +12343,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Projects.waysToParticipate": {
+    "state": "verified",
+    "verified_at": "2026-11-16T17:13:37.347388Z",
+    "verified_by": "Roger"
   },
   "app.containers.Projects.whatsAppMessage": {
     "state": "verified",
