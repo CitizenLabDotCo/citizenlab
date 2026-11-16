@@ -1937,7 +1937,7 @@
   "app.containers.Admin.projects.project.information.ReportTab.visibleNotStarted1": "Questo report diventerà pubblico non appena inizierà la fase. Per non renderlo pubblico, disattiva l'opzione \"Visibile\".",
   "app.containers.Admin.projects.project.information.ReportTab.visibleStarted1": "Questo report è attualmente pubblico. Per renderlo non pubblico, disattiva l'opzione \"Visibile\".",
   "app.containers.Admin.projects.project.information.areYouSureYouWantToDelete": "Vuoi davvero eliminare questo report? Questa azione non può essere annullata.",
-  "app.containers.Admin.projects.project.informationSetup": "Configurazione informazioni",
+  "app.containers.Admin.projects.project.informationSetup": "Configurazione delle informazioni",
   "app.containers.Admin.projects.project.initiativeFormTitle": "Modulo dell'iniziativa",
   "app.containers.Admin.projects.project.inputResponseExport.cancelButton": "Annulla",
   "app.containers.Admin.projects.project.inputResponseExport.collectingResponses": "Raccolta delle risposte in corso… ({progress}/{total})",
