@@ -12894,9 +12894,24 @@
     "verified_at": "2026-10-26T13:27:19.471017Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects.project.switchChangesNotifications": {
+    "state": "verified",
+    "verified_at": "2026-11-16T23:52:46.220336Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.switchClearsEmbedUrl": {
+    "state": "verified",
+    "verified_at": "2026-11-16T23:52:46.220336Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.switchConfirm": {
     "state": "verified",
     "verified_at": "2026-10-28T15:18:05.635749Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.switchLockedResponses": {
+    "state": "verified",
+    "verified_at": "2026-11-16T23:52:46.220336Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.switchSurveyMethodTitle": {
