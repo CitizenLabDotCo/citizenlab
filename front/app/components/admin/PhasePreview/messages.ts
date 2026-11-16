@@ -29,25 +29,13 @@ export default defineMessages({
     id: 'app.components.PhasePreview.endedTooltip2',
     defaultMessage: 'After it ends',
   },
-  beforeStarts: {
-    id: 'app.components.PhasePreview.beforeStarts',
-    defaultMessage: 'This phase has not started yet',
-  },
-  phaseEnded: {
-    id: 'app.components.PhasePreview.phaseEnded',
-    defaultMessage: 'Phase ended',
-  },
-  noDates: {
-    id: 'app.components.PhasePreview.noDates',
-    defaultMessage: 'Dates to be announced',
-  },
-  startsIn: {
-    id: 'app.components.PhasePreview.startsIn',
-    defaultMessage:
-      '{days, plural, =0 {Starts today} one {Starts in # day} other {Starts in # days}}',
-  },
   newPhase: {
     id: 'app.components.PhasePreview.savePhaseFirst',
     defaultMessage: 'Save this phase to preview its participation form.',
+  },
+  blocked: {
+    id: 'app.components.PhasePreview.blocked',
+    defaultMessage:
+      'This action is not available in the preview. Nothing was saved.',
   },
 });
