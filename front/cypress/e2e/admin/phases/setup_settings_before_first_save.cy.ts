@@ -98,7 +98,7 @@ describe('Opening setup settings before saving a phase', () => {
       if (action === 'access') {
         cy.get('[role="dialog"]').contains('Edit access').should('be.visible');
       } else if (action === 'notification') {
-        cy.contains('button', 'Emails to participants').should(
+        cy.contains('button', 'Emails and notifications').should(
           'have.attr',
           'aria-expanded',
           'true'
