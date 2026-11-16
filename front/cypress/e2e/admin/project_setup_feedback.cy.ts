@@ -115,6 +115,32 @@ describe('Project setup feedback', () => {
     cy.get('[role="alert"]').should('be.visible');
   });
 
+  it('asks before leaving unsaved phase edits for a new participation method', () => {
+    cy.apiCreatePhase({
+      projectId,
+      title: randomString(),
+      startAt: '2026-01-01',
+      participationMethod: 'ideation',
+    }).then(({ body }) => {
+      const phaseId = body.data.id;
+      cy.intercept('PATCH', `**/web_api/v1/phases/${phaseId}`).as('savePhase');
+      cy.visit(
+        `/admin/projects/${projectId}/phases/${phaseId}/setup?project_backoffice_redesign`
+      );
+      cy.get('#phase-build-panel-title').clear().type('Unsaved title');
+      cy.get('[aria-label="New participation method"]').click();
+      cy.get('[role="dialog"]')
+        .contains('Collect input and feedback in public')
+        .click();
+      cy.contains('You have unsaved changes').should('be.visible');
+      cy.get('@savePhase.all').should('have.length', 0);
+      cy.location('pathname').should('include', `/phases/${phaseId}/setup`);
+      cy.contains('[role="dialog"] button', 'Save changes').click();
+      cy.wait('@savePhase').its('response.statusCode').should('eq', 200);
+      cy.location('pathname').should('include', '/phases/new');
+    });
+  });
+
   it('omits event demographics without events and manages attachments in the modal', () => {
     cy.apiCreatePhase({
       projectId,
@@ -265,6 +291,92 @@ describe('Project setup feedback', () => {
         'include',
         `/phases/${response?.body.data.id}/setup`
       );
+    });
+  });
+
+  it('keeps a new phase open until its tags are saved too', () => {
+    const draftPath = `/admin/projects/${projectId}/phases/new`;
+    cy.intercept('POST', `**/web_api/v1/projects/${projectId}/phases`).as(
+      'createPhase'
+    );
+    // Delayed, so the tags fail after the phase is created.
+    cy.intercept(
+      {
+        method: 'POST',
+        url: `**/web_api/v1/projects/${projectId}/input_topics`,
+        times: 1,
+      },
+      {
+        statusCode: 422,
+        body: { errors: { base: [{ error: 'invalid' }] } },
+        delay: 1500,
+      }
+    ).as('failedTag');
+    cy.visit(
+      `${draftPath}?project_backoffice_redesign&participation_method=ideation`
+    );
+    cy.get('.e2e-date-phase-picker-input').click();
+    cy.get('.rdp-today .rdp-day_button').first().click();
+    cy.get('.e2e-date-phase-picker-input').click();
+    cy.get('#phase-build-panel-title').type('Phase with tags');
+    cy.contains('button', 'Idea tags').click();
+    cy.get('#phase-add-input-tag').type('Unsaved tag{enter}');
+    cy.contains('button', 'Save changes').click();
+    cy.wait('@createPhase').then(({ response }) => {
+      expect(response?.statusCode).to.eq(201);
+      cy.wait('@failedTag');
+      cy.location('pathname').should('include', draftPath);
+      cy.contains('The tags could not be saved').should('be.visible');
+      cy.contains('Unsaved tag').scrollIntoView().should('be.visible');
+
+      cy.contains('button', 'Save changes').click();
+      cy.location('pathname').should(
+        'include',
+        `/phases/${response?.body.data.id}/setup`
+      );
+      cy.get('@createPhase.all').should('have.length', 1);
+    });
+  });
+
+  it('keeps a card reviewed after the first save of a phase partly failed', () => {
+    cy.intercept('POST', `**/web_api/v1/projects/${projectId}/phases`).as(
+      'createPhase'
+    );
+    cy.intercept(
+      { method: 'POST', url: '**/web_api/v1/file_attachments', times: 1 },
+      { statusCode: 422, body: { errors: { base: [{ error: 'invalid' }] } } }
+    ).as('failedAttachment');
+    cy.visit(
+      `/admin/projects/${projectId}/phases/new?project_backoffice_redesign&participation_method=ideation`
+    );
+    cy.get('.e2e-date-phase-picker-input').click();
+    cy.get('.rdp-today .rdp-day_button').first().click();
+    cy.get('.e2e-date-phase-picker-input').click();
+    cy.get('#phase-build-panel-title').type('Phase with attachment');
+    cy.contains('button', 'Attachments').click();
+    cy.get('#e2e-file-upload-input').selectFile(
+      'cypress/fixtures/example.pdf',
+      { action: 'drag-drop' }
+    );
+    cy.get('[role="dialog"]').contains('example.pdf').should('be.visible');
+    cy.get('[role="dialog"]').contains('button', 'Done').click();
+    cy.contains('button', 'Save changes').click();
+    cy.wait('@createPhase').then(({ response }) => {
+      expect(response?.statusCode).to.eq(201);
+      cy.wait('@failedAttachment');
+      cy.location('pathname').should('include', '/phases/new');
+
+      cy.get('[data-review-card="input_term"]')
+        .contains('What should an input be called?')
+        .click();
+      cy.get('[data-review-card="input_term"]').should('contain', 'Reviewed');
+      cy.contains('button', 'Save changes').click();
+      cy.location('pathname').should(
+        'include',
+        `/phases/${response?.body.data.id}/setup`
+      );
+      cy.get('[data-review-card="input_term"]').should('contain', 'Reviewed');
+      cy.get('@createPhase.all').should('have.length', 1);
     });
   });
 
