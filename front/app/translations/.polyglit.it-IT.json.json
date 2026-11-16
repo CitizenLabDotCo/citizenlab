@@ -4719,6 +4719,11 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+  "app.components.formBuilder.displayAsDropdownForcedWarning": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:21:45.801398Z",
+    "verified_by": "Roger"
+  },
   "app.components.formBuilder.displayAsDropdownTooltip": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
@@ -4743,6 +4748,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
+  },
+  "app.components.formBuilder.dropMultiplePins1": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:21:45.801398Z",
+    "verified_by": "Roger"
   },
   "app.components.formBuilder.dropPin": {
     "state": "verified",
@@ -4994,6 +5004,16 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+  "app.components.formBuilder.limitNumberPins": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:21:45.801398Z",
+    "verified_by": "Roger"
+  },
+  "app.components.formBuilder.limitNumberPinsTooltip": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:21:45.801398Z",
+    "verified_by": "Roger"
+  },
   "app.components.formBuilder.limitNumberTags": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
@@ -5098,6 +5118,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
+  },
+  "app.components.formBuilder.managersOnly": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:21:45.801398Z",
+    "verified_by": "Roger"
   },
   "app.components.formBuilder.mapConfiguration": {
     "state": "verified",
@@ -5229,6 +5254,16 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+  "app.components.formBuilder.pinCount.maximum": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:21:45.801398Z",
+    "verified_by": "Roger"
+  },
+  "app.components.formBuilder.pinCount.minimum": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:21:45.801398Z",
+    "verified_by": "Roger"
+  },
   "app.components.formBuilder.preview": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
@@ -5329,6 +5364,11 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+  "app.components.formBuilder.requiredToggleDescription": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:21:45.801398Z",
+    "verified_by": "Roger"
+  },
   "app.components.formBuilder.requiredToggleLabel": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
@@ -5398,6 +5438,56 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
+  },
+  "app.components.formBuilder.surveyAssistant.editingLocked2": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:21:45.801398Z",
+    "verified_by": "Roger"
+  },
+  "app.components.formBuilder.surveyAssistant.endPage": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:21:45.801398Z",
+    "verified_by": "Roger"
+  },
+  "app.components.formBuilder.surveyAssistant.intro2": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:21:45.801398Z",
+    "verified_by": "Roger"
+  },
+  "app.components.formBuilder.surveyAssistant.outlineSummary": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:21:45.801398Z",
+    "verified_by": "Roger"
+  },
+  "app.components.formBuilder.surveyAssistant.pageNumber": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:21:45.801398Z",
+    "verified_by": "Roger"
+  },
+  "app.components.formBuilder.surveyAssistant.readSurvey": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:21:45.801398Z",
+    "verified_by": "Roger"
+  },
+  "app.components.formBuilder.surveyAssistant.replaceSurvey": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:21:45.801398Z",
+    "verified_by": "Roger"
+  },
+  "app.components.formBuilder.surveyAssistant.replaceWarning": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:21:45.801398Z",
+    "verified_by": "Roger"
+  },
+  "app.components.formBuilder.surveyAssistant.required": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:21:45.801398Z",
+    "verified_by": "Roger"
+  },
+  "app.components.formBuilder.surveyAssistant.untitled": {
+    "state": "verified",
+    "verified_at": "2026-11-16T12:21:45.801398Z",
+    "verified_by": "Roger"
   },
   "app.components.formBuilder.tags": {
     "state": "verified",
