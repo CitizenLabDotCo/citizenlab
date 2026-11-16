@@ -972,7 +972,7 @@
   "app.components.aiAssistant.statusAutoExecuted": "Lettura: {tool}",
   "app.components.aiAssistant.statusExecuted": "Applicata: {tool}",
   "app.components.aiAssistant.statusExpired": "Scaduta: {tool}",
-  "app.components.aiAssistant.statusFailed": "Fallito: {tool}",
+  "app.components.aiAssistant.statusFailed": "Non riuscita: {tool}",
   "app.components.aiAssistant.statusInProgress": "In corso: {tool}",
   "app.components.aiAssistant.statusRejected": "Rifiutata: {tool}",
   "app.components.aiAssistant.title": "Crea con l'IA",
