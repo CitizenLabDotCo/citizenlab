@@ -5,7 +5,6 @@ import { randomString } from '../../support/commands';
 describe('Project page builder', () => {
   const projectTitle = randomString();
   const pageTitle = randomString();
-  const bodyText = randomString();
   const eventTitle = `Event ${randomString()}`;
   const otherEventTitle = `Other ${randomString()}`;
 
@@ -14,16 +13,12 @@ describe('Project page builder', () => {
   let projectSlug = '';
   let pageId = '';
   let pageSlug = '';
-  let builderWasEnabled = false;
   let projectPagesWasEnabled = false;
   let advancedWasEnabled = false;
 
-  const setFeatures = (enabled: boolean, projectPages: boolean) =>
+  const setProjectPages = (enabled: boolean) =>
     cy.apiUpdateAppConfiguration({
-      settings: {
-        custom_page_builder: { allowed: true, enabled },
-        project_static_pages: { allowed: projectPages, enabled: projectPages },
-      },
+      settings: { project_static_pages: { allowed: enabled, enabled } },
     });
 
   // The events widget can only be dragged in with advanced_custom_pages on.
@@ -35,14 +30,12 @@ describe('Project page builder', () => {
   before(() => {
     cy.apiGetAppConfiguration().then((config) => {
       const settings = config.body.data.attributes.settings;
-      builderWasEnabled = settings.custom_page_builder?.enabled === true;
       projectPagesWasEnabled = settings.project_static_pages?.enabled === true;
       advancedWasEnabled = settings.advanced_custom_pages?.enabled === true;
     });
     setAdvancedCustomPages(true);
+    setProjectPages(true);
 
-    // Created with the builder off, so the page starts with legacy content and no layout.
-    setFeatures(false, true);
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectTitle,
@@ -63,10 +56,6 @@ describe('Project page builder', () => {
       cy.apiCreateCustomPage(pageTitle, projectId).then((page) => {
         pageId = page.body.data.id;
         pageSlug = page.body.data.attributes.slug;
-        cy.apiUpdateCustomPage(pageId, {
-          top_info_section_enabled: true,
-          top_info_section_multiloc: { en: `<p>${bodyText}</p>` },
-        });
       });
     });
 
@@ -89,7 +78,7 @@ describe('Project page builder', () => {
   });
 
   after(() => {
-    setFeatures(builderWasEnabled, projectPagesWasEnabled);
+    setProjectPages(projectPagesWasEnabled);
     setAdvancedCustomPages(advancedWasEnabled);
     if (pageId) cy.apiRemoveCustomPage(pageId);
     if (projectId) cy.apiRemoveProject(projectId);
@@ -97,7 +86,6 @@ describe('Project page builder', () => {
   });
 
   it('edits the page from one page with a preview, and opens the builder', () => {
-    setFeatures(true, true);
     cy.setAdminLoginCookie();
     cy.visit(`/admin/projects/${projectId}/pages/${pageId}`);
 
@@ -106,9 +94,6 @@ describe('Project page builder', () => {
     cy.get('[data-cy="e2e-save-project-page"]', { timeout: 30000 }).should(
       'exist'
     );
-    // The first visit derives a layout from the page's content, and the preview renders only
-    // once there is one. Waiting on the preview picks that up through what it leaves behind:
-    // the request itself fires once per page, so a retry would wait for one that never comes.
     cy.get('[data-cy="e2e-project-page-preview-panel"]', { timeout: 30000 })
       .find('iframe')
       .should('have.attr', 'src')
@@ -120,7 +105,6 @@ describe('Project page builder', () => {
       'include',
       `/admin/custom-page-builder/pages/${pageId}`
     );
-    cy.contains(bodyText).should('exist');
 
     cy.get('#e2e-go-back-button').click();
     cy.location('pathname').should(
@@ -132,7 +116,6 @@ describe('Project page builder', () => {
   // A project's page is about that project, as its project page is: an events widget lists that
   // project's events and offers no other source.
   it('adds an events widget about its project', () => {
-    setFeatures(true, true);
     cy.setAdminLoginCookie();
     cy.visit(`/admin/custom-page-builder/pages/${pageId}`);
     cy.get('div#ROOT');
@@ -157,20 +140,9 @@ describe('Project page builder', () => {
       .and('not.contain', otherEventTitle);
   });
 
-  it('renders the derived layout on the published page, under its project', () => {
-    setFeatures(true, true);
-    cy.visit(`/projects/${projectSlug}/pages/${pageSlug}`);
-
-    // Only the builder renders the title widget; the legacy header's title has no data-cy.
-    cy.dataCy('e2e-custom-page-title').should('contain', pageTitle);
-    cy.contains(bodyText).should('be.visible');
-    cy.contains('a', projectTitle).should('be.visible');
-  });
-
   // The box finds its project through the page in the builder, and through the URL once
   // published. Without a project it renders nothing.
   it('adds a participation box about its project', () => {
-    setFeatures(true, true);
     cy.setAdminLoginCookie();
     cy.visit(`/admin/custom-page-builder/pages/${pageId}`);
     cy.get('div#ROOT');
@@ -200,7 +172,6 @@ describe('Project page builder', () => {
   // The section holds a Participation box, so the editor has to resolve one or the drop crashes
   // the builder.
   it('adds the Info & accordions section', () => {
-    setFeatures(true, true);
     cy.setAdminLoginCookie();
     cy.visit(`/admin/custom-page-builder/pages/${pageId}`);
     cy.get('div#ROOT');

@@ -2,9 +2,7 @@ import { randomString } from '../support/commands';
 
 // One widget serves three surfaces under three stored names, so this covers all of them from
 // one fixture: a node an admin drops from a toolbox (canonical `EventsList`), the two legacy
-// names still in the database, and the settings panel that varies by surface. Custom pages are
-// covered separately, in custom_page_builder/custom_page_events_derivation.cy.ts, because their
-// derivation needs its own fixtures.
+// names still in the database, and the settings panel that varies by surface.
 
 const node = (override: Record<string, unknown>) => ({
   nodes: [],
