@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { useTheme } from 'styled-components';
-
 import {
   Box,
   Text,
@@ -10,6 +8,7 @@ import {
   colors,
   IconNames,
 } from '@citizenlab/cl2-component-library';
+import { useTheme } from 'styled-components';
 
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 

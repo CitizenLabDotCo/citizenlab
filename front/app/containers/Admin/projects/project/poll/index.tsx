@@ -1,12 +1,11 @@
 import React from 'react';
 
+import { Box, Title } from '@citizenlab/cl2-component-library';
 import { isError } from 'lodash-es';
 import GetPollQuestions, {
   GetPollQuestionsChildProps,
 } from 'resources/GetPollQuestions';
 import styled from 'styled-components';
-
-import { Box, Title } from '@citizenlab/cl2-component-library';
 
 import usePhase from 'api/phases/usePhase';
 

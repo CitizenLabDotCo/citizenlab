@@ -1,13 +1,12 @@
 import React, { memo, useState, useEffect, useRef } from 'react';
 
-import CSSTransition from 'react-transition-group/CSSTransition';
-import styled from 'styled-components';
-
 import {
   useWindowSize,
   defaultCardStyle,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
+import CSSTransition from 'react-transition-group/CSSTransition';
+import styled from 'styled-components';
 
 import useIdeaById from 'api/ideas/useIdeaById';
 import usePhase from 'api/phases/usePhase';

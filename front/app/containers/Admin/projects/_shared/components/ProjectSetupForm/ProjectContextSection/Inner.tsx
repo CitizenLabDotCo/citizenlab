@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { IOption } from 'typings';
-
 import { Box, Error, Select } from '@citizenlab/cl2-component-library';
+import { IOption } from 'typings';
 
 import { fragmentId as folderFragmentId } from 'containers/Admin/projects/project/projectHeader/FolderProjectDropdown';
 

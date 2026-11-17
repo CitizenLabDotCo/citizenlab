@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { format } from 'date-fns';
-
 import { Icon, Box, InputContainer } from '@citizenlab/cl2-component-library';
+import { format } from 'date-fns';
 
 import useLocale from 'hooks/useLocale';
 

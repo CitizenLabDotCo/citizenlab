@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 
+import { Box, colors, Icon, Text } from '@citizenlab/cl2-component-library';
 import { FocusOn } from 'react-focus-on';
 import styled from 'styled-components';
-
-import { Box, colors, Icon, Text } from '@citizenlab/cl2-component-library';
 
 import { InputTerm } from 'api/phases/types';
 

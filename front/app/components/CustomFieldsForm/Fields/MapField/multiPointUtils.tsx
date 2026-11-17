@@ -6,7 +6,6 @@ import Graphic from '@arcgis/core/Graphic';
 import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer';
 import SimpleLineSymbol from '@arcgis/core/symbols/SimpleLineSymbol';
 import MapView from '@arcgis/core/views/MapView';
-
 import { colors } from '@citizenlab/cl2-component-library';
 
 import {

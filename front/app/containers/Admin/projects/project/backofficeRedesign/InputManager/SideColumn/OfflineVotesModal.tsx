@@ -2,12 +2,6 @@ import React, { useState } from 'react';
 
 import { useQueryClient } from '@tanstack/react-query';
 
-import Banner from 'design-system/Banner';
-import Modal from 'design-system/Modal';
-import NumberField from 'design-system/NumberField';
-import Pagination from 'design-system/Pagination';
-import Spinner from 'design-system/Spinner';
-
 import useIdeas from 'api/ideas/useIdeas';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
 import phasesKeys from 'api/phases/keys';
@@ -15,6 +9,12 @@ import { IPhaseData } from 'api/phases/types';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
 
 import useLocalize from 'hooks/useLocalize';
+
+import Banner from 'design-system/Banner';
+import Modal from 'design-system/Modal';
+import NumberField from 'design-system/NumberField';
+import Pagination from 'design-system/Pagination';
+import Spinner from 'design-system/Spinner';
 
 import { useIntl } from 'utils/cl-intl';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';

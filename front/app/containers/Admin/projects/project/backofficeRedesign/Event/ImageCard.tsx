@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 
 import { UploadFile } from 'typings';
 
-import Banner from 'design-system/Banner';
-import DropZone from 'design-system/DropZone';
-
 import SetupCard from 'containers/Admin/projects/_shared/components/SetupCard';
 import { EventForm } from 'containers/Admin/projects/_shared/events/useEventForm';
 
 import MultilocTextField from 'components/admin/MultilocFields/MultilocTextField';
 import imagesDropzoneMessages from 'components/UI/ImagesDropzone/messages';
+
+import Banner from 'design-system/Banner';
+import DropZone from 'design-system/DropZone';
 
 import { useIntl } from 'utils/cl-intl';
 

@@ -1,8 +1,7 @@
 import React, { useMemo, useState } from 'react';
 
-import { SerializedNodes } from '@craftjs/core';
-
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
+import { SerializedNodes } from '@craftjs/core';
 
 import useCustomPageLayout from 'api/custom_page_layout/useCustomPageLayout';
 

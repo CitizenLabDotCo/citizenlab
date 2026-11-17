@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { useTheme } from 'styled-components';
-
 import {
   Box,
   Button,
@@ -13,6 +11,7 @@ import {
   fontSizes,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
+import { useTheme } from 'styled-components';
 
 import useBasket from 'api/baskets/useBasket';
 import useUpdateBasket from 'api/baskets/useUpdateBasket';

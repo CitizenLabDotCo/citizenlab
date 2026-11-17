@@ -1,8 +1,7 @@
 import React, { memo } from 'react';
 
-import styled from 'styled-components';
-
 import { Box, fontSizes } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import Checkbox from 'components/UI/Checkbox';
 import Error from 'components/UI/Error';

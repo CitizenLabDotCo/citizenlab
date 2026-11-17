@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
+import { Icon, colors, fontSizes } from '@citizenlab/cl2-component-library';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
 import { UploadFile } from 'typings';
-
-import { Icon, colors, fontSizes } from '@citizenlab/cl2-component-library';
 
 import useCustomPageBySlug from 'api/custom_pages/useCustomPageBySlug';
 import useUpdateCustomPage from 'api/custom_pages/useUpdateCustomPage';

@@ -1,9 +1,9 @@
 import React from 'react';
 
-import Switch from 'design-system/Switch';
-
 import { IPhaseData } from 'api/phases/types';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
+
+import Switch from 'design-system/Switch';
 
 import { useIntl } from 'utils/cl-intl';
 

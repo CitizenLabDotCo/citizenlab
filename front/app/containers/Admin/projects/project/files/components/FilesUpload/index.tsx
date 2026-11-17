@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 
-import { useDropzone } from 'react-dropzone';
-
 import {
   Box,
   CheckboxWithLabel,
   Text,
   Title,
 } from '@citizenlab/cl2-component-library';
+import { useDropzone } from 'react-dropzone';
 
 import useAuthUser from 'api/me/useAuthUser';
 

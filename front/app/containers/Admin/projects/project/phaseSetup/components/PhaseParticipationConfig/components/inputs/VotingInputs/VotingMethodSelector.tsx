@@ -7,13 +7,13 @@ import {
   Text,
 } from '@citizenlab/cl2-component-library';
 
-import RadioGroup from 'design-system/RadioGroup';
-
 import { VotingMethod } from 'api/phases/types';
 
 import ChoiceRadio from 'containers/Admin/projects/_shared/components/ChoiceRadio';
 
 import { SubSectionTitle } from 'components/admin/Section';
+
+import RadioGroup from 'design-system/RadioGroup';
 
 import { useIntl } from 'utils/cl-intl';
 

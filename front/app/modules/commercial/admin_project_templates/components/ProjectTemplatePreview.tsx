@@ -1,10 +1,5 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
 
-import * as clipboard from 'clipboard-polyfill';
-import useGraphqlTenantLocales from 'modules/commercial/admin_project_templates/admin/api/useGraphqlTenantLocales';
-import { lighten } from 'polished';
-import styled from 'styled-components';
-
 import {
   Icon,
   Spinner,
@@ -12,6 +7,10 @@ import {
   fontSizes,
   media,
 } from '@citizenlab/cl2-component-library';
+import * as clipboard from 'clipboard-polyfill';
+import useGraphqlTenantLocales from 'modules/commercial/admin_project_templates/admin/api/useGraphqlTenantLocales';
+import { lighten } from 'polished';
+import styled from 'styled-components';
 
 import useLocalize from 'hooks/useLocalize';
 

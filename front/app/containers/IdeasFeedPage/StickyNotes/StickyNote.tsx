@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react';
 
-import styled from 'styled-components';
-
 import {
   Box,
   Text,
@@ -10,6 +8,7 @@ import {
   Icon,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import useAddIdeaExposure from 'api/idea_exposure/useAddIdeaExposure';
 import useIdeaById from 'api/ideas/useIdeaById';

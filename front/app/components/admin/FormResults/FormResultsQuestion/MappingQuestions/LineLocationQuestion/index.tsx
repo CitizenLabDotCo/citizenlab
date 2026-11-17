@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import MapView from '@arcgis/core/views/MapView';
-
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
 
 import useMapConfigById from 'api/map_config/useMapConfigById';

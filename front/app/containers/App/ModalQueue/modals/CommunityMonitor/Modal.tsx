@@ -1,8 +1,7 @@
 import React, { useCallback } from 'react';
 
-import Cookies from 'js-cookie';
-
 import { Box } from '@citizenlab/cl2-component-library';
+import Cookies from 'js-cookie';
 
 import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
 

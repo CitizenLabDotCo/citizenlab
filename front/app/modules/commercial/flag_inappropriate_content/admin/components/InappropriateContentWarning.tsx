@@ -1,9 +1,8 @@
 import React from 'react';
 
+import { colors, IconTooltip } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
-
-import { colors, IconTooltip } from '@citizenlab/cl2-component-library';
 
 import useInappropriateContentFlag from 'api/inappropriate_content_flags/useInappropriateContentFlag';
 

@@ -1,9 +1,8 @@
 import React, { useMemo } from 'react';
 
+import { Box, Title, isRtl } from '@citizenlab/cl2-component-library';
 import { useEditor } from '@craftjs/core';
 import styled from 'styled-components';
-
-import { Box, Title, isRtl } from '@citizenlab/cl2-component-library';
 
 import { IPhaseData } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';

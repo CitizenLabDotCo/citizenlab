@@ -1,10 +1,10 @@
 import React from 'react';
 
-import Modal from 'design-system/Modal';
-
 import phaseSetupMessages from 'containers/Admin/projects/project/phaseSetup/messages';
 
 import { usePageSave } from 'components/admin/PageSaveContext';
+
+import Modal from 'design-system/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 import { useBlocker } from 'utils/router';

@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
 
-import Banner from 'design-system/Banner';
-import Button from 'design-system/Button';
-import Spinner from 'design-system/Spinner';
-
 import { IPhaseData, InputTerm } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
 import { IProjectData } from 'api/projects/types';
@@ -13,6 +9,10 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import { useRegisterPageSaver } from 'components/admin/PageSaveContext';
+
+import Banner from 'design-system/Banner';
+import Button from 'design-system/Button';
+import Spinner from 'design-system/Spinner';
 
 import { useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';

@@ -1,8 +1,7 @@
 import React from 'react';
 
-import moment from 'moment';
-
 import { Box, colors } from '@citizenlab/cl2-component-library';
+import moment from 'moment';
 
 import { IEventData } from 'api/events/types';
 

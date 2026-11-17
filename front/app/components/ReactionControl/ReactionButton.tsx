@@ -1,9 +1,5 @@
 import React from 'react';
 
-import { lighten } from 'polished';
-import { FormattedDate } from 'react-intl';
-import styled, { keyframes } from 'styled-components';
-
 import {
   colors,
   fontSizes,
@@ -15,6 +11,9 @@ import {
   Tooltip,
   Button as ButtonComponent,
 } from '@citizenlab/cl2-component-library';
+import { lighten } from 'polished';
+import { FormattedDate } from 'react-intl';
+import styled, { keyframes } from 'styled-components';
 
 import { TReactionMode } from 'api/idea_reactions/types';
 import useIdeaById from 'api/ideas/useIdeaById';

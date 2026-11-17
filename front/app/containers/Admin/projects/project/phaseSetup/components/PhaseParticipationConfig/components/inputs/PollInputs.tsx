@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { CLErrors } from 'typings';
-
 import { Box, IconTooltip, Toggle } from '@citizenlab/cl2-component-library';
+import { CLErrors } from 'typings';
 
 import PhaseActionAccessRow from 'containers/Admin/projects/_shared/components/PhaseActionAccessRow';
 import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';

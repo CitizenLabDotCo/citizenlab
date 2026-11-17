@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react';
 
+import { Box, Text, Button, colors } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider, Resolver } from 'react-hook-form';
 import { SupportedLocale } from 'typings';
 import { object, mixed, boolean, number } from 'yup';
-
-import { Box, Text, Button, colors } from '@citizenlab/cl2-component-library';
 
 import useAddOfflineIdeasAsync from 'api/import_ideas/useAddImportedIdeasAsync';
 import usePhase from 'api/phases/usePhase';

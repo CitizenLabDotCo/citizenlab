@@ -1,8 +1,7 @@
 import React, { useState, useMemo } from 'react';
 
-import styled from 'styled-components';
-
 import { Box } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import { IDefaultInputTopicData } from 'api/default_input_topics/types';
 import useDefaultInputTopics from 'api/default_input_topics/useDefaultInputTopics';

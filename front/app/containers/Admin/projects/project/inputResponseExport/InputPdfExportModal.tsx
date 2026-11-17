@@ -1,14 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import { snakeCase } from 'lodash-es';
-import { FormProvider } from 'react-hook-form';
-
 import {
   Box,
   Text,
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
+import { snakeCase } from 'lodash-es';
+import { FormProvider } from 'react-hook-form';
 
 import useGenerateInputResponsesPdf from 'api/input_responses_pdf/useGenerateInputResponsesPdf';
 import useInputResponsesPdfJob from 'api/input_responses_pdf/useInputResponsesPdfJob';

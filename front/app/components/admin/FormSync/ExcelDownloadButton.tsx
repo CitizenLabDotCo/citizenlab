@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { saveAs } from 'file-saver';
-
 import { Box, Button, IconTooltip } from '@citizenlab/cl2-component-library';
+import { saveAs } from 'file-saver';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 

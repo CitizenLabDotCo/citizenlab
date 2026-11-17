@@ -1,10 +1,9 @@
 import React from 'react';
 
+import { Box, Button, colors } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { string, object } from 'yup';
-
-import { Box, Button, colors } from '@citizenlab/cl2-component-library';
 
 import useAuthUser from 'api/me/useAuthUser';
 import useUpdateProjectLibraryExternalComment from 'api/project_library_external_comments/useUpdateProjectLibraryExternalComment';

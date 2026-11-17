@@ -1,13 +1,12 @@
 import React, { useMemo } from 'react';
 
-import styled from 'styled-components';
-
 import {
   media,
   fontSizes,
   colors,
   isRtl,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import { IdeaQueryParameters } from 'api/ideas/types';
 

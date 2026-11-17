@@ -1,18 +1,17 @@
 import React, { ReactNode } from 'react';
 
-import { UploadFile } from 'typings';
-
 import { Box, Select, Text } from '@citizenlab/cl2-component-library';
-
-import { ListBoxOption } from 'design-system/ListBox';
-import DesignSystemModal from 'design-system/Modal';
-import DesignSystemSelect from 'design-system/Select';
+import { UploadFile } from 'typings';
 
 import { IFileAttachmentData } from 'api/file_attachments/types';
 import { IFileData } from 'api/files/types';
 import useFiles from 'api/files/useFiles';
 
 import Modal from 'components/UI/Modal';
+
+import { ListBoxOption } from 'design-system/ListBox';
+import DesignSystemModal from 'design-system/Modal';
+import DesignSystemSelect from 'design-system/Select';
 
 import { useIntl } from 'utils/cl-intl';
 import { useParams } from 'utils/router';

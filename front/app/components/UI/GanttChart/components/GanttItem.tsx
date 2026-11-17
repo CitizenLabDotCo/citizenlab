@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { max, min } from 'date-fns';
-
 import { Box, Tooltip, colors } from '@citizenlab/cl2-component-library';
+import { max, min } from 'date-fns';
 
 import { parseBackendDateString } from 'utils/dateUtils';
 

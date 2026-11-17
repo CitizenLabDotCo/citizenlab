@@ -5,10 +5,6 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { Multiloc } from 'typings';
 import { boolean, mixed, ObjectSchema, object, string } from 'yup';
 
-import Banner from 'design-system/Banner';
-import IconButton from 'design-system/IconButton';
-import Modal from 'design-system/Modal';
-
 import usePhase from 'api/phases/usePhase';
 
 import FormMultilocRichTextField from 'components/admin/MultilocFields/FormMultilocRichTextField';
@@ -16,6 +12,10 @@ import FormMultilocTextField from 'components/admin/MultilocFields/FormMultilocT
 import AuthorField from 'components/CustomFieldsForm/Fields/AuthorField';
 import fieldMessages from 'components/CustomFieldsForm/messages';
 import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
+
+import Banner from 'design-system/Banner';
+import IconButton from 'design-system/IconButton';
+import Modal from 'design-system/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';

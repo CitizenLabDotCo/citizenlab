@@ -1,14 +1,13 @@
 import React from 'react';
 
-import { lighten } from 'polished';
-import styled from 'styled-components';
-
 import {
   colors,
   fontSizes,
   media,
   Icon,
 } from '@citizenlab/cl2-component-library';
+import { lighten } from 'polished';
+import styled from 'styled-components';
 
 import useLocale from 'hooks/useLocale';
 

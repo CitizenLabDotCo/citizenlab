@@ -3,9 +3,6 @@
 
 import React, { ReactNode, useState } from 'react';
 
-import { transparentize } from 'polished';
-import styled from 'styled-components';
-
 import {
   Box,
   Text,
@@ -14,6 +11,8 @@ import {
   IconTooltip,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { transparentize } from 'polished';
+import styled from 'styled-components';
 
 import { SummaryChip } from './logic';
 

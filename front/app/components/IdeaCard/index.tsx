@@ -1,14 +1,13 @@
 import React, { useRef, useState, useEffect } from 'react';
 
-import { focusRingInset } from 'global-styles';
-import styled from 'styled-components';
-
 import {
   useBreakpoint,
   Box,
   Title,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
+import { focusRingInset } from 'global-styles';
+import styled from 'styled-components';
 
 import useIdeaImage from 'api/idea_images/useIdeaImage';
 import { IIdea } from 'api/ideas/types';

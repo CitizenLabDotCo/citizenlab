@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { useFormContext } from 'react-hook-form';
-
 import { Box, colors } from '@citizenlab/cl2-component-library';
+import { useFormContext } from 'react-hook-form';
 
 import {
   IFlatCustomField,

@@ -1,9 +1,5 @@
 import React from 'react';
 
-import { groupBy } from 'lodash-es';
-import { darken, rgba } from 'polished';
-import styled, { useTheme } from 'styled-components';
-
 import {
   Title,
   useBreakpoint,
@@ -11,6 +7,9 @@ import {
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
+import { groupBy } from 'lodash-es';
+import { darken, rgba } from 'polished';
+import styled, { useTheme } from 'styled-components';
 
 import useComments from 'api/comments/useComments';
 import useAuthUser from 'api/me/useAuthUser';

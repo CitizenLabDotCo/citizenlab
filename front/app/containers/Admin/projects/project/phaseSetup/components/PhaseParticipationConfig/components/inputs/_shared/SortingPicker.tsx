@@ -1,12 +1,7 @@
 import React from 'react';
 
-import { CLErrors } from 'typings';
-
 import { Radio, IconTooltip } from '@citizenlab/cl2-component-library';
-
-import Button from 'design-system/Button';
-import { fieldStyles } from 'design-system/Field';
-import Menu, { MenuItem, MenuTrigger } from 'design-system/Menu';
+import { CLErrors } from 'typings';
 
 import { IdeaSortMethod } from 'api/phases/types';
 
@@ -16,6 +11,10 @@ import messages from 'containers/Admin/projects/project/messages';
 import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
+
+import Button from 'design-system/Button';
+import { fieldStyles } from 'design-system/Field';
+import Menu, { MenuItem, MenuTrigger } from 'design-system/Menu';
 
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 

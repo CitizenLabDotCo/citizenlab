@@ -1,13 +1,12 @@
 import React, { MouseEvent } from 'react';
 
-import styled, { css } from 'styled-components';
-
 import {
   TooltipContentWrapper,
   colors,
   fontSizes,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
+import styled, { css } from 'styled-components';
 
 import Link from 'utils/cl-router/Link';
 

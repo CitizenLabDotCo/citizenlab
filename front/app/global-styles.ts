@@ -1,6 +1,5 @@
-import { createGlobalStyle, css } from 'styled-components';
-
 import { fontSizes, isRtl, colors } from '@citizenlab/cl2-component-library';
+import { createGlobalStyle, css } from 'styled-components';
 
 export const focusRing = css`
   outline: 2px solid ${colors.black};

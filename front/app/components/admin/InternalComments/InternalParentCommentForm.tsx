@@ -1,10 +1,9 @@
 import React, { useState, useRef } from 'react';
 
+import { ClickOutside, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { isString, trim } from 'lodash-es';
 import { hideVisually } from 'polished';
 import styled from 'styled-components';
-
-import { ClickOutside, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 import useIdeaById from 'api/ideas/useIdeaById';
 import useAddInternalCommentToIdea from 'api/internal_comments/useAddInternalCommentToIdea';

@@ -1,12 +1,11 @@
 import React from 'react';
 
-import { useTheme } from 'styled-components';
-
 import {
   Box,
   CollapsibleContainer,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { useTheme } from 'styled-components';
 
 interface Props {
   title: string;

@@ -1,12 +1,12 @@
 import React, { KeyboardEvent } from 'react';
 
-import DesignSystemSidePanel from 'design-system/SidePanel';
-import Spinner from 'design-system/Spinner';
-
 import useIdeaById from 'api/ideas/useIdeaById';
 import { IPhaseData } from 'api/phases/types';
 
 import { ManagerType } from 'components/admin/PostManager';
+
+import DesignSystemSidePanel from 'design-system/SidePanel';
+import Spinner from 'design-system/Spinner';
 
 import IdeaOverview from './IdeaOverview';
 import PanelHeader, { PanelNavigation } from './PanelHeader';

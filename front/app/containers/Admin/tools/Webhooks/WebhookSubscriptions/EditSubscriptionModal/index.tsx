@@ -1,9 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
 
-import { yupResolver } from '@hookform/resolvers/yup';
-import { FormProvider, useForm } from 'react-hook-form';
-import { object, string, array, boolean } from 'yup';
-
 import {
   Box,
   Button,
@@ -11,6 +7,9 @@ import {
   Title,
   Spinner,
 } from '@citizenlab/cl2-component-library';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { FormProvider, useForm } from 'react-hook-form';
+import { object, string, array, boolean } from 'yup';
 
 import useProjects from 'api/projects/useProjects';
 import { WEBHOOK_EVENTS } from 'api/webhook_subscriptions/types';

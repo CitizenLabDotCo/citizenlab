@@ -2,10 +2,10 @@ import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 
 import { UploadFile } from 'typings';
 
+import imagesDropzoneMessages from 'components/UI/ImagesDropzone/messages';
+
 import Banner from 'design-system/Banner';
 import IconButton from 'design-system/IconButton';
-
-import imagesDropzoneMessages from 'components/UI/ImagesDropzone/messages';
 
 import { useIntl } from 'utils/cl-intl';
 import { returnFileSize } from 'utils/fileUtils';

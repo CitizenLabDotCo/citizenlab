@@ -1,8 +1,5 @@
 import React, { memo } from 'react';
 
-import { WrappedComponentProps } from 'react-intl';
-import styled from 'styled-components';
-
 import {
   Box,
   Icon,
@@ -10,10 +7,8 @@ import {
   colors,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-
-import IconButton from 'design-system/IconButton';
-import Link from 'design-system/Link';
-import Popover, { DialogTrigger } from 'design-system/Popover';
+import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
 
 import { IMapConfig } from 'api/map_config/types';
 import useUpdateMapConfig from 'api/map_config/useUpdateMapConfig';
@@ -26,6 +21,10 @@ import SortableList from 'components/admin/ResourceList/SortableList';
 import SortableRow from 'components/admin/ResourceList/SortableRow';
 import { SubSectionTitle } from 'components/admin/Section';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
+
+import IconButton from 'design-system/IconButton';
+import Link from 'design-system/Link';
+import Popover, { DialogTrigger } from 'design-system/Popover';
 
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';

@@ -1,10 +1,9 @@
 import React, { useState, lazy, Suspense } from 'react';
 
+import { Input, IconButton, colors } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
-
-import { Input, IconButton, colors } from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 

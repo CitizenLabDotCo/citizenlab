@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 
-import { useQueries } from '@tanstack/react-query';
-
 import { Box, Label, Spinner } from '@citizenlab/cl2-component-library';
+import { useQueries } from '@tanstack/react-query';
 
 import ideasKeys from 'api/ideas/keys';
 import { IIdeaData } from 'api/ideas/types';

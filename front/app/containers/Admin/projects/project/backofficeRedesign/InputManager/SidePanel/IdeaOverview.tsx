@@ -2,9 +2,6 @@ import React from 'react';
 
 import { FormattedDate } from 'react-intl';
 
-import Divider from 'design-system/Divider';
-import Icon from 'design-system/Icon';
-
 import { IIdeaData } from 'api/ideas/types';
 import { IPhaseData } from 'api/phases/types';
 
@@ -16,6 +13,9 @@ import CommentsSection from 'components/PostShowComponents/Comments/CommentsSect
 import { CommentsVariantContext } from 'components/PostShowComponents/Comments/commentsVariant';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import UserName from 'components/UI/UserName';
+
+import Divider from 'design-system/Divider';
+import Icon from 'design-system/Icon';
 
 import { FormattedMessage } from 'utils/cl-intl';
 

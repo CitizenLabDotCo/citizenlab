@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 
-import { isEqual } from 'lodash-es';
-
 import {
   Box,
   Text,
   Button,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
+import { isEqual } from 'lodash-es';
 
 import useGroups from 'api/groups/useGroups';
 import { IPermissionData } from 'api/permissions/types';

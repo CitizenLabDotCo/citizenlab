@@ -1,8 +1,7 @@
 import React, { Suspense, useEffect } from 'react';
 
-import { FormProvider, UseFormSetError } from 'react-hook-form';
-
 import { Box } from '@citizenlab/cl2-component-library';
+import { FormProvider, UseFormSetError } from 'react-hook-form';
 
 import useCustomFields from 'api/custom_fields/useCustomFields';
 import usePhase from 'api/phases/usePhase';

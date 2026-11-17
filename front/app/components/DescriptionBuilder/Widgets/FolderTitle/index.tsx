@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { UserComponent } from '@craftjs/core';
-
 import { Title } from '@citizenlab/cl2-component-library';
+import { UserComponent } from '@craftjs/core';
 
 import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 

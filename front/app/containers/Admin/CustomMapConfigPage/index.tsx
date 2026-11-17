@@ -1,12 +1,8 @@
 import React, { memo, useEffect, useState } from 'react';
 
 import MapView from '@arcgis/core/views/MapView';
-import styled from 'styled-components';
-
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
-
-import IconButton from 'design-system/IconButton';
-import DSSpinner from 'design-system/Spinner';
+import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IMapConfig } from 'api/map_config/types';
@@ -20,6 +16,9 @@ import ConfigurationMap from 'components/ConfigurationMap/ConfigurationMap';
 import { goToMapLocation } from 'components/EsriMap/utils';
 import Centerer from 'components/UI/Centerer';
 import goBackMessages from 'components/UI/GoBackButton/messages';
+
+import IconButton from 'design-system/IconButton';
+import DSSpinner from 'design-system/Spinner';
 
 import { useIntl } from 'utils/cl-intl';
 import { getCenter, getZoomLevel } from 'utils/mapUtils/map';

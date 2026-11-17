@@ -1,9 +1,8 @@
 import React from 'react';
 
+import { Box, Title, Text, Tooltip } from '@citizenlab/cl2-component-library';
 import { snakeCase } from 'lodash-es';
 import styled from 'styled-components';
-
-import { Box, Title, Text, Tooltip } from '@citizenlab/cl2-component-library';
 
 import { LogicConfig, ResultUngrouped } from 'api/survey_results/types';
 

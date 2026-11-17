@@ -1,9 +1,5 @@
 import React, { ChangeEvent } from 'react';
 
-import { saveAs } from 'file-saver';
-import { darken } from 'polished';
-import styled from 'styled-components';
-
 import {
   fontSizes,
   Text,
@@ -11,6 +7,9 @@ import {
   Button,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { saveAs } from 'file-saver';
+import { darken } from 'polished';
+import styled from 'styled-components';
 
 import { API_PATH } from 'containers/App/constants';
 

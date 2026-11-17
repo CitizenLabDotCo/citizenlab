@@ -1,6 +1,5 @@
-import { FormatMessage } from 'typings';
-
 import { colors, Locale } from '@citizenlab/cl2-component-library';
+import { FormatMessage } from 'typings';
 
 import { CommunityMonitorSentimentScoreAttributes } from 'api/community_monitor_scores/types';
 

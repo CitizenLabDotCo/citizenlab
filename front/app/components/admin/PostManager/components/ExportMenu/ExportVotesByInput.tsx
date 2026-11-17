@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 
-import saveAs from 'file-saver';
-
 import { fontSizes, Button } from '@citizenlab/cl2-component-library';
+import saveAs from 'file-saver';
 
 import usePhases from 'api/phases/usePhases';
 

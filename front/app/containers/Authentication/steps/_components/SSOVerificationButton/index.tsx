@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { MessageDescriptor } from 'react-intl';
-
 import { colors, IconNames } from '@citizenlab/cl2-component-library';
+import { MessageDescriptor } from 'react-intl';
 
 import { IdMethodData, IdMethodName } from 'api/id_methods/types';
 

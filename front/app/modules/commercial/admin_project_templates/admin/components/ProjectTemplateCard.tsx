@@ -1,9 +1,8 @@
 import React, { memo, useCallback, useState } from 'react';
 
+import { Box, colors, fontSizes } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
 import styled from 'styled-components';
-
-import { Box, colors, fontSizes } from '@citizenlab/cl2-component-library';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Modal from 'components/UI/Modal';

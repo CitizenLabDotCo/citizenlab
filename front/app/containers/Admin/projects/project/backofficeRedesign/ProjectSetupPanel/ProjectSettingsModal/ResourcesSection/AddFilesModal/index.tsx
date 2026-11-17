@@ -1,15 +1,15 @@
 import React, { useRef, useState } from 'react';
 
-import Banner from 'design-system/Banner';
-import Checkbox from 'design-system/Checkbox';
-import DropZone from 'design-system/DropZone';
-import Modal from 'design-system/Modal';
-
 import {
   MAX_FILES,
   MAX_FILE_SIZE,
 } from 'containers/Admin/projects/_shared/fileUploads/utils';
 import filesMessages from 'containers/Admin/projects/project/files/components/messages';
+
+import Banner from 'design-system/Banner';
+import Checkbox from 'design-system/Checkbox';
+import DropZone from 'design-system/DropZone';
+import Modal from 'design-system/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 import { returnFileSize } from 'utils/fileUtils';

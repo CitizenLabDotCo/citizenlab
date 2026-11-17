@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { Multiloc } from 'typings';
-
 import { Box, Title } from '@citizenlab/cl2-component-library';
+import { Multiloc } from 'typings';
 
 import useAddSpaceModerator from 'api/space_moderators/useAddSpaceModerator';
 import useDeleteSpaceModerator from 'api/space_moderators/useDeleteSpaceModerator';

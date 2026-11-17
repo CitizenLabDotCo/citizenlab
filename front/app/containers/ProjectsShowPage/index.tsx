@@ -1,14 +1,13 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
-import JSConfetti from 'js-confetti';
-import { isError } from 'lodash-es';
-import styled from 'styled-components';
-
 import {
   media,
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
+import JSConfetti from 'js-confetti';
+import { isError } from 'lodash-es';
+import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { VotingContext } from 'api/baskets_ideas/useVoting';

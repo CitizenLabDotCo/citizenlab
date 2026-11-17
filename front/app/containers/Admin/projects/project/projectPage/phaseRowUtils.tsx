@@ -1,9 +1,8 @@
 import React from 'react';
 
+import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 import { Locale, format, isSameMonth } from 'date-fns';
 import styled from 'styled-components';
-
-import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 
 import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 import { getPhaseLandingTab } from 'api/phases/utils';

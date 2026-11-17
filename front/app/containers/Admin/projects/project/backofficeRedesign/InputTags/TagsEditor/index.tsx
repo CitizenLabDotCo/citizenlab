@@ -3,12 +3,6 @@ import React, { useMemo, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
-import AlertDialog from 'design-system/AlertDialog';
-import Button from 'design-system/Button';
-import Icon from 'design-system/Icon';
-import SearchField from 'design-system/SearchField';
-import TextField from 'design-system/TextField';
-
 import { IInputTopicData } from 'api/input_topics/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -20,6 +14,12 @@ import InputTopicModal, {
   InputTopicFormValues,
 } from 'containers/Admin/projects/project/topics/InputTopicModal';
 import topicsMessages from 'containers/Admin/projects/project/topics/messages';
+
+import AlertDialog from 'design-system/AlertDialog';
+import Button from 'design-system/Button';
+import Icon from 'design-system/Icon';
+import SearchField from 'design-system/SearchField';
+import TextField from 'design-system/TextField';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';

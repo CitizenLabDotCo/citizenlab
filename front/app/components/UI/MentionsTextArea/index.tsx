@@ -1,12 +1,11 @@
 import React, { useRef } from 'react';
 
+import { colors, fontSizes } from '@citizenlab/cl2-component-library';
 import { isString, isEmpty } from 'lodash-es';
 import { transparentize } from 'polished';
 import { MentionsInput, Mention, MentionItem } from 'react-mentions';
 import styled, { useTheme } from 'styled-components';
 import { SupportedLocale } from 'typings';
-
-import { colors, fontSizes } from '@citizenlab/cl2-component-library';
 
 import getMentions from 'api/mentions/getMentions';
 

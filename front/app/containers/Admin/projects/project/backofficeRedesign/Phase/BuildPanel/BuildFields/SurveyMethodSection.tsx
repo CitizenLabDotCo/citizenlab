@@ -2,8 +2,6 @@ import React, { ReactNode } from 'react';
 
 import { CLErrors } from 'typings';
 
-import RadioGroup from 'design-system/RadioGroup';
-
 import { ParticipationMethod, TSurveyService } from 'api/phases/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -11,6 +9,8 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import ChoiceRadio from 'containers/Admin/projects/_shared/components/ChoiceRadio';
 import pickerMessages from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/components/messages';
 import { SurveyMethod } from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/components/SurveyMethodChoices';
+
+import RadioGroup from 'design-system/RadioGroup';
 
 import { useIntl } from 'utils/cl-intl';
 

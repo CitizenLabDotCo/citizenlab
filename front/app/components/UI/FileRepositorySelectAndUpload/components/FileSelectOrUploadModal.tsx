@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { UploadFile } from 'typings';
-
 import { Button } from '@citizenlab/cl2-component-library';
+import { UploadFile } from 'typings';
 
 import { IFileAttachmentData } from 'api/file_attachments/types';
 import { IFileData } from 'api/files/types';

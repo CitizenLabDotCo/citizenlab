@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
 import { isArray, includes, isString, isEmpty } from 'lodash-es';
 import { Subscription } from 'rxjs';
-
-import { Box } from '@citizenlab/cl2-component-library';
 
 import { MembershipType } from 'api/groups/types';
 import { IQueryParameters } from 'api/users/types';

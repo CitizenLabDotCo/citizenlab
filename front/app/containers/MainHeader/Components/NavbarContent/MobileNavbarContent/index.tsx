@@ -1,8 +1,7 @@
 import React from 'react';
 
-import styled, { useTheme } from 'styled-components';
-
 import { Box, Button, media, isRtl } from '@citizenlab/cl2-component-library';
+import styled, { useTheme } from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 

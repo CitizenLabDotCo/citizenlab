@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 
 import { router } from 'routes';
 
-import Button from 'design-system/Button';
-
 import useCustomFields from 'api/custom_fields/useCustomFields';
 
 import useLocale from 'hooks/useLocale';
@@ -15,6 +13,8 @@ import actionFormMessages from 'components/admin/ActionForm/messages';
 import FormInputEditWarningModal from 'components/admin/FormInputEditWarningModal';
 import formBuilderMessages from 'components/FormBuilder/components/messages';
 import { getTranslatedStringKey } from 'components/FormBuilder/fieldLabels';
+
+import Button from 'design-system/Button';
 
 import { useIntl } from 'utils/cl-intl';
 

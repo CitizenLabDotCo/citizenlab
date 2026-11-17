@@ -1,7 +1,5 @@
 import React, { Fragment } from 'react';
 
-import styled from 'styled-components';
-
 import {
   Radio,
   Title,
@@ -9,6 +7,7 @@ import {
   fontSizes,
   media,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import { IAppConfigurationData } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';

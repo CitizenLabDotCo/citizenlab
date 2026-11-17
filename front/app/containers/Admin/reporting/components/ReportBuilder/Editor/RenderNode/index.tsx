@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import { useNode, useEditor, ROOT_NODE } from '@craftjs/core';
 import styled from 'styled-components';
-
-import { Box, colors } from '@citizenlab/cl2-component-library';
 
 import {
   WIDGET_TITLES,

@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import SearchField from 'design-system/SearchField';
-
 import searchInputMessages from 'components/UI/SearchInput/messages';
+
+import SearchField from 'design-system/SearchField';
 
 import { useIntl } from 'utils/cl-intl';
 

@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import styled from 'styled-components';
-
 import {
   Box,
   Tr,
@@ -10,6 +8,7 @@ import {
   Spinner,
   colors,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import useProjectFolderImage from 'api/project_folder_images/useProjectFolderImage';
 import { MiniProjectFolder } from 'api/project_folders_mini/types';

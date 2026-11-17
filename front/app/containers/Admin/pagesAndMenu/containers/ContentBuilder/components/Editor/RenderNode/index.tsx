@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
 
+import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
 import { useNode, useEditor, ROOT_NODE } from '@craftjs/core';
 import { MessageDescriptor } from 'react-intl';
 import styled from 'styled-components';
-
-import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
 
 import { BuilderCanvasContext } from 'components/admin/ContentBuilder/context/BuilderCanvasContext';
 import messages from 'components/admin/ContentBuilder/messages';

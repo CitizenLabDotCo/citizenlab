@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
 
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm, FormProvider } from 'react-hook-form';
-import { useTheme } from 'styled-components';
-import { Multiloc } from 'typings';
-import { object, boolean } from 'yup';
-
 import {
   Box,
   CollapsibleContainer,
   Text,
 } from '@citizenlab/cl2-component-library';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm, FormProvider } from 'react-hook-form';
+import { useTheme } from 'styled-components';
+import { Multiloc } from 'typings';
+import { object, boolean } from 'yup';
 
 import useCustomFields from 'api/custom_fields/useCustomFields';
 import useCustomForm from 'api/custom_form/useCustomForm';

@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-import styled from 'styled-components';
-import { Multiloc } from 'typings';
-
 import {
   useBreakpoint,
   media,
@@ -11,6 +8,8 @@ import {
   colors,
   Title,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+import { Multiloc } from 'typings';
 
 import { IStatusCountsAll } from 'api/admin_publications_status_counts/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';

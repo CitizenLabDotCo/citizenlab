@@ -1,8 +1,7 @@
 import React from 'react';
 
-import styled, { css } from 'styled-components';
-
 import { Box, media } from '@citizenlab/cl2-component-library';
+import styled, { css } from 'styled-components';
 
 import { IEvents } from 'api/events/types';
 

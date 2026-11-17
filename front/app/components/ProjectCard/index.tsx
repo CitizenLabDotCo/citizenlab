@@ -1,11 +1,5 @@
 import React, { memo, useId, useState } from 'react';
 
-import { isEmpty, round } from 'lodash-es';
-import moment from 'moment';
-import { rgba, darken } from 'polished';
-import { useInView } from 'react-intersection-observer';
-import styled from 'styled-components';
-
 import {
   Box,
   media,
@@ -17,6 +11,11 @@ import {
   Text,
   Title,
 } from '@citizenlab/cl2-component-library';
+import { isEmpty, round } from 'lodash-es';
+import moment from 'moment';
+import { rgba, darken } from 'polished';
+import { useInView } from 'react-intersection-observer';
+import styled from 'styled-components';
 
 import usePhase from 'api/phases/usePhase';
 import useProjectImage from 'api/project_images/useProjectImage';

@@ -1,8 +1,7 @@
 import React, { FormEvent, useEffect, useRef, useState } from 'react';
 
-import { CLErrors, Multiloc } from 'typings';
-
 import { Box, Title, colors } from '@citizenlab/cl2-component-library';
+import { CLErrors, Multiloc } from 'typings';
 
 import useFileAttachments from 'api/file_attachments/useFileAttachments';
 import { IPhase, IUpdatedPhaseProperties } from 'api/phases/types';

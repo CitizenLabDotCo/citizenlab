@@ -1,12 +1,11 @@
 import React from 'react';
 
-import { useFormContext } from 'react-hook-form';
-
 import {
   Box,
   IconTooltip,
   Toggle as ToggleComponent,
 } from '@citizenlab/cl2-component-library';
+import { useFormContext } from 'react-hook-form';
 
 import { LIST_LAYOUT_MAX_OPTIONS } from 'components/CustomFieldsForm/constants';
 import { isDropdownLayoutForced } from 'components/CustomFieldsForm/util';

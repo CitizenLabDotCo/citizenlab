@@ -2,13 +2,13 @@ import React from 'react';
 
 import { CLErrors } from 'typings';
 
-import { RequiredMarker } from 'design-system/Field';
-import Link from 'design-system/Link';
-import TextField from 'design-system/TextField';
-
 import configMessages from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/messages';
 
 import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
+
+import { RequiredMarker } from 'design-system/Field';
+import Link from 'design-system/Link';
+import TextField from 'design-system/TextField';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 

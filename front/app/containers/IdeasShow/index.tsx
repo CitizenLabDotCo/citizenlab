@@ -1,13 +1,12 @@
 import React, { lazy, Suspense, useState } from 'react';
 
-import styled from 'styled-components';
-
 import {
   Box,
   Badge,
   Tooltip,
   Divider,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import useIdeaImages from 'api/idea_images/useIdeaImages';
 import useIdeaById from 'api/ideas/useIdeaById';

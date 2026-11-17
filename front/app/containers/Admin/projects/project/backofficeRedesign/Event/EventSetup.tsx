@@ -2,8 +2,6 @@ import React from 'react';
 
 import { Multiloc } from 'typings';
 
-import Banner from 'design-system/Banner';
-
 import AttachmentsCard from 'containers/Admin/projects/_shared/components/AttachmentsCard';
 import { EventForm } from 'containers/Admin/projects/_shared/events/useEventForm';
 import eventMessages from 'containers/Admin/projects/project/events/messages';
@@ -11,6 +9,8 @@ import eventMessages from 'containers/Admin/projects/project/events/messages';
 import MultilocRichTextField from 'components/admin/MultilocFields/MultilocRichTextField';
 import MultilocTextField from 'components/admin/MultilocFields/MultilocTextField';
 import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
+
+import Banner from 'design-system/Banner';
 
 import { useIntl } from 'utils/cl-intl';
 

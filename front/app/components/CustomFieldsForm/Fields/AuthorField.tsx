@@ -1,17 +1,16 @@
 import React from 'react';
 
+import { Box, colors, IconTooltip } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 import { Controller, useFormContext } from 'react-hook-form';
 import { CLError, RHFErrors } from 'typings';
-
-import { Box, colors, IconTooltip } from '@citizenlab/cl2-component-library';
-
-import IconButton from 'design-system/IconButton';
 
 import Error, { TFieldName } from 'components/UI/Error';
 import { FormLabel } from 'components/UI/FormComponents';
 import formMessages from 'components/UI/FormComponents/messages';
 import UserSelect from 'components/UI/UserSelect';
+
+import IconButton from 'design-system/IconButton';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 

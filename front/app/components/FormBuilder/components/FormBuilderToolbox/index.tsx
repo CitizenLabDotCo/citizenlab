@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { get } from 'lodash-es';
-
 import { Box, Title, colors } from '@citizenlab/cl2-component-library';
+import { get } from 'lodash-es';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';

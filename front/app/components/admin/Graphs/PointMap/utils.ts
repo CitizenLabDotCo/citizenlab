@@ -2,7 +2,6 @@ import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import Renderer from '@arcgis/core/renderers/SimpleRenderer';
 import SimpleMarkerSymbol from '@arcgis/core/symbols/SimpleMarkerSymbol';
 import MapView from '@arcgis/core/views/MapView';
-
 import { colors } from '@citizenlab/cl2-component-library';
 
 import { applyHeatMapRenderer } from 'components/EsriMap/utils';

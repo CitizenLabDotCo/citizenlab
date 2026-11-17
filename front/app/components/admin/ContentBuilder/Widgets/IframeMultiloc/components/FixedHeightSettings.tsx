@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { useNode } from '@craftjs/core';
-
 import { Box, Input } from '@citizenlab/cl2-component-library';
+import { useNode } from '@craftjs/core';
 
 import { useIntl } from 'utils/cl-intl';
 

@@ -1,9 +1,8 @@
 import React from 'react';
 
+import { Select } from '@citizenlab/cl2-component-library';
 import { TRule } from 'modules/commercial/smart_groups/components/UserFilterConditions/rules';
 import { IOption } from 'typings';
-
-import { Select } from '@citizenlab/cl2-component-library';
 
 import { ICustomFieldOptionData } from 'api/custom_field_options/types';
 import useCustomFieldOptions from 'api/custom_field_options/useCustomFieldOptions';

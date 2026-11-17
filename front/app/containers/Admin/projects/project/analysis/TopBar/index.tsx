@@ -1,8 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
-import Cookies from 'js-cookie';
-import styled from 'styled-components';
-
 import {
   Box,
   stylingConsts,
@@ -11,6 +8,8 @@ import {
   Text,
   ClickOutside,
 } from '@citizenlab/cl2-component-library';
+import Cookies from 'js-cookie';
+import styled from 'styled-components';
 
 import useAnalysis from 'api/analyses/useAnalysis';
 import useAuthUser from 'api/me/useAuthUser';

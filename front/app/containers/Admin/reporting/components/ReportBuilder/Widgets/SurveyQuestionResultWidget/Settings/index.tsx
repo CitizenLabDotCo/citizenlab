@@ -1,9 +1,8 @@
 import React, { useCallback } from 'react';
 
+import { Box, Toggle, Select } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 import { IOption } from 'typings';
-
-import { Box, Toggle, Select } from '@citizenlab/cl2-component-library';
 
 import useAnalyses from 'api/analyses/useAnalyses';
 import { ICustomFields } from 'api/custom_fields/types';

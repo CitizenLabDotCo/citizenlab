@@ -1,8 +1,7 @@
 import React from 'react';
 
-import moment from 'moment';
-
 import { Box } from '@citizenlab/cl2-component-library';
+import moment from 'moment';
 
 import Chart from 'components/admin/GraphCards/RegistrationsCard/Chart';
 import { AccessibilityProps } from 'components/admin/Graphs/typings';

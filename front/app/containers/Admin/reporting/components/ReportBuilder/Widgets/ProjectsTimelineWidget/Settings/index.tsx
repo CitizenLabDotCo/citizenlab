@@ -1,9 +1,8 @@
 import React, { ReactNode } from 'react';
 
+import { Box, Text, Select, Input } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 import { IOption } from 'typings';
-
-import { Box, Text, Select, Input } from '@citizenlab/cl2-component-library';
 
 import useProjectFolders from 'api/project_folders/useProjectFolders';
 import useUsers from 'api/users/useUsers';

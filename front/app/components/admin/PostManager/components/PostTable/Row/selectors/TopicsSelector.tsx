@@ -1,7 +1,5 @@
 import React, { memo, useCallback } from 'react';
 
-import { pull } from 'lodash-es';
-
 import {
   IconButton,
   colors,
@@ -9,6 +7,7 @@ import {
   stylingConsts,
   Text,
 } from '@citizenlab/cl2-component-library';
+import { pull } from 'lodash-es';
 
 import useInputTopics from 'api/input_topics/useInputTopics';
 

@@ -2,9 +2,6 @@ import React, { FormEvent, useState } from 'react';
 
 import { CLErrors, Multiloc } from 'typings';
 
-import Banner from 'design-system/Banner';
-import RadioGroup from 'design-system/RadioGroup';
-
 import { Visibility } from 'api/projects/types';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
@@ -13,6 +10,9 @@ import generalMessages from 'containers/Admin/projects/project/general/messages'
 
 import MultilocTitleField from 'components/admin/MultilocFields/MultilocTitleField';
 import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
+
+import Banner from 'design-system/Banner';
+import RadioGroup from 'design-system/RadioGroup';
 
 import { useIntl } from 'utils/cl-intl';
 import validateTitle from 'utils/validateTitle';

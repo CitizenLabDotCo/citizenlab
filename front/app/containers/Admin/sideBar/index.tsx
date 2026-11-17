@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-import styled from 'styled-components';
-import { InsertConfigurationOptions } from 'typings';
-
 import {
   Icon,
   Box,
@@ -12,6 +9,8 @@ import {
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+import { InsertConfigurationOptions } from 'typings';
 
 import { IAppConfiguration } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';

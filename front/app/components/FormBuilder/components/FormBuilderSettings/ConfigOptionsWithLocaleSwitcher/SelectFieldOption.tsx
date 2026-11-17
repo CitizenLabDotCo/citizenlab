@@ -1,7 +1,5 @@
 import React, { memo, useState, useEffect } from 'react';
 
-import { SupportedLocale, UploadFile } from 'typings';
-
 import {
   Box,
   Button,
@@ -9,6 +7,7 @@ import {
   Input,
   Spinner,
 } from '@citizenlab/cl2-component-library';
+import { SupportedLocale, UploadFile } from 'typings';
 
 import useAddCustomFieldOptionImage from 'api/content_field_option_images/useAddCustomFieldOptionImage';
 import { ICustomFieldInputType, IOptionsType } from 'api/custom_fields/types';

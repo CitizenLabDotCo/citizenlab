@@ -3,9 +3,9 @@ import React, { useMemo } from 'react';
 import { parseISO } from 'date-fns';
 import moment from 'moment';
 
-import Icon from 'design-system/Icon';
-
 import useParticipants from 'components/admin/GraphCards/ParticipantsCard/useParticipants';
+
+import Icon from 'design-system/Icon';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 

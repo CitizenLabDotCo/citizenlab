@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { Multiloc } from 'typings';
-
 import { Box } from '@citizenlab/cl2-component-library';
+import { Multiloc } from 'typings';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
 import { IStatusCountsAll } from 'api/admin_publications_status_counts/types';

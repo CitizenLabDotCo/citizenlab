@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 
-import { FormProvider, UseFormReturn } from 'react-hook-form';
-
 import { Box, Success } from '@citizenlab/cl2-component-library';
+import { FormProvider, UseFormReturn } from 'react-hook-form';
 
 import { requestCodeNewPhone } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode';
 import { tooSoonRetryAfter } from 'api/authentication/confirm_phone/resendCooldown';

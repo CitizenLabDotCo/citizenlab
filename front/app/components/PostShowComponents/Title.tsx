@@ -1,8 +1,7 @@
 import React, { memo } from 'react';
 
-import styled from 'styled-components';
-
 import { media, fontSizes, Title } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import Outlet from 'components/Outlet';
 

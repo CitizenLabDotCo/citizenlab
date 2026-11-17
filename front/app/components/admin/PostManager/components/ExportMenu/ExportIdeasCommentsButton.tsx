@@ -1,10 +1,9 @@
 import React from 'react';
 
+import { fontSizes } from '@citizenlab/cl2-component-library';
 import { saveAs } from 'file-saver';
 import { isString } from 'lodash-es';
 import { WrappedComponentProps } from 'react-intl';
-
-import { fontSizes } from '@citizenlab/cl2-component-library';
 
 import { API_PATH } from 'containers/App/constants';
 

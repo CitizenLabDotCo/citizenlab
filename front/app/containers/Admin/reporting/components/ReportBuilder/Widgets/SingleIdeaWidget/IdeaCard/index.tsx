@@ -1,7 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-import styled from 'styled-components';
-
 import {
   colors,
   stylingConsts,
@@ -11,6 +9,7 @@ import {
   Image,
   Icon,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import { IIdeaImageData } from 'api/idea_images/types';
 import { IIdeaData } from 'api/ideas/types';

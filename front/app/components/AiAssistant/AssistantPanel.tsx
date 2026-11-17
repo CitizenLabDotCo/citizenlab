@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import { MessageDescriptor } from 'react-intl';
-
 import {
   Box,
   Icon,
@@ -10,6 +8,7 @@ import {
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
+import { MessageDescriptor } from 'react-intl';
 
 import { AiAssistantSurfaceKey } from 'api/ai_assistant_conversations/types';
 import useAddAiAssistantConversation from 'api/ai_assistant_conversations/useAddAiAssistantConversation';

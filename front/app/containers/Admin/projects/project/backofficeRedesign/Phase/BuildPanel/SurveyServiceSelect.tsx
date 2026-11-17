@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { ListBoxOption } from 'design-system/ListBox';
-import Select from 'design-system/Select';
-
 import { surveyServices, TSurveyService } from 'api/phases/types';
 
 import projectMessages from 'containers/Admin/projects/project/messages';
 import useSurveyProviders from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/useSurveyProviders';
+
+import { ListBoxOption } from 'design-system/ListBox';
+import Select from 'design-system/Select';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 

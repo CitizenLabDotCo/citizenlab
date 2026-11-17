@@ -8,10 +8,10 @@ import {
   CheckboxWithLabel,
 } from '@citizenlab/cl2-component-library';
 
+import ButtonWithLink from 'components/UI/ButtonWithLink';
+
 import Checkbox from 'design-system/Checkbox';
 import IconButton from 'design-system/IconButton';
-
-import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isPage } from 'utils/helperUtils';

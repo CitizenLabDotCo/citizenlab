@@ -1,8 +1,5 @@
 import React, { memo, useCallback, useId } from 'react';
 
-import { isEmpty } from 'lodash-es';
-import styled from 'styled-components';
-
 import {
   media,
   colors,
@@ -14,6 +11,8 @@ import {
   Box,
   Title,
 } from '@citizenlab/cl2-component-library';
+import { isEmpty } from 'lodash-es';
+import styled from 'styled-components';
 
 import useAdminPublication from 'api/admin_publications/useAdminPublication';
 import {

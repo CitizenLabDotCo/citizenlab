@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import styled from 'styled-components';
-
 import {
   Box,
   Text,
@@ -9,6 +7,7 @@ import {
   fontSizes,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 import { ExternalCommentData } from 'api/project_library_external_comments/types';

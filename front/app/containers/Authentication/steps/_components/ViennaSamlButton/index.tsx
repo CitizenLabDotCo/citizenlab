@@ -1,8 +1,7 @@
 import React from 'react';
 
-import styled from 'styled-components';
-
 import { Box } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import AuthProviderButton from 'containers/Authentication/steps/_components/AuthProviderButton';
 import { AuthProvider } from 'containers/Authentication/typings';

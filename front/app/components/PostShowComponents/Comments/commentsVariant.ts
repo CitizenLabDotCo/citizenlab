@@ -1,8 +1,7 @@
 import { createContext, useContext } from 'react';
 
-import { css } from 'styled-components';
-
 import { colors } from '@citizenlab/cl2-component-library';
+import { css } from 'styled-components';
 
 export type CommentsVariant = 'default' | 'panel';
 

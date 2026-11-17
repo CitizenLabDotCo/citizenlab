@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import Spinner from 'design-system/Spinner';
-
 import useIdeas from 'api/ideas/useIdeas';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 import { IPhaseData } from 'api/phases/types';
@@ -12,6 +10,8 @@ import useLocalize from 'hooks/useLocalize';
 
 import { ManagerType } from 'components/admin/PostManager';
 import NoPost from 'components/admin/PostManager/components/PostTable/NoPost';
+
+import Spinner from 'design-system/Spinner';
 
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 

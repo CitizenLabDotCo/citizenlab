@@ -1,8 +1,7 @@
 import React from 'react';
 
-import styled from 'styled-components';
-
 import { colors } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import useCustomFields from 'api/custom_fields/useCustomFields';
 import useIdeaById from 'api/ideas/useIdeaById';

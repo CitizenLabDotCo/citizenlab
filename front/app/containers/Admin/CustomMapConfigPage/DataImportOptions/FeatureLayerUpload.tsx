@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import { request, ErrorTypes, ApiKeyManager } from '@esri/arcgis-rest-request';
-
 import {
   Box,
   Title,
@@ -11,6 +9,7 @@ import {
   Button,
   Success,
 } from '@citizenlab/cl2-component-library';
+import { request, ErrorTypes, ApiKeyManager } from '@esri/arcgis-rest-request';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAddMapLayer from 'api/map_layers/useAddMapLayer';

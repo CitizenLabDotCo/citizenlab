@@ -1,13 +1,13 @@
 import React from 'react';
 
-import Button from 'design-system/Button';
-
 import useCustomFields from 'api/custom_fields/useCustomFields';
 
 import ChoiceRadio from 'containers/Admin/projects/_shared/components/ChoiceRadio';
 import SummaryPill from 'containers/Admin/projects/_shared/components/SummaryPill';
 
 import actionFormMessages from 'components/admin/ActionForm/messages';
+
+import Button from 'design-system/Button';
 
 import { useIntl } from 'utils/cl-intl';
 

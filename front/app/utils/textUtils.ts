@@ -1,6 +1,5 @@
-import { Multiloc } from 'typings';
-
 import { truncate } from '@citizenlab/cl2-component-library';
+import { Multiloc } from 'typings';
 
 export { truncate };
 

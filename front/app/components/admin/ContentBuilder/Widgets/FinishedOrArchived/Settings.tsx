@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { useNode } from '@craftjs/core';
-
 import { Box, Radio, Text } from '@citizenlab/cl2-component-library';
+import { useNode } from '@craftjs/core';
 
 import TitleMultilocInput from 'components/admin/ContentBuilder/Widgets/_shared/TitleMultilocInput';
 

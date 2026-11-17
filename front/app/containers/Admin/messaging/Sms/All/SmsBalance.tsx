@@ -1,13 +1,12 @@
 import React from 'react';
 
-import { FormattedNumber } from 'react-intl';
-
 import {
   Box,
   BoxMarginProps,
   Text,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { FormattedNumber } from 'react-intl';
 
 import useSmsBalance from 'api/campaigns/sms/balance/useSmsBalance';
 

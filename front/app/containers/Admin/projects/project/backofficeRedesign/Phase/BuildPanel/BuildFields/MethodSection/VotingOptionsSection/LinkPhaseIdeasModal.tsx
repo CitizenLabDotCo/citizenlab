@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
-import Modal from 'design-system/Modal';
-import Spinner from 'design-system/Spinner';
-
 import useIdeas from 'api/ideas/useIdeas';
 import usePhase from 'api/phases/usePhase';
+
+import Modal from 'design-system/Modal';
+import Spinner from 'design-system/Spinner';
 
 import { useIntl } from 'utils/cl-intl';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';

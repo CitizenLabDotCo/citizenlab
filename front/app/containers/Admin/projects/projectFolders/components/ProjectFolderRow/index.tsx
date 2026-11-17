@@ -1,8 +1,7 @@
 import React, { memo, useState } from 'react';
 
-import styled from 'styled-components';
-
 import { Icon, Box, Spinner, colors } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
 import useAuthUser from 'api/me/useAuthUser';

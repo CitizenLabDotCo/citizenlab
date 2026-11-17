@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
-import { Multiloc, UploadFile } from 'typings';
-
 import { Box, IconTooltip } from '@citizenlab/cl2-component-library';
+import { Multiloc, UploadFile } from 'typings';
 
 import {
   PROJECTABLE_HEADER_BG_ASPECT_RATIO,

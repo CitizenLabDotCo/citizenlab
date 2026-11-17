@@ -1,13 +1,12 @@
 import React, { useEffect, useState, ReactNode } from 'react';
 
-import styled, { useTheme } from 'styled-components';
-
 import {
   Box,
   Button,
   useBreakpoint,
   isRtl,
 } from '@citizenlab/cl2-component-library';
+import styled, { useTheme } from 'styled-components';
 
 import { useIntl } from 'utils/cl-intl';
 

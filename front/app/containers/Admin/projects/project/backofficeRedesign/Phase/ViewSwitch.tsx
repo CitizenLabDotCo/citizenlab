@@ -2,12 +2,12 @@ import React from 'react';
 
 import { useRouter } from '@tanstack/react-router';
 
+import useLocale from 'hooks/useLocale';
+
 import SegmentedTabs, {
   SegmentedTab,
   SegmentedTabList,
 } from 'design-system/SegmentedTabs';
-
-import useLocale from 'hooks/useLocale';
 
 import { PhaseView } from './usePhaseViews';
 import 'design-system/tokens.css';

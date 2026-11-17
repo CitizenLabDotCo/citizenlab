@@ -1,11 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import MapView from '@arcgis/core/views/MapView';
-import { get } from 'lodash-es';
-import { Controller, useFormContext } from 'react-hook-form';
-import { MessageDescriptor } from 'react-intl';
-import { CLError, RHFErrors } from 'typings';
-
 import {
   Box,
   Icon,
@@ -14,6 +9,10 @@ import {
   colors,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
+import { get } from 'lodash-es';
+import { Controller, useFormContext } from 'react-hook-form';
+import { MessageDescriptor } from 'react-intl';
+import { CLError, RHFErrors } from 'typings';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 import useMapConfigById from 'api/map_config/useMapConfigById';

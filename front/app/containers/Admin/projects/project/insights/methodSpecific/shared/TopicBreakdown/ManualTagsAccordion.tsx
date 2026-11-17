@@ -1,7 +1,5 @@
 import React from 'react';
 
-import styled from 'styled-components';
-
 import {
   Box,
   Text,
@@ -9,6 +7,7 @@ import {
   colors,
   Accordion,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import { useIntl } from 'utils/cl-intl';
 

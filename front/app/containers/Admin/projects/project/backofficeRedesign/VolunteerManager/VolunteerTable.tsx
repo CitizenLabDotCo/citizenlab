@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { IVolunteers, VolunteersSort } from 'api/volunteers/types';
+
 import Pagination from 'design-system/Pagination';
 import Table, {
   ColumnHeader,
@@ -7,8 +9,6 @@ import Table, {
   TableBody,
   TableHeader,
 } from 'design-system/Table';
-
-import { IVolunteers, VolunteersSort } from 'api/volunteers/types';
 
 import { useIntl } from 'utils/cl-intl';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';

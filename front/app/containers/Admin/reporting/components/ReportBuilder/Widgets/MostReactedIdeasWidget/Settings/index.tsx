@@ -1,9 +1,8 @@
 import React, { useCallback } from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 import { IOption, Multiloc } from 'typings';
-
-import { Box } from '@citizenlab/cl2-component-library';
 
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import PhaseFilter from 'components/UI/PhaseFilter';

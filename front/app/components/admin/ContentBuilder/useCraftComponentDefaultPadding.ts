@@ -1,6 +1,5 @@
-import { ROOT_NODE, useEditor, useNode } from '@craftjs/core';
-
 import { useBreakpoint } from '@citizenlab/cl2-component-library';
+import { ROOT_NODE, useEditor, useNode } from '@craftjs/core';
 
 import { DEFAULT_PADDING } from './constants';
 

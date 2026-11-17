@@ -1,13 +1,12 @@
 import React from 'react';
 
-import styled from 'styled-components';
-
 import {
   Icon,
   fontSizes,
   defaultStyles,
   colors,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import AuthorSelect from './AuthorSelect';
 import { SelectedAuthor } from './typings';

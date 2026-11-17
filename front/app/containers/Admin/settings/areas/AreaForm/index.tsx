@@ -1,11 +1,10 @@
 import React from 'react';
 
+import { Box, Button } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { Multiloc } from 'typings';
 import { object } from 'yup';
-
-import { Box, Button } from '@citizenlab/cl2-component-library';
 
 import { Section, SectionField } from 'components/admin/Section';
 import Feedback from 'components/HookForm/Feedback';

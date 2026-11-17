@@ -1,8 +1,7 @@
 import React from 'react';
 
-import styled from 'styled-components';
-
 import { Title, useBreakpoint } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import useEventsByUserId from 'api/events/useEventsByUserId';
 import useUserById from 'api/users/useUserById';

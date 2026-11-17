@@ -1,8 +1,7 @@
 import React, { memo } from 'react';
 
-import { stringify } from 'qs';
-
 import { Tooltip, Box } from '@citizenlab/cl2-component-library';
+import { stringify } from 'qs';
 
 import useAuthUser from 'api/me/useAuthUser';
 import { IPhaseData, ParticipationMethod } from 'api/phases/types';

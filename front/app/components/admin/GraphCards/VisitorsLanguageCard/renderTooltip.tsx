@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { Tooltip } from 'recharts';
-
 import { Text } from '@citizenlab/cl2-component-library';
+import { Tooltip } from 'recharts';
 
 import TooltipOutline from 'components/admin/Graphs/_components/TooltipOutline';
 

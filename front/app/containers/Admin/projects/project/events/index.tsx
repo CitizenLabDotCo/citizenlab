@@ -1,9 +1,5 @@
 import React from 'react';
 
-import saveAs from 'file-saver';
-import moment from 'moment';
-import styled from 'styled-components';
-
 import {
   Box,
   colors,
@@ -11,6 +7,9 @@ import {
   Text,
   Title,
 } from '@citizenlab/cl2-component-library';
+import saveAs from 'file-saver';
+import moment from 'moment';
+import styled from 'styled-components';
 
 import { IEventData } from 'api/events/types';
 import useDeleteEvent from 'api/events/useDeleteEvent';

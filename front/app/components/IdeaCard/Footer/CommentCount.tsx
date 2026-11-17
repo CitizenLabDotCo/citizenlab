@@ -1,8 +1,7 @@
 import React from 'react';
 
-import styled from 'styled-components';
-
 import { colors, fontSizes, Icon } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';

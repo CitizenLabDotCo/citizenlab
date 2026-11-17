@@ -1,8 +1,5 @@
 import React, { useId } from 'react';
 
-import moment from 'moment-timezone';
-import styled, { useTheme } from 'styled-components';
-
 import {
   Icon,
   Box,
@@ -10,6 +7,8 @@ import {
   Text,
   colors,
 } from '@citizenlab/cl2-component-library';
+import moment from 'moment-timezone';
+import styled, { useTheme } from 'styled-components';
 
 import { IEventData } from 'api/events/types';
 

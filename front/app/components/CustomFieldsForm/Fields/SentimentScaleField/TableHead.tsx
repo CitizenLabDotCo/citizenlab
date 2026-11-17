@@ -1,7 +1,5 @@
 import React from 'react';
 
-import styled, { useTheme } from 'styled-components';
-
 import {
   Box,
   Button,
@@ -10,6 +8,7 @@ import {
   Thead,
   Tr,
 } from '@citizenlab/cl2-component-library';
+import styled, { useTheme } from 'styled-components';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 

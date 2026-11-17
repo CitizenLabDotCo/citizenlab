@@ -1,9 +1,8 @@
 import React from 'react';
 
+import { IconNames, Image, colors } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
 import styled, { useTheme } from 'styled-components';
-
-import { IconNames, Image, colors } from '@citizenlab/cl2-component-library';
 
 import { AuthProvider } from 'containers/Authentication/typings';
 

@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 
 import { CLErrors, UploadFile } from 'typings';
 
-import { fieldStyles } from 'design-system/Field';
-
 import { IFileAttachmentData } from 'api/file_attachments/types';
 import { IFileData } from 'api/files/types';
 
@@ -11,6 +9,8 @@ import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 import FileRepositorySelectAndUpload from 'components/UI/FileRepositorySelectAndUpload';
 import FileSelectModal from 'components/UI/FileRepositorySelectAndUpload/components/FileSelectModal';
 import fileMessages from 'components/UI/FileRepositorySelectAndUpload/components/messages';
+
+import { fieldStyles } from 'design-system/Field';
 
 import { useIntl } from 'utils/cl-intl';
 

@@ -1,14 +1,13 @@
 import React, { memo } from 'react';
 
-import { transparentize } from 'polished';
-import styled, { useTheme } from 'styled-components';
-
 import {
   Box,
   Title,
   fontSizes,
   isRtl,
 } from '@citizenlab/cl2-component-library';
+import { transparentize } from 'polished';
+import styled, { useTheme } from 'styled-components';
 
 import useInputTopicById from 'api/input_topics/useInputTopicById';
 

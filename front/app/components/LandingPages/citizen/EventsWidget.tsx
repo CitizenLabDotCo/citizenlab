@@ -1,8 +1,5 @@
 import React from 'react';
 
-import { darken } from 'polished';
-import styled from 'styled-components';
-
 import {
   colors,
   fontSizes,
@@ -12,6 +9,8 @@ import {
   Title,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
+import { darken } from 'polished';
+import styled from 'styled-components';
 
 import useEvents from 'api/events/useEvents';
 

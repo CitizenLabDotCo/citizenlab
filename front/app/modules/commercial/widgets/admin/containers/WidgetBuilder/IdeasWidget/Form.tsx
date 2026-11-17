@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 
+import { Label } from '@citizenlab/cl2-component-library';
 import { useFormContext } from 'react-hook-form';
 import GetProjects from 'resources/GetProjects';
 import GetTopics from 'resources/GetTopics';
-
-import { Label } from '@citizenlab/cl2-component-library';
 
 import { IProjectData } from 'api/projects/types';
 

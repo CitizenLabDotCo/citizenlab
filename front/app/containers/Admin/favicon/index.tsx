@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
+import { Label } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { UploadFile } from 'typings';
-
-import { Label } from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';

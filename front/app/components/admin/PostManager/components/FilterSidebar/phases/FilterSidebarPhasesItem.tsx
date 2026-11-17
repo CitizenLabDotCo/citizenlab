@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { useDrop } from 'react-dnd';
-
 import { Box } from '@citizenlab/cl2-component-library';
+import { useDrop } from 'react-dnd';
 
 import { IPhaseData } from 'api/phases/types';
 import { canContainIdeas } from 'api/phases/utils';

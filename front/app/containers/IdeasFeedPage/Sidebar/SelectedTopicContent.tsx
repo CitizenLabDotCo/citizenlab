@@ -1,7 +1,5 @@
 import React from 'react';
 
-import styled from 'styled-components';
-
 import {
   Box,
   Button,
@@ -10,6 +8,7 @@ import {
   Text,
   Title,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import useInputTopicById from 'api/input_topics/useInputTopicById';
 import useInputTopics from 'api/input_topics/useInputTopics';

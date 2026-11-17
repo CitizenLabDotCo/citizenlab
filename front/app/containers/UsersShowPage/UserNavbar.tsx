@@ -1,9 +1,5 @@
 import React, { memo, KeyboardEvent, useRef } from 'react';
 
-import { rgba } from 'polished';
-import styled from 'styled-components';
-import { ITab } from 'typings';
-
 import {
   fontSizes,
   media,
@@ -11,6 +7,9 @@ import {
   useBreakpoint,
   IconNames,
 } from '@citizenlab/cl2-component-library';
+import { rgba } from 'polished';
+import styled from 'styled-components';
+import { ITab } from 'typings';
 
 import useEventsByUserId from 'api/events/useEventsByUserId';
 import useAuthUser from 'api/me/useAuthUser';

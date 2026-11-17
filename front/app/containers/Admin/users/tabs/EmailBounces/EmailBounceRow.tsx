@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { FormattedDate } from 'react-intl';
-
 import { Box, Tr, Td } from '@citizenlab/cl2-component-library';
+import { FormattedDate } from 'react-intl';
 
 import { IUserData } from 'api/users/types';
 

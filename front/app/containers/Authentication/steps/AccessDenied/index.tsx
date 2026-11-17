@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { useTheme } from 'styled-components';
-
 import { Box, Text, Button } from '@citizenlab/cl2-component-library';
+import { useTheme } from 'styled-components';
 
 import useAccessDeniedExplanation from 'api/access_denied_explanation/useAccessDeniedExplanation';
 

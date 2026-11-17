@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
+import { Title, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
-
-import { Title, colors } from '@citizenlab/cl2-component-library';
 
 import useUpdateCampaignConsents from 'api/campaign_consents/useUpdateCampaignConsents';
 

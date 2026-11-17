@@ -1,10 +1,9 @@
 import React, { ChangeEvent, useState, MouseEvent } from 'react';
 
+import { Box, colors, Td, Badge } from '@citizenlab/cl2-component-library';
 import { uniq, isEmpty } from 'lodash-es';
 import { useDrag } from 'react-dnd';
 import { CellConfiguration, SupportedLocale, Override } from 'typings';
-
-import { Box, colors, Td, Badge } from '@citizenlab/cl2-component-library';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IIdeaData } from 'api/ideas/types';

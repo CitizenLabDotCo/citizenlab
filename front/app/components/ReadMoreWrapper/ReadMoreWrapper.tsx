@@ -1,8 +1,5 @@
 import React, { memo, useCallback, useState, useEffect, useRef } from 'react';
 
-import ReactResizeDetector from 'react-resize-detector';
-import styled, { useTheme } from 'styled-components';
-
 import {
   useWindowSize,
   Box,
@@ -13,6 +10,8 @@ import {
   isRtl,
   Button,
 } from '@citizenlab/cl2-component-library';
+import ReactResizeDetector from 'react-resize-detector';
+import styled, { useTheme } from 'styled-components';
 
 import messages from 'containers/ProjectsShowPage/messages';
 

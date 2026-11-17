@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 
-import styled from 'styled-components';
-
 import { media } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import { IGroupData, MembershipType } from 'api/groups/types';
 import useAddGroup from 'api/groups/useAddGroup';

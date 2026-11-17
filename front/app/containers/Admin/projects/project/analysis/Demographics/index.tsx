@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-import { isEmpty } from 'lodash-es';
-
 import {
   Box,
   IconButton,
@@ -9,6 +7,7 @@ import {
   colors,
   Text,
 } from '@citizenlab/cl2-component-library';
+import { isEmpty } from 'lodash-es';
 
 import { IUserCustomFieldData } from 'api/user_custom_fields/types';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';

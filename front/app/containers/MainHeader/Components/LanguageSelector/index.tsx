@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 
+import { Dropdown, useBreakpoint } from '@citizenlab/cl2-component-library';
 import styled, { useTheme } from 'styled-components';
 import { SupportedLocale } from 'typings';
-
-import { Dropdown, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 

@@ -1,9 +1,8 @@
 import React from 'react';
 
+import { Box, Icon } from '@citizenlab/cl2-component-library';
 import { Tooltip } from 'recharts';
 import { TooltipContentProps } from 'recharts/types/component/Tooltip';
-
-import { Box, Icon } from '@citizenlab/cl2-component-library';
 
 import TooltipOutline from 'components/admin/Graphs/_components/TooltipOutline';
 import { colors } from 'components/admin/Graphs/styling';

@@ -1,9 +1,8 @@
 import React, { memo } from 'react';
 
+import { media } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 import styled from 'styled-components';
-
-import { media } from '@citizenlab/cl2-component-library';
 
 import DateBlockSingleYear from './DateBlockSingleYear';
 import DateBlocksMultiYear from './DateBlocksMultiYear';

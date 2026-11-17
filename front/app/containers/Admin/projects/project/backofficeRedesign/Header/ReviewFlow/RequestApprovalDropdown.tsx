@@ -1,11 +1,11 @@
 import React from 'react';
 
-import Button from 'design-system/Button';
-
 import useRequestProjectReview from 'api/project_reviews/useRequestProjectReview';
 
 import messages from 'containers/Admin/projects/project/projectHeader/PublicationButtons/messages';
 import tracks from 'containers/Admin/projects/project/projectHeader/PublicationButtons/tracks';
+
+import Button from 'design-system/Button';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';

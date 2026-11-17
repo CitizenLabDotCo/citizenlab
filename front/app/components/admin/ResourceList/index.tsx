@@ -1,10 +1,9 @@
 import React, { ReactNode } from 'react';
 
+import { remCalc, fontSizes, colors } from '@citizenlab/cl2-component-library';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import styled from 'styled-components';
-
-import { remCalc, fontSizes, colors } from '@citizenlab/cl2-component-library';
 
 const StyledList = styled.div`
   display: flex;

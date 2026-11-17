@@ -1,11 +1,5 @@
 import React, { PureComponent } from 'react';
 
-import { size, isEmpty, uniqBy, forEach } from 'lodash-es';
-import Dropzone, { Accept, FileRejection } from 'react-dropzone';
-import { WrappedComponentProps } from 'react-intl';
-import styled, { css } from 'styled-components';
-import { UploadFile } from 'typings';
-
 import {
   Icon,
   colors,
@@ -13,6 +7,11 @@ import {
   defaultOutline,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
+import { size, isEmpty, uniqBy, forEach } from 'lodash-es';
+import Dropzone, { Accept, FileRejection } from 'react-dropzone';
+import { WrappedComponentProps } from 'react-intl';
+import styled, { css } from 'styled-components';
+import { UploadFile } from 'typings';
 
 import Error from 'components/UI/Error';
 

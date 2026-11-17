@@ -1,14 +1,13 @@
 import React from 'react';
 
-import { useNode, Element } from '@craftjs/core';
-import { Multiloc } from 'typings';
-
 import {
   Box,
   Accordion as AccordionComponent,
   Title,
   Toggle,
 } from '@citizenlab/cl2-component-library';
+import { useNode, Element } from '@craftjs/core';
+import { Multiloc } from 'typings';
 
 import useLocalize from 'hooks/useLocalize';
 

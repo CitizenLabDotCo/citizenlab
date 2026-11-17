@@ -1,8 +1,7 @@
 import React from 'react';
 
-import styled from 'styled-components';
-
 import { fontSizes, Radio } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import useProjectById from 'api/projects/useProjectById';
 import useUpdateProject from 'api/projects/useUpdateProject';

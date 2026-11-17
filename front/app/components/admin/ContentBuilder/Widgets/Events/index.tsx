@@ -1,8 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 
-import { UserComponent, useEditor } from '@craftjs/core';
-import styled from 'styled-components';
-
 import {
   Box,
   Title,
@@ -10,6 +7,8 @@ import {
   fontSizes,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
+import { UserComponent, useEditor } from '@craftjs/core';
+import styled from 'styled-components';
 
 import { InputParameters } from 'api/events/types';
 import useEvents from 'api/events/useEvents';

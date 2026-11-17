@@ -1,13 +1,12 @@
 import React from 'react';
 
-import styled from 'styled-components';
-
 import {
   colors,
   invisibleA11yText,
   isRtl,
   quillEditedContent,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import { useIntl } from 'utils/cl-intl';
 

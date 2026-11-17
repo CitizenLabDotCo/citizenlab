@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { useTheme } from 'styled-components';
-
 import { Box, CollapsibleContainer } from '@citizenlab/cl2-component-library';
+import { useTheme } from 'styled-components';
 
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 

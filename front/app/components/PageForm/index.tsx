@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react';
 
+import { IconTooltip, Label, Box } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { Multiloc, UploadFile } from 'typings';
 import { object, mixed } from 'yup';
-
-import { IconTooltip, Label, Box } from '@citizenlab/cl2-component-library';
 
 import useCustomPageById from 'api/custom_pages/useCustomPageById';
 import usePageFiles from 'api/page_files/usePageFiles';

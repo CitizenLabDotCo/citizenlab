@@ -3,12 +3,11 @@
 
 import React, { Component } from 'react';
 
+import { fontSizes, colors } from '@citizenlab/cl2-component-library';
 import { withScope, showReportDialog } from '@sentry/react';
 import { WrappedComponentProps } from 'react-intl';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import styled from 'styled-components';
-
-import { fontSizes, colors } from '@citizenlab/cl2-component-library';
 
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';

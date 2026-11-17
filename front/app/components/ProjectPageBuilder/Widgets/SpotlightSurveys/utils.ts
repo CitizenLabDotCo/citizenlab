@@ -1,6 +1,5 @@
-import { Multiloc } from 'typings';
-
 import { ButtonStyles } from '@citizenlab/cl2-component-library';
+import { Multiloc } from 'typings';
 
 import { IPhaseData } from 'api/phases/types';
 import { getPhaseActionDescriptor, isTimelinePhase } from 'api/phases/utils';

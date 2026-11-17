@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 
-import { useTheme } from 'styled-components';
-
 import { Button } from '@citizenlab/cl2-component-library';
+import { useTheme } from 'styled-components';
 
 import usePhase from 'api/phases/usePhase';
 import useSubmissionCount from 'api/submission_count/useSubmissionCount';

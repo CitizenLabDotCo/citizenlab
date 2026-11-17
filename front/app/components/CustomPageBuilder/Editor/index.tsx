@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { SerializedNodes } from '@craftjs/core';
-
 import { Box } from '@citizenlab/cl2-component-library';
+import { SerializedNodes } from '@craftjs/core';
 
 import { VerticalRhythmContext } from 'components/admin/ContentBuilder/verticalRhythm';
 import AboutBox from 'components/admin/ContentBuilder/Widgets/AboutBox';

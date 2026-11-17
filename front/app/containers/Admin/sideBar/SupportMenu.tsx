@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import styled from 'styled-components';
-
 import {
   Icon,
   Box,
@@ -9,6 +7,7 @@ import {
   colors,
   Dropdown,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';

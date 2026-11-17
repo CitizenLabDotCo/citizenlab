@@ -1,8 +1,5 @@
 import React from 'react';
 
-import { darken } from 'polished';
-import styled from 'styled-components';
-
 import {
   Icon,
   IconNames,
@@ -10,6 +7,8 @@ import {
   colors,
   media,
 } from '@citizenlab/cl2-component-library';
+import { darken } from 'polished';
+import styled from 'styled-components';
 
 import useLocale from 'hooks/useLocale';
 

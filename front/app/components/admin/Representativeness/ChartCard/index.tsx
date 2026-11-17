@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import { WrappedComponentProps } from 'react-intl';
-
 import { Box } from '@citizenlab/cl2-component-library';
+import { WrappedComponentProps } from 'react-intl';
 
 import useRScore from 'api/r_score/useRScore';
 import {

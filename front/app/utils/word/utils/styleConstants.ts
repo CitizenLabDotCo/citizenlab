@@ -1,6 +1,5 @@
-import { convertInchesToTwip } from 'docx';
-
 import { colors } from '@citizenlab/cl2-component-library';
+import { convertInchesToTwip } from 'docx';
 
 // Word document styling constants
 // Designed for reuse across insights export and report builder

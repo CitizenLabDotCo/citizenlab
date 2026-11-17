@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
-import rocket from 'assets/img/rocket.png';
-
 import { Box, Image } from '@citizenlab/cl2-component-library';
+import rocket from 'assets/img/rocket.png';
 
 import useIdeaById from 'api/ideas/useIdeaById';
 import usePhases from 'api/phases/usePhases';

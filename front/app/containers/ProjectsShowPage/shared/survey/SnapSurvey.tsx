@@ -1,8 +1,7 @@
 import React from 'react';
 
-import styled from 'styled-components';
-
 import { colors } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 const StyledIframe = styled.iframe`
   height: 600px;

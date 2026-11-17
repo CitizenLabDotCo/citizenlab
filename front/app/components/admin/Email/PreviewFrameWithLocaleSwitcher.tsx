@@ -1,9 +1,8 @@
 import React from 'react';
 
+import { LocaleSwitcher } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { SupportedLocale } from 'typings';
-
-import { LocaleSwitcher } from '@citizenlab/cl2-component-library';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 

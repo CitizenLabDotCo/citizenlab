@@ -1,11 +1,10 @@
 import React, { memo, useState, useEffect } from 'react';
 
 import MapView from '@arcgis/core/views/MapView';
+import { Input, IconTooltip, Icon } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
-
-import { Input, IconTooltip, Icon } from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IMapConfig } from 'api/map_config/types';

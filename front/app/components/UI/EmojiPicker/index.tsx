@@ -1,8 +1,7 @@
 import React, { useState, useRef, useEffect, lazy, Suspense } from 'react';
 
-import styled from 'styled-components';
-
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import useLocale from 'hooks/useLocale';
 

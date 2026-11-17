@@ -8,10 +8,10 @@ import {
   Icon,
 } from '@citizenlab/cl2-component-library';
 
+import Modal from 'components/UI/Modal';
+
 import DSIcon from 'design-system/Icon';
 import DSModal from 'design-system/Modal';
-
-import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';

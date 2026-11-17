@@ -2,13 +2,12 @@ import React, { ReactNode, useEffect, useMemo, useState } from 'react';
 
 import { debounce } from 'lodash-es';
 
-import ComboBox from 'design-system/ComboBox';
-import { ListBoxOption } from 'design-system/ListBox';
-
 import { IUserData } from 'api/users/types';
 import useInfiniteUsers from 'api/users/useInfiniteUsers';
 import useUserById from 'api/users/useUserById';
 
+import ComboBox from 'design-system/ComboBox';
+import { ListBoxOption } from 'design-system/ListBox';
 import 'design-system/tokens.css';
 
 interface Props {

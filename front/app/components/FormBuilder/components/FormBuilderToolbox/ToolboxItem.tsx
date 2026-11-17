@@ -1,7 +1,5 @@
 import React from 'react';
 
-import styled from 'styled-components';
-
 import {
   Box,
   Icon,
@@ -11,6 +9,7 @@ import {
   colors,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import { ICustomFieldInputType } from 'api/custom_fields/types';
 

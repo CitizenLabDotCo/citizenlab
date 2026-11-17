@@ -1,15 +1,14 @@
 import React, { PureComponent } from 'react';
 
-import { darken } from 'polished';
-import CSSTransition from 'react-transition-group/CSSTransition';
-import styled from 'styled-components';
-
 import {
   Icon,
   IconTooltip,
   fontSizes,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { darken } from 'polished';
+import CSSTransition from 'react-transition-group/CSSTransition';
+import styled from 'styled-components';
 
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 

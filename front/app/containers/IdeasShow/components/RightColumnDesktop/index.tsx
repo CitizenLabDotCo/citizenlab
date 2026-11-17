@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { useTheme } from 'styled-components';
-
 import { Box, colors, Divider } from '@citizenlab/cl2-component-library';
+import { useTheme } from 'styled-components';
 
 import useIdeaById from 'api/ideas/useIdeaById';
 import usePhases from 'api/phases/usePhases';

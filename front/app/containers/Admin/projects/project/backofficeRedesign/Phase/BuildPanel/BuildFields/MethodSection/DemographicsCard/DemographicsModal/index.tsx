@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 
-import Modal from 'design-system/Modal';
-import Tabs, { TabPanel } from 'design-system/Tabs';
-
 import { IPhasePermissionAction } from 'api/permissions/types';
 
 import PhaseActionForm from 'containers/Admin/projects/_shared/components/PhaseActionForm';
+
+import Modal from 'design-system/Modal';
+import Tabs, { TabPanel } from 'design-system/Tabs';
 
 import { useIntl } from 'utils/cl-intl';
 

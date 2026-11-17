@@ -1,11 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 
+import { useBreakpoint, ClickOutside } from '@citizenlab/cl2-component-library';
 import { hideVisually } from 'polished';
 import { Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 import styled from 'styled-components';
-
-import { useBreakpoint, ClickOutside } from '@citizenlab/cl2-component-library';
 
 import useAddInternalCommentToIdea from 'api/internal_comments/useAddInternalCommentToIdea';
 import useAuthUser from 'api/me/useAuthUser';

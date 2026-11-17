@@ -1,8 +1,7 @@
 import React from 'react';
 
-import styled from 'styled-components';
-
 import { media, fontSizes, colors } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import CityLogoSection from 'components/CityLogoSection';
 import ContentContainer from 'components/ContentContainer';

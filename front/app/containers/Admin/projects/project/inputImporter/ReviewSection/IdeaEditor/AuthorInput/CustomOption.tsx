@@ -1,13 +1,12 @@
 import React, { useMemo } from 'react';
 
-import styled from 'styled-components';
-
 import {
   Box,
   Icon,
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import { Option } from 'components/UI/UserSelect/typings';
 import { optionIsUser } from 'components/UI/UserSelect/utils';

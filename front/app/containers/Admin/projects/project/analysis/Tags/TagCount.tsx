@@ -1,9 +1,8 @@
 import React from 'react';
 
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import { isNil } from 'lodash-es';
 import styled from 'styled-components';
-
-import { Box, colors } from '@citizenlab/cl2-component-library';
 
 import ProgressBar from 'components/UI/ProgressBar';
 

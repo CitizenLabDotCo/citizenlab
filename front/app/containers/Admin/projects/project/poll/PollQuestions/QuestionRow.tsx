@@ -1,10 +1,7 @@
 import React from 'react';
 
-import styled from 'styled-components';
-
 import { Box } from '@citizenlab/cl2-component-library';
-
-import Button from 'design-system/Button';
+import styled from 'styled-components';
 
 import { IPollQuestionData } from 'api/poll_questions/types';
 
@@ -12,6 +9,8 @@ import { TextCell } from 'components/admin/ResourceList';
 import SortableRow from 'components/admin/ResourceList/SortableRow';
 import T from 'components/T';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
+
+import Button from 'design-system/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
 

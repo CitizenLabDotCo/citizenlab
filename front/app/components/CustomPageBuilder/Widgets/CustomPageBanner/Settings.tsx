@@ -1,9 +1,8 @@
 import React, { useRef } from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 import { ImageSizes, Multiloc } from 'typings';
-
-import { Box } from '@citizenlab/cl2-component-library';
 
 import useAddContentBuilderImage from 'api/content_builder_images/useAddContentBuilderImage';
 import { ICustomPageAttributes } from 'api/custom_pages/types';

@@ -1,13 +1,12 @@
 import React, { useCallback } from 'react';
 
-import styled from 'styled-components';
-
 import {
   Box,
   Spinner,
   Text,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import usePhase from 'api/phases/usePhase';
 

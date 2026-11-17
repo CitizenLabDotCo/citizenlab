@@ -1,9 +1,8 @@
 import React, { memo } from 'react';
 
+import { Icon, colors, media } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
 import styled from 'styled-components';
-
-import { Icon, colors, media } from '@citizenlab/cl2-component-library';
 
 import { IEventFileData } from 'api/event_files/types';
 import { IIdeaFileData } from 'api/idea_files/types';

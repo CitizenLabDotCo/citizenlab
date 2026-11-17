@@ -1,8 +1,7 @@
 import React, { ReactElement, FormEvent } from 'react';
 
-import styled from 'styled-components';
-
 import { fontSizes, colors } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';

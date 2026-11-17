@@ -1,9 +1,8 @@
 import React, { useMemo } from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
 import { isNil } from 'lodash-es';
 import { FormattedDate } from 'react-intl';
-
-import { Box } from '@citizenlab/cl2-component-library';
 
 import useUserCustomFieldsOptions from 'api/custom_field_options/useCustomFieldOptions';
 import { IIdeaCustomField } from 'api/idea_custom_fields/types';

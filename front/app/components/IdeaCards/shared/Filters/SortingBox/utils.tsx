@@ -1,6 +1,5 @@
-import { MessageDescriptor } from 'react-intl';
-
 import { IconNames } from '@citizenlab/cl2-component-library';
+import { MessageDescriptor } from 'react-intl';
 
 import { IdeaSortMethod } from 'api/phases/types';
 

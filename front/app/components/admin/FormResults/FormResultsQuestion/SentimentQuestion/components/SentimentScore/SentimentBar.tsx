@@ -1,8 +1,7 @@
 import React from 'react';
 
-import styled from 'styled-components';
-
 import { Box, colors, stylingConsts } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import { getSentimentGroupColour } from '../../utils';
 

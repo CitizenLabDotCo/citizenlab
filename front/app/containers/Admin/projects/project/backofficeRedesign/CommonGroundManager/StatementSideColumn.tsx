@@ -1,8 +1,8 @@
 import React from 'react';
 
-import Button from 'design-system/Button';
-
 import { CommonGroundResultsData } from 'api/common_ground/types';
+
+import Button from 'design-system/Button';
 
 import { useIntl } from 'utils/cl-intl';
 

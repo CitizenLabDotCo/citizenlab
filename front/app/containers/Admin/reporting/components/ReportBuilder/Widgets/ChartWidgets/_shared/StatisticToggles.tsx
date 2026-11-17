@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { useNode } from '@craftjs/core';
-
 import { Box, Toggle, Tooltip } from '@citizenlab/cl2-component-library';
+import { useNode } from '@craftjs/core';
 
 import { getComparedTimeRange } from 'components/admin/GraphCards/_utils/query';
 

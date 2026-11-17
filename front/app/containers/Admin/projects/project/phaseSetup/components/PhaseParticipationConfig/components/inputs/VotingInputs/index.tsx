@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
 
-import styled from 'styled-components';
-import { CLErrors, IOption } from 'typings';
-
 import {
   Toggle,
   IconTooltip,
@@ -10,9 +7,8 @@ import {
   Box,
   colors,
 } from '@citizenlab/cl2-component-library';
-
-import Banner from 'design-system/Banner';
-import Switch from 'design-system/Switch';
+import styled from 'styled-components';
+import { CLErrors, IOption } from 'typings';
 
 import { PresentationMode, VoteTerm, VotingMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
@@ -31,6 +27,9 @@ import {
 import SettingToggleRow from 'components/admin/SettingToggleRow';
 import Error from 'components/UI/Error';
 import Warning from 'components/UI/Warning';
+
+import Banner from 'design-system/Banner';
+import Switch from 'design-system/Switch';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';

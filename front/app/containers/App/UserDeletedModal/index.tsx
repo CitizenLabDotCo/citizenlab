@@ -1,9 +1,8 @@
 import React from 'react';
 
+import { fontSizes, colors, media } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
-
-import { fontSizes, colors, media } from '@citizenlab/cl2-component-library';
 
 import FormattedAnchor from 'components/FormattedAnchor';
 import Modal from 'components/UI/Modal';

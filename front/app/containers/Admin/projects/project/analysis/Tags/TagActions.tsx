@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import styled from 'styled-components';
-
 import {
   Dropdown,
   DropdownListItem,
@@ -12,6 +10,7 @@ import {
   Box,
   IconButton,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import useAddAnalysisBulkTagging from 'api/analysis_taggings/useAnalysisBulkTaggings';
 import { ITagData } from 'api/analysis_tags/types';

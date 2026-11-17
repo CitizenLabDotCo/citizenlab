@@ -1,10 +1,9 @@
 import React from 'react';
 
+import { Box, colors, Text } from '@citizenlab/cl2-component-library';
 import { FontSizesType } from 'component-library/utils/styleUtils';
 import { isNumber } from 'lodash-es';
 import styled from 'styled-components';
-
-import { Box, colors, Text } from '@citizenlab/cl2-component-library';
 
 import { IAvatarData } from 'api/avatars/types';
 import useAvatarsWithIds from 'api/avatars/useAvatarsWithIds';

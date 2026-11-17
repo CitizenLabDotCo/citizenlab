@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { UploadFile } from 'typings';
-
-import { Box } from '@citizenlab/cl2-component-library';
 
 import { IIdeaFileData } from 'api/idea_files/types';
 import useDeleteIdeaFile from 'api/idea_files/useDeleteIdeaFile';

@@ -1,10 +1,9 @@
 import React, { useState, useRef } from 'react';
 
+import { Box, ClickOutside } from '@citizenlab/cl2-component-library';
 import { isString, trim } from 'lodash-es';
 import { hideVisually } from 'polished';
 import styled from 'styled-components';
-
-import { Box, ClickOutside } from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';

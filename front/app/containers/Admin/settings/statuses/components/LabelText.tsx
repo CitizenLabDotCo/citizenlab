@@ -1,6 +1,5 @@
-import styled from 'styled-components';
-
 import { colors, fontSizes } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 const LabelText = styled.div`
   display: flex;

@@ -1,18 +1,17 @@
 import React, { PureComponent } from 'react';
 
-import { hideVisually } from 'polished';
-import { createPortal } from 'react-dom';
-import { FocusOn } from 'react-focus-on';
-import CSSTransition from 'react-transition-group/CSSTransition';
-import { Subscription } from 'rxjs';
-import styled from 'styled-components';
-
 import {
   Icon,
   ClickOutside,
   media,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { hideVisually } from 'polished';
+import { createPortal } from 'react-dom';
+import { FocusOn } from 'react-focus-on';
+import CSSTransition from 'react-transition-group/CSSTransition';
+import { Subscription } from 'rxjs';
+import styled from 'styled-components';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import eventEmitter from 'utils/eventEmitter';

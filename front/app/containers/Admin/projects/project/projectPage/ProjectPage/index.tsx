@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 
 import { Box, Spinner, colors } from '@citizenlab/cl2-component-library';
 
-import Modal from 'design-system/Modal';
-
 import useGroupsByIds from 'api/groups/useGroupsByIds';
 import useProjectById from 'api/projects/useProjectById';
 
@@ -14,6 +12,8 @@ import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 import PhonePreviewBackdrop from 'containers/Admin/projects/_shared/components/PhonePreviewBackdrop';
 
 import PagePreview from 'components/admin/PagePreview';
+
+import Modal from 'design-system/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';

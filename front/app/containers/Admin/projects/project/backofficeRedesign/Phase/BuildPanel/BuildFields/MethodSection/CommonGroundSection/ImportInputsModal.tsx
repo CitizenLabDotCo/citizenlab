@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 
-import Modal from 'design-system/Modal';
-
 import useCopyInputs from 'api/copy_inputs/useCopyInputs';
 import usePhase from 'api/phases/usePhase';
 
 import inputManagerMessages from 'components/admin/PostManager/CommonGroundInputManager/messages';
+
+import Modal from 'design-system/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 

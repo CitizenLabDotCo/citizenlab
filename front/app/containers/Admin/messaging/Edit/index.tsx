@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import moment from 'moment';
-
 import {
   Box,
   Button,
@@ -12,6 +10,7 @@ import {
   Text,
   Success,
 } from '@citizenlab/cl2-component-library';
+import moment from 'moment';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { EmailCampaignFormValues } from 'api/campaigns/email/types';
@@ -21,7 +20,6 @@ import useUpdateEmailCampaign from 'api/campaigns/email/useUpdateEmailCampaign';
 import { isEmailCampaignDraft } from 'api/campaigns/email/util';
 
 import useLocale from 'hooks/useLocale';
-import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
 import AutomatedCampaignForm from 'containers/Admin/messaging/AutomatedEmails/CampaignForm';
 import CustomCampaignForm from 'containers/Admin/messaging/CustomEmails/CampaignForm';
@@ -34,6 +32,8 @@ import GoBackButton from 'components/UI/GoBackButton';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { useParams } from 'utils/router';
+
+import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
 type EditProps = {
   campaignType: 'custom' | 'automated';

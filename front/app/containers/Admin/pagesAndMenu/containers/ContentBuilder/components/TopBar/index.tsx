@@ -1,9 +1,8 @@
 import React from 'react';
 
+import { Box, Title, Text, colors } from '@citizenlab/cl2-component-library';
 import { useEditor, SerializedNodes } from '@craftjs/core';
 import { SupportedLocale } from 'typings';
-
-import { Box, Title, Text, colors } from '@citizenlab/cl2-component-library';
 
 import useAddContentBuilderLayout from 'api/content_builder/useAddContentBuilderLayout';
 

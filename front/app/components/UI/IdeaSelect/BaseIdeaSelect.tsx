@@ -1,10 +1,9 @@
 import React, { useMemo, FC, useEffect } from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
 import ReactSelect from 'react-select';
 import { useTheme } from 'styled-components';
-
-import { Box } from '@citizenlab/cl2-component-library';
 
 import { IIdeaData } from 'api/ideas/types';
 

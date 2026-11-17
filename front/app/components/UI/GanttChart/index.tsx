@@ -7,9 +7,8 @@ import React, {
   useMemo,
 } from 'react';
 
-import { addMonths, subMonths } from 'date-fns';
-
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
+import { addMonths, subMonths } from 'date-fns';
 
 import GanttChartLeftColumn from './components/GanttChartLeftColumn';
 import GroupedTimeline from './components/GroupedTimeline';

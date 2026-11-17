@@ -1,8 +1,5 @@
 import React from 'react';
 
-import { useTheme } from 'styled-components';
-import { Multiloc } from 'typings';
-
 import {
   Box,
   ButtonStyles,
@@ -11,6 +8,8 @@ import {
   Title,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { useTheme } from 'styled-components';
+import { Multiloc } from 'typings';
 
 import { IPhaseData } from 'api/phases/types';
 

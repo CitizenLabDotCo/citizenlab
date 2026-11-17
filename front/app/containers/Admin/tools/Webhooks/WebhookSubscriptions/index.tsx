@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import styled from 'styled-components';
-
 import {
   Title,
   Text,
@@ -20,6 +18,7 @@ import {
   Badge,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import useProjectById from 'api/projects/useProjectById';
 import useDeleteWebhookSubscription from 'api/webhook_subscriptions/useDeleteWebhookSubscription';

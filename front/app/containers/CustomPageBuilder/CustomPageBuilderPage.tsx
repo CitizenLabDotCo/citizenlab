@@ -1,9 +1,8 @@
 import React, { useState, useRef, useCallback, useMemo } from 'react';
 
+import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
 import { Multiloc, SupportedLocale } from 'typings';
-
-import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 
 import useCustomPageLayout from 'api/custom_page_layout/useCustomPageLayout';
 import useUpsertCustomPageLayout from 'api/custom_page_layout/useUpsertCustomPageLayout';

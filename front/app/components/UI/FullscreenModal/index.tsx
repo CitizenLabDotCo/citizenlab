@@ -1,10 +1,5 @@
 import React, { useEffect } from 'react';
 
-import { createPortal } from 'react-dom';
-import { FocusOn } from 'react-focus-on';
-import CSSTransition from 'react-transition-group/CSSTransition';
-import styled from 'styled-components';
-
 import {
   Color,
   colors,
@@ -13,6 +8,10 @@ import {
   Title,
   TitleProps,
 } from '@citizenlab/cl2-component-library';
+import { createPortal } from 'react-dom';
+import { FocusOn } from 'react-focus-on';
+import CSSTransition from 'react-transition-group/CSSTransition';
+import styled from 'styled-components';
 
 import modalMessages from 'components/UI/Modal/messages';
 

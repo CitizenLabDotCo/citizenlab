@@ -1,8 +1,5 @@
 import React from 'react';
 
-import { darken } from 'polished';
-import styled from 'styled-components';
-
 import {
   colors,
   fontSizes,
@@ -11,6 +8,8 @@ import {
   Tooltip,
   Image,
 } from '@citizenlab/cl2-component-library';
+import { darken } from 'polished';
+import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 import { IUserData } from 'api/users/types';

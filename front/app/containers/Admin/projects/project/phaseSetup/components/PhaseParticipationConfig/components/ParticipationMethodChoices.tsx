@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { PressEvent } from 'react-aria-components';
-
 import {
   Box,
   Badge,
@@ -9,12 +7,13 @@ import {
   colors,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-
-import DsBadge from 'design-system/Badge';
+import { PressEvent } from 'react-aria-components';
 
 import { ParticipationMethod } from 'api/phases/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import DsBadge from 'design-system/Badge';
 
 import { useIntl } from 'utils/cl-intl';
 

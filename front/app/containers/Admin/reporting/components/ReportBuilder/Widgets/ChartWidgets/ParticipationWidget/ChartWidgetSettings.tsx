@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { useNode } from '@craftjs/core';
-
 import { Box, CheckboxWithLabel } from '@citizenlab/cl2-component-library';
+import { useNode } from '@craftjs/core';
 
 import { ParticipationType } from 'api/graph_data_units/requestTypes';
 

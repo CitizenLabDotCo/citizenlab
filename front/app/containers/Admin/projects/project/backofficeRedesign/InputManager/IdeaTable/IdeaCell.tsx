@@ -2,13 +2,13 @@ import React, { ReactNode } from 'react';
 
 import { differenceInCalendarDays } from 'date-fns';
 
-import { Cell } from 'design-system/Table';
-
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IIdeaData } from 'api/ideas/types';
 
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
+
+import { Cell } from 'design-system/Table';
 
 import { useIntl } from 'utils/cl-intl';
 import FormattedBudget from 'utils/currency/FormattedBudget';

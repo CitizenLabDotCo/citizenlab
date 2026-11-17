@@ -1,8 +1,7 @@
 import React, { memo } from 'react';
 
-import styled, { useTheme } from 'styled-components';
-
 import { useBreakpoint } from '@citizenlab/cl2-component-library';
+import styled, { useTheme } from 'styled-components';
 
 import Outlet from 'components/Outlet';
 import QuillEditedContent from 'components/UI/QuillEditedContent';

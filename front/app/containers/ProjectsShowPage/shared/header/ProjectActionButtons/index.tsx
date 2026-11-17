@@ -1,8 +1,7 @@
 import React, { ReactNode, useEffect, useState } from 'react';
 
-import { Multiloc } from 'typings';
-
 import { Box } from '@citizenlab/cl2-component-library';
+import { Multiloc } from 'typings';
 
 import useEvents from 'api/events/useEvents';
 import useAuthUser from 'api/me/useAuthUser';

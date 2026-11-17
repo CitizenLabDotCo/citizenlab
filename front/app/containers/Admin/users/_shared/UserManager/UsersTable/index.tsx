@@ -1,9 +1,8 @@
 import React from 'react';
 
+import { Table, Thead, Th, Tbody, Tr } from '@citizenlab/cl2-component-library';
 import { includes, isArray } from 'lodash-es';
 import styled from 'styled-components';
-
-import { Table, Thead, Th, Tbody, Tr } from '@citizenlab/cl2-component-library';
 
 import { IQueryParameters, IUserData } from 'api/users/types';
 

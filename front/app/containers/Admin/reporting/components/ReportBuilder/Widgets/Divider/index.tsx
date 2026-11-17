@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { useTheme } from 'styled-components';
-
 import { Box, colors } from '@citizenlab/cl2-component-library';
+import { useTheme } from 'styled-components';
 
 import messages from './messages';
 import Settings from './Settings';

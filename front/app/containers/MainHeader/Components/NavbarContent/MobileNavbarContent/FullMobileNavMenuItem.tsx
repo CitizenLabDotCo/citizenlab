@@ -1,14 +1,13 @@
 import React from 'react';
 
-import { darken } from 'polished';
-import styled from 'styled-components';
-
 import {
   Icon,
   IconNames,
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
+import { darken } from 'polished';
+import styled from 'styled-components';
 
 import Link, { typedStyled, type TypedLinkProps } from 'utils/cl-router/Link';
 

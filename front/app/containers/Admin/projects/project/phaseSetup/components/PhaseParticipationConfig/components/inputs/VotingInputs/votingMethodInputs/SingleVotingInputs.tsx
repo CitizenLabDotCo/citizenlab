@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 
-import { CLErrors } from 'typings';
-
 import { Input, Box, Radio } from '@citizenlab/cl2-component-library';
+import { CLErrors } from 'typings';
 
 import {
   SectionField,

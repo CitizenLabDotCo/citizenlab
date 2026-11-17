@@ -1,9 +1,8 @@
 import React from 'react';
 
+import { media } from '@citizenlab/cl2-component-library';
 import styled, { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
-
-import { media } from '@citizenlab/cl2-component-library';
 
 import ContentContainer from 'components/ContentContainer';
 import ResolveTextVariables from 'components/ResolveTextVariables';

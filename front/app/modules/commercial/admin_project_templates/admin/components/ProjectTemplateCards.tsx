@@ -1,10 +1,9 @@
 import React, { memo } from 'react';
 
+import { Spinner, colors, fontSizes } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
-
-import { Spinner, colors, fontSizes } from '@citizenlab/cl2-component-library';
 
 import useLocalize from 'hooks/useLocalize';
 

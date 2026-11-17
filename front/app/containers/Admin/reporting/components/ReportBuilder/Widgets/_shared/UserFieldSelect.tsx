@@ -1,8 +1,7 @@
 import React, { useMemo } from 'react';
 
-import { IOption } from 'typings';
-
 import { Box, Select } from '@citizenlab/cl2-component-library';
+import { IOption } from 'typings';
 
 import { IUserCustomFieldData } from 'api/user_custom_fields/types';
 

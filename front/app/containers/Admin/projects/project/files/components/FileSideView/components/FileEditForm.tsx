@@ -1,11 +1,10 @@
 import React from 'react';
 
+import { Button, Box, Text } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { isEmpty } from 'lodash-es';
 import { FormProvider, useForm } from 'react-hook-form';
 import { boolean, object, string } from 'yup';
-
-import { Button, Box, Text } from '@citizenlab/cl2-component-library';
 
 import { FILE_CATEGORIES, IFile } from 'api/files/types';
 import useUpdateFile from 'api/files/useUpdateFile';

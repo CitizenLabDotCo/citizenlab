@@ -1,8 +1,5 @@
 import React from 'react';
 
-import { useTheme } from 'styled-components';
-import { Multiloc } from 'typings';
-
 import {
   Box,
   Button,
@@ -12,6 +9,8 @@ import {
   useBreakpoint,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
+import { useTheme } from 'styled-components';
+import { Multiloc } from 'typings';
 
 import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
 import usePhase from 'api/phases/usePhase';

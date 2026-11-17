@@ -1,14 +1,14 @@
 import React from 'react';
 
-import Banner from 'design-system/Banner';
-import IconButton from 'design-system/IconButton';
-
 import useAuthUser from 'api/me/useAuthUser';
 
 import useDismissed from 'hooks/useDismissed';
 import useEarlyAccess from 'hooks/useEarlyAccess';
 
 import featureCalloutMessages from 'components/UI/FeatureCallout/messages';
+
+import Banner from 'design-system/Banner';
+import IconButton from 'design-system/IconButton';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isSuperAdmin } from 'utils/permissions/roles';

@@ -1,12 +1,11 @@
 import React, { useMemo, useState } from 'react';
 
+import { colors, Box, Text } from '@citizenlab/cl2-component-library';
 import moment from 'moment-timezone';
 import 'react-day-picker/style.css';
 import { transparentize } from 'polished';
 import { DayPicker, PropsBase } from 'react-day-picker';
 import styled from 'styled-components';
-
-import { colors, Box, Text } from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 

@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 
-import Banner from 'design-system/Banner';
-
 import generalMessages from 'containers/Admin/projects/project/general/messages';
+
+import Banner from 'design-system/Banner';
 
 import { useIntl } from 'utils/cl-intl';
 

@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 
-import Box from 'component-library/components/Box';
-import Radio from 'component-library/components/Radio';
-import styled from 'styled-components';
-
 import {
   Success,
   Error,
   Toggle,
   Text,
 } from '@citizenlab/cl2-component-library';
+import Box from 'component-library/components/Box';
+import Radio from 'component-library/components/Radio';
+import styled from 'styled-components';
 
 import {
   TAppConfigurationSetting,

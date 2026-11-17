@@ -1,10 +1,5 @@
 import React from 'react';
 
-import { useNode, useEditor } from '@craftjs/core';
-import { darken } from 'polished';
-import { useTheme } from 'styled-components';
-import { Multiloc } from 'typings';
-
 import {
   Radio,
   Box,
@@ -12,6 +7,10 @@ import {
   Label,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { useNode, useEditor } from '@craftjs/core';
+import { darken } from 'polished';
+import { useTheme } from 'styled-components';
+import { Multiloc } from 'typings';
 
 import useLocalize from 'hooks/useLocalize';
 

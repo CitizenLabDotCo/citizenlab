@@ -1,13 +1,10 @@
 import React, { useEffect } from 'react';
 
+import { Box, Button } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Multiloc } from 'typings';
 import { object } from 'yup';
-
-import { Box, Button } from '@citizenlab/cl2-component-library';
-
-import DSModal from 'design-system/Modal';
 
 import { IInputTopicData } from 'api/input_topics/types';
 
@@ -24,6 +21,8 @@ import Modal, {
   ModalContentContainer,
   ButtonsWrapper,
 } from 'components/UI/Modal';
+
+import DSModal from 'design-system/Modal';
 
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';

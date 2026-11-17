@@ -1,14 +1,14 @@
 import React from 'react';
 
-import IconButton from 'design-system/IconButton';
-import { ListBoxOption } from 'design-system/ListBox';
-import Select from 'design-system/Select';
-import Spinner from 'design-system/Spinner';
-
 import { FILE_CATEGORIES, FileCategory } from 'api/files/types';
 
 import { UploadStatus } from 'containers/Admin/projects/_shared/fileUploads/types';
 import filesMessages from 'containers/Admin/projects/project/files/components/messages';
+
+import IconButton from 'design-system/IconButton';
+import { ListBoxOption } from 'design-system/ListBox';
+import Select from 'design-system/Select';
+import Spinner from 'design-system/Spinner';
 
 import { useIntl } from 'utils/cl-intl';
 

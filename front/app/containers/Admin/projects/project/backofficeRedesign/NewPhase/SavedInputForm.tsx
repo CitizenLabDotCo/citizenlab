@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 
-import Spinner from 'design-system/Spinner';
-
 import usePhases from 'api/phases/usePhases';
 
 import useSharesInputForm from 'containers/Admin/projects/project/inputForm/useSharesInputForm';
 
 import FormInputEditWarningModal from 'components/admin/FormInputEditWarningModal';
+
+import Spinner from 'design-system/Spinner';
 
 import Navigate from 'utils/cl-router/Navigate';
 import 'design-system/tokens.css';

@@ -2,13 +2,12 @@ import React, { ReactNode, useEffect, useMemo, useState } from 'react';
 
 import { debounce } from 'lodash-es';
 
-import ComboBox from 'design-system/ComboBox';
-import { ListBoxOption } from 'design-system/ListBox';
-
 import useLocale from 'hooks/useLocale';
 
 import fetchLocationOptions from 'components/UI/LocationInput/fetchLocationOptions';
 
+import ComboBox from 'design-system/ComboBox';
+import { ListBoxOption } from 'design-system/ListBox';
 import 'design-system/tokens.css';
 
 interface Props {

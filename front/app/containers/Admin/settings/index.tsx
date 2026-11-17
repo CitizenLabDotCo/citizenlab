@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { ITab } from 'typings';
-
 import { Box, colors } from '@citizenlab/cl2-component-library';
+import { ITab } from 'typings';
 
 import NavigationTabs, {
   Tab,

@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import styled from 'styled-components';
-
 import {
   IconNames,
   StatusLabel,
@@ -10,6 +8,7 @@ import {
   colors,
   Icon,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
 import useAdminPublication from 'api/admin_publications/useAdminPublication';

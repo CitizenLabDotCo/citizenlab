@@ -2,13 +2,13 @@ import React, { ReactNode } from 'react';
 
 import { Button as AriaButton } from 'react-aria-components';
 
+import { SetupReviewCard } from 'api/phases/types';
+
 import Banner from 'design-system/Banner';
 import Disclosure from 'design-system/Disclosure';
 import Icon from 'design-system/Icon';
 import ReviewStatus from 'design-system/ReviewStatus';
 import Tooltip from 'design-system/Tooltip';
-
-import { SetupReviewCard } from 'api/phases/types';
 
 import { useIntl } from 'utils/cl-intl';
 

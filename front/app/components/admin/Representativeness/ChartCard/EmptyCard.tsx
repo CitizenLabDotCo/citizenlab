@@ -1,9 +1,5 @@
 import React from 'react';
 
-import EmptyProjectsImage from 'assets/img/landingpage/no_projects_image.svg';
-import styled from 'styled-components';
-import { Multiloc } from 'typings';
-
 import {
   Box,
   Title,
@@ -11,6 +7,9 @@ import {
   StatusLabel,
   colors,
 } from '@citizenlab/cl2-component-library';
+import EmptyProjectsImage from 'assets/img/landingpage/no_projects_image.svg';
+import styled from 'styled-components';
+import { Multiloc } from 'typings';
 
 import useLocalize from 'hooks/useLocalize';
 

@@ -1,8 +1,7 @@
 import React, { useMemo } from 'react';
 
-import { isEmpty } from 'lodash-es';
-
 import { Box, Spinner, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { isEmpty } from 'lodash-es';
 
 import useProjectPageLayout from 'api/project_page_layout/useProjectPageLayout';
 import useProjectById from 'api/projects/useProjectById';

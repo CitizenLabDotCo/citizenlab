@@ -1,7 +1,5 @@
 import React from 'react';
 
-import styled, { useTheme } from 'styled-components';
-
 import {
   Box,
   Icon,
@@ -10,6 +8,7 @@ import {
   Text,
   Select,
 } from '@citizenlab/cl2-component-library';
+import styled, { useTheme } from 'styled-components';
 
 import { Drag } from 'components/FormBuilder/components/DragAndDrop';
 

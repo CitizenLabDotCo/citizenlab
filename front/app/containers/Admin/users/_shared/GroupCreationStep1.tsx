@@ -1,10 +1,9 @@
 import React, { memo } from 'react';
 
+import { Icon, colors, fontSizes } from '@citizenlab/cl2-component-library';
 import { darken, transparentize } from 'polished';
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
-
-import { Icon, colors, fontSizes } from '@citizenlab/cl2-component-library';
 
 import { IGroupData, MembershipType } from 'api/groups/types';
 

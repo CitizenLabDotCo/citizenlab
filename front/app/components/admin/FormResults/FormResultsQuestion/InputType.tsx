@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { get } from 'lodash-es';
-
 import { BoxMarginProps, Text } from '@citizenlab/cl2-component-library';
+import { get } from 'lodash-es';
 
 import messages from 'containers/Admin/projects/project/surveyFormAssets/messages';
 

@@ -1,9 +1,8 @@
 import React, { useMemo, useEffect } from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import styled from 'styled-components';
-
-import { Box } from '@citizenlab/cl2-component-library';
 
 import { ProjectLibraryProjectData } from 'api/project_library_projects/types';
 import useInfiniteProjectLibraryProjects from 'api/project_library_projects/useInfiniteProjectLibraryProjects';

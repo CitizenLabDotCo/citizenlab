@@ -1,10 +1,5 @@
 import React, { memo } from 'react';
 
-import moment from 'moment';
-import { rgba } from 'polished';
-import { WrappedComponentProps } from 'react-intl';
-import styled from 'styled-components';
-
 import {
   Tr,
   Td,
@@ -13,6 +8,10 @@ import {
   Tooltip,
   Box,
 } from '@citizenlab/cl2-component-library';
+import moment from 'moment';
+import { rgba } from 'polished';
+import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
 
 import useInappropriateContentFlag from 'api/inappropriate_content_flags/useInappropriateContentFlag';
 import {

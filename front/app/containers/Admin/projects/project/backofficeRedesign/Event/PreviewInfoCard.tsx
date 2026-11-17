@@ -1,11 +1,10 @@
 import React from 'react';
 
 // The preview copies the citizen event page and keeps its button icon.
+import { Icon } from '@citizenlab/cl2-component-library';
 import { format, isSameDay } from 'date-fns';
 import moment from 'moment-timezone';
 import { Multiloc } from 'typings';
-
-import { Icon } from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 

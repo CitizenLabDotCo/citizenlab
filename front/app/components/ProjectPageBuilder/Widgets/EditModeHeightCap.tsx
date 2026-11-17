@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import { useEditor } from '@craftjs/core';
-
 import { Box } from '@citizenlab/cl2-component-library';
+import { useEditor } from '@craftjs/core';
 
 import AdminOnlyNote from './EmptyState/AdminOnlyNote';
 import messages from './messages';

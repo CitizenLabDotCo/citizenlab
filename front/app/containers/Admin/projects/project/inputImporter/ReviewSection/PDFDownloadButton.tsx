@@ -1,8 +1,7 @@
 import React, { useCallback, useState } from 'react';
 
-import { saveAs } from 'file-saver';
-
 import { Box, Button } from '@citizenlab/cl2-component-library';
+import { saveAs } from 'file-saver';
 
 import messages from 'containers/Admin/projects/project/inputImporter/ReviewSection/messages';
 

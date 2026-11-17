@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 
-import { rgba } from 'polished';
-import { Subscription } from 'rxjs';
-import styled from 'styled-components';
-
 import {
   Box,
   colors,
   fontSizes,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
+import { rgba } from 'polished';
+import { Subscription } from 'rxjs';
+import styled from 'styled-components';
 
 import useBlockedUsercount from 'api/blocked_users/useBlockedUsersCount';
 import useEmailBansCount from 'api/email_bans/useEmailBansCount';

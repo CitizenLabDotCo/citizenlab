@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
+import { Box, colors, fontSizes } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 import styled from 'styled-components';
-
-import { Box, colors, fontSizes } from '@citizenlab/cl2-component-library';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { convertSecondsToDDHHMM } from 'utils/dateUtils';

@@ -1,9 +1,8 @@
 import React from 'react';
 
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { SupportedLocale } from 'typings';
-
-import { Box, colors } from '@citizenlab/cl2-component-library';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 

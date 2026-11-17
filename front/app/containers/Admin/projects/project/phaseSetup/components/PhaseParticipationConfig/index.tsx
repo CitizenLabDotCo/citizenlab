@@ -1,13 +1,12 @@
 import React, { ReactNode } from 'react';
 
-import { CLErrors, Multiloc } from 'typings';
-
 import {
   Box,
   IconTooltip,
   Input,
   IOption,
 } from '@citizenlab/cl2-component-library';
+import { CLErrors, Multiloc } from 'typings';
 
 import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
 import {

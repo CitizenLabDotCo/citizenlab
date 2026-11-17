@@ -1,6 +1,5 @@
-import styled from 'styled-components';
-
 import { media } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import { PROJECTABLE_HEADER_BG_ASPECT_RATIO } from 'api/projects/constants';
 

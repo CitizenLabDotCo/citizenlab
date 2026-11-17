@@ -9,9 +9,6 @@ import React, {
 
 import Graphic from '@arcgis/core/Graphic';
 import MapView from '@arcgis/core/views/MapView';
-import { createPortal } from 'react-dom';
-import { useTheme } from 'styled-components';
-
 import {
   Box,
   Button,
@@ -19,6 +16,8 @@ import {
   Label,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { createPortal } from 'react-dom';
+import { useTheme } from 'styled-components';
 
 import { IMapConfig } from 'api/map_config/types';
 

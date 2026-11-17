@@ -1,13 +1,12 @@
 import React from 'react';
 
-import styled from 'styled-components';
-
 import {
   IconTooltip,
   Box,
   Title,
   Text,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import useAddProjectModerator from 'api/project_moderators/useAddProjectModerator';
 import useDeleteProjectModerator from 'api/project_moderators/useDeleteProjectModerator';

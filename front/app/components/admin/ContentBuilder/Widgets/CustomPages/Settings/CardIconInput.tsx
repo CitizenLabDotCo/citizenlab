@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import { UploadFile } from 'typings';
-
 import {
   Box,
   Button,
@@ -12,6 +10,7 @@ import {
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
+import { UploadFile } from 'typings';
 
 import useAddContentBuilderImage from 'api/content_builder_images/useAddContentBuilderImage';
 

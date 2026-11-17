@@ -1,10 +1,10 @@
 import React from 'react';
 
-import Pagination from 'design-system/Pagination';
-import Table, { TableBody } from 'design-system/Table';
-
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IIdeaData, Sort } from 'api/ideas/types';
+
+import Pagination from 'design-system/Pagination';
+import Table, { TableBody } from 'design-system/Table';
 
 import { ColumnKey } from '../columns';
 import useInputTermLabels from '../useInputTermLabels';

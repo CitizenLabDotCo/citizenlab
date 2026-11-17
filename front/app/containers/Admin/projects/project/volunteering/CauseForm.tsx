@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { FormProvider } from 'react-hook-form';
-
 import { Box, colors } from '@citizenlab/cl2-component-library';
+import { FormProvider } from 'react-hook-form';
 
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 

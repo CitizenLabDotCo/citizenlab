@@ -1,11 +1,10 @@
 import React, { useRef, KeyboardEvent } from 'react';
 
+import { fontSizes, colors, media } from '@citizenlab/cl2-component-library';
 import { focusRingInset } from 'global-styles';
 import { rgba } from 'polished';
 import { MessageDescriptor } from 'react-intl';
 import styled from 'styled-components';
-
-import { fontSizes, colors, media } from '@citizenlab/cl2-component-library';
 
 import HorizontalScroll from 'components/HorizontalScroll';
 

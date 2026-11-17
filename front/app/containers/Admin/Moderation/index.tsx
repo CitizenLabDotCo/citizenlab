@@ -1,8 +1,5 @@
 import React, { useState, useCallback } from 'react';
 
-import styled from 'styled-components';
-import { IOption, InsertConfigurationOptions } from 'typings';
-
 import {
   Table,
   Thead,
@@ -16,6 +13,8 @@ import {
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+import { IOption, InsertConfigurationOptions } from 'typings';
 
 import useRemoveInappropriateContentFlag from 'api/inappropriate_content_flags/useRemoveInappropriateContentFlag';
 import useAuthUser from 'api/me/useAuthUser';

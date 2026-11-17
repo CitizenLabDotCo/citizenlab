@@ -1,8 +1,7 @@
 import React, { ReactNode } from 'react';
 
-import styled from 'styled-components';
-
 import { colors, fontSizes } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import styles from './LayerConfiguration.module.css';
 

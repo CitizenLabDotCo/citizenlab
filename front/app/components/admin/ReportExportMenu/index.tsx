@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 
+import { Dropdown, fontSizes } from '@citizenlab/cl2-component-library';
 import { Canvg } from 'canvg';
 import { saveAs } from 'file-saver';
 import styled from 'styled-components';
 import * as XLSX from 'xlsx';
-
-import { Dropdown, fontSizes } from '@citizenlab/cl2-component-library';
 
 import { IResolution } from 'components/admin/ResolutionControl';
 import ButtonWithLink from 'components/UI/ButtonWithLink';

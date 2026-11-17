@@ -1,10 +1,9 @@
-import { DefaultTheme } from 'styled-components';
-
 import {
   colors,
   stylingConsts,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
+import { DefaultTheme } from 'styled-components';
 
 interface Settings {
   fontSize?: number;

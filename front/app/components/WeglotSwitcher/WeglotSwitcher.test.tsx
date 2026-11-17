@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { ThemeProvider } from 'styled-components';
-
 import { getTheme } from '@citizenlab/cl2-component-library';
+import { ThemeProvider } from 'styled-components';
 
 import { render, screen, fireEvent, act } from 'utils/testUtils/rtl';
 import { WEGLOT_READY_EVENT, reportMissingWeglotLanguages } from 'utils/weglot';

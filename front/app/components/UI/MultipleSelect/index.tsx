@@ -1,15 +1,14 @@
 import React, { KeyboardEvent, useRef } from 'react';
 
-import ReactSelect, { SelectInstance } from 'react-select';
-import { useTheme } from 'styled-components';
-import { IOption } from 'typings';
-
 import {
   Box,
   Label,
   fontSizes,
   colors,
 } from '@citizenlab/cl2-component-library';
+import ReactSelect, { SelectInstance } from 'react-select';
+import { useTheme } from 'styled-components';
+import { IOption } from 'typings';
 
 import useA11yMessages from 'components/UI/ReactSelect/useA11yMessages';
 

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 
-import Button from 'design-system/Button';
-
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 
 import { ManagerType } from 'components/admin/PostManager';
+
+import Button from 'design-system/Button';
 
 import { useIntl } from 'utils/cl-intl';
 

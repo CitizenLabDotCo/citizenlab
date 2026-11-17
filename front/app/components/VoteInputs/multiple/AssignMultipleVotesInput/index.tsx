@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { useTheme } from 'styled-components';
-
 import {
   Box,
   Button,
@@ -10,6 +8,7 @@ import {
   useBreakpoint,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
+import { useTheme } from 'styled-components';
 
 import useBasket from 'api/baskets/useBasket';
 import useVoting from 'api/baskets_ideas/useVoting';

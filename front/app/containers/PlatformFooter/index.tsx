@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-import { isEmpty } from 'lodash-es';
-import { MessageDescriptor } from 'react-intl';
-import styled, { css } from 'styled-components';
-
 import {
   Icon,
   useBreakpoint,
@@ -11,6 +7,9 @@ import {
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
+import { isEmpty } from 'lodash-es';
+import { MessageDescriptor } from 'react-intl';
+import styled, { css } from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { TPolicyPage } from 'api/custom_pages/types';

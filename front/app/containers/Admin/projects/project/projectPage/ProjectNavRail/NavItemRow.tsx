@@ -1,8 +1,7 @@
 import React from 'react';
 
-import styled from 'styled-components';
-
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import Link, { typedStyled } from 'utils/cl-router/Link';

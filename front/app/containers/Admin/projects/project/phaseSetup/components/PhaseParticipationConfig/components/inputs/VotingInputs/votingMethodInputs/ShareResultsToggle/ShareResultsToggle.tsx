@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { CLErrors } from 'typings';
-
 import {
   Toggle,
   Text,
@@ -9,6 +7,7 @@ import {
   colors,
   Image,
 } from '@citizenlab/cl2-component-library';
+import { CLErrors } from 'typings';
 
 import {
   SectionField,

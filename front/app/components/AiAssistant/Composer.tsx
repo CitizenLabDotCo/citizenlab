@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
 
-import { ErrorCode, useDropzone } from 'react-dropzone';
-import TextareaAutosize from 'react-textarea-autosize';
-import styled from 'styled-components';
-
 import {
   Box,
   IconButton,
@@ -12,6 +8,9 @@ import {
   fontSizes,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
+import { ErrorCode, useDropzone } from 'react-dropzone';
+import TextareaAutosize from 'react-textarea-autosize';
+import styled from 'styled-components';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
+import SummaryPill from 'containers/Admin/projects/_shared/components/SummaryPill';
+
 import Button from 'design-system/Button';
 import IconButton from 'design-system/IconButton';
 import Spinner from 'design-system/Spinner';
-
-import SummaryPill from 'containers/Admin/projects/_shared/components/SummaryPill';
 
 import { useIntl } from 'utils/cl-intl';
 

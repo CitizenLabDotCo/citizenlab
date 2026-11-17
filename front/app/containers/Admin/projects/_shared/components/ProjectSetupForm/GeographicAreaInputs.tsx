@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
-import { IOption, isIOption } from 'typings';
-
 import { IconTooltip, Radio } from '@citizenlab/cl2-component-library';
+import { IOption, isIOption } from 'typings';
 
 import { IAreaData } from 'api/areas/types';
 import useAreas from 'api/areas/useAreas';

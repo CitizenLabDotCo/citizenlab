@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
 import useInstanceId from 'component-library/hooks/useInstanceId';
 import { useInView } from 'react-intersection-observer';
-
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
 

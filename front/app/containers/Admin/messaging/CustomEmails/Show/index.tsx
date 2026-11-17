@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-import moment from 'moment';
-import styled from 'styled-components';
-
 import {
   StatusLabel,
   IconTooltip,
@@ -14,6 +11,8 @@ import {
   Button,
   Success,
 } from '@citizenlab/cl2-component-library';
+import moment from 'moment';
+import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useEmailCampaign from 'api/campaigns/email/useEmailCampaign';

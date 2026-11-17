@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
 
-import { isEmpty, forOwn } from 'lodash-es';
-import moment from 'moment';
-import styled from 'styled-components';
-
 import {
   Badge,
   useBreakpoint,
@@ -13,6 +9,9 @@ import {
   colors,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
+import { isEmpty, forOwn } from 'lodash-es';
+import moment from 'moment';
+import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 import useUserById from 'api/users/useUserById';

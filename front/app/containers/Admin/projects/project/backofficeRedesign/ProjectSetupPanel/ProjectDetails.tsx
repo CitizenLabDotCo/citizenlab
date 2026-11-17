@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 
 import { Button } from 'react-aria-components';
 
-import Icon from 'design-system/Icon';
-
 import { IProjectData } from 'api/projects/types';
+
+import Icon from 'design-system/Icon';
 
 import { useIntl } from 'utils/cl-intl';
 

@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { MessageDescriptor } from 'react-intl';
-
 import {
   Box,
   colors,
@@ -9,6 +7,7 @@ import {
   Title,
   Toggle,
 } from '@citizenlab/cl2-component-library';
+import { MessageDescriptor } from 'react-intl';
 
 import { EarlyAccessTier } from 'api/users/types';
 

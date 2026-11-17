@@ -1,7 +1,5 @@
 import React from 'react';
 
-import Cookies from 'js-cookie';
-
 import {
   Icon,
   colors,
@@ -10,6 +8,7 @@ import {
   Title,
   Box,
 } from '@citizenlab/cl2-component-library';
+import Cookies from 'js-cookie';
 
 import Modal from 'components/UI/Modal';
 

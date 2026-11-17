@@ -1,8 +1,7 @@
 import React, { useContext } from 'react';
 
-import styled from 'styled-components';
-
 import { Box, useBreakpoint, media } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import {
   BAND_Y_PADDING,

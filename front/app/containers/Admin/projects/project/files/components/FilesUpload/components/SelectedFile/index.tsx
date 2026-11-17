@@ -1,15 +1,14 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 
-import { yupResolver } from '@hookform/resolvers/yup';
-import { FieldValues, FormProvider, useForm } from 'react-hook-form';
-import { object, string } from 'yup';
-
 import {
   Box,
   IconButton,
   Text,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { FieldValues, FormProvider, useForm } from 'react-hook-form';
+import { object, string } from 'yup';
 
 import { FILE_CATEGORIES } from 'api/files/types';
 import useAddFile from 'api/files/useAddFile';

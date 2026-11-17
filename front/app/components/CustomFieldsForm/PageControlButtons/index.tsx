@@ -1,8 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-import { useTheme } from 'styled-components';
-import { Multiloc } from 'typings';
-
 import {
   Box,
   Button,
@@ -11,6 +8,8 @@ import {
   colors,
   IconNames,
 } from '@citizenlab/cl2-component-library';
+import { useTheme } from 'styled-components';
+import { Multiloc } from 'typings';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 import useAuthUser from 'api/me/useAuthUser';

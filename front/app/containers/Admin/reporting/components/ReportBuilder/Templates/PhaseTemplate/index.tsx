@@ -1,8 +1,7 @@
 import React, { useContext } from 'react';
 
-import { Element } from '@craftjs/core';
-
 import { Box } from '@citizenlab/cl2-component-library';
+import { Element } from '@craftjs/core';
 
 import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
 import usePhase from 'api/phases/usePhase';

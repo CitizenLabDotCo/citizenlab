@@ -1,7 +1,5 @@
 import React, { MouseEvent, useState } from 'react';
 
-import styled from 'styled-components';
-
 import {
   Toggle,
   Badge,
@@ -9,6 +7,7 @@ import {
   Box,
   colors,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import permissionsPhaseCustomFieldsKeys from 'api/permissions_phase_custom_fields/keys';
 import userCustomFieldsKeys from 'api/user_custom_fields/keys';

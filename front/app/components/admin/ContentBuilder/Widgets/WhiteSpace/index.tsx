@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { useNode } from '@craftjs/core';
-
 import {
   Box,
   Radio,
@@ -10,6 +8,7 @@ import {
   useBreakpoint,
   Divider,
 } from '@citizenlab/cl2-component-library';
+import { useNode } from '@craftjs/core';
 
 import { FormattedMessage } from 'utils/cl-intl';
 

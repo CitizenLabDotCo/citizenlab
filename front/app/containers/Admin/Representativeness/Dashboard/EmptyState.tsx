@@ -1,9 +1,5 @@
 import React from 'react';
 
-import EmptyStateImage from 'assets/img/empty_status.svg';
-import EmptyProjectsImage from 'assets/img/landingpage/no_projects_image.svg';
-import styled from 'styled-components';
-
 import {
   Box,
   Image,
@@ -11,6 +7,9 @@ import {
   Text,
   colors,
 } from '@citizenlab/cl2-component-library';
+import EmptyStateImage from 'assets/img/empty_status.svg';
+import EmptyProjectsImage from 'assets/img/landingpage/no_projects_image.svg';
+import styled from 'styled-components';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 

@@ -1,10 +1,9 @@
 import React, { useMemo, useState, FormEvent } from 'react';
 
+import { Box, Button } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { string, object } from 'yup';
-
-import { Box, Button } from '@citizenlab/cl2-component-library';
 
 import { tooSoonRetryAfter } from 'api/authentication/confirm_phone/resendCooldown';
 

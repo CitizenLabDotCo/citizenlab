@@ -1,8 +1,7 @@
 import React, { useState, useCallback, useMemo } from 'react';
 
-import moment, { Moment } from 'moment';
-
 import { Title, useBreakpoint } from '@citizenlab/cl2-component-library';
+import moment, { Moment } from 'moment';
 
 import useAuthUser from 'api/me/useAuthUser';
 

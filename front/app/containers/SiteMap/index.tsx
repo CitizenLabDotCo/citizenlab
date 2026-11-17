@@ -1,8 +1,7 @@
 import React from 'react';
 
-import styled from 'styled-components';
-
 import { colors, fontSizes, media } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import { TCustomPageCode } from 'api/custom_pages/types';
 import useCustomPages from 'api/custom_pages/useCustomPages';

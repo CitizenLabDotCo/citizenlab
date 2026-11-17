@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
+import { Box, Label, IconTooltip } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 import { Multiloc, UploadFile } from 'typings';
-
-import { Box, Label, IconTooltip } from '@citizenlab/cl2-component-library';
 
 import useAddContentBuilderImage from 'api/content_builder_images/useAddContentBuilderImage';
 

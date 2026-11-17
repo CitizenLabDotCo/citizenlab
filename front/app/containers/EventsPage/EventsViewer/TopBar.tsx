@@ -1,13 +1,12 @@
 import React, { memo } from 'react';
 
-import styled, { useTheme } from 'styled-components';
-
 import {
   Box,
   Title,
   useBreakpoint,
   colors,
 } from '@citizenlab/cl2-component-library';
+import styled, { useTheme } from 'styled-components';
 
 import ProjectFilterDropdown from 'components/ProjectFilterDropdown';
 

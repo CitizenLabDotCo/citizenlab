@@ -1,13 +1,5 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
 
-import { parseDate } from '@internationalized/date';
-import { get, isEmpty, transform } from 'lodash-es';
-import moment from 'moment';
-import { darken } from 'polished';
-import { WrappedComponentProps } from 'react-intl';
-import styled from 'styled-components';
-import { SupportedLocale, Multiloc, IOption } from 'typings';
-
 import {
   Input,
   Icon,
@@ -16,11 +8,13 @@ import {
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
-
-import Banner from 'design-system/Banner';
-import DatePicker from 'design-system/DatePicker';
-import DSIcon from 'design-system/Icon';
-import DSModal from 'design-system/Modal';
+import { parseDate } from '@internationalized/date';
+import { get, isEmpty, transform } from 'lodash-es';
+import moment from 'moment';
+import { darken } from 'polished';
+import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
+import { SupportedLocale, Multiloc, IOption } from 'typings';
 
 import useAuthUser from 'api/me/useAuthUser';
 import useProjectFolders from 'api/project_folders/useProjectFolders';
@@ -36,6 +30,11 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import Modal from 'components/UI/Modal';
+
+import Banner from 'design-system/Banner';
+import DatePicker from 'design-system/DatePicker';
+import DSIcon from 'design-system/Icon';
+import DSModal from 'design-system/Modal';
 
 import { trackEventByName } from 'utils/analytics';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';

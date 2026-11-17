@@ -2,10 +2,9 @@
 import React, { useCallback, useMemo, useState } from 'react';
 
 import MapView from '@arcgis/core/views/MapView';
+import { Box, Button, Label, Spinner } from '@citizenlab/cl2-component-library';
 import { useFormContext } from 'react-hook-form';
 import styled from 'styled-components';
-
-import { Box, Button, Label, Spinner } from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import customFieldsKeys from 'api/custom_fields/keys';

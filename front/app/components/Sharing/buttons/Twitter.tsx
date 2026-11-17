@@ -1,10 +1,9 @@
 import React from 'react';
 
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import { lighten } from 'polished';
 import { TwitterShareButton, XIcon } from 'react-share';
 import styled from 'styled-components';
-
-import { Box, colors } from '@citizenlab/cl2-component-library';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';

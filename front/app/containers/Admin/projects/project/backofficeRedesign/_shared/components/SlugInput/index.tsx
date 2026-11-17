@@ -2,9 +2,6 @@ import React from 'react';
 
 import { CLErrors } from 'typings';
 
-import AffixField from 'design-system/AffixField';
-import Banner from 'design-system/Banner';
-
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import useLocale from 'hooks/useLocale';
@@ -12,6 +9,9 @@ import useLocale from 'hooks/useLocale';
 import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 import messages from 'components/admin/SlugInput/messages';
 import slugInputMessages from 'components/HookForm/SlugInput/messages';
+
+import AffixField from 'design-system/AffixField';
+import Banner from 'design-system/Banner';
 
 import { useIntl } from 'utils/cl-intl';
 

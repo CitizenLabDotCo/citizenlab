@@ -1,8 +1,8 @@
 import React from 'react';
 
-import Icon from 'design-system/Icon';
-
 import { IPhasePermissionAction } from 'api/permissions/types';
+
+import Icon from 'design-system/Icon';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 

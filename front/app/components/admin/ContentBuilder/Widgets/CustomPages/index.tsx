@@ -1,8 +1,7 @@
 import React, { lazy } from 'react';
 
-import { Multiloc } from 'typings';
-
 import { Box, Shimmer, Title, colors } from '@citizenlab/cl2-component-library';
+import { Multiloc } from 'typings';
 
 import useCustomPages from 'api/custom_pages/useCustomPages';
 

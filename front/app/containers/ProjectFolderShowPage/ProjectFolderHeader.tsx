@@ -1,13 +1,12 @@
 import React, { memo } from 'react';
 
-import styled from 'styled-components';
-
 import {
   useWindowSize,
   Box,
   media,
   colors,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import { IProjectFolderData } from 'api/project_folders/types';
 

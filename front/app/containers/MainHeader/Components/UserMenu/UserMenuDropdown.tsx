@@ -1,8 +1,7 @@
 import React, { MouseEvent, KeyboardEvent } from 'react';
 
-import styled from 'styled-components';
-
 import { Dropdown, colors } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
 import useAuthenticationRequirements from 'api/authentication/authentication_requirements/useAuthenticationRequirements';

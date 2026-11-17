@@ -1,9 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
 
-import { MessageDescriptor } from 'react-intl';
-import styled from 'styled-components';
-import { IGraphFormat, IOption } from 'typings';
-
 import {
   Select,
   Box,
@@ -11,6 +7,9 @@ import {
   media,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { MessageDescriptor } from 'react-intl';
+import styled from 'styled-components';
+import { IGraphFormat, IOption } from 'typings';
 
 import { commentsByProjectXlsxEndpoint } from 'api/comments_by_project/util';
 import { commentsByTopicXlsxEndpoint } from 'api/comments_by_topic/util';

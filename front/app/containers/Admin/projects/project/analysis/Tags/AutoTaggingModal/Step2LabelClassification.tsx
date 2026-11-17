@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import { xor } from 'lodash-es';
-
 import {
   Box,
   Button,
@@ -10,6 +8,7 @@ import {
   Text,
   Title,
 } from '@citizenlab/cl2-component-library';
+import { xor } from 'lodash-es';
 
 import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
 

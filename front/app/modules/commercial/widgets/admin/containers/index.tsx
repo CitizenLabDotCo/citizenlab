@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 
-import styled from 'styled-components';
-
 import { Box, colors } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
 import GoBackButton from 'components/UI/GoBackButton';

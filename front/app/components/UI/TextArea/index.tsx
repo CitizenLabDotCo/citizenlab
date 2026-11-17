@@ -1,10 +1,5 @@
 import React from 'react';
 
-import { isEmpty } from 'lodash-es';
-import TextareaAutosize from 'react-textarea-autosize';
-import styled from 'styled-components';
-import { SupportedLocale } from 'typings';
-
 import {
   IconTooltip,
   Label,
@@ -12,6 +7,10 @@ import {
   defaultInputStyle,
   isRtl,
 } from '@citizenlab/cl2-component-library';
+import { isEmpty } from 'lodash-es';
+import TextareaAutosize from 'react-textarea-autosize';
+import styled from 'styled-components';
+import { SupportedLocale } from 'typings';
 
 import Error from 'components/UI/Error';
 

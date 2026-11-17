@@ -1,8 +1,7 @@
 import React from 'react';
 
-import styled from 'styled-components';
-
 import { Spinner, Box } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import useReportLayout from 'api/report_layout/useReportLayout';
 import useReport from 'api/reports/useReport';

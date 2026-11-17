@@ -1,10 +1,5 @@
 import React, { useState } from 'react';
 
-import { yupResolver } from '@hookform/resolvers/yup';
-import { FormProvider, useForm } from 'react-hook-form';
-import { Multiloc } from 'typings';
-import { object, string } from 'yup';
-
 import {
   Box,
   Button,
@@ -12,6 +7,10 @@ import {
   Select,
   Text,
 } from '@citizenlab/cl2-component-library';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { FormProvider, useForm } from 'react-hook-form';
+import { Multiloc } from 'typings';
+import { object, string } from 'yup';
 
 import useLocalize from 'hooks/useLocalize';
 

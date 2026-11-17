@@ -9,10 +9,9 @@ import Layer from '@arcgis/core/layers/Layer';
 import Map from '@arcgis/core/Map';
 import MapView from '@arcgis/core/views/MapView';
 import WebMap from '@arcgis/core/WebMap';
+import { Box, media, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
 import styled from 'styled-components';
-
-import { Box, media, useBreakpoint } from '@citizenlab/cl2-component-library';
 import '@arcgis/core/assets/esri/css/main.css';
 
 import { AppConfigurationMapSettings } from 'api/app_configuration/types';

@@ -1,7 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
-import { UseFormSetError } from 'react-hook-form';
-
 import {
   Box,
   Button,
@@ -10,6 +8,7 @@ import {
   Text,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
+import { UseFormSetError } from 'react-hook-form';
 
 import useIdeaById from 'api/ideas/useIdeaById';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';

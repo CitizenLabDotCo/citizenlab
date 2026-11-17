@@ -1,7 +1,5 @@
 import React from 'react';
 
-import styled from 'styled-components';
-
 import {
   Box,
   IconButton,
@@ -10,6 +8,7 @@ import {
   colors,
   Spinner,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
 import useAdminPublicationsByIds from 'api/admin_publications/useAdminPublicationsByIds';

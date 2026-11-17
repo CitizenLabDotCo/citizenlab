@@ -1,6 +1,5 @@
-import { Multiloc } from 'typings';
-
 import { IconNames } from '@citizenlab/cl2-component-library';
+import { Multiloc } from 'typings';
 
 import { Keys } from 'utils/cl-react-query/types';
 

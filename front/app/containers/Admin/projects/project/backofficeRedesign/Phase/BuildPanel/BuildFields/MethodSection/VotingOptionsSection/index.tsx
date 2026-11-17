@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 
-import Button from 'design-system/Button';
-import IconButton from 'design-system/IconButton';
-import Spinner from 'design-system/Spinner';
-
 import usePhase from 'api/phases/usePhase';
 import usePhases from 'api/phases/usePhases';
 
 import SummaryPill from 'containers/Admin/projects/_shared/components/SummaryPill';
 
 import FormInputEditWarningModal from 'components/admin/FormInputEditWarningModal';
+
+import Button from 'design-system/Button';
+import IconButton from 'design-system/IconButton';
+import Spinner from 'design-system/Spinner';
 
 import { useIntl } from 'utils/cl-intl';
 

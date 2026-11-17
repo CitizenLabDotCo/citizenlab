@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
 
-import { clamp } from 'lodash-es';
-import { WrappedComponentProps } from 'react-intl';
-import styled from 'styled-components';
-
 import {
   Box,
   Text,
@@ -11,6 +7,9 @@ import {
   Icon,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { clamp } from 'lodash-es';
+import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
 
 import { Bins } from 'api/reference_distribution/types';
 

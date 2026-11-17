@@ -1,14 +1,13 @@
 import React from 'react';
 
-import { rgba } from 'polished';
-import styled from 'styled-components';
-
 import {
   Icon,
   Box,
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
+import { rgba } from 'polished';
+import styled from 'styled-components';
 
 import { useIntl } from 'utils/cl-intl';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';

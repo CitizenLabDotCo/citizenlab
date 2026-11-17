@@ -1,9 +1,9 @@
 import React from 'react';
 
-import Modal from 'design-system/Modal';
-
 import { IProjectData, PublicationStatus } from 'api/projects/types';
 import useUpdateProject from 'api/projects/useUpdateProject';
+
+import Modal from 'design-system/Modal';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 

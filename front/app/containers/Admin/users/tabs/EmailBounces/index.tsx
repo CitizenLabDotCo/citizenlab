@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import styled from 'styled-components';
-
 import {
   Box,
   Divider,
@@ -12,6 +10,7 @@ import {
   Th,
   Text,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import useUsers from 'api/users/useUsers';
 

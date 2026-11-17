@@ -1,12 +1,11 @@
 import React from 'react';
 
-import { Element } from '@craftjs/core';
-
 import {
   Box,
   BoxProps,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
+import { Element } from '@craftjs/core';
 
 import { BUILDER_CONTENT_MAX_WIDTH } from 'components/admin/ContentBuilder/constants';
 

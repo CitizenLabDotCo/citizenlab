@@ -1,13 +1,12 @@
 import React from 'react';
 
-import useInstanceId from 'component-library/hooks/useInstanceId';
-
 import {
   Text,
   Label,
   IconTooltip,
   Box,
 } from '@citizenlab/cl2-component-library';
+import useInstanceId from 'component-library/hooks/useInstanceId';
 
 import Input from 'components/HookForm/Input';
 import Warning from 'components/UI/Warning';

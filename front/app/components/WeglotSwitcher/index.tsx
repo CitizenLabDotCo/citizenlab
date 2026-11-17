@@ -1,7 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import { useTheme } from 'styled-components';
-
 import {
   Box,
   Dropdown,
@@ -9,6 +7,7 @@ import {
   defaultStyles,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
+import { useTheme } from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 

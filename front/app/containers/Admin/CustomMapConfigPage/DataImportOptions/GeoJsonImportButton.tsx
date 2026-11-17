@@ -1,12 +1,8 @@
 import React, { memo, useRef, useState } from 'react';
 
+import { Tooltip } from '@citizenlab/cl2-component-library';
 import flatten from 'geojson-flatten';
 import styled from 'styled-components';
-
-import { Tooltip } from '@citizenlab/cl2-component-library';
-
-import Banner from 'design-system/Banner';
-import DSButton from 'design-system/Button';
 
 import { IMapConfig } from 'api/map_config/types';
 import useAddMapLayer from 'api/map_layers/useAddMapLayer';
@@ -15,6 +11,9 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
+
+import Banner from 'design-system/Banner';
+import DSButton from 'design-system/Button';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';

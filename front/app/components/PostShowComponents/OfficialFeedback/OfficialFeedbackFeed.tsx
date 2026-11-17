@@ -1,8 +1,5 @@
 import React from 'react';
 
-import { FormattedDate } from 'react-intl';
-import styled from 'styled-components';
-
 import {
   colors,
   fontSizes,
@@ -10,12 +7,14 @@ import {
   isRtl,
   Title,
 } from '@citizenlab/cl2-component-library';
-
-import Button from 'design-system/Button';
+import { FormattedDate } from 'react-intl';
+import styled from 'styled-components';
 
 import useIdeaOfficialFeedback from 'api/idea_official_feedback/useIdeaOfficialFeedback';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
+
+import Button from 'design-system/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
 

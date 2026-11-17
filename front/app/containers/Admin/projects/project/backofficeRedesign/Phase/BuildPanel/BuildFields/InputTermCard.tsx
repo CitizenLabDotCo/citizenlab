@@ -2,14 +2,14 @@ import React from 'react';
 
 import { Key } from 'react-aria-components';
 
-import { ListBoxOption } from 'design-system/ListBox';
-import Select from 'design-system/Select';
-
 import { InputTerm } from 'api/phases/types';
 import { INPUT_TERMS } from 'api/phases/utils';
 
 import projectMessages from 'containers/Admin/projects/project/messages';
 import { getInputTermOptions } from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/components/shared/CustomFieldPicker';
+
+import { ListBoxOption } from 'design-system/ListBox';
+import Select from 'design-system/Select';
 
 import { useIntl } from 'utils/cl-intl';
 

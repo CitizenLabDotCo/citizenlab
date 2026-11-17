@@ -3,7 +3,6 @@ import React from 'react';
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
 import HelmetIntl from 'components/HelmetIntl';
-import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -11,6 +10,7 @@ import pagesAndMenuMessages from '../../messages';
 import { ADMIN_PAGES_MENU_PATH } from '../../routes';
 
 import messages from './messages';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 type Props = {
   activeTab: 'pages' | 'menu';

@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
 
-import styled from 'styled-components';
-import { Multiloc } from 'typings';
-
 import {
   Box,
   Button,
@@ -12,6 +9,8 @@ import {
   Tooltip,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+import { Multiloc } from 'typings';
 
 import { INavbarChild } from 'api/navbar/types';
 

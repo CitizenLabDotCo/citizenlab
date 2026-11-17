@@ -2,10 +2,6 @@ import React, { ReactNode } from 'react';
 
 import { useRouter } from '@tanstack/react-router';
 
-import Banner from 'design-system/Banner';
-import Button from 'design-system/Button';
-import Menu, { MenuItem, MenuTrigger } from 'design-system/Menu';
-
 import { IPhaseData } from 'api/phases/types';
 import { PHASE_REPORT_TEMPLATE_METHODS } from 'api/reports/constants';
 import useAddReport from 'api/reports/useAddReport';
@@ -15,6 +11,10 @@ import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
 import reportTitleIsTaken from 'containers/Admin/reporting/utils/reportTitleIsTaken';
+
+import Banner from 'design-system/Banner';
+import Button from 'design-system/Button';
+import Menu, { MenuItem, MenuTrigger } from 'design-system/Menu';
 
 import { useIntl } from 'utils/cl-intl';
 import Navigate from 'utils/cl-router/Navigate';

@@ -1,13 +1,12 @@
 import React from 'react';
 
-import { isEmpty } from 'lodash-es';
-import styled from 'styled-components';
-
 import {
   Box,
   defaultCardStyle,
   media,
 } from '@citizenlab/cl2-component-library';
+import { isEmpty } from 'lodash-es';
+import styled from 'styled-components';
 
 import usePhaseFiles from 'api/phase_files/usePhaseFiles';
 import { IPhases } from 'api/phases/types';

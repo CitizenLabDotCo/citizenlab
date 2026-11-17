@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { capitalize } from 'lodash-es';
-
 import { useBreakpoint, colors } from '@citizenlab/cl2-component-library';
+import { capitalize } from 'lodash-es';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { coreSettings } from 'api/app_configuration/utils';

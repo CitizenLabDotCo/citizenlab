@@ -1,7 +1,5 @@
 import React from 'react';
 
-import styled from 'styled-components';
-
 import {
   Box,
   Text,
@@ -11,6 +9,7 @@ import {
   Quote,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import useProjectLibraryPhases from 'api/project_library_phases/useProjectLibraryPhases';
 import { ProjectLibraryProjectData } from 'api/project_library_projects/types';

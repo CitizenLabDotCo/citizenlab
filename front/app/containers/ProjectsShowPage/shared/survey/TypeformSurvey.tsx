@@ -1,10 +1,9 @@
 import React from 'react';
 
+import { useBreakpoint, colors } from '@citizenlab/cl2-component-library';
 import { omitBy, isNil } from 'lodash-es';
 import { stringify } from 'qs';
 import styled from 'styled-components';
-
-import { useBreakpoint, colors } from '@citizenlab/cl2-component-library';
 
 import useAuthUser from 'api/me/useAuthUser';
 

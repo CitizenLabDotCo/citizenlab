@@ -2,6 +2,11 @@ import React from 'react';
 
 import { CheckboxContext, Column } from 'react-aria-components';
 
+import { CommonGroundResultItem } from 'api/common_ground/types';
+import { IIdeaData } from 'api/ideas/types';
+
+import postManagerMessages from 'components/admin/PostManager/messages';
+
 import Checkbox from 'design-system/Checkbox';
 import Pagination from 'design-system/Pagination';
 import Table, {
@@ -9,11 +14,6 @@ import Table, {
   TableBody,
   TableHeader,
 } from 'design-system/Table';
-
-import { CommonGroundResultItem } from 'api/common_ground/types';
-import { IIdeaData } from 'api/ideas/types';
-
-import postManagerMessages from 'components/admin/PostManager/messages';
 
 import { useIntl } from 'utils/cl-intl';
 

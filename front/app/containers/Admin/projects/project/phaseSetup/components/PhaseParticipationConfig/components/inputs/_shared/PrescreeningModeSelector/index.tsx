@@ -1,11 +1,8 @@
 import React from 'react';
 
+import { Box, Select, Text, Toggle } from '@citizenlab/cl2-component-library';
 import { MessageDescriptor } from 'react-intl';
 import { IOption } from 'typings';
-
-import { Box, Select, Text, Toggle } from '@citizenlab/cl2-component-library';
-
-import RadioGroup, { Radio } from 'design-system/RadioGroup';
 
 import { PrescreeningMode } from 'api/phases/types';
 
@@ -13,6 +10,8 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import SettingToggleRow from 'components/admin/SettingToggleRow';
+
+import RadioGroup, { Radio } from 'design-system/RadioGroup';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 

@@ -1,14 +1,13 @@
 import React from 'react';
 
-import InfiniteScroll from 'react-infinite-scroller';
-import styled from 'styled-components';
-
 import {
   Box,
   Spinner,
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
+import InfiniteScroll from 'react-infinite-scroller';
+import styled from 'styled-components';
 
 import useNotifications from 'api/notifications/useNotifications';
 

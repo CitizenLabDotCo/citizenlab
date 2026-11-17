@@ -1,8 +1,5 @@
 import React from 'react';
 
-import { format } from 'date-fns';
-import styled from 'styled-components';
-
 import {
   Box,
   Text,
@@ -12,6 +9,8 @@ import {
   Spinner,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
+import { format } from 'date-fns';
+import styled from 'styled-components';
 
 import { IIdeaData } from 'api/ideas/types';
 import useImportedIdeaMetadata from 'api/import_ideas/useImportedIdeaMetadata';

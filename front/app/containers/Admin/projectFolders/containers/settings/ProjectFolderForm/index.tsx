@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
+import { IconTooltip, Radio, Box } from '@citizenlab/cl2-component-library';
 import { isEmpty, isEqual } from 'lodash-es';
 import { CLErrors, Multiloc, UploadFile } from 'typings';
-
-import { IconTooltip, Radio, Box } from '@citizenlab/cl2-component-library';
 
 import useAdminPublication from 'api/admin_publications/useAdminPublication';
 import useAuthUser from 'api/me/useAuthUser';

@@ -6,10 +6,6 @@ import React, {
   useState,
 } from 'react';
 
-import { media } from 'component-library/utils/styleUtils';
-import { useResizeDetector } from 'react-resize-detector';
-import styled, { useTheme } from 'styled-components';
-
 import {
   Box,
   Button,
@@ -23,6 +19,9 @@ import {
   Tr,
   useWindowSize,
 } from '@citizenlab/cl2-component-library';
+import { media } from 'component-library/utils/styleUtils';
+import { useResizeDetector } from 'react-resize-detector';
+import styled, { useTheme } from 'styled-components';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 

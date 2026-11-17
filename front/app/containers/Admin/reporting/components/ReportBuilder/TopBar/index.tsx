@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-import { useEditor, SerializedNodes } from '@craftjs/core';
-import { SupportedLocale } from 'typings';
-
 import {
   Box,
   Text,
@@ -13,6 +10,8 @@ import {
   DropdownListItem,
   Badge,
 } from '@citizenlab/cl2-component-library';
+import { useEditor, SerializedNodes } from '@craftjs/core';
+import { SupportedLocale } from 'typings';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import usePhase from 'api/phases/usePhase';

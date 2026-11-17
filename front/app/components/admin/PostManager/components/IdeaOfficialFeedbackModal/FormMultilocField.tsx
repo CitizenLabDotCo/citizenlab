@@ -4,14 +4,14 @@ import { get } from 'lodash-es';
 import { Controller, useFormContext } from 'react-hook-form';
 import { CLError, Multiloc } from 'typings';
 
-import TextArea from 'design-system/TextArea';
-
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 import LocaleSwitcher from 'components/admin/MultilocFields/LocaleSwitcher';
 import MultilocTextField from 'components/admin/MultilocFields/MultilocTextField';
 import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 import useSelectedLocale from 'components/admin/MultilocFields/useSelectedLocale';
+
+import TextArea from 'design-system/TextArea';
 
 import styles from './IdeaOfficialFeedbackModal.module.css';
 import 'design-system/tokens.css';

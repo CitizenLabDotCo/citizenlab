@@ -2,8 +2,6 @@ import React, { ReactNode, useState } from 'react';
 
 import { CLErrors } from 'typings';
 
-import Banner from 'design-system/Banner';
-
 import { IUpdatedPhaseProperties, ParticipationMethod } from 'api/phases/types';
 
 import AttachmentsCard from 'containers/Admin/projects/_shared/components/AttachmentsCard';
@@ -16,6 +14,8 @@ import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/t
 
 import MultilocTextField from 'components/admin/MultilocFields/MultilocTextField';
 import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
+
+import Banner from 'design-system/Banner';
 
 import { useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';

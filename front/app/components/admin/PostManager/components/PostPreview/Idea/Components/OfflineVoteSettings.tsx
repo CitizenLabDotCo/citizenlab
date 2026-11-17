@@ -1,7 +1,5 @@
 import React, { useMemo } from 'react';
 
-import { debounce } from 'lodash-es';
-
 import {
   Box,
   Image,
@@ -9,8 +7,7 @@ import {
   Text,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-
-import NumberField from 'design-system/NumberField';
+import { debounce } from 'lodash-es';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useIdeaById from 'api/ideas/useIdeaById';
@@ -20,6 +17,8 @@ import { VotingMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
 import useUserById from 'api/users/useUserById';
+
+import NumberField from 'design-system/NumberField';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';

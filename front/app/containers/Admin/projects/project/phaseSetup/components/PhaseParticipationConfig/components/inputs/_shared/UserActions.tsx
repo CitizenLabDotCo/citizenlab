@@ -1,10 +1,7 @@
 import React, { ReactNode } from 'react';
 
-import { CLError, CLErrors } from 'typings';
-
 import { IconTooltip, Radio } from '@citizenlab/cl2-component-library';
-
-import { fieldStyles } from 'design-system/Field';
+import { CLError, CLErrors } from 'typings';
 
 import PhaseActionAccessRow, {
   AccessOnlyAction,
@@ -13,6 +10,8 @@ import PhaseActionAccessRow, {
 import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
+
+import { fieldStyles } from 'design-system/Field';
 
 import { useIntl } from 'utils/cl-intl';
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';

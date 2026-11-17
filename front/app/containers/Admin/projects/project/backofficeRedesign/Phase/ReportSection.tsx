@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import Button from 'design-system/Button';
-
 import { IPhaseData } from 'api/phases/types';
 import useReport from 'api/reports/useReport';
 import useReportBuilderEnabled from 'api/reports/useReportBuilderEnabled';
@@ -10,6 +8,8 @@ import CreateReportModal from 'containers/Admin/projects/project/information/Rep
 import messages from 'containers/Admin/projects/project/information/ReportTab/messages';
 import topBarMessages from 'containers/Admin/reporting/components/ReportBuilder/TopBar/messages';
 import reportRowMessages from 'containers/Admin/reporting/components/ReportBuilderPage/ReportRow/messages';
+
+import Button from 'design-system/Button';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';

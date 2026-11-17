@@ -1,9 +1,5 @@
 import React, { useMemo } from 'react';
 
-import { Controller, useFormContext } from 'react-hook-form';
-import styled, { useTheme } from 'styled-components';
-import { CLError, RHFErrors } from 'typings';
-
 import {
   Box,
   Checkbox,
@@ -12,6 +8,9 @@ import {
   Image,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { Controller, useFormContext } from 'react-hook-form';
+import styled, { useTheme } from 'styled-components';
+import { CLError, RHFErrors } from 'typings';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 

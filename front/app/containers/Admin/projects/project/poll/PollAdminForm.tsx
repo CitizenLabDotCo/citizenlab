@@ -6,8 +6,6 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
-import Button from 'design-system/Button';
-
 import { IPollQuestionData } from 'api/poll_questions/types';
 import useAddPollQuestion from 'api/poll_questions/useAddPollQuestion';
 import useDeletePollQuestion from 'api/poll_questions/useDeletePollQuestion';
@@ -16,6 +14,8 @@ import useUpdatePollQuestion from 'api/poll_questions/useUpdatePollQuestion';
 
 import { List } from 'components/admin/ResourceList';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
+
+import Button from 'design-system/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';

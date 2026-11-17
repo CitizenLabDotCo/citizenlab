@@ -14,9 +14,6 @@ import Graphic from '@arcgis/core/Graphic';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import Renderer from '@arcgis/core/renderers/SimpleRenderer';
 import MapView from '@arcgis/core/views/MapView';
-import { CSSTransition } from 'react-transition-group';
-import styled, { useTheme } from 'styled-components';
-
 import {
   Box,
   colors,
@@ -24,6 +21,8 @@ import {
   useWindowSize,
   viewportWidths,
 } from '@citizenlab/cl2-component-library';
+import { CSSTransition } from 'react-transition-group';
+import styled, { useTheme } from 'styled-components';
 
 import { IIdeaMarkers } from 'api/idea_markers/types';
 import { IMapConfig } from 'api/map_config/types';

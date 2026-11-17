@@ -1,9 +1,8 @@
 import React from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 import { Multiloc } from 'typings';
-
-import { Box } from '@citizenlab/cl2-component-library';
 
 import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 

@@ -1,8 +1,7 @@
 import React, { useCallback } from 'react';
 
-import { IOption } from 'typings';
-
 import { Label, Select } from '@citizenlab/cl2-component-library';
+import { IOption } from 'typings';
 
 import { useIntl } from 'utils/cl-intl';
 

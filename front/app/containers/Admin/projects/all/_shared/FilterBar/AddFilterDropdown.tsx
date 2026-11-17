@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import styled from 'styled-components';
-
 import {
   Box,
   Button,
@@ -10,6 +8,7 @@ import {
   Tooltip,
   colors,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import { useIntl } from 'utils/cl-intl';
 

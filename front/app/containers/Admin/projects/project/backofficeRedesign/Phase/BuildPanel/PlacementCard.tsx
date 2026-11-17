@@ -1,11 +1,11 @@
 import React, { ReactNode } from 'react';
 
-import RadioGroup from 'design-system/RadioGroup';
-
 import { PhasePlacementType } from 'api/phases/types';
 
 import ChoiceRadio from 'containers/Admin/projects/_shared/components/ChoiceRadio';
 import messages from 'containers/Admin/projects/_shared/components/PhasePlacement/messages';
+
+import RadioGroup from 'design-system/RadioGroup';
 
 import { useIntl } from 'utils/cl-intl';
 

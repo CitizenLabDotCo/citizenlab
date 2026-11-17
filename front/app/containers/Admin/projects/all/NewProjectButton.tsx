@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 
-import DSButton from 'design-system/Button';
-import Menu, { MenuItem, MenuTrigger } from 'design-system/Menu';
-
 import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
 import Button from 'components/UI/ButtonWithLink';
+
+import DSButton from 'design-system/Button';
+import Menu, { MenuItem, MenuTrigger } from 'design-system/Menu';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 

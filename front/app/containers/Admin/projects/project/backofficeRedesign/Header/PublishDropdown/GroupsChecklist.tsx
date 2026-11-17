@@ -1,14 +1,14 @@
 import React from 'react';
 
-import Banner from 'design-system/Banner';
-import Checkbox from 'design-system/Checkbox';
-
 import useGroups from 'api/groups/useGroups';
 import useAddProjectGroup from 'api/project_groups/useAddProjectGroup';
 import useDeleteProjectGroup from 'api/project_groups/useDeleteProjectGroup';
 import useProjectGroups from 'api/project_groups/useProjectGroups';
 
 import useLocalize from 'hooks/useLocalize';
+
+import Banner from 'design-system/Banner';
+import Checkbox from 'design-system/Checkbox';
 
 import { useIntl } from 'utils/cl-intl';
 

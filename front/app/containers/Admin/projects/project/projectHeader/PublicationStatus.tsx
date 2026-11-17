@@ -1,7 +1,5 @@
 import React from 'react';
 
-import moment from 'moment';
-
 import {
   Box,
   Icon,
@@ -9,6 +7,7 @@ import {
   Text,
   colors,
 } from '@citizenlab/cl2-component-library';
+import moment from 'moment';
 
 import { IPhaseData } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';

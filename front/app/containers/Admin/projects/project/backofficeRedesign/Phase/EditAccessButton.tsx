@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
+import ActionForms from 'containers/Admin/projects/project/permissions/Phase/ActionForms';
+
 import Button from 'design-system/Button';
 import Modal from 'design-system/Modal';
-
-import ActionForms from 'containers/Admin/projects/project/permissions/Phase/ActionForms';
 
 import { useIntl } from 'utils/cl-intl';
 

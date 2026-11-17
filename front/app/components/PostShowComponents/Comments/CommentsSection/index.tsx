@@ -1,9 +1,8 @@
 import React, { useState, MouseEvent } from 'react';
 
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import styled, { css } from 'styled-components';
 import { ITab } from 'typings';
-
-import { Box, colors } from '@citizenlab/cl2-component-library';
 
 import useIdeaById from 'api/ideas/useIdeaById';
 

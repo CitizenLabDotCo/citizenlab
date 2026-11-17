@@ -1,8 +1,5 @@
 import React, { useMemo } from 'react';
 
-import { useNode, useEditor } from '@craftjs/core';
-import styled from 'styled-components';
-
 import {
   Box,
   colors,
@@ -13,6 +10,8 @@ import {
   Spinner,
   Text,
 } from '@citizenlab/cl2-component-library';
+import { useNode, useEditor } from '@craftjs/core';
+import styled from 'styled-components';
 
 import useCustomPageById from 'api/custom_pages/useCustomPageById';
 import useCustomPages from 'api/custom_pages/useCustomPages';

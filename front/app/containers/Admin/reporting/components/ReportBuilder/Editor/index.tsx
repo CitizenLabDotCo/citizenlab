@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { Editor as CraftEditor } from '@craftjs/core';
-
 import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Editor as CraftEditor } from '@craftjs/core';
 
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
 

@@ -1,10 +1,9 @@
 import React, { PureComponent, ReactNode } from 'react';
 
+import { colors } from '@citizenlab/cl2-component-library';
 import { focusRing } from 'global-styles';
 import { Range, getTrackBackground } from 'react-range';
 import styled from 'styled-components';
-
-import { colors } from '@citizenlab/cl2-component-library';
 
 const Container = styled.div`
   display: flex;

@@ -1,8 +1,7 @@
 import React from 'react';
 
-import Text from 'component-library/components/Text';
-
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
+import Text from 'component-library/components/Text';
 
 import useCommonGroundResults from 'api/common_ground/useCommonGroundResults';
 

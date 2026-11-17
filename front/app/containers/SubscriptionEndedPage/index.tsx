@@ -1,8 +1,7 @@
 import React from 'react';
 
-import styled from 'styled-components';
-
 import { media, colors, fontSizes } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import ContentContainer from 'components/ContentContainer';
 

@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
 import ReactSelect from 'react-select';
 import { useTheme } from 'styled-components';
-
-import { Box } from '@citizenlab/cl2-component-library';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
 import useAdminPublications from 'api/admin_publications/useAdminPublications';

@@ -1,6 +1,5 @@
-import styled from 'styled-components';
-
 import { isRtl, media } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import Avatar from 'components/Avatar';
 

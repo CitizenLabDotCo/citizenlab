@@ -1,8 +1,5 @@
 import React from 'react';
 
-import { lighten } from 'polished';
-import styled from 'styled-components';
-
 import {
   colors,
   fontSizes,
@@ -10,6 +7,8 @@ import {
   Icon,
   IconButton,
 } from '@citizenlab/cl2-component-library';
+import { lighten } from 'polished';
+import styled from 'styled-components';
 
 import { IFileAttachmentData } from 'api/file_attachments/types';
 import useFileById from 'api/files/useFileById';

@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
 
-import Button from 'design-system/Button';
-import Modal from 'design-system/Modal';
-
 import usePollQuestions from 'api/poll_questions/usePollQuestions';
 
 import ChoiceRadio from 'containers/Admin/projects/_shared/components/ChoiceRadio';
@@ -10,6 +7,9 @@ import SummaryPill from 'containers/Admin/projects/_shared/components/SummaryPil
 import PollAdminForm from 'containers/Admin/projects/project/poll/PollAdminForm';
 
 import actionFormMessages from 'components/admin/ActionForm/messages';
+
+import Button from 'design-system/Button';
+import Modal from 'design-system/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 

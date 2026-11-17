@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
+import { Box, Label } from '@citizenlab/cl2-component-library';
 import { Controller, useFormContext } from 'react-hook-form';
 import { UploadFile } from 'typings';
-
-import { Box, Label } from '@citizenlab/cl2-component-library';
 
 import useDeleteIdeaImage from 'api/idea_images/useDeleteIdeaImage';
 import useIdeaImages from 'api/idea_images/useIdeaImages';

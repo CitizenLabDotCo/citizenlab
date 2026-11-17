@@ -1,10 +1,9 @@
 import React, { FormEvent, useEffect, useState, useRef } from 'react';
 
+import { Button } from '@citizenlab/cl2-component-library';
 import { filter } from 'rxjs/operators';
 import styled, { useTheme } from 'styled-components';
 import { CLErrors } from 'typings';
-
-import { Button } from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IUpdatedComment } from 'api/comments/types';

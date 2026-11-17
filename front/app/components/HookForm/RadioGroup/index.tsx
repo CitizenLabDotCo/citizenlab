@@ -1,10 +1,9 @@
 import React from 'react';
 
+import { Box, BoxProps } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 import { useFormContext } from 'react-hook-form';
 import { CLError, RHFErrors } from 'typings';
-
-import { Box, BoxProps } from '@citizenlab/cl2-component-library';
 
 import Error, { TFieldName } from 'components/UI/Error';
 

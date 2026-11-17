@@ -1,7 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import styled from 'styled-components';
-
 import {
   Box,
   Icon,
@@ -9,6 +7,7 @@ import {
   Text,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import CloseIconButton from 'components/UI/CloseIconButton';
 

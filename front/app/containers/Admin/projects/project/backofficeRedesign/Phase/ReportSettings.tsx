@@ -1,9 +1,5 @@
 import React from 'react';
 
-import Button from 'design-system/Button';
-import Disclosure from 'design-system/Disclosure';
-import Switch from 'design-system/Switch';
-
 import { IPhaseData } from 'api/phases/types';
 import useReport from 'api/reports/useReport';
 import useReportBuilderEnabled from 'api/reports/useReportBuilderEnabled';
@@ -12,6 +8,10 @@ import useUpdateReport from 'api/reports/useUpdateReport';
 import SummaryPill from 'containers/Admin/projects/_shared/components/SummaryPill';
 import visibilityWarning from 'containers/Admin/projects/project/information/ReportTab/visibilityWarning';
 import useConfirmDeleteReport from 'containers/Admin/reporting/components/ReportBuilderPage/ReportRow/useConfirmDeleteReport';
+
+import Button from 'design-system/Button';
+import Disclosure from 'design-system/Disclosure';
+import Switch from 'design-system/Switch';
 
 import { useIntl } from 'utils/cl-intl';
 

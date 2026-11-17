@@ -1,10 +1,9 @@
 import React, { memo } from 'react';
 
+import { Select } from '@citizenlab/cl2-component-library';
 import { keys } from 'lodash-es';
 import { MessageDescriptor, WrappedComponentProps } from 'react-intl';
 import { IOption } from 'typings';
-
-import { Select } from '@citizenlab/cl2-component-library';
 
 import {
   IUserCustomFieldData,

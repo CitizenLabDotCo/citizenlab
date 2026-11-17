@@ -1,9 +1,8 @@
 import React from 'react';
 
+import { Spinner, fontSizes } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
 import { Multiloc } from 'typings';
-
-import { Spinner, fontSizes } from '@citizenlab/cl2-component-library';
 
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
 

@@ -2,11 +2,11 @@ import React from 'react';
 
 import { Selection } from 'react-aria-components';
 
-import Menu, { MenuItem } from 'design-system/Menu';
-
 import useAreas from 'api/areas/useAreas';
 
 import useLocalize from 'hooks/useLocalize';
+
+import Menu, { MenuItem } from 'design-system/Menu';
 
 interface Props {
   'aria-label': string;

@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { object, string, boolean } from 'yup';
-
-import { Box } from '@citizenlab/cl2-component-library';
 
 import { confirmCodeNewPhone } from 'api/authentication/confirm_phone/confirmPhoneConfirmationCode';
 import { requestCodeNewPhone } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode';

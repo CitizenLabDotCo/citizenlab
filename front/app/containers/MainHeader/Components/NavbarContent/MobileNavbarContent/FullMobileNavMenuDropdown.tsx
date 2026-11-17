@@ -1,8 +1,7 @@
 import React, { ReactNode, useState } from 'react';
 
-import styled from 'styled-components';
-
 import { Icon, colors, fontSizes } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 const Wrapper = styled.li`
   list-style: none;

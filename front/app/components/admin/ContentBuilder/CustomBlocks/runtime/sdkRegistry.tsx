@@ -1,6 +1,15 @@
 import * as React from 'react';
 
 // eslint-disable-next-line no-restricted-imports
+import {
+  Box,
+  Text,
+  Title,
+  Button,
+  Icon,
+  Spinner,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import { icons } from 'component-library/components/Icon';
 import * as jsxRuntime from 'react/jsx-runtime';
 import {
@@ -22,16 +31,6 @@ import {
   LabelList,
 } from 'recharts';
 import { useTheme } from 'styled-components';
-
-import {
-  Box,
-  Text,
-  Title,
-  Button,
-  Icon,
-  Spinner,
-  colors,
-} from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';

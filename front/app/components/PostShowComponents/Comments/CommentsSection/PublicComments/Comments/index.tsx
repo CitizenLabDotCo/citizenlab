@@ -1,8 +1,7 @@
 import React, { memo, useEffect, useMemo, useState } from 'react';
 
-import styled from 'styled-components';
-
 import { Spinner } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import { ICommentData } from 'api/comments/types';
 

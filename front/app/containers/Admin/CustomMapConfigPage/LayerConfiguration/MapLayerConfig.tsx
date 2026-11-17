@@ -1,22 +1,15 @@
 import React, { memo, useEffect, useState } from 'react';
 
-import { isEmpty, cloneDeep, forOwn } from 'lodash-es';
-import { WrappedComponentProps } from 'react-intl';
-import styled from 'styled-components';
-import { Multiloc } from 'typings';
-
 import {
   ColorPickerInput,
   IOption,
   Select,
   colors,
 } from '@citizenlab/cl2-component-library';
-
-import Banner from 'design-system/Banner';
-import Button from 'design-system/Button';
-import Link from 'design-system/Link';
-import { ListBoxOption } from 'design-system/ListBox';
-import DSSelect from 'design-system/Select';
+import { isEmpty, cloneDeep, forOwn } from 'lodash-es';
+import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
+import { Multiloc } from 'typings';
 
 import { IMapConfig } from 'api/map_config/types';
 import { IMapLayerAttributes } from 'api/map_layers/types';
@@ -33,6 +26,12 @@ import {
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+
+import Banner from 'design-system/Banner';
+import Button from 'design-system/Button';
+import Link from 'design-system/Link';
+import { ListBoxOption } from 'design-system/ListBox';
+import DSSelect from 'design-system/Select';
 
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';

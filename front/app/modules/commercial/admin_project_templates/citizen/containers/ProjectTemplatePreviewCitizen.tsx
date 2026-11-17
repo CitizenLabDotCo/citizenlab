@@ -1,15 +1,14 @@
 import React, { memo } from 'react';
 
-import { get } from 'lodash-es';
-import { darken } from 'polished';
-import styled from 'styled-components';
-
 import {
   Icon,
   colors,
   media,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
+import { get } from 'lodash-es';
+import { darken } from 'polished';
+import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 

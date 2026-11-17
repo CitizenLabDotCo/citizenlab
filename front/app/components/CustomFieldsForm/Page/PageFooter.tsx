@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { Multiloc } from 'typings';
-
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Multiloc } from 'typings';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 import { IPhaseData, IPhases } from 'api/phases/types';

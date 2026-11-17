@@ -1,6 +1,5 @@
-import styled from 'styled-components';
-
 import { colors, media } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 

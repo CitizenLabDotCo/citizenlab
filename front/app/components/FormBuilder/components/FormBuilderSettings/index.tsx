@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import { useFormContext } from 'react-hook-form';
-
 import {
   Box,
   Title,
@@ -9,6 +7,7 @@ import {
   stylingConsts,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { useFormContext } from 'react-hook-form';
 
 import {
   ICustomFieldSettingsTab,

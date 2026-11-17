@@ -1,10 +1,9 @@
 import React from 'react';
 
+import { Box, media, Text } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
-
-import { Box, media, Text } from '@citizenlab/cl2-component-library';
 
 import {
   BUILDER_CONTENT_MAX_WIDTH,

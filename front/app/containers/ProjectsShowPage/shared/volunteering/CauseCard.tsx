@@ -1,7 +1,5 @@
 import React, { useCallback } from 'react';
 
-import styled, { useTheme } from 'styled-components';
-
 import {
   Icon,
   useWindowSize,
@@ -14,6 +12,7 @@ import {
   Tooltip,
   Title,
 } from '@citizenlab/cl2-component-library';
+import styled, { useTheme } from 'styled-components';
 
 import { AuthenticationContext } from 'api/authentication/authentication_requirements/types';
 import { ICauseData } from 'api/causes/types';

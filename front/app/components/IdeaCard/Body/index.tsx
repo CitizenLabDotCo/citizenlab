@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { transparentize } from 'polished';
-
 import { colors } from '@citizenlab/cl2-component-library';
+import { transparentize } from 'polished';
 
 import { IIdea } from 'api/ideas/types';
 

@@ -1,7 +1,5 @@
 import React, { useCallback } from 'react';
 
-import styled from 'styled-components';
-
 import {
   media,
   defaultCardStyle,
@@ -11,6 +9,7 @@ import {
   Text,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import useCustomFields from 'api/custom_fields/useCustomFields';
 import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';

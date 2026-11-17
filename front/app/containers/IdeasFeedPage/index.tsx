@@ -1,8 +1,7 @@
 import React from 'react';
 
-import styled from 'styled-components';
-
 import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import usePhase from 'api/phases/usePhase';
 import useProjectBySlug from 'api/projects/useProjectBySlug';

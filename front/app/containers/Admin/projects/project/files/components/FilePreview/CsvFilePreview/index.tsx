@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-import Papa from 'papaparse';
-import styled from 'styled-components';
-
 import {
   Table,
   Thead,
@@ -14,6 +11,8 @@ import {
   Text,
   Box,
 } from '@citizenlab/cl2-component-library';
+import Papa from 'papaparse';
+import styled from 'styled-components';
 
 import { IFileData } from 'api/files/types';
 

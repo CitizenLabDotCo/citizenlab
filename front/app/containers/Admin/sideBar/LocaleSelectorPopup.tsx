@@ -1,8 +1,5 @@
 import React from 'react';
 
-import { rgba } from 'polished';
-import { SupportedLocale } from 'typings';
-
 import {
   Box,
   Dropdown,
@@ -10,6 +7,8 @@ import {
   useBreakpoint,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { rgba } from 'polished';
+import { SupportedLocale } from 'typings';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 

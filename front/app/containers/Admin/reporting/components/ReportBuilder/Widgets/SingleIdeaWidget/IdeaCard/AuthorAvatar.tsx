@@ -1,14 +1,13 @@
 import React from 'react';
 
-import { transparentize } from 'polished';
-import styled from 'styled-components';
-
 import {
   colors,
   isRtl,
   fontSizes,
   Box,
 } from '@citizenlab/cl2-component-library';
+import { transparentize } from 'polished';
+import styled from 'styled-components';
 
 import { IIdeaData } from 'api/ideas/types';
 

@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 
-import moment from 'moment';
-import Transition from 'react-transition-group/Transition';
-import { SupportedLocale } from 'typings';
-
 import {
   Box,
   Spinner,
   stylingConsts,
   Button,
 } from '@citizenlab/cl2-component-library';
+import moment from 'moment';
+import Transition from 'react-transition-group/Transition';
+import { SupportedLocale } from 'typings';
 
 import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
 import useAuthUser from 'api/me/useAuthUser';

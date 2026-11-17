@@ -1,9 +1,8 @@
 import React from 'react';
 
+import { Box, Title } from '@citizenlab/cl2-component-library';
 import { UserComponent, useNode } from '@craftjs/core';
 import { Multiloc } from 'typings';
-
-import { Box, Title } from '@citizenlab/cl2-component-library';
 
 import useProjectById from 'api/projects/useProjectById';
 

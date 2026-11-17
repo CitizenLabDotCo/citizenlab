@@ -1,13 +1,12 @@
 import React, { useEffect } from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
 import { useQueryClient } from '@tanstack/react-query';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import styled from 'styled-components';
 import { SupportedLocale } from 'typings';
-
-import { Box } from '@citizenlab/cl2-component-library';
 
 import fileAttachmentsKeys from 'api/file_attachments/keys';
 

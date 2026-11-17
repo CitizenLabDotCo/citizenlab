@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
+import { Box, colors, IconTooltip } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import { Multiloc, UploadFile, CLErrors } from 'typings';
-
-import { Box, colors, IconTooltip } from '@citizenlab/cl2-component-library';
 
 import useProjectImages, {
   CARD_IMAGE_ASPECT_RATIO_HEIGHT,

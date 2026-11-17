@@ -1,8 +1,7 @@
 import React from 'react';
 
-import Badge from 'component-library/components/Badge';
-
 import { Box, colors, Icon, Tooltip } from '@citizenlab/cl2-component-library';
+import Badge from 'component-library/components/Badge';
 
 import { EarlyAccessTier } from 'api/users/types';
 

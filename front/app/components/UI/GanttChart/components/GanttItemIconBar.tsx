@@ -1,8 +1,7 @@
 import React from 'react';
 
-import Icon, { IconNames } from 'component-library/components/Icon';
-
 import { Box } from '@citizenlab/cl2-component-library';
+import Icon, { IconNames } from 'component-library/components/Icon';
 
 interface GanttItemIconBarProps {
   color?: string;

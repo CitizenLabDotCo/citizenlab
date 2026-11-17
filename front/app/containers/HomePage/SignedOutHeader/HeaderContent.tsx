@@ -1,9 +1,8 @@
 import React from 'react';
 
+import { useBreakpoint, media } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
-
-import { useBreakpoint, media } from '@citizenlab/cl2-component-library';
 
 import useLocalize from 'hooks/useLocalize';
 

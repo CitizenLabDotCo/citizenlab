@@ -2,8 +2,6 @@ import React, { useRef, useState } from 'react';
 
 import { CLErrors } from 'typings';
 
-import Button from 'design-system/Button';
-
 import {
   IUpdatedPhaseProperties,
   ParticipationMethod,
@@ -27,6 +25,8 @@ import {
   usePageSave,
   useRegisterPageSaver,
 } from 'components/admin/PageSaveContext';
+
+import Button from 'design-system/Button';
 
 import { useIntl } from 'utils/cl-intl';
 import Navigate from 'utils/cl-router/Navigate';

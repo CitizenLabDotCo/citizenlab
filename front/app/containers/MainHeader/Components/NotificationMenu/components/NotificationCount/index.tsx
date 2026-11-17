@@ -1,14 +1,13 @@
 import React from 'react';
 
-import { darken } from 'polished';
-import styled, { useTheme } from 'styled-components';
-
 import {
   IconButton,
   Box,
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
+import { darken } from 'polished';
+import styled, { useTheme } from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 

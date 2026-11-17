@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import { Controller, useFormContext } from 'react-hook-form';
-
 import {
   Box,
   IOption,
@@ -10,6 +8,7 @@ import {
   Icon,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { Controller, useFormContext } from 'react-hook-form';
 
 import {
   IFlatCustomField,

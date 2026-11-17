@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import { CLErrors } from 'typings';
-
 import {
   Title,
   Box,
@@ -11,6 +9,7 @@ import {
   colors,
   Icon,
 } from '@citizenlab/cl2-component-library';
+import { CLErrors } from 'typings';
 
 import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
 import usePhase from 'api/phases/usePhase';

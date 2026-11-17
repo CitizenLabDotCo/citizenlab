@@ -1,6 +1,5 @@
-import styled, { css } from 'styled-components';
-
 import { fontSizes, media, Title } from '@citizenlab/cl2-component-library';
+import styled, { css } from 'styled-components';
 
 export type TAlign = 'center' | 'left';
 export const getAlignItems = (align: TAlign) => {

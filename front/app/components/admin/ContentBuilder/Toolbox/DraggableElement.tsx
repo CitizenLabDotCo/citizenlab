@@ -1,8 +1,5 @@
 import React, { forwardRef } from 'react';
 
-import { useEditor } from '@craftjs/core';
-import styled from 'styled-components';
-
 import {
   Box,
   Icon,
@@ -10,6 +7,8 @@ import {
   Text,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { useEditor } from '@craftjs/core';
+import styled from 'styled-components';
 
 import UpsellTooltip from 'components/UpsellTooltip';
 

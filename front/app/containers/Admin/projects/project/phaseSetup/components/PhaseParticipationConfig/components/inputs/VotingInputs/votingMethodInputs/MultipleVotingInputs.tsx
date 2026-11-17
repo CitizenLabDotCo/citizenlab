@@ -1,13 +1,12 @@
 import React from 'react';
 
-import { CLErrors, IOption } from 'typings';
-
 import {
   Input,
   Box,
   IconTooltip,
   Select,
 } from '@citizenlab/cl2-component-library';
+import { CLErrors, IOption } from 'typings';
 
 import { VoteTerm } from 'api/phases/types';
 

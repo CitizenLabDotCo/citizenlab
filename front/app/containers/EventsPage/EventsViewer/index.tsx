@@ -1,10 +1,9 @@
 import React from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 import { MessageDescriptor } from 'react-intl';
 import styled from 'styled-components';
-
-import { Box } from '@citizenlab/cl2-component-library';
 
 import useEvents from 'api/events/useEvents';
 import { PublicationStatus } from 'api/projects/types';
