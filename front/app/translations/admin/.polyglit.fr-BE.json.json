@@ -12929,6 +12929,16 @@
     "verified_at": "2026-11-16T23:52:46.220336Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects.project.switchLosesAccessSettings": {
+    "state": "verified",
+    "verified_at": "2026-11-17T09:35:59.130424Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.switchSurveyMethodIntro": {
+    "state": "verified",
+    "verified_at": "2026-11-17T09:35:59.130424Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.switchSurveyMethodTitle": {
     "state": "verified",
     "verified_at": "2026-10-28T15:08:10.393830Z",
