@@ -112,6 +112,14 @@ describe('Survey reuse feedback', () => {
   });
 
   it('requires clearing configured questions before reuse and can undo the deletion', () => {
+    // The form builder links back without the redesign url parameter, so the
+    // flag itself must be on for the round trips to land on the setup page.
+    cy.intercept('GET', '**/web_api/v1/app_configuration**', (request) => {
+      request.continue((response) => {
+        response.body.data.attributes.settings.project_backoffice_redesign.enabled =
+          true;
+      });
+    });
     visitSetup();
     cy.contains('button', 'Edit survey').click();
     cy.contains('Edit form').click();
