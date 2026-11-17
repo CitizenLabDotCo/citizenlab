@@ -1164,6 +1164,11 @@
     "verified_at": "2026-11-17T14:03:56.796846Z",
     "verified_by": "Adrien"
   },
+  "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.description": {
+    "state": "verified",
+    "verified_at": "2026-11-17T16:12:04.674245Z",
+    "verified_by": "Adrien"
+  },
   "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.filterByAreas": {
     "state": "verified",
     "verified_at": "2026-11-17T15:46:57.486799Z",
@@ -1177,6 +1182,11 @@
   "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.filterBySpaces": {
     "state": "verified",
     "verified_at": "2026-11-17T15:46:57.486799Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.filterByTags": {
+    "state": "verified",
+    "verified_at": "2026-11-17T16:12:04.674245Z",
     "verified_by": "Adrien"
   },
   "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.selectionLabel": {
