@@ -5,9 +5,9 @@ import { Radio as AriaRadio } from 'react-aria-components';
 import { useRegisterReasonKey } from '../disabledReason/reasonKeys';
 import ReasonTooltip from '../disabledReason/ReasonTooltip';
 import useAriaDisabledInput from '../disabledReason/useAriaDisabledInput';
-import '../tokens.css';
 
 import styles from './RadioGroup.module.css';
+import '../tokens.css';
 
 type RadioProps = {
   value: string;

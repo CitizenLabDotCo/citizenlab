@@ -7,12 +7,12 @@ import { useCanEditProjectContext } from 'containers/Admin/projects/_shared/comp
 import SettingsSection from 'containers/Admin/projects/project/backofficeRedesign/_shared/components/SettingsModal/SettingsSection';
 
 import Banner from 'design-system/Banner';
-import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 
 import styles from './ContextSection.module.css';
 import messages from './messages';
+import 'design-system/tokens.css';
 
 interface Props {
   spaceId: string | null;

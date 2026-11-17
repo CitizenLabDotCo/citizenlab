@@ -12,12 +12,12 @@ import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import SettingToggleRow from 'components/admin/SettingToggleRow';
 
 import RadioGroup, { Radio } from 'design-system/RadioGroup';
-import 'design-system/tokens.css';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 import styles from './PrescreeningModeSelector.module.css';
+import 'design-system/tokens.css';
 
 const isPrescreeningMode = (value: string): value is PrescreeningMode =>
   value === 'flagged_only' || value === 'all';

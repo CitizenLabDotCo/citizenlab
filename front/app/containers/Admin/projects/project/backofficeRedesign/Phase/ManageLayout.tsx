@@ -1,8 +1,7 @@
 import React, { ReactNode } from 'react';
 
-import 'design-system/tokens.css';
-
 import styles from './ManageLayout.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   side: ReactNode;

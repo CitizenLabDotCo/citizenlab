@@ -10,9 +10,6 @@ import { IInputTopicData } from 'api/input_topics/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import DSModal from 'design-system/Modal';
-import 'design-system/tokens.css';
-
 import FormMultilocRichTextField from 'components/admin/MultilocFields/FormMultilocRichTextField';
 import FormMultilocTextField from 'components/admin/MultilocFields/FormMultilocTextField';
 import { SectionField } from 'components/admin/Section';
@@ -25,6 +22,8 @@ import Modal, {
   ButtonsWrapper,
 } from 'components/UI/Modal';
 
+import DSModal from 'design-system/Modal';
+
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
@@ -32,6 +31,7 @@ import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLo
 import styles from './InputTopicModal.module.css';
 import messages from './messages';
 import TopicEmojiField from './TopicEmojiField';
+import 'design-system/tokens.css';
 
 interface FormValues {
   title_multiloc: Multiloc;

@@ -8,9 +8,9 @@ import {
   useGuardedValue,
   useReasonKeys,
 } from '../disabledReason/reasonKeys';
-import '../tokens.css';
 
 import styles from './ListBox.module.css';
+import '../tokens.css';
 
 export { default as ListBoxOption } from './ListBoxOption';
 export { default as ListBoxPopover } from './ListBoxPopover';

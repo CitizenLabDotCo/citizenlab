@@ -2,10 +2,10 @@ import React, { ReactNode } from 'react';
 
 import { Dialog, Popover as AriaPopover } from 'react-aria-components';
 
-import '../tokens.css';
 import surfaces from '../surfaces.module.css';
 
 import styles from './Popover.module.css';
+import '../tokens.css';
 
 export { DialogTrigger } from 'react-aria-components';
 

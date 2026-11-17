@@ -6,11 +6,11 @@ import SegmentedTabs, {
   SegmentedTab,
   SegmentedTabList,
 } from 'design-system/SegmentedTabs';
-import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
+import 'design-system/tokens.css';
 
 export type EventView = 'build' | 'manage';
 

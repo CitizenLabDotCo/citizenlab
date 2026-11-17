@@ -21,7 +21,6 @@ import Error from 'components/UI/Error';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 import { fieldStyles } from 'design-system/Field';
-import 'design-system/tokens.css';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
@@ -30,6 +29,7 @@ import parentMessages from '../../../../messages';
 import configMessages from '../../messages';
 
 import styles from './NativeSurveyInputs.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   surveyPlacement?: ReactNode;

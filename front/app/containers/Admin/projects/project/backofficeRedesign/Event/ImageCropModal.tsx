@@ -1,14 +1,15 @@
 import React from 'react';
 
-import Modal from 'design-system/Modal';
-import 'design-system/tokens.css';
 import { UploadFile } from 'typings';
 
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 
+import Modal from 'design-system/Modal';
+
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
+import 'design-system/tokens.css';
 
 interface Props {
   opened: boolean;

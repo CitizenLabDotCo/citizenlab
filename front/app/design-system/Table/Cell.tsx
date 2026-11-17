@@ -2,9 +2,8 @@ import React, { ReactNode } from 'react';
 
 import { Cell as AriaCell } from 'react-aria-components';
 
-import '../tokens.css';
-
 import styles from './Cell.module.css';
+import '../tokens.css';
 
 type CellProps = {
   children?: ReactNode;

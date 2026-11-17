@@ -8,9 +8,9 @@ import {
   useReasonKeys,
 } from '../disabledReason/reasonKeys';
 import { FieldLabel, fieldStyles } from '../Field';
-import '../tokens.css';
 
 import styles from './RadioGroup.module.css';
+import '../tokens.css';
 
 type LabelProps =
   | { label: ReactNode; 'aria-label'?: undefined }

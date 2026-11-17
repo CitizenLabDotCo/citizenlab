@@ -6,10 +6,10 @@ import {
 } from 'react-aria-components';
 
 import { FieldHelp, FieldLabel, fieldStyles } from '../Field';
-import '../tokens.css';
 import inputStyles from '../TextField/input.module.css';
 
 import styles from './TextArea.module.css';
+import '../tokens.css';
 
 type TextAreaProps = {
   label: ReactNode;

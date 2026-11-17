@@ -6,12 +6,12 @@ import SettingsSection from 'containers/Admin/projects/project/backofficeRedesig
 import dataMessages from 'containers/Admin/projects/project/data/messages';
 
 import Button from 'design-system/Button';
-import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 import TypedConfirmationModal from './TypedConfirmationModal';
+import 'design-system/tokens.css';
 
 interface Props {
   projectId: string;

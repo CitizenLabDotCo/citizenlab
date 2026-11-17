@@ -1,8 +1,7 @@
 import React, { ReactNode } from 'react';
 
-import 'design-system/tokens.css';
-
 import styles from './SideColumn.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   fillHeight?: boolean;

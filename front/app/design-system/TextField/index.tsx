@@ -3,9 +3,9 @@ import React, { ReactNode, RefCallback } from 'react';
 import { Input, TextField as AriaTextField } from 'react-aria-components';
 
 import { FieldHelp, FieldLabel, fieldStyles } from '../Field';
-import '../tokens.css';
 
 import inputStyles from './input.module.css';
+import '../tokens.css';
 
 type LabelProps =
   | { label: ReactNode; 'aria-label'?: undefined }

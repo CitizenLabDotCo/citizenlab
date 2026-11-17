@@ -9,7 +9,6 @@ import Disclosure from 'design-system/Disclosure';
 import Icon from 'design-system/Icon';
 import ReviewStatus from 'design-system/ReviewStatus';
 import Tooltip from 'design-system/Tooltip';
-import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -17,6 +16,7 @@ import reviewMessages from './messages';
 import styles from './SetupCard.module.css';
 import SetupCardButton, { CardButton } from './SetupCardButton';
 import { useSetupReview } from './SetupReview';
+import 'design-system/tokens.css';
 
 interface Props {
   title: string;

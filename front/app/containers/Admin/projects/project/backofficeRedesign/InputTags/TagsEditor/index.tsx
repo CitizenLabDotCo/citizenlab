@@ -20,7 +20,6 @@ import Button from 'design-system/Button';
 import Icon from 'design-system/Icon';
 import SearchField from 'design-system/SearchField';
 import TextField from 'design-system/TextField';
-import 'design-system/tokens.css';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
@@ -33,6 +32,7 @@ import styles from './TagsSection.module.css';
 import useSortableTags from './useSortableTags';
 import { TagsDraft } from './useTagsDraft';
 import { getSiblings } from './utils';
+import 'design-system/tokens.css';
 
 const TOPICS_SETTINGS_PATH = '/admin/settings/topics/input';
 

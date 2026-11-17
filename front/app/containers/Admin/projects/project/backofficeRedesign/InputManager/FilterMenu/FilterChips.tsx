@@ -2,7 +2,6 @@ import React from 'react';
 
 import FilterBar, { FilterChip } from 'design-system/FilterBar';
 import Menu, { MenuItem, SubmenuTrigger } from 'design-system/Menu';
-import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -10,6 +9,7 @@ import messages from '../messages';
 import OptionList from '../OptionList';
 
 import { FilterCategory } from './useFilterCategories';
+import 'design-system/tokens.css';
 
 interface Props {
   categories: FilterCategory[];

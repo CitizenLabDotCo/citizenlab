@@ -3,9 +3,9 @@ import React, { ReactNode } from 'react';
 import { Key, Tab as AriaTab } from 'react-aria-components';
 
 import Icon, { IconName } from '../Icon';
-import '../tokens.css';
 
 import styles from './VerticalTabs.module.css';
+import '../tokens.css';
 
 type Props = {
   id: Key;

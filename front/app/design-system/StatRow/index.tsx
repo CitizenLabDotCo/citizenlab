@@ -3,9 +3,9 @@ import React, { ReactNode } from 'react';
 import { Button as AriaButton, PressEvent } from 'react-aria-components';
 
 import Icon from '../Icon';
-import '../tokens.css';
 
 import styles from './StatRow.module.css';
+import '../tokens.css';
 
 // A pressable row is a toggle that filters the list: isPressed sets aria-pressed
 // and draws it as a picked row.

@@ -3,9 +3,9 @@ import React from 'react';
 import { Button, PressEvent, ToggleButton } from 'react-aria-components';
 
 import Icon, { IconName } from '../Icon';
-import '../tokens.css';
 
 import styles from './RichTextToolbar.module.css';
+import '../tokens.css';
 
 type ContentProps =
   | { icon: IconName; text?: undefined; 'aria-label': string }

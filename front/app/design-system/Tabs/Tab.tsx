@@ -2,9 +2,8 @@ import React, { ReactNode } from 'react';
 
 import { Key, SelectionIndicator, Tab as AriaTab } from 'react-aria-components';
 
-import '../tokens.css';
-
 import styles from './Tabs.module.css';
+import '../tokens.css';
 
 type Props = {
   id: Key;

@@ -1,17 +1,17 @@
 import React from 'react';
 
-import Spinner from 'design-system/Spinner';
-import 'design-system/tokens.css';
-
 import { IPhaseData } from 'api/phases/types';
 
 import usePhaseEmailCampaigns from 'containers/Admin/projects/project/admin_phase_email_wrapper/usePhaseEmailCampaigns';
+
+import Spinner from 'design-system/Spinner';
 
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 import NotificationRow from './NotificationRow';
 import styles from './PhaseNotifications.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   phase: IPhaseData;

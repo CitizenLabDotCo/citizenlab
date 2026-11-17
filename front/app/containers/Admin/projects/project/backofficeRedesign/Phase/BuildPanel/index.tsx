@@ -20,14 +20,13 @@ import { validateDates } from 'containers/Admin/projects/project/phaseSetup/vali
 import { useRegisterPageSaver } from 'components/admin/PageSaveContext';
 import { usePhasePreviewPublisher } from 'components/admin/PhasePreview/DraftContext';
 
-import 'design-system/tokens.css';
-
 import { useIntl } from 'utils/cl-intl';
 
-import styles from './BuildPanel.module.css';
 import BuildFields from './BuildFields';
+import styles from './BuildPanel.module.css';
 import SwitchSurveyMethodModal from './SwitchSurveyMethodModal';
 import useSurveyMethodLocks from './useSurveyMethodLocks';
+import 'design-system/tokens.css';
 
 interface Props {
   projectId: string;

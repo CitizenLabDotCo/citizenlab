@@ -16,8 +16,8 @@ import Modal from 'design-system/Modal';
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
-import styles from './InputImporterModal.module.css';
 import ImporterRow from './ImporterRow';
+import styles from './InputImporterModal.module.css';
 import messages from './messages';
 
 interface Props {

@@ -14,11 +14,11 @@ import Error from 'components/UI/Error';
 
 import DSSpinner from 'design-system/Spinner';
 
-import PanelFileAttachmentDisplay from './PanelFileAttachmentDisplay';
-import panelStyles from './PanelFileAttachmentDisplay.module.css';
 import FileSelectOrUploadModal from './components/FileSelectOrUploadModal';
 import ScreenReaderFilesList from './components/ScreenReaderFilesList';
 import FileAttachmentDisplay from './FileAttachmentDisplay';
+import PanelFileAttachmentDisplay from './PanelFileAttachmentDisplay';
+import panelStyles from './PanelFileAttachmentDisplay.module.css';
 
 export interface Props {
   id: string;

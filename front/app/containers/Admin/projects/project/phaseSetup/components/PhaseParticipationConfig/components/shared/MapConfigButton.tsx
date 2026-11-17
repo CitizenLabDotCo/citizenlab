@@ -1,7 +1,6 @@
 import React from 'react';
 
 import Button from 'design-system/Button';
-import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
@@ -9,6 +8,7 @@ import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import messages from '../../../../../messages';
 
 import styles from './MapConfigButton.module.css';
+import 'design-system/tokens.css';
 
 // The workspace swaps to the map configuration while this flag is set. It
 // stays on the same page, so a phase that isn't saved yet keeps its edits.

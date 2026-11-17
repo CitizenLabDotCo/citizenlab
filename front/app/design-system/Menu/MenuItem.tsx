@@ -5,10 +5,10 @@ import { Key, MenuItem as AriaMenuItem, Text } from 'react-aria-components';
 import { useRegisterReasonKey } from '../disabledReason/reasonKeys';
 import renderAriaDisabled from '../disabledReason/renderAriaDisabled';
 import Icon, { IconName } from '../Icon';
-import '../tokens.css';
 import Tooltip from '../Tooltip';
 
 import styles from './Menu.module.css';
+import '../tokens.css';
 
 type MenuItemVariant = 'default' | 'danger';
 

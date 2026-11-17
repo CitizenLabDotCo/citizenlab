@@ -5,9 +5,9 @@ import { Switch as AriaSwitch } from 'react-aria-components';
 import ReasonTooltip from '../disabledReason/ReasonTooltip';
 import useAriaDisabledInput from '../disabledReason/useAriaDisabledInput';
 import { SwitchTrack } from '../Switch';
-import '../tokens.css';
 
 import styles from './SwitchRow.module.css';
+import '../tokens.css';
 
 type PopoverSwitchRowProps = {
   children: ReactNode;

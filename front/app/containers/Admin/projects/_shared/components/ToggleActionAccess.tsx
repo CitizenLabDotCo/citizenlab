@@ -1,11 +1,10 @@
 import React, { ReactNode } from 'react';
 
-import 'design-system/tokens.css';
-
 import { IPhasePermissionAction } from 'api/permissions/types';
 
 import PhaseActionAccess from './PhaseActionAccess';
 import styles from './ToggleActionAccess.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   phaseId: string;

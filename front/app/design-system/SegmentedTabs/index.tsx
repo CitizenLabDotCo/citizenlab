@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react';
 
 import { Key, Tabs } from 'react-aria-components';
-
 import '../tokens.css';
 
 export { default as SegmentedTabList } from './SegmentedTabList';

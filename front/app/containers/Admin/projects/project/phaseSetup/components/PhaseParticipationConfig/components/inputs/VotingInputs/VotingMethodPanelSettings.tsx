@@ -10,7 +10,6 @@ import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 
 import { ListBoxOption } from 'design-system/ListBox';
 import Select from 'design-system/Select';
-import 'design-system/tokens.css';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
@@ -20,6 +19,7 @@ import ReactionLimitSettings from '../_shared/ReactionLimitSettings';
 
 import messages from './messages';
 import styles from './VotingMethodPanelSettings.module.css';
+import 'design-system/tokens.css';
 
 const VOTE_TERMS: Record<VoteTerm, MessageDescriptor> = {
   vote: messages.voteTerm,

@@ -17,13 +17,6 @@ import useUpdateMapLayer from 'api/map_layers/useUpdateMapLayer';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
-import Banner from 'design-system/Banner';
-import Button from 'design-system/Button';
-import Link from 'design-system/Link';
-import { ListBoxOption } from 'design-system/ListBox';
-import DSSelect from 'design-system/Select';
-import 'design-system/tokens.css';
-
 import MultilocTextField from 'components/admin/MultilocFields/MultilocTextField';
 import {
   Section,
@@ -33,6 +26,12 @@ import {
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+
+import Banner from 'design-system/Banner';
+import Button from 'design-system/Button';
+import Link from 'design-system/Link';
+import { ListBoxOption } from 'design-system/ListBox';
+import DSSelect from 'design-system/Select';
 
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
@@ -47,6 +46,7 @@ import { useParams } from 'utils/router';
 import messages from '../messages';
 
 import styles from './LayerConfiguration.module.css';
+import 'design-system/tokens.css';
 
 const Container = styled.div`
   display: flex;

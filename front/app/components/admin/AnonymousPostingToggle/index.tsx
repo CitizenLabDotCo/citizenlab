@@ -14,12 +14,12 @@ import SettingToggleRow from 'components/admin/SettingToggleRow';
 import Warning from 'components/UI/Warning';
 
 import Banner from 'design-system/Banner';
-import 'design-system/tokens.css';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import styles from './AnonymousPostingToggle.module.css';
 import messages from './messages';
+import 'design-system/tokens.css';
 
 interface AnonymousPostingToggleProps {
   allow_anonymous_participation: boolean | null | undefined;

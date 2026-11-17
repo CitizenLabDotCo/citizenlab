@@ -1,14 +1,14 @@
 import React from 'react';
 
-import Icon from 'design-system/Icon';
-import 'design-system/tokens.css';
-
 import { IPhasePermissionAction } from 'api/permissions/types';
+
+import Icon from 'design-system/Icon';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import styles from './PhaseActionAccessRow.module.css';
 import ToggleActionAccess from './ToggleActionAccess';
+import 'design-system/tokens.css';
 
 export interface AccessOnlyAction {
   action: IPhasePermissionAction;

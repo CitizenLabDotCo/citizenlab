@@ -1,9 +1,9 @@
 import React, { ReactNode } from 'react';
 
 import Button from 'design-system/Button';
-import 'design-system/tokens.css';
 
 import styles from '../commentsPanel.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   cancelLabel: ReactNode;

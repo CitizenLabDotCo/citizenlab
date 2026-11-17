@@ -25,17 +25,16 @@ import useDeleteSurveyResults from 'api/survey_results/useDeleteSurveyResults';
 import useLocale from 'hooks/useLocale';
 import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
-import DsBadge from 'design-system/Badge';
-import DsButton from 'design-system/Button';
-import Menu, { MenuItem, MenuTrigger } from 'design-system/Menu';
-import DsSpinner from 'design-system/Spinner';
-import 'design-system/tokens.css';
-
 import projectFilesMessages from 'containers/Admin/projects/project/files/components/messages';
 import useInputResponseExport from 'containers/Admin/projects/project/inputResponseExport/useInputResponseExport';
 
 import DeleteModal from 'components/admin/SurveyDeleteModal/SurveyDeleteModal';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
+
+import DsBadge from 'design-system/Badge';
+import DsButton from 'design-system/Button';
+import Menu, { MenuItem, MenuTrigger } from 'design-system/Menu';
+import DsSpinner from 'design-system/Spinner';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
@@ -49,6 +48,7 @@ import { useWordExportContext } from '../../word/WordExportContext';
 
 import ExportDropdownItem from './components/ExportDropdownItem';
 import styles from './SurveyActions.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   phase: IPhaseData;

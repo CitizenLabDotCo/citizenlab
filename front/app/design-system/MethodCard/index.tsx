@@ -2,9 +2,8 @@ import React, { ReactNode } from 'react';
 
 import { Button as AriaButton, PressEvent } from 'react-aria-components';
 
-import '../tokens.css';
-
 import styles from './MethodCard.module.css';
+import '../tokens.css';
 
 type MethodCardProps = {
   title: ReactNode;

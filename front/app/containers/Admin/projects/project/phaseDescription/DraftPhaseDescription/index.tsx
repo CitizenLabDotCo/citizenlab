@@ -16,17 +16,16 @@ import { Multiloc } from 'typings';
 import usePhases from 'api/phases/usePhases';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
 
+import MultilocRichTextField from 'components/admin/MultilocFields/MultilocRichTextField';
+import { usePhasePreviewPublisher } from 'components/admin/PhasePreview/DraftContext';
+import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
+import Warning from 'components/UI/Warning';
+
 import Banner from 'design-system/Banner';
 import DSButton from 'design-system/Button';
 import DSIcon from 'design-system/Icon';
 import IconButton from 'design-system/IconButton';
 import DSSpinner from 'design-system/Spinner';
-import 'design-system/tokens.css';
-
-import MultilocRichTextField from 'components/admin/MultilocFields/MultilocRichTextField';
-import { usePhasePreviewPublisher } from 'components/admin/PhasePreview/DraftContext';
-import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
-import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
 import { isEmptyMultiloc } from 'utils/helperUtils';
@@ -36,6 +35,7 @@ import messages from '../messages';
 
 import styles from './DraftPhaseDescription.module.css';
 import StatusBadges from './StatusBadges';
+import 'design-system/tokens.css';
 
 const AUTOSAVE_DEBOUNCE_MS = 1000;
 

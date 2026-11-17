@@ -2,9 +2,8 @@ import React, { ReactNode } from 'react';
 
 import { TabList } from 'react-aria-components';
 
-import '../tokens.css';
-
 import styles from './SegmentedTabs.module.css';
+import '../tokens.css';
 
 type Props = {
   // Two or three SegmentedTabs.

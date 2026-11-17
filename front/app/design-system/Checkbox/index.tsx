@@ -3,9 +3,9 @@ import React, { ReactNode } from 'react';
 import { Checkbox as AriaCheckbox } from 'react-aria-components';
 
 import Icon from '../Icon';
-import '../tokens.css';
 
 import styles from './Checkbox.module.css';
+import '../tokens.css';
 
 type LabelProps =
   // Show label: the label sits right of the box.

@@ -8,11 +8,11 @@ import useTypedConfirmation from 'components/UI/TypedDeleteConfirmationModal/use
 import Button from 'design-system/Button';
 import Modal from 'design-system/Modal';
 import TextField from 'design-system/TextField';
-import 'design-system/tokens.css';
 
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import styles from './TypedConfirmationModal.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   opened: boolean;

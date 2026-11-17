@@ -18,15 +18,14 @@ import usePhase from 'api/phases/usePhase';
 import useLocalize from 'hooks/useLocalize';
 import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
-import DsBadge from 'design-system/Badge';
-import DsButton from 'design-system/Button';
-import Menu, { MenuItem, MenuTrigger } from 'design-system/Menu';
-import 'design-system/tokens.css';
-
 import projectFilesMessages from 'containers/Admin/projects/project/files/components/messages';
 import useInputResponseExport from 'containers/Admin/projects/project/inputResponseExport/useInputResponseExport';
 
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
+
+import DsBadge from 'design-system/Badge';
+import DsButton from 'design-system/Button';
+import Menu, { MenuItem, MenuTrigger } from 'design-system/Menu';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
@@ -53,6 +52,7 @@ import {
   WordExportProvider,
   useWordExportContext,
 } from './word/WordExportContext';
+import 'design-system/tokens.css';
 
 const AI_ANALYSIS_SUPPORTED_METHODS = [
   'ideation',

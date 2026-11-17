@@ -6,12 +6,12 @@ import Button from 'components/UI/ButtonWithLink';
 
 import DSButton from 'design-system/Button';
 import Menu, { MenuItem, MenuTrigger } from 'design-system/Menu';
-import 'design-system/tokens.css';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 import NewProjectModal, { NewProjectMode } from './NewProjectModal';
+import 'design-system/tokens.css';
 
 const NewProjectButton = () => {
   const { formatMessage } = useIntl();

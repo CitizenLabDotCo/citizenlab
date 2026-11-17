@@ -12,12 +12,12 @@ import {
 } from 'react-aria-components';
 
 import Icon from '../Icon';
-import '../tokens.css';
 
 import styles from './Calendar.module.css';
 import ghostStyles from './GhostButton.module.css';
 
 import type { OpenRangeValue } from './DayPressCalendar';
+import '../tokens.css';
 
 // The weekday headers are hidden from assistive tech (each day is labelled),
 // so trimming the short name to two letters (Mo, Tu) is visual only.

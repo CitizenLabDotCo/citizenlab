@@ -5,7 +5,6 @@ import { IProjectData } from 'api/projects/types';
 import { usePageSave } from 'components/admin/PageSaveContext';
 
 import IconButton from 'design-system/IconButton';
-import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -18,10 +17,11 @@ import LivePanel from './LivePanel';
 import messages from './messages';
 import PanelDivider from './PanelDivider';
 import ProjectDetails from './ProjectDetails';
-import styles from './ProjectSetupPanel.module.css';
 import ProjectSettingsModal from './ProjectSettingsModal';
+import styles from './ProjectSetupPanel.module.css';
 import SaveError from './SaveError';
 import { SetupDraftProvider } from './SetupDraftContext';
+import 'design-system/tokens.css';
 
 interface Props {
   project: IProjectData;

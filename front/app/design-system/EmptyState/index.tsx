@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 
-import '../tokens.css';
 import styles from './EmptyState.module.css';
+import '../tokens.css';
 
 type Props = {
   // One sentence saying what is missing and, if it helps, when it will appear.

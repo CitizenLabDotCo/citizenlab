@@ -9,11 +9,11 @@ import useAddMapLayer from 'api/map_layers/useAddMapLayer';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
-import Banner from 'design-system/Banner';
-import DSButton from 'design-system/Button';
-
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
+
+import Banner from 'design-system/Banner';
+import DSButton from 'design-system/Button';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';

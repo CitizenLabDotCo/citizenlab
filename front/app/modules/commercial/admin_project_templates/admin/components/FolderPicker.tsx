@@ -6,9 +6,9 @@ import contextMessages from 'containers/Admin/projects/_shared/components/Projec
 
 import { ListBoxOption } from 'design-system/ListBox';
 import Select from 'design-system/Select';
-import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
+import 'design-system/tokens.css';
 
 interface Props {
   options: IOption[];

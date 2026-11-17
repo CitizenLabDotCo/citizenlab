@@ -30,7 +30,6 @@ import Warning from 'components/UI/Warning';
 
 import Banner from 'design-system/Banner';
 import Switch from 'design-system/Switch';
-import 'design-system/tokens.css';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
@@ -54,6 +53,7 @@ import ShareResultsToggle from './votingMethodInputs/ShareResultsToggle/ShareRes
 import SingleVotingInputs from './votingMethodInputs/SingleVotingInputs';
 import VotingMethodPanelSettings from './VotingMethodPanelSettings';
 import VotingMethodSelector from './VotingMethodSelector';
+import 'design-system/tokens.css';
 
 export const StyledSectionDescription = styled(SectionDescription)`
   margin-top: 0;

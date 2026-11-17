@@ -2,10 +2,9 @@ import React from 'react';
 
 import { Modal as AriaModal, ModalOverlay } from 'react-aria-components';
 
-import '../tokens.css';
-
 import DialogLayout, { DialogLayoutProps } from './DialogLayout';
 import styles from './Modal.module.css';
+import '../tokens.css';
 
 export type { DialogAction } from './DialogLayout';
 

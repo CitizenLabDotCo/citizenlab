@@ -2,12 +2,6 @@ import React, { useState } from 'react';
 
 import saveAs from 'file-saver';
 
-import Banner from 'design-system/Banner';
-import Button from 'design-system/Button';
-import Link from 'design-system/Link';
-import Spinner from 'design-system/Spinner';
-import 'design-system/tokens.css';
-
 import { AttendanceSort, InputParameters } from 'api/event_attendance/types';
 import useEventAttendances from 'api/event_attendance/useEventAttendances';
 import { IEventData } from 'api/events/types';
@@ -16,6 +10,11 @@ import { exportEventAttendees } from 'api/events/util';
 import useLocalize from 'hooks/useLocalize';
 
 import eventMessages from 'components/admin/EventAttendance/messages';
+
+import Banner from 'design-system/Banner';
+import Button from 'design-system/Button';
+import Link from 'design-system/Link';
+import Spinner from 'design-system/Spinner';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { requestBlob } from 'utils/requestBlob';
@@ -31,6 +30,7 @@ import ManageLayout from '../Phase/ManageLayout';
 import styles from './EventManager.module.css';
 import EventRegistrantTable from './EventRegistrantTable';
 import messages from './messages';
+import 'design-system/tokens.css';
 
 interface Props {
   event?: IEventData;

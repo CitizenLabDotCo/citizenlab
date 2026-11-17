@@ -3,7 +3,6 @@ import React from 'react';
 // The preview copies the citizen event page and keeps its button icon.
 import { Icon } from '@citizenlab/cl2-component-library';
 import { format, isSameDay } from 'date-fns';
-import 'design-system/tokens.css';
 import moment from 'moment-timezone';
 import { Multiloc } from 'typings';
 
@@ -21,9 +20,10 @@ import eventCardMessages from 'components/EventCards/messages';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
-import styles from './PreviewInfoCard.module.css';
 import PreviewDateBlock from './PreviewDateBlock';
+import styles from './PreviewInfoCard.module.css';
 import PreviewInfoRow from './PreviewInfoRow';
+import 'design-system/tokens.css';
 
 interface Props {
   startAt: string;

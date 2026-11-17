@@ -2,12 +2,11 @@ import React, { ReactNode } from 'react';
 
 import { Key, Tabs as AriaTabs } from 'react-aria-components';
 
-import '../tokens.css';
-
 import Tab from './Tab';
 import TabList from './TabList';
 import TabPanel from './TabPanel';
 import styles from './Tabs.module.css';
+import '../tokens.css';
 
 export { Tab, TabList, TabPanel };
 

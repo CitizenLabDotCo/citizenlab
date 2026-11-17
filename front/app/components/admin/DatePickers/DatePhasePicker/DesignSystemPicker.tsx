@@ -13,7 +13,6 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import Banner from 'design-system/Banner';
 import DateRangePicker from 'design-system/DateRangePicker';
-import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -32,6 +31,7 @@ import { getEndTimeMaxTime, getStartTimeMinTime } from './Calendar/utils/utils';
 import styles from './DesignSystemPicker.module.css';
 import { isSelectedRangeOpenEnded } from './isSelectedRangeOpenEnded';
 import messages from './messages';
+import 'design-system/tokens.css';
 
 const toDay = (date: Date) =>
   new CalendarDate(date.getFullYear(), date.getMonth() + 1, date.getDate());

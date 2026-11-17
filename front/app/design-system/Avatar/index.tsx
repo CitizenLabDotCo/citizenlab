@@ -1,9 +1,9 @@
 import React from 'react';
 
 import Icon from '../Icon';
-import '../tokens.css';
 
 import styles from './Avatar.module.css';
+import '../tokens.css';
 
 type AvatarSize = 24 | 28;
 

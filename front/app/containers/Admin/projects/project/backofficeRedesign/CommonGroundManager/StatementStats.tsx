@@ -1,12 +1,12 @@
 import React from 'react';
 
 import StatRow from 'design-system/StatRow';
-import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 
 import styles from './CommonGroundManager.module.css';
 import messages from './messages';
+import 'design-system/tokens.css';
 
 interface Props {
   statements: number;

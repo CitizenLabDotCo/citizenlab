@@ -1,7 +1,5 @@
 import React, { useRef, useState } from 'react';
 
-import Button from 'design-system/Button';
-import 'design-system/tokens.css';
 import { CLErrors } from 'typings';
 
 import {
@@ -28,6 +26,8 @@ import {
   useRegisterPageSaver,
 } from 'components/admin/PageSaveContext';
 
+import Button from 'design-system/Button';
+
 import { useIntl } from 'utils/cl-intl';
 import Navigate from 'utils/cl-router/Navigate';
 
@@ -45,6 +45,7 @@ import PhasePreview from '../Phase/PhasePreview';
 
 import messages from './messages';
 import SavedInputForm from './SavedInputForm';
+import 'design-system/tokens.css';
 
 interface Props {
   project: IProjectData;

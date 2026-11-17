@@ -1,15 +1,15 @@
 import React from 'react';
 
+import messages from 'containers/Admin/projects/project/messages';
+
 import Banner from 'design-system/Banner';
 import NumberField from 'design-system/NumberField';
 import RadioGroup, { Radio } from 'design-system/RadioGroup';
-import 'design-system/tokens.css';
-
-import messages from 'containers/Admin/projects/project/messages';
 
 import { useIntl } from 'utils/cl-intl';
 
 import styles from './ReactionLimitSettings.module.css';
+import 'design-system/tokens.css';
 
 type Method = 'unlimited' | 'limited';
 

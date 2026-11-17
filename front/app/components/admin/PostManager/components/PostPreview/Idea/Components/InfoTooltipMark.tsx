@@ -4,9 +4,9 @@ import { Focusable } from 'react-aria-components';
 
 import Icon from 'design-system/Icon';
 import Tooltip from 'design-system/Tooltip';
-import 'design-system/tokens.css';
 
 import styles from './OfflineVoteSettings.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   'aria-label': string;

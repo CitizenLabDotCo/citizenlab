@@ -13,10 +13,10 @@ import {
   useGuardedValue,
   useReasonKeys,
 } from '../disabledReason/reasonKeys';
-import '../tokens.css';
 import surfaces from '../surfaces.module.css';
 
 import styles from './Menu.module.css';
+import '../tokens.css';
 
 export { MenuTrigger, SubmenuTrigger } from 'react-aria-components';
 export { default as MenuItem } from './MenuItem';

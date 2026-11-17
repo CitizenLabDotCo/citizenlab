@@ -13,7 +13,6 @@ import { IProjectData } from 'api/projects/types';
 import { usePageSave } from 'components/admin/PageSaveContext';
 
 import Spinner from 'design-system/Spinner';
-import 'design-system/tokens.css';
 
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { useLocation, useSearch } from 'utils/router';
@@ -29,8 +28,9 @@ import MethodSettings from './Phase/MethodSettings';
 import { viewFromPathname, PhaseViewKey } from './Phase/usePhaseViews';
 import ViewContent from './Phase/ViewContent';
 import ProjectSetupPanel from './ProjectSetupPanel';
-import styles from './ProjectWorkspace.module.css';
 import ProjectTimeline from './ProjectTimeline';
+import styles from './ProjectWorkspace.module.css';
+import 'design-system/tokens.css';
 
 const InputTags = lazy(() => import('./InputTags'));
 

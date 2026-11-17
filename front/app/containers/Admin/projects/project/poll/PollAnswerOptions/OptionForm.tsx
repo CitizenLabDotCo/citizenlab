@@ -8,11 +8,11 @@ import useDeletePollOption from 'api/poll_options/useDeletePollOption';
 import usePollOptions from 'api/poll_options/usePollOptions';
 import { IPollQuestionData } from 'api/poll_questions/types';
 
-import Button from 'design-system/Button';
-
 import { List } from 'components/admin/ResourceList';
 import T from 'components/T';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
+
+import Button from 'design-system/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';

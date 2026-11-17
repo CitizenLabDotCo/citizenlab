@@ -8,9 +8,9 @@ import {
 } from 'react-aria-components';
 
 import Icon, { IconName } from '../Icon';
-import '../tokens.css';
 
 import styles from './Disclosure.module.css';
+import '../tokens.css';
 
 type SharedProps = {
   title: ReactNode;

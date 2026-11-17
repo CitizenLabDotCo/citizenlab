@@ -14,7 +14,6 @@ import PhonePreviewBackdrop from 'containers/Admin/projects/_shared/components/P
 import PagePreview from 'components/admin/PagePreview';
 
 import Modal from 'design-system/Modal';
-import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
@@ -24,6 +23,7 @@ import { useParams, useSearch } from 'utils/router';
 import messages from '../messages';
 
 import styles from './ProjectPage.module.css';
+import 'design-system/tokens.css';
 
 const ProjectPage = () => {
   const { formatMessage, formatList } = useIntl();

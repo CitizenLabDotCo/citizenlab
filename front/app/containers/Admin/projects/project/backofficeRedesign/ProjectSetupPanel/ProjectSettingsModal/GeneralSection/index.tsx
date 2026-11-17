@@ -12,13 +12,13 @@ import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 import useSelectedLocale from 'components/admin/MultilocFields/useSelectedLocale';
 
 import TextField from 'design-system/TextField';
-import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 
 import ContextSection from './ContextSection';
 import messages from './messages';
 import ResetSection from './ResetSection';
+import 'design-system/tokens.css';
 
 interface Props {
   projectId: string;

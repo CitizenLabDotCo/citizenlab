@@ -10,10 +10,10 @@ import {
 
 import { FieldHelp, FieldLabel, fieldStyles } from '../Field';
 import Icon from '../Icon';
-import '../tokens.css';
 import inputStyles from '../TextField/input.module.css';
 
 import styles from './NumberField.module.css';
+import '../tokens.css';
 
 type LabelProps =
   | { label: ReactNode; 'aria-label'?: undefined }

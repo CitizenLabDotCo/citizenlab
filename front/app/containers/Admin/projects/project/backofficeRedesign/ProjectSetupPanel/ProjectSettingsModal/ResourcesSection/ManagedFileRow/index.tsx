@@ -7,7 +7,6 @@ import filesMessages from 'containers/Admin/projects/project/files/components/me
 import UserName from 'components/UI/UserName';
 
 import AlertDialog from 'design-system/AlertDialog';
-import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 import { saveFileToDisk } from 'utils/fileUtils';
@@ -17,6 +16,7 @@ import FileRow from '../FileRow';
 
 import styles from './ManagedFileRow.module.css';
 import messages from './messages';
+import 'design-system/tokens.css';
 
 interface Props {
   file: IFileData;

@@ -6,8 +6,6 @@ import usePublishAccess from 'containers/Admin/projects/_shared/usePublishAccess
 import publicationButtonsMessages from 'containers/Admin/projects/project/projectHeader/PublicationButtons/messages';
 import ScheduleLaunchModal from 'containers/Admin/projects/project/projectHeader/PublicationButtons/ScheduleLaunchModal';
 
-import 'design-system/tokens.css';
-
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import HeaderDropdown from '../HeaderDropdown';
@@ -22,6 +20,7 @@ import MissingEssentialsModal, {
 import getPublicationState, { PublicationState } from './publicationState';
 import styles from './PublishDropdown.module.css';
 import PublishPanel from './PublishPanel';
+import 'design-system/tokens.css';
 
 const TRIGGER_MESSAGES: Record<PublicationState, MessageDescriptor> = {
   published: messages.publishButtonLive,

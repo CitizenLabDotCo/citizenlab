@@ -10,7 +10,6 @@ import Banner from 'design-system/Banner';
 import Checkbox from 'design-system/Checkbox';
 import DropZone from 'design-system/DropZone';
 import Modal from 'design-system/Modal';
-import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 import { returnFileSize } from 'utils/fileUtils';
@@ -21,6 +20,7 @@ import { FilesDraft, Upload } from '../useFilesDraft';
 
 import styles from './AddFilesModal.module.css';
 import messages from './messages';
+import 'design-system/tokens.css';
 
 interface Props {
   draft: FilesDraft;

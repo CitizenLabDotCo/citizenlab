@@ -3,10 +3,9 @@ import React from 'react';
 import { CalendarDate, isSameDay } from '@internationalized/date';
 import { Calendar as AriaCalendar, DateValue } from 'react-aria-components';
 
-import '../tokens.css';
-
 import styles from './Calendar.module.css';
 import CalendarMonth from './CalendarMonth';
+import '../tokens.css';
 
 // A range that may have no end yet, or no end at all.
 export type OpenRangeValue<T> = {

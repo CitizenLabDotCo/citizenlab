@@ -12,11 +12,11 @@ import slugInputMessages from 'components/HookForm/SlugInput/messages';
 
 import AffixField from 'design-system/AffixField';
 import Banner from 'design-system/Banner';
-import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 
 import styles from './SlugInput.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   slug: string;

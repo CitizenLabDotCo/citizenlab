@@ -1,9 +1,9 @@
 import React from 'react';
 
 import DesignSystemEmptyState from 'design-system/EmptyState';
-import 'design-system/tokens.css';
 
 import styles from './EmptyState.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   title?: string;

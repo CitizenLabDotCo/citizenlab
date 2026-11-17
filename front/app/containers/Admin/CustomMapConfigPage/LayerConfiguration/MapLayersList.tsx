@@ -17,14 +17,14 @@ import useReorderMapLayer from 'api/map_layers/useReorderMapLayer';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import IconButton from 'design-system/IconButton';
-import Link from 'design-system/Link';
-import Popover, { DialogTrigger } from 'design-system/Popover';
-
 import SortableList from 'components/admin/ResourceList/SortableList';
 import SortableRow from 'components/admin/ResourceList/SortableRow';
 import { SubSectionTitle } from 'components/admin/Section';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
+
+import IconButton from 'design-system/IconButton';
+import Link from 'design-system/Link';
+import Popover, { DialogTrigger } from 'design-system/Popover';
 
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';

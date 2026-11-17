@@ -9,7 +9,6 @@ import featureCalloutMessages from 'components/UI/FeatureCallout/messages';
 
 import Banner from 'design-system/Banner';
 import IconButton from 'design-system/IconButton';
-import 'design-system/tokens.css';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isSuperAdmin } from 'utils/permissions/roles';
@@ -18,6 +17,7 @@ import styles from './FeedbackNotice.module.css';
 import messages from './messages';
 import ProfileSettingsLink from './ProfileSettingsLink';
 import SlackChannelLink from './SlackChannelLink';
+import 'design-system/tokens.css';
 
 const FeedbackNotice = () => {
   const { formatMessage } = useIntl();

@@ -10,13 +10,13 @@ import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 
 import Banner from 'design-system/Banner';
 import Switch from 'design-system/Switch';
-import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 
 import ReactionLimitSettings from '../_shared/ReactionLimitSettings';
 
 import styles from './DislikingToggle.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   reacting_enabled?: boolean | null;

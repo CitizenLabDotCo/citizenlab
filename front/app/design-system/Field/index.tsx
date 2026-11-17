@@ -9,9 +9,9 @@ import {
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import '../tokens.css';
 import styles from './Field.module.css';
 import messages from './messages';
+import '../tokens.css';
 
 // The grey Required marker: a dot and the word. Never red.
 export const RequiredMarker = () => (

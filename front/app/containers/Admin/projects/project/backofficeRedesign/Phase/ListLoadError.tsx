@@ -1,12 +1,12 @@
 import React from 'react';
 
 import Button from 'design-system/Button';
-import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 
 import styles from './ListLoadError.module.css';
 import messages from './messages';
+import 'design-system/tokens.css';
 
 interface Props {
   onRetry: () => void;

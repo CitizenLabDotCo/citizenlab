@@ -2,9 +2,8 @@ import React, { ReactNode, useCallback } from 'react';
 
 import { Cell as AriaCell, Key, Row as AriaRow } from 'react-aria-components';
 
-import '../tokens.css';
-
 import styles from './Row.module.css';
+import '../tokens.css';
 
 type RowProps = {
   id: Key;

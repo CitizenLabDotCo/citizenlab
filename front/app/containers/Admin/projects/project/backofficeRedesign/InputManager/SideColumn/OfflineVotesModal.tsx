@@ -1,12 +1,6 @@
 import React, { useState } from 'react';
 
 import { useQueryClient } from '@tanstack/react-query';
-import Banner from 'design-system/Banner';
-import Modal from 'design-system/Modal';
-import NumberField from 'design-system/NumberField';
-import Pagination from 'design-system/Pagination';
-import Spinner from 'design-system/Spinner';
-import 'design-system/tokens.css';
 
 import useIdeas from 'api/ideas/useIdeas';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
@@ -16,12 +10,19 @@ import useUpdatePhase from 'api/phases/useUpdatePhase';
 
 import useLocalize from 'hooks/useLocalize';
 
+import Banner from 'design-system/Banner';
+import Modal from 'design-system/Modal';
+import NumberField from 'design-system/NumberField';
+import Pagination from 'design-system/Pagination';
+import Spinner from 'design-system/Spinner';
+
 import { useIntl } from 'utils/cl-intl';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 import messages from '../messages';
 
 import styles from './SideColumn.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   phase: IPhaseData;

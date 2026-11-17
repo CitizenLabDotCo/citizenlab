@@ -1,7 +1,5 @@
 import React from 'react';
 
-import Banner from 'design-system/Banner';
-import 'design-system/tokens.css';
 import { Multiloc } from 'typings';
 
 import AttachmentsCard from 'containers/Admin/projects/_shared/components/AttachmentsCard';
@@ -12,6 +10,8 @@ import MultilocRichTextField from 'components/admin/MultilocFields/MultilocRichT
 import MultilocTextField from 'components/admin/MultilocFields/MultilocTextField';
 import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 
+import Banner from 'design-system/Banner';
+
 import { useIntl } from 'utils/cl-intl';
 
 import DeleteEventButton from './DeleteEventButton';
@@ -21,6 +21,7 @@ import ImageCard from './ImageCard';
 import LocationCard from './LocationCard';
 import messages from './messages';
 import RegistrationCard from './RegistrationCard';
+import 'design-system/tokens.css';
 
 interface Props {
   projectId: string;

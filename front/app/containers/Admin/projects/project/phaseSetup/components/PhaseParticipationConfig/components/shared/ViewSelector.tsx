@@ -20,7 +20,6 @@ import viewNameMessages from 'components/PostCardsComponents/messages';
 import Error from 'components/UI/Error';
 
 import { fieldStyles } from 'design-system/Field';
-import 'design-system/tokens.css';
 
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { useParams } from 'utils/router';
@@ -30,6 +29,7 @@ import messages from '../../../../../messages';
 import MapConfigButton from './MapConfigButton';
 import ViewRow from './ViewRow';
 import styles from './ViewSelector.module.css';
+import 'design-system/tokens.css';
 
 interface ViewOption {
   value: PresentationMode;

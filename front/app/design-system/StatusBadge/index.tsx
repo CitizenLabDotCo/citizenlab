@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 
-import '../tokens.css';
 import styles from './StatusBadge.module.css';
+import '../tokens.css';
 
 type Props = {
   // The status word, supplied by the caller (e.g. the translated "Draft").

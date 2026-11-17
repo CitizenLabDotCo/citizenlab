@@ -6,10 +6,10 @@ import { useIntl } from 'utils/cl-intl';
 
 import DialogLayout from '../Modal/DialogLayout';
 import modalStyles from '../Modal/Modal.module.css';
-import '../tokens.css';
 
 import styles from './AlertDialog.module.css';
 import messages from './messages';
+import '../tokens.css';
 
 type AlertDialogProps = {
   // The label of the action that opened it, e.g. "Delete project".

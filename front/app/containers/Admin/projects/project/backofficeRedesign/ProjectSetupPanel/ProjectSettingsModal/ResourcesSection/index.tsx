@@ -5,7 +5,6 @@ import backofficeRedesignMessages from 'containers/Admin/projects/project/backof
 
 import Badge from 'design-system/Badge';
 import Button from 'design-system/Button';
-import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -14,6 +13,7 @@ import ManageFilesModal from './ManageFilesModal';
 import messages from './messages';
 import useFilesCount from './useFilesCount';
 import { FilesDraft } from './useFilesDraft';
+import 'design-system/tokens.css';
 
 interface Props {
   projectId: string;

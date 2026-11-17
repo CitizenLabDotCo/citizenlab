@@ -1,11 +1,11 @@
 import React, { ReactNode } from 'react';
 
 import Icon from 'design-system/Icon';
-import 'design-system/tokens.css';
 
 import { getFileIcon } from '../utils';
 
 import styles from './FileRow.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   name: string;

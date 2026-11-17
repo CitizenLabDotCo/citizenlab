@@ -2,9 +2,8 @@ import React, { ReactNode } from 'react';
 
 import { Key, ToggleButton as AriaToggleButton } from 'react-aria-components';
 
-import '../tokens.css';
-
 import styles from './ToggleButton.module.css';
+import '../tokens.css';
 
 type ToggleButtonProps = {
   children: ReactNode;

@@ -2,9 +2,8 @@ import React, { ReactNode } from 'react';
 
 import { Link as AriaLink } from 'react-aria-components';
 
-import '../tokens.css';
-
 import styles from './Link.module.css';
+import '../tokens.css';
 
 type LinkProps = {
   children: ReactNode;

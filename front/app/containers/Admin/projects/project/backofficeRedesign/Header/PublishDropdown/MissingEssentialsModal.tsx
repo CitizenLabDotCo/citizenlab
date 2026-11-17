@@ -10,13 +10,13 @@ import {
 import useSetupReadiness from 'containers/Admin/projects/project/backofficeRedesign/ProjectSetupPanel/useSetupReadiness';
 
 import Modal from 'design-system/Modal';
-import 'design-system/tokens.css';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 import styles from './PublishDropdown.module.css';
 import usePublishNow from './usePublishNow';
+import 'design-system/tokens.css';
 
 export type MissingEssentialsIntent = 'publish' | 'schedule';
 

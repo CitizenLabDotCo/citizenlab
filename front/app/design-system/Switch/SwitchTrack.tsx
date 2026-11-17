@@ -1,8 +1,7 @@
 import React from 'react';
 
-import '../tokens.css';
-
 import styles from './Switch.module.css';
+import '../tokens.css';
 
 type SwitchSize = 36 | 28 | 26;
 

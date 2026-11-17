@@ -14,11 +14,11 @@ import { useIntl } from 'utils/cl-intl';
 
 import ListBox from '../ListBox';
 import SearchField from '../SearchField';
-import '../tokens.css';
 import surfaces from '../surfaces.module.css';
 
 import messages from './messages';
 import styles from './TagPicker.module.css';
+import '../tokens.css';
 
 type TagPickerProps<T extends { id: Key }> = {
   items: T[];

@@ -1,8 +1,7 @@
 import React from 'react';
 
-import 'design-system/tokens.css';
-
 import styles from './PreviewDateBlock.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   day: string;

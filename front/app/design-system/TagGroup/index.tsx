@@ -8,9 +8,9 @@ import {
 } from 'react-aria-components';
 
 import { FieldLabel } from '../Field';
-import '../tokens.css';
 
 import styles from './TagGroup.module.css';
+import '../tokens.css';
 
 export { default as Tag } from './Tag';
 export { default as TagAdd } from './TagAdd';

@@ -4,9 +4,9 @@ import SettingsSection from 'containers/Admin/projects/project/backofficeRedesig
 import topicsMessages from 'containers/Admin/projects/project/topics/messages';
 
 import Switch from 'design-system/Switch';
-import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
+import 'design-system/tokens.css';
 
 interface Props {
   enabled: boolean;

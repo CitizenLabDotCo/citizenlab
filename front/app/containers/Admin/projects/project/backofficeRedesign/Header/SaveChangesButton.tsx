@@ -2,16 +2,16 @@ import React, { useState } from 'react';
 
 import phaseSetupMessages from 'containers/Admin/projects/project/phaseSetup/messages';
 
-import Button from 'design-system/Button';
-import 'design-system/tokens.css';
-
 import { usePageSave } from 'components/admin/PageSaveContext';
+
+import Button from 'design-system/Button';
 
 import { useIntl } from 'utils/cl-intl';
 
 import useReturnToPhaseAfterSave from '../_shared/useReturnToPhaseAfterSave';
 
 import messages from './messages';
+import 'design-system/tokens.css';
 
 interface Props {
   label?: string;

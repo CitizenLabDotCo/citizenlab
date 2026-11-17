@@ -2,8 +2,8 @@ import React, { ReactElement, ReactNode } from 'react';
 
 import { Tooltip as AriaTooltip, TooltipTrigger } from 'react-aria-components';
 
-import '../tokens.css';
 import styles from './Tooltip.module.css';
+import '../tokens.css';
 
 // Timing is a prop, not CSS, so it lives here next to the motion variables.
 export const TOOLTIP_DELAY = 400;

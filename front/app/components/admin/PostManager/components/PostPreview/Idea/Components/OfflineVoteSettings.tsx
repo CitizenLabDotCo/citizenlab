@@ -19,7 +19,6 @@ import useUpdatePhase from 'api/phases/useUpdatePhase';
 import useUserById from 'api/users/useUserById';
 
 import NumberField from 'design-system/NumberField';
-import 'design-system/tokens.css';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -31,6 +30,7 @@ import tracks from '../tracks';
 import tooltipPreview from './assets/preview_for_tooltip.png';
 import InfoTooltipMark from './InfoTooltipMark';
 import styles from './OfflineVoteSettings.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   ideaId: string;

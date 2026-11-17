@@ -12,17 +12,17 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import Checkbox from 'design-system/Checkbox';
 import IconButton from 'design-system/IconButton';
-import 'design-system/tokens.css';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isPage } from 'utils/helperUtils';
 import { useLocation } from 'utils/router';
 
-import { useIsPanelComments } from '../commentsVariant';
 import styles from '../commentsPanel.module.css';
+import { useIsPanelComments } from '../commentsVariant';
 import messages from '../messages';
 
 import PanelFormButtons from './PanelFormButtons';
+import 'design-system/tokens.css';
 
 interface Props {
   processing: boolean;

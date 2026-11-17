@@ -10,7 +10,6 @@ import Button from 'design-system/Button';
 import Modal from 'design-system/Modal';
 import Pagination from 'design-system/Pagination';
 import SearchField from 'design-system/SearchField';
-import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -21,6 +20,7 @@ import useFilesCount from '../useFilesCount';
 import { FilesDraft } from '../useFilesDraft';
 
 import styles from './ManageFilesModal.module.css';
+import 'design-system/tokens.css';
 
 const PAGE_SIZE = 20;
 const SEARCH_DEBOUNCE = 500;

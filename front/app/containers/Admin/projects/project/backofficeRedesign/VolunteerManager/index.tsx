@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import 'design-system/tokens.css';
-
 import useCauses from 'api/causes/useCauses';
 import { exportVolunteers } from 'api/causes/util';
 import { IPhaseData } from 'api/phases/types';
@@ -25,6 +23,7 @@ import CauseStats from './CauseStats';
 import messages from './messages';
 import VolunteerList from './VolunteerList';
 import styles from './VolunteerManager.module.css';
+import 'design-system/tokens.css';
 
 const PAGE_SIZE = 20;
 

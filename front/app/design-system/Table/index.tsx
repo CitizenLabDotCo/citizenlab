@@ -5,9 +5,8 @@ import {
   Table as AriaTable,
 } from 'react-aria-components';
 
-import '../tokens.css';
-
 import styles from './Table.module.css';
+import '../tokens.css';
 
 export { TableBody } from 'react-aria-components';
 export { default as TableHeader } from './TableHeader';

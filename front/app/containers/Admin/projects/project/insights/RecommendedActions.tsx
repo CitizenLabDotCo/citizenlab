@@ -10,18 +10,18 @@ import useReportBuilderEnabled from 'api/reports/useReportBuilderEnabled';
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
+import reportTitleIsTaken from 'containers/Admin/reporting/utils/reportTitleIsTaken';
+
 import Banner from 'design-system/Banner';
 import Button from 'design-system/Button';
 import Menu, { MenuItem, MenuTrigger } from 'design-system/Menu';
-import 'design-system/tokens.css';
-
-import reportTitleIsTaken from 'containers/Admin/reporting/utils/reportTitleIsTaken';
 
 import { useIntl } from 'utils/cl-intl';
 import Navigate from 'utils/cl-router/Navigate';
 
 import messages from './messages';
 import styles from './RecommendedActions.module.css';
+import 'design-system/tokens.css';
 
 const MAX_REPORT_NAME_ATTEMPTS = 10;
 

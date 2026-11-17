@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
 
-import Button from 'design-system/Button';
-import 'design-system/tokens.css';
-
 import { IPhaseData } from 'api/phases/types';
 import useReport from 'api/reports/useReport';
 import useReportBuilderEnabled from 'api/reports/useReportBuilderEnabled';
@@ -12,12 +9,15 @@ import messages from 'containers/Admin/projects/project/information/ReportTab/me
 import topBarMessages from 'containers/Admin/reporting/components/ReportBuilder/TopBar/messages';
 import reportRowMessages from 'containers/Admin/reporting/components/ReportBuilderPage/ReportRow/messages';
 
+import Button from 'design-system/Button';
+
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
 import PanelField from './BuildPanel/PanelField';
 import phaseMessages from './messages';
 import styles from './ReportSection.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   projectId: string;

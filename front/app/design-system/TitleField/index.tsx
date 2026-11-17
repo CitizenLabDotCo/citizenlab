@@ -3,9 +3,9 @@ import React from 'react';
 import { Input, TextField as AriaTextField } from 'react-aria-components';
 
 import { RequiredMarker } from '../Field';
-import '../tokens.css';
 
 import styles from './TitleField.module.css';
+import '../tokens.css';
 
 type TitleFieldProps = {
   // There is no visible label, so the input needs a name.

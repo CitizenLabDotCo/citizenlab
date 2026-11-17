@@ -10,11 +10,11 @@ import emojiPickerMessages from 'components/UI/EmojiPicker/messages';
 
 import Button from 'design-system/Button';
 import Popover, { DialogTrigger } from 'design-system/Popover';
-import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 
 import styles from './InputTopicModal.module.css';
+import 'design-system/tokens.css';
 
 const Picker = lazy(() => import('components/UI/EmojiPicker/Picker'));
 

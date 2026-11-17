@@ -6,7 +6,6 @@ import messages from 'containers/Admin/projects/project/projectHeader/Publicatio
 import tracks from 'containers/Admin/projects/project/projectHeader/PublicationButtons/tracks';
 
 import Button from 'design-system/Button';
-import 'design-system/tokens.css';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
@@ -14,6 +13,7 @@ import { useIntl } from 'utils/cl-intl';
 import HeaderDropdown from '../HeaderDropdown';
 
 import styles from './ReviewFlow.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   projectId: string;

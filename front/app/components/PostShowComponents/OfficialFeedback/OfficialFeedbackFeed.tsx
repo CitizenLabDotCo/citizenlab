@@ -15,13 +15,13 @@ import useIdeaOfficialFeedback from 'api/idea_official_feedback/useIdeaOfficialF
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import Button from 'design-system/Button';
-import 'design-system/tokens.css';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from './messages';
 import panelStyles from './OfficialFeedbackPanel.module.css';
 import OfficialFeedbackPost from './OfficialFeedbackPost';
+import 'design-system/tokens.css';
 
 const Container = styled.div`
   &.hasTopMargin {

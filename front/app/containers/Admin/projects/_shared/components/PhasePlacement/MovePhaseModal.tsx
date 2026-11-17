@@ -2,13 +2,12 @@ import React from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
 
-import Button from 'design-system/Button';
-import 'design-system/tokens.css';
-
 import { IPhaseData } from 'api/phases/types';
 
 import Error from 'components/UI/Error';
 import Modal, { MEDIUM_MODAL_WIDTH } from 'components/UI/Modal';
+
+import Button from 'design-system/Button';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -18,6 +17,7 @@ import MovePhaseDates from './MovePhaseDates';
 import MovePhaseSummary from './MovePhaseSummary';
 import PlacementButton from './PlacementButton';
 import usePhasePlacementMove from './usePhasePlacementMove';
+import 'design-system/tokens.css';
 
 interface Props {
   phase: IPhaseData;

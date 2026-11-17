@@ -13,13 +13,13 @@ import { UploadFile } from 'typings';
 
 import Banner from 'design-system/Banner';
 import DropZone from 'design-system/DropZone';
-import 'design-system/tokens.css';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { getBase64FromFile } from 'utils/fileUtils';
 
 import styles from './FileInput.module.css';
 import messages from './messages';
+import 'design-system/tokens.css';
 
 const Container = styled.div`
   margin-bottom: 10px;

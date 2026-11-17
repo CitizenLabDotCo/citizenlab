@@ -1,13 +1,13 @@
 import React from 'react';
 
-import Icon from 'design-system/Icon';
-
 import { IIdeaData } from 'api/ideas/types';
 import { IPhaseData } from 'api/phases/types';
 
 import OfflineVoteSettings from 'components/admin/PostManager/components/PostPreview/Idea/Components/OfflineVoteSettings';
 import previewMessages from 'components/admin/PostManager/components/PostPreview/messages';
 import postManagerMessages from 'components/admin/PostManager/messages';
+
+import Icon from 'design-system/Icon';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import FormattedBudget from 'utils/currency/FormattedBudget';

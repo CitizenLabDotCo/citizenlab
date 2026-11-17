@@ -7,12 +7,12 @@ import useSortableItem from 'hooks/useSortableItem';
 
 import Icon from 'design-system/Icon';
 import IconButton from 'design-system/IconButton';
-import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 
-import styles from './PanelFileAttachmentDisplay.module.css';
 import messages from './components/messages';
+import styles from './PanelFileAttachmentDisplay.module.css';
+import 'design-system/tokens.css';
 
 const DRAG_TYPE = 'FILE_ATTACHMENT';
 

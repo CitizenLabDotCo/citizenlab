@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { IVolunteers, VolunteersSort } from 'api/volunteers/types';
+
 import Pagination from 'design-system/Pagination';
 import Table, {
   ColumnHeader,
@@ -7,9 +9,6 @@ import Table, {
   TableBody,
   TableHeader,
 } from 'design-system/Table';
-import 'design-system/tokens.css';
-
-import { IVolunteers, VolunteersSort } from 'api/volunteers/types';
 
 import { useIntl } from 'utils/cl-intl';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
@@ -17,6 +16,7 @@ import { getPageNumberFromUrl } from 'utils/paginationUtils';
 import messages from './messages';
 import styles from './VolunteerManager.module.css';
 import VolunteerRow from './VolunteerRow';
+import 'design-system/tokens.css';
 
 interface Props {
   volunteers: IVolunteers;

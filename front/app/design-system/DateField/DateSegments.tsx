@@ -10,10 +10,9 @@ import {
 
 import { useIntl } from 'utils/cl-intl';
 
-import '../tokens.css';
-
 import styles from './DateInput.module.css';
 import messages from './messages';
+import '../tokens.css';
 
 type SegmentProps = {
   segment: DateSegmentProps['segment'];

@@ -12,7 +12,6 @@ import Error from 'components/UI/Error';
 
 import Banner from 'design-system/Banner';
 import DesignSystemButton from 'design-system/Button';
-import 'design-system/tokens.css';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
@@ -26,6 +25,7 @@ import UseTemplateModal from '../components/UseTemplateModal';
 
 import styles from './CreateProjectFromTemplate.module.css';
 import messages from './messages';
+import 'design-system/tokens.css';
 
 interface Props {
   className?: string;

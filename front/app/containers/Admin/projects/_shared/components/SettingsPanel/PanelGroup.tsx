@@ -2,12 +2,11 @@ import React, { ReactNode, useState } from 'react';
 
 import { SetupReviewCard } from 'api/phases/types';
 
-import 'design-system/tokens.css';
-
 import SetupCard from 'containers/Admin/projects/_shared/components/SetupCard';
 import SummaryPill from 'containers/Admin/projects/_shared/components/SummaryPill';
 
 import styles from './PanelGroup.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   label: string;

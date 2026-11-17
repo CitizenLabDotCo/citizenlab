@@ -1,8 +1,5 @@
 import React, { ReactNode, useState } from 'react';
 
-import Button from 'design-system/Button';
-import 'design-system/tokens.css';
-
 import useAddIdea from 'api/ideas/useAddIdea';
 import { IPhaseData } from 'api/phases/types';
 import useProjectById from 'api/projects/useProjectById';
@@ -10,6 +7,8 @@ import useProjectById from 'api/projects/useProjectById';
 import tracks from 'containers/Admin/projects/_shared/components/NewIdeaButton/tracks';
 import AddInputModal from 'containers/Admin/projects/project/backofficeRedesign/Phase/BuildPanel/BuildFields/MethodSection/AddInputModal';
 import FullFormLink from 'containers/Admin/projects/project/backofficeRedesign/Phase/BuildPanel/BuildFields/MethodSection/FullFormLink';
+
+import Button from 'design-system/Button';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
@@ -20,6 +19,7 @@ import useInputTermLabels from '../useInputTermLabels';
 
 import Card from './Card';
 import OfflineFormsButton from './OfflineFormsButton';
+import 'design-system/tokens.css';
 
 interface Props {
   phase: IPhaseData;

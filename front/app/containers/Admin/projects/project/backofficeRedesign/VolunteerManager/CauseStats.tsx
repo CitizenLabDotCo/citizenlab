@@ -1,16 +1,16 @@
 import React from 'react';
 
-import StatRow from 'design-system/StatRow';
-import 'design-system/tokens.css';
-
 import { ICauseData } from 'api/causes/types';
 
 import useLocalize from 'hooks/useLocalize';
+
+import StatRow from 'design-system/StatRow';
 
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 import styles from './VolunteerManager.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   causes: ICauseData[];

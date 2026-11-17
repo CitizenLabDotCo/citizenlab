@@ -4,7 +4,6 @@ import { IProjectData, PublicationStatus } from 'api/projects/types';
 import useUpdateProject from 'api/projects/useUpdateProject';
 
 import Modal from 'design-system/Modal';
-import 'design-system/tokens.css';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
@@ -12,6 +11,7 @@ import backofficeRedesignMessages from '../../messages';
 
 import messages from './messages';
 import styles from './PublishDropdown.module.css';
+import 'design-system/tokens.css';
 
 export type ConfirmableStatus = 'draft' | 'archived';
 

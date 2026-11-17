@@ -1,9 +1,9 @@
 import React, { ReactNode } from 'react';
 
 import Icon, { IconName } from '../Icon';
-import '../tokens.css';
 
 import styles from './Badge.module.css';
+import '../tokens.css';
 
 type UseProps =
   // The value pill of a setting card.

@@ -8,7 +8,6 @@ import Icon from '../Icon';
 
 import messages from './messages';
 import styles from './Pagination.module.css';
-
 import '../tokens.css';
 
 type PaginationItemProps =

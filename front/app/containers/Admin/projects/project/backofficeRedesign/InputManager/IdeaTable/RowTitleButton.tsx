@@ -2,9 +2,8 @@ import React from 'react';
 
 import { Button } from 'react-aria-components';
 
-import 'design-system/tokens.css';
-
 import styles from './IdeaTable.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   title: string;

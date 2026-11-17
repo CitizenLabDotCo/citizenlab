@@ -2,9 +2,9 @@ import React, { ReactNode } from 'react';
 
 import Button, { ButtonVariant } from 'design-system/Button';
 import Popover, { DialogTrigger } from 'design-system/Popover';
-import 'design-system/tokens.css';
 
 import styles from './HeaderDropdown.module.css';
+import 'design-system/tokens.css';
 
 export type HeaderDropdownName = 'publish' | 'share' | 'review';
 

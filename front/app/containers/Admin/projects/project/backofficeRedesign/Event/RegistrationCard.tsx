@@ -1,9 +1,5 @@
 import React from 'react';
 
-import NumberField from 'design-system/NumberField';
-import Switch from 'design-system/Switch';
-import TextField from 'design-system/TextField';
-import 'design-system/tokens.css';
 import { Multiloc } from 'typings';
 
 import SetupCard from 'containers/Admin/projects/_shared/components/SetupCard';
@@ -13,9 +9,14 @@ import eventMessages from 'containers/Admin/projects/project/events/messages';
 import MultilocTextField from 'components/admin/MultilocFields/MultilocTextField';
 import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 
+import NumberField from 'design-system/NumberField';
+import Switch from 'design-system/Switch';
+import TextField from 'design-system/TextField';
+
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
+import 'design-system/tokens.css';
 
 interface Props {
   form: EventForm;

@@ -5,9 +5,9 @@ import { Key, ListBoxItem, Text } from 'react-aria-components';
 import { useRegisterReasonKey } from '../disabledReason/reasonKeys';
 import ReasonTooltip from '../disabledReason/ReasonTooltip';
 import Icon, { IconName } from '../Icon';
-import '../tokens.css';
 
 import styles from './ListBox.module.css';
+import '../tokens.css';
 
 type LabelProps =
   | { children: string; textValue?: string }

@@ -14,7 +14,6 @@ import TextAreaMultilocWithLocaleSwitcher from 'components/HookForm/TextAreaMult
 import Modal from 'components/UI/Modal';
 
 import DSModal from 'design-system/Modal';
-import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
@@ -24,6 +23,7 @@ import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 import FormMultilocField from './FormMultilocField';
 import styles from './IdeaOfficialFeedbackModal.module.css';
 import messages from './messages';
+import 'design-system/tokens.css';
 
 type Props = {
   ideaId: string;

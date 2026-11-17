@@ -3,11 +3,11 @@ import React, { ReactNode } from 'react';
 import { Key, Tabs as AriaTabs } from 'react-aria-components';
 
 import { TabPanel } from '../Tabs';
-import '../tokens.css';
 
 import VerticalTab from './VerticalTab';
 import VerticalTabList from './VerticalTabList';
 import styles from './VerticalTabs.module.css';
+import '../tokens.css';
 
 export { VerticalTab, VerticalTabList, TabPanel };
 

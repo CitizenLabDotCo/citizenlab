@@ -8,7 +8,6 @@ import IconButton from '../IconButton';
 
 import messages from './messages';
 import styles from './SelectionBar.module.css';
-
 import '../tokens.css';
 
 type SelectionBarProps = {

@@ -1,12 +1,12 @@
 import React from 'react';
 
 import Icon from 'design-system/Icon';
-import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 
 import styles from './AdminOnlyPlaceholder.module.css';
 import messages from './messages';
+import 'design-system/tokens.css';
 
 interface Props {
   title: string;

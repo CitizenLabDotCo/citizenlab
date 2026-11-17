@@ -5,12 +5,12 @@ import styled from 'styled-components';
 
 import { IPollQuestionData } from 'api/poll_questions/types';
 
-import Button from 'design-system/Button';
-
 import { TextCell } from 'components/admin/ResourceList';
 import SortableRow from 'components/admin/ResourceList/SortableRow';
 import T from 'components/T';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
+
+import Button from 'design-system/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
 

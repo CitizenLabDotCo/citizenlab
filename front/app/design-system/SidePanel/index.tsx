@@ -3,9 +3,9 @@ import React, { ReactNode } from 'react';
 import { Modal as AriaModal, ModalOverlay } from 'react-aria-components';
 
 import DialogLayout from '../Modal/DialogLayout';
-import '../tokens.css';
 
 import styles from './SidePanel.module.css';
+import '../tokens.css';
 
 type SidePanelProps = {
   title: ReactNode;

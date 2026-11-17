@@ -17,7 +17,6 @@ import Button from 'design-system/Button';
 import Divider from 'design-system/Divider';
 import RadioGroup, { Radio } from 'design-system/RadioGroup';
 import { PopoverSwitchRow } from 'design-system/SwitchRow';
-import 'design-system/tokens.css';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
@@ -30,6 +29,7 @@ import { MissingEssentialsIntent } from './MissingEssentialsModal';
 import getPublicationState, { PublicationState } from './publicationState';
 import styles from './PublishDropdown.module.css';
 import usePublishNow from './usePublishNow';
+import 'design-system/tokens.css';
 
 const HEADER_MESSAGES: Record<PublicationState, MessageDescriptor> = {
   published: messages.publishStatePublished,

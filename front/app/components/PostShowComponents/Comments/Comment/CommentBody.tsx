@@ -22,8 +22,6 @@ import Error from 'components/UI/Error';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
-import 'design-system/tokens.css';
-
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { weglotTranslateSubmission } from 'utils/weglot';
@@ -33,6 +31,7 @@ import panelStyles from '../commentsPanel.module.css';
 import { panelTextAreaStyle, useIsPanelComments } from '../commentsVariant';
 import { commentTranslateButtonClicked$ } from '../events';
 import messages from '../messages';
+import 'design-system/tokens.css';
 
 const Container = styled.div``;
 

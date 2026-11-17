@@ -11,12 +11,12 @@ import FileSelectModal from 'components/UI/FileRepositorySelectAndUpload/compone
 import fileMessages from 'components/UI/FileRepositorySelectAndUpload/components/messages';
 
 import { fieldStyles } from 'design-system/Field';
-import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 
 import SetupCard from './SetupCard';
 import SummaryPill from './SummaryPill';
+import 'design-system/tokens.css';
 
 const MAX_SIZE_MB = 10;
 

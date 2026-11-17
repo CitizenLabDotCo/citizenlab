@@ -12,10 +12,10 @@ import {
 import { FormattedMessage } from 'utils/cl-intl';
 
 import Icon from '../Icon';
-import '../tokens.css';
 
 import styles from './DropZone.module.css';
 import messages from './messages';
+import '../tokens.css';
 
 type DropEvent = Parameters<NonNullable<AriaDropZoneProps['onDrop']>>[0];
 

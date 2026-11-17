@@ -12,7 +12,6 @@ import { ManagerType } from 'components/admin/PostManager';
 import NoPost from 'components/admin/PostManager/components/PostTable/NoPost';
 
 import Spinner from 'design-system/Spinner';
-import 'design-system/tokens.css';
 
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
@@ -23,10 +22,10 @@ import { BatchAttribute } from './BatchBar/useBatchActions';
 import { ColumnKey, getColumns } from './columns';
 import EditInputModal from './EditInputModal';
 import EmptyState from './EmptyState';
-import styles from './InputManager.module.css';
 import FilterChips from './FilterMenu/FilterChips';
 import useFilterCategories from './FilterMenu/useFilterCategories';
 import IdeaTable from './IdeaTable';
+import styles from './InputManager.module.css';
 import ListToolbar from './ListToolbar';
 import SideColumn from './SideColumn';
 import SidePanel from './SidePanel';
@@ -36,6 +35,7 @@ import usePanelNavigation from './usePanelNavigation';
 import usePhaseCounts from './usePhaseCounts';
 import usePickerOptions from './usePickerOptions';
 import useSelection from './useSelection';
+import 'design-system/tokens.css';
 
 const PAGE_SIZE = 20;
 

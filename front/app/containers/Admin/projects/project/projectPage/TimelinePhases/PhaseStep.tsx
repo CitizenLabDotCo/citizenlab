@@ -9,8 +9,6 @@ import useLocalize from 'hooks/useLocalize';
 
 import { getLocale } from 'components/admin/DatePickers/_shared/locales';
 
-import 'design-system/tokens.css';
-
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
@@ -23,6 +21,7 @@ import {
 } from '../phaseRowUtils';
 
 import styles from './PhaseStep.module.css';
+import 'design-system/tokens.css';
 
 const DOT_CLASSES: Record<PhaseStatus, string> = {
   past: styles.dotPast,

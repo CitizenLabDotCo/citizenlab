@@ -5,9 +5,8 @@ import {
   ToggleButtonGroup as AriaToggleButtonGroup,
 } from 'react-aria-components';
 
-import '../tokens.css';
-
 import styles from './ToggleButtonGroup.module.css';
+import '../tokens.css';
 
 type ToggleButtonGroupProps = {
   // Two or three design-system ToggleButtons, each with an id.

@@ -1,7 +1,5 @@
 import React, { ReactNode, useState } from 'react';
 
-import Button from 'design-system/Button';
-import 'design-system/tokens.css';
 import { CLErrors } from 'typings';
 
 import { IUpdatedPhaseProperties, ParticipationMethod } from 'api/phases/types';
@@ -13,10 +11,13 @@ import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/t
 
 import assigneeMessages from 'components/admin/ProjectAssignee/messages';
 
+import Button from 'design-system/Button';
+
 import { useIntl } from 'utils/cl-intl';
 
 import styles from './DraftMethodSettings.module.css';
 import messages from './messages';
+import 'design-system/tokens.css';
 
 // Information has nothing to set here, and document annotation's Konveio link
 // sits in the build panel.

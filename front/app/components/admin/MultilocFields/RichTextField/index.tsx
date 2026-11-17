@@ -3,20 +3,19 @@ import React, { RefCallback, useEffect, useRef } from 'react';
 import 'quill/dist/quill.snow.css';
 import '@enzedonline/quill-blot-formatter2/dist/css/quill-blot-formatter2.css';
 
-import RichTextEditor from 'design-system/RichTextEditor';
-
 import useLocale from 'hooks/useLocale';
 
 import quillMessages from 'components/UI/QuillEditor/messages';
 import useQuillEditor from 'components/UI/QuillEditor/useQuillEditor';
 
-import 'design-system/tokens.css';
+import RichTextEditor from 'design-system/RichTextEditor';
 
 import { useIntl } from 'utils/cl-intl';
 
 import FormattingToolbar from './FormattingToolbar';
 import ImageTooLargeModal from './ImageTooLargeModal';
 import styles from './RichTextField.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   id: string;

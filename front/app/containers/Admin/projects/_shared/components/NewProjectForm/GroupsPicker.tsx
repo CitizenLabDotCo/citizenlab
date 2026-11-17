@@ -10,7 +10,6 @@ import { fieldStyles } from 'design-system/Field';
 import { ListBoxOption } from 'design-system/ListBox';
 import TagGroup, { Tag, TagAdd } from 'design-system/TagGroup';
 import TagPicker from 'design-system/TagPicker';
-import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -18,6 +17,7 @@ import visibilityMessages from '../../visibilityOptions/messages';
 
 import messages from './messages';
 import styles from './NewProjectForm.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   groupIds: string[];

@@ -8,10 +8,10 @@ import {
 } from 'react-aria-components';
 
 import Icon from '../Icon';
-import '../tokens.css';
 import inputStyles from '../TextField/input.module.css';
 
 import styles from './SearchField.module.css';
+import '../tokens.css';
 
 type SearchFieldProps = {
   // There is no visible label, so the field needs a name.

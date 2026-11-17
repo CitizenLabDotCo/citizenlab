@@ -3,11 +3,11 @@ import React from 'react';
 import topicsMessages from 'containers/Admin/projects/project/topics/messages';
 
 import IconButton from 'design-system/IconButton';
-import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 
 import styles from './TagActions.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   deleteDisabled?: boolean;

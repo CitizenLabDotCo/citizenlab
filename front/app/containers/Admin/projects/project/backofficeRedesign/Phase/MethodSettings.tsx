@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import 'design-system/tokens.css';
 import { CLErrors } from 'typings';
 
 import {
@@ -38,6 +37,7 @@ import messages from './messages';
 import styles from './MethodSettings.module.css';
 import ParticipantActionsGroup from './ParticipantActionsGroup';
 import PhaseNotifications from './PhaseNotifications';
+import 'design-system/tokens.css';
 
 const METHODS_WITH_ACTION_ROWS: ParticipationMethod[] = [
   'ideation',

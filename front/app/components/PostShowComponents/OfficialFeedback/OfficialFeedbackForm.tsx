@@ -31,7 +31,6 @@ import MentionsTextArea from 'components/UI/MentionsTextArea';
 import Banner from 'design-system/Banner';
 import Button from 'design-system/Button';
 import TextField from 'design-system/TextField';
-import 'design-system/tokens.css';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -41,6 +40,7 @@ import { weglotTranslateSubmission, WeglotDataOrEmpty } from 'utils/weglot';
 import messages from './messages';
 import panelStyles from './OfficialFeedbackPanel.module.css';
 import tracks from './tracks';
+import 'design-system/tokens.css';
 
 const Container = styled.div``;
 

@@ -2,10 +2,9 @@ import React, { ReactNode } from 'react';
 
 import { Switch as AriaSwitch } from 'react-aria-components';
 
-import '../tokens.css';
-
 import styles from './Switch.module.css';
 import SwitchTrack from './SwitchTrack';
+import '../tokens.css';
 
 type LabelProps =
   | { children: ReactNode; 'aria-label'?: string }

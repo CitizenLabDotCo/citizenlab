@@ -1,11 +1,11 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 
-import Banner from 'design-system/Banner';
-import IconButton from 'design-system/IconButton';
-import 'design-system/tokens.css';
 import { UploadFile } from 'typings';
 
 import imagesDropzoneMessages from 'components/UI/ImagesDropzone/messages';
+
+import Banner from 'design-system/Banner';
+import IconButton from 'design-system/IconButton';
 
 import { useIntl } from 'utils/cl-intl';
 import { returnFileSize } from 'utils/fileUtils';
@@ -18,6 +18,7 @@ import {
   toUploadFile,
 } from './imageUpload';
 import messages from './messages';
+import 'design-system/tokens.css';
 
 interface Dimensions {
   width: number;

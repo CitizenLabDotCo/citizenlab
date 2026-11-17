@@ -1,9 +1,8 @@
 import React from 'react';
 
-import Button from 'design-system/Button';
-import 'design-system/tokens.css';
-
 import { CommonGroundResultsData } from 'api/common_ground/types';
+
+import Button from 'design-system/Button';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -13,6 +12,7 @@ import ExportRow from '../InputManager/SideColumn/ExportRow';
 import messages from './messages';
 import StatementStats from './StatementStats';
 import { totalReactions } from './utils';
+import 'design-system/tokens.css';
 
 interface Props {
   projectId: string;

@@ -13,9 +13,9 @@ import Calendar from '../Calendar';
 import DateSegments from '../DateField/DateSegments';
 import { FieldHelp, FieldLabel, fieldStyles } from '../Field';
 import Icon from '../Icon';
-import '../tokens.css';
 
 import styles from './DatePicker.module.css';
+import '../tokens.css';
 
 type Props = {
   label: ReactNode;

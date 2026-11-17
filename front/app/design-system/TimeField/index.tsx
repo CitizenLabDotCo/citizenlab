@@ -6,9 +6,9 @@ import { TimeField as AriaTimeField } from 'react-aria-components';
 import dateInputStyles from '../DateField/DateInput.module.css';
 import DateSegments from '../DateField/DateSegments';
 import { FieldHelp, FieldLabel, fieldStyles } from '../Field';
-import '../tokens.css';
 
 import styles from './TimeField.module.css';
+import '../tokens.css';
 
 type Props = {
   label: ReactNode;

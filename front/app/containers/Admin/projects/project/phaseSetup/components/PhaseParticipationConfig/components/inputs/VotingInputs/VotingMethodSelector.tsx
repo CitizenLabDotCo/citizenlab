@@ -14,7 +14,6 @@ import ChoiceRadio from 'containers/Admin/projects/_shared/components/ChoiceRadi
 import { SubSectionTitle } from 'components/admin/Section';
 
 import RadioGroup from 'design-system/RadioGroup';
-import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -22,6 +21,7 @@ import BudgetingIcon from './CardIcons/BudgetingIcon';
 import MultipleVotingIcon from './CardIcons/MultipleVotingIcon';
 import SingleVotingIcon from './CardIcons/SingleVotingIcon';
 import messages from './messages';
+import 'design-system/tokens.css';
 
 const VOTING_METHODS = [
   {

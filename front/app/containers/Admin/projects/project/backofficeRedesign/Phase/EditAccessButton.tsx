@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 
+import ActionForms from 'containers/Admin/projects/project/permissions/Phase/ActionForms';
+
 import Button from 'design-system/Button';
 import Modal from 'design-system/Modal';
-import 'design-system/tokens.css';
-
-import ActionForms from 'containers/Admin/projects/project/permissions/Phase/ActionForms';
 
 import { useIntl } from 'utils/cl-intl';
 
 import styles from './EditAccessButton.module.css';
 import messages from './messages';
+import 'design-system/tokens.css';
 
 interface Props {
   phaseId: string;

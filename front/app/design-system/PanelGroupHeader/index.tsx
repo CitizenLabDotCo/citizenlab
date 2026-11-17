@@ -2,9 +2,8 @@ import React, { ReactNode } from 'react';
 
 import { Heading } from 'react-aria-components';
 
-import '../tokens.css';
-
 import styles from './PanelGroupHeader.module.css';
+import '../tokens.css';
 
 type Props = {
   label: ReactNode;

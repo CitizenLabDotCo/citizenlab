@@ -16,7 +16,6 @@ import AlertDialog from 'design-system/AlertDialog';
 import DSButton from 'design-system/Button';
 import DSDivider from 'design-system/Divider';
 import IconButton from 'design-system/IconButton';
-import 'design-system/tokens.css';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
@@ -30,6 +29,7 @@ import PlatformDefaultsNote from './PlatformDefaultsNote';
 import RevertToDefaultsModal from './RevertToDefaultsModal';
 import { Changes, Props } from './types';
 import { Chip, ReadOnlyOverlay } from './ui';
+import 'design-system/tokens.css';
 
 const ActionForm = ({
   phaseId,

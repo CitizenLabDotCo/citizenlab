@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 import { IconName } from 'design-system/Icon';
 import Modal, { DialogAction } from 'design-system/Modal';
-import 'design-system/tokens.css';
 import VerticalTabs, {
   TabPanel,
   VerticalTab,
@@ -12,6 +11,7 @@ import VerticalTabs, {
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import styles from './SettingsModal.module.css';
+import 'design-system/tokens.css';
 
 export interface SettingsModalSection {
   name: string;

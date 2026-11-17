@@ -3,9 +3,9 @@ import React from 'react';
 import { Button } from 'react-aria-components';
 
 import Icon from '../Icon';
-import '../tokens.css';
 
 import styles from './TagGroup.module.css';
+import '../tokens.css';
 
 type TagAddProps = {
   children: string;

@@ -15,11 +15,11 @@ import Error from 'components/UI/Error';
 import Button from 'design-system/Button';
 import { fieldStyles } from 'design-system/Field';
 import Menu, { MenuItem, MenuTrigger } from 'design-system/Menu';
-import 'design-system/tokens.css';
 
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import styles from './SortingPicker.module.css';
+import 'design-system/tokens.css';
 
 const SORTING_LABELS: Record<IdeaSortMethod, MessageDescriptor> = {
   trending: messages.trendingSortingMethod,

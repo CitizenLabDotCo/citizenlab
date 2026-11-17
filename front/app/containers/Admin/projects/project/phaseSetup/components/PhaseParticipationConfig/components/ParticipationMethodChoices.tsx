@@ -14,7 +14,6 @@ import { ParticipationMethod } from 'api/phases/types';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import DsBadge from 'design-system/Badge';
-import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -30,6 +29,7 @@ import volunteeringImage from './assets/volunteering.png';
 import votingImage from './assets/voting.png';
 import messages2 from './messages';
 import ParticipationMethodChoice from './ParticipationMethodChoice';
+import 'design-system/tokens.css';
 
 interface Props {
   isSelected?: (method: ParticipationMethod) => boolean;

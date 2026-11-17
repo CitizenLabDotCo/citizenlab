@@ -4,11 +4,11 @@ import { Multiloc } from 'typings';
 
 import Banner from 'design-system/Banner';
 import TitleField from 'design-system/TitleField';
-import 'design-system/tokens.css';
 
 import LocaleSwitcher from './LocaleSwitcher';
 import styles from './MultilocFields.module.css';
 import useSelectedLocale from './useSelectedLocale';
+import 'design-system/tokens.css';
 
 interface Props {
   id: string;

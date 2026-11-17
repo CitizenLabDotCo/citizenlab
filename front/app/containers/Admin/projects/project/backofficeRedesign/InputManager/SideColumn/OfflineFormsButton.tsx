@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
 
-import Button from 'design-system/Button';
-import { IconName } from 'design-system/Icon';
-import Modal from 'design-system/Modal';
-import 'design-system/tokens.css';
-
 import { ParticipationMethod } from 'api/phases/types';
 
 import { isPDFUploadSupported } from 'containers/Admin/projects/project/inputImporter/ReviewSection/utils';
 
 import ImportInputsSection from 'components/admin/FormSync/ImportInputsSection';
 
+import Button from 'design-system/Button';
+import { IconName } from 'design-system/Icon';
+import Modal from 'design-system/Modal';
+
 import { useIntl } from 'utils/cl-intl';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
 import messages from '../messages';
+import 'design-system/tokens.css';
 
 interface Props {
   participationMethod: ParticipationMethod;

@@ -1,8 +1,7 @@
 import React, { ReactNode } from 'react';
 
-import '../tokens.css';
-
 import styles from './StatTile.module.css';
+import '../tokens.css';
 
 type StatTileProps = {
   label: ReactNode;

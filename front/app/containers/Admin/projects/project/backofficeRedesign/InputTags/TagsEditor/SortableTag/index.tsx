@@ -3,9 +3,9 @@ import React, { ReactNode, RefObject, useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 
 import Icon from 'design-system/Icon';
-import 'design-system/tokens.css';
 
 import styles from './SortableTag.module.css';
+import 'design-system/tokens.css';
 
 export const ROOT_TAG_TYPE = 'tag-root';
 

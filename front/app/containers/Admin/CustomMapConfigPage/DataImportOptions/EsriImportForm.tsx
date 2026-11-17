@@ -4,13 +4,13 @@ import Banner from 'design-system/Banner';
 import Button from 'design-system/Button';
 import IconButton from 'design-system/IconButton';
 import TextField from 'design-system/TextField';
-import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 
 import styles from './DataImportOptions.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   title: string;

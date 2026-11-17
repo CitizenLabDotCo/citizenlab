@@ -5,7 +5,6 @@ import { IOption } from 'typings';
 import Banner from 'design-system/Banner';
 import { ListBoxOption } from 'design-system/ListBox';
 import Select from 'design-system/Select';
-import 'design-system/tokens.css';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
@@ -16,6 +15,7 @@ import useProjectContext, {
 } from '../ProjectSetupForm/ProjectContextSection/useProjectContext';
 
 import messages from './messages';
+import 'design-system/tokens.css';
 
 const SELECT_SIZES: Record<'medium' | 'compact', 36 | 32> = {
   medium: 36,

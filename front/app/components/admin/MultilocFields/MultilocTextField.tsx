@@ -3,11 +3,11 @@ import React, { ReactNode, RefCallback } from 'react';
 import { Multiloc, SupportedLocale } from 'typings';
 
 import TextField from 'design-system/TextField';
-import 'design-system/tokens.css';
 
 import LocaleSwitcher from './LocaleSwitcher';
 import styles from './MultilocFields.module.css';
 import useSelectedLocale from './useSelectedLocale';
+import 'design-system/tokens.css';
 
 type LabelProps =
   | { label: string; 'aria-label'?: undefined }

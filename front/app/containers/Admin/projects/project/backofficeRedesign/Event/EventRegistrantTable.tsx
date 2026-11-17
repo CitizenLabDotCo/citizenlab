@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { AttendanceSort, IEventAttendances } from 'api/event_attendance/types';
+
 import Pagination from 'design-system/Pagination';
 import Table, {
   Cell,
@@ -9,9 +11,6 @@ import Table, {
   TableBody,
   TableHeader,
 } from 'design-system/Table';
-import 'design-system/tokens.css';
-
-import { AttendanceSort, IEventAttendances } from 'api/event_attendance/types';
 
 import { useIntl } from 'utils/cl-intl';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
@@ -19,6 +18,7 @@ import { getFullName } from 'utils/textUtils';
 
 import styles from './EventManager.module.css';
 import messages from './messages';
+import 'design-system/tokens.css';
 
 interface Props {
   attendances: IEventAttendances;

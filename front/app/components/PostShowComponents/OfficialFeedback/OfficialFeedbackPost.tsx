@@ -24,7 +24,6 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 import IconButton from 'design-system/IconButton';
 import Menu, { MenuItem, MenuTrigger } from 'design-system/Menu';
-import 'design-system/tokens.css';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -32,6 +31,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 import OfficialFeedbackForm from './OfficialFeedbackForm';
 import panelStyles from './OfficialFeedbackPanel.module.css';
+import 'design-system/tokens.css';
 
 const Container = styled.div`
   display: flex;

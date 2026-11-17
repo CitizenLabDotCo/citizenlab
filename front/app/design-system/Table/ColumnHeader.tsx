@@ -9,9 +9,9 @@ import {
 } from 'react-aria-components';
 
 import Icon from '../Icon';
-import '../tokens.css';
 
 import styles from './ColumnHeader.module.css';
+import '../tokens.css';
 
 export type ColumnIndicator = 'none' | 'ascending' | 'descending';
 

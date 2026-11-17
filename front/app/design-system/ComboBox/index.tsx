@@ -11,10 +11,10 @@ import {
 import { FieldHelp, FieldLabel, fieldStyles } from '../Field';
 import Icon from '../Icon';
 import ListBox, { ListBoxPopover } from '../ListBox';
-import '../tokens.css';
 
 import styles from './ComboBox.module.css';
 import OpenOnMount from './OpenOnMount';
+import '../tokens.css';
 
 type ComboBoxProps<T extends object> = {
   label: ReactNode;

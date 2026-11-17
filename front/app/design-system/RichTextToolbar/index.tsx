@@ -2,9 +2,8 @@ import React, { ReactNode } from 'react';
 
 import { Toolbar } from 'react-aria-components';
 
-import '../tokens.css';
-
 import styles from './RichTextToolbar.module.css';
+import '../tokens.css';
 
 type RichTextToolbarProps = {
   // RichTextToolbarButton items.

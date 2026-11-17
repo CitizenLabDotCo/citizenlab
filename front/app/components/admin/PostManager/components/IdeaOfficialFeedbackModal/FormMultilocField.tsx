@@ -12,9 +12,9 @@ import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 import useSelectedLocale from 'components/admin/MultilocFields/useSelectedLocale';
 
 import TextArea from 'design-system/TextArea';
-import 'design-system/tokens.css';
 
 import styles from './IdeaOfficialFeedbackModal.module.css';
+import 'design-system/tokens.css';
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null;

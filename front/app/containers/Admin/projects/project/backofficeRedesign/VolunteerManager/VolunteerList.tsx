@@ -1,9 +1,8 @@
 import React from 'react';
 
-import Spinner from 'design-system/Spinner';
-import 'design-system/tokens.css';
-
 import { IVolunteers, VolunteersSort } from 'api/volunteers/types';
+
+import Spinner from 'design-system/Spinner';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -13,6 +12,7 @@ import ListLoadError from '../Phase/ListLoadError';
 import messages from './messages';
 import styles from './VolunteerManager.module.css';
 import VolunteerTable from './VolunteerTable';
+import 'design-system/tokens.css';
 
 interface Props {
   volunteers: IVolunteers | undefined;

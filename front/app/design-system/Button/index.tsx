@@ -8,10 +8,10 @@ import {
 
 import Icon, { IconName } from '../Icon';
 import { SpinnerGraphic } from '../Spinner';
-import '../tokens.css';
 import Tooltip from '../Tooltip';
 
 import styles from './Button.module.css';
+import '../tokens.css';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'quiet' | 'danger';
 

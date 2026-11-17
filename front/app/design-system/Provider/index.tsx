@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react';
 
 import { I18nProvider, RouterProvider } from 'react-aria-components';
-
 import '../tokens.css';
 
 type Props = {

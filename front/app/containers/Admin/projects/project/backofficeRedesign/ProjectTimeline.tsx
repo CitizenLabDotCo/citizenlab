@@ -14,8 +14,8 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 import PanelToggleButton from './PanelToggleButton';
-import styles from './ProjectTimeline.module.css';
 import SelectMethodModal from './ProjectSetupPanel/SelectMethodModal';
+import styles from './ProjectTimeline.module.css';
 import TimelineEvents from './TimelineEvents';
 
 interface Props {

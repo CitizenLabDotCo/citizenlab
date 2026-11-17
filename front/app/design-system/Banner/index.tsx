@@ -1,9 +1,9 @@
 import React, { ReactNode } from 'react';
 
 import Icon, { IconName } from '../Icon';
-import '../tokens.css';
 
 import styles from './Banner.module.css';
+import '../tokens.css';
 
 type Tone = 'info' | 'warning' | 'error' | 'neutral';
 

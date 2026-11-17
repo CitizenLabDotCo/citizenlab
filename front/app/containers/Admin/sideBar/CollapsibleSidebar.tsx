@@ -1,7 +1,6 @@
 import React, { useLayoutEffect, useState } from 'react';
 
 import IconButton from 'design-system/IconButton';
-import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -10,6 +9,7 @@ import messages from './messages';
 import { useWorkspaceHeader } from './WorkspaceHeaderContext';
 
 import Sidebar from './index';
+import 'design-system/tokens.css';
 
 const CollapsibleSidebar = () => {
   const [opened, setOpened] = useState(false);

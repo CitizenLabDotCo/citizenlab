@@ -2,9 +2,9 @@ import React, { ReactNode } from 'react';
 
 // The preview copies the citizen event page and keeps its icons.
 import { Icon, IconNames } from '@citizenlab/cl2-component-library';
-import 'design-system/tokens.css';
 
 import styles from './PreviewInfoRow.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   icon: IconNames;

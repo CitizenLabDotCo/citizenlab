@@ -1,13 +1,12 @@
 import React from 'react';
 
-import '../tokens.css';
-
-import styles from './Pagination.module.css';
-import PaginationItem from './PaginationItem';
-
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
+import styles from './Pagination.module.css';
+import PaginationItem from './PaginationItem';
+
+import '../tokens.css';
 
 type Slot = number | 'ellipsis';
 

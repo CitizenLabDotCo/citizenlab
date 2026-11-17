@@ -2,9 +2,9 @@ import React, { ReactNode, RefObject, useEffect, useState } from 'react';
 
 import { Tooltip as AriaTooltip, TooltipTrigger } from 'react-aria-components';
 
-import '../tokens.css';
 import { TOOLTIP_DELAY } from '../Tooltip';
 import tooltipStyles from '../Tooltip/Tooltip.module.css';
+import '../tokens.css';
 
 type Props = {
   content: ReactNode;

@@ -2,12 +2,12 @@ import React from 'react';
 
 // The preview copies the citizen event page and keeps its icon.
 import { Icon } from '@citizenlab/cl2-component-library';
-import 'design-system/tokens.css';
 
 import { IFileAttachmentData } from 'api/file_attachments/types';
 import useFileById from 'api/files/useFileById';
 
 import styles from './PreviewAttachment.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   attachment: IFileAttachmentData;

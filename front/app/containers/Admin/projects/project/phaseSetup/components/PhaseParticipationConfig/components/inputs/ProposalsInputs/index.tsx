@@ -21,8 +21,6 @@ import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 
-import 'design-system/tokens.css';
-
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import configMessages from '../../../messages';
@@ -37,6 +35,7 @@ import SortingPicker from '../_shared/SortingPicker';
 import UserActions from '../_shared/UserActions';
 
 import styles from './ProposalsInputs.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   moderationAction?: ReactNode;

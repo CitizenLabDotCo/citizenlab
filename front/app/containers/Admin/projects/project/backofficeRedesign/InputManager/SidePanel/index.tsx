@@ -1,17 +1,17 @@
 import React, { KeyboardEvent } from 'react';
 
-import DesignSystemSidePanel from 'design-system/SidePanel';
-import Spinner from 'design-system/Spinner';
-import 'design-system/tokens.css';
-
 import useIdeaById from 'api/ideas/useIdeaById';
 import { IPhaseData } from 'api/phases/types';
 
 import { ManagerType } from 'components/admin/PostManager';
 
+import DesignSystemSidePanel from 'design-system/SidePanel';
+import Spinner from 'design-system/Spinner';
+
 import IdeaOverview from './IdeaOverview';
 import PanelHeader, { PanelNavigation } from './PanelHeader';
 import styles from './SidePanel.module.css';
+import 'design-system/tokens.css';
 
 const isEditable = (target: EventTarget): target is HTMLElement =>
   target instanceof HTMLElement &&

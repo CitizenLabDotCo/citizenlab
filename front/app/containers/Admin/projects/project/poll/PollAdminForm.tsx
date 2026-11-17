@@ -12,11 +12,10 @@ import useDeletePollQuestion from 'api/poll_questions/useDeletePollQuestion';
 import useReorderPollQuestion from 'api/poll_questions/useReorderPollQuestion';
 import useUpdatePollQuestion from 'api/poll_questions/useUpdatePollQuestion';
 
-import Button from 'design-system/Button';
-import 'design-system/tokens.css';
-
 import { List } from 'components/admin/ResourceList';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
+
+import Button from 'design-system/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
@@ -31,6 +30,7 @@ import {
   PollVariantContext,
   useIsPanelPoll,
 } from './PollVariantContext';
+import 'design-system/tokens.css';
 
 const StyledList = styled(List)`
   margin: 10px 0;

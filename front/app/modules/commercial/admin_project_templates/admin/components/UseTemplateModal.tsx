@@ -35,7 +35,6 @@ import Banner from 'design-system/Banner';
 import DatePicker from 'design-system/DatePicker';
 import DSIcon from 'design-system/Icon';
 import DSModal from 'design-system/Modal';
-import 'design-system/tokens.css';
 
 import { trackEventByName } from 'utils/analytics';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -57,6 +56,7 @@ import useTemplateTitle from '../api/useTemplateTitle';
 import FolderPicker from './FolderPicker';
 import messages from './messages';
 import styles from './UseTemplateModal.module.css';
+import 'design-system/tokens.css';
 
 type Variant = 'default' | 'panel';
 

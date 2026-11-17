@@ -15,7 +15,6 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import Divider from 'design-system/Divider';
 import PanelGroupHeader from 'design-system/PanelGroupHeader';
-import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
@@ -34,6 +33,7 @@ import PhaseRowWithOptions from '../TimelinePhases/PhaseRowWithOptions';
 import PhaseStep from '../TimelinePhases/PhaseStep';
 
 import styles from './SpotlightSurveys.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   projectId: string;

@@ -13,7 +13,6 @@ import shareLinkTracks from 'containers/Admin/projects/project/projectHeader/Sha
 import Button from 'design-system/Button';
 import Divider from 'design-system/Divider';
 import TextField from 'design-system/TextField';
-import 'design-system/tokens.css';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
@@ -21,6 +20,7 @@ import { useIntl } from 'utils/cl-intl';
 import AccessPeopleRow from './AccessPeopleRow';
 import messages from './messages';
 import styles from './ShareDropdown.module.css';
+import 'design-system/tokens.css';
 
 const splitEmails = (value: string) =>
   value

@@ -12,13 +12,13 @@ import Modal from 'components/UI/Modal';
 
 import DSIcon from 'design-system/Icon';
 import DSModal from 'design-system/Modal';
-import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
 import styles from './FormInputEditWarningModal.module.css';
 import messages from './messages';
+import 'design-system/tokens.css';
 
 type Props = {
   showEditWarningModal: boolean;

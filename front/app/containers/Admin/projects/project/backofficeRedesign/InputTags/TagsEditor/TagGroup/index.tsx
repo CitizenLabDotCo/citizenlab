@@ -13,7 +13,6 @@ import T from 'components/T';
 import Badge from 'design-system/Badge';
 import Button from 'design-system/Button';
 import IconButton from 'design-system/IconButton';
-import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -28,6 +27,7 @@ import { getSiblings } from '../utils';
 
 import messages from './messages';
 import styles from './TagGroup.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   topic: IInputTopicData;

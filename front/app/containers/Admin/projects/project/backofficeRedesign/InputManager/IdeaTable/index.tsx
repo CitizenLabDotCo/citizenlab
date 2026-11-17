@@ -1,11 +1,10 @@
 import React from 'react';
 
-import Pagination from 'design-system/Pagination';
-import Table, { TableBody } from 'design-system/Table';
-import 'design-system/tokens.css';
-
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IIdeaData, Sort } from 'api/ideas/types';
+
+import Pagination from 'design-system/Pagination';
+import Table, { TableBody } from 'design-system/Table';
 
 import { ColumnKey } from '../columns';
 import useInputTermLabels from '../useInputTermLabels';
@@ -13,6 +12,7 @@ import useInputTermLabels from '../useInputTermLabels';
 import HeaderRow from './HeaderRow';
 import IdeaRow from './IdeaRow';
 import styles from './IdeaTable.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   ideas: IIdeaData[];

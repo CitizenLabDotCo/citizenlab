@@ -12,7 +12,6 @@ import Modal from 'components/UI/Modal';
 import { ListBoxOption } from 'design-system/ListBox';
 import DesignSystemModal from 'design-system/Modal';
 import DesignSystemSelect from 'design-system/Select';
-import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 import { useParams } from 'utils/router';
@@ -21,6 +20,7 @@ import FileInput from '../../FileUploader/FileInput';
 
 import styles from './FileSelectModal.module.css';
 import messages from './messages';
+import 'design-system/tokens.css';
 
 interface Props {
   /** The panel keeps the modal open to show the attached files (children). */

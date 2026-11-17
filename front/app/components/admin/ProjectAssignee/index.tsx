@@ -4,12 +4,12 @@ import { UNASSIGNED } from 'components/admin/PostManager/useAssigneeOptions';
 
 import ComboBox from 'design-system/ComboBox';
 import { ListBoxOption } from 'design-system/ListBox';
-import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 import useProjectAssignee from './useProjectAssignee';
+import 'design-system/tokens.css';
 
 interface Props {
   projectId: string;

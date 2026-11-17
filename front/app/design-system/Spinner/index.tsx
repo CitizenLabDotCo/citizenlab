@@ -2,8 +2,8 @@ import React from 'react';
 
 import { ProgressBar } from 'react-aria-components';
 
-import '../tokens.css';
 import styles from './Spinner.module.css';
+import '../tokens.css';
 
 type GraphicProps = {
   // Accent on light surfaces, Inverse inside a filled Primary or Danger button.

@@ -1,8 +1,8 @@
 import React from 'react';
 
-import '../tokens.css';
 import styles from './Icon.module.css';
 import { icons, IconName } from './icons';
+import '../tokens.css';
 
 export type { IconName };
 

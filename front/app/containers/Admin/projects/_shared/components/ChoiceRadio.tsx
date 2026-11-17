@@ -1,9 +1,9 @@
 import React, { ReactNode } from 'react';
 
 import { Radio } from 'design-system/RadioGroup';
-import 'design-system/tokens.css';
 
 import styles from './ChoiceRadio.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   value: string;

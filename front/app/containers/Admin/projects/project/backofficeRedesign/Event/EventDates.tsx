@@ -2,11 +2,6 @@ import React, { Dispatch, SetStateAction, useState } from 'react';
 
 import { CalendarDate, Time } from '@internationalized/date';
 import { addMinutes, isSameDay } from 'date-fns';
-import Button from 'design-system/Button';
-import DatePicker from 'design-system/DatePicker';
-import IconButton from 'design-system/IconButton';
-import TimeField from 'design-system/TimeField';
-import 'design-system/tokens.css';
 import { CLErrors } from 'typings';
 
 import { IEventProperties } from 'api/events/types';
@@ -19,11 +14,17 @@ import phaseSetupMessages from 'containers/Admin/projects/project/phaseSetup/mes
 
 import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 
+import Button from 'design-system/Button';
+import DatePicker from 'design-system/DatePicker';
+import IconButton from 'design-system/IconButton';
+import TimeField from 'design-system/TimeField';
+
 import { useIntl } from 'utils/cl-intl';
 
 import styles from './EventDates.module.css';
 import messages from './messages';
 import PlatformTimeNote from './PlatformTimeNote';
+import 'design-system/tokens.css';
 
 const withTimeOf = (date: Date, time: Date) => {
   const result = new Date(date);

@@ -3,10 +3,9 @@ import React from 'react';
 import { CalendarDate } from '@internationalized/date';
 import { Calendar as AriaCalendar } from 'react-aria-components';
 
-import '../tokens.css';
-
 import styles from './Calendar.module.css';
 import CalendarMonth from './CalendarMonth';
+import '../tokens.css';
 
 // Takes its value and limits from the Date picker it sits in.
 const Calendar = () => (

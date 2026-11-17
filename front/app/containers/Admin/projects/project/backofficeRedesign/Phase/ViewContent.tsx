@@ -1,11 +1,10 @@
 import React, { ReactNode } from 'react';
 
-import Spinner from 'design-system/Spinner';
-import 'design-system/tokens.css';
-
 import { PhaseInsightsParticipationMetrics } from 'api/phase_insights/types';
 import usePhaseInsights from 'api/phase_insights/usePhaseInsights';
 import { IPhaseData } from 'api/phases/types';
+
+import Spinner from 'design-system/Spinner';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -17,6 +16,7 @@ import ManageLayout from './ManageLayout';
 import messages from './messages';
 import { PhaseViewKey } from './usePhaseViews';
 import styles from './ViewContent.module.css';
+import 'design-system/tokens.css';
 
 const EMPTY_COPY = {
   manage: {

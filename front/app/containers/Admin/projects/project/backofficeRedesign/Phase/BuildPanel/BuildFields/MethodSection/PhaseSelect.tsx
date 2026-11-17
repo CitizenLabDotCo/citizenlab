@@ -10,11 +10,11 @@ import phaseFilterMessages from 'components/UI/PhaseFilter/messages';
 import { ListBoxOption } from 'design-system/ListBox';
 import Select from 'design-system/Select';
 import Spinner from 'design-system/Spinner';
-import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 
 import styles from './PhaseSelect.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   label: string;

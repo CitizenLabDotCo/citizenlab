@@ -11,7 +11,6 @@ import formMessages from 'components/UI/FormComponents/messages';
 import UserSelect from 'components/UI/UserSelect';
 
 import IconButton from 'design-system/IconButton';
-import 'design-system/tokens.css';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
@@ -19,6 +18,7 @@ import messages from '../messages';
 
 import AuthorComboBox from './AuthorComboBox';
 import styles from './AuthorField.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   name: string;

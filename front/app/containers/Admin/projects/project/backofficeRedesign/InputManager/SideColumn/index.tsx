@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 
-import Button from 'design-system/Button';
-import 'design-system/tokens.css';
-
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 
 import { ManagerType } from 'components/admin/PostManager';
+
+import Button from 'design-system/Button';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -22,6 +21,7 @@ import ExportRow from './ExportRow';
 import InputStats from './InputStats';
 import OfflineCollection from './OfflineCollection';
 import OfflineVotesModal from './OfflineVotesModal';
+import 'design-system/tokens.css';
 
 interface Props {
   type: ManagerType;

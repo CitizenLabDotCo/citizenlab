@@ -3,10 +3,10 @@ import React from 'react';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import Icon from '../Icon';
-import '../tokens.css';
 
 import messages from './messages';
 import styles from './ReviewStatus.module.css';
+import '../tokens.css';
 
 type Props = {
   status: 'toReview' | 'toSet' | 'reviewed';

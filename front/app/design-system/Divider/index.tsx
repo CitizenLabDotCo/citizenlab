@@ -2,9 +2,8 @@ import React from 'react';
 
 import { Separator } from 'react-aria-components';
 
-import '../tokens.css';
-
 import styles from './Divider.module.css';
+import '../tokens.css';
 
 const Divider = () => <Separator className={styles.divider} />;
 

@@ -19,8 +19,6 @@ import projectMessages from 'containers/Admin/projects/project/messages';
 import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle';
 import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 
-import 'design-system/tokens.css';
-
 import { useIntl } from 'utils/cl-intl';
 
 import configMessages from '../../../messages';
@@ -36,6 +34,7 @@ import UserActions from '../_shared/UserActions';
 import DislikingSettings from './DislikingSettings';
 import DislikingToggle from './DislikingToggle';
 import styles from './IdeationInputs.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   moderationAction?: ReactNode;

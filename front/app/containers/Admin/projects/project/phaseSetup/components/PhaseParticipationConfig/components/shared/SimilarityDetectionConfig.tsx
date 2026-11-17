@@ -21,7 +21,6 @@ import UpsellTooltip from 'components/UpsellTooltip';
 
 import { fieldStyles } from 'design-system/Field';
 import NumberField from 'design-system/NumberField';
-import 'design-system/tokens.css';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isSuperAdmin } from 'utils/permissions/roles';
@@ -29,6 +28,7 @@ import { isSuperAdmin } from 'utils/permissions/roles';
 import messages from '../messages';
 
 import styles from './SimilarityDetectionConfig.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   similarity_enabled?: boolean | null;

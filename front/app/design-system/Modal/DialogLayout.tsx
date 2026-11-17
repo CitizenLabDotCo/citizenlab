@@ -6,10 +6,10 @@ import { useIntl } from 'utils/cl-intl';
 
 import Button from '../Button';
 import IconButton from '../IconButton';
-import '../tokens.css';
 
 import messages from './messages';
 import styles from './Modal.module.css';
+import '../tokens.css';
 
 export type DialogAction = {
   label: ReactNode;

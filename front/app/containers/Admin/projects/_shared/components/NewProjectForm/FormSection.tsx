@@ -1,8 +1,7 @@
 import React, { useId } from 'react';
 
-import 'design-system/tokens.css';
-
 import styles from './NewProjectForm.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   label: string;

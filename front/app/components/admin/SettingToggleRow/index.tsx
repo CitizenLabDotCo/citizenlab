@@ -1,9 +1,9 @@
 import React from 'react';
 
 import Switch from 'design-system/Switch';
-import 'design-system/tokens.css';
 
 import styles from './SettingToggleRow.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   id?: string;

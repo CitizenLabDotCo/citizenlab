@@ -97,6 +97,11 @@ module.exports = {
             position: 'before',
           },
           {
+            pattern: 'design-system/**',
+            group: 'internal',
+            position: 'before',
+          },
+          {
             pattern: 'utils/**',
             group: 'internal',
             position: 'before',

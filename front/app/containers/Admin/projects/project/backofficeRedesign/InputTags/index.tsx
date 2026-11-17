@@ -13,7 +13,6 @@ import { useRegisterPageSaver } from 'components/admin/PageSaveContext';
 import Banner from 'design-system/Banner';
 import Button from 'design-system/Button';
 import Spinner from 'design-system/Spinner';
-import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
@@ -25,6 +24,7 @@ import messages from './messages';
 import PerspectivesSection from './PerspectivesSection';
 import TagsEditor from './TagsEditor';
 import useTagsDraft from './TagsEditor/useTagsDraft';
+import 'design-system/tokens.css';
 
 interface Props {
   project: IProjectData;

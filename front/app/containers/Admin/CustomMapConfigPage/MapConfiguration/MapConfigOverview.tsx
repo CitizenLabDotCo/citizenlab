@@ -6,10 +6,10 @@ import styled from 'styled-components';
 
 import { IMapConfig } from 'api/map_config/types';
 
-import Banner from 'design-system/Banner';
-
 import { SectionTitle } from 'components/admin/Section';
 import Warning from 'components/UI/Warning';
+
+import Banner from 'design-system/Banner';
 
 import { FormattedMessage } from 'utils/cl-intl';
 

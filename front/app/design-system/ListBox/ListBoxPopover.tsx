@@ -2,10 +2,10 @@ import React, { ReactNode } from 'react';
 
 import { Popover } from 'react-aria-components';
 
-import '../tokens.css';
 import surfaces from '../surfaces.module.css';
 
 import styles from './ListBox.module.css';
+import '../tokens.css';
 
 type Props = {
   // A ListBox.

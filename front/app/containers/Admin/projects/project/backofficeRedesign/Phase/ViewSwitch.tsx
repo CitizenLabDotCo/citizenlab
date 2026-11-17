@@ -8,9 +8,9 @@ import SegmentedTabs, {
   SegmentedTab,
   SegmentedTabList,
 } from 'design-system/SegmentedTabs';
-import 'design-system/tokens.css';
 
 import { PhaseView } from './usePhaseViews';
+import 'design-system/tokens.css';
 
 interface Props {
   label: string;

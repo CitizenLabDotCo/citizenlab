@@ -9,7 +9,6 @@ import IconButton from 'design-system/IconButton';
 import { ListBoxOption } from 'design-system/ListBox';
 import Select from 'design-system/Select';
 import Spinner from 'design-system/Spinner';
-import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -17,6 +16,7 @@ import FileRow from '../FileRow';
 
 import messages from './messages';
 import styles from './UploadingFileRow.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   file: File;

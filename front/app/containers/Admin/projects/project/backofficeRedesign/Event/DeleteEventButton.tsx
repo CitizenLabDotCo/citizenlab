@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
 
-import AlertDialog from 'design-system/AlertDialog';
-import Button from 'design-system/Button';
-import 'design-system/tokens.css';
-
 import useDeleteEvent from 'api/events/useDeleteEvent';
 
 import eventMessages from 'containers/Admin/projects/project/events/messages';
 
 import { usePageSave } from 'components/admin/PageSaveContext';
 
+import AlertDialog from 'design-system/AlertDialog';
+import Button from 'design-system/Button';
+
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
 import styles from './DeleteEventButton.module.css';
 import messages from './messages';
+import 'design-system/tokens.css';
 
 interface Props {
   projectId: string;

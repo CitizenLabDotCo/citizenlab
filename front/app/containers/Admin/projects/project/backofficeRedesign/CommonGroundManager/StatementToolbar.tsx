@@ -1,7 +1,5 @@
 import React from 'react';
 
-import 'design-system/tokens.css';
-
 import { IIdeaData } from 'api/ideas/types';
 
 import { useIntl } from 'utils/cl-intl';
@@ -13,6 +11,7 @@ import SearchToggle from '../InputManager/SearchToggle';
 import styles from './CommonGroundManager.module.css';
 import messages from './messages';
 import StatementBatchBar from './StatementBatchBar';
+import 'design-system/tokens.css';
 
 interface Props {
   selectedIdeas: IIdeaData[];

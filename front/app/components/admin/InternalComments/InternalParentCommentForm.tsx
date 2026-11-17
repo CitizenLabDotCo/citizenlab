@@ -10,6 +10,7 @@ import useAddInternalCommentToIdea from 'api/internal_comments/useAddInternalCom
 import useAuthUser from 'api/me/useAuthUser';
 
 import Avatar from 'components/Avatar';
+import PanelFormButtons from 'components/PostShowComponents/Comments/CommentForm/PanelFormButtons';
 import panelStyles from 'components/PostShowComponents/Comments/commentsPanel.module.css';
 import {
   CommentsVariant,
@@ -17,18 +18,16 @@ import {
   panelTextAreaStyle,
   useIsPanelComments,
 } from 'components/PostShowComponents/Comments/commentsVariant';
-import PanelFormButtons from 'components/PostShowComponents/Comments/CommentForm/PanelFormButtons';
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
-
-import 'design-system/tokens.css';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import { commentAdded } from './events';
 import tracks from './tracks';
+import 'design-system/tokens.css';
 
 const Container = styled.div`
   display: flex;

@@ -1,11 +1,11 @@
 import React from 'react';
 
 import AlertDialog from 'design-system/AlertDialog';
-import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
+import 'design-system/tokens.css';
 
 interface Props {
   opened: boolean;

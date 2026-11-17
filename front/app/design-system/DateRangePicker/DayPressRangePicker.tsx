@@ -20,10 +20,10 @@ import { DayPressCalendar, OpenRangeValue } from '../Calendar';
 import pickerStyles from '../DatePicker/DatePicker.module.css';
 import Divider from '../Divider';
 import Icon from '../Icon';
-import '../tokens.css';
 
 import styles from './DateRangePicker.module.css';
 import TimeOfDayField, { TimeOfDay } from './TimeOfDayField';
+import '../tokens.css';
 
 type Props = {
   // There is no visible label (a card title names it), so this names it.

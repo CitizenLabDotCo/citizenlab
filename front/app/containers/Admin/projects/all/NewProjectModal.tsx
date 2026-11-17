@@ -14,13 +14,13 @@ import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 import Outlet from 'components/Outlet';
 
 import Modal from 'design-system/Modal';
-import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isCLErrorsWrapper } from 'utils/errorUtils';
 
 import messages from './messages';
+import 'design-system/tokens.css';
 
 export type NewProjectMode = 'scratch' | 'template';
 

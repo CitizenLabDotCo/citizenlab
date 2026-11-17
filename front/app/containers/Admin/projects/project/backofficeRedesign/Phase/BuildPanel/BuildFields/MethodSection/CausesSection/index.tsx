@@ -12,8 +12,8 @@ import { useIntl } from 'utils/cl-intl';
 import PanelField from '../../../PanelField';
 
 import CauseModal from './CauseModal';
-import styles from './CausesSection.module.css';
 import CauseRow from './CauseRow';
+import styles from './CausesSection.module.css';
 import DeleteCauseModal from './DeleteCauseModal';
 import messages from './messages';
 import useStagedCauses, {

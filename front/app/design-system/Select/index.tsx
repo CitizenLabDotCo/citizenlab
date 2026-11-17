@@ -10,9 +10,9 @@ import {
 import { FieldHelp, FieldLabel, fieldStyles } from '../Field';
 import Icon from '../Icon';
 import ListBox, { ListBoxPopover } from '../ListBox';
-import '../tokens.css';
 
 import styles from './Select.module.css';
+import '../tokens.css';
 
 type LabelProps =
   | { label: ReactNode; 'aria-label'?: undefined }

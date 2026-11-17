@@ -11,9 +11,9 @@ import { PressEvent } from 'react-aria-components';
 
 import MethodCard from 'design-system/MethodCard';
 import Tooltip from 'design-system/Tooltip';
-import 'design-system/tokens.css';
 
 import styles from './ParticipationMethodChoice.module.css';
+import 'design-system/tokens.css';
 
 type DefaultProps = {
   variant?: 'default';

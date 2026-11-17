@@ -3,7 +3,6 @@ import React from 'react';
 // The preview copies the citizen event page, whose icons the design-system
 // set doesn't have.
 import { Icon } from '@citizenlab/cl2-component-library';
-import 'design-system/tokens.css';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IProjectData } from 'api/projects/types';
@@ -26,6 +25,7 @@ import styles from './EventPreview.module.css';
 import messages from './messages';
 import PreviewAttachment from './PreviewAttachment';
 import PreviewInfoCard from './PreviewInfoCard';
+import 'design-system/tokens.css';
 
 interface Props {
   project: IProjectData;

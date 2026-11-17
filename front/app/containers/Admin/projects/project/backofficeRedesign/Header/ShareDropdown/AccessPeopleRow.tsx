@@ -3,13 +3,13 @@ import React from 'react';
 import { IUserData } from 'api/users/types';
 
 import Avatar from 'design-system/Avatar';
-import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 import { isAdmin } from 'utils/permissions/roles';
 
 import messages from './messages';
 import styles from './ShareDropdown.module.css';
+import 'design-system/tokens.css';
 
 const getRoleMessage = (user: IUserData, isInvitePending: boolean) => {
   if (isInvitePending) return messages.shareRolePending;

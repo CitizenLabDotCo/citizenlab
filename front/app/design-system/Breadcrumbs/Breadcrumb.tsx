@@ -3,10 +3,10 @@ import React, { ReactNode, useContext } from 'react';
 import { Breadcrumb as AriaBreadcrumb, Key, Link } from 'react-aria-components';
 
 import Icon from '../Icon';
-import '../tokens.css';
 
 import styles from './Breadcrumbs.module.css';
 import { SeparatorContext } from './context';
+import '../tokens.css';
 
 type Props = {
   // The level's name.

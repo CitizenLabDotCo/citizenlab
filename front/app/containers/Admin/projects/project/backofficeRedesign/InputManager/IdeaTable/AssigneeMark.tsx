@@ -1,8 +1,8 @@
 import React from 'react';
 
-import Avatar from 'design-system/Avatar';
-
 import useUserById from 'api/users/useUserById';
+
+import Avatar from 'design-system/Avatar';
 
 import { useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';

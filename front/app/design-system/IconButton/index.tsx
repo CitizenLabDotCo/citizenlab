@@ -7,10 +7,10 @@ import {
 } from 'react-aria-components';
 
 import Icon, { IconName } from '../Icon';
-import '../tokens.css';
 import Tooltip from '../Tooltip';
 
 import styles from './IconButton.module.css';
+import '../tokens.css';
 
 // Figma only draws Selected on Bordered.
 type VariantProps =

@@ -1,11 +1,10 @@
 import React from 'react';
 
-import 'design-system/tokens.css';
-
 import { SpaceAndFolderId } from '../ProjectSetupForm/ProjectContextSection/types';
 
 import styles from './ProjectContextPickers.module.css';
 import useContextPickers from './useContextPickers';
+import 'design-system/tokens.css';
 
 interface Props {
   spaceId: string | null;

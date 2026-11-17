@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 
+import searchInputMessages from 'components/UI/SearchInput/messages';
+
 import IconButton from 'design-system/IconButton';
 import SearchField from 'design-system/SearchField';
-
-import searchInputMessages from 'components/UI/SearchInput/messages';
 
 import { useIntl } from 'utils/cl-intl';
 

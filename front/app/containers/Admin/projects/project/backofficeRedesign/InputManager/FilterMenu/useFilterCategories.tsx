@@ -4,12 +4,12 @@ import { IPhaseData } from 'api/phases/types';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { IconName } from 'design-system/Icon';
-
 import { ManagerType } from 'components/admin/PostManager';
 import usePrescreeningStatusFilter from 'components/admin/PostManager/components/FilterSidebar/statuses/usePrescreeningStatusFilter';
 import postManagerMessages from 'components/admin/PostManager/messages';
 import useAssigneeOptions from 'components/admin/PostManager/useAssigneeOptions';
+
+import { IconName } from 'design-system/Icon';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';

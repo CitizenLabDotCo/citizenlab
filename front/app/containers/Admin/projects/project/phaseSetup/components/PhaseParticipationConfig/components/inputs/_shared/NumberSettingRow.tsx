@@ -1,9 +1,9 @@
 import React from 'react';
 
 import NumberField from 'design-system/NumberField';
-import 'design-system/tokens.css';
 
 import styles from './NumberSettingRow.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   id: string;

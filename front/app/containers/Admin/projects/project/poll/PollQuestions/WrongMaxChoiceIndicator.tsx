@@ -5,9 +5,9 @@ import styled from 'styled-components';
 
 import usePollOptions from 'api/poll_options/usePollOptions';
 
-import IconButton from 'design-system/IconButton';
-
 import { TextCell } from 'components/admin/ResourceList';
+
+import IconButton from 'design-system/IconButton';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 

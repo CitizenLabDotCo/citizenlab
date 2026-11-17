@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
 
-import Banner from 'design-system/Banner';
-import DropZone from 'design-system/DropZone';
-import 'design-system/tokens.css';
 import { UploadFile } from 'typings';
 
 import SetupCard from 'containers/Admin/projects/_shared/components/SetupCard';
@@ -10,6 +7,9 @@ import { EventForm } from 'containers/Admin/projects/_shared/events/useEventForm
 
 import MultilocTextField from 'components/admin/MultilocFields/MultilocTextField';
 import imagesDropzoneMessages from 'components/UI/ImagesDropzone/messages';
+
+import Banner from 'design-system/Banner';
+import DropZone from 'design-system/DropZone';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -22,6 +22,7 @@ import {
   toUploadFile,
 } from './imageUpload';
 import messages from './messages';
+import 'design-system/tokens.css';
 
 interface Props {
   form: EventForm;

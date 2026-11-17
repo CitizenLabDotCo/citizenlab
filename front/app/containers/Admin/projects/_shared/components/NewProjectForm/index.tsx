@@ -13,7 +13,6 @@ import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 
 import Banner from 'design-system/Banner';
 import RadioGroup from 'design-system/RadioGroup';
-import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 import validateTitle from 'utils/validateTitle';
@@ -28,6 +27,7 @@ import FormSection from './FormSection';
 import GroupsPicker from './GroupsPicker';
 import messages from './messages';
 import styles from './NewProjectForm.module.css';
+import 'design-system/tokens.css';
 
 export interface NewProjectValues extends SpaceAndFolderId {
   title_multiloc: Multiloc;

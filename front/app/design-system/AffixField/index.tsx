@@ -7,10 +7,10 @@ import {
 } from 'react-aria-components';
 
 import { FieldHelp, FieldLabel, fieldStyles } from '../Field';
-import '../tokens.css';
 import inputStyles from '../TextField/input.module.css';
 
 import styles from './AffixField.module.css';
+import '../tokens.css';
 
 type AffixFieldProps = {
   // The fixed text inside the box. It is not part of the value.

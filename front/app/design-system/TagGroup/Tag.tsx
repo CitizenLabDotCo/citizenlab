@@ -5,10 +5,10 @@ import { Button, Key, Tag as AriaTag } from 'react-aria-components';
 import { useIntl } from 'utils/cl-intl';
 
 import Icon from '../Icon';
-import '../tokens.css';
 
 import messages from './messages';
 import styles from './TagGroup.module.css';
+import '../tokens.css';
 
 type TagProps = {
   children: string;

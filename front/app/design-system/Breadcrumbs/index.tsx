@@ -2,11 +2,10 @@ import React, { ReactNode } from 'react';
 
 import { Breadcrumbs as AriaBreadcrumbs } from 'react-aria-components';
 
-import '../tokens.css';
-
 import Breadcrumb from './Breadcrumb';
 import styles from './Breadcrumbs.module.css';
 import { BreadcrumbSeparator, SeparatorContext } from './context';
+import '../tokens.css';
 
 export { Breadcrumb };
 

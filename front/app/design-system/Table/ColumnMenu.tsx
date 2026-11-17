@@ -14,10 +14,10 @@ import { useIntl } from 'utils/cl-intl';
 
 import { MenuItem } from '../Menu';
 import surfaces from '../surfaces.module.css';
-import '../tokens.css';
 
 import styles from './ColumnMenu.module.css';
 import messages from './messages';
+import '../tokens.css';
 
 type ColumnMenuProps = {
   // Picks the sort copy: A to Z, Smallest first or Earliest first.

@@ -3,9 +3,9 @@ import React from 'react';
 import { Toggle } from '@citizenlab/cl2-component-library';
 
 import Switch from 'design-system/Switch';
-import 'design-system/tokens.css';
 
 import styles from './ActionToggle.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   // The workspace panel renders the design-system switch; the page keeps its toggle.

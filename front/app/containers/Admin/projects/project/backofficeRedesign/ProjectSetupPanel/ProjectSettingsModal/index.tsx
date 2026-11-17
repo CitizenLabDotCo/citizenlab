@@ -13,7 +13,6 @@ import SettingsModal, {
 } from 'containers/Admin/projects/project/backofficeRedesign/_shared/components/SettingsModal';
 
 import Banner from 'design-system/Banner';
-import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
 import { validateSlug } from 'utils/textUtils';
@@ -23,6 +22,7 @@ import GeneralSection from './GeneralSection';
 import messages from './messages';
 import ResourcesSection from './ResourcesSection';
 import useFilesDraft from './ResourcesSection/useFilesDraft';
+import 'design-system/tokens.css';
 
 interface Props {
   project: IProjectData;

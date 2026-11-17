@@ -2,12 +2,11 @@ import React, { ReactNode, RefCallback } from 'react';
 
 import { Multiloc, SupportedLocale } from 'typings';
 
-import 'design-system/tokens.css';
-
 import LocaleSwitcher from './LocaleSwitcher';
 import styles from './MultilocFields.module.css';
 import RichTextField from './RichTextField';
 import useSelectedLocale from './useSelectedLocale';
+import 'design-system/tokens.css';
 
 interface Props {
   id: string;

@@ -7,10 +7,9 @@ import {
 
 import { useIntl } from 'utils/cl-intl';
 
-import '../tokens.css';
-
 import messages from './messages';
 import styles from './TableHeader.module.css';
+import '../tokens.css';
 
 type TableHeaderProps = {
   // ColumnHeader children.
