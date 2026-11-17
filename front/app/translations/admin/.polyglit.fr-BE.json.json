@@ -9129,6 +9129,11 @@
     "verified_at": "2026-11-17T10:14:02.701435Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.offlineCollection": {
+    "state": "verified",
+    "verified_at": "2026-11-17T10:22:35.609195Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.paperAndExcelForms": {
     "state": "verified",
     "verified_at": "2026-10-28T13:19:15.868690Z",
