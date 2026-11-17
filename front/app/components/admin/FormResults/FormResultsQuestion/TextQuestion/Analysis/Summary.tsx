@@ -19,16 +19,19 @@ import Error from 'components/UI/Error';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { useParams } from 'utils/router';
 
 import messages from '../../../messages';
 
 const Summary = ({
   summaryId,
   analysisId,
+  projectId,
+  phaseId,
 }: {
   summaryId: string;
   analysisId: string;
+  projectId: string;
+  phaseId?: string;
 }) => {
   const { formatMessage } = useIntl();
 
@@ -36,11 +39,6 @@ const Summary = ({
     name: 'large_summaries',
     onlyCheckAllowed: true,
   });
-
-  const { projectId, phaseId } = useParams({ strict: false }) as {
-    projectId: string;
-    phaseId: string;
-  };
 
   const { data } = useAnalysisSummary({ analysisId, id: summaryId });
 

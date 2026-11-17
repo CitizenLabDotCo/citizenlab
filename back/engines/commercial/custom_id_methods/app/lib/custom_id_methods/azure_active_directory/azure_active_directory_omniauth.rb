@@ -24,10 +24,6 @@ module CustomIdMethods::AzureActiveDirectory
       '7a610902-304b-4399-9f9e-da68ff478e86'
     end
 
-    def config_parameters
-      %i[tenant client_id] + EMPLOYEE_SSO_CONFIG_PARAMETERS
-    end
-
     def config_parameters_schema
       {
         tenant: {

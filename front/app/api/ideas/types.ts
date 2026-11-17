@@ -1,5 +1,6 @@
 import { ILinks, IRelationship, Multiloc } from 'typings';
 
+import { Agreement } from 'api/common_ground/types';
 import { IdeaSortMethod } from 'api/phases/types';
 import { PublicationStatus as ProjectPublicationStatus } from 'api/projects/types';
 
@@ -112,7 +113,7 @@ export interface IIdeaData {
     published_at: string | null;
     // For manual_votes_amount, in a PB phase this refers to the # offline baskets with this idea (I.e. # offline picks)
     // In the other voting methods, this refers to the total # offline votes cast for this idea.
-    manual_votes_amount: number;
+    manual_votes_amount: number | null;
     // For total_votes, in a PB phase this refers to the total # baskets with this idea (I.e. Total # picks)
     // In the other voting methods, this refers to the total # votes cast on this idea.
     total_votes: number;
@@ -247,6 +248,8 @@ export interface IIdeaQueryParameters<FilterValue = string> {
   'page[size]'?: number;
   projects?: string[];
   phase?: string;
+  /** Common ground statements in these buckets. Needs `phase`. */
+  agreements?: Agreement[];
   author?: string;
   search?: string;
   input_topics?: string[];

@@ -14,19 +14,11 @@ module CustomIdMethods::EtatLu
       'etat_lu'
     end
 
-    def config_parameters
-      %i[
-        ui_method_name
-        issuer
-        client_id
-        client_secret
-        enabled_for_verified_actions
-        hide_from_profile
-      ]
-    end
-
     def config_parameters_schema
       {
+        ui_method_name: {
+          type: 'string'
+        },
         issuer: {
           private: true,
           type: 'string',
@@ -51,12 +43,6 @@ module CustomIdMethods::EtatLu
           description: 'Should verification be hidden in the user profile and under the username?'
         }
       }
-    end
-
-    def exposed_config_parameters
-      [
-        :ui_method_name
-      ]
     end
 
     def locked_attributes

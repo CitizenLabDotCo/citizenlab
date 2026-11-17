@@ -47,6 +47,7 @@ interface Props {
   options: IOption[];
   index: number;
   moveOptionInArray: (sourceIndex: number, destinationIndex: number) => void;
+  disabled: boolean;
 }
 
 const RankingOption = ({
@@ -55,6 +56,7 @@ const RankingOption = ({
   options,
   index,
   moveOptionInArray,
+  disabled,
 }: Props) => {
   const { formatMessage } = useIntl();
   const theme = useTheme();
@@ -80,7 +82,12 @@ const RankingOption = ({
 
   return (
     <li aria-roledescription="sortable">
-      <Drag index={index} useBorder={false} id={`ranking-item-${option.value}`}>
+      <Drag
+        index={index}
+        useBorder={false}
+        id={`ranking-item-${option.value}`}
+        isDragDisabled={disabled}
+      >
         {({ dragHandleProps }) => (
           <StyledBox
             mb="12px"
@@ -108,6 +115,7 @@ const RankingOption = ({
                   options={rankDropdownOptions}
                   value={getRankOfOption(option)}
                   height="auto"
+                  disabled={disabled}
                   onChange={(selectedOption) => {
                     moveOptionInArray(index, selectedOption.value - 1);
 
@@ -132,21 +140,23 @@ const RankingOption = ({
                 </Text>
               </Box>
 
-              <Box flexShrink={0} my="auto" pl="8px">
-                <div
-                  style={{ cursor: 'grab' }}
-                  {...dragHandleProps}
-                  aria-label={formatMessage(messages.rankingDragHandleLabel, {
-                    label: option.label,
-                  })}
-                >
-                  <Icon
-                    height="18px"
-                    name="drag-handle"
-                    fill={theme.colors.textPrimary}
-                  />
-                </div>
-              </Box>
+              {!disabled && (
+                <Box flexShrink={0} my="auto" pl="8px">
+                  <div
+                    style={{ cursor: 'grab' }}
+                    {...dragHandleProps}
+                    aria-label={formatMessage(messages.rankingDragHandleLabel, {
+                      label: option.label,
+                    })}
+                  >
+                    <Icon
+                      height="18px"
+                      name="drag-handle"
+                      fill={theme.colors.textPrimary}
+                    />
+                  </div>
+                </Box>
+              )}
             </StyledBox>
           </StyledBox>
         )}

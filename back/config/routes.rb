@@ -247,6 +247,7 @@ Rails.application.routes.draw do
         concerns :file_attachable, attachable_type: 'Phase'
 
         member do
+          post 'review_setup_card'
           get 'survey_results'
           get 'input_response_fields'
           post 'input_responses_pdf'
@@ -374,6 +375,12 @@ Rails.application.routes.draw do
       resources :custom_field_option_images, only: %i[show create update destroy], controller: :images, defaults: { container_type: 'CustomFieldOption' }
 
       resources :experiments, only: %i[index create]
+
+      resources :pulse_checks, only: [] do
+        post :show_next, on: :collection
+        patch :answer, on: :member
+        patch :dismiss, on: :member
+      end
 
       scope 'stats' do
         with_options controller: 'stats_users' do

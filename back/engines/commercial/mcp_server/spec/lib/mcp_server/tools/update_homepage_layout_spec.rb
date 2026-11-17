@@ -105,6 +105,42 @@ describe McpServer::Tools::UpdateHomepageLayout do
     expect(layout.reload.craftjs_json).not_to have_key('BAD')
   end
 
+  # As from the builder's toolbox, a homepage events widget says when there are no events.
+  context 'with an events widget' do
+    let(:root_with_events) { layout.craftjs_json['ROOT'].merge('nodes' => %w[HOMEPAGEBANNER PROJECTS EVENTS]) }
+
+    it 'switches on its empty message when the props leave it out' do
+      events = craftjs_node('EventsList', parent: 'ROOT', props: { 'source' => 'all' })
+
+      response = run(nodes: { 'ROOT' => root_with_events, 'EVENTS' => events })
+
+      expect(response).not_to be_error
+      expect(layout.reload.craftjs_json.dig('EVENTS', 'props')).to eq('source' => 'all', 'showEmptyMessage' => true)
+    end
+
+    it 'keeps it off when the props switch it off' do
+      events = craftjs_node('EventsList', parent: 'ROOT', props: { 'source' => 'all', 'showEmptyMessage' => false })
+
+      response = run(nodes: { 'ROOT' => root_with_events, 'EVENTS' => events })
+
+      expect(response).not_to be_error
+      expect(layout.reload.craftjs_json.dig('EVENTS', 'props', 'showEmptyMessage')).to be false
+    end
+
+    it 'keeps it off for a stored widget when the props leave it out' do
+      stored = craftjs_node('EventsList', parent: 'ROOT', props: { 'source' => 'all', 'showEmptyMessage' => false })
+      layout.update!(craftjs_json: layout.craftjs_json.merge('ROOT' => root_with_events, 'EVENTS' => stored))
+      edited = craftjs_node('EventsList', parent: 'ROOT', props: { 'source' => 'all', 'limit' => 6 })
+
+      response = run(nodes: { 'EVENTS' => edited })
+
+      expect(response).not_to be_error
+      expect(layout.reload.craftjs_json.dig('EVENTS', 'props')).to eq(
+        'source' => 'all', 'limit' => 6, 'showEmptyMessage' => false
+      )
+    end
+  end
+
   context 'with an events widget filtered by area' do
     let(:area_events) do
       craftjs_node('EventsList', parent: 'ROOT', props: { 'source' => 'areas', 'ids' => [create(:area).id] })

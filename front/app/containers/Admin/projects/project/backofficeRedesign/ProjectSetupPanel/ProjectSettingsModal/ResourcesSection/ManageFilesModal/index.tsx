@@ -4,16 +4,16 @@ import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 
 import useFiles from 'api/files/useFiles';
 
-import messages from 'containers/Admin/projects/project/backofficeRedesign/messages';
 import filesMessages from 'containers/Admin/projects/project/files/components/messages';
 
 import Pagination from 'components/Pagination';
-import Modal from 'components/UI/Modal';
+import Modal, { MEDIUM_MODAL_WIDTH } from 'components/UI/Modal';
 import SearchInput from 'components/UI/SearchInput';
 
 import { useIntl } from 'utils/cl-intl';
 
 import ManagedFileRow from '../ManagedFileRow';
+import messages from '../messages';
 import UploadingFileRow from '../UploadingFileRow';
 import useFilesCount from '../useFilesCount';
 import { FilesDraft } from '../useFilesDraft';
@@ -71,7 +71,7 @@ const ManageFilesModal = ({
       variant="bo"
       opened={opened}
       close={onClose}
-      width={560}
+      width={MEDIUM_MODAL_WIDTH}
       height={FILE_MODAL_HEIGHT}
       header={formatMessage(messages.manageFiles)}
     >

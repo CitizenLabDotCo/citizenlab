@@ -6,6 +6,7 @@ import {
   Select,
   Text,
   Toggle,
+  bo,
 } from '@citizenlab/cl2-component-library';
 import { MessageDescriptor } from 'react-intl';
 import { IOption } from 'typings';
@@ -20,10 +21,6 @@ import SettingToggleRow from 'components/admin/SettingToggleRow';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
-
-// The back-office toggle plus the gap before its label, so the options sit
-// under it.
-const TOGGLE_LABEL_INDENT = '36px';
 
 interface Props {
   prescreening_mode: PrescreeningMode | null | undefined;
@@ -129,9 +126,9 @@ const PrescreeningModeSelector = ({
             display="flex"
             flexDirection="column"
             gap="8px"
-            pl={TOGGLE_LABEL_INDENT}
+            pl={bo.toggleLabelIndent}
           >
-            <Box display="flex" gap="20px">
+            <Box display="flex" gap="24px">
               <Radio
                 variant="bo"
                 name="prescreening_mode"

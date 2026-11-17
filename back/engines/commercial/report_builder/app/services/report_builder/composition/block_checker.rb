@@ -64,8 +64,11 @@ module ReportBuilder
         ContentBuilder::ReportingQueryPolicy.new(@author, :reporting_query).create?
       end
 
+      # An error where nothing looked at the report: there is none yet, the author may
+      # not run the queries, or the renderer is down. The flag tells a caller there is
+      # nothing here to repair.
       def unavailable(text)
-        { error: true, text: text, screenshot: nil }
+        { error: true, unavailable: true, text: text, screenshot: nil }
       end
 
       def token

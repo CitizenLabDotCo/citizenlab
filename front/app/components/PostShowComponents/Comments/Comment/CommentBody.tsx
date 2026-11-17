@@ -1,6 +1,6 @@
 import React, { FormEvent, useEffect, useState, useRef } from 'react';
 
-import { Button } from '@citizenlab/cl2-component-library';
+import { bo, Button, colors } from '@citizenlab/cl2-component-library';
 import { filter } from 'rxjs/operators';
 import styled, { useTheme } from 'styled-components';
 import { CLErrors } from 'typings';
@@ -26,6 +26,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { weglotTranslateSubmission } from 'utils/weglot';
 
+import { useIsBoComments } from '../commentsVariant';
 import { commentTranslateButtonClicked$ } from '../events';
 import messages from '../messages';
 
@@ -76,6 +77,7 @@ const CommentBody = ({
   ideaId,
 }: Props) => {
   const theme = useTheme();
+  const isBo = useIsBoComments();
   const { data: appConfiguration } = useAppConfiguration();
   const { data: comment } = useComment(commentId);
   const { mutate: updateComment, isPending: processing } = useUpdateComment({
@@ -221,8 +223,11 @@ const CommentBody = ({
               value={editableCommentContent}
               rows={1}
               onChange={onEditableCommentContentChange}
-              padding="15px"
-              fontWeight="300"
+              padding={isBo ? '10px' : '15px'}
+              fontWeight={isBo ? '400' : '300'}
+              fontSize={isBo ? '12px' : undefined}
+              border={isBo ? `1px solid ${colors.grey300}` : undefined}
+              borderRadius={isBo ? bo.borderRadius : undefined}
               getTextareaRef={setNewTextAreaRef}
             />
           </QuillEditedContent>
@@ -234,11 +239,14 @@ const CommentBody = ({
               apiErrors.body_multiloc[locale] && (
                 <Error apiErrors={apiErrors.body_multiloc[locale]} />
               )}
-            <Button buttonStyle="secondary-outlined" onClick={cancelEditing}>
+            <Button
+              buttonStyle={isBo ? 'bo-secondary' : 'secondary-outlined'}
+              onClick={cancelEditing}
+            >
               <FormattedMessage {...messages.cancelCommentEdit} />
             </Button>
             <Button
-              buttonStyle="primary"
+              buttonStyle={isBo ? 'bo-primary' : 'primary'}
               processing={processing}
               onClick={onSubmit}
             >

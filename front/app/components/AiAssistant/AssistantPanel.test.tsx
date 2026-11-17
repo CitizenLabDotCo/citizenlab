@@ -5,7 +5,14 @@ import {
   IAiAssistantConversationData,
 } from 'api/ai_assistant_conversations/types';
 
-import { render, screen } from 'utils/testUtils/rtl';
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  userEvent,
+  waitFor,
+} from 'utils/testUtils/rtl';
 
 import AssistantPanel from './AssistantPanel';
 
@@ -25,8 +32,17 @@ jest.mock('api/ai_assistant_conversations/useAiAssistantConversation', () =>
 jest.mock('api/ai_assistant_conversations/useAddAiAssistantConversation', () =>
   jest.fn(() => ({ mutateAsync: jest.fn(), isPending: false }))
 );
+const mockAddMessage = jest.fn();
 jest.mock('api/ai_assistant_messages/useAddAiAssistantMessage', () =>
-  jest.fn(() => ({ mutateAsync: jest.fn() }))
+  jest.fn(() => ({ mutateAsync: mockAddMessage }))
+);
+const mockAddFile = jest.fn();
+jest.mock('api/files/useAddFile', () =>
+  jest.fn(() => ({ mutateAsync: mockAddFile }))
+);
+const mockDeleteFile = jest.fn();
+jest.mock('api/files/useDeleteFile', () =>
+  jest.fn(() => ({ mutateAsync: mockDeleteFile }))
 );
 jest.mock('api/ai_assistant_tool_calls/useApproveAiAssistantToolCall', () =>
   jest.fn(() => ({ mutate: jest.fn(), isPending: false, error: null }))
@@ -58,6 +74,7 @@ const conversation = (
       attributes: {
         role: 'user',
         content: 'Create a survey about our park.',
+        file_ids: [],
         position: 1,
         created_at: '2026-10-01T08:00:00.000Z',
       },
@@ -69,6 +86,7 @@ const conversation = (
       attributes: {
         role: 'assistant',
         content: 'Here is a first draft.',
+        file_ids: [],
         position: 2,
         created_at: '2026-10-01T08:00:10.000Z',
       },
@@ -106,6 +124,7 @@ const renderPanel = () =>
     <AssistantPanel
       surfaceKey="survey_builder"
       subjectId="phase-1"
+      projectId="project-1"
       intro={{ id: 'test.intro', defaultMessage: 'Describe your survey' }}
       toolViews={{}}
       onToolExecuted={jest.fn()}
@@ -162,6 +181,99 @@ describe('AssistantPanel', () => {
 
     expect(screen.getByText('90 seconds')).toBeInTheDocument();
     jest.useRealTimers();
+  });
+
+  it('deletes the uploaded files when the message could not be sent', async () => {
+    mockConversation = conversation({
+      ...baseAttributes,
+      status: 'idle',
+      last_error_code: null,
+    });
+    mockAddFile.mockResolvedValue({ data: { id: 'file-1' } });
+    mockAddMessage.mockRejectedValue(new Error('Request failed'));
+    const { container } = renderPanel();
+    const fileInput = container.querySelector('input[type="file"]');
+    if (!(fileInput instanceof HTMLInputElement)) {
+      throw new Error('No file input');
+    }
+
+    await userEvent.type(screen.getByRole('textbox'), 'Use this brief.');
+    await userEvent.upload(
+      fileInput,
+      new File(['%PDF-1.4'], 'brief.pdf', { type: 'application/pdf' })
+    );
+    await userEvent.click(screen.getByRole('button', { name: 'Send' }));
+
+    await waitFor(() => expect(mockDeleteFile).toHaveBeenCalledWith('file-1'));
+  });
+
+  it('refuses text files above their size limit', async () => {
+    mockConversation = undefined;
+    const { container } = renderPanel();
+    const fileInput = container.querySelector('input[type="file"]');
+    if (!(fileInput instanceof HTMLInputElement)) {
+      throw new Error('No file input');
+    }
+
+    await userEvent.upload(
+      fileInput,
+      new File(['a'.repeat(100 * 1024 + 1)], 'notes.txt', {
+        type: 'text/plain',
+      })
+    );
+
+    expect(
+      screen.getByText(
+        'Only PDF files of up to 4 MB and Markdown (.md) or text (.txt) files of up to 100 KB can be attached, 3 at most.'
+      )
+    ).toBeInTheDocument();
+    expect(screen.queryByText('notes.txt')).not.toBeInTheDocument();
+  });
+
+  it('attaches a file only once when it is picked twice', async () => {
+    mockConversation = undefined;
+    const { container } = renderPanel();
+    const fileInput = container.querySelector('input[type="file"]');
+    if (!(fileInput instanceof HTMLInputElement)) {
+      throw new Error('No file input');
+    }
+    const brief = () =>
+      new File(['%PDF-1.4'], 'brief.pdf', {
+        type: 'application/pdf',
+        lastModified: 1,
+      });
+
+    await userEvent.upload(fileInput, brief());
+    await userEvent.upload(fileInput, brief());
+
+    expect(screen.getAllByText('brief.pdf')).toHaveLength(1);
+  });
+
+  it('keeps files dropped while the assistant works from the browser and the chat', async () => {
+    mockConversation = conversation({
+      ...baseAttributes,
+      status: 'running',
+      last_error_code: null,
+    });
+    const { container } = renderPanel();
+    const dropzone =
+      container.querySelector('input[type="file"]')?.parentElement;
+    if (!dropzone) {
+      throw new Error('No dropzone');
+    }
+
+    const handledByBrowser = fireEvent.drop(dropzone, {
+      dataTransfer: {
+        files: [
+          new File(['%PDF-1.4'], 'brief.pdf', { type: 'application/pdf' }),
+        ],
+        types: ['Files'],
+      },
+    });
+    await act(async () => {});
+
+    expect(handledByBrowser).toBe(false);
+    expect(screen.queryByText('brief.pdf')).not.toBeInTheDocument();
   });
 
   it('shows why the last turn failed', () => {

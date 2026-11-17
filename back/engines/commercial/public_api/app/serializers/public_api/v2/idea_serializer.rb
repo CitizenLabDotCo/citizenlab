@@ -31,7 +31,7 @@ class PublicApi::V2::IdeaSerializer < PublicApi::V2::BaseSerializer
     :images, # Not in spec
     :href, # Not in spec
     :status, # idea_status in spec
-    :custom_field_values, # Not nested in spec
+    :custom_field_values, # Not nested in spec. Deprecated: use the custom_field_answers endpoint
     :type
 
   def title

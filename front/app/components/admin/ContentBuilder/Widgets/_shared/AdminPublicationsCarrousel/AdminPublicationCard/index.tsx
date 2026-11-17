@@ -23,7 +23,12 @@ import projectCardMessages from 'components/ProjectCard/messages';
 import { useIntl } from 'utils/cl-intl';
 import { truncate } from 'utils/textUtils';
 
-import { CardContainer, CardImage, CardLink } from '../../BaseCard';
+import {
+  CARD_ABOVE_TITLE_ORDER,
+  CardContainer,
+  CardImage,
+  CardLink,
+} from '../../BaseCard';
 import { BIG_CARD_WIDTH, SMALL_CARD_WIDTH } from '../constants';
 
 import messages from './messages';
@@ -79,23 +84,25 @@ export const AdminPublicationCard = ({
       onKeyDown={onKeyDown}
       onFocus={onFocus}
     >
-      <CardContainer w={`${cardWidth}px`} ml={ml} mr={mr} display="block">
-        <CardImage imageUrl={imageUrl} alt={imageAltText} />
-        {publication_status === 'archived' && (
-          <Text
-            mt="8px"
-            mb="0px"
-            color="textSecondary"
-            fontSize="s"
-            fontWeight="semi-bold"
-            style={{ textTransform: 'uppercase' }}
-          >
-            {formatMessage(projectCardMessages.archived)}
-          </Text>
-        )}
+      <CardContainer w={`${cardWidth}px`} ml={ml} mr={mr}>
         <Title variant="h4" as="h3" mt="8px" mb="0px" color="tenantText">
           {localize(publication_title_multiloc)}
         </Title>
+        <CardImage imageUrl={imageUrl} alt={imageAltText} />
+        {publication_status === 'archived' && (
+          <Box order={CARD_ABOVE_TITLE_ORDER}>
+            <Text
+              mt="8px"
+              mb="0px"
+              color="textSecondary"
+              fontSize="s"
+              fontWeight="semi-bold"
+              style={{ textTransform: 'uppercase' }}
+            >
+              {formatMessage(projectCardMessages.archived)}
+            </Text>
+          </Box>
+        )}
         <Box display="flex" flexDirection="row" alignItems="center" mt="8px">
           {type === 'folder' && (
             <>

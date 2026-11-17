@@ -4,6 +4,7 @@ import {
   isNonEmptyString,
   isPage,
   isTopBarNavActive,
+  inGroupsOf,
 } from './helperUtils';
 
 describe('isNilOrError', () => {
@@ -122,5 +123,15 @@ describe('isTopBarNavActive', () => {
     const tabUrl = '/dashboard/edit';
     const result = isTopBarNavActive(basePath, pathname, tabUrl);
     expect(result).toBe(false);
+  });
+});
+
+describe('inGroupsOf', () => {
+  it('splits the items into groups of the given size, the last one shorter', () => {
+    expect(inGroupsOf([1, 2, 3, 4, 5], 2)).toEqual([[1, 2], [3, 4], [5]]);
+  });
+
+  it('returns no groups for no items', () => {
+    expect(inGroupsOf([], 2)).toEqual([]);
   });
 });

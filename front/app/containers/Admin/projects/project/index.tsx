@@ -10,6 +10,7 @@ import useProjectById from 'api/projects/useProjectById';
 import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
 import { PageSaveProvider } from 'components/admin/PageSaveContext';
+import { PhasePreviewDraftProvider } from 'components/admin/PhasePreview/DraftContext';
 
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 import { Outlet as RouterOutlet, useMatchRoute, useParams } from 'utils/router';
@@ -17,8 +18,8 @@ import { Outlet as RouterOutlet, useMatchRoute, useParams } from 'utils/router';
 import ProjectWorkspace from './backofficeRedesign';
 import Event from './backofficeRedesign/Event';
 import NewPhase from './backofficeRedesign/NewPhase';
+import { ParticipationPanelProvider } from './backofficeRedesign/ParticipationPanelContext';
 import PhaseSetup from './backofficeRedesign/Phase/PhaseSetup';
-import ProjectTimeline from './backofficeRedesign/ProjectTimeline';
 import UnsavedChangesGuard from './backofficeRedesign/UnsavedChangesGuard';
 import TurnOnNotice from './earlyAccess/TurnOnNotice';
 import ProjectHeader from './projectHeader';
@@ -58,30 +59,32 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
 
   if (workspaceEnabled) {
     return (
-      <PageSaveProvider>
-        <UnsavedChangesGuard />
-        {page === 'newPhase' && <NewPhase project={project} />}
-        {page === 'event' && <Event project={project} />}
-        {page === 'project' && (
-          <ProjectWorkspace
-            project={project}
-            phase={selectedPhase}
-            sidePanel={
-              selectedPhase ? (
-                <PhaseSetup
-                  key={selectedPhase.id}
-                  projectId={projectId}
-                  phase={selectedPhase}
-                />
-              ) : (
-                <ProjectTimeline projectId={projectId} />
-              )
-            }
-          >
-            <RouterOutlet />
-          </ProjectWorkspace>
-        )}
-      </PageSaveProvider>
+      <ParticipationPanelProvider projectId={projectId}>
+        <PhasePreviewDraftProvider>
+          <PageSaveProvider>
+            <UnsavedChangesGuard />
+            {page === 'newPhase' && <NewPhase project={project} />}
+            {page === 'event' && <Event project={project} />}
+            {page === 'project' && (
+              <ProjectWorkspace
+                project={project}
+                phase={selectedPhase}
+                sidePanel={
+                  selectedPhase && (
+                    <PhaseSetup
+                      key={selectedPhase.id}
+                      projectId={projectId}
+                      phase={selectedPhase}
+                    />
+                  )
+                }
+              >
+                <RouterOutlet />
+              </ProjectWorkspace>
+            )}
+          </PageSaveProvider>
+        </PhasePreviewDraftProvider>
+      </ParticipationPanelProvider>
     );
   }
 

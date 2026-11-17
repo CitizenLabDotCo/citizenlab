@@ -131,6 +131,9 @@ gem 'order_as_specified'
 gem 'scenic'
 gem 'ice_cube', '~> 0.17'
 gem 'twilio-ruby', '~> 7.12.0'
+# Provides the `url: true` validator used by our models (e.g. Event, StaticPage).
+# Also pulled in by openid_connect, but listed here so it can't silently disappear.
+gem 'validate_url', '~> 1.0.15'
 
 # Omniauth SSO
 gem 'omniauth', '~> 2.3.1'

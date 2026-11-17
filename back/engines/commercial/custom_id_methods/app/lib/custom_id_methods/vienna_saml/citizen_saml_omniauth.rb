@@ -23,10 +23,6 @@ module CustomIdMethods::ViennaSaml
       '41f5a1a5-df30-4c16-b29b-5b6631c4f04b'
     end
 
-    def config_parameters
-      %i[environment]
-    end
-
     def config_parameters_schema
       {
         environment: {

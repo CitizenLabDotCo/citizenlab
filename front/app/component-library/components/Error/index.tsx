@@ -11,6 +11,8 @@ const timeout = 350;
 
 const ErrorMessageText = styled.div`
   flex: 1 1 100%;
+  min-width: 0;
+  overflow-wrap: anywhere;
   color: ${colors.red600};
   font-size: ${fontSizes.base}px;
   line-height: normal;

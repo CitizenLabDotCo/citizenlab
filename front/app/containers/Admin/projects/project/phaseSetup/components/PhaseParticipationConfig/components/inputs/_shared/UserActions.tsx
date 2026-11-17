@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import {
   Box,
@@ -41,13 +41,16 @@ const UserActions = ({
   phaseId,
   layout = 'page',
   accessOnlyActions = [],
+  reactingSettings,
 }: {
   showCommentingToggle?: boolean;
   showReactingToggle?: boolean;
   phaseId?: string;
-  /** In the workspace panel the likes limit is shown by the caller, last. */
+  /** In the workspace panel the likes limit is shown by the caller. */
   layout?: 'page' | 'panel';
   accessOnlyActions?: AccessOnlyAction[];
+  /** Shown right below the reacting toggle, before the access-only actions. */
+  reactingSettings?: ReactNode;
   submission_enabled: boolean;
   commenting_enabled: boolean;
   reacting_enabled: boolean;
@@ -70,18 +73,24 @@ const UserActions = ({
   return (
     <>
       <ActionsField>
-        <SubSectionTitle>
-          <FormattedMessage {...messages.enabledActionsForUsers} />
-          <IconTooltip
-            content={<FormattedMessage {...messages.enabledActionsTooltip} />}
-          />
-        </SubSectionTitle>
+        {!panel && (
+          <SubSectionTitle>
+            <FormattedMessage {...messages.enabledActionsForUsers} />
+            <IconTooltip
+              content={<FormattedMessage {...messages.enabledActionsTooltip} />}
+            />
+          </SubSectionTitle>
+        )}
 
         <ActionToggleRow
           phaseId={phaseId}
           action="posting_idea"
           error={
-            <Error apiErrors={apiErrors && apiErrors.submission_enabled} />
+            <Error
+              showBackground={layout !== 'panel'}
+              showIcon={layout !== 'panel'}
+              apiErrors={apiErrors && apiErrors.submission_enabled}
+            />
           }
         >
           <Toggle
@@ -97,7 +106,11 @@ const UserActions = ({
             phaseId={phaseId}
             action="commenting_idea"
             error={
-              <Error apiErrors={apiErrors && apiErrors.commenting_enabled} />
+              <Error
+                showBackground={layout !== 'panel'}
+                showIcon={layout !== 'panel'}
+                apiErrors={apiErrors && apiErrors.commenting_enabled}
+              />
             }
           >
             <Toggle
@@ -115,7 +128,11 @@ const UserActions = ({
             action="reacting_idea"
             last
             error={
-              <Error apiErrors={apiErrors && apiErrors.reacting_enabled} />
+              <Error
+                showBackground={layout !== 'panel'}
+                showIcon={layout !== 'panel'}
+                apiErrors={apiErrors && apiErrors.reacting_enabled}
+              />
             }
           >
             <Toggle
@@ -126,6 +143,8 @@ const UserActions = ({
             />
           </ActionToggleRow>
         )}
+
+        {reactingSettings}
 
         {phaseId && (
           <Box>

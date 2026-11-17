@@ -108,7 +108,7 @@ const homepageLayoutWithColumns = () => ({
   }),
 });
 
-const TOOLBOX_PROJECT_PAGE_PROPS = {
+const DEFAULT_PROJECT_PAGE_PROPS = {
   source: 'currentProject',
   timeFilters: ['upcoming', 'past'],
   limit: 'all',
@@ -121,6 +121,8 @@ describe('Events widget', () => {
 
   let projectId = '';
   let projectSlug = '';
+  let emptyProjectId = '';
+  let emptyProjectSlug = '';
   let homepageLayout: Record<string, unknown>;
   let spacesWasEnabled = false;
 
@@ -204,6 +206,15 @@ describe('Events widget', () => {
         endDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
       });
     });
+
+    cy.apiCreateProject({
+      title: `Empty ${randomString()}`,
+      descriptionPreview: projectTitle,
+      publicationStatus: 'published',
+    }).then((project) => {
+      emptyProjectId = project.body.data.id;
+      emptyProjectSlug = project.body.data.attributes.slug;
+    });
   });
 
   beforeEach(() => {
@@ -214,6 +225,7 @@ describe('Events widget', () => {
     cy.apiUpdateHomepageLayout({ craftjs_json: homepageLayout });
     setSpaces(spacesWasEnabled);
     if (projectId) cy.apiRemoveProject(projectId);
+    if (emptyProjectId) cy.apiRemoveProject(emptyProjectId);
   });
 
   it('renders with the props the toolbox wrote', () => {
@@ -256,7 +268,7 @@ describe('Events widget', () => {
   it('offers the project page scroll target', () => {
     cy.apiUpdateProjectPageLayout(
       projectId,
-      projectPageLayoutWith('EventsList', TOOLBOX_PROJECT_PAGE_PROPS)
+      projectPageLayoutWith('EventsList', DEFAULT_PROJECT_PAGE_PROPS)
     );
 
     cy.visit(`/en/projects/${projectSlug}`);
@@ -363,6 +375,41 @@ describe('Events widget', () => {
     cy.get('label[for="events-source-all"]').click();
     cy.get('#events-limit-all').should('exist');
     cy.get('#events-source-spaces').should('not.exist');
+  });
+
+  // A widget without the setting hides itself when it has no events.
+  it('shows the empty message once an admin switches it on', () => {
+    cy.apiUpdateProjectPageLayout(
+      emptyProjectId,
+      projectPageLayoutWith('EventsList', DEFAULT_PROJECT_PAGE_PROPS)
+    );
+
+    cy.visit(`/en/projects/${emptyProjectSlug}`);
+    cy.get('#e2e-project-page-title').should('exist');
+    cy.get('#e2e-project-page-events').should('not.exist');
+
+    cy.setAdminLoginCookie();
+    cy.visit(`/admin/project-page-builder/projects/${emptyProjectId}`);
+    cy.get('div#ROOT');
+    // The widget takes no pointer events in the builder, so select the node around it.
+    cy.contains('No events yet')
+      .parents('.e2e-render-node')
+      .first()
+      .click({ force: true });
+    cy.contains('label', 'Show a message when there are no events').click();
+    cy.get('div#ROOT').should('contain', 'No events to display');
+
+    cy.intercept('**/content_builder_layouts/project_page/upsert').as(
+      'saveProjectPageLayout'
+    );
+    cy.get('#e2e-content-builder-topbar-save').click();
+    cy.wait('@saveProjectPageLayout');
+
+    cy.visit(`/en/projects/${emptyProjectSlug}`);
+    cy.get('#e2e-project-page-events').should(
+      'contain',
+      'No events to display'
+    );
   });
 
   // A query that is switched off keeps serving its last result, so a bucket has to be read

@@ -8,9 +8,10 @@ import {
   Text,
 } from '@citizenlab/cl2-component-library';
 
+import MenuButton from 'components/admin/MenuButton';
+
 import { useIntl } from 'utils/cl-intl';
 
-import MenuButton from '../MenuButton';
 import messages from '../messages';
 import OptionList from '../OptionList';
 import ToolbarIconButton from '../ToolbarIconButton';
@@ -33,6 +34,7 @@ const FilterMenu = ({ categories, onClearAll }: Props) => {
 
   return (
     <MenuButton
+      portal
       align="right"
       width="280px"
       trigger={({ opened, toggle }) => (
@@ -61,7 +63,7 @@ const FilterMenu = ({ categories, onClearAll }: Props) => {
                   width="16px"
                   fill={colors.coolGrey600}
                 />
-                <Text variant="boSection" fontWeight="bold" as="span" m="0">
+                <Text variant="boSection" as="span" m="0">
                   {openCategory.label}
                 </Text>
               </Box>
@@ -71,6 +73,7 @@ const FilterMenu = ({ categories, onClearAll }: Props) => {
               selected={openCategory.selected}
               onToggle={openCategory.toggle}
               searchable={openCategory.searchable}
+              revealChecksOnHover
             />
           </Box>
         ) : (
@@ -78,6 +81,7 @@ const FilterMenu = ({ categories, onClearAll }: Props) => {
             {categories.map((category) => (
               <DropdownListItem
                 key={category.key}
+                data-cy={`e2e-manage-filter-${category.key}`}
                 type="button"
                 onClick={() => setOpenCategoryKey(category.key)}
               >

@@ -15,9 +15,10 @@ import { getLayerType } from '../utils';
 interface Props {
   setView: (view: ViewOptions) => void;
   mapConfig: IMapConfig;
+  variant?: 'default' | 'bo';
 }
 
-const EsriImportOptions = memo<Props>(({ setView, mapConfig }) => {
+const EsriImportOptions = memo<Props>(({ setView, mapConfig, variant }) => {
   const { formatMessage } = useIntl();
   const isEsriIntegrationEnabled = useFeatureFlag({ name: 'esri_integration' });
 
@@ -62,7 +63,9 @@ const EsriImportOptions = memo<Props>(({ setView, mapConfig }) => {
             <Button
               data-cy="e2e-feature-layer-upload-btn"
               icon="location-simple"
-              buttonStyle="secondary-outlined"
+              buttonStyle={
+                variant === 'bo' ? 'bo-secondary' : 'secondary-outlined'
+              }
               onClick={() => {
                 setView('featureLayerUpload');
               }}
@@ -87,7 +90,9 @@ const EsriImportOptions = memo<Props>(({ setView, mapConfig }) => {
             <Button
               data-cy="e2e-web-map-upload-btn"
               icon="map"
-              buttonStyle="secondary-outlined"
+              buttonStyle={
+                variant === 'bo' ? 'bo-secondary' : 'secondary-outlined'
+              }
               onClick={() => {
                 setView('webMapUpload');
               }}

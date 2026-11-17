@@ -4,7 +4,6 @@ import { Box, Button, Text, colors } from '@citizenlab/cl2-component-library';
 
 import { IFileData } from 'api/files/types';
 
-import messages from 'containers/Admin/projects/project/backofficeRedesign/messages';
 import filesMessages from 'containers/Admin/projects/project/files/components/messages';
 
 import Modal from 'components/UI/Modal';
@@ -15,6 +14,8 @@ import { saveFileToDisk } from 'utils/fileUtils';
 
 import FileActionsMenu, { FileAction } from '../FileActionsMenu';
 import FileRow from '../FileRow';
+
+import messages from './messages';
 
 interface Props {
   file: IFileData;
