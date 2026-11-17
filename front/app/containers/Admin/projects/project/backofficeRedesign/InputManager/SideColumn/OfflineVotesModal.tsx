@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import { useQueryClient } from '@tanstack/react-query';
-
 import Banner from 'design-system/Banner';
 import Modal from 'design-system/Modal';
 import NumberField from 'design-system/NumberField';
@@ -123,7 +122,9 @@ const OfflineVotesModal = ({ phase, onClose }: Props) => {
       {ideas?.data.map((idea) => {
         const title = localize(idea.attributes.title_multiloc);
         const value =
-          votes[idea.id] ?? idea.attributes.manual_votes_amount ?? 0;
+          idea.id in votes
+            ? votes[idea.id]
+            : idea.attributes.manual_votes_amount ?? 0;
 
         return (
           <div key={idea.id} className={styles.voteRow}>

@@ -3,12 +3,13 @@ import React, { RefCallback, useEffect, useRef } from 'react';
 import 'quill/dist/quill.snow.css';
 import '@enzedonline/quill-blot-formatter2/dist/css/quill-blot-formatter2.css';
 
+import RichTextEditor from 'design-system/RichTextEditor';
+
 import useLocale from 'hooks/useLocale';
 
 import quillMessages from 'components/UI/QuillEditor/messages';
 import useQuillEditor from 'components/UI/QuillEditor/useQuillEditor';
 
-import RichTextEditor from 'design-system/RichTextEditor';
 import 'design-system/tokens.css';
 
 import { useIntl } from 'utils/cl-intl';
@@ -120,6 +121,8 @@ const RichTextField = ({
       className={styles.field}
       data-invalid={isInvalid || undefined}
       data-rtl={isRtl || undefined}
+      // Saving on mouse leave is not an interaction of its own.
+      role="presentation"
       onMouseLeave={saveLatestContent}
     >
       {/* Quill's own toolbar, never shown: it holds Quill's handlers. Quill

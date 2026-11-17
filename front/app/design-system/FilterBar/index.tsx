@@ -2,14 +2,13 @@ import React, { ReactNode } from 'react';
 
 import { MenuTrigger } from 'react-aria-components';
 
-import Button from '../Button';
-import '../tokens.css';
-
-import styles from './FilterBar.module.css';
-
 import { FormattedMessage } from 'utils/cl-intl';
 
+import Button from '../Button';
+
+import styles from './FilterBar.module.css';
 import messages from './messages';
+import '../tokens.css';
 
 export { default as FilterChip } from './FilterChip';
 

@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
 
+import Menu, { MenuItem, MenuTrigger } from 'design-system/Menu';
+import RichTextToolbar, {
+  RichTextToolbarButton,
+} from 'design-system/RichTextToolbar';
 import Quill from 'quill';
 import QuillToolbar from 'quill/modules/toolbar';
 import { Key } from 'react-aria-components';
 
 import quillMessages from 'components/UI/QuillEditor/messages';
 import tracks from 'components/UI/QuillEditor/tracks';
-
-import Menu, { MenuItem, MenuTrigger } from 'design-system/Menu';
-import RichTextToolbar, {
-  RichTextToolbarButton,
-} from 'design-system/RichTextToolbar';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
@@ -175,7 +174,9 @@ const FormattingToolbar = ({
     editor.focus();
     // A selection inside a link removes the link, as Quill's link button does.
     const value = format === 'link' ? !editor.getFormat().link : true;
-    toolbar.handlers[format]?.call(toolbar, value);
+    // Quill registers these handlers at runtime; one can be missing.
+    if (!(format in toolbar.handlers)) return;
+    toolbar.handlers[format].call(toolbar, value);
   };
 
   // The old toolbar's "Add button": turns the selected text into a button link.

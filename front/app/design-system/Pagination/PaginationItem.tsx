@@ -2,14 +2,14 @@ import React, { useCallback } from 'react';
 
 import { Button as AriaButton } from 'react-aria-components';
 
-import Icon from '../Icon';
-import '../tokens.css';
-
-import styles from './Pagination.module.css';
-
 import { useIntl } from 'utils/cl-intl';
 
+import Icon from '../Icon';
+
 import messages from './messages';
+import styles from './Pagination.module.css';
+
+import '../tokens.css';
 
 type PaginationItemProps =
   | {

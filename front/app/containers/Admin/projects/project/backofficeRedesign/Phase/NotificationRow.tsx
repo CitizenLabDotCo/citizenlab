@@ -1,11 +1,9 @@
 import React, { useCallback, useMemo, useState } from 'react';
 
-import { Button as AriaButton } from 'react-aria-components';
-
 import Icon from 'design-system/Icon';
 import Switch from 'design-system/Switch';
-import 'design-system/tokens.css';
 import Tooltip from 'design-system/Tooltip';
+import { Button as AriaButton } from 'react-aria-components';
 
 import { CampaignData } from 'containers/Admin/messaging/AutomatedEmails/types';
 import useCampaignRow from 'containers/Admin/messaging/AutomatedEmails/useCampaignRow';
@@ -18,6 +16,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import styles from './NotificationRow.module.css';
 import useNotificationDescription from './useNotificationDescription';
+import 'design-system/tokens.css';
 
 interface Props {
   campaign: CampaignData;

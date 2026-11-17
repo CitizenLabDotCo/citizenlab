@@ -2,14 +2,13 @@ import React, { ReactNode } from 'react';
 
 import { Button as AriaButton, MenuTrigger } from 'react-aria-components';
 
-import Icon from '../Icon';
-import '../tokens.css';
-
-import styles from './FilterChip.module.css';
-
 import { useIntl } from 'utils/cl-intl';
 
+import Icon from '../Icon';
+
+import styles from './FilterChip.module.css';
 import messages from './messages';
+import '../tokens.css';
 
 type FilterChipProps = {
   // Facet: value.

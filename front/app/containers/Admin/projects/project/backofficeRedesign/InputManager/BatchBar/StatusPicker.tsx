@@ -38,9 +38,10 @@ const StatusPicker = ({ options, selected, onSelect }: Props) => {
             .filter((option) => option.disabled && !option.disabledReason)
             .map((option) => option.value)}
           onSelectionChange={(keys) => {
-            const [key] = keys === 'all' ? [] : [...keys];
+            const picked = keys === 'all' ? [] : [...keys];
             // An empty selection means the current status was picked again.
-            const statusId = key === undefined ? selected[0] : String(key);
+            const statusId =
+              picked.length === 0 ? selected[0] : String(picked[0]);
             if (statusId) onSelect(statusId);
             setIsOpen(false);
           }}

@@ -37,8 +37,9 @@ const ImageCard = ({ form }: Props) => {
     setCropOpen(true);
   };
 
-  const selectImage = async ([file]: File[]) => {
-    if (!file) return;
+  const selectImage = async (files: File[]) => {
+    if (files.length === 0) return;
+    const [file] = files;
 
     const isTooLarge = isImageTooLarge(file);
     setTooLarge(isTooLarge);

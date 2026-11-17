@@ -1,14 +1,14 @@
 import React from 'react';
 
+import Button from 'design-system/Button';
+import Tooltip from 'design-system/Tooltip';
+
 import useApproveProjectReview from 'api/project_reviews/useApproveProject';
 
 import messages from 'containers/Admin/projects/project/projectHeader/PublicationButtons/messages';
 
-import Button from 'design-system/Button';
-import 'design-system/tokens.css';
-import Tooltip from 'design-system/Tooltip';
-
 import { useIntl } from 'utils/cl-intl';
+import 'design-system/tokens.css';
 
 interface Props {
   projectId: string;

@@ -2,14 +2,14 @@ import React, { ReactNode, useId } from 'react';
 
 import { Toolbar } from 'react-aria-components';
 
-import IconButton from '../IconButton';
-import '../tokens.css';
-
-import styles from './SelectionBar.module.css';
-
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
+import IconButton from '../IconButton';
+
 import messages from './messages';
+import styles from './SelectionBar.module.css';
+
+import '../tokens.css';
 
 type SelectionBarProps = {
   count: number;

@@ -2,6 +2,8 @@ import React, { memo, useEffect, useState } from 'react';
 
 import MapView from '@arcgis/core/views/MapView';
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
+import IconButton from 'design-system/IconButton';
+import DSSpinner from 'design-system/Spinner';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -10,8 +12,6 @@ import useAddProjectMapConfig from 'api/map_config/useAddProjectMapConfig';
 import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
 import useUpdateMapConfig from 'api/map_config/useUpdateMapConfig';
 
-import IconButton from 'design-system/IconButton';
-import DSSpinner from 'design-system/Spinner';
 import 'design-system/tokens.css';
 
 import { useRegisterPageSaver } from 'components/admin/PageSaveContext';
@@ -183,10 +183,7 @@ const CustomMapConfigPage = memo<Props>((props) => {
     );
     const settings = (
       <>
-        {/* TODO: Fix this the next time the file is edited. */}
-        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
         {view === 'main' &&
-          mapConfig &&
           (isPanel ? (
             <MapConfigOverview
               className={styles.settingsColumn}

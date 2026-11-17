@@ -8,15 +8,13 @@ import {
   Tooltip,
   colors,
 } from '@citizenlab/cl2-component-library';
+import StatTile from 'design-system/StatTile';
+import DsTooltip from 'design-system/Tooltip';
 import { Focusable } from 'react-aria-components';
 
 import { SevenDayChange } from 'api/phase_insights/types';
 
 import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
-
-import StatTile from 'design-system/StatTile';
-import 'design-system/tokens.css';
-import DsTooltip from 'design-system/Tooltip';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -24,6 +22,7 @@ import { usePdfExportContext } from '../pdf/PdfExportContext';
 
 import styles from './MetricCard.module.css';
 import MetricTrend from './MetricTrend';
+import 'design-system/tokens.css';
 
 interface Props {
   label: string;
