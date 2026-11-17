@@ -197,6 +197,9 @@ jobs:
             bin/check-claude-privacy.test.sh
             .githooks/pre-commit.test.sh
             bin/check-claude-privacy
+      - run:
+          name: Test copying the AI assistant's skills
+          command: bin/setup-llm-skills.test.sh
 
   changelogger:
     resource_class: small

@@ -1,0 +1,114 @@
+#!/usr/bin/env bash
+# bin/setup-llm-skills — copy the skills listed in back/config/llm_skills.yml
+# from the team's private skills repo into back/vendor/llm_skills: each skill's
+# .md files and its plugin's shared ones, as AIAssistant::Skill reads them.
+# These skills are for the app's AI features, not for coding. Development
+# (make llm-skills-setup) and CI (before building the back image) both run it,
+# so both get the same files. The folder is gitignored, and the privacy guards
+# (.githooks/pre-commit, bin/check-claude-privacy) refuse to commit it.
+#
+# By default it fetches the skills repo at the commit the manifest pins, which
+# needs LLM_SKILLS_GIT_REMOTE, the skills repo's git remote, kept out of this
+# public repo. Set it in your host shell or in env_files/back-secret.env (ask
+# the team for the value).
+#
+# To try a skill you're writing, copy from your clone instead, uncommitted
+# edits included. Re-run it after each edit; the app reads the files on every
+# prompt. A new skill also needs its name in the manifest.
+#
+#   bin/setup-llm-skills --from ../citizenlab-llm-skills
+#
+# Needs yq. Prints skill names only, never their text, as CI logs may be public.
+
+set -euo pipefail
+
+# The test points this at a fake repo.
+REPO_ROOT="${LLM_SKILLS_REPO_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
+MANIFEST="$REPO_ROOT/back/config/llm_skills.yml"
+SKILLS_DIR="$REPO_ROOT/back/vendor/llm_skills"
+SECRET_ENV="$REPO_ROOT/env_files/back-secret.env"
+
+from=""
+if [ $# -eq 2 ] && [ "$1" = "--from" ]; then
+  from="$2"
+elif [ $# -ne 0 ]; then
+  echo "Usage: bin/setup-llm-skills [--from <skills_repo_clone>]" >&2
+  exit 1
+fi
+
+if ! command -v yq >/dev/null; then
+  echo "Error: yq is not installed." >&2
+  exit 1
+fi
+
+if [ -n "$from" ]; then
+  if [ ! -d "$from/plugins" ]; then
+    echo "Error: $from is not a clone of the skills repo." >&2
+    exit 1
+  fi
+else
+  # Reads only this variable from the file, as bin/setup-claude does, because
+  # the docker-compose env file isn't safe to source in bash.
+  if [ -z "${LLM_SKILLS_GIT_REMOTE:-}" ] && [ -f "$SECRET_ENV" ]; then
+    line="$(grep -E '^(export[[:space:]]+)?LLM_SKILLS_GIT_REMOTE=' "$SECRET_ENV" | tail -n 1 || true)"
+    value="${line#*=}"
+    value="${value#\"}"; value="${value%\"}"
+    value="${value#\'}"; value="${value%\'}"
+    LLM_SKILLS_GIT_REMOTE="$value"
+  fi
+  if [ -z "${LLM_SKILLS_GIT_REMOTE:-}" ]; then
+    echo "Error: LLM_SKILLS_GIT_REMOTE is not set." >&2
+    echo "Set it in your host shell, or in env_files/back-secret.env (ask the team for the value)." >&2
+    exit 1
+  fi
+fi
+
+skills="$(yq '.skills[]' "$MANIFEST")"
+
+# The skills are copied to $work/out and replace back/vendor/llm_skills only
+# once all of them are there, so a failed run keeps the previous copy.
+work="$(mktemp -d)"
+trap 'rm -rf "$work"' EXIT
+out="$work/out"
+mkdir -p "$out"
+
+if [ -n "$from" ]; then
+  source_dir="$(cd "$from" && pwd)"
+  source_name="in $from"
+  echo "Copying the LLM skills from $from ..."
+else
+  ref="$(yq '.ref' "$MANIFEST")"
+  source_dir="$work/repo"
+  source_name="at $ref"
+  echo "Fetching the LLM skills at $ref ..."
+  git init -q "$source_dir"
+  git -C "$source_dir" fetch -q --depth 1 "$LLM_SKILLS_GIT_REMOTE" "$ref"
+  git -C "$source_dir" checkout -q FETCH_HEAD
+fi
+
+for skill in $skills; do
+  skill_dirs=("$source_dir"/plugins/*/skills/"$skill")
+  if [ ! -d "${skill_dirs[0]}" ]; then
+    echo "Error: there is no skill $skill $source_name." >&2
+    exit 1
+  fi
+  skill_path="${skill_dirs[0]#"$source_dir/"}"
+  plugin_path="${skill_path%/skills/*}"
+
+  sources=("$skill_path")
+  if [ -d "$source_dir/$plugin_path/shared" ]; then
+    sources+=("$plugin_path/shared")
+  fi
+
+  while IFS= read -r file; do
+    mkdir -p "$out/$(dirname "$file")"
+    cp "$source_dir/$file" "$out/$file"
+  done < <(cd "$source_dir" && find "${sources[@]}" -type f -name '*.md')
+
+  echo "  $skill"
+done
+
+rm -rf "$SKILLS_DIR"
+mkdir -p "$(dirname "$SKILLS_DIR")"
+mv "$out" "$SKILLS_DIR"
+echo "Copied the LLM skills into back/vendor/llm_skills."
