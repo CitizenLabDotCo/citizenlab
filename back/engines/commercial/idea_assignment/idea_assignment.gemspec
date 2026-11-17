@@ -26,5 +26,5 @@ Gem::Specification.new do |spec|
   spec.files = Dir['{app,config,db,lib}/**/*', 'Rakefile', 'README.md']
 
   spec.add_dependency 'email_campaigns'
-  spec.add_dependency 'rails', '~> 7.2'
+  spec.add_dependency 'rails', '>= 7.2', '< 8.2'
 end
