@@ -13899,6 +13899,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.errors.bulk_import_pdf_parsing_timeout": {
+    "state": "verified",
+    "verified_at": "2026-11-17T10:54:35.561907Z",
+    "verified_by": "Adrien"
+  },
   "app.errors.bulk_import_publication_date_invalid_format": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",

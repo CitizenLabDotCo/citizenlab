@@ -11314,6 +11314,11 @@
     "verified_at": "2026-04-21T08:31:07.959339Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanationInsights": {
+    "state": "verified",
+    "verified_at": "2026-11-17T10:54:35.880785Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAll": {
     "state": "verified",
     "verified_at": "2026-04-21T08:31:07.959339Z",
