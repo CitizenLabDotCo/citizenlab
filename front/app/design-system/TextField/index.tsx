@@ -17,6 +17,7 @@ type TextFieldProps = LabelProps & {
   onChange?: (value: string) => void;
   onBlur?: () => void;
   placeholder?: string;
+  labelTooltip?: string;
   description?: ReactNode;
   errorMessage?: ReactNode;
   size?: 36 | 32;
@@ -35,6 +36,7 @@ const TextField = ({
   onChange,
   onBlur,
   placeholder,
+  labelTooltip,
   description,
   errorMessage,
   size = 36,
@@ -58,7 +60,9 @@ const TextField = ({
     aria-label={ariaLabel}
     data-cy={dataCy}
   >
-    {label !== undefined && <FieldLabel>{label}</FieldLabel>}
+    {label !== undefined && (
+      <FieldLabel tooltip={labelTooltip}>{label}</FieldLabel>
+    )}
     <div className={fieldStyles.control}>
       <Input
         ref={inputRef}
