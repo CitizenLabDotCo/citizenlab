@@ -9424,6 +9424,11 @@
     "verified_at": "2026-11-16T23:49:13.780896Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects.project.editAccessDescription": {
+    "state": "verified",
+    "verified_at": "2026-11-17T09:28:25.330771Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.editForm": {
     "state": "verified",
     "verified_at": "2026-10-28T13:19:05.930261Z",
@@ -11052,6 +11057,11 @@
   "app.containers.Admin.projects.project.noTermsYet": {
     "state": "verified",
     "verified_at": "2026-11-17T09:14:15.747996Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.noTermsYetDescription": {
+    "state": "verified",
+    "verified_at": "2026-11-17T09:28:25.330771Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.nobodySignedUpYet": {
