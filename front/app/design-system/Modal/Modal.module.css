@@ -6,6 +6,9 @@
   align-items: center;
   justify-content: center;
   background: var(--gv-surface-backdrop);
+  /* Above the page's own layers (the admin sidebar uses 3000), below the
+     100000 React Aria gives popovers, so menus inside a modal still show. */
+  z-index: 5000;
 }
 
 .overlay[data-entering] {
