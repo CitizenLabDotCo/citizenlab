@@ -119,6 +119,9 @@ module ReportBuilder
         }
       TSX
 
+      # The skill (see AIAssistant::Skill) whose guidance goes into the instructions.
+      SKILL_NAME = 'project-report'
+
       # Our editorial advice. The skill gives its own, so ours is left out when it is loaded.
       READER = 'The reader is a resident or a councillor: interested, not an expert, and reading a printed PDF rather than a screen.'
 
@@ -399,9 +402,10 @@ module ReportBuilder
         PROMPT
       end
 
-      # Only in development for now (see AIAssistant::Skill).
       def skill
-        AIAssistant::Skill.find('project-report') if AIAssistant::Skill.available?
+        return @skill if defined?(@skill)
+
+        @skill = AIAssistant::Skill.find(SKILL_NAME)
       end
 
       def skill_prompt

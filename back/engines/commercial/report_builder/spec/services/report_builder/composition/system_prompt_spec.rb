@@ -36,7 +36,7 @@ describe ReportBuilder::Composition::SystemPrompt do
   describe 'the skill' do
     before { allow(client).to receive(:sdk_declarations).and_return('') }
 
-    it 'is left out outside development, where our own editorial advice applies' do
+    it 'is left out when it is not there, where our own editorial advice applies' do
       text = prompt.text
 
       expect(text).not_to include('<skill')
@@ -49,11 +49,9 @@ describe ReportBuilder::Composition::SystemPrompt do
       )
     end
 
-    it 'replaces our editorial advice in development, and comes after our instructions so they win on a conflict' do
-      stub_const('AIAssistant::Skill::ROOT', Rails.root.join('spec/fixtures/llm_skills/plugins'))
+    it 'replaces our editorial advice, and comes after our instructions so they win on a conflict' do
       # The report skill is private, so the example skill stands in for it.
       example_skill = AIAssistant::Skill.find('example-skill')
-      allow(AIAssistant::Skill).to receive(:available?).and_return(true)
       allow(AIAssistant::Skill).to receive(:find).with('project-report').and_return(example_skill)
 
       text = prompt.text
@@ -68,6 +66,12 @@ describe ReportBuilder::Composition::SystemPrompt do
         '6 to 10 printed pages'
       )
       expect(text).to include('1. Cover.', 'Divider with variant', '## The report is printed', '## Writing the query')
+    end
+
+    it 'is listed in the manifest, so CI puts it in the image' do
+      manifest = YAML.load_file(Rails.root.join('config/llm_skills.yml'))
+
+      expect(manifest['skills']).to include(described_class::SKILL_NAME)
     end
   end
 

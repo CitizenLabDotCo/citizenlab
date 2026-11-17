@@ -32,11 +32,10 @@ describe AIAssistant::Surfaces::SurveyBuilder do
     expect(prompt).to include('Use at most 25 questions', 'need at least 2 options', 'Do not ask for personal data')
   end
 
-  it 'replaces its design advice with its skill in development' do
-    stub_const('AIAssistant::Skill::ROOT', Rails.root.join('spec/fixtures/llm_skills/plugins'))
+  it 'replaces its design advice with its skill' do
     # The surface's skill is private, so the example skill stands in for it.
     example_skill = AIAssistant::Skill.find('example-skill')
-    allow(AIAssistant::Skill).to receive_messages(available?: true, find: example_skill)
+    allow(AIAssistant::Skill).to receive(:find).with('govocal-project-setup').and_return(example_skill)
 
     prompt = surface.system_prompt(locale: 'en')
 

@@ -1,0 +1,5 @@
+# The skills CI copies into the image from the private skills repo, at this commit of it.
+ref: 'aae89eead48a3d8eb9acf721b8d4434b0ad949b6'
+skills:
+  - govocal-project-setup
+  - project-report

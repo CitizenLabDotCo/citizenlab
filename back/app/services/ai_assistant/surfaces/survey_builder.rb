@@ -12,6 +12,10 @@ module AIAssistant
         Phase
       end
 
+      def self.skill_name
+        'govocal-project-setup'
+      end
+
       def available?
         subject.participation_method == 'native_survey'
       end
@@ -25,10 +29,6 @@ module AIAssistant
             pinned: container.merge(fields_last_updated_at: subject.custom_form&.fields_last_updated_at&.iso8601)
           )
         ]
-      end
-
-      def skill_name
-        'govocal-project-setup'
       end
 
       # A form created after the call has no pinned version, so the tool's own stale check misses it.

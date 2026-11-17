@@ -2,19 +2,25 @@
 
 module AIAssistant
   # A skill from the team's skills repo: guidance written for Claude, which a surface adds to
-  # the model's instructions. Only in development for now, where `make llm-skills-setup`
-  # syncs the repo.
+  # the model's instructions. CI copies the skills listed in config/llm_skills.yml into the
+  # image; in development, `make llm-skills-setup` links the whole repo.
   class Skill
-    ROOT = Rails.root.join('vendor/llm_skills/plugins')
+    ROOT = Rails.root.join(Rails.env.test? ? 'spec/fixtures/llm_skills/plugins' : 'vendor/llm_skills/plugins')
     FRONT_MATTER = /\A---\n.*?\n---\n+/m
 
     def self.available?
-      Rails.env.development? && ROOT.directory?
+      ROOT.directory?
     end
 
+    # Outside development, a skill missing from the folder means the build didn't bring it.
     def self.find(name)
+      return unless available?
+
       skill_file = ROOT.glob("*/skills/#{name}/SKILL.md").first
-      new(skill_file.dirname) if skill_file
+      return new(skill_file.dirname) if skill_file
+
+      ErrorReporter.report_msg('LLM skill not found', extra: { name: }) unless Rails.env.development?
+      nil
     end
 
     def initialize(dir)

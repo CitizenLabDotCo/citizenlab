@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # bin/setup-llm-skills — clone or update the team's private skills repo next
 # to this repo (../citizenlab-llm-skills) and link it at back/vendor/llm_skills.
-# These skills are for the app's AI features (read by AIAssistant::Skill in
-# local development), not for coding. The link is gitignored, and the privacy
-# guards (.githooks/pre-commit, bin/check-claude-privacy) refuse to commit it.
+# These skills are for the app's AI features (read by AIAssistant::Skill), not
+# for coding. The link is gitignored, and the privacy guards
+# (.githooks/pre-commit, bin/check-claude-privacy) refuse to commit it.
 #
 # The containers only mount back/, so docker-compose.yml also mounts the clone
 # where the link points to inside them.
