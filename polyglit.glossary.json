@@ -281,6 +281,9 @@
   "post (input term)": {
     "nl-NL": "bericht"
   },
+  "toggle": {
+    "fr-FR": "interrupteur"
+  },
   "reactions (on inputs)": {
     "nl-NL": "likes / dislikes"
   },
