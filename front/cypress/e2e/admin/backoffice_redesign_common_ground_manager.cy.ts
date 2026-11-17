@@ -143,6 +143,23 @@ describe('Redesigned Common Ground manager', () => {
       );
     });
 
+    // The e2e back end runs no background job worker, so the copy job is
+    // stubbed: the test creates the copies itself, then reports the job done.
+    const importJob = {
+      id: 'import-job',
+      type: 'job',
+      attributes: { progress: 0, total: 2, error_count: 0, errors: [] },
+    };
+    let runningJobs: (typeof importJob)[] = [];
+    cy.intercept('POST', `**/phases/${phaseId}/inputs/copy`, (request) => {
+      if (request.body.dry_run) return;
+      runningJobs = [importJob];
+      request.reply({ data: importJob });
+    });
+    cy.intercept({ method: 'GET', pathname: '/web_api/v1/jobs' }, (request) => {
+      request.reply({ data: runningJobs });
+    });
+
     cy.then(() => {
       cy.visit(
         `admin/projects/${projectId}/phases/${phaseId}/ideas?project_backoffice_redesign`
@@ -159,7 +176,21 @@ describe('Redesigned Common Ground manager', () => {
       cy.contains('button', 'Import inputs').click();
     });
 
-    cy.contains('2 statements', { timeout: 120000 }).should('be.visible');
+    cy.contains('0 out of 2 inputs have been imported').should('be.visible');
+    [firstTitle, secondTitle].forEach((title) => {
+      cy.then(() =>
+        cy.apiCreateIdea({
+          phaseId,
+          ideaTitle: title,
+          ideaContent: randomString(30),
+        })
+      );
+    });
+    cy.then(() => {
+      runningJobs = [];
+    });
+
+    cy.contains('2 statements').should('be.visible');
     cy.contains('No inputs yet').should('not.exist');
     cy.contains('[data-cy^="e2e-statement-row-"]', firstTitle).should(
       'be.visible'
