@@ -50,6 +50,9 @@ const CommonGroundResults = ({ phaseId }: Props) => {
     ideas_by_agreement,
   } = results.data.attributes;
   const totalVotes = votes.up + votes.down + votes.neutral;
+  const ideasWithAgreement = ideas_by_agreement.filter(
+    (idea) => idea.agreement !== null
+  );
 
   return (
     <Box mt="8px">
@@ -72,7 +75,7 @@ const CommonGroundResults = ({ phaseId }: Props) => {
       <ResultList
         title={formatMessage(messages.allStatementsTitle)}
         description={formatMessage(messages.allStatementsDescription1)}
-        items={ideas_by_agreement}
+        items={ideasWithAgreement}
       />
     </Box>
   );
