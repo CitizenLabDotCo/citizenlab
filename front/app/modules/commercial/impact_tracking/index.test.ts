@@ -7,7 +7,8 @@ import { IUser } from 'api/users/types';
 // /users/me, and the auth cookie), and the current-user stream. They don't depend on
 // how the module finds out whether the visitor is signed in.
 
-// What the server knows: is the browser signed in?
+// Is the browser signed in? The API sets (or clears) the auth cookie and the
+// signed-in cookie together.
 let signedInOnServer = false;
 const user = { data: { id: 'user-id', type: 'user' } } as unknown as IUser;
 
@@ -19,7 +20,12 @@ jest.mock('utils/cl-react-query/fetcher', () => ({
   default: (args: { path: string }) => mockFetcher(args),
 }));
 
+jest.mock('utils/auth/signedInCookie', () => ({
+  hasSignedInCookie: () => signedInOnServer,
+}));
+
 // Before the HttpOnly cookie, the front-end read the token from a cookie itself.
+// Kept so these tests also run against that version of the module.
 jest.mock(
   'utils/auth/jwt',
   () => ({ getJwt: () => (signedInOnServer ? 'token' : undefined) }),
@@ -138,6 +144,18 @@ describe('impact tracking: session upgrade', () => {
     expect(upgradeCount()).toBe(0);
 
     await signIn();
+    expect(upgradeCount()).toBe(1);
+  });
+
+  // While the app reloads the current user, the stream first gets the old value
+  // (still signed out). The upgrade must not wait for /users/me to answer.
+  it('upgrades as soon as the app starts reloading the user after signing in', async () => {
+    await loadPage({ signedIn: false });
+
+    signedInOnServer = true;
+    mockAuthUserStream.next(null);
+    await flushPromises();
+
     expect(upgradeCount()).toBe(1);
   });
 

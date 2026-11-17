@@ -27,8 +27,17 @@ module ApiAuthenticationHelper
 
   # The Set-Cookie line of the auth cookie in the response, if any.
   def auth_cookie_header
+    cookie_header(AuthToken::Cookie::NAME)
+  end
+
+  # The Set-Cookie line of the signed-in cookie (for the front-end) in the response, if any.
+  def signed_in_cookie_header
+    cookie_header(AuthToken::Cookie::SIGNED_IN_NAME)
+  end
+
+  def cookie_header(name)
     Array(response_headers['Set-Cookie']).join("\n").lines
-      .find { |line| line.start_with?("#{AuthToken::Cookie::NAME}=") }
+      .find { |line| line.start_with?("#{name}=") }
   end
 
   # The auth token the response sets in the auth cookie, if any.

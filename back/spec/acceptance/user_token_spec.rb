@@ -122,6 +122,15 @@ resource 'User Token' do
         expect(Time.zone.parse(cookie[/expires=([^;]+)/i, 1]).to_i).to eq((Time.now + 1.day).to_i)
       end
 
+      example_request 'Sets a signed-in cookie the front-end can read, that expires with the auth cookie', document: false do
+        assert_status 201
+
+        cookie = signed_in_cookie_header
+        expect(cookie).to start_with("#{AuthToken::Cookie::SIGNED_IN_NAME}=true;")
+        expect(cookie).not_to match(/httponly/i)
+        expect(cookie[/expires=([^;]+)/i, 1]).to eq(auth_cookie_header[/expires=([^;]+)/i, 1])
+      end
+
       context 'when remember_me is sent' do
         let(:remember_me) { true }
 
@@ -540,6 +549,7 @@ resource 'User Token' do
       assert_status 204
 
       expect(auth_cookie_header).to match(/\A#{AuthToken::Cookie::NAME}=;/o)
+      expect(signed_in_cookie_header).to match(/\A#{AuthToken::Cookie::SIGNED_IN_NAME}=;/o)
     end
 
     context 'when signed in through an SSO provider that supports logout' do

@@ -12,6 +12,13 @@ module AuthToken
     # TODO: Remove once all such cookies have expired (max. token lifetime after release).
     LEGACY_NAME = 'cl2_jwt'
 
+    # Companion cookie that the front-end can read, to know right away whether the user
+    # is signed in. It holds no secret, only `true`. Set and cleared together with the
+    # auth cookie, with the same expiry, so the browser drops both at the same time.
+    # It is only a hint: the API never reads it, and doesn't check whether the token
+    # is still valid.
+    SIGNED_IN_NAME = 'cl2_signed_in'
+
     # Values of the Sec-Fetch-Site request header for which we trust the cookie. The browser
     # sets this header and pages can't change it. `same-origin`: the request comes from our
     # own page. `none`: the user typed the address or used a bookmark. No header at all: a
@@ -37,11 +44,13 @@ module AuthToken
     # @param expires [Time, nil] nil makes it a session cookie, removed when the browser closes.
     def write(response, token, expires: nil)
       response.set_cookie(NAME, attributes.merge(value: token, expires: expires).compact)
+      response.set_cookie(SIGNED_IN_NAME, signed_in_attributes.merge(value: 'true', expires: expires).compact)
       clear_legacy(response)
     end
 
     def clear(response)
       response.delete_cookie(NAME, attributes)
+      response.delete_cookie(SIGNED_IN_NAME, signed_in_attributes)
       clear_legacy(response)
     end
 
@@ -55,6 +64,10 @@ module AuthToken
         # Strict would not be sent when an SSO provider redirects the user back to us.
         same_site: :lax
       }
+    end
+
+    def signed_in_attributes
+      attributes.merge(httponly: false)
     end
 
     def clear_legacy(response)

@@ -1,10 +1,9 @@
 import authUserStream from 'api/me/authUserStream';
-import { fetchMe } from 'api/me/useAuthUser';
-import { IUser } from 'api/users/types';
 
 import { API_PATH, locales } from 'containers/App/constants';
 
 import { pageChanges$, virtualPageViews$ } from 'utils/analytics';
+import { hasSignedInCookie } from 'utils/auth/signedInCookie';
 import fetcher from 'utils/cl-react-query/fetcher';
 import { getRoutePattern } from 'utils/getRoutePattern';
 import { ModuleConfiguration } from 'utils/moduleUtils';
@@ -117,32 +116,13 @@ const configuration: ModuleConfiguration = {
     });
 
     // Upgrade the session when a visitor signs in, not when a user who was already
-    // signed in when the page loaded is loaded or refetched. The front-end can't read
-    // the HttpOnly auth cookie, so we ask the API with our own /users/me request: its
-    // answer (null when signed out) tells whether the visitor was signed in when the
-    // page loaded. We don't use the first value of the shared current-user query for
-    // that: other code can invalidate that query (e.g. right after signing up) before
-    // its first answer, which then never reaches the stream. Until our answer is in,
-    // changes are ignored. The API finds the current session itself, so this doesn't
+    // signed in when the page loaded is loaded or refetched. The signed-in cookie tells
+    // right away, so the upgrade goes out as soon as the app starts reloading the user
+    // after signing in. The API finds the current session itself, so this doesn't
     // need sessionId.
-    //
-    // Whether the visitor was signed in the last time we checked. undefined: not known
-    // yet.
-    let wasSignedIn: boolean | undefined;
-    fetchMe()
-      .then((user) => {
-        wasSignedIn = !!user;
-      })
-      .catch(() => {
-        // Unknown: no session upgrade on this page load.
-      });
-
-    // The stream's type leaves out null, but fetchMe returns null when signed out.
-    // undefined means still loading (at startup, or after signing out resets the user).
-    authUserStream.subscribe((user: IUser | null | undefined) => {
-      if (user === undefined || wasSignedIn === undefined) return;
-
-      const isSignedIn = !!user;
+    let wasSignedIn = hasSignedInCookie();
+    authUserStream.subscribe(() => {
+      const isSignedIn = hasSignedInCookie();
       if (!wasSignedIn && isSignedIn) {
         upgradeSession();
       }

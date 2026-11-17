@@ -26,6 +26,9 @@ import {
 // The API hands out the auth token only in this HttpOnly cookie, and reads it from
 // there only. Cypress can still read and set HttpOnly cookies itself.
 export const AUTH_COOKIE = 'cl2_auth_token';
+// Set and cleared by the API together with the auth cookie, for the front-end to
+// read (see AuthToken::Cookie). The helpers below keep both in step, as the API does.
+const SIGNED_IN_COOKIE = 'cl2_signed_in';
 
 // Reads the auth token the API set in the response's auth cookie.
 export function authTokenFromResponse(response: Cypress.Response<unknown>) {
@@ -39,34 +42,51 @@ export function authTokenFromResponse(response: Cypress.Response<unknown>) {
 }
 
 /*
-  Removes every auth cookie from the browser. There can be more than one: cookies
-  with the same name but a different domain (host-only `e2e.front` vs `.e2e.front`)
-  coexist, and the browser sends all of them.
+  Removes every cookie named `name` from the browser. There can be more than one:
+  cookies with the same name but a different domain (host-only `e2e.front` vs
+  `.e2e.front`) coexist, and the browser sends all of them.
 */
-function clearAuthCookie(attemptsLeft = 5): Cypress.Chainable<null> {
-  return cy.getCookie(AUTH_COOKIE, { log: false }).then((cookie) => {
+function clearCookieEverywhere(
+  name: string,
+  attemptsLeft = 5
+): Cypress.Chainable<null> {
+  return cy.getCookie(name, { log: false }).then((cookie) => {
     if (!cookie) return cy.wrap(null, { log: false });
     if (attemptsLeft === 0) {
-      throw new Error(`Could not clear the ${AUTH_COOKIE} cookie`);
+      throw new Error(`Could not clear the ${name} cookie`);
     }
     return cy
-      .clearCookie(AUTH_COOKIE, { domain: cookie.domain, log: false })
-      .then(() => clearAuthCookie(attemptsLeft - 1));
+      .clearCookie(name, { domain: cookie.domain, log: false })
+      .then(() => clearCookieEverywhere(name, attemptsLeft - 1));
   });
 }
 
+// Signs the browser out: removes the auth cookie and the signed-in cookie.
+function clearAuthCookie(): Cypress.Chainable<null> {
+  return clearCookieEverywhere(AUTH_COOKIE).then(() =>
+    clearCookieEverywhere(SIGNED_IN_COOKIE)
+  );
+}
+
 /*
-  Signs the browser in with `jwt`. Like the API's own Set-Cookie, the cookie is
-  host-only, so it replaces the current auth cookie in one step. Don't clear the
-  cookie first: a page that is open would send its requests in between without
-  one, get a 401 and act as if the user signed out.
+  Signs the browser in with `jwt`, and sets the signed-in cookie next to it. Like the
+  API's own Set-Cookie, the cookies are host-only, so they replace the current ones
+  in one step. Don't clear the cookies first: a page that is open would send its
+  requests in between without one, get a 401 and act as if the user signed out.
 */
 function setAuthCookie(jwt: string) {
-  return cy.setCookie(AUTH_COOKIE, jwt, {
-    httpOnly: true,
-    hostOnly: true,
-    sameSite: 'lax',
-  });
+  return cy
+    .setCookie(AUTH_COOKIE, jwt, {
+      httpOnly: true,
+      hostOnly: true,
+      sameSite: 'lax',
+    })
+    .then(() =>
+      cy.setCookie(SIGNED_IN_COOKIE, 'true', {
+        hostOnly: true,
+        sameSite: 'lax',
+      })
+    );
 }
 
 /*
