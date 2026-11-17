@@ -25,6 +25,29 @@ describe AIAssistant::Surfaces::SurveyBuilder do
     )
   end
 
+  it 'gives its own design advice without a skill' do
+    prompt = surface.system_prompt(locale: 'en')
+
+    expect(prompt).not_to include('<skill')
+    expect(prompt).to include('Use at most 25 questions', 'need at least 2 options', 'Do not ask for personal data')
+  end
+
+  it 'replaces its design advice with its skill' do
+    # The surface's skill is private, so the example skill stands in for it.
+    example_skill = AIAssistant::Skill.find('example-skill')
+    allow(AIAssistant::Skill).to receive(:find).with('govocal-project-setup').and_return(example_skill)
+
+    prompt = surface.system_prompt(locale: 'en')
+
+    expect(prompt).to include(
+      '<skill name="example-skill">',
+      'Fixture guidance from the example skill.',
+      'Fixture guidance on style.'
+    )
+    expect(prompt).not_to include('Use at most 25 questions')
+    expect(prompt).to include('Call get_form_fields to read the current form', 'need at least 2 options', 'Do not ask for personal data')
+  end
+
   it 'pins the form version to the proposed changes' do
     form = create(:custom_form, participation_context: phase, fields_last_updated_at: 1.hour.ago)
 
