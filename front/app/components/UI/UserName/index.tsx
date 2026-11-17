@@ -20,8 +20,7 @@ import Link from 'utils/cl-router/Link';
 
 import messages from './messages';
 
-// polished can't parse CSS variables, which design-system screens pass as
-// `color`. Darkening one would throw while rendering, so they keep their colour.
+// polished can't parse CSS variables.
 const hoverColor = (color: string) =>
   color.startsWith('var(') ? color : darken(0.15, color);
 
