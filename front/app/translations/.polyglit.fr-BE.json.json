@@ -1189,6 +1189,16 @@
     "verified_at": "2026-11-17T16:12:04.674245Z",
     "verified_by": "Adrien"
   },
+  "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.filteredProjects": {
+    "state": "verified",
+    "verified_at": "2026-11-17T16:18:56.781183Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.notAvailable": {
+    "state": "verified",
+    "verified_at": "2026-11-17T16:18:56.781183Z",
+    "verified_by": "Adrien"
+  },
   "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.selectionLabel": {
     "state": "verified",
     "verified_at": "2026-11-17T15:46:57.486799Z",
