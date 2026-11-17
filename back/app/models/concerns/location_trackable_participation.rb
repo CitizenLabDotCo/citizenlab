@@ -11,6 +11,15 @@ module LocationTrackableParticipation
     after_update :forget_participation_location, if: -> { try(:made_anonymous?) }
   end
 
+  # The value of one ParticipationLocation::EXPORT_COLUMNS attribute for
+  # exports. Blank when the participant chose to post anonymously, since the
+  # location could identify them.
+  def participation_location_for_export(attribute)
+    return if try(:anonymous?)
+
+    participation_location&.export_value(attribute)
+  end
+
   private
 
   def track_participation_location

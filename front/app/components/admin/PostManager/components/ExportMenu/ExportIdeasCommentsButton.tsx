@@ -20,6 +20,8 @@ import { exportType } from '../ExportMenu';
 interface Props {
   exportQueryParameter: 'all' | string | string[];
   exportType: exportType;
+  // Set when exporting from inside a project.
+  projectId?: string;
 }
 
 interface State {
@@ -40,6 +42,7 @@ class ExportCommentsButton extends React.PureComponent<
   handleExportComments = async () => {
     const {
       exportQueryParameter: queryParameter,
+      projectId,
       intl: { formatDate, formatMessage },
     } = this.props;
 
@@ -48,6 +51,7 @@ class ExportCommentsButton extends React.PureComponent<
       queryParametersObject['project'] = queryParameter;
     } else if (!isString(queryParameter)) {
       queryParametersObject['ideas'] = queryParameter;
+      if (projectId) queryParametersObject['project'] = projectId;
     }
 
     try {

@@ -8,6 +8,12 @@ class ParticipationTrackingService
       posted_by_participant?(trackable) && !trackable.try(:anonymous?) && !anonymous_survey?(trackable)
     end
 
+    # The tracking associations worth preloading for an export of the
+    # project: only those whose columns the export can include.
+    def export_includes(project)
+      ParticipationLocationService.enabled_for?(project) ? [:participation_location] : []
+    end
+
     private
 
     # The request is only the participant's own when they post themselves: not

@@ -70,6 +70,20 @@ describe Export::Xlsx::ProjectBasketsVotesGenerator do
       expect(workbook.worksheets[0].sheet_data.size).to eq(2) # Header row + 1 voter
     end
 
+    it 'adds participant location columns last when the project tracks location' do
+      SettingsService.new.activate_feature!('participation_location_tracking')
+      project.update!(track_participation_location: true)
+      create(:participation_location, trackable: basket3, city: 'Brussels')
+
+      header_row = workbook.worksheets[1][0].cells.map(&:value)
+      user_row = workbook.worksheets[1][1].cells.map(&:value)
+
+      expect(header_row.last(5)).to eq [
+        'Participant country', 'Participant region', 'Participant city', 'Participant latitude', 'Participant longitude'
+      ]
+      expect(user_row[header_row.index('Participant city')]).to eq 'Brussels'
+    end
+
     it 'contains one column for each idea in a phase, on each respective worksheet' do
       3.times do |i|
         header_row = workbook.worksheets[i][0].cells.map(&:value)

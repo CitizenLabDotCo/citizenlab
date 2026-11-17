@@ -71,7 +71,7 @@ export default class ExportMenu extends PureComponent<Props, State> {
   };
 
   render() {
-    const { className, type } = this.props;
+    const { className, type, selectedProject } = this.props;
     const { dropdownOpened } = this.state;
     const { exportQueryParameter, exportType } =
       this.getExportQueryParameters();
@@ -100,6 +100,7 @@ export default class ExportMenu extends PureComponent<Props, State> {
               type={type}
               exportQueryParameter={exportQueryParameter}
               exportType={exportType}
+              projectId={type === 'AllIdeas' ? undefined : selectedProject}
             />
           }
         />

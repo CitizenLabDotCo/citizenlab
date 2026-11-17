@@ -69,4 +69,20 @@ RSpec.describe ParticipationTrackingService do
       expect(described_class.track?(create(:basket, phase: voting_project.phases.first, user: user))).to be true
     end
   end
+
+  describe '.export_includes' do
+    let(:project) { create(:project, track_participation_location: true) }
+
+    it 'includes the location when the project tracks it' do
+      SettingsService.new.activate_feature!('participation_location_tracking')
+
+      expect(described_class.export_includes(project)).to eq [:participation_location]
+    end
+
+    it 'is empty when location tracking is off' do
+      SettingsService.new.deactivate_feature!('participation_location_tracking')
+
+      expect(described_class.export_includes(project)).to eq []
+    end
+  end
 end
