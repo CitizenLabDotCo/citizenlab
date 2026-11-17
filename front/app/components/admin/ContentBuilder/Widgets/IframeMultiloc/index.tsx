@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { useEditor } from '@craftjs/core';
+
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 import useLocalize from 'hooks/useLocalize';
 

@@ -6,8 +6,9 @@ import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer';
 import SimpleLineSymbol from '@arcgis/core/symbols/SimpleLineSymbol';
 import MapView from '@arcgis/core/views/MapView';
-import { colors } from '@citizenlab/cl2-component-library';
 import { transparentize } from 'polished';
+
+import { colors } from '@citizenlab/cl2-component-library';
 
 import { IMapConfig } from 'api/map_config/types';
 

@@ -1,5 +1,8 @@
 import React from 'react';
 
+import { darken } from 'polished';
+import styled, { useTheme } from 'styled-components';
+
 import {
   Box,
   IconButton,
@@ -9,8 +12,6 @@ import {
   isRtl,
   Button,
 } from '@citizenlab/cl2-component-library';
-import { darken } from 'polished';
-import styled, { useTheme } from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 

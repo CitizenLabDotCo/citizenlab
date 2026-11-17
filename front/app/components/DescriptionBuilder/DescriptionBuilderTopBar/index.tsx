@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { Box, Text, Title, colors } from '@citizenlab/cl2-component-library';
 import { useEditor, SerializedNodes } from '@craftjs/core';
 import { Multiloc, SupportedLocale } from 'typings';
+
+import { Box, Text, Title, colors } from '@citizenlab/cl2-component-library';
 
 import useLocalize from 'hooks/useLocalize';
 

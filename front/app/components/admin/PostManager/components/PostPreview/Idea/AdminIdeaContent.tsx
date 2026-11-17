@@ -1,13 +1,14 @@
 import React from 'react';
 
+import { darken } from 'polished';
+import styled from 'styled-components';
+
 import {
   IconTooltip,
   Box,
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
-import { darken } from 'polished';
-import styled from 'styled-components';
 
 import useIdeaFiles from 'api/idea_files/useIdeaFiles';
 import useIdeaImages from 'api/idea_images/useIdeaImages';

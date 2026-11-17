@@ -2,6 +2,8 @@ import React, { ReactNode } from 'react';
 
 import { format, parseISO } from 'date-fns';
 
+import Banner from 'design-system/Banner';
+
 import { IPhaseData } from 'api/phases/types';
 
 import useLocale from 'hooks/useLocale';
@@ -9,8 +11,6 @@ import useLocale from 'hooks/useLocale';
 import { phaseStatus } from 'containers/Admin/projects/project/projectPage/phaseRowUtils';
 
 import { getLocale } from 'components/admin/DatePickers/_shared/locales';
-
-import Banner from 'design-system/Banner';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 

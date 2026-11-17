@@ -1,12 +1,13 @@
 import React, { Suspense } from 'react';
 
+import styled from 'styled-components';
+
 import {
   Title,
   Box,
   stylingConsts,
   colors,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 import { SETTINGS_PANEL_WIDTH } from 'components/admin/ContentBuilder/constants';
 import ButtonWithLink from 'components/UI/ButtonWithLink';

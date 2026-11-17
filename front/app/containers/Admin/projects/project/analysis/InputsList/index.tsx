@@ -1,5 +1,8 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
 
+import { useVirtualizer } from '@tanstack/react-virtual';
+import styled from 'styled-components';
+
 import {
   Box,
   Text,
@@ -7,8 +10,6 @@ import {
   stylingConsts,
   Spinner,
 } from '@citizenlab/cl2-component-library';
-import { useVirtualizer } from '@tanstack/react-virtual';
-import styled from 'styled-components';
 
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
 

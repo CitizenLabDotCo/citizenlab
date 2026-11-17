@@ -3,10 +3,11 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Graphic from '@arcgis/core/Graphic';
 import Layer from '@arcgis/core/layers/Layer';
 import MapView from '@arcgis/core/views/MapView';
-import { Box, colors } from '@citizenlab/cl2-component-library';
 import { Point } from 'geojson';
 import { isEmpty } from 'lodash-es';
 import { useTheme } from 'styled-components';
+
+import { Box, colors } from '@citizenlab/cl2-component-library';
 
 import { IMapConfig } from 'api/map_config/types';
 

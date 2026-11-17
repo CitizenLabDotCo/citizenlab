@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Button } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
+
+import { Button } from '@citizenlab/cl2-component-library';
 
 import { trackEventByName } from 'utils/analytics';
 import { injectIntl } from 'utils/cl-intl';

@@ -1,5 +1,8 @@
 import React, { useState, useMemo } from 'react';
 
+import { debounce } from 'lodash-es';
+import styled, { useTheme } from 'styled-components';
+
 import {
   Box,
   Text,
@@ -8,8 +11,6 @@ import {
   Toggle,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { debounce } from 'lodash-es';
-import styled, { useTheme } from 'styled-components';
 
 import RangeInput from 'components/UI/RangeInput';
 

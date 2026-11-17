@@ -1,7 +1,8 @@
 import React, { useRef, useEffect, useState } from 'react';
 
-import { media, isRtl, useBreakpoint } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { media, isRtl, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 import { MIN_VIEWPORT_HEIGHT_FOR_STICKY_ELEMENTS } from 'utils/styleConstants';
 

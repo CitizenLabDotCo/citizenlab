@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
 import { useWatch } from 'react-hook-form';
+
+import { Box } from '@citizenlab/cl2-component-library';
 
 import Input from 'components/HookForm/Input';
 import Toggle from 'components/HookForm/Toggle';

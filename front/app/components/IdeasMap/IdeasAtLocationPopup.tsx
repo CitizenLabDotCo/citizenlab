@@ -1,8 +1,9 @@
 import React from 'react';
 
 import MapView from '@arcgis/core/views/MapView';
-import { Box, Button } from '@citizenlab/cl2-component-library';
 import { createPortal } from 'react-dom';
+
+import { Box, Button } from '@citizenlab/cl2-component-library';
 
 import { IIdeaMarkerData } from 'api/idea_markers/types';
 

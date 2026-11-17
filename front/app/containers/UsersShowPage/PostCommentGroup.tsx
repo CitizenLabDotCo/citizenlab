@@ -1,5 +1,8 @@
 import React from 'react';
 
+import { darken } from 'polished';
+import styled from 'styled-components';
+
 import {
   colors,
   media,
@@ -7,8 +10,6 @@ import {
   defaultCardStyle,
   Icon,
 } from '@citizenlab/cl2-component-library';
-import { darken } from 'polished';
-import styled from 'styled-components';
 
 import { ICommentData } from 'api/comments/types';
 import useIdeaById from 'api/ideas/useIdeaById';

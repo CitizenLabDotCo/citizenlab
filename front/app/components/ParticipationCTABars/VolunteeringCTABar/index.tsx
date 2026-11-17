@@ -1,7 +1,8 @@
 import React, { useEffect, useState, FormEvent } from 'react';
 
-import { Button } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
+
+import { Button } from '@citizenlab/cl2-component-library';
 
 import { IPhaseData } from 'api/phases/types';
 

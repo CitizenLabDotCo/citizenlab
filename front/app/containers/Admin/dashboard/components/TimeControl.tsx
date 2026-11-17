@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 
+import { getMonth } from 'date-fns';
+import moment, { Moment } from 'moment';
+import styled from 'styled-components';
+
 import {
   Icon,
   Dropdown,
   colors,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
-import { getMonth } from 'date-fns';
-import moment, { Moment } from 'moment';
-import styled from 'styled-components';
 
 import DateRangePicker from 'components/admin/DatePickers/DateRangePicker';
 import ButtonWithLink from 'components/UI/ButtonWithLink';

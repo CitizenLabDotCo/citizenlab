@@ -1,5 +1,7 @@
 import React from 'react';
 
+import styled from 'styled-components';
+
 import {
   Box,
   colors,
@@ -7,7 +9,6 @@ import {
   stylingConsts,
   Button,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 import { IFileData } from 'api/files/types';
 import useDeleteFile from 'api/files/useDeleteFile';

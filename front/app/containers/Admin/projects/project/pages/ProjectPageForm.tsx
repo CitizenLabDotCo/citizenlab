@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from 'react';
 
+import { yupResolver } from '@hookform/resolvers/yup';
+import { FormProvider, Resolver, useForm } from 'react-hook-form';
+import { Multiloc, UploadFile } from 'typings';
+import { mixed, object, string } from 'yup';
+
 import {
   Box,
   Title,
@@ -7,10 +12,6 @@ import {
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { FormProvider, Resolver, useForm } from 'react-hook-form';
-import { Multiloc, UploadFile } from 'typings';
-import { mixed, object, string } from 'yup';
 
 import { ICustomPageData } from 'api/custom_pages/types';
 import useAddCustomPage from 'api/custom_pages/useAddCustomPage';

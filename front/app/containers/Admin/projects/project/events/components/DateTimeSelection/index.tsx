@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { Box, Label, Text } from '@citizenlab/cl2-component-library';
 import moment from 'moment-timezone';
 import { CLErrors } from 'typings';
+
+import { Box, Label, Text } from '@citizenlab/cl2-component-library';
 
 import { IEventProperties } from 'api/events/types';
 

@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect, KeyboardEvent } from 'react';
 
+import styled from 'styled-components';
+
 import {
   Dropdown,
   colors,
@@ -8,7 +10,6 @@ import {
   Icon,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 import DropdownFocusSentinel from './DropdownFocusSentinel';
 import { SelectorProps } from './MultiSelectDropdown';

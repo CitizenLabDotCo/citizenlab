@@ -1,7 +1,8 @@
 import React, { memo, useCallback, useState } from 'react';
 
-import { fontSizes, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { fontSizes, colors } from '@citizenlab/cl2-component-library';
 
 import { IdMethodName } from 'api/id_methods/types';
 import useIdMethods from 'api/id_methods/useIdMethods';

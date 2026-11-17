@@ -1,5 +1,7 @@
 import React, { ReactNode } from 'react';
 
+import styled from 'styled-components';
+
 import {
   Box,
   Title,
@@ -11,7 +13,6 @@ import {
   stylingConsts,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 import { TagType } from 'api/analysis_tags/types';
 

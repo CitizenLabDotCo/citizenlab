@@ -1,9 +1,10 @@
 import React from 'react';
 
-import { colors } from '@citizenlab/cl2-component-library';
 import { clone } from 'lodash-es';
 import { Controller, useFormContext } from 'react-hook-form';
 import styled from 'styled-components';
+
+import { colors } from '@citizenlab/cl2-component-library';
 
 import tracks from 'containers/Admin/users/tracks';
 

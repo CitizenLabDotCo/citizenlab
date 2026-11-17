@@ -1,5 +1,9 @@
 import React from 'react';
 
+import { every, isEmpty, isFunction } from 'lodash-es';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import styled from 'styled-components';
+
 import {
   Table,
   Tbody,
@@ -9,9 +13,6 @@ import {
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import { every, isEmpty, isFunction } from 'lodash-es';
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import styled from 'styled-components';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { Sort as IdeasSort, IIdeaData } from 'api/ideas/types';

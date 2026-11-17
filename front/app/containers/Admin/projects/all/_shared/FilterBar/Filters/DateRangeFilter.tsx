@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Box, IconTooltip } from '@citizenlab/cl2-component-library';
 import { format } from 'date-fns';
+
+import { Box, IconTooltip } from '@citizenlab/cl2-component-library';
 
 import DateRangePicker from 'components/admin/DatePickers/DateRangePicker';
 

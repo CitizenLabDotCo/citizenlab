@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Radio } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { Radio } from '@citizenlab/cl2-component-library';
 
 import usePollOptions from 'api/poll_options/usePollOptions';
 import { IPollQuestionData } from 'api/poll_questions/types';

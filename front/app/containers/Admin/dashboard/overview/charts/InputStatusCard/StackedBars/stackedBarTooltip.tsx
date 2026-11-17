@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
 import { Tooltip } from 'recharts';
+
+import { Box } from '@citizenlab/cl2-component-library';
 
 import TooltipOutline from 'components/admin/Graphs/_components/TooltipOutline';
 

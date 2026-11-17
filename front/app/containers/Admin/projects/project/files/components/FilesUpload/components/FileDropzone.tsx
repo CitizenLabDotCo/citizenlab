@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { useDropzone } from 'react-dropzone';
+
 import {
   Box,
   Button,
@@ -7,7 +9,6 @@ import {
   stylingConsts,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { useDropzone } from 'react-dropzone';
 
 import { useIntl } from 'utils/cl-intl';
 

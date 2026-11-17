@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Select } from '@citizenlab/cl2-component-library';
 import { IOption } from 'typings';
+
+import { Select } from '@citizenlab/cl2-component-library';
 
 import useAreas from 'api/areas/useAreas';
 

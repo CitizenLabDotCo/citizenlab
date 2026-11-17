@@ -1,8 +1,9 @@
 import React, { useState, useRef, useCallback, useMemo } from 'react';
 
-import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
 import { Multiloc, SupportedLocale } from 'typings';
+
+import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 
 import useProjectPageLayout from 'api/project_page_layout/useProjectPageLayout';
 import useUpsertProjectPageLayout from 'api/project_page_layout/useUpsertProjectPageLayout';

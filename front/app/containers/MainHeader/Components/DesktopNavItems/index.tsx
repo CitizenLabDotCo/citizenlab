@@ -1,7 +1,8 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 
-import { media, isRtl } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { media, isRtl } from '@citizenlab/cl2-component-library';
 
 import useNavbarItems from 'api/navbar/useNavbarItems';
 

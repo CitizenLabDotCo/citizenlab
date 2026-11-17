@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Box, Button } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
+
+import { Box, Button } from '@citizenlab/cl2-component-library';
 
 import { INavbarDropdownChild, INavbarItem } from 'api/navbar/types';
 import useAddNavbarItem from 'api/navbar/useAddNavbarItem';

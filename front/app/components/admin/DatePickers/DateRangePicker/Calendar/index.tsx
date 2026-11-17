@@ -1,9 +1,10 @@
 import React from 'react';
 
-import { Box, colors, Button } from '@citizenlab/cl2-component-library';
 import { DayPicker, PropsBase } from 'react-day-picker';
 import 'react-day-picker/style.css';
 import styled from 'styled-components';
+
+import { Box, colors, Button } from '@citizenlab/cl2-component-library';
 
 import useLocale from 'hooks/useLocale';
 

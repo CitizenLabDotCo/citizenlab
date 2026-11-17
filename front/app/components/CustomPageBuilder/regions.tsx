@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
 import { UserComponent, useEditor } from '@craftjs/core';
+
+import { Box } from '@citizenlab/cl2-component-library';
 
 type RegionProps = {
   children?: React.ReactNode;

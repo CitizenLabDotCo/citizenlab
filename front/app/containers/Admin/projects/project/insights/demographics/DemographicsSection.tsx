@@ -1,5 +1,7 @@
 import React, { useMemo, useState } from 'react';
 
+import styled, { css } from 'styled-components';
+
 import {
   Box,
   Text,
@@ -7,7 +9,6 @@ import {
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
-import styled, { css } from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { transformDemographicsResponse } from 'api/phase_insights/transformDemographics';

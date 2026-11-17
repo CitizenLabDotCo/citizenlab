@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 import { ImageSizes } from 'typings';
+
+import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 
 import { AvatarImageBubble } from 'components/AvatarBubbles';
 import { BubbleContainer } from 'components/AvatarBubbles/Containers';

@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Icon } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { Icon } from '@citizenlab/cl2-component-library';
 
 // CSS extracted from the official Clave Unica button
 // https://drive.google.com/file/d/1-aBGu5XEjHD1LYcqOZP_mUg4ekFLDv6v/view

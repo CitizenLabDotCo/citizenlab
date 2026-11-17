@@ -1,5 +1,8 @@
 import React, { useEffect, useState, useCallback } from 'react';
 
+import { useNode } from '@craftjs/core';
+import { UploadFile } from 'typings';
+
 import {
   Box,
   Toggle,
@@ -10,8 +13,6 @@ import {
   Input,
   Text,
 } from '@citizenlab/cl2-component-library';
-import { useNode } from '@craftjs/core';
-import { UploadFile } from 'typings';
 
 import useAddContentBuilderImage from 'api/content_builder_images/useAddContentBuilderImage';
 

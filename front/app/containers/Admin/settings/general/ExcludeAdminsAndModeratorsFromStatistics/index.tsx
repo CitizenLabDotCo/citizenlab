@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Box, Toggle } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { Box, Toggle } from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';

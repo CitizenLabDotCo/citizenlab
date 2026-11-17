@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { IconTooltip } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { IconTooltip } from '@citizenlab/cl2-component-library';
 
 import { Section, SubSectionTitle } from 'components/admin/Section';
 

@@ -1,12 +1,12 @@
 import React, { useRef } from 'react';
 
+import Icon from 'design-system/Icon';
+import IconButton from 'design-system/IconButton';
+
 import { IFileAttachmentData } from 'api/file_attachments/types';
 import useFileById from 'api/files/useFileById';
 
 import useSortableItem from 'hooks/useSortableItem';
-
-import Icon from 'design-system/Icon';
-import IconButton from 'design-system/IconButton';
 
 import { useIntl } from 'utils/cl-intl';
 

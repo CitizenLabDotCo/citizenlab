@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { Select, Label } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { IOption } from 'typings';
+
+import { Select, Label } from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IIdeaStatuses } from 'api/idea_statuses/types';

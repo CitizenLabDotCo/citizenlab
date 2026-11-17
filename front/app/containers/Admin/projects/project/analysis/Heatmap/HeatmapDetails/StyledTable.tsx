@@ -1,5 +1,6 @@
-import { colors, Table } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { colors, Table } from '@citizenlab/cl2-component-library';
 
 interface StyledTableProps {
   columns: number;

@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { Spinner } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
 import styled, { useTheme } from 'styled-components';
+
+import { Spinner } from '@citizenlab/cl2-component-library';
 
 import useComment from 'api/comments/useComment';
 import useComments from 'api/comments/useComments';

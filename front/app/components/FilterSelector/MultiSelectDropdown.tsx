@@ -1,5 +1,8 @@
 import React, { useRef, KeyboardEvent, FormEvent, useEffect } from 'react';
 
+import { includes, isNil } from 'lodash-es';
+import styled from 'styled-components';
+
 import {
   Dropdown,
   colors,
@@ -10,8 +13,6 @@ import {
   Icon,
   Spinner,
 } from '@citizenlab/cl2-component-library';
-import { includes, isNil } from 'lodash-es';
-import styled from 'styled-components';
 
 import Checkbox from 'components/UI/Checkbox';
 

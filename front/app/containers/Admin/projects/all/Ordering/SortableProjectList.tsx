@@ -1,7 +1,8 @@
 import React, { Fragment } from 'react';
 
-import { Text, Box } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { Text, Box } from '@citizenlab/cl2-component-library';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
 import useReorderAdminPublication from 'api/admin_publications/useReorderAdminPublication';

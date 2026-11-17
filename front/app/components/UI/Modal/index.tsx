@@ -1,5 +1,12 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 
+import { createPortal } from 'react-dom';
+import { FocusOn } from 'react-focus-on';
+import CSSTransition from 'react-transition-group/CSSTransition';
+import { fromEvent } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import styled from 'styled-components';
+
 import {
   Box,
   media,
@@ -9,12 +16,6 @@ import {
   ClickOutside,
   isRtl,
 } from '@citizenlab/cl2-component-library';
-import { createPortal } from 'react-dom';
-import { FocusOn } from 'react-focus-on';
-import CSSTransition from 'react-transition-group/CSSTransition';
-import { fromEvent } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import styled from 'styled-components';
 
 import CloseIconButton, {
   closeIconButtonStyle,

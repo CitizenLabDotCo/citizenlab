@@ -1,5 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
+import { forOwn, isEmpty } from 'lodash-es';
+import styled from 'styled-components';
+import { Multiloc, SupportedLocale } from 'typings';
+
 import {
   Box,
   Input,
@@ -8,9 +12,10 @@ import {
   fontSizes,
   Title,
 } from '@citizenlab/cl2-component-library';
-import { forOwn, isEmpty } from 'lodash-es';
-import styled from 'styled-components';
-import { Multiloc, SupportedLocale } from 'typings';
+
+import Banner from 'design-system/Banner';
+import Button from 'design-system/Button';
+import TextField from 'design-system/TextField';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IOfficialFeedbackData as IIdeaOfficialFeedbackData } from 'api/idea_official_feedback/types';
@@ -27,10 +32,6 @@ import { formatEditableCommentContent } from 'components/PostShowComponents/util
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
-
-import Banner from 'design-system/Banner';
-import Button from 'design-system/Button';
-import TextField from 'design-system/TextField';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';

@@ -1,5 +1,7 @@
 import React from 'react';
 
+import styled from 'styled-components';
+
 import {
   Button,
   ButtonStyles,
@@ -8,7 +10,6 @@ import {
   colors,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 import useABTest from 'api/experiments/useABTest';
 import { FollowableType } from 'api/follow_unfollow/types';

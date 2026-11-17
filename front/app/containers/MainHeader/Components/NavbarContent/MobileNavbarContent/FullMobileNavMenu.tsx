@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { Box, media, colors } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
 import styled from 'styled-components';
+
+import { Box, media, colors } from '@citizenlab/cl2-component-library';
 
 import useNavbarItems from 'api/navbar/useNavbarItems';
 import { getNavbarChildLink } from 'api/navbar/util';

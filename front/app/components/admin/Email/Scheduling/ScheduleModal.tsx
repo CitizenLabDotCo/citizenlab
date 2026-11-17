@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 
-import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 import isSameDay from 'date-fns/isSameDay';
 import moment from 'moment-timezone';
 import styled from 'styled-components';
+
+import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 
 import {
   IEmailCampaign,

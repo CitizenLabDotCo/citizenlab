@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
+import { stringify } from 'qs';
+
 import {
   Box,
   IconButton,
@@ -8,7 +10,6 @@ import {
   DropdownListItem,
   Spinner,
 } from '@citizenlab/cl2-component-library';
-import { stringify } from 'qs';
 
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
 import useAnalyses from 'api/analyses/useAnalyses';

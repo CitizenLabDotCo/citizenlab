@@ -1,5 +1,7 @@
 import React from 'react';
 
+import moment from 'moment';
+
 import {
   Box,
   Title,
@@ -9,7 +11,6 @@ import {
   Icon,
   colors,
 } from '@citizenlab/cl2-component-library';
-import moment from 'moment';
 
 import { Period } from 'api/graph_data_units/responseTypes/ProjectsWidget';
 import { IProjectImageData } from 'api/project_images/types';

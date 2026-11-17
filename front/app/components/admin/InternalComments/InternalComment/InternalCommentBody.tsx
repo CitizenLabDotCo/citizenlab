@@ -1,8 +1,9 @@
 import React, { FormEvent, useEffect, useState, useRef } from 'react';
 
-import { Button } from '@citizenlab/cl2-component-library';
 import styled, { useTheme } from 'styled-components';
 import { CLErrors } from 'typings';
+
+import { Button } from '@citizenlab/cl2-component-library';
 
 import { IUpdatedInternalComment } from 'api/internal_comments/types';
 import useInternalComment from 'api/internal_comments/useInternalComment';

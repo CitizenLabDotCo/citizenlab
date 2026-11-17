@@ -1,14 +1,15 @@
 import React, { FormEvent, ReactNode } from 'react';
 
+import { rgba } from 'polished';
+import styled from 'styled-components';
+import { Multiloc } from 'typings';
+
 import {
   Dropdown,
   Icon,
   fontSizes,
   isRtl,
 } from '@citizenlab/cl2-component-library';
-import { rgba } from 'polished';
-import styled from 'styled-components';
-import { Multiloc } from 'typings';
 
 import T from 'components/T';
 

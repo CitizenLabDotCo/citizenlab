@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 
+import Button from 'design-system/Button';
+import Modal from 'design-system/Modal';
+
 import { IPhasePermissionAction } from 'api/permissions/types';
 import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
 import usePhase from 'api/phases/usePhase';
@@ -8,9 +11,6 @@ import { getPermissionActionSectionSubtitle } from 'containers/Admin/projects/pr
 
 import { requiresAccount } from 'components/admin/ActionForm/logic';
 import actionFormMessages from 'components/admin/ActionForm/messages';
-
-import Button from 'design-system/Button';
-import Modal from 'design-system/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 

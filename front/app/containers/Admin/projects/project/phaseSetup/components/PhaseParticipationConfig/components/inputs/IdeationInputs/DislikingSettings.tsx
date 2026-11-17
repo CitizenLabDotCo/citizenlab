@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Radio, IconTooltip } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
+
+import { Radio, IconTooltip } from '@citizenlab/cl2-component-library';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 

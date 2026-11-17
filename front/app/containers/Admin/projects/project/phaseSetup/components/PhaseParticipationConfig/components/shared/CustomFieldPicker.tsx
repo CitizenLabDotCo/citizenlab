@@ -1,8 +1,9 @@
 import React, { useMemo } from 'react';
 
-import { Select } from '@citizenlab/cl2-component-library';
 import { MessageDescriptor } from 'react-intl';
 import { FormatMessage, IOption } from 'typings';
+
+import { Select } from '@citizenlab/cl2-component-library';
 
 import { InputTerm } from 'api/phases/types';
 import { INPUT_TERMS } from 'api/phases/utils';

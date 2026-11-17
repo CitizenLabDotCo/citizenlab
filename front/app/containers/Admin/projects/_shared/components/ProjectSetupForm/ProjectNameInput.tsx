@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Box, IconTooltip } from '@citizenlab/cl2-component-library';
 import { Multiloc, CLErrors } from 'typings';
+
+import { Box, IconTooltip } from '@citizenlab/cl2-component-library';
 
 import { IUpdatedProjectProperties } from 'api/projects/types';
 

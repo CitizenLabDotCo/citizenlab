@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
 import {
   Editor as CraftEditor,
   Options,
@@ -8,6 +7,8 @@ import {
   Resolver,
 } from '@craftjs/core';
 import styled from 'styled-components';
+
+import { Box, colors } from '@citizenlab/cl2-component-library';
 
 import RenderNode from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Editor/RenderNode';
 

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 
+import AlertDialog from 'design-system/AlertDialog';
+
 import { IFileData } from 'api/files/types';
 
 import filesMessages from 'containers/Admin/projects/project/files/components/messages';
 
 import UserName from 'components/UI/UserName';
-
-import AlertDialog from 'design-system/AlertDialog';
 
 import { useIntl } from 'utils/cl-intl';
 import { saveFileToDisk } from 'utils/fileUtils';

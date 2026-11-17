@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Multiloc } from 'typings';
+
 import {
   Box,
   Icon,
@@ -7,7 +9,6 @@ import {
   colors,
   IconNames,
 } from '@citizenlab/cl2-component-library';
-import { Multiloc } from 'typings';
 
 import useLocalize from 'hooks/useLocalize';
 

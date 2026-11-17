@@ -1,7 +1,8 @@
 import { createContext, useContext } from 'react';
 
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
 import { useEditor, useNode } from '@craftjs/core';
+
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // Spacing between stacked widgets is a property of the boundary between two
 // roles, not of a widget: https://govocal-prototypes.pages.dev/playground/fo-spacing-rhythm/

@@ -1,13 +1,14 @@
 import React from 'react';
 
+import styled from 'styled-components';
+import { ITab } from 'typings';
+
 import {
   Box,
   StatusLabel,
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
-import { ITab } from 'typings';
 
 import Link from 'utils/cl-router/Link';
 import { useLocation } from 'utils/router';

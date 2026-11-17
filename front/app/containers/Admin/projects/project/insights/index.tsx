@@ -11,6 +11,10 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
+import DsBadge from 'design-system/Badge';
+import DsButton from 'design-system/Button';
+import Menu, { MenuItem, MenuTrigger } from 'design-system/Menu';
+
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
 import useAnalyses from 'api/analyses/useAnalyses';
 import usePhase from 'api/phases/usePhase';
@@ -22,10 +26,6 @@ import projectFilesMessages from 'containers/Admin/projects/project/files/compon
 import useInputResponseExport from 'containers/Admin/projects/project/inputResponseExport/useInputResponseExport';
 
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
-
-import DsBadge from 'design-system/Badge';
-import DsButton from 'design-system/Button';
-import Menu, { MenuItem, MenuTrigger } from 'design-system/Menu';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';

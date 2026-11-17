@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { Moment } from 'moment';
 import { IOption } from 'typings';
+
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 import ResolutionControl, {
   IResolution,

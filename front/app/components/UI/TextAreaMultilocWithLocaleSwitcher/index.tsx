@@ -1,13 +1,14 @@
 import React, { memo, useState, useCallback, useEffect } from 'react';
 
+import styled from 'styled-components';
+import { SupportedLocale, Multiloc } from 'typings';
+
 import {
   IconTooltip,
   LocaleSwitcher,
   Label,
   colors,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
-import { SupportedLocale, Multiloc } from 'typings';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';

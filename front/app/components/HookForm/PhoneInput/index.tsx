@@ -1,12 +1,13 @@
 import React from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
 import IntlTelInput from '@intl-tel-input/react';
 import { Iso2 } from 'intl-tel-input';
 import { get } from 'lodash-es';
 import { Controller, useFormContext } from 'react-hook-form';
 import styled from 'styled-components';
 import { CLError, RHFErrors } from 'typings';
+
+import { Box, colors } from '@citizenlab/cl2-component-library';
 
 import Error, { TFieldName } from 'components/UI/Error';
 import 'intl-tel-input/styles';

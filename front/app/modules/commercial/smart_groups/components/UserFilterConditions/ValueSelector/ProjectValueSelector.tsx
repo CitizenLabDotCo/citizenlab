@@ -1,8 +1,9 @@
 import React, { memo } from 'react';
 
-import { Select } from '@citizenlab/cl2-component-library';
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 import { IOption } from 'typings';
+
+import { Select } from '@citizenlab/cl2-component-library';
 
 import useLocalize from 'hooks/useLocalize';
 

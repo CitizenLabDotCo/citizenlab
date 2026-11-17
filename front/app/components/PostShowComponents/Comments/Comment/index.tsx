@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 
-import { Icon, colors, fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { Icon, colors, fontSizes } from '@citizenlab/cl2-component-library';
 
 import useComment from 'api/comments/useComment';
 import useProjectById from 'api/projects/useProjectById';

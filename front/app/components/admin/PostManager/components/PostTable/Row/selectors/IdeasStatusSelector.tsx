@@ -1,7 +1,8 @@
 import React, { MouseEvent } from 'react';
 
-import { Text, Tooltip } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { Text, Tooltip } from '@citizenlab/cl2-component-library';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 

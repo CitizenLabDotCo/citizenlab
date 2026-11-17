@@ -1,12 +1,13 @@
 import * as React from 'react';
 
+import { FormattedNumber } from 'react-intl';
+import styled from 'styled-components';
+
 import {
   colors,
   fontSizes,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
-import { FormattedNumber } from 'react-intl';
-import styled from 'styled-components';
 
 import useEmailCampaignStats from 'api/campaigns/email/stats/useEmailCampaignStats';
 

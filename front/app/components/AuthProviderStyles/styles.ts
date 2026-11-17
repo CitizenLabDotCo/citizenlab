@@ -1,10 +1,11 @@
+import styled from 'styled-components';
+
 import {
   Label,
   Image,
   fontSizes,
   media,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 

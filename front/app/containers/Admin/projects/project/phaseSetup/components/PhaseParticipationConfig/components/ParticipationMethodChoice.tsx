@@ -1,5 +1,7 @@
 import React, { ReactNode, useState } from 'react';
 
+import { PressEvent } from 'react-aria-components';
+
 import {
   Box,
   colors,
@@ -7,7 +9,6 @@ import {
   Text,
   Image,
 } from '@citizenlab/cl2-component-library';
-import { PressEvent } from 'react-aria-components';
 
 import MethodCard from 'design-system/MethodCard';
 import Tooltip from 'design-system/Tooltip';

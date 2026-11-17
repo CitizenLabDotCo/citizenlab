@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Input, Select, Toggle } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
+
+import { Input, Select, Toggle } from '@citizenlab/cl2-component-library';
 
 import { ConfigFieldSchema } from 'api/custom_blocks/types';
 

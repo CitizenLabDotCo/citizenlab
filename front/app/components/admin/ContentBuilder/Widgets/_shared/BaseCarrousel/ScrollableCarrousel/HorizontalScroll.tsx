@@ -1,7 +1,8 @@
 import React, { ReactNode } from 'react';
 
-import { Box, isRtl } from '@citizenlab/cl2-component-library';
 import styled, { useTheme } from 'styled-components';
+
+import { Box, isRtl } from '@citizenlab/cl2-component-library';
 
 const StyledContainer = styled(Box)`
   display: flex;

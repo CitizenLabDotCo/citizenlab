@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
-import { Box, Text, Title, colors } from '@citizenlab/cl2-component-library';
 import { useEditor } from '@craftjs/core';
 import styled, { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
 import { v4 as uuidv4 } from 'uuid';
+
+import { Box, Text, Title, colors } from '@citizenlab/cl2-component-library';
 
 import useLocalize from 'hooks/useLocalize';
 

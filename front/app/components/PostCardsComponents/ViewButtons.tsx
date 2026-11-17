@@ -1,5 +1,8 @@
 import React, { FormEvent, useRef, useEffect, KeyboardEvent } from 'react';
 
+import { darken } from 'polished';
+import styled, { useTheme } from 'styled-components';
+
 import {
   Icon,
   defaultStyles,
@@ -7,8 +10,6 @@ import {
   colors,
   Box,
 } from '@citizenlab/cl2-component-library';
-import { darken } from 'polished';
-import styled, { useTheme } from 'styled-components';
 
 import { PresentationMode } from 'api/phases/types';
 

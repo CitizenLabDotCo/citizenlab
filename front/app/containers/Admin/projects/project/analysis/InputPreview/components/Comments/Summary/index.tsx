@@ -1,5 +1,7 @@
 import React from 'react';
 
+import styled from 'styled-components';
+
 import {
   Box,
   Divider,
@@ -9,7 +11,6 @@ import {
   Title,
   Spinner,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 import useAnalysisBackgroundTask from 'api/analysis_background_tasks/useAnalysisBackgroundTask';
 import useAnalysisCommentsSummary from 'api/analysis_comments_summaries/useAnalysisCommentsSummary';

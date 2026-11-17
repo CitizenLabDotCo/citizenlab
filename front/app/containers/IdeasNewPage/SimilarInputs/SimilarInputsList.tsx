@@ -1,5 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 
+import { Multiloc } from 'typings';
+
 import {
   Box,
   Spinner,
@@ -7,7 +9,6 @@ import {
   Icon,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { Multiloc } from 'typings';
 
 import { IIdeaData } from 'api/ideas/types';
 import { IPhaseData } from 'api/phases/types';

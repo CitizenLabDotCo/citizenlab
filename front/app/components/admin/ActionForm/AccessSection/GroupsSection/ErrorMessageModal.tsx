@@ -3,6 +3,8 @@
 
 import React from 'react';
 
+import { Multiloc } from 'typings';
+
 import {
   Box,
   Text,
@@ -11,7 +13,6 @@ import {
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import { Multiloc } from 'typings';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 

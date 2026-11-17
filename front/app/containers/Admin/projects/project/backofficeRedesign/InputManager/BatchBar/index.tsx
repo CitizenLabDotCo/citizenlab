@@ -2,14 +2,6 @@ import React, { useState } from 'react';
 
 import { Key } from 'react-aria-components';
 
-import { IIdeaData } from 'api/ideas/types';
-
-import { ManagerType } from 'components/admin/PostManager';
-import useAssigneeOptions, {
-  UNASSIGNED,
-} from 'components/admin/PostManager/useAssigneeOptions';
-import warningModalMessages from 'components/WarningModal/messages';
-
 import AlertDialog from 'design-system/AlertDialog';
 import Button from 'design-system/Button';
 import { ListBoxOption } from 'design-system/ListBox';
@@ -17,6 +9,14 @@ import { MenuTrigger } from 'design-system/Menu';
 import { DialogTrigger } from 'design-system/Popover';
 import SelectionBar from 'design-system/SelectionBar';
 import TagPicker from 'design-system/TagPicker';
+
+import { IIdeaData } from 'api/ideas/types';
+
+import { ManagerType } from 'components/admin/PostManager';
+import useAssigneeOptions, {
+  UNASSIGNED,
+} from 'components/admin/PostManager/useAssigneeOptions';
+import warningModalMessages from 'components/WarningModal/messages';
 
 import { useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';

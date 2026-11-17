@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Box, fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { Box, fontSizes } from '@citizenlab/cl2-component-library';
 
 import useIdMethods from 'api/id_methods/useIdMethods';
 import { getEmployeeSsoConfigs } from 'api/id_methods/utils';

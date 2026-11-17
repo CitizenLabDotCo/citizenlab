@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 
-import { Toggle } from '@citizenlab/cl2-component-library';
 import { useFormContext } from 'react-hook-form';
+
+import { Toggle } from '@citizenlab/cl2-component-library';
 
 import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
 import { supportsPublicAnswers } from 'api/custom_fields/util';

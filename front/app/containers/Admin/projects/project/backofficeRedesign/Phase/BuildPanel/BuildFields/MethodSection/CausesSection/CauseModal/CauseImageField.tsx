@@ -3,13 +3,13 @@ import React, { useState } from 'react';
 import { useController } from 'react-hook-form';
 import { UploadFile } from 'typings';
 
+import Banner from 'design-system/Banner';
+import DropZone from 'design-system/DropZone';
+
 import volunteeringMessages from 'containers/Admin/projects/project/volunteering/messages';
 import { CauseFormValues } from 'containers/Admin/projects/project/volunteering/useCauseForm';
 
 import imagesDropzoneMessages from 'components/UI/ImagesDropzone/messages';
-
-import Banner from 'design-system/Banner';
-import DropZone from 'design-system/DropZone';
 
 import { useIntl } from 'utils/cl-intl';
 import { getBase64FromFile } from 'utils/fileUtils';

@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Box, Select } from '@citizenlab/cl2-component-library';
 import { IOption } from 'typings';
+
+import { Box, Select } from '@citizenlab/cl2-component-library';
 
 import { ICustomFields, ICustomFieldResponse } from 'api/custom_fields/types';
 import useRawCustomFields from 'api/custom_fields/useRawCustomFields';

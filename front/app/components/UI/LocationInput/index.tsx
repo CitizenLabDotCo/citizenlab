@@ -1,10 +1,11 @@
 import React, { useCallback, useMemo } from 'react';
 
-import { Text } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
 import { SelectInstance } from 'react-select';
 import AsyncSelect from 'react-select/async';
 import { useTheme } from 'styled-components';
+
+import { Text } from '@citizenlab/cl2-component-library';
 
 import useLocale from 'hooks/useLocale';
 

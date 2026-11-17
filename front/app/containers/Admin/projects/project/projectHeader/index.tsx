@@ -1,5 +1,7 @@
 import React from 'react';
 
+import styled from 'styled-components';
+
 import {
   Box,
   Title,
@@ -9,7 +11,6 @@ import {
   IconNames,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 import useProjectReview from 'api/project_reviews/useProjectReview';
 import useProjectById from 'api/projects/useProjectById';

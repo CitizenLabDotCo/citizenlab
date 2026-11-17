@@ -1,6 +1,5 @@
 import React, { useEffect, useReducer } from 'react';
 
-import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
 import {
   EditorState,
   NodeId,
@@ -8,6 +7,8 @@ import {
   ROOT_NODE,
   useEditor,
 } from '@craftjs/core';
+
+import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
 
 import { FormattedMessage } from 'utils/cl-intl';
 

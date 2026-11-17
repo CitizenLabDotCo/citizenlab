@@ -1,8 +1,9 @@
 import React, { PureComponent, Fragment } from 'react';
 
-import { colors } from '@citizenlab/cl2-component-library';
 import { pick, clone, omit } from 'lodash-es';
 import styled from 'styled-components';
+
+import { colors } from '@citizenlab/cl2-component-library';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 

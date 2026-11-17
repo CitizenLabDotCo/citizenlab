@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
 import { isEqual } from 'lodash-es';
 import { useResizeDetector } from 'react-resize-detector';
 import { Percentage } from 'typings';
+
+import { Box } from '@citizenlab/cl2-component-library';
 
 import Icon from './Icon';
 import { Position, LegendItem, LegendDimensions } from './typings';

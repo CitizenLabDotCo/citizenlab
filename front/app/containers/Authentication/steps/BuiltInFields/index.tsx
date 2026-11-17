@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
+
+import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { AuthenticationRequirements } from 'api/authentication/authentication_requirements/types';

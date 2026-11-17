@@ -1,12 +1,13 @@
 import React, { memo } from 'react';
 
+import styled from 'styled-components';
+
 import {
   Spinner,
   Text,
   colors,
   media,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 import { IdMethodData } from 'api/id_methods/types';
 import useIdMethods from 'api/id_methods/useIdMethods';

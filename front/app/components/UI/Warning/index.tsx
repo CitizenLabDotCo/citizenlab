@@ -1,5 +1,8 @@
 import React from 'react';
 
+import { darken } from 'polished';
+import styled from 'styled-components';
+
 import {
   Box,
   BoxProps,
@@ -9,8 +12,6 @@ import {
   fontSizes,
   isRtl,
 } from '@citizenlab/cl2-component-library';
-import { darken } from 'polished';
-import styled from 'styled-components';
 
 const Container = styled(Box)`
   display: flex;

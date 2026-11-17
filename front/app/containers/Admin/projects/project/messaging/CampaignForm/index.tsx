@@ -1,5 +1,11 @@
 import * as React from 'react';
 
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm, FormProvider } from 'react-hook-form';
+import styled from 'styled-components';
+import { Multiloc } from 'typings';
+import { string, object } from 'yup';
+
 import {
   IconTooltip,
   Box,
@@ -9,11 +15,6 @@ import {
   Text,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm, FormProvider } from 'react-hook-form';
-import styled from 'styled-components';
-import { Multiloc } from 'typings';
-import { string, object } from 'yup';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';

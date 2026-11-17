@@ -2,6 +2,10 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 import { Multiloc, UploadFile } from 'typings';
 
+import Banner from 'design-system/Banner';
+import DropZone from 'design-system/DropZone';
+import TextArea from 'design-system/TextArea';
+
 import useProjectImages, {
   CARD_IMAGE_ASPECT_RATIO_HEIGHT,
   CARD_IMAGE_ASPECT_RATIO_WIDTH,
@@ -21,10 +25,6 @@ import LocaleSwitcher from 'components/admin/MultilocFields/LocaleSwitcher';
 import MultilocTextField from 'components/admin/MultilocFields/MultilocTextField';
 import useSelectedLocale from 'components/admin/MultilocFields/useSelectedLocale';
 import imagesDropzoneMessages from 'components/UI/ImagesDropzone/messages';
-
-import Banner from 'design-system/Banner';
-import DropZone from 'design-system/DropZone';
-import TextArea from 'design-system/TextArea';
 
 import { useIntl } from 'utils/cl-intl';
 import { convertUrlToUploadFile, isUploadFile } from 'utils/fileUtils';

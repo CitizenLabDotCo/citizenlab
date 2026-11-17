@@ -1,7 +1,8 @@
 import React, { lazy, Suspense } from 'react';
 
-import { Box, media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { Box, media } from '@citizenlab/cl2-component-library';
 
 import { OnboardingCampaignName } from 'api/onboarding_campaigns/types';
 import useCurrentOnboardingCampaign from 'api/onboarding_campaigns/useCurrentOnboardingCampaign';

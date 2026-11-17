@@ -1,5 +1,7 @@
 import React, { memo } from 'react';
 
+import styled from 'styled-components';
+
 import {
   Box,
   Text,
@@ -8,7 +10,6 @@ import {
   defaultCardStyle,
   media,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 import useVoting from 'api/baskets_ideas/useVoting';
 import useIdeaById from 'api/ideas/useIdeaById';

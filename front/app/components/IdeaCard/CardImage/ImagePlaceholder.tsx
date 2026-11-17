@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { Icon, colors } from '@citizenlab/cl2-component-library';
 import { transparentize } from 'polished';
 import styled from 'styled-components';
+
+import { Icon, colors } from '@citizenlab/cl2-component-library';
 
 import { VotingMethod } from 'api/phases/types';
 

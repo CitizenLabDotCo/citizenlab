@@ -7,12 +7,12 @@ import React, {
   useState,
 } from 'react';
 
+import Spinner from 'design-system/Spinner';
+
 import { IPhaseData, InputTerm } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 
 import { usePageSave } from 'components/admin/PageSaveContext';
-
-import Spinner from 'design-system/Spinner';
 
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { useLocation, useSearch } from 'utils/router';

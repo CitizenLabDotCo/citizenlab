@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { Box, colors, Icon } from '@citizenlab/cl2-component-library';
 import { hideVisually, darken } from 'polished';
 import styled, { useTheme } from 'styled-components';
+
+import { Box, colors, Icon } from '@citizenlab/cl2-component-library';
 
 import { IdeaSortMethod } from 'api/phases/types';
 

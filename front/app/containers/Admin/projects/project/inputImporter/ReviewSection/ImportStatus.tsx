@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { Box, Text, colors, Spinner } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 import { CLError } from 'typings';
+
+import { Box, Text, colors, Spinner } from '@citizenlab/cl2-component-library';
 
 import Error from 'components/UI/Error';
 import ProgressBar from 'components/UI/ProgressBar';

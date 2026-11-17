@@ -1,5 +1,7 @@
 import React from 'react';
 
+import styled from 'styled-components';
+
 import {
   Box,
   useBreakpoint,
@@ -7,7 +9,6 @@ import {
   media,
   colors,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 import { VotingContext } from 'api/baskets_ideas/useVoting';
 import useIdeaBySlug from 'api/ideas/useIdeaBySlug';

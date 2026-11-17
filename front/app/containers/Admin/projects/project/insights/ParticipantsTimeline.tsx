@@ -1,7 +1,8 @@
 import React, { useRef } from 'react';
 
-import { Box, Text, Title, Spinner } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
+
+import { Box, Text, Title, Spinner } from '@citizenlab/cl2-component-library';
 
 import usePhaseInsights from 'api/phase_insights/usePhaseInsights';
 import { IPhaseData } from 'api/phases/types';

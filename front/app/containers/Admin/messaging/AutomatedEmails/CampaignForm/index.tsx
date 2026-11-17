@@ -1,10 +1,11 @@
 import * as React from 'react';
 
-import { Box, Button, Success } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import styled from 'styled-components';
 import { object, string } from 'yup';
+
+import { Box, Button, Success } from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import {

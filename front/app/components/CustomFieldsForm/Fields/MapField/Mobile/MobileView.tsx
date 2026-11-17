@@ -1,8 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
 import MapView from '@arcgis/core/views/MapView';
-import { Box } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
+
+import { Box } from '@citizenlab/cl2-component-library';
 
 import { IMapConfig } from 'api/map_config/types';
 

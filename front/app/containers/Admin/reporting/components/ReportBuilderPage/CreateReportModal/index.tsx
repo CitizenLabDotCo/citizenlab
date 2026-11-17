@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import { IOption } from 'typings';
+
 import {
   Box,
   Title,
@@ -9,7 +11,6 @@ import {
   colors,
   Select,
 } from '@citizenlab/cl2-component-library';
-import { IOption } from 'typings';
 
 import useAddReport, { AddReport } from 'api/reports/useAddReport';
 

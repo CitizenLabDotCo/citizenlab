@@ -1,10 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 
-import { Box, Text, Title } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { isEqual } from 'lodash-es';
 import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { array, object, string } from 'yup';
+
+import { Box, Text, Title } from '@citizenlab/cl2-component-library';
 
 import useAnalysis from 'api/analyses/useAnalysis';
 import useUpdateAnalysis from 'api/analyses/useUpdateAnalysis';

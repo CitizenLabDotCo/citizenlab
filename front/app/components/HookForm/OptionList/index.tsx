@@ -1,5 +1,11 @@
 import React, { useState, useCallback } from 'react';
 
+import { cloneDeep, get } from 'lodash-es';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
+import { SupportedLocale, CLError, RHFErrors, Multiloc } from 'typings';
+
 import {
   Box,
   Label,
@@ -8,11 +14,6 @@ import {
   Icon,
   Input,
 } from '@citizenlab/cl2-component-library';
-import { cloneDeep, get } from 'lodash-es';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
-import { SupportedLocale, CLError, RHFErrors, Multiloc } from 'typings';
 
 import { IOptionsType } from 'api/custom_fields/types';
 

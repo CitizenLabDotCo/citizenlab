@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react';
 
-import { Image } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { Image } from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 

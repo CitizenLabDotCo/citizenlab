@@ -1,6 +1,7 @@
 import React from 'react';
 
 import MapView from '@arcgis/core/views/MapView';
+
 import {
   Box,
   Button,

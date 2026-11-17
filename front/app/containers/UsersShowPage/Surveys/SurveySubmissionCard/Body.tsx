@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { colors, Box } from '@citizenlab/cl2-component-library';
 import { transparentize } from 'polished';
+
+import { colors, Box } from '@citizenlab/cl2-component-library';
 
 import useAuthUser from 'api/me/useAuthUser';
 import { IdeaMiniData } from 'api/user_survey_submissions/types';

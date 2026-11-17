@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import styled from 'styled-components';
+
 import {
   Box,
   Title,
@@ -15,7 +17,6 @@ import {
   Spinner,
   Badge,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 import useReplayDelivery from 'api/webhook_deliveries/useReplayDelivery';
 import useWebhookDeliveries from 'api/webhook_deliveries/useWebhookDeliveries';

@@ -1,5 +1,7 @@
 import React from 'react';
 
+import styled from 'styled-components';
+
 import {
   Box,
   Spinner,
@@ -7,7 +9,6 @@ import {
   media,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 import useEventImage from 'api/event_images/useEventImage';
 import useEvent from 'api/events/useEvent';

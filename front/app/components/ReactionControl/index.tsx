@@ -1,8 +1,9 @@
 import React, { MouseEvent, KeyboardEvent, useState, useCallback } from 'react';
 
-import { isRtl } from '@citizenlab/cl2-component-library';
 import { includes } from 'lodash-es';
 import styled from 'styled-components';
+
+import { isRtl } from '@citizenlab/cl2-component-library';
 
 import { TReactionMode } from 'api/idea_reactions/types';
 import useAddIdeaReaction from 'api/idea_reactions/useAddIdeaReaction';

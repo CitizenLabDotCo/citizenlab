@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 
+import { yupResolver } from '@hookform/resolvers/yup';
+import moment from 'moment';
+import { useForm, FormProvider } from 'react-hook-form';
+import { string, object } from 'yup';
+
 import {
   Button,
   Text,
   Box,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
-import { yupResolver } from '@hookform/resolvers/yup';
-import moment from 'moment';
-import { useForm, FormProvider } from 'react-hook-form';
-import { string, object } from 'yup';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useBlockUser from 'api/blocked_users/useBlockUser';

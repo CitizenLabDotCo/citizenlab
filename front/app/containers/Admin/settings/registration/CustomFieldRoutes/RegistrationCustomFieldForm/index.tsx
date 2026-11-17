@@ -1,11 +1,12 @@
 import React from 'react';
 
-import { Button, Box } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { WrappedComponentProps } from 'react-intl';
 import { Multiloc } from 'typings';
 import { object, boolean, string } from 'yup';
+
+import { Button, Box } from '@citizenlab/cl2-component-library';
 
 import { IUserCustomFieldInputType } from 'api/user_custom_fields/types';
 

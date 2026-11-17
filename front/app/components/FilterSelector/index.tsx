@@ -1,6 +1,5 @@
 import React, { useState, useMemo } from 'react';
 
-import { Box, media, isRtl } from '@citizenlab/cl2-component-library';
 import {
   isArray,
   find,
@@ -11,6 +10,8 @@ import {
   without,
 } from 'lodash-es';
 import styled from 'styled-components';
+
+import { Box, media, isRtl } from '@citizenlab/cl2-component-library';
 
 import MultiSelectDropdown from './MultiSelectDropdown';
 import SingleSelectDropdown from './SingleSelectDropdown';

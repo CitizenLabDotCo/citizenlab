@@ -1,5 +1,7 @@
 import React, { useMemo } from 'react';
 
+import styled from 'styled-components';
+
 import {
   Box,
   Button,
@@ -7,7 +9,6 @@ import {
   Text,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 import useInfiniteIdeaFeedIdeas from 'api/idea_feed/useInfiniteIdeaFeedIdeas';
 import useInputTopics from 'api/input_topics/useInputTopics';

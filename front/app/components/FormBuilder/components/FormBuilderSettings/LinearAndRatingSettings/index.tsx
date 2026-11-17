@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
 import { SupportedLocale } from 'typings';
+
+import { Box } from '@citizenlab/cl2-component-library';
 
 import RangeInput from './RangeInput';
 import ScaleLabelInput from './ScaleLabelsInput';

@@ -1,11 +1,12 @@
 import React, { lazy, Suspense } from 'react';
 
-import { colors } from '@citizenlab/cl2-component-library';
 import {
   Editor as CraftEditor,
   SerializedNodes,
   Resolver,
 } from '@craftjs/core';
+
+import { colors } from '@citizenlab/cl2-component-library';
 
 import { ScopedDndContext } from 'components/admin/ResourceList/SortableList';
 

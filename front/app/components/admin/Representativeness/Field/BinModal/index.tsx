@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
+import { isEqual } from 'lodash-es';
+import styled from 'styled-components';
+
 import {
   Box,
   Icon,
@@ -7,8 +10,6 @@ import {
   Button,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { isEqual } from 'lodash-es';
-import styled from 'styled-components';
 
 import { Bins } from 'api/reference_distribution/types';
 

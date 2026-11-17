@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Box, Text, Tooltip } from '@citizenlab/cl2-component-library';
 import { differenceInDays, intervalToDuration } from 'date-fns';
+
+import { Box, Text, Tooltip } from '@citizenlab/cl2-component-library';
 
 import { IPhaseData } from 'api/phases/types';
 import usePhasesByIds from 'api/phases/usePhasesByIds';

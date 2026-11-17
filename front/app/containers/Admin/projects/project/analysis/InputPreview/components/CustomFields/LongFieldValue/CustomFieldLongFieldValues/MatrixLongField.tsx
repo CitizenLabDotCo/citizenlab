@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
+
+import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 
 import useCustomFieldStatements from 'api/custom_field_statements/useCustomFieldStatements';
 import { IIdeaCustomField } from 'api/idea_custom_fields/types';

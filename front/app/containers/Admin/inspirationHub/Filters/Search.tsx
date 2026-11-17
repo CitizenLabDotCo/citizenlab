@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react';
 
-import { colors } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
+
+import { colors } from '@citizenlab/cl2-component-library';
 
 import SearchInput from 'components/UI/SearchInput';
 

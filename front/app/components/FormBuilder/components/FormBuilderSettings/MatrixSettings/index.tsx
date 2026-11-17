@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Title, Box } from '@citizenlab/cl2-component-library';
 import { SupportedLocale } from 'typings';
+
+import { Title, Box } from '@citizenlab/cl2-component-library';
 
 import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
 

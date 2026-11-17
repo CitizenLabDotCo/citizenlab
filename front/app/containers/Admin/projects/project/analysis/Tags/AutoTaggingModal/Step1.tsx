@@ -1,5 +1,8 @@
 import React from 'react';
 
+import { isEmpty } from 'lodash-es';
+import styled from 'styled-components';
+
 import {
   Box,
   Title,
@@ -9,8 +12,6 @@ import {
   Label,
   Radio,
 } from '@citizenlab/cl2-component-library';
-import { isEmpty } from 'lodash-es';
-import styled from 'styled-components';
 
 import useAnalysis from 'api/analyses/useAnalysis';
 import { AutoTaggingMethod } from 'api/analysis_background_tasks/types';

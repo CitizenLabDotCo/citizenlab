@@ -1,7 +1,8 @@
 import React, { ReactNode } from 'react';
 
-import { colors, stylingConsts } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { colors, stylingConsts } from '@citizenlab/cl2-component-library';
 
 import {
   Container,

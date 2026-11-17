@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Box, colors, Text } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
+
+import { Box, colors, Text } from '@citizenlab/cl2-component-library';
 
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 

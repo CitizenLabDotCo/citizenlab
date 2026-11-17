@@ -1,11 +1,12 @@
 import React, { memo, useCallback, useState } from 'react';
 
+import styled from 'styled-components';
+
 import {
   Button,
   useBreakpoint,
   colors,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
 import { ideaSortMethods } from 'api/phases/types';

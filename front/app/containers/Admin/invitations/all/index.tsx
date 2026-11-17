@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 
+import { saveAs } from 'file-saver';
+import { isEmpty } from 'lodash-es';
+import styled from 'styled-components';
+
 import {
   Table,
   Tbody,
@@ -9,9 +13,6 @@ import {
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import { saveAs } from 'file-saver';
-import { isEmpty } from 'lodash-es';
-import styled from 'styled-components';
 
 import { Sort, SortAttribute } from 'api/invites/types';
 import useInvites from 'api/invites/useInvites';

@@ -1,12 +1,13 @@
 import React from 'react';
 
+import styled from 'styled-components';
+
 import {
   Box,
   fontSizes,
   isRtl,
   media,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 import { ICustomPageData } from 'api/custom_pages/types';
 

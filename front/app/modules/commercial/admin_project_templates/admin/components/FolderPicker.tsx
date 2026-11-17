@@ -2,10 +2,10 @@ import React from 'react';
 
 import { IOption } from 'typings';
 
-import contextMessages from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/messages';
-
 import { ListBoxOption } from 'design-system/ListBox';
 import Select from 'design-system/Select';
+
+import contextMessages from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/messages';
 
 import { useIntl } from 'utils/cl-intl';
 import 'design-system/tokens.css';

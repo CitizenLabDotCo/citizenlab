@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 
-import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
 import { isEmpty } from 'lodash-es';
 import { SupportedLocale } from 'typings';
+
+import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 
 import { ReportLayout } from 'api/report_layout/types';
 import useReportLayout from 'api/report_layout/useReportLayout';

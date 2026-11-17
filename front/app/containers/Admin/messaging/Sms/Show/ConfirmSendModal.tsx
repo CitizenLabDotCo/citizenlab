@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { FormattedNumber } from 'react-intl';
+
 import {
   Box,
   IconTooltip,
@@ -7,7 +9,6 @@ import {
   Text,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { FormattedNumber } from 'react-intl';
 
 import useSmsSendSummary from 'api/campaigns/sms/send_summary/useSmsSendSummary';
 import { IGroupData } from 'api/groups/types';

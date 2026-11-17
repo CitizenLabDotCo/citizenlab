@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 
-import { colors } from '@citizenlab/cl2-component-library';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import styled from 'styled-components';
+
+import { colors } from '@citizenlab/cl2-component-library';
 
 import { DragArea, DragHandle } from './primitives';
 import useSheetDrag from './useSheetDrag';

@@ -1,3 +1,5 @@
+import styled from 'styled-components';
+
 import {
   Input,
   Radio,
@@ -5,7 +7,6 @@ import {
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 import { Section, SectionField } from 'components/admin/Section';
 import Error, { ErrorProps } from 'components/UI/Error';

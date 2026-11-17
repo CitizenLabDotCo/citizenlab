@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Box, Title, Tooltip } from '@citizenlab/cl2-component-library';
 import { useSearch } from '@tanstack/react-router';
+
+import { Box, Title, Tooltip } from '@citizenlab/cl2-component-library';
 
 import useAuthUser from 'api/me/useAuthUser';
 

@@ -1,5 +1,9 @@
 import React, { useContext } from 'react';
 
+import { useNode } from '@craftjs/core';
+import { Multiloc } from 'component-library/utils/typings';
+import styled from 'styled-components';
+
 import {
   Box,
   colors,
@@ -9,9 +13,6 @@ import {
   Title,
   Input,
 } from '@citizenlab/cl2-component-library';
-import { useNode } from '@craftjs/core';
-import { Multiloc } from 'component-library/utils/typings';
-import styled from 'styled-components';
 
 import useLocalize from 'hooks/useLocalize';
 

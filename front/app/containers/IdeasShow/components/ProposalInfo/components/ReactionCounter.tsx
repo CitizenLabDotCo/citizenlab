@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Box, fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { Box, fontSizes } from '@citizenlab/cl2-component-library';
 
 import { IIdeaData } from 'api/ideas/types';
 

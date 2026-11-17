@@ -1,12 +1,13 @@
 import React from 'react';
 
+import { isEmpty } from 'lodash-es';
+
 import {
   IconTooltip,
   Box,
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import { isEmpty } from 'lodash-es';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IInputTopicData } from 'api/input_topics/types';

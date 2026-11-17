@@ -1,5 +1,7 @@
 import React, { memo } from 'react';
 
+import { isEmpty } from 'lodash-es';
+
 import {
   Box,
   Icon,
@@ -7,7 +9,6 @@ import {
   Text,
   Divider,
 } from '@citizenlab/cl2-component-library';
-import { isEmpty } from 'lodash-es';
 
 import useAnalysis from 'api/analyses/useAnalysis';
 import { IInputsData } from 'api/analysis_inputs/types';

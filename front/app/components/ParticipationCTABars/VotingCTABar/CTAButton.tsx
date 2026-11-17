@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 
+import JSConfetti from 'js-confetti';
+import styled, { useTheme } from 'styled-components';
+
 import {
   Box,
   Button,
   colors,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import JSConfetti from 'js-confetti';
-import styled, { useTheme } from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useUpdateBasket from 'api/baskets/useUpdateBasket';

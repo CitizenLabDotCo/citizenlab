@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { Box, colors, fontSizes } from '@citizenlab/cl2-component-library';
 import ReactMarkdown from 'react-markdown';
 import styled from 'styled-components';
+
+import { Box, colors, fontSizes } from '@citizenlab/cl2-component-library';
 
 // Keeps the model's Markdown compact in the narrow panel; the component library has no
 // props for the nested elements Markdown produces.

@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 import { Controller, useFormContext } from 'react-hook-form';
 import { CLError, RHFErrors } from 'typings';
+
+import { Box } from '@citizenlab/cl2-component-library';
 
 import useLocale from 'hooks/useLocale';
 

@@ -1,8 +1,9 @@
 import React, { useCallback } from 'react';
 
-import { Box, Toggle, colors } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 import { IOption } from 'typings';
+
+import { Box, Toggle, colors } from '@citizenlab/cl2-component-library';
 
 import { IIdeaData } from 'api/ideas/types';
 import usePhases from 'api/phases/usePhases';

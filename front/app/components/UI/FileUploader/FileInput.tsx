@@ -1,5 +1,8 @@
 import React, { FormEvent, useState, useRef, ChangeEvent } from 'react';
 
+import styled from 'styled-components';
+import { UploadFile } from 'typings';
+
 import {
   colors,
   fontSizes,
@@ -8,8 +11,6 @@ import {
   Icon,
   Error,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
-import { UploadFile } from 'typings';
 
 import Banner from 'design-system/Banner';
 import DropZone from 'design-system/DropZone';

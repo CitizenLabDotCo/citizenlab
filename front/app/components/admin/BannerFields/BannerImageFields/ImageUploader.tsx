@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
 import { UploadFile } from 'typings';
+
+import { Box } from '@citizenlab/cl2-component-library';
 
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import { TDevice } from 'components/admin/SelectPreviewDevice';

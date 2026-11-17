@@ -1,11 +1,12 @@
 import React from 'react';
 
-import { Box, Label } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 import { Controller, useFormContext } from 'react-hook-form';
 import ReactSelect, { GroupBase, SelectComponentsConfig } from 'react-select';
 import { useTheme } from 'styled-components';
 import { CLError, IOption, RHFErrors } from 'typings';
+
+import { Box, Label } from '@citizenlab/cl2-component-library';
 
 import Error, { TFieldName } from 'components/UI/Error';
 import selectStyles from 'components/UI/MultipleSelect/styles';

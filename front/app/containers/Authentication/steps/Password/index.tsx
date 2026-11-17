@@ -1,5 +1,9 @@
 import React, { useMemo } from 'react';
 
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm, FormProvider } from 'react-hook-form';
+import { string, object, boolean } from 'yup';
+
 import {
   Box,
   Text,
@@ -7,9 +11,6 @@ import {
   Input,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm, FormProvider } from 'react-hook-form';
-import { string, object, boolean } from 'yup';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 

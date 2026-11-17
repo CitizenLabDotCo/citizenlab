@@ -2,6 +2,8 @@ import React from 'react';
 
 import { CLErrors, Multiloc } from 'typings';
 
+import Banner from 'design-system/Banner';
+
 import usePhase from 'api/phases/usePhase';
 import usePhases from 'api/phases/usePhases';
 
@@ -12,8 +14,6 @@ import descriptionMessages from 'containers/Admin/projects/project/phaseDescript
 
 import MultilocRichTextField from 'components/admin/MultilocFields/MultilocRichTextField';
 import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
-
-import Banner from 'design-system/Banner';
 
 import { useIntl } from 'utils/cl-intl';
 import { isEmptyMultiloc } from 'utils/helperUtils';

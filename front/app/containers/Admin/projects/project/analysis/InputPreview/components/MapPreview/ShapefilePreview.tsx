@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 
 import MapView from '@arcgis/core/views/MapView';
-import { Text, Box } from '@citizenlab/cl2-component-library';
 import { FeatureCollection } from 'geojson';
 import shp from 'shpjs';
+
+import { Text, Box } from '@citizenlab/cl2-component-library';
 
 import useIdeaFiles from 'api/idea_files/useIdeaFiles';
 import { IMapLayerAttributes } from 'api/map_layers/types';

@@ -1,9 +1,10 @@
 import React from 'react';
 
-import { Button, colors, Title, Box } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { object, string } from 'yup';
+
+import { Button, colors, Title, Box } from '@citizenlab/cl2-component-library';
 
 import useUpdateAnalysisTag from 'api/analysis_tags/useUpdateAnalysisTag';
 

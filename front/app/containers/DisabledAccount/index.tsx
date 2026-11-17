@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
+
+import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import ContentContainer from 'components/ContentContainer';
 import { Title } from 'components/smallForm';

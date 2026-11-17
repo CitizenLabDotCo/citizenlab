@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { CLErrors, UploadFile } from 'typings';
+
+import { Box } from '@citizenlab/cl2-component-library';
 
 import { List } from 'components/admin/ResourceList';
 import SortableRow from 'components/admin/ResourceList/SortableRow';

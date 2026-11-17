@@ -1,12 +1,13 @@
 import React from 'react';
 
+import styled from 'styled-components';
+
 import {
   colors,
   fontSizes,
   defaultCardStyle,
   Icon,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 import PreviewSkeleton from 'components/PhasePreview/PreviewSkeleton';
 

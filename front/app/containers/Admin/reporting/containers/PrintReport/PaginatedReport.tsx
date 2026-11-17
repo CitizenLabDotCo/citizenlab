@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import { Spinner, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { Spinner, colors } from '@citizenlab/cl2-component-library';
 
 import useReportLayout from 'api/report_layout/useReportLayout';
 import useReport from 'api/reports/useReport';

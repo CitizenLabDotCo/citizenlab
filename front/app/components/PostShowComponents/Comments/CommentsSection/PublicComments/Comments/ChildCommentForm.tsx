@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import { Box, ClickOutside } from '@citizenlab/cl2-component-library';
 import { hideVisually } from 'polished';
 import { Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 import styled from 'styled-components';
+
+import { Box, ClickOutside } from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';

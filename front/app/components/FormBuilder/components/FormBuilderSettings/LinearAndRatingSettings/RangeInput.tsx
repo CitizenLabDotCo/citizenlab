@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Controller, useFormContext } from 'react-hook-form';
+
 import {
   Box,
   Label,
@@ -7,7 +9,6 @@ import {
   Text,
   Select,
 } from '@citizenlab/cl2-component-library';
-import { Controller, useFormContext } from 'react-hook-form';
 
 import { useIntl } from 'utils/cl-intl';
 

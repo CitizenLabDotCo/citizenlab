@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { media } from '@citizenlab/cl2-component-library';
 
 import { ICustomPageData } from 'api/custom_pages/types';
 import usePageFiles from 'api/page_files/usePageFiles';

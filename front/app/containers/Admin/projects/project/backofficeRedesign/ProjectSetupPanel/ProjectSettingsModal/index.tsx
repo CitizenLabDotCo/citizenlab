@@ -3,6 +3,8 @@ import React, { useRef, useState } from 'react';
 import { isEmpty } from 'lodash-es';
 import { CLErrors } from 'typings';
 
+import Banner from 'design-system/Banner';
+
 import { IProjectData, IUpdatedProjectProperties } from 'api/projects/types';
 import useUpdateProject from 'api/projects/useUpdateProject';
 
@@ -11,8 +13,6 @@ import { useValidateProjectContext } from 'containers/Admin/projects/_shared/com
 import SettingsModal, {
   SettingsModalSection,
 } from 'containers/Admin/projects/project/backofficeRedesign/_shared/components/SettingsModal';
-
-import Banner from 'design-system/Banner';
 
 import { useIntl } from 'utils/cl-intl';
 import { validateSlug } from 'utils/textUtils';

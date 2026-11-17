@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
 import { forOwn, size, trim } from 'lodash-es';
 import { WrappedComponentProps } from 'react-intl';
 import { Multiloc } from 'typings';
+
+import { Box } from '@citizenlab/cl2-component-library';
 
 import { ICustomPageAttributes } from 'api/custom_pages/types';
 

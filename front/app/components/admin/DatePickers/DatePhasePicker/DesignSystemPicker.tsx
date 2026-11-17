@@ -9,10 +9,10 @@ import {
 import { endOfMonth, startOfMonth } from 'date-fns';
 import moment from 'moment-timezone';
 
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-
 import Banner from 'design-system/Banner';
 import DateRangePicker from 'design-system/DateRangePicker';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import { useIntl } from 'utils/cl-intl';
 

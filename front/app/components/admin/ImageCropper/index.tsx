@@ -1,8 +1,9 @@
 import React, { useState, useCallback } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
 import Cropper, { Point } from 'react-easy-crop';
 import { UploadFile } from 'typings';
+
+import { Box } from '@citizenlab/cl2-component-library';
 
 import RemoveImageButton from 'components/UI/RemoveImageButton';
 

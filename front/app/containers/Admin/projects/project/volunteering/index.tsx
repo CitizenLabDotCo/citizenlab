@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Box, Title } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { Box, Title } from '@citizenlab/cl2-component-library';
 
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';

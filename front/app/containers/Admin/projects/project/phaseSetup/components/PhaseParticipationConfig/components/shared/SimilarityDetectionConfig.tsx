@@ -1,12 +1,16 @@
 import React from 'react';
 
+import { CLErrors } from 'typings';
+
 import {
   IconTooltip,
   Toggle,
   Input,
   Box,
 } from '@citizenlab/cl2-component-library';
-import { CLErrors } from 'typings';
+
+import { fieldStyles } from 'design-system/Field';
+import NumberField from 'design-system/NumberField';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
@@ -18,9 +22,6 @@ import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import SettingToggleRow from 'components/admin/SettingToggleRow';
 import Error from 'components/UI/Error';
 import UpsellTooltip from 'components/UpsellTooltip';
-
-import { fieldStyles } from 'design-system/Field';
-import NumberField from 'design-system/NumberField';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isSuperAdmin } from 'utils/permissions/roles';

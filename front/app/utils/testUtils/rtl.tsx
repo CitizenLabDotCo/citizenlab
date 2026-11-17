@@ -1,6 +1,5 @@
 import React, { ReactNode } from 'react';
 
-import { getTheme } from '@citizenlab/cl2-component-library';
 import { QueryClientProvider } from '@tanstack/react-query';
 // eslint-disable-next-line no-restricted-imports
 import { render, RenderOptions } from '@testing-library/react';
@@ -10,6 +9,8 @@ import messages from 'i18n/en';
 import { HelmetProvider } from 'react-helmet-async';
 import { IntlProvider } from 'react-intl';
 import { ThemeProvider } from 'styled-components';
+
+import { getTheme } from '@citizenlab/cl2-component-library';
 
 import { ModalQueueProvider } from 'containers/App/ModalQueue';
 

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
+import styled from 'styled-components';
+
 import {
   Box,
   Button,
@@ -9,7 +11,6 @@ import {
   colors,
   Error,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IFlatCustomField } from 'api/custom_fields/types';

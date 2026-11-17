@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import { MessageDescriptor } from 'react-intl';
+
 import {
   Box,
   Button,
@@ -7,7 +9,6 @@ import {
   Text,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { MessageDescriptor } from 'react-intl';
 
 import {
   IProjectData,

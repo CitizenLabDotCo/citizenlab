@@ -1,13 +1,5 @@
 import React from 'react';
 
-import {
-  Box,
-  colors,
-  defaultStyles,
-  Title,
-  Text,
-  stylingConsts,
-} from '@citizenlab/cl2-component-library';
 import { xor } from 'lodash-es';
 import {
   BarChart,
@@ -18,6 +10,15 @@ import {
   Cell,
   LabelList,
 } from 'recharts';
+
+import {
+  Box,
+  colors,
+  defaultStyles,
+  Title,
+  Text,
+  stylingConsts,
+} from '@citizenlab/cl2-component-library';
 
 import useAuthorsByDomicile from 'api/analysis_stats/useAuthorsByDomicile';
 import useUserCustomFieldsOptions from 'api/custom_field_options/useCustomFieldOptions';

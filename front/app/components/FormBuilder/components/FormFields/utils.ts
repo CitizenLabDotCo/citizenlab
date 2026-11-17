@@ -1,5 +1,6 @@
-import { colors } from '@citizenlab/cl2-component-library';
 import { rgba } from 'polished';
+
+import { colors } from '@citizenlab/cl2-component-library';
 
 import {
   ICustomFieldInputType,

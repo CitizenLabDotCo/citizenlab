@@ -1,17 +1,18 @@
 import React, { useState, useEffect, FormEvent } from 'react';
 
-import {
-  IconTooltip,
-  Box,
-  Text,
-  Button,
-} from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { isEmpty } from 'lodash-es';
 import { useForm, FormProvider } from 'react-hook-form';
 import styled from 'styled-components';
 import { IOption, UploadFile, Multiloc, SupportedLocale } from 'typings';
 import { string, object, mixed } from 'yup';
+
+import {
+  IconTooltip,
+  Box,
+  Text,
+  Button,
+} from '@citizenlab/cl2-component-library';
 
 import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
 import useAuthUser from 'api/me/useAuthUser';

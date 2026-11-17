@@ -1,7 +1,8 @@
 import React, { memo, useEffect } from 'react';
 
-import { colors, media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { colors, media } from '@citizenlab/cl2-component-library';
 
 import useAuthUser from 'api/me/useAuthUser';
 

@@ -1,13 +1,13 @@
 import React from 'react';
 
+import Checkbox from 'design-system/Checkbox';
+import Icon from 'design-system/Icon';
+import { Cell, Row } from 'design-system/Table';
+
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IIdeaData } from 'api/ideas/types';
 
 import useLocalize from 'hooks/useLocalize';
-
-import Checkbox from 'design-system/Checkbox';
-import Icon from 'design-system/Icon';
-import { Cell, Row } from 'design-system/Table';
 
 import { useIntl } from 'utils/cl-intl';
 

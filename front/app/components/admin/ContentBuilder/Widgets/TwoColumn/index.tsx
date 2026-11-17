@@ -1,5 +1,8 @@
 import React from 'react';
 
+import { useNode, Element } from '@craftjs/core';
+import styled from 'styled-components';
+
 import {
   Box,
   Radio,
@@ -8,8 +11,6 @@ import {
   colors,
   media,
 } from '@citizenlab/cl2-component-library';
-import { useNode, Element } from '@craftjs/core';
-import styled from 'styled-components';
 
 import { BUILDER_CONTENT_MAX_WIDTH } from 'components/admin/ContentBuilder/constants';
 

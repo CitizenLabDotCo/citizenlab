@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 
-import { Box, Success } from '@citizenlab/cl2-component-library';
 import { FormProvider, UseFormReturn } from 'react-hook-form';
+
+import { Box, Success } from '@citizenlab/cl2-component-library';
 
 import { requestCodeForEmail } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
 import { IUser } from 'api/users/types';

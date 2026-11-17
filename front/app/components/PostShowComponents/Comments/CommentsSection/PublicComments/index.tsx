@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
+import { useInView } from 'react-intersection-observer';
+import styled from 'styled-components';
+
 import {
   colors,
   fontSizes,
@@ -8,8 +11,6 @@ import {
   useBreakpoint,
   Title,
 } from '@citizenlab/cl2-component-library';
-import { useInView } from 'react-intersection-observer';
-import styled from 'styled-components';
 
 import { CommentsSort } from 'api/comments/types';
 import useComments from 'api/comments/useComments';

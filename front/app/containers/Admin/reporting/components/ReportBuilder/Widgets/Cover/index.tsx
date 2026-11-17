@@ -1,9 +1,10 @@
 import React from 'react';
 
-import { Box, Text, Title, colors } from '@citizenlab/cl2-component-library';
 import { useEditor } from '@craftjs/core';
 import { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
+
+import { Box, Text, Title, colors } from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 

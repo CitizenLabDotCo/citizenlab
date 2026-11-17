@@ -1,12 +1,13 @@
 import React from 'react';
 
+import styled from 'styled-components';
+
 import {
   colors,
   fontSizes,
   Spinner,
   Icon,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 import { IIdeaMarkers } from 'api/idea_markers/types';
 

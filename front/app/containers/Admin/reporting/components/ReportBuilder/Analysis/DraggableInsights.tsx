@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
 import { useEditor } from '@craftjs/core';
+
+import { Box } from '@citizenlab/cl2-component-library';
 
 import tracks from 'containers/Admin/projects/project/analysis/tracks';
 

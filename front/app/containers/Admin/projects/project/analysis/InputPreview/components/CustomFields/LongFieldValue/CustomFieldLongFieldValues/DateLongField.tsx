@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 import { FormattedDate } from 'react-intl';
+
+import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 
 import { IIdeaCustomField } from 'api/idea_custom_fields/types';
 

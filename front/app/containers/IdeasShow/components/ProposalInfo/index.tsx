@@ -1,5 +1,7 @@
 import React from 'react';
 
+import styled, { useTheme } from 'styled-components';
+
 import {
   Box,
   colors,
@@ -7,7 +9,6 @@ import {
   stylingConsts,
   Text,
 } from '@citizenlab/cl2-component-library';
-import styled, { useTheme } from 'styled-components';
 
 import useIdeaStatus from 'api/idea_statuses/useIdeaStatus';
 import { IIdea } from 'api/ideas/types';

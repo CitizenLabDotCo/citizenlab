@@ -1,5 +1,8 @@
 import React from 'react';
 
+import EmptyProjectsImage from 'assets/img/landingpage/no_projects_image.svg';
+import styled from 'styled-components';
+
 import {
   Box,
   Image,
@@ -7,8 +10,6 @@ import {
   Text,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import EmptyProjectsImage from 'assets/img/landingpage/no_projects_image.svg';
-import styled from 'styled-components';
 
 import useReportBuilderEnabled from 'api/reports/useReportBuilderEnabled';
 

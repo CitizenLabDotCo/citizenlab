@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Box, Label, Radio } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
+
+import { Box, Label, Radio } from '@citizenlab/cl2-component-library';
 
 import { FormattedMessage } from 'utils/cl-intl';
 

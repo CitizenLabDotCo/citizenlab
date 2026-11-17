@@ -1,7 +1,8 @@
 import React, { Suspense, MouseEvent } from 'react';
 
-import { colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { colors } from '@citizenlab/cl2-component-library';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IIdeaData } from 'api/ideas/types';

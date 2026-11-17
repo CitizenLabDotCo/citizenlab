@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
 import { useEditor } from '@craftjs/core';
 import { Multiloc, SupportedLocale } from 'typings';
+
+import { Box } from '@citizenlab/cl2-component-library';
 
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import { IStatusCounts } from 'api/admin_publications_status_counts/types';

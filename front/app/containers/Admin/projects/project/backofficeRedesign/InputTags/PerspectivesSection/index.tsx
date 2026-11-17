@@ -1,9 +1,9 @@
 import React from 'react';
 
+import Switch from 'design-system/Switch';
+
 import SettingsSection from 'containers/Admin/projects/project/backofficeRedesign/_shared/components/SettingsModal/SettingsSection';
 import topicsMessages from 'containers/Admin/projects/project/topics/messages';
-
-import Switch from 'design-system/Switch';
 
 import { useIntl } from 'utils/cl-intl';
 import 'design-system/tokens.css';

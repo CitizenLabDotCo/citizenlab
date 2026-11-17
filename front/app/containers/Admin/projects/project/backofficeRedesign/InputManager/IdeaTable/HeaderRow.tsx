@@ -2,8 +2,6 @@ import React from 'react';
 
 import { CheckboxContext, Column } from 'react-aria-components';
 
-import { ideaSortValues, Sort } from 'api/ideas/types';
-
 import Checkbox from 'design-system/Checkbox';
 import {
   ColumnHeader,
@@ -11,6 +9,8 @@ import {
   ColumnMenu,
   TableHeader,
 } from 'design-system/Table';
+
+import { ideaSortValues, Sort } from 'api/ideas/types';
 
 import { useIntl } from 'utils/cl-intl';
 import { getSortDirection } from 'utils/paginationUtils';

@@ -1,5 +1,6 @@
-import { Icon, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { Icon, colors } from '@citizenlab/cl2-component-library';
 
 const HeaderIcon = styled(Icon).attrs({ name: 'flash' })`
   flex: 0 0 28px;

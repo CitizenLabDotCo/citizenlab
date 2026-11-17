@@ -1,5 +1,8 @@
 import React from 'react';
 
+import styled from 'styled-components';
+import { IOption, SupportedLocale } from 'typings';
+
 import {
   Radio,
   IconTooltip,
@@ -9,8 +12,6 @@ import {
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
-import { IOption, SupportedLocale } from 'typings';
 
 import { IGroups } from 'api/groups/types';
 import useGroups from 'api/groups/useGroups';

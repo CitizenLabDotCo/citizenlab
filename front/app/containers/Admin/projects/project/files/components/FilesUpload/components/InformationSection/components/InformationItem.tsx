@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { MessageDescriptor } from 'react-intl';
+
 import {
   Box,
   Text,
@@ -7,7 +9,6 @@ import {
   colors,
   IconNames,
 } from '@citizenlab/cl2-component-library';
-import { MessageDescriptor } from 'react-intl';
 
 import { useIntl } from 'utils/cl-intl';
 

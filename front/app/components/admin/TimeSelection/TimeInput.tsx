@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
 
+import { format } from 'date-fns';
+
 import {
   Tooltip,
   Button,
@@ -8,7 +10,6 @@ import {
   InputContainer,
   Icon,
 } from '@citizenlab/cl2-component-library';
-import { format } from 'date-fns';
 
 import useLocale from 'hooks/useLocale';
 

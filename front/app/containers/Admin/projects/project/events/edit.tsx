@@ -1,5 +1,8 @@
 import React, { FormEvent, lazy } from 'react';
 
+import { useTheme } from 'styled-components';
+import { Multiloc } from 'typings';
+
 import {
   Box,
   IconTooltip,
@@ -12,8 +15,6 @@ import {
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import { useTheme } from 'styled-components';
-import { Multiloc } from 'typings';
 
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useLocale from 'hooks/useLocale';

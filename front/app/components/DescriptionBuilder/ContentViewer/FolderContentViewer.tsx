@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import { Multiloc } from 'typings';
+
+import { Box, Spinner } from '@citizenlab/cl2-component-library';
 
 import useContentBuilderLayout from 'api/content_builder/useContentBuilderLayout';
 

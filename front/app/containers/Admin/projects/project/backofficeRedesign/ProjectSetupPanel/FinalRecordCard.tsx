@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { IProjectData } from 'api/projects/types';
-
 import Icon from 'design-system/Icon';
+
+import { IProjectData } from 'api/projects/types';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 

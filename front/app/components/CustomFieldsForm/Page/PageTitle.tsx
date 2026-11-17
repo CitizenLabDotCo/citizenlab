@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
+
+import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 

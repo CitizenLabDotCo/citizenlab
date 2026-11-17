@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 
-import { Box, colors, stylingConsts } from '@citizenlab/cl2-component-library';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
+
+import { Box, colors, stylingConsts } from '@citizenlab/cl2-component-library';
 
 import ImportExcelModal from 'components/admin/InputImporterModals/ImportExcelModal';
 import ImportPdfModal from 'components/admin/InputImporterModals/ImportPdfModal';

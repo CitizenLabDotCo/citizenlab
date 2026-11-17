@@ -1,12 +1,13 @@
 import React from 'react';
 
+import { Multiloc } from 'typings';
+
 import {
   Box,
   Title,
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import { Multiloc } from 'typings';
 
 import useAuthUser from 'api/me/useAuthUser';
 import useAddSpace from 'api/spaces/useAddSpace';

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 
-import { Box, Label } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { Box, Label } from '@citizenlab/cl2-component-library';
 
 import { IUserData } from 'api/users/types';
 

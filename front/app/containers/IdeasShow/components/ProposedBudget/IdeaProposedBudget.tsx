@@ -1,7 +1,8 @@
 import React, { memo } from 'react';
 
-import { media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { media } from '@citizenlab/cl2-component-library';
 
 import FormattedBudget from 'utils/currency/FormattedBudget';
 

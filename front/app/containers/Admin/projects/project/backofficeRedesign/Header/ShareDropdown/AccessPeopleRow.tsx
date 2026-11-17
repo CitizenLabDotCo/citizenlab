@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { IUserData } from 'api/users/types';
-
 import Avatar from 'design-system/Avatar';
+
+import { IUserData } from 'api/users/types';
 
 import { useIntl } from 'utils/cl-intl';
 import { isAdmin } from 'utils/permissions/roles';

@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { useTheme } from 'styled-components';
+
 import {
   Box,
   Text,
@@ -7,7 +9,6 @@ import {
   Title,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import { useTheme } from 'styled-components';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
 import useProjectFolderImage from 'api/project_folder_images/useProjectFolderImage';

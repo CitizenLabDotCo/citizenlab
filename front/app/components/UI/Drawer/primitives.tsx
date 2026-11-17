@@ -1,5 +1,6 @@
-import { colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { colors } from '@citizenlab/cl2-component-library';
 
 export const DragHandle = styled.div`
   width: 40px;

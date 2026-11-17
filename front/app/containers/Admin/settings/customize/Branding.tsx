@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 
+import { get } from 'lodash-es';
+import styled from 'styled-components';
+import { UploadFile } from 'typings';
+
 import {
   Label,
   ColorPickerInput,
   calculateContrastRatio,
   hexToRgb,
 } from '@citizenlab/cl2-component-library';
-import { get } from 'lodash-es';
-import styled from 'styled-components';
-import { UploadFile } from 'typings';
 
 import {
   Section,

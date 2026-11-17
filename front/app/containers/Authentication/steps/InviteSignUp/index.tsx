@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 
-import { Box, Label } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
+
+import { Box, Label } from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { Parameters as CreateAccountFromInviteParameters } from 'api/authentication/createAccountFromInvite';

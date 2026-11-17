@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react';
 
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
 

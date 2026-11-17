@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 
 import { useQueryClient } from '@tanstack/react-query';
 
+import Banner from 'design-system/Banner';
+import Modal from 'design-system/Modal';
+
 import phasePermissionKeys from 'api/phase_permissions/keys';
 import { IPhaseData, TSurveyService } from 'api/phases/types';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
@@ -10,9 +13,6 @@ import { SurveyMethod } from 'containers/Admin/projects/project/phaseSetup/compo
 import useNewPhaseDefaults from 'containers/Admin/projects/project/phaseSetup/useNewPhaseDefaults';
 
 import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
-
-import Banner from 'design-system/Banner';
-import Modal from 'design-system/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 

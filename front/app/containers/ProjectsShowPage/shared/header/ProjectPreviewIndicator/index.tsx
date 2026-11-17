@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Box, BoxProps, Text } from '@citizenlab/cl2-component-library';
 import Cookies from 'js-cookie';
+
+import { Box, BoxProps, Text } from '@citizenlab/cl2-component-library';
 
 import useProjectById from 'api/projects/useProjectById';
 

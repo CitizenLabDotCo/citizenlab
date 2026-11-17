@@ -1,7 +1,8 @@
 import React, { useRef, useEffect } from 'react';
 
-import { quillEditedContent } from '@citizenlab/cl2-component-library';
 import styled, { useTheme } from 'styled-components';
+
+import { quillEditedContent } from '@citizenlab/cl2-component-library';
 
 const Container = styled.div<{
   textColor: Props['textColor'];

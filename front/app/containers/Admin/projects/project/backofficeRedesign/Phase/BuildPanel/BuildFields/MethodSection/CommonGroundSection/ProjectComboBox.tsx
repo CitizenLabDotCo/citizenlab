@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 
+import ComboBox from 'design-system/ComboBox';
+import { ListBoxOption } from 'design-system/ListBox';
+
 import { PublicationStatus } from 'api/projects/types';
 import useInfiniteProjectsMiniAdmin from 'api/projects_mini_admin/useInfiniteProjectsMiniAdmin';
 
 import useDebouncedValue from 'hooks/useDebouncedValue';
 import useLocalize from 'hooks/useLocalize';
 
-import ComboBox from 'design-system/ComboBox';
-import { ListBoxOption } from 'design-system/ListBox';
 import 'design-system/tokens.css';
 
 const PUBLICATION_STATUSES: PublicationStatus[] = [

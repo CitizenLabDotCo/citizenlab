@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
+
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 import useAuthUser from 'api/me/useAuthUser';
 import useProjectsMini from 'api/projects_mini/useProjectsMini';

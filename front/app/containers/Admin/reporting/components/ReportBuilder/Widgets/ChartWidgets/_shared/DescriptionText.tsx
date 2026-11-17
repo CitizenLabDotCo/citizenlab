@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Text } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
+
+import { Text } from '@citizenlab/cl2-component-library';
 
 import useLocalize from 'hooks/useLocalize';
 

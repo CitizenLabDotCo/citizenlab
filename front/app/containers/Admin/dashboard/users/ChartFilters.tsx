@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
 import { Moment } from 'moment';
 import { IOption } from 'typings';
+
+import { Box } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
 

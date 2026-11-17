@@ -1,12 +1,13 @@
 import React, { lazy, useCallback } from 'react';
 
+import { useEditor } from '@craftjs/core';
+import { Multiloc } from 'typings';
+
 import {
   Image as ImageComponent,
   colors,
   Icon,
 } from '@citizenlab/cl2-component-library';
-import { useEditor } from '@craftjs/core';
-import { Multiloc } from 'typings';
 
 import useLocalize from 'hooks/useLocalize';
 

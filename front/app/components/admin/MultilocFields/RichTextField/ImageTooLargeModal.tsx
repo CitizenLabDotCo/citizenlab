@@ -1,9 +1,9 @@
 import React from 'react';
 
+import Modal from 'design-system/Modal';
+
 import { MAX_IMAGE_SIZE_MB } from 'components/UI/QuillEditor/createQuill';
 import quillMessages from 'components/UI/QuillEditor/messages';
-
-import Modal from 'design-system/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 

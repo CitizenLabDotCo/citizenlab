@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Tr, Td, colors, IconButton } from '@citizenlab/cl2-component-library';
 import { FormattedDate } from 'react-intl';
+
+import { Tr, Td, colors, IconButton } from '@citizenlab/cl2-component-library';
 
 import { IInviteData } from 'api/invites/types';
 import useDeleteInvite from 'api/invites/useDeleteInvite';

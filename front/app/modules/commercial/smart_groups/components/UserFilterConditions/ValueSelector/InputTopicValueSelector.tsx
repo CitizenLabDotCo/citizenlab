@@ -1,7 +1,8 @@
 import React, { memo, useEffect, useState } from 'react';
 
-import { Box, Select } from '@citizenlab/cl2-component-library';
 import { IOption } from 'typings';
+
+import { Box, Select } from '@citizenlab/cl2-component-library';
 
 import useInputTopicById from 'api/input_topics/useInputTopicById';
 import useInputTopics from 'api/input_topics/useInputTopics';

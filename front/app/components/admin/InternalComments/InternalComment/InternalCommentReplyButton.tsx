@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { colors, fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { colors, fontSizes } from '@citizenlab/cl2-component-library';
 
 import { IInternalCommentData } from 'api/internal_comments/types';
 import useUserById from 'api/users/useUserById';

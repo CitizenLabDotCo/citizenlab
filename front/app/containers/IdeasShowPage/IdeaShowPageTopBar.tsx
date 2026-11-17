@@ -1,7 +1,8 @@
 import React, { useState, useCallback, useEffect } from 'react';
 
-import { Box, useBreakpoint, media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { Box, useBreakpoint, media } from '@citizenlab/cl2-component-library';
 
 import { IIdeaData } from 'api/ideas/types';
 import useAuthUser from 'api/me/useAuthUser';

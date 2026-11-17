@@ -1,5 +1,7 @@
 import React from 'react';
 
+import styled from 'styled-components';
+
 import {
   Box,
   Icon,
@@ -8,7 +10,6 @@ import {
   colors,
   isRtl,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 import Link, { typedStyled, type WrapperTo } from 'utils/cl-router/Link';
 

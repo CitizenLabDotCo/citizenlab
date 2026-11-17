@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Box, Image, stylingConsts } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { Box, Image, stylingConsts } from '@citizenlab/cl2-component-library';
 
 import { CARD_IMAGE_ASPECT_RATIO } from 'api/project_images/useProjectImages';
 

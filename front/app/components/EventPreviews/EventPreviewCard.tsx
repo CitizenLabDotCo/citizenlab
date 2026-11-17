@@ -1,5 +1,8 @@
 import React from 'react';
 
+import moment from 'moment';
+import styled, { useTheme } from 'styled-components';
+
 import {
   Box,
   defaultCardHoverStyle,
@@ -8,8 +11,6 @@ import {
   useBreakpoint,
   colors,
 } from '@citizenlab/cl2-component-library';
-import moment from 'moment';
-import styled, { useTheme } from 'styled-components';
 
 import { IEventData } from 'api/events/types';
 

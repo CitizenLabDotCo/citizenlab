@@ -6,14 +6,15 @@ import React, {
   useRef,
 } from 'react';
 
+import { findIndex } from 'lodash-es';
+import styled from 'styled-components';
+
 import {
   Button,
   colors,
   isRtl,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import { findIndex } from 'lodash-es';
-import styled from 'styled-components';
 
 import { IPhaseData } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';

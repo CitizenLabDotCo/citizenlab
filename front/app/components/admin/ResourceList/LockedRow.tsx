@@ -1,7 +1,8 @@
 import React, { ReactNode } from 'react';
 
-import { Icon, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { Icon, colors } from '@citizenlab/cl2-component-library';
 
 import { Row } from 'components/admin/ResourceList';
 import {

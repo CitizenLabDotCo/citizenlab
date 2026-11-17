@@ -1,9 +1,10 @@
 import React, { memo } from 'react';
 
-import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
 import BoringAvatar from 'boring-avatars';
 import { lighten } from 'polished';
 import styled, { useTheme } from 'styled-components';
+
+import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
 
 import useVerificationMethod from 'api/id_methods/useVerificationMethod';
 import useUserById from 'api/users/useUserById';

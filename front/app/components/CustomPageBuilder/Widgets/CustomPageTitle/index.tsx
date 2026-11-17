@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { Box, Title, Toggle } from '@citizenlab/cl2-component-library';
 import { useEditor, useNode } from '@craftjs/core';
 import { Multiloc } from 'typings';
+
+import { Box, Title, Toggle } from '@citizenlab/cl2-component-library';
 
 import useCustomPageById from 'api/custom_pages/useCustomPageById';
 

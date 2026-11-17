@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Label } from '@citizenlab/cl2-component-library';
 import { useFormContext } from 'react-hook-form';
+
+import { Label } from '@citizenlab/cl2-component-library';
 
 import { Section, SectionField } from 'components/admin/Section';
 import ColorPicker from 'components/HookForm/ColorPicker';

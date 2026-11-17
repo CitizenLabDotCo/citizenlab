@@ -2,15 +2,15 @@ import React from 'react';
 
 import { DialogTrigger, Key } from 'react-aria-components';
 
+import { ListBoxOption } from 'design-system/ListBox';
+import TagPicker from 'design-system/TagPicker';
+
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { coreSettings } from 'api/app_configuration/utils';
 import useGlobalTopics from 'api/global_topics/useGlobalTopics';
 import { IProjectData } from 'api/projects/types';
 
 import useLocalize from 'hooks/useLocalize';
-
-import { ListBoxOption } from 'design-system/ListBox';
-import TagPicker from 'design-system/TagPicker';
 
 import { useIntl } from 'utils/cl-intl';
 

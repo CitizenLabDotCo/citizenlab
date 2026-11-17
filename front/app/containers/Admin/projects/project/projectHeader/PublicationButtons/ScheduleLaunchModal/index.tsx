@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
-import { Box, Button, Text, colors } from '@citizenlab/cl2-component-library';
 import moment from 'moment-timezone';
+
+import { Box, Button, Text, colors } from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IProjectData } from 'api/projects/types';

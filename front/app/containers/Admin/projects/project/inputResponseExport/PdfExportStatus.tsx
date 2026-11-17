@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
+
+import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 
 import { IJobData } from 'api/jobs/types';
 import useUserById from 'api/users/useUserById';

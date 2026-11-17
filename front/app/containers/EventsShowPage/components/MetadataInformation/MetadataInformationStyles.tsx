@@ -1,5 +1,6 @@
-import { Icon, colors, isRtl } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { Icon, colors, isRtl } from '@citizenlab/cl2-component-library';
 
 export const Container = styled.div`
   display: flex;

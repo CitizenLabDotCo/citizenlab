@@ -1,5 +1,10 @@
 import React from 'react';
 
+import { yupResolver } from '@hookform/resolvers/yup';
+import { FormProvider, useForm } from 'react-hook-form';
+import styled from 'styled-components';
+import { Multiloc } from 'typings';
+
 import {
   Box,
   IconTooltip,
@@ -8,10 +13,6 @@ import {
   Tooltip,
   Button,
 } from '@citizenlab/cl2-component-library';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { FormProvider, useForm } from 'react-hook-form';
-import styled from 'styled-components';
-import { Multiloc } from 'typings';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IAreaData } from 'api/areas/types';

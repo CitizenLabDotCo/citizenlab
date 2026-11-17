@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 
+import AlertDialog from 'design-system/AlertDialog';
+import IconButton from 'design-system/IconButton';
+
 import { IIdeaData } from 'api/ideas/types';
 import useDeleteIdea from 'api/ideas/useDeleteIdea';
 
 import warningModalMessages from 'components/WarningModal/messages';
-
-import AlertDialog from 'design-system/AlertDialog';
-import IconButton from 'design-system/IconButton';
 
 import { useIntl } from 'utils/cl-intl';
 

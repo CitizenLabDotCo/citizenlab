@@ -1,8 +1,9 @@
 import React, { useCallback } from 'react';
 
-import { Tooltip, colors, fontSizes } from '@citizenlab/cl2-component-library';
 import Quill from 'quill';
 import styled from 'styled-components';
+
+import { Tooltip, colors, fontSizes } from '@citizenlab/cl2-component-library';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';

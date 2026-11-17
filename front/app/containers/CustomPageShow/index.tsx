@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
+
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useCustomPageBySlug from 'api/custom_pages/useCustomPageBySlug';

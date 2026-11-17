@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { FormProvider } from 'react-hook-form';
+
 import {
   Box,
   Title,
@@ -8,7 +10,6 @@ import {
   colors,
   Icon,
 } from '@citizenlab/cl2-component-library';
-import { FormProvider } from 'react-hook-form';
 
 import Input from 'components/HookForm/Input';
 import Modal from 'components/UI/Modal';

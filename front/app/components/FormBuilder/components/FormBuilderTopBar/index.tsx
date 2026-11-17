@@ -1,5 +1,8 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 
+import { useFormContext } from 'react-hook-form';
+import styled from 'styled-components';
+
 import {
   Box,
   stylingConsts,
@@ -10,8 +13,6 @@ import {
   Toggle,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
-import { useFormContext } from 'react-hook-form';
-import styled from 'styled-components';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 import usePhase from 'api/phases/usePhase';

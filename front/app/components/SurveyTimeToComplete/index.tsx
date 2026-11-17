@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Icon, Text } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
+
+import { Icon, Text } from '@citizenlab/cl2-component-library';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 import useCustomFields from 'api/custom_fields/useCustomFields';

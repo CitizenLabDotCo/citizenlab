@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
-import { Box, colors, stylingConsts } from '@citizenlab/cl2-component-library';
 import styled, { keyframes, css } from 'styled-components';
+
+import { Box, colors, stylingConsts } from '@citizenlab/cl2-component-library';
 
 import { useLocation } from 'utils/router';
 import { scrollToElement } from 'utils/scroll';

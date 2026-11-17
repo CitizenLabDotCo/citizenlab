@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { Select } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { IOption } from 'typings';
+
+import { Select } from '@citizenlab/cl2-component-library';
 
 import useUpdateProject from 'api/projects/useUpdateProject';
 

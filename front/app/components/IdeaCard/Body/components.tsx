@@ -1,5 +1,6 @@
-import { fontSizes, isRtl, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { fontSizes, isRtl, colors } from '@citizenlab/cl2-component-library';
 
 import Avatar from 'components/Avatar';
 import UserName from 'components/UI/UserName';

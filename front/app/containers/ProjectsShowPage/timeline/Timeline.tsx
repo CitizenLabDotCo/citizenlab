@@ -6,6 +6,9 @@ import React, {
   useLayoutEffect,
 } from 'react';
 
+import { darken } from 'polished';
+import styled, { css, keyframes } from 'styled-components';
+
 import {
   Box,
   Icon,
@@ -15,8 +18,6 @@ import {
   isRtl,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import { darken } from 'polished';
-import styled, { css, keyframes } from 'styled-components';
 
 import { IPhaseData } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';

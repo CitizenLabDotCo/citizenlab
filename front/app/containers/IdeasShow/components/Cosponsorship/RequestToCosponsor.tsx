@@ -1,5 +1,7 @@
 import React from 'react';
 
+import styled from 'styled-components';
+
 import {
   Button,
   colors,
@@ -7,7 +9,6 @@ import {
   Title,
   Text,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 import useAcceptCosponsorshipInvitation from 'api/cosponsorship/useAcceptCosponsorshipInvitation';
 import useCosponsorships from 'api/cosponsorship/useCosponsorships';

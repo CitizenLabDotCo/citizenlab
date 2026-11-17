@@ -1,13 +1,14 @@
 import React, { memo } from 'react';
 
+import { darken } from 'polished';
+import styled from 'styled-components';
+
 import {
   Icon,
   fontSizes,
   colors,
   media,
 } from '@citizenlab/cl2-component-library';
-import { darken } from 'polished';
-import styled from 'styled-components';
 
 import useVerificationMethod from 'api/id_methods/useVerificationMethod';
 import useAuthUser from 'api/me/useAuthUser';

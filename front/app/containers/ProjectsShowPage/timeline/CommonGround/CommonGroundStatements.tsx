@@ -1,5 +1,7 @@
 import React, { useCallback } from 'react';
 
+import styled from 'styled-components';
+
 import {
   Box,
   Button,
@@ -10,7 +12,6 @@ import {
   Spinner,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 import useCommonGroundProgress from 'api/common_ground/useCommonGroundProgress';
 import useReactToStatement from 'api/common_ground/useReactToStatement';

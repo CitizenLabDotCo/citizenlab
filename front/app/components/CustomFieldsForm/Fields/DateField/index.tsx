@@ -1,10 +1,11 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
 import { format, startOfDay } from 'date-fns';
 import { get } from 'lodash-es';
 import { Controller, useFormContext } from 'react-hook-form';
 import { CLError, RHFErrors } from 'typings';
+
+import { Box } from '@citizenlab/cl2-component-library';
 
 import DateSinglePicker from 'components/admin/DatePickers/DateSinglePicker';
 import Error, { TFieldName } from 'components/UI/Error';

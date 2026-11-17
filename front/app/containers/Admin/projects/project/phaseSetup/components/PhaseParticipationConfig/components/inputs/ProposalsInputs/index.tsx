@@ -1,7 +1,8 @@
 import React, { ReactNode } from 'react';
 
-import { Input, IOption } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
+
+import { Input, IOption } from '@citizenlab/cl2-component-library';
 
 import {
   IdeaSortMethod,

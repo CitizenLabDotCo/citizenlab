@@ -1,9 +1,10 @@
 import React from 'react';
 
-import { Text } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { object, boolean } from 'yup';
+
+import { Text } from '@citizenlab/cl2-component-library';
 
 import authProvidersMessages from 'containers/Authentication/steps/_components/AuthProviderButton/messages';
 

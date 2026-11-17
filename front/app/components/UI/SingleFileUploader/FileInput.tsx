@@ -1,5 +1,8 @@
 import React, { FormEvent, ChangeEvent } from 'react';
 
+import styled from 'styled-components';
+import { UploadFile } from 'typings';
+
 import {
   colors,
   fontSizes,
@@ -7,8 +10,6 @@ import {
   isRtl,
   Icon,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
-import { UploadFile } from 'typings';
 
 import messages from 'components/UI/FileUploader/messages';
 

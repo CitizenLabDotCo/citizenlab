@@ -1,7 +1,8 @@
 import React, { MouseEvent } from 'react';
 
-import { Box, Divider, Text } from '@citizenlab/cl2-component-library';
 import { xor } from 'lodash-es';
+
+import { Box, Divider, Text } from '@citizenlab/cl2-component-library';
 
 import { IInputTopicData } from 'api/input_topics/types';
 

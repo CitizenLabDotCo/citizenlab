@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
 
-import { Select, Input, Box } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { IOption } from 'typings';
+
+import { Select, Input, Box } from '@citizenlab/cl2-component-library';
+
+import Button from 'design-system/Button';
+import { ListBoxOption } from 'design-system/ListBox';
+import NumberField from 'design-system/NumberField';
+import DSSelect from 'design-system/Select';
 
 import { IPollQuestionData } from 'api/poll_questions/types';
 import useUpdatePollQuestion from 'api/poll_questions/useUpdatePollQuestion';
 
 import { Row } from 'components/admin/ResourceList';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
-
-import Button from 'design-system/Button';
-import { ListBoxOption } from 'design-system/ListBox';
-import NumberField from 'design-system/NumberField';
-import DSSelect from 'design-system/Select';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';

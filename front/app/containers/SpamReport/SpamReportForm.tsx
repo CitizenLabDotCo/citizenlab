@@ -1,11 +1,12 @@
 import React, { FormEvent } from 'react';
 
-import { Label, Radio, fontSizes } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import styled from 'styled-components';
 import { CRUDParams } from 'typings';
+
+import { Label, Radio, fontSizes } from '@citizenlab/cl2-component-library';
 
 import { ISpamReportAdd, ReasonCode } from 'api/spam_reports/types';
 

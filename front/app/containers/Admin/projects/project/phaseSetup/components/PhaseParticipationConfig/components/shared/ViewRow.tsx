@@ -2,12 +2,12 @@ import React, { ReactNode } from 'react';
 
 import { Button as AriaButton } from 'react-aria-components';
 
-import messages from 'containers/Admin/projects/project/messages';
-
 import Button from 'design-system/Button';
 import Icon from 'design-system/Icon';
 import Switch from 'design-system/Switch';
 import Tooltip from 'design-system/Tooltip';
+
+import messages from 'containers/Admin/projects/project/messages';
 
 import { useIntl } from 'utils/cl-intl';
 

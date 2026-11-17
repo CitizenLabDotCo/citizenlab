@@ -1,9 +1,9 @@
 import React from 'react';
 
+import { Cell, Row } from 'design-system/Table';
+
 import { IUserData } from 'api/users/types';
 import { IVolunteerData } from 'api/volunteers/types';
-
-import { Cell, Row } from 'design-system/Table';
 
 import { useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';

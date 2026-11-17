@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
-import { Box, IOption } from '@citizenlab/cl2-component-library';
 import { UploadFile } from 'typings';
+
+import { Box, IOption } from '@citizenlab/cl2-component-library';
 
 import {
   ICustomPageAttributes,

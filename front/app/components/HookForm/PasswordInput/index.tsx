@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { Label } from '@citizenlab/cl2-component-library';
 import { Controller, useFormContext } from 'react-hook-form';
 import { CLError, RHFErrors } from 'typings';
+
+import { Label } from '@citizenlab/cl2-component-library';
 
 import Error, { TFieldName } from 'components/UI/Error';
 import PasswordInputComponent, {

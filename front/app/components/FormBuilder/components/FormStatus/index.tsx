@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
 import { useFormContext } from 'react-hook-form';
+
+import { Box } from '@citizenlab/cl2-component-library';
 
 import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
 

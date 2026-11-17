@@ -1,5 +1,8 @@
 import React, { useEffect } from 'react';
 
+import rocket from 'assets/img/rocket.png';
+import { MessageDescriptor } from 'react-intl';
+
 import {
   Spinner,
   Box,
@@ -7,8 +10,6 @@ import {
   Title,
   Image,
 } from '@citizenlab/cl2-component-library';
-import rocket from 'assets/img/rocket.png';
-import { MessageDescriptor } from 'react-intl';
 
 import useIdeaById from 'api/ideas/useIdeaById';
 import useAuthUser from 'api/me/useAuthUser';

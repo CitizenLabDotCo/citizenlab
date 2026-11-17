@@ -1,5 +1,7 @@
 import React, { useContext } from 'react';
 
+import { useTheme } from 'styled-components';
+
 import {
   Box,
   Text,
@@ -10,7 +12,6 @@ import {
   colors,
   Shimmer,
 } from '@citizenlab/cl2-component-library';
-import { useTheme } from 'styled-components';
 
 import { CARD_IMAGE_ASPECT_RATIO_STR } from 'api/project_images/useProjectImages';
 

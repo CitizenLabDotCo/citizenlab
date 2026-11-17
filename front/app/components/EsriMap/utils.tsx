@@ -20,9 +20,10 @@ import SimpleLineSymbol from '@arcgis/core/symbols/SimpleLineSymbol';
 import SimpleMarkerSymbol from '@arcgis/core/symbols/SimpleMarkerSymbol';
 import MapView from '@arcgis/core/views/MapView';
 import WebMap from '@arcgis/core/WebMap';
-import { colors } from '@citizenlab/cl2-component-library';
 import { transparentize } from 'polished';
 import { v4 as uuidv4 } from 'uuid';
+
+import { colors } from '@citizenlab/cl2-component-library';
 
 import { IMapConfig } from 'api/map_config/types';
 import { IMapLayerAttributes } from 'api/map_layers/types';

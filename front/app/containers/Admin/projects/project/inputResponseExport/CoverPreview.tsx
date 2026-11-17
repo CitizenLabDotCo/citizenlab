@@ -1,5 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
+import { pdfjs, Document, Page } from 'react-pdf';
+
 import {
   Box,
   IconButton,
@@ -8,7 +10,6 @@ import {
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import { pdfjs, Document, Page } from 'react-pdf';
 
 import { InputPdfCover } from 'api/input_responses_pdf/types';
 import { fetchCoverPreviewPdf } from 'api/input_responses_pdf/util';

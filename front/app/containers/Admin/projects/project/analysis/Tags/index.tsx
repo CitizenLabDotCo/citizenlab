@@ -1,5 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
+import { useQueryClient } from '@tanstack/react-query';
+import { isEqual, omit, uniq } from 'lodash-es';
+import styled from 'styled-components';
+
 import {
   Box,
   Button,
@@ -11,9 +15,6 @@ import {
   Spinner,
   CheckboxWithLabel,
 } from '@citizenlab/cl2-component-library';
-import { useQueryClient } from '@tanstack/react-query';
-import { isEqual, omit, uniq } from 'lodash-es';
-import styled from 'styled-components';
 
 import inputsKeys from 'api/analysis_inputs/keys';
 import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';

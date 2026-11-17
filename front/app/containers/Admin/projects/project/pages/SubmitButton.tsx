@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Button, colors } from '@citizenlab/cl2-component-library';
 import { useFormContext } from 'react-hook-form';
+
+import { Button, colors } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
 

@@ -1,5 +1,7 @@
 import React, { ChangeEvent } from 'react';
 
+import { CellConfiguration, Override } from 'typings';
+
 import {
   Thead,
   Tr,
@@ -7,7 +9,6 @@ import {
   Checkbox,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { CellConfiguration, Override } from 'typings';
 
 import { Sort as IdeasSort } from 'api/ideas/types';
 

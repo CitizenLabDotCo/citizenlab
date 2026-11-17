@@ -1,7 +1,11 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
+
+import { Box } from '@citizenlab/cl2-component-library';
+
+import Banner from 'design-system/Banner';
+import { fieldStyles } from 'design-system/Field';
 
 import { IUpdatedPhaseProperties } from 'api/phases/types';
 
@@ -12,9 +16,6 @@ import { isSelectedRangeOpenEnded } from 'components/admin/DatePickers/DatePhase
 import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 import Error from 'components/UI/Error';
 import Warning from 'components/UI/Warning';
-
-import Banner from 'design-system/Banner';
-import { fieldStyles } from 'design-system/Field';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { convertToTimeZoneISO } from 'utils/dateUtils';

@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { Tooltip, Text } from '@citizenlab/cl2-component-library';
 import reactStringReplace from 'react-string-replace';
 import styled from 'styled-components';
+
+import { Tooltip, Text } from '@citizenlab/cl2-component-library';
 
 import { IAnalysisHeatmapCellData } from 'api/analysis_heat_map_cells/types';
 

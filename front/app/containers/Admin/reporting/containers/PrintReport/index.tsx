@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { Text, Spinner, Box, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { Text, Spinner, Box, colors } from '@citizenlab/cl2-component-library';
 
 import useReportBuilderEnabled from 'api/reports/useReportBuilderEnabled';
 

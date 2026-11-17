@@ -1,8 +1,9 @@
 import React, { useRef, useEffect, useState } from 'react';
 
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { FormProvider } from 'react-hook-form';
 import styled from 'styled-components';
+
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 import useIdeaById from 'api/ideas/useIdeaById';

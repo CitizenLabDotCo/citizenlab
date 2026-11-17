@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
-import { Spinner, Box, Text } from '@citizenlab/cl2-component-library';
 import ReactMarkdown from 'react-markdown';
+
+import { Spinner, Box, Text } from '@citizenlab/cl2-component-library';
 
 import { IFileData } from 'api/files/types';
 

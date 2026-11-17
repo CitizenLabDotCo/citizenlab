@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { ManagerType } from 'components/admin/PostManager';
-import ExportButtons from 'components/admin/PostManager/components/ExportMenu/ExportButtons';
-
 import Button from 'design-system/Button';
 import Popover, { DialogTrigger } from 'design-system/Popover';
+
+import { ManagerType } from 'components/admin/PostManager';
+import ExportButtons from 'components/admin/PostManager/components/ExportMenu/ExportButtons';
 
 import { useIntl } from 'utils/cl-intl';
 

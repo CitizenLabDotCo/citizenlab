@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
 import {
   Draggable,
   type DraggableProvided,
   type DraggableProvidedDragHandleProps,
   type DraggableStateSnapshot,
 } from '@hello-pangea/dnd';
+
+import { Box, colors } from '@citizenlab/cl2-component-library';
 
 export type DragHandleProps =
   | (DraggableProvidedDragHandleProps & { 'aria-describedby'?: string })

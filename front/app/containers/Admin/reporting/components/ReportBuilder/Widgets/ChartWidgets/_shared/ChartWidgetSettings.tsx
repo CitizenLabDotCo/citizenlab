@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 import { IOption, Multiloc } from 'typings';
+
+import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import DateRangePicker from 'components/admin/DatePickers/DateRangePicker';
 import { getComparedTimeRange } from 'components/admin/GraphCards/_utils/query';

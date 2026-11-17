@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
+
+import { Box } from '@citizenlab/cl2-component-library';
 
 import Chart from 'components/admin/GraphCards/ReactionsByTimeCard/Chart';
 

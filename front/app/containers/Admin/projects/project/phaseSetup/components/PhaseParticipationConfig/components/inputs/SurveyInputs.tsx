@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Input, IconTooltip, Box } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
+
+import { Input, IconTooltip, Box } from '@citizenlab/cl2-component-library';
 
 import { TSurveyService } from 'api/phases/types';
 

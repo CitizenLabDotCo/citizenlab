@@ -2,11 +2,11 @@ import React, { memo } from 'react';
 
 import { Box, Button, Tooltip } from '@citizenlab/cl2-component-library';
 
+import DSButton from 'design-system/Button';
+
 import { IMapConfig } from 'api/map_config/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
-
-import DSButton from 'design-system/Button';
 
 import { useIntl } from 'utils/cl-intl';
 

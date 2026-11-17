@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { InputContainer, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { InputContainer, colors } from '@citizenlab/cl2-component-library';
 
 import useAdminPublicationsStatusCounts from 'api/admin_publications_status_counts/useAdminPublicationsStatusCounts';
 

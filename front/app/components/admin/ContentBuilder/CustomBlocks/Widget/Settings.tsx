@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Box, Text, Title } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
+
+import { Box, Text, Title } from '@citizenlab/cl2-component-library';
 
 import { BlockConfigValues } from 'api/custom_blocks/types';
 import useCustomBlockVersion from 'api/custom_blocks/useCustomBlockVersion';

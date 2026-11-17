@@ -1,7 +1,8 @@
 import React, { memo } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { Box } from '@citizenlab/cl2-component-library';
 
 import useCauses from 'api/causes/useCauses';
 import { IPhaseData } from 'api/phases/types';

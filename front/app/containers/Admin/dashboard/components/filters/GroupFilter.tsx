@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Select } from '@citizenlab/cl2-component-library';
 import { FormatMessage, IOption } from 'typings';
+
+import { Select } from '@citizenlab/cl2-component-library';
 
 import { IGroupData } from 'api/groups/types';
 import useGroups from 'api/groups/useGroups';

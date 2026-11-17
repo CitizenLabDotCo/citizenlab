@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { colors, media } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
+
+import { colors, media } from '@citizenlab/cl2-component-library';
 
 import useProjectById from 'api/projects/useProjectById';
 

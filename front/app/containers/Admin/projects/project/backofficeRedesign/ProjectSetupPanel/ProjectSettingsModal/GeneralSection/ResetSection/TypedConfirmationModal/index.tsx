@@ -2,12 +2,12 @@ import React from 'react';
 
 import { Controller } from 'react-hook-form';
 
-import typedConfirmationMessages from 'components/UI/TypedDeleteConfirmationModal/messages';
-import useTypedConfirmation from 'components/UI/TypedDeleteConfirmationModal/useTypedConfirmation';
-
 import Button from 'design-system/Button';
 import Modal from 'design-system/Modal';
 import TextField from 'design-system/TextField';
+
+import typedConfirmationMessages from 'components/UI/TypedDeleteConfirmationModal/messages';
+import useTypedConfirmation from 'components/UI/TypedDeleteConfirmationModal/useTypedConfirmation';
 
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 

@@ -1,6 +1,5 @@
 import React, { PureComponent, FormEvent, lazy, Suspense } from 'react';
 
-import type { ColorResult } from 'react-color';
 import styled from 'styled-components';
 
 import { colors } from '../../utils/styleUtils';
@@ -8,6 +7,8 @@ import testEnv from '../../utils/testUtils/testEnv';
 import IconTooltip from '../IconTooltip';
 import Input from '../Input';
 import Label from '../Label';
+
+import type { ColorResult } from 'react-color';
 
 const ChromePicker = lazy(() => import('./ChromePicker'));
 

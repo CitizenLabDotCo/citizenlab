@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { IconTooltip } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
+
+import { IconTooltip } from '@citizenlab/cl2-component-library';
 
 import { TAppConfigurationSettingCore } from 'api/app_configuration/types';
 

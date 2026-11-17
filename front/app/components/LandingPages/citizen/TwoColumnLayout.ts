@@ -1,5 +1,6 @@
-import { Box, media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { Box, media } from '@citizenlab/cl2-component-library';
 
 import Image from 'components/UI/Image';
 

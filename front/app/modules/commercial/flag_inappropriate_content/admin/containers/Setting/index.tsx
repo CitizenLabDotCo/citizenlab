@@ -1,8 +1,9 @@
 import React, { ReactElement } from 'react';
 
-import { IconTooltip, Toggle } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
+
+import { IconTooltip, Toggle } from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 

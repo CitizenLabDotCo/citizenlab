@@ -1,5 +1,9 @@
 import React, { useMemo, useState, useCallback } from 'react';
 
+import ReactSelect from 'react-select';
+import { useTheme } from 'styled-components';
+import { IOption } from 'typings';
+
 import {
   Box,
   Label,
@@ -8,9 +12,6 @@ import {
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import ReactSelect from 'react-select';
-import { useTheme } from 'styled-components';
-import { IOption } from 'typings';
 
 import useAuthUser from 'api/me/useAuthUser';
 import { ParticipationMethod } from 'api/phases/types';

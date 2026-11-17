@@ -4,14 +4,14 @@ import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
 
-import { Row } from 'components/admin/ResourceList';
-
 import {
   RowContent,
   RowContentInner,
   RowTitle,
   RowButton,
 } from 'containers/Admin/projects/_shared/components/StyledComponents';
+
+import { Row } from 'components/admin/ResourceList';
 
 import { FormattedMessage } from 'utils/cl-intl';
 

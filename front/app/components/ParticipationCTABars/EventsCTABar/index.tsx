@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { Button } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 import { useTheme } from 'styled-components';
+
+import { Button } from '@citizenlab/cl2-component-library';
 
 import useEvents from 'api/events/useEvents';
 

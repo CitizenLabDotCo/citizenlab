@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
 import { Placement } from '@craftjs/core';
 import { MessageDescriptor } from 'react-intl';
+
+import { Box, colors } from '@citizenlab/cl2-component-library';
 
 import { OVERLAY_Z_INDEX } from './constants';
 import DropIndicatorCap from './DropIndicatorCap';

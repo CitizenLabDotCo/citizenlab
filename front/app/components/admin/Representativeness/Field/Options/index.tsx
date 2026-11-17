@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Box, Text, Toggle } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
+
+import { Box, Text, Toggle } from '@citizenlab/cl2-component-library';
 
 import useCustomFieldOptions from 'api/custom_field_options/useCustomFieldOptions';
 import { Bins } from 'api/reference_distribution/types';

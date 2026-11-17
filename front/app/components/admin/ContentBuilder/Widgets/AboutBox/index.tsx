@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { Box, colors, Toggle } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 import { Multiloc } from 'typings';
+
+import { Box, colors, Toggle } from '@citizenlab/cl2-component-library';
 
 import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';

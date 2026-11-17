@@ -10,12 +10,12 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 
-import usePermissionsPhaseCustomFields from 'api/permissions_phase_custom_fields/usePermissionsPhaseCustomFields';
-
 import AlertDialog from 'design-system/AlertDialog';
 import DSButton from 'design-system/Button';
 import DSDivider from 'design-system/Divider';
 import IconButton from 'design-system/IconButton';
+
+import usePermissionsPhaseCustomFields from 'api/permissions_phase_custom_fields/usePermissionsPhaseCustomFields';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 

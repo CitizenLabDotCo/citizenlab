@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Controller, useFormContext } from 'react-hook-form';
+
 import {
   Box,
   Image,
@@ -8,7 +10,6 @@ import {
   Text,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import { Controller, useFormContext } from 'react-hook-form';
 
 import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
 

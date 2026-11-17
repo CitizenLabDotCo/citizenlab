@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 
 import { CLError, CLErrors, IOption } from 'typings';
 
+import { ListBoxOption } from 'design-system/ListBox';
+import Select from 'design-system/Select';
+
 import { VoteTerm, VotingMethod } from 'api/phases/types';
 
 import projectMessages from 'containers/Admin/projects/project/messages';
 
 import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
-
-import { ListBoxOption } from 'design-system/ListBox';
-import Select from 'design-system/Select';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 

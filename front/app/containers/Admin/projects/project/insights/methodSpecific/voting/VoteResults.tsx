@@ -1,5 +1,8 @@
 import React from 'react';
 
+import { useTheme } from 'styled-components';
+import { IOption } from 'typings';
+
 import {
   Box,
   Text,
@@ -8,8 +11,6 @@ import {
   Spinner,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { useTheme } from 'styled-components';
-import { IOption } from 'typings';
 
 import { DemographicFieldKey } from 'api/phase_insights/voting_insights/types';
 import useVotingPhaseVotes from 'api/phase_insights/voting_insights/useVotingPhaseVotes';

@@ -8,13 +8,14 @@
  * appear though: the navigation bar, the survey form footer, and floating on
  * pages with neither. Restyling one means restyling both.
  */
+import styled from 'styled-components';
+
 import {
   Icon,
   colors,
   fontSizes,
   isRtl,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 export const DropdownButtonText = styled.span`
   color: ${({ theme }) => theme.navbarTextColor || theme.colors.tenantText};

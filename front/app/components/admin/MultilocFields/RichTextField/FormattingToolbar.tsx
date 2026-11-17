@@ -4,13 +4,13 @@ import Quill from 'quill';
 import QuillToolbar from 'quill/modules/toolbar';
 import { Key } from 'react-aria-components';
 
-import quillMessages from 'components/UI/QuillEditor/messages';
-import tracks from 'components/UI/QuillEditor/tracks';
-
 import Menu, { MenuItem, MenuTrigger } from 'design-system/Menu';
 import RichTextToolbar, {
   RichTextToolbarButton,
 } from 'design-system/RichTextToolbar';
+
+import quillMessages from 'components/UI/QuillEditor/messages';
+import tracks from 'components/UI/QuillEditor/tracks';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';

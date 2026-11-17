@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Icon, colors, fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { Icon, colors, fontSizes } from '@citizenlab/cl2-component-library';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 

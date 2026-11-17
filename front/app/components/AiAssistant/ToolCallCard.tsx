@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import { MessageDescriptor } from 'react-intl';
+
 import {
   Box,
   Icon,
@@ -8,7 +10,6 @@ import {
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import { MessageDescriptor } from 'react-intl';
 
 import {
   AiAssistantToolCallStatus,

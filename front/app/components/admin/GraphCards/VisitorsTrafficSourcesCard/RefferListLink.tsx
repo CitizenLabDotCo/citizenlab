@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Text, Icon, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { Text, Icon, colors } from '@citizenlab/cl2-component-library';
 
 import { FormattedMessage } from 'utils/cl-intl';
 

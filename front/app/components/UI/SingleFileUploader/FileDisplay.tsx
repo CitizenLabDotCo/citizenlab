@@ -1,12 +1,13 @@
 import React from 'react';
 
+import styled from 'styled-components';
+
 import {
   colors,
   Icon,
   IconButton,
   Box,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 import messages from 'components/UI/FileUploader/messages';
 

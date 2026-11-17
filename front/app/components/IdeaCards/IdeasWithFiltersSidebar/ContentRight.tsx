@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Title } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { Title } from '@citizenlab/cl2-component-library';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';

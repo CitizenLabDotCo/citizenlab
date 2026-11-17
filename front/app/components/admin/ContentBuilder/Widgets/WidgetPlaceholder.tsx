@@ -1,5 +1,7 @@
 import React, { ReactNode } from 'react';
 
+import styled from 'styled-components';
+
 import {
   Box,
   colors,
@@ -7,7 +9,6 @@ import {
   Icon,
   IconNames,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 const PlaceholderContainer = styled(Box)<{ color: string }>`
   display: flex;

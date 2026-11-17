@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { colors, IOption, Select } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { colors, IOption, Select } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';

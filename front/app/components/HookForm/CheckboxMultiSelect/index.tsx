@@ -1,5 +1,10 @@
 import React from 'react';
 
+import { get } from 'lodash-es';
+import { Controller, useFormContext } from 'react-hook-form';
+import styled, { useTheme } from 'styled-components';
+import { CLError, IOption, RHFErrors } from 'typings';
+
 import {
   Box,
   CheckboxWithLabel,
@@ -7,10 +12,6 @@ import {
   SelectProps,
   Text,
 } from '@citizenlab/cl2-component-library';
-import { get } from 'lodash-es';
-import { Controller, useFormContext } from 'react-hook-form';
-import styled, { useTheme } from 'styled-components';
-import { CLError, IOption, RHFErrors } from 'typings';
 
 import Error, { TFieldName } from 'components/UI/Error';
 

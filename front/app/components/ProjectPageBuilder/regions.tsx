@@ -1,8 +1,9 @@
 import React, { useRef } from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
 import { Node, UserComponent, useEditor } from '@craftjs/core';
 import styled, { css } from 'styled-components';
+
+import { Box, colors } from '@citizenlab/cl2-component-library';
 
 import DropZoneOutline from 'components/admin/ContentBuilder/DropFeedback/DropZoneOutline';
 import useWidgetProjectId from 'components/admin/ContentBuilder/useWidgetProjectId';

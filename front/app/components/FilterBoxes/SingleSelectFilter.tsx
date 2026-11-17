@@ -1,5 +1,8 @@
 import React from 'react';
 
+import { darken } from 'polished';
+import styled from 'styled-components';
+
 import {
   fontSizes,
   isRtl,
@@ -9,8 +12,6 @@ import {
   colors,
   ColorIndicator,
 } from '@citizenlab/cl2-component-library';
-import { darken } from 'polished';
-import styled from 'styled-components';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';

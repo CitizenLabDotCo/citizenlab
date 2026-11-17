@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Button, colors } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
+
+import { Button, colors } from '@citizenlab/cl2-component-library';
 
 import useIdMethods from 'api/id_methods/useIdMethods';
 import { getFacebookConfig } from 'api/id_methods/utils';

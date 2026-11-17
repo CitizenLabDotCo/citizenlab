@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import styled from 'styled-components';
+
 import {
   Box,
   Text,
@@ -13,7 +15,6 @@ import {
   Input,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 import useCheckEmailBan from 'api/email_bans/useCheckEmailBan';
 import useUserParticipationStats from 'api/user_participation_stats/useUserParticipationStats';

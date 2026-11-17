@@ -1,7 +1,8 @@
 import React, { useState, useCallback, useEffect } from 'react';
 
-import { Box, useTouchDevice } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
+
+import { Box, useTouchDevice } from '@citizenlab/cl2-component-library';
 
 import { CARD_GAP } from '../constants';
 

@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { Box } from '@citizenlab/cl2-component-library';
 
 import messages from './messages';
 import Settings from './Settings';

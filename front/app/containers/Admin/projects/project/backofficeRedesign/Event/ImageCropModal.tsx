@@ -2,9 +2,9 @@ import React from 'react';
 
 import { UploadFile } from 'typings';
 
-import ImageCropperContainer from 'components/admin/ImageCropper/Container';
-
 import Modal from 'design-system/Modal';
+
+import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 
 import { useIntl } from 'utils/cl-intl';
 

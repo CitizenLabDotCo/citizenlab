@@ -1,5 +1,8 @@
 import React from 'react';
 
+import { useNode } from '@craftjs/core';
+import { Multiloc } from 'typings';
+
 import {
   Box,
   Button,
@@ -8,8 +11,6 @@ import {
   Text,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { useNode } from '@craftjs/core';
-import { Multiloc } from 'typings';
 
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 

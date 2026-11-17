@@ -2,14 +2,14 @@ import React from 'react';
 
 import { CLErrors } from 'typings';
 
+import Banner from 'design-system/Banner';
+import Switch from 'design-system/Switch';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import messages from 'containers/Admin/projects/project/messages';
 
 import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
-
-import Banner from 'design-system/Banner';
-import Switch from 'design-system/Switch';
 
 import { useIntl } from 'utils/cl-intl';
 

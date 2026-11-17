@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Spinner, Box, Tooltip } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { Spinner, Box, Tooltip } from '@citizenlab/cl2-component-library';
 
 import {
   IdeaStatusParticipationMethod,

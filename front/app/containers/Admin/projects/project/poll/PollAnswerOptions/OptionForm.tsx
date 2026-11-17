@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 
-import { Box, Text, Title } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { Box, Text, Title } from '@citizenlab/cl2-component-library';
+
+import Button from 'design-system/Button';
 
 import { IPollOptionData } from 'api/poll_options/types';
 import useDeletePollOption from 'api/poll_options/useDeletePollOption';
@@ -11,8 +14,6 @@ import { IPollQuestionData } from 'api/poll_questions/types';
 import { List } from 'components/admin/ResourceList';
 import T from 'components/T';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
-
-import Button from 'design-system/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';

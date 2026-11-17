@@ -8,11 +8,12 @@ import React, {
   useCallback,
 } from 'react';
 
-import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 import { isString, isEmpty } from 'lodash-es';
 import { useForm, FieldPath, FieldPathValue } from 'react-hook-form';
 import styled from 'styled-components';
 import { SupportedLocale, IOption } from 'typings';
+
+import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 
 import { INewBulkInvite } from 'api/invites/types';
 

@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 
+import styled from 'styled-components';
+import { Multiloc } from 'typings';
+
 import {
   Dropdown,
   Icon,
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
-import { Multiloc } from 'typings';
 
 import { INavbarItem } from 'api/navbar/types';
 import { getNavbarChildLink } from 'api/navbar/util';

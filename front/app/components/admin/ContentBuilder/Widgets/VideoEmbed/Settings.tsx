@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Box, Error } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
+
+import { Box, Error } from '@citizenlab/cl2-component-library';
 
 import TextArea from 'components/UI/TextArea';
 

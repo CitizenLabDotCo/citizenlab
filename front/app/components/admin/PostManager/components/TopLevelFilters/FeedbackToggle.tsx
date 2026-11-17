@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { colors, fontSizes } from '@citizenlab/cl2-component-library';
 import styled, { css } from 'styled-components';
+
+import { colors, fontSizes } from '@citizenlab/cl2-component-library';
 
 import CountBadge from 'components/UI/CountBadge';
 

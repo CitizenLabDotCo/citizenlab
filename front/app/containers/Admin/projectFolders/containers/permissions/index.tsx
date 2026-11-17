@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { IconTooltip, Box } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { IconTooltip, Box } from '@citizenlab/cl2-component-library';
 
 import useAddProjectFolderModerator from 'api/project_folder_moderators/useAddProjectFolderModerator';
 import useDeleteProjectFolderModerator from 'api/project_folder_moderators/useDeleteProjectFolderModerator';

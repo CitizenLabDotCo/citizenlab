@@ -1,7 +1,8 @@
 import React, { memo, useCallback } from 'react';
 
-import { fontSizes, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { fontSizes, colors } from '@citizenlab/cl2-component-library';
 
 import useAuthUser from 'api/me/useAuthUser';
 

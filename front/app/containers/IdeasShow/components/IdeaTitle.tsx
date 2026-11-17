@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Box, isRtl, media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { Box, isRtl, media } from '@citizenlab/cl2-component-library';
 
 import { IIdea } from 'api/ideas/types';
 

@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 
-import { Spinner } from '@citizenlab/cl2-component-library';
 import Cookies from 'js-cookie';
+
+import { Spinner } from '@citizenlab/cl2-component-library';
 
 import clHistory from 'utils/cl-router/history';
 import { useParams } from 'utils/router';

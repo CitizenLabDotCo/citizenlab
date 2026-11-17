@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
 
+import Banner from 'design-system/Banner';
+import Button from 'design-system/Button';
+import Modal from 'design-system/Modal';
+import Spinner from 'design-system/Spinner';
+
 import { IFlatCustomField } from 'api/custom_fields/types';
 import useCustomFields from 'api/custom_fields/useCustomFields';
 import useUpdateCustomFields from 'api/custom_fields/useUpdateCustomFields';
@@ -14,11 +19,6 @@ import ImportInputsSection from 'components/admin/FormSync/ImportInputsSection';
 import ImportExcelModal from 'components/admin/InputImporterModals/ImportExcelModal';
 import ImportPdfModal from 'components/admin/InputImporterModals/ImportPdfModal';
 import { transformFieldForSubmission } from 'components/FormBuilder/edit/utils';
-
-import Banner from 'design-system/Banner';
-import Button from 'design-system/Button';
-import Modal from 'design-system/Modal';
-import Spinner from 'design-system/Spinner';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';

@@ -1,7 +1,8 @@
 import React, { MouseEvent } from 'react';
 
-import { Box, Button, Tooltip } from '@citizenlab/cl2-component-library';
 import { xor } from 'lodash-es';
+
+import { Box, Button, Tooltip } from '@citizenlab/cl2-component-library';
 
 import { IPhaseData } from 'api/phases/types';
 import { canContainIdeas } from 'api/phases/utils';

@@ -1,9 +1,10 @@
 import React from 'react';
 
-import { Box, colors, Text } from '@citizenlab/cl2-component-library';
 import Frame from 'react-frame-component';
 import styled from 'styled-components';
 import { SupportedLocale } from 'typings';
+
+import { Box, colors, Text } from '@citizenlab/cl2-component-library';
 
 import useEmailCampaignPreview from 'api/campaigns/email/previews/useEmailCampaignPreview';
 

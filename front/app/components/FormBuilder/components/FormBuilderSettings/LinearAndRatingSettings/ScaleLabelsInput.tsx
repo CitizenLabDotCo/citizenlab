@@ -1,5 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
+import { useFormContext } from 'react-hook-form';
+import styled from 'styled-components';
+import { SupportedLocale } from 'typings';
+
 import {
   Box,
   Label,
@@ -7,9 +11,6 @@ import {
   Input,
   LocaleSwitcher,
 } from '@citizenlab/cl2-component-library';
-import { useFormContext } from 'react-hook-form';
-import styled from 'styled-components';
-import { SupportedLocale } from 'typings';
 
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';

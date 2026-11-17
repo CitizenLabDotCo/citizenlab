@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
 import { SerializedNode } from '@craftjs/core';
 import { SupportedLocale } from 'typings';
+
+import { Box } from '@citizenlab/cl2-component-library';
 
 import ContentBuilderCanvas from 'components/admin/ContentBuilder/Canvas';
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
-import { Title, Text, media, Spinner } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { Title, Text, media, Spinner } from '@citizenlab/cl2-component-library';
 
 import HelmetIntl from 'components/HelmetIntl';
 import ButtonWithLink from 'components/UI/ButtonWithLink';

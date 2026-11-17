@@ -1,5 +1,7 @@
 import React from 'react';
 
+import styled from 'styled-components';
+
 import {
   Box,
   fontSizes,
@@ -7,7 +9,6 @@ import {
   Radio,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 import {
   ICustomPageAttributes,

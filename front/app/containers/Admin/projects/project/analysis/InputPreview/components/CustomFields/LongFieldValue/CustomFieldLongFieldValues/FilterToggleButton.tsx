@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { IconTooltip, Button, Box } from '@citizenlab/cl2-component-library';
 import { xor } from 'lodash-es';
+
+import { IconTooltip, Button, Box } from '@citizenlab/cl2-component-library';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';

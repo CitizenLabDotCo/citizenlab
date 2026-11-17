@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
 import { SupportedLocale } from 'typings';
+
+import { Box, colors } from '@citizenlab/cl2-component-library';
 
 import eventEmitter from 'utils/eventEmitter';
 

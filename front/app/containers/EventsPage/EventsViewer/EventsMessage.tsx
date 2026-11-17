@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { fontSizes, colors } from '@citizenlab/cl2-component-library';
 import { MessageDescriptor } from 'react-intl';
 import styled from 'styled-components';
+
+import { fontSizes, colors } from '@citizenlab/cl2-component-library';
 
 import VerticalCenterer from 'components/VerticalCenterer';
 

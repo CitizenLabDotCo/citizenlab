@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { Box } from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IEmailCampaign } from 'api/campaigns/email/types';

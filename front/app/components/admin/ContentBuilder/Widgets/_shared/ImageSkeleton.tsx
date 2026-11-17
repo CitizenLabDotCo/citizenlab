@@ -1,11 +1,12 @@
 import React from 'react';
 
+import styled from 'styled-components';
+
 import {
   Shimmer,
   stylingConsts,
   colors,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 import { CARD_IMAGE_ASPECT_RATIO } from 'api/project_images/useProjectImages';
 

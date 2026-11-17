@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { Box } from '@citizenlab/cl2-component-library';
 
 import usePhase from 'api/phases/usePhase';
 import { getPhaseActionDescriptor } from 'api/phases/utils';

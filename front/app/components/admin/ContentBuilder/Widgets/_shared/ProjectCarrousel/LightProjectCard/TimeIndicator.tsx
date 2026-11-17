@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { useTheme } from 'styled-components';
+
 import {
   Box,
   Color,
@@ -8,7 +10,6 @@ import {
   Text,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { useTheme } from 'styled-components';
 
 import PhaseTimeLeft from 'components/PhaseTimeLeft';
 

@@ -1,7 +1,8 @@
 import React, { useRef } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
+
+import { Box } from '@citizenlab/cl2-component-library';
 
 import { useDemographicsLive } from 'api/graph_data_units';
 import { usersByAgeXlsxEndpoint } from 'api/users_by_age/util';

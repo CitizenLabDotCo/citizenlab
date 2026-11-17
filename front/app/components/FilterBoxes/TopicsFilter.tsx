@@ -1,5 +1,8 @@
 import React, { useCallback, MouseEvent, memo, useState } from 'react';
 
+import { darken } from 'polished';
+import styled from 'styled-components';
+
 import {
   fontSizes,
   colors,
@@ -8,8 +11,6 @@ import {
   Button,
   Text,
 } from '@citizenlab/cl2-component-library';
-import { darken } from 'polished';
-import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IInputTopicData } from 'api/input_topics/types';

@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { Icon, IconNames, colors } from '@citizenlab/cl2-component-library';
 import { transparentize } from 'polished';
 import styled from 'styled-components';
+
+import { Icon, IconNames, colors } from '@citizenlab/cl2-component-library';
 
 const ImagePlaceholderContainer = styled.div`
   position: absolute;

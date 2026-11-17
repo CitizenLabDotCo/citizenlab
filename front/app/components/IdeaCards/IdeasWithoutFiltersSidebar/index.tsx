@@ -1,5 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 
+import styled from 'styled-components';
+
 import {
   Spinner,
   useBreakpoint,
@@ -7,7 +9,6 @@ import {
   isRtl,
   Box,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 import useCustomFields from 'api/custom_fields/useCustomFields';
 import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';

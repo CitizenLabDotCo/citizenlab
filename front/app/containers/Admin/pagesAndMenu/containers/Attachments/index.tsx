@@ -1,16 +1,17 @@
 import React, { useEffect } from 'react';
 
+import { yupResolver } from '@hookform/resolvers/yup';
+import { FormProvider, useForm } from 'react-hook-form';
+import { WrappedComponentProps } from 'react-intl';
+import { UploadFile } from 'typings';
+import { mixed, object } from 'yup';
+
 import {
   Box,
   Button,
   IconTooltip,
   Label,
 } from '@citizenlab/cl2-component-library';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { FormProvider, useForm } from 'react-hook-form';
-import { WrappedComponentProps } from 'react-intl';
-import { UploadFile } from 'typings';
-import { mixed, object } from 'yup';
 
 import useCustomPageById from 'api/custom_pages/useCustomPageById';
 import useUpdateCustomPage from 'api/custom_pages/useUpdateCustomPage';

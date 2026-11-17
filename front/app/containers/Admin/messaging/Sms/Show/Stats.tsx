@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { colors, fontSizes } from '@citizenlab/cl2-component-library';
 import { FormattedNumber } from 'react-intl';
 import styled from 'styled-components';
+
+import { colors, fontSizes } from '@citizenlab/cl2-component-library';
 
 import useSmsCampaignStats from 'api/campaigns/sms/stats/useSmsCampaignStats';
 

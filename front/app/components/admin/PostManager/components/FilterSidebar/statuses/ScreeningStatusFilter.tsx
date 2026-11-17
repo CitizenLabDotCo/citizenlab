@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { IconTooltip, Box, Tooltip } from '@citizenlab/cl2-component-library';
 import ColorIndicator from 'component-library/components/ColorIndicator';
 import styled from 'styled-components';
+
+import { IconTooltip, Box, Tooltip } from '@citizenlab/cl2-component-library';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 

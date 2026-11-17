@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
 import ReactSelect from 'react-select';
 import { useTheme } from 'styled-components';
+
+import { Box } from '@citizenlab/cl2-component-library';
 
 import { ICustomPageData } from 'api/custom_pages/types';
 import useCustomPages from 'api/custom_pages/useCustomPages';

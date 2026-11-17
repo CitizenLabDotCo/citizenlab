@@ -1,8 +1,9 @@
 import React, { useRef } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
 import Lottie, { LottieRefCurrentProps } from 'lottie-react';
 import styled, { useTheme } from 'styled-components';
+
+import { Box } from '@citizenlab/cl2-component-library';
 
 import { MapInputType } from '../../utils';
 

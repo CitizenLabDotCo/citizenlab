@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 
-import { Box, Text, Button } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { SupportedLocale } from 'typings';
+
+import { Box, Text, Button } from '@citizenlab/cl2-component-library';
 
 import { IEmailCampaignData } from 'api/campaigns/email/types';
 import useDeleteEmailCampaign from 'api/campaigns/email/useDeleteEmailCampaign';

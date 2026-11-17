@@ -1,10 +1,11 @@
+import styled, { css } from 'styled-components';
+
 import {
   BoxPositionProps,
   BoxPaddingProps,
   colors,
   defaultStyles,
 } from '@citizenlab/cl2-component-library';
-import styled, { css } from 'styled-components';
 
 import Tab from './Tab';
 import TabsPageLayout from './TabsPageLayout';

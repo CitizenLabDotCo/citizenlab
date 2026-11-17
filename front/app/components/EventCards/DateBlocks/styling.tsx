@@ -1,5 +1,6 @@
-import { colors, media, fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { colors, media, fontSizes } from '@citizenlab/cl2-component-library';
 
 export const EventDateBlockWrapper = styled.div`
   display: flex;

@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { media } from '@citizenlab/cl2-component-library';
 
 import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/HomepageBanner';
 

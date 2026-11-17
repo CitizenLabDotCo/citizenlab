@@ -1,3 +1,5 @@
+import styled from 'styled-components';
+
 import {
   remCalc,
   colors,
@@ -5,7 +7,6 @@ import {
   isRtl,
   Box,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 import Link, { typedStyled } from 'utils/cl-router/Link';
 

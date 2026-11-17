@@ -1,5 +1,9 @@
 import React, { useState, useRef } from 'react';
 
+import { rgba } from 'polished';
+import { useFormContext } from 'react-hook-form';
+import styled from 'styled-components';
+
 import {
   Box,
   Title,
@@ -9,9 +13,6 @@ import {
   Badge,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import { rgba } from 'polished';
-import { useFormContext } from 'react-hook-form';
-import styled from 'styled-components';
 
 import {
   ICreateMatrixStatementsType,

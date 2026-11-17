@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 
+import Divider from 'design-system/Divider';
+import IconButton from 'design-system/IconButton';
+import PanelGroupHeader from 'design-system/PanelGroupHeader';
+
 import usePhases from 'api/phases/usePhases';
 
 import projectPageMessages from 'containers/Admin/projects/project/projectPage/messages';
 import SpotlightSurveys from 'containers/Admin/projects/project/projectPage/SpotlightSurveys';
 import TimelinePhases from 'containers/Admin/projects/project/projectPage/TimelinePhases';
-
-import Divider from 'design-system/Divider';
-import IconButton from 'design-system/IconButton';
-import PanelGroupHeader from 'design-system/PanelGroupHeader';
 
 import { useIntl } from 'utils/cl-intl';
 

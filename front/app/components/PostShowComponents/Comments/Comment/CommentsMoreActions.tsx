@@ -1,7 +1,8 @@
 import React, { FormEvent, useState, useRef } from 'react';
 
-import { isRtl } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { isRtl } from '@citizenlab/cl2-component-library';
 
 import { DeleteReason, ICommentData } from 'api/comments/types';
 import useMarkCommentForDeletion from 'api/comments/useMarkCommentForDeletion';

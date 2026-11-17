@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { colors, fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
+
+import { colors, fontSizes } from '@citizenlab/cl2-component-library';
 
 import T from 'components/T';
 import { FormSection } from 'components/UI/FormComponents';

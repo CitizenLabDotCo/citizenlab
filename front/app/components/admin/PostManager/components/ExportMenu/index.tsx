@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react';
 
-import { Dropdown } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { Dropdown } from '@citizenlab/cl2-component-library';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 

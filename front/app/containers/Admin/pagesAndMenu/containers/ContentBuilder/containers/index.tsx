@@ -1,9 +1,10 @@
 import React, { useState, useRef, useCallback } from 'react';
 
-import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
 import { isEmpty } from 'lodash-es';
 import { SupportedLocale } from 'typings';
+
+import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 
 import useContentBuilderLayout from 'api/content_builder/useContentBuilderLayout';
 

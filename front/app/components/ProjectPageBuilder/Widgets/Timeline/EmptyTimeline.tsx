@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Box, Text, Title } from '@citizenlab/cl2-component-library';
 import { MessageDescriptor } from 'react-intl';
+
+import { Box, Text, Title } from '@citizenlab/cl2-component-library';
 
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 

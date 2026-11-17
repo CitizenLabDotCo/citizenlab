@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { viewportWidths } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { UploadFile } from 'typings';
+
+import { viewportWidths } from '@citizenlab/cl2-component-library';
 
 import {
   ICustomPageAttributes,

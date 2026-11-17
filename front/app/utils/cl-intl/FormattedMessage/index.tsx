@@ -1,9 +1,10 @@
 import React from 'react';
 
-import { isRtl } from '@citizenlab/cl2-component-library';
 // eslint-disable-next-line no-restricted-imports
 import { FormattedMessage as OriginalFormattedMessage } from 'react-intl';
 import styled from 'styled-components';
+
+import { isRtl } from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 

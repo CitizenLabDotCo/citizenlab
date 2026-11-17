@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
 import { ITab } from 'typings';
+
+import { Box } from '@citizenlab/cl2-component-library';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 

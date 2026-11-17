@@ -1,5 +1,9 @@
 import React from 'react';
 
+import { MessageDescriptor } from 'react-intl';
+import styled from 'styled-components';
+import { Multiloc } from 'typings';
+
 import {
   Box,
   Title,
@@ -7,9 +11,6 @@ import {
   StatusLabel,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { MessageDescriptor } from 'react-intl';
-import styled from 'styled-components';
-import { Multiloc } from 'typings';
 
 import useLocalize from 'hooks/useLocalize';
 

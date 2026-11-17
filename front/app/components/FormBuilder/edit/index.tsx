@@ -1,15 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 
+import { yupResolver } from '@hookform/resolvers/yup';
+import { createPortal } from 'react-dom';
+import { FocusOn } from 'react-focus-on';
+import { useForm, useFieldArray, FormProvider } from 'react-hook-form';
+
 import {
   Box,
   Spinner,
   stylingConsts,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { createPortal } from 'react-dom';
-import { FocusOn } from 'react-focus-on';
-import { useForm, useFieldArray, FormProvider } from 'react-hook-form';
 
 import {
   IFlatCreateCustomField,

@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 
+import { useInView } from 'react-intersection-observer';
+import styled from 'styled-components';
+
 import {
   Box,
   colors,
@@ -8,8 +11,6 @@ import {
   isRtl,
   Title,
 } from '@citizenlab/cl2-component-library';
-import { useInView } from 'react-intersection-observer';
-import styled from 'styled-components';
 
 import useIdeaById from 'api/ideas/useIdeaById';
 import { InternalCommentSort } from 'api/internal_comments/types';

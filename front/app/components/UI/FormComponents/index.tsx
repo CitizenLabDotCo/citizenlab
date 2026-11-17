@@ -1,5 +1,8 @@
 import React, { memo } from 'react';
 
+import { omit } from 'lodash-es';
+import styled from 'styled-components';
+
 import {
   fontSizes,
   colors,
@@ -24,8 +27,6 @@ import {
   Icon,
   IconNames,
 } from '@citizenlab/cl2-component-library';
-import { omit } from 'lodash-es';
-import styled from 'styled-components';
 
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import { isString } from 'utils/helperUtils';

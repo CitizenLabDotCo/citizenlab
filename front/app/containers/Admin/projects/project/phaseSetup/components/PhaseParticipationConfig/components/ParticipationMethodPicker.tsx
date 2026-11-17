@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
-import { IconTooltip, Box } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
+
+import { IconTooltip, Box } from '@citizenlab/cl2-component-library';
 
 import { ParticipationMethod } from 'api/phases/types';
 

@@ -1,9 +1,10 @@
 import React, { KeyboardEvent } from 'react';
 
-import { Box, Label, Spinner } from '@citizenlab/cl2-component-library';
 import ReactSelect from 'react-select';
 import { useTheme } from 'styled-components';
 import { IOption } from 'typings';
+
+import { Box, Label, Spinner } from '@citizenlab/cl2-component-library';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
 import useAdminPublications from 'api/admin_publications/useAdminPublications';

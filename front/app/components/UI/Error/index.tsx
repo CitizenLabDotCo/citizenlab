@@ -1,5 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 
+import { isArray, isEmpty, uniqBy } from 'lodash-es';
+import { darken } from 'polished';
+import CSSTransition from 'react-transition-group/CSSTransition';
+import styled from 'styled-components';
+import { CLError, Multiloc } from 'typings';
+
 import {
   Box,
   Icon,
@@ -7,11 +13,6 @@ import {
   fontSizes,
   isRtl,
 } from '@citizenlab/cl2-component-library';
-import { isArray, isEmpty, uniqBy } from 'lodash-es';
-import { darken } from 'polished';
-import CSSTransition from 'react-transition-group/CSSTransition';
-import styled from 'styled-components';
-import { CLError, Multiloc } from 'typings';
 
 import { IAppConfiguration } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';

@@ -1,5 +1,7 @@
 import React, { memo, useCallback, MouseEvent } from 'react';
 
+import styled from 'styled-components';
+
 import {
   Icon,
   IconNames,
@@ -7,7 +9,6 @@ import {
   fontSizes,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 

@@ -1,5 +1,8 @@
 import React from 'react';
 
+import { FormattedTime } from 'react-intl';
+import styled from 'styled-components';
+
 import {
   useWindowSize,
   media,
@@ -9,8 +12,6 @@ import {
   isRtl,
   Title,
 } from '@citizenlab/cl2-component-library';
-import { FormattedTime } from 'react-intl';
-import styled from 'styled-components';
 
 import usePhase from 'api/phases/usePhase';
 

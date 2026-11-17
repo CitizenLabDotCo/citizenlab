@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { colors, media, fontSizes } from '@citizenlab/cl2-component-library';
 import styled, { useTheme } from 'styled-components';
+
+import { colors, media, fontSizes } from '@citizenlab/cl2-component-library';
 
 import useAuthUser from 'api/me/useAuthUser';
 

@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { fontSizes, colors, Icon } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { fontSizes, colors, Icon } from '@citizenlab/cl2-component-library';
 
 import useProjectById from 'api/projects/useProjectById';
 

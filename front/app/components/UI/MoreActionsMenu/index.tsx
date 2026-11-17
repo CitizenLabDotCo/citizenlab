@@ -1,5 +1,7 @@
 import React, { useState, forwardRef } from 'react';
 
+import styled from 'styled-components';
+
 import {
   Box,
   Dropdown,
@@ -12,7 +14,6 @@ import {
   fontSizes,
   media,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';

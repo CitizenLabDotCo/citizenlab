@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Box, Text, Tooltip } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
+
+import { Box, Text, Tooltip } from '@citizenlab/cl2-component-library';
 
 import useUserById from 'api/users/useUserById';
 

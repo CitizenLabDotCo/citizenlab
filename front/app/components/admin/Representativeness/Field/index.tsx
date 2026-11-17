@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
-import { Accordion, ListItem } from '@citizenlab/cl2-component-library';
 import { omit } from 'lodash-es';
+
+import { Accordion, ListItem } from '@citizenlab/cl2-component-library';
 
 import useCustomFieldOptions from 'api/custom_field_options/useCustomFieldOptions';
 import {

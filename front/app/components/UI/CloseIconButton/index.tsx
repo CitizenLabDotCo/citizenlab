@@ -1,9 +1,10 @@
 import React, { MouseEvent, KeyboardEvent } from 'react';
 
-import { colors, IconButton } from '@citizenlab/cl2-component-library';
 import { focusRingBorder } from 'global-styles';
 import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 import { css } from 'styled-components';
+
+import { colors, IconButton } from '@citizenlab/cl2-component-library';
 
 import { injectIntl } from 'utils/cl-intl';
 

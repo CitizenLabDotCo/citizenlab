@@ -1,14 +1,6 @@
 import React from 'react';
 
 import {
-  Box,
-  colors,
-  defaultStyles,
-  Title,
-  Text,
-  stylingConsts,
-} from '@citizenlab/cl2-component-library';
-import {
   BarChart as RechartsBarChart,
   Bar,
   XAxis,
@@ -17,6 +9,15 @@ import {
   Cell,
   LabelList,
 } from 'recharts';
+
+import {
+  Box,
+  colors,
+  defaultStyles,
+  Title,
+  Text,
+  stylingConsts,
+} from '@citizenlab/cl2-component-library';
 
 import useAuthorsByAge from 'api/analysis_stats/useAuthorsByAge';
 

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
-import { Box, Text, colors, Spinner } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
+
+import { Box, Text, colors, Spinner } from '@citizenlab/cl2-component-library';
 
 import { FollowableObject } from 'api/follow_unfollow/types';
 import useFollowers from 'api/follow_unfollow/useFollowers';

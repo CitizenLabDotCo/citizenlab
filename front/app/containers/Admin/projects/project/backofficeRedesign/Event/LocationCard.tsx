@@ -2,14 +2,14 @@ import React, { lazy, Suspense } from 'react';
 
 import { Multiloc } from 'typings';
 
+import TextField from 'design-system/TextField';
+
 import SetupCard from 'containers/Admin/projects/_shared/components/SetupCard';
 import { EventForm } from 'containers/Admin/projects/_shared/events/useEventForm';
 import eventMessages from 'containers/Admin/projects/project/events/messages';
 
 import MultilocTextField from 'components/admin/MultilocFields/MultilocTextField';
 import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
-
-import TextField from 'design-system/TextField';
 
 import { useIntl } from 'utils/cl-intl';
 

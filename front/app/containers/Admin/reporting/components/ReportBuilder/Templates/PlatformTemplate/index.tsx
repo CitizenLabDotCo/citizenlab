@@ -1,8 +1,9 @@
 import React, { useContext } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
 import { Element } from '@craftjs/core';
 import { FormatMessage } from 'typings';
+
+import { Box } from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { useProjects } from 'api/graph_data_units';
