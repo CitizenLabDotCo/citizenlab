@@ -20,8 +20,10 @@ type Props = {
   isUnread?: boolean;
   isDisabled?: boolean;
   // Looks disabled but stays focusable (arrow keys reach it) so the tooltip can say
-  // why; it can't be selected.
+  // why; it can't be selected and drops its href.
   disabledReason?: ReactNode;
+  // Makes the tab a link, for views that each have their own route.
+  href?: string;
   'data-cy'?: string;
 };
 
@@ -31,6 +33,7 @@ const SegmentedTab = ({
   isUnread = false,
   isDisabled,
   disabledReason,
+  href,
   'data-cy': dataCy,
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -42,6 +45,7 @@ const SegmentedTab = ({
       id={id}
       className={styles.tab}
       isDisabled={isDisabled && !hasReason}
+      href={hasReason ? undefined : href}
       render={hasReason ? renderAriaDisabled : undefined}
       data-cy={dataCy}
     >

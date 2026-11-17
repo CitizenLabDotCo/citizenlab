@@ -24,18 +24,19 @@ const SetupCardTooltip = ({ content, children }: Props) => {
 
     const enter = () => setIsHovered(true);
     const leave = () => setIsHovered(false);
-    const focus = () => setIsFocusVisible(trigger.matches(':focus-visible'));
-    const blur = () => setIsFocusVisible(false);
+    // React Aria marks keyboard focus on the button itself; the browser's
+    // :focus-visible also matches focus that follows a click.
+    const syncFocusVisible = () =>
+      setIsFocusVisible(trigger.hasAttribute('data-focus-visible'));
+    const observer = new MutationObserver(syncFocusVisible);
 
     trigger.addEventListener('mouseenter', enter);
     trigger.addEventListener('mouseleave', leave);
-    trigger.addEventListener('focus', focus);
-    trigger.addEventListener('blur', blur);
+    observer.observe(trigger, { attributeFilter: ['data-focus-visible'] });
     return () => {
       trigger.removeEventListener('mouseenter', enter);
       trigger.removeEventListener('mouseleave', leave);
-      trigger.removeEventListener('focus', focus);
-      trigger.removeEventListener('blur', blur);
+      observer.disconnect();
     };
   }, [content]);
 

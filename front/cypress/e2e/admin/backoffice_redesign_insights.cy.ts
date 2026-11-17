@@ -80,6 +80,11 @@ describe('Redesigned phase Insights', () => {
         });
       });
 
+  const closeMenu = () => {
+    cy.get('[role="menu"]').type('{esc}');
+    cy.get('[role="menu"]').should('not.exist');
+  };
+
   it('shows real participation alongside report, sharing, AI and download actions', () => {
     createPhase('ideation').then(() => {
       addParticipantIdea();
@@ -93,6 +98,8 @@ describe('Redesigned phase Insights', () => {
       });
       cy.contains('Download as PDF').should('be.visible');
       cy.contains('Download as Word').should('be.visible');
+      // Menus are modal: close one before pressing anything else.
+      closeMenu();
       cy.get('aside[aria-label="Recommended actions"]')
         .contains('button', 'Share results with participants')
         .click();
@@ -102,6 +109,7 @@ describe('Redesigned phase Insights', () => {
       cy.contains('a', 'Create an information phase')
         .should('have.attr', 'href')
         .and('include', 'participation_method=information');
+      closeMenu();
       cy.get('[aria-label="Phase Insights"]').then(($region) => {
         const bounds = $region[0].getBoundingClientRect();
         expect(bounds.right).to.be.at.most(1280);

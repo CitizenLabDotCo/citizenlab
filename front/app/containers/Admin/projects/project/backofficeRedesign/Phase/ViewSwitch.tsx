@@ -1,12 +1,12 @@
 import React from 'react';
 
+import useLocale from 'hooks/useLocale';
+
 import SegmentedTabs, {
   SegmentedTab,
   SegmentedTabList,
 } from 'design-system/SegmentedTabs';
 import 'design-system/tokens.css';
-
-import clHistory from 'utils/cl-router/history';
 
 import { PhaseView } from './usePhaseViews';
 
@@ -18,6 +18,8 @@ interface Props {
   phaseId: string;
 }
 
+// Each view has its own route, so the tabs are links and the route decides
+// which one is selected.
 const ViewSwitch = ({
   label,
   views,
@@ -25,27 +27,21 @@ const ViewSwitch = ({
   projectId,
   phaseId,
 }: Props) => {
+  const locale = useLocale();
+
   if (views.length < 2) return null;
 
-  const handleSelectionChange = (key: React.Key) => {
-    if (key === activeView) return;
-
-    const to = views.find((view) => view.key === key)?.to;
-    if (!to) return;
-
-    clHistory.push(
-      to.replace('$projectId', projectId).replace('$phaseId', phaseId)
-    );
-  };
-
   return (
-    <SegmentedTabs
-      selectedKey={activeView}
-      onSelectionChange={handleSelectionChange}
-    >
+    <SegmentedTabs selectedKey={activeView}>
       <SegmentedTabList aria-label={label}>
         {views.map((view) => (
-          <SegmentedTab key={view.key} id={view.key}>
+          <SegmentedTab
+            key={view.key}
+            id={view.key}
+            href={`/${locale}${view.to
+              .replace('$projectId', projectId)
+              .replace('$phaseId', phaseId)}`}
+          >
             {view.label}
           </SegmentedTab>
         ))}
