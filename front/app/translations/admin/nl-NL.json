@@ -3822,8 +3822,6 @@
   "app.containers.AdminPage.ProjectIdeaForm.saved": "Opgeslagen!",
   "app.containers.AdminPage.ProjectIdeaForm.viewFormLinkCopy": "Bekijk formulier",
   "app.containers.AdminPage.ProjectPages.addFirstPage": "Voeg je eerste pagina toe",
-  "app.containers.AdminPage.ProjectPages.attachmentsLabel": "Bijlagen",
-  "app.containers.AdminPage.ProjectPages.contentLabel": "Inhoud",
   "app.containers.AdminPage.ProjectPages.createButton": "Pagina maken",
   "app.containers.AdminPage.ProjectPages.deleteButton": "Verwijderen",
   "app.containers.AdminPage.ProjectPages.deleteConfirmation": "Weet je zeker dat je deze pagina wilt verwijderen?",

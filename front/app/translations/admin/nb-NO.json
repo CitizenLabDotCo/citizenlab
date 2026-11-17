@@ -3822,8 +3822,6 @@
   "app.containers.AdminPage.ProjectIdeaForm.saved": "Frelst!",
   "app.containers.AdminPage.ProjectIdeaForm.viewFormLinkCopy": "Vis skjema",
   "app.containers.AdminPage.ProjectPages.addFirstPage": "Legg til din første side",
-  "app.containers.AdminPage.ProjectPages.attachmentsLabel": "Vedlegg",
-  "app.containers.AdminPage.ProjectPages.contentLabel": "Innhold",
   "app.containers.AdminPage.ProjectPages.createButton": "Opprett side",
   "app.containers.AdminPage.ProjectPages.deleteButton": "Slett",
   "app.containers.AdminPage.ProjectPages.deleteConfirmation": "Er du sikker på at du vil slette denne siden?",

@@ -3822,8 +3822,6 @@
   "app.containers.AdminPage.ProjectIdeaForm.saved": "Kaydedildi!",
   "app.containers.AdminPage.ProjectIdeaForm.viewFormLinkCopy": "Formu görüntüle",
   "app.containers.AdminPage.ProjectPages.addFirstPage": "İlk sayfanızı ekleyin",
-  "app.containers.AdminPage.ProjectPages.attachmentsLabel": "Ekler",
-  "app.containers.AdminPage.ProjectPages.contentLabel": "İçerik",
   "app.containers.AdminPage.ProjectPages.createButton": "Sayfa oluştur",
   "app.containers.AdminPage.ProjectPages.deleteButton": "Sil",
   "app.containers.AdminPage.ProjectPages.deleteConfirmation": "Bu sayfayı silmek istediğinizden emin misiniz?",
