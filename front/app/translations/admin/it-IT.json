@@ -2598,7 +2598,6 @@
   "app.containers.Admin.projects.project.surveyDates": "Date del sondaggio",
   "app.containers.Admin.projects.project.surveyDemographicQuestions": "Domande demografiche",
   "app.containers.Admin.projects.project.surveyForm": "Modulo del sondaggio",
-
   "app.containers.Admin.projects.project.surveyQuestionsDeleted": "Domande eliminate",
   "app.containers.Admin.projects.project.surveySetup": "Configurazione del sondaggio",
   "app.containers.Admin.projects.project.surveySetupLead": "Crea il sondaggio o importa le risposte raccolte offline.",
