@@ -424,9 +424,7 @@ const App = ({ children }: Props) => {
               <Authentication />
             </ErrorBoundary>
             <ErrorBoundary>
-              {/* A design-system modal makes everything outside it inert. Modals
-                  portalled here, like the cookie consent, can open on top of
-                  one, so React Aria must leave this container usable. */}
+              {/* Keeps these modals usable above design-system modals. */}
               <div id="modal-portal" data-react-aria-top-layer />
             </ErrorBoundary>
             {showFrontOfficeNavbar() && (
