@@ -50,7 +50,7 @@ const useUpdateCustomField = () => {
   const queryClient = useQueryClient();
   return useMutation<ICustomField, CLErrors, IUpdateCustomFieldProperties>({
     mutationFn: updateCustomField,
-    onSuccess: async (_, variables) => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: customFieldsKeys.lists() });
 
       queryClient.invalidateQueries({
@@ -67,7 +67,7 @@ const useUpdateCustomField = () => {
           }),
         });
 
-        await queryClient.invalidateQueries({
+        queryClient.invalidateQueries({
           queryKey: phasesKeys.item({ phaseId: variables.phaseId }),
         });
       }
