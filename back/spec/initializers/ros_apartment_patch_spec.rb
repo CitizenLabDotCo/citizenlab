@@ -2,8 +2,9 @@
 
 require 'rails_helper'
 
-# The patches reach into private methods and constants of ros-apartment's SQL-based schema
-# adapter, so these specs guard tenant creation across ros-apartment and Rails upgrades.
+# The dump memoization overrides a private method of ros-apartment's SQL-based schema adapter,
+# and tenant creation relies on the adapter filtering pg_dump output, so these specs guard
+# tenant creation across ros-apartment and Rails upgrades.
 RSpec.describe Apartment::Adapters::PostgresqlSchemaFromSqlAdapter do
   let(:adapter) { Apartment::Tenant.adapter }
 

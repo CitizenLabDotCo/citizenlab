@@ -34,10 +34,25 @@ describe 'db rake tasks' do
   end
 
   describe 'db:schema:dump' do
-    it 'post-processes structure.sql after dumping it' do
-      action_files = Rake::Task['db:schema:dump'].actions.filter_map { |action| action.source_location&.first }
+    let(:hook) do
+      Rake::Task['db:schema:dump'].actions.find do |action|
+        action.source_location&.first == Rails.root.join('lib/tasks/db.rake').to_s
+      end
+    end
+    let(:postprocess_task) { Rake::Task['db:postprocess_structure_sql'] }
 
-      expect(action_files).to include(Rails.root.join('lib/tasks/db.rake').to_s)
+    before { allow(postprocess_task).to receive(:execute) }
+    after { postprocess_task.reenable }
+
+    it 'post-processes structure.sql after dumping it' do
+      expect(hook).to be_present
+    end
+
+    # ros-apartment dumps the schema again after migrating the tenants.
+    it 'post-processes every dump in the same run' do
+      2.times { hook.call }
+
+      expect(postprocess_task).to have_received(:execute).twice
     end
   end
 end

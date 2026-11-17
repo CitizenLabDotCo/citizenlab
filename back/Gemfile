@@ -40,9 +40,9 @@ group :development, :test do
   gem 'rack-mini-profiler', '~> 4.0', require: %w[prepend_net_http_patch rack-mini-profiler]
   gem 'rspec_api_documentation'
   gem 'rspec_junit_formatter'
-  gem 'rspec-rails', '~> 6.1.2'
+  gem 'rspec-rails', '~> 8.0'
   gem 'rspec-parameterized'
-  gem 'rspec-sqlimit'
+  gem 'rspec-sqlimit', '~> 1.0'
   gem 'rspec-its'
   gem 'rubocop', '~> 1.69', require: false
   gem 'rubocop-ast', require: false
@@ -64,7 +64,7 @@ group :development do
   gem 'spring'
   gem 'spring-commands-rspec'
   gem 'spring-watcher-listen', '~> 2.1'
-  gem 'annotate'
+  gem 'annotaterb', '~> 4.26'
 end
 
 group :test do
@@ -223,7 +223,7 @@ free_engines.each do |engine_name|
   gem engine_name, path: path if File.directory?(path)
 end
 
-gem 'ros-apartment', '~> 3.2', require: 'apartment'
+gem 'ros-apartment', '~> 3.4', require: 'apartment'
 
 commercial_engines = [
   'multi_tenancy',
