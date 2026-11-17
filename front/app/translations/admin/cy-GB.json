@@ -3822,8 +3822,6 @@
   "app.containers.AdminPage.ProjectIdeaForm.saved": "Cadwyd!",
   "app.containers.AdminPage.ProjectIdeaForm.viewFormLinkCopy": "Gweld ffurflen",
   "app.containers.AdminPage.ProjectPages.addFirstPage": "Ychwanegwch eich tudalen gyntaf",
-  "app.containers.AdminPage.ProjectPages.attachmentsLabel": "Atodiadau",
-  "app.containers.AdminPage.ProjectPages.contentLabel": "Cynnwys",
   "app.containers.AdminPage.ProjectPages.createButton": "Creu tudalen",
   "app.containers.AdminPage.ProjectPages.deleteButton": "Dileu",
   "app.containers.AdminPage.ProjectPages.deleteConfirmation": "Ydych chi'n siŵr eich bod am ddileu'r dudalen hon?",

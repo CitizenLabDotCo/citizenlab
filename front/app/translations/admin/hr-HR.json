@@ -3822,8 +3822,6 @@
   "app.containers.AdminPage.ProjectIdeaForm.saved": "Spremljeno!",
   "app.containers.AdminPage.ProjectIdeaForm.viewFormLinkCopy": "Prikaži obrazac",
   "app.containers.AdminPage.ProjectPages.addFirstPage": "Dodajte svoju prvu stranicu",
-  "app.containers.AdminPage.ProjectPages.attachmentsLabel": "Privitci",
-  "app.containers.AdminPage.ProjectPages.contentLabel": "Sadržaj",
   "app.containers.AdminPage.ProjectPages.createButton": "Izradi stranicu",
   "app.containers.AdminPage.ProjectPages.deleteButton": "Izbriši",
   "app.containers.AdminPage.ProjectPages.deleteConfirmation": "Jeste li sigurni da želite izbrisati ovu stranicu?",
