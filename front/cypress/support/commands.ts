@@ -57,17 +57,16 @@ function clearAuthCookie(attemptsLeft = 5): Cypress.Chainable<null> {
 
 /*
   Signs the browser in with `jwt`. Like the API's own Set-Cookie, the cookie is
-  host-only. Otherwise it would sit next to a cookie the API set, instead of
-  replacing it.
+  host-only, so it replaces the current auth cookie in one step. Don't clear the
+  cookie first: a page that is open would send its requests in between without
+  one, get a 401 and act as if the user signed out.
 */
 function setAuthCookie(jwt: string) {
-  return clearAuthCookie().then(() =>
-    cy.setCookie(AUTH_COOKIE, jwt, {
-      httpOnly: true,
-      hostOnly: true,
-      sameSite: 'lax',
-    })
-  );
+  return cy.setCookie(AUTH_COOKIE, jwt, {
+    httpOnly: true,
+    hostOnly: true,
+    sameSite: 'lax',
+  });
 }
 
 /*
@@ -103,12 +102,20 @@ function requestAs<T = any>(
 /*
   Makes an API request as a visitor who isn't signed in, whoever the browser is
   signed in as. Some endpoints, such as confirm_code_email, reject signed-in callers.
+
+  cy.request always sends the browser's cookies. Instead of removing the auth cookie
+  (a page that is open would then act as if the user signed out), the request says it
+  comes from another website: the API ignores the auth cookie on such requests (CSRF
+  protection, see AuthToken::Cookie.read).
 */
 function requestAnonymously<T = any>(
   options: Partial<Cypress.RequestOptions>
 ): Cypress.Chainable<Cypress.Response<T>> {
   return preservingAuthCookie(() =>
-    clearAuthCookie().then(() => cy.request<T>(options))
+    cy.request<T>({
+      ...options,
+      headers: { ...options.headers, 'Sec-Fetch-Site': 'cross-site' },
+    })
   );
 }
 
