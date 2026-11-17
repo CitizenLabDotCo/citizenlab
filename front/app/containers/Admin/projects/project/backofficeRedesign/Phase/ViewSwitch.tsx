@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { useRouter } from '@tanstack/react-router';
+
 import useLocale from 'hooks/useLocale';
 
 import SegmentedTabs, {
@@ -19,7 +21,8 @@ interface Props {
 }
 
 // Each view has its own route, so the tabs are links and the route decides
-// which one is selected.
+// which one is selected. The router builds the hrefs, so the search params it
+// retains (the redesign preview flag) stay on them.
 const ViewSwitch = ({
   label,
   views,
@@ -28,6 +31,7 @@ const ViewSwitch = ({
   phaseId,
 }: Props) => {
   const locale = useLocale();
+  const router = useRouter();
 
   if (views.length < 2) return null;
 
@@ -38,9 +42,12 @@ const ViewSwitch = ({
           <SegmentedTab
             key={view.key}
             id={view.key}
-            href={`/${locale}${view.to
-              .replace('$projectId', projectId)
-              .replace('$phaseId', phaseId)}`}
+            href={
+              router.buildLocation({
+                to: `/$locale${view.to}` as const,
+                params: { locale, projectId, phaseId },
+              }).href
+            }
           >
             {view.label}
           </SegmentedTab>

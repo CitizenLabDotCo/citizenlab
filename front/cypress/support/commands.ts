@@ -179,9 +179,9 @@ export function randomPhoneNumber() {
 export function pickTodayInPhaseDatePicker() {
   cy.get('.e2e-date-phase-picker-input button').first().click();
   cy.get('[role="dialog"] [role="grid"] [data-today]').first().click();
-  // Escape on the calendar dialog closes its popover, wherever focus went
-  // after the press.
-  cy.get('[role="dialog"]:has([role="grid"])').type('{esc}');
+  // The pressed day keeps focus, so Escape reaches the calendar popover.
+  // Typing into the dialog instead would first click it, pressing another day.
+  cy.focused().should('have.attr', 'role', 'button').type('{esc}');
   cy.get('[role="dialog"] [role="grid"]').should('not.exist');
 }
 

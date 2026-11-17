@@ -240,7 +240,7 @@ describe('Moving a survey phase on and off the timeline', () => {
         });
         cy.get('[role="dialog"]')
           .contains('button', 'Retry')
-          .should('have.attr', 'aria-disabled', 'false')
+          .should('not.be.disabled')
           .click();
         cy.wait('@retriedLayout').its('response.statusCode').should('eq', 200);
         confirmMove();
