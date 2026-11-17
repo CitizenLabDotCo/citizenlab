@@ -18,6 +18,7 @@ type AffixFieldProps = {
   label: ReactNode;
   value?: string;
   onChange?: (value: string) => void;
+  labelTooltip?: string;
   description?: ReactNode;
   errorMessage?: ReactNode;
   isInvalid?: boolean;
@@ -28,6 +29,7 @@ const AffixField = ({
   label,
   value,
   onChange,
+  labelTooltip,
   description,
   errorMessage,
   isInvalid,
@@ -38,7 +40,7 @@ const AffixField = ({
     onChange={onChange}
     isInvalid={isInvalid}
   >
-    <FieldLabel>{label}</FieldLabel>
+    <FieldLabel tooltip={labelTooltip}>{label}</FieldLabel>
     <div className={fieldStyles.control}>
       <Group className={`${styles.prefixGroup} ${inputStyles.size36}`}>
         <span className={styles.affix}>{prefix}</span>
