@@ -1,4 +1,5 @@
 import authUserStream from 'api/me/authUserStream';
+import { fetchMe } from 'api/me/useAuthUser';
 import { IUser } from 'api/users/types';
 
 import { API_PATH, locales } from 'containers/App/constants';
@@ -115,22 +116,37 @@ const configuration: ModuleConfiguration = {
       trackPageView(path);
     });
 
-    // Upgrade the session when a visitor signs in: the user goes from signed out
-    // (null) to signed in. Not when a user who was signed in when the page loaded is
-    // loaded or refetched. The API can't be asked for that at page load, as the
-    // front-end can't read the HttpOnly auth cookie, so the first answer of /users/me
-    // tells: null (signed out) or a user. undefined means still loading (at startup, or
-    // after signing out resets the user) and is skipped. The API finds the current
-    // session itself, so this doesn't need sessionId.
-    let previousUser: IUser | null | undefined;
-    // The stream's type leaves out null, but fetchMe returns null when signed out.
-    authUserStream.subscribe((user: IUser | null | undefined) => {
-      if (user === undefined) return;
+    // Upgrade the session when a visitor signs in, not when a user who was already
+    // signed in when the page loaded is loaded or refetched. The front-end can't read
+    // the HttpOnly auth cookie, so we ask the API with our own /users/me request: its
+    // answer (null when signed out) tells whether the visitor was signed in when the
+    // page loaded. We don't use the first value of the shared current-user query for
+    // that: other code can invalidate that query (e.g. right after signing up) before
+    // its first answer, which then never reaches the stream. Until our answer is in,
+    // changes are ignored. The API finds the current session itself, so this doesn't
+    // need sessionId.
+    //
+    // Whether the visitor was signed in the last time we checked. undefined: not known
+    // yet.
+    let wasSignedIn: boolean | undefined;
+    fetchMe()
+      .then((user) => {
+        wasSignedIn = !!user;
+      })
+      .catch(() => {
+        // Unknown: no session upgrade on this page load.
+      });
 
-      if (previousUser === null && user) {
+    // The stream's type leaves out null, but fetchMe returns null when signed out.
+    // undefined means still loading (at startup, or after signing out resets the user).
+    authUserStream.subscribe((user: IUser | null | undefined) => {
+      if (user === undefined || wasSignedIn === undefined) return;
+
+      const isSignedIn = !!user;
+      if (!wasSignedIn && isSignedIn) {
         upgradeSession();
       }
-      previousUser = user;
+      wasSignedIn = isSignedIn;
     });
   },
 };
