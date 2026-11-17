@@ -9049,9 +9049,19 @@
     "verified_at": "2026-09-16T19:26:50.578477Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.acceptedTile": {
+    "state": "verified",
+    "verified_at": "2026-11-17T10:36:16.750145Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.addColumns": {
     "state": "verified",
     "verified_at": "2026-10-28T14:54:05.642161Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.addTag": {
+    "state": "verified",
+    "verified_at": "2026-11-17T10:36:16.750145Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.batchAssign": {
@@ -9082,6 +9092,11 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.clearSelection": {
     "state": "verified",
     "verified_at": "2026-11-17T10:14:02.487195Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.copyToPhase": {
+    "state": "verified",
+    "verified_at": "2026-11-17T10:36:16.750145Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.delete": {
@@ -9169,6 +9184,11 @@
     "verified_at": "2026-11-17T10:14:02.487195Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.noOtherPhasesForTerms": {
+    "state": "verified",
+    "verified_at": "2026-11-17T10:36:16.750145Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.offlineCollection": {
     "state": "verified",
     "verified_at": "2026-11-17T10:22:35.419387Z",
@@ -9182,6 +9202,11 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.phases": {
     "state": "verified",
     "verified_at": "2026-10-26T13:27:19.241589Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.position": {
+    "state": "verified",
+    "verified_at": "2026-11-17T10:36:16.750145Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.previousInput": {
@@ -9199,6 +9224,16 @@
     "verified_at": "2026-11-17T10:14:02.487195Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.removeFromPhase": {
+    "state": "verified",
+    "verified_at": "2026-11-17T10:36:16.750145Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.removeTag": {
+    "state": "verified",
+    "verified_at": "2026-11-17T10:36:16.750145Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.repliedMark": {
     "state": "verified",
     "verified_at": "2026-11-17T10:14:02.487195Z",
@@ -9212,6 +9247,11 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.replyReplied": {
     "state": "verified",
     "verified_at": "2026-11-17T10:14:02.487195Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.respondedTile": {
+    "state": "verified",
+    "verified_at": "2026-11-17T10:36:16.750145Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.searchInputs": {
