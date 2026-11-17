@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # bin/setup-llm-skills.test.sh — tests for bin/setup-llm-skills, run against a
-# fake citizenlab and a fake skills repo in a temp directory. Needs git and yq,
-# like the script.
+# fake citizenlab and a fake skills repo in a temp directory. Needs git, like
+# the script.
 #
 #   ./bin/setup-llm-skills.test.sh
 #
@@ -169,6 +169,12 @@ if grep -q 'missing-skill' "$TEST_TMP/stderr"; then
 else
   fail "names the missing skill"
 fi
+assert_eq "$(cat "$REPORT_SKILL")" 'report, draft' "keeps the previous copy"
+
+echo "Fails on a manifest in another format"
+echo "ref: '$PINNED'" > "$LLM_SKILLS_REPO_ROOT/back/config/llm_skills.yml"
+echo "skills: [report]" >> "$LLM_SKILLS_REPO_ROOT/back/config/llm_skills.yml"
+assert_fails "$SCRIPT_TO_TEST"
 assert_eq "$(cat "$REPORT_SKILL")" 'report, draft' "keeps the previous copy"
 
 echo "Fails without the remote"

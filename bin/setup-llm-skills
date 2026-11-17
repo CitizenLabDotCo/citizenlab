@@ -9,8 +9,7 @@
 #
 # By default it fetches the skills repo at the commit the manifest pins, which
 # needs LLM_SKILLS_GIT_REMOTE, the skills repo's git remote, kept out of this
-# public repo. Set it in your host shell or in env_files/back-secret.env (ask
-# the team for the value).
+# public repo. Set it in your host shell or in env_files/back-secret.env.
 #
 # To try a skill you're writing, copy from your clone instead, uncommitted
 # edits included. Re-run it after each edit; the app reads the files on every
@@ -18,7 +17,7 @@
 #
 #   bin/setup-llm-skills --from ../citizenlab-llm-skills
 #
-# Needs yq. Prints skill names only, never their text, as CI logs may be public.
+# Prints skill names only, never their text, as CI logs may be public.
 
 set -euo pipefail
 
@@ -36,8 +35,11 @@ elif [ $# -ne 0 ]; then
   exit 1
 fi
 
-if ! command -v yq >/dev/null; then
-  echo "Error: yq is not installed." >&2
+# Read with sed so that no YAML tool is needed; the manifest says which format to keep.
+ref="$(sed -n "s/^ref: '\(.*\)'$/\1/p" "$MANIFEST")"
+skills="$(sed -n 's/^  - //p' "$MANIFEST")"
+if [ -z "$ref" ] || [ -z "$skills" ]; then
+  echo "Error: can't read the ref and the skills in back/config/llm_skills.yml." >&2
   exit 1
 fi
 
@@ -63,8 +65,6 @@ else
   fi
 fi
 
-skills="$(yq '.skills[]' "$MANIFEST")"
-
 # The skills are copied to $work/out and replace back/vendor/llm_skills only
 # once all of them are there, so a failed run keeps the previous copy.
 work="$(mktemp -d)"
@@ -77,7 +77,6 @@ if [ -n "$from" ]; then
   source_name="in $from"
   echo "Copying the LLM skills from $from ..."
 else
-  ref="$(yq '.ref' "$MANIFEST")"
   source_dir="$work/repo"
   source_name="at $ref"
   echo "Fetching the LLM skills at $ref ..."
