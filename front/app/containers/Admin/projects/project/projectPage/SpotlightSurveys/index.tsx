@@ -2,6 +2,9 @@ import React from 'react';
 
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 
+import Divider from 'design-system/Divider';
+import PanelGroupHeader from 'design-system/PanelGroupHeader';
+
 import usePhases from 'api/phases/usePhases';
 import { getPhaseLandingTab } from 'api/phases/utils';
 import useProjectPageLayout from 'api/project_page_layout/useProjectPageLayout';
@@ -12,9 +15,6 @@ import useLocalize from 'hooks/useLocalize';
 import { getLocale } from 'components/admin/DatePickers/_shared/locales';
 import { linkedSurveyPhaseIds } from 'components/ProjectPageBuilder/Widgets/SpotlightSurveys/linkedSurveyPhaseIds';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
-
-import Divider from 'design-system/Divider';
-import PanelGroupHeader from 'design-system/PanelGroupHeader';
 
 import { useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';

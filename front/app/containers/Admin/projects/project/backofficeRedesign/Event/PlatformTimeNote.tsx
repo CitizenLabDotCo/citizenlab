@@ -4,9 +4,9 @@ import React from 'react';
 import { Icon } from '@citizenlab/cl2-component-library';
 import { Focusable } from 'react-aria-components';
 
-import dateTimeMessages from 'containers/Admin/projects/project/events/components/DateTimeSelection/messages';
-
 import Tooltip from 'design-system/Tooltip';
+
+import dateTimeMessages from 'containers/Admin/projects/project/events/components/DateTimeSelection/messages';
 
 import { useIntl } from 'utils/cl-intl';
 import { getGmtOffset } from 'utils/dateUtils';

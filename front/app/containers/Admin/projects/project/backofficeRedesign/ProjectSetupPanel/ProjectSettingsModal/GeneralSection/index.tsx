@@ -2,6 +2,8 @@ import React from 'react';
 
 import { CLErrors, Multiloc } from 'typings';
 
+import TextField from 'design-system/TextField';
+
 import { SpaceAndFolderId } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/types';
 import SettingsSection from 'containers/Admin/projects/project/backofficeRedesign/_shared/components/SettingsModal/SettingsSection';
 import SettingsSections from 'containers/Admin/projects/project/backofficeRedesign/_shared/components/SettingsModal/SettingsSections';
@@ -10,8 +12,6 @@ import SlugInput from 'containers/Admin/projects/project/backofficeRedesign/_sha
 import LocaleSwitcher from 'components/admin/MultilocFields/LocaleSwitcher';
 import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 import useSelectedLocale from 'components/admin/MultilocFields/useSelectedLocale';
-
-import TextField from 'design-system/TextField';
 
 import { useIntl } from 'utils/cl-intl';
 

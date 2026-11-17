@@ -9,6 +9,8 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
 
+import NumberField from 'design-system/NumberField';
+
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
@@ -17,8 +19,6 @@ import { VotingMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
 import useUserById from 'api/users/useUserById';
-
-import NumberField from 'design-system/NumberField';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';

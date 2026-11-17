@@ -13,6 +13,12 @@ import { debounce } from 'lodash-es';
 import { Controller, useForm, FormProvider } from 'react-hook-form';
 import { Multiloc } from 'typings';
 
+import Banner from 'design-system/Banner';
+import DSButton from 'design-system/Button';
+import DSIcon from 'design-system/Icon';
+import IconButton from 'design-system/IconButton';
+import DSSpinner from 'design-system/Spinner';
+
 import usePhases from 'api/phases/usePhases';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
 
@@ -20,12 +26,6 @@ import MultilocRichTextField from 'components/admin/MultilocFields/MultilocRichT
 import { usePhasePreviewPublisher } from 'components/admin/PhasePreview/DraftContext';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 import Warning from 'components/UI/Warning';
-
-import Banner from 'design-system/Banner';
-import DSButton from 'design-system/Button';
-import DSIcon from 'design-system/Icon';
-import IconButton from 'design-system/IconButton';
-import DSSpinner from 'design-system/Spinner';
 
 import { useIntl } from 'utils/cl-intl';
 import { isEmptyMultiloc } from 'utils/helperUtils';

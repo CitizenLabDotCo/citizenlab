@@ -6,6 +6,9 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { Multiloc, SupportedLocale } from 'typings';
 
+import Button from 'design-system/Button';
+import TextField from 'design-system/TextField';
+
 import useAddPollOption from 'api/poll_options/useAddPollOption';
 import useUpdatePollOption from 'api/poll_options/useUpdatePollOption';
 
@@ -16,9 +19,6 @@ import usePrevious from 'hooks/usePrevious';
 import LocaleSwitcher from 'components/admin/MultilocFields/LocaleSwitcher';
 import { TextCell, Row } from 'components/admin/ResourceList';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
-
-import Button from 'design-system/Button';
-import TextField from 'design-system/TextField';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';

@@ -4,6 +4,11 @@ import { CalendarDate, Time } from '@internationalized/date';
 import { addMinutes, isSameDay } from 'date-fns';
 import { CLErrors } from 'typings';
 
+import Button from 'design-system/Button';
+import DatePicker from 'design-system/DatePicker';
+import IconButton from 'design-system/IconButton';
+import TimeField from 'design-system/TimeField';
+
 import { IEventProperties } from 'api/events/types';
 
 import SetupCard from 'containers/Admin/projects/_shared/components/SetupCard';
@@ -13,11 +18,6 @@ import eventMessages from 'containers/Admin/projects/project/events/messages';
 import phaseSetupMessages from 'containers/Admin/projects/project/phaseSetup/messages';
 
 import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
-
-import Button from 'design-system/Button';
-import DatePicker from 'design-system/DatePicker';
-import IconButton from 'design-system/IconButton';
-import TimeField from 'design-system/TimeField';
 
 import { useIntl } from 'utils/cl-intl';
 

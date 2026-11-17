@@ -2,11 +2,11 @@ import React from 'react';
 
 import { Multiloc } from 'typings';
 
+import IconButton from 'design-system/IconButton';
+
 import useLocalize from 'hooks/useLocalize';
 
 import volunteeringMessages from 'containers/Admin/projects/project/volunteering/messages';
-
-import IconButton from 'design-system/IconButton';
 
 import { useIntl } from 'utils/cl-intl';
 

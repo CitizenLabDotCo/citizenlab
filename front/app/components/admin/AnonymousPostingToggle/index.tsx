@@ -7,13 +7,13 @@ import {
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
 
+import Banner from 'design-system/Banner';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import SettingToggleRow from 'components/admin/SettingToggleRow';
 import Warning from 'components/UI/Warning';
-
-import Banner from 'design-system/Banner';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 

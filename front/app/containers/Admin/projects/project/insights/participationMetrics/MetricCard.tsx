@@ -10,12 +10,12 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { Focusable } from 'react-aria-components';
 
+import StatTile from 'design-system/StatTile';
+import DsTooltip from 'design-system/Tooltip';
+
 import { SevenDayChange } from 'api/phase_insights/types';
 
 import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
-
-import StatTile from 'design-system/StatTile';
-import DsTooltip from 'design-system/Tooltip';
 
 import { useIntl } from 'utils/cl-intl';
 

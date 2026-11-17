@@ -1,12 +1,12 @@
 import React from 'react';
 
+import StatRow from 'design-system/StatRow';
+
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IPhaseData } from 'api/phases/types';
 
 import { ManagerType } from 'components/admin/PostManager';
 import { UNASSIGNED } from 'components/admin/PostManager/useAssigneeOptions';
-
-import StatRow from 'design-system/StatRow';
 
 import { useIntl } from 'utils/cl-intl';
 

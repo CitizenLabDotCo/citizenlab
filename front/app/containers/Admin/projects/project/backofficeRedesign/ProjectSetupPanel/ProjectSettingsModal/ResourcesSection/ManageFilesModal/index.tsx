@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 
+import Button from 'design-system/Button';
+import Modal from 'design-system/Modal';
+import Pagination from 'design-system/Pagination';
+import SearchField from 'design-system/SearchField';
+
 import useFiles from 'api/files/useFiles';
 
 import useDebouncedValue from 'hooks/useDebouncedValue';
 
 import filesMessages from 'containers/Admin/projects/project/files/components/messages';
-
-import Button from 'design-system/Button';
-import Modal from 'design-system/Modal';
-import Pagination from 'design-system/Pagination';
-import SearchField from 'design-system/SearchField';
 
 import { useIntl } from 'utils/cl-intl';
 

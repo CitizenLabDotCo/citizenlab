@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
+import IconButton from 'design-system/IconButton';
+
 import { IProjectData } from 'api/projects/types';
 
 import { usePageSave } from 'components/admin/PageSaveContext';
-
-import IconButton from 'design-system/IconButton';
 
 import { useIntl } from 'utils/cl-intl';
 

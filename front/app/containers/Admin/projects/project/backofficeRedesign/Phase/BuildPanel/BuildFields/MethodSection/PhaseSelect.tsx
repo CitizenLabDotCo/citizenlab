@@ -1,15 +1,15 @@
 import React from 'react';
 
+import { ListBoxOption } from 'design-system/ListBox';
+import Select from 'design-system/Select';
+import Spinner from 'design-system/Spinner';
+
 import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
 
 import useLocalize from 'hooks/useLocalize';
 
 import phaseFilterMessages from 'components/UI/PhaseFilter/messages';
-
-import { ListBoxOption } from 'design-system/ListBox';
-import Select from 'design-system/Select';
-import Spinner from 'design-system/Spinner';
 
 import { useIntl } from 'utils/cl-intl';
 

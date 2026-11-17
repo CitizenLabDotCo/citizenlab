@@ -2,6 +2,8 @@ import React, { ReactNode, useState } from 'react';
 
 import { CLErrors } from 'typings';
 
+import Button from 'design-system/Button';
+
 import { IUpdatedPhaseProperties, ParticipationMethod } from 'api/phases/types';
 
 import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';
@@ -10,8 +12,6 @@ import configMessages from 'containers/Admin/projects/project/phaseSetup/compone
 import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/typings';
 
 import assigneeMessages from 'components/admin/ProjectAssignee/messages';
-
-import Button from 'design-system/Button';
 
 import { useIntl } from 'utils/cl-intl';
 

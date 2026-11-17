@@ -2,18 +2,18 @@ import React from 'react';
 
 import { Key } from 'react-aria-components';
 
+import Menu, {
+  MenuItem,
+  MenuTrigger,
+  SubmenuTrigger,
+} from 'design-system/Menu';
+
 import useAreas from 'api/areas/useAreas';
 import { IProjectData } from 'api/projects/types';
 
 import useLocalize from 'hooks/useLocalize';
 
 import generalMessages from 'containers/Admin/projects/project/general/messages';
-
-import Menu, {
-  MenuItem,
-  MenuTrigger,
-  SubmenuTrigger,
-} from 'design-system/Menu';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 

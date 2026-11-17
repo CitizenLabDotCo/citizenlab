@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
-import SettingsSection from 'containers/Admin/projects/project/backofficeRedesign/_shared/components/SettingsModal/SettingsSection';
-import backofficeRedesignMessages from 'containers/Admin/projects/project/backofficeRedesign/messages';
-
 import Badge from 'design-system/Badge';
 import Button from 'design-system/Button';
+
+import SettingsSection from 'containers/Admin/projects/project/backofficeRedesign/_shared/components/SettingsModal/SettingsSection';
+import backofficeRedesignMessages from 'containers/Admin/projects/project/backofficeRedesign/messages';
 
 import { useIntl } from 'utils/cl-intl';
 

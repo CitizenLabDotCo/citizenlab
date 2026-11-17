@@ -3,6 +3,13 @@ import React, { useState } from 'react';
 import { Text, Box, Button, Spinner } from '@citizenlab/cl2-component-library';
 import { IOption } from 'typings';
 
+import Banner from 'design-system/Banner';
+import { FieldLabel } from 'design-system/Field';
+import { ListBoxOption } from 'design-system/ListBox';
+import DesignSystemModal from 'design-system/Modal';
+import DesignSystemSelect from 'design-system/Select';
+import DesignSystemSpinner from 'design-system/Spinner';
+
 import usePhases from 'api/phases/usePhases';
 
 import useLocalize from 'hooks/useLocalize';
@@ -13,13 +20,6 @@ import Modal from 'components/UI/Modal';
 import PhaseFilter from 'components/UI/PhaseFilter';
 import phaseFilterMessages from 'components/UI/PhaseFilter/messages';
 import Warning from 'components/UI/Warning';
-
-import Banner from 'design-system/Banner';
-import { FieldLabel } from 'design-system/Field';
-import { ListBoxOption } from 'design-system/ListBox';
-import DesignSystemModal from 'design-system/Modal';
-import DesignSystemSelect from 'design-system/Select';
-import DesignSystemSpinner from 'design-system/Spinner';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';

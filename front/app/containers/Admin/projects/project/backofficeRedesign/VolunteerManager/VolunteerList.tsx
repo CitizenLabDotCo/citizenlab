@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { IVolunteers, VolunteersSort } from 'api/volunteers/types';
-
 import Spinner from 'design-system/Spinner';
+
+import { IVolunteers, VolunteersSort } from 'api/volunteers/types';
 
 import { useIntl } from 'utils/cl-intl';
 

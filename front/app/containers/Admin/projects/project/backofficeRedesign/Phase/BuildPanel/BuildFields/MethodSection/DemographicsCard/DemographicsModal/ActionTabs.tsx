@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { IPhasePermissionAction } from 'api/permissions/types';
-
 import { Tab, TabList } from 'design-system/Tabs';
+
+import { IPhasePermissionAction } from 'api/permissions/types';
 
 import { useIntl } from 'utils/cl-intl';
 

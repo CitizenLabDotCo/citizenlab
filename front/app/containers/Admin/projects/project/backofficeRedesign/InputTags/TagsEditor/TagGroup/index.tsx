@@ -2,6 +2,10 @@ import React, { useMemo, useState } from 'react';
 
 import { useDragLayer } from 'react-dnd';
 
+import Badge from 'design-system/Badge';
+import Button from 'design-system/Button';
+import IconButton from 'design-system/IconButton';
+
 import { IInputTopicData } from 'api/input_topics/types';
 
 import useLocalize from 'hooks/useLocalize';
@@ -9,10 +13,6 @@ import useLocalize from 'hooks/useLocalize';
 import topicsMessages from 'containers/Admin/projects/project/topics/messages';
 
 import T from 'components/T';
-
-import Badge from 'design-system/Badge';
-import Button from 'design-system/Button';
-import IconButton from 'design-system/IconButton';
 
 import { useIntl } from 'utils/cl-intl';
 

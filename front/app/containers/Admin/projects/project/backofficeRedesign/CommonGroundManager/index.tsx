@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 
 import { useQueryClient } from '@tanstack/react-query';
 
+import Banner from 'design-system/Banner';
+import Spinner from 'design-system/Spinner';
+
 import commonGroundResultsKeys from 'api/common_ground/keys/commonGroundResultsKeys';
 import useCommonGroundResults from 'api/common_ground/useCommonGroundResults';
 import useCopyInputs from 'api/copy_inputs/useCopyInputs';
@@ -16,9 +19,6 @@ import useLocalize from 'hooks/useLocalize';
 import inputManagerMessages from 'components/admin/PostManager/CommonGroundInputManager/messages';
 import NoInputsDisplay from 'components/admin/PostManager/CommonGroundInputManager/NoInputsDisplay';
 import NoPost from 'components/admin/PostManager/components/PostTable/NoPost';
-
-import Banner from 'design-system/Banner';
-import Spinner from 'design-system/Spinner';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';

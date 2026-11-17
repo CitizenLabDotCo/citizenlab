@@ -8,6 +8,8 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
+import { fieldStyles } from 'design-system/Field';
+
 import { PresentationMode } from 'api/phases/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -18,8 +20,6 @@ import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import viewNameMessages from 'components/PostCardsComponents/messages';
 import Error from 'components/UI/Error';
-
-import { fieldStyles } from 'design-system/Field';
 
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { useParams } from 'utils/router';

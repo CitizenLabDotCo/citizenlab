@@ -2,6 +2,8 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
+import DesignSystemProvider from 'design-system/Provider';
+
 import useAuthUser from 'api/me/useAuthUser';
 import usePhase from 'api/phases/usePhase';
 import { IProjectData } from 'api/projects/types';
@@ -12,8 +14,6 @@ import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
 import { PageSaveProvider } from 'components/admin/PageSaveContext';
 import { PhasePreviewDraftProvider } from 'components/admin/PhasePreview/DraftContext';
-
-import DesignSystemProvider from 'design-system/Provider';
 
 import clHistory from 'utils/cl-router/history';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';

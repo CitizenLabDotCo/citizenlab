@@ -2,6 +2,8 @@ import React from 'react';
 
 import { FormProvider } from 'react-hook-form';
 
+import Modal from 'design-system/Modal';
+
 import volunteeringMessages from 'containers/Admin/projects/project/volunteering/messages';
 import useCauseForm, {
   CauseFormValues,
@@ -10,8 +12,6 @@ import useCauseForm, {
 import FormMultilocRichTextField from 'components/admin/MultilocFields/FormMultilocRichTextField';
 import FormMultilocTextField from 'components/admin/MultilocFields/FormMultilocTextField';
 import Feedback from 'components/HookForm/Feedback';
-
-import Modal from 'design-system/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 

@@ -4,11 +4,11 @@ import { Box } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
+import Button from 'design-system/Button';
+
 import { Row, TextCell } from 'components/admin/ResourceList';
 import T from 'components/T';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
-
-import Button from 'design-system/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
 

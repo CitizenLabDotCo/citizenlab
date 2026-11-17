@@ -2,14 +2,14 @@ import React, { useEffect, useRef } from 'react';
 
 import { DialogTrigger, Key } from 'react-aria-components';
 
-import useGroups from 'api/groups/useGroups';
-
-import useLocalize from 'hooks/useLocalize';
-
 import { fieldStyles } from 'design-system/Field';
 import { ListBoxOption } from 'design-system/ListBox';
 import TagGroup, { Tag, TagAdd } from 'design-system/TagGroup';
 import TagPicker from 'design-system/TagPicker';
+
+import useGroups from 'api/groups/useGroups';
+
+import useLocalize from 'hooks/useLocalize';
 
 import { useIntl } from 'utils/cl-intl';
 

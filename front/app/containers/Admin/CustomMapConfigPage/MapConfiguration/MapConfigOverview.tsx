@@ -4,12 +4,12 @@ import MapView from '@arcgis/core/views/MapView';
 import { Text } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import Banner from 'design-system/Banner';
+
 import { IMapConfig } from 'api/map_config/types';
 
 import { SectionTitle } from 'components/admin/Section';
 import Warning from 'components/UI/Warning';
-
-import Banner from 'design-system/Banner';
 
 import { FormattedMessage } from 'utils/cl-intl';
 

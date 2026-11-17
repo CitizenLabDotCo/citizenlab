@@ -1,12 +1,12 @@
 import React from 'react';
 
+import Banner from 'design-system/Banner';
+
 import useContextPickers from 'containers/Admin/projects/_shared/components/ProjectContextPickers/useContextPickers';
 import contextMessages from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/messages';
 import { SpaceAndFolderId } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/types';
 import { useCanEditProjectContext } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/utils';
 import SettingsSection from 'containers/Admin/projects/project/backofficeRedesign/_shared/components/SettingsModal/SettingsSection';
-
-import Banner from 'design-system/Banner';
 
 import { useIntl } from 'utils/cl-intl';
 

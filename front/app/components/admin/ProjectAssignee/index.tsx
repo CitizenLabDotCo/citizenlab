@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { UNASSIGNED } from 'components/admin/PostManager/useAssigneeOptions';
-
 import ComboBox from 'design-system/ComboBox';
 import { ListBoxOption } from 'design-system/ListBox';
+
+import { UNASSIGNED } from 'components/admin/PostManager/useAssigneeOptions';
 
 import { useIntl } from 'utils/cl-intl';
 

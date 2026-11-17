@@ -3,6 +3,8 @@ import React, { ReactNode } from 'react';
 import { IconTooltip, Radio } from '@citizenlab/cl2-component-library';
 import { CLError, CLErrors } from 'typings';
 
+import { fieldStyles } from 'design-system/Field';
+
 import PhaseActionAccessRow, {
   AccessOnlyAction,
 } from 'containers/Admin/projects/_shared/components/PhaseActionAccessRow';
@@ -10,8 +12,6 @@ import PhaseActionAccessRow, {
 import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
-
-import { fieldStyles } from 'design-system/Field';
 
 import { useIntl } from 'utils/cl-intl';
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';

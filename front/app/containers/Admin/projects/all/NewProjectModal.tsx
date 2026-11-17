@@ -2,6 +2,8 @@ import React, { useId, useState } from 'react';
 
 import { CLErrors } from 'typings';
 
+import Modal from 'design-system/Modal';
+
 import useAddProjectGroup from 'api/project_groups/useAddProjectGroup';
 import { IProject } from 'api/projects/types';
 import useAddProject from 'api/projects/useAddProject';
@@ -12,8 +14,6 @@ import NewProjectForm, {
 import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 
 import Outlet from 'components/Outlet';
-
-import Modal from 'design-system/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';

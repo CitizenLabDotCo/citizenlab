@@ -11,6 +11,9 @@ import { FormattedDate } from 'react-intl';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
+import IconButton from 'design-system/IconButton';
+import Menu, { MenuItem, MenuTrigger } from 'design-system/Menu';
+
 import { IOfficialFeedbackData as IIdeaOfficialFeedbackData } from 'api/idea_official_feedback/types';
 import useDeleteIdeaOfficialFeedback from 'api/idea_official_feedback/useDeleteIdeaOfficialFeedback';
 
@@ -21,9 +24,6 @@ import T from 'components/T';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import moreActionsMessages from 'components/UI/MoreActionsMenu/messages';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-
-import IconButton from 'design-system/IconButton';
-import Menu, { MenuItem, MenuTrigger } from 'design-system/Menu';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';

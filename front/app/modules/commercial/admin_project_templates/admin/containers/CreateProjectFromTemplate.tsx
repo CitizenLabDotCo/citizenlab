@@ -4,14 +4,14 @@ import { Box, Button } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import useGraphqlTenantLocales from 'modules/commercial/admin_project_templates/admin/api/useGraphqlTenantLocales';
 
+import Banner from 'design-system/Banner';
+import DesignSystemButton from 'design-system/Button';
+
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 import Error from 'components/UI/Error';
-
-import Banner from 'design-system/Banner';
-import DesignSystemButton from 'design-system/Button';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';

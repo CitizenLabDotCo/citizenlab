@@ -11,6 +11,12 @@ import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
+import Banner from 'design-system/Banner';
+import Button from 'design-system/Button';
+import Link from 'design-system/Link';
+import { ListBoxOption } from 'design-system/ListBox';
+import DSSelect from 'design-system/Select';
+
 import { IMapConfig } from 'api/map_config/types';
 import { IMapLayerAttributes } from 'api/map_layers/types';
 import useUpdateMapLayer from 'api/map_layers/useUpdateMapLayer';
@@ -26,12 +32,6 @@ import {
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-
-import Banner from 'design-system/Banner';
-import Button from 'design-system/Button';
-import Link from 'design-system/Link';
-import { ListBoxOption } from 'design-system/ListBox';
-import DSSelect from 'design-system/Select';
 
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';

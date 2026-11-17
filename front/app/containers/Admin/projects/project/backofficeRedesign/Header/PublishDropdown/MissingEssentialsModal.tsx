@@ -1,5 +1,7 @@
 import React from 'react';
 
+import Modal from 'design-system/Modal';
+
 import { IProjectData } from 'api/projects/types';
 
 import ReadyMark from 'containers/Admin/projects/project/backofficeRedesign/ProjectSetupPanel/ReadyMark';
@@ -8,8 +10,6 @@ import {
   SETUP_ITEMS,
 } from 'containers/Admin/projects/project/backofficeRedesign/ProjectSetupPanel/setupItems';
 import useSetupReadiness from 'containers/Admin/projects/project/backofficeRedesign/ProjectSetupPanel/useSetupReadiness';
-
-import Modal from 'design-system/Modal';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 

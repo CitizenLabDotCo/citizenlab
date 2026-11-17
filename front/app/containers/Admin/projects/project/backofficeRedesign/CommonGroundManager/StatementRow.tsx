@@ -1,12 +1,12 @@
 import React from 'react';
 
+import Checkbox from 'design-system/Checkbox';
+import { Cell, Row } from 'design-system/Table';
+
 import { CommonGroundResultItem } from 'api/common_ground/types';
 import { IIdeaData } from 'api/ideas/types';
 
 import useLocalize from 'hooks/useLocalize';
-
-import Checkbox from 'design-system/Checkbox';
-import { Cell, Row } from 'design-system/Table';
 
 import { useIntl } from 'utils/cl-intl';
 

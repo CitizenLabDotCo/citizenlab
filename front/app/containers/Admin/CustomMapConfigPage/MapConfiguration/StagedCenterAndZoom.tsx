@@ -1,11 +1,11 @@
 import React from 'react';
 
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { IMapConfig } from 'api/map_config/types';
-
 import Banner from 'design-system/Banner';
 import IconButton from 'design-system/IconButton';
 import TextField from 'design-system/TextField';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { IMapConfig } from 'api/map_config/types';
 
 import { useIntl } from 'utils/cl-intl';
 import { getCenter, getZoomLevel } from 'utils/mapUtils/map';

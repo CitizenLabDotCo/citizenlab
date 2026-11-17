@@ -6,14 +6,14 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { Multiloc } from 'typings';
 import { object } from 'yup';
 
+import DSModal from 'design-system/Modal';
+
 import useAddIdeaOfficialFeedback from 'api/idea_official_feedback/useAddIdeaOfficialFeedback';
 
 import Feedback from 'components/HookForm/Feedback';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import TextAreaMultilocWithLocaleSwitcher from 'components/HookForm/TextAreaMultilocWithLocaleSwitcher';
 import Modal from 'components/UI/Modal';
-
-import DSModal from 'design-system/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';

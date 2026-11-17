@@ -5,14 +5,14 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { CLErrors, UploadFile } from 'typings';
 
+import DSSpinner from 'design-system/Spinner';
+
 import { IFileAttachmentData } from 'api/file_attachments/types';
 import { IFileData } from 'api/files/types';
 
 import { List } from 'components/admin/ResourceList';
 import SortableRow from 'components/admin/ResourceList/SortableRow';
 import Error from 'components/UI/Error';
-
-import DSSpinner from 'design-system/Spinner';
 
 import FileSelectOrUploadModal from './components/FileSelectOrUploadModal';
 import ScreenReaderFilesList from './components/ScreenReaderFilesList';

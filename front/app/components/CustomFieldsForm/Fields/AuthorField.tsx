@@ -5,12 +5,12 @@ import { get } from 'lodash-es';
 import { Controller, useFormContext } from 'react-hook-form';
 import { CLError, RHFErrors } from 'typings';
 
+import IconButton from 'design-system/IconButton';
+
 import Error, { TFieldName } from 'components/UI/Error';
 import { FormLabel } from 'components/UI/FormComponents';
 import formMessages from 'components/UI/FormComponents/messages';
 import UserSelect from 'components/UI/UserSelect';
-
-import IconButton from 'design-system/IconButton';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 

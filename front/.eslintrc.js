@@ -77,6 +77,11 @@ module.exports = {
         pathGroups: [
           { group: 'builtin', pattern: 'react', position: 'before' },
           {
+            pattern: 'design-system/**',
+            group: 'internal',
+            position: 'before',
+          },
+          {
             pattern: 'api/**',
             group: 'internal',
             position: 'before',
@@ -93,11 +98,6 @@ module.exports = {
           },
           {
             pattern: 'components/**',
-            group: 'internal',
-            position: 'before',
-          },
-          {
-            pattern: 'design-system/**',
             group: 'internal',
             position: 'before',
           },

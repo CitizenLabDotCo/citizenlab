@@ -3,6 +3,9 @@ import React from 'react';
 import { Locale, format, isSameDay, isThisYear } from 'date-fns';
 import { router } from 'routes';
 
+import IconButton from 'design-system/IconButton';
+import PanelGroupHeader from 'design-system/PanelGroupHeader';
+
 import useEvents from 'api/events/useEvents';
 
 import useLocale from 'hooks/useLocale';
@@ -14,9 +17,6 @@ import {
 } from 'containers/Admin/projects/project/projectPage/phaseRowUtils';
 
 import { getLocale } from 'components/admin/DatePickers/_shared/locales';
-
-import IconButton from 'design-system/IconButton';
-import PanelGroupHeader from 'design-system/PanelGroupHeader';
 
 import { useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 
+import Button from 'design-system/Button';
+
 import useResetProject from 'api/projects/useResetProject';
 
 import SettingsSection from 'containers/Admin/projects/project/backofficeRedesign/_shared/components/SettingsModal/SettingsSection';
 import dataMessages from 'containers/Admin/projects/project/data/messages';
-
-import Button from 'design-system/Button';
 
 import { useIntl } from 'utils/cl-intl';
 

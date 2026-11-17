@@ -2,16 +2,16 @@ import React, { useCallback, useMemo, useState } from 'react';
 
 import { Button as AriaButton } from 'react-aria-components';
 
+import Icon from 'design-system/Icon';
+import Switch from 'design-system/Switch';
+import Tooltip from 'design-system/Tooltip';
+
 import { CampaignData } from 'containers/Admin/messaging/AutomatedEmails/types';
 import useCampaignRow from 'containers/Admin/messaging/AutomatedEmails/useCampaignRow';
 import messagingMessages from 'containers/Admin/messaging/messages';
 
 import { useRegisterPageSaver } from 'components/admin/PageSaveContext';
 import upsellMessages from 'components/UpsellTooltip/messages';
-
-import Icon from 'design-system/Icon';
-import Switch from 'design-system/Switch';
-import Tooltip from 'design-system/Tooltip';
 
 import { useIntl } from 'utils/cl-intl';
 

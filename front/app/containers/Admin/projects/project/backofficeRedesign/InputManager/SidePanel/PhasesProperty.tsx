@@ -2,16 +2,16 @@ import React, { useState } from 'react';
 
 import { Key } from 'react-aria-components';
 
+import Button from 'design-system/Button';
+import { MenuTrigger } from 'design-system/Menu';
+import TagGroup, { Tag } from 'design-system/TagGroup';
+
 import { IIdeaData } from 'api/ideas/types';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
 import useIdeasPhases from 'api/ideas_phases/useIdeasPhases';
 
 import PhaseDeselectModal from 'components/admin/PostManager/components/PostTable/Row/PhaseDeselectModal';
 import { ideaHasVotesInPhase } from 'components/admin/PostManager/components/PostTable/Row/utils';
-
-import Button from 'design-system/Button';
-import { MenuTrigger } from 'design-system/Menu';
-import TagGroup, { Tag } from 'design-system/TagGroup';
 
 import { useIntl } from 'utils/cl-intl';
 

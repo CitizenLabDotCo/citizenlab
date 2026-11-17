@@ -6,6 +6,8 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { Multiloc } from 'typings';
 import { object } from 'yup';
 
+import DSModal from 'design-system/Modal';
+
 import { IInputTopicData } from 'api/input_topics/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -21,8 +23,6 @@ import Modal, {
   ModalContentContainer,
   ButtonsWrapper,
 } from 'components/UI/Modal';
-
-import DSModal from 'design-system/Modal';
 
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';

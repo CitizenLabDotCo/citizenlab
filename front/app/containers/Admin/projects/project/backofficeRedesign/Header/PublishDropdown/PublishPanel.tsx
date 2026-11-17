@@ -1,5 +1,10 @@
 import React from 'react';
 
+import Button from 'design-system/Button';
+import Divider from 'design-system/Divider';
+import RadioGroup, { Radio } from 'design-system/RadioGroup';
+import { PopoverSwitchRow } from 'design-system/SwitchRow';
+
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useProjectPublicationRecipientCount from 'api/project_publication_recipient_count/useProjectPublicationRecipientCount';
 import { IProjectData, Visibility } from 'api/projects/types';
@@ -12,11 +17,6 @@ import {
 import visibilityMessages from 'containers/Admin/projects/_shared/visibilityOptions/messages';
 import { getMissingItems } from 'containers/Admin/projects/project/backofficeRedesign/ProjectSetupPanel/setupItems';
 import useSetupReadiness from 'containers/Admin/projects/project/backofficeRedesign/ProjectSetupPanel/useSetupReadiness';
-
-import Button from 'design-system/Button';
-import Divider from 'design-system/Divider';
-import RadioGroup, { Radio } from 'design-system/RadioGroup';
-import { PopoverSwitchRow } from 'design-system/SwitchRow';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 

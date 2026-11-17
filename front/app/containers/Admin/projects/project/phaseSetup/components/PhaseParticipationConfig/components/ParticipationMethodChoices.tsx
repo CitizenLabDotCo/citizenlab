@@ -9,11 +9,11 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { PressEvent } from 'react-aria-components';
 
+import DsBadge from 'design-system/Badge';
+
 import { ParticipationMethod } from 'api/phases/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
-
-import DsBadge from 'design-system/Badge';
 
 import { useIntl } from 'utils/cl-intl';
 

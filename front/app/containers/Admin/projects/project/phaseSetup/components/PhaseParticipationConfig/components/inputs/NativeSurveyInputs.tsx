@@ -3,6 +3,8 @@ import React, { ReactNode } from 'react';
 import { Box, Text, Toggle } from '@citizenlab/cl2-component-library';
 import { CLErrors, Multiloc } from 'typings';
 
+import { fieldStyles } from 'design-system/Field';
+
 import { IPhase, IUpdatedPhaseProperties } from 'api/phases/types';
 import useProjectById from 'api/projects/useProjectById';
 
@@ -19,8 +21,6 @@ import SettingToggleRow from 'components/admin/SettingToggleRow';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-
-import { fieldStyles } from 'design-system/Field';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 

@@ -2,15 +2,15 @@ import React from 'react';
 
 import { Key, TagGroup, TagList } from 'react-aria-components';
 
-import { IIdeaData } from 'api/ideas/types';
-import useUpdateIdea from 'api/ideas/useUpdateIdea';
-
-import { ManagerType } from 'components/admin/PostManager';
-
 import { ListBoxOption } from 'design-system/ListBox';
 import { DialogTrigger } from 'design-system/Popover';
 import { Tag, TagAdd } from 'design-system/TagGroup';
 import TagPicker from 'design-system/TagPicker';
+
+import { IIdeaData } from 'api/ideas/types';
+import useUpdateIdea from 'api/ideas/useUpdateIdea';
+
+import { ManagerType } from 'components/admin/PostManager';
 
 import { useIntl } from 'utils/cl-intl';
 

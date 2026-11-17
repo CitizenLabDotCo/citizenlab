@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 
+import Button from 'design-system/Button';
+import Divider from 'design-system/Divider';
+import Modal from 'design-system/Modal';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import inputImporterMessages from 'containers/Admin/projects/project/inputImporter/messages';
@@ -8,10 +12,6 @@ import formSyncMessages from 'components/admin/FormSync/messages';
 import ImportExcelModal from 'components/admin/InputImporterModals/ImportExcelModal';
 import ImportPdfModal from 'components/admin/InputImporterModals/ImportPdfModal';
 import upsellMessages from 'components/UpsellTooltip/messages';
-
-import Button from 'design-system/Button';
-import Divider from 'design-system/Divider';
-import Modal from 'design-system/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
