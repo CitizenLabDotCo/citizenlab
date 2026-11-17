@@ -3822,8 +3822,6 @@
   "app.containers.AdminPage.ProjectIdeaForm.saved": "Saved!",
   "app.containers.AdminPage.ProjectIdeaForm.viewFormLinkCopy": "View form",
   "app.containers.AdminPage.ProjectPages.addFirstPage": "Afegiu la vostra primera pàgina",
-  "app.containers.AdminPage.ProjectPages.attachmentsLabel": "Fitxers adjunts",
-  "app.containers.AdminPage.ProjectPages.contentLabel": "Contingut",
   "app.containers.AdminPage.ProjectPages.createButton": "Crea la pàgina",
   "app.containers.AdminPage.ProjectPages.deleteButton": "Suprimeix",
   "app.containers.AdminPage.ProjectPages.deleteConfirmation": "Esteu segur que voleu suprimir aquesta pàgina?",

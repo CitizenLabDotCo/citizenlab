@@ -3822,8 +3822,6 @@
   "app.containers.AdminPage.ProjectIdeaForm.saved": "Išgelbėtas!",
   "app.containers.AdminPage.ProjectIdeaForm.viewFormLinkCopy": "Peržiūrėti formą",
   "app.containers.AdminPage.ProjectPages.addFirstPage": "Pridėkite savo pirmąjį puslapį",
-  "app.containers.AdminPage.ProjectPages.attachmentsLabel": "Priedai",
-  "app.containers.AdminPage.ProjectPages.contentLabel": "Turinys",
   "app.containers.AdminPage.ProjectPages.createButton": "Sukurti puslapį",
   "app.containers.AdminPage.ProjectPages.deleteButton": "Ištrinti",
   "app.containers.AdminPage.ProjectPages.deleteConfirmation": "Ar tikrai norite ištrinti šį puslapį?",

@@ -3822,8 +3822,6 @@
   "app.containers.AdminPage.ProjectIdeaForm.saved": "Saglabāts!",
   "app.containers.AdminPage.ProjectIdeaForm.viewFormLinkCopy": "Skatīt veidlapu",
   "app.containers.AdminPage.ProjectPages.addFirstPage": "Pievienojiet savu pirmo lapu",
-  "app.containers.AdminPage.ProjectPages.attachmentsLabel": "Pielikumi",
-  "app.containers.AdminPage.ProjectPages.contentLabel": "Saturs",
   "app.containers.AdminPage.ProjectPages.createButton": "Izveidot lapu",
   "app.containers.AdminPage.ProjectPages.deleteButton": "Dzēst",
   "app.containers.AdminPage.ProjectPages.deleteConfirmation": "Vai tiešām vēlaties dzēst šo lapu?",

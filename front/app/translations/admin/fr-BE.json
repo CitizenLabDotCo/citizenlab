@@ -3822,8 +3822,6 @@
   "app.containers.AdminPage.ProjectIdeaForm.saved": "Enregistré !",
   "app.containers.AdminPage.ProjectIdeaForm.viewFormLinkCopy": "Voir le formulaire",
   "app.containers.AdminPage.ProjectPages.addFirstPage": "Ajoutez votre première page",
-  "app.containers.AdminPage.ProjectPages.attachmentsLabel": "Pièces jointes",
-  "app.containers.AdminPage.ProjectPages.contentLabel": "Contenu",
   "app.containers.AdminPage.ProjectPages.createButton": "Créer",
   "app.containers.AdminPage.ProjectPages.deleteButton": "Supprimer",
   "app.containers.AdminPage.ProjectPages.deleteConfirmation": "Voulez-vous vraiment supprimer cette page ?",

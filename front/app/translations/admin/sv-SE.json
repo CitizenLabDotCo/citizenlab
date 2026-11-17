@@ -3822,8 +3822,6 @@
   "app.containers.AdminPage.ProjectIdeaForm.saved": "Sparad!",
   "app.containers.AdminPage.ProjectIdeaForm.viewFormLinkCopy": "Visa formulär",
   "app.containers.AdminPage.ProjectPages.addFirstPage": "Lägg till din första sida",
-  "app.containers.AdminPage.ProjectPages.attachmentsLabel": "Bilagor",
-  "app.containers.AdminPage.ProjectPages.contentLabel": "Innehåll",
   "app.containers.AdminPage.ProjectPages.createButton": "Skapa sida",
   "app.containers.AdminPage.ProjectPages.deleteButton": "Ta bort",
   "app.containers.AdminPage.ProjectPages.deleteConfirmation": "Är du säker på att du vill ta bort den här sidan?",

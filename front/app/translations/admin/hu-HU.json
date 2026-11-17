@@ -3822,8 +3822,6 @@
   "app.containers.AdminPage.ProjectIdeaForm.saved": "Saved!",
   "app.containers.AdminPage.ProjectIdeaForm.viewFormLinkCopy": "Űrlap megtekintése",
   "app.containers.AdminPage.ProjectPages.addFirstPage": "Adja hozzá az első oldalt",
-  "app.containers.AdminPage.ProjectPages.attachmentsLabel": "Mellékletek",
-  "app.containers.AdminPage.ProjectPages.contentLabel": "Tartalom",
   "app.containers.AdminPage.ProjectPages.createButton": "Oldal létrehozása",
   "app.containers.AdminPage.ProjectPages.deleteButton": "Törlés",
   "app.containers.AdminPage.ProjectPages.deleteConfirmation": "Biztosan törölni szeretné ezt az oldalt?",

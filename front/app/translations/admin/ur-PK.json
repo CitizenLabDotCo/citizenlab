@@ -3822,8 +3822,6 @@
   "app.containers.AdminPage.ProjectIdeaForm.saved": "محفوظ کیا گیا!",
   "app.containers.AdminPage.ProjectIdeaForm.viewFormLinkCopy": "فارم دیکھیں",
   "app.containers.AdminPage.ProjectPages.addFirstPage": "اپنا پہلا صفحہ شامل کریں",
-  "app.containers.AdminPage.ProjectPages.attachmentsLabel": "منسلکات",
-  "app.containers.AdminPage.ProjectPages.contentLabel": "مواد",
   "app.containers.AdminPage.ProjectPages.createButton": "صفحہ بنائیں",
   "app.containers.AdminPage.ProjectPages.deleteButton": "حذف کریں",
   "app.containers.AdminPage.ProjectPages.deleteConfirmation": "کیا آپ واقعی یہ صفحہ حذف کرنا چاہتے ہیں؟",
