@@ -41,7 +41,6 @@ const TimeField = ({
     onChange={onChange}
     minValue={minValue}
     maxValue={maxValue}
-    hourCycle={24}
     isInvalid={isInvalid}
     isDisabled={isDisabled}
   >
