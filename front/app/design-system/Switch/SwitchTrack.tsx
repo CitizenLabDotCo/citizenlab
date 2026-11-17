@@ -4,7 +4,7 @@ import '../tokens.css';
 
 import styles from './Switch.module.css';
 
-export type SwitchSize = 36 | 28 | 26;
+type SwitchSize = 36 | 28 | 26;
 
 type Props = {
   size: SwitchSize;
@@ -13,7 +13,7 @@ type Props = {
   isDisabled?: boolean;
 };
 
-// The track and thumb alone, for rows that own the interaction (a menu item).
+// The track and thumb alone, for rows that own the interaction (the popover switch row).
 const SwitchTrack = ({
   size,
   isSelected,

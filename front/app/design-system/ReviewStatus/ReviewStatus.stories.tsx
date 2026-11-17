@@ -7,6 +7,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 const meta = {
   title: 'Design system/Status & feedback/Review status',
   component: ReviewStatus,
+  args: { status: 'toReview' },
 } satisfies Meta<typeof ReviewStatus>;
 
 export default meta;

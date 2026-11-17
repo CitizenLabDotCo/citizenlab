@@ -107,7 +107,6 @@ const HeaderRow = ({
         isRowHeader
         defaultWidth="1fr"
         minWidth={200}
-        allowsResizing={false}
         indicator={indicator('title')}
         menu={
           <ColumnMenu
@@ -131,7 +130,6 @@ const HeaderRow = ({
               key={column}
               id={column}
               defaultWidth={COLUMN_WIDTHS[column] ?? COLUMN_WIDTH}
-              allowsResizing={false}
               showChevron={!!columnSort}
               indicator={columnSort ? indicator(columnSort) : 'none'}
               menu={

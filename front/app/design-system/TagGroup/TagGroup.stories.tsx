@@ -25,7 +25,6 @@ const RemovableDistricts = () => {
     <div style={{ width: 328 }}>
       <TagGroup
         label="Districts"
-        description="Residents filter projects by district."
         items={districts}
         onRemove={(keys: Set<Key>) =>
           setDistricts((current) =>
@@ -45,42 +44,22 @@ export const Default: Story = {
   render: () => <RemovableDistricts />,
 };
 
-// Removable Yes / No and Default / Disabled. Hover the x, or tab in for Focused.
+// Removable Yes / No. Hover the x, or tab in for Focused.
 export const Tags: Story = {
   args: { label: 'Districts', children: null },
   render: () => (
     <div style={{ display: 'grid', gap: 16 }}>
-      <AriaTagGroup
-        aria-label="Removable"
-        onRemove={() => {}}
-        disabledKeys={['disabled']}
-      >
+      <AriaTagGroup aria-label="Removable" onRemove={() => {}}>
         <TagList style={{ display: 'flex', gap: 16 }}>
           <Tag id="default">Harbour</Tag>
-          <Tag id="disabled">Harbour</Tag>
         </TagList>
       </AriaTagGroup>
-      <AriaTagGroup aria-label="Not removable" disabledKeys={['disabled']}>
+      <AriaTagGroup aria-label="Not removable">
         <TagList style={{ display: 'flex', gap: 16 }}>
           <Tag id="default">Harbour</Tag>
-          <Tag id="disabled">Harbour</Tag>
         </TagList>
       </AriaTagGroup>
-      <div style={{ display: 'flex', gap: 16 }}>
-        <TagAdd>Add tag</TagAdd>
-        <TagAdd isDisabled>Add tag</TagAdd>
-      </div>
-    </div>
-  ),
-};
-
-export const Required: Story = {
-  args: { label: 'Districts', children: null },
-  render: () => (
-    <div style={{ width: 328 }}>
-      <TagGroup label="Districts" isRequired add={<TagAdd>Add tag</TagAdd>}>
-        <Tag id="harbour">Harbour</Tag>
-      </TagGroup>
+      <TagAdd>Add tag</TagAdd>
     </div>
   ),
 };

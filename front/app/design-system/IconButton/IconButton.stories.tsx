@@ -26,25 +26,17 @@ const Row = ({ children }: { children: React.ReactNode }) => (
 export const AllVariants: Story = {
   render: () => (
     <div style={{ display: 'grid', gap: 16 }}>
-      {(['default', 'strong'] as const).map((tone) =>
-        sizes.map((size) => (
-          <Row key={`ghost-${tone}-${size}`}>
-            <IconButton
-              icon="chevron-down-16"
-              aria-label="Open"
-              tone={tone}
-              size={size}
-            />
-            <IconButton
-              icon="chevron-down-16"
-              aria-label="Open"
-              tone={tone}
-              size={size}
-              isDisabled
-            />
-          </Row>
-        ))
-      )}
+      {sizes.map((size) => (
+        <Row key={`ghost-${size}`}>
+          <IconButton icon="chevron-down-16" aria-label="Open" size={size} />
+          <IconButton
+            icon="chevron-down-16"
+            aria-label="Open"
+            size={size}
+            isDisabled
+          />
+        </Row>
+      ))}
       {sizes.map((size) => (
         <Row key={`bordered-${size}`}>
           <IconButton
@@ -77,49 +69,8 @@ export const AllVariants: Story = {
           />
         </Row>
       ))}
-      {sizes.map((size) => (
-        <Row key={`primary-${size}`}>
-          <IconButton
-            icon="chevron-down-16"
-            aria-label="Send"
-            variant="primary"
-            size={size}
-          />
-          <IconButton
-            icon="chevron-down-16"
-            aria-label="Send"
-            variant="primary"
-            size={size}
-            isDisabled
-          />
-          <IconButton
-            icon="chevron-down-16"
-            aria-label="Send"
-            variant="primary"
-            size={size}
-            isPending
-          />
-        </Row>
-      ))}
     </div>
   ),
-};
-
-const ToggleExample = () => {
-  const [isSelected, setSelected] = React.useState(false);
-  return (
-    <IconButton
-      icon="funnel-16"
-      aria-label="Filter"
-      variant="bordered"
-      isSelected={isSelected}
-      onChange={setSelected}
-    />
-  );
-};
-
-export const Toggle: Story = {
-  render: () => <ToggleExample />,
 };
 
 // Looks disabled, stays focusable; hover or focus shows why. Pressing does nothing.
@@ -131,14 +82,6 @@ export const DisabledWithReason: Story = {
         aria-label="Download"
         disabledReason="Nobody signed up yet"
         onPress={() => window.alert('pressed')}
-      />
-      <IconButton
-        icon="funnel-16"
-        aria-label="Filter"
-        variant="bordered"
-        isSelected={false}
-        onChange={() => window.alert('toggled')}
-        disabledReason="No filters for this view"
       />
     </Row>
   ),

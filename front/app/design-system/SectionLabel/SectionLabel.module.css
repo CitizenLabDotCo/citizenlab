@@ -1,9 +1,0 @@
-.sectionLabel {
-  composes: ui from '../typography.module.css';
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: var(--gv-size-32);
-  color: var(--gv-text-disabled);
-}

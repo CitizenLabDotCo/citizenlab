@@ -6,7 +6,7 @@ import '../tokens.css';
 
 import styles from './MethodCard.module.css';
 
-export type MethodCardProps = {
+type MethodCardProps = {
   title: ReactNode;
   description: ReactNode;
   // The resident preview shown above the text.
@@ -14,7 +14,6 @@ export type MethodCardProps = {
   // Badges with use="note"; the Notes row shows when set.
   notes?: ReactNode;
   onPress?: (e: PressEvent) => void;
-  'data-cy'?: string;
 };
 
 const MethodCard = ({
@@ -23,9 +22,8 @@ const MethodCard = ({
   art,
   notes,
   onPress,
-  'data-cy': dataCy,
 }: MethodCardProps) => (
-  <AriaButton className={styles.card} onPress={onPress} data-cy={dataCy}>
+  <AriaButton className={styles.card} onPress={onPress}>
     <span className={styles.art}>{art}</span>
     <span className={styles.text}>
       <span className={styles.title}>{title}</span>

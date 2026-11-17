@@ -58,12 +58,7 @@ const StatementTable = ({
   const allSelected = selectedOnPage.length === ideas.length;
 
   const column = (id: string, label: string) => (
-    <ColumnHeader
-      id={id}
-      defaultWidth={COLUMN_WIDTH}
-      allowsResizing={false}
-      showChevron={false}
-    >
+    <ColumnHeader id={id} defaultWidth={COLUMN_WIDTH} showChevron={false}>
       {label}
     </ColumnHeader>
   );
@@ -96,7 +91,6 @@ const StatementTable = ({
             isRowHeader
             defaultWidth="1fr"
             minWidth={200}
-            allowsResizing={false}
             showChevron={false}
           >
             {formatMessage(messages.statementColumn)}

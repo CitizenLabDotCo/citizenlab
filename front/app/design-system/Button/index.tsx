@@ -17,7 +17,7 @@ export type ButtonVariant = 'primary' | 'secondary' | 'quiet' | 'danger';
 
 type LabelProps =
   | { children: ReactNode; 'aria-label'?: string }
-  // Without a label (the menu half of a Split button) the button needs an aria-label.
+  // Without a label the button needs an aria-label.
   | { children?: undefined; 'aria-label': string };
 
 export type ButtonProps = LabelProps & {
@@ -32,15 +32,13 @@ export type ButtonProps = LabelProps & {
   // Looks disabled but stays focusable so the tooltip can say why.
   disabledReason?: ReactNode;
   onPress?: (e: PressEvent) => void;
-  type?: 'button' | 'submit' | 'reset';
+  type?: 'button' | 'submit';
   form?: string;
-  slot?: string;
   autoFocus?: boolean;
   // Goes somewhere while looking like a button (React Aria Link; client-side inside DesignSystemProvider).
   href?: string;
-  target?: '_blank' | '_self';
+  target?: '_blank';
   id?: string;
-  'aria-describedby'?: string;
   'data-cy'?: string;
 };
 
@@ -57,13 +55,11 @@ const Button = ({
   onPress,
   type = 'button',
   form,
-  slot,
   autoFocus,
   href,
   target,
   id,
   'aria-label': ariaLabel,
-  'aria-describedby': ariaDescribedBy,
   'data-cy': dataCy,
 }: ButtonProps) => {
   const isFilled = variant === 'primary' || variant === 'danger';
@@ -102,7 +98,6 @@ const Button = ({
         autoFocus={autoFocus}
         id={id}
         aria-label={ariaLabel}
-        aria-describedby={ariaDescribedBy}
         data-cy={dataCy}
       >
         {content}
@@ -116,7 +111,6 @@ const Button = ({
       // An aria-disabled submit button would still submit its form.
       type={hasReason ? 'button' : type}
       form={form}
-      slot={slot}
       autoFocus={autoFocus}
       id={id}
       isPending={isPending}
@@ -124,7 +118,6 @@ const Button = ({
       aria-disabled={hasReason ? true : undefined}
       onPress={hasReason ? undefined : onPress}
       aria-label={ariaLabel}
-      aria-describedby={ariaDescribedBy}
       data-cy={dataCy}
     >
       {content}

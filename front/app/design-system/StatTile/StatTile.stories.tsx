@@ -20,24 +20,3 @@ export const Default: Story = {
     </div>
   ),
 };
-
-export const AllVariants: Story = {
-  render: () => (
-    <div style={{ display: 'flex', gap: 24, alignItems: 'flex-start' }}>
-      <div style={{ width: 183.5 }}>
-        <StatTile label="Visitors" value="312" />
-      </div>
-      <div style={{ width: 144.8 }}>
-        <StatTile type="tall" label="Visitors" value="23" />
-      </div>
-      <div style={{ width: 180.5 }}>
-        <StatTile
-          type="withNote"
-          label="Voters"
-          value="1"
-          note="updating live"
-        />
-      </div>
-    </div>
-  ),
-};

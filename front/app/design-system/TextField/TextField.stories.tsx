@@ -23,7 +23,6 @@ const states = [
   { name: 'Default' },
   { name: 'Invalid', isInvalid: true },
   { name: 'Disabled', isDisabled: true },
-  { name: 'Read-only', isReadOnly: true },
 ] as const;
 
 // Hovered and Focused come from the pointer and keyboard.
@@ -47,25 +46,13 @@ export const AllVariants: Story = {
                       ? 'Use 80 characters or fewer.'
                       : 'Add a name to publish.'
                   }
-                  defaultValue={
-                    content === 'filled' ? 'Westmere Park renewal' : undefined
-                  }
+                  value={content === 'filled' ? 'Westmere Park renewal' : ''}
                   size={size}
                   isInvalid={'isInvalid' in state}
                   isDisabled={'isDisabled' in state}
-                  isReadOnly={'isReadOnly' in state}
                 />
               </div>
             ))}
-            <div style={{ width: 200 }}>
-              <TextField
-                label="Project name"
-                placeholder="Add a name"
-                description="Shown on the project card."
-                size={size}
-                isRequired
-              />
-            </div>
           </div>
         ))
       )}

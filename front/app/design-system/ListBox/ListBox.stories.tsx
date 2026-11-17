@@ -30,7 +30,7 @@ export const Default: Story = {
       <ListBox
         aria-label="Sorting"
         selectionMode="single"
-        defaultSelectedKeys={new Set(['Trending'])}
+        selectedKeys={new Set(['Trending'])}
       >
         {[...sorts, 'Random'].map((sort) => (
           <ListBoxOption key={sort} id={sort}>
@@ -52,20 +52,14 @@ export const Options: Story = {
           <ListBox
             aria-label={selectionMode === 'single' ? 'Check' : 'Checkbox'}
             selectionMode={selectionMode}
-            defaultSelectedKeys={new Set(['yes', 'yes-disabled'])}
+            selectedKeys={new Set(['yes', 'yes-disabled'])}
             disabledKeys={['no-disabled', 'yes-disabled']}
           >
             <ListBoxOption id="no">Trending</ListBoxOption>
             <ListBoxOption id="yes">Trending</ListBoxOption>
             <ListBoxOption id="no-disabled">Trending</ListBoxOption>
             <ListBoxOption id="yes-disabled">Trending</ListBoxOption>
-            <ListBoxOption
-              id="description"
-              description="Most reactions in the last days"
-            >
-              Trending
-            </ListBoxOption>
-            <ListBoxOption id="icon" icon="tag-16" count={12}>
+            <ListBoxOption id="icon" icon="tag-16">
               Trending
             </ListBoxOption>
           </ListBox>
@@ -84,7 +78,7 @@ export const DisabledWithReason: Story = {
       <ListBox
         aria-label="Sorting"
         selectionMode="single"
-        defaultSelectedKeys={new Set(['Trending'])}
+        selectedKeys={new Set(['Trending'])}
       >
         {sorts.map((sort) => (
           <ListBoxOption

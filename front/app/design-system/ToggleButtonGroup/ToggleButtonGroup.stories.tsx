@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
+
+import { Key } from 'react-aria-components';
 
 import ToggleButton from '../ToggleButton';
 
@@ -11,7 +13,8 @@ const meta = {
   component: ToggleButtonGroup,
   args: {
     'aria-label': 'Layout',
-    defaultSelectedKeys: ['nested'],
+    selectedKeys: ['nested'],
+    onSelectionChange: () => {},
     children: [
       <ToggleButton key="nested" id="nested">
         Nested
@@ -28,18 +31,29 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
 
+const Example = ({ label, ids }: { label: string; ids: string[] }) => {
+  const [selectedKeys, setSelectedKeys] = useState<Set<Key>>(new Set([ids[0]]));
+
+  return (
+    <ToggleButtonGroup
+      aria-label={label}
+      selectedKeys={selectedKeys}
+      onSelectionChange={setSelectedKeys}
+    >
+      {ids.map((id) => (
+        <ToggleButton key={id} id={id}>
+          {id}
+        </ToggleButton>
+      ))}
+    </ToggleButtonGroup>
+  );
+};
+
 export const AllVariants: Story = {
   render: () => (
     <div style={{ display: 'grid', gap: 16, justifyItems: 'start' }}>
-      <ToggleButtonGroup aria-label="Layout" defaultSelectedKeys={['nested']}>
-        <ToggleButton id="nested">Nested</ToggleButton>
-        <ToggleButton id="flat">Flat</ToggleButton>
-      </ToggleButtonGroup>
-      <ToggleButtonGroup aria-label="Option" defaultSelectedKeys={['one']}>
-        <ToggleButton id="one">Option</ToggleButton>
-        <ToggleButton id="two">Option</ToggleButton>
-        <ToggleButton id="three">Option</ToggleButton>
-      </ToggleButtonGroup>
+      <Example label="Layout" ids={['Nested', 'Flat']} />
+      <Example label="Option" ids={['One', 'Two', 'Three']} />
     </div>
   ),
 };

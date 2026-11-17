@@ -1,7 +1,6 @@
 import React from 'react';
 
 import Checkbox from '.';
-import CheckboxGroup from './CheckboxGroup';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -18,14 +17,13 @@ export const Default: Story = {};
 
 const checked = [
   { label: 'No', props: {} },
-  { label: 'Yes', props: { defaultSelected: true } },
+  { label: 'Yes', props: { isSelected: true } },
   { label: 'Indeterminate', props: { isIndeterminate: true } },
 ];
 
 const states = [
   { label: 'Default', props: {} },
   { label: 'Disabled', props: { isDisabled: true } },
-  { label: 'Invalid', props: { isInvalid: true } },
 ];
 
 export const AllVariants: Story = {
@@ -52,18 +50,5 @@ export const AllVariants: Story = {
         </div>
       ))}
     </div>
-  ),
-};
-
-export const Group: Story = {
-  render: () => (
-    <CheckboxGroup
-      label="Show these layers"
-      isInvalid
-      errorMessage="Pick at least one layer"
-    >
-      <Checkbox value="map">Show on the map</Checkbox>
-      <Checkbox value="list">Show in the list</Checkbox>
-    </CheckboxGroup>
   ),
 };

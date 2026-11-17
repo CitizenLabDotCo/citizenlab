@@ -1,7 +1,6 @@
 import React from 'react';
 
 import Button from '../Button';
-import TextField from '../TextField';
 
 import Popover, { DialogTrigger } from '.';
 
@@ -10,7 +9,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 const meta = {
   title: 'Design system/Overlays/Popover',
   component: Popover,
-  args: { title: 'Rename', children: null },
+  args: { 'aria-label': 'Rename', children: null },
 } satisfies Meta<typeof Popover>;
 
 export default meta;
@@ -47,16 +46,6 @@ const Trigger = ({ children }: { children: React.ReactElement }) => (
 export const Default: Story = {
   render: () => (
     <Trigger>
-      <Popover title="Rename">
-        <Slot />
-      </Popover>
-    </Trigger>
-  ),
-};
-
-export const WithoutTitle: Story = {
-  render: () => (
-    <Trigger>
       <Popover aria-label="Rename">
         <Slot />
       </Popover>
@@ -64,24 +53,11 @@ export const WithoutTitle: Story = {
   ),
 };
 
-// The _Popover body · Rename example.
-export const Rename: Story = {
+export const Hug: Story = {
   render: () => (
     <Trigger>
-      <Popover title="Rename">
-        <TextField
-          label="Project title"
-          size={32}
-          defaultValue="Westmere Riverside Park"
-        />
-        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
-          <Button size={28} slot="close">
-            Cancel
-          </Button>
-          <Button size={28} variant="primary" slot="close">
-            Save
-          </Button>
-        </div>
+      <Popover aria-label="Pick an icon" width="hug">
+        <Slot />
       </Popover>
     </Trigger>
   ),

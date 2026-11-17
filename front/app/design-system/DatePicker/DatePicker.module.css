@@ -13,11 +13,6 @@
   padding: 0 var(--gv-space-4) 0 var(--gv-space-8);
 }
 
-.size32 {
-  composes: size32 from '../TextField/input.module.css';
-  padding: 0 var(--gv-space-4) 0 var(--gv-space-8);
-}
-
 .picker[data-open] .box {
   border-color: var(--gv-border-control-active);
 }

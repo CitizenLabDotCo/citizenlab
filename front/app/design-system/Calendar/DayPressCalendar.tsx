@@ -8,7 +8,11 @@ import '../tokens.css';
 import styles from './Calendar.module.css';
 import CalendarMonth from './CalendarMonth';
 
-import type { OpenRangeValue } from './RangeCalendar';
+// A range that may have no end yet, or no end at all.
+export type OpenRangeValue<T> = {
+  start: T;
+  end: T | null;
+};
 
 const daysFrom = (start: CalendarDate, end: CalendarDate) => {
   const days: CalendarDate[] = [];
@@ -24,17 +28,17 @@ type Props = {
   minValue?: DateValue;
   maxValue?: DateValue;
   isDateUnavailable?: (date: DateValue) => boolean;
-  isDisabled?: boolean;
-  autoFocus?: boolean;
+  // The day that has focus first, and so the month shown first.
   defaultFocusedValue?: DateValue;
-  'aria-label'?: string;
 };
 
 /*
- * React Aria's RangeCalendar applies its own two-press selection and cannot
- * hold a range without an end. A multiple-selection Calendar holding every
- * day of the range keeps each day announced as selected, and the one day a
- * press adds or removes is the pressed day.
+ * For ranges with their own rules: every press goes to onDayPress, and the
+ * caller decides the new value. React Aria's RangeCalendar applies its own
+ * two-press selection and cannot hold a range without an end. A
+ * multiple-selection Calendar holding every day of the range keeps each day
+ * announced as selected, and the one day a press adds or removes is the
+ * pressed day.
  */
 const DayPressCalendar = ({
   value,
@@ -42,10 +46,7 @@ const DayPressCalendar = ({
   minValue,
   maxValue,
   isDateUnavailable,
-  isDisabled,
-  autoFocus,
   defaultFocusedValue,
-  'aria-label': ariaLabel,
 }: Props) => {
   const selectedDays = !value
     ? []
@@ -70,11 +71,8 @@ const DayPressCalendar = ({
       minValue={minValue}
       maxValue={maxValue}
       isDateUnavailable={isDateUnavailable}
-      isDisabled={isDisabled}
-      autoFocus={autoFocus}
       defaultFocusedValue={defaultFocusedValue}
       firstDayOfWeek="mon"
-      aria-label={ariaLabel}
     >
       <CalendarMonth range={value} />
     </AriaCalendar>

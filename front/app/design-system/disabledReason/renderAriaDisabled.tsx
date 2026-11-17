@@ -7,7 +7,7 @@ type ItemElementProps =
     >
   | React.JSX.IntrinsicElements['div'];
 
-// The `render` of a collection item (Tab, MenuItem, ListBoxItem) with a disabled reason.
+// The `render` of a collection item (SegmentedTab, MenuItem) with a disabled reason.
 // React Aria sets aria-disabled only on items it disables, and these stay enabled so
 // they keep focus. The props are React Aria's own DOM props for the element.
 const renderAriaDisabled = (props: ItemElementProps) =>

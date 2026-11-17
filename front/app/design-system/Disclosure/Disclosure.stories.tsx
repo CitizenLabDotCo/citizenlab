@@ -1,10 +1,8 @@
 import React, { ReactNode } from 'react';
 
 import Badge from '../Badge';
-import Button from '../Button';
 import IconButton from '../IconButton';
 import ReviewStatus from '../ReviewStatus';
-import Switch from '../Switch';
 
 import Disclosure from '.';
 
@@ -56,15 +54,6 @@ export const HeaderDisclosure: Story = {
       <Disclosure title="Attachments" isDisabled>
         <Body />
       </Disclosure>
-      <Disclosure title="Attachments" disabledReason="Publish the phase first">
-        <Body />
-      </Disclosure>
-      <Disclosure title="Attachments" defaultExpanded>
-        <Body />
-      </Disclosure>
-      <Disclosure title="Attachments" defaultExpanded isDisabled>
-        <Body />
-      </Disclosure>
     </Column>
   ),
 };
@@ -72,8 +61,13 @@ export const HeaderDisclosure: Story = {
 export const HeaderButton: Story = {
   render: () => (
     <Column>
-      <Disclosure header="button" title="Attachments" />
-      <Disclosure header="button" title="Attachments" isDisabled />
+      <Disclosure header="button" title="Attachments" actionIcon="plus-16" />
+      <Disclosure
+        header="button"
+        title="Attachments"
+        actionIcon="plus-16"
+        isDisabled
+      />
       <Disclosure
         header="button"
         title="Idea tags"
@@ -91,42 +85,12 @@ export const HeaderStatic: Story = {
       <Disclosure
         header="static"
         title="Attachments"
-        actions={
-          <Button variant="secondary" size={28}>
-            Button
-          </Button>
-        }
+        actions={<IconButton icon="plus-16" aria-label="Add an attachment" />}
       />
       <Disclosure
         header="static"
         title="Attachments"
-        isDisabled
-        actions={
-          <Button variant="secondary" size={28}>
-            Button
-          </Button>
-        }
-      />
-      <Disclosure
-        header="static"
-        title="Attachments"
-        actions={
-          <Button variant="secondary" size={28}>
-            Button
-          </Button>
-        }
-      >
-        <Body />
-      </Disclosure>
-      <Disclosure
-        header="static"
-        title="Attachments"
-        isDisabled
-        actions={
-          <Button variant="secondary" size={28}>
-            Button
-          </Button>
-        }
+        actions={<IconButton icon="plus-16" aria-label="Add an attachment" />}
       >
         <Body />
       </Disclosure>
@@ -147,9 +111,6 @@ export const Slots: Story = {
       >
         <Body />
       </Disclosure>
-      <Disclosure title="Embed URL" value="Not set">
-        <Body />
-      </Disclosure>
       <Disclosure title="Input form" summary={<Badge>Idea</Badge>}>
         <Body />
       </Disclosure>
@@ -160,42 +121,8 @@ export const Slots: Story = {
       >
         <Body />
       </Disclosure>
-      <Disclosure title="Dates" isRequired>
-        <Body />
-      </Disclosure>
-      <Disclosure
-        title="Report"
-        header="static"
-        actions={
-          <div style={{ display: 'flex', gap: 8 }}>
-            <Button variant="secondary">Download</Button>
-            <Button variant="primary" icon="plus-16">
-              Add a report
-            </Button>
-          </div>
-        }
-      />
-      <Disclosure
-        title="Options to vote on"
-        header="static"
-        actions={
-          <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-            <IconButton icon="plus-16" aria-label="Add an option" />
-            <IconButton icon="upload-16" aria-label="Import options" />
-            <Button variant="primary">Create form</Button>
-          </div>
-        }
-      />
-      <Disclosure
-        title="Auto-share results"
-        header="static"
-        actions={
-          <Switch size={26} aria-label="Auto-share results" defaultSelected />
-        }
-      />
       <Disclosure
         title="A very long setting title that has to truncate before anything else does"
-        isRequired
         summary={<Badge>Default</Badge>}
       >
         <Body />

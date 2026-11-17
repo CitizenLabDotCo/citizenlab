@@ -5,23 +5,14 @@ import { TabList as AriaTabList } from 'react-aria-components';
 import '../tokens.css';
 import styles from './Tabs.module.css';
 
-export type TabListProps = {
+type Props = {
   // Tab elements.
   children: ReactNode;
   'aria-label'?: string;
-  'aria-labelledby'?: string;
 };
 
-const TabList = ({
-  children,
-  'aria-label': ariaLabel,
-  'aria-labelledby': ariaLabelledBy,
-}: TabListProps) => (
-  <AriaTabList
-    className={styles.tabList}
-    aria-label={ariaLabel}
-    aria-labelledby={ariaLabelledBy}
-  >
+const TabList = ({ children, 'aria-label': ariaLabel }: Props) => (
+  <AriaTabList className={styles.tabList} aria-label={ariaLabel}>
     {children}
   </AriaTabList>
 );

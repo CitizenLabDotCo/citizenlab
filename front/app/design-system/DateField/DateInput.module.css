@@ -1,7 +1,4 @@
-/*
- * The segmented input box shared by Date field, Time field, Date picker and
- * Date range picker.
- */
+/* The segmented input box shared by Time field and Date picker. */
 
 .field {
   composes: field from '../Field/Field.module.css';
@@ -24,7 +21,7 @@
   padding: 0 var(--gv-space-10) 0 var(--gv-space-8);
 }
 
-/* The DateInput when it sits inside a picker's box rather than being the box. */
+/* The DateInput inside the Date picker's box, rather than being the box. */
 .segments {
   display: flex;
   align-items: center;

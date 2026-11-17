@@ -1,13 +1,13 @@
 import React from 'react';
 
-import Breadcrumbs, { Breadcrumb, BreadcrumbSeparator } from '.';
+import Breadcrumbs, { Breadcrumb } from '.';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
   title: 'Design system/Navigation/Breadcrumbs',
   component: Breadcrumbs,
-  args: { children: null },
+  args: { children: null, separator: 'chevron' },
 } satisfies Meta<typeof Breadcrumbs>;
 
 export default meta;
@@ -15,7 +15,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   render: () => (
-    <Breadcrumbs>
+    <Breadcrumbs separator="chevron">
       <Breadcrumb href="#projects">Projects</Breadcrumb>
       <Breadcrumb href="#project">Untitled project</Breadcrumb>
       <Breadcrumb>Collect ideas</Breadcrumb>
@@ -23,7 +23,7 @@ export const Default: Story = {
   ),
 };
 
-const separators: BreadcrumbSeparator[] = ['chevron', 'slash'];
+const separators = ['chevron', 'slash'] as const;
 
 // Each row: a link level (Default; hover, press and focus it to see the states),
 // a disabled level, then the current level.
@@ -40,7 +40,7 @@ export const AllVariants: Story = {
         </Breadcrumbs>
       ))}
       <div style={{ width: 200 }}>
-        <Breadcrumbs>
+        <Breadcrumbs separator="chevron">
           <Breadcrumb href="#projects">Projects</Breadcrumb>
           <Breadcrumb href="#project">A very long project name</Breadcrumb>
           <Breadcrumb>Collect ideas</Breadcrumb>

@@ -12,13 +12,6 @@
   flex-grow: 1;
 }
 
-/* A column flex box stretches each action button to the card's width. */
-.actions {
-  display: flex;
-  flex-direction: column;
-  gap: var(--gv-space-8);
-}
-
 .stats {
   padding: var(--gv-space-8);
   border-radius: var(--gv-radius-12);

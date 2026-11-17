@@ -67,20 +67,3 @@
 .dropZone[data-drop-target] .text {
   color: var(--gv-text-primary);
 }
-
-.dropZone[data-disabled] {
-  background: var(--gv-surface-disabled);
-  border-color: var(--gv-border-disabled);
-}
-
-.dropZone[data-disabled] .icon {
-  color: var(--gv-icon-disabled);
-}
-
-.dropZone[data-disabled] .text {
-  color: var(--gv-text-disabled);
-}
-
-.dropZone[data-disabled] .browse {
-  cursor: default;
-}

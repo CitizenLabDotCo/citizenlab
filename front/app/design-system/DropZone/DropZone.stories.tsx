@@ -20,12 +20,3 @@ export const Default: Story = {
     </div>
   ),
 };
-
-export const AllVariants: Story = {
-  render: (args) => (
-    <div style={{ width: 370, display: 'grid', gap: 16 }}>
-      <DropZone {...args} />
-      <DropZone {...args} isDisabled />
-    </div>
-  ),
-};

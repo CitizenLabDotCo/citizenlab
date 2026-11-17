@@ -33,11 +33,6 @@
   cursor: pointer;
 }
 
-.field[data-disabled] .button {
-  color: var(--gv-icon-disabled);
-  cursor: default;
-}
-
 .chevron {
   transition: transform var(--gv-motion-duration-fast)
     var(--gv-motion-easing-standard);

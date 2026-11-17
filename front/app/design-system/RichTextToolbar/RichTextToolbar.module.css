@@ -64,8 +64,3 @@
 .button[data-selected][data-hovered] {
   background: var(--gv-surface-pressed);
 }
-
-.button[data-disabled] {
-  opacity: var(--gv-opacity-disabled);
-  cursor: default;
-}

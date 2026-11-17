@@ -20,10 +20,6 @@
   cursor: default;
 }
 
-.radio[data-readonly] {
-  cursor: default;
-}
-
 /* 18 px ring with a 1.5 px border: both off-scale, kept as drawn. */
 .indicator {
   composes: ringOutside from '../focus.module.css';

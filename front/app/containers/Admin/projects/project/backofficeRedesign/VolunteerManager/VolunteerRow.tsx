@@ -21,7 +21,7 @@ const VolunteerRow = ({ volunteer, user, causeTitle }: Props) => {
   const name = user ? getFullName(user) : undefined;
 
   return (
-    <Row id={volunteer.id} kind="flat" textValue={name}>
+    <Row id={volunteer.id} textValue={name}>
       <Cell>{name}</Cell>
       <Cell tone="secondary">{user?.attributes.email}</Cell>
       <Cell>{causeTitle}</Cell>

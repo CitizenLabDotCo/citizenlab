@@ -47,7 +47,7 @@ const Facet = () => (
   <Menu
     aria-label="Status"
     selectionMode="multiple"
-    defaultSelectedKeys={new Set(['proposed'])}
+    selectedKeys={new Set(['proposed'])}
   >
     {statuses.map((status) => (
       <MenuItem
@@ -186,9 +186,6 @@ export const LinkItems: Story = {
       <Menu aria-label="Share results">
         <MenuItem href="#messaging">Go to messaging</MenuItem>
         <MenuItem href="#homepage">Edit project homepage</MenuItem>
-        <MenuItem href="https://www.govocal.com" target="_blank">
-          Open in a new tab
-        </MenuItem>
       </Menu>
     </MenuTrigger>
   ),

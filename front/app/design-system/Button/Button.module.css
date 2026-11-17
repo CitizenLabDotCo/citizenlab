@@ -29,13 +29,9 @@
   gap: var(--gv-space-8);
 }
 
-/* Show label off (the menu half of a Split button): a square. */
+/* Without a label: a square. */
 .unlabelled {
   padding: 0;
-}
-
-.unlabelled.size28 {
-  width: var(--gv-size-control-28);
 }
 
 .unlabelled.size32 {

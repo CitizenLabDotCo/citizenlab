@@ -46,14 +46,7 @@ export const ButtonVariants: Story = {
   render: () => (
     <div style={{ display: 'flex', gap: 16 }}>
       <RichTextToolbarButton icon="bold-14" aria-label="Bold" />
-      <RichTextToolbarButton icon="bold-14" aria-label="Bold" isDisabled />
-      <RichTextToolbarButton icon="bold-14" aria-label="Bold" defaultSelected />
-      <RichTextToolbarButton
-        icon="bold-14"
-        aria-label="Bold"
-        defaultSelected
-        isDisabled
-      />
+      <RichTextToolbarButton icon="bold-14" aria-label="Bold" isSelected />
     </div>
   ),
 };
@@ -66,10 +59,7 @@ export const AllTools: Story = {
       <RichTextToolbar aria-label="Formatting">
         <MenuTrigger>
           <RichTextToolbarButton text="Normal" hasMenu />
-          <Menu
-            selectionMode="single"
-            defaultSelectedKeys={new Set(['normal'])}
-          >
+          <Menu selectionMode="single" selectedKeys={new Set(['normal'])}>
             <MenuItem id="title">Title</MenuItem>
             <MenuItem id="subtitle">Subtitle</MenuItem>
             <MenuItem id="normal">Normal</MenuItem>
@@ -85,7 +75,7 @@ export const AllTools: Story = {
         <RichTextToolbarButton text="Add button" isSelected={false} />
         <MenuTrigger>
           <RichTextToolbarButton text="Align left" hasMenu />
-          <Menu selectionMode="single" defaultSelectedKeys={new Set(['left'])}>
+          <Menu selectionMode="single" selectedKeys={new Set(['left'])}>
             <MenuItem id="left">Align left</MenuItem>
             <MenuItem id="center">Center text</MenuItem>
             <MenuItem id="right">Align right</MenuItem>
@@ -117,14 +107,8 @@ export const TextButtonVariants: Story = {
   render: () => (
     <div style={{ display: 'flex', gap: 16 }}>
       <RichTextToolbarButton text="1." aria-label="Ordered list" />
-      <RichTextToolbarButton
-        text="1."
-        aria-label="Ordered list"
-        defaultSelected
-      />
-      <RichTextToolbarButton text="1." aria-label="Ordered list" isDisabled />
+      <RichTextToolbarButton text="1." aria-label="Ordered list" isSelected />
       <RichTextToolbarButton text="Normal" hasMenu />
-      <RichTextToolbarButton text="Normal" hasMenu isDisabled />
     </div>
   ),
 };

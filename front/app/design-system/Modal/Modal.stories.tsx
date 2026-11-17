@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { ComponentProps, useState } from 'react';
 
 import Button from '../Button';
 
-import Modal, { DialogTrigger, ModalSize } from '.';
+import Modal from '.';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -31,7 +31,8 @@ const meta = {
   component: Modal,
   args: {
     title: 'Modal title',
-    defaultOpen: true,
+    isOpen: true,
+    onOpenChange: () => {},
     children: <Slot />,
     primaryAction: { label: 'Save', onPress: (close) => close() },
     secondaryAction: { label: 'Cancel' },
@@ -41,7 +42,9 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const sizeStory = (size: ModalSize): Story => ({
+type ModalProps = ComponentProps<typeof Modal>;
+
+const sizeStory = (size: NonNullable<ModalProps['size']>): Story => ({
   args: {
     size,
     children: <Slot fill={size === 866 || size === 920} />,
@@ -65,23 +68,23 @@ export const NoFooter: Story = {
   args: { primaryAction: undefined, secondaryAction: undefined },
 };
 
+const WithTriggerExample = (args: ModalProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+      <Button onPress={() => setIsOpen(true)}>Open modal</Button>
+      <Modal {...args} isOpen={isOpen} onOpenChange={setIsOpen} />
+    </>
+  );
+};
+
 export const WithTrigger: Story = {
-  args: { defaultOpen: undefined },
-  render: (args) => (
-    <DialogTrigger>
-      <Button>Open modal</Button>
-      <Modal {...args} />
-    </DialogTrigger>
-  ),
+  render: (args) => <WithTriggerExample {...args} />,
 };
 
 // A press on the backdrop also closes it.
 export const Dismissable: Story = {
-  args: { defaultOpen: undefined, isDismissable: true },
-  render: (args) => (
-    <DialogTrigger>
-      <Button>Open modal</Button>
-      <Modal {...args} />
-    </DialogTrigger>
-  ),
+  args: { isDismissable: true },
+  render: (args) => <WithTriggerExample {...args} />,
 };

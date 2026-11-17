@@ -23,7 +23,7 @@ type Props = LabelProps & {
   onBlur?: () => void;
   inputRef?: RefCallback<HTMLInputElement>;
   errorMessage?: ReactNode;
-  size?: 36 | 32;
+  size?: 32;
   // Typing stops at the limit, and the count shows under the field.
   maxCharCount?: number;
 };

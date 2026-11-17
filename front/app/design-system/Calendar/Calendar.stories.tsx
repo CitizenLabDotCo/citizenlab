@@ -1,20 +1,16 @@
 import React, { useState } from 'react';
 
-import {
-  CalendarDate,
-  getLocalTimeZone,
-  parseDate,
-  today,
-} from '@internationalized/date';
+import { CalendarDate, parseDate } from '@internationalized/date';
 import { I18nProvider } from 'react-aria-components';
 
-import Calendar, { OpenRangeValue, RangeCalendar } from '.';
+import { DayPressCalendar, OpenRangeValue } from '.';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
+// The single-day Calendar only shows inside the Date picker; see its stories.
 const meta = {
   title: 'Design system/Forms/Calendar',
-  component: Calendar,
+  component: DayPressCalendar,
   decorators: [
     (Story) => (
       <I18nProvider locale="en-GB">
@@ -22,39 +18,10 @@ const meta = {
       </I18nProvider>
     ),
   ],
-} satisfies Meta<typeof Calendar>;
+} satisfies Meta<typeof DayPressCalendar>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Single: Story = {
-  render: () => (
-    <Calendar
-      defaultValue={parseDate('2026-11-20')}
-      minValue={today(getLocalTimeZone())}
-    />
-  ),
-};
-
-export const Range: Story = {
-  render: () => (
-    <RangeCalendar
-      defaultValue={{
-        start: parseDate('2026-11-16'),
-        end: parseDate('2026-11-27'),
-      }}
-    />
-  ),
-};
-
-export const Unavailable: Story = {
-  render: () => (
-    <Calendar
-      defaultValue={parseDate('2026-11-20')}
-      isDateUnavailable={(date) => date.day % 7 === 0}
-    />
-  ),
-};
+type Story = StoryObj<typeof DayPressCalendar>;
 
 type DayPressDemoProps = {
   initialValue: OpenRangeValue<CalendarDate> | null;
@@ -65,7 +32,7 @@ const DayPressDemo = ({ initialValue }: DayPressDemoProps) => {
   const [value, setValue] = useState(initialValue);
 
   return (
-    <RangeCalendar
+    <DayPressCalendar
       value={value}
       onDayPress={(day) =>
         setValue(
@@ -76,7 +43,6 @@ const DayPressDemo = ({ initialValue }: DayPressDemoProps) => {
       }
       defaultFocusedValue={parseDate('2026-11-01')}
       isDateUnavailable={(date) => date.day >= 3 && date.day <= 6}
-      aria-label="Phase dates"
     />
   );
 };

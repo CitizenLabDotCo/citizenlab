@@ -11,20 +11,11 @@
   box-sizing: border-box;
   display: flex;
   align-items: center;
+  height: var(--gv-size-36);
   border-radius: var(--gv-radius-6);
   transition-property: background-color;
   transition-duration: var(--gv-motion-duration-fast);
   transition-timing-function: var(--gv-motion-easing-standard);
-}
-
-.size36 .cell {
-  height: var(--gv-size-36);
-  --gv-column-padding: var(--gv-space-12);
-}
-
-.size32 .cell {
-  height: var(--gv-size-32);
-  --gv-column-padding: var(--gv-space-8);
 }
 
 .trigger {
@@ -37,7 +28,7 @@
   min-width: 0;
   gap: var(--gv-space-8);
   margin: 0;
-  padding: 0 var(--gv-column-padding);
+  padding: 0 var(--gv-space-12);
   border: none;
   border-radius: var(--gv-radius-6);
   background: transparent;
@@ -47,15 +38,6 @@
 
 span.trigger {
   cursor: default;
-}
-
-/* The head gap sits between the expand-all control and the label. */
-.afterExpandAll {
-  padding-left: var(--gv-space-8);
-}
-
-.cell[data-align='end'] .trigger {
-  justify-content: flex-end;
 }
 
 .labelGroup {
@@ -76,11 +58,6 @@ span.trigger {
 .arrow {
   flex-shrink: 0;
   color: var(--gv-icon-tertiary);
-}
-
-.filter {
-  flex-shrink: 0;
-  color: var(--gv-text-filter-chip);
 }
 
 .chevron {
@@ -112,7 +89,7 @@ span.trigger {
   color: var(--gv-icon-primary);
 }
 
-/* Sorted or filtered: the label reads Small strong. */
+/* Sorted: the label reads Small strong. */
 .cell[data-on] .label {
   font-weight: var(--gv-font-weight-medium);
 }
@@ -125,40 +102,4 @@ span.trigger {
 .cell:has(.trigger[data-focus-visible]) {
   outline: var(--gv-border-width-focus) solid var(--gv-border-focused);
   outline-offset: calc(-1 * var(--gv-border-width-focus));
-}
-
-/* Expand all */
-.expandAll {
-  display: flex;
-  flex-shrink: 0;
-  align-items: center;
-  padding: 0 var(--gv-space-4) 0 var(--gv-column-padding);
-}
-
-.expandToggle {
-  composes: ringInside from '../focus.module.css';
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: var(--gv-size-16);
-  height: var(--gv-size-16);
-  margin: 0;
-  padding: 0;
-  border: none;
-  border-radius: var(--gv-radius-4);
-  background: transparent;
-  cursor: pointer;
-}
-
-.expandIcon {
-  color: var(--gv-icon-tertiary);
-}
-
-.expandToggle[data-hovered] {
-  background: var(--gv-border-divider);
-}
-
-.expandToggle[data-hovered] .expandIcon {
-  color: var(--gv-icon-primary);
 }

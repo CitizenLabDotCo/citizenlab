@@ -5,30 +5,6 @@ export default defineMessages({
     id: 'app.designSystem.Table.actionsColumn',
     defaultMessage: 'Actions',
   },
-  expandAll: {
-    id: 'app.designSystem.Table.expandAll',
-    defaultMessage: 'Expand all',
-  },
-  collapseAll: {
-    id: 'app.designSystem.Table.collapseAll',
-    defaultMessage: 'Collapse all',
-  },
-  expand: {
-    id: 'app.designSystem.Table.expand',
-    defaultMessage: 'Expand',
-  },
-  collapse: {
-    id: 'app.designSystem.Table.collapse',
-    defaultMessage: 'Collapse',
-  },
-  resizeColumn: {
-    id: 'app.designSystem.Table.resizeColumn',
-    defaultMessage: 'Resize column',
-  },
-  dragRow: {
-    id: 'app.designSystem.Table.dragRow',
-    defaultMessage: 'Drag to move',
-  },
   sortAscendingText: {
     id: 'app.designSystem.Table.sortAscendingText',
     defaultMessage: 'A to Z',
@@ -60,13 +36,5 @@ export default defineMessages({
   sortSection: {
     id: 'app.designSystem.Table.sortSection',
     defaultMessage: 'Sort',
-  },
-  valuesSection: {
-    id: 'app.designSystem.Table.valuesSection',
-    defaultMessage: 'Filter by value',
-  },
-  addFilter: {
-    id: 'app.designSystem.Table.addFilter',
-    defaultMessage: 'Filter',
   },
 });

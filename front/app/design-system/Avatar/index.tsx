@@ -5,17 +5,17 @@ import '../tokens.css';
 
 import styles from './Avatar.module.css';
 
-export type AvatarSize = 24 | 26 | 28;
+type AvatarSize = 24 | 28;
 
 // Initials sit next to the person's name, so they are hidden from assistive tech.
-export type AvatarContent =
+type AvatarContent =
   | { content?: 'initials'; initials: string }
   // Without a src the photo placeholder shows.
   | { content: 'image'; src?: string; alt: string }
   // Nobody assigned.
   | { content: 'empty' };
 
-export type AvatarProps = AvatarContent & {
+type AvatarProps = AvatarContent & {
   size?: AvatarSize;
 };
 

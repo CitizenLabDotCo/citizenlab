@@ -45,12 +45,3 @@
 .searchField .group[data-focus-within] {
   border-color: var(--gv-border-control-active);
 }
-
-.searchField .group[data-disabled] {
-  background: var(--gv-surface-disabled);
-  border-color: var(--gv-border-disabled);
-}
-
-.searchField .group[data-disabled] .searchIcon {
-  color: var(--gv-icon-disabled);
-}

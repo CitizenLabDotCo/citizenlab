@@ -23,7 +23,7 @@ const getSlots = (page: number, pageCount: number): Slot[] => {
   return [1, 'ellipsis', page, 'ellipsis', pageCount];
 };
 
-export type PaginationProps = {
+type PaginationProps = {
   page: number;
   pageCount: number;
   onChange: (page: number) => void;

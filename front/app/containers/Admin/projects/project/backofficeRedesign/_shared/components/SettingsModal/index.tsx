@@ -88,7 +88,6 @@ const SettingsModal = ({
         {notice && <div className={styles.notice}>{notice}</div>}
         <div className={styles.layout}>
           <VerticalTabs
-            style="settings"
             selectedKey={selected.name}
             onSelectionChange={(key) => setSelectedSection(String(key))}
           >

@@ -1,39 +1,15 @@
+/* The underline alone says it is a link, so it shows in every state. */
 .link {
+  composes: bodyLink from '../typography.module.css';
   composes: ringOutside from '../focus.module.css';
+  color: var(--gv-text-secondary);
   cursor: pointer;
   transition-property: color;
   transition-duration: var(--gv-motion-duration-fast);
   transition-timing-function: var(--gv-motion-easing-standard);
 }
 
-.link[data-disabled] {
-  opacity: var(--gv-opacity-disabled);
-  cursor: default;
-}
-
-/* The underline alone says it is a link, so it shows in every state. */
-.inline {
-  composes: bodyLink from '../typography.module.css';
-  color: var(--gv-text-secondary);
-}
-
-.inline[data-hovered],
-.inline[data-pressed] {
+.link[data-hovered],
+.link[data-pressed] {
   color: var(--gv-text-primary);
-}
-
-.standalone {
-  composes: ui from '../typography.module.css';
-  color: var(--gv-text-link);
-  text-decoration: none;
-}
-
-.standalone[data-hovered] {
-  color: var(--gv-text-link-hovered);
-  text-decoration: underline;
-}
-
-.standalone[data-pressed] {
-  color: var(--gv-text-link-pressed);
-  text-decoration: underline;
 }

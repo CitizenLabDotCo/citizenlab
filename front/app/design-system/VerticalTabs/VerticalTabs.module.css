@@ -7,9 +7,6 @@
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
-}
-
-.settingsColumn {
   width: 210px;
   padding: var(--gv-space-16) var(--gv-space-12);
   gap: var(--gv-space-4);
@@ -47,57 +44,24 @@
   white-space: nowrap;
 }
 
-.count {
-  flex-shrink: 0;
-  color: var(--gv-text-tertiary);
-}
-
-.tab[data-hovered]:not([data-selected]):not([aria-disabled='true']) {
+.tab[data-hovered]:not([data-selected]) {
   background: var(--gv-surface-hovered);
   color: var(--gv-text-primary);
 }
 
-.tab[data-pressed]:not([data-selected]):not([aria-disabled='true']) {
+.tab[data-pressed]:not([data-selected]) {
   background: var(--gv-surface-pressed);
   color: var(--gv-text-primary);
 }
 
-.tab[data-hovered]:not([aria-disabled='true']) .icon,
-.tab[data-pressed]:not([aria-disabled='true']) .icon,
+.tab[data-hovered] .icon,
+.tab[data-pressed] .icon,
 .tab[data-selected] .icon {
   color: var(--gv-icon-primary);
 }
 
 .tab[data-selected] {
+  background: var(--gv-surface-tab-selected);
   color: var(--gv-text-primary);
   font-weight: var(--gv-font-weight-medium);
-}
-
-.settings[data-selected] {
-  background: var(--gv-surface-tab-selected);
-}
-
-.rail[data-selected] {
-  background: var(--gv-surface-control-subtle);
-}
-
-/* The count stays regular on the selected tab. */
-.tab[data-selected] .count {
-  font-weight: var(--gv-font-weight-regular);
-}
-
-.tab[data-disabled],
-.tab[aria-disabled='true'] {
-  color: var(--gv-text-disabled);
-  cursor: default;
-}
-
-.tab[data-disabled] .icon,
-.tab[aria-disabled='true'] .icon {
-  color: var(--gv-icon-disabled);
-}
-
-.tab[data-disabled] .count,
-.tab[aria-disabled='true'] .count {
-  color: var(--gv-text-disabled);
 }

@@ -9,29 +9,17 @@ import '../tokens.css';
 
 import styles from './RadioGroup.module.css';
 
-export type RadioProps = {
+type RadioProps = {
   value: string;
   children: ReactNode;
   isDisabled?: boolean;
   // Looks disabled but stays focusable (arrow keys reach it) so the tooltip can say
   // why; it can't be chosen.
   disabledReason?: ReactNode;
-  autoFocus?: boolean;
-  // Set on the input.
-  id?: string;
-  'data-cy'?: string;
 };
 
 // Only used inside a RadioGroup.
-const Radio = ({
-  value,
-  children,
-  isDisabled,
-  disabledReason,
-  autoFocus,
-  id,
-  'data-cy': dataCy,
-}: RadioProps) => {
+const Radio = ({ value, children, isDisabled, disabledReason }: RadioProps) => {
   const hasReason = !!disabledReason;
   const reasonId = useId();
   const rootRef = useRef<HTMLLabelElement>(null);
@@ -46,10 +34,7 @@ const Radio = ({
       className={`${styles.radio} ${hasReason ? styles.withReason : ''}`}
       value={value}
       isDisabled={isDisabled && !hasReason}
-      autoFocus={autoFocus}
-      id={id}
       aria-describedby={hasReason ? reasonId : undefined}
-      data-cy={dataCy}
     >
       {({ isFocusVisible, isHovered }) => (
         <>

@@ -11,7 +11,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
-export type SelectionBarProps = {
+type SelectionBarProps = {
   count: number;
   // The batch actions: secondary Buttons, size 28, with a leading icon.
   children: ReactNode;

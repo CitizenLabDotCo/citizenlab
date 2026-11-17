@@ -30,25 +30,6 @@
   pointer-events: none;
 }
 
-.icon {
-  flex-shrink: 0;
-  color: var(--gv-icon-secondary);
-}
-
-.toggleButton[data-hovered]:not([aria-disabled='true']),
-.toggleButton[data-pressed]:not([aria-disabled='true']) {
-  color: var(--gv-text-primary);
-}
-
-.toggleButton[data-pressed]:not([aria-disabled='true']) {
-  background: var(--gv-surface-neutral-hovered);
-}
-
-.toggleButton[data-hovered]:not([aria-disabled='true']) .icon,
-.toggleButton[data-pressed]:not([aria-disabled='true']) .icon {
-  color: var(--gv-icon-primary);
-}
-
 .toggleButton[data-selected] {
   background: var(--gv-surface-panel);
   color: var(--gv-text-primary);
@@ -59,12 +40,12 @@
   border-color: var(--gv-border-control);
 }
 
-.toggleButton[data-selected] .icon {
-  color: var(--gv-icon-primary);
+/* After Selected, so a pressed selected button still shows the press. */
+.toggleButton[data-hovered],
+.toggleButton[data-pressed] {
+  color: var(--gv-text-primary);
 }
 
-.toggleButton[data-disabled],
-.toggleButton[aria-disabled='true'] {
-  opacity: var(--gv-opacity-disabled);
-  cursor: default;
+.toggleButton[data-pressed] {
+  background: var(--gv-surface-neutral-hovered);
 }

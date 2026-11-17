@@ -9,10 +9,6 @@
   background: var(--gv-surface-panel);
 }
 
-.tall {
-  height: 102px;
-}
-
 .label {
   composes: body from '../typography.module.css';
   color: var(--gv-text-secondary);
@@ -21,9 +17,4 @@
 .value {
   composes: stat from '../typography.module.css';
   color: var(--gv-text-primary);
-}
-
-.note {
-  composes: smallStrong from '../typography.module.css';
-  color: var(--gv-text-secondary);
 }

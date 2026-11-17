@@ -10,25 +10,17 @@ import '../tokens.css';
 import messages from './messages';
 import styles from './TagGroup.module.css';
 
-export type TagProps = {
+type TagProps = {
   children: string;
   id?: Key;
-  isDisabled?: boolean;
-  'data-cy'?: string;
 };
 
 // Removable when the TagGroup has onRemove.
-const Tag = ({ children, id, isDisabled, 'data-cy': dataCy }: TagProps) => {
+const Tag = ({ children, id }: TagProps) => {
   const { formatMessage } = useIntl();
 
   return (
-    <AriaTag
-      id={id}
-      textValue={children}
-      isDisabled={isDisabled}
-      className={styles.tag}
-      data-cy={dataCy}
-    >
+    <AriaTag id={id} textValue={children} className={styles.tag}>
       {({ allowsRemoving }) => (
         <>
           {children}

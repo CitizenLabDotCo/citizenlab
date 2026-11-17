@@ -12,9 +12,8 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 export { default as FilterChip } from './FilterChip';
-export type { FilterChipProps } from './FilterChip';
 
-export type FilterBarProps = {
+type FilterBarProps = {
   // FilterChips.
   children?: ReactNode;
   // The design-system Menu that Add filter opens.

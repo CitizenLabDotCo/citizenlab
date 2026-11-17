@@ -12,29 +12,22 @@ import {
   DateValue,
   Dialog,
   DialogTrigger,
-  LabelContext,
   Popover,
   useLocale,
 } from 'react-aria-components';
 
-import { OpenRangeValue, RangeCalendar } from '../Calendar';
+import { DayPressCalendar, OpenRangeValue } from '../Calendar';
 import pickerStyles from '../DatePicker/DatePicker.module.css';
 import Divider from '../Divider';
-import { FieldHelp, FieldLabel, fieldStyles } from '../Field';
 import Icon from '../Icon';
 import '../tokens.css';
 
 import styles from './DateRangePicker.module.css';
 import TimeOfDayField, { TimeOfDay } from './TimeOfDayField';
 
-export type DayPressLabelProps =
-  | { label: ReactNode; 'aria-label'?: string }
-  // Without a label (a card title names it), the picker needs an aria-label.
-  | { label?: undefined; 'aria-label': string };
-
-export type DayPressBaseProps = {
-  description?: ReactNode;
-  size?: 36 | 32;
+type Props = {
+  // There is no visible label (a card title names it), so this names it.
+  'aria-label': string;
   // An end of null shows endPlaceholder.
   value: OpenRangeValue<CalendarDateTime> | null;
   onDayPress: (date: CalendarDate) => void;
@@ -48,16 +41,7 @@ export type DayPressBaseProps = {
   endTime?: TimeOfDay;
   // Shown under the calendar, e.g. in place of the times.
   calendarNote?: ReactNode;
-  isDisabled?: boolean;
-  isOpen?: boolean;
-  defaultOpen?: boolean;
   onOpenChange?: (isOpen: boolean) => void;
-  'data-cy'?: string;
-};
-
-type Props = DayPressBaseProps & {
-  label?: ReactNode;
-  'aria-label'?: string;
 };
 
 const isMidnight = (date: CalendarDateTime) =>
@@ -85,10 +69,7 @@ const toCalendarRange = (
 // optional times of day. The box is a button: typed dates would skip the
 // caller's rules.
 const DayPressRangePicker = ({
-  label,
   'aria-label': ariaLabel,
-  description,
-  size = 36,
   value,
   onDayPress,
   startPlaceholder,
@@ -100,13 +81,8 @@ const DayPressRangePicker = ({
   startTime,
   endTime,
   calendarNote,
-  isDisabled,
-  isOpen,
-  defaultOpen,
   onOpenChange,
-  'data-cy': dataCy,
 }: Props) => {
-  const labelId = useId();
   const valueId = useId();
   const { locale } = useLocale();
   const formatter = useMemo(
@@ -124,81 +100,60 @@ const DayPressRangePicker = ({
   const hasFooter = !!startTime || !!endTime || !!calendarNote;
 
   return (
-    <div
-      className={styles.picker}
-      data-disabled={isDisabled || undefined}
-      data-cy={dataCy}
-    >
-      {label && (
-        <LabelContext.Provider value={{ id: labelId, elementType: 'span' }}>
-          <FieldLabel>{label}</FieldLabel>
-        </LabelContext.Provider>
-      )}
-      <div className={fieldStyles.control}>
-        <DialogTrigger
-          isOpen={isOpen}
-          defaultOpen={defaultOpen}
-          onOpenChange={onOpenChange}
+    <div className={styles.picker}>
+      <DialogTrigger onOpenChange={onOpenChange}>
+        <Button
+          className={`${pickerStyles.box} ${pickerStyles.size36} ${styles.trigger}`}
+          aria-label={ariaLabel}
+          aria-describedby={valueId}
         >
-          <Button
-            className={`${pickerStyles.box} ${pickerStyles[`size${size}`]} ${
-              styles.trigger
-            }`}
-            isDisabled={isDisabled}
-            aria-label={label ? undefined : ariaLabel}
-            aria-labelledby={label ? `${labelId} ${valueId}` : undefined}
-            aria-describedby={label ? undefined : valueId}
-          >
-            <span className={styles.values} id={valueId}>
-              <span className={value ? styles.value : styles.placeholder}>
-                {value ? format(value.start) : startPlaceholder}
-              </span>
-              <span className={styles.arrow} aria-hidden>
-                {' → '}
-              </span>
-              <span className={value?.end ? styles.value : styles.placeholder}>
-                {value?.end ? format(value.end) : endPlaceholder}
-              </span>
+          <span className={styles.values} id={valueId}>
+            <span className={value ? styles.value : styles.placeholder}>
+              {value ? format(value.start) : startPlaceholder}
             </span>
-            <span className={styles.calendarIcon} aria-hidden>
-              <Icon name="calendar-16" />
+            <span className={styles.arrow} aria-hidden>
+              {' → '}
             </span>
-          </Button>
-          <Popover
-            className={pickerStyles.popover}
-            placement="bottom start"
-            offset={4}
+            <span className={value?.end ? styles.value : styles.placeholder}>
+              {value?.end ? format(value.end) : endPlaceholder}
+            </span>
+          </span>
+          <span className={styles.calendarIcon} aria-hidden>
+            <Icon name="calendar-16" />
+          </span>
+        </Button>
+        <Popover
+          className={pickerStyles.popover}
+          placement="bottom start"
+          offset={4}
+        >
+          <Dialog
+            className={`${pickerStyles.dialog} ${styles.dialog}`}
+            aria-label={ariaLabel}
           >
-            <Dialog
-              className={`${pickerStyles.dialog} ${styles.dialog}`}
-              aria-label={label ? undefined : ariaLabel}
-              aria-labelledby={label ? labelId : undefined}
-            >
-              <RangeCalendar
-                value={toCalendarRange(value)}
-                onDayPress={onDayPress}
-                minValue={minValue}
-                maxValue={maxValue}
-                isDateUnavailable={isDateUnavailable}
-                defaultFocusedValue={defaultFocusedValue}
-              />
-              {hasFooter && (
-                <>
-                  <Divider />
-                  {(startTime || endTime) && (
-                    <div className={styles.times}>
-                      {startTime && <TimeOfDayField time={startTime} />}
-                      {endTime && <TimeOfDayField time={endTime} />}
-                    </div>
-                  )}
-                  {calendarNote}
-                </>
-              )}
-            </Dialog>
-          </Popover>
-        </DialogTrigger>
-        <FieldHelp description={description} />
-      </div>
+            <DayPressCalendar
+              value={toCalendarRange(value)}
+              onDayPress={onDayPress}
+              minValue={minValue}
+              maxValue={maxValue}
+              isDateUnavailable={isDateUnavailable}
+              defaultFocusedValue={defaultFocusedValue}
+            />
+            {hasFooter && (
+              <>
+                <Divider />
+                {(startTime || endTime) && (
+                  <div className={styles.times}>
+                    {startTime && <TimeOfDayField time={startTime} />}
+                    {endTime && <TimeOfDayField time={endTime} />}
+                  </div>
+                )}
+                {calendarNote}
+              </>
+            )}
+          </Dialog>
+        </Popover>
+      </DialogTrigger>
     </div>
   );
 };

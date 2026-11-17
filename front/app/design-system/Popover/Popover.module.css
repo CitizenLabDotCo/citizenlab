@@ -12,8 +12,3 @@
   overflow: auto;
   outline: none;
 }
-
-.title {
-  composes: bodyStrong from '../typography.module.css';
-  color: var(--gv-text-primary);
-}

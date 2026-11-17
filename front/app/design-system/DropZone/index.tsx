@@ -19,13 +19,12 @@ import messages from './messages';
 
 type DropEvent = Parameters<NonNullable<AriaDropZoneProps['onDrop']>>[0];
 
-export type DropZoneProps = {
+type DropZoneProps = {
   // Called with the files picked with browse or dropped on the zone.
   onSelect: (files: File[]) => void;
   // MIME types, as for FileTrigger.
   acceptedFileTypes?: string[];
   allowsMultiple?: boolean;
-  isDisabled?: boolean;
   // Set on the drop zone element.
   id?: string;
   'aria-label'?: string;
@@ -38,7 +37,6 @@ const DropZone = ({
   onSelect,
   acceptedFileTypes,
   allowsMultiple = false,
-  isDisabled = false,
   id,
   'aria-label': ariaLabel,
   'data-cy': dataCy,
@@ -61,7 +59,6 @@ const DropZone = ({
   return (
     <AriaDropZone
       className={styles.dropZone}
-      isDisabled={isDisabled}
       getDropOperation={(types) =>
         !acceptedFileTypes || acceptedFileTypes.some((type) => types.has(type))
           ? 'copy'
@@ -89,7 +86,7 @@ const DropZone = ({
                       allowsMultiple={allowsMultiple}
                       onSelect={handleSelect}
                     >
-                      <Button className={styles.browse} isDisabled={isDisabled}>
+                      <Button className={styles.browse}>
                         <FormattedMessage {...messages.browse} />
                       </Button>
                     </FileTrigger>

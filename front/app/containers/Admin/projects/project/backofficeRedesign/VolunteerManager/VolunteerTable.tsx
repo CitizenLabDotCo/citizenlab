@@ -44,24 +44,18 @@ const VolunteerTable = ({
     <div>
       <Table aria-label={formatMessage(messages.volunteers)}>
         <TableHeader>
-          <ColumnHeader
-            id="volunteer"
-            isRowHeader
-            allowsResizing={false}
-            showChevron={false}
-          >
+          <ColumnHeader id="volunteer" isRowHeader showChevron={false}>
             {formatMessage(messages.volunteerColumn)}
           </ColumnHeader>
-          <ColumnHeader id="email" allowsResizing={false} showChevron={false}>
+          <ColumnHeader id="email" showChevron={false}>
             {formatMessage(messages.emailColumn)}
           </ColumnHeader>
-          <ColumnHeader id="cause" allowsResizing={false} showChevron={false}>
+          <ColumnHeader id="cause" showChevron={false}>
             {formatMessage(messages.cause)}
           </ColumnHeader>
           <ColumnHeader
             id="signedUp"
             defaultWidth={140}
-            allowsResizing={false}
             indicator={sortDirection}
             menu={
               <ColumnMenu

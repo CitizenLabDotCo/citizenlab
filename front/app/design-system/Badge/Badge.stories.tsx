@@ -1,13 +1,13 @@
 import React from 'react';
 
-import Badge, { BadgeTone } from '.';
+import Badge from '.';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
   title: 'Design system/Status & feedback/Badge',
   component: Badge,
-  args: { children: 'Idea', icon: 'lightbulb-14' },
+  args: { children: 'Idea', icon: 'paperclip-16' },
 } satisfies Meta<typeof Badge>;
 
 export default meta;
@@ -15,7 +15,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
 
-const tones: BadgeTone[] = ['neutral', 'selected'];
+const tones = ['neutral', 'selected'] as const;
 
 export const AllVariants: Story = {
   render: () => (
@@ -25,15 +25,15 @@ export const AllVariants: Story = {
           key={tone}
           style={{ display: 'flex', gap: 16, alignItems: 'center' }}
         >
-          <Badge tone={tone} icon="lightbulb-14">
+          <Badge tone={tone} icon="paperclip-16">
             Idea
           </Badge>
           <Badge tone={tone}>Idea</Badge>
-          <Badge tone={tone} use="note">
-            Idea
-          </Badge>
         </div>
       ))}
+      <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
+        <Badge use="note">Idea</Badge>
+      </div>
     </div>
   ),
 };

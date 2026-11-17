@@ -24,7 +24,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    action: <IconButton icon="rows-expand-16" aria-label="Expand all" />,
+    action: <IconButton icon="plus-16" aria-label="Add" />,
   },
 };
 
@@ -34,7 +34,7 @@ export const AllVariants: Story = {
       <PanelGroupHeader
         label="Settings"
         context="panel"
-        action={<IconButton icon="rows-expand-16" aria-label="Expand all" />}
+        action={<IconButton icon="plus-16" aria-label="Add" />}
       />
       <PanelGroupHeader label="How ideas are shown" context="panel" />
       <PanelGroupHeader

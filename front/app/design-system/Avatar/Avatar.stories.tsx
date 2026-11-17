@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Avatar, { AvatarSize } from '.';
+import Avatar from '.';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -15,7 +15,7 @@ type Story = StoryObj<typeof Avatar>;
 
 export const Default: Story = {};
 
-const sizes: AvatarSize[] = [28, 24, 26];
+const sizes = [28, 24] as const;
 
 export const AllVariants: Story = {
   render: () => (

@@ -12,14 +12,14 @@ import '../tokens.css';
 import messages from './messages';
 import styles from './TableHeader.module.css';
 
-export type TableHeaderProps = {
+type TableHeaderProps = {
   // ColumnHeader children.
   children: ReactNode;
   // The + that adds a column: an IconButton Ghost 28 inside a MenuTrigger.
   addColumn?: ReactNode;
 };
 
-// The last column is the 28 px slot that holds the row menus below it.
+// The last column is a 28 px slot for the add-column control; each Row fills it with an empty cell.
 const TableHeader = ({ children, addColumn }: TableHeaderProps) => {
   const { formatMessage } = useIntl();
 

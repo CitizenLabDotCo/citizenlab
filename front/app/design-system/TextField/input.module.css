@@ -51,12 +51,6 @@
   border-color: var(--gv-border-danger);
 }
 
-/* Read-only stays readable and focusable; only the surface changes. */
-.input[readonly],
-.input[data-readonly] {
-  background: var(--gv-surface-tertiary);
-}
-
 .input[data-disabled] {
   background: var(--gv-surface-tertiary);
   color: var(--gv-text-disabled);

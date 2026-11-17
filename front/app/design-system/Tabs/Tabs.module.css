@@ -47,31 +47,16 @@
   pointer-events: none;
 }
 
-.count {
-  color: var(--gv-text-tertiary);
-}
-
-.tab[data-hovered]:not([data-selected]):not([aria-disabled='true']) {
+.tab[data-hovered]:not([data-selected]) {
   color: var(--gv-text-link);
 }
 
-.tab[data-pressed]:not([data-selected]):not([aria-disabled='true']) {
+.tab[data-pressed]:not([data-selected]) {
   color: var(--gv-text-link-pressed);
 }
 
 .tab[data-selected] {
   color: var(--gv-text-link);
-}
-
-.tab[data-disabled],
-.tab[aria-disabled='true'] {
-  color: var(--gv-text-disabled);
-  cursor: default;
-}
-
-.tab[data-disabled] .count,
-.tab[aria-disabled='true'] .count {
-  color: var(--gv-text-disabled);
 }
 
 .indicator {

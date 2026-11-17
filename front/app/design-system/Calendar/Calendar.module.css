@@ -94,27 +94,18 @@
   color: var(--gv-text-inverse);
 }
 
-/*
- * Range: the days between fill edge to edge. RangeCalendar marks the ends
- * with data attributes; a DayPressCalendar range marks them with classes.
- */
-.rangeCell[data-selected]:not([data-selection-start]):not([data-selection-end]),
+/* Range: the days between fill edge to edge. */
 .rangeMiddle[data-selected] {
   border-radius: 0;
   background: var(--gv-surface-selected);
   color: var(--gv-text-primary);
 }
 
-.rangeCell[data-selected]:not([data-selection-start]):not(
-    [data-selection-end]
-  )::after,
 .rangeMiddle[data-selected]::after {
   content: none;
 }
 
 /* Start and end keep the square, with a half band towards the range. */
-.rangeCell[data-selection-start]::before,
-.rangeCell[data-selection-end]::before,
 .rangeStart[data-selected]::before,
 .rangeEnd[data-selected]::before {
   content: '';
@@ -126,16 +117,10 @@
   background: var(--gv-surface-selected);
 }
 
-.rangeCell[data-selection-start]::before,
 .rangeStart[data-selected]::before {
   inset-inline-end: 0;
 }
 
-.rangeCell[data-selection-end]::before,
 .rangeEnd[data-selected]::before {
   inset-inline-start: 0;
-}
-
-.rangeCell[data-selection-start][data-selection-end]::before {
-  content: none;
 }

@@ -13,17 +13,14 @@ import inputStyles from '../TextField/input.module.css';
 
 import styles from './SearchField.module.css';
 
-export type SearchFieldProps = {
+type SearchFieldProps = {
   // There is no visible label, so the field needs a name.
   'aria-label': string;
   value?: string;
   defaultValue?: string;
   onChange?: (value: string) => void;
-  onSubmit?: (value: string) => void;
-  onClear?: () => void;
   placeholder?: string;
   size?: 32 | 36;
-  isDisabled?: boolean;
   autoFocus?: boolean;
   'data-cy'?: string;
 };
@@ -33,11 +30,8 @@ const SearchField = ({
   value,
   defaultValue,
   onChange,
-  onSubmit,
-  onClear,
   placeholder,
   size = 32,
-  isDisabled = false,
   autoFocus,
   'data-cy': dataCy,
 }: SearchFieldProps) => (
@@ -47,9 +41,6 @@ const SearchField = ({
     value={value}
     defaultValue={defaultValue}
     onChange={onChange}
-    onSubmit={onSubmit}
-    onClear={onClear}
-    isDisabled={isDisabled}
     autoFocus={autoFocus}
     data-cy={dataCy}
   >

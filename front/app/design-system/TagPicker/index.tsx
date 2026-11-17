@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode } from 'react';
 
 import {
   Autocomplete,
@@ -20,16 +20,14 @@ import surfaces from '../surfaces.module.css';
 import messages from './messages';
 import styles from './TagPicker.module.css';
 
-export type TagPickerProps<T extends { id: Key }> = {
+type TagPickerProps<T extends { id: Key }> = {
   items: T[];
   // A ListBoxOption for each item.
   children: (item: T) => ReactNode;
   // Names the dialog and the list.
   'aria-label': string;
-  selectedKeys?: Set<Key>;
-  defaultSelectedKeys?: Set<Key>;
-  onSelectionChange?: (keys: Set<Key>) => void;
-  'data-cy'?: string;
+  selectedKeys: Set<Key>;
+  onSelectionChange: (keys: Set<Key>) => void;
 };
 
 // Put it in a DialogTrigger after the TagAdd pill of a TagGroup.
@@ -38,25 +36,18 @@ const TagPicker = <T extends { id: Key }>({
   children,
   'aria-label': ariaLabel,
   selectedKeys,
-  defaultSelectedKeys,
   onSelectionChange,
-  'data-cy': dataCy,
 }: TagPickerProps<T>) => {
   const { formatMessage } = useIntl();
   const { contains } = useFilter({ sensitivity: 'base' });
-  const [uncontrolledKeys, setUncontrolledKeys] = useState<Set<Key>>(
-    defaultSelectedKeys ?? new Set()
-  );
-  const keys = selectedKeys ?? uncontrolledKeys;
 
   // Select all (Ctrl+A) reports 'all'; the picker always works with the keys.
   const handleSelectionChange = (selection: Selection) => {
-    const next =
+    onSelectionChange(
       selection === 'all'
         ? new Set(items.map((item) => item.id))
-        : new Set(selection);
-    setUncontrolledKeys(next);
-    onSelectionChange?.(next);
+        : new Set(selection)
+    );
   };
 
   return (
@@ -65,7 +56,7 @@ const TagPicker = <T extends { id: Key }>({
       offset={4}
       className={`${surfaces.dropdown} ${styles.popover}`}
     >
-      <Dialog aria-label={ariaLabel} className={styles.dialog} data-cy={dataCy}>
+      <Dialog aria-label={ariaLabel} className={styles.dialog}>
         {({ close }) => (
           <>
             <Autocomplete filter={contains}>
@@ -79,7 +70,7 @@ const TagPicker = <T extends { id: Key }>({
                 items={items}
                 aria-label={ariaLabel}
                 selectionMode="multiple"
-                selectedKeys={keys}
+                selectedKeys={selectedKeys}
                 onSelectionChange={handleSelectionChange}
               >
                 {children}
@@ -87,7 +78,9 @@ const TagPicker = <T extends { id: Key }>({
             </Autocomplete>
             <div className={styles.footer}>
               <span className={styles.count}>
-                {formatMessage(messages.selectedCount, { count: keys.size })}
+                {formatMessage(messages.selectedCount, {
+                  count: selectedKeys.size,
+                })}
               </span>
               <Button className={styles.done} onPress={close}>
                 {formatMessage(messages.done)}

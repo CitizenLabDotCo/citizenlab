@@ -12,20 +12,16 @@ type LabelProps =
   // Without a visible label (a title in a header, an inline rename) the field needs an aria-label.
   | { label?: undefined; 'aria-label': string };
 
-export type TextFieldProps = LabelProps & {
+type TextFieldProps = LabelProps & {
   value?: string;
-  defaultValue?: string;
   onChange?: (value: string) => void;
   onBlur?: () => void;
   placeholder?: string;
   description?: ReactNode;
   errorMessage?: ReactNode;
   size?: 36 | 32;
-  isRequired?: boolean;
   isInvalid?: boolean;
   isDisabled?: boolean;
-  isReadOnly?: boolean;
-  name?: string;
   id?: string;
   autoFocus?: boolean;
   // For a form library that focuses the first invalid field.
@@ -36,18 +32,14 @@ export type TextFieldProps = LabelProps & {
 const TextField = ({
   label,
   value,
-  defaultValue,
   onChange,
   onBlur,
   placeholder,
   description,
   errorMessage,
   size = 36,
-  isRequired = false,
   isInvalid,
   isDisabled = false,
-  isReadOnly = false,
-  name,
   id,
   autoFocus,
   inputRef,
@@ -57,22 +49,16 @@ const TextField = ({
   <AriaTextField
     className={inputStyles.field}
     value={value}
-    defaultValue={defaultValue}
     onChange={onChange}
     onBlur={onBlur}
-    isRequired={isRequired}
     isInvalid={isInvalid}
     isDisabled={isDisabled}
-    isReadOnly={isReadOnly}
-    name={name}
     id={id}
     autoFocus={autoFocus}
     aria-label={ariaLabel}
     data-cy={dataCy}
   >
-    {label !== undefined && (
-      <FieldLabel isRequired={isRequired}>{label}</FieldLabel>
-    )}
+    {label !== undefined && <FieldLabel>{label}</FieldLabel>}
     <div className={fieldStyles.control}>
       <Input
         ref={inputRef}

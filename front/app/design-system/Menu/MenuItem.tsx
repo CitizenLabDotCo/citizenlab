@@ -10,27 +10,25 @@ import Tooltip from '../Tooltip';
 
 import styles from './Menu.module.css';
 
-export type MenuItemVariant = 'default' | 'danger';
+type MenuItemVariant = 'default' | 'danger';
 
 type LabelProps =
   | { children: string; textValue?: string }
   // A label that is not plain text needs a textValue for type-ahead.
   | { children: ReactNode; textValue: string };
 
-export type MenuItemProps = LabelProps & {
+type MenuItemProps = LabelProps & {
   id?: Key;
   variant?: MenuItemVariant;
   icon?: IconName;
   description?: ReactNode;
   count?: ReactNode;
-  isDisabled?: boolean;
   // Looks disabled but stays focusable so the tooltip can say why; its action and
   // selection are ignored and the menu stays open. Give the item an id.
   disabledReason?: ReactNode;
   onAction?: () => void;
   // Renders the item as a link; DesignSystemProvider routes it client-side.
   href?: string;
-  target?: '_blank' | '_self';
   'data-cy'?: string;
 };
 
@@ -43,11 +41,9 @@ const MenuItem = ({
   icon,
   description,
   count,
-  isDisabled,
   disabledReason,
   onAction,
   href,
-  target,
   'data-cy': dataCy,
 }: MenuItemProps) => {
   const hasReason = !!disabledReason;
@@ -59,11 +55,8 @@ const MenuItem = ({
       textValue={
         textValue ?? (typeof children === 'string' ? children : undefined)
       }
-      isDisabled={isDisabled && !hasReason}
       onAction={hasReason ? undefined : onAction}
       href={hasReason ? undefined : href}
-      target={hasReason ? undefined : target}
-      rel={target === '_blank' ? 'noreferrer' : undefined}
       shouldCloseOnSelect={hasReason ? false : undefined}
       render={hasReason ? renderAriaDisabled : undefined}
       className={`${styles.item} ${styles[variant]}`}

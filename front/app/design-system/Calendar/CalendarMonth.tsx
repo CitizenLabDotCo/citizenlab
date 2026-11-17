@@ -17,7 +17,7 @@ import '../tokens.css';
 import styles from './Calendar.module.css';
 import ghostStyles from './GhostButton.module.css';
 
-import type { OpenRangeValue } from './RangeCalendar';
+import type { OpenRangeValue } from './DayPressCalendar';
 
 // The weekday headers are hidden from assistive tech (each day is labelled),
 // so trimming the short name to two letters (Mo, Tu) is visual only.
@@ -38,12 +38,11 @@ const rangeClass = (
 };
 
 type Props = {
-  isRange?: boolean;
   range?: OpenRangeValue<CalendarDate> | null;
 };
 
-// The header and grid inside a Calendar or RangeCalendar.
-const CalendarMonth = ({ isRange = false, range = null }: Props) => (
+// The header and grid inside a Calendar or DayPressCalendar.
+const CalendarMonth = ({ range = null }: Props) => (
   <>
     <header className={styles.header}>
       <Button slot="previous" className={ghostStyles.button}>
@@ -66,9 +65,7 @@ const CalendarMonth = ({ isRange = false, range = null }: Props) => (
         {(date) => (
           <CalendarCell
             date={date}
-            className={`${styles.cell} ${
-              isRange ? styles.rangeCell : ''
-            } ${rangeClass(date, range)}`}
+            className={`${styles.cell} ${rangeClass(date, range)}`}
           />
         )}
       </CalendarGridBody>

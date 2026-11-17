@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 
-import { Breadcrumbs as AriaBreadcrumbs, Key } from 'react-aria-components';
+import { Breadcrumbs as AriaBreadcrumbs } from 'react-aria-components';
 
 import '../tokens.css';
 
@@ -9,35 +9,17 @@ import styles from './Breadcrumbs.module.css';
 import { BreadcrumbSeparator, SeparatorContext } from './context';
 
 export { Breadcrumb };
-export type { BreadcrumbProps } from './Breadcrumb';
-export type { BreadcrumbSeparator };
 
-export type BreadcrumbsProps = {
+type Props = {
   // Breadcrumb elements; the last one is the current page.
   children: ReactNode;
   // Slash for the phase header.
-  separator?: BreadcrumbSeparator;
-  isDisabled?: boolean;
-  onAction?: (key: Key) => void;
-  'aria-label'?: string;
+  separator: BreadcrumbSeparator;
 };
 
-const Breadcrumbs = ({
-  children,
-  separator = 'chevron',
-  isDisabled,
-  onAction,
-  'aria-label': ariaLabel,
-}: BreadcrumbsProps) => (
+const Breadcrumbs = ({ children, separator }: Props) => (
   <SeparatorContext.Provider value={separator}>
-    <AriaBreadcrumbs
-      className={styles.breadcrumbs}
-      isDisabled={isDisabled}
-      onAction={onAction}
-      aria-label={ariaLabel}
-    >
-      {children}
-    </AriaBreadcrumbs>
+    <AriaBreadcrumbs className={styles.breadcrumbs}>{children}</AriaBreadcrumbs>
   </SeparatorContext.Provider>
 );
 

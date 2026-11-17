@@ -11,7 +11,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
-export type PaginationItemProps =
+type PaginationItemProps =
   | {
       kind?: 'page';
       number: number;

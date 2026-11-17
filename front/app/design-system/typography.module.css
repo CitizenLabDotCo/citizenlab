@@ -1,4 +1,4 @@
-/* The twelve text styles of Foundations → Typography. Components `composes` one of these. */
+/* The text styles of Foundations → Typography. Components `composes` one of these. */
 
 .base {
   font-family: var(--gv-font-family);
@@ -11,20 +11,6 @@
   font-size: var(--gv-font-size-28);
   line-height: var(--gv-font-line-height-32);
   font-weight: var(--gv-font-weight-regular);
-}
-
-.statSmall {
-  composes: base;
-  font-size: var(--gv-font-size-20);
-  line-height: var(--gv-font-line-height-24);
-  font-weight: var(--gv-font-weight-medium);
-}
-
-.pageTitle {
-  composes: base;
-  font-size: var(--gv-font-size-20);
-  line-height: var(--gv-font-line-height-28);
-  font-weight: var(--gv-font-weight-medium);
 }
 
 .title {

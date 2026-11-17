@@ -7,13 +7,8 @@
   cursor: pointer;
 }
 
-.switch[data-disabled],
-.withReason {
+.switch[data-disabled] {
   opacity: var(--gv-opacity-disabled);
-  cursor: default;
-}
-
-.switch[data-readonly] {
   cursor: default;
 }
 
@@ -82,14 +77,14 @@
 }
 
 /* Hover darkens the off track; the on track keeps its colour until pressed. */
-.switch[data-hovered]:not(.withReason) .track:not([data-selected]) {
+.switch[data-hovered] .track:not([data-selected]) {
   background: var(--gv-border-strong);
 }
 
-.switch[data-pressed]:not(.withReason) .track:not([data-selected]) {
+.switch[data-pressed] .track:not([data-selected]) {
   background: var(--gv-surface-switch-off-pressed);
 }
 
-.switch[data-pressed]:not(.withReason) .track[data-selected] {
+.switch[data-pressed] .track[data-selected] {
   background: var(--switch-on-pressed);
 }

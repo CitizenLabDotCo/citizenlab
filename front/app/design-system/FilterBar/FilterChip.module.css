@@ -5,7 +5,10 @@
   align-items: center;
   gap: var(--gv-space-6);
   height: var(--gv-size-28);
+  padding-right: var(--gv-space-4);
   border-radius: var(--gv-radius-full);
+  background: var(--gv-surface-filter-chip);
+  color: var(--gv-text-filter-chip);
   outline: none;
   transition-property: background-color;
   transition-duration: var(--gv-motion-duration-fast);
@@ -60,27 +63,6 @@
   cursor: pointer;
 }
 
-/* Applied */
-.applied {
-  padding-right: var(--gv-space-4);
-  background: var(--gv-surface-filter-chip);
-  color: var(--gv-text-filter-chip);
-}
-
-.applied:has([data-hovered]) {
+.chip:has([data-hovered]) {
   background: var(--gv-surface-filter-chip-hovered);
-}
-
-/* Default */
-.default .trigger {
-  padding-right: var(--gv-space-8);
-}
-
-.default {
-  background: var(--gv-surface-hovered);
-  color: var(--gv-text-toolbar);
-}
-
-.default:has([data-hovered]) {
-  background: var(--gv-surface-neutral-hovered);
 }

@@ -64,7 +64,6 @@ interface Props {
   selectedRange: Partial<DateRange>;
   disabledRanges: DateRange[];
   startMonth?: Date;
-  endMonth?: Date;
   defaultMonth?: Date;
   onUpdateRange: (range: Partial<DateRange>) => void;
   className?: string;
@@ -75,7 +74,6 @@ const DesignSystemPicker = ({
   selectedRange,
   disabledRanges,
   startMonth,
-  endMonth,
   defaultMonth,
   onUpdateRange,
   className,
@@ -107,7 +105,6 @@ const DesignSystemPicker = ({
     defaultMonth,
   });
   const lastMonth = getEndMonth({
-    endMonth,
     selectedRange,
     disabledRanges,
     defaultMonth,

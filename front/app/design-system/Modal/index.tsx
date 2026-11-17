@@ -7,17 +7,12 @@ import '../tokens.css';
 import DialogLayout, { DialogLayoutProps } from './DialogLayout';
 import styles from './Modal.module.css';
 
-export { DialogTrigger } from 'react-aria-components';
 export type { DialogAction } from './DialogLayout';
 
-export type ModalSize = 440 | 560 | 866 | 920;
-
-export type ModalProps = DialogLayoutProps & {
-  size?: ModalSize;
-  // Leave these out inside a DialogTrigger, which owns the open state.
-  isOpen?: boolean;
-  defaultOpen?: boolean;
-  onOpenChange?: (isOpen: boolean) => void;
+type ModalProps = DialogLayoutProps & {
+  size?: 440 | 560 | 866 | 920;
+  isOpen: boolean;
+  onOpenChange: (isOpen: boolean) => void;
   // Also dismiss it on a press on the backdrop.
   isDismissable?: boolean;
   'data-cy'?: string;
@@ -33,14 +28,12 @@ const Modal = ({
   showClose = true,
   size = 560,
   isOpen,
-  defaultOpen,
   onOpenChange,
   isDismissable = false,
   'data-cy': dataCy,
 }: ModalProps) => (
   <ModalOverlay
     isOpen={isOpen}
-    defaultOpen={defaultOpen}
     onOpenChange={onOpenChange}
     isDismissable={isDismissable}
     className={styles.overlay}

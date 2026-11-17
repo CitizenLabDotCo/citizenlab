@@ -35,7 +35,6 @@ const DistrictsField = () => {
     <div style={{ width: 328 }}>
       <TagGroup
         label="Districts"
-        description="Residents filter projects by district."
         items={districts.filter((district) => selected.has(district.id))}
         onRemove={(keys: Set<Key>) =>
           setSelected(
@@ -65,6 +64,12 @@ const DistrictsField = () => {
 };
 
 export const Default: Story = {
-  args: { 'aria-label': 'Districts', items: [], children: () => null },
+  args: {
+    'aria-label': 'Districts',
+    items: [],
+    selectedKeys: new Set(),
+    onSelectionChange: () => {},
+    children: () => null,
+  },
   render: () => <DistrictsField />,
 };

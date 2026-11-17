@@ -14,12 +14,9 @@ type LabelProps =
   // A label that is not plain text needs a textValue for type-ahead and filtering.
   | { children: ReactNode; textValue: string };
 
-export type ListBoxOptionProps = LabelProps & {
+type ListBoxOptionProps = LabelProps & {
   id?: Key;
-  description?: ReactNode;
   icon?: IconName;
-  count?: ReactNode;
-  isDisabled?: boolean;
   // Looks disabled but stays focusable so the tooltip can say why; it can't be
   // selected. Give the option an id.
   disabledReason?: ReactNode;
@@ -31,10 +28,7 @@ const ListBoxOption = ({
   children,
   textValue,
   id,
-  description,
   icon,
-  count,
-  isDisabled,
   disabledReason,
   'data-cy': dataCy,
 }: ListBoxOptionProps) => {
@@ -50,7 +44,6 @@ const ListBoxOption = ({
       textValue={
         textValue ?? (typeof children === 'string' ? children : undefined)
       }
-      isDisabled={isDisabled && !hasReason}
       // React Aria gives options no aria-disabled or extra description of their own.
       render={
         hasReason
@@ -85,13 +78,7 @@ const ListBoxOption = ({
             <Text slot="label" className={styles.label}>
               {children}
             </Text>
-            {description && (
-              <Text slot="description" className={styles.description}>
-                {description}
-              </Text>
-            )}
           </span>
-          {count !== undefined && <span className={styles.count}>{count}</span>}
           {selectionMode === 'single' && isSelected && (
             <Icon name="check-14" className={styles.check} />
           )}

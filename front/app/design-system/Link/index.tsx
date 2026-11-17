@@ -6,36 +6,16 @@ import '../tokens.css';
 
 import styles from './Link.module.css';
 
-export type LinkVariant = 'inline' | 'standalone';
-
-export type LinkProps = {
+type LinkProps = {
   children: ReactNode;
   href: string;
-  // Inline sits inside a paragraph; Standalone stands on its own line.
-  variant?: LinkVariant;
-  target?: '_blank' | '_self';
+  target?: '_blank';
   rel?: string;
-  isDisabled?: boolean;
-  'data-cy'?: string;
 };
 
-const Link = ({
-  children,
-  href,
-  variant = 'inline',
-  target,
-  rel,
-  isDisabled = false,
-  'data-cy': dataCy,
-}: LinkProps) => (
-  <AriaLink
-    className={`${styles.link} ${styles[variant]}`}
-    href={href}
-    target={target}
-    rel={rel}
-    isDisabled={isDisabled}
-    data-cy={dataCy}
-  >
+// Sits inside a paragraph.
+const Link = ({ children, href, target, rel }: LinkProps) => (
+  <AriaLink className={styles.link} href={href} target={target} rel={rel}>
     {children}
   </AriaLink>
 );

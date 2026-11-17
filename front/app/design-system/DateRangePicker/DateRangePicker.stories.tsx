@@ -19,10 +19,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 const meta = {
   title: 'Design system/Forms/Date range picker',
   component: DateRangePicker,
-  args: {
-    label: 'Phase dates',
-    description: 'Residents see these on the timeline.',
-  },
   decorators: [
     (Story) => (
       <I18nProvider locale="en-GB">
@@ -35,53 +31,8 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof DateRangePicker>;
 
-export const Default: Story = {};
-
-const filled = {
-  start: parseDate('2026-11-14'),
-  end: parseDate('2026-11-30'),
-};
-
-export const Open: Story = {
-  args: { defaultOpen: true, defaultValue: filled },
-};
-
-const states = [
-  { name: 'Default' },
-  {
-    name: 'Invalid',
-    isInvalid: true,
-    errorMessage: 'End after the start date.',
-  },
-  { name: 'Disabled', isDisabled: true },
-];
-
-export const AllVariants: Story = {
-  render: () => (
-    <div style={{ display: 'grid', gap: 32 }}>
-      {([36, 32] as const).map((size) => (
-        <div key={size} style={{ display: 'flex', flexWrap: 'wrap', gap: 24 }}>
-          {states.map(({ name, ...state }) =>
-            [null, filled].map((value) => (
-              <DateRangePicker
-                key={`${name}-${!!value}`}
-                label="Phase dates"
-                description="Residents see these on the timeline."
-                size={size}
-                defaultValue={value}
-                {...state}
-              />
-            ))
-          )}
-        </div>
-      ))}
-      <DateRangePicker label="Phase dates" isRequired />
-    </div>
-  ),
-};
-
-// A day-press picker with simple demo rules: a press before the start or on a
-// full range starts again, a later press sets the end.
+// Simple demo rules: a press before the start or on a full range starts
+// again, a later press sets the end.
 const pressDay = (
   value: OpenRangeValue<CalendarDateTime> | null,
   day: CalendarDate
@@ -97,18 +48,14 @@ const pressDay = (
 
 type DayPressDemoProps = {
   initialValue: OpenRangeValue<CalendarDateTime> | null;
-  defaultOpen?: boolean;
   withTimes?: boolean;
   note?: string;
-  isDisabled?: boolean;
 };
 
 const DayPressDemo = ({
   initialValue,
-  defaultOpen,
   withTimes = true,
   note,
-  isDisabled,
 }: DayPressDemoProps) => {
   const [value, setValue] = useState(initialValue);
 
@@ -123,8 +70,7 @@ const DayPressDemo = ({
 
   return (
     <DateRangePicker
-      label="Phase dates"
-      description="Residents see these on the timeline."
+      aria-label="Phase dates"
       value={value}
       onDayPress={(day) => setValue(pressDay(value, day))}
       startPlaceholder="Select date"
@@ -135,8 +81,6 @@ const DayPressDemo = ({
       minValue={parseDate('2026-01-01')}
       maxValue={parseDate('2027-12-31')}
       defaultFocusedValue={parseDate('2026-11-01')}
-      defaultOpen={defaultOpen}
-      isDisabled={isDisabled}
       startTime={
         withTimes
           ? {
@@ -166,41 +110,26 @@ const DayPressDemo = ({
 const nov = (day: number, hour: number, minute = 0) =>
   new CalendarDateTime(2026, 11, day, hour, minute);
 
-export const DayPressEmpty: Story = {
+export const Empty: Story = {
   render: () => <DayPressDemo initialValue={null} />,
 };
 
-export const DayPressOpenEnded: Story = {
+export const OpenEnded: Story = {
+  render: () => <DayPressDemo initialValue={{ start: nov(9, 9), end: null }} />,
+};
+
+export const RangeWithTimes: Story = {
   render: () => (
-    <DayPressDemo initialValue={{ start: nov(9, 9), end: null }} defaultOpen />
+    <DayPressDemo initialValue={{ start: nov(9, 9), end: nov(20, 17, 30) }} />
   ),
 };
 
-export const DayPressRangeWithTimes: Story = {
-  render: () => (
-    <DayPressDemo
-      initialValue={{ start: nov(9, 9), end: nov(20, 17, 30) }}
-      defaultOpen
-    />
-  ),
-};
-
-export const DayPressOneDayWithNote: Story = {
+export const OneDayWithNote: Story = {
   render: () => (
     <DayPressDemo
       initialValue={{ start: nov(12, 0), end: nov(13, 0) }}
       withTimes={false}
       note="A one-day phase runs from midnight to midnight."
-      defaultOpen
-    />
-  ),
-};
-
-export const DayPressDisabled: Story = {
-  render: () => (
-    <DayPressDemo
-      initialValue={{ start: nov(9, 9), end: nov(20, 17, 30) }}
-      isDisabled
     />
   ),
 };

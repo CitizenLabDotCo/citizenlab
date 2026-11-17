@@ -379,9 +379,9 @@ const UseTemplateModal = memo<Props & WrappedComponentProps>(
                 )}
                 aria-label={intl.formatMessage(messages.projectTitle)}
               />
-              {/* The design-system picker takes no id, so it sits on the wrapper. */}
-              <div id="project-start-date" className={styles.startDate}>
+              <div className={styles.startDate}>
                 <DatePicker
+                  id="project-start-date"
                   label={intl.formatMessage(messages.projectStartDate)}
                   value={startDate ? parseDate(startDate) : null}
                   onChange={(date) =>

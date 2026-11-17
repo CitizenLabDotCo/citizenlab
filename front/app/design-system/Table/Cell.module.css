@@ -15,22 +15,10 @@
   white-space: nowrap;
 }
 
-.content[data-align='end'] {
-  justify-content: flex-end;
-}
-
-.editor {
-  padding-left: var(--gv-space-6);
-}
-
 .toneCell {
   color: var(--gv-text-cell);
 }
 
 .secondary {
-  color: var(--gv-text-secondary);
-}
-
-.meta {
   color: var(--gv-text-secondary);
 }

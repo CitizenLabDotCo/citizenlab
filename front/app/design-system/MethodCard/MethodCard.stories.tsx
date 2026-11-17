@@ -1,11 +1,6 @@
 import React from 'react';
 
 import Badge from '../Badge';
-import VerticalTabs, {
-  TabPanel,
-  VerticalTab,
-  VerticalTabList,
-} from '../VerticalTabs';
 
 import MethodCard from '.';
 
@@ -42,11 +37,7 @@ const meta = {
     title: 'Survey',
     description: surveyDescription,
     art: <Art />,
-    notes: (
-      <Badge use="note" tone="selected">
-        Responses stay private
-      </Badge>
-    ),
+    notes: <Badge use="note">Beta</Badge>,
   },
 } satisfies Meta<typeof MethodCard>;
 
@@ -77,71 +68,26 @@ const methods = [
   { title: 'Document annotation', description: surveyDescription },
 ];
 
-const groups = ['Gather input', 'Shape decisions', 'Inform and recruit'];
-
-// The New participation method modal body.
-export const MethodPicker: Story = {
+// The cards as the New participation method modal lays them out.
+export const Grid: Story = {
   render: () => (
     <div
       style={{
-        width: 920,
-        height: 582,
-        display: 'flex',
-        border: '1px solid var(--gv-border-divider)',
+        width: 680,
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr',
+        gap: 16,
       }}
     >
-      <VerticalTabs defaultSelectedKey="Gather input">
-        <div
-          style={{
-            width: 203,
-            height: 582,
-            flexShrink: 0,
-            boxSizing: 'border-box',
-            padding: '8px 20px 18px 8px',
-            background: 'var(--gv-surface-secondary)',
-            borderRight: '1px solid var(--gv-border-divider)',
-          }}
-        >
-          <VerticalTabList aria-label="Method groups">
-            {groups.map((group) => (
-              <VerticalTab key={group} id={group}>
-                {group}
-              </VerticalTab>
-            ))}
-          </VerticalTabList>
-        </div>
-        {groups.map((group) => (
-          <TabPanel key={group} id={group}>
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: '1fr 1fr',
-                gap: 16,
-                padding: '24px 28px 0',
-                overflow: 'auto',
-                height: 582,
-                boxSizing: 'border-box',
-              }}
-            >
-              {methods.map((method) => (
-                <MethodCard
-                  key={method.title}
-                  title={method.title}
-                  description={method.description}
-                  art={<Art />}
-                  notes={
-                    method.hasNotes && (
-                      <Badge use="note" tone="selected">
-                        Responses stay private
-                      </Badge>
-                    )
-                  }
-                />
-              ))}
-            </div>
-          </TabPanel>
-        ))}
-      </VerticalTabs>
+      {methods.map((method) => (
+        <MethodCard
+          key={method.title}
+          title={method.title}
+          description={method.description}
+          art={<Art />}
+          notes={method.hasNotes && <Badge use="note">Beta</Badge>}
+        />
+      ))}
     </div>
   ),
 };

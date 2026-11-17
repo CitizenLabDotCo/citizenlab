@@ -11,18 +11,11 @@
   white-space: nowrap;
 }
 
-/* 28 and 26 draw the white ring inside, 24 outside (it separates a stack). */
+/* 28 draws the white ring inside, 24 outside. */
 .size28 {
   width: var(--gv-size-28);
   height: var(--gv-size-28);
   border: var(--gv-border-width-2) solid var(--gv-border-inverse);
-}
-
-.size26 {
-  width: var(--gv-size-26);
-  height: var(--gv-size-26);
-  /* Off the border-width scale on purpose. */
-  border: 1.5px solid var(--gv-border-inverse);
 }
 
 .size24 {

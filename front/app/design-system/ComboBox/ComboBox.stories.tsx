@@ -42,18 +42,14 @@ export const Default: Story = {
 };
 
 // Hovered, Focused and Open come from the pointer and the keyboard.
-const states = [
-  { name: 'Default' },
-  { name: 'Invalid', isInvalid: true },
-  { name: 'Disabled', isDisabled: true },
-];
+const states = [{ name: 'Default' }, { name: 'Invalid', isInvalid: true }];
 
 export const AllVariants: Story = {
   args: { label: 'Manager', children: renderPerson },
   render: () => (
     <div style={{ display: 'grid', gap: 24 }}>
       {([36, 32] as const).map((size) =>
-        states.map(({ name, isInvalid, isDisabled }) => (
+        states.map(({ name, isInvalid }) => (
           <div key={`${size}-${name}`} style={{ display: 'flex', gap: 24 }}>
             {[undefined, 'hanne'].map((value) => (
               <div key={value ?? 'placeholder'} style={{ width: 200 }}>
@@ -64,10 +60,8 @@ export const AllVariants: Story = {
                   errorMessage="Add a manager to publish."
                   size={size}
                   defaultItems={people}
-                  defaultValue={value}
+                  value={value}
                   isInvalid={isInvalid}
-                  isDisabled={isDisabled}
-                  isRequired={name === 'Default' && !!value}
                 >
                   {renderPerson}
                 </ComboBox>
@@ -80,28 +74,12 @@ export const AllVariants: Story = {
   ),
 };
 
-// No visible label: the row or a heading already names it.
-export const AriaLabelOnly: Story = {
-  args: { label: 'Manager', children: renderPerson },
-  render: () => (
-    <div style={{ width: 200 }}>
-      <ComboBox
-        aria-label="Manager"
-        placeholder="Search people"
-        defaultItems={people}
-      >
-        {renderPerson}
-      </ComboBox>
-    </div>
-  ),
-};
-
 // Opens on load, e.g. when a setup link points straight at this field.
 export const DefaultOpen: Story = {
   args: {
     label: 'Manager',
     defaultItems: people,
-    defaultValue: 'hanne',
+    value: 'hanne',
     defaultOpen: true,
     autoFocus: true,
     children: renderPerson,

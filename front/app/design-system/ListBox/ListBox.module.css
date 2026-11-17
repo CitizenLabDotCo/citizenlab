@@ -64,17 +64,6 @@
   font-weight: var(--gv-font-weight-medium);
 }
 
-.description {
-  composes: small from '../typography.module.css';
-  color: var(--gv-text-secondary);
-}
-
-.count {
-  composes: small from '../typography.module.css';
-  flex-shrink: 0;
-  color: var(--gv-text-placeholder);
-}
-
 .check {
   flex-shrink: 0;
   color: var(--gv-icon-primary);
@@ -82,11 +71,7 @@
 
 /* Disabled: the colours change, the row keeps its strength. */
 .option[data-disabled] .label,
-.option[aria-disabled='true'] .label,
-.option[data-disabled] .description,
-.option[aria-disabled='true'] .description,
-.option[data-disabled] .count,
-.option[aria-disabled='true'] .count {
+.option[aria-disabled='true'] .label {
   color: var(--gv-text-disabled);
 }
 

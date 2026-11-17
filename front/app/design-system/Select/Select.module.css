@@ -55,11 +55,3 @@
 .field[data-invalid] .button {
   border-color: var(--gv-border-danger);
 }
-
-.button[data-disabled] {
-  cursor: default;
-}
-
-.button[data-disabled] .value {
-  color: var(--gv-text-disabled);
-}

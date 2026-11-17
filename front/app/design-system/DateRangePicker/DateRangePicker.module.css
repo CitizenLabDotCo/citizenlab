@@ -3,24 +3,13 @@
   width: 296px;
 }
 
-.segments {
-  display: flex;
-  flex: 1;
-  align-items: center;
-  min-width: 0;
-}
-
 .arrow {
   composes: ui from '../typography.module.css';
   color: var(--gv-text-tertiary);
   white-space: pre;
 }
 
-.picker[data-disabled] .arrow {
-  color: var(--gv-text-disabled);
-}
-
-/* DayPressRangePicker: the whole box is the button that opens the calendar. */
+/* The whole box is the button that opens the calendar. */
 .trigger {
   text-align: start;
   cursor: pointer;
@@ -30,12 +19,11 @@
   border-color: var(--gv-border-control-active);
 }
 
-.trigger[data-disabled] {
-  cursor: default;
-}
-
 .values {
-  composes: segments;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  min-width: 0;
   overflow: hidden;
   white-space: nowrap;
 }
@@ -48,12 +36,6 @@
   color: var(--gv-text-placeholder);
 }
 
-.trigger[data-disabled] .value,
-.trigger[data-disabled] .placeholder,
-.trigger[data-disabled] .arrow {
-  color: var(--gv-text-disabled);
-}
-
 .calendarIcon {
   composes: button from '../Calendar/GhostButton.module.css';
 }
@@ -61,10 +43,6 @@
 .trigger[data-pressed] .calendarIcon {
   background: var(--gv-surface-pressed);
   color: var(--gv-icon-primary);
-}
-
-.trigger[data-disabled] .calendarIcon {
-  opacity: var(--gv-opacity-disabled);
 }
 
 /* As wide as the calendar or the times; a note wraps inside that. */

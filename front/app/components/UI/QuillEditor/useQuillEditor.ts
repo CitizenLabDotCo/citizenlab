@@ -10,7 +10,7 @@ import { createQuill, detachQuillFromToolbar } from './createQuill';
 import messages from './messages';
 import { getHTML, setHTML } from './utils';
 
-export interface QuillEditorParams {
+interface QuillEditorParams {
   id: string;
   // The id of the element Quill uses as its toolbar container.
   toolbarId: string;

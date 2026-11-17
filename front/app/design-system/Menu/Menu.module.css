@@ -107,14 +107,9 @@
   color: var(--gv-text-danger);
 }
 
-.danger .chevron {
-  color: var(--gv-text-disabled);
-}
-
 .danger[data-hovered],
 .danger[data-focused],
-.danger[data-pressed],
-.danger[data-open] {
+.danger[data-pressed] {
   background: var(--gv-surface-danger-hovered);
 }
 

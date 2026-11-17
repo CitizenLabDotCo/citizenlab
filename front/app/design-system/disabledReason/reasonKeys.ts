@@ -13,18 +13,8 @@ import { Key, Selection } from 'react-aria-components';
 // selection or action on them.
 export const ReasonKeysContext = createContext<Set<Key> | null>(null);
 
-// Each collection (Tabs, Menu, ListBox, RadioGroup) keeps its own keys.
+// Each collection (Menu, ListBox, RadioGroup) keeps its own keys.
 export const useReasonKeys = () => useRef(new Set<Key>()).current;
-
-// Select and ComboBox own the selection of the ListBox they render, so that ListBox
-// collects its options' keys into theirs.
-export const SelectReasonKeysContext = createContext<Set<Key> | null>(null);
-
-export const useListBoxReasonKeys = () => {
-  const selectKeys = useContext(SelectReasonKeysContext);
-  const own = useReasonKeys();
-  return selectKeys ?? own;
-};
 
 export const useRegisterReasonKey = (
   key: Key | undefined,
@@ -68,29 +58,4 @@ export const togglesReasonKey = (
 ) => {
   if (next === 'all' || current === 'all') return false;
   return [...keys].some((key) => next.has(key) !== current.has(key));
-};
-
-// Tabs, SegmentedTabs and VerticalTabs: a tab with a reason takes focus (arrow keys
-// included) but never becomes the selected tab.
-export const useTabsSelection = (
-  selectedKey: Key | null | undefined,
-  defaultSelectedKey: Key | undefined,
-  onSelectionChange: ((key: Key) => void) | undefined
-) => {
-  const reasonKeys = useReasonKeys();
-  const [current, handleChange] = useGuardedValue<Key | null>(
-    selectedKey,
-    defaultSelectedKey ?? null,
-    (key) => {
-      if (key !== null) onSelectionChange?.(key);
-    },
-    (next) => next !== null && reasonKeys.has(next)
-  );
-
-  // React Aria Tabs takes undefined, not null, for "nothing selected yet".
-  return {
-    reasonKeys,
-    selectedKey: current ?? undefined,
-    onSelectionChange: handleChange,
-  };
 };

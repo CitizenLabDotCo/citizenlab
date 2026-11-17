@@ -12,31 +12,23 @@ type ContentProps =
   // A short text where no icon is drawn yet. Without an aria-label the text names the button.
   | { icon?: undefined; text: string; 'aria-label'?: string };
 
-export type RichTextToolbarButtonProps = ContentProps & {
+type RichTextToolbarButtonProps = ContentProps & {
   // Bold, italic and list keep a pressed state. Link, image and video open a
   // picker: leave isSelected false and use onPress.
   isSelected?: boolean;
-  defaultSelected?: boolean;
-  onChange?: (isSelected: boolean) => void;
   onPress?: (e: PressEvent) => void;
   // The trigger of a Menu inside a MenuTrigger (e.g. the heading picker): a
   // plain button with the dropdown chevron, no pressed state.
   hasMenu?: boolean;
-  isDisabled?: boolean;
-  'data-cy'?: string;
 };
 
 const RichTextToolbarButton = ({
   icon,
   text,
   isSelected,
-  defaultSelected,
-  onChange,
   onPress,
   hasMenu = false,
-  isDisabled,
   'aria-label': ariaLabel,
-  'data-cy': dataCy,
 }: RichTextToolbarButtonProps) => {
   const className = `${styles.button} ${
     text === undefined ? '' : styles.withText
@@ -51,13 +43,7 @@ const RichTextToolbarButton = ({
 
   if (hasMenu) {
     return (
-      <Button
-        className={className}
-        onPress={onPress}
-        isDisabled={isDisabled}
-        aria-label={ariaLabel}
-        data-cy={dataCy}
-      >
+      <Button className={className} aria-label={ariaLabel}>
         {content}
       </Button>
     );
@@ -67,12 +53,8 @@ const RichTextToolbarButton = ({
     <ToggleButton
       className={className}
       isSelected={isSelected}
-      defaultSelected={defaultSelected}
-      onChange={onChange}
       onPress={onPress}
-      isDisabled={isDisabled}
       aria-label={ariaLabel}
-      data-cy={dataCy}
     >
       {content}
     </ToggleButton>

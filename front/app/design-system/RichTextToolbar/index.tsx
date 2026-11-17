@@ -6,24 +6,21 @@ import '../tokens.css';
 
 import styles from './RichTextToolbar.module.css';
 
-export type RichTextToolbarProps = {
+type RichTextToolbarProps = {
   // RichTextToolbarButton items.
   children: ReactNode;
   'aria-label': string;
-  'data-cy'?: string;
 };
 
 const RichTextToolbar = ({
   children,
   'aria-label': ariaLabel,
-  'data-cy': dataCy,
 }: RichTextToolbarProps) => (
-  <Toolbar className={styles.toolbar} aria-label={ariaLabel} data-cy={dataCy}>
+  <Toolbar className={styles.toolbar} aria-label={ariaLabel}>
     {children}
   </Toolbar>
 );
 
 export { default as RichTextToolbarButton } from './RichTextToolbarButton';
-export type { RichTextToolbarButtonProps } from './RichTextToolbarButton';
 
 export default RichTextToolbar;

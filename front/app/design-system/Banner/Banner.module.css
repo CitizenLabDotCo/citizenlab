@@ -19,21 +19,6 @@
   min-width: 0;
 }
 
-.description {
-  display: flex;
-  flex: 1;
-  flex-wrap: wrap;
-  min-width: 0;
-  column-gap: var(--gv-space-4);
-}
-
-.link {
-  composes: ringOutside from '../focus.module.css';
-  color: inherit;
-  text-decoration: underline;
-  cursor: pointer;
-}
-
 .info {
   background: var(--gv-surface-info);
 }

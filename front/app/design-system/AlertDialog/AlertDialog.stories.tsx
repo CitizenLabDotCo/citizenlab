@@ -1,6 +1,4 @@
-import React from 'react';
-
-import { DialogTrigger } from 'react-aria-components';
+import React, { ComponentProps, useState } from 'react';
 
 import Button from '../Button';
 
@@ -16,8 +14,9 @@ const meta = {
     children:
       'Westmere Riverside Park, its phases and its 312 inputs will be deleted. This cannot be undone.',
     confirmLabel: 'Delete project',
-    onConfirm: (close) => close(),
-    defaultOpen: true,
+    onConfirm: () => {},
+    isOpen: true,
+    onOpenChange: () => {},
   },
 } satisfies Meta<typeof AlertDialog>;
 
@@ -30,12 +29,24 @@ export const Pending: Story = {
   args: { isPending: true },
 };
 
+const WithTriggerExample = (args: ComponentProps<typeof AlertDialog>) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+      <Button variant="danger" onPress={() => setIsOpen(true)}>
+        Delete project
+      </Button>
+      <AlertDialog
+        {...args}
+        isOpen={isOpen}
+        onOpenChange={setIsOpen}
+        onConfirm={() => setIsOpen(false)}
+      />
+    </>
+  );
+};
+
 export const WithTrigger: Story = {
-  args: { defaultOpen: undefined },
-  render: (args) => (
-    <DialogTrigger>
-      <Button variant="danger">Delete project</Button>
-      <AlertDialog {...args} />
-    </DialogTrigger>
-  ),
+  render: (args) => <WithTriggerExample {...args} />,
 };

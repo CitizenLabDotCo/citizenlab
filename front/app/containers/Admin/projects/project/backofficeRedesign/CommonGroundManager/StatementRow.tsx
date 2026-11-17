@@ -43,7 +43,6 @@ const StatementRow = ({
   return (
     <Row
       id={idea.id}
-      kind="flat"
       textValue={title}
       isActive={active}
       isPicked={selected}

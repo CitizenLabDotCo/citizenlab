@@ -10,7 +10,7 @@ const meta = {
   args: {
     label: 'Votes per resident',
     description: 'From 1 to 10.',
-    defaultValue: 3,
+    value: 3,
     minValue: 1,
     maxValue: 10,
   },
@@ -34,7 +34,7 @@ export const AllVariants: Story = {
             <NumberField
               label="Votes per resident"
               description="From 1 to 10."
-              defaultValue={3}
+              value={3}
               size={size}
             />
           </div>
@@ -43,7 +43,7 @@ export const AllVariants: Story = {
               label="Votes per resident"
               description="From 1 to 10."
               errorMessage="Use a number from 1 to 10."
-              defaultValue={12}
+              value={12}
               size={size}
               isInvalid
             />
@@ -52,7 +52,7 @@ export const AllVariants: Story = {
             <NumberField
               label="Votes per resident"
               description="From 1 to 10."
-              defaultValue={3}
+              value={3}
               size={size}
               isDisabled
             />
@@ -61,11 +61,10 @@ export const AllVariants: Story = {
             <NumberField
               label="Votes per resident"
               description="At the minimum the decrement step is disabled."
-              defaultValue={1}
+              value={1}
               minValue={1}
               maxValue={10}
               size={size}
-              isRequired
             />
           </div>
         </div>
@@ -81,7 +80,7 @@ export const StepLabels: Story = {
       <NumberField
         aria-label="Parking permits for residents"
         size={32}
-        defaultValue={0}
+        value={0}
         minValue={0}
         step={1}
         incrementAriaLabel="Add one"

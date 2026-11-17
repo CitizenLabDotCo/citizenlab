@@ -11,21 +11,18 @@ import '../tokens.css';
 import styles from './AlertDialog.module.css';
 import messages from './messages';
 
-export type AlertDialogProps = {
+type AlertDialogProps = {
   // The label of the action that opened it, e.g. "Delete project".
   title: ReactNode;
   // What is lost, and that it cannot be undone.
   children: ReactNode;
   confirmLabel: ReactNode;
-  // Gets close so an uncontrolled dialog can shut itself when it is done.
-  onConfirm: (close: () => void) => void;
+  onConfirm: () => void;
   isPending?: boolean;
-  isOpen?: boolean;
-  defaultOpen?: boolean;
-  onOpenChange?: (isOpen: boolean) => void;
+  isOpen: boolean;
+  onOpenChange: (isOpen: boolean) => void;
   confirmId?: string;
   confirmDataCy?: string;
-  'data-cy'?: string;
 };
 
 // Only for a destructive action that cannot be undone. Focus starts on Cancel.
@@ -36,18 +33,15 @@ const AlertDialog = ({
   onConfirm,
   isPending,
   isOpen,
-  defaultOpen,
   onOpenChange,
   confirmId,
   confirmDataCy,
-  'data-cy': dataCy,
 }: AlertDialogProps) => {
   const { formatMessage } = useIntl();
 
   return (
     <ModalOverlay
       isOpen={isOpen}
-      defaultOpen={defaultOpen}
       onOpenChange={onOpenChange}
       className={modalStyles.overlay}
     >
@@ -65,7 +59,6 @@ const AlertDialog = ({
           }}
           secondaryAction={{ label: formatMessage(messages.cancel) }}
           autoFocusSecondary
-          data-cy={dataCy}
         >
           <p className={styles.text}>{children}</p>
         </DialogLayout>

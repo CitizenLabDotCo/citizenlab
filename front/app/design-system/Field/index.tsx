@@ -23,13 +23,11 @@ export const RequiredMarker = () => (
 
 type FieldLabelProps = {
   children: ReactNode;
-  isRequired?: boolean;
 };
 
-export const FieldLabel = ({ children, isRequired }: FieldLabelProps) => (
+export const FieldLabel = ({ children }: FieldLabelProps) => (
   <div className={styles.labelRow}>
     <Label className={styles.label}>{children}</Label>
-    {isRequired && <RequiredMarker />}
   </div>
 );
 

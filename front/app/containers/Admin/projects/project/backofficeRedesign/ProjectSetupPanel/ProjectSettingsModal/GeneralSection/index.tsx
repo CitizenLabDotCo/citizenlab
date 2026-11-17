@@ -93,7 +93,6 @@ const GeneralSection = ({
       <SettingsSection title={formatMessage(messages.settingsProjectUrl)}>
         <SlugInput
           slug={slug}
-          pathnameWithoutSlug="projects"
           apiErrors={apiErrors}
           showSlugErrorMessage={showSlugErrorMessage}
           onSlugChange={onSlugChange}

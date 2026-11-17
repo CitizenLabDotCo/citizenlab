@@ -42,18 +42,14 @@ export const Default: Story = {
 };
 
 // Hovered, Pressed and Focused come from the pointer and the keyboard.
-const states = [
-  { name: 'Default' },
-  { name: 'Invalid', isInvalid: true },
-  { name: 'Disabled', isDisabled: true },
-];
+const states = [{ name: 'Default' }, { name: 'Invalid', isInvalid: true }];
 
 export const AllVariants: Story = {
   args: { label: 'Sorting', children: options },
   render: () => (
     <div style={{ display: 'grid', gap: 24 }}>
       {([36, 32] as const).map((size) =>
-        states.map(({ name, isInvalid, isDisabled }) => (
+        states.map(({ name, isInvalid }) => (
           <div key={`${size}-${name}`} style={{ display: 'flex', gap: 24 }}>
             {[undefined, 'Trending'].map((value) => (
               <div key={value ?? 'placeholder'} style={{ width: 168 }}>
@@ -67,9 +63,8 @@ export const AllVariants: Story = {
                       : 'Choose an order to publish.'
                   }
                   size={size}
-                  defaultValue={value}
+                  value={value}
                   isInvalid={isInvalid}
-                  isDisabled={isDisabled}
                 >
                   {options}
                 </Select>
@@ -82,36 +77,12 @@ export const AllVariants: Story = {
   ),
 };
 
-// Oldest looks disabled but stays focusable in the list; choosing it does nothing.
-export const DisabledWithReason: Story = {
-  args: { label: 'Sorting', children: null },
-  render: () => (
-    <div style={{ width: 168 }}>
-      <Select label="Sorting" defaultValue="Trending">
-        {['Trending', 'Newest', 'Oldest'].map((sort) => (
-          <ListBoxOption
-            key={sort}
-            id={sort}
-            disabledReason={
-              sort === 'Oldest' ? 'Only for phases with an end date' : undefined
-            }
-          >
-            {sort}
-          </ListBoxOption>
-        ))}
-      </Select>
-    </div>
-  ),
-};
-
 // No visible label: the row or a heading already names it.
 export const AriaLabelOnly: Story = {
   args: { label: 'Sorting', children: null },
   render: () => (
     <div style={{ width: 168 }}>
-      <Select aria-label="Sorting" defaultValue="Trending">
-        {options}
-      </Select>
+      <Select aria-label="Sorting">{options}</Select>
     </div>
   ),
 };

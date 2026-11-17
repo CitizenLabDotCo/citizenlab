@@ -7,7 +7,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 const meta = {
   title: 'Design system/Data display/Stat row',
   component: StatRow,
-  args: { label: 'Waiting for a reply', value: '40', onPress: () => {} },
+  args: { label: 'Waiting for a reply', value: '40' },
 } satisfies Meta<typeof StatRow>;
 
 export default meta;
@@ -16,7 +16,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   render: (args) => (
     <div style={{ width: 292 }}>
-      <StatRow label={args.label} value={args.value} onPress={() => {}} />
+      <StatRow label={args.label} value={args.value} />
     </div>
   ),
 };
@@ -25,9 +25,12 @@ export const Default: Story = {
 export const AllVariants: Story = {
   render: () => (
     <div style={{ width: 292, display: 'grid', gap: 24 }}>
-      <StatRow label="Waiting for a reply" value="40" onPress={() => {}} />
-      <StatRow label="New ideas" value="18" isNew onPress={() => {}} />
-      <StatRow label="New comments" value="33" href="#comments" />
+      <StatRow
+        label="Waiting for a reply"
+        value="40"
+        isPressed={false}
+        onPress={() => {}}
+      />
       <StatRow label="New statements" value="4" />
     </div>
   ),

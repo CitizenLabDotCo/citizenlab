@@ -6,28 +6,19 @@ import Icon from '../Icon';
 import '../tokens.css';
 
 import styles from './Breadcrumbs.module.css';
-import { BreadcrumbSeparator, SeparatorContext } from './context';
+import { SeparatorContext } from './context';
 
-export type BreadcrumbProps = {
+type Props = {
   // The level's name.
   children: ReactNode;
   id?: Key;
   href?: string;
   isDisabled?: boolean;
-  // Defaults to the separator of the surrounding Breadcrumbs.
-  separator?: BreadcrumbSeparator;
 };
 
 // The last Breadcrumb in a Breadcrumbs is the current page: not a link, no separator.
-const Breadcrumb = ({
-  children,
-  id,
-  href,
-  isDisabled,
-  separator,
-}: BreadcrumbProps) => {
-  const contextSeparator = useContext(SeparatorContext);
-  const shownSeparator = separator ?? contextSeparator;
+const Breadcrumb = ({ children, id, href, isDisabled }: Props) => {
+  const separator = useContext(SeparatorContext);
 
   return (
     <AriaBreadcrumb id={id} className={styles.breadcrumb}>
@@ -41,7 +32,7 @@ const Breadcrumb = ({
             <Link className={styles.link} href={href} isDisabled={isDisabled}>
               <span className={styles.text}>{children}</span>
             </Link>
-            {shownSeparator === 'chevron' ? (
+            {separator === 'chevron' ? (
               <Icon name="chevron-right-16" className={styles.chevron} />
             ) : (
               <span className={styles.slash} aria-hidden>

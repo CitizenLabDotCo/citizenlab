@@ -1,4 +1,4 @@
-/* Generated from the Go Vocal Design System Figma file (Foundations). Do not edit by hand. */
+/* Generated from the Go Vocal Design System Figma file (Foundations), keeping only the tokens the app uses. */
 :root {
   /* Colour primitives: only semantic tokens below may point at these. */
   --gv-neutral-0: #ffffff;
@@ -9,21 +9,17 @@
   --gv-neutral-1000: #000000;
   --gv-slate-50: #f5f7f8;
   --gv-slate-100: #edeff0;
-  --gv-slate-150: #e6e8ea;
   --gv-slate-200: #e4e6eb;
   --gv-slate-300: #b8c5d0;
   --gv-slate-400: #8d9eac;
   --gv-slate-500: #84939e;
   --gv-slate-600: #596b7a;
-  --gv-slate-650: #5a686f;
   --gv-slate-700: #44565f;
   --gv-slate-750: #43515d;
-  --gv-slate-800: #414f56;
   --gv-navy-650: #044d6c;
   --gv-navy-700: #04496c;
   --gv-navy-900: #003349;
   --gv-teal-50: #edf8fa;
-  --gv-teal-400: #01a1b1;
   --gv-teal-500: #147985;
   --gv-teal-700: #0a5159;
   --gv-green-600: #096f03;
@@ -31,10 +27,8 @@
   --gv-red-500: #e52516;
   --gv-amber-600: #b8860b;
   --gv-amber-50: #fef8e1;
-  --gv-alpha-black-70: rgba(0, 0, 0, 0.7);
   --gv-alpha-backdrop: rgba(15, 20, 35, 0.45);
   --gv-alpha-green-12: rgba(8, 131, 58, 0.12);
-  --gv-alpha-amber-30: rgba(212, 146, 16, 0.3);
   --gv-alpha-red-12: rgba(229, 37, 22, 0.12);
   --gv-alpha-red-6: rgba(214, 22, 7, 0.06);
   --gv-alpha-navy-10: rgba(4, 77, 108, 0.1);
@@ -44,33 +38,16 @@
   --gv-slate-225: #d3dbde;
   --gv-slate-125: #ebedef;
   --gv-green-500: #04884c;
-  --gv-green-400: #4a9e6a;
   --gv-red-450: #d6473a;
   --gv-red-600: #d61607;
-  --gv-teal-75: #e5f5f7;
-  --gv-blue-300: #6aa3d6;
-  --gv-blue-400: #4a86c4;
-  --gv-blue-500: #3a6ea3;
-  --gv-blue-600: #2f5a86;
-  --gv-blue-700: #274a6e;
   --gv-blue-25: #f7fafd;
   --gv-blue-150: #c3dcf6;
   --gv-blue-900: #1c477b;
   --gv-blue-450: #4183c4;
   --gv-blue-50: #e5f1f7;
   --gv-blue-100: #cbdee4;
-  --gv-olive-500: #a2a24a;
-  --gv-orange-400: #e08a4e;
-  --gv-orange-500: #cc7a55;
-  --gv-brand-950: #0f1423;
   --gv-red-800: #9b1005;
-  --gv-amber-500: #d49210;
-  --gv-brown-500: #8c680d;
-  --gv-navy-600: #00577c;
-  --gv-green-550: #08833a;
-  --gv-red-100: #fde9e8;
   --gv-neutral-400: #cbcbcb;
-  --gv-alpha-black-35: rgba(0, 0, 0, 0.35);
   --gv-green-300: #62c462;
   --gv-slate-40: #f4f6f8;
   --gv-blue-10: #e6eef1;
@@ -88,7 +65,6 @@
   --gv-surface-info: var(--gv-teal-50);
   --gv-surface-backdrop: var(--gv-alpha-backdrop);
   --gv-surface-neutral: var(--gv-slate-100);
-  --gv-surface-accent-strong: var(--gv-teal-500);
   --gv-surface-success: var(--gv-alpha-green-12);
   --gv-surface-brand-strong: var(--gv-navy-700);
   --gv-surface-brand-strong-hovered: var(--gv-navy-900);
@@ -108,16 +84,11 @@
   --gv-surface-warning: var(--gv-amber-50);
   --gv-surface-danger: var(--gv-alpha-red-12);
   --gv-surface-selected: var(--gv-alpha-navy-10);
-  --gv-surface-disabled: var(--gv-neutral-25);
   --gv-surface-danger-strong-hovered: var(--gv-red-800);
-  --gv-surface-progress: var(--gv-green-550);
   --gv-surface-track: var(--gv-slate-125);
-  --gv-surface-danger-subtle: var(--gv-red-100);
   --gv-surface-tab-selected: var(--gv-slate-200);
   --gv-surface-step-done: var(--gv-green-500);
   --gv-surface-control-subtle: var(--gv-slate-40);
-  --gv-surface-search-match: var(--gv-teal-75);
-  --gv-surface-filter-on: var(--gv-teal-75);
   --gv-surface-row-new: var(--gv-blue-10);
   --gv-surface-switch-on-panel: var(--gv-slate-750);
   --gv-surface-brand-strong-pressed: var(--gv-navy-950);
@@ -125,13 +96,6 @@
   --gv-surface-switch-off-pressed: var(--gv-slate-300);
   --gv-surface-inverse-pressed: var(--gv-neutral-1000);
   --gv-surface-switch-on-panel-pressed: var(--gv-slate-850);
-
-  /* side-nav */
-  --gv-side-nav-surface: var(--gv-navy-900);
-  --gv-side-nav-surface-current: var(--gv-alpha-black-70);
-  --gv-side-nav-surface-hovered: var(--gv-alpha-black-35);
-  --gv-side-nav-icon: var(--gv-slate-300);
-  --gv-side-nav-icon-current: var(--gv-teal-400);
 
   /* text */
   --gv-text-primary: var(--gv-neutral-900);
@@ -151,7 +115,6 @@
   --gv-text-toolbar: var(--gv-slate-750);
   --gv-text-warning: var(--gv-amber-600);
   --gv-text-info: var(--gv-teal-700);
-  --gv-text-link-hovered: var(--gv-navy-900);
   --gv-text-link-pressed: var(--gv-navy-700);
   --gv-text-cell: var(--gv-slate-750);
 
@@ -170,11 +133,8 @@
   --gv-border-danger: var(--gv-red-600);
   --gv-border-control-active: var(--gv-slate-500);
   --gv-border-checked: var(--gv-blue-450);
-  --gv-border-warning: var(--gv-alpha-amber-30);
   --gv-border-accent: var(--gv-teal-500);
-  --gv-border-disabled: var(--gv-slate-100);
   --gv-border-divider: var(--gv-slate-125);
-  --gv-border-resize: var(--gv-navy-600);
   --gv-border-placeholder: var(--gv-neutral-400);
   --gv-border-step-done: var(--gv-green-300);
 
@@ -191,25 +151,12 @@
   --gv-icon-chip-selected: var(--gv-blue-900);
   --gv-icon-accent: var(--gv-teal-500);
   --gv-icon-disabled: var(--gv-slate-400);
-  --gv-icon-selected: var(--gv-navy-650);
 
   /* chart */
   --gv-chart-agree: var(--gv-green-500);
   --gv-chart-disagree: var(--gv-red-450);
   --gv-chart-pass: var(--gv-slate-300);
-  --gv-chart-bar: var(--gv-navy-650);
   --gv-chart-line-primary: var(--gv-navy-650);
-  --gv-chart-line-secondary: var(--gv-orange-400);
-  --gv-chart-grid: var(--gv-slate-100);
-  --gv-chart-axis: var(--gv-slate-500);
-  --gv-chart-blue-1: var(--gv-blue-300);
-  --gv-chart-blue-2: var(--gv-blue-400);
-  --gv-chart-blue-3: var(--gv-blue-500);
-  --gv-chart-blue-4: var(--gv-blue-600);
-  --gv-chart-blue-5: var(--gv-blue-700);
-  --gv-chart-green: var(--gv-green-400);
-  --gv-chart-olive: var(--gv-olive-500);
-  --gv-chart-terracotta: var(--gv-orange-500);
 
   /* Spacing */
   --gv-space-0: 0px;
@@ -227,19 +174,15 @@
   --gv-space-28: 28px;
   --gv-space-32: 32px;
   --gv-space-40: 40px;
-  --gv-space-48: 48px;
   --gv-space-56: 56px;
   --gv-space-104: 104px;
 
   /* Radius */
-  --gv-radius-2: 2px;
   --gv-radius-4: 4px;
   --gv-radius-6: 6px;
   --gv-radius-8: 8px;
   --gv-radius-10: 10px;
   --gv-radius-12: 12px;
-  --gv-radius-14: 14px;
-  --gv-radius-22: 22px;
   --gv-radius-full: 999px;
 
   /* Size */
@@ -276,12 +219,10 @@
   --gv-font-size-13: 13px;
   --gv-font-size-14: 14px;
   --gv-font-size-16: 16px;
-  --gv-font-size-20: 20px;
   --gv-font-size-28: 28px;
   --gv-font-line-height-16: 16px;
   --gv-font-line-height-20: 20px;
   --gv-font-line-height-24: 24px;
-  --gv-font-line-height-28: 28px;
   --gv-font-line-height-32: 32px;
   --gv-font-letter-spacing-0: 0;
 
@@ -295,7 +236,6 @@
   --gv-motion-duration-medium: 200ms;
   --gv-motion-duration-slow: 300ms;
   --gv-motion-duration-panel: 360ms;
-  --gv-motion-duration-loop: 1600ms;
   --gv-motion-offset-near: 4px;
   --gv-motion-offset-mid: 8px;
   --gv-motion-offset-far: 12px;

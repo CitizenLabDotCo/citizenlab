@@ -18,8 +18,7 @@ export type DialogAction = {
   onPress?: (close: () => void) => void;
   isPending?: boolean;
   isDisabled?: boolean;
-  disabledReason?: ReactNode;
-  type?: 'button' | 'submit';
+  type?: 'submit';
   form?: string;
   id?: string;
   'data-cy'?: string;
@@ -105,7 +104,6 @@ const DialogLayout = ({
                   }
                   isPending={secondaryAction.isPending}
                   isDisabled={secondaryAction.isDisabled}
-                  disabledReason={secondaryAction.disabledReason}
                   type={secondaryAction.type}
                   form={secondaryAction.form}
                   id={secondaryAction.id}
@@ -122,7 +120,6 @@ const DialogLayout = ({
                   onPress={() => primaryAction.onPress?.(close)}
                   isPending={primaryAction.isPending}
                   isDisabled={primaryAction.isDisabled}
-                  disabledReason={primaryAction.disabledReason}
                   type={primaryAction.type}
                   form={primaryAction.form}
                   id={primaryAction.id}

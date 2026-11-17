@@ -20,7 +20,6 @@ import styles from './SlugInput.module.css';
 
 interface Props {
   slug: string;
-  pathnameWithoutSlug: 'projects' | 'folders';
   apiErrors: CLErrors | null;
   showSlugErrorMessage: boolean;
   onSlugChange: (slug: string) => void;
@@ -29,7 +28,6 @@ interface Props {
 
 const SlugInput = ({
   slug,
-  pathnameWithoutSlug,
   apiErrors,
   showSlugErrorMessage,
   onSlugChange,
@@ -51,7 +49,7 @@ const SlugInput = ({
     <div className={styles.slugInput}>
       <AffixField
         label={formatMessage(slugInputMessages.urlSlugLabel)}
-        prefix={`${hostName}/${locale}/${pathnameWithoutSlug}/`}
+        prefix={`${hostName}/${locale}/projects/`}
         value={slug}
         onChange={onSlugChange}
         description={formatMessage(slugInputMessages.slugTooltip)}

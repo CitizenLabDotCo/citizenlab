@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Time } from '@internationalized/date';
 import { I18nProvider } from 'react-aria-components';
@@ -10,7 +10,12 @@ import type { Meta, StoryObj } from '@storybook/react';
 const meta = {
   title: 'Design system/Forms/Time field',
   component: TimeField,
-  args: { label: 'Start time', description: 'In Westmere time.' },
+  args: {
+    label: 'Start time',
+    description: 'In Westmere time.',
+    value: null,
+    onChange: () => {},
+  },
   decorators: [
     (Story) => (
       <I18nProvider locale="en-GB">
@@ -23,13 +28,24 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {};
+type DemoProps = Omit<
+  React.ComponentProps<typeof TimeField>,
+  'value' | 'onChange'
+> & { initialValue: Time | null };
+
+const Demo = ({ initialValue, ...props }: DemoProps) => {
+  const [value, setValue] = useState(initialValue);
+  return <TimeField {...props} value={value} onChange={setValue} />;
+};
+
+export const Default: Story = {
+  render: (args) => <Demo {...args} initialValue={null} />,
+};
 
 const states = [
   { name: 'Default' },
   { name: 'Invalid', isInvalid: true, errorMessage: 'Add a start time.' },
   { name: 'Disabled', isDisabled: true },
-  { name: 'Read-only', isReadOnly: true },
 ];
 
 export const AllVariants: Story = {
@@ -40,11 +56,11 @@ export const AllVariants: Story = {
           {states.map(({ name, ...state }) =>
             [null, new Time(14, 30)].map((value) => (
               <div key={`${name}-${!!value}`} style={{ width: 200 }}>
-                <TimeField
+                <Demo
                   label="Start time"
                   description="In Westmere time."
                   size={size}
-                  defaultValue={value}
+                  initialValue={value}
                   {...state}
                 />
               </div>
@@ -52,9 +68,6 @@ export const AllVariants: Story = {
           )}
         </div>
       ))}
-      <div style={{ width: 200 }}>
-        <TimeField label="Start time" isRequired />
-      </div>
     </div>
   ),
 };

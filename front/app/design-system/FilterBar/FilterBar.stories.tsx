@@ -66,7 +66,6 @@ export const Chips: Story = {
         menu={statusMenu}
         onRemove={() => {}}
       />
-      <FilterChip type="default" label="Status: Published" menu={statusMenu} />
       <FilterChip
         label="Folder: A very long folder name that cuts off at the maximum width"
         menu={statusMenu}

@@ -20,7 +20,6 @@
   background: var(--gv-surface-hovered);
 }
 
-.row[data-disabled],
 .withReason {
   color: var(--gv-text-disabled);
   cursor: default;

@@ -12,13 +12,11 @@ interface Props {
   label?: ReactNode;
   'aria-label': string;
   placeholder?: string;
-  onFocus?: () => void;
   noImages?: boolean;
   noVideos?: boolean;
   noLinks?: boolean;
   noAlign?: boolean;
   limitedTextFormatting?: boolean;
-  withCTAButton?: boolean;
 }
 
 // A MultilocRichTextField bound to the surrounding react-hook-form form.
@@ -27,13 +25,11 @@ const FormMultilocRichTextField = ({
   label,
   'aria-label': ariaLabel,
   placeholder,
-  onFocus,
   noImages,
   noVideos,
   noLinks,
   noAlign,
   limitedTextFormatting,
-  withCTAButton,
 }: Props) => {
   const { control, emptyMultiloc, errorMessage } = useFormMultilocField(name);
 
@@ -50,7 +46,6 @@ const FormMultilocRichTextField = ({
           placeholder={placeholder}
           valueMultiloc={{ ...emptyMultiloc, ...field.value }}
           onChange={field.onChange}
-          onFocus={onFocus}
           onBlur={field.onBlur}
           editorRef={field.ref}
           errorMessage={errorMessage}
@@ -59,7 +54,6 @@ const FormMultilocRichTextField = ({
           noLinks={noLinks}
           noAlign={noAlign}
           limitedTextFormatting={limitedTextFormatting}
-          withCTAButton={withCTAButton}
         />
       )}
     />

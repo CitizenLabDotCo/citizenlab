@@ -48,14 +48,13 @@ const Segment = ({ segment }: SegmentProps) => {
 };
 
 type Props = {
-  // The class of the DateInput: the box itself (Date field, Time field) or
-  // the segment row inside a picker's box.
+  // The class of the DateInput: the box itself (Time field) or the segment
+  // row inside the Date picker's box.
   className: string;
-  slot?: 'start' | 'end';
 };
 
-const DateSegments = ({ className, slot }: Props) => (
-  <DateInput className={className} slot={slot}>
+const DateSegments = ({ className }: Props) => (
+  <DateInput className={className}>
     {(segment) => <Segment segment={segment} />}
   </DateInput>
 );

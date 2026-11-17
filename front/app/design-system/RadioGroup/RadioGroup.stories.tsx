@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import RadioGroup, { Radio } from '.';
 
@@ -14,25 +14,32 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  render: () => (
-    <RadioGroup label="Who can take part" defaultValue="everyone">
-      <Radio value="everyone">Everyone</Radio>
-      <Radio value="registered">Registered residents</Radio>
-      <Radio value="groups">Selected groups</Radio>
-    </RadioGroup>
-  ),
+  render: function Render() {
+    const [value, setValue] = useState('everyone');
+    return (
+      <RadioGroup label="Who can take part" value={value} onChange={setValue}>
+        <Radio value="everyone">Everyone</Radio>
+        <Radio value="registered">Registered residents</Radio>
+        <Radio value="groups">Selected groups</Radio>
+      </RadioGroup>
+    );
+  },
 };
 
 export const AllVariants: Story = {
   render: () => (
     <div style={{ display: 'flex', gap: 48 }}>
-      <RadioGroup label="Default" defaultValue="yes">
+      <RadioGroup label="Default" value="yes">
         <Radio value="yes">Everyone</Radio>
         <Radio value="no">Everyone</Radio>
       </RadioGroup>
-      <RadioGroup label="Disabled" defaultValue="yes" isDisabled>
-        <Radio value="yes">Everyone</Radio>
-        <Radio value="no">Everyone</Radio>
+      <RadioGroup label="Disabled" value="yes">
+        <Radio value="yes" isDisabled>
+          Everyone
+        </Radio>
+        <Radio value="no" isDisabled>
+          Everyone
+        </Radio>
       </RadioGroup>
     </div>
   ),
@@ -41,23 +48,29 @@ export const AllVariants: Story = {
 // Budgeting looks disabled but stays focusable: Tab and the arrow keys reach it and
 // the tooltip says why; clicking it, Space or arrowing onto it keeps the choice.
 export const DisabledWithReason: Story = {
-  render: () => (
-    <RadioGroup label="Voting method" defaultValue="single">
-      <Radio value="single">Single vote</Radio>
-      <Radio value="budgeting" disabledReason="Budgeting needs the add-on">
-        Budgeting
-      </Radio>
-      <Radio value="multiple">Multiple votes</Radio>
-    </RadioGroup>
-  ),
+  render: function Render() {
+    const [value, setValue] = useState('single');
+    return (
+      <RadioGroup label="Voting method" value={value} onChange={setValue}>
+        <Radio value="single">Single vote</Radio>
+        <Radio value="budgeting" disabledReason="Budgeting needs the add-on">
+          Budgeting
+        </Radio>
+        <Radio value="multiple">Multiple votes</Radio>
+      </RadioGroup>
+    );
+  },
 };
 
 // No visible label: a heading above already names the choice.
 export const AriaLabelOnly: Story = {
-  render: () => (
-    <RadioGroup aria-label="Voting method" defaultValue="single">
-      <Radio value="single">Single vote</Radio>
-      <Radio value="multiple">Multiple votes</Radio>
-    </RadioGroup>
-  ),
+  render: function Render() {
+    const [value, setValue] = useState('single');
+    return (
+      <RadioGroup aria-label="Voting method" value={value} onChange={setValue}>
+        <Radio value="single">Single vote</Radio>
+        <Radio value="multiple">Multiple votes</Radio>
+      </RadioGroup>
+    );
+  },
 };

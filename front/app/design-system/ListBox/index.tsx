@@ -6,17 +6,16 @@ import {
   ReasonKeysContext,
   togglesReasonKey,
   useGuardedValue,
-  useListBoxReasonKeys,
+  useReasonKeys,
 } from '../disabledReason/reasonKeys';
 import '../tokens.css';
 
 import styles from './ListBox.module.css';
 
 export { default as ListBoxOption } from './ListBoxOption';
-export type { ListBoxOptionProps } from './ListBoxOption';
 export { default as ListBoxPopover } from './ListBoxPopover';
 
-export type ListBoxProps<T extends object> = {
+type ListBoxProps<T extends object> = {
   // ListBoxOption elements, or a function of each item when `items` is set.
   children: ReactNode | ((item: T) => ReactNode);
   items?: Iterable<T>;
@@ -24,11 +23,8 @@ export type ListBoxProps<T extends object> = {
   // Single draws the check on the selected option, multiple the checkbox.
   selectionMode?: 'single' | 'multiple';
   selectedKeys?: Selection;
-  defaultSelectedKeys?: Selection;
   onSelectionChange?: (keys: Selection) => void;
   disabledKeys?: Iterable<Key>;
-  renderEmptyState?: () => ReactNode;
-  'data-cy'?: string;
 };
 
 // Inside Select and ComboBox it takes its selection from them; on its own (the tag picker)
@@ -39,18 +35,14 @@ const ListBox = <T extends object>({
   'aria-label': ariaLabel,
   selectionMode,
   selectedKeys,
-  defaultSelectedKeys,
   onSelectionChange,
   disabledKeys,
-  renderEmptyState,
-  'data-cy': dataCy,
 }: ListBoxProps<T>) => {
-  // A ListBoxOption with a disabled reason takes focus but is never selected. Inside
-  // a Select or ComboBox, they guard the selection instead.
-  const reasonKeys = useListBoxReasonKeys();
+  // A ListBoxOption with a disabled reason takes focus but is never selected.
+  const reasonKeys = useReasonKeys();
   const [currentKeys, handleSelectionChange] = useGuardedValue<Selection>(
     selectedKeys,
-    defaultSelectedKeys ?? new Set(),
+    new Set(),
     onSelectionChange,
     (next, current) => togglesReasonKey(reasonKeys, next, current)
   );
@@ -66,9 +58,7 @@ const ListBox = <T extends object>({
         selectedKeys={ownsSelection ? currentKeys : undefined}
         onSelectionChange={ownsSelection ? handleSelectionChange : undefined}
         disabledKeys={disabledKeys}
-        renderEmptyState={renderEmptyState}
         className={styles.listBox}
-        data-cy={dataCy}
       >
         {children}
       </AriaListBox>

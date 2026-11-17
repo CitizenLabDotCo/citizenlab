@@ -20,9 +20,8 @@ type LabelProps =
   // Without a visible label (a heading or the row already names it) it needs an aria-label.
   | { label?: undefined; 'aria-label': string };
 
-export type NumberFieldProps = LabelProps & {
+type NumberFieldProps = LabelProps & {
   value?: number;
-  defaultValue?: number;
   onChange?: (value: number) => void;
   minValue?: number;
   maxValue?: number;
@@ -30,7 +29,6 @@ export type NumberFieldProps = LabelProps & {
   description?: ReactNode;
   errorMessage?: ReactNode;
   size?: 36 | 32;
-  isRequired?: boolean;
   isInvalid?: boolean;
   isDisabled?: boolean;
   // Names for the step buttons; React Aria's default is "Increase/Decrease <field label>".
@@ -38,7 +36,6 @@ export type NumberFieldProps = LabelProps & {
   decrementAriaLabel?: string;
   name?: string;
   id?: string;
-  'data-cy'?: string;
 };
 
 type StepButtonProps = { slot: 'increment' | 'decrement' };
@@ -70,7 +67,6 @@ const StepButton = ({ slot }: StepButtonProps) => {
 const NumberField = ({
   label,
   value,
-  defaultValue,
   onChange,
   minValue,
   maxValue,
@@ -78,7 +74,6 @@ const NumberField = ({
   description,
   errorMessage,
   size = 36,
-  isRequired = false,
   isInvalid,
   isDisabled = false,
   incrementAriaLabel,
@@ -86,17 +81,14 @@ const NumberField = ({
   name,
   id,
   'aria-label': ariaLabel,
-  'data-cy': dataCy,
 }: NumberFieldProps) => (
   <AriaNumberField
     className={inputStyles.field}
     value={value}
-    defaultValue={defaultValue}
     onChange={onChange}
     minValue={minValue}
     maxValue={maxValue}
     step={step}
-    isRequired={isRequired}
     isInvalid={isInvalid}
     isDisabled={isDisabled}
     incrementAriaLabel={incrementAriaLabel}
@@ -104,11 +96,8 @@ const NumberField = ({
     name={name}
     id={id}
     aria-label={ariaLabel}
-    data-cy={dataCy}
   >
-    {label !== undefined && (
-      <FieldLabel isRequired={isRequired}>{label}</FieldLabel>
-    )}
+    {label !== undefined && <FieldLabel>{label}</FieldLabel>}
     <div className={fieldStyles.control}>
       <Group className={`${styles.group} ${inputStyles[`size${size}`]}`}>
         {/* React Aria names the steps and disables them at the minimum and maximum. */}

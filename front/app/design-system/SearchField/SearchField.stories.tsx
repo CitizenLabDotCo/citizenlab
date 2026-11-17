@@ -28,13 +28,6 @@ export const AllVariants: Story = {
               defaultValue={value}
               size={size}
             />
-            <SearchField
-              aria-label="Search projects"
-              placeholder="Search projects"
-              defaultValue={value}
-              size={size}
-              isDisabled
-            />
           </div>
         ))
       )}

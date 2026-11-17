@@ -50,21 +50,15 @@ const EventRegistrantTable = ({
         })}
       >
         <TableHeader>
-          <ColumnHeader
-            id="registrant"
-            isRowHeader
-            allowsResizing={false}
-            showChevron={false}
-          >
+          <ColumnHeader id="registrant" isRowHeader showChevron={false}>
             {formatMessage(messages.registrant)}
           </ColumnHeader>
-          <ColumnHeader id="email" allowsResizing={false} showChevron={false}>
+          <ColumnHeader id="email" showChevron={false}>
             {formatMessage(messages.email)}
           </ColumnHeader>
           <ColumnHeader
             id="registered"
             defaultWidth={140}
-            allowsResizing={false}
             indicator={sortDirection}
             menu={
               <ColumnMenu
@@ -92,7 +86,6 @@ const EventRegistrantTable = ({
               <Row
                 key={attendance.id}
                 id={attendance.id}
-                kind="flat"
                 textValue={name}
                 data-cy={`e2e-event-registrant-${attendance.id}`}
               >

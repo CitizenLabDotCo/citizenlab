@@ -8,13 +8,11 @@ import '../tokens.css';
 import messages from './messages';
 import styles from './ReviewStatus.module.css';
 
-export type ReviewStatusStatus = 'toReview' | 'toSet' | 'reviewed';
-
-export type ReviewStatusProps = {
-  status?: ReviewStatusStatus;
+type Props = {
+  status: 'toReview' | 'toSet' | 'reviewed';
 };
 
-const ReviewStatus = ({ status = 'toReview' }: ReviewStatusProps) => {
+const ReviewStatus = ({ status }: Props) => {
   const isReviewed = status === 'reviewed';
 
   return (
@@ -23,7 +21,7 @@ const ReviewStatus = ({ status = 'toReview' }: ReviewStatusProps) => {
         name={isReviewed ? 'circle-check-filled-16' : 'circle-dashed-14'}
         className={styles.icon}
       />
-      <span className={styles.label}>
+      <span>
         <FormattedMessage {...messages[status]} />
       </span>
     </span>
