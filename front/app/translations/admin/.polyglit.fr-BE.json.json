@@ -19229,6 +19229,11 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.ProjectPages.addFirstPage": {
+    "state": "verified",
+    "verified_at": "2026-11-17T16:44:16.246258Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.AdminPage.ProjectPages.attachmentsLabel": {
     "state": "verified",
     "verified_at": "2026-10-30T12:47:37.105722Z",
@@ -19302,6 +19307,11 @@
   "app.containers.AdminPage.ProjectPages.saveSuccess": {
     "state": "verified",
     "verified_at": "2026-10-30T12:47:37.105722Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.AdminPage.ProjectPages.slugRegexError": {
+    "state": "verified",
+    "verified_at": "2026-11-17T16:44:16.246258Z",
     "verified_by": "Adrien"
   },
   "app.containers.AdminPage.ProjectPages.slugRequiredError": {
