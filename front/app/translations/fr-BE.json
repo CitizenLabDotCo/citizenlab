@@ -234,7 +234,7 @@
   "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.filterByTags": "L'une de ces étiquettes",
   "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.filteredProjects": "Projets par critère",
   "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.notAvailable": "Les listes de projets par critère ne sont pas disponibles sur cette plateforme. Ce widget n’est donc pas visible par les résidents.",
-  "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.nothingSelected": "Choisissez-en au moins un pour afficher les projets ici.",
+  "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.nothingSelected": "Sélectionnez au moins un élément pour afficher des projets ici.",
   "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.selectionLabel": "Sélection",
   "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.titleLabel": "Titre",
   "app.components.ErrorBoundary.errorFormErrorFormEntry": "Certains champs sont invalides. Merci de corriger ces champs puis de réessayer.",

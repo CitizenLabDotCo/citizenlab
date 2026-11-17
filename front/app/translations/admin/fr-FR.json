@@ -892,7 +892,7 @@
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.viewCustomPage": "Afficher la page personnalisée",
   "app.containers.Admin.PagesAndMenu.containers.CustomPages.Edit.HeroBanner.buttonTitle": "Bouton",
   "app.containers.Admin.PagesAndMenu.containers.CustomPages.customPagePreviewTitle": "Aperçu de la page personnalisée",
-  "app.containers.Admin.PagesAndMenu.containers.CustomPages.editCustomPageInContentBuilder": "Modifier la page dans l'éditeur de contenu",
+  "app.containers.Admin.PagesAndMenu.containers.CustomPages.editCustomPageInContentBuilder": "Modifier la page dans l’éditeur de contenu",
   "app.containers.Admin.PagesAndMenu.containers.CustomPages.editCustomPageMetaTitle": "Modifier la page personnalisée | {orgName}",
   "app.containers.Admin.PagesAndMenu.containers.CustomPages.pageContentTab": "Contenu de la page",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.editProject": "Modifier",
