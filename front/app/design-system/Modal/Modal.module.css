@@ -6,6 +6,8 @@
   align-items: center;
   justify-content: center;
   background: var(--gv-surface-backdrop);
+  /* Below React Aria popovers (100000). */
+  z-index: 5000;
 }
 
 .overlay[data-entering] {
