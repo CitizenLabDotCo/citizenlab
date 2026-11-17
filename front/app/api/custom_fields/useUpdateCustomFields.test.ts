@@ -1,6 +1,8 @@
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
+import usePhase from 'api/phases/usePhase';
+
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
@@ -33,6 +35,53 @@ describe('useUpdateCustomFields', () => {
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data?.data).toEqual([]);
+  });
+
+  it('refreshes the phase persistence state after saving its questions', async () => {
+    let saved = false;
+    server.use(
+      http.get('*phases/persistence-test', () =>
+        HttpResponse.json({
+          data: {
+            id: 'persistence-test',
+            attributes: { custom_form_persisted: saved },
+          },
+        })
+      ),
+      http.patch('*phases/persistence-test/custom_fields/update_all', () => {
+        saved = true;
+        return HttpResponse.json({ data: [] });
+      })
+    );
+
+    const { result } = renderHook(
+      () => ({
+        phase: usePhase('persistence-test'),
+        update: useUpdateCustomFields(),
+      }),
+      { wrapper: createQueryClientWrapper() }
+    );
+
+    await waitFor(() =>
+      expect(
+        result.current.phase.data?.data.attributes.custom_form_persisted
+      ).toBe(false)
+    );
+
+    await act(async () => {
+      await result.current.update.mutateAsync({
+        projectId: 'project',
+        phaseId: 'persistence-test',
+        customFields: [],
+        customForm: { saveType: 'manual' },
+      });
+    });
+
+    await waitFor(() =>
+      expect(
+        result.current.phase.data?.data.attributes.custom_form_persisted
+      ).toBe(true)
+    );
   });
 
   it('mutates data correctly in project', async () => {

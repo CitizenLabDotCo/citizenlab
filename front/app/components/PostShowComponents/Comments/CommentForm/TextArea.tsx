@@ -2,6 +2,8 @@ import React from 'react';
 
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 
+import { useIsBoComments } from '../commentsVariant';
+
 interface Props {
   id?: string;
   className: string;
@@ -27,6 +29,8 @@ const TextArea = ({
   onFocus,
   getTextAreaRef,
 }: Props) => {
+  const isBo = useIsBoComments();
+
   return (
     <MentionsTextArea
       name="comment"
@@ -39,7 +43,8 @@ const TextArea = ({
       error={error}
       onChange={onChange}
       onFocus={onFocus}
-      fontWeight="300"
+      fontWeight={isBo ? '400' : '300'}
+      fontSize={isBo ? '12px' : undefined}
       padding="10px"
       borderRadius="none"
       border="none"

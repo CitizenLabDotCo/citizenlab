@@ -19,6 +19,10 @@ class PhasePolicy < ApplicationPolicy
     policy_for(record.project).update?
   end
 
+  def review_setup_card?
+    update?
+  end
+
   def destroy?
     policy_for(record.project).update?
   end

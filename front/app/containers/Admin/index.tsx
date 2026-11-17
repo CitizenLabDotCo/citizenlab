@@ -5,6 +5,8 @@ import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 
+import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
+
 import {
   CUSTOM_PAGE_BUILDER_PATH,
   HOMEPAGE_BUILDER_PATH,
@@ -17,6 +19,8 @@ import { Outlet as RouterOutlet, useLocation } from 'utils/router';
 
 import PulseCheck from './PulseCheck';
 import Sidebar from './sideBar/';
+import CollapsibleSidebar from './sideBar/CollapsibleSidebar';
+import { WorkspaceHeaderProvider } from './sideBar/WorkspaceHeaderContext';
 
 const Container = styled.div`
   display: flex;
@@ -94,6 +98,7 @@ type Props = {
 const AdminPage = memo<Props>(({ className }) => {
   const { data: authUser } = useAuthUser();
   const { pathname } = useLocation();
+  const redesigned = useProjectBackofficeRedesign();
 
   // The check in front/app/containers/Admin/routes.tsx already should do the same.
   // TODO: double check it and remove `userCanViewAdmin`
@@ -170,19 +175,22 @@ const AdminPage = memo<Props>(({ className }) => {
     !sidebarRendered;
 
   return (
-    <Container className={className}>
-      {sidebarRendered && <Sidebar />}
-      <RightColumn
-        className={`
-          ${fullWidth ? 'fullWidth' : ''}
-          ${noPadding ? 'noPadding' : ''}
-          ${isProjectPage ? 'projectPage' : ''}
-        `}
-      >
-        <RouterOutlet />
-      </RightColumn>
-      <PulseCheck />
-    </Container>
+    <WorkspaceHeaderProvider>
+      <Container className={className}>
+        {sidebarRendered &&
+          (isProjectPage && redesigned ? <CollapsibleSidebar /> : <Sidebar />)}
+        <RightColumn
+          className={`
+            ${fullWidth ? 'fullWidth' : ''}
+            ${noPadding ? 'noPadding' : ''}
+            ${isProjectPage ? 'projectPage' : ''}
+          `}
+        >
+          <RouterOutlet />
+        </RightColumn>
+        <PulseCheck />
+      </Container>
+    </WorkspaceHeaderProvider>
   );
 });
 

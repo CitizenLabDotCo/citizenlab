@@ -281,6 +281,9 @@
   "post (input term)": {
     "nl-NL": "bericht"
   },
+  "toggle": {
+    "fr-FR": "interrupteur"
+  },
   "reactions (on inputs)": {
     "nl-NL": "likes / dislikes"
   },
@@ -359,6 +362,9 @@
   },
   "custom page": {
     "nl-NL": "aanpasbare pagina"
+  },
+  "to upload": {
+    "fr-FR": "téléverser / importer (selon le contexte)"
   },
   "preview (verb)": {
     "nl-NL": "tonen"

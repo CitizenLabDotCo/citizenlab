@@ -18,6 +18,7 @@ import { exportEventAttendees } from 'api/events/util';
 
 import useLocalize from 'hooks/useLocalize';
 
+import attendanceMessages from 'components/admin/EventAttendance/messages';
 import { List, Row, HeadRow } from 'components/admin/ResourceList';
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
@@ -102,27 +103,29 @@ const AdminProjectEventsIndex = () => {
           <Box maxWidth="600px" mt="24px">
             <Warning>
               <FormattedMessage
-                {...messages.eventAttendanceExportText}
+                {...attendanceMessages.eventAttendanceExportText}
                 values={{
                   userTabLink: (
                     <a
-                      href={formatMessage(messages.usersTabLink)}
+                      href={formatMessage(attendanceMessages.usersTabLink)}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      <FormattedMessage {...messages.usersTabLinkText} />
+                      <FormattedMessage
+                        {...attendanceMessages.usersTabLinkText}
+                      />
                     </a>
                   ),
                   supportArticleLink: (
                     <a
                       href={formatMessage(
-                        messages.attendanceSupportArticleLink2
+                        attendanceMessages.attendanceSupportArticleLink2
                       )}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
                       <FormattedMessage
-                        {...messages.attendanceSupportArticleLinkText}
+                        {...attendanceMessages.attendanceSupportArticleLinkText}
                       />
                     </a>
                   ),

@@ -17,6 +17,7 @@ import { IProjectData, IUpdatedProjectProperties } from 'api/projects/types';
 import useUpdateProject from 'api/projects/useUpdateProject';
 
 import { useRegisterPageSaver } from 'components/admin/PageSaveContext';
+import { PROJECT_SETUP_SAVER_KEY } from 'components/admin/PageSaveContext/constants';
 
 export type ProjectChanges = Partial<
   Omit<IUpdatedProjectProperties, 'projectId'>
@@ -147,7 +148,7 @@ export const SetupDraftProvider = ({ project, children }: Props) => {
     }
   };
 
-  useRegisterPageSaver('project-setup', {
+  useRegisterPageSaver(PROJECT_SETUP_SAVER_KEY, {
     dirty:
       Object.keys(changes).length > 0 || Object.keys(imageChanges).length > 0,
     save,

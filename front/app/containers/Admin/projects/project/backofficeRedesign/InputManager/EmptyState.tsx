@@ -5,9 +5,11 @@ import { Box, colors, Icon, Text } from '@citizenlab/cl2-component-library';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
+import useInputTermLabels from './useInputTermLabels';
 
 const EmptyState = () => {
   const { formatMessage } = useIntl();
+  const { terms, capitalizedTerms } = useInputTermLabels();
 
   return (
     <Box
@@ -19,10 +21,10 @@ const EmptyState = () => {
     >
       <Icon name="idea" width="48px" height="48px" fill={colors.grey400} />
       <Text m="0" fontWeight="semi-bold" textAlign="center">
-        {formatMessage(messages.noInputsTitle)}
+        {formatMessage(messages.noTermsTitle, { terms: capitalizedTerms })}
       </Text>
       <Text variant="boHelper" m="0" textAlign="center">
-        {formatMessage(messages.noInputsDescription)}
+        {formatMessage(messages.noTermsDescription, { terms })}
       </Text>
     </Box>
   );

@@ -48,13 +48,18 @@ const TagsProperty = ({ idea, type }: Props) => {
           <TagChip
             key={option.value}
             label={option.label}
+            outlined
             onRemove={() => toggleTag(option.value)}
             removeLabel={formatMessage(messages.removeTag, {
               tag: option.label,
             })}
           />
         ))}
-      <PropertyMenu label={formatMessage(messages.addTag)} icon="plus">
+      <PropertyMenu
+        label={formatMessage(messages.addTag)}
+        icon="plus"
+        appearance="link"
+      >
         {() => (
           <OptionList
             options={tagOptions}

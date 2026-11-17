@@ -193,6 +193,7 @@ declare global {
       apiRemoveCustomPage: typeof apiRemoveCustomPage;
       apiCreateCustomPage: typeof apiCreateCustomPage;
       apiUpdateCustomPage: typeof apiUpdateCustomPage;
+      apiRemoveCustomPageLayout: typeof apiRemoveCustomPageLayout;
       apiAddFileToCustomPage: typeof apiAddFileToCustomPage;
       apiAddProjectsToFolder: typeof apiAddProjectsToFolder;
       apiCreatePhase: typeof apiCreatePhase;
@@ -204,6 +205,7 @@ declare global {
       apiCreateCause: typeof apiCreateCause;
       apiVerifyBogus: typeof apiVerifyBogus;
       apiCreateEvent: typeof apiCreateEvent;
+      apiAttendEvent: typeof apiAttendEvent;
       apiRemoveEvent: typeof apiRemoveEvent;
       apiCreateReportBuilder: typeof apiCreateReportBuilder;
       apiRemoveReportBuilder: typeof apiRemoveReportBuilder;
@@ -946,7 +948,7 @@ function apiReactToIdea(
   email: string,
   password: string,
   ideaId: string,
-  mode: TReactionMode
+  mode: TReactionMode | 'neutral'
 ) {
   return cy.apiLogin(email, password).then((response) => {
     const jwt = response.body.jwt;
@@ -1397,6 +1399,20 @@ function apiRemoveCustomPage(customPageId: string) {
   });
 }
 
+function apiRemoveCustomPageLayout(customPageId: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return requestAs(adminJwt, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'DELETE',
+      url: `web_api/v1/static_pages/${customPageId}/content_builder_layouts/custom_page`,
+    });
+  });
+}
+
 function apiUpdateCustomPage(
   customPageId: string,
   attributes: Record<string, unknown>
@@ -1511,6 +1527,7 @@ function apiCreatePhase({
   description,
   surveyUrl,
   surveyService,
+  documentAnnotationUrl,
   votingMaxTotal,
   allow_anonymous_participation,
   allow_multiple_responses,
@@ -1521,6 +1538,8 @@ function apiCreatePhase({
   nativeSurveyTitleMultiloc,
   presentation_mode,
   reacting_dislike_enabled,
+  reactingThreshold,
+  expireDaysLimit,
   available_views = ['card', 'map'],
   placementType,
 }: {
@@ -1535,6 +1554,7 @@ function apiCreatePhase({
   description?: string;
   surveyUrl?: string;
   surveyService?: 'typeform' | 'survey_monkey' | 'google_forms';
+  documentAnnotationUrl?: string;
   presentation_mode?: 'card' | 'map' | 'feed';
   available_views?: ('card' | 'map' | 'feed')[];
   votingMaxTotal?: number;
@@ -1546,6 +1566,8 @@ function apiCreatePhase({
   nativeSurveyButtonMultiloc?: Multiloc;
   nativeSurveyTitleMultiloc?: Multiloc;
   reacting_dislike_enabled?: boolean;
+  reactingThreshold?: number;
+  expireDaysLimit?: number;
   placementType?: 'on_timeline' | 'standalone';
 }) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
@@ -1569,12 +1591,15 @@ function apiCreatePhase({
           voting_method: votingMethod,
           submission_enabled: canPost,
           reacting_enabled: canReact,
+          reacting_threshold: reactingThreshold,
+          expire_days_limit: expireDaysLimit,
           commenting_enabled: canComment,
           presentation_mode,
           available_views,
           description_multiloc: { en: description },
           survey_embed_url: surveyUrl,
           survey_service: surveyService,
+          document_annotation_embed_url: documentAnnotationUrl,
           voting_max_total: votingMaxTotal,
           allow_anonymous_participation: allow_anonymous_participation,
           allow_multiple_responses: allow_multiple_responses,
@@ -1685,6 +1710,16 @@ function apiVerifyBogus(jwt: string, error?: string) {
   });
 }
 
+function apiAttendEvent(eventId: string, jwt: string) {
+  return requestAs(jwt, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    method: 'POST',
+    url: `web_api/v1/events/${eventId}/attendances`,
+  });
+}
+
 function apiCreateEvent({
   projectId,
   title,
@@ -1694,6 +1729,7 @@ function apiCreateEvent({
   startDate,
   endDate,
   onlineLink,
+  maximumAttendees,
 }: {
   projectId: string;
   title: string;
@@ -1703,6 +1739,7 @@ function apiCreateEvent({
   endDate: Date;
   includeLocation?: boolean;
   onlineLink?: string;
+  maximumAttendees?: number;
 }) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -1734,6 +1771,7 @@ function apiCreateEvent({
           start_at: startDate.toJSON(),
           end_at: endDate.toJSON(),
           online_link: onlineLink,
+          maximum_attendees: maximumAttendees,
         },
       },
     });
@@ -2708,6 +2746,7 @@ Cypress.Commands.add('setConsentCookie', setConsentCookie);
 Cypress.Commands.add('setLoginCookie', setLoginCookie);
 Cypress.Commands.add('apiVerifyBogus', apiVerifyBogus);
 Cypress.Commands.add('apiCreateEvent', apiCreateEvent);
+Cypress.Commands.add('apiAttendEvent', apiAttendEvent);
 Cypress.Commands.add('apiRemoveEvent', apiRemoveEvent);
 Cypress.Commands.add('apiCreateReportBuilder', apiCreateReportBuilder);
 Cypress.Commands.add('apiRemoveReportBuilder', apiRemoveReportBuilder);
@@ -2731,6 +2770,7 @@ Cypress.Commands.add('apiSetProjectAreas', apiSetProjectAreas);
 Cypress.Commands.add('apiRemoveCustomPage', apiRemoveCustomPage);
 Cypress.Commands.add('apiCreateCustomPage', apiCreateCustomPage);
 Cypress.Commands.add('apiUpdateCustomPage', apiUpdateCustomPage);
+Cypress.Commands.add('apiRemoveCustomPageLayout', apiRemoveCustomPageLayout);
 Cypress.Commands.add('apiAddFileToCustomPage', apiAddFileToCustomPage);
 Cypress.Commands.add('clickLocaleSwitcherAndType', clickLocaleSwitcherAndType);
 Cypress.Commands.add('apiCreateSmartGroup', apiCreateSmartGroup);

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { IProjectData } from 'api/projects/types';
 
@@ -18,8 +18,10 @@ import clHistory from 'utils/cl-router/history';
 import ProjectWorkspace from '..';
 import backofficeRedesignMessages from '../messages';
 
+import EventManager from './EventManager';
 import EventPreview from './EventPreview';
 import EventSetup from './EventSetup';
+import EventViewSwitch, { EventView } from './EventViewSwitch';
 import messages from './messages';
 
 interface Props {
@@ -32,6 +34,7 @@ const EventWorkspace = ({ project, eventId, onCreate }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const pageSave = usePageSave();
+  const [activeView, setActiveView] = useState<EventView>('build');
   const form = useEventForm({ projectId: project.id, eventId, onCreate });
 
   useRegisterPageSaver('event', { dirty: form.dirty, save: form.save });
@@ -58,15 +61,22 @@ const EventWorkspace = ({ project, eventId, onCreate }: Props) => {
       project={project}
       draft={{
         label: title || formatMessage(fallbackTitle),
-        parentLabel: formatMessage(backofficeRedesignMessages.eventsSection),
         saveLabel: formatMessage(
           form.event ? eventMessages.saveButtonLabel : messages.create
         ),
       }}
       sidePanel={<EventSetup projectId={project.id} form={form} />}
       withParticipation={false}
+      activeView={activeView}
+      viewSwitch={
+        <EventViewSwitch activeView={activeView} onChange={setActiveView} />
+      }
     >
-      <EventPreview project={project} form={form} />
+      {activeView === 'build' ? (
+        <EventPreview project={project} form={form} />
+      ) : (
+        <EventManager event={form.event} />
+      )}
     </ProjectWorkspace>
   );
 };
