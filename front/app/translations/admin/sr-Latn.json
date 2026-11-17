@@ -2113,7 +2113,6 @@
   "app.containers.AdminPage.ProjectEdit.PollTab.deleteOption": "Izbriši",
   "app.containers.AdminPage.ProjectEdit.PollTab.deleteQuestion": "Izbriši",
   "app.containers.AdminPage.ProjectEdit.PollTab.editOption1": "Измени опцију одговора",
-  "app.containers.AdminPage.ProjectEdit.PollTab.editOptionSave1": "Сачувајте опције одговора",
   "app.containers.AdminPage.ProjectEdit.PollTab.editPollAnswersButtonLabel1": "Измените опције одговора",
   "app.containers.AdminPage.ProjectEdit.PollTab.editPollQuestion": "Уреди питање",
   "app.containers.AdminPage.ProjectEdit.PollTab.exportPollResults": "Izvezite rezultate ankete",
