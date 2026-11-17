@@ -8,6 +8,8 @@ import ToggleButton from 'design-system/ToggleButton';
 import ToggleButtonGroup from 'design-system/ToggleButtonGroup';
 import 'design-system/tokens.css';
 
+import styles from './MultilocFields.module.css';
+
 interface Props {
   // Names the group, e.g. the label of the field it switches.
   'aria-label': string;
@@ -43,7 +45,7 @@ const LocaleSwitcher = ({
       {locales.map((locale) => (
         <ToggleButton key={locale} id={locale}>
           {valueMultiloc && !valueMultiloc[locale] && <NewDot />}
-          {locale}
+          <span className={styles.localeCode}>{locale}</span>
         </ToggleButton>
       ))}
     </ToggleButtonGroup>
