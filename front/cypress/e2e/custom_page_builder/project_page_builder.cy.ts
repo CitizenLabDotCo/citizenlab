@@ -5,6 +5,7 @@ import { randomString } from '../../support/commands';
 describe('Project page builder', () => {
   const projectTitle = randomString();
   const pageTitle = randomString();
+  const bodyText = randomString();
   const eventTitle = `Event ${randomString()}`;
   const otherEventTitle = `Other ${randomString()}`;
 
@@ -34,8 +35,8 @@ describe('Project page builder', () => {
       advancedWasEnabled = settings.advanced_custom_pages?.enabled === true;
     });
     setAdvancedCustomPages(true);
-    setProjectPages(true);
 
+    setProjectPages(true);
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectTitle,
@@ -56,6 +57,13 @@ describe('Project page builder', () => {
       cy.apiCreateCustomPage(pageTitle, projectId).then((page) => {
         pageId = page.body.data.id;
         pageSlug = page.body.data.attributes.slug;
+        cy.apiUpdateCustomPage(pageId, {
+          top_info_section_enabled: true,
+          top_info_section_multiloc: { en: `<p>${bodyText}</p>` },
+        });
+        // Creating the page gave it a layout from its title alone. Without one, the page starts
+        // with legacy content only, and the first visit derives a layout from it.
+        cy.apiRemoveCustomPageLayout(pageId);
       });
     });
 
@@ -86,6 +94,7 @@ describe('Project page builder', () => {
   });
 
   it('edits the page from one page with a preview, and opens the builder', () => {
+    setProjectPages(true);
     cy.setAdminLoginCookie();
     cy.visit(`/admin/projects/${projectId}/pages/${pageId}`);
 
@@ -94,6 +103,9 @@ describe('Project page builder', () => {
     cy.get('[data-cy="e2e-save-project-page"]', { timeout: 30000 }).should(
       'exist'
     );
+    // The first visit derives a layout from the page's content, and the preview renders only
+    // once there is one. Waiting on the preview picks that up through what it leaves behind:
+    // the request itself fires once per page, so a retry would wait for one that never comes.
     cy.get('[data-cy="e2e-project-page-preview-panel"]', { timeout: 30000 })
       .find('iframe')
       .should('have.attr', 'src')
@@ -105,6 +117,7 @@ describe('Project page builder', () => {
       'include',
       `/admin/custom-page-builder/pages/${pageId}`
     );
+    cy.contains(bodyText).should('exist');
 
     cy.get('#e2e-go-back-button').click();
     cy.location('pathname').should(
@@ -116,6 +129,7 @@ describe('Project page builder', () => {
   // A project's page is about that project, as its project page is: an events widget lists that
   // project's events and offers no other source.
   it('adds an events widget about its project', () => {
+    setProjectPages(true);
     cy.setAdminLoginCookie();
     cy.visit(`/admin/custom-page-builder/pages/${pageId}`);
     cy.get('div#ROOT');
@@ -140,9 +154,20 @@ describe('Project page builder', () => {
       .and('not.contain', otherEventTitle);
   });
 
+  it('renders the derived layout on the published page, under its project', () => {
+    setProjectPages(true);
+    cy.visit(`/projects/${projectSlug}/pages/${pageSlug}`);
+
+    // Only the builder renders the title widget; the legacy header's title has no data-cy.
+    cy.dataCy('e2e-custom-page-title').should('contain', pageTitle);
+    cy.contains(bodyText).should('be.visible');
+    cy.contains('a', projectTitle).should('be.visible');
+  });
+
   // The box finds its project through the page in the builder, and through the URL once
   // published. Without a project it renders nothing.
   it('adds a participation box about its project', () => {
+    setProjectPages(true);
     cy.setAdminLoginCookie();
     cy.visit(`/admin/custom-page-builder/pages/${pageId}`);
     cy.get('div#ROOT');
@@ -172,6 +197,7 @@ describe('Project page builder', () => {
   // The section holds a Participation box, so the editor has to resolve one or the drop crashes
   // the builder.
   it('adds the Info & accordions section', () => {
+    setProjectPages(true);
     cy.setAdminLoginCookie();
     cy.visit(`/admin/custom-page-builder/pages/${pageId}`);
     cy.get('div#ROOT');
