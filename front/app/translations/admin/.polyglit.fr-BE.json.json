@@ -16004,6 +16004,11 @@
     "verified_at": "2026-10-26T13:30:56.416187Z",
     "verified_by": "Adrien"
   },
+  "app.containers.AdminPage.FoldersEdit.editDescriptionInContentBuilder": {
+    "state": "verified",
+    "verified_at": "2026-11-17T16:38:14.320358Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.AdminPage.FoldersEdit.fileUploadLabel": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
@@ -16028,6 +16033,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AdminPage.FoldersEdit.folderPreviewTitle": {
+    "state": "verified",
+    "verified_at": "2026-11-17T16:38:14.320358Z",
+    "verified_by": "Adrien"
   },
   "app.containers.AdminPage.FoldersEdit.headerImageInputLabel": {
     "state": "verified",
