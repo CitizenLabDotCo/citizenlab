@@ -150,11 +150,13 @@ const Tooltip = ({
     // When manually hidden (click/Space/Escape toggle), skip the key
     // increment and isFocused reset. This preserves the Tippy instance so
     // the user can re-open it with another click/Space.
-    if (!manuallyHiddenRef.current) {
-      setIsFocused(undefined);
-      setKey((prev) => prev + 1);
-    }
-  }, [setIsFocused, setKey]);
+    if (manuallyHiddenRef.current) return;
+    // A hover tooltip that focus never held open has nothing to reset, and the
+    // remount would replace the element that was just clicked.
+    if (keyboardOnlyFocus && isFocused === undefined) return;
+    setIsFocused(undefined);
+    setKey((prev) => prev + 1);
+  }, [isFocused, keyboardOnlyFocus]);
 
   // Tippy is in "controlled mode" whenever `visible` (i.e. isFocused) is not
   // undefined — that includes `false`, not just `true`. In controlled mode
