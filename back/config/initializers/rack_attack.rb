@@ -24,7 +24,8 @@ class Rack::Attack
     # Rack raises when it can't parse the query string or a form body, which
     # bots send often. Raised here, that 500s the request before it is routed.
     # Rails answers the same requests with a 400 when it parses their params.
-    # A bad body still leaves the query string, so its keys (like `token`) count.
+    # When only the body is broken, fall back to the query string's params, so a
+    # `token` passed there still counts against the per-user throttles.
     def params
       super
     rescue *PARSE_ERRORS

@@ -494,12 +494,13 @@ describe 'Rack::Attack' do
     it 'counts a token passed in a form body against the same user' do
       # Rails reads params[:token] from a form body too, so the throttle has to.
       path = '/web_api/v1/user/request_reconfirm_code_email'
+      body = { request_code: { only_if_first_time: false } }
 
       freeze_at_window_start do
-        post(path, params: { token: token, request_code: { only_if_first_time: false } }, headers: { 'REMOTE_ADDR' => '1.2.3.1' })
+        post(path, params: body.merge(token: token), headers: { 'REMOTE_ADDR' => '1.2.3.1' })
         expect(status).to eq(200) # OK
 
-        post(path, params: '{ "request_code": { "only_if_first_time": false } }', headers: json_headers(token: token, ip: '1.2.3.2'))
+        post(path, params: body, headers: { 'Authorization' => "Bearer #{token}", 'REMOTE_ADDR' => '1.2.3.2' })
         expect(status).to eq(429) # Too many requests
       end
     end
