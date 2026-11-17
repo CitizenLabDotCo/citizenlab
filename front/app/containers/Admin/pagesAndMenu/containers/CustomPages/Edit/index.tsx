@@ -42,8 +42,8 @@ const CustomPagesEditSettings = () => {
     return null;
   }
 
-  // Builder pages use one page for everything: the legacy section editors on the content tab
-  // no longer change what the page shows.
+  // Builder pages use one page for everything: the section editors on the content tab don't
+  // change what a builder page shows.
   const showSettingsWithPreview = isContentBuilderPage(customPage.data);
 
   const pageTitleMultiloc = customPage.data.attributes.title_multiloc;

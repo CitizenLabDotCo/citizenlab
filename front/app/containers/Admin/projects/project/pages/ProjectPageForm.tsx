@@ -77,8 +77,8 @@ const ProjectPageForm = ({ project, page }: Props) => {
     }
   };
 
-  // The body and files are authored in the builder: the form is the custom page settings card,
-  // sitting beside the preview or above the builder's own breadcrumbs, title and view button.
+  // The body and files are authored in the builder, and the surrounding page shows the
+  // breadcrumbs, title and view button: the form is the custom page settings card.
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)}>

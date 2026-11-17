@@ -5,8 +5,8 @@ module ContentBuilder
     module MultiTenancy
       module SideFxTenantService
         # Once a tenant's template has been applied, give every project its page, every folder its
-        # description, and every static page in StaticPage::CONTENT_BUILDER_CODES its layout. Policy
-        # pages are outside that set and still render through the legacy static page sections.
+        # description, and every static page whose code is in StaticPage::CONTENT_BUILDER_CODES its
+        # layout. Policy pages are outside that set and render through the static page sections.
         # Errors are reported but swallowed so provisioning can never abort tenant creation.
         def after_apply_template(tenant, template, current_user = nil)
           super
