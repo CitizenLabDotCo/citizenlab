@@ -5,8 +5,7 @@ import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import useIdeaById from 'api/ideas/useIdeaById';
 import { IPhaseData } from 'api/phases/types';
 
-import { ManagerType, PreviewMode } from 'components/admin/PostManager';
-import AdminIdeaEdit from 'components/admin/PostManager/components/PostPreview/Idea/AdminIdeaEdit';
+import { ManagerType } from 'components/admin/PostManager';
 import SideModal from 'components/UI/SideModal';
 
 import IdeaOverview from './IdeaOverview';
@@ -14,52 +13,57 @@ import PanelHeader, { PanelNavigation } from './PanelHeader';
 
 interface Props {
   ideaId: string | undefined;
-  mode: PreviewMode;
   type: ManagerType;
   context: string;
   listedPhase: IPhaseData | undefined;
   navigation: PanelNavigation | undefined;
-  onChangeMode: (mode: PreviewMode) => void;
+  onEdit: (ideaId: string) => void;
   onClose: () => void;
+  /** Runs after the input is deleted from the panel. Closes it by default. */
+  onDeleted?: () => void;
+  isEditing: boolean;
 }
 
 const SidePanel = ({
   ideaId,
-  mode,
   type,
   context,
   listedPhase,
   navigation,
-  onChangeMode,
+  onEdit,
   onClose,
+  onDeleted = onClose,
+  isEditing,
 }: Props) => {
   const { data: idea, isPlaceholderData } = useIdeaById(ideaId);
 
   return (
-    <SideModal opened={!!ideaId} close={onClose} width="640px">
+    <SideModal
+      opened={!!ideaId}
+      close={onClose}
+      width="640px"
+      variant="bo"
+      // Clicks in the edit modal land outside the panel and would close it.
+      closeOnClickOutside={!isEditing}
+    >
       {(!idea || isPlaceholderData) && !!ideaId && (
         <Box display="flex" justifyContent="center" py="80px">
           <Spinner />
         </Box>
       )}
       {idea && !isPlaceholderData && (
-        <>
+        <Box display="flex" flexDirection="column" height="100%">
           <PanelHeader context={context} navigation={navigation} />
-          {mode === 'edit' ? (
-            <AdminIdeaEdit
-              ideaId={idea.data.id}
-              goBack={() => onChangeMode('view')}
-            />
-          ) : (
+          <Box flex="1" minHeight="0" overflowY="auto">
             <IdeaOverview
               idea={idea.data}
               type={type}
               listedPhase={listedPhase}
-              onEdit={() => onChangeMode('edit')}
-              onDeleted={onClose}
+              onEdit={() => onEdit(idea.data.id)}
+              onDeleted={onDeleted}
             />
-          )}
-        </>
+          </Box>
+        </Box>
       )}
     </SideModal>
   );

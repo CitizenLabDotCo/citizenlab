@@ -73,6 +73,20 @@ describe IdeaFeed::TopicModelingService do
         expect(project.input_topics.count).to eq 2
         expect(project.input_topics.pluck(:depth)).to contain_exactly(0, 1)
       end
+
+      it 'keeps a single-emoji icon and drops any other icon the LLM returns' do
+        create(:idea, project:, phases: [phase], title_multiloc: { 'en' => 'Finding parking is impossible' })
+
+        expect_any_instance_of(Analysis::LLM::ClaudeOpus46).to receive(:chat).and_return([
+          { 'title_multiloc' => { 'en' => 'Parking' }, 'description_multiloc' => { 'en' => 'Parking' }, 'icon' => '🚗', 'problems' => [] },
+          { 'title_multiloc' => { 'en' => 'Cycling' }, 'description_multiloc' => { 'en' => 'Cycling' }, 'icon' => '🚲🚴', 'problems' => [] },
+          { 'title_multiloc' => { 'en' => 'Housing' }, 'description_multiloc' => { 'en' => 'Housing' }, 'icon' => '<img src=x onerror=alert(1)>', 'problems' => [] }
+        ])
+
+        expect { service.rebalance_topics! }.to change(InputTopic, :count).from(0).to(3)
+        icons = project.input_topics.to_h { |topic| [topic.title_multiloc['en'], topic.icon] }
+        expect(icons).to eq('Parking' => '🚗', 'Cycling' => nil, 'Housing' => nil)
+      end
     end
 
     context 'when topics already exist' do

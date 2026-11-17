@@ -42,8 +42,17 @@ const PlacementCard = ({
   const { formatMessage } = useIntl();
 
   return (
-    <PanelField label={formatMessage(messages.surveyPlacement)}>
-      <Box display="flex" flexDirection="column" gap="20px">
+    <PanelField
+      reviewKey="survey_placement"
+      label={formatMessage(messages.surveyPlacement)}
+    >
+      <Box
+        display="flex"
+        flexWrap="wrap"
+        alignItems="flex-start"
+        gap="20px 24px"
+        pt="8px"
+      >
         {OPTIONS.map((option) => (
           <ChoiceRadio
             key={option.value}

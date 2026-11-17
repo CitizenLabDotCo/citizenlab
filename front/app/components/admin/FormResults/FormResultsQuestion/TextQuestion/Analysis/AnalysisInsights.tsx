@@ -31,11 +31,15 @@ const AnalysisInsights = ({
   textResponseSource,
   textResponsesCount,
   insights,
+  projectId,
+  phaseId,
 }: {
   analysis: IAnalysisData;
   textResponseSource?: TextResponseSource;
   textResponsesCount: number;
   insights?: IInsights;
+  projectId: string;
+  phaseId?: string;
 }) => {
   const search = useSearch({ strict: false });
   const [automaticSummaryCreated, setAutomaticSummaryCreated] = useState(false);
@@ -172,12 +176,16 @@ const AnalysisInsights = ({
                 key={selectedInsight.relationships.insightable.data.id}
                 questionId={selectedInsight.relationships.insightable.data.id}
                 analysisId={analysis.id}
+                projectId={projectId}
+                phaseId={phaseId}
               />
             ) : (
               <Summary
                 key={selectedInsight.relationships.insightable.data.id}
                 summaryId={selectedInsight.relationships.insightable.data.id}
                 analysisId={analysis.id}
+                projectId={projectId}
+                phaseId={phaseId}
               />
             )}
           </>

@@ -139,6 +139,32 @@ describe IdeasFinder do
     end
   end
 
+  describe '#agreements_condition' do
+    let_it_be(:common_ground_phase) { create(:common_ground_phase) }
+    let_it_be(:agreed) do
+      create(:idea, project: common_ground_phase.project, phases: [common_ground_phase]).tap do |idea|
+        create(:reaction, reactable: idea, mode: 'up')
+      end
+    end
+    let_it_be(:disagreed) do
+      create(:idea, project: common_ground_phase.project, phases: [common_ground_phase]).tap do |idea|
+        create(:reaction, reactable: idea, mode: 'down')
+      end
+    end
+
+    before { params[:agreements] = %w[agree] }
+
+    it 'returns the statements in those buckets' do
+      params[:phase] = common_ground_phase.id
+      expect(result_record_ids).to eq [agreed.id]
+    end
+
+    it 'returns nothing without a common ground phase' do
+      params[:phase] = timeline_project.phases.first.id
+      expect(result_record_ids).to be_empty
+    end
+  end
+
   describe '#idea_status_condition' do
     let(:idea_status_id) { IdeaStatus.pick(:id) }
     let(:expected_record_ids) { Idea.where(idea_status_id: idea_status_id).pluck(:id) }

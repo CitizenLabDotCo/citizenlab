@@ -69,7 +69,8 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
         manual_voters_amount
         manual_voters_last_updated_at
         manual_voters_last_updated_by_id
-      ], # manual-vote operational state
+        reviewed_setup_cards
+      ], # manual-vote operational state / setup review progress
 
       'Project' => %w[
         completed_setup_steps
@@ -164,6 +165,7 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
 
       # Per-user runtime objects regenerated through normal use.
       user_runtime: %w[
+        PulseCheck
         Notification
         Onboarding::CampaignDismissal
       ],

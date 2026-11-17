@@ -67,8 +67,7 @@ class McpServer::LayoutWidgets
         custom: {"title":{"id":"app.containers.admin.ContentBuilder.fileAttachment","defaultMessage":"File attachment"}}
     DOC
     'PageLink' => <<~DOC,
-      PageLink — link to one of the project's static pages. props: {"pageId":"<CustomPage id>","displayType":"link"|"preview"}
-        "link" renders a single titled row; "preview" renders the title plus an excerpt of the page.
+      PageLink — link to one of the project's static pages, shown as a titled row. props: {"pageId":"<CustomPage id>"}
         custom: {"title":{"id":"app.containers.admin.ContentBuilder.projectPageLink","defaultMessage":"Project Page Link"},"noPointerEvents":true}
         No tool here lists static pages, so only reuse a pageId already in this layout or one
         the user gives you — never invent one. A pageId that resolves to nothing renders nothing.

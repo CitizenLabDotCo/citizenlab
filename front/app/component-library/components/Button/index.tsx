@@ -6,6 +6,7 @@ import styled from 'styled-components';
 
 import {
   bo,
+  stylingConsts,
   colors,
   invisibleA11yText,
   fontSizes,
@@ -84,7 +85,7 @@ const BO_PICKER_GEOMETRY = {
   ...BO_GEOMETRY,
   height: '30px',
   padding: '0 10px 0 12px',
-  borderRadius: '999px',
+  borderRadius: stylingConsts.borderRadiusPill,
   fontWeight: '400',
 };
 
@@ -451,7 +452,8 @@ function getButtonStyle(
       font-weight: ${fontWeight};
       text-decoration: ${textDecoration};
       white-space: ${whiteSpace};
-      text-align: left;
+      overflow-wrap: anywhere;
+      text-align: ${props.textAlign || 'left'};
       margin: 0;
       margin-top: -1px;
       padding: 0;
@@ -624,6 +626,7 @@ export type ButtonContainerProps = {
   textDecoration?: string;
   textDecorationHover?: string;
   whiteSpace?: string;
+  textAlign?: 'left' | 'center' | 'right';
   minWidth?: string;
   fontSize?: string;
   opacityDisabled?: string;
@@ -719,6 +722,7 @@ const Button = forwardRef<Ref, Props>((props, ref) => {
     textDecoration,
     textDecorationHover,
     whiteSpace,
+    textAlign,
     fullWidth,
     role,
     ariaLabel,
@@ -824,6 +828,7 @@ const Button = forwardRef<Ref, Props>((props, ref) => {
       textDecoration={textDecoration}
       textDecorationHover={textDecorationHover}
       whiteSpace={whiteSpace}
+      textAlign={textAlign}
       fontSize={fontSize}
       opacityDisabled={opacityDisabled}
       {...rest}

@@ -41,6 +41,81 @@ resource 'Event attendances' do
         created_at_values = response_data.map { |item| item.dig(:attributes, :created_at) }
         expect(created_at_values).to eq created_at_values.sort
       end
+
+      example 'Searching registrants by name', document: false do
+        attendances.first.attendee.update!(first_name: 'Sam', last_name: 'Ortega')
+        do_request(search: 'Sam Ortega')
+
+        expect(status).to eq(200)
+        expect(response_data.pluck(:id)).to eq([attendances.first.id])
+        expect(json_response_body.dig(:meta, :total)).to eq(1)
+        expect(json_response_body.dig(:meta, :unfiltered_total)).to eq(2)
+      end
+
+      example 'Searching registrants by email', document: false do
+        do_request(search: attendances.last.attendee.email)
+
+        expect(status).to eq(200)
+        expect(response_data.pluck(:id)).to eq([attendances.last.id])
+        expect(json_response_body[:included].map { |item| item.dig(:attributes, :email) })
+          .to include(attendances.last.attendee.email)
+        expect(json_response_body[:included].first[:attributes].keys)
+          .to match_array(%i[first_name last_name email])
+      end
+
+      example 'Filtering signup dates before pagination', document: false do
+        attendances.first.reload.update!(created_at: Time.zone.now.beginning_of_week - 1.second)
+        attendances.last.reload.update!(created_at: Time.zone.now.beginning_of_week)
+        do_request(registered: 'this_week', page: { size: 1, number: 1 })
+
+        expect(status).to eq(200)
+        expect(response_data.pluck(:id)).to eq([attendances.last.id])
+        expect(json_response_body.dig(:meta, :total)).to eq(1)
+      end
+
+      example 'Filtering earlier registrations', document: false do
+        attendances.first.reload.update!(created_at: Time.zone.now.beginning_of_week - 1.second)
+        do_request(registered: 'earlier')
+
+        expect(status).to eq(200)
+        expect(response_data.pluck(:id)).to eq([attendances.first.id])
+      end
+
+      example 'Sorting and paginating registrants', document: false do
+        attendances.first.reload.update!(created_at: 2.days.ago)
+        do_request(sort: '-created_at', page: { size: 1, number: 1 })
+
+        expect(status).to eq(200)
+        expect(response_data.pluck(:id)).to eq([attendances.last.id])
+        expect(json_response_body.dig(:meta, :total)).to eq(2)
+        expect(json_response_body.dig(:links, :next)).to be_present
+      end
+    end
+  end
+
+  get 'web_api/v1/events/:event_id/attendances' do
+    let(:event) { create(:event) }
+    let(:event_id) { event.id }
+    let(:moderator) { create(:user, roles: [{ type: 'project_moderator', project_id: moderated_project_id }]) }
+
+    before { header_token_for(moderator) }
+
+    context 'for a project the moderator manages' do
+      let(:moderated_project_id) { event.project_id }
+      let!(:attendance) { create(:event_attendance, event: event) }
+
+      example_request 'Moderators can list their event registrants', document: false do
+        expect(status).to eq(200)
+        expect(response_data.pluck(:id)).to eq([attendance.id])
+      end
+    end
+
+    context 'for a project the moderator does not manage' do
+      let(:moderated_project_id) { create(:project).id }
+
+      example_request 'Moderators cannot read other projects registrants', document: false do
+        expect(status).to eq(401)
+      end
     end
   end
 

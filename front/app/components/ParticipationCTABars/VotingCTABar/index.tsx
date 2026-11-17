@@ -4,14 +4,17 @@ import { Text, Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 import useBasket from 'api/baskets/useBasket';
 import useVoting from 'api/baskets_ideas/useVoting';
-import { getCurrentPhase } from 'api/phases/utils';
 
 import ErrorToast from 'components/ErrorToast';
 import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
-import { CTABarProps } from 'components/ParticipationCTABars/utils';
+import {
+  CTABarProps,
+  getCTAPhase,
+} from 'components/ParticipationCTABars/utils';
 
 import { useIntl } from 'utils/cl-intl';
 import useFormatCurrency from 'utils/currency/useFormatCurrency';
+import { usePhasePreview } from 'utils/phasePreview/runtime';
 
 import CTAButton from './CTAButton';
 import { getOptionSelectionCounter, getVotesCounter } from './utils';
@@ -21,9 +24,10 @@ const VotingCTABar = ({ phases, project }: CTABarProps) => {
   const { numberOfVotesCast, numberOfOptionsSelected, basketId } = useVoting();
   const { formatMessage } = useIntl();
   const formatCurrency = useFormatCurrency();
+  const preview = usePhasePreview();
 
   const currentPhase = useMemo(() => {
-    return getCurrentPhase(phases);
+    return getCTAPhase(phases);
   }, [phases]);
 
   const { data: basket } = useBasket(basketId);
@@ -48,6 +52,7 @@ const VotingCTABar = ({ phases, project }: CTABarProps) => {
 
   const submittedAt = basket?.data.attributes.submitted_at || null;
   const hasUserParticipated = !!submittedAt;
+  const counterColor = preview ? 'textSecondary' : 'white';
 
   return (
     <>
@@ -64,7 +69,7 @@ const VotingCTABar = ({ phases, project }: CTABarProps) => {
           participationState={
             <Box ml="21px" display={isMobileOrSmaller ? 'block' : 'flex'}>
               <Text
-                color="white"
+                color={counterColor}
                 m="0px"
                 mr="4px"
                 fontSize="s"
@@ -73,7 +78,12 @@ const VotingCTABar = ({ phases, project }: CTABarProps) => {
                 {votesCounter}
               </Text>
               {optionSelectionCounter && (
-                <Text color="white" m="0px" fontSize="s" aria-live="polite">
+                <Text
+                  color={counterColor}
+                  m="0px"
+                  fontSize="s"
+                  aria-live="polite"
+                >
                   {isMobileOrSmaller ? '' : ' • '}
                   {optionSelectionCounter}
                 </Text>

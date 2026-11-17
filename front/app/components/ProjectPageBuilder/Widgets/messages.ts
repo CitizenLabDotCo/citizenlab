@@ -96,10 +96,10 @@ export default defineMessages({
     id: 'app.components.ProjectPageBuilder.Widgets.sectionBackgroundWhite',
     defaultMessage: 'White',
   },
-  eventsEmptyMessage: {
-    id: 'app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage',
+  eventsEmptyMessage2: {
+    id: 'app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage2',
     defaultMessage:
-      "No events yet — events added in the project editor appear here automatically. Visitors won't see this section until then.",
+      "No events yet. Visitors won't see this section while it's empty, unless you switch on “Show a message when there are no events”.",
   },
   untitledProject: {
     id: 'app.components.ProjectPageBuilder.Widgets.untitledProject',

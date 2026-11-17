@@ -5,6 +5,7 @@ import styled from 'styled-components';
 
 import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/HomepageBanner';
 
+import { TitleVariant } from 'components/admin/ContentBuilder/Widgets/_shared/TitleVariantSetting';
 import { homepageBannerLayoutHeights } from 'components/LandingPages/citizen/constants';
 import {
   Container,
@@ -18,6 +19,7 @@ import HeaderContent from './HeaderContent';
 interface Props {
   className?: string;
   homepageSettings: Partial<IHomepageBannerSettings>;
+  titleVariant?: TitleVariant;
 }
 
 const Header = styled.div<{
@@ -44,7 +46,11 @@ const Header = styled.div<{
   `}
 `;
 
-const FullWidthBannerLayout = ({ className, homepageSettings }: Props) => {
+const FullWidthBannerLayout = ({
+  className,
+  homepageSettings,
+  titleVariant,
+}: Props) => {
   const headerImage = homepageSettings.header_bg?.large;
   const homepageSettingColor =
     homepageSettings.banner_signed_out_header_overlay_color;
@@ -91,7 +97,11 @@ const FullWidthBannerLayout = ({ className, homepageSettings }: Props) => {
             )}
         </HeaderImage>
 
-        <HeaderContent fontColors="light" homepageSettings={homepageSettings} />
+        <HeaderContent
+          fontColors="light"
+          homepageSettings={homepageSettings}
+          titleVariant={titleVariant}
+        />
       </Header>
     </Container>
   );

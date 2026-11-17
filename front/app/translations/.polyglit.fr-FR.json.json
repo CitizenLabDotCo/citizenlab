@@ -19,6 +19,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "EmailSettingsPage.initialUnsubscribeSuccessWithoutCampaign": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:05:41.931109Z",
+    "verified_by": "Adrien"
+  },
   "UI.FormComponents.optional": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -759,6 +764,11 @@
     "verified_at": "2026-10-16T09:27:28.428851Z",
     "verified_by": "Cindy EB"
   },
+  "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.preferToStayAnonymous": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:05:41.931109Z",
+    "verified_by": "Adrien"
+  },
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.saveThisCode": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -1094,6 +1104,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.components.CustomFieldsForm.typeToSearch": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:05:41.931109Z",
+    "verified_by": "Adrien"
+  },
   "app.components.CustomFieldsForm.typeYourAnswer": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -1198,6 +1213,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.components.ErrorBoundary.reloadPage": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:14:48.850215Z",
+    "verified_by": "Adrien"
   },
   "app.components.ErrorToast.budgetExceededError": {
     "state": "verified",
@@ -1344,6 +1364,16 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.components.FileRepositorySelectAndUpload.removeFile": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:53:16.182482Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.FileRepositorySelectAndUpload.removeFileAriaLabel": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:53:16.182482Z",
+    "verified_by": "Adrien"
+  },
   "app.components.FileRepositorySelectAndUpload.selectExistingFile": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -1399,6 +1429,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.components.FilterBoxes.a11y_allSelected": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:09:51.954841Z",
+    "verified_by": "Adrien"
+  },
   "app.components.FilterBoxes.a11y_numberOfInputs": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -1413,6 +1448,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.components.FilterBoxes.a11y_selectedOption": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:14:48.850215Z",
+    "verified_by": "Adrien"
   },
   "app.components.FilterBoxes.a11y_selectedTopicFilters": {
     "state": "verified",
@@ -3149,6 +3189,11 @@
     "verified_at": "2026-07-17T08:20:45.182128Z",
     "verified_by": "Cindy EB"
   },
+  "app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage2": {
+    "state": "verified",
+    "verified_at": "2026-11-09T09:16:26.369913Z",
+    "verified_by": "Adrien"
+  },
   "app.components.ProjectPageBuilder.Widgets.eventsLinkText": {
     "state": "verified",
     "verified_at": "2026-07-16T16:00:17.561417Z",
@@ -3544,6 +3589,101 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.components.ReactSelect.filterResultsForTerm": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:39:37.152664Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.ReactSelect.focusedOptionDisabled": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:43:57.542994Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.ReactSelect.focusedOptionSelectedDisabled": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:39:37.152664Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.ReactSelect.focusedValue": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:35:12.808951Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.ReactSelect.guidanceInput": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:31:13.775598Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.ReactSelect.guidanceInputMulti": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:43:57.542994Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.ReactSelect.guidanceInputSearchable": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:26:45.049167Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.ReactSelect.guidanceInputSearchableMulti": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:43:57.542994Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.ReactSelect.guidanceMenu": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:35:12.808951Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.ReactSelect.guidanceMenuTabSelects": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:35:12.808951Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.ReactSelect.guidanceValue": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:39:37.152664Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.ReactSelect.noOptions": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:39:37.152664Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.ReactSelect.optionDeselected": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:43:57.542994Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.ReactSelect.optionDisabled": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:43:57.542994Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.ReactSelect.optionSelected": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:39:37.152664Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.ReactSelect.optionsAlreadySelected": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:21:40.855971Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.ReactSelect.resultsAvailable": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:31:13.775598Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.ReactSelect.selectLabel": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:35:12.808951Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.ReactSelect.selectionCleared": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:43:57.542994Z",
+    "verified_by": "Adrien"
+  },
   "app.components.ReactionControl.completeProfileToReact": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -3694,6 +3834,11 @@
     "verified_at": "2026-08-24T07:55:36.331011Z",
     "verified_by": "Cindy EB"
   },
+  "app.components.SmsConsent.phoneConfirmationDisclosureWithoutCampaignsEnabled": {
+    "state": "verified",
+    "verified_at": "2026-11-16T21:36:11.008825Z",
+    "verified_by": "Adrien"
+  },
   "app.components.SmsConsent.smsConfirmationDisclosure": {
     "state": "verified",
     "verified_at": "2026-08-05T12:46:18.882983Z",
@@ -3749,6 +3894,11 @@
     "verified_at": "2026-07-16T16:14:31.535806Z",
     "verified_by": "Adrien"
   },
+  "app.components.UI.FeatureCallout.dismiss": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:53:16.182482Z",
+    "verified_by": "Adrien"
+  },
   "app.components.UI.FileAttachments.FileDisplay.ariaLabel": {
     "state": "verified",
     "verified_at": "2026-05-13T07:39:06.225219Z",
@@ -3784,10 +3934,35 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.components.UI.OptionPicker.noResults": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:43:57.542994Z",
+    "verified_by": "Adrien"
+  },
   "app.components.UI.PhaseFilter.noAppropriatePhases": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.components.UI.PillPicker.clearSearch": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:48:19.555781Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.UI.PillPicker.done": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:48:19.555781Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.UI.PillPicker.remove": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:48:19.555781Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.UI.PillPicker.selectedCount": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:48:19.555781Z",
+    "verified_by": "Adrien"
   },
   "app.components.UI.RemoveImageButton.a11y_removeImage": {
     "state": "verified",
@@ -5153,6 +5328,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.components.formBuilder.displayAsDropdownForcedWarning": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:56:12.433129Z",
+    "verified_by": "Adrien"
   },
   "app.components.formBuilder.displayAsDropdownTooltip": {
     "state": "verified",
@@ -7329,6 +7509,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.containers.Authentication.accountMergeNotAllowed": {
+    "state": "verified",
+    "verified_at": "2026-11-16T21:36:11.008825Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Authentication.authenticationDialog": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -7342,6 +7527,16 @@
   "app.containers.Authentication.enterYourPhoneNumber": {
     "state": "verified",
     "verified_at": "2026-07-22T11:55:53.713766Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Authentication.linkYourAccount": {
+    "state": "verified",
+    "verified_at": "2026-11-16T21:36:11.008825Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Authentication.phoneConfirmationCodeInvalid": {
+    "state": "verified",
+    "verified_at": "2026-11-16T21:13:27.345993Z",
     "verified_by": "Adrien"
   },
   "app.containers.Authentication.signUpOrLogIn": {
@@ -7393,6 +7588,16 @@
     "state": "verified",
     "verified_at": "2026-10-28T13:22:21.611959Z",
     "verified_by": "Cindy EB"
+  },
+  "app.containers.Authentication.steps.FlowStart.useEmailInstead": {
+    "state": "verified",
+    "verified_at": "2026-11-16T21:13:27.345993Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Authentication.steps.FlowStart.usePhoneNumberInstead": {
+    "state": "verified",
+    "verified_at": "2026-11-16T21:13:27.345993Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": {
     "state": "verified",
@@ -7449,6 +7654,16 @@
     "verified_at": "2026-08-26T10:01:07.098833Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Authentication.steps.Policies.byContinuingPhoneWithoutCampaignsEnabled": {
+    "state": "verified",
+    "verified_at": "2026-11-16T21:13:27.345993Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": {
+    "state": "verified",
+    "verified_at": "2026-11-16T21:13:27.345993Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Authentication.steps.SSOVerification.alreadyHaveAnAccount": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -7458,6 +7673,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": {
+    "state": "verified",
+    "verified_at": "2026-11-16T21:45:55.860365Z",
+    "verified_by": "Adrien"
   },
   "app.containers.CampaignsConsentForm.ally_categoryLabel": {
     "state": "verified",
@@ -8133,6 +8353,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.containers.EventsShow.metaTitle1": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:14:48.850215Z",
+    "verified_by": "Adrien"
   },
   "app.containers.EventsShow.online2": {
     "state": "verified",
@@ -10194,6 +10419,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.containers.IdeasShow.metaTitle1": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:14:48.850215Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.IdeasShow.moreFromThisSubmission": {
     "state": "verified",
     "verified_at": "2026-10-16T09:27:28.428851Z",
@@ -10599,6 +10829,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.containers.Navbar.confirmPhone": {
+    "state": "verified",
+    "verified_at": "2026-11-16T21:36:11.008825Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Navbar.unverified": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -10618,6 +10853,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.containers.NewAuthModal.changeYourEmail": {
+    "state": "verified",
+    "verified_at": "2026-11-16T21:36:11.008825Z",
+    "verified_by": "Adrien"
   },
   "app.containers.NewAuthModal.completeYourProfile": {
     "state": "verified",
@@ -11054,6 +11294,16 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.containers.NotificationMenu.reportGenerated": {
+    "state": "verified",
+    "verified_at": "2026-11-16T21:36:11.008825Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.NotificationMenu.reportGeneratedStoppedEarly": {
+    "state": "verified",
+    "verified_at": "2026-11-16T21:36:11.008825Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.NotificationMenu.spaceModerationRightsReceived": {
     "state": "verified",
     "verified_at": "2026-04-13T14:12:08.732776Z",
@@ -11379,6 +11629,11 @@
     "verified_at": "2026-07-17T08:13:45.230201Z",
     "verified_by": "Adrien"
   },
+  "app.containers.PhoneChange.privacyLinkText": {
+    "state": "verified",
+    "verified_at": "2026-11-16T21:36:11.008825Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.PhoneChange.smsManualCampaignConsentLabel2": {
     "state": "verified",
     "verified_at": "2026-08-24T07:55:36.331011Z",
@@ -11387,6 +11642,11 @@
   "app.containers.PhoneChange.submitButton": {
     "state": "verified",
     "verified_at": "2026-07-16T21:48:43.456670Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.PhoneChange.termsLinkText": {
+    "state": "verified",
+    "verified_at": "2026-11-16T21:36:11.008825Z",
     "verified_by": "Adrien"
   },
   "app.containers.PhoneChange.titleAddPhone": {
@@ -11444,6 +11704,11 @@
     "verified_at": "2026-07-16T20:33:09.844499Z",
     "verified_by": "Adrien"
   },
+  "app.containers.PhoneConfirmation.sendNewCodeIn": {
+    "state": "verified",
+    "verified_at": "2026-11-16T21:36:11.008825Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.PhoneConfirmation.verifyAndContinue": {
     "state": "verified",
     "verified_at": "2026-07-16T21:17:35.796040Z",
@@ -11478,6 +11743,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.containers.ProjectFolderShowPage.metaTitle2": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:14:48.850215Z",
+    "verified_by": "Adrien"
   },
   "app.containers.ProjectFolderShowPage.projectFolderTwitterMessage": {
     "state": "verified",
@@ -11758,6 +12028,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Projects.metaTitle2": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:14:48.850215Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Projects.minBudgetRequired": {
     "state": "verified",
@@ -12394,6 +12669,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.containers.SignIn.signInError2": {
+    "state": "verified",
+    "verified_at": "2026-11-16T21:36:11.008825Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.SignIn.useFranceConnectToLoginCreateOrVerifyYourAccount": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -12629,9 +12909,24 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessSaveError": {
+    "state": "verified",
+    "verified_at": "2026-11-16T21:36:11.008825Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessSubtitle": {
+    "state": "verified",
+    "verified_at": "2026-11-16T21:45:55.860365Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessTitle": {
     "state": "verified",
     "verified_at": "2026-10-29T22:41:18.598322Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.UsersEditPage.EarlyAccess.projectBackofficeRedesignDescription2": {
+    "state": "verified",
+    "verified_at": "2026-11-16T21:36:11.008825Z",
     "verified_by": "Adrien"
   },
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": {
@@ -13708,6 +14003,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.errors.file_too_large": {
+    "state": "verified",
+    "verified_at": "2026-11-16T22:05:41.931109Z",
+    "verified_by": "Adrien"
   },
   "app.errors.first_name_blank": {
     "state": "verified",

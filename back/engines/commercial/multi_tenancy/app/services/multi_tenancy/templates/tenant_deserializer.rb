@@ -364,6 +364,7 @@ module MultiTenancy
         end
 
         localize_remote_files_for_test!(new_attributes)
+        restore_craftjs_json_texts!(new_attributes, locales)
 
         new_attributes
       end
@@ -396,6 +397,20 @@ module MultiTenancy
           end
 
           multiloc
+        end
+      end
+
+      # Hand-written templates give a text widget's content as a translation key, as they do for
+      # a top-level multiloc. A text given as a multiloc is kept as it is.
+      def restore_craftjs_json_texts!(attributes, locales)
+        craftjs_json = attributes['craftjs_json']
+        return unless craftjs_json.is_a?(Hash)
+
+        attributes['craftjs_json'] = craftjs_json.transform_values do |node|
+          text = node.dig('props', 'text') if node.is_a?(Hash)
+          next node unless text.is_a?(String)
+
+          node.merge('props' => node['props'].merge('text' => restore_multiloc_attribute(text, locales)))
         end
       end
 
