@@ -119,6 +119,7 @@ const AreaCard = ({ project, ready }: Props) => {
     <Box ref={cardRef}>
       <SetupCard
         id="e2e-setup-card-area"
+        tooltip={formatMessage(messages.areaTooltip)}
         title={formatMessage(projectSetupPanelMessages.areaItem)}
         ready={ready}
         summary={getSummary()}

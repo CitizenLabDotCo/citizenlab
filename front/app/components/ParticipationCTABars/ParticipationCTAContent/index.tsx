@@ -7,6 +7,9 @@ import { IPhaseData } from 'api/phases/types';
 
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 
+import { usePhasePreview } from 'utils/phasePreview/runtime';
+
+import PreviewCTAContent from './PreviewCTAContent';
 import TimeIndicator from './TimeIndicator';
 
 const CTAButtonWrapper = styled(Box)`
@@ -34,6 +37,19 @@ const ParticipationCTAContent = ({
   const isSmallerThanPhone = useBreakpoint('phone');
   // This is the same condition we have in ProjectCTABar.
   const sticksToBottom = isSmallerThanPhone;
+
+  const preview = usePhasePreview();
+  if (preview) {
+    return (
+      <PreviewCTAContent
+        preview={preview}
+        currentPhase={currentPhase}
+        CTAButton={CTAButton}
+        hasUserParticipated={hasUserParticipated}
+        participationState={participationState}
+      />
+    );
+  }
 
   return sticksToBottom ? (
     <Box

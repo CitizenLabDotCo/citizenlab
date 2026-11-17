@@ -25,6 +25,11 @@ import { isNilOrError } from 'utils/helperUtils';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 import { weglotTranslateSubmission } from 'utils/weglot';
 
+import {
+  boCommentFormStyle,
+  CommentsVariant,
+  useIsBoComments,
+} from '../../../commentsVariant';
 import { commentReplyButtonClicked$, commentAdded } from '../../../events';
 import messages from '../../../messages';
 import tracks from '../../../tracks';
@@ -42,7 +47,7 @@ const FormContainer = styled(ClickOutside)`
   align-items: stretch;
 `;
 
-const Form = styled.form`
+const Form = styled.form<{ variant: CommentsVariant }>`
   flex: 1;
   background: #fff;
   border: 1px solid ${colors.borderDark};
@@ -55,6 +60,8 @@ const Form = styled.form`
   &.focused {
     border: solid 2px ${(props) => props.theme.colors.tenantPrimary};
   }
+
+  ${boCommentFormStyle}
 `;
 
 const HiddenLabel = styled.span`
@@ -77,6 +84,7 @@ const ChildCommentForm = ({
   allowAnonymousParticipation,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const isBo = useIsBoComments();
   const locale = useLocale();
   const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
@@ -285,9 +293,12 @@ const ChildCommentForm = ({
           onClickOutside={onCancel}
           closeOnClickOutsideEnabled={false}
         >
-          {/* TODO: Fix this the next time the file is edited. */}
-          {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-          <Form className={focused ? 'focused' : ''}>
+          <Form
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+            className={focused ? 'focused' : ''}
+            variant={isBo ? 'bo' : 'default'}
+          >
             <label>
               <HiddenLabel>
                 <FormattedMessage {...messages.replyToComment} />

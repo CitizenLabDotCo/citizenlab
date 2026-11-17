@@ -53,7 +53,7 @@ const ExportVotesByUser = () => {
       padding="0"
       fontSize={`${fontSizes.s}px`}
     >
-      <FormattedMessage {...messages.exportVotesByUser} />
+      <FormattedMessage {...messages.exportVotesByUser2} />
     </Button>
   );
 };

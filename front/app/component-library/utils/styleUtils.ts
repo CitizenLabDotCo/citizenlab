@@ -225,6 +225,8 @@ export const bo = {
   },
   borderRadius: '8px',
   panelBorderRadius: '12px',
+  drawerBorderRadius: '18px',
+  drawerInset: '16px',
   headerFontSize: BO_HEADER_FONT_SIZE,
   controlFontSize: BO_CONTROL_FONT_SIZE,
   toggleWidth: `${BO_TOGGLE_WIDTH}px`,
@@ -250,6 +252,7 @@ export const stylingConsts = {
   pageWidth: 1150,
   textWidth: 720,
   borderRadius: '3px',
+  borderRadiusPill: '999px',
   border: `1px solid ${colors.divider}`,
 };
 

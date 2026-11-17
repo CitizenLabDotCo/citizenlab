@@ -1,29 +1,36 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
+import useCustomFields from 'api/custom_fields/useCustomFields';
 import useAuthUser from 'api/me/useAuthUser';
-import { IPhaseData } from 'api/phases/types';
-import usePhases from 'api/phases/usePhases';
-import { getCurrentPhase } from 'api/phases/utils';
 
 import IdeaButton from 'components/IdeaButton';
 import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
-import { CTABarProps } from 'components/ParticipationCTABars/utils';
+import {
+  CTABarProps,
+  getCTAPhase,
+} from 'components/ParticipationCTABars/utils';
 
 import { getIdeaPostingRules } from 'utils/actionTakingRules';
+import { usePhasePreview } from 'utils/phasePreview/runtime';
 
-const NativeSurveyCTABar = ({ project }: CTABarProps) => {
+const NativeSurveyCTABar = ({ project, phases }: CTABarProps) => {
   const theme = useTheme();
   const { data: authUser } = useAuthUser();
-  const { data: phases } = usePhases(project.id);
   const isSmallerThanPhone = useBreakpoint('phone');
-  const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
+  const currentPhase = getCTAPhase(phases);
 
-  useEffect(() => {
-    setCurrentPhase(getCurrentPhase(phases?.data));
-  }, [phases, project]);
+  const preview = usePhasePreview();
+  const { data: fields } = useCustomFields({
+    projectId: preview && !preview.unsaved ? project.id : undefined,
+    phaseId: preview && !preview.unsaved ? preview.phase.id : undefined,
+    publicFields: true,
+  });
+  const hasQuestions = fields?.some(
+    (field) => field.enabled && field.input_type !== 'page'
+  );
 
   const { disabledReason } = getIdeaPostingRules({
     project,
@@ -31,6 +38,8 @@ const NativeSurveyCTABar = ({ project }: CTABarProps) => {
     authUser: authUser?.data,
   });
   const hasUserParticipated = disabledReason === 'posting_limited_max_reached';
+
+  if (preview && (!hasQuestions || preview.lifecycle === 'ended')) return null;
 
   return (
     <ParticipationCTAContent

@@ -2,6 +2,7 @@ import React, { FormEvent, useState, useRef, ChangeEvent } from 'react';
 
 import {
   colors,
+  bo,
   fontSizes,
   defaultOutline,
   isRtl,
@@ -47,7 +48,7 @@ const Input = styled.input`
   }
 `;
 
-const Label = styled.label`
+const Label = styled.label<{ variant: 'default' | 'bo' }>`
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -62,6 +63,27 @@ const Label = styled.label`
   ${isRtl`
     flex-direction: row-reverse;
   `}
+
+  ${({ variant }) =>
+    variant === 'bo' &&
+    `
+      flex-direction: column;
+      justify-content: center;
+      gap: 8px;
+      padding: 22px 16px;
+      border-color: ${colors.grey300};
+      border-radius: ${bo.borderRadius};
+      background: ${colors.grey50};
+      font-size: ${fontSizes.xs}px;
+      line-height: 16px;
+      text-align: center;
+
+      ${StyledIcon} {
+        width: 20px;
+        height: 20px;
+        margin: 0;
+      }
+    `}
 
   &:hover {
     color: #000;
@@ -150,6 +172,7 @@ const fileAccept = [
 ];
 
 interface Props {
+  variant?: 'default' | 'bo';
   onAdd: (file: UploadFile) => void;
   className?: string;
   id: string;
@@ -159,6 +182,7 @@ interface Props {
 }
 
 const FileInput = ({
+  variant = 'default',
   className,
   id,
   onAdd,
@@ -232,7 +256,7 @@ const FileInput = ({
         data-testid="fileInput"
         multiple={multiple}
       />
-      <Label aria-hidden htmlFor={id}>
+      <Label variant={variant} aria-hidden htmlFor={id}>
         <StyledIcon name="upload-file" ariaHidden />
         <FormattedMessage {...messages.fileInputDescription} />
       </Label>

@@ -4,11 +4,11 @@ import { Button } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
 import { IPhaseData } from 'api/phases/types';
-import { getCurrentPhase } from 'api/phases/utils';
 
 import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
 import {
   CTABarProps,
+  getCTAPhase,
   useScrollToCurrentPhaseElement,
 } from 'components/ParticipationCTABars/utils';
 
@@ -22,7 +22,7 @@ const VolunteeringCTABar = ({ phases, project }: CTABarProps) => {
   const scrollToPhaseElement = useScrollToCurrentPhaseElement(project, phases);
 
   useEffect(() => {
-    setCurrentPhase(getCurrentPhase(phases));
+    setCurrentPhase(getCTAPhase(phases));
   }, [phases]);
 
   const handleVolunteerClick = (event: FormEvent) => {
