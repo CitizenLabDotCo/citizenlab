@@ -163,6 +163,19 @@ commands:
           cd ~
           rm -rf ~/$(echo $CIRCLE_REPOSITORY_URL | cut -d '/' -f 2 | cut -d '.' -f 1)
           git clone -b "$CIRCLE_BRANCH" "$CIRCLE_REPOSITORY_URL" --depth 1
+  # Copies the AI assistant's skills into back/vendor/llm_skills, for the back image build.
+  vendor-llm-skills:
+    steps:
+      # TODO(TAN-9082): the fingerprint of the skills repo's read-only deploy key, once it is in the project.
+      - add_ssh_keys:
+          fingerprints:
+            - "00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00"
+      - run:
+          name: Copy the AI assistant's skills into the back image
+          # GitHub accepts the checkout key too, which can't read the skills repo, so only the deploy key is offered.
+          command: |
+            GIT_SSH_COMMAND="ssh -i ~/.ssh/id_rsa_00000000000000000000000000000000 -o IdentitiesOnly=yes" \
+              ~/citizenlab/bin/vendor-llm-skills ~/citizenlab/back/vendor/llm_skills
 
 jobs:
   trigger-workflows:
@@ -197,6 +210,9 @@ jobs:
             bin/check-claude-privacy.test.sh
             .githooks/pre-commit.test.sh
             bin/check-claude-privacy
+      - run:
+          name: Test copying the AI assistant's skills into the back image
+          command: bin/vendor-llm-skills.test.sh
 
   changelogger:
     resource_class: small
@@ -252,6 +268,7 @@ jobs:
     steps:
       - echo_pipeline_parameters
       - shallow-clone
+      - vendor-llm-skills
       - setup_remote_docker:
           docker_layer_caching: << parameters.docker_layer_caching >>
       - run: |
@@ -269,6 +286,7 @@ jobs:
     steps:
       - echo_pipeline_parameters
       - shallow-clone
+      - vendor-llm-skills
       - setup_remote_docker:
           docker_layer_caching: false
       - run: |

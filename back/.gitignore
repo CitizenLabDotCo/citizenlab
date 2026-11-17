@@ -36,5 +36,5 @@ attractor_output/
 secrets/*
 !secrets/*.sample
 
-# Skills for the AI features in development, synced by bin/setup-llm-skills.
+# Skills for the AI features: a link made by bin/setup-llm-skills in development, a copy made by bin/vendor-llm-skills in CI.
 /vendor/llm_skills
