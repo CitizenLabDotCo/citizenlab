@@ -20,7 +20,7 @@ import Link from 'utils/cl-router/Link';
 
 import messages from './messages';
 
-// polished can't parse CSS variables.
+// polished can't read CSS variables (design-system tokens); those keep their colour.
 const hoverColor = (color: string) =>
   color.startsWith('var(') ? color : darken(0.15, color);
 

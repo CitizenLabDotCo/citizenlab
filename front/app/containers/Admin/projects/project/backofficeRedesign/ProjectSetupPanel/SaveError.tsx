@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import generalMessages from 'containers/Admin/projects/project/general/messages';
 
@@ -11,13 +11,23 @@ import { useSetupDraft } from './SetupDraftContext';
 const SaveError = () => {
   const { formatMessage } = useIntl();
   const { saveFailed } = useSetupDraft();
+  const ref = useRef<HTMLDivElement>(null);
+
+  // The panel may be scrolled to the card that triggered the save.
+  useEffect(() => {
+    if (saveFailed) {
+      ref.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, [saveFailed]);
 
   if (!saveFailed) return null;
 
   return (
-    <Banner tone="error">
-      {formatMessage(generalMessages.saveErrorMessage)}
-    </Banner>
+    <div ref={ref}>
+      <Banner tone="error">
+        {formatMessage(generalMessages.saveErrorMessage)}
+      </Banner>
+    </div>
   );
 };
 

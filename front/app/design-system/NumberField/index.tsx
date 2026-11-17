@@ -55,6 +55,9 @@ const StepButton = ({ slot }: StepButtonProps) => {
       slot={slot}
       className={styles.step}
       aria-disabled={canStep === false ? true : undefined}
+      // Focus stays in the input: a blur before the stepped value renders
+      // would commit the old one.
+      onMouseDown={(event) => event.preventDefault()}
     >
       <Icon
         name={slot === 'increment' ? 'plus-16' : 'minus-16'}

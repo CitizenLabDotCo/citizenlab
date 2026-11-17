@@ -96,10 +96,13 @@ describe('Redesigned input manager', () => {
   it('starts with the timeline open and platform navigation hidden', () => {
     cy.contains('Participation').should('be.visible');
     cy.get('[data-project-workspace-header]').then((header) => {
+      // The button sits in the header row, centred on it.
+      const middle = (element: HTMLElement) => {
+        const { top, height } = element.getBoundingClientRect();
+        return top + height / 2;
+      };
       cy.get('[aria-label="Platform navigation"]').should((button) => {
-        expect(button[0].getBoundingClientRect().top).to.eq(
-          header[0].getBoundingClientRect().top
-        );
+        expect(middle(button[0])).to.be.closeTo(middle(header[0]), 1);
       });
     });
     cy.get('[aria-label="Platform navigation"]')
