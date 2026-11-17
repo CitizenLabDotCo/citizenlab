@@ -70,6 +70,7 @@ const SurveySetupModal = ({
     data: phase,
     isFetching: phaseFetching,
     isPlaceholderData: phasePlaceholder,
+    refetch: refetchPhase,
   } = usePhase(phaseId);
   const { data: submissionCount } = useSubmissionCount({ phaseId });
   const hasSavedQuestions =
@@ -98,6 +99,8 @@ const SurveySetupModal = ({
         ),
         customForm: { saveType: 'manual' },
       });
+      // Delete and Undo depend on the saved state the phase reports.
+      await refetchPhase({ cancelRefetch: false });
       return true;
     } catch {
       setQuestionsFailed(true);
