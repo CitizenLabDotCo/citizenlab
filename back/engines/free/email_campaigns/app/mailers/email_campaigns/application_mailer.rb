@@ -35,7 +35,7 @@ module EmailCampaigns
     private
 
     def mailgun_variables
-      super.merge(campaign&.extra_mailgun_variables(command) || {})
+      super.merge('cl_delivery_id' => command[:delivery_id]).compact
     end
 
     def show_unsubscribe_link?

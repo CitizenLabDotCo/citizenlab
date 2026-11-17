@@ -24,10 +24,6 @@ module EmailCampaigns
         &.sent_at
     end
 
-    def extra_mailgun_variables(command)
-      { 'cl_delivery_id' => command[:delivery_id] }
-    end
-
     private
 
     def generate_delivery_id(command)
