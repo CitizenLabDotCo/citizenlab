@@ -1,4 +1,5 @@
 import authUserStream from 'api/me/authUserStream';
+import { IUser } from 'api/users/types';
 
 import { API_PATH, locales } from 'containers/App/constants';
 
@@ -114,10 +115,22 @@ const configuration: ModuleConfiguration = {
       trackPageView(path);
     });
 
-    authUserStream.subscribe((user) => {
-      if (!!user && sessionTracked && sessionId) {
+    // Upgrade the session when a visitor signs in: the user goes from signed out
+    // (null) to signed in. Not when a user who was signed in when the page loaded is
+    // loaded or refetched. The API can't be asked for that at page load, as the
+    // front-end can't read the HttpOnly auth cookie, so the first answer of /users/me
+    // tells: null (signed out) or a user. undefined means still loading (at startup, or
+    // after signing out resets the user) and is skipped. The API finds the current
+    // session itself, so this doesn't need sessionId.
+    let previousUser: IUser | null | undefined;
+    // The stream's type leaves out null, but fetchMe returns null when signed out.
+    authUserStream.subscribe((user: IUser | null | undefined) => {
+      if (user === undefined) return;
+
+      if (previousUser === null && user) {
         upgradeSession();
       }
+      previousUser = user;
     });
   },
 };
