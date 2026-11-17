@@ -10,7 +10,7 @@ export interface IBasketData {
   id: string;
   type: string;
   attributes: {
-    submitted_at: string;
+    submitted_at: string | null;
     total_votes: number;
   };
   relationships: {

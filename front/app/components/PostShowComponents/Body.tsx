@@ -14,10 +14,11 @@ interface Props {
   translateButtonClicked?: boolean;
   className?: string;
   color?: string;
+  fontSize?: 's';
 }
 
 const Body = memo<Props>(
-  ({ postId, body, translateButtonClicked, className, color }) => {
+  ({ postId, body, translateButtonClicked, className, color, fontSize }) => {
     const smallerThanSmallTablet = useBreakpoint('tablet');
     const theme = useTheme();
 
@@ -25,7 +26,7 @@ const Body = memo<Props>(
       <Container id={`e2e-idea-description`} className={className}>
         <QuillEditedContent
           textColor={color || theme.colors.tenantText}
-          fontSize={smallerThanSmallTablet ? 'base' : 'l'}
+          fontSize={fontSize ?? (smallerThanSmallTablet ? 'base' : 'l')}
           fontWeight={400}
         >
           <div aria-live="polite">

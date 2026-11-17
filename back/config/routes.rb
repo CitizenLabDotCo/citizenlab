@@ -247,6 +247,7 @@ Rails.application.routes.draw do
         concerns :file_attachable, attachable_type: 'Phase'
 
         member do
+          post 'review_setup_card'
           get 'survey_results'
           get 'input_response_fields'
           post 'input_responses_pdf'

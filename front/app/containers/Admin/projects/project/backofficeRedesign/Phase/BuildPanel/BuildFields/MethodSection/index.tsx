@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { InputTerm, ParticipationMethod } from 'api/phases/types';
+
+import InputTagsCard from '../../../../InputTags/InputTagsCard';
 
 import CausesSection from './CausesSection';
 import CommonGroundSection from './CommonGroundSection';
@@ -15,6 +17,7 @@ interface Props {
   phaseId?: string;
   inputTerm?: InputTerm;
   formInSurveyOptions: boolean;
+  draftQuestionsAction?: ReactNode;
 }
 
 const MethodSection = ({
@@ -23,6 +26,7 @@ const MethodSection = ({
   phaseId,
   inputTerm,
   formInSurveyOptions,
+  draftQuestionsAction,
 }: Props) => {
   switch (participationMethod) {
     case 'poll':
@@ -36,7 +40,8 @@ const MethodSection = ({
       return phaseId ? (
         <>
           <VotingOptionsSection projectId={projectId} phaseId={phaseId} />
-          <DemographicsCard phaseId={phaseId} />
+          <InputTagsCard projectId={projectId} inputTerm={inputTerm} />
+          <DemographicsCard projectId={projectId} phaseId={phaseId} />
         </>
       ) : null;
     case 'volunteering':
@@ -53,6 +58,7 @@ const MethodSection = ({
           phaseId={phaseId}
           inputTerm={inputTerm}
           formInSurveyOptions={formInSurveyOptions}
+          draftQuestionsAction={draftQuestionsAction}
         />
       );
   }

@@ -14,6 +14,11 @@ import useAddInternalCommentToIdea from 'api/internal_comments/useAddInternalCom
 import useAuthUser from 'api/me/useAuthUser';
 
 import Avatar from 'components/Avatar';
+import {
+  boCommentFormStyle,
+  CommentsVariant,
+  useIsBoComments,
+} from 'components/PostShowComponents/Comments/commentsVariant';
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
@@ -50,7 +55,7 @@ const Anchor = styled.div`
   left: 0px;
 `;
 
-const Form = styled.form`
+const Form = styled.form<{ variant: CommentsVariant }>`
   flex: 1;
   border: 1px solid ${colors.borderDark};
   border-radius: ${(props) => props.theme.borderRadius};
@@ -63,6 +68,8 @@ const Form = styled.form`
   &.focused {
     border: solid 2px ${(props) => props.theme.colors.tenantPrimary};
   }
+
+  ${boCommentFormStyle}
 `;
 
 const HiddenLabel = styled.span`
@@ -95,6 +102,8 @@ const InternalParentCommentForm = ({ ideaId, className }: Props) => {
   const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
   const smallerThanTablet = useBreakpoint('tablet');
+  const isBo = useIsBoComments();
+  const responsivePadding = smallerThanTablet && !isBo ? '6px 12px' : undefined;
   const {
     mutate: addInternalCommentToIdea,
     isPending: addCommentToIdeaIsLoading,
@@ -212,7 +221,10 @@ const InternalParentCommentForm = ({ ideaId, className }: Props) => {
         closeOnClickOutsideEnabled={false}
       >
         <Anchor id="submit-comment-anchor" />
-        <Form className={focused ? 'focused' : ''}>
+        <Form
+          className={focused ? 'focused' : ''}
+          variant={isBo ? 'bo' : 'default'}
+        >
           <label htmlFor="submit-comment">
             <HiddenLabel>
               <FormattedMessage {...commentsMessages.yourComment} />
@@ -228,7 +240,8 @@ const InternalParentCommentForm = ({ ideaId, className }: Props) => {
               error={getErrorMessage()}
               onChange={onChange}
               onFocus={onFocus}
-              fontWeight="300"
+              fontWeight={isBo ? '400' : '300'}
+              fontSize={isBo ? '12px' : undefined}
               padding="10px"
               borderRadius="none"
               border="none"
@@ -240,8 +253,8 @@ const InternalParentCommentForm = ({ ideaId, className }: Props) => {
               <CancelButton
                 disabled={processing}
                 onClick={close}
-                buttonStyle="secondary-outlined"
-                padding={smallerThanTablet ? '6px 12px' : undefined}
+                buttonStyle={isBo ? 'bo-secondary' : 'secondary-outlined'}
+                padding={responsivePadding}
               >
                 <FormattedMessage {...commentsMessages.cancel} />
               </CancelButton>
@@ -250,7 +263,8 @@ const InternalParentCommentForm = ({ ideaId, className }: Props) => {
                 processing={processing}
                 onClick={onSubmit}
                 disabled={hasEmptyError}
-                padding={smallerThanTablet ? '6px 12px' : undefined}
+                buttonStyle={isBo ? 'bo-primary' : 'primary'}
+                padding={responsivePadding}
                 icon="shield-check"
               >
                 <FormattedMessage {...commentsMessages.postInternalComment} />

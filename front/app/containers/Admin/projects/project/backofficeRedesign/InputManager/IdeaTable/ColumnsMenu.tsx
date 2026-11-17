@@ -2,10 +2,11 @@ import React from 'react';
 
 import { Box, colors, IconButton } from '@citizenlab/cl2-component-library';
 
+import MenuButton from 'components/admin/MenuButton';
+
 import { useIntl } from 'utils/cl-intl';
 
 import { ColumnKey, COLUMNS, orderColumns } from '../columns';
-import MenuButton from '../MenuButton';
 import messages from '../messages';
 import OptionList from '../OptionList';
 

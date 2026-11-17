@@ -55,7 +55,7 @@ const useSetupReadiness = (
 
   return {
     readiness: {
-      general: completedSteps.includes('settings'),
+      general: localize(attributes.title_multiloc).trim().length > 0,
       methods: (phases?.data.length ?? 0) > 0,
       page: completedSteps.includes('page'),
       homepageCard: hasCardImage && hasCardDescription,

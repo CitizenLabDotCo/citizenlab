@@ -8,9 +8,9 @@ interface Props {
 }
 
 const PropertyRow = ({ label, children }: Props) => (
-  <Box display="flex" alignItems="flex-start" gap="12px" minHeight="32px">
-    <Box flex="0 0 96px" pt="6px">
-      <Text variant="boHelper" m="0">
+  <Box display="flex" alignItems="flex-start" gap="8px" minHeight="24px">
+    <Box flex="0 0 64px" pt="3px">
+      <Text variant="boHelper" fontSize="xs" m="0">
         {label}
       </Text>
     </Box>
@@ -20,7 +20,7 @@ const PropertyRow = ({ label, children }: Props) => (
       flexWrap="wrap"
       gap="6px"
       flexGrow={1}
-      minHeight="32px"
+      minHeight="24px"
     >
       {children}
     </Box>

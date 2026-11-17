@@ -16,6 +16,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { usePhasePreview } from 'utils/phasePreview/runtime';
 
 import messages from './messages';
 import SubmissionIdContainer from './SubmissionIdContainer';
@@ -33,10 +34,11 @@ const SubmissionReference = ({
   const { formatMessage } = useIntl();
   const { data: authUser } = useAuthUser();
 
+  const preview = usePhasePreview();
   const hideSubmissionRemovalText = useFeatureFlag({
     name: 'hide_submission_removal_text',
   });
-  if (hideSubmissionRemovalText) return null;
+  if (hideSubmissionRemovalText || preview) return null;
 
   return (
     <Box

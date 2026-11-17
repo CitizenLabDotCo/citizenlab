@@ -1,9 +1,16 @@
-import React, { ReactNode, Suspense, lazy, useState } from 'react';
+import React, {
+  ReactNode,
+  Suspense,
+  lazy,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import { Box, Spinner, bo, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import { IPhaseData } from 'api/phases/types';
+import { IPhaseData, InputTerm } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 
 import { usePageSave } from 'components/admin/PageSaveContext';
@@ -19,10 +26,12 @@ import { HeaderDropdownName } from './Header/HeaderDropdown';
 import PanelToggleButton from './PanelToggleButton';
 import { useParticipationPanel } from './ParticipationPanelContext';
 import MethodSettings from './Phase/MethodSettings';
-import { viewFromPathname } from './Phase/usePhaseViews';
+import { viewFromPathname, PhaseViewKey } from './Phase/usePhaseViews';
 import ViewContent from './Phase/ViewContent';
 import ProjectSetupPanel from './ProjectSetupPanel';
 import ProjectTimeline from './ProjectTimeline';
+
+const InputTags = lazy(() => import('./InputTags'));
 
 // Lazy so ArcGIS only loads once the map is opened.
 const CustomMapConfigPage = lazy(
@@ -81,6 +90,7 @@ const PanelContent = styled(Box)<{ collapsed: boolean; animate: boolean }>`
 `;
 
 interface Draft {
+  inputTerm?: InputTerm;
   label: string;
   parentLabel?: string;
   saveLabel?: string;
@@ -93,6 +103,8 @@ interface Props {
   draft?: Draft;
   sidePanel?: ReactNode;
   withParticipation?: boolean;
+  activeView?: PhaseViewKey;
+  viewSwitch?: ReactNode;
   children: ReactNode;
 }
 
@@ -102,27 +114,50 @@ const ProjectWorkspace = ({
   draft,
   sidePanel,
   withParticipation = true,
+  activeView: providedActiveView,
+  viewSwitch,
   children,
 }: Props) => {
   const { pending, collapsed, animate } = useParticipationPanel();
   const { pathname } = useLocation();
-  const { map_config } = useSearch({ strict: false });
+  const { map_config, input_tags } = useSearch({ strict: false });
   const [openDropdown, setOpenDropdown] = useState<HeaderDropdownName | null>(
     null
   );
   const pageSave = usePageSave();
 
   const section = sectionFromPathname(pathname, project.id);
-  const activeView = viewFromPathname(pathname);
+  const activeView = providedActiveView ?? viewFromPathname(pathname);
 
   const inPhase = !!(phase || draft);
-  // An open phase email takes the whole width, like the other views.
+  const workspaceRef = useRef<HTMLDivElement>(null);
+  const wasSaving = useRef(false);
+  const saving = pageSave?.saving ?? false;
+
+  useEffect(() => {
+    const finishedSaving = wasSaving.current && !saving;
+    wasSaving.current = saving;
+    if (!finishedSaving || !inPhase) return;
+
+    // Wait for field errors to mount after every save attempt, including retries.
+    const frame = requestAnimationFrame(() => {
+      const error = workspaceRef.current?.querySelector<HTMLElement>(
+        '.e2e-error-message:not(.error-exit):not(.error-exit-active)'
+      );
+      error?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [saving, inPhase]);
+
+  // An open phase email takes the whole width.
   const editingEmail = /\/emails\/[^/]+\/edit$/.test(pathname);
   // The map configuration does the same, and keeps the phase panel mounted so
   // a phase that isn't saved yet keeps its edits.
   const editingMap = inPhase && !!map_config;
-  const showPanels =
-    (!phase || activeView === 'build') && !editingEmail && !editingMap;
+  const editingTags = inPhase && !!input_tags;
+  const [tagsOpened, setTagsOpened] = useState(false);
+  if (editingTags && !tagsOpened) setTagsOpened(true);
+  const showPanels = activeView === 'build' && !editingEmail && !editingMap;
   // Once opened, the map stays mounted, so its unsaved edits wait for the
   // page's save button like the rest of the phase.
   const [mapOpened, setMapOpened] = useState(false);
@@ -158,7 +193,9 @@ const ProjectWorkspace = ({
     </Box>
   );
   const showParticipation =
-    withParticipation && !pending && (!inPhase || showPanels);
+    withParticipation &&
+    !pending &&
+    (!inPhase || (!editingEmail && !editingMap));
   const participationSlot = showParticipation && (
     <CollapsiblePanel
       collapsed={collapsed}
@@ -199,8 +236,24 @@ const ProjectWorkspace = ({
       borderRadius={bo.panelBorderRadius}
       background={colors.white}
     >
-      {sidePanel}
-      {settingsPanel}
+      <Box display={editingTags ? 'none' : 'block'}>
+        {sidePanel}
+        {settingsPanel}
+      </Box>
+      {tagsOpened && (
+        <Box display={editingTags ? 'block' : 'none'}>
+          <Suspense fallback={<Spinner />}>
+            <InputTags
+              key={`${project.id}-${phase?.id}-${pageSave?.revision}`}
+              project={project}
+              phase={phase}
+              inputTerm={
+                phase?.attributes.input_term ?? draft?.inputTerm ?? 'idea'
+              }
+            />
+          </Suspense>
+        </Box>
+      )}
     </Box>
   );
 
@@ -214,7 +267,8 @@ const ProjectWorkspace = ({
       display="flex"
       flexDirection="column"
       borderRadius={bo.panelBorderRadius}
-      background={colors.grey100}
+      // Manage and Insights bring their own white panels.
+      background={activeView !== 'build' ? undefined : colors.grey100}
     >
       {mapOpened && (
         <Box display={editingMap ? 'block' : 'none'} h="100%">
@@ -234,6 +288,7 @@ const ProjectWorkspace = ({
 
   return (
     <Box
+      ref={workspaceRef}
       display="flex"
       flexDirection="column"
       gap={PANEL_GAP}
@@ -250,6 +305,7 @@ const ProjectWorkspace = ({
         draftParentLabel={draft?.parentLabel}
         saveLabel={draft?.saveLabel}
         activeView={activeView}
+        viewSwitch={viewSwitch}
         editingMap={editingMap}
         section={section}
         openDropdown={openDropdown}
@@ -272,7 +328,7 @@ const ProjectWorkspace = ({
         {inPhase && phaseSlot}
 
         {phase && activeView !== 'build' ? (
-          <ViewContent project={project} phase={phase} view={activeView}>
+          <ViewContent phase={phase} view={activeView}>
             {mainSlot}
           </ViewContent>
         ) : (

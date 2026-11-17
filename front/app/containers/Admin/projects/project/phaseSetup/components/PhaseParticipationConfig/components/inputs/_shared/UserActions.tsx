@@ -86,7 +86,11 @@ const UserActions = ({
           phaseId={phaseId}
           action="posting_idea"
           error={
-            <Error apiErrors={apiErrors && apiErrors.submission_enabled} />
+            <Error
+              showBackground={layout !== 'panel'}
+              showIcon={layout !== 'panel'}
+              apiErrors={apiErrors && apiErrors.submission_enabled}
+            />
           }
         >
           <Toggle
@@ -102,7 +106,11 @@ const UserActions = ({
             phaseId={phaseId}
             action="commenting_idea"
             error={
-              <Error apiErrors={apiErrors && apiErrors.commenting_enabled} />
+              <Error
+                showBackground={layout !== 'panel'}
+                showIcon={layout !== 'panel'}
+                apiErrors={apiErrors && apiErrors.commenting_enabled}
+              />
             }
           >
             <Toggle
@@ -120,7 +128,11 @@ const UserActions = ({
             action="reacting_idea"
             last
             error={
-              <Error apiErrors={apiErrors && apiErrors.reacting_enabled} />
+              <Error
+                showBackground={layout !== 'panel'}
+                showIcon={layout !== 'panel'}
+                apiErrors={apiErrors && apiErrors.reacting_enabled}
+              />
             }
           >
             <Toggle

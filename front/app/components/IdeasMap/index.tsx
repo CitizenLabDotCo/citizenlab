@@ -52,6 +52,7 @@ import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { projectPointToWebMercator } from 'utils/mapUtils/map';
 import { isAdmin } from 'utils/permissions/roles';
+import { usePhasePreview } from 'utils/phasePreview/runtime';
 import { useLocation, useSearch } from 'utils/router';
 
 import IdeaMapOverlay from './desktop/IdeaMapOverlay';
@@ -252,6 +253,9 @@ const IdeasMap = memo<Props>(
       if (graphics) {
         return new FeatureLayer({
           source: graphics, // Array of idea graphics
+          // Stated rather than inferred, so a phase without pins still gets a
+          // valid (empty) point layer instead of an unrenderable table layer.
+          geometryType: 'point',
           title: formatMessage(messages.userInputs),
           id: 'ideasLayer',
           outFields: ['*'],
@@ -319,13 +323,18 @@ const IdeasMap = memo<Props>(
       [esriMapView, selectedIdeaId, ideaMarkers]
     );
 
+    const preview = usePhasePreview();
+    const canPreviewSubmission =
+      !preview || (!preview.unsaved && preview.lifecycle === 'open');
+
     const onMapClick = useCallback(
       (event: any, mapView: MapView) => {
         const clickedPointProjected = projectPointToWebMercator(event.mapPoint);
         setClickedMapLocation(esriPointToGeoJson(clickedPointProjected));
 
         const ideaPostingEnabled =
-          phase?.data.attributes.submission_enabled || isAdmin(authUser);
+          canPreviewSubmission &&
+          (phase?.data.attributes.submission_enabled || isAdmin(authUser));
 
         const showSubmitPopup = () => {
           if (ideaPostingEnabled) {
@@ -433,6 +442,7 @@ const IdeasMap = memo<Props>(
       },
       [
         setSelectedIdea,
+        canPreviewSubmission,
         authUser,
         phase?.data.attributes.submission_enabled,
         startIdeaButtonNode,
@@ -599,7 +609,9 @@ const IdeasMap = memo<Props>(
                 />
               </Box>
             )}
-            <InstructionMessage projectId={projectId} />
+            {canPreviewSubmission && (
+              <InstructionMessage projectId={projectId} />
+            )}
           </InnerContainer>
         </StyledMapContainer>
         {isMobileOrSmaller && (
