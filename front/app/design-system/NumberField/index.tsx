@@ -1,10 +1,11 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useContext } from 'react';
 
 import {
   Button,
   Group,
   Input,
   NumberField as AriaNumberField,
+  NumberFieldStateContext,
 } from 'react-aria-components';
 
 import { FieldHelp, FieldLabel, fieldStyles } from '../Field';
@@ -32,9 +33,35 @@ export type NumberFieldProps = LabelProps & {
   isRequired?: boolean;
   isInvalid?: boolean;
   isDisabled?: boolean;
+  // Names for the step buttons; React Aria's default is "Increase/Decrease <field label>".
+  incrementAriaLabel?: string;
+  decrementAriaLabel?: string;
   name?: string;
   id?: string;
   'data-cy'?: string;
+};
+
+type StepButtonProps = { slot: 'increment' | 'decrement' };
+
+// React Aria disables a step at the minimum and maximum with the native disabled attribute;
+// it also marks it aria-disabled so the state reads the same as other disabled controls.
+const StepButton = ({ slot }: StepButtonProps) => {
+  const state = useContext(NumberFieldStateContext);
+  const canStep =
+    slot === 'increment' ? state?.canIncrement : state?.canDecrement;
+
+  return (
+    <Button
+      slot={slot}
+      className={styles.step}
+      aria-disabled={canStep === false ? true : undefined}
+    >
+      <Icon
+        name={slot === 'increment' ? 'plus-16' : 'minus-16'}
+        className={styles.stepIcon}
+      />
+    </Button>
+  );
 };
 
 const NumberField = ({
@@ -51,6 +78,8 @@ const NumberField = ({
   isRequired = false,
   isInvalid,
   isDisabled = false,
+  incrementAriaLabel,
+  decrementAriaLabel,
   name,
   id,
   'aria-label': ariaLabel,
@@ -67,6 +96,8 @@ const NumberField = ({
     isRequired={isRequired}
     isInvalid={isInvalid}
     isDisabled={isDisabled}
+    incrementAriaLabel={incrementAriaLabel}
+    decrementAriaLabel={decrementAriaLabel}
     name={name}
     id={id}
     aria-label={ariaLabel}
@@ -78,13 +109,9 @@ const NumberField = ({
     <div className={fieldStyles.control}>
       <Group className={`${styles.group} ${inputStyles[`size${size}`]}`}>
         {/* React Aria names the steps and disables them at the minimum and maximum. */}
-        <Button slot="decrement" className={styles.step}>
-          <Icon name="minus-16" className={styles.stepIcon} />
-        </Button>
+        <StepButton slot="decrement" />
         <Input className={styles.value} />
-        <Button slot="increment" className={styles.step}>
-          <Icon name="plus-16" className={styles.stepIcon} />
-        </Button>
+        <StepButton slot="increment" />
       </Group>
       <FieldHelp description={description} errorMessage={errorMessage} />
     </div>

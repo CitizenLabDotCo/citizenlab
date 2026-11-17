@@ -14,8 +14,10 @@ import { useIntl } from 'utils/cl-intl';
 import { ColumnKey, COLUMNS } from '../columns';
 import messages from '../messages';
 import TooltipMark from '../TooltipMark';
+import useInputTermLabels from '../useInputTermLabels';
 
 import IdeaCell from './IdeaCell';
+import RowTitleButton from './RowTitleButton';
 import styles from './IdeaTable.module.css';
 
 interface Props {
@@ -24,6 +26,7 @@ interface Props {
   statuses: IIdeaStatusData[];
   tagLabels: Map<string, string>;
   selected: boolean;
+  active: boolean;
   onToggleSelect: () => void;
   onOpen: () => void;
 }
@@ -34,11 +37,13 @@ const IdeaRow = ({
   statuses,
   tagLabels,
   selected,
+  active,
   onToggleSelect,
   onOpen,
 }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
+  const { term } = useInputTermLabels();
   const { attributes, relationships } = idea;
   const status = statuses.find(
     (status) => status.id === relationships.idea_status.data?.id
@@ -53,6 +58,8 @@ const IdeaRow = ({
       id={idea.id}
       kind="flat"
       textValue={title}
+      isActive={active}
+      isPicked={selected}
       onAction={onOpen}
       data-cy={`e2e-idea-row-${idea.id}`}
     >
@@ -60,11 +67,11 @@ const IdeaRow = ({
         <Checkbox
           isSelected={selected}
           onChange={onToggleSelect}
-          aria-label={formatMessage(messages.selectInput)}
+          aria-label={formatMessage(messages.selectTerm, { term })}
         />
       </Cell>
       <Cell>
-        <span className={styles.title}>{title}</span>
+        <RowTitleButton title={title} onOpen={onOpen} />
         {showsMark('replied') && hasReply && (
           <TooltipMark label={formatMessage(messages.repliedMark)}>
             <Icon name="message-square-16" className={styles.markIcon} />

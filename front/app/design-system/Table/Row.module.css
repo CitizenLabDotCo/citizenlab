@@ -49,17 +49,25 @@
   background: var(--gv-surface-pressed);
 }
 
-.row[data-selected] > td {
+/* A picked row, or the current one (isActive), draws as Selected=Yes. */
+.row[data-selected] > td,
+.row[data-picked] > td,
+.row[data-active] > td {
   background: var(--gv-surface-row-selected);
 }
 
 /* Picked rows next to each other form one block with rounded ends. */
-.row[data-selected] + .row[data-selected] > td {
+.row:is([data-selected], [data-picked], [data-active])
+  + .row:is([data-selected], [data-picked], [data-active])
+  > td {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
 
-.row[data-selected]:has(+ .row[data-selected]) > td {
+.row:is([data-selected], [data-picked], [data-active]):has(
+    + .row:is([data-selected], [data-picked], [data-active])
+  )
+  > td {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }

@@ -7,15 +7,3 @@
   flex-direction: column;
   gap: var(--gv-space-16);
 }
-
-.preview {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--gv-space-4);
-}
-
-.previewLabel {
-  composes: small from '../../../../../../../../../design-system/typography.module.css';
-  color: var(--gv-text-secondary);
-}

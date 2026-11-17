@@ -11,6 +11,7 @@ import warningModalMessages from 'components/WarningModal/messages';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
+import useInputTermLabels from '../useInputTermLabels';
 
 import styles from './SidePanel.module.css';
 
@@ -22,6 +23,7 @@ interface Props {
 
 const QuickActions = ({ idea, onEdit, onDeleted }: Props) => {
   const { formatMessage } = useIntl();
+  const { term } = useInputTermLabels();
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const { mutate: deleteIdea, isPending } = useDeleteIdea();
 
@@ -60,11 +62,11 @@ const QuickActions = ({ idea, onEdit, onDeleted }: Props) => {
         isOpen={deleteModalOpen}
         onOpenChange={setDeleteModalOpen}
         isPending={isPending}
-        title={formatMessage(warningModalMessages.deleteInputTitle)}
+        title={formatMessage(messages.deleteTermTitle, { term })}
         confirmLabel={formatMessage(warningModalMessages.confirm)}
         onConfirm={handleDelete}
       >
-        {formatMessage(warningModalMessages.deleteInputExplanation)}
+        {formatMessage(messages.deleteTermExplanation, { term })}
       </AlertDialog>
     </div>
   );

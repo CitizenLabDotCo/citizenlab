@@ -13,10 +13,15 @@ import '../tokens.css';
 import styles from './StatRow.module.css';
 
 // Pressable rows open the matching filtered list: a link with href, a button with onPress.
+// A button row can be a toggle: isPressed sets aria-pressed and draws it as a picked row.
 type PressableProps =
-  | { href: string; onPress?: undefined }
-  | { href?: undefined; onPress: (e: PressEvent) => void }
-  | { href?: undefined; onPress?: undefined };
+  | { href: string; onPress?: undefined; isPressed?: undefined }
+  | {
+      href?: undefined;
+      onPress: (e: PressEvent) => void;
+      isPressed?: boolean;
+    }
+  | { href?: undefined; onPress?: undefined; isPressed?: undefined };
 
 export type StatRowProps = PressableProps & {
   label: ReactNode;
@@ -32,6 +37,7 @@ const StatRow = ({
   isNew = false,
   href,
   onPress,
+  isPressed,
   'data-cy': dataCy,
 }: StatRowProps) => {
   const isPressable = href !== undefined || onPress !== undefined;
@@ -63,7 +69,12 @@ const StatRow = ({
 
   if (onPress) {
     return (
-      <AriaButton className={className} onPress={onPress} data-cy={dataCy}>
+      <AriaButton
+        className={className}
+        onPress={onPress}
+        aria-pressed={isPressed}
+        data-cy={dataCy}
+      >
         {content}
       </AriaButton>
     );

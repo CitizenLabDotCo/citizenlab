@@ -74,3 +74,14 @@ export const WithTrigger: Story = {
     </DialogTrigger>
   ),
 };
+
+// A press on the backdrop also closes it.
+export const Dismissable: Story = {
+  args: { defaultOpen: undefined, isDismissable: true },
+  render: (args) => (
+    <DialogTrigger>
+      <Button>Open modal</Button>
+      <Modal {...args} />
+    </DialogTrigger>
+  ),
+};

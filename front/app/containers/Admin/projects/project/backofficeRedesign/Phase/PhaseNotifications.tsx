@@ -7,6 +7,9 @@ import { IPhaseData } from 'api/phases/types';
 
 import usePhaseEmailCampaigns from 'containers/Admin/projects/project/admin_phase_email_wrapper/usePhaseEmailCampaigns';
 
+import { useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
 import NotificationRow from './NotificationRow';
 import styles from './PhaseNotifications.module.css';
 
@@ -15,12 +18,16 @@ interface Props {
 }
 
 const PhaseNotifications = ({ phase }: Props) => {
+  const { formatMessage } = useIntl();
   const { campaigns, loading } = usePhaseEmailCampaigns(phase.id);
 
   if (loading) return <Spinner />;
 
   return (
     <div className={styles.list}>
+      <p className={styles.description}>
+        {formatMessage(messages.participantCommunicationsDescription)}
+      </p>
       {campaigns.map((campaign) => (
         <NotificationRow
           key={campaign.id}

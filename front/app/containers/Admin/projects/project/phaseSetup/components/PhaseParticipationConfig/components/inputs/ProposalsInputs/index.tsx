@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { Input, IOption } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
@@ -39,6 +39,7 @@ import UserActions from '../_shared/UserActions';
 import styles from './ProposalsInputs.module.css';
 
 interface Props {
+  moderationAction?: ReactNode;
   input_term: InputTerm | undefined;
   handleInputTermChange: (option: IOption) => void;
   submission_enabled?: boolean | null;
@@ -90,6 +91,7 @@ interface Props {
 }
 
 const ProposalsInputs = ({
+  moderationAction,
   input_term,
   handleInputTermChange,
   submission_enabled,
@@ -346,17 +348,20 @@ const ProposalsInputs = ({
           {userActions}
         </PanelGroup>
         {requirements}
-        <PanelGroup
-          label={formatMessage(configMessages.moderationGroup)}
-          defaultOpen
-        >
-          <div className={styles.moderation}>
-            <ModerationAssignee phaseId={phaseId} />
-            {screening}
-            {anonymity}
-            {similarity}
-          </div>
-        </PanelGroup>
+        <div id="phase-moderation-settings">
+          <PanelGroup
+            label={formatMessage(configMessages.moderationGroup)}
+            defaultOpen
+          >
+            <div className={styles.moderation}>
+              {!phaseId && moderationAction}
+              <ModerationAssignee phaseId={phaseId} />
+              {screening}
+              {anonymity}
+              {similarity}
+            </div>
+          </PanelGroup>
+        </div>
       </>
     );
   }

@@ -6,11 +6,13 @@ import { CLErrors } from 'typings';
 import { IUpdatedPhaseProperties } from 'api/phases/types';
 
 import Banner from 'design-system/Banner';
+import { fieldStyles } from 'design-system/Field';
 
 import { DateRange } from 'components/admin/DatePickers/_shared/typings';
 import DatePhasePicker from 'components/admin/DatePickers/DatePhasePicker';
 import DesignSystemPicker from 'components/admin/DatePickers/DatePhasePicker/DesignSystemPicker';
 import { isSelectedRangeOpenEnded } from 'components/admin/DatePickers/DatePhasePicker/isSelectedRangeOpenEnded';
+import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 import Error from 'components/UI/Error';
 import Warning from 'components/UI/Warning';
 
@@ -49,6 +51,10 @@ const PhaseDatePicker = ({
   label,
 }: Props) => {
   const { selectedRange, disabledRanges, defaultMonth, timeZone } = ranges;
+  const isPanel = variant === 'panel';
+  const getApiErrorText = useApiErrorText();
+  const startError = getApiErrorText(errors?.start_at);
+  const endError = getApiErrorText(errors?.end_at);
 
   const handleUpdateRange = ({ from, to }: Partial<DateRange>) =>
     onChange({
@@ -92,12 +98,35 @@ const PhaseDatePicker = ({
           className={CLASS_NAME}
         />
       )}
-      <Error apiErrors={errors?.start_at} />
-      <Error apiErrors={errors?.end_at} />
-      <Error text={validationErrors.phaseDateError} />
+      {isPanel ? (
+        // The field-error slot lets the workspace scroll to these after a failed save.
+        <>
+          {startError && (
+            <p slot="errorMessage" className={fieldStyles.error}>
+              {startError}
+            </p>
+          )}
+          {endError && (
+            <p slot="errorMessage" className={fieldStyles.error}>
+              {endError}
+            </p>
+          )}
+          {validationErrors.phaseDateError && (
+            <p slot="errorMessage" className={fieldStyles.error}>
+              {validationErrors.phaseDateError}
+            </p>
+          )}
+        </>
+      ) : (
+        <>
+          <Error apiErrors={errors?.start_at} />
+          <Error apiErrors={errors?.end_at} />
+          <Error text={validationErrors.phaseDateError} />
+        </>
+      )}
 
       {isSelectedRangeOpenEnded(selectedRange, disabledRanges) &&
-        (variant === 'panel' ? (
+        (isPanel ? (
           <div className={styles.openEndedWarning}>
             <Banner tone="warning">{openEndedWarning}</Banner>
           </div>

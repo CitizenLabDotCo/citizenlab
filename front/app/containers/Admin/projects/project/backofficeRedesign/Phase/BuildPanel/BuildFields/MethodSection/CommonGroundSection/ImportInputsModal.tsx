@@ -102,6 +102,7 @@ const ImportInputsModal = ({
               phaseId={fromPhaseId}
               participationMethods={['ideation', 'voting', 'common_ground']}
               onChange={handlePhaseChange}
+              data-cy="e2e-import-phase-select"
               filterPhases={
                 fromProjectId === projectId && phaseStartDate
                   ? (phases) =>

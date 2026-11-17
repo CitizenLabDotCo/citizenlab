@@ -9,6 +9,7 @@ import RadioGroup from 'design-system/RadioGroup';
 
 import { useIntl } from 'utils/cl-intl';
 
+import styles from './BuildPanel.module.css';
 import PanelField from './PanelField';
 
 const OPTIONS = [
@@ -43,7 +44,7 @@ const PlacementCard = ({
   const label = formatMessage(messages.surveyPlacement);
 
   return (
-    <PanelField label={label}>
+    <PanelField reviewKey="survey_placement" label={label}>
       <RadioGroup
         aria-label={label}
         name={name}
@@ -53,15 +54,17 @@ const PlacementCard = ({
           if (option && option.value !== value) onChange(option.value);
         }}
       >
-        {OPTIONS.map((option) => (
-          <ChoiceRadio
-            key={option.value}
-            value={option.value}
-            title={formatMessage(option.label)}
-            description={formatMessage(option.description)}
-            disabled={disabled}
-          />
-        ))}
+        <div className={styles.placementChoices}>
+          {OPTIONS.map((option) => (
+            <ChoiceRadio
+              key={option.value}
+              value={option.value}
+              title={formatMessage(option.label)}
+              description={formatMessage(option.description)}
+              disabled={disabled}
+            />
+          ))}
+        </div>
       </RadioGroup>
       {children}
     </PanelField>

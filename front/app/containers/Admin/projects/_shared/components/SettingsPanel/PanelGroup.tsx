@@ -1,38 +1,55 @@
 import React, { ReactNode, useState } from 'react';
 
-import Disclosure from 'design-system/Disclosure';
+import { SetupReviewCard } from 'api/phases/types';
+
 import 'design-system/tokens.css';
 
+import SetupCard from 'containers/Admin/projects/_shared/components/SetupCard';
 import SummaryPill from 'containers/Admin/projects/_shared/components/SummaryPill';
 
 import styles from './PanelGroup.module.css';
 
 interface Props {
   label: string;
+  reviewKey?: SetupReviewCard;
+  reviewNeedsChoice?: boolean;
   defaultOpen?: boolean;
   /** Shown as a pill in the card header while the group is closed. */
   summary?: string;
+  onClose?: () => void;
   children: ReactNode;
 }
 
 const PanelGroup = ({
   label,
+  reviewKey,
+  reviewNeedsChoice,
   defaultOpen = false,
   summary,
+  onClose,
   children,
 }: Props) => {
   const [open, setOpen] = useState(defaultOpen);
+  const toggle = () => {
+    if (open) onClose?.();
+    setOpen(!open);
+  };
 
   return (
     <div className={styles.group}>
-      <Disclosure
+      <SetupCard
         title={label}
-        summary={summary && <SummaryPill label={summary} />}
-        isExpanded={open}
-        onExpandedChange={setOpen}
+        reviewKey={reviewKey}
+        reviewNeedsChoice={reviewNeedsChoice}
+        action={summary && <SummaryPill label={summary} />}
+        button={{
+          icon: open ? 'chevron-up' : 'chevron-down',
+          expanded: open,
+          onClick: toggle,
+        }}
       >
         {open && children}
-      </Disclosure>
+      </SetupCard>
     </div>
   );
 };

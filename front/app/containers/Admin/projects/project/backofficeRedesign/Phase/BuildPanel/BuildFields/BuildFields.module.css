@@ -1,7 +1,6 @@
 .fields {
   display: flex;
   flex-direction: column;
-  gap: var(--gv-space-10);
   padding: var(--gv-space-16) var(--gv-space-18) var(--gv-space-10);
 }
 
@@ -9,12 +8,24 @@
   display: flex;
   align-items: center;
   min-height: var(--gv-size-control-32);
-  margin-bottom: var(--gv-space-6);
+  margin-bottom: var(--gv-space-16);
 }
 
 .title {
   composes: uiStrong from '../../../../../../../../design-system/typography.module.css';
   color: var(--gv-text-primary);
+}
+
+.sections {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-32);
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-14);
 }
 
 .group {

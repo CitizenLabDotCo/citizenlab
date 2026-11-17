@@ -123,6 +123,10 @@
   background: var(--gv-surface-control-subtle);
 }
 
+.mainSlot[data-bare] {
+  background: none;
+}
+
 .mapSlot {
   height: 100%;
 }

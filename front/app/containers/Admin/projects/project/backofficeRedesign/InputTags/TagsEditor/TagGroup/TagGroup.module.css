@@ -1,0 +1,34 @@
+.divided {
+  border-top: var(--gv-border-width-1) solid var(--gv-border-subtle);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-8);
+  min-height: 44px;
+  cursor: grab;
+}
+
+.title {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: var(--gv-space-8);
+  min-width: 0;
+}
+
+.name {
+  composes: ui from '../../../../../../../../design-system/typography.module.css';
+  color: var(--gv-text-primary);
+}
+
+.subtopics {
+  margin: 0 0 var(--gv-space-8) var(--gv-space-10);
+  padding-left: var(--gv-space-20);
+  border-left: var(--gv-border-width-2) solid var(--gv-border-default);
+}
+
+.addSubtopic {
+  display: flex;
+}

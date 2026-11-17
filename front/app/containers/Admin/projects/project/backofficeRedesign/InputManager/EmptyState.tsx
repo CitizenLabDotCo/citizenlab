@@ -6,17 +6,19 @@ import { useIntl } from 'utils/cl-intl';
 
 import styles from './EmptyState.module.css';
 import messages from './messages';
+import useInputTermLabels from './useInputTermLabels';
 
 const EmptyState = () => {
   const { formatMessage } = useIntl();
+  const { terms, capitalizedTerms } = useInputTermLabels();
 
   return (
     <DesignSystemEmptyState>
       <span className={styles.content}>
         <span className={styles.title}>
-          {formatMessage(messages.noInputsTitle)}
+          {formatMessage(messages.noTermsTitle, { terms: capitalizedTerms })}
         </span>
-        <span>{formatMessage(messages.noInputsDescription)}</span>
+        <span>{formatMessage(messages.noTermsDescription, { terms })}</span>
       </span>
     </DesignSystemEmptyState>
   );

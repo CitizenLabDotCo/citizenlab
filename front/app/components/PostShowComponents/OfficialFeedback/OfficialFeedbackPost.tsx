@@ -19,13 +19,19 @@ import useLocalize from 'hooks/useLocalize';
 import { formatCommentContent } from 'components/PostShowComponents/utils';
 import T from 'components/T';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
+import moreActionsMessages from 'components/UI/MoreActionsMenu/messages';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
+
+import IconButton from 'design-system/IconButton';
+import Menu, { MenuItem, MenuTrigger } from 'design-system/Menu';
+import 'design-system/tokens.css';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 import OfficialFeedbackForm from './OfficialFeedbackForm';
+import panelStyles from './OfficialFeedbackPanel.module.css';
 
 const Container = styled.div`
   display: flex;
@@ -148,6 +154,7 @@ interface Props {
 
   className?: string;
   a11y_pronounceLatestOfficialFeedbackPost?: boolean;
+  variant?: 'default' | 'panel';
 }
 
 const OfficialFeedbackPost = ({
@@ -155,8 +162,10 @@ const OfficialFeedbackPost = ({
   editingAllowed,
   className,
   a11y_pronounceLatestOfficialFeedbackPost,
+  variant = 'default',
 }: Props) => {
   const { formatMessage } = useIntl();
+  const isPanel = variant === 'panel';
   const localize = useLocalize();
   const { mutate: deleteOfficialFeedbackFromIdea } =
     useDeleteIdeaOfficialFeedback();
@@ -198,6 +207,19 @@ const OfficialFeedbackPost = ({
   const { body_multiloc, author_multiloc, created_at, updated_at } =
     officialFeedbackPost.attributes;
 
+  if (showEditForm && isPanel) {
+    return (
+      <div key={officialFeedbackPost.id} className={panelStyles.editForm}>
+        <OfficialFeedbackForm
+          formType="edit"
+          feedback={officialFeedbackPost}
+          onClose={closeEditForm}
+          variant="panel"
+        />
+      </div>
+    );
+  }
+
   if (showEditForm) {
     return (
       <EditFormContainer key={officialFeedbackPost.id}>
@@ -227,6 +249,83 @@ const OfficialFeedbackPost = ({
       day="numeric"
     />
   );
+
+  if (isPanel) {
+    const datesPostedEdited = (
+      <>
+        <FormattedMessage
+          {...messages.postedOn}
+          values={{ date: formattedPostedOnDate }}
+        />
+        {updated_at && updated_at !== created_at && (
+          <>
+            {' - '}
+            <FormattedMessage
+              {...messages.lastEdition}
+              values={{ date: formattedUpdatedAtDate }}
+            />
+          </>
+        )}
+      </>
+    );
+
+    return (
+      <div
+        key={officialFeedbackPost.id}
+        className={`e2e-official-feedback-post ${panelStyles.post} ${
+          className ?? ''
+        }`}
+      >
+        {editingAllowed && (
+          <div className={panelStyles.postMenu}>
+            <MenuTrigger>
+              <IconButton
+                icon="more-horizontal-16"
+                aria-label={formatMessage(moreActionsMessages.showMoreActions)}
+              />
+              <Menu
+                aria-label={formatMessage(moreActionsMessages.showMoreActions)}
+                placement="bottom end"
+              >
+                <MenuItem id="edit" onAction={openEditForm}>
+                  {formatMessage(messages.editOfficialFeedbackPost)}
+                </MenuItem>
+                <MenuItem
+                  id="delete"
+                  variant="danger"
+                  onAction={deletePost(officialFeedbackPost.id)}
+                >
+                  {formatMessage(messages.deleteOfficialFeedbackPost)}
+                </MenuItem>
+              </Menu>
+            </MenuTrigger>
+          </div>
+        )}
+
+        <ScreenReaderOnly aria-live="polite">
+          {a11y_pronounceLatestOfficialFeedbackPost &&
+            getPostBodyText(body_multiloc)}
+        </ScreenReaderOnly>
+
+        <QuillEditedContent fontWeight={400} fontSize="s">
+          <div
+            className={`e2e-official-feedback-post-body ${panelStyles.postBody}`}
+            dangerouslySetInnerHTML={{
+              __html: getPostBodyText(body_multiloc),
+            }}
+          />
+        </QuillEditedContent>
+        <div className={panelStyles.footer}>
+          <span
+            className={`e2e-official-feedback-post-author ${panelStyles.author}`}
+          >
+            <T value={author_multiloc} />
+          </span>
+          <span>{datesPostedEdited}</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <PostContainer

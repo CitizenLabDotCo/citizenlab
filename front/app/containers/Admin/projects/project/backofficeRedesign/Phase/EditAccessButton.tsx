@@ -13,23 +13,44 @@ import messages from './messages';
 
 interface Props {
   phaseId: string;
+  initialOpened?: boolean;
+  showButton?: boolean;
+  onClose?: () => void;
 }
 
-const EditAccessButton = ({ phaseId }: Props) => {
+const EditAccessButton = ({
+  phaseId,
+  initialOpened = false,
+  showButton = true,
+  onClose,
+}: Props) => {
   const { formatMessage } = useIntl();
-  const [opened, setOpened] = useState(false);
+  const [opened, setOpened] = useState(initialOpened);
+
+  const close = () => {
+    setOpened(false);
+    onClose?.();
+  };
 
   return (
     <>
-      <div className={styles.buttonRow}>
-        <Button variant="secondary" size={32} onPress={() => setOpened(true)}>
-          {formatMessage(messages.editAccess)}
-        </Button>
-      </div>
+      {showButton && (
+        <div className={styles.buttonRow}>
+          <Button variant="secondary" size={32} onPress={() => setOpened(true)}>
+            {formatMessage(messages.editAccess)}
+          </Button>
+        </div>
+      )}
 
       <Modal
         isOpen={opened}
-        onOpenChange={setOpened}
+        onOpenChange={(isOpen) => {
+          if (isOpen) {
+            setOpened(true);
+          } else {
+            close();
+          }
+        }}
         size={920}
         title={formatMessage(messages.editAccess)}
         description={formatMessage(messages.editAccessDescription)}

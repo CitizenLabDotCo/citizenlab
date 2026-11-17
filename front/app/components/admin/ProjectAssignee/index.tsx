@@ -13,11 +13,19 @@ import useProjectAssignee from './useProjectAssignee';
 
 interface Props {
   projectId: string;
+  defaultOpen?: boolean;
+  onClose?: () => void;
   assignee?: string | null;
   onAssigneeChange: (assignee: string | null) => void;
 }
 
-const ProjectAssignee = ({ projectId, assignee, onAssigneeChange }: Props) => {
+const ProjectAssignee = ({
+  projectId,
+  assignee,
+  onAssigneeChange,
+  defaultOpen,
+  onClose,
+}: Props) => {
   const { formatMessage } = useIntl();
   const { loaded, options, savedAssignee } = useProjectAssignee(projectId);
 
@@ -25,6 +33,11 @@ const ProjectAssignee = ({ projectId, assignee, onAssigneeChange }: Props) => {
 
   return (
     <ComboBox
+      defaultOpen={defaultOpen}
+      autoFocus={defaultOpen}
+      onOpenChange={(isOpen) => {
+        if (!isOpen) onClose?.();
+      }}
       label={formatMessage(messages.assignee)}
       description={formatMessage(messages.assigneeDescription)}
       size={32}

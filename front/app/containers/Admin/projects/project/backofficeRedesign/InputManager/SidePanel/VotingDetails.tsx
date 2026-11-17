@@ -54,6 +54,7 @@ const VotingDetails = ({ idea, phase }: Props) => {
           ideaId={idea.id}
           phaseId={phase.id}
           votingMethod={votingMethod}
+          variant="panel"
         />
       )}
     </div>

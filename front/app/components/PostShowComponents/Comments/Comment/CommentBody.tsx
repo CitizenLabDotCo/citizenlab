@@ -22,10 +22,15 @@ import Error from 'components/UI/Error';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import 'design-system/tokens.css';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { weglotTranslateSubmission } from 'utils/weglot';
 
+import PanelFormButtons from '../CommentForm/PanelFormButtons';
+import panelStyles from '../commentsPanel.module.css';
+import { panelTextAreaStyle, useIsPanelComments } from '../commentsVariant';
 import { commentTranslateButtonClicked$ } from '../events';
 import messages from '../messages';
 
@@ -76,6 +81,8 @@ const CommentBody = ({
   ideaId,
 }: Props) => {
   const theme = useTheme();
+  const { formatMessage } = useIntl();
+  const isPanel = useIsPanelComments();
   const { data: appConfiguration } = useAppConfiguration();
   const { data: comment } = useComment(commentId);
   const { mutate: updateComment, isPending: processing } = useUpdateComment({
@@ -198,14 +205,26 @@ const CommentBody = ({
     return null;
   }
 
-  const cancelEditing = (event: React.MouseEvent) => {
-    event.preventDefault();
+  const resetEditing = () => {
     setEditableCommentContent(
       formatEditableCommentContent(
         localize(comment.data.attributes.body_multiloc)
       )
     );
     onCancelEditing();
+  };
+
+  const editError = apiErrors &&
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    apiErrors.body_multiloc &&
+    apiErrors.body_multiloc[locale] && (
+      <Error apiErrors={apiErrors.body_multiloc[locale]} />
+    );
+
+  const cancelEditing = (event: React.MouseEvent) => {
+    event.preventDefault();
+    resetEditing();
   };
 
   return (
@@ -221,30 +240,47 @@ const CommentBody = ({
               value={editableCommentContent}
               rows={1}
               onChange={onEditableCommentContentChange}
-              padding="15px"
-              fontWeight="300"
+              padding={
+                isPanel ? 'var(--gv-space-8) var(--gv-space-10)' : '15px'
+              }
+              color={isPanel ? panelTextAreaStyle.color : undefined}
+              fontWeight={isPanel ? panelTextAreaStyle.fontWeight : '300'}
+              fontSize={isPanel ? panelTextAreaStyle.fontSize : undefined}
+              lineHeight={isPanel ? panelTextAreaStyle.lineHeight : undefined}
+              border={
+                isPanel
+                  ? 'var(--gv-border-width-1) solid var(--gv-border-control)'
+                  : undefined
+              }
+              borderRadius={isPanel ? 'var(--gv-radius-8)' : undefined}
               getTextareaRef={setNewTextAreaRef}
             />
           </QuillEditedContent>
-          <ButtonsWrapper>
-            {apiErrors &&
-              // TODO: Fix this the next time the file is edited.
-              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-              apiErrors.body_multiloc &&
-              apiErrors.body_multiloc[locale] && (
-                <Error apiErrors={apiErrors.body_multiloc[locale]} />
-              )}
-            <Button buttonStyle="secondary-outlined" onClick={cancelEditing}>
-              <FormattedMessage {...messages.cancelCommentEdit} />
-            </Button>
-            <Button
-              buttonStyle="primary"
-              processing={processing}
-              onClick={onSubmit}
-            >
-              <FormattedMessage {...messages.saveCommentEdit} />
-            </Button>
-          </ButtonsWrapper>
+          {isPanel ? (
+            <div className={panelStyles.editFooter}>
+              {editError}
+              <PanelFormButtons
+                cancelLabel={formatMessage(messages.cancelCommentEdit)}
+                submitLabel={formatMessage(messages.saveCommentEdit)}
+                onCancel={resetEditing}
+                processing={processing}
+              />
+            </div>
+          ) : (
+            <ButtonsWrapper>
+              {editError}
+              <Button buttonStyle="secondary-outlined" onClick={cancelEditing}>
+                <FormattedMessage {...messages.cancelCommentEdit} />
+              </Button>
+              <Button
+                buttonStyle="primary"
+                processing={processing}
+                onClick={onSubmit}
+              >
+                <FormattedMessage {...messages.saveCommentEdit} />
+              </Button>
+            </ButtonsWrapper>
+          )}
         </StyledForm>
       ) : (
         <CommentWrapper className={`e2e-comment-body ${commentType}`}>

@@ -8,6 +8,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 
 import ReadyMark from './ReadyMark';
 import styles from './SetupCard.module.css';
+import SetupCardTooltip from './SetupCardTooltip';
 
 type Behaviour =
   | { kind: 'expand'; children: ReactNode }
@@ -23,12 +24,20 @@ type Behaviour =
 interface Props {
   id: string;
   title: string;
+  tooltip?: string;
   ready?: boolean;
   summary?: string;
   behaviour: Behaviour;
 }
 
-const SetupCard = ({ id, title, ready, summary, behaviour }: Props) => {
+const SetupCard = ({
+  id,
+  title,
+  tooltip,
+  ready,
+  summary,
+  behaviour,
+}: Props) => {
   const cardTitle = (
     <>
       {ready !== undefined && (
@@ -47,21 +56,25 @@ const SetupCard = ({ id, title, ready, summary, behaviour }: Props) => {
   // Disclosure takes no DOM id, so the wrapper keeps it.
   return (
     <div id={id}>
-      {behaviour.kind === 'expand' ? (
-        <Disclosure title={cardTitle} summary={badge}>
-          {behaviour.children}
-        </Disclosure>
-      ) : (
-        <Disclosure
-          header="button"
-          title={cardTitle}
-          summary={badge}
-          actionIcon={
-            behaviour.kind === 'action' ? behaviour.icon : 'chevron-down-16'
-          }
-          onPress={behaviour.kind === 'action' ? behaviour.onClick : undefined}
-        />
-      )}
+      <SetupCardTooltip content={tooltip}>
+        {behaviour.kind === 'expand' ? (
+          <Disclosure title={cardTitle} summary={badge}>
+            {behaviour.children}
+          </Disclosure>
+        ) : (
+          <Disclosure
+            header="button"
+            title={cardTitle}
+            summary={badge}
+            actionIcon={
+              behaviour.kind === 'action' ? behaviour.icon : 'chevron-down-16'
+            }
+            onPress={
+              behaviour.kind === 'action' ? behaviour.onClick : undefined
+            }
+          />
+        )}
+      </SetupCardTooltip>
     </div>
   );
 };

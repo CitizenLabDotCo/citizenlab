@@ -38,6 +38,7 @@ const FilterMenu = ({ categories, onClearAll }: Props) => {
             <MenuItem
               id={category.key}
               icon={category.icon}
+              data-cy={`e2e-manage-filter-${category.key}`}
               count={
                 category.isActive && category.multiple
                   ? category.selected.length

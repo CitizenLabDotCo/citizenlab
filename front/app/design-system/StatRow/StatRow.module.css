@@ -25,6 +25,11 @@
   background: var(--gv-surface-hovered);
 }
 
+/* A toggle row that is on (isPressed): the picked-row surface. */
+.pressable[aria-pressed='true'] {
+  background: var(--gv-surface-row-selected);
+}
+
 .label {
   display: flex;
   align-items: center;

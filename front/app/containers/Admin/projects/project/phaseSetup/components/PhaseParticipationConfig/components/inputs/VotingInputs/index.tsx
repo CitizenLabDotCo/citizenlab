@@ -228,6 +228,8 @@ const VotingInputs = ({
           <PanelHeading label={formatMessage(configMessages.settingsGroup)} />
         </div>
         <PanelGroup
+          reviewKey="voting_method"
+          reviewNeedsChoice={!voting_method}
           label={formatMessage(votingMessages.votingMethodSelectorTitle)}
           defaultOpen
         >

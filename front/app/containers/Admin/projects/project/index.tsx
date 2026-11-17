@@ -11,6 +11,7 @@ import useLocale from 'hooks/useLocale';
 import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
 import { PageSaveProvider } from 'components/admin/PageSaveContext';
+import { PhasePreviewDraftProvider } from 'components/admin/PhasePreview/DraftContext';
 
 import DesignSystemProvider from 'design-system/Provider';
 
@@ -70,28 +71,30 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
           locale={locale}
           navigate={(path) => clHistory.push(path)}
         >
-          <PageSaveProvider>
-            <UnsavedChangesGuard />
-            {page === 'newPhase' && <NewPhase project={project} />}
-            {page === 'event' && <Event project={project} />}
-            {page === 'project' && (
-              <ProjectWorkspace
-                project={project}
-                phase={selectedPhase}
-                sidePanel={
-                  selectedPhase && (
-                    <PhaseSetup
-                      key={selectedPhase.id}
-                      projectId={projectId}
-                      phase={selectedPhase}
-                    />
-                  )
-                }
-              >
-                <RouterOutlet />
-              </ProjectWorkspace>
-            )}
-          </PageSaveProvider>
+          <PhasePreviewDraftProvider>
+            <PageSaveProvider>
+              <UnsavedChangesGuard />
+              {page === 'newPhase' && <NewPhase project={project} />}
+              {page === 'event' && <Event project={project} />}
+              {page === 'project' && (
+                <ProjectWorkspace
+                  project={project}
+                  phase={selectedPhase}
+                  sidePanel={
+                    selectedPhase && (
+                      <PhaseSetup
+                        key={selectedPhase.id}
+                        projectId={projectId}
+                        phase={selectedPhase}
+                      />
+                    )
+                  }
+                >
+                  <RouterOutlet />
+                </ProjectWorkspace>
+              )}
+            </PageSaveProvider>
+          </PhasePreviewDraftProvider>
         </DesignSystemProvider>
       </ParticipationPanelProvider>
     );

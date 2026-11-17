@@ -9,7 +9,6 @@ import {
   ClickOutside,
   isRtl,
 } from '@citizenlab/cl2-component-library';
-import { focusRingBorder } from 'global-styles';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -17,7 +16,9 @@ import { fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import styled from 'styled-components';
 
-import CloseIconButton from 'components/UI/CloseIconButton';
+import CloseIconButton, {
+  closeIconButtonStyle,
+} from 'components/UI/CloseIconButton';
 
 import { trackEventByName } from 'utils/analytics';
 import eventEmitter from 'utils/eventEmitter';
@@ -67,21 +68,7 @@ const StyledCloseIconButton = styled(CloseIconButton)`
   z-index: 2000;
   width: 44px;
   height: 44px;
-  border-radius: 8px;
-  border: solid 1px transparent;
-  transition: all 100ms ease-out;
-  outline: none !important;
-  padding: 0px;
-
-  &:hover {
-    background: rgba(15, 20, 35, 0.05);
-  }
-
-  /* This button forces outline:none, so the global outline ring can't apply —
-     use the shared border-based ring instead. */
-  &.focus-visible {
-    ${focusRingBorder}
-  }
+  ${closeIconButtonStyle}
 
   &.no-header {
     top: 12px;

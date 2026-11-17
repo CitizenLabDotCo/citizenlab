@@ -1,8 +1,11 @@
 import React, { useCallback, useMemo, useState } from 'react';
 
-import IconButton from 'design-system/IconButton';
+import { Button as AriaButton } from 'react-aria-components';
+
+import Icon from 'design-system/Icon';
 import Switch from 'design-system/Switch';
 import 'design-system/tokens.css';
+import Tooltip from 'design-system/Tooltip';
 
 import { CampaignData } from 'containers/Admin/messaging/AutomatedEmails/types';
 import useCampaignRow from 'containers/Admin/messaging/AutomatedEmails/useCampaignRow';
@@ -13,8 +16,8 @@ import upsellMessages from 'components/UpsellTooltip/messages';
 
 import { useIntl } from 'utils/cl-intl';
 
-import NotificationDetail from './NotificationDetail';
 import styles from './NotificationRow.module.css';
+import useNotificationDescription from './useNotificationDescription';
 
 interface Props {
   campaign: CampaignData;
@@ -38,6 +41,9 @@ const NotificationRow = ({ campaign, projectId, phaseId }: Props) => {
     isEditable,
     canBeDisabled,
   } = useCampaignRow({ campaign, context, editPath });
+  const description = useNotificationDescription(
+    campaign.attributes.campaign_name
+  );
   const when = campaign.trigger || campaign.schedule;
   const savedEnabled = !!campaign.attributes.enabled;
   const [enabled, setEnabled] = useState(savedEnabled);
@@ -53,6 +59,29 @@ const NotificationRow = ({ campaign, projectId, phaseId }: Props) => {
     : isComingSoon
     ? formatMessage(messagingMessages.editDisabledTooltip)
     : undefined;
+  const isEditDisabled = !isEditable || !enabled;
+  const hasReason = isEditDisabled && !!disabledReason;
+
+  // The whole text block opens the editor, so it is a plain React Aria button
+  // styled as a row; a design-system Button only holds a short label.
+  const editButton = (
+    <AriaButton
+      className={styles.edit}
+      aria-label={editLabel}
+      isDisabled={isEditDisabled && !hasReason}
+      aria-disabled={hasReason ? true : undefined}
+      onPress={isEditDisabled ? undefined : openEditor}
+    >
+      <span className={styles.content}>
+        <span className={styles.title}>{campaign.campaign_description}</span>
+        <span className={styles.detail}>
+          {description ??
+            [campaign.recipient_segment, when].filter(Boolean).join(' · ')}
+        </span>
+      </span>
+      <Icon name="chevron-right-16" className={styles.chevron} />
+    </AriaButton>
+  );
 
   return (
     <div className={styles.row}>
@@ -65,32 +94,13 @@ const NotificationRow = ({ campaign, projectId, phaseId }: Props) => {
           isDisabled={!canBeDisabled}
         />
       </div>
-      <div className={styles.content}>
-        <span className={styles.description}>
-          {campaign.campaign_description}
-        </span>
-        {campaign.recipient_segment && (
-          <NotificationDetail
-            icon="user"
-            label={formatMessage(messagingMessages.automatedEmailsRecipients)}
-            text={campaign.recipient_segment}
-          />
-        )}
-        {when && (
-          <NotificationDetail
-            icon="clock"
-            label={formatMessage(messagingMessages.automatedEmailsTriggers)}
-            text={when}
-          />
+      <div className={styles.main}>
+        {hasReason ? (
+          <Tooltip content={disabledReason}>{editButton}</Tooltip>
+        ) : (
+          editButton
         )}
       </div>
-      <IconButton
-        icon="chevron-right-16"
-        aria-label={editLabel}
-        isDisabled={!isEditable}
-        disabledReason={disabledReason}
-        onPress={openEditor}
-      />
     </div>
   );
 };

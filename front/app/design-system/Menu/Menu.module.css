@@ -36,6 +36,8 @@
   padding: var(--gv-space-6) var(--gv-space-8);
   border-radius: var(--gv-radius-8);
   color: var(--gv-text-primary);
+  /* An item with href renders as <a>. */
+  text-decoration: none;
   cursor: default;
   transition-property: background-color;
   transition-duration: var(--gv-motion-duration-fast);

@@ -7,7 +7,12 @@ import Tooltip from 'design-system/Tooltip';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 
-type CardIcon = 'chevron-right' | 'chevron-down' | 'chevron-up' | 'plus';
+type CardIcon =
+  | 'chevron-right'
+  | 'chevron-down'
+  | 'chevron-up'
+  | 'plus'
+  | 'edit';
 
 export interface CardButton {
   icon: CardIcon;
@@ -22,11 +27,14 @@ const ACTION_ICONS: Record<CardIcon, IconName> = {
   'chevron-down': 'chevron-down-16',
   'chevron-up': 'chevron-down-16',
   plus: 'plus-16',
+  edit: 'pencil-14',
 };
 
 interface Props {
   title: string;
   titleTooltip?: JSX.Element;
+  /** A review status, shown next to the title. */
+  status?: ReactNode;
   action?: ReactNode;
   button: CardButton;
   children?: ReactNode;
@@ -35,6 +43,7 @@ interface Props {
 const SetupCardButton = ({
   title,
   titleTooltip,
+  status,
   action,
   button,
   children,
@@ -52,6 +61,7 @@ const SetupCardButton = ({
     return (
       <Disclosure
         title={titleWithAction}
+        status={status}
         summary={action}
         isExpanded={button.expanded}
         onExpandedChange={button.onClick}
@@ -69,6 +79,7 @@ const SetupCardButton = ({
       <Disclosure
         header="static"
         title={title}
+        status={status}
         summary={action}
         actions={
           <IconButton
@@ -88,6 +99,7 @@ const SetupCardButton = ({
     <Disclosure
       header="button"
       title={titleWithAction}
+      status={status}
       summary={action}
       actionIcon={ACTION_ICONS[button.icon]}
       isDisabled={button.disabled}

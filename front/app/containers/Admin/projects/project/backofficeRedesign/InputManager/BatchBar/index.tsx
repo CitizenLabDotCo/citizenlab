@@ -13,7 +13,6 @@ import TagPicker from 'design-system/TagPicker';
 import { IIdeaData } from 'api/ideas/types';
 
 import { ManagerType } from 'components/admin/PostManager';
-import actionBarMessages from 'components/admin/PostManager/components/ActionBar/messages';
 import useAssigneeOptions, {
   UNASSIGNED,
 } from 'components/admin/PostManager/useAssigneeOptions';
@@ -24,19 +23,28 @@ import { getFullName } from 'utils/textUtils';
 
 import messages from '../messages';
 import OptionList from '../OptionList';
+import useInputTermLabels from '../useInputTermLabels';
 import usePickerOptions from '../usePickerOptions';
 import { phaseIds, topicIds } from '../utils';
 
+import BatchFailureAlert from './BatchFailureAlert';
+import SelectAllButton from './SelectAllButton';
 import StatusPicker from './StatusPicker';
-import useBatchActions from './useBatchActions';
+import useBatchActions, { BatchAttribute } from './useBatchActions';
 
 interface Props {
   type: ManagerType;
   projectId: string;
   ideas: IIdeaData[];
-  onUpdated: (idea: IIdeaData) => void;
+  /** How many inputs match the current filters, on every page. */
+  total: number | undefined;
+  onUpdated: (ideas: IIdeaData[], attribute: BatchAttribute) => void;
   onEdit: (ideaId: string) => void;
   onClear: () => void;
+  onDeleted: (ideaIds: string[]) => void;
+  onSelectAll: () => void;
+  isSelectingAll: boolean;
+  selectAllFailed: boolean;
 }
 
 const shared = (ideas: IIdeaData[], values: (idea: IIdeaData) => string[]) =>
@@ -50,11 +58,17 @@ const BatchBar = ({
   type,
   projectId,
   ideas,
+  total,
   onUpdated,
   onEdit,
   onClear,
+  onDeleted,
+  onSelectAll,
+  isSelectingAll,
+  selectAllFailed,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const { term, terms, termCount } = useInputTermLabels();
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [phaseMenuOpen, setPhaseMenuOpen] = useState(false);
   const { statusOptions, tagOptions, phaseOptions } = usePickerOptions(
@@ -62,15 +76,22 @@ const BatchBar = ({
     projectId
   );
   const assigneeOptions = useAssigneeOptions(projectId, getFullName);
-  const { setStatus, assign, toggleTag, copyToPhase, deleteAll, isDeleting } =
-    useBatchActions({
-      ideas,
-      onUpdated,
-      onDeleted: () => {
-        setDeleteModalOpen(false);
-        onClear();
-      },
-    });
+  const {
+    setStatus,
+    assign,
+    toggleTag,
+    copyToPhase,
+    deleteAll,
+    isDeleting,
+    failure,
+  } = useBatchActions({
+    ideas,
+    onUpdated,
+    onDeleted: (ideaIds) => {
+      setDeleteModalOpen(false);
+      onDeleted(ideaIds);
+    },
+  });
 
   const statusIds = (idea: IIdeaData) => {
     const id = idea.relationships.idea_status.data?.id;
@@ -94,6 +115,17 @@ const BatchBar = ({
   return (
     <>
       <SelectionBar count={ideas.length} onClearSelection={onClear}>
+        {total !== undefined && ideas.length < total && (
+          <SelectAllButton
+            label={formatMessage(messages.selectAllTerms, {
+              termCount: termCount(total),
+            })}
+            processing={isSelectingAll}
+            failed={selectAllFailed}
+            onClick={onSelectAll}
+          />
+        )}
+
         <StatusPicker
           options={statusOptions}
           selected={shared(ideas, statusIds)}
@@ -153,7 +185,9 @@ const BatchBar = ({
             <Button
               size={28}
               icon="arrow-right-16"
-              disabledReason={formatMessage(messages.noOtherPhases)}
+              disabledReason={formatMessage(messages.noOtherPhasesForTerms, {
+                terms,
+              })}
             >
               {formatMessage(messages.copyToPhase)}
             </Button>
@@ -177,29 +211,31 @@ const BatchBar = ({
         >
           {isSingle
             ? formatMessage(messages.delete)
-            : formatMessage(actionBarMessages.deleteAllSelectedInputs, {
-                count: ideas.length,
+            : formatMessage(messages.deleteTerms, {
+                termCount: termCount(ideas.length),
               })}
         </Button>
+
+        <BatchFailureAlert failure={failure} />
       </SelectionBar>
 
       <AlertDialog
         isOpen={deleteModalOpen}
         onOpenChange={setDeleteModalOpen}
         isPending={isDeleting}
-        title={formatMessage(
+        title={
           isSingle
-            ? warningModalMessages.deleteInputTitle
-            : actionBarMessages.deleteInputsTitle
-        )}
+            ? formatMessage(messages.deleteTermTitle, { term })
+            : formatMessage(messages.deleteTermsTitle2, {
+                termCount: termCount(ideas.length),
+              })
+        }
         confirmLabel={formatMessage(warningModalMessages.confirm)}
         onConfirm={deleteAll}
       >
-        {formatMessage(
-          isSingle
-            ? warningModalMessages.deleteInputExplanation
-            : actionBarMessages.deleteInputsExplanation
-        )}
+        {isSingle
+          ? formatMessage(messages.deleteTermExplanation, { term })
+          : formatMessage(messages.deleteTermsExplanation, { terms })}
       </AlertDialog>
     </>
   );

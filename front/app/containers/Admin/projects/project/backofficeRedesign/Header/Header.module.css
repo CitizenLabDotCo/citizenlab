@@ -3,10 +3,16 @@
   flex: 0 0 var(--gv-size-48);
   align-items: center;
   height: var(--gv-size-48);
-  /* 26 px has no space token; kept as it is today. */
-  padding: 0 var(--gv-space-20) 0 26px;
+  padding: 0 var(--gv-space-20) 0 var(--gv-space-56);
   border-radius: var(--gv-radius-12);
   background: var(--gv-surface-panel);
+}
+
+.separator {
+  flex: 0 0 auto;
+  height: var(--gv-size-24);
+  margin-right: var(--gv-space-16);
+  border-left: 1px solid var(--gv-border-divider);
 }
 
 .crumbBar {

@@ -7,19 +7,19 @@ import searchInputMessages from 'components/UI/SearchInput/messages';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from './messages';
 import styles from './SearchToggle.module.css';
 
 const DEBOUNCE = 500;
 const ANNOUNCEMENT_DELAY = 700;
 
 interface Props {
+  label: string;
   searchTerm: string | undefined;
   onChange: (term: string | null) => void;
   resultCount: number;
 }
 
-const SearchToggle = ({ searchTerm, onChange, resultCount }: Props) => {
+const SearchToggle = ({ label, searchTerm, onChange, resultCount }: Props) => {
   const { formatMessage } = useIntl();
   const [isOpen, setIsOpen] = useState(!!searchTerm);
   const [appliedTerm, setAppliedTerm] = useState(searchTerm);
@@ -58,7 +58,7 @@ const SearchToggle = ({ searchTerm, onChange, resultCount }: Props) => {
       <IconButton
         variant="bordered"
         icon="search-16"
-        aria-label={formatMessage(messages.searchInputs)}
+        aria-label={label}
         onPress={() => setIsOpen(true)}
         data-cy="e2e-input-manager-search-toggle"
       />
@@ -70,8 +70,8 @@ const SearchToggle = ({ searchTerm, onChange, resultCount }: Props) => {
       <SearchField
         key={inputKey}
         defaultValue={searchTerm}
-        placeholder={formatMessage(messages.searchInputs)}
-        aria-label={formatMessage(messages.searchInputs)}
+        placeholder={label}
+        aria-label={label}
         onChange={handleChange}
         autoFocus
         data-cy="e2e-input-manager-search"

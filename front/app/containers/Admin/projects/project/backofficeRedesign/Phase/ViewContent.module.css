@@ -20,10 +20,6 @@
 
 .sidePanel {
   composes: panel;
-  flex: 0 0 clamp(320px, 30vw, 384px);
-  width: clamp(320px, 30vw, 384px);
-}
-
-.offlineCollection {
-  padding: var(--gv-space-16);
+  flex: 0 0 308px;
+  width: 308px;
 }

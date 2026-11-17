@@ -424,6 +424,48 @@ export const FlatList: Story = {
   ),
 };
 
+// isActive: the row open in the side panel, drawn as Selected=Yes without React Aria selection.
+// Press a row to make it the active one.
+const ActiveRows = () => {
+  const [activeId, setActiveId] = useState('b');
+
+  return (
+    <div style={{ width: 1360 }}>
+      <Table aria-label="Projects" keyboardNavigationBehavior="tab">
+        <ProjectHeader nested={false} />
+        <TableBody>
+          {['a', 'b', 'c'].map((id) => (
+            <Row
+              key={id}
+              id={id}
+              kind="flat"
+              isActive={id === activeId}
+              onAction={() => setActiveId(id)}
+              actions={rowMenu}
+              textValue={projectName}
+            >
+              <NameCell
+                kind="flat"
+                path={{
+                  space: 'Mobility and transport',
+                  folder: 'Parking permits',
+                }}
+              >
+                {projectName}
+              </NameCell>
+              <ProjectCells />
+            </Row>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
+  );
+};
+
+export const ActiveRow: Story = {
+  render: () => <ActiveRows />,
+};
+
 export const CellEditors: Story = {
   render: () => (
     <div style={{ display: 'flex', gap: 24, alignItems: 'center' }}>

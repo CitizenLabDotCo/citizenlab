@@ -13,7 +13,8 @@ import { FilterCategory } from './useFilterCategories';
 
 interface Props {
   categories: FilterCategory[];
-  count: number | undefined;
+  /** The formatted result count, e.g. "24 inputs". */
+  count?: string;
   onClearAll: () => void;
 }
 
@@ -28,9 +29,7 @@ const FilterChips = ({ categories, count, onClearAll }: Props) => {
 
   return (
     <FilterBar
-      count={
-        count !== undefined && formatMessage(messages.inputCount, { count })
-      }
+      count={count}
       onClear={onClearAll}
       addFilterMenu={
         <Menu aria-label={formatMessage(messages.filter)}>

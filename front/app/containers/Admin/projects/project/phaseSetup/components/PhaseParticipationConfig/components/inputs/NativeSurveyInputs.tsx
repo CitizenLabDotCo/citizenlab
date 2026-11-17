@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { Box, Text, Toggle } from '@citizenlab/cl2-component-library';
 import { CLErrors, Multiloc } from 'typings';
@@ -20,8 +20,7 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
-import Banner from 'design-system/Banner';
-import Button from 'design-system/Button';
+import { fieldStyles } from 'design-system/Field';
 import 'design-system/tokens.css';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -33,6 +32,7 @@ import configMessages from '../../messages';
 import styles from './NativeSurveyInputs.module.css';
 
 interface Props {
+  surveyPlacement?: ReactNode;
   apiErrors: CLErrors | null;
   phase?: IPhase;
   formData: IUpdatedPhaseProperties;
@@ -47,6 +47,7 @@ interface Props {
 }
 
 const NativeSurveyInputs = ({
+  surveyPlacement,
   apiErrors,
   phase,
   formData,
@@ -92,6 +93,7 @@ const NativeSurveyInputs = ({
         <div className={styles.heading}>
           <PanelHeading label={formatMessage(configMessages.settingsGroup)} />
         </div>
+        {surveyPlacement}
         <PanelGroup
           label={formatMessage(configMessages.participantActionsGroup)}
           defaultOpen
@@ -104,7 +106,9 @@ const NativeSurveyInputs = ({
             checked={!!formData.submission_enabled}
             onChange={toggleSubmissionEnabled}
           />
-          {submissionError && <Banner tone="error">{submissionError}</Banner>}
+          {submissionError && (
+            <p className={fieldStyles.error}>{submissionError}</p>
+          )}
           <SettingToggleRow
             title={formatMessage(parentMessages.allowMultipleResponsesLabel)}
             description={formatMessage(
@@ -114,7 +118,7 @@ const NativeSurveyInputs = ({
             onChange={toggleAllowMultipleResponses}
           />
           {multipleResponsesError && (
-            <Banner tone="error">{multipleResponsesError}</Banner>
+            <p className={fieldStyles.error}>{multipleResponsesError}</p>
           )}
           {phase && (
             <PhaseActionAccessRow
@@ -153,14 +157,6 @@ const NativeSurveyInputs = ({
               onChange={handleSurveyCTAChange}
               errorMessage={ctaError}
             />
-            <div className={styles.preview}>
-              <span className={styles.previewLabel}>
-                {formatMessage(parentMessages.previewSurveyCTALabel)}
-              </span>
-              <Button variant="secondary" size={32} onPress={openSurveyPreview}>
-                {localize(formData.native_survey_button_multiloc)}
-              </Button>
-            </div>
           </div>
         </PanelGroup>
       </>

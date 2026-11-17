@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import StatRow from '.';
 
@@ -31,4 +31,30 @@ export const AllVariants: Story = {
       <StatRow label="New statements" value="4" />
     </div>
   ),
+};
+
+const PressedRows = () => {
+  const [isPressed, setIsPressed] = useState(true);
+
+  return (
+    <div style={{ width: 292 }}>
+      <StatRow
+        label="Waiting for a reply"
+        value="40"
+        isPressed={isPressed}
+        onPress={() => setIsPressed((pressed) => !pressed)}
+      />
+      <StatRow
+        label="Unassigned"
+        value="12"
+        isPressed={false}
+        onPress={() => {}}
+      />
+    </div>
+  );
+};
+
+// isPressed: a toggle row whose filter is on (aria-pressed, surface/row-selected).
+export const Pressed: Story = {
+  render: () => <PressedRows />,
 };

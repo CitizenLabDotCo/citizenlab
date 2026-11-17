@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 
+import { IconName } from 'design-system/Icon';
 import Menu, { MenuItem } from 'design-system/Menu';
 
 import ColorDot from './ColorDot';
@@ -9,6 +10,7 @@ export interface Option {
   value: string;
   label: string;
   color?: string;
+  icon?: IconName;
   count?: number;
   disabled?: boolean;
   disabledReason?: ReactNode;
@@ -44,6 +46,7 @@ const OptionList = ({
         key={option.value}
         id={option.value}
         textValue={option.label}
+        icon={option.icon}
         count={option.count}
         disabledReason={option.disabled ? option.disabledReason : undefined}
       >

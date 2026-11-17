@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useState } from 'react';
 
 import { CLErrors } from 'typings';
 
@@ -18,6 +18,10 @@ import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 import Banner from 'design-system/Banner';
 
 import { useIntl } from 'utils/cl-intl';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { useSearch } from 'utils/router';
+
+import SurveySetupModal from '../SurveySetupModal';
 
 import styles from './BuildFields.module.css';
 import DescriptionField from './DescriptionField';
@@ -42,7 +46,7 @@ interface Props {
   standalone: boolean;
   files: ReturnType<typeof usePhaseFileAttachments>;
   surveyMethodSwitch: SurveyMethodSwitch;
-  surveyPlacement?: ReactNode;
+  draftQuestionsAction?: ReactNode;
   onChange: (newData: Partial<IUpdatedPhaseProperties>) => void;
   onDatesChange: (dates: Dates) => void;
 }
@@ -57,13 +61,16 @@ const BuildFields = ({
   standalone,
   files,
   surveyMethodSwitch,
-  surveyPlacement,
+  draftQuestionsAction,
   onChange,
   onDatesChange,
 }: Props) => {
   const { formatMessage } = useIntl();
   const apiErrorText = useApiErrorText();
   const baseError = apiErrorText(errors?.base);
+  const { survey_action } = useSearch({ strict: false });
+  const [surveySetupOpened, setSurveySetupOpened] = useState(false);
+
   const surveyOptionsShown = !standalone && isSurveyMethod(participationMethod);
 
   return (
@@ -74,106 +81,121 @@ const BuildFields = ({
         </h2>
       </div>
 
-      {surveyPlacement}
+      <div className={styles.sections}>
+        <PhaseDates
+          participationMethod={participationMethod}
+          formData={formData}
+          errors={errors}
+          validationErrors={validationErrors}
+          standalone={standalone}
+          onChange={onDatesChange}
+        />
 
-      <PhaseDates
-        participationMethod={participationMethod}
-        formData={formData}
-        errors={errors}
-        validationErrors={validationErrors}
-        standalone={standalone}
-        onChange={onDatesChange}
-      />
+        <div className={styles.details}>
+          <div className={styles.group}>
+            <div className="intercom-admin-phase-name">
+              <MultilocTextField
+                id="phase-build-panel-title"
+                aria-label={formatMessage(phaseSetupMessages.titleLabel)}
+                placeholder={formatMessage(messages.phaseTitle)}
+                valueMultiloc={formData.title_multiloc}
+                onChange={(title_multiloc) => onChange({ title_multiloc })}
+                errorMessage={apiErrorText(errors?.title_multiloc)}
+              />
+            </div>
 
-      <div className={styles.group}>
-        <div className="intercom-admin-phase-name">
-          <MultilocTextField
-            id="phase-build-panel-title"
-            aria-label={formatMessage(phaseSetupMessages.titleLabel)}
-            placeholder={formatMessage(messages.phaseTitle)}
-            valueMultiloc={formData.title_multiloc}
-            onChange={(title_multiloc) => onChange({ title_multiloc })}
-            errorMessage={apiErrorText(errors?.title_multiloc)}
+            <DescriptionField
+              projectId={projectId}
+              phaseId={phaseId}
+              value={formData.description_multiloc}
+              errors={errors}
+              onChange={(description_multiloc) =>
+                onChange({ description_multiloc })
+              }
+            />
+          </div>
+          <AttachmentsCard
+            id="phase-build-panel-file-uploader"
+            title={formatMessage(messages.attachments)}
+            files={files}
+            errors={errors}
           />
         </div>
 
-        {phaseId && (
-          <DescriptionField
-            projectId={projectId}
-            phaseId={phaseId}
-            value={formData.description_multiloc}
-            errors={errors}
-            onChange={(description_multiloc) =>
-              onChange({ description_multiloc })
-            }
-          />
-        )}
-      </div>
+        <div className={styles.group}>
+          {USES_INPUT_TERM.includes(participationMethod) && (
+            <>
+              <PanelHeading
+                label={formatMessage(
+                  participationMethod === 'proposals'
+                    ? messages.proposalsAndParticipantData
+                    : messages.ideasAndParticipantData
+                )}
+              />
+              <InputTermCard
+                value={formData.input_term}
+                onChange={(input_term) => onChange({ input_term })}
+              />
+            </>
+          )}
 
-      <div className={styles.group}>
-        <AttachmentsCard
-          id="phase-build-panel-file-uploader"
-          title={formatMessage(messages.attachments)}
-          files={files}
-          errors={errors}
-        />
-
-        {USES_INPUT_TERM.includes(participationMethod) && (
-          <>
+          {participationMethod === 'voting' && phaseId && (
             <PanelHeading
-              label={formatMessage(
-                participationMethod === 'proposals'
-                  ? messages.proposalsAndParticipantData
-                  : messages.ideasAndParticipantData
-              )}
+              label={formatMessage(messages.optionsAndParticipantData)}
             />
-            <InputTermCard
-              value={formData.input_term}
-              onChange={(input_term) => onChange({ input_term })}
+          )}
+
+          {participationMethod === 'document_annotation' && (
+            <DocumentUrlCard
+              value={formData.document_annotation_embed_url}
+              errors={errors}
+              onChange={(document_annotation_embed_url) =>
+                onChange({ document_annotation_embed_url })
+              }
             />
-          </>
-        )}
+          )}
 
-        {participationMethod === 'voting' && phaseId && (
-          <PanelHeading
-            label={formatMessage(messages.optionsAndParticipantData)}
-          />
-        )}
+          {surveyOptionsShown && (
+            <SurveyMethodSection
+              projectId={projectId}
+              phaseId={phaseId}
+              selected={participationMethod}
+              surveyService={formData.survey_service}
+              surveyEmbedUrl={formData.survey_embed_url}
+              errors={errors}
+              onExternalSurveyChange={onChange}
+              disabledReasons={surveyMethodSwitch.disabledReasons}
+              onSelect={surveyMethodSwitch.onSelect}
+              draftQuestionsAction={draftQuestionsAction}
+              onAddQuestions={() => setSurveySetupOpened(true)}
+            />
+          )}
 
-        {participationMethod === 'document_annotation' && (
-          <DocumentUrlCard
-            value={formData.document_annotation_embed_url}
-            errors={errors}
-            onChange={(document_annotation_embed_url) =>
-              onChange({ document_annotation_embed_url })
-            }
-          />
-        )}
-
-        {surveyOptionsShown && (
-          <SurveyMethodSection
+          <MethodSection
             projectId={projectId}
+            participationMethod={participationMethod}
             phaseId={phaseId}
-            selected={participationMethod}
-            surveyService={formData.survey_service}
-            surveyEmbedUrl={formData.survey_embed_url}
-            errors={errors}
-            onExternalSurveyChange={onChange}
-            disabledReasons={surveyMethodSwitch.disabledReasons}
-            onSelect={surveyMethodSwitch.onSelect}
+            inputTerm={formData.input_term}
+            formInSurveyOptions={surveyOptionsShown}
+            draftQuestionsAction={draftQuestionsAction}
           />
-        )}
+        </div>
 
-        <MethodSection
-          projectId={projectId}
-          participationMethod={participationMethod}
-          phaseId={phaseId}
-          inputTerm={formData.input_term}
-          formInSurveyOptions={surveyOptionsShown}
-        />
+        {baseError && <Banner tone="error">{baseError}</Banner>}
       </div>
 
-      {baseError && <Banner tone="error">{baseError}</Banner>}
+      {phaseId && participationMethod === 'native_survey' && (
+        <SurveySetupModal
+          projectId={projectId}
+          phaseId={phaseId}
+          opened={surveySetupOpened}
+          onClose={() => setSurveySetupOpened(false)}
+          initialAction={survey_action}
+          onCloseAction={() => {
+            if (survey_action) removeSearchParams(['survey_action']);
+          }}
+        />
+      )}
     </div>
   );
 };

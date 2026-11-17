@@ -7,20 +7,26 @@ import { ManagerType } from 'components/admin/PostManager';
 import { useIntl } from 'utils/cl-intl';
 
 import BatchBar from './BatchBar';
+import { BatchAttribute } from './BatchBar/useBatchActions';
 import FilterMenu from './FilterMenu';
 import { FilterCategory } from './FilterMenu/useFilterCategories';
 import styles from './ListToolbar.module.css';
 import messages from './messages';
 import SearchToggle from './SearchToggle';
+import useInputTermLabels from './useInputTermLabels';
 
 interface Props {
   type: ManagerType;
   projectId: string;
   count: number | undefined;
   selectedIdeas: IIdeaData[];
-  onUpdated: (idea: IIdeaData) => void;
+  onUpdated: (ideas: IIdeaData[], attribute: BatchAttribute) => void;
   onEdit: (ideaId: string) => void;
   onClearSelection: () => void;
+  onDeleted: (ideaIds: string[]) => void;
+  onSelectAll: () => void;
+  isSelectingAll: boolean;
+  selectAllFailed: boolean;
   searchTerm: string | undefined;
   onSearch: (term: string | null) => void;
   categories: FilterCategory[];
@@ -35,12 +41,17 @@ const ListToolbar = ({
   onUpdated,
   onEdit,
   onClearSelection,
+  onDeleted,
+  onSelectAll,
+  isSelectingAll,
+  selectAllFailed,
   searchTerm,
   onSearch,
   categories,
   onClearFilters,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const { terms, termCount } = useInputTermLabels();
 
   return (
     <div className={styles.toolbar}>
@@ -49,17 +60,23 @@ const ListToolbar = ({
           type={type}
           projectId={projectId}
           ideas={selectedIdeas}
+          total={count}
           onUpdated={onUpdated}
           onEdit={onEdit}
           onClear={onClearSelection}
+          onDeleted={onDeleted}
+          onSelectAll={onSelectAll}
+          isSelectingAll={isSelectingAll}
+          selectAllFailed={selectAllFailed}
         />
       ) : (
         <p className={styles.count}>
-          {count !== undefined && formatMessage(messages.inputCount, { count })}
+          {count !== undefined && termCount(count)}
         </p>
       )}
       <div className={styles.display}>
         <SearchToggle
+          label={formatMessage(messages.searchTerms, { terms })}
           searchTerm={searchTerm}
           onChange={onSearch}
           resultCount={count ?? 0}

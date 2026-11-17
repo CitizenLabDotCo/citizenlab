@@ -19,6 +19,7 @@ import ListBox, { ListBoxPopover } from '../ListBox';
 import '../tokens.css';
 
 import styles from './ComboBox.module.css';
+import OpenOnMount from './OpenOnMount';
 
 type LabelProps =
   | { label: ReactNode; 'aria-label'?: undefined }
@@ -47,6 +48,9 @@ export type ComboBoxProps<T extends object> = LabelProps & {
   disabledKeys?: Iterable<Key>;
   name?: string;
   autoFocus?: boolean;
+  // Opens the list on mount, e.g. when a link points straight at this field.
+  defaultOpen?: boolean;
+  onOpenChange?: (isOpen: boolean) => void;
   'data-cy'?: string;
 };
 
@@ -71,6 +75,8 @@ const ComboBox = <T extends object>({
   disabledKeys,
   name,
   autoFocus,
+  defaultOpen = false,
+  onOpenChange,
   'aria-label': ariaLabel,
   'data-cy': dataCy,
 }: ComboBoxProps<T>) => {
@@ -100,6 +106,7 @@ const ComboBox = <T extends object>({
         disabledKeys={disabledKeys}
         name={name}
         autoFocus={autoFocus}
+        onOpenChange={onOpenChange}
         aria-label={ariaLabel}
         data-cy={dataCy}
       >
@@ -119,6 +126,7 @@ const ComboBox = <T extends object>({
           </Group>
           <FieldHelp description={description} errorMessage={errorMessage} />
         </div>
+        {defaultOpen && <OpenOnMount />}
         <ListBoxPopover>
           <ListBox>{children}</ListBox>
         </ListBoxPopover>

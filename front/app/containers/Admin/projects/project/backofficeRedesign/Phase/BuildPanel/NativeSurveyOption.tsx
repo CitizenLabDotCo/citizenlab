@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import useCustomFields from 'api/custom_fields/useCustomFields';
 
@@ -13,13 +13,13 @@ import { useIntl } from 'utils/cl-intl';
 
 import methodSectionMessages from './BuildFields/MethodSection/messages';
 import styles from './BuildPanel.module.css';
-import SurveySetupModal from './SurveySetupModal';
 
 interface Props {
   projectId: string;
   phaseId: string;
   title: string;
   description: string;
+  onAddQuestions: () => void;
 }
 
 const NativeSurveyOption = ({
@@ -27,9 +27,9 @@ const NativeSurveyOption = ({
   phaseId,
   title,
   description,
+  onAddQuestions,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const [opened, setOpened] = useState(false);
   const { data: customFields } = useCustomFields({ projectId, phaseId });
 
   const nQuestions = (customFields ?? []).filter(
@@ -56,18 +56,15 @@ const NativeSurveyOption = ({
       />
       {customFields && (
         <div className={styles.fullWidth}>
-          <Button variant="secondary" size={28} onPress={() => setOpened(true)}>
-            {formatMessage(methodSectionMessages.addQuestions)}
+          <Button variant="secondary" size={28} onPress={onAddQuestions}>
+            {formatMessage(
+              hasQuestions
+                ? methodSectionMessages.editSurvey
+                : methodSectionMessages.addQuestions
+            )}
           </Button>
         </div>
       )}
-      <SurveySetupModal
-        projectId={projectId}
-        phaseId={phaseId}
-        hasQuestions={hasQuestions}
-        opened={opened}
-        onClose={() => setOpened(false)}
-      />
     </div>
   );
 };

@@ -24,6 +24,7 @@ import DSSpinner from 'design-system/Spinner';
 import 'design-system/tokens.css';
 
 import MultilocRichTextField from 'components/admin/MultilocFields/MultilocRichTextField';
+import { usePhasePreviewPublisher } from 'components/admin/PhasePreview/DraftContext';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 import Warning from 'components/UI/Warning';
 
@@ -77,6 +78,17 @@ const DraftPhaseDescription = ({
     },
   });
 
+  const preview = usePhasePreviewPublisher('description', phaseId);
+  React.useEffect(() => {
+    const subscription = methods.watch(() =>
+      preview.publish({
+        description_multiloc: methods.getValues('draft_description_multiloc'),
+        draft_description_multiloc: {},
+      })
+    );
+    return () => subscription.unsubscribe();
+  }, [methods, preview]);
+
   const debouncedSaveDraft = useMemo(
     () =>
       debounce((value: Multiloc) => {
@@ -116,7 +128,12 @@ const DraftPhaseDescription = ({
         description_multiloc: methods.getValues('draft_description_multiloc'),
         draft_description_multiloc: {},
       },
-      { onSuccess: () => setIsEditing(false) }
+      {
+        onSuccess: () => {
+          preview.clear();
+          setIsEditing(false);
+        },
+      }
     );
   };
 
@@ -129,6 +146,7 @@ const DraftPhaseDescription = ({
         onSuccess: () => {
           methods.reset({ draft_description_multiloc: descriptionMultiloc });
           debouncedSaveDraft.cancel();
+          preview.clear();
           setIsEditing(false);
         },
       }

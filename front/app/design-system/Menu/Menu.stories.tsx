@@ -175,3 +175,21 @@ export const DisabledWithReason: Story = {
     </MenuTrigger>
   ),
 };
+
+// Items with href are links: middle-click and "Open in new tab" work, and
+// DesignSystemProvider routes a plain click client-side.
+export const LinkItems: Story = {
+  args: { children: null },
+  render: () => (
+    <MenuTrigger defaultOpen>
+      <Button hasMenu>Share results</Button>
+      <Menu aria-label="Share results">
+        <MenuItem href="#messaging">Go to messaging</MenuItem>
+        <MenuItem href="#homepage">Edit project homepage</MenuItem>
+        <MenuItem href="https://www.govocal.com" target="_blank">
+          Open in a new tab
+        </MenuItem>
+      </Menu>
+    </MenuTrigger>
+  ),
+};

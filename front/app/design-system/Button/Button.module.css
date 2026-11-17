@@ -10,6 +10,7 @@
   border-radius: var(--gv-radius-8);
   background: transparent;
   white-space: nowrap;
+  text-decoration: none;
   cursor: pointer;
   transition-property: background-color, border-color, color;
   transition-duration: var(--gv-motion-duration-fast);

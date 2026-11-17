@@ -52,6 +52,7 @@ const TopicTagsCard = ({ project, ready }: Props) => {
     <DialogTrigger>
       <SetupCard
         id="e2e-setup-card-topics"
+        tooltip={formatMessage(messages.topicTagsDescription)}
         title={topicsTerm ? `${title} (${topicsTerm})` : title}
         ready={ready}
         summary={

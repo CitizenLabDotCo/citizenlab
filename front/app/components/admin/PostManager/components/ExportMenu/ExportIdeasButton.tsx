@@ -95,13 +95,13 @@ class ExportIdeasButton extends React.PureComponent<
         fontSize={`${fontSizes.s}px`}
       >
         {exportType === 'all' && (
-          <FormattedMessage {...messages.exportAllInputs} />
+          <FormattedMessage {...messages.exportAllInputs2} />
         )}
         {exportType === 'project' && (
-          <FormattedMessage {...messages.exportInputsProjects} />
+          <FormattedMessage {...messages.exportInputsProjects2} />
         )}
         {exportType === 'selected_posts' && (
-          <FormattedMessage {...messages.exportSelectedInputs} />
+          <FormattedMessage {...messages.exportSelectedInputs2} />
         )}
       </ButtonWithLink>
     );

@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useCallback } from 'react';
 
 import { Cell as AriaCell, Key, Row as AriaRow } from 'react-aria-components';
 
@@ -21,6 +21,11 @@ export type RowProps = {
   actions?: ReactNode;
   // The row you just made: it sits on a grey band that fades out.
   isCreated?: boolean;
+  // The row shown as current without being picked, such as the one open in the side panel.
+  // Drawn like a selected row and marked aria-current.
+  isActive?: boolean;
+  // Ticked by a checkbox the caller owns (no React Aria selection): drawn as Selected=Yes.
+  isPicked?: boolean;
   isDisabled?: boolean;
   textValue?: string;
   hasChildItems?: boolean;
@@ -36,31 +41,52 @@ const Row = ({
   childRows,
   actions,
   isCreated = false,
+  isActive = false,
+  isPicked = false,
   isDisabled,
   textValue,
   hasChildItems,
   onAction,
   href,
   'data-cy': dataCy,
-}: RowProps) => (
-  <AriaRow
-    id={id}
-    textValue={textValue}
-    isDisabled={isDisabled}
-    hasChildItems={hasChildItems}
-    onAction={onAction}
-    href={href}
-    className={`${styles.row} ${styles[kind]}`}
-    data-created={isCreated || undefined}
-    data-cy={dataCy}
-  >
-    {children}
-    <AriaCell className={styles.actionsCell}>
-      <div className={styles.actions}>{actions}</div>
-      <RowGrip />
-    </AriaCell>
-    {childRows}
-  </AriaRow>
-);
+}: RowProps) => {
+  // React Aria's Row does not pass aria-current through, so set it on the element.
+  // A callback ref, because the row element mounts after the collection is built.
+  const ref = useCallback(
+    (row: HTMLTableRowElement | null) => {
+      if (!row) return;
+      if (isActive) {
+        row.setAttribute('aria-current', 'true');
+      } else {
+        row.removeAttribute('aria-current');
+      }
+    },
+    [isActive]
+  );
+
+  return (
+    <AriaRow
+      ref={ref}
+      id={id}
+      textValue={textValue}
+      isDisabled={isDisabled}
+      hasChildItems={hasChildItems}
+      onAction={onAction}
+      href={href}
+      className={`${styles.row} ${styles[kind]}`}
+      data-created={isCreated || undefined}
+      data-active={isActive || undefined}
+      data-picked={isPicked || undefined}
+      data-cy={dataCy}
+    >
+      {children}
+      <AriaCell className={styles.actionsCell}>
+        <div className={styles.actions}>{actions}</div>
+        <RowGrip />
+      </AriaCell>
+      {childRows}
+    </AriaRow>
+  );
+};
 
 export default Row;

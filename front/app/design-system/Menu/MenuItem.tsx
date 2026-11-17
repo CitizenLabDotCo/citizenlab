@@ -28,6 +28,9 @@ export type MenuItemProps = LabelProps & {
   // selection are ignored and the menu stays open. Give the item an id.
   disabledReason?: ReactNode;
   onAction?: () => void;
+  // Renders the item as a link; DesignSystemProvider routes it client-side.
+  href?: string;
+  target?: '_blank' | '_self';
   'data-cy'?: string;
 };
 
@@ -43,6 +46,8 @@ const MenuItem = ({
   isDisabled,
   disabledReason,
   onAction,
+  href,
+  target,
   'data-cy': dataCy,
 }: MenuItemProps) => {
   const hasReason = !!disabledReason;
@@ -56,6 +61,9 @@ const MenuItem = ({
       }
       isDisabled={isDisabled && !hasReason}
       onAction={hasReason ? undefined : onAction}
+      href={hasReason ? undefined : href}
+      target={hasReason ? undefined : target}
+      rel={target === '_blank' ? 'noreferrer' : undefined}
       shouldCloseOnSelect={hasReason ? false : undefined}
       render={hasReason ? renderAriaDisabled : undefined}
       className={`${styles.item} ${styles[variant]}`}

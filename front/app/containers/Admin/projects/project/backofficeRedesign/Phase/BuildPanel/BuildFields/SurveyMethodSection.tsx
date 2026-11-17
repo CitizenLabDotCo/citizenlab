@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { CLErrors } from 'typings';
 
@@ -20,8 +20,8 @@ import PanelField from '../PanelField';
 import PollOption from '../PollOption';
 
 import styles from './BuildFields.module.css';
-import formSectionMessages from './MethodSection/FormSection/messages';
 import messages from './messages';
+import formSectionMessages from './MethodSection/FormSection/messages';
 
 const NAME = 'survey-method';
 
@@ -43,6 +43,8 @@ interface Props extends SurveyMethodSwitch {
   surveyEmbedUrl: string | null | undefined;
   errors: CLErrors | null;
   onExternalSurveyChange: (changes: ExternalSurveyChanges) => void;
+  draftQuestionsAction?: ReactNode;
+  onAddQuestions: () => void;
 }
 
 const SurveyMethodSection = ({
@@ -55,6 +57,8 @@ const SurveyMethodSection = ({
   surveyEmbedUrl,
   errors,
   onExternalSurveyChange,
+  draftQuestionsAction,
+  onAddQuestions,
 }: Props) => {
   const { formatMessage } = useIntl();
   const surveysEnabled = useFeatureFlag({ name: 'surveys' });
@@ -84,7 +88,7 @@ const SurveyMethodSection = ({
   const label = formatMessage(pickerMessages.surveyOptions);
 
   return (
-    <PanelField label={label}>
+    <PanelField reviewKey="survey_method" label={label}>
       <div className={styles.choice}>
         <RadioGroup
           aria-label={label}
@@ -111,6 +115,7 @@ const SurveyMethodSection = ({
                       phaseId={phaseId}
                       title={title}
                       description={description}
+                      onAddQuestions={onAddQuestions}
                     />
                   );
                 }
@@ -134,7 +139,10 @@ const SurveyMethodSection = ({
                       description={description}
                       disabledReason={disabledReasons[method]}
                     />
-                    {method === selected && method !== 'survey' && (
+                    {method === selected &&
+                      method === 'native_survey' &&
+                      draftQuestionsAction}
+                    {method === selected && method === 'poll' && (
                       <p className={styles.helper}>
                         {formatMessage(formSectionMessages.saveToEditForm)}
                       </p>

@@ -6,8 +6,6 @@ import { CLErrors } from 'typings';
 import { IProjectData, IUpdatedProjectProperties } from 'api/projects/types';
 import useUpdateProject from 'api/projects/useUpdateProject';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import { SpaceAndFolderId } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/types';
 import { useValidateProjectContext } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/utils';
 import SettingsModal, {
@@ -23,11 +21,8 @@ import { validateSlug } from 'utils/textUtils';
 import DiscardChangesModal from './DiscardChangesModal';
 import GeneralSection from './GeneralSection';
 import messages from './messages';
-import PerspectivesSection from './PerspectivesSection';
 import ResourcesSection from './ResourcesSection';
 import useFilesDraft from './ResourcesSection/useFilesDraft';
-import TagsSection from './TagsSection';
-import useTagsDraft from './TagsSection/useTagsDraft';
 
 interface Props {
   project: IProjectData;
@@ -41,10 +36,6 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
 
   const { mutateAsync: updateProject } = useUpdateProject();
   const validateProjectContext = useValidateProjectContext();
-  const perspectivesActive = useFeatureFlag({
-    name: 'live_auto_input_topics',
-  });
-  const tagsDraft = useTagsDraft(projectId);
   const filesDraft = useFilesDraft(projectId);
 
   const [processing, setProcessing] = useState(false);
@@ -116,23 +107,19 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
       return;
     }
 
-    const [tagsSaved, filesSaved] = await Promise.all([
-      tagsDraft.save(),
-      filesDraft.save(),
-    ]);
+    const filesSaved = await filesDraft.save();
 
     savingRef.current = false;
     setProcessing(false);
 
-    if (tagsSaved && filesSaved) {
+    if (filesSaved) {
       onClose();
     } else {
       setSaveFailed(true);
     }
   };
 
-  const dirty =
-    !isEmpty(projectAttributesDiff) || tagsDraft.dirty || filesDraft.dirty;
+  const dirty = !isEmpty(projectAttributesDiff) || filesDraft.dirty;
 
   const discard = () => {
     setProjectAttributesDiff({});
@@ -141,7 +128,6 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
     setProjectContextError(false);
     setApiErrors({});
     setSaveFailed(false);
-    tagsDraft.reset();
     filesDraft.reset();
     setConfirmingDiscard(false);
     onClose();
@@ -186,31 +172,6 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
       icon: 'paperclip-16',
       content: <ResourcesSection projectId={projectId} draft={filesDraft} />,
     },
-    {
-      name: 'tags',
-      group: messages.settingsInputsGroup,
-      label: messages.settingsTags,
-      icon: 'tag-16',
-      content: <TagsSection draft={tagsDraft} />,
-    },
-    ...(perspectivesActive
-      ? [
-          {
-            name: 'perspectives',
-            group: messages.settingsInputsGroup,
-            label: messages.settingsPerspectives,
-            icon: 'sparkles-16',
-            content: (
-              <PerspectivesSection
-                enabled={projectAttrs.live_auto_input_topics_enabled}
-                onChange={(live_auto_input_topics_enabled) =>
-                  applyDiff({ live_auto_input_topics_enabled })
-                }
-              />
-            ),
-          } satisfies SettingsModalSection,
-        ]
-      : []),
   ];
 
   return (

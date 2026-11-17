@@ -73,3 +73,20 @@ export const AllVariants: Story = {
     </div>
   ),
 };
+
+// incrementAriaLabel / decrementAriaLabel replace React Aria's "Increase/Decrease <label>" names.
+export const StepLabels: Story = {
+  render: () => (
+    <div style={{ width: 200 }}>
+      <NumberField
+        aria-label="Parking permits for residents"
+        size={32}
+        defaultValue={0}
+        minValue={0}
+        step={1}
+        incrementAriaLabel="Add one"
+        decrementAriaLabel="Remove one"
+      />
+    </div>
+  ),
+};

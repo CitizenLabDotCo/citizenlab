@@ -11,9 +11,14 @@ import {
 import styled from 'styled-components';
 import { UploadFile } from 'typings';
 
+import Banner from 'design-system/Banner';
+import DropZone from 'design-system/DropZone';
+import 'design-system/tokens.css';
+
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { getBase64FromFile } from 'utils/fileUtils';
 
+import styles from './FileInput.module.css';
 import messages from './messages';
 
 const Container = styled.div`
@@ -150,6 +155,7 @@ const fileAccept = [
 ];
 
 interface Props {
+  variant?: 'default' | 'panel';
   onAdd: (file: UploadFile) => void;
   className?: string;
   id: string;
@@ -159,6 +165,7 @@ interface Props {
 }
 
 const FileInput = ({
+  variant = 'default',
   className,
   id,
   onAdd,
@@ -180,17 +187,15 @@ const FileInput = ({
     event.currentTarget.value = null;
   };
 
-  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-
-    if (files && files.length > 0) {
+  const addFiles = (files: File[]) => {
+    if (files.length > 0) {
       // Reset any error state
       setUnsupportedFileNames([]);
       setHasTooLargeFile(false);
       latestPickRef.current += 1;
       const pick = latestPickRef.current;
 
-      Array.from(files).forEach(async (file: UploadFile) => {
+      files.forEach(async (file: UploadFile) => {
         const base64 = await getBase64FromFile(file);
         // Files are read asynchronously, so an earlier pick can finish after
         // a newer one has reset the errors: only the latest pick reports them.
@@ -218,6 +223,34 @@ const FileInput = ({
       });
     }
   };
+
+  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
+    addFiles(Array.from(event.target.files ?? []));
+  };
+
+  if (variant === 'panel') {
+    return (
+      <div className={`${styles.panel} ${className ?? ''}`}>
+        <DropZone
+          id={id}
+          data-cy={dataCy}
+          aria-label={formatMessage(messages.fileInputDescription)}
+          allowsMultiple={multiple}
+          onSelect={addFiles}
+        />
+        {unsupportedFileNames.map((fileName, index) => (
+          <Banner key={`${index}-${fileName}`} tone="error">
+            {formatMessage(messages.incorrect_extension, { fileName })}
+          </Banner>
+        ))}
+        {hasTooLargeFile && maxSizeMb !== undefined && (
+          <Banner tone="error">
+            {formatMessage(messages.file_too_large, { maxSizeMb })}
+          </Banner>
+        )}
+      </div>
+    );
+  }
 
   return (
     <Container className={className}>

@@ -1,6 +1,7 @@
 .text {
   display: flex;
   flex-direction: column;
+  gap: var(--gv-space-2);
   min-width: 0;
 }
 

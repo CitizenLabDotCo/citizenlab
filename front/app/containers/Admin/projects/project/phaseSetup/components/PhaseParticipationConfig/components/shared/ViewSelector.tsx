@@ -5,7 +5,6 @@ import {
   IconTooltip,
   Box,
   Text,
-  colors,
 } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
@@ -15,9 +14,13 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';
 
+import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import viewNameMessages from 'components/PostCardsComponents/messages';
 import Error from 'components/UI/Error';
+
+import { fieldStyles } from 'design-system/Field';
+import 'design-system/tokens.css';
 
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { useParams } from 'utils/router';
@@ -26,6 +29,7 @@ import messages from '../../../../../messages';
 
 import MapConfigButton from './MapConfigButton';
 import ViewRow from './ViewRow';
+import styles from './ViewSelector.module.css';
 
 interface ViewOption {
   value: PresentationMode;
@@ -61,6 +65,7 @@ const ViewSelector = ({
   variant = 'default',
 }: Props) => {
   const { formatMessage } = useIntl();
+  const getApiErrorMessage = useApiErrorText();
   const { projectId, phaseId } = useParams({ strict: false }) as {
     projectId: string;
     phaseId: string;
@@ -142,9 +147,11 @@ const ViewSelector = ({
     ).length;
     const defaultViewName =
       defaultView && formatMessage(defaultView.shortTitle);
+    const errorMessage = getApiErrorMessage(apiErrors?.presentation_mode);
 
     return (
       <PanelGroup
+        reviewKey="views"
         label={formatMessage(title || messages.availableViews)}
         summary={
           defaultViewName && otherViewsCount > 0
@@ -155,12 +162,9 @@ const ViewSelector = ({
             : defaultViewName
         }
       >
-        <Box display="flex" flexDirection="column">
-          {viewOptions.map((option, index) => (
-            <Box
-              key={option.value}
-              borderTop={index > 0 ? `1px solid ${colors.grey200}` : undefined}
-            >
+        <div className={styles.views}>
+          {viewOptions.map((option) => (
+            <div key={option.value} className={styles.view}>
               <ViewRow
                 title={formatMessage(option.title)}
                 description={
@@ -177,10 +181,10 @@ const ViewSelector = ({
               >
                 {option.value === 'map' && <MapConfigButton />}
               </ViewRow>
-            </Box>
+            </div>
           ))}
-        </Box>
-        <Error apiErrors={apiErrors && apiErrors.presentation_mode} />
+        </div>
+        {errorMessage && <p className={fieldStyles.error}>{errorMessage}</p>}
       </PanelGroup>
     );
   }

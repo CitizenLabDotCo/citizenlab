@@ -5,9 +5,32 @@ module WebApi::V1
     class AttendancesController < ApplicationController
       def index
         event = Event.find(params[:event_id])
-        attendances = policy_scope(event.attendances).order(created_at: :asc)
-        paginated_attendances = paginate(attendances)
-        render json: linked_json(paginated_attendances, WebApi::V1::Events::AttendanceSerializer)
+        authorize(event, :attendees_xlsx?)
+        attendances = policy_scope(event.attendances)
+        total = attendances.count
+        attendances = attendances.where(attendee: User.search_by_all(params[:search])) if params[:search].present?
+
+        week_start = Time.zone.now.beginning_of_week
+        case params[:registered]
+        when 'this_week'
+          attendances = attendances.where(created_at: week_start..)
+        when 'earlier'
+          attendances = attendances.where(created_at: ...week_start)
+        end
+
+        direction = params[:sort] == '-created_at' ? :desc : :asc
+        attendances = paginate(attendances.order(created_at: direction, id: direction)).includes(:attendee)
+
+        render json: {
+          **linked_json(
+            attendances,
+            WebApi::V1::Events::AttendanceSerializer,
+            params: jsonapi_serializer_params,
+            include: [:attendee],
+            fields: { user: %i[first_name last_name email] }
+          ),
+          meta: { total: attendances.total_count, unfiltered_total: total }
+        }
       end
 
       def create

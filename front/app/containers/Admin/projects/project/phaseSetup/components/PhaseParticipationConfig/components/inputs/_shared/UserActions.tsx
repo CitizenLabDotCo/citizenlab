@@ -1,14 +1,17 @@
 import React, { ReactNode } from 'react';
 
 import { IconTooltip, Radio } from '@citizenlab/cl2-component-library';
-import { CLErrors } from 'typings';
+import { CLError, CLErrors } from 'typings';
 
 import PhaseActionAccessRow, {
   AccessOnlyAction,
 } from 'containers/Admin/projects/_shared/components/PhaseActionAccessRow';
 
+import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
+
+import { fieldStyles } from 'design-system/Field';
 
 import { useIntl } from 'utils/cl-intl';
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
@@ -63,7 +66,15 @@ const UserActions = ({
   handleLikingLimitOnChange: (reacting_like_limited_max: string) => void;
 }) => {
   const { formatMessage } = useIntl();
+  const getApiErrorMessage = useApiErrorText();
   const panel = layout === 'panel';
+
+  // The panel shows errors as plain field error text.
+  const actionError = (errors: CLError[] | undefined) => {
+    if (!panel) return <Error apiErrors={errors} />;
+    const message = getApiErrorMessage(errors);
+    return message && <p className={fieldStyles.error}>{message}</p>;
+  };
 
   const actions = (
     <>
@@ -79,7 +90,7 @@ const UserActions = ({
       <ActionToggleRow
         phaseId={phaseId}
         action="posting_idea"
-        error={<Error apiErrors={apiErrors && apiErrors.submission_enabled} />}
+        error={actionError(apiErrors?.submission_enabled)}
       >
         <ActionToggle
           layout={layout}
@@ -93,9 +104,7 @@ const UserActions = ({
         <ActionToggleRow
           phaseId={phaseId}
           action="commenting_idea"
-          error={
-            <Error apiErrors={apiErrors && apiErrors.commenting_enabled} />
-          }
+          error={actionError(apiErrors?.commenting_enabled)}
         >
           <ActionToggle
             layout={layout}
@@ -111,7 +120,7 @@ const UserActions = ({
           phaseId={phaseId}
           action="reacting_idea"
           last
-          error={<Error apiErrors={apiErrors && apiErrors.reacting_enabled} />}
+          error={actionError(apiErrors?.reacting_enabled)}
         >
           <ActionToggle
             layout={layout}

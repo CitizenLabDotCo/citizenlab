@@ -1,0 +1,17 @@
+.panelMetric {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 80px;
+  min-width: 80px;
+}
+
+/* Focusable so the design-system Tooltip can open on hover and keyboard focus. */
+.hint {
+  composes: ringOutside from '../../../../../../design-system/focus.module.css';
+  border-radius: var(--gv-radius-4);
+  cursor: default;
+}
+
+.tooltipText {
+  margin: 0;
+}

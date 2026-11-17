@@ -1,0 +1,46 @@
+import React from 'react';
+
+import { Key } from 'react-aria-components';
+
+import SegmentedTabs, {
+  SegmentedTab,
+  SegmentedTabList,
+} from 'design-system/SegmentedTabs';
+import 'design-system/tokens.css';
+
+import { useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
+
+export type EventView = 'build' | 'manage';
+
+interface Props {
+  activeView: EventView;
+  onChange: (view: EventView) => void;
+}
+
+const EventViewSwitch = ({ activeView, onChange }: Props) => {
+  const { formatMessage } = useIntl();
+
+  const handleSelectionChange = (key: Key) => {
+    if (key === 'build' || key === 'manage') onChange(key);
+  };
+
+  return (
+    <SegmentedTabs
+      selectedKey={activeView}
+      onSelectionChange={handleSelectionChange}
+    >
+      <SegmentedTabList aria-label={formatMessage(messages.eventView)}>
+        <SegmentedTab id="build">
+          {formatMessage(messages.buildView)}
+        </SegmentedTab>
+        <SegmentedTab id="manage">
+          {formatMessage(messages.manageView)}
+        </SegmentedTab>
+      </SegmentedTabList>
+    </SegmentedTabs>
+  );
+};
+
+export default EventViewSwitch;

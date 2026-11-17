@@ -95,3 +95,20 @@ export const AriaLabelOnly: Story = {
     </div>
   ),
 };
+
+// Opens on load, e.g. when a setup link points straight at this field.
+export const DefaultOpen: Story = {
+  args: {
+    label: 'Manager',
+    defaultItems: people,
+    defaultValue: 'hanne',
+    defaultOpen: true,
+    autoFocus: true,
+    children: renderPerson,
+  },
+  render: (args) => (
+    <div style={{ width: 200, minHeight: 280 }}>
+      <ComboBox {...args} />
+    </div>
+  ),
+};

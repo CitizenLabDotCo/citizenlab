@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
@@ -9,6 +9,8 @@ import Breadcrumbs, { Breadcrumb } from 'design-system/Breadcrumbs';
 import Icon from 'design-system/Icon';
 import IconButton from 'design-system/IconButton';
 import 'design-system/tokens.css';
+
+import { useWorkspaceHeader } from 'containers/Admin/sideBar/WorkspaceHeaderContext';
 
 import { usePageSave } from 'components/admin/PageSaveContext';
 import goBackMessages from 'components/UI/GoBackButton/messages';
@@ -43,6 +45,7 @@ interface Props {
   draftParentLabel?: string;
   saveLabel?: string;
   activeView: PhaseViewKey;
+  viewSwitch?: ReactNode;
   /** The back button then returns from the map to the phase. */
   editingMap?: boolean;
   section?: ProjectSection;
@@ -57,6 +60,7 @@ const WorkspaceHeader = ({
   draftParentLabel,
   saveLabel,
   activeView,
+  viewSwitch,
   editingMap,
   section,
   openDropdown,
@@ -65,6 +69,7 @@ const WorkspaceHeader = ({
   const { formatMessage } = useIntl();
   const pageSave = usePageSave();
   const localize = useLocalize();
+  const workspaceHeader = useWorkspaceHeader();
   const views = usePhaseViews(phase);
   const inPhase = !!(phase || draftLabel);
   const saveButtonLabel = inPhase
@@ -104,19 +109,22 @@ const WorkspaceHeader = ({
   const crumbs = inPhase ? phaseCrumbs : projectCrumbs;
 
   return (
-    <header className={styles.header}>
+    <header
+      ref={workspaceHeader?.setElement}
+      data-project-workspace-header=""
+      className={styles.header}
+    >
+      <span className={styles.separator} aria-hidden="true" />
       <div className={styles.crumbBar}>
         {inPhase &&
           (editingMap ? (
             <IconButton
-              variant="bordered"
               icon="arrow-left-16"
               aria-label={formatMessage(goBackMessages.goBack)}
               onPress={() => removeSearchParams(['map_config'])}
             />
           ) : (
             <IconButton
-              variant="bordered"
               icon="arrow-left-16"
               aria-label={formatMessage(messages.backToProjectSetup)}
               onPress={() => clHistory.push(projectPath)}
@@ -142,15 +150,16 @@ const WorkspaceHeader = ({
       </div>
 
       <div className={styles.viewSwitch}>
-        {phase && (
-          <ViewSwitch
-            label={formatMessage(messages.phaseViewSwitch)}
-            views={views}
-            activeView={activeView}
-            projectId={project.id}
-            phaseId={phase.id}
-          />
-        )}
+        {viewSwitch ??
+          (phase && (
+            <ViewSwitch
+              label={formatMessage(messages.phaseViewSwitch)}
+              views={views}
+              activeView={activeView}
+              projectId={project.id}
+              phaseId={phase.id}
+            />
+          ))}
       </div>
 
       <div className={styles.actions}>

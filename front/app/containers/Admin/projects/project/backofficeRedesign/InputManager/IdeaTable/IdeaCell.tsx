@@ -1,5 +1,7 @@
 import React, { ReactNode } from 'react';
 
+import { differenceInCalendarDays } from 'date-fns';
+
 import { Cell } from 'design-system/Table';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
@@ -14,9 +16,11 @@ import { timeAgo } from 'utils/dateUtils';
 
 import ColorDot from '../ColorDot';
 import { ColumnKey, COLUMNS } from '../columns';
+import messages from '../messages';
 import { topicIds } from '../utils';
 
 import AssigneeMark from './AssigneeMark';
+import styles from './IdeaTable.module.css';
 import TagChips from './TagChips';
 
 interface Props {
@@ -60,7 +64,34 @@ const IdeaCell = ({ column, idea, status, tagLabels }: Props) => {
     );
   }
 
+  const daysLeft = attributes.expires_at
+    ? differenceInCalendarDays(new Date(attributes.expires_at), new Date())
+    : undefined;
+  const isClosed =
+    daysLeft === undefined ||
+    (attributes.expires_at !== undefined &&
+      Date.parse(attributes.expires_at) <= Date.now()) ||
+    // Reaching the support threshold does not stop further support.
+    (status &&
+      !['proposed', 'threshold_reached', 'custom'].includes(
+        status.attributes.code
+      ));
+
   const values: Record<ColumnKey, ReactNode> = {
+    support: (
+      <>
+        {attributes.likes_count}
+        {attributes.reacting_threshold !== undefined && (
+          <span className={styles.threshold}>
+            {' '}
+            / {attributes.reacting_threshold}
+          </span>
+        )}
+      </>
+    ),
+    timeLeft: isClosed
+      ? formatMessage(messages.closed)
+      : formatMessage(messages.daysLeft, { days: daysLeft }),
     status: null,
     assignee: null,
     tags: null,
@@ -72,6 +103,7 @@ const IdeaCell = ({ column, idea, status, tagLabels }: Props) => {
     published: attributes.published_at
       ? timeAgo(Date.parse(attributes.published_at), locale)
       : null,
+    totalVotes: attributes.total_votes,
     votes: attributes.votes_count,
     offlineVotes: attributes.manual_votes_amount || 0,
     offlinePicks: attributes.manual_votes_amount || 0,

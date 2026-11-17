@@ -1,6 +1,11 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  failed: {
+    id: 'app.containers.Admin.projects.setupReview.failed',
+    defaultMessage: 'Review could not be saved. Select the card to try again.',
+  },
+
   archived: {
     id: 'app.containers.Admin.projects.all.components.archived',
     defaultMessage: 'Archived',

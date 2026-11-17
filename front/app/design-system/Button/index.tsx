@@ -1,6 +1,10 @@
 import React, { ReactNode } from 'react';
 
-import { Button as AriaButton, PressEvent } from 'react-aria-components';
+import {
+  Button as AriaButton,
+  Link as AriaLink,
+  PressEvent,
+} from 'react-aria-components';
 
 import Icon, { IconName } from '../Icon';
 import { SpinnerGraphic } from '../Spinner';
@@ -32,6 +36,9 @@ export type ButtonProps = LabelProps & {
   form?: string;
   slot?: string;
   autoFocus?: boolean;
+  // Goes somewhere while looking like a button (React Aria Link; client-side inside DesignSystemProvider).
+  href?: string;
+  target?: '_blank' | '_self';
   id?: string;
   'aria-describedby'?: string;
   'data-cy'?: string;
@@ -52,6 +59,8 @@ const Button = ({
   form,
   slot,
   autoFocus,
+  href,
+  target,
   id,
   'aria-label': ariaLabel,
   'aria-describedby': ariaDescribedBy,
@@ -68,6 +77,38 @@ const Button = ({
   ]
     .filter(Boolean)
     .join(' ');
+
+  const content = (
+    <>
+      {isPending ? (
+        <SpinnerGraphic tone={isFilled ? 'inverse' : 'accent'} />
+      ) : (
+        icon && <Icon name={icon} className={styles.icon} />
+      )}
+      {children}
+      {trailingIcon && <Icon name={trailingIcon} className={styles.icon} />}
+      {hasMenu && <Icon name="chevron-down-12" className={styles.chevron} />}
+    </>
+  );
+
+  if (href && !hasReason) {
+    return (
+      <AriaLink
+        className={className}
+        href={href}
+        target={target}
+        rel={target === '_blank' ? 'noreferrer' : undefined}
+        isDisabled={isDisabled}
+        autoFocus={autoFocus}
+        id={id}
+        aria-label={ariaLabel}
+        aria-describedby={ariaDescribedBy}
+        data-cy={dataCy}
+      >
+        {content}
+      </AriaLink>
+    );
+  }
 
   const button = (
     <AriaButton
@@ -86,14 +127,7 @@ const Button = ({
       aria-describedby={ariaDescribedBy}
       data-cy={dataCy}
     >
-      {isPending ? (
-        <SpinnerGraphic tone={isFilled ? 'inverse' : 'accent'} />
-      ) : (
-        icon && <Icon name={icon} className={styles.icon} />
-      )}
-      {children}
-      {trailingIcon && <Icon name={trailingIcon} className={styles.icon} />}
-      {hasMenu && <Icon name="chevron-down-12" className={styles.chevron} />}
+      {content}
     </AriaButton>
   );
 

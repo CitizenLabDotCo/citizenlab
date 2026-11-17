@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { KeyboardEvent } from 'react';
 
 import DesignSystemSidePanel from 'design-system/SidePanel';
 import Spinner from 'design-system/Spinner';
@@ -7,33 +7,60 @@ import 'design-system/tokens.css';
 import useIdeaById from 'api/ideas/useIdeaById';
 import { IPhaseData } from 'api/phases/types';
 
-import { ManagerType, PreviewMode } from 'components/admin/PostManager';
-import AdminIdeaEdit from 'components/admin/PostManager/components/PostPreview/Idea/AdminIdeaEdit';
+import { ManagerType } from 'components/admin/PostManager';
 
 import IdeaOverview from './IdeaOverview';
 import PanelHeader, { PanelNavigation } from './PanelHeader';
 import styles from './SidePanel.module.css';
 
+const isEditable = (target: EventTarget): target is HTMLElement =>
+  target instanceof HTMLElement &&
+  (target.isContentEditable ||
+    ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName));
+
+// Escape first leaves the field being typed in, so its text isn't lost; a
+// second Escape closes the panel. Runs while bubbling, so widgets that handle
+// Escape themselves (open menus, search fields) still go first.
+const blurFieldOnEscape = (event: KeyboardEvent<HTMLDivElement>) => {
+  const { target, currentTarget } = event;
+  if (
+    event.key !== 'Escape' ||
+    event.isDefaultPrevented() ||
+    // Modals and popovers opened from the panel are portalled elsewhere.
+    !(target instanceof Node) ||
+    !currentTarget.contains(target) ||
+    !isEditable(target)
+  ) {
+    return;
+  }
+
+  target.blur();
+  event.stopPropagation();
+};
+
 interface Props {
   ideaId: string | undefined;
-  mode: PreviewMode;
   type: ManagerType;
   context: string;
   listedPhase: IPhaseData | undefined;
   navigation: PanelNavigation | undefined;
-  onChangeMode: (mode: PreviewMode) => void;
+  onEdit: (ideaId: string) => void;
   onClose: () => void;
+  /** Runs after the input is deleted from the panel. Closes it by default. */
+  onDeleted?: () => void;
+  isEditing: boolean;
 }
 
 const SidePanel = ({
   ideaId,
-  mode,
   type,
   context,
   listedPhase,
   navigation,
-  onChangeMode,
+  onEdit,
   onClose,
+  onDeleted = onClose,
+  isEditing,
 }: Props) => {
   const { data: idea, isPlaceholderData } = useIdeaById(ideaId);
   const isLoaded = !!idea && !isPlaceholderData;
@@ -42,11 +69,17 @@ const SidePanel = ({
     <DesignSystemSidePanel
       isOpen={!!ideaId}
       onOpenChange={(isOpen) => {
-        if (!isOpen) onClose();
+        // The edit modal sits on top of the panel; closing it keeps the panel.
+        if (!isOpen && !isEditing) onClose();
       }}
       title={context}
     >
-      <div id="e2e-side-modal-content" className={styles.content}>
+      <div
+        id="e2e-side-modal-content"
+        className={styles.content}
+        role="presentation"
+        onKeyDown={blurFieldOnEscape}
+      >
         {!isLoaded && !!ideaId && (
           <div className={styles.loading}>
             <Spinner />
@@ -55,20 +88,13 @@ const SidePanel = ({
         {idea && isLoaded && (
           <>
             {navigation && <PanelHeader navigation={navigation} />}
-            {mode === 'edit' ? (
-              <AdminIdeaEdit
-                ideaId={idea.data.id}
-                goBack={() => onChangeMode('view')}
-              />
-            ) : (
-              <IdeaOverview
-                idea={idea.data}
-                type={type}
-                listedPhase={listedPhase}
-                onEdit={() => onChangeMode('edit')}
-                onDeleted={onClose}
-              />
-            )}
+            <IdeaOverview
+              idea={idea.data}
+              type={type}
+              listedPhase={listedPhase}
+              onEdit={() => onEdit(idea.data.id)}
+              onDeleted={onDeleted}
+            />
           </>
         )}
       </div>

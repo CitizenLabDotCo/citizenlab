@@ -31,7 +31,7 @@ const InputTermCard = ({ value, onChange }: Props) => {
   const options = getInputTermOptions(formatMessage);
 
   return (
-    <PanelField label={title}>
+    <PanelField reviewKey="input_term" label={title}>
       <Select
         aria-label={title}
         description={formatMessage(messages.inputTermDescription)}

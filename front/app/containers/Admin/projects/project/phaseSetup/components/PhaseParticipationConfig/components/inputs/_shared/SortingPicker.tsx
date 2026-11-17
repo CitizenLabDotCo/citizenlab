@@ -12,8 +12,8 @@ import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 
-import Banner from 'design-system/Banner';
 import Button from 'design-system/Button';
+import { fieldStyles } from 'design-system/Field';
 import Menu, { MenuItem, MenuTrigger } from 'design-system/Menu';
 import 'design-system/tokens.css';
 
@@ -56,6 +56,7 @@ export default ({
     return (
       <div className={styles.card}>
         <SetupCard
+          reviewKey="sorting"
           title={title}
           titleTooltip={
             <FormattedMessage {...messages.defaultPostSortingTooltip} />
@@ -85,7 +86,7 @@ export default ({
             </MenuTrigger>
           }
         >
-          {errorMessage && <Banner tone="error">{errorMessage}</Banner>}
+          {errorMessage && <p className={fieldStyles.error}>{errorMessage}</p>}
         </SetupCard>
       </div>
     );

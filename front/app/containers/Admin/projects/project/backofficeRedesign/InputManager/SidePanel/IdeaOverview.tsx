@@ -13,10 +13,16 @@ import useLocalize from 'hooks/useLocalize';
 import { ManagerType } from 'components/admin/PostManager';
 import IdeaOfficialFeedbackModal from 'components/admin/PostManager/components/IdeaOfficialFeedbackModal';
 import CommentsSection from 'components/PostShowComponents/Comments/CommentsSection';
+import { CommentsVariantContext } from 'components/PostShowComponents/Comments/commentsVariant';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import UserName from 'components/UI/UserName';
 
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from '../messages';
+
 import AssigneeProperty from './AssigneeProperty';
+import CommonGroundReactions from './CommonGroundReactions';
 import IdeaContent from './IdeaContent';
 import PhasesProperty from './PhasesProperty';
 import QuickActions from './QuickActions';
@@ -44,19 +50,31 @@ const IdeaOverview = ({
   const localize = useLocalize();
   const { attributes, relationships } = idea;
   const isProposals = type === 'ProjectProposals';
+  // Statements can't move into other phases, which only list idea phases.
+  const showPhases =
+    !isProposals &&
+    listedPhase?.attributes.participation_method !== 'common_ground';
 
   return (
     <div className={styles.overview}>
-      <div>
+      <div className={styles.summary}>
         <h2 className={styles.title}>{localize(attributes.title_multiloc)}</h2>
+        <IdeaContent idea={idea} />
         <div className={styles.byline}>
           <span>
-            {/* UserName draws its own text, so it gets the size and colour of the line. */}
-            <UserName
-              userId={relationships.author?.data?.id ?? null}
-              anonymous={attributes.anonymous}
-              fontSize={13}
-              color="var(--gv-text-secondary)"
+            <FormattedMessage
+              {...messages.postedBy}
+              values={{
+                // UserName draws its own text, so it gets the size and colour of the line.
+                author: (
+                  <UserName
+                    userId={relationships.author?.data?.id ?? null}
+                    anonymous={attributes.anonymous}
+                    fontSize={12}
+                    color="var(--gv-text-primary)"
+                  />
+                ),
+              }}
             />
           </span>
           {attributes.published_at && (
@@ -70,23 +88,24 @@ const IdeaOverview = ({
             </span>
           )}
         </div>
+        <div className={styles.reactionsRow}>
+          <div className={styles.reactions}>
+            <span className={styles.reaction}>
+              <Icon name="arrow-up-16" className={styles.reactionIcon} />
+              {attributes.likes_count}
+            </span>
+            {!isProposals && (
+              <span className={styles.reaction}>
+                <Icon name="arrow-down-16" className={styles.reactionIcon} />
+                {attributes.dislikes_count}
+              </span>
+            )}
+          </div>
+          <QuickActions idea={idea} onEdit={onEdit} onDeleted={onDeleted} />
+        </div>
       </div>
 
-      <div className={styles.reactionsRow}>
-        <div className={styles.reactions}>
-          <span className={styles.reaction}>
-            <Icon name="arrow-up-16" className={styles.reactionIcon} />
-            {attributes.likes_count}
-          </span>
-          {!isProposals && (
-            <span className={styles.reaction}>
-              <Icon name="arrow-down-16" className={styles.reactionIcon} />
-              {attributes.dislikes_count}
-            </span>
-          )}
-        </div>
-        <QuickActions idea={idea} onEdit={onEdit} onDeleted={onDeleted} />
-      </div>
+      <CommonGroundReactions phase={listedPhase} ideaId={idea.id} />
 
       <Divider />
 
@@ -94,25 +113,24 @@ const IdeaOverview = ({
         <StatusProperty idea={idea} type={type} />
         <AssigneeProperty idea={idea} />
         <TagsProperty idea={idea} type={type} />
-        {!isProposals && <PhasesProperty idea={idea} />}
+        {showPhases && <PhasesProperty idea={idea} />}
         <VotingDetails idea={idea} phase={listedPhase} />
       </div>
 
       <Divider />
 
-      <IdeaContent idea={idea} />
-
-      <Divider />
-
-      <OfficialFeedback postId={idea.id} permissionToPost />
-      <CommentsSection
-        postId={idea.id}
-        allowAnonymousParticipation={
-          listedPhase?.attributes.allow_anonymous_participation
-        }
-        showInternalComments
-      />
-      <IdeaOfficialFeedbackModal ideaId={idea.id} />
+      {/* Shared feedback and comment components; their 'panel' variant is the side-panel look. */}
+      <OfficialFeedback postId={idea.id} permissionToPost variant="panel" />
+      <CommentsVariantContext.Provider value="panel">
+        <CommentsSection
+          postId={idea.id}
+          allowAnonymousParticipation={
+            listedPhase?.attributes.allow_anonymous_participation
+          }
+          showInternalComments
+        />
+      </CommentsVariantContext.Provider>
+      <IdeaOfficialFeedbackModal ideaId={idea.id} variant="panel" />
     </div>
   );
 };

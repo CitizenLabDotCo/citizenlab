@@ -1,6 +1,14 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  project: {
+    id: 'app.components.formBuilder.copySurveyModal.project',
+    defaultMessage: 'Project',
+  },
+  selectSurveyProject: {
+    id: 'app.components.formBuilder.copySurveyModal.selectSurveyProject',
+    defaultMessage: 'Search projects with surveys',
+  },
   copySurveyTitle: {
     id: 'app.components.formBuilder.copySurveyModal.title',
     defaultMessage: 'Select a survey to duplicate',

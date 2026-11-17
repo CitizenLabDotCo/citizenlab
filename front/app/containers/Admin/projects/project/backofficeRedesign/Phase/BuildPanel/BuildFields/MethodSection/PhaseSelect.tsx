@@ -23,6 +23,7 @@ interface Props {
   participationMethods: ParticipationMethod[];
   filterPhases?: (phases: IPhaseData[]) => IPhaseData[];
   onChange: (phaseId: string) => void;
+  'data-cy'?: string;
 }
 
 const PhaseSelect = ({
@@ -32,6 +33,7 @@ const PhaseSelect = ({
   participationMethods,
   filterPhases,
   onChange,
+  'data-cy': dataCy,
 }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
@@ -61,6 +63,7 @@ const PhaseSelect = ({
     <Select
       label={label}
       items={options}
+      data-cy={dataCy}
       value={phaseId ?? null}
       onChange={(key) => {
         if (typeof key === 'string') onChange(key);

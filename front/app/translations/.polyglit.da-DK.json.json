@@ -1429,6 +1429,21 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
+  "app.components.FileRepositorySelectAndUpload.attachmentCount": {
+    "state": "verified",
+    "verified_at": "2026-11-13T07:37:54.367807Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.FileRepositorySelectAndUpload.attachments": {
+    "state": "verified",
+    "verified_at": "2026-11-13T07:37:54.367807Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.FileRepositorySelectAndUpload.done": {
+    "state": "verified",
+    "verified_at": "2026-11-13T14:21:00.555488Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.components.FileRepositorySelectAndUpload.or": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
@@ -2413,6 +2428,21 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
+  },
+  "app.components.PhasePreview.beforeStarts": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:48:50.705659Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.PhasePreview.phaseEnded": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:48:50.705659Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.PhasePreview.startsIn": {
+    "state": "verified",
+    "verified_at": "2026-11-16T11:48:50.705659Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.components.PostCardsComponents.feed": {
     "state": "verified",

@@ -27,12 +27,6 @@ const ViewSwitch = ({
 }: Props) => {
   if (views.length < 2) return null;
 
-  // A view the phase has no tab for cannot be reached. With a reason it stays
-  // focusable and says why in its tooltip; without one it is plainly disabled.
-  const lockedKeys = views
-    .filter((view) => !view.to && !view.lockedReason)
-    .map((view) => view.key);
-
   const handleSelectionChange = (key: React.Key) => {
     if (key === activeView) return;
 
@@ -48,15 +42,10 @@ const ViewSwitch = ({
     <SegmentedTabs
       selectedKey={activeView}
       onSelectionChange={handleSelectionChange}
-      disabledKeys={lockedKeys}
     >
       <SegmentedTabList aria-label={label}>
         {views.map((view) => (
-          <SegmentedTab
-            key={view.key}
-            id={view.key}
-            disabledReason={view.to ? undefined : view.lockedReason}
-          >
+          <SegmentedTab key={view.key} id={view.key}>
             {view.label}
           </SegmentedTab>
         ))}

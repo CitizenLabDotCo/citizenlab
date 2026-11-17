@@ -97,6 +97,7 @@ const AreaCard = ({ project, ready }: Props) => {
     <MenuTrigger>
       <SetupCard
         id="e2e-setup-card-area"
+        tooltip={formatMessage(messages.areaTooltip)}
         title={title}
         ready={ready}
         summary={getSummary()}

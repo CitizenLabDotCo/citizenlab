@@ -17,6 +17,7 @@ import { getSortDirection } from 'utils/paginationUtils';
 
 import { ColumnKey, COLUMNS } from '../columns';
 import messages from '../messages';
+import useInputTermLabels from '../useInputTermLabels';
 
 import ColumnsMenu from './ColumnsMenu';
 import styles from './IdeaTable.module.css';
@@ -56,6 +57,7 @@ const HeaderRow = ({
   onToggleSelectAll,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const { terms, capitalizedTerm } = useInputTermLabels();
   const sortDirection = getSortDirection(sort);
   const sortedAttribute = sort.replace(/^-/, '');
 
@@ -96,7 +98,7 @@ const HeaderRow = ({
             isSelected={allSelected}
             isIndeterminate={!allSelected && someSelected}
             onChange={onToggleSelectAll}
-            aria-label={formatMessage(messages.selectAll)}
+            aria-label={formatMessage(messages.selectAllOnPage, { terms })}
           />
         </CheckboxContext.Provider>
       </Column>
@@ -117,7 +119,7 @@ const HeaderRow = ({
           />
         }
       >
-        {formatMessage(messages.inputColumn)}
+        {capitalizedTerm}
       </ColumnHeader>
       {columns
         .filter((column) => !COLUMNS[column].mark)

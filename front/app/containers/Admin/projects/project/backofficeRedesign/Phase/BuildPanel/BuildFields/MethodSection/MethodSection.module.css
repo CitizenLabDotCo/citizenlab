@@ -20,3 +20,14 @@
   composes: ui from '../../../../../../../../../design-system/typography.module.css';
   color: var(--gv-text-primary);
 }
+
+.fullFormLink {
+  composes: uiLink from '../../../../../../../../../design-system/typography.module.css';
+  composes: ringOutside from '../../../../../../../../../design-system/focus.module.css';
+  border-radius: var(--gv-radius-4);
+  color: var(--gv-text-secondary);
+}
+
+.fullFormLink:hover {
+  color: var(--gv-text-primary);
+}

@@ -18,10 +18,12 @@ export type ModalProps = DialogLayoutProps & {
   isOpen?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (isOpen: boolean) => void;
+  // Also dismiss it on a press on the backdrop.
+  isDismissable?: boolean;
   'data-cy'?: string;
 };
 
-// Escape and Close dismiss it; a press on the backdrop does not.
+// Escape and Close dismiss it; a press on the backdrop only with isDismissable.
 const Modal = ({
   title,
   description,
@@ -33,12 +35,14 @@ const Modal = ({
   isOpen,
   defaultOpen,
   onOpenChange,
+  isDismissable = false,
   'data-cy': dataCy,
 }: ModalProps) => (
   <ModalOverlay
     isOpen={isOpen}
     defaultOpen={defaultOpen}
     onOpenChange={onOpenChange}
+    isDismissable={isDismissable}
     className={styles.overlay}
   >
     <AriaModal className={`${styles.modal} ${styles[`size${size}`]}`}>
