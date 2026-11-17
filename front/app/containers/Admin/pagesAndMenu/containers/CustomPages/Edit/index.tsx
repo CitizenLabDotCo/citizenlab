@@ -19,7 +19,6 @@ import Breadcrumbs from 'components/UI/Breadcrumbs';
 import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
 import { Outlet as RouterOutlet, useParams } from 'utils/router';
 
 import messages from '../messages';
@@ -38,18 +37,14 @@ const CustomPagesEditSettings = () => {
     name: 'pages',
     onlyCheckAllowed: true,
   });
-  const customPageBuilderEnabled = useFeatureFlag({
-    name: 'custom_page_builder',
-  });
 
-  if (isNilOrError(customPage)) {
+  if (!customPage) {
     return null;
   }
 
-  // With the builder on, one page replaces the two tabs: the section editors on the content
-  // tab no longer change what the page shows.
-  const showSettingsWithPreview =
-    customPageBuilderEnabled && isContentBuilderPage(customPage.data);
+  // Builder pages use one page for everything: the legacy section editors on the content tab
+  // no longer change what the page shows.
+  const showSettingsWithPreview = isContentBuilderPage(customPage.data);
 
   const pageTitleMultiloc = customPage.data.attributes.title_multiloc;
   return (
