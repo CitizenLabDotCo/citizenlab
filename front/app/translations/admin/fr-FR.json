@@ -222,7 +222,7 @@
   "app.components.admin.ActionForm.name": "Nom",
   "app.components.admin.ActionForm.none": "Aucun",
   "app.components.admin.ActionForm.nothingExtra": "Rien de plus",
-  "app.components.admin.ActionForm.override": "Modifier",
+  "app.components.admin.ActionForm.override": "Personnaliser",
   "app.components.admin.ActionForm.password3": "Mot de passe",
   "app.components.admin.ActionForm.piiExcluded": "Données personnelles exclues",
   "app.components.admin.ActionForm.piiExcludedFromResults": "Données personnelles exclues des résultats",
