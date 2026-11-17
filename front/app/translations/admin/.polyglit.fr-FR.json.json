@@ -10169,6 +10169,11 @@
     "verified_at": "2026-07-17T08:20:45.230747Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Admin.projects.project.inputResponseExport.exportStartedBy": {
+    "state": "verified",
+    "verified_at": "2026-11-17T11:04:23.463734Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.inputResponseExport.fieldReviewNoFlags": {
     "state": "verified",
     "verified_at": "2026-07-17T08:20:45.230747Z",
@@ -11353,6 +11358,11 @@
     "state": "verified",
     "verified_at": "2026-04-21T08:31:07.835171Z",
     "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanationCommunityMonitor": {
+    "state": "verified",
+    "verified_at": "2026-11-17T11:04:23.463734Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanationInsights": {
     "state": "verified",
