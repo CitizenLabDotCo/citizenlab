@@ -1,4 +1,11 @@
-import React, { FormEvent, useState, useRef, ChangeEvent } from 'react';
+import React, {
+  FormEvent,
+  useState,
+  useRef,
+  ChangeEvent,
+  lazy,
+  Suspense,
+} from 'react';
 
 import {
   colors,
@@ -11,15 +18,16 @@ import {
 import styled from 'styled-components';
 import { UploadFile } from 'typings';
 
-import Banner from 'design-system/Banner';
-import DropZone from 'design-system/DropZone';
-
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { getBase64FromFile } from 'utils/fileUtils';
 
 import styles from './FileInput.module.css';
 import messages from './messages';
 import 'design-system/tokens.css';
+
+// Back-office only (panel variant), so participants never download them.
+const Banner = lazy(() => import('design-system/Banner'));
+const DropZone = lazy(() => import('design-system/DropZone'));
 
 const Container = styled.div`
   margin-bottom: 10px;
@@ -231,23 +239,25 @@ const FileInput = ({
   if (variant === 'panel') {
     return (
       <div className={`${styles.panel} ${className ?? ''}`}>
-        <DropZone
-          id={id}
-          data-cy={dataCy}
-          aria-label={formatMessage(messages.fileInputDescription)}
-          allowsMultiple={multiple}
-          onSelect={addFiles}
-        />
-        {unsupportedFileNames.map((fileName, index) => (
-          <Banner key={`${index}-${fileName}`} tone="error">
-            {formatMessage(messages.incorrect_extension, { fileName })}
-          </Banner>
-        ))}
-        {hasTooLargeFile && maxSizeMb !== undefined && (
-          <Banner tone="error">
-            {formatMessage(messages.file_too_large, { maxSizeMb })}
-          </Banner>
-        )}
+        <Suspense fallback={null}>
+          <DropZone
+            id={id}
+            data-cy={dataCy}
+            aria-label={formatMessage(messages.fileInputDescription)}
+            allowsMultiple={multiple}
+            onSelect={addFiles}
+          />
+          {unsupportedFileNames.map((fileName, index) => (
+            <Banner key={`${index}-${fileName}`} tone="error">
+              {formatMessage(messages.incorrect_extension, { fileName })}
+            </Banner>
+          ))}
+          {hasTooLargeFile && maxSizeMb !== undefined && (
+            <Banner tone="error">
+              {formatMessage(messages.file_too_large, { maxSizeMb })}
+            </Banner>
+          )}
+        </Suspense>
       </div>
     );
   }

@@ -1,9 +1,11 @@
-import React, { memo } from 'react';
+import React, { lazy, memo, Suspense } from 'react';
 
 import styled from 'styled-components';
 
+import { loadOfficialFeedbackForm } from './moderatorParts';
 import OfficialFeedbackFeed from './OfficialFeedbackFeed';
-import OfficialFeedbackForm from './OfficialFeedbackForm';
+
+const OfficialFeedbackForm = lazy(loadOfficialFeedbackForm);
 
 interface Props {
   postId: string;
@@ -27,11 +29,13 @@ const OfficialFeedback = memo<Props>(
       return (
         <Container className={className || ''}>
           {permissionToPost && (
-            <OfficialFeedbackForm
-              formType="new"
-              postId={postId}
-              variant={variant}
-            />
+            <Suspense fallback={null}>
+              <OfficialFeedbackForm
+                formType="new"
+                postId={postId}
+                variant={variant}
+              />
+            </Suspense>
           )}
 
           <OfficialFeedbackFeed

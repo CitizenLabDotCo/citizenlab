@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { lazy, Suspense, useState } from 'react';
 
 import {
   colors,
@@ -11,9 +11,6 @@ import { FormattedDate } from 'react-intl';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
-import IconButton from 'design-system/IconButton';
-import Menu, { MenuItem, MenuTrigger } from 'design-system/Menu';
-
 import { IOfficialFeedbackData as IIdeaOfficialFeedbackData } from 'api/idea_official_feedback/types';
 import useDeleteIdeaOfficialFeedback from 'api/idea_official_feedback/useDeleteIdeaOfficialFeedback';
 
@@ -22,16 +19,21 @@ import useLocalize from 'hooks/useLocalize';
 import { formatCommentContent } from 'components/PostShowComponents/utils';
 import T from 'components/T';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
-import moreActionsMessages from 'components/UI/MoreActionsMenu/messages';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
-import OfficialFeedbackForm from './OfficialFeedbackForm';
+import {
+  loadOfficialFeedbackForm,
+  loadOfficialFeedbackPanelMenu,
+} from './moderatorParts';
 import panelStyles from './OfficialFeedbackPanel.module.css';
 import 'design-system/tokens.css';
+
+const OfficialFeedbackForm = lazy(loadOfficialFeedbackForm);
+const OfficialFeedbackPanelMenu = lazy(loadOfficialFeedbackPanelMenu);
 
 const Container = styled.div`
   display: flex;
@@ -210,12 +212,14 @@ const OfficialFeedbackPost = ({
   if (showEditForm && isPanel) {
     return (
       <div key={officialFeedbackPost.id} className={panelStyles.editForm}>
-        <OfficialFeedbackForm
-          formType="edit"
-          feedback={officialFeedbackPost}
-          onClose={closeEditForm}
-          variant="panel"
-        />
+        <Suspense fallback={null}>
+          <OfficialFeedbackForm
+            formType="edit"
+            feedback={officialFeedbackPost}
+            onClose={closeEditForm}
+            variant="panel"
+          />
+        </Suspense>
       </div>
     );
   }
@@ -223,11 +227,13 @@ const OfficialFeedbackPost = ({
   if (showEditForm) {
     return (
       <EditFormContainer key={officialFeedbackPost.id}>
-        <OfficialFeedbackForm
-          formType="edit"
-          feedback={officialFeedbackPost}
-          onClose={closeEditForm}
-        />
+        <Suspense fallback={null}>
+          <OfficialFeedbackForm
+            formType="edit"
+            feedback={officialFeedbackPost}
+            onClose={closeEditForm}
+          />
+        </Suspense>
       </EditFormContainer>
     );
   }
@@ -278,27 +284,12 @@ const OfficialFeedbackPost = ({
       >
         {editingAllowed && (
           <div className={panelStyles.postMenu}>
-            <MenuTrigger>
-              <IconButton
-                icon="more-horizontal-16"
-                aria-label={formatMessage(moreActionsMessages.showMoreActions)}
+            <Suspense fallback={null}>
+              <OfficialFeedbackPanelMenu
+                onEdit={openEditForm}
+                onDelete={deletePost(officialFeedbackPost.id)}
               />
-              <Menu
-                aria-label={formatMessage(moreActionsMessages.showMoreActions)}
-                placement="bottom end"
-              >
-                <MenuItem id="edit" onAction={openEditForm}>
-                  {formatMessage(messages.editOfficialFeedbackPost)}
-                </MenuItem>
-                <MenuItem
-                  id="delete"
-                  variant="danger"
-                  onAction={deletePost(officialFeedbackPost.id)}
-                >
-                  {formatMessage(messages.deleteOfficialFeedbackPost)}
-                </MenuItem>
-              </Menu>
-            </MenuTrigger>
+            </Suspense>
           </div>
         )}
 
