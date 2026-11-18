@@ -240,7 +240,8 @@ describe('Moving a survey phase on and off the timeline', () => {
         });
         cy.get('[role="dialog"]')
           .contains('button', 'Retry')
-          .should('not.be.disabled')
+          // Pending (and ignoring presses) while a load is still running.
+          .should('not.have.attr', 'data-pending')
           .click();
         cy.wait('@retriedLayout').its('response.statusCode').should('eq', 200);
         confirmMove();
