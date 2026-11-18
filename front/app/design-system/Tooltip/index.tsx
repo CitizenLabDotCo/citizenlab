@@ -5,6 +5,8 @@ import { Tooltip as AriaTooltip, TooltipTrigger } from 'react-aria-components';
 import styles from './Tooltip.module.css';
 import '../tokens.css';
 
+export { default as TooltipTarget } from './TooltipTarget';
+
 // Timing is a prop, not CSS, so it lives here next to the motion variables.
 export const TOOLTIP_DELAY = 400;
 const TOOLTIP_CLOSE_DELAY = 0;
