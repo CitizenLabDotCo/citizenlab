@@ -29,7 +29,9 @@ const reloadOnce = (chunkError: string) => {
 };
 
 export const installStaleBuildReload = (router: AnyRouter) => {
-  router.subscribe('onBeforeNavigate', ({ toLocation }) => {
+  router.subscribe('onBeforeNavigate', ({ toLocation, pathChanged }) => {
+    // Search and hash updates happen mid-form, so they don't count.
+    if (!pathChanged) return;
     lastRouteChangeAt = Date.now();
     if (staleBuild) {
       reloading = true;

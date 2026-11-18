@@ -9,7 +9,10 @@ jest.mock('utils/urlUtils', () => ({
 const reload = jest.mocked(reloadPage);
 const assign = jest.mocked(navigateToUrl);
 
-type Listener = (event: { toLocation: { href: string } }) => void;
+type Listener = (event: {
+  toLocation: { href: string };
+  pathChanged: boolean;
+}) => void;
 
 const chunkError = new TypeError(
   'Failed to fetch dynamically imported module: /assets/ProjectsShow.js'
@@ -40,7 +43,8 @@ const setup = () => {
 
   return {
     isReloadingForNewBuild: module.isReloadingForNewBuild,
-    navigate: (href: string) => navigate({ toLocation: { href } }),
+    navigate: (href: string, pathChanged = true) =>
+      navigate({ toLocation: { href }, pathChanged }),
     failChunk: () => {
       const event = new Event('vite:preloadError', { cancelable: true });
       Object.assign(event, { payload: chunkError });
@@ -113,6 +117,27 @@ describe('installStaleBuildReload', () => {
     expect(reload).not.toHaveBeenCalled();
     expect(assign).toHaveBeenCalledWith('/en/projects/b');
     expect(app.isReloadingForNewBuild()).toBe(true);
+  });
+
+  it('ignores search-only navigations after a chunk failed', () => {
+    const app = setup();
+    cleanup = app.cleanup;
+
+    app.failChunk();
+    app.navigate('/en/projects/a?tab=map', false);
+
+    expect(assign).not.toHaveBeenCalled();
+    expect(app.isReloadingForNewBuild()).toBe(false);
+  });
+
+  it('does not reload when a chunk fails right after a search-only navigation', () => {
+    const app = setup();
+    cleanup = app.cleanup;
+
+    app.navigate('/en/projects/a?tab=map', false);
+    app.failChunk();
+
+    expect(reload).not.toHaveBeenCalled();
   });
 
   it('navigates normally while the build is current', () => {
