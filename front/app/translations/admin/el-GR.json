@@ -3786,8 +3786,6 @@
   "app.containers.AdminPage.ProjectIdeaForm.saved": "Saved!",
   "app.containers.AdminPage.ProjectIdeaForm.viewFormLinkCopy": "View form",
   "app.containers.AdminPage.ProjectPages.addFirstPage": "Προσθέστε την πρώτη σας σελίδα",
-  "app.containers.AdminPage.ProjectPages.attachmentsLabel": "Συνημμένα",
-  "app.containers.AdminPage.ProjectPages.contentLabel": "Περιεχόμενο",
   "app.containers.AdminPage.ProjectPages.createButton": "Δημιουργία σελίδας",
   "app.containers.AdminPage.ProjectPages.deleteButton": "Διαγραφή",
   "app.containers.AdminPage.ProjectPages.deleteConfirmation": "Είστε βέβαιοι ότι θέλετε να διαγράψετε αυτήν τη σελίδα;",

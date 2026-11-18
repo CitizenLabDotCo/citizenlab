@@ -3786,8 +3786,6 @@
   "app.containers.AdminPage.ProjectIdeaForm.saved": "Tallennettu!",
   "app.containers.AdminPage.ProjectIdeaForm.viewFormLinkCopy": "Näytä lomake",
   "app.containers.AdminPage.ProjectPages.addFirstPage": "Lisää ensimmäinen sivusi",
-  "app.containers.AdminPage.ProjectPages.attachmentsLabel": "Liitteet",
-  "app.containers.AdminPage.ProjectPages.contentLabel": "Sisältö",
   "app.containers.AdminPage.ProjectPages.createButton": "Luo sivu",
   "app.containers.AdminPage.ProjectPages.deleteButton": "Poista",
   "app.containers.AdminPage.ProjectPages.deleteConfirmation": "Haluatko varmasti poistaa tämän sivun?",

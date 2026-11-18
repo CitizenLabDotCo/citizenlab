@@ -3786,8 +3786,6 @@
   "app.containers.AdminPage.ProjectIdeaForm.saved": "Gemt!",
   "app.containers.AdminPage.ProjectIdeaForm.viewFormLinkCopy": "Vis formular",
   "app.containers.AdminPage.ProjectPages.addFirstPage": "Tilføj din første side",
-  "app.containers.AdminPage.ProjectPages.attachmentsLabel": "Vedhæftede filer",
-  "app.containers.AdminPage.ProjectPages.contentLabel": "Indhold",
   "app.containers.AdminPage.ProjectPages.createButton": "Opret side",
   "app.containers.AdminPage.ProjectPages.deleteButton": "Slet",
   "app.containers.AdminPage.ProjectPages.deleteConfirmation": "Er du sikker på, at du vil slette denne side?",

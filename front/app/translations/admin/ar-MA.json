@@ -3786,8 +3786,6 @@
   "app.containers.AdminPage.ProjectIdeaForm.saved": "تم الحفظ!",
   "app.containers.AdminPage.ProjectIdeaForm.viewFormLinkCopy": "عرض النموذج",
   "app.containers.AdminPage.ProjectPages.addFirstPage": "أضف صفحتك الأولى",
-  "app.containers.AdminPage.ProjectPages.attachmentsLabel": "المرفقات",
-  "app.containers.AdminPage.ProjectPages.contentLabel": "المحتوى",
   "app.containers.AdminPage.ProjectPages.createButton": "إنشاء صفحة",
   "app.containers.AdminPage.ProjectPages.deleteButton": "حذف",
   "app.containers.AdminPage.ProjectPages.deleteConfirmation": "هل أنت متأكد من رغبتك في حذف هذه الصفحة؟",

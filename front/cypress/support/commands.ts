@@ -76,6 +76,7 @@ declare global {
       apiRemoveCustomPage: typeof apiRemoveCustomPage;
       apiCreateCustomPage: typeof apiCreateCustomPage;
       apiUpdateCustomPage: typeof apiUpdateCustomPage;
+      apiRemoveCustomPageLayout: typeof apiRemoveCustomPageLayout;
       apiAddFileToCustomPage: typeof apiAddFileToCustomPage;
       apiAddProjectsToFolder: typeof apiAddProjectsToFolder;
       apiCreatePhase: typeof apiCreatePhase;
@@ -1308,6 +1309,21 @@ function apiRemoveCustomPage(customPageId: string) {
       },
       method: 'DELETE',
       url: `web_api/v1/static_pages/${customPageId}`,
+    });
+  });
+}
+
+function apiRemoveCustomPageLayout(customPageId: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'DELETE',
+      url: `web_api/v1/static_pages/${customPageId}/content_builder_layouts/custom_page`,
     });
   });
 }
@@ -2708,6 +2724,7 @@ Cypress.Commands.add('apiSetProjectAreas', apiSetProjectAreas);
 Cypress.Commands.add('apiRemoveCustomPage', apiRemoveCustomPage);
 Cypress.Commands.add('apiCreateCustomPage', apiCreateCustomPage);
 Cypress.Commands.add('apiUpdateCustomPage', apiUpdateCustomPage);
+Cypress.Commands.add('apiRemoveCustomPageLayout', apiRemoveCustomPageLayout);
 Cypress.Commands.add('apiAddFileToCustomPage', apiAddFileToCustomPage);
 Cypress.Commands.add('clickLocaleSwitcherAndType', clickLocaleSwitcherAndType);
 Cypress.Commands.add('apiCreateSmartGroup', apiCreateSmartGroup);

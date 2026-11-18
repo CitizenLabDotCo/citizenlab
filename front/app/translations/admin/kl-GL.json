@@ -3786,8 +3786,6 @@
   "app.containers.AdminPage.ProjectIdeaForm.saved": "Saved!",
   "app.containers.AdminPage.ProjectIdeaForm.viewFormLinkCopy": "View form",
   "app.containers.AdminPage.ProjectPages.addFirstPage": "Qupperneq siulleq ilannguguk",
-  "app.containers.AdminPage.ProjectPages.attachmentsLabel": "Ilanngussat",
-  "app.containers.AdminPage.ProjectPages.contentLabel": "Imarisaa",
   "app.containers.AdminPage.ProjectPages.createButton": "Qupperneq piliariuk",
   "app.containers.AdminPage.ProjectPages.deleteButton": "Piiaruk",
   "app.containers.AdminPage.ProjectPages.deleteConfirmation": "Qularinngiliuk qupperneq manna piiarusullugu?",
