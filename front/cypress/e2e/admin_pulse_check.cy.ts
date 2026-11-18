@@ -136,7 +136,7 @@ describe('Admin pulse check with the real API', () => {
     cy.get('#e2e-publish-dropdown-toggle').click();
     // The button stays pending, and ignores presses, until readiness loads.
     cy.get('#e2e-publish-now button')
-      .should('not.have.attr', 'data-pending')
+      .should(($button) => expect($button).not.to.have.attr('data-pending'))
       .click();
     cy.get('#e2e-publish-anyway').click();
     cy.wait('@publishProject', { timeout: 30000 })
