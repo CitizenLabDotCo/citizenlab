@@ -44,10 +44,6 @@ describe 'db rake tasks' do
     before { allow(postprocess_task).to receive(:execute) }
     after { postprocess_task.reenable }
 
-    it 'post-processes structure.sql after dumping it' do
-      expect(hook).to be_present
-    end
-
     # ros-apartment dumps the schema again after migrating the tenants.
     it 'post-processes every dump in the same run' do
       2.times { hook.call }
