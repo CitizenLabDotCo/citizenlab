@@ -892,7 +892,7 @@ jobs:
   front-chromatic:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
-    resource_class: medium
+    resource_class: large
     working_directory: ~/citizenlab/front
     steps:
       # Non-shallow clone (required for chromatic)
