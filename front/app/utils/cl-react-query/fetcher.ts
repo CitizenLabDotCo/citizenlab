@@ -157,16 +157,25 @@ async function fetcher({
       return null;
     }
 
-    reportError('Unsupported case. No valid JSON.');
+    // A bodiless 401 or 404 is expected, mostly from crawlers.
+    if (response.status !== 401 && response.status !== 404) {
+      reportError('Unsupported case. No valid JSON.');
+    }
     throw new HttpError('Unsupported case. No valid JSON.', response.status);
   }
 
   if (!response.ok) {
-    const error = data as unknown as CLErrors;
+    // Error bodies don't have the success shape.
+    const body: unknown = data;
+    const error = body as CLErrors;
     handleBlockedUserError(response.status, error);
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (!error.errors) {
+
+    // A missing record's 404 body is a bare string (the exception message).
+    // Unknown routes return an object, so wrong API paths are still reported.
+    const isMissingRecord = response.status === 404 && typeof body === 'string';
+    const hasErrors =
+      typeof body === 'object' && body !== null && 'errors' in body;
+    if (!hasErrors && !isMissingRecord) {
       reportError(data);
     }
 

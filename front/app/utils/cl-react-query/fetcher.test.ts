@@ -1,4 +1,5 @@
 import { queryClient } from 'utils/cl-react-query/queryClient';
+import { reportError } from 'utils/loggingUtils';
 
 import fetcher, { HttpError } from './fetcher';
 
@@ -37,6 +38,11 @@ jest.mock('utils/cl-react-query/queryClient', () => ({
 }));
 
 const mockSetQueryData = queryClient.setQueryData as jest.Mock;
+
+jest.mock('utils/loggingUtils', () => ({ reportError: jest.fn() }));
+const mockReportError = jest.mocked(reportError);
+
+beforeEach(() => mockReportError.mockClear());
 
 describe('fetcher', () => {
   describe('GET', () => {
@@ -109,6 +115,64 @@ describe('fetcher', () => {
 
       await expect(request).rejects.toBeInstanceOf(HttpError);
       await expect(request).rejects.toHaveProperty('status', 404);
+    });
+
+    it('does not report a 404 for a missing record', async () => {
+      const message = "Couldn't find Project with 'id'=\"1\"";
+      jest.mocked(global.fetch).mockResolvedValueOnce({
+        status: 404,
+        ok: false,
+        json: () => Promise.resolve(message),
+      } as Response);
+
+      await expect(fetcher({ path: '/path', action: 'get' })).rejects.toBe(
+        message
+      );
+      expect(mockReportError).not.toHaveBeenCalled();
+    });
+
+    it('reports a 404 for an unknown route', async () => {
+      const body = { status: 404, error: 'Not Found' };
+      jest.mocked(global.fetch).mockResolvedValueOnce({
+        status: 404,
+        ok: false,
+        json: () => Promise.resolve(body),
+      } as Response);
+
+      await expect(fetcher({ path: '/path', action: 'get' })).rejects.toEqual(
+        body
+      );
+      expect(mockReportError).toHaveBeenCalledWith(body);
+    });
+
+    it('does not report a 401 or 404 without a JSON body', async () => {
+      for (const status of [401, 404]) {
+        jest.mocked(global.fetch).mockResolvedValueOnce({
+          status,
+          ok: false,
+          json: () => Promise.reject(new SyntaxError('Unexpected end of JSON')),
+        } as Response);
+
+        await expect(
+          fetcher({ path: '/path', action: 'get' })
+        ).rejects.toBeInstanceOf(HttpError);
+      }
+      expect(mockReportError).not.toHaveBeenCalled();
+    });
+
+    it('reports any other status without a JSON body', async () => {
+      jest.mocked(global.fetch).mockResolvedValueOnce({
+        status: 413,
+        ok: false,
+        json: () => Promise.reject(new SyntaxError('Unexpected token <')),
+      } as Response);
+
+      await expect(
+        fetcher({ path: '/path', action: 'get' })
+      ).rejects.toBeInstanceOf(HttpError);
+      expect(mockReportError).toHaveBeenCalledWith(
+        'Unsupported case. No valid JSON.'
+      );
     });
   });
   describe('POST', () => {
