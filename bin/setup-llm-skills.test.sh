@@ -84,7 +84,11 @@ commit_all 'Second'
 # ============================================================================
 
 export LLM_SKILLS_REPO_ROOT="$TEST_TMP/citizenlab"
-export LLM_SKILLS_GIT_REMOTE="file://$FAKE_REPO"
+# Sends the script's fetches of the real skills repo to the fake one.
+SKILLS_REPO="$(sed -n 's/^SKILLS_REPO="\(.*\)"$/\1/p' "$SCRIPT_TO_TEST")"
+export GIT_CONFIG_COUNT=1
+export GIT_CONFIG_KEY_0="url.file://$FAKE_REPO.insteadOf"
+export GIT_CONFIG_VALUE_0="$SKILLS_REPO"
 SKILLS_DIR="$LLM_SKILLS_REPO_ROOT/back/vendor/llm_skills"
 REPORT_SKILL="$SKILLS_DIR/plugins/reporting/skills/report/SKILL.md"
 mkdir -p "$LLM_SKILLS_REPO_ROOT/back/config"
@@ -146,15 +150,9 @@ else
   fail "keeps what the link pointed to"
 fi
 
-echo "Reads the remote from env_files/back-secret.env"
-mkdir -p "$LLM_SKILLS_REPO_ROOT/env_files"
-echo "LLM_SKILLS_GIT_REMOTE=\"file://$FAKE_REPO\"" > "$LLM_SKILLS_REPO_ROOT/env_files/back-secret.env"
-LLM_SKILLS_GIT_REMOTE='' assert_succeeds "$SCRIPT_TO_TEST"
-rm -r "$LLM_SKILLS_REPO_ROOT/env_files"
-
 echo "Copies from a clone with --from, uncommitted edits included"
 write_file plugins/reporting/skills/report/SKILL.md 'report, draft'
-LLM_SKILLS_GIT_REMOTE='' assert_succeeds "$SCRIPT_TO_TEST" --from "$FAKE_REPO"
+assert_succeeds "$SCRIPT_TO_TEST" --from "$FAKE_REPO"
 assert_eq "$(cat "$REPORT_SKILL")" 'report, draft' "copies the clone as it is"
 
 echo "Fails with --from a folder that isn't a clone of the skills repo"
@@ -177,9 +175,9 @@ echo "skills: [report]" >> "$LLM_SKILLS_REPO_ROOT/back/config/llm_skills.yml"
 assert_fails "$SCRIPT_TO_TEST"
 assert_eq "$(cat "$REPORT_SKILL")" 'report, draft' "keeps the previous copy"
 
-echo "Fails without the remote"
-write_manifest "$PINNED" report
-LLM_SKILLS_GIT_REMOTE='' assert_fails "$SCRIPT_TO_TEST"
+echo "Fails when the pinned commit can't be fetched"
+write_manifest 0000000000000000000000000000000000000000 report
+assert_fails "$SCRIPT_TO_TEST"
 assert_eq "$(cat "$REPORT_SKILL")" 'report, draft' "keeps the previous copy"
 
 
