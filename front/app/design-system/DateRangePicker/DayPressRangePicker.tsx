@@ -142,6 +142,7 @@ const DayPressRangePicker = ({
               maxValue={maxValue}
               isDateUnavailable={isDateUnavailable}
               defaultFocusedValue={defaultFocusedValue}
+              autoFocus
             />
             {hasFooter && (
               <>
