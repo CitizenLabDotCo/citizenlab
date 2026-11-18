@@ -173,10 +173,7 @@ commands:
             - "00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00"
       - run:
           name: Copy the AI assistant's skills into the back image
-          # GitHub accepts the checkout key too, which can't read the skills repo, so only the deploy key is offered.
-          command: |
-            GIT_SSH_COMMAND="ssh -i ~/.ssh/id_rsa_00000000000000000000000000000000 -o IdentitiesOnly=yes" \
-              ~/citizenlab/bin/setup-llm-skills
+          command: ~/citizenlab/bin/setup-llm-skills
 
 jobs:
   trigger-workflows:
