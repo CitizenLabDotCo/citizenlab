@@ -4,6 +4,7 @@ import {
   Button as AriaButton,
   Disclosure as AriaDisclosure,
   DisclosurePanel,
+  Heading,
   PressEvent,
 } from 'react-aria-components';
 
@@ -65,12 +66,14 @@ const DisclosureCard = ({
     onExpandedChange={onExpandedChange}
     isDisabled={isDisabled}
   >
-    <AriaButton slot="trigger" className={styles.trigger}>
-      <HeaderContent {...content} />
-      <span className={styles.iconBox}>
-        <Icon name="chevron-down-16" className={styles.chevron} />
-      </span>
-    </AriaButton>
+    <Heading level={4} className={styles.heading}>
+      <AriaButton slot="trigger" className={styles.trigger}>
+        <HeaderContent {...content} />
+        <span className={styles.iconBox}>
+          <Icon name="chevron-down-16" className={styles.chevron} />
+        </span>
+      </AriaButton>
+    </Heading>
     <DisclosurePanel className={styles.panel}>
       <div className={styles.panelContent}>{children}</div>
     </DisclosurePanel>
