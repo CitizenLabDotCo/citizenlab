@@ -1,5 +1,4 @@
-# annotaterb settings, carried over from the annotate gem's settings so annotations keep their
-# format. Run `bundle exec annotaterb models` to annotate by hand.
+# annotaterb settings. Run `bundle exec annotaterb models` to annotate by hand.
 ---
 models: true
 model_dir:

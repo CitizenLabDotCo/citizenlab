@@ -12,13 +12,13 @@
 #
 # Indexes
 #
-#  index_static_pages_global_topics_on_static_page_id   (static_page_id)
 #  index_static_pages_global_topics_on_global_topic_id  (global_topic_id)
+#  index_static_pages_global_topics_on_static_page_id   (static_page_id)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (static_page_id => static_pages.id)
 #  fk_rails_...  (global_topic_id => global_topics.id)
+#  fk_rails_...  (static_page_id => static_pages.id)
 #
 class StaticPagesGlobalTopic < ApplicationRecord
   belongs_to :static_page

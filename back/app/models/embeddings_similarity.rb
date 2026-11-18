@@ -14,7 +14,7 @@
 #
 #  index_embeddings_similarities_on_embeddable           (embeddable_type,embeddable_id)
 #  index_embeddings_similarities_on_embedded_attributes  (embedded_attributes)
-#  index_embeddings_similarities_on_embedding            (embedding) USING hnsw
+#  index_embeddings_similarities_on_embedding            (embedding vector_cosine_ops) USING hnsw
 #
 class EmbeddingsSimilarity < ApplicationRecord
   belongs_to :embeddable, polymorphic: true

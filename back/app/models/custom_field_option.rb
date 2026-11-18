@@ -15,13 +15,16 @@
 #
 # Indexes
 #
-#  custom_field_options_field_id_ordering_unique          (custom_field_id,ordering) UNIQUE
 #  index_custom_field_options_on_custom_field_id          (custom_field_id)
 #  index_custom_field_options_on_custom_field_id_and_key  (custom_field_id,key) UNIQUE
 #
 # Foreign Keys
 #
 #  fk_rails_...  (custom_field_id => custom_fields.id)
+#
+# Unique Constraints
+#
+#  custom_field_options_field_id_ordering_unique  (custom_field_id, ordering) DEFERRABLE INITIALLY IMMEDIATE
 #
 class CustomFieldOption < ApplicationRecord
   include PlainTextMultiloc
