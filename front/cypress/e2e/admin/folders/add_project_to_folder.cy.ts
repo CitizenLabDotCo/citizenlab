@@ -70,19 +70,23 @@ describe('Admin: add projects to folder', () => {
     cy.get(`[data-cy="e2e-manage-button-${projectId1}"]`).should('exist');
     cy.get(`[data-cy="e2e-manage-button-${projectId2}"]`).should('exist');
 
+    // After each add, every listed project is refetched. The browser queues the
+    // next PATCH behind those requests, so it can take a while to be sent.
+    const membershipRequest = { requestTimeout: 30000 };
+
     // Add the first project, then wait for its PATCH to resolve before the next.
     cy.get(`[data-cy="e2e-manage-button-${projectId1}"]`)
       .find('button')
       .scrollIntoView()
       .click();
-    cy.wait('@updateMembership');
+    cy.wait('@updateMembership', membershipRequest);
 
     // Add the second project and wait for its PATCH to resolve.
     cy.get(`[data-cy="e2e-manage-button-${projectId2}"]`)
       .find('button')
       .scrollIntoView()
       .click();
-    cy.wait('@updateMembership');
+    cy.wait('@updateMembership', membershipRequest);
 
     // Both projects now appear in the folder's "projects already added" list.
     cy.get('#e2e-admin-folders-projects-list')

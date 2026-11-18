@@ -106,12 +106,12 @@ describe('Opening setup settings before saving a phase', () => {
         cy.get('#phase-moderation-settings')
           .contains('Assignee')
           .should('be.visible');
-        // The assignee combobox opens its list straight away.
+        // The assignee menu opens straight away.
         cy.get('#phase-moderation-settings')
-          .find('[role="combobox"]')
+          .find('button[aria-haspopup="true"]')
           .should('be.visible')
           .and('have.attr', 'aria-expanded', 'true');
-        cy.get('[role="listbox"]').should('be.visible');
+        cy.get('[role="menu"]').should('be.visible');
       }
       cy.get('@createPhase.all').should('have.length', 1);
     });

@@ -39,6 +39,7 @@ export type ButtonProps = LabelProps & {
   href?: string;
   target?: '_blank';
   id?: string;
+  'aria-describedby'?: string;
   'data-cy'?: string;
 };
 
@@ -60,6 +61,7 @@ const Button = ({
   target,
   id,
   'aria-label': ariaLabel,
+  'aria-describedby': ariaDescribedBy,
   'data-cy': dataCy,
 }: ButtonProps) => {
   const isFilled = variant === 'primary' || variant === 'danger';
@@ -98,6 +100,7 @@ const Button = ({
         autoFocus={autoFocus}
         id={id}
         aria-label={ariaLabel}
+        aria-describedby={ariaDescribedBy}
         data-cy={dataCy}
       >
         {content}
@@ -118,6 +121,7 @@ const Button = ({
       aria-disabled={hasReason ? true : undefined}
       onPress={hasReason ? undefined : onPress}
       aria-label={ariaLabel}
+      aria-describedby={ariaDescribedBy}
       data-cy={dataCy}
     >
       {content}
