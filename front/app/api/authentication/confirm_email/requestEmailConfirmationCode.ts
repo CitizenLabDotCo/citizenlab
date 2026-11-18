@@ -59,7 +59,7 @@ const hasNewEmailError = (error: unknown, errorKey: string) =>
   Array.isArray(error.errors.new_email) &&
   error.errors.new_email.some(({ error }) => error === errorKey);
 
-const isEmailTaken = (error: unknown) =>
+export const isEmailTaken = (error: unknown) =>
   hasNewEmailError(error, 'is already taken');
 
 // A blocked or banned address. The error is deliberately vague, as on sign-up,

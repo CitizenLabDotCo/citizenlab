@@ -453,12 +453,6 @@ class User < ApplicationRecord
     merge_target_email.present?
   end
 
-  # True when the user is invalid only because their email is blocked or banned.
-  def only_blocked_email_errors?
-    details = errors.details.values.flatten
-    details.any? && details.all? { |detail| detail[:code].in?([EMAIL_DOMAIN_BLOCKED_ERROR_CODE, EMAIL_BANNED_ERROR_CODE]) }
-  end
-
   private
 
   # Concurrent requests race here; the savepoint lets the caller's transaction survive the losing insert.

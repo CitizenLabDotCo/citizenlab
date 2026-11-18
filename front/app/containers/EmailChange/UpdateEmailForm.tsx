@@ -4,7 +4,7 @@ import { Box, Success } from '@citizenlab/cl2-component-library';
 import { FormProvider, UseFormReturn } from 'react-hook-form';
 
 import {
-  isEmailRefused,
+  isEmailTaken,
   requestCodeForEmail,
 } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
 import { IUser } from 'api/users/types';
@@ -71,7 +71,7 @@ const UpdateEmailForm = ({
         })
         .catch((requestError) => {
           setError(
-            isEmailRefused(requestError) ? 'something_went_wrong' : 'taken'
+            isEmailTaken(requestError) ? 'taken' : 'something_went_wrong'
           );
         });
     } catch (error) {

@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
-# Reports OmniAuth strategy failures from the `on_failure` hook, the only place
-# the error exists: OmniAuth then redirects to /auth/failure without it.
+# Reports OmniAuth failures: strategy failures, and users from the SSO callback that cannot be saved.
 class OmniauthFailureService
+  # Runs from the `on_failure` hook, the only place the error exists: OmniAuth
+  # then redirects to /auth/failure without it.
   def report(env)
     error = env['omniauth.error']
     error_type = env['omniauth.error.type']&.to_s
@@ -24,7 +25,41 @@ class OmniauthFailureService
     Rails.logger.error("Could not report OmniAuth failure: #{e.class}: #{e.message}")
   end
 
+  # Users rejected by our email rules (blocked domain, banned email) are expected,
+  # so they are logged as an activity, not reported. Any other validation error
+  # may mean the SSO method is misconfigured, so it is reported, grouped per
+  # provider and error.
+  def report_invalid_record(error, provider, remote_ip)
+    record = error.record
+    if record.is_a?(User) && only_blocked_email_errors?(record)
+      SideFxUserService.new.after_error(record, remote_ip)
+      return
+    end
+
+    validation_errors = record.errors.details.flat_map do |attribute, details|
+      details.map { |detail| "#{attribute}.#{validation_error_key(detail[:error])}" }
+    end.uniq.sort
+
+    ErrorReporter.report(
+      error,
+      extra: { provider: provider, record: record.class.name, validation_errors: validation_errors },
+      fingerprint: ['omniauth-invalid-record', provider, record.class.name, *validation_errors]
+    )
+  end
+
   private
+
+  def only_blocked_email_errors?(user)
+    details = user.errors.details.values.flatten
+    details.any? && details.all? do |detail|
+      detail[:code].in?([User::EMAIL_DOMAIN_BLOCKED_ERROR_CODE, User::EMAIL_BANNED_ERROR_CODE])
+    end
+  end
+
+  # JsonValidator adds a Hash whose message can hold the value; group on its error name only.
+  def validation_error_key(error)
+    error.is_a?(Hash) ? error[:error] : error
+  end
 
   # HTTP errors from the IDP often have a useless message (e.g. "Unknown :: <html>…"),
   # so add the status, response body and cause.

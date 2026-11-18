@@ -94,4 +94,65 @@ describe OmniauthFailureService do
       expect { service.report(env) }.not_to raise_error
     end
   end
+
+  describe '#report_invalid_record' do
+    using RSpec::Parameterized::TableSyntax
+
+    def invalid_record_error(user)
+      user.validate
+      ActiveRecord::RecordInvalid.new(user)
+    end
+
+    blocked_email = "someone@#{User::EMAIL_DOMAIN_BLACKLIST.first}"
+
+    where(:case_name, :email, :locale, :reported) do
+      'the email domain is blocked'            | blocked_email  | 'en' | false
+      'there are other errors as well'         | blocked_email  | 'xx' | true
+      'there are only other validation errors' | 'not-an-email' | 'en' | true
+    end
+
+    with_them do
+      it 'reports only when the user is not rejected by the email rules alone' do
+        error = invalid_record_error(build(:user, email: email, locale: locale))
+
+        if reported
+          expect(ErrorReporter).to receive(:report)
+        else
+          expect(ErrorReporter).not_to receive(:report)
+        end
+
+        service.report_invalid_record(error, 'fake_sso', '1.2.3.4')
+      end
+    end
+
+    it 'logs a banned email as an activity instead of reporting it' do
+      ban = EmailBan.ban!('banned@example.com')
+      error = invalid_record_error(build(:user, email: 'banned@example.com'))
+
+      expect(ErrorReporter).not_to receive(:report)
+      expect { service.report_invalid_record(error, 'fake_sso', '1.2.3.4') }
+        .to have_enqueued_job(LogActivityJob).with(ban, 'banned_email_used', nil, anything, payload: { remote_ip: '1.2.3.4' })
+    end
+
+    it 'treats a blocked new email like a blocked email' do
+      user = create(:user)
+      user.new_email = "someone@#{User::EMAIL_DOMAIN_BLACKLIST.first}"
+
+      expect(ErrorReporter).not_to receive(:report)
+
+      service.report_invalid_record(invalid_record_error(user), 'fake_sso', '1.2.3.4')
+    end
+
+    it 'groups other errors by provider, record and validation error key' do
+      error = invalid_record_error(build(:user, email: 'not-an-email'))
+
+      expect(ErrorReporter).to receive(:report).with(
+        error,
+        extra: { provider: 'fake_sso', record: 'User', validation_errors: ['email.invalid'] },
+        fingerprint: %w[omniauth-invalid-record fake_sso User email.invalid]
+      )
+
+      service.report_invalid_record(error, 'fake_sso', '1.2.3.4')
+    end
+  end
 end
