@@ -1,4 +1,4 @@
-import { randomString } from '../../../support/commands';
+import { randomEmail, randomString } from '../../../support/commands';
 import moment = require('moment');
 
 describe('Report builder Participants timeline widget', () => {
@@ -6,6 +6,7 @@ describe('Report builder Participants timeline widget', () => {
   let projectSlug: string;
   let reportId: string;
   let phaseId: string;
+  let userId: string | undefined;
   const projectTitle = randomString();
 
   beforeEach(() => {
@@ -37,11 +38,24 @@ describe('Report builder Participants timeline widget', () => {
         });
       })
       .then((phase) => {
-        cy.apiCreateIdea({
-          phaseId: phase.body.data.id,
-          ideaTitle,
-          ideaContent,
-        });
+        // Participate as a resident: admins and moderators are excluded from
+        // statistics by default, so an admin-authored idea would not count.
+        return cy
+          .apiSignup(
+            randomString(),
+            randomString(),
+            randomEmail(),
+            randomString()
+          )
+          .then((user) => {
+            userId = user.body.data.id;
+            return cy.apiCreateIdea({
+              phaseId: phase.body.data.id,
+              ideaTitle,
+              ideaContent,
+              jwt: user._jwt,
+            });
+          });
       })
       .then(() => {
         return cy.apiCreatePhase({
@@ -77,6 +91,10 @@ describe('Report builder Participants timeline widget', () => {
   afterEach(() => {
     if (reportId) {
       cy.apiRemoveReportBuilder(reportId);
+    }
+    if (userId) {
+      cy.apiRemoveUser(userId);
+      userId = undefined;
     }
   });
 

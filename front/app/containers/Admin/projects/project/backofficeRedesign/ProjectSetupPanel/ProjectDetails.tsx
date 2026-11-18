@@ -6,8 +6,7 @@ import { IProjectData } from 'api/projects/types';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../messages';
-
+import messages from './messages';
 import SetupCards from './SetupCards';
 
 interface Props {

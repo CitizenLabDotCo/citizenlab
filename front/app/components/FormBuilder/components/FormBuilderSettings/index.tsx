@@ -14,10 +14,8 @@ import {
   IFlatCustomFieldWithIndex,
 } from 'api/custom_fields/types';
 
-import {
-  getTranslatedStringKey,
-  ResolvedFormBuilderConfig,
-} from 'components/FormBuilder/utils';
+import { getTranslatedStringKey } from 'components/FormBuilder/fieldLabels';
+import { ResolvedFormBuilderConfig } from 'components/FormBuilder/utils';
 import CloseIconButton from 'components/UI/CloseIconButton';
 
 import { trackEventByName } from 'utils/analytics';

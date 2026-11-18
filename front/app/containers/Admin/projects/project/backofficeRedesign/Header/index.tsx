@@ -1,6 +1,12 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
-import { Box, Tooltip, bo, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Button,
+  Tooltip,
+  bo,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { IPhaseData } from 'api/phases/types';
@@ -8,18 +14,22 @@ import { IProjectData } from 'api/projects/types';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { useWorkspaceHeader } from 'containers/Admin/sideBar/WorkspaceHeaderContext';
+
 import { usePageSave } from 'components/admin/PageSaveContext';
 import Breadcrumbs, { TBreadcrumbs } from 'components/UI/Breadcrumbs';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
+import goBackMessages from 'components/UI/GoBackButton/messages';
 
 import { useIntl } from 'utils/cl-intl';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 import { ProjectSection } from '../_shared/sections';
-import messages from '../messages';
 import usePhaseViews, { PhaseViewKey } from '../Phase/usePhaseViews';
 import ViewSwitch from '../Phase/ViewSwitch';
 
 import { HeaderDropdownName } from './HeaderDropdown';
+import messages from './messages';
 import PublishDropdown from './PublishDropdown';
 import ReviewFlow from './ReviewFlow';
 import SaveChangesButton from './SaveChangesButton';
@@ -40,6 +50,9 @@ interface Props {
   draftParentLabel?: string;
   saveLabel?: string;
   activeView: PhaseViewKey;
+  viewSwitch?: ReactNode;
+  /** The back button then returns from the map to the phase. */
+  editingMap?: boolean;
   section?: ProjectSection;
   openDropdown: HeaderDropdownName | null;
   onOpenDropdown: (dropdown: HeaderDropdownName | null) => void;
@@ -52,6 +65,8 @@ const WorkspaceHeader = ({
   draftParentLabel,
   saveLabel,
   activeView,
+  viewSwitch,
+  editingMap,
   section,
   openDropdown,
   onOpenDropdown,
@@ -59,6 +74,7 @@ const WorkspaceHeader = ({
   const { formatMessage } = useIntl();
   const pageSave = usePageSave();
   const localize = useLocalize();
+  const workspaceHeader = useWorkspaceHeader();
   const views = usePhaseViews(phase);
   const inPhase = !!(phase || draftLabel);
   const saveButtonLabel = inPhase
@@ -98,15 +114,23 @@ const WorkspaceHeader = ({
   return (
     <Box
       as="header"
+      ref={workspaceHeader?.setElement}
+      data-project-workspace-header=""
       display="flex"
       alignItems="center"
       flex={`0 0 ${HEADER_HEIGHT}`}
       height={HEADER_HEIGHT}
-      pl="26px"
+      pl="56px"
       pr="20px"
       background={colors.white}
       borderRadius={bo.panelBorderRadius}
     >
+      <Box
+        flex="0 0 auto"
+        height="24px"
+        borderLeft={`1px solid ${colors.divider}`}
+        mr="16px"
+      />
       <CrumbBar
         flex="1 1 0"
         minWidth="0"
@@ -117,16 +141,30 @@ const WorkspaceHeader = ({
       >
         {inPhase ? (
           <>
-            <ButtonWithLink
-              to="/admin/projects/$projectId"
-              params={{ projectId: project.id }}
-              buttonStyle="bo-secondary"
-              icon="arrow-left"
-              width={bo.buttonMedium.height}
-              height={bo.buttonMedium.height}
-              padding="0"
-              ariaLabel={formatMessage(messages.backToProjectSetup)}
-            />
+            {editingMap ? (
+              <Button
+                buttonStyle="bo-text"
+                icon="arrow-left"
+                iconColor={colors.coolGrey500}
+                width={bo.buttonMedium.height}
+                height={bo.buttonMedium.height}
+                padding="0"
+                ariaLabel={formatMessage(goBackMessages.goBack)}
+                onClick={() => removeSearchParams(['map_config'])}
+              />
+            ) : (
+              <ButtonWithLink
+                to="/admin/projects/$projectId"
+                params={{ projectId: project.id }}
+                buttonStyle="bo-text"
+                icon="arrow-left"
+                iconColor={colors.coolGrey500}
+                width={bo.buttonMedium.height}
+                height={bo.buttonMedium.height}
+                padding="0"
+                ariaLabel={formatMessage(messages.backToProjectSetup)}
+              />
+            )}
             <Breadcrumbs
               breadcrumbs={phaseCrumbs}
               separator={draftParentLabel ? 'chevron' : 'slash'}
@@ -146,14 +184,15 @@ const WorkspaceHeader = ({
       </CrumbBar>
 
       <Box flex="0 0 auto">
-        {phase && (
-          <ViewSwitch
-            views={views}
-            activeView={activeView}
-            projectId={project.id}
-            phaseId={phase.id}
-          />
-        )}
+        {viewSwitch ??
+          (phase && (
+            <ViewSwitch
+              views={views}
+              activeView={activeView}
+              projectId={project.id}
+              phaseId={phase.id}
+            />
+          ))}
       </Box>
 
       <Box

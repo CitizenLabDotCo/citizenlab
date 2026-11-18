@@ -10,12 +10,20 @@ module CustomIdMethods::BosaFas
       '6a66cafb-08a8-451f-8c0b-f349cdfdaaee'
     end
 
-    def config_parameters
-      %i[environment identifier secret enabled_for_verified_actions]
-    end
-
     def config_parameters_schema
       {
+        environment: {
+          private: true,
+          type: 'string'
+        },
+        identifier: {
+          private: true,
+          type: 'string'
+        },
+        secret: {
+          private: true,
+          type: 'string'
+        },
         enabled_for_verified_actions: {
           private: true,
           type: 'boolean',

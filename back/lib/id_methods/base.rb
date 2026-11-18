@@ -47,6 +47,24 @@ module IdMethods
       name
     end
 
+    # JSON Schema for each config parameter, used for the AdminHQ settings form.
+    # Its key order is the order of the fields in that form.
+    # @return [Hash{Symbol => Hash}]
+    def config_parameters_schema
+      {}
+    end
+
+    def config_parameters
+      config_parameters_schema.keys
+    end
+
+    # The config parameters sent to the front-end in the id methods API. Like app
+    # configuration settings, a parameter is public unless its schema marks it
+    # private.
+    def public_config_parameters
+      config_parameters_schema.reject { |_param, schema| schema[:private] }.keys
+    end
+
     def enabled_for_verified_actions?
       return false if config.nil?
 

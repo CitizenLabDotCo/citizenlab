@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
 
-import usePhase from 'api/phases/usePhase';
-import usePhases from 'api/phases/usePhases';
-
 import FormInputEditWarningModal from 'components/admin/FormInputEditWarningModal';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
@@ -10,6 +7,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
 import messages from './messages';
+import useSharesInputForm from './useSharesInputForm';
 
 interface Props {
   projectId: string;
@@ -19,25 +17,11 @@ interface Props {
 
 const EditInputFormButton = ({ projectId, phaseId, editFormLink }: Props) => {
   const [showEditWarningModal, setShowEditWarningModal] = useState(false);
-  const { data: phase } = usePhase(phaseId);
-  const { data: phases } = usePhases(projectId);
+  const shouldShowWarning = useSharesInputForm(projectId, phaseId);
 
-  if (!phase || !phases) {
+  if (shouldShowWarning === undefined) {
     return null;
   }
-
-  // Ideation and voting phases share a project-level input form,
-  // so editing affects every such phase in the project.
-  // Proposals phases have a phase-specific form and never share.
-  const sharesProjectLevelForm = (method: string) =>
-    method === 'ideation' || method === 'voting';
-  const currentSharesForm = sharesProjectLevelForm(
-    phase.data.attributes.participation_method
-  );
-  const sharingPhasesCount = phases.data.filter((p) =>
-    sharesProjectLevelForm(p.attributes.participation_method)
-  ).length;
-  const shouldShowWarning = currentSharesForm && sharingPhasesCount > 1;
 
   return (
     <>

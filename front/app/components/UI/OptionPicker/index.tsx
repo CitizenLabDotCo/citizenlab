@@ -91,6 +91,7 @@ export interface PickerOption<T extends string> {
 }
 
 interface Props<T extends string> {
+  defaultOpen?: boolean;
   title: string;
   description: string;
   options: PickerOption<T>[];
@@ -107,6 +108,7 @@ interface Props<T extends string> {
 }
 
 const OptionPicker = <T extends string>({
+  defaultOpen = false,
   title,
   description,
   options,
@@ -123,7 +125,7 @@ const OptionPicker = <T extends string>({
   const { formatMessage } = useIntl();
   const triggerRef = useRef<HTMLButtonElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
-  const [opened, setOpened] = useState(false);
+  const [opened, setOpened] = useState(defaultOpen);
   const [openUp, setOpenUp] = useState(false);
   const [alignRight, setAlignRight] = useState(false);
   const [maxHeight, setMaxHeight] = useState(MAX_HEIGHT);

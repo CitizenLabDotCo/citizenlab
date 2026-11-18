@@ -7,6 +7,7 @@ import { useForm, FormProvider } from 'react-hook-form';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { AuthenticationRequirements } from 'api/authentication/authentication_requirements/types';
 import useAuthenticationRequirements from 'api/authentication/authentication_requirements/useAuthenticationRequirements';
+import { isEmailRefused } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
 import useAuthUser from 'api/me/useAuthUser';
 
 import useLocale from 'hooks/useLocale';
@@ -118,6 +119,15 @@ const BuiltInFields = ({
     } catch (e: any) {
       if (e?.errors?.new_email?.[0]?.error === 'is already taken') {
         setError('email_taken_and_user_can_be_verified');
+        return;
+      }
+
+      // The address is checked as the pending `new_email`, but the field here is `email`.
+      if (isEmailRefused(e)) {
+        handleHookFormSubmissionError(
+          { errors: { email: [{ error: 'something_went_wrong' }] } },
+          methods.setError
+        );
         return;
       }
 

@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/HomepageBanner';
 import HeaderContent from 'containers/HomePage/SignedOutHeader/HeaderContent';
 
+import { TitleVariant } from 'components/admin/ContentBuilder/Widgets/_shared/TitleVariantSetting';
 import { homepageBannerLayoutHeights } from 'components/LandingPages/citizen/constants';
 import {
   Container,
@@ -16,6 +17,7 @@ import Image from 'components/UI/Image';
 
 interface Props {
   homepageSettings: Partial<IHomepageBannerSettings>;
+  titleVariant?: TitleVariant;
 }
 
 const HeaderImage = styled(Image)<{
@@ -30,7 +32,7 @@ const HeaderImage = styled(Image)<{
   `}
 `;
 
-const TwoColumnLayout = ({ homepageSettings }: Props) => {
+const TwoColumnLayout = ({ homepageSettings, titleVariant }: Props) => {
   const headerImage = homepageSettings.header_bg?.large;
 
   // For two column layout, only phone height is customizable
@@ -62,6 +64,7 @@ const TwoColumnLayout = ({ homepageSettings }: Props) => {
           fontColors="dark"
           align="left"
           homepageSettings={homepageSettings}
+          titleVariant={titleVariant}
         />
       </TextWrapper>
     </Container>

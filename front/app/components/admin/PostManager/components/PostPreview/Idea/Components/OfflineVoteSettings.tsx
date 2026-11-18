@@ -31,9 +31,19 @@ interface Props {
   ideaId: string;
   phaseId: string;
   votingMethod: VotingMethod;
+  variant?: 'default' | 'bo';
 }
 
-const OfflineVoteSettings = ({ ideaId, votingMethod, phaseId }: Props) => {
+const OfflineVoteSettings = ({
+  ideaId,
+  votingMethod,
+  phaseId,
+  variant = 'default',
+}: Props) => {
+  const isBo = variant === 'bo';
+  const modifiedByProps = isBo
+    ? ({ variant: 'boHelper', fontSize: 'xs' } as const)
+    : ({ color: 'textSecondary', fontSize: 's' } as const);
   const { data: authUser } = useAuthUser();
 
   const { data: appConfig } = useAppConfiguration();
@@ -99,10 +109,11 @@ const OfflineVoteSettings = ({ ideaId, votingMethod, phaseId }: Props) => {
   }, [authUser?.data.id, manualVotersAmount, phaseId, tenantId, updatePhase]);
 
   return (
-    <Box mt="20px">
+    <Box mt={isBo ? '8px' : '20px'}>
       {votingMethod === 'budgeting' && (
-        <Box mb="20px">
+        <Box mb={isBo ? '16px' : '20px'}>
           <Input
+            variant={variant}
             type="number"
             value={manualVotersAmount?.toString() || ''}
             label={<FormattedMessage {...messages.manualVotersLabel} />}
@@ -129,7 +140,7 @@ const OfflineVoteSettings = ({ ideaId, votingMethod, phaseId }: Props) => {
             }}
           />
           {userLastModifiedVoters?.data.attributes.first_name && (
-            <Text pt="4px" m="0px" color="textSecondary" fontSize="s">
+            <Text pt="4px" m="0px" {...modifiedByProps}>
               <FormattedMessage
                 {...messages.modifiedBy}
                 values={{
@@ -146,6 +157,7 @@ const OfflineVoteSettings = ({ ideaId, votingMethod, phaseId }: Props) => {
       >
         <>
           <Input
+            variant={variant}
             type="number"
             value={manualVotesAmount?.toString() || ''}
             disabled={!manualVotersAmount && isBudgeting}
@@ -194,7 +206,7 @@ const OfflineVoteSettings = ({ ideaId, votingMethod, phaseId }: Props) => {
             }}
           />
           {userLastModifiedVotes?.data.attributes.first_name && (
-            <Text pt="4px" m="0px" color="textSecondary" fontSize="s">
+            <Text pt="4px" m="0px" {...modifiedByProps}>
               <FormattedMessage
                 {...messages.modifiedBy}
                 values={{

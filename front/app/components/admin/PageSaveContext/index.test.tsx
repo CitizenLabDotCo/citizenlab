@@ -60,13 +60,44 @@ describe('PageSaveContext', () => {
       settings: { dirty: false, save: saveSettings },
     });
 
-    let saved: boolean | undefined;
+    let failed: string[] | undefined;
     await act(async () => {
-      saved = await result.current?.saveAll('button');
+      failed = await result.current?.saveAll('button');
     });
 
-    expect(saved).toBe(true);
+    expect(failed).toEqual([]);
     expect(saveBuild).toHaveBeenCalledWith('button');
+    expect(saveSettings).not.toHaveBeenCalled();
+  });
+
+  it('can save a clean panel when an action requires it', async () => {
+    const save = jest.fn().mockResolvedValue(undefined);
+    const { result } = renderPanels({ build: { dirty: false, save } });
+
+    await act(async () => {
+      await result.current?.saveAll('leave', 'build');
+    });
+
+    expect(save).toHaveBeenCalledWith('leave');
+  });
+
+  it('can save one panel and leave the other changes alone', async () => {
+    const saveBuild = jest.fn().mockResolvedValue(undefined);
+    const saveSettings = jest.fn().mockResolvedValue(undefined);
+    const { result } = renderPanels({
+      build: { dirty: true, save: saveBuild },
+      settings: { dirty: true, save: saveSettings },
+    });
+
+    expect(result.current?.dirtyKeys).toEqual(['build', 'settings']);
+
+    let failed: string[] | undefined;
+    await act(async () => {
+      failed = await result.current?.save(['build'], 'leave');
+    });
+
+    expect(failed).toEqual([]);
+    expect(saveBuild).toHaveBeenCalledWith('leave');
     expect(saveSettings).not.toHaveBeenCalled();
   });
 
@@ -79,12 +110,12 @@ describe('PageSaveContext', () => {
       },
     });
 
-    let saved: boolean | undefined;
+    let failed: string[] | undefined;
     await act(async () => {
-      saved = await result.current?.saveAll('leave');
+      failed = await result.current?.saveAll('leave');
     });
 
-    expect(saved).toBe(false);
+    expect(failed).toEqual(['settings']);
     expect(result.current?.saving).toBe(false);
   });
 

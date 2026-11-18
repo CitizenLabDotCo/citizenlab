@@ -1,6 +1,8 @@
 import React, { ReactNode, useState } from 'react';
 
-import { Box, Button, colors } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
+
+import { SetupReviewCard } from 'api/phases/types';
 
 import SetupCard from 'containers/Admin/projects/_shared/components/SetupCard';
 import SummaryPill from 'containers/Admin/projects/_shared/components/SummaryPill';
@@ -9,22 +11,31 @@ import PanelRowButton from './PanelRowButton';
 
 interface Props {
   label: string;
+  reviewKey?: SetupReviewCard;
+  reviewNeedsChoice?: boolean;
   defaultOpen?: boolean;
   variant?: 'card' | 'row';
   /** Shown as a pill in the card header while the group is closed. */
   summary?: string;
+  onClose?: () => void;
   children: ReactNode;
 }
 
 const PanelGroup = ({
   label,
+  reviewKey,
+  reviewNeedsChoice,
   defaultOpen = false,
   variant = 'card',
   summary,
+  onClose,
   children,
 }: Props) => {
   const [open, setOpen] = useState(defaultOpen);
-  const toggle = () => setOpen((open) => !open);
+  const toggle = () => {
+    if (open) onClose?.();
+    setOpen(!open);
+  };
 
   if (variant === 'row') {
     return (
@@ -44,22 +55,14 @@ const PanelGroup = ({
     <Box mb="10px">
       <SetupCard
         title={label}
-        action={
-          <Box display="flex" alignItems="center" gap="4px">
-            {summary && !open && <SummaryPill label={summary} />}
-            <Button
-              buttonStyle="bo-text"
-              icon={open ? 'chevron-up' : 'chevron-down'}
-              iconSize="16px"
-              width="28px"
-              height="28px"
-              padding="0"
-              ariaLabel={label}
-              ariaExpanded={open}
-              onClick={toggle}
-            />
-          </Box>
-        }
+        reviewKey={reviewKey}
+        reviewNeedsChoice={reviewNeedsChoice}
+        action={summary && !open && <SummaryPill label={summary} />}
+        button={{
+          icon: open ? 'chevron-up' : 'chevron-down',
+          expanded: open,
+          onClick: toggle,
+        }}
       >
         {open && children}
       </SetupCard>

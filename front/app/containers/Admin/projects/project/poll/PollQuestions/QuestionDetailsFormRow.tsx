@@ -13,6 +13,7 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
+import { usePollStyles } from '../PollVariantContext';
 
 import WrongMaxChoiceIndicator from './WrongMaxChoiceIndicator';
 
@@ -37,6 +38,8 @@ interface Props {
 }
 
 const QuestionDetailsFormRow = ({ question, onCancelOptionEditing }: Props) => {
+  const { buttonStyle, boSize, inputVariant } = usePollStyles();
+
   const { mutate: updatePollQuestion } = useUpdatePollQuestion();
   const [maxAnswers, setMaxAnswers] = useState(question.attributes.max_options);
   const [questionType, setQuestionType] = useState(
@@ -101,6 +104,7 @@ const QuestionDetailsFormRow = ({ question, onCancelOptionEditing }: Props) => {
       <FormContainer>
         <Box minWidth="200px">
           <Select
+            variant={inputVariant}
             options={typeOptions}
             value={questionType}
             onChange={changeQuestionType}
@@ -123,7 +127,8 @@ const QuestionDetailsFormRow = ({ question, onCancelOptionEditing }: Props) => {
         />
         <ButtonWithLink
           className="e2e-form-question-settings-save"
-          buttonStyle="admin-dark"
+          buttonStyle={buttonStyle('admin-dark')}
+          boSize={boSize}
           onClick={onSave}
           disabled={!isValid}
           mr="8px"
@@ -133,7 +138,8 @@ const QuestionDetailsFormRow = ({ question, onCancelOptionEditing }: Props) => {
         <ButtonWithLink
           className="e2e-collapse-option-form"
           onClick={onCancelOptionEditing}
-          buttonStyle="secondary-outlined"
+          buttonStyle={buttonStyle('secondary-outlined')}
+          boSize={boSize}
         >
           <FormattedMessage {...messages.cancelEditAnswerOptions} />
         </ButtonWithLink>

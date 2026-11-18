@@ -17,6 +17,7 @@ import { getSortDirection } from 'utils/paginationUtils';
 
 import { ColumnKey, COLUMNS } from '../columns';
 import messages from '../messages';
+import useInputTermLabels from '../useInputTermLabels';
 
 import ColumnsMenu from './ColumnsMenu';
 
@@ -42,6 +43,7 @@ const HeaderRow = ({
   onToggleSelectAll,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const { terms, capitalizedTerm } = useInputTermLabels();
   const sortDirection = getSortDirection(sort);
 
   // A first click orders descending, a second click on the same column flips it.
@@ -65,7 +67,7 @@ const HeaderRow = ({
             checked={allSelected}
             indeterminate={!allSelected && someSelected}
             onChange={onToggleSelectAll}
-            ariaLabel={formatMessage(messages.selectAll)}
+            ariaLabel={formatMessage(messages.selectAllOnPage, { terms })}
           />
         </Th>
         <SortableHeaderCell
@@ -74,7 +76,7 @@ const HeaderRow = ({
           sortDirection={sortDirection}
           onChange={handleSort('title')}
         >
-          {formatMessage(messages.inputColumn)}
+          {capitalizedTerm}
         </SortableHeaderCell>
         {columns
           .filter((column) => !COLUMNS[column].mark)

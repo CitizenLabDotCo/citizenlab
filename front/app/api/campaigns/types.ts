@@ -3,6 +3,11 @@
 // non-email/non-sms code (consents, notifications, phases) belongs here.
 
 type RegisterUserCampaignName =
+  | 'native_survey_not_submitted'
+  | 'survey_submitted'
+  | 'your_input_in_screening'
+  | 'cosponsor_of_your_idea'
+  | 'invitation_to_cosponsor_idea'
   | 'comment_deleted_by_admin'
   | 'comment_on_idea_you_follow'
   | 'comment_on_your_comment'

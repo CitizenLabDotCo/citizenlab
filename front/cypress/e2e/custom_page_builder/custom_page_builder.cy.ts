@@ -21,13 +21,7 @@ describe('Custom page builder', () => {
   let projectId = '';
   let otherProjectId = '';
   let areaId = '';
-  let builderWasEnabled = false;
   let filteringWasEnabled = false;
-
-  const setBuilderFeature = (enabled: boolean) =>
-    cy.apiUpdateAppConfiguration({
-      settings: { custom_page_builder: { allowed: true, enabled } },
-    });
 
   const setFiltering = (enabled: boolean) =>
     cy.apiUpdateAppConfiguration({
@@ -67,18 +61,13 @@ describe('Custom page builder', () => {
   before(() => {
     cy.setAdminLoginCookie();
 
-    // Created with the builder flag off, so no layout is provisioned and the page is shaped
-    // like the legacy pages the migration has to cope with: content in the columns, no graph.
-    // Filtering has to be on when the layout is derived, or the lists are not derived at all.
+    // The page is shaped like a legacy page: content in the columns, no graph. Filtering has to
+    // be on when the layout is derived, or the lists are not derived at all.
     cy.apiGetAppConfiguration().then((config) => {
-      builderWasEnabled =
-        config.body.data.attributes.settings.custom_page_builder?.enabled ===
-        true;
       filteringWasEnabled =
         config.body.data.attributes.settings.advanced_custom_pages?.enabled ===
         true;
     });
-    setBuilderFeature(false);
     setFiltering(true);
 
     cy.apiCreateArea(areaTitle).then((area) => {
@@ -138,12 +127,14 @@ describe('Custom page builder', () => {
         });
 
         cy.apiAddFileToCustomPage(pageId, 'example.pdf', 'example.pdf');
+        // Creating the page gave it a layout from its title alone. Without one, the builder
+        // derives a layout from the columns above on first open.
+        cy.apiRemoveCustomPageLayout(pageId);
       });
     });
   });
 
   after(() => {
-    setBuilderFeature(builderWasEnabled);
     setFiltering(filteringWasEnabled);
     if (pageId) cy.apiRemoveCustomPage(pageId);
     if (projectId) cy.apiRemoveProject(projectId);
@@ -151,20 +142,10 @@ describe('Custom page builder', () => {
     if (areaId) cy.apiRemoveArea(areaId);
   });
 
-  it('renders the legacy page while the feature is off', () => {
-    setBuilderFeature(false);
-    cy.visit(`/pages/${pageSlug}`);
-
-    cy.get('.e2e-signed-out-header-title').should('contain', bannerHeaderText);
-    cy.contains(topInfoText).should('be.visible');
-    cy.contains(bottomInfoText).should('be.visible');
-  });
-
   // A page with no layout yet derives one and saves it on this first open. Everything after
   // this reads that stored graph, so the wait matters: without it the next visit derives
   // again, possibly with different features.
   it('derives the page content into the builder', () => {
-    setBuilderFeature(true);
     cy.intercept('GET', `**/static_pages/${pageId}`).as('getPage');
     cy.intercept(
       'GET',
@@ -352,8 +333,8 @@ describe('Custom page builder', () => {
     cy.contains(buttonText).should('be.visible');
   });
 
-  // With the builder on, one page replaces the settings and content tabs: the settings form beside
-  // a preview, and the builder one click away.
+  // One page replaces the settings and content tabs: the settings form beside a preview, and the
+  // builder one click away.
   it('edits the page from one page with a preview', () => {
     cy.setAdminLoginCookie();
     cy.visit(`/admin/pages-menu/pages/${pageId}/settings`);

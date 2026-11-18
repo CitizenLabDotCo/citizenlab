@@ -1,11 +1,10 @@
-#Translations for continuous to timeline migration
-it:
+it-IT:
   phase_title_default:
-    ideation: Raccogli gli input
-    voting: Votazione
-    poll: Consultazione
-    native_survey: Sondaggio
-    survey: Sondaggio
     document_annotation: Feedback sul documento
-    volunteering: Trova dei volontari
+    ideation: Raccogli i contributi
     information: Informazioni
+    native_survey: Sondaggio
+    poll: Consultazione
+    survey: Sondaggio
+    volunteering: Trova dei volontari
+    voting: Votazione

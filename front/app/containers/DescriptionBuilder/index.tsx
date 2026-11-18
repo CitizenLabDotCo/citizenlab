@@ -13,6 +13,7 @@ import useLocale from 'hooks/useLocale';
 
 import { ContentBuilderLayoutProvider } from 'components/admin/ContentBuilder/context/ContentBuilderLayoutContext';
 import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
+import { getSaveError } from 'components/admin/ContentBuilder/saveError';
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
 import DescriptionBuilderContent from 'components/DescriptionBuilder/DescriptionBuilderContent';
 import DescriptionBuilderEditModePreview from 'components/DescriptionBuilder/DescriptionBuilderEditModePreview';
@@ -22,7 +23,6 @@ import Editor from 'components/DescriptionBuilder/Editor';
 import ContentBuilderSettings from 'components/DescriptionBuilder/Settings';
 
 import { type TypedLinkProps } from 'utils/cl-router/Link';
-import { isNilOrError } from 'utils/helperUtils';
 import { useLocation } from 'utils/router';
 
 type Props = {
@@ -56,7 +56,7 @@ const DescriptionBuilderPage = ({
   const {
     mutate: addContentBuilderLayout,
     isPending: isAddingLayout,
-    isError: isAddLayoutError,
+    error: addLayoutError,
   } = useAddContentBuilderLayout();
 
   const [contentBuilderErrors, setContentBuilderErrors] =
@@ -84,7 +84,7 @@ const DescriptionBuilderPage = ({
     });
   }, []);
 
-  if (isNilOrError(locales) || !descriptionBuilderVisible || !layout) {
+  if (!locales || !descriptionBuilderVisible || !layout) {
     return null;
   }
 
@@ -152,7 +152,7 @@ const DescriptionBuilderPage = ({
             titleMultiloc={titleMultiloc}
             onSave={handleSave}
             isSaving={isAddingLayout}
-            saveHasError={isAddLayoutError}
+            saveError={addLayoutError ? getSaveError(addLayoutError) : null}
           />
           <Box
             mt={`${stylingConsts.menuHeight}px`}

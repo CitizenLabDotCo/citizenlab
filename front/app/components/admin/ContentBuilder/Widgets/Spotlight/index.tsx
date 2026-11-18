@@ -12,6 +12,8 @@ import useLocalize from 'hooks/useLocalize';
 
 import { useIntl } from 'utils/cl-intl';
 
+import { TitleVariant } from '../_shared/TitleVariantSetting';
+
 import messages from './messages';
 import SpotlightProjectInner from './Spotlight';
 
@@ -26,6 +28,7 @@ interface Props {
   descriptionMultiloc?: Multiloc;
   buttonTextMultiloc: Multiloc;
   hideAvatars?: boolean;
+  titleVariant?: TitleVariant;
 }
 
 const Spotlight = ({
@@ -35,6 +38,7 @@ const Spotlight = ({
   descriptionMultiloc,
   buttonTextMultiloc,
   hideAvatars,
+  titleVariant,
 }: Props) => {
   // If publicationType === 'project'
   const projectId = publicationType === 'project' ? publicationId : undefined;
@@ -71,6 +75,7 @@ const Spotlight = ({
         description={formatMessage(messages.pleaseSelectAProjectOrFolder)}
         loading={false}
         hideAvatars={hideAvatars}
+        titleVariant={titleVariant}
       />
     );
   }
@@ -110,6 +115,7 @@ const Spotlight = ({
       loading={getLoading()}
       avatarIds={avatarIds}
       hideAvatars={hideAvatars}
+      titleVariant={titleVariant}
       userCount={publication?.data.attributes.participants_count}
     />
   );

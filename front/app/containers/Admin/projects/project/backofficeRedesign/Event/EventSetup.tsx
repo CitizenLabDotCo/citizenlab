@@ -3,13 +3,11 @@ import React from 'react';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
 
-import SetupCard from 'containers/Admin/projects/_shared/components/SetupCard';
+import AttachmentsCard from 'containers/Admin/projects/_shared/components/AttachmentsCard';
 import { EventForm } from 'containers/Admin/projects/_shared/events/useEventForm';
 import eventMessages from 'containers/Admin/projects/project/events/messages';
 
 import Error from 'components/UI/Error';
-import FileRepositorySelectAndUpload from 'components/UI/FileRepositorySelectAndUpload';
-import FileSelectOrUploadModal from 'components/UI/FileRepositorySelectAndUpload/components/FileSelectOrUploadModal';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 
@@ -30,10 +28,6 @@ interface Props {
 const EventSetup = ({ projectId, form }: Props) => {
   const { formatMessage } = useIntl();
   const { attributes, errors } = form;
-  const hasAttachmentsBody =
-    form.files.attachments.length > 0 ||
-    form.files.isUploadingFile ||
-    !!errors?.file;
 
   return (
     <Box
@@ -81,36 +75,13 @@ const EventSetup = ({ projectId, form }: Props) => {
       </Box>
 
       <Box display="flex" flexDirection="column" gap="12px">
-        <SetupCard
+        <AttachmentsCard
+          id="event-file-uploader"
           title={formatMessage(messages.attachments)}
-          action={
-            <FileSelectOrUploadModal
-              fileAttachments={form.files.attachments}
-              onFileAdd={form.files.uploadFile}
-              onFileAttach={form.files.attachFile}
-              maxSizeMb={10}
-              isDisabled={form.files.isUploadingFile || form.saving}
-              iconOnly
-            />
-          }
-        >
-          {hasAttachmentsBody && (
-            <FileRepositorySelectAndUpload
-              id="event-file-uploader"
-              variant="bo"
-              onFileAdd={form.files.uploadFile}
-              onFileRemove={form.files.removeFile}
-              onFileReorder={form.files.reorderFiles}
-              onFileAttach={form.files.attachFile}
-              fileAttachments={form.files.attachments}
-              apiErrors={errors}
-              maxSizeMb={10}
-              isUploadingFile={form.files.isUploadingFile}
-              disabled={form.saving}
-              hideTrigger
-            />
-          )}
-        </SetupCard>
+          files={form.files}
+          errors={errors}
+          disabled={form.saving}
+        />
 
         <ImageCard form={form} />
 

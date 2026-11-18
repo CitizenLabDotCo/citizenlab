@@ -327,8 +327,9 @@ RSpec.describe UserRoles do
       it 'returns admins that are not citizenlab members' do
         create(:admin, email: 'admincl@citizenlab.co')
         create(:admin, email: 'admingv@govocal.com')
+        lookalike_admin = create(:admin, email: 'admin@evilgovocal.com')
 
-        expect(User.billed_admins).to contain_exactly(admin, admin_reviewer)
+        expect(User.billed_admins).to contain_exactly(admin, admin_reviewer, lookalike_admin)
       end
     end
 
@@ -387,8 +388,14 @@ RSpec.describe UserRoles do
           bigger@govocal.us
           magdalena@govocal.cl
           hello+admin@GOVOCAL.UK
+          hello@demo.govocal.com
+          hello@Demo.CitizenLab.EU
         ]
         super_admins = super_admin_emails.map { |email| create(:admin, email: email) }
+        create(:admin, email: 'hello@evilgovocal.com')
+        create(:admin, email: 'hello@demo.evilgovocal.com')
+        create(:admin, email: 'hello@notcitizenlab.co')
+        create(:admin, email: 'hello@demo.notcitizenlab.eu')
 
         expect(User.super_admins).to match_array(super_admins)
       end

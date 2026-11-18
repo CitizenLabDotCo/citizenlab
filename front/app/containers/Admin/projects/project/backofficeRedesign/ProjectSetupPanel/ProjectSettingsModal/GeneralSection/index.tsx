@@ -6,7 +6,6 @@ import { SpaceAndFolderId } from 'containers/Admin/projects/_shared/components/P
 import BoSlugInput from 'containers/Admin/projects/project/backofficeRedesign/_shared/components/BoSlugInput';
 import SettingsSection from 'containers/Admin/projects/project/backofficeRedesign/_shared/components/SettingsModal/SettingsSection';
 import SettingsSections from 'containers/Admin/projects/project/backofficeRedesign/_shared/components/SettingsModal/SettingsSections';
-import messages from 'containers/Admin/projects/project/backofficeRedesign/messages';
 
 import Error from 'components/UI/Error';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
@@ -14,6 +13,7 @@ import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLoca
 import { useIntl } from 'utils/cl-intl';
 
 import ContextSection from './ContextSection';
+import messages from './messages';
 import ResetSection from './ResetSection';
 
 interface Props {

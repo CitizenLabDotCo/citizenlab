@@ -9,6 +9,7 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import { useIntl } from 'utils/cl-intl';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
+import getOgUrl from 'utils/cl-router/getOgUrl';
 
 import messages from './messages';
 
@@ -16,7 +17,6 @@ const ProjectsMeta = () => {
   const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
   const tenantLocales = useAppConfigurationLocales();
-  const { location } = window;
   const projectsIndexTitle = formatMessage(messages.metaTitle1);
   const projectsIndexDescription = formatMessage(messages.metaDescription);
 
@@ -37,7 +37,7 @@ const ProjectsMeta = () => {
       <meta name="description" content={projectsIndexDescription} />
       <meta property="og:title" content={projectsIndexTitle} />
       <meta property="og:description" content={projectsIndexDescription} />
-      <meta property="og:url" content={location.href} />
+      <meta property="og:url" content={getOgUrl()} />
     </Helmet>
   );
 };

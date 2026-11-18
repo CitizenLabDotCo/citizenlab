@@ -37,11 +37,15 @@ import DemographicFieldContent from './DemographicFieldContent';
 // Styled components reusing NavigationTabs constants and styles
 const TabsContainer = styled.div`
   display: flex;
+  overflow-x: auto;
+  min-width: 0;
   border-bottom: ${tabBorderSize}px solid ${colors.divider};
 `;
 
 const TabButton = styled.button<{ active: boolean }>`
   ${({ active }) => css`
+    flex-shrink: 0;
+    white-space: nowrap;
     list-style: none;
     display: flex;
     align-items: center;
@@ -305,7 +309,10 @@ const DemographicsSection = ({ phase }: Props) => {
           </Text>
         </Box>
 
-        <TabsContainer data-pdf-exclude="true">
+        <TabsContainer
+          data-pdf-exclude="true"
+          data-cy="e2e-insights-demographic-tabs"
+        >
           {fields.map((field, index) => (
             <TabButton
               key={field.field_id}
@@ -320,7 +327,7 @@ const DemographicsSection = ({ phase }: Props) => {
           ))}
         </TabsContainer>
 
-        <Box position="relative">
+        <Box position="relative" minWidth="0">
           {fields.map((field, index) => {
             const isSelected = index === selectedFieldIndex;
             return (

@@ -890,7 +890,9 @@ RSpec.describe User do
         build_stubbed(:admin, email: 'breek.nou.mijn.klomp@govocal.NL'),
         build_stubbed(:admin, email: 'bigger@govocal.us'),
         build_stubbed(:admin, email: 'magdalena@govocal.cl'),
-        build_stubbed(:admin, email: 'hello+admin@GOVOCAL.UK')
+        build_stubbed(:admin, email: 'hello+admin@GOVOCAL.UK'),
+        build_stubbed(:admin, email: 'hello@demo.govocal.com'),
+        build_stubbed(:admin, email: 'hello@Demo.CitizenLab.EU')
       ]
 
       expect(users).to all be_super_admin
@@ -901,6 +903,11 @@ RSpec.describe User do
         build_stubbed(:admin, email: 'hello@citizenlab.com'),
         build_stubbed(:admin, email: 'citizenlab.co@gmail.com'),
         build_stubbed(:admin, email: 'govocal.com@gmail.com'),
+        build_stubbed(:admin, email: 'hello@evilgovocal.com'),
+        build_stubbed(:admin, email: 'hello@evil-govocal.com'),
+        build_stubbed(:admin, email: 'hello@demo.evilgovocal.com'),
+        build_stubbed(:admin, email: 'hello@govocal.com.evil.io'),
+        build_stubbed(:admin, email: 'hello@notcitizenlab.co'),
         build_stubbed(:admin)
       ]
       expect(strangers).not_to include(be_super_admin)

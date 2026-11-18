@@ -1,6 +1,12 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
-import { Box, Input, IOption, Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Input,
+  IOption,
+  Text,
+  bo,
+} from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
 import {
@@ -13,6 +19,7 @@ import {
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';
+import PanelHeading from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelHeading';
 import messages from 'containers/Admin/projects/project/messages';
 
 import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle';
@@ -33,6 +40,7 @@ import SortingPicker from '../_shared/SortingPicker';
 import UserActions from '../_shared/UserActions';
 
 interface Props {
+  moderationAction?: ReactNode;
   input_term: InputTerm | undefined;
   handleInputTermChange: (option: IOption) => void;
   submission_enabled?: boolean | null;
@@ -84,6 +92,7 @@ interface Props {
 }
 
 const ProposalsInputs = ({
+  moderationAction,
   input_term,
   handleInputTermChange,
   submission_enabled,
@@ -149,6 +158,8 @@ const ProposalsInputs = ({
         onChange={handleDaysLimitChange}
       />
       <Error
+        showBackground={layout !== 'panel'}
+        showIcon={layout !== 'panel'}
         text={expireDateLimitError}
         apiErrors={apiErrors && apiErrors.expire_days_limit}
       />
@@ -169,6 +180,8 @@ const ProposalsInputs = ({
         onChange={handleReactingThresholdChange}
       />
       <Error
+        showBackground={layout !== 'panel'}
+        showIcon={layout !== 'panel'}
         text={reactingThresholdError}
         apiErrors={apiErrors && apiErrors.reacting_threshold}
       />
@@ -188,6 +201,8 @@ const ProposalsInputs = ({
         onChange={handleReactingThresholdChange}
         error={
           <Error
+            showBackground={layout !== 'panel'}
+            showIcon={layout !== 'panel'}
             text={reactingThresholdError}
             apiErrors={apiErrors && apiErrors.reacting_threshold}
           />
@@ -201,6 +216,8 @@ const ProposalsInputs = ({
         onChange={handleDaysLimitChange}
         error={
           <Error
+            showBackground={layout !== 'panel'}
+            showIcon={layout !== 'panel'}
             text={expireDateLimitError}
             apiErrors={apiErrors && apiErrors.expire_days_limit}
           />
@@ -231,6 +248,33 @@ const ProposalsInputs = ({
     />
   ) : null;
 
+  const likes = reacting_enabled && (
+    <ReactionLimitSettings
+      name="likingmethod"
+      title={formatMessage(messages.likingMethodTitle)}
+      method={reacting_like_method}
+      max={reacting_like_limited_max}
+      maxLabel={formatMessage(messages.maxLikes)}
+      onMethodChange={handleReactingLikeMethodOnChange}
+      onMaxChange={handleLikingLimitOnChange}
+      error={
+        <>
+          <Error
+            showBackground={layout !== 'panel'}
+            showIcon={layout !== 'panel'}
+            apiErrors={apiErrors && apiErrors.reacting_method}
+          />
+          <Error
+            showBackground={layout !== 'panel'}
+            showIcon={layout !== 'panel'}
+            text={noLikingLimitError}
+            apiErrors={apiErrors && apiErrors.reacting_limit}
+          />
+        </>
+      }
+    />
+  );
+
   const userActions = (
     <UserActions
       submission_enabled={submission_enabled || false}
@@ -247,26 +291,8 @@ const ProposalsInputs = ({
       handleLikingLimitOnChange={handleLikingLimitOnChange}
       phaseId={phaseId}
       layout={layout}
-    />
-  );
-
-  const likes = reacting_enabled && (
-    <ReactionLimitSettings
-      name="likingmethod"
-      title={formatMessage(messages.likingMethodTitle)}
-      method={reacting_like_method}
-      max={reacting_like_limited_max}
-      maxLabel={formatMessage(messages.maxLikes)}
-      onMethodChange={handleReactingLikeMethodOnChange}
-      onMaxChange={handleLikingLimitOnChange}
-      error={
-        <>
-          <Error apiErrors={apiErrors && apiErrors.reacting_method} />
-          <Error
-            text={noLikingLimitError}
-            apiErrors={apiErrors && apiErrors.reacting_limit}
-          />
-        </>
+      reactingSettings={
+        layout === 'panel' && <Box pl={bo.toggleLabelIndent}>{likes}</Box>
       }
     />
   );
@@ -316,29 +342,37 @@ const ProposalsInputs = ({
   if (layout === 'panel') {
     return (
       <>
-        <Box pt="22px">
-          <PanelGroup
-            label={formatMessage(configMessages.participantActionsGroup)}
-            defaultOpen
-          >
-            {userActions}
-            {likes}
-          </PanelGroup>
+        <Box mb="10px">
+          <PanelHeading
+            label={formatMessage(configMessages.howProposalsAreShown)}
+          />
         </Box>
-        {requirements}
-        <PanelGroup
-          label={formatMessage(configMessages.moderationGroup)}
-          defaultOpen
-        >
-          <Box display="flex" flexDirection="column" gap="16px">
-            <ModerationAssignee phaseId={phaseId} />
-            {screening}
-            {anonymity}
-            {similarity}
-          </Box>
-        </PanelGroup>
         {views}
         {sorting}
+        <Box mb="10px">
+          <PanelHeading label={formatMessage(configMessages.settingsGroup)} />
+        </Box>
+        <PanelGroup
+          label={formatMessage(configMessages.participantActionsGroup)}
+          defaultOpen
+        >
+          {userActions}
+        </PanelGroup>
+        {requirements}
+        <Box id="phase-moderation-settings">
+          <PanelGroup
+            label={formatMessage(configMessages.moderationGroup)}
+            defaultOpen
+          >
+            <Box display="flex" flexDirection="column" gap="16px">
+              {!phaseId && moderationAction}
+              <ModerationAssignee phaseId={phaseId} />
+              {screening}
+              {anonymity}
+              {similarity}
+            </Box>
+          </PanelGroup>
+        </Box>
       </>
     );
   }

@@ -8,6 +8,10 @@ import { OnboardingCampaignName } from 'api/onboarding_campaigns/types';
 
 import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/HomepageBanner';
 
+import {
+  DEFAULT_TITLE_VARIANT,
+  TitleVariant,
+} from 'components/admin/ContentBuilder/Widgets/_shared/TitleVariantSetting';
 import T from 'components/T';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -53,11 +57,13 @@ const HeaderContent = styled.div`
 interface Props {
   currentOnboardingCampaignName: OnboardingCampaignName;
   homepageSettings: Partial<IHomepageBannerSettings>;
+  titleVariant?: TitleVariant;
 }
 
 const FallbackStep = ({
   currentOnboardingCampaignName,
   homepageSettings,
+  titleVariant = DEFAULT_TITLE_VARIANT,
 }: Props) => {
   const { data: authUser } = useAuthUser();
 
@@ -70,7 +76,7 @@ const FallbackStep = ({
       >
         <HeaderContent id="e2e-signed-in-header-default-cta">
           <Left>
-            <Title variant="h2" m="0" color="white" as="h1">
+            <Title variant={titleVariant} m="0" color="white">
               {defaultMessage && !isEmptyMultiloc(defaultMessage) ? (
                 <T value={defaultMessage} supportHtml />
               ) : (

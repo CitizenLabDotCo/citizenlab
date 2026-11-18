@@ -7,8 +7,9 @@ import { IProjectData } from 'api/projects/types';
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
-import messages from '../messages';
+import backofficeRedesignMessages from '../messages';
 
+import messages from './messages';
 import PanelDivider from './PanelDivider';
 import PanelHeading from './PanelHeading';
 import ParticipantsGraph from './ParticipantsGraph';
@@ -28,7 +29,9 @@ const LivePanel = ({ project }: Props) => {
     <Box>
       <PanelHeading
         title={formatMessage(
-          collecting ? messages.collectingNow : messages.participation
+          collecting
+            ? messages.collectingNow
+            : backofficeRedesignMessages.participation
         )}
       />
       <ParticipantsGraph project={project} />
