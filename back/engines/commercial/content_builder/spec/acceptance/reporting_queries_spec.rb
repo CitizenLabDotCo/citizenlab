@@ -21,8 +21,8 @@ resource 'ReportingQueries' do
     # the subject is what surrounds it: which answers are stored, which are re-used,
     # and who is allowed to cause one. Validation stays real, because normalising the
     # SQL is what decides whether two questions are the same question.
-    allow(McpServer::ReportingQueryRunner).to receive(:run) do |query|
-      McpServer::ReportingQueryRunner.validate!(query)
+    allow(McpServer::ReportingQueryRunner).to receive(:run) do |query, scope:|
+      McpServer::ReportingQueryRunner.validate!(query, scope: scope)
       McpServer::ReportingQueryRunner::Result.new(
         columns: ['contributions'], rows: [{ 'contributions' => 42 }], truncated: false
       )
@@ -217,6 +217,15 @@ resource 'ReportingQueries' do
 
         assert_status 200
         expect(McpServer::ReportingQueryRunner).to have_received(:run).with(anything, scope: project_scope)
+      end
+
+      example '[error] Try to read an admin-only view on a project report', document: false do
+        admin_header_token
+
+        do_request(query: 'SELECT count(*) FROM reporting_staff_activities', layout_id: layout.id)
+
+        assert_status 422
+        expect(json_response_body[:errors][:query].first[:error]).to eq 'rejected'
       end
 
       example 'Run the renderer\'s query over the project\'s rows only', document: false do
