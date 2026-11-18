@@ -16,7 +16,7 @@ export interface IEmailCampaignsData {
 }
 
 // Per-recipient delivery counts for an email campaign, keyed by the email
-// delivery lifecycle (Mailgun-tracked).
+// delivery lifecycle (tracked through the email provider's webhooks).
 export interface IEmailDeliveryStats {
   sent: number;
   bounced: number;
