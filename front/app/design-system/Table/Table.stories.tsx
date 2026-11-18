@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { MenuTrigger, SortDirection } from 'react-aria-components';
+import { Key, MenuTrigger, SortDirection } from 'react-aria-components';
 
 import Button from '../Button';
 import IconButton from '../IconButton';
@@ -9,7 +9,6 @@ import Menu, { MenuItem } from '../Menu';
 import Table, {
   Cell,
   ColumnHeader,
-  ColumnIndicator,
   ColumnMenu,
   Row,
   TableBody,
@@ -27,7 +26,11 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const indicators: ColumnIndicator[] = ['none', 'ascending', 'descending'];
+const sortDirections: (SortDirection | undefined)[] = [
+  undefined,
+  'ascending',
+  'descending',
+];
 
 const columnMenu = (
   <ColumnMenu columnType="text" onSortChange={() => {}} onHide={() => {}} />
@@ -47,11 +50,11 @@ export const ColumnHeaders: Story = {
   render: () => (
     <Table aria-label="Column headers">
       <TableHeader>
-        {indicators.map((indicator, index) => (
+        {sortDirections.map((sortDirection, index) => (
           <ColumnHeader
-            key={indicator}
-            id={indicator}
-            indicator={indicator}
+            key={sortDirection ?? 'none'}
+            id={sortDirection ?? 'none'}
+            sortDirection={sortDirection}
             defaultWidth={160}
             isRowHeader={index === 0}
             menu={columnMenu}
@@ -90,10 +93,11 @@ const inputs = [
   { id: 'c', title: 'Longer library opening hours', likes: 8 },
 ];
 
-// isActive: the row open in the side panel; isPicked: ticked by a caller-owned checkbox.
-// Press a row to make it the active one; the column menus sort the list.
+// isActive: the row open in the side panel. Press a row to make it the active
+// one (or, once a row is ticked, to tick it); the column menus sort the list.
 const InputTable = () => {
   const [activeId, setActiveId] = useState('b');
+  const [selectedKeys, setSelectedKeys] = useState<Set<Key>>(new Set(['c']));
   const [direction, setDirection] = useState<SortDirection>('descending');
   const sorted = [...inputs].sort((a, b) =>
     direction === 'ascending' ? a.likes - b.likes : b.likes - a.likes
@@ -101,7 +105,19 @@ const InputTable = () => {
 
   return (
     <div style={{ width: 800 }}>
-      <Table aria-label="Inputs" keyboardNavigationBehavior="tab">
+      <Table
+        aria-label="Inputs"
+        keyboardNavigationBehavior="tab"
+        selection={{
+          selectedKeys,
+          onSelectionChange: (keys) =>
+            setSelectedKeys(
+              new Set(keys === 'all' ? inputs.map(({ id }) => id) : keys)
+            ),
+          selectAll: 'Select all inputs on this page',
+          selectRow: 'Select input',
+        }}
+      >
         <TableHeader addColumn={addColumn}>
           <ColumnHeader
             id="title"
@@ -115,13 +131,9 @@ const InputTable = () => {
           <ColumnHeader
             id="likes"
             defaultWidth={120}
-            indicator={direction}
+            sortDirection={direction}
             menu={
-              <ColumnMenu
-                columnType="number"
-                sortDirection={direction}
-                onSortChange={setDirection}
-              />
+              <ColumnMenu columnType="number" onSortChange={setDirection} />
             }
           >
             Likes
@@ -137,7 +149,6 @@ const InputTable = () => {
               id={input.id}
               textValue={input.title}
               isActive={input.id === activeId}
-              isPicked={input.id === 'c'}
               onAction={() => setActiveId(input.id)}
             >
               <Cell>{input.title}</Cell>

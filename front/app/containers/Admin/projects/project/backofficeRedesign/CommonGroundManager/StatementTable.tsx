@@ -1,8 +1,5 @@
 import React from 'react';
 
-import { CheckboxContext, Column } from 'react-aria-components';
-
-import Checkbox from 'design-system/Checkbox';
 import Pagination from 'design-system/Pagination';
 import Table, {
   ColumnHeader,
@@ -33,8 +30,7 @@ interface Props {
   dimmed: boolean;
   currentPage: number;
   lastPage: number;
-  onToggleSelect: (idea: IIdeaData) => void;
-  onToggleSelectPage: () => void;
+  onSelectOnPage: (ideaIds: Set<string>) => void;
   onOpen: (ideaId: string) => void;
   onChangePage: (page: number) => void;
 }
@@ -48,14 +44,12 @@ const StatementTable = ({
   dimmed,
   currentPage,
   lastPage,
-  onToggleSelect,
-  onToggleSelectPage,
+  onSelectOnPage,
   onOpen,
   onChangePage,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const selectedOnPage = ideas.filter((idea) => selectedIds.has(idea.id));
-  const allSelected = selectedOnPage.length === ideas.length;
+  const pageIds = ideas.map((idea) => idea.id);
 
   const column = (id: string, label: string) => (
     <ColumnHeader id={id} defaultWidth={COLUMN_WIDTH} showChevron={false}>
@@ -68,24 +62,17 @@ const StatementTable = ({
       <Table
         aria-label={formatMessage(messages.statements)}
         keyboardNavigationBehavior="tab"
+        selection={{
+          selectedKeys: pageIds.filter((id) => selectedIds.has(id)),
+          onSelectionChange: (keys) =>
+            onSelectOnPage(
+              new Set(keys === 'all' ? pageIds : [...keys].map(String))
+            ),
+          selectAll: formatMessage(messages.selectAllOnPage),
+          selectRow: formatMessage(messages.selectStatement),
+        }}
       >
         <TableHeader>
-          <Column
-            id="select"
-            width={40}
-            minWidth={40}
-            className={styles.selectColumn}
-          >
-            {/* The header row offers its checkbox slot to React Aria's own selection only. */}
-            <CheckboxContext.Provider value={null}>
-              <Checkbox
-                isSelected={allSelected}
-                isIndeterminate={!allSelected && selectedOnPage.length > 0}
-                onChange={onToggleSelectPage}
-                aria-label={formatMessage(messages.selectAllOnPage)}
-              />
-            </CheckboxContext.Provider>
-          </Column>
           <ColumnHeader
             id="title"
             isRowHeader
@@ -109,9 +96,7 @@ const StatementTable = ({
               idea={idea}
               showModeration={showModeration}
               result={resultsById.get(idea.id)}
-              selected={selectedIds.has(idea.id)}
               active={idea.id === openId}
-              onToggleSelect={() => onToggleSelect(idea)}
               onOpen={() => onOpen(idea.id)}
             />
           ))}

@@ -1,14 +1,6 @@
 import React from 'react';
 
-import { CheckboxContext, Column } from 'react-aria-components';
-
-import Checkbox from 'design-system/Checkbox';
-import {
-  ColumnHeader,
-  ColumnIndicator,
-  ColumnMenu,
-  TableHeader,
-} from 'design-system/Table';
+import { ColumnHeader, ColumnMenu, TableHeader } from 'design-system/Table';
 
 import { ideaSortValues, Sort } from 'api/ideas/types';
 
@@ -16,11 +8,9 @@ import { useIntl } from 'utils/cl-intl';
 import { getSortDirection } from 'utils/paginationUtils';
 
 import { ColumnKey, COLUMNS } from '../columns';
-import messages from '../messages';
 import useInputTermLabels from '../useInputTermLabels';
 
 import ColumnsMenu from './ColumnsMenu';
-import styles from './IdeaTable.module.css';
 
 interface Props {
   columns: ColumnKey[];
@@ -28,9 +18,6 @@ interface Props {
   onChangeColumns: (columns: ColumnKey[]) => void;
   sort: Sort;
   onSort: (sort: Sort) => void;
-  allSelected: boolean;
-  someSelected: boolean;
-  onToggleSelectAll: () => void;
 }
 
 const COLUMN_TYPES: Partial<Record<ColumnKey, 'text' | 'date'>> = {
@@ -52,17 +39,13 @@ const HeaderRow = ({
   onChangeColumns,
   sort,
   onSort,
-  allSelected,
-  someSelected,
-  onToggleSelectAll,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const { terms, capitalizedTerm } = useInputTermLabels();
-  const sortDirection = getSortDirection(sort);
+  const { capitalizedTerm } = useInputTermLabels();
   const sortedAttribute = sort.replace(/^-/, '');
 
-  const indicator = (attribute: Sort): ColumnIndicator =>
-    sortedAttribute === attribute ? sortDirection : 'none';
+  const sortDirectionOf = (attribute: Sort) =>
+    sortedAttribute === attribute ? getSortDirection(sort) : undefined;
 
   // A descending order is the plain attribute, an ascending one its "-" form.
   const handleSort =
@@ -86,36 +69,14 @@ const HeaderRow = ({
         />
       }
     >
-      <Column
-        id="select"
-        width={40}
-        minWidth={40}
-        className={styles.selectColumn}
-      >
-        {/* The header row offers its checkbox slot to React Aria's own selection only. */}
-        <CheckboxContext.Provider value={null}>
-          <Checkbox
-            isSelected={allSelected}
-            isIndeterminate={!allSelected && someSelected}
-            onChange={onToggleSelectAll}
-            aria-label={formatMessage(messages.selectAllOnPage, { terms })}
-          />
-        </CheckboxContext.Provider>
-      </Column>
       <ColumnHeader
         id="title"
         isRowHeader
         defaultWidth="1fr"
         minWidth={200}
-        indicator={indicator('title')}
+        sortDirection={sortDirectionOf('title')}
         menu={
-          <ColumnMenu
-            columnType="text"
-            sortDirection={
-              sortedAttribute === 'title' ? sortDirection : undefined
-            }
-            onSortChange={handleSort('title')}
-          />
+          <ColumnMenu columnType="text" onSortChange={handleSort('title')} />
         }
       >
         {capitalizedTerm}
@@ -131,14 +92,11 @@ const HeaderRow = ({
               id={column}
               defaultWidth={COLUMN_WIDTHS[column] ?? COLUMN_WIDTH}
               showChevron={!!columnSort}
-              indicator={columnSort ? indicator(columnSort) : 'none'}
+              sortDirection={columnSort && sortDirectionOf(columnSort)}
               menu={
                 columnSort && (
                   <ColumnMenu
                     columnType={COLUMN_TYPES[column] ?? 'number'}
-                    sortDirection={
-                      sortedAttribute === columnSort ? sortDirection : undefined
-                    }
                     onSortChange={handleSort(columnSort)}
                     onHide={hideColumn(column)}
                   />

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import {
   Key,
@@ -15,6 +15,7 @@ import { useIntl } from 'utils/cl-intl';
 import { MenuItem } from '../Menu';
 import surfaces from '../surfaces.module.css';
 
+import { ColumnSortContext } from './ColumnHeader';
 import styles from './ColumnMenu.module.css';
 import messages from './messages';
 import '../tokens.css';
@@ -22,7 +23,7 @@ import '../tokens.css';
 type ColumnMenuProps = {
   // Picks the sort copy: A to Z, Smallest first or Earliest first.
   columnType: 'text' | 'number' | 'date';
-  // The current order gets the check.
+  // The current order gets the check. Inside a ColumnHeader it defaults to the head's.
   sortDirection?: SortDirection;
   onSortChange: (direction: SortDirection) => void;
   onHide?: () => void;
@@ -45,6 +46,8 @@ const ColumnMenu = ({
   onHide,
 }: ColumnMenuProps) => {
   const { formatMessage } = useIntl();
+  const columnSortDirection = useContext(ColumnSortContext);
+  const checked = sortDirection ?? columnSortDirection;
   const [ascending, descending] = sortMessages[columnType];
 
   return (
@@ -58,7 +61,7 @@ const ColumnMenu = ({
           id="sort"
           aria-label={formatMessage(messages.sortSection)}
           selectionMode="single"
-          selectedKeys={sortDirection ? [sortDirection] : []}
+          selectedKeys={checked ? [checked] : []}
           onSelectionChange={(keys) => {
             const [direction] = toKeySet(keys);
             if (direction === 'ascending' || direction === 'descending') {

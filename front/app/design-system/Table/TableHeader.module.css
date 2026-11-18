@@ -8,3 +8,9 @@
   padding: 0;
   vertical-align: middle;
 }
+
+.selection {
+  box-sizing: border-box;
+  padding: 0 var(--gv-space-12);
+  vertical-align: middle;
+}
