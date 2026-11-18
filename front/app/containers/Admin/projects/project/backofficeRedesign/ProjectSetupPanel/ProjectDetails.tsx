@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 
-import { Button } from 'react-aria-components';
-
 import Icon from 'design-system/Icon';
+import UnstyledButton from 'design-system/UnstyledButton';
 
 import { IProjectData } from 'api/projects/types';
 
@@ -23,7 +22,7 @@ const ProjectDetails = ({ project, onOpenSettings }: Props) => {
 
   return (
     <div>
-      <Button
+      <UnstyledButton
         id="e2e-project-details-toggle"
         className={styles.toggle}
         aria-expanded={opened}
@@ -32,7 +31,7 @@ const ProjectDetails = ({ project, onOpenSettings }: Props) => {
       >
         {formatMessage(messages.projectDetails)}
         <Icon name="chevron-down-16" className={styles.chevron} />
-      </Button>
+      </UnstyledButton>
 
       {opened && (
         <div id="project-details-cards" className={styles.cards}>

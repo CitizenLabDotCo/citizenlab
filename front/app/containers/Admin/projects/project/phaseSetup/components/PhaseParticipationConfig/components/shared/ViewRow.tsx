@@ -1,11 +1,10 @@
 import React, { ReactNode } from 'react';
 
-import { Button as AriaButton } from 'react-aria-components';
-
 import Button from 'design-system/Button';
 import Icon from 'design-system/Icon';
 import Switch from 'design-system/Switch';
 import Tooltip from 'design-system/Tooltip';
+import UnstyledButton from 'design-system/UnstyledButton';
 
 import messages from 'containers/Admin/projects/project/messages';
 
@@ -49,12 +48,12 @@ const ViewRow = ({
           </span>
           {titleText}
           <Tooltip content={cannotBeDisabled}>
-            <AriaButton
+            <UnstyledButton
               className={styles.infoButton}
               aria-label={cannotBeDisabled}
             >
               <Icon name="info-16" />
-            </AriaButton>
+            </UnstyledButton>
           </Tooltip>
         </div>
       ) : (

@@ -1,11 +1,10 @@
 import React from 'react';
 
-import { Key, TagGroup, TagList } from 'react-aria-components';
-
 import { ListBoxOption } from 'design-system/ListBox';
 import { DialogTrigger } from 'design-system/Popover';
-import { Tag, TagAdd } from 'design-system/TagGroup';
+import { InlineTagGroup, Tag, TagAdd } from 'design-system/TagGroup';
 import TagPicker from 'design-system/TagPicker';
+import { Key } from 'design-system/types';
 
 import { IIdeaData } from 'api/ideas/types';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
@@ -51,22 +50,19 @@ const TagsProperty = ({ idea, type }: Props) => {
 
   return (
     <PropertyRow label={label}>
-      {/* The design-system TagGroup always shows its label; this row draws it on the left. */}
-      <TagGroup
+      <InlineTagGroup
         aria-label={label}
         onRemove={handleRemove}
-        className={styles.tagGroup}
+        className={styles.tagList}
       >
-        <TagList className={styles.tagList}>
-          {tagOptions
-            .filter((option) => selected.includes(option.value))
-            .map((option) => (
-              <Tag key={option.value} id={option.value}>
-                {option.label}
-              </Tag>
-            ))}
-        </TagList>
-      </TagGroup>
+        {tagOptions
+          .filter((option) => selected.includes(option.value))
+          .map((option) => (
+            <Tag key={option.value} id={option.value}>
+              {option.label}
+            </Tag>
+          ))}
+      </InlineTagGroup>
       <DialogTrigger>
         <TagAdd>{formatMessage(messages.addTag)}</TagAdd>
         <TagPicker

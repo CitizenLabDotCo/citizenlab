@@ -7,10 +7,10 @@ import {
   Text,
   Image,
 } from '@citizenlab/cl2-component-library';
-import { PressEvent } from 'react-aria-components';
 
 import MethodCard from 'design-system/MethodCard';
 import Tooltip from 'design-system/Tooltip';
+import { PressEvent } from 'design-system/types';
 
 import styles from './ParticipationMethodChoice.module.css';
 import 'design-system/tokens.css';

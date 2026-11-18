@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { Key } from 'react-aria-components';
 import { Multiloc, SupportedLocale } from 'typings';
 
 import NewDot from 'design-system/NewDot';
 import ToggleButton from 'design-system/ToggleButton';
 import ToggleButtonGroup from 'design-system/ToggleButtonGroup';
+import { Key } from 'design-system/types';
 import 'design-system/tokens.css';
 
 import styles from './MultilocFields.module.css';

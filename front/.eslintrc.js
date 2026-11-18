@@ -1,3 +1,50 @@
+// Imports restricted everywhere, including the design system.
+const restrictedImports = [
+  {
+    name: '@tanstack/react-router',
+    importNames: ['Link', 'useNavigate', 'NavLink'],
+    message:
+      "Import the Link or useNavigate from utils/cl-router instead of directly from '@tanstack/react-router'",
+  },
+  {
+    name: 'react-intl',
+    importNames: ['FormattedMessage', 'injectIntl', 'useIntl'],
+    message:
+      "Import FormattedMessage, injectIntl and useIntl from 'utils/cl-intl' instead of directly from 'react-intl'",
+  },
+  {
+    name: 'history',
+    message:
+      "Import history from utils/cl-router/cl-history instead of directly from 'history'",
+  },
+  {
+    name: 'lodash',
+    message: "Import lodash functions from 'lodash-es' instead of 'lodash'",
+  },
+  {
+    name: '@testing-library/react',
+    message:
+      "Import React testing library exports from 'utils/testUtils/rtl' instead",
+  },
+  {
+    name: '@tippyjs/react',
+    message:
+      "Import Tooltip from component library instead of directly from '@tippyjs/react'",
+  },
+];
+
+// React Aria stays behind the design system, so an upgrade only touches that folder.
+const reactAriaImports = [
+  'react-aria-components',
+  'react-aria',
+  'react-stately',
+  '@internationalized/date',
+].map((name) => ({
+  name,
+  message:
+    'Use the design-system components instead. Types are in design-system/types and date values in design-system/dates.',
+}));
+
 module.exports = {
   env: {
     browser: true,
@@ -140,42 +187,7 @@ module.exports = {
     'no-param-reassign': 'error',
     'no-restricted-imports': [
       'error',
-      {
-        paths: [
-          {
-            name: '@tanstack/react-router',
-            importNames: ['Link', 'useNavigate', 'NavLink'],
-            message:
-              "Import the Link or useNavigate from utils/cl-router instead of directly from '@tanstack/react-router'",
-          },
-          {
-            name: 'react-intl',
-            importNames: ['FormattedMessage', 'injectIntl', 'useIntl'],
-            message:
-              "Import FormattedMessage, injectIntl and useIntl from 'utils/cl-intl' instead of directly from 'react-intl'",
-          },
-          {
-            name: 'history',
-            message:
-              "Import history from utils/cl-router/cl-history instead of directly from 'history'",
-          },
-          {
-            name: 'lodash',
-            message:
-              "Import lodash functions from 'lodash-es' instead of 'lodash'",
-          },
-          {
-            name: '@testing-library/react',
-            message:
-              "Import React testing library exports from 'utils/testUtils/rtl' instead",
-          },
-          {
-            name: '@tippyjs/react',
-            message:
-              "Import Tooltip from component library instead of directly from '@tippyjs/react'",
-          },
-        ],
-      },
+      { paths: [...restrictedImports, ...reactAriaImports] },
     ],
     'no-trailing-spaces': 'off',
     'no-underscore-dangle': 'off',
@@ -237,6 +249,14 @@ module.exports = {
     ],
     '@typescript-eslint/no-unnecessary-condition': 'error',
   },
+  overrides: [
+    {
+      files: ['app/design-system/**'],
+      rules: {
+        'no-restricted-imports': ['error', { paths: restrictedImports }],
+      },
+    },
+  ],
   ignorePatterns: [
     '.rollup.config.cjs',
     '.eslintrc.js',

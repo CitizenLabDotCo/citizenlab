@@ -28,8 +28,8 @@
   background: var(--gv-surface-pressed);
 }
 
-/* A picked row, or the current one (isActive), draws as Selected=Yes. */
-.row[data-picked] > td,
+/* A selected row, or the current one (isActive), draws as Selected=Yes. */
+.row[data-selected] > td,
 .row[data-active] > td {
   background: var(--gv-surface-selected-row);
 }

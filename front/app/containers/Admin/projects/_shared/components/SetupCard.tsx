@@ -1,12 +1,11 @@
 import React, { ReactNode } from 'react';
 
-import { Button as AriaButton } from 'react-aria-components';
-
 import Banner from 'design-system/Banner';
 import Disclosure from 'design-system/Disclosure';
 import Icon from 'design-system/Icon';
 import ReviewStatus from 'design-system/ReviewStatus';
 import Tooltip from 'design-system/Tooltip';
+import UnstyledButton from 'design-system/UnstyledButton';
 
 import { SetupReviewCard } from 'api/phases/types';
 
@@ -68,9 +67,9 @@ const SetupCard = ({
           <span className={styles.titleRow}>
             {title}
             <Tooltip content={titleTooltip}>
-              <AriaButton className={styles.infoButton} aria-label={title}>
+              <UnstyledButton className={styles.infoButton} aria-label={title}>
                 <Icon name="info-16" />
-              </AriaButton>
+              </UnstyledButton>
             </Tooltip>
           </span>
         ) : (

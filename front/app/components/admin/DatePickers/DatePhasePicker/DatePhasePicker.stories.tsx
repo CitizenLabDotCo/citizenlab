@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { I18nProvider } from 'react-aria-components';
+import DesignSystemProvider from 'design-system/Provider';
 
 import { DateRange } from '../_shared/typings';
 
@@ -97,7 +97,7 @@ const DesignSystemWrapper = ({
     useState<Partial<DateRange>>(initialRange);
 
   return (
-    <I18nProvider locale="en-GB">
+    <DesignSystemProvider locale="en-GB" navigate={() => {}}>
       <DesignSystemPicker
         label="Phase dates"
         selectedRange={selectedRange}
@@ -105,7 +105,7 @@ const DesignSystemWrapper = ({
         defaultMonth={defaultMonth}
         onUpdateRange={setSelectedRange}
       />
-    </I18nProvider>
+    </DesignSystemProvider>
   );
 };
 

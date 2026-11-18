@@ -59,11 +59,10 @@ const EventRegistrantTable = ({
           <ColumnHeader
             id="registered"
             defaultWidth={140}
-            indicator={sortDirection}
+            sortDirection={sortDirection}
             menu={
               <ColumnMenu
                 columnType="date"
-                sortDirection={sortDirection}
                 onSortChange={(direction) =>
                   onSort(
                     direction === 'ascending' ? 'created_at' : '-created_at'

@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import { Key } from 'react-aria-components';
-
 import AlertDialog from 'design-system/AlertDialog';
 import Button from 'design-system/Button';
 import { ListBoxOption } from 'design-system/ListBox';
@@ -9,6 +7,7 @@ import { MenuTrigger } from 'design-system/Menu';
 import { DialogTrigger } from 'design-system/Popover';
 import SelectionBar from 'design-system/SelectionBar';
 import TagPicker from 'design-system/TagPicker';
+import { Key } from 'design-system/types';
 
 import { IIdeaData } from 'api/ideas/types';
 

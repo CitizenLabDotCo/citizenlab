@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 
 import {
   colors,
@@ -10,8 +10,6 @@ import {
 import { FormattedDate } from 'react-intl';
 import styled from 'styled-components';
 
-import Button from 'design-system/Button';
-
 import useIdeaOfficialFeedback from 'api/idea_official_feedback/useIdeaOfficialFeedback';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
@@ -22,6 +20,9 @@ import messages from './messages';
 import panelStyles from './OfficialFeedbackPanel.module.css';
 import OfficialFeedbackPost from './OfficialFeedbackPost';
 import 'design-system/tokens.css';
+
+// Back-office only (panel variant), so participants never download it.
+const Button = lazy(() => import('design-system/Button'));
 
 const Container = styled.div`
   &.hasTopMargin {
@@ -150,14 +151,16 @@ const OfficialFeedbackFeed = ({
 
           {hasMore && (
             <div className={panelStyles.loadMore}>
-              <Button
-                variant="secondary"
-                size={28}
-                onPress={onLoadMore}
-                isPending={isFetchingNextPageIdeasFeedback}
-              >
-                <FormattedMessage {...messages.showPreviousUpdates} />
-              </Button>
+              <Suspense fallback={null}>
+                <Button
+                  variant="secondary"
+                  size={28}
+                  onPress={onLoadMore}
+                  isPending={isFetchingNextPageIdeasFeedback}
+                >
+                  <FormattedMessage {...messages.showPreviousUpdates} />
+                </Button>
+              </Suspense>
             </div>
           )}
         </div>

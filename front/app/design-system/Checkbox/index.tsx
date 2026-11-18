@@ -9,9 +9,11 @@ import '../tokens.css';
 
 type LabelProps =
   // Show label: the label sits right of the box.
-  | { children: ReactNode; 'aria-label'?: string }
+  | { children: ReactNode; 'aria-label'?: string; slot?: undefined }
   // Without a label (a list row) the box needs an aria-label.
-  | { children?: undefined; 'aria-label': string };
+  | { children?: undefined; 'aria-label': string; slot?: undefined }
+  // A table's selection box: the table wires it up and names it by its row.
+  | { slot: 'selection'; children?: undefined; 'aria-label'?: string };
 
 type CheckboxProps = LabelProps & {
   isSelected?: boolean;
@@ -30,6 +32,7 @@ const Checkbox = ({
   onChange,
   'aria-label': ariaLabel,
   'data-cy': dataCy,
+  slot,
 }: CheckboxProps) => (
   <AriaCheckbox
     className={styles.checkbox}
@@ -39,6 +42,7 @@ const Checkbox = ({
     onChange={onChange}
     aria-label={ariaLabel}
     data-cy={dataCy}
+    slot={slot}
   >
     <span className={styles.box}>
       <Icon name="check-14" className={styles.tick} />

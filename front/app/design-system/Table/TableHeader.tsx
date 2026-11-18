@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useContext } from 'react';
 
 import {
   Column as AriaColumn,
@@ -7,7 +7,10 @@ import {
 
 import { useIntl } from 'utils/cl-intl';
 
+import Checkbox from '../Checkbox';
+
 import messages from './messages';
+import SelectionLabelsContext from './SelectionLabelsContext';
 import styles from './TableHeader.module.css';
 import '../tokens.css';
 
@@ -21,9 +24,20 @@ type TableHeaderProps = {
 // The last column is a 28 px slot for the add-column control; each Row fills it with an empty cell.
 const TableHeader = ({ children, addColumn }: TableHeaderProps) => {
   const { formatMessage } = useIntl();
+  const selectionLabels = useContext(SelectionLabelsContext);
 
   return (
     <AriaTableHeader className={styles.header}>
+      {selectionLabels && (
+        <AriaColumn
+          id="selection"
+          width={40}
+          minWidth={40}
+          className={styles.selection}
+        >
+          <Checkbox slot="selection" aria-label={selectionLabels.selectAll} />
+        </AriaColumn>
+      )}
       {children}
       <AriaColumn
         id="actions"

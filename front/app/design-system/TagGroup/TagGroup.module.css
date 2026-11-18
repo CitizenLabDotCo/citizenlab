@@ -130,3 +130,7 @@
 .addIcon path {
   stroke-width: calc(1.16667 * 16 / 14);
 }
+
+.inlineGroup {
+  display: contents;
+}

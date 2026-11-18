@@ -1,4 +1,4 @@
-import React, { KeyboardEvent } from 'react';
+import React, { KeyboardEvent, useEffect } from 'react';
 
 import DesignSystemSidePanel from 'design-system/SidePanel';
 import Spinner from 'design-system/Spinner';
@@ -7,6 +7,7 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import { IPhaseData } from 'api/phases/types';
 
 import { ManagerType } from 'components/admin/PostManager';
+import { preloadOfficialFeedbackModeratorParts } from 'components/PostShowComponents/OfficialFeedback/moderatorParts';
 
 import IdeaOverview from './IdeaOverview';
 import PanelHeader, { PanelNavigation } from './PanelHeader';
@@ -64,6 +65,11 @@ const SidePanel = ({
 }: Props) => {
   const { data: idea, isPlaceholderData } = useIdeaById(ideaId);
   const isLoaded = !!idea && !isPlaceholderData;
+
+  // The panel stays mounted while closed, so this runs before the first idea opens.
+  useEffect(() => {
+    preloadOfficialFeedbackModeratorParts();
+  }, []);
 
   return (
     <DesignSystemSidePanel

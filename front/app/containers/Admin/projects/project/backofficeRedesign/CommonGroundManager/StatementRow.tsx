@@ -1,6 +1,5 @@
 import React from 'react';
 
-import Checkbox from 'design-system/Checkbox';
 import { Cell, Row } from 'design-system/Table';
 
 import { CommonGroundResultItem } from 'api/common_ground/types';
@@ -8,12 +7,9 @@ import { IIdeaData } from 'api/ideas/types';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { useIntl } from 'utils/cl-intl';
-
 import AssigneeMark from '../InputManager/IdeaTable/AssigneeMark';
 import RowTitleButton from '../InputManager/IdeaTable/RowTitleButton';
 
-import messages from './messages';
 import { totalReactions } from './utils';
 
 interface Props {
@@ -21,9 +17,7 @@ interface Props {
   showModeration: boolean;
   /** Absent for a statement without reactions. */
   result: CommonGroundResultItem | undefined;
-  selected: boolean;
   active: boolean;
-  onToggleSelect: () => void;
   onOpen: () => void;
 }
 
@@ -31,12 +25,9 @@ const StatementRow = ({
   idea,
   showModeration,
   result,
-  selected,
   active,
-  onToggleSelect,
   onOpen,
 }: Props) => {
-  const { formatMessage } = useIntl();
   const localize = useLocalize();
   const title = localize(idea.attributes.title_multiloc);
 
@@ -45,17 +36,9 @@ const StatementRow = ({
       id={idea.id}
       textValue={title}
       isActive={active}
-      isPicked={selected}
       onAction={onOpen}
       data-cy={`e2e-statement-row-${idea.id}`}
     >
-      <Cell>
-        <Checkbox
-          isSelected={selected}
-          onChange={onToggleSelect}
-          aria-label={formatMessage(messages.selectStatement)}
-        />
-      </Cell>
       <Cell>
         <RowTitleButton title={title} onOpen={onOpen} />
       </Cell>

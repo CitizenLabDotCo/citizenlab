@@ -16,12 +16,6 @@
   padding: var(--gv-space-16) 0;
 }
 
-.selectColumn {
-  box-sizing: border-box;
-  padding: 0 var(--gv-space-12);
-  vertical-align: middle;
-}
-
 .toolbar {
   display: flex;
   align-items: center;

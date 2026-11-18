@@ -210,8 +210,7 @@ const CommonGroundManager = ({ project, phase }: Props) => {
           dimmed={isChangingList}
           currentPage={page}
           lastPage={lastPage}
-          onToggleSelect={selection.toggle}
-          onToggleSelectPage={selection.togglePage}
+          onSelectOnPage={selection.selectOnPage}
           onOpen={setPreviewId}
           onChangePage={setPage}
         />

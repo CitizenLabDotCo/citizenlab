@@ -226,8 +226,7 @@ const InputManager = ({ project, phase }: Props) => {
                   )
                 }
                 selectedIds={new Set(selection.selectedIds)}
-                onToggleSelect={selection.toggle}
-                onToggleSelectPage={selection.togglePage}
+                onSelectOnPage={selection.selectOnPage}
                 openIdeaId={selectedIdeaId}
                 onOpen={openPanel}
                 currentPage={page}

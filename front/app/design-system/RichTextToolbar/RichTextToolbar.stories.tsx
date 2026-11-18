@@ -19,24 +19,24 @@ export const Default: Story = {
   render: () => (
     <div style={{ width: 442 }}>
       <RichTextToolbar aria-label="Formatting">
-        <RichTextToolbarButton icon="bold-14" aria-label="Bold" />
-        <RichTextToolbarButton icon="italic-14" aria-label="Italic" />
-        <RichTextToolbarButton icon="list-14" aria-label="List" />
         <RichTextToolbarButton
-          icon="link-14"
-          aria-label="Link"
+          icon="bold-14"
+          aria-label="Bold"
           isSelected={false}
         />
         <RichTextToolbarButton
-          icon="image-14"
-          aria-label="Image"
+          icon="italic-14"
+          aria-label="Italic"
           isSelected={false}
         />
         <RichTextToolbarButton
-          icon="square-play-14"
-          aria-label="Video"
+          icon="list-14"
+          aria-label="List"
           isSelected={false}
         />
+        <RichTextToolbarButton icon="link-14" aria-label="Link" />
+        <RichTextToolbarButton icon="image-14" aria-label="Image" />
+        <RichTextToolbarButton icon="square-play-14" aria-label="Video" />
       </RichTextToolbar>
     </div>
   ),
@@ -45,7 +45,11 @@ export const Default: Story = {
 export const ButtonVariants: Story = {
   render: () => (
     <div style={{ display: 'flex', gap: 16 }}>
-      <RichTextToolbarButton icon="bold-14" aria-label="Bold" />
+      <RichTextToolbarButton
+        icon="bold-14"
+        aria-label="Bold"
+        isSelected={false}
+      />
       <RichTextToolbarButton icon="bold-14" aria-label="Bold" isSelected />
     </div>
   ),
@@ -65,14 +69,18 @@ export const AllTools: Story = {
             <MenuItem id="normal">Normal</MenuItem>
           </Menu>
         </MenuTrigger>
-        <RichTextToolbarButton icon="bold-14" aria-label="Bold" />
-        <RichTextToolbarButton icon="italic-14" aria-label="Italic" />
         <RichTextToolbarButton
-          icon="link-14"
-          aria-label="Add link"
+          icon="bold-14"
+          aria-label="Bold"
           isSelected={false}
         />
-        <RichTextToolbarButton text="Add button" isSelected={false} />
+        <RichTextToolbarButton
+          icon="italic-14"
+          aria-label="Italic"
+          isSelected={false}
+        />
+        <RichTextToolbarButton icon="link-14" aria-label="Add link" />
+        <RichTextToolbarButton text="Add button" />
         <MenuTrigger>
           <RichTextToolbarButton text="Align left" hasMenu />
           <Menu selectionMode="single" selectedKeys={new Set(['left'])}>
@@ -81,23 +89,19 @@ export const AllTools: Story = {
             <MenuItem id="right">Align right</MenuItem>
           </Menu>
         </MenuTrigger>
-        <RichTextToolbarButton text="1." aria-label="Ordered list" />
-        <RichTextToolbarButton icon="list-14" aria-label="Unordered list" />
         <RichTextToolbarButton
-          icon="image-14"
-          aria-label="Upload image"
+          text="1."
+          aria-label="Ordered list"
           isSelected={false}
         />
         <RichTextToolbarButton
-          icon="square-play-14"
-          aria-label="Add video"
+          icon="list-14"
+          aria-label="Unordered list"
           isSelected={false}
         />
-        <RichTextToolbarButton
-          text="Tx"
-          aria-label="Remove formatting"
-          isSelected={false}
-        />
+        <RichTextToolbarButton icon="image-14" aria-label="Upload image" />
+        <RichTextToolbarButton icon="square-play-14" aria-label="Add video" />
+        <RichTextToolbarButton text="Tx" aria-label="Remove formatting" />
       </RichTextToolbar>
     </div>
   ),
@@ -106,7 +110,11 @@ export const AllTools: Story = {
 export const TextButtonVariants: Story = {
   render: () => (
     <div style={{ display: 'flex', gap: 16 }}>
-      <RichTextToolbarButton text="1." aria-label="Ordered list" />
+      <RichTextToolbarButton
+        text="1."
+        aria-label="Ordered list"
+        isSelected={false}
+      />
       <RichTextToolbarButton text="1." aria-label="Ordered list" isSelected />
       <RichTextToolbarButton text="Normal" hasMenu />
     </div>

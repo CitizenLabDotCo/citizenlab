@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 
-import { Modal as AriaModal, ModalOverlay } from 'react-aria-components';
+import { Modal as AriaModal, ModalOverlay, Text } from 'react-aria-components';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -60,7 +60,9 @@ const AlertDialog = ({
           secondaryAction={{ label: formatMessage(messages.cancel) }}
           autoFocusSecondary
         >
-          <p className={styles.text}>{children}</p>
+          <Text slot="description" elementType="p" className={styles.text}>
+            {children}
+          </Text>
         </DialogLayout>
       </AriaModal>
     </ModalOverlay>

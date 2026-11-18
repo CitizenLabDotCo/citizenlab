@@ -6,7 +6,10 @@ import Table, { TableBody } from 'design-system/Table';
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IIdeaData, Sort } from 'api/ideas/types';
 
+import { useIntl } from 'utils/cl-intl';
+
 import { ColumnKey } from '../columns';
+import messages from '../messages';
 import useInputTermLabels from '../useInputTermLabels';
 
 import HeaderRow from './HeaderRow';
@@ -24,8 +27,7 @@ interface Props {
   statuses: IIdeaStatusData[];
   tagLabels: Map<string, string>;
   selectedIds: Set<string>;
-  onToggleSelect: (idea: IIdeaData) => void;
-  onToggleSelectPage: () => void;
+  onSelectOnPage: (ideaIds: Set<string>) => void;
   openIdeaId: string | undefined;
   onOpen: (ideaId: string) => void;
   currentPage: number;
@@ -43,31 +45,38 @@ const IdeaTable = ({
   statuses,
   tagLabels,
   selectedIds,
-  onToggleSelect,
-  onToggleSelectPage,
+  onSelectOnPage,
   openIdeaId,
   onOpen,
   currentPage,
   lastPage,
   onChangePage,
 }: Props) => {
-  const { capitalizedTerms } = useInputTermLabels();
-  const selectedOnPage = ideas.filter((idea) => selectedIds.has(idea.id));
+  const { formatMessage } = useIntl();
+  const { capitalizedTerms, term, terms } = useInputTermLabels();
+  const pageIds = ideas.map((idea) => idea.id);
 
   return (
     <div>
-      <Table aria-label={capitalizedTerms} keyboardNavigationBehavior="tab">
+      <Table
+        aria-label={capitalizedTerms}
+        keyboardNavigationBehavior="tab"
+        selection={{
+          selectedKeys: pageIds.filter((id) => selectedIds.has(id)),
+          onSelectionChange: (keys) =>
+            onSelectOnPage(
+              new Set(keys === 'all' ? pageIds : [...keys].map(String))
+            ),
+          selectAll: formatMessage(messages.selectAllOnPage, { terms }),
+          selectRow: formatMessage(messages.selectTerm, { term }),
+        }}
+      >
         <HeaderRow
           columns={columns}
           availableColumns={availableColumns}
           onChangeColumns={onChangeColumns}
           sort={sort}
           onSort={onSort}
-          allSelected={
-            ideas.length > 0 && selectedOnPage.length === ideas.length
-          }
-          someSelected={selectedOnPage.length > 0}
-          onToggleSelectAll={onToggleSelectPage}
         />
         <TableBody>
           {ideas.map((idea) => (
@@ -77,9 +86,7 @@ const IdeaTable = ({
               columns={columns}
               statuses={statuses}
               tagLabels={tagLabels}
-              selected={selectedIds.has(idea.id)}
               active={idea.id === openIdeaId}
-              onToggleSelect={() => onToggleSelect(idea)}
               onOpen={() => onOpen(idea.id)}
             />
           ))}

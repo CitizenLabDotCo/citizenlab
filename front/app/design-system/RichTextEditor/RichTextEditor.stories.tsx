@@ -8,24 +8,24 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 const toolbar = (
   <RichTextToolbar aria-label="Formatting">
-    <RichTextToolbarButton icon="bold-14" aria-label="Bold" />
-    <RichTextToolbarButton icon="italic-14" aria-label="Italic" />
-    <RichTextToolbarButton icon="list-14" aria-label="List" />
     <RichTextToolbarButton
-      icon="link-14"
-      aria-label="Link"
+      icon="bold-14"
+      aria-label="Bold"
       isSelected={false}
     />
     <RichTextToolbarButton
-      icon="image-14"
-      aria-label="Image"
+      icon="italic-14"
+      aria-label="Italic"
       isSelected={false}
     />
     <RichTextToolbarButton
-      icon="square-play-14"
-      aria-label="Video"
+      icon="list-14"
+      aria-label="List"
       isSelected={false}
     />
+    <RichTextToolbarButton icon="link-14" aria-label="Link" />
+    <RichTextToolbarButton icon="image-14" aria-label="Image" />
+    <RichTextToolbarButton icon="square-play-14" aria-label="Video" />
   </RichTextToolbar>
 );
 

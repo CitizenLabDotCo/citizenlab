@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useState } from 'react';
 
 import { Time } from '@internationalized/date';
 
@@ -20,27 +20,43 @@ const isInRange = (time: Time, minValue?: Time, maxValue?: Time) =>
   (!minValue || time.compare(minValue) >= 0) &&
   (!maxValue || time.compare(maxValue) <= 0);
 
+const isSameTime = (a: Time | null, b: Time | null) =>
+  a === b || (!!a && !!b && a.compare(b) === 0);
+
 type Props = {
   time: TimeOfDay;
 };
 
 // A start or end time under the calendar of a DayPressRangePicker.
-const TimeOfDayField = ({ time }: Props) => (
-  <TimeField
-    label={time.label}
-    description={time.description}
-    size={32}
-    value={time.value}
-    minValue={time.minValue}
-    maxValue={time.maxValue}
-    isDisabled={time.isDisabled}
-    onChange={(value) => {
-      // Typing passes through times outside the limits; those stay unsaved.
-      if (value && isInRange(value, time.minValue, time.maxValue)) {
-        time.onChange(value);
-      }
-    }}
-  />
-);
+const TimeOfDayField = ({ time }: Props) => {
+  // React Aria resets a controlled field whose value doesn't follow the typing,
+  // so the field keeps what was typed (an out-of-range time then shows as
+  // invalid instead of vanishing) until the caller sends a different time.
+  const [typed, setTyped] = useState(time.value);
+  const [savedValue, setSavedValue] = useState(time.value);
+
+  if (!isSameTime(time.value, savedValue)) {
+    setSavedValue(time.value);
+    setTyped(time.value);
+  }
+
+  return (
+    <TimeField
+      label={time.label}
+      description={time.description}
+      size={32}
+      value={typed}
+      minValue={time.minValue}
+      maxValue={time.maxValue}
+      isDisabled={time.isDisabled}
+      onChange={(value) => {
+        setTyped(value);
+        if (value && isInRange(value, time.minValue, time.maxValue)) {
+          time.onChange(value);
+        }
+      }}
+    />
+  );
+};
 
 export default TimeOfDayField;

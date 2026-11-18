@@ -12,13 +12,20 @@
 }
 
 /* The ring goes round the whole card when its header has focus. */
-.card:has(> .trigger[data-focus-visible]) {
+.card:has(> .trigger[data-focus-visible]),
+.card:has(> .heading > .trigger[data-focus-visible]) {
   outline: var(--gv-border-width-focus) solid var(--gv-border-focused);
   outline-offset: var(--gv-focus-ring-offset);
 }
 
 .card[data-disabled] {
   opacity: var(--gv-opacity-disabled);
+}
+
+.heading {
+  margin: 0;
+  font: inherit;
+  color: inherit;
 }
 
 .header {

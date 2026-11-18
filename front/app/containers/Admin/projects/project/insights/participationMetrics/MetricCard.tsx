@@ -8,10 +8,9 @@ import {
   Tooltip,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { Focusable } from 'react-aria-components';
 
 import StatTile from 'design-system/StatTile';
-import DsTooltip from 'design-system/Tooltip';
+import DsTooltip, { TooltipTarget } from 'design-system/Tooltip';
 
 import { SevenDayChange } from 'api/phase_insights/types';
 
@@ -81,11 +80,7 @@ const MetricCard = ({
           label={
             labelHint ? (
               <DsTooltip content={labelHint}>
-                <Focusable>
-                  <span className={styles.hint} tabIndex={0}>
-                    {label}
-                  </span>
-                </Focusable>
+                <TooltipTarget className={styles.hint}>{label}</TooltipTarget>
               </DsTooltip>
             ) : (
               label
@@ -94,11 +89,9 @@ const MetricCard = ({
           value={
             valueTooltip ? (
               <DsTooltip content={valueTooltip}>
-                <Focusable>
-                  <span className={styles.hint} tabIndex={0}>
-                    {formattedValue}
-                  </span>
-                </Focusable>
+                <TooltipTarget className={styles.hint}>
+                  {formattedValue}
+                </TooltipTarget>
               </DsTooltip>
             ) : (
               formattedValue

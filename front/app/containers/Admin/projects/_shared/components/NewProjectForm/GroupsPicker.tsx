@@ -1,11 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 
-import { DialogTrigger, Key } from 'react-aria-components';
-
 import { fieldStyles } from 'design-system/Field';
 import { ListBoxOption } from 'design-system/ListBox';
+import { DialogTrigger } from 'design-system/Popover';
 import TagGroup, { Tag, TagAdd } from 'design-system/TagGroup';
 import TagPicker from 'design-system/TagPicker';
+import { Key } from 'design-system/types';
 
 import useGroups from 'api/groups/useGroups';
 

@@ -4,12 +4,6 @@
   padding: var(--gv-space-16) 0;
 }
 
-.selectColumn {
-  box-sizing: border-box;
-  padding: 0 var(--gv-space-12);
-  vertical-align: middle;
-}
-
 .markIcon {
   color: var(--gv-icon-tertiary);
 }
@@ -18,10 +12,6 @@
   display: flex;
   align-items: center;
   gap: var(--gv-space-4);
-}
-
-.tagGroup {
-  display: contents;
 }
 
 .tagList {

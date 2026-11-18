@@ -1,11 +1,10 @@
 import React from 'react';
 
-import { Key } from 'react-aria-components';
-
 import SegmentedTabs, {
   SegmentedTab,
   SegmentedTabList,
 } from 'design-system/SegmentedTabs';
+import { Key } from 'design-system/types';
 
 import { useIntl } from 'utils/cl-intl';
 

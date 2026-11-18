@@ -29,6 +29,7 @@ type Props = {
   isDateUnavailable?: (date: DateValue) => boolean;
   // The day that has focus first, and so the month shown first.
   defaultFocusedValue?: DateValue;
+  autoFocus?: boolean;
 };
 
 /*
@@ -46,6 +47,7 @@ const DayPressCalendar = ({
   maxValue,
   isDateUnavailable,
   defaultFocusedValue,
+  autoFocus,
 }: Props) => {
   const selectedDays = !value
     ? []
@@ -71,6 +73,7 @@ const DayPressCalendar = ({
       maxValue={maxValue}
       isDateUnavailable={isDateUnavailable}
       defaultFocusedValue={defaultFocusedValue}
+      autoFocus={autoFocus}
       firstDayOfWeek="mon"
     >
       <CalendarMonth range={value} />

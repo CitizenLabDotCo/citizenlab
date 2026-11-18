@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { DialogTrigger, Key } from 'react-aria-components';
-
 import { ListBoxOption } from 'design-system/ListBox';
+import { DialogTrigger } from 'design-system/Popover';
 import TagPicker from 'design-system/TagPicker';
+import { Key } from 'design-system/types';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { coreSettings } from 'api/app_configuration/utils';

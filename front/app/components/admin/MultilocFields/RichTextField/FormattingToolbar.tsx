@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 
 import Quill from 'quill';
 import QuillToolbar from 'quill/modules/toolbar';
-import { Key } from 'react-aria-components';
 
 import Menu, { MenuItem, MenuTrigger } from 'design-system/Menu';
 import RichTextToolbar, {
   RichTextToolbarButton,
 } from 'design-system/RichTextToolbar';
+import { Key } from 'design-system/types';
 
 import quillMessages from 'components/UI/QuillEditor/messages';
 import tracks from 'components/UI/QuillEditor/tracks';
@@ -225,7 +225,6 @@ const FormattingToolbar = ({
         <RichTextToolbarButton
           icon="link-14"
           aria-label={formatMessage(quillMessages.link)}
-          isSelected={false}
           onPress={() => {
             callQuillHandler('link');
             trackEventByName(tracks.basicEditing, { type: 'link' });
@@ -235,7 +234,6 @@ const FormattingToolbar = ({
       {!noLinks && withCTAButton && (
         <RichTextToolbarButton
           text={formatMessage(quillMessages.customLink)}
-          isSelected={false}
           onPress={addCTAButton}
         />
       )}
@@ -276,7 +274,6 @@ const FormattingToolbar = ({
         <RichTextToolbarButton
           icon="image-14"
           aria-label={formatMessage(quillMessages.image)}
-          isSelected={false}
           onPress={() => {
             callQuillHandler('image');
             trackEventByName(tracks.imageEditing);
@@ -287,7 +284,6 @@ const FormattingToolbar = ({
         <RichTextToolbarButton
           icon="square-play-14"
           aria-label={formatMessage(quillMessages.video)}
-          isSelected={false}
           onPress={() => {
             callQuillHandler('video');
             trackEventByName(tracks.videoEditing);
@@ -298,7 +294,6 @@ const FormattingToolbar = ({
         // No remove-formatting icon is drawn yet; Tx is the usual mark for it.
         text="Tx"
         aria-label={formatMessage(quillMessages.clean)}
-        isSelected={false}
         onPress={() => callQuillHandler('clean')}
       />
     </RichTextToolbar>

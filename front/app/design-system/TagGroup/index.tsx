@@ -12,6 +12,7 @@ import { FieldLabel } from '../Field';
 import styles from './TagGroup.module.css';
 import '../tokens.css';
 
+export { default as InlineTagGroup } from './InlineTagGroup';
 export { default as Tag } from './Tag';
 export { default as TagAdd } from './TagAdd';
 
