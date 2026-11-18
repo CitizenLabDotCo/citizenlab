@@ -23,11 +23,12 @@ module Tasks
 
         # The author is compared by name because the copies still carry the importer's placeholder
         # user, named after the real author. The importer adds the current time to the imported
-        # publication date, so only the day can match.
+        # publication date, so only the day can match. The importer also flattened the body's HTML
+        # to text, with `*` for list bullets, so only the text can match, line breaks aside.
         TIE_BREAKERS = [
           ->(idea) { idea.author&.full_name },
           ->(idea) { idea.published_at&.to_date },
-          ->(idea) { idea.body_multiloc }
+          ->(idea) { idea.body_multiloc.transform_values { |body| SanitizationService.new.strip_to_plain_text(body).to_s.gsub(/[\s*]/, '') } }
         ].freeze
 
         attr_reader :counts
@@ -205,8 +206,11 @@ module Tasks
           restore_dates(comments, copied)
         end
 
+        # The model recomputes a named author's hash from a salt that can differ between
+        # environments, so only a comment without an author is told apart by its hash.
         def find_copied_comment(copy, comment)
-          copy.comments.find_by(comment.slice(:author_id, :author_hash, :created_at))
+          keys = comment.author_id ? %i[author_id created_at] : %i[author_id author_hash created_at]
+          copy.comments.find_by(comment.slice(*keys))
         end
 
         # In a dry run nothing is created, so the replies of a new comment get a nil parent there.

@@ -107,6 +107,15 @@ describe Tasks::SingleUse::Services::ConsolidatedInputsRepairer do
       expect { second.run }.not_to(change { [Comment.count, Reaction.count] })
     end
 
+    it 'creates nothing when run a second time where the author hash salt differs from the sources' do
+      allow(ENV).to receive(:fetch).and_call_original
+      allow(ENV).to receive(:fetch).with('AUTHOR_HASH_SALT', anything).and_return('another-salt')
+      repairer.run
+      second = described_class.new(map, reporter: ScriptReporter.new, execute: true)
+
+      expect { second.run }.not_to(change { [Comment.count, Reaction.count] })
+    end
+
     it 'adds a reaction missing from an earlier run' do
       repairer.run
       copied = copy.comments.find_by!(created_at: comment.created_at)
@@ -165,6 +174,14 @@ describe Tasks::SingleUse::Services::ConsolidatedInputsRepairer do
       source_idea('Training', author: other_author)
       wanted = source_idea('Training')
       copy = imported_copy('Training')
+
+      expect(repairer.match(target_phase, [source_phase.id])).to eq [[wanted, copy]]
+    end
+
+    it 'breaks a title tie by body, read as text' do
+      source_idea('Training', body_multiloc: { 'en' => '<p><strong>Xhosa</strong></p><ul><li>Very useful.</li></ul>' })
+      wanted = source_idea('Training', body_multiloc: { 'en' => "<p><strong>Supervisory course</strong></p><ul>\n<li>\nVery useful.</li></ul>" })
+      copy = imported_copy('Training', body_multiloc: { 'en' => 'Supervisory course  * Very useful.' })
 
       expect(repairer.match(target_phase, [source_phase.id])).to eq [[wanted, copy]]
     end
