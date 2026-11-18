@@ -183,9 +183,10 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
   const spacesEnabled = useFeatureFlag({ name: 'spaces' });
   const isCustomSmtpEnabled = useFeatureFlag({ name: 'custom_smtp' });
   const { data: emailBouncedUsersCount } = useEmailBouncedUsersCount();
-  // Bounces are only recorded from Mailgun webhooks. A tenant on its own SMTP
-  // server only has the ones left from before it switched, and they still
-  // block sending, so the link stays until they're cleared.
+  // Bounces are only recorded through the webhooks of some email providers.
+  // The list of bounced users is not cleared when a tenant switches to its own
+  // SMTP server, and those users stay blocked, so the link stays visible as
+  // long as the list is not empty.
   const showEmailBounces =
     !isCustomSmtpEnabled ||
     (emailBouncedUsersCount?.data.attributes.count ?? 0) > 0;
