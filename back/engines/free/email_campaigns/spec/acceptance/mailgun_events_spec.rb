@@ -5,22 +5,25 @@ require 'rspec_api_documentation/dsl'
 
 resource 'Mailgun Events' do
   explanation 'Endpoint that receives webhook events from Mailgun'
+  header 'Content-Type', 'application/json'
 
-  before do
-    header 'Content-Type', 'application/json'
-  end
+  let(:api_key) { 'key-test' }
+
+  before { stub_const('ENV', ENV.to_h.merge('MAILGUN_API_KEY' => api_key)) }
 
   post 'hooks/mailgun_events' do
     let(:delivery) { create(:delivery) }
-    let(:signature) { '19317083e86d1be8e76337d3c92fd637279386a6a8cbfe3a8826915570599a9d' }
+    let(:timestamp) { '1532087464' }
+    let(:token) { '19810be4e053736bc87ea4e047a722a1d50731d4df429b1baf' }
+    let(:signature) { OpenSSL::HMAC.hexdigest('SHA256', api_key, timestamp + token) }
     let(:delivery_id) { delivery.id }
 
     let(:cl_tenant_id) { AppConfiguration.instance.id }
     let(:mailgun_event) do
       {
         signature: {
-          'timestamp' => '1532087464',
-          'token' => '19810be4e053736bc87ea4e047a722a1d50731d4df429b1baf',
+          'timestamp' => timestamp,
+          'token' => token,
           'signature' => signature
         },
         'event-data': {
@@ -123,15 +126,31 @@ resource 'Mailgun Events' do
     end
 
     context '[error] for a non-matching signature' do
-      before do
-        stub_const('ENV', ENV.to_h.merge('MAILGUN_API_KEY' => 'somefakekey'))
-      end
-
-      let!(:signature) { 'Ryqqw2p75aFnseL8kjPRgu' }
+      let(:signature) { 'Ryqqw2p75aFnseL8kjPRgu' }
 
       example 'returns not_acceptable' do
         do_request(mailgun_event)
         expect(response_status).to eq 406
+        # The rejected event leaves the delivery untouched
+        expect(delivery.reload.delivery_status).to eq('sent')
+      end
+    end
+
+    context '[error] without a signature' do
+      example 'returns not_acceptable' do
+        do_request(mailgun_event.except(:signature))
+        expect(response_status).to eq 406
+      end
+    end
+
+    context '[error] when no Mailgun API key is configured' do
+      let(:api_key) { nil }
+      let(:signature) { 'irrelevant-without-a-key' }
+
+      example 'returns unauthorized' do
+        do_request(mailgun_event)
+        expect(response_status).to eq 401
+        expect(delivery.reload.delivery_status).to eq('sent')
       end
     end
   end
