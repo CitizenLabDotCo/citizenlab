@@ -13,8 +13,8 @@ type ContentProps =
   | { icon?: undefined; text: string; 'aria-label'?: string };
 
 type RichTextToolbarButtonProps = ContentProps & {
-  // Bold, italic and list keep a pressed state. Link, image and video open a
-  // picker: leave isSelected false and use onPress.
+  // Set for toggles (bold, list); leave out for actions (link, image), which
+  // then render as plain buttons rather than "not pressed" toggles.
   isSelected?: boolean;
   onPress?: (e: PressEvent) => void;
   // The trigger of a Menu inside a MenuTrigger (e.g. the heading picker): a
@@ -44,6 +44,14 @@ const RichTextToolbarButton = ({
   if (hasMenu) {
     return (
       <Button className={className} aria-label={ariaLabel}>
+        {content}
+      </Button>
+    );
+  }
+
+  if (isSelected === undefined) {
+    return (
+      <Button className={className} onPress={onPress} aria-label={ariaLabel}>
         {content}
       </Button>
     );
