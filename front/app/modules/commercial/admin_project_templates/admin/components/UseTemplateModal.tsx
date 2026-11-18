@@ -8,7 +8,6 @@ import {
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
-import { parseDate } from '@internationalized/date';
 import { get, isEmpty, transform } from 'lodash-es';
 import moment from 'moment';
 import { darken } from 'polished';
@@ -18,6 +17,7 @@ import { SupportedLocale, Multiloc, IOption } from 'typings';
 
 import Banner from 'design-system/Banner';
 import DatePicker from 'design-system/DatePicker';
+import { parseDate } from 'design-system/dates';
 import DSIcon from 'design-system/Icon';
 import DSModal from 'design-system/Modal';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button } from 'react-aria-components';
+import UnstyledButton from 'design-system/UnstyledButton';
 
 import styles from './IdeaTable.module.css';
 import 'design-system/tokens.css';
@@ -13,9 +13,9 @@ interface Props {
 // The row's title as a button, for rows that don't open on their own.
 // React Aria stops the press here, so a row action doesn't run twice.
 const RowTitleButton = ({ title, onOpen }: Props) => (
-  <Button className={styles.titleButton} onPress={onOpen}>
+  <UnstyledButton className={styles.titleButton} onPress={onOpen}>
     {title}
-  </Button>
+  </UnstyledButton>
 );
 
 export default RowTitleButton;

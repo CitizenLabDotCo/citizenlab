@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { Selection } from 'react-aria-components';
-
 import Menu, { MenuItem } from 'design-system/Menu';
+import { Selection } from 'design-system/types';
 
 import useAreas from 'api/areas/useAreas';
 

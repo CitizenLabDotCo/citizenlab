@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 
-import { Key } from 'react-aria-components';
-
 import Button from 'design-system/Button';
 import { MenuTrigger } from 'design-system/Menu';
 import TagGroup, { Tag } from 'design-system/TagGroup';
+import { Key } from 'design-system/types';
 
 import { IIdeaData } from 'api/ideas/types';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';

@@ -1,9 +1,8 @@
 import React from 'react';
 
-import { Key } from 'react-aria-components';
-
 import { ListBoxOption } from 'design-system/ListBox';
 import Select from 'design-system/Select';
+import { Key } from 'design-system/types';
 
 import { InputTerm } from 'api/phases/types';
 import { INPUT_TERMS } from 'api/phases/utils';

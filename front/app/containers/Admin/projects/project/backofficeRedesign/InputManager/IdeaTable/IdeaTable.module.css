@@ -14,10 +14,6 @@
   gap: var(--gv-space-4);
 }
 
-.tagGroup {
-  display: contents;
-}
-
 .tagList {
   display: flex;
   align-items: center;

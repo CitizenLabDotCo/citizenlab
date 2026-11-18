@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 
-import {
-  AnyCalendarDate,
-  CalendarDate,
-  CalendarDateTime,
-  Time,
-} from '@internationalized/date';
 import { endOfMonth, startOfMonth } from 'date-fns';
 import moment from 'moment-timezone';
 
 import Banner from 'design-system/Banner';
 import DateRangePicker from 'design-system/DateRangePicker';
+import {
+  AnyCalendarDate,
+  CalendarDate,
+  CalendarDateTime,
+  Time,
+} from 'design-system/dates';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 

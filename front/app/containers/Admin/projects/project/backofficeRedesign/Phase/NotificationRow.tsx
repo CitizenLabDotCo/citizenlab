@@ -1,10 +1,9 @@
 import React, { useCallback, useMemo, useState } from 'react';
 
-import { Button as AriaButton } from 'react-aria-components';
-
 import Icon from 'design-system/Icon';
 import Switch from 'design-system/Switch';
 import Tooltip from 'design-system/Tooltip';
+import UnstyledButton from 'design-system/UnstyledButton';
 
 import { CampaignData } from 'containers/Admin/messaging/AutomatedEmails/types';
 import useCampaignRow from 'containers/Admin/messaging/AutomatedEmails/useCampaignRow';
@@ -65,7 +64,7 @@ const NotificationRow = ({ campaign, projectId, phaseId }: Props) => {
   // The whole text block opens the editor, so it is a plain React Aria button
   // styled as a row; a design-system Button only holds a short label.
   const editButton = (
-    <AriaButton
+    <UnstyledButton
       className={styles.edit}
       aria-label={editLabel}
       isDisabled={isEditDisabled && !hasReason}
@@ -80,7 +79,7 @@ const NotificationRow = ({ campaign, projectId, phaseId }: Props) => {
         </span>
       </span>
       <Icon name="chevron-right-16" className={styles.chevron} />
-    </AriaButton>
+    </UnstyledButton>
   );
 
   return (

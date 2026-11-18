@@ -1,9 +1,7 @@
 import React, { ReactNode } from 'react';
 
-import { Focusable } from 'react-aria-components';
-
 import Icon from 'design-system/Icon';
-import Tooltip from 'design-system/Tooltip';
+import Tooltip, { TooltipTarget } from 'design-system/Tooltip';
 
 import styles from './OfflineVoteSettings.module.css';
 import 'design-system/tokens.css';
@@ -13,20 +11,12 @@ interface Props {
   content: ReactNode;
 }
 
-// An info icon with a rich tooltip. The design-system Tooltip only opens on a
-// focusable trigger, so the icon is made focusable.
+// An info icon with a rich tooltip.
 const InfoTooltipMark = ({ 'aria-label': ariaLabel, content }: Props) => (
   <Tooltip content={content}>
-    <Focusable>
-      <span
-        className={styles.infoMark}
-        role="img"
-        aria-label={ariaLabel}
-        tabIndex={0}
-      >
-        <Icon name="info-16" />
-      </span>
-    </Focusable>
+    <TooltipTarget className={styles.infoMark} aria-label={ariaLabel}>
+      <Icon name="info-16" />
+    </TooltipTarget>
   </Tooltip>
 );
 

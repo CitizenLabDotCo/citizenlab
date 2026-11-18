@@ -1,12 +1,11 @@
 import React from 'react';
 
-import { Key } from 'react-aria-components';
-
 import Menu, {
   MenuItem,
   MenuTrigger,
   SubmenuTrigger,
 } from 'design-system/Menu';
+import { Key } from 'design-system/types';
 
 import useAreas from 'api/areas/useAreas';
 import { IProjectData } from 'api/projects/types';

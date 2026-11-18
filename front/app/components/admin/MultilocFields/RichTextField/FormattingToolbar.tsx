@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 
 import Quill from 'quill';
 import QuillToolbar from 'quill/modules/toolbar';
-import { Key } from 'react-aria-components';
 
 import Menu, { MenuItem, MenuTrigger } from 'design-system/Menu';
 import RichTextToolbar, {
   RichTextToolbarButton,
 } from 'design-system/RichTextToolbar';
+import { Key } from 'design-system/types';
 
 import quillMessages from 'components/UI/QuillEditor/messages';
 import tracks from 'components/UI/QuillEditor/tracks';

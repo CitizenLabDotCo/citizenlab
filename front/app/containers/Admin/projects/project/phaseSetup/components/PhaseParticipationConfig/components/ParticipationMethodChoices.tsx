@@ -7,9 +7,9 @@ import {
   colors,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import { PressEvent } from 'react-aria-components';
 
 import DsBadge from 'design-system/Badge';
+import { PressEvent } from 'design-system/types';
 
 import { ParticipationMethod } from 'api/phases/types';
 

@@ -1,11 +1,11 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 
-import { CalendarDate, Time } from '@internationalized/date';
 import { addMinutes, isSameDay } from 'date-fns';
 import { CLErrors } from 'typings';
 
 import Button from 'design-system/Button';
 import DatePicker from 'design-system/DatePicker';
+import { CalendarDate, Time } from 'design-system/dates';
 import IconButton from 'design-system/IconButton';
 import TimeField from 'design-system/TimeField';
 
@@ -32,7 +32,7 @@ const withTimeOf = (date: Date, time: Date) => {
   return result;
 };
 
-// The pickers work on @internationalized/date values; the form keeps the
+// The pickers work on the design system's date values; the form keeps the
 // platform wall-clock Dates, so values are converted only here.
 const toCalendarDate = (date: Date) =>
   new CalendarDate(date.getFullYear(), date.getMonth() + 1, date.getDate());

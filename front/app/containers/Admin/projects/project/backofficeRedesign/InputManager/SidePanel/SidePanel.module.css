@@ -115,7 +115,6 @@
 }
 
 /* The tags flow in the row next to the add control. */
-.tagGroup,
 .tagList {
   display: contents;
 }
