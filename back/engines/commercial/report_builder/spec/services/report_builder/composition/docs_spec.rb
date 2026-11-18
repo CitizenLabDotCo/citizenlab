@@ -40,7 +40,7 @@ describe ReportBuilder::Composition::Docs do
       queries.each do |sql|
         # The notes write an id the context supplies as '...'.
         query = sql.gsub("'...'", "'#{SecureRandom.uuid}'")
-        expect { McpServer::ReportingQueryRunner.run(query) }.not_to raise_error, query
+        expect { McpServer::ReportingQueryRunner.run(query, scope: McpServer::QueryScope.all) }.not_to raise_error, query
       end
     end
 
