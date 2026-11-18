@@ -5,8 +5,8 @@ module Tasks
     module Services
       # Repairs the copies an admin made of old inputs with the input importer, when several old
       # phases were merged into a new one (TAN-9037). The importer left behind the author (it
-      # created a placeholder user, or none), the images, the follows and the comments; this puts
-      # each of them back from the source input.
+      # created a placeholder user, or none), the reactions, the images, the follows and the
+      # comments; this puts each of them back from the source input.
       #
       # The importer keeps no link to the source input, so each imported copy is matched to a source
       # by title. When titles repeat, the author's name, the publication date and the body narrow it
@@ -81,7 +81,7 @@ module Tasks
           replaced_author = nil
           Idea.transaction do
             replaced_author = fix_author(source, copy, log)
-            copy_author_reaction(source, copy, log)
+            copy_idea_reactions(source, copy, log)
             copy_followers(source, copy, log)
             copy_comments(source, copy, log)
           end
@@ -145,18 +145,18 @@ module Tasks
           replaced_author
         end
 
-        # The like an author gives their own input on submission, which the importer did not replay.
-        def copy_author_reaction(source, copy, log)
-          return if source.author_id.nil?
+        # Includes the like an author gives their own input on submission, which the importer did not
+        # replay either.
+        def copy_idea_reactions(source, copy, log)
+          source.reactions.order(:created_at).each do |reaction|
+            next if reaction_copied?(copy, reaction)
 
-          reaction = source.reactions.find_by(user_id: source.author_id)
-          return if reaction.nil? || copy.reactions.exists?(user_id: source.author_id)
-
-          copied_reaction = copy.reactions.create!(reaction.attributes.slice(*COPIED_REACTION_ATTRIBUTES)) if @execute
-          log << {
-            kind: :create, model: 'Reaction', count: :author_reactions,
-            attributes: { id: copied_reaction&.id, source_id: reaction.id, idea_id: copy.id }
-          }
+            copied_reaction = copy.reactions.create!(reaction.attributes.slice(*COPIED_REACTION_ATTRIBUTES)) if @execute
+            log << {
+              kind: :create, model: 'Reaction', count: :idea_reactions,
+              attributes: { id: copied_reaction&.id, source_id: reaction.id, idea_id: copy.id }
+            }
+          end
         end
 
         # Each image is downloaded and saved on its own, so a broken URL costs only that image. The
@@ -232,9 +232,12 @@ module Tasks
           end
         end
 
-        def reaction_copied?(copied_comment, reaction)
-          scope = copied_comment.reactions.where(user_id: reaction.user_id, mode: reaction.mode)
-          scope = scope.where(created_at: reaction.created_at) if reaction.user_id.nil?
+        # A user reacts at most once on the same input or comment, whatever the mode, so someone who
+        # has since reacted on the copy keeps that reaction. Reactions of deleted users have no user
+        # left to compare, only their date.
+        def reaction_copied?(reactable, reaction)
+          scope = reactable.reactions.where(user_id: reaction.user_id)
+          scope = scope.where(mode: reaction.mode, created_at: reaction.created_at) if reaction.user_id.nil?
           scope.exists?
         end
 

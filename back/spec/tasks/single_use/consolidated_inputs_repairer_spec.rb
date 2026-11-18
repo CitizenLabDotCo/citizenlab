@@ -324,39 +324,49 @@ describe Tasks::SingleUse::Services::ConsolidatedInputsRepairer do
     end
   end
 
-  describe "copying the author's like" do
+  describe "copying the input's reactions" do
     let!(:source) { source_idea('Bike lanes') }
     let!(:copy) { imported_copy('Bike lanes') }
 
-    it 'copies the reaction the author gave their source' do
-      like = create(:reaction, reactable: source, user: author, created_at: 1.year.ago)
+    it 'copies every reaction on the source, the author\'s like included' do
+      reactions = [
+        create(:reaction, reactable: source, user: author, created_at: 1.year.ago),
+        create(:reaction, reactable: source, created_at: 11.months.ago),
+        create(:dislike, reactable: source, created_at: 10.months.ago)
+      ]
 
       repairer.run
 
-      expect(copy.reload.reactions.map { |r| r.slice(:user_id, :mode, :created_at) }).to eq [like.reload.slice(:user_id, :mode, :created_at)]
-      expect(copy.likes_count).to eq 1
+      expect(copy.reload.reactions.order(:created_at).map { |r| r.slice(:user_id, :mode, :created_at) })
+        .to eq(reactions.map { |r| r.reload.slice(:user_id, :mode, :created_at) })
+      expect(copy.slice(:likes_count, :dislikes_count)).to eq('likes_count' => 2, 'dislikes_count' => 1)
+      expect(repairer.counts).to include(idea_reactions: 3)
     end
 
-    it 'copies nothing when the author had not reacted, or other people did' do
-      create(:reaction, reactable: source)
+    it 'keeps the reaction someone has since given on the copy' do
+      user = create(:user)
+      create(:reaction, reactable: source, user: user)
+      copy_dislike = create(:dislike, reactable: copy, user: user)
 
-      expect { repairer.run }.not_to(change { copy.reactions.count })
+      repairer.run
+
+      expect(copy.reload.reactions).to eq [copy_dislike]
+      expect(repairer.counts).not_to include(:idea_reactions)
     end
 
-    it 'copies nothing when the author has already reacted on the copy' do
-      create(:reaction, reactable: source, user: author)
-      create(:dislike, reactable: copy, user: author)
-
-      expect { repairer.run }.not_to(change { copy.reactions.count })
-    end
-
-    it 'copies nothing for an anonymous source' do
+    it 'copies the reactions on an anonymous source' do
       source.update!(anonymous: true)
       create(:reaction, reactable: source)
 
+      expect { repairer.run }.to change { copy.reactions.count }.by(1)
+    end
+
+    it 'copies the reaction of a deleted user once' do
+      create(:reaction, reactable: source, user: nil)
       repairer.run
 
-      expect(repairer.counts).not_to include(:author_reactions)
+      expect { described_class.new(map, reporter: ScriptReporter.new, execute: true).run }.not_to(change { copy.reactions.count })
+      expect(copy.reactions.pluck(:user_id)).to eq [nil]
     end
   end
 
@@ -456,7 +466,7 @@ describe Tasks::SingleUse::Services::ConsolidatedInputsRepairer do
     it 'writes and deletes nothing the second time' do
       repairer.run
       expect(reporter.errors).to be_empty
-      expect(repairer.counts).to include(authors_fixed: 1, ghosts_deleted: 1, author_reactions: 1, images: 1, followers: 1, comments: 1)
+      expect(repairer.counts).to include(authors_fixed: 1, ghosts_deleted: 1, idea_reactions: 1, images: 1, followers: 1, comments: 1)
       second = described_class.new(map, reporter: ScriptReporter.new, execute: true)
 
       expect { second.run }.not_to(change { [User.count, Idea.pluck(:author_id).sort, Reaction.count, IdeaImage.count, Follower.count, Comment.count] })

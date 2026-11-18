@@ -4,8 +4,9 @@ require_relative 'services/consolidated_inputs_repairer'
 
 # Cape Town merged its old Staff and Resident ideas phases into one new phase per audience by
 # importing the inputs (TAN-9037). The import attached each copy to a placeholder user instead of
-# its real author, and left the images, follows and comments behind. This puts each of them back
-# from the old input onto its imported copy, deletes the placeholder users, and notifies nobody.
+# its real author, and left the reactions, images, follows and comments behind. This puts each of
+# them back from the old input onto its imported copy, deletes the placeholder users, and notifies
+# nobody.
 # See ConsolidatedInputsRepairer for how copies are matched to their source.
 #
 #     rake 'single_use:repair_consolidated_inputs[,capetown.govocal.com]'         # dry run
@@ -28,7 +29,7 @@ namespace :single_use do
       puts "   Pairs matched: #{counts[:pairs]}, skipped: #{counts[:skipped]}"
       puts "   Authors fixed: #{counts[:authors_fixed]}, made anonymous: #{counts[:made_anonymous]}"
       puts "   Placeholder users deleted: #{counts[:ghosts_deleted]}, kept: #{counts[:ghosts_kept]}"
-      puts "   Author likes: #{counts[:author_reactions]}, follows: #{counts[:followers]}"
+      puts "   Input reactions: #{counts[:idea_reactions]}, follows: #{counts[:followers]}"
       puts "   Images: #{counts[:images]}, not copied: #{counts[:images_failed]}"
       puts "   Comments: #{counts[:comments]}, comment reactions: #{counts[:reactions]}"
       # Follows only lead to notifications when the feature is on.
