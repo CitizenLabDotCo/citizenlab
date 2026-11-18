@@ -27,7 +27,7 @@
 
 /* A toggle row that is on (isPressed): the picked-row surface. */
 .pressable[aria-pressed='true'] {
-  background: var(--gv-surface-row-selected);
+  background: var(--gv-surface-selected-row);
 }
 
 .label {

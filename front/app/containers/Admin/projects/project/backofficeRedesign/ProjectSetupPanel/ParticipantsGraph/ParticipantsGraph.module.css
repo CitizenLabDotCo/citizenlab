@@ -71,7 +71,7 @@
 
 /* No chart token for an area fill; this surface has the fill's colour. */
 .sparklineArea {
-  fill: var(--gv-surface-row-new);
+  fill: var(--gv-component-tag-list-surface-new);
 }
 
 .sparklineLine {

@@ -40,14 +40,14 @@
 }
 
 .checkbox[data-disabled] .box {
-  background: var(--gv-surface-tertiary);
+  background: var(--gv-surface-sunken);
 }
 
 /* Checked and Indeterminate */
 .checkbox[data-selected] .box,
 .checkbox[data-indeterminate] .box {
-  background: var(--gv-surface-checked);
-  border-color: var(--gv-border-checked);
+  background: var(--gv-component-checkbox-surface-checked);
+  border-color: var(--gv-component-checkbox-border-checked);
 }
 
 .checkbox[data-selected][data-hovered] .box,

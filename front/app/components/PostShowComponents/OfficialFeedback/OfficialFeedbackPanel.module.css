@@ -17,7 +17,7 @@
   margin-bottom: var(--gv-space-8);
   padding: var(--gv-space-12);
   border-radius: var(--gv-radius-8);
-  background: var(--gv-surface-tertiary);
+  background: var(--gv-surface-sunken);
   color: var(--gv-text-primary);
   white-space: pre-line;
 }
@@ -64,7 +64,7 @@
   margin-bottom: var(--gv-space-8);
   padding: var(--gv-space-12);
   border-radius: var(--gv-radius-8);
-  background: var(--gv-surface-tertiary);
+  background: var(--gv-surface-sunken);
 }
 
 .localeRow {

@@ -56,46 +56,38 @@
   --gv-slate-850: #2c373d;
 
   /* surface */
-  --gv-surface-app: var(--gv-slate-100);
+  --gv-surface-canvas: var(--gv-slate-100);
   --gv-surface-panel: var(--gv-neutral-0);
-  --gv-surface-tertiary: var(--gv-slate-50);
-  --gv-surface-secondary: var(--gv-neutral-25);
+  --gv-surface-sunken: var(--gv-slate-50);
+  --gv-surface-panel-subtle: var(--gv-neutral-25);
   --gv-surface-hovered: var(--gv-slate-50);
   --gv-surface-pressed: var(--gv-slate-100);
   --gv-surface-info: var(--gv-teal-50);
   --gv-surface-backdrop: var(--gv-alpha-backdrop);
-  --gv-surface-neutral: var(--gv-slate-100);
+  --gv-surface-muted: var(--gv-slate-100);
   --gv-surface-success: var(--gv-alpha-green-12);
   --gv-surface-brand-strong: var(--gv-navy-700);
   --gv-surface-brand-strong-hovered: var(--gv-navy-900);
   --gv-surface-selected-strong: var(--gv-navy-650);
   --gv-surface-inverse: var(--gv-neutral-900);
-  --gv-surface-neutral-strong: var(--gv-neutral-200);
+  --gv-surface-muted-strong: var(--gv-neutral-200);
   --gv-surface-danger-strong: var(--gv-red-500);
-  --gv-surface-chip-neutral: var(--gv-slate-25);
-  --gv-surface-chip-selected: var(--gv-blue-25);
-  --gv-surface-tooltip: var(--gv-neutral-800);
+  --gv-surface-chip: var(--gv-slate-25);
+  --gv-surface-selected-chip: var(--gv-blue-25);
   --gv-surface-danger-hovered: var(--gv-alpha-red-6);
-  --gv-surface-filter-chip: var(--gv-blue-50);
-  --gv-surface-filter-chip-hovered: var(--gv-blue-100);
-  --gv-surface-neutral-hovered: var(--gv-slate-125);
-  --gv-surface-checked: var(--gv-blue-450);
-  --gv-surface-row-selected: var(--gv-alpha-blue-10);
+  --gv-surface-muted-hovered: var(--gv-slate-125);
+  --gv-surface-selected-row: var(--gv-alpha-blue-10);
   --gv-surface-warning: var(--gv-amber-50);
   --gv-surface-danger: var(--gv-alpha-red-12);
   --gv-surface-selected: var(--gv-alpha-navy-10);
   --gv-surface-danger-strong-hovered: var(--gv-red-800);
   --gv-surface-track: var(--gv-slate-125);
-  --gv-surface-tab-selected: var(--gv-slate-200);
-  --gv-surface-step-done: var(--gv-green-500);
+  --gv-surface-selected-tab: var(--gv-slate-200);
+  --gv-surface-success-strong: var(--gv-green-500);
   --gv-surface-control-subtle: var(--gv-slate-40);
-  --gv-surface-row-new: var(--gv-blue-10);
-  --gv-surface-switch-on-panel: var(--gv-slate-750);
   --gv-surface-brand-strong-pressed: var(--gv-navy-950);
   --gv-surface-danger-strong-pressed: var(--gv-red-900);
-  --gv-surface-switch-off-pressed: var(--gv-slate-300);
   --gv-surface-inverse-pressed: var(--gv-neutral-1000);
-  --gv-surface-switch-on-panel-pressed: var(--gv-slate-850);
 
   /* text */
   --gv-text-primary: var(--gv-neutral-900);
@@ -103,20 +95,17 @@
   --gv-text-secondary: var(--gv-slate-600);
   --gv-text-tertiary: var(--gv-slate-500);
   --gv-text-disabled: var(--gv-slate-400);
-  --gv-text-neutral: var(--gv-slate-700);
-  --gv-text-success-strong: var(--gv-green-900);
+  --gv-text-on-muted: var(--gv-slate-700);
   --gv-text-success: var(--gv-green-600);
   --gv-text-inverse: var(--gv-neutral-0);
   --gv-text-placeholder: var(--gv-slate-500);
   --gv-text-link: var(--gv-navy-650);
-  --gv-text-chip-selected: var(--gv-blue-900);
+  --gv-text-selected-chip: var(--gv-blue-900);
   --gv-text-danger: var(--gv-red-600);
-  --gv-text-filter-chip: var(--gv-teal-700);
-  --gv-text-toolbar: var(--gv-slate-750);
   --gv-text-warning: var(--gv-amber-600);
   --gv-text-info: var(--gv-teal-700);
   --gv-text-link-pressed: var(--gv-navy-700);
-  --gv-text-cell: var(--gv-slate-750);
+  --gv-text-body-subtle: var(--gv-slate-750);
 
   /* border */
   --gv-border-control: var(--gv-neutral-200);
@@ -128,27 +117,24 @@
   --gv-border-focused: var(--gv-navy-650);
   --gv-border-inverse: var(--gv-neutral-0);
   --gv-border-strong: var(--gv-slate-250);
-  --gv-border-chip-neutral: var(--gv-slate-225);
-  --gv-border-chip-selected: var(--gv-blue-150);
+  --gv-border-chip: var(--gv-slate-225);
+  --gv-border-selected-chip: var(--gv-blue-150);
   --gv-border-danger: var(--gv-red-600);
   --gv-border-control-active: var(--gv-slate-500);
-  --gv-border-checked: var(--gv-blue-450);
   --gv-border-accent: var(--gv-teal-500);
   --gv-border-divider: var(--gv-slate-125);
-  --gv-border-placeholder: var(--gv-neutral-400);
-  --gv-border-step-done: var(--gv-green-300);
 
   /* icon */
   --gv-icon-tertiary: var(--gv-slate-500);
   --gv-icon-secondary: var(--gv-slate-600);
   --gv-icon-quiet: var(--gv-slate-400);
   --gv-icon-primary: var(--gv-neutral-900);
-  --gv-icon-neutral: var(--gv-slate-700);
+  --gv-icon-on-muted: var(--gv-slate-700);
   --gv-icon-info: var(--gv-teal-700);
   --gv-icon-warning: var(--gv-amber-600);
   --gv-icon-success: var(--gv-green-600);
   --gv-icon-inverse: var(--gv-neutral-0);
-  --gv-icon-chip-selected: var(--gv-blue-900);
+  --gv-icon-selected-chip: var(--gv-blue-900);
   --gv-icon-accent: var(--gv-teal-500);
   --gv-icon-disabled: var(--gv-slate-400);
 
@@ -157,6 +143,22 @@
   --gv-chart-disagree: var(--gv-red-450);
   --gv-chart-pass: var(--gv-slate-300);
   --gv-chart-line-primary: var(--gv-navy-650);
+
+  /* component */
+  --gv-component-avatar-border-empty: var(--gv-neutral-400);
+  --gv-component-checkbox-border-checked: var(--gv-blue-450);
+  --gv-component-checkbox-surface-checked: var(--gv-blue-450);
+  --gv-component-filter-surface-applied-hovered: var(--gv-blue-100);
+  --gv-component-filter-surface-applied: var(--gv-blue-50);
+  --gv-component-filter-text-applied: var(--gv-teal-700);
+  --gv-component-filter-text: var(--gv-text-body-subtle);
+  --gv-component-rail-phase-border-done: var(--gv-green-300);
+  --gv-component-status-text-live: var(--gv-green-900);
+  --gv-component-switch-surface-off-pressed: var(--gv-slate-300);
+  --gv-component-switch-surface-on-panel-pressed: var(--gv-slate-850);
+  --gv-component-switch-surface-on-panel: var(--gv-slate-750);
+  --gv-component-tag-list-surface-new: var(--gv-blue-10);
+  --gv-component-tooltip-surface: var(--gv-neutral-800);
 
   /* Spacing */
   --gv-space-0: 0px;

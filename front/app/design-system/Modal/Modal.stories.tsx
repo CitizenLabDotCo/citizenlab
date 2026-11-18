@@ -16,7 +16,7 @@ const Slot = ({ fill }: { fill?: boolean }) => (
       flex: fill ? 1 : undefined,
       height: fill ? undefined : 64,
       borderRadius: 8,
-      background: 'var(--gv-surface-secondary)',
+      background: 'var(--gv-surface-panel-subtle)',
       border: '1px solid var(--gv-border-control)',
       font: '12px/16px var(--gv-font-family)',
       color: 'var(--gv-text-tertiary)',

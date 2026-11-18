@@ -52,7 +52,7 @@
 }
 
 .input[data-disabled] {
-  background: var(--gv-surface-tertiary);
+  background: var(--gv-surface-sunken);
   color: var(--gv-text-disabled);
   cursor: default;
 }

@@ -47,5 +47,5 @@
 }
 
 .toggleButton[data-pressed] {
-  background: var(--gv-surface-neutral-hovered);
+  background: var(--gv-surface-muted-hovered);
 }

@@ -4,7 +4,7 @@
   max-width: 320px;
   padding: var(--gv-space-4) var(--gv-space-8);
   border-radius: var(--gv-radius-4);
-  background: var(--gv-surface-tooltip);
+  background: var(--gv-component-tooltip-surface);
   color: var(--gv-text-inverse);
   overflow-wrap: break-word;
 }

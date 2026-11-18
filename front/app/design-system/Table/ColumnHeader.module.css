@@ -68,7 +68,7 @@ span.trigger {
 /* Hovered, pressed or open: the head lights up. */
 .column[data-hovered] .cell,
 .cell:has(.trigger[aria-expanded='true']) {
-  background: var(--gv-surface-secondary);
+  background: var(--gv-surface-panel-subtle);
 }
 
 .cell:has(.trigger[data-pressed]) {

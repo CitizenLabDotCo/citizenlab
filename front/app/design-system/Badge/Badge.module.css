@@ -25,21 +25,21 @@
 }
 
 .neutral {
-  background: var(--gv-surface-chip-neutral);
-  border-color: var(--gv-border-chip-neutral);
-  color: var(--gv-text-neutral);
+  background: var(--gv-surface-chip);
+  border-color: var(--gv-border-chip);
+  color: var(--gv-text-on-muted);
 }
 
 .neutral .icon {
-  color: var(--gv-icon-neutral);
+  color: var(--gv-icon-on-muted);
 }
 
 .selected {
-  background: var(--gv-surface-chip-selected);
-  border-color: var(--gv-border-chip-selected);
-  color: var(--gv-text-chip-selected);
+  background: var(--gv-surface-selected-chip);
+  border-color: var(--gv-border-selected-chip);
+  color: var(--gv-text-selected-chip);
 }
 
 .selected .icon {
-  color: var(--gv-icon-chip-selected);
+  color: var(--gv-icon-selected-chip);
 }

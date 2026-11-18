@@ -17,7 +17,7 @@
 
 .selected,
 .selected:hover {
-  background: var(--gv-surface-neutral-hovered);
+  background: var(--gv-surface-muted-hovered);
 }
 
 /* Runs from under this dot to the next row's dot. 15.5 px centres the 1 px line on the 8 px dot. */
@@ -31,7 +31,7 @@
 }
 
 .linePast {
-  background: var(--gv-border-step-done);
+  background: var(--gv-component-rail-phase-border-done);
 }
 
 .dot {
@@ -45,15 +45,15 @@
 }
 
 .dotPast {
-  background: var(--gv-surface-step-done);
+  background: var(--gv-surface-success-strong);
 }
 
 .dotPresent {
-  background: var(--gv-border-step-done);
+  background: var(--gv-component-rail-phase-border-done);
 }
 
 .dotFuture {
-  background: var(--gv-surface-neutral-strong);
+  background: var(--gv-surface-muted-strong);
 }
 
 .body {
@@ -71,7 +71,7 @@
 }
 
 .titleFuture {
-  color: var(--gv-text-neutral);
+  color: var(--gv-text-on-muted);
 }
 
 .meta {

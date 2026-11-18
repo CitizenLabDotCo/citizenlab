@@ -11,11 +11,11 @@
 }
 
 .draft {
-  background: var(--gv-surface-tertiary);
-  color: var(--gv-text-neutral);
+  background: var(--gv-surface-sunken);
+  color: var(--gv-text-on-muted);
 }
 
 .published {
   background: var(--gv-surface-success);
-  color: var(--gv-text-success-strong);
+  color: var(--gv-component-status-text-live);
 }

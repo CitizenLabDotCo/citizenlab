@@ -16,7 +16,7 @@
 }
 
 .toneCell {
-  color: var(--gv-text-cell);
+  color: var(--gv-text-body-subtle);
 }
 
 .secondary {

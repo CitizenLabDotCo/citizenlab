@@ -49,7 +49,7 @@
   z-index: 1;
   background-color: color-mix(
     in srgb,
-    var(--gv-surface-neutral) 35%,
+    var(--gv-surface-muted) 35%,
     transparent
   );
 }

@@ -6,7 +6,7 @@
   padding: var(--gv-space-12);
   border: var(--gv-border-width-1) solid var(--gv-border-divider);
   border-radius: 3px;
-  background: var(--gv-surface-secondary);
+  background: var(--gv-surface-panel-subtle);
 }
 
 .link {

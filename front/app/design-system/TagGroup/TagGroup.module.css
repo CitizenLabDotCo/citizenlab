@@ -25,10 +25,10 @@
   gap: 5px;
   height: var(--gv-size-26);
   padding: 0 11px;
-  border: var(--gv-border-width-1) solid var(--gv-border-chip-selected);
+  border: var(--gv-border-width-1) solid var(--gv-border-selected-chip);
   border-radius: var(--gv-radius-full);
-  background: var(--gv-surface-chip-selected);
-  color: var(--gv-text-chip-selected);
+  background: var(--gv-surface-selected-chip);
+  color: var(--gv-text-selected-chip);
   white-space: nowrap;
   cursor: default;
 }
@@ -49,7 +49,7 @@
   border: none;
   border-radius: var(--gv-radius-full);
   background: transparent;
-  color: var(--gv-icon-chip-selected);
+  color: var(--gv-icon-selected-chip);
   outline: none;
   cursor: pointer;
   transition-property: background-color;

@@ -18,7 +18,7 @@ const Art = () => (
       boxSizing: 'border-box',
       borderRadius: 8,
       border: '1px solid var(--gv-border-control)',
-      background: 'var(--gv-surface-secondary)',
+      background: 'var(--gv-surface-panel-subtle)',
       color: 'var(--gv-text-tertiary)',
       font: '12px/16px var(--gv-font-family)',
     }}

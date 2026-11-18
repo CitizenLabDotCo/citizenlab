@@ -6,7 +6,7 @@
   gap: var(--gv-space-2);
   padding: 0 var(--gv-space-4);
   border-bottom: var(--gv-border-width-1) solid var(--gv-border-subtle);
-  background: var(--gv-surface-secondary);
+  background: var(--gv-surface-panel-subtle);
 }
 
 .button {
@@ -58,7 +58,7 @@
 }
 
 .button[data-selected] {
-  background: var(--gv-surface-neutral);
+  background: var(--gv-surface-muted);
 }
 
 .button[data-selected][data-hovered] {

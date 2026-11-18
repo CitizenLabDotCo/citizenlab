@@ -3,7 +3,7 @@
   composes: ringInside from '../focus.module.css';
   position: relative;
   border-radius: var(--gv-radius-8);
-  color: var(--gv-text-cell);
+  color: var(--gv-text-body-subtle);
   cursor: default;
 }
 
@@ -21,7 +21,7 @@
 }
 
 .row[data-hovered] > td {
-  background: var(--gv-surface-secondary);
+  background: var(--gv-surface-panel-subtle);
 }
 
 .row[data-pressed] > td {
@@ -31,7 +31,7 @@
 /* A picked row, or the current one (isActive), draws as Selected=Yes. */
 .row[data-picked] > td,
 .row[data-active] > td {
-  background: var(--gv-surface-row-selected);
+  background: var(--gv-surface-selected-row);
 }
 
 .actionsCell {

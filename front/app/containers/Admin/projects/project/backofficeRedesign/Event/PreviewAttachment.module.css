@@ -17,6 +17,6 @@
   margin: 0;
   font-size: var(--gv-font-size-14);
   line-height: var(--gv-font-line-height-20);
-  color: var(--gv-text-toolbar);
+  color: var(--gv-component-filter-text);
   text-decoration: underline;
 }

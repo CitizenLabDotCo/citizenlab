@@ -105,8 +105,8 @@
 }
 
 .option[data-selected] .checkbox {
-  border-color: var(--gv-border-checked);
-  background: var(--gv-surface-checked);
+  border-color: var(--gv-component-checkbox-border-checked);
+  background: var(--gv-component-checkbox-surface-checked);
 }
 
 .option[data-disabled]:not([data-selected]) .checkbox,

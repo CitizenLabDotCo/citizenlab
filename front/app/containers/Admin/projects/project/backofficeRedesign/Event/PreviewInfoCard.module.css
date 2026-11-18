@@ -3,7 +3,7 @@
   padding: var(--gv-space-20);
   /* The citizen card radius is 3 px; 4 is the nearest token. */
   border-radius: var(--gv-radius-4);
-  background: var(--gv-surface-app);
+  background: var(--gv-surface-canvas);
 }
 
 .inner {

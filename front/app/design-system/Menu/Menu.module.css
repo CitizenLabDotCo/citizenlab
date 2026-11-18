@@ -152,8 +152,8 @@
 }
 
 .item[data-selected] .checkbox {
-  border-color: var(--gv-border-checked);
-  background: var(--gv-surface-checked);
+  border-color: var(--gv-component-checkbox-border-checked);
+  background: var(--gv-component-checkbox-surface-checked);
 }
 
 .item[data-disabled] .checkbox,
@@ -163,7 +163,7 @@
 
 .item[data-disabled]:not([data-selected]) .checkbox,
 .item[aria-disabled='true']:not([data-selected]) .checkbox {
-  background: var(--gv-surface-tertiary);
+  background: var(--gv-surface-sunken);
 }
 
 .checkboxIcon {

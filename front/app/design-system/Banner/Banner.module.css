@@ -48,7 +48,7 @@
   gap: var(--gv-space-8);
   border-radius: var(--gv-radius-8);
   background: var(--gv-surface-control-subtle);
-  color: var(--gv-text-cell);
+  color: var(--gv-text-body-subtle);
 }
 
 .neutral .iconWrapper {

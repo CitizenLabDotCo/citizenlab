@@ -9,7 +9,7 @@
   padding: var(--gv-space-24) var(--gv-space-16);
   border: var(--gv-border-width-1) solid var(--gv-border-control);
   border-radius: var(--gv-radius-10);
-  background: var(--gv-surface-secondary);
+  background: var(--gv-surface-panel-subtle);
   transition-property: background-color, border-color;
   transition-duration: var(--gv-motion-duration-fast);
   transition-timing-function: var(--gv-motion-easing-standard);
@@ -51,7 +51,7 @@
 }
 
 .dropZone[data-hovered] {
-  background: var(--gv-surface-tertiary);
+  background: var(--gv-surface-sunken);
   border-color: var(--gv-border-control-hovered);
 }
 

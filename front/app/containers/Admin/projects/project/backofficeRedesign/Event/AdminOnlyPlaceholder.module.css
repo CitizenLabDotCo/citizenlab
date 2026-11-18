@@ -7,7 +7,7 @@
   padding: var(--gv-space-16);
   border: var(--gv-border-width-1) dashed var(--gv-border-control);
   border-radius: var(--gv-radius-8);
-  background: var(--gv-surface-secondary);
+  background: var(--gv-surface-panel-subtle);
 }
 
 .title {

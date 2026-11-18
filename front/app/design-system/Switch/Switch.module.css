@@ -22,7 +22,7 @@
   height: var(--switch-height);
   padding: var(--gv-space-2);
   border-radius: var(--gv-radius-full);
-  background: var(--gv-surface-neutral-strong);
+  background: var(--gv-surface-muted-strong);
   transition: background-color var(--gv-motion-duration-fast)
     var(--gv-motion-easing-standard);
 }
@@ -52,8 +52,8 @@
   --switch-width: 26px;
   --switch-height: 16px;
   --switch-thumb: 12px;
-  --switch-on: var(--gv-surface-switch-on-panel);
-  --switch-on-pressed: var(--gv-surface-switch-on-panel-pressed);
+  --switch-on: var(--gv-component-switch-surface-on-panel);
+  --switch-on-pressed: var(--gv-component-switch-surface-on-panel-pressed);
 }
 
 .thumb {
@@ -82,7 +82,7 @@
 }
 
 .switch[data-pressed] .track:not([data-selected]) {
-  background: var(--gv-surface-switch-off-pressed);
+  background: var(--gv-component-switch-surface-off-pressed);
 }
 
 .switch[data-pressed] .track[data-selected] {

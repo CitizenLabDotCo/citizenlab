@@ -27,7 +27,7 @@
 
 .eventRow[data-selected],
 .eventRow[data-selected]:hover {
-  background: var(--gv-surface-neutral-hovered);
+  background: var(--gv-surface-muted-hovered);
 }
 
 .eventTitle {

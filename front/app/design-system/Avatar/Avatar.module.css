@@ -29,12 +29,13 @@
 }
 
 .image {
-  background: var(--gv-surface-neutral-hovered);
+  background: var(--gv-surface-muted-hovered);
 }
 
 .empty {
   background: var(--gv-surface-hovered);
-  border: var(--gv-border-width-1) dashed var(--gv-border-placeholder);
+  border: var(--gv-border-width-1) dashed
+    var(--gv-component-avatar-border-empty);
   box-shadow: none;
 }
 

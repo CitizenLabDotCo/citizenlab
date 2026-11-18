@@ -7,7 +7,7 @@
 }
 
 .dotPublished {
-  background: var(--gv-surface-step-done);
+  background: var(--gv-surface-success-strong);
 }
 
 .dotArchived {
@@ -86,7 +86,7 @@
   margin-top: var(--gv-space-4);
   padding: var(--gv-space-12) var(--gv-space-8);
   border-radius: var(--gv-radius-12);
-  background: var(--gv-surface-secondary);
+  background: var(--gv-surface-panel-subtle);
 }
 
 .groupsIntro {

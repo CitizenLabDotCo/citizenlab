@@ -93,7 +93,7 @@
 }
 
 .secondary[data-hovered]:not([aria-disabled='true']) {
-  background: var(--gv-surface-secondary);
+  background: var(--gv-surface-panel-subtle);
   border-color: var(--gv-border-control-hovered);
 }
 

@@ -6,7 +6,7 @@
   padding: 3px;
   gap: var(--gv-space-2);
   border-radius: 5px;
-  background: var(--gv-surface-neutral);
+  background: var(--gv-surface-muted);
 }
 
 .tab {
@@ -36,7 +36,7 @@
 }
 
 .tab[data-pressed]:not([data-selected]) {
-  background: var(--gv-surface-neutral-hovered);
+  background: var(--gv-surface-muted-hovered);
 }
 
 .tab[data-selected] {

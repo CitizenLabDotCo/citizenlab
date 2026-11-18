@@ -7,8 +7,8 @@
   height: var(--gv-size-28);
   padding-right: var(--gv-space-4);
   border-radius: var(--gv-radius-full);
-  background: var(--gv-surface-filter-chip);
-  color: var(--gv-text-filter-chip);
+  background: var(--gv-component-filter-surface-applied);
+  color: var(--gv-component-filter-text-applied);
   outline: none;
   transition-property: background-color;
   transition-duration: var(--gv-motion-duration-fast);
@@ -64,5 +64,5 @@
 }
 
 .chip:has([data-hovered]) {
-  background: var(--gv-surface-filter-chip-hovered);
+  background: var(--gv-component-filter-surface-applied-hovered);
 }

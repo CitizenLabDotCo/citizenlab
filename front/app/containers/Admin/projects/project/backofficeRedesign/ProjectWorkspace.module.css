@@ -6,7 +6,7 @@
   height: 100vh;
   padding: var(--gv-space-8);
   overflow: hidden;
-  background: var(--gv-surface-app);
+  background: var(--gv-surface-canvas);
 }
 
 .columns {

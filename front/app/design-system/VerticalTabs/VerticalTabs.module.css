@@ -11,7 +11,7 @@
   padding: var(--gv-space-16) var(--gv-space-12);
   gap: var(--gv-space-4);
   border-right: var(--gv-border-width-1) solid var(--gv-border-default);
-  background: var(--gv-surface-tertiary);
+  background: var(--gv-surface-sunken);
 }
 
 .tab {
@@ -23,7 +23,7 @@
   padding: var(--gv-space-8) var(--gv-space-12);
   gap: var(--gv-space-10);
   border-radius: var(--gv-radius-8);
-  color: var(--gv-text-cell);
+  color: var(--gv-text-body-subtle);
   text-decoration: none;
   cursor: pointer;
   transition-property: background-color, color;
@@ -61,7 +61,7 @@
 }
 
 .tab[data-selected] {
-  background: var(--gv-surface-tab-selected);
+  background: var(--gv-surface-selected-tab);
   color: var(--gv-text-primary);
   font-weight: var(--gv-font-weight-medium);
 }
