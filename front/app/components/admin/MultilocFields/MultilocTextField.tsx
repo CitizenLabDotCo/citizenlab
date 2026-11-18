@@ -10,9 +10,9 @@ import useSelectedLocale from './useSelectedLocale';
 import 'design-system/tokens.css';
 
 type LabelProps =
-  | { label: string; 'aria-label'?: undefined }
+  | { label: string; labelTooltip?: string; 'aria-label'?: undefined }
   // Without a visible label (a title) the field needs an aria-label.
-  | { label?: undefined; 'aria-label': string };
+  | { label?: undefined; labelTooltip?: undefined; 'aria-label': string };
 
 type Props = LabelProps & {
   id?: string;
@@ -33,6 +33,7 @@ type Props = LabelProps & {
 const MultilocTextField = ({
   id,
   label,
+  labelTooltip,
   'aria-label': ariaLabel,
   description,
   placeholder,
@@ -85,6 +86,7 @@ const MultilocTextField = ({
       <TextField
         id={id}
         label={label}
+        labelTooltip={labelTooltip}
         description={help}
         placeholder={placeholder}
         value={value}

@@ -11,7 +11,7 @@ import { INPUT_TERMS } from 'api/phases/utils';
 import projectMessages from 'containers/Admin/projects/project/messages';
 import { getInputTermOptions } from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/components/shared/CustomFieldPicker';
 
-import { useIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import PanelField from '../PanelField';
 
@@ -31,10 +31,13 @@ const InputTermCard = ({ value, onChange }: Props) => {
   const options = getInputTermOptions(formatMessage);
 
   return (
-    <PanelField reviewKey="input_term" label={title}>
+    <PanelField
+      reviewKey="input_term"
+      label={title}
+      labelTooltip={<FormattedMessage {...messages.inputTermDescription} />}
+    >
       <Select
         aria-label={title}
-        description={formatMessage(messages.inputTermDescription)}
         size={32}
         value={value ?? null}
         onChange={(key) => {

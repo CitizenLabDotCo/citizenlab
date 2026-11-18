@@ -85,17 +85,21 @@ const DayPressRangePicker = ({
 }: Props) => {
   const valueId = useId();
   const { locale } = useLocale();
-  const formatter = useMemo(
-    () =>
+  const [dateFormatter, timeFormatter] = useMemo(
+    () => [
       new DateFormatter(locale, {
-        dateStyle: 'short',
-        timeStyle: 'short',
-        hourCycle: 'h23',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
       }),
+      new DateFormatter(locale, { hour: 'numeric', minute: '2-digit' }),
+    ],
     [locale]
   );
-  const format = (date: CalendarDateTime) =>
-    formatter.format(date.toDate(getLocalTimeZone()));
+  const format = (date: CalendarDateTime) => {
+    const value = date.toDate(getLocalTimeZone());
+    return `${dateFormatter.format(value)} ${timeFormatter.format(value)}`;
+  };
 
   const hasFooter = !!startTime || !!endTime || !!calendarNote;
 

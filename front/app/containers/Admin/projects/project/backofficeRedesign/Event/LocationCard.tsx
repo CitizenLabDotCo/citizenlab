@@ -39,7 +39,7 @@ const LocationCard = ({ form }: Props) => {
       <TextField
         id="event-online-link"
         label={formatMessage(eventMessages.onlineEventLinkLabel)}
-        description={formatMessage(eventMessages.onlineEventLinkTooltip)}
+        labelTooltip={formatMessage(eventMessages.onlineEventLinkTooltip)}
         value={attributes.online_link ?? ''}
         placeholder="https://..."
         onChange={(online_link) => form.updateAttributes({ online_link })}
@@ -50,7 +50,7 @@ const LocationCard = ({ form }: Props) => {
       <LocationComboBox
         label={formatMessage(messages.address)}
         placeholder={formatMessage(eventMessages.searchForLocation)}
-        description={formatMessage(eventMessages.addressOneTooltip)}
+        labelTooltip={formatMessage(eventMessages.addressOneTooltip)}
         errorMessage={addressError}
         value={attributes.address_1 ?? ''}
         onChange={(address_1) => form.updateAttributes({ address_1 })}
@@ -59,7 +59,7 @@ const LocationCard = ({ form }: Props) => {
       <MultilocTextField
         id="event-address-2"
         label={formatMessage(messages.addressDetails)}
-        description={formatMessage(eventMessages.addressTwoTooltip)}
+        labelTooltip={formatMessage(eventMessages.addressTwoTooltip)}
         placeholder={formatMessage(eventMessages.addressTwoPlaceholder)}
         valueMultiloc={attributes.address_2_multiloc}
         onChange={(address_2_multiloc: Multiloc) =>

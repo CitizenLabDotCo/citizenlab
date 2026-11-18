@@ -52,7 +52,7 @@ const SlugInput = ({
         prefix={`${hostName}/${locale}/projects/`}
         value={slug}
         onChange={onSlugChange}
-        description={formatMessage(slugInputMessages.slugTooltip)}
+        labelTooltip={formatMessage(slugInputMessages.slugTooltip)}
         isInvalid={!!errorMessage}
         errorMessage={errorMessage}
       />

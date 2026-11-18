@@ -14,7 +14,7 @@ import 'design-system/tokens.css';
 interface Props {
   label: ReactNode;
   placeholder: string;
-  description?: ReactNode;
+  labelTooltip?: string;
   errorMessage?: ReactNode;
   // The address; empty when there is none.
   value: string;
@@ -24,7 +24,7 @@ interface Props {
 const LocationComboBox = ({
   label,
   placeholder,
-  description,
+  labelTooltip,
   errorMessage,
   value,
   onChange,
@@ -52,7 +52,7 @@ const LocationComboBox = ({
     <ComboBox
       label={label}
       placeholder={placeholder}
-      description={description}
+      labelTooltip={labelTooltip}
       errorMessage={errorMessage}
       isInvalid={!!errorMessage}
       items={items}

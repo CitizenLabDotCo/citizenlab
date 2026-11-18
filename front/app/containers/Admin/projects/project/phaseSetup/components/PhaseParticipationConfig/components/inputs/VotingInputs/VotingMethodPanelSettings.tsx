@@ -127,7 +127,7 @@ const VotingMethodPanelSettings = ({
           <Select
             id="vote_term"
             label={formatMessage(messages.voteCalled2)}
-            description={formatMessage(messages.ifLeftEmpty)}
+            labelTooltip={formatMessage(messages.ifLeftEmpty)}
             size={32}
             value={voteTerm ?? null}
             onChange={(key) => {

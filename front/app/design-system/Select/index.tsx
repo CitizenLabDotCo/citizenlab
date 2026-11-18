@@ -26,6 +26,7 @@ type SelectProps<T extends object> = LabelProps & {
   value?: Key | null;
   onChange?: (value: Key | null) => void;
   placeholder?: string;
+  labelTooltip?: string;
   description?: ReactNode;
   errorMessage?: ReactNode;
   size?: 36 | 32;
@@ -41,6 +42,7 @@ const Select = <T extends object>({
   value,
   onChange,
   placeholder,
+  labelTooltip,
   description,
   errorMessage,
   size = 36,
@@ -59,7 +61,9 @@ const Select = <T extends object>({
     aria-label={ariaLabel}
     data-cy={dataCy}
   >
-    {label !== undefined && <FieldLabel>{label}</FieldLabel>}
+    {label !== undefined && (
+      <FieldLabel tooltip={labelTooltip}>{label}</FieldLabel>
+    )}
     <div className={fieldStyles.control}>
       <Button className={`${styles.button} ${styles[`size${size}`]}`}>
         {/* Only the label text: the option's icon stays in the list. */}

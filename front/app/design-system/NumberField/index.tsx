@@ -26,11 +26,14 @@ type NumberFieldProps = LabelProps & {
   minValue?: number;
   maxValue?: number;
   step?: number;
+  labelTooltip?: string;
   description?: ReactNode;
   errorMessage?: ReactNode;
   size?: 36 | 32;
   isInvalid?: boolean;
   isDisabled?: boolean;
+  // A plain input for decimals, where one step button press barely moves the value.
+  hideStepButtons?: boolean;
   // Names for the step buttons; React Aria's default is "Increase/Decrease <field label>".
   incrementAriaLabel?: string;
   decrementAriaLabel?: string;
@@ -71,11 +74,13 @@ const NumberField = ({
   minValue,
   maxValue,
   step,
+  labelTooltip,
   description,
   errorMessage,
   size = 36,
   isInvalid,
   isDisabled = false,
+  hideStepButtons = false,
   incrementAriaLabel,
   decrementAriaLabel,
   name,
@@ -97,14 +102,22 @@ const NumberField = ({
     id={id}
     aria-label={ariaLabel}
   >
-    {label !== undefined && <FieldLabel>{label}</FieldLabel>}
+    {label !== undefined && (
+      <FieldLabel tooltip={labelTooltip}>{label}</FieldLabel>
+    )}
     <div className={fieldStyles.control}>
-      <Group className={`${styles.group} ${inputStyles[`size${size}`]}`}>
-        {/* React Aria names the steps and disables them at the minimum and maximum. */}
-        <StepButton slot="decrement" />
-        <Input className={styles.value} />
-        <StepButton slot="increment" />
-      </Group>
+      {hideStepButtons ? (
+        <Input
+          className={`${inputStyles.input} ${inputStyles[`size${size}`]}`}
+        />
+      ) : (
+        <Group className={`${styles.group} ${inputStyles[`size${size}`]}`}>
+          {/* React Aria names the steps and disables them at the minimum and maximum. */}
+          <StepButton slot="decrement" />
+          <Input className={styles.value} />
+          <StepButton slot="increment" />
+        </Group>
+      )}
       <FieldHelp description={description} errorMessage={errorMessage} />
     </div>
   </AriaNumberField>

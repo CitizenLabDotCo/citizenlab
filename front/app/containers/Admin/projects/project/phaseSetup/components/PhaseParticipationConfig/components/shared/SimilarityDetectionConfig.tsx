@@ -154,10 +154,11 @@ const SimilarityDetectionConfig = ({
             <NumberField
               name="similarity_threshold_title"
               label={formatMessage(messages.similarityThresholdTitle)}
-              description={formatMessage(
+              labelTooltip={formatMessage(
                 messages.similarityThresholdTitleTooltipMessage
               )}
               size={32}
+              hideStepButtons
               minValue={0}
               maxValue={1}
               step={0.01}
@@ -176,10 +177,11 @@ const SimilarityDetectionConfig = ({
             <NumberField
               name="similarity_threshold_body"
               label={formatMessage(messages.similarityThresholdBody)}
-              description={formatMessage(
+              labelTooltip={formatMessage(
                 messages.similarityThresholdBodyTooltipMessage
               )}
               size={32}
+              hideStepButtons
               minValue={0}
               maxValue={1}
               step={0.01}
