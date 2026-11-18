@@ -76,6 +76,11 @@ Apartment.configure do |config|
     ActiveSupport.on_load(:active_record_postgresqladapter) { prepend GemExtensions::ActiveRecord::ConnectionAdapters::PostgreSqlAdapter }
 
     config.parallel_migration_threads = parallel_migration_threads
+    # By default, Apartment forks a process per worker and turns Rails' migration locks off for
+    # parallel runs. The patches above give each tenant schema its own lock, so keep the locks,
+    # and keep the workers as threads of this process.
+    config.parallel_strategy = :threads
+    config.manage_advisory_locks = false
   end
 
   # ==> PostgreSQL only options
