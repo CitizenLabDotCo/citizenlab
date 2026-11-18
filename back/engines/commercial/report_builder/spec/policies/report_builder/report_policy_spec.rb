@@ -211,6 +211,15 @@ RSpec.describe ReportBuilder::ReportPolicy do
           it_behaves_like 'not permitted anything'
           it { expect(scope.resolve.count).to eq(0) }
         end
+
+        # No widget the user may not read stands in the way here, so moderating
+        # the phase's project is the only thing that can.
+        context 'when user cannot moderate phase, and report is not visible and has no data widgets' do
+          let_it_be(:user) { create(:project_moderator) }
+          let_it_be(:report) { create(:report, phase: current_phase) }
+
+          it_behaves_like 'not permitted anything'
+        end
       end
     end
 

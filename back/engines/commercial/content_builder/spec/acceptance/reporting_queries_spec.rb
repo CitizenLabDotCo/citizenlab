@@ -166,6 +166,15 @@ resource 'ReportingQueries' do
 
         assert_status 401
       end
+
+      example '[error] Try to read one that is not published as a moderator of another project', document: false do
+        report.update!(visible: false)
+        header_token_for create(:project_moderator, projects: [create(:project)])
+
+        do_request(query: sql, layout_id: layout.id)
+
+        assert_status 401
+      end
     end
 
     context 'when the renderer renders a block' do
