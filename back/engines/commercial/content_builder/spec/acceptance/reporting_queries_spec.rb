@@ -347,6 +347,20 @@ resource 'ReportingQueries' do
       end
     end
 
+    context 'when a moderator of the project and of another project refreshes a report about the project' do
+      let(:project) { create(:project) }
+      let(:report) { create(:report, project: project) }
+      let(:layout) { report.layout }
+
+      before { header_token_for create(:project_moderator, projects: [project, create(:project)]) }
+
+      example_request 'Re-run every stored answer over the report\'s project only', document: false do
+        assert_status 200
+        expect(McpServer::ReportingQueryRunner)
+          .to have_received(:run).with(anything, scope: McpServer::QueryScope.new(project_ids: [project.id]))
+      end
+    end
+
     context 'when visitor' do
       example_request '[error] Try to refresh without authorization' do
         assert_status 401
