@@ -1134,6 +1134,21 @@
     "verified_at": "2026-03-27T13:21:30.107106Z",
     "verified_by": "Cindy EB"
   },
+  "app.components.CustomPageBuilder.Widgets.CustomPageTitle.hiddenNote": {
+    "state": "verified",
+    "verified_at": "2026-11-17T14:03:56.564269Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.CustomPageBuilder.Widgets.CustomPageTitle.lockedNote": {
+    "state": "verified",
+    "verified_at": "2026-11-17T14:03:56.564269Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.CustomPageBuilder.Widgets.CustomPageTitle.showTitleLabel": {
+    "state": "verified",
+    "verified_at": "2026-11-17T14:03:56.564269Z",
+    "verified_by": "Adrien"
+  },
   "app.components.CustomPageBuilder.Widgets.CustomPageTitle.title": {
     "state": "verified",
     "verified_at": "2026-10-26T13:27:19.186136Z",
@@ -1142,6 +1157,56 @@
   "app.components.CustomPageBuilder.Widgets.CustomPageTitle.titleLabel": {
     "state": "verified",
     "verified_at": "2026-10-26T13:27:19.186136Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.CustomPageBuilder.Widgets.CustomPageTitle.untitledPage": {
+    "state": "verified",
+    "verified_at": "2026-11-17T14:03:56.564269Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.description": {
+    "state": "verified",
+    "verified_at": "2026-11-17T16:12:04.504149Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.filterByAreas": {
+    "state": "verified",
+    "verified_at": "2026-11-17T15:46:57.285719Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.filterByLabel": {
+    "state": "verified",
+    "verified_at": "2026-11-17T15:46:57.285719Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.filterBySpaces": {
+    "state": "verified",
+    "verified_at": "2026-11-17T15:46:57.285719Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.filterByTags": {
+    "state": "verified",
+    "verified_at": "2026-11-17T16:12:04.504149Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.filteredProjects": {
+    "state": "verified",
+    "verified_at": "2026-11-17T16:18:56.615027Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.notAvailable": {
+    "state": "verified",
+    "verified_at": "2026-11-17T16:18:56.615027Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.nothingSelected": {
+    "state": "verified",
+    "verified_at": "2026-11-17T16:33:19.570252Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.selectionLabel": {
+    "state": "verified",
+    "verified_at": "2026-11-17T15:46:57.285719Z",
     "verified_by": "Adrien"
   },
   "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.titleLabel": {
@@ -8253,6 +8318,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.containers.CustomPageBuilder.customPage": {
+    "state": "verified",
+    "verified_at": "2026-11-17T14:03:56.564269Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.CustomPageBuilder.saveError": {
+    "state": "verified",
+    "verified_at": "2026-11-17T14:03:56.564269Z",
+    "verified_by": "Adrien"
   },
   "app.containers.CustomPageBuilder.saveErrorUnauthorizedFile": {
     "state": "verified",
