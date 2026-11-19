@@ -1971,7 +1971,7 @@
   "app.containers.IdeasNewPage.api_error_topic_title_multiloc_too_short": "Emnets titel skal være mindst 10 tegn lang",
   "app.containers.IdeasNewPage.cancelLeaveSurveyButtonText": "Annuller",
   "app.containers.IdeasNewPage.commentMetaTitle1": "Tilføj ny kommentar til projekt | {orgName}",
-  "app.containers.IdeasNewPage.confirmLeaveFormButtonText": "Ja, jeg vil gerne afbryderne logge af",
+  "app.containers.IdeasNewPage.confirmLeaveFormButtonText": "Ja, jeg vil gerne afbryde",
   "app.containers.IdeasNewPage.contributionMetaTitle1": "Tilføj nyt bidrag til projektet | {orgName}",
   "app.containers.IdeasNewPage.editSurvey": "Rediger undersøgelse",
   "app.containers.IdeasNewPage.ideaNewMetaDescription": "Send et indlæg, og deltag i samtalen på {orgName}'s borgerinddragelsesplatform.",
