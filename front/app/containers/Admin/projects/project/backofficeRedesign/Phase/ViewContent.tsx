@@ -1,10 +1,13 @@
 import React, { ReactNode } from 'react';
 
+import Banner from 'design-system/Banner';
 import Spinner from 'design-system/Spinner';
 
 import { PhaseInsightsParticipationMetrics } from 'api/phase_insights/types';
 import usePhaseInsights from 'api/phase_insights/usePhaseInsights';
 import { IPhaseData } from 'api/phases/types';
+
+import projectMessages from 'containers/Admin/projects/project/messages';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -144,6 +147,13 @@ const ViewContent = ({ phase, view, children }: Props) => {
           size="small"
           title={formatMessage(messages.noInsightsYet)}
         />
+        {phase.attributes.participation_method === 'document_annotation' && (
+          <div role="note" className={styles.note}>
+            <Banner tone="neutral">
+              {formatMessage(projectMessages.konveioParticipationDataNotice)}
+            </Banner>
+          </div>
+        )}
       </div>
     </>
   );

@@ -3,6 +3,10 @@
 .base {
   font-family: var(--gv-font-family);
   letter-spacing: var(--gv-font-letter-spacing-0);
+}
+
+/* Zero specificity, so a composing class's own margin wins whatever order the stylesheets load in. */
+:where(.base) {
   margin: 0;
 }
 

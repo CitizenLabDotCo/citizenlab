@@ -238,6 +238,22 @@ export const icons = defineIcons({
       </>
     ),
   },
+  'chevrons-up-down-16': {
+    size: 16,
+    height: 16,
+    viewBox: '0 0 16 16',
+    paths: (
+      <>
+        <path
+          d="M5 10L8 13L11 10M5 6L8 3L11 6"
+          strokeWidth="1.16667"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          stroke="currentColor"
+        />
+      </>
+    ),
+  },
   'circle-check-filled-16': {
     size: 16,
     height: 16,

@@ -34,6 +34,7 @@ import Navigate from 'utils/cl-router/Navigate';
 import ProjectWorkspace from '..';
 import BuildFields from '../Phase/BuildPanel/BuildFields';
 import methodSectionMessages from '../Phase/BuildPanel/BuildFields/MethodSection/messages';
+import buildPanelStyles from '../Phase/BuildPanel/BuildPanel.module.css';
 import PlacementCard from '../Phase/BuildPanel/PlacementCard';
 import SurveySetupModal, {
   SurveySetupAction,
@@ -288,10 +289,9 @@ const NewPhaseWorkspace = ({
               ['native_survey', 'ideation', 'proposals'].includes(
                 participationMethod
               ) && (
-                <div>
+                <div className={buildPanelStyles.fullWidth}>
                   <Button
                     variant="secondary"
-                    size={28}
                     data-cy={
                       participationMethod === 'native_survey'
                         ? 'add-draft-survey-questions'

@@ -10,12 +10,6 @@
   list-style: none;
 }
 
-.emptyActions {
-  display: flex;
-  justify-content: flex-end;
-  gap: var(--gv-space-8);
-}
-
 .row {
   display: flex;
   align-items: center;

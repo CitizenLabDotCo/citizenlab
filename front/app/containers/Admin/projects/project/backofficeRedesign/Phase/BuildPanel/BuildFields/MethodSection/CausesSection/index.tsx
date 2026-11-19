@@ -114,20 +114,15 @@ const CausesSection = ({ phaseId }: Props) => {
           )}
         </PanelField>
       ) : (
-        <PanelField label={label}>
-          <div className={styles.emptyActions}>
-            <Button
-              variant="secondary"
-              size={28}
-              disabledReason={formatMessage(messages.nobodySignedUpYet)}
-            >
-              {downloadLabel}
-            </Button>
-            <Button variant="primary" size={28} onPress={openAdd}>
+        // Nobody can have signed up without a cause, so there is nothing to download yet.
+        <PanelField
+          label={label}
+          action={
+            <Button variant="primary" icon="plus-16" onPress={openAdd}>
               {addLabel}
             </Button>
-          </div>
-        </PanelField>
+          }
+        />
       )}
 
       {modal && (

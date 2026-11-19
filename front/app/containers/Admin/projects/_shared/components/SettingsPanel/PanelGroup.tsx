@@ -1,10 +1,11 @@
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, useContext, useState } from 'react';
 
 import { SetupReviewCard } from 'api/phases/types';
 
 import SetupCard from 'containers/Admin/projects/_shared/components/SetupCard';
 import SummaryPill from 'containers/Admin/projects/_shared/components/SummaryPill';
 
+import ExpandAllContext from './ExpandAllContext';
 import styles from './PanelGroup.module.css';
 import 'design-system/tokens.css';
 
@@ -15,6 +16,8 @@ interface Props {
   defaultOpen?: boolean;
   /** Shown as a pill in the card header while the group is closed. */
   summary?: string;
+  // Holds it open while a field inside shows an error, so the error can be seen.
+  hasError?: boolean;
   onClose?: () => void;
   children: ReactNode;
 }
@@ -25,13 +28,23 @@ const PanelGroup = ({
   reviewNeedsChoice,
   defaultOpen = false,
   summary,
+  hasError = false,
   onClose,
   children,
 }: Props) => {
   const [open, setOpen] = useState(defaultOpen);
+  const expandAll = useContext(ExpandAllContext).count;
+  const [seenExpandAll, setSeenExpandAll] = useState(expandAll);
+
+  // Opens on each Expand all press; adjusted during render, as React recommends for derived state.
+  if (expandAll !== seenExpandAll) {
+    setSeenExpandAll(expandAll);
+    setOpen(true);
+  }
+  const isOpen = open || hasError;
   const toggle = () => {
-    if (open) onClose?.();
-    setOpen(!open);
+    if (isOpen) onClose?.();
+    setOpen(!isOpen);
   };
 
   return (
@@ -42,12 +55,13 @@ const PanelGroup = ({
         reviewNeedsChoice={reviewNeedsChoice}
         action={summary && <SummaryPill label={summary} />}
         button={{
-          icon: open ? 'chevron-up' : 'chevron-down',
-          expanded: open,
+          icon: isOpen ? 'chevron-up' : 'chevron-down',
+          expanded: isOpen,
           onClick: toggle,
         }}
       >
-        {open && children}
+        {/* Kept mounted while closed, so unsaved edits inside stay registered for saving. */}
+        {children}
       </SetupCard>
     </div>
   );

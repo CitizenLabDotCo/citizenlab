@@ -3,8 +3,8 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--gv-space-12);
-  min-height: var(--gv-size-40);
-  margin-bottom: var(--gv-space-12);
+  min-height: var(--gv-size-28);
+  margin-bottom: var(--gv-space-8);
 }
 
 .count {
@@ -14,8 +14,9 @@
 
 .display {
   display: flex;
+  flex-shrink: 0;
   align-items: center;
-  gap: var(--gv-space-8);
+  gap: var(--gv-space-6);
 }
 
 /* The Stats frame of the Manage side panel: padding 8, gap 0. */

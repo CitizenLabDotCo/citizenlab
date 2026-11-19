@@ -48,10 +48,14 @@ const StatementRow = ({
         </Cell>
       )}
       {showModeration && (
-        <Cell tone="secondary">{idea.attributes.likes_count}</Cell>
+        <Cell tone="secondary" align="end">
+          {idea.attributes.likes_count || '–'}
+        </Cell>
       )}
-      <Cell tone="secondary">{result?.agree_percent ?? 0}%</Cell>
-      <Cell tone="secondary">{totalReactions(result?.votes)}</Cell>
+      <Cell align="end">{result?.agree_percent ?? 0}%</Cell>
+      <Cell tone="secondary" align="end">
+        {totalReactions(result?.votes)}
+      </Cell>
     </Row>
   );
 };

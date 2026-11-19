@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { Input, TextField as AriaTextField } from 'react-aria-components';
 
-import { RequiredMarker } from '../Field';
+import { FieldHelp, RequiredMarker } from '../Field';
 
 import styles from './TitleField.module.css';
 import '../tokens.css';
@@ -13,6 +13,8 @@ type TitleFieldProps = {
   value?: string;
   onChange?: (value: string) => void;
   placeholder?: string;
+  id?: string;
+  errorMessage?: ReactNode;
 };
 
 // A title is always required, so the marker is always drawn.
@@ -21,18 +23,25 @@ const TitleField = ({
   value,
   onChange,
   placeholder,
+  id,
+  errorMessage,
 }: TitleFieldProps) => (
   <AriaTextField
     className={styles.titleField}
     aria-label={ariaLabel}
     value={value}
     onChange={onChange}
+    id={id}
+    isInvalid={!!errorMessage}
     isRequired
   >
-    <Input className={styles.input} placeholder={placeholder} />
-    <span className={styles.marker}>
-      <RequiredMarker />
+    <span className={styles.control}>
+      <Input className={styles.input} placeholder={placeholder} />
+      <span className={styles.marker}>
+        <RequiredMarker />
+      </span>
     </span>
+    <FieldHelp errorMessage={errorMessage} />
   </AriaTextField>
 );
 

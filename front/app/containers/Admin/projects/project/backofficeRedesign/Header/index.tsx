@@ -1,14 +1,15 @@
 import React, { ReactNode } from 'react';
 
 import Breadcrumbs, { Breadcrumb } from 'design-system/Breadcrumbs';
-import Icon from 'design-system/Icon';
 import IconButton from 'design-system/IconButton';
+import StatusBadge from 'design-system/StatusBadge';
 
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 
 import useLocalize from 'hooks/useLocalize';
 
+import sharedMessages from 'containers/Admin/projects/_shared/components/messages';
 import { useWorkspaceHeader } from 'containers/Admin/sideBar/WorkspaceHeaderContext';
 
 import { usePageSave } from 'components/admin/PageSaveContext';
@@ -26,6 +27,7 @@ import styles from './Header.module.css';
 import { HeaderDropdownName } from './HeaderDropdown';
 import messages from './messages';
 import PublishDropdown from './PublishDropdown';
+import publishMessages from './PublishDropdown/messages';
 import ReviewFlow from './ReviewFlow';
 import SaveChangesButton from './SaveChangesButton';
 import ShareDropdown from './ShareDropdown';
@@ -72,9 +74,7 @@ const WorkspaceHeader = ({
   const workspaceHeader = useWorkspaceHeader();
   const views = usePhaseViews(phase);
   const inPhase = !!(phase || draftLabel);
-  const saveButtonLabel = inPhase
-    ? saveLabel
-    : formatMessage(messages.saveProjectSetup);
+  const saveButtonLabel = saveLabel ?? formatMessage(messages.save);
 
   const projectPath = `/admin/projects/${project.id}`;
   const projectTitle = localize(project.attributes.title_multiloc);
@@ -107,6 +107,7 @@ const WorkspaceHeader = ({
   ];
 
   const crumbs = inPhase ? phaseCrumbs : projectCrumbs;
+  const publicationStatus = project.attributes.publication_status;
 
   return (
     <header
@@ -131,7 +132,6 @@ const WorkspaceHeader = ({
             />
           ))}
         <div className={styles.crumbs}>
-          {!inPhase && <Icon name="folder-16" className={styles.folderIcon} />}
           <Breadcrumbs
             separator={inPhase && !draftParentLabel ? 'slash' : 'chevron'}
           >
@@ -146,6 +146,17 @@ const WorkspaceHeader = ({
               </Breadcrumb>
             ))}
           </Breadcrumbs>
+          {/* A phase goes live with its project; an archived one has no badge. */}
+          {phase && publicationStatus === 'draft' && (
+            <StatusBadge status="draft">
+              {formatMessage(sharedMessages.draft)}
+            </StatusBadge>
+          )}
+          {phase && publicationStatus === 'published' && (
+            <StatusBadge status="published">
+              {formatMessage(publishMessages.publishButtonLive)}
+            </StatusBadge>
+          )}
         </div>
       </div>
 
@@ -167,13 +178,6 @@ const WorkspaceHeader = ({
           <SaveChangesButton key={phase?.id} label={saveButtonLabel} />
         ) : (
           <>
-            <IconButton
-              icon="eye-16"
-              aria-label={formatMessage(messages.previewProject)}
-              onPress={() =>
-                clHistory.push(`/projects/${project.attributes.slug}`)
-              }
-            />
             <div className={styles.dropdowns}>
               <ShareDropdown
                 project={project}

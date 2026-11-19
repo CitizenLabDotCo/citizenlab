@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import Button from 'design-system/Button';
+import Disclosure from 'design-system/Disclosure';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IPhaseData } from 'api/phases/types';
@@ -64,15 +64,18 @@ const SideColumn = ({
       />
       {isVoting ? (
         <Card fillHeight={false}>
-          <Button trailingIcon="plus-16" onPress={() => setOfflineOpened(true)}>
-            {formatMessage(messages.addOfflineVotes)}
-          </Button>
-          <Button
-            trailingIcon="upload-16"
+          <Disclosure
+            header="button"
+            title={formatMessage(messages.addOfflineVotes)}
+            actionIcon="plus-16"
+            onPress={() => setOfflineOpened(true)}
+          />
+          <Disclosure
+            header="button"
+            title={formatMessage(messages.importOptions)}
+            actionIcon="upload-16"
             onPress={() => setImportOpened(true)}
-          >
-            {formatMessage(messages.importOptions)}
-          </Button>
+          />
           {exports}
         </Card>
       ) : (

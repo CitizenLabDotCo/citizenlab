@@ -15,6 +15,7 @@ import reviewMessages from './messages';
 import styles from './SetupCard.module.css';
 import SetupCardButton, { CardButton } from './SetupCardButton';
 import { useSetupReview } from './SetupReview';
+import { SummaryReviewedContext } from './SummaryPill';
 import 'design-system/tokens.css';
 
 interface Props {
@@ -49,12 +50,18 @@ const SetupCard = ({
     </span>
   ) : undefined;
 
+  const summary = action && (
+    <SummaryReviewedContext.Provider value={reviewed}>
+      {action}
+    </SummaryReviewedContext.Provider>
+  );
+
   const card = button ? (
     <SetupCardButton
       title={title}
       titleTooltip={titleTooltip}
       status={status}
-      action={action}
+      action={summary}
       button={button}
     >
       {children}
@@ -77,7 +84,7 @@ const SetupCard = ({
         )
       }
       status={status}
-      actions={action}
+      actions={summary}
     >
       {children}
     </Disclosure>

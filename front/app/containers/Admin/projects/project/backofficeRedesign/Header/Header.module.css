@@ -24,11 +24,6 @@
   overflow: hidden;
 }
 
-.folderIcon {
-  flex-shrink: 0;
-  color: var(--gv-icon-tertiary);
-}
-
 .viewSwitch {
   flex: 0 0 auto;
 }

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 
 import { CLErrors } from 'typings';
 
+import { RequiredMarker } from 'design-system/Field';
+
 import { IUpdatedPhaseProperties, ParticipationMethod } from 'api/phases/types';
 
 import { CardButton } from 'containers/Admin/projects/_shared/components/SetupCardButton';
@@ -75,9 +77,12 @@ const PhaseDates = ({
     <PanelField
       label={label}
       action={
-        formData.start_at &&
-        !open && (
-          <DatesSummary startAt={formData.start_at} endAt={formData.end_at} />
+        formData.start_at ? (
+          !open && (
+            <DatesSummary startAt={formData.start_at} endAt={formData.end_at} />
+          )
+        ) : (
+          <RequiredMarker />
         )
       }
       button={toggle}

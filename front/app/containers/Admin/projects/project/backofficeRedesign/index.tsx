@@ -24,6 +24,7 @@ import WorkspaceHeader from './Header';
 import { HeaderDropdownName } from './Header/HeaderDropdown';
 import PanelToggleButton from './PanelToggleButton';
 import { useParticipationPanel } from './ParticipationPanelContext';
+import GoesLiveNote from './Phase/GoesLiveNote';
 import MethodSettings from './Phase/MethodSettings';
 import { viewFromPathname, PhaseViewKey } from './Phase/usePhaseViews';
 import ViewContent from './Phase/ViewContent';
@@ -162,6 +163,7 @@ const ProjectWorkspace = ({
       <div className={editingTags ? styles.hidden : undefined}>
         {sidePanel}
         {settingsPanel}
+        <GoesLiveNote project={project} />
       </div>
       {tagsOpened && (
         <div className={editingTags ? undefined : styles.hidden}>

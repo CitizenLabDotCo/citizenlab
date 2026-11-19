@@ -36,8 +36,8 @@
 
 .phaseSlot {
   composes: panel;
-  flex: 0 0 560px;
-  width: 560px;
+  flex: 0 0 480px;
+  width: 480px;
 }
 
 .hidden {

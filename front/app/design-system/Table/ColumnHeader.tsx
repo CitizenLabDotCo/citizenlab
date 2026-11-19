@@ -35,6 +35,7 @@ type ColumnHeaderProps = {
   isRowHeader?: boolean;
   defaultWidth?: ColumnProps['defaultWidth'];
   minWidth?: ColumnProps['minWidth'];
+  align?: 'start' | 'end';
 };
 
 const ColumnHeader = ({
@@ -46,6 +47,7 @@ const ColumnHeader = ({
   isRowHeader,
   defaultWidth,
   minWidth,
+  align = 'start',
 }: ColumnHeaderProps) => {
   // React Aria only sets aria-sort with allowsSorting, which would make a
   // press on the head sort instead of opening the menu.
@@ -88,7 +90,10 @@ const ColumnHeader = ({
       minWidth={minWidth}
       className={styles.column}
     >
-      <div className={styles.cell} data-on={sortDirection ? true : undefined}>
+      <div
+        className={`${styles.cell} ${align === 'end' ? styles.end : ''}`}
+        data-on={sortDirection ? true : undefined}
+      >
         {menu ? (
           <ColumnSortContext.Provider value={sortDirection}>
             <MenuTrigger>

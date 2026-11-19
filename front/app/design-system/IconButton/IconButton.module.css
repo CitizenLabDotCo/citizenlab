@@ -41,6 +41,10 @@
   color: var(--gv-icon-tertiary);
 }
 
+.ghost.strong .icon {
+  color: var(--gv-icon-secondary);
+}
+
 .ghost[data-hovered]:not([aria-disabled='true']),
 .ghost[data-pressed]:not([aria-disabled='true']) {
   background: var(--gv-surface-pressed);
@@ -75,8 +79,14 @@
   color: var(--gv-icon-primary);
 }
 
-.bordered[data-selected] {
+.bordered[data-selected],
+.bordered[data-selected][data-hovered]:not([aria-disabled='true']) {
   border-color: var(--gv-border-selected);
+}
+
+.bordered[data-selected] .icon,
+.bordered[data-selected][data-hovered]:not([aria-disabled='true']) .icon {
+  color: var(--gv-border-selected);
 }
 
 /*

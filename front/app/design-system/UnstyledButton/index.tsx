@@ -14,6 +14,7 @@ type Props = {
   'aria-controls'?: string;
   // Focusable but inactive, for a control that explains why in a tooltip.
   'aria-disabled'?: boolean;
+  'data-cy'?: string;
 };
 
 // React Aria's press and focus handling without the design-system Button's box.
@@ -27,6 +28,7 @@ const UnstyledButton = ({
   'aria-expanded': ariaExpanded,
   'aria-controls': ariaControls,
   'aria-disabled': ariaDisabled,
+  'data-cy': dataCy,
 }: Props) => (
   <AriaButton
     className={className}
@@ -37,6 +39,7 @@ const UnstyledButton = ({
     aria-expanded={ariaExpanded}
     aria-controls={ariaControls}
     aria-disabled={ariaDisabled}
+    data-cy={dataCy}
   >
     {children}
   </AriaButton>

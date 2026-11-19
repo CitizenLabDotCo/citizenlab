@@ -1,6 +1,9 @@
 import React from 'react';
 
 import { IdeationMetrics as IdeationMetricsType } from 'api/phase_insights/types';
+import { InputTerm } from 'api/phases/types';
+
+import inputTermMessages from 'containers/Admin/projects/project/inputTermMessages';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -9,16 +12,24 @@ import MetricCard from '../MetricCard';
 
 interface Props {
   metrics: IdeationMetricsType;
+  // Set in the redesigned workspace only; elsewhere the tile keeps "Inputs".
+  inputTerm?: InputTerm;
   showChange: boolean;
 }
 
-const IdeationMetrics = ({ metrics, showChange }: Props) => {
+const IdeationMetrics = ({ metrics, inputTerm, showChange }: Props) => {
   const { formatMessage } = useIntl();
 
   return (
     <>
       <MetricCard
-        label={formatMessage(messages.inputs)}
+        label={
+          inputTerm
+            ? formatMessage(inputTermMessages.capitalizedPlural, {
+                term: inputTerm,
+              })
+            : formatMessage(messages.inputs)
+        }
         value={metrics.ideas_posted}
         icon="blank-paper"
         change={

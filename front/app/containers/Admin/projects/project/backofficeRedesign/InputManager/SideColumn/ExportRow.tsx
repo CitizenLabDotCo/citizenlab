@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Button from 'design-system/Button';
+import Disclosure from 'design-system/Disclosure';
 import Popover, { DialogTrigger } from 'design-system/Popover';
 
 import { ManagerType } from 'components/admin/PostManager';
@@ -22,9 +22,11 @@ const ExportRow = ({ type, projectId, selectedIds }: Props) => {
 
   return (
     <DialogTrigger>
-      <Button trailingIcon="download-16">
-        {formatMessage(messages.export)}
-      </Button>
+      <Disclosure
+        header="button"
+        title={formatMessage(messages.export)}
+        actionIcon="download-16"
+      />
       <Popover aria-label={formatMessage(messages.exportParticipationData)}>
         {/* Kept from the menu this replaced; the e2e tests find the export options by it. */}
         <div role="menu">

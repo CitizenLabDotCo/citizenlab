@@ -60,6 +60,7 @@ const SelectMethodModal = ({ projectId, opened, onClose }: Props) => {
       opened={opened}
       close={onClose}
       size={920}
+      tabStyle="rail"
       header={formatMessage(projectPageMessages.newParticipationMethod)}
       sections={METHOD_GROUPS.map(({ name, label, methods }) => ({
         name,

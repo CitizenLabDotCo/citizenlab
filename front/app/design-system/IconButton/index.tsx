@@ -29,6 +29,7 @@ type IconButtonProps = VariantProps & {
   // Names the button and is the text of its tooltip.
   'aria-label': string;
   size?: 28 | 24;
+  tone?: 'default' | 'strong';
   isDisabled?: boolean;
   // Looks disabled but stays focusable; the tooltip shows the reason instead of the aria-label.
   disabledReason?: ReactNode;
@@ -43,6 +44,7 @@ const IconButton = ({
   'aria-label': ariaLabel,
   variant = 'ghost',
   size = 28,
+  tone = 'default',
   isSelected,
   isDisabled,
   disabledReason,
@@ -53,7 +55,7 @@ const IconButton = ({
 }: IconButtonProps) => {
   const className = `${styles.iconButton} ${styles[variant]} ${
     styles[`size${size}`]
-  }`;
+  } ${tone === 'strong' ? styles.strong : ''}`;
 
   const hasReason = !!disabledReason;
 

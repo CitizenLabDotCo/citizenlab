@@ -1,6 +1,10 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  previewProject: {
+    id: 'app.containers.Admin.projects.project.previewProject',
+    defaultMessage: 'Preview the project page',
+  },
   failed: {
     id: 'app.containers.Admin.projects.setupReview.failed',
     defaultMessage: 'Review could not be saved. Select the card to try again.',

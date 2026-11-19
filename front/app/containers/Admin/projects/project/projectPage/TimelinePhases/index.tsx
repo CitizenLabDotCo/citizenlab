@@ -30,6 +30,7 @@ import EmptyState from './EmptyState';
 import PhaseOptionsMenu from './PhaseOptionsMenu';
 import PhaseRowWithOptions from './PhaseRowWithOptions';
 import PhaseStep from './PhaseStep';
+import SkeletonRows from './SkeletonRows';
 
 interface Props {
   projectId: string;
@@ -74,7 +75,8 @@ const TimelinePhases = ({
         </Text>
       )}
 
-      {sortedPhases.length === 0 && <EmptyState />}
+      {sortedPhases.length === 0 &&
+        (redesign ? <SkeletonRows /> : <EmptyState />)}
 
       <Box
         className="intercom-product-tour-project-timeline-phases"

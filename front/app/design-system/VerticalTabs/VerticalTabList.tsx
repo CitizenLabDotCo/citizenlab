@@ -8,10 +8,15 @@ import '../tokens.css';
 type Props = {
   // VerticalTab elements.
   children: ReactNode;
+  tabStyle?: 'settings' | 'rail';
 };
 
-const VerticalTabList = ({ children }: Props) => (
-  <AriaTabList className={styles.tabList}>{children}</AriaTabList>
+const VerticalTabList = ({ children, tabStyle = 'settings' }: Props) => (
+  <AriaTabList
+    className={`${styles.tabList} ${tabStyle === 'rail' ? styles.rail : ''}`}
+  >
+    {children}
+  </AriaTabList>
 );
 
 export default VerticalTabList;

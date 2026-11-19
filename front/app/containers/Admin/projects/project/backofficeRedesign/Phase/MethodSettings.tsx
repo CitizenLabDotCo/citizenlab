@@ -11,11 +11,15 @@ import usePhase from 'api/phases/usePhase';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
 
 import { AccessOnlyAction } from 'containers/Admin/projects/_shared/components/PhaseActionAccessRow';
+import ExpandAllContext from 'containers/Admin/projects/_shared/components/SettingsPanel/ExpandAllContext';
 import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';
 import PanelHeading from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelHeading';
+import useExpandAll from 'containers/Admin/projects/_shared/components/SettingsPanel/useExpandAll';
+import usePhaseEmailCampaigns from 'containers/Admin/projects/project/admin_phase_email_wrapper/usePhaseEmailCampaigns';
 import projectMessages from 'containers/Admin/projects/project/messages';
 import PhaseParticipationConfig from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig';
 import ModerationAssignee from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/components/inputs/_shared/ModerationAssignee';
+import useAssigneeSummary from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/components/inputs/_shared/useAssigneeSummary';
 import configMessages from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/messages';
 import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/typings';
 import { validateParticipation } from 'containers/Admin/projects/project/phaseSetup/validate';
@@ -25,6 +29,7 @@ import {
   useRegisterPageSaver,
 } from 'components/admin/PageSaveContext';
 import { usePhasePreviewPublisher } from 'components/admin/PhasePreview/DraftContext';
+import postManagerMessages from 'components/admin/PostManager/messages';
 
 import { useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
@@ -74,6 +79,12 @@ const MethodSettings = ({ phase }: Props) => {
   const pageSave = usePageSave();
   const { setup_action } = useSearch({ strict: false });
   const openedSection = useRef<HTMLDivElement>(null);
+  const campaigns = usePhaseEmailCampaigns(phase.id);
+  const expandAll = useExpandAll();
+  // Only voting shows the assignee card here; the other methods' cards fetch their own.
+  const assigneeSummary = useAssigneeSummary(
+    phase.attributes.participation_method === 'voting' ? phase.id : undefined
+  );
 
   useEffect(() => {
     if (setup_action) {
@@ -145,74 +156,89 @@ const MethodSettings = ({ phase }: Props) => {
   });
 
   return (
-    <div className={styles.panel}>
-      {accessOnlyActions ? (
-        <>
-          <div className={styles.heading}>
-            <PanelHeading label={formatMessage(configMessages.settingsGroup)} />
-          </div>
-          <ParticipantActionsGroup
-            phaseId={phase.id}
-            actions={accessOnlyActions}
-          />
-        </>
-      ) : (
-        <PhaseParticipationConfig
-          phase={phaseWithRelationships}
-          formData={formData}
-          validationErrors={validationErrors}
-          apiErrors={errors}
-          onChange={handleChange}
-          setValidationErrors={setValidationErrors}
-          hideMethodPicker
-          layout="panel"
-          surveyPlacement={
-            <SurveyPlacement
-              phase={phase}
-              hasUnsavedChanges={!!pageSave?.dirty}
-              onMoved={(updated) => setFormData(updated.attributes)}
+    <ExpandAllContext.Provider value={expandAll}>
+      <div className={styles.panel}>
+        {accessOnlyActions ? (
+          <>
+            <div className={styles.heading}>
+              <PanelHeading
+                label={formatMessage(configMessages.settingsGroup)}
+                expandable
+              />
+            </div>
+            <ParticipantActionsGroup
+              phaseId={phase.id}
+              actions={accessOnlyActions}
             />
-          }
-        />
-      )}
-
-      <EditAccessButton
-        phaseId={phase.id}
-        initialOpened={setup_action === 'access'}
-        showButton={
-          !accessOnlyActions &&
-          !METHODS_WITH_ACTION_ROWS.includes(participationMethod)
-        }
-        onClose={() => {
-          if (setup_action === 'access') removeSearchParams(['setup_action']);
-        }}
-      />
-
-      <div ref={setup_action === 'notifications' ? openedSection : undefined}>
-        <PanelGroup
-          label={formatMessage(messages.participantCommunications)}
-          defaultOpen={setup_action === 'notifications'}
-          onClose={() => {
-            if (setup_action === 'notifications') {
-              removeSearchParams(['setup_action']);
+          </>
+        ) : (
+          <PhaseParticipationConfig
+            phase={phaseWithRelationships}
+            formData={formData}
+            validationErrors={validationErrors}
+            apiErrors={errors}
+            onChange={handleChange}
+            setValidationErrors={setValidationErrors}
+            hideMethodPicker
+            layout="panel"
+            surveyPlacement={
+              <SurveyPlacement
+                phase={phase}
+                hasUnsavedChanges={!!pageSave?.dirty}
+                onMoved={(updated) => setFormData(updated.attributes)}
+              />
             }
-          }}
-        >
-          <PhaseNotifications phase={phase} />
-        </PanelGroup>
-      </div>
+          />
+        )}
 
-      {participationMethod === 'voting' && (
-        <div id="phase-moderation-settings">
+        <EditAccessButton
+          phaseId={phase.id}
+          initialOpened={setup_action === 'access'}
+          showButton={
+            !accessOnlyActions &&
+            !METHODS_WITH_ACTION_ROWS.includes(participationMethod)
+          }
+          onClose={() => {
+            if (setup_action === 'access') removeSearchParams(['setup_action']);
+          }}
+        />
+
+        <div ref={setup_action === 'notifications' ? openedSection : undefined}>
           <PanelGroup
-            label={formatMessage(configMessages.moderationGroup)}
-            defaultOpen
+            label={formatMessage(messages.participantCommunications)}
+            defaultOpen={setup_action === 'notifications'}
+            summary={
+              campaigns.loading
+                ? undefined
+                : formatMessage(messages.notificationsOnSummary, {
+                    count: campaigns.campaigns.filter(
+                      ({ attributes }) => attributes.enabled
+                    ).length,
+                  })
+            }
+            onClose={() => {
+              if (setup_action === 'notifications') {
+                removeSearchParams(['setup_action']);
+              }
+            }}
           >
-            <ModerationAssignee phaseId={phase.id} />
+            <PhaseNotifications phase={phase} />
           </PanelGroup>
         </div>
-      )}
-    </div>
+
+        {participationMethod === 'voting' && (
+          <div id="phase-moderation-settings">
+            <PanelGroup
+              label={formatMessage(postManagerMessages.assignee)}
+              defaultOpen={setup_action === 'moderation'}
+              summary={assigneeSummary}
+            >
+              <ModerationAssignee phaseId={phase.id} />
+            </PanelGroup>
+          </div>
+        )}
+      </div>
+    </ExpandAllContext.Provider>
   );
 };
 

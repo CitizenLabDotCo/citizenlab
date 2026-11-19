@@ -15,6 +15,8 @@ import { ParticipationMethod } from 'api/phases/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import { PARTICIPATION_METHOD_LABELS } from 'containers/Admin/inspirationHub/constants';
+
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../../../../messages';
@@ -68,7 +70,7 @@ const ParticipationMethodChoices = ({
         {shows('ideation') && (
           <ParticipationMethodChoice
             variant="panel"
-            title={formatMessage(messages2.ideationTitle)}
+            title={formatMessage(PARTICIPATION_METHOD_LABELS.ideation)}
             subtitle={formatMessage(messages2.ideationDescription)}
             onPress={(event) => onSelect(event, 'ideation')}
             image={ideationImage}
@@ -78,7 +80,7 @@ const ParticipationMethodChoices = ({
         {shows('proposals') && (
           <ParticipationMethodChoice
             variant="panel"
-            title={formatMessage(messages2.proposalsTitle)}
+            title={formatMessage(PARTICIPATION_METHOD_LABELS.proposals)}
             subtitle={formatMessage(messages2.proposalsDescription)}
             onPress={(event) => onSelect(event, 'proposals')}
             image={proposalsImage}
@@ -88,7 +90,7 @@ const ParticipationMethodChoices = ({
         {commonGroundEnabled && shows('common_ground') && (
           <ParticipationMethodChoice
             variant="panel"
-            title={formatMessage(messages2.commonGroundTitle)}
+            title={formatMessage(PARTICIPATION_METHOD_LABELS.common_ground)}
             subtitle={formatMessage(messages2.commonGroundDescription)}
             onPress={(event) => onSelect(event, 'common_ground')}
             image={commonGroundImage}
@@ -100,7 +102,7 @@ const ParticipationMethodChoices = ({
         {shows('native_survey') && (
           <ParticipationMethodChoice
             variant="panel"
-            title={formatMessage(messages2.surveyTitle)}
+            title={formatMessage(PARTICIPATION_METHOD_LABELS.native_survey)}
             subtitle={formatMessage(messages2.surveyDescription)}
             onPress={(event) => onSelect(event, 'native_survey')}
             image={surveyImage}
@@ -110,7 +112,7 @@ const ParticipationMethodChoices = ({
         {shows('voting') && (
           <ParticipationMethodChoice
             variant="panel"
-            title={formatMessage(messages2.votingTitle)}
+            title={formatMessage(PARTICIPATION_METHOD_LABELS.voting)}
             subtitle={formatMessage(messages2.votingDescription)}
             onPress={(event) => onSelect(event, 'voting')}
             image={votingImage}
@@ -120,7 +122,7 @@ const ParticipationMethodChoices = ({
         {shows('information') && (
           <ParticipationMethodChoice
             variant="panel"
-            title={formatMessage(messages2.informationTitle)}
+            title={formatMessage(PARTICIPATION_METHOD_LABELS.information)}
             subtitle={formatMessage(messages2.reportingDescription)}
             onPress={(event) => onSelect(event, 'information')}
             image={informationImage}
@@ -130,7 +132,7 @@ const ParticipationMethodChoices = ({
         {shows('volunteering') && (
           <ParticipationMethodChoice
             variant="panel"
-            title={formatMessage(messages2.volunteeringTitle)}
+            title={formatMessage(PARTICIPATION_METHOD_LABELS.volunteering)}
             subtitle={formatMessage(messages2.volunteeringDescription)}
             onPress={(event) => onSelect(event, 'volunteering')}
             image={volunteeringImage}
@@ -142,7 +144,9 @@ const ParticipationMethodChoices = ({
             documentAnnotationEnabled && (
               <ParticipationMethodChoice
                 variant="panel"
-                title={formatMessage(messages2.documentTitle)}
+                title={formatMessage(
+                  PARTICIPATION_METHOD_LABELS.document_annotation
+                )}
                 subtitle={formatMessage(messages2.documentDescription)}
                 onPress={(event) => onSelect(event, 'document_annotation')}
                 image={documentImage}
@@ -152,7 +156,9 @@ const ParticipationMethodChoices = ({
           ) : (
             <ParticipationMethodChoice
               variant="panel"
-              title={formatMessage(messages2.documentTitle)}
+              title={formatMessage(
+                PARTICIPATION_METHOD_LABELS.document_annotation
+              )}
               subtitle={formatMessage(messages2.documentDescription)}
               image={documentImage}
               participation_method="document_annotation"

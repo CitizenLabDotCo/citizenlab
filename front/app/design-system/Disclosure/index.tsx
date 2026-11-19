@@ -9,6 +9,7 @@ import {
 } from 'react-aria-components';
 
 import Icon, { IconName } from '../Icon';
+import { SpinnerGraphic } from '../Spinner';
 
 import styles from './Disclosure.module.css';
 import '../tokens.css';
@@ -34,6 +35,7 @@ type ButtonHeaderProps = SharedProps & {
   actionIcon: IconName;
   onPress?: (e: PressEvent) => void;
   isDisabled?: boolean;
+  isPending?: boolean;
 };
 
 type StaticHeaderProps = SharedProps & {
@@ -84,17 +86,19 @@ const ButtonCard = ({
   actionIcon,
   onPress,
   isDisabled = false,
+  isPending = false,
   ...content
 }: ButtonHeaderProps) => (
   <div className={styles.card} data-disabled={isDisabled || undefined}>
     <AriaButton
       className={styles.trigger}
       isDisabled={isDisabled}
+      isPending={isPending}
       onPress={onPress}
     >
       <HeaderContent {...content} />
       <span className={styles.iconBox}>
-        <Icon name={actionIcon} />
+        {isPending ? <SpinnerGraphic /> : <Icon name={actionIcon} />}
       </span>
     </AriaButton>
   </div>

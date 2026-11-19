@@ -17,12 +17,18 @@ type Story = StoryObj<typeof meta>;
 
 const tabs = ['General', 'Access', 'Notifications', 'Emails'];
 
-const VerticalTabsDemo = ({ withIcons = false }: { withIcons?: boolean }) => {
+const VerticalTabsDemo = ({
+  withIcons = false,
+  tabStyle,
+}: {
+  withIcons?: boolean;
+  tabStyle?: 'settings' | 'rail';
+}) => {
   const [selectedKey, setSelectedKey] = useState<Key>('General');
 
   return (
     <VerticalTabs selectedKey={selectedKey} onSelectionChange={setSelectedKey}>
-      <VerticalTabList>
+      <VerticalTabList tabStyle={tabStyle}>
         {tabs.map((tab) => (
           <VerticalTab
             key={tab}
@@ -48,4 +54,8 @@ export const Default: Story = {
 
 export const WithIcons: Story = {
   render: () => <VerticalTabsDemo withIcons />,
+};
+
+export const Rail: Story = {
+  render: () => <VerticalTabsDemo tabStyle="rail" />,
 };

@@ -49,7 +49,7 @@ const PollOption = ({ phaseId, title, description }: Props) => {
       />
       {pollQuestions && (
         <div className={styles.fullWidth}>
-          <Button variant="secondary" size={28} onPress={() => setOpened(true)}>
+          <Button variant="secondary" onPress={() => setOpened(true)}>
             {formatMessage(methodSectionMessages.addQuestions)}
           </Button>
         </div>

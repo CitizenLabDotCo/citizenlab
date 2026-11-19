@@ -102,7 +102,7 @@ const FileSelectModal = ({
         isDismissable={!isUploadingFile}
         title={formatMessage(messages.attachments)}
         size={440}
-        primaryAction={{
+        secondaryAction={{
           label: formatMessage(messages.done),
           isDisabled: isUploadingFile,
           onPress: onClose,

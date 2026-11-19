@@ -3,14 +3,22 @@ import React from 'react';
 import { Box, Button, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import UnstyledButton from 'design-system/UnstyledButton';
+
 import PhonePreview from 'components/admin/PhonePreview';
 
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
+import styles from './PagePreview.module.css';
+import 'design-system/tokens.css';
 
 const Preview = styled(PhonePreview)`
   transition: transform 150ms ease-out, box-shadow 150ms ease-out;
+
+  &:hover .${styles.veil}, &:focus-within .${styles.veil} {
+    opacity: 1;
+  }
 
   &:hover,
   &:focus-within {
@@ -58,6 +66,7 @@ type Props = {
   dataCy?: string;
   editPageContentClassName?: string;
   alignTop?: boolean;
+  variant?: 'default' | 'workspace';
 };
 
 // A phone preview of a page with buttons that open its content builder.
@@ -70,8 +79,34 @@ const PagePreview = ({
   dataCy,
   editPageContentClassName,
   alignTop,
+  variant = 'default',
 }: Props) => {
   const { formatMessage } = useIntl();
+  const editText =
+    editPageContentText ?? formatMessage(messages.editPageContent);
+
+  if (variant === 'workspace') {
+    return (
+      <Preview
+        src={src}
+        title={iframeTitle}
+        dataCy={dataCy}
+        alignTop={alignTop}
+      >
+        <div className={styles.veil}>
+          <span className={editPageContentClassName}>
+            <UnstyledButton
+              className={styles.glassButton}
+              onPress={onEdit}
+              data-cy="e2e-edit-page-content"
+            >
+              {editText}
+            </UnstyledButton>
+          </span>
+        </div>
+      </Preview>
+    );
+  }
 
   return (
     <Preview src={src} title={iframeTitle} dataCy={dataCy} alignTop={alignTop}>
@@ -116,9 +151,7 @@ const PagePreview = ({
             onClick={onEdit}
             ariaLabel={editPageContentAriaLabel}
             dataCy="e2e-edit-page-content"
-            text={
-              editPageContentText ?? formatMessage(messages.editPageContent)
-            }
+            text={editText}
           />
         </CtaWrapper>
       </Overlay>

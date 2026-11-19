@@ -3,6 +3,10 @@
   width: 240px;
 }
 
+.full {
+  width: 100%;
+}
+
 .group {
   composes: input from '../TextField/input.module.css';
   gap: var(--gv-space-6);

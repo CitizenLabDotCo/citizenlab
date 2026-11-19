@@ -3,17 +3,18 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--gv-space-12);
-  min-height: var(--gv-size-40);
-  margin-bottom: var(--gv-space-12);
+  min-height: var(--gv-size-28);
+  margin-bottom: var(--gv-space-8);
 }
 
 .count {
-  composes: ui from '../../../../../../design-system/typography.module.css';
-  color: var(--gv-text-secondary);
+  composes: title from '../../../../../../design-system/typography.module.css';
+  color: var(--gv-text-primary);
 }
 
 .display {
   display: flex;
+  flex-shrink: 0;
   align-items: center;
-  gap: var(--gv-space-8);
+  gap: var(--gv-space-6);
 }

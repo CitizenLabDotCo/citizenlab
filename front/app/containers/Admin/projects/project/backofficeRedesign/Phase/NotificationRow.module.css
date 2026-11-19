@@ -48,13 +48,25 @@
 }
 
 .detail {
-  composes: ui from '../../../../../../design-system/typography.module.css';
+  composes: small from '../../../../../../design-system/typography.module.css';
   color: var(--gv-text-secondary);
 }
 
 .chevron {
   flex-shrink: 0;
   color: var(--gv-icon-secondary);
+}
+
+.off[data-disabled] {
+  opacity: 1;
+}
+
+.off .title {
+  color: var(--gv-text-disabled);
+}
+
+.off .chevron {
+  visibility: hidden;
 }
 
 .edit[data-hovered]:not([aria-disabled='true']) .chevron {

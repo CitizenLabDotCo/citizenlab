@@ -3,7 +3,7 @@ import React, { ReactNode } from 'react';
 import { useRouter } from '@tanstack/react-router';
 
 import Banner from 'design-system/Banner';
-import Button from 'design-system/Button';
+import Disclosure from 'design-system/Disclosure';
 import Menu, { MenuItem, MenuTrigger } from 'design-system/Menu';
 
 import { IPhaseData } from 'api/phases/types';
@@ -14,6 +14,7 @@ import useReportBuilderEnabled from 'api/reports/useReportBuilderEnabled';
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
+import projectMessages from 'containers/Admin/projects/project/messages';
 import reportTitleIsTaken from 'containers/Admin/reporting/utils/reportTitleIsTaken';
 
 import { useIntl } from 'utils/cl-intl';
@@ -99,13 +100,13 @@ const RecommendedActions = ({ phase, children }: Props) => {
         {formatMessage(messages.recommendedActions)}
       </p>
       {reportBuilderEnabled && (
-        <Button
-          icon="file-chart-column-16"
+        <Disclosure
+          header="button"
+          title={formatMessage(messages.addReport)}
+          actionIcon="file-chart-column-16"
           isPending={isPending}
           onPress={addPhaseReport}
-        >
-          {formatMessage(messages.addReport)}
-        </Button>
+        />
       )}
       {isError && (
         <Banner tone="error">
@@ -113,7 +114,11 @@ const RecommendedActions = ({ phase, children }: Props) => {
         </Banner>
       )}
       <MenuTrigger>
-        <Button hasMenu>{formatMessage(messages.shareResults)}</Button>
+        <Disclosure
+          header="button"
+          title={formatMessage(messages.shareResults)}
+          actionIcon="chevron-down-16"
+        />
         <Menu aria-label={formatMessage(messages.shareResults)}>
           <MenuItem href={messagingHref}>
             {formatMessage(messages.goToMessaging)}
@@ -130,7 +135,7 @@ const RecommendedActions = ({ phase, children }: Props) => {
       {phase.attributes.participation_method === 'document_annotation' && (
         <div role="note">
           <Banner tone="neutral">
-            {formatMessage(messages.konveioParticipationDataNotice)}
+            {formatMessage(projectMessages.konveioParticipationDataNotice)}
           </Banner>
         </div>
       )}

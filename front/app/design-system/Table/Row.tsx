@@ -4,7 +4,6 @@ import { Cell as AriaCell, Key, Row as AriaRow } from 'react-aria-components';
 
 import Checkbox from '../Checkbox';
 
-import Cell from './Cell';
 import styles from './Row.module.css';
 import SelectionLabelsContext from './SelectionLabelsContext';
 import '../tokens.css';
@@ -56,9 +55,9 @@ const Row = ({
       data-cy={dataCy}
     >
       {selectionLabels && (
-        <Cell>
+        <AriaCell className={styles.selectionCell}>
           <Checkbox slot="selection" aria-label={selectionLabels.selectRow} />
-        </Cell>
+        </AriaCell>
       )}
       {children}
       {/* Fills the header's last column, which holds the add-column menu. */}

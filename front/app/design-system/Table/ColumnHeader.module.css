@@ -11,7 +11,8 @@
   box-sizing: border-box;
   display: flex;
   align-items: center;
-  height: var(--gv-size-36);
+  /* 31 + the header's 1 px hairline = Size 32. */
+  height: calc(var(--gv-size-32) - var(--gv-border-width-1));
   border-radius: var(--gv-radius-6);
   transition-property: background-color;
   transition-duration: var(--gv-motion-duration-fast);
@@ -28,12 +29,16 @@
   min-width: 0;
   gap: var(--gv-space-8);
   margin: 0;
-  padding: 0 var(--gv-space-12);
+  padding: 0 var(--gv-space-8);
   border: none;
   border-radius: var(--gv-radius-6);
   background: transparent;
   font: inherit;
   cursor: pointer;
+}
+
+.end .trigger {
+  justify-content: flex-end;
 }
 
 span.trigger {
@@ -63,6 +68,12 @@ span.trigger {
 .chevron {
   flex-shrink: 0;
   color: var(--gv-icon-quiet);
+}
+
+.column:not([data-hovered], [data-focus-visible])
+  .trigger:not([data-pressed], [aria-expanded='true'], [data-focus-visible])
+  .chevron {
+  visibility: hidden;
 }
 
 /* Hovered, pressed or open: the head lights up. */

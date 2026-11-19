@@ -19,7 +19,7 @@ import messages from './messages';
 import StatementRow from './StatementRow';
 import 'design-system/tokens.css';
 
-const COLUMN_WIDTH = 120;
+const COLUMN_WIDTHS = { assignee: 88, likes: 56, agree: 72, reactions: 88 };
 
 interface Props {
   ideas: IIdeaData[];
@@ -51,8 +51,14 @@ const StatementTable = ({
   const { formatMessage } = useIntl();
   const pageIds = ideas.map((idea) => idea.id);
 
-  const column = (id: string, label: string) => (
-    <ColumnHeader id={id} defaultWidth={COLUMN_WIDTH} showChevron={false}>
+  const column = (id: keyof typeof COLUMN_WIDTHS, label: string) => (
+    <ColumnHeader
+      id={id}
+      defaultWidth={COLUMN_WIDTHS[id]}
+      minWidth={COLUMN_WIDTHS[id]}
+      showChevron={false}
+      align={id === 'assignee' ? 'start' : 'end'}
+    >
       {label}
     </ColumnHeader>
   );

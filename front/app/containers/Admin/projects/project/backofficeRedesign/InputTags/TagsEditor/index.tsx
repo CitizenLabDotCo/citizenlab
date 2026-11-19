@@ -15,7 +15,6 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
-import SettingsSection from 'containers/Admin/projects/project/backofficeRedesign/_shared/components/SettingsModal/SettingsSection';
 import InputTopicModal, {
   InputTopicFormValues,
 } from 'containers/Admin/projects/project/topics/InputTopicModal';
@@ -99,32 +98,30 @@ const TagsSection = ({ draft }: Props) => {
 
   return (
     <>
-      <SettingsSection
-        title={formatMessage(messages.settingsCreateAndManageTags)}
-        titleVariant="label"
-        description={
-          <>
-            <FormattedMessage {...topicsMessages.projectTopicsDescription} />
-            {canAccessTopicsSettings && (
-              <>
-                {' '}
-                <FormattedMessage
-                  {...topicsMessages.defaultInputTopicsInfo}
-                  values={{
-                    settingsLink: (
-                      <Link to={TOPICS_SETTINGS_PATH}>
-                        <FormattedMessage
-                          {...topicsMessages.defaultInputTopicsSettings}
-                        />
-                      </Link>
-                    ),
-                  }}
-                />
-              </>
-            )}
-          </>
-        }
+      <section
+        className={styles.section}
+        aria-label={formatMessage(messages.settingsCreateAndManageTags)}
       >
+        <p className={styles.intro}>
+          <FormattedMessage {...topicsMessages.projectTopicsDescription} />
+          {canAccessTopicsSettings && (
+            <>
+              {' '}
+              <FormattedMessage
+                {...topicsMessages.defaultInputTopicsInfo}
+                values={{
+                  settingsLink: (
+                    <Link to={TOPICS_SETTINGS_PATH}>
+                      <FormattedMessage
+                        {...topicsMessages.defaultInputTopicsSettings}
+                      />
+                    </Link>
+                  ),
+                }}
+              />
+            </>
+          )}
+        </p>
         <div className={styles.info}>
           <Icon name="info-16" className={styles.infoIcon} />
           <p className={styles.infoText}>
@@ -133,6 +130,8 @@ const TagsSection = ({ draft }: Props) => {
         </div>
         <div className={styles.search}>
           <SearchField
+            size={36}
+            width="full"
             aria-label={formatMessage(messages.searchTags)}
             placeholder={formatMessage(messages.searchTags)}
             value={search}
@@ -168,7 +167,6 @@ const TagsSection = ({ draft }: Props) => {
                     drag={drag}
                     canAddSubtopics={nestedInputTopicsActive}
                     deleteDisabled={isLastRootTopic}
-                    isFirst={index === 0}
                     onAddSubtopic={() =>
                       setEditing({ topic: null, parentId: topic.id })
                     }
@@ -192,7 +190,6 @@ const TagsSection = ({ draft }: Props) => {
           <div className={styles.addField}>
             <TextField
               id="phase-add-input-tag"
-              size={32}
               aria-label={formatMessage(messages.addTagPlaceholder)}
               placeholder={formatMessage(messages.addTagPlaceholder)}
               value={name}
@@ -209,7 +206,7 @@ const TagsSection = ({ draft }: Props) => {
             {formatMessage(messages.settingsAddTag)}
           </Button>
         </form>
-      </SettingsSection>
+      </section>
       <AlertDialog
         isOpen={!!topicToDelete}
         onOpenChange={(isOpen) => {

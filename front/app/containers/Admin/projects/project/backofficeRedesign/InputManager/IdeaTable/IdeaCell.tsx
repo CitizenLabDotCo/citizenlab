@@ -14,7 +14,6 @@ import { useIntl } from 'utils/cl-intl';
 import FormattedBudget from 'utils/currency/FormattedBudget';
 import { timeAgo } from 'utils/dateUtils';
 
-import ColorDot from '../ColorDot';
 import { ColumnKey, COLUMNS } from '../columns';
 import messages from '../messages';
 import { topicIds } from '../utils';
@@ -38,8 +37,7 @@ const IdeaCell = ({ column, idea, status, tagLabels }: Props) => {
 
   if (column === 'status') {
     return (
-      <Cell>
-        {status && <ColorDot color={status.attributes.color} />}
+      <Cell tone="secondary">
         {status && localize(status.attributes.title_multiloc)}
       </Cell>
     );

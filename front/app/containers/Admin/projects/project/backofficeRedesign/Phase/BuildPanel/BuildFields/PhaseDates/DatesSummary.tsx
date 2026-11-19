@@ -20,7 +20,9 @@ const DatesSummary = ({ startAt, endAt }: Props) => {
   const dateLocale = getLocale(useLocale());
 
   return (
+    // Dates are always ones the admin picked.
     <SummaryPill
+      active
       icon="calendar-14"
       label={formatDateRange(
         startAt,
