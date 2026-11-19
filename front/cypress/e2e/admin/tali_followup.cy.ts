@@ -49,8 +49,8 @@ describe('Tali follow-up designs', () => {
     cy.contains('Shared with “Second method”').should('be.visible');
     const tag = `Shared tag ${randomString()}`;
     cy.get('#phase-add-input-tag').type(`${tag}{enter}`);
-    cy.contains('button', 'Save changes').click();
-    cy.contains('button', 'Back to phase setup').click();
+    cy.contains('button', /^Save$/).click();
+    cy.get('button[aria-label="Back to phase setup"]').click();
     cy.then(() => visit(otherPhaseId));
     cy.contains('button', 'Idea tags').click();
     cy.get('[aria-label="Search tags"]').type(tag);
