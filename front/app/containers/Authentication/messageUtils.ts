@@ -96,6 +96,7 @@ export const ERROR_CODE_MESSAGES: Record<ErrorCode, MessageDescriptor> = {
   resending_code_failed: errorMessages.resending_code_failed,
   verification_taken: errorMessages.verification_taken,
   account_merge_not_allowed: messages.accountMergeNotAllowed,
+  verification_signed_out: messages.verificationSignedOut,
 };
 
 type HelperTextKey =
