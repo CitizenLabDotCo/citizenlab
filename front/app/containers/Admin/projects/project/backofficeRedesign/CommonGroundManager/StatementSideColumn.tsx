@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Button from 'design-system/Button';
+import Disclosure from 'design-system/Disclosure';
 
 import { CommonGroundResultsData } from 'api/common_ground/types';
 
@@ -43,12 +43,18 @@ const StatementSideColumn = ({
         />
       )}
       <Card fillHeight>
-        <Button trailingIcon="plus-16" onPress={onAdd}>
-          {formatMessage(messages.addStatement)}
-        </Button>
-        <Button trailingIcon="upload-16" onPress={onImport}>
-          {formatMessage(messages.importInputs)}
-        </Button>
+        <Disclosure
+          header="button"
+          title={formatMessage(messages.addStatement)}
+          actionIcon="plus-16"
+          onPress={onAdd}
+        />
+        <Disclosure
+          header="button"
+          title={formatMessage(messages.importInputs)}
+          actionIcon="upload-16"
+          onPress={onImport}
+        />
         <ExportRow
           type="ProjectProposals"
           projectId={projectId}

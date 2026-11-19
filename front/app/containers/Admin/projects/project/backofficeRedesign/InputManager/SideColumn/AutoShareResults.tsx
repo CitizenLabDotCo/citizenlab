@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Disclosure from 'design-system/Disclosure';
 import Switch from 'design-system/Switch';
 
 import { IPhaseData } from 'api/phases/types';
@@ -28,22 +29,25 @@ const AutoShareResults = ({ phase }: Props) => {
     <Card fillHeight>
       <div className={styles.autoShare}>
         {enabled && <AutoShareNotice phase={phase} />}
-        <div className={styles.switchRow}>
-          <Switch
-            id={TOGGLE_ID}
-            size={26}
-            isSelected={enabled}
-            isDisabled={isPending}
-            onChange={() =>
-              updatePhase({
-                phaseId: phase.id,
-                autoshare_results_enabled: !enabled,
-              })
-            }
-          >
-            {formatMessage(messages.autoShareResults)}
-          </Switch>
-        </div>
+        <Disclosure
+          header="static"
+          title={formatMessage(messages.autoShareResults)}
+          actions={
+            <Switch
+              id={TOGGLE_ID}
+              size={26}
+              aria-label={formatMessage(messages.autoShareResults)}
+              isSelected={enabled}
+              isDisabled={isPending}
+              onChange={() =>
+                updatePhase({
+                  phaseId: phase.id,
+                  autoshare_results_enabled: !enabled,
+                })
+              }
+            />
+          }
+        />
       </div>
     </Card>
   );

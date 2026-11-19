@@ -18,12 +18,12 @@ import useLocalize from 'hooks/useLocalize';
 
 import inputManagerMessages from 'components/admin/PostManager/CommonGroundInputManager/messages';
 import NoInputsDisplay from 'components/admin/PostManager/CommonGroundInputManager/NoInputsDisplay';
-import NoPost from 'components/admin/PostManager/components/PostTable/NoPost';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 import FilterChips from '../InputManager/FilterMenu/FilterChips';
+import NoMatches from '../InputManager/NoMatches';
 import SidePanel from '../InputManager/SidePanel';
 import usePanelNavigation from '../InputManager/usePanelNavigation';
 import useSelection from '../InputManager/useSelection';
@@ -198,7 +198,7 @@ const CommonGroundManager = ({ project, phase }: Props) => {
         />
       )}
       {ideas && pageIdeas.length === 0 && !!phaseTotal && (
-        <NoPost handleSeeAll={clearFilters} />
+        <NoMatches onClearFilters={clearFilters} />
       )}
       {pageIdeas.length > 0 && (
         <StatementTable

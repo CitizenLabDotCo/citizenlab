@@ -11,7 +11,6 @@ import { IProjectData } from 'api/projects/types';
 import useLocalize from 'hooks/useLocalize';
 
 import { ManagerType } from 'components/admin/PostManager';
-import NoPost from 'components/admin/PostManager/components/PostTable/NoPost';
 
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
@@ -27,6 +26,7 @@ import useFilterCategories from './FilterMenu/useFilterCategories';
 import IdeaTable from './IdeaTable';
 import styles from './InputManager.module.css';
 import ListToolbar from './ListToolbar';
+import NoMatches from './NoMatches';
 import SideColumn from './SideColumn';
 import SidePanel from './SidePanel';
 import useInputTermLabels from './useInputTermLabels';
@@ -210,7 +210,9 @@ const InputManager = ({ project, phase }: Props) => {
         ) : (
           <div className={isChangingList ? styles.changing : undefined}>
             {listBody === 'empty' && <EmptyState />}
-            {listBody === 'noMatches' && <NoPost handleSeeAll={clearFilters} />}
+            {listBody === 'noMatches' && (
+              <NoMatches onClearFilters={clearFilters} />
+            )}
             {listBody === 'table' && (
               <IdeaTable
                 ideas={pageIdeas}

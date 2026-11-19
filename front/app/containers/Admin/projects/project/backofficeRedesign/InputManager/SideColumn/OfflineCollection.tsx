@@ -1,6 +1,6 @@
 import React, { ReactNode, useState } from 'react';
 
-import Button from 'design-system/Button';
+import Disclosure from 'design-system/Disclosure';
 
 import useAddIdea from 'api/ideas/useAddIdea';
 import { IPhaseData } from 'api/phases/types';
@@ -39,21 +39,21 @@ const OfflineCollection = ({ phase, children, fillHeight = true }: Props) => {
 
   return (
     <Card fillHeight={fillHeight}>
-      <Button
-        trailingIcon="plus-16"
+      <Disclosure
+        header="button"
+        title={addLabel}
+        actionIcon="plus-16"
         onPress={() => {
           trackEventByName(tracks.clickNewIdea.name, {
             pathnameFrom: pathname,
           });
           setAddOpened(true);
         }}
-      >
-        {addLabel}
-      </Button>
+      />
       <OfflineFormsButton
         participationMethod={phase.attributes.participation_method}
         label={formatMessage(messages.importPaperTerms, { terms })}
-        trailingIcon="upload-16"
+        cardIcon="upload-16"
       />
       {children}
       {addOpened && (
