@@ -32,13 +32,15 @@
           "organization_name": {
             "title": "Organisation Name",
             "description": "How the city or organisation is referred to throughout the platform.",
-            "$ref": "#/definitions/multiloc_string"
+            "$ref": "#/definitions/multiloc_string",
+            "admin_writable": true
           },
           "organization_site": {
             "title": "Organisation Website",
             "description": "The city or organisation's official website.",
             "type": "string",
-            "pattern": "^$|^((http:\/\/.+)|(https:\/\/.+))"
+            "pattern": "^$|^((http:\/\/.+)|(https:\/\/.+))",
+            "admin_writable": true
           },
           "organization_type": {
             "title": "Organisation Type",
@@ -59,21 +61,24 @@
             "description": "The country where the platform's citizens are located. Type first letters of the country name, in English, to search.",
             "type": ["string", "null"],
             "enum": <%= country_codes_service.codes_in_name_order.to_json %>,
-            "enumNames": <%= country_codes_service.names_in_name_order.to_json %>
+            "enumNames": <%= country_codes_service.names_in_name_order.to_json %>,
+            "admin_writable": true
           },
           "timezone": {
             "title": "Time Zone",
             "type": "string",
             "default": "Europe/Brussels",
             "enum": [<%= TimezoneService::SUPPORTED_TIMEZONES.map{|l| "\"#{l}\""}.join(",") %>],
-            "enumNames": [<%= TimezoneService::SUPPORTED_TIMEZONES.map{|tz| TimezoneService.new.display_timezone(tz)}.map{|l| "\"#{l}\""}.join(",") %>]
+            "enumNames": [<%= TimezoneService::SUPPORTED_TIMEZONES.map{|tz| TimezoneService.new.display_timezone(tz)}.map{|l| "\"#{l}\""}.join(",") %>],
+            "admin_writable": true
           },
           "currency": {
             "title": "Currency",
             "description": "Currency used by the organisation, for projects like participatory budgeting that have budget fields.",
             "type": "string",
             "default": "EUR",
-            "enum": [<%= CL2_SUPPORTED_CURRENCIES.map{|l| "\"#{l}\""}.join(",") %>]
+            "enum": [<%= CL2_SUPPORTED_CURRENCIES.map{|l| "\"#{l}\""}.join(",") %>],
+            "admin_writable": true
           },
           "locales": {
             "title": "Platform Languages",
@@ -86,13 +91,15 @@
             },
             "uniqueItems": true,
             "minItems": 1,
-            "default": ["en"]
+            "default": ["en"],
+            "admin_writable": true
           },
           "population": {
             "title": "Population",
             "description": "Number of inhabitants in the territory. Leave empty if not applicable.",
             "type": ["integer", "null"],
-            "minimum": 0
+            "minimum": 0,
+            "admin_writable": true
           },
           "weglot_api_key": {
             "title": "Weglot API key",
@@ -110,21 +117,24 @@
             "description": "Main colour of platform. Input as a 6-digit HEX color, including the # sign (e.g. #073F80).",
             "type": "string",
             "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
-            "default": "#163A7D"
+            "default": "#163A7D",
+            "admin_writable": true
           },
           "color_secondary": {
             "title": "Secondary Colour",
             "description": "Secondary colour of platform. Input as a 6-digit HEX color, including the # sign (e.g. #ff672f).",
             "type": "string",
             "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
-            "default": "#CF4040"
+            "default": "#CF4040",
+            "admin_writable": true
           },
           "color_text": {
             "title": "Text Colour",
             "description": "Colour of platform text. Input as a 6-digit HEX color, including the # sign (e.g. #7fbbca).",
             "type": "string",
             "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
-            "default": "#163A7D"
+            "default": "#163A7D",
+            "admin_writable": true
           },
           "meta_title": {
             "title": "Page Title",
@@ -163,28 +173,33 @@
           "enter_email_helper_text": {
             "title": "Enter email helper text",
             "description": "Optional short text, shown at the top of the email entry step of the authentication flow. Supports HTML.",
-            "$ref": "#/definitions/multiloc_string"
+            "$ref": "#/definitions/multiloc_string",
+            "admin_writable": true
           },
           "enter_password_helper_text": {
             "title": "Enter password helper text",
             "description": "Optional short text, shown at the top of the password entry step of the authentication flow. Supports HTML.",
-            "$ref": "#/definitions/multiloc_string"
+            "$ref": "#/definitions/multiloc_string",
+            "admin_writable": true
           },
           "complete_your_profile_helper_text": {
             "title": "Complete profile helper text",
             "description": "Optional short text, shown at the top of the 'Complete your profile' step of the authentication flow. Supports HTML.",
-            "$ref": "#/definitions/multiloc_string"
+            "$ref": "#/definitions/multiloc_string",
+            "admin_writable": true
           },
           "custom_fields_signup_helper_text":  {
             "title": "Demographic questions helper text",
             "description": "Optional short text, shown at the top demographic questions step the authentication flow. Supports HTML.",
-            "$ref": "#/definitions/multiloc_string"
+            "$ref": "#/definitions/multiloc_string",
+            "admin_writable": true
           },
           "onboarding":  {
             "title": "Onboarding (Step 3)",
             "description": "Onboarding step after login or signup, asking for topics you are interested in.",
             "type": "boolean",
-            "default": false
+            "default": false,
+            "admin_writable": true
           },
           "allow_sharing":  {
             "title": "Sharing content on socials",
@@ -195,22 +210,26 @@
           "areas_term": {
             "title": "Geographic Units",
             "description": "What a geographic unit should be called on this platform (e.g., neighbourhoods, districts, etc.). Input the plural form here with all lowercase letters. If left blank, this field defaults to 'areas'.",
-            "$ref": "#/definitions/multiloc_string"
+            "$ref": "#/definitions/multiloc_string",
+            "admin_writable": true
           },
           "area_term": {
             "title": "Geographic Unit",
             "description": "What a geographic unit should be called on this platform (e.g., neighbourhood, district, etc.)? Input the singular form here with all lowercase letters. If left blank, this field defaults to 'area'.",
-            "$ref": "#/definitions/multiloc_string"
+            "$ref": "#/definitions/multiloc_string",
+            "admin_writable": true
           },
           "topics_term": {
             "title": "Tag Units",
             "description": "What a tag unit should be called on this platform (e.g., departments, themes, etc.). Input the plural form here with all lowercase letters. If left blank, this field defaults to 'tags'.",
-            "$ref": "#/definitions/multiloc_string"
+            "$ref": "#/definitions/multiloc_string",
+            "admin_writable": true
           },
           "topic_term": {
             "title": "Tag Unit",
             "description": "What a tag unit should be called on this platform (e.g., department, theme, etc.). Input the singular form here with all lowercase letters. If left blank, this field defaults to 'tag'.",
-            "$ref": "#/definitions/multiloc_string"
+            "$ref": "#/definitions/multiloc_string",
+            "admin_writable": true
           },
           "from_email": {
             "title": "From email",
@@ -264,7 +283,8 @@
             "description": "Default is User 123456.",
             "type": "string",
             "enum": ["user", "animal"],
-            "default": "user"
+            "default": "user",
+            "admin_writable": true
           },
           "private_attributes_in_export":  {
             "title": "Allow private attributes (user name & email) in native survey exports & analysis?",
@@ -276,7 +296,8 @@
             "title": "Exclude admins and moderators from statistics",
             "description": "When enabled, the participation and visits of admins and moderators are left out of statistics and graphs.",
             "type": "boolean",
-            "default": true
+            "default": true,
+            "admin_writable": true
           },
           "projects_unlisted_by_default":  {
             "title": "Make new projects unlisted by default",
@@ -492,7 +513,8 @@
           "api_key": {
             "title": "API Key",
             "description": "Add customer’s Esri API key to allow importing map layers from their ArcGIS Online in the map tabs in projects. This setting is also available to admins in the Tools: Esri Maps item.",
-            "type": "string"
+            "type": "string",
+            "admin_writable": true
           }
         }
       },
@@ -762,7 +784,7 @@
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true, "admin_writable": true},
           "extended_blocking": { "type": "boolean", "default": false}
         }
       },

@@ -70,6 +70,30 @@ class SettingsService
     remove_private_settings(settings, schema)
   end
 
+  # @return [Array<Array(String, String)>] the [feature, setting] pairs that admins who
+  #   are not super admins may change.
+  def admin_writable_settings(schema)
+    schema['properties'].flat_map do |feature, feature_schema|
+      feature_schema['properties'].filter_map do |setting, setting_schema|
+        [feature, setting] if setting_schema['admin_writable']
+      end
+    end
+  end
+
+  # Settings that are added, changed or removed all count. A feature whose value is not a
+  # hash counts as a whole, as [feature, nil].
+  # @return [Array<Array(String, String)>] the [feature, setting] pairs whose value differs.
+  def changed_settings(before, after)
+    (before.keys | after.keys).flat_map do |feature|
+      was = before.fetch(feature, {})
+      now = after.fetch(feature, {})
+      next [] if was == now
+      next [[feature, nil]] unless was.is_a?(Hash) && now.is_a?(Hash)
+
+      (was.keys | now.keys).filter_map { |setting| [feature, setting] if was[setting] != now[setting] }
+    end
+  end
+
   def activate_feature!(feature, config: nil, settings: {})
     config ||= AppConfiguration.instance
     feature_settings = config.settings[feature] || {}
