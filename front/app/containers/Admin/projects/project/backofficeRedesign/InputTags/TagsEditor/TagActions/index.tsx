@@ -21,13 +21,13 @@ const TagActions = ({ deleteDisabled, onEdit, onDelete }: Props) => {
   return (
     <div className={styles.actions}>
       <IconButton
-        variant="bordered"
-        icon="pencil-14"
+        size={24}
+        icon="square-pen-16"
         aria-label={formatMessage(topicsMessages.edit)}
         onPress={onEdit}
       />
       <IconButton
-        variant="bordered"
+        size={24}
         icon="trash-2-16"
         aria-label={formatMessage(topicsMessages.delete)}
         isDisabled={deleteDisabled}

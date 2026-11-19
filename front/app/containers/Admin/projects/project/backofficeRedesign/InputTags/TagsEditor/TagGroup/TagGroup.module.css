@@ -1,13 +1,15 @@
-.divided {
-  border-top: var(--gv-border-width-1) solid var(--gv-border-subtle);
-}
-
 .row {
   display: flex;
   align-items: center;
   gap: var(--gv-space-8);
-  min-height: 44px;
+  min-height: var(--gv-size-36);
+  padding: 0 var(--gv-space-4);
+  border-radius: var(--gv-radius-8);
   cursor: grab;
+}
+
+.row:hover {
+  background: var(--gv-surface-control-subtle);
 }
 
 .title {

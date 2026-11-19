@@ -35,7 +35,6 @@ interface Props {
   drag: SortableTagRenderProps;
   canAddSubtopics: boolean;
   deleteDisabled: boolean;
-  isFirst: boolean;
   onAddSubtopic: () => void;
   onEdit: (topic: IInputTopicData) => void;
   onDelete: (topic: IInputTopicData) => void;
@@ -48,7 +47,6 @@ const TagGroup = ({
   drag,
   canAddSubtopics,
   deleteDisabled,
-  isFirst,
   onAddSubtopic,
   onEdit,
   onDelete,
@@ -74,7 +72,7 @@ const TagGroup = ({
   const subtopicsId = `tag-subtopics-${topic.id}`;
 
   return (
-    <div className={isFirst ? undefined : styles.divided}>
+    <div>
       <div ref={drag.rowRef} className={styles.row}>
         {drag.handle}
         {collapsible && (
@@ -117,10 +115,7 @@ const TagGroup = ({
               cancelDrag={cancelDrag}
             >
               {({ rowRef, handle }) => (
-                <div
-                  ref={rowRef}
-                  className={`${styles.row} ${index > 0 ? styles.divided : ''}`}
-                >
+                <div ref={rowRef} className={styles.row}>
                   {handle}
                   <span className={`${styles.title} ${styles.name}`}>
                     <T value={subtopic.attributes.title_multiloc} />

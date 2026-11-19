@@ -1,12 +1,10 @@
 import React from 'react';
 
-import Switch from 'design-system/Switch';
-
-import SettingsSection from 'containers/Admin/projects/project/backofficeRedesign/_shared/components/SettingsModal/SettingsSection';
 import topicsMessages from 'containers/Admin/projects/project/topics/messages';
 
+import SettingToggleRow from 'components/admin/SettingToggleRow';
+
 import { useIntl } from 'utils/cl-intl';
-import 'design-system/tokens.css';
 
 interface Props {
   enabled: boolean;
@@ -16,21 +14,12 @@ interface Props {
 const PerspectivesSection = ({ enabled, onChange }: Props) => {
   const { formatMessage } = useIntl();
 
-  const title = formatMessage(topicsMessages.perspectives);
-
   return (
-    <SettingsSection
-      title={title}
-      titleVariant="label"
+    <SettingToggleRow
+      title={formatMessage(topicsMessages.perspectives)}
       description={formatMessage(topicsMessages.liveAutoInputTopicsDescription)}
-      action={
-        <Switch
-          size={36}
-          aria-label={title}
-          isSelected={enabled}
-          onChange={onChange}
-        />
-      }
+      checked={enabled}
+      onChange={() => onChange(!enabled)}
     />
   );
 };

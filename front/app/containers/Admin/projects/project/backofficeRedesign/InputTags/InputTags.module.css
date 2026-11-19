@@ -5,8 +5,11 @@
   padding: var(--gv-space-18);
 }
 
-.back {
-  align-self: flex-start;
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-8);
+  min-height: var(--gv-size-32);
 }
 
 .title {

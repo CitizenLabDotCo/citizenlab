@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import Banner from 'design-system/Banner';
-import Button from 'design-system/Button';
+import IconButton from 'design-system/IconButton';
 import Spinner from 'design-system/Spinner';
 
 import { IPhaseData, InputTerm } from 'api/phases/types';
@@ -12,12 +12,12 @@ import useUpdateProject from 'api/projects/useUpdateProject';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
+import inputTermMessages from 'containers/Admin/projects/project/inputTermMessages';
+
 import { useRegisterPageSaver } from 'components/admin/PageSaveContext';
 
 import { useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
-
-import inputTermMessages from '../InputManager/inputTermMessages';
 
 import styles from './InputTags.module.css';
 import messages from './messages';
@@ -73,23 +73,20 @@ const InputTags = ({ project, phase, inputTerm }: Props) => {
   });
   return (
     <div className={styles.inputTags}>
-      <div className={styles.back}>
-        <Button
-          variant="quiet"
-          size={32}
+      <div className={styles.header}>
+        <IconButton
           icon="arrow-left-16"
+          aria-label={formatMessage(messages.back)}
           onPress={() => removeSearchParams(['input_tags'])}
-        >
-          {formatMessage(messages.back)}
-        </Button>
+        />
+        <h2 className={styles.title}>
+          {formatMessage(messages.tagsTitle, {
+            term: formatMessage(inputTermMessages.capitalizedSingular, {
+              term: inputTerm,
+            }),
+          })}
+        </h2>
       </div>
-      <h2 className={styles.title}>
-        {formatMessage(messages.tagsTitle, {
-          term: formatMessage(inputTermMessages.capitalizedSingular, {
-            term: inputTerm,
-          }),
-        })}
-      </h2>
       {others.length > 0 && (
         <div role="note">
           <Banner tone="neutral">
