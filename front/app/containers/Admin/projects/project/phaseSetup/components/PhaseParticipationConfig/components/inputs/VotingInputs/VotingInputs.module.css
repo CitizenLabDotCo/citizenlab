@@ -1,4 +1,5 @@
 .heading {
+  padding-top: var(--gv-space-14);
   margin-bottom: var(--gv-space-10);
 }
 

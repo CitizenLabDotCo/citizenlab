@@ -1,20 +1,27 @@
-import React from 'react';
+import React, { createContext, useContext } from 'react';
 
 import Badge from 'design-system/Badge';
 import { IconName } from 'design-system/Icon';
 import 'design-system/tokens.css';
 
+// Set by a setup card once it is reviewed: its summary then turns from grey to blue.
+export const SummaryReviewedContext = createContext(false);
+
 interface Props {
   label: string;
   icon?: IconName;
-  /** Marks something that is set up, like a form that has questions. */
+  /** Marks something the admin set, like a form that has questions. */
   active?: boolean;
 }
 
-const SummaryPill = ({ label, icon, active = false }: Props) => (
-  <Badge tone={active ? 'selected' : 'neutral'} icon={icon}>
-    {label}
-  </Badge>
-);
+const SummaryPill = ({ label, icon, active = false }: Props) => {
+  const reviewed = useContext(SummaryReviewedContext);
+
+  return (
+    <Badge tone={active || reviewed ? 'selected' : 'neutral'} icon={icon}>
+      {label}
+    </Badge>
+  );
+};
 
 export default SummaryPill;

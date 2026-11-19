@@ -91,12 +91,15 @@ const NativeSurveyInputs = ({
     return (
       <>
         <div className={styles.heading}>
-          <PanelHeading label={formatMessage(configMessages.settingsGroup)} />
+          <PanelHeading
+            label={formatMessage(configMessages.settingsGroup)}
+            expandable
+          />
         </div>
         {surveyPlacement}
         <PanelGroup
           label={formatMessage(configMessages.participantActionsGroup)}
-          defaultOpen
+          hasError={!!submissionError || !!multipleResponsesError}
         >
           <SettingToggleRow
             title={formatMessage(configMessages.acceptNewResponses)}

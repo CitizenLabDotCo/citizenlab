@@ -12,6 +12,7 @@ import {
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import ExpandAllContext from 'containers/Admin/projects/_shared/components/SettingsPanel/ExpandAllContext';
 import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';
 import PanelHeading from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelHeading';
 import messages from 'containers/Admin/projects/project/messages';
@@ -22,6 +23,7 @@ import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { useSearch } from 'utils/router';
 
 import configMessages from '../../../messages';
 import CustomFieldPicker from '../../shared/CustomFieldPicker';
@@ -32,10 +34,14 @@ import NumberSettingRow from '../_shared/NumberSettingRow';
 import PrescreeningModeSelector from '../_shared/PrescreeningModeSelector';
 import ReactionLimitSettings from '../_shared/ReactionLimitSettings';
 import SortingPicker from '../_shared/SortingPicker';
+import useAssigneeSummary from '../_shared/useAssigneeSummary';
+import useParticipantActionsSummary from '../_shared/useParticipantActionsSummary';
 import UserActions from '../_shared/UserActions';
 
 import styles from './ProposalsInputs.module.css';
 import 'design-system/tokens.css';
+
+const NO_EXPAND_ALL = { count: 0 };
 
 interface Props {
   moderationAction?: ReactNode;
@@ -131,6 +137,13 @@ const ProposalsInputs = ({
   phaseId,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const { setup_action } = useSearch({ strict: false });
+  const assigneeSummary = useAssigneeSummary(phaseId);
+  const actionsSummary = useParticipantActionsSummary({
+    submission_enabled,
+    commenting_enabled,
+    reacting_enabled,
+  });
   const getApiErrorMessage = useApiErrorText();
   const prescreeningFeatureEnabled = useFeatureFlag({
     name: 'prescreening',
@@ -186,7 +199,20 @@ const ProposalsInputs = ({
   const requirements = (
     <PanelGroup
       label={formatMessage(configMessages.proposalRequirementsGroup)}
-      defaultOpen
+      hasError={
+        !!reactingThresholdError ||
+        !!expireDateLimitError ||
+        !!apiErrors?.reacting_threshold ||
+        !!apiErrors?.expire_days_limit
+      }
+      summary={
+        reacting_threshold && expire_days_limit
+          ? formatMessage(configMessages.proposalRequirementsSummary, {
+              votes: reacting_threshold,
+              days: expire_days_limit,
+            })
+          : undefined
+      }
     >
       <NumberSettingRow
         id="reacting_threshold"
@@ -335,14 +361,28 @@ const ProposalsInputs = ({
             label={formatMessage(configMessages.howProposalsAreShown)}
           />
         </div>
-        {views}
-        {sorting}
+        {/* Expand all is for the Settings cards only. */}
+        <ExpandAllContext.Provider value={NO_EXPAND_ALL}>
+          {views}
+          {sorting}
+        </ExpandAllContext.Provider>
         <div className={styles.heading}>
-          <PanelHeading label={formatMessage(configMessages.settingsGroup)} />
+          <PanelHeading
+            label={formatMessage(configMessages.settingsGroup)}
+            expandable
+          />
         </div>
         <PanelGroup
           label={formatMessage(configMessages.participantActionsGroup)}
-          defaultOpen
+          summary={actionsSummary}
+          hasError={
+            !!noLikingLimitError ||
+            !!apiErrors?.reacting_limit ||
+            !!apiErrors?.reacting_method ||
+            !!apiErrors?.submission_enabled ||
+            !!apiErrors?.commenting_enabled ||
+            !!apiErrors?.reacting_enabled
+          }
         >
           {userActions}
         </PanelGroup>
@@ -350,7 +390,9 @@ const ProposalsInputs = ({
         <div id="phase-moderation-settings">
           <PanelGroup
             label={formatMessage(configMessages.moderationGroup)}
-            defaultOpen
+            // An unsaved phase keeps it open for its save-first action.
+            defaultOpen={!phaseId || setup_action === 'moderation'}
+            summary={assigneeSummary}
           >
             <div className={styles.moderation}>
               {!phaseId && moderationAction}

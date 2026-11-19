@@ -225,7 +225,10 @@ const VotingInputs = ({
     return (
       <>
         <div className={styles.heading}>
-          <PanelHeading label={formatMessage(configMessages.settingsGroup)} />
+          <PanelHeading
+            label={formatMessage(configMessages.settingsGroup)}
+            expandable
+          />
         </div>
         <PanelGroup
           reviewKey="voting_method"
@@ -260,7 +263,7 @@ const VotingInputs = ({
         </PanelGroup>
         <PanelGroup
           label={formatMessage(configMessages.participantActionsGroup)}
-          defaultOpen
+          hasError={!!commentingError}
         >
           {phaseId && (
             <PhaseActionAccessRow
