@@ -6,6 +6,7 @@ RSpec.describe Permission do
   it_behaves_like 'a sanitized html_multiloc', factory: :permission, attribute: :access_denied_explanation_multiloc
 
   def configure_verification_method
+    allow_test_id_methods
     AppConfiguration.instance.settings['id_config'] =
       { 'allowed' => true, 'enabled' => true, 'id_methods' => [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
     AppConfiguration.instance.save!

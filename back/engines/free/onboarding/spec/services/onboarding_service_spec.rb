@@ -75,6 +75,7 @@ describe Onboarding::OnboardingService do
 
     context 'verification' do
       before do
+        allow_test_id_methods
         @app_config = AppConfiguration.instance.tap do |cfg|
           cfg.settings['id_config'] = {
             allowed: true,

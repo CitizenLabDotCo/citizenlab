@@ -26,6 +26,13 @@ module IdMethods
       false
     end
 
+    # True if this method fakes an identity provider for testing. Outside development, it
+    # is then only available on platforms whose lifecycle stage is in
+    # IdMethodService::TEST_ONLY_LIFECYCLE_STAGES, whatever the id_config says.
+    def test_only?
+      false
+    end
+
     # @param [AppConfiguration] configuration
     def omniauth_setup(_configuration, _env)
       raise 'Subclass must implement this method'

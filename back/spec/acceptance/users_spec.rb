@@ -2282,6 +2282,7 @@ resource 'Users' do
 
         describe do
           before do
+            allow_test_id_methods
             AppConfiguration.instance.settings['id_config'] = { allowed: true, enabled: true, id_methods: [{ name: 'bogus' }] }
             AppConfiguration.instance.save!
           end

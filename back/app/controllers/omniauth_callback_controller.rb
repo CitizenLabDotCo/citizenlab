@@ -275,10 +275,8 @@ class OmniauthCallbackController < ApplicationController
   end
 
   def auth_method
-    @auth_method ||= begin
-      method = IdMethodService.new.method_by_name(auth_provider)
-      method if method&.authentication?
-    end
+    @auth_method ||= authentication_service.active_methods(AppConfiguration.instance)
+      .find { |method| method.name == auth_provider }
   end
 
   def handle_verification(auth, user)
