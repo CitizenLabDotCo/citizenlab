@@ -11,13 +11,16 @@ import useSelectedLocale from './useSelectedLocale';
 import 'design-system/tokens.css';
 
 interface Props {
+  // Goes on the input.
   id: string;
   'aria-label': string;
   placeholder: string;
-  valueMultiloc: Multiloc | null;
+  valueMultiloc: Multiloc | null | undefined;
   onChange: (valueMultiloc: Multiloc) => void;
   // One message per locale; the one for the locale shown is displayed.
   errorMultiloc?: Multiloc | null;
+  // One message for the whole field, shown under it.
+  errorMessage?: string;
 }
 
 // A multilingual design-system TitleField, e.g. the name of a new project.
@@ -28,6 +31,7 @@ const MultilocTitleField = ({
   valueMultiloc,
   onChange,
   errorMultiloc,
+  errorMessage,
 }: Props) => {
   const { locales, selectedLocale, setSelectedLocale } = useSelectedLocale();
 
@@ -36,8 +40,7 @@ const MultilocTitleField = ({
   const error = errorMultiloc?.[selectedLocale];
 
   return (
-    // The design-system TitleField takes no id, so the id sits on its wrapper.
-    <div id={id} className={styles.field}>
+    <div className={styles.field}>
       {locales.length > 1 && (
         <div className={styles.localeRow}>
           <LocaleSwitcher
@@ -50,6 +53,8 @@ const MultilocTitleField = ({
         </div>
       )}
       <TitleField
+        id={id}
+        errorMessage={errorMessage}
         aria-label={ariaLabel}
         placeholder={placeholder}
         value={valueMultiloc?.[selectedLocale] ?? ''}

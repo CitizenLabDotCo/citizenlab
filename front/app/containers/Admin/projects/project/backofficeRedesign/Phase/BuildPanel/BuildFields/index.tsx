@@ -14,7 +14,7 @@ import { isSurveyMethod } from 'containers/Admin/projects/project/phaseSetup/com
 import phaseSetupMessages from 'containers/Admin/projects/project/phaseSetup/messages';
 import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/typings';
 
-import MultilocTextField from 'components/admin/MultilocFields/MultilocTextField';
+import MultilocTitleField from 'components/admin/MultilocFields/MultilocTitleField';
 import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 
 import { useIntl } from 'utils/cl-intl';
@@ -94,7 +94,7 @@ const BuildFields = ({
         <div className={styles.details}>
           <div className={styles.group}>
             <div className="intercom-admin-phase-name">
-              <MultilocTextField
+              <MultilocTitleField
                 id="phase-build-panel-title"
                 aria-label={formatMessage(phaseSetupMessages.titleLabel)}
                 placeholder={formatMessage(messages.phaseTitle)}

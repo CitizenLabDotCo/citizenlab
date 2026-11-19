@@ -1,11 +1,11 @@
 .list {
   display: flex;
   flex-direction: column;
-  gap: var(--gv-space-16);
+  gap: var(--gv-space-6);
 }
 
 .description {
-  composes: ui from '../../../../../../design-system/typography.module.css';
+  composes: small from '../../../../../../design-system/typography.module.css';
   margin: 0;
   color: var(--gv-text-secondary);
 }

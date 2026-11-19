@@ -56,7 +56,7 @@ const NativeSurveyOption = ({
       />
       {customFields && (
         <div className={styles.fullWidth}>
-          <Button variant="secondary" size={28} onPress={onAddQuestions}>
+          <Button variant="secondary" onPress={onAddQuestions}>
             {formatMessage(
               hasQuestions
                 ? methodSectionMessages.editSurvey

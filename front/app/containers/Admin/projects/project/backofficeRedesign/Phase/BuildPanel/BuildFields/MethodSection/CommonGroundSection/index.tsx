@@ -68,18 +68,10 @@ const CommonGroundSection = ({ projectId, phaseId }: Props) => {
             </div>
           ) : (
             <div className={styles.emptyActions}>
-              <Button
-                variant="secondary"
-                size={28}
-                onPress={() => setAddOpened(true)}
-              >
+              <Button variant="secondary" onPress={() => setAddOpened(true)}>
                 {addLabel}
               </Button>
-              <Button
-                variant="primary"
-                size={28}
-                onPress={() => setImportOpened(true)}
-              >
+              <Button variant="primary" onPress={() => setImportOpened(true)}>
                 {importLabel}
               </Button>
             </div>

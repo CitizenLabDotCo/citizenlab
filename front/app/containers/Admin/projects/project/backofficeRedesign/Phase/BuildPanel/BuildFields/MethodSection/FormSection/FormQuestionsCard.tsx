@@ -97,7 +97,6 @@ const FormQuestionsCard = ({ projectId, phaseId, title, survey }: Props) => {
               {survey ? (
                 <Button
                   variant="secondary"
-                  size={28}
                   onPress={() =>
                     router.navigate({
                       to: '/$locale/admin/projects/$projectId/phases/$phaseId/survey-form/edit',
@@ -110,7 +109,6 @@ const FormQuestionsCard = ({ projectId, phaseId, title, survey }: Props) => {
               ) : (
                 <Button
                   variant="secondary"
-                  size={28}
                   isDisabled={!inputForm.ready}
                   onPress={inputForm.open}
                 >

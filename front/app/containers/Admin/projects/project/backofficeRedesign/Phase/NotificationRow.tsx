@@ -65,7 +65,7 @@ const NotificationRow = ({ campaign, projectId, phaseId }: Props) => {
   // styled as a row; a design-system Button only holds a short label.
   const editButton = (
     <UnstyledButton
-      className={styles.edit}
+      className={`${styles.edit} ${enabled ? '' : styles.off}`}
       aria-label={editLabel}
       isDisabled={isEditDisabled && !hasReason}
       aria-disabled={hasReason ? true : undefined}

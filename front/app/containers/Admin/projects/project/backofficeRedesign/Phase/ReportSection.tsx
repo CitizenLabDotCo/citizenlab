@@ -42,11 +42,10 @@ const ReportSection = ({ projectId, phase }: Props) => {
             <Button
               id="e2e-create-report-button"
               variant="primary"
-              size={28}
               icon="plus-16"
               onPress={() => setCreateOpened(true)}
             >
-              {formatMessage(messages.createReport)}
+              {formatMessage(phaseMessages.addReport)}
             </Button>
           }
         />
@@ -70,7 +69,6 @@ const ReportSection = ({ projectId, phase }: Props) => {
         <div className={styles.actions}>
           <Button
             variant="secondary"
-            size={28}
             onPress={() =>
               window.open(
                 `/admin/reporting/report-builder/${reportId}/print`,
@@ -83,7 +81,6 @@ const ReportSection = ({ projectId, phase }: Props) => {
           </Button>
           <Button
             variant="secondary"
-            size={28}
             isDisabled={!canEdit}
             disabledReason={
               report && !canEdit

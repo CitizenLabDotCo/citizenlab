@@ -28,6 +28,7 @@ const SettingToggleRow = ({
       size={26}
       isSelected={checked}
       isDisabled={disabled}
+      labelAlign={description ? 'top' : 'center'}
       onChange={() => onChange()}
     >
       <span className={styles.text}>

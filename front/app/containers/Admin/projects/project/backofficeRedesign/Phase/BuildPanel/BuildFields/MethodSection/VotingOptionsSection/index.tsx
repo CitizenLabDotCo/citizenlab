@@ -97,7 +97,6 @@ const VotingOptionsSection = ({ projectId, phaseId }: Props) => {
               <div className={styles.primaryAction}>
                 <Button
                   variant="primary"
-                  size={28}
                   isDisabled={!hasIdeationBefore && !inputForm.ready}
                   onPress={
                     hasIdeationBefore
