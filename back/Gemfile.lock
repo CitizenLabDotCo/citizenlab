@@ -499,7 +499,7 @@ GEM
       base64
       ssrf_filter (~> 1.5)
     csv (3.3.6)
-    dalli (3.2.16)
+    dalli (3.2.17)
       logger
     database_cleaner (2.1.0)
       database_cleaner-active_record (>= 2, < 3)
