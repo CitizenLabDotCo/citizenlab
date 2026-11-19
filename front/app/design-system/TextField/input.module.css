@@ -7,13 +7,9 @@
 .input {
   composes: ui from '../typography.module.css';
   box-sizing: border-box;
-  display: flex;
   align-items: center;
-  gap: var(--gv-space-8);
-  width: 100%;
   min-width: 0;
   margin: 0;
-  padding: 0 var(--gv-space-10);
   border: var(--gv-border-width-1) solid var(--gv-border-control);
   border-radius: var(--gv-radius-8);
   background: var(--gv-surface-panel);
@@ -22,6 +18,14 @@
   transition-property: background-color, border-color, color;
   transition-duration: var(--gv-motion-duration-fast);
   transition-timing-function: var(--gv-motion-easing-standard);
+}
+
+/* Zero specificity, so a field that composes .input wins with its own values whatever order the stylesheets load in. */
+:where(.input) {
+  display: flex;
+  gap: var(--gv-space-8);
+  width: 100%;
+  padding: 0 var(--gv-space-10);
 }
 
 .input::placeholder,
