@@ -1,6 +1,9 @@
+/* Wraps rather than pushing the tools beside it out of a narrow list. */
 .selectionBar {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
+  min-width: 0;
   gap: var(--gv-space-6);
 }
 

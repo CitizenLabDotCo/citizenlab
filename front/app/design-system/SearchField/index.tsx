@@ -21,6 +21,8 @@ type SearchFieldProps = {
   onChange?: (value: string) => void;
   placeholder?: string;
   size?: 32 | 36;
+  // Full: fills its container, as in a panel; the default is the toolbar's 240.
+  width?: 'toolbar' | 'full';
   autoFocus?: boolean;
   'data-cy'?: string;
 };
@@ -32,11 +34,12 @@ const SearchField = ({
   onChange,
   placeholder,
   size = 32,
+  width = 'toolbar',
   autoFocus,
   'data-cy': dataCy,
 }: SearchFieldProps) => (
   <AriaSearchField
-    className={styles.searchField}
+    className={`${styles.searchField} ${width === 'full' ? styles.full : ''}`}
     aria-label={ariaLabel}
     value={value}
     defaultValue={defaultValue}

@@ -7,6 +7,15 @@
   cursor: pointer;
 }
 
+.top {
+  align-items: flex-start;
+}
+
+/* Centres the track on the label's first 20 px line. */
+.top .track {
+  margin-top: calc((var(--gv-font-line-height-20) - var(--switch-height)) / 2);
+}
+
 .switch[data-disabled] {
   opacity: var(--gv-opacity-disabled);
   cursor: default;

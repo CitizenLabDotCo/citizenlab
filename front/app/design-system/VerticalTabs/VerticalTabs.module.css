@@ -65,3 +65,14 @@
   color: var(--gv-text-primary);
   font-weight: var(--gv-font-weight-medium);
 }
+
+.rail {
+  width: 203px;
+  padding: var(--gv-space-8) var(--gv-space-20) var(--gv-space-18)
+    var(--gv-space-8);
+  background: var(--gv-surface-panel-subtle);
+}
+
+.rail .tab[data-selected] {
+  background: var(--gv-surface-control-subtle);
+}

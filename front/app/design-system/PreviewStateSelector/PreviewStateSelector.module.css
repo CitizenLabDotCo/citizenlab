@@ -1,0 +1,35 @@
+/* Radius 5 and 3 are off the token scale; kept as drawn. */
+.track {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  padding: 3px;
+  gap: var(--gv-space-2);
+  border-radius: 5px;
+  background: var(--gv-surface-muted);
+}
+
+.item {
+  composes: small from '../typography.module.css';
+  composes: ringInside from '../focus.module.css';
+  padding: var(--gv-space-4) var(--gv-space-12);
+  border: none;
+  border-radius: 3px;
+  background: transparent;
+  color: var(--gv-text-on-muted);
+  white-space: nowrap;
+  cursor: pointer;
+  transition-property: background-color, color;
+  transition-duration: var(--gv-motion-duration-fast);
+  transition-timing-function: var(--gv-motion-easing-standard);
+}
+
+.item[data-hovered] {
+  color: var(--gv-text-primary);
+}
+
+.item[data-selected] {
+  background: var(--gv-surface-panel);
+  color: var(--gv-text-primary);
+  font-weight: var(--gv-font-weight-medium);
+}

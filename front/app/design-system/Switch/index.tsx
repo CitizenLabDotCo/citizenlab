@@ -18,6 +18,8 @@ type SwitchProps = LabelProps & {
   onChange?: (isSelected: boolean) => void;
   isDisabled?: boolean;
   id?: string;
+  // Top: the switch sits on the first line of a label that has a description under it.
+  labelAlign?: 'center' | 'top';
 };
 
 const Switch = ({
@@ -27,10 +29,11 @@ const Switch = ({
   onChange,
   isDisabled,
   id,
+  labelAlign = 'center',
   'aria-label': ariaLabel,
 }: SwitchProps) => (
   <AriaSwitch
-    className={styles.switch}
+    className={`${styles.switch} ${labelAlign === 'top' ? styles.top : ''}`}
     isSelected={isSelected}
     onChange={onChange}
     isDisabled={isDisabled}
