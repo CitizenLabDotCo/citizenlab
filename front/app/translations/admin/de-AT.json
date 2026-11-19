@@ -3822,8 +3822,6 @@
   "app.containers.AdminPage.ProjectIdeaForm.saved": "Gespeichert!",
   "app.containers.AdminPage.ProjectIdeaForm.viewFormLinkCopy": "Formular ansehen",
   "app.containers.AdminPage.ProjectPages.addFirstPage": "Erste Seite hinzufügen",
-  "app.containers.AdminPage.ProjectPages.attachmentsLabel": "Anhänge",
-  "app.containers.AdminPage.ProjectPages.contentLabel": "Inhalt",
   "app.containers.AdminPage.ProjectPages.createButton": "Seite erstellen",
   "app.containers.AdminPage.ProjectPages.deleteButton": "Löschen",
   "app.containers.AdminPage.ProjectPages.deleteConfirmation": "Sind Sie sicher, dass Sie diese Seite löschen möchten?",

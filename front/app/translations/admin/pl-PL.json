@@ -3822,8 +3822,6 @@
   "app.containers.AdminPage.ProjectIdeaForm.saved": "Zapisane!",
   "app.containers.AdminPage.ProjectIdeaForm.viewFormLinkCopy": "Wyświetl formularz",
   "app.containers.AdminPage.ProjectPages.addFirstPage": "Dodaj swoją pierwszą stronę",
-  "app.containers.AdminPage.ProjectPages.attachmentsLabel": "Załączniki",
-  "app.containers.AdminPage.ProjectPages.contentLabel": "Treść",
   "app.containers.AdminPage.ProjectPages.createButton": "Utwórz stronę",
   "app.containers.AdminPage.ProjectPages.deleteButton": "Usuń",
   "app.containers.AdminPage.ProjectPages.deleteConfirmation": "Czy na pewno chcesz usunąć tę stronę?",
