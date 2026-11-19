@@ -3613,7 +3613,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.addSurveyContent2": "Tilføj indhold til undersøgelsen",
   "app.containers.AdminPage.ProjectEdit.survey.cancelQuitButtonText": "Annuller",
   "app.containers.AdminPage.ProjectEdit.survey.choiceCount2": "{percentage}% ({choiceCount, plural, no {# valgmuligheder} one {# valg} other {# valg}})",
-  "app.containers.AdminPage.ProjectEdit.survey.confirmQuitButtonText1": "Ja, jeg vil gerne logge af",
+  "app.containers.AdminPage.ProjectEdit.survey.confirmQuitButtonText1": "Ja, jeg vil gerne afbryde",
   "app.containers.AdminPage.ProjectEdit.survey.editSurvey2": "Rediger",
   "app.containers.AdminPage.ProjectEdit.survey.existingSubmissionsWarning": "Besvarelserne til denne undersøgelse er begyndt at komme ind. Ændringer i undersøgelsen kan resultere i tab af data og ufuldstændige data i de eksporterede filer.",
   "app.containers.AdminPage.ProjectEdit.survey.file_upload": "Upload af fil",
