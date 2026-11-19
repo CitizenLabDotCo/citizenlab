@@ -106,6 +106,13 @@ module Cl2Back
         domain: ENV.fetch('MAILGUN_DOMAIN'),
         api_host: ENV.fetch('MAILGUN_API_HOST', 'api.mailgun.net')
       }
+    when 'scaleway_tem'
+      config.action_mailer.delivery_method = :scaleway_tem
+      config.action_mailer.scaleway_tem_settings = {
+        secret_key: ENV.fetch('SCW_TEM_SECRET_KEY'),
+        project_id: ENV.fetch('SCW_TEM_PROJECT_ID'),
+        region: ENV.fetch('SCW_TEM_REGION', 'fr-par')
+      }
     when 'smtp'
       config.action_mailer.delivery_method = :smtp
       config.action_mailer.smtp_settings = {
@@ -118,6 +125,8 @@ module Cl2Back
         enable_starttls_auto: ENV.fetch('SMTP_ENABLE_STARTTLS_AUTO', nil),
         openssl_verify_mode: ENV.fetch('SMTP_OPENSSL_VERIFY_MODE', nil)
       }.compact
+    else
+      raise "Unknown ACTION_MAILER_DELIVERY_METHOD: #{ENV.fetch('ACTION_MAILER_DELIVERY_METHOD').inspect}"
     end
   end
 end
