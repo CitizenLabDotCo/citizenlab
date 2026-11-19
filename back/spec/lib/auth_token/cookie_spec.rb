@@ -4,10 +4,11 @@ require 'rails_helper'
 
 RSpec.describe AuthToken::Cookie do
   describe '.read' do
-    def read_cookie(sec_fetch_site)
-      env = Rack::MockRequest.env_for('/web_api/v1/users/me')
+    def read_cookie(sec_fetch_site, origin: nil)
+      env = Rack::MockRequest.env_for('https://example.org/web_api/v1/users/me')
       env['HTTP_COOKIE'] = "#{described_class::NAME}=abc"
       env['HTTP_SEC_FETCH_SITE'] = sec_fetch_site if sec_fetch_site
+      env['HTTP_ORIGIN'] = origin if origin
       described_class.read(Rack::Request.new(env))
     end
 
@@ -29,6 +30,16 @@ RSpec.describe AuthToken::Cookie do
 
     it 'ignores the cookie on requests from another subdomain' do
       expect(read_cookie('same-site')).to be_nil
+    end
+
+    context 'when the browser does not send Sec-Fetch-Site' do
+      it 'reads the cookie on requests from our own page' do
+        expect(read_cookie(nil, origin: 'https://example.org')).to eq('abc')
+      end
+
+      it 'ignores the cookie on requests from another website or subdomain' do
+        expect(read_cookie(nil, origin: 'https://other.example.org')).to be_nil
+      end
     end
   end
 

@@ -19,9 +19,11 @@ type Parameters = Identifier & {
 };
 
 export default async function signIn(parameters: Parameters) {
-  try {
-    await requestAuthCookie(parameters);
+  // A failed sign-in (e.g. a wrong password) sets no cookie, so there is nothing to undo.
+  await requestAuthCookie(parameters);
 
+  // The cookie is set: if the user can't be loaded, sign out rather than stay half signed in.
+  try {
     const authUser = await getAuthUserAsync();
 
     invalidateQueryCache();
@@ -75,7 +77,6 @@ async function getAuthUserAsync() {
   try {
     return await getAuthUser();
   } catch {
-    signOut();
     throw new Error('not_authenticated');
   }
 }

@@ -5,7 +5,10 @@ class OmniauthCallbackController < ApplicationController
   skip_after_action :verify_authorized
 
   def create
-    if auth_method && verification_method
+    # Verification was asked for, but the user wasn't signed in (see OmniauthVerificationToken).
+    if omniauth_params&.dig('verification') == 'true' && omniauth_params['token'].blank?
+      verification_failure_redirect('no_token_passed')
+    elsif auth_method && verification_method
       # If token is present, the user is already logged in, which means they try to verify not authenticate.
       if omniauth_params['token'].present?
         # We need it only for providers that support both auth and ver except FC.
@@ -229,7 +232,7 @@ class OmniauthCallbackController < ApplicationController
 
   # Reject any parameters we don't need to be passed to the frontend in the URL
   def filter_omniauth_params
-    omniauth_params&.except('token', 'verification_pathname', 'sso_pathname', 'RelayState') || {}
+    omniauth_params&.except('token', 'verification', 'verification_pathname', 'sso_pathname', 'RelayState') || {}
   end
 
   def add_uri_params(uri, params = {})

@@ -572,6 +572,16 @@ resource 'User Token' do
         expect(json_response_body[:logout_url]).to eq(logout_url)
         expect(auth_cookie_header).to match(/\A#{AuthToken::Cookie::NAME}=;/o)
       end
+
+      example 'Still signs out when the logout URL cannot be built' do
+        allow_any_instance_of(AuthenticationService).to receive(:logout_url).and_raise(NoMethodError)
+        expect(ErrorReporter).to receive(:report).with(an_instance_of(NoMethodError))
+
+        do_request
+
+        assert_status 204
+        expect(auth_cookie_header).to match(/\A#{AuthToken::Cookie::NAME}=;/o)
+      end
     end
   end
 end

@@ -8,7 +8,9 @@
 # The front-end can't read the auth token, so it only asks for verification with `verification=true`.
 # This middleware then adds the token from the auth cookie as the `token` param, before OmniAuth
 # stores the request params. Any `token` param sent by the client is dropped: only the signed-in
-# user's own token may turn an SSO round trip into a verification.
+# user's own token may turn an SSO round trip into a verification. `verification=true` is kept, so
+# that the callback fails the verification when there is no token (the cookie expired, or the
+# request came from another website), instead of signing in to (or creating) another account.
 class OmniauthVerificationToken
   REQUEST_PHASE_PATH = %r{\A/auth/[^/]+\z}
 
@@ -28,7 +30,7 @@ class OmniauthVerificationToken
     return unless query.key?('token') || query.key?('verification')
 
     query.delete('token')
-    if query.delete('verification') == 'true'
+    if query['verification'] == 'true'
       token = AuthToken::Cookie.read(Rack::Request.new(env))
       query['token'] = token if token
     end

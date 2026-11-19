@@ -17,18 +17,19 @@ RSpec.describe OmniauthVerificationToken do
   it 'adds the token from the auth cookie when verification is requested' do
     query = query_passed_on('/auth/clave_unica', 'verification=true&verification_pathname=/page', cookie: 'abc')
 
-    expect(query).to eq('token' => 'abc', 'verification_pathname' => '/page')
+    expect(query).to eq('verification' => 'true', 'token' => 'abc', 'verification_pathname' => '/page')
   end
 
   # A link on another website must not start a verification for the signed-in user.
   it 'does not add a token when the request comes from another website' do
     query = query_passed_on('/auth/clave_unica', 'verification=true', cookie: 'abc', sec_fetch_site: 'cross-site')
 
-    expect(query).to eq({})
+    expect(query).to eq('verification' => 'true')
   end
 
-  it 'does not add a token when there is no auth cookie' do
-    expect(query_passed_on('/auth/clave_unica', 'verification=true')).to eq({})
+  # The callback then fails the verification, see OmniauthCallbackController#create.
+  it 'does not add a token when there is no auth cookie, but keeps the verification request' do
+    expect(query_passed_on('/auth/clave_unica', 'verification=true')).to eq('verification' => 'true')
   end
 
   it 'does not add a token when verification is not requested' do
@@ -40,13 +41,13 @@ RSpec.describe OmniauthVerificationToken do
     expect(query).to eq({})
 
     query = query_passed_on('/auth/clave_unica', 'verification=true&token=forged', cookie: 'abc')
-    expect(query).to eq('token' => 'abc')
+    expect(query).to eq('verification' => 'true', 'token' => 'abc')
   end
 
   it 'keeps nested params' do
     query = query_passed_on('/auth/google', 'verification=true&claim_tokens[]=a&claim_tokens[]=b', cookie: 'abc')
 
-    expect(query).to eq('token' => 'abc', 'claim_tokens' => %w[a b])
+    expect(query).to eq('verification' => 'true', 'token' => 'abc', 'claim_tokens' => %w[a b])
   end
 
   it 'leaves callbacks and other paths alone' do

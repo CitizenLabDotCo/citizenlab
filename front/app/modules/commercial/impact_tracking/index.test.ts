@@ -24,14 +24,6 @@ jest.mock('utils/auth/signedInCookie', () => ({
   hasSignedInCookie: () => signedInOnServer,
 }));
 
-// Before the HttpOnly cookie, the front-end read the token from a cookie itself.
-// Kept so these tests also run against that version of the module.
-jest.mock(
-  'utils/auth/jwt',
-  () => ({ getJwt: () => (signedInOnServer ? 'token' : undefined) }),
-  { virtual: true }
-);
-
 let mockAuthUserStream: BehaviorSubject<IUser | null | undefined>;
 jest.mock('api/me/authUserStream', () => ({
   __esModule: true,

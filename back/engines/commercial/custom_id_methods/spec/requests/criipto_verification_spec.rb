@@ -262,6 +262,17 @@ context 'criipto verification' do
     expect(response).to redirect_to('/en/?param=some-param&sso_flow=signup&sso_success=true')
   end
 
+  # E.g. the auth cookie expired while the page was open: verifying must not sign the
+  # user in to (or create) another account instead.
+  it 'fails the verification when the user is not signed in' do
+    get '/auth/criipto?verification=true&verification_pathname=/some-page'
+    follow_redirect!
+
+    expect(User.count).to eq(1)
+    expect(@user.reload.verified).to be(false)
+    expect(response).to redirect_to('/some-page?verification_error=true&error_code=no_token_passed')
+  end
+
   it 'does not send email to empty address (when just registered)' do
     get '/auth/criipto'
     follow_redirect!

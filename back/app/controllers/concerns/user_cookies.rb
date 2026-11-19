@@ -18,6 +18,10 @@ module UserCookies
     AuthenticationService.new.logout_url(payload['provider'], user) if user
   rescue JWT::DecodeError
     nil
+  rescue StandardError => e
+    # Signing out or deleting the account must not fail because the logout URL can't be built.
+    ErrorReporter.report(e)
+    nil
   end
 
   # Reset the current user's JWT token after certain actions, such as password change or email change, to invalidate existing sessions.

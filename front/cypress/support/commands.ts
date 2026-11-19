@@ -123,10 +123,11 @@ function requestAs<T = any>(
   Makes an API request as a visitor who isn't signed in, whoever the browser is
   signed in as. Some endpoints, such as confirm_code_email, reject signed-in callers.
 
-  cy.request always sends the browser's cookies. Instead of removing the auth cookie
-  (a page that is open would then act as if the user signed out), the request says it
-  comes from another website: the API ignores the auth cookie on such requests (CSRF
-  protection, see AuthToken::Cookie.read).
+  cy.request always sends the browser's cookies, after any Cookie header given here.
+  Instead of removing the auth cookie (a page that is open would then act as if the
+  user signed out), the request sends an empty auth cookie first: the API uses the
+  first cookie of a name, so it sees no token. (Saying the request comes from another
+  website doesn't work: the API rejects such requests, see CrossSiteRequestGuard.)
 */
 function requestAnonymously<T = any>(
   options: Partial<Cypress.RequestOptions>
@@ -134,7 +135,7 @@ function requestAnonymously<T = any>(
   return preservingAuthCookie(() =>
     cy.request<T>({
       ...options,
-      headers: { ...options.headers, 'Sec-Fetch-Site': 'cross-site' },
+      headers: { ...options.headers, Cookie: `${AUTH_COOKIE}=` },
     })
   );
 }

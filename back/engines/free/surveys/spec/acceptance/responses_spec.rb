@@ -121,11 +121,8 @@ resource 'Survey Responses' do
   end
 
   before do
-    # admin_header_token
+    admin_header_token
     header 'Content-Type', 'application/json'
-
-    admin_user = create(:admin)
-    header_token_for(admin_user)
 
     stub_request(:get, 'https://api.typeform.com/forms/HKGaPV')
       .with(headers: { 'Authorization' => 'Bearer' })
@@ -147,10 +144,7 @@ resource 'Survey Responses' do
     end
 
     describe 'when resident' do
-      before do
-        user = create(:user)
-        header_token_for(user)
-      end
+      before { resident_header_token }
 
       example '[error] XLSX export', document: false do
         do_request

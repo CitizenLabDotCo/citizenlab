@@ -3,7 +3,6 @@
 # Signs users in and out. The auth token is handed out in an HttpOnly cookie only:
 # it never appears in a response body, so the front-end has no access to it.
 class WebApi::V1::UserTokenController < ActionController::API
-  include ActionController::Cookies
   include EnforceUserSso
   include UserCookies
 
@@ -49,11 +48,10 @@ class WebApi::V1::UserTokenController < ActionController::API
   private
 
   def sign_in(user)
-    remember_me = auth_params[:remember_me] == true
-    expires_at = token_lifetime(remember_me).from_now
-
+    # to_token_payload sets the long lifetime, the one of remember_me.
     payload = user.to_token_payload
-    payload[:exp] = expires_at.to_i
+    payload[:exp] = AuthToken::AuthToken::TOKEN_SHORT_LIFETIME.from_now.to_i unless auth_params[:remember_me] == true
+    expires_at = Time.zone.at(payload[:exp])
     token = AuthToken::AuthToken.new(payload: payload).token
 
     # The cookie lives as long as the token: 1 day, or longer with remember_me.
@@ -70,13 +68,6 @@ class WebApi::V1::UserTokenController < ActionController::API
     password = auth_params[:password]
 
     password.present? && user.authenticate(password).present?
-  end
-
-  def token_lifetime(remember_me)
-    return AuthToken::AuthToken::TOKEN_SHORT_LIFETIME unless remember_me
-
-    max_lifetime = AppConfiguration.instance.settings.dig('core', 'authentication_token_lifetime_in_days')
-    max_lifetime.present? ? max_lifetime.to_i.days : AuthToken::AuthToken::TOKEN_DEFAULT_LIFETIME
   end
 
   def auth_params
