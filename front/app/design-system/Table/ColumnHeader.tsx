@@ -35,7 +35,6 @@ type ColumnHeaderProps = {
   isRowHeader?: boolean;
   defaultWidth?: ColumnProps['defaultWidth'];
   minWidth?: ColumnProps['minWidth'];
-  // End: over a column of numbers.
   align?: 'start' | 'end';
 };
 

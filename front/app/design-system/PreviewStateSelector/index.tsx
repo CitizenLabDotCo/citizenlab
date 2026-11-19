@@ -14,7 +14,6 @@ import '../tokens.css';
 type Option = {
   id: string;
   label: string;
-  // Explains what the preview shows in this state.
   tooltip?: string;
 };
 

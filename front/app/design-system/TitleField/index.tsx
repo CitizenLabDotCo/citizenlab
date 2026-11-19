@@ -13,7 +13,6 @@ type TitleFieldProps = {
   value?: string;
   onChange?: (value: string) => void;
   placeholder?: string;
-  // Goes on the input.
   id?: string;
   errorMessage?: ReactNode;
 };

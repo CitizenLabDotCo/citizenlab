@@ -70,7 +70,6 @@ span.trigger {
   color: var(--gv-icon-quiet);
 }
 
-/* Off at rest. */
 .column:not([data-hovered], [data-focus-visible])
   .trigger:not([data-pressed], [aria-expanded='true'], [data-focus-visible])
   .chevron {

@@ -11,7 +11,6 @@ import 'design-system/tokens.css';
 
 interface Props {
   label: string;
-  // Offers Expand all for the cards that follow (Figma: Settings only).
   expandable?: boolean;
 }
 

@@ -8,7 +8,6 @@ const DOTTED_BACKGROUND = `radial-gradient(circle at 1px 1px, rgba(0, 0, 0, 0.04
 
 interface Props {
   children: ReactNode;
-  // A tool for the whole stage, drawn at its top right (the preview button).
   action?: ReactNode;
 }
 

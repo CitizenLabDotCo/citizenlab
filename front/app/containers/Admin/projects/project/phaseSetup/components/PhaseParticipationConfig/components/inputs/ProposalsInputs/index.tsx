@@ -361,7 +361,6 @@ const ProposalsInputs = ({
             label={formatMessage(configMessages.howProposalsAreShown)}
           />
         </div>
-        {/* Expand all is for the Settings cards only. */}
         <ExpandAllContext.Provider value={NO_EXPAND_ALL}>
           {views}
           {sorting}

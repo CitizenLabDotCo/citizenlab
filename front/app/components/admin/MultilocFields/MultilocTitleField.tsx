@@ -11,7 +11,6 @@ import useSelectedLocale from './useSelectedLocale';
 import 'design-system/tokens.css';
 
 interface Props {
-  // Goes on the input.
   id: string;
   'aria-label': string;
   placeholder: string;

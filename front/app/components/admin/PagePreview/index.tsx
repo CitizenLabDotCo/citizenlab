@@ -66,7 +66,6 @@ type Props = {
   dataCy?: string;
   editPageContentClassName?: string;
   alignTop?: boolean;
-  // Workspace: one button on hover, for the project workspace.
   variant?: 'default' | 'workspace';
 };
 

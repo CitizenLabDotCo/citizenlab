@@ -8,7 +8,6 @@ import '../tokens.css';
 type Props = {
   // VerticalTab elements.
   children: ReactNode;
-  // Settings: the sunken column of a settings modal. Rail: the lighter category rail of a picker.
   tabStyle?: 'settings' | 'rail';
 };
 

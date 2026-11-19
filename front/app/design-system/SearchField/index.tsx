@@ -21,7 +21,6 @@ type SearchFieldProps = {
   onChange?: (value: string) => void;
   placeholder?: string;
   size?: 32 | 36;
-  // Full: fills its container, as in a panel; the default is the toolbar's 240.
   width?: 'toolbar' | 'full';
   autoFocus?: boolean;
   'data-cy'?: string;

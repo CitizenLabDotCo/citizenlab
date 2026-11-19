@@ -26,7 +26,6 @@
   width: 308px;
 }
 
-/* The empty state takes the room the note leaves. */
 .sidePanel > :first-child {
   flex-grow: 1;
   height: auto;

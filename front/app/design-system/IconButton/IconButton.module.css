@@ -79,7 +79,6 @@
   color: var(--gv-icon-primary);
 }
 
-/* Hover keeps the selected navy. */
 .bordered[data-selected],
 .bordered[data-selected][data-hovered]:not([aria-disabled='true']) {
   border-color: var(--gv-border-selected);

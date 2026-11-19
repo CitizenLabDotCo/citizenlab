@@ -29,7 +29,6 @@ type IconButtonProps = VariantProps & {
   // Names the button and is the text of its tooltip.
   'aria-label': string;
   size?: 28 | 24;
-  // Strong: a darker Ghost icon for the main action of a row, such as the rail's add button.
   tone?: 'default' | 'strong';
   isDisabled?: boolean;
   // Looks disabled but stays focusable; the tooltip shows the reason instead of the aria-label.

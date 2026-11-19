@@ -1,4 +1,3 @@
-/* A hairline closes the heads: 31 + 1. */
 .header > tr > th {
   border-bottom: var(--gv-border-width-1) solid var(--gv-border-divider);
 }

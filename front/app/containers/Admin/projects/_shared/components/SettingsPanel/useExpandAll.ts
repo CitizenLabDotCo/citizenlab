@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react';
 
-// The value for an ExpandAllContext provider around a panel's setting cards.
 const useExpandAll = () => {
   const [count, setCount] = useState(0);
 

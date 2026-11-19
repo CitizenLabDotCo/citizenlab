@@ -20,7 +20,6 @@ import 'design-system/tokens.css';
 interface Props {
   participationMethod: ParticipationMethod;
   label?: string;
-  /** Renders it as an action card of the side column, with this icon. */
   cardIcon?: IconName;
 }
 

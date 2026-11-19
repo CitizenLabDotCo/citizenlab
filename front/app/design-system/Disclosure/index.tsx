@@ -35,7 +35,6 @@ type ButtonHeaderProps = SharedProps & {
   actionIcon: IconName;
   onPress?: (e: PressEvent) => void;
   isDisabled?: boolean;
-  // Swaps the action icon for a spinner while the action runs.
   isPending?: boolean;
 };
 

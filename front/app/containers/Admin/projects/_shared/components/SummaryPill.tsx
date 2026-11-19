@@ -4,7 +4,6 @@ import Badge from 'design-system/Badge';
 import { IconName } from 'design-system/Icon';
 import 'design-system/tokens.css';
 
-// Set by a setup card once it is reviewed: its summary then turns from grey to blue.
 export const SummaryReviewedContext = createContext(false);
 
 interface Props {

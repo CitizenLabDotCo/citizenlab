@@ -57,7 +57,6 @@
   color: var(--gv-icon-secondary);
 }
 
-/* A notification that is off: a grey title and nothing to open, rather than a dimmed row. */
 .off[data-disabled] {
   opacity: 1;
 }

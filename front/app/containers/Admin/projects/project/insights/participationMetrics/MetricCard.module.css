@@ -5,7 +5,6 @@
   min-width: 0;
 }
 
-/* The tile fills its stretched cell, so tiles in a row share one height. */
 .panelMetric > * {
   flex-grow: 1;
 }

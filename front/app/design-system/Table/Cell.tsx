@@ -8,7 +8,6 @@ import '../tokens.css';
 type CellProps = {
   children?: ReactNode;
   tone?: 'cell' | 'secondary';
-  // End: numbers, lined up on their right edge.
   align?: 'start' | 'end';
 };
 
