@@ -251,6 +251,19 @@ describe 'Rack::Attack' do
     end
   end
 
+  it 'does not fail requests whose form body cannot be parsed' do
+    # Bots probing for Next.js server actions send multipart POSTs with no body.
+    multipart = { 'CONTENT_TYPE' => 'multipart/form-data; boundary=----bound', 'CONTENT_LENGTH' => '5494' }
+    urlencoded = { 'CONTENT_TYPE' => 'application/x-www-form-urlencoded' }
+    path = '/web_api/v1/user/request_reconfirm_code_email'
+
+    # Tests raise instead of rendering errors, so these show the request got past
+    # Rack::Attack to Rails, which answers 404 and 400 in production.
+    expect { post '/api/auth/callback', headers: multipart }.to raise_error(ActionController::RoutingError)
+    expect { post path, headers: multipart }.to raise_error(ActionController::BadRequest)
+    expect { post path, params: 'a[]=1&a[b]=2', headers: urlencoded }.to raise_error(ActionController::BadRequest)
+  end
+
   it 'limits invite acceptance requests from same IP to 10 in 20 seconds' do
     freeze_time do
       10.times do
