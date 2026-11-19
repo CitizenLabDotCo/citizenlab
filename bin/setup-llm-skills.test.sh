@@ -169,6 +169,18 @@ else
 fi
 assert_eq "$(cat "$REPORT_SKILL")" 'report, draft' "keeps the previous copy"
 
+echo "Fails on a skill that is in two plugins"
+write_file plugins/reporting/skills/twice/SKILL.md 'twice, in reporting'
+write_file plugins/setup/skills/twice/SKILL.md 'twice, in setup'
+write_manifest "$PINNED" report twice
+assert_fails "$SCRIPT_TO_TEST" --from "$FAKE_REPO"
+if grep -q 'more than one skill twice' "$TEST_TMP/stderr"; then
+  pass "names the skill"
+else
+  fail "names the skill"
+fi
+assert_eq "$(cat "$REPORT_SKILL")" 'report, draft' "keeps the previous copy"
+
 echo "Fails on a manifest in another format"
 echo "ref: '$PINNED'" > "$LLM_SKILLS_REPO_ROOT/back/config/llm_skills.yml"
 echo "skills: [report]" >> "$LLM_SKILLS_REPO_ROOT/back/config/llm_skills.yml"

@@ -73,6 +73,10 @@ for skill in $skills; do
     echo "Error: there is no skill $skill $source_name." >&2
     exit 1
   fi
+  if [ "${#skill_dirs[@]}" -gt 1 ]; then
+    echo "Error: there is more than one skill $skill $source_name." >&2
+    exit 1
+  fi
   skill_path="${skill_dirs[0]#"$source_dir/"}"
   plugin_path="${skill_path%/skills/*}"
 
