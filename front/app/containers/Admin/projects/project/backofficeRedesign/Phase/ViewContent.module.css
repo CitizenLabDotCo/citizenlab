@@ -20,6 +20,18 @@
 
 .sidePanel {
   composes: panel;
+  display: flex;
   flex: 0 0 308px;
+  flex-direction: column;
   width: 308px;
+}
+
+/* The empty state takes the room the note leaves. */
+.sidePanel > :first-child {
+  flex-grow: 1;
+  height: auto;
+}
+
+.note {
+  padding: var(--gv-space-18);
 }

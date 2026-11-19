@@ -12,7 +12,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 import DsBadge from 'design-system/Badge';
-import DsButton from 'design-system/Button';
+import Disclosure from 'design-system/Disclosure';
 import Menu, { MenuItem, MenuTrigger } from 'design-system/Menu';
 
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
@@ -338,23 +338,22 @@ const InsightsContent = () => {
   ) : (
     <div className={styles.panelActions}>
       {supportsAiAnalysis && (
-        <DsButton
-          icon="sparkles-16"
+        <Disclosure
+          header="button"
+          title={formatMessage(messages.aiSensemaking)}
+          actionIcon="sparkles-16"
           onPress={handleGoToAnalysis}
           isPending={isCreatingAnalysis}
-        >
-          {formatMessage(messages.aiSensemaking)}
-        </DsButton>
+        />
       )}
       <MenuTrigger>
-        <DsButton
-          icon="download-16"
-          hasMenu
+        <Disclosure
+          header="button"
+          title={formatMessage(messages.downloadInsights)}
+          actionIcon="download-16"
           isPending={isDownloading}
           isDisabled={!allComponentsReady && !isDownloading}
-        >
-          {formatMessage(messages.downloadInsights)}
-        </DsButton>
+        />
         <Menu aria-label={formatMessage(messages.downloadInsights)}>
           <MenuItem onAction={handleDownloadPdf}>
             {formatMessage(messages.downloadPdf)}

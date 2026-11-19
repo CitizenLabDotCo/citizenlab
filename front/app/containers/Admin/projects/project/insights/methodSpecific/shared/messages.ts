@@ -1,6 +1,14 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  statusBreakdownCard: {
+    id: 'app.containers.Admin.projects.project.insights.statusBreakdownCard',
+    defaultMessage: 'Status breakdown',
+  },
+  topicBreakdownCard: {
+    id: 'app.containers.Admin.projects.project.insights.shared.topicBreakdownCard',
+    defaultMessage: 'Topic breakdown',
+  },
   statusBreakdown: {
     id: 'app.containers.Admin.projects.project.insights.statusBreakdown',
     defaultMessage: 'Status Breakdown',

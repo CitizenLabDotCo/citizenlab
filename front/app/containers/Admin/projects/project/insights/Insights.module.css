@@ -34,7 +34,7 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: var(--gv-space-8);
+  gap: var(--gv-space-10);
 }
 
 .status {
