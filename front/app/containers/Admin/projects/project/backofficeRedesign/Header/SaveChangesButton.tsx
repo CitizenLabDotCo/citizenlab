@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 
 import Button from 'design-system/Button';
 
-import phaseSetupMessages from 'containers/Admin/projects/project/phaseSetup/messages';
-
 import { usePageSave } from 'components/admin/PageSaveContext';
 
 import { useIntl } from 'utils/cl-intl';
@@ -14,7 +12,7 @@ import messages from './messages';
 import 'design-system/tokens.css';
 
 interface Props {
-  label?: string;
+  label: string;
 }
 
 const SaveChangesButton = ({ label }: Props) => {
@@ -44,9 +42,7 @@ const SaveChangesButton = ({ label }: Props) => {
       isPending={pageSave.saving}
       onPress={handleClick}
     >
-      {showSaved
-        ? formatMessage(messages.savedLabel)
-        : label ?? formatMessage(phaseSetupMessages.saveChangesLabel)}
+      {showSaved ? formatMessage(messages.savedLabel) : label}
     </Button>
   );
 };

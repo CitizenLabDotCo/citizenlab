@@ -32,10 +32,13 @@ const SetupCardTooltip = ({ content, children }: Props) => {
 
     trigger.addEventListener('mouseenter', enter);
     trigger.addEventListener('mouseleave', leave);
+    // Pressing the card closes the tooltip, as a design-system Tooltip does.
+    trigger.addEventListener('pointerdown', leave);
     observer.observe(trigger, { attributeFilter: ['data-focus-visible'] });
     return () => {
       trigger.removeEventListener('mouseenter', enter);
       trigger.removeEventListener('mouseleave', leave);
+      trigger.removeEventListener('pointerdown', leave);
       observer.disconnect();
     };
   }, [content]);

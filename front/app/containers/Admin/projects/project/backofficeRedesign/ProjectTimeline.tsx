@@ -42,6 +42,7 @@ const ProjectTimeline = ({ projectId, withNewMethod }: Props) => {
             <span className="intercom-product-tour-project-timeline-new-phase">
               <IconButton
                 icon="plus-16"
+                tone="strong"
                 aria-label={formatMessage(
                   projectPageMessages.newParticipationMethod
                 )}

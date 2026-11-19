@@ -12,6 +12,7 @@ import useLocalize from 'hooks/useLocalize';
 import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
 import PhonePreviewBackdrop from 'containers/Admin/projects/_shared/components/PhonePreviewBackdrop';
+import PreviewProjectButton from 'containers/Admin/projects/_shared/components/PreviewProjectButton';
 
 import PagePreview from 'components/admin/PagePreview';
 
@@ -86,7 +87,9 @@ const ProjectPage = () => {
   });
 
   return (
-    <PhonePreviewBackdrop>
+    <PhonePreviewBackdrop
+      action={redesign && <PreviewProjectButton slug={slug} />}
+    >
       <Modal
         size={440}
         isOpen={groupsFailedOpen}
@@ -110,6 +113,10 @@ const ProjectPage = () => {
         onEdit={openContentBuilder}
         dataCy="e2e-project-page-preview"
         editPageContentClassName="intercom-product-tour-project-edit-project"
+        editPageContentText={
+          redesign ? formatMessage(messages.editProjectPage) : undefined
+        }
+        variant={redesign ? 'workspace' : 'default'}
       />
     </PhonePreviewBackdrop>
   );

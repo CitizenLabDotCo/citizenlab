@@ -14,7 +14,6 @@ import useLocalize from 'hooks/useLocalize';
 
 import { useIntl } from 'utils/cl-intl';
 
-import projectSetupPanelMessages from '../messages';
 import SetupCard from '../SetupCard';
 import { getDraftValues, useSetupDraft } from '../SetupDraftContext';
 
@@ -37,7 +36,7 @@ const TopicTagsCard = ({ project, ready }: Props) => {
   const topicsTerm =
     appConfiguration &&
     localize(coreSettings(appConfiguration.data).topics_term);
-  const title = formatMessage(projectSetupPanelMessages.topicTags);
+  const title = formatMessage(messages.topicTagsTitle);
 
   const options = (topics?.data ?? []).map((topic) => ({
     id: topic.id,

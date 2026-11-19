@@ -16,7 +16,6 @@ import generalMessages from 'containers/Admin/projects/project/general/messages'
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
-import projectSetupPanelMessages from '../messages';
 import SetupCard from '../SetupCard';
 import { getDraftValues, useSetupDraft } from '../SetupDraftContext';
 
@@ -90,7 +89,7 @@ const AreaCard = ({ project, ready }: Props) => {
     changeProject({ area_ids: newAreaIds, include_all_areas: false });
   };
 
-  const title = formatMessage(projectSetupPanelMessages.areaItem);
+  const title = formatMessage(messages.areaTitle);
 
   return (
     <MenuTrigger>

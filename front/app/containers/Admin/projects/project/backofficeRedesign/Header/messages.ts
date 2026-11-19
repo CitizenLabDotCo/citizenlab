@@ -5,10 +5,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.projectsCrumb',
     defaultMessage: 'Projects',
   },
-  previewProject: {
-    id: 'app.containers.Admin.projects.project.previewProject',
-    defaultMessage: 'Preview the project page',
-  },
   backToProjectSetup: {
     id: 'app.containers.Admin.projects.project.backToProjectSetup',
     defaultMessage: 'Project setup',
@@ -17,7 +13,7 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.savedLabel',
     defaultMessage: 'Saved',
   },
-  saveProjectSetup: {
+  save: {
     id: 'app.containers.Admin.projects.project.saveProjectSetup',
     defaultMessage: 'Save',
   },

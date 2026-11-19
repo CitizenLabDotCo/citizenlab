@@ -31,6 +31,7 @@ interface Props {
   notice?: React.ReactNode;
   primaryAction?: DialogAction;
   size?: 866 | 920;
+  tabStyle?: 'settings' | 'rail';
 }
 
 // Sections of the same group are pulled together, so a group never shows up
@@ -61,6 +62,7 @@ const SettingsModal = ({
   notice,
   primaryAction,
   size = 866,
+  tabStyle,
 }: Props) => {
   const { formatMessage } = useIntl();
   const [selectedSection, setSelectedSection] = useState(
@@ -91,7 +93,7 @@ const SettingsModal = ({
             selectedKey={selected.name}
             onSelectionChange={(key) => setSelectedSection(String(key))}
           >
-            <VerticalTabList>
+            <VerticalTabList tabStyle={tabStyle}>
               {orderedSections.map(({ name, label, icon }) => (
                 <VerticalTab key={name} id={name} icon={icon}>
                   {formatMessage(label)}

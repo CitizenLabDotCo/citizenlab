@@ -95,7 +95,7 @@ const BeforeYouPublish = ({ project, onOpenSettings }: Props) => {
         <SetupCard
           id="e2e-setup-card-methods"
           tooltip={formatMessage(setupCardMessages.methodsTooltip)}
-          title={formatMessage(backofficeRedesignMessages.participationMethods)}
+          title={formatMessage(setupCardMessages.methodsTitle)}
           ready={readiness.methods}
           behaviour={
             participationPanel.collapsed
