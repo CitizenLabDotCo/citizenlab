@@ -42,9 +42,8 @@ const ProjectMoreActionsMenu = ({
   const { data: authUser } = useAuthUser();
 
   const { mutate: deleteProject } = useDeleteProject();
-  const { mutate: copyProject } = useCopyProject();
+  const { mutate: copyProject, isPending: isCopying } = useCopyProject();
 
-  const [isCopying, setIsCopying] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
@@ -71,15 +70,8 @@ const ProjectMoreActionsMenu = ({
     // If the user is a moderator of the folder
     (typeof folderId === 'string' && userModeratesFolder(authUser, folderId));
 
-  const setLoadingState = (
-    type: 'deleting' | 'copying',
-    isLoading: boolean
-  ) => {
-    if (type === 'copying') {
-      setIsCopying(isLoading);
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    } else if (type === 'deleting') {
+  const setLoadingState = (type: ActionType, isLoading: boolean) => {
+    if (type === 'deleting') {
       setIsDeleting(isLoading);
     }
 
@@ -92,10 +84,6 @@ const ProjectMoreActionsMenu = ({
     if (userCanCopyProject) {
       actions.push({
         handler: async () => {
-          // Ignore the click while a copy is running: the menu closes as soon as
-          // the copy starts, so it can be reopened and clicked again.
-          if (isCopying) return;
-
           setLoadingState('copying', true);
 
           copyProject(projectId, {
@@ -109,9 +97,14 @@ const ProjectMoreActionsMenu = ({
             },
           });
         },
-        label: formatMessage(messages.copyProjectButton),
+        label: formatMessage(
+          isCopying ? messages.copyingProject : messages.copyProjectButton
+        ),
         icon: 'copy' as const,
         isLoading: isCopying,
+        // The menu closes as soon as the copy starts, so it can be reopened
+        // and clicked again before the first copy is done.
+        disabled: isCopying,
       });
     }
 

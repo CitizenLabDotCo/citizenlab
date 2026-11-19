@@ -62,6 +62,7 @@ const server = setupServer(
 
 describe('ProjectMoreActionsMenu', () => {
   beforeAll(() => server.listen());
+  afterEach(() => server.resetHandlers());
   afterAll(() => server.close());
 
   it('calls setError with an error when copying fails', async () => {
@@ -103,12 +104,18 @@ describe('ProjectMoreActionsMenu', () => {
     render(<ProjectMoreActionsMenu {...defaultProps} />);
     const user = userEvent.setup();
 
-    for (let i = 0; i < 2; i++) {
-      await user.click(screen.getByTestId('moreOptionsButton'));
-      await user.click(
-        await screen.findByRole('menuitem', { name: 'Copy project' })
-      );
-    }
+    await user.click(screen.getByTestId('moreOptionsButton'));
+    await user.click(
+      await screen.findByRole('menuitem', { name: 'Copy project' })
+    );
+
+    // Reopen the menu while the copy is running and click the item again
+    await user.click(screen.getByTestId('moreOptionsButton'));
+    const copyingItem = await screen.findByRole('menuitem', {
+      name: 'Copying project…',
+    });
+    expect(copyingItem).toHaveAttribute('aria-disabled', 'true');
+    await user.click(copyingItem);
 
     await waitFor(() => {
       expect(defaultProps.setError).toHaveBeenCalled();
