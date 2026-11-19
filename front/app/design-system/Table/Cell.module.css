@@ -8,11 +8,15 @@
   box-sizing: border-box;
   display: flex;
   align-items: center;
-  height: var(--gv-size-40);
+  min-height: var(--gv-size-36);
   min-width: 0;
   gap: var(--gv-space-8);
-  padding: 0 var(--gv-space-12);
+  padding: 0 var(--gv-space-8);
   white-space: nowrap;
+}
+
+.end {
+  justify-content: flex-end;
 }
 
 .toneCell {

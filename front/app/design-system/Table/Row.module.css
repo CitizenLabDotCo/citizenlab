@@ -1,4 +1,4 @@
-/* Every row is 40 of content plus a 1 px hairline, so the list steps by 41. */
+/* A row is at least 36 of content plus a 1 px hairline, so a one-line list steps by 37. */
 .row {
   composes: ringInside from '../focus.module.css';
   position: relative;
@@ -9,7 +9,7 @@
 
 .row > td {
   padding: 0;
-  border-bottom: var(--gv-border-width-1) solid var(--gv-border-divider);
+  border-bottom: var(--gv-border-width-1) solid var(--gv-border-row);
   vertical-align: middle;
   transition-property: background-color;
   transition-duration: var(--gv-motion-duration-fast);
@@ -32,6 +32,33 @@
 .row[data-selected] > td,
 .row[data-active] > td {
   background: var(--gv-surface-selected-row);
+}
+
+/* Neighbouring picked rows read as one block, rounded only at its ends. */
+.row[data-selected] > td {
+  border-bottom-color: transparent;
+}
+
+.row[data-selected]:not(.row[data-selected] + .row[data-selected])
+  > td:first-child {
+  border-top-left-radius: var(--gv-radius-8);
+}
+
+.row[data-selected]:not(.row[data-selected] + .row[data-selected])
+  > td:last-child {
+  border-top-right-radius: var(--gv-radius-8);
+}
+
+.row[data-selected]:not(:has(+ .row[data-selected])) > td:first-child {
+  border-bottom-left-radius: var(--gv-radius-8);
+}
+
+.row[data-selected]:not(:has(+ .row[data-selected])) > td:last-child {
+  border-bottom-right-radius: var(--gv-radius-8);
+}
+
+.selectionCell {
+  text-align: center;
 }
 
 .actionsCell {

@@ -31,8 +31,8 @@ const TableHeader = ({ children, addColumn }: TableHeaderProps) => {
       {selectionLabels && (
         <AriaColumn
           id="selection"
-          width={40}
-          minWidth={40}
+          width={28}
+          minWidth={28}
           className={styles.selection}
         >
           <Checkbox slot="selection" aria-label={selectionLabels.selectAll} />
