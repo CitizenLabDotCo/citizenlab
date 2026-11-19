@@ -113,22 +113,23 @@ resource 'User Token' do
         expect(jwt['exp']).to eq((Time.now + 1.day).to_i)
       end
 
-      example_request 'Sets the token in an HttpOnly cookie only, that expires with the token', document: false do
+      # Users are told not to tick remember_me on a public computer.
+      example_request 'Sets the token in an HttpOnly session cookie only, dropped when the browser closes', document: false do
         assert_status 201
 
         expect(response_body).to be_blank
         cookie = auth_cookie_header
         expect(cookie).to match(/httponly/i)
-        expect(Time.zone.parse(cookie[/expires=([^;]+)/i, 1]).to_i).to eq((Time.now + 1.day).to_i)
+        expect(cookie).not_to match(/expires=/i)
       end
 
-      example_request 'Sets a signed-in cookie the front-end can read, that expires with the auth cookie', document: false do
+      example_request 'Sets a signed-in session cookie the front-end can read', document: false do
         assert_status 201
 
         cookie = signed_in_cookie_header
         expect(cookie).to start_with("#{AuthToken::Cookie::SIGNED_IN_NAME}=true;")
         expect(cookie).not_to match(/httponly/i)
-        expect(cookie[/expires=([^;]+)/i, 1]).to eq(auth_cookie_header[/expires=([^;]+)/i, 1])
+        expect(cookie).not_to match(/expires=/i)
       end
 
       context 'when remember_me is sent' do
@@ -145,6 +146,7 @@ resource 'User Token' do
           assert_status 201
 
           expect(Time.zone.parse(auth_cookie_header[/expires=([^;]+)/i, 1]).to_i).to eq((Time.now + 30.days).to_i)
+          expect(signed_in_cookie_header[/expires=([^;]+)/i, 1]).to eq(auth_cookie_header[/expires=([^;]+)/i, 1])
         end
 
         context 'when authentication_token_lifetime_in_days is configured' do

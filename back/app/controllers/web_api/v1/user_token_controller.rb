@@ -48,14 +48,16 @@ class WebApi::V1::UserTokenController < ActionController::API
   private
 
   def sign_in(user)
+    remember_me = auth_params[:remember_me] == true
     # to_token_payload sets the long lifetime, the one of remember_me.
     payload = user.to_token_payload
-    payload[:exp] = AuthToken::AuthToken::TOKEN_SHORT_LIFETIME.from_now.to_i unless auth_params[:remember_me] == true
-    expires_at = Time.zone.at(payload[:exp])
+    payload[:exp] = AuthToken::AuthToken::TOKEN_SHORT_LIFETIME.from_now.to_i unless remember_me
     token = AuthToken::AuthToken.new(payload: payload).token
 
-    # The cookie lives as long as the token: 1 day, or longer with remember_me.
-    AuthToken::Cookie.write(response, token, expires: expires_at)
+    # With remember_me, the cookie lives as long as the token. Without it, it's a
+    # session cookie: the browser drops it when it closes (users are told not to tick
+    # remember_me on a public computer). The token still expires after 1 day.
+    AuthToken::Cookie.write(response, token, expires: (Time.zone.at(payload[:exp]) if remember_me))
     head :created
   end
 

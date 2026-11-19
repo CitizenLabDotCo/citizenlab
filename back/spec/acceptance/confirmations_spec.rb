@@ -34,6 +34,14 @@ resource 'Confirmations' do
       expect(JWT.decode(token, nil, false).first['sub']).to eq user.id
     end
 
+    example 'signs the user in with a 1-day token in a session cookie', document: false do
+      do_request(confirmation: { email: user.email, code: user.email_confirmation.code })
+
+      expect(JWT.decode(auth_token_from_response_cookie, nil, false).first['exp']).to eq((Time.now + 1.day).to_i)
+      expect(auth_cookie_header).not_to match(/expires=/i)
+      expect(signed_in_cookie_header).not_to match(/expires=/i)
+    end
+
     example 'deletes the confirmation upon successful confirmation' do
       user.email_confirmation.update!(code_reset_count: 3)
       do_request(confirmation: { email: user.email, code: user.email_confirmation.code })

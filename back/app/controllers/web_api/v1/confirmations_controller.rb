@@ -171,13 +171,13 @@ class WebApi::V1::ConfirmationsController < ApplicationController
     params.require(:confirmation).permit(:phone, :code, :sms_manual_campaign_consent)
   end
 
-  # Signs the user in with a short-lived token.
+  # Signs the user in with a short-lived token, in a session cookie: the browser drops
+  # it when it closes, as when signing in with a password without remember_me.
   def sign_in(user)
-    expires_at = AuthToken::AuthToken::TOKEN_SHORT_LIFETIME.from_now
     payload = user.to_token_payload
-    payload[:exp] = expires_at.to_i
+    payload[:exp] = AuthToken::AuthToken::TOKEN_SHORT_LIFETIME.from_now.to_i
 
-    AuthToken::Cookie.write(response, AuthToken::AuthToken.new(payload: payload).token, expires: expires_at)
+    AuthToken::Cookie.write(response, AuthToken::AuthToken.new(payload: payload).token)
   end
 
   def confirm_code_params
