@@ -91,6 +91,31 @@ describe('ProjectMoreActionsMenu', () => {
     });
   });
 
+  it('starts only one copy when copy is clicked again while copying', async () => {
+    let copyRequests = 0;
+    server.use(
+      http.post(copyApiPath, async () => {
+        copyRequests += 1;
+        await new Promise((resolve) => setTimeout(resolve, 200));
+        return HttpResponse.json(null, { status: 500 });
+      })
+    );
+    render(<ProjectMoreActionsMenu {...defaultProps} />);
+    const user = userEvent.setup();
+
+    for (let i = 0; i < 2; i++) {
+      await user.click(screen.getByTestId('moreOptionsButton'));
+      await user.click(
+        await screen.findByRole('menuitem', { name: 'Copy project' })
+      );
+    }
+
+    await waitFor(() => {
+      expect(defaultProps.setError).toHaveBeenCalled();
+    });
+    expect(copyRequests).toBe(1);
+  });
+
   it('calls setError with an error when deleting fails', async () => {
     const setErrorFn = jest.fn();
     defaultProps.setError = setErrorFn;

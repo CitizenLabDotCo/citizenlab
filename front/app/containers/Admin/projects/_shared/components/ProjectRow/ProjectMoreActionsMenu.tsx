@@ -92,6 +92,10 @@ const ProjectMoreActionsMenu = ({
     if (userCanCopyProject) {
       actions.push({
         handler: async () => {
+          // Ignore the click while a copy is running: the menu closes as soon as
+          // the copy starts, so it can be reopened and clicked again.
+          if (isCopying) return;
+
           setLoadingState('copying', true);
 
           copyProject(projectId, {
