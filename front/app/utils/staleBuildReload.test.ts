@@ -1,25 +1,26 @@
-import { navigateToUrl, reloadPage } from 'utils/urlUtils';
+import { reloadPage } from 'utils/urlUtils';
 
 import type { AnyRouter } from '@tanstack/react-router';
 
 jest.mock('utils/urlUtils', () => ({
-  navigateToUrl: jest.fn(),
   reloadPage: jest.fn(),
 }));
 const reload = jest.mocked(reloadPage);
-const assign = jest.mocked(navigateToUrl);
 
-type Listener = (event: {
-  toLocation: { href: string };
-  pathChanged: boolean;
-}) => void;
+type Listener = (event: { pathChanged: boolean }) => void;
 
-const chunkError = new TypeError(
-  'Failed to fetch dynamically imported module: /assets/ProjectsShow.js'
-);
+const chunkError = (chunk: string) =>
+  new TypeError(
+    `Failed to fetch dynamically imported module: /assets/${chunk}`
+  );
 
-// Fresh module per test, since its state is module-level.
-const setup = () => {
+let cleanup = () => {};
+
+// Loads a fresh module, as a page load would. Its state is module-level, while
+// sessionStorage carries over like it does across a reload.
+const loadPage = () => {
+  cleanup();
+
   let module: typeof import('./staleBuildReload') | undefined;
   jest.isolateModules(() => {
     module =
@@ -40,42 +41,38 @@ const setup = () => {
   module.installStaleBuildReload(router);
   const preloadError = addListener.mock.calls[0][1];
   addListener.mockRestore();
+  cleanup = () => window.removeEventListener('vite:preloadError', preloadError);
 
   return {
     isReloadingForNewBuild: module.isReloadingForNewBuild,
-    navigate: (href: string, pathChanged = true) =>
-      navigate({ toLocation: { href }, pathChanged }),
-    failChunk: () => {
+    changePath: () => navigate({ pathChanged: true }),
+    changeSearch: () => navigate({ pathChanged: false }),
+    failChunk: (chunk = 'ProjectsShow.js') => {
       const event = new Event('vite:preloadError', { cancelable: true });
-      Object.assign(event, { payload: chunkError });
+      Object.assign(event, { payload: chunkError(chunk) });
       window.dispatchEvent(event);
       return event;
     },
-    cleanup: () =>
-      window.removeEventListener('vite:preloadError', preloadError),
   };
 };
 
-let cleanup: () => void = () => {};
-
 beforeEach(() => {
   reload.mockClear();
-  assign.mockClear();
   sessionStorage.clear();
   jest.useFakeTimers();
 });
 
 afterEach(() => {
   cleanup();
+  cleanup = () => {};
   jest.useRealTimers();
 });
 
 describe('installStaleBuildReload', () => {
   it('reloads when a chunk fails right after a route change', () => {
-    const app = setup();
-    cleanup = app.cleanup;
+    const app = loadPage();
 
-    app.navigate('/en/projects/a');
+    app.changePath();
     const event = app.failChunk();
 
     expect(reload).toHaveBeenCalledTimes(1);
@@ -84,22 +81,24 @@ describe('installStaleBuildReload', () => {
     expect(event.defaultPrevented).toBe(false);
   });
 
-  it('reloads only once per failing chunk', () => {
-    const app = setup();
-    cleanup = app.cleanup;
+  it('reloads only once per chunk per session', () => {
+    const app = loadPage();
+    app.changePath();
+    app.failChunk();
 
-    app.navigate('/en/projects/a');
-    app.failChunk();
-    app.failChunk();
+    const reloaded = loadPage();
+    reloaded.changePath();
+    reloaded.failChunk();
+    reloaded.changePath();
+    jest.runAllTimers();
 
     expect(reload).toHaveBeenCalledTimes(1);
   });
 
   it('does not reload when a chunk fails mid-page', () => {
-    const app = setup();
-    cleanup = app.cleanup;
+    const app = loadPage();
 
-    app.navigate('/en/projects/a');
+    app.changePath();
     jest.advanceTimersByTime(60_000);
     app.failChunk();
 
@@ -107,45 +106,113 @@ describe('installStaleBuildReload', () => {
     expect(app.isReloadingForNewBuild()).toBe(false);
   });
 
-  it('does a full page load on the next route change after a chunk failed', () => {
-    const app = setup();
-    cleanup = app.cleanup;
+  it('reloads once the router has pushed the next route after a chunk failed', () => {
+    const app = loadPage();
 
     app.failChunk();
-    app.navigate('/en/projects/b');
+    app.changePath();
 
     expect(reload).not.toHaveBeenCalled();
-    expect(assign).toHaveBeenCalledWith('/en/projects/b');
+    jest.advanceTimersByTime(0);
+    expect(reload).toHaveBeenCalledTimes(1);
+    expect(app.isReloadingForNewBuild()).toBe(true);
+  });
+
+  it('stops reloading on route changes once a failed chunk fails again after a reload', () => {
+    const app = loadPage();
+    app.failChunk();
+    app.changePath();
+    jest.runAllTimers();
+
+    const reloaded = loadPage();
+    jest.advanceTimersByTime(60_000);
+    reloaded.failChunk();
+    reloaded.changePath();
+    jest.runAllTimers();
+
+    expect(reload).toHaveBeenCalledTimes(1);
+  });
+
+  it('ignores chunk failures while a reload is under way', () => {
+    const app = loadPage();
+
+    app.failChunk('ProjectsShow.js');
+    app.changePath();
+    app.failChunk('IdeasShow.js');
+    jest.runAllTimers();
+
+    expect(reload).toHaveBeenCalledTimes(1);
+
+    // IdeasShow.js still gets its own reload later in the session.
+    const reloaded = loadPage();
+    reloaded.changePath();
+    reloaded.failChunk('IdeasShow.js');
+    expect(reload).toHaveBeenCalledTimes(2);
+  });
+
+  it('does not reload while offline', () => {
+    const onLine = jest
+      .spyOn(navigator, 'onLine', 'get')
+      .mockReturnValue(false);
+    const app = loadPage();
+
+    app.changePath();
+    app.failChunk();
+    app.changePath();
+    jest.runAllTimers();
+    onLine.mockRestore();
+
+    expect(reload).not.toHaveBeenCalled();
+  });
+
+  it('reports errors again if the reload is cancelled', () => {
+    const app = loadPage();
+
+    app.failChunk();
+    app.changePath();
+    jest.advanceTimersByTime(5_000);
+
+    expect(app.isReloadingForNewBuild()).toBe(false);
+  });
+
+  it('restarts the cancel timeout when another reload starts', () => {
+    const app = loadPage();
+
+    app.changePath();
+    app.failChunk();
+    jest.advanceTimersByTime(3_000);
+    app.changePath();
+    jest.advanceTimersByTime(3_000);
+
     expect(app.isReloadingForNewBuild()).toBe(true);
   });
 
   it('ignores search-only navigations after a chunk failed', () => {
-    const app = setup();
-    cleanup = app.cleanup;
+    const app = loadPage();
 
     app.failChunk();
-    app.navigate('/en/projects/a?tab=map', false);
+    app.changeSearch();
+    jest.runAllTimers();
 
-    expect(assign).not.toHaveBeenCalled();
+    expect(reload).not.toHaveBeenCalled();
     expect(app.isReloadingForNewBuild()).toBe(false);
   });
 
   it('does not reload when a chunk fails right after a search-only navigation', () => {
-    const app = setup();
-    cleanup = app.cleanup;
+    const app = loadPage();
 
-    app.navigate('/en/projects/a?tab=map', false);
+    app.changeSearch();
     app.failChunk();
 
     expect(reload).not.toHaveBeenCalled();
   });
 
   it('navigates normally while the build is current', () => {
-    const app = setup();
-    cleanup = app.cleanup;
+    const app = loadPage();
 
-    app.navigate('/en/projects/b');
+    app.changePath();
+    jest.runAllTimers();
 
-    expect(assign).not.toHaveBeenCalled();
+    expect(reload).not.toHaveBeenCalled();
   });
 });
