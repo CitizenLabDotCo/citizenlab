@@ -56,9 +56,10 @@ Sentry.init({
   ],
   tracesSampleRate: 0.05,
   sendClientReports: false,
-  ignoreErrors: [
-    // Thrown by Facebook's Android in-app browser, not our code.
-    'Java object is gone',
+  denyUrls: [
+    // Scripts injected by Meta's in-app browsers (Facebook, Instagram).
+    // Sentry matches the frame that threw, so our own errors still get through.
+    /^iabjs:\/\//,
   ],
   beforeSend: (event) => (isReloadingForNewBuild() ? null : event),
 });
