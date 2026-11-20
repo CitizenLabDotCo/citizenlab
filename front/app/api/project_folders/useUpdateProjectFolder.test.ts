@@ -10,7 +10,7 @@ import useUpdateProjectFolder from './useUpdateProjectFolder';
 const apiPath = '*project_folders/:projectFolderId';
 const server = setupServer(
   http.patch(apiPath, () => {
-    return HttpResponse.json({ data: projectFolderData }, { status: 200 });
+    return HttpResponse.json(projectFolderData, { status: 200 });
   })
 );
 
@@ -39,7 +39,7 @@ describe('useUpdateProjectFolder', () => {
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    expect(result.current.data?.data).toEqual(projectFolderData);
+    expect(result.current.data).toEqual(projectFolderData);
   });
 
   it('returns error correctly', async () => {
