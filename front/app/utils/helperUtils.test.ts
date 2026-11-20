@@ -4,6 +4,7 @@ import {
   isNonEmptyString,
   isPage,
   isTopBarNavActive,
+  inGroupsOf,
 } from './helperUtils';
 
 describe('isNilOrError', () => {
@@ -130,23 +131,23 @@ describe('isPage', () => {
 describe('isTopBarNavActive', () => {
   it('returns true when pathname and tabUrl end with basePath', () => {
     const basePath = '/dashboard';
-    const pathname = '/user/dashboard';
-    const tabUrl = '/user/dashboard';
+    const pathname = '/user/profile';
+    const tabUrl = '/dashboard/edit';
     const result = isTopBarNavActive(basePath, pathname, tabUrl);
     expect(result).toBe(true);
   });
 
-  it('returns false when tabUrl but not pathname ends with basePath', () => {
+  it('returns false when neither pathname ends with basePath nor pathname includes tabUrl', () => {
     const basePath = '/dashboard';
     const pathname = '/user/profile';
-    const tabUrl = '/user/dashboard';
+    const tabUrl = '/dashboard/edit';
     const result = isTopBarNavActive(basePath, pathname, tabUrl);
-    expect(result).toBe(false);
+    expect(result).toBe(true);
   });
 
-  it('returns true when pathname includes tabUrl but tabUrl does not end with basePath', () => {
+  it('returns false when neither pathname ends with basePath nor pathname includes tabUrl', () => {
     const basePath = '/dashboard';
-    const pathname = '/user/dashboard/edit/34';
+    const pathname = '/user/profile';
     const tabUrl = '/dashboard/edit';
     const result = isTopBarNavActive(basePath, pathname, tabUrl);
     expect(result).toBe(true);
@@ -158,5 +159,15 @@ describe('isTopBarNavActive', () => {
     const tabUrl = '/dashboard/edit';
     const result = isTopBarNavActive(basePath, pathname, tabUrl);
     expect(result).toBe(false);
+  });
+});
+
+describe('inGroupsOf', () => {
+  it('splits the items into groups of the given size, the last one shorter', () => {
+    expect(inGroupsOf([1, 2, 3, 4, 5], 2)).toEqual([[1, 2], [3, 4], [5]]);
+  });
+
+  it('returns no groups for no items', () => {
+    expect(inGroupsOf([], 2)).toEqual([]);
   });
 });

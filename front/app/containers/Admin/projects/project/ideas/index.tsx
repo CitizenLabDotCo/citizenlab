@@ -22,6 +22,7 @@ import { useParams } from 'utils/router';
 
 import AnalysisBanner from '../../_shared/components/AnalysisBanner';
 import NewIdeaButton from '../../_shared/components/NewIdeaButton';
+import CommonGroundManager from '../backofficeRedesign/CommonGroundManager';
 import InputManagerRedesign from '../backofficeRedesign/InputManager';
 import messages from '../messages';
 
@@ -49,6 +50,16 @@ const AdminProjectIdeas = () => {
 
   if (project === undefined) {
     return null;
+  }
+
+  if (isBackofficeRedesignEnabled && phase && isCommonGround) {
+    return (
+      <CommonGroundManager
+        key={phaseId}
+        project={project.data}
+        phase={phase.data}
+      />
+    );
   }
 
   if (isBackofficeRedesignEnabled && phase && !isCommonGround) {

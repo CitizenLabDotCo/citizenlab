@@ -36,9 +36,6 @@ jest.mock('api/custom_page_layout/useUpsertCustomPageLayout', () =>
   jest.fn(() => ({ mutate: mockUpsert }))
 );
 
-let featureEnabled = true;
-jest.mock('hooks/useFeatureFlag', () => jest.fn(() => featureEnabled));
-
 let layoutIsError = false;
 jest.mock('api/custom_page_layout/useCustomPageLayout', () => ({
   __esModule: true,
@@ -49,23 +46,12 @@ describe('CustomPageBuilder bootstrap', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     layoutIsError = false;
-    featureEnabled = true;
     pageCode = 'custom';
   });
 
   it('does not create a layout when one already exists', () => {
     render(<CustomPageBuilder />);
 
-    expect(mockUpsert).not.toHaveBeenCalled();
-  });
-
-  // Gating only the link would let a typed URL reach the builder, which writes a layout.
-  it('renders nothing and writes no layout when the feature is off', () => {
-    featureEnabled = false;
-    layoutIsError = true;
-    render(<CustomPageBuilder />);
-
-    expect(screen.queryByTestId('builderPage')).not.toBeInTheDocument();
     expect(mockUpsert).not.toHaveBeenCalled();
   });
 

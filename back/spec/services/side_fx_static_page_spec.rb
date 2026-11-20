@@ -14,8 +14,6 @@ describe SideFxStaticPageService do
     end
 
     it 'provisions an enabled Content Builder layout for a custom page (content_builder patch)' do
-      SettingsService.new.activate_feature!('custom_page_builder')
-
       service.after_create(page, user)
 
       layout = ContentBuilder::Layout.find_by(content_buildable: page, code: 'custom_page')
@@ -23,7 +21,6 @@ describe SideFxStaticPageService do
     end
 
     it 'provisions a layout for a project-scoped page (content_builder patch)' do
-      SettingsService.new.activate_feature!('custom_page_builder')
       project_page = create(:static_page, :project_scoped)
 
       service.after_create(project_page, user)
@@ -32,7 +29,6 @@ describe SideFxStaticPageService do
     end
 
     it 'provisions a layout for the FAQ page (content_builder patch)' do
-      SettingsService.new.activate_feature!('custom_page_builder')
       faq_page = create(:static_page, code: 'faq', slug: 'faq')
 
       service.after_create(faq_page, user)
@@ -41,20 +37,11 @@ describe SideFxStaticPageService do
     end
 
     it 'does not provision a layout for a policy page (content_builder patch)' do
-      SettingsService.new.activate_feature!('custom_page_builder')
       policy_page = create(:static_page, code: 'terms-and-conditions', slug: 'terms-and-conditions')
 
       service.after_create(policy_page, user)
 
       expect(ContentBuilder::Layout.find_by(content_buildable: policy_page)).to be_nil
-    end
-
-    it 'provisions no layout while the feature is off (content_builder patch)' do
-      SettingsService.new.deactivate_feature!('custom_page_builder')
-
-      service.after_create(page, user)
-
-      expect(ContentBuilder::Layout.find_by(content_buildable: page)).to be_nil
     end
   end
 

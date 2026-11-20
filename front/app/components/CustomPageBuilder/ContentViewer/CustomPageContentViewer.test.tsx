@@ -13,9 +13,6 @@ jest.mock('components/admin/ContentBuilder/Frame', () => ({
   default: () => <div data-testid="frame" />,
 }));
 
-let featureEnabled = true;
-jest.mock('hooks/useFeatureFlag', () => jest.fn(() => featureEnabled));
-
 let layoutResponse: {
   data: { data: { attributes: { enabled: boolean; craftjs_json: object } } };
 } | null = null;
@@ -49,7 +46,6 @@ const withContent = {
 
 describe('CustomPageContentViewer', () => {
   beforeEach(() => {
-    featureEnabled = true;
     isLoading = false;
     layoutResponse = layout(true, withContent);
   });

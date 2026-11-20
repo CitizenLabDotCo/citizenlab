@@ -7,12 +7,12 @@ import useDeleteIdea from 'api/ideas/useDeleteIdea';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import WarningModal from 'components/WarningModal';
-import warningModalMessages from 'components/WarningModal/messages';
 
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 import ToolbarIconButton from '../ToolbarIconButton';
+import useInputTermLabels from '../useInputTermLabels';
 
 interface Props {
   idea: IIdeaData;
@@ -22,6 +22,7 @@ interface Props {
 
 const QuickActions = ({ idea, onEdit, onDeleted }: Props) => {
   const { formatMessage } = useIntl();
+  const { term } = useInputTermLabels();
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const { mutate: deleteIdea, isPending } = useDeleteIdea();
 
@@ -62,8 +63,8 @@ const QuickActions = ({ idea, onEdit, onDeleted }: Props) => {
       <WarningModal
         open={deleteModalOpen}
         isLoading={isPending}
-        title={formatMessage(warningModalMessages.deleteInputTitle)}
-        explanation={formatMessage(warningModalMessages.deleteInputExplanation)}
+        title={formatMessage(messages.deleteTermTitle, { term })}
+        explanation={formatMessage(messages.deleteTermExplanation, { term })}
         onClose={() => setDeleteModalOpen(false)}
         onConfirm={handleDelete}
       />

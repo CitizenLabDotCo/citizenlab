@@ -23,8 +23,26 @@ export interface ManagerFilters {
   phase?: string;
 }
 
+export type SetFilters = (
+  changes: Partial<ManagerFilters>,
+  options?: { replace?: boolean }
+) => void;
+
 export const DEFAULT_SORT: Sort = 'new';
 export const ALL_PHASES = 'all';
+
+// Replacing the filters leaves the search alone: it has its own control.
+const NO_REPLACED_FILTERS = {
+  page: undefined,
+  status: undefined,
+  assignee: undefined,
+  topics: undefined,
+  feedback_needed: undefined,
+  source: undefined,
+  phase: undefined,
+};
+
+const NO_FILTERS = { ...NO_REPLACED_FILTERS, search: undefined };
 
 const list = (value: string | string[] | undefined) =>
   (Array.isArray(value) ? value : value?.split(',') ?? []).filter(Boolean);
@@ -73,9 +91,11 @@ const useManagerParams = (phaseId: string) => {
     [filters, searchTerm, sort]
   );
 
-  const setFilters = useCallback(
-    (changes: Partial<ManagerFilters>) => {
-      const updates: Record<string, string | undefined> = { page: undefined };
+  const setFilters: SetFilters = useCallback(
+    (changes, { replace = false } = {}) => {
+      const updates: Record<string, string | undefined> = replace
+        ? { ...NO_REPLACED_FILTERS }
+        : { page: undefined };
 
       if ('statuses' in changes) {
         updates.status = joined(changes.statuses ?? []);
@@ -105,16 +125,7 @@ const useManagerParams = (phaseId: string) => {
   );
 
   const clearFilters = useCallback(() => {
-    updateSearchParams({
-      page: undefined,
-      status: undefined,
-      assignee: undefined,
-      topics: undefined,
-      feedback_needed: undefined,
-      source: undefined,
-      phase: undefined,
-      search: undefined,
-    });
+    updateSearchParams(NO_FILTERS);
   }, []);
 
   const setSort = useCallback((sort: Sort) => {

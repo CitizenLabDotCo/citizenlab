@@ -11,7 +11,7 @@ type IdeasQueryParameters = IIdeaQueryParameters<string | string[]>;
 // TODO: use front/app/components/UI/IdeaSelect/IdeaSingleSelect.tsx instead of increasing this number.
 export const defaultPageSize = 26;
 
-const fetchIdeas = (queryParameters: IdeasQueryParameters) =>
+export const fetchIdeas = (queryParameters: IdeasQueryParameters) =>
   fetcher<IIdeas>({
     path: `/ideas`,
     action: 'get',

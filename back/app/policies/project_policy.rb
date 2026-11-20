@@ -56,6 +56,17 @@ class ProjectPolicy < ApplicationPolicy
     end
   end
 
+  # The projects a user may analyse with reporting SQL. Not Scope: a moderator can
+  # see every public project, but may only analyse the ones they moderate. Same
+  # rule as ReportBuilder::LiveGraphDataUnitPolicy.
+  class ReportingScope < ApplicationPolicy::Scope
+    def resolve
+      return scope.none unless user&.active?
+
+      UserRoleService.new.moderatable_projects(user, scope)
+    end
+  end
+
   def index_xlsx?
     active_moderator?
   end

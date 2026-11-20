@@ -44,7 +44,10 @@ services:
       - BASE_DEV_URI
       - USER_UID=${USER_UID:-1000}
       - USER_GID=${USER_GID:-1000}
-      - ASSET_HOST_URI
+      # A bare `- ASSET_HOST_URI` would unset it when the shell does not set it, overriding back-safe.env.
+      - ASSET_HOST_URI=${ASSET_HOST_URI:-http://localhost:4000}
+      # Lets jobs in cl-que download files from localhost:4000 (see back/config/initializers/carrierwave.rb).
+      - DOCKER_BACKEND_HOST=${WORKTREE_PREFIX:-cl}-back-web
     tty: true
     stdin_open: true
 
@@ -73,6 +76,8 @@ services:
       - BASE_DEV_URI
       - USER_UID=${USER_UID:-1000}
       - USER_GID=${USER_GID:-1000}
+      - ASSET_HOST_URI=${ASSET_HOST_URI:-http://localhost:4000}
+      - DOCKER_BACKEND_HOST=${WORKTREE_PREFIX:-cl}-back-web
     tty: true
     stdin_open: true
 
@@ -208,6 +213,8 @@ services:
     environment:
       - API_HOST=web
       - API_PORT=4000
+      # Network alias of the cl2-admin-templates web service (its docker-compose.yml)
+      - GRAPHQL_HOST=${GRAPHQL_HOST:-admin-templates}
       - NODE_OPTIONS=--max-old-space-size=4096
     tty: true
     stdin_open: true

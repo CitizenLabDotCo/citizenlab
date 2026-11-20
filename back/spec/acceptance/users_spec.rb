@@ -1868,6 +1868,39 @@ resource 'Users' do
               expect(user.reload.roles).to match [{ 'type' => 'admin', 'project_reviewer' => true }]
             end
           end
+
+          context 'on a super admin' do
+            let(:super_admin) { create(:super_admin) }
+            let(:id) { super_admin.id }
+            let(:password) { 'An0ther-Passw0rd!' }
+
+            example '[error] Change the password of a super admin', document: false do
+              expect { do_request }.not_to(change { super_admin.reload.password_digest })
+              assert_status 401
+            end
+          end
+
+          context 'on a resident with a staff address' do
+            let(:staff_user) { create(:user, email: 'staff@govocal.com') }
+            let(:id) { staff_user.id }
+            let(:roles) { [type: 'admin'] }
+
+            example_request 'Make the user (staff address) admin', document: false do
+              assert_status 200
+              expect(staff_user.reload.super_admin?).to be true
+            end
+          end
+
+          context 'on another user, with a password' do
+            let(:resident) { create(:user) }
+            let(:id) { resident.id }
+            let(:password) { 'An0ther-Passw0rd!' }
+
+            example 'Ignores the password', document: false do
+              expect { do_request }.not_to(change { resident.reload.password_digest })
+              assert_status 200
+            end
+          end
         end
       end
 
@@ -2249,6 +2282,7 @@ resource 'Users' do
 
         describe do
           before do
+            allow_test_id_methods
             AppConfiguration.instance.settings['id_config'] = { allowed: true, enabled: true, id_methods: [{ name: 'bogus' }] }
             AppConfiguration.instance.save!
           end

@@ -23,6 +23,10 @@ const Container = styled.div`
   &.hasTopMargin {
     margin-top: 60px;
   }
+
+  &.hasSmallTopMargin {
+    margin-top: 16px;
+  }
 `;
 
 const FeedbackHeader = styled.div`
@@ -77,6 +81,7 @@ interface Props {
   editingAllowed: boolean | undefined;
   className?: string;
   a11y_pronounceLatestOfficialFeedbackPost?: boolean;
+  variant?: 'default' | 'bo';
 }
 
 const OfficialFeedbackFeed = ({
@@ -84,7 +89,10 @@ const OfficialFeedbackFeed = ({
   editingAllowed,
   className,
   a11y_pronounceLatestOfficialFeedbackPost,
+  variant = 'default',
 }: Props) => {
+  const isBo = variant === 'bo';
+  const topMargin = isBo ? 'hasSmallTopMargin' : 'hasTopMargin';
   const [pageSize, setPageSize] = React.useState(3);
   const {
     data: ideaFeedbacks,
@@ -123,22 +131,24 @@ const OfficialFeedbackFeed = ({
     return (
       <Container
         aria-live="polite"
-        className={`${className} ${editingAllowed ? 'hasTopMargin' : ''}`}
+        className={`${className} ${editingAllowed ? topMargin : ''}`}
         id="official-feedback-feed"
       >
-        <FeedbackHeader>
-          <Title variant="h2" m="0" color="red600" fontSize="l">
-            <FormattedMessage {...messages.officialUpdates} />
-          </Title>
-          <FeedbackSubtitle>
-            <FormattedMessage
-              {...messages.lastUpdate}
-              values={{
-                lastUpdateDate: <StyledSpan>{formattedDate}</StyledSpan>,
-              }}
-            />
-          </FeedbackSubtitle>
-        </FeedbackHeader>
+        {!isBo && (
+          <FeedbackHeader>
+            <Title variant="h2" m="0" color="red600" fontSize="l">
+              <FormattedMessage {...messages.officialUpdates} />
+            </Title>
+            <FeedbackSubtitle>
+              <FormattedMessage
+                {...messages.lastUpdate}
+                values={{
+                  lastUpdateDate: <StyledSpan>{formattedDate}</StyledSpan>,
+                }}
+              />
+            </FeedbackSubtitle>
+          </FeedbackHeader>
+        )}
 
         {officialFeedbacksList.map((officialFeedbackPost, i) => {
           return (
@@ -146,6 +156,7 @@ const OfficialFeedbackFeed = ({
               key={officialFeedbackPost.id}
               editingAllowed={editingAllowed}
               officialFeedbackPost={officialFeedbackPost}
+              variant={variant}
               a11y_pronounceLatestOfficialFeedbackPost={
                 i === 0 && a11y_pronounceLatestOfficialFeedbackPost
               }

@@ -10,6 +10,19 @@ RSpec.describe McpServer::Tools::GetReportingSqlSchema do
     end
   end
 
+  describe '.tables_for' do
+    it 'gives every row every table' do
+      expect(described_class.tables_for(McpServer::QueryScope.all)).to eq described_class::REPORTING_TABLES
+    end
+
+    it 'leaves the admin-only tables out of a project scope' do
+      tables = described_class.tables_for(McpServer::QueryScope.new(project_ids: []))
+
+      expect(tables).to eq described_class::REPORTING_TABLES.reject(&:admin_only?)
+      expect(tables).not_to include(Analytics::Reporting::StaffActivity)
+    end
+  end
+
   describe McpServer::Tools::GetReportingSqlSchema::Runner do
     def run(params = {})
       described_class.new(

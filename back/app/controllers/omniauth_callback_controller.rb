@@ -23,16 +23,8 @@ class OmniauthCallbackController < ApplicationController
     end
   end
 
+  # Failures are reported by OmniauthFailureService before OmniAuth redirects here.
   def failure
-    omniauth_error = request.env['omniauth.error']
-    if omniauth_error
-      ErrorReporter.report(omniauth_error, extra: omniauth_failure_extra(omniauth_error))
-    else
-      ErrorReporter.report_msg(
-        "OmniAuth failure: #{request.env['omniauth.error.type'] || 'unknown'}",
-        extra: { strategy: request.env['omniauth.error.strategy']&.name }
-      )
-    end
     signin_failure_redirect
   end
 
@@ -48,28 +40,6 @@ class OmniauthCallbackController < ApplicationController
 
   def omniauth_params
     request.env['omniauth.params']
-  end
-
-  # When omniauth fails inside an HTTP exchange (e.g. Rack::OAuth2::Client::Error
-  # when the IDP/WAF returns HTML instead of JSON for the token request), the
-  # exception's #message is often just "Unknown :: <html>…</html>". Surface the
-  # status, response body and underlying cause so Sentry shows what actually
-  # came back from the IDP.
-  def omniauth_failure_extra(error)
-    extra = {
-      error_type: request.env['omniauth.error.type'],
-      strategy: request.env['omniauth.error.strategy']&.name
-    }
-    extra[:http_status] = error.status if error.respond_to?(:status)
-    if error.respond_to?(:response) && error.response.is_a?(Hash)
-      response_body = error.response[:error_description] || error.response[:body]
-      extra[:response_body] = response_body.to_s.first(2000) if response_body.present?
-    end
-    if error.cause
-      extra[:cause_class] = error.cause.class.name
-      extra[:cause_message] = error.cause.message
-    end
-    extra
   end
 
   def find_existing_user(authver_method, auth, user_attrs, verify:)
@@ -141,7 +111,7 @@ class OmniauthCallbackController < ApplicationController
           SideFxInviteService.new.after_accept(@invite, claim_tokens:)
           verify_and_sign_in(auth, @user, verify, sign_up: true)
         rescue ActiveRecord::RecordInvalid => e
-          ErrorReporter.report(e)
+          OmniauthFailureService.new.report_invalid_record(e, authver_method.name, request.remote_ip)
           signin_failure_redirect
         end
 
@@ -152,7 +122,7 @@ class OmniauthCallbackController < ApplicationController
           SideFxUserService.new.after_update(@user, nil)
           ClaimTokenService.claim(@user, claim_tokens)
         rescue ActiveRecord::RecordInvalid => e
-          ErrorReporter.report(e)
+          OmniauthFailureService.new.report_invalid_record(e, authver_method.name, request.remote_ip)
           signin_failure_redirect
           return
         end
@@ -169,8 +139,7 @@ class OmniauthCallbackController < ApplicationController
         SideFxUserService.new.after_create(@user, nil, claim_tokens:)
         verify_and_sign_in(auth, @user, verify, sign_up: true, user_created: true)
       rescue ActiveRecord::RecordInvalid => e
-        Rails.logger.info "Social signup failed: #{e.message}"
-        ErrorReporter.report(e)
+        OmniauthFailureService.new.report_invalid_record(e, authver_method.name, request.remote_ip)
         signin_failure_redirect
       end
     end
@@ -306,10 +275,8 @@ class OmniauthCallbackController < ApplicationController
   end
 
   def auth_method
-    @auth_method ||= begin
-      method = IdMethodService.new.method_by_name(auth_provider)
-      method if method&.authentication?
-    end
+    @auth_method ||= authentication_service.active_methods(AppConfiguration.instance)
+      .find { |method| method.name == auth_provider }
   end
 
   def handle_verification(auth, user)
