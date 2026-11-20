@@ -4,22 +4,22 @@
 # custom_field_answers association (persisted by the record's save). To be
 # deleted once the API and the importers speak answers directly.
 class CustomFieldValuesTransitionService
-  # nil values count as absent answers.
+  # Stages the values that have a field and drops the others, for values from a source
+  # we don't control, like an identity provider. Returns whether all were staged.
   def assign(record, values)
-    values = (values || {}).as_json.compact
-    answers = record.custom_field_answers.reject(&:marked_for_destruction?).index_by(&:key)
-    fields = fields_by_key(record, values.keys)
+    values = normalize(values)
+    dropped = keys_without_field(record, values)
+    stage(record, values.except(*dropped))
+    dropped.empty?
+  end
 
-    (answers.keys - values.keys).each { |key| answers[key].mark_for_destruction }
-    values.each do |key, value|
-      field = fields[key]
-      value = field.input_type_strategy.normalize_value(value) if field
-      if (answer = answers[key])
-        answer.assign_attributes(value: value, custom_field: field)
-      else
-        record.custom_field_answers.build(key: key, value: value, custom_field: field)
-      end
-    end
+  # Raises when a value has no field: in our own code that is a bug.
+  def assign!(record, values)
+    values = normalize(values)
+    dropped = keys_without_field(record, values)
+    raise ArgumentError, "No field for keys: #{dropped.join(', ')}" if dropped.any?
+
+    stage(record, values)
   end
 
   def custom_field_values(record)
@@ -29,6 +29,37 @@ class CustomFieldValuesTransitionService
   end
 
   private
+
+  # nil values count as absent answers.
+  def normalize(values)
+    (values || {}).as_json.compact
+  end
+
+  # The keys that would start an answer without a field. An existing answer keeps
+  # its key, with or without a field.
+  def keys_without_field(record, values)
+    stored_keys = record.custom_field_answers.reject(&:marked_for_destruction?).map(&:key)
+    new_keys = values.keys - stored_keys
+    new_keys - fields_by_key(record, new_keys).keys
+  end
+
+  def stage(record, values)
+    answers = record.custom_field_answers.reject(&:marked_for_destruction?).index_by(&:key)
+    fields = fields_by_key(record, values.keys)
+
+    (answers.keys - values.keys).each { |key| answers[key].mark_for_destruction }
+    values.each do |key, value|
+      field = fields[key]
+      value = field.input_type_strategy.normalize_value(value) if field
+      if (answer = answers[key])
+        answer.value = value
+        # A moved input keeps its answers to questions its new form does not have.
+        answer.custom_field = field if field
+      else
+        record.custom_field_answers.build(key: key, value: value, custom_field: field)
+      end
+    end
+  end
 
   def fields_by_key(record, keys)
     return {} if keys.empty?

@@ -187,7 +187,7 @@ class WebApi::V1::IdeasController < ApplicationController
     end
 
     validate_custom_field_values!(input, form, custom_field_values) if published
-    CustomFieldValuesTransitionService.new.assign(input, custom_field_values)
+    CustomFieldValuesTransitionService.new.assign!(input, custom_field_values)
 
     ActiveRecord::Base.transaction do
       save_or_raise!(input, **save_options)
@@ -266,7 +266,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
     ActiveRecord::Base.transaction do # Assigning relationships cause database changes
       input.assign_attributes(update_params)
-      CustomFieldValuesTransitionService.new.assign(input, custom_field_values)
+      CustomFieldValuesTransitionService.new.assign!(input, custom_field_values)
       sidefx.before_update(input, current_user)
       assign_deferred_relationship_ids(input, phase_ids, cosponsor_ids)
 
@@ -731,10 +731,12 @@ class WebApi::V1::IdeasController < ApplicationController
     end
   end
 
-  # User field values merged into the input (u_-prefixed keys) are not validated.
+  # User field values merged into the input (u_-prefixed keys) are not validated, nor are
+  # answers to questions of another form, which an input keeps when it moves project.
   def validate_custom_field_values!(input, custom_form, values)
     fields = IdeaCustomFieldsService.new(custom_form).all_fields.select(&:supports_submission?)
     values = values.reject { |key, _| key.start_with?(UserFieldsInFormService.prefix) }
+    values = values.except(*answers_to_other_forms(input, fields).map(&:key))
     errors = CustomFieldValuesValidationService.new.json_schema_validation_errors(fields, values)
     return if errors.empty?
 
@@ -742,6 +744,12 @@ class WebApi::V1::IdeasController < ApplicationController
       input.errors.add(:custom_field_values, error, value: values)
     end
     raise ApiError.from_record(input)
+  end
+
+  # Stored answers whose field is not in this form. Answers without a field are not included.
+  def answers_to_other_forms(input, fields)
+    field_ids = fields.map(&:id)
+    input.custom_field_answers.select { it.custom_field_id && field_ids.exclude?(it.custom_field_id) }
   end
 
   def copy_filters

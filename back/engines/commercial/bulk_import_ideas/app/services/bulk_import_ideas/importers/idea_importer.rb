@@ -37,7 +37,7 @@ module BulkImportIdeas::Importers
 
       custom_field_values = idea_attributes.delete(:custom_field_values)
       idea = Idea.new idea_attributes
-      CustomFieldValuesTransitionService.new.assign(idea, custom_field_values) if custom_field_values
+      CustomFieldValuesTransitionService.new.assign!(idea, custom_field_values) if custom_field_values
       idea.slug ||= SecureRandom.uuid if !idea.valid? # Support importing draft ideas without title
       raise BulkImportIdeas::Error.new 'bulk_import_idea_not_valid', value: idea.errors.messages unless idea.valid?
 

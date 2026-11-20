@@ -74,7 +74,7 @@ module BulkImportIdeas::Importers
                 locale: @locale,
                 imported: true
               )
-              CustomFieldValuesTransitionService.new.assign(user, custom_field_values)
+              CustomFieldValuesTransitionService.new.assign!(user, custom_field_values)
               user.save!
 
               # Assume all imported users are confirmed and change date to created_at if it exists
