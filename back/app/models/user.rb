@@ -228,7 +228,8 @@ class User < ApplicationRecord
   # auto_confirm_on_invite_accept must run before complete_registration, as the former can set confirmation_required to false,
   # which is a condition for complete_registration to set registration_completed_at
   # By putting it on the line before complete_registration, and using prepend: true, we ensure it runs before complete_registration.
-  before_validation :auto_confirm_on_invite_accept, if: ->(user) { user.invite_status_change&.last == 'accepted' }, prepend: true
+  # An address typed in while accepting was never proven to belong to the invitee, so it goes through the normal confirmation.
+  before_validation :auto_confirm_on_invite_accept, if: -> { invite_status_change&.last == 'accepted' && (!email_changed? || email_changed_only_in_case?) }, prepend: true
   before_validation :complete_registration
 
   # A bounce belongs to the address, so a different address starts clean.

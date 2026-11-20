@@ -1578,6 +1578,7 @@
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Düzenle",
   "app.containers.Admin.projects.all.copyProjectButton": "Proje kopyalama",
   "app.containers.Admin.projects.all.copyProjectError": "Bu projeyi kopyalarken bir hata oluştu, lütfen daha sonra tekrar deneyin.",
+  "app.containers.Admin.projects.all.copyingProject": "Proje kopyalanıyor…",
   "app.containers.Admin.projects.all.customiseEnd": "Formun sonunu özelleştirin.",
   "app.containers.Admin.projects.all.customiseStart": "Formun başlangıcını özelleştirin.",
   "app.containers.Admin.projects.all.deleteFolderButton1": "Klasörü sil",

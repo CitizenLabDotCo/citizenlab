@@ -1578,6 +1578,7 @@
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Uredi",
   "app.containers.Admin.projects.all.copyProjectButton": "Kopiraj projekt",
   "app.containers.Admin.projects.all.copyProjectError": "Došlo je do pogreške prilikom kopiranja ovog projekta, pokušajte ponovno kasnije.",
+  "app.containers.Admin.projects.all.copyingProject": "Kopiranje projekta…",
   "app.containers.Admin.projects.all.customiseEnd": "Prilagodite kraj obrasca.",
   "app.containers.Admin.projects.all.customiseStart": "Prilagodite početak obrasca.",
   "app.containers.Admin.projects.all.deleteFolderButton1": "Izbriši mapu",

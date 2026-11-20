@@ -1578,6 +1578,7 @@
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Redaguoti",
   "app.containers.Admin.projects.all.copyProjectButton": "Kopijuoti projektą",
   "app.containers.Admin.projects.all.copyProjectError": "Įvyko klaida kopijuojant šį projektą, pabandykite vėliau.",
+  "app.containers.Admin.projects.all.copyingProject": "Kopijuojamas projektas…",
   "app.containers.Admin.projects.all.customiseEnd": "Pritaikykite formos pabaigą.",
   "app.containers.Admin.projects.all.customiseStart": "Pritaikykite formos pradžią.",
   "app.containers.Admin.projects.all.deleteFolderButton1": "Ištrinti aplanką",

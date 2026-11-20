@@ -1578,6 +1578,7 @@
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Edit",
   "app.containers.Admin.projects.all.copyProjectButton": "Projet kopéieren",
   "app.containers.Admin.projects.all.copyProjectError": "Beim Kopéiere vun dësem Projet ass e Feeler opgetrueden, wgl. probéiert et méi spéit nach eng Kéier.",
+  "app.containers.Admin.projects.all.copyingProject": "Projet gëtt kopéiert…",
   "app.containers.Admin.projects.all.customiseEnd": "Personaliséiert d'Enn vum Formulaire.",
   "app.containers.Admin.projects.all.customiseStart": "Personnaliséiert den Ufank vum Formulaire.",
   "app.containers.Admin.projects.all.deleteFolderButton1": "Datei läschen",

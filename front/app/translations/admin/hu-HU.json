@@ -1578,6 +1578,7 @@
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Edit",
   "app.containers.Admin.projects.all.copyProjectButton": "Projekt másolása",
   "app.containers.Admin.projects.all.copyProjectError": "Hiba történt a projekt másolása közben, kérjük, próbálja meg később.",
+  "app.containers.Admin.projects.all.copyingProject": "Projekt másolása…",
   "app.containers.Admin.projects.all.customiseEnd": "Szabja testre az űrlap végét.",
   "app.containers.Admin.projects.all.customiseStart": "Szabja testre az űrlap elejét.",
   "app.containers.Admin.projects.all.deleteFolderButton1": "Mappa törlése",

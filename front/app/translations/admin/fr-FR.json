@@ -1578,6 +1578,7 @@
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Gérer",
   "app.containers.Admin.projects.all.copyProjectButton": "Copie du projet",
   "app.containers.Admin.projects.all.copyProjectError": "Une erreur s'est produite lors de la copie de ce projet, veuillez réessayer plus tard.",
+  "app.containers.Admin.projects.all.copyingProject": "Copie du projet…",
   "app.containers.Admin.projects.all.customiseEnd": "Personnaliser la fin du formulaire.",
   "app.containers.Admin.projects.all.customiseStart": "Personnaliser le début du formulaire.",
   "app.containers.Admin.projects.all.deleteFolderButton1": "Supprimer le dossier",

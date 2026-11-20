@@ -1578,6 +1578,7 @@
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Bearbeiten",
   "app.containers.Admin.projects.all.copyProjectButton": "Projekt duplizieren",
   "app.containers.Admin.projects.all.copyProjectError": "Beim Kopieren dieses Projekts ist ein Fehler aufgetreten. Bitte versuchen Sie es später noch einmal.",
+  "app.containers.Admin.projects.all.copyingProject": "Projekt wird kopiert…",
   "app.containers.Admin.projects.all.customiseEnd": "Passen Sie das Ende des Formulars an.",
   "app.containers.Admin.projects.all.customiseStart": "Passen Sie den Anfang des Formulars an.",
   "app.containers.Admin.projects.all.deleteFolderButton1": "Ordner löschen",

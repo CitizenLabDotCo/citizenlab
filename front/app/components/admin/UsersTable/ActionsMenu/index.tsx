@@ -12,6 +12,7 @@ import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { usePermission } from 'utils/permissions';
 import { isAdmin, isRegularUser } from 'utils/permissions/roles';
 
 import messages from './messages';
@@ -32,6 +33,7 @@ const ActionsMenu = ({ user }: Props) => {
   const [modalOpened, setModalOpened] = useState<ModalName | null>(null);
   const { mutate: updateUser } = useUpdateUser();
   const assignModerator = useAssignModerator();
+  const canManageUserInRow = usePermission({ item: user, action: 'manage' });
 
   const [resourcesForModeratorAssignment, setResourcesForModeratorAssignment] =
     useState<Resources | null>(null);
@@ -42,7 +44,6 @@ const ActionsMenu = ({ user }: Props) => {
   const isUserInRowModerator = !isRegularUser({ data: user });
   const userInRowHasRegistered = user.attributes.invite_status !== 'pending';
   const userInRowIsCurrentUser = user.id === authUser.data.id;
-  const authUserIsAdmin = isAdmin(authUser);
 
   const handleMakeAdmin = () => {
     updateUser({
@@ -183,17 +184,17 @@ const ActionsMenu = ({ user }: Props) => {
     };
 
     if (userInRowHasRegistered) {
-      return authUserIsAdmin
+      return canManageUserInRow
         ? [
             showProfileAction,
             ...getSeatChangeActions(),
             deleteUserAction,
             ...userBlockingRelatedActions,
           ]
-        : [showProfileAction]; // Project/folder managers can only see profile
+        : [showProfileAction]; // Managers, and admins on a super admin, can only see the profile
     }
 
-    return authUserIsAdmin ? [deleteUserAction] : []; // Project/folder managers cannot delete anyone
+    return canManageUserInRow ? [deleteUserAction] : []; // Managers, and admins on a super admin, cannot delete
   };
 
   const actions = getActions();

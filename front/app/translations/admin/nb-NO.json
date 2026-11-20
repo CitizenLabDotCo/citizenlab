@@ -1578,6 +1578,7 @@
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Rediger",
   "app.containers.Admin.projects.all.copyProjectButton": "Kopier prosjekt",
   "app.containers.Admin.projects.all.copyProjectError": "Det oppstod en feil ved kopiering av dette prosjektet, vennligst prøv igjen senere.",
+  "app.containers.Admin.projects.all.copyingProject": "Kopierer prosjekt…",
   "app.containers.Admin.projects.all.customiseEnd": "Tilpass slutten av skjemaet.",
   "app.containers.Admin.projects.all.customiseStart": "Tilpass starten av skjemaet.",
   "app.containers.Admin.projects.all.deleteFolderButton1": "Slett mappe",

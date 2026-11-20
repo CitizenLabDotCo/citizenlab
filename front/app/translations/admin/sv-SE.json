@@ -1578,6 +1578,7 @@
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Hantera",
   "app.containers.Admin.projects.all.copyProjectButton": "Kopiera projekt",
   "app.containers.Admin.projects.all.copyProjectError": "Ett fel uppstod när det här projektet skulle kopieras, försök igen senare.",
+  "app.containers.Admin.projects.all.copyingProject": "Kopierar projekt…",
   "app.containers.Admin.projects.all.customiseEnd": "Anpassa slutet av formuläret.",
   "app.containers.Admin.projects.all.customiseStart": "Anpassa början av formuläret.",
   "app.containers.Admin.projects.all.deleteFolderButton1": "Ta bort mapp",
