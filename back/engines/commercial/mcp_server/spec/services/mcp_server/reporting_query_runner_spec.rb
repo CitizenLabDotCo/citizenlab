@@ -116,7 +116,8 @@ RSpec.describe McpServer::ReportingQueryRunner do
         expect(count(model.table_name, scope)).to eq model.for_projects([mine.id]).count
       end
 
-      next if model == Analytics::Reporting::ReferenceDistribution
+      # Census figures and platform baselines are the same for every scope.
+      next if [Analytics::Reporting::ReferenceDistribution, Analytics::Reporting::PlatformBaseline].include?(model)
 
       it "reads no rows of #{model.table_name} for an empty scope" do
         expect(count(model.table_name, McpServer::QueryScope.new(project_ids: []))).to eq 0
