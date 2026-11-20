@@ -21,8 +21,8 @@ resource 'ReportingQueries' do
     # the subject is what surrounds it: which answers are stored, which are re-used,
     # and who is allowed to cause one. Validation stays real, because normalising the
     # SQL is what decides whether two questions are the same question.
-    allow(McpServer::ReportingQueryRunner).to receive(:run) do |query|
-      McpServer::ReportingQueryRunner.validate!(query)
+    allow(McpServer::ReportingQueryRunner).to receive(:run) do |query, scope:|
+      McpServer::ReportingQueryRunner.validate!(query, scope: scope)
       McpServer::ReportingQueryRunner::Result.new(
         columns: ['contributions'], rows: [{ 'contributions' => 42 }], truncated: false
       )
@@ -166,6 +166,15 @@ resource 'ReportingQueries' do
 
         assert_status 401
       end
+
+      example '[error] Try to read one that is not published as a moderator of another project', document: false do
+        report.update!(visible: false)
+        header_token_for create(:project_moderator, projects: [create(:project)])
+
+        do_request(query: sql, layout_id: layout.id)
+
+        assert_status 401
+      end
     end
 
     context 'when the renderer renders a block' do
@@ -190,6 +199,70 @@ resource 'ReportingQueries' do
 
         assert_status 401
         expect(other.query_snapshots.count).to eq 0
+      end
+    end
+
+    # A report about a project reads that project's rows, whoever asks, so everyone
+    # working on it sees the same answers.
+    context 'when the layout belongs to a report about a project' do
+      let(:project) { create(:project) }
+      let(:report) { create(:report, project: project) }
+      let(:layout) { report.layout }
+      let(:project_scope) { McpServer::QueryScope.new(project_ids: [project.id]) }
+
+      example 'Run an admin\'s query over the project\'s rows only', document: false do
+        admin_header_token
+
+        do_request(query: sql, layout_id: layout.id)
+
+        assert_status 200
+        expect(McpServer::ReportingQueryRunner).to have_received(:run).with(anything, scope: project_scope)
+      end
+
+      example '[error] Try to read an admin-only view on a project report', document: false do
+        admin_header_token
+
+        do_request(query: 'SELECT count(*) FROM reporting_staff_activities', layout_id: layout.id)
+
+        assert_status 422
+        expect(json_response_body[:errors][:query].first[:error]).to eq 'rejected'
+      end
+
+      example 'Run the renderer\'s query over the project\'s rows only', document: false do
+        token = ContentBuilder::ScopedReportingToken.mint(layout_id: layout.id, user_id: create(:admin).id)
+
+        do_request(query: sql, layout_id: layout.id, reporting_token: token)
+
+        assert_status 200
+        expect(McpServer::ReportingQueryRunner).to have_received(:run).with(anything, scope: project_scope)
+      end
+
+      example 'Run the renderer\'s query for a moderator of other projects over no rows', document: false do
+        moderator = create(:project_moderator, projects: [create(:project)])
+        token = ContentBuilder::ScopedReportingToken.mint(layout_id: layout.id, user_id: moderator.id)
+
+        do_request(query: sql, layout_id: layout.id, reporting_token: token)
+
+        expect(McpServer::ReportingQueryRunner)
+          .to have_received(:run).with(anything, scope: McpServer::QueryScope.new(project_ids: []))
+      end
+
+      example 'Run an admin\'s query on a phase report over its project\'s rows only', document: false do
+        phase = create(:phase)
+        admin_header_token
+
+        do_request(query: sql, layout_id: create(:report, phase: phase).layout.id)
+
+        expect(McpServer::ReportingQueryRunner)
+          .to have_received(:run).with(anything, scope: McpServer::QueryScope.new(project_ids: [phase.project_id]))
+      end
+
+      example 'Run an admin\'s query on a layout that is no report\'s over every row', document: false do
+        admin_header_token
+
+        do_request(query: sql, layout_id: create(:layout).id)
+
+        expect(McpServer::ReportingQueryRunner).to have_received(:run).with(anything, scope: McpServer::QueryScope.all)
       end
     end
   end
@@ -267,6 +340,33 @@ resource 'ReportingQueries' do
       example_request 'Replace every stored answer the report holds' do
         assert_status 200
         expect(snapshot.reload.executed_at).to be > 1.minute.ago
+      end
+    end
+
+    context 'when an admin refreshes a report about a project' do
+      let(:report) { create(:report, project: create(:project)) }
+      let(:layout) { report.layout }
+
+      before { admin_header_token }
+
+      example_request 'Re-run every stored answer over the project\'s rows only', document: false do
+        assert_status 200
+        expect(McpServer::ReportingQueryRunner)
+          .to have_received(:run).with(anything, scope: McpServer::QueryScope.new(project_ids: [report.project_id]))
+      end
+    end
+
+    context 'when a moderator of the project and of another project refreshes a report about the project' do
+      let(:project) { create(:project) }
+      let(:report) { create(:report, project: project) }
+      let(:layout) { report.layout }
+
+      before { header_token_for create(:project_moderator, projects: [project, create(:project)]) }
+
+      example_request 'Re-run every stored answer over the report\'s project only', document: false do
+        assert_status 200
+        expect(McpServer::ReportingQueryRunner)
+          .to have_received(:run).with(anything, scope: McpServer::QueryScope.new(project_ids: [project.id]))
       end
     end
 

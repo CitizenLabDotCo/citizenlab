@@ -23,6 +23,10 @@ module Analytics
       self.table_name = 'reporting_analysis_insights'
       self.primary_key = :id
 
+      include ScopedView
+
+      def self.for_projects(project_ids) = where(project_id: project_ids)
+
       def self.table_description
         <<~DOC.squish
           One row per insight an admin generated with the platform's AI
