@@ -32,8 +32,9 @@ module Matomo
 
     private
 
-    # Also true when the job does not run through Que (e.g. `perform_now`), where
-    # there is nothing to reschedule.
+    # Also true when no Que worker is running a job (e.g. `perform_now` from a request or
+    # the console), where there is nothing to reschedule. Do not run this job with
+    # `perform_now` inside another job: `que_target` would then be that other job.
     def final_attempt?
       que_target.nil? || error_count >= maximum_retry_count
     end
