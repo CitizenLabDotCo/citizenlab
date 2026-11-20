@@ -167,6 +167,7 @@ resource 'Omniauth Callback', document: false do
 
   context 'when SSO method returns email and it is confirmed' do
     before do
+      allow_test_id_methods
       AppConfiguration.instance.settings['id_config'] = {
         allowed: true,
         enabled: true,
@@ -191,6 +192,14 @@ resource 'Omniauth Callback', document: false do
         expect(user.confirmation_required?).to be false
         expect(user.email_confirmed_at).to be_present
         expect(user.verified).to be true
+      end
+
+      # The OmniAuth test mode skips the strategy setup, which already refuses unconfigured methods.
+      example '[error] fake SSO on a customer platform', document: false do
+        change_lifecycle_stage('active')
+
+        expect { do_request }.to raise_error(RuntimeError, 'fake_sso not supported')
+        expect(User.find_by(email: 'billy_fixed@example.com')).to be_nil
       end
 
       example 'if there is a pending invite with this email: allow create account' do
@@ -446,6 +455,7 @@ resource 'Omniauth Callback', document: false do
     let(:delivery_service) { instance_spy(EmailCampaigns::DeliveryService) }
 
     before do
+      allow_test_id_methods
       AppConfiguration.instance.settings['id_config'] = {
         allowed: true,
         enabled: true,
@@ -632,6 +642,7 @@ resource 'Omniauth Callback', document: false do
 
   context 'when the user returned by SSO cannot be saved' do
     before do
+      allow_test_id_methods
       AppConfiguration.instance.settings['id_config'] = {
         allowed: true,
         enabled: true,

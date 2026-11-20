@@ -10,6 +10,7 @@ resource 'Id methods' do
     header 'Content-Type', 'application/json'
     create(:custom_field_gender)
     create(:custom_field_birthyear)
+    allow_test_id_methods
     configuration = AppConfiguration.instance
     configuration.settings['id_config'] = {
       allowed: true,

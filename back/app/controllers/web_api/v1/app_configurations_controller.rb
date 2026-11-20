@@ -17,7 +17,19 @@ class WebApi::V1::AppConfigurationsController < ApplicationController
       return
     end
 
+    # Checked before update_configuration!, which already deletes the logo and favicon
+    # files when asked to.
+    settings = app_configuration.settings
+    changed = SettingsService.new.changed_settings(settings, settings.deep_merge(config_params.fetch(:settings, {}).to_h))
+    forbidden = policy(app_configuration).forbidden_settings(changed)
+    if forbidden.any?
+      app_configuration.errors.add(:settings, 'not_permitted', value: forbidden)
+      render json: { errors: app_configuration.errors.details }, status: :forbidden
+      return
+    end
+
     update_configuration!(app_configuration, config_params)
+
     side_fx_service = SideFxAppConfigurationService.new
     side_fx_service.before_update(app_configuration, current_user)
 

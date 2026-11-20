@@ -7,6 +7,7 @@ resource 'PermissionsCustomField' do
   before do
     header 'Content-Type', 'application/json'
     admin_header_token
+    allow_test_id_methods
     AppConfiguration.instance.settings['id_config'] = { allowed: true, enabled: true, id_methods: [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
     AppConfiguration.instance.save!
   end

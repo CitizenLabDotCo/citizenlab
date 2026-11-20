@@ -5,6 +5,7 @@ describe Permissions::BasePermissionsService do
 
   before do
     # Enable a verification method so that verifications can be created and checked
+    allow_test_id_methods
     AppConfiguration.instance.settings['id_config'] = { 'allowed' => true, 'enabled' => true, 'id_methods' => [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
     AppConfiguration.instance.save!
   end
