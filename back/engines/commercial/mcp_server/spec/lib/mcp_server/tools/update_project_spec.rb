@@ -22,6 +22,15 @@ describe McpServer::Tools::UpdateProject do
     end
   end
 
+  it 'ignores track_participation_location while its feature is off, like the web API' do
+    SettingsService.new.deactivate_feature!('participation_location_tracking')
+
+    response = run(project_id: project.id, track_participation_location: true)
+
+    expect(response).not_to be_error
+    expect(project.reload.track_participation_location).to be false
+  end
+
   it 'updates the header background from a remote URL' do
     remote_url = 'https://example.com/header.jpg'
     fixture_path = stub_remote_image_download(remote_url)
