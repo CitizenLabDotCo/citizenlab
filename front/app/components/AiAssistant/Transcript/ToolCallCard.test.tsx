@@ -34,7 +34,7 @@ const toolCall = (
   },
 });
 
-const view = {
+const display = {
   label: { id: 'test.label', defaultMessage: 'new survey questions' },
   Preview: () => <div>Outline preview</div>,
 };
@@ -56,7 +56,7 @@ describe('ToolCallCard', () => {
         toolCall={toolCall()}
         conversationId="conversation-1"
         decidable
-        view={view}
+        display={display}
         onExecuted={onExecuted}
       />
     );
@@ -82,7 +82,7 @@ describe('ToolCallCard', () => {
         toolCall={toolCall()}
         conversationId="conversation-1"
         decidable
-        view={view}
+        display={display}
         onExecuted={onExecuted}
       />
     );
@@ -97,7 +97,7 @@ describe('ToolCallCard', () => {
         toolCall={toolCall()}
         conversationId="conversation-1"
         decidable
-        view={view}
+        display={display}
         onExecuted={jest.fn()}
       />
     );
@@ -125,7 +125,7 @@ describe('ToolCallCard', () => {
         toolCall={toolCall('executed')}
         conversationId="conversation-1"
         decidable={false}
-        view={view}
+        display={display}
         onExecuted={jest.fn()}
       />
     );

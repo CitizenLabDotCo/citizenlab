@@ -9,5 +9,9 @@ module AIAssistant
     def reject?
       approve?
     end
+
+    def answer?
+      approve?
+    end
   end
 end
