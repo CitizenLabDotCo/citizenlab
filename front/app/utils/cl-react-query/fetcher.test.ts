@@ -1,3 +1,5 @@
+import { captureMessage } from '@sentry/react';
+
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import { reportError } from 'utils/loggingUtils';
 
@@ -39,10 +41,25 @@ jest.mock('utils/cl-react-query/queryClient', () => ({
 
 const mockSetQueryData = queryClient.setQueryData as jest.Mock;
 
-jest.mock('utils/loggingUtils', () => ({ reportError: jest.fn() }));
+jest.mock('utils/loggingUtils', () => ({
+  reportError: jest.fn(),
+  baseReportTags: () => ({}),
+}));
 const mockReportError = jest.mocked(reportError);
 
-beforeEach(() => mockReportError.mockClear());
+const mockSetTags = jest.fn();
+jest.mock('@sentry/react', () => ({
+  captureMessage: jest.fn(),
+  withScope: (callback: (scope: unknown) => void) =>
+    callback({ setTags: mockSetTags, setContext: jest.fn() }),
+}));
+const mockCaptureMessage = jest.mocked(captureMessage);
+
+beforeEach(() => {
+  mockReportError.mockClear();
+  mockCaptureMessage.mockClear();
+  mockSetTags.mockClear();
+});
 
 describe('fetcher', () => {
   describe('GET', () => {
@@ -157,10 +174,10 @@ describe('fetcher', () => {
           fetcher({ path: '/path', action: 'get' })
         ).rejects.toBeInstanceOf(HttpError);
       }
-      expect(mockReportError).not.toHaveBeenCalled();
+      expect(mockCaptureMessage).not.toHaveBeenCalled();
     });
 
-    it('reports any other status without a JSON body', async () => {
+    it('reports any other status without a JSON body, with the status', async () => {
       jest.mocked(global.fetch).mockResolvedValueOnce({
         status: 413,
         ok: false,
@@ -170,9 +187,26 @@ describe('fetcher', () => {
       await expect(
         fetcher({ path: '/path', action: 'get' })
       ).rejects.toBeInstanceOf(HttpError);
-      expect(mockReportError).toHaveBeenCalledWith(
+      expect(mockCaptureMessage).toHaveBeenCalledWith(
         'Unsupported case. No valid JSON.'
       );
+      expect(mockSetTags).toHaveBeenCalledWith({
+        http_status: 413,
+        http_method: 'GET',
+      });
+    });
+
+    it('does not report a body that fails to arrive', async () => {
+      jest.mocked(global.fetch).mockResolvedValueOnce({
+        status: 200,
+        ok: true,
+        json: () => Promise.reject(new TypeError('Load failed')),
+      } as Response);
+
+      await expect(
+        fetcher({ path: '/path', action: 'get' })
+      ).rejects.toBeInstanceOf(HttpError);
+      expect(mockCaptureMessage).not.toHaveBeenCalled();
     });
   });
   describe('POST', () => {
