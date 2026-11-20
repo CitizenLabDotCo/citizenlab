@@ -1,6 +1,6 @@
 import useMachineTranslationByCommentId from 'modules/commercial/machine_translations/api/useMachineTranslationByCommentId';
 import useMachineTranslationByIdeaId from 'modules/commercial/machine_translations/api/useMachineTranslationByIdeaId';
-import { SupportedLocale } from 'typings';
+import { Multiloc, SupportedLocale } from 'typings';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -10,6 +10,8 @@ interface Parameters {
   id: string;
   context: 'idea' | 'comment';
   machineTranslationButtonClicked: boolean;
+  // The original multiloc. A translation is only fetched when it has no text for localeTo.
+  multiloc: Multiloc | null | undefined;
 }
 
 export default function useTranslation({
@@ -18,10 +20,12 @@ export default function useTranslation({
   id,
   context,
   machineTranslationButtonClicked,
+  multiloc,
 }: Parameters) {
   const isMachineTranslationsEnabled = useFeatureFlag({
     name: 'machine_translations',
   });
+  const needsTranslation = !!multiloc && !multiloc[localeTo];
 
   const { data: ideaTranslation } = useMachineTranslationByIdeaId({
     ideaId: id,
@@ -32,9 +36,7 @@ export default function useTranslation({
     enabled:
       machineTranslationButtonClicked &&
       isMachineTranslationsEnabled &&
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      localeTo &&
+      needsTranslation &&
       context === 'idea',
   });
   const { data: commentTranslation } = useMachineTranslationByCommentId({
@@ -46,11 +48,11 @@ export default function useTranslation({
     enabled:
       machineTranslationButtonClicked &&
       isMachineTranslationsEnabled &&
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      localeTo &&
+      needsTranslation &&
       context === 'comment',
   });
+
+  if (!needsTranslation) return;
 
   if (context === 'idea') {
     return ideaTranslation?.data;

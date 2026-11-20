@@ -270,8 +270,6 @@
   "app.components.TopicsPicker.numberOfSelectedTopics": "Selectate {numberOfSelectedTopics, plural, =0 {zero topics} one {one topic} other {# topics}}. {selectedTopicNames}",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Afișați mai multe acțiuni",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Elimină",
-  "app.components.UI.TranslateButton.original": "Original",
-  "app.components.UI.TranslateButton.translate": "Traduceți",
   "app.components.Unauthorized.noPermission": "Nu aveți permisiunea de a vizualiza această pagină",
   "app.components.Unauthorized.notAuthorized": "Ne pare rău, nu sunteți autorizat să accesați această pagină.",
   "app.components.Upload.errorImageMaxSizeExceeded": "Imaginea selectată este mai mare decât {maxFileSize} MB",

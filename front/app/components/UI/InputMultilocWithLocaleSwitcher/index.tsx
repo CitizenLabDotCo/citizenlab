@@ -7,6 +7,9 @@ import {
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
+import MultilocTranslationStatus from 'components/UI/MultilocTranslation/MultilocTranslationStatus';
+import useMultilocTranslation from 'components/UI/MultilocTranslation/useMultilocTranslation';
+
 import { isNilOrError } from 'utils/helperUtils';
 
 export interface Props
@@ -14,10 +17,25 @@ export interface Props
 
 const InputMultilocWithLocaleSwitcherWrapper = memo<Props>((props) => {
   const tenantLocales = useAppConfigurationLocales();
+  const translation = useMultilocTranslation({
+    valueMultiloc: props.valueMultiloc,
+    onChange: (multiloc) => props.onChange?.(multiloc),
+  });
 
   if (!isNilOrError(tenantLocales)) {
     return (
-      <InputMultilocWithLocaleSwitcher {...props} locales={tenantLocales} />
+      <InputMultilocWithLocaleSwitcher
+        {...props}
+        locales={tenantLocales}
+        localeStates={translation.localeStates}
+        localeStateLabels={translation.localeStateLabels}
+        renderBelowInput={(selectedLocale) => (
+          <MultilocTranslationStatus
+            translation={translation}
+            selectedLocale={selectedLocale}
+          />
+        )}
+      />
     );
   }
 

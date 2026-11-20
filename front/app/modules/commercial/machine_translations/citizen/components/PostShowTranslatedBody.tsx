@@ -2,6 +2,8 @@ import React from 'react';
 
 import useTranslation from 'modules/commercial/machine_translations/hooks/useTranslation';
 
+import useIdeaById from 'api/ideas/useIdeaById';
+
 import useLocale from 'hooks/useLocale';
 
 import { isNilOrError } from 'utils/helperUtils';
@@ -18,6 +20,7 @@ const PostShowTranslatedBody = ({
   body,
 }: Props) => {
   const locale = useLocale();
+  const { data: idea } = useIdeaById(postId);
 
   const translation = useTranslation({
     attributeName: 'body_multiloc',
@@ -25,6 +28,7 @@ const PostShowTranslatedBody = ({
     id: postId,
     context: 'idea',
     machineTranslationButtonClicked: translateButtonClicked || false,
+    multiloc: idea?.data.attributes.body_multiloc,
   });
 
   const content =

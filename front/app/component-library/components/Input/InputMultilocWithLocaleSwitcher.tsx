@@ -11,6 +11,8 @@ import LocaleSwitcher from '../LocaleSwitcher';
 
 import Input, { InputProps, boLabelStyle } from '.';
 
+type LocaleSwitcherProps = React.ComponentProps<typeof LocaleSwitcher>;
+
 export const stackedLabelStyle = css`
   flex-direction: column;
   align-items: flex-end;
@@ -59,6 +61,11 @@ export interface Props extends Omit<InputProps, 'value' | 'onChange'> {
   initiallySelectedLocale?: Locale;
   hideLocaleSwitcher?: boolean;
   stackedLabel?: boolean;
+  // Extra state per locale in the locale switcher, e.g. a machine translation.
+  localeStates?: LocaleSwitcherProps['localeStates'];
+  localeStateLabels?: LocaleSwitcherProps['localeStateLabels'];
+  // Rendered under the input, e.g. the translation status of the selected locale.
+  renderBelowInput?: (selectedLocale: Locale) => React.ReactNode;
 }
 
 const InputMultilocWithLocaleSwitcher = memo<Props>((props) => {
@@ -73,6 +80,9 @@ const InputMultilocWithLocaleSwitcher = memo<Props>((props) => {
     initiallySelectedLocale,
     hideLocaleSwitcher,
     stackedLabel = false,
+    localeStates,
+    localeStateLabels,
+    renderBelowInput,
     ...inputProps
   } = props;
   const { id, className } = props;
@@ -150,6 +160,8 @@ const InputMultilocWithLocaleSwitcher = memo<Props>((props) => {
                 values={{
                   input_field: valueMultiloc as Multiloc,
                 }}
+                localeStates={localeStates}
+                localeStateLabels={localeStateLabels}
               />
             )}
           </LabelContainer>
@@ -160,6 +172,7 @@ const InputMultilocWithLocaleSwitcher = memo<Props>((props) => {
           onChange={handleValueOnChange}
           error={error}
         />
+        {renderBelowInput?.(selectedLocale)}
       </Box>
     );
   }
