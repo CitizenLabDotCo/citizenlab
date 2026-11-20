@@ -10,6 +10,26 @@ RSpec.describe DecidimImporter::Extractors::ProjectsExtractor do
     described_class.new(rows, ref_map, locale_mapper: mapper, primary_locale: 'fr-FR').run
   end
 
+  describe 'visibility' do
+    using RSpec::Parameterized::TableSyntax
+
+    where(:private_space, :is_transparent, :visible_to) do
+      'true'  | 'false' | 'admins'
+      't'     | ''      | 'admins'
+      'true'  | 't'     | nil
+      'false' | ''      | nil
+      ''      | nil     | nil
+    end
+
+    with_them do
+      it 'restricts only private, non-transparent spaces to admins' do
+        attrs = extract([{ 'uid' => 'a1', 'title' => '{"fr":"A"}', 'private_space' => private_space,
+                           'is_transparent' => is_transparent }]).first.attributes
+        expect(attrs['visible_to']).to eq(visible_to)
+      end
+    end
+  end
+
   it 'keeps the Decidim slug from a participatory-process URL' do
     attrs = extract([{ 'uid' => 'p1', 'title' => '{"fr":"P"}',
                        'url' => 'https://x.fr/processes/mon-process?foo=1' }]).first.attributes
