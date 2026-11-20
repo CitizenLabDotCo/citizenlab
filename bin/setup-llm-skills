@@ -1,0 +1,99 @@
+#!/usr/bin/env bash
+# bin/setup-llm-skills — copy the skills listed in back/config/llm_skills.yml
+# from the team's private skills repo into back/vendor/llm_skills: each skill's
+# .md files and its plugin's shared ones, as AIAssistant::Skill reads them.
+# These skills are for the app's AI features, not for coding. Development
+# (make llm-skills-setup) and CI (before building the back image) both run it,
+# so both get the same files. The folder is gitignored, and the privacy guards
+# (.githooks/pre-commit, bin/check-claude-privacy) refuse to commit it.
+#
+# By default it fetches the skills repo at the commit the manifest pins, which
+# needs read access to it over SSH.
+#
+# To try a skill you're writing, copy from your clone instead, uncommitted
+# edits included. Re-run it after each edit; the app reads the files on every
+# prompt. A new skill also needs its name in the manifest.
+#
+#   bin/setup-llm-skills --from ../gv-claude-plugins
+#
+# Prints skill names only, never their text, as CI logs may be public.
+
+set -euo pipefail
+
+# The test points this at a fake repo.
+REPO_ROOT="${LLM_SKILLS_REPO_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
+MANIFEST="$REPO_ROOT/back/config/llm_skills.yml"
+SKILLS_DIR="$REPO_ROOT/back/vendor/llm_skills"
+SKILLS_REPO="git@github.com:CitizenLabDotCo/gv-claude-plugins.git"
+
+from=""
+if [ $# -eq 2 ] && [ "$1" = "--from" ]; then
+  from="$2"
+elif [ $# -ne 0 ]; then
+  echo "Usage: bin/setup-llm-skills [--from <skills_repo_clone>]" >&2
+  exit 1
+fi
+
+# Read with sed so that no YAML tool is needed; the manifest says which format to keep.
+ref="$(sed -n "s/^ref: '\(.*\)'$/\1/p" "$MANIFEST")"
+skills="$(sed -n 's/^  - //p' "$MANIFEST")"
+if [ -z "$ref" ] || [ -z "$skills" ]; then
+  echo "Error: can't read the ref and the skills in back/config/llm_skills.yml." >&2
+  exit 1
+fi
+
+if [ -n "$from" ] && [ ! -d "$from/plugins" ]; then
+  echo "Error: $from is not a clone of the skills repo." >&2
+  exit 1
+fi
+
+# The skills are copied to $work/out and replace back/vendor/llm_skills only
+# once all of them are there, so a failed run keeps the previous copy.
+work="$(mktemp -d)"
+trap 'rm -rf "$work"' EXIT
+out="$work/out"
+mkdir -p "$out"
+
+if [ -n "$from" ]; then
+  source_dir="$(cd "$from" && pwd)"
+  source_name="in $from"
+  echo "Copying the LLM skills from $from ..."
+else
+  source_dir="$work/repo"
+  source_name="at $ref"
+  echo "Fetching the LLM skills at $ref ..."
+  git init -q "$source_dir"
+  git -C "$source_dir" fetch -q --depth 1 "$SKILLS_REPO" "$ref"
+  git -C "$source_dir" checkout -q FETCH_HEAD
+fi
+
+for skill in $skills; do
+  skill_dirs=("$source_dir"/plugins/*/skills/"$skill")
+  if [ ! -d "${skill_dirs[0]}" ]; then
+    echo "Error: there is no skill $skill $source_name." >&2
+    exit 1
+  fi
+  if [ "${#skill_dirs[@]}" -gt 1 ]; then
+    echo "Error: there is more than one skill $skill $source_name." >&2
+    exit 1
+  fi
+  skill_path="${skill_dirs[0]#"$source_dir/"}"
+  plugin_path="${skill_path%/skills/*}"
+
+  sources=("$skill_path")
+  if [ -d "$source_dir/$plugin_path/shared" ]; then
+    sources+=("$plugin_path/shared")
+  fi
+
+  while IFS= read -r file; do
+    mkdir -p "$out/$(dirname "$file")"
+    cp "$source_dir/$file" "$out/$file"
+  done < <(cd "$source_dir" && find "${sources[@]}" -type f -name '*.md')
+
+  echo "  $skill"
+done
+
+rm -rf "$SKILLS_DIR"
+mkdir -p "$(dirname "$SKILLS_DIR")"
+mv "$out" "$SKILLS_DIR"
+echo "Copied the LLM skills into back/vendor/llm_skills."

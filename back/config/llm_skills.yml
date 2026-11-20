@@ -1,0 +1,7 @@
+# The skills of the AI features, which bin/setup-llm-skills copies from the private skills
+# repo, at this commit of it, into vendor/llm_skills, in development and in CI.
+# The script reads it without a YAML parser: keep the ref quoted and one `  - name` line per skill.
+ref: 'aae89eead48a3d8eb9acf721b8d4434b0ad949b6'
+skills:
+  - govocal-project-setup
+  - project-report
