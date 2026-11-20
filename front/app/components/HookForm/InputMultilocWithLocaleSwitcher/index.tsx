@@ -64,12 +64,14 @@ const InputMultilocWithLocaleSwitcher = ({
         name={name}
         control={control}
         defaultValue={defaultValue}
-        render={({ field, fieldState }) => {
+        render={({ field: { ref, ...field }, fieldState }) => {
           return (
             <InputMultilocWithLocaleSwitcherComponent
               id={name}
+              // The component can't hold a ref itself; it hands its input
+              // element over through setRef instead.
               setRef={(el) => {
-                field.ref(el);
+                ref(el);
               }}
               {...field}
               {...rest}

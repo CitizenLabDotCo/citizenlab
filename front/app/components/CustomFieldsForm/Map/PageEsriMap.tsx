@@ -1,6 +1,10 @@
 import React from 'react';
 
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  stylingConsts,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 
 import { IMapConfig } from 'api/map_config/types';
 
@@ -11,21 +15,32 @@ const PageEsriMap = ({
   mapConfig,
   mapLayers,
   draggableDivRef,
+  variant = 'side',
 }: {
   currentPageIndex: number;
   mapConfig: IMapConfig | null | undefined;
   mapLayers: __esri.Layer[];
-  draggableDivRef: React.RefObject<HTMLDivElement>;
+  draggableDivRef?: React.RefObject<HTMLDivElement>;
+  // 'side' fills the left of a classic form card; 'block' fills whatever
+  // box it's put in (surveys).
+  variant?: 'side' | 'block';
 }) => {
   const isMobileOrSmaller = useBreakpoint('phone');
   return (
     <Box
-      id="map_page"
-      w={isMobileOrSmaller ? '100%' : '60%'}
-      minWidth="60%"
+      // Its presence switches the ideation forms to their map layout; the
+      // survey's block map mustn't.
+      id={variant === 'side' ? 'map_page' : undefined}
+      w={isMobileOrSmaller || variant === 'block' ? '100%' : '60%'}
+      minWidth={variant === 'side' ? '60%' : undefined}
       h="100%"
+      borderRadius={
+        variant === 'block' ? stylingConsts.borderRadius : undefined
+      }
+      overflow={variant === 'block' ? 'hidden' : undefined}
       ref={draggableDivRef}
       key={`esri_map_${currentPageIndex}`}
+      data-cy={variant === 'block' ? 'e2e-survey-page-map' : undefined}
     >
       <EsriMap
         layers={mapLayers}

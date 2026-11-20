@@ -35,10 +35,15 @@ import BudgetField from '../Fields/BudgetField';
 import PageEsriDivider from '../Map/PageEsriDivider';
 import PageEsriMap from '../Map/PageEsriMap';
 import useEsriMapPage from '../Map/useEsriMapPage';
+import { FORM_QUESTION_SPACING } from '../Page/FormPageLayout';
 import PageFooter from '../Page/PageFooter';
 import PageTitle from '../Page/PageTitle';
+import PageTransition, { usePageDirection } from '../Page/PageTransition';
+import PreviousPageButton from '../Page/PreviousPageButton';
+import ProgressFooter from '../Page/ProgressFooter';
 import { FormValues } from '../Page/types';
 import usePageForm from '../Page/usePageForm';
+import PageControlButtons from '../PageControlButtons';
 import PostParticipationBox from '../PostParticipationBox';
 import { getFormCompletionPercentage, trackFormPageView } from '../util';
 
@@ -81,6 +86,8 @@ const IdeationPage = ({
   pages,
 }: CustomFieldsPage) => {
   const pageRef = useRef<HTMLDivElement>(null);
+  // Next pages slide in from the right, previous ones from the left.
+  const enterDirection = usePageDirection(currentPageIndex);
 
   const [isDisclaimerOpened, setIsDisclaimerOpened] = useState(false);
   const { data: authUser } = useAuthUser();
@@ -228,6 +235,140 @@ const IdeationPage = ({
 
   const showSubmissionReference = isLastPage && idea && showIdeaId;
   const showPostParticipationSignup = !!(isLastPage && idea && !authUser);
+
+  const footerVariant =
+    currentPageIndex === lastPageIndex
+      ? 'after-submission'
+      : currentPageIndex === lastPageIndex - 1
+      ? 'submission'
+      : 'other';
+  const handlePrevious = () => {
+    setCurrentPageIndex(currentPageIndex - 1);
+  };
+
+  // Map pages and the admin side panel keep the classic layout: a card with
+  // its own scroll and the buttons in a footer. Other pages flow with the page.
+  if (!isMapPage && !isAdminPage) {
+    return (
+      <FormProvider {...methods}>
+        <StyledForm id="idea-form">
+          <Box
+            id="container"
+            w="100%"
+            // Room for the progress card floating at the bottom.
+            pb="80px"
+            data-cy={`e2e-page-number-${currentPageIndex + 1}`}
+          >
+            <PageTransition key={currentPageIndex} direction={enterDirection}>
+              <Box
+                ref={pageRef}
+                tabIndex={0}
+                role="region"
+                aria-labelledby={`page-${currentPageIndex + 1}-title`}
+                style={{ outline: 'none' }}
+              >
+                {currentPageIndex > 0 && !isLastPage && (
+                  <PreviousPageButton onClick={handlePrevious} />
+                )}
+                {showFormFeedback && <Feedback />}
+
+                <PageTitle
+                  page={page}
+                  id={`page-${currentPageIndex + 1}-title`}
+                />
+
+                {page.key === 'user_page' && <CustomFieldsSignupHelperText />}
+
+                {currentPageIndex === 0 && isAdmin(authUser) && (
+                  <Box mb="24px">
+                    <AuthorField name="author_id" />
+                  </Box>
+                )}
+                {currentPageIndex === lastPageIndex - 1 &&
+                  isAdminOrModerator &&
+                  phase?.attributes.voting_method === 'budgeting' && (
+                    <Box mb="24px">
+                      <BudgetField name="budget" />
+                    </Box>
+                  )}
+                <CustomFields
+                  questions={pageQuestions}
+                  projectId={projectId}
+                  ideaId={ideaId}
+                  phase={phase}
+                  participationMethod={participationMethod}
+                  questionSpacing={FORM_QUESTION_SPACING}
+                />
+
+                {currentPageIndex === lastPageIndex - 1 &&
+                  showTogglePostAnonymously &&
+                  !isIdeaEditPage && (
+                    <ProfileVisiblity
+                      postAnonymously={postAnonymously}
+                      onChange={handleOnChangeAnonymousPosting}
+                    />
+                  )}
+                {showPostParticipationSignup && project && (
+                  <PostParticipationBox
+                    showJoinDiscussionsBulletPoint
+                    onCreateAccount={() => {
+                      triggerPostParticipationFlow({
+                        name: 'followProjectAndRedirect',
+                        params: {
+                          projectId: project.data.id,
+                          path: `/ideas/${idea.data.attributes.slug}`,
+                        },
+                      });
+                    }}
+                  />
+                )}
+                {showSubmissionReference && (
+                  <SubmissionReference
+                    inputId={idea.data.id}
+                    postParticipationSignUpVisible={showPostParticipationSignup}
+                  />
+                )}
+
+                <PageControlButtons
+                  inline
+                  showPrevious={false}
+                  handleNextAndSubmit={handleNextAndsubmit}
+                  handlePrevious={handlePrevious}
+                  hasPreviousPage={currentPageIndex > 0}
+                  isLoading={methods.formState.isSubmitting}
+                  pageVariant={footerVariant}
+                  phases={phases?.data}
+                  currentPhase={phase}
+                  pageButtonLabelMultiloc={page.page_button_label_multiloc}
+                  pageButtonLink={page.page_button_link}
+                  project={project}
+                  pageQuestions={pageQuestions}
+                  currentPageIndex={currentPageIndex}
+                />
+              </Box>
+            </PageTransition>
+          </Box>
+          <ProgressFooter
+            formCompletionPercentage={formCompletionPercentage}
+            currentPage={currentPageIndex + 1}
+            totalPages={lastPageIndex}
+          />
+          {showAnonymousConfirmationModal && (
+            <AnonymousParticipationConfirmationModal
+              onCloseModal={() => {
+                setShowAnonymousConfirmationModal(false);
+              }}
+            />
+          )}
+          <ContentUploadDisclaimer
+            isDisclaimerOpened={isDisclaimerOpened}
+            onAcceptDisclaimer={onAcceptDisclaimer}
+            onCancelDisclaimer={onCancelDisclaimer}
+          />
+        </StyledForm>
+      </FormProvider>
+    );
+  }
 
   return (
     <FormProvider {...methods}>

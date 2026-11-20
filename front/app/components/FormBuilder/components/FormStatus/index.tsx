@@ -22,6 +22,7 @@ type FormStatusProps = {
   builderConfig: ResolvedFormBuilderConfig;
   projectId: string;
   phaseId: string;
+  showDragAndDropHint?: boolean;
 };
 
 const FormStatus = ({
@@ -35,6 +36,7 @@ const FormStatus = ({
   },
   projectId,
   phaseId,
+  showDragAndDropHint = true,
 }: FormStatusProps) => {
   const { data: submissionCount } = useFormSubmissionCount({
     phaseId,
@@ -83,7 +85,9 @@ const FormStatus = ({
 
   return (
     <>
-      <Warning mb="8px">{formatMessage(messages.dragAndDrop)}</Warning>
+      {showDragAndDropHint && (
+        <Warning mb="8px">{formatMessage(messages.dragAndDrop)}</Warning>
+      )}
 
       {showWarnings()}
 

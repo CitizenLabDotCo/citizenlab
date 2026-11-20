@@ -1,4 +1,10 @@
-import { useEffect, useMemo, useCallback, useRef } from 'react';
+import {
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useCallback,
+  useRef,
+} from 'react';
 
 import useMapConfigById from 'api/map_config/useMapConfigById';
 import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
@@ -24,8 +30,11 @@ const useEsriMapPage = ({ project, pages, currentPageIndex, localize }) => {
     return parseLayers(mapConfig, localize);
   }, [localize, mapConfig]);
 
-  // Emit event when page changes and map is fetched
-  useEffect(() => {
+  // Emit event when page changes and map is fetched. The form layout switches
+  // between its map and regular versions on this event, so it's emitted
+  // before the browser paints: otherwise the new page briefly shows in the
+  // previous page's layout and then jumps.
+  useLayoutEffect(() => {
     eventEmitter.emit(FORM_PAGE_CHANGE_EVENT);
   }, [currentPageIndex, isFetchingMapConfig, isFetchingProjectConfig]);
 
