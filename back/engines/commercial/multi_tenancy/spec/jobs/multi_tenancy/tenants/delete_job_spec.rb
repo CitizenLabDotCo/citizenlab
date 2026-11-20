@@ -20,6 +20,32 @@ RSpec.describe MultiTenancy::Tenants::DeleteJob do
       end
     end
 
+    context 'when user data is still being removed from Matomo' do
+      def create_matomo_job(**attrs)
+        create(
+          :que_job,
+          active_job_class: 'Matomo::RemoveUserFromMatomoJob',
+          tenant_schema_name: tenant.schema_name,
+          **attrs
+        )
+      end
+
+      it 'keeps the tenant and schedules a new attempt' do
+        create_matomo_job
+
+        expect { described_class.perform_now(tenant, retry_interval: 10.minutes) }
+          .to enqueue_job(described_class).with(tenant, last_user_count: 0, retry_interval: 10.minutes)
+        expect { tenant.reload }.not_to raise_error
+      end
+
+      it 'deletes the tenant once the remaining Matomo jobs have expired' do
+        create_matomo_job(expired_at: Time.zone.now)
+
+        described_class.perform_now(tenant)
+        expect { tenant.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
     context 'when tenant still have users' do
       before_all { create(:user) }
 

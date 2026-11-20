@@ -117,6 +117,35 @@ RSpec.describe Matomo::Client do
         })
       end
     end
+
+    it 'only searches the given sites' do
+      allow(HTTParty).to receive(:post)
+
+      service.find_data_subjects(user_id, site_ids: %w[13 14])
+
+      expect(HTTParty).to have_received(:post) do |_path, options|
+        expect(options[:query]['idSite']).to eq('13,14')
+      end
+    end
+
+    it 'searches all sites when no site is given' do
+      allow(HTTParty).to receive(:post)
+
+      service.find_data_subjects(user_id, site_ids: [])
+
+      expect(HTTParty).to have_received(:post) do |_path, options|
+        expect(options[:query]['idSite']).to eq('all')
+      end
+    end
+  end
+
+  describe '#delete_user_data' do
+    it 'does not call Matomo without a user' do
+      allow(HTTParty).to receive(:post)
+
+      expect(service.delete_user_data(nil)).to be_nil
+      expect(HTTParty).not_to have_received(:post)
+    end
   end
 
   describe '#error?' do
@@ -150,6 +179,7 @@ RSpec.describe Matomo::Client do
           instance_double(
             HTTParty::Response,
             success?: true, # Matomo API returns 200 even for failed requests
+            code: 200,
             parsed_response: { 'result' => 'error', 'message' => error_message }
           )
         end
@@ -165,6 +195,7 @@ RSpec.describe Matomo::Client do
           instance_double(
             HTTParty::Response,
             success?: false,
+            code: 500,
             parsed_response: error_message
           )
         end
@@ -172,6 +203,22 @@ RSpec.describe Matomo::Client do
         specify do
           expect { service.raise_if_error(response) }
             .to raise_error(Matomo::Client::MatomoApiError, error_message)
+        end
+      end
+
+      context 'and the status is 503' do
+        let(:response) do
+          instance_double(
+            HTTParty::Response,
+            success?: false,
+            code: 503,
+            parsed_response: error_message
+          )
+        end
+
+        specify do
+          expect { service.raise_if_error(response) }
+            .to raise_error(Matomo::Client::ServiceUnavailableError, error_message)
         end
       end
     end
