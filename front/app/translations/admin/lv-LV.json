@@ -1580,6 +1580,7 @@
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Rediģēt",
   "app.containers.Admin.projects.all.copyProjectButton": "Kopēt projektu",
   "app.containers.Admin.projects.all.copyProjectError": "Kļūda, kopējot šo projektu, lūdzu, mēģiniet vēlreiz vēlāk.",
+  "app.containers.Admin.projects.all.copyingProject": "Kopē projektu…",
   "app.containers.Admin.projects.all.customiseEnd": "Pielāgojiet veidlapas beigas.",
   "app.containers.Admin.projects.all.customiseStart": "Pielāgojiet veidlapas sākumu.",
   "app.containers.Admin.projects.all.deleteFolderButton1": "Dzēst mapi",

@@ -1580,6 +1580,7 @@
   "app.containers.Admin.projects.all.components.manageButtonLabel": "ਸੰਪਾਦਿਤ ਕਰੋ",
   "app.containers.Admin.projects.all.copyProjectButton": "ਪ੍ਰੋਜੈਕਟ ਦੀ ਨਕਲ ਕਰੋ",
   "app.containers.Admin.projects.all.copyProjectError": "ਇਸ ਪ੍ਰੋਜੈਕਟ ਨੂੰ ਕਾਪੀ ਕਰਨ ਵਿੱਚ ਇੱਕ ਤਰੁੱਟੀ ਸੀ, ਕਿਰਪਾ ਕਰਕੇ ਬਾਅਦ ਵਿੱਚ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
+  "app.containers.Admin.projects.all.copyingProject": "ਪ੍ਰੋਜੈਕਟ ਕਾਪੀ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ...",
   "app.containers.Admin.projects.all.customiseEnd": "ਫਾਰਮ ਦੇ ਅੰਤ ਨੂੰ ਅਨੁਕੂਲਿਤ ਕਰੋ।",
   "app.containers.Admin.projects.all.customiseStart": "ਫਾਰਮ ਦੀ ਸ਼ੁਰੂਆਤ ਨੂੰ ਅਨੁਕੂਲਿਤ ਕਰੋ।",
   "app.containers.Admin.projects.all.deleteFolderButton1": "ਫੋਲਡਰ ਮਿਟਾਓ",

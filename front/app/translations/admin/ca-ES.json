@@ -1580,6 +1580,7 @@
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Edit",
   "app.containers.Admin.projects.all.copyProjectButton": "Copy project",
   "app.containers.Admin.projects.all.copyProjectError": "There was an error copying this project, please try again later.",
+  "app.containers.Admin.projects.all.copyingProject": "S'està copiant el projecte…",
   "app.containers.Admin.projects.all.customiseEnd": "Personalitza el final del formulari.",
   "app.containers.Admin.projects.all.customiseStart": "Personalitza l'inici del formulari.",
   "app.containers.Admin.projects.all.deleteFolderButton1": "Delete folder",

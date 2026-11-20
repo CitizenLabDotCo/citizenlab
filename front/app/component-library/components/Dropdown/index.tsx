@@ -99,7 +99,8 @@ export const DropdownListItem = styled.button`
     background: ${colors.grey200};
   }
 
-  &:disabled {
+  &:disabled,
+  &[aria-disabled='true'] {
     color: ${colors.grey400};
     cursor: not-allowed;
 

@@ -16,6 +16,11 @@ module Analytics
       self.table_name = 'reporting_invites'
       self.primary_key = nil
 
+      include ScopedView
+
+      # Platform-wide totals with no project to limit them to.
+      def self.admin_only? = true
+
       def self.table_description
         <<~DOC.squish
           Invitations to join the platform, as totals per day invited and

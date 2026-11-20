@@ -53,6 +53,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.copyProjectButton',
     defaultMessage: 'Copy project',
   },
+  copyingProject: {
+    id: 'app.containers.Admin.projects.all.copyingProject',
+    defaultMessage: 'Copying project…',
+  },
   xGroupsHaveAccess: {
     id: 'app.containers.AdminPage.ProjectEdit.xGroupsHaveAccess',
     defaultMessage:

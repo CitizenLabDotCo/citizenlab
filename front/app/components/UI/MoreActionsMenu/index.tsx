@@ -78,6 +78,8 @@ export interface IAction {
   icon?: IconNames;
   name?: string;
   isLoading?: boolean;
+  // Kept focusable so screen readers still announce the item as unavailable
+  disabled?: boolean;
 }
 
 export interface Props {
@@ -127,10 +129,15 @@ const MoreActionsMenu = forwardRef<HTMLButtonElement, Props>(
     };
 
     const handleListItemOnClick =
-      (handler: (event: React.MouseEvent) => Promise<any> | void) =>
+      (
+        handler: (event: React.MouseEvent) => Promise<any> | void,
+        disabled?: boolean
+      ) =>
       async (event: React.MouseEvent) => {
         event.preventDefault();
         event.stopPropagation();
+        if (disabled) return;
+
         await handler(event);
         hide();
       };
@@ -169,13 +176,15 @@ const MoreActionsMenu = forwardRef<HTMLButtonElement, Props>(
           content={
             <Box role="menu">
               {actions.map((action, index) => {
-                const { handler, label, icon, name, isLoading } = action;
+                const { handler, label, icon, name, isLoading, disabled } =
+                  action;
 
                 return (
                   <DropdownListItem
                     key={index}
                     onMouseDown={removeFocusAfterMouseClick}
-                    onClick={handleListItemOnClick(handler)}
+                    onClick={handleListItemOnClick(handler, disabled)}
+                    aria-disabled={disabled}
                     className={name ? `e2e-action-${name}` : undefined}
                     role="menuitem"
                   >

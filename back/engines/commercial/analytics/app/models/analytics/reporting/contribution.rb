@@ -24,6 +24,10 @@ module Analytics
       # The `type` column is the contribution kind, not Rails STI.
       self.inheritance_column = nil
 
+      include ScopedView
+
+      def self.for_projects(project_ids) = where(project_id: project_ids)
+
       def self.table_description
         <<~DOC.squish
           The unified participation fact: one row per action a resident took,

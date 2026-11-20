@@ -604,6 +604,16 @@
     "verified_at": "2026-11-11T17:40:55.120449Z",
     "verified_by": "Luuc"
   },
+  "app.components.PhasePreview.beforeTooltip2": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.PhasePreview.blocked": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
   "app.components.PhasePreview.ended": {
     "state": "verified",
     "verified_at": "2026-11-11T17:40:55.120449Z",
@@ -612,6 +622,11 @@
   "app.components.PhasePreview.endedTooltip": {
     "state": "verified",
     "verified_at": "2026-11-11T17:40:55.120449Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.PhasePreview.endedTooltip2": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
     "verified_by": "Luuc"
   },
   "app.components.PhasePreview.lifecycle": {
@@ -632,6 +647,11 @@
   "app.components.PhasePreview.openTooltip": {
     "state": "verified",
     "verified_at": "2026-11-11T17:40:55.120449Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.PhasePreview.openTooltip2": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
     "verified_by": "Luuc"
   },
   "app.components.PhasePreview.participation": {
@@ -804,6 +824,11 @@
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
   },
+  "app.components.ProjectTemplatePreview.retryTemplates": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
   "app.components.ProjectTemplatePreview.seeMoreTemplates": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
@@ -813,6 +838,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
+  },
+  "app.components.ProjectTemplatePreview.templatesLoadFailed": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
   },
   "app.components.ProjectTemplatePreview.typeProjectName": {
     "state": "verified",
@@ -1599,7 +1629,6 @@
     "verified_at": "2026-09-16T16:56:10.076710Z",
     "verified_by": "Luuc"
   },
-
   "app.components.admin.ContentBuilder.Widgets.Events.noEventsToDisplay": {
     "state": "verified",
     "verified_at": "2026-11-06T18:18:07.640645Z",
@@ -1630,7 +1659,6 @@
     "verified_at": "2026-09-16T16:56:10.076710Z",
     "verified_by": "Luuc"
   },
-
   "app.components.admin.ContentBuilder.Widgets.Events.showEmptyMessage": {
     "state": "verified",
     "verified_at": "2026-11-06T18:18:07.640645Z",
@@ -2196,40 +2224,80 @@
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
   },
+  "app.components.admin.PostManager.exportAllInputs2": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
   "app.components.admin.PostManager.exportIdeasComments": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
+  },
+  "app.components.admin.PostManager.exportIdeasComments2": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
   },
   "app.components.admin.PostManager.exportIdeasCommentsProjects": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
   },
+  "app.components.admin.PostManager.exportIdeasCommentsProjects2": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
   "app.components.admin.PostManager.exportInputsProjects": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
+  },
+  "app.components.admin.PostManager.exportInputsProjects2": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
   },
   "app.components.admin.PostManager.exportSelectedInputs": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
   },
+  "app.components.admin.PostManager.exportSelectedInputs2": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
   "app.components.admin.PostManager.exportSelectedInputsComments": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
+  },
+  "app.components.admin.PostManager.exportSelectedInputsComments2": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
   },
   "app.components.admin.PostManager.exportVotesByInput": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
   },
+  "app.components.admin.PostManager.exportVotesByInput2": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
   "app.components.admin.PostManager.exportVotesByUser": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
+  },
+  "app.components.admin.PostManager.exportVotesByUser2": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
   },
   "app.components.admin.PostManager.exports": {
     "state": "verified",
@@ -3771,6 +3839,16 @@
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
   },
+  "app.components.formBuilder.copySurveyModal.project": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.formBuilder.copySurveyModal.selectSurveyProject": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
   "app.components.formBuilder.copySurveyModal.survey": {
     "state": "verified",
     "verified_at": "2026-09-16T16:56:10.076710Z",
@@ -3986,61 +4064,51 @@
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
   },
-
   "app.containers.Admin.FeedbackPrompt.close": {
     "state": "verified",
     "verified_at": "2026-10-13T15:16:27.731852Z",
     "verified_by": "Luuc"
   },
-
   "app.containers.Admin.FeedbackPrompt.commentLabel": {
     "state": "verified",
     "verified_at": "2026-10-13T15:16:27.731852Z",
     "verified_by": "Luuc"
   },
-
   "app.containers.Admin.FeedbackPrompt.projectSetupEaseQuestion": {
     "state": "verified",
     "verified_at": "2026-10-13T15:16:27.731852Z",
     "verified_by": "Luuc"
   },
-
   "app.containers.Admin.FeedbackPrompt.returnFindabilityQuestion2": {
     "state": "verified",
     "verified_at": "2026-10-13T15:16:27.731852Z",
     "verified_by": "Luuc"
   },
-
   "app.containers.Admin.FeedbackPrompt.saveError": {
     "state": "verified",
     "verified_at": "2026-10-15T19:48:41.398140Z",
     "verified_by": "Luuc"
   },
-
   "app.containers.Admin.FeedbackPrompt.scaleHint": {
     "state": "verified",
     "verified_at": "2026-10-13T15:16:27.731852Z",
     "verified_by": "Luuc"
   },
-
   "app.containers.Admin.FeedbackPrompt.send": {
     "state": "verified",
     "verified_at": "2026-10-13T15:16:27.731852Z",
     "verified_by": "Luuc"
   },
-
   "app.containers.Admin.FeedbackPrompt.thanks": {
     "state": "verified",
     "verified_at": "2026-10-13T15:16:27.731852Z",
     "verified_by": "Luuc"
   },
-
   "app.containers.Admin.FeedbackPrompt.veryEasy": {
     "state": "verified",
     "verified_at": "2026-10-13T15:16:27.731852Z",
     "verified_by": "Luuc"
   },
-
   "app.containers.Admin.FeedbackPrompt.veryHard": {
     "state": "verified",
     "verified_at": "2026-10-13T15:16:27.731852Z",
@@ -7306,25 +7374,21 @@
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
   },
-
   "app.containers.Admin.pagesAndMenu.ContentBuilder.CraftComponents.shared.headingLevel1": {
     "state": "verified",
     "verified_at": "2026-11-12T14:44:59.166986Z",
     "verified_by": "Luuc"
   },
-
   "app.containers.Admin.pagesAndMenu.ContentBuilder.CraftComponents.shared.headingLevel2": {
     "state": "verified",
     "verified_at": "2026-11-12T14:44:59.166986Z",
     "verified_by": "Luuc"
   },
-
   "app.containers.Admin.pagesAndMenu.ContentBuilder.CraftComponents.shared.titleHeadingLevel": {
     "state": "verified",
     "verified_at": "2026-11-12T14:44:59.166986Z",
     "verified_by": "Luuc"
   },
-
   "app.containers.Admin.pagesAndMenu.ContentBuilder.CraftComponents.shared.titleHeadingLevelDescription": {
     "state": "verified",
     "verified_at": "2026-11-12T14:44:59.166986Z",
@@ -9450,6 +9514,11 @@
     "verified_at": "2026-11-02T08:57:12.904211Z",
     "verified_by": "Luuc"
   },
+  "app.containers.Admin.projects.project.addAnInput": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.project.addAnOption": {
     "state": "verified",
     "verified_at": "2026-11-02T08:57:12.904211Z",
@@ -9473,6 +9542,11 @@
   "app.containers.Admin.projects.project.addIdeasFromPreviousPhaseDescription": {
     "state": "verified",
     "verified_at": "2026-09-23T16:57:15.709408Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.addInputTagPlaceholder": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
     "verified_by": "Luuc"
   },
   "app.containers.Admin.projects.project.addQuestions": {
@@ -9580,9 +9654,229 @@
     "verified_at": "2026-10-27T14:09:52.266727Z",
     "verified_by": "Luuc"
   },
+  "app.containers.Admin.projects.project.backFromInputTags": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.project.backToProjectSetup": {
     "state": "verified",
     "verified_at": "2026-09-15T12:28:36.899086Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.addStatement": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.agree": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.agreeColumn": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.agreementFilter": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.disagree": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.divided": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.editStatement": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.importInputs": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.mostlyAgree": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.mostlyDisagree": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.notSeenYet": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.participants": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.reactions": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.saveStatement": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.searchStatements": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.selectAllOnPage": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.selectStatement": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.statementColumn": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.statementCount": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.statementNoun": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.statements": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.statementsNoun": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.unsure": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.Event.buildView": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.Event.earlier": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.Event.email": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.Event.eventView": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.Event.exportRegistrants": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.Event.externalRegistrations": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.Event.manageView": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.Event.noMatchingRegistrants": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.Event.noRegistrants": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.Event.noRegistrantsDescription": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.Event.registered": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.Event.registrant": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.Event.registrantCount": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.Event.registrantsExportError": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.Event.registrantsLoadError": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.Event.remainingSpots": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.Event.retryRegistrants": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.Event.searchRegistrants": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.Event.spotsLeft": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.Event.thisWeek": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
     "verified_by": "Luuc"
   },
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.acceptedTile": {
@@ -9595,10 +9889,40 @@
     "verified_at": "2026-10-01T15:12:00.428635Z",
     "verified_by": "Pauline"
   },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.addOfflineVotes": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.addOne": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.addTag": {
     "state": "verified",
     "verified_at": "2026-10-01T15:12:00.428635Z",
     "verified_by": "Pauline"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.autoShareNotice": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.autoShareNoticeEnded": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.autoShareNoticeNoEndDate": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.autoShareResults": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
   },
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.awaitingReply": {
     "state": "verified",
@@ -9610,6 +9934,11 @@
     "verified_at": "2026-10-01T15:12:00.428635Z",
     "verified_by": "Pauline"
   },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.batchDeleteFailed": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.batchStatus": {
     "state": "verified",
     "verified_at": "2026-10-01T15:12:00.428635Z",
@@ -9619,6 +9948,11 @@
     "state": "verified",
     "verified_at": "2026-10-01T15:12:00.428635Z",
     "verified_by": "Pauline"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.batchUpdateFailed": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
   },
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.clearAllFilters": {
     "state": "verified",
@@ -9635,20 +9969,70 @@
     "verified_at": "2026-10-01T15:12:00.428635Z",
     "verified_by": "Pauline"
   },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.closed": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.copyToPhase": {
     "state": "verified",
     "verified_at": "2026-10-01T15:12:00.428635Z",
     "verified_by": "Pauline"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.daysLeft": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
   },
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.delete": {
     "state": "verified",
     "verified_at": "2026-10-01T15:12:00.428635Z",
     "verified_by": "Pauline"
   },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.deleteTermExplanation": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.deleteTermTitle": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.deleteTerms": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.deleteTermsExplanation": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.deleteTermsTitle2": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.edit": {
     "state": "verified",
     "verified_at": "2026-10-01T15:12:00.428635Z",
     "verified_by": "Pauline"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.editTerm": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.export": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.exportParticipationData": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
   },
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.exports": {
     "state": "verified",
@@ -9695,6 +10079,16 @@
     "verified_at": "2026-10-01T15:12:00.428635Z",
     "verified_by": "Pauline"
   },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.importOptions": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.importPaperTerms": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.inputColumn": {
     "state": "verified",
     "verified_at": "2026-10-01T15:12:00.428635Z",
@@ -9720,10 +10114,20 @@
     "verified_at": "2026-10-01T15:12:00.428635Z",
     "verified_by": "Pauline"
   },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.newTerm": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.nextInput": {
     "state": "verified",
     "verified_at": "2026-10-01T15:12:00.428635Z",
     "verified_by": "Pauline"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.nextTerm": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
   },
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.noInputsDescription": {
     "state": "verified",
@@ -9745,10 +10149,60 @@
     "verified_at": "2026-10-01T15:12:00.428635Z",
     "verified_by": "Pauline"
   },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.noOtherPhasesForTerms": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.noTermsDescription": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.noTermsTitle": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.offlineCollection": {
     "state": "verified",
     "verified_at": "2026-10-01T15:12:00.428635Z",
     "verified_by": "Pauline"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.offlineColumn": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.offlineParticipants": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.offlineVotes": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.offlineVotesHelp": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.offlineVotesSaveError": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.onlineColumn": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.onlineVotes": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
   },
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.paperAndExcelForms": {
     "state": "verified",
@@ -9765,10 +10219,25 @@
     "verified_at": "2026-10-01T15:12:00.428635Z",
     "verified_by": "Pauline"
   },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.postedBy": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.previousInput": {
     "state": "verified",
     "verified_at": "2026-10-01T15:12:00.428635Z",
     "verified_by": "Pauline"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.previousTerm": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.proposalVotes": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
   },
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.publishedColumn": {
     "state": "verified",
@@ -9784,6 +10253,11 @@
     "state": "verified",
     "verified_at": "2026-10-01T15:12:00.428635Z",
     "verified_by": "Pauline"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.removeOne": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
   },
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.removeTag": {
     "state": "verified",
@@ -9810,6 +10284,16 @@
     "verified_at": "2026-10-01T15:12:00.428635Z",
     "verified_by": "Pauline"
   },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.save": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.saveOfflineVotes": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.searchInputs": {
     "state": "verified",
     "verified_at": "2026-10-01T15:12:00.428635Z",
@@ -9820,15 +10304,40 @@
     "verified_at": "2026-10-01T15:12:00.428635Z",
     "verified_by": "Pauline"
   },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.searchTerms": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.selectAll": {
     "state": "verified",
     "verified_at": "2026-10-01T15:12:00.428635Z",
     "verified_by": "Pauline"
   },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.selectAllFailed": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.selectAllOnPage": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.selectAllTerms": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.selectInput": {
     "state": "verified",
     "verified_at": "2026-10-01T15:12:00.428635Z",
     "verified_by": "Pauline"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.selectTerm": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
   },
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.selectedCount": {
     "state": "verified",
@@ -9860,10 +10369,25 @@
     "verified_at": "2026-10-01T15:12:00.428635Z",
     "verified_by": "Pauline"
   },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.stillGatheringSupport": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.tagsColumn": {
     "state": "verified",
     "verified_at": "2026-10-01T15:12:00.428635Z",
     "verified_by": "Pauline"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.timeLeft": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.totalVotesColumn": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
   },
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.unassigned": {
     "state": "verified",
@@ -9874,6 +10398,101 @@
     "state": "verified",
     "verified_at": "2026-10-01T15:12:00.428635Z",
     "verified_by": "Pauline"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.waitingForReply": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.waitingForResponse": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.Phase.insightsDateRange": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.Phase.listLoadFailed": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.Phase.noActivityInDateRange": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.Phase.retryListLoad": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.cause": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.earlier": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.emailColumn": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.exportVolunteers": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.noMatchingVolunteers": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.noVolunteersYet": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.noVolunteersYetDescription": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.searchVolunteers": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.signedUpColumn": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.thisWeek": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.volunteerColumn": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.volunteerCount": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.VolunteerManager.volunteers": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
   },
   "app.containers.Admin.projects.project.beforeYouPublish": {
     "state": "verified",
@@ -10005,9 +10624,19 @@
     "verified_at": "2026-11-02T08:57:12.904211Z",
     "verified_by": "Luuc"
   },
+  "app.containers.Admin.projects.project.deleteQuestionsToReuse": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.project.deleteReport": {
     "state": "verified",
     "verified_at": "2026-10-27T14:09:52.266727Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.deleteSurveyQuestions": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
     "verified_by": "Luuc"
   },
   "app.containers.Admin.projects.project.demographicsNotSet": {
@@ -10115,9 +10744,19 @@
     "verified_at": "2026-10-27T14:09:52.266727Z",
     "verified_by": "Luuc"
   },
+  "app.containers.Admin.projects.project.editSurvey": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.project.editSurveyForm": {
     "state": "verified",
     "verified_at": "2026-09-15T12:28:36.899086Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.emptyInputTitleError": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
     "verified_by": "Luuc"
   },
   "app.containers.Admin.projects.project.emptyOptionError": {
@@ -10700,6 +11339,11 @@
     "verified_at": "2026-10-27T14:09:52.266727Z",
     "verified_by": "Luuc"
   },
+  "app.containers.Admin.projects.project.inputDescriptionLabel": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.project.inputResponseExport.cancelButton": {
     "state": "verified",
     "verified_at": "2026-07-20T21:19:29.190865Z",
@@ -10850,9 +11494,34 @@
     "verified_at": "2026-07-20T21:19:29.190865Z",
     "verified_by": "Luuc"
   },
+  "app.containers.Admin.projects.project.inputSaveFailed": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.inputSaveFailedFullForm": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.inputTagsSaveFailed": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.project.inputTermDescription": {
     "state": "verified",
     "verified_at": "2026-10-27T14:09:52.266727Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.inputTitleLabel": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.inputTitlePlaceholder": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
     "verified_by": "Luuc"
   },
   "app.containers.Admin.projects.project.inputsSection": {
@@ -10865,6 +11534,11 @@
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects.project.insights.addReport": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.project.insights.age": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
@@ -10874,6 +11548,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.projects.project.insights.aiSensemaking": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
   },
   "app.containers.Admin.projects.project.insights.areas": {
     "state": "verified",
@@ -10935,6 +11614,11 @@
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects.project.insights.createInformationPhase": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.project.insights.currentValueComparedWithZero": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
@@ -10955,6 +11639,11 @@
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects.project.insights.downloadInsights": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.project.insights.downloadInsightsPdf": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
@@ -10974,6 +11663,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.projects.project.insights.editProjectHomepage": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
   },
   "app.containers.Admin.projects.project.insights.errorLoading": {
     "state": "verified",
@@ -11024,6 +11718,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.projects.project.insights.goToMessaging": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
   },
   "app.containers.Admin.projects.project.insights.ideasPosted": {
     "state": "verified",
@@ -11215,6 +11914,16 @@
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects.project.insights.recommendedActions": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.insights.reportCreationFailed": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.project.insights.representativenessScore": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
@@ -11244,6 +11953,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.projects.project.insights.shareResults": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
   },
   "app.containers.Admin.projects.project.insights.shared.aiPowered1": {
     "state": "verified",
@@ -11765,6 +12479,16 @@
     "verified_at": "2026-09-15T12:47:12.657839Z",
     "verified_by": "Luuc"
   },
+  "app.containers.Admin.projects.project.noTermsYet": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.noTermsYetDescription": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.project.nobodySignedUpYet": {
     "state": "verified",
     "verified_at": "2026-11-02T08:57:12.904211Z",
@@ -12165,6 +12889,11 @@
     "verified_at": "2026-07-21T19:52:31.292869Z",
     "verified_by": "Luuc"
   },
+  "app.containers.Admin.projects.project.openFullForm": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.project.optionAnonymousTooltip": {
     "state": "verified",
     "verified_at": "2026-11-02T08:57:12.904211Z",
@@ -12200,9 +12929,109 @@
     "verified_at": "2026-11-02T08:57:12.904211Z",
     "verified_by": "Luuc"
   },
+  "app.containers.Admin.projects.project.participantCommunications": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.participantCommunicationsDescription": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.project.participantCount": {
     "state": "verified",
     "verified_at": "2026-09-15T12:47:12.657839Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.participantEmail.commentDeleted": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.participantEmail.commentReply": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.participantEmail.cosponsorAccepted": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.participantEmail.cosponsorInvitation": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.participantEmail.followedComment": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.participantEmail.inputPublished": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.participantEmail.lastChance": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.participantEmail.officialFeedback": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.participantEmail.phaseStarted": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.participantEmail.screening": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.participantEmail.statusChanged": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.participantEmail.surveySubmitted": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.participantEmail.unfinishedSurvey": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.participantEmail.unfinishedVote": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.participantEmail.updateMention": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.participantEmail.voteSubmitted": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.participantEmail.votingResults": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.participantEmail.votingStarted": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
     "verified_by": "Luuc"
   },
   "app.containers.Admin.projects.project.participantsEmpty": {
@@ -12544,6 +13373,11 @@
     "state": "verified",
     "verified_at": "2026-10-08T07:57:18.470901Z",
     "verified_by": "Pauline"
+  },
+  "app.containers.Admin.projects.project.phaseInputTagsTitle": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
   },
   "app.containers.Admin.projects.project.phaseNoEndDate": {
     "state": "verified",
@@ -12935,6 +13769,11 @@
     "verified_at": "2026-10-27T14:09:52.266727Z",
     "verified_by": "Luuc"
   },
+  "app.containers.Admin.projects.project.questionsUpdateFailed": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.project.readyForReview": {
     "state": "verified",
     "verified_at": "2026-10-27T13:59:01.183417Z",
@@ -13025,6 +13864,11 @@
     "verified_at": "2026-10-20T11:54:17.740380Z",
     "verified_by": "Luuc"
   },
+  "app.containers.Admin.projects.project.savedSurveyQuestions": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.project.savingAndOpeningSurvey": {
     "state": "verified",
     "verified_at": "2026-11-11T17:41:49.978929Z",
@@ -13033,6 +13877,11 @@
   "app.containers.Admin.projects.project.scheduledToPublish": {
     "state": "verified",
     "verified_at": "2026-10-27T13:59:01.183417Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.searchInputTags": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
     "verified_by": "Luuc"
   },
   "app.containers.Admin.projects.project.selectAMethod": {
@@ -13160,6 +14009,31 @@
     "verified_at": "2026-10-27T13:41:32.903181Z",
     "verified_by": "Luuc"
   },
+  "app.containers.Admin.projects.project.setupCards.areaTooltip": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.setupCards.generalTooltip": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.setupCards.homepageCardTooltip": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.setupCards.methodsTooltip": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.setupCards.projectPageTooltip": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.project.shareInvite": {
     "state": "verified",
     "verified_at": "2026-09-15T12:47:12.657839Z",
@@ -13208,6 +14082,11 @@
   "app.containers.Admin.projects.project.shareYou": {
     "state": "verified",
     "verified_at": "2026-09-15T12:47:12.657839Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.sharedInputTags": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
     "verified_by": "Luuc"
   },
   "app.containers.Admin.projects.project.showCauses": {
@@ -13690,6 +14569,11 @@
     "verified_at": "2026-11-04T14:55:37.213820Z",
     "verified_by": "Luuc"
   },
+  "app.containers.Admin.projects.project.surveyDemographicQuestions": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.project.surveyForm": {
     "state": "verified",
     "verified_at": "2026-09-15T12:47:12.657839Z",
@@ -13803,6 +14687,11 @@
   "app.containers.Admin.projects.project.surveyPdfExport.zoomOut": {
     "state": "verified",
     "verified_at": "2026-06-29T09:12:16.705223Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.surveyQuestionsDeleted": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
     "verified_by": "Luuc"
   },
   "app.containers.Admin.projects.project.surveyResponsesInInsights": {
@@ -13920,6 +14809,11 @@
     "verified_at": "2026-10-27T13:59:01.183417Z",
     "verified_by": "Luuc"
   },
+  "app.containers.Admin.projects.project.topicTagsDescription": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.project.topicTagsNoMatch": {
     "state": "verified",
     "verified_at": "2026-10-27T13:59:01.183417Z",
@@ -13949,6 +14843,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.projects.project.undoDeleteQuestions": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
   },
   "app.containers.Admin.projects.project.unsavedChangesCancel": {
     "state": "verified",
@@ -14133,6 +15032,26 @@
   "app.containers.Admin.projects.projectHeader.ScheduleLaunchModal.whoCanFindProject2": {
     "state": "verified",
     "verified_at": "2026-05-04T12:35:25.720706Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.setupReview.failed": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.setupReview.reviewed": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.setupReview.toReview": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.setupReview.toSet": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
     "verified_by": "Luuc"
   },
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReport": {
@@ -21669,6 +22588,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AdminPage.SideBar.platformNavigation": {
+    "state": "verified",
+    "verified_at": "2026-11-19T22:21:56.636366Z",
+    "verified_by": "Luuc"
   },
   "app.containers.AdminPage.SideBar.processing": {
     "state": "verified",

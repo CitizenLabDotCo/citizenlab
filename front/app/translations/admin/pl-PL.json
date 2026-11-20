@@ -1580,6 +1580,7 @@
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Zarządzaj",
   "app.containers.Admin.projects.all.copyProjectButton": "Kopia projektu",
   "app.containers.Admin.projects.all.copyProjectError": "Wystąpił błąd przy kopiowaniu tego projektu, proszę spróbować ponownie później.",
+  "app.containers.Admin.projects.all.copyingProject": "Kopiowanie projektu…",
   "app.containers.Admin.projects.all.customiseEnd": "Dostosuj zakończenie formularza.",
   "app.containers.Admin.projects.all.customiseStart": "Dostosuj początek formularza.",
   "app.containers.Admin.projects.all.deleteFolderButton1": "Usuń folder",
