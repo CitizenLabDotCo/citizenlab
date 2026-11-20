@@ -7,6 +7,15 @@ class WebApi::V1::ProjectMiniAdminSerializer < WebApi::V1::BaseSerializer
     object.admin_publication.effective_publication_status
   end
 
+  # The status as the admin project list shows it, matching the display_status
+  # filter and the status sort: a draft waiting for review approval is
+  # 'pending' rather than 'draft'.
+  attribute :display_status do |object|
+    status = object.admin_publication.effective_publication_status
+    awaiting_approval = object.review && !object.review.approved_at
+    status == 'draft' && awaiting_approval ? 'pending' : status
+  end
+
   attribute :first_published_at do |object|
     object.admin_publication.first_published_at
   end
@@ -30,6 +39,20 @@ class WebApi::V1::ProjectMiniAdminSerializer < WebApi::V1::BaseSerializer
 
   attribute :active_phases_end_date do |object|
     object.schedule.active_span&.last
+  end
+
+  # The phase the project is about right now, the one the phase sort orders by,
+  # so the list can say what's happening without loading every phase.
+  attribute :highlighted_phase do |object|
+    phase = object.schedule.highlighted_phase
+    next unless phase
+
+    {
+      participation_method: phase.participation_method,
+      status: object.schedule.participation_status,
+      start_at: phase.start_at,
+      end_at: phase.end_at
+    }
   end
 
   attribute :folder_title_multiloc do |object|
