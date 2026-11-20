@@ -36,7 +36,7 @@ module DecidimImporter
         return nil if uid.nil?
 
         attributes = {
-          'title_multiloc' => multiloc(row[COLUMNS[:title]]),
+          'title_multiloc' => title_multiloc(uid, row),
           'admin_publication_attributes' => { 'publication_status' => 'published' },
           'created_at' => timestamp(row[COLUMNS[:created_at]]),
           'updated_at' => timestamp(row[COLUMNS[:updated_at]])
@@ -47,6 +47,16 @@ module DecidimImporter
         folder = ref_map.register(uid, Record.new('project_folders/folder', attributes))
         register_description_layout(uid, folder, multiloc(row[COLUMNS[:description]]))
         folder
+      end
+
+      # Decidim lets a group be saved with every title locale blank, but a folder needs a title: such a
+      # group gets a generic one, logged so the admins can rename the folder.
+      def title_multiloc(uid, row)
+        title = multiloc(row[COLUMNS[:title]])
+        return title if title.present?
+
+        adjust(uid, 'process group has no title: imported as an untitled folder')
+        i18n_multiloc('untitled_folder', locales: [primary_locale])
       end
 
       def register_description_layout(uid, folder, description)

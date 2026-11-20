@@ -32,6 +32,16 @@ RSpec.describe DecidimImporter::Extractors::FoldersExtractor do
     expect(layout.attributes.dig('craftjs_json', 'TEXT', 'props', 'text', 'fr-FR')).to include('Vert')
   end
 
+  it 'gives a group with no title a generic title and logs it' do
+    extractor = described_class.new([{ 'uid' => 'group-2', 'title' => '{"en":"","fr":""}' }], ref_map,
+      locale_mapper: mapper, primary_locale: 'fr-FR')
+
+    attrs = extractor.run.first.attributes
+
+    expect(attrs['title_multiloc']).to eq('fr-FR' => I18n.t('decidim_importer.untitled_folder', locale: 'fr-FR'))
+    expect(extractor.adjusted).to contain_exactly(hash_including(uid: 'group-2'))
+  end
+
   it 'registers folders by their uid for cross-file joins' do
     extract([{ 'uid' => 'decidim-participatoryprocessgroup-9', 'title' => '{"fr":"X"}' }])
     expect(ref_map.fetch('decidim-participatoryprocessgroup-9')).to be_present
