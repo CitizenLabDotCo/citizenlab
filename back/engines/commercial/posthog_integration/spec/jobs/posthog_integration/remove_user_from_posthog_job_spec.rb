@@ -23,6 +23,13 @@ RSpec.describe PosthogIntegration::RemoveUserFromPosthogJob do
         expect(posthog_client)
           .to have_received(:delete_person_by_distinct_id).with(user_id, retries: 10)
       end
+
+      it 'removes each user when given a list of ids' do
+        job.perform(%w[user-1 user-2])
+
+        expect(posthog_client).to have_received(:delete_person_by_distinct_id).with('user-1', retries: 10)
+        expect(posthog_client).to have_received(:delete_person_by_distinct_id).with('user-2', retries: 10)
+      end
     end
 
     context 'when PostHog integration is not configured' do
