@@ -91,7 +91,7 @@ RSpec.describe Matomo::RemoveUserFromMatomoJob do
         Thread.current[:que_current_job] = nil
       end
 
-      context 'when retries are left' do
+      context 'when it is one of the first attempts' do
         let(:error_count) { 2 }
 
         it 'reschedules the job without raising' do
@@ -107,6 +107,30 @@ RSpec.describe Matomo::RemoveUserFromMatomoJob do
             :set_error,
             [a_value_between(744, 864), 'Matomo::Client::ServiceUnavailableError: 503', a_kind_of(String), 1]
           )
+        end
+      end
+
+      context 'when it is the last quiet attempt' do
+        let(:error_count) { described_class::QUIET_ATTEMPTS - 1 }
+
+        it 'reschedules the job without raising' do
+          expect { perform_through_que }.not_to raise_error
+        end
+      end
+
+      context 'when the quiet attempts are used up' do
+        let(:error_count) { described_class::QUIET_ATTEMPTS }
+
+        before { allow(Sentry).to receive(:set_tags) }
+
+        it 'raises, so that the error is reported and the job retried' do
+          expect { perform_through_que }.to raise_error(Matomo::Client::ServiceUnavailableError)
+          expect(Que).not_to have_received(:execute).with(:expire_job, anything)
+        end
+
+        it 'tags the error with the attempt number' do
+          expect { perform_through_que }.to raise_error(Matomo::Client::ServiceUnavailableError)
+          expect(Sentry).to have_received(:set_tags).with(attempt: 5)
         end
       end
 
