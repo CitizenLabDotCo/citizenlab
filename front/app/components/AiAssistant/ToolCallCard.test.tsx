@@ -1,6 +1,9 @@
 import React from 'react';
 
-import { IAiAssistantToolCallData } from 'api/ai_assistant_tool_calls/types';
+import {
+  AiAssistantToolCallStatus,
+  IAiAssistantToolCallData,
+} from 'api/ai_assistant_tool_calls/types';
 
 import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
 
@@ -17,18 +20,17 @@ jest.mock('api/ai_assistant_tool_calls/useRejectAiAssistantToolCall', () =>
 );
 
 const toolCall = (
-  attributes: Partial<IAiAssistantToolCallData['attributes']> = {}
+  status: AiAssistantToolCallStatus = 'awaiting_user'
 ): IAiAssistantToolCallData => ({
   id: 'call-1',
   type: 'ai_assistant_tool_call',
   attributes: {
     name: 'replace_form_fields',
     arguments: { fields: [] },
-    status: 'awaiting_user',
+    status,
     reason: null,
     decided_at: null,
     created_at: '2026-10-01T08:00:00.000Z',
-    ...attributes,
   },
 });
 
@@ -46,7 +48,7 @@ describe('ToolCallCard', () => {
   it('shows the preview of a proposed change and approves it', () => {
     const onExecuted = jest.fn();
     mockApprove.mockImplementation((_variables, { onSuccess }) =>
-      onSuccess({ data: toolCall({ status: 'executed' }) })
+      onSuccess({ data: toolCall('executed') })
     );
 
     render(
@@ -72,7 +74,7 @@ describe('ToolCallCard', () => {
   it('does not report a failed approval as executed', () => {
     const onExecuted = jest.fn();
     mockApprove.mockImplementation((_variables, { onSuccess }) =>
-      onSuccess({ data: toolCall({ status: 'failed' }) })
+      onSuccess({ data: toolCall('failed') })
     );
 
     render(
@@ -120,7 +122,7 @@ describe('ToolCallCard', () => {
   it('only shows the status of calls that cannot be decided on', () => {
     render(
       <ToolCallCard
-        toolCall={toolCall({ status: 'executed' })}
+        toolCall={toolCall('executed')}
         conversationId="conversation-1"
         decidable={false}
         view={view}
