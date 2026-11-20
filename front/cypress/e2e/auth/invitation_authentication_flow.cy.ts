@@ -1,3 +1,4 @@
+import { confirmEmail } from '../../support/auth';
 import { randomString, randomEmail } from '../../support/commands';
 
 function getInvites() {
@@ -97,7 +98,9 @@ describe('Invitation authentication flow', () => {
       cy.get('#e2e-sign-up-email-password-container');
       cy.get('#firstName').should('have.value', 'Jack');
       cy.get('#lastName').should('have.value', 'Johnson');
-      cy.get('#email').should('have.value', 'jack@johnson.com');
+      cy.get('#email')
+        .should('have.value', 'jack@johnson.com')
+        .and('have.attr', 'readonly');
 
       const password = randomString();
       cy.get('#password').type(password).should('have.value', password);
@@ -128,10 +131,17 @@ describe('Invitation authentication flow', () => {
       const password = randomString();
 
       cy.get('#email').type(email).should('have.value', email);
-      cy.get('#password').type(password).should('have.value', password);
+      cy.get('#password').should('not.exist');
 
       cy.get('#e2e-policies-container .e2e-checkbox').click();
       cy.get('#e2e-signup-password-submit-button').click();
+
+      confirmEmail(cy);
+
+      // The password is only set once the email typed in is confirmed.
+      cy.get('#e2e-built-in-fields-container', { timeout: 60000 });
+      cy.get('#password').type(password).should('have.value', password);
+      cy.get('#e2e-built-in-fields-submit-button > button').click();
 
       cy.get('#e2e-success-continue-button').click();
     });
