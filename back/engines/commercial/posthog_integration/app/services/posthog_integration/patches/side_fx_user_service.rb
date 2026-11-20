@@ -3,9 +3,9 @@
 module PosthogIntegration
   module Patches
     module SideFxUserService
-      def after_destroy(frozen_user, current_user, **)
+      def after_destroy_all(user_ids, wait: 0)
         super
-        RemoveUserFromPosthogJob.perform_later(frozen_user.id)
+        RemoveUserFromPosthogJob.set(wait:).perform_later(user_ids)
       end
     end
   end

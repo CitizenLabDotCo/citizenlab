@@ -84,20 +84,19 @@ module MultiTenancy
       [false, tenant, config]
     end
 
+    # Marks the tenant as deleted. +Tenants::DeleteJob+ then deletes its users in batches
+    # (one tenant per cluster at a time) and finally the tenant itself.
+    #
     # @param [Tenant] tenant
-    # @param [ActiveSupport::Duration,nil] retry_interval
-    def delete(tenant, retry_interval: nil)
+    def delete(tenant)
       tenant_side_fx.before_destroy(tenant)
       # Deliberately not `update!`: a tenant must not become undeletable because of the state of
       # the record being deleted. `update_column` writes the one column, skipping validation and
       # the app configuration sync — which ignores `deleted_at` anyway (see `attributes_delta`).
-      tenant.update_column(:deleted_at, Time.zone.now)
+      # An existing `deleted_at` is kept: it decides when the tenant's turn to be deleted comes.
+      tenant.update_column(:deleted_at, Time.zone.now) unless tenant.deleted?
 
-      # Users must be removed before the tenant to ensure PII is removed from
-      # third-party services.
-      tenant.switch { User.destroy_all_async }
-      job_opts = { retry_interval: retry_interval }.compact
-      MultiTenancy::Tenants::DeleteJob.perform_later(tenant, **job_opts)
+      MultiTenancy::Tenants::DeleteJob.perform_later(tenant)
     end
 
     def shift_timestamps(num_days)
