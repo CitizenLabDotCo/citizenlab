@@ -1,7 +1,10 @@
 import React from 'react';
 
-import { Box, Tooltip, bo } from '@citizenlab/cl2-component-library';
 import { Locale, format, isSameDay, isThisYear } from 'date-fns';
+import { router } from 'routes';
+
+import IconButton from 'design-system/IconButton';
+import PanelGroupHeader from 'design-system/PanelGroupHeader';
 
 import useEvents from 'api/events/useEvents';
 
@@ -9,16 +12,11 @@ import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
 import {
-  EventRow,
   STATUS_LABELS,
-  SectionLabel,
-  StepMeta,
-  StepTitle,
   formatDateRange,
 } from 'containers/Admin/projects/project/projectPage/phaseRowUtils';
 
 import { getLocale } from 'components/admin/DatePickers/_shared/locales';
-import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
@@ -26,6 +24,7 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 import { useParams } from 'utils/router';
 
 import messages from './messages';
+import styles from './TimelineEvents.module.css';
 
 // Events often span several years, so the year is shown unless it's this one.
 const formatDay = (date: Date, locale: Locale) =>
@@ -49,7 +48,8 @@ interface Props {
 const TimelineEvents = ({ projectId }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const dateLocale = getLocale(useLocale());
+  const locale = useLocale();
+  const dateLocale = getLocale(locale);
   const { id: selectedEventId } = useParams({ strict: false });
   const { data: events } = useEvents({
     projectIds: [projectId],
@@ -60,40 +60,28 @@ const TimelineEvents = ({ projectId }: Props) => {
   if (!events) return null;
 
   return (
-    <Box>
-      <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-        pl="10px"
-        mb="4px"
-      >
-        <Box as="h4" m="0">
-          <SectionLabel as="span">
-            {formatMessage(messages.eventsSection)}
-          </SectionLabel>
-        </Box>
-        <Tooltip
-          content={formatMessage(messages.newEvent)}
-          theme="dark"
-          placement="bottom"
-          appendTo={() => document.body}
-        >
-          <ButtonWithLink
-            to="/admin/projects/$projectId/events/new"
-            params={{ projectId }}
-            buttonStyle="bo-text"
-            icon="plus"
-            width="32px"
-            height="32px"
-            padding="0"
-            ariaLabel={formatMessage(messages.newEvent)}
-          />
-        </Tooltip>
-      </Box>
+    <div>
+      <div className={styles.header}>
+        <PanelGroupHeader
+          context="rail"
+          level={4}
+          label={formatMessage(messages.eventsSection)}
+          action={
+            <IconButton
+              icon="plus-16"
+              aria-label={formatMessage(messages.newEvent)}
+              onPress={() =>
+                router.navigate({
+                  to: '/$locale/admin/projects/$projectId/events/new',
+                  params: { locale, projectId },
+                })
+              }
+            />
+          }
+        />
+      </div>
 
-      {/* Inset 2px so the text lines up with the section label. */}
-      <Box display="flex" flexDirection="column" mx="2px">
+      <div className={styles.events}>
         {events.data.map((event) => {
           const { start_at, end_at, title_multiloc } = event.attributes;
           const status = pastPresentOrFuture([start_at, end_at]);
@@ -103,21 +91,21 @@ const TimelineEvents = ({ projectId }: Props) => {
               key={event.id}
               to="/admin/projects/$projectId/events/$id"
               params={{ projectId, id: event.id }}
+              className={styles.eventRow}
+              data-selected={event.id === selectedEventId || undefined}
             >
-              <EventRow selected={event.id === selectedEventId}>
-                <StepTitle style={{ color: bo.colors.textHeadingStrong }}>
-                  {localize(title_multiloc)}
-                </StepTitle>
-                <StepMeta m="0" color="textSecondary">
-                  {formatMessage(STATUS_LABELS[status])} ·{' '}
-                  {formatEventDate(start_at, end_at, dateLocale)}
-                </StepMeta>
-              </EventRow>
+              <span className={styles.eventTitle}>
+                {localize(title_multiloc)}
+              </span>
+              <span className={styles.eventMeta}>
+                {formatMessage(STATUS_LABELS[status])} ·{' '}
+                {formatEventDate(start_at, end_at, dateLocale)}
+              </span>
             </Link>
           );
         })}
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 };
 

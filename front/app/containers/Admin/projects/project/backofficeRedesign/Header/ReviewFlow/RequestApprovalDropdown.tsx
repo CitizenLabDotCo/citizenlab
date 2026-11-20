@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Button, Text, Tooltip } from '@citizenlab/cl2-component-library';
+import Button from 'design-system/Button';
 
 import useRequestProjectReview from 'api/project_reviews/useRequestProjectReview';
 
@@ -11,6 +11,9 @@ import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 
 import HeaderDropdown from '../HeaderDropdown';
+
+import styles from './ReviewFlow.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   projectId: string;
@@ -45,47 +48,45 @@ const RequestApprovalDropdown = ({
       },
     });
 
+  const label = formatMessage(
+    pending ? messages.pendingApproval : messages.requestApproval
+  );
+
   return (
-    <Tooltip
-      content={formatMessage(messages.pendingApprovalTooltip)}
-      theme="dark"
-      placement="bottom"
-      disabled={!pending}
-    >
-      <Box>
-        <HeaderDropdown
-          opened={opened && !pending}
-          onOpenChange={handleOpenChange}
-          disabled={pending || processing}
-          label={formatMessage(
-            pending ? messages.pendingApproval : messages.requestApproval
-          )}
-          buttonStyle="bo-primary"
-          icon={pending ? undefined : 'chevron-down'}
-          id={pending ? 'e2e-request-approval-pending' : 'e2e-request-approval'}
-          width="380px"
-          content={
-            <Box>
-              <Text variant="boHelper" m="0" mb="16px">
-                {formatMessage(messages.requestApprovalDescription, {
-                  inFolder,
-                })}
-              </Text>
-              <Button
-                buttonStyle="bo-primary"
-                width="100%"
-                icon="send"
-                onClick={sendRequest}
-                processing={isPending}
-                id="e2e-request-approval-confirm"
-              >
-                {formatMessage(messages.requestApproval)}
-              </Button>
-            </Box>
-          }
-        />
-      </Box>
-    </Tooltip>
+    <HeaderDropdown
+      opened={opened && !pending}
+      onOpenChange={handleOpenChange}
+      disabled={pending || processing}
+      disabledReason={
+        pending ? formatMessage(messages.pendingApprovalTooltip) : undefined
+      }
+      label={label}
+      panelLabel={label}
+      variant="primary"
+      hasMenu={!pending}
+      id={pending ? 'e2e-request-approval-pending' : 'e2e-request-approval'}
+      panelWidth="publish"
+      content={
+        <div className={styles.panel}>
+          <p className={styles.description}>
+            {formatMessage(messages.requestApprovalDescription, {
+              inFolder,
+            })}
+          </p>
+          <div className={styles.fullWidth}>
+            <Button
+              id="e2e-request-approval-confirm"
+              variant="primary"
+              size={32}
+              onPress={sendRequest}
+              isPending={isPending}
+            >
+              {formatMessage(messages.requestApproval)}
+            </Button>
+          </div>
+        </div>
+      }
+    />
   );
 };
 

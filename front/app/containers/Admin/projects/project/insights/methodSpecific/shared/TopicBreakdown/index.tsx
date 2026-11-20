@@ -10,8 +10,12 @@ import {
 
 import { ParticipationMethod } from 'api/phases/types';
 
+import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
+
 import { useIntl } from 'utils/cl-intl';
 
+import InsightCard from '../../../InsightCard';
+import { usePdfExportContext } from '../../../pdf/PdfExportContext';
 import { useWordSection, type WordSection } from '../../../word/useWordSection';
 import WordExportableInsight from '../../../word/WordExportableInsight';
 import messages from '../messages';
@@ -28,6 +32,8 @@ interface Props {
 
 const TopicBreakdown = ({ phaseId, participationMethod }: Props) => {
   const { formatMessage } = useIntl();
+  const { isPdfRenderMode } = usePdfExportContext();
+  const redesigned = useProjectBackofficeRedesign() && !isPdfRenderMode;
 
   const {
     isAiTopicsAllowed,
@@ -121,6 +127,37 @@ const TopicBreakdown = ({ phaseId, participationMethod }: Props) => {
     );
   }
 
+  const breakdown = (
+    <>
+      {isAiTopicsAllowed ? (
+        <AiTopicsAccordion
+          aiTopics={aiTopics}
+          totalInputs={totalInputs}
+          maxAiTopicCount={maxAiTopicCount}
+        />
+      ) : (
+        <AiUpsellBanner />
+      )}
+
+      <Box borderTop={`1px solid ${colors.divider}`} mt="8px" pt="8px">
+        <ManualTagsAccordion
+          manualTopics={manualTopics}
+          maxManualTopicCount={maxManualTopicCount}
+        />
+      </Box>
+    </>
+  );
+
+  if (redesigned) {
+    return (
+      <WordExportableInsight exportId="topic-breakdown" skipExport>
+        <InsightCard title={formatMessage(messages.topicBreakdownCard)}>
+          <div>{breakdown}</div>
+        </InsightCard>
+      </WordExportableInsight>
+    );
+  }
+
   return (
     <WordExportableInsight exportId="topic-breakdown" skipExport>
       <Box
@@ -159,22 +196,7 @@ const TopicBreakdown = ({ phaseId, participationMethod }: Props) => {
           </Box>
         </Box>
 
-        {isAiTopicsAllowed ? (
-          <AiTopicsAccordion
-            aiTopics={aiTopics}
-            totalInputs={totalInputs}
-            maxAiTopicCount={maxAiTopicCount}
-          />
-        ) : (
-          <AiUpsellBanner />
-        )}
-
-        <Box borderTop={`1px solid ${colors.divider}`} mt="8px" pt="8px">
-          <ManualTagsAccordion
-            manualTopics={manualTopics}
-            maxManualTopicCount={maxManualTopicCount}
-          />
-        </Box>
+        {breakdown}
       </Box>
     </WordExportableInsight>
   );

@@ -8,14 +8,21 @@ import {
   CheckboxWithLabel,
 } from '@citizenlab/cl2-component-library';
 
+import Checkbox from 'design-system/Checkbox';
+import IconButton from 'design-system/IconButton';
+
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isPage } from 'utils/helperUtils';
 import { useLocation } from 'utils/router';
 
-import { useIsBoComments } from '../commentsVariant';
+import styles from '../commentsPanel.module.css';
+import { useIsPanelComments } from '../commentsVariant';
 import messages from '../messages';
+
+import PanelFormButtons from './PanelFormButtons';
+import 'design-system/tokens.css';
 
 interface Props {
   processing: boolean;
@@ -44,8 +51,7 @@ const Actions = ({
   const smallerThanTablet = useBreakpoint('tablet');
   const smallerThanPhone = useBreakpoint('phone');
   const { pathname } = useLocation();
-  const isBo = useIsBoComments();
-  const responsivePadding = smallerThanTablet && !isBo ? '6px 12px' : undefined;
+  const isPanel = useIsPanelComments();
 
   const isAdminPage = isPage('admin', pathname);
 
@@ -57,6 +63,39 @@ const Actions = ({
 
   if (!visible) {
     return null;
+  }
+
+  if (isPanel) {
+    return (
+      <div className={styles.formFooter}>
+        {allowAnonymousParticipation && (
+          <div className={styles.anonymous}>
+            <Checkbox
+              isSelected={postAnonymously}
+              onChange={togglePostAnonymously}
+              data-cy="e2e-post-comment-anonymously-checkbox"
+            >
+              {formatMessage(messages.postAnonymously)}
+            </Checkbox>
+            <IconButton
+              icon="info-16"
+              size={24}
+              aria-label={formatMessage(messages.inputsAssociatedWithProfile)}
+            />
+          </div>
+        )}
+        <PanelFormButtons
+          cancelLabel={formatMessage(messages.cancel)}
+          submitLabel={formatMessage(buttonText)}
+          onCancel={onCancel}
+          onSubmit={onSubmit}
+          processing={processing}
+          isCancelDisabled={processing}
+          isSubmitDisabled={submitButtonDisabled}
+          submitId="e2e-submit-comment-btn"
+        />
+      </div>
+    );
   }
 
   const checkbox = (
@@ -90,8 +129,8 @@ const Actions = ({
     <Box display="flex">
       <ButtonWithLink
         disabled={processing}
-        buttonStyle={isBo ? 'bo-secondary' : 'secondary-outlined'}
-        padding={responsivePadding}
+        buttonStyle="secondary-outlined"
+        padding={smallerThanTablet ? '6px 12px' : undefined}
         mr="8px"
         onClick={onCancel}
       >
@@ -102,8 +141,7 @@ const Actions = ({
         id="e2e-submit-comment-btn"
         processing={processing}
         disabled={submitButtonDisabled}
-        buttonStyle={isBo ? 'bo-primary' : 'primary'}
-        padding={responsivePadding}
+        padding={smallerThanTablet ? '6px 12px' : undefined}
         icon={isAdminPage ? 'users' : undefined}
         onClick={onSubmit}
       >

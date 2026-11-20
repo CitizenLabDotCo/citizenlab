@@ -1,7 +1,8 @@
 import React, { useRef, useState } from 'react';
 
-import { Box, Button } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
+
+import Button from 'design-system/Button';
 
 import {
   IUpdatedPhaseProperties,
@@ -33,6 +34,7 @@ import Navigate from 'utils/cl-router/Navigate';
 import ProjectWorkspace from '..';
 import BuildFields from '../Phase/BuildPanel/BuildFields';
 import methodSectionMessages from '../Phase/BuildPanel/BuildFields/MethodSection/messages';
+import buildPanelStyles from '../Phase/BuildPanel/BuildPanel.module.css';
 import PlacementCard from '../Phase/BuildPanel/PlacementCard';
 import SurveySetupModal, {
   SurveySetupAction,
@@ -44,6 +46,7 @@ import PhasePreview from '../Phase/PhasePreview';
 
 import messages from './messages';
 import SavedInputForm from './SavedInputForm';
+import 'design-system/tokens.css';
 
 interface Props {
   project: IProjectData;
@@ -286,25 +289,23 @@ const NewPhaseWorkspace = ({
               ['native_survey', 'ideation', 'proposals'].includes(
                 participationMethod
               ) && (
-                <Box>
+                <div className={buildPanelStyles.fullWidth}>
                   <Button
-                    buttonStyle="bo-secondary"
+                    variant="secondary"
                     data-cy={
                       participationMethod === 'native_survey'
                         ? 'add-draft-survey-questions'
                         : 'add-draft-input-questions'
                     }
-                    boSize="medium"
-                    width="100%"
-                    processing={
+                    isPending={
                       participationMethod !== 'native_survey' &&
                       !!pageSave?.saving
                     }
-                    disabled={
+                    isDisabled={
                       participationMethod !== 'native_survey' &&
                       files.isUploadingFile
                     }
-                    onClick={() => {
+                    onPress={() => {
                       if (participationMethod === 'native_survey') {
                         setSurveySetupOpened(true);
                       } else {
@@ -314,7 +315,7 @@ const NewPhaseWorkspace = ({
                   >
                     {formatMessage(methodSectionMessages.addQuestions)}
                   </Button>
-                </Box>
+                </div>
               )
             }
             surveyMethodSwitch={{

@@ -1,0 +1,15 @@
+/* No gap after a prefix: the URL reads as one string. */
+.prefixGroup {
+  composes: input from '../TextField/input.module.css';
+  gap: 0;
+}
+
+.affix {
+  flex-shrink: 0;
+  color: var(--gv-text-secondary);
+  white-space: nowrap;
+}
+
+.input {
+  composes: innerInput from '../TextField/input.module.css';
+}

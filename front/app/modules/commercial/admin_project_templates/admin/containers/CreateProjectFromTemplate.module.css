@@ -1,0 +1,7 @@
+.loadError {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--gv-space-12);
+  padding: var(--gv-space-24);
+}

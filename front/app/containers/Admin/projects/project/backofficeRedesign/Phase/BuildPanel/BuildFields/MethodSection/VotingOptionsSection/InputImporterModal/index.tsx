@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
 
-import {
-  Box,
-  Button,
-  Divider,
-  Tooltip,
-} from '@citizenlab/cl2-component-library';
+import Button from 'design-system/Button';
+import Divider from 'design-system/Divider';
+import Modal from 'design-system/Modal';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -14,13 +11,13 @@ import inputImporterMessages from 'containers/Admin/projects/project/inputImport
 import formSyncMessages from 'components/admin/FormSync/messages';
 import ImportExcelModal from 'components/admin/InputImporterModals/ImportExcelModal';
 import ImportPdfModal from 'components/admin/InputImporterModals/ImportPdfModal';
-import Modal, { MEDIUM_MODAL_WIDTH } from 'components/UI/Modal';
-import UpsellTooltip from 'components/UpsellTooltip';
+import upsellMessages from 'components/UpsellTooltip/messages';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
 import ImporterRow from './ImporterRow';
+import styles from './InputImporterModal.module.css';
 import messages from './messages';
 
 interface Props {
@@ -55,56 +52,56 @@ const InputImporterModal = ({ projectId, phaseId, opened, onClose }: Props) => {
   return (
     <>
       <Modal
-        opened={opened}
-        close={onClose}
-        width={MEDIUM_MODAL_WIDTH}
-        variant="bo"
-        header={formatMessage(inputImporterMessages.inputImporter)}
+        isOpen={opened}
+        onOpenChange={(isOpen) => {
+          if (!isOpen) onClose();
+        }}
+        size={560}
+        title={formatMessage(inputImporterMessages.inputImporter)}
       >
-        <Box p="24px" display="flex" flexDirection="column" gap="16px">
+        <div className={styles.body}>
           <ImporterRow
             title={formatMessage(messages.paperForms)}
             description={formatMessage(messages.paperFormsDescription)}
           >
-            <Tooltip
-              disabled={printedFormsEnabled}
-              theme="dark"
-              content={
-                <Box display="flex" flexDirection="column" gap="8px">
-                  {formatMessage(formSyncMessages.unlockScanningTooltip1)}
-                  {formatMessage(formSyncMessages.unlockScanningTooltip2)}
-                </Box>
+            <Button
+              variant="secondary"
+              size={32}
+              disabledReason={
+                !printedFormsEnabled && (
+                  <span className={styles.tooltipLines}>
+                    <span>
+                      {formatMessage(formSyncMessages.unlockScanningTooltip1)}
+                    </span>
+                    <span>
+                      {formatMessage(formSyncMessages.unlockScanningTooltip2)}
+                    </span>
+                  </span>
+                )
               }
+              onPress={() => startUpload('pdf')}
             >
-              <Button
-                buttonStyle="bo-secondary"
-                boSize="medium"
-                width="auto"
-                disabled={!printedFormsEnabled}
-                onClick={() => startUpload('pdf')}
-              >
-                {formatMessage(formSyncMessages.importScans)}
-              </Button>
-            </Tooltip>
+              {formatMessage(formSyncMessages.importScans)}
+            </Button>
           </ImporterRow>
-          <Divider margin="0" />
+          <Divider />
           <ImporterRow
             title={formatMessage(formSyncMessages.spreadsheet)}
             description={formatMessage(messages.spreadsheetImportDescription)}
           >
-            <UpsellTooltip disabled={inputImporterAllowed} theme="dark">
-              <Button
-                buttonStyle="bo-secondary"
-                boSize="medium"
-                width="auto"
-                disabled={!inputImporterAllowed}
-                onClick={() => startUpload('excel')}
-              >
-                {formatMessage(formSyncMessages.importFile)}
-              </Button>
-            </UpsellTooltip>
+            <Button
+              variant="secondary"
+              size={32}
+              disabledReason={
+                !inputImporterAllowed &&
+                formatMessage(upsellMessages.tooltipContent)
+              }
+              onPress={() => startUpload('excel')}
+            >
+              {formatMessage(formSyncMessages.importFile)}
+            </Button>
           </ImporterRow>
-        </Box>
+        </div>
       </Modal>
       <ImportPdfModal
         projectId={projectId}

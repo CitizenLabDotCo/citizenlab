@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 
 import { CLErrors, UploadFile } from 'typings';
 
+import { fieldStyles } from 'design-system/Field';
+
 import { IFileAttachmentData } from 'api/file_attachments/types';
 import { IFileData } from 'api/files/types';
 
-import Error from 'components/UI/Error';
+import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 import FileRepositorySelectAndUpload from 'components/UI/FileRepositorySelectAndUpload';
 import FileSelectModal from 'components/UI/FileRepositorySelectAndUpload/components/FileSelectModal';
 import fileMessages from 'components/UI/FileRepositorySelectAndUpload/components/messages';
@@ -14,6 +16,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import SetupCard from './SetupCard';
 import SummaryPill from './SummaryPill';
+import 'design-system/tokens.css';
 
 const MAX_SIZE_MB = 10;
 
@@ -42,7 +45,9 @@ const AttachmentsCard = ({
   disabled = false,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const getApiErrorMessage = useApiErrorText();
   const [opened, setOpened] = useState(false);
+  const fileError = opened ? undefined : getApiErrorMessage(errors?.file);
   const hasBody =
     files.attachments.length > 0 || files.isUploadingFile || !!errors?.file;
 
@@ -54,7 +59,7 @@ const AttachmentsCard = ({
           files.attachments.length > 0 && (
             <SummaryPill
               active
-              icon="paperclip"
+              icon="paperclip-16"
               label={formatMessage(fileMessages.attachmentCount, {
                 count: files.attachments.length,
               })}
@@ -68,17 +73,11 @@ const AttachmentsCard = ({
           onClick: () => setOpened(true),
         }}
       >
-        {!opened && errors?.file && (
-          <Error
-            apiErrors={errors.file}
-            showBackground={false}
-            showIcon={false}
-          />
-        )}
+        {fileError && <p className={fieldStyles.error}>{fileError}</p>}
       </SetupCard>
       <FileSelectModal
         opened={opened}
-        variant="bo"
+        variant="panel"
         onClose={() => setOpened(false)}
         fileAttachments={files.attachments}
         onFileAdd={files.uploadFile}
@@ -89,7 +88,7 @@ const AttachmentsCard = ({
         {hasBody && (
           <FileRepositorySelectAndUpload
             id={id}
-            variant="bo"
+            variant="panel"
             onFileAdd={files.uploadFile}
             onFileRemove={files.removeFile}
             onFileReorder={files.reorderFiles}

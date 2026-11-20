@@ -1,0 +1,49 @@
+/* The panel look of the shared comment forms (CommentsVariantContext 'panel'). */
+
+/* The box around the comment text area. */
+.form {
+  border: var(--gv-border-width-1) solid var(--gv-border-control);
+  border-radius: var(--gv-radius-8);
+  background: var(--gv-surface-panel);
+  transition-property: border-color;
+  transition-duration: var(--gv-motion-duration-fast);
+  transition-timing-function: var(--gv-motion-easing-standard);
+}
+
+.form:hover {
+  border-color: var(--gv-border-control-hovered);
+}
+
+.form:global(.focused) {
+  border-color: var(--gv-border-focused);
+}
+
+/* Actions inside the box, under the text area. */
+.formFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gv-space-8);
+  padding: var(--gv-space-8);
+}
+
+.anonymous {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-4);
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--gv-space-8);
+  margin-left: auto;
+}
+
+/* Actions under the text area of a comment being edited. */
+.editFooter {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-8);
+  margin-top: var(--gv-space-8);
+}

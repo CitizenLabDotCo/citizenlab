@@ -486,12 +486,14 @@ const PhaseParticipationConfig = ({
         {participation_method === 'common_ground' &&
           (layout === 'panel' ? (
             <>
-              <Box mb="10px">
-                <PanelHeading label={formatMessage(messages.settingsGroup)} />
+              <Box pt="14px" mb="10px">
+                <PanelHeading
+                  label={formatMessage(messages.settingsGroup)}
+                  expandable
+                />
               </Box>
               <PanelGroup
                 label={formatMessage(messages.participantActionsGroup)}
-                defaultOpen
               >
                 {commonGroundActions}
               </PanelGroup>

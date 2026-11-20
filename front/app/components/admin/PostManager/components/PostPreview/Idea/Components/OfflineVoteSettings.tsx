@@ -9,6 +9,8 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
 
+import NumberField from 'design-system/NumberField';
+
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
@@ -19,19 +21,22 @@ import useUpdatePhase from 'api/phases/useUpdatePhase';
 import useUserById from 'api/users/useUserById';
 
 import { trackEventByName } from 'utils/analytics';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';
 
 import messages from '../messages';
 import tracks from '../tracks';
 
 import tooltipPreview from './assets/preview_for_tooltip.png';
+import InfoTooltipMark from './InfoTooltipMark';
+import styles from './OfflineVoteSettings.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   ideaId: string;
   phaseId: string;
   votingMethod: VotingMethod;
-  variant?: 'default' | 'bo';
+  variant?: 'default' | 'panel';
 }
 
 const OfflineVoteSettings = ({
@@ -40,10 +45,7 @@ const OfflineVoteSettings = ({
   phaseId,
   variant = 'default',
 }: Props) => {
-  const isBo = variant === 'bo';
-  const modifiedByProps = isBo
-    ? ({ variant: 'boHelper', fontSize: 'xs' } as const)
-    : ({ color: 'textSecondary', fontSize: 's' } as const);
+  const { formatMessage } = useIntl();
   const { data: authUser } = useAuthUser();
 
   const { data: appConfig } = useAppConfiguration();
@@ -67,10 +69,10 @@ const OfflineVoteSettings = ({
   const isBudgeting = votingMethod === 'budgeting';
 
   const handleOfflineVotesChangedDebounced = useMemo(() => {
-    return debounce(() => {
+    return debounce((amount: number | null) => {
       updateIdea({
         id: ideaId,
-        requestBody: { manual_votes_amount: manualVotesAmount },
+        requestBody: { manual_votes_amount: amount },
         skipRefetchCounts: true,
       });
 
@@ -82,21 +84,14 @@ const OfflineVoteSettings = ({
         currentUser: authUser?.data.id || null,
       });
     }, 300);
-  }, [
-    authUser?.data.id,
-    ideaId,
-    manualVotesAmount,
-    phaseId,
-    tenantId,
-    updateIdea,
-  ]);
+  }, [authUser?.data.id, ideaId, phaseId, tenantId, updateIdea]);
 
   const handleOfflineVotersChangedDebounced = useMemo(() => {
-    return debounce(() => {
-      manualVotersAmount !== null &&
+    return debounce((amount: number | null) => {
+      amount !== null &&
         updatePhase({
           phaseId,
-          manual_voters_amount: manualVotersAmount,
+          manual_voters_amount: amount,
         });
 
       trackEventByName(tracks.changeManualVoterAmount, {
@@ -106,14 +101,143 @@ const OfflineVoteSettings = ({
         currentUser: authUser?.data.id || null,
       });
     }, 300);
-  }, [authUser?.data.id, manualVotersAmount, phaseId, tenantId, updatePhase]);
+  }, [authUser?.data.id, phaseId, tenantId, updatePhase]);
+
+  if (variant === 'panel') {
+    const votersModifiedBy = userLastModifiedVoters?.data.attributes
+      .first_name && (
+      <FormattedMessage
+        {...messages.modifiedBy}
+        values={{
+          name: `${userLastModifiedVoters.data.attributes.first_name} ${userLastModifiedVoters.data.attributes.last_name}`,
+        }}
+      />
+    );
+    const votesModifiedBy = userLastModifiedVotes?.data.attributes
+      .first_name && (
+      <FormattedMessage
+        {...messages.modifiedBy}
+        values={{ name: getFullName(userLastModifiedVotes.data) }}
+      />
+    );
+    const votesDisabled = !manualVotersAmount && isBudgeting;
+    const votesLabel = formatMessage(
+      isBudgeting
+        ? messages.manualPickAdjustment
+        : messages.manualVoteAdjustment
+    );
+    // NumberField reports NaN when the field is cleared.
+    const toAmount = (value: number) => (Number.isNaN(value) ? null : value);
+
+    return (
+      <div className={styles.panel}>
+        {isBudgeting && (
+          <div className={styles.field}>
+            <NumberField
+              label={
+                <span className={styles.label}>
+                  {formatMessage(messages.manualVotersLabel)}
+                  <InfoTooltipMark
+                    aria-label={formatMessage(messages.manualVotersLabel)}
+                    content={
+                      <>
+                        <FormattedMessage
+                          {...messages.manualVotersTooltip1}
+                          values={{ b: (chunks) => <strong>{chunks}</strong> }}
+                        />
+                        <span className={styles.tooltipBlock}>
+                          <FormattedMessage
+                            {...messages.manualVotersTooltip2}
+                          />
+                        </span>
+                      </>
+                    }
+                  />
+                </span>
+              }
+              value={manualVotersAmount ?? undefined}
+              // NumberField commits its value on blur, Enter and the steppers.
+              onChange={(value) => {
+                const amount = toAmount(value);
+                setManualVotersAmount(amount);
+                handleOfflineVotersChangedDebounced(amount);
+              }}
+            />
+            {votersModifiedBy && (
+              <p className={styles.modifiedBy}>{votersModifiedBy}</p>
+            )}
+          </div>
+        )}
+        <div className={styles.field}>
+          <NumberField
+            label={
+              <span className={styles.label}>
+                {votesLabel}
+                <InfoTooltipMark
+                  aria-label={votesLabel}
+                  content={
+                    <>
+                      <img
+                        className={styles.tooltipImage}
+                        src={tooltipPreview}
+                        alt="info"
+                      />
+                      <FormattedMessage
+                        {...messages.manualVoteAdjustmentTooltip1}
+                      />
+                      <ul className={styles.tooltipList}>
+                        <li>
+                          <FormattedMessage
+                            {...messages.manualVoteAdjustmentTooltip2}
+                          />
+                        </li>
+                        <li>
+                          <FormattedMessage
+                            {...messages.manualVoteAdjustmentTooltip3}
+                          />
+                        </li>
+                        <li>
+                          <FormattedMessage
+                            {...messages.manualVoteAdjustmentTooltip4}
+                          />
+                        </li>
+                        <li>
+                          <FormattedMessage
+                            {...messages.manualVoteAdjustmentTooltip5}
+                          />
+                        </li>
+                      </ul>
+                    </>
+                  }
+                />
+              </span>
+            }
+            value={manualVotesAmount ?? undefined}
+            isDisabled={votesDisabled}
+            description={
+              votesDisabled
+                ? formatMessage(messages.manualVotersDisabledTooltip)
+                : undefined
+            }
+            onChange={(value) => {
+              const amount = toAmount(value);
+              setManualVotesAmount(amount);
+              handleOfflineVotesChangedDebounced(amount);
+            }}
+          />
+          {votesModifiedBy && (
+            <p className={styles.modifiedBy}>{votesModifiedBy}</p>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <Box mt={isBo ? '8px' : '20px'}>
+    <Box mt="20px">
       {votingMethod === 'budgeting' && (
-        <Box mb={isBo ? '16px' : '20px'}>
+        <Box mb="20px">
           <Input
-            variant={variant}
             type="number"
             value={manualVotersAmount?.toString() || ''}
             label={<FormattedMessage {...messages.manualVotersLabel} />}
@@ -136,11 +260,11 @@ const OfflineVoteSettings = ({
               setManualVotersAmount(parseInt(value, 10));
             }}
             onBlur={() => {
-              handleOfflineVotersChangedDebounced();
+              handleOfflineVotersChangedDebounced(manualVotersAmount);
             }}
           />
           {userLastModifiedVoters?.data.attributes.first_name && (
-            <Text pt="4px" m="0px" {...modifiedByProps}>
+            <Text pt="4px" m="0px" color="textSecondary" fontSize="s">
               <FormattedMessage
                 {...messages.modifiedBy}
                 values={{
@@ -157,7 +281,6 @@ const OfflineVoteSettings = ({
       >
         <>
           <Input
-            variant={variant}
             type="number"
             value={manualVotesAmount?.toString() || ''}
             disabled={!manualVotersAmount && isBudgeting}
@@ -202,11 +325,11 @@ const OfflineVoteSettings = ({
               setManualVotesAmount(parseInt(value, 10));
             }}
             onBlur={() => {
-              handleOfflineVotesChangedDebounced();
+              handleOfflineVotesChangedDebounced(manualVotesAmount);
             }}
           />
           {userLastModifiedVotes?.data.attributes.first_name && (
-            <Text pt="4px" m="0px" {...modifiedByProps}>
+            <Text pt="4px" m="0px" color="textSecondary" fontSize="s">
               <FormattedMessage
                 {...messages.modifiedBy}
                 values={{

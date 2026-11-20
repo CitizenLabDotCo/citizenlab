@@ -1,15 +1,13 @@
 import React, { useMemo, useState } from 'react';
 
-import {
-  Box,
-  Button,
-  Icon,
-  Input,
-  Text,
-  colors,
-} from '@citizenlab/cl2-component-library';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+
+import AlertDialog from 'design-system/AlertDialog';
+import Button from 'design-system/Button';
+import Icon from 'design-system/Icon';
+import SearchField from 'design-system/SearchField';
+import TextField from 'design-system/TextField';
 
 import { IInputTopicData } from 'api/input_topics/types';
 
@@ -17,13 +15,10 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
-import SettingsSection from 'containers/Admin/projects/project/backofficeRedesign/_shared/components/SettingsModal/SettingsSection';
 import InputTopicModal, {
   InputTopicFormValues,
 } from 'containers/Admin/projects/project/topics/InputTopicModal';
 import topicsMessages from 'containers/Admin/projects/project/topics/messages';
-
-import Modal from 'components/UI/Modal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
@@ -32,9 +27,11 @@ import { usePermission } from 'utils/permissions';
 import messages from './messages';
 import SortableTag, { ROOT_TAG_TYPE } from './SortableTag';
 import TagGroup from './TagGroup';
+import styles from './TagsSection.module.css';
 import useSortableTags from './useSortableTags';
 import { TagsDraft } from './useTagsDraft';
 import { getSiblings } from './utils';
+import 'design-system/tokens.css';
 
 const TOPICS_SETTINGS_PATH = '/admin/settings/topics/input';
 
@@ -101,53 +98,46 @@ const TagsSection = ({ draft }: Props) => {
 
   return (
     <>
-      <SettingsSection
-        title={formatMessage(messages.settingsCreateAndManageTags)}
-        titleVariant="label"
-        description={
-          <>
-            <FormattedMessage {...topicsMessages.projectTopicsDescription} />
-            {canAccessTopicsSettings && (
-              <>
-                {' '}
-                <FormattedMessage
-                  {...topicsMessages.defaultInputTopicsInfo}
-                  values={{
-                    settingsLink: (
-                      <Link to={TOPICS_SETTINGS_PATH}>
-                        <FormattedMessage
-                          {...topicsMessages.defaultInputTopicsSettings}
-                        />
-                      </Link>
-                    ),
-                  }}
-                />
-              </>
-            )}
-          </>
-        }
+      <section
+        className={styles.section}
+        aria-label={formatMessage(messages.settingsCreateAndManageTags)}
       >
-        <Box display="flex" alignItems="center" gap="8px" mb="8px">
-          <Icon
-            name="info-outline"
-            width="14px"
-            height="14px"
-            fill={colors.coolGrey500}
-          />
-          <Text variant="boMicro" color="coolGrey500" lineHeight="1.5" m="0px">
+        <p className={styles.intro}>
+          <FormattedMessage {...topicsMessages.projectTopicsDescription} />
+          {canAccessTopicsSettings && (
+            <>
+              {' '}
+              <FormattedMessage
+                {...topicsMessages.defaultInputTopicsInfo}
+                values={{
+                  settingsLink: (
+                    <Link to={TOPICS_SETTINGS_PATH}>
+                      <FormattedMessage
+                        {...topicsMessages.defaultInputTopicsSettings}
+                      />
+                    </Link>
+                  ),
+                }}
+              />
+            </>
+          )}
+        </p>
+        <div className={styles.info}>
+          <Icon name="info-16" className={styles.infoIcon} />
+          <p className={styles.infoText}>
             {formatMessage(messages.tagsRequiredInfo)}
-          </Text>
-        </Box>
-        <Box mb="12px">
-          <Input
-            type="search"
-            variant="bo"
+          </p>
+        </div>
+        <div className={styles.search}>
+          <SearchField
+            size={36}
+            width="full"
+            aria-label={formatMessage(messages.searchTags)}
+            placeholder={formatMessage(messages.searchTags)}
             value={search}
             onChange={setSearch}
-            ariaLabel={formatMessage(messages.searchTags)}
-            placeholder={formatMessage(messages.searchTags)}
           />
-        </Box>
+        </div>
         <DndProvider backend={HTML5Backend}>
           {ordered.map((topic, index) => {
             const matches = [topic, ...getSiblings(tags, topic.id)].some(
@@ -177,7 +167,6 @@ const TagsSection = ({ draft }: Props) => {
                     drag={drag}
                     canAddSubtopics={nestedInputTopicsActive}
                     deleteDisabled={isLastRootTopic}
-                    isFirst={index === 0}
                     onAddSubtopic={() =>
                       setEditing({ topic: null, parentId: topic.id })
                     }
@@ -190,85 +179,57 @@ const TagsSection = ({ draft }: Props) => {
             );
           })}
         </DndProvider>
-        <Box
-          position="sticky"
-          bottom="0"
-          background={colors.white}
-          pt="12px"
-          pb="8px"
-          display="flex"
-          gap="8px"
+        {/* A form, so Enter in the name field adds the tag. */}
+        <form
+          className={styles.addRow}
+          onSubmit={(event) => {
+            event.preventDefault();
+            add();
+          }}
         >
-          <Box flexGrow={1}>
-            <Input
+          <div className={styles.addField}>
+            <TextField
               id="phase-add-input-tag"
-              type="text"
-              variant="bo"
+              aria-label={formatMessage(messages.addTagPlaceholder)}
+              placeholder={formatMessage(messages.addTagPlaceholder)}
               value={name}
               onChange={setName}
-              placeholder={formatMessage(messages.addTagPlaceholder)}
-              ariaLabel={formatMessage(messages.addTagPlaceholder)}
-              onKeyDown={(event) => {
-                if (event.key === 'Enter') {
-                  event.preventDefault();
-                  add();
-                }
-              }}
             />
-          </Box>
+          </div>
           <Button
-            buttonStyle="bo-secondary"
-            icon="plus"
-            disabled={!name.trim()}
-            onClick={add}
+            type="submit"
+            variant="secondary"
+            size={32}
+            icon="plus-14"
+            isDisabled={!name.trim()}
           >
             {formatMessage(messages.settingsAddTag)}
           </Button>
-        </Box>
-      </SettingsSection>
-      <Modal
-        variant="bo"
-        opened={!!topicToDelete}
-        close={() => setTopicToDelete(null)}
-        width={540}
-        header={<FormattedMessage {...topicsMessages.confirmHeader} />}
-        footer={
-          <Box display="flex" justifyContent="flex-end" gap="8px" w="100%">
-            <Button
-              buttonStyle="bo-secondary"
-              width="auto"
-              onClick={() => setTopicToDelete(null)}
-            >
-              <FormattedMessage {...topicsMessages.cancel} />
-            </Button>
-            <Button
-              buttonStyle="bo-delete"
-              width="auto"
-              onClick={confirmDelete}
-              id="e2e-input-topic-delete-confirmation-button"
-            >
-              <FormattedMessage {...topicsMessages.delete} />
-            </Button>
-          </Box>
-        }
+        </form>
+      </section>
+      <AlertDialog
+        isOpen={!!topicToDelete}
+        onOpenChange={(isOpen) => {
+          if (!isOpen) setTopicToDelete(null);
+        }}
+        title={<FormattedMessage {...topicsMessages.confirmHeader} />}
+        confirmLabel={<FormattedMessage {...topicsMessages.delete} />}
+        onConfirm={confirmDelete}
+        confirmId="e2e-input-topic-delete-confirmation-button"
       >
-        <Box p="24px">
-          <Text variant="boControl" m="0px">
-            <FormattedMessage
-              {...(deleteHasSubtags
-                ? topicsMessages.deleteInputTopicWithChildrenConfirmation
-                : topicsMessages.deleteInputTopicConfirmation)}
-            />
-          </Text>
-        </Box>
-      </Modal>
+        <FormattedMessage
+          {...(deleteHasSubtags
+            ? topicsMessages.deleteInputTopicWithChildrenConfirmation
+            : topicsMessages.deleteInputTopicConfirmation)}
+        />
+      </AlertDialog>
       <InputTopicModal
         topic={editing?.topic ?? null}
         parentId={editing && !editing.topic ? editing.parentId : undefined}
         opened={!!editing}
         close={() => setEditing(null)}
         onSubmit={saveTopic}
-        variant="bo"
+        variant="panel"
       />
     </>
   );

@@ -21,14 +21,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.NewProjectForm.chooseGroups',
     defaultMessage: 'Choose groups',
   },
-  searchGroups: {
-    id: 'app.containers.Admin.projects.NewProjectForm.searchGroups',
-    defaultMessage: 'Search groups',
-  },
-  noGroupsMatch: {
-    id: 'app.containers.Admin.projects.NewProjectForm.noGroupsMatch',
-    defaultMessage: 'No groups match your search.',
-  },
   groupsRequired: {
     id: 'app.containers.Admin.projects.NewProjectForm.groupsRequired',
     defaultMessage: 'Choose at least one group.',

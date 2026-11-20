@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 
-import {
-  Box,
-  Button,
-  colors,
-  IconButton,
-  Text,
-} from '@citizenlab/cl2-component-library';
+import AlertDialog from 'design-system/AlertDialog';
+import Button from 'design-system/Button';
+import { ListBoxOption } from 'design-system/ListBox';
+import { MenuTrigger } from 'design-system/Menu';
+import { DialogTrigger } from 'design-system/Popover';
+import SelectionBar from 'design-system/SelectionBar';
+import TagPicker from 'design-system/TagPicker';
+import { Key } from 'design-system/types';
 
 import { IIdeaData } from 'api/ideas/types';
 
@@ -14,7 +15,7 @@ import { ManagerType } from 'components/admin/PostManager';
 import useAssigneeOptions, {
   UNASSIGNED,
 } from 'components/admin/PostManager/useAssigneeOptions';
-import WarningModal from 'components/WarningModal';
+import warningModalMessages from 'components/WarningModal/messages';
 
 import { useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';
@@ -26,8 +27,8 @@ import usePickerOptions from '../usePickerOptions';
 import { phaseIds, topicIds } from '../utils';
 
 import BatchFailureAlert from './BatchFailureAlert';
-import BatchMenuButton from './BatchMenuButton';
 import SelectAllButton from './SelectAllButton';
+import StatusPicker from './StatusPicker';
 import useBatchActions, { BatchAttribute } from './useBatchActions';
 
 interface Props {
@@ -52,13 +53,6 @@ const shared = (ideas: IIdeaData[], values: (idea: IIdeaData) => string[]) =>
         ideas.every((idea) => values(idea).includes(value))
       );
 
-const partial = (ideas: IIdeaData[], values: (idea: IIdeaData) => string[]) => {
-  const all = shared(ideas, values);
-  return [...new Set(ideas.flatMap(values))].filter(
-    (value) => !all.includes(value)
-  );
-};
-
 const BatchBar = ({
   type,
   projectId,
@@ -75,6 +69,7 @@ const BatchBar = ({
   const { formatMessage } = useIntl();
   const { term, terms, termCount } = useInputTermLabels();
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [phaseMenuOpen, setPhaseMenuOpen] = useState(false);
   const { statusOptions, tagOptions, phaseOptions } = usePickerOptions(
     type,
     projectId
@@ -105,84 +100,75 @@ const BatchBar = ({
     idea.relationships.assignee?.data?.id ?? UNASSIGNED,
   ];
   const sharedPhases = shared(ideas, phaseIds);
-  const partialTags = partial(ideas, topicIds);
+  const sharedTags = shared(ideas, topicIds);
   const isSingle = ideas.length === 1;
 
+  // The picker reports the whole new selection; each tag that changed is toggled.
+  const handleTagsChange = (keys: Set<Key>) => {
+    tagOptions
+      .map((option) => option.value)
+      .filter((tagId) => keys.has(tagId) !== sharedTags.includes(tagId))
+      .forEach(toggleTag);
+  };
+
   return (
-    <Box display="flex" alignItems="center" gap="8px" flexWrap="wrap">
-      <Text variant="boSection" m="0" mr="4px">
-        {formatMessage(messages.selectedCount, { count: ideas.length })}
-      </Text>
-
-      {total !== undefined && ideas.length < total && (
-        <SelectAllButton
-          label={formatMessage(messages.selectAllTerms, {
-            termCount: termCount(total),
-          })}
-          processing={isSelectingAll}
-          failed={selectAllFailed}
-          onClick={onSelectAll}
-        />
-      )}
-
-      <BatchMenuButton
-        icon="check-circle"
-        label={formatMessage(messages.batchStatus)}
-        width="280px"
-      >
-        {(close) => (
-          <>
-            <OptionList
-              options={statusOptions}
-              selected={shared(ideas, statusIds)}
-              onToggle={(statusId) => {
-                setStatus(statusId);
-                close();
-              }}
-            />
-            <Text variant="boMicro" m="8px">
-              {formatMessage(messages.statusChangeNotifies)}
-            </Text>
-          </>
+    <>
+      <SelectionBar count={ideas.length} onClearSelection={onClear}>
+        {total !== undefined && ideas.length < total && (
+          <SelectAllButton
+            label={formatMessage(messages.selectAllTerms, {
+              termCount: termCount(total),
+            })}
+            processing={isSelectingAll}
+            failed={selectAllFailed}
+            onClick={onSelectAll}
+          />
         )}
-      </BatchMenuButton>
 
-      <BatchMenuButton icon="user" label={formatMessage(messages.batchAssign)}>
-        {(close) => (
+        <StatusPicker
+          options={statusOptions}
+          selected={shared(ideas, statusIds)}
+          onSelect={setStatus}
+        />
+
+        <MenuTrigger>
+          <Button size={28} icon="user-16">
+            {formatMessage(messages.batchAssign)}
+          </Button>
           <OptionList
+            aria-label={formatMessage(messages.batchAssign)}
             options={assigneeOptions}
             selected={shared(ideas, assigneeIds)}
-            onToggle={(assigneeId) => {
-              assign(assigneeId);
-              close();
-            }}
+            onToggle={assign}
+            selectionMode="single"
           />
-        )}
-      </BatchMenuButton>
+        </MenuTrigger>
 
-      <BatchMenuButton icon="label" label={formatMessage(messages.batchTags)}>
-        {() => (
-          <OptionList
-            options={tagOptions.map((option) => ({
-              ...option,
-              partial: partialTags.includes(option.value),
+        <DialogTrigger>
+          <Button size={28} icon="tag-16">
+            {formatMessage(messages.batchTags)}
+          </Button>
+          <TagPicker
+            aria-label={formatMessage(messages.batchTags)}
+            items={tagOptions.map((option) => ({
+              id: option.value,
+              label: option.label,
             }))}
-            selected={shared(ideas, topicIds)}
-            searchable
-            onToggle={toggleTag}
-          />
-        )}
-      </BatchMenuButton>
+            selectedKeys={new Set(sharedTags)}
+            onSelectionChange={handleTagsChange}
+          >
+            {(tag) => <ListBoxOption id={tag.id}>{tag.label}</ListBoxOption>}
+          </TagPicker>
+        </DialogTrigger>
 
-      {type === 'ProjectIdeas' && (
-        <BatchMenuButton
-          icon="arrow-right"
-          label={formatMessage(messages.copyToPhase)}
-          width="280px"
-        >
-          {(close) =>
-            phaseOptions.length > 0 ? (
+        {type === 'ProjectIdeas' &&
+          (phaseOptions.length > 0 ? (
+            <MenuTrigger isOpen={phaseMenuOpen} onOpenChange={setPhaseMenuOpen}>
+              <Button size={28} icon="arrow-right-16">
+                {formatMessage(messages.copyToPhase)}
+              </Button>
               <OptionList
+                aria-label={formatMessage(messages.copyToPhase)}
                 options={phaseOptions.map((option) => ({
                   ...option,
                   disabled: sharedPhases.includes(option.value),
@@ -190,55 +176,52 @@ const BatchBar = ({
                 selected={sharedPhases}
                 onToggle={(phaseId) => {
                   copyToPhase(phaseId);
-                  close();
+                  setPhaseMenuOpen(false);
                 }}
               />
-            ) : (
-              <Text variant="boHelper" m="8px">
-                {formatMessage(messages.noOtherPhasesForTerms, { terms })}
-              </Text>
-            )
-          }
-        </BatchMenuButton>
-      )}
+            </MenuTrigger>
+          ) : (
+            <Button
+              size={28}
+              icon="arrow-right-16"
+              disabledReason={formatMessage(messages.noOtherPhasesForTerms, {
+                terms,
+              })}
+            >
+              {formatMessage(messages.copyToPhase)}
+            </Button>
+          ))}
 
-      {isSingle && (
+        {isSingle && (
+          <Button
+            size={28}
+            icon="square-pen-16"
+            onPress={() => onEdit(ideas[0].id)}
+          >
+            {formatMessage(messages.edit)}
+          </Button>
+        )}
+
         <Button
-          buttonStyle="bo-secondary"
-          icon="edit"
-          onClick={() => onEdit(ideas[0].id)}
+          variant="danger"
+          size={28}
+          icon="trash-2-16"
+          onPress={() => setDeleteModalOpen(true)}
         >
-          {formatMessage(messages.edit)}
+          {isSingle
+            ? formatMessage(messages.delete)
+            : formatMessage(messages.deleteTerms, {
+                termCount: termCount(ideas.length),
+              })}
         </Button>
-      )}
 
-      <Button
-        buttonStyle="bo-delete"
-        icon="delete"
-        onClick={() => setDeleteModalOpen(true)}
-      >
-        {isSingle
-          ? formatMessage(messages.delete)
-          : formatMessage(messages.deleteTerms, {
-              termCount: termCount(ideas.length),
-            })}
-      </Button>
+        <BatchFailureAlert failure={failure} />
+      </SelectionBar>
 
-      <IconButton
-        iconName="close"
-        iconWidth="18px"
-        iconHeight="18px"
-        iconColor={colors.coolGrey600}
-        iconColorOnHover={colors.textPrimary}
-        a11y_buttonActionMessage={formatMessage(messages.clearSelection)}
-        onClick={onClear}
-      />
-
-      <BatchFailureAlert failure={failure} />
-
-      <WarningModal
-        open={deleteModalOpen}
-        isLoading={isDeleting}
+      <AlertDialog
+        isOpen={deleteModalOpen}
+        onOpenChange={setDeleteModalOpen}
+        isPending={isDeleting}
         title={
           isSingle
             ? formatMessage(messages.deleteTermTitle, { term })
@@ -246,15 +229,14 @@ const BatchBar = ({
                 termCount: termCount(ideas.length),
               })
         }
-        explanation={
-          isSingle
-            ? formatMessage(messages.deleteTermExplanation, { term })
-            : formatMessage(messages.deleteTermsExplanation, { terms })
-        }
-        onClose={() => setDeleteModalOpen(false)}
+        confirmLabel={formatMessage(warningModalMessages.confirm)}
         onConfirm={deleteAll}
-      />
-    </Box>
+      >
+        {isSingle
+          ? formatMessage(messages.deleteTermExplanation, { term })
+          : formatMessage(messages.deleteTermsExplanation, { terms })}
+      </AlertDialog>
+    </>
   );
 };
 

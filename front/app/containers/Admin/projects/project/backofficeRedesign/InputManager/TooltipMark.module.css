@@ -1,0 +1,15 @@
+.mark {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  border-radius: var(--gv-radius-full);
+  outline: none;
+}
+
+/* Not a React Aria element, so it draws the design-system ring itself instead of the app's. */
+.mark:focus-visible,
+.mark:global(.focus-visible) {
+  outline: var(--gv-border-width-focus) solid var(--gv-border-focused);
+  outline-offset: var(--gv-focus-ring-offset);
+  box-shadow: none;
+}

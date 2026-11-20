@@ -1,24 +1,22 @@
 import React, { useCallback, useMemo, useState } from 'react';
 
-import {
-  Box,
-  colors,
-  Button,
-  Text,
-  Toggle,
-  Tooltip,
-} from '@citizenlab/cl2-component-library';
+import Icon from 'design-system/Icon';
+import Switch from 'design-system/Switch';
+import Tooltip from 'design-system/Tooltip';
+import UnstyledButton from 'design-system/UnstyledButton';
 
 import { CampaignData } from 'containers/Admin/messaging/AutomatedEmails/types';
 import useCampaignRow from 'containers/Admin/messaging/AutomatedEmails/useCampaignRow';
 import messagingMessages from 'containers/Admin/messaging/messages';
 
 import { useRegisterPageSaver } from 'components/admin/PageSaveContext';
-import UpsellTooltip from 'components/UpsellTooltip';
+import upsellMessages from 'components/UpsellTooltip/messages';
 
 import { useIntl } from 'utils/cl-intl';
 
+import styles from './NotificationRow.module.css';
 import useNotificationDescription from './useNotificationDescription';
+import 'design-system/tokens.css';
 
 interface Props {
   campaign: CampaignData;
@@ -54,64 +52,55 @@ const NotificationRow = ({ campaign, projectId, phaseId }: Props) => {
     save: () => saveEnabled(enabled),
   });
 
+  const editLabel = formatMessage(messagingMessages.editButtonLabel);
+  const disabledReason = isOutsidePlan
+    ? formatMessage(upsellMessages.tooltipContent)
+    : isComingSoon
+    ? formatMessage(messagingMessages.editDisabledTooltip)
+    : undefined;
+  const isEditDisabled = !isEditable || !enabled;
+  const hasReason = isEditDisabled && !!disabledReason;
+
+  // The whole text block opens the editor, so it is a plain React Aria button
+  // styled as a row; a design-system Button only holds a short label.
   const editButton = (
-    <Button
-      buttonStyle="bo-text"
-      icon="chevron-right"
-      iconPos="right"
-      iconSize="16px"
-      iconColor={colors.coolGrey500}
-      width="100%"
-      height="auto"
-      justify="space-between"
-      whiteSpace="normal"
-      textAlign="left"
-      padding="0"
-      ariaLabel={formatMessage(messagingMessages.editButtonLabel)}
-      disabled={!isEditable || !enabled}
-      onClick={openEditor}
+    <UnstyledButton
+      className={`${styles.edit} ${enabled ? '' : styles.off}`}
+      aria-label={editLabel}
+      isDisabled={isEditDisabled && !hasReason}
+      aria-disabled={hasReason ? true : undefined}
+      onPress={isEditDisabled ? undefined : openEditor}
     >
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="flex-start"
-        gap="4px"
-        py="4px"
-      >
-        <Text as="span" variant="boControl" lineHeight="20px" m="0">
-          {campaign.campaign_description}
-        </Text>
-        <Text as="span" variant="boHelper" lineHeight="18px" m="0">
+      <span className={styles.content}>
+        <span className={styles.title}>{campaign.campaign_description}</span>
+        <span className={styles.detail}>
           {description ??
             [campaign.recipient_segment, when].filter(Boolean).join(' · ')}
-        </Text>
-      </Box>
-    </Button>
+        </span>
+      </span>
+      <Icon name="chevron-right-16" className={styles.chevron} />
+    </UnstyledButton>
   );
 
   return (
-    <Box display="flex" alignItems="center" gap="12px">
-      <Box alignSelf="flex-start" pt="2px">
-        <Toggle
-          variant="bo"
-          checked={enabled}
-          onChange={() => setEnabled((enabled) => !enabled)}
-          disabled={!canBeDisabled}
+    <div className={styles.row}>
+      <div className={styles.switch}>
+        <Switch
+          size={26}
+          aria-label={campaign.campaign_description}
+          isSelected={enabled}
+          onChange={setEnabled}
+          isDisabled={!canBeDisabled}
         />
-      </Box>
-      <Box flexGrow={1} minWidth="0">
-        {isOutsidePlan ? (
-          <UpsellTooltip disabled={false}>{editButton}</UpsellTooltip>
+      </div>
+      <div className={styles.main}>
+        {hasReason ? (
+          <Tooltip content={disabledReason}>{editButton}</Tooltip>
         ) : (
-          <Tooltip
-            disabled={!isComingSoon}
-            content={formatMessage(messagingMessages.editDisabledTooltip)}
-          >
-            <div>{editButton}</div>
-          </Tooltip>
+          editButton
         )}
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 };
 

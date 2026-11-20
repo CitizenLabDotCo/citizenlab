@@ -1,10 +1,12 @@
 import React from 'react';
 
-import { Box, Icon, Text, bo, colors } from '@citizenlab/cl2-component-library';
+import Icon from 'design-system/Icon';
 
 import { useIntl } from 'utils/cl-intl';
 
+import styles from './AdminOnlyPlaceholder.module.css';
 import messages from './messages';
+import 'design-system/tokens.css';
 
 interface Props {
   title: string;
@@ -14,39 +16,15 @@ const AdminOnlyPlaceholder = ({ title }: Props) => {
   const { formatMessage } = useIntl();
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      justifyContent="center"
-      gap="6px"
-      p="16px"
-      border={`1px dashed ${colors.divider}`}
-      borderRadius={bo.borderRadius}
-      background={colors.grey50}
-    >
-      <Text
-        variant="boSection"
-        m="0"
-        lineHeight="18px"
-        color="coolGrey700"
-        textAlign="center"
-      >
-        {title}
-      </Text>
-      <Box display="flex" alignItems="center" gap="6px">
-        <Icon
-          name="eye-off"
-          width="14px"
-          height="14px"
-          fill={colors.coolGrey500}
-          ariaHidden
-        />
-        <Text m="0" fontSize="xs" lineHeight="14px" color="coolGrey500">
+    <div className={styles.placeholder}>
+      <p className={styles.title}>{title}</p>
+      <div className={styles.note}>
+        <Icon name="eye-off-16" className={styles.icon} />
+        <p className={styles.noteText}>
           {formatMessage(messages.onlyAdminsSeeThis)}
-        </Text>
-      </Box>
-    </Box>
+        </p>
+      </div>
+    </div>
   );
 };
 

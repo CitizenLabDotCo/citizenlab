@@ -1,0 +1,46 @@
+.popover {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: 328px;
+}
+
+.dialog {
+  box-sizing: border-box;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--gv-space-8);
+  min-height: 0;
+  padding: var(--gv-space-12);
+  outline: none;
+}
+
+/* The Search field is drawn 240 wide for a toolbar; in the picker it spans the 302 column. */
+.dialog > :first-child {
+  width: auto;
+}
+
+.footer {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: var(--gv-space-10);
+  border-top: var(--gv-border-width-1) solid var(--gv-border-control);
+}
+
+.count {
+  composes: small from '../typography.module.css';
+  color: var(--gv-text-secondary);
+}
+
+/* Done does something on the page, so it is a Button drawn as the Standalone Link. */
+.done {
+  composes: link standalone from '../Link/Link.module.css';
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: var(--gv-radius-4);
+  background: transparent;
+}

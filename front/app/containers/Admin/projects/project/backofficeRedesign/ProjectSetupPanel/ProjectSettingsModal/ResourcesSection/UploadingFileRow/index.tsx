@@ -1,12 +1,9 @@
 import React from 'react';
 
-import {
-  Box,
-  Button,
-  Select,
-  Spinner,
-  Text,
-} from '@citizenlab/cl2-component-library';
+import IconButton from 'design-system/IconButton';
+import { ListBoxOption } from 'design-system/ListBox';
+import Select from 'design-system/Select';
+import Spinner from 'design-system/Spinner';
 
 import { FILE_CATEGORIES, FileCategory } from 'api/files/types';
 
@@ -18,6 +15,8 @@ import { useIntl } from 'utils/cl-intl';
 import FileRow from '../FileRow';
 
 import messages from './messages';
+import styles from './UploadingFileRow.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   file: File;
@@ -35,6 +34,7 @@ const UploadingFileRow = ({
   onRemove,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const selectFileType = formatMessage(filesMessages.selectFileType);
 
   return (
     <FileRow
@@ -42,54 +42,56 @@ const UploadingFileRow = ({
       mimeType={file.type}
       meta={
         status === 'too_large' && (
-          <Text variant="boMicro" color="red600" m="0px">
+          <p className={styles.error}>
             {formatMessage(filesMessages.fileSizeError)}
-          </Text>
+          </p>
         )
       }
       status={
-        <Box flexShrink={0} display="flex" alignItems="center" gap="8px">
+        <div className={styles.status}>
           {status === 'queued' && (
-            <Box w="180px">
+            <div className={styles.categorySelect}>
               <Select
-                variant="bo"
+                aria-label={selectFileType}
+                size={32}
                 value={category ?? null}
-                placeholder={formatMessage(filesMessages.selectFileType)}
-                options={FILE_CATEGORIES.map((option) => ({
-                  value: option,
-                  label: formatMessage(filesMessages[option]),
-                }))}
-                onChange={(option) => onCategoryChange(option.value)}
-              />
-            </Box>
+                placeholder={selectFileType}
+                onChange={(key) => {
+                  const option = FILE_CATEGORIES.find((value) => value === key);
+                  if (option) onCategoryChange(option);
+                }}
+              >
+                {FILE_CATEGORIES.map((option) => (
+                  <ListBoxOption key={option} id={option}>
+                    {formatMessage(filesMessages[option])}
+                  </ListBoxOption>
+                ))}
+              </Select>
+            </div>
           )}
           {status === 'uploading' && (
             <>
-              <Text variant="boMicro" color="coolGrey500" m="0px">
+              <span className={styles.note}>
                 {formatMessage(messages.fileUploading)}
-              </Text>
-              <Spinner size="14px" />
+              </span>
+              <Spinner aria-label={formatMessage(messages.fileUploading)} />
             </>
           )}
           {status === 'error' && (
-            <Text variant="boMicro" color="red600" m="0px">
+            <span className={styles.error}>
               {formatMessage(messages.fileUploadFailed)}
-            </Text>
+            </span>
           )}
-        </Box>
+        </div>
       }
       actions={
         status !== 'uploading' && (
-          <Button
-            buttonStyle="bo-text"
-            icon="close"
-            width="28px"
-            height="28px"
-            padding="0"
-            ariaLabel={formatMessage(messages.removeFile, {
+          <IconButton
+            icon="x-16"
+            aria-label={formatMessage(messages.removeFile, {
               fileName: file.name,
             })}
-            onClick={onRemove}
+            onPress={onRemove}
           />
         )
       }

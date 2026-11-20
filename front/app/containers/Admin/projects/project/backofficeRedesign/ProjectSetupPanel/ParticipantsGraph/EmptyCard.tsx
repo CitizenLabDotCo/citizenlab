@@ -1,32 +1,28 @@
 import React from 'react';
 
-import { Box, Text, colors } from '@citizenlab/cl2-component-library';
-
 import { useIntl } from 'utils/cl-intl';
 
-import { StatCard } from '../StatCardLink';
-
 import messages from './messages';
+import styles from './ParticipantsGraph.module.css';
 
 const EmptyCard = () => {
   const { formatMessage, formatNumber } = useIntl();
 
   return (
-    <StatCard
+    <div
+      className={styles.emptyCard}
       role="group"
       aria-label={formatMessage(messages.participantsGraphLabel)}
     >
-      <Text variant="boMicro" m="0">
+      <p className={styles.caption}>
         {formatMessage(messages.participantsGraphLabel)}
-      </Text>
-      <Text m="0" mt="2px" fontSize="xxl" fontWeight="bold" color="coolGrey500">
-        {formatNumber(0)}
-      </Text>
-      <Box mt="40px" borderTop={`1px dashed ${colors.coolGrey300}`} />
-      <Text variant="boMicro" mt="8px" mb="0">
+      </p>
+      <p className={styles.emptyValue}>{formatNumber(0)}</p>
+      <div className={styles.emptyLine} />
+      <p className={styles.emptyNote}>
         {formatMessage(messages.participantsEmpty)}
-      </Text>
-    </StatCard>
+      </p>
+    </div>
   );
 };
 

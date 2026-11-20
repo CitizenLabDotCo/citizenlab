@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import { Box, colors, ClickOutside } from '@citizenlab/cl2-component-library';
+import { Box, ClickOutside } from '@citizenlab/cl2-component-library';
 import { hideVisually } from 'polished';
 import { Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
@@ -25,10 +25,11 @@ import { isNilOrError } from 'utils/helperUtils';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 import { weglotTranslateSubmission } from 'utils/weglot';
 
+import panelStyles from '../../../commentsPanel.module.css';
 import {
-  boCommentFormStyle,
   CommentsVariant,
-  useIsBoComments,
+  defaultCommentFormFrame,
+  useIsPanelComments,
 } from '../../../commentsVariant';
 import { commentReplyButtonClicked$, commentAdded } from '../../../events';
 import messages from '../../../messages';
@@ -50,18 +51,8 @@ const FormContainer = styled(ClickOutside)`
 const Form = styled.form<{ variant: CommentsVariant }>`
   flex: 1;
   background: #fff;
-  border: 1px solid ${colors.borderDark};
-  border-radius: ${(props) => props.theme.borderRadius};
 
-  &:not(.focused):hover {
-    border-color: ${colors.black};
-  }
-
-  &.focused {
-    border: solid 2px ${(props) => props.theme.colors.tenantPrimary};
-  }
-
-  ${boCommentFormStyle}
+  ${defaultCommentFormFrame}
 `;
 
 const HiddenLabel = styled.span`
@@ -84,7 +75,7 @@ const ChildCommentForm = ({
   allowAnonymousParticipation,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const isBo = useIsBoComments();
+  const isPanel = useIsPanelComments();
   const locale = useLocale();
   const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
@@ -296,8 +287,10 @@ const ChildCommentForm = ({
           <Form
             // TODO: Fix this the next time the file is edited.
             // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            className={focused ? 'focused' : ''}
-            variant={isBo ? 'bo' : 'default'}
+            className={`${focused ? 'focused' : ''} ${
+              isPanel ? panelStyles.form : ''
+            }`}
+            variant={isPanel ? 'panel' : 'default'}
           >
             <label>
               <HiddenLabel>

@@ -1,24 +1,22 @@
 import React from 'react';
 
-import {
-  Box,
-  colors,
-  Table,
-  Tbody,
-  Th,
-  Thead,
-  Tr,
-} from '@citizenlab/cl2-component-library';
+import Pagination from 'design-system/Pagination';
+import Table, {
+  ColumnHeader,
+  ColumnMenu,
+  TableBody,
+  TableHeader,
+} from 'design-system/Table';
 
 import { IVolunteers, VolunteersSort } from 'api/volunteers/types';
-
-import Pagination from 'components/Pagination';
 
 import { useIntl } from 'utils/cl-intl';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 import messages from './messages';
+import styles from './VolunteerManager.module.css';
 import VolunteerRow from './VolunteerRow';
+import 'design-system/tokens.css';
 
 interface Props {
   volunteers: IVolunteers;
@@ -40,28 +38,40 @@ const VolunteerTable = ({
   const { formatMessage } = useIntl();
   const users = new Map(volunteers.included.map((user) => [user.id, user]));
   const lastPage = getPageNumberFromUrl(volunteers.links.last) || 1;
+  const sortDirection = sort === 'created_at' ? 'ascending' : 'descending';
 
   return (
-    <Box overflowX="auto">
-      <Table>
-        <Thead>
-          <Tr background={colors.white}>
-            <Th>{formatMessage(messages.volunteerColumn)}</Th>
-            <Th>{formatMessage(messages.emailColumn)}</Th>
-            <Th>{formatMessage(messages.cause)}</Th>
-            <Th
-              clickable
-              sortDirection={sort === 'created_at' ? 'ascending' : 'descending'}
-              onClick={() =>
-                onSort(sort === 'created_at' ? '-created_at' : 'created_at')
-              }
-              style={{ whiteSpace: 'nowrap' }}
-            >
-              {formatMessage(messages.signedUpColumn)}
-            </Th>
-          </Tr>
-        </Thead>
-        <Tbody>
+    <div>
+      <Table aria-label={formatMessage(messages.volunteers)}>
+        <TableHeader>
+          <ColumnHeader id="volunteer" isRowHeader showChevron={false}>
+            {formatMessage(messages.volunteerColumn)}
+          </ColumnHeader>
+          <ColumnHeader id="email" showChevron={false}>
+            {formatMessage(messages.emailColumn)}
+          </ColumnHeader>
+          <ColumnHeader id="cause" showChevron={false}>
+            {formatMessage(messages.cause)}
+          </ColumnHeader>
+          <ColumnHeader
+            id="signedUp"
+            defaultWidth={140}
+            sortDirection={sortDirection}
+            menu={
+              <ColumnMenu
+                columnType="date"
+                onSortChange={(direction) =>
+                  onSort(
+                    direction === 'ascending' ? 'created_at' : '-created_at'
+                  )
+                }
+              />
+            }
+          >
+            {formatMessage(messages.signedUpColumn)}
+          </ColumnHeader>
+        </TableHeader>
+        <TableBody>
           {volunteers.data.map((volunteer) => (
             <VolunteerRow
               key={volunteer.id}
@@ -72,18 +82,18 @@ const VolunteerTable = ({
               )}
             />
           ))}
-        </Tbody>
+        </TableBody>
       </Table>
       {lastPage > 1 && (
-        <Box display="flex" justifyContent="center" py="16px">
+        <div className={styles.pagination}>
           <Pagination
-            currentPage={currentPage}
-            totalPages={lastPage}
-            loadPage={onChangePage}
+            page={currentPage}
+            pageCount={lastPage}
+            onChange={onChangePage}
           />
-        </Box>
+        </div>
       )}
-    </Box>
+    </div>
   );
 };
 

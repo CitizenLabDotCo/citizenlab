@@ -1,0 +1,163 @@
+.card {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border: var(--gv-border-width-1) solid var(--gv-border-default);
+  border-radius: var(--gv-radius-8);
+  background: var(--gv-surface-panel);
+  /* Clips the header fill to the rounded corners. */
+  overflow: hidden;
+  outline: none;
+}
+
+/* The ring goes round the whole card when its header has focus. */
+.card:has(> .trigger[data-focus-visible]),
+.card:has(> .heading > .trigger[data-focus-visible]) {
+  outline: var(--gv-border-width-focus) solid var(--gv-border-focused);
+  outline-offset: var(--gv-focus-ring-offset);
+}
+
+.card[data-disabled] {
+  opacity: var(--gv-opacity-disabled);
+}
+
+.heading {
+  margin: 0;
+  font: inherit;
+  color: inherit;
+}
+
+.header {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-10);
+  width: 100%;
+  min-width: 0;
+  padding: var(--gv-space-8) var(--gv-space-8) var(--gv-space-8)
+    var(--gv-space-12);
+}
+
+.trigger {
+  composes: header;
+  margin: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  outline: none;
+  cursor: pointer;
+  transition-property: background-color;
+  transition-duration: var(--gv-motion-duration-fast);
+  transition-timing-function: var(--gv-motion-easing-standard);
+}
+
+.trigger[data-disabled] {
+  cursor: default;
+}
+
+.trigger[data-hovered] {
+  background: var(--gv-surface-hovered);
+}
+
+.trigger[data-pressed] {
+  background: var(--gv-surface-pressed);
+}
+
+.title {
+  composes: small from '../typography.module.css';
+  flex: 1;
+  min-width: 0;
+  color: var(--gv-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.slot {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.summary {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.card[data-expanded] .summary {
+  display: none;
+}
+
+.iconBox {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: var(--gv-size-control-28);
+  height: var(--gv-size-control-28);
+  border-radius: var(--gv-radius-8);
+  color: var(--gv-icon-tertiary);
+  transition-property: color;
+  transition-duration: var(--gv-motion-duration-fast);
+  transition-timing-function: var(--gv-motion-easing-standard);
+}
+
+.trigger[data-hovered] .iconBox,
+.trigger[data-pressed] .iconBox,
+.trigger[data-focus-visible] .iconBox {
+  color: var(--gv-icon-primary);
+}
+
+.chevron {
+  transition-property: transform;
+  transition-duration: var(--gv-motion-duration-medium);
+  transition-timing-function: var(--gv-motion-easing-standard);
+}
+
+.card[data-expanded] .chevron {
+  transform: rotate(180deg);
+}
+
+.actions {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+}
+
+/* Closing: the height on easing-move. Opening (below): easing-silk. */
+.panel {
+  height: var(--disclosure-panel-height);
+  overflow: clip;
+  transition-property: height;
+  transition-duration: var(--gv-motion-duration-medium);
+  transition-timing-function: var(--gv-motion-easing-move);
+}
+
+.card[data-expanded] .panel {
+  transition-duration: var(--gv-motion-duration-slow);
+  transition-timing-function: var(--gv-motion-easing-silk);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-8);
+  padding: var(--gv-space-0) var(--gv-space-12) var(--gv-space-12);
+}
+
+/* The content fades behind the moving edge: out at once, in after a beat. */
+.panelContent {
+  composes: body;
+  opacity: 0;
+  transition-property: opacity;
+  transition-duration: var(--gv-motion-duration-instant);
+  transition-timing-function: var(--gv-motion-easing-standard);
+}
+
+.card[data-expanded] .panelContent {
+  opacity: 1;
+  transition-duration: var(--gv-motion-duration-medium);
+  transition-delay: var(--gv-motion-duration-instant);
+}

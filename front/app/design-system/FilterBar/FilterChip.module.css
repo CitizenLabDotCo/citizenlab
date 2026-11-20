@@ -1,0 +1,68 @@
+.chip {
+  box-sizing: border-box;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--gv-space-6);
+  height: var(--gv-size-28);
+  padding-right: var(--gv-space-4);
+  border-radius: var(--gv-radius-full);
+  background: var(--gv-component-filter-surface-applied);
+  color: var(--gv-component-filter-text-applied);
+  outline: none;
+  transition-property: background-color;
+  transition-duration: var(--gv-motion-duration-fast);
+  transition-timing-function: var(--gv-motion-easing-standard);
+}
+
+/* The trigger fills the chip up to the remove button, so the ring goes on the chip. */
+.chip:has(.trigger[data-focus-visible]) {
+  outline: var(--gv-border-width-focus) solid var(--gv-border-focused);
+  outline-offset: var(--gv-focus-ring-offset);
+}
+
+.trigger {
+  composes: ui from '../typography.module.css';
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gv-space-6);
+  height: 100%;
+  padding: 0 0 0 var(--gv-space-10);
+  border: none;
+  border-radius: var(--gv-radius-full);
+  background: transparent;
+  color: inherit;
+  white-space: nowrap;
+  cursor: pointer;
+  outline: none;
+}
+
+.label {
+  max-width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.icon {
+  flex-shrink: 0;
+}
+
+.remove {
+  composes: ringOutside from '../focus.module.css';
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: var(--gv-size-20);
+  height: var(--gv-size-20);
+  padding: 0;
+  border: none;
+  border-radius: var(--gv-radius-full);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.chip:has([data-hovered]) {
+  background: var(--gv-component-filter-surface-applied-hovered);
+}

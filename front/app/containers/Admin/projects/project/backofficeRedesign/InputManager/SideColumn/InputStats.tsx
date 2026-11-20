@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { bo, Box, colors } from '@citizenlab/cl2-component-library';
+import StatRow from 'design-system/StatRow';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IPhaseData } from 'api/phases/types';
@@ -15,7 +15,7 @@ import useInputTermLabels from '../useInputTermLabels';
 import { ManagerFilters, SetFilters } from '../useManagerParams';
 import { PhaseCounts } from '../usePhaseCounts';
 
-import StatRow from './StatRow';
+import styles from './SideColumn.module.css';
 
 type RowFilter = Pick<
   Partial<ManagerFilters>,
@@ -147,22 +147,24 @@ const InputStats = ({
     );
 
   return (
-    <Box p="8px" borderRadius={bo.panelBorderRadius} background={colors.white}>
+    <div className={styles.stats}>
       {rows.map(({ key, label, value, filter }) => {
         const active = !!filter && isOnlyFilter(filters, filter);
         const canFilter = !!filter && (value > 0 || active);
 
-        return (
+        return canFilter ? (
           <StatRow
             key={key}
             label={label}
             value={value}
-            onClick={canFilter ? () => toggleRow(filter, active) : undefined}
-            pressed={active}
+            onPress={() => toggleRow(filter, active)}
+            isPressed={active}
           />
+        ) : (
+          <StatRow key={key} label={label} value={value} />
         );
       })}
-    </Box>
+    </div>
   );
 };
 

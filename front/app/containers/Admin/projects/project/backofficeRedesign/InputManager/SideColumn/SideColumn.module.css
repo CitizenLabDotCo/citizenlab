@@ -1,0 +1,68 @@
+/* A white card on the grey side column, like the list panel next to it. */
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-10);
+  padding: var(--gv-space-16);
+  border-radius: var(--gv-radius-12);
+  background: var(--gv-surface-panel);
+}
+
+.fillHeight {
+  flex-grow: 1;
+}
+
+.stats {
+  padding: var(--gv-space-8);
+  border-radius: var(--gv-radius-12);
+  background: var(--gv-surface-panel);
+}
+
+.autoShare {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-8);
+}
+
+.modalHelp {
+  composes: ui from '../../../../../../../design-system/typography.module.css';
+  margin: 0 0 var(--gv-space-16);
+  color: var(--gv-text-secondary);
+}
+
+.participants {
+  margin-bottom: var(--gv-space-16);
+}
+
+.voteRow {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-16);
+  margin-bottom: var(--gv-space-16);
+}
+
+.voteLabel {
+  composes: ui from '../../../../../../../design-system/typography.module.css';
+  flex-grow: 1;
+  min-width: 0;
+  color: var(--gv-text-primary);
+}
+
+/* Today's vote control is 144 px wide (two 32 px steps around an 80 px input); no size token. */
+.voteField {
+  flex: 0 0 144px;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  padding: var(--gv-space-16) 0;
+}
+
+.pagination {
+  margin-top: var(--gv-space-16);
+}
+
+.error {
+  margin-top: var(--gv-space-16);
+}

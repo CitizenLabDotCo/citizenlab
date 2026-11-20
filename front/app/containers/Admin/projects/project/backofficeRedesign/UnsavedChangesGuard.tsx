@@ -1,17 +1,17 @@
 import React from 'react';
 
-import { Box, Button, Text } from '@citizenlab/cl2-component-library';
+import Modal from 'design-system/Modal';
 
 import phaseSetupMessages from 'containers/Admin/projects/project/phaseSetup/messages';
 
 import { usePageSave } from 'components/admin/PageSaveContext';
-import Modal, { MEDIUM_MODAL_WIDTH } from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 import { useBlocker } from 'utils/router';
 
 import useReturnToPhaseAfterSave from './_shared/useReturnToPhaseAfterSave';
 import messages from './messages';
+import styles from './UnsavedChangesGuard.module.css';
 
 const UnsavedChangesGuard = () => {
   const { formatMessage } = useIntl();
@@ -44,40 +44,28 @@ const UnsavedChangesGuard = () => {
   };
 
   return (
+    // The close button cancels: Modal has room for two footer actions only.
     <Modal
-      opened
-      close={blocker.reset}
-      width={MEDIUM_MODAL_WIDTH}
-      header={formatMessage(messages.unsavedChangesTitle)}
-      footer={
-        <Box display="flex" justifyContent="flex-end" gap="8px" width="100%">
-          <Button buttonStyle="bo-secondary" onClick={blocker.reset}>
-            {formatMessage(messages.unsavedChangesCancel)}
-          </Button>
-          <Button
-            buttonStyle="bo-secondary"
-            onClick={() => {
-              pageSave.discardAll();
-              proceed();
-            }}
-          >
-            {formatMessage(messages.discardChanges)}
-          </Button>
-          <Button
-            buttonStyle="bo-primary"
-            processing={pageSave.saving}
-            onClick={handleSave}
-          >
-            {formatMessage(phaseSetupMessages.saveChangesLabel)}
-          </Button>
-        </Box>
-      }
+      isOpen
+      onOpenChange={(isOpen) => !isOpen && blocker.reset()}
+      size={560}
+      title={formatMessage(messages.unsavedChangesTitle)}
+      secondaryAction={{
+        label: formatMessage(messages.discardChanges),
+        onPress: () => {
+          pageSave.discardAll();
+          proceed();
+        },
+      }}
+      primaryAction={{
+        label: formatMessage(phaseSetupMessages.saveChangesLabel),
+        isPending: pageSave.saving,
+        onPress: handleSave,
+      }}
     >
-      <Box p="24px">
-        <Text variant="boHelper">
-          {formatMessage(messages.unsavedChangesDescription2)}
-        </Text>
-      </Box>
+      <p className={styles.text}>
+        {formatMessage(messages.unsavedChangesDescription2)}
+      </p>
     </Modal>
   );
 };

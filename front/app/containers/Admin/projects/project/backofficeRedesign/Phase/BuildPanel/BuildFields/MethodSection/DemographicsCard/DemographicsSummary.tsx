@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { Text } from '@citizenlab/cl2-component-library';
-
 import { IPhasePermissionAction } from 'api/permissions/types';
 import usePermissionsPhaseCustomFields from 'api/permissions_phase_custom_fields/usePermissionsPhaseCustomFields';
 
@@ -9,6 +7,8 @@ import demographicMessages from 'components/admin/ActionForm/DataSection/Demogra
 import actionFormMessages from 'components/admin/ActionForm/messages';
 
 import { useIntl } from 'utils/cl-intl';
+
+import styles from './DemographicsCard.module.css';
 
 interface Props {
   phaseId: string;
@@ -27,11 +27,11 @@ const DemographicsSummary = ({ phaseId, action }: Props) => {
   const nQuestions = customFields.data.length;
 
   return (
-    <Text as="span" variant="boHelper" fontSize="xs" m="0">
+    <span className={styles.summary}>
       {nQuestions > 0
         ? formatMessage(actionFormMessages.nQuestions, { nQuestions })
         : formatMessage(demographicMessages.noDemographicQuestionsAsked)}
-    </Text>
+    </span>
   );
 };
 

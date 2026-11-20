@@ -35,35 +35,23 @@ it('follows edited dates into another lifecycle after a manual choice', () => {
   const { rerender } = render(
     renderPreview({ start_at: inDays(-1), end_at: inDays(5) })
   );
-  expect(screen.getByRole('button', { name: 'Open' })).toHaveAttribute(
-    'aria-pressed',
-    'true'
-  );
+  expect(screen.getByRole('radio', { name: 'Open' })).toBeChecked();
 
-  fireEvent.click(screen.getByRole('button', { name: 'Ended' }));
-  expect(screen.getByRole('button', { name: 'Ended' })).toHaveAttribute(
-    'aria-pressed',
-    'true'
-  );
+  fireEvent.click(screen.getByRole('radio', { name: 'Ended' }));
+  expect(screen.getByRole('radio', { name: 'Ended' })).toBeChecked();
 
   rerender(renderPreview({ start_at: inDays(-1), end_at: inDays(6) }));
-  expect(screen.getByRole('button', { name: 'Ended' })).toHaveAttribute(
-    'aria-pressed',
-    'true'
-  );
+  expect(screen.getByRole('radio', { name: 'Ended' })).toBeChecked();
 
   rerender(renderPreview({ start_at: inDays(3), end_at: inDays(6) }));
-  expect(screen.getByRole('button', { name: 'Before' })).toHaveAttribute(
-    'aria-pressed',
-    'true'
-  );
+  expect(screen.getByRole('radio', { name: 'Before' })).toBeChecked();
 });
 
 it('offers only the three lifecycle states', () => {
   render(renderPreview({ start_at: inDays(-1), end_at: inDays(5) }));
 
   expect(
-    screen.getAllByRole('button').map((button) => button.textContent)
+    screen.getAllByRole('radio').map((radio) => radio.textContent)
   ).toEqual(['Before', 'Open', 'Ended']);
   expect(screen.queryByText(/What residents see/)).not.toBeInTheDocument();
 });
@@ -83,7 +71,7 @@ it('includes saved participation in Open and Ended snapshots', () => {
     ['Open', 'open', true],
     ['Ended', 'ended', true],
   ] as const) {
-    fireEvent.click(screen.getByRole('button', { name: label }));
+    fireEvent.click(screen.getByRole('radio', { name: label }));
     window.dispatchEvent(
       new MessageEvent('message', {
         origin: window.location.origin,

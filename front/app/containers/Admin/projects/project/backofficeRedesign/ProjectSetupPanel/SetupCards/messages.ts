@@ -1,6 +1,26 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  settingsTitle: {
+    id: 'app.containers.Admin.projects.project.setupCards.settingsTitle',
+    defaultMessage: 'Settings',
+  },
+  projectCardTitle: {
+    id: 'app.containers.Admin.projects.project.setupCards.projectCardTitle',
+    defaultMessage: 'Set project card',
+  },
+  areaTitle: {
+    id: 'app.containers.Admin.projects.project.setupCards.areaTitle',
+    defaultMessage: 'Set area',
+  },
+  topicTagsTitle: {
+    id: 'app.containers.Admin.projects.project.setupCards.topicTagsTitle',
+    defaultMessage: 'Set topic tags',
+  },
+  methodsTitle: {
+    id: 'app.containers.Admin.projects.project.setupCards.methodsTitle',
+    defaultMessage: 'Plan participation',
+  },
   generalTooltip: {
     id: 'app.containers.Admin.projects.project.setupCards.generalTooltip',
     defaultMessage: 'The project name, and the space and folder it belongs to',
@@ -65,13 +85,5 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.topicTagsDescription',
     defaultMessage:
       'Participants can filter projects by topic on the homepage.',
-  },
-  topicTagsSearch: {
-    id: 'app.containers.Admin.projects.project.topicTagsSearch',
-    defaultMessage: 'Search tags...',
-  },
-  topicTagsNoMatch: {
-    id: 'app.containers.Admin.projects.project.topicTagsNoMatch',
-    defaultMessage: 'No matching tags',
   },
 });

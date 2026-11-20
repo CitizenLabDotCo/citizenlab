@@ -1,0 +1,32 @@
+.timeline {
+  padding: var(--gv-space-18) var(--gv-space-8) var(--gv-space-24);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--gv-size-32);
+  margin-bottom: 17px;
+  padding-right: var(--gv-space-4);
+  padding-left: var(--gv-space-10);
+}
+
+.title {
+  composes: uiStrong from '../../../../../design-system/typography.module.css';
+  color: var(--gv-text-primary);
+}
+
+.actions {
+  display: flex;
+  gap: var(--gv-space-4);
+}
+
+/* Lines a group label up with the rows below it. */
+.groupHeader {
+  padding: 0 var(--gv-space-10);
+}
+
+.divider {
+  margin: var(--gv-space-12) var(--gv-space-10) var(--gv-space-8);
+}

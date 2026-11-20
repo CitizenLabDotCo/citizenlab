@@ -1,0 +1,33 @@
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-4);
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-6);
+}
+
+/* Sets the primary action a little apart from the icon buttons. */
+.primaryAction {
+  display: flex;
+  margin-left: var(--gv-space-4);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-16);
+}
+
+.lead {
+  composes: ui from '../../../../../../../../../../design-system/typography.module.css';
+  color: var(--gv-text-secondary);
+}
+
+.helper {
+  composes: ui from '../../../../../../../../../../design-system/typography.module.css';
+  color: var(--gv-text-secondary);
+}

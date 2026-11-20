@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
-import { Box, Button } from '@citizenlab/cl2-component-library';
+import Button from 'design-system/Button';
+import Modal from 'design-system/Modal';
 
 import usePollQuestions from 'api/poll_questions/usePollQuestions';
 
@@ -9,20 +10,19 @@ import SummaryPill from 'containers/Admin/projects/_shared/components/SummaryPil
 import PollAdminForm from 'containers/Admin/projects/project/poll/PollAdminForm';
 
 import actionFormMessages from 'components/admin/ActionForm/messages';
-import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 
 import methodSectionMessages from './BuildFields/MethodSection/messages';
+import styles from './BuildPanel.module.css';
 
 interface Props {
   phaseId: string;
-  name: string;
   title: string;
   description: string;
 }
 
-const PollOption = ({ phaseId, name, title, description }: Props) => {
+const PollOption = ({ phaseId, title, description }: Props) => {
   const { formatMessage } = useIntl();
   const [opened, setOpened] = useState(false);
   const { data: pollQuestions } = usePollQuestions({ phaseId });
@@ -31,11 +31,9 @@ const PollOption = ({ phaseId, name, title, description }: Props) => {
   const hasQuestions = nQuestions > 0;
 
   return (
-    <Box display="flex" flexDirection="column" gap="12px">
+    <div className={styles.option}>
       <ChoiceRadio
-        name={name}
         value="poll"
-        currentValue="poll"
         title={title}
         titleAdornment={
           hasQuestions && (
@@ -48,34 +46,27 @@ const PollOption = ({ phaseId, name, title, description }: Props) => {
           )
         }
         description={description}
-        onChange={() => {}}
       />
       {pollQuestions && (
-        <Button
-          buttonStyle="bo-secondary"
-          boSize="medium"
-          width="100%"
-          onClick={() => setOpened(true)}
-        >
-          {formatMessage(methodSectionMessages.addQuestions)}
-        </Button>
+        <div className={styles.fullWidth}>
+          <Button variant="secondary" onPress={() => setOpened(true)}>
+            {formatMessage(methodSectionMessages.addQuestions)}
+          </Button>
+        </div>
       )}
       <Modal
-        opened={opened}
-        close={() => setOpened(false)}
-        width={900}
-        variant="bo"
-        header={formatMessage(methodSectionMessages.pollQuestions)}
+        isOpen={opened}
+        onOpenChange={setOpened}
+        size={920}
+        title={formatMessage(methodSectionMessages.pollQuestions)}
       >
-        <Box p="24px">
-          <PollAdminForm
-            variant="bo"
-            phaseId={phaseId}
-            pollQuestions={pollQuestions?.data}
-          />
-        </Box>
+        <PollAdminForm
+          variant="panel"
+          phaseId={phaseId}
+          pollQuestions={pollQuestions?.data}
+        />
       </Modal>
-    </Box>
+    </div>
   );
 };
 

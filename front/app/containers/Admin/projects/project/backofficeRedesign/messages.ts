@@ -33,18 +33,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.publishRestoreToDraft',
     defaultMessage: 'Restore to draft',
   },
-  listing: {
-    id: 'app.containers.Admin.projects.project.listing',
-    defaultMessage: 'Listing',
-  },
-  settingsManagement: {
-    id: 'app.containers.Admin.projects.project.settingsManagement',
-    defaultMessage: 'Management',
-  },
-  settingsSaveChanges: {
-    id: 'app.containers.Admin.projects.project.settingsSaveChanges',
-    defaultMessage: 'Save changes',
-  },
   unsavedChangesTitle: {
     id: 'app.containers.Admin.projects.project.unsavedChangesTitle',
     defaultMessage: 'Unsaved changes',
@@ -52,10 +40,6 @@ export default defineMessages({
   unsavedChangesDescription2: {
     id: 'app.containers.Admin.projects.project.unsavedChangesDescription2',
     defaultMessage: 'You have unsaved changes. Leaving now discards them.',
-  },
-  unsavedChangesCancel: {
-    id: 'app.containers.Admin.projects.project.unsavedChangesCancel',
-    defaultMessage: 'Cancel',
   },
   discardChanges: {
     id: 'app.containers.Admin.projects.project.discardChanges',

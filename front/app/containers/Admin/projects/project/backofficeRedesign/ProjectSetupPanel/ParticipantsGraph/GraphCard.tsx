@@ -1,17 +1,19 @@
 import React, { useMemo } from 'react';
 
-import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
 import { parseISO } from 'date-fns';
 import moment from 'moment';
+
+import Icon from 'design-system/Icon';
 
 import useParticipants from 'components/admin/GraphCards/ParticipantsCard/useParticipants';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-import StatCardLink, { STAT_CARD_PADDING } from '../StatCardLink';
+import StatCardLink from '../StatCardLink';
 
 import EmptyCard from './EmptyCard';
 import messages from './messages';
+import styles from './ParticipantsGraph.module.css';
 import Sparkline from './Sparkline';
 
 const MIN_WEEKS = 2;
@@ -47,66 +49,36 @@ const GraphCard = ({ projectId }: Props) => {
     !!sinceDate && sinceDate.getFullYear() === new Date().getFullYear();
 
   return (
-    <StatCardLink
-      to="/admin/projects/$projectId/audience"
-      params={{ projectId }}
-    >
-      <Box
-        display="flex"
-        alignItems="flex-start"
-        justifyContent="space-between"
-        gap="8px"
-      >
-        <Box minWidth="0">
-          <Text variant="boMicro">
+    <StatCardLink projectId={projectId}>
+      <div className={styles.head}>
+        <div className={styles.summary}>
+          <p className={styles.caption}>
             {formatMessage(messages.participantsGraphLabel)}
-          </Text>
-          <Text
-            m="0"
-            mt="2px"
-            fontSize="xxl"
-            fontWeight="bold"
-            color="textPrimary"
-          >
-            {formatNumber(participants)}
-          </Text>
+          </p>
+          <p className={styles.value}>{formatNumber(participants)}</p>
           {lastPeriod > 0 && (
-            <Text variant="boMicro" mt="2px">
+            <p className={styles.lastPeriod}>
               <FormattedMessage
                 {...messages.participantsGraphLastPeriod}
                 values={{
                   count: lastPeriod,
                   b: (chunks) => (
-                    <Text
-                      as="span"
-                      m="0"
-                      fontSize="xs"
-                      fontWeight="bold"
-                      color="green500"
-                    >
-                      {chunks}
-                    </Text>
+                    <span className={styles.growth}>{chunks}</span>
                   ),
                 }}
               />
-            </Text>
+            </p>
           )}
-        </Box>
-        <Icon
-          name="chevron-right"
-          width="16px"
-          height="16px"
-          fill={colors.textSecondary}
-          my="0px"
-        />
-      </Box>
+        </div>
+        <Icon name="chevron-right-16" className={styles.chevron} />
+      </div>
 
       {sinceDate && (
         <>
-          <Box mt="8px" mx={`-${STAT_CARD_PADDING}px`}>
+          <div className={styles.sparkline}>
             <Sparkline values={weeks.map((week) => week.participants)} />
-          </Box>
-          <Text variant="boMicro" mt="4px">
+          </div>
+          <p className={styles.scale}>
             {formatMessage(messages.participantsGraphScale, {
               date: formatDate(sinceDate, {
                 day: 'numeric',
@@ -114,7 +86,7 @@ const GraphCard = ({ projectId }: Props) => {
                 ...(sinceThisYear ? {} : { year: 'numeric' }),
               }),
             })}
-          </Text>
+          </p>
         </>
       )}
     </StatCardLink>

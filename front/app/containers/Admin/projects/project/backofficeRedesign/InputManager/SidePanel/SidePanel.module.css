@@ -1,0 +1,207 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-16);
+}
+
+/* 80 px has no spacing token; it centres the spinner where the input will appear. */
+.loading {
+  display: flex;
+  justify-content: center;
+  padding: 80px 0;
+}
+
+.navigation {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--gv-space-8);
+}
+
+.position {
+  composes: ui from '../../../../../../../design-system/typography.module.css';
+  color: var(--gv-text-secondary);
+}
+
+.overview {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-24);
+}
+
+.summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-12);
+}
+
+.title {
+  composes: bodyStrong from '../../../../../../../design-system/typography.module.css';
+  color: var(--gv-text-primary);
+}
+
+.byline {
+  composes: small from '../../../../../../../design-system/typography.module.css';
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-24);
+  color: var(--gv-text-secondary);
+}
+
+.reactionsRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.reactions {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-12);
+}
+
+.reaction {
+  composes: ui from '../../../../../../../design-system/typography.module.css';
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gv-space-4);
+  color: var(--gv-text-secondary);
+}
+
+.reactionIcon {
+  color: var(--gv-icon-secondary);
+}
+
+.quickActions {
+  display: flex;
+  gap: var(--gv-space-6);
+}
+
+.properties {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-10);
+}
+
+.property {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--gv-space-8);
+  min-height: var(--gv-size-28);
+}
+
+/* The label column keeps today's 64 px; there is no size token for it.
+   The top padding centres its 16 px line on a 28 px control. */
+.propertyLabel {
+  composes: small from '../../../../../../../design-system/typography.module.css';
+  flex: 0 0 64px;
+  padding-top: var(--gv-space-6);
+  color: var(--gv-text-secondary);
+}
+
+.propertyValue {
+  display: flex;
+  flex-grow: 1;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--gv-space-6);
+  min-height: var(--gv-size-28);
+}
+
+.menuLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gv-space-6);
+}
+
+/* The tags flow in the row next to the add control. */
+.tagList {
+  display: contents;
+}
+
+.budget {
+  composes: uiStrong from '../../../../../../../design-system/typography.module.css';
+  color: var(--gv-text-primary);
+}
+
+.secondary {
+  composes: ui from '../../../../../../../design-system/typography.module.css';
+  color: var(--gv-text-secondary);
+}
+
+.infoIcon {
+  color: var(--gv-icon-tertiary);
+}
+
+.ideaContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-16);
+}
+
+/* #E0E0E0 hairline: --gv-border-control is the token with that value. */
+.image {
+  box-sizing: border-box;
+  width: 100%;
+  border: var(--gv-border-width-1) solid var(--gv-border-control);
+  border-radius: var(--gv-radius-8);
+}
+
+/* 12 px bar height has no size token. */
+.agreementBar {
+  display: flex;
+  height: 12px;
+  overflow: hidden;
+  border-radius: var(--gv-radius-8);
+  background: var(--gv-surface-track);
+}
+
+.agree {
+  background: var(--gv-chart-agree);
+}
+
+.disagree {
+  background: var(--gv-chart-disagree);
+}
+
+.unsure {
+  background: var(--gv-chart-pass);
+}
+
+/* What nobody has seen yet is the empty part of the track. */
+.notSeen {
+  background: var(--gv-surface-track);
+}
+
+.agreementLegend {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-8);
+  margin-top: var(--gv-space-12);
+}
+
+.agreementRow {
+  composes: ui from '../../../../../../../design-system/typography.module.css';
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-8);
+  color: var(--gv-text-primary);
+}
+
+/* 8 px legend dot has no size token. */
+.agreementDot {
+  flex: 0 0 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.agreementLabel {
+  flex-grow: 1;
+}
+
+/* 42 px keeps the percentages right-aligned in one column; no size token. */
+.agreementShare {
+  flex: 0 0 42px;
+  color: var(--gv-text-secondary);
+  text-align: right;
+}

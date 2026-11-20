@@ -1,18 +1,22 @@
 import React from 'react';
 
-import { Input, Text, Toggle } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
+
+import NumberField from 'design-system/NumberField';
+import Switch from 'design-system/Switch';
+import TextField from 'design-system/TextField';
 
 import SetupCard from 'containers/Admin/projects/_shared/components/SetupCard';
 import { EventForm } from 'containers/Admin/projects/_shared/events/useEventForm';
 import eventMessages from 'containers/Admin/projects/project/events/messages';
 
-import Error from 'components/UI/Error';
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+import MultilocTextField from 'components/admin/MultilocFields/MultilocTextField';
+import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
+import 'design-system/tokens.css';
 
 interface Props {
   form: EventForm;
@@ -21,71 +25,59 @@ interface Props {
 const RegistrationCard = ({ form }: Props) => {
   const { formatMessage } = useIntl();
   const { attributes, errors } = form;
+  const apiErrorText = useApiErrorText();
+  const maximumAttendeesError = apiErrorText(
+    errors?.maximum_attendees,
+    'maximum_attendees'
+  );
+  const usingUrlError = apiErrorText(errors?.using_url);
 
   return (
     <SetupCard title={formatMessage(messages.registration)}>
-      <Toggle
-        size="small"
-        label={
-          <Text as="span" variant="boControl" m="0">
-            {formatMessage(eventMessages.toggleRegistrationLimitLabel)}
-          </Text>
-        }
-        checked={form.registrationLimitOn}
+      <Switch
+        size={26}
+        isSelected={form.registrationLimitOn}
         onChange={form.toggleRegistrationLimit}
-      />
+      >
+        {formatMessage(eventMessages.toggleRegistrationLimitLabel)}
+      </Switch>
       {form.registrationLimitOn && (
-        <>
-          <Input
-            id="maximum_attendees"
-            variant="bo"
-            label={formatMessage(eventMessages.maximumRegistrants)}
-            type="number"
-            value={attributes.maximum_attendees?.toString()}
-            onChange={form.setMaximumAttendees}
-          />
-          <Error
-            fieldName="maximum_attendees"
-            apiErrors={errors?.maximum_attendees}
-          />
-        </>
+        <NumberField
+          id="maximum_attendees"
+          label={formatMessage(eventMessages.maximumRegistrants)}
+          value={attributes.maximum_attendees ?? NaN}
+          // An empty field gives NaN, which the form counts as 0.
+          onChange={(value) =>
+            form.setMaximumAttendees(Number.isNaN(value) ? '' : String(value))
+          }
+          isInvalid={!!maximumAttendeesError}
+          errorMessage={maximumAttendeesError}
+        />
       )}
 
-      <Toggle
-        size="small"
-        label={
-          <Text as="span" variant="boControl" m="0">
-            {formatMessage(eventMessages.toggleCustomRegisterButtonLabel)}
-          </Text>
-        }
-        checked={form.customButtonOn}
+      <Switch
+        size={26}
+        isSelected={form.customButtonOn}
         onChange={form.toggleCustomButton}
-      />
+      >
+        {formatMessage(eventMessages.toggleCustomRegisterButtonLabel)}
+      </Switch>
       {form.customButtonOn && (
         <>
-          <Input
+          <TextField
             id="event-custom-button-link"
-            variant="bo"
             label={formatMessage(eventMessages.customButtonLink)}
-            labelTooltipText={formatMessage(
-              eventMessages.customButtonLinkTooltip
-            )}
-            type="text"
-            value={attributes.using_url}
+            description={formatMessage(eventMessages.customButtonLinkTooltip)}
+            value={attributes.using_url ?? ''}
             placeholder="https://..."
-            onChange={(using_url: string) =>
-              form.updateAttributes({ using_url })
-            }
+            onChange={(using_url) => form.updateAttributes({ using_url })}
+            isInvalid={!!usingUrlError}
+            errorMessage={usingUrlError}
           />
-          <Error apiErrors={errors?.using_url} />
-          <InputMultilocWithLocaleSwitcher
+          <MultilocTextField
             id="event-custom-button-text"
-            type="text"
-            variant="bo"
             label={formatMessage(eventMessages.customButtonText)}
-            labelTooltipText={formatMessage(
-              eventMessages.customButtonTextTooltip3
-            )}
+            description={formatMessage(eventMessages.customButtonTextTooltip3)}
             valueMultiloc={attributes.attend_button_multiloc}
             onChange={(attend_button_multiloc: Multiloc) =>
               form.updateAttributes({ attend_button_multiloc })

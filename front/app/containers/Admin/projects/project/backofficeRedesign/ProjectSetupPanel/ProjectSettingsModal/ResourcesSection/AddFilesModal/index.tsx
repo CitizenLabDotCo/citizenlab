@@ -1,15 +1,9 @@
 import React, { useRef, useState } from 'react';
 
-import {
-  Box,
-  Button,
-  CheckboxWithLabel,
-  Text,
-  bo,
-  colors,
-  stylingConsts,
-} from '@citizenlab/cl2-component-library';
-import { useDropzone } from 'react-dropzone';
+import Banner from 'design-system/Banner';
+import Checkbox from 'design-system/Checkbox';
+import DropZone from 'design-system/DropZone';
+import Modal from 'design-system/Modal';
 
 import {
   MAX_FILES,
@@ -17,17 +11,16 @@ import {
 } from 'containers/Admin/projects/_shared/fileUploads/utils';
 import filesMessages from 'containers/Admin/projects/project/files/components/messages';
 
-import Modal, { MEDIUM_MODAL_WIDTH } from 'components/UI/Modal';
-
 import { useIntl } from 'utils/cl-intl';
 import { returnFileSize } from 'utils/fileUtils';
 
 import resourcesSectionMessages from '../messages';
 import UploadingFileRow from '../UploadingFileRow';
 import { FilesDraft, Upload } from '../useFilesDraft';
-import { FILE_MODAL_HEIGHT } from '../utils';
 
+import styles from './AddFilesModal.module.css';
 import messages from './messages';
+import 'design-system/tokens.css';
 
 interface Props {
   draft: FilesDraft;
@@ -59,14 +52,6 @@ const AddFilesModal = ({ draft, opened, onClose }: Props) => {
     ]);
   };
 
-  const { getRootProps, getInputProps, open } = useDropzone({
-    multiple: true,
-    noClick: true,
-    // Allow all file types to be uploaded.
-    validator: () => null,
-    onDrop: addFiles,
-  });
-
   const queued = selected.filter(({ status }) => status === 'queued');
   const totalSize = selected.reduce((sum, { file }) => sum + file.size, 0);
 
@@ -82,113 +67,80 @@ const AddFilesModal = ({ draft, opened, onClose }: Props) => {
     handleClose();
   };
 
+  const addFilesLabel = formatMessage(resourcesSectionMessages.addFiles);
+
   return (
     <Modal
-      variant="bo"
-      opened={opened}
-      close={handleClose}
-      width={MEDIUM_MODAL_WIDTH}
-      height={selected.length > 0 ? FILE_MODAL_HEIGHT : undefined}
-      header={formatMessage(resourcesSectionMessages.addFiles)}
-      footer={
-        <Box display="flex" justifyContent="flex-end" width="100%">
-          <Button
-            buttonStyle="bo-primary"
-            width="auto"
-            height={bo.buttonMedium.height}
-            padding={bo.buttonMedium.padding}
-            fontSize={bo.buttonMedium.fontSize}
-            disabled={queued.length === 0}
-            onClick={handleAdd}
-          >
-            {formatMessage(resourcesSectionMessages.addFiles)}
-          </Button>
-        </Box>
-      }
+      isOpen={opened}
+      onOpenChange={(isOpen) => {
+        if (!isOpen) handleClose();
+      }}
+      title={addFilesLabel}
+      size={560}
+      primaryAction={{
+        label: addFilesLabel,
+        onPress: handleAdd,
+        isDisabled: queued.length === 0,
+      }}
     >
-      <Box p="24px">
-        <Box
-          {...getRootProps()}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          gap="12px"
-          minHeight="88px"
-          p="16px"
-          border={`1px dashed ${colors.coolGrey300}`}
-          borderRadius={stylingConsts.borderRadius}
-        >
-          <Text variant="boMicro" color="coolGrey500" m="0px">
-            {formatMessage(messages.dropFilesHereOr)}
-          </Text>
-          <Button
-            buttonStyle="bo-secondary"
-            width="auto"
-            height={bo.buttonMedium.height}
-            padding={bo.buttonMedium.padding}
-            fontSize={bo.buttonMedium.fontSize}
-            onClick={open}
-          >
-            {formatMessage(filesMessages.chooseFiles)}
-          </Button>
-          <input {...getInputProps()} />
-        </Box>
-        <Text variant="boMicro" color="coolGrey500" mt="8px" mb="0px">
+      <div className={styles.upload}>
+        <DropZone
+          aria-label={addFilesLabel}
+          allowsMultiple
+          onSelect={addFiles}
+        />
+        <p className={styles.hint}>
           {formatMessage(messages.supportedFileTypes)}
-        </Text>
+        </p>
         {tooManyFiles && (
-          <Text variant="boMicro" color="red600" mt="8px" mb="0px">
+          <Banner tone="error">
             {formatMessage(filesMessages.maxFilesError, {
               maxFiles: MAX_FILES,
             })}
-          </Text>
+          </Banner>
         )}
-        {selected.length > 0 && (
-          <Box mt="16px">
-            <Text variant="boMicro" color="coolGrey500" mb="4px" mt="0px">
-              {formatMessage(messages.filesCountWithSize, {
-                count: selected.length,
-                size: returnFileSize(totalSize),
-              })}
-            </Text>
-            <Box mx="-8px">
-              {selected.map(({ key, file, status, category }) => (
-                <UploadingFileRow
-                  key={key}
-                  file={file}
-                  status={status}
-                  category={category}
-                  onCategoryChange={(category) =>
-                    setSelected((current) =>
-                      current.map((upload) =>
-                        upload.key === key ? { ...upload, category } : upload
-                      )
+      </div>
+      {selected.length > 0 && (
+        <div>
+          <p className={styles.count}>
+            {formatMessage(messages.filesCountWithSize, {
+              count: selected.length,
+              size: returnFileSize(totalSize),
+            })}
+          </p>
+          <div className={styles.files}>
+            {selected.map(({ key, file, status, category }) => (
+              <UploadingFileRow
+                key={key}
+                file={file}
+                status={status}
+                category={category}
+                onCategoryChange={(category) =>
+                  setSelected((current) =>
+                    current.map((upload) =>
+                      upload.key === key ? { ...upload, category } : upload
                     )
-                  }
-                  onRemove={() =>
-                    setSelected((current) =>
-                      current.filter((upload) => upload.key !== key)
-                    )
-                  }
-                />
-              ))}
-            </Box>
-            <Box mt="16px">
-              <CheckboxWithLabel
-                size="20px"
-                checked={allowAiProcessing}
-                disabled={queued.length === 0}
-                onChange={(event) => setAllowAiProcessing(event.target.checked)}
-                label={
-                  <Text variant="boControl" fontSize="xs" m="0px">
-                    {formatMessage(filesMessages.allowAiProcessing)}
-                  </Text>
+                  )
+                }
+                onRemove={() =>
+                  setSelected((current) =>
+                    current.filter((upload) => upload.key !== key)
+                  )
                 }
               />
-            </Box>
-          </Box>
-        )}
-      </Box>
+            ))}
+          </div>
+          <div className={styles.aiProcessing}>
+            <Checkbox
+              isSelected={allowAiProcessing}
+              isDisabled={queued.length === 0}
+              onChange={setAllowAiProcessing}
+            >
+              {formatMessage(filesMessages.allowAiProcessing)}
+            </Checkbox>
+          </div>
+        </div>
+      )}
     </Modal>
   );
 };

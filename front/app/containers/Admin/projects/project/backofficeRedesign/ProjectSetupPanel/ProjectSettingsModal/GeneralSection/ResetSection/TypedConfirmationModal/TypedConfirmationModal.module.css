@@ -1,0 +1,20 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-20);
+}
+
+.warning {
+  composes: ui from '../../../../../../../../../../design-system/typography.module.css';
+  color: var(--gv-text-secondary);
+}
+
+.word {
+  font-weight: var(--gv-font-weight-medium);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--gv-space-8);
+}

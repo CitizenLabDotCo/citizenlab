@@ -1,0 +1,49 @@
+.section {
+  display: flex;
+  flex-direction: column;
+}
+
+.intro {
+  composes: small from '../../../../../../../design-system/typography.module.css';
+  margin-bottom: var(--gv-space-12);
+  color: var(--gv-text-secondary);
+}
+
+.intro a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.info {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-8);
+  margin-bottom: var(--gv-space-8);
+}
+
+.infoIcon {
+  flex-shrink: 0;
+  color: var(--gv-icon-tertiary);
+}
+
+.infoText {
+  composes: small from '../../../../../../../design-system/typography.module.css';
+  color: var(--gv-text-secondary);
+}
+
+.search {
+  margin-bottom: var(--gv-space-12);
+}
+
+.addRow {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  gap: var(--gv-space-8);
+  padding: var(--gv-space-12) 0 var(--gv-space-8);
+  background: var(--gv-surface-panel);
+}
+
+.addField {
+  flex-grow: 1;
+}

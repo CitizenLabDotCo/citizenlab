@@ -1,0 +1,10 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-8);
+}
+
+.title {
+  composes: uiStrong from '../../../../../../design-system/typography.module.css';
+  color: var(--gv-text-primary);
+}

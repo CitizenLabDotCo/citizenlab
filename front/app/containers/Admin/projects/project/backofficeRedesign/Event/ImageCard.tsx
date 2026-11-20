@@ -2,17 +2,27 @@ import React, { useState } from 'react';
 
 import { UploadFile } from 'typings';
 
+import Banner from 'design-system/Banner';
+import DropZone from 'design-system/DropZone';
+
 import SetupCard from 'containers/Admin/projects/_shared/components/SetupCard';
 import { EventForm } from 'containers/Admin/projects/_shared/events/useEventForm';
 
-import ImagesDropzone from 'components/UI/ImagesDropzone';
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+import MultilocTextField from 'components/admin/MultilocFields/MultilocTextField';
+import imagesDropzoneMessages from 'components/UI/ImagesDropzone/messages';
 
 import { useIntl } from 'utils/cl-intl';
 
 import ImageCropModal from './ImageCropModal';
 import ImageFileRow from './ImageFileRow';
+import {
+  ACCEPTED_IMAGE_TYPES,
+  isImageTooLarge,
+  MAX_IMAGE_FILE_SIZE_MB,
+  toUploadFile,
+} from './imageUpload';
 import messages from './messages';
+import 'design-system/tokens.css';
 
 interface Props {
   form: EventForm;
@@ -21,10 +31,22 @@ interface Props {
 const ImageCard = ({ form }: Props) => {
   const { formatMessage } = useIntl();
   const [cropOpen, setCropOpen] = useState(false);
+  const [tooLarge, setTooLarge] = useState(false);
 
   const addImage = (images: UploadFile[]) => {
     form.addImage(images);
     setCropOpen(true);
+  };
+
+  const selectImage = async (files: File[]) => {
+    if (files.length === 0) return;
+    const [file] = files;
+
+    const isTooLarge = isImageTooLarge(file);
+    setTooLarge(isTooLarge);
+    if (isTooLarge) return;
+
+    addImage([await toUploadFile(file)]);
   };
 
   return (
@@ -38,26 +60,29 @@ const ImageCard = ({ form }: Props) => {
             onReplace={(image) => addImage([image])}
             onRemove={form.removeImage}
           />
-          <InputMultilocWithLocaleSwitcher
+          <MultilocTextField
             id="event-image-alt-text"
-            type="text"
-            variant="bo"
-            valueMultiloc={form.imageAltText}
             label={formatMessage(messages.altText)}
             placeholder={formatMessage(messages.altTextPlaceholder)}
+            valueMultiloc={form.imageAltText}
             onChange={form.changeImageAltText}
           />
         </>
       ) : (
-        <ImagesDropzone
-          images={[]}
-          acceptedFileTypes={{ 'image/*': ['.jpg', '.jpeg', '.png'] }}
-          onAdd={addImage}
-          onRemove={form.removeImage}
-          imagePreviewRatio={1 / 3}
-          label={formatMessage(messages.dropImage)}
-          compact
-        />
+        <>
+          <DropZone
+            aria-label={formatMessage(messages.dropImage)}
+            acceptedFileTypes={ACCEPTED_IMAGE_TYPES}
+            onSelect={selectImage}
+          />
+          {tooLarge && (
+            <Banner tone="error">
+              {formatMessage(imagesDropzoneMessages.errorImageMaxSizeExceeded, {
+                maxFileSize: MAX_IMAGE_FILE_SIZE_MB,
+              })}
+            </Banner>
+          )}
+        </>
       )}
       <ImageCropModal
         opened={cropOpen && form.imageNeedsCrop}

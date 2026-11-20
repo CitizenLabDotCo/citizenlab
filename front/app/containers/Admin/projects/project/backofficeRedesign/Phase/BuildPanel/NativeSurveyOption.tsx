@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Button } from '@citizenlab/cl2-component-library';
+import Button from 'design-system/Button';
 
 import useCustomFields from 'api/custom_fields/useCustomFields';
 
@@ -12,11 +12,11 @@ import actionFormMessages from 'components/admin/ActionForm/messages';
 import { useIntl } from 'utils/cl-intl';
 
 import methodSectionMessages from './BuildFields/MethodSection/messages';
+import styles from './BuildPanel.module.css';
 
 interface Props {
   projectId: string;
   phaseId: string;
-  name: string;
   title: string;
   description: string;
   onAddQuestions: () => void;
@@ -25,7 +25,6 @@ interface Props {
 const NativeSurveyOption = ({
   projectId,
   phaseId,
-  name,
   title,
   description,
   onAddQuestions,
@@ -39,11 +38,9 @@ const NativeSurveyOption = ({
   const hasQuestions = nQuestions > 0;
 
   return (
-    <Box display="flex" flexDirection="column" gap="12px">
+    <div className={styles.option}>
       <ChoiceRadio
-        name={name}
         value="native_survey"
-        currentValue="native_survey"
         title={title}
         titleAdornment={
           hasQuestions && (
@@ -56,23 +53,19 @@ const NativeSurveyOption = ({
           )
         }
         description={description}
-        onChange={() => {}}
       />
       {customFields && (
-        <Button
-          buttonStyle="bo-secondary"
-          boSize="medium"
-          width="100%"
-          onClick={onAddQuestions}
-        >
-          {formatMessage(
-            hasQuestions
-              ? methodSectionMessages.editSurvey
-              : methodSectionMessages.addQuestions
-          )}
-        </Button>
+        <div className={styles.fullWidth}>
+          <Button variant="secondary" onPress={onAddQuestions}>
+            {formatMessage(
+              hasQuestions
+                ? methodSectionMessages.editSurvey
+                : methodSectionMessages.addQuestions
+            )}
+          </Button>
+        </div>
       )}
-    </Box>
+    </div>
   );
 };
 

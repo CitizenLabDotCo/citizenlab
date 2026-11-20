@@ -1,10 +1,12 @@
 import React from 'react';
 
-import { Button, Text } from '@citizenlab/cl2-component-library';
+import Button from 'design-system/Button';
 
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
+
+import styles from './BatchBar.module.css';
 
 interface Props {
   label: string;
@@ -18,13 +20,18 @@ const SelectAllButton = ({ label, processing, failed, onClick }: Props) => {
 
   return (
     <>
-      <Button buttonStyle="bo-text" processing={processing} onClick={onClick}>
+      <Button
+        variant="quiet"
+        size={28}
+        isPending={processing}
+        onPress={onClick}
+      >
         {label}
       </Button>
       {failed && (
-        <Text as="span" variant="boHelper" color="red600" m="0" role="alert">
+        <span className={styles.error} role="alert">
           {formatMessage(messages.selectAllFailed)}
-        </Text>
+        </span>
       )}
     </>
   );

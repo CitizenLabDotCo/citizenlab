@@ -1,10 +1,12 @@
 import React from 'react';
 
-import { Box, Button, Text } from '@citizenlab/cl2-component-library';
+import Button from 'design-system/Button';
 
 import { useIntl } from 'utils/cl-intl';
 
+import styles from './ListLoadError.module.css';
 import messages from './messages';
+import 'design-system/tokens.css';
 
 interface Props {
   onRetry: () => void;
@@ -16,14 +18,14 @@ const ListLoadError = ({ onRetry, message, retryLabel }: Props) => {
   const { formatMessage } = useIntl();
 
   return (
-    <Box role="alert">
-      <Text variant="boHelper">
+    <div role="alert" className={styles.error}>
+      <p className={styles.message}>
         {message ?? formatMessage(messages.listLoadFailed)}
-      </Text>
-      <Button buttonStyle="bo-secondary" onClick={onRetry}>
+      </p>
+      <Button variant="secondary" size={32} onPress={onRetry}>
         {retryLabel ?? formatMessage(messages.retryListLoad)}
       </Button>
-    </Box>
+    </div>
   );
 };
 

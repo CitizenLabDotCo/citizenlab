@@ -1,11 +1,12 @@
 import React from 'react';
 
-import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
+import Icon from 'design-system/Icon';
 
 import { IProjectData } from 'api/projects/types';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
+import styles from './FinalRecordCard.module.css';
 import messages from './messages';
 import StatCardLink from './StatCardLink';
 import usePhaseResults from './usePhaseResults';
@@ -57,41 +58,17 @@ const FinalRecordCard = ({ project }: Props) => {
   ];
 
   return (
-    <StatCardLink
-      to="/admin/projects/$projectId/audience"
-      params={{ projectId: project.id }}
-    >
-      <Box display="flex" justifyContent="space-between" gap="8px">
-        <Text variant="boMicro" m="0">
-          {formatMessage(messages.finalRecord)}
-        </Text>
-        <Icon
-          name="chevron-right"
-          width="16px"
-          height="16px"
-          fill={colors.textSecondary}
-          my="0px"
-        />
-      </Box>
+    <StatCardLink projectId={project.id}>
+      <div className={styles.head}>
+        <p className={styles.caption}>{formatMessage(messages.finalRecord)}</p>
+        <Icon name="chevron-right-16" className={styles.chevron} />
+      </div>
 
-      {rows.map(({ label, value }, index) => (
-        <Box
-          key={label.id}
-          display="flex"
-          justifyContent="space-between"
-          gap="8px"
-          py="8px"
-          borderBottom={
-            index === rows.length - 1 ? 'none' : `1px dashed ${colors.grey300}`
-          }
-        >
-          <Text variant="boLabel" m="0" color="textSecondary">
-            {formatMessage(label)}
-          </Text>
-          <Text variant="boLabel" m="0" fontWeight="semi-bold">
-            {value ?? '—'}
-          </Text>
-        </Box>
+      {rows.map(({ label, value }) => (
+        <div key={label.id} className={styles.row}>
+          <p className={styles.label}>{formatMessage(label)}</p>
+          <p className={styles.value}>{value ?? '—'}</p>
+        </div>
       ))}
     </StatCardLink>
   );

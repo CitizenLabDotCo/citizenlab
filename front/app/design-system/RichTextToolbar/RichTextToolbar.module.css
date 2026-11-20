@@ -1,0 +1,66 @@
+.toolbar {
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--gv-space-2);
+  padding: 0 var(--gv-space-4);
+  border-bottom: var(--gv-border-width-1) solid var(--gv-border-subtle);
+  background: var(--gv-surface-panel-subtle);
+}
+
+.button {
+  composes: ringOutside from '../focus.module.css';
+  box-sizing: border-box;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: var(--gv-size-28);
+  height: 24px;
+  padding: 0;
+  border: none;
+  border-radius: var(--gv-radius-6);
+  background: transparent;
+  cursor: pointer;
+  transition: background-color var(--gv-motion-duration-fast)
+    var(--gv-motion-easing-standard);
+}
+
+/* A text button (no icon drawn yet, or a menu trigger) grows with its text; 28 stays the minimum. */
+.withText {
+  gap: var(--gv-space-2);
+  width: auto;
+  min-width: var(--gv-size-28);
+  padding: 0 var(--gv-space-6);
+}
+
+.text {
+  composes: small from '../typography.module.css';
+  color: var(--gv-text-secondary);
+  white-space: nowrap;
+}
+
+.chevron {
+  flex-shrink: 0;
+  color: var(--gv-icon-secondary);
+}
+
+.icon {
+  /* A global svg { fill: currentColor } rule overrides the Icon's fill="none". */
+  fill: none;
+  flex-shrink: 0;
+  color: var(--gv-icon-secondary);
+}
+
+.button[data-hovered] {
+  background: var(--gv-surface-hovered);
+}
+
+.button[data-selected] {
+  background: var(--gv-surface-muted);
+}
+
+.button[data-selected][data-hovered] {
+  background: var(--gv-surface-pressed);
+}

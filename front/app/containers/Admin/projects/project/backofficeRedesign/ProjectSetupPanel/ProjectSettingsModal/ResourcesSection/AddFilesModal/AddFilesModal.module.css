@@ -1,0 +1,24 @@
+.upload {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-8);
+}
+
+.hint,
+.count {
+  composes: small from '../../../../../../../../../design-system/typography.module.css';
+  color: var(--gv-text-secondary);
+}
+
+.count {
+  margin-bottom: var(--gv-space-4);
+}
+
+/* Rows reach into the body padding, so their hover background lines up with the text. */
+.files {
+  margin: 0 calc(-1 * var(--gv-space-8));
+}
+
+.aiProcessing {
+  margin-top: var(--gv-space-16);
+}

@@ -3,8 +3,11 @@ import React, { memo, useEffect } from 'react';
 import { colors, media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import DesignSystemProvider from 'design-system/Provider';
+
 import useAuthUser from 'api/me/useAuthUser';
 
+import useLocale from 'hooks/useLocale';
 import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
 import {
@@ -98,6 +101,7 @@ type Props = {
 const AdminPage = memo<Props>(({ className }) => {
   const { data: authUser } = useAuthUser();
   const { pathname } = useLocation();
+  const locale = useLocale();
   const redesigned = useProjectBackofficeRedesign();
 
   // The check in front/app/containers/Admin/routes.tsx already should do the same.
@@ -175,22 +179,31 @@ const AdminPage = memo<Props>(({ className }) => {
     !sidebarRendered;
 
   return (
-    <WorkspaceHeaderProvider>
-      <Container className={className}>
-        {sidebarRendered &&
-          (isProjectPage && redesigned ? <CollapsibleSidebar /> : <Sidebar />)}
-        <RightColumn
-          className={`
-            ${fullWidth ? 'fullWidth' : ''}
-            ${noPadding ? 'noPadding' : ''}
-            ${isProjectPage ? 'projectPage' : ''}
-          `}
-        >
-          <RouterOutlet />
-        </RightColumn>
-        <PulseCheck />
-      </Container>
-    </WorkspaceHeaderProvider>
+    <DesignSystemProvider
+      locale={locale}
+      navigate={(path) => clHistory.push(path)}
+    >
+      <WorkspaceHeaderProvider>
+        <Container className={className}>
+          {sidebarRendered &&
+            (isProjectPage && redesigned ? (
+              <CollapsibleSidebar />
+            ) : (
+              <Sidebar />
+            ))}
+          <RightColumn
+            className={`
+              ${fullWidth ? 'fullWidth' : ''}
+              ${noPadding ? 'noPadding' : ''}
+              ${isProjectPage ? 'projectPage' : ''}
+            `}
+          >
+            <RouterOutlet />
+          </RightColumn>
+          <PulseCheck />
+        </Container>
+      </WorkspaceHeaderProvider>
+    </DesignSystemProvider>
   );
 });
 

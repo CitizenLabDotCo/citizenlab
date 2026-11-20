@@ -1,0 +1,20 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-16);
+}
+
+.description {
+  composes: ui from '../../../../../../../design-system/typography.module.css';
+  margin: 0;
+  color: var(--gv-text-secondary);
+}
+
+/* Lets the button take the full row. */
+.fullWidth {
+  display: flex;
+}
+
+.fullWidth > * {
+  flex: 1;
+}

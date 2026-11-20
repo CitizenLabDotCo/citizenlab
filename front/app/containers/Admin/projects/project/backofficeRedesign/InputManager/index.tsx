@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, Spinner } from '@citizenlab/cl2-component-library';
+import Spinner from 'design-system/Spinner';
 
 import useIdeas from 'api/ideas/useIdeas';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
@@ -11,7 +11,6 @@ import { IProjectData } from 'api/projects/types';
 import useLocalize from 'hooks/useLocalize';
 
 import { ManagerType } from 'components/admin/PostManager';
-import NoPost from 'components/admin/PostManager/components/PostTable/NoPost';
 
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
@@ -25,14 +24,18 @@ import EmptyState from './EmptyState';
 import FilterChips from './FilterMenu/FilterChips';
 import useFilterCategories from './FilterMenu/useFilterCategories';
 import IdeaTable from './IdeaTable';
+import styles from './InputManager.module.css';
 import ListToolbar from './ListToolbar';
+import NoMatches from './NoMatches';
 import SideColumn from './SideColumn';
 import SidePanel from './SidePanel';
+import useInputTermLabels from './useInputTermLabels';
 import useManagerParams from './useManagerParams';
 import usePanelNavigation from './usePanelNavigation';
 import usePhaseCounts from './usePhaseCounts';
 import usePickerOptions from './usePickerOptions';
 import useSelection from './useSelection';
+import 'design-system/tokens.css';
 
 const PAGE_SIZE = 20;
 
@@ -53,6 +56,7 @@ interface Props {
 
 const InputManager = ({ project, phase }: Props) => {
   const localize = useLocalize();
+  const { termCount } = useInputTermLabels();
   const type: ManagerType =
     phase.attributes.participation_method === 'proposals'
       ? 'ProjectProposals'
@@ -189,18 +193,26 @@ const InputManager = ({ project, phase }: Props) => {
         categories={categories}
         onClearFilters={clearFilters}
       />
-      <FilterChips categories={categories} onClearAll={clearFilters} />
-      <Box position="relative">
+      <FilterChips
+        categories={categories}
+        count={
+          filteredTotal !== undefined ? termCount(filteredTotal) : undefined
+        }
+        onClearAll={clearFilters}
+      />
+      <div className={styles.list}>
         {isError ? (
           <ListLoadError onRetry={() => refetch()} />
         ) : !ideas ? (
-          <Box display="flex" justifyContent="center" py="80px">
+          <div className={styles.loading}>
             <Spinner />
-          </Box>
+          </div>
         ) : (
-          <Box opacity={isChangingList ? 0.4 : 1}>
+          <div className={isChangingList ? styles.changing : undefined}>
             {listBody === 'empty' && <EmptyState />}
-            {listBody === 'noMatches' && <NoPost handleSeeAll={clearFilters} />}
+            {listBody === 'noMatches' && (
+              <NoMatches onClearFilters={clearFilters} />
+            )}
             {listBody === 'table' && (
               <IdeaTable
                 ideas={pageIdeas}
@@ -216,8 +228,7 @@ const InputManager = ({ project, phase }: Props) => {
                   )
                 }
                 selectedIds={new Set(selection.selectedIds)}
-                onToggleSelect={selection.toggle}
-                onToggleSelectPage={selection.togglePage}
+                onSelectOnPage={selection.selectOnPage}
                 openIdeaId={selectedIdeaId}
                 onOpen={openPanel}
                 currentPage={page}
@@ -225,21 +236,14 @@ const InputManager = ({ project, phase }: Props) => {
                 onChangePage={setPage}
               />
             )}
-          </Box>
+          </div>
         )}
         {ideas && isChangingList && (
-          <Box
-            position="absolute"
-            top="80px"
-            left="0"
-            right="0"
-            display="flex"
-            justifyContent="center"
-          >
+          <div className={styles.changingSpinner}>
             <Spinner />
-          </Box>
+          </div>
         )}
-      </Box>
+      </div>
       <SidePanel
         ideaId={selectedIdeaId}
         type={type}

@@ -1,0 +1,37 @@
+/* Looks like a PanelGroupHeader, but the whole row toggles the cards. */
+.toggle {
+  composes: ui from '../../../../../../design-system/typography.module.css';
+  composes: ringOutside from '../../../../../../design-system/focus.module.css';
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gv-space-8);
+  width: 100%;
+  height: var(--gv-size-28);
+  padding: 0;
+  border: none;
+  border-radius: var(--gv-radius-4);
+  background: transparent;
+  color: var(--gv-text-secondary);
+  text-align: start;
+  cursor: pointer;
+}
+
+.chevron {
+  flex-shrink: 0;
+  color: var(--gv-icon-secondary);
+  transition: transform var(--gv-motion-duration-medium)
+    var(--gv-motion-easing-standard);
+}
+
+.toggle[aria-expanded='true'] .chevron {
+  transform: rotate(180deg);
+}
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-8);
+  margin-top: var(--gv-space-16);
+}

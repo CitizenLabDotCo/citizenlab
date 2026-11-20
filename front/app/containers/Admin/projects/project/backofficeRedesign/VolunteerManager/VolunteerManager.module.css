@@ -1,0 +1,49 @@
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gv-space-12);
+  min-height: var(--gv-size-28);
+  margin-bottom: var(--gv-space-8);
+}
+
+.count {
+  composes: title from '../../../../../../design-system/typography.module.css';
+  color: var(--gv-text-primary);
+}
+
+.display {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--gv-space-6);
+}
+
+/* The Stats frame of the Manage side panel: padding 8, gap 0. */
+.stats {
+  padding: var(--gv-space-8);
+  border-radius: var(--gv-radius-12);
+  background: var(--gv-surface-panel);
+}
+
+/* 80 px has no spacing token; it keeps the spinner where the first rows will appear. */
+.loading {
+  display: flex;
+  justify-content: center;
+  padding: 80px 0;
+}
+
+/* 0.4 is today's dimming of the stale list while the next page loads; no opacity token matches. */
+.dimmed {
+  opacity: 0.4;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  padding: var(--gv-space-16) 0;
+}
+
+.date {
+  white-space: nowrap;
+}

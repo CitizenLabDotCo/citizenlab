@@ -1,0 +1,91 @@
+/*
+ * The input frame every text-like field shares. `.input` goes on the element that draws the
+ * box: an Input or TextArea, or a Group when the box also holds icons, buttons or affixes
+ * (then `.innerInput` goes on the Input inside it).
+ */
+
+.input {
+  composes: ui from '../typography.module.css';
+  box-sizing: border-box;
+  align-items: center;
+  min-width: 0;
+  margin: 0;
+  border: var(--gv-border-width-1) solid var(--gv-border-control);
+  border-radius: var(--gv-radius-8);
+  background: var(--gv-surface-panel);
+  color: var(--gv-text-primary);
+  outline: none;
+  transition-property: background-color, border-color, color;
+  transition-duration: var(--gv-motion-duration-fast);
+  transition-timing-function: var(--gv-motion-easing-standard);
+}
+
+/* Zero specificity, so a field that composes .input wins with its own values whatever order the stylesheets load in. */
+:where(.input) {
+  display: flex;
+  gap: var(--gv-space-8);
+  width: 100%;
+  padding: 0 var(--gv-space-10);
+}
+
+.input::placeholder,
+.innerInput::placeholder {
+  color: var(--gv-text-placeholder);
+  opacity: 1;
+}
+
+.size36 {
+  height: var(--gv-size-control-36);
+}
+
+.size32 {
+  height: var(--gv-size-control-32);
+}
+
+.input[data-hovered] {
+  border-color: var(--gv-border-control-hovered);
+}
+
+.input[data-focused],
+.input[data-focus-within] {
+  border-color: var(--gv-border-focused);
+}
+
+.input[data-invalid] {
+  border-color: var(--gv-border-danger);
+}
+
+.input[data-disabled] {
+  background: var(--gv-surface-sunken);
+  color: var(--gv-text-disabled);
+  cursor: default;
+}
+
+.input[data-disabled]::placeholder,
+.input[data-disabled] .innerInput::placeholder {
+  color: var(--gv-text-disabled);
+}
+
+.innerInput {
+  flex: 1 1 auto;
+  box-sizing: border-box;
+  min-width: 0;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  outline: none;
+}
+
+.innerInput[data-disabled] {
+  cursor: default;
+}
+
+/* The field column (label, control, help). */
+.field {
+  composes: field from '../Field/Field.module.css';
+}

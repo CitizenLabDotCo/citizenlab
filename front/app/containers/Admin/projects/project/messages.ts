@@ -750,4 +750,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.configureMap',
     defaultMessage: 'Configure map',
   },
+  konveioParticipationDataNotice: {
+    id: 'app.containers.Admin.projects.project.insights.konveioParticipationDataNotice',
+    defaultMessage:
+      'Konveio keeps the participation data for this document on its side, so only visitor numbers are available here. After the phase closes, visit your Konveio dashboard for a summary of the feedback and to download the raw participation data.',
+  },
 });

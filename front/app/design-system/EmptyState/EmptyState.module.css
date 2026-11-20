@@ -1,0 +1,19 @@
+.emptyState {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gv-text-tertiary);
+  text-align: center;
+}
+
+.list {
+  composes: ui from '../typography.module.css';
+  padding: var(--gv-space-24) var(--gv-space-8);
+}
+
+.card {
+  composes: small from '../typography.module.css';
+  min-height: 90px;
+  padding: var(--gv-space-14);
+}

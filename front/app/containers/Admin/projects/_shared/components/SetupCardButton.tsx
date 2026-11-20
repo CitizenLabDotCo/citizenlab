@@ -1,110 +1,117 @@
 import React, { ReactNode } from 'react';
 
-import {
-  Box,
-  Icon,
-  IconNames,
-  Text,
-  Tooltip,
-  bo,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import Disclosure from 'design-system/Disclosure';
+import { IconName } from 'design-system/Icon';
+import IconButton from 'design-system/IconButton';
+import Tooltip from 'design-system/Tooltip';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 
+type CardIcon =
+  | 'chevron-right'
+  | 'chevron-down'
+  | 'chevron-up'
+  | 'plus'
+  | 'edit';
+
 export interface CardButton {
-  icon: IconNames;
+  icon: CardIcon;
   onClick: () => void;
   actionLabel?: string;
   expanded?: boolean;
   disabled?: boolean;
 }
 
+const ACTION_ICONS: Record<CardIcon, IconName> = {
+  'chevron-right': 'chevron-right-16',
+  'chevron-down': 'chevron-down-16',
+  'chevron-up': 'chevron-down-16',
+  plus: 'plus-16',
+  edit: 'pencil-14',
+};
+
 interface Props {
   title: string;
   titleTooltip?: JSX.Element;
+  /** A review status, shown next to the title. */
+  status?: ReactNode;
   action?: ReactNode;
   button: CardButton;
+  children?: ReactNode;
 }
 
-const SetupCardButton = ({ title, titleTooltip, action, button }: Props) => {
-  const header = (
-    <Box
-      as="button"
-      type="button"
-      w="100%"
-      minHeight="44px"
-      display="flex"
-      alignItems="center"
-      gap="10px"
-      p="8px 8px 8px 12px"
-      background="transparent"
-      border="none"
-      borderRadius={bo.borderRadius}
-      cursor={button.disabled ? 'default' : 'pointer'}
-      aria-expanded={button.expanded}
-      disabled={button.disabled}
-      onClick={button.onClick}
-    >
-      <Box
-        flex="1 1 auto"
-        minWidth="0"
-        display="flex"
-        alignItems="center"
-        gap="4px"
+const SetupCardButton = ({
+  title,
+  titleTooltip,
+  status,
+  action,
+  button,
+  children,
+}: Props) => {
+  const titleWithAction = (
+    <>
+      {title}
+      {button.actionLabel && (
+        <ScreenReaderOnly>{`, ${button.actionLabel}`}</ScreenReaderOnly>
+      )}
+    </>
+  );
+
+  if (button.expanded !== undefined) {
+    return (
+      <Disclosure
+        title={titleWithAction}
+        status={status}
+        summary={action}
+        isExpanded={button.expanded}
+        onExpandedChange={button.onClick}
+        isDisabled={button.disabled}
       >
-        <Text
-          as="span"
-          variant="boControl"
-          fontSize="xs"
-          lineHeight="20px"
-          m="0"
-          textAlign="left"
-        >
-          {title}
-          {button.actionLabel && (
-            <ScreenReaderOnly>{`, ${button.actionLabel}`}</ScreenReaderOnly>
-          )}
-        </Text>
-        {titleTooltip && (
-          <Icon
-            name="info-solid"
-            width="20px"
-            height="20px"
-            fill={colors.textSecondary}
-            ariaHidden
+        {children}
+      </Disclosure>
+    );
+  }
+
+  // A button header has no body, so a card with content gets its action as
+  // an icon button in a static header instead.
+  if (children) {
+    return (
+      <Disclosure
+        header="static"
+        title={title}
+        status={status}
+        summary={action}
+        actions={
+          <IconButton
+            icon={ACTION_ICONS[button.icon]}
+            aria-label={button.actionLabel ?? title}
+            isDisabled={button.disabled}
+            onPress={button.onClick}
           />
-        )}
-      </Box>
-      {action}
-      <Box
-        flex="0 0 auto"
-        w="28px"
-        h="28px"
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-        aria-hidden
+        }
       >
-        <Icon
-          name={button.icon}
-          width="16px"
-          height="16px"
-          fill={colors.coolGrey500}
-        />
-      </Box>
-    </Box>
+        {children}
+      </Disclosure>
+    );
+  }
+
+  const card = (
+    <Disclosure
+      header="button"
+      title={titleWithAction}
+      status={status}
+      summary={action}
+      actionIcon={ACTION_ICONS[button.icon]}
+      isDisabled={button.disabled}
+      onPress={button.onClick}
+    />
   );
 
-  // A tooltip icon is a button of its own and can't sit inside the header
-  // button, so the whole header carries the tooltip instead.
-  if (!titleTooltip) return header;
+  // The tooltip icon can't sit inside the header button, so the whole header
+  // carries the tooltip instead.
+  if (!titleTooltip) return card;
 
-  return (
-    <Tooltip content={titleTooltip} theme="dark" width="100%">
-      {header}
-    </Tooltip>
-  );
+  return <Tooltip content={titleTooltip}>{card}</Tooltip>;
 };
 
 export default SetupCardButton;

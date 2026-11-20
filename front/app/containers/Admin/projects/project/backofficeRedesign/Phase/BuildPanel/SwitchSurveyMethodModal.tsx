@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 
-import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 import { useQueryClient } from '@tanstack/react-query';
+
+import Banner from 'design-system/Banner';
+import Modal from 'design-system/Modal';
 
 import phasePermissionKeys from 'api/phase_permissions/keys';
 import { IPhaseData, TSurveyService } from 'api/phases/types';
@@ -10,14 +12,13 @@ import useUpdatePhase from 'api/phases/useUpdatePhase';
 import { SurveyMethod } from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/components/SurveyMethodChoices';
 import useNewPhaseDefaults from 'containers/Admin/projects/project/phaseSetup/useNewPhaseDefaults';
 
-import Error from 'components/UI/Error';
-import Modal, { MEDIUM_MODAL_WIDTH } from 'components/UI/Modal';
+import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from './messages';
-
+import styles from './BuildPanel.module.css';
 import ExternalSurveyFields from './ExternalSurveyFields';
+import messages from './messages';
 import { useEnabledSurveyServices } from './SurveyServiceSelect';
 
 interface Props {
@@ -32,6 +33,7 @@ const SwitchSurveyMethodModal = ({ phase, method, onClose }: Props) => {
   const newPhaseDefaults = useNewPhaseDefaults();
   const { mutate: updatePhase, isPending, error, reset } = useUpdatePhase();
   const services = useEnabledSurveyServices();
+  const apiErrorText = useApiErrorText();
   const [surveyService, setSurveyService] = useState<TSurveyService>();
   const [surveyEmbedUrl, setSurveyEmbedUrl] = useState('');
 
@@ -89,43 +91,43 @@ const SwitchSurveyMethodModal = ({ phase, method, onClose }: Props) => {
     messages.switchChangesNotifications,
   ];
 
+  const errorTexts = [
+    apiErrorText(error?.errors.participation_method),
+    apiErrorText(error?.errors.base),
+  ].filter((text) => !!text);
+
   return (
     <Modal
-      opened={method !== null}
-      close={close}
-      width={MEDIUM_MODAL_WIDTH}
-      header={formatMessage(messages.switchSurveyMethodTitle)}
-      footer={
-        <Box display="flex" justifyContent="flex-end" gap="8px" width="100%">
-          <Button buttonStyle="bo-secondary" onClick={close}>
-            {formatMessage(messages.switchCancel)}
-          </Button>
-          <Button
-            buttonStyle="bo-primary"
-            processing={isPending}
-            disabled={toExternal && !surveyEmbedUrl.trim()}
-            onClick={handleConfirm}
-          >
-            {formatMessage(messages.switchConfirm)}
-          </Button>
-        </Box>
-      }
+      isOpen={method !== null}
+      onOpenChange={(isOpen) => {
+        if (!isOpen) close();
+      }}
+      size={560}
+      title={formatMessage(messages.switchSurveyMethodTitle)}
+      secondaryAction={{
+        label: formatMessage(messages.switchCancel),
+        onPress: close,
+      }}
+      primaryAction={{
+        label: formatMessage(messages.switchConfirm),
+        isPending,
+        isDisabled: toExternal && !surveyEmbedUrl.trim(),
+        onPress: handleConfirm,
+      }}
     >
-      <Box p="24px">
-        <Text variant="boHelper" mb="12px">
+      <div className={styles.switchBody}>
+        <p className={styles.switchIntro}>
           {formatMessage(messages.switchSurveyMethodIntro)}
-        </Text>
-        <Box as="ul" pl="20px" m="0">
+        </p>
+        <ul className={styles.consequences}>
           {consequences.map((message) => (
-            <li key={message.id}>
-              <Text variant="boHelper" my="4px">
-                {formatMessage(message)}
-              </Text>
+            <li key={message.id} className={styles.consequence}>
+              {formatMessage(message)}
             </li>
           ))}
-        </Box>
+        </ul>
         {toExternal && (
-          <Box mt="20px">
+          <div className={styles.externalFields}>
             <ExternalSurveyFields
               service={selectedService}
               embedUrl={surveyEmbedUrl}
@@ -133,11 +135,18 @@ const SwitchSurveyMethodModal = ({ phase, method, onClose }: Props) => {
               onServiceChange={setSurveyService}
               onEmbedUrlChange={setSurveyEmbedUrl}
             />
-          </Box>
+          </div>
         )}
-        {error && <Error apiErrors={error.errors.participation_method} />}
-        {error?.errors.base && <Error apiErrors={error.errors.base} />}
-      </Box>
+        {errorTexts.length > 0 && (
+          <div className={styles.errors}>
+            {errorTexts.map((text) => (
+              <Banner key={text} tone="error">
+                {text}
+              </Banner>
+            ))}
+          </div>
+        )}
+      </div>
     </Modal>
   );
 };

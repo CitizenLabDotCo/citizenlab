@@ -176,6 +176,16 @@ export function randomPhoneNumber() {
   return { national, e164: `+32${national}` };
 }
 
+// Picks today in the redesigned phase date picker, then closes its calendar.
+export function pickTodayInPhaseDatePicker() {
+  cy.get('.e2e-date-phase-picker-input button').first().click();
+  cy.get('[role="dialog"] [role="grid"] [data-today]').first().click();
+  // The pressed day keeps focus, so Escape reaches the calendar popover.
+  // Typing into the dialog instead would first click it, pressing another day.
+  cy.focused().should('have.attr', 'role', 'button').type('{esc}');
+  cy.get('[role="dialog"] [role="grid"]').should('not.exist');
+}
+
 function unregisterServiceWorkers() {
   if (navigator.serviceWorker) {
     navigator.serviceWorker.getRegistrations().then((registrations) => {

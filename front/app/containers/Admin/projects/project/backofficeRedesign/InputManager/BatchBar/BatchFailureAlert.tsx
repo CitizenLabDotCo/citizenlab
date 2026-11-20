@@ -1,11 +1,10 @@
 import React from 'react';
 
-import { Text } from '@citizenlab/cl2-component-library';
-
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 
+import styles from './BatchBar.module.css';
 import { BatchFailure } from './useBatchActions';
 
 interface Props {
@@ -20,14 +19,14 @@ const BatchFailureAlert = ({ failure }: Props) => {
   const { action, failed, total } = failure;
 
   return (
-    <Text as="span" variant="boHelper" color="red600" m="0" role="alert">
+    <span className={styles.error} role="alert">
       {formatMessage(
         action === 'delete'
           ? messages.batchDeleteFailed
           : messages.batchUpdateFailed,
         { failed, total }
       )}
-    </Text>
+    </span>
   );
 };
 
