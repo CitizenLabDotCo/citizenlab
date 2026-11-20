@@ -12,6 +12,10 @@ module AIAssistant
         Phase
       end
 
+      def self.skill_name
+        'govocal-project-setup'
+      end
+
       def available?
         subject.participation_method == 'native_survey'
       end
@@ -60,7 +64,9 @@ module AIAssistant
           project_title: multiloc_service.t(subject.project.title_multiloc, locale),
           responses_count: subject.ideas_count.to_i,
           writable: writable?,
-          platform_locales: AppConfiguration.instance.settings('core', 'locales')
+          platform_locales: AppConfiguration.instance.settings('core', 'locales'),
+          # The skill gives its own design advice, which ours would contradict.
+          with_skill: skill.present?
         )
       end
 

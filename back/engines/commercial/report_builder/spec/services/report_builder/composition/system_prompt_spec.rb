@@ -33,6 +33,48 @@ describe ReportBuilder::Composition::SystemPrompt do
     expect(ErrorReporter).to have_received(:report).with(error)
   end
 
+  describe 'the skill' do
+    before { allow(client).to receive(:sdk_declarations).and_return('') }
+
+    it 'is left out when it is not there, where our own editorial advice applies' do
+      text = prompt.text
+
+      expect(text).not_to include('<skill')
+      expect(text).to include(
+        'The reader is a resident or a councillor',
+        '4. Taking part.',
+        'Keep the prose under about 500 words',
+        '## Choosing the chart',
+        '6 to 10 printed pages'
+      )
+    end
+
+    it 'replaces our editorial advice, and comes after our instructions so they win on a conflict' do
+      # The report skill is private, so the example skill stands in for it.
+      example_skill = AIAssistant::Skill.find('example-skill')
+      allow(AIAssistant::Skill).to receive(:find).with('project-report').and_return(example_skill)
+
+      text = prompt.text
+
+      expect(text).to include('<skill name="example-skill">', 'Fixture guidance from the example skill.')
+      expect(text.index('<skill')).to be > text.index('## The platform')
+      expect(text).not_to include(
+        'The reader is a resident or a councillor',
+        '4. Taking part.',
+        'Keep the prose under about 500 words',
+        '## Choosing the chart',
+        '6 to 10 printed pages'
+      )
+      expect(text).to include('1. Cover.', 'Divider with variant', '## The report is printed', '## Writing the query')
+    end
+
+    it 'is listed in the manifest, so CI puts it in the image' do
+      manifest = YAML.load_file(Rails.root.join('config/llm_skills.yml'))
+
+      expect(manifest['skills']).to include(described_class::SKILL_NAME)
+    end
+  end
+
   # The typechecker is strict, and an example the model copies that does not pass it is
   # a failed first attempt in every run.
   describe 'the golden examples' do
