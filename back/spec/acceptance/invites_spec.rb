@@ -36,6 +36,19 @@ resource 'Invites' do
       end
 
       describe do
+        let!(:emailed_invite) { create(:invite) }
+        let!(:code_invite) { create(:invite_without_email) }
+
+        example 'Hides the token of emailed invites from admins who are not super admins', document: false do
+          do_request
+          assert_status 200
+          attributes = json_parse(response_body)[:data].to_h { [it[:id], it[:attributes]] }
+          expect(attributes[emailed_invite.id]).not_to include(:token, :activate_invite_url)
+          expect(attributes[code_invite.id]).to include(token: code_invite.token)
+        end
+      end
+
+      describe do
         let!(:invites) { create_list(:invite, 5) }
         let(:invite) { create(:invite, invitee: create(:user, last_name: 'abcdefg1234')) }
         let(:search) { invite.invitee.last_name[0..6] }
@@ -96,6 +109,16 @@ resource 'Invites' do
         assert_status 200
       end
 
+      example 'Leaves out the token of emailed invites for admins who are not super admins', document: false do
+        code_invite = create(:invite_without_email)
+        do_request
+        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+        token_column = worksheet[0].cells.map(&:value).index('token')
+        tokens = worksheet.drop(1).map { |row| row[token_column]&.value }
+
+        expect(tokens).to contain_exactly(code_invite.token, nil, nil, nil)
+      end
+
       describe 'when resident' do
         before { resident_header_token }
 
@@ -129,7 +152,7 @@ resource 'Invites' do
         parameter :email, 'The email of the user. Required if not specified at creation of the invite', required: false
         parameter :first_name, 'The first name of the invitee. Required if not specified at creation of the invite.', required: false
         parameter :last_name, 'The last name of the invitee. Required if not specified at creation of the invite.', required: false
-        parameter :password, 'The password of the invitee.', required: true
+        parameter :password, 'The password of the invitee. Ignored if the invite has no email: the invitee sets it after confirming their email.', required: false
         parameter :avatar, 'The avatar of the invitee.', required: false
         parameter :locale, 'The locale of the invitee.', required: false
         parameter :claim_tokens, <<~DESC
@@ -173,6 +196,32 @@ resource 'Invites' do
         assert_status(200)
         expect(invite.reload.accepted_at).to be_present
         expect(invite.invitee.invite_status).to eq('accepted')
+      end
+
+      example 'Accept an invite with another email keeps the invited email', document: false do
+        do_request(invite: { email: 'someone.else@example.com' })
+
+        assert_status(200)
+        invitee = invite.reload.invitee
+        expect(invitee.email).to eq('super.boulette@hotmail.com')
+        expect(invitee.email_confirmed_at).to be_present
+      end
+
+      context 'when the invite has no email' do
+        let(:invite) { create(:invite_without_email) }
+        let(:email) { 'new.invitee@example.com' }
+
+        example 'Accept an invite leaves the typed email unconfirmed and sets no password', document: false do
+          do_request
+
+          assert_status(200)
+          invitee = invite.reload.invitee
+          expect(invitee.email).to eq('new.invitee@example.com')
+          expect(invitee.email_confirmed_at).to be_nil
+          expect(invitee.confirmation_required).to be true
+          expect(invitee.registration_completed_at).to be_nil
+          expect(invitee.password_digest).to be_nil
+        end
       end
 
       example '[error] Accept an invite with an invalid token', document: false do
