@@ -1580,6 +1580,7 @@
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Cuir in Eagar",
   "app.containers.Admin.projects.all.copyProjectButton": "Cóipeáil tionscadail",
   "app.containers.Admin.projects.all.copyProjectError": "Tharla earráid agus an tionscadal seo á chóipeáil, déan iarracht arís ar ball.",
+  "app.containers.Admin.projects.all.copyingProject": "Ag cóipeáil tionscadail…",
   "app.containers.Admin.projects.all.customiseEnd": "Saincheap deireadh na foirme.",
   "app.containers.Admin.projects.all.customiseStart": "Saincheap tús na foirme.",
   "app.containers.Admin.projects.all.deleteFolderButton1": "Scrios fillteán",

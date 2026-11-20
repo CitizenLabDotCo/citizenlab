@@ -1580,6 +1580,7 @@
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Muokkaa",
   "app.containers.Admin.projects.all.copyProjectButton": "Kopioi projekti",
   "app.containers.Admin.projects.all.copyProjectError": "Tämän projektin kopioinnissa tapahtui virhe. Yritä myöhemmin uudelleen.",
+  "app.containers.Admin.projects.all.copyingProject": "Kopioidaan projektia…",
   "app.containers.Admin.projects.all.customiseEnd": "Mukauta lomakkeen loppua.",
   "app.containers.Admin.projects.all.customiseStart": "Mukauta lomakkeen alkua.",
   "app.containers.Admin.projects.all.deleteFolderButton1": "Poista kansio",

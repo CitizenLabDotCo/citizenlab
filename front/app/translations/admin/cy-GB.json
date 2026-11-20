@@ -1580,6 +1580,7 @@
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Golygu",
   "app.containers.Admin.projects.all.copyProjectButton": "Copi prosiect",
   "app.containers.Admin.projects.all.copyProjectError": "Bu gwall wrth gopïo'r prosiect hwn, ceisiwch eto yn nes ymlaen.",
+  "app.containers.Admin.projects.all.copyingProject": "Wrthi’n copïo prosiect…",
   "app.containers.Admin.projects.all.customiseEnd": "Addaswch ddiwedd y ffurflen.",
   "app.containers.Admin.projects.all.customiseStart": "Addasu dechrau'r ffurflen.",
   "app.containers.Admin.projects.all.deleteFolderButton1": "Dileu ffolder",

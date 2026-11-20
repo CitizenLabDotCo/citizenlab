@@ -1580,6 +1580,7 @@
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Beheren",
   "app.containers.Admin.projects.all.copyProjectButton": "Kopieer project",
   "app.containers.Admin.projects.all.copyProjectError": "Er is een fout opgetreden bij het kopiëren van dit project, probeer het later nog eens.",
+  "app.containers.Admin.projects.all.copyingProject": "Project kopiëren…",
   "app.containers.Admin.projects.all.customiseEnd": "Pas het einde van het formulier aan.",
   "app.containers.Admin.projects.all.customiseStart": "Pas het begin van het formulier aan.",
   "app.containers.Admin.projects.all.deleteFolderButton1": "Map verwijderen",

@@ -1580,6 +1580,7 @@
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Modifica",
   "app.containers.Admin.projects.all.copyProjectButton": "Copia progetto",
   "app.containers.Admin.projects.all.copyProjectError": "Si è verificato un errore nella copia di questo progetto, riprova più tardi.",
+  "app.containers.Admin.projects.all.copyingProject": "Copia del progetto in corso…",
   "app.containers.Admin.projects.all.customiseEnd": "Personalizza la parte finale del modulo.",
   "app.containers.Admin.projects.all.customiseStart": "Personalizza la parte iniziale del modulo.",
   "app.containers.Admin.projects.all.deleteFolderButton1": "Elimina cartella",
