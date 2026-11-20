@@ -116,20 +116,17 @@ describe('SSO: user with unconfirmed email - edge cases', () => {
     fakeSSOGlobalSignup(cy, 'tracy_smith', { email });
 
     // The address belongs to the account above, so the merge code is sent straight away.
-    let ssoJwt: string | undefined;
-    cy.getCookie('cl2_jwt').then((cookie) => {
-      ssoJwt = cookie?.value;
-    });
-
-    // Confirm email
     confirmEmail(cy);
 
-    // The merge deletes this SSO account and hands back a token for the survivor.
-    // confirmEmail only awaits the response, so wait for that token to be stored:
-    // a request made before it lands carries the deleted account's token and 401s.
-    cy.getCookie('cl2_jwt').should((cookie) => {
-      expect(cookie?.value).not.to.eq(ssoJwt);
-    });
+    // The merge deletes this SSO account and returns a token for the survivor,
+    // which the app stores after the response. getCookie reads only once, so
+    // poll document.cookie: a request sent before then still carries the
+    // deleted account's token and gets a 401.
+    cy.get('@confirmCode')
+      .its('response.body.data.attributes.auth_token.token')
+      .then((token) => {
+        cy.document().its('cookie').should('include', `cl2_jwt=${token}`);
+      });
 
     // Merged into the account that already had this address. Same as above, the
     // profile it inherits is incomplete, so the flow does not reach success.
