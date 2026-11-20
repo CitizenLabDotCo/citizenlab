@@ -12,13 +12,16 @@
 #
 # Indexes
 #
-#  custom_field_matrix_statements_field_id_ordering_unique  (custom_field_id,ordering) UNIQUE
 #  index_custom_field_matrix_statements_on_custom_field_id  (custom_field_id)
 #  index_custom_field_matrix_statements_on_key              (key)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (custom_field_id => custom_fields.id)
+#
+# Unique Constraints
+#
+#  custom_field_matrix_statements_field_id_ordering_unique  (custom_field_id, ordering) DEFERRABLE INITIALLY IMMEDIATE
 #
 class CustomFieldMatrixStatement < ApplicationRecord
   include PlainTextMultiloc

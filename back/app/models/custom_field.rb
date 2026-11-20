@@ -49,9 +49,12 @@
 #
 # Indexes
 #
-#  custom_fields_resource_id_ordering_unique             (resource_id,ordering) UNIQUE
 #  index_custom_fields_on_ordering                       (ordering) UNIQUE WHERE (resource_id IS NULL)
 #  index_custom_fields_on_resource_type_and_resource_id  (resource_type,resource_id)
+#
+# Unique Constraints
+#
+#  custom_fields_resource_id_ordering_unique  (resource_id, ordering) DEFERRABLE INITIALLY IMMEDIATE
 #
 class CustomField < ApplicationRecord
   include BulkReorderable

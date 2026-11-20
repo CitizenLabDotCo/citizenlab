@@ -22,7 +22,7 @@
 #  index_files_on_category                                (category)
 #  index_files_on_description_multiloc_text_gin_trgm_ops  (((description_multiloc)::text) gin_trgm_ops) USING gin
 #  index_files_on_mime_type                               (mime_type)
-#  index_files_on_name_gin_trgm                           (name) USING gin
+#  index_files_on_name_gin_trgm                           (name gin_trgm_ops) USING gin
 #  index_files_on_size                                    (size)
 #  index_files_on_tsvector                                (tsvector) USING gin
 #  index_files_on_uploader_id                             (uploader_id)

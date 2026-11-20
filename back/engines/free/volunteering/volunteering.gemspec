@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'acts_as_list', '~> 1.0'
   s.add_dependency 'kaminari', '~> 1.2'
   s.add_dependency 'pundit', '~> 2.0'
-  s.add_dependency 'rails', '~> 7.2'
+  s.add_dependency 'rails', '>= 7.2', '< 8.2'
 
   s.add_development_dependency 'rspec_api_documentation'
   s.add_development_dependency 'rspec-rails'

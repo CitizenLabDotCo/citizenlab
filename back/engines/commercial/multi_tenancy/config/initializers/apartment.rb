@@ -78,6 +78,12 @@ Apartment.configure do |config|
     config.parallel_migration_threads = parallel_migration_threads
   end
 
+  # By default, Apartment forks a process per worker and turns Rails' migration locks off for
+  # parallel runs. The patches above give each tenant schema its own lock, so keep the locks,
+  # and keep the workers as threads of this process. Only read when migrating in parallel.
+  config.parallel_strategy = :threads
+  config.manage_advisory_locks = false
+
   # ==> PostgreSQL only options
 
   # Specifies whether to use PostgreSQL schemas or create a new database per Tenant.

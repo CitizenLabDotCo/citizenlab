@@ -37,6 +37,17 @@ describe AvatarsService do
       expect(result[:total_count]).to eq 1
       expect(result[:users].map(&:id)).to contain_exactly(u1.id)
     end
+
+    # The cache outlives a deploy, so it must not hold records whose format can change with Rails.
+    it 'caches only user ids and the count', :clear_cache do
+      project = create(:project)
+      user = create(:user)
+      create(:idea, project: project, author: user)
+
+      service.avatars_for_project(project)
+
+      expect(Rails.cache.read("#{project.cache_key}/user_avatar_ids")).to eq(user_ids: [user.id], total_count: 1)
+    end
   end
 
   describe 'avatars_for_folder' do
@@ -55,6 +66,17 @@ describe AvatarsService do
       expect(result[:total_count]).to eq 4
       expect(result[:users].size).to eq 2
       expect(([u1, u2, u3, u4] - result[:users]).size).to eq 2
+    end
+
+    it 'caches only user ids and the count', :clear_cache do
+      project = create(:project)
+      folder = create(:project_folder, projects: [project])
+      user = create(:user)
+      create(:idea, project: project, author: user)
+
+      service.avatars_for_folder(folder)
+
+      expect(Rails.cache.read("#{folder.cache_key}/user_avatar_ids")).to eq(user_ids: [user.id], total_count: 1)
     end
   end
 

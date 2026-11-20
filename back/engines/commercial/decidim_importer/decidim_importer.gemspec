@@ -16,7 +16,7 @@ Gem::Specification.new do |spec|
   spec.files = Dir['{app,config,db,lib}/**/*', 'Rakefile', 'README.md']
 
   spec.add_dependency 'pundit', '~> 2.0'
-  spec.add_dependency 'rails', '~> 7.2'
+  spec.add_dependency 'rails', '>= 7.2', '< 8.2'
   spec.add_dependency 'ros-apartment', '>=2.9.0'
 
   spec.add_development_dependency 'rspec-rails'

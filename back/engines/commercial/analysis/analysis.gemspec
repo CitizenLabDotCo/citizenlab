@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'distribution', '~> 0.8.0'
   s.add_dependency 'matrix', '~> 0.4.2'
   s.add_dependency 'prime', '~> 0.1.3'
-  s.add_dependency 'rails', '~> 7.2'
+  s.add_dependency 'rails', '>= 7.2', '< 8.2'
   s.add_dependency 'ruby-openai', '~> 8.3.0'
   s.add_dependency 'tiktoken_ruby', '~> 0.0.12'
 

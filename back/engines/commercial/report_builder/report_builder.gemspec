@@ -18,6 +18,6 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'analytics'
   spec.add_dependency 'content_builder'
-  spec.add_dependency 'rails', '~> 7.2'
+  spec.add_dependency 'rails', '>= 7.2', '< 8.2'
   spec.add_dependency 'user_custom_fields'
 end
