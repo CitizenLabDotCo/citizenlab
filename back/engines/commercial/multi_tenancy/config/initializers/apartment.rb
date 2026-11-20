@@ -126,7 +126,7 @@ class RescuedApartmentMiddleware < Apartment::Elevators::Generic
   end
 
   def parse_tenant_name(request)
-    if request.path =~ %r{^/admin_api/.*} || request.path =~ %r{^/okcomputer.*} || request.path == '/hooks/mailgun_events'
+    if tenantless_path?(request.path)
       nil
     else
       host = if Rails.env.development? || Rails.env.staging?
@@ -141,6 +141,13 @@ class RescuedApartmentMiddleware < Apartment::Elevators::Generic
       end
       Tenant.host_to_schema_name(host)
     end
+  end
+
+  private
+
+  def tenantless_path?(path)
+    path.start_with?('/admin_api/', '/okcomputer') ||
+      path == '/hooks/mailgun_events' || path == '/hooks/scaleway_events'
   end
 end
 
