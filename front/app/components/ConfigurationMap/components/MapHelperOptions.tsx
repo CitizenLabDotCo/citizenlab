@@ -19,12 +19,16 @@ import { useIntl } from 'utils/cl-intl';
 import { getMapZoom, projectPointToWebMercator } from 'utils/mapUtils/map';
 import { useParams } from 'utils/router';
 
+export type MapViewValues = { lat: number; lng: number; zoom: string };
+
 type Props = {
   mapView: MapView | null;
   mapConfig: IMapConfig;
+  /** Takes the current view instead of saving it as the default. */
+  onSaveZoom?: (view: MapViewValues) => void;
 };
 
-const MapHelperOptions = ({ mapConfig, mapView }: Props) => {
+const MapHelperOptions = ({ mapConfig, mapView, onSaveZoom }: Props) => {
   const { projectId } = useParams({ strict: false }) as {
     projectId: string;
   };
@@ -52,6 +56,17 @@ const MapHelperOptions = ({ mapConfig, mapView }: Props) => {
     const projectedPoint = projectPointToWebMercator(mapView.center);
 
     if (projectedPoint.longitude && projectedPoint.latitude) {
+      const zoom = getMapZoom(mapView.zoom, mapView.scale);
+
+      if (onSaveZoom) {
+        onSaveZoom({
+          lat: projectedPoint.latitude,
+          lng: projectedPoint.longitude,
+          zoom,
+        });
+        return;
+      }
+
       updateMapConfig({
         mapConfigId: mapConfig.data.id,
         center_geojson: {
@@ -59,7 +74,7 @@ const MapHelperOptions = ({ mapConfig, mapView }: Props) => {
           coordinates: [projectedPoint.longitude, projectedPoint.latitude],
         },
 
-        zoom_level: getMapZoom(mapView.zoom, mapView.scale),
+        zoom_level: zoom,
       });
     }
   };

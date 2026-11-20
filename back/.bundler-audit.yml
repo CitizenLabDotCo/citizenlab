@@ -6,7 +6,7 @@ ignore:
   # themselves with a separator-terminated prefix guard. Revisit with the rubyzip 3 bump.
 
   # ruby_llm 1.16.0: three ReDoS reports filed together, all describing
-  # polynomial-time regex behaviour on Ruby 3.1.x. We run 3.4.7, where all three
+  # polynomial-time regex behaviour on Ruby 3.1.x. We run 3.4, where all three
   # are linear (measured on the 1.16.0 code: doubling the input doubles the time).
   # Each affected path is also unreachable for us — through ruby_llm we only ever
   # use the bedrock and vertexai providers:

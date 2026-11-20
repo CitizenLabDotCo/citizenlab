@@ -1,0 +1,573 @@
+import { phasesData } from 'api/phases/__mocks__/_mockServer';
+import { project1 } from 'api/projects/__mocks__/_mockServer';
+
+import { getPageNumberFromUrl } from 'utils/paginationUtils';
+
+import { createPreviewFetch } from './runtime';
+import { PreviewSession } from './session';
+import { PreviewSnapshot } from './types';
+
+const snapshot: PreviewSnapshot = {
+  project: project1,
+  phase: phasesData[0],
+  draft: {},
+};
+const origin = 'https://demo.stg.govocal.com';
+const phaseId = phasesData[0].id;
+
+const setup = () => {
+  const network = jest.fn(
+    async () =>
+      new Response(JSON.stringify({ data: [] }), {
+        headers: { 'Content-Type': 'application/json' },
+      })
+  );
+  const blocked = jest.fn();
+  const session = new PreviewSession(snapshot);
+  const fetch = createPreviewFetch(session, network, origin, blocked);
+  const request = (path: string, method: string, body = {}) =>
+    fetch(`${origin}/web_api/v1${path}`, {
+      method,
+      body: method === 'GET' ? undefined : JSON.stringify(body),
+    });
+
+  return { network, blocked, request, session, fetch };
+};
+
+it('previews newly enabled views without editing the default view', async () => {
+  const phase: PreviewSnapshot['phase'] = {
+    ...snapshot.phase,
+    attributes: {
+      ...snapshot.phase.attributes,
+      available_views: ['card'],
+      presentation_mode: 'card',
+    },
+  };
+  const { request, session } = setup();
+  const getView = async () => {
+    const response = await request(`/phases/${phaseId}`, 'GET');
+    return (await response.json()).data.attributes.presentation_mode;
+  };
+
+  session.updateSnapshot({ ...snapshot, phase });
+  expect(await getView()).toBe('card');
+
+  const mapDraft: PreviewSnapshot['draft'] = {
+    available_views: ['card', 'map'],
+  };
+  session.updateSnapshot({ ...snapshot, phase, draft: mapDraft });
+  expect(await getView()).toBe('map');
+
+  const feedDraft: PreviewSnapshot['draft'] = {
+    available_views: ['card', 'map', 'feed'],
+  };
+  session.updateSnapshot({ ...snapshot, phase, draft: feedDraft });
+  expect(await getView()).toBe('feed');
+
+  session.updateSnapshot({
+    ...snapshot,
+    phase,
+    draft: mapDraft,
+    lifecycle: 'ended',
+  });
+  expect(await getView()).toBe('card');
+  expect(session.snapshot.draft).toEqual(mapDraft);
+  expect(phase.attributes.presentation_mode).toBe('card');
+});
+
+it('hides submitted ideas and their counts until participation is shown', async () => {
+  const { network, request, session } = setup();
+  const phase: PreviewSnapshot['phase'] = {
+    ...snapshot.phase,
+    attributes: {
+      ...snapshot.phase.attributes,
+      participation_method: 'ideation',
+      ideas_count: 1,
+    },
+  };
+  const open = { ...snapshot, phase, lifecycle: 'open' } as const;
+  const savedIdeas = { data: [{ id: 'idea-1', type: 'idea' }] };
+  network.mockImplementation(
+    async () =>
+      new Response(JSON.stringify(savedIdeas), {
+        headers: { 'Content-Type': 'application/json' },
+      })
+  );
+
+  session.updateSnapshot({ ...open, showParticipation: false });
+  const read = async (path: string) => (await request(path, 'GET')).json();
+  const listPath = `/ideas?phase=${phaseId}&page%5Bnumber%5D=1`;
+  const emptyPage = await read(listPath);
+  expect(emptyPage.data).toEqual([]);
+  expect(getPageNumberFromUrl(emptyPage.links.self)).toBe(1);
+  expect(emptyPage.links.next).toBeUndefined();
+  expect((await read(`/ideas/as_markers?phase=${phaseId}`)).data).toEqual([]);
+  expect((await read(`/phases/${phaseId}/idea_feed/ideas`)).data).toEqual([]);
+  expect(
+    (await read(`/ideas/filter_counts?phase=${phaseId}`)).data.attributes.total
+  ).toBe(0);
+  expect((await read(`/phases/${phaseId}`)).data.attributes.ideas_count).toBe(
+    0
+  );
+  expect(network).not.toHaveBeenCalled();
+  expect((await read('/ideas?phase=other-phase')).data).toHaveLength(1);
+
+  session.updateSnapshot({ ...open, showParticipation: true });
+  expect((await read(listPath)).data).toHaveLength(1);
+  expect((await read(`/phases/${phaseId}`)).data.attributes.ideas_count).toBe(
+    1
+  );
+  const response = await request(`/phases/${phaseId}/inputs`, 'POST', {
+    idea: { title_multiloc: { en: 'Temporary idea' } },
+  });
+  expect(response.ok).toBe(true);
+  expect(network).toHaveBeenCalledTimes(2);
+});
+
+it('keeps voting options available before anyone has voted', async () => {
+  const { network, request, session } = setup();
+  const phase: PreviewSnapshot['phase'] = {
+    ...snapshot.phase,
+    attributes: {
+      ...snapshot.phase.attributes,
+      participation_method: 'voting',
+      votes_count: 3,
+    },
+  };
+  session.updateSnapshot({
+    ...snapshot,
+    phase,
+    lifecycle: 'open',
+    showParticipation: false,
+  });
+  await request(`/ideas?phase=${phaseId}`, 'GET');
+  expect(network).toHaveBeenCalledTimes(1);
+  const result = await (await request(`/phases/${phaseId}`, 'GET')).json();
+  expect(result.data.attributes.votes_count).toBe(0);
+});
+
+it.each(['POST', 'PUT', 'PATCH', 'DELETE'])(
+  'blocks unknown %s requests without contacting the server',
+  async (method) => {
+    const { request, network, blocked } = setup();
+    const response = await request('/users/me', method, {
+      user: { first_name: 'Changed' },
+    });
+
+    expect(response.status).toBe(422);
+    expect(network).not.toHaveBeenCalled();
+    expect(blocked).toHaveBeenCalledTimes(1);
+  }
+);
+
+it('blocks external writes, including Request objects', async () => {
+  const { fetch, network } = setup();
+  const response = await fetch(
+    new Request('https://external.example/submit', {
+      method: 'POST',
+      body: 'test',
+    })
+  );
+
+  expect(response.status).toBe(422);
+  expect(network).not.toHaveBeenCalled();
+});
+
+it('keeps survey page autosaves, final submissions and refetched drafts local', async () => {
+  const { request, network } = setup();
+  const response = await request(`/phases/${phaseId}/inputs`, 'POST', {
+    idea: {
+      publication_status: 'draft',
+      custom_field_values: { answer: 'First page' },
+    },
+  });
+  const created = await response.json();
+
+  await request(`/ideas/${created.data.id}`, 'PATCH', {
+    idea: {
+      publication_status: 'published',
+      custom_field_values: { answer: 'Final page' },
+    },
+  });
+  const draft = await (await request(`/ideas/draft/${phaseId}`, 'GET')).json();
+
+  expect(draft.data.attributes.custom_field_values.answer).toBe('Final page');
+  expect(draft.data.attributes.publication_status).toBe('published');
+  expect(network).not.toHaveBeenCalled();
+});
+
+it.each(['budgeting', 'single_voting', 'multiple_voting'])(
+  'keeps %s selections and basket submission local',
+  async (votingMethod) => {
+    const { request, network } = setup();
+
+    await request('/baskets/ideas/option-1', 'PUT', {
+      baskets_idea: { votes: votingMethod === 'multiple_voting' ? 3 : 1 },
+    });
+    await request('/baskets/preview-basket', 'PATCH', {
+      basket: { submitted: true },
+    });
+    const basket = await (
+      await request('/baskets/preview-basket', 'GET')
+    ).json();
+    const choices = await (
+      await request('/baskets/preview-basket/baskets_ideas', 'GET')
+    ).json();
+
+    expect(basket.data.attributes.submitted_at).toBeTruthy();
+    expect(choices.data).toHaveLength(1);
+    expect(network).not.toHaveBeenCalled();
+  }
+);
+
+it.each([
+  [
+    `/phases/${phaseId}/poll_responses`,
+    { response: { response_options_attributes: [{ option_id: 'option-1' }] } },
+  ],
+  ['/causes/cause-1/volunteers', {}],
+  ['/events/event-1/attendances', { attendance: {} }],
+  ['/ideas/statement-1/reactions', { reaction: { mode: 'up' } }],
+])('keeps participation at %s local', async (path, body) => {
+  const { request, network } = setup();
+
+  expect((await request(path, 'POST', body)).ok).toBe(true);
+  expect(network).not.toHaveBeenCalled();
+});
+
+it('starts a new preview without previous test answers or the real user draft', async () => {
+  const first = setup();
+  await first.request(`/phases/${phaseId}/inputs`, 'POST', {
+    idea: { title_multiloc: { en: 'Private test' } },
+  });
+
+  const second = setup();
+  const draft = await (
+    await second.request(`/ideas/draft/${phaseId}`, 'GET')
+  ).json();
+  expect(draft.data.id).toBeUndefined();
+  expect(second.network).not.toHaveBeenCalled();
+});
+
+it('preserves server access and lifecycle restrictions', () => {
+  const phase = {
+    ...phasesData[0],
+    attributes: {
+      ...phasesData[0].attributes,
+      action_descriptors: {
+        ...phasesData[0].attributes.action_descriptors,
+        posting_idea: { enabled: false, disabled_reason: 'user_not_in_group' },
+        voting: { enabled: false, disabled_reason: 'inactive_phase' },
+      },
+    },
+  };
+  const { session } = setup();
+  const result = session.transform(JSON.parse(JSON.stringify({ data: phase })));
+
+  // The selected phase comes from the editor snapshot, not an unrelated server payload.
+  expect(result.data).toBeDefined();
+  const other = session.transform({
+    data: {
+      id: 'idea-1',
+      type: 'idea',
+      attributes: { action_descriptors: phase.attributes.action_descriptors },
+    },
+  });
+  expect(other).toMatchObject({
+    data: {
+      attributes: {
+        action_descriptors: {
+          posting_idea: {
+            enabled: false,
+            disabled_reason: 'user_not_in_group',
+          },
+          voting: { enabled: false, disabled_reason: 'inactive_phase' },
+        },
+      },
+    },
+  });
+});
+
+it('does not mutate the parent snapshot when preparing preview data', async () => {
+  const { session } = setup();
+  const before = JSON.stringify(snapshot);
+
+  session.read(`/phases/${phaseId}`);
+  session.transform({
+    data: {
+      id: project1.id,
+      type: 'project',
+      attributes: { publication_status: 'draft' },
+      relationships: {},
+    },
+  });
+
+  expect(JSON.stringify(snapshot)).toBe(before);
+});
+
+it('blocks malformed write bodies without forwarding them', async () => {
+  const { fetch, network, blocked } = setup();
+  const response = await fetch(`${origin}/web_api/v1/ideas`, {
+    method: 'POST',
+    body: '{invalid',
+  });
+
+  expect(response.status).toBe(422);
+  expect(network).not.toHaveBeenCalled();
+  expect(blocked).toHaveBeenCalled();
+});
+
+it('keeps event attendance and cancellation isolated from the real account', async () => {
+  const { request, network, session } = setup();
+  session.transform({
+    data: { id: 'event-1', type: 'event', attributes: {}, relationships: {} },
+  });
+
+  expect(
+    (await (await request('/users/me/events', 'GET')).json()).data
+  ).toEqual([]);
+  await request('/events/event-1/attendances', 'POST');
+  const attending = await (await request('/users/me/events', 'GET')).json();
+  expect(attending.data).toHaveLength(1);
+  expect(attending.data[0].relationships.user_attendance.data.id).toBe(
+    'preview-event-1'
+  );
+
+  await request('/event_attendances/preview-event-1', 'DELETE');
+  expect(
+    (await (await request('/users/me/events', 'GET')).json()).data
+  ).toEqual([]);
+  expect(network).not.toHaveBeenCalled();
+});
+
+it('updates the cached phase after a simulated poll response', async () => {
+  const { request } = setup();
+  const result = await (
+    await request(`/phases/${phaseId}/poll_responses`, 'POST')
+  ).json();
+
+  expect(result.included[0].attributes.action_descriptors.taking_poll).toEqual({
+    enabled: false,
+    disabled_reason: 'already_responded',
+  });
+});
+
+it('preserves configured dates and publication state', () => {
+  const session = new PreviewSession(snapshot);
+  expect(session.read(`/phases/${phaseId}`)).toMatchObject({
+    data: {
+      attributes: {
+        start_at: phasesData[0].attributes.start_at,
+        end_at: phasesData[0].attributes.end_at,
+      },
+    },
+  });
+
+  expect(
+    session.transform(JSON.parse(JSON.stringify({ data: project1 })))
+  ).toMatchObject({
+    data: {
+      attributes: {
+        publication_status: project1.attributes.publication_status,
+      },
+      relationships: { current_phase: project1.relationships.current_phase },
+    },
+  });
+});
+
+it('advances common-ground statements using local reactions', () => {
+  const session = new PreviewSession(snapshot);
+  session.setStatements({
+    data: [
+      { id: 'a', type: 'idea' },
+      { id: 'b', type: 'idea' },
+    ],
+  });
+  session.write('/ideas/a/reactions', 'POST', { reaction: { mode: 'up' } });
+
+  expect(
+    session.transform({
+      data: {
+        id: phaseId,
+        type: 'common_ground_progress',
+        attributes: { num_ideas: 2 },
+      },
+    })
+  ).toMatchObject({
+    data: {
+      attributes: { num_ideas: 2, num_reacted_ideas: 1 },
+      relationships: { next_idea: { data: { id: 'b', type: 'idea' } } },
+    },
+  });
+});
+
+it('updates phase edits without clearing local answers, votes or completion', async () => {
+  const { session, request, network } = setup();
+  const created = await (
+    await request(`/phases/${phaseId}/inputs`, 'POST', {
+      idea: { custom_field_values: { answer: 'Keep my answer' } },
+    })
+  ).json();
+  await request('/baskets/ideas/option-1', 'PUT', {
+    baskets_idea: { votes: 2 },
+  });
+  await request(`/phases/${phaseId}/poll_responses`, 'POST');
+
+  expect(
+    session.updateSnapshot({
+      ...snapshot,
+      draft: {
+        title_multiloc: { en: 'Edited title' },
+        description_multiloc: { en: '<p>Edited description</p>' },
+      },
+    })
+  ).toBe(true);
+
+  const phase = await (await request(`/phases/${phaseId}`, 'GET')).json();
+  const draft = await (await request(`/ideas/draft/${phaseId}`, 'GET')).json();
+  const basket = await (await request('/baskets/preview-basket', 'GET')).json();
+
+  expect(phase.data.attributes.title_multiloc.en).toBe('Edited title');
+  expect(phase.data.attributes.description_multiloc.en).toBe(
+    '<p>Edited description</p>'
+  );
+  expect(
+    phase.data.attributes.action_descriptors.taking_poll.disabled_reason
+  ).toBe('already_responded');
+  expect(draft.data.id).toBe(created.data.id);
+  expect(draft.data.attributes.custom_field_values.answer).toBe(
+    'Keep my answer'
+  );
+  expect(basket.data.attributes.total_votes).toBe(2);
+  expect(network).not.toHaveBeenCalled();
+});
+
+it('ignores duplicate snapshots and rejects another phase or project', () => {
+  const { session } = setup();
+
+  expect(session.updateSnapshot(snapshot)).toBe(false);
+  expect(
+    session.updateSnapshot({
+      ...snapshot,
+      phase: { ...snapshot.phase, id: 'another-phase' },
+    })
+  ).toBe(false);
+  expect(
+    session.updateSnapshot({
+      ...snapshot,
+      project: { ...snapshot.project, id: 'another-project' },
+    })
+  ).toBe(false);
+  expect(session.snapshot).toEqual(snapshot);
+});
+
+it('keeps required single-file answers inside the simulated form response', async () => {
+  const { request, network } = setup();
+  const file = {
+    content: 'data:text/plain;base64,aGVsbG8=',
+    name: 'answer.txt',
+  };
+  const response = await request(`/phases/${phaseId}/inputs`, 'POST', {
+    idea: { custom_field_values: { evidence: file } },
+  });
+  const input = await response.json();
+  expect(input.data.attributes.custom_field_values.evidence).toEqual(file);
+  const saved = await request(`/ideas/${input.data.id}`, 'PATCH', {
+    idea: { publication_status: 'published' },
+  });
+  expect(
+    (await saved.json()).data.attributes.custom_field_values.evidence
+  ).toEqual(file);
+  expect(network).not.toHaveBeenCalled();
+});
+
+it('uploads, refetches and deletes draft attachments without server writes', async () => {
+  const { request, network, blocked } = setup();
+  const input = await (
+    await request(`/phases/${phaseId}/inputs`, 'POST', {
+      idea: { publication_status: 'draft' },
+    })
+  ).json();
+  const path = `/ideas/${input.data.id}/files`;
+  const content = 'data:text/plain;base64,aGVsbG8=';
+  const response = await request(path, 'POST', {
+    file: { name: 'evidence.txt', file: content },
+  });
+  expect(response.status).toBe(200);
+  const file = (await response.json()).data;
+  expect(file.attributes).toMatchObject({
+    name: 'evidence.txt',
+    size: 5,
+    file: { url: content },
+  });
+  expect(await (await request(path, 'GET')).json()).toEqual({ data: [file] });
+  expect((await request(`${path}/${file.id}`, 'DELETE')).status).toBe(200);
+  expect(await (await request(path, 'GET')).json()).toEqual({ data: [] });
+  expect(network).not.toHaveBeenCalled();
+  expect(blocked).not.toHaveBeenCalled();
+});
+
+it('blocks malformed attachments and uploads to real ideas', async () => {
+  const { request, network } = setup();
+  const input = await (
+    await request(`/phases/${phaseId}/inputs`, 'POST')
+  ).json();
+  for (const file of [
+    'https://example.com/private.pdf',
+    'data:text/plain;base64,%%%',
+  ]) {
+    expect(
+      (
+        await request(`/ideas/${input.data.id}/files`, 'POST', {
+          file: { name: 'bad.txt', file },
+        })
+      ).status
+    ).toBe(422);
+  }
+  expect(
+    (
+      await request('/ideas/real-idea/files', 'POST', {
+        file: { name: 'evidence.txt', file: 'data:text/plain;base64,aGVsbG8=' },
+      })
+    ).status
+  ).toBe(422);
+  expect(network).not.toHaveBeenCalled();
+});
+
+it('keeps the real common-ground progress when statements fail to load', async () => {
+  const progress = {
+    data: {
+      id: phaseId,
+      type: 'common_ground_progress',
+      attributes: { num_ideas: 3, num_reacted_ideas: 0 },
+    },
+  };
+  const network = jest.fn(async (input: RequestInfo | URL) =>
+    String(input).includes('/progress')
+      ? new Response(JSON.stringify(progress), {
+          headers: { 'Content-Type': 'application/json' },
+        })
+      : new Response(JSON.stringify({ errors: {} }), {
+          status: 500,
+          headers: { 'Content-Type': 'application/json' },
+        })
+  );
+  const fetch = createPreviewFetch(
+    new PreviewSession(snapshot),
+    network,
+    origin,
+    jest.fn()
+  );
+
+  const response = await fetch(
+    `${origin}/web_api/v1/phases/${phaseId}/progress`
+  );
+
+  expect(response.status).toBe(200);
+  expect(await response.json()).toMatchObject({
+    data: {
+      type: 'common_ground_progress',
+      attributes: { num_ideas: 3, num_reacted_ideas: 0 },
+    },
+  });
+});

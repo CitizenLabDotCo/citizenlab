@@ -10,12 +10,12 @@ import ScheduleLaunchModal from 'containers/Admin/projects/project/projectHeader
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
-import messages from '../../messages';
 import HeaderDropdown from '../HeaderDropdown';
 
 import ConfirmStatusChangeModal, {
   ConfirmableStatus,
 } from './ConfirmStatusChangeModal';
+import messages from './messages';
 import MissingEssentialsModal, {
   MissingEssentialsIntent,
 } from './MissingEssentialsModal';
@@ -83,6 +83,7 @@ const PublishDropdown = ({ project, opened, onOpenChange }: Props) => {
               icon="chevron-down"
               id="e2e-publish-dropdown-toggle"
               width="380px"
+              maxHeight="calc(100vh - 160px)"
               label={
                 <Box display="flex" alignItems="center" gap="7px">
                   {dotColor && (

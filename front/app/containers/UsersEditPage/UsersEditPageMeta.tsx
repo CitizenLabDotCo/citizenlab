@@ -11,6 +11,7 @@ import useLocalize from 'hooks/useLocalize';
 import { useIntl } from 'utils/cl-intl';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
+import getOgUrl from 'utils/cl-router/getOgUrl';
 
 import messages from './messages';
 
@@ -35,7 +36,6 @@ const UsersEditPageMeta = ({ authUser }: Props) => {
     return null;
   }
 
-  const { location } = window;
   const usersEditPageIndexTitle = formatMessage(messages.metaTitle1, {
     firstName,
     lastName,
@@ -66,7 +66,7 @@ const UsersEditPageMeta = ({ authUser }: Props) => {
       <meta name="description" content={usersEditPageDescription} />
       <meta property="og:title" content={usersEditPageIndexTitle} />
       <meta property="og:description" content={usersEditPageDescription} />
-      <meta property="og:url" content={location.href} />
+      <meta property="og:url" content={getOgUrl()} />
     </Helmet>
   );
 };

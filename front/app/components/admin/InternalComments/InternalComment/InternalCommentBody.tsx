@@ -1,6 +1,6 @@
 import React, { FormEvent, useEffect, useState, useRef } from 'react';
 
-import { Button } from '@citizenlab/cl2-component-library';
+import { bo, Button, colors } from '@citizenlab/cl2-component-library';
 import styled, { useTheme } from 'styled-components';
 import { CLErrors } from 'typings';
 
@@ -10,6 +10,7 @@ import useUpdateInternalComment from 'api/internal_comments/useUpdateInternalCom
 
 import useLocale from 'hooks/useLocale';
 
+import { useIsBoComments } from 'components/PostShowComponents/Comments/commentsVariant';
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
 import {
   formatCommentContent,
@@ -70,6 +71,7 @@ const InternalCommentBody = ({
   ideaId,
 }: Props) => {
   const theme = useTheme();
+  const isBo = useIsBoComments();
   const { data: comment } = useInternalComment(commentId);
   const { mutate: updateComment, isPending: processing } =
     useUpdateInternalComment({
@@ -179,8 +181,11 @@ const InternalCommentBody = ({
               value={editableCommentContent}
               rows={1}
               onChange={onEditableCommentContentChange}
-              padding="15px"
-              fontWeight="300"
+              padding={isBo ? '10px' : '15px'}
+              fontWeight={isBo ? '400' : '300'}
+              fontSize={isBo ? '12px' : undefined}
+              border={isBo ? `1px solid ${colors.grey300}` : undefined}
+              borderRadius={isBo ? bo.borderRadius : undefined}
               getTextareaRef={setNewTextAreaRef}
               adminsAndModerators
             />
@@ -193,11 +198,14 @@ const InternalCommentBody = ({
               apiErrors.body_multiloc[locale] && (
                 <Error apiErrors={apiErrors.body_multiloc[locale]} />
               )}
-            <Button buttonStyle="secondary-outlined" onClick={cancelEditing}>
+            <Button
+              buttonStyle={isBo ? 'bo-secondary' : 'secondary-outlined'}
+              onClick={cancelEditing}
+            >
               <FormattedMessage {...commentsMessages.cancelCommentEdit} />
             </Button>
             <Button
-              buttonStyle="primary"
+              buttonStyle={isBo ? 'bo-primary' : 'primary'}
               processing={processing}
               onClick={onSubmit}
               id="e2e-save-internal-comment-edit-button"

@@ -8,31 +8,46 @@ import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../messages';
+import messages from './messages';
 
 interface Props {
   phaseId: string;
+  initialOpened?: boolean;
+  showButton?: boolean;
+  onClose?: () => void;
 }
 
-const EditAccessButton = ({ phaseId }: Props) => {
+const EditAccessButton = ({
+  phaseId,
+  initialOpened = false,
+  showButton = true,
+  onClose,
+}: Props) => {
   const { formatMessage } = useIntl();
-  const [opened, setOpened] = useState(false);
+  const [opened, setOpened] = useState(initialOpened);
+
+  const close = () => {
+    setOpened(false);
+    onClose?.();
+  };
 
   return (
     <>
-      <Box display="flex" py="16px">
-        <Button
-          buttonStyle="bo-secondary"
-          width="auto"
-          onClick={() => setOpened(true)}
-        >
-          {formatMessage(messages.editAccess)}
-        </Button>
-      </Box>
+      {showButton && (
+        <Box display="flex" py="16px">
+          <Button
+            buttonStyle="bo-secondary"
+            width="auto"
+            onClick={() => setOpened(true)}
+          >
+            {formatMessage(messages.editAccess)}
+          </Button>
+        </Box>
+      )}
 
       <Modal
         opened={opened}
-        close={() => setOpened(false)}
+        close={close}
         width="900px"
         header={formatMessage(messages.editAccess)}
       >

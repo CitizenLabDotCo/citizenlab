@@ -22,6 +22,11 @@ export default defineMessages({
     defaultMessage:
       'Assign a budget to options and ask participants to select their preferred options that fit within a total budget.',
   },
+  budgetingVotingMethodSubtitle2: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.budgetingVotingMethodSubtitle2',
+    defaultMessage:
+      'Participants pick the options that fit within a total budget',
+  },
   multipleVotingMethodTitle: {
     id: 'app.containers.AdminPage.ProjectEdit.Voting.multipleVotingMethodTitle',
     defaultMessage: 'Multiple votes per option',
@@ -31,6 +36,11 @@ export default defineMessages({
     defaultMessage:
       'Users are given an amount of tokens to distribute between options',
   },
+  multipleVotingMethodSubtitle2: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.multipleVotingMethodSubtitle2',
+    defaultMessage:
+      'Participants get an amount of votes to distribute between options',
+  },
   singleVotingMethodTitle: {
     id: 'app.containers.AdminPage.ProjectEdit.Voting.singleVotingMethodTitle',
     defaultMessage: 'One vote per option',
@@ -39,17 +49,33 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.Voting.singleVotingMethodSubtitle',
     defaultMessage: 'Users can chose to approve any of the options',
   },
+  singleVotingMethodSubtitle2: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.singleVotingMethodSubtitle2',
+    defaultMessage: 'Participants can approve any of the options',
+  },
   voteCalled: {
     id: 'app.containers.AdminPage.ProjectEdit.Voting.voteCalled',
     defaultMessage: 'What should a vote be called?',
+  },
+  voteCalled2: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.voteCalled2',
+    defaultMessage: 'What a vote is called',
   },
   numberVotesPerUser: {
     id: 'app.containers.AdminPage.ProjectEdit.Voting.numberVotesPerUser',
     defaultMessage: 'Number of votes per user',
   },
+  numberVotesPerUser2: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.numberVotesPerUser2',
+    defaultMessage: 'Votes per participant',
+  },
   maxVotesPerOption: {
     id: 'app.containers.AdminPage.ProjectEdit.Voting.maxVotesPerOption',
     defaultMessage: 'Maximum votes per option',
+  },
+  maxVotesPerOption2: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.maxVotesPerOption2',
+    defaultMessage: 'Max votes per option',
   },
   voteCalledPlaceholderSingular: {
     id: 'app.containers.AdminPage.ProjectEdit.Voting.voteCalledPlaceholderSingular2',
@@ -63,6 +89,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.Voting.minimumOptions',
     defaultMessage: 'Minimum selected options',
   },
+  minimumOptions2: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.minimumOptions2',
+    defaultMessage: 'Min options to select',
+  },
   minimumOptionsDescription: {
     id: 'app.containers.AdminPage.ProjectEdit.Voting.minimumOptionsDescription2',
     defaultMessage:
@@ -71,6 +101,10 @@ export default defineMessages({
   maximumVotes: {
     id: 'app.containers.AdminPage.ProjectEdit.Voting.maximumVotes',
     defaultMessage: 'Maximum amount of votes',
+  },
+  maximumVotes2: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.maximumVotes2',
+    defaultMessage: 'Votes per participant',
   },
   maximumVotesDescription: {
     id: 'app.containers.AdminPage.ProjectEdit.Voting.maximumVotesDescription',

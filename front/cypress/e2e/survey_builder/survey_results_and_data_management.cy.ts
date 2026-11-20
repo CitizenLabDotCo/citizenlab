@@ -1,7 +1,6 @@
 import { snakeCase } from 'lodash-es';
 import { randomString } from '../../support/commands';
 import { addSurveyField, waitForCustomFormFields } from './utils';
-import moment = require('moment');
 
 describe('Survey Builder - Results and Data Management', () => {
   const phaseTitle = randomString();
@@ -164,57 +163,6 @@ describe('Survey Builder - Results and Data Management', () => {
     cy.dataCy('e2e-confirm-delete-survey-results').click();
 
     cy.dataCy('e2e-form-delete-results-notice').should('not.exist');
-  });
-
-  it('allows export of survey results', () => {
-    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
-    waitForCustomFormFields();
-    addSurveyField('#toolbox_multiline_text');
-    cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
-
-    // Save the survey
-    cy.get('form').submit();
-    // Should show success message on saving
-    cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
-
-    // Check that the user can access the settings to edit
-    cy.contains(questionTitle).should('exist').click();
-    cy.get('#e2e-title-multiloc').should('exist');
-
-    // Navigate to the survey page
-    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
-
-    cy.contains(questionTitle).should('exist');
-
-    cy.get(`*[id^="${questionTitle}"]:not([id$="-label"])`).type(answer, {
-      force: true,
-    });
-
-    // Save survey response
-    cy.dataCy('e2e-submit-form').should('be.visible');
-
-    cy.wait(1000);
-    cy.dataCy('e2e-submit-form').click();
-    cy.dataCy('e2e-page-number-1').should('be.visible');
-    cy.dataCy('e2e-after-submission').should('be.visible');
-
-    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/insights`);
-
-    // Open the export dropdown
-    cy.dataCy('e2e-survey-export-button').click();
-
-    // Click button to export survey results
-    cy.dataCy('e2e-download-survey-results').click();
-
-    // Check that file is downloaded
-    const downloadsFolder = Cypress.config('downloadsFolder');
-    const fileName = `${snakeCase(phaseTitle)}_${moment().format(
-      'YYYY-MM-DD'
-    )}.xlsx`;
-    cy.readFile(`${downloadsFolder}/${fileName}`).should('exist');
-
-    // Delete the downloads folder and its contents
-    cy.task('deleteFolder', downloadsFolder);
   });
 
   it('allows export of survey responses through the PII review modal', () => {

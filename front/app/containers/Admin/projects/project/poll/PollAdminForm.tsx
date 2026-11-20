@@ -22,6 +22,11 @@ import messages from './messages';
 import OptionForm from './PollAnswerOptions/OptionForm';
 import QuestionFormRow from './PollQuestions/QuestionFormRow';
 import QuestionRow from './PollQuestions/QuestionRow';
+import {
+  PollVariant,
+  PollVariantContext,
+  usePollStyles,
+} from './PollVariantContext';
 
 const StyledList = styled(List)`
   margin: 10px 0;
@@ -30,9 +35,11 @@ const StyledList = styled(List)`
 interface Props {
   phaseId: string;
   pollQuestions: IPollQuestionData[] | null | undefined;
+  variant?: PollVariant;
 }
 
 const PollAdminForm = ({ phaseId, pollQuestions }: Props) => {
+  const { buttonStyle, boSize } = usePollStyles();
   const { mutate: addPollQuestion } = useAddPollQuestion();
   const { mutate: deletePollQuestion } = useDeletePollQuestion();
   const { mutate: updatePollQuestion } = useUpdatePollQuestion();
@@ -218,7 +225,8 @@ const PollAdminForm = ({ phaseId, pollQuestions }: Props) => {
       {!newQuestionTitle && !editingOptionsId && (
         <ButtonWithLink
           className="e2e-add-question-btn"
-          buttonStyle="admin-dark"
+          buttonStyle={buttonStyle('admin-dark')}
+          boSize={boSize}
           icon="plus-circle"
           onClick={startNewQuestion}
         >
@@ -229,8 +237,10 @@ const PollAdminForm = ({ phaseId, pollQuestions }: Props) => {
   );
 };
 
-export default (props: Props) => (
-  <DndProvider backend={HTML5Backend}>
-    <PollAdminForm {...props} />
-  </DndProvider>
+export default ({ variant = 'default', ...props }: Props) => (
+  <PollVariantContext.Provider value={variant}>
+    <DndProvider backend={HTML5Backend}>
+      <PollAdminForm {...props} />
+    </DndProvider>
+  </PollVariantContext.Provider>
 );

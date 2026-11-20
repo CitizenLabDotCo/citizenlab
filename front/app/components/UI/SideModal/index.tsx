@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 
 import {
+  bo,
   Icon,
   ClickOutside,
   media,
@@ -11,7 +12,11 @@ import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import { Subscription } from 'rxjs';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+
+import CloseIconButton, {
+  closeIconButtonStyle,
+} from 'components/UI/CloseIconButton';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import eventEmitter from 'utils/eventEmitter';
@@ -26,7 +31,9 @@ const easing = 'cubic-bezier(0.165, 0.84, 0.44, 1)';
 
 const ModalWrapper = styled(ClickOutside)``;
 
-const ModalContainer = styled.div<{ width: string }>`
+type Variant = 'default' | 'bo';
+
+const ModalContainer = styled.div<{ width: string; variant: Variant }>`
   width: ${({ width }) => width};
   height: 100vh;
   background: white;
@@ -38,6 +45,16 @@ const ModalContainer = styled.div<{ width: string }>`
   top: 0;
   right: 0;
   will-change: opacity, transform;
+
+  ${({ variant }) =>
+    variant === 'bo' &&
+    css`
+      top: ${bo.drawerInset};
+      right: ${bo.drawerInset};
+      height: calc(100vh - 2 * ${bo.drawerInset});
+      max-width: calc(100vw - 2 * ${bo.drawerInset});
+      border-radius: ${bo.drawerBorderRadius};
+    `}
 `;
 
 const CloseIcon = styled(Icon)`
@@ -70,6 +87,19 @@ const CloseButton = styled.button`
     height: 18px;
     width: 18px;
   `}
+`;
+
+// Matches the close button of the bo modal, centred in the panel header. It
+// sits outside the container, so it follows the bo inset itself.
+const BoCloseButton = styled(CloseIconButton)`
+  position: absolute;
+  top: calc(12px + ${bo.drawerInset});
+  right: calc(20px + ${bo.drawerInset});
+  width: 28px;
+  height: 28px;
+  opacity: 0;
+  z-index: 1001;
+  ${closeIconButtonStyle}
 `;
 
 const Overlay = styled.div`
@@ -106,7 +136,7 @@ const Overlay = styled.div`
   }
 
   &.modal-enter-done {
-    ${CloseButton} {
+    ${CloseButton}, ${BoCloseButton} {
       opacity: 1;
     }
   }
@@ -119,7 +149,7 @@ const Overlay = styled.div`
       transform: translateX(0px);
     }
 
-    ${CloseButton} {
+    ${CloseButton}, ${BoCloseButton} {
       opacity: 0;
     }
 
@@ -144,6 +174,11 @@ const ModalContent = styled.div`
   -webkit-overflow-scrolling: touch;
 `;
 
+const isEditable = (target: EventTarget | null): target is HTMLElement =>
+  target instanceof HTMLElement &&
+  (target.isContentEditable ||
+    ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName));
+
 const HiddenSpan = styled.span`
   ${hideVisually()}
 `;
@@ -155,6 +190,9 @@ type Props = {
   label?: string;
   children?: any;
   width?: string;
+  variant?: Variant;
+  /** Off while a modal opened from outside this one sits on top of it. */
+  closeOnClickOutside?: boolean;
 };
 
 type State = {
@@ -193,6 +231,10 @@ export default class SideModal extends PureComponent<Props, State> {
         this.setState({ innerModalOpened: false });
       }),
     ];
+
+    if (this.props.variant === 'bo') {
+      window.addEventListener('keydown', this.handleKeyDown);
+    }
   }
 
   componentWillUnmount() {
@@ -206,7 +248,33 @@ export default class SideModal extends PureComponent<Props, State> {
     }
 
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    window.removeEventListener('keydown', this.handleKeyDown);
   }
+
+  // A modal on top closes on keydown. Handling Escape on keyup, as ClickOutside
+  // does, would then also close this panel with the same keypress.
+  handleKeyDown = (event: KeyboardEvent) => {
+    const { opened, closeOnClickOutside = true, close } = this.props;
+
+    if (
+      event.key !== 'Escape' ||
+      // Already handled, for example by a menu inside the panel.
+      event.defaultPrevented ||
+      !opened ||
+      !closeOnClickOutside ||
+      this.state.innerModalOpened
+    ) {
+      return;
+    }
+
+    // Escape first leaves the field being typed in, so its text isn't lost.
+    if (isEditable(event.target)) {
+      event.target.blur();
+      return;
+    }
+
+    close();
+  };
 
   clickOutsideModal = () => {
     this.props.close();
@@ -219,7 +287,14 @@ export default class SideModal extends PureComponent<Props, State> {
   };
 
   render(): React.ReactNode {
-    const { children, opened, label, width = '940px' } = this.props;
+    const {
+      children,
+      opened,
+      label,
+      width = '940px',
+      variant = 'default',
+      closeOnClickOutside = true,
+    } = this.props;
     // TODO: Fix this the next time the file is edited.
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const modalPortalElement = document?.getElementById('modal-portal');
@@ -237,6 +312,9 @@ export default class SideModal extends PureComponent<Props, State> {
           unmountOnExit={true}
           enter={true}
           exit={true}
+          // The close button only shows once the transition is done, which
+          // never happens for a panel that is already open on page load.
+          appear={variant === 'bo'}
         >
           <Overlay
             id="e2e-modal-container"
@@ -247,23 +325,38 @@ export default class SideModal extends PureComponent<Props, State> {
           >
             <ModalWrapper
               onClickOutside={this.clickOutsideModal}
-              closeOnClickOutsideEnabled={!this.state.innerModalOpened}
+              closeOnClickOutsideEnabled={
+                closeOnClickOutside && !this.state.innerModalOpened
+              }
+              isModal={variant === 'bo'}
             >
               <FocusOn>
-                <ModalContainer width={width}>
+                <ModalContainer width={width} variant={variant}>
                   <ModalContent id="e2e-side-modal-content">
                     {children}
                   </ModalContent>
                 </ModalContainer>
-                <CloseButton
-                  className="e2e-modal-close-button"
-                  onClick={this.clickCloseButton}
-                >
-                  <HiddenSpan>
-                    <FormattedMessage {...messages.closeButtonAria} />
-                  </HiddenSpan>
-                  <CloseIcon name="close" />
-                </CloseButton>
+                {variant === 'bo' ? (
+                  <BoCloseButton
+                    className="e2e-modal-close-button"
+                    onClick={this.clickCloseButton}
+                    iconColor={colors.textSecondary}
+                    iconColorOnHover={colors.textSecondary}
+                    iconWidth="20px"
+                    iconHeight="20px"
+                    a11y_buttonActionMessage={messages.closeButtonAria}
+                  />
+                ) : (
+                  <CloseButton
+                    className="e2e-modal-close-button"
+                    onClick={this.clickCloseButton}
+                  >
+                    <HiddenSpan>
+                      <FormattedMessage {...messages.closeButtonAria} />
+                    </HiddenSpan>
+                    <CloseIcon name="close" />
+                  </CloseButton>
+                )}
               </FocusOn>
             </ModalWrapper>
           </Overlay>

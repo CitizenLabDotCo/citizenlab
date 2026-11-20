@@ -30,6 +30,7 @@ interface AccordionProps {
 const Accordion = ({ title, openByDefault = false }: AccordionProps) => {
   const localize = useLocalize();
   const componentDefaultPadding = useCraftComponentDefaultPadding();
+  const localizedTitle = localize(title).trim();
 
   return (
     <AccordionComponent
@@ -41,9 +42,11 @@ const Accordion = ({ title, openByDefault = false }: AccordionProps) => {
       isOpenByDefault={openByDefault}
       title={
         <Box className="e2e-accordion" display="flex">
-          <Title variant="h3" color="tenantText">
-            {localize(title)}
-          </Title>
+          {localizedTitle && (
+            <Title variant="h3" color="tenantText">
+              {localizedTitle}
+            </Title>
+          )}
         </Box>
       }
     >

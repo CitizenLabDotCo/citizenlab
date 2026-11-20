@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
-import { Box, IOption } from '@citizenlab/cl2-component-library';
+import { Box, IOption, bo } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
 import {
@@ -35,6 +35,7 @@ import DislikingSettings from './DislikingSettings';
 import DislikingToggle from './DislikingToggle';
 
 interface Props {
+  moderationAction?: ReactNode;
   input_term: InputTerm | undefined;
   handleInputTermChange: (option: IOption) => void;
   submission_enabled?: boolean | null;
@@ -91,6 +92,7 @@ interface Props {
 }
 
 const IdeationInputs = ({
+  moderationAction,
   input_term,
   handleInputTermChange,
   submission_enabled,
@@ -162,25 +164,6 @@ const IdeationInputs = ({
     />
   ) : null;
 
-  const userActions = (
-    <UserActions
-      submission_enabled={submission_enabled || false}
-      commenting_enabled={commenting_enabled || false}
-      reacting_enabled={reacting_enabled || false}
-      togglePostingEnabled={togglePostingEnabled}
-      toggleCommentingEnabled={toggleCommentingEnabled}
-      toggleReactingEnabled={toggleReactingEnabled}
-      apiErrors={apiErrors}
-      reacting_like_method={reacting_like_method}
-      reacting_like_limited_max={reacting_like_limited_max}
-      noLikingLimitError={noLikingLimitError}
-      handleReactingLikeMethodOnChange={handleReactingLikeMethodOnChange}
-      handleLikingLimitOnChange={handleLikingLimitOnChange}
-      phaseId={phaseId}
-      layout={layout}
-    />
-  );
-
   const likes = reacting_enabled && (
     <ReactionLimitSettings
       name="likingmethod"
@@ -192,8 +175,14 @@ const IdeationInputs = ({
       onMaxChange={handleLikingLimitOnChange}
       error={
         <>
-          <Error apiErrors={apiErrors && apiErrors.reacting_method} />
           <Error
+            showBackground={layout !== 'panel'}
+            showIcon={layout !== 'panel'}
+            apiErrors={apiErrors && apiErrors.reacting_method}
+          />
+          <Error
+            showBackground={layout !== 'panel'}
+            showIcon={layout !== 'panel'}
             text={noLikingLimitError}
             apiErrors={apiErrors && apiErrors.reacting_limit}
           />
@@ -215,6 +204,33 @@ const IdeationInputs = ({
       }
       handleReactingDislikeMethodOnChange={handleReactingDislikeMethodOnChange}
       handleDislikingLimitOnChange={handleDislikingLimitOnChange}
+    />
+  );
+
+  const userActions = (
+    <UserActions
+      submission_enabled={submission_enabled || false}
+      commenting_enabled={commenting_enabled || false}
+      reacting_enabled={reacting_enabled || false}
+      togglePostingEnabled={togglePostingEnabled}
+      toggleCommentingEnabled={toggleCommentingEnabled}
+      toggleReactingEnabled={toggleReactingEnabled}
+      apiErrors={apiErrors}
+      reacting_like_method={reacting_like_method}
+      reacting_like_limited_max={reacting_like_limited_max}
+      noLikingLimitError={noLikingLimitError}
+      handleReactingLikeMethodOnChange={handleReactingLikeMethodOnChange}
+      handleLikingLimitOnChange={handleLikingLimitOnChange}
+      phaseId={phaseId}
+      layout={layout}
+      reactingSettings={
+        layout === 'panel' && (
+          <>
+            <Box pl={bo.toggleLabelIndent}>{likes}</Box>
+            {dislikingToggle}
+          </>
+        )
+      }
     />
   );
 
@@ -285,27 +301,28 @@ const IdeationInputs = ({
         {views}
         {sorting}
         <Box mb="10px">
-          <PanelHeading label={formatMessage(configMessages.rulesGroup)} />
+          <PanelHeading label={formatMessage(configMessages.settingsGroup)} />
         </Box>
         <PanelGroup
           label={formatMessage(configMessages.participantActionsGroup)}
           defaultOpen
         >
           {userActions}
-          {dislikingToggle}
-          {likes}
         </PanelGroup>
-        <PanelGroup
-          label={formatMessage(configMessages.moderationGroup)}
-          defaultOpen
-        >
-          <Box display="flex" flexDirection="column" gap="16px">
-            <ModerationAssignee phaseId={phaseId} />
-            {screening}
-            {anonymity}
-            {similarity}
-          </Box>
-        </PanelGroup>
+        <Box id="phase-moderation-settings">
+          <PanelGroup
+            label={formatMessage(configMessages.moderationGroup)}
+            defaultOpen
+          >
+            <Box display="flex" flexDirection="column" gap="16px">
+              {!phaseId && moderationAction}
+              <ModerationAssignee phaseId={phaseId} />
+              {screening}
+              {anonymity}
+              {similarity}
+            </Box>
+          </PanelGroup>
+        </Box>
       </>
     );
   }

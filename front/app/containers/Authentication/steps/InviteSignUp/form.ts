@@ -1,5 +1,5 @@
 import { FormatMessage } from 'typings';
-import { string, object, boolean } from 'yup';
+import { string, object, boolean, StringSchema } from 'yup';
 
 import authProvidersMessages from 'containers/Authentication/steps/_components/AuthProviderButton/messages';
 
@@ -13,9 +13,14 @@ export interface FormValues {
   first_name: string;
   last_name: string;
   email: string;
-  password: string;
+  password?: string;
   policiesAccepted: boolean;
 }
+
+// Before validation Yup expects the optional password key to be there, even if undefined.
+export type FormInput = Omit<FormValues, 'password'> & {
+  password: string | undefined;
+};
 
 export const DEFAULT_VALUES: Partial<FormValues> = {
   first_name: undefined,
@@ -36,13 +41,16 @@ export const getEmailSchema = (formatMessage: FormatMessage) =>
 export const getSchema = (
   minimumPasswordLength: number,
   formatMessage: FormatMessage,
+  askPassword: boolean,
   minimumStrength?: number
 ) => {
   const emailSchema = getEmailSchema(formatMessage);
-  const passwordSchema = getPasswordSchema(formatMessage, {
-    minimumPasswordLength,
-    minimumStrength,
-  });
+  const passwordSchema: StringSchema<string | undefined> = askPassword
+    ? getPasswordSchema(formatMessage, {
+        minimumPasswordLength,
+        minimumStrength,
+      })
+    : string();
 
   const schema = object({
     first_name: string().required(

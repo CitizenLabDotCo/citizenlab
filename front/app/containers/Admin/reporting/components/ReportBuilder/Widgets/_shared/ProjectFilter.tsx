@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 
 import useAuthUser from 'api/me/useAuthUser';
+import { ParticipationMethod } from 'api/phases/types';
 
 import dashboardFilterMessages from 'containers/Admin/dashboard/components/filters/messages';
 
@@ -17,6 +18,8 @@ interface Option {
 interface Props {
   id?: string;
   projectId?: string;
+  participationMethods?: ParticipationMethod[];
+  placeholder?: string;
   emptyOptionMessage?: MessageDescriptor;
   onProjectFilter: (filter: Option) => void;
 }
@@ -24,6 +27,8 @@ interface Props {
 const ProjectFilter = ({
   id,
   projectId,
+  participationMethods,
+  placeholder,
   emptyOptionMessage,
   onProjectFilter,
 }: Props) => {
@@ -58,6 +63,8 @@ const ProjectFilter = ({
       width="100%"
       mb="20px"
       selectedProjectId={projectId}
+      participationMethods={participationMethods}
+      placeholder={placeholder}
       emptyOptionMessage={getEmptyOptionMessage()}
       onProjectFilter={handleProjectFilter}
       includeHiddenProjects

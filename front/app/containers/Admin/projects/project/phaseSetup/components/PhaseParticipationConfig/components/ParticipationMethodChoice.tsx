@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 
 import {
   Box,
+  Color,
+  bo,
   colors,
   Title,
   Text,
@@ -20,6 +22,49 @@ type Props = {
   width?: string;
   /** Shown on hover when the method can't be picked. */
   disabledReason?: string;
+  /** `bo`: a menu of actions, so no card looks selected or greyed out. */
+  variant?: 'default' | 'bo';
+};
+
+interface Look {
+  width: string;
+  border: string;
+  background: string;
+  borderRadius: string;
+  muted: boolean;
+  titleColor: Color;
+  subtitleColor: Color;
+}
+
+const getLook = (
+  variant: 'default' | 'bo',
+  width: string,
+  selected: boolean,
+  highlighted: boolean
+): Look => {
+  if (variant === 'bo') {
+    return {
+      width: '100%',
+      border: highlighted ? bo.colors.sectionLabel : colors.grey200,
+      background: highlighted ? colors.grey50 : colors.white,
+      borderRadius: bo.panelBorderRadius,
+      muted: false,
+      titleColor: 'textPrimary',
+      subtitleColor: 'textSecondary',
+    };
+  }
+
+  const textColor = selected ? 'primary' : 'coolGrey500';
+
+  return {
+    width,
+    border: highlighted ? colors.primary : colors.borderLight,
+    background: highlighted ? colors.teal50 : colors.white,
+    borderRadius: '3px',
+    muted: !selected,
+    titleColor: textColor,
+    subtitleColor: textColor,
+  };
 };
 
 interface ChildTextProps {
@@ -50,20 +95,21 @@ const ParticipationMethodChoice = ({
   participation_method,
   width = '240px',
   disabledReason,
+  variant = 'default',
 }: Props) => {
   const [isHover, setIsHover] = useState(false);
   const disabled = !!disabledReason;
   const highlighted = selected || (isHover && !disabled);
-  const borderColor = highlighted ? colors.primary : colors.borderLight;
+  const look = getLook(variant, width, selected, highlighted);
 
   const card = (
     <Box
       display="flex"
-      width={width}
+      width={look.width}
       flexDirection="column"
-      borderRadius="3px"
-      border={`1px solid ${borderColor}`}
-      background={highlighted ? colors.teal50 : colors.white}
+      borderRadius={look.borderRadius}
+      border={`1px solid ${look.border}`}
+      background={look.background}
       opacity={disabled ? 0.6 : 1}
       padding="16px"
       gap="8px"
@@ -89,7 +135,9 @@ const ParticipationMethodChoice = ({
           alt={'Ideation'}
           w="100%"
           style={{
-            ...(selected ? {} : { filter: 'grayscale(100%)', opacity: '50%' }),
+            ...(look.muted
+              ? { filter: 'grayscale(100%)', opacity: '50%' }
+              : {}),
           }}
         />
       )}
@@ -97,7 +145,7 @@ const ParticipationMethodChoice = ({
         <Title
           my="0px"
           variant="h6"
-          color={selected ? 'primary' : 'coolGrey500'}
+          color={look.titleColor}
           textAlign="left"
           width="100%"
           style={{ overflowWrap: 'break-word', wordWrap: 'break-word' }}
@@ -110,7 +158,7 @@ const ParticipationMethodChoice = ({
         <Text
           my="0px"
           variant="bodyS"
-          color={selected ? 'primary' : 'coolGrey500'}
+          color={look.subtitleColor}
           textAlign="left"
           width="100%"
           style={{ overflowWrap: 'break-word', wordWrap: 'break-word' }}
@@ -130,7 +178,7 @@ const ParticipationMethodChoice = ({
       content={disabledReason}
       placement="top"
       theme="dark"
-      width={width}
+      width={look.width}
     >
       {card}
     </Tooltip>

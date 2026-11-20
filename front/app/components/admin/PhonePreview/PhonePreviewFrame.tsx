@@ -13,6 +13,7 @@ interface Props {
   className?: string;
   dataCy?: string;
   alignTop?: boolean;
+  bottomSpace?: number;
   children?: ReactNode;
 }
 
@@ -21,9 +22,10 @@ const PhonePreviewFrame = ({
   className,
   dataCy,
   alignTop = false,
+  bottomSpace = 0,
   children,
 }: Props) => {
-  const { scale, containerRef } = useFitPhonePreview();
+  const { scale, containerRef } = useFitPhonePreview(bottomSpace);
 
   return (
     <Box

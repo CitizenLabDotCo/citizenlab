@@ -1,14 +1,16 @@
-import messages from '../messages';
+import backofficeRedesignMessages from '../messages';
+
+import messages from './messages';
 
 const SECTIONS = [
   {
     path: 'events',
-    label: messages.eventsSection,
+    label: backofficeRedesignMessages.eventsSection,
     to: '/admin/projects/$projectId/events',
   },
   {
     path: 'files',
-    label: messages.filesSection,
+    label: backofficeRedesignMessages.filesSection,
     to: '/admin/projects/$projectId/files',
   },
   {

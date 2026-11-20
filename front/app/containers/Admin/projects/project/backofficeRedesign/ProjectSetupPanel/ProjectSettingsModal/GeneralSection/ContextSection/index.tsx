@@ -7,11 +7,12 @@ import contextMessages from 'containers/Admin/projects/_shared/components/Projec
 import { SpaceAndFolderId } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/types';
 import { useCanEditProjectContext } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/utils';
 import SettingsSection from 'containers/Admin/projects/project/backofficeRedesign/_shared/components/SettingsModal/SettingsSection';
-import messages from 'containers/Admin/projects/project/backofficeRedesign/messages';
 
 import Error from 'components/UI/Error';
 
 import { useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
 
 interface Props {
   spaceId: string | null;

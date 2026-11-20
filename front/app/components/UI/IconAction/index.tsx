@@ -16,6 +16,7 @@ interface Props {
   onClick: (event: MouseEvent) => void;
   id?: string;
   disabled?: boolean;
+  ariaExpanded?: boolean;
   buttonStyle?: Extract<ButtonStyles, 'bo-text' | 'bo-secondary'>;
 }
 
@@ -26,6 +27,7 @@ const IconAction = ({
   onClick,
   id,
   disabled,
+  ariaExpanded,
   buttonStyle = 'bo-text',
 }: Props) => (
   <Tooltip content={tooltip} theme="dark">
@@ -40,6 +42,7 @@ const IconAction = ({
       height="28px"
       padding="0"
       ariaLabel={ariaLabel}
+      ariaExpanded={ariaExpanded}
       disabled={disabled}
       onClick={onClick}
     />

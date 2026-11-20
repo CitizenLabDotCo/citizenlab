@@ -245,6 +245,19 @@ resource 'Request codes' do
       expect(delivery_service).not_to have_received(:send_now_to_user)
     end
 
+    example 'It does not work, and logs an activity, if the new_email domain is blocked' do
+      user = create(:user)
+      header_token_for(user)
+      blocked_email = "new_email@#{User::EMAIL_DOMAIN_BLACKLIST.first}"
+
+      expect { do_request(request_code: { new_email: blocked_email }) }
+        .to have_enqueued_job(LogActivityJob)
+        .with(AppConfiguration.instance, 'blacklisted_email_domain_used', nil, anything, payload: hash_including(email: blocked_email))
+      expect(response_status).to eq 422
+      expect(json_response_body.dig(:errors, :new_email, 0, :code)).to eq User::EMAIL_DOMAIN_BLOCKED_ERROR_CODE
+      expect(delivery_service).not_to have_received(:send_now_to_user)
+    end
+
     example 'It does not work if new_email is already taken by another user' do
       existing_user = create(:user, email: 'existing_email@example.com')
       user = create(:user)

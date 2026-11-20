@@ -285,4 +285,29 @@ resource 'ContentBuilderLayouts' do
       end
     end
   end
+
+  context 'when folder moderator' do
+    let(:other_project_file) { create(:file, projects: [create(:project)]) }
+
+    before { header_token_for create(:project_folder_moderator, project_folders: [folder]) }
+
+    post 'web_api/v1/project_folders/:folder_id/content_builder_layouts/:code/upsert' do
+      with_options scope: :content_builder_layout do
+        parameter :craftjs_json, 'The craftjs layout configuration'
+      end
+
+      let(:craftjs_json) do
+        {
+          'ROOT' => { 'type' => { 'resolvedName' => 'Container' }, 'nodes' => ['file1'] },
+          'file1' => { 'type' => { 'resolvedName' => 'FileAttachment' }, 'props' => { 'fileId' => other_project_file.id } }
+        }
+      end
+
+      example_request '[error] Try to add a file from a project outside their folder' do
+        assert_status 401
+        expect(json_parse(response_body).dig(:errors, :base, 0, :error)).to eq 'unauthorized_file'
+        expect(layout.reload.referenced_file_ids).to be_empty
+      end
+    end
+  end
 end

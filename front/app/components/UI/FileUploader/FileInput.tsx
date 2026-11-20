@@ -1,7 +1,8 @@
-import React, { FormEvent, useState, ChangeEvent } from 'react';
+import React, { FormEvent, useState, useRef, ChangeEvent } from 'react';
 
 import {
   colors,
+  bo,
   fontSizes,
   defaultOutline,
   isRtl,
@@ -47,7 +48,7 @@ const Input = styled.input`
   }
 `;
 
-const Label = styled.label`
+const Label = styled.label<{ variant: 'default' | 'bo' }>`
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -62,6 +63,27 @@ const Label = styled.label`
   ${isRtl`
     flex-direction: row-reverse;
   `}
+
+  ${({ variant }) =>
+    variant === 'bo' &&
+    `
+      flex-direction: column;
+      justify-content: center;
+      gap: 8px;
+      padding: 22px 16px;
+      border-color: ${colors.grey300};
+      border-radius: ${bo.borderRadius};
+      background: ${colors.grey50};
+      font-size: ${fontSizes.xs}px;
+      line-height: 16px;
+      text-align: center;
+
+      ${StyledIcon} {
+        width: 20px;
+        height: 20px;
+        margin: 0;
+      }
+    `}
 
   &:hover {
     color: #000;
@@ -150,6 +172,7 @@ const fileAccept = [
 ];
 
 interface Props {
+  variant?: 'default' | 'bo';
   onAdd: (file: UploadFile) => void;
   className?: string;
   id: string;
@@ -159,6 +182,7 @@ interface Props {
 }
 
 const FileInput = ({
+  variant = 'default',
   className,
   id,
   onAdd,
@@ -168,7 +192,12 @@ const FileInput = ({
 }: Props) => {
   const { formatMessage } = useIntl();
 
-  const [error, setError] = useState<string | undefined>(undefined);
+  const [unsupportedFileNames, setUnsupportedFileNames] = useState<string[]>(
+    []
+  );
+  const [hasTooLargeFile, setHasTooLargeFile] = useState(false);
+  const latestPickRef = useRef(0);
+
   const onClick = (event: FormEvent<any>) => {
     // reset the value of the input field
     // so we can upload the same file again after deleting it
@@ -180,24 +209,30 @@ const FileInput = ({
 
     if (files && files.length > 0) {
       // Reset any error state
-      setError(undefined);
+      setUnsupportedFileNames([]);
+      setHasTooLargeFile(false);
+      latestPickRef.current += 1;
+      const pick = latestPickRef.current;
 
       Array.from(files).forEach(async (file: UploadFile) => {
         const base64 = await getBase64FromFile(file);
+        // Files are read asynchronously, so an earlier pick can finish after
+        // a newer one has reset the errors: only the latest pick reports them.
+        const isLatestPick = pick === latestPickRef.current;
         file.base64 = base64;
         file.filename = file.name;
         file.extension =
           file.type ||
           base64.substring(base64.indexOf(':') + 1, base64.indexOf(';base64'));
-        if (!fileAccept.includes(file.extension)) {
-          file.error = ['incorrect_extension'];
-          setError('incorrect_extension');
-        }
 
         if (maxSizeMb && file.size / 1000000 > maxSizeMb) {
-          // File is larger than maxSize
           file.error = ['file_too_large'];
-          setError('file_too_large');
+          if (isLatestPick) setHasTooLargeFile(true);
+        } else if (!fileAccept.includes(file.extension)) {
+          file.error = ['incorrect_extension'];
+          if (isLatestPick) {
+            setUnsupportedFileNames((fileNames) => [...fileNames, file.name]);
+          }
         }
 
         if (!file.error) {
@@ -221,16 +256,18 @@ const FileInput = ({
         data-testid="fileInput"
         multiple={multiple}
       />
-      <Label aria-hidden htmlFor={id}>
+      <Label variant={variant} aria-hidden htmlFor={id}>
         <StyledIcon name="upload-file" ariaHidden />
         <FormattedMessage {...messages.fileInputDescription} />
       </Label>
-      {error && (
+      {unsupportedFileNames.map((fileName, index) => (
         <Error
-          text={formatMessage(messages[error], {
-            maxSizeMb: maxSizeMb || 0,
-          })}
+          key={`${index}-${fileName}`}
+          text={formatMessage(messages.incorrect_extension, { fileName })}
         />
+      ))}
+      {hasTooLargeFile && maxSizeMb !== undefined && (
+        <Error text={formatMessage(messages.file_too_large, { maxSizeMb })} />
       )}
     </Container>
   );

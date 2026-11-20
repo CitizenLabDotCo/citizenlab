@@ -207,22 +207,32 @@ export const focusRing = css`
 // Back office theme
 const BO_HEADER_FONT_SIZE = '13px';
 const BO_CONTROL_FONT_SIZE = 13;
+const BO_TOGGLE_WIDTH = 26;
+const BO_TOGGLE_LABEL_GAP = 12;
 
 export const bo = {
   colors: {
     textHeadingStrong: '#1E1E1E',
     textHeading: '#474747',
     statusFill: '#E2EEE1',
-    stepHalo: '#D7E3E7',
-    liveHalo: '#DAF2E7',
-    stepBorder: '#D4D9DD',
     stepDone: '#4A935E',
+    stepDoneDot: '#1F8F5C',
+    stepDoneLine: '#94CCA4',
+    stepLiveDot: '#80E69E',
+    stepUpcomingTitle: '#435D4A',
+    sectionLabel: '#8D9EAC',
     crumbSeparator: '#8D9EAC',
   },
   borderRadius: '8px',
   panelBorderRadius: '12px',
+  drawerBorderRadius: '18px',
+  drawerInset: '16px',
   headerFontSize: BO_HEADER_FONT_SIZE,
   controlFontSize: BO_CONTROL_FONT_SIZE,
+  toggleWidth: `${BO_TOGGLE_WIDTH}px`,
+  toggleLabelGap: `${BO_TOGGLE_LABEL_GAP}px`,
+  // Lines content up with the label of a bo toggle.
+  toggleLabelIndent: `${BO_TOGGLE_WIDTH + BO_TOGGLE_LABEL_GAP}px`,
   buttonMedium: {
     height: '32px',
     padding: '0 16px',
@@ -242,6 +252,7 @@ export const stylingConsts = {
   pageWidth: 1150,
   textWidth: 720,
   borderRadius: '3px',
+  borderRadiusPill: '999px',
   border: `1px solid ${colors.divider}`,
 };
 
@@ -279,8 +290,8 @@ export const defaultInputStyle = css`
   height: ${getHeight};
 
   &:not(:disabled):not(.disabled) {
-    &:not(.error):hover,
-    &:not(.error).hover {
+    &:not(.error):not([readonly]):hover,
+    &:not(.error):not([readonly]).hover {
       border-color: ${colors.black};
     }
 
@@ -306,6 +317,13 @@ export const defaultInputStyle = css`
     background-color: ${colors.grey100};
     border-color: ${colors.grey400};
     cursor: not-allowed;
+  }
+
+  /* Unlike disabled, the text keeps full contrast: the value is meant to be read */
+  &[readonly] {
+    background-color: ${colors.grey100};
+    border-color: ${colors.grey400};
+    cursor: default;
   }
   ${(props: { size?: InputSize }) =>
     props.size === 'small' &&

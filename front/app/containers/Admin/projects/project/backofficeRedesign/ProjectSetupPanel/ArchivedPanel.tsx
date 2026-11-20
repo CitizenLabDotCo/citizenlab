@@ -8,9 +8,10 @@ import ConfirmStatusChangeModal from 'containers/Admin/projects/project/backoffi
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../messages';
+import backofficeRedesignMessages from '../messages';
 
 import FinalRecordCard from './FinalRecordCard';
+import messages from './messages';
 import SetupCard from './SetupCard';
 
 interface Props {
@@ -29,7 +30,7 @@ const ArchivedPanel = ({ project }: Props) => {
       <FinalRecordCard project={project} />
       <SetupCard
         id="e2e-next-action-restore-draft"
-        title={formatMessage(messages.publishRestoreToDraft)}
+        title={formatMessage(backofficeRedesignMessages.publishRestoreToDraft)}
         behaviour={{
           kind: 'action',
           icon: 'chevron-right',

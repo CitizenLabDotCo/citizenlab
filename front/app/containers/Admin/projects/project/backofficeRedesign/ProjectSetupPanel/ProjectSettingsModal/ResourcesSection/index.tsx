@@ -10,12 +10,13 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 import SettingsSection from 'containers/Admin/projects/project/backofficeRedesign/_shared/components/SettingsModal/SettingsSection';
-import messages from 'containers/Admin/projects/project/backofficeRedesign/messages';
+import backofficeRedesignMessages from 'containers/Admin/projects/project/backofficeRedesign/messages';
 
 import { useIntl } from 'utils/cl-intl';
 
 import AddFilesModal from './AddFilesModal';
 import ManageFilesModal from './ManageFilesModal';
+import messages from './messages';
 import useFilesCount from './useFilesCount';
 import { FilesDraft } from './useFilesDraft';
 
@@ -36,7 +37,7 @@ const ResourcesSection = ({ projectId, draft }: Props) => {
 
   return (
     <SettingsSection
-      title={formatMessage(messages.filesSection)}
+      title={formatMessage(backofficeRedesignMessages.filesSection)}
       description={formatMessage(messages.filesDescription)}
       action={
         <Button

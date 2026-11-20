@@ -208,9 +208,9 @@ class XlsxService
     generate_xlsx 'Comments', columns, comments
   end
 
-  def generate_invites_xlsx(invites, view_private_attributes: false)
+  def generate_invites_xlsx(invites, view_private_attributes: false, view_token: ->(_invite) { false })
     columns = [
-      { header: 'token',         f: ->(i) { i.token },                 skip_sanitization: true },
+      { header: 'token',         f: ->(i) { i.token if view_token.call(i) }, skip_sanitization: true },
       { header: 'invite_status', f: ->(i) { i.invitee.invite_status }, skip_sanitization: true },
       { header: 'email',         f: ->(i) { i.invitee.email } },
       { header: 'first_name',    f: ->(i) { i.invitee.first_name } },

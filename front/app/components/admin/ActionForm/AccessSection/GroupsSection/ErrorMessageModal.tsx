@@ -15,7 +15,7 @@ import { Multiloc } from 'typings';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
-import Modal from 'components/UI/Modal';
+import Modal, { MEDIUM_MODAL_WIDTH } from 'components/UI/Modal';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -42,7 +42,7 @@ const ErrorMessageModal = ({
     <Modal
       opened={opened}
       close={onClose}
-      width="560px"
+      width={MEDIUM_MODAL_WIDTH}
       header={<FormattedMessage {...messages.modalTitle} />}
     >
       <Box p="24px">

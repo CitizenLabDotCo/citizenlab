@@ -30,16 +30,4 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.noPageSelected',
     defaultMessage: 'No page selected.',
   },
-  displayTypeLabel: {
-    id: 'app.containers.admin.ContentBuilder.displayTypeLabel',
-    defaultMessage: 'Display as',
-  },
-  displayTypeLink: {
-    id: 'app.containers.admin.ContentBuilder.displayTypeLink',
-    defaultMessage: 'Link',
-  },
-  displayTypePreview: {
-    id: 'app.containers.admin.ContentBuilder.displayTypePreview',
-    defaultMessage: 'Preview',
-  },
 });

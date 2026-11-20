@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
 import {
@@ -12,28 +13,40 @@ import useUpdatePhase from 'api/phases/useUpdatePhase';
 
 import { AccessOnlyAction } from 'containers/Admin/projects/_shared/components/PhaseActionAccessRow';
 import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';
+import PanelHeading from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelHeading';
 import projectMessages from 'containers/Admin/projects/project/messages';
 import PhaseParticipationConfig from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig';
+import ModerationAssignee from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/components/inputs/_shared/ModerationAssignee';
 import configMessages from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/messages';
 import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/typings';
 import { validateParticipation } from 'containers/Admin/projects/project/phaseSetup/validate';
 
-import { useRegisterPageSaver } from 'components/admin/PageSaveContext';
+import {
+  usePageSave,
+  useRegisterPageSaver,
+} from 'components/admin/PageSaveContext';
+import { usePhasePreviewPublisher } from 'components/admin/PhasePreview/DraftContext';
 
 import { useIntl } from 'utils/cl-intl';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { isCLErrorsWrapper } from 'utils/errorUtils';
+import { useSearch } from 'utils/router';
 
-import messages from '../messages';
-
+import SurveyPlacement from './BuildPanel/SurveyPlacement';
 import EditAccessButton from './EditAccessButton';
+import messages from './messages';
 import PanelSettings from './PanelSettings';
 import ParticipantActionsGroup from './ParticipantActionsGroup';
 import PhaseNotifications from './PhaseNotifications';
 
-const METHODS_WITH_ACTION_TOGGLES: ParticipationMethod[] = [
+const METHODS_WITH_ACTION_ROWS: ParticipationMethod[] = [
   'ideation',
   'proposals',
   'common_ground',
+  'voting',
+  'native_survey',
+  'poll',
+  'survey',
 ];
 
 const ACCESS_ONLY_ACTIONS: Partial<
@@ -43,7 +56,11 @@ const ACCESS_ONLY_ACTIONS: Partial<
     { action: 'attending_event', label: projectMessages.attendingEventAction },
   ],
   volunteering: [
-    { action: 'volunteering', label: configMessages.volunteeringAction },
+    { action: 'volunteering', label: configMessages.volunteeringAction2 },
+    { action: 'attending_event', label: projectMessages.attendingEventAction },
+  ],
+  document_annotation: [
+    { action: 'annotating_document', label: messages.annotatingDocumentAction },
     { action: 'attending_event', label: projectMessages.attendingEventAction },
   ],
 };
@@ -54,6 +71,19 @@ interface Props {
 
 const MethodSettings = ({ phase }: Props) => {
   const { formatMessage } = useIntl();
+  const pageSave = usePageSave();
+  const { setup_action } = useSearch({ strict: false });
+  const openedSection = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (setup_action) {
+      const section =
+        setup_action === 'moderation'
+          ? document.getElementById('phase-moderation-settings')
+          : openedSection.current;
+      section?.scrollIntoView({ block: 'nearest' });
+    }
+  }, [setup_action]);
   const { data: phaseWithRelationships } = usePhase(phase.id);
   const { mutateAsync: updatePhase } = useUpdatePhase();
 
@@ -66,6 +96,8 @@ const MethodSettings = ({ phase }: Props) => {
     {}
   );
 
+  const preview = usePhasePreviewPublisher('settings', phase.id);
+
   const participationMethod = phase.attributes.participation_method;
   const accessOnlyActions = ACCESS_ONLY_ACTIONS[participationMethod];
 
@@ -73,6 +105,16 @@ const MethodSettings = ({ phase }: Props) => {
     config: IUpdatedPhaseProperties,
     changedFields: Partial<IUpdatedPhaseProperties>
   ) => {
+    setErrors((errors) =>
+      errors
+        ? Object.fromEntries(
+            Object.entries(errors).filter(
+              ([field]) => !(field in changedFields)
+            )
+          )
+        : null
+    );
+    preview.publish(changedFields);
     setChanges((changes) => ({ ...changes, ...changedFields }));
     setFormData(config);
   };
@@ -88,6 +130,7 @@ const MethodSettings = ({ phase }: Props) => {
 
     try {
       await updatePhase({ phaseId: phase.id, ...changes });
+      preview.clear();
       setChanges({});
       setErrors(null);
     } catch (error) {
@@ -104,10 +147,15 @@ const MethodSettings = ({ phase }: Props) => {
   return (
     <PanelSettings p="0 18px 24px">
       {accessOnlyActions ? (
-        <ParticipantActionsGroup
-          phaseId={phase.id}
-          actions={accessOnlyActions}
-        />
+        <>
+          <Box mb="10px">
+            <PanelHeading label={formatMessage(configMessages.settingsGroup)} />
+          </Box>
+          <ParticipantActionsGroup
+            phaseId={phase.id}
+            actions={accessOnlyActions}
+          />
+        </>
       ) : (
         <PhaseParticipationConfig
           phase={phaseWithRelationships}
@@ -118,17 +166,52 @@ const MethodSettings = ({ phase }: Props) => {
           setValidationErrors={setValidationErrors}
           hideMethodPicker
           layout="panel"
+          surveyPlacement={
+            <SurveyPlacement
+              phase={phase}
+              hasUnsavedChanges={!!pageSave?.dirty}
+              onMoved={(updated) => setFormData(updated.attributes)}
+            />
+          }
         />
       )}
 
-      {!accessOnlyActions &&
-        !METHODS_WITH_ACTION_TOGGLES.includes(participationMethod) && (
-          <EditAccessButton phaseId={phase.id} />
-        )}
+      <EditAccessButton
+        phaseId={phase.id}
+        initialOpened={setup_action === 'access'}
+        showButton={
+          !accessOnlyActions &&
+          !METHODS_WITH_ACTION_ROWS.includes(participationMethod)
+        }
+        onClose={() => {
+          if (setup_action === 'access') removeSearchParams(['setup_action']);
+        }}
+      />
 
-      <PanelGroup label={formatMessage(messages.notifications)}>
-        <PhaseNotifications phase={phase} />
-      </PanelGroup>
+      <Box ref={setup_action === 'notifications' ? openedSection : undefined}>
+        <PanelGroup
+          label={formatMessage(messages.participantCommunications)}
+          defaultOpen={setup_action === 'notifications'}
+          onClose={() => {
+            if (setup_action === 'notifications') {
+              removeSearchParams(['setup_action']);
+            }
+          }}
+        >
+          <PhaseNotifications phase={phase} />
+        </PanelGroup>
+      </Box>
+
+      {participationMethod === 'voting' && (
+        <Box id="phase-moderation-settings">
+          <PanelGroup
+            label={formatMessage(configMessages.moderationGroup)}
+            defaultOpen
+          >
+            <ModerationAssignee phaseId={phase.id} />
+          </PanelGroup>
+        </Box>
+      )}
     </PanelSettings>
   );
 };

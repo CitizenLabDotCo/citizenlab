@@ -55,29 +55,61 @@ RSpec.describe ContentBuilder::LayoutPolicy do
 
       context 'when craftjs_json references files' do
         let(:file) { create(:file) }
-        let(:layout) do
-          create(:layout, craftjs_json: {
+        let(:craftjs_json_with_file) do
+          {
             'ROOT' => { 'type' => { 'resolvedName' => 'Container' }, 'nodes' => ['node1'] },
             'node1' => { 'type' => { 'resolvedName' => 'FileAttachment' }, 'props' => { 'fileId' => file.id } }
-          })
+          }
         end
 
-        context 'when user is authorized to use the file' do
-          before do
-            allow_any_instance_of(Files::FilePolicy).to receive(:update?).and_return(true)
+        context 'when the file is added to the layout' do
+          let(:layout) { create(:layout).tap { |layout| layout.craftjs_json = craftjs_json_with_file } }
+
+          context 'when user is authorized to use the file' do
+            before do
+              allow_any_instance_of(Files::FilePolicy).to receive(:update?).and_return(true)
+            end
+
+            it { is_expected.to permit(:upsert) }
+            it { is_expected.to permit(:update) }
           end
 
-          it { is_expected.to permit(:upsert) }
-          it { is_expected.to permit(:update) }
+          context 'when user is not authorized to use the file' do
+            before do
+              allow_any_instance_of(Files::FilePolicy).to receive(:update?).and_return(false)
+            end
+
+            it 'refuses with the unauthorized_file reason' do
+              %i[upsert? update?].each do |action|
+                expect { policy.public_send(action) }
+                  .to raise_error(Pundit::NotAuthorizedErrorWithReason) { |e| expect(e.reason).to eq 'unauthorized_file' }
+              end
+            end
+          end
         end
 
-        context 'when user is not authorized to use the file' do
+        context 'when a new layout references the file' do
+          let(:layout) { build(:layout, craftjs_json: craftjs_json_with_file) }
+
           before do
             allow_any_instance_of(Files::FilePolicy).to receive(:update?).and_return(false)
           end
 
-          it { is_expected.not_to permit(:upsert) }
-          it { is_expected.not_to permit(:update) }
+          it 'refuses with the unauthorized_file reason' do
+            expect { policy.upsert? }
+              .to raise_error(Pundit::NotAuthorizedErrorWithReason) { |e| expect(e.reason).to eq 'unauthorized_file' }
+          end
+        end
+
+        context 'when the file is already in the saved layout' do
+          let(:layout) { create(:layout, craftjs_json: craftjs_json_with_file) }
+
+          before do
+            allow_any_instance_of(Files::FilePolicy).to receive(:update?).and_return(false)
+          end
+
+          it { is_expected.to permit(:upsert) }
+          it { is_expected.to permit(:update) }
         end
 
         context 'when file does not exist' do

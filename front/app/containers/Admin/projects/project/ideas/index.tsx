@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { Box, Title, Text, Button } from '@citizenlab/cl2-component-library';
 
+import useCopyInputs from 'api/copy_inputs/useCopyInputs';
 import usePhase from 'api/phases/usePhase';
 import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
@@ -21,6 +22,7 @@ import { useParams } from 'utils/router';
 
 import AnalysisBanner from '../../_shared/components/AnalysisBanner';
 import NewIdeaButton from '../../_shared/components/NewIdeaButton';
+import CommonGroundManager from '../backofficeRedesign/CommonGroundManager';
 import InputManagerRedesign from '../backofficeRedesign/InputManager';
 import messages from '../messages';
 
@@ -41,12 +43,23 @@ const AdminProjectIdeas = () => {
   const { data: phases } = usePhases(projectId);
   const { data: phase } = usePhase(phaseId);
   const [showPastInputsModal, setShowPastInputsModal] = useState(false);
+  const { mutate: copyInputs } = useCopyInputs();
   const isBackofficeRedesignEnabled = useProjectBackofficeRedesign();
   const isCommonGround =
     phase?.data.attributes.participation_method === 'common_ground';
 
   if (project === undefined) {
     return null;
+  }
+
+  if (isBackofficeRedesignEnabled && phase && isCommonGround) {
+    return (
+      <CommonGroundManager
+        key={phaseId}
+        project={project.data}
+        phase={phase.data}
+      />
+    );
   }
 
   if (isBackofficeRedesignEnabled && phase && !isCommonGround) {
@@ -147,6 +160,9 @@ const AdminProjectIdeas = () => {
             showPastInputsModal={showPastInputsModal}
             setShowPastInputsModal={setShowPastInputsModal}
             currentPhaseid={phaseId}
+            onImport={(fromPhaseId) =>
+              copyInputs({ toPhaseId: phaseId, fromPhaseId })
+            }
           />
         </>
       ) : (

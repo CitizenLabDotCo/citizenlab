@@ -182,8 +182,8 @@ describe ContentBuilder::CustomPageLayoutService do
         expect(ContentBuilder::LayoutImage.find_by(code: code).image).to be_present
       end
 
-      # The migration task's overwrite skips a page whose derived graph matches the stored one,
-      # which only holds if a re-derive finds the copy it made rather than making another.
+      # Deriving a page again, for example after its layout is removed, reuses the banner image
+      # copy it made rather than making another.
       it 'derives the same graph, and copies nothing, the second time' do
         page = page_with_banner_image
         first = service.craftjs_json_for(page)
@@ -274,8 +274,8 @@ describe ContentBuilder::CustomPageLayoutService do
       expect(section_ids(craftjs)).to be_empty
     end
 
-    # The migration task compares a stored graph with a freshly derived one to decide whether
-    # a page needs rewriting, which only works while node ids are fixed rather than generated.
+    # Node ids are fixed rather than generated, so deriving is repeatable: the same content gives
+    # the same graph.
     it 'gives two pages with the same content an identical graph' do
       attributes = { top_info_section_multiloc: plain_text, top_info_section_enabled: true }
 
@@ -316,7 +316,8 @@ describe ContentBuilder::CustomPageLayoutService do
           'ids' => [area.id],
           'timeFilters' => ['upcoming'],
           'limit' => 3,
-          'projectPublicationStatuses' => ['published']
+          'projectPublicationStatuses' => ['published'],
+          'showEmptyMessage' => true
         })
       end
 

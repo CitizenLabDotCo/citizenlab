@@ -4,8 +4,6 @@ import useCustomPageById from 'api/custom_pages/useCustomPageById';
 import { isContentBuilderPage } from 'api/custom_pages/util';
 import useProjectById from 'api/projects/useProjectById';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import { adminCustomPageSettingsPath } from 'containers/Admin/pagesAndMenu/routes';
 import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 
@@ -20,21 +18,15 @@ const CustomPageBuilder = () => {
   const { customPageId } = useParams({ strict: false }) as {
     customPageId: string;
   };
-  // The page is gated, not just the link to it: opening the builder provisions a layout, so
-  // a typed URL on a tenant without the feature, or for a page not on the builder, would write
-  // data.
-  const featureEnabled = useFeatureFlag({ name: 'custom_page_builder' });
+  // Opening the builder provisions a layout, so bail for a page not on the builder: a typed URL
+  // for one would write data otherwise.
   const { data: customPage } = useCustomPageById(customPageId);
   const projectId = customPage?.data.attributes.project_id;
   const { data: project } = useProjectById(projectId);
   useEnsureCustomPageLayout(customPageId);
   const { searchStr } = useLocation();
 
-  if (
-    !featureEnabled ||
-    !customPage ||
-    !isContentBuilderPage(customPage.data)
-  ) {
+  if (!customPage || !isContentBuilderPage(customPage.data)) {
     return null;
   }
   // A project's page lives under the project, in the admin and on the site.

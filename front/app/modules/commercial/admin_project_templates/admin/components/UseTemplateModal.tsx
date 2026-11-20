@@ -27,7 +27,7 @@ import T from 'components/T';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import Modal from 'components/UI/Modal';
+import Modal, { MEDIUM_MODAL_WIDTH } from 'components/UI/Modal';
 
 import { trackEventByName } from 'utils/analytics';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -318,7 +318,7 @@ const UseTemplateModal = memo<Props & WrappedComponentProps>(
 
     return (
       <Modal
-        width={isBo ? 560 : 500}
+        width={isBo ? MEDIUM_MODAL_WIDTH : 500}
         variant={variant}
         opened={opened}
         close={onClose}

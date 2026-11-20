@@ -2,6 +2,7 @@ import React from 'react';
 
 import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/HomepageBanner';
 
+import { TitleVariant } from 'components/admin/ContentBuilder/Widgets/_shared/TitleVariantSetting';
 import {
   Container,
   Header,
@@ -16,9 +17,10 @@ import HeaderContent from './HeaderContent';
 
 interface Props {
   homepageSettings: Partial<IHomepageBannerSettings>;
+  titleVariant?: TitleVariant;
 }
 
-const FixedRatioLayout = ({ homepageSettings }: Props) => {
+const FixedRatioLayout = ({ homepageSettings, titleVariant }: Props) => {
   const headerImage = homepageSettings.header_bg?.large;
   const homepageSettingColor =
     homepageSettings.banner_signed_out_header_overlay_color;
@@ -45,7 +47,11 @@ const FixedRatioLayout = ({ homepageSettings }: Props) => {
             )}
         </HeaderImage>
 
-        <HeaderContent fontColors="light" homepageSettings={homepageSettings} />
+        <HeaderContent
+          fontColors="light"
+          homepageSettings={homepageSettings}
+          titleVariant={titleVariant}
+        />
       </Header>
     </Container>
   );

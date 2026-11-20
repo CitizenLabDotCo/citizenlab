@@ -16,7 +16,7 @@ import NavItem from './NavItem';
 export interface SettingsModalSection {
   name: string;
   label: MessageDescriptor;
-  icon: IconNames;
+  icon?: IconNames;
   content: React.ReactNode;
   group?: MessageDescriptor;
 }

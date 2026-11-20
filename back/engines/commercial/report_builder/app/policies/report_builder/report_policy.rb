@@ -40,7 +40,7 @@ module ReportBuilder
       elsif user.present? && user.moderator?
         if record.phase?
           if policy_for(record.phase).show?
-            record.public? || access_to_data?
+            record.public? || (policy_for(record.phase).active_moderator? && access_to_data?)
           else
             false
           end
