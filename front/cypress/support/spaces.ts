@@ -2,10 +2,9 @@ export const createSpace = ({ title }: { title: string }) => {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return cy.requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'POST',
       url: 'web_api/v1/spaces',
@@ -41,10 +40,9 @@ export function createModeratorForSpace({
     return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
       const adminJwt = response.body.jwt;
 
-      return cy.request({
+      return cy.requestAs(adminJwt, {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${adminJwt}`,
         },
         method: 'POST',
         url: `web_api/v1/spaces/${spaceId}/moderators`,
@@ -62,10 +60,9 @@ export function removeSpace(spaceId: string) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return cy.requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'DELETE',
       url: `web_api/v1/spaces/${spaceId}`,

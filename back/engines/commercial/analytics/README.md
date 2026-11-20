@@ -26,11 +26,12 @@ such as posts, participations, visits
 
 ### Testing queries in your dev env
 
-You can use this request in the browser developer console.
+You can use this request in the browser developer console, on the platform's page while
+signed in (the browser sends the auth cookie).
 ```js
 fetch(window.location.origin + "/web_api/v1/analytics", {
+  credentials: "include",
   headers: {
-    authorization: `Bearer ${document.cookie.split("; ").find((x) => x.startsWith("cl2_jwt")).replace("cl2_jwt=", "")}`,
     "content-type": "application/json",
   },
   body: `{

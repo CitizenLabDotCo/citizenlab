@@ -95,7 +95,8 @@ context 'etat_lu verification' do
 
   context 'when verifying an existing user' do
     it 'successfully verifies an existing user' do
-      get "/auth/etat_lu?token=#{@token}&random-passthrough-param=somevalue&verification_pathname=/yipie"
+      cookies[AuthToken::Cookie::NAME] = @token
+      get '/auth/etat_lu?verification=true&random-passthrough-param=somevalue&verification_pathname=/yipie'
       follow_redirect!
 
       expect_user_to_be_verified(@user)
@@ -104,7 +105,8 @@ context 'etat_lu verification' do
     end
 
     it 'successfully authenticates an existing user that was previously verified' do
-      get "/auth/etat_lu?token=#{@token}"
+      cookies[AuthToken::Cookie::NAME] = @token
+      get '/auth/etat_lu?verification=true'
       follow_redirect!
 
       expect(User.count).to eq(1)
@@ -120,7 +122,8 @@ context 'etat_lu verification' do
     end
 
     it 'successfully verifies another user with another etat_lu account' do
-      get "/auth/etat_lu?token=#{@token}"
+      cookies[AuthToken::Cookie::NAME] = @token
+      get '/auth/etat_lu?verification=true'
       follow_redirect!
       expect(@user.reload).to have_attributes(verified: true)
 
@@ -130,7 +133,8 @@ context 'etat_lu verification' do
       auth_hash['extra']['raw_info']['sub'] = 'XYZ789'
       OmniAuth.config.mock_auth[:etat_lu] = OmniAuth::AuthHash.new(auth_hash)
 
-      get "/auth/etat_lu?token=#{token2}"
+      cookies[AuthToken::Cookie::NAME] = token2
+      get '/auth/etat_lu?verification=true'
       follow_redirect!
       expect(user2.reload).to have_attributes(verified: true)
     end
@@ -142,7 +146,8 @@ context 'etat_lu verification' do
         hashed_uid: Verification::VerificationService.new.send(:hashed_uid, auth_hash['uid'], 'etat_lu')
       )
 
-      get "/auth/etat_lu?token=#{@token}"
+      cookies[AuthToken::Cookie::NAME] = @token
+      get '/auth/etat_lu?verification=true'
       follow_redirect!
 
       expect(@user.reload).to have_attributes(verified: false)

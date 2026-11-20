@@ -236,10 +236,9 @@ describe('Sign up - email and SMS (2FA)', () => {
             const jwt = response.body.jwt;
 
             return cy
-              .request({
+              .requestAs(jwt, {
                 headers: {
                   'Content-Type': 'application/json',
-                  Authorization: `Bearer ${jwt}`,
                 },
                 method: 'POST',
                 url: `web_api/v1/user/request_code_new_phone`,
@@ -248,10 +247,9 @@ describe('Sign up - email and SMS (2FA)', () => {
                 },
               })
               .then(() => {
-                return cy.request({
+                return cy.requestAs(jwt, {
                   headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${jwt}`,
                   },
                   method: 'POST',
                   url: `web_api/v1/user/confirm_code_new_phone`,
