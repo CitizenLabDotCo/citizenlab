@@ -20,14 +20,18 @@ module Matomo
     # Sends as many `PrivacyManager.deleteDataSubjects` requests as necessary
     # to remove all user data from Matomo.
     # @param [String] user_id
+    # @param [Array<String>,NilClass] site_ids Sites to search. All sites if blank.
     # @return [Hash,NilClass] Summary of deleted data by aggregating results
     #   from the different `PrivacyManager.deleteDataSubjects` requests. `nil`
     #   if no data was found for this user.
-    def delete_user_data(user_id)
+    def delete_user_data(user_id, site_ids: nil)
+      # Without a user, the segment would not restrict the search to one user.
+      return if user_id.blank?
+
       deletes_summary = {}
 
       loop do
-        visits_response = find_data_subjects(user_id)
+        visits_response = find_data_subjects(user_id, site_ids:)
         raise_if_error(visits_response)
         break if visits_response.parsed_response.blank?
 
@@ -73,10 +77,12 @@ module Matomo
     end
 
     # @param [String] user_id
+    # @param [Array<String>,NilClass] site_ids Sites to search. All sites if blank.
     # @return [HTTParty::Response]
-    def find_data_subjects(user_id)
+    def find_data_subjects(user_id, site_ids: nil)
       query = {
-        'idSite' => 'all',
+        # Searching all sites is slow: Matomo scans the visits of every site.
+        'idSite' => site_ids.presence&.join(',') || 'all',
         'module' => 'API',
         'method' => 'PrivacyManager.findDataSubjects',
         'segment' => "userId==#{user_id}",
@@ -147,6 +153,8 @@ module Matomo
         response.parsed_response.to_s
       end
 
+      raise ServiceUnavailableError, message if response.code == 503
+
       raise MatomoApiError, message
     end
 
@@ -185,6 +193,7 @@ module Matomo
     end
 
     class MatomoApiError < RuntimeError; end
+    class ServiceUnavailableError < MatomoApiError; end
     class MissingAuthorizationTokenError < RuntimeError; end
     class MissingBaseUriError < RuntimeError; end
   end
