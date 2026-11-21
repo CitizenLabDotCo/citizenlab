@@ -42,11 +42,7 @@ module WebApi
           @ver_ser = ::Verification::VerificationService.new
           @verification_method = @ver_ser.method_by_name(params[:method_name])
 
-          return send_not_found unless @verification_method
-
-          return if @ver_ser.active_methods(AppConfiguration.instance).include?(@verification_method)
-
-          raise Pundit::NotAuthorizedError
+          send_not_found unless @verification_method
         end
       end
     end
