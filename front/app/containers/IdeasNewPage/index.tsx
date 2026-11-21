@@ -73,14 +73,15 @@ const IdeasNewPage = () => {
     );
   }
 
-  const { enabled, disabledReason, authenticationRequirements } =
+  const { show, enabled, disabledReason, authenticationRequirements } =
     getIdeaPostingRules({
       project: project.data,
       phase,
       authUser: authUser?.data,
     });
 
-  if (enabled === 'maybe' || disabledReason) {
+  // `show` is false when the phase has submissions switched off.
+  if (!show || enabled === 'maybe' || disabledReason) {
     const triggerAuthFlow = () => {
       triggerAuthenticationFlow({
         context: {

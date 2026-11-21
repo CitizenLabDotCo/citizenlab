@@ -44,11 +44,6 @@ const IdeasNewSurveyPage = () => {
 
   const { data: phase, isLoading: phaseIsLoading } = usePhase(phaseId);
 
-  const participationMethod = phase?.data.attributes.participation_method;
-  const isSurveyPhase =
-    participationMethod === 'native_survey' ||
-    participationMethod === 'community_monitor_survey';
-
   /*
     TO DO: simplify these loading & auth checks, then if possible abstract and use the same the IdeasNewPage
   */
@@ -68,10 +63,19 @@ const IdeasNewSurveyPage = () => {
     return <PageNotFound />;
   }
 
+  if (!phase || phase.data.relationships.project.data.id !== project.data.id) {
+    return <PageNotFound />;
+  }
+
+  const participationMethod = phase.data.attributes.participation_method;
+  const isSurveyPhase =
+    participationMethod === 'native_survey' ||
+    participationMethod === 'community_monitor_survey';
+
   const { enabled, disabledReason, authenticationRequirements } =
     getIdeaPostingRules({
       project: project.data,
-      phase: phase?.data,
+      phase: phase.data,
       authUser: authUser?.data,
     });
 
@@ -81,7 +85,7 @@ const IdeasNewSurveyPage = () => {
     // current phase is) would otherwise fall through to the authentication gate
     // below, which offers a sign-in for a posting_idea permission that cannot
     // exist on such a phase, and so dead-ends on a failed requirements fetch.
-    if (phase && !isSurveyPhase) {
+    if (!isSurveyPhase) {
       return <SurveyNotActiveNotice project={project.data} />;
     }
 

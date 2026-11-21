@@ -37,7 +37,13 @@ const IdeasNewRedirect = () => {
     return isUnauthorizedRQ(projectError) ? <Unauthorized /> : <PageNotFound />;
   }
 
-  if (project && (!phaseId || phaseStatus === 'error')) {
+  // No phase in the link and none currently running: nothing is open for
+  // posting, which is a permission message rather than a missing page.
+  if (project && !phaseId) {
+    return <Unauthorized />;
+  }
+
+  if (phaseStatus === 'error') {
     return <PageNotFound />;
   }
 

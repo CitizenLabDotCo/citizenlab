@@ -40,6 +40,7 @@ jest.mock('api/projects/useProjectBySlug', () =>
 );
 
 let mockParticipationMethod: ParticipationMethod = 'native_survey';
+let mockPhaseProjectId = 'project-id';
 
 // Phases with no submission action report posting_not_supported, since no
 // Permission record exists for it (see Permission::ACTIONS in the back-end).
@@ -58,6 +59,9 @@ jest.mock('api/phases/usePhase', () =>
           submission_enabled: true,
           action_descriptors: { posting_idea: postingDescriptor() },
         },
+        relationships: {
+          project: { data: { id: mockPhaseProjectId, type: 'project' } },
+        },
       } as unknown as IPhaseData,
     },
     isLoading: false,
@@ -65,7 +69,10 @@ jest.mock('api/phases/usePhase', () =>
 );
 
 describe('IdeasNewSurveyPage', () => {
-  beforeEach(() => jest.clearAllMocks());
+  beforeEach(() => {
+    jest.clearAllMocks();
+    mockPhaseProjectId = 'project-id';
+  });
 
   it('renders the survey form for a native survey phase', () => {
     mockParticipationMethod = 'native_survey';
@@ -87,6 +94,16 @@ describe('IdeasNewSurveyPage', () => {
     expect(
       screen.getByText('This survey is not currently active.')
     ).toBeInTheDocument();
+    expect(mockTriggerAuthenticationFlow).not.toHaveBeenCalled();
+  });
+
+  it('shows not found for a phase from another project', () => {
+    mockParticipationMethod = 'native_survey';
+    mockPhaseProjectId = 'other-project-id';
+
+    render(<IdeasNewSurveyPage />);
+
+    expect(screen.queryByTestId('surveyForm')).not.toBeInTheDocument();
     expect(mockTriggerAuthenticationFlow).not.toHaveBeenCalled();
   });
 });
