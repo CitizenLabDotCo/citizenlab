@@ -8,6 +8,7 @@ import { createNativeSurveyProjectWithPermission, fakeSSOAuth } from './utils';
 
 describe('Sign up - email and SMS (2FA)', () => {
   let projectId = '';
+  let phaseId = '';
   const projectTitle = randomString();
 
   before(() => {
@@ -17,8 +18,9 @@ describe('Sign up - email and SMS (2FA)', () => {
         permitted_by: 'users',
         require_confirmed_phone_number: true,
       },
-    }).then(({ projectId: id }) => {
+    }).then(({ projectId: id, phaseId: pId }) => {
       projectId = id;
+      phaseId = pId;
     });
   });
 
@@ -50,7 +52,7 @@ describe('Sign up - email and SMS (2FA)', () => {
 
     cy.location('pathname').should(
       'eq',
-      `/en/projects/${projectTitle}/surveys/new`
+      `/en/projects/${projectTitle}/surveys/new/${phaseId}`
     );
     cy.logout();
   });
@@ -133,7 +135,7 @@ describe('Sign up - email and SMS (2FA)', () => {
 
     cy.location('pathname').should(
       'eq',
-      `/en/projects/${projectTitle}/surveys/new`
+      `/en/projects/${projectTitle}/surveys/new/${phaseId}`
     );
     cy.logout();
   });
@@ -181,7 +183,7 @@ describe('Sign up - email and SMS (2FA)', () => {
 
     cy.location('pathname').should(
       'eq',
-      `/en/projects/${projectTitle}/surveys/new`
+      `/en/projects/${projectTitle}/surveys/new/${phaseId}`
     );
     cy.logout();
   });
@@ -217,7 +219,7 @@ describe('Sign up - email and SMS (2FA)', () => {
 
     cy.location('pathname').should(
       'eq',
-      `/en/projects/${projectTitle}/surveys/new`
+      `/en/projects/${projectTitle}/surveys/new/${phaseId}`
     );
   });
 
@@ -293,6 +295,7 @@ describe('Sign up - email and SMS (2FA)', () => {
 
 describe('Sign up - SSO and SMS (2FA)', () => {
   let projectId = '';
+  let phaseId = '';
   const projectTitle = randomString();
 
   before(() => {
@@ -304,8 +307,9 @@ describe('Sign up - SSO and SMS (2FA)', () => {
         require_confirmed_email: false,
         require_verification: true,
       },
-    }).then(({ projectId: id }) => {
+    }).then(({ projectId: id, phaseId: pId }) => {
       projectId = id;
+      phaseId = pId;
     });
   });
 
@@ -335,7 +339,7 @@ describe('Sign up - SSO and SMS (2FA)', () => {
 
     cy.location('pathname').should(
       'eq',
-      `/en/projects/${projectTitle}/surveys/new`
+      `/en/projects/${projectTitle}/surveys/new/${phaseId}`
     );
   });
 });

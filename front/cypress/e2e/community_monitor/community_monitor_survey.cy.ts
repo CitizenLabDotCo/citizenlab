@@ -39,7 +39,7 @@ describe('Submit community monitor survey', () => {
 
   it('can be submitted by an admin user', () => {
     cy.visit(
-      `projects/community-monitor/surveys/new?phase_id=${communityMonitorPhaseId}`
+      `projects/community-monitor/surveys/new/${communityMonitorPhaseId}`
     );
 
     // First default question
@@ -65,7 +65,7 @@ describe('Submit community monitor survey', () => {
     cy.setConsentCookie();
 
     cy.visit(
-      `projects/community-monitor/surveys/new?phase_id=${communityMonitorPhaseId}`
+      `projects/community-monitor/surveys/new/${communityMonitorPhaseId}`
     );
 
     // First default question
@@ -100,7 +100,7 @@ describe('Submit community monitor survey', () => {
     cy.clearAllCookies();
     cy.setConsentCookie();
     cy.visit(
-      `projects/community-monitor/surveys/new?phase_id=${communityMonitorPhaseId}`
+      `projects/community-monitor/surveys/new/${communityMonitorPhaseId}`
     );
 
     // Authentication modal should pop up

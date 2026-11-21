@@ -5,7 +5,7 @@ import {
 } from 'utils/cl-react-query/resetQueryCache';
 import clHistory from 'utils/cl-router/history';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
-import { endsWith } from 'utils/helperUtils';
+import { endsWith, isPage } from 'utils/helperUtils';
 
 import logoutUrl from './logoutUrl';
 
@@ -48,7 +48,7 @@ export default async function signOut() {
         TODO: Could probably be removed now that we have the Unauthorized component
         that renders if the user is not authenticated
       */
-      if (pathname && endsWith(pathname, '/ideas/new')) {
+      if (pathname && isPage('idea_form', pathname)) {
         clHistory.push(pathname.split('/ideas/new')[0]);
       }
     }

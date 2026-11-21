@@ -91,7 +91,7 @@ describe('Survey question logic', () => {
     cy.wait(1000);
 
     // Take survey and make sure it works as expected
-    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/surveys/new/${phaseId}`);
     cy.reload();
 
     // Select first option
@@ -365,7 +365,7 @@ describe('Bug: ambiguity around missing values in survey logic', () => {
 
   it('navigates through the survey correctly (question skipped)', () => {
     cy.setAdminLoginCookie();
-    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/surveys/new/${phaseId}`);
 
     // Go to next page
     cy.wait(5000);
@@ -377,7 +377,7 @@ describe('Bug: ambiguity around missing values in survey logic', () => {
 
   it('navigates through the survey correctly (option 1)', () => {
     cy.setAdminLoginCookie();
-    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/surveys/new/${phaseId}`);
 
     // Select first option
     cy.get('[data-testid="radio-container"]').first();
