@@ -85,7 +85,8 @@ context 'federa verification' do
     end
 
     it 'successfully verifies a user' do
-      get "/auth/federa?token=#{@token}&random-passthrough-param=somevalue&verification_pathname=/yipie"
+      cookies[AuthToken::Cookie::NAME] = @token
+      get '/auth/federa?verification=true&random-passthrough-param=somevalue&verification_pathname=/yipie'
       follow_redirect!
 
       expect_user_to_be_verified(@user)
@@ -94,7 +95,8 @@ context 'federa verification' do
     end
 
     it 'successfully authenticates a user that was previously verified' do
-      get "/auth/federa?token=#{@token}"
+      cookies[AuthToken::Cookie::NAME] = @token
+      get '/auth/federa?verification=true'
       follow_redirect!
 
       expect(User.count).to eq(1)
@@ -110,7 +112,8 @@ context 'federa verification' do
     end
 
     it 'successfully verifies another user with another Federa account (different UID)' do
-      get "/auth/federa?token=#{@token}"
+      cookies[AuthToken::Cookie::NAME] = @token
+      get '/auth/federa?verification=true'
       follow_redirect!
       expect(@user.reload).to have_attributes({
         verified: true
@@ -121,7 +124,8 @@ context 'federa verification' do
       auth_hash['extra']['raw_info']['CodiceFiscale'] = ['TINIT-ZYXWVU98T76S543R']
       OmniAuth.config.mock_auth[:federa] = OmniAuth::AuthHash.new(auth_hash)
 
-      get "/auth/federa?token=#{token2}"
+      cookies[AuthToken::Cookie::NAME] = token2
+      get '/auth/federa?verification=true'
       follow_redirect!
       expect(user2.reload).to have_attributes(verified: true)
     end
@@ -159,7 +163,8 @@ context 'federa verification' do
         hashed_uid: Verification::VerificationService.new.send(:hashed_uid, user_uid, 'federa')
       )
 
-      get "/auth/federa?token=#{@token}"
+      cookies[AuthToken::Cookie::NAME] = @token
+      get '/auth/federa?verification=true'
       follow_redirect!
 
       expect(@user.reload).to have_attributes(verified: false)
@@ -218,7 +223,8 @@ context 'federa verification' do
         before { new_user.update!(email: Faker::Internet.email) }
 
         it 'does not verify another user and does not delete previously verified new user' do
-          get "/auth/federa?token=#{@token}&verification_pathname=/some-page"
+          cookies[AuthToken::Cookie::NAME] = @token
+          get '/auth/federa?verification=true&verification_pathname=/some-page'
           follow_redirect!
 
           expect(response).to redirect_to('/some-page?verification_error=true&error_code=taken')
@@ -234,7 +240,8 @@ context 'federa verification' do
 
       context 'when verified registration is not completed by new user' do
         it 'successfully verifies another user and deletes previously verified blank new user' do
-          get "/auth/federa?token=#{@token}&verification_pathname=/some-page"
+          cookies[AuthToken::Cookie::NAME] = @token
+          get '/auth/federa?verification=true&verification_pathname=/some-page'
           follow_redirect!
 
           expect(response).to redirect_to('/en/some-page?verification_success=true')
@@ -264,7 +271,7 @@ context 'federa verification' do
         user = User.order(created_at: :asc).last
         expect_user_to_be_verified_and_identified(user)
 
-        headers = { 'Authorization' => authorization_header(user) }
+        headers = { 'Cookie' => auth_cookie(user) }
 
         expect(user.email).to be_nil
         expect(user.active?).to be(true)
@@ -336,7 +343,8 @@ context 'federa verification' do
       end
 
       it 'stashes the incoming GET params in cache during the request phase' do
-        get "/auth/federa?token=#{@token}&verification_pathname=/yipie"
+        cookies[AuthToken::Cookie::NAME] = @token
+        get '/auth/federa?verification=true&verification_pathname=/yipie'
 
         # The request-phase setup adds a RelayState UUID to env['QUERY_STRING']
         # and stashes the remaining params in Rails.cache under that UUID.
@@ -403,7 +411,8 @@ ICt/7LH3iUiRWjGjs6qRhdE=
 
     it 'redirects to the service with correct SAML parameters' do
       OmniAuth.config.test_mode = false
-      get "/auth/federa?token=#{@token}"
+      cookies[AuthToken::Cookie::NAME] = @token
+      get '/auth/federa?verification=true'
       expect(response).to have_http_status(:redirect)
       redirect_url = URI.parse(response.location)
       expect(redirect_url.host).to eq('federatest.lepida.it')

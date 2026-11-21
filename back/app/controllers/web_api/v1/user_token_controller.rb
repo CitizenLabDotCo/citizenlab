@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
+# Signs users in and out. The auth token is handed out in an HttpOnly cookie only:
+# it never appears in a response body, so the front-end has no access to it.
 class WebApi::V1::UserTokenController < ActionController::API
   include EnforceUserSso
+  include UserCookies
 
   before_action :sso_enforced?, only: %i[create]
 
@@ -14,7 +17,7 @@ class WebApi::V1::UserTokenController < ActionController::API
     return head :not_found unless user && !user.confirmation_required? && password_correct?(user)
 
     handle_successful_authentication_sidefx(user)
-    render json: auth_token(user), status: :created
+    sign_in(user)
   end
 
   # Phone number + password
@@ -26,10 +29,37 @@ class WebApi::V1::UserTokenController < ActionController::API
     return head :not_found unless user&.phone_confirmed_at && password_correct?(user)
 
     handle_successful_authentication_sidefx(user)
-    render json: auth_token(user), status: :created
+    sign_in(user)
+  end
+
+  # Sign out. Users signed in through an SSO provider that supports logout must also
+  # be signed out there, so the URL to send them to is returned when there is one.
+  def destroy
+    logout_url = sso_logout_url
+    AuthToken::Cookie.clear(response)
+
+    if logout_url
+      render json: { logout_url: logout_url }
+    else
+      head :no_content
+    end
   end
 
   private
+
+  def sign_in(user)
+    remember_me = auth_params[:remember_me] == true
+    # to_token_payload sets the long lifetime, the one of remember_me.
+    payload = user.to_token_payload
+    payload[:exp] = AuthToken::AuthToken::TOKEN_SHORT_LIFETIME.from_now.to_i unless remember_me
+    token = AuthToken::AuthToken.new(payload: payload).token
+
+    # With remember_me, the cookie lives as long as the token. Without it, it's a
+    # session cookie: the browser drops it when it closes (users are told not to tick
+    # remember_me on a public computer). The token still expires after 1 day.
+    AuthToken::Cookie.write(response, token, expires: (Time.zone.at(payload[:exp]) if remember_me))
+    head :created
+  end
 
   def handle_successful_authentication_sidefx(user)
     ClaimTokenService.claim(user, auth_params[:claim_tokens])
@@ -40,16 +70,6 @@ class WebApi::V1::UserTokenController < ActionController::API
     password = auth_params[:password]
 
     password.present? && user.authenticate(password).present?
-  end
-
-  def auth_token(user)
-    payload = user.to_token_payload
-
-    unless auth_params[:remember_me] # default expiration is set in #to_token_payload and can also be used by 3rd party auth
-      payload[:exp] = AuthToken::AuthToken::TOKEN_SHORT_LIFETIME.from_now.to_i
-    end
-
-    AuthToken::AuthToken.new payload: payload
   end
 
   def auth_params
