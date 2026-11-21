@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Spinner } from '@citizenlab/cl2-component-library';
 
-import usePhases from 'api/phases/usePhases';
+import usePhase from 'api/phases/usePhase';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import PageNotFound from 'components/PageNotFound';
@@ -10,7 +10,6 @@ import Unauthorized from 'components/Unauthorized';
 import VerticalCenterer from 'components/VerticalCenterer';
 
 import Navigate from 'utils/cl-router/Navigate';
-import { getParticipationMethod } from 'utils/configs/participationMethodConfig';
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 import { useParams, useSearch } from 'utils/router';
 
@@ -28,13 +27,21 @@ const IdeasNewRedirect = () => {
     status: projectStatus,
     error: projectError,
   } = useProjectBySlug(slug);
-  const { data: phases } = usePhases(project?.data.id);
+  const phaseId =
+    phase_id || project?.data.relationships.current_phase?.data?.id;
+  // Fetched by id rather than taken from the project's phase list, because
+  // that list only holds timeline phases and leaves out standalone ones.
+  const { data: phase, status: phaseStatus } = usePhase(phaseId);
 
   if (projectStatus === 'error') {
     return isUnauthorizedRQ(projectError) ? <Unauthorized /> : <PageNotFound />;
   }
 
-  if (!project || !phases) {
+  if (project && (!phaseId || phaseStatus === 'error')) {
+    return <PageNotFound />;
+  }
+
+  if (!phaseId || !phase) {
     return (
       <VerticalCenterer>
         <Spinner />
@@ -42,18 +49,7 @@ const IdeasNewRedirect = () => {
     );
   }
 
-  const phaseId =
-    phase_id || project.data.relationships.current_phase?.data?.id;
-
-  if (!phaseId) {
-    return <PageNotFound />;
-  }
-
-  const participationMethod = getParticipationMethod(
-    project.data,
-    phases.data,
-    phaseId
-  );
+  const participationMethod = phase.data.attributes.participation_method;
 
   if (participationMethod === 'native_survey') {
     return (

@@ -3,7 +3,7 @@ import React from 'react';
 import { Spinner } from '@citizenlab/cl2-component-library';
 
 import useAuthUser from 'api/me/useAuthUser';
-import usePhases from 'api/phases/usePhases';
+import usePhase from 'api/phases/usePhase';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
@@ -30,13 +30,13 @@ const IdeasNewPage = () => {
     error: projectError,
   } = useProjectBySlug(slug);
   const { data: authUser } = useAuthUser();
-  const { data: phases, status: phasesStatus } = usePhases(project?.data.id);
+  const { data: phaseData, status: phaseStatus } = usePhase(phaseId);
 
   /*
     TO DO: simplify these loading & auth checks, then if possible abstract and use the same the IdeasNewSurveyPage
   */
 
-  if (projectStatus === 'pending' || phasesStatus === 'pending') {
+  if (projectStatus === 'pending' || phaseStatus === 'pending') {
     return (
       <VerticalCenterer>
         <Spinner />
@@ -52,13 +52,11 @@ const IdeasNewPage = () => {
     return <PageNotFound />;
   }
 
-  if (!phases) {
-    return null;
-  }
+  // Fetched by id rather than taken from the project's phase list, because
+  // that list only holds timeline phases and leaves out standalone ones.
+  const phase = phaseData?.data;
 
-  const phase = phases.data.find((phase) => phase.id === phaseId);
-
-  if (!phase) {
+  if (!phase || phase.relationships.project.data.id !== project.data.id) {
     return <PageNotFound />;
   }
 
