@@ -42,7 +42,7 @@ module WebApi
           @ver_ser = ::Verification::VerificationService.new
           @verification_method = @ver_ser.method_by_name(params[:method_name])
 
-          raise "Unknown verification method #{params[:method_name]}" unless @verification_method
+          return send_not_found unless @verification_method
 
           return if @ver_ser.active_methods(AppConfiguration.instance).include?(@verification_method)
 
