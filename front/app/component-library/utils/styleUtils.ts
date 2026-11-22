@@ -290,8 +290,8 @@ export const defaultInputStyle = css`
   height: ${getHeight};
 
   &:not(:disabled):not(.disabled) {
-    &:not(.error):hover,
-    &:not(.error).hover {
+    &:not(.error):not([readonly]):hover,
+    &:not(.error):not([readonly]).hover {
       border-color: ${colors.black};
     }
 
@@ -317,6 +317,13 @@ export const defaultInputStyle = css`
     background-color: ${colors.grey100};
     border-color: ${colors.grey400};
     cursor: not-allowed;
+  }
+
+  /* Unlike disabled, the text keeps full contrast: the value is meant to be read */
+  &[readonly] {
+    background-color: ${colors.grey100};
+    border-color: ${colors.grey400};
+    cursor: default;
   }
   ${(props: { size?: InputSize }) =>
     props.size === 'small' &&

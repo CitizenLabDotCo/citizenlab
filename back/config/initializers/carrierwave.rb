@@ -33,7 +33,12 @@ module ProcessableUriDownloader
   # master branch, but this is not the case when executing
   # the steps mentioned above.
   def process_uri(uri)
-    URI.parse uri
+    URI.parse(uri).tap do |parsed|
+      # Local Docker only: other containers (e.g. cl-que applying a project template) can't
+      # reach the back end at localhost. DOCKER_BACKEND_HOST is set in docker-compose.yml.
+      backend_host = ENV['DOCKER_BACKEND_HOST'].presence
+      parsed.host = backend_host if Rails.env.development? && backend_host && parsed.host == 'localhost'
+    end
   rescue URI::InvalidURIError, Addressable::URI::InvalidURIError
     raise CarrierWave::DownloadError, "couldn't parse URL: #{uri}"
   end
@@ -43,7 +48,7 @@ module ProcessableUriDownloader
   def skip_ssrf_protection?(uri)
     return false unless Rails.env.development?
 
-    uri.hostname == 'localhost'
+    ['localhost', ENV['DOCKER_BACKEND_HOST'].presence].compact.include?(uri.hostname)
   end
 end
 

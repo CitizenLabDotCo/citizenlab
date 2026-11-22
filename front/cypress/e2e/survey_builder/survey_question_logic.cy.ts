@@ -344,10 +344,9 @@ describe('Bug: ambiguity around missing values in survey logic', () => {
             ],
           };
 
-          return cy.request({
+          return cy.requestAs(adminJwt, {
             headers: {
               'Content-Type': 'application/json',
-              Authorization: `Bearer ${adminJwt}`,
             },
             method: 'PATCH',
             url: `web_api/v1/phases/${phaseId}/custom_fields/update_all`,

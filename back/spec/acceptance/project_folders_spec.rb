@@ -235,6 +235,15 @@ resource 'ProjectFolder' do
           expect(folder.reload.space_id).to be_nil
           expect(project_in_folder.reload.space_id).to be_nil
         end
+
+        example 'Keeps the folder in its space if its projects fail to move', document: false do
+          allow(Project).to receive(:where).and_call_original
+          allow(Project).to receive(:where).with(id: [project_in_folder.id]).and_raise(ActiveRecord::Deadlocked)
+
+          expect { do_request project_folder: { space_id: space.id } }.to raise_error(ActiveRecord::Deadlocked)
+          expect(folder.reload.space_id).to be_nil
+          expect(project_in_folder.reload.space_id).to be_nil
+        end
       end
     end
 

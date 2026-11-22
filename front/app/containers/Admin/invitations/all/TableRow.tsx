@@ -34,8 +34,7 @@ const TableRow = ({ invite }: InputProps) => {
   if (!user) return null;
 
   return (
-    // To test invitation flow, we need the token, hence this className
-    <Tr key={invite.id} className={invite.attributes.token}>
+    <Tr key={invite.id}>
       <Td>{user.data.attributes.email}</Td>
       <Td>
         <span>{getFullName(user.data)}</span>

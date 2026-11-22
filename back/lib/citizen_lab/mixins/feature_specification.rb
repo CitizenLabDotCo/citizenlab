@@ -20,7 +20,9 @@ module CitizenLab
           'properties' => {
             'allowed' => { 'type' => 'boolean', 'default' => allowed_by_default },
             'enabled' => { 'type' => 'boolean', 'default' => enabled_by_default }
-          }.merge(settings_props)
+          }.merge(settings_props).to_h do |name, schema|
+            [name, admin_writable_setting_names.include?(name) ? schema.merge('admin_writable' => true) : schema]
+          end
         }.compact
       end
 
@@ -68,6 +70,16 @@ module CitizenLab
       # @return [Boolean]
       def development
         false
+      end
+
+      # Names of the feature's settings (including "allowed" and "enabled") that admins who
+      # are not super admins may change. Every other setting can only be changed by super
+      # admins. Core features mark these settings with an "admin_writable": true key in
+      # their JSON schema.
+      #
+      # @return [Array<String>]
+      def admin_writable_setting_names
+        []
       end
 
       # @return [Boolean]

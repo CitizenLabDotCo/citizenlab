@@ -24,8 +24,8 @@ class Rack::Attack
     # Rack raises when it can't parse the query string or a form body, which
     # bots send often. Raised here, that 500s the request before it is routed.
     # Rails answers the same requests with a 400 when it parses their params.
-    # When only the body is broken, fall back to the query string's params, so a
-    # `token` passed there still counts against the per-user throttles.
+    # When only the body is broken, fall back to the query string's params, which
+    # the throttles can still use.
     def params
       super
     rescue *PARSE_ERRORS
@@ -46,9 +46,9 @@ class Rack::Attack
     safelist_ip(safe_ip)
   end
 
-  # The user ID a request authenticates as, reading params[:token] before the header like AuthToken::Authenticable#token.
+  # The user ID a request authenticates as, read from the auth cookie like AuthToken::Authenticable#token.
   USER_ID_FROM_JWT = lambda do |req|
-    jwt = req.params['token'].presence || req.env['HTTP_AUTHORIZATION']&.split&.last
+    jwt = AuthToken::Cookie.read(req)
     JWT.decode(jwt, nil, false, algorithm: 'RS256').first['sub'] # sub is the user ID
   rescue JWT::DecodeError
     nil

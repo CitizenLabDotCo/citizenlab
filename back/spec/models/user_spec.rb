@@ -1256,6 +1256,19 @@ RSpec.describe User do
       expect(u.registration_completed_at).not_to be_nil
     end
 
+    it 'is not set when an invited user accepts the invite with another email' do
+      u = create(:invited_user)
+      u.update!(invite_status: 'accepted', email: 'someone.else@example.com')
+      expect(u.registration_completed_at).to be_nil
+      expect(u.email_confirmed_at).to be_nil
+    end
+
+    it 'is set when an invited user accepts the invite with a different-case email' do
+      u = create(:invited_user)
+      u.update!(invite_status: 'accepted', email: u.email.upcase)
+      expect(u.registration_completed_at).not_to be_nil
+    end
+
     it 'is set when an SSO user is created' do
       u = create(:sso_user)
       expect(u.registration_completed_at).not_to be_nil

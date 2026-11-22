@@ -20,6 +20,10 @@ module FlagInappropriateContent
       ['moderation']
     end
 
+    def self.admin_writable_setting_names
+      %w[enabled]
+    end
+
     add_setting 'custom_guidelines', schema: {
       type: 'string',
       title: 'Additional moderation guidelines',

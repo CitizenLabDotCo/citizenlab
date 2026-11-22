@@ -9,7 +9,6 @@ class SideFxInviteService
 
   def before_accept(invite)
     invite.accepted_at = Time.now
-    invite.invitee.email_confirmed_at ||= invite.accepted_at
   end
 
   def after_accept(invite, claim_tokens: nil)

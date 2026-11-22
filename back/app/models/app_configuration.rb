@@ -234,8 +234,10 @@ class AppConfiguration < ApplicationRecord
       # localhost:3000 works (webpack proxies requests to localhost:4000)
       # using the app from the browser, but localhost:4000 is a better default
       # because it's more universal:
-      # it works both in the browser and in the BE code that runs in cl-back-web container
-      # (e.g., to copy images applying a tenant template or copying a project).
+      # it works both in the browser and in the BE code that runs in cl-back-web container.
+      # Code in other containers (e.g. cl-que, which applies project templates and copies
+      # their images) cannot reach localhost:4000. In Docker, downloads from localhost go to
+      # DOCKER_BACKEND_HOST instead (see config/initializers/carrierwave.rb).
       base_uri(ENV.fetch('ASSET_HOST_URI', 'http://localhost:4000'))
     end
   end

@@ -96,13 +96,14 @@ context 'franceconnect verification' do
         active: true,
         hashed_uid: '84d610ebae19b5e09aa5621e006746c4cd568bec352e1d98d48643e6765a82e7'
       })
-      expect(cookies[:cl2_jwt]).to be_present
+      expect(cookies[AuthToken::Cookie::NAME]).to be_present
     end
 
     it 'successfully verifies an existing user' do
       user = create(:user, first_name: 'Jean', last_name: 'Dupont')
       token = AuthToken::AuthToken.new(payload: user.to_token_payload).token
-      get "/auth/franceconnect?sso_verification=true&token=#{token}&random-passthrough-param=somevalue&verification_pathname=/yipie"
+      cookies[AuthToken::Cookie::NAME] = token
+      get '/auth/franceconnect?sso_verification=true&verification=true&random-passthrough-param=somevalue&verification_pathname=/yipie'
       follow_redirect!
 
       expect(response).to redirect_to('/en/yipie?sso_verification=true&random-passthrough-param=somevalue&verification_success=true')
@@ -148,13 +149,14 @@ context 'franceconnect verification' do
         active: true,
         hashed_uid: '84d610ebae19b5e09aa5621e006746c4cd568bec352e1d98d48643e6765a82e7'
       })
-      expect(cookies[:cl2_jwt]).to be_present
+      expect(cookies[AuthToken::Cookie::NAME]).to be_present
     end
 
     it 'successfully verifies an existing user' do
       user = create(:user, first_name: 'Jean', last_name: 'Dupont')
       token = AuthToken::AuthToken.new(payload: user.to_token_payload).token
-      get "/auth/franceconnect?sso_verification=true&token=#{token}&random-passthrough-param=somevalue&verification_pathname=/yipie"
+      cookies[AuthToken::Cookie::NAME] = token
+      get '/auth/franceconnect?sso_verification=true&verification=true&random-passthrough-param=somevalue&verification_pathname=/yipie'
       follow_redirect!
 
       expect(response).to redirect_to('/en/yipie?sso_verification=true&random-passthrough-param=somevalue&verification_success=true')
@@ -188,7 +190,8 @@ context 'franceconnect verification' do
     it 'fills them in when verifying an existing user' do
       user = create(:user, first_name: 'Jean', last_name: 'Dupont')
       token = AuthToken::AuthToken.new(payload: user.to_token_payload).token
-      get "/auth/franceconnect?sso_verification=true&token=#{token}&verification_pathname=/yipie"
+      cookies[AuthToken::Cookie::NAME] = token
+      get '/auth/franceconnect?sso_verification=true&verification=true&verification_pathname=/yipie'
       follow_redirect!
 
       expect(CustomFieldValuesTransitionService.new.custom_field_values(user.reload)).to include('birthyear' => 1962, 'gender' => 'female')

@@ -55,7 +55,7 @@ resource 'ProjectImage' do
     end
 
     example 'Unauthorized (401) when not signed in', document: false do
-      header 'Authorization', nil
+      header 'Cookie', nil
 
       expect { do_request }.not_to change(ProjectImage, :count)
       assert_status 401
@@ -113,7 +113,7 @@ resource 'ProjectImage' do
     end
 
     example 'Unauthorized (401) when not signed in', document: false do
-      header 'Authorization', nil
+      header 'Cookie', nil
 
       expect { do_request }.not_to change { ProjectImage.find(image_id).ordering }
       assert_status 401
@@ -130,7 +130,7 @@ resource 'ProjectImage' do
     end
 
     example 'Unauthorized (401) when not signed in', document: false do
-      header 'Authorization', nil
+      header 'Cookie', nil
 
       expect { do_request }.not_to change(ProjectImage, :count)
       assert_status 401

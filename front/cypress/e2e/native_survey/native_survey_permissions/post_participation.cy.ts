@@ -104,7 +104,7 @@ describe('Post Participation Signup: survey', () => {
     cy.location('pathname').should('eq', `/en/projects/${projectSlug}`);
 
     // Get user ID from JWT cookie and check profile
-    cy.getCookie('cl2_jwt').then((cookie) => {
+    cy.getCookie('cl2_auth_token').then((cookie) => {
       const jwt = cookie?.value;
       if (jwt) {
         const payload = JSON.parse(atob(jwt.split('.')[1]));

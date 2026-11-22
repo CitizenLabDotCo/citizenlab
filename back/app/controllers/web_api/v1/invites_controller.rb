@@ -55,7 +55,11 @@ class WebApi::V1::InvitesController < ApplicationController
 
     I18n.with_locale(current_user&.locale) do
       @invites = policy_scope(Invite).includes(invitee: [:manual_groups])
-      xlsx = XlsxService.new.generate_invites_xlsx @invites, view_private_attributes: policy(User).view_private_attributes?
+      xlsx = XlsxService.new.generate_invites_xlsx(
+        @invites,
+        view_private_attributes: policy(User).view_private_attributes?,
+        view_token: ->(invite) { policy(invite).view_token? }
+      )
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'invites.xlsx'
     end
   end
@@ -72,8 +76,11 @@ class WebApi::V1::InvitesController < ApplicationController
     raise ApiError.new(:already_accepted, status: 401) if @invite.accepted_at
 
     invitee = @invite.invitee
+    # An emailed invite keeps the address it was sent to. An invitation code takes a typed
+    # address but no password: until that address is confirmed, nobody may set one on the account.
+    user_params = invitee.email.present? ? accept_params.except(:email) : accept_params.except(:password)
     ActiveRecord::Base.transaction do
-      invitee = UserService.assign_params_in_accept_invite(invitee, accept_params)
+      invitee = UserService.assign_params_in_accept_invite(invitee, user_params)
       SideFxInviteService.new.before_accept @invite
       save_or_raise! invitee, context: :form_submission
       save_or_raise! @invite
