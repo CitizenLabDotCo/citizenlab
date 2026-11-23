@@ -7,8 +7,12 @@ module EmailCampaigns
   # Verification follows the SNS recipe: the signing certificate is fetched from `SigningCertURL`,
   # checked against Scaleway's published CA chain (vendored in `config/scaleway_sns_trust_chain/`), and
   # its public key verifies the signature over the canonical string of the envelope. Certificates are
-  # cached by URL, so a rotation only costs one download.
+  # cached by URL.
   # See https://www.scaleway.com/en/docs/topics-and-events/reference-content/verifying-webhooks/
+  #
+  # A valid signature only proves the message came through Scaleway, not that it came from
+  # us: any Scaleway customer can send signed messages from their own topic. So we only
+  # accept messages from our own topic.
   class ScalewaySnsMessage
     class InvalidMessage < StandardError; end
 
@@ -28,7 +32,7 @@ module EmailCampaigns
     CERTIFICATE_CACHE_TTL = 1.day
 
     class << self
-      attr_writer :region, :trust_chain_path
+      attr_writer :region, :trust_chain_path, :expected_topic_arn
 
       # @param raw_body [String] the request body as received; the signature covers the exact
       #   `Message` string, so it must not be re-serialised.
@@ -59,6 +63,11 @@ module EmailCampaigns
 
       def trust_chain_path
         @trust_chain_path || Engine.root.join('config', 'scaleway_sns_trust_chain', "#{region}.pem")
+      end
+
+      # The only topic envelopes are accepted from. If it's not set, every envelope is refused.
+      def expected_topic_arn
+        @expected_topic_arn || ENV.fetch('SCW_TEM_TOPIC_ARN', nil)
       end
     end
 
@@ -107,6 +116,10 @@ module EmailCampaigns
     def verify!
       raise InvalidMessage, "unsupported Type #{type.inspect}" unless SIGNED_KEYS.key?(type)
 
+      # Checked before fetching the certificate, so a message from the wrong topic costs no
+      # outbound request.
+      verify_topic!
+
       digest = DIGESTS[envelope['SignatureVersion'].to_s]
       raise InvalidMessage, 'unsupported SignatureVersion' unless digest
 
@@ -124,6 +137,13 @@ module EmailCampaigns
     end
 
     private
+
+    def verify_topic!
+      expected = self.class.expected_topic_arn
+      raise InvalidMessage, 'no expected topic configured' if expected.blank?
+      # `TopicArn` is covered by the signature.
+      raise InvalidMessage, 'unexpected TopicArn' unless topic_arn == expected
+    end
 
     def string_to_sign
       SIGNED_KEYS[type].filter_map do |key|

@@ -84,6 +84,7 @@ RSpec.describe EmailCampaigns::ScalewaySnsMessage do
   before do
     described_class.region = 'fr-par'
     described_class.trust_chain_path = pki[:trust_chain].path
+    described_class.expected_topic_arn = topic_arn
     Rails.cache.clear
     stub_request(:get, certificate_url).to_return(status: 200, body: pki[:signing_cert].to_pem)
   end
@@ -91,6 +92,7 @@ RSpec.describe EmailCampaigns::ScalewaySnsMessage do
   after do
     described_class.region = nil
     described_class.trust_chain_path = nil
+    described_class.expected_topic_arn = nil
   end
 
   it 'accepts a notification signed by a certificate issued by the trusted chain' do
@@ -150,6 +152,47 @@ RSpec.describe EmailCampaigns::ScalewaySnsMessage do
     expect { described_class.parse!(signed_envelope(type: 'Notification', 'SigningCertURL' => foreign_url).to_json) }
       .to raise_error(described_class::InvalidMessage, /SigningCertURL/)
     expect(a_request(:get, foreign_url)).not_to have_been_made
+  end
+
+  describe 'topic' do
+    let(:foreign_topic_arn) { 'arn:scw:sns:fr-par:project-other:their-topic' }
+
+    it 'refuses a correctly signed notification from another topic' do
+      envelope = signed_envelope(type: 'Notification', 'TopicArn' => foreign_topic_arn).to_json
+
+      expect { described_class.parse!(envelope) }.to raise_error(described_class::InvalidMessage, /TopicArn/)
+      expect(a_request(:get, certificate_url)).not_to have_been_made # It should not fetch the certificate.
+    end
+
+    it 'refuses a correctly signed subscription confirmation from another topic' do
+      subscribe_url = 'https://sns.mnq.fr-par.scaleway.com/?Action=ConfirmSubscription&TopicArn=x&Token=y'
+
+      envelope = signed_envelope(
+        type: 'SubscriptionConfirmation',
+        'TopicArn' => foreign_topic_arn,
+        'SubscribeURL' => subscribe_url,
+        'Token' => 'y'
+      ).to_json
+
+      expect { described_class.parse!(envelope) }
+        .to raise_error(described_class::InvalidMessage, /TopicArn/)
+    end
+
+    it 'refuses every envelope when no topic is configured' do
+      described_class.expected_topic_arn = nil
+      stub_const('ENV', ENV.to_h.except('SCW_TEM_TOPIC_ARN'))
+
+      expect { described_class.parse!(signed_envelope(type: 'Notification').to_json) }
+        .to raise_error(described_class::InvalidMessage, /no expected topic/)
+    end
+
+    it 'reads the expected topic from the environment' do
+      described_class.expected_topic_arn = nil
+      topic_arn = 'arn:scw:sns:fr-par:project-uuid:from-env'
+      stub_const('ENV', ENV.to_h.merge('SCW_TEM_TOPIC_ARN' => topic_arn))
+
+      expect(described_class.expected_topic_arn).to eq(topic_arn)
+    end
   end
 
   it 'refuses bodies that are not SNS envelopes' do
