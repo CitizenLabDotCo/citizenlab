@@ -312,6 +312,13 @@ RSpec.describe ContentBuilder::LayoutPolicy do
       include_examples 'visible only to who can see the parent',
         visible_to: %i[visitor normal_user admin], hidden_from: []
     end
+
+    context 'for a layout whose parent type the policy does not know' do
+      let(:layout) { create(:layout, content_buildable_type: 'UnknownClassName') }
+
+      include_examples 'visible only to who can see the parent',
+        visible_to: [], hidden_from: %i[visitor normal_user admin]
+    end
   end
 
   describe 'Scope' do
