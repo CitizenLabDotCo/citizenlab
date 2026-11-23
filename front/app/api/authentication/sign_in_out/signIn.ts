@@ -1,6 +1,5 @@
 import { API_PATH } from 'containers/App/constants';
 
-import { getJwt, setJwt } from 'utils/auth/jwt';
 import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
 import { clearClaimToken } from 'utils/claimToken';
 
@@ -16,14 +15,15 @@ type Identifier =
 type Parameters = Identifier & {
   password: string;
   rememberMe?: boolean;
-  tokenLifetime?: number;
   claimTokens?: string[];
 };
 
 export default async function signIn(parameters: Parameters) {
-  try {
-    await getAndSetToken(parameters);
+  // A failed sign-in (e.g. a wrong password) sets no cookie, so there is nothing to undo.
+  await requestAuthCookie(parameters);
 
+  // The cookie is set: if the user can't be loaded, sign out rather than stay half signed in.
+  try {
     const authUser = await getAuthUserAsync();
 
     invalidateQueryCache();
@@ -35,12 +35,13 @@ export default async function signIn(parameters: Parameters) {
   }
 }
 
-async function getAndSetToken({
+// On success, the API sets the auth token in an HttpOnly cookie, which the browser
+// then sends along with every API request. This code never sees the token.
+async function requestAuthCookie({
   email,
   phone,
   password,
   rememberMe = false,
-  tokenLifetime,
   claimTokens,
 }: Parameters) {
   // Each identifier has its own endpoint: they look the account up differently
@@ -56,27 +57,26 @@ async function getAndSetToken({
     },
   };
 
-  const jwt = getJwt();
-  return await fetch(`${API_PATH}/${endpoint}`, {
+  const response = await fetch(`${API_PATH}/${endpoint}`, {
     method: 'POST',
+    credentials: 'include', // Include cookies (session, auth tokens)
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${jwt}`,
     },
     body: JSON.stringify(bodyData),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      setJwt(data.jwt, rememberMe, tokenLifetime);
-      clearClaimToken();
-    });
+  });
+
+  if (!response.ok) {
+    throw new Error(`Sign in failed with status ${response.status}`);
+  }
+
+  clearClaimToken();
 }
 
 async function getAuthUserAsync() {
   try {
     return await getAuthUser();
   } catch {
-    signOut();
     throw new Error('not_authenticated');
   }
 }

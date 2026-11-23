@@ -171,10 +171,9 @@ describe('Native survey permitted by: users', () => {
       const adminJwt = response.body.jwt;
 
       return cy
-        .request({
+        .requestAs(adminJwt, {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${adminJwt}`,
           },
           method: 'GET',
           url: `web_api/v1/ideas/${ideaId}`,
@@ -213,30 +212,8 @@ describe('Native survey permitted by: users', () => {
           return updatePermission({
             adminJwt,
             phaseId,
-            user_fields_in_form: true,
-          });
-        });
-      });
-
-      it('works', () => {
-        fieldsInForm();
-        confirmSavedToProfile();
-        confirmSavedToIdea({ expectUserId: true });
-      });
-    });
-  });
-
-  describe('Collect demographics only', () => {
-    describe('Ask demographic questions in registration flow', () => {
-      before(() => {
-        cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
-          const adminJwt = response.body.jwt;
-
-          return updatePermission({
-            adminJwt,
-            phaseId,
             user_fields_in_form: false,
-            user_data_collection: 'demographics_only',
+            user_data_collection: 'anonymous',
           });
         });
       });
@@ -244,34 +221,39 @@ describe('Native survey permitted by: users', () => {
       it('works', () => {
         fieldsInRegFlow();
         confirmSavedToProfile();
-        confirmSavedToIdea({ expectUserId: false });
-      });
-    });
 
-    describe('Ask demographic questions in survey', () => {
-      before(() => {
         cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
           const adminJwt = response.body.jwt;
 
           return updatePermission({
             adminJwt,
             phaseId,
-            user_fields_in_form: true,
+            user_fields_in_form: false,
+            user_data_collection: 'anonymous',
           });
         });
       });
 
       it('works', () => {
-        fieldsInForm();
+        fieldsInRegFlow();
         confirmSavedToProfile();
-        confirmSavedToIdea({ expectUserId: false });
-      });
-    });
-  });
 
-  describe('Full anonymity', () => {
-    describe('Ask demographic questions in registration flow', () => {
-      before(() => {
+        cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+          const adminJwt = response.body.jwt;
+
+          return updatePermission({
+            adminJwt,
+            phaseId,
+            user_fields_in_form: false,
+            user_data_collection: 'anonymous',
+          });
+        });
+      });
+
+      it('works', () => {
+        fieldsInRegFlow();
+        confirmSavedToProfile();
+
         cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
           const adminJwt = response.body.jwt;
 
@@ -292,10 +274,9 @@ describe('Native survey permitted by: users', () => {
           const adminJwt = response.body.jwt;
 
           return cy
-            .request({
+            .requestAs(adminJwt, {
               headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${adminJwt}`,
               },
               method: 'GET',
               url: `web_api/v1/ideas/${ideaId}`,

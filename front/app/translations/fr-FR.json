@@ -1513,6 +1513,7 @@
   "app.containers.Authentication.steps.Policies.byContinuingPhone3": "En continuant, vous acceptez de recevoir un code de confirmation à usage unique par SMS de la part de {orgName}. Si vous avez accepté ci-dessus, vous recevrez également des nouvelles et des mises à jour ; la fréquence des messages varie. Des frais de messages et de données peuvent s'appliquer. Répondez HELP pour obtenir de l'aide, STOP pour vous désinscrire.",
   "app.containers.Authentication.steps.Policies.byContinuingPhoneWithoutCampaignsEnabled": "En continuant, vous acceptez de recevoir par SMS un code de confirmation à usage unique de la part de {orgName}. Des frais de messagerie et de données peuvent s’appliquer. Répondez HELP pour obtenir de l’aide ou STOP pour vous désinscrire.",
   "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": "Créer un compte avec le numéro : {phone} {changeLink}",
+  "app.containers.Authentication.verificationSignedOut": "Vous avez été déconnecté, nous n'avons donc pas pu vérifier votre identité. Connectez-vous et réessayez.",
   "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "Activer ou désactiver toutes les notifications de la catégorie « {contentType} »",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Notifications dans cette catégorie",
   "app.containers.CampaignsConsentForm.emailNotificationsSubTitle": "Quels types de notifications par e-mail souhaitez-vous recevoir ?",

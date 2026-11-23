@@ -6,8 +6,6 @@ import styled from 'styled-components';
 import 'react-pdf/dist/Page/TextLayer.css';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 
-import { getJwt } from 'utils/auth/jwt';
-
 import PDFDownloadButton from './PDFDownloadButton';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.mjs`;
@@ -42,13 +40,13 @@ const PDFViewer = ({ file, ideaId }: Props) => {
     setPagesInDocument(numPages);
   };
 
-  const jwt = getJwt();
-  const fileWithHeaders = useMemo(
+  // Sends the auth cookie along, which authenticates the request.
+  const fileWithCredentials = useMemo(
     () => ({
       url: file,
-      httpHeaders: { Authorization: jwt },
+      withCredentials: true,
     }),
-    [file, jwt]
+    [file]
   );
 
   return (
@@ -63,7 +61,7 @@ const PDFViewer = ({ file, ideaId }: Props) => {
       >
         <Document
           key={ideaId}
-          file={fileWithHeaders}
+          file={fileWithCredentials}
           onLoadSuccess={handleLoadSuccess}
         >
           {pagesInDocument &&

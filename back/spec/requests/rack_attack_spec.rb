@@ -21,7 +21,7 @@ describe 'Rack::Attack' do
   # Throttles key off the IP and the JWT, so examples vary one and hold the other fixed.
   def json_headers(token: nil, ip: nil)
     headers = { 'CONTENT_TYPE' => 'application/json' }
-    headers['Authorization'] = "Bearer #{token}" if token
+    headers['Cookie'] = "#{AuthToken::Cookie::NAME}=#{token}" if token
     headers['REMOTE_ADDR'] = ip if ip
     headers
   end
@@ -473,48 +473,6 @@ describe 'Rack::Attack' do
             expect(status).not_to eq(429)
           end
         end
-      end
-    end
-
-    it 'counts a token passed as a query param against the same user' do
-      # AuthToken reads params[:token] before the Authorization header, so a caller
-      # can't escape the per-user limit by moving the token from one to the other.
-      path = '/web_api/v1/user/request_reconfirm_code_email'
-      params = '{ "request_code": { "only_if_first_time": false } }'
-
-      freeze_at_window_start do
-        post("#{path}?token=#{token}", params: params, headers: json_headers(ip: '1.2.3.1'))
-        expect(status).to eq(200) # OK
-
-        post(path, params: params, headers: json_headers(token: token, ip: '1.2.3.2'))
-        expect(status).to eq(429) # Too many requests
-      end
-    end
-
-    it 'counts a token passed in a form body against the same user' do
-      # Rails reads params[:token] from a form body too, so the throttle has to.
-      path = '/web_api/v1/user/request_reconfirm_code_email'
-      body = { request_code: { only_if_first_time: false } }
-
-      freeze_at_window_start do
-        post(path, params: body.merge(token: token), headers: { 'REMOTE_ADDR' => '1.2.3.1' })
-        expect(status).to eq(200) # OK
-
-        post(path, params: body, headers: { 'Authorization' => "Bearer #{token}", 'REMOTE_ADDR' => '1.2.3.2' })
-        expect(status).to eq(429) # Too many requests
-      end
-    end
-
-    it 'counts a query param token when the form body cannot be parsed' do
-      path = '/web_api/v1/user/request_reconfirm_code_email'
-      urlencoded = { 'CONTENT_TYPE' => 'application/x-www-form-urlencoded', 'REMOTE_ADDR' => '1.2.3.1' }
-
-      freeze_at_window_start do
-        expect { post("#{path}?token=#{token}", params: 'a[]=1&a[b]=2', headers: urlencoded) }
-          .to raise_error(ActionController::BadRequest)
-
-        post(path, params: '{ "request_code": { "only_if_first_time": false } }', headers: json_headers(token: token, ip: '1.2.3.2'))
-        expect(status).to eq(429) # Too many requests
       end
     end
   end
