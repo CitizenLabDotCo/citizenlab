@@ -113,6 +113,9 @@ module Cl2Back
         project_id: ENV.fetch('SCW_TEM_PROJECT_ID'),
         region: ENV.fetch('SCW_TEM_REGION', 'fr-par')
       }
+
+      # Fail hard at boot if the topic ARN is missing.
+      raise 'SCW_TEM_TOPIC_ARN is empty' if ENV.fetch('SCW_TEM_TOPIC_ARN').blank?
     when 'smtp'
       config.action_mailer.delivery_method = :smtp
       config.action_mailer.smtp_settings = {
