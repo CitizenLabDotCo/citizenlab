@@ -64,7 +64,9 @@ resource 'ContentBuilderLayouts', :clear_cache, document: false do
         do_request
         expect(status).to eq 200
 
-        header 'Authorization', nil
+        # Sign out: drop the auth cookie the request sent and any the response set.
+        header 'Cookie', nil
+        sign_out_client
         do_request
         expect(status).to eq 401
       end
