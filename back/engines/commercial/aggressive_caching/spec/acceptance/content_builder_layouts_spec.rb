@@ -94,6 +94,26 @@ resource 'ContentBuilderLayouts', :clear_cache, document: false do
       do_request
       expect(status).to eq 401
     end
+
+    # A preview link lets this visitor see the draft project, and the next one not.
+    context 'when the visitor has the project\'s preview link' do
+      let(:cache_key) { "api_response/example.org/web_api/v1/projects/#{project_id}/content_builder_layouts/#{code}.json" }
+
+      before do
+        SettingsService.new.activate_feature! 'project_preview_link'
+        header 'Cookie', "preview_token=#{project.preview_token}"
+      end
+
+      example 'it does not cache, so a visitor asking next is still refused' do
+        do_request
+        expect(status).to eq 200
+        expect(Rails.cache.read(cache_key)).to be_nil
+
+        header 'Cookie', nil
+        do_request
+        expect(status).to eq 401
+      end
+    end
   end
 
   get 'web_api/v1/home_pages/content_builder_layouts/:code' do
