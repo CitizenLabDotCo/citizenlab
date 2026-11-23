@@ -70,7 +70,7 @@ describe('Survey logic conflict', () => {
     cy.get('[data-testid="feedbackSuccessMessage"]');
 
     // Take survey and make sure it works as expected
-    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/surveys/new/${phaseId}`);
 
     // Make sure submit button is shown
     cy.dataCy('e2e-submit-form');

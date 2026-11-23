@@ -1,6 +1,30 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  savedSurveyQuestions: {
+    id: 'app.containers.Admin.projects.project.savedSurveyQuestions',
+    defaultMessage: 'Questions added',
+  },
+  deleteSurveyQuestions: {
+    id: 'app.containers.Admin.projects.project.deleteSurveyQuestions',
+    defaultMessage: 'Delete questions',
+  },
+  deleteQuestionsToReuse: {
+    id: 'app.containers.Admin.projects.project.deleteQuestionsToReuse',
+    defaultMessage: 'Delete the questions to use a previous survey',
+  },
+  surveyQuestionsDeleted: {
+    id: 'app.containers.Admin.projects.project.surveyQuestionsDeleted',
+    defaultMessage: 'Questions deleted',
+  },
+  undoDeleteQuestions: {
+    id: 'app.containers.Admin.projects.project.undoDeleteQuestions',
+    defaultMessage: 'Undo',
+  },
+  questionsUpdateFailed: {
+    id: 'app.containers.Admin.projects.project.questionsUpdateFailed',
+    defaultMessage: 'The questions could not be updated. Please try again.',
+  },
   switchLockedResponses: {
     id: 'app.containers.Admin.projects.project.switchLockedResponses',
     defaultMessage:
@@ -46,6 +70,15 @@ export default defineMessages({
   switchConfirm: {
     id: 'app.containers.Admin.projects.project.switchConfirm',
     defaultMessage: 'Change',
+  },
+  savingAndOpening: {
+    id: 'app.containers.Admin.projects.project.savingAndOpeningSurvey',
+    defaultMessage: 'Saving the phase and opening your selection…',
+  },
+  waitingForAttachment: {
+    id: 'app.containers.Admin.projects.project.waitingForSurveyAttachment',
+    defaultMessage:
+      'Wait for the attachment to finish uploading before continuing.',
   },
   surveySetupLead: {
     id: 'app.containers.Admin.projects.project.surveySetupLead',

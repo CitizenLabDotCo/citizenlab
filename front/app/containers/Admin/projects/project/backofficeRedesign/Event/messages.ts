@@ -1,6 +1,88 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  buildView: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.Event.buildView',
+    defaultMessage: 'Build',
+  },
+  manageView: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.Event.manageView',
+    defaultMessage: 'Manage',
+  },
+  eventView: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.Event.eventView',
+    defaultMessage: 'Event view',
+  },
+  exportRegistrants: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.Event.exportRegistrants',
+    defaultMessage: 'Export registrants',
+  },
+  registrantCount: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.Event.registrantCount',
+    defaultMessage: '{count, plural, one {# registrant} other {# registrants}}',
+  },
+  registrant: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.Event.registrant',
+    defaultMessage: 'Registrant',
+  },
+  email: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.Event.email',
+    defaultMessage: 'Email',
+  },
+  registered: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.Event.registered',
+    defaultMessage: 'Registered',
+  },
+  searchRegistrants: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.Event.searchRegistrants',
+    defaultMessage: 'Search registrants',
+  },
+  thisWeek: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.Event.thisWeek',
+    defaultMessage: 'This week',
+  },
+  earlier: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.Event.earlier',
+    defaultMessage: 'Earlier',
+  },
+  noRegistrants: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.Event.noRegistrants',
+    defaultMessage: 'No registrants yet',
+  },
+  noRegistrantsDescription: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.Event.noRegistrantsDescription',
+    defaultMessage: 'People who register for this event will appear here',
+  },
+  noMatchingRegistrants: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.Event.noMatchingRegistrants',
+    defaultMessage: 'No registrants match these filters',
+  },
+  spotsLeft: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.Event.spotsLeft',
+    defaultMessage: 'Spots left',
+  },
+  remainingSpots: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.Event.remainingSpots',
+    defaultMessage: '{remaining} of {total}',
+  },
+  registrantsLoadError: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.Event.registrantsLoadError',
+    defaultMessage: 'Registrants could not be loaded. Please try again.',
+  },
+  retryRegistrants: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.Event.retryRegistrants',
+    defaultMessage: 'Try again',
+  },
+  registrantsExportError: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.Event.registrantsExportError',
+    defaultMessage: 'Registrants could not be exported. Please try again.',
+  },
+  externalRegistrations: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.Event.externalRegistrations',
+    defaultMessage:
+      'Registrations through this event’s external link are managed outside the platform.',
+  },
+
   eventSetup: {
     id: 'app.containers.Admin.projects.project.event.eventSetup',
     defaultMessage: 'Event setup',

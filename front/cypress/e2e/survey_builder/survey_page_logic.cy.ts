@@ -97,7 +97,7 @@ describe('Survey page logic', () => {
     cy.get('[data-testid="feedbackSuccessMessage"]');
 
     // Go to survey
-    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/surveys/new/${phaseId}`);
 
     // Expect submit button to be there, proving that page 1 goes straight to the end
     // of the survey (and not to page 2)

@@ -11,6 +11,7 @@ import useLocalize from 'hooks/useLocalize';
 import { useIntl } from 'utils/cl-intl';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
+import getOgUrl from 'utils/cl-router/getOgUrl';
 import { imageSizes } from 'utils/fileUtils';
 import { stripHtml } from 'utils/textUtils';
 
@@ -36,7 +37,6 @@ const ProjectFolderShowPageMeta = ({ projectFolder }: Props) => {
     250
   );
   const image = projectFolder.attributes.header_bg?.large;
-  const { location } = window;
 
   return (
     <Helmet>
@@ -65,7 +65,7 @@ const ProjectFolderShowPageMeta = ({ projectFolder }: Props) => {
         property="og:image:height"
         content={`${imageSizes.projectBg.large[1]}`}
       />
-      <meta property="og:url" content={location.href} />
+      <meta property="og:url" content={getOgUrl()} />
       <meta name="twitter:card" content="summary_large_image" />
     </Helmet>
   );

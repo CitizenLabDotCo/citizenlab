@@ -3,6 +3,7 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 
 import { SSOProvider } from 'api/authentication/singleSignOn';
+import { isOnlyShownForVerification } from 'api/id_methods/utils';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useSuperAdmin from 'hooks/useSuperAdmin';
@@ -30,7 +31,8 @@ interface Props {
 }
 
 // Default sign-in interface: FranceConnect, then email, then all other SSO
-// methods (each only shown when its feature flag is enabled).
+// methods (each only shown when its feature flag is enabled). Methods set to
+// only show for verification are left out here; VerificationVariant shows them.
 const DefaultVariant = ({
   loading,
   state,
@@ -46,7 +48,9 @@ const DefaultVariant = ({
     useFeatureFlag({ name: 'password_login' }) || isSuperAdmin;
 
   const authMethodsEnabledBesidesFC = visibleIdMethodsExceptFC.filter(
-    (method) => method.attributes.authentication_method
+    (method) =>
+      method.attributes.authentication_method &&
+      !isOnlyShownForVerification(method)
   );
 
   return (
@@ -79,7 +83,10 @@ const DefaultVariant = ({
         </>
       )}
       {authMethodsEnabledBesidesFC.length > 0 && (
-        <SSOButtonsExceptFC onClickSSO={onSwitchToSSO} />
+        <SSOButtonsExceptFC
+          methods={authMethodsEnabledBesidesFC}
+          onClickSSO={onSwitchToSSO}
+        />
       )}
       <AdminSignInLink />
     </Box>

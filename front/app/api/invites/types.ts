@@ -36,11 +36,12 @@ export interface IInviteData {
   id: string;
   type: 'invite';
   attributes: {
-    token: string;
+    // Left out for emailed invites unless a super admin is viewing them.
+    token?: string;
     accepted_at: string | null;
     updated_at: string;
     created_at: string;
-    activate_invite_url: string;
+    activate_invite_url?: string;
   };
   relationships: {
     invitee: {

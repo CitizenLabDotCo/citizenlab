@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode, useRef, useState } from 'react';
 
 import {
   Box,
@@ -8,7 +8,8 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
-import { boolean, ObjectSchema, object, string } from 'yup';
+import { Multiloc } from 'typings';
+import { boolean, mixed, ObjectSchema, object, string } from 'yup';
 
 import usePhase from 'api/phases/usePhase';
 
@@ -16,6 +17,8 @@ import AuthorField from 'components/CustomFieldsForm/Fields/AuthorField';
 import fieldMessages from 'components/CustomFieldsForm/messages';
 import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
+import Error from 'components/UI/Error';
 import Modal, { MEDIUM_MODAL_WIDTH } from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
@@ -39,6 +42,13 @@ const COPY = {
     emptyError: messages.emptyOptionError,
     anonymousTooltip: messages.optionAnonymousTooltip,
   },
+  input: {
+    header: messages.addAnInput,
+    label: messages.inputTitleLabel,
+    placeholder: messages.inputTitlePlaceholder,
+    emptyError: messages.emptyInputTitleError,
+    anonymousTooltip: messages.optionAnonymousTooltip,
+  },
 };
 
 // The input forms fix these limits on the title.
@@ -48,16 +58,35 @@ const MAX_CHARACTERS = 120;
 interface Props {
   phaseId: string;
   kind: keyof typeof COPY;
-  onSubmit: (values: InputValues) => void;
+  /** A returned promise keeps the modal open until it settles. */
+  onSubmit: (values: InputValues) => void | Promise<unknown>;
   onClose: () => void;
+  defaultValues?: InputValues;
+  header?: string;
+  submitLabel?: string;
+  /** Leads to the input form, for the questions this modal leaves out. */
+  fullFormLink?: ReactNode;
 }
 
-const AddInputModal = ({ phaseId, kind, onSubmit, onClose }: Props) => {
+const AddInputModal = ({
+  phaseId,
+  kind,
+  onSubmit,
+  onClose,
+  defaultValues,
+  header,
+  submitLabel,
+  fullFormLink,
+}: Props) => {
   const { formatMessage } = useIntl();
+  const [saveFailed, setSaveFailed] = useState(false);
+  // isSubmitting only updates after a render, so a double click needs this.
+  const submitting = useRef(false);
   const { data: phase } = usePhase(phaseId);
   const allowAnonymous = !!phase?.data.attributes.allow_anonymous_participation;
   const copy = COPY[kind];
   const fieldName = formatMessage(copy.label);
+  const isInput = kind === 'input';
 
   const schema: ObjectSchema<InputValues> = object({
     title_multiloc: validateAtLeastOneLocale(formatMessage(copy.emptyError), {
@@ -78,6 +107,8 @@ const AddInputModal = ({ phaseId, kind, onSubmit, onClose }: Props) => {
             })
           ),
     }),
+    // Whether it is required depends on the phase's form, so the API checks it.
+    body_multiloc: mixed<Multiloc>(),
     author_id: string().nullable(),
     anonymous: boolean(),
   });
@@ -85,11 +116,22 @@ const AddInputModal = ({ phaseId, kind, onSubmit, onClose }: Props) => {
   const methods = useForm<InputValues>({
     mode: 'onTouched',
     resolver: yupResolver(schema),
+    defaultValues,
   });
 
-  const submit = methods.handleSubmit((values) => {
-    onSubmit(values);
-    onClose();
+  const submit = methods.handleSubmit(async (values) => {
+    if (submitting.current) return;
+
+    submitting.current = true;
+    setSaveFailed(false);
+    try {
+      await onSubmit(values);
+      onClose();
+    } catch {
+      setSaveFailed(true);
+    } finally {
+      submitting.current = false;
+    }
   });
 
   return (
@@ -98,15 +140,28 @@ const AddInputModal = ({ phaseId, kind, onSubmit, onClose }: Props) => {
       close={onClose}
       width={MEDIUM_MODAL_WIDTH}
       variant="bo"
-      header={formatMessage(copy.header)}
+      header={header ?? formatMessage(copy.header)}
       footer={
-        <Box display="flex" justifyContent="flex-end" gap="8px" width="100%">
-          <Button buttonStyle="bo-text" onClick={onClose}>
-            {formatMessage(messages.statementCancel)}
-          </Button>
-          <Button buttonStyle="bo-primary" onClick={submit}>
-            {formatMessage(messages.addStatement)}
-          </Button>
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+          gap="8px"
+          width="100%"
+        >
+          <Box>{fullFormLink}</Box>
+          <Box display="flex" gap="8px">
+            <Button buttonStyle="bo-text" onClick={onClose}>
+              {formatMessage(messages.statementCancel)}
+            </Button>
+            <Button
+              buttonStyle="bo-primary"
+              processing={methods.formState.isSubmitting}
+              onClick={submit}
+            >
+              {submitLabel ?? formatMessage(messages.addStatement)}
+            </Button>
+          </Box>
         </Box>
       }
     >
@@ -129,6 +184,16 @@ const AddInputModal = ({ phaseId, kind, onSubmit, onClose }: Props) => {
             placeholder={formatMessage(copy.placeholder)}
             maxCharCount={MAX_CHARACTERS}
           />
+          {isInput && (
+            <QuillMultilocWithLocaleSwitcher
+              id="add-input-description"
+              name="body_multiloc"
+              variant="bo"
+              label={formatMessage(messages.inputDescriptionLabel)}
+              noImages
+              noVideos
+            />
+          )}
           {allowAnonymous && (
             <Box>
               <Box display="flex" alignItems="center" gap="4px" mb="8px">
@@ -154,6 +219,15 @@ const AddInputModal = ({ phaseId, kind, onSubmit, onClose }: Props) => {
                 }
               />
             </Box>
+          )}
+          {saveFailed && (
+            <Error
+              text={formatMessage(
+                isInput
+                  ? messages.inputSaveFailedFullForm
+                  : messages.inputSaveFailed
+              )}
+            />
           )}
         </Box>
       </FormProvider>

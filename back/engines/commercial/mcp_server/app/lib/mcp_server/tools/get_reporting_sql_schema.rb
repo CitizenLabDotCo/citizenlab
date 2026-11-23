@@ -41,6 +41,11 @@ class McpServer::Tools::GetReportingSqlSchema < McpServer::BaseTool
 
   REPORTING_TABLE_NAMES = REPORTING_TABLES.map(&:table_name).freeze
 
+  # The tables a query with this McpServer::QueryScope may read.
+  def self.tables_for(scope)
+    scope.all? ? REPORTING_TABLES : REPORTING_TABLES.reject(&:admin_only?)
+  end
+
   def name = 'get_reporting_sql_schema'
 
   def annotations = READ_ANNOTATIONS

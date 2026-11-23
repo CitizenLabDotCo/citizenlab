@@ -1,6 +1,39 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  exportAllInputs2: {
+    id: 'app.components.admin.PostManager.exportAllInputs2',
+    defaultMessage: 'Export all inputs to Excel',
+  },
+  exportInputsProjects2: {
+    id: 'app.components.admin.PostManager.exportInputsProjects2',
+    defaultMessage: 'Export all project inputs to Excel',
+  },
+  exportSelectedInputs2: {
+    id: 'app.components.admin.PostManager.exportSelectedInputs2',
+    defaultMessage: 'Export selected inputs to Excel',
+  },
+  exportIdeasComments2: {
+    id: 'app.components.admin.PostManager.exportIdeasComments2',
+    defaultMessage: 'Export all comments to Excel',
+  },
+  exportIdeasCommentsProjects2: {
+    id: 'app.components.admin.PostManager.exportIdeasCommentsProjects2',
+    defaultMessage: 'Export all project comments to Excel',
+  },
+  exportSelectedInputsComments2: {
+    id: 'app.components.admin.PostManager.exportSelectedInputsComments2',
+    defaultMessage: 'Export comments for selected inputs to Excel',
+  },
+  exportVotesByUser2: {
+    id: 'app.components.admin.PostManager.exportVotesByUser2',
+    defaultMessage: 'Export votes by participant to Excel',
+  },
+  exportVotesByInput2: {
+    id: 'app.components.admin.PostManager.exportVotesByInput2',
+    defaultMessage: 'Export votes by option to Excel',
+  },
+
   assignedToMe: {
     id: 'app.components.admin.PostManager.assignedToMe',
     defaultMessage: 'Assigned to me',
@@ -118,18 +151,6 @@ export default defineMessages({
     defaultMessage:
       "The number of times this has been included in other participants' participatory budgets",
   },
-  exportAllInputs: {
-    id: 'app.components.admin.PostManager.exportAllInputs',
-    defaultMessage: 'Export all inputs (.xslx)',
-  },
-  exportInputsProjects: {
-    id: 'app.components.admin.PostManager.exportInputsProjects',
-    defaultMessage: 'Export inputs for this project (.xslx)',
-  },
-  exportSelectedInputs: {
-    id: 'app.components.admin.PostManager.exportSelectedInputs',
-    defaultMessage: 'Export selected inputs (.xslx)',
-  },
   inputsExportFileName: {
     id: 'app.components.admin.PostManager.inputsExportFileName',
     defaultMessage: 'input',
@@ -138,29 +159,9 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.inputCommentsExportFileName',
     defaultMessage: 'input_comments',
   },
-  exportIdeasComments: {
-    id: 'app.components.admin.PostManager.exportIdeasComments',
-    defaultMessage: 'Export all comments (.xslx)',
-  },
-  exportIdeasCommentsProjects: {
-    id: 'app.components.admin.PostManager.exportIdeasCommentsProjects',
-    defaultMessage: 'Export comments for this project (.xslx)',
-  },
-  exportSelectedInputsComments: {
-    id: 'app.components.admin.PostManager.exportSelectedInputsComments',
-    defaultMessage: 'Export comments for selected inputs (.xslx)',
-  },
-  exportVotesByUser: {
-    id: 'app.components.admin.PostManager.exportVotesByUser',
-    defaultMessage: 'Export votes by user (.xslx)',
-  },
   votesByUserExportFileName: {
     id: 'app.components.admin.PostManager.votesByUserExportFileName',
     defaultMessage: 'votes_by_user',
-  },
-  exportVotesByInput: {
-    id: 'app.components.admin.PostManager.exportVotesByInput',
-    defaultMessage: 'Export votes by input (.xslx)',
   },
   votesByInputExportFileName: {
     id: 'app.components.admin.PostManager.votesByInputExportFileName',

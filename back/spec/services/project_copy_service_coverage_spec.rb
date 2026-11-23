@@ -63,6 +63,8 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
         idea_status_id
       ], # status/moderation operational state
 
+      'Phase' => %w[reviewed_setup_cards], # copied projects start with no cards reviewed
+
       'Project' => %w[
         completed_setup_steps
         default_assignee_id
@@ -169,6 +171,7 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
 
       # Per-user runtime objects regenerated through normal use.
       user_runtime: %w[
+        PulseCheck
         Notification
         Onboarding::CampaignDismissal
       ],

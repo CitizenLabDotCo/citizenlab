@@ -11,8 +11,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { string, object, boolean } from 'yup';
 
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-
 import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
 import PasswordInput from 'components/HookForm/PasswordInput';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
@@ -22,7 +20,6 @@ import {
   isCLErrorsWrapper,
   handleHookFormSubmissionError,
 } from 'utils/errorUtils';
-import { isNilOrError } from 'utils/helperUtils';
 
 import containerMessages from '../../messages';
 import { SetError, State } from '../../typings';
@@ -38,7 +35,6 @@ interface Props {
   onSubmit: (
     password: string,
     rememberMe: boolean,
-    tokenLifetime: number,
     claimTokens?: string[]
   ) => void;
   onClose: () => void;
@@ -56,7 +52,6 @@ const DEFAULT_VALUES: Partial<FormValues> = {
 
 const Password = ({ state, loading, setError, onSubmit, onClose }: Props) => {
   const { formatMessage } = useIntl();
-  const { data: appConfiguration } = useAppConfiguration();
 
   const schema = useMemo(
     () =>
@@ -76,8 +71,6 @@ const Password = ({ state, loading, setError, onSubmit, onClose }: Props) => {
     shouldFocusError: true,
   });
 
-  if (isNilOrError(appConfiguration)) return null;
-
   // The user got here by identifying themselves with either an email address or
   // a phone number; we only show which account they are logging in to.
   const { email, phone } = state;
@@ -85,17 +78,8 @@ const Password = ({ state, loading, setError, onSubmit, onClose }: Props) => {
   if (account === null) return null;
 
   const handleSubmit = async ({ password, rememberMe }: FormValues) => {
-    const tokenLifetime =
-      appConfiguration.data.attributes.settings.core
-        .authentication_token_lifetime_in_days;
-
     try {
-      await onSubmit(
-        password,
-        rememberMe,
-        tokenLifetime,
-        state.claimTokens ?? undefined
-      );
+      await onSubmit(password, rememberMe, state.claimTokens ?? undefined);
     } catch (e) {
       if (isCLErrorsWrapper(e)) {
         handleHookFormSubmissionError(e, methods.setError);

@@ -197,6 +197,7 @@ describe AccountMergeService do
 
   describe 'locked identity attributes' do
     before do
+      allow_test_id_methods
       AppConfiguration.instance.settings['id_config'] = { allowed: true, enabled: true, id_methods: [{ name: 'cow' }, { name: 'bosa_fas' }, { name: 'bogus' }] }
       AppConfiguration.instance.save!
     end
@@ -242,6 +243,7 @@ describe AccountMergeService do
 
   describe 'custom field values' do
     before do
+      allow_test_id_methods
       AppConfiguration.instance.settings['id_config'] = { allowed: true, enabled: true, id_methods: [{ name: 'bogus' }] }
       AppConfiguration.instance.save!
     end

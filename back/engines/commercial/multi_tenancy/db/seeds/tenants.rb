@@ -416,10 +416,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            custom_page_builder: {
-              enabled: true,
-              allowed: true
-            },
             llm_reporting: {
               enabled: true,
               allowed: true

@@ -48,7 +48,7 @@ describe('Form builder multiple choice choose multiple component', () => {
     cy.get('#e2e-title-multiloc').type('Question title 2', { force: true });
     cy.get('#e2e-option-input-0').type('Option 1 question 2', { force: true });
     cy.get('form').submit();
-    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/surveys/new/${phaseId}`);
     cy.contains('Question title 2').should('exist');
     cy.contains('Option 1 question 2').should('exist');
   });
@@ -69,7 +69,7 @@ describe('Form builder multiple choice choose multiple component', () => {
     cy.contains('Save').click();
 
     // Go to survey
-    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/surveys/new/${phaseId}`);
     cy.contains(questionTitle).should('exist');
 
     // Save survey response
@@ -101,7 +101,7 @@ describe('Form builder multiple choice choose multiple component', () => {
     cy.contains('Save').click();
 
     // Go to survey
-    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/surveys/new/${phaseId}`);
     cy.contains(questionTitle).should('exist');
 
     // Select 'Other' option
@@ -117,7 +117,7 @@ describe('Form builder multiple choice choose multiple component', () => {
       'eq',
       `${
         Cypress.config().baseUrl
-      }/en/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`
+      }/en/projects/${projectSlug}/surveys/new/${phaseId}`
     );
 
     cy.get(`[id^="${questionTitle}"]:not([id$="-label"])`)

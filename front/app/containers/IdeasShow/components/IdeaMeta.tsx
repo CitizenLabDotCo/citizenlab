@@ -15,6 +15,7 @@ import useLocalize from 'hooks/useLocalize';
 import { useIntl } from 'utils/cl-intl';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
+import getOgUrl from 'utils/cl-router/getOgUrl';
 import { imageSizes } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { getFullName, stripHtml } from 'utils/textUtils';
@@ -55,7 +56,7 @@ const IdeaMeta = ({ ideaId }: Props) => {
       ideaImages && ideaImages.data.length > 0
         ? ideaImages.data[0].attributes.versions.fb
         : null;
-    const ideaUrl = window.location.href;
+    const ideaUrl = getOgUrl();
     const projectTitle =
       project &&
       localize(project.data.attributes.title_multiloc, { maxChar: 20 });

@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/HomepageBanner';
 import HeaderContent from 'containers/HomePage/SignedOutHeader/HeaderContent';
 
+import { TitleVariant } from 'components/admin/ContentBuilder/Widgets/_shared/TitleVariantSetting';
 import ContentContainer from 'components/ContentContainer';
 import { homepageBannerLayoutHeights } from 'components/LandingPages/citizen/constants';
 import { Container } from 'components/LandingPages/citizen/TwoRowLayout';
@@ -13,6 +14,7 @@ import Image from 'components/UI/Image';
 
 interface Props {
   homepageSettings: Partial<IHomepageBannerSettings>;
+  titleVariant?: TitleVariant;
 }
 
 const HeaderImage = styled(Image)<{
@@ -33,7 +35,7 @@ const HeaderImage = styled(Image)<{
   `}
 `;
 
-const TwoRowLayout = ({ homepageSettings }: Props) => {
+const TwoRowLayout = ({ homepageSettings, titleVariant }: Props) => {
   const headerImage = homepageSettings.header_bg?.large;
 
   // Get custom heights or fall back to layout defaults
@@ -75,6 +77,7 @@ const TwoRowLayout = ({ homepageSettings }: Props) => {
           <HeaderContent
             fontColors="dark"
             homepageSettings={homepageSettings}
+            titleVariant={titleVariant}
           />
         </Container>
       </ContentContainer>

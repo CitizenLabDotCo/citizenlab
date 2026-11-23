@@ -12,11 +12,19 @@ import useProjectAssignee from './useProjectAssignee';
 
 interface Props {
   projectId: string;
+  defaultOpen?: boolean;
+  onClose?: () => void;
   assignee?: string | null;
   onAssigneeChange: (assignee: string | null) => void;
 }
 
-const ProjectAssignee = ({ projectId, assignee, onAssigneeChange }: Props) => {
+const ProjectAssignee = ({
+  projectId,
+  assignee,
+  onAssigneeChange,
+  defaultOpen,
+  onClose,
+}: Props) => {
   const { formatMessage } = useIntl();
   const { loaded, options, savedAssignee } = useProjectAssignee(projectId);
 
@@ -41,6 +49,8 @@ const ProjectAssignee = ({ projectId, assignee, onAssigneeChange }: Props) => {
         </Text>
       </Box>
       <OptionPicker
+        defaultOpen={defaultOpen}
+        onClose={onClose}
         title={title}
         description={description}
         options={options.map((option) => ({ ...option, icon: 'user' }))}

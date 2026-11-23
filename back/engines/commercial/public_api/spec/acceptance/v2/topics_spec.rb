@@ -42,6 +42,24 @@ resource 'Topics' do
       end
     end
 
+    context 'when paging through topics created at the same time' do
+      let(:page_size) { 1 }
+
+      before do
+        GlobalTopic.update_all(created_at: '2020-01-01')
+        InputTopic.update_all(created_at: '2020-01-01')
+      end
+
+      example 'Returns each topic exactly once', document: false do
+        ids = (1..5).flat_map do |page_number|
+          do_request(page_number: page_number)
+          json_response_body[:topics].pluck(:id)
+        end
+
+        expect(ids).to eq (global_topics + input_topics).map(&:id).sort.reverse
+      end
+    end
+
     context 'when the page size is smaller than the total number of topics' do
       let(:page_size) { 2 }
 

@@ -42,14 +42,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectPages.titleLabel',
     defaultMessage: 'Title',
   },
-  contentLabel: {
-    id: 'app.containers.AdminPage.ProjectPages.contentLabel',
-    defaultMessage: 'Content',
-  },
-  attachmentsLabel: {
-    id: 'app.containers.AdminPage.ProjectPages.attachmentsLabel',
-    defaultMessage: 'Attachments',
-  },
   createButton: {
     id: 'app.containers.AdminPage.ProjectPages.createButton',
     defaultMessage: 'Create page',

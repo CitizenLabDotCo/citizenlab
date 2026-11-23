@@ -6,6 +6,15 @@ describe ContentBuilder::HtmlBlockSanitizerService do
   let(:service) { described_class.new }
 
   describe 'sanitize' do
+    it 'returns the output of the last pass when one pass changes the html' do
+      sanitizer = instance_double(Rails::HTML5::SafeListSanitizer)
+      allow(Rails::HTML5::SafeListSanitizer).to receive(:new).and_return(sanitizer)
+      allow(sanitizer).to receive(:sanitize).and_return('<p>first pass</p>', '<p>stable</p>', '<p>stable</p>')
+
+      expect(service.sanitize('<p>input</p>')).to eq '<p>stable</p>'
+      expect(sanitizer).to have_received(:sanitize).exactly(3).times
+    end
+
     it 'allows common tags and attributes to pass through' do
       input = <<~HTML
         <header>

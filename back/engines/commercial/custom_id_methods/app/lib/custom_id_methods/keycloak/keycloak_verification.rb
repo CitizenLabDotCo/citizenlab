@@ -10,17 +10,6 @@ module CustomIdMethods::Keycloak
       'd6938fe6-4bee-4490-b80c-b14dafb5da1b'
     end
 
-    def config_parameters
-      %i[
-        provider
-        issuer
-        client_id
-        client_secret
-        enabled_for_verified_actions
-        hide_from_profile
-      ]
-    end
-
     def config_parameters_schema
       {
         provider: {
@@ -33,6 +22,14 @@ module CustomIdMethods::Keycloak
           type: 'string',
           description: 'Full URL to the issuer of the keycloak instance - eg https://keycloak.com/auth/realms/realm-name'
         },
+        client_id: {
+          private: true,
+          type: 'string'
+        },
+        client_secret: {
+          private: true,
+          type: 'string'
+        },
         enabled_for_verified_actions: {
           private: true,
           type: 'boolean',
@@ -44,12 +41,6 @@ module CustomIdMethods::Keycloak
           description: 'Should verification be hidden in the user profile and under the username?'
         }
       }
-    end
-
-    def exposed_config_parameters
-      [
-        :provider
-      ]
     end
 
     def locked_attributes

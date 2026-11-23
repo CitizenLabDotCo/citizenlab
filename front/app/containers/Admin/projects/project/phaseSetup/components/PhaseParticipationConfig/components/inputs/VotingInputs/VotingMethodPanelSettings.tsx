@@ -72,6 +72,8 @@ const VotingMethodPanelSettings = ({
       onChange={handleMinVotingOptionsChange}
       error={
         <Error
+          showBackground={false}
+          showIcon={false}
           text={validationErrors.minSelectedOptionsError}
           apiErrors={apiErrors && apiErrors.voting_min_selected_options}
         />
@@ -81,6 +83,8 @@ const VotingMethodPanelSettings = ({
 
   const maxTotalError = (
     <Error
+      showBackground={false}
+      showIcon={false}
       text={validationErrors.maxTotalVotesError}
       apiErrors={apiErrors && apiErrors.voting_max_total}
     />
@@ -141,6 +145,8 @@ const VotingMethodPanelSettings = ({
           onChange={handleMaxVotesPerOptionAmountChange}
           error={
             <Error
+              showBackground={false}
+              showIcon={false}
               text={validationErrors.maxVotesPerOptionError}
               apiErrors={apiErrors && apiErrors.voting_max_votes_per_idea}
             />
@@ -165,6 +171,8 @@ const VotingMethodPanelSettings = ({
           onChange={handleVotingMinTotalChange}
           error={
             <Error
+              showBackground={false}
+              showIcon={false}
               text={validationErrors.minTotalVotesError}
               apiErrors={apiErrors && apiErrors.voting_min_total}
             />

@@ -16,6 +16,11 @@ module Analytics
       self.table_name = 'reporting_registrations'
       self.primary_key = nil
 
+      include ScopedView
+
+      # Platform-wide totals with no project to limit them to.
+      def self.admin_only? = true
+
       def self.table_description
         <<~DOC.squish
           The sign-up funnel, as totals per day sign-up started and sign-up

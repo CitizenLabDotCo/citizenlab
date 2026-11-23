@@ -17,9 +17,12 @@ interface PageSaveContextValue {
   register: (key: string, save: SaveFn) => () => void;
   setDirty: (key: string, dirty: boolean) => void;
   dirty: boolean;
+  dirtyKeys: string[];
   saving: boolean;
   /** Resolves to the keys of the panels whose save failed. */
-  saveAll: (reason: SaveReason) => Promise<string[]>;
+  save: (keys: string[], reason: SaveReason) => Promise<string[]>;
+  /** Saves every panel with changes. Resolves like `save`. */
+  saveAll: (reason: SaveReason, includeKey?: string) => Promise<string[]>;
   discardAll: () => void;
   revision: number;
   leave: () => void;
@@ -65,17 +68,23 @@ export const PageSaveProvider = ({ children }: { children: ReactNode }) => {
     });
   }, []);
 
+  const save = useCallback(async (keys: string[], reason: SaveReason) => {
+    setSaving(true);
+    const registered = keys.filter((key) => savers.current.has(key));
+    const results = await Promise.allSettled(
+      registered.map((key) => savers.current.get(key)?.(reason))
+    );
+    setSaving(false);
+    return registered.filter((_key, i) => results[i].status === 'rejected');
+  }, []);
+
   const saveAll = useCallback(
-    async (reason: SaveReason) => {
-      setSaving(true);
-      const keys = dirtyKeys.filter((key) => savers.current.has(key));
-      const results = await Promise.allSettled(
-        keys.map((key) => savers.current.get(key)?.(reason))
-      );
-      setSaving(false);
-      return keys.filter((_key, i) => results[i].status === 'rejected');
-    },
-    [dirtyKeys]
+    (reason: SaveReason, includeKey?: string) =>
+      save(
+        [...new Set(includeKey ? [...dirtyKeys, includeKey] : dirtyKeys)],
+        reason
+      ),
+    [dirtyKeys, save]
   );
 
   const value = useMemo(() => {
@@ -83,7 +92,9 @@ export const PageSaveProvider = ({ children }: { children: ReactNode }) => {
       register,
       setDirty,
       dirty,
+      dirtyKeys,
       saving,
+      save,
       saveAll,
       discardAll: () => {
         setDirtyKeys([]);
@@ -93,7 +104,18 @@ export const PageSaveProvider = ({ children }: { children: ReactNode }) => {
       leave,
       isLeaving,
     };
-  }, [register, setDirty, dirty, saving, saveAll, revision, leave, isLeaving]);
+  }, [
+    register,
+    setDirty,
+    dirty,
+    dirtyKeys,
+    saving,
+    save,
+    saveAll,
+    revision,
+    leave,
+    isLeaving,
+  ]);
 
   return (
     <PageSaveContext.Provider value={value}>

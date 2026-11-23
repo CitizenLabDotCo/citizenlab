@@ -4,14 +4,6 @@
 # with: the button can be kept away from residents (visibility), and staff email
 # domains can be forced through the SSO instead of a password.
 module CustomIdMethods::EmployeeSso
-  EMPLOYEE_SSO_CONFIG_PARAMETERS = %i[
-    logo_url
-    login_mechanism_name
-    visibility
-    enforced_email_domains
-    enforced_email_domain_error_multiloc
-  ].freeze
-
   def employee_only?
     true
   end
@@ -37,6 +29,7 @@ module CustomIdMethods::EmployeeSso
         description: "Should this login mechanism be shown with other options to everyone, be hidden but available at /sign-in/admin or linked from the login modal via an 'admin options' link?"
       },
       enforced_email_domains: {
+        private: true,
         title: 'Enforced Domains',
         type: 'string',
         description: "Comma-separated list of email domains (e.g. 'example.com,company.org'). Users with these email domains must sign in via this method."
@@ -47,12 +40,6 @@ module CustomIdMethods::EmployeeSso
         description: 'Custom error message shown to users who must sign in via this method due to their email domain.'
       }
     }
-  end
-
-  # Exposed publicly via the /id_methods endpoint so the frontend can
-  # render the SSO button (logo, label) and enforce visibility / domain rules.
-  def exposed_config_parameters
-    %i[logo_url login_mechanism_name visibility enforced_email_domain_error_multiloc]
   end
 
   def enforced_email_domains

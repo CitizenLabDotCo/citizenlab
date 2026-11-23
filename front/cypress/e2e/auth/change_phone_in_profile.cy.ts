@@ -75,10 +75,9 @@ describe('Change phone in profile', () => {
     apiSignUp().then(({ jwt }) => {
       const headers = {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${jwt}`,
       };
 
-      cy.request({
+      cy.requestAs(jwt, {
         headers,
         method: 'POST',
         url: 'web_api/v1/user/request_code_new_phone',
@@ -86,7 +85,7 @@ describe('Change phone in profile', () => {
       });
 
       // The e2e back-end runs in development, where the code is always 123456.
-      cy.request({
+      cy.requestAs(jwt, {
         headers,
         method: 'POST',
         url: 'web_api/v1/user/confirm_code_new_phone',

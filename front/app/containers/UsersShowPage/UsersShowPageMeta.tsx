@@ -12,6 +12,7 @@ import useLocalize from 'hooks/useLocalize';
 import { useIntl } from 'utils/cl-intl';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
+import getOgUrl from 'utils/cl-router/getOgUrl';
 
 import messages from './messages';
 
@@ -30,7 +31,6 @@ const UsersShowPageMeta = ({ user }: Props) => {
     return null;
   }
 
-  const { location } = window;
   const firstName = user.attributes.first_name;
   const lastName = user.attributes.last_name;
   const organizationNameMultiLoc =
@@ -76,7 +76,7 @@ const UsersShowPageMeta = ({ user }: Props) => {
       <meta name="description" content={usersShowPageDescription} />
       <meta property="og:title" content={usersShowPageIndexTitle} />
       <meta property="og:description" content={usersShowPageDescription} />
-      <meta property="og:url" content={location.href} />
+      <meta property="og:url" content={getOgUrl()} />
       <meta name="robots" content="noindex" />
     </Helmet>
   );

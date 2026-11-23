@@ -92,8 +92,8 @@ export interface IAttributes {
   isDeleteEnabled?: boolean;
   ask_follow_up?: boolean;
   constraints?: {
-    locked: boolean;
-    locks: {
+    locked?: boolean;
+    locks?: {
       attributes?: ('title_multiloc' | 'required')[];
       deletion?: boolean;
     };
