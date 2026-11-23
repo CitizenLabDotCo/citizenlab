@@ -33,11 +33,13 @@ resource 'StaticPages', :clear_cache, document: false do
     end
   end
 
-  get 'web_api/v1/static_pages/:id' do
+  # by_slug, unlike show, checks the policy inside the action, so a cached copy would be
+  # served before that check runs.
+  get 'web_api/v1/static_pages/by_slug/:slug' do
     let(:group_member) { create(:user) }
     let(:page) { create(:static_page, project: create(:private_groups_project, user: group_member)) }
-    let(:id) { page.id }
-    let(:cache_key) { "api_response/example.org/web_api/v1/static_pages/#{id}.json" }
+    let(:slug) { page.slug }
+    let(:cache_key) { "api_response/example.org/web_api/v1/static_pages/by_slug/#{slug}.json" }
 
     example 'refuses a visitor when the page\'s project is hidden from them' do
       do_request
