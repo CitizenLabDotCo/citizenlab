@@ -770,10 +770,12 @@ resource 'AdminPublication' do
         header_token_for(@moderator)
       end
 
+      # 6 visible projects; the empty draft folder is not theirs to see.
       example 'Lists projects', document: false do
         do_request
         assert_status 200
-        expect(response_data.size).to eq 7
+        expect(response_data.size).to eq 6
+        expect(response_data.pluck(:id)).not_to include empty_draft_folder.admin_publication.id
       end
 
       example 'Unlisted projects that user can moderate are included', document: false do
@@ -785,7 +787,7 @@ resource 'AdminPublication' do
 
         do_request
         assert_status 200
-        expect(response_data.size).to eq 8
+        expect(response_data.size).to eq 7
         expect(response_data.pluck(:id)).to include unlisted_project_user_moderates.admin_publication.id
         expect(response_data.pluck(:id)).not_to include unlisted_project.admin_publication.id
       end
@@ -798,7 +800,7 @@ resource 'AdminPublication' do
 
         do_request remove_all_unlisted: true
         assert_status 200
-        expect(response_data.size).to eq 7
+        expect(response_data.size).to eq 6
       end
     end
   end
@@ -837,9 +839,11 @@ resource 'AdminPublication' do
       parameter :filter_can_moderate, 'Filter out the projects the user is allowed to moderate. False by default', required: false
       parameter :exclude_projects_in_included_folders, 'Exclude projects in included folders (boolean)', required: false
 
+      # Not the two empty draft folders, which they do not moderate.
       example 'Lists publications', document: false do
         do_request
-        expect(response_data.size).to eq 18
+        expect(response_data.size).to eq 16
+        expect(response_ids).not_to include(empty_draft_folder.admin_publication.id, @empty_draft_folder.admin_publication.id)
       end
 
       example 'Includes unlisted projects in folder user can moderate', document: false do
@@ -856,7 +860,7 @@ resource 'AdminPublication' do
 
         do_request
         assert_status 200
-        expect(response_data.size).to eq 19
+        expect(response_data.size).to eq 17
         expect(response_ids).to include unlisted_project_user_moderates.admin_publication.id
         expect(response_ids).not_to include unlisted_project.admin_publication.id
       end
@@ -873,7 +877,7 @@ resource 'AdminPublication' do
 
         do_request remove_all_unlisted: true
         assert_status 200
-        expect(response_data.size).to eq 18
+        expect(response_data.size).to eq 16
         expect(response_ids).not_to include unlisted_project_user_moderates.admin_publication.id
       end
     end
