@@ -290,15 +290,16 @@ class AppConfiguration < ApplicationRecord
 
   def sanitize_helper_texts
     core = settings&.dig('core')
-    return unless core.is_a?(Hash)
+    # Without a host, the record fails the host validation anyway.
+    return if !core.is_a?(Hash) || host.blank?
 
     service = SanitizationService.new
     sanitized = HELPER_TEXT_SETTINGS.each_with_object({}) do |name, result|
       # Any other shape is left to the schema validation, which rejects it.
       next unless core[name].is_a?(Hash) && core[name].values.all?(String)
 
-      multiloc = service.remove_multiloc_style_and_script(core[name])
-      multiloc = service.sanitize_multiloc(multiloc, HELPER_TEXT_SANITIZE_FEATURES)
+      multiloc = service.remove_multiloc_hidden_elements(core[name])
+      multiloc = service.sanitize_multiloc(multiloc, HELPER_TEXT_SANITIZE_FEATURES, host: host)
       # Admins edit these texts in a plain text field, where an escaped `&` would show as `&amp;`.
       # Unescaping it is safe: it never brings back a `<`, `>` or quote.
       result[name] = multiloc.transform_values { |html| html.gsub('&amp;', '&') }

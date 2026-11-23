@@ -121,15 +121,15 @@ RSpec.describe AppConfiguration do
       end
 
       it 'does not let an escaped quote break out of an attribute' do
-        input = '<b title="&amp;quot; onmouseover=alert(1) x=&amp;quot;">t</b>'
+        input = '<iframe src="https://maps.example.org/m" title="&amp;quot; onload=alert(1) x=&amp;quot;"></iframe>'
         2.times do
           config.settings['core']['enter_email_helper_text'] = { 'en' => input }
           config.save!
           input = config.reload.settings('core', 'enter_email_helper_text', 'en')
         end
 
-        bold = Nokogiri::HTML.fragment(input).at('b')
-        expect(bold.attributes.keys).to eq ['title']
+        iframe = Nokogiri::HTML.fragment(input).at('iframe')
+        expect(iframe.attributes.keys).to contain_exactly('src', 'title')
       end
     end
 
@@ -138,6 +138,16 @@ RSpec.describe AppConfiguration do
       config.save!
 
       expect(config.reload.settings('core', 'organization_name')).to eq('en' => 'Name <b>bold</b>')
+    end
+
+    # As when a tenant is created: the configuration being saved is not the current one.
+    it "checks iframes against the configuration's own host" do
+      settings = config.settings.deep_dup
+      settings['core']['enter_email_helper_text'] = { 'en' => '<iframe src="https://ville.example.com/m"></iframe>' }
+      other = described_class.send(:new, host: 'ville.example.com', settings: settings)
+      other.valid?
+
+      expect(other.settings('core', 'enter_email_helper_text', 'en')).to eq ''
     end
   end
 
