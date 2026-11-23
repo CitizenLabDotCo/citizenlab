@@ -307,6 +307,30 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
     end
   end
 
+  describe 'form_header' do
+    using RSpec::Parameterized::TableSyntax
+
+    where(:print_start_multiloc, :expected_header) do
+      {}                                  | :default
+      { 'en' => '' }                      | :default
+      { 'nl-NL' => '<p>Welkom</p>' }      | :default
+      { 'en' => '<p>Custom start</p>' }   | '<p>Custom start</p>'
+    end
+
+    with_them do
+      before { custom_form.update!(print_start_multiloc: print_start_multiloc) }
+
+      it 'returns the custom start text, or the default header when it is blank for the locale' do
+        header = service.send(:form_header)
+        if expected_header == :default
+          expect(header).to include('<h1>PROJECT - PHASE</h1>')
+        else
+          expect(header).to eq(expected_header)
+        end
+      end
+    end
+  end
+
   describe 'font_family' do
     let(:font_family) { service.send(:font_family) }
 
