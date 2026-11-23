@@ -124,6 +124,17 @@ RSpec.describe McpServer::ReportingQueryRunner do
       end
     end
 
+    # The rows above stay under the view's floor of 5 projects, so the baselines
+    # are empty there and need rows of their own.
+    it 'reads the same platform baselines in every scope' do
+      create_list(:project_with_active_ideation_phase, 5)
+      every_row = count('reporting_platform_baselines', McpServer::QueryScope.all)
+
+      expect(every_row).to be > 0
+      expect(count('reporting_platform_baselines', scope)).to eq every_row
+      expect(count('reporting_platform_baselines', McpServer::QueryScope.new(project_ids: []))).to eq every_row
+    end
+
     it 'refuses an admin-only view' do
       expect { described_class.run('SELECT count(*) FROM reporting_staff_activities', scope: scope) }
         .to raise_error(described_class::Rejected, /reporting_staff_activities/)

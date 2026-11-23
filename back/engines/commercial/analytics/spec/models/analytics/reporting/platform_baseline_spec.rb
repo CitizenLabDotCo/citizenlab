@@ -97,6 +97,18 @@ RSpec.describe Analytics::Reporting::PlatformBaseline do
       expect(baseline('phases_per_project').projects_counted).to eq 5
     end
 
+    it 'takes the online voters of each voting phase that has started' do
+      voting = [6, 2, 0, 0, 0].map do |voters|
+        create(:single_voting_phase, project: create(:project), start_at: 10.days.ago, end_at: 2.days.from_now, baskets_count: voters)
+      end
+      create(:single_voting_phase, project: voting.first.project, start_at: 5.days.from_now, baskets_count: 50)
+
+      voters = baseline('online_voters_per_voting_phase')
+      expect(voters.projects_counted).to eq 5
+      expect(voters.median).to eq 0
+      expect(voters.mean).to eq 1.6
+    end
+
     it 'counts survey responses, not the comments and reactions made while a survey runs' do
       surveys = Array.new(4) { survey_project }
       answer_survey(surveys.first, 2)
