@@ -131,14 +131,28 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
   // status, so sending it back could race with an Approve for another idea and
   // flip a just-approved idea back to 'draft'. Only Approve/Undo should ever
   // touch publication_status.
+  //
+  // Saves can settle out of order, so only the latest save of an idea may
+  // show or hide its error: an older one would report on outdated answers.
+  const latestAutoSavePerIdea = useRef<Partial<Record<string, number>>>({});
   const autoSave = useCallback(
     (id: string, formData: FormValues) => {
       const { publication_status: _omit, ...rest } = formData;
+      const saveNumber = (latestAutoSavePerIdea.current[id] ?? 0) + 1;
+      latestAutoSavePerIdea.current[id] = saveNumber;
+      const isLatestSave = () =>
+        latestAutoSavePerIdea.current[id] === saveNumber;
+
       updateIdea({ id, requestBody: rest, skipRefetchCounts: true })
-        .then(() =>
-          setFailedSaveIdeaId((failedId) => (failedId === id ? null : failedId))
-        )
-        .catch(() => setFailedSaveIdeaId(id));
+        .then(() => {
+          if (!isLatestSave()) return;
+          setFailedSaveIdeaId((failedId) =>
+            failedId === id ? null : failedId
+          );
+        })
+        .catch(() => {
+          if (isLatestSave()) setFailedSaveIdeaId(id);
+        });
     },
     [updateIdea]
   );
