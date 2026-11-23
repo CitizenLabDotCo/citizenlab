@@ -1,5 +1,6 @@
 import { isEqual } from 'lodash-es';
 
+import { IFlatCustomField } from 'api/custom_fields/types';
 import { IIdeas } from 'api/ideas/types';
 import { ImportedIdeaMetadataResponse } from 'api/import_ideas/types';
 import { IUser } from 'api/users/types';
@@ -121,4 +122,28 @@ export const getUserChanges = (
   };
 
   return userChanges;
+};
+
+// Number inputs yield strings, and the importer sends the raw form values
+// rather than values cast by the validation schema. Cast them here so the API
+// gets numbers. An emptied answer becomes null, which clears it: a missing key
+// would keep the stored value.
+export const castNumberAnswers = (
+  values: Record<string, unknown>,
+  fields: Pick<IFlatCustomField, 'key' | 'input_type'>[]
+) => {
+  const castValues = { ...values };
+
+  fields.forEach(({ key, input_type }) => {
+    const value = castValues[key];
+    if (input_type !== 'number' || typeof value !== 'string') return;
+
+    if (value.trim() === '') {
+      castValues[key] = null;
+    } else if (!Number.isNaN(Number(value))) {
+      castValues[key] = Number(value);
+    }
+  });
+
+  return castValues;
 };

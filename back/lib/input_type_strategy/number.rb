@@ -21,6 +21,14 @@ module InputTypeStrategy
       Utils.to_number(value)
     end
 
+    # Number inputs in the browser yield strings ("1963"). Strings that aren't
+    # numbers are kept as is, so answer validation still rejects them.
+    def normalize_value(value)
+      return value if !value.is_a?(String)
+
+      Integer(value, 10, exception: false) || Float(value, exception: false) || value
+    end
+
     def answers_eq(answers, value)
       answers.where("(value #>> '{}')::float = ?", value)
     end
