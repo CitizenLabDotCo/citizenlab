@@ -2327,6 +2327,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Phase:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2": "The selected phase cannot contain inputs. Please select another one.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "Remove all inputs",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.saveFailed": "We couldn't save this input. Check its answers and try again.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.showMoreApprovedInputs": "Show more",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.toReviewTab": "To review",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": "Undo approval",
