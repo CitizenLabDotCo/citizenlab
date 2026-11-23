@@ -21,12 +21,16 @@ module InputTypeStrategy
       Utils.to_number(value)
     end
 
+    # Plain decimal notation only: Integer() and Float() would also accept Ruby
+    # literals such as "1_963", "0x7AB" or "1e3".
+    DECIMAL_FORMAT = /\A[-+]?\d+(\.\d+)?\z/
+
     # Number inputs in the browser yield strings ("1963"). Strings that aren't
     # numbers are kept as is, so answer validation still rejects them.
     def normalize_value(value)
-      return value if !value.is_a?(String)
+      return value if !value.is_a?(String) || !DECIMAL_FORMAT.match?(value)
 
-      Integer(value, 10, exception: false) || Float(value, exception: false) || value
+      value.include?('.') ? value.to_f : value.to_i
     end
 
     def answers_eq(answers, value)
