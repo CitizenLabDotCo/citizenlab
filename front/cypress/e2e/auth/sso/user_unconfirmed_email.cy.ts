@@ -144,8 +144,8 @@ describe('SSO: user with unconfirmed email - edge cases', () => {
     cy.get('.e2e-idea-button').first().find('button').should('exist');
     cy.get('.e2e-idea-button').first().find('button').click({ force: true });
     cy.location('pathname').should(
-      'eq',
-      '/en/projects/an-idea-bring-it-to-your-council/ideas/new'
+      'match',
+      /^\/en\/projects\/an-idea-bring-it-to-your-council\/ideas\/new\/[^/]+$/
     );
   });
 

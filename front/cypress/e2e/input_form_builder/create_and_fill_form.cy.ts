@@ -57,7 +57,7 @@ describe('Input form builder', () => {
     cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
 
     // Fill in the form
-    cy.visit(`/projects/${projectSlug}/ideas/new`);
+    cy.visit(`/projects/${projectSlug}/ideas/new/${phaseId}`);
 
     cy.get('#e2e-idea-new-page');
     cy.get('#idea-form');
@@ -161,7 +161,7 @@ describe('Input form builder', () => {
 
     // Fill in the form, and include a lat and long in the URL
     cy.visit(
-      `/projects/${projectSlug}/ideas/new?lat=51.692888988476945&lng=5.678635184096174`
+      `/projects/${projectSlug}/ideas/new/${phaseId}?lat=51.692888988476945&lng=5.678635184096174`
     );
 
     cy.get('#e2e-idea-new-page');
@@ -204,7 +204,7 @@ describe('Input form builder', () => {
       'eq',
       `${
         Cypress.config().baseUrl
-      }/en/projects/${projectSlug}/ideas/new?lat=51.692888988476945&lng=5.678635184096174`
+      }/en/projects/${projectSlug}/ideas/new/${phaseId}?lat=51.692888988476945&lng=5.678635184096174`
     );
 
     // Fill in required custom field
@@ -265,7 +265,7 @@ describe('Input form builder', () => {
     cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
 
     // Only the private question tells the participant who sees the answer
-    cy.visit(`/projects/${projectSlug}/ideas/new`);
+    cy.visit(`/projects/${projectSlug}/ideas/new/${phaseId}`);
     cy.get('#idea-form');
     cy.get('#title_multiloc ').click().type(ideaTitle, { delay: 0 });
     cy.clickInputFormPageButton('e2e-next-page');

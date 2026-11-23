@@ -93,7 +93,7 @@ describe('Input form builder', () => {
 
     // Publish an idea without description
     const title1 = randomString(12);
-    cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/ideas/new/${phaseId}`);
 
     // Fill in the title since these are required
     cy.get('#title_multiloc ').type(title1, { delay: 0 });
@@ -125,7 +125,7 @@ describe('Input form builder', () => {
 
     // Publish an idea without description
     const title2 = randomString(12);
-    cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/ideas/new/${phaseId}`);
 
     // Fill in the title since these are required
     cy.get('#title_multiloc ').type(title2, { delay: 0 });
