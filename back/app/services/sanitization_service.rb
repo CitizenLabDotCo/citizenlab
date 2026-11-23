@@ -72,6 +72,23 @@ class SanitizationService
     end
   end
 
+  def remove_multiloc_style_and_script(multiloc)
+    multiloc.transform_values do |text|
+      remove_style_and_script text
+    end
+  end
+
+  # `sanitize` drops a tag it does not allow but keeps its text, so the content of a
+  # `<style>` or `<script>` would show up as visible text. This removes both with their content.
+  def remove_style_and_script(html)
+    return html if html.blank?
+
+    Nokogiri::HTML.fragment(html).then do |doc|
+      doc.css('style, script').each(&:remove)
+      doc.to_s
+    end
+  end
+
   # Turns URLs in text into HTML links
   # @param multiloc [Hash] A multiloc hash, its values will be linkified.
   # @return [Hash] The multiloc hash with it's content (values) being transformed into links.
@@ -242,6 +259,14 @@ class SanitizationService
         tags: %w[iframe],
         attributes: %w[class frameborder allowfullscreen referrerpolicy src data-blot-formatter-unclickable-bound width height data-align style]
       },
+      embed: {
+        tags: %w[iframe],
+        attributes: %w[src width height frameborder allowfullscreen style title loading referrerpolicy scrolling marginheight marginwidth]
+      },
+      blocks: {
+        tags: %w[h1 div],
+        attributes: %w[class]
+      },
       mention: {
         tags: %w[span],
         attributes: %w[class data-user-id data-link-profile]
@@ -252,18 +277,22 @@ class SanitizationService
       }
     }.freeze
 
-    private_constant :EDITOR_FEATURES
-    attr_reader :tags, :attributes
+    # Any https page but the platform's own (see `embeddable?`). No whitespace, control character or
+    # backslash: browsers drop or rewrite them, so the host they load could differ from the one checked.
+    EMBED_SRC = %r{\Ahttps://[^[:space:][:cntrl:]\\]+\z}i
+
+    private_constant :EDITOR_FEATURES, :EMBED_SRC
+    attr_reader :features, :tags, :attributes
 
     def initialize(features = [])
       super()
-      features_w_default = features + [:default]
-      @tags = features_w_default.flat_map { |f| EDITOR_FEATURES[f][:tags] }.uniq
-      @attributes = features_w_default.flat_map { |f| EDITOR_FEATURES[f][:attributes] }.uniq
+      @features = features + [:default]
+      @tags = @features.flat_map { |f| EDITOR_FEATURES[f][:tags] }.uniq
+      @attributes = @features.flat_map { |f| EDITOR_FEATURES[f][:attributes] }.uniq
     end
 
     def allowed_node?(node)
-      return iframe_allowed? && UrlValidationService.new.video_whitelisted?(node['src']) if node.name == 'iframe'
+      return iframe_allowed?(node['src']) if node.name == 'iframe'
 
       ensure_nofollow(node) if node.name == 'a'
       tags.include? node.name
@@ -271,8 +300,19 @@ class SanitizationService
 
     private
 
-    def iframe_allowed?
-      tags.include? 'iframe'
+    def iframe_allowed?(src)
+      (features.include?(:video) && UrlValidationService.new.video_whitelisted?(src)) ||
+        (features.include?(:embed) && embeddable?(src.to_s))
+    end
+
+    # A page on the platform's own host would run with the platform's rights, inside its pages.
+    def embeddable?(src)
+      return false unless EMBED_SRC.match?(src)
+
+      host = Addressable::URI.parse(src).normalize.host
+      host.present? && host != Addressable::URI.parse("https://#{AppConfiguration.instance.host}").normalize.host
+    rescue Addressable::URI::InvalidURIError
+      false
     end
 
     def ensure_nofollow(node)
