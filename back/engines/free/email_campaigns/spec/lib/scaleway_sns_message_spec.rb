@@ -123,7 +123,7 @@ RSpec.describe EmailCampaigns::ScalewaySnsMessage do
     expect { message.subscribe_url }.to raise_error(described_class::InvalidMessage, /SubscribeURL/)
   end
 
-  it 'refuses a tampered message' do
+  it 'refuses a message whose signature does not match its content' do
     envelope = signed_envelope(type: 'Notification')
     envelope['Message'] = { type: 'email_delivered', email_headers: [{ key: 'X-Govocal-Delivery-Id', value: 'other' }] }.to_json
 

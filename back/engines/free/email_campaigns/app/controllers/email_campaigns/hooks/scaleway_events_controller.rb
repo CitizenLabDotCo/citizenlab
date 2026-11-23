@@ -25,7 +25,7 @@ module EmailCampaigns
     # address itself is bad.
     HARD_BOUNCE_TYPES = %w[email_mailbox_not_found].freeze
 
-    # Anything that is not an authentic envelope is refused with 401. Authentic events we
+    # Anything that is not a valid envelope is refused with 401. Valid events we
     # have no use for (unknown delivery, unknown tenant, unhandled type) are still
     # acknowledged with 200, otherwise Topics and Events would retry them: the message
     # reached us correctly, we simply don't do anything with it.

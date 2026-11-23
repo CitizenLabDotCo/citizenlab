@@ -29,7 +29,7 @@ resource 'Scaleway TEM events' do
     end
     let(:envelope) { { 'Type' => 'Notification', 'Message' => event.to_json } }
 
-    # The envelope's authenticity (signature verification) has its own spec; here `parse!`
+    # The envelope's validity (signature, topic) has its own spec; here `parse!`
     # hands back the envelope unverified.
     before do
       allow(EmailCampaigns::ScalewaySnsMessage).to receive(:parse!) do |raw_body|
@@ -156,7 +156,7 @@ resource 'Scaleway TEM events' do
       expect(confirmation).to have_been_made
     end
 
-    example '[error] Refuse a body that is not an authentic envelope', document: false do
+    example '[error] Refuse an invalid envelope', document: false do
       allow(EmailCampaigns::ScalewaySnsMessage).to receive(:parse!).and_call_original
 
       do_request(envelope)

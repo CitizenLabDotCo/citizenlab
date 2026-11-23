@@ -36,7 +36,8 @@ module EmailCampaigns
 
       # @param raw_body [String] the request body as received; the signature covers the exact
       #   `Message` string, so it must not be re-serialised.
-      # @raise [InvalidMessage] when the body is not a well-formed, authentic SNS envelope
+      # @raise [InvalidMessage] when the body isn't an SNS envelope, doesn't come from the
+      #   expected topic, or can't be authenticated.
       def parse!(raw_body)
         envelope = JSON.parse(raw_body)
         raise InvalidMessage, 'body is not a JSON object' unless envelope.is_a?(Hash)
