@@ -17,6 +17,17 @@ module CitizenLab
       end
     end
 
+    # Waits until the lock is free. The lock is held until the outermost
+    # transaction ends, so callers inside a transaction keep it until commit.
+    # @param [String] lock_name
+    def with_transaction_lock(lock_name)
+      lock_id = Zlib.crc32(lock_name)
+      ActiveRecord::Base.transaction do
+        ActiveRecord::Base.connection.execute("SELECT pg_advisory_xact_lock(#{lock_id})")
+        yield
+      end
+    end
+
     class FailedToLock < RuntimeError; end
   end
 end

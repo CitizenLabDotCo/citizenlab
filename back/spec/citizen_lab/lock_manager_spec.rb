@@ -39,4 +39,36 @@ RSpec.describe CitizenLab::LockManager do
       expect(result).to eq(:result)
     end
   end
+
+  describe '.with_transaction_lock', use_transactional_fixtures: false do
+    it 'waits until the lock is released' do
+      lock_name = 'lock-name'
+      events = Queue.new
+      locked = Queue.new
+      release = Queue.new
+
+      thread = Thread.new do
+        described_class.with_transaction_lock(lock_name) do
+          locked << true
+          release.pop
+          events << :first_released
+        end
+      end
+
+      locked.pop
+      waiting = Thread.new do
+        described_class.with_transaction_lock(lock_name) { events << :second_locked }
+      end
+      sleep 0.1
+      release << true
+      [thread, waiting].each(&:join)
+
+      expect(Array.new(events.size) { events.pop }).to eq %i[first_released second_locked]
+    end
+
+    it 'returns the result of the block' do
+      result = described_class.with_transaction_lock('lock-name') { :result }
+      expect(result).to eq(:result)
+    end
+  end
 end

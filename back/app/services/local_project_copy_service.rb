@@ -3,6 +3,17 @@
 # Copies a project within a tenant.
 class LocalProjectCopyService < ProjectCopyService
   def copy(source_project, dest_folder: source_project.folder)
+    # The copy's slug is picked from its title when the project is saved, but
+    # only the commit reserves it. Two copies of the same project running at
+    # the same time would otherwise pick the same slug.
+    CitizenLab::LockManager.with_transaction_lock("project_copy/#{source_project.id}") do
+      copy_project(source_project, dest_folder)
+    end
+  end
+
+  private
+
+  def copy_project(source_project, dest_folder)
     new_title_multiloc = add_suffix_to_title(source_project.title_multiloc)
 
     options = {
@@ -25,8 +36,6 @@ class LocalProjectCopyService < ProjectCopyService
 
     copied_project
   end
-
-  private
 
   def tenant_template_service
     @tenant_template_service ||= MultiTenancy::Templates::TenantDeserializer.new(
