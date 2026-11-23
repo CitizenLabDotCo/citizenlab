@@ -51,7 +51,7 @@ describe('Survey Builder - Creation and Basic Flow', () => {
     cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
 
     // Try filling in the survey
-    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/surveys/new/${phaseId}`);
 
     cy.contains(questionTitle).should('exist');
 
@@ -65,7 +65,7 @@ describe('Survey Builder - Creation and Basic Flow', () => {
       'eq',
       `${
         Cypress.config().baseUrl
-      }/en/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`
+      }/en/projects/${projectSlug}/surveys/new/${phaseId}`
     );
 
     cy.get(`*[id^="${questionTitle}"]:not([id$="-label"])`)
@@ -83,7 +83,7 @@ describe('Survey Builder - Creation and Basic Flow', () => {
 
   it('can click button in survey page to navigate to the survey builder', () => {
     // Navigate to the survey
-    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/surveys/new/${phaseId}`);
 
     cy.dataCy('e2e-edit-survey-link').click();
     cy.location('pathname').should(
@@ -121,12 +121,12 @@ describe('Survey Builder - Creation and Basic Flow', () => {
     cy.get(`[data-cy="${`field-${questionTitle}`}"]`).should('not.exist');
 
     // Navigate to the survey page
-    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/surveys/new/${phaseId}`);
     cy.contains(questionTitle).should('not.exist');
   });
 
   it('navigates to live project in a new tab when view project button in content builder is clicked', () => {
-    const projectUrl = `/en/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`;
+    const projectUrl = `/en/projects/${projectSlug}/surveys/new/${phaseId}`;
 
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form`);
     cy.dataCy('e2e-edit-survey-form').click();
@@ -148,7 +148,7 @@ describe('Survey Builder - Creation and Basic Flow', () => {
       'eq',
       `${
         Cypress.config().baseUrl
-      }/en/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`
+      }/en/projects/${projectSlug}/surveys/new/${phaseId}`
     );
   });
 

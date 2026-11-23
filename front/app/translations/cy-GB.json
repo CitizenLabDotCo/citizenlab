@@ -1513,6 +1513,7 @@
   "app.containers.Authentication.steps.Policies.byContinuingPhone3": "Trwy barhau, rydych chi'n cytuno i dderbyn cod cadarnhau un-tro trwy SMS oddi wrth {orgName}. Os gwnaethoch ddewis cymryd rhan uchod, byddwch hefyd yn derbyn newyddion a diweddariadau; mae amlder y negeseuon yn amrywio. Gall cyfraddau negeseuon a data fod yn berthnasol. Atebwch HELP am gymorth, STOP i optio allan.",
   "app.containers.Authentication.steps.Policies.byContinuingPhoneWithoutCampaignsEnabled": "Drwy barhau, rydych chi'n cytuno i dderbyn cod cadarnhau un tro trwy SMS gan {orgName}. Gall cyfraddau negeseuon a data fod yn berthnasol. Atebwch HELP am gymorth, STOP i optio allan.",
   "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": "Creu cyfrif newydd gyda: {phone} {changeLink}",
+  "app.containers.Authentication.verificationSignedOut": "Cawsoch eich allgofnodi, felly ni allem wirio eich hunaniaeth. Mewngofnodwch a rhowch gynnig arall arni.",
   "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "Toglo pob hysbysiad {contentType}",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Hysbysiadau yn y categori hwn",
   "app.containers.CampaignsConsentForm.emailNotificationsSubTitle": "Pa fathau o hysbysiadau e-bost hoffech chi eu cael?",

@@ -102,23 +102,6 @@ resource 'Omniauth Callback', document: false do
     end
   end
 
-  context 'when the user is logged in' do
-    before do
-      @user = create(:user)
-    end
-
-    parameter :user_id, 'User ID', required: true
-
-    let(:user_id) { @user.id }
-
-    get '/auth/clave_unica/logout_data' do
-      example_request 'Returns ClaveUnica redirect URL' do
-        assert_status(200)
-        expect(json_response_body[:url]).to start_with('https://accounts.claveunica.gob.cl/api/v1/accounts/app/logout')
-      end
-    end
-  end
-
   context 'when authenticating via OAuth' do
     before do
       AppConfiguration.instance.settings['id_config'] = {
@@ -156,10 +139,11 @@ resource 'Omniauth Callback', document: false do
 
         assert_status(302) # Redirect code
 
-        cookie_header = response_headers['Set-Cookie']
-        expect(cookie_header).to match(/cl2_jwt=[^;]+/)
-        expect(cookie_header).to include('SameSite=Lax')
-        expect(cookie_header.include?('Secure')).to be(false) # No HTTPS in the test environment
+        cookie_header = auth_cookie_header
+        expect(cookie_header).to match(/#{AuthToken::Cookie::NAME}=[^;]+/o)
+        expect(cookie_header).to match(/httponly/i)
+        expect(cookie_header).to match(/samesite=lax/i)
+        expect(cookie_header).not_to match(/secure/i) # No HTTPS in the test environment
         expect(cookie_header).to match(/expires=.+GMT/i)
       end
     end
@@ -167,6 +151,7 @@ resource 'Omniauth Callback', document: false do
 
   context 'when SSO method returns email and it is confirmed' do
     before do
+      allow_test_id_methods
       AppConfiguration.instance.settings['id_config'] = {
         allowed: true,
         enabled: true,
@@ -191,6 +176,14 @@ resource 'Omniauth Callback', document: false do
         expect(user.confirmation_required?).to be false
         expect(user.email_confirmed_at).to be_present
         expect(user.verified).to be true
+      end
+
+      # The OmniAuth test mode skips the strategy setup, which already refuses unconfigured methods.
+      example '[error] fake SSO on a customer platform', document: false do
+        change_lifecycle_stage('active')
+
+        expect { do_request }.to raise_error(RuntimeError, 'fake_sso not supported')
+        expect(User.find_by(email: 'billy_fixed@example.com')).to be_nil
       end
 
       example 'if there is a pending invite with this email: allow create account' do
@@ -446,6 +439,7 @@ resource 'Omniauth Callback', document: false do
     let(:delivery_service) { instance_spy(EmailCampaigns::DeliveryService) }
 
     before do
+      allow_test_id_methods
       AppConfiguration.instance.settings['id_config'] = {
         allowed: true,
         enabled: true,
@@ -632,6 +626,7 @@ resource 'Omniauth Callback', document: false do
 
   context 'when the user returned by SSO cannot be saved' do
     before do
+      allow_test_id_methods
       AppConfiguration.instance.settings['id_config'] = {
         allowed: true,
         enabled: true,

@@ -5,10 +5,9 @@ function getInvites() {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return cy.requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'GET',
       url: 'web_api/v1/invites',
@@ -21,10 +20,9 @@ function deleteInvites() {
     const adminJwt = response.body.jwt;
 
     return cy
-      .request({
+      .requestAs(adminJwt, {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${adminJwt}`,
         },
         method: 'GET',
         url: 'web_api/v1/invites',
@@ -33,10 +31,9 @@ function deleteInvites() {
         const invites = response.body.data;
 
         invites.forEach(({ id }: any) => {
-          cy.request({
+          cy.requestAs(adminJwt, {
             headers: {
               'Content-Type': 'application/json',
-              Authorization: `Bearer ${adminJwt}`,
             },
             method: 'DELETE',
             url: `web_api/v1/invites/${id}`,

@@ -556,7 +556,7 @@ resource 'Ideas' do
         let!(:idea) { create(:idea, project: phase.project, phases: [phase], author: @user, publication_status: 'draft') }
 
         example '[empty idea] User not logged in', document: false do
-          header 'Authorization', nil
+          header 'Cookie', nil
           do_request
           expect(status).to eq 200
           json_response = json_parse(response_body)
@@ -628,7 +628,7 @@ resource 'Ideas' do
           expect(json_response[:data].pluck(:id)).to include(submitted_idea.id)
 
           # A visitor making the same request does not
-          header 'Authorization', nil
+          header 'Cookie', nil
           do_request
           assert_status 200
           json_response = json_parse(response_body)

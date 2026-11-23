@@ -16,6 +16,10 @@ module CustomIdMethods::FakeSso
       true
     end
 
+    def test_only?
+      true
+    end
+
     def profile_to_user_attrs(auth)
       {
         first_name: auth.info['first_name'],

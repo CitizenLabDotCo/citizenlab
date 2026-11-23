@@ -27,6 +27,18 @@ class ApplicationController < ActionController::API
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
+  # Postgres can't store null bytes, so a param holding one (mostly from security
+  # scanners) raises when it reaches a query. That is bad input, not a server error.
+  # Other ArgumentErrors fall back to a handler for their cause, as Rails would do if
+  # this handler didn't exist.
+  rescue_from ArgumentError do |e|
+    if e.message.include?('null byte')
+      head :bad_request
+    else
+      rescue_with_handler(e.cause) || raise(e)
+    end
+  end
+
   # +pundit_user+ is overridden to be able to embed additional context in the +user+
   # object passed to policies. It is meant to be used with policies that inherit from
   # +ApplicationPolicy+, which includes all the necessary utilities to parse this *special

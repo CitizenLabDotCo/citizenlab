@@ -1513,6 +1513,7 @@
   "app.containers.Authentication.steps.Policies.byContinuingPhone3": "Jatkamalla hyväksyt, että saat kertakäyttöisen vahvistuskoodin tekstiviestitse organisaatiolta {orgName}. Jos annoit suostumuksesi edellä, saat myös uutisia ja päivityksiä; viestien lähetystiheys vaihtelee. Viesti- ja tiedonsiirtomaksuja saatetaan veloittaa. Vastaa HELP saadaksesi apua tai STOP peruuttaaksesi tilauksen.",
   "app.containers.Authentication.steps.Policies.byContinuingPhoneWithoutCampaignsEnabled": "Jatkamalla hyväksyt, että vastaanotat kertakäyttöisen vahvistuskoodin tekstiviestitse organisaatiolta {orgName}. Viesti- ja tiedonsiirtomaksuja saatetaan periä. Vastaa HELP saadaksesi apua, STOP peruuttaaksesi.",
   "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": "Luo uusi tili numerolla: {phone} {changeLink}",
+  "app.containers.Authentication.verificationSignedOut": "Sinut on kirjattu ulos, joten emme voineet vahvistaa henkilöllisyyttäsi. Kirjaudu sisään ja yritä uudelleen.",
   "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "Kytke kaikki {contentType}-ilmoitukset päälle/pois",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Tämän kategorian ilmoitukset",
   "app.containers.CampaignsConsentForm.emailNotificationsSubTitle": "Millaisia sähköposti-ilmoituksia haluat vastaanottaa?",

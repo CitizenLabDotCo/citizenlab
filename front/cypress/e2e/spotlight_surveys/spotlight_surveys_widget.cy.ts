@@ -87,8 +87,10 @@ describe('Extra surveys widget in the project page builder', () => {
       .first()
       .click({ force: true });
 
-    cy.url().should('include', `/projects/${projectSlug}/surveys/new`);
-    cy.url().should('include', `phase_id=${surveyPhaseId}`);
+    cy.location('pathname').should(
+      'eq',
+      `/en/projects/${projectSlug}/surveys/new/${surveyPhaseId}`
+    );
   });
 
   it('supports the plain button format with custom button text', () => {

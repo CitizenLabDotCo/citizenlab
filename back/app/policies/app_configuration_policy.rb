@@ -15,6 +15,14 @@ class AppConfigurationPolicy < ApplicationPolicy
     user&.active? && user.admin?
   end
 
+  # @param changed [Array<Array(String, String)>] the [feature, setting] pairs whose value changes.
+  # @return [Array<Array(String, String)>] the pairs this user may not change.
+  def forbidden_settings(changed)
+    return [] if user&.super_admin?
+
+    changed - SettingsService.new.admin_writable_settings(AppConfiguration::Settings.json_schema)
+  end
+
   def create?
     false
   end
