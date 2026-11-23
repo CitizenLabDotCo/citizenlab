@@ -27,11 +27,14 @@ module ContentBuilder
     end
 
     def show?
-      # A page's layout holds a copy of its content, so it is no more visible than the page: a
-      # project's page follows its project. Other layouts stay public.
-      return policy_for(record.content_buildable).show? if record.content_buildable.is_a?(StaticPage)
+      # A layout holds a copy of its parent's content, so it is no more visible than its
+      # parent: a project's, folder's or page's layout follows that project, folder or page.
+      # Homepage layouts (no parent) are public. A report says for itself who may read its
+      # layout (ReportPolicy#layout?, checked by the callers), so it is not delegated here.
+      buildable = record.content_buildable
+      return true if buildable.nil? || record.content_buildable_type == 'ReportBuilder::Report'
 
-      true
+      policy_for(buildable).show?
     end
 
     def upsert?
