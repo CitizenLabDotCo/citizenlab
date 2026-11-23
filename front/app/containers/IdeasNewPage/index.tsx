@@ -81,7 +81,11 @@ const IdeasNewPage = () => {
     });
 
   // `show` is false when the phase has submissions switched off.
-  if (!show || enabled === 'maybe' || disabledReason) {
+  if (!show) {
+    return <Unauthorized />;
+  }
+
+  if (enabled === 'maybe' || disabledReason) {
     const triggerAuthFlow = () => {
       triggerAuthenticationFlow({
         context: {
