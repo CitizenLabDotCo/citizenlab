@@ -168,6 +168,36 @@ module ReportBuilder
           enough contrast in greyscale.
       TEXT
 
+      OPENING = <<~TEXT.chomp
+        The first three are not optional, and they come in this order. A report that
+        opens straight onto a chart is not a report.
+
+        1. Cover. One Cover node, filled in for this project, then a PageBreak.
+        2. Contents. One TableOfContents, then a PageBreak, so the contents have a
+           page to themselves.
+        3. Executive summary. Four to six bullet points in one TextMultiloc, under an
+           <h2> reading "Executive summary" in the report's locale. Each bullet opens
+           with the finding itself in <b>, then the evidence for it. This is the only
+           part some readers will read, so it carries the whole argument — and every
+           number in it must be one you saw in a query result.
+      TEXT
+
+      # With the skill, it decides what the opening holds; we only say how to build it.
+      SKILL_OPENING = <<~TEXT.chomp
+        The report opens in this order. A report that opens straight onto a chart is not
+        a report.
+
+        1. Cover. One Cover node, filled in as the skill's cover asks, then a PageBreak.
+           Put the phase timeline and the promise to residents in a TextMultiloc
+           directly under it, before the PageBreak.
+        2. Contents. One TableOfContents, then a PageBreak, when the skill calls for a
+           table of contents.
+        3. Executive summary, as the skill sets it out: outcome first, at most five
+           findings. One TextMultiloc under an <h2> reading "Executive summary" in the
+           report's locale, each finding opening with the finding itself in <b>. Every
+           number in it must be one you saw in a query result.
+      TEXT
+
       PAGE_COUNT = <<~TEXT.chomp
         - Keep the whole report to roughly 6 to 10 printed pages. A section per page
           reads better than one long scroll.
@@ -191,12 +221,12 @@ module ReportBuilder
           have written when they run out is what the reader gets. Several calls fit in
           one round, so send them together. Work in this order:
 
-          1. Explore, in ten rounds at most. Query until you know what this project's data
+          1. Explore, in #{skill ? 'fourteen' : 'ten'} rounds at most. Query until you know what this project's data
              actually holds: how participation moved over time, what people answered, who
              took part, where they came from. Send four or five queries at a time. Then
              stop: a question you did not ask costs less than a report with no sections.
           2. Write the charts. One author_chart_block call per chart, several per round.
-             Seven is the most a report this length carries, so choose the questions worth
+             #{skill ? 'Write the hero charts the skill\'s sections call for, one per section at most' : 'Seven is the most a report this length carries'}, so choose the questions worth
              a chart rather than charting everything you can. A chart you author and do
              not place is wasted.
           3. Build the report with patch_layout, a section at a time. Send only the nodes
@@ -222,17 +252,7 @@ module ReportBuilder
 
           ## The report
 
-          The first three are not optional, and they come in this order. A report that
-          opens straight onto a chart is not a report.
-
-          1. Cover. One Cover node, filled in for this project, then a PageBreak.
-          2. Contents. One TableOfContents, then a PageBreak, so the contents have a
-             page to themselves.
-          3. Executive summary. Four to six bullet points in one TextMultiloc, under an
-             <h2> reading "Executive summary" in the report's locale. Each bullet opens
-             with the finding itself in <b>, then the evidence for it. This is the only
-             part some readers will read, so it carries the whole argument — and every
-             number in it must be one you saw in a query result.
+          #{skill ? SKILL_OPENING : OPENING}
           #{skill ? '4. Then the other sections, as the skill below sets them out.' : SECTIONS}
 
           Every section from 3 onwards opens the same way: a Divider with variant
@@ -409,7 +429,7 @@ module ReportBuilder
       end
 
       def skill_prompt
-        ::Analysis::LLM::Prompt.new.fetch('ai_assistant_skill', skill:) if skill
+        ::Analysis::LLM::Prompt.new.fetch('ai_assistant_report_skill', skill:, sample_rows: ReportComposer::SAMPLE_ROWS) if skill
       end
 
       # The one description of the SDK, read from where the typechecker reads it. When

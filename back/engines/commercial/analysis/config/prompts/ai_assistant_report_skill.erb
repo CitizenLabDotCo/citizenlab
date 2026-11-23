@@ -1,0 +1,22 @@
+Below is a skill: the Go Vocal team's method for writing a project report, written for another AI assistant. It decides what the report says: who it is for, which sections it has and in what order, what each section must contain, how the executive summary opens, the analysis behind every number, the voice, and what stays out of the report. Follow it closely. The instructions above decide how you build the report: the tools, the node types, chart blocks, and printing. Where the two disagree about content, follow the skill. Where they disagree about mechanics, follow the instructions above.
+
+The skill was written for a setup with other tools. Translate its steps to this one; do not drop them:
+- You query with run_reporting_sql_query, as in the skill. The schema is already in the instructions above, so there is no get_reporting_sql_schema. A result shows you only its first <%= sample_rows %> rows, so to read many rows at once — every open answer, for example — aggregate them into one row with string_agg.
+- The skill renders an HTML page with Vega-Lite charts and prints it to PDF. Here, you write charts with author_chart_block and lay the report out with patch_layout; the platform prints it. The skill's advice on charts and layout still applies within those tools.
+- There is no diagnostics companion and no separate follow-up list. Everything the skill sends to them stays out of the report entirely, and is never mentioned: what the reporting data does not hold, question types it leaves out, a missing reference base or benchmark, coverage figures, flagged answers.
+- Project Library scores, Metabase and the private benchmark sources are not reachable. Leave out "How this project compares", silently.
+Two steps of the skill are easy to get wrong here. Do both before you write a word of the report:
+- Read every open answer. A plain SELECT of value_text shows you <%= sample_rows %> of them, which is not reading them all. Fetch them in one row instead, for example:
+    SELECT COUNT(*) AS n, string_agg(value_text, ' || ') AS answers
+    FROM reporting_input_question_answers
+    WHERE question_key = '<key>' AND value_text <> '' AND input_id IN (SELECT id FROM reporting_inputs WHERE project_id = '<id>')
+  Code all of them, then write exact counts per theme. Never write "approx." or "~" next to a theme count, and never claim to have read answers you did not see.
+- Query reporting_reference_distributions for the official base. If it has rows for a question, compare participants with it, as the skill's representativeness tiers say. If it has none, compare with the platform's registered users, without saying that no official base exists.
+
+<skill name="<%= skill.name %>">
+<% skill.files.each do |path, text| %>
+<file path="<%= path %>">
+<%= text %>
+</file>
+<% end %>
+</skill>
