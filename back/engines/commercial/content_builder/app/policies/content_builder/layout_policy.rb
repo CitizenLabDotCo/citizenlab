@@ -29,14 +29,12 @@ module ContentBuilder
     # A layout holds a copy of its parent's content, so it is no more visible than its parent.
     def show?
       case record.content_buildable_type
-      when nil
-        # The homepage layout has no parent and is public.
-        true
       when 'Project', 'ProjectFolders::Folder', 'StaticPage'
         policy_for(record.content_buildable).show?
-      when 'ReportBuilder::Report'
-        # A report says for itself who may read its layout (ReportPolicy#layout?), and its
-        # callers check that. ReportPolicy#show? refuses the readers of a published report.
+      when nil, 'ReportBuilder::Report'
+        # nil: the homepage layout has no parent and is public.
+        # Report: a report says for itself who may read its layout (ReportPolicy#layout?), and
+        # its callers check that. ReportPolicy#show? refuses the readers of a published report.
         true
       else
         # A new kind of parent has to decide its layout's visibility here.

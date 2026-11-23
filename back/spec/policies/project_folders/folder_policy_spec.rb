@@ -450,12 +450,12 @@ describe ProjectFolders::FolderPolicy do
       before { subject_folder.admin_publication.update! publication_status: 'draft' }
 
       it { is_expected.to permit(:show) }
+      it { is_expected.to permit(:update) }
+      it { is_expected.to permit(:destroy) }
 
       it 'returns the draft folder' do
         expect(scope.resolve).to include subject_folder
       end
-      it { is_expected.to permit(:update) }
-      it { is_expected.to permit(:destroy) }
     end
   end
 end
