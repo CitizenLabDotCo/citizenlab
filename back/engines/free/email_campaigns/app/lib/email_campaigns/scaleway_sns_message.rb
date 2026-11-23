@@ -141,8 +141,14 @@ module EmailCampaigns
     def verify_topic!
       expected = self.class.expected_topic_arn
       raise InvalidMessage, 'no expected topic configured' if expected.blank?
+
       # `TopicArn` is covered by the signature.
-      raise InvalidMessage, 'unexpected TopicArn' unless topic_arn == expected
+      # The message is truncated: the signature hasn't been checked yet, so the value
+      # could be anything, of any size. 350 leaves some margin over the longest possible
+      # topic ARN, which is about 320 characters.
+      if topic_arn != expected
+        raise InvalidMessage, "unexpected TopicArn: #{topic_arn.to_s.truncate(350).inspect}"
+      end
     end
 
     def string_to_sign
