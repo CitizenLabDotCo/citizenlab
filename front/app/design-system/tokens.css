@@ -143,6 +143,7 @@
   --gv-chart-disagree: var(--gv-red-450);
   --gv-chart-pass: var(--gv-slate-300);
   --gv-chart-line-primary: var(--gv-navy-650);
+  --gv-chart-bar: var(--gv-blue-450);
 
   /* component */
   --gv-component-avatar-border-empty: var(--gv-neutral-400);
