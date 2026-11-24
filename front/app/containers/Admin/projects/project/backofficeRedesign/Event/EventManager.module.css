@@ -14,16 +14,21 @@
   gap: var(--gv-space-8);
 }
 
+/* Deliberately not the shared list-manager toolbar: events has its own
+   height and spacing, which change independently. */
 .toolbar {
-  composes: toolbar from '../_shared/listManager.module.css';
-  --list-toolbar-height: var(--gv-size-40);
-  --list-toolbar-margin: var(--gv-space-12);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gv-space-12);
+  min-height: var(--gv-size-40);
+  margin-bottom: var(--gv-space-12);
 }
 
 .display {
-  composes: display from '../_shared/listManager.module.css';
-  --list-toolbar-display-shrink: 1;
-  --list-toolbar-display-gap: var(--gv-space-8);
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-8);
 }
 
 .loading {
