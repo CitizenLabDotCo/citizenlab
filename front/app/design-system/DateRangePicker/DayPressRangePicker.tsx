@@ -116,7 +116,8 @@ const DayPressRangePicker = ({
           aria-describedby={[valueId, ariaDescribedBy]
             .filter(Boolean)
             .join(' ')}
-          aria-invalid={isInvalid || undefined}
+          // A button can't take aria-invalid; aria-describedby links the error.
+          data-invalid={isInvalid || undefined}
         >
           <span className={styles.values} id={valueId}>
             <span className={value ? styles.value : styles.placeholder}>
