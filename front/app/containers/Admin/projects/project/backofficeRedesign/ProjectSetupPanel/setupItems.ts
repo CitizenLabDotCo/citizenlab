@@ -1,8 +1,5 @@
 import { MessageDescriptor } from 'utils/cl-intl';
 
-import backofficeRedesignMessages from '../messages';
-
-import messages from './messages';
 import setupCardMessages from './SetupCards/messages';
 import { SetupReadiness } from './useSetupReadiness';
 
@@ -10,12 +7,12 @@ export const SETUP_ITEMS: {
   key: keyof SetupReadiness;
   label: MessageDescriptor;
 }[] = [
-  { key: 'general', label: messages.generalInformation },
+  { key: 'general', label: setupCardMessages.settingsTitle },
   { key: 'homepageCard', label: setupCardMessages.projectCardTitle },
   { key: 'area', label: setupCardMessages.areaTitle },
-  { key: 'topics', label: messages.topicTags },
-  { key: 'page', label: messages.projectPageItem },
-  { key: 'methods', label: backofficeRedesignMessages.participationMethods },
+  { key: 'topics', label: setupCardMessages.topicTagsTitle },
+  { key: 'page', label: setupCardMessages.editProjectPage },
+  { key: 'methods', label: setupCardMessages.methodsTitle },
 ];
 
 export const getMissingItems = (readiness: SetupReadiness) =>
