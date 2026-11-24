@@ -10,7 +10,20 @@ describe SideFxUserService do
   describe 'after_destroy' do
     it 'successfully enqueues PII data deletion job for Matomo' do
       expect { service.after_destroy(user, current_user) }
-        .to have_enqueued_job(Matomo::RemoveUserFromMatomoJob).with(user.id)
+        .to have_enqueued_job(Matomo::RemoveUserFromMatomoJob).with([user.id])
+    end
+
+    it 'does not enqueue the Matomo job when remove_from_third_parties is false' do
+      expect { service.after_destroy(user, current_user, remove_from_third_parties: false) }
+        .not_to have_enqueued_job(Matomo::RemoveUserFromMatomoJob)
+    end
+  end
+
+  describe 'after_destroy_all' do
+    it 'enqueues one Matomo job for all the users' do
+      user_ids = [user.id, current_user.id]
+      expect { service.after_destroy_all(user_ids) }
+        .to have_enqueued_job(Matomo::RemoveUserFromMatomoJob).with(user_ids).exactly(:once)
     end
   end
 end

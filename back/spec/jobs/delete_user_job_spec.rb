@@ -24,7 +24,7 @@ RSpec.describe DeleteUserJob do
       described_class.perform_now(user.id, current_user)
 
       expect(sidefx_service).to have_received(:after_destroy)
-        .with(user, current_user, participation_data_deleted: false, update_member_counts: true)
+        .with(user, current_user, participation_data_deleted: false, update_member_counts: true, remove_from_third_parties: true)
     end
 
     context 'with delete_participation_data: true' do
@@ -46,7 +46,7 @@ RSpec.describe DeleteUserJob do
 
         described_class.perform_now(user.id, current_user, delete_participation_data: true)
 
-        expect(sidefx_service).to have_received(:after_destroy).with(user, current_user, participation_data_deleted: true, update_member_counts: true)
+        expect(sidefx_service).to have_received(:after_destroy).with(user, current_user, participation_data_deleted: true, update_member_counts: true, remove_from_third_parties: true)
       end
     end
 
@@ -61,7 +61,19 @@ RSpec.describe DeleteUserJob do
         described_class.perform_now(user.id, current_user, update_member_counts: false)
 
         expect(sidefx_service).to have_received(:after_destroy)
-          .with(user, current_user, participation_data_deleted: false, update_member_counts: false)
+          .with(user, current_user, participation_data_deleted: false, update_member_counts: false, remove_from_third_parties: true)
+      end
+    end
+
+    context 'with remove_from_third_parties: false' do
+      it 'passes remove_from_third_parties to side effects' do
+        sidefx_service = instance_spy(SideFxUserService, 'sidefx_service')
+        allow(SideFxUserService).to receive(:new).and_return(sidefx_service)
+
+        described_class.perform_now(user.id, remove_from_third_parties: false)
+
+        expect(sidefx_service).to have_received(:after_destroy)
+          .with(user, nil, participation_data_deleted: false, update_member_counts: true, remove_from_third_parties: false)
       end
     end
 
