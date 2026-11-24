@@ -239,6 +239,7 @@ describe Verification::VerificationService do
 
   describe 'locked_custom_fields' do
     before do
+      allow_test_id_methods
       AppConfiguration.instance.settings['id_config']['id_methods'] << { name: 'bogus' }
       AppConfiguration.instance.save!
     end

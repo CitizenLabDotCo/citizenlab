@@ -272,9 +272,8 @@ const SurveyActions = ({ phase }: Props) => {
             variant="quiet"
             href={
               router.buildLocation({
-                to: '/$locale/projects/$slug/surveys/new',
-                params: { locale, slug: project.data.attributes.slug },
-                search: { phase_id: phaseId },
+                to: '/$locale/projects/$slug/surveys/new/$phaseId',
+                params: { locale, slug: project.data.attributes.slug, phaseId },
               }).href
             }
             target="_blank"
@@ -381,7 +380,8 @@ const SurveyActions = ({ phase }: Props) => {
         <Box display="flex" alignItems="center" gap="8px">
           {isAnyDownloading && <Spinner size="24px" />}
           <ButtonWithLink
-            linkTo={`/projects/${project.data.attributes.slug}/surveys/new?phase_id=${phaseId}`}
+            to="/projects/$slug/surveys/new/$phaseId"
+            params={{ slug: project.data.attributes.slug, phaseId }}
             buttonStyle="text"
             width="auto"
             openLinkInNewTab

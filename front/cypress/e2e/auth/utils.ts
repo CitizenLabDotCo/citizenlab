@@ -152,7 +152,7 @@ export const fakeSSOAuth = (
   // The back-end /auth/fake_sso/callback set the JWT cookie and redirected
   // the browser to the front-end with `sso_success=true`. The front-end
   // picks up that param and resumes the auth flow in a modal.
-  cy.getCookie('cl2_jwt', { timeout: 10000 }).should('not.be.null');
+  cy.getCookie('cl2_auth_token', { timeout: 10000 }).should('not.be.null');
   cy.location('search', { timeout: 20000 }).should(
     'include',
     'sso_success=true'

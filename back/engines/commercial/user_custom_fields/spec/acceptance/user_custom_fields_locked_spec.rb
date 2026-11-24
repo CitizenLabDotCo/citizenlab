@@ -8,6 +8,7 @@ resource 'User Custom Fields - Locked Fields' do
 
   before do
     header 'Content-Type', 'application/json'
+    allow_test_id_methods
     AppConfiguration.instance.settings['id_config'] = {
       allowed: true,
       enabled: true,

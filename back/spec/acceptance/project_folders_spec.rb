@@ -38,6 +38,16 @@ resource 'ProjectFolder' do
       expect(response_data.size).to eq 1
       expect(response_data.pluck(:id)).to match_array filter_ids
     end
+
+    example 'Does not list a folder whose projects are all hidden from the visitor', document: false do
+      hidden_folder = create(:project_folder, projects: [create(:private_groups_project)])
+
+      do_request
+
+      assert_status 200
+      expect(response_data.pluck(:id)).to match_array @folders.map(&:id)
+      expect(response_data.pluck(:id)).not_to include hidden_folder.id
+    end
   end
 
   get 'web_api/v1/project_folders/:id' do
@@ -232,6 +242,15 @@ resource 'ProjectFolder' do
           folder.update!(space: space)
 
           do_request project_folder: { space_id: nil }
+          expect(folder.reload.space_id).to be_nil
+          expect(project_in_folder.reload.space_id).to be_nil
+        end
+
+        example 'Keeps the folder in its space if its projects fail to move', document: false do
+          allow(Project).to receive(:where).and_call_original
+          allow(Project).to receive(:where).with(id: [project_in_folder.id]).and_raise(ActiveRecord::Deadlocked)
+
+          expect { do_request project_folder: { space_id: space.id } }.to raise_error(ActiveRecord::Deadlocked)
           expect(folder.reload.space_id).to be_nil
           expect(project_in_folder.reload.space_id).to be_nil
         end

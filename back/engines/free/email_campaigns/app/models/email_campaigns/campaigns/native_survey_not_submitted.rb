@@ -93,7 +93,7 @@ module EmailCampaigns
       project_url = Frontend::UrlService.new.model_to_url(idea.project, locale: Locale.new(recipient.locale))
       [{
         event_payload: {
-          survey_url: "#{project_url}/ideas/new?phase_id=#{idea.creation_phase.id}",
+          survey_url: "#{project_url}/surveys/new/#{idea.creation_phase.id}",
           phase_title_multiloc: idea.creation_phase.title_multiloc,
           phase_end_at: idea.creation_phase.end_at
         }

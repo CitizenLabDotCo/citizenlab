@@ -38,7 +38,13 @@ const IdeasEditPage = lazy(() => import('containers/IdeasEditPage'));
 const IdeasIndexPage = lazy(() => import('containers/IdeasIndexPage'));
 const IdeasShowPage = lazy(() => import('containers/IdeasShowPage'));
 const IdeasNewPage = lazy(() => import('containers/IdeasNewPage'));
+const IdeasNewRedirect = lazy(
+  () => import('containers/IdeasNewPage/IdeasNewRedirect')
+);
 const IdeasNewSurveyPage = lazy(() => import('containers/IdeasNewSurveyPage'));
+const IdeasNewSurveyRedirect = lazy(
+  () => import('containers/IdeasNewSurveyPage/IdeasNewSurveyRedirect')
+);
 const ProjectsIndexPage = lazy(() => import('containers/ProjectsIndexPage'));
 const ProjectsShowPage = lazy(() => import('containers/ProjectsShowPage'));
 const ProjectFolderShowPage = lazy(
@@ -361,7 +367,6 @@ const ideasShowRoute = createRoute({
 
 // Project idea/survey new routes
 const projectIdeaNewSearchSchema = yup.object({
-  phase_id: yup.string().optional(),
   idea_id: yup.string().optional(),
   selected_idea_id: yup.string().optional(),
   lat: yup.number().optional(),
@@ -370,7 +375,7 @@ const projectIdeaNewSearchSchema = yup.object({
 
 const projectIdeaNewRoute = createRoute({
   getParentRoute: () => localeRoute,
-  path: 'projects/$slug/ideas/new',
+  path: 'projects/$slug/ideas/new/$phaseId',
   validateSearch: (search: Record<string, unknown>) =>
     projectIdeaNewSearchSchema.validateSync(search, { stripUnknown: true }),
   component: () => (
@@ -380,8 +385,26 @@ const projectIdeaNewRoute = createRoute({
   ),
 });
 
-const projectSurveyNewSearchSchema = yup.object({
+// Idea links shared before the phase moved into the path.
+const projectIdeaNewRedirectSearchSchema = projectIdeaNewSearchSchema.shape({
   phase_id: yup.string().optional(),
+});
+
+const projectIdeaNewRedirectRoute = createRoute({
+  getParentRoute: () => localeRoute,
+  path: 'projects/$slug/ideas/new',
+  validateSearch: (search: Record<string, unknown>) =>
+    projectIdeaNewRedirectSearchSchema.validateSync(search, {
+      stripUnknown: true,
+    }),
+  component: () => (
+    <PageLoading>
+      <IdeasNewRedirect />
+    </PageLoading>
+  ),
+});
+
+const projectSurveyNewSearchSchema = yup.object({
   idea_id: yup.string().optional(),
   go_back: yup.string().optional(),
 });
@@ -392,7 +415,7 @@ type ProjectSurveyNewSearchParams = yup.InferType<
 
 const projectSurveyNewRoute = createRoute({
   getParentRoute: () => localeRoute,
-  path: 'projects/$slug/surveys/new',
+  path: 'projects/$slug/surveys/new/$phaseId',
   validateSearch: (
     search: Record<string, unknown>
   ): ProjectSurveyNewSearchParams =>
@@ -400,6 +423,33 @@ const projectSurveyNewRoute = createRoute({
   component: () => (
     <PageLoading>
       <IdeasNewSurveyPage />
+    </PageLoading>
+  ),
+});
+
+// Survey links shared before the phase moved into the path.
+const projectSurveyNewRedirectSearchSchema = projectSurveyNewSearchSchema.shape(
+  {
+    phase_id: yup.string().optional(),
+  }
+);
+
+type ProjectSurveyNewRedirectSearchParams = yup.InferType<
+  typeof projectSurveyNewRedirectSearchSchema
+>;
+
+const projectSurveyNewRedirectRoute = createRoute({
+  getParentRoute: () => localeRoute,
+  path: 'projects/$slug/surveys/new',
+  validateSearch: (
+    search: Record<string, unknown>
+  ): ProjectSurveyNewRedirectSearchParams =>
+    projectSurveyNewRedirectSearchSchema.validateSync(search, {
+      stripUnknown: true,
+    }),
+  component: () => (
+    <PageLoading>
+      <IdeasNewSurveyRedirect />
     </PageLoading>
   ),
 });
@@ -710,7 +760,9 @@ const buildRouteTree = (moduleRoutes: Partial<Routes> = {}) =>
       ideasIndexRoute,
       ideasShowRoute,
       projectIdeaNewRoute,
+      projectIdeaNewRedirectRoute,
       projectSurveyNewRoute,
+      projectSurveyNewRedirectRoute,
       projectPreviewRoute.addChildren([projectPreviewTokenRoute]),
       projectsIndexRoute,
       projectShowRoute.addChildren([

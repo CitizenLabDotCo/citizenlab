@@ -193,11 +193,13 @@ function getButtonStyle(
     darken(0.12, backgroundColor);
   const backgroundActiveColor =
     props.bgActiveColor ||
-    (backgroundHoverColor === 'transparent'
-      ? 'inherit'
-      : backgroundHoverColor.startsWith('rgba')
-      ? opacify(0.12, backgroundHoverColor)
-      : darken(0.12, backgroundHoverColor));
+    (backgroundHoverColor !== 'transparent'
+      ? // The test mock for polished can return undefined.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        backgroundHoverColor?.startsWith('rgba')
+        ? opacify(0.12, backgroundHoverColor)
+        : darken(0.12, backgroundHoverColor)
+      : 'inherit');
   const backgroundDisabledColor =
     props.bgDisabledColor ||
     // TODO: Fix this the next time the file is edited.

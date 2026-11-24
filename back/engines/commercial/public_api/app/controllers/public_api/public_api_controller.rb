@@ -81,6 +81,12 @@ module PublicApi
 
     private
 
+    # API clients are not browsers: they send their token in the Authorization
+    # header rather than in the cookie that AuthToken::Authenticable reads by default.
+    def token
+      request.headers['Authorization']&.split&.last
+    end
+
     def switch_locale(&)
       locale = AppConfiguration.instance.closest_locale_to(requested_locale)
       I18n.with_locale(locale, &)

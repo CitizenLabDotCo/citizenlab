@@ -1508,6 +1508,7 @@
   "app.containers.Authentication.steps.Policies.byContinuingPhone3": "بمتابعتك، فإنك توافق على استلام رمز تأكيد لمرة واحدة عبر رسالة نصية قصيرة من {orgName}. إذا اخترت الموافقة أعلاه، فستتلقى أيضاً الأخبار والتحديثات؛ وتختلف وتيرة الرسائل. قد تُطبق رسوم الرسائل والبيانات. أرسل HELP للمساعدة، وSTOP لإلغاء الاشتراك.",
   "app.containers.Authentication.steps.Policies.byContinuingPhoneWithoutCampaignsEnabled": "بالاستمرار، فإنك توافق على تلقي رمز تأكيد لمرة واحدة عبر رسالة نصية قصيرة (SMS) من {orgName}. قد تُطبق رسوم الرسائل والبيانات. أرسل HELP للمساعدة، وSTOP لإلغاء الاشتراك.",
   "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": "إنشاء حساب جديد باستخدام: {phone} {changeLink}",
+  "app.containers.Authentication.verificationSignedOut": "لقد تم تسجيل خروجك، لذا لم نتمكن من التحقق من هويتك. سجل الدخول وحاول مرة أخرى.",
   "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "تبديل جميع إشعارات {contentType}",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "الإشعارات في هذه الفئة",
   "app.containers.CampaignsConsentForm.emailNotificationsSubTitle": "ما هي أنواع إشعارات البريد الإلكتروني التي ترغب في تلقيها؟",

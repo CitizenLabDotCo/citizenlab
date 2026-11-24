@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
 class IdMethodService
+  # Lifecycle stages of the platforms (demos, staging, e2e) on which the test-only id
+  # methods may be used. Never add 'active' here: anyone could then verify themselves.
+  # In development they are always allowed, as the seeded local platform is 'active'.
+  TEST_ONLY_LIFECYCLE_STAGES = %w[demo not_applicable].freeze
+
   def all_methods
     @all_methods ||= IdMethods.all_methods
   end
@@ -31,8 +36,9 @@ class IdMethodService
   def configured_methods(app_configuration)
     configured_methods = app_configuration.settings('id_config', 'id_methods') || []
     configured_names = configured_methods.pluck('name')
+    test_only_allowed = Rails.env.development? || TEST_ONLY_LIFECYCLE_STAGES.include?(app_configuration.lifecycle_stage)
     all_methods.select do |method|
-      configured_names.include?(method.name)
+      configured_names.include?(method.name) && (test_only_allowed || !method.test_only?)
     end
   end
 

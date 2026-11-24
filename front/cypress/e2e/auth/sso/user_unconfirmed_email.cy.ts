@@ -117,7 +117,7 @@ describe('SSO: user with unconfirmed email - edge cases', () => {
 
     // The address belongs to the account above, so the merge code is sent straight away.
     let ssoJwt: string | undefined;
-    cy.getCookie('cl2_jwt').then((cookie) => {
+    cy.getCookie('cl2_auth_token').then((cookie) => {
       ssoJwt = cookie?.value;
     });
 
@@ -127,7 +127,7 @@ describe('SSO: user with unconfirmed email - edge cases', () => {
     // The merge deletes this SSO account and hands back a token for the survivor.
     // confirmEmail only awaits the response, so wait for that token to be stored:
     // a request made before it lands carries the deleted account's token and 401s.
-    cy.getCookie('cl2_jwt').should((cookie) => {
+    cy.getCookie('cl2_auth_token').should((cookie) => {
       expect(cookie?.value).not.to.eq(ssoJwt);
     });
 
@@ -144,8 +144,8 @@ describe('SSO: user with unconfirmed email - edge cases', () => {
     cy.get('.e2e-idea-button').first().find('button').should('exist');
     cy.get('.e2e-idea-button').first().find('button').click({ force: true });
     cy.location('pathname').should(
-      'eq',
-      '/en/projects/an-idea-bring-it-to-your-council/ideas/new'
+      'match',
+      /^\/en\/projects\/an-idea-bring-it-to-your-council\/ideas\/new\/[^/]+$/
     );
   });
 
