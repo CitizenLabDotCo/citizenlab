@@ -4,8 +4,12 @@ module Matomo
   class RemoveUserFromMatomoJob < ApplicationJob
     self.priority = 70 # Lower priority than default, but still higher than DeleteUserJob.
 
-    def run(user_id)
-      Matomo::Client.new.delete_user_data(user_id)
+    # @param [String,Array<String>] user_ids one id, or a list of ids (one job for a batch of
+    #   users, see +SideFxUserService#after_destroy_all+). The users are removed one after the
+    #   other, which also keeps the load on Matomo low.
+    def run(user_ids)
+      client = Matomo::Client.new
+      Array(user_ids).each { |user_id| client.delete_user_data(user_id) }
     rescue Matomo::Client::MissingBaseUriError
       # Ignore, assuming that Matomo was not configured.
     rescue Matomo::Client::MissingAuthorizationTokenError
