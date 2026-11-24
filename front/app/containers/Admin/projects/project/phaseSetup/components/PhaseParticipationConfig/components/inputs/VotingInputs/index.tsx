@@ -47,7 +47,6 @@ import votingMessages from './messages';
 import styles from './VotingInputs.module.css';
 import VotingMethodChangeModal from './VotingMethodChangeModal';
 import BudgetingInputs from './votingMethodInputs/BudgetingInputs';
-import shareMessages from './votingMethodInputs/messages';
 import MultipleVotingInputs from './votingMethodInputs/MultipleVotingInputs';
 import ShareResultsToggle from './votingMethodInputs/ShareResultsToggle/ShareResultsToggle';
 import SingleVotingInputs from './votingMethodInputs/SingleVotingInputs';
@@ -307,14 +306,6 @@ const VotingInputs = ({
               description={formatMessage(messages.votingFilteringEnabled)}
               checked={!!voting_filtering_enabled}
               onChange={toggleVotingFilteringEnabled}
-            />
-            <SettingToggleRow
-              title={formatMessage(shareMessages.autoshareResults)}
-              description={formatMessage(
-                shareMessages.autoshareResultsToggleDescription
-              )}
-              checked={!!autoshare_results_enabled}
-              onChange={toggleAutoshareResultsEnabled}
             />
             {similarity}
           </div>
