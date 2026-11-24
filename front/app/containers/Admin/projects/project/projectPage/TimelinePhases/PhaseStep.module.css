@@ -15,11 +15,6 @@
   background: var(--gv-surface-control-subtle);
 }
 
-.selected,
-.selected:hover {
-  background: var(--gv-surface-muted-hovered);
-}
-
 /* Runs from under this dot to the next row's dot. 15.5 px centres the 1 px line on the 8 px dot. */
 .line {
   position: absolute;
@@ -76,12 +71,8 @@
 
 .meta {
   composes: small from '../../../../../../design-system/typography.module.css';
-  margin-top: var(--gv-space-8);
-  color: var(--gv-text-secondary);
-}
-
-.metaFuture {
   margin-top: var(--gv-space-2);
+  color: var(--gv-text-secondary);
 }
 
 .status {
