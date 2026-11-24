@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { useQueryClient } from '@tanstack/react-query';
+import { useController, useForm } from 'react-hook-form';
 
 import Banner from 'design-system/Banner';
 import Modal from 'design-system/Modal';
@@ -27,29 +28,49 @@ interface Props {
   onClose: () => void;
 }
 
+interface FormValues {
+  survey_service?: TSurveyService;
+  survey_embed_url: string;
+}
+
 const SwitchSurveyMethodModal = ({ phase, method, onClose }: Props) => {
   const { formatMessage } = useIntl();
   const queryClient = useQueryClient();
   const newPhaseDefaults = useNewPhaseDefaults();
-  const { mutate: updatePhase, isPending, error, reset } = useUpdatePhase();
+  const {
+    mutateAsync: updatePhase,
+    error,
+    reset: resetMutation,
+  } = useUpdatePhase();
   const services = useEnabledSurveyServices();
   const apiErrorText = useApiErrorText();
-  const [surveyService, setSurveyService] = useState<TSurveyService>();
-  const [surveyEmbedUrl, setSurveyEmbedUrl] = useState('');
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { isSubmitting },
+  } = useForm<FormValues>({ defaultValues: { survey_embed_url: '' } });
+  const { field: serviceField } = useController({
+    control,
+    name: 'survey_service',
+  });
+  const { field: embedUrlField } = useController({
+    control,
+    name: 'survey_embed_url',
+  });
 
   const current = phase.attributes.participation_method;
   // An external survey can't be saved without its tool and link.
   const toExternal = method === 'survey';
-  const selectedService = surveyService ?? services[0];
+  const selectedService = serviceField.value ?? services[0];
 
   const close = () => {
+    resetMutation();
     reset();
-    setSurveyService(undefined);
-    setSurveyEmbedUrl('');
     onClose();
   };
 
-  const handleConfirm = () => {
+  const submit = handleSubmit(async ({ survey_embed_url }) => {
     if (!method || !newPhaseDefaults) return;
 
     const {
@@ -58,8 +79,8 @@ const SwitchSurveyMethodModal = ({ phase, method, onClose }: Props) => {
       ...defaults
     } = newPhaseDefaults(method);
 
-    updatePhase(
-      {
+    try {
+      await updatePhase({
         phaseId: phase.id,
         ...defaults,
         native_survey_title_multiloc:
@@ -70,19 +91,17 @@ const SwitchSurveyMethodModal = ({ phase, method, onClose }: Props) => {
           native_survey_button_multiloc,
         ...(toExternal && {
           survey_service: selectedService,
-          survey_embed_url: surveyEmbedUrl,
+          survey_embed_url,
         }),
-      },
-      {
-        onSuccess: () => {
-          queryClient.invalidateQueries({
-            queryKey: phasePermissionKeys.lists(),
-          });
-          close();
-        },
-      }
-    );
-  };
+      });
+    } catch {
+      // The modal shows the errors from the mutation's state.
+      return;
+    }
+
+    queryClient.invalidateQueries({ queryKey: phasePermissionKeys.lists() });
+    close();
+  });
 
   const consequences = [
     messages.switchLosesAccessSettings,
@@ -110,9 +129,9 @@ const SwitchSurveyMethodModal = ({ phase, method, onClose }: Props) => {
       }}
       primaryAction={{
         label: formatMessage(messages.switchConfirm),
-        isPending,
-        isDisabled: toExternal && !surveyEmbedUrl.trim(),
-        onPress: handleConfirm,
+        isPending: isSubmitting,
+        isDisabled: toExternal && !embedUrlField.value.trim(),
+        onPress: () => submit(),
       }}
     >
       <div className={styles.switchBody}>
@@ -130,10 +149,10 @@ const SwitchSurveyMethodModal = ({ phase, method, onClose }: Props) => {
           <div className={styles.externalFields}>
             <ExternalSurveyFields
               service={selectedService}
-              embedUrl={surveyEmbedUrl}
+              embedUrl={embedUrlField.value}
               errors={error?.errors}
-              onServiceChange={setSurveyService}
-              onEmbedUrlChange={setSurveyEmbedUrl}
+              onServiceChange={serviceField.onChange}
+              onEmbedUrlChange={embedUrlField.onChange}
             />
           </div>
         )}
