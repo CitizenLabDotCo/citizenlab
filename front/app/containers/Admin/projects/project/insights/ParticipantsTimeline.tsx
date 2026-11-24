@@ -3,6 +3,9 @@ import React, { useRef } from 'react';
 import { Box, Text, Title, Spinner } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 
+import DashboardCard from 'design-system/DashboardCard';
+import Skeleton from 'design-system/Skeleton';
+
 import usePhaseInsights from 'api/phase_insights/usePhaseInsights';
 import { IPhaseData } from 'api/phases/types';
 
@@ -13,7 +16,6 @@ import ReportExportMenu from 'components/admin/ReportExportMenu';
 
 import { useIntl } from 'utils/cl-intl';
 
-import InsightCard from './InsightCard';
 import messages from './messages';
 import { usePdfExportContext } from './pdf/PdfExportContext';
 import WordExportableInsight from './word/WordExportableInsight';
@@ -33,6 +35,14 @@ const ParticipantsTimeline = ({ phase }: Props) => {
   const graphRef = useRef<SVGElement>(null);
 
   const { data, isPending, error } = usePhaseInsights({ phaseId: phase.id });
+
+  if (isPending && redesigned) {
+    return (
+      <WordExportableInsight exportId="participation-timeline" skipExport>
+        <Skeleton shape="block" height={266} />
+      </WordExportableInsight>
+    );
+  }
 
   if (isPending) {
     return (
@@ -117,9 +127,9 @@ const ParticipantsTimeline = ({ phase }: Props) => {
 
   if (redesigned) {
     return (
-      <InsightCard title={title} actions={exportMenu}>
+      <DashboardCard title={title} actions={exportMenu}>
         {chart}
-      </InsightCard>
+      </DashboardCard>
     );
   }
 
