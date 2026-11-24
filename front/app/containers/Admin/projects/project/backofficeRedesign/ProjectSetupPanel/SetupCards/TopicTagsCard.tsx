@@ -8,30 +8,28 @@ import { Key } from 'design-system/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { coreSettings } from 'api/app_configuration/utils';
 import useGlobalTopics from 'api/global_topics/useGlobalTopics';
-import { IProjectData } from 'api/projects/types';
 
 import useLocalize from 'hooks/useLocalize';
 
 import { useIntl } from 'utils/cl-intl';
 
 import SetupCard from '../SetupCard';
-import { getDraftValues, useSetupDraft } from '../SetupDraftContext';
+import { useSetupDraft } from '../SetupDraftContext';
 
 import messages from './messages';
 
 interface Props {
-  project: IProjectData;
   ready?: boolean;
 }
 
-const TopicTagsCard = ({ project, ready }: Props) => {
+const TopicTagsCard = ({ ready }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { data: topics } = useGlobalTopics({});
   const { data: appConfiguration } = useAppConfiguration();
-  const { changes, changeProject } = useSetupDraft();
+  const { values, changeProject } = useSetupDraft();
 
-  const { topicIds } = getDraftValues(project, changes);
+  const topicIds = values.global_topic_ids;
 
   const topicsTerm =
     appConfiguration &&
@@ -44,7 +42,7 @@ const TopicTagsCard = ({ project, ready }: Props) => {
   }));
 
   const changeTopics = (keys: Set<Key>) => {
-    changeProject({ global_topic_ids: Array.from(keys, String) });
+    changeProject('global_topic_ids', Array.from(keys, String));
   };
 
   return (

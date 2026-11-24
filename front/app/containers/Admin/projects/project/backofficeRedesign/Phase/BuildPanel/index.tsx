@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import { useForm } from 'react-hook-form';
 import { CLErrors } from 'typings';
 
 import { IFileAttachmentData } from 'api/file_attachments/types';
@@ -14,7 +15,6 @@ import usePhaseFileAttachments, {
   fileAttachmentErrors,
 } from 'containers/Admin/projects/_shared/usePhaseFileAttachments';
 import { SurveyMethod } from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/components/SurveyMethodChoices';
-import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/typings';
 import { validateDates } from 'containers/Admin/projects/project/phaseSetup/validate';
 
 import { useRegisterPageSaver } from 'components/admin/PageSaveContext';
@@ -39,14 +39,20 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
   const { data: phases } = usePhases(projectId);
   const { mutateAsync: updatePhase } = useUpdatePhase();
 
-  const [formData, setFormData] = useState<IUpdatedPhaseProperties>(
-    phase.attributes
-  );
-  const [dirty, setDirty] = useState(false);
+  const {
+    watch,
+    setValue,
+    getValues,
+    reset,
+    setError,
+    clearErrors,
+    formState: { isDirty, errors: formErrors },
+  } = useForm<{ phase: IUpdatedPhaseProperties }>({
+    defaultValues: { phase: phase.attributes },
+  });
+  const formData = watch('phase');
+  const [filesChanged, setFilesChanged] = useState(false);
   const [errors, setErrors] = useState<CLErrors | null>(null);
-  const [validationErrors, setValidationErrors] = useState<ValidationErrors>(
-    {}
-  );
   const [pendingSurveyMethod, setPendingSurveyMethod] =
     useState<SurveyMethod | null>(null);
   const surveyMethodLocks = useSurveyMethodLocks(phase);
@@ -58,7 +64,7 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
     projectId,
     phaseId: phase.id,
     savedAttachments,
-    onStage: () => setDirty(true),
+    onStage: () => setFilesChanged(true),
   });
 
   // Detached phases skip the timeline rules: their dates may overlap and stay
@@ -69,7 +75,6 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
 
   const updateFormData = (newData: Partial<IUpdatedPhaseProperties>) => {
     preview.publish(newData);
-    setDirty(true);
     setErrors((errors) =>
       errors
         ? Object.fromEntries(
@@ -77,58 +82,65 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
           )
         : null
     );
-    setFormData((formData) => ({ ...formData, ...newData }));
+    setValue(
+      'phase',
+      { ...getValues('phase'), ...newData },
+      { shouldDirty: true }
+    );
   };
 
   const save = async () => {
-    const { isValidated, errors } = validateDates(
-      formData,
+    const values = getValues('phase');
+    const { isValidated, errors: dateErrors } = validateDates(
+      values,
       phases,
       formatMessage,
       phase.id,
       standalone
     );
 
-    setValidationErrors(errors);
-    if (!isValidated) throw new Error('Invalid phase dates');
+    if (!isValidated) {
+      setError('root.dates', { message: dateErrors.phaseDateError });
+      throw new Error('Invalid phase dates');
+    }
 
     try {
       const response = await updatePhase({
         phaseId: phase.id,
-        title_multiloc: formData.title_multiloc,
-        start_at: formData.start_at,
-        end_at: formData.end_at,
-        input_term: formData.input_term,
+        title_multiloc: values.title_multiloc,
+        start_at: values.start_at,
+        end_at: values.end_at,
+        input_term: values.input_term,
         ...(phase.attributes.participation_method === 'survey'
           ? {
-              survey_service: formData.survey_service,
-              survey_embed_url: formData.survey_embed_url,
+              survey_service: values.survey_service,
+              survey_embed_url: values.survey_embed_url,
             }
           : {}),
         ...(phase.attributes.participation_method === 'document_annotation'
           ? {
               document_annotation_embed_url:
-                formData.document_annotation_embed_url,
+                values.document_annotation_embed_url,
             }
           : {}),
         // A draft description publishes on its own; sending the loaded value
         // would undo a publish made since.
         ...(draftDescriptionEnabled
           ? {}
-          : { description_multiloc: formData.description_multiloc }),
+          : { description_multiloc: values.description_multiloc }),
       });
-      setFormData(response.data.attributes);
+      reset({ phase: response.data.attributes });
       preview.clear();
       await files.save(phase.id);
       setErrors(null);
-      setDirty(false);
+      setFilesChanged(false);
     } catch (reason) {
       setErrors(fileAttachmentErrors(reason));
       throw reason;
     }
   };
 
-  useRegisterPageSaver('build', { dirty, save });
+  useRegisterPageSaver('build', { dirty: isDirty || filesChanged, save });
 
   return (
     <div className={styles.panel}>
@@ -139,7 +151,7 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
           participationMethod={phase.attributes.participation_method}
           formData={formData}
           errors={errors}
-          validationErrors={validationErrors}
+          validationErrors={{ phaseDateError: formErrors.root?.dates.message }}
           standalone={standalone}
           files={files}
           surveyMethodSwitch={{
@@ -148,10 +160,7 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
           }}
           onChange={updateFormData}
           onDatesChange={(dates) => {
-            setValidationErrors((errors) => ({
-              ...errors,
-              phaseDateError: undefined,
-            }));
+            clearErrors('root.dates');
             updateFormData(dates);
           }}
         />

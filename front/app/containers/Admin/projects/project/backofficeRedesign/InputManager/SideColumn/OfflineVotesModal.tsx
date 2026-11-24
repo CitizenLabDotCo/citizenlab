@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import { useQueryClient } from '@tanstack/react-query';
+import { Controller, useForm } from 'react-hook-form';
 
 import Banner from 'design-system/Banner';
 import Modal from 'design-system/Modal';
@@ -29,17 +30,32 @@ interface Props {
   onClose: () => void;
 }
 
+interface FormValues {
+  manual_voters_amount: number;
+  votes: Partial<Record<string, number>>;
+}
+
+// A cleared number field reports NaN.
+const isNumber = (value: number | undefined) =>
+  value === undefined || !Number.isNaN(value);
+
 const OfflineVotesModal = ({ phase, onClose }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const queryClient = useQueryClient();
   const [page, setPage] = useState(1);
-  const [votes, setVotes] = useState<Record<string, number>>({});
-  const [voters, setVoters] = useState(
-    phase.attributes.manual_voters_amount ?? 0
-  );
-  const [saving, setSaving] = useState(false);
-  const [failed, setFailed] = useState(false);
+  const {
+    control,
+    handleSubmit,
+    setError,
+    formState: { errors, isSubmitting, isValid },
+  } = useForm<FormValues>({
+    mode: 'onChange',
+    defaultValues: {
+      manual_voters_amount: phase.attributes.manual_voters_amount ?? 0,
+      votes: {},
+    },
+  });
   const { mutateAsync: updateIdea } = useUpdateIdea();
   const { mutateAsync: updatePhase } = useUpdatePhase();
   const { data: ideas } = useIdeas({
@@ -51,53 +67,47 @@ const OfflineVotesModal = ({ phase, onClose }: Props) => {
     'page[size]': 20,
   });
   const lastPage = ideas ? getPageNumberFromUrl(ideas.links.last) || 1 : 1;
-  // A cleared field reports NaN.
-  const invalid =
-    Object.values(votes).some((value) => Number.isNaN(value)) ||
-    Number.isNaN(voters);
 
-  const save = async () => {
-    setSaving(true);
-    setFailed(false);
+  const save = handleSubmit(async ({ manual_voters_amount, votes }) => {
     try {
       if (phase.attributes.voting_method === 'budgeting') {
-        await updatePhase({
-          phaseId: phase.id,
-          manual_voters_amount: voters,
-        });
+        await updatePhase({ phaseId: phase.id, manual_voters_amount });
       }
       for (const [id, value] of Object.entries(votes)) {
+        // Every rendered idea has an entry; only edited ones have a value.
+        if (value === undefined) continue;
+
         await updateIdea({
           id,
           requestBody: { manual_votes_amount: value },
         });
       }
-      queryClient.invalidateQueries({ queryKey: phasesKeys.items() });
-      queryClient.invalidateQueries({
-        queryKey: phasesKeys.list({
-          projectId: phase.relationships.project.data.id,
-        }),
-      });
-      onClose();
     } catch {
-      setFailed(true);
-    } finally {
-      setSaving(false);
+      setError('root', { type: 'server' });
+      return;
     }
-  };
+
+    queryClient.invalidateQueries({ queryKey: phasesKeys.items() });
+    queryClient.invalidateQueries({
+      queryKey: phasesKeys.list({
+        projectId: phase.relationships.project.data.id,
+      }),
+    });
+    onClose();
+  });
 
   return (
     <Modal
       isOpen
       onOpenChange={(isOpen) => {
-        if (!isOpen && !saving) onClose();
+        if (!isOpen && !isSubmitting) onClose();
       }}
       title={formatMessage(messages.addOfflineVotes)}
       primaryAction={{
         label: formatMessage(messages.saveOfflineVotes),
-        onPress: save,
-        isPending: saving,
-        isDisabled: !ideas || ideas.data.length === 0 || invalid,
+        onPress: () => save(),
+        isPending: isSubmitting,
+        isDisabled: !ideas || ideas.data.length === 0 || !isValid,
       }}
     >
       <p className={styles.modalHelp}>
@@ -105,13 +115,20 @@ const OfflineVotesModal = ({ phase, onClose }: Props) => {
       </p>
       {phase.attributes.voting_method === 'budgeting' && (
         <div className={styles.participants}>
-          <NumberField
-            label={formatMessage(messages.offlineParticipants)}
-            value={voters}
-            minValue={0}
-            step={1}
-            onChange={setVoters}
-            isDisabled={saving}
+          <Controller
+            control={control}
+            name="manual_voters_amount"
+            rules={{ validate: isNumber }}
+            render={({ field }) => (
+              <NumberField
+                label={formatMessage(messages.offlineParticipants)}
+                value={field.value}
+                minValue={0}
+                step={1}
+                onChange={field.onChange}
+                isDisabled={isSubmitting}
+              />
+            )}
           />
         </div>
       )}
@@ -122,26 +139,31 @@ const OfflineVotesModal = ({ phase, onClose }: Props) => {
       )}
       {ideas?.data.map((idea) => {
         const title = localize(idea.attributes.title_multiloc);
-        const value =
-          idea.id in votes
-            ? votes[idea.id]
-            : idea.attributes.manual_votes_amount ?? 0;
 
         return (
           <div key={idea.id} className={styles.voteRow}>
             <span className={styles.voteLabel}>{title}</span>
             <div className={styles.voteField}>
-              <NumberField
-                aria-label={title}
-                id={`offline-votes-${idea.id}`}
-                size={32}
-                value={value}
-                minValue={0}
-                step={1}
-                isDisabled={saving}
-                incrementAriaLabel={formatMessage(messages.addOne)}
-                decrementAriaLabel={formatMessage(messages.removeOne)}
-                onChange={(next) => setVotes({ ...votes, [idea.id]: next })}
+              <Controller
+                control={control}
+                name={`votes.${idea.id}`}
+                rules={{ validate: isNumber }}
+                render={({ field }) => (
+                  <NumberField
+                    aria-label={title}
+                    id={`offline-votes-${idea.id}`}
+                    size={32}
+                    value={
+                      field.value ?? idea.attributes.manual_votes_amount ?? 0
+                    }
+                    minValue={0}
+                    step={1}
+                    isDisabled={isSubmitting}
+                    incrementAriaLabel={formatMessage(messages.addOne)}
+                    decrementAriaLabel={formatMessage(messages.removeOne)}
+                    onChange={field.onChange}
+                  />
+                )}
               />
             </div>
           </div>
@@ -152,7 +174,7 @@ const OfflineVotesModal = ({ phase, onClose }: Props) => {
           <Pagination page={page} pageCount={lastPage} onChange={setPage} />
         </div>
       )}
-      {failed && (
+      {errors.root && (
         <div className={styles.error}>
           <Banner tone="error">
             {formatMessage(messages.offlineVotesSaveError)}

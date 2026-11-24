@@ -5,7 +5,6 @@ import { Multiloc } from 'typings';
 import Banner from 'design-system/Banner';
 
 import AttachmentsCard from 'containers/Admin/projects/_shared/components/AttachmentsCard';
-import { EventForm } from 'containers/Admin/projects/_shared/events/useEventForm';
 import eventMessages from 'containers/Admin/projects/project/events/messages';
 
 import MultilocRichTextField from 'components/admin/MultilocFields/MultilocRichTextField';
@@ -21,6 +20,7 @@ import ImageCard from './ImageCard';
 import LocationCard from './LocationCard';
 import messages from './messages';
 import RegistrationCard from './RegistrationCard';
+import { EventForm } from './useEventForm';
 import 'design-system/tokens.css';
 
 interface Props {

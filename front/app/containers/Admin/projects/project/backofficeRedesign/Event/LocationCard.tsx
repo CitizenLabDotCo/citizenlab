@@ -6,7 +6,6 @@ import Text from 'design-system/Text';
 import TextField from 'design-system/TextField';
 
 import SetupCard from 'containers/Admin/projects/_shared/components/SetupCard';
-import { EventForm } from 'containers/Admin/projects/_shared/events/useEventForm';
 import eventMessages from 'containers/Admin/projects/project/events/messages';
 
 import MultilocTextField from 'components/admin/MultilocFields/MultilocTextField';
@@ -14,10 +13,11 @@ import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 
 import { useIntl } from 'utils/cl-intl';
 
+import 'design-system/tokens.css';
 import styles from './LocationCard.module.css';
 import LocationComboBox from './LocationComboBox';
 import messages from './messages';
-import 'design-system/tokens.css';
+import { EventForm } from './useEventForm';
 
 // Lazy so ArcGIS only loads once the event has a place on the map.
 const EventMap = lazy(

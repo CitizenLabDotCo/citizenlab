@@ -1,4 +1,6 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
+
+import { useController, useForm } from 'react-hook-form';
 
 import Icon from 'design-system/Icon';
 import Switch from 'design-system/Switch';
@@ -14,9 +16,9 @@ import upsellMessages from 'components/UpsellTooltip/messages';
 
 import { useIntl } from 'utils/cl-intl';
 
+import 'design-system/tokens.css';
 import styles from './NotificationRow.module.css';
 import useNotificationDescription from './useNotificationDescription';
-import 'design-system/tokens.css';
 
 interface Props {
   campaign: CampaignData;
@@ -44,12 +46,23 @@ const NotificationRow = ({ campaign, projectId, phaseId }: Props) => {
     campaign.attributes.campaign_name
   );
   const when = campaign.trigger || campaign.schedule;
-  const savedEnabled = !!campaign.attributes.enabled;
-  const [enabled, setEnabled] = useState(savedEnabled);
+  const {
+    control,
+    reset,
+    formState: { isDirty },
+  } = useForm({
+    defaultValues: { enabled: !!campaign.attributes.enabled },
+  });
+  const {
+    field: { value: enabled, onChange: setEnabled },
+  } = useController({ control, name: 'enabled' });
 
   useRegisterPageSaver(`notification-${campaign.id}`, {
-    dirty: enabled !== savedEnabled,
-    save: () => saveEnabled(enabled),
+    dirty: isDirty,
+    save: async () => {
+      await saveEnabled(enabled);
+      reset({ enabled });
+    },
   });
 
   const editLabel = formatMessage(messagingMessages.editButtonLabel);

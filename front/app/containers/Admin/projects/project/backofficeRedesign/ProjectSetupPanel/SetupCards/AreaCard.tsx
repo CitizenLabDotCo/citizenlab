@@ -8,7 +8,6 @@ import Menu, {
 import { Key } from 'design-system/types';
 
 import useAreas from 'api/areas/useAreas';
-import { IProjectData } from 'api/projects/types';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -17,7 +16,7 @@ import generalMessages from 'containers/Admin/projects/project/general/messages'
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import SetupCard from '../SetupCard';
-import { getDraftValues, useSetupDraft } from '../SetupDraftContext';
+import { useSetupDraft } from '../SetupDraftContext';
 
 import AreaFlyout from './AreaFlyout';
 import messages from './messages';
@@ -52,17 +51,16 @@ const getAreaType = (areaIds: string[], includeAllAreas: boolean): AreaType => {
 };
 
 interface Props {
-  project: IProjectData;
   ready?: boolean;
 }
 
-const AreaCard = ({ project, ready }: Props) => {
+const AreaCard = ({ ready }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { data: areas } = useAreas({});
-  const { changes, changeProject } = useSetupDraft();
+  const { values, changeProject } = useSetupDraft();
 
-  const { areaIds, includeAllAreas } = getDraftValues(project, changes);
+  const { area_ids: areaIds, include_all_areas: includeAllAreas } = values;
   const areaType = getAreaType(areaIds, includeAllAreas);
 
   const getSummary = () => {
@@ -81,12 +79,14 @@ const AreaCard = ({ project, ready }: Props) => {
   const pickAreaType = (value: Key) => {
     if (value !== 'none' && value !== 'all') return;
     if (value !== areaType) {
-      changeProject({ area_ids: [], include_all_areas: value === 'all' });
+      changeProject('area_ids', []);
+      changeProject('include_all_areas', value === 'all');
     }
   };
 
   const changeAreas = (newAreaIds: string[]) => {
-    changeProject({ area_ids: newAreaIds, include_all_areas: false });
+    changeProject('area_ids', newAreaIds);
+    changeProject('include_all_areas', false);
   };
 
   const title = formatMessage(messages.areaTitle);

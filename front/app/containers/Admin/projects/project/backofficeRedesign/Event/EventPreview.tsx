@@ -10,7 +10,6 @@ import { IProjectData } from 'api/projects/types';
 import useLocalize from 'hooks/useLocalize';
 
 import PhonePreviewBackdrop from 'containers/Admin/projects/_shared/components/PhonePreviewBackdrop';
-import { EventForm } from 'containers/Admin/projects/_shared/events/useEventForm';
 import eventMessages from 'containers/Admin/projects/project/events/messages';
 
 import PhonePreviewFrame from 'components/admin/PhonePreview/PhonePreviewFrame';
@@ -25,6 +24,7 @@ import styles from './EventPreview.module.css';
 import messages from './messages';
 import PreviewAttachment from './PreviewAttachment';
 import PreviewInfoCard from './PreviewInfoCard';
+import { EventForm } from './useEventForm';
 import 'design-system/tokens.css';
 
 interface Props {

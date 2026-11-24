@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 
+import { useForm } from 'react-hook-form';
 import { CLErrors } from 'typings';
 
 import Button from 'design-system/Button';
@@ -32,6 +33,7 @@ import { useIntl } from 'utils/cl-intl';
 import Navigate from 'utils/cl-router/Navigate';
 
 import ProjectWorkspace from '..';
+import markSaved from '../_shared/markSaved';
 import BuildFields from '../Phase/BuildPanel/BuildFields';
 import methodSectionMessages from '../Phase/BuildPanel/BuildFields/MethodSection/messages';
 import PlacementCard from '../Phase/BuildPanel/PlacementCard';
@@ -46,6 +48,11 @@ import PhasePreview from '../Phase/PhasePreview';
 import messages from './messages';
 import SavedInputForm from './SavedInputForm';
 import 'design-system/tokens.css';
+
+interface DraftValues {
+  phase: IUpdatedPhaseProperties;
+  reviewedCards: SetupReviewCard[];
+}
 
 interface Props {
   project: IProjectData;
@@ -76,16 +83,27 @@ const NewPhaseWorkspace = ({
     initialParticipationMethod
   );
   const [standalone, setStandalone] = useState(initialStandalone);
-  const [formData, setFormData] = useState(initialFormData);
-  const [reviewedCards, setReviewedCards] = useState<SetupReviewCard[]>([]);
-  const [dirty, setDirty] = useState(false);
+
+  const form = useForm<DraftValues>({
+    defaultValues: { phase: initialFormData, reviewedCards: [] },
+  });
+  const {
+    watch,
+    setValue,
+    getValues,
+    getFieldState,
+    formState: { isDirty },
+  } = form;
+  const formData = watch('phase');
+  const reviewedCards = watch('reviewedCards');
+  const [filesChanged, setFilesChanged] = useState(false);
+
   const [errors, setErrors] = useState<CLErrors | null>(null);
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>(
     {}
   );
   const savedPhase = useRef<{
     id: string;
-    formData: IUpdatedPhaseProperties;
     reviewedCards: SetupReviewCard[];
   }>();
   const [surveySetupOpened, setSurveySetupOpened] = useState(false);
@@ -98,11 +116,10 @@ const NewPhaseWorkspace = ({
     projectId,
     phaseId: undefined,
     savedAttachments: undefined,
-    onStage: () => setDirty(true),
+    onStage: () => setFilesChanged(true),
   });
 
   const updateFormData = (newData: Partial<IUpdatedPhaseProperties>) => {
-    setDirty(true);
     setErrors((errors) =>
       errors
         ? Object.fromEntries(
@@ -110,24 +127,31 @@ const NewPhaseWorkspace = ({
           )
         : null
     );
-    setFormData((formData) => ({ ...formData, ...newData }));
+    setValue(
+      'phase',
+      { ...getValues('phase'), ...newData },
+      { shouldDirty: true }
+    );
   };
 
-  const savePhase = async () => {
+  const savePhase = async ({
+    phase: sentPhase,
+    reviewedCards,
+  }: DraftValues) => {
     const previous = savedPhase.current;
     if (!previous) {
       const { data: phase } = await addPhase({
         projectId,
-        ...formData,
+        ...sentPhase,
         reviewed_setup_cards: reviewedCards,
       });
-      savedPhase.current = { id: phase.id, formData, reviewedCards };
+      savedPhase.current = { id: phase.id, reviewedCards };
       return phase.id;
     }
 
     // An attachment failure can leave the phase saved while the draft stays open.
-    if (previous.formData !== formData) {
-      await updatePhase({ ...formData, phaseId: previous.id });
+    if (getFieldState('phase').isDirty) {
+      await updatePhase({ ...sentPhase, phaseId: previous.id });
     }
     // Updating a phase doesn't take reviewed cards.
     for (const card of reviewedCards) {
@@ -135,15 +159,17 @@ const NewPhaseWorkspace = ({
         await reviewSetupCard({ phaseId: previous.id, card });
       }
     }
-    savedPhase.current = { id: previous.id, formData, reviewedCards };
+    savedPhase.current = { id: previous.id, reviewedCards };
     return previous.id;
   };
 
   const save = async (reason: SaveReason) => {
     setErrors(null);
+    // A copy, so edits made while saving don't change what was sent.
+    const sent = { ...getValues() };
 
     const { isValidated, errors } = validate(
-      formData,
+      sent.phase,
       phases,
       formatMessage,
       savedPhase.current?.id,
@@ -156,9 +182,10 @@ const NewPhaseWorkspace = ({
     }
 
     try {
-      const phaseId = await savePhase();
+      const phaseId = await savePhase(sent);
+      markSaved(form, sent);
       await files.save(phaseId);
-      setDirty(false);
+      setFilesChanged(false);
 
       if (reason === 'button') setDestination({ phaseId });
     } catch (error) {
@@ -167,14 +194,13 @@ const NewPhaseWorkspace = ({
     }
   };
 
-  useRegisterPageSaver('draft', { dirty, save });
+  useRegisterPageSaver('draft', { dirty: isDirty || filesChanged, save });
 
   const saveAndOpenAction = async (
     action: SurveySetupAction | 'input' | SetupSettingsAction
   ) => {
     if (!pageSave || pageSave.saving || files.isUploadingFile) return;
 
-    setDirty(true);
     const failed = await pageSave.saveAll('leave', 'draft');
     setSurveySetupOpened(false);
     if (failed.length > 0 || !savedPhase.current) return;
@@ -235,10 +261,12 @@ const NewPhaseWorkspace = ({
     <DraftSetupReviewContext.Provider
       value={{
         reviewed: reviewedCards,
-        onReview: (card) => {
-          setDirty(true);
-          setReviewedCards((cards) => [...new Set([...cards, card])]);
-        },
+        onReview: (card) =>
+          setValue(
+            'reviewedCards',
+            [...new Set([...getValues('reviewedCards'), card])],
+            { shouldDirty: true }
+          ),
       }}
     >
       <ProjectWorkspace
