@@ -10,7 +10,7 @@ import useUpdateInternalComment from 'api/internal_comments/useUpdateInternalCom
 
 import useLocale from 'hooks/useLocale';
 
-import PanelFormButtons from 'components/PostShowComponents/Comments/CommentForm/PanelFormButtons';
+import LazyPanelFormButtons from 'components/PostShowComponents/Comments/CommentForm/LazyPanelFormButtons';
 import panelStyles from 'components/PostShowComponents/Comments/commentsPanel.module.css';
 import {
   panelTextAreaStyle,
@@ -220,7 +220,7 @@ const InternalCommentBody = ({
           {isPanel ? (
             <div className={panelStyles.editFooter}>
               {editError}
-              <PanelFormButtons
+              <LazyPanelFormButtons
                 cancelLabel={formatMessage(commentsMessages.cancelCommentEdit)}
                 submitLabel={formatMessage(commentsMessages.saveCommentEdit)}
                 onCancel={resetEditing}
