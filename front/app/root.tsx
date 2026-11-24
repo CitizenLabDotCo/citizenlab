@@ -79,7 +79,12 @@ const Root = () => {
           </LanguageProvider>
         </HelmetProvider>
       </OutletsProvider>
-      {!isPhasePreviewFrame() && <ReactQueryDevtools initialIsOpen={false} />}
+      {!isPhasePreviewFrame() && (
+        <ReactQueryDevtools
+          initialIsOpen={false}
+          buttonPosition="bottom-left"
+        />
+      )}
     </QueryClientProvider>
   );
 };
