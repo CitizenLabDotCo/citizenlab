@@ -7,11 +7,10 @@ import useCustomFields from 'api/custom_fields/useCustomFields';
 import usePhase from 'api/phases/usePhase';
 
 import usePageForm from 'components/CustomFieldsForm/Page/usePageForm';
+import { castNumberAnswers } from 'components/CustomFieldsForm/util';
 import Feedback from 'components/HookForm/Feedback';
 
 import { useParams } from 'utils/router';
-
-import { castNumberAnswers } from './utils';
 
 const CustomFields = React.lazy(
   () => import('components/CustomFieldsForm/CustomFields')
