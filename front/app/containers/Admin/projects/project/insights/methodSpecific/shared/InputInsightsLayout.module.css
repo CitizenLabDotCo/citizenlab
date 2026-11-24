@@ -1,0 +1,22 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-16);
+  margin-top: var(--gv-space-16);
+}
+
+.pair {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gv-space-16);
+}
+
+.summary {
+  flex: 1.4 1 320px;
+  min-width: 0;
+}
+
+.topics {
+  flex: 1 1 280px;
+  min-width: 0;
+}
