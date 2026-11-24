@@ -1508,6 +1508,7 @@
   "app.containers.Authentication.steps.Policies.byContinuingPhone3": "بالاستمرار، كتوافق على استقبال رمز تأكيد لمرة واحدة عبر SMS من {orgName}. إلا وافقتي الفوق، غادي توصل حتى بالأخبار والمستجدات؛ وتيرة الرسائل كتختلف. تقدر تطبق رسوم على الرسائل والبيانات. صيفط HELP للمساعدة، و STOP باش تلغي الاشتراك.",
   "app.containers.Authentication.steps.Policies.byContinuingPhoneWithoutCampaignsEnabled": "بالاستمرار، فإنك توافق على تلقي رمز تأكيد لمرة واحدة عبر رسالة نصية قصيرة (SMS) من {orgName}. قد تُطبق رسوم الرسائل والبيانات. أرسل HELP للمساعدة، وSTOP لإلغاء الاشتراك.",
   "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": "صاوب حساب جديد بـ: {phone} {changeLink}",
+  "app.containers.Authentication.verificationSignedOut": "تم تسجيل الخروج ديالك، داكشي علاش ما قدرناش نتحققو من الهوية ديالك. سجل الدخول وعاود حاول مرة أخرى.",
   "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "تبديل جميع إشعارات {contentType}",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "الإشعارات فهاد الفئة",
   "app.containers.CampaignsConsentForm.emailNotificationsSubTitle": "شنو هي أنواع إشعارات البريد الإلكتروني اللي بغيتي توصل بها؟",

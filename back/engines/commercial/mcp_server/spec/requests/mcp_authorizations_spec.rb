@@ -12,7 +12,7 @@ describe McpServer::WebApi::V1::McpAuthorizationsController do
     Doorkeeper::Application.create!(name: 'Urban Insights', redirect_uri: 'https://b.example.com/cb', confidential: false)
   end
   let(:auth_headers) do
-    { 'Authorization' => "Bearer #{AuthToken::AuthToken.new(payload: user.to_token_payload).token}" }
+    { 'Cookie' => auth_cookie(user) }
   end
 
   def create_token(owner, application, **opts)

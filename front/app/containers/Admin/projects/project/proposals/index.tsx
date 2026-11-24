@@ -73,9 +73,8 @@ const AdminProjectProposals = () => {
               <NewIdeaButton
                 participationMethod={phase.data.attributes.participation_method}
                 inputTerm={phase.data.attributes.input_term}
-                to="/projects/$slug/ideas/new"
-                params={{ slug: project.data.attributes.slug }}
-                search={{ phase_id: phaseId }}
+                to="/projects/$slug/ideas/new/$phaseId"
+                params={{ slug: project.data.attributes.slug, phaseId }}
               />
             )}
           </Box>

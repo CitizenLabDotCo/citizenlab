@@ -34,7 +34,7 @@ resource 'Users - Locked attributes' do
 
     context 'for an unauthenticated user' do
       before do
-        header 'Authorization', nil
+        header 'Cookie', nil
       end
 
       example_request '[error] returns 401 Unauthorized response' do

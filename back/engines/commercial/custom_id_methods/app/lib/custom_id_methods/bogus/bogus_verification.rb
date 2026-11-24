@@ -15,6 +15,10 @@ module CustomIdMethods::Bogus
       false
     end
 
+    def test_only?
+      true
+    end
+
     def verification_method_type
       :manual_sync
     end

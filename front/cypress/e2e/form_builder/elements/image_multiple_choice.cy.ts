@@ -48,7 +48,7 @@ describe('Form builder image multiple choice choose multiple component', () => {
     cy.get('#e2e-title-multiloc').type('Question title 2', { force: true });
     cy.get('#e2e-option-input-0').type('Option 1 question 2', { force: true });
     cy.get('form').submit();
-    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/surveys/new/${phaseId}`);
     cy.contains('Question title 2').should('exist');
     cy.contains('Option 1 question 2').should('exist');
   });
@@ -67,7 +67,7 @@ describe('Form builder image multiple choice choose multiple component', () => {
     });
     cy.get('#e2e-option-input-0').type('Car', { force: true });
     cy.contains('Save').click();
-    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/surveys/new/${phaseId}`);
     cy.contains(questionTitle).should('exist');
     cy.wait(2000);
     cy.get(`*[id^="${questionTitle}"]:not([id$="-label"])`).eq(1).click({
@@ -85,7 +85,7 @@ describe('Form builder image multiple choice choose multiple component', () => {
       'eq',
       `${
         Cypress.config().baseUrl
-      }/en/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`
+      }/en/projects/${projectSlug}/surveys/new/${phaseId}`
     );
 
     cy.get(`*[id^="${questionTitle}"]:not([id$="-label"])`)

@@ -1508,6 +1508,7 @@
   "app.containers.Authentication.steps.Policies.byContinuingPhone3": "Kontynuując, wyrażasz zgodę na otrzymanie jednorazowego kodu potwierdzającego SMS od {orgName}. Jeśli powyżej wyrażono zgodę, będziesz otrzymywać również wiadomości i aktualizacje; częstotliwość wiadomości jest różna. Mogą obowiązywać opłaty za wiadomości i przesyłanie danych. Odpowiedz HELP, aby uzyskać pomoc, lub STOP, aby zrezygnować.",
   "app.containers.Authentication.steps.Policies.byContinuingPhoneWithoutCampaignsEnabled": "Kontynuując, wyrażasz zgodę na otrzymanie jednorazowego kodu potwierdzającego SMS-em od {orgName}. Mogą obowiązywać opłaty za wiadomości i przesyłanie danych. Odpisz HELP, aby uzyskać pomoc, lub STOP, aby zrezygnować.",
   "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": "Utwórz nowe konto za pomocą: {phone} {changeLink}",
+  "app.containers.Authentication.verificationSignedOut": "Wylogowano Cię, więc nie mogliśmy zweryfikować Twojej tożsamości. Zaloguj się i spróbuj ponownie.",
   "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "Przełącz wszystkie powiadomienia {contentType}",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Powiadomienia w tej kategorii",
   "app.containers.CampaignsConsentForm.emailNotificationsSubTitle": "Jakiego rodzaju powiadomienia e-mail chcesz otrzymywać?",

@@ -64,9 +64,11 @@ const OfflineCollection = ({ phase, children, fillHeight = true }: Props) => {
           fullFormLink={
             project && (
               <FullFormLink
-                to="/projects/$slug/ideas/new"
-                params={{ slug: project.data.attributes.slug }}
-                search={{ phase_id: phase.id }}
+                to="/projects/$slug/ideas/new/$phaseId"
+                params={{
+                  slug: project.data.attributes.slug,
+                  phaseId: phase.id,
+                }}
               />
             )
           }

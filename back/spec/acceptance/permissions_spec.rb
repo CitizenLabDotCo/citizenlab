@@ -15,6 +15,7 @@ resource 'Permissions' do
     # once the action has been overridden. The inherited state is covered
     # separately, in the 'when the action inherits the global permission' groups.
     override_permissions!(@phase)
+    allow_test_id_methods
     AppConfiguration.instance.settings['id_config'] = { allowed: true, enabled: true, id_methods: [{ name: 'fake_sso' }] }
     AppConfiguration.instance.save!
   end
@@ -781,6 +782,7 @@ resource 'Permissions' do
 
       context 'with fields locked by verification' do
         before do
+          allow_test_id_methods
           AppConfiguration.instance.settings['id_config'] = {
             allowed: true,
             enabled: true,
