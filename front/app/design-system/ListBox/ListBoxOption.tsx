@@ -47,18 +47,15 @@ const ListBoxOption = ({
       // React Aria gives options no aria-disabled or extra description of their own.
       render={
         hasReason
-          ? (props) =>
-              'href' in props ? (
-                <a {...props} />
-              ) : (
-                <div
-                  {...props}
-                  aria-disabled="true"
-                  aria-describedby={[props['aria-describedby'], reasonId]
-                    .filter(Boolean)
-                    .join(' ')}
-                />
-              )
+          ? (props: React.JSX.IntrinsicElements['div']) => (
+              <div
+                {...props}
+                aria-disabled="true"
+                aria-describedby={[props['aria-describedby'], reasonId]
+                  .filter(Boolean)
+                  .join(' ')}
+              />
+            )
           : undefined
       }
       className={styles.option}

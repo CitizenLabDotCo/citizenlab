@@ -10,6 +10,7 @@
 }
 
 .button {
+  composes: button from '../reset.module.css';
   composes: ringOutside from '../focus.module.css';
   box-sizing: border-box;
   display: inline-flex;
@@ -18,10 +19,7 @@
   justify-content: center;
   width: var(--gv-size-28);
   height: 24px;
-  padding: 0;
-  border: none;
   border-radius: var(--gv-radius-6);
-  background: transparent;
   cursor: pointer;
   transition: background-color var(--gv-motion-duration-fast)
     var(--gv-motion-easing-standard);

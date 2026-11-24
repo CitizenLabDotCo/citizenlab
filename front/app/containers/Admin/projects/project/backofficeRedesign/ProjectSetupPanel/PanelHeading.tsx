@@ -1,6 +1,7 @@
 import React from 'react';
 
 import PanelGroupHeader from 'design-system/PanelGroupHeader';
+import Text from 'design-system/Text';
 
 import styles from './PanelHeading.module.css';
 
@@ -13,7 +14,13 @@ const PanelHeading = ({ title, meta }: Props) => (
   <div className={styles.heading}>
     <PanelGroupHeader
       label={title}
-      action={meta && <span className={styles.meta}>{meta}</span>}
+      action={
+        meta && (
+          <Text as="span" variant="ui" tone="secondary">
+            {meta}
+          </Text>
+        )
+      }
     />
   </div>
 );

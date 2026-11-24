@@ -9,8 +9,3 @@
   flex-direction: column;
   gap: var(--gv-space-4);
 }
-
-.label {
-  composes: small from '../../../../../../../../../../../design-system/typography.module.css';
-  color: var(--gv-text-secondary);
-}

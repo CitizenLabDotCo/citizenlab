@@ -1,45 +1,27 @@
-/* 80 px has no spacing token; it keeps the spinner where the first rows will appear. */
 .loading {
-  display: flex;
-  justify-content: center;
-  padding: 80px 0;
+  composes: loading from '../_shared/listManager.module.css';
 }
 
-/* 0.4 is today's dimming of the stale list while the next page loads; no opacity token matches. */
 .dimmed {
-  opacity: 0.4;
+  composes: dimmed from '../_shared/listManager.module.css';
 }
 
 .pagination {
-  display: flex;
-  justify-content: center;
-  padding: var(--gv-space-16) 0;
+  composes: pagination from '../_shared/listManager.module.css';
 }
 
 .toolbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--gv-space-12);
-  min-height: var(--gv-size-28);
-  margin-bottom: var(--gv-space-8);
+  composes: toolbar from '../_shared/listManager.module.css';
 }
 
 .count {
-  composes: title from '../../../../../../design-system/typography.module.css';
-  color: var(--gv-text-primary);
+  composes: count from '../_shared/listManager.module.css';
 }
 
 .display {
-  display: flex;
-  flex-shrink: 0;
-  align-items: center;
-  gap: var(--gv-space-6);
+  composes: display from '../_shared/listManager.module.css';
 }
 
-/* The Stats frame of the Manage side panel: padding 8, gap 0. */
 .stats {
-  padding: var(--gv-space-8);
-  border-radius: var(--gv-radius-12);
-  background: var(--gv-surface-panel);
+  composes: stats from '../_shared/listManager.module.css';
 }

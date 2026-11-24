@@ -47,11 +47,6 @@
   color: var(--gv-text-primary);
 }
 
-.detail {
-  composes: small from '../../../../../../design-system/typography.module.css';
-  color: var(--gv-text-secondary);
-}
-
 .chevron {
   flex-shrink: 0;
   color: var(--gv-icon-secondary);

@@ -8,10 +8,11 @@ import '../tokens.css';
 type Props = {
   id: Key;
   children: ReactNode;
+  className?: string;
 };
 
-const TabPanel = ({ id, children }: Props) => (
-  <AriaTabPanel id={id} className={styles.tabPanel}>
+const TabPanel = ({ id, children, className }: Props) => (
+  <AriaTabPanel id={id} className={`${styles.tabPanel} ${className ?? ''}`}>
     {children}
   </AriaTabPanel>
 );

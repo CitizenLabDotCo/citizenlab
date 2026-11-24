@@ -1,12 +1,5 @@
-/* Padding 3 and radius 5 are off the scale, kept as rendered. */
 .tabList {
-  box-sizing: border-box;
-  display: inline-flex;
-  align-items: center;
-  padding: 3px;
-  gap: var(--gv-space-2);
-  border-radius: 5px;
-  background: var(--gv-surface-muted);
+  composes: track from '../segmented.module.css';
 }
 
 .tab {
@@ -18,7 +11,7 @@
   flex-shrink: 0;
   align-items: center;
   justify-content: center;
-  height: var(--gv-size-control-28);
+  height: var(--gv-size-28);
   padding: 0 var(--gv-space-14);
   gap: var(--gv-space-6);
   border-radius: 5px;

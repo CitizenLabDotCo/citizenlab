@@ -2,6 +2,7 @@ import React from 'react';
 
 import Button from 'design-system/Button';
 import DesignSystemEmptyState from 'design-system/EmptyState';
+import Text from 'design-system/Text';
 
 import postManagerMessages from 'components/admin/PostManager/messages';
 
@@ -19,9 +20,9 @@ const NoMatches = ({ onClearFilters }: Props) => {
   return (
     <DesignSystemEmptyState>
       <span className={styles.content}>
-        <span className={styles.title}>
+        <Text as="span" variant="uiStrong" tone="primary">
           {formatMessage(postManagerMessages.noFilteredResults)}
-        </span>
+        </Text>
         <span>
           {formatMessage(postManagerMessages.resetInputFiltersDescription)}
         </span>

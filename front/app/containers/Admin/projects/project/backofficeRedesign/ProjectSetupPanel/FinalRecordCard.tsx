@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Icon from 'design-system/Icon';
+import Text from 'design-system/Text';
 
 import { IProjectData } from 'api/projects/types';
 
@@ -60,14 +61,20 @@ const FinalRecordCard = ({ project }: Props) => {
   return (
     <StatCardLink projectId={project.id}>
       <div className={styles.head}>
-        <p className={styles.caption}>{formatMessage(messages.finalRecord)}</p>
+        <Text variant="small" tone="secondary">
+          {formatMessage(messages.finalRecord)}
+        </Text>
         <Icon name="chevron-right-16" className={styles.chevron} />
       </div>
 
       {rows.map(({ label, value }) => (
         <div key={label.id} className={styles.row}>
-          <p className={styles.label}>{formatMessage(label)}</p>
-          <p className={styles.value}>{value ?? '—'}</p>
+          <Text variant="ui" tone="secondary">
+            {formatMessage(label)}
+          </Text>
+          <Text variant="uiStrong" tone="primary">
+            {value ?? '—'}
+          </Text>
         </div>
       ))}
     </StatCardLink>

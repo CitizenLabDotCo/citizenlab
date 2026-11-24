@@ -16,12 +16,6 @@
   gap: var(--gv-space-12);
 }
 
-/* Full-width button: the design-system Button has no width option. */
-.fullWidth {
-  display: flex;
-  flex-direction: column;
-}
-
 .helper {
   composes: ui from '../../../../../../../design-system/typography.module.css';
   color: var(--gv-text-secondary);

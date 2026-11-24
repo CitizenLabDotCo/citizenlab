@@ -13,3 +13,7 @@
   outline-offset: var(--gv-focus-ring-offset);
   box-shadow: none;
 }
+
+.info {
+  color: var(--gv-icon-secondary);
+}

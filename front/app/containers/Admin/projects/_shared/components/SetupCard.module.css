@@ -5,18 +5,6 @@
   max-width: 100%;
 }
 
-.infoButton {
-  composes: ringOutside from '../../../../../design-system/focus.module.css';
-  display: inline-flex;
-  flex-shrink: 0;
-  padding: 0;
-  border: none;
-  border-radius: var(--gv-radius-4);
-  background: transparent;
-  color: var(--gv-icon-secondary);
-  cursor: default;
-}
-
 .review {
   display: flex;
   flex-direction: column;

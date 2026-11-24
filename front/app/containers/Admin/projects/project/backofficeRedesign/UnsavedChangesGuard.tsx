@@ -2,6 +2,7 @@ import React from 'react';
 
 import Button from 'design-system/Button';
 import Modal from 'design-system/Modal';
+import Text from 'design-system/Text';
 
 import phaseSetupMessages from 'containers/Admin/projects/project/phaseSetup/messages';
 
@@ -13,7 +14,6 @@ import { useBlocker } from 'utils/router';
 import useReturnToPhaseAfterSave from './_shared/useReturnToPhaseAfterSave';
 import publishMessages from './Header/PublishDropdown/messages';
 import messages from './messages';
-import styles from './UnsavedChangesGuard.module.css';
 
 const UnsavedChangesGuard = () => {
   const { formatMessage } = useIntl();
@@ -70,9 +70,9 @@ const UnsavedChangesGuard = () => {
         onPress: handleSave,
       }}
     >
-      <p className={styles.text}>
+      <Text variant="ui" tone="secondary">
         {formatMessage(messages.unsavedChangesDescription2)}
-      </p>
+      </Text>
     </Modal>
   );
 };

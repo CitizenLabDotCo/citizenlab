@@ -1,8 +1,6 @@
 import React, { ReactNode } from 'react';
 
-import { Spinner } from '@citizenlab/cl2-component-library';
-
-import styles from './PlacementButton.module.css';
+import { Button, colors } from '@citizenlab/cl2-component-library';
 
 interface Props {
   appearance: 'primary' | 'secondary';
@@ -13,44 +11,34 @@ interface Props {
   'data-cy'?: string;
 }
 
-// The old flow keeps the button look it has today; the redesign uses design-system buttons.
 const PlacementButton = ({
   appearance,
-  disabled = false,
-  processing = false,
+  disabled,
+  processing,
   onClick,
   children,
   'data-cy': dataCy,
-}: Props) => {
-  const className = [
-    styles.button,
-    styles[appearance],
-    processing ? styles.processing : undefined,
-  ]
-    .filter(Boolean)
-    .join(' ');
-
-  return (
-    <button
-      type="button"
-      className={className}
-      aria-disabled={disabled || processing}
-      data-cy={dataCy}
-      onClick={() => {
-        if (!disabled && !processing) onClick();
-      }}
-    >
-      <span className={styles.text}>{children}</span>
-      {processing && (
-        <span className={styles.spinner}>
-          <Spinner
-            size="24px"
-            color={appearance === 'primary' ? '#ffffff' : '#1e1e1e'}
-          />
-        </span>
-      )}
-    </button>
-  );
-};
+}: Props) => (
+  <Button
+    type="button"
+    buttonStyle={
+      appearance === 'primary' ? 'admin-dark' : 'admin-dark-outlined'
+    }
+    bgColor={appearance === 'secondary' ? colors.white : undefined}
+    borderColor={appearance === 'secondary' ? colors.grey300 : undefined}
+    height="36px"
+    padding="0 16px"
+    lineHeight="20px"
+    fontSize="14px"
+    fontWeight="500"
+    borderRadius="8px"
+    disabled={disabled}
+    processing={processing}
+    onClick={onClick}
+    dataCy={dataCy}
+  >
+    {children}
+  </Button>
+);
 
 export default PlacementButton;

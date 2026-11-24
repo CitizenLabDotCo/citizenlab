@@ -35,11 +35,11 @@
 }
 
 .size36 {
-  height: var(--gv-size-control-36);
+  height: var(--gv-size-36);
 }
 
 .size32 {
-  height: var(--gv-size-control-32);
+  height: var(--gv-size-32);
 }
 
 .input[data-hovered] {

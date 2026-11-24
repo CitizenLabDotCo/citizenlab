@@ -1,21 +1,13 @@
-/* Radius 5 and 3 are off the token scale; kept as drawn. */
 .track {
-  box-sizing: border-box;
-  display: inline-flex;
-  align-items: center;
-  padding: 3px;
-  gap: var(--gv-space-2);
-  border-radius: 5px;
-  background: var(--gv-surface-muted);
+  composes: track from '../segmented.module.css';
 }
 
 .item {
+  composes: button from '../reset.module.css';
   composes: small from '../typography.module.css';
   composes: ringInside from '../focus.module.css';
   padding: var(--gv-space-4) var(--gv-space-12);
-  border: none;
   border-radius: 3px;
-  background: transparent;
   color: var(--gv-text-on-muted);
   white-space: nowrap;
   cursor: pointer;

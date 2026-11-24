@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import Modal from 'design-system/Modal';
 import Tabs, { TabPanel } from 'design-system/Tabs';
+import Text from 'design-system/Text';
 
 import { IPhasePermissionAction } from 'api/permissions/types';
 
@@ -48,9 +49,9 @@ const DemographicsModal = ({ phaseId, actions, opened, onClose }: Props) => {
       title={title}
     >
       <div className={styles.body}>
-        <p className={styles.helper}>
+        <Text variant="ui" tone="secondary">
           {formatMessage(messages.collectDemographicDataDescription)}
-        </p>
+        </Text>
         {actions.length > 1 ? (
           <Tabs
             selectedKey={selected}

@@ -7,7 +7,6 @@ import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 import messages from '../../../../../messages';
 
-import styles from './MapConfigButton.module.css';
 import 'design-system/tokens.css';
 
 // The workspace swaps to the map configuration while this flag is set. It
@@ -16,15 +15,14 @@ const MapConfigButton = () => {
   const { formatMessage } = useIntl();
 
   return (
-    <div className={styles.fullWidth}>
-      <Button
-        variant="secondary"
-        size={32}
-        onPress={() => updateSearchParams({ map_config: true })}
-      >
-        {formatMessage(messages.configureMap)}
-      </Button>
-    </div>
+    <Button
+      fullWidth
+      variant="secondary"
+      size={32}
+      onPress={() => updateSearchParams({ map_config: true })}
+    >
+      {formatMessage(messages.configureMap)}
+    </Button>
   );
 };
 

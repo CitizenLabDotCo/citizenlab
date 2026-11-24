@@ -8,8 +8,3 @@
   flex-shrink: 0;
   color: var(--gv-icon-secondary);
 }
-
-.text {
-  composes: small from '../../../../../../design-system/typography.module.css';
-  color: var(--gv-text-secondary);
-}

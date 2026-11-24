@@ -18,12 +18,11 @@
 }
 
 .main {
+  composes: panel from '../../../../../../design-system/surfaces.module.css';
   position: relative;
   flex-grow: 1;
   min-width: 0;
   min-height: 0;
   padding: var(--gv-space-18);
   overflow-y: auto;
-  border-radius: var(--gv-radius-12);
-  background: var(--gv-surface-panel);
 }

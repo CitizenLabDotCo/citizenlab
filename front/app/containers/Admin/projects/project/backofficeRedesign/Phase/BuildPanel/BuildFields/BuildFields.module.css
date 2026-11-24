@@ -7,7 +7,7 @@
 .header {
   display: flex;
   align-items: center;
-  min-height: var(--gv-size-control-32);
+  min-height: var(--gv-size-32);
   margin-bottom: var(--gv-space-16);
 }
 
@@ -55,9 +55,4 @@
   display: flex;
   flex-direction: column;
   gap: var(--gv-space-12);
-}
-
-.helper {
-  composes: ui from '../../../../../../../../design-system/typography.module.css';
-  color: var(--gv-text-secondary);
 }

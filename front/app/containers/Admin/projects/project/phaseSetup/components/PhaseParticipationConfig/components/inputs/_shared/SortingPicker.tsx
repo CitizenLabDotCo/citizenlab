@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useId } from 'react';
 
 import { Radio, IconTooltip } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
 import Button from 'design-system/Button';
-import { fieldStyles } from 'design-system/Field';
+import { FieldError } from 'design-system/Field';
 import Menu, { MenuItem, MenuTrigger } from 'design-system/Menu';
 
 import { IdeaSortMethod } from 'api/phases/types';
@@ -47,6 +47,7 @@ export default ({
   variant = 'default',
 }: Props) => {
   const { formatMessage } = useIntl();
+  const errorId = useId();
   const getApiErrorMessage = useApiErrorText();
 
   if (variant === 'panel') {
@@ -63,7 +64,12 @@ export default ({
           }
           action={
             <MenuTrigger>
-              <Button variant="secondary" size={28} hasMenu>
+              <Button
+                variant="secondary"
+                size={28}
+                hasMenu
+                aria-describedby={errorMessage ? errorId : undefined}
+              >
                 {ideas_order
                   ? formatMessage(SORTING_LABELS[ideas_order])
                   : title}
@@ -86,7 +92,7 @@ export default ({
             </MenuTrigger>
           }
         >
-          {errorMessage && <p className={fieldStyles.error}>{errorMessage}</p>}
+          {errorMessage && <FieldError id={errorId}>{errorMessage}</FieldError>}
         </SetupCard>
       </div>
     );

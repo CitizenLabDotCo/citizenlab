@@ -2,6 +2,7 @@ import React, { lazy, Suspense } from 'react';
 
 import { Multiloc } from 'typings';
 
+import Text from 'design-system/Text';
 import TextField from 'design-system/TextField';
 
 import SetupCard from 'containers/Admin/projects/_shared/components/SetupCard';
@@ -70,12 +71,12 @@ const LocationCard = ({ form }: Props) => {
       {form.hasLocationPoint && (
         <div className={styles.field}>
           <div>
-            <p className={styles.label}>
+            <Text variant="body" tone="primary">
               {formatMessage(eventMessages.refineOnMap)}
-            </p>
-            <p className={styles.description}>
+            </Text>
+            <Text variant="ui" tone="secondary">
               {formatMessage(eventMessages.refineOnMapInstructions)}
-            </p>
+            </Text>
           </div>
           <Suspense fallback={null}>
             <EventMap

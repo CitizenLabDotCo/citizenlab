@@ -1,6 +1,8 @@
 import React from 'react';
 
 import Icon from 'design-system/Icon';
+import Text from 'design-system/Text';
+import TooltipMark from 'design-system/Tooltip/TooltipMark';
 
 import { IIdeaData } from 'api/ideas/types';
 import { IPhaseData } from 'api/phases/types';
@@ -11,8 +13,6 @@ import postManagerMessages from 'components/admin/PostManager/messages';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import FormattedBudget from 'utils/currency/FormattedBudget';
-
-import TooltipMark from '../TooltipMark';
 
 import PropertyRow from './PropertyRow';
 import styles from './SidePanel.module.css';
@@ -33,15 +33,15 @@ const VotingDetails = ({ idea, phase }: Props) => {
     <div className={styles.properties}>
       {budget && (
         <PropertyRow label={formatMessage(postManagerMessages.cost)}>
-          <span className={styles.budget}>
+          <Text as="span" variant="uiStrong" tone="primary">
             <FormattedBudget value={budget} />
-          </span>
-          <span className={styles.secondary}>
+          </Text>
+          <Text as="span" variant="ui" tone="secondary">
             <FormattedMessage
               {...previewMessages.picks}
               values={{ picksNumber: baskets_count }}
             />
-          </span>
+          </Text>
           <TooltipMark
             label={formatMessage(postManagerMessages.pbItemCountTooltip)}
           >

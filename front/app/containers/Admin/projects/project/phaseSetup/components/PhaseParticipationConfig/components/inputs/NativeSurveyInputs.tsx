@@ -1,9 +1,9 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useId } from 'react';
 
 import { Box, Text, Toggle } from '@citizenlab/cl2-component-library';
 import { CLErrors, Multiloc } from 'typings';
 
-import { fieldStyles } from 'design-system/Field';
+import { FieldError } from 'design-system/Field';
 
 import { IPhase, IUpdatedPhaseProperties } from 'api/phases/types';
 import useProjectById from 'api/projects/useProjectById';
@@ -59,6 +59,8 @@ const NativeSurveyInputs = ({
 }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
+  const submissionErrorId = useId();
+  const multipleResponsesErrorId = useId();
   const getApiErrorMessage = useApiErrorText();
   const { data: project } = useProjectById(
     phase?.data.relationships.project.data.id
@@ -106,22 +108,28 @@ const NativeSurveyInputs = ({
             description={formatMessage(
               configMessages.acceptNewResponsesDescription
             )}
+            aria-describedby={submissionError ? submissionErrorId : undefined}
             checked={!!formData.submission_enabled}
             onChange={toggleSubmissionEnabled}
           />
           {submissionError && (
-            <p className={fieldStyles.error}>{submissionError}</p>
+            <FieldError id={submissionErrorId}>{submissionError}</FieldError>
           )}
           <SettingToggleRow
             title={formatMessage(parentMessages.allowMultipleResponsesLabel)}
             description={formatMessage(
               parentMessages.allowMultipleResponsesDescription
             )}
+            aria-describedby={
+              multipleResponsesError ? multipleResponsesErrorId : undefined
+            }
             checked={!!formData.allow_multiple_responses}
             onChange={toggleAllowMultipleResponses}
           />
           {multipleResponsesError && (
-            <p className={fieldStyles.error}>{multipleResponsesError}</p>
+            <FieldError id={multipleResponsesErrorId}>
+              {multipleResponsesError}
+            </FieldError>
           )}
           {phase && (
             <PhaseActionAccessRow

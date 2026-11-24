@@ -4,6 +4,7 @@ import { UploadFile } from 'typings';
 
 import Banner from 'design-system/Banner';
 import IconButton from 'design-system/IconButton';
+import Text from 'design-system/Text';
 
 import imagesDropzoneMessages from 'components/UI/ImagesDropzone/messages';
 
@@ -103,7 +104,7 @@ const ImageFileRow = ({
           <p className={styles.name} title={image.name}>
             {image.name}
           </p>
-          <p className={styles.meta}>
+          <Text variant="small" tone="secondary">
             <span className={styles.nowrap}>{returnFileSize(image.size)}</span>
             {dimensions && (
               <>
@@ -113,7 +114,7 @@ const ImageFileRow = ({
                 </span>
               </>
             )}
-          </p>
+          </Text>
           {stackActions && actions}
         </div>
         {!stackActions && actions}

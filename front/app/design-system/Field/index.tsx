@@ -1,19 +1,13 @@
 import React, { ReactNode, useContext } from 'react';
 
-import {
-  FieldError,
-  FieldErrorContext,
-  Focusable,
-  Label,
-  Text,
-} from 'react-aria-components';
+import { FieldErrorContext, Label, Text } from 'react-aria-components';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import Icon from '../Icon';
-import Tooltip from '../Tooltip';
+import TooltipMark from '../Tooltip/TooltipMark';
 
 import styles from './Field.module.css';
+import FieldError from './FieldError';
 import messages from './messages';
 import '../tokens.css';
 
@@ -34,20 +28,7 @@ type FieldLabelProps = {
 export const FieldLabel = ({ children, tooltip }: FieldLabelProps) => (
   <div className={styles.labelRow}>
     <Label className={styles.label}>{children}</Label>
-    {tooltip && (
-      <Tooltip content={tooltip}>
-        <Focusable>
-          <span
-            className={styles.infoMark}
-            role="img"
-            aria-label={tooltip}
-            tabIndex={0}
-          >
-            <Icon name="info-16" />
-          </span>
-        </Focusable>
-      </Tooltip>
-    )}
+    {tooltip && <TooltipMark label={tooltip} />}
   </div>
 );
 
@@ -63,7 +44,7 @@ export const FieldHelp = ({ description, errorMessage }: FieldHelpProps) => {
 
   return (
     <>
-      <FieldError className={styles.error}>{errorMessage}</FieldError>
+      <FieldError>{errorMessage}</FieldError>
       {description && !isInvalid && (
         <Text slot="description" className={styles.description}>
           {description}
@@ -73,4 +54,4 @@ export const FieldHelp = ({ description, errorMessage }: FieldHelpProps) => {
   );
 };
 
-export { styles as fieldStyles };
+export { FieldError, styles as fieldStyles };

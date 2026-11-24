@@ -1,4 +1,0 @@
-.empty {
-  composes: small from '../../../../../../../../../design-system/typography.module.css';
-  color: var(--gv-text-danger);
-}

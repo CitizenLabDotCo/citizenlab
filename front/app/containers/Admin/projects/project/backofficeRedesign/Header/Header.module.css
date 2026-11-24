@@ -1,11 +1,10 @@
 .header {
+  composes: panel from '../../../../../../design-system/surfaces.module.css';
   display: flex;
   flex: 0 0 var(--gv-size-48);
   align-items: center;
   height: var(--gv-size-48);
   padding: 0 var(--gv-space-20) 0 var(--gv-space-56);
-  border-radius: var(--gv-radius-12);
-  background: var(--gv-surface-panel);
 }
 
 .separator {

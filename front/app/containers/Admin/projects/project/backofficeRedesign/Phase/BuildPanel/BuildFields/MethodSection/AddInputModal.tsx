@@ -8,6 +8,7 @@ import { boolean, mixed, ObjectSchema, object, string } from 'yup';
 import Banner from 'design-system/Banner';
 import IconButton from 'design-system/IconButton';
 import Modal from 'design-system/Modal';
+import Text from 'design-system/Text';
 
 import usePhase from 'api/phases/usePhase';
 
@@ -172,9 +173,9 @@ const AddInputModal = ({
           {allowAnonymous && (
             <div>
               <div className={styles.visibilityLabel}>
-                <span className={styles.helper}>
+                <Text as="span" variant="small" tone="secondary">
                   {formatMessage(messages.statementProfileVisibility)}
-                </span>
+                </Text>
                 <IconButton
                   icon="info-16"
                   size={24}
@@ -185,9 +186,9 @@ const AddInputModal = ({
                 name="anonymous"
                 size="20px"
                 label={
-                  <span className={styles.control}>
+                  <Text as="span" variant="ui" tone="primary">
                     {formatMessage(messages.statementPostAnonymously)}
-                  </span>
+                  </Text>
                 }
               />
             </div>

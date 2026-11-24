@@ -1,9 +1,9 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useId } from 'react';
 
 import { IconTooltip, Radio } from '@citizenlab/cl2-component-library';
 import { CLError, CLErrors } from 'typings';
 
-import { fieldStyles } from 'design-system/Field';
+import { FieldError } from 'design-system/Field';
 
 import PhaseActionAccessRow, {
   AccessOnlyAction,
@@ -67,13 +67,17 @@ const UserActions = ({
 }) => {
   const { formatMessage } = useIntl();
   const getApiErrorMessage = useApiErrorText();
+  const errorId = useId();
+  const postingErrorId = `${errorId}-posting`;
+  const commentingErrorId = `${errorId}-commenting`;
+  const reactingErrorId = `${errorId}-reacting`;
   const panel = layout === 'panel';
 
   // The panel shows errors as plain field error text.
-  const actionError = (errors: CLError[] | undefined) => {
+  const actionError = (errors: CLError[] | undefined, id: string) => {
     if (!panel) return <Error apiErrors={errors} />;
     const message = getApiErrorMessage(errors);
-    return message && <p className={fieldStyles.error}>{message}</p>;
+    return message && <FieldError id={id}>{message}</FieldError>;
   };
 
   const actions = (
@@ -90,10 +94,15 @@ const UserActions = ({
       <ActionToggleRow
         phaseId={phaseId}
         action="posting_idea"
-        error={actionError(apiErrors?.submission_enabled)}
+        error={actionError(apiErrors?.submission_enabled, postingErrorId)}
       >
         <ActionToggle
           layout={layout}
+          aria-describedby={
+            panel && getApiErrorMessage(apiErrors?.submission_enabled)
+              ? postingErrorId
+              : undefined
+          }
           checked={submission_enabled || false}
           onChange={togglePostingEnabled}
           label={formatMessage(messages.inputPostingEnabled)}
@@ -104,10 +113,15 @@ const UserActions = ({
         <ActionToggleRow
           phaseId={phaseId}
           action="commenting_idea"
-          error={actionError(apiErrors?.commenting_enabled)}
+          error={actionError(apiErrors?.commenting_enabled, commentingErrorId)}
         >
           <ActionToggle
             layout={layout}
+            aria-describedby={
+              panel && getApiErrorMessage(apiErrors?.commenting_enabled)
+                ? commentingErrorId
+                : undefined
+            }
             checked={commenting_enabled || false}
             onChange={toggleCommentingEnabled}
             label={formatMessage(messages.inputCommentingEnabled)}
@@ -120,10 +134,15 @@ const UserActions = ({
           phaseId={phaseId}
           action="reacting_idea"
           last
-          error={actionError(apiErrors?.reacting_enabled)}
+          error={actionError(apiErrors?.reacting_enabled, reactingErrorId)}
         >
           <ActionToggle
             layout={layout}
+            aria-describedby={
+              panel && getApiErrorMessage(apiErrors?.reacting_enabled)
+                ? reactingErrorId
+                : undefined
+            }
             checked={reacting_enabled || false}
             onChange={toggleReactingEnabled}
             label={formatMessage(messages.inputReactingEnabled)}

@@ -5,6 +5,7 @@ import SearchField from 'design-system/SearchField';
 
 import searchInputMessages from 'components/UI/SearchInput/messages';
 
+import { ScreenReaderOnly } from 'utils/a11y';
 import { useIntl } from 'utils/cl-intl';
 
 import styles from './SearchToggle.module.css';
@@ -76,9 +77,9 @@ const SearchToggle = ({ label, searchTerm, onChange, resultCount }: Props) => {
         autoFocus
         data-cy="e2e-input-manager-search"
       />
-      <span className={styles.announcement} role="status" aria-live="polite">
+      <ScreenReaderOnly role="status" aria-live="polite">
         {announcement}
-      </span>
+      </ScreenReaderOnly>
     </div>
   );
 };

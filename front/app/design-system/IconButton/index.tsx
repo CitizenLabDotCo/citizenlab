@@ -36,6 +36,7 @@ type IconButtonProps = VariantProps & {
   onPress?: (e: PressEvent) => void;
   'aria-expanded'?: boolean;
   'aria-controls'?: string;
+  'aria-describedby'?: string;
   'data-cy'?: string;
 };
 
@@ -51,6 +52,7 @@ const IconButton = ({
   onPress,
   'aria-expanded': ariaExpanded,
   'aria-controls': ariaControls,
+  'aria-describedby': ariaDescribedBy,
   'data-cy': dataCy,
 }: IconButtonProps) => {
   const className = `${styles.iconButton} ${styles[variant]} ${
@@ -70,6 +72,7 @@ const IconButton = ({
       onPress={hasReason ? undefined : onPress}
       aria-expanded={ariaExpanded}
       aria-controls={ariaControls}
+      aria-describedby={ariaDescribedBy}
       aria-label={ariaLabel}
       data-cy={dataCy}
     >
@@ -82,6 +85,7 @@ const IconButton = ({
       type="button"
       aria-expanded={ariaExpanded}
       aria-controls={ariaControls}
+      aria-describedby={ariaDescribedBy}
       isDisabled={isDisabled && !hasReason}
       aria-disabled={hasReason ? true : undefined}
       onPress={hasReason ? undefined : onPress}

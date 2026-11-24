@@ -18,11 +18,6 @@
   gap: var(--gv-space-8);
 }
 
-.position {
-  composes: ui from '../../../../../../../design-system/typography.module.css';
-  color: var(--gv-text-secondary);
-}
-
 .overview {
   display: flex;
   flex-direction: column;
@@ -117,16 +112,6 @@
 /* The tags flow in the row next to the add control. */
 .tagList {
   display: contents;
-}
-
-.budget {
-  composes: uiStrong from '../../../../../../../design-system/typography.module.css';
-  color: var(--gv-text-primary);
-}
-
-.secondary {
-  composes: ui from '../../../../../../../design-system/typography.module.css';
-  color: var(--gv-text-secondary);
 }
 
 .infoIcon {

@@ -21,11 +21,10 @@
    radios inside it are placed, and scrolled, within the column. Otherwise
    they hang below the page, and focusing one scrolls the whole workspace. */
 .panel {
+  composes: panel from '../../../../../design-system/surfaces.module.css';
   position: relative;
   min-height: 0;
   overflow-y: auto;
-  border-radius: var(--gv-radius-12);
-  background: var(--gv-surface-panel);
 }
 
 .setupSlot {

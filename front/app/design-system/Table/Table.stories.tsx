@@ -78,7 +78,6 @@ export const ColumnMenuOpen: Story = {
         <Button>Published</Button>
         <ColumnMenu
           columnType="date"
-          sortDirection="ascending"
           onSortChange={() => {}}
           onHide={() => {}}
         />

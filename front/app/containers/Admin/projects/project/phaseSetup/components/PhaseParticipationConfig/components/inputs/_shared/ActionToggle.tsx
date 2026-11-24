@@ -13,12 +13,24 @@ interface Props {
   checked: boolean;
   onChange: () => void;
   label: string;
+  'aria-describedby'?: string;
 }
 
-const ActionToggle = ({ layout, checked, onChange, label }: Props) => {
+const ActionToggle = ({
+  layout,
+  checked,
+  onChange,
+  label,
+  'aria-describedby': ariaDescribedBy,
+}: Props) => {
   if (layout === 'panel') {
     return (
-      <Switch size={26} isSelected={checked} onChange={() => onChange()}>
+      <Switch
+        aria-describedby={ariaDescribedBy}
+        size={26}
+        isSelected={checked}
+        onChange={() => onChange()}
+      >
         <span className={styles.label}>{label}</span>
       </Switch>
     );

@@ -6,10 +6,11 @@ import '../tokens.css';
 type StatTileProps = {
   label: ReactNode;
   value: ReactNode;
+  className?: string;
 };
 
-const StatTile = ({ label, value }: StatTileProps) => (
-  <div className={styles.tile}>
+const StatTile = ({ label, value, className }: StatTileProps) => (
+  <div className={`${styles.tile} ${className ?? ''}`}>
     <span className={styles.label}>{label}</span>
     <span className={styles.value}>{value}</span>
   </div>

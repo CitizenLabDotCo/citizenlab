@@ -3,9 +3,3 @@
   flex-direction: column;
   gap: var(--gv-space-6);
 }
-
-.description {
-  composes: small from '../../../../../../design-system/typography.module.css';
-  margin: 0;
-  color: var(--gv-text-secondary);
-}
