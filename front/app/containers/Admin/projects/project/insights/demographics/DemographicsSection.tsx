@@ -9,6 +9,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled, { css } from 'styled-components';
 
+import DashboardCard from 'design-system/DashboardCard';
 import EmptyState from 'design-system/EmptyState';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -29,7 +30,6 @@ import {
 
 import { useIntl } from 'utils/cl-intl';
 
-import InsightCard from '../InsightCard';
 import messages from '../messages';
 import { usePdfExportContext } from '../pdf/PdfExportContext';
 import { useWordSection, type WordSection } from '../word/useWordSection';
@@ -229,13 +229,13 @@ const DemographicsSection = ({ phase }: Props) => {
   if (fields.length === 0 && redesigned) {
     return (
       <WordExportableInsight exportId="demographics">
-        <InsightCard
+        <DashboardCard
           title={formatMessage(messages.demographicsAndAudienceCard)}
         >
           <EmptyState context="card">
             {formatMessage(messages.noDemographicData)}
           </EmptyState>
-        </InsightCard>
+        </DashboardCard>
       </WordExportableInsight>
     );
   }
@@ -358,11 +358,11 @@ const DemographicsSection = ({ phase }: Props) => {
   if (redesigned) {
     return (
       <WordExportableInsight exportId="demographics">
-        <InsightCard
+        <DashboardCard
           title={formatMessage(messages.demographicsAndAudienceCard)}
         >
           <Box position="relative">{tabs}</Box>
-        </InsightCard>
+        </DashboardCard>
       </WordExportableInsight>
     );
   }
