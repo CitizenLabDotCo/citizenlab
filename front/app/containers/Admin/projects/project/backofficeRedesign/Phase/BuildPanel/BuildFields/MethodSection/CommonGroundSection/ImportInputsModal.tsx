@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
+
+import { useController, useForm } from 'react-hook-form';
 
 import Modal from 'design-system/Modal';
 
@@ -15,6 +17,11 @@ import styles from './CommonGroundSection.module.css';
 import messages from './messages';
 import ProjectComboBox from './ProjectComboBox';
 
+interface FormValues {
+  fromProjectId?: string;
+  fromPhaseId?: string;
+}
+
 interface Props {
   projectId: string;
   phaseId: string;
@@ -29,39 +36,42 @@ const ImportInputsModal = ({
   onClose,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const [fromProjectId, setFromProjectId] = useState<string>();
-  const [fromPhaseId, setFromPhaseId] = useState<string>();
-  const [count, setCount] = useState<number>();
-  const { mutate: copyInputs, isPending: counting } = useCopyInputs();
+  const { control, handleSubmit, setValue } = useForm<FormValues>();
+  const { field: projectField } = useController({
+    control,
+    name: 'fromProjectId',
+  });
+  const { field: phaseField } = useController({ control, name: 'fromPhaseId' });
+  // A dry run of the copy is how the API reports how many inputs would move.
+  const {
+    mutate: countInputs,
+    data: dryRun,
+    isPending: counting,
+    reset: resetCount,
+  } = useCopyInputs();
   const { data: phase } = usePhase(phaseId);
 
+  const fromProjectId = projectField.value;
+  const fromPhaseId = phaseField.value;
+  const count = dryRun?.data.attributes.total;
   const phaseStartDate = phase?.data.attributes.start_at;
 
   const handleProjectChange = (value: string | undefined) => {
-    setFromProjectId(value);
-    setFromPhaseId(undefined);
-    setCount(undefined);
+    projectField.onChange(value);
+    setValue('fromPhaseId', undefined);
+    resetCount();
   };
 
-  // A dry run of the copy is how the API reports how many inputs would move.
   const handlePhaseChange = (value: string) => {
-    setFromPhaseId(value);
-    setCount(undefined);
-    copyInputs(
-      { toPhaseId: phaseId, fromPhaseId: value, dryRun: true },
-      {
-        onSuccess: (job) => {
-          setCount(job.data.attributes.total);
-        },
-      }
-    );
+    phaseField.onChange(value);
+    countInputs({ toPhaseId: phaseId, fromPhaseId: value, dryRun: true });
   };
 
-  const handleImport = () => {
+  const handleImport = handleSubmit(({ fromPhaseId }) => {
     if (!fromPhaseId || count === undefined) return;
     onImport(fromPhaseId, count);
     onClose();
-  };
+  });
 
   return (
     <Modal
@@ -78,7 +88,7 @@ const ImportInputsModal = ({
       primaryAction={{
         label: formatMessage(inputManagerMessages.importInputs),
         isDisabled: !fromPhaseId || counting || !count,
-        onPress: handleImport,
+        onPress: () => handleImport(),
       }}
     >
       <div>
