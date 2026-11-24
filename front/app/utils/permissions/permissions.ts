@@ -1,3 +1,5 @@
+import { useCallback } from 'react';
+
 import { isObject } from 'lodash-es';
 
 import { IAppConfigurationData } from 'api/app_configuration/types';
@@ -52,18 +54,22 @@ const getPermissionRule = (resourceType: TResourceType, action: TAction) => {
   return permissionRules[resourceType][action];
 };
 
-const usePermission = ({
-  item,
-  action,
-  context,
-}: {
+type PermissionParams = {
   item: TPermissionItem | null;
   action: string;
   context?: any;
-}) => {
-  const { data: user } = useAuthUser();
-  const { data: appConfig } = useAppConfiguration();
+};
 
+const hasPermission = ({
+  item,
+  action,
+  context,
+  user,
+  appConfig,
+}: PermissionParams & {
+  user: IUser | undefined | null;
+  appConfig: IAppConfigurationData | undefined;
+}) => {
   if (!item) {
     return false;
   }
@@ -74,10 +80,26 @@ const usePermission = ({
   // TODO: Fix this the next time the file is edited.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (rule && appConfig) {
-    return rule(item, user, appConfig.data, context);
+    return rule(item, user, appConfig, context);
   } else {
     throw `No permission rule is specified on resource '${resourceType}' for action '${action}'`;
   }
 };
 
-export { definePermissionRule, usePermission };
+// Returns a function that checks a permission for the current user, for
+// checking many items at once (hooks can't be called once per item in a list).
+const usePermissionCheck = () => {
+  const { data: user } = useAuthUser();
+  const { data: appConfig } = useAppConfiguration();
+
+  return useCallback(
+    (params: PermissionParams) =>
+      hasPermission({ ...params, user, appConfig: appConfig?.data }),
+    [user, appConfig]
+  );
+};
+
+const usePermission = (params: PermissionParams) =>
+  usePermissionCheck()(params);
+
+export { definePermissionRule, usePermission, usePermissionCheck };

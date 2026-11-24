@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+import { invalidateAdminSearchIfShownChanged } from 'api/admin_search/utils';
 import emailCampaignsKeys from 'api/campaigns/email/keys';
 import projectsKeys from 'api/projects/keys';
 import supportedCampaignNamesKeys from 'api/supported_campaign_names/keys';
@@ -45,6 +46,10 @@ const useUpdatePhase = () => {
       ) {
         await phaseRefreshes;
       }
+      invalidateAdminSearchIfShownChanged(queryClient, {
+        id: data.data.id,
+        titleMultiloc: data.data.attributes.title_multiloc,
+      });
       queryClient.invalidateQueries({ queryKey: emailCampaignsKeys.lists() });
       queryClient.invalidateQueries({
         queryKey: supportedCampaignNamesKeys.lists({
