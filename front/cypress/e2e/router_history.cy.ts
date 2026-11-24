@@ -65,8 +65,8 @@ describe('router history', () => {
     // Go to new idea form
     cy.get('#project-ideabutton').click();
     cy.location('pathname').should(
-      'eq',
-      '/en/projects/an-idea-bring-it-to-your-council/ideas/new'
+      'match',
+      /^\/en\/projects\/an-idea-bring-it-to-your-council\/ideas\/new\/[^/]+$/
     );
 
     // Go back with browser back button
@@ -79,8 +79,8 @@ describe('router history', () => {
     // Go forward with browser forward button
     cy.go('forward');
     cy.location('pathname').should(
-      'eq',
-      '/en/projects/an-idea-bring-it-to-your-council/ideas/new'
+      'match',
+      /^\/en\/projects\/an-idea-bring-it-to-your-council\/ideas\/new\/[^/]+$/
     );
 
     // Navigate back to home page
@@ -90,8 +90,8 @@ describe('router history', () => {
     // Go back with browser back button
     cy.go('back');
     cy.location('pathname').should(
-      'eq',
-      '/en/projects/an-idea-bring-it-to-your-council/ideas/new'
+      'match',
+      /^\/en\/projects\/an-idea-bring-it-to-your-council\/ideas\/new\/[^/]+$/
     );
   });
 });

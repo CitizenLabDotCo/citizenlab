@@ -46,7 +46,7 @@ type Props = {
 
 const SurveyHeading = ({ titleText, phaseId }: Props) => {
   const { slug: projectSlug } = useParams({
-    from: '/$locale/projects/$slug/surveys/new',
+    from: '/$locale/projects/$slug/surveys/new/$phaseId',
   });
   const { data: project } = useProjectBySlug(projectSlug);
   const { data: phase } = usePhase(phaseId);
@@ -64,7 +64,7 @@ const SurveyHeading = ({ titleText, phaseId }: Props) => {
     setShowLeaveModal(false);
   };
   const searchParams = useSearch({
-    from: '/$locale/projects/$slug/surveys/new',
+    from: '/$locale/projects/$slug/surveys/new/$phaseId',
   });
 
   const hasBeenSubmitted = searchParams.idea_id !== undefined;

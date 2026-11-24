@@ -21,6 +21,7 @@ describe Permissions::PermissionInheritanceService do
 
   before do
     # The copied require_verification is only carried through on a platform that can verify.
+    allow_test_id_methods
     AppConfiguration.instance.settings['id_config'] =
       { 'allowed' => true, 'enabled' => true, 'id_methods' => [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
     AppConfiguration.instance.save!

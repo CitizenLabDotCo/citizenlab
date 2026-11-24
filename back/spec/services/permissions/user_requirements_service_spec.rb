@@ -529,6 +529,7 @@ describe Permissions::UserRequirementsService do
 
         before do
           # A verification group only asks for verification where verifying is possible.
+          allow_test_id_methods
           AppConfiguration.instance.settings['id_config'] =
             { 'allowed' => true, 'enabled' => true, 'id_methods' => [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
           AppConfiguration.instance.save!
@@ -593,6 +594,7 @@ describe Permissions::UserRequirementsService do
 
       before do
         # Enable a verification method so that verifications can be created and checked
+        allow_test_id_methods
         AppConfiguration.instance.settings['id_config'] = { 'allowed' => true, 'enabled' => true, 'id_methods' => [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
         AppConfiguration.instance.save!
       end
@@ -1075,6 +1077,7 @@ describe Permissions::UserRequirementsService do
 
       context 'and require_confirmed_email is disabled (verification then backs the account)' do
         before do
+          allow_test_id_methods
           AppConfiguration.instance.settings['id_config'] = { 'allowed' => true, 'enabled' => true, 'id_methods' => [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
           AppConfiguration.instance.save!
           permission.update!(require_verification: true, require_confirmed_email: false)

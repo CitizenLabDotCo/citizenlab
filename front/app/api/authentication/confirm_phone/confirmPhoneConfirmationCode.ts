@@ -1,22 +1,20 @@
 import requirementsKeys from 'api/authentication/authentication_requirements/keys';
-import { ConfirmCodeResponse } from 'api/authentication/confirm_email/confirmEmailConfirmationCode';
 import meKeys from 'api/me/keys';
 
-import { setJwt } from 'utils/auth/jwt';
 import fetcher from 'utils/cl-react-query/fetcher';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
 
 // Confirms the `phone` of an account that isn't signed in yet (phone signup /
-// passwordless phone login), which is why the token the backend returns is
-// adopted here.
+// passwordless phone login). On success, the API signs the user in by setting
+// the auth cookie.
 export const confirmCodePhone = async (
   code: string,
   phone: string,
   sms_manual_campaign_consent?: boolean
 ) => {
   try {
-    const res = await fetcher<ConfirmCodeResponse>({
+    await fetcher({
       path: `/user/confirm_code_phone`,
       action: 'post',
       body: {
@@ -24,7 +22,6 @@ export const confirmCodePhone = async (
       },
     });
 
-    setJwt(res.data.attributes.auth_token.token, false);
     invalidateQueryCache();
 
     return true;
@@ -33,8 +30,8 @@ export const confirmCodePhone = async (
   }
 };
 
-// Re-confirmation of the signed-in user's own number. The caller keeps the
-// (possibly longer lived) token it already has, so no JWT is set here.
+// Re-confirmation of the signed-in user's own number. The caller stays signed in
+// with the (possibly longer lived) auth cookie it already has.
 export const reconfirmCodePhone = async (code: string) => {
   try {
     await fetcher({

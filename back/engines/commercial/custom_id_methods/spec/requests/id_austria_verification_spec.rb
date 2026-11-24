@@ -105,7 +105,8 @@ context 'id_austria verification' do
   end
 
   it 'successfully verifies a user' do
-    get "/auth/id_austria?token=#{@token}&random-passthrough-param=somevalue&verification_pathname=/yipie"
+    cookies[AuthToken::Cookie::NAME] = @token
+    get '/auth/id_austria?verification=true&random-passthrough-param=somevalue&verification_pathname=/yipie'
     follow_redirect!
 
     expect_user_to_be_verified(@user)
@@ -114,7 +115,8 @@ context 'id_austria verification' do
   end
 
   it 'successfully authenticates a user that was previously verified' do
-    get "/auth/id_austria?token=#{@token}"
+    cookies[AuthToken::Cookie::NAME] = @token
+    get '/auth/id_austria?verification=true'
     follow_redirect!
 
     expect(User.count).to eq(1)
@@ -130,7 +132,8 @@ context 'id_austria verification' do
   end
 
   it 'successfully verifies another user with another ID Austria account (different bPK)' do
-    get "/auth/id_austria?token=#{@token}"
+    cookies[AuthToken::Cookie::NAME] = @token
+    get '/auth/id_austria?verification=true'
     follow_redirect!
     expect(@user.reload).to have_attributes({
       verified: true
@@ -141,7 +144,8 @@ context 'id_austria verification' do
     auth_hash['extra']['raw_info']['urn:pvpgvat:oidc.bpk'] = '12345'
     OmniAuth.config.mock_auth[:id_austria] = OmniAuth::AuthHash.new(auth_hash)
 
-    get "/auth/id_austria?token=#{token2}"
+    cookies[AuthToken::Cookie::NAME] = token2
+    get '/auth/id_austria?verification=true'
     follow_redirect!
     expect(user2.reload).to have_attributes(verified: true)
   end
@@ -170,7 +174,8 @@ context 'id_austria verification' do
       hashed_uid: Verification::VerificationService.new.send(:hashed_uid, user_bpk, 'id_austria')
     )
 
-    get "/auth/id_austria?token=#{@token}"
+    cookies[AuthToken::Cookie::NAME] = @token
+    get '/auth/id_austria?verification=true'
     follow_redirect!
 
     expect(@user.reload).to have_attributes(verified: false)
@@ -219,7 +224,8 @@ context 'id_austria verification' do
       before { new_user.update!(email: Faker::Internet.email) }
 
       it 'does not verify another user and does not delete previously verified new user' do
-        get "/auth/id_austria?token=#{@token}&verification_pathname=/some-page"
+        cookies[AuthToken::Cookie::NAME] = @token
+        get '/auth/id_austria?verification=true&verification_pathname=/some-page'
         follow_redirect!
 
         expect(response).to redirect_to('/some-page?verification_error=true&error_code=taken')
@@ -235,7 +241,8 @@ context 'id_austria verification' do
 
     context 'when verified registration is not completed by new user' do
       it 'successfully verifies another user and deletes previously verified blank new user' do
-        get "/auth/id_austria?token=#{@token}&verification_pathname=/some-page"
+        cookies[AuthToken::Cookie::NAME] = @token
+        get '/auth/id_austria?verification=true&verification_pathname=/some-page'
         follow_redirect!
 
         expect(response).to redirect_to('/en/some-page?verification_success=true')
@@ -263,7 +270,7 @@ context 'id_austria verification' do
       user = User.order(created_at: :asc).last
       expect_user_to_be_verified_and_identified(user)
 
-      headers = { 'Authorization' => authorization_header(user) }
+      headers = { 'Cookie' => auth_cookie(user) }
 
       expect(user.email).to be_nil
       expect(user.active?).to be(true)

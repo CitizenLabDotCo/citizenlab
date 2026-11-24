@@ -1,34 +1,14 @@
 import requirementsKeys from 'api/authentication/authentication_requirements/keys';
 import meKeys from 'api/me/keys';
-import { HighestRole } from 'api/users/types';
 
-import { setJwt } from 'utils/auth/jwt';
 import fetcher from 'utils/cl-react-query/fetcher';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
 
-// Returned by both confirm_code_email and confirm_code_phone.
-export type ConfirmCodeResponse = {
-  data: {
-    type: 'create';
-    attributes: {
-      auth_token: {
-        payload: {
-          exp: number;
-          cluster: string;
-          highest_role: HighestRole;
-          sub: string;
-          tenant: string;
-        };
-        token: string;
-      };
-    };
-  };
-};
-
 export const confirmCodeEmail = async (email: string, code: string) => {
   try {
-    const res = await fetcher<ConfirmCodeResponse>({
+    // On success, the API signs the user in by setting the auth cookie.
+    await fetcher({
       path: `/user/confirm_code_email`,
       action: 'post',
       body: {
@@ -36,7 +16,6 @@ export const confirmCodeEmail = async (email: string, code: string) => {
       },
     });
 
-    setJwt(res.data.attributes.auth_token.token, false);
     invalidateQueryCache();
 
     return true;
@@ -45,8 +24,8 @@ export const confirmCodeEmail = async (email: string, code: string) => {
   }
 };
 
-// Re-confirmation of the signed-in user's own email. The caller keeps the token
-// it already has, so - unlike confirmCodeEmail - no JWT is set here.
+// Re-confirmation of the signed-in user's own email. The caller stays signed in
+// with the auth cookie it already has, which - unlike confirmCodeEmail - is left alone.
 export const reconfirmCodeEmail = async (code: string) => {
   try {
     await fetcher({
@@ -66,12 +45,12 @@ export const reconfirmCodeEmail = async (code: string) => {
   }
 };
 
-// On success the requesting account no longer exists, so the response carries a
-// token for the survivor. The whole cache is reset rather than a few keys: the
+// On success the requesting account no longer exists, so the API signs the user
+// in as the survivor. The whole cache is reset rather than a few keys: the
 // signed-in user is now a different person.
 export const confirmCodeMergeAccount = async (code: string) => {
   try {
-    const res = await fetcher<ConfirmCodeResponse>({
+    await fetcher({
       path: `/user/confirm_code_merge_account`,
       action: 'post',
       body: {
@@ -79,7 +58,6 @@ export const confirmCodeMergeAccount = async (code: string) => {
       },
     });
 
-    setJwt(res.data.attributes.auth_token.token, false);
     invalidateQueryCache();
 
     return true;

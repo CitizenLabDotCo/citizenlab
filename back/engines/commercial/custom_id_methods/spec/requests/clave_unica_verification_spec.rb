@@ -85,7 +85,8 @@ context 'clave_unica verification' do
   end
 
   it 'successfully verifies a user' do
-    get "/auth/clave_unica?token=#{@token}&random-passthrough-param=somevalue&verification_pathname=/yipie"
+    cookies[AuthToken::Cookie::NAME] = @token
+    get '/auth/clave_unica?verification=true&random-passthrough-param=somevalue&verification_pathname=/yipie'
     follow_redirect!
 
     expect(response).to redirect_to('/en/yipie?random-passthrough-param=somevalue&verification_success=true')
@@ -96,7 +97,8 @@ context 'clave_unica verification' do
   it "successfully verifies a user that hasn't completed her registration" do
     @user.update!(registration_completed_at: nil)
 
-    get "/auth/clave_unica?token=#{@token}&verification_pathname=/yipie"
+    cookies[AuthToken::Cookie::NAME] = @token
+    get '/auth/clave_unica?verification=true&verification_pathname=/yipie'
     follow_redirect!
 
     expect(response).to redirect_to('/en/yipie?verification_success=true')
@@ -106,7 +108,8 @@ context 'clave_unica verification' do
   end
 
   it 'redirect to a path without an ending slash when no pathname is passed' do
-    get "/auth/clave_unica?token=#{@token}"
+    cookies[AuthToken::Cookie::NAME] = @token
+    get '/auth/clave_unica?verification=true'
     follow_redirect!
     expect(response).to redirect_to('/en?verification_success=true')
   end
@@ -118,7 +121,8 @@ context 'clave_unica verification' do
       hashed_uid: Verification::VerificationService.new.send(:hashed_uid, '44444444', 'clave_unica')
     )
 
-    get "/auth/clave_unica?token=#{@token}&verification_pathname=/some-page"
+    cookies[AuthToken::Cookie::NAME] = @token
+    get '/auth/clave_unica?verification=true&verification_pathname=/some-page'
     follow_redirect!
 
     expect(response).to redirect_to('/some-page?verification_error=true&error_code=taken')
@@ -172,7 +176,8 @@ context 'clave_unica verification' do
       before { new_user.update!(email: Faker::Internet.email) }
 
       it 'does not verify another user and does not delete previously verified new user' do
-        get "/auth/clave_unica?token=#{@token}&verification_pathname=/some-page"
+        cookies[AuthToken::Cookie::NAME] = @token
+        get '/auth/clave_unica?verification=true&verification_pathname=/some-page'
         follow_redirect!
 
         expect(response).to redirect_to('/some-page?verification_error=true&error_code=taken')
@@ -188,7 +193,8 @@ context 'clave_unica verification' do
 
     context 'when verified registration is not completed by new user' do
       it 'successfully verifies another user and deletes previously verified blank new user' do
-        get "/auth/clave_unica?token=#{@token}&verification_pathname=/some-page"
+        cookies[AuthToken::Cookie::NAME] = @token
+        get '/auth/clave_unica?verification=true&verification_pathname=/some-page'
         follow_redirect!
 
         expect(response).to redirect_to('/en/some-page?verification_success=true')
@@ -221,7 +227,7 @@ context 'clave_unica verification' do
         expect(user.confirmation_required?).to be(true)
         expect(ActionMailer::Base.deliveries.count).to eq(0)
 
-        headers = { 'Authorization' => authorization_header(user) }
+        headers = { 'Cookie' => auth_cookie(user) }
 
         post '/web_api/v1/user/request_code_new_email', params: { request_code: { new_email: 'newcoolemail@example.org' } }, headers: headers
         expect(response).to have_http_status(:ok)
@@ -243,7 +249,7 @@ context 'clave_unica verification' do
         follow_redirect!
 
         user = User.order(created_at: :asc).last
-        headers = { 'Authorization' => authorization_header(user) }
+        headers = { 'Cookie' => auth_cookie(user) }
 
         post '/web_api/v1/user/request_code_new_email', params: { request_code: { new_email: '1@example.org' } }, headers: headers
         expect(response).to have_http_status(:ok)
@@ -284,7 +290,8 @@ context 'clave_unica verification' do
       before { CustomIdMethods::IdCardLookup::IdCard.create!(card_id: '44.444.444-4') }
 
       it 'sets rut_verified custom field' do
-        get "/auth/clave_unica?token=#{@token}"
+        cookies[AuthToken::Cookie::NAME] = @token
+        get '/auth/clave_unica?verification=true'
         follow_redirect!
 
         expect(@user.reload.custom_field_answers.pluck(:key, :value)).to eq [['rut_verified', true]]
@@ -295,7 +302,8 @@ context 'clave_unica verification' do
       before { CustomIdMethods::IdCardLookup::IdCard.create!(card_id: '55.555.555-5') }
 
       it 'does not set rut_verified custom field' do
-        get "/auth/clave_unica?token=#{@token}"
+        cookies[AuthToken::Cookie::NAME] = @token
+        get '/auth/clave_unica?verification=true'
         follow_redirect!
 
         expect(@user.reload.custom_field_answers).to be_empty
