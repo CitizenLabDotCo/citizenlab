@@ -49,7 +49,12 @@ describe('PulseCheckCard', () => {
     expect(
       screen.queryByText('Thank you for your feedback!')
     ).not.toBeInTheDocument();
-    await user.type(screen.getByRole('textbox'), 'Smooth');
+    await user.type(
+      screen.getByRole('textbox', {
+        name: 'Anything you would like to add? (optional)',
+      }),
+      'Smooth'
+    );
     await user.click(screen.getByRole('button', { name: 'Send' }));
 
     expect(mockAnswer).toHaveBeenLastCalledWith({
@@ -61,6 +66,28 @@ describe('PulseCheckCard', () => {
       screen.getByText('Thank you for your feedback!')
     ).toBeInTheDocument();
   });
+
+  it.each([
+    ['project_setup_ease', 'What was the hardest part?'],
+    ['return_findability', 'What were you looking for?'],
+  ] as const)(
+    'asks for specific feedback on a low %s score',
+    async (key, prompt) => {
+      const user = userEvent.setup();
+      render(
+        <PulseCheckCard
+          pulseCheck={{
+            ...pulseCheck,
+            attributes: { ...pulseCheck.attributes, key },
+          }}
+          onClose={jest.fn()}
+        />
+      );
+
+      await user.click(screen.getByRole('button', { name: '4' }));
+      expect(screen.getByRole('textbox', { name: prompt })).toBeInTheDocument();
+    }
+  );
 
   it('changes the score with the arrow keys', async () => {
     const user = userEvent.setup();

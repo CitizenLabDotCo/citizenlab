@@ -26,6 +26,11 @@ import messages from './messages';
 import questions from './questions';
 
 const SCORES = [1, 2, 3, 4, 5, 6, 7];
+const LOW_SCORE_MAX = 4;
+const LOW_SCORE_PROMPTS = {
+  project_setup_ease: messages.projectSetupLowScore,
+  return_findability: messages.findabilityLowScore,
+};
 
 interface Props {
   pulseCheck: IPulseCheckData;
@@ -46,7 +51,12 @@ const PulseCheckCard = ({ pulseCheck, onClose }: Props) => {
   } = useAnswerPulseCheck();
   const { mutate: dismiss } = useDismissPulseCheck();
 
-  const question = formatMessage(questions[pulseCheck.attributes.key]);
+  const { key } = pulseCheck.attributes;
+  const question = formatMessage(questions[key]);
+  const commentPrompt =
+    score !== undefined && score <= LOW_SCORE_MAX
+      ? LOW_SCORE_PROMPTS[key]
+      : messages.commentLabel;
   const scoreId = `pulse-check-score-${pulseCheck.id}`;
 
   const handleClose = () => {
@@ -222,7 +232,7 @@ const PulseCheckCard = ({ pulseCheck, onClose }: Props) => {
               >
                 <TextArea
                   id={`pulse-check-comment-${pulseCheck.id}`}
-                  label={formatMessage(messages.commentLabel)}
+                  label={formatMessage(commentPrompt)}
                   value={comment}
                   onChange={setComment}
                   rows={3}

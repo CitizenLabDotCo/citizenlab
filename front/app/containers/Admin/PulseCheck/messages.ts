@@ -22,6 +22,14 @@ export default defineMessages({
     id: 'app.containers.Admin.FeedbackPrompt.scaleHint',
     defaultMessage: '1 is very hard, 7 is very easy',
   },
+  projectSetupLowScore: {
+    id: 'app.containers.Admin.FeedbackPrompt.projectSetupLowScore',
+    defaultMessage: 'What was the hardest part?',
+  },
+  findabilityLowScore: {
+    id: 'app.containers.Admin.FeedbackPrompt.findabilityLowScore',
+    defaultMessage: 'What were you looking for?',
+  },
   commentLabel: {
     id: 'app.containers.Admin.FeedbackPrompt.commentLabel',
     defaultMessage: 'Anything you would like to add? (optional)',
