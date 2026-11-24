@@ -10,10 +10,12 @@ class UserService
       custom_field_values = user_params.delete(:custom_field_values)
       new_or_existing_user.assign_attributes(user_params)
       yield if block_given?
-      add_custom_field_values_schema_errors(new_or_existing_user, custom_field_values)
+      transition_service = CustomFieldValuesTransitionService.new
+      changed_values = transition_service.changed_values(new_or_existing_user, custom_field_values)
+      add_custom_field_values_schema_errors(new_or_existing_user, changed_values)
       return false if new_or_existing_user.errors.any?
 
-      CustomFieldValuesTransitionService.new.assign!(new_or_existing_user, custom_field_values) if custom_field_values
+      transition_service.assign!(new_or_existing_user, custom_field_values) if custom_field_values
       # `on: :create` and `on: :update` callbacks/validations are not called
       new_or_existing_user.save(context: :form_submission)
     end
@@ -182,9 +184,6 @@ class UserService
     end
 
     def add_custom_field_values_schema_errors(user, values)
-      return if values.nil?
-
-      values = values.to_h
       errors = CustomFieldValuesValidationService.new.json_schema_validation_errors(
         CustomField.registration.includes(:options),
         values

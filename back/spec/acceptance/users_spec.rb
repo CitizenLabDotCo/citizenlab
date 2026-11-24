@@ -2124,6 +2124,16 @@ resource 'Users' do
           end
         end
 
+        example 'Update a user who stores an answer the registration form no longer has', document: false do
+          @user.custom_field_answers.create!(key: 'retired', value: 'x')
+
+          do_request
+
+          assert_status 200
+          expect(response_data.dig(:attributes, :first_name)).to eq first_name
+          expect(@user.reload.answer_for_key('retired').value).to eq 'x'
+        end
+
         describe do
           example "Set a user's custom field values" do
             cf = create(:custom_field)
