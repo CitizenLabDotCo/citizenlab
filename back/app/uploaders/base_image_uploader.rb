@@ -32,6 +32,18 @@ class BaseImageUploader < BaseUploader
     CarrierwaveTempRemote.url(identifier, version_name) || super
   end
 
+  # Some servers send the wrong Content-Type: Facebook serves JPEG profile pictures as
+  # image/avif. When the URL has no extension, CarrierWave takes it from that header,
+  # and exiftool refuses to strip a file whose extension doesn't match its content.
+  def download!(uri, remote_headers = {})
+    remote_file = downloader.new(self).download(uri, remote_headers)
+    cache!(
+      tempfile: remote_file.file,
+      filename: filename_matching_content(remote_file),
+      content_type: remote_file.content_type
+    )
+  end
+
   # Lower the JPEG quality in the resize itself, so the image is only saved once.
   def resize_to_fill(width, height, gravity = 'Center', combine_options: {}, &)
     super(width, height, gravity, combine_options: jpeg_quality_options.merge(combine_options), &)
@@ -74,6 +86,15 @@ class BaseImageUploader < BaseUploader
 
   def jpeg?
     %w[image/jpeg image/jpg].include?(@file.content_type)
+  end
+
+  def filename_matching_content(remote_file)
+    filename = remote_file.original_filename
+    type = Marcel::Magic.by_magic(remote_file.file)
+    return filename unless type&.mediatype == 'image' && type.extensions.any?
+    return filename if type.extensions.include?(File.extname(filename).delete_prefix('.').downcase)
+
+    "#{File.basename(filename, '.*')}.#{type.extensions.first}"
   end
 
   # Modified from https://vivianbrown.net/blog/cropping-gifs.html
@@ -148,7 +169,8 @@ class BaseImageUploader < BaseUploader
           exiftool_error_signal: status.termsig
         }
       )
-      raise "Image stripping failed for #{@file.path}: #{stderr}"
+      # CarrierWave's mount turns a ProcessingError into a validation error on the record.
+      raise CarrierWave::ProcessingError
     end
   end
 end

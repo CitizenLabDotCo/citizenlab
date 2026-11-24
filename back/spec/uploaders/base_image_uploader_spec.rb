@@ -89,6 +89,64 @@ RSpec.describe BaseImageUploader do
     end
   end
 
+  describe '#download!' do
+    let(:url) { 'https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=1' }
+    let(:jpeg) { Rails.root.join('spec/fixtures/female_avatar_0.jpg') }
+
+    around do |example|
+      described_class.enable_processing = true
+      example.run
+      uploader.remove! if uploader.file
+      described_class.enable_processing = false
+    end
+
+    before do
+      allow_any_instance_of(ProcessableUriDownloader).to receive(:skip_ssrf_protection?).and_return(true)
+    end
+
+    it 'names a JPEG served as image/avif after its content, so stripping succeeds' do
+      stub_request(:get, url).to_return(body: jpeg.binread, headers: { 'Content-Type' => 'image/avif' })
+
+      uploader.download!(url)
+
+      expect(uploader.file.filename).to eq('profilepic.jpg')
+      expect(uploader.file.content_type).to eq('image/jpeg')
+    end
+
+    it 'keeps the name when the content matches the declared type' do
+      stub_request(:get, url).to_return(body: jpeg.binread, headers: { 'Content-Type' => 'image/jpeg' })
+
+      uploader.download!(url)
+
+      expect(uploader.file.filename).to eq('profilepic.jpg')
+    end
+
+    it 'still rejects content that is not an image' do
+      stub_request(:get, url).to_return(body: '<html></html>', headers: { 'Content-Type' => 'image/avif' })
+
+      expect { uploader.download!(url) }.to raise_error(CarrierWave::IntegrityError)
+    end
+  end
+
+  describe '#strip' do
+    around do |example|
+      described_class.enable_processing = true
+      example.run
+      described_class.enable_processing = false
+    end
+
+    it 'raises a processing error when exiftool fails' do
+      jpeg_named_avif = Rails.root.join('tmp', "#{SecureRandom.uuid}.avif")
+      FileUtils.cp(Rails.root.join('spec/fixtures/female_avatar_0.jpg'), jpeg_named_avif)
+      allow(ErrorReporter).to receive(:report_msg)
+
+      expect { uploader.cache!(File.open(jpeg_named_avif)) }.to raise_error(CarrierWave::ProcessingError)
+      expect(ErrorReporter).to have_received(:report_msg).with('Exiftool command failed during image stripping.', anything)
+    ensure
+      FileUtils.rm_f(jpeg_named_avif)
+    end
+  end
+
   it 'whitelists exactly [image/jpg image/jpeg image/gif image/png image/webp]' do
     expect(uploader.extension_allowlist).to match_array %w[jpg jpeg gif png webp avif]
     expect(uploader.content_type_allowlist).to match_array %w[image/jpg image/jpeg image/gif image/png image/webp image/avif]
