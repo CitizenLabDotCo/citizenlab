@@ -2535,7 +2535,7 @@ CREATE TABLE public.custom_field_answers (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     answerable_type character varying NOT NULL,
     answerable_id uuid NOT NULL,
-    custom_field_id uuid,
+    custom_field_id uuid NOT NULL,
     key character varying NOT NULL,
     value jsonb NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
@@ -4132,7 +4132,7 @@ CREATE VIEW public.reporting_comments AS
     c.created_at
    FROM (public.comments c
      JOIN public.ideas i ON ((i.id = c.idea_id)))
-  WHERE (((c.publication_status)::text = 'published'::text) AND ((i.publication_status)::text = ANY ((ARRAY['submitted'::character varying, 'published'::character varying])::text[])));
+  WHERE (((c.publication_status)::text = 'published'::text) AND ((i.publication_status)::text = ANY (ARRAY[('submitted'::character varying)::text, ('published'::character varying)::text])));
 
 
 --
@@ -4148,7 +4148,7 @@ CREATE VIEW public.reporting_input_question_answers AS
              LEFT JOIN public.custom_forms phase_form ON ((((phase_form.participation_context_type)::text = 'Phase'::text) AND (phase_form.participation_context_id = i.creation_phase_id))))
              LEFT JOIN public.custom_forms project_form ON ((((project_form.participation_context_type)::text = 'Project'::text) AND (project_form.participation_context_id = i.project_id))))
              LEFT JOIN public.phases form_ph ON (((phase_form.id IS NOT NULL) AND (form_ph.id = i.creation_phase_id))))
-          WHERE ((i.publication_status)::text = ANY ((ARRAY['submitted'::character varying, 'published'::character varying])::text[]))
+          WHERE ((i.publication_status)::text = ANY (ARRAY[('submitted'::character varying)::text, ('published'::character varying)::text]))
         )
  SELECT i.id AS input_id,
     q.id AS question_id,
@@ -4162,11 +4162,11 @@ CREATE VIEW public.reporting_input_question_answers AS
           ORDER BY t.key
          LIMIT 1)) AS question_label,
         CASE
-            WHEN ((q.input_type)::text = ANY ((ARRAY['number'::character varying, 'linear_scale'::character varying, 'rating'::character varying, 'sentiment_linear_scale'::character varying, 'file_upload'::character varying, 'shapefile_upload'::character varying, 'point'::character varying, 'line'::character varying, 'polygon'::character varying])::text[])) THEN NULL::text
+            WHEN ((q.input_type)::text = ANY (ARRAY[('number'::character varying)::text, ('linear_scale'::character varying)::text, ('rating'::character varying)::text, ('sentiment_linear_scale'::character varying)::text, ('file_upload'::character varying)::text, ('shapefile_upload'::character varying)::text, ('point'::character varying)::text, ('line'::character varying)::text, ('polygon'::character varying)::text])) THEN NULL::text
             ELSE (a.value #>> '{}'::text[])
         END AS value_text,
         CASE
-            WHEN (((q.input_type)::text = ANY ((ARRAY['number'::character varying, 'linear_scale'::character varying, 'rating'::character varying, 'sentiment_linear_scale'::character varying])::text[])) AND (jsonb_typeof(a.value) = 'number'::text)) THEN ((a.value #>> '{}'::text[]))::numeric
+            WHEN (((q.input_type)::text = ANY (ARRAY[('number'::character varying)::text, ('linear_scale'::character varying)::text, ('rating'::character varying)::text, ('sentiment_linear_scale'::character varying)::text])) AND (jsonb_typeof(a.value) = 'number'::text)) THEN ((a.value #>> '{}'::text[]))::numeric
             ELSE NULL::numeric
         END AS value_numeric,
     COALESCE(NULLIF((label.multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
@@ -4183,18 +4183,18 @@ CREATE VIEW public.reporting_input_question_answers AS
     NULL::text AS statement_key,
     NULL::text AS statement_label,
         CASE
-            WHEN ((q.input_type)::text = ANY ((ARRAY['point'::character varying, 'line'::character varying, 'polygon'::character varying])::text[])) THEN a.value
+            WHEN ((q.input_type)::text = ANY (ARRAY[('point'::character varying)::text, ('line'::character varying)::text, ('polygon'::character varying)::text])) THEN a.value
             ELSE NULL::jsonb
         END AS value_geojson
    FROM (((form_inputs i
-     JOIN public.custom_fields q ON ((((q.resource_type)::text = 'CustomForm'::text) AND (q.resource_id = i.form_id) AND ((q.input_type)::text = ANY ((ARRAY['text'::character varying, 'multiline_text'::character varying, 'select'::character varying, 'select_image'::character varying, 'checkbox'::character varying, 'date'::character varying, 'number'::character varying, 'linear_scale'::character varying, 'rating'::character varying, 'sentiment_linear_scale'::character varying, 'file_upload'::character varying, 'shapefile_upload'::character varying, 'point'::character varying, 'line'::character varying, 'polygon'::character varying])::text[])))))
+     JOIN public.custom_fields q ON ((((q.resource_type)::text = 'CustomForm'::text) AND (q.resource_id = i.form_id) AND ((q.input_type)::text = ANY (ARRAY[('text'::character varying)::text, ('multiline_text'::character varying)::text, ('select'::character varying)::text, ('select_image'::character varying)::text, ('checkbox'::character varying)::text, ('date'::character varying)::text, ('number'::character varying)::text, ('linear_scale'::character varying)::text, ('rating'::character varying)::text, ('sentiment_linear_scale'::character varying)::text, ('file_upload'::character varying)::text, ('shapefile_upload'::character varying)::text, ('point'::character varying)::text, ('line'::character varying)::text, ('polygon'::character varying)::text])))))
      JOIN public.custom_field_answers a ON ((((a.answerable_type)::text = 'Idea'::text) AND (a.answerable_id = i.id) AND ((a.key)::text = (q.key)::text))))
      CROSS JOIN LATERAL ( SELECT
                 CASE
-                    WHEN ((q.input_type)::text = ANY ((ARRAY['select'::character varying, 'select_image'::character varying])::text[])) THEN ( SELECT o.title_multiloc
+                    WHEN ((q.input_type)::text = ANY (ARRAY[('select'::character varying)::text, ('select_image'::character varying)::text])) THEN ( SELECT o.title_multiloc
                        FROM public.custom_field_options o
                       WHERE ((o.custom_field_id = q.id) AND ((o.key)::text = (a.value #>> '{}'::text[]))))
-                    WHEN (((q.input_type)::text = ANY ((ARRAY['linear_scale'::character varying, 'sentiment_linear_scale'::character varying])::text[])) AND (jsonb_typeof(a.value) = 'number'::text)) THEN
+                    WHEN (((q.input_type)::text = ANY (ARRAY[('linear_scale'::character varying)::text, ('sentiment_linear_scale'::character varying)::text])) AND (jsonb_typeof(a.value) = 'number'::text)) THEN
                     CASE (a.value #>> '{}'::text[])
                         WHEN '1'::text THEN q.linear_scale_label_1_multiloc
                         WHEN '2'::text THEN q.linear_scale_label_2_multiloc
@@ -4211,7 +4211,7 @@ CREATE VIEW public.reporting_input_question_answers AS
                     END
                     ELSE NULL::jsonb
                 END AS multiloc) label)
-  WHERE (((q.input_type)::text <> ALL ((ARRAY['file_upload'::character varying, 'shapefile_upload'::character varying])::text[])) OR (EXISTS ( SELECT 1
+  WHERE (((q.input_type)::text <> ALL (ARRAY[('file_upload'::character varying)::text, ('shapefile_upload'::character varying)::text])) OR (EXISTS ( SELECT 1
            FROM public.file_attachments fa
           WHERE (fa.id =
                 CASE
@@ -4253,7 +4253,7 @@ UNION ALL
     NULL::text AS statement_label,
     NULL::jsonb AS value_geojson
    FROM ((((form_inputs i
-     JOIN public.custom_fields q ON ((((q.resource_type)::text = 'CustomForm'::text) AND (q.resource_id = i.form_id) AND ((q.input_type)::text = ANY ((ARRAY['multiselect'::character varying, 'multiselect_image'::character varying])::text[])))))
+     JOIN public.custom_fields q ON ((((q.resource_type)::text = 'CustomForm'::text) AND (q.resource_id = i.form_id) AND ((q.input_type)::text = ANY (ARRAY[('multiselect'::character varying)::text, ('multiselect_image'::character varying)::text])))))
      JOIN public.custom_field_answers a ON ((((a.answerable_type)::text = 'Idea'::text) AND (a.answerable_id = i.id) AND ((a.key)::text = (q.key)::text))))
      CROSS JOIN LATERAL jsonb_array_elements_text(a.value) selected(value))
      LEFT JOIN public.custom_field_options o ON (((o.custom_field_id = q.id) AND ((o.key)::text = selected.value))))
@@ -4559,9 +4559,9 @@ UNION ALL
 CREATE VIEW public.reporting_email_deliveries AS
  SELECT c.id AS campaign_id,
     lower(regexp_replace(regexp_replace("substring"((c.type)::text, '([^:]+)$'::text), '([A-Z]+)([A-Z][a-z])'::text, '\1_\2'::text, 'g'::text), '([a-z\d])([A-Z])'::text, '\1_\2'::text, 'g'::text)) AS campaign_type,
-    ((c.type)::text = ANY ((ARRAY['EmailCampaigns::Campaigns::Manual'::character varying, 'EmailCampaigns::Campaigns::ManualProjectParticipants'::character varying])::text[])) AS manual,
+    ((c.type)::text = ANY (ARRAY[('EmailCampaigns::Campaigns::Manual'::character varying)::text, ('EmailCampaigns::Campaigns::ManualProjectParticipants'::character varying)::text])) AS manual,
         CASE
-            WHEN ((c.type)::text = ANY ((ARRAY['EmailCampaigns::Campaigns::Manual'::character varying, 'EmailCampaigns::Campaigns::ManualProjectParticipants'::character varying])::text[])) THEN COALESCE(NULLIF((c.subject_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+            WHEN ((c.type)::text = ANY (ARRAY[('EmailCampaigns::Campaigns::Manual'::character varying)::text, ('EmailCampaigns::Campaigns::ManualProjectParticipants'::character varying)::text])) THEN COALESCE(NULLIF((c.subject_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
                FROM public.app_configurations ac
              LIMIT 1)), ''::text), ( SELECT t.value
                FROM jsonb_each_text(c.subject_multiloc) t(key, value)
@@ -4581,9 +4581,9 @@ CREATE VIEW public.reporting_email_deliveries AS
     (count(*))::integer AS sent_count,
     (count(*) FILTER (WHERE ((d.delivery_status)::text = 'bounced'::text)))::integer AS bounced_count,
     (count(*) FILTER (WHERE ((d.delivery_status)::text = 'failed'::text)))::integer AS failed_count,
-    (count(*) FILTER (WHERE ((d.delivery_status)::text = ANY ((ARRAY['accepted'::character varying, 'delivered'::character varying, 'opened'::character varying, 'clicked'::character varying])::text[]))))::integer AS accepted_count,
-    (count(*) FILTER (WHERE ((d.delivery_status)::text = ANY ((ARRAY['delivered'::character varying, 'opened'::character varying, 'clicked'::character varying])::text[]))))::integer AS delivered_count,
-    (count(*) FILTER (WHERE ((d.delivery_status)::text = ANY ((ARRAY['opened'::character varying, 'clicked'::character varying])::text[]))))::integer AS opened_count,
+    (count(*) FILTER (WHERE ((d.delivery_status)::text = ANY (ARRAY[('accepted'::character varying)::text, ('delivered'::character varying)::text, ('opened'::character varying)::text, ('clicked'::character varying)::text]))))::integer AS accepted_count,
+    (count(*) FILTER (WHERE ((d.delivery_status)::text = ANY (ARRAY[('delivered'::character varying)::text, ('opened'::character varying)::text, ('clicked'::character varying)::text]))))::integer AS delivered_count,
+    (count(*) FILTER (WHERE ((d.delivery_status)::text = ANY (ARRAY[('opened'::character varying)::text, ('clicked'::character varying)::text]))))::integer AS opened_count,
     (count(*) FILTER (WHERE ((d.delivery_status)::text = 'clicked'::text)))::integer AS clicked_count
    FROM ((public.email_campaigns_deliveries d
      JOIN public.email_campaigns_campaigns c ON ((c.id = d.campaign_id)))
@@ -4652,7 +4652,7 @@ CREATE VIEW public.reporting_input_analysis_tags AS
      JOIN public.analysis_analyses a ON ((a.id = t.analysis_id)))
      LEFT JOIN public.phases ph ON ((ph.id = a.phase_id)))
      JOIN public.ideas i ON ((i.id = tg.input_id)))
-  WHERE ((i.publication_status)::text = ANY ((ARRAY['submitted'::character varying, 'published'::character varying])::text[]));
+  WHERE ((i.publication_status)::text = ANY (ARRAY[('submitted'::character varying)::text, ('published'::character varying)::text]));
 
 
 --
@@ -4672,7 +4672,7 @@ CREATE VIEW public.reporting_input_imports AS
    FROM ((public.idea_imports ii
      JOIN public.ideas i ON ((i.id = ii.idea_id)))
      LEFT JOIN public.idea_import_files f ON ((f.id = ii.file_id)))
-  WHERE ((i.publication_status)::text = ANY ((ARRAY['submitted'::character varying, 'published'::character varying])::text[]));
+  WHERE ((i.publication_status)::text = ANY (ARRAY[('submitted'::character varying)::text, ('published'::character varying)::text]));
 
 
 --
@@ -4686,7 +4686,7 @@ CREATE VIEW public.reporting_input_phases AS
     ip.created_at
    FROM (public.ideas_phases ip
      JOIN public.ideas i ON ((i.id = ip.idea_id)))
-  WHERE ((i.publication_status)::text = ANY ((ARRAY['submitted'::character varying, 'published'::character varying])::text[]));
+  WHERE ((i.publication_status)::text = ANY (ARRAY[('submitted'::character varying)::text, ('published'::character varying)::text]));
 
 
 --
@@ -4725,7 +4725,7 @@ CREATE VIEW public.reporting_input_status_changes AS
             a.acted_at
            FROM (public.activities a
              JOIN public.ideas i ON ((i.id = a.item_id)))
-          WHERE (((a.item_type)::text = 'Idea'::text) AND ((a.action)::text = ANY ((ARRAY['changed_status'::character varying, 'changed_input_status'::character varying])::text[])) AND ((i.publication_status)::text = ANY ((ARRAY['submitted'::character varying, 'published'::character varying])::text[])))
+          WHERE (((a.item_type)::text = 'Idea'::text) AND ((a.action)::text = ANY (ARRAY[('changed_status'::character varying)::text, ('changed_input_status'::character varying)::text])) AND ((i.publication_status)::text = ANY (ARRAY[('submitted'::character varying)::text, ('published'::character varying)::text])))
         )
  SELECT c.id,
     c.input_id,
@@ -4855,7 +4855,7 @@ CREATE VIEW public.reporting_inputs AS
    FROM ((public.ideas i
      LEFT JOIN public.phases creation_ph ON ((creation_ph.id = i.creation_phase_id)))
      LEFT JOIN public.idea_statuses s ON ((s.id = i.idea_status_id)))
-  WHERE ((i.publication_status)::text = ANY ((ARRAY['submitted'::character varying, 'published'::character varying])::text[]));
+  WHERE ((i.publication_status)::text = ANY (ARRAY[('submitted'::character varying)::text, ('published'::character varying)::text]));
 
 
 --
@@ -4925,7 +4925,7 @@ CREATE VIEW public.reporting_official_feedbacks AS
     ofb.updated_at
    FROM (public.official_feedbacks ofb
      JOIN public.ideas i ON ((i.id = ofb.idea_id)))
-  WHERE ((i.publication_status)::text = ANY ((ARRAY['submitted'::character varying, 'published'::character varying])::text[]));
+  WHERE ((i.publication_status)::text = ANY (ARRAY[('submitted'::character varying)::text, ('published'::character varying)::text]));
 
 
 --
@@ -10927,6 +10927,7 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261124133741'),
 ('20261113090000'),
 ('20261028180200'),
 ('20261028180100'),
@@ -10936,9 +10937,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20261028141100'),
 ('20261028140100'),
 ('20261028130100'),
-('20261027120000'),
 ('20261028120100'),
 ('20261027120100'),
+('20261027120000'),
 ('20261019100000'),
 ('20261014200000'),
 ('20261014130100'),
