@@ -13,6 +13,8 @@ import useAddProjectMapConfig from 'api/map_config/useAddProjectMapConfig';
 import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
 import useUpdateMapConfig from 'api/map_config/useUpdateMapConfig';
 
+import projectMessages from 'containers/Admin/projects/project/messages';
+
 import { useRegisterPageSaver } from 'components/admin/PageSaveContext';
 import { MAP_CONFIG_SAVER_KEY } from 'components/admin/PageSaveContext/constants';
 import ConfigurationMap from 'components/ConfigurationMap/ConfigurationMap';
@@ -31,7 +33,6 @@ import MapConfigOverview from './MapConfiguration/MapConfigOverview';
 import StagedCenterAndZoom, {
   CenterAndZoomValues,
 } from './MapConfiguration/StagedCenterAndZoom';
-import messages from './messages';
 import { isValidCenterAndZoom } from './utils';
 import 'design-system/tokens.css';
 
@@ -255,7 +256,7 @@ const CustomMapConfigPage = memo<Props>((props) => {
                 />
               )}
               <h2 className={styles.settingsTitle}>
-                {formatMessage(messages.mapConfigurationTitle)}
+                {formatMessage(projectMessages.configureMap)}
               </h2>
             </div>
             {settings}

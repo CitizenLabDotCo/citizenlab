@@ -5,9 +5,10 @@
   background: var(--gv-surface-canvas);
 }
 
-/* Fits the 520px settings column, its padding and a scrollbar. */
 .settingsPanel {
-  flex: 0 0 580px;
+  box-sizing: border-box;
+  flex: 0 1 480px;
+  min-width: 280px;
   overflow-y: auto;
   padding: var(--gv-space-16) var(--gv-space-18);
   border-radius: var(--gv-radius-12);
@@ -22,17 +23,17 @@
 }
 
 .settingsTitle {
-  composes: title from '../../../design-system/typography.module.css';
+  composes: uiStrong from '../../../design-system/typography.module.css';
   color: var(--gv-text-primary);
 }
 
 .settingsColumn {
-  flex: 0 0 520px;
-  width: 520px;
+  width: 100%;
 }
 
 .mapPanel {
-  flex-grow: 1;
+  flex: 1;
+  min-width: 0;
   padding: var(--gv-space-16);
   border-radius: var(--gv-radius-12);
   background: var(--gv-surface-control-subtle);

@@ -103,8 +103,7 @@ const ProjectWorkspace = ({
 
   // An open phase email takes the whole width.
   const editingEmail = /\/emails\/[^/]+\/edit$/.test(pathname);
-  // The map configuration does the same, and keeps the phase panel mounted so
-  // a phase that isn't saved yet keeps its edits.
+  // Keep phase fields mounted while the map replaces the settings and preview.
   const editingMap = inPhase && !!map_config;
   const editingTags = inPhase && !!input_tags;
   const [tagsOpened, setTagsOpened] = useState(false);
@@ -131,10 +130,7 @@ const ProjectWorkspace = ({
   const setupSlot = !section && (
     <div className={styles.setupSlot}>{settingsPanel}</div>
   );
-  const showParticipation =
-    withParticipation &&
-    !pending &&
-    (!inPhase || (!editingEmail && !editingMap));
+  const showParticipation = withParticipation && !pending && !editingEmail;
   const participationSlot = showParticipation && (
     <div
       className={styles.participationSlot}

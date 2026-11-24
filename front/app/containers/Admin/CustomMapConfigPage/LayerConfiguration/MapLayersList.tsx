@@ -11,8 +11,6 @@ import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 
 import IconButton from 'design-system/IconButton';
-import Link from 'design-system/Link';
-import Popover, { DialogTrigger } from 'design-system/Popover';
 
 import { IMapConfig } from 'api/map_config/types';
 import useUpdateMapConfig from 'api/map_config/useUpdateMapConfig';
@@ -187,33 +185,6 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
             <span className={styles.headingText}>
               <FormattedMessage {...messages.mapData} />
             </span>
-            {isEsriIntegrationEnabled && ( // TODO: Remove once Esri integration is released
-              <DialogTrigger>
-                <IconButton
-                  icon="info-16"
-                  size={24}
-                  aria-label={formatMessage(messages.mapData)}
-                />
-                <Popover aria-label={formatMessage(messages.mapData)}>
-                  <p className={styles.popoverText}>
-                    <FormattedMessage
-                      {...messages.layersTooltip}
-                      values={{
-                        supportArticle: (
-                          <Link
-                            href={supportArticleUrl}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            {formatMessage(messages.supportArticle)}
-                          </Link>
-                        ),
-                      }}
-                    />
-                  </p>
-                </Popover>
-              </DialogTrigger>
-            )}
           </h3>
           {layersWithOrdering && (
             <SortableList

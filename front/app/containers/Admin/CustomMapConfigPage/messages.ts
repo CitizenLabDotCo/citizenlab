@@ -1,6 +1,10 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  saveZoomHelp: {
+    id: 'app.containers.AdminPage.CustomMapConfigPage.saveZoomHelp',
+    defaultMessage: 'Move and zoom the map, then press {button}.',
+  },
   errorMessage: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.errorMessage',
     defaultMessage: 'Something went wrong, please try again later',

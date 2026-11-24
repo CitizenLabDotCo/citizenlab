@@ -1,8 +1,13 @@
 .esriOptions {
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--gv-space-12);
-  margin-bottom: var(--gv-space-12);
+  flex-direction: column;
+  gap: var(--gv-space-8);
+  margin-bottom: var(--gv-space-8);
+}
+
+.esriOptions > button,
+.geoJsonOption > button {
+  justify-content: space-between;
 }
 
 /* The button opens this input, so it stays out of sight and out of the tab order. */
