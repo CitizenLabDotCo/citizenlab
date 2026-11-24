@@ -21,15 +21,15 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--gv-space-12);
-  min-height: var(--list-toolbar-height, var(--gv-size-28));
-  margin-bottom: var(--list-toolbar-margin, var(--gv-space-8));
+  min-height: var(--gv-size-28);
+  margin-bottom: var(--gv-space-8);
 }
 
 .display {
   display: flex;
-  flex-shrink: var(--list-toolbar-display-shrink, 0);
+  flex-shrink: 0;
   align-items: center;
-  gap: var(--list-toolbar-display-gap, var(--gv-space-6));
+  gap: var(--gv-space-6);
 }
 
 /* The Stats frame of the Manage side panel: padding 8, gap 0. */
