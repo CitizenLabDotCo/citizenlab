@@ -49,12 +49,14 @@ export const themeColors = {
   /**
    * Grey
    */
+  grey900: '#1E1E1E',
   grey800: '#333333', // formerly text
   grey700: '#767676', // formerly border, grey
   grey600: '#999999', // formerly placeholder
   grey500: '#BDBDBD', // formerly mediumGrey
   grey400: '#CBCBCB', // formerly popoverDarkFg
   grey300: '#E0E0E0', // formerly separationDark
+  greyPressed: '#DDDDDD',
   grey200: '#EBEDEF', // formerly lightGreyishBlue
   grey100: '#F4F6F8',
   grey50: '#FCFCFC',

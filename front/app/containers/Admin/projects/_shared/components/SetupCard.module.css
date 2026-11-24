@@ -5,6 +5,10 @@
   max-width: 100%;
 }
 
+.infoMark {
+  --gv-tooltip-mark-radius: var(--gv-radius-4);
+}
+
 .review {
   display: flex;
   flex-direction: column;

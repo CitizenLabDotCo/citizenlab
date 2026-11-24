@@ -10,7 +10,7 @@
     var(--gv-motion-easing-standard);
 }
 
-.editor:has(.body:focus-within) {
+.editor:has(.body [contenteditable='true']:focus) {
   border-color: var(--gv-border-focused);
 }
 

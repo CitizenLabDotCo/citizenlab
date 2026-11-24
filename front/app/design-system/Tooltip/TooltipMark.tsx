@@ -11,11 +11,20 @@ type Props = {
   label: string;
   content?: ReactNode;
   children?: ReactNode;
+  className?: string;
 };
 
-const TooltipMark = ({ label, content = label, children }: Props) => (
+const TooltipMark = ({
+  label,
+  content = label,
+  children,
+  className,
+}: Props) => (
   <Tooltip content={content}>
-    <TooltipTarget className={styles.mark} aria-label={label}>
+    <TooltipTarget
+      className={className ? `${styles.mark} ${className}` : styles.mark}
+      aria-label={label}
+    >
       {children ?? <Icon name="info-16" className={styles.info} />}
     </TooltipTarget>
   </Tooltip>

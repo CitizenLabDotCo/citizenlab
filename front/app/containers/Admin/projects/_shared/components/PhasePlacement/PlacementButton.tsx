@@ -18,27 +18,36 @@ const PlacementButton = ({
   onClick,
   children,
   'data-cy': dataCy,
-}: Props) => (
-  <Button
-    type="button"
-    buttonStyle={
-      appearance === 'primary' ? 'admin-dark' : 'admin-dark-outlined'
-    }
-    bgColor={appearance === 'secondary' ? colors.white : undefined}
-    borderColor={appearance === 'secondary' ? colors.grey300 : undefined}
-    height="36px"
-    padding="0 16px"
-    lineHeight="20px"
-    fontSize="14px"
-    fontWeight="500"
-    borderRadius="8px"
-    disabled={disabled}
-    processing={processing}
-    onClick={onClick}
-    dataCy={dataCy}
-  >
-    {children}
-  </Button>
-);
+}: Props) => {
+  const isPrimary = appearance === 'primary';
+  const textColor = isPrimary ? colors.white : colors.grey900;
+
+  return (
+    <Button
+      type="button"
+      buttonStyle={isPrimary ? 'admin-dark' : 'admin-dark-outlined'}
+      textColor={textColor}
+      textHoverColor={textColor}
+      bgColor={isPrimary ? colors.primary : colors.white}
+      bgHoverColor={isPrimary ? colors.blue700 : colors.grey50}
+      bgActiveColor={isPrimary ? colors.black : colors.greyPressed}
+      borderThickness={isPrimary ? '0' : undefined}
+      borderColor={isPrimary ? 'transparent' : colors.grey300}
+      borderHoverColor={isPrimary ? 'transparent' : colors.coolGrey500}
+      height="36px"
+      padding="0 16px"
+      lineHeight="20px"
+      fontSize="14px"
+      fontWeight="500"
+      borderRadius="8px"
+      disabled={disabled || processing}
+      processing={processing}
+      onClick={onClick}
+      dataCy={dataCy}
+    >
+      {children}
+    </Button>
+  );
+};
 
 export default PlacementButton;

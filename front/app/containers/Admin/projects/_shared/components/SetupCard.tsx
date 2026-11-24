@@ -71,7 +71,11 @@ const SetupCard = ({
         titleTooltip ? (
           <span className={styles.titleRow}>
             {title}
-            <TooltipMark label={title} content={titleTooltip} />
+            <TooltipMark
+              label={title}
+              content={titleTooltip}
+              className={styles.infoMark}
+            />
           </span>
         ) : (
           title
