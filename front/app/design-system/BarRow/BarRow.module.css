@@ -1,0 +1,45 @@
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-12);
+  min-width: 0;
+  padding: var(--gv-space-6) 0;
+}
+
+.label {
+  composes: ui from '../typography.module.css';
+  flex: 1;
+  min-width: 0;
+  color: var(--gv-text-body-subtle);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.label::first-letter {
+  text-transform: uppercase;
+}
+
+.track {
+  flex: 1;
+  height: var(--gv-space-6);
+  border-radius: var(--gv-radius-full);
+  background: var(--gv-surface-sunken);
+  overflow: hidden;
+}
+
+.fill {
+  display: block;
+  height: 100%;
+  border-radius: var(--gv-radius-full);
+  background: var(--gv-chart-bar);
+}
+
+.value {
+  composes: small from '../typography.module.css';
+  flex-shrink: 0;
+  min-width: 64px;
+  color: var(--gv-text-body-subtle);
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
