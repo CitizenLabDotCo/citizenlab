@@ -83,7 +83,7 @@ const PhaseStep = ({
   const isFuture = status === 'future';
 
   return (
-    <div className={classNames(styles.row, selected && styles.selected)}>
+    <div className={styles.row}>
       {withLine && (
         <div
           className={classNames(
@@ -96,10 +96,15 @@ const PhaseStep = ({
       <div
         className={classNames(styles.body, withOptions && styles.withOptions)}
       >
-        <p className={classNames(styles.title, isFuture && styles.titleFuture)}>
+        <p
+          className={classNames(
+            styles.title,
+            isFuture && !selected && styles.titleFuture
+          )}
+        >
           {localize(phase.attributes.title_multiloc)}
         </p>
-        <p className={classNames(styles.meta, isFuture && styles.metaFuture)}>
+        <p className={styles.meta}>
           <span
             className={classNames(
               styles.status,
