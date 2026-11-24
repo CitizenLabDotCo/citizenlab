@@ -461,12 +461,10 @@ resource 'Ideas' do
           context 'with a draft input' do
             let(:publication_status) { 'draft' }
 
-            example_request 'Create a draft input with a value that is not an option' do
-              assert_status 201
-              expect(project.reload.ideas.first.custom_field_answers.pluck(:key, :value)).to contain_exactly(
-                %w[custom_field_name1 Cat],
-                %w[select_field unlisted_animal]
-              )
+            example_request '[error] Create a draft input with a value that is not an option' do
+              assert_status 422
+              expect(json_response_body.dig(:errors, :custom_field_values)).to be_present
+              expect(project.reload.ideas).to be_empty
             end
           end
         end

@@ -176,4 +176,27 @@ RSpec.describe CustomFieldValuesTransitionService do
       expect(service.custom_field_values(nil)).to eq({})
     end
   end
+
+  describe '#changed_values' do
+    let(:user) do
+      build(:user, custom_field_answers: [
+        build(:custom_field_answer, key: 'pet', value: 'cat'),
+        build(:custom_field_answer, key: 'colour', value: 'red')
+      ])
+    end
+
+    it 'returns the values that are new or differ from the stored answers' do
+      values = { 'pet' => 'cat', 'colour' => 'blue', 'food' => 'rice' }
+
+      expect(service.changed_values(user, values)).to eq('colour' => 'blue', 'food' => 'rice')
+    end
+
+    it 'leaves out the values that clear an answer' do
+      expect(service.changed_values(user, 'pet' => nil)).to eq({})
+    end
+
+    it 'accepts symbol keys' do
+      expect(service.changed_values(user, pet: 'cat', colour: 'blue')).to eq('colour' => 'blue')
+    end
+  end
 end

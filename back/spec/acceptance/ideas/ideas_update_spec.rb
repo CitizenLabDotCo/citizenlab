@@ -348,15 +348,81 @@ resource 'Ideas' do
           end
         end
 
-        example '[error] Edit an idea that stores an answer without a field', document: false do
+        context 'when the form changed after the idea was answered' do
+          let(:form) { create(:custom_form, :with_default_fields, participation_context: project) }
+          let(:edit) { { title_multiloc: { 'en' => 'Changed title' }, publication_status: 'published' } }
+
+          def remove_option(option)
+            CustomFields::Options::DestroyService.new.destroy!(option)
+          end
+
+          context 'with a single choice question' do
+            let(:field) { create(:custom_field_select, resource: form, key: 'transport') }
+            let!(:bike) { create(:custom_field_option, custom_field: field, key: 'bike') }
+            let!(:other) { create(:custom_field_option, custom_field: field, key: 'other', other: true) }
+
+            example 'Edit an idea that chose the removed "Other" option', document: false do
+              input.custom_field_answers.create!(key: 'transport', value: 'other', custom_field: field)
+              input.custom_field_answers.create!(key: 'transport_other', value: 'Boat', custom_field: field)
+              remove_option(other)
+
+              do_request idea: edit
+
+              assert_status 200
+              expect(response_data.dig(:attributes, :title_multiloc, :en)).to eq 'Changed title'
+            end
+
+            example 'Choose another option after the "Other" option was removed', document: false do
+              input.custom_field_answers.create!(key: 'transport', value: 'other', custom_field: field)
+              input.custom_field_answers.create!(key: 'transport_other', value: 'Boat', custom_field: field)
+              remove_option(other)
+
+              do_request idea: edit.merge(transport: 'bike')
+
+              assert_status 200
+              expect(input.reload.answer_for_key('transport').value).to eq 'bike'
+            end
+
+            example 'Edit an idea that chose a deleted option', document: false do
+              input.custom_field_answers.create!(key: 'transport', value: 'bike', custom_field: field)
+              remove_option(bike)
+
+              do_request idea: edit
+
+              assert_status 200
+              expect(response_data.dig(:attributes, :title_multiloc, :en)).to eq 'Changed title'
+            end
+
+            example '[error] Choose an option the question does not have', document: false do
+              do_request idea: edit.merge(transport: 'car')
+
+              assert_status 422
+              error = json_response_body.dig(:errors, :custom_field_values, 0, :error)
+              expect(error).to include(error: 'Enum', fragment: '#/transport')
+            end
+          end
+
+          example 'Edit an idea with a follow-up answer after the follow-up was switched off', document: false do
+            field = create(:custom_field_sentiment_linear_scale, resource: form, key: 'mood', ask_follow_up: true)
+            input.custom_field_answers.create!(key: 'mood', value: 2, custom_field: field)
+            input.custom_field_answers.create!(key: 'mood_follow_up', value: 'Too much traffic', custom_field: field)
+            field.update!(ask_follow_up: false)
+
+            do_request idea: edit
+
+            assert_status 200
+            expect(response_data.dig(:attributes, :title_multiloc, :en)).to eq 'Changed title'
+          end
+        end
+
+        example 'Edit an idea that stores an answer without a field', document: false do
           create(:custom_form, :with_default_fields, participation_context: project)
           input.custom_field_answers.create!(key: 'orphan', value: 'x')
 
           do_request idea: { title_multiloc: { 'en' => 'Changed title' }, publication_status: 'published' }
 
-          assert_status 422
-          error = json_response_body.dig(:errors, :custom_field_values, 0, :error)
-          expect(error).to include(error: 'AdditionalProperties', human_message: include('orphan'))
+          assert_status 200
+          expect(input.reload.answer_for_key('orphan').value).to eq 'x'
         end
 
         example 'Removing the author of a published idea', document: false do

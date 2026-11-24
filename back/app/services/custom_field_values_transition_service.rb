@@ -28,6 +28,11 @@ class CustomFieldValuesTransitionService
     record.custom_field_answers.reject(&:marked_for_destruction?).to_h { [it.key, it.value] }
   end
 
+  def changed_values(record, values)
+    stored = custom_field_values(record)
+    normalize(values).reject { |key, value| stored[key] == value }
+  end
+
   private
 
   # nil values count as absent answers.
