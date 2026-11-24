@@ -17,7 +17,10 @@ const ParticipantActionsGroup = ({ phaseId, actions }: Props) => {
   const { formatMessage } = useIntl();
 
   return (
-    <PanelGroup label={formatMessage(configMessages.participantActionsGroup)}>
+    <PanelGroup
+      label={formatMessage(configMessages.participantActionsGroup)}
+      reviewKey="participant_actions"
+    >
       {actions.map(({ action, label }) => (
         <PhaseActionAccessRow
           key={action}

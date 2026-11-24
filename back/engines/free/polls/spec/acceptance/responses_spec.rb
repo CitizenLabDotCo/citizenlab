@@ -121,5 +121,15 @@ resource 'Poll Responses' do
     example_request 'Create a poll response in a phase' do
       expect(response_status).to eq 201
     end
+
+    example 'Reject a new response while collection is paused and accept it when resumed', document: false do
+      phase.update!(submission_enabled: false)
+      expect { do_request }.not_to change(Polls::Response, :count)
+      expect(response_status).to eq 401
+
+      phase.update!(submission_enabled: true)
+      expect { do_request }.to change(Polls::Response, :count).by(1)
+      expect(response_status).to eq 201
+    end
   end
 end

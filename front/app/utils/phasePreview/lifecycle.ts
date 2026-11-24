@@ -84,6 +84,8 @@ export const getPreviewActionSettings = ({
 const settingsForAction = (name: string, settings: ActionSettings) => {
   switch (name) {
     case 'posting_idea':
+    case 'taking_survey':
+    case 'taking_poll':
       return { posting_disabled: settings.submission_enabled };
     case 'commenting_idea':
     case 'comment_reacting_idea':

@@ -116,6 +116,7 @@ const actionDisabledMessages: {
     user_blocked: messages.documentAnnotationDisabledNotPermitted,
   },
   taking_survey: {
+    posting_disabled: messages.postingDisabled,
     project_inactive: messages.surveyDisabledProjectInactive,
     inactive_phase: messages.surveyDisabledNotActivePhase,
     not_survey: messages.surveyDisabledNotActivePhase,
@@ -127,6 +128,7 @@ const actionDisabledMessages: {
     user_blocked: messages.surveyDisabledNotPermitted,
   },
   taking_poll: {
+    posting_disabled: messages.postingDisabled,
     project_inactive: messages.pollDisabledProjectInactive,
     inactive_phase: messages.pollDisabledNotActivePhase,
     not_poll: messages.pollDisabledNotActivePhase,

@@ -317,6 +317,7 @@ const IdeationInputs = ({
         </div>
         <PanelGroup
           label={formatMessage(configMessages.participantActionsGroup)}
+          reviewKey="participant_actions"
           summary={actionsSummary}
           hasError={
             !!noLikingLimitError ||

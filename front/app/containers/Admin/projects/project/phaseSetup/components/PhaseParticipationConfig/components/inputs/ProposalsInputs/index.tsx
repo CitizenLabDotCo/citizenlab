@@ -199,6 +199,7 @@ const ProposalsInputs = ({
   const requirements = (
     <PanelGroup
       label={formatMessage(configMessages.proposalRequirementsGroup)}
+      reviewKey="proposal_requirements"
       hasError={
         !!reactingThresholdError ||
         !!expireDateLimitError ||
@@ -373,6 +374,7 @@ const ProposalsInputs = ({
         </div>
         <PanelGroup
           label={formatMessage(configMessages.participantActionsGroup)}
+          reviewKey="participant_actions"
           summary={actionsSummary}
           hasError={
             !!noLikingLimitError ||

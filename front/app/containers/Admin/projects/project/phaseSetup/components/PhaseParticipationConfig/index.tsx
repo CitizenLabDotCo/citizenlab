@@ -134,6 +134,12 @@ const PhaseParticipationConfig = ({
     });
   };
 
+  const toggleResponseCollection = () => {
+    updateFormData({
+      submission_enabled: formData.submission_enabled === false,
+    });
+  };
+
   const togglePostingEnabled = () => {
     updateFormData({
       submission_enabled: !formData.submission_enabled,
@@ -494,6 +500,7 @@ const PhaseParticipationConfig = ({
               </Box>
               <PanelGroup
                 label={formatMessage(messages.participantActionsGroup)}
+                reviewKey="participant_actions"
               >
                 {commonGroundActions}
               </PanelGroup>
@@ -644,6 +651,8 @@ const PhaseParticipationConfig = ({
 
         {participation_method === 'poll' && (
           <PollInputs
+            responsesEnabled={submission_enabled !== false}
+            onToggleResponses={toggleResponseCollection}
             poll_anonymous={poll_anonymous}
             apiErrors={apiErrors}
             togglePollAnonymous={togglePollAnonymous}
@@ -707,6 +716,8 @@ const PhaseParticipationConfig = ({
         )}
         {participation_method === 'survey' && (
           <SurveyInputs
+            responsesEnabled={submission_enabled !== false}
+            onToggleResponses={toggleResponseCollection}
             survey_service={survey_service}
             survey_embed_url={survey_embed_url}
             apiErrors={apiErrors}

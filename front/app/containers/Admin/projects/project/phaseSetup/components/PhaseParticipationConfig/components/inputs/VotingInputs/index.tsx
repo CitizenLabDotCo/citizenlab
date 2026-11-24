@@ -262,6 +262,7 @@ const VotingInputs = ({
         </SetupCard>
         <PanelGroup
           label={formatMessage(configMessages.participantActionsGroup)}
+          reviewKey="participant_actions"
           hasError={!!commentingError}
         >
           {phaseId && (

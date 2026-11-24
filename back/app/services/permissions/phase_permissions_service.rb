@@ -202,8 +202,10 @@ module Permissions
     end
 
     def taking_survey_denied_reason_for_action
-      unless phase.survey?
+      if !phase.survey?
         TAKING_SURVEY_DENIED_REASONS[:not_survey]
+      elsif phase.submission_enabled == false
+        POSTING_DENIED_REASONS[:posting_disabled]
       end
     end
 
@@ -218,6 +220,8 @@ module Permissions
         TAKING_POLL_DENIED_REASONS[:not_poll]
       elsif user && phase.poll_responses.exists?(user: user)
         TAKING_POLL_DENIED_REASONS[:already_responded]
+      elsif phase.submission_enabled == false
+        POSTING_DENIED_REASONS[:posting_disabled]
       end
     end
 

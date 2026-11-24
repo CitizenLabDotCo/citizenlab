@@ -16,7 +16,11 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../../../../../messages';
 import configMessages from '../../messages';
 
+import ResponseCollectionToggle from './_shared/ResponseCollectionToggle';
+
 interface Props {
+  responsesEnabled: boolean;
+  onToggleResponses: () => void;
   poll_anonymous: boolean | undefined;
   apiErrors: CLErrors | null | undefined;
   togglePollAnonymous: () => void;
@@ -26,6 +30,8 @@ interface Props {
 }
 
 const PollInputs = ({
+  responsesEnabled,
+  onToggleResponses,
   poll_anonymous,
   apiErrors,
   togglePollAnonymous,
@@ -50,23 +56,34 @@ const PollInputs = ({
             expandable
           />
         </Box>
-        {/* Access rights belong to a saved phase. */}
-        {phaseId && (
-          <PanelGroup
-            label={formatMessage(configMessages.participantActionsGroup)}
-          >
-            <PhaseActionAccessRow
-              phaseId={phaseId}
-              action="taking_poll"
-              label={configMessages.takingPollAction}
-            />
-            <PhaseActionAccessRow
-              phaseId={phaseId}
-              action="attending_event"
-              label={messages.attendingEventAction}
-            />
-          </PanelGroup>
-        )}
+        <PanelGroup
+          label={formatMessage(configMessages.participantActionsGroup)}
+          reviewKey="participant_actions"
+          summary={formatMessage(
+            responsesEnabled
+              ? configMessages.responsesOpen
+              : configMessages.responsesPaused
+          )}
+        >
+          <ResponseCollectionToggle
+            checked={responsesEnabled}
+            onChange={onToggleResponses}
+          />
+          {phaseId && (
+            <>
+              <PhaseActionAccessRow
+                phaseId={phaseId}
+                action="taking_poll"
+                label={configMessages.takingPollAction}
+              />
+              <PhaseActionAccessRow
+                phaseId={phaseId}
+                action="attending_event"
+                label={messages.attendingEventAction}
+              />
+            </>
+          )}
+        </PanelGroup>
         <PanelGroup label={formatMessage(configMessages.moderationGroup)}>
           <SettingToggleRow
             title={formatMessage(messages.anonymousPolling)}

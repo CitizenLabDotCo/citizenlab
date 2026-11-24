@@ -101,6 +101,7 @@ const NativeSurveyInputs = ({
         {surveyPlacement}
         <PanelGroup
           label={formatMessage(configMessages.participantActionsGroup)}
+          reviewKey="participant_actions"
           hasError={!!submissionError || !!multipleResponsesError}
         >
           <SettingToggleRow
