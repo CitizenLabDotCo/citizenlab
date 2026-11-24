@@ -85,7 +85,10 @@ const WorkspaceHeader = ({
       inPhase ? phaseSetupMessages.saveChangesLabel : messages.save
     );
 
-  const projectPath = `/admin/projects/${project.id}`;
+  const projectPath = router.buildLocation({
+    to: '/$locale/admin/projects/$projectId',
+    params: { locale, projectId: project.id },
+  }).href;
   const projectTitle = localize(project.attributes.title_multiloc);
 
   const phaseCrumbs: Crumb[] = [
@@ -103,7 +106,10 @@ const WorkspaceHeader = ({
     {
       key: 'projects',
       label: formatMessage(messages.projectsCrumb),
-      path: '/admin/projects',
+      path: router.buildLocation({
+        to: '/$locale/admin/projects',
+        params: { locale },
+      }).href,
     },
     {
       key: 'project',
@@ -137,12 +143,7 @@ const WorkspaceHeader = ({
             <IconButton
               icon="arrow-left-16"
               aria-label={formatMessage(messages.backToProjectSetup)}
-              onPress={() =>
-                void router.navigate({
-                  to: '/$locale/admin/projects/$projectId',
-                  params: { locale, projectId: project.id },
-                })
-              }
+              href={projectPath}
             />
           ))}
         <div className={styles.crumbs}>
