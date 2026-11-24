@@ -6964,6 +6964,11 @@
     "verified_at": "2026-07-16T20:44:39.997828Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.messaging.smsUpsellTooltip2": {
+    "state": "verified",
+    "verified_at": "2026-10-16T09:43:07.242220Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.Admin.messaging.tabSms": {
     "state": "verified",
     "verified_at": "2026-07-16T19:50:19.871096Z",
@@ -25264,6 +25269,11 @@
     "verified_at": "2026-11-17T11:37:48.659103Z",
     "verified_by": "Adrien"
   },
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.notConfigured": {
+    "state": "verified",
+    "verified_at": "2026-10-16T09:43:07.242220Z",
+    "verified_by": "Cindy EB"
+  },
   "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordAvailableDescription2": {
     "state": "verified",
     "verified_at": "2026-11-17T13:26:03.722763Z",
@@ -25278,6 +25288,11 @@
     "state": "verified",
     "verified_at": "2026-11-17T13:26:03.722763Z",
     "verified_by": "Adrien"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.phoneUpsellTooltip2": {
+    "state": "verified",
+    "verified_at": "2026-10-16T09:43:07.242220Z",
+    "verified_by": "Cindy EB"
   },
   "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.securityChecks2": {
     "state": "verified",

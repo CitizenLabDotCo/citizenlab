@@ -39,12 +39,10 @@ describe('Project setup feedback', () => {
       ]);
     });
     setupCard('homepage-card').click();
-    setupCard('homepage-card')
-      .click()
-      .trigger('pointerout', {
-        eventConstructor: 'PointerEvent',
-        pointerType: 'mouse',
-      });
+    setupCard('homepage-card').click().trigger('pointerout', {
+      eventConstructor: 'PointerEvent',
+      pointerType: 'mouse',
+    });
     cy.get('body').should(($body) => {
       expect($body.find('[role="tooltip"]').filter(':visible')).to.have.length(
         0
