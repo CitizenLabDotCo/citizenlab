@@ -1,6 +1,6 @@
 import { Multiloc } from 'typings';
 
-import { Sort } from 'api/ideas/types';
+import { IIdeaQueryParameters, Sort } from 'api/ideas/types';
 
 import { Keys } from 'utils/cl-react-query/types';
 
@@ -8,7 +8,16 @@ import ideaMarkersKeys from './keys';
 
 export type IdeaMarkersKeys = Keys<typeof ideaMarkersKeys>;
 
-export interface QueryParameters {
+export interface QueryParameters
+  extends Pick<
+    IIdeaQueryParameters<string | string[]>,
+    | 'idea_status'
+    | 'assignee'
+    | 'feedback_needed'
+    | 'official_feedback'
+    | 'imported'
+    | 'transitive'
+  > {
   phaseId?: string | null;
   projectIds: string[] | null;
   sort?: Sort;

@@ -206,14 +206,15 @@ const BatchBar = ({
           variant="danger"
           size={28}
           icon="trash-2-16"
+          aria-label={
+            isSingle
+              ? formatMessage(messages.delete)
+              : formatMessage(messages.deleteTerms, {
+                  termCount: termCount(ideas.length),
+                })
+          }
           onPress={() => setDeleteModalOpen(true)}
-        >
-          {isSingle
-            ? formatMessage(messages.delete)
-            : formatMessage(messages.deleteTerms, {
-                termCount: termCount(ideas.length),
-              })}
-        </Button>
+        />
 
         <BatchFailureAlert failure={failure} />
       </SelectionBar>

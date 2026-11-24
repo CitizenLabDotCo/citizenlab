@@ -1,0 +1,27 @@
+.progress {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-12);
+  width: 100%;
+}
+
+.count {
+  composes: uiStrong from '../typography.module.css';
+  color: var(--gv-text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.track {
+  flex: 1;
+  max-width: 96px;
+  height: var(--gv-space-4);
+  border-radius: var(--gv-radius-full);
+  background: var(--gv-surface-sunken);
+}
+
+.fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--gv-icon-tertiary);
+}

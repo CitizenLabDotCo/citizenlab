@@ -18,6 +18,7 @@ export type ColumnKey =
   | 'comments'
   | 'published'
   | 'totalVotes'
+  | 'totalPicks'
   | 'votes'
   | 'offlineVotes'
   | 'picks'
@@ -44,6 +45,7 @@ export const COLUMNS: Record<ColumnKey, Column> = {
   comments: { label: postManagerMessages.comments, sort: 'comments_count' },
   published: { label: messages.publishedColumn, sort: 'new' },
   totalVotes: { label: messages.totalVotesColumn, sort: 'total_votes' },
+  totalPicks: { label: messages.totalVotesColumn, sort: 'total_baskets' },
   votes: { label: messages.onlineColumn, sort: 'votes_count' },
   offlineVotes: {
     label: messages.offlineColumn,
@@ -72,6 +74,7 @@ const COLUMN_ORDER: ColumnKey[] = [
   'assignee',
   'tags',
   'totalVotes',
+  'totalPicks',
   'votes',
   'offlineVotes',
   'picks',
@@ -100,7 +103,7 @@ const GENERAL_COLUMNS: ColumnKey[] = [
 ];
 
 const VOTING_COLUMNS: Record<string, ColumnKey[]> = {
-  budgeting: ['picks', 'offlinePicks', 'budget', 'comments'],
+  budgeting: ['totalPicks', 'picks', 'offlinePicks', 'budget', 'comments'],
   multiple_voting: [
     'totalVotes',
     'votes',
@@ -135,6 +138,10 @@ export const getColumns = (
 
   return {
     available: orderColumns([...GENERAL_COLUMNS, ...votingColumns]),
-    initial: votingMethod ? votingColumns : ['status', 'imported'],
+    initial: votingMethod
+      ? votingColumns.filter(
+          (column) => column !== 'budget' && column !== 'participants'
+        )
+      : ['status', 'imported'],
   };
 };

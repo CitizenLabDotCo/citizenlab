@@ -60,6 +60,21 @@ describe('Redesigned input manager', () => {
     cy.apiRemoveProject(projectId);
   });
 
+  it('switches between the list and the map with the same filters', () => {
+    cy.intercept('GET', '**/web_api/v1/ideas/as_markers*').as('markers');
+
+    cy.contains('button', /^Map$/).click();
+    cy.wait('@markers').then(({ request, response }) => {
+      expect(response?.statusCode).to.eq(200);
+      expect(new URL(request.url).searchParams.get('phase')).to.eq(phaseId);
+    });
+    cy.get('#e2e-ideas-map').should('exist');
+
+    cy.contains('button', /^List$/).click();
+    cy.get('#e2e-ideas-map').should('not.exist');
+    cy.get(`[data-cy="e2e-idea-row-${firstIdeaId}"]`).should('be.visible');
+  });
+
   it('opens an input in the side panel through the url', () => {
     cy.get(`[data-cy="e2e-idea-row-${firstIdeaId}"]`)
       .contains(firstTitle)

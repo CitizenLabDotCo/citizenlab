@@ -21,3 +21,20 @@
 .stats {
   composes: stats from '../_shared/listManager.module.css';
 }
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gv-space-8);
+  padding: var(--gv-space-24) var(--gv-space-8);
+  color: var(--gv-icon-secondary);
+  text-align: center;
+}
+
+.emptyActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--gv-space-8);
+}

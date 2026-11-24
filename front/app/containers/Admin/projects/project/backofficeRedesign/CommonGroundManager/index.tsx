@@ -3,7 +3,10 @@ import React, { useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 
 import Banner from 'design-system/Banner';
+import Button from 'design-system/Button';
+import Icon from 'design-system/Icon';
 import Spinner from 'design-system/Spinner';
+import Text from 'design-system/Text';
 
 import commonGroundResultsKeys from 'api/common_ground/keys/commonGroundResultsKeys';
 import useCommonGroundResults from 'api/common_ground/useCommonGroundResults';
@@ -17,7 +20,6 @@ import { IProjectData } from 'api/projects/types';
 import useLocalize from 'hooks/useLocalize';
 
 import inputManagerMessages from 'components/admin/PostManager/CommonGroundInputManager/messages';
-import NoInputsDisplay from 'components/admin/PostManager/CommonGroundInputManager/NoInputsDisplay';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
@@ -34,6 +36,7 @@ import ManageLayout from '../Phase/ManageLayout';
 import AddStatementModal from './AddStatementModal';
 import styles from './CommonGroundManager.module.css';
 import EditStatementModal from './EditStatementModal';
+import messages from './messages';
 import StatementSideColumn from './StatementSideColumn';
 import StatementTable from './StatementTable';
 import StatementToolbar from './StatementToolbar';
@@ -187,15 +190,25 @@ const CommonGroundManager = ({ project, phase }: Props) => {
           <Spinner />
         </div>
       )}
-      {ideas && phaseTotal === 0 && (
-        <NoInputsDisplay
-          isJobInProgress={isImporting}
-          importedCount={importedCount}
-          totalInputsToBeImported={totalToImport}
-          project={project}
-          phaseId={phase.id}
-          setShowPastInputsModal={setImportOpened}
-        />
+      {ideas && phaseTotal === 0 && !isError && (
+        <div className={styles.empty}>
+          <Icon name="message-square-16" />
+          <Text variant="uiStrong">
+            <FormattedMessage {...inputManagerMessages.noInputs} />
+          </Text>
+          <div className={styles.emptyActions}>
+            <Button variant="secondary" onPress={() => setAddOpened(true)}>
+              <FormattedMessage {...messages.addStatement} />
+            </Button>
+            <Button
+              variant="primary"
+              isDisabled={isImporting}
+              onPress={() => setImportOpened(true)}
+            >
+              <FormattedMessage {...inputManagerMessages.startFromPastInputs} />
+            </Button>
+          </div>
+        </div>
       )}
       {ideas && pageIdeas.length === 0 && !!phaseTotal && (
         <NoMatches onClearFilters={clearFilters} />

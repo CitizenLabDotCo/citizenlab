@@ -1,6 +1,18 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  inputDisplay: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.inputDisplay',
+    defaultMessage: 'Input view',
+  },
+  listDisplay: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.listDisplay',
+    defaultMessage: 'List',
+  },
+  mapDisplay: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.mapDisplay',
+    defaultMessage: 'Map',
+  },
   removeOne: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.removeOne',
     defaultMessage: 'Remove one',
@@ -85,6 +97,10 @@ export default defineMessages({
   repliedMark: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.repliedMark',
     defaultMessage: 'Replied',
+  },
+  orderByColumn: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.orderByColumn',
+    defaultMessage: 'Order by {column}',
   },
   addColumns: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.addColumns',

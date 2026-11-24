@@ -23,6 +23,8 @@ interface Props {
   availableColumns: ColumnKey[];
   onChangeColumns: (columns: ColumnKey[]) => void;
   sort: Sort;
+  showVoteThumbnails: boolean;
+  leadingVoteCount?: number;
   onSort: (sort: Sort) => void;
   statuses: IIdeaStatusData[];
   tagLabels: Map<string, string>;
@@ -41,6 +43,8 @@ const IdeaTable = ({
   availableColumns,
   onChangeColumns,
   sort,
+  showVoteThumbnails,
+  leadingVoteCount,
   onSort,
   statuses,
   tagLabels,
@@ -85,6 +89,8 @@ const IdeaTable = ({
               idea={idea}
               columns={columns}
               statuses={statuses}
+              showVoteThumbnail={showVoteThumbnails}
+              leadingVoteCount={leadingVoteCount}
               tagLabels={tagLabels}
               active={idea.id === openIdeaId}
               onOpen={() => onOpen(idea.id)}

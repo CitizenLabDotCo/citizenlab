@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import Text from 'design-system/Text';
 
@@ -21,6 +21,7 @@ interface Props {
   type: ManagerType;
   projectId: string;
   count: number | undefined;
+  displayToggle?: ReactNode;
   selectedIdeas: IIdeaData[];
   onUpdated: (ideas: IIdeaData[], attribute: BatchAttribute) => void;
   onEdit: (ideaId: string) => void;
@@ -39,6 +40,7 @@ const ListToolbar = ({
   type,
   projectId,
   count,
+  displayToggle,
   selectedIdeas,
   onUpdated,
   onEdit,
@@ -77,6 +79,7 @@ const ListToolbar = ({
         </Text>
       )}
       <div className={styles.display}>
+        {displayToggle}
         <SearchToggle
           label={formatMessage(messages.searchTerms, { terms })}
           searchTerm={searchTerm}

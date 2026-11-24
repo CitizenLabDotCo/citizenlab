@@ -50,7 +50,7 @@ const list = (value: string | string[] | undefined) =>
 const joined = (values: string[]) =>
   values.length > 0 ? values.join(',') : undefined;
 
-const useManagerParams = (phaseId: string) => {
+const useManagerParams = (phaseId: string, phaseSort: Sort = DEFAULT_SORT) => {
   const search = useSearch({ strict: false });
 
   const filters: ManagerFilters = useMemo(
@@ -70,9 +70,10 @@ const useManagerParams = (phaseId: string) => {
     [search, phaseId]
   );
 
+  const defaultSort = filters.phase === phaseId ? phaseSort : DEFAULT_SORT;
   const page = Math.max(1, parseInt(search.page ?? '1', 10) || 1);
   const sort: Sort =
-    ideaSortValues.find((value) => value === search.sort) ?? DEFAULT_SORT;
+    ideaSortValues.find((value) => value === search.sort) ?? defaultSort;
   const searchTerm = search.search;
   const selectedIdeaId = search.selected_idea_id;
 
@@ -128,12 +129,15 @@ const useManagerParams = (phaseId: string) => {
     updateSearchParams(NO_FILTERS);
   }, []);
 
-  const setSort = useCallback((sort: Sort) => {
-    updateSearchParams({
-      page: undefined,
-      sort: sort === DEFAULT_SORT ? undefined : sort,
-    });
-  }, []);
+  const setSort = useCallback(
+    (sort: Sort) => {
+      updateSearchParams({
+        page: undefined,
+        sort: sort === defaultSort ? undefined : sort,
+      });
+    },
+    [defaultSort]
+  );
 
   const setPage = useCallback((page: number) => {
     updateSearchParams({ page: page > 1 ? String(page) : undefined });

@@ -15,6 +15,7 @@ import {
 } from 'react-aria-components';
 
 import Icon from '../Icon';
+import Tooltip from '../Tooltip';
 
 import styles from './ColumnHeader.module.css';
 import '../tokens.css';
@@ -27,8 +28,8 @@ type ColumnHeaderProps = {
   id: Key;
   // The label.
   children: string;
-  // Sort lives in the menu; the head only shows it.
   sortDirection?: SortDirection;
+  sortAction?: { onPress: () => void; label: string };
   showChevron?: boolean;
   // A ColumnMenu; a press on the head opens it.
   menu?: ReactElement;
@@ -42,6 +43,7 @@ const ColumnHeader = ({
   id,
   children,
   sortDirection,
+  sortAction,
   showChevron = true,
   menu,
   isRowHeader,
@@ -101,6 +103,12 @@ const ColumnHeader = ({
               {menu}
             </MenuTrigger>
           </ColumnSortContext.Provider>
+        ) : sortAction ? (
+          <Tooltip content={sortAction.label}>
+            <AriaButton className={styles.trigger} onPress={sortAction.onPress}>
+              {label}
+            </AriaButton>
+          </Tooltip>
         ) : (
           <span className={styles.trigger}>{label}</span>
         )}

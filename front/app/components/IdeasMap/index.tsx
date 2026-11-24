@@ -106,6 +106,10 @@ export interface Props {
   mapConfig?: IMapConfig | null;
   ideaMarkers?: IIdeaMarkers;
   inputFiltersProps?: InputFiltersProps;
+  management?: {
+    selectedIdeaId: string | undefined;
+    onSelectIdea: (ideaId: string | null) => void;
+  };
 }
 
 const IdeasMap = memo<Props>(
@@ -115,6 +119,7 @@ const IdeasMap = memo<Props>(
     mapConfig,
     ideaMarkers,
     inputFiltersProps,
+    management,
   }: Props) => {
     const theme = useTheme();
     const localize = useLocalize();
@@ -140,19 +145,27 @@ const IdeasMap = memo<Props>(
     const [clickedMapLocation, setClickedMapLocation] =
       useState<GeoJSON.Point | null>(null);
 
-    const selectedIdeaId = searchParams.idea_map_id ?? null;
+    const selectedIdeaId = management
+      ? management.selectedIdeaId ?? null
+      : searchParams.idea_map_id ?? null;
+    const onSelectManagedIdea = management?.onSelectIdea;
 
     const ideaData = ideaMarkers?.data.find(
       (idea) => idea.id === selectedIdeaId
     );
 
-    const setSelectedIdea = useCallback((ideaId: string | null) => {
-      if (ideaId) {
-        updateSearchParams({ idea_map_id: ideaId });
-      } else {
-        removeSearchParams(['idea_map_id']);
-      }
-    }, []);
+    const setSelectedIdea = useCallback(
+      (ideaId: string | null) => {
+        if (onSelectManagedIdea) {
+          onSelectManagedIdea(ideaId);
+        } else if (ideaId) {
+          updateSearchParams({ idea_map_id: ideaId });
+        } else {
+          removeSearchParams(['idea_map_id']);
+        }
+      },
+      [onSelectManagedIdea]
+    );
 
     const [ideasSharingLocation, setIdeasSharingLocation] = useState<
       string[] | null
@@ -325,7 +338,8 @@ const IdeasMap = memo<Props>(
 
     const preview = usePhasePreview();
     const canPreviewSubmission =
-      !preview || (!preview.unsaved && preview.lifecycle === 'open');
+      !management &&
+      (!preview || (!preview.unsaved && preview.lifecycle === 'open'));
 
     const onMapClick = useCallback(
       (event: any, mapView: MapView) => {
@@ -530,7 +544,7 @@ const IdeasMap = memo<Props>(
               // TODO: Fix this the next time the file is edited.
               // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               webMapId={mapConfig?.data?.attributes?.esri_web_map_id}
-              height={isMobileOrSmaller ? '68vh' : '80vh'}
+              height={management || isMobileOrSmaller ? '68vh' : '80vh'}
               layers={layers}
               onHover={onMapHover}
               onClick={onMapClick}
@@ -543,7 +557,7 @@ const IdeasMap = memo<Props>(
                 (layer) => layer.id === hoveredLayerId
               )}
             />
-            {phaseId && (
+            {phaseId && !management && (
               <StartIdeaButton
                 modalPortalElement={startIdeaButtonNode}
                 latlng={clickedMapLocation}
@@ -561,7 +575,7 @@ const IdeasMap = memo<Props>(
               )}
               mapView={esriMapView}
             />
-            {isMobileOrSmaller && (
+            {!management && isMobileOrSmaller && (
               <CSSTransition
                 classNames="animation"
                 in={!!selectedIdeaId}
@@ -590,7 +604,7 @@ const IdeasMap = memo<Props>(
                 </Box>
               </CSSTransition>
             )}
-            {!isMobileOrSmaller && (
+            {!management && !isMobileOrSmaller && (
               <Box
                 width="390px"
                 height={`calc(${mapHeightDesktop} - 80px)`}
@@ -614,7 +628,7 @@ const IdeasMap = memo<Props>(
             )}
           </InnerContainer>
         </StyledMapContainer>
-        {isMobileOrSmaller && (
+        {!management && isMobileOrSmaller && (
           <Box width="100%" mt="8px">
             <IdeaMapOverlay
               projectId={projectId}
