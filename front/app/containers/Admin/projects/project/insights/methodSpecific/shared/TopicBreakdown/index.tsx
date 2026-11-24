@@ -8,13 +8,15 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
+import DashboardCard from 'design-system/DashboardCard';
+import Skeleton from 'design-system/Skeleton';
+
 import { ParticipationMethod } from 'api/phases/types';
 
 import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
 import { useIntl } from 'utils/cl-intl';
 
-import InsightCard from '../../../InsightCard';
 import { usePdfExportContext } from '../../../pdf/PdfExportContext';
 import { useWordSection, type WordSection } from '../../../word/useWordSection';
 import WordExportableInsight from '../../../word/WordExportableInsight';
@@ -23,6 +25,7 @@ import messages from '../messages';
 import AiTopicsAccordion from './AiTopicsAccordion';
 import AiUpsellBanner from './AiUpsellBanner';
 import ManualTagsAccordion from './ManualTagsAccordion';
+import TopicGroup from './TopicGroup';
 import useTopicBreakdownData from './useTopicBreakdownData';
 
 interface Props {
@@ -109,6 +112,14 @@ const TopicBreakdown = ({ phaseId, participationMethod }: Props) => {
     { skip: isLoading || !hasAnyTopics }
   );
 
+  if (isLoading && redesigned) {
+    return (
+      <WordExportableInsight exportId="topic-breakdown" skipExport>
+        <Skeleton shape="block" height={212} />
+      </WordExportableInsight>
+    );
+  }
+
   if (isLoading) {
     return (
       <WordExportableInsight exportId="topic-breakdown" skipExport>
@@ -123,6 +134,39 @@ const TopicBreakdown = ({ phaseId, participationMethod }: Props) => {
         >
           <Spinner size="24px" />
         </Box>
+      </WordExportableInsight>
+    );
+  }
+
+  if (redesigned) {
+    return (
+      <WordExportableInsight exportId="topic-breakdown" skipExport>
+        <DashboardCard title={formatMessage(messages.topicBreakdownCard)}>
+          <div>
+            {isAiTopicsAllowed ? (
+              <TopicGroup
+                title={formatMessage(messages.aiTopicDistributionRow)}
+                summary={formatMessage(messages.aiTopicsSummary, {
+                  inputsCount: totalInputs,
+                  topicsCount: aiTopics.length,
+                })}
+                topics={aiTopics}
+                emptyMessage={formatMessage(messages.noAiTopics)}
+              />
+            ) : (
+              <AiUpsellBanner />
+            )}
+            <TopicGroup
+              title={formatMessage(messages.manualTagsByParticipantsRow)}
+              summary={formatMessage(messages.manualTagsSummary, {
+                taggedCount: manualTopics.reduce((sum, t) => sum + t.count, 0),
+                topicsCount: manualTopics.length,
+              })}
+              topics={manualTopics}
+              emptyMessage={formatMessage(messages.noManualTags)}
+            />
+          </div>
+        </DashboardCard>
       </WordExportableInsight>
     );
   }
@@ -147,16 +191,6 @@ const TopicBreakdown = ({ phaseId, participationMethod }: Props) => {
       </Box>
     </>
   );
-
-  if (redesigned) {
-    return (
-      <WordExportableInsight exportId="topic-breakdown" skipExport>
-        <InsightCard title={formatMessage(messages.topicBreakdownCard)}>
-          <div>{breakdown}</div>
-        </InsightCard>
-      </WordExportableInsight>
-    );
-  }
 
   return (
     <WordExportableInsight exportId="topic-breakdown" skipExport>
