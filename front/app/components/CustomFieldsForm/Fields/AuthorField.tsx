@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 
 import { Box, colors, IconTooltip } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
@@ -13,7 +13,10 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 
-import AuthorComboBox from './AuthorComboBox';
+import styles from './AuthorField.module.css';
+import 'design-system/tokens.css';
+
+const AuthorComboBox = lazy(() => import('./AuthorComboBox'));
 
 interface Props {
   name: string;
@@ -50,12 +53,14 @@ const AuthorField = ({ name, id, variant }: Props) => {
           name={name}
           control={control}
           render={({ field }) => (
-            <AuthorComboBox
-              placeholder={formatMessage(messages.authorFieldPlaceholder)}
-              value={field.value ?? null}
-              errorMessage={validationError}
-              onChange={(userId) => setValue(name, userId)}
-            />
+            <Suspense fallback={<div className={styles.placeholder} />}>
+              <AuthorComboBox
+                placeholder={formatMessage(messages.authorFieldPlaceholder)}
+                value={field.value ?? null}
+                errorMessage={validationError}
+                onChange={(userId) => setValue(name, userId)}
+              />
+            </Suspense>
           )}
         />
         {apiErrorMessage}
