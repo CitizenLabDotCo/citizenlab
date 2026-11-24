@@ -1,12 +1,7 @@
 import React from 'react';
 
-import {
-  bo,
-  Box,
-  colors,
-  Text,
-  Toggle,
-} from '@citizenlab/cl2-component-library';
+import Disclosure from 'design-system/Disclosure';
+import Switch from 'design-system/Switch';
 
 import { IPhaseData } from 'api/phases/types';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
@@ -17,6 +12,7 @@ import messages from '../messages';
 
 import AutoShareNotice from './AutoShareNotice';
 import Card from './Card';
+import styles from './SideColumn.module.css';
 
 const TOGGLE_ID = 'auto-share-results';
 
@@ -31,37 +27,28 @@ const AutoShareResults = ({ phase }: Props) => {
 
   return (
     <Card fillHeight>
-      <Box display="flex" flexDirection="column" gap="8px">
+      <div className={styles.autoShare}>
         {enabled && <AutoShareNotice phase={phase} />}
-        <Box
-          display="flex"
-          alignItems="center"
-          justifyContent="space-between"
-          gap="12px"
-          minHeight="44px"
-          p="8px 12px"
-          border={`1px solid ${colors.grey200}`}
-          borderRadius={bo.borderRadius}
-        >
-          <Box as="label" htmlFor={TOGGLE_ID} cursor="pointer">
-            <Text as="span" variant="boControl" m="0">
-              {formatMessage(messages.autoShareResults)}
-            </Text>
-          </Box>
-          <Toggle
-            id={TOGGLE_ID}
-            variant="bo"
-            checked={enabled}
-            disabled={isPending}
-            onChange={() =>
-              updatePhase({
-                phaseId: phase.id,
-                autoshare_results_enabled: !enabled,
-              })
-            }
-          />
-        </Box>
-      </Box>
+        <Disclosure
+          header="static"
+          title={formatMessage(messages.autoShareResults)}
+          actions={
+            <Switch
+              id={TOGGLE_ID}
+              size={26}
+              aria-label={formatMessage(messages.autoShareResults)}
+              isSelected={enabled}
+              isDisabled={isPending}
+              onChange={() =>
+                updatePhase({
+                  phaseId: phase.id,
+                  autoshare_results_enabled: !enabled,
+                })
+              }
+            />
+          }
+        />
+      </div>
     </Card>
   );
 };

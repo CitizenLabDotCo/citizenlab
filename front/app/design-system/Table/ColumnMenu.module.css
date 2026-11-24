@@ -1,0 +1,25 @@
+.popover {
+  display: flex;
+  flex-direction: column;
+  width: 260px;
+  padding: var(--gv-space-6);
+  overflow: auto;
+}
+
+.menu {
+  display: contents;
+  outline: none;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+}
+
+.separator {
+  flex-shrink: 0;
+  height: var(--gv-border-width-1);
+  margin: var(--gv-space-6) var(--gv-space-4);
+  border: none;
+  background: var(--gv-border-divider);
+}

@@ -1,10 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  dropFilesHereOr: {
-    id: 'app.containers.Admin.projects.project.dropFilesHereOr',
-    defaultMessage: 'Drop files here or',
-  },
   supportedFileTypes: {
     id: 'app.containers.Admin.projects.project.supportedFileTypes',
     defaultMessage:

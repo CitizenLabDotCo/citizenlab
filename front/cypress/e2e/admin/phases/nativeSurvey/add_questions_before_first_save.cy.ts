@@ -1,4 +1,7 @@
-import { randomString } from '../../../../support/commands';
+import {
+  pickTodayInPhaseDatePicker,
+  randomString,
+} from '../../../../support/commands';
 
 describe('Adding survey questions before saving a phase', () => {
   let projectId: string;
@@ -39,9 +42,7 @@ describe('Adding survey questions before saving a phase', () => {
     cy.contains('Missing start date').should('exist');
     cy.location('pathname').should('include', draftPath);
 
-    cy.get('.e2e-date-phase-picker-input').click();
-    cy.get('.rdp-today .rdp-day_button').first().click();
-    cy.get('.e2e-date-phase-picker-input').click();
+    pickTodayInPhaseDatePicker();
 
     cy.get('[data-cy="add-draft-survey-questions"]').click();
     cy.get('[role="dialog"]').contains('button', 'Start from scratch').click();
@@ -56,7 +57,7 @@ describe('Adding survey questions before saving a phase', () => {
     cy.get('[role="dialog"]')
       .contains('button', 'Start from scratch')
       .should('be.visible');
-    cy.get('[role="dialog"] .e2e-modal-close-button').click();
+    cy.get('[role="dialog"] [data-cy="e2e-modal-close-button"]').click();
     cy.get('[role="dialog"]').should('not.exist');
     cy.get('@createPhase.all').should('have.length', 1);
     cy.location('pathname').should('include', draftPath);
@@ -89,9 +90,7 @@ describe('Adding survey questions before saving a phase', () => {
       `${draftPath}?project_backoffice_redesign&participation_method=native_survey`
     );
 
-    cy.get('.e2e-date-phase-picker-input').click();
-    cy.get('.rdp-today .rdp-day_button').first().click();
-    cy.get('.e2e-date-phase-picker-input').click();
+    pickTodayInPhaseDatePicker();
     cy.get('#phase-build-panel-title').type('Survey for the neighbourhood');
 
     cy.get('[data-cy="add-draft-survey-questions"]').scrollIntoView().click();
@@ -101,7 +100,7 @@ describe('Adding survey questions before saving a phase', () => {
     cy.wait('@createPhase').its('response.statusCode').should('eq', 201);
     cy.get('[data-cy="e2e-copy-survey-modal"]').should('be.visible');
 
-    cy.get('[role="dialog"] .e2e-modal-close-button').click();
+    cy.get('[role="dialog"] [data-cy="e2e-modal-close-button"]').click();
     cy.get('[role="dialog"]').should('not.exist');
     cy.location('search').should('not.include', 'survey_action');
   });

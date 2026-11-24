@@ -1,25 +1,18 @@
 import React from 'react';
 
-import {
-  Box,
-  Image,
-  Text,
-  bo,
-  colors,
-} from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
+
+import IconButton from 'design-system/IconButton';
+import Text from 'design-system/Text';
 
 import useLocalize from 'hooks/useLocalize';
 
 import volunteeringMessages from 'containers/Admin/projects/project/volunteering/messages';
 
-import IconAction from 'components/UI/IconAction';
-
 import { useIntl } from 'utils/cl-intl';
 
+import styles from './CausesSection.module.css';
 import messages from './messages';
-
-const THUMBNAIL_SIZE = '40px';
 
 interface Props {
   title: Multiloc;
@@ -40,56 +33,33 @@ const CauseRow = ({
   const localize = useLocalize();
 
   return (
-    <Box
-      as="li"
-      display="flex"
-      alignItems="center"
-      gap="12px"
-      py="8px"
-      borderBottom={`1px solid ${colors.grey100}`}
-    >
+    <li className={styles.row}>
       {imageUrl ? (
-        <Image
-          src={imageUrl}
-          alt=""
-          width={THUMBNAIL_SIZE}
-          height={THUMBNAIL_SIZE}
-          borderRadius={bo.borderRadius}
-          objectFit="cover"
-          style={{ flex: 'none' }}
-        />
+        <img src={imageUrl} alt="" className={styles.thumbnail} />
       ) : (
-        <Box
-          width={THUMBNAIL_SIZE}
-          height={THUMBNAIL_SIZE}
-          flex="none"
-          borderRadius={bo.borderRadius}
-          background={colors.grey100}
-        />
+        <div className={styles.placeholder} />
       )}
-      <Box display="flex" flexDirection="column" flexGrow={1} minWidth="0">
-        <Text as="span" variant="boControl" m="0">
+      <div className={styles.text}>
+        <Text as="span" variant="ui" tone="primary">
           {localize(title)}
         </Text>
-        <Text as="span" variant="boHelper" fontSize="xs" m="0">
+        <Text as="span" variant="small" tone="secondary">
           {formatMessage(messages.nSignedUp, { count: volunteersCount })}
         </Text>
-      </Box>
-      <Box display="flex" gap="4px" flex="none">
-        <IconAction
-          icon="edit"
-          tooltip={formatMessage(volunteeringMessages.editButtonLabel)}
-          ariaLabel={formatMessage(volunteeringMessages.editCauseTitle)}
-          onClick={onEdit}
+      </div>
+      <div className={styles.rowActions}>
+        <IconButton
+          icon="pencil-14"
+          aria-label={formatMessage(volunteeringMessages.editCauseTitle)}
+          onPress={onEdit}
         />
-        <IconAction
-          icon="delete"
-          tooltip={formatMessage(volunteeringMessages.deleteButtonLabel)}
-          ariaLabel={formatMessage(messages.deleteCause)}
-          onClick={onDelete}
+        <IconButton
+          icon="trash-2-16"
+          aria-label={formatMessage(messages.deleteCause)}
+          onPress={onDelete}
         />
-      </Box>
-    </Box>
+      </div>
+    </li>
   );
 };
 

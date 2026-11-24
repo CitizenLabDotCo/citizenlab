@@ -45,17 +45,18 @@ describe('Phase preview permissions and feature boundary', () => {
           .its('0.contentDocument.body')
           .should('not.be.empty')
           .then((body) => cy.wrap(body));
-      cy.get('[role="group"][aria-label="Preview phase state"]')
+      cy.get('[aria-label="Preview phase state"]')
         .contains('button', 'Open')
         .click();
       phone().find('#e2e-ideation-cta-button').should('not.exist');
+      cy.contains('button', 'Participant actions').click();
       cy.contains('label', 'Submitting inputs').scrollIntoView().click();
       phone()
         .find('#e2e-ideation-cta-button button')
         .should('have.attr', 'aria-disabled', 'false');
       cy.contains('label', 'Submitting inputs').scrollIntoView().click();
       phone().find('#e2e-ideation-cta-button').should('not.exist');
-      cy.get('[role="group"][aria-label="Preview phase state"]')
+      cy.get('[aria-label="Preview phase state"]')
         .contains('button', 'Open')
         .click();
       phone().contains('Live reaction option').should('be.visible');
@@ -104,9 +105,7 @@ describe('Phase preview permissions and feature boundary', () => {
             `Existing ${method}`
           );
           cy.get('[data-cy="e2e-phase-preview"]').should('not.exist');
-          cy.get('[role="group"][aria-label="Preview phase state"]').should(
-            'not.exist'
-          );
+          cy.get('[aria-label="Preview phase state"]').should('not.exist');
         });
       });
     }

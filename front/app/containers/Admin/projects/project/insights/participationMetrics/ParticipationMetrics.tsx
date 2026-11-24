@@ -7,6 +7,8 @@ import { IPhaseData } from 'api/phases/types';
 
 import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
+import projectMessages from 'containers/Admin/projects/project/messages';
+
 import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
@@ -159,7 +161,9 @@ const ParticipationMetrics = ({ phase }: Props) => {
           ? [
               {
                 type: 'paragraph' as const,
-                text: formatMessage(messages.konveioParticipationDataNotice),
+                text: formatMessage(
+                  projectMessages.konveioParticipationDataNotice
+                ),
               },
             ]
           : []),
@@ -201,13 +205,13 @@ const ParticipationMetrics = ({ phase }: Props) => {
     <Box display="flex" flexDirection="column" gap="16px" w="100%">
       {showKonveioNotice && (!redesigned || isPdfRenderMode) && (
         <Warning>
-          {formatMessage(messages.konveioParticipationDataNotice)}
+          {formatMessage(projectMessages.konveioParticipationDataNotice)}
         </Warning>
       )}
       <Box
         display="flex"
         flexWrap="wrap"
-        gap={redesigned && !isPdfRenderMode ? '8px' : '16px'}
+        gap={redesigned && !isPdfRenderMode ? '10px' : '16px'}
         w="100%"
       >
         <MetricCard
@@ -235,6 +239,11 @@ const ParticipationMetrics = ({ phase }: Props) => {
         )}
         <MethodMetrics
           participationMethod={participation_method}
+          inputTerm={
+            redesigned && !isPdfRenderMode
+              ? phase.attributes.input_term
+              : undefined
+          }
           metrics={metrics}
           showChange={isCurrentPhase}
         />

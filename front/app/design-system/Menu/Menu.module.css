@@ -1,0 +1,151 @@
+.popover {
+  composes: popover from '../collection.module.css';
+}
+
+/* A submenu is navigation inside the menu: it fades in at once and leaves in the same frame. */
+.popover[data-trigger='SubmenuTrigger'][data-entering] {
+  animation: submenu-fade var(--gv-motion-duration-instant)
+    var(--gv-motion-easing-standard);
+}
+
+.popover[data-trigger='SubmenuTrigger'][data-exiting] {
+  animation: none;
+}
+
+.menu {
+  composes: collection from '../collection.module.css';
+  padding: var(--gv-space-6);
+}
+
+.item {
+  composes: item from '../collection.module.css';
+  composes: ui from '../typography.module.css';
+  color: var(--gv-text-primary);
+  /* An item with href renders as <a>. */
+  text-decoration: none;
+}
+
+.icon {
+  flex-shrink: 0;
+  color: var(--gv-icon-secondary);
+}
+
+.text {
+  composes: text from '../collection.module.css';
+}
+
+.label {
+  composes: label from '../collection.module.css';
+}
+
+.description {
+  composes: small from '../typography.module.css';
+  color: var(--gv-text-secondary);
+}
+
+.count {
+  composes: small from '../typography.module.css';
+  flex-shrink: 0;
+  color: var(--gv-text-placeholder);
+}
+
+.chevron {
+  flex-shrink: 0;
+  color: var(--gv-icon-secondary);
+}
+
+.check {
+  composes: check from '../collection.module.css';
+}
+
+/* Check mark: the selected item turns UI strong, which differs from UI only in weight. */
+.item[data-selection-mode='single'][data-selected] .label {
+  font-weight: var(--gv-font-weight-medium);
+}
+
+/* Default */
+.default[data-hovered],
+.default[data-focused],
+.default[data-open] {
+  background: var(--gv-surface-hovered);
+}
+
+.default[data-pressed] {
+  background: var(--gv-surface-pressed);
+}
+
+/* Danger */
+.danger .label {
+  color: var(--gv-text-danger);
+}
+
+.danger .icon {
+  color: var(--gv-text-danger);
+}
+
+.danger[data-hovered],
+.danger[data-focused],
+.danger[data-pressed] {
+  background: var(--gv-surface-danger-hovered);
+}
+
+/* Disabled: the colours change, the row keeps its strength. */
+.item[data-disabled] .label,
+.item[aria-disabled='true'] .label,
+.item[data-disabled] .description,
+.item[aria-disabled='true'] .description,
+.item[data-disabled] .count,
+.item[aria-disabled='true'] .count {
+  color: var(--gv-text-disabled);
+}
+
+.item[data-disabled] .icon,
+.item[aria-disabled='true'] .icon,
+.item[data-disabled] .check,
+.item[aria-disabled='true'] .check {
+  color: var(--gv-icon-disabled);
+}
+
+/* Checkbox mark: hidden until the row is hovered, focused or checked. */
+.checkbox {
+  composes: checkbox from '../collection.module.css';
+}
+
+.item[data-hovered] .checkbox,
+.item[data-focused] .checkbox,
+.item[data-selected] .checkbox {
+  opacity: 1;
+}
+
+.item[data-selected] .checkbox {
+  border-color: var(--gv-component-checkbox-border-checked);
+  background: var(--gv-component-checkbox-surface-checked);
+}
+
+.item[data-disabled] .checkbox,
+.item[aria-disabled='true'] .checkbox {
+  opacity: var(--gv-opacity-disabled);
+}
+
+.item[data-disabled]:not([data-selected]) .checkbox,
+.item[aria-disabled='true']:not([data-selected]) .checkbox {
+  background: var(--gv-surface-sunken);
+}
+
+.checkboxIcon {
+  composes: checkboxIcon from '../collection.module.css';
+}
+
+.separator {
+  flex-shrink: 0;
+  height: var(--gv-border-width-1);
+  margin: var(--gv-space-6) var(--gv-space-4);
+  border: none;
+  background: var(--gv-border-subtle);
+}
+
+@keyframes submenu-fade {
+  from {
+    opacity: 0;
+  }
+}

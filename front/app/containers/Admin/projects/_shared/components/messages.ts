@@ -1,17 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  toSet: {
-    id: 'app.containers.Admin.projects.setupReview.toSet',
-    defaultMessage: 'To set',
-  },
-  toReview: {
-    id: 'app.containers.Admin.projects.setupReview.toReview',
-    defaultMessage: 'To review',
-  },
-  reviewed: {
-    id: 'app.containers.Admin.projects.setupReview.reviewed',
-    defaultMessage: 'Reviewed',
+  previewProject: {
+    id: 'app.containers.Admin.projects.project.previewProject',
+    defaultMessage: 'Preview the project page',
   },
   failed: {
     id: 'app.containers.Admin.projects.setupReview.failed',

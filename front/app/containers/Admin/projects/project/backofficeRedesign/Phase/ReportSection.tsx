@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, Button, Tooltip } from '@citizenlab/cl2-component-library';
+import Button from 'design-system/Button';
 
 import { IPhaseData } from 'api/phases/types';
 import useReport from 'api/reports/useReport';
@@ -11,12 +11,13 @@ import messages from 'containers/Admin/projects/project/information/ReportTab/me
 import topBarMessages from 'containers/Admin/reporting/components/ReportBuilder/TopBar/messages';
 import reportRowMessages from 'containers/Admin/reporting/components/ReportBuilderPage/ReportRow/messages';
 
-import ButtonWithLink from 'components/UI/ButtonWithLink';
-
 import { useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 
 import PanelField from './BuildPanel/PanelField';
 import phaseMessages from './messages';
+import styles from './ReportSection.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   projectId: string;
@@ -40,13 +41,11 @@ const ReportSection = ({ projectId, phase }: Props) => {
           action={
             <Button
               id="e2e-create-report-button"
-              buttonStyle="bo-primary"
-              icon="plus"
-              boSize="medium"
-              width="auto"
-              onClick={() => setCreateOpened(true)}
+              variant="primary"
+              icon="plus-16"
+              onPress={() => setCreateOpened(true)}
             >
-              {formatMessage(messages.createReport)}
+              {formatMessage(phaseMessages.addReport)}
             </Button>
           }
         />
@@ -67,12 +66,10 @@ const ReportSection = ({ projectId, phase }: Props) => {
     <PanelField
       label={formatMessage(messages.report)}
       action={
-        <Box display="flex" alignItems="center" gap="8px">
+        <div className={styles.actions}>
           <Button
-            buttonStyle="bo-secondary"
-            boSize="medium"
-            width="auto"
-            onClick={() =>
+            variant="secondary"
+            onPress={() =>
               window.open(
                 `/admin/reporting/report-builder/${reportId}/print`,
                 '_blank',
@@ -82,25 +79,23 @@ const ReportSection = ({ projectId, phase }: Props) => {
           >
             {formatMessage(topBarMessages.download)}
           </Button>
-          <Tooltip
-            disabled={!report || canEdit}
-            placement="bottom"
-            content={formatMessage(reportRowMessages.cannotEditReport)}
+          <Button
+            variant="secondary"
+            isDisabled={!canEdit}
+            disabledReason={
+              report && !canEdit
+                ? formatMessage(reportRowMessages.cannotEditReport)
+                : undefined
+            }
+            onPress={() =>
+              clHistory.push(
+                `/admin/reporting/report-builder/${reportId}/editor`
+              )
+            }
           >
-            <div>
-              <ButtonWithLink
-                buttonStyle="bo-secondary"
-                boSize="medium"
-                width="auto"
-                disabled={!canEdit}
-                to="/admin/reporting/report-builder/$reportId/editor"
-                params={{ reportId }}
-              >
-                {formatMessage(phaseMessages.editReport)}
-              </ButtonWithLink>
-            </div>
-          </Tooltip>
-        </Box>
+            {formatMessage(phaseMessages.editReport)}
+          </Button>
+        </div>
       }
     />
   );

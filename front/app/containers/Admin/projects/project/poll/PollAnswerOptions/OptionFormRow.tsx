@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from 'react';
 
-import { Input, LocaleSwitcher } from '@citizenlab/cl2-component-library';
+import {
+  Input,
+  LocaleSwitcher as PageLocaleSwitcher,
+} from '@citizenlab/cl2-component-library';
 import { Multiloc, SupportedLocale } from 'typings';
+
+import Button from 'design-system/Button';
+import TextField from 'design-system/TextField';
 
 import useAddPollOption from 'api/poll_options/useAddPollOption';
 import useUpdatePollOption from 'api/poll_options/useUpdatePollOption';
@@ -10,14 +16,15 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
 import usePrevious from 'hooks/usePrevious';
 
+import LocaleSwitcher from 'components/admin/MultilocFields/LocaleSwitcher';
 import { TextCell, Row } from 'components/admin/ResourceList';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../messages';
-import { usePollStyles } from '../PollVariantContext';
+import { useIsPanelPoll } from '../PollVariantContext';
 
 /*
  * edit mode : titleMultiloc and optionId defined, question Id not used
@@ -38,7 +45,8 @@ const OptionFormRow = ({
   questionId,
   closeRow,
 }: Props) => {
-  const { buttonStyle, boSize, inputVariant } = usePollStyles();
+  const isPanel = useIsPanelPoll();
+  const { formatMessage } = useIntl();
 
   const { mutate: addPollOption } = useAddPollOption();
   const { mutate: updatePollOption } = useUpdatePollOption();
@@ -102,47 +110,74 @@ const OptionFormRow = ({
   return (
     <Row className="e2e-form-option-row">
       <TextCell>
-        {selectedLocale && (
-          <LocaleSwitcher
-            variant={inputVariant}
-            onSelectedLocaleChange={onSelectedLocaleChange}
-            locales={!isNilOrError(tenantLocales) ? tenantLocales : []}
-            selectedLocale={selectedLocale}
-            values={{ titleMultiloc: newTitleMultiloc }}
-          />
-        )}
+        {selectedLocale &&
+          (isPanel ? (
+            <LocaleSwitcher
+              aria-label={formatMessage(messages.optionTitleLabel)}
+              locales={!isNilOrError(tenantLocales) ? tenantLocales : []}
+              selectedLocale={selectedLocale}
+              onChange={onSelectedLocaleChange}
+              valueMultiloc={newTitleMultiloc}
+            />
+          ) : (
+            <PageLocaleSwitcher
+              onSelectedLocaleChange={onSelectedLocaleChange}
+              locales={!isNilOrError(tenantLocales) ? tenantLocales : []}
+              selectedLocale={selectedLocale}
+              values={{ titleMultiloc: newTitleMultiloc }}
+            />
+          ))}
       </TextCell>
 
       <TextCell className="expand">
-        {selectedLocale && (
-          <Input
-            variant={inputVariant}
-            autoFocus
-            value={newTitleMultiloc[selectedLocale]}
-            locale={selectedLocale}
-            type="text"
-            onChange={onChangeTitle}
-          />
-        )}
+        {selectedLocale &&
+          (isPanel ? (
+            <TextField
+              aria-label={formatMessage(messages.optionTitleLabel)}
+              autoFocus
+              size={32}
+              value={newTitleMultiloc[selectedLocale] ?? ''}
+              onChange={(value) => onChangeTitle(value, selectedLocale)}
+            />
+          ) : (
+            <Input
+              autoFocus
+              value={newTitleMultiloc[selectedLocale]}
+              locale={selectedLocale}
+              type="text"
+              onChange={onChangeTitle}
+            />
+          ))}
       </TextCell>
 
-      <ButtonWithLink
-        className="e2e-form-option-save"
-        buttonStyle={buttonStyle('admin-dark')}
-        boSize={boSize}
-        onClick={onSave}
-      >
-        <FormattedMessage {...messages.saveOption} />
-      </ButtonWithLink>
+      {isPanel ? (
+        <>
+          <Button variant="primary" size={28} onPress={onSave}>
+            <FormattedMessage {...messages.saveOption} />
+          </Button>
+          <Button size={28} onPress={closeRow}>
+            <FormattedMessage {...messages.cancelOption} />
+          </Button>
+        </>
+      ) : (
+        <>
+          <ButtonWithLink
+            className="e2e-form-option-save"
+            buttonStyle="admin-dark"
+            onClick={onSave}
+          >
+            <FormattedMessage {...messages.saveOption} />
+          </ButtonWithLink>
 
-      <ButtonWithLink
-        className="e2e-form-option-cancel"
-        buttonStyle={buttonStyle('secondary-outlined')}
-        boSize={boSize}
-        onClick={closeRow}
-      >
-        <FormattedMessage {...messages.cancelOption} />
-      </ButtonWithLink>
+          <ButtonWithLink
+            className="e2e-form-option-cancel"
+            buttonStyle="secondary-outlined"
+            onClick={closeRow}
+          >
+            <FormattedMessage {...messages.cancelOption} />
+          </ButtonWithLink>
+        </>
+      )}
     </Row>
   );
 };

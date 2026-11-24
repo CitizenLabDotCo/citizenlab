@@ -4,7 +4,6 @@ import { IProjectData } from 'api/projects/types';
 
 import useLocalize from 'hooks/useLocalize';
 
-import useEventForm from 'containers/Admin/projects/_shared/events/useEventForm';
 import eventMessages from 'containers/Admin/projects/project/events/messages';
 
 import {
@@ -23,6 +22,7 @@ import EventPreview from './EventPreview';
 import EventSetup from './EventSetup';
 import EventViewSwitch, { EventView } from './EventViewSwitch';
 import messages from './messages';
+import useEventForm from './useEventForm';
 
 interface Props {
   project: IProjectData;

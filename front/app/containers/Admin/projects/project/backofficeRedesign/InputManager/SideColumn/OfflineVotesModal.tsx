@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 
-import {
-  Box,
-  Button,
-  Input,
-  Spinner,
-  Text,
-} from '@citizenlab/cl2-component-library';
 import { useQueryClient } from '@tanstack/react-query';
+import { Controller, useForm } from 'react-hook-form';
+
+import Banner from 'design-system/Banner';
+import Modal from 'design-system/Modal';
+import NumberField from 'design-system/NumberField';
+import Pagination from 'design-system/Pagination';
+import Spinner from 'design-system/Spinner';
 
 import useIdeas from 'api/ideas/useIdeas';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
@@ -17,31 +17,45 @@ import useUpdatePhase from 'api/phases/useUpdatePhase';
 
 import useLocalize from 'hooks/useLocalize';
 
-import Pagination from 'components/Pagination';
-import Error from 'components/UI/Error';
-import Modal from 'components/UI/Modal';
-
 import { useIntl } from 'utils/cl-intl';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 import messages from '../messages';
+
+import styles from './SideColumn.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   phase: IPhaseData;
   onClose: () => void;
 }
 
+interface FormValues {
+  manual_voters_amount: number;
+  votes: Partial<Record<string, number>>;
+}
+
+// A cleared number field reports NaN.
+const isNumber = (value: number | undefined) =>
+  value === undefined || !Number.isNaN(value);
+
 const OfflineVotesModal = ({ phase, onClose }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const queryClient = useQueryClient();
   const [page, setPage] = useState(1);
-  const [votes, setVotes] = useState<Record<string, string>>({});
-  const [voters, setVoters] = useState(
-    String(phase.attributes.manual_voters_amount ?? 0)
-  );
-  const [saving, setSaving] = useState(false);
-  const [failed, setFailed] = useState(false);
+  const {
+    control,
+    handleSubmit,
+    setError,
+    formState: { errors, isSubmitting, isValid },
+  } = useForm<FormValues>({
+    mode: 'onChange',
+    defaultValues: {
+      manual_voters_amount: phase.attributes.manual_voters_amount ?? 0,
+      votes: {},
+    },
+  });
   const { mutateAsync: updateIdea } = useUpdateIdea();
   const { mutateAsync: updatePhase } = useUpdatePhase();
   const { data: ideas } = useIdeas({
@@ -53,150 +67,120 @@ const OfflineVotesModal = ({ phase, onClose }: Props) => {
     'page[size]': 20,
   });
   const lastPage = ideas ? getPageNumberFromUrl(ideas.links.last) || 1 : 1;
-  const invalid =
-    Object.values(votes).some((value) => !/^\d+$/.test(value)) ||
-    !/^\d+$/.test(voters);
 
-  const save = async () => {
-    setSaving(true);
-    setFailed(false);
+  const save = handleSubmit(async ({ manual_voters_amount, votes }) => {
     try {
       if (phase.attributes.voting_method === 'budgeting') {
-        await updatePhase({
-          phaseId: phase.id,
-          manual_voters_amount: Number(voters),
-        });
+        await updatePhase({ phaseId: phase.id, manual_voters_amount });
       }
       for (const [id, value] of Object.entries(votes)) {
+        // Every rendered idea has an entry; only edited ones have a value.
+        if (value === undefined) continue;
+
         await updateIdea({
           id,
-          requestBody: { manual_votes_amount: Number(value) },
+          requestBody: { manual_votes_amount: value },
         });
       }
-      queryClient.invalidateQueries({ queryKey: phasesKeys.items() });
-      queryClient.invalidateQueries({
-        queryKey: phasesKeys.list({
-          projectId: phase.relationships.project.data.id,
-        }),
-      });
-      onClose();
     } catch {
-      setFailed(true);
-    } finally {
-      setSaving(false);
+      setError('root', { type: 'server' });
+      return;
     }
-  };
+
+    queryClient.invalidateQueries({ queryKey: phasesKeys.items() });
+    queryClient.invalidateQueries({
+      queryKey: phasesKeys.list({
+        projectId: phase.relationships.project.data.id,
+      }),
+    });
+    onClose();
+  });
 
   return (
     <Modal
-      opened
-      close={() => {
-        if (!saving) onClose();
+      isOpen
+      onOpenChange={(isOpen) => {
+        if (!isOpen && !isSubmitting) onClose();
       }}
-      header={formatMessage(messages.addOfflineVotes)}
-      variant="bo"
+      title={formatMessage(messages.addOfflineVotes)}
+      primaryAction={{
+        label: formatMessage(messages.saveOfflineVotes),
+        onPress: () => save(),
+        isPending: isSubmitting,
+        isDisabled: !ideas || ideas.data.length === 0 || !isValid,
+      }}
     >
-      <Box p="24px">
-        <Text variant="boHelper" mt="0">
-          {formatMessage(messages.offlineVotesHelp)}
-        </Text>
-        {phase.attributes.voting_method === 'budgeting' && (
-          <Box mb="16px">
-            <Input
-              type="number"
-              variant="bo"
-              label={formatMessage(messages.offlineParticipants)}
-              value={voters}
-              min="0"
-              onChange={setVoters}
-              disabled={saving}
-            />
-          </Box>
-        )}
-        {!ideas && <Spinner />}
-        {ideas?.data.map((idea) => {
-          const value =
-            votes[idea.id] ?? String(idea.attributes.manual_votes_amount ?? 0);
-          return (
-            <Box
-              key={idea.id}
-              display="flex"
-              alignItems="center"
-              gap="16px"
-              mb="16px"
-            >
-              <Box as="label" htmlFor={`offline-votes-${idea.id}`} flexGrow={1}>
-                <Text as="span" variant="boLabel" m="0">
-                  {localize(idea.attributes.title_multiloc)}
-                </Text>
-              </Box>
-              <Box display="flex" alignItems="center" gap="4px">
-                <Button
-                  buttonStyle="bo-secondary"
-                  width="32px"
-                  padding="0"
-                  ariaLabel={formatMessage(messages.removeOne)}
-                  disabled={saving || Number(value) <= 0}
-                  onClick={() =>
-                    setVotes({
-                      ...votes,
-                      [idea.id]: String(Math.max(0, (Number(value) || 0) - 1)),
-                    })
-                  }
-                >
-                  −
-                </Button>
-                <Box width="80px">
-                  <Input
-                    id={`offline-votes-${idea.id}`}
-                    variant="bo"
-                    type="number"
-                    min="0"
-                    value={value}
-                    disabled={saving}
-                    onChange={(next) => setVotes({ ...votes, [idea.id]: next })}
-                  />
-                </Box>
-                <Button
-                  buttonStyle="bo-secondary"
-                  width="32px"
-                  padding="0"
-                  ariaLabel={formatMessage(messages.addOne)}
-                  disabled={saving}
-                  onClick={() =>
-                    setVotes({
-                      ...votes,
-                      [idea.id]: String(Math.max(0, Number(value) || 0) + 1),
-                    })
-                  }
-                >
-                  +
-                </Button>
-              </Box>
-            </Box>
-          );
-        })}
-        {lastPage > 1 && (
-          <Pagination
-            currentPage={page}
-            totalPages={lastPage}
-            loadPage={setPage}
+      <p className={styles.modalHelp}>
+        {formatMessage(messages.offlineVotesHelp)}
+      </p>
+      {phase.attributes.voting_method === 'budgeting' && (
+        <div className={styles.participants}>
+          <Controller
+            control={control}
+            name="manual_voters_amount"
+            rules={{ validate: isNumber }}
+            render={({ field }) => (
+              <NumberField
+                label={formatMessage(messages.offlineParticipants)}
+                value={field.value}
+                minValue={0}
+                step={1}
+                onChange={field.onChange}
+                isDisabled={isSubmitting}
+              />
+            )}
           />
-        )}
-        {failed && (
-          <Error text={formatMessage(messages.offlineVotesSaveError)} />
-        )}
-        <Box display="flex" justifyContent="flex-end" mt="24px">
-          <Button
-            buttonStyle="bo-primary"
-            processing={saving}
-            disabled={!ideas || ideas.data.length === 0 || invalid}
-            onClick={save}
-          >
-            {formatMessage(messages.saveOfflineVotes)}
-          </Button>
-        </Box>
-      </Box>
+        </div>
+      )}
+      {!ideas && (
+        <div className={styles.loading}>
+          <Spinner />
+        </div>
+      )}
+      {ideas?.data.map((idea) => {
+        const title = localize(idea.attributes.title_multiloc);
+
+        return (
+          <div key={idea.id} className={styles.voteRow}>
+            <span className={styles.voteLabel}>{title}</span>
+            <div className={styles.voteField}>
+              <Controller
+                control={control}
+                name={`votes.${idea.id}`}
+                rules={{ validate: isNumber }}
+                render={({ field }) => (
+                  <NumberField
+                    aria-label={title}
+                    id={`offline-votes-${idea.id}`}
+                    size={32}
+                    value={
+                      field.value ?? idea.attributes.manual_votes_amount ?? 0
+                    }
+                    minValue={0}
+                    step={1}
+                    isDisabled={isSubmitting}
+                    incrementAriaLabel={formatMessage(messages.addOne)}
+                    decrementAriaLabel={formatMessage(messages.removeOne)}
+                    onChange={field.onChange}
+                  />
+                )}
+              />
+            </div>
+          </div>
+        );
+      })}
+      {lastPage > 1 && (
+        <div className={styles.pagination}>
+          <Pagination page={page} pageCount={lastPage} onChange={setPage} />
+        </div>
+      )}
+      {errors.root && (
+        <div className={styles.error}>
+          <Banner tone="error">
+            {formatMessage(messages.offlineVotesSaveError)}
+          </Banner>
+        </div>
+      )}
     </Modal>
   );
 };

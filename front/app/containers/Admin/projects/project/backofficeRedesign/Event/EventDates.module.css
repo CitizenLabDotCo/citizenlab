@@ -1,0 +1,31 @@
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--gv-space-12) var(--gv-space-8);
+  align-items: start;
+}
+
+.endDate {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--gv-space-4);
+  min-width: 0;
+}
+
+.endDatePicker {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Lines the 24 px button up with the 36 px input under the label. */
+.removeEndDate {
+  margin-top: calc(
+    var(--gv-font-line-height-20) + var(--gv-space-8) + var(--gv-space-6)
+  );
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

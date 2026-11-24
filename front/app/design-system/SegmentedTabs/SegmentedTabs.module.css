@@ -1,0 +1,54 @@
+.tabList {
+  composes: track from '../segmented.module.css';
+}
+
+.tab {
+  composes: ui from '../typography.module.css';
+  composes: ringInside from '../focus.module.css';
+  position: relative;
+  box-sizing: border-box;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  height: var(--gv-size-28);
+  padding: 0 var(--gv-space-14);
+  gap: var(--gv-space-6);
+  border-radius: 5px;
+  color: var(--gv-text-secondary);
+  white-space: nowrap;
+  cursor: pointer;
+  transition-property: background-color, color;
+  transition-duration: var(--gv-motion-duration-fast);
+  transition-timing-function: var(--gv-motion-easing-standard);
+}
+
+.tab[data-hovered],
+.tab[data-pressed] {
+  color: var(--gv-text-primary);
+}
+
+.tab[data-pressed]:not([data-selected]) {
+  background: var(--gv-surface-muted-hovered);
+}
+
+.tab[data-selected] {
+  color: var(--gv-text-primary);
+  font-weight: var(--gv-font-weight-medium);
+  cursor: default;
+}
+
+/* The white block slides between tabs; React Aria animates translate and width. */
+.indicator {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--gv-surface-panel);
+  transition-property: translate, width;
+  transition-duration: var(--gv-motion-duration-medium);
+  transition-timing-function: var(--gv-motion-easing-move);
+}
+
+.label {
+  position: relative;
+}

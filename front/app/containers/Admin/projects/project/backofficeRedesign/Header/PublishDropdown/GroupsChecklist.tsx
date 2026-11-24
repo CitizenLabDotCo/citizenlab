@@ -1,12 +1,7 @@
 import React from 'react';
 
-import {
-  Box,
-  CheckboxWithLabel,
-  Text,
-  bo,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import Banner from 'design-system/Banner';
+import Checkbox from 'design-system/Checkbox';
 
 import useGroups from 'api/groups/useGroups';
 import useAddProjectGroup from 'api/project_groups/useAddProjectGroup';
@@ -15,12 +10,11 @@ import useProjectGroups from 'api/project_groups/useProjectGroups';
 
 import useLocalize from 'hooks/useLocalize';
 
-import Error from 'components/UI/Error';
-import CheckOption from 'components/UI/PillPicker/CheckOption';
-
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
+import styles from './PublishDropdown.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   projectId: string;
@@ -66,36 +60,31 @@ const GroupsChecklist = ({ projectId }: Props) => {
   };
 
   return (
-    <Box
-      mt="4px"
-      p="12px 8px"
-      borderRadius={bo.panelBorderRadius}
-      background={colors.grey50}
-    >
-      <Text variant="boMicro" m="0 0 4px 8px">
+    <div className={styles.groups}>
+      <p className={styles.groupsIntro}>
         {formatMessage(
           groups.data.length > 0
             ? messages.publishChooseGroups
             : messages.publishNoGroups
         )}
-      </Text>
+      </p>
       {groups.data.map((group) => (
-        <CheckOption key={group.id}>
-          <CheckboxWithLabel
-            p="8px"
-            size="17px"
-            checkedColor="primary"
-            checked={linkIds.has(group.id)}
-            disabled={busy}
+        <div key={group.id} className={styles.groupOption}>
+          <Checkbox
+            isSelected={linkIds.has(group.id)}
+            isDisabled={busy}
             onChange={() => toggle(group.id)}
-            label={localize(group.attributes.title_multiloc)}
-          />
-        </CheckOption>
+          >
+            {localize(group.attributes.title_multiloc)}
+          </Checkbox>
+        </div>
       ))}
       {(addFailed || deleteFailed) && (
-        <Error text={formatMessage(messages.publishGroupsSaveFailed)} />
+        <Banner tone="error">
+          {formatMessage(messages.publishGroupsSaveFailed)}
+        </Banner>
       )}
-    </Box>
+    </div>
   );
 };
 

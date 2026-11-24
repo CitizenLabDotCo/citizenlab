@@ -44,29 +44,30 @@ const SurveyInputs = ({
 
   // In the panel, the service and link are set from the build panel.
   if (layout === 'panel') {
+    // Access rights belong to a saved phase; before that there is nothing to set here.
+    if (!phaseId) return null;
+
     return (
       <>
-        <Box mb="10px">
-          <PanelHeading label={formatMessage(configMessages.settingsGroup)} />
+        <Box pt="14px" mb="10px">
+          <PanelHeading
+            label={formatMessage(configMessages.settingsGroup)}
+            expandable
+          />
         </Box>
         <PanelGroup
           label={formatMessage(configMessages.participantActionsGroup)}
-          defaultOpen
         >
-          {phaseId && (
-            <>
-              <PhaseActionAccessRow
-                phaseId={phaseId}
-                action="taking_survey"
-                label={configMessages.takingSurveyAction}
-              />
-              <PhaseActionAccessRow
-                phaseId={phaseId}
-                action="attending_event"
-                label={messages.attendingEventAction}
-              />
-            </>
-          )}
+          <PhaseActionAccessRow
+            phaseId={phaseId}
+            action="taking_survey"
+            label={configMessages.takingSurveyAction}
+          />
+          <PhaseActionAccessRow
+            phaseId={phaseId}
+            action="attending_event"
+            label={messages.attendingEventAction}
+          />
         </PanelGroup>
       </>
     );

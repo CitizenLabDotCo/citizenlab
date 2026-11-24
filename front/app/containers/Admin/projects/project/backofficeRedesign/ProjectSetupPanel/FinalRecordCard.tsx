@@ -1,11 +1,13 @@
 import React from 'react';
 
-import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
+import Icon from 'design-system/Icon';
+import Text from 'design-system/Text';
 
 import { IProjectData } from 'api/projects/types';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
+import styles from './FinalRecordCard.module.css';
 import messages from './messages';
 import StatCardLink from './StatCardLink';
 import usePhaseResults from './usePhaseResults';
@@ -57,41 +59,23 @@ const FinalRecordCard = ({ project }: Props) => {
   ];
 
   return (
-    <StatCardLink
-      to="/admin/projects/$projectId/audience"
-      params={{ projectId: project.id }}
-    >
-      <Box display="flex" justifyContent="space-between" gap="8px">
-        <Text variant="boMicro" m="0">
+    <StatCardLink projectId={project.id}>
+      <div className={styles.head}>
+        <Text variant="small" tone="secondary">
           {formatMessage(messages.finalRecord)}
         </Text>
-        <Icon
-          name="chevron-right"
-          width="16px"
-          height="16px"
-          fill={colors.textSecondary}
-          my="0px"
-        />
-      </Box>
+        <Icon name="chevron-right-16" className={styles.chevron} />
+      </div>
 
-      {rows.map(({ label, value }, index) => (
-        <Box
-          key={label.id}
-          display="flex"
-          justifyContent="space-between"
-          gap="8px"
-          py="8px"
-          borderBottom={
-            index === rows.length - 1 ? 'none' : `1px dashed ${colors.grey300}`
-          }
-        >
-          <Text variant="boLabel" m="0" color="textSecondary">
+      {rows.map(({ label, value }) => (
+        <div key={label.id} className={styles.row}>
+          <Text variant="ui" tone="secondary">
             {formatMessage(label)}
           </Text>
-          <Text variant="boLabel" m="0" fontWeight="semi-bold">
+          <Text variant="uiStrong" tone="primary">
             {value ?? '—'}
           </Text>
-        </Box>
+        </div>
       ))}
     </StatCardLink>
   );

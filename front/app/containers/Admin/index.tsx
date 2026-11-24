@@ -17,6 +17,7 @@ import clHistory from 'utils/cl-router/history';
 import { usePermission } from 'utils/permissions';
 import { Outlet as RouterOutlet, useLocation } from 'utils/router';
 
+import AdminDesignSystemProvider from './AdminDesignSystemProvider';
 import PulseCheck from './PulseCheck';
 import Sidebar from './sideBar/';
 import CollapsibleSidebar from './sideBar/CollapsibleSidebar';
@@ -175,22 +176,28 @@ const AdminPage = memo<Props>(({ className }) => {
     !sidebarRendered;
 
   return (
-    <WorkspaceHeaderProvider>
-      <Container className={className}>
-        {sidebarRendered &&
-          (isProjectPage && redesigned ? <CollapsibleSidebar /> : <Sidebar />)}
-        <RightColumn
-          className={`
-            ${fullWidth ? 'fullWidth' : ''}
-            ${noPadding ? 'noPadding' : ''}
-            ${isProjectPage ? 'projectPage' : ''}
-          `}
-        >
-          <RouterOutlet />
-        </RightColumn>
-        <PulseCheck />
-      </Container>
-    </WorkspaceHeaderProvider>
+    <AdminDesignSystemProvider>
+      <WorkspaceHeaderProvider>
+        <Container className={className}>
+          {sidebarRendered &&
+            (isProjectPage && redesigned ? (
+              <CollapsibleSidebar />
+            ) : (
+              <Sidebar />
+            ))}
+          <RightColumn
+            className={`
+              ${fullWidth ? 'fullWidth' : ''}
+              ${noPadding ? 'noPadding' : ''}
+              ${isProjectPage ? 'projectPage' : ''}
+            `}
+          >
+            <RouterOutlet />
+          </RightColumn>
+          <PulseCheck />
+        </Container>
+      </WorkspaceHeaderProvider>
+    </AdminDesignSystemProvider>
   );
 });
 

@@ -1,6 +1,8 @@
 import React from 'react';
 
-import { Box, Button, Text } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
+
+import Button from 'design-system/Button';
 
 import { IPhaseData } from 'api/phases/types';
 
@@ -10,15 +12,19 @@ import Modal, { MEDIUM_MODAL_WIDTH } from 'components/UI/Modal';
 import { useIntl } from 'utils/cl-intl';
 
 import placementMessages from './messages';
+import styles from './MovePhase.module.css';
 import MovePhaseDates from './MovePhaseDates';
 import MovePhaseSummary from './MovePhaseSummary';
+import PlacementButton from './PlacementButton';
 import usePhasePlacementMove from './usePhasePlacementMove';
+import 'design-system/tokens.css';
 
 interface Props {
   phase: IPhaseData;
   onClose: () => void;
   onMoved?: (phase: IPhaseData) => void;
   hasUnsavedChanges?: boolean;
+  variant?: 'default' | 'panel';
 }
 
 const MovePhaseModal = ({
@@ -26,7 +32,9 @@ const MovePhaseModal = ({
   onClose,
   onMoved,
   hasUnsavedChanges = false,
+  variant = 'default',
 }: Props) => {
+  const redesign = variant === 'panel';
   const { formatMessage } = useIntl();
   const placementMove = usePhasePlacementMove(phase);
   const { onTimeline, loaded, blocked, move, isPending } = placementMove;
@@ -34,6 +42,13 @@ const MovePhaseModal = ({
   const close = () => {
     if (!isPending) onClose();
   };
+  const confirm = () =>
+    move({
+      onSuccess: (updatedPhase) => {
+        onMoved?.(updatedPhase);
+        onClose();
+      },
+    });
 
   return (
     <Modal
@@ -57,41 +72,47 @@ const MovePhaseModal = ({
           flexWrap="wrap"
         >
           {blocked && (
-            <Text
-              variant="boHelper"
-              m="0"
-              mr="auto"
-              role="status"
-              aria-live="polite"
-            >
+            <p className={styles.status} role="status" aria-live="polite">
               {formatMessage(placementMessages.resolveDateConflicts, {
                 count: placementMove.dateConflictCount,
               })}
-            </Text>
+            </p>
           )}
-          <Button
-            buttonStyle="bo-secondary"
-            disabled={isPending}
-            onClick={close}
-          >
-            {formatMessage(placementMessages.cancelButton)}
-          </Button>
-          <Button
-            buttonStyle="bo-primary"
-            disabled={!loaded || blocked || hasUnsavedChanges}
-            processing={isPending}
-            data-cy="e2e-phase-placement-confirm"
-            onClick={() =>
-              move({
-                onSuccess: (updatedPhase) => {
-                  onMoved?.(updatedPhase);
-                  onClose();
-                },
-              })
-            }
-          >
-            {formatMessage(placementMessages.confirmButton)}
-          </Button>
+          {redesign ? (
+            <>
+              <Button isDisabled={isPending} onPress={close}>
+                {formatMessage(placementMessages.cancelButton)}
+              </Button>
+              <Button
+                variant="primary"
+                isDisabled={!loaded || blocked || hasUnsavedChanges}
+                isPending={isPending}
+                data-cy="e2e-phase-placement-confirm"
+                onPress={confirm}
+              >
+                {formatMessage(placementMessages.confirmButton)}
+              </Button>
+            </>
+          ) : (
+            <>
+              <PlacementButton
+                appearance="secondary"
+                disabled={isPending}
+                onClick={close}
+              >
+                {formatMessage(placementMessages.cancelButton)}
+              </PlacementButton>
+              <PlacementButton
+                appearance="primary"
+                disabled={!loaded || blocked || hasUnsavedChanges}
+                processing={isPending}
+                data-cy="e2e-phase-placement-confirm"
+                onClick={confirm}
+              >
+                {formatMessage(placementMessages.confirmButton)}
+              </PlacementButton>
+            </>
+          )}
         </Box>
       }
     >
@@ -102,13 +123,22 @@ const MovePhaseModal = ({
         {placementMove.loadFailed && (
           <Box role="alert" mb="16px">
             <Error text={formatMessage(placementMessages.loadFailed)} />
-            <Button
-              buttonStyle="bo-secondary"
-              processing={placementMove.retrying}
-              onClick={placementMove.retryLoading}
-            >
-              {formatMessage(placementMessages.retryLoading)}
-            </Button>
+            {redesign ? (
+              <Button
+                isPending={placementMove.retrying}
+                onPress={placementMove.retryLoading}
+              >
+                {formatMessage(placementMessages.retryLoading)}
+              </Button>
+            ) : (
+              <PlacementButton
+                appearance="secondary"
+                processing={placementMove.retrying}
+                onClick={placementMove.retryLoading}
+              >
+                {formatMessage(placementMessages.retryLoading)}
+              </PlacementButton>
+            )}
           </Box>
         )}
         <MovePhaseSummary

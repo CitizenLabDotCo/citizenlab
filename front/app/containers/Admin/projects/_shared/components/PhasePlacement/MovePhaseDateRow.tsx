@@ -13,9 +13,8 @@ import Error from 'components/UI/Error';
 import { useIntl } from 'utils/cl-intl';
 import { convertToTimeZoneISO, getDateInTimezone } from 'utils/dateUtils';
 
-import PanelGroup from '../SettingsPanel/PanelGroup';
-
 import messages from './messages';
+import MovePhaseDateGroup from './MovePhaseDateGroup';
 import { PlacementDates } from './usePhasePlacementMove';
 import { PhaseDateError } from './utils';
 
@@ -80,7 +79,7 @@ const MovePhaseDateRow = ({ phase, defaultOpen, errors, onChange }: Props) => {
   };
 
   return (
-    <PanelGroup label={`${title} · ${dates}`} defaultOpen={defaultOpen}>
+    <MovePhaseDateGroup label={`${title} · ${dates}`} defaultOpen={defaultOpen}>
       <Box px="12px">
         <DatePhasePicker
           selectedRange={{ from, to }}
@@ -104,7 +103,7 @@ const MovePhaseDateRow = ({ phase, defaultOpen, errors, onChange }: Props) => {
           />
         ))}
       </Box>
-    </PanelGroup>
+    </MovePhaseDateGroup>
   );
 };
 

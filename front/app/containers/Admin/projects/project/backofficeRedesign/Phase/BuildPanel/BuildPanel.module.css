@@ -1,0 +1,94 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-height: 0;
+}
+
+.fields {
+  flex-grow: 1;
+}
+
+/* A survey option with the button that opens its questions. */
+.option {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-12);
+}
+
+.setupBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-10);
+}
+
+.setupLead {
+  margin-bottom: var(--gv-space-6);
+}
+
+.setupStatus {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-12);
+}
+
+.setupRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gv-space-12);
+}
+
+.setupUndo {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-12);
+}
+
+.switchBody {
+  display: flex;
+  flex-direction: column;
+}
+
+.switchIntro {
+  margin-bottom: var(--gv-space-12);
+}
+
+.consequences {
+  margin: 0;
+  padding-left: var(--gv-space-20);
+}
+
+.consequence {
+  margin: var(--gv-space-4) 0;
+}
+
+.externalFields {
+  margin-top: var(--gv-space-20);
+}
+
+.errors {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-8);
+  margin-top: var(--gv-space-16);
+}
+
+/* Placement choices sit side by side and wrap when the panel is narrow. */
+.placementChoices {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--gv-space-20) var(--gv-space-24);
+}
+
+.surveyFields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-12);
+}
+
+.setupRow > p,
+.setupUndo > p {
+  margin: 0;
+}
