@@ -3,16 +3,23 @@ import React, { ReactNode, useEffect, useMemo, useState } from 'react';
 import { debounce } from 'lodash-es';
 
 import ComboBox from 'design-system/ComboBox';
+import IconButton from 'design-system/IconButton';
 import { ListBoxOption } from 'design-system/ListBox';
 
 import { IUserData } from 'api/users/types';
 import useInfiniteUsers from 'api/users/useInfiniteUsers';
 import useUserById from 'api/users/useUserById';
 
+import formMessages from 'components/UI/FormComponents/messages';
+
+import { useIntl } from 'utils/cl-intl';
+
+import messages from '../messages';
+
+import styles from './AuthorField.module.css';
 import 'design-system/tokens.css';
 
 interface Props {
-  label: ReactNode;
   placeholder: string;
   value: string | null;
   errorMessage?: ReactNode;
@@ -25,12 +32,12 @@ const optionLabel = ({ attributes }: IUserData) => {
 };
 
 const AuthorComboBox = ({
-  label,
   placeholder,
   value,
   errorMessage,
   onChange,
 }: Props) => {
+  const { formatMessage } = useIntl();
   const [search, setSearch] = useState('');
   const { data: users } = useInfiniteUsers({
     pageSize: 5,
@@ -52,7 +59,17 @@ const AuthorComboBox = ({
 
   return (
     <ComboBox
-      label={label}
+      label={
+        <span className={styles.label}>
+          {formatMessage(messages.authorFieldLabel)}
+          <IconButton
+            icon="info-16"
+            size={24}
+            aria-label={formatMessage(messages.adminFieldTooltip)}
+          />
+          ({formatMessage(formMessages.optional)})
+        </span>
+      }
       placeholder={placeholder}
       size={32}
       items={items}

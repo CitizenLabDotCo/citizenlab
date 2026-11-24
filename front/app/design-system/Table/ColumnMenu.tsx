@@ -77,10 +77,14 @@ const ColumnMenu = ({
             {formatMessage(descending)}
           </MenuItem>
         </MenuSection>
-        <Separator className={styles.separator} />
-        <MenuItem id="hide" icon="eye-off-16" onAction={onHide}>
-          {formatMessage(messages.hideColumn)}
-        </MenuItem>
+        {onHide && (
+          <>
+            <Separator className={styles.separator} />
+            <MenuItem id="hide" icon="eye-off-16" onAction={onHide}>
+              {formatMessage(messages.hideColumn)}
+            </MenuItem>
+          </>
+        )}
       </AriaMenu>
     </Popover>
   );

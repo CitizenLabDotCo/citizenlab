@@ -32,6 +32,7 @@ interface Props {
   onReplace: (image: UploadFile) => void;
   onRemove: () => void;
   stackActions?: boolean;
+  acceptedFileTypes?: string[];
 }
 
 const ImageFileRow = ({
@@ -41,6 +42,7 @@ const ImageFileRow = ({
   onReplace,
   onRemove,
   stackActions = false,
+  acceptedFileTypes = ACCEPTED_IMAGE_TYPES,
 }: Props) => {
   const { formatMessage } = useIntl();
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -118,7 +120,7 @@ const ImageFileRow = ({
         <input
           ref={inputRef}
           type="file"
-          accept={ACCEPTED_IMAGE_TYPES.join(',')}
+          accept={acceptedFileTypes.join(',')}
           hidden
           onChange={handleFileChange}
         />

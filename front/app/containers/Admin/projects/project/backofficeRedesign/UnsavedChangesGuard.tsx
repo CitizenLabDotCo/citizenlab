@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Button from 'design-system/Button';
 import Modal from 'design-system/Modal';
 
 import phaseSetupMessages from 'containers/Admin/projects/project/phaseSetup/messages';
@@ -10,6 +11,7 @@ import { useIntl } from 'utils/cl-intl';
 import { useBlocker } from 'utils/router';
 
 import useReturnToPhaseAfterSave from './_shared/useReturnToPhaseAfterSave';
+import publishMessages from './Header/PublishDropdown/messages';
 import messages from './messages';
 import styles from './UnsavedChangesGuard.module.css';
 
@@ -44,19 +46,24 @@ const UnsavedChangesGuard = () => {
   };
 
   return (
-    // The close button cancels: Modal has room for two footer actions only.
     <Modal
       isOpen
       onOpenChange={(isOpen) => !isOpen && blocker.reset()}
       size={560}
       title={formatMessage(messages.unsavedChangesTitle)}
-      secondaryAction={{
-        label: formatMessage(messages.discardChanges),
-        onPress: () => {
-          pageSave.discardAll();
-          proceed();
-        },
-      }}
+      leadingAction={
+        <Button
+          variant="quiet"
+          isDisabled={pageSave.saving}
+          onPress={() => {
+            pageSave.discardAll();
+            proceed();
+          }}
+        >
+          {formatMessage(messages.discardChanges)}
+        </Button>
+      }
+      secondaryAction={{ label: formatMessage(publishMessages.publishCancel) }}
       primaryAction={{
         label: formatMessage(phaseSetupMessages.saveChangesLabel),
         isPending: pageSave.saving,

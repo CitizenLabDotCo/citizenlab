@@ -24,6 +24,7 @@ const Modal = ({
   children,
   primaryAction,
   secondaryAction,
+  leadingAction,
   showClose = true,
   size = 560,
   isOpen,
@@ -43,6 +44,7 @@ const Modal = ({
         description={description}
         primaryAction={primaryAction}
         secondaryAction={secondaryAction}
+        leadingAction={leadingAction}
         showClose={showClose}
         data-cy={dataCy}
       >

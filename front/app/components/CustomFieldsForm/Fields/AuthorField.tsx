@@ -1,24 +1,19 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 
 import { Box, colors, IconTooltip } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 import { Controller, useFormContext } from 'react-hook-form';
 import { CLError, RHFErrors } from 'typings';
 
-import IconButton from 'design-system/IconButton';
-
 import Error, { TFieldName } from 'components/UI/Error';
 import { FormLabel } from 'components/UI/FormComponents';
-import formMessages from 'components/UI/FormComponents/messages';
 import UserSelect from 'components/UI/UserSelect';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 
-import AuthorComboBox from './AuthorComboBox';
-import styles from './AuthorField.module.css';
-import 'design-system/tokens.css';
+const AuthorComboBox = lazy(() => import('./AuthorComboBox'));
 
 interface Props {
   name: string;
@@ -55,23 +50,14 @@ const AuthorField = ({ name, id, variant }: Props) => {
           name={name}
           control={control}
           render={({ field }) => (
-            <AuthorComboBox
-              label={
-                <span className={styles.label}>
-                  {formatMessage(messages.authorFieldLabel)}
-                  <IconButton
-                    icon="info-16"
-                    size={24}
-                    aria-label={formatMessage(messages.adminFieldTooltip)}
-                  />
-                  ({formatMessage(formMessages.optional)})
-                </span>
-              }
-              placeholder={formatMessage(messages.authorFieldPlaceholder)}
-              value={field.value ?? null}
-              errorMessage={validationError}
-              onChange={(userId) => setValue(name, userId)}
-            />
+            <Suspense fallback={null}>
+              <AuthorComboBox
+                placeholder={formatMessage(messages.authorFieldPlaceholder)}
+                value={field.value ?? null}
+                errorMessage={validationError}
+                onChange={(userId) => setValue(name, userId)}
+              />
+            </Suspense>
           )}
         />
         {apiErrorMessage}

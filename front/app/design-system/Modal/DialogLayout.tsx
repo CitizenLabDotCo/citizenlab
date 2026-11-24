@@ -30,6 +30,7 @@ export type DialogLayoutProps = {
   children: ReactNode;
   primaryAction?: DialogAction;
   secondaryAction?: DialogAction;
+  leadingAction?: ReactNode;
   showClose?: boolean;
 };
 
@@ -49,6 +50,7 @@ const DialogLayout = ({
   children,
   primaryAction,
   secondaryAction,
+  leadingAction,
   showClose = true,
   role = 'dialog',
   primaryVariant = 'primary',
@@ -91,8 +93,11 @@ const DialogLayout = ({
           <div className={`${styles.body} ${bodyClassName ?? ''}`}>
             {children}
           </div>
-          {(primaryAction || secondaryAction) && (
+          {(leadingAction || primaryAction || secondaryAction) && (
             <div className={styles.footer}>
+              {leadingAction && (
+                <div className={styles.leadingAction}>{leadingAction}</div>
+              )}
               {secondaryAction && (
                 <Button
                   variant="secondary"

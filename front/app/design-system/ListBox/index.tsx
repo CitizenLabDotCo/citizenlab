@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useContext } from 'react';
 
 import { Key, ListBox as AriaListBox, Selection } from 'react-aria-components';
 
@@ -39,7 +39,9 @@ const ListBox = <T extends object>({
   disabledKeys,
 }: ListBoxProps<T>) => {
   // A ListBoxOption with a disabled reason takes focus but is never selected.
-  const reasonKeys = useReasonKeys();
+  const fieldReasonKeys = useContext(ReasonKeysContext);
+  const listReasonKeys = useReasonKeys();
+  const reasonKeys = fieldReasonKeys ?? listReasonKeys;
   const [currentKeys, handleSelectionChange] = useGuardedValue<Selection>(
     selectedKeys,
     new Set(),

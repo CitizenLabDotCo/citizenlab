@@ -69,14 +69,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.projectPageItem',
     defaultMessage: 'Project page',
   },
-  homepageCard: {
-    id: 'app.containers.Admin.projects.project.homepageCard',
-    defaultMessage: 'Homepage card',
-  },
-  areaItem: {
-    id: 'app.containers.Admin.projects.project.areaItem',
-    defaultMessage: 'Area',
-  },
   phaseUnitInputs: {
     id: 'app.containers.Admin.projects.project.phaseUnitInputs',
     defaultMessage: 'inputs',

@@ -12,14 +12,18 @@ import { CauseFormValues } from 'containers/Admin/projects/project/volunteering/
 import imagesDropzoneMessages from 'components/UI/ImagesDropzone/messages';
 
 import { useIntl } from 'utils/cl-intl';
-import { getBase64FromFile } from 'utils/fileUtils';
 
 import ImageFileRow from '../../../../../../Event/ImageFileRow';
+import {
+  ACCEPTED_IMAGE_TYPES,
+  isImageTooLarge,
+  MAX_IMAGE_FILE_SIZE_MB,
+  toUploadFile,
+} from '../../../../../../Event/imageUpload';
 
 import styles from './CauseModal.module.css';
 
-const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/gif'];
-const MAX_FILE_SIZE_MB = 10;
+const ACCEPTED_TYPES = [...ACCEPTED_IMAGE_TYPES, 'image/gif'];
 
 const CauseImageField = () => {
   const { formatMessage } = useIntl();
@@ -31,20 +35,15 @@ const CauseImageField = () => {
   const setImage = (images: UploadFile[]) => field.onChange(images);
   const removeImage = () => field.onChange([]);
 
-  const addFile = async ([file]: File[]) => {
-    const isTooLarge = file.size > MAX_FILE_SIZE_MB * 1000000;
+  const addFile = async (files: File[]) => {
+    const file = files.at(0);
+    if (!file) return;
+
+    const isTooLarge = isImageTooLarge(file);
     setTooLarge(isTooLarge);
     if (isTooLarge) return;
 
-    const base64 = await getBase64FromFile(file);
-    setImage([
-      Object.assign(file, {
-        base64,
-        url: base64,
-        remote: false,
-        filename: file.name,
-      }),
-    ]);
+    setImage([await toUploadFile(file)]);
   };
 
   return (
@@ -54,6 +53,7 @@ const CauseImageField = () => {
         <ImageFileRow
           image={image}
           thumbnail={image.base64}
+          acceptedFileTypes={ACCEPTED_TYPES}
           onReplace={(newImage) => setImage([newImage])}
           onRemove={removeImage}
         />
@@ -67,7 +67,7 @@ const CauseImageField = () => {
       {tooLarge && (
         <Banner tone="error">
           {formatMessage(imagesDropzoneMessages.errorImageMaxSizeExceeded, {
-            maxFileSize: MAX_FILE_SIZE_MB,
+            maxFileSize: MAX_IMAGE_FILE_SIZE_MB,
           })}
         </Banner>
       )}
