@@ -32,13 +32,13 @@ describe CustomFieldService do
     it 'deletes the values that a user field stored on inputs through user fields in form' do
       field = create(:custom_field, key: 'the_field')
       user = create(:user, custom_field_answers: [
-        build(:custom_field_answer, key: 'the_field', value: 'other'),
-        build(:custom_field_answer, key: 'the_field_other', value: 'gone')
+        build(:custom_field_answer, custom_field: field, value: 'other'),
+        build(:custom_field_answer, key: 'the_field_other', custom_field: field, value: 'gone')
       ])
       input = create(:idea, custom_field_answers: [
-        build(:custom_field_answer, key: 'u_the_field', value: 'other'),
-        build(:custom_field_answer, key: 'u_the_field_other', value: 'gone'),
-        build(:custom_field_answer, key: 'other_field', value: 'stays')
+        build(:custom_field_answer, key: 'u_the_field', custom_field: field, value: 'other'),
+        build(:custom_field_answer, key: 'u_the_field_other', custom_field: field, value: 'gone'),
+        build(:custom_field_answer, custom_field: create(:custom_field, key: 'other_field'), value: 'stays')
       ])
 
       service.delete_field_answers(field)
@@ -56,9 +56,9 @@ describe CustomFieldService do
         project: phase.project,
         creation_phase: phase,
         custom_field_answers: [
-          build(:custom_field_answer, key: 'extra_field', value: 'gone'),
-          build(:custom_field_answer, key: 'extra_field_follow_up', value: 'gone'),
-          build(:custom_field_answer, key: 'another_field', value: 'stays')
+          build(:custom_field_answer, custom_field: field, value: 'gone'),
+          build(:custom_field_answer, key: 'extra_field_follow_up', custom_field: field, value: 'gone'),
+          build(:custom_field_answer, custom_field: create(:custom_field_text, resource: form, key: 'another_field'), value: 'stays')
         ]
       )
 
@@ -69,12 +69,13 @@ describe CustomFieldService do
 
     it 'does not delete values of inputs in other participation contexts with the same field key' do
       other_phase = create(:single_phase_native_survey_project).phases.first
-      create(:custom_form, participation_context: other_phase)
+      other_form = create(:custom_form, participation_context: other_phase)
+      other_field = create(:custom_field_text, resource: other_form, key: 'extra_field')
       other_input = create(
         :idea,
         project: other_phase.project,
         creation_phase: other_phase,
-        custom_field_answers: [build(:custom_field_answer, key: 'extra_field', value: 'stays')]
+        custom_field_answers: [build(:custom_field_answer, custom_field: other_field, value: 'stays')]
       )
 
       phase = create(:single_phase_native_survey_project).phases.first
