@@ -47,8 +47,8 @@ const SetupCards = ({ project, readiness, onOpenSettings }: Props) => {
           children: <HomepageCardFields project={project} />,
         }}
       />
-      <AreaCard project={project} ready={readiness?.area} />
-      <TopicTagsCard project={project} ready={readiness?.topics} />
+      <AreaCard ready={readiness?.area} />
+      <TopicTagsCard ready={readiness?.topics} />
       <SetupCard
         id="e2e-setup-card-project-page"
         tooltip={formatMessage(messages.projectPageTooltip)}
