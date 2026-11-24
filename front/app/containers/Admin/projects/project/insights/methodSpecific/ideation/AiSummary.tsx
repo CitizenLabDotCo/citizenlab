@@ -9,6 +9,9 @@ import {
   Title,
 } from '@citizenlab/cl2-component-library';
 
+import EmptyState from 'design-system/EmptyState';
+import Skeleton from 'design-system/Skeleton';
+
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
 import useAnalyses from 'api/analyses/useAnalyses';
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
@@ -20,10 +23,12 @@ import useAddAnalysisSummaryPreCheck from 'api/analysis_summary_pre_check/useAdd
 import { ParticipationMethod } from 'api/phases/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
 import { getAnalysisScope } from 'containers/Admin/projects/_shared/components/AnalysisBanner/utils';
 import InsightBody from 'containers/Admin/projects/project/analysis/Insights/InsightBody';
 import SummaryHeader from 'containers/Admin/projects/project/analysis/Insights/SummaryHeader';
+
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
@@ -33,6 +38,8 @@ import { usePdfExportContext } from '../../pdf/PdfExportContext';
 import { useWordSection } from '../../word/useWordSection';
 import WordExportableInsight from '../../word/WordExportableInsight';
 
+import AiSummaryCard from './AiSummaryCard';
+import styles from './AiSummaryCard.module.css';
 import messages from './messages';
 
 const MIN_INPUTS_FOR_SUMMARY = 10;
@@ -45,6 +52,7 @@ interface Props {
 const AiSummary = ({ phaseId, participationMethod }: Props) => {
   const { formatMessage } = useIntl();
   const { isPdfRenderMode } = usePdfExportContext();
+  const redesigned = useProjectBackofficeRedesign() && !isPdfRenderMode;
   const { projectId } = useParams({ strict: false }) as { projectId: string };
   const [automaticSummaryCreated, setAutomaticSummaryCreated] = useState(false);
   const [analysisCreationAttempted, setAnalysisCreationAttempted] =
@@ -196,7 +204,50 @@ const AiSummary = ({ phaseId, participationMethod }: Props) => {
     }
   };
 
-  if (isLoadingAnalyses || isLoadingInsights || isCreatingAnalysis) {
+  const isLoading = isLoadingAnalyses || isLoadingInsights || isCreatingAnalysis;
+
+  if (redesigned && isLoading) {
+    return (
+      <WordExportableInsight exportId="ai-summary" skipExport>
+        <Skeleton shape="block" height={212} />
+      </WordExportableInsight>
+    );
+  }
+
+  if (redesigned && inputCount < MIN_INPUTS_FOR_SUMMARY) {
+    return (
+      <WordExportableInsight exportId="ai-summary" skipExport>
+        <AiSummaryCard>
+          <EmptyState context="card">
+            {formatMessage(messages.notEnoughInputs, {
+              minInputs: MIN_INPUTS_FOR_SUMMARY,
+              count: inputCount,
+            })}
+          </EmptyState>
+        </AiSummaryCard>
+      </WordExportableInsight>
+    );
+  }
+
+  if (redesigned && (isPreChecking || isAddingSummary)) {
+    return (
+      <WordExportableInsight exportId="ai-summary" skipExport>
+        <AiSummaryCard>
+          <div
+            className={styles.pending}
+            role="status"
+            aria-label={formatMessage(messages.generatingSummary)}
+          >
+            <Skeleton />
+            <Skeleton />
+            <Skeleton width="72%" />
+          </div>
+        </AiSummaryCard>
+      </WordExportableInsight>
+    );
+  }
+
+  if (isLoading) {
     return (
       <WordExportableInsight exportId="ai-summary" skipExport>
         <Box p="24px" bg="white" borderRadius="3px">
@@ -267,6 +318,26 @@ const AiSummary = ({ phaseId, participationMethod }: Props) => {
   const filters = summaryData.data.attributes.filters;
   const backgroundTaskId =
     summaryData.data.relationships.background_task.data.id;
+
+  if (redesigned) {
+    return (
+      <WordExportableInsight exportId="ai-summary" skipExport>
+        <AiSummaryCard
+          coverage={`${missingInputsCount} / ${inputCount}`}
+          onExplore={handleExplore}
+        >
+          <InsightBody
+            text={summary ?? null}
+            filters={filters}
+            analysisId={analysisId}
+            projectId={projectId}
+            phaseId={phaseId}
+            backgroundTaskId={backgroundTaskId}
+          />
+        </AiSummaryCard>
+      </WordExportableInsight>
+    );
+  }
 
   return (
     <WordExportableInsight exportId="ai-summary" skipExport>
