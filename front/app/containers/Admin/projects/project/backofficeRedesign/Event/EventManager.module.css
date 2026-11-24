@@ -14,8 +14,6 @@
   gap: var(--gv-space-8);
 }
 
-/* Deliberately not the shared list-manager toolbar: events has its own
-   height and spacing, which change independently. */
 .toolbar {
   display: flex;
   align-items: center;
