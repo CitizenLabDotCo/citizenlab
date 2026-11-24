@@ -1,0 +1,44 @@
+.esriOptions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gv-space-12);
+  margin-bottom: var(--gv-space-12);
+}
+
+/* The button opens this input, so it stays out of sight and out of the tab order. */
+.fileInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.importError {
+  margin-top: var(--gv-space-10);
+}
+
+.esriForm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-16);
+  margin-top: var(--gv-space-12);
+}
+
+.esriHeading {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-4);
+  margin: 0;
+}
+
+.esriTitle {
+  composes: uiStrong from '../../../../design-system/typography.module.css';
+  color: var(--gv-text-primary);
+}
+
+.esriActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gv-space-8);
+}

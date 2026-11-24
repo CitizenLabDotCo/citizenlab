@@ -1,0 +1,8 @@
+.textArea {
+  composes: input from '../TextField/input.module.css';
+  display: block;
+  min-height: 76px;
+  padding: var(--gv-space-8) var(--gv-space-10);
+  overflow: hidden;
+  resize: none;
+}

@@ -1,0 +1,10 @@
+.footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  display: flex;
+  margin: auto calc(-1 * var(--gv-space-18)) 0;
+  padding: var(--gv-space-12) var(--gv-space-18);
+  border-top: var(--gv-border-width-1) solid var(--gv-border-divider);
+  background: var(--gv-surface-panel-subtle);
+}

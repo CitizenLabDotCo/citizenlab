@@ -1,0 +1,10 @@
+.container {
+  width: 100%;
+  overflow: auto;
+}
+
+.table {
+  border-collapse: separate;
+  border-spacing: 0;
+  outline: none;
+}

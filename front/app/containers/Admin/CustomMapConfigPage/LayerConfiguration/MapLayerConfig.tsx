@@ -11,12 +11,19 @@ import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
+import Banner from 'design-system/Banner';
+import Button from 'design-system/Button';
+import Link from 'design-system/Link';
+import { ListBoxOption } from 'design-system/ListBox';
+import DSSelect from 'design-system/Select';
+
 import { IMapConfig } from 'api/map_config/types';
 import { IMapLayerAttributes } from 'api/map_layers/types';
 import useUpdateMapLayer from 'api/map_layers/useUpdateMapLayer';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
+import MultilocTextField from 'components/admin/MultilocFields/MultilocTextField';
 import {
   Section,
   SectionField,
@@ -37,6 +44,9 @@ import {
 import { useParams } from 'utils/router';
 
 import messages from '../messages';
+
+import styles from './LayerConfiguration.module.css';
+import 'design-system/tokens.css';
 
 const Container = styled.div`
   display: flex;
@@ -77,6 +87,7 @@ interface Props {
   mapConfig: IMapConfig;
   className?: string;
   onClose: () => void;
+  variant?: 'default' | 'panel';
 }
 
 interface IFormValues {
@@ -92,6 +103,15 @@ const makiIconOptions: IOption[] = makiIconNames.map((makiIconName) => {
     label: makiIconName,
   };
 });
+
+// The empty option clears the icon.
+const makiIconItems = [
+  { id: '', label: '' },
+  ...makiIconNames.map((makiIconName) => ({
+    id: makiIconName,
+    label: makiIconName,
+  })),
+];
 
 const getEditableTitleMultiloc = (
   mapLayer: IMapLayerAttributes | undefined
@@ -110,7 +130,14 @@ const getEditableTitleMultiloc = (
 };
 
 const MapLayerConfig = memo<Props & WrappedComponentProps>(
-  ({ mapConfig, mapLayerId, className, onClose, intl: { formatMessage } }) => {
+  ({
+    mapConfig,
+    mapLayerId,
+    className,
+    onClose,
+    variant = 'default',
+    intl: { formatMessage },
+  }) => {
     const { projectId } = useParams({ strict: false }) as { projectId: string };
     const { mutateAsync: updateProjectMapLayer } = useUpdateMapLayer(projectId);
     const tenantLocales = useAppConfigurationLocales();
@@ -270,6 +297,84 @@ const MapLayerConfig = memo<Props & WrappedComponentProps>(
         }
       }
     };
+
+    if (variant === 'panel') {
+      return (
+        <div className={`${styles.layerConfig} ${className ?? ''}`}>
+          <h3 className={styles.heading}>
+            <span className={styles.headingText}>
+              {formatMessage(messages.editLayer)}
+            </span>
+          </h3>
+          <MultilocTextField
+            label={formatMessage(messages.layerName)}
+            description={formatMessage(messages.layerNameTooltip)}
+            valueMultiloc={formValues.title_multiloc}
+            onChange={handleTitleOnChange}
+          />
+          <MultilocTextField
+            label={formatMessage(messages.layerTooltip)}
+            description={formatMessage(messages.layerTooltipTooltip)}
+            valueMultiloc={formValues.tooltipContent}
+            onChange={handleTooltipContentOnChange}
+          />
+          {geojsonDataType === 'Point' && (
+            <DSSelect
+              label={formatMessage(messages.layerIconName)}
+              description={
+                <FormattedMessage
+                  {...messages.layerIconNameTooltip}
+                  values={{
+                    url: (
+                      <Link
+                        href="https://github.com/olistik/maki-icons-list"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {formatMessage(messages.here)}
+                      </Link>
+                    ),
+                  }}
+                />
+              }
+              items={makiIconItems}
+              value={formValues.markerSymbol}
+              onChange={(key) => {
+                if (typeof key === 'string') formChange({ markerSymbol: key });
+              }}
+            >
+              {(item: { id: string; label: string }) => (
+                <ListBoxOption id={item.id}>{item.label}</ListBoxOption>
+              )}
+            </DSSelect>
+          )}
+          {/* The design system has no colour picker. */}
+          <ColorPickerInput
+            type="text"
+            value={formValues.color}
+            onChange={handleColorOnChange}
+            label={formatMessage(messages.layerColor)}
+            labelTooltipText={formatMessage(messages.layerColorTooltip)}
+          />
+          <div className={styles.layerConfigActions}>
+            <Button
+              variant="primary"
+              isPending={processing}
+              isDisabled={!touched}
+              onPress={handleOnSubmit}
+            >
+              {formatMessage(messages.save)}
+            </Button>
+            <Button isDisabled={processing} onPress={handleOnCancel}>
+              {formatMessage(messages.cancel)}
+            </Button>
+          </div>
+          {!isEmpty(errors) && (
+            <Banner tone="error">{formatMessage(messages.errorMessage)}</Banner>
+          )}
+        </div>
+      );
+    }
 
     return (
       <Container className={className || ''}>

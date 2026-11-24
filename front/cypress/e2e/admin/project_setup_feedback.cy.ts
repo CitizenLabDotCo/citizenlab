@@ -1,4 +1,11 @@
-import { randomString } from '../../support/commands';
+import {
+  pickTodayInPhaseDatePicker,
+  randomString,
+} from '../../support/commands';
+
+// The card id sits on a wrapper; its header button is the first button inside.
+const setupCard = (card: string) =>
+  cy.get(`#e2e-setup-card-${card} button`).first();
 
 describe('Project setup feedback', () => {
   let projectId: string;
@@ -21,7 +28,7 @@ describe('Project setup feedback', () => {
   it('recognizes completed general information and explains topic tags', () => {
     cy.visit(`/admin/projects/${projectId}?project_backoffice_redesign`);
     cy.get('#e2e-setup-card-general').should('contain', 'Ready');
-    cy.get('button[id^="e2e-setup-card-"]').then((cards) => {
+    cy.get('div[id^="e2e-setup-card-"]').then((cards) => {
       expect([...cards].map((card) => card.id)).to.deep.equal([
         'e2e-setup-card-general',
         'e2e-setup-card-homepage-card',
@@ -31,8 +38,13 @@ describe('Project setup feedback', () => {
         'e2e-setup-card-methods',
       ]);
     });
-    cy.get('#e2e-setup-card-homepage-card').click();
-    cy.get('#e2e-setup-card-homepage-card').click().trigger('mouseleave');
+    setupCard('homepage-card').click();
+    setupCard('homepage-card')
+      .click()
+      .trigger('pointerout', {
+        eventConstructor: 'PointerEvent',
+        pointerType: 'mouse',
+      });
     cy.get('body').should(($body) => {
       expect($body.find('[role="tooltip"]').filter(':visible')).to.have.length(
         0
@@ -54,40 +66,47 @@ describe('Project setup feedback', () => {
       ['methods', 'The ways participants take part, one after the other'],
     ];
     tooltips.forEach(([card, description]) => {
-      cy.get(`#e2e-setup-card-${card}`).focus();
+      // The tooltip opens after a hover delay, and closes when the pointer leaves.
+      setupCard(card).trigger('pointerover', {
+        eventConstructor: 'PointerEvent',
+        pointerType: 'mouse',
+      });
       cy.get('[role="tooltip"]')
         .filter(':visible')
         .should('contain', description);
-      cy.get(`#e2e-setup-card-${card}`).trigger('keydown', { key: 'Escape' });
+      setupCard(card).trigger('pointerout', {
+        eventConstructor: 'PointerEvent',
+        pointerType: 'mouse',
+      });
       cy.get('body').should(($body) => {
         expect(
           $body.find('[role="tooltip"]').filter(':visible')
         ).to.have.length(0);
       });
     });
-    cy.get('#e2e-setup-card-topics').click();
-    cy.get('[placeholder="Search tags..."]').should('be.visible');
+    setupCard('topics').click();
+    cy.get('[placeholder="Search tags"]').should('be.visible');
   });
 
   it('saves project edits before opening a participation method', () => {
     cy.visit(`/admin/projects/${projectId}?project_backoffice_redesign`);
-    cy.get('#e2e-setup-card-homepage-card').click();
-    cy.get('#homepage-card-description-en')
+    setupCard('homepage-card').click();
+    cy.get('#homepage-card-description')
       .clear()
       .type('Saved before choosing a method');
     cy.intercept('PATCH', `**/web_api/v1/projects/${projectId}`).as(
       'saveProject'
     );
-    cy.get('#e2e-setup-card-methods').click();
+    setupCard('methods').click();
     cy.get('[role="dialog"]')
-      .contains('Collect input and feedback in public')
+      .contains(/^Ideation$/)
       .click();
     cy.wait('@saveProject').its('response.statusCode').should('eq', 200);
     cy.location('pathname').should('include', '/phases/new');
     cy.contains('Unsaved changes').should('not.exist');
     cy.visit(`/admin/projects/${projectId}?project_backoffice_redesign`);
-    cy.get('#e2e-setup-card-homepage-card').click();
-    cy.get('#homepage-card-description-en').should(
+    setupCard('homepage-card').click();
+    cy.get('#homepage-card-description').should(
       'have.value',
       'Saved before choosing a method'
     );
@@ -95,20 +114,20 @@ describe('Project setup feedback', () => {
 
   it('keeps project edits when saving before navigation fails', () => {
     cy.visit(`/admin/projects/${projectId}?project_backoffice_redesign`);
-    cy.get('#e2e-setup-card-homepage-card').click();
-    cy.get('#homepage-card-description-en').clear().type('Keep this draft');
+    setupCard('homepage-card').click();
+    cy.get('#homepage-card-description').clear().type('Keep this draft');
     cy.intercept('PATCH', `**/web_api/v1/projects/${projectId}`, {
       statusCode: 422,
       body: { errors: { base: [{ error: 'invalid' }] } },
     }).as('failedSave');
-    cy.get('#e2e-setup-card-methods').click();
+    setupCard('methods').click();
     cy.get('[role="dialog"]')
-      .contains('Collect input and feedback in public')
+      .contains(/^Ideation$/)
       .click();
     cy.wait('@failedSave');
     cy.location('pathname').should('not.include', '/phases/new');
     cy.get('[role="dialog"]').should('not.exist');
-    cy.get('#homepage-card-description-en').should(
+    cy.get('#homepage-card-description').should(
       'have.value',
       'Keep this draft'
     );
@@ -130,7 +149,7 @@ describe('Project setup feedback', () => {
       cy.get('#phase-build-panel-title').clear().type('Unsaved title');
       cy.get('[aria-label="New participation method"]').click();
       cy.get('[role="dialog"]')
-        .contains('Collect input and feedback in public')
+        .contains(/^Ideation$/)
         .click();
       cy.contains('You have unsaved changes').should('be.visible');
       cy.get('@savePhase.all').should('have.length', 0);
@@ -156,7 +175,7 @@ describe('Project setup feedback', () => {
     cy.get('[role="dialog"]')
       .should('contain', 'Submitting inputs')
       .and('not.contain', 'Attending an event');
-    cy.get('[role="dialog"] .e2e-modal-close-button').click();
+    cy.get('[role="dialog"] [data-cy="e2e-modal-close-button"]').click();
     cy.contains('button', 'Attachments').click();
     cy.get('#e2e-file-upload-input').selectFile(
       'cypress/fixtures/example.pdf',
@@ -205,7 +224,7 @@ describe('Project setup feedback', () => {
       cy.get('[role="dialog"]')
         .should('contain', 'Collect demographic data')
         .and('not.contain', 'Attending an event');
-      cy.get('[role="dialog"] .e2e-modal-close-button').click();
+      cy.get('[role="dialog"] [data-cy="e2e-modal-close-button"]').click();
       cy.contains('button', 'Demographic questions').should('be.visible');
     });
   });
@@ -258,32 +277,33 @@ describe('Project setup feedback', () => {
         .scrollTo('bottom');
     };
     const expectErrorInView = (text: string) => {
-      cy.contains('.e2e-error-message', text).should(($error) => {
-        const bounds = $error[0].getBoundingClientRect();
-        expect(bounds.top).to.be.greaterThan(130);
-        expect(bounds.bottom).to.be.lessThan(800);
-      });
+      // The same errors the page scrolls to after a save.
+      cy.contains('[slot="errorMessage"], .e2e-error-message', text).should(
+        ($error) => {
+          const bounds = $error[0].getBoundingClientRect();
+          expect(bounds.top).to.be.greaterThan(130);
+          expect(bounds.bottom).to.be.lessThan(800);
+        }
+      );
     };
     for (let attempt = 0; attempt < 2; attempt++) {
       scrollAway();
-      cy.contains('button', 'Save changes').click();
+      cy.contains('button', /^Save changes$/).click();
       expectErrorInView('Missing start date');
     }
 
-    cy.get('.e2e-date-phase-picker-input').click();
-    cy.get('.rdp-today .rdp-day_button').first().click();
-    cy.get('.e2e-date-phase-picker-input').click();
+    pickTodayInPhaseDatePicker();
     cy.get('#phase-build-panel-title').clear();
     scrollAway();
     cy.intercept('POST', `**/web_api/v1/projects/${projectId}/phases`).as(
       'createOpenPhase'
     );
-    cy.contains('button', 'Save changes').click();
+    cy.contains('button', /^Save changes$/).click();
     cy.wait('@createOpenPhase').its('response.statusCode').should('eq', 422);
     expectErrorInView('This cannot be empty.');
 
     cy.get('#phase-build-panel-title').type('Open-ended phase');
-    cy.contains('button', 'Save changes').click();
+    cy.contains('button', /^Save changes$/).click();
     cy.wait('@createOpenPhase').then(({ response }) => {
       expect(response?.statusCode).to.eq(201);
       expect(response?.body.data.attributes.end_at).to.eq(null);
@@ -315,13 +335,11 @@ describe('Project setup feedback', () => {
     cy.visit(
       `${draftPath}?project_backoffice_redesign&participation_method=ideation`
     );
-    cy.get('.e2e-date-phase-picker-input').click();
-    cy.get('.rdp-today .rdp-day_button').first().click();
-    cy.get('.e2e-date-phase-picker-input').click();
+    pickTodayInPhaseDatePicker();
     cy.get('#phase-build-panel-title').type('Phase with tags');
     cy.contains('button', 'Idea tags').click();
     cy.get('#phase-add-input-tag').type('Unsaved tag{enter}');
-    cy.contains('button', 'Save changes').click();
+    cy.contains('button', /^Save changes$/).click();
     cy.wait('@createPhase').then(({ response }) => {
       expect(response?.statusCode).to.eq(201);
       cy.wait('@failedTag');
@@ -329,7 +347,7 @@ describe('Project setup feedback', () => {
       cy.contains('The tags could not be saved').should('be.visible');
       cy.contains('Unsaved tag').scrollIntoView().should('be.visible');
 
-      cy.contains('button', 'Save changes').click();
+      cy.contains('button', /^Save changes$/).click();
       cy.location('pathname').should(
         'include',
         `/phases/${response?.body.data.id}/setup`
@@ -349,9 +367,7 @@ describe('Project setup feedback', () => {
     cy.visit(
       `/admin/projects/${projectId}/phases/new?project_backoffice_redesign&participation_method=ideation`
     );
-    cy.get('.e2e-date-phase-picker-input').click();
-    cy.get('.rdp-today .rdp-day_button').first().click();
-    cy.get('.e2e-date-phase-picker-input').click();
+    pickTodayInPhaseDatePicker();
     cy.get('#phase-build-panel-title').type('Phase with attachment');
     cy.contains('button', 'Attachments').click();
     cy.get('#e2e-file-upload-input').selectFile(
@@ -360,7 +376,7 @@ describe('Project setup feedback', () => {
     );
     cy.get('[role="dialog"]').contains('example.pdf').should('be.visible');
     cy.get('[role="dialog"]').contains('button', 'Done').click();
-    cy.contains('button', 'Save changes').click();
+    cy.contains('button', /^Save changes$/).click();
     cy.wait('@createPhase').then(({ response }) => {
       expect(response?.statusCode).to.eq(201);
       cy.wait('@failedAttachment');
@@ -370,7 +386,7 @@ describe('Project setup feedback', () => {
         .contains('What should an input be called?')
         .click();
       cy.get('[data-review-card="input_term"]').should('contain', 'Reviewed');
-      cy.contains('button', 'Save changes').click();
+      cy.contains('button', /^Save changes$/).click();
       cy.location('pathname').should(
         'include',
         `/phases/${response?.body.data.id}/setup`

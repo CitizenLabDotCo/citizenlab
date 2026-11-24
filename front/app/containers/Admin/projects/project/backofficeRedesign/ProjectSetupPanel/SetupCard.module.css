@@ -1,0 +1,6 @@
+/* The mark sits in the title, so the title still truncates as one line. */
+.mark {
+  display: inline-flex;
+  margin-right: var(--gv-space-10);
+  vertical-align: -3px;
+}

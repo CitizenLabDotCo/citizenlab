@@ -48,16 +48,15 @@ const AssigneeProperty = ({ idea }: Props) => {
   return (
     <PropertyRow label={formatMessage(messages.filterAssignee)}>
       <PropertyMenu label={current?.label}>
-        {(close) => (
-          <OptionList
-            options={options}
-            selected={[assigneeId]}
-            onToggle={(newAssigneeId) => {
-              if (newAssigneeId !== assigneeId) assign(newAssigneeId);
-              close();
-            }}
-          />
-        )}
+        <OptionList
+          aria-label={formatMessage(messages.filterAssignee)}
+          options={options}
+          selected={[assigneeId]}
+          onToggle={(newAssigneeId) => {
+            if (newAssigneeId !== assigneeId) assign(newAssigneeId);
+          }}
+          selectionMode="single"
+        />
       </PropertyMenu>
     </PropertyRow>
   );

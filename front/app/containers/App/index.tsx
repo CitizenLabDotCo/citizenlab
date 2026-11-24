@@ -424,7 +424,8 @@ const App = ({ children }: Props) => {
               <Authentication />
             </ErrorBoundary>
             <ErrorBoundary>
-              <div id="modal-portal" />
+              {/* Keeps these modals usable above design-system modals. */}
+              <div id="modal-portal" data-react-aria-top-layer />
             </ErrorBoundary>
             {showFrontOfficeNavbar() && (
               <ErrorBoundary>

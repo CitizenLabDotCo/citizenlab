@@ -42,7 +42,7 @@ jest.mock(
 );
 
 jest.mock('api/app_configuration/useAppConfiguration');
-jest.mock('hooks/useProjectBackofficeRedesign', () => () => false);
+jest.mock('hooks/useProjectBackofficeRedesign', () => () => true);
 jest.mock('components/admin/PagePreview', () => () => null);
 
 const NOT_ADDED = /These groups couldn't be added/;
@@ -50,13 +50,6 @@ const NOT_ADDED = /These groups couldn't be added/;
 beforeEach(() => {
   mockSearch = {};
   mockLoadedGroupIds = Object.keys(mockGroupTitles);
-  const portal = document.createElement('div');
-  portal.id = 'modal-portal';
-  document.body.appendChild(portal);
-});
-
-afterEach(() => {
-  document.getElementById('modal-portal')?.remove();
 });
 
 describe('ProjectPage', () => {

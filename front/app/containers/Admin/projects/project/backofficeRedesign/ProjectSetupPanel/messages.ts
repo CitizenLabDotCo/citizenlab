@@ -33,10 +33,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.methodGroupInformAndRecruit',
     defaultMessage: 'Inform and recruit',
   },
-  topicTags: {
-    id: 'app.containers.Admin.projects.project.topicTags',
-    defaultMessage: 'Topic tags',
-  },
   beforeYouPublish: {
     id: 'app.containers.Admin.projects.project.beforeYouPublish',
     defaultMessage: 'Before you publish',
@@ -64,18 +60,6 @@ export default defineMessages({
   itemNotReady: {
     id: 'app.containers.Admin.projects.project.itemNotReady',
     defaultMessage: 'Not ready',
-  },
-  projectPageItem: {
-    id: 'app.containers.Admin.projects.project.projectPageItem',
-    defaultMessage: 'Project page',
-  },
-  homepageCard: {
-    id: 'app.containers.Admin.projects.project.homepageCard',
-    defaultMessage: 'Homepage card',
-  },
-  areaItem: {
-    id: 'app.containers.Admin.projects.project.areaItem',
-    defaultMessage: 'Area',
   },
   phaseUnitInputs: {
     id: 'app.containers.Admin.projects.project.phaseUnitInputs',
@@ -121,10 +105,6 @@ export default defineMessages({
   finalRecordPhases: {
     id: 'app.containers.Admin.projects.project.finalRecordPhases',
     defaultMessage: 'Phases',
-  },
-  generalInformation: {
-    id: 'app.containers.Admin.projects.project.generalInformation',
-    defaultMessage: 'General information',
   },
   projectDetails: {
     id: 'app.containers.Admin.projects.project.projectDetails',

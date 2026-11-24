@@ -1,12 +1,8 @@
-import React, { KeyboardEvent, useLayoutEffect, useRef, useState } from 'react';
+import React from 'react';
 
-import { Box, Button, Dropdown, bo } from '@citizenlab/cl2-component-library';
-
-import DropdownMenuItem from 'components/UI/DropdownMenuItem';
-import getPopoverPlacement from 'components/UI/PillPicker/getPopoverPlacement';
-
-const GAP = 4;
-const OFFSET = `calc(100% + ${GAP}px)`;
+import IconButton from 'design-system/IconButton';
+import Menu, { MenuItem, MenuTrigger } from 'design-system/Menu';
+import 'design-system/tokens.css';
 
 export interface FileAction {
   name: string;
@@ -19,74 +15,17 @@ interface Props {
   actions: FileAction[];
 }
 
-const FileActionsMenu = ({ ariaLabel, actions }: Props) => {
-  const [opened, setOpened] = useState(false);
-  const [openUp, setOpenUp] = useState(false);
-  const triggerRef = useRef<HTMLDivElement>(null);
-  const menuRef = useRef<HTMLDivElement>(null);
-
-  // Rows near the bottom of the scrolling file list would push the menu out
-  // of view, so it opens upward when there is no room below.
-  useLayoutEffect(() => {
-    const trigger = triggerRef.current;
-    const menu = menuRef.current;
-    if (!opened || !trigger || !menu) return;
-
-    const placement = getPopoverPlacement(
-      trigger,
-      { height: menu.offsetHeight, width: menu.offsetWidth },
-      GAP
-    );
-    setOpenUp(placement.openUp);
-  }, [opened]);
-
-  // Escape should close only this menu, not the modal around it.
-  const handleKeyDown = (event: KeyboardEvent) => {
-    if (event.key !== 'Escape' || !opened) return;
-
-    event.stopPropagation();
-    setOpened(false);
-  };
-
-  return (
-    <Box position="relative" ref={triggerRef} onKeyDown={handleKeyDown}>
-      <Button
-        buttonStyle="bo-text"
-        icon="dots-horizontal"
-        width="28px"
-        height="28px"
-        padding="0"
-        ariaLabel={ariaLabel}
-        ariaExpanded={opened}
-        ariaHasPopup="menu"
-        onClick={() => setOpened(!opened)}
-      />
-      <Dropdown
-        opened={opened}
-        onClickOutside={() => setOpened(false)}
-        top={openUp ? undefined : OFFSET}
-        bottom={openUp ? OFFSET : undefined}
-        right="0px"
-        width="180px"
-        zIndex="10"
-        borderRadius={bo.borderRadius}
-        content={
-          <Box ref={menuRef} role="menu">
-            {actions.map(({ name, label, onClick }) => (
-              <DropdownMenuItem
-                key={name}
-                label={label}
-                onClick={() => {
-                  setOpened(false);
-                  onClick();
-                }}
-              />
-            ))}
-          </Box>
-        }
-      />
-    </Box>
-  );
-};
+const FileActionsMenu = ({ ariaLabel, actions }: Props) => (
+  <MenuTrigger>
+    <IconButton icon="more-horizontal-16" aria-label={ariaLabel} />
+    <Menu aria-label={ariaLabel} placement="bottom end">
+      {actions.map(({ name, label, onClick }) => (
+        <MenuItem key={name} id={name} onAction={onClick}>
+          {label}
+        </MenuItem>
+      ))}
+    </Menu>
+  </MenuTrigger>
+);
 
 export default FileActionsMenu;

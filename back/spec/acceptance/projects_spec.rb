@@ -2173,6 +2173,15 @@ resource 'Projects' do
     let(:source_project) { create(:project) }
     let(:id) { source_project.id }
 
+    context 'when not signed in' do
+      example '[Unauthorized] Copy a project in a folder', document: false do
+        create(:project_folder, projects: [source_project])
+
+        do_request
+        assert_status 401
+      end
+    end
+
     context 'when project moderator' do
       before { header_token_for moderator }
 

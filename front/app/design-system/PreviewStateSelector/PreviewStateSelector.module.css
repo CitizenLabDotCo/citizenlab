@@ -1,0 +1,27 @@
+.track {
+  composes: track from '../segmented.module.css';
+}
+
+.item {
+  composes: button from '../reset.module.css';
+  composes: small from '../typography.module.css';
+  composes: ringInside from '../focus.module.css';
+  padding: var(--gv-space-4) var(--gv-space-12);
+  border-radius: 3px;
+  color: var(--gv-text-on-muted);
+  white-space: nowrap;
+  cursor: pointer;
+  transition-property: background-color, color;
+  transition-duration: var(--gv-motion-duration-fast);
+  transition-timing-function: var(--gv-motion-easing-standard);
+}
+
+.item[data-hovered] {
+  color: var(--gv-text-primary);
+}
+
+.item[data-selected] {
+  background: var(--gv-surface-panel);
+  color: var(--gv-text-primary);
+  font-weight: var(--gv-font-weight-medium);
+}

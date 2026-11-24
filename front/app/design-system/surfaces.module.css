@@ -1,0 +1,63 @@
+.panel {
+  border-radius: var(--gv-radius-12);
+  background: var(--gv-surface-panel);
+}
+
+/*
+ * The dropdown surface shared by Menu, Submenu, the ListBox of Select and
+ * ComboBox, and Popover. It is the only surface that carries a shadow.
+ */
+.dropdown {
+  composes: panel;
+  box-sizing: border-box;
+  border: var(--gv-border-width-1) solid var(--gv-border-control);
+  box-shadow: var(--gv-shadow-dropdown);
+  outline: none;
+}
+
+/* Fade 120 ms and settle 4 px from the trigger side; leave in place in 80 ms. */
+.dropdown[data-entering] {
+  animation: dropdown-fade var(--gv-motion-duration-fast)
+      var(--gv-motion-easing-standard),
+    dropdown-settle var(--gv-motion-duration-medium)
+      var(--gv-motion-easing-enter);
+}
+
+.dropdown[data-exiting] {
+  animation: dropdown-fade-out var(--gv-motion-duration-instant)
+    var(--gv-motion-easing-exit);
+}
+
+.dropdown[data-placement='bottom'] {
+  --gv-dropdown-from: translateY(calc(-1 * var(--gv-motion-offset-near)));
+}
+
+.dropdown[data-placement='top'] {
+  --gv-dropdown-from: translateY(var(--gv-motion-offset-near));
+}
+
+.dropdown[data-placement='left'] {
+  --gv-dropdown-from: translateX(var(--gv-motion-offset-near));
+}
+
+.dropdown[data-placement='right'] {
+  --gv-dropdown-from: translateX(calc(-1 * var(--gv-motion-offset-near)));
+}
+
+@keyframes dropdown-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes dropdown-settle {
+  from {
+    transform: var(--gv-dropdown-from, none);
+  }
+}
+
+@keyframes dropdown-fade-out {
+  to {
+    opacity: 0;
+  }
+}

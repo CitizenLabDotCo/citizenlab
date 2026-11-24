@@ -1,16 +1,15 @@
 import React from 'react';
 
-import {
-  Box,
-  Button,
-  bo,
-  colors,
-  defaultStyles,
-} from '@citizenlab/cl2-component-library';
+import SegmentedTabs, {
+  SegmentedTab,
+  SegmentedTabList,
+} from 'design-system/SegmentedTabs';
+import { Key } from 'design-system/types';
 
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
+import 'design-system/tokens.css';
 
 export type EventView = 'build' | 'manage';
 
@@ -22,43 +21,24 @@ interface Props {
 const EventViewSwitch = ({ activeView, onChange }: Props) => {
   const { formatMessage } = useIntl();
 
+  const handleSelectionChange = (key: Key) => {
+    if (key === 'build' || key === 'manage') onChange(key);
+  };
+
   return (
-    <Box
-      display="inline-flex"
-      gap="2px"
-      p="3px"
-      borderRadius={bo.borderRadius}
-      background={colors.grey100}
-      role="group"
-      aria-label={formatMessage(messages.eventView)}
+    <SegmentedTabs
+      selectedKey={activeView}
+      onSelectionChange={handleSelectionChange}
     >
-      <Button
-        buttonStyle="bo-text"
-        type="button"
-        width="auto"
-        borderRadius={bo.borderRadius}
-        boxShadow={activeView === 'build' ? defaultStyles.boxShadow : undefined}
-        bgColor={activeView === 'build' ? colors.white : undefined}
-        aria-pressed={activeView === 'build'}
-        onClick={() => onChange('build')}
-      >
-        {formatMessage(messages.buildView)}
-      </Button>
-      <Button
-        buttonStyle="bo-text"
-        type="button"
-        width="auto"
-        borderRadius={bo.borderRadius}
-        boxShadow={
-          activeView === 'manage' ? defaultStyles.boxShadow : undefined
-        }
-        bgColor={activeView === 'manage' ? colors.white : undefined}
-        aria-pressed={activeView === 'manage'}
-        onClick={() => onChange('manage')}
-      >
-        {formatMessage(messages.manageView)}
-      </Button>
-    </Box>
+      <SegmentedTabList aria-label={formatMessage(messages.eventView)}>
+        <SegmentedTab id="build">
+          {formatMessage(messages.buildView)}
+        </SegmentedTab>
+        <SegmentedTab id="manage">
+          {formatMessage(messages.manageView)}
+        </SegmentedTab>
+      </SegmentedTabList>
+    </SegmentedTabs>
   );
 };
 

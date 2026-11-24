@@ -55,6 +55,16 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.proposalRequirementsGroup',
     defaultMessage: 'Proposal requirements',
   },
+  participantActionsSummary: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.participantActionsSummary',
+    defaultMessage:
+      '{action, select, submit {Submit} comment {Comment} other {React}}{others, plural, =0 {} other { +#}}',
+  },
+  proposalRequirementsSummary: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.proposalRequirementsSummary',
+    defaultMessage:
+      '{votes, plural, one {# vote} other {# votes}} in {days, plural, one {# day} other {# days}}',
+  },
   proposalRequirementsNote: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.proposalRequirementsNote',
     defaultMessage:

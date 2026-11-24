@@ -1,0 +1,4 @@
+.text {
+  composes: body from '../typography.module.css';
+  color: var(--gv-text-body);
+}

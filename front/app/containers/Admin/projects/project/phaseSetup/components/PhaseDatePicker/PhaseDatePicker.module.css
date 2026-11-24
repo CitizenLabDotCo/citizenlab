@@ -1,0 +1,8 @@
+.openEndedWarning {
+  margin-top: var(--gv-space-12);
+}
+
+.openEndedWarning ul {
+  margin: var(--gv-space-4) 0 0;
+  padding-left: var(--gv-space-18);
+}

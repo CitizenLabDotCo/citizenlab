@@ -164,6 +164,7 @@ export default defineConfig(({ mode }) => {
         typings: path.resolve(__dirname, 'app/typings'),
         'global-styles': path.resolve(__dirname, 'app/global-styles'),
         'component-library': path.resolve(__dirname, 'app/component-library'),
+        'design-system': path.resolve(__dirname, 'app/design-system'),
         moment: 'moment',
         polished: path.resolve(__dirname, 'node_modules/polished'),
         react: path.resolve(__dirname, 'node_modules/react'),

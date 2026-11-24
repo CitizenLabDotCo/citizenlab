@@ -1,0 +1,9 @@
+.ready {
+  flex-shrink: 0;
+  color: var(--gv-icon-success);
+}
+
+.notReady {
+  flex-shrink: 0;
+  color: var(--gv-icon-primary);
+}

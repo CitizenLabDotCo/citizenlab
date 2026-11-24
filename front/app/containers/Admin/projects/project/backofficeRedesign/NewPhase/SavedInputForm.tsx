@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Spinner } from '@citizenlab/cl2-component-library';
+import Spinner from 'design-system/Spinner';
 
 import usePhases from 'api/phases/usePhases';
 
@@ -9,6 +9,7 @@ import useSharesInputForm from 'containers/Admin/projects/project/inputForm/useS
 import FormInputEditWarningModal from 'components/admin/FormInputEditWarningModal';
 
 import Navigate from 'utils/cl-router/Navigate';
+import 'design-system/tokens.css';
 
 interface Props {
   projectId: string;
@@ -41,7 +42,7 @@ const SavedInputForm = ({ projectId, phaseId }: Props) => {
   if (sharesForm) {
     return (
       <FormInputEditWarningModal
-        variant="bo"
+        variant="panel"
         showEditWarningModal
         setShowEditWarningModal={(open) => setCancelled(!open)}
         editFormLink={`/admin/projects/${projectId}/phases/${phaseId}/form/edit`}

@@ -112,7 +112,7 @@ describe('Phase preview live edits', () => {
           .find('button')
           .should('be.disabled');
       });
-    cy.get('[role="group"][aria-label="Preview phase state"]')
+    cy.get('[aria-label="Preview phase state"]')
       .contains('button', 'Participation')
       .should('not.exist');
     cy.contains('Save this phase to preview its participation form.').should(
@@ -149,7 +149,7 @@ describe('Phase preview live edits', () => {
     cy.visit(
       `admin/projects/${projectId}/phases/${surveyPhaseId}/setup?project_backoffice_redesign`
     );
-    cy.get('[role="group"][aria-label="Preview phase state"]')
+    cy.get('[aria-label="Preview phase state"]')
       .contains('button', 'Open')
       .click();
     cy.get('[data-cy="e2e-phase-preview"] iframe', { timeout: 60000 })
@@ -199,7 +199,7 @@ describe('Phase preview live edits', () => {
         .contains('button', 'Take the Spotlight survey')
         .should('be.disabled');
 
-      cy.get('[role="group"][aria-label="Preview phase state"]')
+      cy.get('[aria-label="Preview phase state"]')
         .contains('button', 'Open')
         .click();
       phone()
@@ -233,17 +233,17 @@ describe('Phase preview live edits', () => {
       .then((body) => {
         const previewDocument = body.ownerDocument;
         cy.wrap(body).find('.e2e-poll-option').first().click();
-        cy.get('[role="group"][aria-label="Preview phase state"]')
+        cy.get('[aria-label="Preview phase state"]')
           .contains('button', 'Before')
           .click();
         cy.wrap(body)
           .contains('This phase has not started yet')
           .should('be.visible');
-        cy.get('[role="group"][aria-label="Preview phase state"]')
+        cy.get('[aria-label="Preview phase state"]')
           .contains('button', 'Ended')
           .click();
         cy.wrap(body).contains('Phase ended').should('be.visible');
-        cy.get('[role="group"][aria-label="Preview phase state"]')
+        cy.get('[aria-label="Preview phase state"]')
           .contains('button', 'Open')
           .click();
         cy.wrap(body)
@@ -281,7 +281,7 @@ describe('Phase preview live edits', () => {
         cy.visit(
           `admin/projects/${projectId}/phases/${phase.body.data.id}/setup?project_backoffice_redesign`
         );
-        cy.get('[role="group"][aria-label="Preview phase state"]')
+        cy.get('[aria-label="Preview phase state"]')
           .contains('button', 'Open')
           .click();
         cy.get('[data-cy="e2e-phase-preview"] iframe', { timeout: 60000 })
@@ -308,7 +308,7 @@ describe('Phase preview live edits', () => {
     }).then(({ body }) => {
       const ideaPhaseId = body.data.id;
       const route = `admin/projects/${projectId}/phases/${ideaPhaseId}/setup?project_backoffice_redesign`;
-      const switcher = '[role="group"][aria-label="Preview phase state"]';
+      const switcher = '[aria-label="Preview phase state"]';
       const savedIdea = 'A new bench by the park entrance';
       const phone = () =>
         cy
@@ -370,7 +370,7 @@ describe('Phase preview live edits', () => {
       cy.visit(
         `admin/projects/${projectId}/phases/${ideaPhaseId}/setup?project_backoffice_redesign`
       );
-      cy.get('[role="group"][aria-label="Preview phase state"]')
+      cy.get('[aria-label="Preview phase state"]')
         .contains('button', 'Open')
         .click();
       phone().contains(savedIdea).click();
@@ -398,9 +398,7 @@ describe('Phase preview live edits', () => {
         .then((body) => cy.wrap(body))
         .contains('h3', 'Information preview')
         .should('be.visible');
-      cy.get('[role="group"][aria-label="Preview phase state"]').should(
-        'not.exist'
-      );
+      cy.get('[aria-label="Preview phase state"]').should('not.exist');
     });
   });
 
@@ -436,10 +434,10 @@ describe('Phase preview live edits', () => {
             .contains('This phase has not started yet')
             .should('be.visible');
           cy.wrap(body).contains('Preview voting option').should('exist');
-          cy.get('[role="group"][aria-label="Preview phase state"]')
+          cy.get('[aria-label="Preview phase state"]')
             .contains('button', 'Participation')
             .should('not.exist');
-          cy.get('[role="group"][aria-label="Preview phase state"]')
+          cy.get('[aria-label="Preview phase state"]')
             .contains('button', 'Open')
             .click();
           cy.wrap(body)
@@ -447,11 +445,11 @@ describe('Phase preview live edits', () => {
             .should('have.attr', 'aria-disabled', 'false')
             .click();
           cy.wrap(body).find('.e2e-vote-plus').should('be.visible');
-          cy.get('[role="group"][aria-label="Preview phase state"]')
+          cy.get('[aria-label="Preview phase state"]')
             .contains('button', 'Ended')
             .click();
           cy.wrap(body).contains('Phase ended').should('be.visible');
-          cy.get('[role="group"][aria-label="Preview phase state"]')
+          cy.get('[aria-label="Preview phase state"]')
             .contains('button', 'Open')
             .click();
           cy.wrap(body).find('.e2e-vote-plus').should('be.visible');

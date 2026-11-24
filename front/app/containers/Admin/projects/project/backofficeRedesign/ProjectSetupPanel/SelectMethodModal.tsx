@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
 import { router } from 'routes';
 
 import { ParticipationMethod } from 'api/phases/types';
@@ -18,6 +17,7 @@ import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { useSearch } from 'utils/router';
 
 import messages from './messages';
+import styles from './SelectMethodModal.module.css';
 
 const METHOD_GROUPS: {
   name: string;
@@ -59,21 +59,16 @@ const SelectMethodModal = ({ projectId, opened, onClose }: Props) => {
     <SettingsModal
       opened={opened}
       close={onClose}
-      width="min(920px, 94vw)"
+      size={920}
+      tabStyle="rail"
       header={formatMessage(projectPageMessages.newParticipationMethod)}
       sections={METHOD_GROUPS.map(({ name, label, methods }) => ({
         name,
         label,
         content: (
-          <Box
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(2, 1fr)',
-              gap: '16px',
-            }}
-          >
+          <div className={styles.methods}>
             <ParticipationMethodChoices
-              variant="bo"
+              variant="panel"
               methods={methods}
               onSelect={async (_event, method) => {
                 if (method === participation_method) {
@@ -104,7 +99,7 @@ const SelectMethodModal = ({ projectId, opened, onClose }: Props) => {
                 });
               }}
             />
-          </Box>
+          </div>
         ),
       }))}
     />
