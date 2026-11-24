@@ -4,19 +4,19 @@ import { useController, useForm } from 'react-hook-form';
 
 import Icon from 'design-system/Icon';
 import Switch from 'design-system/Switch';
+import Text from 'design-system/Text';
 import UnstyledButton from 'design-system/UnstyledButton';
 
-import messagingMessages from 'containers/Admin/messaging/messages';
-import useCampaignRow from 'containers/Admin/messaging/AutomatedEmails/useCampaignRow';
 import { CampaignData } from 'containers/Admin/messaging/AutomatedEmails/types';
+import useCampaignRow from 'containers/Admin/messaging/AutomatedEmails/useCampaignRow';
+import messagingMessages from 'containers/Admin/messaging/messages';
 
-import upsellMessages from 'components/UpsellTooltip/messages';
 import { useRegisterPageSaver } from 'components/admin/PageSaveContext';
+import upsellMessages from 'components/UpsellTooltip/messages';
 
 import { useIntl } from 'utils/cl-intl';
 
 import 'design-system/tokens.css';
-import Text from 'design-system/Text';
 import styles from './NotificationRow.module.css';
 import useNotificationDescription from './useNotificationDescription';
 
