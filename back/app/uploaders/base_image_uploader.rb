@@ -35,6 +35,7 @@ class BaseImageUploader < BaseUploader
   # Some servers send the wrong Content-Type: Facebook serves JPEG profile pictures as
   # image/avif. When the URL has no extension, CarrierWave takes it from that header,
   # and exiftool refuses to strip a file whose extension doesn't match its content.
+  # Mirrors CarrierWave::Uploader::Download#download!, so check it again on CarrierWave upgrades.
   def download!(uri, remote_headers = {})
     remote_file = downloader.new(self).download(uri, remote_headers)
     cache!(
