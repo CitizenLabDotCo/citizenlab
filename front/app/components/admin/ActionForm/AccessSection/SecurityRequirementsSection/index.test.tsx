@@ -261,10 +261,10 @@ describe('<SecurityRequirementsSection />', () => {
   });
 
   describe('the phone row', () => {
+    const phoneCheckbox = () =>
+      screen.getByRole('checkbox', { name: new RegExp(PHONE_LABEL) });
     const phoneToggle = () =>
-      within(
-        screen.getByText(PHONE_LABEL).closest('label')!.parentElement!
-      ).getByTestId('toggle');
+      within(phoneCheckbox().parentElement!).getByTestId('toggle');
 
     describe('when password login and SMS are both enabled', () => {
       it('shows a working toggle', async () => {
@@ -308,8 +308,7 @@ describe('<SecurityRequirementsSection />', () => {
         expect(screen.getByText(PHONE_LABEL)).toBeInTheDocument();
         expect(screen.getByText('(Not configured)')).toBeInTheDocument();
 
-        const toggle = phoneToggle();
-        const checkbox = toggle.parentElement!.querySelector('input')!;
+        const checkbox = phoneCheckbox();
         expect(checkbox).not.toBeChecked();
         expect(checkbox).toBeDisabled();
       });
