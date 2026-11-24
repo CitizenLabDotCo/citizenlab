@@ -30,10 +30,11 @@ const PlacementButton = ({
       textHoverColor={textColor}
       bgColor={isPrimary ? colors.primary : colors.white}
       bgHoverColor={isPrimary ? colors.blue700 : colors.grey50}
-      bgActiveColor={isPrimary ? colors.black : colors.greyPressed}
+      bgActiveColor={isPrimary ? colors.black : colors.grey300}
       borderThickness={isPrimary ? '0' : undefined}
       borderColor={isPrimary ? 'transparent' : colors.grey300}
       borderHoverColor={isPrimary ? 'transparent' : colors.coolGrey500}
+      // Literal values keep the classic look; the 8px radius is not stylingConsts.borderRadius.
       height="36px"
       padding="0 16px"
       lineHeight="20px"
