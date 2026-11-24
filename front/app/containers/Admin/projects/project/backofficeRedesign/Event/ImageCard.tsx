@@ -6,7 +6,6 @@ import Banner from 'design-system/Banner';
 import DropZone from 'design-system/DropZone';
 
 import SetupCard from 'containers/Admin/projects/_shared/components/SetupCard';
-import { EventForm } from 'containers/Admin/projects/_shared/events/useEventForm';
 
 import MultilocTextField from 'components/admin/MultilocFields/MultilocTextField';
 import imagesDropzoneMessages from 'components/UI/ImagesDropzone/messages';
@@ -22,6 +21,7 @@ import {
   toUploadFile,
 } from './imageUpload';
 import messages from './messages';
+import { EventForm } from './useEventForm';
 import 'design-system/tokens.css';
 
 interface Props {
