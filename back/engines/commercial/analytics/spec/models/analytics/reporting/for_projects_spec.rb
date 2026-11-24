@@ -34,7 +34,7 @@ RSpec.describe 'Reporting view project rules' do # rubocop:disable RSpec/Describ
     form = create(:custom_form, participation_context: phase)
     question = create(:custom_field_sentiment_linear_scale, resource: form, question_category: 'quality_of_life')
     response = create(:native_survey_response, project: phase.project, creation_phase: phase)
-    response.custom_field_answers.create!(key: question.key, value: 4)
+    create(:custom_field_answer, answerable: response, custom_field: question, value: 4)
     scores = Analytics::Reporting::CommunityMonitorScore
 
     expect(scores.for_projects([phase.project_id])).not_to be_empty

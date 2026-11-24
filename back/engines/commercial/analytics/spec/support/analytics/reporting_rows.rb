@@ -33,12 +33,12 @@ module Analytics
       IdeaStatus.find_by(code: 'proposed', participation_method: 'ideation') || create(:idea_status_proposed)
       question = create(:custom_field_linear_scale, resource: create(:custom_form, participation_context: phase))
       response = create(:native_survey_response, project: phase.project, creation_phase: phase)
-      response.custom_field_answers.create!(key: question.key, value: 4)
+      create(:custom_field_answer, answerable: response, custom_field: question, value: 4)
     end
 
     def create_user_with_gender
-      CustomField.find_by(key: 'gender') || create(:custom_field_gender, :with_options)
-      create(:user, custom_field_answers: [build(:custom_field_answer, key: 'gender', value: 'male')])
+      gender_field = CustomField.find_by(key: 'gender') || create(:custom_field_gender, :with_options)
+      create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: gender_field, value: 'male')])
     end
 
     def create_input_rows(idea)
