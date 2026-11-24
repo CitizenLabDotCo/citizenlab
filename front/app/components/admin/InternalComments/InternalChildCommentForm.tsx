@@ -10,7 +10,7 @@ import useAddInternalCommentToIdea from 'api/internal_comments/useAddInternalCom
 import useAuthUser from 'api/me/useAuthUser';
 
 import Avatar from 'components/Avatar';
-import PanelFormButtons from 'components/PostShowComponents/Comments/CommentForm/PanelFormButtons';
+import LazyPanelFormButtons from 'components/PostShowComponents/Comments/CommentForm/LazyPanelFormButtons';
 import panelStyles from 'components/PostShowComponents/Comments/commentsPanel.module.css';
 import {
   CommentsVariant,
@@ -291,7 +291,7 @@ const InternalChildCommentForm = ({
               />
               {isPanel ? (
                 <div className={panelStyles.formFooter}>
-                  <PanelFormButtons
+                  <LazyPanelFormButtons
                     cancelLabel={formatMessage(commentsMessages.cancel)}
                     submitLabel={formatMessage(
                       commentsMessages.postInternalComment
