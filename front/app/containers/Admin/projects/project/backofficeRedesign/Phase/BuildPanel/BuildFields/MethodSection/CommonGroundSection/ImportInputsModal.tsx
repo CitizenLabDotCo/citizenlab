@@ -3,6 +3,7 @@ import React from 'react';
 import { useController, useForm } from 'react-hook-form';
 
 import Modal from 'design-system/Modal';
+import Text from 'design-system/Text';
 
 import useCopyInputs from 'api/copy_inputs/useCopyInputs';
 import usePhase from 'api/phases/usePhase';
@@ -13,10 +14,9 @@ import { useIntl } from 'utils/cl-intl';
 
 import PhaseSelect from '../PhaseSelect';
 
-import ProjectComboBox from './ProjectComboBox';
-import Text from 'design-system/Text';
-import messages from './messages';
 import styles from './CommonGroundSection.module.css';
+import messages from './messages';
+import ProjectComboBox from './ProjectComboBox';
 
 interface FormValues {
   fromProjectId?: string;
