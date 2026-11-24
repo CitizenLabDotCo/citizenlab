@@ -61,7 +61,6 @@ RSpec.describe ReportBuilder::Queries::SurveyQuestionResult do
         create(
           :custom_field_select,
           resource: form,
-          key: 'color',
           options: [
             create(:custom_field_option, key: 'red'),
             create(:custom_field_option, key: 'blue')
@@ -72,13 +71,13 @@ RSpec.describe ReportBuilder::Queries::SurveyQuestionResult do
 
       before_all do
         created_at = Time.zone.local(2025, 2, 10)
-        admin_and_moderator_values = { select_field.key => 'ny', group_field.key => 'blue', linear_scale_field.key => 5 }
+        admin_and_moderator_values = { select_field => 'ny', group_field => 'blue', linear_scale_field => 5 }
         {
-          create(:user) => { select_field.key => 'la', group_field.key => 'red', linear_scale_field.key => 2 },
-          nil => { select_field.key => 'ny', group_field.key => 'red', linear_scale_field.key => 4 },
+          create(:user) => { select_field => 'la', group_field => 'red', linear_scale_field => 2 },
+          nil => { select_field => 'ny', group_field => 'red', linear_scale_field => 4 },
           **create_admins_and_moderators(project: project).index_with(admin_and_moderator_values)
         }.each do |author, answers|
-          custom_field_answers = answers.map { |key, value| build(:custom_field_answer, key: key, value: value) }
+          custom_field_answers = answers.map { |custom_field, value| build(:custom_field_answer, custom_field:, value:) }
           create(:native_survey_response, project:, phases: phases_of_inputs, author:, created_at:, custom_field_answers:)
         end
       end
@@ -138,7 +137,6 @@ RSpec.describe ReportBuilder::Queries::SurveyQuestionResult do
         create(
           :custom_field_select,
           resource_type: 'User',
-          key: 'city',
           options: [
             create(:custom_field_option, key: 'la'),
             create(:custom_field_option, key: 'ny')
@@ -149,7 +147,6 @@ RSpec.describe ReportBuilder::Queries::SurveyQuestionResult do
         create(
           :custom_field_select,
           resource: form,
-          key: 'transport',
           options: [
             create(:custom_field_option, key: 'bike'),
             create(:custom_field_option, key: 'train')
@@ -162,10 +159,10 @@ RSpec.describe ReportBuilder::Queries::SurveyQuestionResult do
           :native_survey_response,
           project: project,
           phases: phases_of_inputs,
-          author: create(:user, custom_field_answers: [build(:custom_field_answer, key: 'city', value: 'ny')]),
+          author: create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: demographic_field, value: 'ny')]),
           custom_field_answers: [
             build(:custom_field_answer, custom_field: select_field, value: 'la'),
-            build(:custom_field_answer, key: 'transport', value: 'bike')
+            build(:custom_field_answer, custom_field: transport_question, value: 'bike')
           ]
         )
       end
