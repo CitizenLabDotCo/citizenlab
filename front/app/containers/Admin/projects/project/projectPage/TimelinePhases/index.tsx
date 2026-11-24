@@ -2,8 +2,10 @@ import React from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
 
+import { IPhaseData } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
 import { getPhaseLandingTab } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
 
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
@@ -50,6 +52,7 @@ const TimelinePhases = ({
   const dateLocale = getLocale(useLocale());
   const { phaseId } = useParams({ strict: false });
   const { data: phases } = usePhases(projectId);
+  const { data: project } = useProjectById(projectId);
 
   if (!phases) {
     return null;
@@ -60,6 +63,11 @@ const TimelinePhases = ({
   );
   const noEndLabel = formatMessage(messages.phaseNoEndDate);
   const redesign = variant === 'panel';
+  // Nothing to manage or read before the project is published.
+  const opensOnBuild =
+    redesign && project?.data.attributes.publication_status === 'draft';
+  const landingTab = (phase: IPhaseData) =>
+    opensOnBuild ? 'setup' : getPhaseLandingTab(phase);
 
   return (
     <Box>
@@ -99,7 +107,7 @@ const TimelinePhases = ({
 
           const row = (
             <Link
-              to={PHASE_TAB_ROUTES[getPhaseLandingTab(phase)]}
+              to={PHASE_TAB_ROUTES[landingTab(phase)]}
               params={{ projectId, phaseId: phase.id }}
             >
               {redesign ? (
