@@ -9,3 +9,5 @@ fi-FI:
     debate_information_updates: Tiedotuspäivitykset
     debate_instructions: Ohjeet
     documents_to_consult: Kuulemisasiakirjat
+    private_space_members: 'Jäsenet: %{space}'
+    untitled_folder: Nimetön kansio

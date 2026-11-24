@@ -9,3 +9,5 @@ nl-NL:
     debate_information_updates: Informatie-updates
     debate_instructions: Instructies
     documents_to_consult: Raadplegingsdocumenten
+    private_space_members: 'Leden: %{space}'
+    untitled_folder: Naamloze map
