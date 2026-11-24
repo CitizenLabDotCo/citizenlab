@@ -153,6 +153,7 @@ const CustomPageProjectsAndEventsWrapper = ({ page }: Props) => {
       rootLevelOnly: isSpaceFiltered,
       removeNotAllowedParents: true,
       onlyProjects: !isSpaceFiltered,
+      remove_all_unlisted: true,
     }
   );
 
