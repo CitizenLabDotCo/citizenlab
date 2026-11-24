@@ -25,6 +25,7 @@ type Props = Dates &
     yaxis?: YAxisProps;
     showParticipants?: boolean;
     showVisitors?: boolean;
+    showLegend?: boolean;
     isAnimationActive?: boolean;
   };
 
@@ -55,6 +56,7 @@ const Chart = ({
   ariaDescribedBy,
   showParticipants = true,
   showVisitors = false,
+  showLegend = true,
   isAnimationActive,
 }: Props & AccessibilityProps) => {
   const { formatMessage } = useIntl();
@@ -107,10 +109,14 @@ const Chart = ({
       xaxis={{ tickFormatter: formatTick }}
       yaxis={yaxis}
       tooltip={noData ? undefined : renderTooltip(resolution, series)}
-      legend={{
-        marginTop: 16,
-        items: legendItems,
-      }}
+      legend={
+        showLegend
+          ? {
+              marginTop: 16,
+              items: legendItems,
+            }
+          : undefined
+      }
       innerRef={noData ? undefined : innerRef}
       {...accessibilityProps}
     />

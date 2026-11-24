@@ -1,0 +1,16 @@
+.chart {
+  height: 170px;
+  margin-bottom: var(--gv-space-6);
+}
+
+/* The chart library sets these as attributes; the card uses the dashboard type. */
+.chart :global(.recharts-cartesian-axis-tick-value) {
+  fill: var(--gv-text-tertiary);
+  font-family: var(--gv-font-family);
+  font-size: var(--gv-font-size-12);
+}
+
+.chart :global(.recharts-cartesian-axis-line),
+.chart :global(.recharts-cartesian-axis-tick-line) {
+  stroke: var(--gv-border-control);
+}
