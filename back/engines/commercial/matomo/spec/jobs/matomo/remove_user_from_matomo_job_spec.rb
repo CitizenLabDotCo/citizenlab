@@ -17,14 +17,13 @@ RSpec.describe Matomo::RemoveUserFromMatomoJob do
       expect(matomo_client).to have_received(:delete_user_data).with(user_id)
     end
 
-    it 'removes the data of each user when given a list of ids' do
+    it 'removes the data of all the users with one call when given a list of ids' do
       matomo_client = instance_spy(Matomo::Client, 'matomo_client')
       allow(Matomo::Client).to receive(:new).and_return(matomo_client)
 
       job.perform(%w[user-1 user-2])
 
-      expect(matomo_client).to have_received(:delete_user_data).with('user-1')
-      expect(matomo_client).to have_received(:delete_user_data).with('user-2')
+      expect(matomo_client).to have_received(:delete_user_data).once.with(%w[user-1 user-2])
     end
 
     it 'raises an error if MATOMO_HOST is configured but MATOMO_AUTHORIZATION_TOKEN is missing' do

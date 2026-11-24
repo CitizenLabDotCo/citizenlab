@@ -119,6 +119,50 @@ RSpec.describe Matomo::Client do
     end
   end
 
+  describe '#find_data_subjects with several users' do
+    it 'ORs the users in the segment' do
+      allow(HTTParty).to receive(:post)
+
+      service.find_data_subjects(%w[user-1 user-2])
+
+      expect(HTTParty).to have_received(:post) do |_path, options|
+        expect(options[:query]['segment']).to eq('userId==user-1,userId==user-2')
+      end
+    end
+  end
+
+  describe '#delete_user_data' do
+    def response(payload)
+      instance_double(HTTParty::Response, success?: true, parsed_response: payload)
+    end
+
+    let(:visits) { [{ 'idSite' => 1, 'idVisit' => 10 }] }
+
+    before do
+      allow(service).to receive(:sleep)
+      allow(service).to receive(:delete_data_subjects).and_return(response({ 'log_visit' => 1 }))
+    end
+
+    it 'looks up the users USERS_PER_REQUEST at a time, until no visits are left' do
+      stub_const("#{described_class}::USERS_PER_REQUEST", 2)
+      allow(service).to receive(:find_data_subjects).and_return(response(visits), response([]))
+      allow(service).to receive(:find_data_subjects).with(%w[user-3]).and_return(response([]))
+
+      summary = service.delete_user_data(%w[user-1 user-2 user-3])
+
+      expect(service).to have_received(:find_data_subjects).with(%w[user-1 user-2]).twice
+      expect(service).to have_received(:find_data_subjects).with(%w[user-3]).once
+      expect(service).to have_received(:delete_data_subjects).once.with(visits)
+      expect(summary).to eq({ 'log_visit' => 1 })
+    end
+
+    it 'returns nil when no data was found' do
+      allow(service).to receive(:find_data_subjects).and_return(response([]))
+
+      expect(service.delete_user_data('user-1')).to be_nil
+    end
+  end
+
   describe '#error?' do
     using RSpec::Parameterized::TableSyntax
 

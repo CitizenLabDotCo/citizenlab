@@ -21,14 +21,13 @@ RSpec.describe PosthogIntegration::RemoveUserFromPosthogJob do
         job.perform(user_id)
 
         expect(posthog_client)
-          .to have_received(:delete_person_by_distinct_id).with(user_id, retries: 10)
+          .to have_received(:delete_persons_by_distinct_ids).with([user_id], retries: 10)
       end
 
-      it 'removes each user when given a list of ids' do
+      it 'removes all the users with one call when given a list of ids' do
         job.perform(%w[user-1 user-2])
 
-        expect(posthog_client).to have_received(:delete_person_by_distinct_id).with('user-1', retries: 10)
-        expect(posthog_client).to have_received(:delete_person_by_distinct_id).with('user-2', retries: 10)
+        expect(posthog_client).to have_received(:delete_persons_by_distinct_ids).once.with(%w[user-1 user-2], retries: 10)
       end
     end
 
@@ -39,7 +38,7 @@ RSpec.describe PosthogIntegration::RemoveUserFromPosthogJob do
 
       it 'does not remove user data from PostHog' do
         expect_any_instance_of(PosthogIntegration::PostHog::Client)
-          .not_to receive(:delete_person_by_distinct_id)
+          .not_to receive(:delete_persons_by_distinct_ids)
 
         job.perform(user_id)
       end

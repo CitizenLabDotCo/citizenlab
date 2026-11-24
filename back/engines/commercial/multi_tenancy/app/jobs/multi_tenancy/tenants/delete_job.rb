@@ -4,26 +4,15 @@ module MultiTenancy
   module Tenants
     # Deletes a tenant that +TenantService#delete+ marked as deleted.
     #
-    # Dropping the tenant's schema deletes all its data at once, users included. The users are
-    # not deleted one by one first (no +DeleteUserJob+), because that is expensive for the
-    # database: on 2026-10-27, five large tenants deleted within 11 minutes queued tens of
-    # thousands of user deletions, and the Benelux database ran out of memory.
-    #
-    # Only what dropping the schema doesn't cover is done separately:
-    # - The users are removed from third-party services (Intercom, Segment, Matomo, PostHog),
-    #   with one job per service per +THIRD_PARTY_REMOVAL_BATCH_SIZE+ users.
-    # - Their avatars are deleted from S3.
-    #
-    # The first run queues the third-party removals and reschedules itself. The next runs wait
-    # until those jobs are done, because destroying the tenant deletes the jobs of its schema
-    # that are still queued. Then the avatars are deleted and the tenant is destroyed.
+    # Destroying the tenant drops its schema, which deletes all its data, users included, so
+    # users aren't deleted one by one (that is very heavy on the database). Only the user data
+    # outside the schema is removed separately: from third-party services, and avatars on S3.
     class DeleteJob < ApplicationJob
       perform_retries(false)
 
       THIRD_PARTY_REMOVAL_BATCH_SIZE = 250
-      # How long to wait before checking again whether the third-party removals are done.
       CHECK_INTERVAL = 2.minutes
-      # Queued by +SideFxUserService#after_destroy_all+.
+      # The jobs queued by +SideFxUserService#after_destroy_all+.
       THIRD_PARTY_REMOVAL_JOBS = %w[
         RemoveUserFromIntercomJob
         RemoveUsersFromSegmentJob
@@ -33,14 +22,15 @@ module MultiTenancy
 
       # @param [Tenant] tenant
       # @param [Boolean] third_party_removal_queued
-      # @param [Hash] _legacy_options +last_user_count+ and +retry_interval+, passed by jobs that
-      #   were queued when users were still deleted one by one. Ignored.
+      # @param [Hash] _legacy_options ignored. Accepts the arguments of jobs queued by the
+      #   previous version of this job (+last_user_count+, +retry_interval+).
       def run(tenant, third_party_removal_queued: false, **_legacy_options)
         unless third_party_removal_queued
           queue_third_party_removal(tenant)
           return reschedule(tenant)
         end
 
+        # Destroying the tenant deletes its queued jobs, so the removals must be done first.
         return reschedule(tenant) if third_party_removal_pending?(tenant)
 
         delete_avatars(tenant)
@@ -57,8 +47,10 @@ module MultiTenancy
         end
       end
 
-      # Called outside of +tenant.switch+ on purpose: destroying the tenant deletes all the
-      # jobs of its schema (+Tenant#delete_que_jobs+), and this job must not be one of them.
+      # Queues this job again, to check in +CHECK_INTERVAL+ whether the third-party removals are
+      # done. Don't call it inside +tenant.switch+: the job would then belong to the tenant's
+      # schema, and destroying the tenant deletes every job of that schema
+      # (+Tenant#delete_que_jobs+), including the run that is destroying it.
       def reschedule(tenant)
         DeleteJob.set(wait: CHECK_INTERVAL).perform_later(tenant, third_party_removal_queued: true)
       end
@@ -74,10 +66,7 @@ module MultiTenancy
         end
       end
 
-      # Deleting a user deletes its avatar, but dropping the schema doesn't. All avatars of the
-      # tenant are stored under one prefix (see +MultiTenancy::Patches::BaseUploader#store_dir+).
-      #
-      # The tenant's other files are not deleted (yet).
+      # Dropping the schema doesn't delete files. The tenant's other files are kept for now.
       def delete_avatars(tenant)
         return unless AvatarUploader.use_fog_engine?
 

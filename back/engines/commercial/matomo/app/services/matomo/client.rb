@@ -4,6 +4,10 @@ module Matomo
   class Client
     attr_reader :base_uri, :auth_token
 
+    # How many users +#find_data_subjects+ looks for at once. Their ids are OR-ed in the
+    # segment, which is sent in the URL: 50 ids keep it at about 2 KB.
+    USERS_PER_REQUEST = 50
+
     # @param [String] base_uri
     # @param [String] auth_token
     def initialize(base_uri = nil, auth_token = nil)
@@ -18,24 +22,28 @@ module Matomo
     end
 
     # Sends as many `PrivacyManager.deleteDataSubjects` requests as necessary
-    # to remove all user data from Matomo.
-    # @param [String] user_id
+    # to remove all the data of these users from Matomo. The users are looked up
+    # +USERS_PER_REQUEST+ at a time.
+    # @param [String,Array<String>] user_ids
     # @return [Hash,NilClass] Summary of deleted data by aggregating results
     #   from the different `PrivacyManager.deleteDataSubjects` requests. `nil`
-    #   if no data was found for this user.
-    def delete_user_data(user_id)
+    #   if no data was found for these users.
+    def delete_user_data(user_ids)
       deletes_summary = {}
 
-      loop do
-        visits_response = find_data_subjects(user_id)
-        raise_if_error(visits_response)
-        break if visits_response.parsed_response.blank?
+      Array(user_ids).each_slice(USERS_PER_REQUEST) do |batch|
+        # `findDataSubjects` returns at most 401 visits, so this repeats until none are left.
+        loop do
+          visits_response = find_data_subjects(batch)
+          raise_if_error(visits_response)
+          break if visits_response.parsed_response.blank?
 
-        delete_response = delete_data_subjects(visits_response.parsed_response)
-        raise_if_error(delete_response)
-        deletes_summary.merge!(delete_response.parsed_response) { |_key, v1, v2| v1 + v2 }
-        sleep(0.5)
-        break if delete_response.parsed_response.values.sum.zero? # nb data points that were deleted
+          delete_response = delete_data_subjects(visits_response.parsed_response)
+          raise_if_error(delete_response)
+          deletes_summary.merge!(delete_response.parsed_response) { |_key, v1, v2| v1 + v2 }
+          sleep(0.5)
+          break if delete_response.parsed_response.values.sum.zero? # nb data points that were deleted
+        end
       end
 
       deletes_summary.presence
@@ -72,14 +80,15 @@ module Matomo
       )
     end
 
-    # @param [String] user_id
+    # @param [String,Array<String>] user_ids
     # @return [HTTParty::Response]
-    def find_data_subjects(user_id)
+    def find_data_subjects(user_ids)
       query = {
         'idSite' => 'all',
         'module' => 'API',
         'method' => 'PrivacyManager.findDataSubjects',
-        'segment' => "userId==#{user_id}",
+        # A comma ORs the conditions of a segment.
+        'segment' => Array(user_ids).map { |user_id| "userId==#{user_id}" }.join(','),
         'format' => 'JSON'
       }
 

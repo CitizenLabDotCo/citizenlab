@@ -8,7 +8,6 @@ class RemoveUserFromIntercomJob < ApplicationJob
   def run(user_ids)
     return unless INTERCOM_CLIENT
 
-    service = TrackIntercomService.new(INTERCOM_CLIENT)
-    Array(user_ids).each { |user_id| service.forget_user(user_id) }
+    TrackIntercomService.new(INTERCOM_CLIENT).forget_users(Array(user_ids))
   end
 end
