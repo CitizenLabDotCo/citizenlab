@@ -30,7 +30,6 @@ const PlacementButton = ({
       textHoverColor={textColor}
       bgColor={isPrimary ? colors.primary : colors.white}
       bgHoverColor={isPrimary ? colors.blue700 : colors.grey50}
-      bgActiveColor={isPrimary ? colors.black : colors.grey300}
       borderThickness={isPrimary ? '0' : undefined}
       borderColor={isPrimary ? 'transparent' : colors.grey300}
       borderHoverColor={isPrimary ? 'transparent' : colors.coolGrey500}
