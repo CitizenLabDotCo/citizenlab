@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
-import Icon from 'design-system/Icon';
-import UnstyledButton from 'design-system/UnstyledButton';
+import PanelGroupHeader from 'design-system/PanelGroupHeader';
 
 import { IProjectData } from 'api/projects/types';
 
@@ -22,16 +21,15 @@ const ProjectDetails = ({ project, onOpenSettings }: Props) => {
 
   return (
     <div>
-      <UnstyledButton
-        id="e2e-project-details-toggle"
-        className={styles.toggle}
-        aria-expanded={opened}
-        aria-controls="project-details-cards"
-        onPress={() => setOpened((opened) => !opened)}
-      >
-        {formatMessage(messages.projectDetails)}
-        <Icon name="chevron-down-16" className={styles.chevron} />
-      </UnstyledButton>
+      <PanelGroupHeader
+        label={formatMessage(messages.projectDetails)}
+        toggle={{
+          id: 'e2e-project-details-toggle',
+          expanded: opened,
+          controls: 'project-details-cards',
+          onPress: () => setOpened(!opened),
+        }}
+      />
 
       {opened && (
         <div id="project-details-cards" className={styles.cards}>

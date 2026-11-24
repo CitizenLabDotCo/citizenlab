@@ -28,3 +28,29 @@
 .rail .label {
   color: var(--gv-text-disabled);
 }
+
+.toggle {
+  composes: ringOutside from '../focus.module.css';
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gv-space-8);
+  width: 100%;
+  min-height: var(--gv-size-28);
+  border-radius: var(--gv-radius-4);
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+
+.chevron {
+  flex-shrink: 0;
+  color: var(--gv-icon-secondary);
+  transition: transform var(--gv-motion-duration-medium)
+    var(--gv-motion-easing-standard);
+}
+
+.toggle[aria-expanded='true'] .chevron {
+  transform: rotate(180deg);
+}

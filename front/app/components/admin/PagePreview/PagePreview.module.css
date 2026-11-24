@@ -1,4 +1,5 @@
 .veil {
+  composes: ringInside from '../../../design-system/focus.module.css';
   position: absolute;
   inset: 0;
   display: flex;
@@ -8,8 +9,7 @@
   opacity: 0;
   background: color-mix(in srgb, var(--gv-surface-inverse) 20%, transparent);
   backdrop-filter: blur(2px);
-  /* Wheel and scroll fall through to the iframe, so the preview stays scrollable. */
-  pointer-events: none;
+  cursor: pointer;
   transition-property: opacity;
   transition-duration: var(--gv-motion-duration-fast);
   transition-timing-function: var(--gv-motion-easing-standard);
@@ -17,13 +17,10 @@
 
 .glassButton {
   composes: uiStrong from '../../../design-system/typography.module.css';
-  composes: ringOutside from '../../../design-system/focus.module.css';
   padding: var(--gv-space-6) var(--gv-space-12);
   border: none;
   border-radius: var(--gv-radius-8);
   background: color-mix(in srgb, var(--gv-surface-inverse) 86%, transparent);
   backdrop-filter: blur(8px);
   color: var(--gv-text-inverse);
-  cursor: pointer;
-  pointer-events: auto;
 }

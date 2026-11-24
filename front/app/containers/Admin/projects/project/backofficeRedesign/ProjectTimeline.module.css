@@ -25,3 +25,36 @@
 .divider {
   margin: var(--gv-space-12) var(--gv-space-10) var(--gv-space-8);
 }
+
+.addRow {
+  composes: smallStrong from '../../../../../design-system/typography.module.css';
+  composes: ringInside from '../../../../../design-system/focus.module.css';
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-8);
+  width: 100%;
+  min-height: var(--gv-size-32);
+  padding: 0 var(--gv-space-10);
+  border-radius: var(--gv-radius-6);
+  color: var(--gv-text-secondary);
+  cursor: pointer;
+}
+
+.addRow:hover {
+  background: var(--gv-surface-hovered);
+}
+
+.addRowIcon {
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+  width: var(--gv-size-16);
+  height: var(--gv-size-16);
+  border: var(--gv-border-width-1) dashed var(--gv-border-control);
+  border-radius: var(--gv-radius-full);
+}
+
+.addRowIcon > svg {
+  width: 10px;
+  height: 10px;
+}

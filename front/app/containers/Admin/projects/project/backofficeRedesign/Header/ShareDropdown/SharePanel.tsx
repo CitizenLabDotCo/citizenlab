@@ -17,6 +17,8 @@ import shareLinkTracks from 'containers/Admin/projects/project/projectHeader/Sha
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 
+import getPublicationState from '../PublishDropdown/publicationState';
+
 import AccessPeopleRow from './AccessPeopleRow';
 import messages from './messages';
 import styles from './ShareDropdown.module.css';
@@ -58,6 +60,12 @@ const SharePanel = ({ project, linkCopied, onLinkCopied }: Props) => {
   }, []);
 
   const { slug, preview_token } = project.attributes;
+  const previewExplanation = {
+    draft: messages.sharePreviewExplanation,
+    scheduled: messages.shareScheduledPreviewExplanation,
+    published: messages.sharePublishedPreviewExplanation,
+    archived: messages.shareArchivedPreviewExplanation,
+  }[getPublicationState(project)];
 
   const handleInvite = async () => {
     const emails = splitEmails(invitees);
@@ -121,9 +129,7 @@ const SharePanel = ({ project, linkCopied, onLinkCopied }: Props) => {
         <Divider />
       </div>
 
-      <p className={styles.helper}>
-        {formatMessage(messages.sharePreviewExplanation)}
-      </p>
+      <p className={styles.helper}>{formatMessage(previewExplanation)}</p>
       <Button
         fullWidth
         id="e2e-share-preview-link"

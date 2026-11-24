@@ -90,20 +90,20 @@ const PagePreview = ({
       <Preview
         src={src}
         title={iframeTitle}
+        interactive={false}
         dataCy={dataCy}
         alignTop={alignTop}
       >
-        <div className={styles.veil}>
-          <span className={editPageContentClassName}>
-            <UnstyledButton
-              className={styles.glassButton}
-              onPress={onEdit}
-              data-cy="e2e-edit-page-content"
-            >
-              {editText}
-            </UnstyledButton>
-          </span>
-        </div>
+        <UnstyledButton
+          className={[styles.veil, editPageContentClassName]
+            .filter(Boolean)
+            .join(' ')}
+          aria-label={editPageContentAriaLabel}
+          onPress={onEdit}
+          data-cy="e2e-edit-page-content"
+        >
+          <span className={styles.glassButton}>{editText}</span>
+        </UnstyledButton>
       </Preview>
     );
   }

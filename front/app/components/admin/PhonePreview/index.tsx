@@ -9,6 +9,7 @@ interface Props {
   frameName?: string;
   frameRef?: React.Ref<HTMLIFrameElement>;
   title: string;
+  interactive?: boolean;
   className?: string;
   dataCy?: string;
   // Starts the phone at the top of the area, to line up with content beside it. The area then
@@ -23,6 +24,7 @@ const PhonePreview = ({
   frameName,
   frameRef,
   title,
+  interactive = true,
   className,
   dataCy,
   alignTop = false,
@@ -48,6 +50,9 @@ const PhonePreview = ({
         }
         src={src}
         title={title}
+        tabIndex={interactive ? undefined : -1}
+        aria-hidden={interactive ? undefined : true}
+        pointerEvents={interactive ? undefined : 'none'}
         display="block"
         w="100%"
         h="100%"

@@ -5,7 +5,7 @@
   margin: var(--gv-space-10) 0 var(--gv-space-12);
   padding: var(--gv-space-12);
   border: var(--gv-border-width-1) solid var(--gv-border-divider);
-  border-radius: 3px;
+  border-radius: var(--gv-radius-8);
   background: var(--gv-surface-panel-subtle);
 }
 
