@@ -68,6 +68,14 @@ const defaultNavItems: NavItem[] = [
     showAtBottom: false,
   },
   {
+    name: 'productFeedback',
+    link: '/admin/product-feedback',
+    iconName: 'idea',
+    message: 'productFeedback',
+    featureNames: ['userjot'],
+    showAtBottom: false,
+  },
+  {
     name: 'inspirationHub',
     link: '/admin/inspiration-hub',
     iconName: 'globe',

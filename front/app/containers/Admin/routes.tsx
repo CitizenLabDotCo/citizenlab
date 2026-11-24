@@ -28,6 +28,7 @@ import createAdminInspirationHubRoutes from './inspirationHub/routes';
 import createAdminInvitationsRoutes from './invitations/routes';
 import createAdminMessagingRoutes from './messaging/routes';
 import createAdminPagesAndMenuRoutes from './pagesAndMenu/routes';
+import createAdminProductFeedbackRoutes from './productFeedback/routes';
 import createProjectFoldersRoutes from './projectFolders/routes';
 import createAdminProjectsRoutes from './projects/routes';
 import createAdminReportingRoutes from './reporting/routes';
@@ -309,6 +310,7 @@ export const createAdminRoutes = (moduleRoutes: Partial<Routes> = {}) => {
     ...createAdminReportingRoutes(),
     createAdminToolsRoutes(moduleRoutes['admin.tools']),
     createAdminCommunityMonitorRoutes(),
+    createAdminProductFeedbackRoutes(),
     createAdminInspirationHubRoutes(),
     createAdminSpacesRoutes(),
     faviconRoute,
