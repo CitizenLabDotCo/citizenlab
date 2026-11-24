@@ -45,15 +45,15 @@ const UserjotEmbed = ({ projectId, identity }: Props) => {
 
   if (failed) {
     return (
-      <Warning>
-        <FormattedMessage {...messages.loadingFailed} />
-      </Warning>
+      <Box p="24px">
+        <Warning>
+          <FormattedMessage {...messages.loadingFailed} />
+        </Warning>
+      </Box>
     );
   }
 
-  return (
-    <Box ref={containerRef} id="e2e-userjot-embed" w="100%" minHeight="720px" />
-  );
+  return <Box ref={containerRef} id="e2e-userjot-embed" w="100%" h="100%" />;
 };
 
 export default UserjotEmbed;
