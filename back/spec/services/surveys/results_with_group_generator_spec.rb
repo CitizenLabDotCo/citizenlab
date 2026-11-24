@@ -711,8 +711,8 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
     end
 
     let_it_be(:anon_responses) do
-      male_user = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'gender', value: 'male')])
-      female_user = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'gender', value: 'female')])
+      male_user = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: gender_user_custom_field, value: 'male')])
+      female_user = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: gender_user_custom_field, value: 'female')])
 
       # Anonymous responses - author_id becomes NULL, but demographic
       # data is merged into idea answers with u_-prefixed keys

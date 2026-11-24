@@ -315,12 +315,12 @@ RSpec.shared_context 'survey_setup' do
   let_it_be(:responses) do
     create(:idea_status_proposed)
     male_user = create(:user, custom_field_answers: [
-      build(:custom_field_answer, key: 'gender', value: 'male'),
-      build(:custom_field_answer, key: 'domicile', value: domicile_user_custom_field.options[0].area.id)
+      build(:custom_field_answer, custom_field: gender_user_custom_field, value: 'male'),
+      build(:custom_field_answer, custom_field: domicile_user_custom_field, value: domicile_user_custom_field.options[0].area.id)
     ])
     female_user = create(:user, custom_field_answers: [
-      build(:custom_field_answer, key: 'gender', value: 'female'),
-      build(:custom_field_answer, key: 'domicile', value: domicile_user_custom_field.options[1].area.id)
+      build(:custom_field_answer, custom_field: gender_user_custom_field, value: 'female'),
+      build(:custom_field_answer, custom_field: domicile_user_custom_field, value: domicile_user_custom_field.options[1].area.id)
     ])
     no_gender_user = create(:user)
     idea_file1 = create(:idea_file)
