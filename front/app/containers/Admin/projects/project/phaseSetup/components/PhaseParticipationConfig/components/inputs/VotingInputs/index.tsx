@@ -213,6 +213,7 @@ const VotingInputs = ({
 
   const views = (
     <ViewSelector
+      inputTerm="option"
       presentation_mode={presentation_mode}
       available_views={available_views}
       apiErrors={apiErrors}

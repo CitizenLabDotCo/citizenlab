@@ -119,7 +119,14 @@ describe('Project setup feedback', () => {
           request.reply({ statusCode: 503, body: {} });
         }
       }).as('updateMap');
-      cy.visit(path);
+      cy.visit(path.replace('&map_config=true', ''));
+      cy.get('[data-review-card="views"]')
+        .contains('button', 'Available views')
+        .click();
+      cy.contains('Displays ideas as pins').should('be.visible');
+      cy.contains('a', 'Idea form').should('be.visible');
+      cy.contains('button', 'Configure map').click();
+      cy.contains('h2', 'Configure map').should('be.visible');
 
       const latitude = () => cy.get('input[aria-label="Default latitude"]');
       const zoom = () => cy.get('input[aria-label="Map zoom level"]');
@@ -141,6 +148,7 @@ describe('Project setup feedback', () => {
       cy.contains('[role="status"]', /^Saved$/).should('be.visible');
 
       cy.visit(path);
+      cy.contains('h2', 'Edit map').should('be.visible');
       latitude().should('have.value', '12.5');
       zoom().should('have.value', '8');
     });

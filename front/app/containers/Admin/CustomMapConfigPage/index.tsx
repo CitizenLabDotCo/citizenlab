@@ -24,6 +24,7 @@ import Centerer from 'components/UI/Centerer';
 import goBackMessages from 'components/UI/GoBackButton/messages';
 
 import { useIntl } from 'utils/cl-intl';
+import { hasCustomMapSettings } from 'utils/map';
 import { getCenter, getZoomLevel } from 'utils/mapUtils/map';
 import { useParams } from 'utils/router';
 
@@ -306,7 +307,11 @@ const CustomMapConfigPage = memo<Props>((props) => {
                 />
               )}
               <h2 className={styles.settingsTitle}>
-                {formatMessage(projectMessages.configureMap)}
+                {formatMessage(
+                  hasCustomMapSettings(mapConfig.data, appConfig?.data)
+                    ? projectMessages.editMap
+                    : projectMessages.configureMap
+                )}
               </h2>
               <Text role="status" variant="small" tone="secondary">
                 {!staged && saved && formatMessage(messages.mapPositionSaved)}

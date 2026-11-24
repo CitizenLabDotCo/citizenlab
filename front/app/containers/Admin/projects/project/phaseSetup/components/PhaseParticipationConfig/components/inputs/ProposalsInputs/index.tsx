@@ -326,6 +326,7 @@ const ProposalsInputs = ({
 
   const views = (
     <ViewSelector
+      inputTerm={input_term}
       variant={layout === 'panel' ? 'panel' : undefined}
       presentation_mode={presentation_mode}
       available_views={available_views}

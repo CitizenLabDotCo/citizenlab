@@ -353,6 +353,24 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.listViewTitle',
     defaultMessage: 'List view',
   },
+  methodListViewDescription: {
+    id: 'app.containers.AdminPage.ProjectEdit.methodListViewDescription',
+    defaultMessage:
+      '{inputs} appear in a scrollable feed, sorted by trending, reactions, comments, date, or activity. Best for: smaller consultations.',
+  },
+  methodMapViewDescription: {
+    id: 'app.containers.AdminPage.ProjectEdit.methodMapViewDescription',
+    defaultMessage:
+      'Displays {inputs} as pins on a map. Make sure you add a location field to the {inputFormLink}. Best for: location-based consultations, urban planning, infrastructure feedback.',
+  },
+  methodFormLink: {
+    id: 'app.containers.AdminPage.ProjectEdit.methodFormLink',
+    defaultMessage: '{input} form',
+  },
+  methodTagsLink: {
+    id: 'app.containers.AdminPage.ProjectEdit.methodTagsLink',
+    defaultMessage: '{input} tags',
+  },
   listViewDescription: {
     id: 'app.containers.AdminPage.ProjectEdit.listViewDescription1',
     defaultMessage:
@@ -745,6 +763,10 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.betaTooltip',
     defaultMessage:
       "This participation method is in beta. We're gradually rolling it out to gather feedback and improve the experience.",
+  },
+  editMap: {
+    id: 'app.containers.AdminPage.ProjectEdit.editMap',
+    defaultMessage: 'Edit map',
   },
   configureMap: {
     id: 'app.containers.AdminPage.ProjectEdit.configureMap',
