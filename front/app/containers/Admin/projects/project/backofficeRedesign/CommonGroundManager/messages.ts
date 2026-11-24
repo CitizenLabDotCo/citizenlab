@@ -1,6 +1,14 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  orderByAgreement: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.orderByAgreement',
+    defaultMessage: 'Order by agreement',
+  },
+  addedByParticipants: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.addedByParticipants',
+    defaultMessage: 'Added by participants',
+  },
   agree: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.CommonGroundManager.agree',
     defaultMessage: 'Agree',

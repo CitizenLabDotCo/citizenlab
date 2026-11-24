@@ -23,6 +23,8 @@ const COLUMN_WIDTHS = { assignee: 88, likes: 56, agree: 72, reactions: 88 };
 
 interface Props {
   ideas: IIdeaData[];
+  agreeSortDirection?: 'ascending' | 'descending';
+  onSortByAgree: () => void;
   showModeration: boolean;
   resultsById: Map<string, CommonGroundResultItem>;
   selectedIds: Set<string>;
@@ -37,6 +39,8 @@ interface Props {
 
 const StatementTable = ({
   ideas,
+  agreeSortDirection,
+  onSortByAgree,
   showModeration,
   resultsById,
   selectedIds,
@@ -57,6 +61,15 @@ const StatementTable = ({
       defaultWidth={COLUMN_WIDTHS[id]}
       minWidth={COLUMN_WIDTHS[id]}
       showChevron={false}
+      sortDirection={id === 'agree' ? agreeSortDirection : undefined}
+      sortAction={
+        id === 'agree'
+          ? {
+              label: formatMessage(messages.orderByAgreement),
+              onPress: onSortByAgree,
+            }
+          : undefined
+      }
       align={id === 'assignee' ? 'start' : 'end'}
     >
       {label}

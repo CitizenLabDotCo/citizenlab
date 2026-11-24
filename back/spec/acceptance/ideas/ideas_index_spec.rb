@@ -19,11 +19,64 @@ resource 'Ideas' do
     parameter :idea_status, 'Filter by status (idea status id)', required: false
     parameter :custom_field_answers, 'Filter by answers to public choice questions: { field_id: [option_key, ...] } (OR within a question, AND across questions)', required: false
     parameter :search, 'Filter by searching in title and body', required: false
-    parameter :sort, "Either 'new', '-new', 'trending', '-trending', 'popular', '-popular', 'author_name', '-author_name', 'likes_count', '-likes_count', 'dislikes_count', '-dislikes_count', 'status', '-status', 'status_priority', 'baskets_count', '-baskets_count', 'votes_count', '-votes_count', 'budget', '-budget', 'random'", required: false
+    parameter :sort, "Either 'new', '-new', 'trending', '-trending', 'popular', '-popular', 'author_name', '-author_name', 'likes_count', '-likes_count', 'dislikes_count', '-dislikes_count', 'status', '-status', 'status_priority', 'baskets_count', '-baskets_count', 'votes_count', '-votes_count', 'budget', '-budget', 'random', or 'agree_percent' / '-agree_percent' for a Common Ground phase", required: false
     parameter :publication_status, 'Filter by publication status; returns all published ideas by default', required: false
     parameter :project_publication_status, "Filter by project publication_status. One of #{AdminPublication::PUBLICATION_STATUSES.join(', ')}", required: false
     parameter :feedback_needed, 'Filter out ideas that need feedback', required: false
     parameter :filter_trending, 'Filter out truly trending ideas', required: false
+    parameter :added_by_participants, 'Filter to inputs from resident accounts in moderatable projects', required: false
+    parameter :content_warnings, 'Filter to inputs with active inappropriate-content flags in moderatable projects', required: false
+
+    context 'with the Manage filters' do
+      let(:project) { create(:project) }
+      let(:other_project) { create(:project) }
+      let(:moderator) { create(:project_moderator, projects: [project]) }
+      let!(:resident_input) { create(:idea, project: project) }
+      let!(:staff_input) { create(:idea, project: project, author: moderator) }
+      let!(:other_input) { create(:idea, project: other_project) }
+
+      before { header_token_for moderator }
+
+      example 'Filter inputs added by participants' do
+        do_request(added_by_participants: true)
+        assert_status 200
+        expect(json_response_body[:data].pluck(:id)).to eq [resident_input.id]
+      end
+
+      example 'Filter active content warnings without exposing flags in other projects' do
+        create(:inappropriate_content_flag, flaggable: resident_input)
+        create(:inappropriate_content_flag, flaggable: staff_input, deleted_at: Time.current)
+        create(:inappropriate_content_flag, flaggable: other_input)
+
+        do_request(content_warnings: true)
+        assert_status 200
+        expect(json_response_body[:data].pluck(:id)).to eq [resident_input.id]
+      end
+    end
+
+    context 'with Common Ground agreement sorting' do
+      let(:common_ground_phase) { create(:common_ground_phase, :ongoing) }
+      let!(:agreed) { create(:common_ground_input, phase: common_ground_phase) }
+      let!(:split) { create(:common_ground_input, phase: common_ground_phase) }
+      let!(:unreacted) { create(:common_ground_input, phase: common_ground_phase) }
+
+      before do
+        header_token_for create(:admin)
+        create(:reaction, reactable: agreed, mode: 'up')
+        create(:reaction, reactable: split, mode: 'up')
+        create(:reaction, reactable: split, mode: 'neutral')
+      end
+
+      example 'Sort statements by the displayed percentage including statements without reactions' do
+        do_request(phase: common_ground_phase.id, sort: 'agree_percent')
+        assert_status 200
+        expect(json_response_body[:data].pluck(:id)).to eq [agreed.id, split.id, unreacted.id]
+
+        do_request(phase: common_ground_phase.id, sort: '-agree_percent')
+        assert_status 200
+        expect(json_response_body[:data].pluck(:id)).to eq [unreacted.id, split.id, agreed.id]
+      end
+    end
 
     context 'when moderator' do
       before { header_token_for(moderator) }

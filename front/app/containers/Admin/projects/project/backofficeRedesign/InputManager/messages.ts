@@ -1,6 +1,10 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  contentWarnings: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.contentWarnings',
+    defaultMessage: 'Content warnings',
+  },
   inputDisplay: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.inputDisplay',
     defaultMessage: 'Input view',

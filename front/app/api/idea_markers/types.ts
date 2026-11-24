@@ -17,6 +17,7 @@ export interface QueryParameters
     | 'official_feedback'
     | 'imported'
     | 'transitive'
+    | 'content_warnings'
   > {
   phaseId?: string | null;
   projectIds: string[] | null;

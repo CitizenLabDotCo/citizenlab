@@ -15,6 +15,10 @@ const usePhaseCounts = (scope: Scope) => {
     ...scope,
     official_feedback: true,
   });
+  const { data: warnings } = useIdeasFilterCounts({
+    ...scope,
+    content_warnings: true,
+  });
   const { data: imported } = useIdeasFilterCounts({ ...scope, imported: true });
 
   if (!counts || !awaiting || !replied || !imported) return undefined;
@@ -32,6 +36,7 @@ const usePhaseCounts = (scope: Scope) => {
     byTopic: input_topic_id,
     byAssignee,
     awaiting: awaiting.data.attributes.total,
+    contentWarnings: warnings?.data.attributes.total,
     replied: replied.data.attributes.total,
     imported: imported.data.attributes.total,
     online: total - imported.data.attributes.total,

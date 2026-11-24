@@ -22,34 +22,34 @@ const isAgreement = (value: string): value is Agreement =>
 
 const useAgreementFilter = ({
   statements,
-  searched,
+  filtered,
   onChange,
 }: {
   statements: CommonGroundResultItem[];
-  searched: IIdeasFilterCountsQueryParameters | undefined;
+  filtered: IIdeasFilterCountsQueryParameters | undefined;
   onChange: () => void;
 }) => {
   const { formatMessage } = useIntl();
   const [selected, setSelected] = useState<Agreement[]>([]);
 
-  // The results know nothing of the search, so the API counts the matches.
-  const searchedCount = (agreement: Agreement) => ({
-    ...searched,
+  // Count each agreement within the current search and sidebar filters.
+  const filteredCount = (agreement: Agreement) => ({
+    ...filtered,
     agreements: [agreement],
   });
   const { data: agreeCounts } = useIdeasFilterCounts(
-    searchedCount('agree'),
-    !!searched
+    filteredCount('agree'),
+    !!filtered
   );
   const { data: splitCounts } = useIdeasFilterCounts(
-    searchedCount('split'),
-    !!searched
+    filteredCount('split'),
+    !!filtered
   );
   const { data: disagreeCounts } = useIdeasFilterCounts(
-    searchedCount('disagree'),
-    !!searched
+    filteredCount('disagree'),
+    !!filtered
   );
-  const searchedTotals: Record<Agreement, number | undefined> = {
+  const filteredTotals: Record<Agreement, number | undefined> = {
     agree: agreeCounts?.data.attributes.total,
     split: splitCounts?.data.attributes.total,
     disagree: disagreeCounts?.data.attributes.total,
@@ -66,7 +66,7 @@ const useAgreementFilter = ({
     icon: 'circle-check-filled-16',
     options: AGREEMENTS.map(({ value, label }) => {
       const count =
-        (searched && searchedTotals[value]) ??
+        (filtered && filteredTotals[value]) ??
         statements.filter((statement) => statement.agreement === value).length;
 
       return {

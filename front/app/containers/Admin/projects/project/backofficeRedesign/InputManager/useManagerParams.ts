@@ -19,6 +19,7 @@ export interface ManagerFilters {
   assignees: string[];
   topics: string[];
   reply?: ReplyFilter;
+  contentWarnings?: boolean;
   source?: SourceFilter;
   phase?: string;
 }
@@ -38,6 +39,7 @@ const NO_REPLACED_FILTERS = {
   assignee: undefined,
   topics: undefined,
   feedback_needed: undefined,
+  content_warnings: undefined,
   source: undefined,
   phase: undefined,
 };
@@ -64,6 +66,7 @@ const useManagerParams = (phaseId: string, phaseSort: Sort = DEFAULT_SORT) => {
           : search.feedback_needed === 'false'
           ? 'replied'
           : undefined,
+      contentWarnings: search.content_warnings === 'true',
       source: isSourceFilter(search.source) ? search.source : undefined,
       phase: search.phase === ALL_PHASES ? undefined : search.phase || phaseId,
     }),
@@ -84,6 +87,7 @@ const useManagerParams = (phaseId: string, phaseSort: Sort = DEFAULT_SORT) => {
       input_topics: filters.topics,
       feedback_needed: filters.reply === 'awaiting' || undefined,
       official_feedback: filters.reply === 'replied' || undefined,
+      content_warnings: filters.contentWarnings || undefined,
       imported: filters.source ? filters.source === 'imported' : undefined,
       phase: filters.phase,
       search: searchTerm,
@@ -109,6 +113,9 @@ const useManagerParams = (phaseId: string, phaseSort: Sort = DEFAULT_SORT) => {
         updates.feedback_needed = changes.reply
           ? String(changes.reply === 'awaiting')
           : undefined;
+      }
+      if ('contentWarnings' in changes) {
+        updates.content_warnings = changes.contentWarnings ? 'true' : undefined;
       }
       if ('source' in changes) updates.source = changes.source;
       if ('phase' in changes) {

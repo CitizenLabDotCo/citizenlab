@@ -28,6 +28,8 @@ class SortByParamsService
     when '-trending'
       ids = TrendingIdeaService.new.sort_trending(scope).map(&:id).reverse
       Idea.unscoped.where(id: ids).order_as_specified(id: ids)
+    when 'agree_percent' then sort_by_agree_percent(scope, params[:phase], current_user, :desc)
+    when '-agree_percent' then sort_by_agree_percent(scope, params[:phase], current_user, :asc)
     when 'likes_count' then scope.order(likes_count: :desc)
     when '-likes_count' then scope.order(likes_count: :asc)
     when 'dislikes_count' then scope.order(dislikes_count: :desc)
@@ -71,6 +73,18 @@ class SortByParamsService
   end
 
   private
+
+  def sort_by_agree_percent(scope, phase_id, current_user, direction)
+    phase = Phase.find_by(id: phase_id)
+    unless phase&.participation_method == ParticipationMethod::CommonGround.method_str
+      raise ApiError.new(:unsupported_sort_parameter, status: 400)
+    end
+
+    return scope.none unless Pundit.policy!(current_user, phase).common_ground_results?
+
+    exclude = StatisticsRoleExclusion.new.exclude_admins_and_moderators?
+    CommonGround::ResultsService.new(phase, exclude_admins_and_moderators: exclude).order_by_agree_percent(scope, direction)
+  end
 
   def sort_locale(current_user)
     current_user&.locale || AppConfiguration.instance.settings('core', 'locales').first

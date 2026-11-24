@@ -35,7 +35,8 @@ export type FilterCategoryKey =
   | 'reply'
   | 'signedUp'
   | 'cause'
-  | 'agreement';
+  | 'agreement'
+  | 'contentWarnings';
 
 export interface FilterCategory {
   key: FilterCategoryKey;
@@ -189,6 +190,22 @@ const useFilterCategories = ({
       clear: () => setFilters({ reply: undefined }),
     },
   ];
+
+  if (counts?.contentWarnings !== undefined || filters.contentWarnings) {
+    const label = formatMessage(messages.contentWarnings);
+
+    categories.push({
+      key: 'contentWarnings',
+      label,
+      icon: 'info-16',
+      options: [{ value: 'flagged', label, count: counts?.contentWarnings }],
+      selected: filters.contentWarnings ? ['flagged'] : [],
+      multiple: false,
+      isActive: !!filters.contentWarnings,
+      toggle: () => setFilters({ contentWarnings: !filters.contentWarnings }),
+      clear: () => setFilters({ contentWarnings: false }),
+    });
+  }
 
   // Proposals only ever belong to the phase they were posted in.
   if (isProposals) return categories;

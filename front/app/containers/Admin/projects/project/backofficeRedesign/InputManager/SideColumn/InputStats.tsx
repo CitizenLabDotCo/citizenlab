@@ -19,7 +19,7 @@ import styles from './SideColumn.module.css';
 
 type RowFilter = Pick<
   Partial<ManagerFilters>,
-  'statuses' | 'assignees' | 'reply'
+  'statuses' | 'assignees' | 'reply' | 'contentWarnings'
 >;
 
 interface Row {
@@ -35,7 +35,11 @@ const sameValues = (values: string[], target: string[]) =>
   target.every((value) => values.includes(value));
 
 const isOnlyFilter = (filters: ManagerFilters, filter: RowFilter) =>
-  (!!filter.reply || !!filter.statuses?.length || !!filter.assignees?.length) &&
+  (!!filter.reply ||
+    !!filter.statuses?.length ||
+    !!filter.assignees?.length ||
+    !!filter.contentWarnings) &&
+  !!filters.contentWarnings === !!filter.contentWarnings &&
   filters.reply === filter.reply &&
   sameValues(filters.statuses, filter.statuses ?? []) &&
   sameValues(filters.assignees, filter.assignees ?? []) &&
@@ -135,6 +139,15 @@ const InputStats = ({
       }
     }
   }
+  if (counts?.contentWarnings !== undefined) {
+    rows.push({
+      key: 'contentWarnings',
+      label: formatMessage(messages.contentWarnings),
+      value: counts.contentWarnings,
+      filter: { contentWarnings: true },
+    });
+  }
+
   if (counts && isVoting && !showVotes) {
     rows.push({ key: 'inputs', label: capitalizedTerms, value: counts.total });
   }
