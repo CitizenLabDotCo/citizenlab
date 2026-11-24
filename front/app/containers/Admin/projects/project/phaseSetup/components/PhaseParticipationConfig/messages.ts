@@ -55,10 +55,10 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.proposalRequirementsGroup',
     defaultMessage: 'Proposal requirements',
   },
-  participantActionsSummary: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.participantActionsSummary',
+  participantActionsSummary2: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.participantActionsSummary2',
     defaultMessage:
-      '{action, select, submit {Submit} comment {Comment} other {React}}{others, plural, =0 {} other { +#}}',
+      '{action, select, submit {Submit} comment {Comment} vote {Vote} add_statements {Add statements} other {React}}{others, plural, =0 {} other { +#}}',
   },
   proposalRequirementsSummary: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.proposalRequirementsSummary',

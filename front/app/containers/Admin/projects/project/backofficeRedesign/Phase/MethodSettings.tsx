@@ -70,6 +70,13 @@ const ACCESS_ONLY_ACTIONS: Partial<
   ],
 };
 
+const ACCESS_ONLY_SUMMARIES = {
+  volunteering: messages.signUpSummary,
+  document_annotation: messages.annotateSummary,
+} satisfies Partial<
+  Record<ParticipationMethod, typeof messages.annotateSummary>
+>;
+
 interface Props {
   phase: IPhaseData;
 }
@@ -111,6 +118,11 @@ const MethodSettings = ({ phase }: Props) => {
 
   const participationMethod = phase.attributes.participation_method;
   const accessOnlyActions = ACCESS_ONLY_ACTIONS[participationMethod];
+  const accessOnlySummary =
+    participationMethod === 'volunteering' ||
+    participationMethod === 'document_annotation'
+      ? formatMessage(ACCESS_ONLY_SUMMARIES[participationMethod])
+      : undefined;
 
   const handleChange = (
     config: IUpdatedPhaseProperties,
@@ -169,6 +181,7 @@ const MethodSettings = ({ phase }: Props) => {
             <ParticipantActionsGroup
               phaseId={phase.id}
               actions={accessOnlyActions}
+              summary={accessOnlySummary}
             />
           </>
         ) : (

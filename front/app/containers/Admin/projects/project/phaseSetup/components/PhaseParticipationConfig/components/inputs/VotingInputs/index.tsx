@@ -43,6 +43,7 @@ import SimilarityDetectionConfig from '../../shared/SimilarityDetectionConfig';
 import { ToggleRow } from '../../shared/styling';
 import ViewSelector from '../../shared/ViewSelector';
 import ActionToggleRow from '../_shared/ActionToggleRow';
+import useParticipantActionsSummary from '../_shared/useParticipantActionsSummary';
 
 import votingMessages from './messages';
 import styles from './VotingInputs.module.css';
@@ -139,6 +140,10 @@ const VotingInputs = ({
 }: VotingInputsProps) => {
   const { formatMessage } = useIntl();
   const getApiErrorMessage = useApiErrorText();
+  const actionsSummary = useParticipantActionsSummary({
+    voting: true,
+    commenting_enabled,
+  });
   const { projectId, phaseId } = useParams({ strict: false });
   const { data: phase } = usePhase(phaseId);
   const [pendingVotingMethod, setPendingVotingMethod] =
@@ -263,6 +268,7 @@ const VotingInputs = ({
         <PanelGroup
           label={formatMessage(configMessages.participantActionsGroup)}
           reviewKey="participant_actions"
+          summary={actionsSummary}
           hasError={!!commentingError}
         >
           {phaseId && (

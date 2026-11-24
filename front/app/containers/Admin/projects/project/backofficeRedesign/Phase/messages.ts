@@ -97,6 +97,14 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.deleteReport',
     defaultMessage: 'Delete report',
   },
+  annotateSummary: {
+    id: 'app.containers.Admin.projects.project.annotateSummary',
+    defaultMessage: 'Annotate',
+  },
+  signUpSummary: {
+    id: 'app.containers.Admin.projects.project.signUpSummary',
+    defaultMessage: 'Sign up',
+  },
   annotatingDocumentAction: {
     id: 'app.containers.Admin.projects.project.annotatingDocumentAction',
     defaultMessage: 'Annotating the document',

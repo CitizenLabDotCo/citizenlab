@@ -102,6 +102,11 @@ const NativeSurveyInputs = ({
         <PanelGroup
           label={formatMessage(configMessages.participantActionsGroup)}
           reviewKey="participant_actions"
+          summary={formatMessage(
+            formData.submission_enabled
+              ? configMessages.responsesOpen
+              : configMessages.responsesPaused
+          )}
           hasError={!!submissionError || !!multipleResponsesError}
         >
           <SettingToggleRow

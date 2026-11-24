@@ -39,6 +39,7 @@ import { anyIsDefined } from 'utils/helperUtils';
 
 import { ValidationErrors } from '../../typings';
 
+import useParticipantActionsSummary from './components/inputs/_shared/useParticipantActionsSummary';
 import UserActions from './components/inputs/_shared/UserActions';
 import IdeationInputs from './components/inputs/IdeationInputs';
 import NativeSurveyInputs from './components/inputs/NativeSurveyInputs';
@@ -424,6 +425,11 @@ const PhaseParticipationConfig = ({
   const showSurveys =
     surveys_enabled && anyIsDefined(...Object.values(surveyProviders));
 
+  const commonGroundSummary = useParticipantActionsSummary({
+    adding_statements: submission_enabled,
+    voting: true,
+  });
+
   if (!participation_method) {
     // Type check, should in practice always be defined
     return null;
@@ -501,6 +507,7 @@ const PhaseParticipationConfig = ({
               <PanelGroup
                 label={formatMessage(messages.participantActionsGroup)}
                 reviewKey="participant_actions"
+                summary={commonGroundSummary}
               >
                 {commonGroundActions}
               </PanelGroup>

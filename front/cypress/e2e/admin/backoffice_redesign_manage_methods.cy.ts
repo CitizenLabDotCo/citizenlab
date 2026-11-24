@@ -36,6 +36,7 @@ describe('Redesigned method-specific Manage views', () => {
           participationMethod: method,
           votingMethod: method === 'voting' ? 'single_voting' : undefined,
           canPost: true,
+          canComment: method === 'voting' ? true : undefined,
           canReact: true,
           reactingThreshold: method === 'proposals' ? 2 : undefined,
           expireDaysLimit: method === 'proposals' ? 30 : undefined,
@@ -56,6 +57,13 @@ describe('Redesigned method-specific Manage views', () => {
         })
       )
       .then((idea) => {
+        cy.visit(
+          `admin/projects/${projectId}/phases/${phaseId}/setup?project_backoffice_redesign`
+        );
+        cy.get('[data-review-card="participant_actions"]').should(
+          'contain.text',
+          'Vote +1'
+        );
         cy.visit(
           `admin/projects/${projectId}/phases/${phaseId}/ideas?project_backoffice_redesign`
         );
