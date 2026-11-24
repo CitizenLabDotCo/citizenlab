@@ -1,6 +1,11 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  tagsIntro: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputTags.tagsIntro',
+    defaultMessage:
+      'Create and manage the tags that participants can use to categorize their {terms} in this project.',
+  },
   tagsTitle: {
     id: 'app.containers.Admin.projects.project.phaseInputTagsTitle',
     defaultMessage: '{term} tags',

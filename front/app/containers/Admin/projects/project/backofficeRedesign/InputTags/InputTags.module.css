@@ -11,3 +11,13 @@
   gap: var(--gv-space-8);
   min-height: var(--gv-size-32);
 }
+
+.intro {
+  composes: small from '../../../../../../design-system/typography.module.css';
+  color: var(--gv-text-secondary);
+}
+
+.intro a {
+  color: inherit;
+  text-decoration: underline;
+}

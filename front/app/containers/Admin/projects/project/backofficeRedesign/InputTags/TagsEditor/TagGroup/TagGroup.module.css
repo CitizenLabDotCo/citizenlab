@@ -12,6 +12,12 @@
   background: var(--gv-surface-control-subtle);
 }
 
+@media (hover: hover) {
+  .row:not(:hover):not(:focus-within) > .actions {
+    opacity: 0;
+  }
+}
+
 .title {
   display: flex;
   flex: 1;

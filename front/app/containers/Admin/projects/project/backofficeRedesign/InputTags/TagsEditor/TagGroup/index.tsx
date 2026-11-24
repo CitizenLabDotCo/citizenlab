@@ -2,7 +2,6 @@ import React, { useMemo, useState } from 'react';
 
 import { useDragLayer } from 'react-dnd';
 
-import Badge from 'design-system/Badge';
 import Button from 'design-system/Button';
 import IconButton from 'design-system/IconButton';
 import Text from 'design-system/Text';
@@ -92,9 +91,14 @@ const TagGroup = ({
           <Text as="span" variant="ui" tone="primary">
             <T value={topic.attributes.title_multiloc} />
           </Text>
-          {subtopics.length > 0 && <Badge use="note">{subtopics.length}</Badge>}
+          {subtopics.length > 0 && (
+            <Text as="span" variant="small" tone="tertiary">
+              {formatMessage(messages.subtagCount, { count: subtopics.length })}
+            </Text>
+          )}
         </div>
         <TagActions
+          className={styles.actions}
           deleteDisabled={deleteDisabled}
           onEdit={() => onEdit(topic)}
           onDelete={() => onDelete(topic)}
@@ -127,6 +131,7 @@ const TagGroup = ({
                     <T value={subtopic.attributes.title_multiloc} />
                   </Text>
                   <TagActions
+                    className={styles.actions}
                     onEdit={() => onEdit(subtopic)}
                     onDelete={() => onDelete(subtopic)}
                   />

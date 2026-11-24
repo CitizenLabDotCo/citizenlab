@@ -1,6 +1,10 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  tagCount: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputTags.tagCount',
+    defaultMessage: '{count, plural, one {# tag} other {# tags}}',
+  },
   searchTags: {
     id: 'app.containers.Admin.projects.project.searchInputTags',
     defaultMessage: 'Search tags',

@@ -14,11 +14,14 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import inputTermMessages from 'containers/Admin/projects/project/inputTermMessages';
+import topicsMessages from 'containers/Admin/projects/project/topics/messages';
 
 import { useRegisterPageSaver } from 'components/admin/PageSaveContext';
 
-import { useIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { usePermission } from 'utils/permissions';
 
 import styles from './InputTags.module.css';
 import messages from './messages';
@@ -26,6 +29,8 @@ import PerspectivesSection from './PerspectivesSection';
 import TagsEditor from './TagsEditor';
 import useTagsDraft from './TagsEditor/useTagsDraft';
 import 'design-system/tokens.css';
+
+const TOPICS_SETTINGS_PATH = '/admin/settings/topics/input';
 
 interface Props {
   project: IProjectData;
@@ -36,6 +41,10 @@ const InputTags = ({ project, phase, inputTerm }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const draft = useTagsDraft(project.id);
+  const canAccessTopicsSettings = usePermission({
+    action: 'access',
+    item: { type: 'route', path: TOPICS_SETTINGS_PATH },
+  });
   const { data: phases } = usePhases(project.id, 'all');
   const perspectivesActive = useFeatureFlag({ name: 'live_auto_input_topics' });
   const { mutateAsync: updateProject } = useUpdateProject();
@@ -88,6 +97,31 @@ const InputTags = ({ project, phase, inputTerm }: Props) => {
           })}
         </Text>
       </div>
+      <p className={styles.intro}>
+        <FormattedMessage
+          {...messages.tagsIntro}
+          values={{
+            terms: formatMessage(inputTermMessages.plural, { term: inputTerm }),
+          }}
+        />
+        {canAccessTopicsSettings && (
+          <>
+            {' '}
+            <FormattedMessage
+              {...topicsMessages.defaultInputTopicsInfo}
+              values={{
+                settingsLink: (
+                  <Link to={TOPICS_SETTINGS_PATH}>
+                    <FormattedMessage
+                      {...topicsMessages.defaultInputTopicsSettings}
+                    />
+                  </Link>
+                ),
+              }}
+            />
+          </>
+        )}
+      </p>
       {others.length > 0 && (
         <div role="note">
           <Banner tone="neutral">

@@ -10,16 +10,17 @@ import styles from './TagActions.module.css';
 import 'design-system/tokens.css';
 
 interface Props {
+  className: string;
   deleteDisabled?: boolean;
   onEdit: () => void;
   onDelete: () => void;
 }
 
-const TagActions = ({ deleteDisabled, onEdit, onDelete }: Props) => {
+const TagActions = ({ className, deleteDisabled, onEdit, onDelete }: Props) => {
   const { formatMessage } = useIntl();
 
   return (
-    <div className={styles.actions}>
+    <div className={`${styles.actions} ${className}`}>
       <IconButton
         size={24}
         icon="square-pen-16"

@@ -22,8 +22,6 @@ import InputTopicModal, {
 import topicsMessages from 'containers/Admin/projects/project/topics/messages';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
-import { usePermission } from 'utils/permissions';
 
 import messages from './messages';
 import SortableTag, { ROOT_TAG_TYPE } from './SortableTag';
@@ -33,8 +31,6 @@ import useSortableTags from './useSortableTags';
 import { TagsDraft } from './useTagsDraft';
 import { getSiblings } from './utils';
 import 'design-system/tokens.css';
-
-const TOPICS_SETTINGS_PATH = '/admin/settings/topics/input';
 
 interface Props {
   draft: TagsDraft;
@@ -56,10 +52,6 @@ const TagsSection = ({ draft }: Props) => {
     });
     setName('');
   };
-  const canAccessTopicsSettings = usePermission({
-    action: 'access',
-    item: { type: 'route', path: TOPICS_SETTINGS_PATH },
-  });
   const nestedInputTopicsActive = useFeatureFlag({
     name: 'nested_input_topics',
   });
@@ -103,26 +95,6 @@ const TagsSection = ({ draft }: Props) => {
         className={styles.section}
         aria-label={formatMessage(messages.settingsCreateAndManageTags)}
       >
-        <p className={styles.intro}>
-          <FormattedMessage {...topicsMessages.projectTopicsDescription} />
-          {canAccessTopicsSettings && (
-            <>
-              {' '}
-              <FormattedMessage
-                {...topicsMessages.defaultInputTopicsInfo}
-                values={{
-                  settingsLink: (
-                    <Link to={TOPICS_SETTINGS_PATH}>
-                      <FormattedMessage
-                        {...topicsMessages.defaultInputTopicsSettings}
-                      />
-                    </Link>
-                  ),
-                }}
-              />
-            </>
-          )}
-        </p>
         <div className={styles.info}>
           <Icon name="info-16" className={styles.infoIcon} />
           <Text variant="small" tone="secondary">
@@ -139,6 +111,9 @@ const TagsSection = ({ draft }: Props) => {
             onChange={setSearch}
           />
         </div>
+        <Text variant="smallStrong" tone="secondary">
+          {formatMessage(messages.tagCount, { count: rootTopics.length })}
+        </Text>
         <DndProvider backend={HTML5Backend}>
           {ordered.map((topic, index) => {
             const matches = [topic, ...getSiblings(tags, topic.id)].some(
@@ -202,10 +177,9 @@ const TagsSection = ({ draft }: Props) => {
             variant="secondary"
             size={32}
             icon="plus-14"
+            aria-label={formatMessage(messages.settingsAddTag)}
             isDisabled={!name.trim()}
-          >
-            {formatMessage(messages.settingsAddTag)}
-          </Button>
+          />
         </form>
       </section>
       <AlertDialog
