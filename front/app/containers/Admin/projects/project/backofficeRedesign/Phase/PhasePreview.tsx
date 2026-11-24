@@ -9,6 +9,7 @@ import useProjectById from 'api/projects/useProjectById';
 import useLocale from 'hooks/useLocale';
 
 import PhonePreviewBackdrop from 'containers/Admin/projects/_shared/components/PhonePreviewBackdrop';
+import PreviewProjectButton from 'containers/Admin/projects/_shared/components/PreviewProjectButton';
 
 import PhasePreviewFrame from 'components/admin/PhasePreview';
 import { usePhasePreviewDraft } from 'components/admin/PhasePreview/DraftContext';
@@ -50,7 +51,7 @@ const PhasePreview = ({ projectId, phase, draft }: Props) => {
   }).href;
 
   return (
-    <PhonePreviewBackdrop>
+    <PhonePreviewBackdrop action={<PreviewProjectButton slug={slug} />}>
       <PhasePreviewFrame
         key={phase?.id ?? 'new'}
         src={src}

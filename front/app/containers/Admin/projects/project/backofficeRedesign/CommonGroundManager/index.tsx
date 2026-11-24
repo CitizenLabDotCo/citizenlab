@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 
-import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import { useQueryClient } from '@tanstack/react-query';
+
+import Banner from 'design-system/Banner';
+import Spinner from 'design-system/Spinner';
 
 import commonGroundResultsKeys from 'api/common_ground/keys/commonGroundResultsKeys';
 import useCommonGroundResults from 'api/common_ground/useCommonGroundResults';
@@ -16,13 +18,12 @@ import useLocalize from 'hooks/useLocalize';
 
 import inputManagerMessages from 'components/admin/PostManager/CommonGroundInputManager/messages';
 import NoInputsDisplay from 'components/admin/PostManager/CommonGroundInputManager/NoInputsDisplay';
-import NoPost from 'components/admin/PostManager/components/PostTable/NoPost';
-import Warning from 'components/UI/Warning';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 import FilterChips from '../InputManager/FilterMenu/FilterChips';
+import NoMatches from '../InputManager/NoMatches';
 import SidePanel from '../InputManager/SidePanel';
 import usePanelNavigation from '../InputManager/usePanelNavigation';
 import useSelection from '../InputManager/useSelection';
@@ -31,11 +32,13 @@ import ListLoadError from '../Phase/ListLoadError';
 import ManageLayout from '../Phase/ManageLayout';
 
 import AddStatementModal from './AddStatementModal';
+import styles from './CommonGroundManager.module.css';
 import EditStatementModal from './EditStatementModal';
 import StatementSideColumn from './StatementSideColumn';
 import StatementTable from './StatementTable';
 import StatementToolbar from './StatementToolbar';
 import useAgreementFilter from './useAgreementFilter';
+import 'design-system/tokens.css';
 
 const PAGE_SIZE = 20;
 
@@ -152,12 +155,12 @@ const CommonGroundManager = ({ project, phase }: Props) => {
       }
     >
       {isImporting && (
-        <Warning>
+        <Banner tone="info">
           <FormattedMessage
             {...inputManagerMessages.inputImportProgress}
             values={{ importedCount, totalCount: totalToImport }}
           />
-        </Warning>
+        </Banner>
       )}
       <StatementToolbar
         selectedIdeas={selection.selectedIdeas}
@@ -180,9 +183,9 @@ const CommonGroundManager = ({ project, phase }: Props) => {
 
       {isError && <ListLoadError onRetry={() => refetch()} />}
       {!ideas && !isError && (
-        <Box display="flex" justifyContent="center" py="80px">
+        <div className={styles.loading}>
           <Spinner />
-        </Box>
+        </div>
       )}
       {ideas && phaseTotal === 0 && (
         <NoInputsDisplay
@@ -195,7 +198,7 @@ const CommonGroundManager = ({ project, phase }: Props) => {
         />
       )}
       {ideas && pageIdeas.length === 0 && !!phaseTotal && (
-        <NoPost handleSeeAll={clearFilters} />
+        <NoMatches onClearFilters={clearFilters} />
       )}
       {pageIdeas.length > 0 && (
         <StatementTable
@@ -207,8 +210,7 @@ const CommonGroundManager = ({ project, phase }: Props) => {
           dimmed={isChangingList}
           currentPage={page}
           lastPage={lastPage}
-          onToggleSelect={selection.toggle}
-          onToggleSelectPage={selection.togglePage}
+          onSelectOnPage={selection.selectOnPage}
           onOpen={setPreviewId}
           onChangePage={setPage}
         />

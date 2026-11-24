@@ -1,0 +1,41 @@
+.pagination {
+  display: flex;
+  justify-content: center;
+  padding: var(--gv-space-16) 0;
+}
+
+.markIcon {
+  color: var(--gv-icon-tertiary);
+}
+
+.tags {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-4);
+}
+
+.tagList {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-4);
+}
+
+.titleButton {
+  composes: ui from '../../../../../../../design-system/typography.module.css';
+  composes: ringOutside from '../../../../../../../design-system/focus.module.css';
+  display: -webkit-box;
+  min-width: 0;
+  max-width: 100%;
+  /* Margin, not padding: overflow clips at the padding edge, which would show part of a fourth line. */
+  margin: var(--gv-space-8) 0;
+  padding: 0;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  color: var(--gv-text-primary);
+  text-align: left;
+  white-space: normal;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  cursor: pointer;
+}

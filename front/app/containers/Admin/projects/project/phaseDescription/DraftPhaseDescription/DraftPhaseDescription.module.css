@@ -1,0 +1,40 @@
+.warning {
+  margin-bottom: var(--gv-space-8);
+}
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gv-space-8);
+  margin-top: var(--gv-space-8);
+}
+
+.saveGroup {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-16);
+}
+
+.saveState {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-8);
+}
+
+.saveStateText {
+  composes: body from '../../../../../../design-system/typography.module.css';
+  color: var(--gv-text-secondary);
+}
+
+/* Today's green (#04884C) has no icon token; icon/success is the matching role. */
+.savedIcon {
+  color: var(--gv-icon-success);
+}
+
+.badges {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gv-space-8);
+}

@@ -207,7 +207,7 @@ const generateYupSchema = ({
                     originalValue === '' ? null : value
                   )
                   .nullable();
-        } else if (key === 'birthyear') {
+        } else if (key === 'birthyear' || key === 'u_birthyear') {
           schema[key] = required
             ? number()
                 .transform((value, originalValue) =>

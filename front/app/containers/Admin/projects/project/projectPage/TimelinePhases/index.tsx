@@ -30,10 +30,11 @@ import EmptyState from './EmptyState';
 import PhaseOptionsMenu from './PhaseOptionsMenu';
 import PhaseRowWithOptions from './PhaseRowWithOptions';
 import PhaseStep from './PhaseStep';
+import SkeletonRows from './SkeletonRows';
 
 interface Props {
   projectId: string;
-  variant?: 'sidebar' | 'backofficeRedesign';
+  variant?: 'sidebar' | 'panel';
   heading?: React.ReactNode;
   withPhaseOptions?: boolean;
 }
@@ -58,7 +59,7 @@ const TimelinePhases = ({
     a.attributes.start_at.localeCompare(b.attributes.start_at)
   );
   const noEndLabel = formatMessage(messages.phaseNoEndDate);
-  const redesign = variant === 'backofficeRedesign';
+  const redesign = variant === 'panel';
 
   return (
     <Box>
@@ -74,7 +75,8 @@ const TimelinePhases = ({
         </Text>
       )}
 
-      {sortedPhases.length === 0 && <EmptyState />}
+      {sortedPhases.length === 0 &&
+        (redesign ? <SkeletonRows /> : <EmptyState />)}
 
       <Box
         className="intercom-product-tour-project-timeline-phases"
@@ -141,7 +143,13 @@ const TimelinePhases = ({
           return withPhaseOptions ? (
             <PhaseRowWithOptions
               key={phase.id}
-              options={<PhaseOptionsMenu projectId={projectId} phase={phase} />}
+              options={
+                <PhaseOptionsMenu
+                  projectId={projectId}
+                  phase={phase}
+                  variant={variant}
+                />
+              }
             >
               {row}
             </PhaseRowWithOptions>

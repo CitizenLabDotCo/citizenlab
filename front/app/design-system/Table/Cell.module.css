@@ -1,0 +1,28 @@
+.cell {
+  composes: ringInside from '../focus.module.css';
+  min-width: 0;
+}
+
+.content {
+  composes: ui from '../typography.module.css';
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  min-height: var(--gv-size-36);
+  min-width: 0;
+  gap: var(--gv-space-8);
+  padding: 0 var(--gv-space-8);
+  white-space: nowrap;
+}
+
+.end {
+  justify-content: flex-end;
+}
+
+.toneCell {
+  color: var(--gv-text-body-subtle);
+}
+
+.secondary {
+  color: var(--gv-text-secondary);
+}

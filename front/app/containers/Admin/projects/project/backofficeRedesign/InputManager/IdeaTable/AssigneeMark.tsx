@@ -1,11 +1,12 @@
 import React from 'react';
 
-import { Box, colors, Tooltip } from '@citizenlab/cl2-component-library';
+import Avatar from 'design-system/Avatar';
+import TooltipMark from 'design-system/Tooltip/TooltipMark';
 
-import Avatar from 'components/Avatar';
-import UserName from 'components/UI/UserName';
+import useUserById from 'api/users/useUserById';
 
 import { useIntl } from 'utils/cl-intl';
+import { getFullName } from 'utils/textUtils';
 
 import messages from '../messages';
 
@@ -15,30 +16,29 @@ interface Props {
 
 const AssigneeMark = ({ assigneeId }: Props) => {
   const { formatMessage } = useIntl();
+  const { data: user } = useUserById(assigneeId);
 
   if (!assigneeId) {
     return (
-      <Tooltip content={formatMessage(messages.unassigned)} theme="dark">
-        <Box
-          width="22px"
-          height="22px"
-          borderRadius="50%"
-          border={`1px dashed ${colors.grey400}`}
-          aria-label={formatMessage(messages.unassigned)}
-        />
-      </Tooltip>
+      <TooltipMark label={formatMessage(messages.unassigned)}>
+        <Avatar content="empty" size={24} />
+      </TooltipMark>
     );
   }
 
+  if (!user) return null;
+
+  const name = getFullName(user.data);
+
   return (
-    <Tooltip
-      content={<UserName userId={assigneeId} color={colors.white} />}
-      theme="dark"
-    >
-      <Box display="inline-flex">
-        <Avatar userId={assigneeId} size={22} />
-      </Box>
-    </Tooltip>
+    <TooltipMark label={name}>
+      <Avatar
+        content="image"
+        src={user.data.attributes.avatar?.small ?? undefined}
+        alt={name}
+        size={24}
+      />
+    </TooltipMark>
   );
 };
 

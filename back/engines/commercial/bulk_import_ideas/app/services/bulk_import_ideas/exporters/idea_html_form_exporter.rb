@@ -76,9 +76,9 @@ module BulkImportIdeas::Exporters
 
     def form_header
       form = @participation_method.custom_form
-      return format_urls(default_print_start_multiloc[@locale]) if form.print_start_multiloc == {}
+      return format_urls(default_print_start_multiloc[@locale]) if form.print_start_multiloc[@locale].blank?
 
-      print_start = TextImageService.new.render_data_images_multiloc(form.print_start_multiloc, field: :print_end_multiloc, imageable: form)
+      print_start = TextImageService.new.render_data_images_multiloc(form.print_start_multiloc, field: :print_start_multiloc, imageable: form)
       format_urls(print_start[@locale])
     end
 

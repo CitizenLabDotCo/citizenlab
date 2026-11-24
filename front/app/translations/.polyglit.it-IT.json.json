@@ -1419,6 +1419,21 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+  "app.components.FileRepositorySelectAndUpload.attachmentCount": {
+    "state": "verified",
+    "verified_at": "2026-11-24T15:28:16.820067Z",
+    "verified_by": "Roger"
+  },
+  "app.components.FileRepositorySelectAndUpload.attachments": {
+    "state": "verified",
+    "verified_at": "2026-11-24T15:28:16.820067Z",
+    "verified_by": "Roger"
+  },
+  "app.components.FileRepositorySelectAndUpload.done": {
+    "state": "verified",
+    "verified_at": "2026-11-24T15:28:16.820067Z",
+    "verified_by": "Roger"
+  },
   "app.components.FileRepositorySelectAndUpload.or": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
@@ -2403,6 +2418,21 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
+  },
+  "app.components.PhasePreview.beforeStarts": {
+    "state": "verified",
+    "verified_at": "2026-11-24T15:28:16.820067Z",
+    "verified_by": "Roger"
+  },
+  "app.components.PhasePreview.phaseEnded": {
+    "state": "verified",
+    "verified_at": "2026-11-24T15:28:16.820067Z",
+    "verified_by": "Roger"
+  },
+  "app.components.PhasePreview.startsIn": {
+    "state": "verified",
+    "verified_at": "2026-11-24T15:28:16.820067Z",
+    "verified_by": "Roger"
   },
   "app.components.PostCardsComponents.feed": {
     "state": "verified",

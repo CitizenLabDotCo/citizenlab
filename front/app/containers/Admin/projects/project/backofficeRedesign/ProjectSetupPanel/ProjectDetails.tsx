@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 
-import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
+import Icon from 'design-system/Icon';
+import UnstyledButton from 'design-system/UnstyledButton';
 
 import { IProjectData } from 'api/projects/types';
 
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
+import styles from './ProjectDetails.module.css';
 import SetupCards from './SetupCards';
 
 interface Props {
@@ -19,48 +21,24 @@ const ProjectDetails = ({ project, onOpenSettings }: Props) => {
   const [opened, setOpened] = useState(false);
 
   return (
-    <Box>
-      <Box
-        as="button"
-        type="button"
+    <div>
+      <UnstyledButton
         id="e2e-project-details-toggle"
-        w="100%"
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-        gap="8px"
-        p="0"
-        background="transparent"
-        border="none"
-        cursor="pointer"
+        className={styles.toggle}
         aria-expanded={opened}
         aria-controls="project-details-cards"
-        onClick={() => setOpened((opened) => !opened)}
+        onPress={() => setOpened((opened) => !opened)}
       >
-        <Text variant="boSection" fontSize="xs" m="0">
-          {formatMessage(messages.projectDetails)}
-        </Text>
-        <Icon
-          name={opened ? 'chevron-up' : 'chevron-down'}
-          width="16px"
-          height="16px"
-          fill={colors.coolGrey600}
-          my="0px"
-        />
-      </Box>
+        {formatMessage(messages.projectDetails)}
+        <Icon name="chevron-down-16" className={styles.chevron} />
+      </UnstyledButton>
 
       {opened && (
-        <Box
-          id="project-details-cards"
-          mt="16px"
-          display="flex"
-          flexDirection="column"
-          gap="8px"
-        >
+        <div id="project-details-cards" className={styles.cards}>
           <SetupCards project={project} onOpenSettings={onOpenSettings} />
-        </Box>
+        </div>
       )}
-    </Box>
+    </div>
   );
 };
 

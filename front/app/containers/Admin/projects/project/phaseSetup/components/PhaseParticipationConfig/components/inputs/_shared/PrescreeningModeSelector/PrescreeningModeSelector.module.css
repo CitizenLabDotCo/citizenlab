@@ -1,0 +1,18 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-10);
+}
+
+/* Lines the modes up with the switch label: the switch width plus its gap. */
+.modes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-8);
+  padding-left: calc(var(--gv-size-26) + var(--gv-space-10));
+}
+
+.helper {
+  composes: ui from '../../../../../../../../../../../design-system/typography.module.css';
+  color: var(--gv-text-secondary);
+}

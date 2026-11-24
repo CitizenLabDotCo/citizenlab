@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 
 import {
   useBreakpoint,
@@ -14,8 +14,14 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isPage } from 'utils/helperUtils';
 import { useLocation } from 'utils/router';
 
-import { useIsBoComments } from '../commentsVariant';
+import panelStyles from '../commentsPanel.module.css';
+import { useIsPanelComments } from '../commentsVariant';
 import messages from '../messages';
+import 'design-system/tokens.css';
+
+// The panel variant uses design-system components; loading them lazily keeps
+// React Aria out of the citizen-facing idea page bundle.
+const PanelCommentActions = lazy(() => import('./PanelCommentActions'));
 
 interface Props {
   processing: boolean;
@@ -44,8 +50,7 @@ const Actions = ({
   const smallerThanTablet = useBreakpoint('tablet');
   const smallerThanPhone = useBreakpoint('phone');
   const { pathname } = useLocation();
-  const isBo = useIsBoComments();
-  const responsivePadding = smallerThanTablet && !isBo ? '6px 12px' : undefined;
+  const isPanel = useIsPanelComments();
 
   const isAdminPage = isPage('admin', pathname);
 
@@ -57,6 +62,29 @@ const Actions = ({
 
   if (!visible) {
     return null;
+  }
+
+  if (isPanel) {
+    return (
+      <Suspense
+        fallback={
+          <div className={panelStyles.formFooter}>
+            <div className={panelStyles.buttonsPlaceholder} />
+          </div>
+        }
+      >
+        <PanelCommentActions
+          processing={processing}
+          postAnonymously={postAnonymously}
+          allowAnonymousParticipation={allowAnonymousParticipation}
+          submitButtonDisabled={submitButtonDisabled}
+          submitLabel={formatMessage(buttonText)}
+          togglePostAnonymously={togglePostAnonymously}
+          onSubmit={onSubmit}
+          onCancel={onCancel}
+        />
+      </Suspense>
+    );
   }
 
   const checkbox = (
@@ -90,8 +118,8 @@ const Actions = ({
     <Box display="flex">
       <ButtonWithLink
         disabled={processing}
-        buttonStyle={isBo ? 'bo-secondary' : 'secondary-outlined'}
-        padding={responsivePadding}
+        buttonStyle="secondary-outlined"
+        padding={smallerThanTablet ? '6px 12px' : undefined}
         mr="8px"
         onClick={onCancel}
       >
@@ -102,8 +130,7 @@ const Actions = ({
         id="e2e-submit-comment-btn"
         processing={processing}
         disabled={submitButtonDisabled}
-        buttonStyle={isBo ? 'bo-primary' : 'primary'}
-        padding={responsivePadding}
+        padding={smallerThanTablet ? '6px 12px' : undefined}
         icon={isAdminPage ? 'users' : undefined}
         onClick={onSubmit}
       >

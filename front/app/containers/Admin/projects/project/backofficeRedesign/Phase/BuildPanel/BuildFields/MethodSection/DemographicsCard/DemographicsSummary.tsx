@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Text } from '@citizenlab/cl2-component-library';
+import Text from 'design-system/Text';
 
 import { IPhasePermissionAction } from 'api/permissions/types';
 import usePermissionsPhaseCustomFields from 'api/permissions_phase_custom_fields/usePermissionsPhaseCustomFields';
@@ -27,7 +27,7 @@ const DemographicsSummary = ({ phaseId, action }: Props) => {
   const nQuestions = customFields.data.length;
 
   return (
-    <Text as="span" variant="boHelper" fontSize="xs" m="0">
+    <Text as="span" variant="small" tone="secondary">
       {nQuestions > 0
         ? formatMessage(actionFormMessages.nQuestions, { nQuestions })
         : formatMessage(demographicMessages.noDemographicQuestionsAsked)}

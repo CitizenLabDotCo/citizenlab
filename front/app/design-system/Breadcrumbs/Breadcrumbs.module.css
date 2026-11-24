@@ -1,0 +1,87 @@
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-4);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.breadcrumb {
+  composes: ui from '../typography.module.css';
+  display: flex;
+  flex: 0 1 auto;
+  align-items: center;
+  gap: var(--gv-space-4);
+  min-width: 0;
+}
+
+/* The current level keeps its full name first; the links truncate before it. */
+.breadcrumb[data-current] {
+  flex-shrink: 0;
+  max-width: 100%;
+}
+
+.text,
+.current {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.link {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  outline: none;
+  color: var(--gv-text-secondary);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color var(--gv-motion-duration-fast)
+    var(--gv-motion-easing-standard);
+}
+
+/* Figma draws a radius 4 ring 4 px outside the label; an outline cannot round a square box. */
+.link[data-focus-visible]::after {
+  content: '';
+  position: absolute;
+  inset: calc(
+    -1 * (var(--gv-focus-ring-offset) + var(--gv-border-width-focus))
+  );
+  border: var(--gv-border-width-focus) solid var(--gv-border-focused);
+  border-radius: var(--gv-radius-4);
+  pointer-events: none;
+}
+
+.link[data-hovered] {
+  color: var(--gv-text-primary);
+}
+
+.link[data-pressed] {
+  color: var(--gv-text-primary);
+}
+
+.link[data-pressed] .text {
+  text-decoration: underline;
+}
+
+.link[data-disabled] {
+  color: var(--gv-text-disabled);
+  cursor: default;
+}
+
+.current {
+  composes: uiStrong from '../typography.module.css';
+  color: var(--gv-text-primary);
+}
+
+.chevron {
+  flex-shrink: 0;
+  color: var(--gv-icon-quiet);
+}
+
+.slash {
+  flex-shrink: 0;
+  color: var(--gv-icon-quiet);
+}

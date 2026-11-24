@@ -9,6 +9,7 @@ const APP_FOLDER_ALIASES = [
   'components',
   'containers',
   'context',
+  'design-system',
   'global-styles',
   'hooks',
   'i18n',

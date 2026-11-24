@@ -1,26 +1,15 @@
 import React, { useLayoutEffect, useState } from 'react';
 
-import { Box, Button } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
+import IconButton from 'design-system/IconButton';
 
 import { useIntl } from 'utils/cl-intl';
 
+import styles from './CollapsibleSidebar.module.css';
 import messages from './messages';
 import { useWorkspaceHeader } from './WorkspaceHeaderContext';
 
 import Sidebar from './index';
-
-const SidebarOverlay = styled.div<{ offset: number }>`
-  position: fixed;
-  top: ${({ offset }) => offset}px;
-  bottom: 0;
-  left: 0;
-  z-index: 0;
-
-  > div > nav {
-    top: ${({ offset }) => offset}px;
-  }
-`;
+import 'design-system/tokens.css';
 
 const CollapsibleSidebar = () => {
   const [opened, setOpened] = useState(false);
@@ -57,11 +46,11 @@ const CollapsibleSidebar = () => {
   }, [header]);
 
   return (
-    <Box
-      position="fixed"
-      top={`${position.top}px`}
-      left={`${position.left}px`}
-      zIndex="3000"
+    // Tracks hover and focus within the trigger and the sidebar; the IconButton is the control.
+    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+    <div
+      className={styles.anchor}
+      style={{ top: `${position.top}px`, left: `${position.left}px` }}
       onMouseEnter={() => setOpened(true)}
       onMouseLeave={() => setOpened(false)}
       onFocus={() => setOpened(true)}
@@ -80,24 +69,23 @@ const CollapsibleSidebar = () => {
         }
       }}
     >
-      <Box position="relative" zIndex="1">
-        <Button
-          buttonStyle="bo-text"
-          icon="panel-left"
-          width="40px"
-          height="48px"
-          padding="0"
-          ariaLabel={formatMessage(messages.platformNavigation)}
-          ariaExpanded={opened}
-          onClick={() => setOpened(true)}
+      <div className={styles.trigger}>
+        <IconButton
+          icon="panel-left-16"
+          aria-label={formatMessage(messages.platformNavigation)}
+          aria-expanded={opened}
+          onPress={() => setOpened(true)}
         />
-      </Box>
+      </div>
       {opened && (
-        <SidebarOverlay offset={Math.max(0, position.top - 8)}>
+        <div
+          className={styles.overlay}
+          style={{ top: `${Math.max(0, position.top - 8)}px` }}
+        >
           <Sidebar />
-        </SidebarOverlay>
+        </div>
       )}
-    </Box>
+    </div>
   );
 };
 

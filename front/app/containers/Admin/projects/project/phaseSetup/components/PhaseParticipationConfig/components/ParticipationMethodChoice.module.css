@@ -1,0 +1,14 @@
+/* Lets the card fill its grid cell. */
+.cell {
+  display: flex;
+}
+
+.unavailable {
+  opacity: var(--gv-opacity-disabled);
+}
+
+.art {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

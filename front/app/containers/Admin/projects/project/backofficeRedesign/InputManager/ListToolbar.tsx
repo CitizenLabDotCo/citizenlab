@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import Text from 'design-system/Text';
 
 import { IIdeaData } from 'api/ideas/types';
 
@@ -12,6 +12,7 @@ import BatchBar from './BatchBar';
 import { BatchAttribute } from './BatchBar/useBatchActions';
 import FilterMenu from './FilterMenu';
 import { FilterCategory } from './FilterMenu/useFilterCategories';
+import styles from './ListToolbar.module.css';
 import messages from './messages';
 import SearchToggle from './SearchToggle';
 import useInputTermLabels from './useInputTermLabels';
@@ -55,14 +56,7 @@ const ListToolbar = ({
   const { terms, termCount } = useInputTermLabels();
 
   return (
-    <Box
-      display="flex"
-      alignItems="center"
-      justifyContent="space-between"
-      gap="12px"
-      minHeight="40px"
-      mb="12px"
-    >
+    <div className={styles.toolbar}>
       {selectedIdeas.length > 0 ? (
         <BatchBar
           type={type}
@@ -78,11 +72,11 @@ const ListToolbar = ({
           selectAllFailed={selectAllFailed}
         />
       ) : (
-        <Text variant="boLabel" m="0">
+        <Text variant="title" tone="primary">
           {count !== undefined && termCount(count)}
         </Text>
       )}
-      <Box display="flex" alignItems="center" gap="8px">
+      <div className={styles.display}>
         <SearchToggle
           label={formatMessage(messages.searchTerms, { terms })}
           searchTerm={searchTerm}
@@ -90,8 +84,8 @@ const ListToolbar = ({
           resultCount={count ?? 0}
         />
         <FilterMenu categories={categories} onClearAll={onClearFilters} />
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 };
 

@@ -1,0 +1,27 @@
+.toolbar {
+  composes: toolbar from '../_shared/listManager.module.css';
+}
+
+.display {
+  composes: display from '../_shared/listManager.module.css';
+}
+
+.stats {
+  composes: stats from '../_shared/listManager.module.css';
+}
+
+.loading {
+  composes: loading from '../_shared/listManager.module.css';
+}
+
+.dimmed {
+  composes: dimmed from '../_shared/listManager.module.css';
+}
+
+.pagination {
+  composes: pagination from '../_shared/listManager.module.css';
+}
+
+.date {
+  white-space: nowrap;
+}

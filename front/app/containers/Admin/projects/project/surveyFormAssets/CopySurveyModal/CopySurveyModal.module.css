@@ -1,0 +1,11 @@
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-16);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-4);
+}

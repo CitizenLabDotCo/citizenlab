@@ -9,8 +9,11 @@ import {
   DropdownListItem,
   Badge,
   colors,
-  bo,
 } from '@citizenlab/cl2-component-library';
+
+import DsBadge from 'design-system/Badge';
+import Disclosure from 'design-system/Disclosure';
+import Menu, { MenuItem, MenuTrigger } from 'design-system/Menu';
 
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
 import useAnalyses from 'api/analyses/useAnalyses';
@@ -23,7 +26,6 @@ import projectFilesMessages from 'containers/Admin/projects/project/files/compon
 import useInputResponseExport from 'containers/Admin/projects/project/inputResponseExport/useInputResponseExport';
 
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
-import MenuButton from 'components/admin/MenuButton';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
@@ -35,6 +37,7 @@ import { getAnalysisScope } from '../../_shared/components/AnalysisBanner/utils'
 
 import DemographicsSection from './demographics/DemographicsSection';
 import getExportFilename from './getExportFilename';
+import styles from './Insights.module.css';
 import messages from './messages';
 import MethodSpecificInsights from './methodSpecific/MethodSpecificInsights';
 import SurveyActions from './methodSpecific/nativeSurvey/SurveyActions';
@@ -49,6 +52,7 @@ import {
   WordExportProvider,
   useWordExportContext,
 } from './word/WordExportContext';
+import 'design-system/tokens.css';
 
 const AI_ANALYSIS_SUPPORTED_METHODS = [
   'ideation',
@@ -202,7 +206,6 @@ const InsightsContent = () => {
 
   const isNativeSurvey = participationMethod === 'native_survey';
   const showInputResponseExport =
-    !redesigned &&
     !!participationMethod &&
     INPUT_RESPONSE_EXPORT_METHODS.includes(participationMethod);
 
@@ -248,13 +251,34 @@ const InsightsContent = () => {
     </Box>
   );
 
+  const exportStatusTexts = (
+    <>
+      {isDownloadingWord && getExportStatusText() && (
+        <Text fontSize="s" color="textSecondary" m="0px">
+          {getExportStatusText()}
+        </Text>
+      )}
+      {isDownloadingPdf && getPdfStatusText() && (
+        <Text fontSize="s" color="textSecondary" m="0px">
+          {getPdfStatusText()}
+        </Text>
+      )}
+      {exportError && (
+        <Text fontSize="s" color="error" m="0px">
+          {exportError}
+        </Text>
+      )}
+      {(captureWarnings.length > 0 || pdfSkippedSections.length > 0) &&
+        !isDownloading && (
+          <Text fontSize="s" color="orange500" m="0px">
+            {formatMessage(wordMessages.exportCaptureWarning)}
+          </Text>
+        )}
+    </>
+  );
+
   const actions = (
-    <Box
-      display="flex"
-      flexDirection="column"
-      gap="8px"
-      alignItems={redesigned ? 'stretch' : 'flex-end'}
-    >
+    <Box display="flex" flexDirection="column" gap="8px" alignItems="flex-end">
       {isNativeSurvey ? (
         <SurveyActions phase={phase.data} />
       ) : (
@@ -262,103 +286,101 @@ const InsightsContent = () => {
           display="flex"
           flexDirection="column"
           gap="8px"
-          alignItems={redesigned ? 'stretch' : 'flex-end'}
+          alignItems="flex-end"
         >
-          <Box
-            display="flex"
-            gap="8px"
-            flexDirection={redesigned ? 'column-reverse' : 'row'}
-          >
-            {redesigned ? (
-              <MenuButton
-                portal
-                triggerWidth="100%"
-                width="260px"
-                trigger={({ opened, toggle }) => (
-                  <Button
-                    buttonStyle="bo-secondary"
-                    width="100%"
-                    justify="space-between"
-                    icon="download"
-                    iconPos="right"
-                    ariaExpanded={opened}
-                    processing={isDownloading}
-                    disabled={!allComponentsReady && !isDownloading}
-                    onClick={toggle}
-                  >
-                    {formatMessage(messages.downloadInsights)}
-                  </Button>
-                )}
+          <Box display="flex" gap="8px">
+            <Box position="relative" display="inline-block">
+              <Button
+                buttonStyle={supportsAiAnalysis ? 'secondary' : 'primary'}
+                icon="download"
+                onClick={toggleDropdown()}
+                processing={isDownloading}
+                disabled={!allComponentsReady && !isDownloading}
+                aria-label={formatMessage(messages.exportButton)}
               >
-                {(close) => <Box onClick={close}>{exportOptions}</Box>}
-              </MenuButton>
-            ) : (
-              <Box position="relative" display="inline-block">
-                <Button
-                  buttonStyle={supportsAiAnalysis ? 'secondary' : 'primary'}
-                  icon="download"
-                  onClick={toggleDropdown()}
-                  processing={isDownloading}
-                  disabled={!allComponentsReady && !isDownloading}
-                  aria-label={formatMessage(messages.exportButton)}
-                >
-                  <FormattedMessage {...messages.exportButton} />
-                </Button>
-                <Dropdown
-                  width="max-content"
-                  top="42px"
-                  right="12px"
-                  opened={dropdownOpened}
-                  onClickOutside={toggleDropdown(false)}
-                  zIndex="10000"
-                  content={exportOptions}
-                />
-              </Box>
-            )}
+                <FormattedMessage {...messages.exportButton} />
+              </Button>
+              <Dropdown
+                width="max-content"
+                top="42px"
+                right="12px"
+                opened={dropdownOpened}
+                onClickOutside={toggleDropdown(false)}
+                zIndex="10000"
+                content={exportOptions}
+              />
+            </Box>
 
             {supportsAiAnalysis && (
               <Button
-                buttonStyle={redesigned ? 'bo-secondary' : 'primary'}
-                width={redesigned ? '100%' : undefined}
-                justify={redesigned ? 'space-between' : undefined}
-                iconPos={redesigned ? 'right' : 'left'}
+                buttonStyle="primary"
                 icon="stars"
                 onClick={handleGoToAnalysis}
                 processing={isCreatingAnalysis}
               >
-                <FormattedMessage
-                  {...(redesigned
-                    ? messages.aiSensemaking
-                    : messages.aiAnalysis)}
-                />
+                <FormattedMessage {...messages.aiAnalysis} />
               </Button>
             )}
           </Box>
-          {isDownloadingWord && getExportStatusText() && (
-            <Text fontSize="s" color="textSecondary" m="0px">
-              {getExportStatusText()}
-            </Text>
-          )}
-          {isDownloadingPdf && getPdfStatusText() && (
-            <Text fontSize="s" color="textSecondary" m="0px">
-              {getPdfStatusText()}
-            </Text>
-          )}
-          {exportError && (
-            <Text fontSize="s" color="error" m="0px">
-              {exportError}
-            </Text>
-          )}
-          {(captureWarnings.length > 0 || pdfSkippedSections.length > 0) &&
-            !isDownloading && (
-              <Text fontSize="s" color="orange500" m="0px">
-                {formatMessage(wordMessages.exportCaptureWarning)}
-              </Text>
-            )}
+          {exportStatusTexts}
         </Box>
       )}
     </Box>
   );
+
+  const panelStatusText =
+    (isDownloadingWord && getExportStatusText()) ||
+    (isDownloadingPdf && getPdfStatusText()) ||
+    null;
+
+  const panelActions = isNativeSurvey ? (
+    <SurveyActions phase={phase.data} />
+  ) : (
+    <div className={styles.panelActions}>
+      {supportsAiAnalysis && (
+        <Disclosure
+          header="button"
+          title={formatMessage(messages.aiSensemaking)}
+          actionIcon="sparkles-16"
+          onPress={handleGoToAnalysis}
+          isPending={isCreatingAnalysis}
+        />
+      )}
+      <MenuTrigger>
+        <Disclosure
+          header="button"
+          title={formatMessage(messages.downloadInsights)}
+          actionIcon="download-16"
+          isPending={isDownloading}
+          isDisabled={!allComponentsReady && !isDownloading}
+        />
+        <Menu aria-label={formatMessage(messages.downloadInsights)}>
+          <MenuItem onAction={handleDownloadPdf}>
+            {formatMessage(messages.downloadPdf)}
+          </MenuItem>
+          <MenuItem
+            onAction={handleDownloadWord}
+            count={
+              <DsBadge use="note">
+                {formatMessage(projectFilesMessages.beta)}
+              </DsBadge>
+            }
+          >
+            {formatMessage(messages.downloadWord)}
+          </MenuItem>
+        </Menu>
+      </MenuTrigger>
+      {panelStatusText && <p className={styles.status}>{panelStatusText}</p>}
+      {exportError && <p className={styles.statusError}>{exportError}</p>}
+      {(captureWarnings.length > 0 || pdfSkippedSections.length > 0) &&
+        !isDownloading && (
+          <p className={styles.statusWarning}>
+            {formatMessage(wordMessages.exportCaptureWarning)}
+          </p>
+        )}
+    </div>
+  );
+
   const dashboard = (
     <Box display="flex" flexDirection="column" gap="16px" pt="16px">
       <PageBreakBox>
@@ -400,40 +422,34 @@ const InsightsContent = () => {
 
   return (
     <>
-      <Box
-        height={redesigned ? '100%' : undefined}
-        minHeight="0"
-        borderBottom="none"
-        display="flex"
-        flexDirection="column"
-        role="region"
-        aria-label="Phase Insights"
-      >
-        {redesigned ? (
-          <Box display="flex" gap="8px" flexGrow={1} minHeight="0" minWidth="0">
-            <Box
-              flexGrow={1}
-              minWidth="0"
-              overflowY="auto"
-              p="18px"
-              background={colors.white}
-              borderRadius={bo.panelBorderRadius}
-            >
-              {dashboard}
-            </Box>
-            <Box flex="0 0 308px" width="308px" minHeight="0" overflowY="auto">
+      {redesigned ? (
+        <div
+          className={styles.panelRegion}
+          role="region"
+          aria-label="Phase Insights"
+        >
+          <div className={styles.panelLayout}>
+            <div className={styles.dashboardPanel}>{dashboard}</div>
+            <div className={styles.sideColumn}>
               <RecommendedActions phase={phase.data}>
-                {actions}
+                {panelActions}
               </RecommendedActions>
-            </Box>
-          </Box>
-        ) : (
-          <>
-            {header}
-            {dashboard}
-          </>
-        )}
-      </Box>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <Box
+          minHeight="0"
+          borderBottom="none"
+          display="flex"
+          flexDirection="column"
+          role="region"
+          aria-label="Phase Insights"
+        >
+          {header}
+          {dashboard}
+        </Box>
+      )}
 
       {inputResponseExport.modal}
 

@@ -1,0 +1,35 @@
+.loading {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
+}
+
+.panel {
+  composes: panel from '../../../../../../design-system/surfaces.module.css';
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.main {
+  composes: panel;
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.sidePanel {
+  composes: panel;
+  display: flex;
+  flex: 0 0 308px;
+  flex-direction: column;
+  width: 308px;
+}
+
+.sidePanel > :first-child {
+  flex-grow: 1;
+  height: auto;
+}
+
+.note {
+  padding: var(--gv-space-18);
+}

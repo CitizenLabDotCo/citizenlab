@@ -1,0 +1,24 @@
+.heading {
+  padding-top: var(--gv-space-14);
+  margin-bottom: var(--gv-space-10);
+}
+
+.methodSettings {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-4);
+  margin-top: var(--gv-space-16);
+  padding-top: var(--gv-space-16);
+  border-top: var(--gv-border-width-1) solid var(--gv-border-divider);
+}
+
+.switchLabel {
+  composes: ui from '../../../../../../../../../../design-system/typography.module.css';
+  color: var(--gv-text-primary);
+}
+
+.displaySettings {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-16);
+}

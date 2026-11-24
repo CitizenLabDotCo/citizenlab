@@ -1,27 +1,24 @@
 import React from 'react';
 
-import {
-  Box,
-  Button,
-  Table,
-  Tbody,
-  Td,
-  Text,
-  Th,
-  Thead,
-  Tr,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import Pagination from 'design-system/Pagination';
+import Table, {
+  Cell,
+  ColumnHeader,
+  ColumnMenu,
+  Row,
+  TableBody,
+  TableHeader,
+} from 'design-system/Table';
 
 import { AttendanceSort, IEventAttendances } from 'api/event_attendance/types';
-
-import Pagination from 'components/Pagination';
 
 import { useIntl } from 'utils/cl-intl';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 import { getFullName } from 'utils/textUtils';
 
+import styles from './EventManager.module.css';
 import messages from './messages';
+import 'design-system/tokens.css';
 
 interface Props {
   attendances: IEventAttendances;
@@ -43,87 +40,80 @@ const EventRegistrantTable = ({
     attendances.included.map((user) => [user.id, user])
   );
   const lastPage = getPageNumberFromUrl(attendances.links.last) || 1;
+  const sortDirection = sort === 'created_at' ? 'ascending' : 'descending';
 
   return (
-    <Box overflowX="auto">
-      <Table>
-        <Thead>
-          <Tr background={colors.white}>
-            <Th>
-              <Text variant="boLabel" as="span" color="coolGrey600" m="0">
-                {formatMessage(messages.registrant)}
-              </Text>
-            </Th>
-            <Th>
-              <Text variant="boLabel" as="span" color="coolGrey600" m="0">
-                {formatMessage(messages.email)}
-              </Text>
-            </Th>
-            <Th aria-sort={sort === 'created_at' ? 'ascending' : 'descending'}>
-              <Button
-                buttonStyle="bo-text"
-                type="button"
-                padding="0"
-                width="auto"
-                icon={sort === 'created_at' ? 'chevron-up' : 'chevron-down'}
-                iconPos="right"
-                onClick={() =>
-                  onSort(sort === 'created_at' ? '-created_at' : 'created_at')
+    <div>
+      <Table
+        aria-label={formatMessage(messages.registrantCount, {
+          count: attendances.meta.total,
+        })}
+      >
+        <TableHeader>
+          <ColumnHeader id="registrant" isRowHeader showChevron={false}>
+            {formatMessage(messages.registrant)}
+          </ColumnHeader>
+          <ColumnHeader id="email" showChevron={false}>
+            {formatMessage(messages.email)}
+          </ColumnHeader>
+          <ColumnHeader
+            id="registered"
+            defaultWidth={140}
+            sortDirection={sortDirection}
+            menu={
+              <ColumnMenu
+                columnType="date"
+                onSortChange={(direction) =>
+                  onSort(
+                    direction === 'ascending' ? 'created_at' : '-created_at'
+                  )
                 }
-              >
-                {formatMessage(messages.registered)}
-              </Button>
-            </Th>
-          </Tr>
-        </Thead>
-        <Tbody>
+              />
+            }
+          >
+            {formatMessage(messages.registered)}
+          </ColumnHeader>
+        </TableHeader>
+        <TableBody>
           {attendances.data.map((attendance) => {
             const user = attendees.get(
               attendance.relationships.attendee.data.id
             );
+            const name = user ? getFullName(user) : undefined;
+
             return (
-              <Tr
+              <Row
                 key={attendance.id}
-                dataCy={`e2e-event-registrant-${attendance.id}`}
+                id={attendance.id}
+                textValue={name}
+                data-cy={`e2e-event-registrant-${attendance.id}`}
               >
-                <Td py="12px" borderBottom={`1px solid ${colors.grey200}`}>
-                  <Text variant="boControl" m="0">
-                    {user && getFullName(user)}
-                  </Text>
-                </Td>
-                <Td py="12px" borderBottom={`1px solid ${colors.grey200}`}>
-                  <Text variant="boControl" color="coolGrey600" m="0">
-                    {user?.attributes.email}
-                  </Text>
-                </Td>
-                <Td
-                  py="12px"
-                  borderBottom={`1px solid ${colors.grey200}`}
-                  style={{ whiteSpace: 'nowrap' }}
-                >
-                  <Text variant="boControl" color="coolGrey600" m="0">
+                <Cell>{name}</Cell>
+                <Cell tone="secondary">{user?.attributes.email}</Cell>
+                <Cell tone="secondary">
+                  <span className={styles.date}>
                     {formatDate(attendance.attributes.created_at, {
                       day: 'numeric',
                       month: 'short',
                       year: 'numeric',
                     })}
-                  </Text>
-                </Td>
-              </Tr>
+                  </span>
+                </Cell>
+              </Row>
             );
           })}
-        </Tbody>
+        </TableBody>
       </Table>
       {lastPage > 1 && (
-        <Box display="flex" justifyContent="center" py="16px">
+        <div className={styles.pagination}>
           <Pagination
-            currentPage={page}
-            totalPages={lastPage}
-            loadPage={onPageChange}
+            page={page}
+            pageCount={lastPage}
+            onChange={onPageChange}
           />
-        </Box>
+        </div>
       )}
-    </Box>
+    </div>
   );
 };
 

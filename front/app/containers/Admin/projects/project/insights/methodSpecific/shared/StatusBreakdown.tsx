@@ -2,14 +2,19 @@ import React, { useMemo, ReactNode } from 'react';
 
 import { Box, Text, Spinner } from '@citizenlab/cl2-component-library';
 
+import EmptyState from 'design-system/EmptyState';
+
 import { IdeaStatusParticipationMethod } from 'api/idea_statuses/types';
 import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 
 import useLocalize from 'hooks/useLocalize';
+import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
 import { useIntl } from 'utils/cl-intl';
 
+import InsightCard from '../../InsightCard';
+import { usePdfExportContext } from '../../pdf/PdfExportContext';
 import { useWordSection } from '../../word/useWordSection';
 import WordExportableInsight from '../../word/WordExportableInsight';
 
@@ -43,6 +48,8 @@ interface Props {
 
 const StatusBreakdown = ({ phaseId, participationMethod }: Props) => {
   const { formatMessage } = useIntl();
+  const { isPdfRenderMode } = usePdfExportContext();
+  const redesigned = useProjectBackofficeRedesign() && !isPdfRenderMode;
   const localize = useLocalize();
 
   const { data: filterCounts, isLoading: isLoadingCounts } =
@@ -119,6 +126,34 @@ const StatusBreakdown = ({ phaseId, participationMethod }: Props) => {
             <Spinner size="24px" />
           </Box>
         </StatusCard>
+      </WordExportableInsight>
+    );
+  }
+
+  if (redesigned) {
+    return (
+      <WordExportableInsight exportId="status-breakdown">
+        <InsightCard title={formatMessage(messages.statusBreakdownCard)}>
+          {statusData.length === 0 ? (
+            <EmptyState context="card">
+              {formatMessage(messages.noInputsSubmitted)}
+            </EmptyState>
+          ) : (
+            <Box display="flex" flexDirection="column" gap="4px">
+              {statusData.map((status) => (
+                <DistributionBar
+                  key={status.id}
+                  name={status.name}
+                  count={status.count}
+                  percentage={status.percentage}
+                  maxCount={maxCount}
+                  barColor={status.color}
+                  showBadge={false}
+                />
+              ))}
+            </Box>
+          )}
+        </InsightCard>
       </WordExportableInsight>
     );
   }

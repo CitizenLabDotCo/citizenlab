@@ -1,16 +1,10 @@
 import React from 'react';
 
-import { colors } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
+import styles from './ParticipantsGraph.module.css';
 
 interface Props {
   values: number[];
 }
-const Svg = styled.svg`
-  display: block;
-  width: 100%;
-  height: 34px;
-`;
 
 const WIDTH = 100;
 const HEIGHT = 30;
@@ -42,23 +36,26 @@ const Sparkline = ({ values }: Props) => {
   if (!linePoints) return null;
 
   return (
-    <Svg
+    <svg
+      className={styles.sparklineSvg}
       viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
       preserveAspectRatio="none"
       aria-hidden
       focusable="false"
     >
-      <polygon points={getAreaPoints(linePoints)} fill={colors.blue10} />
+      <polygon
+        className={styles.sparklineArea}
+        points={getAreaPoints(linePoints)}
+      />
       <polyline
+        className={styles.sparklineLine}
         points={linePoints}
-        fill="none"
-        stroke={colors.primary}
         strokeWidth="2"
         vectorEffect="non-scaling-stroke"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-    </Svg>
+    </svg>
   );
 };
 

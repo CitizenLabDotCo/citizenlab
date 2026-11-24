@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import Text from 'design-system/Text';
 
 import { IIdeaData } from 'api/ideas/types';
 
@@ -10,8 +10,10 @@ import FilterMenu from '../InputManager/FilterMenu';
 import { FilterCategory } from '../InputManager/FilterMenu/useFilterCategories';
 import SearchToggle from '../InputManager/SearchToggle';
 
+import styles from './CommonGroundManager.module.css';
 import messages from './messages';
 import StatementBatchBar from './StatementBatchBar';
+import 'design-system/tokens.css';
 
 interface Props {
   selectedIdeas: IIdeaData[];
@@ -45,14 +47,7 @@ const StatementToolbar = ({
   const { formatMessage } = useIntl();
 
   return (
-    <Box
-      display="flex"
-      alignItems="center"
-      justifyContent="space-between"
-      gap="12px"
-      minHeight="40px"
-      mb="12px"
-    >
+    <div className={styles.toolbar}>
       {selectedIdeas.length > 0 ? (
         <StatementBatchBar
           ideas={selectedIdeas}
@@ -65,12 +60,12 @@ const StatementToolbar = ({
           selectAllFailed={selectAllFailed}
         />
       ) : (
-        <Text variant="boLabel" m="0">
+        <Text variant="title" tone="primary">
           {listedTotal !== undefined &&
             formatMessage(messages.statementCount, { count: listedTotal })}
         </Text>
       )}
-      <Box display="flex" alignItems="center" gap="8px">
+      <div className={styles.display}>
         <SearchToggle
           label={formatMessage(messages.searchStatements)}
           searchTerm={search}
@@ -81,8 +76,8 @@ const StatementToolbar = ({
           categories={[agreementCategory]}
           onClearAll={onClearFilters}
         />
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 };
 

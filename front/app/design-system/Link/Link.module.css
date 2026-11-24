@@ -1,0 +1,15 @@
+/* The underline alone says it is a link, so it shows in every state. */
+.link {
+  composes: bodyLink from '../typography.module.css';
+  composes: ringOutside from '../focus.module.css';
+  color: var(--gv-text-secondary);
+  cursor: pointer;
+  transition-property: color;
+  transition-duration: var(--gv-motion-duration-fast);
+  transition-timing-function: var(--gv-motion-easing-standard);
+}
+
+.link[data-hovered],
+.link[data-pressed] {
+  color: var(--gv-text-primary);
+}

@@ -1,0 +1,60 @@
+/* The parts every form field shares: label row, description, error. */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-8);
+  min-width: 0;
+}
+
+/* The control and the description or error under it. */
+.control {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-4);
+}
+
+.labelRow {
+  display: flex;
+  align-items: center;
+  gap: var(--gv-space-8);
+}
+
+.labelRowWithAccessory {
+  composes: labelRow;
+  gap: var(--gv-space-4);
+}
+
+.label {
+  composes: body from '../typography.module.css';
+  color: var(--gv-text-primary);
+}
+
+.field[data-disabled] .label {
+  color: var(--gv-text-disabled);
+}
+
+.description {
+  composes: ui from '../typography.module.css';
+  color: var(--gv-text-secondary);
+}
+
+.error {
+  composes: ui from '../typography.module.css';
+  color: var(--gv-text-danger);
+}
+
+.requiredMarker {
+  composes: small from '../typography.module.css';
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gv-space-8);
+  color: var(--gv-text-tertiary);
+}
+
+.requiredDot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--gv-radius-full);
+  background: var(--gv-icon-tertiary);
+}

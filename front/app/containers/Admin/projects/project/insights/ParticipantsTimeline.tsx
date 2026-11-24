@@ -6,11 +6,14 @@ import moment from 'moment';
 import usePhaseInsights from 'api/phase_insights/usePhaseInsights';
 import { IPhaseData } from 'api/phases/types';
 
+import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
+
 import Chart from 'components/admin/GraphCards/ParticipantsCard/Chart';
 import ReportExportMenu from 'components/admin/ReportExportMenu';
 
 import { useIntl } from 'utils/cl-intl';
 
+import InsightCard from './InsightCard';
 import messages from './messages';
 import { usePdfExportContext } from './pdf/PdfExportContext';
 import WordExportableInsight from './word/WordExportableInsight';
@@ -25,6 +28,7 @@ const PDF_CHART_HEIGHT = 280;
 
 const ParticipantsTimeline = ({ phase }: Props) => {
   const { isPdfRenderMode } = usePdfExportContext();
+  const redesigned = useProjectBackofficeRedesign() && !isPdfRenderMode;
   const { formatMessage } = useIntl();
   const graphRef = useRef<SVGElement>(null);
 
@@ -84,6 +88,41 @@ const ParticipantsTimeline = ({ phase }: Props) => {
       ? moment(timeSeries[timeSeries.length - 1].date_group)
       : null;
 
+  const exportMenu = (
+    <ReportExportMenu
+      name="participation-timeline"
+      svgNode={graphRef}
+      xlsx={{ data: xlsxData }}
+    />
+  );
+  const chart = (
+    <WordExportableInsight
+      exportId="participation-timeline"
+      heading={title}
+      height={isPdfRenderMode ? `${PDF_CHART_HEIGHT}px` : '249px'}
+      width={isPdfRenderMode ? `${PDF_CHART_WIDTH}px` : undefined}
+    >
+      <Chart
+        timeSeries={chartData}
+        startAtMoment={startAtMoment}
+        endAtMoment={endAtMoment}
+        resolution={resolution}
+        showParticipants={showParticipants}
+        showVisitors={true}
+        innerRef={graphRef}
+        isAnimationActive={!isPdfRenderMode}
+      />
+    </WordExportableInsight>
+  );
+
+  if (redesigned) {
+    return (
+      <InsightCard title={title} actions={exportMenu}>
+        {chart}
+      </InsightCard>
+    );
+  }
+
   return (
     <Box mt="8px" bg="white" py="24px" borderRadius="8px">
       <Box
@@ -95,30 +134,9 @@ const ParticipantsTimeline = ({ phase }: Props) => {
         <Title variant="h3" m="0">
           {title}
         </Title>
-        <ReportExportMenu
-          name="participation-timeline"
-          svgNode={graphRef}
-          xlsx={{ data: xlsxData }}
-        />
+        {exportMenu}
       </Box>
-
-      <WordExportableInsight
-        exportId="participation-timeline"
-        heading={title}
-        height={isPdfRenderMode ? `${PDF_CHART_HEIGHT}px` : '249px'}
-        width={isPdfRenderMode ? `${PDF_CHART_WIDTH}px` : undefined}
-      >
-        <Chart
-          timeSeries={chartData}
-          startAtMoment={startAtMoment}
-          endAtMoment={endAtMoment}
-          resolution={resolution}
-          showParticipants={showParticipants}
-          showVisitors={true}
-          innerRef={graphRef}
-          isAnimationActive={!isPdfRenderMode}
-        />
-      </WordExportableInsight>
+      {chart}
     </Box>
   );
 };
