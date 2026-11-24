@@ -109,7 +109,7 @@ const BeforeYouPublish = ({ project, onOpenSettings }: Props) => {
                 }
               : {
                   kind: 'action',
-                  icon: 'plus-16',
+                  icon: 'chevron-right-16',
                   actionLabel: formatMessage(
                     projectPageMessages.newParticipationMethod
                   ),
