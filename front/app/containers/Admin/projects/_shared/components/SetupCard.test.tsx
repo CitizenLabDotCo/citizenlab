@@ -56,7 +56,11 @@ describe('SetupCard', () => {
 
     await userEvent.tab();
 
-    expect(screen.getByRole('img', { name: 'More information' })).toHaveFocus();
+    expect(
+      screen.getByRole('img', {
+        name: 'More information about Voting method',
+      })
+    ).toHaveFocus();
     expect(await screen.findByRole('tooltip')).toHaveTextContent(
       'Choose how people vote.'
     );
