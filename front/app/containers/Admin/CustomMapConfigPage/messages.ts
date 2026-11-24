@@ -1,6 +1,15 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  stagedSaveZoomHelp: {
+    id: 'app.containers.AdminPage.CustomMapConfigPage.stagedSaveZoomHelp',
+    defaultMessage:
+      'Enter coordinates and zoom, or move the map and press {button}. Then save your changes.',
+  },
+  invalidCenterAndZoom: {
+    id: 'app.containers.AdminPage.CustomMapConfigPage.invalidCenterAndZoom',
+    defaultMessage: 'Enter valid coordinates and a whole-number zoom level.',
+  },
   saveZoomHelp: {
     id: 'app.containers.AdminPage.CustomMapConfigPage.saveZoomHelp',
     defaultMessage: 'Move and zoom the map, then press {button}.',

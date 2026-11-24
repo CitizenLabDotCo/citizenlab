@@ -86,11 +86,11 @@ const CustomMapConfigPage = memo<Props>((props) => {
   const defaultZoom = getZoomLevel(undefined, appConfig?.data, mapConfig?.data);
 
   const parseStaged = (values: CenterAndZoomValues) => {
-    const lat = parseFloat(values.lat);
-    const lng = parseFloat(values.lng);
-    const zoom = parseInt(values.zoom, 10);
+    const lat = Number(values.lat.trim() || NaN);
+    const lng = Number(values.lng.trim() || NaN);
+    const zoom = Number(values.zoom.trim() || NaN);
 
-    return isValidCenterAndZoom(lat, lng, zoom)
+    return Number.isInteger(zoom) && isValidCenterAndZoom(lat, lng, zoom)
       ? {
           center: { type: 'Point' as const, coordinates: [lng, lat] },
           zoom,

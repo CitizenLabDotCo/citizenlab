@@ -39,12 +39,10 @@ describe('Project setup feedback', () => {
       ]);
     });
     setupCard('homepage-card').click();
-    setupCard('homepage-card')
-      .click()
-      .trigger('pointerout', {
-        eventConstructor: 'PointerEvent',
-        pointerType: 'mouse',
-      });
+    setupCard('homepage-card').click().trigger('pointerout', {
+      eventConstructor: 'PointerEvent',
+      pointerType: 'mouse',
+    });
     cy.get('body').should(($body) => {
       expect($body.find('[role="tooltip"]').filter(':visible')).to.have.length(
         0
@@ -99,8 +97,45 @@ describe('Project setup feedback', () => {
     cy.contains('[role="tab"]', /^Insights$/).click();
     cy.contains('Insights will appear here').should('be.visible');
     cy.contains('[role="tab"]', /^Build$/).click();
-    cy.get('#phase-build-panel-title').should('have.value', 'Unsaved phase title');
+    cy.get('#phase-build-panel-title').should(
+      'have.value',
+      'Unsaved phase title'
+    );
     cy.location('pathname').should('include', '/phases/new');
+  });
+
+  it('rejects invalid map coordinates and saves valid changes from the workspace', () => {
+    cy.apiCreatePhase({
+      projectId,
+      title: 'Map setup',
+      startAt: '2026-01-01',
+      participationMethod: 'ideation',
+    }).then(({ body }) => {
+      const path = `/admin/projects/${projectId}/phases/${body.data.id}/setup?project_backoffice_redesign&map_config=true`;
+      cy.intercept('PATCH', '**/web_api/v1/map_configs/*').as('updateMap');
+      cy.visit(path);
+
+      const latitude = () => cy.get('input[aria-label="Default latitude"]');
+      latitude().clear().type('12.5north');
+      cy.contains('button', /^Save$/).click();
+      cy.contains('Enter valid coordinates').should('be.visible');
+      cy.get('@updateMap.all').should('have.length', 0);
+
+      latitude().clear().type('12.5');
+      const zoom = () => cy.get('input[aria-label="Map zoom level"]');
+      zoom().clear().type('8.5');
+      cy.contains('button', /^Save$/).click();
+      cy.contains('Enter valid coordinates').should('be.visible');
+      cy.get('@updateMap.all').should('have.length', 0);
+
+      zoom().clear().type('8');
+      cy.contains('button', /^Save$/).click();
+      cy.wait('@updateMap').its('response.statusCode').should('eq', 200);
+
+      cy.visit(path);
+      latitude().should('have.value', '12.5');
+      cy.get('input[aria-label="Map zoom level"]').should('have.value', '8');
+    });
   });
 
   it('opens the editor when the project preview is clicked', () => {

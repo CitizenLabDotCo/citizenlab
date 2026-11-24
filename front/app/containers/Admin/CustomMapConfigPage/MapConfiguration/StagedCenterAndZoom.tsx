@@ -73,12 +73,14 @@ const StagedCenterAndZoom = ({
         </div>
       ))}
       <Text variant="small" tone="secondary">
-        {formatMessage(messages.saveZoomHelp, {
+        {formatMessage(messages.stagedSaveZoomHelp, {
           button: formatMessage(messages.saveZoom),
         })}
       </Text>
       {invalid && (
-        <Banner tone="error">{formatMessage(messages.errorMessage)}</Banner>
+        <Banner tone="error">
+          {formatMessage(messages.invalidCenterAndZoom)}
+        </Banner>
       )}
     </div>
   );
