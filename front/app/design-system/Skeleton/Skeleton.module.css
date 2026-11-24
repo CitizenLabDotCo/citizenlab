@@ -1,0 +1,15 @@
+.skeleton {
+  display: block;
+  flex-shrink: 0;
+  max-width: 100%;
+  background: var(--gv-surface-control-subtle);
+}
+
+.line {
+  height: var(--gv-size-16);
+  border-radius: var(--gv-radius-4);
+}
+
+.block {
+  border-radius: var(--gv-radius-8);
+}
