@@ -85,7 +85,7 @@ module MultiTenancy
     end
 
     # Marks the tenant as deleted. +Tenants::DeleteJob+ then deletes its users in batches
-    # and finally the tenant itself.
+    # (one tenant per cluster at a time) and finally the tenant itself.
     #
     # @param [Tenant] tenant
     def delete(tenant)
@@ -93,7 +93,8 @@ module MultiTenancy
       # Deliberately not `update!`: a tenant must not become undeletable because of the state of
       # the record being deleted. `update_column` writes the one column, skipping validation and
       # the app configuration sync — which ignores `deleted_at` anyway (see `attributes_delta`).
-      tenant.update_column(:deleted_at, Time.zone.now)
+      # An existing `deleted_at` is kept: it decides when the tenant's turn to be deleted comes.
+      tenant.update_column(:deleted_at, Time.zone.now) unless tenant.deleted?
 
       MultiTenancy::Tenants::DeleteJob.perform_later(tenant)
     end

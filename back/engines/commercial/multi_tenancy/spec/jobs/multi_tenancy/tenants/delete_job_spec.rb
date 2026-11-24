@@ -5,8 +5,15 @@ require 'rails_helper'
 RSpec.describe MultiTenancy::Tenants::DeleteJob do
   let(:tenant) { Tenant.current }
 
+  before { tenant.update_column(:deleted_at, 1.hour.ago) }
+
   def create_job(job_class, arguments = [], schema_name: tenant.schema_name, **attrs)
     create(:que_job, active_job_class: job_class, job_arguments: arguments, tenant_schema_name: schema_name, **attrs)
+  end
+
+  # An active +DeleteJob+ for +other_tenant+, as +TenantService#delete+ would have queued it.
+  def queue_delete_job_for(other_tenant)
+    create_job(described_class.name, [{ '_aj_globalid' => "gid://citizenlab/Tenant/#{other_tenant.id}" }], schema_name: 'public')
   end
 
   describe '#perform_now' do
@@ -78,6 +85,33 @@ RSpec.describe MultiTenancy::Tenants::DeleteJob do
       it 'still runs jobs queued with the former retry_interval argument' do
         expect { described_class.perform_now(tenant, last_user_count: 5, retry_interval: 6.hours) }
           .to have_enqueued_job(described_class).with(tenant, last_user_count: 3)
+      end
+    end
+
+    context 'when another tenant is being deleted' do
+      let!(:other_tenant) { create(:tenant, deleted_at: 2.hours.ago) }
+
+      before_all { create(:user) }
+
+      it 'waits for its turn if the other deletion was requested first' do
+        queue_delete_job_for(other_tenant)
+
+        expect { described_class.perform_now(tenant) }
+          .to  have_enqueued_job(described_class).with(tenant, last_user_count: nil)
+          .and not_have_enqueued_job(DeleteUserJob)
+      end
+
+      it 'goes first if its deletion was requested first' do
+        other_tenant.update_column(:deleted_at, 1.minute.ago)
+        queue_delete_job_for(other_tenant)
+
+        expect { described_class.perform_now(tenant) }.to have_enqueued_job(DeleteUserJob)
+      end
+
+      it 'does not wait for a deletion that was aborted (its job expired)' do
+        queue_delete_job_for(other_tenant).update!(expired_at: Time.zone.now)
+
+        expect { described_class.perform_now(tenant) }.to have_enqueued_job(DeleteUserJob)
       end
     end
   end

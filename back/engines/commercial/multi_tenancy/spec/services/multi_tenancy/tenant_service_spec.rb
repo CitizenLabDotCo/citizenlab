@@ -57,13 +57,22 @@ RSpec.describe MultiTenancy::TenantService do
   describe '#delete' do
     let(:tenant) { Tenant.current }
 
-    # The users are deleted in batches by Tenants::DeleteJob.
+    # The users are deleted in batches by Tenants::DeleteJob, one tenant at a time.
     it 'enqueues Tenants::DeleteJob, but no DeleteUserJob' do
       create_list(:user, 3)
 
       expect { service.delete(tenant) }
         .to  have_enqueued_job(MultiTenancy::Tenants::DeleteJob)
         .and not_have_enqueued_job(DeleteUserJob)
+    end
+
+    # The deletion date decides when the tenant's turn to be deleted comes.
+    it 'keeps the deletion date of a tenant that is deleted twice' do
+      deleted_at = 1.day.ago.round
+      tenant.update_column(:deleted_at, deleted_at)
+
+      service.delete(tenant)
+      expect(tenant.reload.deleted_at).to eq(deleted_at)
     end
 
     it 'runs before_destroy side effects' do
