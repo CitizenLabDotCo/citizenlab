@@ -13,6 +13,8 @@ import {
 import { ICustomPageData, TCustomPageCode } from 'api/custom_pages/types';
 import useCustomPages from 'api/custom_pages/useCustomPages';
 import useDeleteCustomPage from 'api/custom_pages/useDeleteCustomPage';
+import useNavbarItems from 'api/navbar/useNavbarItems';
+import { MAX_NAVBAR_ITEMS } from 'api/navbar/util';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -29,6 +31,7 @@ import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
 
 import messages from './messages';
+import RemovedDefaultItemRow from './RemovedDefaultItemRow';
 
 // Policy pages (terms, privacy, cookie) are managed in Settings, not here.
 const FIXED_PAGES_SET = new Set<TCustomPageCode>([
@@ -43,6 +46,12 @@ const PagesTab = () => {
   const { formatMessage } = useIntl();
   const { data: pages } = useCustomPages();
   const { mutate: deleteCustomPage } = useDeleteCustomPage();
+  // Full titles: they are posted back when the item is added to the menu.
+  const { data: navbarItems } = useNavbarItems({ truncateTitles: false });
+  const { data: removedDefaultItems } = useNavbarItems({
+    onlyRemovedDefaultItems: true,
+    truncateTitles: false,
+  });
 
   const canCreateCustomPages = useFeatureFlag({
     name: 'pages',
@@ -54,6 +63,7 @@ const PagesTab = () => {
   }
 
   const customPages = pages.data.filter(isNotFixedPage);
+  const navbarIsFull = (navbarItems?.data.length ?? 0) >= MAX_NAVBAR_ITEMS;
 
   const handleClickDelete = (pageId: string) => () => {
     if (window.confirm(formatMessage(messages.deletePageConfirmation))) {
@@ -88,6 +98,17 @@ const PagesTab = () => {
           </Tooltip>
         }
       >
+        <Box>
+          {/* Wait for the navbar items: until then we can't tell if it is full. */}
+          {navbarItems &&
+            removedDefaultItems?.data.map((navbarItem) => (
+              <RemovedDefaultItemRow
+                key={navbarItem.id}
+                navbarItem={navbarItem}
+                navbarIsFull={navbarIsFull}
+              />
+            ))}
+        </Box>
         {customPages.length === 0 ? (
           <Text color="textSecondary" py="16px">
             {formatMessage(messages.noPages)}

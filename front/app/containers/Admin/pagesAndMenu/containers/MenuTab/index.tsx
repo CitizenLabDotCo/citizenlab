@@ -10,6 +10,7 @@ import { isNavbarDropdown, MAX_NAVBAR_ITEMS } from 'api/navbar/util';
 
 import PagesMenuTabs from 'containers/Admin/pagesAndMenu/components/PagesMenuTabs';
 import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
+import pagesAndMenuMessages from 'containers/Admin/pagesAndMenu/messages';
 import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
 
 import LockedRow from 'components/admin/ResourceList/LockedRow';
@@ -87,7 +88,7 @@ const MenuTab = () => {
         subtitle={formatMessage(messages.menuSubtitle)}
         rightSideCTA={
           <Tooltip
-            content={formatMessage(messages.navBarMaxItems)}
+            content={formatMessage(pagesAndMenuMessages.navBarMaxItems)}
             disabled={!navbarIsFull}
           >
             <ButtonWithLink
