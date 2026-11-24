@@ -1,18 +1,10 @@
 /* The ListBox popover of Select and ComboBox: the dropdown surface, 240 wide. */
 .popover {
-  display: flex;
-  flex-direction: column;
-  width: 240px;
+  composes: popover from '../collection.module.css';
 }
 
 .listBox {
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  min-height: 0;
-  overflow: auto;
-  outline: none;
+  composes: collection from '../collection.module.css';
 }
 
 .popover .listBox {
@@ -20,18 +12,7 @@
 }
 
 .option {
-  composes: ringInside from '../focus.module.css';
-  box-sizing: border-box;
-  display: flex;
-  flex-shrink: 0;
-  align-items: center;
-  gap: var(--gv-space-10);
-  padding: var(--gv-space-6) var(--gv-space-8);
-  border-radius: var(--gv-radius-8);
-  cursor: default;
-  transition-property: background-color;
-  transition-duration: var(--gv-motion-duration-fast);
-  transition-timing-function: var(--gv-motion-easing-standard);
+  composes: item from '../collection.module.css';
 }
 
 .option[data-hovered],
@@ -45,15 +26,11 @@
 }
 
 .text {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  min-width: 0;
+  composes: text from '../collection.module.css';
 }
 
 .label {
-  composes: ui from '../typography.module.css';
-  color: var(--gv-text-primary);
+  composes: label from '../collection.module.css';
 }
 
 /* Check mark: the selected option turns UI strong, which differs from UI only in weight. */
@@ -65,8 +42,7 @@
 }
 
 .check {
-  flex-shrink: 0;
-  color: var(--gv-icon-primary);
+  composes: check from '../collection.module.css';
 }
 
 /* Disabled: the colours change, the row keeps its strength. */
@@ -82,17 +58,7 @@
 
 /* Checkbox mark: hidden until the row is hovered, focused or checked. */
 .checkbox {
-  box-sizing: border-box;
-  display: flex;
-  flex-shrink: 0;
-  align-items: center;
-  justify-content: center;
-  width: 15px;
-  height: 15px;
-  border: var(--gv-border-width-1) solid var(--gv-border-control);
-  border-radius: var(--gv-radius-4);
-  background: var(--gv-surface-panel);
-  opacity: 0;
+  composes: checkbox from '../collection.module.css';
   transition-property: background-color, border-color, opacity;
   transition-duration: var(--gv-motion-duration-fast);
   transition-timing-function: var(--gv-motion-easing-standard);
@@ -121,9 +87,7 @@
 
 /* The 14 px check drawn at 11 px with the 1.5 stroke Figma sets on it (1.5 × 14 / 11 in icon units). */
 .checkboxIcon {
-  width: 11px;
-  height: 11px;
-  color: var(--gv-icon-inverse);
+  composes: checkboxIcon from '../collection.module.css';
 }
 
 .checkboxIcon path {

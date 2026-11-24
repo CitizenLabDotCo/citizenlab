@@ -5,7 +5,7 @@
   display: flex;
   align-items: center;
   gap: var(--gv-space-16);
-  height: var(--gv-size-control-32);
+  height: var(--gv-size-32);
   padding: 0 var(--gv-space-8);
   border-radius: var(--gv-radius-8);
   color: var(--gv-text-primary);

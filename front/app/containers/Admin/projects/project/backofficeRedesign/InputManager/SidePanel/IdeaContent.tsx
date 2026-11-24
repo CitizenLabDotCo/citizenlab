@@ -1,5 +1,7 @@
 import React from 'react';
 
+import Text from 'design-system/Text';
+
 import useIdeaFiles from 'api/idea_files/useIdeaFiles';
 import useIdeaImages from 'api/idea_images/useIdeaImages';
 import { IIdeaData } from 'api/ideas/types';
@@ -39,12 +41,12 @@ const IdeaContent = ({ idea }: Props) => {
       {image && <img src={image} alt="" className={styles.image} />}
       {attributes.proposed_budget && (
         <div>
-          <p className={styles.secondary}>
+          <Text variant="ui" tone="secondary">
             {formatMessage(previewMessages.proposedBudgetTitle)}
-          </p>
-          <p className={styles.budget}>
+          </Text>
+          <Text variant="uiStrong" tone="primary">
             <FormattedBudget value={attributes.proposed_budget} />
-          </p>
+          </Text>
         </div>
       )}
       <Body

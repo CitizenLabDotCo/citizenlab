@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import Modal from 'design-system/Modal';
+import Text from 'design-system/Text';
 
 import useCopyInputs from 'api/copy_inputs/useCopyInputs';
 import usePhase from 'api/phases/usePhase';
@@ -116,9 +117,9 @@ const ImportInputsModal = ({
           </div>
         )}
         {fromPhaseId && count !== undefined && (
-          <p className={styles.helper}>
+          <Text variant="ui" tone="secondary">
             {formatMessage(inputManagerMessages.noOfInputsToImport, { count })}
-          </p>
+          </Text>
         )}
       </div>
     </Modal>

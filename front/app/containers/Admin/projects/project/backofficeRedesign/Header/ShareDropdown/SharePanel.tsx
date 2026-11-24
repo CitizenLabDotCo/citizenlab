@@ -124,27 +124,26 @@ const SharePanel = ({ project, linkCopied, onLinkCopied }: Props) => {
       <p className={styles.helper}>
         {formatMessage(messages.sharePreviewExplanation)}
       </p>
-      <div className={styles.fullWidth}>
-        <Button
-          id="e2e-share-preview-link"
-          variant="secondary"
-          size={32}
-          icon={linkCopied ? 'circle-check-filled-16' : 'link-16'}
-          onPress={handleCopyPreviewLink}
-          isDisabled={!isPreviewLinkEnabled}
-          disabledReason={
-            isPreviewLinkEnabled
-              ? undefined
-              : formatMessage(projectHeaderMessages.shareLinkUpsellTooltip)
-          }
-        >
-          {formatMessage(
-            linkCopied
-              ? projectHeaderMessages.shareLinkCopied
-              : messages.sharePreviewLink
-          )}
-        </Button>
-      </div>
+      <Button
+        fullWidth
+        id="e2e-share-preview-link"
+        variant="secondary"
+        size={32}
+        icon={linkCopied ? 'circle-check-filled-16' : 'link-16'}
+        onPress={handleCopyPreviewLink}
+        isDisabled={!isPreviewLinkEnabled}
+        disabledReason={
+          isPreviewLinkEnabled
+            ? undefined
+            : formatMessage(projectHeaderMessages.shareLinkUpsellTooltip)
+        }
+      >
+        {formatMessage(
+          linkCopied
+            ? projectHeaderMessages.shareLinkCopied
+            : messages.sharePreviewLink
+        )}
+      </Button>
     </div>
   );
 };

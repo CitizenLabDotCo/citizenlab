@@ -30,7 +30,9 @@ export type DialogLayoutProps = {
   children: ReactNode;
   primaryAction?: DialogAction;
   secondaryAction?: DialogAction;
+  leadingAction?: ReactNode;
   showClose?: boolean;
+  isCloseDisabled?: boolean;
 };
 
 type Props = DialogLayoutProps & {
@@ -49,7 +51,9 @@ const DialogLayout = ({
   children,
   primaryAction,
   secondaryAction,
+  leadingAction,
   showClose = true,
+  isCloseDisabled,
   role = 'dialog',
   primaryVariant = 'primary',
   autoFocusSecondary = false,
@@ -84,6 +88,7 @@ const DialogLayout = ({
                 icon="x-16"
                 aria-label={formatMessage(messages.close)}
                 onPress={close}
+                isDisabled={isCloseDisabled}
                 data-cy="e2e-modal-close-button"
               />
             )}
@@ -91,8 +96,11 @@ const DialogLayout = ({
           <div className={`${styles.body} ${bodyClassName ?? ''}`}>
             {children}
           </div>
-          {(primaryAction || secondaryAction) && (
+          {(leadingAction || primaryAction || secondaryAction) && (
             <div className={styles.footer}>
+              {leadingAction && (
+                <div className={styles.leadingAction}>{leadingAction}</div>
+              )}
               {secondaryAction && (
                 <Button
                   variant="secondary"

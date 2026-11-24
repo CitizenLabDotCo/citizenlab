@@ -3,11 +3,8 @@ import React, { memo, useEffect } from 'react';
 import { colors, media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import DesignSystemProvider from 'design-system/Provider';
-
 import useAuthUser from 'api/me/useAuthUser';
 
-import useLocale from 'hooks/useLocale';
 import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
 import {
@@ -20,6 +17,7 @@ import clHistory from 'utils/cl-router/history';
 import { usePermission } from 'utils/permissions';
 import { Outlet as RouterOutlet, useLocation } from 'utils/router';
 
+import AdminDesignSystemProvider from './AdminDesignSystemProvider';
 import PulseCheck from './PulseCheck';
 import Sidebar from './sideBar/';
 import CollapsibleSidebar from './sideBar/CollapsibleSidebar';
@@ -101,7 +99,6 @@ type Props = {
 const AdminPage = memo<Props>(({ className }) => {
   const { data: authUser } = useAuthUser();
   const { pathname } = useLocation();
-  const locale = useLocale();
   const redesigned = useProjectBackofficeRedesign();
 
   // The check in front/app/containers/Admin/routes.tsx already should do the same.
@@ -179,10 +176,7 @@ const AdminPage = memo<Props>(({ className }) => {
     !sidebarRendered;
 
   return (
-    <DesignSystemProvider
-      locale={locale}
-      navigate={(path) => clHistory.push(path)}
-    >
+    <AdminDesignSystemProvider>
       <WorkspaceHeaderProvider>
         <Container className={className}>
           {sidebarRendered &&
@@ -203,7 +197,7 @@ const AdminPage = memo<Props>(({ className }) => {
           <PulseCheck />
         </Container>
       </WorkspaceHeaderProvider>
-    </DesignSystemProvider>
+    </AdminDesignSystemProvider>
   );
 });
 

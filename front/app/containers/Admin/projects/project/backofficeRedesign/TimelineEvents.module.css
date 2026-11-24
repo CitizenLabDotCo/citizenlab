@@ -29,13 +29,3 @@
 .eventRow[data-selected]:hover {
   background: var(--gv-surface-muted-hovered);
 }
-
-.eventTitle {
-  composes: smallStrong from '../../../../../design-system/typography.module.css';
-  color: var(--gv-text-primary);
-}
-
-.eventMeta {
-  composes: small from '../../../../../design-system/typography.module.css';
-  color: var(--gv-text-secondary);
-}

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Button from 'design-system/Button';
+import Text from 'design-system/Text';
 
 import useRequestProjectReview from 'api/project_reviews/useRequestProjectReview';
 
@@ -68,22 +69,21 @@ const RequestApprovalDropdown = ({
       panelWidth="publish"
       content={
         <div className={styles.panel}>
-          <p className={styles.description}>
+          <Text variant="ui" tone="secondary">
             {formatMessage(messages.requestApprovalDescription, {
               inFolder,
             })}
-          </p>
-          <div className={styles.fullWidth}>
-            <Button
-              id="e2e-request-approval-confirm"
-              variant="primary"
-              size={32}
-              onPress={sendRequest}
-              isPending={isPending}
-            >
-              {formatMessage(messages.requestApproval)}
-            </Button>
-          </div>
+          </Text>
+          <Button
+            fullWidth
+            id="e2e-request-approval-confirm"
+            variant="primary"
+            size={32}
+            onPress={sendRequest}
+            isPending={isPending}
+          >
+            {formatMessage(messages.requestApproval)}
+          </Button>
         </div>
       }
     />

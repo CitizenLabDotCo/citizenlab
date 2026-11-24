@@ -2,6 +2,8 @@ import React from 'react';
 
 import { render, screen, userEvent } from 'utils/testUtils/rtl';
 
+import { ReasonKeysContext } from '../disabledReason/reasonKeys';
+
 import ListBox, { ListBoxOption } from '.';
 
 describe('ListBoxOption with a disabled reason', () => {
@@ -27,5 +29,25 @@ describe('ListBoxOption with a disabled reason', () => {
     expect(option).toHaveAttribute('aria-disabled', 'true');
     expect(option).toHaveAccessibleDescription('Not for this phase');
     expect(onSelectionChange).not.toHaveBeenCalled();
+  });
+
+  it('ignores the keys of a surrounding Menu or RadioGroup', async () => {
+    const user = userEvent.setup();
+    const onSelectionChange = jest.fn();
+    render(
+      <ReasonKeysContext.Provider value={new Set(['done'])}>
+        <ListBox
+          aria-label="Status"
+          selectionMode="single"
+          onSelectionChange={onSelectionChange}
+        >
+          <ListBoxOption id="done">Done</ListBoxOption>
+        </ListBox>
+      </ReasonKeysContext.Provider>
+    );
+
+    await user.click(screen.getByRole('option', { name: 'Done' }));
+
+    expect(onSelectionChange).toHaveBeenCalledTimes(1);
   });
 });

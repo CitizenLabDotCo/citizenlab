@@ -28,8 +28,8 @@
 
 .weekday {
   composes: small from '../typography.module.css';
-  width: var(--gv-size-control-32);
-  height: var(--gv-size-control-32);
+  width: var(--gv-size-32);
+  height: var(--gv-size-32);
   padding: 0;
   text-align: center;
   vertical-align: middle;
@@ -45,8 +45,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: var(--gv-size-control-32);
-  height: var(--gv-size-control-32);
+  width: var(--gv-size-32);
+  height: var(--gv-size-32);
   border-radius: var(--gv-radius-8);
   color: var(--gv-text-primary);
   cursor: pointer;

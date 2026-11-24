@@ -19,7 +19,13 @@ const inputs = [
   { id: 'c', title: 'Longer library hours' },
 ];
 
-const Inputs = ({ onAction = () => {} }: { onAction?: () => void }) => {
+const Inputs = ({
+  onAction = () => {},
+  onHide,
+}: {
+  onAction?: () => void;
+  onHide?: () => void;
+}) => {
   const [selectedKeys, setSelectedKeys] = useState<Set<Key>>(new Set());
 
   return (
@@ -42,7 +48,13 @@ const Inputs = ({ onAction = () => {} }: { onAction?: () => void }) => {
         <ColumnHeader
           id="likes"
           sortDirection="descending"
-          menu={<ColumnMenu columnType="number" onSortChange={() => {}} />}
+          menu={
+            <ColumnMenu
+              columnType="number"
+              onSortChange={() => {}}
+              onHide={onHide}
+            />
+          }
         >
           Likes
         </ColumnHeader>
@@ -82,6 +94,20 @@ describe('Table sort', () => {
     const [ascending, descending] = screen.getAllByRole('menuitemradio');
     expect(ascending).toHaveAttribute('aria-checked', 'false');
     expect(descending).toHaveAttribute('aria-checked', 'true');
+    expect(
+      screen.queryByRole('menuitem', { name: 'Hide column' })
+    ).not.toBeInTheDocument();
+  });
+
+  it('offers Hide column when the column can be hidden', async () => {
+    const user = userEvent.setup();
+    const onHide = jest.fn();
+    render(<Inputs onHide={onHide} />);
+
+    await user.click(screen.getByRole('button', { name: /Likes/ }));
+    await user.click(screen.getByRole('menuitem', { name: 'Hide column' }));
+
+    expect(onHide).toHaveBeenCalledTimes(1);
   });
 });
 

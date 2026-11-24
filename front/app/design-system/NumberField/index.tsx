@@ -27,6 +27,7 @@ type NumberFieldProps = LabelProps & {
   maxValue?: number;
   step?: number;
   labelTooltip?: string;
+  labelAccessory?: ReactNode;
   description?: ReactNode;
   errorMessage?: ReactNode;
   size?: 36 | 32;
@@ -75,6 +76,7 @@ const NumberField = ({
   maxValue,
   step,
   labelTooltip,
+  labelAccessory,
   description,
   errorMessage,
   size = 36,
@@ -103,7 +105,9 @@ const NumberField = ({
     aria-label={ariaLabel}
   >
     {label !== undefined && (
-      <FieldLabel tooltip={labelTooltip}>{label}</FieldLabel>
+      <FieldLabel tooltip={labelTooltip} labelAccessory={labelAccessory}>
+        {label}
+      </FieldLabel>
     )}
     <div className={fieldStyles.control}>
       {hideStepButtons ? (

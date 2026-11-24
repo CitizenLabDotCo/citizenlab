@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Spinner from 'design-system/Spinner';
+import Text from 'design-system/Text';
 
 import { IPhaseData } from 'api/phases/types';
 
@@ -25,9 +26,9 @@ const PhaseNotifications = ({ phase }: Props) => {
 
   return (
     <div className={styles.list}>
-      <p className={styles.description}>
+      <Text variant="small" tone="secondary">
         {formatMessage(messages.participantCommunicationsDescription)}
-      </p>
+      </Text>
       {campaigns.map((campaign) => (
         <NotificationRow
           key={campaign.id}

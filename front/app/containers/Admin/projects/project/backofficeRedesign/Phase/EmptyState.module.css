@@ -18,8 +18,3 @@
 .small {
   max-width: 240px;
 }
-
-.title {
-  composes: uiStrong from '../../../../../../design-system/typography.module.css';
-  color: var(--gv-text-primary);
-}

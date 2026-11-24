@@ -3,6 +3,7 @@ import React, { ReactNode } from 'react';
 import { differenceInCalendarDays } from 'date-fns';
 
 import { Cell } from 'design-system/Table';
+import Text from 'design-system/Text';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IIdeaData } from 'api/ideas/types';
@@ -19,7 +20,6 @@ import messages from '../messages';
 import { topicIds } from '../utils';
 
 import AssigneeMark from './AssigneeMark';
-import styles from './IdeaTable.module.css';
 import TagChips from './TagChips';
 
 interface Props {
@@ -80,10 +80,10 @@ const IdeaCell = ({ column, idea, status, tagLabels }: Props) => {
       <>
         {attributes.likes_count}
         {attributes.reacting_threshold !== undefined && (
-          <span className={styles.threshold}>
+          <Text as="span" variant="ui" tone="secondary">
             {' '}
             / {attributes.reacting_threshold}
-          </span>
+          </Text>
         )}
       </>
     ),

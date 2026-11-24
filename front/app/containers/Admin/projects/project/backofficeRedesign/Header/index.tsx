@@ -1,5 +1,7 @@
 import React, { ReactNode } from 'react';
 
+import { useRouter } from '@tanstack/react-router';
+
 import Breadcrumbs, { Breadcrumb } from 'design-system/Breadcrumbs';
 import IconButton from 'design-system/IconButton';
 import StatusBadge from 'design-system/StatusBadge';
@@ -7,16 +9,17 @@ import StatusBadge from 'design-system/StatusBadge';
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 
+import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
 import sharedMessages from 'containers/Admin/projects/_shared/components/messages';
+import phaseSetupMessages from 'containers/Admin/projects/project/phaseSetup/messages';
 import { useWorkspaceHeader } from 'containers/Admin/sideBar/WorkspaceHeaderContext';
 
 import { usePageSave } from 'components/admin/PageSaveContext';
 import goBackMessages from 'components/UI/GoBackButton/messages';
 
 import { useIntl } from 'utils/cl-intl';
-import clHistory from 'utils/cl-router/history';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 import { ProjectSection } from '../_shared/sections';
@@ -71,12 +74,21 @@ const WorkspaceHeader = ({
   const { formatMessage } = useIntl();
   const pageSave = usePageSave();
   const localize = useLocalize();
+  const locale = useLocale();
+  const router = useRouter();
   const workspaceHeader = useWorkspaceHeader();
   const views = usePhaseViews(phase);
   const inPhase = !!(phase || draftLabel);
-  const saveButtonLabel = saveLabel ?? formatMessage(messages.save);
+  const saveButtonLabel =
+    saveLabel ??
+    formatMessage(
+      inPhase ? phaseSetupMessages.saveChangesLabel : messages.save
+    );
 
-  const projectPath = `/admin/projects/${project.id}`;
+  const projectPath = router.buildLocation({
+    to: '/$locale/admin/projects/$projectId',
+    params: { locale, projectId: project.id },
+  }).href;
   const projectTitle = localize(project.attributes.title_multiloc);
 
   const phaseCrumbs: Crumb[] = [
@@ -94,7 +106,10 @@ const WorkspaceHeader = ({
     {
       key: 'projects',
       label: formatMessage(messages.projectsCrumb),
-      path: '/admin/projects',
+      path: router.buildLocation({
+        to: '/$locale/admin/projects',
+        params: { locale },
+      }).href,
     },
     {
       key: 'project',
@@ -128,7 +143,7 @@ const WorkspaceHeader = ({
             <IconButton
               icon="arrow-left-16"
               aria-label={formatMessage(messages.backToProjectSetup)}
-              onPress={() => clHistory.push(projectPath)}
+              href={projectPath}
             />
           ))}
         <div className={styles.crumbs}>

@@ -1,5 +1,7 @@
 import React from 'react';
 
+import Text from 'design-system/Text';
+
 import styles from './SettingsSection.module.css';
 import 'design-system/tokens.css';
 
@@ -21,12 +23,18 @@ const SettingsSection = ({
   <section>
     <div className={styles.header}>
       <div className={styles.text}>
-        <h3
-          className={titleVariant === 'heading' ? styles.heading : styles.label}
+        <Text
+          as="h3"
+          variant={titleVariant === 'heading' ? 'uiStrong' : 'ui'}
+          tone={titleVariant === 'heading' ? 'primary' : 'secondary'}
         >
           {title}
-        </h3>
-        {description && <p className={styles.description}>{description}</p>}
+        </Text>
+        {description && (
+          <Text variant="small" tone="secondary" className={styles.description}>
+            {description}
+          </Text>
+        )}
       </div>
       {action && <div className={styles.action}>{action}</div>}
     </div>

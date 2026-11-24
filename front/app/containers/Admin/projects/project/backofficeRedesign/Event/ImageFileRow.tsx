@@ -4,6 +4,7 @@ import { UploadFile } from 'typings';
 
 import Banner from 'design-system/Banner';
 import IconButton from 'design-system/IconButton';
+import Text from 'design-system/Text';
 
 import imagesDropzoneMessages from 'components/UI/ImagesDropzone/messages';
 
@@ -32,6 +33,7 @@ interface Props {
   onReplace: (image: UploadFile) => void;
   onRemove: () => void;
   stackActions?: boolean;
+  acceptedFileTypes?: string[];
 }
 
 const ImageFileRow = ({
@@ -41,6 +43,7 @@ const ImageFileRow = ({
   onReplace,
   onRemove,
   stackActions = false,
+  acceptedFileTypes = ACCEPTED_IMAGE_TYPES,
 }: Props) => {
   const { formatMessage } = useIntl();
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -101,7 +104,7 @@ const ImageFileRow = ({
           <p className={styles.name} title={image.name}>
             {image.name}
           </p>
-          <p className={styles.meta}>
+          <Text variant="small" tone="secondary">
             <span className={styles.nowrap}>{returnFileSize(image.size)}</span>
             {dimensions && (
               <>
@@ -111,14 +114,14 @@ const ImageFileRow = ({
                 </span>
               </>
             )}
-          </p>
+          </Text>
           {stackActions && actions}
         </div>
         {!stackActions && actions}
         <input
           ref={inputRef}
           type="file"
-          accept={ACCEPTED_IMAGE_TYPES.join(',')}
+          accept={acceptedFileTypes.join(',')}
           hidden
           onChange={handleFileChange}
         />

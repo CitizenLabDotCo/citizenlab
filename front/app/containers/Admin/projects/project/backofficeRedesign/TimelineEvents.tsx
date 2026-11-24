@@ -5,6 +5,7 @@ import { router } from 'routes';
 
 import IconButton from 'design-system/IconButton';
 import PanelGroupHeader from 'design-system/PanelGroupHeader';
+import Text from 'design-system/Text';
 
 import useEvents from 'api/events/useEvents';
 
@@ -94,13 +95,13 @@ const TimelineEvents = ({ projectId }: Props) => {
               className={styles.eventRow}
               data-selected={event.id === selectedEventId || undefined}
             >
-              <span className={styles.eventTitle}>
+              <Text as="span" variant="smallStrong" tone="primary">
                 {localize(title_multiloc)}
-              </span>
-              <span className={styles.eventMeta}>
+              </Text>
+              <Text as="span" variant="small" tone="secondary">
                 {formatMessage(STATUS_LABELS[status])} ·{' '}
                 {formatEventDate(start_at, end_at, dateLocale)}
-              </span>
+              </Text>
             </Link>
           );
         })}

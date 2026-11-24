@@ -88,25 +88,24 @@ const SettingsModal = ({
     >
       <div className={styles.frame}>
         {notice && <div className={styles.notice}>{notice}</div>}
-        <div className={styles.layout}>
-          <VerticalTabs
-            selectedKey={selected.name}
-            onSelectionChange={(key) => setSelectedSection(String(key))}
-          >
-            <VerticalTabList tabStyle={tabStyle}>
-              {orderedSections.map(({ name, label, icon }) => (
-                <VerticalTab key={name} id={name} icon={icon}>
-                  {formatMessage(label)}
-                </VerticalTab>
-              ))}
-            </VerticalTabList>
-            {orderedSections.map(({ name, content }) => (
-              <TabPanel key={name} id={name}>
-                {content}
-              </TabPanel>
+        <VerticalTabs
+          className={styles.layout}
+          selectedKey={selected.name}
+          onSelectionChange={(key) => setSelectedSection(String(key))}
+        >
+          <VerticalTabList tabStyle={tabStyle} className={styles.tabList}>
+            {orderedSections.map(({ name, label, icon }) => (
+              <VerticalTab key={name} id={name} icon={icon}>
+                {formatMessage(label)}
+              </VerticalTab>
             ))}
-          </VerticalTabs>
-        </div>
+          </VerticalTabList>
+          {orderedSections.map(({ name, content }) => (
+            <TabPanel key={name} id={name} className={styles.tabPanel}>
+              {content}
+            </TabPanel>
+          ))}
+        </VerticalTabs>
       </div>
     </Modal>
   );

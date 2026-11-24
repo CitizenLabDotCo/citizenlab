@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useMemo, useState } from 'react';
+import React, { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 
 import { debounce } from 'lodash-es';
 
@@ -31,17 +31,25 @@ const LocationComboBox = ({
 }: Props) => {
   const locale = useLocale();
   const [results, setResults] = useState<string[]>([]);
+  const latestRequest = useRef(0);
 
   const search = useMemo(
     () =>
-      debounce((text: string) => {
-        fetchLocationOptions(text, locale).then((options) =>
-          setResults(options.map((option) => option.value))
-        );
+      debounce(async (text: string, request: number) => {
+        const options = await fetchLocationOptions(text, locale);
+        if (request === latestRequest.current) {
+          setResults(options.map((option) => option.value));
+        }
       }, 500),
     [locale]
   );
-  useEffect(() => () => search.cancel(), [search]);
+  useEffect(
+    () => () => {
+      latestRequest.current += 1;
+      search.cancel();
+    },
+    [search]
+  );
 
   // The current address has to be in the list for it to show in the input.
   const addresses =
@@ -58,16 +66,24 @@ const LocationComboBox = ({
       items={items}
       value={value || null}
       onChange={(key) => {
-        if (typeof key === 'string') onChange(key);
+        if (typeof key === 'string') {
+          latestRequest.current += 1;
+          search.cancel();
+          onChange(key);
+        }
       }}
       onInputChange={(text) => {
-        // Picking an address writes it into the input; that is not a search.
-        if (text === value) return;
+        latestRequest.current += 1;
+        search.cancel();
+
         if (text === '') {
-          onChange('');
+          setResults([]);
+          if (value) onChange('');
           return;
         }
-        search(text);
+
+        // Picking an address writes it into the input; that is not a search.
+        if (text !== value) search(text, latestRequest.current);
       }}
       data-cy="e2e-event-location-input"
     >

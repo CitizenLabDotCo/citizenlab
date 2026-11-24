@@ -3,6 +3,7 @@ import React from 'react';
 import { Multiloc } from 'typings';
 
 import IconButton from 'design-system/IconButton';
+import Text from 'design-system/Text';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -39,10 +40,12 @@ const CauseRow = ({
         <div className={styles.placeholder} />
       )}
       <div className={styles.text}>
-        <span className={styles.title}>{localize(title)}</span>
-        <span className={styles.meta}>
+        <Text as="span" variant="ui" tone="primary">
+          {localize(title)}
+        </Text>
+        <Text as="span" variant="small" tone="secondary">
           {formatMessage(messages.nSignedUp, { count: volunteersCount })}
-        </span>
+        </Text>
       </div>
       <div className={styles.rowActions}>
         <IconButton

@@ -40,6 +40,11 @@
   margin-left: auto;
 }
 
+/* Holds the 28 px button row while the panel buttons load. */
+.buttonsPlaceholder {
+  height: var(--gv-size-28);
+}
+
 /* Actions under the text area of a comment being edited. */
 .editFooter {
   display: flex;

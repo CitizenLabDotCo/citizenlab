@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useId, useRef } from 'react';
 
-import { fieldStyles } from 'design-system/Field';
+import { FieldError } from 'design-system/Field';
 import { ListBoxOption } from 'design-system/ListBox';
 import { DialogTrigger } from 'design-system/Popover';
 import TagGroup, { Tag, TagAdd } from 'design-system/TagGroup';
@@ -29,6 +29,7 @@ const GroupsPicker = ({ groupIds, showError, onChange }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { data: groups } = useGroups({});
+  const errorId = useId();
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -63,7 +64,9 @@ const GroupsPicker = ({ groupIds, showError, onChange }: Props) => {
         }
         add={
           <DialogTrigger>
-            <TagAdd>{chooseGroupsLabel}</TagAdd>
+            <TagAdd aria-describedby={showError ? errorId : undefined}>
+              {chooseGroupsLabel}
+            </TagAdd>
             <TagPicker
               aria-label={chooseGroupsLabel}
               items={options}
@@ -80,9 +83,9 @@ const GroupsPicker = ({ groupIds, showError, onChange }: Props) => {
         {(option) => <Tag id={option.id}>{option.name}</Tag>}
       </TagGroup>
       {showError && (
-        <p className={fieldStyles.error}>
+        <FieldError id={errorId}>
           {formatMessage(messages.groupsRequired)}
-        </p>
+        </FieldError>
       )}
     </div>
   );

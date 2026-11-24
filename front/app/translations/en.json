@@ -2731,6 +2731,8 @@
   "app.designSystem.TagPicker.done": "Done",
   "app.designSystem.TagPicker.search": "Search tags",
   "app.designSystem.TagPicker.selectedCount": "{count} selected",
+  "app.designSystem.Tooltip.moreInformation": "More information",
+  "app.designSystem.Tooltip.moreInformationAbout": "More information about {subject}",
   "app.errors.after_end_at": "The start date occurs after the end date",
   "app.errors.avatar_carrierwave_download_error": "Could not download avatar file.",
   "app.errors.avatar_carrierwave_integrity_error": "Avatar file is not of an allowed type.",

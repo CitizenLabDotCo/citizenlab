@@ -1,8 +1,3 @@
-.helper {
-  composes: ui from '../../../../../../../../../../design-system/typography.module.css';
-  color: var(--gv-text-secondary);
-}
-
 .questions {
   margin: 0;
   padding: 0;
@@ -18,7 +13,6 @@
 }
 
 .number {
-  composes: helper;
   min-width: var(--gv-space-16);
 }
 
@@ -29,7 +23,6 @@
 }
 
 .details {
-  composes: helper;
   text-align: right;
 }
 

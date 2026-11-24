@@ -3,7 +3,6 @@ import React, { ReactNode } from 'react';
 import Disclosure from 'design-system/Disclosure';
 import { IconName } from 'design-system/Icon';
 import IconButton from 'design-system/IconButton';
-import Tooltip from 'design-system/Tooltip';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 
@@ -20,6 +19,7 @@ export interface CardButton {
   actionLabel?: string;
   expanded?: boolean;
   disabled?: boolean;
+  describedBy?: string;
 }
 
 const ACTION_ICONS: Record<CardIcon, IconName> = {
@@ -33,6 +33,7 @@ const ACTION_ICONS: Record<CardIcon, IconName> = {
 interface Props {
   title: string;
   titleTooltip?: JSX.Element;
+  staticTitle?: ReactNode;
   /** A review status, shown next to the title. */
   status?: ReactNode;
   action?: ReactNode;
@@ -43,6 +44,7 @@ interface Props {
 const SetupCardButton = ({
   title,
   titleTooltip,
+  staticTitle = title,
   status,
   action,
   button,
@@ -61,6 +63,7 @@ const SetupCardButton = ({
     return (
       <Disclosure
         title={titleWithAction}
+        tooltip={titleTooltip}
         status={status}
         summary={action}
         isExpanded={button.expanded}
@@ -78,13 +81,14 @@ const SetupCardButton = ({
     return (
       <Disclosure
         header="static"
-        title={title}
+        title={staticTitle}
         status={status}
         summary={action}
         actions={
           <IconButton
             icon={ACTION_ICONS[button.icon]}
             aria-label={button.actionLabel ?? title}
+            aria-describedby={button.describedBy}
             isDisabled={button.disabled}
             onPress={button.onClick}
           />
@@ -95,9 +99,10 @@ const SetupCardButton = ({
     );
   }
 
-  const card = (
+  return (
     <Disclosure
       header="button"
+      tooltip={titleTooltip}
       title={titleWithAction}
       status={status}
       summary={action}
@@ -106,12 +111,6 @@ const SetupCardButton = ({
       onPress={button.onClick}
     />
   );
-
-  // The tooltip icon can't sit inside the header button, so the whole header
-  // carries the tooltip instead.
-  if (!titleTooltip) return card;
-
-  return <Tooltip content={titleTooltip}>{card}</Tooltip>;
 };
 
 export default SetupCardButton;

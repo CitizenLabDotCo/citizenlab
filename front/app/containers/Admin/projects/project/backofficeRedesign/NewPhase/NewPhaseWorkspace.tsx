@@ -34,7 +34,6 @@ import Navigate from 'utils/cl-router/Navigate';
 import ProjectWorkspace from '..';
 import BuildFields from '../Phase/BuildPanel/BuildFields';
 import methodSectionMessages from '../Phase/BuildPanel/BuildFields/MethodSection/messages';
-import buildPanelStyles from '../Phase/BuildPanel/BuildPanel.module.css';
 import PlacementCard from '../Phase/BuildPanel/PlacementCard';
 import SurveySetupModal, {
   SurveySetupAction,
@@ -289,33 +288,32 @@ const NewPhaseWorkspace = ({
               ['native_survey', 'ideation', 'proposals'].includes(
                 participationMethod
               ) && (
-                <div className={buildPanelStyles.fullWidth}>
-                  <Button
-                    variant="secondary"
-                    data-cy={
-                      participationMethod === 'native_survey'
-                        ? 'add-draft-survey-questions'
-                        : 'add-draft-input-questions'
+                <Button
+                  fullWidth
+                  variant="secondary"
+                  data-cy={
+                    participationMethod === 'native_survey'
+                      ? 'add-draft-survey-questions'
+                      : 'add-draft-input-questions'
+                  }
+                  isPending={
+                    participationMethod !== 'native_survey' &&
+                    !!pageSave?.saving
+                  }
+                  isDisabled={
+                    participationMethod !== 'native_survey' &&
+                    files.isUploadingFile
+                  }
+                  onPress={() => {
+                    if (participationMethod === 'native_survey') {
+                      setSurveySetupOpened(true);
+                    } else {
+                      saveAndOpenAction('input');
                     }
-                    isPending={
-                      participationMethod !== 'native_survey' &&
-                      !!pageSave?.saving
-                    }
-                    isDisabled={
-                      participationMethod !== 'native_survey' &&
-                      files.isUploadingFile
-                    }
-                    onPress={() => {
-                      if (participationMethod === 'native_survey') {
-                        setSurveySetupOpened(true);
-                      } else {
-                        saveAndOpenAction('input');
-                      }
-                    }}
-                  >
-                    {formatMessage(methodSectionMessages.addQuestions)}
-                  </Button>
-                </div>
+                  }}
+                >
+                  {formatMessage(methodSectionMessages.addQuestions)}
+                </Button>
               )
             }
             surveyMethodSwitch={{

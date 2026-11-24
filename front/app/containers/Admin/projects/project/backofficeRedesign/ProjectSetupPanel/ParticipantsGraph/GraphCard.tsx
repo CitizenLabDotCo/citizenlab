@@ -4,6 +4,7 @@ import { parseISO } from 'date-fns';
 import moment from 'moment';
 
 import Icon from 'design-system/Icon';
+import Text from 'design-system/Text';
 
 import useParticipants from 'components/admin/GraphCards/ParticipantsCard/useParticipants';
 
@@ -52,22 +53,28 @@ const GraphCard = ({ projectId }: Props) => {
     <StatCardLink projectId={projectId}>
       <div className={styles.head}>
         <div className={styles.summary}>
-          <p className={styles.caption}>
+          <Text variant="small" tone="secondary">
             {formatMessage(messages.participantsGraphLabel)}
-          </p>
+          </Text>
           <p className={styles.value}>{formatNumber(participants)}</p>
           {lastPeriod > 0 && (
-            <p className={styles.lastPeriod}>
+            <Text
+              variant="small"
+              tone="secondary"
+              className={styles.lastPeriod}
+            >
               <FormattedMessage
                 {...messages.participantsGraphLastPeriod}
                 values={{
                   count: lastPeriod,
                   b: (chunks) => (
-                    <span className={styles.growth}>{chunks}</span>
+                    <Text as="span" variant="smallStrong" tone="success">
+                      {chunks}
+                    </Text>
                   ),
                 }}
               />
-            </p>
+            </Text>
           )}
         </div>
         <Icon name="chevron-right-16" className={styles.chevron} />
@@ -78,7 +85,7 @@ const GraphCard = ({ projectId }: Props) => {
           <div className={styles.sparkline}>
             <Sparkline values={weeks.map((week) => week.participants)} />
           </div>
-          <p className={styles.scale}>
+          <Text variant="small" tone="secondary" className={styles.scale}>
             {formatMessage(messages.participantsGraphScale, {
               date: formatDate(sinceDate, {
                 day: 'numeric',
@@ -86,7 +93,7 @@ const GraphCard = ({ projectId }: Props) => {
                 ...(sinceThisYear ? {} : { year: 'numeric' }),
               }),
             })}
-          </p>
+          </Text>
         </>
       )}
     </StatCardLink>

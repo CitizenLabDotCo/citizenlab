@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import Text from 'design-system/Text';
+
 import { IProjectData } from 'api/projects/types';
 
 import ConfirmStatusChangeModal from 'containers/Admin/projects/project/backofficeRedesign/Header/PublishDropdown/ConfirmStatusChangeModal';
@@ -8,7 +10,6 @@ import { useIntl } from 'utils/cl-intl';
 
 import backofficeRedesignMessages from '../messages';
 
-import styles from './ArchivedPanel.module.css';
 import FinalRecordCard from './FinalRecordCard';
 import messages from './messages';
 import SetupCard from './SetupCard';
@@ -23,9 +24,9 @@ const ArchivedPanel = ({ project }: Props) => {
 
   return (
     <div>
-      <p className={styles.explanation}>
+      <Text variant="ui" tone="secondary">
         {formatMessage(messages.archivedExplanation)}
-      </p>
+      </Text>
       <FinalRecordCard project={project} />
       <SetupCard
         id="e2e-next-action-restore-draft"

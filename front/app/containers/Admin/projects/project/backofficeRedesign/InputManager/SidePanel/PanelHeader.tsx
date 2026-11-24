@@ -1,6 +1,7 @@
 import React from 'react';
 
 import IconButton from 'design-system/IconButton';
+import Text from 'design-system/Text';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -33,12 +34,12 @@ const PanelHeader = ({ navigation }: Props) => {
         onPress={() => navigation.onPrevious?.()}
         isDisabled={!navigation.onPrevious}
       />
-      <span className={styles.position}>
+      <Text as="span" variant="ui" tone="secondary">
         {formatMessage(messages.position, {
           position: navigation.position,
           total: navigation.total,
         })}
-      </span>
+      </Text>
       <IconButton
         icon="chevron-right-16"
         aria-label={formatMessage(messages.nextTerm, { term })}

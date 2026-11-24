@@ -1,4 +1,5 @@
 .button {
+  composes: button from '../reset.module.css';
   composes: uiStrong from '../typography.module.css';
   composes: ringOutside from '../focus.module.css';
   box-sizing: border-box;
@@ -6,9 +7,7 @@
   flex-shrink: 0;
   align-items: center;
   justify-content: center;
-  border: none;
   border-radius: var(--gv-radius-8);
-  background: transparent;
   white-space: nowrap;
   text-decoration: none;
   cursor: pointer;
@@ -18,13 +17,13 @@
 }
 
 .size28 {
-  height: var(--gv-size-control-28);
+  height: var(--gv-size-28);
   padding: 0 var(--gv-space-12);
   gap: var(--gv-space-6);
 }
 
 .size32 {
-  height: var(--gv-size-control-32);
+  height: var(--gv-size-32);
   padding: 0 var(--gv-space-16);
   gap: var(--gv-space-8);
 }
@@ -35,7 +34,7 @@
 }
 
 .unlabelled.size32 {
-  width: var(--gv-size-control-32);
+  width: var(--gv-size-32);
 }
 
 /* React Aria marks a pending button disabled too; Pending stays at full strength. */
@@ -142,4 +141,8 @@
 
 .danger[data-pressed] {
   background: var(--gv-surface-danger-strong-pressed);
+}
+
+.fullWidth {
+  width: 100%;
 }

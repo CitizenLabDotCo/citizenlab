@@ -1,5 +1,7 @@
 import React from 'react';
 
+import Text from 'design-system/Text';
+
 import { IIdeaData } from 'api/ideas/types';
 
 import { useIntl } from 'utils/cl-intl';
@@ -58,10 +60,10 @@ const StatementToolbar = ({
           selectAllFailed={selectAllFailed}
         />
       ) : (
-        <p className={styles.count}>
+        <Text variant="title" tone="primary">
           {listedTotal !== undefined &&
             formatMessage(messages.statementCount, { count: listedTotal })}
-        </p>
+        </Text>
       )}
       <div className={styles.display}>
         <SearchToggle

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render, screen } from 'utils/testUtils/rtl';
+import { render, screen, userEvent } from 'utils/testUtils/rtl';
 
 import Disclosure from '.';
 
@@ -15,4 +15,25 @@ describe('Disclosure', () => {
     ).toBeInTheDocument();
     expect(heading).toContainElement(screen.getByRole('button'));
   });
+});
+
+it('shows the tooltip on keyboard focus and still expands on enter', async () => {
+  const user = userEvent.setup();
+
+  render(
+    <Disclosure title="Set area" tooltip="Choose where the project applies.">
+      <p>Selected areas</p>
+    </Disclosure>
+  );
+
+  await user.tab();
+  const trigger = screen.getByRole('button', { name: 'Set area' });
+  expect(trigger).toHaveFocus();
+  expect(await screen.findByRole('tooltip')).toHaveTextContent(
+    'Choose where the project applies.'
+  );
+
+  await user.keyboard('{Enter}');
+  expect(trigger).toHaveAttribute('aria-expanded', 'true');
+  expect(screen.getByText('Selected areas')).toBeVisible();
 });

@@ -5,7 +5,7 @@ import Button from 'design-system/Button';
 import styles from '../commentsPanel.module.css';
 import 'design-system/tokens.css';
 
-interface Props {
+export interface PanelFormButtonsProps {
   cancelLabel: ReactNode;
   submitLabel: ReactNode;
   onCancel: () => void;
@@ -27,7 +27,7 @@ const PanelFormButtons = ({
   isCancelDisabled,
   isSubmitDisabled,
   submitId,
-}: Props) => (
+}: PanelFormButtonsProps) => (
   <div className={styles.buttons}>
     <Button
       variant="secondary"

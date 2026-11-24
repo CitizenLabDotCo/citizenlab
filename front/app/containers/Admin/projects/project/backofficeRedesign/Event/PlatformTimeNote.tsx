@@ -3,6 +3,7 @@ import React from 'react';
 // The design-system icon set has no globe.
 import { Icon } from '@citizenlab/cl2-component-library';
 
+import Text from 'design-system/Text';
 import Tooltip, { TooltipTarget } from 'design-system/Tooltip';
 
 import dateTimeMessages from 'containers/Admin/projects/project/events/components/DateTimeSelection/messages';
@@ -37,9 +38,9 @@ const PlatformTimeNote = ({ timezone, now }: Props) => {
           fill="currentColor"
           className={styles.icon}
         />
-        <span className={styles.text}>
+        <Text as="span" variant="small" tone="secondary">
           {formatMessage(messages.platformTime, { timezone })}
-        </span>
+        </Text>
       </TooltipTarget>
     </Tooltip>
   );

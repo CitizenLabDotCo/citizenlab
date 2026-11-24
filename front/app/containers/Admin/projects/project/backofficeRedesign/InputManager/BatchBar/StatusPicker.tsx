@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import Button from 'design-system/Button';
 import ListBox, { ListBoxOption } from 'design-system/ListBox';
 import Popover, { DialogTrigger } from 'design-system/Popover';
+import Text from 'design-system/Text';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -62,9 +63,9 @@ const StatusPicker = ({ options, selected, onSelect }: Props) => {
             </ListBoxOption>
           ))}
         </ListBox>
-        <p className={styles.note}>
+        <Text variant="small" tone="secondary">
           {formatMessage(messages.statusChangeNotifies)}
-        </p>
+        </Text>
       </Popover>
     </DialogTrigger>
   );

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Avatar from 'design-system/Avatar';
+import TooltipMark from 'design-system/Tooltip/TooltipMark';
 
 import useUserById from 'api/users/useUserById';
 
@@ -8,7 +9,6 @@ import { useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';
 
 import messages from '../messages';
-import TooltipMark from '../TooltipMark';
 
 interface Props {
   assigneeId: string | undefined;

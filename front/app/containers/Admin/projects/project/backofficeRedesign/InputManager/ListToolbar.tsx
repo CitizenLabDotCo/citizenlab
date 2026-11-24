@@ -1,5 +1,7 @@
 import React from 'react';
 
+import Text from 'design-system/Text';
+
 import { IIdeaData } from 'api/ideas/types';
 
 import { ManagerType } from 'components/admin/PostManager';
@@ -70,9 +72,9 @@ const ListToolbar = ({
           selectAllFailed={selectAllFailed}
         />
       ) : (
-        <p className={styles.count}>
+        <Text variant="title" tone="primary">
           {count !== undefined && termCount(count)}
-        </p>
+        </Text>
       )}
       <div className={styles.display}>
         <SearchToggle

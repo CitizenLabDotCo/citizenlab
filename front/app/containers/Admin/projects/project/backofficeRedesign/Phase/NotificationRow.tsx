@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useState } from 'react';
 
 import Icon from 'design-system/Icon';
 import Switch from 'design-system/Switch';
-import Tooltip from 'design-system/Tooltip';
+import Text from 'design-system/Text';
 import UnstyledButton from 'design-system/UnstyledButton';
 
 import { CampaignData } from 'containers/Admin/messaging/AutomatedEmails/types';
@@ -59,7 +59,6 @@ const NotificationRow = ({ campaign, projectId, phaseId }: Props) => {
     ? formatMessage(messagingMessages.editDisabledTooltip)
     : undefined;
   const isEditDisabled = !isEditable || !enabled;
-  const hasReason = isEditDisabled && !!disabledReason;
 
   // The whole text block opens the editor, so it is a plain React Aria button
   // styled as a row; a design-system Button only holds a short label.
@@ -67,16 +66,18 @@ const NotificationRow = ({ campaign, projectId, phaseId }: Props) => {
     <UnstyledButton
       className={`${styles.edit} ${enabled ? '' : styles.off}`}
       aria-label={editLabel}
-      isDisabled={isEditDisabled && !hasReason}
-      aria-disabled={hasReason ? true : undefined}
-      onPress={isEditDisabled ? undefined : openEditor}
+      isDisabled={isEditDisabled}
+      disabledReason={isEditDisabled ? disabledReason : undefined}
+      onPress={openEditor}
     >
       <span className={styles.content}>
-        <span className={styles.title}>{campaign.campaign_description}</span>
-        <span className={styles.detail}>
+        <Text as="span" variant="ui" tone="primary" className={styles.title}>
+          {campaign.campaign_description}
+        </Text>
+        <Text as="span" variant="small" tone="secondary">
           {description ??
             [campaign.recipient_segment, when].filter(Boolean).join(' · ')}
-        </span>
+        </Text>
       </span>
       <Icon name="chevron-right-16" className={styles.chevron} />
     </UnstyledButton>
@@ -93,13 +94,7 @@ const NotificationRow = ({ campaign, projectId, phaseId }: Props) => {
           isDisabled={!canBeDisabled}
         />
       </div>
-      <div className={styles.main}>
-        {hasReason ? (
-          <Tooltip content={disabledReason}>{editButton}</Tooltip>
-        ) : (
-          editButton
-        )}
-      </div>
+      <div className={styles.main}>{editButton}</div>
     </div>
   );
 };

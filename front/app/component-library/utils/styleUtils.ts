@@ -49,6 +49,7 @@ export const themeColors = {
   /**
    * Grey
    */
+  grey900: '#1E1E1E',
   grey800: '#333333', // formerly text
   grey700: '#767676', // formerly border, grey
   grey600: '#999999', // formerly placeholder

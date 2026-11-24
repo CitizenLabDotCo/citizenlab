@@ -10,6 +10,7 @@ import {
 
 import Icon, { IconName } from '../Icon';
 import { SpinnerGraphic } from '../Spinner';
+import Tooltip from '../Tooltip';
 
 import styles from './Disclosure.module.css';
 import '../tokens.css';
@@ -24,6 +25,7 @@ type SharedProps = {
 
 type DisclosureHeaderProps = SharedProps & {
   header?: 'disclosure';
+  tooltip?: ReactNode;
   isExpanded?: boolean;
   onExpandedChange?: (isExpanded: boolean) => void;
   isDisabled?: boolean;
@@ -32,6 +34,7 @@ type DisclosureHeaderProps = SharedProps & {
 
 type ButtonHeaderProps = SharedProps & {
   header: 'button';
+  tooltip?: ReactNode;
   actionIcon: IconName;
   onPress?: (e: PressEvent) => void;
   isDisabled?: boolean;
@@ -60,36 +63,43 @@ const DisclosureCard = ({
   onExpandedChange,
   children,
   isDisabled = false,
+  tooltip,
   ...content
-}: DisclosureHeaderProps) => (
-  <AriaDisclosure
-    className={styles.card}
-    isExpanded={isExpanded}
-    onExpandedChange={onExpandedChange}
-    isDisabled={isDisabled}
-  >
-    <Heading level={4} className={styles.heading}>
-      <AriaButton slot="trigger" className={styles.trigger}>
-        <HeaderContent {...content} />
-        <span className={styles.iconBox}>
-          <Icon name="chevron-down-16" className={styles.chevron} />
-        </span>
-      </AriaButton>
-    </Heading>
-    <DisclosurePanel className={styles.panel}>
-      <div className={styles.panelContent}>{children}</div>
-    </DisclosurePanel>
-  </AriaDisclosure>
-);
+}: DisclosureHeaderProps) => {
+  const trigger = (
+    <AriaButton slot="trigger" className={styles.trigger}>
+      <HeaderContent {...content} />
+      <span className={styles.iconBox}>
+        <Icon name="chevron-down-16" className={styles.chevron} />
+      </span>
+    </AriaButton>
+  );
+  return (
+    <AriaDisclosure
+      className={styles.card}
+      isExpanded={isExpanded}
+      onExpandedChange={onExpandedChange}
+      isDisabled={isDisabled}
+    >
+      <Heading level={4} className={styles.heading}>
+        {tooltip ? <Tooltip content={tooltip}>{trigger}</Tooltip> : trigger}
+      </Heading>
+      <DisclosurePanel className={styles.panel}>
+        <div className={styles.panelContent}>{children}</div>
+      </DisclosurePanel>
+    </AriaDisclosure>
+  );
+};
 
 const ButtonCard = ({
   actionIcon,
   onPress,
   isDisabled = false,
   isPending = false,
+  tooltip,
   ...content
-}: ButtonHeaderProps) => (
-  <div className={styles.card} data-disabled={isDisabled || undefined}>
+}: ButtonHeaderProps) => {
+  const trigger = (
     <AriaButton
       className={styles.trigger}
       isDisabled={isDisabled}
@@ -101,8 +111,13 @@ const ButtonCard = ({
         {isPending ? <SpinnerGraphic /> : <Icon name={actionIcon} />}
       </span>
     </AriaButton>
-  </div>
-);
+  );
+  return (
+    <div className={styles.card} data-disabled={isDisabled || undefined}>
+      {tooltip ? <Tooltip content={tooltip}>{trigger}</Tooltip> : trigger}
+    </div>
+  );
+};
 
 const StaticCard = ({ actions, children, ...content }: StaticHeaderProps) => (
   <div className={styles.card}>

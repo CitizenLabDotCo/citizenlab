@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import Modal from 'design-system/Modal';
 import Spinner from 'design-system/Spinner';
+import Text from 'design-system/Text';
 
 import useIdeas from 'api/ideas/useIdeas';
 import usePhase from 'api/phases/usePhase';
@@ -85,9 +86,9 @@ const LinkPhaseIdeasModal = ({
       }}
     >
       <div className={styles.body}>
-        <p className={styles.lead}>
+        <Text variant="ui" tone="secondary">
           {formatMessage(messages.linkPhaseDescription)}
-        </p>
+        </Text>
         <PhaseSelect
           label={formatMessage(messages.linkPhaseLabel)}
           projectId={projectId}
@@ -103,9 +104,9 @@ const LinkPhaseIdeasModal = ({
         />
         {loading && <Spinner />}
         {ideas && (
-          <p className={styles.helper}>
+          <Text variant="ui" tone="secondary">
             {formatMessage(messages.nInputsToLink, { count: ideas.length })}
-          </p>
+          </Text>
         )}
       </div>
     </Modal>

@@ -8,11 +8,16 @@ type RichTextEditorProps = {
   toolbar: ReactNode;
   // The editing surface. The editor engine is not part of the design system.
   children: ReactNode;
+  isInvalid?: boolean;
 };
 
 // The frame of the description editor: the toolbar over the editing body.
-const RichTextEditor = ({ toolbar, children }: RichTextEditorProps) => (
-  <div className={styles.editor}>
+const RichTextEditor = ({
+  toolbar,
+  children,
+  isInvalid,
+}: RichTextEditorProps) => (
+  <div className={styles.editor} data-invalid={isInvalid || undefined}>
     {toolbar}
     <div className={styles.body}>{children}</div>
   </div>

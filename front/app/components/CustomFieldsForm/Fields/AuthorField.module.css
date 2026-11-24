@@ -1,5 +1,4 @@
-.label {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--gv-space-4);
+/* Holds the author picker's label row and 32 px input while it loads. */
+.placeholder {
+  height: calc(var(--gv-size-24) + var(--gv-space-8) + var(--gv-size-32));
 }

@@ -23,6 +23,7 @@ type LabelProps =
 export type ButtonProps = LabelProps & {
   variant?: ButtonVariant;
   size?: 28 | 32;
+  fullWidth?: boolean;
   icon?: IconName;
   trailingIcon?: IconName;
   // Draws the dropdown chevron. Set it when the button is a MenuTrigger.
@@ -47,6 +48,7 @@ const Button = ({
   children,
   variant = 'secondary',
   size = 32,
+  fullWidth = false,
   icon,
   trailingIcon,
   hasMenu = false,
@@ -69,6 +71,7 @@ const Button = ({
 
   const className = [
     styles.button,
+    fullWidth && styles.fullWidth,
     styles[variant],
     styles[`size${size}`],
     children === undefined ? styles.unlabelled : undefined,
