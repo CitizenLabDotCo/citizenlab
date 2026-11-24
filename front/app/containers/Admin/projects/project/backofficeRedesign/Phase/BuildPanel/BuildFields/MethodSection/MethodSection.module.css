@@ -11,16 +11,6 @@
   margin-bottom: var(--gv-space-8);
 }
 
-.helper {
-  composes: small from '../../../../../../../../../design-system/typography.module.css';
-  color: var(--gv-text-secondary);
-}
-
-.control {
-  composes: ui from '../../../../../../../../../design-system/typography.module.css';
-  color: var(--gv-text-primary);
-}
-
 .fullFormLink {
   composes: uiLink from '../../../../../../../../../design-system/typography.module.css';
   composes: ringOutside from '../../../../../../../../../design-system/focus.module.css';

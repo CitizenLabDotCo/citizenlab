@@ -3,6 +3,7 @@ import React from 'react';
 import { ListBoxOption } from 'design-system/ListBox';
 import Select from 'design-system/Select';
 import Spinner from 'design-system/Spinner';
+import Text from 'design-system/Text';
 
 import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
@@ -13,7 +14,6 @@ import phaseFilterMessages from 'components/UI/PhaseFilter/messages';
 
 import { useIntl } from 'utils/cl-intl';
 
-import styles from './PhaseSelect.module.css';
 import 'design-system/tokens.css';
 
 interface Props {
@@ -53,9 +53,9 @@ const PhaseSelect = ({
 
   if (options.length === 0) {
     return (
-      <p className={styles.empty}>
+      <Text variant="small" tone="danger">
         {formatMessage(phaseFilterMessages.noAppropriatePhases)}
-      </p>
+      </Text>
     );
   }
 

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Button from 'design-system/Button';
+import Text from 'design-system/Text';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -19,9 +20,9 @@ const ListLoadError = ({ onRetry, message, retryLabel }: Props) => {
 
   return (
     <div role="alert" className={styles.error}>
-      <p className={styles.message}>
+      <Text variant="ui" tone="secondary">
         {message ?? formatMessage(messages.listLoadFailed)}
-      </p>
+      </Text>
       <Button variant="secondary" size={32} onPress={onRetry}>
         {retryLabel ?? formatMessage(messages.retryListLoad)}
       </Button>

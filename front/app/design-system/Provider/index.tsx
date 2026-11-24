@@ -9,11 +9,19 @@ type Props = {
   locale: string;
   // Client-side navigation for every design-system link (Link, Breadcrumb).
   navigate: (path: string) => void;
+  useHref?: (href: string) => string;
 };
 
-const DesignSystemProvider = ({ children, locale, navigate }: Props) => (
+const DesignSystemProvider = ({
+  children,
+  locale,
+  navigate,
+  useHref,
+}: Props) => (
   <I18nProvider locale={locale}>
-    <RouterProvider navigate={navigate}>{children}</RouterProvider>
+    <RouterProvider navigate={navigate} useHref={useHref}>
+      {children}
+    </RouterProvider>
   </I18nProvider>
 );
 

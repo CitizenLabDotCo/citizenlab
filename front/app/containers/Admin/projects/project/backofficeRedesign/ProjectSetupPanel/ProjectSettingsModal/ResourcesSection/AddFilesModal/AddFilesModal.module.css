@@ -4,12 +4,6 @@
   gap: var(--gv-space-8);
 }
 
-.hint,
-.count {
-  composes: small from '../../../../../../../../../design-system/typography.module.css';
-  color: var(--gv-text-secondary);
-}
-
 .count {
   margin-bottom: var(--gv-space-4);
 }

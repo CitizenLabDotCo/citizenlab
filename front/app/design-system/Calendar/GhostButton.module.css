@@ -3,18 +3,16 @@
  * Size=24) used for the month arrows and the pickers' calendar button.
  */
 .button {
+  composes: button from '../reset.module.css';
   composes: ringOutside from '../focus.module.css';
   box-sizing: border-box;
   display: inline-flex;
   flex-shrink: 0;
   align-items: center;
   justify-content: center;
-  width: var(--gv-size-control-24);
-  height: var(--gv-size-control-24);
-  padding: 0;
-  border: none;
+  width: var(--gv-size-24);
+  height: var(--gv-size-24);
   border-radius: var(--gv-radius-8);
-  background: transparent;
   color: var(--gv-icon-tertiary);
   cursor: pointer;
   transition-property: background-color, color;

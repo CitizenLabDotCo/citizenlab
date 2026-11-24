@@ -12,11 +12,12 @@ import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 
 import { useIntl } from 'utils/cl-intl';
 
-import styles from './LocationCard.module.css';
-import LocationComboBox from './LocationComboBox';
-import messages from './messages';
-import { EventForm } from './useEventForm';
 import 'design-system/tokens.css';
+import LocationComboBox from './LocationComboBox';
+import Text from 'design-system/Text';
+import messages from './messages';
+import styles from './LocationCard.module.css';
+import { EventForm } from './useEventForm';
 
 // Lazy so ArcGIS only loads once the event has a place on the map.
 const EventMap = lazy(
@@ -70,12 +71,12 @@ const LocationCard = ({ form }: Props) => {
       {form.hasLocationPoint && (
         <div className={styles.field}>
           <div>
-            <p className={styles.label}>
+            <Text variant="body" tone="primary">
               {formatMessage(eventMessages.refineOnMap)}
-            </p>
-            <p className={styles.description}>
+            </Text>
+            <Text variant="ui" tone="secondary">
               {formatMessage(eventMessages.refineOnMapInstructions)}
-            </p>
+            </Text>
           </div>
           <Suspense fallback={null}>
             <EventMap

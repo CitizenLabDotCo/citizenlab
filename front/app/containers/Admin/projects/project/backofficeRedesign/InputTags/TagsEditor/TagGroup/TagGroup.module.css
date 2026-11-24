@@ -20,11 +20,6 @@
   min-width: 0;
 }
 
-.name {
-  composes: ui from '../../../../../../../../design-system/typography.module.css';
-  color: var(--gv-text-primary);
-}
-
 .subtopics {
   margin: 0 0 var(--gv-space-8) var(--gv-space-10);
   padding-left: var(--gv-space-20);

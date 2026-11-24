@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useId } from 'react';
 
 import {
   Toggle,
@@ -8,7 +8,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
-import { fieldStyles } from 'design-system/Field';
+import { FieldError } from 'design-system/Field';
 
 import { PresentationMode } from 'api/phases/types';
 
@@ -65,6 +65,7 @@ const ViewSelector = ({
   variant = 'default',
 }: Props) => {
   const { formatMessage } = useIntl();
+  const errorId = useId();
   const getApiErrorMessage = useApiErrorText();
   const { projectId, phaseId } = useParams({ strict: false }) as {
     projectId: string;
@@ -162,7 +163,12 @@ const ViewSelector = ({
             : defaultViewName
         }
       >
-        <div className={styles.views}>
+        <div
+          className={styles.views}
+          role="group"
+          aria-label={formatMessage(title || messages.availableViews)}
+          aria-describedby={errorMessage ? errorId : undefined}
+        >
           {viewOptions.map((option) => (
             <div key={option.value} className={styles.view}>
               <ViewRow
@@ -184,7 +190,7 @@ const ViewSelector = ({
             </div>
           ))}
         </div>
-        {errorMessage && <p className={fieldStyles.error}>{errorMessage}</p>}
+        {errorMessage && <FieldError id={errorId}>{errorMessage}</FieldError>}
       </PanelGroup>
     );
   }

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import DesignSystemEmptyState from 'design-system/EmptyState';
+import Text from 'design-system/Text';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -15,9 +16,9 @@ const EmptyState = () => {
   return (
     <DesignSystemEmptyState>
       <span className={styles.content}>
-        <span className={styles.title}>
+        <Text as="span" variant="uiStrong" tone="primary">
           {formatMessage(messages.noTermsTitle, { terms: capitalizedTerms })}
-        </span>
+        </Text>
         <span>{formatMessage(messages.noTermsDescription, { terms })}</span>
       </span>
     </DesignSystemEmptyState>

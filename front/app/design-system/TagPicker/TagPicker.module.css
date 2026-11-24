@@ -37,10 +37,8 @@
 
 /* Done does something on the page, so it is a Button drawn as the Standalone Link. */
 .done {
+  composes: button from '../reset.module.css';
   composes: link standalone from '../Link/Link.module.css';
   margin: 0;
-  padding: 0;
-  border: none;
   border-radius: var(--gv-radius-4);
-  background: transparent;
 }

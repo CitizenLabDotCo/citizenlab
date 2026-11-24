@@ -118,6 +118,10 @@
   border-top: var(--gv-border-width-1) solid var(--gv-border-row);
 }
 
+.leadingAction {
+  margin-inline-end: auto;
+}
+
 @keyframes fade-in {
   from {
     opacity: 0;

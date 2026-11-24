@@ -6,6 +6,7 @@ import Banner from 'design-system/Banner';
 import Button from 'design-system/Button';
 import Link from 'design-system/Link';
 import Spinner from 'design-system/Spinner';
+import Text from 'design-system/Text';
 
 import { AttendanceSort, InputParameters } from 'api/event_attendance/types';
 import useEventAttendances from 'api/event_attendance/useEventAttendances';
@@ -114,10 +115,10 @@ const EventManager = ({ event }: Props) => {
         <div className={styles.side}>
           {event?.attributes.maximum_attendees != null && attendances && (
             <div className={styles.spots}>
-              <span className={styles.label}>
+              <Text as="span" variant="ui" tone="secondary">
                 {formatMessage(messages.spotsLeft)}
-              </span>
-              <span className={styles.label}>
+              </Text>
+              <Text as="span" variant="ui" tone="secondary">
                 {formatMessage(messages.remainingSpots, {
                   remaining: Math.max(
                     0,
@@ -125,7 +126,7 @@ const EventManager = ({ event }: Props) => {
                   ),
                   total: event.attributes.maximum_attendees,
                 })}
-              </span>
+              </Text>
             </div>
           )}
           {event && unfilteredTotal > 0 && (
@@ -139,9 +140,9 @@ const EventManager = ({ event }: Props) => {
             </Button>
           )}
           {exportError && (
-            <p className={styles.error} role="alert">
+            <Text variant="small" tone="danger" role="alert">
               {formatMessage(messages.registrantsExportError)}
-            </p>
+            </Text>
           )}
           <div role="note">
             <Banner tone="neutral">
@@ -171,18 +172,18 @@ const EventManager = ({ event }: Props) => {
             </Banner>
           </div>
           {event?.attributes.using_url && (
-            <p className={styles.helper}>
+            <Text variant="small" tone="secondary">
               {formatMessage(messages.externalRegistrations)}
-            </p>
+            </Text>
           )}
         </div>
       }
     >
       <div className={styles.toolbar}>
-        <p className={styles.count}>
+        <Text variant="title" tone="primary">
           {(!event || attendances) &&
             formatMessage(messages.registrantCount, { count: total })}
-        </p>
+        </Text>
         <div className={styles.display}>
           <SearchToggle
             label={formatMessage(messages.searchRegistrants)}

@@ -39,7 +39,12 @@ describe('Project setup feedback', () => {
       ]);
     });
     setupCard('homepage-card').click();
-    setupCard('homepage-card').click().trigger('mouseleave');
+    setupCard('homepage-card')
+      .click()
+      .trigger('pointerout', {
+        eventConstructor: 'PointerEvent',
+        pointerType: 'mouse',
+      });
     cy.get('body').should(($body) => {
       expect($body.find('[role="tooltip"]').filter(':visible')).to.have.length(
         0
@@ -62,11 +67,17 @@ describe('Project setup feedback', () => {
     ];
     tooltips.forEach(([card, description]) => {
       // The tooltip opens after a hover delay, and closes when the pointer leaves.
-      setupCard(card).trigger('mouseenter');
+      setupCard(card).trigger('pointerover', {
+        eventConstructor: 'PointerEvent',
+        pointerType: 'mouse',
+      });
       cy.get('[role="tooltip"]')
         .filter(':visible')
         .should('contain', description);
-      setupCard(card).trigger('mouseleave');
+      setupCard(card).trigger('pointerout', {
+        eventConstructor: 'PointerEvent',
+        pointerType: 'mouse',
+      });
       cy.get('body').should(($body) => {
         expect(
           $body.find('[role="tooltip"]').filter(':visible')

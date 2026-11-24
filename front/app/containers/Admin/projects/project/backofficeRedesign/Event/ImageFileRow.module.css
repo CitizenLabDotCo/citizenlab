@@ -41,11 +41,6 @@
   white-space: nowrap;
 }
 
-.meta {
-  composes: small from '../../../../../../design-system/typography.module.css';
-  color: var(--gv-text-secondary);
-}
-
 .nowrap {
   white-space: nowrap;
 }

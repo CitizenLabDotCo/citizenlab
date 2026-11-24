@@ -1,12 +1,11 @@
 import React from 'react';
 
 import Button from 'design-system/Button';
+import Text from 'design-system/Text';
 
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
-
-import styles from './BatchBar.module.css';
 
 interface Props {
   label: string;
@@ -29,9 +28,9 @@ const SelectAllButton = ({ label, processing, failed, onClick }: Props) => {
         {label}
       </Button>
       {failed && (
-        <span className={styles.error} role="alert">
+        <Text as="span" variant="small" tone="danger" role="alert">
           {formatMessage(messages.selectAllFailed)}
-        </span>
+        </Text>
       )}
     </>
   );

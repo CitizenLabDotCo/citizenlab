@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useId } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
 import Banner from 'design-system/Banner';
-import { fieldStyles } from 'design-system/Field';
+import { FieldError } from 'design-system/Field';
 
 import { IUpdatedPhaseProperties } from 'api/phases/types';
 
@@ -55,6 +55,12 @@ const PhaseDatePicker = ({
   const getApiErrorText = useApiErrorText();
   const startError = getApiErrorText(errors?.start_at);
   const endError = getApiErrorText(errors?.end_at);
+  const errorId = useId();
+  const hasError = !!(
+    startError ||
+    endError ||
+    validationErrors.phaseDateError
+  );
 
   const handleUpdateRange = ({ from, to }: Partial<DateRange>) =>
     onChange({
@@ -81,6 +87,8 @@ const PhaseDatePicker = ({
       {variant === 'panel' ? (
         <DesignSystemPicker
           label={label}
+          aria-describedby={hasError ? errorId : undefined}
+          isInvalid={hasError}
           selectedRange={selectedRange}
           disabledRanges={disabledRanges}
           defaultMonth={defaultMonth}
@@ -99,24 +107,13 @@ const PhaseDatePicker = ({
         />
       )}
       {isPanel ? (
-        // The field-error slot lets the workspace scroll to these after a failed save.
-        <>
-          {startError && (
-            <p slot="errorMessage" className={fieldStyles.error}>
-              {startError}
-            </p>
-          )}
-          {endError && (
-            <p slot="errorMessage" className={fieldStyles.error}>
-              {endError}
-            </p>
-          )}
-          {validationErrors.phaseDateError && (
-            <p slot="errorMessage" className={fieldStyles.error}>
-              {validationErrors.phaseDateError}
-            </p>
-          )}
-        </>
+        hasError && (
+          <div id={errorId}>
+            <FieldError>{startError}</FieldError>
+            <FieldError>{endError}</FieldError>
+            <FieldError>{validationErrors.phaseDateError}</FieldError>
+          </div>
+        )
       ) : (
         <>
           <Error apiErrors={errors?.start_at} />

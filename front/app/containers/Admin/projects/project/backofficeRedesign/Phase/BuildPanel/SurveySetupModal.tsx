@@ -4,6 +4,7 @@ import Banner from 'design-system/Banner';
 import Button from 'design-system/Button';
 import Modal from 'design-system/Modal';
 import Spinner from 'design-system/Spinner';
+import Text from 'design-system/Text';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 import useCustomFields from 'api/custom_fields/useCustomFields';
@@ -174,19 +175,19 @@ const SurveySetupModal = ({
           {draft?.saving ? (
             <div role="status" className={styles.setupStatus}>
               <Spinner />
-              <p className={styles.setupStatusText}>
+              <Text variant="ui" tone="primary">
                 {formatMessage(messages.savingAndOpening)}
-              </p>
+              </Text>
             </div>
           ) : draft?.uploading ? (
-            <p role="status" className={styles.setupStatusText}>
+            <Text role="status" variant="ui" tone="primary">
               {formatMessage(messages.waitingForAttachment)}
-            </p>
+            </Text>
           ) : (
             <>
-              <p className={styles.setupLead}>
+              <Text variant="ui" tone="secondary" className={styles.setupLead}>
                 {formatMessage(messages.surveySetupLead)}
-              </p>
+              </Text>
               {!draft && questionsPending ? (
                 <Spinner />
               ) : (
@@ -201,9 +202,9 @@ const SurveySetupModal = ({
               )}
               {hasSavedQuestions && (
                 <div className={styles.setupRow}>
-                  <p className={styles.helper}>
+                  <Text variant="ui" tone="secondary">
                     {formatMessage(messages.savedSurveyQuestions)}
-                  </p>
+                  </Text>
                   <Button
                     variant="quiet"
                     size={28}
@@ -218,9 +219,9 @@ const SurveySetupModal = ({
               )}
               {deletedQuestions && !hasSavedQuestions && (
                 <div role="status" className={styles.setupUndo}>
-                  <p className={styles.helper}>
+                  <Text variant="ui" tone="secondary">
                     {formatMessage(messages.surveyQuestionsDeleted)}
-                  </p>
+                  </Text>
                   <Button
                     variant="quiet"
                     size={28}

@@ -6,6 +6,8 @@ import Button from '../Button';
 import IconButton from '../IconButton';
 import Menu, { MenuItem } from '../Menu';
 
+import { ColumnSortContext } from './ColumnHeader';
+
 import Table, {
   Cell,
   ColumnHeader,
@@ -74,15 +76,17 @@ export const ColumnHeaders: Story = {
 export const ColumnMenuOpen: Story = {
   render: () => (
     <div style={{ height: 200 }}>
-      <MenuTrigger defaultOpen>
-        <Button>Published</Button>
-        <ColumnMenu
-          columnType="date"
-          sortDirection="ascending"
-          onSortChange={() => {}}
-          onHide={() => {}}
-        />
-      </MenuTrigger>
+      {/* A ColumnHeader normally provides the sort, which checks its menu item. */}
+      <ColumnSortContext.Provider value="descending">
+        <MenuTrigger defaultOpen>
+          <Button>Published</Button>
+          <ColumnMenu
+            columnType="date"
+            onSortChange={() => {}}
+            onHide={() => {}}
+          />
+        </MenuTrigger>
+      </ColumnSortContext.Provider>
     </div>
   ),
 };

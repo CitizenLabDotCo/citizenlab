@@ -1,4 +1,5 @@
 .iconButton {
+  composes: button from '../reset.module.css';
   composes: ringOutside from '../focus.module.css';
   position: relative;
   box-sizing: border-box;
@@ -6,10 +7,7 @@
   flex-shrink: 0;
   align-items: center;
   justify-content: center;
-  padding: 0;
-  border: none;
   border-radius: var(--gv-radius-8);
-  background: transparent;
   cursor: pointer;
   transition-property: background-color, border-color, color;
   transition-duration: var(--gv-motion-duration-fast);
@@ -17,13 +15,13 @@
 }
 
 .size28 {
-  width: var(--gv-size-control-28);
-  height: var(--gv-size-control-28);
+  width: var(--gv-size-28);
+  height: var(--gv-size-28);
 }
 
 .size24 {
-  width: var(--gv-size-control-24);
-  height: var(--gv-size-control-24);
+  width: var(--gv-size-24);
+  height: var(--gv-size-24);
 }
 
 .iconButton[data-disabled],

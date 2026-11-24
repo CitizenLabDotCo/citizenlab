@@ -8,12 +8,19 @@ import '../tokens.css';
 type Props = {
   // VerticalTab elements.
   children: ReactNode;
+  className?: string;
   tabStyle?: 'settings' | 'rail';
 };
 
-const VerticalTabList = ({ children, tabStyle = 'settings' }: Props) => (
+const VerticalTabList = ({
+  children,
+  className,
+  tabStyle = 'settings',
+}: Props) => (
   <AriaTabList
-    className={`${styles.tabList} ${tabStyle === 'rail' ? styles.rail : ''}`}
+    className={`${styles.tabList} ${tabStyle === 'rail' ? styles.rail : ''} ${
+      className ?? ''
+    }`}
   >
     {children}
   </AriaTabList>

@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { router } from 'routes';
 
 import Button from 'design-system/Button';
+import Text from 'design-system/Text';
 
 import useCustomFields from 'api/custom_fields/useCustomFields';
 
@@ -82,13 +83,25 @@ const FormQuestionsCard = ({ projectId, phaseId, title, survey }: Props) => {
 
                 return (
                   <li key={question.id} className={styles.question}>
-                    <span className={styles.number}>{index + 1}</span>
+                    <Text
+                      as="span"
+                      variant="ui"
+                      tone="secondary"
+                      className={styles.number}
+                    >
+                      {index + 1}
+                    </Text>
                     <span className={styles.questionTitle}>
                       {localize(question.title_multiloc)}
                     </span>
-                    <span className={styles.details}>
+                    <Text
+                      as="span"
+                      variant="ui"
+                      tone="secondary"
+                      className={styles.details}
+                    >
                       {details.join(' · ')}
-                    </span>
+                    </Text>
                   </li>
                 );
               })}

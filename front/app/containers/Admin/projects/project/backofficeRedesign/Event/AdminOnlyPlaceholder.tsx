@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Icon from 'design-system/Icon';
+import Text from 'design-system/Text';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -20,9 +21,9 @@ const AdminOnlyPlaceholder = ({ title }: Props) => {
       <p className={styles.title}>{title}</p>
       <div className={styles.note}>
         <Icon name="eye-off-16" className={styles.icon} />
-        <p className={styles.noteText}>
+        <Text variant="small" tone="tertiary">
           {formatMessage(messages.onlyAdminsSeeThis)}
-        </p>
+        </Text>
       </div>
     </div>
   );

@@ -1,11 +1,10 @@
 /* A white card on the grey side column, like the list panel next to it. */
 .card {
+  composes: panel from '../../../../../../../design-system/surfaces.module.css';
   display: flex;
   flex-direction: column;
   gap: var(--gv-space-10);
   padding: var(--gv-space-16);
-  border-radius: var(--gv-radius-12);
-  background: var(--gv-surface-panel);
 }
 
 .fillHeight {
@@ -13,9 +12,8 @@
 }
 
 .stats {
+  composes: panel from '../../../../../../../design-system/surfaces.module.css';
   padding: var(--gv-space-8);
-  border-radius: var(--gv-radius-12);
-  background: var(--gv-surface-panel);
 }
 
 .autoShare {

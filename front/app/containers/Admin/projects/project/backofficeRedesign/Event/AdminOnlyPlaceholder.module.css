@@ -27,8 +27,3 @@
   height: var(--gv-size-icon-14);
   color: var(--gv-icon-tertiary);
 }
-
-.noteText {
-  composes: small from '../../../../../../design-system/typography.module.css';
-  color: var(--gv-text-tertiary);
-}

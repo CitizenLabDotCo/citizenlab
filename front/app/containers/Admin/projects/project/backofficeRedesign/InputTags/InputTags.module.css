@@ -11,9 +11,3 @@
   gap: var(--gv-space-8);
   min-height: var(--gv-size-32);
 }
-
-.title {
-  composes: uiStrong from '../../../../../../design-system/typography.module.css';
-  margin: 0;
-  color: var(--gv-text-primary);
-}

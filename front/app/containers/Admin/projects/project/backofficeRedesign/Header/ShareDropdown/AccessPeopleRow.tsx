@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Avatar from 'design-system/Avatar';
+import Text from 'design-system/Text';
 
 import { IUserData } from 'api/users/types';
 
@@ -56,7 +57,9 @@ const AccessPeopleRow = ({ user, isAuthUser }: Props) => {
           <span className={styles.you}>{formatMessage(messages.shareYou)}</span>
         )}
       </p>
-      <span className={styles.role}>{formatMessage(roleMessage)}</span>
+      <Text as="span" variant="ui" tone="secondary">
+        {formatMessage(roleMessage)}
+      </Text>
     </div>
   );
 };

@@ -4,15 +4,23 @@ import { debounce } from 'lodash-es';
 
 import ComboBox from 'design-system/ComboBox';
 import { ListBoxOption } from 'design-system/ListBox';
+import TooltipMark from 'design-system/Tooltip/TooltipMark';
 
 import { IUserData } from 'api/users/types';
 import useInfiniteUsers from 'api/users/useInfiniteUsers';
 import useUserById from 'api/users/useUserById';
 
+import formMessages from 'components/UI/FormComponents/messages';
+
+import { ScreenReaderOnly } from 'utils/a11y';
+import { useIntl } from 'utils/cl-intl';
+
+import messages from '../messages';
+
+import styles from './AuthorComboBox.module.css';
 import 'design-system/tokens.css';
 
 interface Props {
-  label: ReactNode;
   placeholder: string;
   value: string | null;
   errorMessage?: ReactNode;
@@ -25,12 +33,12 @@ const optionLabel = ({ attributes }: IUserData) => {
 };
 
 const AuthorComboBox = ({
-  label,
   placeholder,
   value,
   errorMessage,
   onChange,
 }: Props) => {
+  const { formatMessage } = useIntl();
   const [search, setSearch] = useState('');
   const { data: users } = useInfiniteUsers({
     pageSize: 5,
@@ -50,9 +58,25 @@ const AuthorComboBox = ({
       ? [selected, ...usersList]
       : usersList;
 
+  const optional = `(${formatMessage(formMessages.optional)})`;
+
   return (
     <ComboBox
-      label={label}
+      label={
+        <>
+          {formatMessage(messages.authorFieldLabel)}
+          <ScreenReaderOnly>{` ${optional}`}</ScreenReaderOnly>
+        </>
+      }
+      labelAccessory={
+        <span className={styles.labelAccessory}>
+          <TooltipMark
+            size={24}
+            label={formatMessage(messages.adminFieldTooltip)}
+          />
+          <span aria-hidden="true">{optional}</span>
+        </span>
+      }
       placeholder={placeholder}
       size={32}
       items={items}

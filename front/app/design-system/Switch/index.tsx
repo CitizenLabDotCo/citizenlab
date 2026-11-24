@@ -19,6 +19,7 @@ type SwitchProps = LabelProps & {
   isDisabled?: boolean;
   id?: string;
   labelAlign?: 'center' | 'top';
+  'aria-describedby'?: string;
 };
 
 const Switch = ({
@@ -30,6 +31,7 @@ const Switch = ({
   id,
   labelAlign = 'center',
   'aria-label': ariaLabel,
+  'aria-describedby': ariaDescribedBy,
 }: SwitchProps) => (
   <AriaSwitch
     className={`${styles.switch} ${labelAlign === 'top' ? styles.top : ''}`}
@@ -38,6 +40,7 @@ const Switch = ({
     isDisabled={isDisabled}
     id={id}
     aria-label={ariaLabel}
+    aria-describedby={ariaDescribedBy}
   >
     {({ isSelected, isFocusVisible }) => (
       <>

@@ -2,10 +2,9 @@ import React, { ReactNode } from 'react';
 
 import Banner from 'design-system/Banner';
 import Disclosure from 'design-system/Disclosure';
-import Icon from 'design-system/Icon';
 import ReviewStatus from 'design-system/ReviewStatus';
-import Tooltip from 'design-system/Tooltip';
-import UnstyledButton from 'design-system/UnstyledButton';
+import tooltipMessages from 'design-system/Tooltip/messages';
+import TooltipMark from 'design-system/Tooltip/TooltipMark';
 
 import { SetupReviewCard } from 'api/phases/types';
 
@@ -56,10 +55,26 @@ const SetupCard = ({
     </SummaryReviewedContext.Provider>
   );
 
+  const staticTitle = titleTooltip ? (
+    <span className={styles.titleRow}>
+      {title}
+      <TooltipMark
+        label={formatMessage(tooltipMessages.moreInformationAbout, {
+          subject: title,
+        })}
+        content={titleTooltip}
+        className={styles.infoMark}
+      />
+    </span>
+  ) : (
+    title
+  );
+
   const card = button ? (
     <SetupCardButton
       title={title}
       titleTooltip={titleTooltip}
+      staticTitle={staticTitle}
       status={status}
       action={summary}
       button={button}
@@ -69,20 +84,7 @@ const SetupCard = ({
   ) : (
     <Disclosure
       header="static"
-      title={
-        titleTooltip ? (
-          <span className={styles.titleRow}>
-            {title}
-            <Tooltip content={titleTooltip}>
-              <UnstyledButton className={styles.infoButton} aria-label={title}>
-                <Icon name="info-16" />
-              </UnstyledButton>
-            </Tooltip>
-          </span>
-        ) : (
-          title
-        )
-      }
+      title={staticTitle}
       status={status}
       actions={summary}
     >

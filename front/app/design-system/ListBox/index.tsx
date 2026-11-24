@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useContext } from 'react';
 
 import { Key, ListBox as AriaListBox, Selection } from 'react-aria-components';
 
@@ -38,16 +38,23 @@ const ListBox = <T extends object>({
   onSelectionChange,
   disabledKeys,
 }: ListBoxProps<T>) => {
+  // Without its own selectionMode the selection belongs to a Select or ComboBox.
+  const ownsSelection = selectionMode !== undefined;
+
   // A ListBoxOption with a disabled reason takes focus but is never selected.
-  const reasonKeys = useReasonKeys();
+  // A list with its own selectionMode keeps its own keys, even inside a Menu or
+  // RadioGroup; without one it uses the keys of its Select or ComboBox.
+  const fieldReasonKeys = useContext(ReasonKeysContext);
+  const listReasonKeys = useReasonKeys();
+  const reasonKeys = ownsSelection
+    ? listReasonKeys
+    : fieldReasonKeys ?? listReasonKeys;
   const [currentKeys, handleSelectionChange] = useGuardedValue<Selection>(
     selectedKeys,
     new Set(),
     onSelectionChange,
     (next, current) => togglesReasonKey(reasonKeys, next, current)
   );
-  // Without its own selectionMode the selection belongs to a Select or ComboBox.
-  const ownsSelection = selectionMode !== undefined;
 
   return (
     <ReasonKeysContext.Provider value={reasonKeys}>

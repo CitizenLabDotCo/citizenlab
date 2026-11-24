@@ -1,6 +1,9 @@
 import React from 'react';
 
+import alertDialogMessages from 'design-system/AlertDialog/messages';
+import Button from 'design-system/Button';
 import Modal from 'design-system/Modal';
+import Text from 'design-system/Text';
 
 import phaseSetupMessages from 'containers/Admin/projects/project/phaseSetup/messages';
 
@@ -11,7 +14,6 @@ import { useBlocker } from 'utils/router';
 
 import useReturnToPhaseAfterSave from './_shared/useReturnToPhaseAfterSave';
 import messages from './messages';
-import styles from './UnsavedChangesGuard.module.css';
 
 const UnsavedChangesGuard = () => {
   const { formatMessage } = useIntl();
@@ -44,18 +46,29 @@ const UnsavedChangesGuard = () => {
   };
 
   return (
-    // The close button cancels: Modal has room for two footer actions only.
     <Modal
       isOpen
-      onOpenChange={(isOpen) => !isOpen && blocker.reset()}
+      onOpenChange={(isOpen) => {
+        if (!isOpen && !pageSave.saving) blocker.reset();
+      }}
+      isCloseDisabled={pageSave.saving}
       size={560}
       title={formatMessage(messages.unsavedChangesTitle)}
+      leadingAction={
+        <Button
+          variant="quiet"
+          isDisabled={pageSave.saving}
+          onPress={() => {
+            pageSave.discardAll();
+            proceed();
+          }}
+        >
+          {formatMessage(messages.discardChanges)}
+        </Button>
+      }
       secondaryAction={{
-        label: formatMessage(messages.discardChanges),
-        onPress: () => {
-          pageSave.discardAll();
-          proceed();
-        },
+        label: formatMessage(alertDialogMessages.cancel),
+        isDisabled: pageSave.saving,
       }}
       primaryAction={{
         label: formatMessage(phaseSetupMessages.saveChangesLabel),
@@ -63,9 +76,9 @@ const UnsavedChangesGuard = () => {
         onPress: handleSave,
       }}
     >
-      <p className={styles.text}>
+      <Text variant="ui" tone="secondary">
         {formatMessage(messages.unsavedChangesDescription2)}
-      </p>
+      </Text>
     </Modal>
   );
 };

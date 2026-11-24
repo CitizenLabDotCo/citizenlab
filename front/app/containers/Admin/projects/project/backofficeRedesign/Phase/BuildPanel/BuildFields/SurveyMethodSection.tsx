@@ -3,6 +3,7 @@ import React, { ReactNode } from 'react';
 import { CLErrors } from 'typings';
 
 import RadioGroup from 'design-system/RadioGroup';
+import Text from 'design-system/Text';
 
 import { ParticipationMethod, TSurveyService } from 'api/phases/types';
 
@@ -143,9 +144,9 @@ const SurveyMethodSection = ({
                       method === 'native_survey' &&
                       draftQuestionsAction}
                     {method === selected && method === 'poll' && (
-                      <p className={styles.helper}>
+                      <Text variant="ui" tone="secondary">
                         {formatMessage(formSectionMessages.saveToEditForm)}
-                      </p>
+                      </Text>
                     )}
                   </div>
                 );

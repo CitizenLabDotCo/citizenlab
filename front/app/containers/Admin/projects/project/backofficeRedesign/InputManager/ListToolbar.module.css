@@ -7,11 +7,6 @@
   margin-bottom: var(--gv-space-8);
 }
 
-.count {
-  composes: title from '../../../../../../design-system/typography.module.css';
-  color: var(--gv-text-primary);
-}
-
 .display {
   display: flex;
   flex-shrink: 0;

@@ -1,20 +1,8 @@
-import React, { AnchorHTMLAttributes, DetailedHTMLProps } from 'react';
+import React from 'react';
 
-type ItemElementProps =
-  | DetailedHTMLProps<
-      AnchorHTMLAttributes<HTMLAnchorElement> & { href: string },
-      HTMLAnchorElement
-    >
-  | React.JSX.IntrinsicElements['div'];
-
-// The `render` of a collection item (SegmentedTab, MenuItem) with a disabled reason.
-// React Aria sets aria-disabled only on items it disables, and these stay enabled so
-// they keep focus. The props are React Aria's own DOM props for the element.
-const renderAriaDisabled = (props: ItemElementProps) =>
-  'href' in props ? (
-    <a {...props} aria-disabled="true" />
-  ) : (
-    <div {...props} aria-disabled="true" />
-  );
+// Disabled reasons keep collection items focusable so their tooltip can open.
+const renderAriaDisabled = (props: React.JSX.IntrinsicElements['div']) => (
+  <div {...props} aria-disabled="true" />
+);
 
 export default renderAriaDisabled;

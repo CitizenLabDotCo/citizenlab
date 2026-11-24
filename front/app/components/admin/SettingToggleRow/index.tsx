@@ -8,6 +8,7 @@ import 'design-system/tokens.css';
 interface Props {
   id?: string;
   title: string;
+  'aria-describedby'?: string;
   description?: string;
   checked: boolean;
   disabled?: boolean;
@@ -17,6 +18,7 @@ interface Props {
 const SettingToggleRow = ({
   id,
   title,
+  'aria-describedby': ariaDescribedBy,
   description,
   checked,
   disabled,
@@ -25,6 +27,7 @@ const SettingToggleRow = ({
   <div>
     <Switch
       id={id}
+      aria-describedby={ariaDescribedBy}
       size={26}
       isSelected={checked}
       isDisabled={disabled}

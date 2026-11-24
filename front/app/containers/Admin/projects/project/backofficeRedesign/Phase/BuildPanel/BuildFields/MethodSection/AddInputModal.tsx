@@ -6,8 +6,9 @@ import { Multiloc } from 'typings';
 import { boolean, mixed, ObjectSchema, object, string } from 'yup';
 
 import Banner from 'design-system/Banner';
-import IconButton from 'design-system/IconButton';
 import Modal from 'design-system/Modal';
+import Text from 'design-system/Text';
+import TooltipMark from 'design-system/Tooltip/TooltipMark';
 
 import usePhase from 'api/phases/usePhase';
 
@@ -172,22 +173,21 @@ const AddInputModal = ({
           {allowAnonymous && (
             <div>
               <div className={styles.visibilityLabel}>
-                <span className={styles.helper}>
+                <Text as="span" variant="small" tone="secondary">
                   {formatMessage(messages.statementProfileVisibility)}
-                </span>
-                <IconButton
-                  icon="info-16"
+                </Text>
+                <TooltipMark
                   size={24}
-                  aria-label={formatMessage(copy.anonymousTooltip)}
+                  label={formatMessage(copy.anonymousTooltip)}
                 />
               </div>
               <CheckboxWithLabel
                 name="anonymous"
                 size="20px"
                 label={
-                  <span className={styles.control}>
+                  <Text as="span" variant="ui" tone="primary">
                     {formatMessage(messages.statementPostAnonymously)}
-                  </span>
+                  </Text>
                 }
               />
             </div>

@@ -5,21 +5,25 @@ import { UploadFile } from 'typings';
 
 import Banner from 'design-system/Banner';
 import DropZone from 'design-system/DropZone';
+import Text from 'design-system/Text';
 
+import ImageFileRow from 'containers/Admin/projects/project/backofficeRedesign/Event/ImageFileRow';
+import {
+  ACCEPTED_IMAGE_TYPES,
+  isImageTooLarge,
+  MAX_IMAGE_FILE_SIZE_MB,
+  toUploadFile,
+} from 'containers/Admin/projects/project/backofficeRedesign/Event/imageUpload';
 import volunteeringMessages from 'containers/Admin/projects/project/volunteering/messages';
 import { CauseFormValues } from 'containers/Admin/projects/project/volunteering/useCauseForm';
 
 import imagesDropzoneMessages from 'components/UI/ImagesDropzone/messages';
 
 import { useIntl } from 'utils/cl-intl';
-import { getBase64FromFile } from 'utils/fileUtils';
-
-import ImageFileRow from '../../../../../../Event/ImageFileRow';
 
 import styles from './CauseModal.module.css';
 
-const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/gif'];
-const MAX_FILE_SIZE_MB = 10;
+const ACCEPTED_TYPES = [...ACCEPTED_IMAGE_TYPES, 'image/gif'];
 
 const CauseImageField = () => {
   const { formatMessage } = useIntl();
@@ -31,29 +35,27 @@ const CauseImageField = () => {
   const setImage = (images: UploadFile[]) => field.onChange(images);
   const removeImage = () => field.onChange([]);
 
-  const addFile = async ([file]: File[]) => {
-    const isTooLarge = file.size > MAX_FILE_SIZE_MB * 1000000;
+  const addFile = async (files: File[]) => {
+    const file = files.at(0);
+    if (!file) return;
+
+    const isTooLarge = isImageTooLarge(file);
     setTooLarge(isTooLarge);
     if (isTooLarge) return;
 
-    const base64 = await getBase64FromFile(file);
-    setImage([
-      Object.assign(file, {
-        base64,
-        url: base64,
-        remote: false,
-        filename: file.name,
-      }),
-    ]);
+    setImage([await toUploadFile(file)]);
   };
 
   return (
     <div className={styles.imageField}>
-      <span className={styles.label}>{label}</span>
+      <Text as="span" variant="small" tone="secondary">
+        {label}
+      </Text>
       {image ? (
         <ImageFileRow
           image={image}
           thumbnail={image.base64}
+          acceptedFileTypes={ACCEPTED_TYPES}
           onReplace={(newImage) => setImage([newImage])}
           onRemove={removeImage}
         />
@@ -67,7 +69,7 @@ const CauseImageField = () => {
       {tooLarge && (
         <Banner tone="error">
           {formatMessage(imagesDropzoneMessages.errorImageMaxSizeExceeded, {
-            maxFileSize: MAX_FILE_SIZE_MB,
+            maxFileSize: MAX_IMAGE_FILE_SIZE_MB,
           })}
         </Banner>
       )}

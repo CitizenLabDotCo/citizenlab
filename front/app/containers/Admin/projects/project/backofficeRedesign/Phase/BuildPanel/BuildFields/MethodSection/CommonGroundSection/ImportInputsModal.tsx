@@ -13,9 +13,10 @@ import { useIntl } from 'utils/cl-intl';
 
 import PhaseSelect from '../PhaseSelect';
 
-import styles from './CommonGroundSection.module.css';
-import messages from './messages';
 import ProjectComboBox from './ProjectComboBox';
+import Text from 'design-system/Text';
+import messages from './messages';
+import styles from './CommonGroundSection.module.css';
 
 interface FormValues {
   fromProjectId?: string;
@@ -126,9 +127,9 @@ const ImportInputsModal = ({
           </div>
         )}
         {fromPhaseId && count !== undefined && (
-          <p className={styles.helper}>
+          <Text variant="ui" tone="secondary">
             {formatMessage(inputManagerMessages.noOfInputsToImport, { count })}
-          </p>
+          </Text>
         )}
       </div>
     </Modal>

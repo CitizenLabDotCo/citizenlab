@@ -8,7 +8,6 @@ import { ScreenReaderOnly } from 'utils/a11y';
 
 import ReadyMark from './ReadyMark';
 import styles from './SetupCard.module.css';
-import SetupCardTooltip from './SetupCardTooltip';
 
 type Behaviour =
   | { kind: 'expand'; children: ReactNode }
@@ -56,25 +55,22 @@ const SetupCard = ({
   // Disclosure takes no DOM id, so the wrapper keeps it.
   return (
     <div id={id}>
-      <SetupCardTooltip content={tooltip}>
-        {behaviour.kind === 'expand' ? (
-          <Disclosure title={cardTitle} summary={badge}>
-            {behaviour.children}
-          </Disclosure>
-        ) : (
-          <Disclosure
-            header="button"
-            title={cardTitle}
-            summary={badge}
-            actionIcon={
-              behaviour.kind === 'action' ? behaviour.icon : 'chevron-down-16'
-            }
-            onPress={
-              behaviour.kind === 'action' ? behaviour.onClick : undefined
-            }
-          />
-        )}
-      </SetupCardTooltip>
+      {behaviour.kind === 'expand' ? (
+        <Disclosure title={cardTitle} summary={badge} tooltip={tooltip}>
+          {behaviour.children}
+        </Disclosure>
+      ) : (
+        <Disclosure
+          header="button"
+          tooltip={tooltip}
+          title={cardTitle}
+          summary={badge}
+          actionIcon={
+            behaviour.kind === 'action' ? behaviour.icon : 'chevron-down-16'
+          }
+          onPress={behaviour.kind === 'action' ? behaviour.onClick : undefined}
+        />
+      )}
     </div>
   );
 };

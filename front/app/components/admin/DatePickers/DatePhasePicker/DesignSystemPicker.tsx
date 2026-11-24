@@ -61,6 +61,8 @@ const fromTime = (time: Time, base: Date) => {
 
 interface Props {
   label: string;
+  'aria-describedby'?: string;
+  isInvalid?: boolean;
   selectedRange: Partial<DateRange>;
   disabledRanges: DateRange[];
   startMonth?: Date;
@@ -71,6 +73,8 @@ interface Props {
 
 const DesignSystemPicker = ({
   label,
+  'aria-describedby': ariaDescribedBy,
+  isInvalid,
   selectedRange,
   disabledRanges,
   startMonth,
@@ -157,6 +161,8 @@ const DesignSystemPicker = ({
     <div className={`e2e-date-phase-picker-input ${className}-input`}>
       <DateRangePicker
         aria-label={label}
+        aria-describedby={ariaDescribedBy}
+        isInvalid={isInvalid}
         value={
           from
             ? { start: toDateTime(from), end: to ? toDateTime(to) : null }

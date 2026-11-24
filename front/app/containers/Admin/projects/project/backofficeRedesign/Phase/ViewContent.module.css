@@ -6,10 +6,9 @@
 }
 
 .panel {
+  composes: panel from '../../../../../../design-system/surfaces.module.css';
   min-height: 0;
   overflow-y: auto;
-  border-radius: var(--gv-radius-12);
-  background: var(--gv-surface-panel);
 }
 
 .main {

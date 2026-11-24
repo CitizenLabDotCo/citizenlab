@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import Divider from 'design-system/Divider';
 import IconButton from 'design-system/IconButton';
 import PanelGroupHeader from 'design-system/PanelGroupHeader';
+import Text from 'design-system/Text';
 
 import usePhases from 'api/phases/usePhases';
 
@@ -32,9 +33,9 @@ const ProjectTimeline = ({ projectId, withNewMethod }: Props) => {
   return (
     <div className={styles.timeline}>
       <div className={styles.header}>
-        <h4 className={styles.title}>
+        <Text as="h4" variant="uiStrong" tone="primary">
           {formatMessage(messages.participation)}
-        </h4>
+        </Text>
         <div className={styles.actions}>
           <PanelToggleButton variant="ghost" />
           {withNewMethod && (

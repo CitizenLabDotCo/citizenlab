@@ -10,6 +10,8 @@ import {
 import { debounce } from 'lodash-es';
 
 import NumberField from 'design-system/NumberField';
+import tooltipMessages from 'design-system/Tooltip/messages';
+import TooltipMark from 'design-system/Tooltip/TooltipMark';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useIdeaById from 'api/ideas/useIdeaById';
@@ -28,7 +30,6 @@ import messages from '../messages';
 import tracks from '../tracks';
 
 import tooltipPreview from './assets/preview_for_tooltip.png';
-import InfoTooltipMark from './InfoTooltipMark';
 import styles from './OfflineVoteSettings.module.css';
 import 'design-system/tokens.css';
 
@@ -134,26 +135,24 @@ const OfflineVoteSettings = ({
         {isBudgeting && (
           <div className={styles.field}>
             <NumberField
-              label={
-                <span className={styles.label}>
-                  {formatMessage(messages.manualVotersLabel)}
-                  <InfoTooltipMark
-                    aria-label={formatMessage(messages.manualVotersLabel)}
-                    content={
-                      <>
-                        <FormattedMessage
-                          {...messages.manualVotersTooltip1}
-                          values={{ b: (chunks) => <strong>{chunks}</strong> }}
-                        />
-                        <span className={styles.tooltipBlock}>
-                          <FormattedMessage
-                            {...messages.manualVotersTooltip2}
-                          />
-                        </span>
-                      </>
-                    }
-                  />
-                </span>
+              label={formatMessage(messages.manualVotersLabel)}
+              labelAccessory={
+                <TooltipMark
+                  label={formatMessage(tooltipMessages.moreInformationAbout, {
+                    subject: formatMessage(messages.manualVotersLabel),
+                  })}
+                  content={
+                    <>
+                      <FormattedMessage
+                        {...messages.manualVotersTooltip1}
+                        values={{ b: (chunks) => <strong>{chunks}</strong> }}
+                      />
+                      <span className={styles.tooltipBlock}>
+                        <FormattedMessage {...messages.manualVotersTooltip2} />
+                      </span>
+                    </>
+                  }
+                />
               }
               value={manualVotersAmount ?? undefined}
               // NumberField commits its value on blur, Enter and the steppers.
@@ -170,47 +169,47 @@ const OfflineVoteSettings = ({
         )}
         <div className={styles.field}>
           <NumberField
-            label={
-              <span className={styles.label}>
-                {votesLabel}
-                <InfoTooltipMark
-                  aria-label={votesLabel}
-                  content={
-                    <>
-                      <img
-                        className={styles.tooltipImage}
-                        src={tooltipPreview}
-                        alt="info"
-                      />
-                      <FormattedMessage
-                        {...messages.manualVoteAdjustmentTooltip1}
-                      />
-                      <ul className={styles.tooltipList}>
-                        <li>
-                          <FormattedMessage
-                            {...messages.manualVoteAdjustmentTooltip2}
-                          />
-                        </li>
-                        <li>
-                          <FormattedMessage
-                            {...messages.manualVoteAdjustmentTooltip3}
-                          />
-                        </li>
-                        <li>
-                          <FormattedMessage
-                            {...messages.manualVoteAdjustmentTooltip4}
-                          />
-                        </li>
-                        <li>
-                          <FormattedMessage
-                            {...messages.manualVoteAdjustmentTooltip5}
-                          />
-                        </li>
-                      </ul>
-                    </>
-                  }
-                />
-              </span>
+            label={votesLabel}
+            labelAccessory={
+              <TooltipMark
+                label={formatMessage(tooltipMessages.moreInformationAbout, {
+                  subject: votesLabel,
+                })}
+                content={
+                  <>
+                    <img
+                      className={styles.tooltipImage}
+                      src={tooltipPreview}
+                      alt="info"
+                    />
+                    <FormattedMessage
+                      {...messages.manualVoteAdjustmentTooltip1}
+                    />
+                    <ul className={styles.tooltipList}>
+                      <li>
+                        <FormattedMessage
+                          {...messages.manualVoteAdjustmentTooltip2}
+                        />
+                      </li>
+                      <li>
+                        <FormattedMessage
+                          {...messages.manualVoteAdjustmentTooltip3}
+                        />
+                      </li>
+                      <li>
+                        <FormattedMessage
+                          {...messages.manualVoteAdjustmentTooltip4}
+                        />
+                      </li>
+                      <li>
+                        <FormattedMessage
+                          {...messages.manualVoteAdjustmentTooltip5}
+                        />
+                      </li>
+                    </ul>
+                  </>
+                }
+              />
             }
             value={manualVotesAmount ?? undefined}
             isDisabled={votesDisabled}

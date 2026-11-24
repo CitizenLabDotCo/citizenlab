@@ -1,25 +1,26 @@
 import React from 'react';
 
-import { useQueryClient } from '@tanstack/react-query';
 import { useController, useForm } from 'react-hook-form';
+import { useQueryClient } from '@tanstack/react-query';
 
 import Banner from 'design-system/Banner';
 import Modal from 'design-system/Modal';
 
 import phasePermissionKeys from 'api/phase_permissions/keys';
-import { IPhaseData, TSurveyService } from 'api/phases/types';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
+import { IPhaseData, TSurveyService } from 'api/phases/types';
 
-import { SurveyMethod } from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/components/SurveyMethodChoices';
 import useNewPhaseDefaults from 'containers/Admin/projects/project/phaseSetup/useNewPhaseDefaults';
+import { SurveyMethod } from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/components/SurveyMethodChoices';
 
 import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 
 import { useIntl } from 'utils/cl-intl';
 
-import styles from './BuildPanel.module.css';
 import ExternalSurveyFields from './ExternalSurveyFields';
+import Text from 'design-system/Text';
 import messages from './messages';
+import styles from './BuildPanel.module.css';
 import { useEnabledSurveyServices } from './SurveyServiceSelect';
 
 interface Props {
@@ -135,14 +136,20 @@ const SwitchSurveyMethodModal = ({ phase, method, onClose }: Props) => {
       }}
     >
       <div className={styles.switchBody}>
-        <p className={styles.switchIntro}>
+        <Text variant="ui" tone="secondary" className={styles.switchIntro}>
           {formatMessage(messages.switchSurveyMethodIntro)}
-        </p>
+        </Text>
         <ul className={styles.consequences}>
           {consequences.map((message) => (
-            <li key={message.id} className={styles.consequence}>
+            <Text
+              key={message.id}
+              as="li"
+              variant="ui"
+              tone="secondary"
+              className={styles.consequence}
+            >
               {formatMessage(message)}
-            </li>
+            </Text>
           ))}
         </ul>
         {toExternal && (

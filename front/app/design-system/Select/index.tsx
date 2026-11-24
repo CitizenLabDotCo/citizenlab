@@ -7,6 +7,11 @@ import {
   SelectValue,
 } from 'react-aria-components';
 
+import {
+  ReasonKeysContext,
+  useGuardedValue,
+  useReasonKeys,
+} from '../disabledReason/reasonKeys';
 import { FieldHelp, FieldLabel, fieldStyles } from '../Field';
 import Icon from '../Icon';
 import ListBox, { ListBoxPopover } from '../ListBox';
@@ -50,36 +55,48 @@ const Select = <T extends object>({
   id,
   'aria-label': ariaLabel,
   'data-cy': dataCy,
-}: SelectProps<T>) => (
-  <AriaSelect
-    className={styles.field}
-    value={value}
-    onChange={onChange}
-    placeholder={placeholder}
-    isInvalid={isInvalid}
-    id={id}
-    aria-label={ariaLabel}
-    data-cy={dataCy}
-  >
-    {label !== undefined && (
-      <FieldLabel tooltip={labelTooltip}>{label}</FieldLabel>
-    )}
-    <div className={fieldStyles.control}>
-      <Button className={`${styles.button} ${styles[`size${size}`]}`}>
-        {/* Only the label text: the option's icon stays in the list. */}
-        <SelectValue className={styles.value}>
-          {({ isPlaceholder, selectedText, defaultChildren }) =>
-            isPlaceholder ? defaultChildren : selectedText
-          }
-        </SelectValue>
-        <Icon name="chevron-down-12" className={styles.chevron} />
-      </Button>
-      <FieldHelp description={description} errorMessage={errorMessage} />
-    </div>
-    <ListBoxPopover>
-      <ListBox items={items}>{children}</ListBox>
-    </ListBoxPopover>
-  </AriaSelect>
-);
+}: SelectProps<T>) => {
+  const reasonKeys = useReasonKeys();
+  const [currentValue, handleChange] = useGuardedValue<Key | null>(
+    value,
+    null,
+    onChange,
+    (next) => next !== null && reasonKeys.has(next)
+  );
+
+  return (
+    <ReasonKeysContext.Provider value={reasonKeys}>
+      <AriaSelect
+        className={styles.field}
+        value={currentValue}
+        onChange={handleChange}
+        placeholder={placeholder}
+        isInvalid={isInvalid}
+        id={id}
+        aria-label={ariaLabel}
+        data-cy={dataCy}
+      >
+        {label !== undefined && (
+          <FieldLabel tooltip={labelTooltip}>{label}</FieldLabel>
+        )}
+        <div className={fieldStyles.control}>
+          <Button className={`${styles.button} ${styles[`size${size}`]}`}>
+            {/* Only the label text: the option's icon stays in the list. */}
+            <SelectValue className={styles.value}>
+              {({ isPlaceholder, selectedText, defaultChildren }) =>
+                isPlaceholder ? defaultChildren : selectedText
+              }
+            </SelectValue>
+            <Icon name="chevron-down-12" className={styles.chevron} />
+          </Button>
+          <FieldHelp description={description} errorMessage={errorMessage} />
+        </div>
+        <ListBoxPopover>
+          <ListBox items={items}>{children}</ListBox>
+        </ListBoxPopover>
+      </AriaSelect>
+    </ReasonKeysContext.Provider>
+  );
+};
 
 export default Select;

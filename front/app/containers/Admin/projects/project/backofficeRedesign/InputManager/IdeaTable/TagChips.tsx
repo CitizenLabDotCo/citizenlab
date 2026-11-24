@@ -1,8 +1,8 @@
 import React from 'react';
 
 import { InlineTagGroup, Tag } from 'design-system/TagGroup';
-
-import TooltipMark from '../TooltipMark';
+import Text from 'design-system/Text';
+import TooltipMark from 'design-system/Tooltip/TooltipMark';
 
 import styles from './IdeaTable.module.css';
 
@@ -27,7 +27,11 @@ const TagChips = ({ label, labels }: Props) => {
       </InlineTagGroup>
       {hidden.length > 0 && (
         <TooltipMark label={hidden.join(', ')}>
-          <span className={styles.more}>{`+${hidden.length}`}</span>
+          <Text
+            as="span"
+            variant="ui"
+            tone="secondary"
+          >{`+${hidden.length}`}</Text>
         </TooltipMark>
       )}
     </span>

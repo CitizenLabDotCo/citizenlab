@@ -4,21 +4,21 @@ import { useController, useForm } from 'react-hook-form';
 
 import Icon from 'design-system/Icon';
 import Switch from 'design-system/Switch';
-import Tooltip from 'design-system/Tooltip';
 import UnstyledButton from 'design-system/UnstyledButton';
 
-import { CampaignData } from 'containers/Admin/messaging/AutomatedEmails/types';
-import useCampaignRow from 'containers/Admin/messaging/AutomatedEmails/useCampaignRow';
 import messagingMessages from 'containers/Admin/messaging/messages';
+import useCampaignRow from 'containers/Admin/messaging/AutomatedEmails/useCampaignRow';
+import { CampaignData } from 'containers/Admin/messaging/AutomatedEmails/types';
 
-import { useRegisterPageSaver } from 'components/admin/PageSaveContext';
 import upsellMessages from 'components/UpsellTooltip/messages';
+import { useRegisterPageSaver } from 'components/admin/PageSaveContext';
 
 import { useIntl } from 'utils/cl-intl';
 
+import 'design-system/tokens.css';
+import Text from 'design-system/Text';
 import styles from './NotificationRow.module.css';
 import useNotificationDescription from './useNotificationDescription';
-import 'design-system/tokens.css';
 
 interface Props {
   campaign: CampaignData;
@@ -72,7 +72,6 @@ const NotificationRow = ({ campaign, projectId, phaseId }: Props) => {
     ? formatMessage(messagingMessages.editDisabledTooltip)
     : undefined;
   const isEditDisabled = !isEditable || !enabled;
-  const hasReason = isEditDisabled && !!disabledReason;
 
   // The whole text block opens the editor, so it is a plain React Aria button
   // styled as a row; a design-system Button only holds a short label.
@@ -80,16 +79,18 @@ const NotificationRow = ({ campaign, projectId, phaseId }: Props) => {
     <UnstyledButton
       className={`${styles.edit} ${enabled ? '' : styles.off}`}
       aria-label={editLabel}
-      isDisabled={isEditDisabled && !hasReason}
-      aria-disabled={hasReason ? true : undefined}
-      onPress={isEditDisabled ? undefined : openEditor}
+      isDisabled={isEditDisabled}
+      disabledReason={isEditDisabled ? disabledReason : undefined}
+      onPress={openEditor}
     >
       <span className={styles.content}>
-        <span className={styles.title}>{campaign.campaign_description}</span>
-        <span className={styles.detail}>
+        <Text as="span" variant="ui" tone="primary" className={styles.title}>
+          {campaign.campaign_description}
+        </Text>
+        <Text as="span" variant="small" tone="secondary">
           {description ??
             [campaign.recipient_segment, when].filter(Boolean).join(' · ')}
-        </span>
+        </Text>
       </span>
       <Icon name="chevron-right-16" className={styles.chevron} />
     </UnstyledButton>
@@ -106,13 +107,7 @@ const NotificationRow = ({ campaign, projectId, phaseId }: Props) => {
           isDisabled={!canBeDisabled}
         />
       </div>
-      <div className={styles.main}>
-        {hasReason ? (
-          <Tooltip content={disabledReason}>{editButton}</Tooltip>
-        ) : (
-          editButton
-        )}
-      </div>
+      <div className={styles.main}>{editButton}</div>
     </div>
   );
 };

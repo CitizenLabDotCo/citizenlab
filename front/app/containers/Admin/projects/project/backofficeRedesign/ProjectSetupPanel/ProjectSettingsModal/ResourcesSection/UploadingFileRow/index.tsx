@@ -4,6 +4,7 @@ import IconButton from 'design-system/IconButton';
 import { ListBoxOption } from 'design-system/ListBox';
 import Select from 'design-system/Select';
 import Spinner from 'design-system/Spinner';
+import Text from 'design-system/Text';
 
 import { FILE_CATEGORIES, FileCategory } from 'api/files/types';
 
@@ -42,9 +43,9 @@ const UploadingFileRow = ({
       mimeType={file.type}
       meta={
         status === 'too_large' && (
-          <p className={styles.error}>
+          <Text variant="small" tone="danger">
             {formatMessage(filesMessages.fileSizeError)}
-          </p>
+          </Text>
         )
       }
       status={
@@ -71,16 +72,16 @@ const UploadingFileRow = ({
           )}
           {status === 'uploading' && (
             <>
-              <span className={styles.note}>
+              <Text as="span" variant="small" tone="secondary">
                 {formatMessage(messages.fileUploading)}
-              </span>
+              </Text>
               <Spinner aria-label={formatMessage(messages.fileUploading)} />
             </>
           )}
           {status === 'error' && (
-            <span className={styles.error}>
+            <Text as="span" variant="small" tone="danger">
               {formatMessage(messages.fileUploadFailed)}
-            </span>
+            </Text>
           )}
         </div>
       }

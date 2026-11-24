@@ -5,6 +5,7 @@ import { useDragLayer } from 'react-dnd';
 import Badge from 'design-system/Badge';
 import Button from 'design-system/Button';
 import IconButton from 'design-system/IconButton';
+import Text from 'design-system/Text';
 
 import { IInputTopicData } from 'api/input_topics/types';
 
@@ -88,9 +89,9 @@ const TagGroup = ({
           />
         )}
         <div className={styles.title}>
-          <span className={styles.name}>
+          <Text as="span" variant="ui" tone="primary">
             <T value={topic.attributes.title_multiloc} />
-          </span>
+          </Text>
           {subtopics.length > 0 && <Badge use="note">{subtopics.length}</Badge>}
         </div>
         <TagActions
@@ -117,9 +118,14 @@ const TagGroup = ({
               {({ rowRef, handle }) => (
                 <div ref={rowRef} className={styles.row}>
                   {handle}
-                  <span className={`${styles.title} ${styles.name}`}>
+                  <Text
+                    as="span"
+                    variant="ui"
+                    tone="primary"
+                    className={styles.title}
+                  >
                     <T value={subtopic.attributes.title_multiloc} />
-                  </span>
+                  </Text>
                   <TagActions
                     onEdit={() => onEdit(subtopic)}
                     onDelete={() => onDelete(subtopic)}

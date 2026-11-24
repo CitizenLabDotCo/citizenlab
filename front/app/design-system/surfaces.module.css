@@ -1,12 +1,16 @@
+.panel {
+  border-radius: var(--gv-radius-12);
+  background: var(--gv-surface-panel);
+}
+
 /*
  * The dropdown surface shared by Menu, Submenu, the ListBox of Select and
  * ComboBox, and Popover. It is the only surface that carries a shadow.
  */
 .dropdown {
+  composes: panel;
   box-sizing: border-box;
-  background: var(--gv-surface-panel);
   border: var(--gv-border-width-1) solid var(--gv-border-control);
-  border-radius: var(--gv-radius-12);
   box-shadow: var(--gv-shadow-dropdown);
   outline: none;
 }

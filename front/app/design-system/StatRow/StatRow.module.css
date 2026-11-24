@@ -1,4 +1,5 @@
 .statRow {
+  composes: button from '../reset.module.css';
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -6,9 +7,7 @@
   gap: var(--gv-space-16);
   width: 100%;
   padding: var(--gv-space-8);
-  border: none;
   border-radius: var(--gv-radius-8);
-  background: transparent;
   text-align: start;
   text-decoration: none;
 }

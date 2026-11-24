@@ -4,11 +4,6 @@
   gap: var(--gv-space-8);
 }
 
-.caption {
-  composes: small from '../../../../../../design-system/typography.module.css';
-  color: var(--gv-text-secondary);
-}
-
 .chevron {
   color: var(--gv-icon-secondary);
 }
@@ -23,14 +18,4 @@
 
 .row:last-child {
   border-bottom: none;
-}
-
-.label {
-  composes: ui from '../../../../../../design-system/typography.module.css';
-  color: var(--gv-text-secondary);
-}
-
-.value {
-  composes: uiStrong from '../../../../../../design-system/typography.module.css';
-  color: var(--gv-text-primary);
 }

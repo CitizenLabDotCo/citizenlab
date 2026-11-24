@@ -3,6 +3,7 @@ import React, { ReactNode, useState } from 'react';
 import { CLErrors } from 'typings';
 
 import Banner from 'design-system/Banner';
+import Text from 'design-system/Text';
 
 import { IUpdatedPhaseProperties, ParticipationMethod } from 'api/phases/types';
 
@@ -76,9 +77,9 @@ const BuildFields = ({
   return (
     <div className={styles.fields}>
       <div className={styles.header}>
-        <h2 className={styles.title}>
+        <Text as="h2" variant="uiStrong" tone="primary">
           {formatMessage(setupTitle(participationMethod))}
-        </h2>
+        </Text>
       </div>
 
       <div className={styles.sections}>

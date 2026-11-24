@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import Text from 'design-system/Text';
+
 import { IPhaseData } from 'api/phases/types';
 
 import messages from 'containers/Admin/projects/_shared/components/PhasePlacement/messages';
@@ -8,7 +10,6 @@ import { canChangePlacement } from 'containers/Admin/projects/_shared/components
 
 import { useIntl } from 'utils/cl-intl';
 
-import styles from './BuildPanel.module.css';
 import PlacementCard from './PlacementCard';
 
 interface Props {
@@ -31,9 +32,9 @@ const SurveyPlacement = ({ phase, hasUnsavedChanges, onMoved }: Props) => {
       onChange={() => setOpened(true)}
     >
       {hasUnsavedChanges && (
-        <p className={styles.helper}>
+        <Text variant="ui" tone="secondary">
           {formatMessage(messages.moveSaveChangesFirst)}
-        </p>
+        </Text>
       )}
       {opened && (
         <MovePhaseModal

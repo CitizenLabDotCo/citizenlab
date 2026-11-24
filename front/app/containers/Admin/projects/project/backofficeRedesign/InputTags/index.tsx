@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import Banner from 'design-system/Banner';
 import IconButton from 'design-system/IconButton';
 import Spinner from 'design-system/Spinner';
+import Text from 'design-system/Text';
 
 import { IPhaseData, InputTerm } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
@@ -79,13 +80,13 @@ const InputTags = ({ project, phase, inputTerm }: Props) => {
           aria-label={formatMessage(messages.back)}
           onPress={() => removeSearchParams(['input_tags'])}
         />
-        <h2 className={styles.title}>
+        <Text as="h2" variant="uiStrong" tone="primary">
           {formatMessage(messages.tagsTitle, {
             term: formatMessage(inputTermMessages.capitalizedSingular, {
               term: inputTerm,
             }),
           })}
-        </h2>
+        </Text>
       </div>
       {others.length > 0 && (
         <div role="note">
