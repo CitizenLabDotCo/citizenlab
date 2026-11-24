@@ -5,6 +5,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.statusBreakdownCard',
     defaultMessage: 'Status breakdown',
   },
+  shareAndCount: {
+    id: 'app.containers.Admin.projects.project.insights.shared.shareAndCount',
+    defaultMessage: '{percentage}% · {count}',
+  },
   topicBreakdownCard: {
     id: 'app.containers.Admin.projects.project.insights.shared.topicBreakdownCard',
     defaultMessage: 'Topic breakdown',
@@ -49,6 +53,14 @@ export default defineMessages({
   manualTagsByParticipants: {
     id: 'app.containers.Admin.projects.project.insights.shared.manualTagsByParticipants1',
     defaultMessage: 'Manual Tags by Participants',
+  },
+  aiTopicDistributionRow: {
+    id: 'app.containers.Admin.projects.project.insights.shared.aiTopicDistributionRow',
+    defaultMessage: 'AI topic distribution',
+  },
+  manualTagsByParticipantsRow: {
+    id: 'app.containers.Admin.projects.project.insights.shared.manualTagsByParticipantsRow',
+    defaultMessage: 'Manual tags by participants',
   },
   topicsAutoDetected: {
     id: 'app.containers.Admin.projects.project.insights.shared.topicsAutoDetected1',
