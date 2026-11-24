@@ -40,8 +40,7 @@ class CustomFieldValuesTransitionService
     (values || {}).as_json.compact
   end
 
-  # The keys that would start an answer without a field. An existing answer keeps
-  # its key, with or without a field.
+  # Only new answers need a field in the current form; a moved input keeps its old ones.
   def keys_without_field(record, values)
     stored_keys = record.custom_field_answers.reject(&:marked_for_destruction?).map(&:key)
     new_keys = values.keys - stored_keys

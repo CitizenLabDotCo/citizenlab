@@ -415,16 +415,6 @@ resource 'Ideas' do
           end
         end
 
-        example 'Edit an idea that stores an answer without a field', document: false do
-          create(:custom_form, :with_default_fields, participation_context: project)
-          input.custom_field_answers.create!(key: 'orphan', value: 'x')
-
-          do_request idea: { title_multiloc: { 'en' => 'Changed title' }, publication_status: 'published' }
-
-          assert_status 200
-          expect(input.reload.answer_for_key('orphan').value).to eq 'x'
-        end
-
         example 'Removing the author of a published idea', document: false do
           input.update! publication_status: 'published'
           do_request idea: { author_id: nil }

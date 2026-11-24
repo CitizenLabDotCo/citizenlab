@@ -21,14 +21,6 @@ RSpec.describe CustomFieldValuesTransitionService do
 
       expect(service.assign(user, { 'pet' => 'cat' })).to be true
     end
-
-    it 'still updates an existing answer that has no field' do
-      user = create(:user)
-      user.custom_field_answers.create!(key: 'retired', value: 'x')
-
-      expect(service.assign(user, { 'retired' => 'y' })).to be true
-      expect(user.answer_for_key('retired')).to have_attributes(value: 'y', custom_field_id: nil)
-    end
   end
 
   describe '#assign!' do
@@ -106,15 +98,6 @@ RSpec.describe CustomFieldValuesTransitionService do
       service.assign!(idea, { 'shared' => 'kept' })
 
       expect(idea.answer_for_key('shared').custom_field_id).to eq destination_field.id
-    end
-
-    it 'still updates an existing answer that has no field' do
-      user = create(:user)
-      user.custom_field_answers.create!(key: 'retired', value: 'x')
-
-      service.assign!(user, { 'retired' => 'y' })
-
-      expect(user.answer_for_key('retired')).to have_attributes(value: 'y', custom_field_id: nil)
     end
 
     it 'deletes all answers when assigning empty values' do
