@@ -2311,6 +2311,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Phase :",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2": "La phase sélectionnée ne peut pas contenir d'idées. Veuillez en sélectionner une autre.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "Supprimer toutes les contributions",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.saveFailed": "Nous n'avons pas pu enregistrer cette contribution. Vérifiez ses réponses et réessayez.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.showMoreApprovedInputs": "Afficher plus",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.toReviewTab": "À vérifier",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": "Annuler l'approbation",

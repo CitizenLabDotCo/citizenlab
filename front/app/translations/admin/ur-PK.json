@@ -2311,6 +2311,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "مرحلہ:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2": "منتخب شدہ مرحلے میں ان پٹ شامل نہیں ہو سکتے۔ براہ کرم کوئی اور منتخب کریں۔",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "تمام اندراجات ہٹائیں",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.saveFailed": "ہم اس اندراج کو محفوظ نہیں کر سکے۔ اس کے جوابات چیک کریں اور دوبارہ کوشش کریں۔",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.showMoreApprovedInputs": "مزید دکھائیں",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.toReviewTab": "جائزہ لینے کے لیے",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": "منظوری واپس لیں",

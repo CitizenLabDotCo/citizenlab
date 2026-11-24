@@ -2311,6 +2311,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Céim:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2": "Ní féidir ionchuir a bheith sa chéim roghnaithe. Roghnaigh ceann eile le do thoil.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "Bain gach ionchur",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.saveFailed": "Níorbh fhéidir linn an t-ionchur seo a shábháil. Seiceáil na freagraí agus bain triail as arís.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.showMoreApprovedInputs": "Taispeáin tuilleadh",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.toReviewTab": "Le hathbhreithniú",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": "Cealaigh ceadú",

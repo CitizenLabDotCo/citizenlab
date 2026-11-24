@@ -2311,6 +2311,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Phase:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2": "Die ausgewählte Phase kann keine Beiträge enthalten. Bitte wähle eine andere.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "Alle Beiträge entfernen",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.saveFailed": "Wir konnten diesen Beitrag nicht speichern. Überprüfe die Antworten und versuche es erneut.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.showMoreApprovedInputs": "Mehr anzeigen",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.toReviewTab": "Zu prüfen",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": "Freigabe rückgängig machen",

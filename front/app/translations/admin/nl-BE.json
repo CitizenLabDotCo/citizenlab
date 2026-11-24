@@ -2311,6 +2311,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Fase:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2": "De geselecteerde fase kan geen bijdragen bevatten. Selecteer een andere.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "Alle bijdragen verwijderen",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.saveFailed": "We konden deze bijdrage niet opslaan. Controleer de antwoorden en probeer het opnieuw.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.showMoreApprovedInputs": "Toon meer",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.toReviewTab": "Te beoordelen",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": "Goedkeuring ongedaan maken",

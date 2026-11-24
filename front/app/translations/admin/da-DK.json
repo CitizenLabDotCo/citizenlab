@@ -2311,6 +2311,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Fase:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2": "Den valgte fase kan ikke indeholde inputs. Vælg venligst en anden.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "Fjern alle input",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.saveFailed": "Vi kunne ikke gemme dette input. Tjek svarene og prøv igen.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.showMoreApprovedInputs": "Vis mere",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.toReviewTab": "Til gennemgang",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": "Fortryd godkendelse",

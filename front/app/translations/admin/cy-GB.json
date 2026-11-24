@@ -2311,6 +2311,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Cyfnod:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2": "Ni all y cam a ddewiswyd gynnwys mewnbynnau. Dewiswch un arall.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "Tynnu pob mewnbwn",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.saveFailed": "Ni fu'n bosibl cadw'r mewnbwn hwn. Gwiriwch yr atebion a rhowch gynnig arall arni.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.showMoreApprovedInputs": "Dangos mwy",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.toReviewTab": "I'w hadolygu",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": "Dadwneud cymeradwyaeth",

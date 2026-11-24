@@ -2311,6 +2311,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Vaihe:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2": "Valittu vaihe ei voi sisältää tuloja. Valitse toinen.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "Poista kaikki syötteet",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.saveFailed": "Tätä syötettä ei voitu tallentaa. Tarkista vastaukset ja yritä uudelleen.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.showMoreApprovedInputs": "Näytä lisää",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.toReviewTab": "Tarkistettavat",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": "Kumoa hyväksyntä",

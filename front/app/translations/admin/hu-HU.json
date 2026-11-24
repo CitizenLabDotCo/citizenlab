@@ -2311,6 +2311,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Szakasz:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2": "A kiválasztott fázis nem tartalmazhat beküldéseket. Kérjük, válasszon egy másikat.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "Összes bejegyzés eltávolítása",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.saveFailed": "Nem sikerült menteni ezt a bevitelt. Ellenőrizze a válaszokat, és próbálja meg újra.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.showMoreApprovedInputs": "Több megjelenítése",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.toReviewTab": "Ellenőrzésre vár",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": "Jóváhagyás visszavonása",

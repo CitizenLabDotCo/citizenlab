@@ -2311,6 +2311,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Fase:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2": "La fase seleccionada no pot contenir aportacions. Selecciona'n una altra.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "Eliminar totes les entrades",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.saveFailed": "No s'ha pogut desar aquesta entrada. Revisa les respostes i torna-ho a intentar.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.showMoreApprovedInputs": "Mostra'n més",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.toReviewTab": "Per revisar",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": "Desfer l'aprovació",

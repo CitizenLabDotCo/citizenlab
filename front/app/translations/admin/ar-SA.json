@@ -2311,6 +2311,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "مرحلة:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2": "لا يمكن أن تحتوي المرحلة المحددة على مدخلات. الرجاء اختيار واحد آخر.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "إزالة جميع المدخلات",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.saveFailed": "تعذر حفظ هذه المدخلات. يرجى التحقق من الإجابات والمحاولة مرة أخرى.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.showMoreApprovedInputs": "عرض المزيد",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.toReviewTab": "للمراجعة",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": "تراجع عن الموافقة",

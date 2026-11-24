@@ -2311,6 +2311,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Fas:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2": "Den valda fasen kan inte innehålla ingångar. Vänligen välj en annan.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "Ta bort alla bidrag",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.saveFailed": "Vi kunde inte spara det här bidraget. Kontrollera svaren och försök igen.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.showMoreApprovedInputs": "Visa mer",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.toReviewTab": "Att granska",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": "Ångra godkännande",

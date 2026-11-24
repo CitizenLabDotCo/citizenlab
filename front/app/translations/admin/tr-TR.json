@@ -2311,6 +2311,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Aşama:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2": "Seçilen faz girişleri içeremez. Lütfen başka bir tane seçin.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "Tüm girişleri kaldır",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.saveFailed": "Bu girişi kaydedemedik. Yanıtları kontrol edin ve tekrar deneyin.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.showMoreApprovedInputs": "Daha fazla göster",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.toReviewTab": "İncelenecekler",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": "Onayı geri al",

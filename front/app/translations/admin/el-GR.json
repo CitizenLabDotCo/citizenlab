@@ -2311,6 +2311,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Φάση:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2": "Η επιλεγμένη φάση δεν μπορεί να περιέχει καταχωρίσεις. Παρακαλούμε επιλέξτε μια άλλη.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "Αφαίρεση όλων των καταχωρίσεων",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.saveFailed": "Δεν μπορέσαμε να αποθηκεύσουμε αυτήν την καταχώριση. Ελέγξτε τις απαντήσεις και δοκιμάστε ξανά.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.showMoreApprovedInputs": "Εμφάνιση περισσότερων",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.toReviewTab": "Προς αξιολόγηση",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": "Αναίρεση έγκρισης",

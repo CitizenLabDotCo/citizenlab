@@ -2311,6 +2311,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Etapas:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2": "Pasirinktoje fazėje negali būti įėjimų. Pasirinkite kitą.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "Pašalinti visus įrašus",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.saveFailed": "Nepavyko išsaugoti šios įvesties. Patikrinkite atsakymus ir bandykite dar kartą.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.showMoreApprovedInputs": "Rodyti daugiau",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.toReviewTab": "Peržiūrai",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": "Atšaukti patvirtinimą",

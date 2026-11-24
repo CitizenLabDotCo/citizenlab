@@ -2311,6 +2311,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Immikkoortoq:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2": "Immikkoortoq toqqarneqartoq ilanngussanik imaqarsinnaanngilaq. Allamik toqqaagit.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "Ilanngussat tamarmik piiakkit",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.saveFailed": "Immiussaq una toqqorsinnaanngilarput. Akissutit misissukkit misileqqillutillu.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.showMoreApprovedInputs": "Annertunerusumik takutiguk",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.toReviewTab": "Misissugassat",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": "Akuerineqarnera taamaatiguk",

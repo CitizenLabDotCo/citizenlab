@@ -2311,6 +2311,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Faza:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2": "Wybrana faza nie może zawierać wejść. Wybierz inną fazę.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "Usuń wszystkie zgłoszenia",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.saveFailed": "Nie udało się zapisać tych danych. Sprawdź odpowiedzi i spróbuj ponownie.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.showMoreApprovedInputs": "Pokaż więcej",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.toReviewTab": "Do przeglądu",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": "Cofnij zatwierdzenie",

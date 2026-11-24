@@ -2311,6 +2311,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Phas:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2": "Déi gewielte Phas kann keng Bäiträg enthalen. Wielt wgl. eng aner aus.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "All Inputen ewechhuelen",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.saveFailed": "Mir konnten dës Agab net späicheren. Iwwerpréift d'Äntwerten a probéiert et nach eng Kéier.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.showMoreApprovedInputs": "Méi weisen",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.toReviewTab": "Ze iwwerpréiwen",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": "Approbatioun réckgängeg maachen",

@@ -2311,6 +2311,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "ਪੜਾਅ:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2": "ਚੁਣੇ ਹੋਏ ਪੜਾਅ ਵਿੱਚ ਇਨਪੁੱਟ ਸ਼ਾਮਲ ਨਹੀਂ ਹੋ ਸਕਦੇ ਹਨ। ਕਿਰਪਾ ਕਰਕੇ ਕੋਈ ਹੋਰ ਚੁਣੋ।",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "ਸਾਰੇ ਇਨਪੁੱਟ ਹਟਾਓ",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.saveFailed": "ਅਸੀਂ ਇਸ ਇਨਪੁਟ ਨੂੰ ਸੇਵ ਨਹੀਂ ਕਰ ਸਕੇ। ਇਸਦੇ ਜਵਾਬਾਂ ਦੀ ਜਾਂਚ ਕਰੋ ਅਤੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.showMoreApprovedInputs": "ਹੋਰ ਦਿਖਾਓ",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.toReviewTab": "ਸਮੀਖਿਆ ਲਈ",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": "ਮਨਜ਼ੂਰੀ ਵਾਪਸ ਲਓ",

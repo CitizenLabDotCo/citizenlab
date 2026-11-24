@@ -2311,6 +2311,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Fase:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2": "A fase selecionada não pode conter entradas. Selecione outra.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "Remover todas as entradas",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.saveFailed": "Não foi possível salvar esta entrada. Verifique as respostas e tente novamente.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.showMoreApprovedInputs": "Ver mais",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.toReviewTab": "Para revisar",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": "Desfazer aprovação",

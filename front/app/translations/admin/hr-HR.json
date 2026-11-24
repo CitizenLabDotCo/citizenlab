@@ -2311,6 +2311,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Faza:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2": "Odabrana faza ne može sadržavati ulaze. Odaberite drugu.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "Ukloni sve unose",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.saveFailed": "Nismo uspjeli spremiti ovaj unos. Provjerite odgovore i pokušajte ponovno.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.showMoreApprovedInputs": "Prikaži više",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.toReviewTab": "Za pregled",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": "Poništi odobrenje",
