@@ -2,7 +2,10 @@ import React, { useMemo, ReactNode } from 'react';
 
 import { Box, Text, Spinner } from '@citizenlab/cl2-component-library';
 
+import BarRow from 'design-system/BarRow';
+import DashboardCard from 'design-system/DashboardCard';
 import EmptyState from 'design-system/EmptyState';
+import Skeleton from 'design-system/Skeleton';
 
 import { IdeaStatusParticipationMethod } from 'api/idea_statuses/types';
 import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
@@ -13,7 +16,6 @@ import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
 import { useIntl } from 'utils/cl-intl';
 
-import InsightCard from '../../InsightCard';
 import { usePdfExportContext } from '../../pdf/PdfExportContext';
 import { useWordSection } from '../../word/useWordSection';
 import WordExportableInsight from '../../word/WordExportableInsight';
@@ -118,6 +120,14 @@ const StatusBreakdown = ({ phaseId, participationMethod }: Props) => {
     { skip: isLoading || statusData.length === 0 }
   );
 
+  if (isLoading && redesigned) {
+    return (
+      <WordExportableInsight exportId="status-breakdown">
+        <Skeleton shape="block" height={96} />
+      </WordExportableInsight>
+    );
+  }
+
   if (isLoading) {
     return (
       <WordExportableInsight exportId="status-breakdown">
@@ -133,27 +143,28 @@ const StatusBreakdown = ({ phaseId, participationMethod }: Props) => {
   if (redesigned) {
     return (
       <WordExportableInsight exportId="status-breakdown">
-        <InsightCard title={formatMessage(messages.statusBreakdownCard)}>
+        <DashboardCard title={formatMessage(messages.statusBreakdownCard)}>
           {statusData.length === 0 ? (
             <EmptyState context="card">
               {formatMessage(messages.noInputsSubmitted)}
             </EmptyState>
           ) : (
-            <Box display="flex" flexDirection="column" gap="4px">
+            <div>
               {statusData.map((status) => (
-                <DistributionBar
+                <BarRow
                   key={status.id}
-                  name={status.name}
-                  count={status.count}
-                  percentage={status.percentage}
-                  maxCount={maxCount}
-                  barColor={status.color}
-                  showBadge={false}
+                  label={status.name}
+                  value={formatMessage(messages.shareAndCount, {
+                    percentage: status.percentage,
+                    count: status.count,
+                  })}
+                  share={status.percentage / 100}
+                  color={status.color}
                 />
               ))}
-            </Box>
+            </div>
           )}
-        </InsightCard>
+        </DashboardCard>
       </WordExportableInsight>
     );
   }
