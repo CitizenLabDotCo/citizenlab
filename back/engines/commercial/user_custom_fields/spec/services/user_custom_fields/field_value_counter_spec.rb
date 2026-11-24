@@ -110,12 +110,12 @@ RSpec.describe UserCustomFields::FieldValueCounter do
 
       before do
         create(:user, custom_field_answers: [
-          build(:custom_field_answer, key: select_field.key, value: 'option1'),
-          build(:custom_field_answer, key: multiselect_field.key, value: %w[option1 option2])
+          build(:custom_field_answer, custom_field: select_field, value: 'option1'),
+          build(:custom_field_answer, custom_field: multiselect_field, value: %w[option1 option2])
         ])
         create(:user, custom_field_answers: [
-          build(:custom_field_answer, key: select_field.key, value: 'option2'),
-          build(:custom_field_answer, key: multiselect_field.key, value: %w[option2])
+          build(:custom_field_answer, custom_field: select_field, value: 'option2'),
+          build(:custom_field_answer, custom_field: multiselect_field, value: %w[option2])
         ])
         create(:user)
       end

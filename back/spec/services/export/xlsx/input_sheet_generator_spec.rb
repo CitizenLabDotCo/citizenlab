@@ -169,7 +169,7 @@ describe Export::Xlsx::InputSheetGenerator do
             :idea_with_topics,
             project: phase.project,
             phases: [phase],
-            custom_field_answers: [build(:custom_field_answer, key: extra_idea_field.key, value: 'Answer')],
+            custom_field_answers: [build(:custom_field_answer, custom_field: extra_idea_field, value: 'Answer')],
             assignee: assignee
           )
         end
@@ -401,8 +401,8 @@ describe Export::Xlsx::InputSheetGenerator do
           creation_phase: phase,
           phases: [phase],
           custom_field_answers: [
-            build(:custom_field_answer, key: multiselect_field.key, value: %w[cat dog]),
-            build(:custom_field_answer, key: ranking_field.key, value: %w[by_train by_bike])
+            build(:custom_field_answer, custom_field: multiselect_field, value: %w[cat dog]),
+            build(:custom_field_answer, custom_field: ranking_field, value: %w[by_train by_bike])
           ],
           author: create(:user, custom_field_answers: [
             build(:custom_field_answer, key: 'birthyear', value: 1999),
@@ -417,8 +417,8 @@ describe Export::Xlsx::InputSheetGenerator do
           creation_phase: phase,
           phases: [phase],
           custom_field_answers: [
-            build(:custom_field_answer, key: multiselect_field.key, value: %w[cat]),
-            build(:custom_field_answer, key: matrix_field.key, value: { 'send_more_animals_to_space' => 3, 'ride_bicycles_more_often' => 4 })
+            build(:custom_field_answer, custom_field: multiselect_field, value: %w[cat]),
+            build(:custom_field_answer, custom_field: matrix_field, value: { 'send_more_animals_to_space' => 3, 'ride_bicycles_more_often' => 4 })
           ]
         )
       end
@@ -429,8 +429,8 @@ describe Export::Xlsx::InputSheetGenerator do
           creation_phase: phase,
           phases: [phase],
           custom_field_answers: [
-            build(:custom_field_answer, key: multiselect_field.key, value: %w[dog]),
-            build(:custom_field_answer, key: ranking_field.key, value: %w[by_bike by_train])
+            build(:custom_field_answer, custom_field: multiselect_field, value: %w[dog]),
+            build(:custom_field_answer, custom_field: ranking_field, value: %w[by_bike by_train])
           ],
           author: nil
         )
@@ -1021,7 +1021,7 @@ describe Export::Xlsx::InputSheetGenerator do
             :idea_with_topics,
             project: phase.project,
             phases: [phase],
-            custom_field_answers: [build(:custom_field_answer, key: extra_idea_field.key, value: 'Answer')],
+            custom_field_answers: [build(:custom_field_answer, custom_field: extra_idea_field, value: 'Answer')],
             assignee: assignee
           )
         end

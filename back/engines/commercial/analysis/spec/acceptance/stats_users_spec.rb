@@ -168,8 +168,8 @@ resource 'Analysis - Stats - Users' do
         before do
           @custom_field = create(:custom_field_select)
           @option1, @option2, = create_list(:custom_field_option, 2, custom_field: @custom_field)
-          user1 = create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: @option1.key)])
-          user2 = create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: @option2.key)])
+          user1 = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: @custom_field, value: @option1.key)])
+          user2 = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: @custom_field, value: @option2.key)])
           user3 = create(:user)
           create(:idea, project: project, author: user1)
           create(:idea, project: project, author: user2)
@@ -218,8 +218,8 @@ resource 'Analysis - Stats - Users' do
         before do
           @custom_field = create(:custom_field_multiselect)
           @option1, @option2 = create_list(:custom_field_option, 2, custom_field: @custom_field)
-          user1 = create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: [@option1.key])])
-          user2 = create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: [@option1.key, @option2.key])])
+          user1 = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: @custom_field, value: [@option1.key])])
+          user2 = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: @custom_field, value: [@option1.key, @option2.key])])
           user3 = create(:user)
           create(:idea, project: project, author: user1)
           create(:idea, project: project, author: user2)
@@ -250,8 +250,8 @@ resource 'Analysis - Stats - Users' do
         before do
           @custom_field = create(:custom_field_checkbox)
           user1 = create(:user)
-          user2 = create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: false)])
-          user3 = create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: true)])
+          user2 = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: @custom_field, value: false)])
+          user3 = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: @custom_field, value: true)])
           create(:idea, project: project, author: user1)
           create(:idea, project: project, author: user1)
           create(:idea, project: project, author: user2)

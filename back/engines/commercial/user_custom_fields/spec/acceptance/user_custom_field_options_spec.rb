@@ -131,7 +131,7 @@ resource 'User Custom Field Options' do
       end
 
       example "Deleting a custom field option that's still referenced in a user's setting", document: false do
-        user = create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: custom_field_option.key)])
+        user = create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: @custom_field, value: custom_field_option.key)])
         expect(user.reload.custom_field_answers.pluck(:key, :value)).to eq [[@custom_field.key, custom_field_option.key]]
         do_request
         expect(response_status).to eq 200

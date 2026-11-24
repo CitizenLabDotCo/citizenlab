@@ -10,7 +10,7 @@ describe CustomFields::Options::DestroyService do
     context 'when deleting a custom-form field option that has the same key as a user field option' do
       let(:custom_field) { create(:custom_field, :for_custom_form, input_type: 'select') }
       let(:option) { create(:custom_field_option, custom_field: custom_field, key: 'same-option-key') }
-      let!(:user) { create(:user, custom_field_answers: [build(:custom_field_answer, key: custom_field.key, value: 'same-option-key')]) }
+      let!(:user) { create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: custom_field, value: 'same-option-key')]) }
 
       it 'does not update the custom field value of users' do
         service.destroy!(option, current_user)
@@ -45,7 +45,7 @@ describe CustomFields::Options::DestroyService do
 
     context 'when deleting a select custom-form field option' do
       let(:field) { create(:custom_field_select, :with_options, :for_custom_form) }
-      let!(:idea) { create(:idea, custom_field_answers: [build(:custom_field_answer, key: field.key, value: 'option1')]) }
+      let!(:idea) { create(:idea, custom_field_answers: [build(:custom_field_answer, custom_field: field, value: 'option1')]) }
 
       it 'does not update the custom field values of ideas' do
         service.destroy!(field.options.find_by(key: 'option1'), current_user)
@@ -55,7 +55,7 @@ describe CustomFields::Options::DestroyService do
 
     context 'when deleting a multiselect custom-form field option' do
       let(:field) { create(:custom_field_multiselect, :with_options, :for_custom_form) }
-      let!(:idea) { create(:idea, custom_field_answers: [build(:custom_field_answer, key: field.key, value: %w[option1 option2])]) }
+      let!(:idea) { create(:idea, custom_field_answers: [build(:custom_field_answer, custom_field: field, value: %w[option1 option2])]) }
 
       it 'does not update the custom field values of ideas' do
         service.destroy!(field.options.find_by(key: 'option1'), current_user)
@@ -66,7 +66,7 @@ describe CustomFields::Options::DestroyService do
     context 'when deleting a user field option' do
       let(:field) { create(:custom_field_select) }
       let(:option) { create(:custom_field_option, custom_field: field, key: 'option1') }
-      let!(:user) { create(:user, custom_field_answers: [build(:custom_field_answer, key: field.key, value: 'option1')]) }
+      let!(:user) { create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: field, value: 'option1')]) }
 
       it 'deletes the option from the custom field values of users' do
         service.destroy!(option, current_user)
@@ -79,8 +79,8 @@ describe CustomFields::Options::DestroyService do
       let(:another_cf) { create(:custom_field_select, :with_options, :for_custom_form) }
       let!(:idea) do
         create(:idea, custom_field_answers: [
-          build(:custom_field_answer, key: ranking_cf.key, value: ranking_cf.options.map(&:key)),
-          build(:custom_field_answer, key: another_cf.key, value: another_cf.options.first.key)
+          build(:custom_field_answer, custom_field: ranking_cf, value: ranking_cf.options.map(&:key)),
+          build(:custom_field_answer, custom_field: another_cf, value: another_cf.options.first.key)
         ])
       end
 

@@ -57,7 +57,7 @@ resource 'R-scores (Representativeness scores)' do
 
           def create_one_user_for_each_option(custom_field)
             custom_field.options.map do |option|
-              create(:user, custom_field_answers: [build(:custom_field_answer, key: custom_field.key, value: option.key)])
+              create(:user, custom_field_answers: [build(:custom_field_answer, custom_field: custom_field, value: option.key)])
             end
           end
 

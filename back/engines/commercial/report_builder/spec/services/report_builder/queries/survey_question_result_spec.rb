@@ -31,7 +31,7 @@ RSpec.describe ReportBuilder::Queries::SurveyQuestionResult do
         :native_survey_response,
         project: project,
         phases: phases_of_inputs,
-        custom_field_answers: [build(:custom_field_answer, key: select_field.key, value: 'la')]
+        custom_field_answers: [build(:custom_field_answer, custom_field: select_field, value: 'la')]
       )
     end
 
@@ -164,7 +164,7 @@ RSpec.describe ReportBuilder::Queries::SurveyQuestionResult do
           phases: phases_of_inputs,
           author: create(:user, custom_field_answers: [build(:custom_field_answer, key: 'city', value: 'ny')]),
           custom_field_answers: [
-            build(:custom_field_answer, key: select_field.key, value: 'la'),
+            build(:custom_field_answer, custom_field: select_field, value: 'la'),
             build(:custom_field_answer, key: 'transport', value: 'bike')
           ]
         )

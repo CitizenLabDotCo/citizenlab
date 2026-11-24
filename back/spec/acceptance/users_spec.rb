@@ -2145,7 +2145,7 @@ resource 'Users' do
           example "Clear out a user's custom field value if set to nil" do
             cf = create(:custom_field)
             cf2 = create(:custom_field)
-            create(:custom_field_answer, answerable: @user, key: cf.key, value: 'somevalue')
+            create(:custom_field_answer, answerable: @user, custom_field: cf, value: 'somevalue')
 
             do_request(user: { custom_field_values: {
               cf.key => nil,
@@ -2161,7 +2161,7 @@ resource 'Users' do
           example "Add to user's existing custom field values" do
             cf = create(:custom_field)
             cf2 = create(:custom_field)
-            create(:custom_field_answer, answerable: @user, key: cf.key, value: 'somevalue')
+            create(:custom_field_answer, answerable: @user, custom_field: cf, value: 'somevalue')
 
             do_request(user: { custom_field_values: { cf2.key => 'another_value' } })
             expect(response_status).to eq 200
@@ -2174,7 +2174,7 @@ resource 'Users' do
           example "Replace a user's existing custom field value" do
             cf = create(:custom_field)
             cf2 = create(:custom_field)
-            create(:custom_field_answer, answerable: @user, key: cf.key, value: 'somevalue')
+            create(:custom_field_answer, answerable: @user, custom_field: cf, value: 'somevalue')
 
             do_request(user: { custom_field_values: {
               cf.key => 'new_value',
@@ -2191,7 +2191,7 @@ resource 'Users' do
           example 'Cannot modify values of hidden custom fields' do
             cf = create(:custom_field, hidden: true, enabled: true)
             some_value = 'some_value'
-            create(:custom_field_answer, answerable: @user, key: cf.key, value: some_value)
+            create(:custom_field_answer, answerable: @user, custom_field: cf, value: some_value)
 
             do_request(user: { custom_field_values: { cf.key => 'another_value' } })
             json_response = json_parse(response_body)
@@ -2203,7 +2203,7 @@ resource 'Users' do
           example 'Can modify values of disabled custom fields' do
             cf = create(:custom_field, hidden: false, enabled: false)
             some_value = 'some_value'
-            create(:custom_field_answer, answerable: @user, key: cf.key, value: some_value)
+            create(:custom_field_answer, answerable: @user, custom_field: cf, value: some_value)
 
             do_request(user: { custom_field_values: { cf.key => 'another_value' } })
             json_response = json_parse(response_body)
@@ -2279,8 +2279,8 @@ resource 'Users' do
 
           example "Can't change some attributes of a user verified with FranceConnect", document: false do
             create(:verification, method_name: 'franceconnect', user: @user)
-            create(:custom_field_answer, answerable: @user, key: cf.key, value: 'original value')
-            create(:custom_field_answer, answerable: @user, key: birthyear_cf.key, value: 1950)
+            create(:custom_field_answer, answerable: @user, custom_field: cf, value: 'original value')
+            create(:custom_field_answer, answerable: @user, custom_field: birthyear_cf, value: 1950)
             do_request
             expect(response_status).to eq 200
             @user.reload
@@ -2317,8 +2317,8 @@ resource 'Users' do
 
           example "Can't change gender of a user verified with Bogus", document: false do
             create(:verification, method_name: 'bogus', user: @user)
-            create(:custom_field_answer, answerable: @user, key: cf.key, value: 'original value')
-            create(:custom_field_answer, answerable: @user, key: gender_cf.key, value: 'male')
+            create(:custom_field_answer, answerable: @user, custom_field: cf, value: 'original value')
+            create(:custom_field_answer, answerable: @user, custom_field: gender_cf, value: 'male')
             do_request
             expect(response_status).to eq 200
             @user.reload

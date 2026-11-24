@@ -29,15 +29,15 @@ RSpec.describe Surveys::ResultsGenerator do
         project: project,
         phases: phases_of_inputs,
         custom_field_answers: [
-          build(:custom_field_answer, key: text_field.key, value: 'Green'),
-          build(:custom_field_answer, key: multiselect_field.key, value: 'some_single_select_value'),
-          build(:custom_field_answer, key: select_field.key, value: 'other'),
+          build(:custom_field_answer, custom_field: text_field, value: 'Green'),
+          build(:custom_field_answer, custom_field: multiselect_field, value: 'some_single_select_value'),
+          build(:custom_field_answer, custom_field: select_field, value: 'other'),
           build(:custom_field_answer, key: "#{select_field.key}_other", value: 'Austin', custom_field: select_field),
-          build(:custom_field_answer, key: multiselect_image_field.key, value: ['house']),
-          build(:custom_field_answer, key: matrix_linear_scale_field.key, value: {
+          build(:custom_field_answer, custom_field: multiselect_image_field, value: ['house']),
+          build(:custom_field_answer, custom_field: matrix_linear_scale_field, value: {
             'ride_bicycles_more_often' => 3
           }),
-          build(:custom_field_answer, key: sentiment_linear_scale_field.key, value: 5),
+          build(:custom_field_answer, custom_field: sentiment_linear_scale_field, value: 5),
           build(:custom_field_answer, key: "#{sentiment_linear_scale_field.key}_follow_up", value: 'Great thanks very much', custom_field: sentiment_linear_scale_field)
         ],
         author: create(:user, custom_field_answers: [
@@ -220,7 +220,7 @@ RSpec.describe Surveys::ResultsGenerator do
       context 'with an empty selection' do
         before do
           create(:native_survey_response, project: project, phases: phases_of_inputs, custom_field_answers: [
-            build(:custom_field_answer, key: multiselect_field.key, value: [])
+            build(:custom_field_answer, custom_field: multiselect_field, value: [])
           ])
         end
 

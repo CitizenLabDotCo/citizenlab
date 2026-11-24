@@ -189,12 +189,12 @@ describe IdeasFinder do
     let!(:idea3) { create(:idea, project: project) }
 
     before do
-      create(:custom_field_answer, answerable: idea1, key: select_field.key, value: 'option1')
-      create(:custom_field_answer, answerable: idea2, key: select_field.key, value: 'option1')
-      create(:custom_field_answer, answerable: idea3, key: select_field.key, value: 'option2')
-      create(:custom_field_answer, answerable: idea1, key: multiselect_field.key, value: %w[option1 option2])
-      create(:custom_field_answer, answerable: idea2, key: multiselect_field.key, value: %w[option1])
-      create(:custom_field_answer, answerable: idea3, key: private_field.key, value: 'option1')
+      create(:custom_field_answer, answerable: idea1, custom_field: select_field, value: 'option1')
+      create(:custom_field_answer, answerable: idea2, custom_field: select_field, value: 'option1')
+      create(:custom_field_answer, answerable: idea3, custom_field: select_field, value: 'option2')
+      create(:custom_field_answer, answerable: idea1, custom_field: multiselect_field, value: %w[option1 option2])
+      create(:custom_field_answer, answerable: idea2, custom_field: multiselect_field, value: %w[option1])
+      create(:custom_field_answer, answerable: idea3, custom_field: private_field, value: 'option1')
     end
 
     it 'returns the ideas with one of the given answers' do
@@ -221,7 +221,7 @@ describe IdeasFinder do
       hidden_project = create(:private_admins_project)
       hidden_form = create(:custom_form, participation_context: hidden_project)
       hidden_field = create(:custom_field_select, :with_options, resource: hidden_form, answers_visible_to: 'public')
-      create(:custom_field_answer, answerable: create(:idea, project: hidden_project), key: hidden_field.key, value: 'option1')
+      create(:custom_field_answer, answerable: create(:idea, project: hidden_project), custom_field: hidden_field, value: 'option1')
 
       params[:custom_field_answers] = { hidden_field.id => %w[option1] }
       expect(result_record_ids).to match_array Idea.ids

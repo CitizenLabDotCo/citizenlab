@@ -27,7 +27,7 @@ describe Export::AnswerFieldsForReport do
       let(:field) { create(:custom_field_matrix_linear_scale, resource: form) }
       let(:input) do
         create(:idea, custom_field_answers: [
-          build(:custom_field_answer, key: field.key, value: { 'send_more_animals_to_space' => 3, 'ride_bicycles_more_often' => 5 })
+          build(:custom_field_answer, custom_field: field, value: { 'send_more_animals_to_space' => 3, 'ride_bicycles_more_often' => 5 })
         ])
       end
 
@@ -47,7 +47,7 @@ describe Export::AnswerFieldsForReport do
       let(:field) { create(:custom_field_select, :with_options, resource: form) }
       let(:input) do
         create(:idea, custom_field_answers: [
-          build(:custom_field_answer, key: field.key, value: 'other'),
+          build(:custom_field_answer, custom_field: field, value: 'other'),
           build(:custom_field_answer, key: "#{field.key}_other", value: 'Something else', custom_field: field)
         ])
       end
@@ -83,7 +83,7 @@ describe Export::AnswerFieldsForReport do
       let(:field) { create(:custom_field_select, :with_options, resource: form, ask_follow_up: true) }
       let(:input) do
         create(:idea, custom_field_answers: [
-          build(:custom_field_answer, key: field.key, value: 'option1'),
+          build(:custom_field_answer, custom_field: field, value: 'option1'),
           build(:custom_field_answer, key: "#{field.key}_follow_up", value: 'Because reasons', custom_field: field)
         ])
       end

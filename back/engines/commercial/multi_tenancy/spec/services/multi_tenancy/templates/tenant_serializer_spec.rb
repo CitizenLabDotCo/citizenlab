@@ -282,7 +282,7 @@ describe MultiTenancy::Templates::TenantSerializer do
       field = create(:custom_field, :for_custom_form, resource: form)
 
       create(:idea, project: timeline_project, phases: [ideation_phase])
-      create(:idea, project: timeline_project, phases: [survey_phase], creation_phase: survey_phase, custom_field_answers: [build(:custom_field_answer, key: field.key, value: 'My value')])
+      create(:idea, project: timeline_project, phases: [survey_phase], creation_phase: survey_phase, custom_field_answers: [build(:custom_field_answer, custom_field: field, value: 'My value')])
 
       template = tenant_serializer.run(deserializer_format: true)
 

@@ -281,11 +281,11 @@ resource 'Ideas' do
             public_field = create(:custom_field_select, :with_options, resource: form, answers_visible_to: 'public', show_as_filter: true)
             private_field = create(:custom_field_select, :with_options, resource: form)
             disabled_field = create(:custom_field_select, :with_options, resource: form, answers_visible_to: 'public', show_as_filter: true, enabled: false)
-            create(:custom_field_answer, answerable: @i1, key: public_field.key, value: 'option1')
-            create(:custom_field_answer, answerable: @i2, key: public_field.key, value: 'option1')
-            create(:custom_field_answer, answerable: @i3, key: public_field.key, value: 'option2')
-            create(:custom_field_answer, answerable: @i4, key: private_field.key, value: 'option1')
-            create(:custom_field_answer, answerable: @i4, key: disabled_field.key, value: 'option1')
+            create(:custom_field_answer, answerable: @i1, custom_field: public_field, value: 'option1')
+            create(:custom_field_answer, answerable: @i2, custom_field: public_field, value: 'option1')
+            create(:custom_field_answer, answerable: @i3, custom_field: public_field, value: 'option2')
+            create(:custom_field_answer, answerable: @i4, custom_field: private_field, value: 'option1')
+            create(:custom_field_answer, answerable: @i4, custom_field: disabled_field, value: 'option1')
 
             do_request
 
@@ -297,14 +297,14 @@ resource 'Ideas' do
           example 'Answer counts ignore the filter on their own question, not the one on other questions' do
             multiselect = create(:custom_field_multiselect, :with_options, resource: form, answers_visible_to: 'public', show_as_filter: true)
             select = create(:custom_field_select, :with_options, resource: form, answers_visible_to: 'public', show_as_filter: true)
-            create(:custom_field_answer, answerable: @i1, key: multiselect.key, value: %w[option1 option2])
-            create(:custom_field_answer, answerable: @i2, key: multiselect.key, value: ['option1'])
-            create(:custom_field_answer, answerable: @i3, key: multiselect.key, value: ['option1'])
-            create(:custom_field_answer, answerable: @i4, key: multiselect.key, value: ['option2'])
-            create(:custom_field_answer, answerable: @i1, key: select.key, value: 'option1')
-            create(:custom_field_answer, answerable: @i2, key: select.key, value: 'option1')
-            create(:custom_field_answer, answerable: @i3, key: select.key, value: 'option2')
-            create(:custom_field_answer, answerable: @i4, key: select.key, value: 'option2')
+            create(:custom_field_answer, answerable: @i1, custom_field: multiselect, value: %w[option1 option2])
+            create(:custom_field_answer, answerable: @i2, custom_field: multiselect, value: ['option1'])
+            create(:custom_field_answer, answerable: @i3, custom_field: multiselect, value: ['option1'])
+            create(:custom_field_answer, answerable: @i4, custom_field: multiselect, value: ['option2'])
+            create(:custom_field_answer, answerable: @i1, custom_field: select, value: 'option1')
+            create(:custom_field_answer, answerable: @i2, custom_field: select, value: 'option1')
+            create(:custom_field_answer, answerable: @i3, custom_field: select, value: 'option2')
+            create(:custom_field_answer, answerable: @i4, custom_field: select, value: 'option2')
 
             do_request custom_field_answers: { multiselect.id => ['option1'] }
 

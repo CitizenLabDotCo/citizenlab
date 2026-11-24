@@ -722,7 +722,7 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
         project: anon_project,
         phases: [anon_phase],
         custom_field_answers: [
-          build(:custom_field_answer, key: favourite_animal_field.key, value: 'godzilla'),
+          build(:custom_field_answer, custom_field: favourite_animal_field, value: 'godzilla'),
           build(:custom_field_answer, key: 'u_gender', value: 'male', custom_field: gender_user_custom_field)
         ],
         author: male_user,
@@ -733,7 +733,7 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
         project: anon_project,
         phases: [anon_phase],
         custom_field_answers: [
-          build(:custom_field_answer, key: favourite_animal_field.key, value: 'godzilla'),
+          build(:custom_field_answer, custom_field: favourite_animal_field, value: 'godzilla'),
           build(:custom_field_answer, key: 'u_gender', value: 'female', custom_field: gender_user_custom_field)
         ],
         author: female_user,
@@ -744,7 +744,7 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
         project: anon_project,
         phases: [anon_phase],
         custom_field_answers: [
-          build(:custom_field_answer, key: favourite_animal_field.key, value: 'gremlin'),
+          build(:custom_field_answer, custom_field: favourite_animal_field, value: 'gremlin'),
           build(:custom_field_answer, key: 'u_gender', value: 'female', custom_field: gender_user_custom_field)
         ],
         author: female_user,

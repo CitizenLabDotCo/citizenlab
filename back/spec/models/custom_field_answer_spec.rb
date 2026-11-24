@@ -68,13 +68,13 @@ RSpec.describe CustomFieldAnswer do
 
   it 'rejects a second answer for the same answerable and key at the database level' do
     existing = create(:custom_field_answer)
-    duplicate = build(:custom_field_answer, answerable: existing.answerable, key: existing.key)
+    duplicate = build(:custom_field_answer, answerable: existing.answerable, custom_field: existing)
     expect { duplicate.save! }.to raise_error(ActiveRecord::RecordNotUnique)
   end
 
   it 'is deleted when its custom field is deleted' do
     field = create(:custom_field)
-    answer = create(:custom_field_answer, key: field.key)
+    answer = create(:custom_field_answer, custom_field: field)
     field.destroy!
     expect(described_class.exists?(answer.id)).to be false
   end
