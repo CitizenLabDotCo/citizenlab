@@ -57,7 +57,7 @@ RSpec.describe MultiTenancy::TenantService do
   describe '#delete' do
     let(:tenant) { Tenant.current }
 
-    # The users are deleted in batches by Tenants::DeleteJob.
+    # Tenants::DeleteJob drops the whole tenant, users included.
     it 'enqueues Tenants::DeleteJob, but no DeleteUserJob' do
       create_list(:user, 3)
 

@@ -64,34 +64,6 @@ RSpec.describe User do
         .to have_enqueued_job(DeleteUserJob).exactly(described_class.count).times
     end
 
-    it 'deletes the users without per-user third-party removal jobs' do
-      expect { described_class.destroy_all_async }
-        .to have_enqueued_job(DeleteUserJob)
-        .with(described_class.first.id, update_member_counts: false, remove_from_third_parties: false)
-    end
-
-    it 'removes the users from third parties with one job per service per batch' do
-      stub_const("#{described_class}::THIRD_PARTY_REMOVAL_BATCH_SIZE", 1)
-      side_fx = instance_double(SideFxUserService, after_destroy_all: nil)
-      allow(SideFxUserService).to receive(:new).and_return(side_fx)
-
-      described_class.destroy_all_async
-
-      expect(side_fx).to have_received(:after_destroy_all).twice
-      described_class.pluck(:id).each do |id|
-        expect(side_fx).to have_received(:after_destroy_all).with([id], wait: anything)
-      end
-    end
-
-    it 'schedules the third-party removals after the users of the batch are deleted' do
-      freeze_time do
-        expect { described_class.destroy_all_async }
-          .to have_enqueued_job(RemoveUserFromIntercomJob)
-          .with(match_array(described_class.pluck(:id)))
-          .at(0.2.seconds.from_now + 5.minutes)
-      end
-    end
-
     it 'enqueues a user-deletion job for each user in the given scope' do
       scope = described_class.where(id: described_class.first.id)
       expect { described_class.destroy_all_async(scope) }
@@ -111,8 +83,7 @@ RSpec.describe User do
         create_deletion_job([user.id])
 
         expect { described_class.destroy_all_async }
-          .not_to have_enqueued_job(DeleteUserJob)
-          .with(user.id, update_member_counts: false, remove_from_third_parties: false)
+          .not_to have_enqueued_job(DeleteUserJob).with(user.id, update_member_counts: false)
       end
 
       it 'still enqueues a job for the other users' do

@@ -10,9 +10,54 @@ RSpec.describe MultiTenancy::Tenants::DeleteJob do
   end
 
   describe '#perform_now' do
-    context 'when tenant has no users' do
-      it 'deletes tenant' do
+    context 'when the third-party removals are not queued yet' do
+      before_all { create_list(:user, 3) }
+
+      it 'queues them with one job per service per batch of users, and reschedules itself' do
+        stub_const("#{described_class}::THIRD_PARTY_REMOVAL_BATCH_SIZE", 2)
+
+        expect { described_class.perform_now(tenant) }
+          .to  have_enqueued_job(RemoveUserFromIntercomJob).exactly(2).times
+          .and have_enqueued_job(RemoveUsersFromSegmentJob).exactly(2).times
+          .and have_enqueued_job(described_class).with(tenant, third_party_removal_queued: true)
+      end
+
+      it 'does not delete the users one by one' do
+        expect { described_class.perform_now(tenant) }.to not_have_enqueued_job(DeleteUserJob)
+      end
+
+      it 'does not destroy the tenant yet' do
         described_class.perform_now(tenant)
+        expect(tenant.reload).to be_present
+      end
+
+      it 'still runs jobs queued with the former arguments' do
+        expect { described_class.perform_now(tenant, last_user_count: 5, retry_interval: 6.hours) }
+          .to  have_enqueued_job(RemoveUserFromIntercomJob)
+          .and have_enqueued_job(described_class).with(tenant, third_party_removal_queued: true)
+      end
+    end
+
+    context 'when the third-party removals are queued' do
+      it 'waits while they are still running' do
+        create_job('Matomo::RemoveUserFromMatomoJob', [['user-id']])
+
+        expect { described_class.perform_now(tenant, third_party_removal_queued: true) }
+          .to have_enqueued_job(described_class).with(tenant, third_party_removal_queued: true)
+        expect(tenant.reload).to be_present
+      end
+
+      it 'ignores removal jobs that expired' do
+        create_job('Matomo::RemoveUserFromMatomoJob', [['user-id']], expired_at: Time.zone.now)
+
+        described_class.perform_now(tenant, third_party_removal_queued: true)
+        expect { tenant.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      it 'destroys the tenant once they are done' do
+        create(:user)
+
+        described_class.perform_now(tenant, third_party_removal_queued: true)
         expect { tenant.reload }.to raise_error(ActiveRecord::RecordNotFound)
       end
 
@@ -20,64 +65,45 @@ RSpec.describe MultiTenancy::Tenants::DeleteJob do
         service = instance_double(MultiTenancy::SideFxTenantService)
         allow(MultiTenancy::SideFxTenantService).to receive(:new).and_return(service)
         expect(service).to receive(:after_destroy).with(tenant)
-        described_class.perform_now(tenant)
+
+        described_class.perform_now(tenant, third_party_removal_queued: true)
       end
 
-      it 'waits for the third-party removal jobs before deleting the tenant' do
-        create_job('Matomo::RemoveUserFromMatomoJob', [['user-id']])
+      context 'when files are stored on S3' do
+        let(:s3_utils) { instance_double(Aws::S3::Utils, delete_objects: { deleted_count: 4, errors_count: 0 }) }
+        let(:s3_client) { instance_double(Aws::S3::Client) }
 
-        expect { described_class.perform_now(tenant, last_user_count: 1) }
-          .to have_enqueued_job(described_class).with(tenant, last_user_count: 1)
-        expect(tenant.reload).to be_present
+        before do
+          allow(AvatarUploader).to receive(:use_fog_engine?).and_return(true)
+          allow(Aws::S3::Utils).to receive(:new).and_return(s3_utils)
+          allow(Aws::S3::Client).to receive(:new).and_return(s3_client)
+          allow(ENV).to receive(:fetch).and_call_original
+          allow(ENV).to receive(:fetch).with('AWS_S3_BUCKET').and_return('uploads-bucket')
+        end
+
+        it 'deletes the avatars of the users' do
+          described_class.perform_now(tenant, third_party_removal_queued: true)
+
+          expect(s3_utils).to have_received(:delete_objects)
+            .with('uploads-bucket', s3_client, prefix: "uploads/#{tenant.id}/user/avatar/")
+        end
+
+        it 'reports avatars that could not be deleted, and still destroys the tenant' do
+          allow(s3_utils).to receive(:delete_objects).and_return({ deleted_count: 3, errors_count: 1 })
+          allow(ErrorReporter).to receive(:report_msg)
+
+          described_class.perform_now(tenant, third_party_removal_queued: true)
+
+          expect(ErrorReporter).to have_received(:report_msg)
+          expect { tenant.reload }.to raise_error(ActiveRecord::RecordNotFound)
+        end
       end
 
-      it 'ignores third-party removal jobs that expired' do
-        create_job('Matomo::RemoveUserFromMatomoJob', [['user-id']], expired_at: Time.zone.now)
+      it 'does not touch S3 when files are stored locally' do
+        allow(Aws::S3::Utils).to receive(:new)
 
-        described_class.perform_now(tenant)
-        expect { tenant.reload }.to raise_error(ActiveRecord::RecordNotFound)
-      end
-    end
-
-    context 'when tenant still has users' do
-      before_all { create_list(:user, 3) }
-
-      it 'queues the first batch of user deletions and reschedules itself' do
-        stub_const("#{described_class}::BATCH_SIZE", 2)
-
-        expect { described_class.perform_now(tenant) }
-          .to  have_enqueued_job(DeleteUserJob).exactly(2).times
-          .and have_enqueued_job(described_class).with(tenant, last_user_count: 3)
-      end
-
-      it 'removes the batch from third parties with one job per service' do
-        expect { described_class.perform_now(tenant) }
-          .to  have_enqueued_job(RemoveUserFromIntercomJob).exactly(:once)
-          .and have_enqueued_job(RemoveUsersFromSegmentJob).exactly(:once)
-      end
-
-      it 'waits while the current batch is still being processed' do
-        create_job('DeleteUserJob', [User.first.id])
-
-        expect { described_class.perform_now(tenant, last_user_count: 3) }
-          .to  have_enqueued_job(described_class).with(tenant, last_user_count: 3)
-          .and not_have_enqueued_job(DeleteUserJob)
-      end
-
-      it 'queues the next batch once the user count decreased' do
-        expect { described_class.perform_now(tenant, last_user_count: 5) }
-          .to  have_enqueued_job(DeleteUserJob).exactly(3).times
-          .and have_enqueued_job(described_class).with(tenant, last_user_count: 3)
-      end
-
-      it 'aborts if the nb of users did not decrease after the last batch' do
-        expect { described_class.perform_now(tenant, last_user_count: 3) }
-          .to raise_error(described_class::Aborted)
-      end
-
-      it 'still runs jobs queued with the former retry_interval argument' do
-        expect { described_class.perform_now(tenant, last_user_count: 5, retry_interval: 6.hours) }
-          .to have_enqueued_job(described_class).with(tenant, last_user_count: 3)
+        described_class.perform_now(tenant, third_party_removal_queued: true)
+        expect(Aws::S3::Utils).not_to have_received(:new)
       end
     end
   end

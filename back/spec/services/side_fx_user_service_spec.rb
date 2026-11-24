@@ -308,12 +308,6 @@ describe SideFxUserService do
       expect { service.after_destroy(user, current_user) }
         .to have_enqueued_job(RemoveUsersFromSegmentJob).with([user.id])
     end
-
-    it 'does not enqueue third-party removal jobs when remove_from_third_parties is false' do
-      expect { service.after_destroy(user, current_user, remove_from_third_parties: false) }
-        .to  not_have_enqueued_job(RemoveUserFromIntercomJob)
-        .and not_have_enqueued_job(RemoveUsersFromSegmentJob)
-    end
   end
 
   describe 'after_destroy_all' do
@@ -323,13 +317,6 @@ describe SideFxUserService do
       expect { service.after_destroy_all(user_ids) }
         .to  have_enqueued_job(RemoveUserFromIntercomJob).with(user_ids).exactly(:once)
         .and have_enqueued_job(RemoveUsersFromSegmentJob).with(user_ids).exactly(:once)
-    end
-
-    it 'delays the jobs when asked to' do
-      freeze_time do
-        expect { service.after_destroy_all(user_ids, wait: 5.minutes) }
-          .to have_enqueued_job(RemoveUserFromIntercomJob).at(5.minutes.from_now)
-      end
     end
   end
 

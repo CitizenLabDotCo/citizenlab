@@ -29,17 +29,13 @@ class DeleteUserJob < ApplicationJob
   #   content instead of anonymizing it
   # @param [Boolean] ban_email When true, bans the user's email from future registration
   # @param [String,NilClass] ban_reason Optional reason for the email ban
-  # @param [Boolean] update_member_counts
-  # @param [Boolean] remove_from_third_parties false when the caller removes the user from
-  #   third-party services itself, in bulk (see +User.destroy_all_async+)
   def run(
     user,
     current_user = nil,
     delete_participation_data: false,
     ban_email: false,
     ban_reason: nil,
-    update_member_counts: true,
-    remove_from_third_parties: true
+    update_member_counts: true
   )
     unless user.respond_to?(:id)
       user_id = user
@@ -66,8 +62,7 @@ class DeleteUserJob < ApplicationJob
     SideFxUserService.new.after_destroy(
       user, current_user,
       participation_data_deleted: delete_participation_data,
-      update_member_counts:,
-      remove_from_third_parties:
+      update_member_counts:
     )
   end
 

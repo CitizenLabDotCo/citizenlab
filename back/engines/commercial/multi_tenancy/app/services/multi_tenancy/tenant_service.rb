@@ -84,8 +84,8 @@ module MultiTenancy
       [false, tenant, config]
     end
 
-    # Marks the tenant as deleted. +Tenants::DeleteJob+ then deletes its users in batches
-    # and finally the tenant itself.
+    # Marks the tenant as deleted. +Tenants::DeleteJob+ then removes its users from
+    # third-party services and destroys the tenant.
     #
     # @param [Tenant] tenant
     def delete(tenant)

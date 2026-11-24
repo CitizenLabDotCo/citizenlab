@@ -47,15 +47,7 @@ class SideFxUserService
     UpdateMemberCountJob.perform_later
   end
 
-  # @param [Boolean] remove_from_third_parties false when the caller removes the user from
-  #   third-party services itself, in bulk (see +#after_destroy_all+).
-  def after_destroy(
-    frozen_user,
-    current_user,
-    participation_data_deleted: false,
-    update_member_counts: true,
-    remove_from_third_parties: true
-  )
+  def after_destroy(frozen_user, current_user, participation_data_deleted: false, update_member_counts: true)
     activity_user = current_user&.id == frozen_user&.id ? nil : current_user
 
     LogActivityJob.perform_later(
@@ -67,18 +59,17 @@ class SideFxUserService
     )
 
     UpdateMemberCountJob.perform_later if update_member_counts
-    after_destroy_all([frozen_user.id]) if remove_from_third_parties
+    after_destroy_all([frozen_user.id])
   end
 
   # Removes users that are deleted (or about to be) from third-party services, with one
   # job per service for all of them. Used for a single user by +#after_destroy+, and for
-  # a whole batch of users when a tenant is deleted (see +MultiTenancy::Tenants::DeleteJob+).
+  # all the users of a tenant when it is deleted (see +MultiTenancy::Tenants::DeleteJob+).
   #
   # @param [Array<String>] user_ids
-  # @param [ActiveSupport::Duration,Integer] wait delay before the jobs run
-  def after_destroy_all(user_ids, wait: 0)
-    RemoveUserFromIntercomJob.set(wait:).perform_later(user_ids)
-    RemoveUsersFromSegmentJob.set(wait:).perform_later(user_ids)
+  def after_destroy_all(user_ids)
+    RemoveUserFromIntercomJob.perform_later(user_ids)
+    RemoveUsersFromSegmentJob.perform_later(user_ids)
   end
 
   def after_block(user, current_user)

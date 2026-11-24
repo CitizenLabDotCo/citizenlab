@@ -12,11 +12,6 @@ describe SideFxUserService do
       expect { service.after_destroy(user, current_user) }
         .to have_enqueued_job(Matomo::RemoveUserFromMatomoJob).with([user.id])
     end
-
-    it 'does not enqueue the Matomo job when remove_from_third_parties is false' do
-      expect { service.after_destroy(user, current_user, remove_from_third_parties: false) }
-        .not_to have_enqueued_job(Matomo::RemoveUserFromMatomoJob)
-    end
   end
 
   describe 'after_destroy_all' do
