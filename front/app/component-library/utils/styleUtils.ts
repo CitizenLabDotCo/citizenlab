@@ -56,7 +56,6 @@ export const themeColors = {
   grey500: '#BDBDBD', // formerly mediumGrey
   grey400: '#CBCBCB', // formerly popoverDarkFg
   grey300: '#E0E0E0', // formerly separationDark
-  greyPressed: '#DDDDDD',
   grey200: '#EBEDEF', // formerly lightGreyishBlue
   grey100: '#F4F6F8',
   grey50: '#FCFCFC',
