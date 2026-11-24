@@ -132,34 +132,42 @@ RSpec.describe Matomo::Client do
   end
 
   describe '#delete_user_data' do
-    def response(payload)
-      instance_double(HTTParty::Response, success?: true, parsed_response: payload)
+    let(:index_php) { "#{base_uri}/index.php" }
+    let(:visits) { [{ 'idSite' => 1, 'idVisit' => 10 }] }
+    let!(:delete_request) do
+      stub_request(:post, index_php)
+        .with(query: hash_including('method' => 'PrivacyManager.deleteDataSubjects'))
+        .to_return(json({ 'log_visit' => 1 }))
     end
 
-    let(:visits) { [{ 'idSite' => 1, 'idVisit' => 10 }] }
+    def json(payload)
+      { status: 200, body: payload.to_json, headers: { 'Content-Type' => 'application/json' } }
+    end
 
-    before do
-      allow(service).to receive(:sleep)
-      allow(service).to receive(:delete_data_subjects).and_return(response({ 'log_visit' => 1 }))
+    def stub_find_data_subjects(segment, *payloads)
+      stub_request(:post, index_php)
+        .with(query: hash_including('method' => 'PrivacyManager.findDataSubjects', 'segment' => segment))
+        .to_return(*payloads.map { |payload| json(payload) })
     end
 
     it 'looks up the users USERS_PER_REQUEST at a time, until no visits are left' do
       stub_const("#{described_class}::USERS_PER_REQUEST", 2)
-      allow(service).to receive(:find_data_subjects).and_return(response(visits), response([]))
-      allow(service).to receive(:find_data_subjects).with(%w[user-3]).and_return(response([]))
+      first_batch = stub_find_data_subjects('userId==user-1,userId==user-2', visits, [])
+      second_batch = stub_find_data_subjects('userId==user-3', [])
 
       summary = service.delete_user_data(%w[user-1 user-2 user-3])
 
-      expect(service).to have_received(:find_data_subjects).with(%w[user-1 user-2]).twice
-      expect(service).to have_received(:find_data_subjects).with(%w[user-3]).once
-      expect(service).to have_received(:delete_data_subjects).once.with(visits)
+      expect(first_batch).to have_been_requested.twice
+      expect(second_batch).to have_been_requested.once
+      expect(delete_request).to have_been_requested.once
       expect(summary).to eq({ 'log_visit' => 1 })
     end
 
     it 'returns nil when no data was found' do
-      allow(service).to receive(:find_data_subjects).and_return(response([]))
+      stub_find_data_subjects('userId==user-1', [])
 
       expect(service.delete_user_data('user-1')).to be_nil
+      expect(delete_request).not_to have_been_requested
     end
   end
 
