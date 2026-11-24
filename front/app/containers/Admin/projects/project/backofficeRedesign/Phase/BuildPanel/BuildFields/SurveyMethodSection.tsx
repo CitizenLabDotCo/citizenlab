@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react';
 
 import { CLErrors } from 'typings';
 
+import Button from 'design-system/Button';
 import RadioGroup from 'design-system/RadioGroup';
 import Text from 'design-system/Text';
 
@@ -15,6 +16,7 @@ import { SurveyMethod } from 'containers/Admin/projects/project/phaseSetup/compo
 
 import { useIntl } from 'utils/cl-intl';
 
+import panelStyles from '../BuildPanel.module.css';
 import ExternalSurveyFields from '../ExternalSurveyFields';
 import NativeSurveyOption from '../NativeSurveyOption';
 import PanelField from '../PanelField';
@@ -23,6 +25,7 @@ import PollOption from '../PollOption';
 import styles from './BuildFields.module.css';
 import messages from './messages';
 import formSectionMessages from './MethodSection/FormSection/messages';
+import methodSectionMessages from './MethodSection/messages';
 
 const NAME = 'survey-method';
 
@@ -89,7 +92,7 @@ const SurveyMethodSection = ({
   const label = formatMessage(pickerMessages.surveyOptions);
 
   return (
-    <PanelField reviewKey="survey_method" label={label}>
+    <PanelField reviewKey="survey_method" label={label} spacedBody>
       <div className={styles.choice}>
         <RadioGroup
           aria-label={label}
@@ -142,7 +145,19 @@ const SurveyMethodSection = ({
                     />
                     {method === selected &&
                       method === 'native_survey' &&
-                      draftQuestionsAction}
+                      draftQuestionsAction && (
+                        <div className={panelStyles.questionActions}>
+                          {draftQuestionsAction}
+                          <Button
+                            variant="secondary"
+                            icon="download-16"
+                            aria-label={formatMessage(
+                              methodSectionMessages.downloadForm
+                            )}
+                            isDisabled
+                          />
+                        </div>
+                      )}
                     {method === selected && method === 'poll' && (
                       <Text variant="ui" tone="secondary">
                         {formatMessage(formSectionMessages.saveToEditForm)}

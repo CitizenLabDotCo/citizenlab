@@ -1,8 +1,12 @@
 import React from 'react';
 
+import { useRouter } from '@tanstack/react-router';
+
 import Button from 'design-system/Button';
 
 import useCustomFields from 'api/custom_fields/useCustomFields';
+
+import useLocale from 'hooks/useLocale';
 
 import ChoiceRadio from 'containers/Admin/projects/_shared/components/ChoiceRadio';
 import SummaryPill from 'containers/Admin/projects/_shared/components/SummaryPill';
@@ -30,6 +34,8 @@ const NativeSurveyOption = ({
   onAddQuestions,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const router = useRouter();
+  const locale = useLocale();
   const { data: customFields } = useCustomFields({ projectId, phaseId });
 
   const nQuestions = (customFields ?? []).filter(
@@ -55,13 +61,30 @@ const NativeSurveyOption = ({
         description={description}
       />
       {customFields && (
-        <Button fullWidth variant="secondary" onPress={onAddQuestions}>
-          {formatMessage(
-            hasQuestions
-              ? methodSectionMessages.editSurvey
-              : methodSectionMessages.addQuestions
-          )}
-        </Button>
+        <div className={styles.questionActions}>
+          <Button fullWidth variant="secondary" onPress={onAddQuestions}>
+            {formatMessage(
+              hasQuestions
+                ? methodSectionMessages.editSurvey
+                : methodSectionMessages.addQuestions
+            )}
+          </Button>
+          <Button
+            variant="secondary"
+            icon="download-16"
+            aria-label={formatMessage(methodSectionMessages.downloadForm)}
+            isDisabled={!hasQuestions}
+            href={
+              hasQuestions
+                ? router.buildLocation({
+                    to: '/$locale/admin/projects/$projectId/phases/$phaseId/survey-form',
+                    params: { locale, projectId, phaseId },
+                  }).href
+                : undefined
+            }
+            target="_blank"
+          />
+        </div>
       )}
     </div>
   );

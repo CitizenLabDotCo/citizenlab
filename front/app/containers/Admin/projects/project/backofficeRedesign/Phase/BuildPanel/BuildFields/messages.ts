@@ -58,6 +58,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.optionsAndParticipantData',
     defaultMessage: 'Options and participant data',
   },
+  phaseContentLanguage: {
+    id: 'app.containers.Admin.projects.project.phaseContentLanguage',
+    defaultMessage: 'Phase content language',
+  },
   phaseTitle: {
     id: 'app.containers.Admin.projects.project.phaseTitle2',
     defaultMessage: 'Add a title',

@@ -39,6 +39,16 @@
     var(--gv-space-12);
 }
 
+.card[data-spaced-body] > .header {
+  padding-top: var(--gv-space-14);
+  padding-bottom: 0;
+}
+
+.card[data-spaced-body] > .body {
+  padding-top: 25px;
+  padding-bottom: var(--gv-space-14);
+}
+
 .trigger {
   composes: button from '../reset.module.css';
   composes: header;

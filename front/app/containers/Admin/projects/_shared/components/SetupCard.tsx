@@ -19,6 +19,7 @@ import 'design-system/tokens.css';
 
 interface Props {
   title: string;
+  spacedBody?: boolean;
   reviewKey?: SetupReviewCard;
   reviewNeedsChoice?: boolean;
   titleTooltip?: JSX.Element;
@@ -32,6 +33,7 @@ interface Props {
 
 const SetupCard = ({
   title,
+  spacedBody,
   reviewKey,
   reviewNeedsChoice = false,
   titleTooltip,
@@ -102,6 +104,7 @@ const SetupCard = ({
   ) : (
     <Disclosure
       header="static"
+      spacedBody={spacedBody}
       title={staticTitle}
       status={status}
       actions={summary}

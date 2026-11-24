@@ -19,6 +19,7 @@ import usePhase from 'api/phases/usePhase';
 import PhaseActionAccessRow from 'containers/Admin/projects/_shared/components/PhaseActionAccessRow';
 import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';
 import PanelHeading from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelHeading';
+import SetupCard from 'containers/Admin/projects/_shared/components/SetupCard';
 
 import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 import {
@@ -229,11 +230,10 @@ const VotingInputs = ({
             expandable
           />
         </div>
-        <PanelGroup
+        <SetupCard
           reviewKey="voting_method"
           reviewNeedsChoice={!voting_method}
-          label={formatMessage(votingMessages.votingMethodSelectorTitle)}
-          defaultOpen
+          title={formatMessage(votingMessages.votingMethodSelectorTitle)}
         >
           {methodSelector}
           {voting_method && (
@@ -259,7 +259,7 @@ const VotingInputs = ({
               />
             </div>
           )}
-        </PanelGroup>
+        </SetupCard>
         <PanelGroup
           label={formatMessage(configMessages.participantActionsGroup)}
           hasError={!!commentingError}

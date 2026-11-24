@@ -10,6 +10,7 @@ import 'design-system/tokens.css';
 
 interface Props {
   id: string;
+  locale?: SupportedLocale;
   // Shown on the left of the locale switcher. It can hold more than words
   // (badges, a tooltip), so the editor and the switcher take aria-label.
   label?: ReactNode;
@@ -27,6 +28,7 @@ interface Props {
   noLinks?: boolean;
   noAlign?: boolean;
   limitedTextFormatting?: boolean;
+  compactToolbar?: boolean;
   withCTAButton?: boolean;
 }
 
@@ -34,6 +36,7 @@ interface Props {
 // row, the editor for the picked locale under it.
 const MultilocRichTextField = ({
   id,
+  locale,
   label,
   'aria-label': ariaLabel,
   placeholder,
@@ -48,9 +51,15 @@ const MultilocRichTextField = ({
   noLinks,
   noAlign,
   limitedTextFormatting,
+  compactToolbar,
   withCTAButton,
 }: Props) => {
-  const { locales, selectedLocale, setSelectedLocale } = useSelectedLocale();
+  const {
+    locales,
+    selectedLocale: defaultLocale,
+    setSelectedLocale,
+  } = useSelectedLocale();
+  const selectedLocale = locale ?? defaultLocale;
 
   if (!selectedLocale) return null;
 
@@ -58,18 +67,20 @@ const MultilocRichTextField = ({
 
   return (
     <div id={id} className={styles.field}>
-      {(label !== undefined || locales.length > 1) && (
+      {(label !== undefined || (!locale && locales.length > 1)) && (
         <div
           className={label === undefined ? styles.localeRow : styles.labelRow}
         >
           {label !== undefined && <span className={styles.label}>{label}</span>}
-          <LocaleSwitcher
-            aria-label={ariaLabel}
-            locales={locales}
-            selectedLocale={selectedLocale}
-            onChange={setSelectedLocale}
-            valueMultiloc={valueMultiloc}
-          />
+          {!locale && (
+            <LocaleSwitcher
+              aria-label={ariaLabel}
+              locales={locales}
+              selectedLocale={selectedLocale}
+              onChange={setSelectedLocale}
+              valueMultiloc={valueMultiloc}
+            />
+          )}
         </div>
       )}
       <RichTextField
@@ -90,6 +101,7 @@ const MultilocRichTextField = ({
         noLinks={noLinks}
         noAlign={noAlign}
         limitedTextFormatting={limitedTextFormatting}
+        compactToolbar={compactToolbar}
         withCTAButton={withCTAButton}
       />
       {errorMessage && (

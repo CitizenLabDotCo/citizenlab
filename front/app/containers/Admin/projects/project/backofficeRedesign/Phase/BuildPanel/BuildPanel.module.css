@@ -92,3 +92,8 @@
 .setupUndo > p {
   margin: 0;
 }
+
+.questionActions {
+  display: flex;
+  gap: var(--gv-space-8);
+}

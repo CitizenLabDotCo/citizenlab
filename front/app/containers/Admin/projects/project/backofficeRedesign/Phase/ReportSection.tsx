@@ -39,14 +39,19 @@ const ReportSection = ({ projectId, phase }: Props) => {
         <PanelField
           label={formatMessage(messages.report)}
           action={
-            <Button
-              id="e2e-create-report-button"
-              variant="primary"
-              icon="plus-16"
-              onPress={() => setCreateOpened(true)}
-            >
-              {formatMessage(phaseMessages.addReport)}
-            </Button>
+            <div className={styles.actions}>
+              <Button variant="secondary" isDisabled>
+                {formatMessage(topBarMessages.download)}
+              </Button>
+              <Button
+                id="e2e-create-report-button"
+                variant="primary"
+                icon="plus-16"
+                onPress={() => setCreateOpened(true)}
+              >
+                {formatMessage(phaseMessages.addReport)}
+              </Button>
+            </div>
           }
         />
         <CreateReportModal

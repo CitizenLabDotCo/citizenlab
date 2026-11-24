@@ -6,8 +6,6 @@ import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
 
 import { useIntl } from 'utils/cl-intl';
 
-import PanelField from '../../../PanelField';
-
 import DemographicsModal from './DemographicsModal';
 import DemographicsSummary from './DemographicsSummary';
 import messages from './messages';
@@ -62,12 +60,11 @@ const DemographicsCard = ({
 
   return (
     <>
-      <PanelField
-        reviewKey="demographics"
+      <DemographicsSummary
+        phaseId={phaseId}
+        action={actions[0]}
         label={label}
-        // The summary follows the phase's main action, sorted first.
-        action={<DemographicsSummary phaseId={phaseId} action={actions[0]} />}
-        button={{ icon: 'chevron-right', onClick: () => setOpened(true) }}
+        onOpen={() => setOpened(true)}
       />
       <DemographicsModal
         phaseId={phaseId}

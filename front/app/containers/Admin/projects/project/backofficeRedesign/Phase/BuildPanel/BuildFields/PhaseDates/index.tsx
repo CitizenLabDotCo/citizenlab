@@ -41,10 +41,6 @@ const PhaseDates = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const [expanded, setExpanded] = useState(false);
-  // Adding the toggle swaps the card's header, which remounts the picker and
-  // closes its calendar. A card that opened without dates keeps its form, so
-  // picking the first day leaves the calendar open for the end date.
-  const [openedWithoutDates] = useState(!formData.start_at);
   const ranges = usePhaseDateRanges({ formData, standalone });
 
   if (!ranges) return null;
@@ -56,22 +52,19 @@ const PhaseDates = ({
   );
   const hasError =
     !!errors?.start_at || !!errors?.end_at || !!validationErrors.phaseDateError;
-  // Without a start date, or with an error, the picker must stay in sight.
-  const forcedOpen = openedWithoutDates || !formData.start_at || hasError;
-  const open = expanded || forcedOpen;
+  // Keep the disclosure mounted while a first date is picked or a save fails.
+  const open = expanded || hasError;
 
   const handleChange = (dates: Dates) => {
     setExpanded(true);
     onChange(dates);
   };
 
-  const toggle: CardButton | undefined = forcedOpen
-    ? undefined
-    : {
-        icon: open ? 'chevron-up' : 'chevron-down',
-        expanded: open,
-        onClick: () => setExpanded((expanded) => !expanded),
-      };
+  const toggle: CardButton = {
+    icon: open ? 'chevron-up' : 'chevron-down',
+    expanded: open,
+    onClick: () => setExpanded(!open),
+  };
 
   return (
     <PanelField

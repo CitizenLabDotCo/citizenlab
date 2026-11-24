@@ -20,6 +20,7 @@ import { DraftSetupReviewContext } from 'containers/Admin/projects/_shared/compo
 import usePhaseFileAttachments, {
   fileAttachmentErrors,
 } from 'containers/Admin/projects/_shared/usePhaseFileAttachments';
+import inputTermMessages from 'containers/Admin/projects/project/inputTermMessages';
 import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/typings';
 import validate from 'containers/Admin/projects/project/phaseSetup/validate';
 
@@ -43,8 +44,11 @@ import SurveySetupModal, {
 import DraftMethodSettings, {
   SetupSettingsAction,
 } from '../Phase/DraftMethodSettings';
+import EmptyState from '../Phase/EmptyState';
 import PhasePreview from '../Phase/PhasePreview';
+import { PhaseViewKey } from '../Phase/usePhaseViews';
 
+import DraftPhaseViewSwitch from './DraftPhaseViewSwitch';
 import messages from './messages';
 import SavedInputForm from './SavedInputForm';
 import 'design-system/tokens.css';
@@ -83,6 +87,7 @@ const NewPhaseWorkspace = ({
     initialParticipationMethod
   );
   const [standalone, setStandalone] = useState(initialStandalone);
+  const [activeView, setActiveView] = useState<PhaseViewKey>('build');
 
   const form = useForm<DraftValues>({
     defaultValues: { phase: initialFormData, reviewedCards: [] },
@@ -271,6 +276,13 @@ const NewPhaseWorkspace = ({
     >
       <ProjectWorkspace
         project={project}
+        activeView={activeView}
+        viewSwitch={
+          <DraftPhaseViewSwitch
+            activeView={activeView}
+            onChange={setActiveView}
+          />
+        }
         draft={{
           inputTerm: formData.input_term,
           label: formatMessage(
@@ -361,7 +373,22 @@ const NewPhaseWorkspace = ({
           />
         }
       >
-        <PhasePreview projectId={projectId} draft={formData} />
+        {activeView === 'build' ? (
+          <PhasePreview projectId={projectId} draft={formData} />
+        ) : (
+          <EmptyState
+            size="large"
+            title={
+              activeView === 'manage'
+                ? formatMessage(messages.draftManageEmpty, {
+                    terms: formatMessage(inputTermMessages.capitalizedPlural, {
+                      term: formData.input_term ?? 'other',
+                    }),
+                  })
+                : formatMessage(messages.draftInsightsEmpty)
+            }
+          />
+        )}
         {participationMethod === 'native_survey' && (
           <SurveySetupModal
             projectId={projectId}

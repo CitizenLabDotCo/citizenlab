@@ -48,9 +48,17 @@ const PollOption = ({ phaseId, title, description }: Props) => {
         description={description}
       />
       {pollQuestions && (
-        <Button fullWidth variant="secondary" onPress={() => setOpened(true)}>
-          {formatMessage(methodSectionMessages.addQuestions)}
-        </Button>
+        <div className={styles.questionActions}>
+          <Button fullWidth variant="secondary" onPress={() => setOpened(true)}>
+            {formatMessage(methodSectionMessages.addQuestions)}
+          </Button>
+          <Button
+            variant="secondary"
+            icon="download-16"
+            aria-label={formatMessage(methodSectionMessages.downloadForm)}
+            isDisabled
+          />
+        </div>
       )}
       <Modal
         isOpen={opened}

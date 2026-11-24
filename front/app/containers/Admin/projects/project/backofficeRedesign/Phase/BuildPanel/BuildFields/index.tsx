@@ -15,8 +15,10 @@ import { isSurveyMethod } from 'containers/Admin/projects/project/phaseSetup/com
 import phaseSetupMessages from 'containers/Admin/projects/project/phaseSetup/messages';
 import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/typings';
 
+import LocaleSwitcher from 'components/admin/MultilocFields/LocaleSwitcher';
 import MultilocTitleField from 'components/admin/MultilocFields/MultilocTitleField';
 import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
+import useSelectedLocale from 'components/admin/MultilocFields/useSelectedLocale';
 
 import { useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
@@ -68,6 +70,14 @@ const BuildFields = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const apiErrorText = useApiErrorText();
+  const { locales, selectedLocale, setSelectedLocale } = useSelectedLocale();
+  const translations = Object.fromEntries(
+    locales.map((locale) => [
+      locale,
+      formData.title_multiloc?.[locale] &&
+        formData.description_multiloc?.[locale],
+    ])
+  );
   const baseError = apiErrorText(errors?.base);
   const { survey_action } = useSearch({ strict: false });
   const [surveySetupOpened, setSurveySetupOpened] = useState(false);
@@ -93,9 +103,19 @@ const BuildFields = ({
             onChange={onDatesChange}
           />
           <div className={styles.group}>
+            {selectedLocale && (
+              <LocaleSwitcher
+                aria-label={formatMessage(messages.phaseContentLanguage)}
+                locales={locales}
+                selectedLocale={selectedLocale}
+                onChange={setSelectedLocale}
+                valueMultiloc={translations}
+              />
+            )}
             <div className="intercom-admin-phase-name">
               <MultilocTitleField
                 id="phase-build-panel-title"
+                locale={selectedLocale}
                 aria-label={formatMessage(phaseSetupMessages.titleLabel)}
                 placeholder={formatMessage(messages.phaseTitle)}
                 valueMultiloc={formData.title_multiloc}
@@ -107,6 +127,7 @@ const BuildFields = ({
             <DescriptionField
               projectId={projectId}
               phaseId={phaseId}
+              locale={selectedLocale}
               value={formData.description_multiloc}
               errors={errors}
               onChange={(description_multiloc) =>

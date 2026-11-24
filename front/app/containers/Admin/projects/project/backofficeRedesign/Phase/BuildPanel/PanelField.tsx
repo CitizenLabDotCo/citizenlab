@@ -7,6 +7,7 @@ import { CardButton } from 'containers/Admin/projects/_shared/components/SetupCa
 
 interface Props {
   label: string;
+  spacedBody?: boolean;
   reviewKey?: SetupReviewCard;
   labelTooltip?: JSX.Element;
   action?: ReactNode;
@@ -17,6 +18,7 @@ interface Props {
 
 const PanelField = ({
   label,
+  spacedBody,
   reviewKey,
   labelTooltip,
   action,
@@ -26,6 +28,7 @@ const PanelField = ({
 }: Props) => (
   <SetupCard
     title={label}
+    spacedBody={spacedBody}
     reviewKey={reviewKey}
     titleTooltip={labelTooltip}
     action={action}
