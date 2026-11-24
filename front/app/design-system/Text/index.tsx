@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { AriaRole, ReactNode } from 'react';
 
 import typography from '../typography.module.css';
 
@@ -29,13 +29,14 @@ type Tone =
   | 'success';
 
 type Props = {
-  as?: 'p' | 'span' | 'div';
+  as?: 'p' | 'span' | 'div' | 'h2' | 'h3' | 'h4' | 'li';
   variant?: Variant;
   tone?: Tone;
   children: ReactNode;
   className?: string;
   id?: string;
   title?: string;
+  role?: AriaRole;
 };
 
 const Text = ({
@@ -46,11 +47,13 @@ const Text = ({
   className,
   id,
   title,
+  role,
 }: Props) => (
   <Element
     className={`${typography[variant]} ${styles[tone]} ${className ?? ''}`}
     id={id}
     title={title}
+    role={role}
   >
     {children}
   </Element>

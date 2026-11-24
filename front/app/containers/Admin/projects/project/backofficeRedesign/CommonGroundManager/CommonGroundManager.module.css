@@ -14,10 +14,6 @@
   composes: toolbar from '../_shared/listManager.module.css';
 }
 
-.count {
-  composes: count from '../_shared/listManager.module.css';
-}
-
 .display {
   composes: display from '../_shared/listManager.module.css';
 }

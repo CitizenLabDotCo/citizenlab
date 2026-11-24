@@ -4,6 +4,7 @@ import { FormattedDate } from 'react-intl';
 
 import Divider from 'design-system/Divider';
 import Icon from 'design-system/Icon';
+import Text from 'design-system/Text';
 
 import { IIdeaData } from 'api/ideas/types';
 import { IPhaseData } from 'api/phases/types';
@@ -58,7 +59,9 @@ const IdeaOverview = ({
   return (
     <div className={styles.overview}>
       <div className={styles.summary}>
-        <h2 className={styles.title}>{localize(attributes.title_multiloc)}</h2>
+        <Text as="h2" variant="bodyStrong" tone="primary">
+          {localize(attributes.title_multiloc)}
+        </Text>
         <IdeaContent idea={idea} />
         <div className={styles.byline}>
           <span>

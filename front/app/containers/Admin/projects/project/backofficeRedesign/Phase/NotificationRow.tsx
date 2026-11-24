@@ -71,7 +71,9 @@ const NotificationRow = ({ campaign, projectId, phaseId }: Props) => {
       onPress={openEditor}
     >
       <span className={styles.content}>
-        <span className={styles.title}>{campaign.campaign_description}</span>
+        <Text as="span" variant="ui" tone="primary" className={styles.title}>
+          {campaign.campaign_description}
+        </Text>
         <Text as="span" variant="small" tone="secondary">
           {description ??
             [campaign.recipient_segment, when].filter(Boolean).join(' · ')}

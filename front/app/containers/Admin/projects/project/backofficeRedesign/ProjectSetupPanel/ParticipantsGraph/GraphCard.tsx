@@ -53,12 +53,16 @@ const GraphCard = ({ projectId }: Props) => {
     <StatCardLink projectId={projectId}>
       <div className={styles.head}>
         <div className={styles.summary}>
-          <p className={styles.caption}>
+          <Text variant="small" tone="secondary">
             {formatMessage(messages.participantsGraphLabel)}
-          </p>
+          </Text>
           <p className={styles.value}>{formatNumber(participants)}</p>
           {lastPeriod > 0 && (
-            <p className={styles.lastPeriod}>
+            <Text
+              variant="small"
+              tone="secondary"
+              className={styles.lastPeriod}
+            >
               <FormattedMessage
                 {...messages.participantsGraphLastPeriod}
                 values={{
@@ -70,7 +74,7 @@ const GraphCard = ({ projectId }: Props) => {
                   ),
                 }}
               />
-            </p>
+            </Text>
           )}
         </div>
         <Icon name="chevron-right-16" className={styles.chevron} />
@@ -81,7 +85,7 @@ const GraphCard = ({ projectId }: Props) => {
           <div className={styles.sparkline}>
             <Sparkline values={weeks.map((week) => week.participants)} />
           </div>
-          <p className={styles.scale}>
+          <Text variant="small" tone="secondary" className={styles.scale}>
             {formatMessage(messages.participantsGraphScale, {
               date: formatDate(sinceDate, {
                 day: 'numeric',
@@ -89,7 +93,7 @@ const GraphCard = ({ projectId }: Props) => {
                 ...(sinceThisYear ? {} : { year: 'numeric' }),
               }),
             })}
-          </p>
+          </Text>
         </>
       )}
     </StatCardLink>

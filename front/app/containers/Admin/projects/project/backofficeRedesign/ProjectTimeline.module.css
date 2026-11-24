@@ -12,11 +12,6 @@
   padding-left: var(--gv-space-10);
 }
 
-.title {
-  composes: uiStrong from '../../../../../design-system/typography.module.css';
-  color: var(--gv-text-primary);
-}
-
 .actions {
   display: flex;
   gap: var(--gv-space-4);

@@ -4,6 +4,7 @@ import { useQueryClient } from '@tanstack/react-query';
 
 import Banner from 'design-system/Banner';
 import Modal from 'design-system/Modal';
+import Text from 'design-system/Text';
 
 import phasePermissionKeys from 'api/phase_permissions/keys';
 import { IPhaseData, TSurveyService } from 'api/phases/types';
@@ -116,14 +117,20 @@ const SwitchSurveyMethodModal = ({ phase, method, onClose }: Props) => {
       }}
     >
       <div className={styles.switchBody}>
-        <p className={styles.switchIntro}>
+        <Text variant="ui" tone="secondary" className={styles.switchIntro}>
           {formatMessage(messages.switchSurveyMethodIntro)}
-        </p>
+        </Text>
         <ul className={styles.consequences}>
           {consequences.map((message) => (
-            <li key={message.id} className={styles.consequence}>
+            <Text
+              key={message.id}
+              as="li"
+              variant="ui"
+              tone="secondary"
+              className={styles.consequence}
+            >
               {formatMessage(message)}
-            </li>
+            </Text>
           ))}
         </ul>
         {toExternal && (

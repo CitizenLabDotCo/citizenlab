@@ -4,6 +4,7 @@ import Banner from 'design-system/Banner';
 import Checkbox from 'design-system/Checkbox';
 import DropZone from 'design-system/DropZone';
 import Modal from 'design-system/Modal';
+import Text from 'design-system/Text';
 
 import {
   MAX_FILES,
@@ -89,9 +90,9 @@ const AddFilesModal = ({ draft, opened, onClose }: Props) => {
           allowsMultiple
           onSelect={addFiles}
         />
-        <p className={styles.hint}>
+        <Text variant="small" tone="secondary">
           {formatMessage(messages.supportedFileTypes)}
-        </p>
+        </Text>
         {tooManyFiles && (
           <Banner tone="error">
             {formatMessage(filesMessages.maxFilesError, {
@@ -102,12 +103,12 @@ const AddFilesModal = ({ draft, opened, onClose }: Props) => {
       </div>
       {selected.length > 0 && (
         <div>
-          <p className={styles.count}>
+          <Text variant="small" tone="secondary" className={styles.count}>
             {formatMessage(messages.filesCountWithSize, {
               count: selected.length,
               size: returnFileSize(totalSize),
             })}
-          </p>
+          </Text>
           <div className={styles.files}>
             {selected.map(({ key, file, status, category }) => (
               <UploadingFileRow

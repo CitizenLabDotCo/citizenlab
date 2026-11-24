@@ -14,19 +14,10 @@
   gap: var(--gv-space-8);
 }
 
-.error {
-  composes: small from '../../../../../../design-system/typography.module.css';
-  color: var(--gv-text-danger);
-}
-
 .toolbar {
   composes: toolbar from '../_shared/listManager.module.css';
   --list-toolbar-height: var(--gv-size-40);
   --list-toolbar-margin: var(--gv-space-12);
-}
-
-.count {
-  composes: count from '../_shared/listManager.module.css';
 }
 
 .display {

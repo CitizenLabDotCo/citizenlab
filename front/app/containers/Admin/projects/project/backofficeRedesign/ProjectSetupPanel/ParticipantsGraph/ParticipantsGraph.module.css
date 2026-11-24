@@ -9,11 +9,6 @@
   min-width: 0;
 }
 
-.caption {
-  composes: small from '../../../../../../../design-system/typography.module.css';
-  color: var(--gv-text-secondary);
-}
-
 .value {
   composes: stat from '../../../../../../../design-system/typography.module.css';
   margin-top: var(--gv-space-2);
@@ -26,7 +21,6 @@
 }
 
 .lastPeriod {
-  composes: caption;
   margin-top: var(--gv-space-2);
 }
 
@@ -40,7 +34,6 @@
 }
 
 .scale {
-  composes: caption;
   margin-top: var(--gv-space-4);
 }
 
@@ -54,7 +47,6 @@
 }
 
 .emptyNote {
-  composes: caption;
   margin-top: var(--gv-space-8);
 }
 

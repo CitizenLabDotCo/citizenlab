@@ -25,11 +25,6 @@
   margin-bottom: var(--list-toolbar-margin, var(--gv-space-8));
 }
 
-.count {
-  composes: title from '../../../../../../design-system/typography.module.css';
-  color: var(--gv-text-primary);
-}
-
 .display {
   display: flex;
   flex-shrink: var(--list-toolbar-display-shrink, 0);

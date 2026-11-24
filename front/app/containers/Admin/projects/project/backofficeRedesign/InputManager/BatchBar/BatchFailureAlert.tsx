@@ -1,10 +1,11 @@
 import React from 'react';
 
+import Text from 'design-system/Text';
+
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 
-import styles from './BatchBar.module.css';
 import { BatchFailure } from './useBatchActions';
 
 interface Props {
@@ -19,14 +20,14 @@ const BatchFailureAlert = ({ failure }: Props) => {
   const { action, failed, total } = failure;
 
   return (
-    <span className={styles.error} role="alert">
+    <Text as="span" variant="small" tone="danger" role="alert">
       {formatMessage(
         action === 'delete'
           ? messages.batchDeleteFailed
           : messages.batchUpdateFailed,
         { failed, total }
       )}
-    </span>
+    </Text>
   );
 };
 

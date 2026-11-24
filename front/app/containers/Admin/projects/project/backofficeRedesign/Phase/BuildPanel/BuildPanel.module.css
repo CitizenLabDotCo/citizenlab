@@ -16,11 +16,6 @@
   gap: var(--gv-space-12);
 }
 
-.helper {
-  composes: ui from '../../../../../../../design-system/typography.module.css';
-  color: var(--gv-text-secondary);
-}
-
 .setupBody {
   display: flex;
   flex-direction: column;
@@ -28,7 +23,6 @@
 }
 
 .setupLead {
-  composes: helper;
   margin-bottom: var(--gv-space-6);
 }
 
@@ -36,12 +30,6 @@
   display: flex;
   align-items: center;
   gap: var(--gv-space-12);
-}
-
-.setupStatusText {
-  composes: ui from '../../../../../../../design-system/typography.module.css';
-  margin: 0;
-  color: var(--gv-text-primary);
 }
 
 .setupRow {
@@ -63,7 +51,6 @@
 }
 
 .switchIntro {
-  composes: helper;
   margin-bottom: var(--gv-space-12);
 }
 
@@ -73,7 +60,6 @@
 }
 
 .consequence {
-  composes: helper;
   margin: var(--gv-space-4) 0;
 }
 

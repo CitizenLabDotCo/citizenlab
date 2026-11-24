@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import IconButton from 'design-system/IconButton';
+import Text from 'design-system/Text';
 
 import { IProjectData } from 'api/projects/types';
 
@@ -46,9 +47,9 @@ const ProjectSetupPanel = ({ project }: Props) => {
     <SetupDraftProvider key={pageSave?.revision} project={project}>
       <div className={styles.panel}>
         <div className={styles.header}>
-          <h2 className={styles.title}>
+          <Text as="h2" variant="uiStrong" tone="primary">
             {formatMessage(messages.projectSetupPanel)}
-          </h2>
+          </Text>
           <IconButton
             icon="settings-16"
             aria-label={formatMessage(messages.projectSettings)}

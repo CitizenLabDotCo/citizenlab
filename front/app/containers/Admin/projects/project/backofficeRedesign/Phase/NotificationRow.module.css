@@ -42,11 +42,6 @@
   min-width: 0;
 }
 
-.title {
-  composes: ui from '../../../../../../design-system/typography.module.css';
-  color: var(--gv-text-primary);
-}
-
 .chevron {
   flex-shrink: 0;
   color: var(--gv-icon-secondary);

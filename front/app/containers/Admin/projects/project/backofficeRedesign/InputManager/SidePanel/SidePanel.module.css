@@ -30,11 +30,6 @@
   gap: var(--gv-space-12);
 }
 
-.title {
-  composes: bodyStrong from '../../../../../../../design-system/typography.module.css';
-  color: var(--gv-text-primary);
-}
-
 .byline {
   composes: small from '../../../../../../../design-system/typography.module.css';
   display: flex;

@@ -1,5 +1,7 @@
 import React from 'react';
 
+import Text from 'design-system/Text';
+
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
@@ -14,14 +16,14 @@ const EmptyCard = () => {
       role="group"
       aria-label={formatMessage(messages.participantsGraphLabel)}
     >
-      <p className={styles.caption}>
+      <Text variant="small" tone="secondary">
         {formatMessage(messages.participantsGraphLabel)}
-      </p>
+      </Text>
       <p className={styles.emptyValue}>{formatNumber(0)}</p>
       <div className={styles.emptyLine} />
-      <p className={styles.emptyNote}>
+      <Text variant="small" tone="secondary" className={styles.emptyNote}>
         {formatMessage(messages.participantsEmpty)}
-      </p>
+      </Text>
     </div>
   );
 };

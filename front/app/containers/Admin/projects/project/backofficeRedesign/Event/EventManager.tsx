@@ -140,9 +140,9 @@ const EventManager = ({ event }: Props) => {
             </Button>
           )}
           {exportError && (
-            <p className={styles.error} role="alert">
+            <Text variant="small" tone="danger" role="alert">
               {formatMessage(messages.registrantsExportError)}
-            </p>
+            </Text>
           )}
           <div role="note">
             <Banner tone="neutral">
@@ -180,10 +180,10 @@ const EventManager = ({ event }: Props) => {
       }
     >
       <div className={styles.toolbar}>
-        <p className={styles.count}>
+        <Text variant="title" tone="primary">
           {(!event || attendances) &&
             formatMessage(messages.registrantCount, { count: total })}
-        </p>
+        </Text>
         <div className={styles.display}>
           <SearchToggle
             label={formatMessage(messages.searchRegistrants)}

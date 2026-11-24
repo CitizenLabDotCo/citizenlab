@@ -12,21 +12,6 @@
   min-width: 0;
 }
 
-.heading {
-  composes: uiStrong from '../../../../../../../../design-system/typography.module.css';
-  color: var(--gv-text-primary);
-}
-
-.label {
-  composes: ui from '../../../../../../../../design-system/typography.module.css';
-  color: var(--gv-text-secondary);
-}
-
-.description {
-  composes: small from '../../../../../../../../design-system/typography.module.css';
-  color: var(--gv-text-secondary);
-}
-
 .description a {
   color: inherit;
   text-decoration: underline;

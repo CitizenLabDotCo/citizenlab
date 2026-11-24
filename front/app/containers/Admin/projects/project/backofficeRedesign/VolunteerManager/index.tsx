@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import Text from 'design-system/Text';
+
 import useCauses from 'api/causes/useCauses';
 import { exportVolunteers } from 'api/causes/util';
 import { IPhaseData } from 'api/phases/types';
@@ -151,10 +153,10 @@ const VolunteerManager = ({ phase }: Props) => {
       }
     >
       <div className={styles.toolbar}>
-        <p className={styles.count}>
+        <Text variant="title" tone="primary">
           {total !== undefined &&
             formatMessage(messages.volunteerCount, { count: total })}
-        </p>
+        </Text>
         <div className={styles.display}>
           <SearchToggle
             label={formatMessage(messages.searchVolunteers)}
