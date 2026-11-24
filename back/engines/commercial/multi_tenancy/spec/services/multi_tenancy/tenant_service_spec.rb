@@ -57,13 +57,13 @@ RSpec.describe MultiTenancy::TenantService do
   describe '#delete' do
     let(:tenant) { Tenant.current }
 
-    it "enqueues DeleteUserJob's and Tenant::DeleteJob" do
-      nb_users = 3
-      create_list(:user, nb_users)
+    # The users are deleted in batches by Tenants::DeleteJob.
+    it 'enqueues Tenants::DeleteJob, but no DeleteUserJob' do
+      create_list(:user, 3)
 
       expect { service.delete(tenant) }
-        .to  have_enqueued_job(DeleteUserJob).exactly(nb_users).times
-        .and have_enqueued_job(MultiTenancy::Tenants::DeleteJob)
+        .to  have_enqueued_job(MultiTenancy::Tenants::DeleteJob)
+        .and not_have_enqueued_job(DeleteUserJob)
     end
 
     it 'runs before_destroy side effects' do
