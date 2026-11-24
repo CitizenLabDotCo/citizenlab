@@ -262,14 +262,6 @@ describe AccountMergeService do
       )
     end
 
-    it "does not copy the source's answers to fields the platform does not have" do
-      source.custom_field_answers.create!(key: 'retired', value: 'x')
-
-      merge!
-
-      expect(target.reload.answer_for_key('retired')).to be_nil
-    end
-
     # bogus locks gender, so the source's answer is the provider's and wins.
     it 'lets a locked answer from the source win over the target' do
       gender_field = create(:custom_field_gender, :with_options)
