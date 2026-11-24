@@ -24,6 +24,9 @@ interface Props {
   titleTooltip?: JSX.Element;
   action?: ReactNode;
   button?: CardButton;
+  /** A Menu the card header opens. The action then shows the picked value. */
+  menu?: ReactNode;
+  menuDescribedBy?: string;
   children?: ReactNode;
 }
 
@@ -34,6 +37,8 @@ const SetupCard = ({
   titleTooltip,
   action,
   button,
+  menu,
+  menuDescribedBy,
   children,
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -70,7 +75,20 @@ const SetupCard = ({
     title
   );
 
-  const card = button ? (
+  const card = menu ? (
+    <>
+      <Disclosure
+        header="menu"
+        title={title}
+        tooltip={titleTooltip}
+        status={status}
+        summary={summary}
+        menu={menu}
+        aria-describedby={menuDescribedBy}
+      />
+      {children}
+    </>
+  ) : button ? (
     <SetupCardButton
       title={title}
       titleTooltip={titleTooltip}

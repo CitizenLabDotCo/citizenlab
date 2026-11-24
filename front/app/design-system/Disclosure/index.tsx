@@ -5,6 +5,7 @@ import {
   Disclosure as AriaDisclosure,
   DisclosurePanel,
   Heading,
+  MenuTrigger,
   PressEvent,
 } from 'react-aria-components';
 
@@ -41,6 +42,15 @@ type ButtonHeaderProps = SharedProps & {
   isPending?: boolean;
 };
 
+type MenuHeaderProps = SharedProps & {
+  header: 'menu';
+  tooltip?: ReactNode;
+  // A Menu. It opens under the card; the summary Badge shows the picked value.
+  menu: ReactNode;
+  isDisabled?: boolean;
+  'aria-describedby'?: string;
+};
+
 type StaticHeaderProps = SharedProps & {
   header: 'static';
   actions?: ReactNode;
@@ -48,7 +58,11 @@ type StaticHeaderProps = SharedProps & {
   children?: ReactNode;
 };
 
-type Props = DisclosureHeaderProps | ButtonHeaderProps | StaticHeaderProps;
+type Props =
+  | DisclosureHeaderProps
+  | ButtonHeaderProps
+  | MenuHeaderProps
+  | StaticHeaderProps;
 
 const HeaderContent = ({ title, status, summary }: SharedProps) => (
   <>
@@ -119,6 +133,35 @@ const ButtonCard = ({
   );
 };
 
+const MenuCard = ({
+  menu,
+  tooltip,
+  isDisabled = false,
+  'aria-describedby': ariaDescribedBy,
+  ...content
+}: MenuHeaderProps) => {
+  const trigger = (
+    <AriaButton
+      className={styles.trigger}
+      isDisabled={isDisabled}
+      aria-describedby={ariaDescribedBy}
+    >
+      <HeaderContent {...content} />
+      <span className={styles.iconBox}>
+        <Icon name="chevron-down-16" />
+      </span>
+    </AriaButton>
+  );
+  return (
+    <div className={styles.card} data-disabled={isDisabled || undefined}>
+      <MenuTrigger>
+        {tooltip ? <Tooltip content={tooltip}>{trigger}</Tooltip> : trigger}
+        {menu}
+      </MenuTrigger>
+    </div>
+  );
+};
+
 const StaticCard = ({ actions, children, ...content }: StaticHeaderProps) => (
   <div className={styles.card}>
     <div className={styles.header}>
@@ -131,6 +174,7 @@ const StaticCard = ({ actions, children, ...content }: StaticHeaderProps) => (
 
 const Disclosure = (props: Props) => {
   if (props.header === 'button') return <ButtonCard {...props} />;
+  if (props.header === 'menu') return <MenuCard {...props} />;
   if (props.header === 'static') return <StaticCard {...props} />;
   return <DisclosureCard {...props} />;
 };

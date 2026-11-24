@@ -11,6 +11,7 @@ interface Props {
   labelTooltip?: JSX.Element;
   action?: ReactNode;
   button?: CardButton;
+  menu?: ReactNode;
   children?: ReactNode;
 }
 
@@ -20,6 +21,7 @@ const PanelField = ({
   labelTooltip,
   action,
   button,
+  menu,
   children,
 }: Props) => (
   <SetupCard
@@ -28,6 +30,7 @@ const PanelField = ({
     titleTooltip={labelTooltip}
     action={action}
     button={button}
+    menu={menu}
   >
     {children}
   </SetupCard>

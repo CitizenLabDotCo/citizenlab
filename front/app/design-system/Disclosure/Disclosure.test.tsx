@@ -2,6 +2,8 @@ import React from 'react';
 
 import { render, screen, userEvent } from 'utils/testUtils/rtl';
 
+import Menu, { MenuItem } from '../Menu';
+
 import Disclosure from '.';
 
 describe('Disclosure', () => {
@@ -36,4 +38,27 @@ it('shows the tooltip on keyboard focus and still expands on enter', async () =>
   await user.keyboard('{Enter}');
   expect(trigger).toHaveAttribute('aria-expanded', 'true');
   expect(screen.getByText('Selected areas')).toBeVisible();
+});
+
+it('opens its menu from the header', async () => {
+  const user = userEvent.setup();
+  const onAction = jest.fn();
+
+  render(
+    <Disclosure
+      header="menu"
+      title="Sorting"
+      menu={
+        <Menu aria-label="Sorting" onAction={onAction}>
+          <MenuItem id="trending">Trending</MenuItem>
+          <MenuItem id="new">Most recent</MenuItem>
+        </Menu>
+      }
+    />
+  );
+
+  await user.click(screen.getByRole('button', { name: 'Sorting' }));
+  await user.click(screen.getByRole('menuitem', { name: 'Most recent' }));
+
+  expect(onAction).toHaveBeenCalledWith('new');
 });
