@@ -40,7 +40,9 @@ const Modal = ({
     isKeyboardDismissDisabled={isCloseDisabled}
     className={styles.overlay}
   >
-    <AriaModal className={`${styles.modal} ${styles[`size${size}`]}`}>
+    <AriaModal
+      className={`${styles.modal} ${styles.lowHead} ${styles[`size${size}`]}`}
+    >
       <DialogLayout
         title={title}
         description={description}
