@@ -1,4 +1,0 @@
-.explanation {
-  composes: ui from '../../../../../../design-system/typography.module.css';
-  color: var(--gv-text-secondary);
-}

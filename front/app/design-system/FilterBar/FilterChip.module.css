@@ -22,15 +22,14 @@
 }
 
 .trigger {
+  composes: button from '../reset.module.css';
   composes: ui from '../typography.module.css';
   display: inline-flex;
   align-items: center;
   gap: var(--gv-space-6);
   height: 100%;
   padding: 0 0 0 var(--gv-space-10);
-  border: none;
   border-radius: var(--gv-radius-full);
-  background: transparent;
   color: inherit;
   white-space: nowrap;
   cursor: pointer;
@@ -48,6 +47,7 @@
 }
 
 .remove {
+  composes: button from '../reset.module.css';
   composes: ringOutside from '../focus.module.css';
   display: inline-flex;
   flex-shrink: 0;
@@ -55,10 +55,7 @@
   justify-content: center;
   width: var(--gv-size-20);
   height: var(--gv-size-20);
-  padding: 0;
-  border: none;
   border-radius: var(--gv-radius-full);
-  background: transparent;
   color: inherit;
   cursor: pointer;
 }

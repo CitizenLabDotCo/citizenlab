@@ -21,13 +21,3 @@
   flex-direction: column;
   gap: var(--gv-space-16);
 }
-
-.lead {
-  composes: ui from '../../../../../../../../../../design-system/typography.module.css';
-  color: var(--gv-text-secondary);
-}
-
-.helper {
-  composes: ui from '../../../../../../../../../../design-system/typography.module.css';
-  color: var(--gv-text-secondary);
-}

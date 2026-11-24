@@ -4,13 +4,3 @@
   flex-direction: column;
   gap: var(--gv-space-8);
 }
-
-.label {
-  composes: body from '../../../../../../design-system/typography.module.css';
-  color: var(--gv-text-primary);
-}
-
-.description {
-  composes: ui from '../../../../../../design-system/typography.module.css';
-  color: var(--gv-text-secondary);
-}

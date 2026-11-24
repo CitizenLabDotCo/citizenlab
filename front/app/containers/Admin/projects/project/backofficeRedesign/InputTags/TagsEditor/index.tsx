@@ -7,6 +7,7 @@ import AlertDialog from 'design-system/AlertDialog';
 import Button from 'design-system/Button';
 import Icon from 'design-system/Icon';
 import SearchField from 'design-system/SearchField';
+import Text from 'design-system/Text';
 import TextField from 'design-system/TextField';
 
 import { IInputTopicData } from 'api/input_topics/types';
@@ -124,9 +125,9 @@ const TagsSection = ({ draft }: Props) => {
         </p>
         <div className={styles.info}>
           <Icon name="info-16" className={styles.infoIcon} />
-          <p className={styles.infoText}>
+          <Text variant="small" tone="secondary">
             {formatMessage(messages.tagsRequiredInfo)}
-          </p>
+          </Text>
         </div>
         <div className={styles.search}>
           <SearchField

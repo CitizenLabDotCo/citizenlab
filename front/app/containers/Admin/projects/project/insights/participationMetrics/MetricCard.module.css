@@ -1,12 +1,6 @@
 .panelMetric {
-  display: flex;
-  flex-direction: column;
   flex: 0 0 calc((100% - 4 * var(--gv-space-10)) / 5);
   min-width: 0;
-}
-
-.panelMetric > * {
-  flex-grow: 1;
 }
 
 /* Focusable so the design-system Tooltip can open on hover and keyboard focus. */

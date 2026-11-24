@@ -192,13 +192,12 @@ function getButtonStyle(
     get(defaultStyleValues, `${props.buttonStyle}.bgHoverColor`) ||
     darken(0.12, backgroundColor);
   const backgroundActiveColor =
-    backgroundHoverColor !== 'transparent'
-      ? // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        backgroundHoverColor?.startsWith('rgba')
-        ? opacify(0.12, backgroundHoverColor)
-        : darken(0.12, backgroundHoverColor)
-      : 'inherit';
+    props.bgActiveColor ||
+    (backgroundHoverColor === 'transparent'
+      ? 'inherit'
+      : backgroundHoverColor.startsWith('rgba')
+      ? opacify(0.12, backgroundHoverColor)
+      : darken(0.12, backgroundHoverColor));
   const backgroundDisabledColor =
     props.bgDisabledColor ||
     // TODO: Fix this the next time the file is edited.
@@ -483,6 +482,7 @@ export type ButtonContainerProps = {
   textDisabledColor?: string;
   bgColor?: string;
   bgHoverColor?: string;
+  bgActiveColor?: string;
   bgDisabledColor?: string;
   borderColor?: string;
   borderHoverColor?: string;
@@ -574,6 +574,7 @@ const Button = forwardRef<Ref, Props>((props, ref) => {
     textDisabledColor,
     bgColor,
     bgHoverColor,
+    bgActiveColor,
     bgDisabledColor,
     borderColor,
     borderHoverColor,
@@ -685,6 +686,7 @@ const Button = forwardRef<Ref, Props>((props, ref) => {
       textDisabledColor={textDisabledColor}
       bgColor={bgColor}
       bgHoverColor={bgHoverColor}
+      bgActiveColor={bgActiveColor}
       bgDisabledColor={bgDisabledColor}
       borderColor={borderColor}
       borderHoverColor={borderHoverColor}

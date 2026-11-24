@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useId } from 'react';
 
 import {
   IconTooltip,
@@ -8,7 +8,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
-import { fieldStyles } from 'design-system/Field';
+import { FieldError } from 'design-system/Field';
 import NumberField from 'design-system/NumberField';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -53,6 +53,7 @@ const SimilarityDetectionConfig = ({
   variant = 'default',
 }: Props) => {
   const { formatMessage } = useIntl();
+  const errorId = useId();
   const getApiErrorMessage = useApiErrorText();
   const isInputIQActivated = useFeatureFlag({ name: 'input_iq' });
   const isInputIQAllowed = useFeatureFlag({
@@ -139,6 +140,7 @@ const SimilarityDetectionConfig = ({
         <UpsellTooltip disabled={!showUpsellTooltip}>
           <SettingToggleRow
             id="similarity_enabled"
+            aria-describedby={enabledError ? errorId : undefined}
             title={formatMessage(messages.similarIdeaDetection)}
             description={formatMessage(
               messages.similarIdeaDetectionDescription
@@ -148,7 +150,7 @@ const SimilarityDetectionConfig = ({
             onChange={() => handleSimilarityEnabledChange(!similarity_enabled)}
           />
         </UpsellTooltip>
-        {enabledError && <p className={fieldStyles.error}>{enabledError}</p>}
+        {enabledError && <FieldError id={errorId}>{enabledError}</FieldError>}
         {allowConfiguringThreshold && similarity_enabled && (
           <>
             <NumberField

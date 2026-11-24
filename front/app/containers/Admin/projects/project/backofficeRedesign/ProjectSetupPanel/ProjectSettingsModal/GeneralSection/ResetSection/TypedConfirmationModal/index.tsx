@@ -4,6 +4,7 @@ import { Controller } from 'react-hook-form';
 
 import Button from 'design-system/Button';
 import Modal from 'design-system/Modal';
+import Text from 'design-system/Text';
 import TextField from 'design-system/TextField';
 
 import typedConfirmationMessages from 'components/UI/TypedDeleteConfirmationModal/messages';
@@ -52,7 +53,9 @@ const TypedConfirmationModal = ({
       showClose={false}
     >
       <form className={styles.form} onSubmit={onSubmit}>
-        <p className={styles.warning}>{formatMessage(mainWarning)}</p>
+        <Text variant="ui" tone="secondary">
+          {formatMessage(mainWarning)}
+        </Text>
         <Controller
           name="confirmation"
           control={methods.control}

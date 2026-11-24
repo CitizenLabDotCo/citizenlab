@@ -18,7 +18,6 @@ import Icon from '../Icon';
 import ListBox, { ListBoxPopover } from '../ListBox';
 
 import styles from './ComboBox.module.css';
-import OpenOnMount from './OpenOnMount';
 import '../tokens.css';
 
 type ComboBoxProps<T extends object> = {
@@ -37,10 +36,6 @@ type ComboBoxProps<T extends object> = {
   errorMessage?: ReactNode;
   size?: 36 | 32;
   isInvalid?: boolean;
-  autoFocus?: boolean;
-  // Opens the list on mount, e.g. when a link points straight at this field.
-  defaultOpen?: boolean;
-  onOpenChange?: (isOpen: boolean) => void;
   'data-cy'?: string;
 };
 
@@ -58,9 +53,6 @@ const ComboBox = <T extends object>({
   errorMessage,
   size = 36,
   isInvalid,
-  autoFocus,
-  defaultOpen = false,
-  onOpenChange,
   'data-cy': dataCy,
 }: ComboBoxProps<T>) => {
   const reasonKeys = useReasonKeys();
@@ -81,8 +73,6 @@ const ComboBox = <T extends object>({
         onChange={handleChange}
         onInputChange={onInputChange}
         isInvalid={isInvalid}
-        autoFocus={autoFocus}
-        onOpenChange={onOpenChange}
         data-cy={dataCy}
       >
         <FieldLabel tooltip={labelTooltip}>{label}</FieldLabel>
@@ -98,7 +88,6 @@ const ComboBox = <T extends object>({
           </Group>
           <FieldHelp description={description} errorMessage={errorMessage} />
         </div>
-        {defaultOpen && <OpenOnMount />}
         <ListBoxPopover>
           <ListBox>{children}</ListBox>
         </ListBoxPopover>

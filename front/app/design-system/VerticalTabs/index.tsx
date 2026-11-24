@@ -14,14 +14,20 @@ export { VerticalTab, VerticalTabList, TabPanel };
 type Props = {
   // A VerticalTabList followed by its TabPanels.
   children: ReactNode;
+  className?: string;
   selectedKey: Key;
   onSelectionChange: (key: Key) => void;
 };
 
-const VerticalTabs = ({ children, selectedKey, onSelectionChange }: Props) => (
+const VerticalTabs = ({
+  children,
+  className,
+  selectedKey,
+  onSelectionChange,
+}: Props) => (
   <AriaTabs
     orientation="vertical"
-    className={styles.tabs}
+    className={`${styles.tabs} ${className ?? ''}`}
     selectedKey={selectedKey}
     onSelectionChange={onSelectionChange}
   >

@@ -28,6 +28,8 @@ import '../tokens.css';
 type Props = {
   // There is no visible label (a card title names it), so this names it.
   'aria-label': string;
+  'aria-describedby'?: string;
+  isInvalid?: boolean;
   // An end of null shows endPlaceholder.
   value: OpenRangeValue<CalendarDateTime> | null;
   onDayPress: (date: CalendarDate) => void;
@@ -70,6 +72,8 @@ const toCalendarRange = (
 // caller's rules.
 const DayPressRangePicker = ({
   'aria-label': ariaLabel,
+  'aria-describedby': ariaDescribedBy,
+  isInvalid,
   value,
   onDayPress,
   startPlaceholder,
@@ -109,7 +113,10 @@ const DayPressRangePicker = ({
         <Button
           className={`${pickerStyles.box} ${pickerStyles.size36} ${styles.trigger}`}
           aria-label={ariaLabel}
-          aria-describedby={valueId}
+          aria-describedby={[valueId, ariaDescribedBy]
+            .filter(Boolean)
+            .join(' ')}
+          aria-invalid={isInvalid || undefined}
         >
           <span className={styles.values} id={valueId}>
             <span className={value ? styles.value : styles.placeholder}>

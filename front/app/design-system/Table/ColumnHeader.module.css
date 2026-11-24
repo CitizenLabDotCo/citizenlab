@@ -20,6 +20,7 @@
 }
 
 .trigger {
+  composes: button from '../reset.module.css';
   composes: ringInside from '../focus.module.css';
   box-sizing: border-box;
   display: flex;
@@ -30,9 +31,7 @@
   gap: var(--gv-space-8);
   margin: 0;
   padding: 0 var(--gv-space-8);
-  border: none;
   border-radius: var(--gv-radius-6);
-  background: transparent;
   font: inherit;
   cursor: pointer;
 }

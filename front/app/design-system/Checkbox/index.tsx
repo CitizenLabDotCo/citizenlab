@@ -17,8 +17,6 @@ type LabelProps =
 
 type CheckboxProps = LabelProps & {
   isSelected?: boolean;
-  // Checked=Indeterminate: the dash of a select-all box when some rows are picked.
-  isIndeterminate?: boolean;
   isDisabled?: boolean;
   onChange?: (isSelected: boolean) => void;
   'data-cy'?: string;
@@ -27,7 +25,6 @@ type CheckboxProps = LabelProps & {
 const Checkbox = ({
   children,
   isSelected,
-  isIndeterminate,
   isDisabled,
   onChange,
   'aria-label': ariaLabel,
@@ -37,7 +34,6 @@ const Checkbox = ({
   <AriaCheckbox
     className={styles.checkbox}
     isSelected={isSelected}
-    isIndeterminate={isIndeterminate}
     isDisabled={isDisabled}
     onChange={onChange}
     aria-label={ariaLabel}

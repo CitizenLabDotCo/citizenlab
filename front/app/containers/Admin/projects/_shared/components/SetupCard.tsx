@@ -2,10 +2,8 @@ import React, { ReactNode } from 'react';
 
 import Banner from 'design-system/Banner';
 import Disclosure from 'design-system/Disclosure';
-import Icon from 'design-system/Icon';
 import ReviewStatus from 'design-system/ReviewStatus';
-import Tooltip from 'design-system/Tooltip';
-import UnstyledButton from 'design-system/UnstyledButton';
+import TooltipMark from 'design-system/Tooltip/TooltipMark';
 
 import { SetupReviewCard } from 'api/phases/types';
 
@@ -73,11 +71,11 @@ const SetupCard = ({
         titleTooltip ? (
           <span className={styles.titleRow}>
             {title}
-            <Tooltip content={titleTooltip}>
-              <UnstyledButton className={styles.infoButton} aria-label={title}>
-                <Icon name="info-16" />
-              </UnstyledButton>
-            </Tooltip>
+            <TooltipMark
+              label={title}
+              content={titleTooltip}
+              className={styles.infoMark}
+            />
           </span>
         ) : (
           title

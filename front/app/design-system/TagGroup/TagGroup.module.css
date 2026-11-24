@@ -38,6 +38,7 @@
 }
 
 .remove {
+  composes: button from '../reset.module.css';
   display: flex;
   flex-shrink: 0;
   align-items: center;
@@ -45,10 +46,7 @@
   width: var(--gv-size-16);
   height: var(--gv-size-16);
   margin: 0;
-  padding: 0;
-  border: none;
   border-radius: var(--gv-radius-full);
-  background: transparent;
   color: var(--gv-icon-selected-chip);
   outline: none;
   cursor: pointer;
@@ -63,6 +61,7 @@
 
 /* Tag add: a dashed pill. Gap 5 is D's off-scale value, kept as drawn. */
 .add {
+  composes: button from '../reset.module.css';
   composes: ui from '../typography.module.css';
   composes: ringOutside from '../focus.module.css';
   position: relative;
@@ -74,9 +73,7 @@
   height: var(--gv-size-26);
   margin: 0;
   padding: 0 var(--gv-space-12) 0 var(--gv-space-10);
-  border: none;
   border-radius: var(--gv-radius-full);
-  background: transparent;
   color: var(--gv-text-secondary);
   white-space: nowrap;
   cursor: pointer;

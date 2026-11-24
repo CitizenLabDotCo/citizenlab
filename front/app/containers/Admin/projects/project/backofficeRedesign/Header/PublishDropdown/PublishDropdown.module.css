@@ -37,16 +37,6 @@
   gap: var(--gv-space-2);
 }
 
-.optionLabel {
-  composes: ui from '../../../../../../../design-system/typography.module.css';
-  color: var(--gv-text-primary);
-}
-
-.optionDescription {
-  composes: ui from '../../../../../../../design-system/typography.module.css';
-  color: var(--gv-text-secondary);
-}
-
 .divider {
   margin: var(--gv-space-16) 0;
 }
@@ -55,12 +45,6 @@
   display: flex;
   flex-direction: column;
   gap: var(--gv-space-4);
-}
-
-.micro {
-  composes: small from '../../../../../../../design-system/typography.module.css';
-  margin: 0;
-  color: var(--gv-text-secondary);
 }
 
 .footer {
@@ -75,10 +59,6 @@
 /* Each action takes an equal share of the row. */
 .action {
   display: flex;
-  flex: 1;
-}
-
-.action > * {
   flex: 1;
 }
 
@@ -114,10 +94,4 @@
   padding: var(--gv-space-10) 0;
   border-bottom: var(--gv-border-width-1) solid var(--gv-border-divider);
   color: var(--gv-text-primary);
-}
-
-.modalText {
-  composes: ui from '../../../../../../../design-system/typography.module.css';
-  margin: 0;
-  color: var(--gv-text-secondary);
 }

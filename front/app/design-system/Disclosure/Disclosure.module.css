@@ -40,10 +40,9 @@
 }
 
 .trigger {
+  composes: button from '../reset.module.css';
   composes: header;
   margin: 0;
-  border: none;
-  background: transparent;
   color: inherit;
   font: inherit;
   text-align: start;
@@ -95,8 +94,8 @@
   flex-shrink: 0;
   align-items: center;
   justify-content: center;
-  width: var(--gv-size-control-28);
-  height: var(--gv-size-control-28);
+  width: var(--gv-size-28);
+  height: var(--gv-size-28);
   border-radius: var(--gv-radius-8);
   color: var(--gv-icon-tertiary);
   transition-property: color;

@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useId, useState } from 'react';
 
 import { CLErrors, UploadFile } from 'typings';
 
-import { fieldStyles } from 'design-system/Field';
+import { FieldError } from 'design-system/Field';
 
 import { IFileAttachmentData } from 'api/file_attachments/types';
 import { IFileData } from 'api/files/types';
@@ -46,6 +46,7 @@ const AttachmentsCard = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const getApiErrorMessage = useApiErrorText();
+  const errorId = useId();
   const [opened, setOpened] = useState(false);
   const fileError = opened ? undefined : getApiErrorMessage(errors?.file);
   const hasBody =
@@ -70,10 +71,11 @@ const AttachmentsCard = ({
           icon: files.attachments.length > 0 ? 'edit' : 'plus',
           actionLabel: formatMessage(fileMessages.addFile),
           disabled: files.isUploadingFile || disabled,
+          describedBy: fileError ? errorId : undefined,
           onClick: () => setOpened(true),
         }}
       >
-        {fileError && <p className={fieldStyles.error}>{fileError}</p>}
+        {fileError && <FieldError id={errorId}>{fileError}</FieldError>}
       </SetupCard>
       <FileSelectModal
         opened={opened}

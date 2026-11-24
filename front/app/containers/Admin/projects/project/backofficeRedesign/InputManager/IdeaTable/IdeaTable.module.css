@@ -20,11 +20,6 @@
   gap: var(--gv-space-4);
 }
 
-.more {
-  composes: ui from '../../../../../../../design-system/typography.module.css';
-  color: var(--gv-text-secondary);
-}
-
 .titleButton {
   composes: ui from '../../../../../../../design-system/typography.module.css';
   composes: ringOutside from '../../../../../../../design-system/focus.module.css';
@@ -43,9 +38,4 @@
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
   cursor: pointer;
-}
-
-.threshold {
-  composes: ui from '../../../../../../../design-system/typography.module.css';
-  color: var(--gv-text-secondary);
 }

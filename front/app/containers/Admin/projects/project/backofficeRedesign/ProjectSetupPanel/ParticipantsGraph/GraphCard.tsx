@@ -4,6 +4,7 @@ import { parseISO } from 'date-fns';
 import moment from 'moment';
 
 import Icon from 'design-system/Icon';
+import Text from 'design-system/Text';
 
 import useParticipants from 'components/admin/GraphCards/ParticipantsCard/useParticipants';
 
@@ -63,7 +64,9 @@ const GraphCard = ({ projectId }: Props) => {
                 values={{
                   count: lastPeriod,
                   b: (chunks) => (
-                    <span className={styles.growth}>{chunks}</span>
+                    <Text as="span" variant="smallStrong" tone="success">
+                      {chunks}
+                    </Text>
                   ),
                 }}
               />

@@ -23,8 +23,6 @@ import '../tokens.css';
 type ColumnMenuProps = {
   // Picks the sort copy: A to Z, Smallest first or Earliest first.
   columnType: 'text' | 'number' | 'date';
-  // The current order gets the check. Inside a ColumnHeader it defaults to the head's.
-  sortDirection?: SortDirection;
   onSortChange: (direction: SortDirection) => void;
   onHide?: () => void;
 };
@@ -39,15 +37,9 @@ const toKeySet = (keys: Selection) =>
   keys === 'all' ? new Set<Key>() : new Set(keys);
 
 // Pass as the menu of a ColumnHeader: it opens under the head.
-const ColumnMenu = ({
-  columnType,
-  sortDirection,
-  onSortChange,
-  onHide,
-}: ColumnMenuProps) => {
+const ColumnMenu = ({ columnType, onSortChange, onHide }: ColumnMenuProps) => {
   const { formatMessage } = useIntl();
-  const columnSortDirection = useContext(ColumnSortContext);
-  const checked = sortDirection ?? columnSortDirection;
+  const checked = useContext(ColumnSortContext);
   const [ascending, descending] = sortMessages[columnType];
 
   return (

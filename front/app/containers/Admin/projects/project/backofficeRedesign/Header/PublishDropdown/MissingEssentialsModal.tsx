@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Modal from 'design-system/Modal';
+import Text from 'design-system/Text';
 
 import { IProjectData } from 'api/projects/types';
 
@@ -83,12 +84,12 @@ const MissingEssentialsModal = ({
         id: 'e2e-publish-anyway',
       }}
     >
-      <p className={styles.modalText}>
+      <Text variant="ui" tone="secondary">
         {formatMessage(messages.publishMissingBody, {
           missing: missing.length,
           total: SETUP_ITEMS.length,
         })}
-      </p>
+      </Text>
       <ul className={styles.missingList}>
         {missing.map(({ key, label }) => (
           <li key={key} className={styles.missingItem}>

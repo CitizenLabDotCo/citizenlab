@@ -10,11 +10,6 @@
   align-items: flex-start;
 }
 
-.title {
-  composes: ui from '../../../../../../../../../../../design-system/typography.module.css';
-  color: var(--gv-text-primary);
-}
-
 .description {
   composes: ui from '../../../../../../../../../../../design-system/typography.module.css';
   margin: var(--gv-space-2) 0 var(--gv-space-12);

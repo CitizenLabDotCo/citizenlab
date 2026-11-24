@@ -4,6 +4,7 @@ import Button from 'design-system/Button';
 import Divider from 'design-system/Divider';
 import RadioGroup, { Radio } from 'design-system/RadioGroup';
 import { PopoverSwitchRow } from 'design-system/SwitchRow';
+import Text from 'design-system/Text';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useProjectPublicationRecipientCount from 'api/project_publication_recipient_count/useProjectPublicationRecipientCount';
@@ -141,12 +142,12 @@ const PublishPanel = ({
           {FIND_OPTIONS.map((option) => (
             <Radio key={option.value} value={option.value}>
               <span className={styles.option}>
-                <span className={styles.optionLabel}>
+                <Text as="span" variant="ui" tone="primary">
                   {formatMessage(option.label)}
-                </span>
-                <span className={styles.optionDescription}>
+                </Text>
+                <Text as="span" variant="ui" tone="secondary">
                   {formatMessage(option.description)}
-                </span>
+                </Text>
               </span>
             </Radio>
           ))}
@@ -160,12 +161,12 @@ const PublishPanel = ({
           {OPEN_OPTIONS.map((option) => (
             <Radio key={option.value} value={option.value}>
               <span className={styles.option}>
-                <span className={styles.optionLabel}>
+                <Text as="span" variant="ui" tone="primary">
                   {formatMessage(option.label)}
-                </span>
-                <span className={styles.optionDescription}>
+                </Text>
+                <Text as="span" variant="ui" tone="secondary">
                   {formatMessage(option.description)}
-                </span>
+                </Text>
               </span>
             </Radio>
           ))}
@@ -190,9 +191,9 @@ const PublishPanel = ({
           {formatMessage(messages.publishSendEmail)}
         </PopoverSwitchRow>
         {count !== undefined && (
-          <p className={styles.micro}>
+          <Text variant="small" tone="secondary">
             {formatMessage(messages.publishEmailRecipients, { count })}
-          </p>
+          </Text>
         )}
       </div>
 
@@ -201,6 +202,7 @@ const PublishPanel = ({
           <>
             <div className={styles.action}>
               <Button
+                fullWidth
                 variant="secondary"
                 size={32}
                 onPress={() => onConfirmStatusChange('draft')}
@@ -212,6 +214,7 @@ const PublishPanel = ({
             </div>
             <div className={styles.action}>
               <Button
+                fullWidth
                 variant="secondary"
                 size={32}
                 onPress={() => onConfirmStatusChange('archived')}
@@ -225,6 +228,7 @@ const PublishPanel = ({
         {publicationState === 'archived' && (
           <div className={styles.action}>
             <Button
+              fullWidth
               variant="secondary"
               size={32}
               onPress={() => onConfirmStatusChange('draft')}
@@ -238,6 +242,7 @@ const PublishPanel = ({
           <>
             <div className={styles.action}>
               <Button
+                fullWidth
                 variant="secondary"
                 size={32}
                 icon="calendar-16"
@@ -249,6 +254,7 @@ const PublishPanel = ({
             </div>
             <div id="e2e-publish-now" className={styles.action}>
               <Button
+                fullWidth
                 variant="primary"
                 size={32}
                 onPress={handlePublishNow}

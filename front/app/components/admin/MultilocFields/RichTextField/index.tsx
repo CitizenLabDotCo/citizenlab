@@ -118,7 +118,6 @@ const RichTextField = ({
     <div
       ref={fieldRef}
       className={styles.field}
-      data-invalid={isInvalid || undefined}
       data-rtl={isRtl || undefined}
       // Saving on mouse leave is not an interaction of its own.
       role="presentation"
@@ -137,6 +136,7 @@ const RichTextField = ({
         )}
       </div>
       <RichTextEditor
+        isInvalid={isInvalid}
         toolbar={
           <FormattingToolbar
             editor={editor}

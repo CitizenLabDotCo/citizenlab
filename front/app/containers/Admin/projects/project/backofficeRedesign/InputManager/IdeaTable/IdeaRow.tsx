@@ -2,6 +2,7 @@ import React from 'react';
 
 import Icon from 'design-system/Icon';
 import { Cell, Row } from 'design-system/Table';
+import TooltipMark from 'design-system/Tooltip/TooltipMark';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IIdeaData } from 'api/ideas/types';
@@ -12,7 +13,6 @@ import { useIntl } from 'utils/cl-intl';
 
 import { ColumnKey, COLUMNS } from '../columns';
 import messages from '../messages';
-import TooltipMark from '../TooltipMark';
 
 import IdeaCell from './IdeaCell';
 import styles from './IdeaTable.module.css';

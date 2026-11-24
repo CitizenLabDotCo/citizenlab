@@ -2,16 +2,12 @@
   position: relative;
 }
 
-/* 80 px has no spacing token; it keeps the spinner where the first rows will appear. */
 .loading {
-  display: flex;
-  justify-content: center;
-  padding: 80px 0;
+  composes: loading from '../_shared/listManager.module.css';
 }
 
-/* 0.4 is today's dimming of the stale list while the next page loads; no opacity token matches. */
 .changing {
-  opacity: 0.4;
+  composes: dimmed from '../_shared/listManager.module.css';
 }
 
 .changingSpinner {

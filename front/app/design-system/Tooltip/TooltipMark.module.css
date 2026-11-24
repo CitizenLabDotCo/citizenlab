@@ -2,7 +2,7 @@
   display: inline-flex;
   flex-shrink: 0;
   align-items: center;
-  border-radius: var(--gv-radius-full);
+  border-radius: var(--gv-tooltip-mark-radius, var(--gv-radius-full));
   outline: none;
 }
 
@@ -12,4 +12,8 @@
   outline: var(--gv-border-width-focus) solid var(--gv-border-focused);
   outline-offset: var(--gv-focus-ring-offset);
   box-shadow: none;
+}
+
+.info {
+  color: var(--gv-icon-secondary);
 }

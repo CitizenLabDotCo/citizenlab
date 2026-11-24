@@ -6,6 +6,7 @@
 }
 
 .item {
+  composes: button from '../reset.module.css';
   composes: body from '../typography.module.css';
   box-sizing: border-box;
   display: inline-flex;
@@ -14,9 +15,7 @@
   justify-content: center;
   min-width: var(--gv-size-28);
   height: var(--gv-size-28);
-  border: none;
   border-radius: var(--gv-radius-4);
-  background: transparent;
   color: var(--gv-text-link);
   white-space: nowrap;
 }

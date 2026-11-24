@@ -18,7 +18,6 @@ export const Default: Story = {};
 const checked = [
   { label: 'No', props: {} },
   { label: 'Yes', props: { isSelected: true } },
-  { label: 'Indeterminate', props: { isIndeterminate: true } },
 ];
 
 const states = [

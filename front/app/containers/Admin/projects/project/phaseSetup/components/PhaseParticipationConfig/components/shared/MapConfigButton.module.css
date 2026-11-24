@@ -1,5 +1,0 @@
-/* Full-width button: the design-system Button has no width option. */
-.fullWidth {
-  display: flex;
-  flex-direction: column;
-}

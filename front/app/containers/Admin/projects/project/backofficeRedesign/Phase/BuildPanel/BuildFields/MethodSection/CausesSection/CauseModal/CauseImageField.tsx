@@ -5,6 +5,7 @@ import { UploadFile } from 'typings';
 
 import Banner from 'design-system/Banner';
 import DropZone from 'design-system/DropZone';
+import Text from 'design-system/Text';
 
 import volunteeringMessages from 'containers/Admin/projects/project/volunteering/messages';
 import { CauseFormValues } from 'containers/Admin/projects/project/volunteering/useCauseForm';
@@ -48,7 +49,9 @@ const CauseImageField = () => {
 
   return (
     <div className={styles.imageField}>
-      <span className={styles.label}>{label}</span>
+      <Text as="span" variant="small" tone="secondary">
+        {label}
+      </Text>
       {image ? (
         <ImageFileRow
           image={image}

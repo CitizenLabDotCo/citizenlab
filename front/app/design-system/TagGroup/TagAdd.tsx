@@ -9,11 +9,15 @@ import '../tokens.css';
 
 type TagAddProps = {
   children: string;
+  'aria-describedby'?: string;
 };
 
 // Put it in a DialogTrigger: the trigger opens the tag picker.
-const TagAdd = ({ children }: TagAddProps) => (
-  <Button className={styles.add}>
+const TagAdd = ({
+  children,
+  'aria-describedby': ariaDescribedBy,
+}: TagAddProps) => (
+  <Button className={styles.add} aria-describedby={ariaDescribedBy}>
     <svg className={styles.dash} aria-hidden focusable="false">
       <rect />
     </svg>

@@ -3,6 +3,7 @@ import React from 'react';
 import Button from 'design-system/Button';
 import Disclosure from 'design-system/Disclosure';
 import Switch from 'design-system/Switch';
+import Text from 'design-system/Text';
 
 import { IPhaseData } from 'api/phases/types';
 import useReport from 'api/reports/useReport';
@@ -54,12 +55,12 @@ const ReportSettings = ({ phase }: Props) => {
         onChange={() => updateReport({ id: report.data.id, visible: !visible })}
       >
         <span className={styles.switchLabel}>
-          <span className={styles.label}>
+          <Text as="span" variant="ui" tone="primary">
             {formatMessage(messages.reportVisibleToParticipants)}
-          </span>
-          <span className={styles.helper}>
+          </Text>
+          <Text as="span" variant="ui" tone="secondary">
             {formatMessage(visibilityWarning(report, phase))}
-          </span>
+          </Text>
         </span>
       </Switch>
       <div>

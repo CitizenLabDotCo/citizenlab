@@ -75,30 +75,29 @@ const MetricCard = ({
       );
 
     return (
-      <div className={styles.panelMetric}>
-        <StatTile
-          label={
-            labelHint ? (
-              <DsTooltip content={labelHint}>
-                <TooltipTarget className={styles.hint}>{label}</TooltipTarget>
-              </DsTooltip>
-            ) : (
-              label
-            )
-          }
-          value={
-            valueTooltip ? (
-              <DsTooltip content={valueTooltip}>
-                <TooltipTarget className={styles.hint}>
-                  {formattedValue}
-                </TooltipTarget>
-              </DsTooltip>
-            ) : (
-              formattedValue
-            )
-          }
-        />
-      </div>
+      <StatTile
+        className={styles.panelMetric}
+        label={
+          labelHint ? (
+            <DsTooltip content={labelHint}>
+              <TooltipTarget className={styles.hint}>{label}</TooltipTarget>
+            </DsTooltip>
+          ) : (
+            label
+          )
+        }
+        value={
+          valueTooltip ? (
+            <DsTooltip content={valueTooltip}>
+              <TooltipTarget className={styles.hint}>
+                {formattedValue}
+              </TooltipTarget>
+            </DsTooltip>
+          ) : (
+            formattedValue
+          )
+        }
+      />
     );
   }
 
