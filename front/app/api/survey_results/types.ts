@@ -113,6 +113,7 @@ export type ResultUngrouped = BaseResult & {
   pointResponses?: { answer: GeoJSON.Point }[];
   lineResponses?: { answer: GeoJSON.LineString }[];
   polygonResponses?: { answer: GeoJSON.Polygon }[];
+  multipointResponses?: { answer: GeoJSON.MultiPoint }[];
 
   // Defined for file upload questions
   files?: { name: string; url: string }[];

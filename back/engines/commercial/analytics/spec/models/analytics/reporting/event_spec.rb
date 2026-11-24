@@ -46,12 +46,13 @@ RSpec.describe Analytics::Reporting::Event do
     expect(described_class.find(offline.id)).to have_attributes(online_link: nil, external_registration_url: nil)
   end
 
-  it 'joins the attendance rows of reporting_contributions' do
+  it 'joins the attendance rows of reporting_contributions, which attendees_count counts' do
     event = create(:event)
     attendance = create(:event_attendance, event: event)
 
     expect(
       Analytics::Reporting::Contribution.where(type: 'attendance', parent_id: event.id).pluck(:id)
     ).to eq [attendance.id]
+    expect(described_class.find(event.id).attendees_count).to eq 1
   end
 end

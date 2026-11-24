@@ -58,6 +58,11 @@ module InputTypeStrategy
       false
     end
 
+    # Whether the answers can be counted per option, as a filter facet.
+    def supports_answer_facet?
+      false
+    end
+
     def supports_selection?
       supports_single_selection? || supports_multiple_selection?
     end

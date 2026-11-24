@@ -10,6 +10,8 @@ import PolygonMap from 'components/admin/Graphs/PolygonMap';
 
 import { useIntl } from 'utils/cl-intl';
 
+import useRegisterMapView from './useRegisterMapView';
+
 interface Props {
   polygonResponses: { answer: GeoJSON.Polygon }[];
   mapConfigId?: string;
@@ -24,6 +26,7 @@ const PolygonLocationQuestion = ({
   projectId,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const registerMapView = useRegisterMapView(customFieldId);
 
   const polygons = useMemo(() => {
     return polygonResponses.map(({ answer }) => answer);
@@ -50,6 +53,7 @@ const PolygonLocationQuestion = ({
         mapConfig={mapConfig}
         layerTitle={formatMessage(surveyResultMessages.responses)}
         layerId={`responsesLayer_${customFieldId}`}
+        onInit={registerMapView}
       />
     </div>
   );

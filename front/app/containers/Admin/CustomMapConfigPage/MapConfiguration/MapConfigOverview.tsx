@@ -1,8 +1,10 @@
-import React, { memo, useState } from 'react';
+import React, { memo, ReactNode, useState } from 'react';
 
 import MapView from '@arcgis/core/views/MapView';
 import { Text } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import Banner from 'design-system/Banner';
 
 import { IMapConfig } from 'api/map_config/types';
 
@@ -17,6 +19,7 @@ import MapLayersList from '../LayerConfiguration/MapLayersList';
 import messages from '../messages';
 
 import MapCenterAndZoomConfig from './MapCenterAndZoomConfig';
+import styles from './MapConfiguration.module.css';
 
 const Container = styled.div``;
 
@@ -50,10 +53,20 @@ interface Props {
   mapConfig: IMapConfig;
   className?: string;
   setView: (view: ViewOptions) => void;
+  variant?: 'default' | 'panel';
+  /** Replaces the center and zoom form, which saves on its own. The bo variant always passes it. */
+  centerAndZoom?: ReactNode;
 }
 
 const MapConfigOverview = memo<Props>(
-  ({ className, mapConfig, setView, mapView }) => {
+  ({
+    className,
+    mapConfig,
+    setView,
+    mapView,
+    variant = 'default',
+    centerAndZoom,
+  }) => {
     const [editedMapLayerId, setEditedMapLayerId] = useState<string | null>(
       null
     );
@@ -67,6 +80,41 @@ const MapConfigOverview = memo<Props>(
     };
 
     const isProjectMapPage = window.location.pathname.endsWith('/map');
+
+    if (variant === 'panel') {
+      return (
+        <div className={className}>
+          <div className={styles.intro}>
+            <p className={styles.description}>
+              <FormattedMessage {...messages.mapConfigurationDescription} />
+            </p>
+            <Banner tone="warning">
+              <FormattedMessage {...messages.mapLocationWarning} />
+            </Banner>
+          </div>
+
+          {!editedMapLayerId ? (
+            <>
+              <MapLayersList
+                className={styles.layersList}
+                onEditLayer={openLayerConfig}
+                setView={setView}
+                mapConfig={mapConfig}
+                variant={variant}
+              />
+              {centerAndZoom}
+            </>
+          ) : (
+            <MapLayerConfig
+              mapLayerId={editedMapLayerId}
+              onClose={closeLayerConfig}
+              mapConfig={mapConfig}
+              variant={variant}
+            />
+          )}
+        </div>
+      );
+    }
 
     return (
       <Container className={className || ''}>
@@ -94,11 +142,14 @@ const MapConfigOverview = memo<Props>(
               onEditLayer={openLayerConfig}
               setView={setView}
               mapConfig={mapConfig}
+              variant={variant}
             />
-            <StyledMapCenterAndZoomConfig
-              mapView={mapView}
-              mapConfig={mapConfig}
-            />
+            {centerAndZoom ?? (
+              <StyledMapCenterAndZoomConfig
+                mapView={mapView}
+                mapConfig={mapConfig}
+              />
+            )}
           </>
         ) : (
           <MapLayerConfig

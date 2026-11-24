@@ -26,4 +26,8 @@ export default defineMessages({
     id: 'app.containers.Authentication.steps.FlowStart.useEmailInstead',
     defaultMessage: 'Use your email address instead',
   },
+  signInWithEmployeeAccount: {
+    id: 'app.containers.Authentication.steps.FlowStart.signInWithEmployeeAccount',
+    defaultMessage: 'Sign in with your employee account',
+  },
 });

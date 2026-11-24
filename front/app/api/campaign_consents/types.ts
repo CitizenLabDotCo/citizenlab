@@ -21,6 +21,8 @@ export interface ICampaignConsentAttributes {
   content_type_multiloc: Multiloc;
   channel: 'email' | 'sms';
   consented: boolean;
+  // False for users who can't manage their other preferences, e.g. a pending invitee.
+  can_manage_preferences: boolean;
 }
 
 export interface ICampaignConsents {

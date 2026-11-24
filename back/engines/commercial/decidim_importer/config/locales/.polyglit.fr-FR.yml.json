@@ -1,0 +1,17 @@
+{
+  "decidim_importer.accountability_status": {
+    "state": "verified",
+    "verified_at": "2026-10-26T13:30:56.381242Z",
+    "verified_by": "Adrien"
+  },
+  "decidim_importer.blog": {
+    "state": "verified",
+    "verified_at": "2026-10-26T13:30:56.381242Z",
+    "verified_by": "Adrien"
+  },
+  "decidim_importer.debate_conclusions": {
+    "state": "verified",
+    "verified_at": "2026-10-26T13:30:56.381242Z",
+    "verified_by": "Adrien"
+  }
+}

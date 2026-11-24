@@ -9,12 +9,17 @@
 #  user_id  :uuid
 #  voted_at :datetime
 #  weight   :integer
+#  phase_id :uuid
 #
 module Analytics
   module Reporting
     class InputVote < Analytics::ApplicationRecordView
       self.table_name = 'reporting_input_votes'
       self.primary_key = :id
+
+      include ScopedView
+
+      def self.for_projects(project_ids) = where(input_id: Input.for_projects(project_ids).select(:id))
 
       def self.table_description
         <<~DOC.squish
@@ -31,17 +36,18 @@ module Analytics
           'input_id' => 'The input the vote is for.',
           'user_id' => 'The voter, or NULL for deleted users.',
           'voted_at' => 'When the voter submitted their ballot (UTC).',
-          'weight' => <<~DOC.squish
+          'weight' => <<~DOC.squish,
             Magnitude of the vote: 1 for single voting, the number of votes put
             on this input for multiple voting, and the allocated amount for
             participatory budgeting. SUM(weight) gives an input's online vote
             total.
           DOC
+          'phase_id' => 'The voting phase the ballot was cast in. Filter on it for per-phase results when inputs are voted on in several phases.'
         }
       end
 
       def self.foreign_keys
-        { 'input_id' => 'reporting_inputs.id', 'user_id' => 'reporting_users.id' }
+        { 'input_id' => 'reporting_inputs.id', 'user_id' => 'reporting_users.id', 'phase_id' => 'reporting_phases.id' }
       end
     end
   end

@@ -1,0 +1,20 @@
+.filterBar {
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--gv-space-6);
+  min-height: 44px;
+  padding-bottom: var(--gv-space-8);
+  border-bottom: var(--gv-border-width-1) solid var(--gv-border-subtle);
+}
+
+.spacer {
+  flex-grow: 1;
+}
+
+.count {
+  composes: small from '../typography.module.css';
+  color: var(--gv-text-placeholder);
+  white-space: nowrap;
+}

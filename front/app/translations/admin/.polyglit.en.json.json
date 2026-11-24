@@ -8,5 +8,10 @@
     "state": "verified",
     "verified_at": "2026-06-02T16:02:58.222932Z",
     "verified_by": "Nola Moreau"
+  },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": {
+    "state": "verified",
+    "verified_at": "2026-10-22T13:07:49.196752Z",
+    "verified_by": "KenVM"
   }
 }

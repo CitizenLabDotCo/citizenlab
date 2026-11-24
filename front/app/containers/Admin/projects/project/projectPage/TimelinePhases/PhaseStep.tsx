@@ -1,12 +1,6 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
-import {
-  Box,
-  Color,
-  Text,
-  bo,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import { format } from 'date-fns';
 
 import { IPhaseData } from 'api/phases/types';
 
@@ -15,91 +9,114 @@ import useLocalize from 'hooks/useLocalize';
 
 import { getLocale } from 'components/admin/DatePickers/_shared/locales';
 
-import { MessageDescriptor, useIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 import {
+  METHOD_LABELS,
   PhaseStatus,
-  StepDot,
-  StepLine,
-  StepMeta,
-  StepRow,
-  StepTitle,
-  formatDatePair,
+  STATUS_LABELS,
   phaseStatus,
+  shortDateRange,
 } from '../phaseRowUtils';
 
-const STATUS_STYLES: Record<
-  PhaseStatus,
-  {
-    label: MessageDescriptor;
-    labelColor: Color;
-    labelWeight: number;
-    titleColor: string;
-  }
+import styles from './PhaseStep.module.css';
+import 'design-system/tokens.css';
+
+const DOT_CLASSES: Record<PhaseStatus, string> = {
+  past: styles.dotPast,
+  present: styles.dotPresent,
+  future: styles.dotFuture,
+};
+
+const LABEL_CLASSES: Record<
+  'timeline' | 'spotlight',
+  Record<PhaseStatus, string | undefined>
 > = {
-  past: {
-    label: messages.phaseDone,
-    labelColor: 'green600',
-    labelWeight: 400,
-    titleColor: bo.colors.textHeadingStrong,
+  timeline: {
+    past: styles.timelineDone,
+    present: styles.timelineDone,
+    future: undefined,
   },
-  present: {
-    label: messages.phaseInProgress,
-    labelColor: 'primary',
-    labelWeight: 500,
-    titleColor: bo.colors.textHeadingStrong,
-  },
-  future: {
-    label: messages.phaseUpcoming,
-    labelColor: 'textSecondary',
-    labelWeight: 400,
-    titleColor: colors.coolGrey700,
+  spotlight: {
+    past: styles.spotlightPast,
+    present: styles.spotlightPresent,
+    future: undefined,
   },
 };
 
+const classNames = (...names: (string | false | undefined)[]) =>
+  names.filter(Boolean).join(' ');
+
 interface Props {
   phase: IPhaseData;
+  placement: 'timeline' | 'spotlight';
   selected: boolean;
-  isLast: boolean;
+  withLine: boolean;
   withOptions: boolean;
+  extraMeta?: ReactNode;
 }
 
-const PhaseStep = ({ phase, selected, isLast, withOptions }: Props) => {
+const PhaseStep = ({
+  phase,
+  placement,
+  selected,
+  withLine,
+  withOptions,
+  extraMeta,
+}: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const dateLocale = getLocale(useLocale());
+  const locale = getLocale(useLocale());
   const status = phaseStatus(phase);
-  const { label, labelColor, labelWeight, titleColor } = STATUS_STYLES[status];
+  const { start_at, end_at, participation_method } = phase.attributes;
+
+  const dates = end_at
+    ? formatMessage(
+        messages.phaseDateRange,
+        shortDateRange(start_at, end_at, locale)
+      )
+    : formatMessage(messages.phaseOpenEnded, {
+        startDate: format(new Date(start_at), 'd MMM', { locale }),
+      });
+
+  const isFuture = status === 'future';
 
   return (
-    <StepRow selected={selected}>
-      {!isLast && <StepLine status={status} />}
-      <StepDot status={status} />
-      <Box flexGrow={1} pr={withOptions ? '24px' : '0'}>
-        <StepTitle style={{ color: titleColor }}>
-          {localize(phase.attributes.title_multiloc)}
-        </StepTitle>
-        <StepMeta color="textSecondary">
-          <Text
-            as="span"
-            m="0"
-            color={labelColor}
-            style={{ fontWeight: labelWeight }}
-          >
-            {formatMessage(label)}
-          </Text>
-          {' · '}
-          {formatDatePair(
-            phase.attributes.start_at,
-            phase.attributes.end_at,
-            'd MMMM',
-            dateLocale,
-            formatMessage(messages.phaseNoEndDate)
+    <div className={classNames(styles.row, selected && styles.selected)}>
+      {withLine && (
+        <div
+          className={classNames(
+            styles.line,
+            status === 'past' && styles.linePast
           )}
-        </StepMeta>
-      </Box>
-    </StepRow>
+        />
+      )}
+      <div className={classNames(styles.dot, DOT_CLASSES[status])} />
+      <div
+        className={classNames(styles.body, withOptions && styles.withOptions)}
+      >
+        <p className={classNames(styles.title, isFuture && styles.titleFuture)}>
+          {localize(phase.attributes.title_multiloc)}
+        </p>
+        <p className={classNames(styles.meta, isFuture && styles.metaFuture)}>
+          <span
+            className={classNames(
+              styles.status,
+              LABEL_CLASSES[placement][status],
+              status === 'present' && styles.statusPresent
+            )}
+          >
+            {formatMessage(STATUS_LABELS[status])}
+          </span>
+          {' · '}
+          {dates}
+          {' · '}
+          {formatMessage(METHOD_LABELS[participation_method])}
+          {extraMeta}
+        </p>
+      </div>
+    </div>
   );
 };
 

@@ -19,7 +19,8 @@ describe WebApi::V1::CustomFieldSerializer do
       constraints: {},
       random_option_ordering: false,
       include_in_printed_form: true,
-      answers_visible_to: 'moderators'
+      answers_visible_to: 'moderators',
+      show_as_filter: false
     }
   end
 

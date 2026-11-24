@@ -38,26 +38,6 @@ module AdminApi
         object.dig('id_config', 'id_methods')&.find { |method| method['name'] == 'facebook' }
       end
 
-      field :integration_onze_stad_app_allowed, Boolean, null: true
-      def integration_onze_stad_app_allowed
-        object.dig('integration_onze_stad_app', 'allowed')
-      end
-
-      field :integration_onze_stad_app_enabled, Boolean, null: true
-      def integration_onze_stad_app_enabled
-        object.dig('integration_onze_stad_app', 'enabled')
-      end
-
-      field :integration_onze_stad_app_app_id, String, null: true
-      def integration_onze_stad_app_app_id
-        object.dig('integration_onze_stad_app', 'app_id')
-      end
-
-      field :integration_onze_stad_app_api_key, String, null: true
-      def integration_onze_stad_app_api_key
-        object.dig('integration_onze_stad_app', 'api_key')
-      end
-
       field :core_locales, [String], null: false
       def core_locales
         object.dig('core', 'locales')

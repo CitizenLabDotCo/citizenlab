@@ -179,16 +179,12 @@ describe('Native survey project page actions', () => {
       cy.setLoginCookie(userEmail, userPassword);
       // Visit timeline project
       cy.visit(`/projects/${projectSlugWithFutureSurvey}`);
-      // Check that correct text and actions shown
-      cy.get('.e2e-idea-button')
-        .first()
-        .find('div')
-        .first()
-        .should('be.visible')
-        .trigger('mouseenter');
-      cy.contains('New submissions can only be added in active phases.').should(
-        'exist'
+      // Wait for the phase to load before asserting the button's absence
+      cy.get('.e2e-phase-description').contains(
+        `description ${phaseFutureTitle}`
       );
+      // There's no primary CTA while no phase is running
+      cy.get('.e2e-idea-button').should('not.exist');
     });
   });
 

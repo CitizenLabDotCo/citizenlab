@@ -21,6 +21,12 @@ module ReportBuilder
       layout_side_fx_service.after_update(report.layout, user) if report.layout.previous_changes.present?
     end
 
+    # The LLM finished writing the report. Distinct from a plain update: it is what
+    # tells the admin who walked away that their report is ready.
+    def after_generate(report, user)
+      LogActivityJob.perform_later(report, 'generated', user, Time.now.to_i)
+    end
+
     def before_destroy(report, user)
       layout_side_fx_service.before_destroy(report.layout, user)
     end

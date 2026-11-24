@@ -53,7 +53,8 @@ const EmbedSettings = () => {
   };
 
   const handleUrlBlur = () => {
-    const validation = isValidUrl(url);
+    // An empty Embed is unfinished rather than invalid: it saves and renders nothing.
+    const validation = !url || isValidUrl(url);
 
     setProp((props: IframeProps) => {
       props.errorType = 'invalidUrl';

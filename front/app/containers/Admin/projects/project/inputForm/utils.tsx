@@ -50,7 +50,6 @@ export const ideationConfig: FormBuilderConfig = {
     'idea_files_attributes',
   ],
   showStatusBadge: false,
-  isFormPhaseSpecific: false,
   getWarningNotice: () => {
     return (
       <Box id="e2e-warning-notice" mb="16px">
@@ -104,8 +103,6 @@ export const proposalsConfig: FormBuilderConfig = {
     'cosponsor_ids',
   ],
   showStatusBadge: false,
-  isFormPhaseSpecific: true,
-
   getWarningNotice: () => {
     return (
       <Box id="e2e-warning-notice" mb="16px">

@@ -84,12 +84,10 @@ class McpServer::Tools::CreateDemoInputs < McpServer::BaseTool
   end
 
   class Runner < McpServer::BaseTool::Runner
-    DEMO_ONLY_MESSAGE = 'Demo inputs can only be created on demo and trial platforms.'
-
     def run
       phase = Phase.find_by(id: params[:phase_id])
       return not_found_error('Phase', params[:phase_id]) unless phase
-      return error(DEMO_ONLY_MESSAGE) unless published_writable_platform?
+      return demo_only_error('Creating demo inputs') unless published_writable_platform?
 
       ceiling = ceiling_error(phase.project)
       return ceiling if ceiling

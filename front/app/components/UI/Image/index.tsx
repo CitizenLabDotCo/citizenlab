@@ -88,6 +88,9 @@ const Image: React.FC<Props> = ({
       onError={handleImageError}
       id={id}
       className={className || ''}
+      // The pre-render server (cl2-deployment: prerender/server/skipAssets.js)
+      // relies on images always having a `loading` attribute, so it can force
+      // faded-in images visible. Update it if this or the fade-in changes.
       loading={isLazy ? 'lazy' : 'eager'}
     />
   );

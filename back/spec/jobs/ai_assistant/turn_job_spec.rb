@@ -1,0 +1,66 @@
+# frozen_string_literal: true
+
+require 'rails_helper'
+
+describe AIAssistant::TurnJob, :active_job_que_adapter do
+  let(:conversation) { create(:ai_assistant_conversation, status: 'running') }
+  let(:job) { described_class.perform_later(conversation) }
+
+  it 'runs the turn of a running conversation' do
+    turn = instance_double(AIAssistant::Turn, run: nil)
+    allow(AIAssistant::Turn).to receive(:new).with(conversation).and_return(turn)
+
+    job.perform_now
+
+    expect(turn).to have_received(:run)
+  end
+
+  it 'does nothing for a conversation that is not running' do
+    conversation.update!(status: 'idle')
+    expect(AIAssistant::Turn).not_to receive(:new)
+
+    job.perform_now
+  end
+
+  it 'drops a turn whose conversation was deleted while it was queued' do
+    serialized_job = described_class.new(conversation).serialize
+    conversation.destroy!
+
+    expect { ActiveJob::Base.execute(serialized_job) }.not_to raise_error
+  end
+
+  describe '#handle_error' do
+    using RSpec::Parameterized::TableSyntax
+
+    where(:error, :error_count, :expires) do
+      RubyLLM::OverloadedError.new(nil, 'busy') | 1 | false
+      RubyLLM::RateLimitError.new(nil, 'slow down') | 3 | true
+      RubyLLM::BadRequestError.new(nil, 'bad') | 1 | true
+      StandardError.new | 1 | true
+    end
+
+    with_them do
+      it 'retries temporary LLM errors a few times, and expires on the rest' do
+        allow(job).to receive(:error_count).and_return(error_count)
+
+        if expires
+          expect(job).to receive(:expire)
+        else
+          expect(job).not_to receive(:expire)
+        end
+
+        job.handle_error(error)
+      end
+    end
+  end
+
+  describe '#expire' do
+    it 'marks the conversation as failed with an error code' do
+      allow(job.send(:que_target)).to receive(:que_error).and_return(RubyLLM::ContextLengthExceededError.new(nil, 'too long'))
+
+      job.send(:expire)
+
+      expect(conversation.reload).to have_attributes(status: 'failed', last_error_code: 'context_too_long')
+    end
+  end
+end

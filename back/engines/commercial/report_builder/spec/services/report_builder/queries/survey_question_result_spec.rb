@@ -133,6 +133,83 @@ RSpec.describe ReportBuilder::Queries::SurveyQuestionResult do
       end
     end
 
+    context 'when grouping by a demographic field' do
+      let_it_be(:demographic_field) do
+        create(
+          :custom_field_select,
+          resource_type: 'User',
+          key: 'city',
+          options: [
+            create(:custom_field_option, key: 'la'),
+            create(:custom_field_option, key: 'ny')
+          ]
+        )
+      end
+      let_it_be(:transport_question) do
+        create(
+          :custom_field_select,
+          resource: form,
+          key: 'transport',
+          options: [
+            create(:custom_field_option, key: 'bike'),
+            create(:custom_field_option, key: 'train')
+          ]
+        )
+      end
+
+      before_all do
+        create(
+          :native_survey_response,
+          project: project,
+          phases: phases_of_inputs,
+          author: create(:user, custom_field_answers: [build(:custom_field_answer, key: 'city', value: 'ny')]),
+          custom_field_answers: [
+            build(:custom_field_answer, key: select_field.key, value: 'la'),
+            build(:custom_field_answer, key: 'transport', value: 'bike')
+          ]
+        )
+      end
+
+      let(:params) do
+        {
+          phase_id: survey_phase.id,
+          question_id: select_field.id,
+          group_mode: 'user_field',
+          group_field_id: demographic_field.id
+        }
+      end
+      let(:permission) { survey_phase.permissions.find_by(action: 'posting_idea') }
+
+      def group_keys(result)
+        result[:answers].flat_map(&:keys).uniq
+      end
+
+      it 'groups the answers while the survey collects user data' do
+        result = query.run_query(**params)
+
+        expect(result[:grouped]).to be true
+        answer = result[:answers].find { |a| a[:answer] == 'la' }
+        expect(answer[:groups]).to include({ group: 'ny', count: 1 })
+      end
+
+      it 'drops the grouping when the survey is fully anonymous' do
+        permission.update!(user_data_collection: 'anonymous')
+        result = query.run_query(**params)
+
+        expect(result[:grouped]).to be false
+        expect(group_keys(result)).not_to include(:groups)
+      end
+
+      it 'keeps grouping by a survey question when the survey is fully anonymous' do
+        permission.update!(user_data_collection: 'anonymous')
+        result = query.run_query(**params, group_mode: 'survey_question', group_field_id: transport_question.id)
+
+        expect(result[:grouped]).to be true
+        answer = result[:answers].find { |a| a[:answer] == 'la' }
+        expect(answer[:groups]).to include({ group: 'bike', count: 1 })
+      end
+    end
+
     context 'when phase_id is not provided' do
       it 'returns an empty hash' do
         expect(query.run_query).to eq({})

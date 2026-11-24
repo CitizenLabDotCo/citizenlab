@@ -63,6 +63,8 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
         idea_status_id
       ], # status/moderation operational state
 
+      'Phase' => %w[reviewed_setup_cards], # copied projects start with no cards reviewed
+
       'Project' => %w[
         completed_setup_steps
         default_assignee_id
@@ -108,6 +110,14 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
       analytics: %w[
         Analytics::DimensionDate
         Analytics::DimensionType
+      ],
+
+      # The AI assistant's chats with individual admins — per-user runtime data, never
+      # templated or copied.
+      ai_assistant: %w[
+        AIAssistant::Conversation
+        AIAssistant::Message
+        AIAssistant::ToolCall
       ],
 
       # AI analysis, insights and embeddings — derived from user content.
@@ -161,6 +171,7 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
 
       # Per-user runtime objects regenerated through normal use.
       user_runtime: %w[
+        PulseCheck
         Notification
         Onboarding::CampaignDismissal
       ],
@@ -254,6 +265,17 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
         StaticPageFile
         StaticPagesGlobalTopic
         StaticPagesSpace
+      ],
+
+      # AI-authored page builder blocks are tenant-wide CMS content, not scoped to
+      # a project. A query snapshot is a cached answer, rebuilt on demand. A chat and
+      # a generation transcript record how a report was written, not the report.
+      llm_reporting: %w[
+        ContentBuilder::CustomBlock
+        ContentBuilder::CustomBlockVersion
+        ContentBuilder::QuerySnapshot
+        ReportBuilder::GenerationTranscript
+        ReportBuilder::ReportChat
       ],
 
       # Per-tenant admin moderation runtime (internal comments on ideas — not

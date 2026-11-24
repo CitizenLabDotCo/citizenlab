@@ -10,6 +10,10 @@ export default defineMessages({
     defaultMessage:
       'To confirm the deletion of {entityName}, type {confirmationWord} below:',
   },
+  typeToConfirmShort: {
+    id: 'app.components.TypedConfirmationModal.typeToConfirmShort',
+    defaultMessage: 'Type {confirmationWord} to confirm',
+  },
   cancel: {
     id: 'app.components.TypedConfirmationModal.cancel',
     defaultMessage: 'Cancel',

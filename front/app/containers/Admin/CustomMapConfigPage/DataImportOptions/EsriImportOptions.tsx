@@ -2,6 +2,8 @@ import React, { memo } from 'react';
 
 import { Box, Button, Tooltip } from '@citizenlab/cl2-component-library';
 
+import DSButton from 'design-system/Button';
+
 import { IMapConfig } from 'api/map_config/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -12,12 +14,15 @@ import { ViewOptions } from '..';
 import messages from '../messages';
 import { getLayerType } from '../utils';
 
+import styles from './DataImportOptions.module.css';
+
 interface Props {
   setView: (view: ViewOptions) => void;
   mapConfig: IMapConfig;
+  variant?: 'default' | 'panel';
 }
 
-const EsriImportOptions = memo<Props>(({ setView, mapConfig }) => {
+const EsriImportOptions = memo<Props>(({ setView, mapConfig, variant }) => {
   const { formatMessage } = useIntl();
   const isEsriIntegrationEnabled = useFeatureFlag({ name: 'esri_integration' });
 
@@ -39,6 +44,43 @@ const EsriImportOptions = memo<Props>(({ setView, mapConfig }) => {
     }
     return;
   };
+
+  const featureLayerUploadDisabled =
+    layerType === 'CustomMaps::GeojsonLayer' || !isEsriIntegrationEnabled;
+
+  if (variant === 'panel') {
+    return (
+      <div className={styles.esriOptions}>
+        <DSButton
+          data-cy="e2e-feature-layer-upload-btn"
+          icon="map-pin-14"
+          onPress={() => {
+            setView('featureLayerUpload');
+          }}
+          isDisabled={featureLayerUploadDisabled}
+          disabledReason={
+            layerType === 'CustomMaps::GeojsonLayer' && isEsriIntegrationEnabled
+              ? formatMessage(messages.featureLayerRemoveGeojsonTooltip)
+              : undefined
+          }
+        >
+          {formatMessage(messages.importEsriFeatureLayer)}
+        </DSButton>
+        <DSButton
+          data-cy="e2e-web-map-upload-btn"
+          onPress={() => {
+            setView('webMapUpload');
+          }}
+          isDisabled={webMapUploadDisabled}
+          disabledReason={
+            webMapUploadDisabled ? getWebMapDisabledMessage() : undefined
+          }
+        >
+          {formatMessage(messages.importEsriWebMap)}
+        </DSButton>
+      </div>
+    );
+  }
 
   return (
     <Box mb="12px">
@@ -66,10 +108,7 @@ const EsriImportOptions = memo<Props>(({ setView, mapConfig }) => {
               onClick={() => {
                 setView('featureLayerUpload');
               }}
-              disabled={
-                layerType === 'CustomMaps::GeojsonLayer' ||
-                !isEsriIntegrationEnabled
-              }
+              disabled={featureLayerUploadDisabled}
             >
               {formatMessage(messages.importEsriFeatureLayer)}
             </Button>

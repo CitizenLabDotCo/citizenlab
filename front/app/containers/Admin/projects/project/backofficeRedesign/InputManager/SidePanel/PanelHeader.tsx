@@ -1,15 +1,14 @@
 import React from 'react';
 
-import {
-  Box,
-  colors,
-  IconButton,
-  Text,
-} from '@citizenlab/cl2-component-library';
+import IconButton from 'design-system/IconButton';
+import Text from 'design-system/Text';
 
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
+import useInputTermLabels from '../useInputTermLabels';
+
+import styles from './SidePanel.module.css';
 
 export interface PanelNavigation {
   position: number;
@@ -19,58 +18,35 @@ export interface PanelNavigation {
 }
 
 interface Props {
-  context: string;
-  navigation: PanelNavigation | undefined;
+  navigation: PanelNavigation;
 }
 
-const PanelHeader = ({ context, navigation }: Props) => {
+// The panel's head holds the context and the close button, so the stepper sits on top of the body.
+const PanelHeader = ({ navigation }: Props) => {
   const { formatMessage } = useIntl();
+  const { term } = useInputTermLabels();
 
   return (
-    <Box
-      display="flex"
-      alignItems="center"
-      justifyContent="space-between"
-      gap="12px"
-      pl="24px"
-      pr="80px"
-      py="12px"
-      borderBottom={`1px solid ${colors.divider}`}
-      position="sticky"
-      top="0"
-      background={colors.white}
-      zIndex="1"
-    >
-      <Text variant="boHelper" m="0">
-        {context}
+    <div className={styles.navigation}>
+      <IconButton
+        icon="chevron-left-16"
+        aria-label={formatMessage(messages.previousTerm, { term })}
+        onPress={() => navigation.onPrevious?.()}
+        isDisabled={!navigation.onPrevious}
+      />
+      <Text as="span" variant="ui" tone="secondary">
+        {formatMessage(messages.position, {
+          position: navigation.position,
+          total: navigation.total,
+        })}
       </Text>
-      {navigation && (
-        <Box display="flex" alignItems="center" gap="8px">
-          <IconButton
-            iconName="chevron-left"
-            iconColor={colors.coolGrey600}
-            iconColorOnHover={colors.textPrimary}
-            a11y_buttonActionMessage={formatMessage(messages.previousInput)}
-            onClick={() => navigation.onPrevious?.()}
-            disabled={!navigation.onPrevious}
-          />
-          <Text variant="boHelper" m="0">
-            {formatMessage(messages.position, {
-              position: navigation.position,
-              total: navigation.total,
-            })}
-          </Text>
-          <IconButton
-            iconName="chevron-right"
-            iconColor={colors.coolGrey600}
-            iconColorOnHover={colors.textPrimary}
-            a11y_buttonActionMessage={formatMessage(messages.nextInput)}
-            onClick={() => navigation.onNext?.()}
-            disabled={!navigation.onNext}
-          />
-        </Box>
-      )}
-    </Box>
+      <IconButton
+        icon="chevron-right-16"
+        aria-label={formatMessage(messages.nextTerm, { term })}
+        onPress={() => navigation.onNext?.()}
+        isDisabled={!navigation.onNext}
+      />
+    </div>
   );
 };
 

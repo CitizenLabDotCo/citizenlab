@@ -13,7 +13,11 @@ const OFFERED: OfferedEarlyAccessFeatures = {
   project_backoffice_redesign: 'internal',
 };
 
-const buildUser = (optedIn: string[], offered = OFFERED) =>
+const buildUser = (
+  optedIn: string[],
+  offered = OFFERED,
+  highestRole = 'super_admin'
+) =>
   ({
     data: {
       id: 'user-id',
@@ -21,6 +25,7 @@ const buildUser = (optedIn: string[], offered = OFFERED) =>
       attributes: {
         early_access_opt_ins: optedIn,
         offered_early_access_features: offered,
+        highest_role: highestRole,
       },
     },
   } as unknown as IUser);
@@ -43,6 +48,25 @@ describe('FeedbackNotice', () => {
       'href',
       'https://go-vocal.slack.com/archives/C0BRBG0TGM8'
     );
+  });
+
+  it('hides the internal Slack channel from a customer admin', () => {
+    mockAuthUser = buildUser(
+      ['project_backoffice_redesign'],
+      { project_backoffice_redesign: 'general' },
+      'admin'
+    );
+    render(<FeedbackNotice />);
+
+    expect(
+      screen.getByText('You are using the new project back office.')
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', { name: '#dev-tandem-uxui-revamp' })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: 'profile settings' })
+    ).toBeInTheDocument();
   });
 
   it('renders nothing when the redesign comes from the platform setting', () => {

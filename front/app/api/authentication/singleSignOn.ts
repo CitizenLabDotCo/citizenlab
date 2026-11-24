@@ -27,6 +27,7 @@ export interface SSOProviderMap {
   keycloak: 'keycloak';
   twoday: 'twoday';
   publik: 'publik';
+  okta: 'okta';
   acm: 'acm';
   id_vienna_saml: 'id_vienna_saml';
 }

@@ -1,14 +1,22 @@
+import { SupportedLocale } from 'typings';
+
 import { QueryKeys } from 'utils/cl-react-query/types';
 
 const baseKey = { type: 'email_campaign_preview' };
 
 const emailCampaignPreviewsKeys = {
   all: () => [baseKey],
-  item: ({ campaignId }: { campaignId: string | null }) => [
+  item: ({
+    campaignId,
+    locale,
+  }: {
+    campaignId: string | null;
+    locale?: SupportedLocale;
+  }) => [
     {
       ...baseKey,
       operation: 'item',
-      parameters: { id: campaignId },
+      parameters: { id: campaignId, locale },
     },
   ],
 } satisfies QueryKeys;

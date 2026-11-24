@@ -7,23 +7,19 @@ import {
   Tooltip,
 } from '@citizenlab/cl2-component-library';
 
-import useAddEmailCampaign from 'api/campaigns/email/useAddEmailCampaign';
-import useUpdateEmailCampaign from 'api/campaigns/email/useUpdateEmailCampaign';
 import { CampaignContext } from 'api/campaigns/types';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import UpsellTooltip from 'components/UpsellTooltip';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import clHistory from 'utils/cl-router/history';
 import { useLocation } from 'utils/router';
 
 import messages from '../messages';
 
 import CampaignDescription from './CampaignDescription';
 import { CampaignData } from './types';
+import useCampaignRow from './useCampaignRow';
 
 type Props = {
   campaign: CampaignData;
@@ -34,59 +30,19 @@ type Props = {
 const CampaignRow = ({ campaign, context, onClickViewExample }: Props) => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
-  const { mutate: addCampaign } = useAddEmailCampaign();
-  const { mutate: updateCampaign } = useUpdateEmailCampaign();
-  const unpersistedContextCampaign =
-    context && !campaign.relationships.context?.data?.id;
-
-  const toggleEnabled = () => {
-    if (unpersistedContextCampaign) {
-      addCampaign({
-        context,
-        campaign_name: campaign.attributes.campaign_name,
-        enabled: !campaign.attributes.enabled,
-      });
-    } else {
-      updateCampaign({
-        id: campaign.id,
-        campaign: {
-          enabled: !campaign.attributes.enabled,
-        },
-      });
-    }
-  };
-
-  const globalFeatureActivated = useFeatureFlag({
-    name: 'customised_automated_emails',
+  const {
+    toggleEnabled,
+    openEditor,
+    isComingSoon,
+    isOutsidePlan,
+    isEditable,
+    canBeDisabled,
+  } = useCampaignRow({
+    campaign,
+    context,
+    editPath: (campaignId) => `${pathname}/${campaignId}/edit`,
   });
-  const contextFeatureActivated = useFeatureFlag({
-    name: 'customised_automated_context_emails',
-  });
-  const isComingSoon =
-    (campaign.attributes.editable_regions || []).length === 0;
-  const isContextDisabled = context && !campaign.attributes.enabled;
-  const isOutsidePlan =
-    !globalFeatureActivated || (context && !contextFeatureActivated);
-  const isEditable = !isComingSoon && !isContextDisabled && !isOutsidePlan;
-  const canBeDisabled = campaign.attributes.can_be_disabled;
-  const handleEditClick = () => {
-    if (unpersistedContextCampaign) {
-      addCampaign(
-        {
-          context,
-          campaign_name: campaign.attributes.campaign_name,
-          enabled: campaign.attributes.enabled,
-        },
-        {
-          onSuccess: (addedCampaign) => {
-            clHistory.push(`${pathname}/${addedCampaign.data.id}/edit`);
-          },
-        }
-      );
-    } else {
-      clHistory.push(`${pathname}/${campaign.id}/edit`);
-    }
-  };
+
   const renderTooltip = (children) => {
     if (isOutsidePlan) {
       return <UpsellTooltip disabled={false}>{children}</UpsellTooltip>;
@@ -126,7 +82,7 @@ const CampaignRow = ({ campaign, context, onClickViewExample }: Props) => {
             {renderTooltip(
               <ButtonWithLink
                 icon="edit"
-                onClick={handleEditClick}
+                onClick={openEditor}
                 disabled={!isEditable}
                 buttonStyle="secondary-outlined"
               >

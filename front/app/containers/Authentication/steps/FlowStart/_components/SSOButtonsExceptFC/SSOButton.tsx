@@ -7,6 +7,7 @@ import useIdMethods from 'api/id_methods/useIdMethods';
 import {
   getAzureB2cConfig,
   getAzureConfig,
+  getOktaConfig,
   getPublikConfig,
 } from 'api/id_methods/utils';
 
@@ -166,6 +167,20 @@ const SSOButton = ({ provider, onClickSSO }: Props) => {
         </WrappedAuthProviderButton>
       );
     }
+    case 'okta':
+      return (
+        <WrappedAuthProviderButton
+          icon="okta"
+          imageUrl={getOktaConfig(idMethods)?.attributes.logo_url}
+          authProvider="okta"
+          onClick={onClickSSO}
+        >
+          <FormattedMessage
+            {...sharedMessages.continueWithLoginMechanism}
+            values={{ loginMechanismName: idMethodNames.okta }}
+          />
+        </WrappedAuthProviderButton>
+      );
     case 'acm':
       return (
         <WrappedAuthProviderButton

@@ -52,8 +52,6 @@ class McpServer::Tools::UpdatePlatformConfig < McpServer::BaseTool
   end
 
   class Runner < McpServer::BaseTool::Runner
-    DEMO_ONLY_MESSAGE = 'Platform config can only be updated on demo and trial platforms.'
-
     # MCP param key => core settings key.
     CORE_KEYS = {
       organization_name_multiloc: 'organization_name',
@@ -64,7 +62,7 @@ class McpServer::Tools::UpdatePlatformConfig < McpServer::BaseTool
     }.freeze
 
     def run
-      return error(DEMO_ONLY_MESSAGE) unless published_writable_platform?
+      return demo_only_error('Updating the platform config') unless published_writable_platform?
 
       config = AppConfiguration.instance
       authorize(config, :update?)
@@ -76,7 +74,11 @@ class McpServer::Tools::UpdatePlatformConfig < McpServer::BaseTool
 
       # deep_merge preserves untouched core keys, feature blocks, and merges *_multiloc
       # fields per locale (arrays like locales replace wholesale).
-      config.settings = config.settings.deep_merge('core' => core)
+      settings = config.settings.deep_merge('core' => core)
+      forbidden = policy(config).forbidden_settings(SettingsService.new.changed_settings(config.settings, settings))
+      return error("Only super admins can change: #{forbidden.map { |pair| pair.join('.') }.join(', ')}.") if forbidden.any?
+
+      config.settings = settings
       config.remote_logo_url = params[:logo_url] if params[:logo_url]
       config.remote_favicon_url = params[:favicon_url] if params[:favicon_url]
 

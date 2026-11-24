@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Label } from '@citizenlab/cl2-component-library';
+import { Label } from '@citizenlab/cl2-component-library';
 import { Controller, useFormContext } from 'react-hook-form';
 import { CLError, RHFErrors } from 'typings';
 
@@ -23,7 +23,7 @@ const EmojiPicker = ({ name, label }: Props) => {
   const apiError = errors?.error && ([errors] as CLError[]);
 
   return (
-    <Box>
+    <div>
       {label && <Label htmlFor={name}>{label}</Label>}
       <Controller
         name={name}
@@ -50,7 +50,7 @@ const EmojiPicker = ({ name, label }: Props) => {
           scrollIntoView={false}
         />
       )}
-    </Box>
+    </div>
   );
 };
 

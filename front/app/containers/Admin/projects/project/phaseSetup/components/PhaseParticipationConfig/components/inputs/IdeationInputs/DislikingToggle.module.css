@@ -1,0 +1,15 @@
+.toggleRow {
+  display: flex;
+  align-items: center;
+  min-height: 42px;
+}
+
+.label {
+  composes: ui from '../../../../../../../../../../design-system/typography.module.css';
+  color: var(--gv-text-primary);
+}
+
+/* Lines the settings up with the switch label: the switch width plus its gap. */
+.settings {
+  padding-left: calc(var(--gv-size-26) + var(--gv-space-10));
+}

@@ -1,0 +1,21 @@
+.statusBadge {
+  composes: smallStrong from '../typography.module.css';
+  box-sizing: border-box;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  height: 18px;
+  padding: 0 var(--gv-space-6);
+  border-radius: var(--gv-radius-full);
+  white-space: nowrap;
+}
+
+.draft {
+  background: var(--gv-surface-sunken);
+  color: var(--gv-text-on-muted);
+}
+
+.published {
+  background: var(--gv-surface-success);
+  color: var(--gv-component-status-text-live);
+}

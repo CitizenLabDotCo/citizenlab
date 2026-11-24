@@ -1,0 +1,52 @@
+import { MessageDescriptor } from 'react-intl';
+
+import { isCLErrorsWrapper } from 'utils/errorUtils';
+
+import messages from './messages';
+
+// The first machine-readable error code of a failed request.
+export const getRequestErrorCode = (error: unknown) =>
+  isCLErrorsWrapper(error)
+    ? Object.values(error.errors).flat().at(0)?.error
+    : undefined;
+
+// Error codes of failed turns (the conversation's last_error_code) and of refused
+// requests.
+export const getErrorMessage = (
+  code: string | undefined
+): MessageDescriptor => {
+  switch (code) {
+    case 'llm_unavailable':
+      return messages.errorLlmUnavailable;
+    case 'llm_request_rejected':
+      return messages.errorLlmRequestRejected;
+    case 'context_too_long':
+      return messages.errorContextTooLong;
+    case 'surface_unavailable':
+      return messages.errorSurfaceUnavailable;
+    case 'turn_timed_out':
+      return messages.errorTurnTimedOut;
+    case 'tool_budget_exceeded':
+      return messages.errorToolBudgetExceeded;
+    case 'conversation_busy':
+      return messages.errorConversationBusy;
+    case 'tool_call_expired':
+      return messages.errorToolCallExpired2;
+    case 'tool_call_not_awaiting_user':
+      return messages.errorToolCallNotAwaitingApproval;
+    case 'not_in_project':
+      return messages.errorFileNotInProject;
+    case 'ai_processing_not_allowed':
+      return messages.errorAiProcessingNotAllowed;
+    case 'unsupported_file_type':
+      return messages.errorUnsupportedFileType2;
+    case 'not_utf8':
+      return messages.errorFileNotUtf8;
+    case 'too_many_in_conversation':
+      return messages.errorTooManyConversationFiles;
+    case 'too_long':
+      return messages.errorTooLong;
+    default:
+      return messages.errorGeneric;
+  }
+};

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import {
+  Box,
   IconButton,
   colors,
   useBreakpoint,
@@ -14,6 +15,8 @@ import styled, { useTheme } from 'styled-components';
 import useAuthUser from 'api/me/useAuthUser';
 
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+
+import WeglotSwitcher from 'components/WeglotSwitcher';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
@@ -156,6 +159,20 @@ const DesktopNavbarContent = () => {
 
       <RightItem className="noLeftMargin">
         <StyledLanguageSelector />
+      </RightItem>
+
+      <RightItem className="noLeftMargin">
+        {/* Matches the gap StyledLanguageSelector gives itself, so the two
+            switchers are evenly spaced when both are shown. */}
+        <Box
+          display="flex"
+          alignItems="center"
+          h="100%"
+          pl={theme.isRtl ? undefined : '20px'}
+          pr={theme.isRtl ? '20px' : undefined}
+        >
+          <WeglotSwitcher />
+        </Box>
       </RightItem>
     </Right>
   );

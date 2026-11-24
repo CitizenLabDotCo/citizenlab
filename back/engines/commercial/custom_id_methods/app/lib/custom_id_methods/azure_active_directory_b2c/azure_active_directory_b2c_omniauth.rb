@@ -22,10 +22,6 @@ module CustomIdMethods::AzureActiveDirectoryB2c
       '08ac0e90-1a7d-4684-9117-b5cefe907e89'
     end
 
-    def config_parameters
-      %i[tenant_name tenant_id policy_name client_id logo_url login_mechanism_name]
-    end
-
     def config_parameters_schema
       {
         tenant_name: {
@@ -63,12 +59,6 @@ module CustomIdMethods::AzureActiveDirectoryB2c
           description: 'The Login Mechanism Name is used for user-facing copy. For instance, "Sign up with {login_mechanism_name}.".'
         }
       }
-    end
-
-    # Exposed publicly via the /id_methods endpoint so the frontend can
-    # render the SSO button (logo, label).
-    def exposed_config_parameters
-      %i[logo_url login_mechanism_name]
     end
 
     # Azure AD B2C endpoints are specific to the user flow ("policy") that an application wishes to use to authenticate users.

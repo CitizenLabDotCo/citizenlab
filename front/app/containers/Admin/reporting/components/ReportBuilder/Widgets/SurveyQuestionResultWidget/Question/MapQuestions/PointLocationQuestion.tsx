@@ -10,6 +10,8 @@ import PointMap from 'components/admin/Graphs/PointMap';
 
 import { useIntl } from 'utils/cl-intl';
 
+import useRegisterMapView from './useRegisterMapView';
+
 interface Props {
   pointResponses: { answer: GeoJSON.Point }[];
   mapConfigId?: string;
@@ -26,6 +28,7 @@ const PointLocationQuestion = ({
   heatmap,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const registerMapView = useRegisterMapView(customFieldId);
 
   const points = useMemo(() => {
     return pointResponses.map(({ answer }) => answer);
@@ -52,6 +55,7 @@ const PointLocationQuestion = ({
         mapConfig={mapConfig}
         layerTitle={formatMessage(surveyResultMessages.responses)}
         layerId={`responsesLayer_${customFieldId}`}
+        onInit={registerMapView}
         heatmap={heatmap}
       />
     </div>

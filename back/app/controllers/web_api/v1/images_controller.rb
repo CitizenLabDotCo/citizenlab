@@ -36,14 +36,16 @@ class WebApi::V1::ImagesController < ApplicationController
       container_class: CustomFieldOption,
       image_class: CustomFieldOptionImage,
       policy_scope_class: CustomFieldOptionImagePolicy::Scope,
-      image_relationship: :image,
-      container_id: :custom_field_option_id
+      image_relationship: :image
+      # No `container_id`: this route is not nested under an option, so the image is
+      # always built standalone. With the key, a query param could set the container,
+      # and `image` is a has_one, which the collection build in `create` cannot use.
     }
   }
 
   before_action :set_container, only: %i[index create]
   before_action :set_image, only: %i[show update destroy]
-  skip_before_action :authenticate_user
+  skip_before_action :authenticate_user, only: %i[index show]
   skip_after_action :verify_policy_scoped
 
   def index
@@ -58,11 +60,14 @@ class WebApi::V1::ImagesController < ApplicationController
 
   def create
     @image = if @container
-      @container.send(secure_constantize(:image_relationship)).create(image_params)
+      @container.send(secure_constantize(:image_relationship)).new
     else
-      secure_constantize(:image_class).new(image_params)
+      secure_constantize(:image_class).new
     end
+    # authorize before any caller-supplied attribute lands
     authorize @image
+    @image.assign_attributes(image_params)
+
     if @image.save
       render json: WebApi::V1::ImageSerializer.new(
         @image,

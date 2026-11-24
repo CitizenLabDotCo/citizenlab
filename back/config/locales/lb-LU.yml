@@ -140,9 +140,15 @@ lb-LU:
           title: Wat ass däin Thema?
   errors:
     messages:
+      ai_processing_not_allowed: däerf eventuell net vun der KI verschafft ginn
       in_the_past: muss an der Zukunft sinn
       max_must_be_greater_than_min_characters: De Maximum muss méi grouss wéi de Minimum sinn.
       max_must_be_greater_than_or_equal_to_min_select_count: De Maximum muss méi grouss oder gläich dem Minimum sinn.
+      not_found: goufen net fonnt
+      not_in_project: musse Dateie vun dësem Projet sinn
+      not_utf8: musse als UTF-8 gespäichert sinn
+      too_many_in_conversation: si ze vill fir eng Konversatioun
+      unsupported_file_type: musse PDF-Dateie vu maximal 4 MB, oder Markdown- oder Textdateie vu maximal 100 KB sinn
   events:
     council_meeting_description: |
       <p>Bei dëser Conseilssëtzung wäerten déi Biergerinitiativen dobäi sinn, déi 100 Stëmmen a manner wéi 3 Méint kruten. </p><p>De Conseil wäert da seng Usiichten zu all Iddi matdeelen.</p>
@@ -180,6 +186,7 @@ lb-LU:
       logic_no_further_questions: Baséierend op Ären Äntwerten braucht Dir <strong>keng</strong> weider Froen ze beäntweren.
       logic_section: Sektioun %{letter}
       matrix_print_description: Fir all Zeil, markéiert ee Krees mat engem Kräiz fir Är Preferenz unzeweisen.
+      multipoint_print_description: Zeechent wgl. en X op d'Kaart hei drënner fir all Standuert deen Dir dobäisetze wëllt.
       optional: fakultativ
       page: Säit
       permission: Erlaabnis

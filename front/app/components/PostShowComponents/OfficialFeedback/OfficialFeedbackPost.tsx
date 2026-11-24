@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { lazy, Suspense, useState } from 'react';
 
 import {
   colors,
@@ -25,7 +25,15 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
-import OfficialFeedbackForm from './OfficialFeedbackForm';
+import {
+  loadOfficialFeedbackForm,
+  loadOfficialFeedbackPanelMenu,
+} from './moderatorParts';
+import panelStyles from './OfficialFeedbackPanel.module.css';
+import 'design-system/tokens.css';
+
+const OfficialFeedbackForm = lazy(loadOfficialFeedbackForm);
+const OfficialFeedbackPanelMenu = lazy(loadOfficialFeedbackPanelMenu);
 
 const Container = styled.div`
   display: flex;
@@ -148,6 +156,7 @@ interface Props {
 
   className?: string;
   a11y_pronounceLatestOfficialFeedbackPost?: boolean;
+  variant?: 'default' | 'panel';
 }
 
 const OfficialFeedbackPost = ({
@@ -155,8 +164,10 @@ const OfficialFeedbackPost = ({
   editingAllowed,
   className,
   a11y_pronounceLatestOfficialFeedbackPost,
+  variant = 'default',
 }: Props) => {
   const { formatMessage } = useIntl();
+  const isPanel = variant === 'panel';
   const localize = useLocalize();
   const { mutate: deleteOfficialFeedbackFromIdea } =
     useDeleteIdeaOfficialFeedback();
@@ -198,14 +209,31 @@ const OfficialFeedbackPost = ({
   const { body_multiloc, author_multiloc, created_at, updated_at } =
     officialFeedbackPost.attributes;
 
+  if (showEditForm && isPanel) {
+    return (
+      <div key={officialFeedbackPost.id} className={panelStyles.editForm}>
+        <Suspense fallback={null}>
+          <OfficialFeedbackForm
+            formType="edit"
+            feedback={officialFeedbackPost}
+            onClose={closeEditForm}
+            variant="panel"
+          />
+        </Suspense>
+      </div>
+    );
+  }
+
   if (showEditForm) {
     return (
       <EditFormContainer key={officialFeedbackPost.id}>
-        <OfficialFeedbackForm
-          formType="edit"
-          feedback={officialFeedbackPost}
-          onClose={closeEditForm}
-        />
+        <Suspense fallback={null}>
+          <OfficialFeedbackForm
+            formType="edit"
+            feedback={officialFeedbackPost}
+            onClose={closeEditForm}
+          />
+        </Suspense>
       </EditFormContainer>
     );
   }
@@ -227,6 +255,68 @@ const OfficialFeedbackPost = ({
       day="numeric"
     />
   );
+
+  if (isPanel) {
+    const datesPostedEdited = (
+      <>
+        <FormattedMessage
+          {...messages.postedOn}
+          values={{ date: formattedPostedOnDate }}
+        />
+        {updated_at && updated_at !== created_at && (
+          <>
+            {' - '}
+            <FormattedMessage
+              {...messages.lastEdition}
+              values={{ date: formattedUpdatedAtDate }}
+            />
+          </>
+        )}
+      </>
+    );
+
+    return (
+      <div
+        key={officialFeedbackPost.id}
+        className={`e2e-official-feedback-post ${panelStyles.post} ${
+          className ?? ''
+        }`}
+      >
+        {editingAllowed && (
+          <div className={panelStyles.postMenu}>
+            <Suspense fallback={null}>
+              <OfficialFeedbackPanelMenu
+                onEdit={openEditForm}
+                onDelete={deletePost(officialFeedbackPost.id)}
+              />
+            </Suspense>
+          </div>
+        )}
+
+        <ScreenReaderOnly aria-live="polite">
+          {a11y_pronounceLatestOfficialFeedbackPost &&
+            getPostBodyText(body_multiloc)}
+        </ScreenReaderOnly>
+
+        <QuillEditedContent fontWeight={400} fontSize="s">
+          <div
+            className={`e2e-official-feedback-post-body ${panelStyles.postBody}`}
+            dangerouslySetInnerHTML={{
+              __html: getPostBodyText(body_multiloc),
+            }}
+          />
+        </QuillEditedContent>
+        <div className={panelStyles.footer}>
+          <span
+            className={`e2e-official-feedback-post-author ${panelStyles.author}`}
+          >
+            <T value={author_multiloc} />
+          </span>
+          <span>{datesPostedEdited}</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <PostContainer

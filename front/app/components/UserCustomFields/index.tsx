@@ -7,6 +7,7 @@ import useUserCustomFieldsForPermission from 'api/user_custom_fields_for_permiss
 
 import CustomFields from 'components/CustomFieldsForm/CustomFields';
 import usePageForm from 'components/CustomFieldsForm/Page/usePageForm';
+import { castNumberAnswers } from 'components/CustomFieldsForm/util';
 
 interface Props {
   onChange: (formData: Record<string, any>) => void;
@@ -47,17 +48,7 @@ const UserCustomFieldsForm = ({
 
   useEffect(() => {
     const subscription = methods.watch((values) => {
-      const valueKeys = Object.keys(values);
-
-      const transformedValues = {};
-      valueKeys.forEach((key) => {
-        const question = customFields?.find((q) => q.key === key);
-        transformedValues[key] =
-          question?.input_type === 'number' && values[key] !== undefined
-            ? Number(values[key])
-            : values[key];
-      });
-      onChange(transformedValues);
+      onChange(castNumberAnswers(values, customFields ?? []));
     });
     return () => subscription.unsubscribe();
   }, [methods, onChange, customFields]);

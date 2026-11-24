@@ -49,6 +49,7 @@ export const themeColors = {
   /**
    * Grey
    */
+  grey900: '#1E1E1E',
   grey800: '#333333', // formerly text
   grey700: '#767676', // formerly border, grey
   grey600: '#999999', // formerly placeholder
@@ -78,6 +79,7 @@ export const themeColors = {
   teal300: '#40B8C5', // formerly clBlueLight
   teal200: '#80CFD8', // formerly clBlueLighter
   teal100: '#BEE7EB', // formerly clBlueLightest
+  teal75: '#E5F5F7',
   teal50: '#EDF8FA',
   /**
    * Red
@@ -91,12 +93,10 @@ export const themeColors = {
    * Green
    */
   green700: '#024D2B',
-  green600: '#096F03',
   green500: '#04884C', // formerly clGreen
   green400: '#32B67A',
   green300: '#62C462',
   green100: '#e4f7ef', // formerly clGreenSuccessBackground
-  greenMint: '#CAE0CD',
 
   /**
    * Orange
@@ -147,7 +147,6 @@ export type Color =
   | 'inherit';
 
 export const fontSizes = {
-  xxs: 10,
   xs: 12,
   s: 14,
   base: 16,
@@ -203,32 +202,6 @@ export const focusRing = css`
   box-shadow: 0 0 0 2px ${colors.white};
 `;
 
-// Back office theme
-const BO_HEADER_FONT_SIZE = '13px';
-const BO_CONTROL_FONT_SIZE = 13;
-
-export const bo = {
-  colors: {
-    textHeadingStrong: '#1E1E1E',
-    textHeading: '#474747',
-    statusFill: '#E2EEE1',
-    stepHalo: '#D7E3E7',
-    liveHalo: '#DAF2E7',
-    stepBorder: '#D4D9DD',
-    crumbSeparator: '#8D9EAC',
-  },
-  borderRadius: '8px',
-  panelBorderRadius: '12px',
-  headerFontSize: BO_HEADER_FONT_SIZE,
-  controlFontSize: BO_CONTROL_FONT_SIZE,
-  buttonMedium: {
-    height: '32px',
-    padding: '0 16px',
-    fontSize: BO_HEADER_FONT_SIZE,
-    iconSize: '14px',
-  },
-};
-
 export const stylingConsts = {
   menuHeight: 78,
   mobileMenuHeight: 72,
@@ -277,8 +250,8 @@ export const defaultInputStyle = css`
   height: ${getHeight};
 
   &:not(:disabled):not(.disabled) {
-    &:not(.error):hover,
-    &:not(.error).hover {
+    &:not(.error):not([readonly]):hover,
+    &:not(.error):not([readonly]).hover {
       border-color: ${colors.black};
     }
 
@@ -305,13 +278,19 @@ export const defaultInputStyle = css`
     border-color: ${colors.grey400};
     cursor: not-allowed;
   }
+
+  /* Unlike disabled, the text keeps full contrast: the value is meant to be read */
+  &[readonly] {
+    background-color: ${colors.grey100};
+    border-color: ${colors.grey400};
+    cursor: default;
+  }
   ${(props: { size?: InputSize }) =>
     props.size === 'small' &&
     css`
       font-size: ${fontSizes.s}px;
       padding: 10px;
     `}
-  }
 `;
 
 export const getFontWeightCSS = (fontWeight: FontWeight) => {

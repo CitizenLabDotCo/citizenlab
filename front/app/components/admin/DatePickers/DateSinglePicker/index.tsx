@@ -20,6 +20,7 @@ const DateSinglePicker = ({
   placement,
   onChange,
   disabledPast = undefined,
+  formatDate,
 }: Props) => {
   const [calendarOpen, setCalendarOpen] = useState(false);
 
@@ -56,6 +57,7 @@ const DateSinglePicker = ({
           disabled={disabled}
           selectedDate={selectedDate}
           ariaExpanded={calendarOpen}
+          formatDate={formatDate}
           onClick={() => setCalendarOpen(true)}
         />
       </Tooltip>

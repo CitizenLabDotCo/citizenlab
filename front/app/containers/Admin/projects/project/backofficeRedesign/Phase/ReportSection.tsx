@@ -1,20 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import { Box, Text, Toggle } from '@citizenlab/cl2-component-library';
+import Button from 'design-system/Button';
 
 import { IPhaseData } from 'api/phases/types';
 import useReport from 'api/reports/useReport';
 import useReportBuilderEnabled from 'api/reports/useReportBuilderEnabled';
-import useUpdateReport from 'api/reports/useUpdateReport';
 
-import EmptyState from 'containers/Admin/projects/project/information/ReportTab/EmptyState';
+import CreateReportModal from 'containers/Admin/projects/project/information/ReportTab/CreateReportModal';
 import messages from 'containers/Admin/projects/project/information/ReportTab/messages';
-import visibilityWarning from 'containers/Admin/projects/project/information/ReportTab/visibilityWarning';
-import Buttons from 'containers/Admin/reporting/components/ReportBuilderPage/ReportRow/Buttons';
-
-import Warning from 'components/UI/Warning';
+import topBarMessages from 'containers/Admin/reporting/components/ReportBuilder/TopBar/messages';
+import reportRowMessages from 'containers/Admin/reporting/components/ReportBuilderPage/ReportRow/messages';
 
 import { useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+
+import PanelField from './BuildPanel/PanelField';
+import phaseMessages from './messages';
+import styles from './ReportSection.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   projectId: string;
@@ -23,50 +26,78 @@ interface Props {
 
 const ReportSection = ({ projectId, phase }: Props) => {
   const { formatMessage } = useIntl();
+  const [createOpened, setCreateOpened] = useState(false);
   const reportId = phase.relationships.report?.data?.id;
   const { data: report } = useReport(reportId);
-  const { mutate: updateReport } = useUpdateReport();
   const reportBuilderEnabled = useReportBuilderEnabled();
 
   if (!reportBuilderEnabled) return null;
 
-  return (
-    <Box display="flex" flexDirection="column" gap="12px">
-      <Text variant="boSection">{formatMessage(messages.report)}</Text>
+  if (!reportId) {
+    return (
+      <>
+        <PanelField
+          label={formatMessage(messages.report)}
+          action={
+            <Button
+              id="e2e-create-report-button"
+              variant="primary"
+              icon="plus-16"
+              onPress={() => setCreateOpened(true)}
+            >
+              {formatMessage(phaseMessages.addReport)}
+            </Button>
+          }
+        />
+        <CreateReportModal
+          projectId={projectId}
+          phaseId={phase.id}
+          open={createOpened}
+          onClose={() => setCreateOpened(false)}
+        />
+      </>
+    );
+  }
 
-      {reportId ? (
-        <>
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="space-between"
+  const canEdit =
+    !!report?.data.attributes.action_descriptors.editing_report.enabled;
+
+  return (
+    <PanelField
+      label={formatMessage(messages.report)}
+      action={
+        <div className={styles.actions}>
+          <Button
+            variant="secondary"
+            onPress={() =>
+              window.open(
+                `/admin/reporting/report-builder/${reportId}/print`,
+                '_blank',
+                'noreferrer'
+              )
+            }
           >
-            {report && (
-              <Toggle
-                checked={report.data.attributes.visible}
-                onChange={() =>
-                  updateReport({
-                    id: report.data.id,
-                    visible: !report.data.attributes.visible,
-                  })
-                }
-                label={formatMessage(messages.visible)}
-              />
-            )}
-            <Buttons reportId={reportId} showDuplicate={false} />
-          </Box>
-          {report && (
-            <Warning>
-              <Text variant="boHelper">
-                {formatMessage(visibilityWarning(report, phase))}
-              </Text>
-            </Warning>
-          )}
-        </>
-      ) : (
-        <EmptyState projectId={projectId} phaseId={phase.id} />
-      )}
-    </Box>
+            {formatMessage(topBarMessages.download)}
+          </Button>
+          <Button
+            variant="secondary"
+            isDisabled={!canEdit}
+            disabledReason={
+              report && !canEdit
+                ? formatMessage(reportRowMessages.cannotEditReport)
+                : undefined
+            }
+            onPress={() =>
+              clHistory.push(
+                `/admin/reporting/report-builder/${reportId}/editor`
+              )
+            }
+          >
+            {formatMessage(phaseMessages.editReport)}
+          </Button>
+        </div>
+      }
+    />
   );
 };
 

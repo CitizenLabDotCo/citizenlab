@@ -22,12 +22,12 @@ module CustomIdMethods::OostendeRrn
       '00c4faa6-4b0f-11ed-b878-0242ac120002'
     end
 
-    def config_parameters
-      %i[api_key environment]
-    end
-
     def config_parameters_schema
       {
+        api_key: {
+          private: true,
+          type: 'string'
+        },
         environment: {
           type: 'string',
           enum: %w[dv qa production],

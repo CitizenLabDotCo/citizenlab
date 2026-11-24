@@ -9,7 +9,13 @@ import {
   Text,
   Badge,
 } from '@citizenlab/cl2-component-library';
+import { useRouter } from '@tanstack/react-router';
 import { stringify } from 'qs';
+
+import DsBadge from 'design-system/Badge';
+import DsButton from 'design-system/Button';
+import Menu, { MenuItem, MenuTrigger } from 'design-system/Menu';
+import DsSpinner from 'design-system/Spinner';
 
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
 import useAnalyses from 'api/analyses/useAnalyses';
@@ -20,9 +26,9 @@ import useUpdatePhase from 'api/phases/useUpdatePhase';
 import useProjectById from 'api/projects/useProjectById';
 import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
 import useDeleteSurveyResults from 'api/survey_results/useDeleteSurveyResults';
-import { downloadSurveyResults } from 'api/survey_results/utils';
 
 import useLocale from 'hooks/useLocale';
+import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
 import projectFilesMessages from 'containers/Admin/projects/project/files/components/messages';
 import useInputResponseExport from 'containers/Admin/projects/project/inputResponseExport/useInputResponseExport';
@@ -41,14 +47,18 @@ import wordMessages from '../../word/messages';
 import { useWordExportContext } from '../../word/WordExportContext';
 
 import ExportDropdownItem from './components/ExportDropdownItem';
+import styles from './SurveyActions.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   phase: IPhaseData;
 }
 
 const SurveyActions = ({ phase }: Props) => {
-  const locale = useLocale();
+  const redesigned = useProjectBackofficeRedesign();
   const { formatMessage } = useIntl();
+  const locale = useLocale();
+  const router = useRouter();
   const projectId = phase.relationships.project.data.id;
   const phaseId = phase.id;
   const {
@@ -91,7 +101,6 @@ const SurveyActions = ({ phase }: Props) => {
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isDropdownOpened, setDropdownOpened] = useState(false);
-  const [isDownloadingXlsx, setIsDownloadingXlsx] = useState(false);
 
   if (!project || !submissionCount) {
     return null;
@@ -137,18 +146,6 @@ const SurveyActions = ({ phase }: Props) => {
         },
       }
     );
-  };
-
-  const handleDownloadXlsx = async () => {
-    try {
-      setIsDownloadingXlsx(true);
-      setDropdownOpened(false);
-      await downloadSurveyResults(locale, phase);
-    } catch (error) {
-      // eslint-disable-next-line no-empty
-    } finally {
-      setIsDownloadingXlsx(false);
-    }
   };
 
   const openAnalysis = (analysisId: string) => {
@@ -234,8 +231,7 @@ const SurveyActions = ({ phase }: Props) => {
     }
   };
 
-  const isAnyDownloading =
-    isDownloadingXlsx || isDownloadingPdf || isDownloadingWord;
+  const isAnyDownloading = isDownloadingPdf || isDownloadingWord;
   const exportStatusText =
     (isDownloadingPdf && getPdfStatusText()) ||
     (isDownloadingWord && getWordStatusText()) ||
@@ -243,6 +239,134 @@ const SurveyActions = ({ phase }: Props) => {
   const showCaptureWarning =
     !isAnyDownloading &&
     (pdfSkippedSections.length > 0 || captureWarnings.length > 0);
+
+  const downloadInsightsPdf = async () => {
+    await captureAllMapScreenshots();
+    downloadPdf();
+  };
+
+  const downloadInsightsWord = async () => {
+    await captureAllMapScreenshots();
+    downloadWord();
+  };
+
+  const modals = (
+    <>
+      <DeleteModal
+        showDeleteModal={showDeleteModal}
+        closeDeleteModal={closeDeleteModal}
+        deleteResults={deleteResults}
+      />
+      {responseExportModal}
+    </>
+  );
+
+  if (redesigned) {
+    return (
+      <>
+        <div className={styles.panelActions} data-pdf-exclude="true">
+          {isAnyDownloading && (
+            <DsSpinner aria-label={formatMessage(messages.downloadInsights)} />
+          )}
+          <DsButton
+            variant="quiet"
+            href={
+              router.buildLocation({
+                to: '/$locale/projects/$slug/surveys/new/$phaseId',
+                params: { locale, slug: project.data.attributes.slug, phaseId },
+              }).href
+            }
+            target="_blank"
+          >
+            {formatMessage(messages.newSubmission)}
+          </DsButton>
+          <DsButton
+            icon="upload-16"
+            href={
+              router.buildLocation({
+                to: '/$locale/admin/projects/$projectId/phases/$phaseId/input-importer',
+                params: { locale, projectId, phaseId },
+              }).href
+            }
+          >
+            {formatMessage(messages.import)}
+          </DsButton>
+          <MenuTrigger>
+            <DsButton
+              icon="download-16"
+              hasMenu
+              data-cy="e2e-survey-export-button"
+            >
+              {formatMessage(messages.exportButton)}
+            </DsButton>
+            <Menu aria-label={formatMessage(messages.exportButton)}>
+              <MenuItem
+                icon="download-16"
+                onAction={openPdfExportModal}
+                data-cy="e2e-export-responses-pdf"
+              >
+                {formatMessage(messages.exportResponsesToPdf)}
+              </MenuItem>
+              <MenuItem
+                icon="download-16"
+                onAction={openXlsxExportModal}
+                data-cy="e2e-export-responses-xlsx"
+              >
+                {formatMessage(messages.exportResponsesToXlsx)}
+              </MenuItem>
+            </Menu>
+          </MenuTrigger>
+          <DsButton
+            icon="sparkles-16"
+            onPress={goToAnalysis}
+            isPending={isAddLoading || isUpdateLoading}
+          >
+            {formatMessage(messages.aiSensemaking)}
+          </DsButton>
+          <MenuTrigger>
+            <DsButton icon="download-16" hasMenu isPending={isAnyDownloading}>
+              {formatMessage(messages.downloadInsights)}
+            </DsButton>
+            <Menu aria-label={formatMessage(messages.downloadInsights)}>
+              <MenuItem icon="download-16" onAction={downloadInsightsPdf}>
+                {formatMessage(messages.downloadInsightsPdf)}
+              </MenuItem>
+              <MenuItem
+                icon="download-16"
+                onAction={downloadInsightsWord}
+                count={
+                  <DsBadge use="note">
+                    {formatMessage(projectFilesMessages.beta)}
+                  </DsBadge>
+                }
+              >
+                {formatMessage(messages.downloadWord)}
+              </MenuItem>
+            </Menu>
+          </MenuTrigger>
+          {haveSubmissionsComeIn && (
+            <DsButton
+              variant="quiet"
+              icon="trash-2-16"
+              onPress={openDeleteModal}
+              data-cy="e2e-delete-survey-results"
+            >
+              {formatMessage(messages.deleteSurveyResults)}
+            </DsButton>
+          )}
+          {exportStatusText && (
+            <p className={styles.status}>{exportStatusText}</p>
+          )}
+          {showCaptureWarning && (
+            <p className={styles.statusWarning}>
+              {formatMessage(wordMessages.exportCaptureWarning)}
+            </p>
+          )}
+        </div>
+        {modals}
+      </>
+    );
+  }
 
   return (
     <>
@@ -256,7 +380,8 @@ const SurveyActions = ({ phase }: Props) => {
         <Box display="flex" alignItems="center" gap="8px">
           {isAnyDownloading && <Spinner size="24px" />}
           <ButtonWithLink
-            linkTo={`/projects/${project.data.attributes.slug}/surveys/new?phase_id=${phaseId}`}
+            to="/projects/$slug/surveys/new/$phaseId"
+            params={{ slug: project.data.attributes.slug, phaseId }}
             buttonStyle="text"
             width="auto"
             openLinkInNewTab
@@ -313,29 +438,20 @@ const SurveyActions = ({ phase }: Props) => {
                     label={formatMessage(messages.downloadInsightsPdf)}
                     onClick={async () => {
                       setDropdownOpened(false);
-                      await captureAllMapScreenshots();
-                      downloadPdf();
+                      await downloadInsightsPdf();
                     }}
                   />
                   <ExportDropdownItem
                     label={formatMessage(messages.downloadWord)}
                     onClick={async () => {
                       setDropdownOpened(false);
-                      await captureAllMapScreenshots();
-                      downloadWord();
+                      await downloadInsightsWord();
                     }}
                     badge={
                       <Badge color={colors.coolGrey600} className="inverse">
                         {formatMessage(projectFilesMessages.beta)}
                       </Badge>
                     }
-                  />
-                  <ExportDropdownItem
-                    label={`${formatMessage(
-                      messages.downloadSurveyResults
-                    )} (.xlsx)`}
-                    onClick={handleDownloadXlsx}
-                    data-cy="e2e-download-survey-results"
                   />
                 </Box>
               }
@@ -372,12 +488,7 @@ const SurveyActions = ({ phase }: Props) => {
           </Text>
         )}
       </Box>
-      <DeleteModal
-        showDeleteModal={showDeleteModal}
-        closeDeleteModal={closeDeleteModal}
-        deleteResults={deleteResults}
-      />
-      {responseExportModal}
+      {modals}
     </>
   );
 };

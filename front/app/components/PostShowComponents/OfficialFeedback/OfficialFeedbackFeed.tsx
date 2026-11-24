@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 
 import {
   colors,
@@ -17,7 +17,12 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from './messages';
+import panelStyles from './OfficialFeedbackPanel.module.css';
 import OfficialFeedbackPost from './OfficialFeedbackPost';
+import 'design-system/tokens.css';
+
+// Back-office only (panel variant), so participants never download it.
+const Button = lazy(() => import('design-system/Button'));
 
 const Container = styled.div`
   &.hasTopMargin {
@@ -77,6 +82,7 @@ interface Props {
   editingAllowed: boolean | undefined;
   className?: string;
   a11y_pronounceLatestOfficialFeedbackPost?: boolean;
+  variant?: 'default' | 'panel';
 }
 
 const OfficialFeedbackFeed = ({
@@ -84,7 +90,9 @@ const OfficialFeedbackFeed = ({
   editingAllowed,
   className,
   a11y_pronounceLatestOfficialFeedbackPost,
+  variant = 'default',
 }: Props) => {
+  const isPanel = variant === 'panel';
   const [pageSize, setPageSize] = React.useState(3);
   const {
     data: ideaFeedbacks,
@@ -119,6 +127,45 @@ const OfficialFeedbackFeed = ({
     };
 
     const hasMore = hasNextPageIdeasFeedback;
+
+    if (isPanel) {
+      return (
+        <div
+          aria-live="polite"
+          className={`${className ?? ''} ${
+            editingAllowed ? panelStyles.feed : ''
+          }`}
+          id="official-feedback-feed"
+        >
+          {officialFeedbacksList.map((officialFeedbackPost, i) => (
+            <OfficialFeedbackPost
+              key={officialFeedbackPost.id}
+              editingAllowed={editingAllowed}
+              officialFeedbackPost={officialFeedbackPost}
+              variant="panel"
+              a11y_pronounceLatestOfficialFeedbackPost={
+                i === 0 && a11y_pronounceLatestOfficialFeedbackPost
+              }
+            />
+          ))}
+
+          {hasMore && (
+            <div className={panelStyles.loadMore}>
+              <Suspense fallback={null}>
+                <Button
+                  variant="secondary"
+                  size={28}
+                  onPress={onLoadMore}
+                  isPending={isFetchingNextPageIdeasFeedback}
+                >
+                  <FormattedMessage {...messages.showPreviousUpdates} />
+                </Button>
+              </Suspense>
+            </div>
+          )}
+        </div>
+      );
+    }
 
     return (
       <Container

@@ -24,6 +24,10 @@ module Analytics
       self.table_name = 'reporting_events'
       self.primary_key = :id
 
+      include ScopedView
+
+      def self.for_projects(project_ids) = where(project_id: project_ids)
+
       def self.table_description
         <<~DOC.squish
           One row per event: an in-person or online meeting organised within a
@@ -56,7 +60,13 @@ module Analytics
             platform, so the event has no attendance rows and attendees_count
             stays 0. Report its registrations as unknown, not as zero.
           DOC
-          'attendees_count' => 'Number of people registered on the platform. Equals the attendance rows for this event in reporting_contributions.',
+          'attendees_count' => <<~DOC.squish,
+            Number of registrations shown on the event page. For events created
+            on the platform it equals the attendance rows for this event in
+            reporting_contributions. Events imported from another platform keep
+            that platform's count but have no attendance rows for it, so the two
+            can differ: report attendees_count as the event's registrations.
+          DOC
           'maximum_attendees' => 'Registration capacity, or NULL when unlimited.',
           'created_at' => 'When the event was created by an admin (UTC), not when it takes place (see start_at).'
         }

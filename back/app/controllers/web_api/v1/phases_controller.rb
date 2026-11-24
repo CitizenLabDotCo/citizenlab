@@ -6,7 +6,7 @@ class WebApi::V1::PhasesController < ApplicationController
   before_action :set_phase, only: %i[
     show show_mini update destroy survey_results input_responses_pdf input_responses_pdf_result
     input_responses_xlsx input_response_fields sentiment_by_quarter submission_count index_xlsx
-    delete_inputs show_progress common_ground_results
+    delete_inputs show_progress common_ground_results review_setup_card
   ]
   before_action :ensure_input_export_review, only: %i[
     input_responses_pdf input_responses_pdf_result input_responses_xlsx input_response_fields
@@ -51,15 +51,63 @@ class WebApi::V1::PhasesController < ApplicationController
     render json: WebApi::V1::PhaseSerializer.new(@phase, params: phase_serializer_params).serializable_hash, status: :created
   end
 
+  def review_setup_card
+    card = params.require(:card)
+
+    @phase.with_lock do
+      @phase.reviewed_setup_cards |= [card]
+      save_or_raise!(@phase)
+    end
+
+    render json: WebApi::V1::PhaseSerializer.new(@phase, params: phase_serializer_params).serializable_hash
+  end
+
   def update
     update_params = phase_params_for_update
+    timeline_dates = update_params.delete(:timeline_phase_dates) || []
     @phase.set_manual_voters(update_params[:manual_voters_amount], current_user) if update_params[:manual_voters_amount]
     @phase.assign_attributes update_params
     authorize @phase
-    sidefx.before_update(@phase, current_user)
 
-    save_or_raise!(@phase)
-    sidefx.after_update(@phase, current_user)
+    phases = @phase.project.with_lock do
+      updated_phases = timeline_dates.map do |dates|
+        phase = @phase.project.phases.on_timeline.where.not(id: @phase.id).find(dates[:id])
+        authorize phase, :update?
+        phase.assign_attributes(dates.except(:id))
+        phase
+      end
+      if updated_phases.map(&:id).uniq.length != updated_phases.length
+        raise ApiError.new(:duplicate_phase_ids, field: :timeline_phase_dates)
+      end
+
+      updated_phases << @phase
+
+      # Validate against the final timeline, including edits to other phases.
+      # These writes roll back together if any phase fails validation.
+      if timeline_dates.any?
+        # Reject invalid ranges before staging dates, which would otherwise
+        # violate the database constraint before model validation can respond.
+        updated_phases.each do |phase|
+          phase.valid?
+          if phase.errors.of_kind?(:start_at, :blank) || phase.errors.of_kind?(:base, :duration_too_short)
+            raise_phase_validation_error(phase)
+          end
+
+          dates = phase.changes.slice('start_at', 'end_at', 'placement_type').transform_values(&:last)
+          Phase.where(id: phase.id).update_all(dates) if dates.any?
+        end
+      end
+
+      updated_phases.each do |phase|
+        sidefx.before_update(phase, current_user)
+        raise_phase_validation_error(phase) unless phase.save
+      end
+      # Permissions and project-page cleanup must roll back with the move.
+      updated_phases.each { |phase| sidefx.after_update_in_transaction(phase, current_user) } # rubocop:disable Style/CombinableLoops
+      updated_phases
+    end
+    phases.each { |phase| sidefx.after_update_notifications(phase, current_user) }
+
     render json: WebApi::V1::PhaseSerializer.new(@phase, params: phase_serializer_params).serializable_hash, status: :ok
   end
 
@@ -260,12 +308,20 @@ class WebApi::V1::PhasesController < ApplicationController
   end
 
   def phase_params_for_create
-    # placement_type can only be set on creation, not changed afterwards.
-    params.require(:phase).permit(:placement_type, *shared_phase_params)
+    params.require(:phase).permit(:placement_type, *shared_phase_params, reviewed_setup_cards: [])
   end
 
   def phase_params_for_update
-    params.require(:phase).permit(shared_phase_params)
+    params.require(:phase).permit(:placement_type, *shared_phase_params, timeline_phase_dates: %i[id start_at end_at])
+  end
+
+  def raise_phase_validation_error(phase)
+    raise ApiError.from_record(phase) if phase.id == @phase.id
+
+    raise ApiError.new(:validation_failed, payload: {
+      errors: phase.errors.details,
+      meta: { phase_id: phase.id }
+    })
   end
 
   def ensure_input_export_review

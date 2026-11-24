@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { Box, Text, Title } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import Button from 'design-system/Button';
+
 import { IPollOptionData } from 'api/poll_options/types';
 import useDeletePollOption from 'api/poll_options/useDeletePollOption';
 import usePollOptions from 'api/poll_options/usePollOptions';
@@ -17,9 +19,11 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../messages';
 import QuestionDetailsFormRow from '../PollQuestions/QuestionDetailsFormRow';
+import { useIsPanelPoll } from '../PollVariantContext';
 
 import OptionFormRow from './OptionFormRow';
 import OptionRow from './OptionRow';
+import styles from './PollAnswerOptions.module.css';
 
 const Container = styled.div``;
 
@@ -33,6 +37,8 @@ interface Props {
 }
 
 const OptionForm = ({ question, collapse }: Props) => {
+  const isPanel = useIsPanelPoll();
+
   const { data: pollOptions } = usePollOptions(question.id);
   const { mutate: deletePollOption } = useDeletePollOption();
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -53,76 +59,106 @@ const OptionForm = ({ question, collapse }: Props) => {
     deletePollOption({ optionId, questionId: question.id });
   };
 
+  const header = (
+    <FormattedMessage
+      {...messages.optionsFormHeader}
+      values={{
+        questionTitle: isPanel ? (
+          <span className={styles.headerQuestion}>
+            <T value={question.attributes.title_multiloc} />
+          </span>
+        ) : (
+          <Text display="inline" fontWeight="normal" as="span">
+            <T value={question.attributes.title_multiloc} />
+          </Text>
+        ),
+      }}
+    />
+  );
+
+  const list = (
+    <List
+      key={
+        isNilOrError(pollOptions)
+          ? 0
+          : pollOptions.data.length + (editingId === 'new' ? 1 : 0)
+      }
+    >
+      {!isNilOrError(pollOptions) && (
+        <>
+          <QuestionDetailsFormRow
+            question={question}
+            onCancelOptionEditing={collapse}
+          />
+          {pollOptions.data.map((pollOption: IPollOptionData) =>
+            editingId === pollOption.id ? (
+              <OptionFormRow
+                questionId={question.id}
+                key={pollOption.id}
+                mode="edit"
+                closeRow={closeRow}
+                optionId={pollOption.id}
+                titleMultiloc={pollOption.attributes.title_multiloc}
+              />
+            ) : (
+              <OptionRow
+                key={pollOption.id}
+                pollOptionId={pollOption.id}
+                pollOptionTitle={pollOption.attributes.title_multiloc}
+                deleteOption={deleteOption(pollOption.id)}
+                editOption={editOption(pollOption.id)}
+              />
+            )
+          )}
+        </>
+      )}
+      {editingId === 'new' ? (
+        <OptionFormRow
+          key="new"
+          mode="new"
+          questionId={question.id}
+          closeRow={closeRow}
+        />
+      ) : isPanel ? (
+        <div className={styles.addOption}>
+          <Button
+            variant="primary"
+            icon="plus-16"
+            onPress={addOption}
+            autoFocus
+          >
+            <FormattedMessage {...messages.addAnswerOption} />
+          </Button>
+        </div>
+      ) : (
+        <StyledButton
+          className="e2e-add-option"
+          buttonStyle="admin-dark"
+          icon="plus-circle"
+          onClick={addOption}
+          autoFocus
+        >
+          <FormattedMessage {...messages.addAnswerOption} />
+        </StyledButton>
+      )}
+    </List>
+  );
+
+  if (isPanel) {
+    return (
+      <div key={question.id} id={question.id} className="e2e-options-form">
+        <h3 className={styles.header}>{header}</h3>
+        {list}
+      </div>
+    );
+  }
+
   return (
     <Container key={question.id} id={question.id} className="e2e-options-form">
       <Title variant="h4" color="primary">
-        <FormattedMessage
-          {...messages.optionsFormHeader}
-          values={{
-            questionTitle: (
-              <Text display="inline" fontWeight="normal" as="span">
-                <T value={question.attributes.title_multiloc} />
-              </Text>
-            ),
-          }}
-        />
+        {header}
       </Title>
-      <Box>
-        <List
-          key={
-            isNilOrError(pollOptions)
-              ? 0
-              : pollOptions.data.length + (editingId === 'new' ? 1 : 0)
-          }
-        >
-          {!isNilOrError(pollOptions) && (
-            <>
-              <QuestionDetailsFormRow
-                question={question}
-                onCancelOptionEditing={collapse}
-              />
-              {pollOptions.data.map((pollOption: IPollOptionData) =>
-                editingId === pollOption.id ? (
-                  <OptionFormRow
-                    questionId={question.id}
-                    key={pollOption.id}
-                    mode="edit"
-                    closeRow={closeRow}
-                    optionId={pollOption.id}
-                    titleMultiloc={pollOption.attributes.title_multiloc}
-                  />
-                ) : (
-                  <OptionRow
-                    key={pollOption.id}
-                    pollOptionId={pollOption.id}
-                    pollOptionTitle={pollOption.attributes.title_multiloc}
-                    deleteOption={deleteOption(pollOption.id)}
-                    editOption={editOption(pollOption.id)}
-                  />
-                )
-              )}
-            </>
-          )}
-          {editingId === 'new' ? (
-            <OptionFormRow
-              key="new"
-              mode="new"
-              questionId={question.id}
-              closeRow={closeRow}
-            />
-          ) : (
-            <StyledButton
-              className="e2e-add-option"
-              buttonStyle="admin-dark"
-              icon="plus-circle"
-              onClick={addOption}
-              autoFocus
-            >
-              <FormattedMessage {...messages.addAnswerOption} />
-            </StyledButton>
-          )}
-        </List>
-      </Box>
+      <Box>{list}</Box>
     </Container>
   );
 };

@@ -16,6 +16,11 @@ resource 'Idea Custom Fields' do
   shared_examples 'draft project preview tests' do |options = {}|
     phase_var = options[:phase_var] || 'survey_phase'
     custom_field_var = options[:custom_field_var] || 'custom_field1'
+    # A Cookie header replaces the auth cookie set by header_token_for, so it is sent again.
+    user_var = options[:user_var]
+    preview_cookie = lambda do |spec, preview_token|
+      [(spec.auth_cookie(spec.instance_eval(user_var)) if user_var), "preview_token=#{preview_token}"].compact.join('; ')
+    end
 
     before do
       phase = instance_eval(phase_var)
@@ -32,7 +37,7 @@ resource 'Idea Custom Fields' do
       context 'and a valid preview_token is provided in cookies' do
         before do
           phase = instance_eval(phase_var)
-          header('Cookie', "preview_token=#{phase.project.preview_token}")
+          header('Cookie', preview_cookie.call(self, phase.project.preview_token))
         end
 
         example 'List all public custom fields for a phase' do
@@ -46,7 +51,7 @@ resource 'Idea Custom Fields' do
       end
 
       context 'and an invalid preview_token is provided in cookies' do
-        before { header('Cookie', 'preview_token=invalid') }
+        before { header('Cookie', preview_cookie.call(self, 'invalid')) }
 
         include_examples 'Unauthorized (401)'
       end
@@ -59,7 +64,7 @@ resource 'Idea Custom Fields' do
     context 'and the project_preview_link feature flag is disabled and a valid preview_token is provided in cookies' do
       before do
         phase = instance_eval(phase_var)
-        header('Cookie', "preview_token=#{phase.project.preview_token}")
+        header('Cookie', preview_cookie.call(self, phase.project.preview_token))
       end
 
       include_examples 'Unauthorized (401)'
@@ -127,6 +132,16 @@ resource 'Idea Custom Fields' do
           custom_field1.key
         ]
       end
+
+      example 'List the custom fields of the project form for an ideation phase', document: false do
+        project = create(:single_phase_ideation_project)
+        project_form = create(:custom_form, participation_context: project)
+        ideation_field = create(:custom_field_text, resource: project_form, key: 'ideation_field')
+
+        do_request(phase_id: project.phases.first.id)
+        assert_status 200
+        expect(response_data.map { |d| d.dig(:attributes, :key) }).to eq [ideation_field.key]
+      end
     end
 
     context 'when regular user' do
@@ -137,7 +152,8 @@ resource 'Idea Custom Fields' do
       context 'when the project is in draft' do
         include_examples 'draft project preview tests', {
           phase_var: 'survey_phase',
-          custom_field_var: 'custom_field1'
+          custom_field_var: 'custom_field1',
+          user_var: 'user'
         }
       end
     end

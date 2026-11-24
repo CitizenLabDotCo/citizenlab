@@ -37,7 +37,7 @@ const IdeaFormBuilder = ({
 
   const { data: formCustomFields } = useFormCustomFields({
     projectId,
-    phaseId: config.isFormPhaseSpecific ? phaseId : undefined,
+    phaseId,
   });
 
   const goBackUrl = useFormBuilderGoBackUrl(projectId, phaseId, 'form');
@@ -48,9 +48,8 @@ const IdeaFormBuilder = ({
       formCustomFields={formCustomFields}
       goBackUrl={goBackUrl}
       viewFormLink={{
-        to: '/projects/$slug/ideas/new',
-        params: { slug: projectSlug },
-        search: { phase_id: phaseId },
+        to: '/projects/$slug/ideas/new/$phaseId',
+        params: { slug: projectSlug, phaseId },
       }}
     />
   );

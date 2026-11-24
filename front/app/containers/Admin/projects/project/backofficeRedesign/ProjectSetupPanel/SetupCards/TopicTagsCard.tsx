@@ -1,55 +1,77 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import { IProjectData } from 'api/projects/types';
-import useUpdateProject from 'api/projects/useUpdateProject';
+import { ListBoxOption } from 'design-system/ListBox';
+import { DialogTrigger } from 'design-system/Popover';
+import TagPicker from 'design-system/TagPicker';
+import { Key } from 'design-system/types';
 
-import TopicInputs from 'containers/Admin/projects/_shared/components/ProjectSetupForm/TopicInputs';
-import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { coreSettings } from 'api/app_configuration/utils';
+import useGlobalTopics from 'api/global_topics/useGlobalTopics';
+
+import useLocalize from 'hooks/useLocalize';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../../messages';
+import SetupCard from '../SetupCard';
+import { useSetupDraft } from '../SetupDraftContext';
+
+import messages from './messages';
 
 interface Props {
-  project: IProjectData;
+  ready?: boolean;
 }
 
-const TopicTagsCard = ({ project }: Props) => {
+const TopicTagsCard = ({ ready }: Props) => {
   const { formatMessage } = useIntl();
-  const { mutate: updateProject, isPending } = useUpdateProject();
-  // Each click saves the whole list, so quick clicks must build on the
-  // previous pick rather than on project data that hasn't refetched yet.
-  const [pickedTopicIds, setPickedTopicIds] = useState<string[]>();
+  const localize = useLocalize();
+  const { data: topics } = useGlobalTopics({});
+  const { data: appConfiguration } = useAppConfiguration();
+  const { values, changeProject } = useSetupDraft();
 
-  const savedTopicIds = project.relationships.global_topics.data.map(
-    (topic) => topic.id
-  );
+  const topicIds = values.global_topic_ids;
 
-  // Once saving is done and the saved list matches the pick, drop the pick, so
-  // later changes made elsewhere show up here.
-  if (
-    !isPending &&
-    pickedTopicIds &&
-    pickedTopicIds.length === savedTopicIds.length &&
-    pickedTopicIds.every((id) => savedTopicIds.includes(id))
-  ) {
-    setPickedTopicIds(undefined);
-  }
+  const topicsTerm =
+    appConfiguration &&
+    localize(coreSettings(appConfiguration.data).topics_term);
+  const title = formatMessage(messages.topicTagsTitle);
 
-  const topicIds = pickedTopicIds ?? savedTopicIds;
+  const options = (topics?.data ?? []).map((topic) => ({
+    id: topic.id,
+    label: localize(topic.attributes.title_multiloc),
+  }));
 
-  const handleChange = (global_topic_ids: string[]) => {
-    setPickedTopicIds(global_topic_ids);
-    updateProject(
-      { projectId: project.id, global_topic_ids },
-      { onError: () => setPickedTopicIds(undefined) }
-    );
+  const changeTopics = (keys: Set<Key>) => {
+    changeProject('global_topic_ids', Array.from(keys, String));
   };
 
   return (
-    <PanelGroup label={formatMessage(messages.topicTags)}>
-      <TopicInputs selectedTopicIds={topicIds} onChange={handleChange} />
-    </PanelGroup>
+    <DialogTrigger>
+      <SetupCard
+        id="e2e-setup-card-topics"
+        tooltip={formatMessage(messages.topicTagsDescription)}
+        title={topicsTerm ? `${title} (${topicsTerm})` : title}
+        ready={ready}
+        summary={
+          topicIds.length > 0
+            ? formatMessage(messages.topicTagsCount, {
+                count: topicIds.length,
+              })
+            : undefined
+        }
+        behaviour={{ kind: 'trigger' }}
+      />
+      <TagPicker
+        aria-label={title}
+        items={options}
+        selectedKeys={new Set(topicIds)}
+        onSelectionChange={changeTopics}
+      >
+        {(option) => (
+          <ListBoxOption id={option.id}>{option.label}</ListBoxOption>
+        )}
+      </TagPicker>
+    </DialogTrigger>
   );
 };
 

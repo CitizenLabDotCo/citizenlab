@@ -1,32 +1,62 @@
 import React, { useRef, useState } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { useForm } from 'react-hook-form';
 import { CLErrors } from 'typings';
 
-import { IUpdatedPhaseProperties, ParticipationMethod } from 'api/phases/types';
+import Button from 'design-system/Button';
+
+import {
+  IUpdatedPhaseProperties,
+  ParticipationMethod,
+  SetupReviewCard,
+} from 'api/phases/types';
 import useAddPhase from 'api/phases/useAddPhase';
 import usePhases from 'api/phases/usePhases';
+import useReviewSetupCard from 'api/phases/useReviewSetupCard';
+import useUpdatePhase from 'api/phases/useUpdatePhase';
 import { IProjectData } from 'api/projects/types';
 
+import { DraftSetupReviewContext } from 'containers/Admin/projects/_shared/components/SetupReview';
 import usePhaseFileAttachments, {
   fileAttachmentErrors,
 } from 'containers/Admin/projects/_shared/usePhaseFileAttachments';
 import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/typings';
 import validate from 'containers/Admin/projects/project/phaseSetup/validate';
 
+import {
+  SaveReason,
+  usePageSave,
+  useRegisterPageSaver,
+} from 'components/admin/PageSaveContext';
+
 import { useIntl } from 'utils/cl-intl';
-import clHistory from 'utils/cl-router/history';
+import Navigate from 'utils/cl-router/Navigate';
 
 import ProjectWorkspace from '..';
-import { SaveReason, useRegisterPageSaver } from '../_shared/PageSaveContext';
+import markSaved from '../_shared/markSaved';
 import BuildFields from '../Phase/BuildPanel/BuildFields';
-import DraftMethodSettings from '../Phase/DraftMethodSettings';
+import methodSectionMessages from '../Phase/BuildPanel/BuildFields/MethodSection/messages';
+import PlacementCard from '../Phase/BuildPanel/PlacementCard';
+import SurveySetupModal, {
+  SurveySetupAction,
+} from '../Phase/BuildPanel/SurveySetupModal';
+import DraftMethodSettings, {
+  SetupSettingsAction,
+} from '../Phase/DraftMethodSettings';
 import PhasePreview from '../Phase/PhasePreview';
+
+import messages from './messages';
+import SavedInputForm from './SavedInputForm';
+import 'design-system/tokens.css';
+
+interface DraftValues {
+  phase: IUpdatedPhaseProperties;
+  reviewedCards: SetupReviewCard[];
+}
 
 interface Props {
   project: IProjectData;
   participationMethod: ParticipationMethod;
-  label: string;
   standalone: boolean;
   initialFormData: IUpdatedPhaseProperties;
   defaultsForMethod: (
@@ -37,8 +67,7 @@ interface Props {
 const NewPhaseWorkspace = ({
   project,
   participationMethod: initialParticipationMethod,
-  label,
-  standalone,
+  standalone: initialStandalone,
   initialFormData,
   defaultsForMethod,
 }: Props) => {
@@ -46,85 +75,235 @@ const NewPhaseWorkspace = ({
   const projectId = project.id;
   const { data: phases } = usePhases(projectId);
   const { mutateAsync: addPhase } = useAddPhase();
+  const { mutateAsync: updatePhase } = useUpdatePhase();
+  const { mutateAsync: reviewSetupCard } = useReviewSetupCard();
+  const pageSave = usePageSave();
 
   const [participationMethod, setParticipationMethod] = useState(
     initialParticipationMethod
   );
-  const [formData, setFormData] = useState(initialFormData);
-  const [dirty, setDirty] = useState(false);
+  const [standalone, setStandalone] = useState(initialStandalone);
+
+  const form = useForm<DraftValues>({
+    defaultValues: { phase: initialFormData, reviewedCards: [] },
+  });
+  const {
+    watch,
+    setValue,
+    getValues,
+    getFieldState,
+    formState: { isDirty },
+  } = form;
+  const formData = watch('phase');
+  const reviewedCards = watch('reviewedCards');
+  const [filesChanged, setFilesChanged] = useState(false);
+
   const [errors, setErrors] = useState<CLErrors | null>(null);
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>(
     {}
   );
-  const createdPhaseId = useRef<string>();
+  const savedPhase = useRef<{
+    id: string;
+    reviewedCards: SetupReviewCard[];
+  }>();
+  const [surveySetupOpened, setSurveySetupOpened] = useState(false);
+  const [destination, setDestination] = useState<{
+    phaseId: string;
+    action?: SurveySetupAction | 'input' | SetupSettingsAction;
+  }>();
 
   const files = usePhaseFileAttachments({
     projectId,
     phaseId: undefined,
     savedAttachments: undefined,
-    onStage: () => setDirty(true),
+    onStage: () => setFilesChanged(true),
   });
 
   const updateFormData = (newData: Partial<IUpdatedPhaseProperties>) => {
-    setDirty(true);
-    setFormData((formData) => ({ ...formData, ...newData }));
+    setErrors((errors) =>
+      errors
+        ? Object.fromEntries(
+            Object.entries(errors).filter(([field]) => !(field in newData))
+          )
+        : null
+    );
+    setValue(
+      'phase',
+      { ...getValues('phase'), ...newData },
+      { shouldDirty: true }
+    );
   };
 
-  const createPhase = async () => {
-    if (createdPhaseId.current) return createdPhaseId.current;
+  const savePhase = async ({
+    phase: sentPhase,
+    reviewedCards,
+  }: DraftValues) => {
+    const previous = savedPhase.current;
+    if (!previous) {
+      const { data: phase } = await addPhase({
+        projectId,
+        ...sentPhase,
+        reviewed_setup_cards: reviewedCards,
+      });
+      savedPhase.current = { id: phase.id, reviewedCards };
+      return phase.id;
+    }
 
-    const { data: phase } = await addPhase({ projectId, ...formData });
-    createdPhaseId.current = phase.id;
-    return phase.id;
+    // An attachment failure can leave the phase saved while the draft stays open.
+    if (getFieldState('phase').isDirty) {
+      await updatePhase({ ...sentPhase, phaseId: previous.id });
+    }
+    // Updating a phase doesn't take reviewed cards.
+    for (const card of reviewedCards) {
+      if (!previous.reviewedCards.includes(card)) {
+        await reviewSetupCard({ phaseId: previous.id, card });
+      }
+    }
+    savedPhase.current = { id: previous.id, reviewedCards };
+    return previous.id;
   };
 
   const save = async (reason: SaveReason) => {
-    if (!createdPhaseId.current) {
-      const { isValidated, errors } = validate(
-        formData,
-        phases,
-        formatMessage,
-        undefined,
-        standalone
-      );
+    setErrors(null);
+    // A copy, so edits made while saving don't change what was sent.
+    const sent = { ...getValues() };
 
-      setValidationErrors(errors);
-      if (!isValidated) throw new Error('Invalid phase');
+    const { isValidated, errors } = validate(
+      sent.phase,
+      phases,
+      formatMessage,
+      savedPhase.current?.id,
+      standalone
+    );
+
+    setValidationErrors(errors);
+    if (!isValidated) {
+      throw new Error('Invalid phase');
     }
 
     try {
-      const phaseId = await createPhase();
+      const phaseId = await savePhase(sent);
+      markSaved(form, sent);
       await files.save(phaseId);
-      setDirty(false);
+      setFilesChanged(false);
 
-      if (reason === 'button') {
-        clHistory.push(`/admin/projects/${projectId}/phases/${phaseId}/setup`);
-      }
+      if (reason === 'button') setDestination({ phaseId });
     } catch (error) {
       setErrors(fileAttachmentErrors(error));
       throw error;
     }
   };
 
-  useRegisterPageSaver('draft', { dirty, save });
+  useRegisterPageSaver('draft', { dirty: isDirty || filesChanged, save });
+
+  const saveAndOpenAction = async (
+    action: SurveySetupAction | 'input' | SetupSettingsAction
+  ) => {
+    if (!pageSave || pageSave.saving || files.isUploadingFile) return;
+
+    const failed = await pageSave.saveAll('leave', 'draft');
+    setSurveySetupOpened(false);
+    if (failed.length > 0 || !savedPhase.current) return;
+
+    pageSave.leave();
+    setDestination({ phaseId: savedPhase.current.id, action });
+  };
+
+  // The header button also saves the other panels. The saved phase only opens
+  // once none of them has changes left, so a failed one keeps its edits.
+  const settled = !pageSave?.dirty && !pageSave?.saving;
+
+  if (destination && (destination.action || settled)) {
+    const params = { projectId, phaseId: destination.phaseId };
+
+    if (destination.action === 'input') {
+      return (
+        <SavedInputForm projectId={projectId} phaseId={destination.phaseId} />
+      );
+    }
+
+    if (destination.action === 'edit') {
+      return (
+        <Navigate
+          to="/admin/projects/$projectId/phases/$phaseId/survey-form/edit"
+          params={params}
+          replace
+        />
+      );
+    }
+
+    if (
+      destination.action === 'access' ||
+      destination.action === 'notifications' ||
+      destination.action === 'moderation'
+    ) {
+      return (
+        <Navigate
+          to="/admin/projects/$projectId/phases/$phaseId/setup"
+          params={params}
+          search={{ setup_action: destination.action }}
+          replace
+        />
+      );
+    }
+
+    return (
+      <Navigate
+        to="/admin/projects/$projectId/phases/$phaseId/setup"
+        params={params}
+        search={{ survey_action: destination.action }}
+        replace={!!destination.action}
+      />
+    );
+  }
 
   return (
-    <ProjectWorkspace
-      project={project}
-      draft={{
-        label,
-        methodSettings: (
-          <DraftMethodSettings
-            formData={formData}
-            validationErrors={validationErrors}
-            apiErrors={errors}
-            onChange={updateFormData}
-            setValidationErrors={setValidationErrors}
-          />
-        ),
+    <DraftSetupReviewContext.Provider
+      value={{
+        reviewed: reviewedCards,
+        onReview: (card) =>
+          setValue(
+            'reviewedCards',
+            [...new Set([...getValues('reviewedCards'), card])],
+            { shouldDirty: true }
+          ),
       }}
-      sidePanel={
-        <Box p="20px">
+    >
+      <ProjectWorkspace
+        project={project}
+        draft={{
+          inputTerm: formData.input_term,
+          label: formatMessage(
+            standalone ? messages.newSurveyCrumb : messages.newPhaseCrumb
+          ),
+          methodSettings: (
+            <DraftMethodSettings
+              surveyPlacement={
+                // Only the platform's own survey can run outside the timeline.
+                participationMethod === 'native_survey' && (
+                  <PlacementCard
+                    name="new-survey-placement"
+                    value={standalone ? 'standalone' : 'on_timeline'}
+                    onChange={(placement_type) => {
+                      setStandalone(placement_type === 'standalone');
+                      setValidationErrors({});
+                      updateFormData({ placement_type });
+                    }}
+                  />
+                )
+              }
+              onOpenSetting={saveAndOpenAction}
+              saving={!!pageSave?.saving}
+              uploading={files.isUploadingFile}
+              formData={formData}
+              validationErrors={validationErrors}
+              apiErrors={errors}
+              onChange={updateFormData}
+              setValidationErrors={setValidationErrors}
+            />
+          ),
+        }}
+        sidePanel={
           <BuildFields
             projectId={projectId}
             participationMethod={participationMethod}
@@ -133,6 +312,38 @@ const NewPhaseWorkspace = ({
             validationErrors={validationErrors}
             standalone={standalone}
             files={files}
+            draftQuestionsAction={
+              ['native_survey', 'ideation', 'proposals'].includes(
+                participationMethod
+              ) && (
+                <Button
+                  fullWidth
+                  variant="secondary"
+                  data-cy={
+                    participationMethod === 'native_survey'
+                      ? 'add-draft-survey-questions'
+                      : 'add-draft-input-questions'
+                  }
+                  isPending={
+                    participationMethod !== 'native_survey' &&
+                    !!pageSave?.saving
+                  }
+                  isDisabled={
+                    participationMethod !== 'native_survey' &&
+                    files.isUploadingFile
+                  }
+                  onPress={() => {
+                    if (participationMethod === 'native_survey') {
+                      setSurveySetupOpened(true);
+                    } else {
+                      saveAndOpenAction('input');
+                    }
+                  }}
+                >
+                  {formatMessage(methodSectionMessages.addQuestions)}
+                </Button>
+              )
+            }
             surveyMethodSwitch={{
               onSelect: (method) => {
                 setParticipationMethod(method);
@@ -148,11 +359,23 @@ const NewPhaseWorkspace = ({
               updateFormData(dates);
             }}
           />
-        </Box>
-      }
-    >
-      <PhasePreview projectId={projectId} />
-    </ProjectWorkspace>
+        }
+      >
+        <PhasePreview projectId={projectId} draft={formData} />
+        {participationMethod === 'native_survey' && (
+          <SurveySetupModal
+            projectId={projectId}
+            opened={surveySetupOpened}
+            onClose={() => setSurveySetupOpened(false)}
+            draft={{
+              onChoose: saveAndOpenAction,
+              saving: !!pageSave?.saving,
+              uploading: files.isUploadingFile,
+            }}
+          />
+        )}
+      </ProjectWorkspace>
+    </DraftSetupReviewContext.Provider>
   );
 };
 

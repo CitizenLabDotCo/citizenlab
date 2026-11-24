@@ -1,4 +1,5 @@
 import { PublicationStatus } from 'api/projects/types';
+import { ProjectSortableParam } from 'api/projects_mini_admin/types';
 
 import { MessageDescriptor } from 'utils/cl-intl';
 
@@ -12,3 +13,5 @@ export const PUBLICATION_STATUS_LABELS: Record<
   published: messages.published,
   archived: messages.archived,
 };
+
+export const DEFAULT_SORT: ProjectSortableParam = 'recently_viewed';

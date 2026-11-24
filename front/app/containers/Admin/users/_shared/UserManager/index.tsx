@@ -56,7 +56,9 @@ const UserManager = ({
   folderModeratorsOnly,
   spaceModeratorsOnly,
 }: Props) => {
-  const [sort, setSort] = useState<IQueryParameters['sort']>('-created_at');
+  const [sort, setSort] = useState<IQueryParameters['sort']>(
+    '-registration_completed_at'
+  );
   const [pageNumber, setPageNumber] =
     useState<IQueryParameters['pageNumber']>(1);
   const [selectedUsers, setSelectedUsers] = useState<SelectedUsersType>('none');

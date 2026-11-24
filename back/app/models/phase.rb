@@ -93,6 +93,7 @@ class Phase < ApplicationRecord
   has_one :custom_form, as: :participation_context, dependent: :destroy # native_survey only
 
   has_many :baskets, dependent: :destroy
+  has_many :ai_assistant_conversations, class_name: 'AIAssistant::Conversation', as: :subject, dependent: :destroy
   has_many :permissions, as: :permission_scope, dependent: :destroy
   has_many :ideas_phases, dependent: :destroy
   has_many :ideas, through: :ideas_phases
@@ -111,6 +112,10 @@ class Phase < ApplicationRecord
   before_save :close_previous_open_phase # see also Phase#validate_previous_phase_can_be_closed
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
+
+  SETUP_REVIEW_CARDS = %w[input_term demographics form survey_method survey_placement voting_method views sorting].freeze
+
+  validate :validate_reviewed_setup_cards
 
   validates :project, presence: true
   validates :title_multiloc, presence: true, multiloc: { presence: true }
@@ -378,6 +383,12 @@ class Phase < ApplicationRecord
   end
 
   private
+
+  def validate_reviewed_setup_cards
+    unless reviewed_setup_cards.is_a?(Array) && (reviewed_setup_cards - SETUP_REVIEW_CARDS).empty?
+      errors.add(:reviewed_setup_cards, :invalid)
+    end
+  end
 
   def sanitize_description_multiloc
     self.description_multiloc = sanitize_html_multiloc(description_multiloc)

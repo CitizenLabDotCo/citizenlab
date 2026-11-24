@@ -1,0 +1,11 @@
+.sections {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-32);
+}
+
+/* A sibling selector, so a section that renders nothing leaves no stray divider. */
+.sections > * + * {
+  padding-top: var(--gv-space-24);
+  border-top: var(--gv-border-width-1) solid var(--gv-border-default);
+}

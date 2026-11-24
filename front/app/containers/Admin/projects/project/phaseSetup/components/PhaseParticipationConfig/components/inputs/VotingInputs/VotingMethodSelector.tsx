@@ -7,7 +7,11 @@ import {
   Text,
 } from '@citizenlab/cl2-component-library';
 
+import RadioGroup from 'design-system/RadioGroup';
+
 import { VotingMethod } from 'api/phases/types';
+
+import ChoiceRadio from 'containers/Admin/projects/_shared/components/ChoiceRadio';
 
 import { SubSectionTitle } from 'components/admin/Section';
 
@@ -17,17 +21,30 @@ import BudgetingIcon from './CardIcons/BudgetingIcon';
 import MultipleVotingIcon from './CardIcons/MultipleVotingIcon';
 import SingleVotingIcon from './CardIcons/SingleVotingIcon';
 import messages from './messages';
+import 'design-system/tokens.css';
 
 const VOTING_METHODS = [
-  { method: 'single_voting', title: messages.singleVotingMethodTitle },
-  { method: 'multiple_voting', title: messages.multipleVotingMethodTitle },
-  { method: 'budgeting', title: messages.budgetingVotingMethodTitle },
+  {
+    method: 'single_voting',
+    title: messages.singleVotingMethodTitle,
+    subtitle: messages.singleVotingMethodSubtitle2,
+  },
+  {
+    method: 'multiple_voting',
+    title: messages.multipleVotingMethodTitle,
+    subtitle: messages.multipleVotingMethodSubtitle2,
+  },
+  {
+    method: 'budgeting',
+    title: messages.budgetingVotingMethodTitle,
+    subtitle: messages.budgetingVotingMethodSubtitle2,
+  },
 ] as const;
 
 type VotingMethodSelectorProps = {
   voting_method?: VotingMethod | null;
   handleVotingMethodOnChange: (voting_method: VotingMethod) => void;
-  /** 'panel' shows the methods as a narrow list of titles. */
+  /** 'panel' shows the methods as a narrow list of radios. */
   layout?: 'page' | 'panel';
 };
 
@@ -40,26 +57,24 @@ const VotingMethodSelector = ({
 
   if (layout === 'panel') {
     return (
-      <Box mb="24px">
-        <SubSectionTitle>
-          {formatMessage(messages.votingMethodSelectorTitle)}
-        </SubSectionTitle>
-        <Box display="flex" flexDirection="column" gap="12px">
-          {VOTING_METHODS.map(({ method, title }) => (
-            <CardButton
-              key={method}
-              width="100%"
-              minHeight="auto"
-              selected={voting_method === method}
-              onClick={(e) => {
-                e.preventDefault();
-                handleVotingMethodOnChange(method);
-              }}
-              title={formatMessage(title)}
-            />
-          ))}
-        </Box>
-      </Box>
+      <RadioGroup
+        aria-label={formatMessage(messages.votingMethodSelectorTitle)}
+        name="voting_method"
+        value={voting_method ?? null}
+        onChange={(value) => {
+          const option = VOTING_METHODS.find(({ method }) => method === value);
+          if (option) handleVotingMethodOnChange(option.method);
+        }}
+      >
+        {VOTING_METHODS.map(({ method, title, subtitle }) => (
+          <ChoiceRadio
+            key={method}
+            value={method}
+            title={formatMessage(title)}
+            description={formatMessage(subtitle)}
+          />
+        ))}
+      </RadioGroup>
     );
   }
 

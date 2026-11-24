@@ -34,6 +34,16 @@ describe RandomCustomFieldValuesService do
     expect(value).to be_in([area.id, 'outside'])
   end
 
+  it 'generates several pins for a multipoint field' do
+    multipoint = create(:custom_field_multipoint, required: true)
+
+    value = service.generate([multipoint])[multipoint.key]
+
+    expect(value['type']).to eq 'MultiPoint'
+    expect(value['coordinates'].size).to be >= 2
+    expect(value['coordinates']).to all(have_attributes(size: 2))
+  end
+
   it 'skips pages and unsupported types' do
     page = create(:custom_field_page)
     file_upload = create(:custom_field_file_upload, required: true)

@@ -29,10 +29,14 @@ RSpec.describe DecidimImporter::Extractors::BlogPostsExtractor do
     expect(page.attributes['id']).to be_present
     expect(page.attributes['code']).to eq('custom')
     expect(page.attributes['title_multiloc']).to eq('fr-FR' => 'Végétalisation')
-    expect(page.attributes['top_info_section_enabled']).to be(true)
-    expect(page.attributes['top_info_section_multiloc']).to eq('fr-FR' => '<h5>Un projet</h5>')
     expect(page.attributes['project_ref']).to be(project.attributes)
     expect(ref_map.fetch('decidim--blogs--post--1')).to eq(page)
+
+    layout = ref_map.fetch('decidim--blogs--post--1-layout')
+    expect(layout.attributes['content_buildable_ref']).to be(page.attributes)
+    expect(layout.attributes['craftjs_json']).to eq(
+      ContentBuilder::CustomPageLayoutService.new.craftjs_json_for_body('fr-FR' => '<h5>Un projet</h5>')
+    )
   end
 
   it 'skips a post whose process was not imported, an unpublished post, and a titleless post' do

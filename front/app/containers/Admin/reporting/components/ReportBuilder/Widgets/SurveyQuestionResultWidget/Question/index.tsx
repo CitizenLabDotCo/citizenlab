@@ -92,6 +92,7 @@ const SurveyQuestionResult = ({
       case 'point':
       case 'line':
       case 'polygon':
+      case 'multipoint':
         return (
           <MapQuestion
             attributes={attributes}

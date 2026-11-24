@@ -29,6 +29,8 @@ const RegistrationCustomFieldSettings = () => {
         description_multiloc: customField.data.attributes.description_multiloc,
         required: customField.data.attributes.required,
         enabled: customField.data.attributes.enabled,
+        min_characters: customField.data.attributes.min_characters,
+        max_characters: customField.data.attributes.max_characters,
       }
     );
   };

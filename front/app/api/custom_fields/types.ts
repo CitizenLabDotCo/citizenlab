@@ -42,6 +42,7 @@ export type ICustomFieldInputType =
   | 'point'
   | 'line'
   | 'polygon'
+  | 'multipoint'
   | 'cosponsor_ids'
   | 'sentiment_linear_scale'
   | 'checkbox'
@@ -83,14 +84,16 @@ export interface IAttributes {
   page_button_label_multiloc?: Multiloc;
   page_button_link?: string;
   required: boolean;
+  answers_visible_to: 'public' | 'moderators';
+  show_as_filter: boolean;
   isRequiredEditable?: boolean;
   isEnabledEditable?: boolean;
   isTitleEditable?: boolean;
   isDeleteEnabled?: boolean;
   ask_follow_up?: boolean;
   constraints?: {
-    locked: boolean;
-    locks: {
+    locked?: boolean;
+    locks?: {
       attributes?: ('title_multiloc' | 'required')[];
       deletion?: boolean;
     };
@@ -154,7 +157,6 @@ export type IFlatCustomField = Omit<
     options?: IOptionsType[];
     matrix_statements?: IMatrixStatementsType[];
     map_config?: { data: IRelationship };
-    answers_visible_to?: 'public' | 'moderators';
   };
 
 export type ICustomFieldSettingsTab = 'content' | 'logic';

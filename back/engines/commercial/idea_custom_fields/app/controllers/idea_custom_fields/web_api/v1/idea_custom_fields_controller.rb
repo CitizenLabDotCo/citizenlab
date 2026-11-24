@@ -5,11 +5,13 @@ module IdeaCustomFields
     CONSTANTIZER = {
       'Project' => {
         container_class: Project,
-        container_id: :project_id
+        container_id: :project_id,
+        custom_form: ->(project) { CustomForm.find_or_initialize_by(participation_context: project) }
       },
       'Phase' => {
         container_class: Phase,
-        container_id: :phase_id
+        container_id: :phase_id,
+        custom_form: ->(phase) { phase.pmethod.custom_form }
       }
     }
 
@@ -57,7 +59,7 @@ module IdeaCustomFields
     def as_geojson
       raise_error_if_not_geographic_field
 
-      @phase = Phase.find(params[:phase_id])
+      @phase = @custom_field.resource.participation_context
       geojson = I18n.with_locale(current_user.locale) do
         geojson_generator.generate_geojson
       end
@@ -124,6 +126,7 @@ module IdeaCustomFields
         :question_category,
         :include_in_printed_form,
         :answers_visible_to,
+        :show_as_filter,
         :min_characters,
         :max_characters,
         { title_multiloc: CL2_SUPPORTED_LOCALES,
@@ -163,8 +166,7 @@ module IdeaCustomFields
     def set_custom_form
       container_id = params[secure_constantize(:container_id)]
       @container = secure_constantize(:container_class).find container_id
-
-      @custom_form = CustomForm.find_or_initialize_by participation_context: @container
+      @custom_form = secure_constantize(:custom_form).call(@container)
     end
 
     def set_custom_field

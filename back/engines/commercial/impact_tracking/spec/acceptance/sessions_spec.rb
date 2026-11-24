@@ -55,6 +55,13 @@ resource 'Impact tracking session' do
       expect(user.reload.last_active_at.to_i).to be > last_active_at.to_i
     end
 
+    example 'Creating a session for an admin returning after 60+ days queues a pulse check', document: false do
+      user = create(:admin, last_active_at: 61.days.ago)
+      header_token_for(user)
+      do_request
+      expect(user.pulse_checks.sole).to have_attributes(key: 'return_findability', status: 'pending')
+    end
+
     example 'Don\'t track the session start of a crawler', document: false do
       header 'User-Agent', 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)'
       do_request
@@ -65,6 +72,18 @@ resource 'Impact tracking session' do
       header 'User-Agent', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/W.X.Y.Z Safari/537.36 Prerender (+https://github.com/prerender/prerender)'
       do_request
       expect(ImpactTracking::Session.count).to eq 0
+    end
+
+    # Documenting this behaviour.
+    example 'Create new sesssion with same monthly_user_hash for same signed in user', document: false do
+      user = create(:user)
+      header_token_for(user)
+      do_request
+      expect(response_status).to eq 200
+      expect(ImpactTracking::Session.count).to eq 1
+      do_request
+      expect(response_status).to eq 200
+      expect(ImpactTracking::Session.count).to eq 2
     end
 
     example 'Track the session start of an admin', document: false do

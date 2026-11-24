@@ -47,7 +47,8 @@ resource 'Users' do
       DESC
 
       parameter :sort, <<~DESC, required: false
-        Sort user by 'created_at', '-created_at', 'last_name', '-last_name', 'email', '-email', 'role', '-role'
+        Sort user by 'created_at', '-created_at', 'registration_completed_at', '-registration_completed_at',
+        'last_name', '-last_name', 'email', '-email', 'role', '-role'
       DESC
 
       example_request '[error] List all users' do
@@ -749,7 +750,10 @@ resource 'Users' do
           parameter :size, 'Number of users per page'
         end
         parameter :search, 'Filter by searching in first_name, last_name and email', required: false
-        parameter :sort, "Sort user by 'created_at', '-created_at', 'last_name', '-last_name', 'email', '-email', 'role', '-role'", required: false
+        parameter :sort, <<~DESC, required: false
+          Sort user by 'created_at', '-created_at', 'registration_completed_at', '-registration_completed_at',
+          'last_name', '-last_name', 'email', '-email', 'role', '-role'
+        DESC
         parameter :group, 'Filter by group_id', required: false
         parameter :project, 'Filter by users who participated in the project (by project id)', required: false
         parameter :can_moderate_project, 'Filter by users (and admins) who can moderate the project (by id)', required: false
@@ -894,6 +898,74 @@ resource 'Users' do
           json_response = json_parse(response_body)
 
           expect(json_response[:data].map { |u| u.dig(:attributes, :email) }.last).to eq inactive_user.email
+        end
+
+        # Backdates every user, the admin from the outer context included, so they
+        # all have distinct dates and the expected order is unambiguous.
+        def create_users_registered_on_distinct_days
+          %w[Bednar Cole Hagenes].each { |l| create(:user, last_name: l) }
+          User.all.each_with_index do |user, i|
+            user.update!(registration_completed_at: Time.now - i.days)
+          end
+        end
+
+        example 'List all users sorted by registration_completed_at' do
+          create_users_registered_on_distinct_days
+
+          do_request sort: 'registration_completed_at'
+
+          assert_status 200
+          expect(response_data.pluck(:id)).to eq User.order(:registration_completed_at).pluck(:id)
+        end
+
+        example 'List all users sorted by -registration_completed_at' do
+          create_users_registered_on_distinct_days
+
+          do_request sort: '-registration_completed_at'
+
+          assert_status 200
+          expect(response_data.pluck(:id)).to eq User.order(registration_completed_at: :desc).pluck(:id)
+        end
+
+        # Users without a registration date are only returned when include_inactive is set,
+        # since the index applies the `registered` scope otherwise. A pending invite has no
+        # date and sorts as the most recent: first when descending, last when ascending.
+        {
+          'registration_completed_at' => :last,
+          '-registration_completed_at' => :first
+        }.each do |sort_param, nil_position|
+          example "List all users sorted by #{sort_param} lists nil values #{nil_position}", document: false do
+            create_users_registered_on_distinct_days
+            invitee = create(:invited_user)
+
+            do_request sort: sort_param, include_inactive: true
+
+            assert_status 200
+            expect(response_data.pluck(:id).public_send(nil_position)).to eq invitee.id
+          end
+        end
+
+        # Both invitees lack a registration date, so only the tie-breaker decides their order.
+        example 'List all users sorted by -registration_completed_at breaks ties on created_at', document: false do
+          older, newer = create_list(:invited_user, 2)
+          older.update!(created_at: 2.days.ago)
+          newer.update!(created_at: 1.day.ago)
+
+          do_request sort: '-registration_completed_at', include_inactive: true
+
+          assert_status 200
+          expect(response_data.pluck(:id).first(2)).to eq [newer.id, older.id]
+        end
+
+        example 'List all users sorted by registration_completed_at breaks ties on created_at', document: false do
+          older, newer = create_list(:invited_user, 2)
+          older.update!(created_at: 2.days.ago)
+          newer.update!(created_at: 1.day.ago)
+
+          do_request sort: 'registration_completed_at', include_inactive: true
+
+          assert_status 200
+          expect(response_data.pluck(:id).last(2)).to eq [older.id, newer.id]
         end
 
         example 'List all users in group' do
@@ -1796,6 +1868,39 @@ resource 'Users' do
               expect(user.reload.roles).to match [{ 'type' => 'admin', 'project_reviewer' => true }]
             end
           end
+
+          context 'on a super admin' do
+            let(:super_admin) { create(:super_admin) }
+            let(:id) { super_admin.id }
+            let(:password) { 'An0ther-Passw0rd!' }
+
+            example '[error] Change the password of a super admin', document: false do
+              expect { do_request }.not_to(change { super_admin.reload.password_digest })
+              assert_status 401
+            end
+          end
+
+          context 'on a resident with a staff address' do
+            let(:staff_user) { create(:user, email: 'staff@govocal.com') }
+            let(:id) { staff_user.id }
+            let(:roles) { [type: 'admin'] }
+
+            example_request 'Make the user (staff address) admin', document: false do
+              assert_status 200
+              expect(staff_user.reload.super_admin?).to be true
+            end
+          end
+
+          context 'on another user, with a password' do
+            let(:resident) { create(:user) }
+            let(:id) { resident.id }
+            let(:password) { 'An0ther-Passw0rd!' }
+
+            example 'Ignores the password', document: false do
+              expect { do_request }.not_to(change { resident.reload.password_digest })
+              assert_status 200
+            end
+          end
         end
       end
 
@@ -1860,6 +1965,15 @@ resource 'Users' do
         context 'normal route' do
           example_request 'Ping as an admin' do
             assert_status 200
+          end
+
+          example 'Ping returns when the session expires', document: false do
+            token = AuthToken::AuthToken.new(payload: @user.to_token_payload.merge(exp: 2.hours.from_now.to_i)).token
+            header 'Cookie', "#{AuthToken::Cookie::NAME}=#{token}"
+
+            do_request
+            assert_status 200
+            expect(json_response_body[:expires_at]).to eq(JWT.decode(token, nil, false).first['exp'])
           end
         end
 
@@ -2135,6 +2249,11 @@ resource 'Users' do
         end
 
         describe do
+          before do
+            AppConfiguration.instance.settings['id_config'] = { allowed: true, enabled: true, id_methods: [{ name: 'franceconnect' }] }
+            AppConfiguration.instance.save!
+          end
+
           let(:cf) { create(:custom_field) }
           let(:birthyear_cf) { create(:custom_field_birthyear) }
           let(:custom_field_values) do
@@ -2171,6 +2290,12 @@ resource 'Users' do
         end
 
         describe do
+          before do
+            allow_test_id_methods
+            AppConfiguration.instance.settings['id_config'] = { allowed: true, enabled: true, id_methods: [{ name: 'bogus' }] }
+            AppConfiguration.instance.save!
+          end
+
           let(:cf) { create(:custom_field) }
           let(:gender_cf) { create(:custom_field_gender) }
           let(:custom_field_values) do
@@ -2248,7 +2373,7 @@ resource 'Users' do
             expect(BCrypt::Password.new(@user.password_digest)).to be_is_password('test_new_password')
 
             # Resets the JWT cookie by setting a new token expiry key, so that old tokens are invalidated after password change
-            expect(CGI.unescape(response_headers['Set-Cookie'])).to include('cl2_jwt=')
+            expect(auth_token_from_response_cookie).to be_present
             expect(@user.token_expiry_key).not_to be_nil
           end
         end
@@ -2336,6 +2461,48 @@ resource 'Users' do
 
             expect(response_status).to eq 200
             expect(EmailBan.banned?(@subject_user.email)).to be true
+          end
+        end
+
+        example 'Deleting another user keeps the admin signed in', document: false do
+          do_request
+
+          expect(response_status).to eq 200
+          expect(auth_cookie_header).to be_nil
+        end
+      end
+
+      delete 'web_api/v1/users/:id' do
+        let(:id) { @user.id }
+
+        example 'Delete your own account' do
+          do_request
+
+          expect(response_status).to eq 200
+          expect { User.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+          expect(auth_cookie_header).to match(/\A#{AuthToken::Cookie::NAME}=;/o)
+        end
+
+        context 'when signed in through an SSO provider that supports logout' do
+          let(:logout_url) { 'https://sso.example.com/logout' }
+
+          before do
+            token = AuthToken::AuthToken.new(
+              payload: @user.to_token_payload.merge(provider: 'franceconnect', logout_supported: true)
+            ).token
+            header 'Cookie', "#{AuthToken::Cookie::NAME}=#{token}"
+
+            allow_any_instance_of(AuthenticationService)
+              .to receive(:logout_url).with('franceconnect', @user).and_return(logout_url)
+          end
+
+          example 'Delete your own account and get the URL to sign out at the SSO provider' do
+            do_request
+
+            expect(response_status).to eq 200
+            expect(json_response_body[:logout_url]).to eq(logout_url)
+            expect { User.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+            expect(auth_cookie_header).to match(/\A#{AuthToken::Cookie::NAME}=;/o)
           end
         end
       end

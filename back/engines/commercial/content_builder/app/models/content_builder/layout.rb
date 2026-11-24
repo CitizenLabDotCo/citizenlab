@@ -29,6 +29,7 @@ module ContentBuilder
     HOMEPAGE_CODE = 'homepage'
 
     belongs_to :content_buildable, polymorphic: true, optional: true
+    has_many :query_snapshots, class_name: 'ContentBuilder::QuerySnapshot', dependent: :delete_all
 
     before_validation :swap_data_images, on: :create
     before_validation :set_craftjs_json, :sanitize_craftjs_json
@@ -67,13 +68,33 @@ module ContentBuilder
       end
     end
 
-    # Returns file IDs referenced by FileAttachment widgets in craftjs_json.
-    def referenced_file_ids
-      return [] if craftjs_json.blank?
+    # Returns file IDs referenced by FileAttachment widgets in the given craftjs graph (the
+    # layout's own by default).
+    def referenced_file_ids(json = craftjs_json)
+      return [] if json.blank?
 
-      craftjs_json.each_value.filter_map do |node|
+      json.each_value.filter_map do |node|
         node.dig('props', 'fileId') if file_attachment_widget?(node)
       end
+    end
+
+    # Returns referenced file IDs that are not yet in the saved craftjs_json.
+    def added_file_ids
+      referenced_file_ids - referenced_file_ids(attribute_in_database(:craftjs_json))
+    end
+
+    # Points FileAttachment widgets at other files, e.g. the copies made by a project copy.
+    # Writes the columns directly so copied content is not re-validated or re-sanitized.
+    # @param file_id_mapping [Hash{String=>String}] old file ID => new file ID
+    def remap_file_ids!(file_id_mapping)
+      nodes = craftjs_json.each_value.select do |node|
+        file_attachment_widget?(node) && file_id_mapping.key?(node.dig('props', 'fileId'))
+      end
+      return if nodes.empty?
+
+      nodes.each { |node| node['props']['fileId'] = file_id_mapping[node['props']['fileId']] }
+      update_columns(craftjs_json: craftjs_json, updated_at: Time.current)
+      sync_file_attachments
     end
 
     # Syncs file attachments based on fileIds referenced in craftjs_json.
@@ -95,7 +116,7 @@ module ContentBuilder
 
       LayoutService.new.select_craftjs_elements_for_types(craftjs_json, ['IframeMultiloc']).each do |elt|
         url = elt.dig 'props', 'url'
-        if url && url_starts.none? { |url_start| url.starts_with?(url_start) }
+        if url.present? && url_starts.none? { |url_start| url.starts_with?(url_start) }
           errors.add :craftjs_json, :iframe_url_invalid, url: url
         end
       end

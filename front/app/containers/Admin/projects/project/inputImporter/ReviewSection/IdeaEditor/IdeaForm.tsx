@@ -7,6 +7,7 @@ import useCustomFields from 'api/custom_fields/useCustomFields';
 import usePhase from 'api/phases/usePhase';
 
 import usePageForm from 'components/CustomFieldsForm/Page/usePageForm';
+import { castNumberAnswers } from 'components/CustomFieldsForm/util';
 import Feedback from 'components/HookForm/Feedback';
 
 import { useParams } from 'utils/router';
@@ -38,7 +39,7 @@ const IdeaForm = ({
 
   const { data: customFields } = useCustomFields({
     projectId,
-    phaseId: participationMethod === 'native_survey' ? phaseId : undefined,
+    phaseId,
     publicFields: true,
   });
 
@@ -54,6 +55,8 @@ const IdeaForm = ({
   const { methods } = usePageForm({
     pageQuestions: questions || [],
     defaultValues: formData,
+    // A blank "please specify" line on a scanned form is a complete answer
+    otherTextOptional: true,
   });
 
   // Trigger validation on mount so errors show immediately
@@ -72,11 +75,11 @@ const IdeaForm = ({
   // Watch for changes in form values and update formData and form validation state accordingly
   useEffect(() => {
     const subscription = methods.watch((values) => {
-      setFormData(values);
+      setFormData(castNumberAnswers(values, customFields ?? []));
       methods.trigger();
     });
     return () => subscription.unsubscribe();
-  }, [methods, formData, setFormData, setIdeaFormDataValid]);
+  }, [methods, formData, setFormData, setIdeaFormDataValid, customFields]);
 
   // We are setting the setError function to the ref so that it can be used easily in the parent component for error handling
   setError.current = methods.setError;
@@ -92,9 +95,7 @@ const IdeaForm = ({
                 questions={questions}
                 projectId={projectId}
                 phase={phase?.data}
-                participationMethod={
-                  phase?.data.attributes.participation_method
-                }
+                participationMethod={participationMethod}
                 showQuestionNumbers={true}
                 scrollErrorIntoView={false}
               />

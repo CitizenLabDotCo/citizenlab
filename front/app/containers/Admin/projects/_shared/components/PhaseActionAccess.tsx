@@ -1,22 +1,21 @@
 import React, { useState } from 'react';
 
-import { Box, Button } from '@citizenlab/cl2-component-library';
+import Button from 'design-system/Button';
+import Modal from 'design-system/Modal';
 
 import { IPhasePermissionAction } from 'api/permissions/types';
-import useInheritPhasePermission from 'api/phase_permissions/useInheritPhasePermission';
-import useOverridePhasePermission from 'api/phase_permissions/useOverridePhasePermission';
 import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
-import useUpdatePhasePermission from 'api/phase_permissions/useUpdatePhasePermission';
 import usePhase from 'api/phases/usePhase';
 
 import { getPermissionActionSectionSubtitle } from 'containers/Admin/projects/project/permissions/Phase/ActionForms/utils';
 
-import ActionForm from 'components/admin/ActionForm';
 import { requiresAccount } from 'components/admin/ActionForm/logic';
 import actionFormMessages from 'components/admin/ActionForm/messages';
-import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
+
+import PhaseActionForm from './PhaseActionForm';
+import 'design-system/tokens.css';
 
 interface Props {
   phaseId: string;
@@ -28,9 +27,6 @@ const PhaseActionAccess = ({ phaseId, action }: Props) => {
   const [opened, setOpened] = useState(false);
   const { data: phase } = usePhase(phaseId);
   const { data: permissions } = usePhasePermissions({ phaseId });
-  const { mutateAsync: updatePhasePermission } = useUpdatePhasePermission();
-  const { mutateAsync: overridePhasePermission } = useOverridePhasePermission();
-  const { mutateAsync: inheritPhasePermission } = useInheritPhasePermission();
 
   const permission = permissions?.data.find(
     (permission) => permission.attributes.action === action
@@ -58,47 +54,16 @@ const PhaseActionAccess = ({ phaseId, action }: Props) => {
   return (
     <>
       <Button
-        buttonStyle="text"
-        size="s"
-        px="0"
-        py="0"
-        justify="left"
-        icon="chevron-right"
-        iconPos="right"
-        iconSize="16px"
-        onClick={() => setOpened(true)}
+        variant="quiet"
+        size={28}
+        trailingIcon="chevron-right-16"
+        onPress={() => setOpened(true)}
       >
         {formatMessage(summary())}
       </Button>
 
-      <Modal
-        opened={opened}
-        close={() => setOpened(false)}
-        header={title}
-        width="700px"
-      >
-        <Box p="24px">
-          <ActionForm
-            phaseId={phaseId}
-            permissionData={permission}
-            title={title}
-            variant="plain"
-            onChange={async (changes) => {
-              await updatePhasePermission({
-                permissionId: permission.id,
-                phaseId,
-                action,
-                permission: changes,
-              });
-            }}
-            onOverride={async () => {
-              await overridePhasePermission({ phaseId, action });
-            }}
-            onRevertToDefaults={async () => {
-              await inheritPhasePermission({ phaseId, action });
-            }}
-          />
-        </Box>
+      <Modal isOpen={opened} onOpenChange={setOpened} title={title} size={560}>
+        <PhaseActionForm phaseId={phaseId} action={action} variant="plain" />
       </Modal>
     </>
   );

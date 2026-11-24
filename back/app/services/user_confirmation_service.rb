@@ -160,7 +160,7 @@ class UserConfirmationService
     # before a submitted blank or nil code could be compared against it.
     raise ValidationError.new(:code, :expired) unless confirmation.code_outstanding?
 
-    validate_retry_count!(confirmation, code)
+    validate_retry_count!(confirmation)
     validate_code_value!(confirmation, code)
     validate_code_expiration!(confirmation)
   end
@@ -206,13 +206,16 @@ class UserConfirmationService
     raise ValidationError.new(:user, :no_phone) if phone.blank?
   end
 
-  def validate_retry_count!(confirmation, code)
-    return if confirmation.code == code # don't increment unless code is wrong
+  # Every attempt uses up a retry, also the correct one, and the count happens
+  # before the code is compared. One atomic UPDATE does the check and the count,
+  # so after the limit no code is accepted, also not by parallel requests.
+  def validate_retry_count!(confirmation)
+    counted = confirmation.class
+      .where(id: confirmation.id)
+      .where(code_retry_count: ...max_retries)
+      .update_all('code_retry_count = code_retry_count + 1')
 
-    confirmation.code_retry_count += 1
-    return if confirmation.save
-
-    raise ValidationError.new(:code, :too_many_retries)
+    raise ValidationError.new(:code, :too_many_retries) if counted.zero?
   end
 
   def validate_code_value!(confirmation, code)
@@ -289,5 +292,9 @@ class UserConfirmationService
 
   def app_configuration
     @app_configuration ||= AppConfiguration.instance
+  end
+
+  def max_retries
+    ENV.fetch('EMAIL_CONFIRMATION_MAX_RETRIES', 5).to_i
   end
 end

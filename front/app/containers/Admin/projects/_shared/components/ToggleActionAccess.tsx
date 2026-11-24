@@ -1,20 +1,22 @@
-import React from 'react';
-
-import { Box } from '@citizenlab/cl2-component-library';
+import React, { ReactNode } from 'react';
 
 import { IPhasePermissionAction } from 'api/permissions/types';
 
 import PhaseActionAccess from './PhaseActionAccess';
+import styles from './ToggleActionAccess.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   phaseId: string;
   action: IPhasePermissionAction;
+  children: ReactNode;
 }
 
-const ToggleActionAccess = ({ phaseId, action }: Props) => (
-  <Box mt="-6px" mb="12px" ml="52px">
+const ToggleActionAccess = ({ phaseId, action, children }: Props) => (
+  <div className={styles.row}>
+    {children}
     <PhaseActionAccess phaseId={phaseId} action={action} />
-  </Box>
+  </div>
 );
 
 export default ToggleActionAccess;

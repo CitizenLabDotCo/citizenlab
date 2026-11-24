@@ -12,6 +12,7 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import { useIntl } from 'utils/cl-intl';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
+import getOgUrl from 'utils/cl-router/getOgUrl';
 import { getInputTermMessage } from 'utils/i18n';
 import { useParams } from 'utils/router';
 
@@ -19,12 +20,13 @@ import messages from './messages';
 
 const IdeasNewMeta = () => {
   const { formatMessage } = useIntl();
-  const { slug } = useParams({ from: '/$locale/projects/$slug/ideas/new' });
+  const { slug } = useParams({
+    from: '/$locale/projects/$slug/ideas/new/$phaseId',
+  });
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectBySlug(slug);
   const { data: phases } = usePhases(project ? project.data.id : undefined);
   const locales = useAppConfigurationLocales();
-  const { location } = window;
 
   const inputTerm = getInputTerm(phases?.data);
   const ideasIndexTitle = formatMessage(
@@ -67,7 +69,7 @@ const IdeasNewMeta = () => {
       <meta name="description" content={ideasIndexDescription} />
       <meta property="og:title" content={ideasIndexTitle} />
       <meta property="og:description" content={ideasIndexDescription} />
-      <meta property="og:url" content={location.href} />
+      <meta property="og:url" content={getOgUrl()} />
       {project && project.data.attributes.listed && (
         <meta name="robots" content="noindex" />
       )}

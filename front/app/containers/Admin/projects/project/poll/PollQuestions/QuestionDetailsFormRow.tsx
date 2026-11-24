@@ -4,16 +4,24 @@ import { Select, Input, Box } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { IOption } from 'typings';
 
+import Button from 'design-system/Button';
+import { ListBoxOption } from 'design-system/ListBox';
+import NumberField from 'design-system/NumberField';
+import DSSelect from 'design-system/Select';
+
 import { IPollQuestionData } from 'api/poll_questions/types';
 import useUpdatePollQuestion from 'api/poll_questions/useUpdatePollQuestion';
 
 import { Row } from 'components/admin/ResourceList';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
+import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
+import { useIsPanelPoll } from '../PollVariantContext';
 
+import styles from './PollQuestions.module.css';
 import WrongMaxChoiceIndicator from './WrongMaxChoiceIndicator';
 
 const FormContainer = styled.div`
@@ -37,6 +45,8 @@ interface Props {
 }
 
 const QuestionDetailsFormRow = ({ question, onCancelOptionEditing }: Props) => {
+  const isPanel = useIsPanelPoll();
+
   const { mutate: updatePollQuestion } = useUpdatePollQuestion();
   const [maxAnswers, setMaxAnswers] = useState(question.attributes.max_options);
   const [questionType, setQuestionType] = useState(
@@ -96,6 +106,71 @@ const QuestionDetailsFormRow = ({ question, onCancelOptionEditing }: Props) => {
   };
 
   const { isValid } = validate();
+
+  if (isPanel) {
+    return (
+      <Row>
+        <div className={styles.formGroup}>
+          <div className={styles.typeSelect}>
+            <DSSelect
+              label={
+                <ScreenReaderOnly>
+                  {formatMessage(messages.questionTypeLabel)}
+                </ScreenReaderOnly>
+              }
+              size={32}
+              items={typeOptions}
+              value={questionType}
+              onChange={(key) => {
+                const option = typeOptions.find(({ value }) => value === key);
+                if (option) changeQuestionType(option);
+              }}
+            >
+              {(option: IOption) => (
+                <ListBoxOption id={option.value}>{option.label}</ListBoxOption>
+              )}
+            </DSSelect>
+          </div>
+          {questionType === 'multiple_options' && (
+            <div className={styles.maxAnswers}>
+              <NumberField
+                label={
+                  <ScreenReaderOnly>
+                    {formatMessage(messages.maxAnswersLabel)}
+                  </ScreenReaderOnly>
+                }
+                size={32}
+                value={maxAnswers ?? undefined}
+                onChange={setMaxAnswers}
+                // A multiple answer question should have at least two answer options
+                minValue={2}
+              />
+            </div>
+          )}
+        </div>
+        <div className={styles.formGroup}>
+          <WrongMaxChoiceIndicator
+            questionId={question.id}
+            maxAnswers={maxAnswers}
+          />
+          <div className={styles.actions}>
+            <Button
+              variant="primary"
+              size={28}
+              onPress={onSave}
+              isDisabled={!isValid}
+            >
+              <FormattedMessage {...messages.saveQuestionSettings} />
+            </Button>
+            <Button size={28} onPress={onCancelOptionEditing}>
+              <FormattedMessage {...messages.cancelEditAnswerOptions} />
+            </Button>
+          </div>
+        </div>
+      </Row>
+    );
+  }
+
   return (
     <Row>
       <FormContainer>

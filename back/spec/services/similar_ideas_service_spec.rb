@@ -8,7 +8,7 @@ describe SimilarIdeasService do
   let(:idea) { create(:embeddings_similarity, embedding: embeddings['pizza'], embedded_attributes: 'body').embeddable }
   let(:service) { described_class.new(idea) }
 
-  describe 'similar_ideas' do
+  describe 'similar_ideas', :clear_cache do
     let!(:idea_burger) { create(:embeddings_similarity, embedding: embeddings['burger'], embedded_attributes: 'title').embeddable }
     let!(:idea_moon) { create(:embeddings_similarity, embedding: embeddings['moon'], embedded_attributes: 'title').embeddable }
     let!(:idea_bats) { create(:embeddings_similarity, embedding: embeddings['bats'], embedded_attributes: 'body').embeddable }
@@ -105,6 +105,21 @@ describe SimilarIdeasService do
       expect { service.upsert_embeddings! }.to change(EmbeddingsSimilarity, :count).by(1)
       expect(idea.embeddings_similarities.pluck(:embedded_attributes)).to match_array %w[title body]
       expect(idea.embeddings_similarities.pluck(:embedding)).to contain_exactly(embedding, embedding)
+    end
+  end
+
+  describe 'embedding caching', :clear_cache do
+    let(:idea) { create(:idea, title_multiloc: { 'en' => 'Pizza' }, body_multiloc: { 'en' => 'Pizza with cheese' }) }
+    let(:cohere) { instance_double(CohereMultilingualEmbeddings) }
+
+    before { allow(CohereMultilingualEmbeddings).to receive(:new).and_return(cohere) }
+
+    it 'only calls the embeddings API once per text' do
+      expect(cohere).to receive(:embedding).with('Pizza').once.and_return(embeddings['pizza'])
+      expect(cohere).to receive(:embedding).with('Pizza with cheese').once.and_return(embeddings['pizza'])
+
+      2.times { service.similar_ideas(title_threshold: 1.0, body_threshold: 1.0) }
+      described_class.new(Idea.new(title_multiloc: { 'en' => 'Pizza' })).similar_ideas(title_threshold: 1.0)
     end
   end
 end

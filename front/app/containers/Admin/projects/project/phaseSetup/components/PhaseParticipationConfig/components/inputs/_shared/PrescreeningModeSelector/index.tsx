@@ -4,19 +4,28 @@ import { Box, Select, Text, Toggle } from '@citizenlab/cl2-component-library';
 import { MessageDescriptor } from 'react-intl';
 import { IOption } from 'typings';
 
+import RadioGroup, { Radio } from 'design-system/RadioGroup';
+
 import { PrescreeningMode } from 'api/phases/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
+import SettingToggleRow from 'components/admin/SettingToggleRow';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
+import styles from './PrescreeningModeSelector.module.css';
+import 'design-system/tokens.css';
+
+const isPrescreeningMode = (value: string): value is PrescreeningMode =>
+  value === 'flagged_only' || value === 'all';
 
 interface Props {
   prescreening_mode: PrescreeningMode | null | undefined;
   onPrescreeningModeChange: (mode: PrescreeningMode | null) => void;
+  variant?: 'default' | 'panel';
 }
 
 const descriptionMessages: Record<string, MessageDescriptor> = {
@@ -84,7 +93,9 @@ const PrescreeningToggle = ({ isEnabled, onChange }: ToggleProps) => (
 const PrescreeningModeSelector = ({
   prescreening_mode,
   onPrescreeningModeChange,
+  variant = 'default',
 }: Props) => {
+  const { formatMessage } = useIntl();
   const flagInappropriateContentEnabled = useFeatureFlag({
     name: 'flag_inappropriate_content',
   });
@@ -95,6 +106,46 @@ const PrescreeningModeSelector = ({
 
   const showFlaggedOnlyOption =
     flagInappropriateContentEnabled && prescreeningFlaggedOnlyEnabled;
+
+  if (variant === 'panel') {
+    // Without flagging, 'flagged_only' screens nothing, as on the full page.
+    const screening =
+      prescreening_mode === 'all' ||
+      (showFlaggedOnlyOption && prescreening_mode === 'flagged_only');
+
+    return (
+      <div className={styles.panel}>
+        <SettingToggleRow
+          title={formatMessage(messages.contentScreeningTitle)}
+          description={formatMessage(messages.contentScreeningDescription)}
+          checked={screening}
+          onChange={() => onPrescreeningModeChange(screening ? null : 'all')}
+        />
+        {screening && showFlaggedOnlyOption && (
+          <div className={styles.modes}>
+            <RadioGroup
+              aria-label={formatMessage(messages.contentScreeningTitle)}
+              name="prescreening_mode"
+              value={prescreening_mode}
+              onChange={(value) => {
+                if (isPrescreeningMode(value)) onPrescreeningModeChange(value);
+              }}
+            >
+              <Radio value="flagged_only">
+                {formatMessage(messages.prescreeningModeFlaggedOnly)}
+              </Radio>
+              <Radio value="all">
+                {formatMessage(messages.prescreeningModeAll)}
+              </Radio>
+            </RadioGroup>
+            <p className={styles.helper}>
+              {formatMessage(descriptionMessages[prescreening_mode])}
+            </p>
+          </div>
+        )}
+      </div>
+    );
+  }
 
   const settings = (() => {
     if (showFlaggedOnlyOption) {

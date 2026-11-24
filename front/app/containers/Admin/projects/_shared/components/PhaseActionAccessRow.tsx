@@ -1,12 +1,14 @@
 import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import Icon from 'design-system/Icon';
 
 import { IPhasePermissionAction } from 'api/permissions/types';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
-import PhaseActionAccess from './PhaseActionAccess';
+import styles from './PhaseActionAccessRow.module.css';
+import ToggleActionAccess from './ToggleActionAccess';
+import 'design-system/tokens.css';
 
 export interface AccessOnlyAction {
   action: IPhasePermissionAction;
@@ -21,12 +23,15 @@ const PhaseActionAccessRow = ({ phaseId, action, label }: Props) => {
   const { formatMessage } = useIntl();
 
   return (
-    <Box mb="12px">
-      <Text m="0" fontSize="s" color="primary">
-        {formatMessage(label)}
-      </Text>
-      <PhaseActionAccess phaseId={phaseId} action={action} />
-    </Box>
+    <ToggleActionAccess phaseId={phaseId} action={action}>
+      <span className={styles.row}>
+        {/* Sits where a 26 px switch sits in the toggle rows above. */}
+        <span className={styles.iconBox}>
+          <Icon name="check-14" className={styles.icon} />
+        </span>
+        <span className={styles.label}>{formatMessage(label)}</span>
+      </span>
+    </ToggleActionAccess>
   );
 };
 

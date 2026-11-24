@@ -1,4 +1,8 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  QueryClient,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
 
 import analyticsKeys from 'api/analytics/keys';
 import ideaImagesKeys from 'api/idea_images/keys';
@@ -12,11 +16,40 @@ import fetcher from 'utils/cl-react-query/fetcher';
 
 import ideasKeys from './keys';
 
-const deleteIdea = (id: string) =>
+export const deleteIdea = (id: string) =>
   fetcher({
     path: `/ideas/${id}`,
     action: 'delete',
   });
+
+// Shared with batch deletes, which refresh once for the whole batch.
+export const invalidateAfterIdeaDelete = (
+  queryClient: QueryClient,
+  ideaIds: string[]
+) => {
+  queryClient.invalidateQueries({
+    queryKey: ideasKeys.lists(),
+  });
+  queryClient.invalidateQueries({ queryKey: ideaMarkersKeys.lists() });
+  queryClient.invalidateQueries({ queryKey: ideaFilterCountsKeys.all() });
+  queryClient.invalidateQueries({ queryKey: ideaFilterCountsKeys.items() });
+  queryClient.invalidateQueries({ queryKey: userIdeaCountKeys.items() });
+  ideaIds.forEach((ideaId) =>
+    queryClient.invalidateQueries({
+      queryKey: ideaImagesKeys.list({ ideaId }),
+    })
+  );
+  queryClient.invalidateQueries({
+    queryKey: ideaImagesKeys.items(),
+  });
+  queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
+  queryClient.invalidateQueries({
+    queryKey: analyticsKeys.all(),
+  });
+  queryClient.invalidateQueries({
+    queryKey: importedIdeasKeys.all(),
+  });
+};
 
 const useDeleteIdea = () => {
   const queryClient = useQueryClient();
@@ -24,26 +57,7 @@ const useDeleteIdea = () => {
   return useMutation({
     mutationFn: deleteIdea,
     onSuccess: (_data, ideaId) => {
-      queryClient.invalidateQueries({
-        queryKey: ideasKeys.lists(),
-      });
-      queryClient.invalidateQueries({ queryKey: ideaMarkersKeys.lists() });
-      queryClient.invalidateQueries({ queryKey: ideaFilterCountsKeys.all() });
-      queryClient.invalidateQueries({ queryKey: ideaFilterCountsKeys.items() });
-      queryClient.invalidateQueries({ queryKey: userIdeaCountKeys.items() });
-      queryClient.invalidateQueries({
-        queryKey: ideaImagesKeys.list({ ideaId }),
-      });
-      queryClient.invalidateQueries({
-        queryKey: ideaImagesKeys.items(),
-      });
-      queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
-      queryClient.invalidateQueries({
-        queryKey: analyticsKeys.all(),
-      });
-      queryClient.invalidateQueries({
-        queryKey: importedIdeasKeys.all(),
-      });
+      invalidateAfterIdeaDelete(queryClient, [ideaId]);
     },
   });
 };

@@ -58,9 +58,15 @@ const SearchSelect = ({
   const {
     trigger,
     setValue,
+    watch,
     formState: { errors: formContextErrors },
     control,
   } = useFormContext();
+
+  // field.value falls back to the value the field had when it first appeared
+  // whenever the answer is cleared, so the old answer stays selected.
+  // watch() always gives the real current value.
+  const value = watch(name);
 
   const errors = get(formContextErrors, name) as RHFErrors;
   const validationError = errors?.message;
@@ -77,7 +83,7 @@ const SearchSelect = ({
       <Controller
         name={name}
         control={control}
-        render={({ field: { ref, value }, fieldState }) => {
+        render={({ field: { ref }, fieldState }) => {
           // react-select needs the full option, but the form holds only the value.
           const selectedOption =
             value === undefined || value === null || value === ''
@@ -109,7 +115,10 @@ const SearchSelect = ({
                 menuPlacement="auto"
                 menuShouldScrollIntoView={false}
                 onChange={(option) => {
-                  setValue(name, option?.value ?? '', { shouldDirty: true });
+                  // Clearing leaves the value undefined rather than '', so an
+                  // optional answer is left out of the submission instead of
+                  // being sent as a value that isn't an option.
+                  setValue(name, option?.value, { shouldDirty: true });
                   trigger(name);
                   onChange?.(option);
                 }}

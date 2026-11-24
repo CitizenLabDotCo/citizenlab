@@ -106,6 +106,26 @@ describe MultiTenancy::Templates::Utils do
     end
   end
 
+  # A deployment whose S3 credentials belong to another provider cannot reach the
+  # bucket (it lives on GoVocal's AWS). Leaving TEMPLATE_BUCKET unset should
+  # short-circuit every S3 call: the stubs raise so an unguarded one fails the test.
+  context 'without a templates bucket' do
+    subject(:service) { described_class.new(template_bucket: nil, s3_client: s3_client) }
+
+    before do
+      s3_client.stub_responses(:get_object, 'InvalidAccessKeyId')
+      s3_client.stub_responses(:list_objects_v2, 'InvalidAccessKeyId')
+    end
+
+    it 'lists the internal templates only' do
+      expect(service.template_names).to eq %w[base e2etests_template]
+    end
+
+    it 'builds a manifest of the internal templates only' do
+      expect(service.template_manifest.keys).to contain_exactly('base', 'e2etests_template')
+    end
+  end
+
   describe '.user_locales' do
     where(:case_name, :expected_locales, :serialized_models) do
       [

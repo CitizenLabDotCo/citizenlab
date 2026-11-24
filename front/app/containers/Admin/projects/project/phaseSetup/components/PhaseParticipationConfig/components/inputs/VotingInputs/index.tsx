@@ -10,17 +10,24 @@ import {
 import styled from 'styled-components';
 import { CLErrors, IOption } from 'typings';
 
+import Banner from 'design-system/Banner';
+import Switch from 'design-system/Switch';
+
 import { PresentationMode, VoteTerm, VotingMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 
-import ToggleActionAccess from 'containers/Admin/projects/_shared/components/ToggleActionAccess';
+import PhaseActionAccessRow from 'containers/Admin/projects/_shared/components/PhaseActionAccessRow';
+import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';
+import PanelHeading from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelHeading';
 
+import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 import {
   SectionDescription,
   SectionField,
   SubSectionTitle,
   SubSectionTitleWithDescription,
 } from 'components/admin/Section';
+import SettingToggleRow from 'components/admin/SettingToggleRow';
 import Error from 'components/UI/Error';
 import Warning from 'components/UI/Warning';
 
@@ -30,16 +37,23 @@ import { useParams } from 'utils/router';
 
 import messages from '../../../../../../messages';
 import { ValidationErrors } from '../../../../../typings';
+import configMessages from '../../../messages';
 import SimilarityDetectionConfig from '../../shared/SimilarityDetectionConfig';
 import { ToggleRow } from '../../shared/styling';
 import ViewSelector from '../../shared/ViewSelector';
+import ActionToggleRow from '../_shared/ActionToggleRow';
 
+import votingMessages from './messages';
+import styles from './VotingInputs.module.css';
 import VotingMethodChangeModal from './VotingMethodChangeModal';
 import BudgetingInputs from './votingMethodInputs/BudgetingInputs';
+import shareMessages from './votingMethodInputs/messages';
 import MultipleVotingInputs from './votingMethodInputs/MultipleVotingInputs';
 import ShareResultsToggle from './votingMethodInputs/ShareResultsToggle/ShareResultsToggle';
 import SingleVotingInputs from './votingMethodInputs/SingleVotingInputs';
+import VotingMethodPanelSettings from './VotingMethodPanelSettings';
 import VotingMethodSelector from './VotingMethodSelector';
+import 'design-system/tokens.css';
 
 export const StyledSectionDescription = styled(SectionDescription)`
   margin-top: 0;
@@ -124,6 +138,7 @@ const VotingInputs = ({
   layout = 'page',
 }: VotingInputsProps) => {
   const { formatMessage } = useIntl();
+  const getApiErrorMessage = useApiErrorText();
   const { projectId, phaseId } = useParams({ strict: false });
   const { data: phase } = usePhase(phaseId);
   const [pendingVotingMethod, setPendingVotingMethod] =
@@ -158,51 +173,184 @@ const VotingInputs = ({
     }
   };
 
+  const methodSelector = (
+    <VotingMethodSelector
+      voting_method={voting_method}
+      handleVotingMethodOnChange={handleVotingMethodSelect}
+      layout={layout}
+    />
+  );
+
+  const changeModal = (
+    <VotingMethodChangeModal
+      opened={pendingVotingMethod !== null}
+      onClose={() => setPendingVotingMethod(null)}
+      onConfirm={() => {
+        if (pendingVotingMethod) {
+          handleVotingMethodOnChange(pendingVotingMethod);
+        }
+        setPendingVotingMethod(null);
+      }}
+    />
+  );
+
+  const similarity = (
+    <SimilarityDetectionConfig
+      variant={panel ? 'panel' : undefined}
+      apiErrors={apiErrors}
+      similarity_enabled={similarity_enabled}
+      similarity_threshold_title={similarity_threshold_title}
+      similarity_threshold_body={similarity_threshold_body}
+      handleSimilarityEnabledChange={handleSimilarityEnabledChange}
+      handleThresholdChange={handleThresholdChange}
+    />
+  );
+
+  const views = (
+    <ViewSelector
+      presentation_mode={presentation_mode}
+      available_views={available_views}
+      apiErrors={apiErrors}
+      handleIdeasDisplayChange={handleIdeasDisplayChange}
+      handleAvailableViewsChange={handleAvailableViewsChange}
+      title={messages.defaultViewOptions}
+      hideFeed
+      variant={panel ? 'panel' : undefined}
+    />
+  );
+
+  if (panel) {
+    const commentingError = getApiErrorMessage(apiErrors?.commenting_enabled);
+
+    return (
+      <>
+        <div className={styles.heading}>
+          <PanelHeading
+            label={formatMessage(configMessages.settingsGroup)}
+            expandable
+          />
+        </div>
+        <PanelGroup
+          reviewKey="voting_method"
+          reviewNeedsChoice={!voting_method}
+          label={formatMessage(votingMessages.votingMethodSelectorTitle)}
+          defaultOpen
+        >
+          {methodSelector}
+          {voting_method && (
+            <div className={styles.methodSettings}>
+              {/* Remounts per method, as switching resets the vote limits. */}
+              <VotingMethodPanelSettings
+                key={voting_method}
+                voting_method={voting_method}
+                voting_min_total={voting_min_total}
+                voting_max_total={voting_max_total}
+                voting_max_votes_per_idea={voting_max_votes_per_idea}
+                voting_min_selected_options={voting_min_selected_options}
+                voteTerm={voteTerm}
+                apiErrors={apiErrors}
+                validationErrors={validationErrors}
+                handleVotingMinTotalChange={handleVotingMinTotalChange}
+                handleVotingMaxTotalChange={handleVotingMaxTotalChange}
+                handleMaxVotesPerOptionAmountChange={
+                  handleMaxVotesPerOptionAmountChange
+                }
+                handleMinVotingOptionsChange={handleMinVotingOptionsChange}
+                handleVoteTermChange={handleVoteTermChange}
+              />
+            </div>
+          )}
+        </PanelGroup>
+        <PanelGroup
+          label={formatMessage(configMessages.participantActionsGroup)}
+          hasError={!!commentingError}
+        >
+          {phaseId && (
+            <PhaseActionAccessRow
+              phaseId={phaseId}
+              action="voting"
+              label={configMessages.votingAction}
+            />
+          )}
+          <ActionToggleRow
+            phaseId={phaseId}
+            action="commenting_idea"
+            error={
+              commentingError && <Banner tone="error">{commentingError}</Banner>
+            }
+          >
+            <Switch
+              size={26}
+              isSelected={!!commenting_enabled}
+              onChange={() => toggleCommentingEnabled()}
+            >
+              <span className={styles.switchLabel}>
+                {formatMessage(messages.inputCommentingEnabled)}
+              </span>
+            </Switch>
+          </ActionToggleRow>
+          {phaseId && (
+            <PhaseActionAccessRow
+              phaseId={phaseId}
+              action="attending_event"
+              label={messages.attendingEventAction}
+            />
+          )}
+        </PanelGroup>
+        <PanelGroup
+          label={formatMessage(configMessages.votingDisplayGroup)}
+          defaultOpen
+        >
+          <div className={styles.displaySettings}>
+            <SettingToggleRow
+              title={formatMessage(messages.enabledVotingFiltering)}
+              description={formatMessage(messages.votingFilteringEnabled)}
+              checked={!!voting_filtering_enabled}
+              onChange={toggleVotingFilteringEnabled}
+            />
+            <SettingToggleRow
+              title={formatMessage(shareMessages.autoshareResults)}
+              description={formatMessage(
+                shareMessages.autoshareResultsToggleDescription
+              )}
+              checked={!!autoshare_results_enabled}
+              onChange={toggleAutoshareResultsEnabled}
+            />
+            {similarity}
+          </div>
+        </PanelGroup>
+        {views}
+        {changeModal}
+      </>
+    );
+  }
+
   return (
     <>
-      <VotingMethodSelector
-        voting_method={voting_method}
-        handleVotingMethodOnChange={handleVotingMethodSelect}
-        layout={layout}
-      />
-      <VotingMethodChangeModal
-        opened={pendingVotingMethod !== null}
-        onClose={() => setPendingVotingMethod(null)}
-        onConfirm={() => {
-          if (pendingVotingMethod) {
-            handleVotingMethodOnChange(pendingVotingMethod);
-          }
-          setPendingVotingMethod(null);
-        }}
-      />
-      <Box
-        paddingLeft={panel ? undefined : '32px'}
-        borderLeft={panel ? undefined : `1px solid ${colors.divider}`}
-      >
-        {!panel && (
-          <Box my="16px" maxWidth="700px">
-            <Warning>
-              <FormattedMessage
-                {...messages.learnMoreVotingMethod}
-                values={{
-                  b: (chunks) => (
-                    <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
-                  ),
-                  voteTypeDescription: getVoteTypeDescription(),
-                  optionAnalysisArticleLink: (
-                    <a
-                      href="https://support.govocal.com/en/articles/527581-voting-and-prioritization-methods-for-enhanced-decision-making"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <FormattedMessage {...messages.optionAnalysisLinkText} />
-                    </a>
-                  ),
-                }}
-              />
-            </Warning>
-          </Box>
-        )}
+      {methodSelector}
+      <Box paddingLeft="32px" borderLeft={`1px solid ${colors.divider}`}>
+        <Box my="16px" maxWidth="700px">
+          <Warning>
+            <FormattedMessage
+              {...messages.learnMoreVotingMethod}
+              values={{
+                b: (chunks) => (
+                  <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+                ),
+                voteTypeDescription: getVoteTypeDescription(),
+                optionAnalysisArticleLink: (
+                  <a
+                    href="https://support.govocal.com/en/articles/527581-voting-and-prioritization-methods-for-enhanced-decision-making"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <FormattedMessage {...messages.optionAnalysisLinkText} />
+                  </a>
+                ),
+              }}
+            />
+          </Warning>
+        </Box>
         <SectionField>
           <SubSectionTitleWithDescription>
             <FormattedMessage {...messages.optionsToVoteOn} />
@@ -276,16 +424,13 @@ const VotingInputs = ({
           <StyledSectionDescription>
             <FormattedMessage {...messages.enabledActionsForUsersDescription} />
           </StyledSectionDescription>
-          <ToggleRow>
+          <ActionToggleRow action="commenting_idea">
             <Toggle
               checked={!!commenting_enabled}
               onChange={toggleCommentingEnabled}
               label={formatMessage(messages.inputCommentingEnabled)}
             />
-          </ToggleRow>
-          {panel && phaseId && (
-            <ToggleActionAccess phaseId={phaseId} action="commenting_idea" />
-          )}
+          </ActionToggleRow>
           <Text mb="0px" pb="0px" color={'textSecondary'} fontSize="s">
             {formatMessage(messages.commentingBias)}
           </Text>
@@ -311,24 +456,8 @@ const VotingInputs = ({
           apiErrors={apiErrors}
         />
 
-        <SimilarityDetectionConfig
-          apiErrors={apiErrors}
-          similarity_enabled={similarity_enabled}
-          similarity_threshold_title={similarity_threshold_title}
-          similarity_threshold_body={similarity_threshold_body}
-          handleSimilarityEnabledChange={handleSimilarityEnabledChange}
-          handleThresholdChange={handleThresholdChange}
-        />
-
-        <ViewSelector
-          presentation_mode={presentation_mode}
-          available_views={available_views}
-          apiErrors={apiErrors}
-          handleIdeasDisplayChange={handleIdeasDisplayChange}
-          handleAvailableViewsChange={handleAvailableViewsChange}
-          title={messages.defaultViewOptions}
-          hideFeed
-        />
+        {similarity}
+        {views}
       </Box>
     </>
   );

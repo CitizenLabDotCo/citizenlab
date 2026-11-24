@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 
 import {
   Box,
-  bo,
   media,
   colors,
   fontSizes,
@@ -10,15 +9,16 @@ import {
   ClickOutside,
   isRtl,
 } from '@citizenlab/cl2-component-library';
-import { focusRingBorder } from 'global-styles';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import { fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
-import CloseIconButton from 'components/UI/CloseIconButton';
+import CloseIconButton, {
+  closeIconButtonStyle,
+} from 'components/UI/CloseIconButton';
 
 import { trackEventByName } from 'utils/analytics';
 import eventEmitter from 'utils/eventEmitter';
@@ -60,9 +60,7 @@ export const ModalContentContainer = styled.div<{
   `}
 `;
 
-type Variant = 'default' | 'bo';
-
-const StyledCloseIconButton = styled(CloseIconButton)<{ variant: Variant }>`
+const StyledCloseIconButton = styled(CloseIconButton)`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -70,21 +68,7 @@ const StyledCloseIconButton = styled(CloseIconButton)<{ variant: Variant }>`
   z-index: 2000;
   width: 44px;
   height: 44px;
-  border-radius: 8px;
-  border: solid 1px transparent;
-  transition: all 100ms ease-out;
-  outline: none !important;
-  padding: 0px;
-
-  &:hover {
-    background: rgba(15, 20, 35, 0.05);
-  }
-
-  /* This button forces outline:none, so the global outline ring can't apply —
-     use the shared border-based ring instead. */
-  &.focus-visible {
-    ${focusRingBorder}
-  }
+  ${closeIconButtonStyle}
 
   &.no-header {
     top: 12px;
@@ -103,14 +87,6 @@ const StyledCloseIconButton = styled(CloseIconButton)<{ variant: Variant }>`
   ${media.phone`
     right: 15px;
   `}
-
-  ${({ variant }) =>
-    variant === 'bo' &&
-    css`
-      right: 20px;
-      width: 28px;
-      height: 28px;
-    `}
 `;
 
 const StyledFocusOn = styled(FocusOn)<{
@@ -125,9 +101,11 @@ const StyledFocusOn = styled(FocusOn)<{
 
 const ModalContainer = styled(ClickOutside)<{
   windowHeight: number;
+  height?: string;
 }>`
   width: 100%;
   max-height: 85vh;
+  ${({ height }) => height && `height: ${height};`}
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 24px 70px rgba(15, 20, 35, 0.35);
@@ -211,7 +189,7 @@ const Overlay = styled.div<{ zIndex?: number }>`
   }
 `;
 
-const HeaderTitle = styled.h1<{ variant: Variant }>`
+const HeaderTitle = styled.h1`
   color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.l}px;
   font-weight: 400;
@@ -234,17 +212,6 @@ const HeaderTitle = styled.h1<{ variant: Variant }>`
       margin-left: 74px;
     `}
   `}
-
-  ${({ variant }) =>
-    variant === 'bo' &&
-    css`
-      color: ${bo.colors.textHeadingStrong};
-      font-size: ${fontSizes.s}px;
-      font-weight: 500;
-      letter-spacing: normal;
-      line-height: 28px;
-      margin-right: 48px;
-    `}
 `;
 
 const Skip = styled.div`
@@ -288,13 +255,15 @@ const ModalContentContainerSwitch = ({
   return <StyledFocusOn width={width}>{children}</StyledFocusOn>;
 };
 
+export const MEDIUM_MODAL_WIDTH = 560;
+
 interface BaseProps {
   'data-testid'?: string;
-  variant?: Variant;
   opened: boolean;
   fixedHeight?: boolean;
   fillContent?: boolean;
   width?: number | string;
+  height?: string;
   close: () => void;
   className?: string;
   footer?: JSX.Element;
@@ -319,11 +288,11 @@ type Props =
 
 const Modal: React.FC<Props> = ({
   'data-testid': dataTestId,
-  variant = 'default',
   opened,
   fixedHeight = false,
   fillContent = false,
   width = 650,
+  height,
   close,
   className,
   header,
@@ -448,7 +417,6 @@ const Modal: React.FC<Props> = ({
     [close]
   );
 
-  const isBo = variant === 'bo';
   const closeButtonClassName = `e2e-modal-close-button${
     header ? '' : ' no-header'
   }`;
@@ -456,7 +424,6 @@ const Modal: React.FC<Props> = ({
   const closeButton = hideCloseButton ? null : (
     <StyledCloseIconButton
       className={closeButtonClassName}
-      variant={variant}
       onClick={clickCloseButton}
       iconColor={colors.textSecondary}
       iconColorOnHover={colors.textSecondary}
@@ -504,6 +471,7 @@ const Modal: React.FC<Props> = ({
             className={`modalcontent ${fixedHeight ? 'fixedHeight' : ''}`}
             onClickOutside={clickOutsideModal}
             windowHeight={windowHeight}
+            height={height}
             ariaLabelledBy={header ? 'modal-header' : ariaLabelledBy}
             isModal
             role="dialog"
@@ -515,15 +483,11 @@ const Modal: React.FC<Props> = ({
                 flexDirection="column"
                 alignItems="stretch"
                 justifyContent="center"
-                minHeight={isBo ? undefined : '65px'}
-                padding={isBo ? '16px 24px 12px' : '14px 18px'}
-                borderBottom={`solid 1px ${
-                  isBo ? colors.grey100 : colors.grey200
-                }`}
+                minHeight="65px"
+                padding="14px 18px"
+                borderBottom={`solid 1px ${colors.grey200}`}
               >
-                <HeaderTitle id="modal-header" variant={variant}>
-                  {header}
-                </HeaderTitle>
+                <HeaderTitle id="modal-header">{header}</HeaderTitle>
                 {closeButton}
               </Box>
             ) : (

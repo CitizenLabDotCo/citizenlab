@@ -10,7 +10,8 @@ module ContentBuilder
     # - structural (always, on the whole graph): ROOT present, parent/child references
     #   consistent, no orphans, double references or cycles.
     # - conventions (only when `widget_specs` is given): allowed widget types, node id
-    #   format, node keys, linkedNodes slot names, prop enums and multiloc shapes.
+    #   format, node keys, linkedNodes slot names or child count, prop enums and
+    #   multiloc shapes.
     #   Pass `convention_scope` (an array of node ids) to check only those nodes, so a
     #   partial update is not failed by pre-existing nodes it did not touch.
     class Validator
@@ -193,7 +194,12 @@ module ContentBuilder
       # A widget that declares slots holds its content only there; the FE renders
       # nothing from its `nodes`. So every declared slot must be wired and no content
       # may sit in `nodes` — either mistake renders the widget blank and uneditable.
+      #
+      # A widget that declares 'children' instead renders either wiring, so only how
+      # many it holds is a convention.
       def slot_errors(id, node, spec)
+        return child_count_errors(id, node, spec) if spec['children']
+
         slots = spec['slots'] || []
         errors = node['linkedNodes'].keys.filter_map do |slot|
           next if slots.include?(slot)
@@ -213,6 +219,25 @@ module ContentBuilder
             "content must be wired through linkedNodes slots (#{slots.join(', ')}), not 'nodes'")
         end
         errors
+      end
+
+      # For a widget that renders craft children and falls back to linked slots only
+      # when it has none, both wirings are correct and either may be what is stored.
+      # The FE draws `nodes` when there are any and otherwise looks its slots up by
+      # name, so a node has to use one wiring fully: every child in `nodes`, or
+      # exactly the declared slots. A node holding some of each draws only the
+      # `nodes` ones and strands the rest.
+      def child_count_errors(id, node, spec)
+        expected = spec['children']
+        slots = spec['slots'] || []
+        linked = node['linkedNodes'].keys
+        return [] if node['nodes'].size == expected && linked.empty?
+        return [] if node['nodes'].empty? && slots.size == expected && linked.sort == slots.sort
+
+        [error(id, :child_count,
+          "must hold #{expected} children, either all in 'nodes' or wired to exactly the " \
+          "linkedNodes slots #{slots.join(', ')}; this has #{node['nodes'].size} in 'nodes'" \
+          "#{linked.any? ? " and slots #{linked.join(', ')}" : ''}")]
       end
 
       # Slot containers must be canvases. An edge is checked when either its parent

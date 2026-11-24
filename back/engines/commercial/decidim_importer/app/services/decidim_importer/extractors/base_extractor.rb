@@ -51,20 +51,34 @@ module DecidimImporter
       end
 
       # Registers a custom, project-scoped `StaticPage` with an explicit id so a Content Builder
-      # `PageLink` can reference it (refs can't reach into the JSONB blob). Shared by pages and blogs.
+      # `PageLink` can reference it (refs can't reach into the JSONB blob), and the layout holding its
+      # body. Shared by pages and blogs.
       def register_static_page(uid, project, title:, body:, created_at: nil, updated_at: nil)
-        attributes = {
-          'id' => SecureRandom.uuid,
-          'title_multiloc' => title,
-          'code' => 'custom',
-          'top_info_section_enabled' => true,
-          'top_info_section_multiloc' => body
-        }
+        attributes = { 'id' => SecureRandom.uuid, 'title_multiloc' => title, 'code' => 'custom' }
         attributes['created_at'] = created_at if created_at
         attributes['updated_at'] = updated_at if updated_at
         page = Record.new('static_page', attributes)
         page.reference('project', project)
         ref_map.register(uid, page)
+        register_static_page_layout(uid, page, body)
+        page
+      end
+
+      def register_static_page_layout(uid, page, body)
+        layout = Record.new('content_builder/layout', {
+          'code' => ContentBuilder::CustomPageLayoutService::CODE,
+          'enabled' => true,
+          'craftjs_json' => ContentBuilder::CustomPageLayoutService.new.craftjs_json_for_body(tidy_body(body))
+        })
+        layout.reference('content_buildable', page)
+        ref_map.register("#{uid}-layout", layout)
+      end
+
+      # Layout text is neither trimmed nor linkified on save, so the body gets the same preparation as
+      # other rich text: empty trailing tags removed and bare URLs turned into links.
+      def tidy_body(body)
+        service = SanitizationService.new
+        service.linkify_multiloc(service.remove_multiloc_empty_trailing_tags(body))
       end
 
       # A multiloc translation of a `decidim_importer.<key>` back-end string, with English fallback

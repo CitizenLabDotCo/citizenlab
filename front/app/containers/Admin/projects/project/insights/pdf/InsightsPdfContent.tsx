@@ -56,7 +56,7 @@ const InsightsPdfContent = ({ phase }: Props) => {
         </PageBreakBox>
 
         <PageBreakBox data-pdf-section="true">
-          <ParticipantsTimeline phaseId={phase.id} />
+          <ParticipantsTimeline phase={phase} />
         </PageBreakBox>
 
         <DemographicsSection phase={phase} />

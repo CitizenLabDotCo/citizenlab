@@ -36,6 +36,7 @@ en-GB:
         project_participants: To project participants
         registered_users: To registered users
       recipient_segment:
+        admin_who_generated_the_report: The admin who asked for the report
         admins: Admins
         admins_and_managers: Admins & managers
         admins_and_managers_assigned_to_the_input: Admins & managers assigned to the input
@@ -76,6 +77,7 @@ en-GB:
         users_who_follow_the_project: Users who follow the project
         users_who_follow_the_proposal: Users who follow the proposal
       trigger:
+        3_days_after_invite_is_sent: 3 days after invitation is sent
         7_days_after_invite_is_sent: 7 days after invite is sent
         7_days_before_phase_starts: 7 days before a stage starts
         7_days_before_the_project_changes_phase: 7 days before the project changes phase
@@ -109,6 +111,7 @@ en-GB:
         proposal_is_upvoted_above_threshold: Proposal is upvoted above threshold
         proposal_status_changes: Proposal status changes
         registration_to_event: Registration to an event
+        report_generated: A report finished generating
         survey_1_day_after_draft_saved: 1 day after user last saved the survey in draft
         user_accepts_invitation_to_cosponsor_a_proposal: User accepts invitation to co-sponsor a proposal
         user_changes_email: User changes their email address
@@ -206,6 +209,7 @@ en-GB:
       project_review_request: Project review request
       project_review_state_change: Project approved
       proposal_expired_for_admin: Proposal expired without reaching the voting threshold
+      report_generated: Report generated
       screening_digest: Weekly screening reminder
       sms_manual: Official SMS messages
       space_moderation_rights_received: Space manager rights received
@@ -661,6 +665,13 @@ en-GB:
       preheader: An input expired without reaching the threshold
       subject: '"%{input_title}" expired without reaching the threshold'
       title: An input expired without reaching the voting threshold
+    report_generated:
+      cta_button: Open the report
+      event_description: The report has been written and is ready for you to review and edit.
+      preheader: Your report is ready
+      stopped_early: The writing stopped before the report was finished. Everything written so far is saved — open it and ask for the rest in the chat.
+      subject: "Your report for '%{projectName}' is ready"
+      title: Your report is ready
     schedules:
       quarterly: Quarterly, on the first day of the quarter
       weekly:

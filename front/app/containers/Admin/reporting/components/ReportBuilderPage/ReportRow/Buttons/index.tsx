@@ -3,7 +3,6 @@ import React from 'react';
 import { colors, Tooltip } from '@citizenlab/cl2-component-library';
 
 import useCopyReport from 'api/reports/useCopyReport';
-import useDeleteReport from 'api/reports/useDeleteReport';
 import useReport from 'api/reports/useReport';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
@@ -11,6 +10,7 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
+import useConfirmDeleteReport from '../useConfirmDeleteReport';
 
 const BaseButton = (props) => {
   // hard-coded values come after the spread operator to override the prop values
@@ -31,23 +31,13 @@ interface Props {
 const Buttons = ({ reportId, showDuplicate = true }: Props) => {
   const { formatMessage } = useIntl();
   const { mutate: duplicateReport, isPending: isDuplicating } = useCopyReport();
-  const { mutate: deleteReport, isPending: isDeleting } = useDeleteReport();
+  const { confirmDelete, isDeleting } = useConfirmDeleteReport();
   const { data: report } = useReport(reportId);
   if (!report) return null;
 
   const isLoading = isDuplicating || isDeleting;
   const canEdit =
     report.data.attributes.action_descriptors.editing_report.enabled;
-
-  const handleDeleteReport = async () => {
-    const reportName = report.data.attributes.name;
-
-    const message = reportName
-      ? formatMessage(messages.confirmDeleteReport, { reportName })
-      : formatMessage(messages.confirmDeleteThisReport);
-
-    if (window.confirm(message)) deleteReport(report.data.id);
-  };
 
   return (
     <>
@@ -56,7 +46,7 @@ const Buttons = ({ reportId, showDuplicate = true }: Props) => {
         icon="delete"
         buttonStyle="white"
         textColor={colors.textSecondary}
-        onClick={handleDeleteReport}
+        onClick={() => confirmDelete(report)}
         processing={isDeleting}
         disabled={isLoading || !canEdit}
       >

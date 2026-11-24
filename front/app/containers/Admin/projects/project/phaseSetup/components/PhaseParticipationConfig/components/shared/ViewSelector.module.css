@@ -1,0 +1,8 @@
+.views {
+  display: flex;
+  flex-direction: column;
+}
+
+.view + .view {
+  border-top: var(--gv-border-width-1) solid var(--gv-border-divider);
+}

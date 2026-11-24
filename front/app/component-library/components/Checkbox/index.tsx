@@ -67,6 +67,10 @@ const StyledCheckbox = styled.div<{
   }
   `}
 
+  &.disabled {
+    opacity: 0.5;
+  }
+
   width: ${({ size }) => parseInt(size, 10)}px;
   height: ${({ size }) => parseInt(size, 10)}px;
   flex: 0 0 ${({ size }) => parseInt(size, 10)}px;

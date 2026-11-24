@@ -13,6 +13,7 @@ interface Settings {
 function getSelectStyles(theme: DefaultTheme, settings?: Settings) {
   const fontSize = settings?.fontSize || fontSizes.base;
   const minHeight = settings?.minHeight || stylingConsts.inputHeight;
+  const borderRadius = stylingConsts.borderRadius;
 
   return {
     valueContainer: (base) => ({
@@ -37,7 +38,7 @@ function getSelectStyles(theme: DefaultTheme, settings?: Settings) {
         : isFocused
         ? theme.colors.tenantPrimary
         : `${colors.borderDark}`,
-      borderRadius: stylingConsts.borderRadius,
+      borderRadius,
       minHeight,
       // Matches the disabled style of defaultInputStyle (e.g. Input)
       backgroundColor: isDisabled ? `${colors.grey100}` : '#fff',
@@ -79,7 +80,7 @@ function getSelectStyles(theme: DefaultTheme, settings?: Settings) {
     }),
     menuList: (base) => ({
       ...base,
-      borderRadius: stylingConsts.borderRadius,
+      borderRadius,
     }),
     option: (base, { isFocused }) => ({
       ...base,

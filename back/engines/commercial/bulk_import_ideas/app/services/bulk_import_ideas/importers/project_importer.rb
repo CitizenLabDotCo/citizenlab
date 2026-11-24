@@ -143,8 +143,7 @@ module BulkImportIdeas::Importers
             option = find_object_by_title(field.options, option_title)
             next unless option
 
-            # For domicile fields, we need to use the area ID as the option key, except for 'outside' option
-            option_keys << (field.domicile? && option.key != 'outside' ? option.area.id : option.key)
+            option_keys << option.answer_key
           end
 
           value = option_keys.compact.uniq

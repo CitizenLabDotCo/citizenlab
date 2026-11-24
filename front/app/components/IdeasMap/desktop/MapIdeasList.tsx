@@ -51,7 +51,12 @@ interface Props {
 
 const MapIdeasList = memo<Props>(
   ({ projectId, phaseId, className, onSelectIdea, inputFiltersProps }) => {
-    const { sort: sortParam, search, topics } = useSearch({ strict: false });
+    const {
+      sort: sortParam,
+      search,
+      topics,
+      answers,
+    } = useSearch({ strict: false });
     const isTabletOrSmaller = useBreakpoint('tablet');
     const { formatMessage } = useIntl();
     const [showFilters, setShowFilters] = useState(false);
@@ -60,13 +65,14 @@ const MapIdeasList = memo<Props>(
       ideaQueryParameters,
       onChangeStatus,
       onChangeTopics,
+      onChangeAnswer,
       handleSortOnChange,
       ideasFilterCounts,
       numberOfSearchResults,
     } = inputFiltersProps ?? {};
 
     const hasInputFilterProps =
-      onChangeStatus && onChangeTopics && handleSortOnChange;
+      onChangeStatus && onChangeTopics && onChangeAnswer && handleSortOnChange;
 
     const { data: phase } = usePhase(phaseId);
 
@@ -87,13 +93,15 @@ const MapIdeasList = memo<Props>(
       sort,
       search,
       input_topics,
+      custom_field_answers: answers,
     });
 
     const handleSearchOnChange = useCallback((search: string | null) => {
       updateSearchParams({ search });
     }, []);
 
-    const isFiltered = (search && search.length > 0) || input_topics.length > 0;
+    const isFiltered =
+      (search && search.length > 0) || input_topics.length > 0 || !!answers;
 
     const methodConfig =
       // TODO: Fix this the next time the file is edited.
@@ -131,12 +139,14 @@ const MapIdeasList = memo<Props>(
               onSearch={handleSearchOnChange}
               onChangeStatus={onChangeStatus}
               onChangeTopics={onChangeTopics}
+              onChangeAnswer={onChangeAnswer}
               handleSortOnChange={handleSortOnChange}
               opened={showFilters}
               onClose={() => {
                 setShowFilters(false);
               }}
               projectId={projectId}
+              phaseId={phaseId}
             />
           </>
         )}

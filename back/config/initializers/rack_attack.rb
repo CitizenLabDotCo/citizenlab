@@ -13,6 +13,28 @@ class Rack::Attack
     def remote_ip
       @remote_ip ||= ActionDispatch::Request.new(env).remote_ip
     end
+
+    # The errors Rails turns into a 400 when it parses params (see
+    # ActionDispatch::Request#GET and #POST).
+    PARSE_ERRORS = [
+      EOFError, Rack::Utils::ParameterTypeError, Rack::Utils::InvalidParameterError,
+      Rack::QueryParser::ParamsTooDeepError
+    ].freeze
+
+    # Rack raises when it can't parse the query string or a form body, which
+    # bots send often. Raised here, that 500s the request before it is routed.
+    # Rails answers the same requests with a 400 when it parses their params.
+    # When only the body is broken, fall back to the query string's params, which
+    # the throttles can still use.
+    def params
+      super
+    rescue *PARSE_ERRORS
+      @params = begin
+        self.GET
+      rescue *PARSE_ERRORS
+        {}
+      end
+    end
   end
 end
 
@@ -24,9 +46,9 @@ class Rack::Attack
     safelist_ip(safe_ip)
   end
 
-  # The user ID a request authenticates as, reading params[:token] before the header like AuthToken::Authenticable#token.
+  # The user ID a request authenticates as, read from the auth cookie like AuthToken::Authenticable#token.
   USER_ID_FROM_JWT = lambda do |req|
-    jwt = req.params['token'].presence || req.env['HTTP_AUTHORIZATION']&.split&.last
+    jwt = AuthToken::Cookie.read(req)
     JWT.decode(jwt, nil, false, algorithm: 'RS256').first['sub'] # sub is the user ID
   rescue JWT::DecodeError
     nil
@@ -272,6 +294,21 @@ class Rack::Attack
     if %r{/web_api/v1/ideas/.+/authoring_assistance_responses}.match?(req.path) && req.post?
       req.remote_ip
     end
+  end
+
+  # AI assistant turns (a new message, or a decision on a proposed change), which run LLM
+  # calls.
+  AI_ASSISTANT_TURN_PATH = Regexp.union(
+    %r{\A/web_api/v1/ai_assistant_conversations/[^/]+/messages(\.[^/]+)?\z},
+    %r{\A/web_api/v1/ai_assistant_tool_calls/[^/]+/(approve|reject)(\.[^/]+)?\z}
+  )
+
+  throttle('ai_assistant_turns/user', limit: 60, period: 1.hour) do |req|
+    USER_ID_FROM_JWT.call(req) if req.post? && AI_ASSISTANT_TURN_PATH.match?(req.path)
+  end
+
+  throttle('ai_assistant_turns/ip', limit: 120, period: 1.hour) do |req|
+    req.remote_ip if req.post? && AI_ASSISTANT_TURN_PATH.match?(req.path)
   end
 
   # Similar inputs responses by IP.

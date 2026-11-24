@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { IOption } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
@@ -12,23 +12,38 @@ import {
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import ExpandAllContext from 'containers/Admin/projects/_shared/components/SettingsPanel/ExpandAllContext';
 import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';
+import PanelHeading from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelHeading';
+import projectMessages from 'containers/Admin/projects/project/messages';
 
 import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle';
+import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 
 import { useIntl } from 'utils/cl-intl';
+import { useSearch } from 'utils/router';
 
 import configMessages from '../../../messages';
 import CustomFieldPicker from '../../shared/CustomFieldPicker';
 import SimilarityDetectionConfig from '../../shared/SimilarityDetectionConfig';
 import ViewSelector from '../../shared/ViewSelector';
+import ModerationAssignee from '../_shared/ModerationAssignee';
 import PrescreeningModeSelector from '../_shared/PrescreeningModeSelector';
+import ReactionLimitSettings from '../_shared/ReactionLimitSettings';
 import SortingPicker from '../_shared/SortingPicker';
+import useAssigneeSummary from '../_shared/useAssigneeSummary';
+import useParticipantActionsSummary from '../_shared/useParticipantActionsSummary';
 import UserActions from '../_shared/UserActions';
 
 import DislikingSettings from './DislikingSettings';
+import DislikingToggle from './DislikingToggle';
+import styles from './IdeationInputs.module.css';
+import 'design-system/tokens.css';
+
+const NO_EXPAND_ALL = { count: 0 };
 
 interface Props {
+  moderationAction?: ReactNode;
   input_term: InputTerm | undefined;
   handleInputTermChange: (option: IOption) => void;
   submission_enabled?: boolean | null;
@@ -85,6 +100,7 @@ interface Props {
 }
 
 const IdeationInputs = ({
+  moderationAction,
   input_term,
   handleInputTermChange,
   submission_enabled,
@@ -126,12 +142,21 @@ const IdeationInputs = ({
   phaseId,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const { setup_action } = useSearch({ strict: false });
+  const assigneeSummary = useAssigneeSummary(phaseId);
+  const actionsSummary = useParticipantActionsSummary({
+    submission_enabled,
+    commenting_enabled,
+    reacting_enabled,
+  });
+  const getApiErrorMessage = useApiErrorText();
   const prescreeningIdeationEnabled = useFeatureFlag({
     name: 'prescreening_ideation',
   });
 
   const anonymity = (
     <AnonymousPostingToggle
+      variant={layout === 'panel' ? 'panel' : undefined}
       allow_anonymous_participation={allow_anonymous_participation}
       handleAllowAnonymousParticipationOnChange={
         handleAllowAnonymousParticipationOnChange
@@ -149,10 +174,45 @@ const IdeationInputs = ({
 
   const screening = prescreeningIdeationEnabled ? (
     <PrescreeningModeSelector
+      variant={layout === 'panel' ? 'panel' : undefined}
       prescreening_mode={prescreening_mode}
       onPrescreeningModeChange={onPrescreeningModeChange}
     />
   ) : null;
+
+  const likes = reacting_enabled && (
+    <ReactionLimitSettings
+      name="likingmethod"
+      title={formatMessage(projectMessages.likingMethodTitle)}
+      method={reacting_like_method}
+      max={reacting_like_limited_max}
+      maxLabel={formatMessage(projectMessages.maxLikes)}
+      onMethodChange={handleReactingLikeMethodOnChange}
+      onMaxChange={handleLikingLimitOnChange}
+      methodError={getApiErrorMessage(apiErrors?.reacting_method)}
+      maxError={
+        [noLikingLimitError, getApiErrorMessage(apiErrors?.reacting_limit)]
+          .filter(Boolean)
+          .join(' ') || undefined
+      }
+    />
+  );
+
+  const dislikingToggle = (
+    <DislikingToggle
+      reacting_enabled={reacting_enabled}
+      reacting_dislike_enabled={reacting_dislike_enabled}
+      reacting_dislike_method={reacting_dislike_method}
+      reacting_dislike_limited_max={reacting_dislike_limited_max}
+      noDislikingLimitError={noDislikingLimitError}
+      apiErrors={apiErrors}
+      handleReactingDislikeEnabledOnChange={
+        handleReactingDislikeEnabledOnChange
+      }
+      handleReactingDislikeMethodOnChange={handleReactingDislikeMethodOnChange}
+      handleDislikingLimitOnChange={handleDislikingLimitOnChange}
+    />
+  );
 
   const userActions = (
     <UserActions
@@ -169,6 +229,15 @@ const IdeationInputs = ({
       handleReactingLikeMethodOnChange={handleReactingLikeMethodOnChange}
       handleLikingLimitOnChange={handleLikingLimitOnChange}
       phaseId={phaseId}
+      layout={layout}
+      reactingSettings={
+        layout === 'panel' && (
+          <>
+            <div className={styles.reactingSettings}>{likes}</div>
+            {dislikingToggle}
+          </>
+        )
+      }
     />
   );
 
@@ -190,6 +259,7 @@ const IdeationInputs = ({
 
   const similarity = (
     <SimilarityDetectionConfig
+      variant={layout === 'panel' ? 'panel' : undefined}
       apiErrors={apiErrors}
       similarity_enabled={similarity_enabled}
       similarity_threshold_title={similarity_threshold_title}
@@ -201,6 +271,7 @@ const IdeationInputs = ({
 
   const views = (
     <ViewSelector
+      variant={layout === 'panel' ? 'panel' : undefined}
       presentation_mode={presentation_mode}
       available_views={available_views}
       apiErrors={apiErrors}
@@ -211,6 +282,7 @@ const IdeationInputs = ({
 
   const sorting = (
     <SortingPicker
+      variant={layout === 'panel' ? 'panel' : undefined}
       options={[
         { key: 'trending', value: 'trending' },
         { key: 'comments_count', value: 'comments_count' },
@@ -228,34 +300,52 @@ const IdeationInputs = ({
   if (layout === 'panel') {
     return (
       <>
-        <PanelGroup
-          label={formatMessage(configMessages.participantActionsGroup)}
-          defaultOpen
-        >
-          {userActions}
-          {disliking}
-        </PanelGroup>
-        <PanelGroup
-          label={formatMessage(configMessages.moderationGroup)}
-          defaultOpen
-        >
-          {anonymity}
-          {screening}
-          {similarity}
-        </PanelGroup>
-        <PanelGroup
-          label={formatMessage(configMessages.displayGroup)}
-          defaultOpen
-        >
+        <div className={styles.heading}>
+          <PanelHeading
+            label={formatMessage(configMessages.howIdeasAreShown)}
+          />
+        </div>
+        <ExpandAllContext.Provider value={NO_EXPAND_ALL}>
           {views}
           {sorting}
-        </PanelGroup>
+        </ExpandAllContext.Provider>
+        <div className={styles.heading}>
+          <PanelHeading
+            label={formatMessage(configMessages.settingsGroup)}
+            expandable
+          />
+        </div>
         <PanelGroup
-          label={formatMessage(configMessages.submissionNameGroup)}
-          defaultOpen
+          label={formatMessage(configMessages.participantActionsGroup)}
+          summary={actionsSummary}
+          hasError={
+            !!noLikingLimitError ||
+            !!noDislikingLimitError ||
+            !!apiErrors?.reacting_limit ||
+            !!apiErrors?.reacting_method ||
+            !!apiErrors?.submission_enabled ||
+            !!apiErrors?.commenting_enabled ||
+            !!apiErrors?.reacting_enabled
+          }
         >
-          {inputTerm}
+          {userActions}
         </PanelGroup>
+        <div id="phase-moderation-settings">
+          <PanelGroup
+            label={formatMessage(configMessages.moderationGroup)}
+            // An unsaved phase keeps it open for its save-first action.
+            defaultOpen={!phaseId || setup_action === 'moderation'}
+            summary={assigneeSummary}
+          >
+            <div className={styles.moderation}>
+              {!phaseId && moderationAction}
+              <ModerationAssignee phaseId={phaseId} />
+              {screening}
+              {anonymity}
+              {similarity}
+            </div>
+          </PanelGroup>
+        </div>
       </>
     );
   }

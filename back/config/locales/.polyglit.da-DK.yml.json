@@ -379,6 +379,11 @@
     "verified_at": "2026-03-18T12:49:36.745075Z",
     "verified_by": "Admin"
   },
+  "errors.messages.ai_processing_not_allowed": {
+    "state": "verified",
+    "verified_at": "2026-11-11T13:10:00.522652Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "errors.messages.in_the_past": {
     "state": "verified",
     "verified_at": "2026-03-19T13:12:54.406340Z",
@@ -393,6 +398,31 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.745075Z",
     "verified_by": "Admin"
+  },
+  "errors.messages.not_found": {
+    "state": "verified",
+    "verified_at": "2026-11-11T13:10:00.522652Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "errors.messages.not_in_project": {
+    "state": "verified",
+    "verified_at": "2026-11-11T13:10:00.522652Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "errors.messages.not_utf8": {
+    "state": "verified",
+    "verified_at": "2026-11-11T13:10:00.522652Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "errors.messages.too_many_in_conversation": {
+    "state": "verified",
+    "verified_at": "2026-11-11T13:10:00.522652Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "errors.messages.unsupported_file_type": {
+    "state": "verified",
+    "verified_at": "2026-11-11T13:10:00.522652Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "events.council_meeting_description": {
     "state": "verified",
@@ -538,6 +568,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.745075Z",
     "verified_by": "Admin"
+  },
+  "form_builder.pdf_export.multipoint_print_description": {
+    "state": "verified",
+    "verified_at": "2026-10-03T15:29:50.754670Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "form_builder.pdf_export.optional": {
     "state": "verified",

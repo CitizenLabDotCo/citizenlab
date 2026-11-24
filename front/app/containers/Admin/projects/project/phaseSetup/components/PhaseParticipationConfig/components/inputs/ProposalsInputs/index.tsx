@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { Input, IOption } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
@@ -12,24 +12,39 @@ import {
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import ExpandAllContext from 'containers/Admin/projects/_shared/components/SettingsPanel/ExpandAllContext';
 import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';
+import PanelHeading from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelHeading';
 import messages from 'containers/Admin/projects/project/messages';
 
 import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle';
+import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { useSearch } from 'utils/router';
 
 import configMessages from '../../../messages';
 import CustomFieldPicker from '../../shared/CustomFieldPicker';
 import SimilarityDetectionConfig from '../../shared/SimilarityDetectionConfig';
 import ViewSelector from '../../shared/ViewSelector';
+import ModerationAssignee from '../_shared/ModerationAssignee';
+import NumberSettingRow from '../_shared/NumberSettingRow';
 import PrescreeningModeSelector from '../_shared/PrescreeningModeSelector';
+import ReactionLimitSettings from '../_shared/ReactionLimitSettings';
 import SortingPicker from '../_shared/SortingPicker';
+import useAssigneeSummary from '../_shared/useAssigneeSummary';
+import useParticipantActionsSummary from '../_shared/useParticipantActionsSummary';
 import UserActions from '../_shared/UserActions';
 
+import styles from './ProposalsInputs.module.css';
+import 'design-system/tokens.css';
+
+const NO_EXPAND_ALL = { count: 0 };
+
 interface Props {
+  moderationAction?: ReactNode;
   input_term: InputTerm | undefined;
   handleInputTermChange: (option: IOption) => void;
   submission_enabled?: boolean | null;
@@ -81,6 +96,7 @@ interface Props {
 }
 
 const ProposalsInputs = ({
+  moderationAction,
   input_term,
   handleInputTermChange,
   submission_enabled,
@@ -121,6 +137,14 @@ const ProposalsInputs = ({
   phaseId,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const { setup_action } = useSearch({ strict: false });
+  const assigneeSummary = useAssigneeSummary(phaseId);
+  const actionsSummary = useParticipantActionsSummary({
+    submission_enabled,
+    commenting_enabled,
+    reacting_enabled,
+  });
+  const getApiErrorMessage = useApiErrorText();
   const prescreeningFeatureEnabled = useFeatureFlag({
     name: 'prescreening',
   });
@@ -172,8 +196,63 @@ const ProposalsInputs = ({
     </SectionField>
   );
 
+  const requirements = (
+    <PanelGroup
+      label={formatMessage(configMessages.proposalRequirementsGroup)}
+      hasError={
+        !!reactingThresholdError ||
+        !!expireDateLimitError ||
+        !!apiErrors?.reacting_threshold ||
+        !!apiErrors?.expire_days_limit
+      }
+      summary={
+        reacting_threshold && expire_days_limit
+          ? formatMessage(configMessages.proposalRequirementsSummary, {
+              votes: reacting_threshold,
+              days: expire_days_limit,
+            })
+          : undefined
+      }
+    >
+      <NumberSettingRow
+        id="reacting_threshold"
+        label={formatMessage(messages.reactingThreshold)}
+        value={reacting_threshold}
+        min={2}
+        onChange={handleReactingThresholdChange}
+        errorMessage={
+          [
+            reactingThresholdError,
+            getApiErrorMessage(apiErrors?.reacting_threshold),
+          ]
+            .filter(Boolean)
+            .join(' ') || undefined
+        }
+      />
+      <NumberSettingRow
+        id="expire_days_limit"
+        label={formatMessage(messages.expireDaysLimit)}
+        value={expire_days_limit}
+        min={1}
+        onChange={handleDaysLimitChange}
+        errorMessage={
+          [
+            expireDateLimitError,
+            getApiErrorMessage(apiErrors?.expire_days_limit),
+          ]
+            .filter(Boolean)
+            .join(' ') || undefined
+        }
+      />
+      <p className={styles.note}>
+        {formatMessage(configMessages.proposalRequirementsNote)}
+      </p>
+    </PanelGroup>
+  );
+
   const anonymity = (
     <AnonymousPostingToggle
+      variant={layout === 'panel' ? 'panel' : undefined}
       allow_anonymous_participation={allow_anonymous_participation}
       handleAllowAnonymousParticipationOnChange={
         handleAllowAnonymousParticipationOnChange
@@ -184,10 +263,29 @@ const ProposalsInputs = ({
 
   const screening = prescreeningFeatureEnabled ? (
     <PrescreeningModeSelector
+      variant={layout === 'panel' ? 'panel' : undefined}
       prescreening_mode={prescreening_mode}
       onPrescreeningModeChange={onPrescreeningModeChange}
     />
   ) : null;
+
+  const likes = reacting_enabled && (
+    <ReactionLimitSettings
+      name="likingmethod"
+      title={formatMessage(messages.likingMethodTitle)}
+      method={reacting_like_method}
+      max={reacting_like_limited_max}
+      maxLabel={formatMessage(messages.maxLikes)}
+      onMethodChange={handleReactingLikeMethodOnChange}
+      onMaxChange={handleLikingLimitOnChange}
+      methodError={getApiErrorMessage(apiErrors?.reacting_method)}
+      maxError={
+        [noLikingLimitError, getApiErrorMessage(apiErrors?.reacting_limit)]
+          .filter(Boolean)
+          .join(' ') || undefined
+      }
+    />
+  );
 
   const userActions = (
     <UserActions
@@ -204,11 +302,18 @@ const ProposalsInputs = ({
       handleReactingLikeMethodOnChange={handleReactingLikeMethodOnChange}
       handleLikingLimitOnChange={handleLikingLimitOnChange}
       phaseId={phaseId}
+      layout={layout}
+      reactingSettings={
+        layout === 'panel' && (
+          <div className={styles.reactingSettings}>{likes}</div>
+        )
+      }
     />
   );
 
   const similarity = (
     <SimilarityDetectionConfig
+      variant={layout === 'panel' ? 'panel' : undefined}
       apiErrors={apiErrors}
       similarity_enabled={similarity_enabled}
       similarity_threshold_title={similarity_threshold_title}
@@ -220,6 +325,7 @@ const ProposalsInputs = ({
 
   const views = (
     <ViewSelector
+      variant={layout === 'panel' ? 'panel' : undefined}
       presentation_mode={presentation_mode}
       available_views={available_views}
       apiErrors={apiErrors}
@@ -231,6 +337,7 @@ const ProposalsInputs = ({
 
   const sorting = (
     <SortingPicker
+      variant={layout === 'panel' ? 'panel' : undefined}
       options={[
         { key: 'trending', value: 'trending' },
         { key: 'comments_count', value: 'comments_count' },
@@ -238,6 +345,7 @@ const ProposalsInputs = ({
         { key: 'popular', value: 'popular' },
         { key: 'newest', value: 'new' },
         { key: 'oldest', value: '-new' },
+        { key: 'status_priority', value: 'status_priority' },
       ]}
       ideas_order={ideas_order}
       apiErrors={apiErrors}
@@ -248,40 +356,52 @@ const ProposalsInputs = ({
   if (layout === 'panel') {
     return (
       <>
+        <div className={styles.heading}>
+          <PanelHeading
+            label={formatMessage(configMessages.howProposalsAreShown)}
+          />
+        </div>
+        <ExpandAllContext.Provider value={NO_EXPAND_ALL}>
+          {views}
+          {sorting}
+        </ExpandAllContext.Provider>
+        <div className={styles.heading}>
+          <PanelHeading
+            label={formatMessage(configMessages.settingsGroup)}
+            expandable
+          />
+        </div>
         <PanelGroup
           label={formatMessage(configMessages.participantActionsGroup)}
-          defaultOpen
+          summary={actionsSummary}
+          hasError={
+            !!noLikingLimitError ||
+            !!apiErrors?.reacting_limit ||
+            !!apiErrors?.reacting_method ||
+            !!apiErrors?.submission_enabled ||
+            !!apiErrors?.commenting_enabled ||
+            !!apiErrors?.reacting_enabled
+          }
         >
           {userActions}
         </PanelGroup>
-        <PanelGroup
-          label={formatMessage(configMessages.votesGroup)}
-          defaultOpen
-        >
-          {expiry}
-          {threshold}
-        </PanelGroup>
-        <PanelGroup
-          label={formatMessage(configMessages.moderationGroup)}
-          defaultOpen
-        >
-          {anonymity}
-          {screening}
-          {similarity}
-        </PanelGroup>
-        <PanelGroup
-          label={formatMessage(configMessages.displayGroup)}
-          defaultOpen
-        >
-          {views}
-          {sorting}
-        </PanelGroup>
-        <PanelGroup
-          label={formatMessage(configMessages.submissionNameGroup)}
-          defaultOpen
-        >
-          {inputTerm}
-        </PanelGroup>
+        {requirements}
+        <div id="phase-moderation-settings">
+          <PanelGroup
+            label={formatMessage(configMessages.moderationGroup)}
+            // An unsaved phase keeps it open for its save-first action.
+            defaultOpen={!phaseId || setup_action === 'moderation'}
+            summary={assigneeSummary}
+          >
+            <div className={styles.moderation}>
+              {!phaseId && moderationAction}
+              <ModerationAssignee phaseId={phaseId} />
+              {screening}
+              {anonymity}
+              {similarity}
+            </div>
+          </PanelGroup>
+        </div>
       </>
     );
   }

@@ -1,4 +1,4 @@
-import { IRelationship, Multiloc } from 'typings';
+import { CLErrorsWrapper, IRelationship, Multiloc } from 'typings';
 
 import { UserDataCollection } from 'api/permissions/types';
 import { PhaseActionDescriptors } from 'api/projects/types';
@@ -34,7 +34,18 @@ export interface IPhaseData {
   };
 }
 
+export type SetupReviewCard =
+  | 'input_term'
+  | 'demographics'
+  | 'form'
+  | 'survey_method'
+  | 'survey_placement'
+  | 'voting_method'
+  | 'views'
+  | 'sorting';
+
 export interface IPhaseAttributes {
+  reviewed_setup_cards?: SetupReviewCard[];
   voting_filtering_enabled: boolean;
   placement_type: PhasePlacementType;
   title_multiloc: Multiloc;
@@ -76,6 +87,7 @@ export interface IPhaseAttributes {
   /** For budgeting it's: for each idea multiply price of the idea
    * with the idea's baskets_count, then sum all those to get the total idea votes for the phase  */
   votes_count: number;
+  manual_votes_count: number;
   total_votes_amount: number;
   report_public: boolean;
   native_survey_title_multiloc?: Multiloc;
@@ -109,7 +121,7 @@ export interface IPhase {
 
 export interface IUpdatedPhaseProperties {
   project_id?: string;
-  placement_type?: PhasePlacementType; // Only settable on creation.
+  placement_type?: PhasePlacementType;
   title_multiloc?: Multiloc;
   description_multiloc?: Multiloc;
   draft_description_multiloc?: Multiloc;
@@ -156,22 +168,31 @@ export interface IUpdatedPhaseProperties {
 
 export interface AddPhaseObject extends IUpdatedPhaseProperties {
   projectId: string;
+  reviewed_setup_cards?: SetupReviewCard[];
 }
 
 export interface UpdatePhaseObject extends IUpdatedPhaseProperties {
   phaseId: string;
+  timeline_phase_dates?: {
+    id: string;
+    start_at?: string;
+    end_at?: string | null;
+  }[];
 }
 
-export type TSurveyService =
-  | 'typeform'
-  | 'survey_xact'
-  | 'survey_monkey'
-  | 'google_forms'
-  | 'enalyzer'
-  | 'qualtrics'
-  | 'smart_survey'
-  | 'microsoft_forms'
-  | 'snap_survey';
+export const surveyServices = [
+  'typeform',
+  'survey_xact',
+  'survey_monkey',
+  'google_forms',
+  'enalyzer',
+  'qualtrics',
+  'smart_survey',
+  'microsoft_forms',
+  'snap_survey',
+] as const;
+
+export type TSurveyService = (typeof surveyServices)[number];
 
 export const participationMethods = [
   'ideation',
@@ -204,6 +225,7 @@ export const ideaSortMethods = [
   'popular',
   'new',
   '-new',
+  'status_priority',
 ] as const;
 
 export type IdeaSortMethod = (typeof ideaSortMethods)[number];
@@ -230,3 +252,7 @@ export const presentationModes = ['card', 'map', 'feed'] as const;
 export type PresentationMode = (typeof presentationModes)[number];
 
 export type PrescreeningMode = 'flagged_only' | 'all';
+
+export interface PhaseUpdateError extends CLErrorsWrapper {
+  meta?: { phase_id: string };
+}

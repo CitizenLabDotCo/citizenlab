@@ -55,6 +55,8 @@ module ContentBuilder
 
         def update
           layout.assign_attributes params_for_update
+          # Again with the new content, so the policy sees the files this save adds.
+          authorize layout
           side_fx_service.before_update layout, current_user
           if layout.save
             side_fx_service.after_update layout, current_user

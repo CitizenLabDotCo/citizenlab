@@ -255,6 +255,35 @@ resource 'Campaigns' do
         expect(response_data.dig(:attributes, :html)).to be_present
         expect(response_data.dig(:attributes, :subject)).to be_present
       end
+
+      context 'with a locale' do
+        parameter :locale, 'Render the preview in this platform locale instead of the current user\'s locale', required: false
+
+        let(:campaign) { create(:manual_campaign, subject_multiloc: { 'en' => 'English subject', 'nl-NL' => 'Dutch subject' }) }
+
+        example 'Get a campaign HTML preview in another locale' do
+          do_request(locale: 'nl-NL')
+          assert_status 200
+          expect(response_data.dig(:attributes, :subject)).to eq 'Dutch subject'
+          expect(@user.reload.locale).to eq 'en'
+        end
+
+        example 'Ignores a locale that is not configured on the platform', document: false do
+          do_request(locale: 'xx-XX')
+          assert_status 200
+          expect(response_data.dig(:attributes, :subject)).to eq 'English subject'
+        end
+
+        context 'for an automated campaign' do
+          let(:campaign) { create(:invite_received_campaign, subject_multiloc: { 'en' => 'English invite', 'nl-NL' => 'Dutch invite' }) }
+
+          example 'Get an automated campaign HTML preview in another locale', document: false do
+            do_request(locale: 'nl-NL')
+            assert_status 200
+            expect(response_data.dig(:attributes, :subject)).to eq 'Dutch invite'
+          end
+        end
+      end
     end
 
     post 'web_api/v1/campaigns' do
@@ -645,6 +674,22 @@ resource 'Campaigns' do
           expect(json_response_body).to include_response_error(:base, 'sms_not_configured')
           expect(EmailCampaigns::Sms::Delivery.count).to eq(0)
         end
+      end
+    end
+
+    post 'web_api/v1/campaigns/:id/send_email_preview' do
+      include ActiveJob::TestHelper
+
+      parameter :locale, 'Send the preview in this platform locale instead of the current user\'s locale', required: false
+
+      let(:campaign) { create(:manual_campaign, subject_multiloc: { 'en' => 'English subject', 'nl-NL' => 'Dutch subject' }) }
+      let(:id) { campaign.id }
+
+      example 'Send a preview email in another locale' do
+        perform_enqueued_jobs(only: ActionMailer::MailDeliveryJob) { do_request(locale: 'nl-NL') }
+        assert_status 200
+        expect(ActionMailer::Base.deliveries.last.subject).to eq 'Dutch subject'
+        expect(@user.reload.locale).to eq 'en'
       end
     end
 

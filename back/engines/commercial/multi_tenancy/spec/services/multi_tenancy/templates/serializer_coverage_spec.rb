@@ -69,7 +69,8 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
         manual_voters_amount
         manual_voters_last_updated_at
         manual_voters_last_updated_by_id
-      ], # manual-vote operational state
+        reviewed_setup_cards
+      ], # manual-vote operational state / setup review progress
 
       'Project' => %w[
         completed_setup_steps
@@ -117,6 +118,14 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
         Analytics::DimensionType
       ],
 
+      # The AI assistant's chats with individual admins — per-user runtime data, never
+      # templated or copied.
+      ai_assistant: %w[
+        AIAssistant::Conversation
+        AIAssistant::Message
+        AIAssistant::ToolCall
+      ],
+
       # AI analysis, insights and embeddings — derived from user content.
       analysis: %w[
         Analysis::AdditionalCustomField
@@ -155,6 +164,7 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
 
       # Per-user runtime objects regenerated through normal use.
       user_runtime: %w[
+        PulseCheck
         Notification
         Onboarding::CampaignDismissal
       ],
@@ -217,6 +227,17 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
       representativeness: %w[
         CustomFieldBin
         UserCustomFields::Representativeness::RefDistribution
+      ],
+
+      # AI-authored page builder blocks, the answers they cached and the record of
+      # the runs that wrote them. All of it stays in the tenant that made it: the
+      # feature is behind the `llm_reporting` flag and has no template story yet.
+      llm_reporting: %w[
+        ContentBuilder::CustomBlock
+        ContentBuilder::CustomBlockVersion
+        ContentBuilder::QuerySnapshot
+        ReportBuilder::GenerationTranscript
+        ReportBuilder::ReportChat
       ],
 
       # Files engine — Preview/Transcript are derived artifacts (generated from the file),

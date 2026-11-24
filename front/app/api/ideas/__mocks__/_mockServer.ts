@@ -99,6 +99,7 @@ export const ideaDataWithVotes: IIdeaData[] = [
         ],
       },
       phases: { data: [] },
+      creation_phase: { data: null },
       author: {
         data: {
           id: '8ea3a61c-e1bd-4756-a54d-c092553abccd',
@@ -213,6 +214,7 @@ export const ideaDataWithVotes: IIdeaData[] = [
       ideas_phases: { data: [] },
       idea_images: { data: [] },
       phases: { data: [] },
+      creation_phase: { data: null },
       author: {
         data: {
           id: '8ea3a61c-e1bd-4756-a54d-c092553abccd',
@@ -333,6 +335,7 @@ export const ideaData: IIdeaData[] = [
         ],
       },
       phases: { data: [] },
+      creation_phase: { data: null },
       author: {
         data: {
           id: '8ea3a61c-e1bd-4756-a54d-c092553abccd',
@@ -447,6 +450,7 @@ export const ideaData: IIdeaData[] = [
       ideas_phases: { data: [] },
       idea_images: { data: [] },
       phases: { data: [] },
+      creation_phase: { data: null },
       author: {
         data: {
           id: '8ea3a61c-e1bd-4756-a54d-c092553abccd',

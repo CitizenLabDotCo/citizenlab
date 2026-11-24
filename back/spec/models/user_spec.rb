@@ -890,7 +890,9 @@ RSpec.describe User do
         build_stubbed(:admin, email: 'breek.nou.mijn.klomp@govocal.NL'),
         build_stubbed(:admin, email: 'bigger@govocal.us'),
         build_stubbed(:admin, email: 'magdalena@govocal.cl'),
-        build_stubbed(:admin, email: 'hello+admin@GOVOCAL.UK')
+        build_stubbed(:admin, email: 'hello+admin@GOVOCAL.UK'),
+        build_stubbed(:admin, email: 'hello@demo.govocal.com'),
+        build_stubbed(:admin, email: 'hello@Demo.CitizenLab.EU')
       ]
 
       expect(users).to all be_super_admin
@@ -901,6 +903,11 @@ RSpec.describe User do
         build_stubbed(:admin, email: 'hello@citizenlab.com'),
         build_stubbed(:admin, email: 'citizenlab.co@gmail.com'),
         build_stubbed(:admin, email: 'govocal.com@gmail.com'),
+        build_stubbed(:admin, email: 'hello@evilgovocal.com'),
+        build_stubbed(:admin, email: 'hello@evil-govocal.com'),
+        build_stubbed(:admin, email: 'hello@demo.evilgovocal.com'),
+        build_stubbed(:admin, email: 'hello@govocal.com.evil.io'),
+        build_stubbed(:admin, email: 'hello@notcitizenlab.co'),
         build_stubbed(:admin)
       ]
       expect(strangers).not_to include(be_super_admin)
@@ -1105,6 +1112,35 @@ RSpec.describe User do
 
         expect(build(:admin).offered_early_access_features).to eq({ 'general_feature' => 'general' })
       end
+
+      context 'when the platform upgrades the internal feature' do
+        before do
+          AppConfiguration.instance.settings['internal_feature'] = {
+            'allowed' => false, 'enabled' => false, 'early_access_upgrade' => true
+          }
+        end
+
+        it 'offers the feature to an admin as general' do
+          expect(build(:admin).offered_early_access_features)
+            .to eq({ 'general_feature' => 'general', 'internal_feature' => 'general' })
+        end
+
+        it 'accepts an opt-in from an admin' do
+          expect(build(:admin, early_access_opt_ins: ['internal_feature'])).to be_valid
+        end
+
+        it 'still offers nothing to a resident' do
+          expect(build(:user).offered_early_access_features).to be_empty
+        end
+      end
+
+      it 'ignores an upgrade on a general feature' do
+        AppConfiguration.instance.settings['general_feature'] = {
+          'allowed' => false, 'enabled' => false, 'early_access_upgrade' => true
+        }
+
+        expect(build(:admin).offered_early_access_features).to eq({ 'general_feature' => 'general' })
+      end
     end
 
     describe '#early_access_overrides' do
@@ -1123,6 +1159,13 @@ RSpec.describe User do
       it 'drops an internal feature an admin is no longer eligible for' do
         admin = build(:super_admin, early_access_opt_ins: ['internal_feature'])
         admin.email = 'someone@example.com'
+
+        expect(admin.early_access_overrides).to be_empty
+      end
+
+      it 'drops an internal feature when the platform removes its upgrade' do
+        admin = build(:admin, early_access_opt_ins: ['internal_feature'])
+        AppConfiguration.instance.settings['internal_feature'] = { 'early_access_upgrade' => false }
 
         expect(admin.early_access_overrides).to be_empty
       end
@@ -1210,6 +1253,19 @@ RSpec.describe User do
     it 'is set when an invited user accepts the invite' do
       u = create(:invited_user)
       u.update!(invite_status: 'accepted')
+      expect(u.registration_completed_at).not_to be_nil
+    end
+
+    it 'is not set when an invited user accepts the invite with another email' do
+      u = create(:invited_user)
+      u.update!(invite_status: 'accepted', email: 'someone.else@example.com')
+      expect(u.registration_completed_at).to be_nil
+      expect(u.email_confirmed_at).to be_nil
+    end
+
+    it 'is set when an invited user accepts the invite with a different-case email' do
+      u = create(:invited_user)
+      u.update!(invite_status: 'accepted', email: u.email.upcase)
       expect(u.registration_completed_at).not_to be_nil
     end
 

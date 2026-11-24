@@ -139,7 +139,8 @@ context 'ACM verification (Oostende Itsme)' do
     let!(:token) { AuthToken::AuthToken.new(payload: existing_user.to_token_payload).token }
 
     it 'verifies an existing user' do
-      get "/auth/acm?token=#{token}&verification_pathname=/some-page"
+      cookies[AuthToken::Cookie::NAME] = token
+      get '/auth/acm?verification=true&verification_pathname=/some-page'
       follow_redirect!
 
       expect(response).to redirect_to('/en/some-page?verification_success=true')
@@ -152,7 +153,8 @@ context 'ACM verification (Oostende Itsme)' do
       before { stub_wijk_budget_api({ geldig: false, redenNietGeldig: 'ERR11' }) }
 
       it 'verifies an existing user if outside the area, but sets RRN result to "lives_outside"' do
-        get "/auth/acm?token=#{token}&verification_pathname=/some-page"
+        cookies[AuthToken::Cookie::NAME] = token
+        get '/auth/acm?verification=true&verification_pathname=/some-page'
         follow_redirect!
 
         expect(response).to redirect_to('/en/some-page?verification_success=true')
@@ -163,7 +165,8 @@ context 'ACM verification (Oostende Itsme)' do
       it 'verifies a user outside the area, but does not set RRN result if rrn verification is not enabled' do
         disable_rrn_verification
 
-        get "/auth/acm?token=#{token}&verification_pathname=/some-page"
+        cookies[AuthToken::Cookie::NAME] = token
+        get '/auth/acm?verification=true&verification_pathname=/some-page'
         follow_redirect!
 
         expect(response).to redirect_to('/en/some-page?verification_success=true')
@@ -176,7 +179,8 @@ context 'ACM verification (Oostende Itsme)' do
       before { stub_wijk_budget_api({ geldig: false, redenNietGeldig: 'ERR12' }) }
 
       it 'verfies an existing user if they are too young, but sets RRN result to "under_minimum_age"' do
-        get "/auth/acm?token=#{token}&verification_pathname=/some-page"
+        cookies[AuthToken::Cookie::NAME] = token
+        get '/auth/acm?verification=true&verification_pathname=/some-page'
         follow_redirect!
 
         expect(response).to redirect_to('/en/some-page?verification_success=true')
@@ -198,7 +202,7 @@ context 'ACM verification (Oostende Itsme)' do
       get '/auth/acm?sso_pathname=/some-page'
       follow_redirect!
 
-      expect(cookies[:cl2_jwt]).to be_present
+      expect(cookies[AuthToken::Cookie::NAME]).to be_present
       expect(response).to redirect_to('/en/some-page?sso_flow=signin&sso_success=true')
       expect(existing_user.reload.email).to eq('test@govocal.com')
       expect_user_to_be_identified(existing_user.reload)
@@ -213,7 +217,7 @@ context 'ACM verification (Oostende Itsme)' do
       get '/auth/acm?sso_pathname=/some-page'
       follow_redirect!
 
-      expect(cookies[:cl2_jwt]).to be_present
+      expect(cookies[AuthToken::Cookie::NAME]).to be_present
       expect(response).to redirect_to('/en/some-page?sso_flow=signin&sso_success=true')
       expect(existing_user.reload.email).to eq('test@govocal.com')
       expect_user_to_be_identified(existing_user.reload)
@@ -384,7 +388,8 @@ context 'ACM verification (Oostende Itsme)' do
       existing_user = create(:user, first_name: 'EXISTING', last_name: 'USER', email: 'test@govocal.com')
       token = AuthToken::AuthToken.new(payload: existing_user.to_token_payload).token
 
-      get "/auth/acm?token=#{token}&verification_pathname=/some-page"
+      cookies[AuthToken::Cookie::NAME] = token
+      get '/auth/acm?verification=true&verification_pathname=/some-page'
       follow_redirect!
 
       expect(response).to redirect_to('/en/some-page?verification_success=true')

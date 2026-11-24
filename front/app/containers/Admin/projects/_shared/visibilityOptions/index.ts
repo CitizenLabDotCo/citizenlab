@@ -35,7 +35,7 @@ export const OPEN_OPTIONS: VisibilityOption<Visibility>[] = [
     value: 'public',
     icon: 'users',
     label: messages.publishOpenEveryone,
-    description: messages.publishOpenEveryoneDescription,
+    description: messages.publishOpenEveryoneDescription2,
   },
   {
     value: 'admins',

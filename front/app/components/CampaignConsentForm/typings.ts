@@ -23,6 +23,7 @@ export interface GroupedCampaignConsent {
 export interface ConsentGroupView extends GroupedCampaignConsent {
   id: string;
   contentType: string;
+  isOpenByDefault: boolean;
 }
 
 export type ToggleGroupHandler = (

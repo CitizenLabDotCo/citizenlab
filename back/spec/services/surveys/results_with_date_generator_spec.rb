@@ -20,7 +20,7 @@ RSpec.describe Surveys::ResultsWithDateGenerator do
         let(:quarter) { 2 }
 
         it 'returns the correct totals' do
-          expect(generated_results[:results].count).to eq 20
+          expect(generated_results[:results].count).to eq 21
           expect(generated_results[:totalSubmissions]).to eq 4
         end
 
@@ -49,7 +49,7 @@ RSpec.describe Surveys::ResultsWithDateGenerator do
         let(:quarter) { '1' }
 
         it 'returns the correct totals' do
-          expect(generated_results[:results].count).to eq 20
+          expect(generated_results[:results].count).to eq 21
           expect(generated_results[:totalSubmissions]).to eq 23
         end
 

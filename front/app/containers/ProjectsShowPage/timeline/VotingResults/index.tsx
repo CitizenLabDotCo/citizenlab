@@ -6,7 +6,10 @@ import { IIdeaData } from 'api/ideas/types';
 import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
 import { VotingMethod } from 'api/phases/types';
 
+import PreviewSkeleton from 'components/PhasePreview/PreviewSkeleton';
+
 import { useIntl } from 'utils/cl-intl';
+import { usePhasePreview } from 'utils/phasePreview/runtime';
 
 import messages from './messages';
 import VotingResultCard from './VotingResultCard';
@@ -31,9 +34,11 @@ const VotingResults = ({ phaseId, votingMethod }: Props) => {
   });
 
   const smallerThanPhone = useBreakpoint('phone');
+  const preview = usePhasePreview();
 
   const ideasList = ideas?.pages.map((page) => page.data).flat();
   if (!ideasList) return null;
+  if (preview && ideasList.length === 0) return <PreviewSkeleton />;
 
   const getMx = (i: number) =>
     smallerThanPhone ? {} : i % 2 ? { ml: '8px' } : { mr: '8px' };
@@ -42,6 +47,7 @@ const VotingResults = ({ phaseId, votingMethod }: Props) => {
 
   return (
     <Box
+      id="voting-results"
       mt={smallerThanPhone ? '4px' : '8px'}
       w="100%"
       display="flex"

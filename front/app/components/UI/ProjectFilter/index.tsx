@@ -13,6 +13,7 @@ import { useTheme } from 'styled-components';
 import { IOption } from 'typings';
 
 import useAuthUser from 'api/me/useAuthUser';
+import { ParticipationMethod } from 'api/phases/types';
 import { IProjectData, PublicationStatus } from 'api/projects/types';
 import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
 import useInfiniteProjectsMiniAdmin from 'api/projects_mini_admin/useInfiniteProjectsMiniAdmin';
@@ -39,6 +40,7 @@ interface Option {
 
 interface Props {
   selectedProjectId?: string;
+  participationMethods?: ParticipationMethod[];
   excludeProjectId?: string;
   emptyOptionMessage?: MessageDescriptor;
   placeholder?: string;
@@ -68,6 +70,7 @@ const generateProjectOptions = (
 
 const ProjectFilter = ({
   selectedProjectId,
+  participationMethods,
   excludeProjectId,
   emptyOptionMessage,
   placeholder,
@@ -88,6 +91,7 @@ const ProjectFilter = ({
     {
       status: PUBLICATION_STATUSES,
       sort: 'alphabetically_asc',
+      participation_methods: participationMethods,
       search: debouncedSearchValue,
       discoverability: includeHiddenProjects
         ? ['listed', 'unlisted']
@@ -161,6 +165,7 @@ const ProjectFilter = ({
   const selectedOption =
     allProjectOptions.find((option) => option.value === selectedProjectId) ||
     null;
+  const controlHeight = `${stylingConsts.inputHeight}px`;
 
   return (
     <Box {...boxProps} width="100%">
@@ -184,8 +189,8 @@ const ProjectFilter = ({
           control: (base, { isFocused }) => ({
             ...base,
             width: '100%',
-            minHeight: `${stylingConsts.inputHeight}px`,
-            height: `${stylingConsts.inputHeight}px`,
+            minHeight: controlHeight,
+            height: controlHeight,
             borderWidth: isFocused ? '2px' : '1px',
             borderColor: isFocused
               ? theme.colors.tenantPrimary

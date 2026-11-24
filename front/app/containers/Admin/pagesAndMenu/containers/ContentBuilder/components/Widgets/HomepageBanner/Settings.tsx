@@ -23,6 +23,7 @@ import {
   CONTENT_BUILDER_ERROR_EVENT,
   IMAGE_UPLOADING_EVENT,
 } from 'components/admin/ContentBuilder/constants';
+import TitleVariantSetting from 'components/admin/ContentBuilder/Widgets/_shared/TitleVariantSetting';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import { homepageBannerLayoutHeights } from 'components/LandingPages/citizen/constants';
 import Error from 'components/UI/Error';
@@ -333,6 +334,8 @@ const HomepageBannerSettings = () => {
         )}
       </>
 
+      <TitleVariantSetting name="homepage-banner-title-variant" />
+
       <Box
         display="flex"
         borderRadius="3px"
@@ -476,16 +479,8 @@ const HomepageBannerSettings = () => {
           <div data-cy="e2e-banner-avatar-toggle">
             <Toggle
               disabled={!customHomepageBannerAllowed}
-              label={
-                <Box>
-                  <Text m="0px" color="primary">
-                    {formatMessage(messages.showAvatars)}
-                  </Text>
-                  <Text m="0px" color="textSecondary" fontSize="s">
-                    {formatMessage(messages.showAvatarsDescription)}
-                  </Text>
-                </Box>
-              }
+              label={formatMessage(messages.showAvatars)}
+              description={formatMessage(messages.showAvatarsDescription)}
               checked={homepageSettings.banner_avatars_enabled}
               onChange={() => {
                 setProp(

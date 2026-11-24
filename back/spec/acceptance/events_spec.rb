@@ -135,6 +135,11 @@ resource 'Events' do
         do_request(page: { number: { injected: '1' } })
         assert_status 200
       end
+
+      example 'returns 400 for a parameter containing a null byte', document: false do
+        do_request(project_publication_statuses: ["published\u0000"])
+        assert_status 400
+      end
     end
 
     context 'when the user registered to some events' do
@@ -339,7 +344,9 @@ resource 'Events' do
   end
 
   get 'web_api/v1/events/:id' do
-    let(:event) { @events.first }
+    # Reload: counter_culture updates the in-memory attendees_count of the shared
+    # before_all records, which other examples' attendances would otherwise leak into.
+    let(:event) { @events.first.reload }
     let(:id) { event.id }
 
     example_request 'Get one event by id' do

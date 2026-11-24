@@ -18,6 +18,10 @@ module ParticipationMethod
       %w[card map]
     end
 
+    def allowed_ideas_orders
+      super + %w[status_priority]
+    end
+
     def assign_defaults_for_phase
       super
       phase.reacting_dislike_enabled = false

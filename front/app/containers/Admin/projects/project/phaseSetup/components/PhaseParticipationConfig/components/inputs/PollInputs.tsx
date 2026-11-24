@@ -1,23 +1,86 @@
 import React from 'react';
 
-import { IconTooltip, Toggle } from '@citizenlab/cl2-component-library';
+import { Box, IconTooltip, Toggle } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
+import PhaseActionAccessRow from 'containers/Admin/projects/_shared/components/PhaseActionAccessRow';
+import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';
+import PanelHeading from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelHeading';
+
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
+import SettingToggleRow from 'components/admin/SettingToggleRow';
 import Error from 'components/UI/Error';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from '../../../../../messages';
+import configMessages from '../../messages';
 
 interface Props {
   poll_anonymous: boolean | undefined;
   apiErrors: CLErrors | null | undefined;
   togglePollAnonymous: () => void;
+  layout?: 'page' | 'panel';
+  /** Only set in the panel, where access is edited per action. */
+  phaseId?: string;
 }
 
-export default ({ poll_anonymous, apiErrors, togglePollAnonymous }: Props) => (
-  <>
+const PollInputs = ({
+  poll_anonymous,
+  apiErrors,
+  togglePollAnonymous,
+  layout = 'page',
+  phaseId,
+}: Props) => {
+  const { formatMessage } = useIntl();
+  const error = (
+    <Error
+      showBackground={layout !== 'panel'}
+      showIcon={layout !== 'panel'}
+      apiErrors={apiErrors && apiErrors.poll_anonymous}
+    />
+  );
+
+  if (layout === 'panel') {
+    return (
+      <>
+        <Box pt="14px" mb="10px">
+          <PanelHeading
+            label={formatMessage(configMessages.settingsGroup)}
+            expandable
+          />
+        </Box>
+        {/* Access rights belong to a saved phase. */}
+        {phaseId && (
+          <PanelGroup
+            label={formatMessage(configMessages.participantActionsGroup)}
+          >
+            <PhaseActionAccessRow
+              phaseId={phaseId}
+              action="taking_poll"
+              label={configMessages.takingPollAction}
+            />
+            <PhaseActionAccessRow
+              phaseId={phaseId}
+              action="attending_event"
+              label={messages.attendingEventAction}
+            />
+          </PanelGroup>
+        )}
+        <PanelGroup label={formatMessage(configMessages.moderationGroup)}>
+          <SettingToggleRow
+            title={formatMessage(messages.anonymousPolling)}
+            description={formatMessage(messages.anonymousPollingTooltip)}
+            checked={!!poll_anonymous}
+            onChange={togglePollAnonymous}
+          />
+          {error}
+        </PanelGroup>
+      </>
+    );
+  }
+
+  return (
     <SectionField>
       <SubSectionTitle>
         <FormattedMessage {...messages.anonymousPolling} />
@@ -31,7 +94,9 @@ export default ({ poll_anonymous, apiErrors, togglePollAnonymous }: Props) => (
         onChange={togglePollAnonymous}
       />
 
-      <Error apiErrors={apiErrors && apiErrors.poll_anonymous} />
+      {error}
     </SectionField>
-  </>
-);
+  );
+};
+
+export default PollInputs;

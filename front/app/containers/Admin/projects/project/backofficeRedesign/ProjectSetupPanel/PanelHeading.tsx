@@ -1,6 +1,9 @@
 import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import PanelGroupHeader from 'design-system/PanelGroupHeader';
+import Text from 'design-system/Text';
+
+import styles from './PanelHeading.module.css';
 
 interface Props {
   title: string;
@@ -8,18 +11,18 @@ interface Props {
 }
 
 const PanelHeading = ({ title, meta }: Props) => (
-  <Box
-    display="flex"
-    alignItems="baseline"
-    justifyContent="space-between"
-    gap="8px"
-    mb="6px"
-  >
-    <Text variant="boSection" color="textSecondary">
-      {title}
-    </Text>
-    {meta && <Text variant="boMicro">{meta}</Text>}
-  </Box>
+  <div className={styles.heading}>
+    <PanelGroupHeader
+      label={title}
+      action={
+        meta && (
+          <Text as="span" variant="ui" tone="secondary">
+            {meta}
+          </Text>
+        )
+      }
+    />
+  </div>
 );
 
 export default PanelHeading;

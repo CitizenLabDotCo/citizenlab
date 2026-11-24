@@ -19,6 +19,7 @@ RSpec.describe InputTypeStrategy::Number do
   its(:supports_single_selection?) { is_expected.to be false }
   its(:supports_multiple_selection?) { is_expected.to be false }
   its(:supports_selection?) { is_expected.to be false }
+  its(:supports_answer_facet?) { is_expected.to be false }
   its(:supports_select_count?) { is_expected.to be false }
   its(:supports_dropdown_layout?) { is_expected.to be false }
   its(:supports_xlsx_export?) { is_expected.to be true }
@@ -39,6 +40,30 @@ RSpec.describe InputTypeStrategy::Number do
     it 'keeps a fractional number' do
       expect(input_type_strategy.cast_xlsx_value('666.34')).to eq 666.34
       expect(input_type_strategy.cast_xlsx_value(666.34)).to eq 666.34
+    end
+  end
+
+  describe '#normalize_value' do
+    where(:value, :expected) do
+      [
+        ['1963', 1963],
+        ['010', 10],
+        ['666.34', 666.34],
+        ['1963.0', 1963],
+        ['12.05', 12.05],
+        [1963, 1963],
+        ['-5', -5],
+        ['', ''],
+        ['abc', 'abc'],
+        ['1_963', '1_963'],
+        ['0x7AB', '0x7AB'],
+        ['1e3', '1e3'],
+        [' 1963 ', ' 1963 ']
+      ]
+    end
+
+    with_them do
+      it { expect(input_type_strategy.normalize_value(value)).to eql expected }
     end
   end
 end

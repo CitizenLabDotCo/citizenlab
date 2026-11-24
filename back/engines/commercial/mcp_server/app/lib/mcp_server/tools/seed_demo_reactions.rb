@@ -42,14 +42,13 @@ class McpServer::Tools::SeedDemoReactions < McpServer::BaseTool
   end
 
   class Runner < McpServer::BaseTool::Runner
-    DEMO_ONLY_MESSAGE = 'Demo reactions can only be created on demo and trial platforms.'
     REACTING_PHASES = %w[ideation proposals].freeze
     DISLIKE_PROBABILITY = 0.1
 
     def run
       phase = Phase.find_by(id: params[:phase_id])
       return not_found_error('Phase', params[:phase_id]) unless phase
-      return error(DEMO_ONLY_MESSAGE) unless published_writable_platform?
+      return demo_only_error('Creating demo reactions') unless published_writable_platform?
 
       unless REACTING_PHASES.include?(phase.participation_method) && phase.reacting_enabled
         return error('Phase does not support reactions.')

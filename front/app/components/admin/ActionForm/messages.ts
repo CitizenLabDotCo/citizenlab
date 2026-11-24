@@ -76,6 +76,11 @@ export default defineMessages({
     id: 'app.components.admin.ActionForm.override',
     defaultMessage: 'Override',
   },
+  platformDefaultsTooltip: {
+    id: 'app.components.admin.ActionForm.platformDefaultsTooltip',
+    defaultMessage:
+      'This action follows the platform defaults. Override them to set who can take part in this phase only.',
+  },
   revertToPlatformDefaults: {
     id: 'app.components.admin.ActionForm.revertToPlatformDefaults',
     defaultMessage: 'Revert to platform defaults',
@@ -96,5 +101,10 @@ export default defineMessages({
   revertToPlatformDefaultsCancelButton: {
     id: 'app.components.admin.ActionForm.revertToPlatformDefaultsCancelButton',
     defaultMessage: 'Cancel',
+  },
+  adminsOnlyNoData: {
+    id: 'app.components.admin.ActionForm.adminsOnlyNoData',
+    defaultMessage:
+      'Only admins and managers can do this, so no participant data is collected.',
   },
 });

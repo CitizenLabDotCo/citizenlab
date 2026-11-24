@@ -18,6 +18,7 @@ import {
 
 export type ReportWordSection =
   | { type: 'text'; html: string }
+  | { type: 'pagebreak' }
   | { type: 'whitespace'; size?: SpacerSize }
   | { type: 'iframe'; url: string; title?: string }
   | {
@@ -58,7 +59,8 @@ export default function useReportWordDownload({
       setError(null);
 
       try {
-        const { Document, Packer, ImageRun, Paragraph } = await import('docx');
+        const { Document, Packer, ImageRun, PageBreak, Paragraph } =
+          await import('docx');
 
         const children = [createTitle(reportTitle), createEmptyParagraph()];
 
@@ -67,6 +69,10 @@ export default function useReportWordDownload({
             case 'text': {
               const paragraphs = createParagraphsFromHtml(section.html);
               children.push(...paragraphs, createEmptyParagraph());
+              break;
+            }
+            case 'pagebreak': {
+              children.push(new Paragraph({ children: [new PageBreak()] }));
               break;
             }
             case 'whitespace': {

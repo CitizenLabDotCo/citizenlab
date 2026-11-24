@@ -1,14 +1,10 @@
 import React from 'react';
 
-import {
-  Box,
-  colors,
-  Divider,
-  Icon,
-  Text,
-  Title,
-} from '@citizenlab/cl2-component-library';
 import { FormattedDate } from 'react-intl';
+
+import Divider from 'design-system/Divider';
+import Icon from 'design-system/Icon';
+import Text from 'design-system/Text';
 
 import { IIdeaData } from 'api/ideas/types';
 import { IPhaseData } from 'api/phases/types';
@@ -18,13 +14,20 @@ import useLocalize from 'hooks/useLocalize';
 import { ManagerType } from 'components/admin/PostManager';
 import IdeaOfficialFeedbackModal from 'components/admin/PostManager/components/IdeaOfficialFeedbackModal';
 import CommentsSection from 'components/PostShowComponents/Comments/CommentsSection';
+import { CommentsVariantContext } from 'components/PostShowComponents/Comments/commentsVariant';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import UserName from 'components/UI/UserName';
 
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from '../messages';
+
 import AssigneeProperty from './AssigneeProperty';
+import CommonGroundReactions from './CommonGroundReactions';
 import IdeaContent from './IdeaContent';
 import PhasesProperty from './PhasesProperty';
 import QuickActions from './QuickActions';
+import styles from './SidePanel.module.css';
 import StatusProperty from './StatusProperty';
 import TagsProperty from './TagsProperty';
 import VotingDetails from './VotingDetails';
@@ -48,80 +51,90 @@ const IdeaOverview = ({
   const localize = useLocalize();
   const { attributes, relationships } = idea;
   const isProposals = type === 'ProjectProposals';
+  // Statements can't move into other phases, which only list idea phases.
+  const showPhases =
+    !isProposals &&
+    listedPhase?.attributes.participation_method !== 'common_ground';
 
   return (
-    <Box display="flex" flexDirection="column" gap="16px" p="24px">
-      <Box>
-        <Title variant="h3" as="h2" m="0" mb="8px" color="textPrimary">
+    <div className={styles.overview}>
+      <div className={styles.summary}>
+        <Text as="h2" variant="bodyStrong" tone="primary">
           {localize(attributes.title_multiloc)}
-        </Title>
-        <Box display="flex" alignItems="center" gap="8px">
-          <Text variant="boHelper" m="0">
-            <UserName
-              userId={relationships.author?.data?.id ?? null}
-              anonymous={attributes.anonymous}
-              fontSize={14}
+        </Text>
+        <IdeaContent idea={idea} />
+        <div className={styles.byline}>
+          <span>
+            <FormattedMessage
+              {...messages.postedBy}
+              values={{
+                // UserName draws its own text, so it gets the size and colour of the line.
+                author: (
+                  <UserName
+                    userId={relationships.author?.data?.id ?? null}
+                    anonymous={attributes.anonymous}
+                    fontSize={12}
+                    color="var(--gv-text-primary)"
+                  />
+                ),
+              }}
             />
-          </Text>
+          </span>
           {attributes.published_at && (
-            <Text variant="boHelper" m="0">
+            <span>
               <FormattedDate
                 value={attributes.published_at}
                 year="numeric"
                 month="long"
                 day="numeric"
               />
-            </Text>
+            </span>
           )}
-        </Box>
-      </Box>
-
-      <Box display="flex" alignItems="center" justifyContent="space-between">
-        <Box display="flex" alignItems="center" gap="12px">
-          <Box display="flex" alignItems="center" gap="4px">
-            <Icon name="vote-up" width="16px" fill={colors.coolGrey600} />
-            <Text variant="boLabel" m="0">
+        </div>
+        <div className={styles.reactionsRow}>
+          <div className={styles.reactions}>
+            <span className={styles.reaction}>
+              <Icon name="arrow-up-16" className={styles.reactionIcon} />
               {attributes.likes_count}
-            </Text>
-          </Box>
-          {!isProposals && (
-            <Box display="flex" alignItems="center" gap="4px">
-              <Icon name="vote-down" width="16px" fill={colors.coolGrey600} />
-              <Text variant="boLabel" m="0">
+            </span>
+            {!isProposals && (
+              <span className={styles.reaction}>
+                <Icon name="arrow-down-16" className={styles.reactionIcon} />
                 {attributes.dislikes_count}
-              </Text>
-            </Box>
-          )}
-        </Box>
-        <QuickActions idea={idea} onEdit={onEdit} onDeleted={onDeleted} />
-      </Box>
+              </span>
+            )}
+          </div>
+          <QuickActions idea={idea} onEdit={onEdit} onDeleted={onDeleted} />
+        </div>
+      </div>
 
-      <Divider m="0" />
+      <CommonGroundReactions phase={listedPhase} ideaId={idea.id} />
 
-      <Box display="flex" flexDirection="column" gap="8px">
+      <Divider />
+
+      <div className={styles.properties}>
         <StatusProperty idea={idea} type={type} />
         <AssigneeProperty idea={idea} />
         <TagsProperty idea={idea} type={type} />
-        {!isProposals && <PhasesProperty idea={idea} />}
+        {showPhases && <PhasesProperty idea={idea} />}
         <VotingDetails idea={idea} phase={listedPhase} />
-      </Box>
+      </div>
 
-      <Divider m="0" />
+      <Divider />
 
-      <IdeaContent idea={idea} />
-
-      <Divider m="0" />
-
-      <OfficialFeedback postId={idea.id} permissionToPost />
-      <CommentsSection
-        postId={idea.id}
-        allowAnonymousParticipation={
-          listedPhase?.attributes.allow_anonymous_participation
-        }
-        showInternalComments
-      />
-      <IdeaOfficialFeedbackModal ideaId={idea.id} />
-    </Box>
+      {/* Shared feedback and comment components; their 'panel' variant is the side-panel look. */}
+      <OfficialFeedback postId={idea.id} permissionToPost variant="panel" />
+      <CommentsVariantContext.Provider value="panel">
+        <CommentsSection
+          postId={idea.id}
+          allowAnonymousParticipation={
+            listedPhase?.attributes.allow_anonymous_participation
+          }
+          showInternalComments
+        />
+      </CommentsVariantContext.Provider>
+      <IdeaOfficialFeedbackModal ideaId={idea.id} variant="panel" />
+    </div>
   );
 };
 

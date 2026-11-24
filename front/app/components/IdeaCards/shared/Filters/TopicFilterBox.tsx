@@ -1,16 +1,17 @@
 import React, { memo } from 'react';
 
-import { omit } from 'lodash-es';
+import { Box } from '@citizenlab/cl2-component-library';
 
-import { IIdeasFilterCountsQueryParameters } from 'api/ideas_filter_counts/types';
-import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
+import useCustomFields from 'api/custom_fields/useCustomFields';
 import useInputTopics from 'api/input_topics/useInputTopics';
 
 import TopicsFilter from 'components/FilterBoxes/TopicsFilter';
+import { FilterCounts } from 'components/FilterBoxes/types';
 
 interface Props {
   projectId: string;
-  ideaQueryParameters: IIdeasFilterCountsQueryParameters;
+  phaseId: string;
+  filterCounts: FilterCounts;
   selectedTopicIds: string[] | null | undefined;
   onChange: (arg: string[] | null) => void;
   className?: string;
@@ -19,36 +20,46 @@ interface Props {
 const TopicFilterBox = memo<Props>(
   ({
     projectId,
+    phaseId,
     selectedTopicIds,
-    ideaQueryParameters,
+    filterCounts,
     onChange,
     className,
   }) => {
-    const ideaFiltersWithoutTopics = omit(ideaQueryParameters, 'topics');
+    // Public fields only include the enabled ones.
+    const { data: customFields } = useCustomFields({
+      phaseId,
+      publicFields: true,
+    });
+    const topicsEnabled = customFields?.some(
+      (field) => field.code === 'topic_ids'
+    );
 
     const { data: topics } = useInputTopics(projectId, {
       sort: '-ideas_count',
       depth: 0,
     });
 
-    const { data: ideasFilterCounts } = useIdeasFilterCounts({
-      ...ideaFiltersWithoutTopics,
-      idea_status: ideaFiltersWithoutTopics.idea_status,
-    });
-
-    if (ideasFilterCounts) {
-      return (
-        <TopicsFilter
-          className={className}
-          topics={topics?.data}
-          selectedTopicIds={selectedTopicIds}
-          onChange={onChange}
-          filterCounts={ideasFilterCounts.data.attributes}
-        />
-      );
+    if (
+      !topicsEnabled ||
+      !topics ||
+      topics.data.length === 0 ||
+      !filterCounts
+    ) {
+      return null;
     }
 
-    return null;
+    return (
+      <Box mb="20px">
+        <TopicsFilter
+          className={className}
+          topics={topics.data}
+          selectedTopicIds={selectedTopicIds}
+          onChange={onChange}
+          filterCounts={filterCounts}
+        />
+      </Box>
+    );
   }
 );
 

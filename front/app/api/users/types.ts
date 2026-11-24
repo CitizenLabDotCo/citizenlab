@@ -138,7 +138,9 @@ export type Sort =
   | 'role'
   | '-role'
   | 'last_active_at'
-  | '-last_active_at';
+  | '-last_active_at'
+  | 'registration_completed_at'
+  | '-registration_completed_at';
 
 export interface IQueryParameters {
   pageNumber?: number;

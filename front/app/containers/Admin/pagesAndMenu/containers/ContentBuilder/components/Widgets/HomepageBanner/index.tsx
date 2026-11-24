@@ -11,6 +11,7 @@ import SignedInHeader from 'containers/HomePage/SignedInHeader';
 import SignedOutHeader from 'containers/HomePage/SignedOutHeader';
 
 import { DEFAULT_Y_PADDING } from 'components/admin/ContentBuilder/constants';
+import { TitleVariant } from 'components/admin/ContentBuilder/Widgets/_shared/TitleVariantSetting';
 
 import { useLocation, useSearch } from 'utils/router';
 
@@ -91,9 +92,10 @@ export type Props = {
   };
   hasError?: boolean;
   errors?: ErrorType[];
+  titleVariant?: TitleVariant;
 };
 
-const HomepageBanner = ({ homepageSettings, image }: Props) => {
+const HomepageBanner = ({ homepageSettings, image, titleVariant }: Props) => {
   const { pathname } = useLocation();
   const { data: authUser } = useAuthUser();
   const search = useSearch({ strict: false });
@@ -121,6 +123,7 @@ const HomepageBanner = ({ homepageSettings, image }: Props) => {
             },
           }}
           isContentBuilderDisplay={!isHomepage}
+          titleVariant={titleVariant}
         />
       ) : (
         <SignedOutHeader
@@ -132,6 +135,7 @@ const HomepageBanner = ({ homepageSettings, image }: Props) => {
               small: image?.imageUrl || null,
             },
           }}
+          titleVariant={titleVariant}
         />
       )}
     </Box>

@@ -1,0 +1,50 @@
+.toggleButton {
+  composes: button from '../reset.module.css';
+  composes: ui from '../typography.module.css';
+  composes: ringInside from '../focus.module.css';
+  position: relative;
+  box-sizing: border-box;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  height: var(--gv-size-28);
+  padding: 0 var(--gv-space-12);
+  gap: var(--gv-space-6);
+  border-radius: var(--gv-radius-full);
+  color: var(--gv-text-secondary);
+  white-space: nowrap;
+  cursor: pointer;
+  transition-property: background-color, color;
+  transition-duration: var(--gv-motion-duration-fast);
+  transition-timing-function: var(--gv-motion-easing-standard);
+}
+
+/* The hairline sits inside the box so selecting does not change the width. */
+.toggleButton::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: var(--gv-border-width-1) solid transparent;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.toggleButton[data-selected] {
+  background: var(--gv-surface-panel);
+  color: var(--gv-text-primary);
+  font-weight: var(--gv-font-weight-medium);
+}
+
+.toggleButton[data-selected]::before {
+  border-color: var(--gv-border-control);
+}
+
+/* After Selected, so a pressed selected button still shows the press. */
+.toggleButton[data-hovered],
+.toggleButton[data-pressed] {
+  color: var(--gv-text-primary);
+}
+
+.toggleButton[data-pressed] {
+  background: var(--gv-surface-muted-hovered);
+}

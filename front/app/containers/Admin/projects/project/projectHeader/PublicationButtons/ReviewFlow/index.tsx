@@ -3,11 +3,11 @@ import React from 'react';
 import { Button, Tooltip, Box } from '@citizenlab/cl2-component-library';
 
 import useApproveProjectReview from 'api/project_reviews/useApproveProject';
-import useProjectReview from 'api/project_reviews/useProjectReview';
 import { IProjectData } from 'api/projects/types';
 
+import useReviewAction from 'containers/Admin/projects/_shared/useReviewAction';
+
 import { useIntl } from 'utils/cl-intl';
-import { usePermission } from 'utils/permissions';
 
 import messages from '../messages';
 
@@ -18,39 +18,26 @@ interface Props {
 }
 
 const ReviewFlow = ({ project }: Props) => {
-  const canReview = usePermission({
-    item: project,
-    action: 'review',
-  });
-  const { data: projectReview, isLoading: isProjectReviewLoading } =
-    useProjectReview(project.id);
+  const { action, pending, isLoading } = useReviewAction(project);
   const {
     mutate: approveProjectReview,
     isPending: isApprovingProjectReviewLoading,
   } = useApproveProjectReview();
   const { formatMessage } = useIntl();
 
-  const approvalPending = projectReview?.data.attributes.state === 'pending';
-  const approvalGranted = projectReview?.data.attributes.state === 'approved';
-  const isPublished = project.attributes.publication_status === 'published';
-
-  const showProjectApprovalButton = approvalPending && canReview;
-  const showReviewRequestButton =
-    !canReview && !approvalGranted && !isPublished;
-
   return (
     <>
-      {showReviewRequestButton && (
+      {action === 'request' && (
         <Box position="relative">
           <ReviewRequestButton
             projectId={project.id}
             inFolder={!!project.attributes.folder_id}
-            approvalPending={approvalPending}
-            processing={isProjectReviewLoading}
+            approvalPending={pending}
+            processing={isLoading}
           />
         </Box>
       )}
-      {showProjectApprovalButton && (
+      {action === 'approve' && (
         <Tooltip
           content={formatMessage(messages.approveTooltip)}
           placement="bottom"

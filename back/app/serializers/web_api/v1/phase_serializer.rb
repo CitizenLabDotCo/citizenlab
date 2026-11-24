@@ -43,6 +43,8 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
     can_moderate?(phase, params)
   }
 
+  attribute :reviewed_setup_cards, if: proc { |phase, params| can_moderate?(phase, params) }
+
   attribute :description_multiloc do |object|
     TextImageService.new.render_data_images_multiloc object.description_multiloc, field: :description_multiloc, imageable: object
   end

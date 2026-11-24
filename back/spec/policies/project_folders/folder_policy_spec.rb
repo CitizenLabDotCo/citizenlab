@@ -94,8 +94,8 @@ describe ProjectFolders::FolderPolicy do
         expect(scope.resolve).to include subject_folder
       end
 
-      it 'returns the draft folder to the user' do
-        expect(scope.resolve).to include draft_folder
+      it 'does not return a draft folder they do not moderate' do
+        expect(scope.resolve).not_to include draft_folder
       end
 
       it 'returns the archived folder to the user' do
@@ -115,8 +115,8 @@ describe ProjectFolders::FolderPolicy do
         expect(scope.resolve).to include subject_folder
       end
 
-      it 'returns the draft folder to the user' do
-        expect(scope.resolve).to include draft_folder
+      it 'does not return a draft folder they do not moderate' do
+        expect(scope.resolve).not_to include draft_folder
       end
 
       it 'returns the archived folder to the user' do
@@ -141,8 +141,8 @@ describe ProjectFolders::FolderPolicy do
         expect(scope.resolve).to include subject_folder
       end
 
-      it 'returns the draft folder to the user' do
-        expect(scope.resolve).to include draft_folder
+      it 'does not return a draft folder they do not moderate' do
+        expect(scope.resolve).not_to include draft_folder
       end
 
       it 'returns the archived folder to the user' do
@@ -167,8 +167,8 @@ describe ProjectFolders::FolderPolicy do
         expect(scope.resolve).to include subject_folder
       end
 
-      it 'returns the draft folder to the user' do
-        expect(scope.resolve).to include draft_folder
+      it 'does not return a draft folder they do not moderate' do
+        expect(scope.resolve).not_to include draft_folder
       end
 
       it 'returns the archived folder to the user' do
@@ -202,6 +202,18 @@ describe ProjectFolders::FolderPolicy do
       it { is_expected.to permit(:show) }
     end
 
+    it 'does not list the folder to a visitor' do
+      expect(described_class::Scope.new(nil, ProjectFolders::Folder).resolve).not_to include subject_folder
+    end
+
+    it 'does not list the folder to a user outside the group' do
+      expect(described_class::Scope.new(create(:user), ProjectFolders::Folder).resolve).not_to include subject_folder
+    end
+
+    it 'lists the folder to a member of the group' do
+      expect(described_class::Scope.new(member, ProjectFolders::Folder).resolve).to include subject_folder
+    end
+
     context 'when project moderator' do
       let(:user) { create(:project_moderator, projects: [project]) }
 
@@ -226,6 +238,22 @@ describe ProjectFolders::FolderPolicy do
     let(:subject_folder) { create(:project_folder, projects: [project]) }
 
     before { subject_folder.admin_publication.update! publication_status: 'draft' }
+
+    context 'when moderator of the folder, listing folders' do
+      let(:user) { create(:project_folder_moderator, project_folders: [subject_folder]) }
+
+      it 'returns the draft folder' do
+        expect(scope.resolve).to include subject_folder
+      end
+    end
+
+    context 'when moderator of a project in the draft folder, listing folders' do
+      let(:user) { create(:project_moderator, projects: [project]) }
+
+      it 'does not return the draft folder' do
+        expect(scope.resolve).not_to include subject_folder
+      end
+    end
 
     context 'when visitor' do
       let(:user) { nil }
@@ -261,6 +289,10 @@ describe ProjectFolders::FolderPolicy do
   context 'when a published folder is empty' do
     let(:subject_folder) { create(:project_folder, projects: []) }
 
+    it 'lists the folder to a visitor' do
+      expect(described_class::Scope.new(nil, ProjectFolders::Folder).resolve).to include subject_folder
+    end
+
     context 'when visitor' do
       let(:user) { nil }
 
@@ -274,6 +306,10 @@ describe ProjectFolders::FolderPolicy do
   context 'when a published folder only has draft projects' do
     let(:draft_project) { create(:project, admin_publication_attributes: { publication_status: 'draft' }) }
     let(:subject_folder) { create(:project_folder, projects: [draft_project]) }
+
+    it 'does not list the folder to a regular user' do
+      expect(described_class::Scope.new(create(:user), ProjectFolders::Folder).resolve).not_to include subject_folder
+    end
 
     context 'when visitor' do
       let(:user) { nil }
@@ -416,6 +452,10 @@ describe ProjectFolders::FolderPolicy do
       it { is_expected.to permit(:show) }
       it { is_expected.to permit(:update) }
       it { is_expected.to permit(:destroy) }
+
+      it 'returns the draft folder' do
+        expect(scope.resolve).to include subject_folder
+      end
     end
   end
 end

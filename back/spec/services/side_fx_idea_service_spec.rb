@@ -140,6 +140,7 @@ describe SideFxIdeaService do
     end
 
     it "doesn't enqueue an upsert embedding job when the input_iq feature is turned off" do
+      SettingsService.new.deactivate_feature! 'input_iq'
       idea = create(:idea, author: user)
       expect { service.after_create(idea, user, phase) }
         .not_to enqueue_job(UpsertEmbeddingJob)
@@ -429,6 +430,7 @@ describe SideFxIdeaService do
     end
 
     it "doesn't enqueue an upsert embedding job when the input_iq feature is turned off" do
+      SettingsService.new.deactivate_feature! 'input_iq'
       idea = create(:idea, author: user)
       idea.update!(title_multiloc: { en: 'changed' })
       expect { service.after_update(idea, user) }

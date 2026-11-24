@@ -1,0 +1,67 @@
+.head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--gv-space-8);
+}
+
+.summary {
+  min-width: 0;
+}
+
+.value {
+  composes: stat from '../../../../../../../design-system/typography.module.css';
+  margin-top: var(--gv-space-2);
+  color: var(--gv-text-primary);
+}
+
+.emptyValue {
+  composes: value;
+  color: var(--gv-text-tertiary);
+}
+
+.lastPeriod {
+  margin-top: var(--gv-space-2);
+}
+
+.chevron {
+  color: var(--gv-icon-secondary);
+}
+
+/* The line runs to the card's edges. */
+.sparkline {
+  margin: var(--gv-space-8) calc(-1 * var(--gv-space-12)) 0;
+}
+
+.scale {
+  margin-top: var(--gv-space-4);
+}
+
+.emptyCard {
+  composes: card from '../StatCardLink.module.css';
+}
+
+.emptyLine {
+  margin-top: var(--gv-space-40);
+  border-top: var(--gv-border-width-1) dashed var(--gv-chart-pass);
+}
+
+.emptyNote {
+  margin-top: var(--gv-space-8);
+}
+
+.sparklineSvg {
+  display: block;
+  width: 100%;
+  height: 34px;
+}
+
+/* No chart token for an area fill; this surface has the fill's colour. */
+.sparklineArea {
+  fill: var(--gv-component-tag-list-surface-new);
+}
+
+.sparklineLine {
+  fill: none;
+  stroke: var(--gv-chart-line-primary);
+}

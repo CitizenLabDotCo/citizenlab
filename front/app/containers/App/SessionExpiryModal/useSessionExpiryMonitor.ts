@@ -2,7 +2,6 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 
 import { API_PATH } from 'containers/App/constants';
 
-import { getJwt, getSecondsUntilExpiry } from 'utils/auth/jwt';
 import clHistory from 'utils/cl-router/history';
 
 type SessionState = 'idle' | 'expiring_soon' | 'expired';
@@ -11,30 +10,49 @@ const CHECK_INTERVAL_S = 300; // Checks session valid every 5 minutes unless the
 const EXPIRING_SOON_THRESHOLD_S = 1800; // Show expiring soon 30 minutes before expiry
 const DISMISSED_RESHOW_THRESHOLD_S = 320; // If dismissed re-show expiring soon just over 5 mins before expiry
 
-type PingResult = 'valid' | 'expired' | 'not_admin';
+type PingResult =
+  | { status: 'valid'; expiresAt: number | null }
+  | { status: 'expired' }
+  | { status: 'not_admin' };
+
+// The auth token is in an HttpOnly cookie we can't read, so the API tells us when
+// it expires (in seconds since the epoch).
+async function readExpiresAt(response: Response): Promise<number | null> {
+  try {
+    const body: unknown = await response.json();
+    if (
+      typeof body === 'object' &&
+      body !== null &&
+      'expires_at' in body &&
+      typeof body.expires_at === 'number'
+    ) {
+      return body.expires_at;
+    }
+  } catch {
+    // No JSON body: we don't know when the session expires
+  }
+  return null;
+}
 
 async function checkSessionOnServer(
   isAdminRoute: boolean
 ): Promise<PingResult> {
-  const jwt = getJwt();
-  if (!jwt) return 'expired';
-
   const adminParam = isAdminRoute ? '?admin=true' : '';
 
   try {
     const response = await fetch(`${API_PATH}/users/me/ping${adminParam}`, {
       method: 'GET',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${jwt}`,
       },
     });
-    if (response.status === 401) return 'expired';
-    if (response.status === 403) return 'not_admin';
-    return 'valid';
+    if (response.status === 401) return { status: 'expired' };
+    if (response.status === 403) return { status: 'not_admin' };
+    return { status: 'valid', expiresAt: await readExpiresAt(response) };
   } catch {
     // Network error — don't treat as logged out
-    return 'valid';
+    return { status: 'valid', expiresAt: null };
   }
 }
 
@@ -82,47 +100,40 @@ export default function useSessionExpiryMonitor(
 
     const check = async () => {
       if (checkingRef.current) return;
-
-      // Detect if the JWT has been refreshed (new login) since we dismissed
-      const secondsUntilExpiry = getSecondsUntilExpiry();
-      if (secondsUntilExpiry !== null) {
-        const currentExp = Math.floor(Date.now() / 1000) + secondsUntilExpiry;
-        if (lastExpRef.current !== null && currentExp > lastExpRef.current) {
-          // JWT was replaced with a newer one — user logged back in
-          dismissedRef.current = false;
-          dismissedExpiringSoonRef.current = false;
-          setSessionState('idle');
-        }
-        lastExpRef.current = currentExp;
-      }
-
-      if (dismissedRef.current) return;
       checkingRef.current = true;
 
       try {
-        const secondsLeft = getSecondsUntilExpiry();
+        const isAdminRoute = pathname.startsWith('/admin');
+        const ping = await checkSessionOnServer(isAdminRoute);
+        const expiresAt = ping.status === 'valid' ? ping.expiresAt : null;
 
-        // JWT clearly expired locally — no need to check server
-        if (secondsLeft !== null && secondsLeft <= 0) {
-          setSessionState('expired');
-          return;
+        // Detect if the token has been refreshed (new login) since we dismissed
+        if (expiresAt !== null) {
+          if (lastExpRef.current !== null && expiresAt > lastExpRef.current) {
+            // Token was replaced with a newer one — user logged back in
+            dismissedRef.current = false;
+            dismissedExpiringSoonRef.current = false;
+            setSessionState('idle');
+          }
+          lastExpRef.current = expiresAt;
         }
 
-        // For all other cases (expiring soon, looks fine, or cookie missing),
-        // verify against the server before deciding state
-        const isAdminRoute = pathname.startsWith('/admin');
-        const pingResult = await checkSessionOnServer(isAdminRoute);
-        if (pingResult === 'not_admin') {
+        if (dismissedRef.current) return;
+
+        if (ping.status === 'not_admin') {
           // User is authenticated but lacks admin/moderator access
           clHistory.push('/');
           return;
         }
-        if (pingResult === 'expired') {
+        if (ping.status === 'expired') {
           setSessionState('expired');
           return;
         }
+        if (expiresAt === null) return;
 
-        if (secondsLeft !== null && secondsLeft <= EXPIRING_SOON_THRESHOLD_S) {
+        const secondsLeft = expiresAt - Math.floor(Date.now() / 1000);
+
+        if (secondsLeft <= EXPIRING_SOON_THRESHOLD_S) {
           const threshold = dismissedExpiringSoonRef.current
             ? DISMISSED_RESHOW_THRESHOLD_S
             : EXPIRING_SOON_THRESHOLD_S;

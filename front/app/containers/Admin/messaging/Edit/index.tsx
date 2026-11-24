@@ -19,11 +19,13 @@ import useSendEmailCampaignPreview from 'api/campaigns/email/useSendEmailCampaig
 import useUpdateEmailCampaign from 'api/campaigns/email/useUpdateEmailCampaign';
 import { isEmailCampaignDraft } from 'api/campaigns/email/util';
 
+import useLocale from 'hooks/useLocale';
+
 import AutomatedCampaignForm from 'containers/Admin/messaging/AutomatedEmails/CampaignForm';
 import CustomCampaignForm from 'containers/Admin/messaging/CustomEmails/CampaignForm';
 import messages from 'containers/Admin/messaging/messages';
 
-import PreviewFrame from 'components/admin/Email/PreviewFrame';
+import PreviewFrameWithLocaleSwitcher from 'components/admin/Email/PreviewFrameWithLocaleSwitcher';
 import T from 'components/T';
 import GoBackButton from 'components/UI/GoBackButton';
 
@@ -31,29 +33,44 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { useParams } from 'utils/router';
 
+import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
+
 type EditProps = {
   campaignType: 'custom' | 'automated';
 };
 const Edit = ({ campaignType }: EditProps) => {
-  const { campaignId } = useParams({ strict: false }) as {
+  const { campaignId, projectId, phaseId } = useParams({ strict: false }) as {
     campaignId: string;
+    projectId?: string;
+    phaseId?: string;
   };
+  const backofficeRedesign = useProjectBackofficeRedesign();
+  // The redesigned workspace edits a phase's emails from its build view.
+  const phaseBuildPath =
+    backofficeRedesign && projectId && phaseId
+      ? `/admin/projects/${projectId}/phases/${phaseId}/setup`
+      : undefined;
   const { data: tenant } = useAppConfiguration();
   const { data: campaign } = useEmailCampaign(campaignId);
   const { mutateAsync: updateCampaign, isPending } = useUpdateEmailCampaign();
 
   const [previewSent, setPreviewSent] = useState(false);
+  const locale = useLocale();
+  const [previewLocale, setPreviewLocale] = useState(locale);
 
   const { mutate: sendCampaignPreview, isPending: isSendingCampaignPreview } =
     useSendEmailCampaignPreview();
   const { formatMessage } = useIntl();
 
   const handleSendPreviewEmail = () => {
-    sendCampaignPreview(campaignId, {
-      onSuccess: () => {
-        setPreviewSent(true);
-      },
-    });
+    sendCampaignPreview(
+      { id: campaignId, locale: previewLocale },
+      {
+        onSuccess: () => {
+          setPreviewSent(true);
+        },
+      }
+    );
   };
 
   if (!campaign) {
@@ -62,17 +79,20 @@ const Edit = ({ campaignType }: EditProps) => {
 
   const handleSubmit = async (values: EmailCampaignFormValues) => {
     await updateCampaign({ id: campaign.data.id, campaign: values });
+    // Automated emails stay on the page, so the admin sees the saved changes in the preview.
     if (campaignType === 'custom') {
       clHistory.push(
         `/admin/messaging/emails/custom/${campaign.data.id}?updated=true`
       );
-    } else {
-      clHistory.push('/admin/messaging/emails/automated');
     }
   };
 
   const goBack = () => {
-    clHistory.goBack();
+    if (phaseBuildPath) {
+      clHistory.push(phaseBuildPath);
+    } else {
+      clHistory.goBack();
+    }
   };
   const timeZone = tenant?.data.attributes.settings.core.timezone;
 
@@ -174,13 +194,13 @@ const Edit = ({ campaignType }: EditProps) => {
               </Button>
             </Box>
           </Box>
-          <Box>
-            <PreviewFrame
-              campaignId={campaign.data.id}
-              showHeaders={true}
-              height="740px"
-            />
-          </Box>
+          <PreviewFrameWithLocaleSwitcher
+            campaignId={campaign.data.id}
+            locale={previewLocale}
+            onLocaleChange={setPreviewLocale}
+            showHeaders={true}
+            height="740px"
+          />
         </Box>
       </Box>
     </Box>

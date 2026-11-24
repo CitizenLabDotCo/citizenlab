@@ -212,6 +212,23 @@ describe MultiTenancy::Templates::TenantSerializer do
       end
     end
 
+    it 'successfully copies over a project report with its project link' do
+      project = create(:project)
+      create(:report, project: project, name: 'Project report')
+
+      template = tenant_serializer.run(deserializer_format: true)
+
+      tenant = create(:tenant)
+      tenant.switch do
+        MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
+
+        expect(Project.count).to be 1
+        report = ReportBuilder::Report.find_by(name: 'Project report')
+        expect(report).to be_present
+        expect(report.project).to eq Project.first
+      end
+    end
+
     it 'successfully copies over a project-scoped static page with its project link' do
       project = create(:project)
       create(:static_page, :project_scoped, project: project, title_multiloc: { 'en' => 'Project about' },

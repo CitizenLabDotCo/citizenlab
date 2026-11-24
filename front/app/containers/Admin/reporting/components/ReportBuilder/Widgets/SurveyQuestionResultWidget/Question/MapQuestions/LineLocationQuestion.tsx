@@ -10,6 +10,8 @@ import LineMap from 'components/admin/Graphs/LineMap';
 
 import { useIntl } from 'utils/cl-intl';
 
+import useRegisterMapView from './useRegisterMapView';
+
 interface Props {
   lineResponses: { answer: GeoJSON.LineString }[];
   mapConfigId?: string;
@@ -24,6 +26,7 @@ const LineLocationQuestion = ({
   projectId,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const registerMapView = useRegisterMapView(customFieldId);
 
   const lines = useMemo(() => {
     return lineResponses.map(({ answer }) => answer);
@@ -50,6 +53,7 @@ const LineLocationQuestion = ({
         mapConfig={mapConfig}
         layerTitle={formatMessage(surveyResultMessages.responses)}
         layerId={`responsesLayer_${customFieldId}`}
+        onInit={registerMapView}
       />
     </div>
   );

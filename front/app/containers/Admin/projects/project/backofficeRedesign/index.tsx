@@ -1,31 +1,51 @@
-import React, { ReactNode, useState } from 'react';
+import React, {
+  ReactNode,
+  Suspense,
+  lazy,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
-import { Box, bo, colors } from '@citizenlab/cl2-component-library';
+import Spinner from 'design-system/Spinner';
 
-import { IPhaseData } from 'api/phases/types';
+import { IPhaseData, InputTerm } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 
-import { useLocation } from 'utils/router';
+import { usePageSave } from 'components/admin/PageSaveContext';
+
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { useLocation, useSearch } from 'utils/router';
 
 import FeedbackNotice from '../earlyAccess/FeedbackNotice';
 
-import MethodSettings from './Phase/MethodSettings';
-import ProjectSetupPanel from './ProjectSetupPanel';
-import ViewContent from './Phase/ViewContent';
-import WorkspaceHeader from './Header';
-import useMarkSetupStep from './_shared/useMarkSetupStep';
-import { HeaderDropdownName } from './Header/HeaderDropdown';
 import { sectionFromPathname } from './_shared/sections';
-import { usePageSave } from './_shared/PageSaveContext';
-import { viewFromPathname } from './Phase/usePhaseViews';
+import WorkspaceHeader from './Header';
+import { HeaderDropdownName } from './Header/HeaderDropdown';
+import PanelToggleButton from './PanelToggleButton';
+import { useParticipationPanel } from './ParticipationPanelContext';
+import GoesLiveNote from './Phase/GoesLiveNote';
+import MethodSettings from './Phase/MethodSettings';
+import { viewFromPathname, PhaseViewKey } from './Phase/usePhaseViews';
+import ViewContent from './Phase/ViewContent';
+import ProjectSetupPanel from './ProjectSetupPanel';
+import ProjectTimeline from './ProjectTimeline';
+import styles from './ProjectWorkspace.module.css';
+import 'design-system/tokens.css';
 
-const PROJECT_PANEL_WIDTH = '332px';
-const PHASE_PANEL_WIDTH = '560px';
-const PANEL_GAP = '8px';
+const InputTags = lazy(() => import('./InputTags'));
+
+// Lazy so ArcGIS only loads once the map is opened.
+const CustomMapConfigPage = lazy(
+  () => import('containers/Admin/CustomMapConfigPage')
+);
 
 interface Draft {
+  inputTerm?: InputTerm;
   label: string;
-  methodSettings: ReactNode;
+  parentLabel?: string;
+  saveLabel?: string;
+  methodSettings?: ReactNode;
 }
 
 interface Props {
@@ -33,6 +53,9 @@ interface Props {
   phase?: IPhaseData;
   draft?: Draft;
   sidePanel?: ReactNode;
+  withParticipation?: boolean;
+  activeView?: PhaseViewKey;
+  viewSwitch?: ReactNode;
   children: ReactNode;
 }
 
@@ -41,25 +64,56 @@ const ProjectWorkspace = ({
   phase,
   draft,
   sidePanel,
+  withParticipation = true,
+  activeView: providedActiveView,
+  viewSwitch,
   children,
 }: Props) => {
+  const { pending, collapsed, animate } = useParticipationPanel();
   const { pathname } = useLocation();
+  const { map_config, input_tags } = useSearch({ strict: false });
   const [openDropdown, setOpenDropdown] = useState<HeaderDropdownName | null>(
     null
   );
-  const markSetupStep = useMarkSetupStep(project);
   const pageSave = usePageSave();
 
-  const showDropdown = (dropdown: HeaderDropdownName | null) => {
-    setOpenDropdown(dropdown);
-    if (dropdown === 'share') markSetupStep('share');
-  };
-
   const section = sectionFromPathname(pathname, project.id);
-  const activeView = viewFromPathname(pathname);
+  const activeView = providedActiveView ?? viewFromPathname(pathname);
 
   const inPhase = !!(phase || draft);
-  const showPanels = !phase || activeView === 'build';
+  const workspaceRef = useRef<HTMLDivElement>(null);
+  const wasSaving = useRef(false);
+  const saving = pageSave?.saving ?? false;
+
+  useEffect(() => {
+    const finishedSaving = wasSaving.current && !saving;
+    wasSaving.current = saving;
+    if (!finishedSaving || !inPhase) return;
+
+    // Wait for field errors to mount after every save attempt, including retries.
+    // Design-system fields render their error in the errorMessage slot.
+    const frame = requestAnimationFrame(() => {
+      const error = workspaceRef.current?.querySelector<HTMLElement>(
+        '[slot="errorMessage"], .e2e-error-message:not(.error-exit):not(.error-exit-active)'
+      );
+      error?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [saving, inPhase]);
+
+  // An open phase email takes the whole width.
+  const editingEmail = /\/emails\/[^/]+\/edit$/.test(pathname);
+  // The map configuration does the same, and keeps the phase panel mounted so
+  // a phase that isn't saved yet keeps its edits.
+  const editingMap = inPhase && !!map_config;
+  const editingTags = inPhase && !!input_tags;
+  const [tagsOpened, setTagsOpened] = useState(false);
+  if (editingTags && !tagsOpened) setTagsOpened(true);
+  const showPanels = activeView === 'build' && !editingEmail && !editingMap;
+  // Once opened, the map stays mounted, so its unsaved edits wait for the
+  // page's save button like the rest of the phase.
+  const [mapOpened, setMapOpened] = useState(false);
+  if (editingMap && !mapOpened) setMapOpened(true);
 
   const settingsPanel = draft ? (
     draft.methodSettings
@@ -71,105 +125,127 @@ const ProjectWorkspace = ({
       phase={phase}
     />
   ) : (
-    <ProjectSetupPanel project={project} onOpenDropdown={showDropdown} />
+    <ProjectSetupPanel project={project} />
   );
 
   const setupSlot = !section && (
-    <Box
-      flex={`0 0 ${PROJECT_PANEL_WIDTH}`}
-      width={PROJECT_PANEL_WIDTH}
-      minHeight="0"
-      overflowY="auto"
-      borderRadius={bo.panelBorderRadius}
-      background={colors.white}
-    >
-      {settingsPanel}
-    </Box>
+    <div className={styles.setupSlot}>{settingsPanel}</div>
   );
-  const timelineSlot = sidePanel && (
-    <Box
-      flex={`0 0 ${PROJECT_PANEL_WIDTH}`}
-      width={PROJECT_PANEL_WIDTH}
-      minHeight="0"
-      overflowY="auto"
-      borderRadius={bo.panelBorderRadius}
-      background={colors.white}
+  const showParticipation =
+    withParticipation &&
+    !pending &&
+    (!inPhase || (!editingEmail && !editingMap));
+  const participationSlot = showParticipation && (
+    <div
+      className={styles.participationSlot}
+      data-collapsed={collapsed || undefined}
+      data-rail={inPhase || undefined}
+      data-animate={animate || undefined}
     >
-      {sidePanel}
-    </Box>
+      <div
+        className={styles.panelContent}
+        data-collapsed={collapsed || undefined}
+        data-animate={animate || undefined}
+        aria-hidden={collapsed}
+      >
+        <ProjectTimeline projectId={project.id} withNewMethod={!draft} />
+      </div>
+      {inPhase && collapsed && (
+        <div className={styles.railToggle}>
+          <PanelToggleButton variant="ghost" />
+        </div>
+      )}
+    </div>
   );
   // A phase has a single panel: its build fields, then its settings.
   const phaseSlot = (
-    <Box
-      display={showPanels ? 'block' : 'none'}
-      flex={`0 0 ${PHASE_PANEL_WIDTH}`}
-      width={PHASE_PANEL_WIDTH}
-      minHeight="0"
-      overflowY="auto"
-      borderRadius={bo.panelBorderRadius}
-      background={colors.white}
-    >
-      {sidePanel}
-      <Box borderTop={`1px solid ${colors.grey200}`}>{settingsPanel}</Box>
-    </Box>
+    <div className={`${styles.phaseSlot} ${showPanels ? '' : styles.hidden}`}>
+      <div className={editingTags ? styles.hidden : undefined}>
+        {sidePanel}
+        {settingsPanel}
+        <GoesLiveNote project={project} />
+      </div>
+      {tagsOpened && (
+        <div className={editingTags ? undefined : styles.hidden}>
+          <Suspense fallback={<Spinner />}>
+            <InputTags
+              key={`${project.id}-${phase?.id}-${pageSave?.revision}`}
+              project={project}
+              phase={phase}
+              inputTerm={
+                phase?.attributes.input_term ?? draft?.inputTerm ?? 'idea'
+              }
+            />
+          </Suspense>
+        </div>
+      )}
+    </div>
   );
 
   const mainSlot = (
-    <Box
-      flexGrow={1}
-      minWidth="0"
-      minHeight="0"
-      overflowY="auto"
-      display="flex"
-      flexDirection="column"
-      borderRadius={bo.panelBorderRadius}
-      background={colors.grey100}
+    <div
+      className={styles.mainSlot}
+      // Manage and Insights bring their own white panels.
+      data-bare={activeView !== 'build' || undefined}
     >
-      {children}
-    </Box>
+      {mapOpened && (
+        <div className={`${styles.mapSlot} ${editingMap ? '' : styles.hidden}`}>
+          <Suspense fallback={<Spinner />}>
+            <CustomMapConfigPage
+              // Discarding the changes drops its staged edits too.
+              key={pageSave?.revision}
+              variant="panel"
+              onBack={() => removeSearchParams(['map_config'])}
+            />
+          </Suspense>
+        </div>
+      )}
+      {!editingMap && children}
+    </div>
   );
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      gap={PANEL_GAP}
-      p={PANEL_GAP}
-      height="100vh"
-      overflow="hidden"
-      background={colors.background}
-    >
+    <div ref={workspaceRef} className={styles.workspace}>
       <FeedbackNotice />
       <WorkspaceHeader
         project={project}
         phase={phase}
         draftLabel={draft?.label}
+        draftParentLabel={draft?.parentLabel}
+        saveLabel={draft?.saveLabel}
         activeView={activeView}
+        viewSwitch={viewSwitch}
+        editingMap={editingMap}
         section={section}
         openDropdown={openDropdown}
-        onOpenDropdown={showDropdown}
+        onOpenDropdown={setOpenDropdown}
       />
 
-      <Box
-        display="flex"
-        gap={PANEL_GAP}
-        flexGrow={1}
-        minHeight="0"
-        overflow="hidden"
-      >
-        {inPhase ? phaseSlot : setupSlot}
+      <div className={styles.columns}>
+        {!inPhase && setupSlot}
+
+        {/* Always in this slot, so moving between the project and a phase
+              keeps the same panel instead of mounting a new one. */}
+        {participationSlot}
+
+        {inPhase && phaseSlot}
 
         {phase && activeView !== 'build' ? (
-          <ViewContent project={project} phase={phase} view={activeView}>
+          <ViewContent phase={phase} view={activeView}>
             {mainSlot}
           </ViewContent>
         ) : (
-          mainSlot
+          <div className={styles.mainColumn}>
+            {mainSlot}
+            {showParticipation && !inPhase && collapsed && (
+              <div className={styles.floatingToggle}>
+                <PanelToggleButton variant="bordered" />
+              </div>
+            )}
+          </div>
         )}
-
-        {!inPhase && timelineSlot}
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 };
 

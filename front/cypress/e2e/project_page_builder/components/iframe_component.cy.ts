@@ -45,6 +45,24 @@ describe('Project description builder Iframe component', () => {
     // trip over (a 2-element click, and a frame click that selects nothing
     // deletable). Fail fast here, at the cause.
     cy.get('.e2e-content-builder-iframe-component').should('have.length', 1);
+
+    // An empty iframe is unfinished rather than invalid: it saves, with a placeholder in the
+    // builder and nothing on the live page
+    cy.dataCy('e2e-iframe-placeholder').should('exist');
+    cy.get('#e2e-content-builder-iframe-url-input').focus().blur();
+    cy.get('.e2e-error-message').should('not.exist');
+    cy.get('#e2e-content-builder-topbar-save').click();
+    cy.wait('@saveProjectDescriptionBuilder')
+      .its('response.statusCode')
+      .should('be.oneOf', [200, 201]);
+    cy.visit(`/projects/${projectSlug}`);
+    cy.get('.e2e-content-builder-iframe-component').should('exist');
+    cy.dataCy('e2e-iframe-placeholder').should('not.exist');
+    cy.visit(`/admin/project-page-builder/projects/${projectId}`);
+    cy.get('.e2e-content-builder-iframe-component').wait(1000).click('center', {
+      force: true,
+    });
+
     cy.get('#e2e-content-builder-iframe-url-input').type(
       // Typeform survey created in CitizenLab Methods Squad workspace specifically for e2e
       'https://citizenlabco.typeform.com/to/cZtXQzTf'

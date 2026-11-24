@@ -131,6 +131,13 @@ Rails.application.config.middleware.use OmniAuth::Builder do
   provider :openid_connect, setup: PUBLIK_SETUP_PROC, name: 'publik', issuer: CustomIdMethods::Publik::PublikOmniauth.new.method(:issuer)
 end
 
+OKTA_SETUP_PROC = lambda do |env|
+  CustomIdMethods::Okta::OktaOmniauth.new.omniauth_setup(AppConfiguration.instance, env)
+end
+Rails.application.config.middleware.use OmniAuth::Builder do
+  provider :openid_connect, setup: OKTA_SETUP_PROC, name: 'okta', issuer: CustomIdMethods::Okta::OktaOmniauth.new.method(:issuer)
+end
+
 TWODAY_SETUP_PROC = lambda do |env|
   CustomIdMethods::Twoday::TwodayOmniauth.new.omniauth_setup(AppConfiguration.instance, env)
 end

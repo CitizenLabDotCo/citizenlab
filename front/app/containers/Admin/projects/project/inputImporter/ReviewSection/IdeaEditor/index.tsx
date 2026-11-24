@@ -5,6 +5,7 @@ import {
   Button,
   colors,
   stylingConsts,
+  Text,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { UseFormSetError } from 'react-hook-form';
@@ -21,10 +22,13 @@ import useUserById from 'api/users/useUserById';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import Error from 'components/UI/Error';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { useParams } from 'utils/router';
 
+import hasEngagement from '../hasEngagement';
 import messages from '../messages';
 
 import IdeaForm from './IdeaForm';
@@ -42,14 +46,21 @@ import {
 interface Props {
   ideaId: string | null;
   setIdeaId: (ideaId: null | string) => void;
-  onIdeaApproved: (approved: { id: string; title: string }) => void;
 }
 
 type FormValues = Record<string, any>;
 
-const IdeaEditor = ({ ideaId, setIdeaId, onIdeaApproved }: Props) => {
+const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
   const [ideaFormDataValid, setIdeaFormDataValid] = useState(false);
+  const [loadingUndoApproval, setLoadingUndoApproval] = useState(false);
+  const [failedSaveIdeaId, setFailedSaveIdeaId] = useState<string | null>(null);
+  // Kept apart from autosave failures: a successful draft save doesn't mean
+  // Approve, which runs the publication checks, would now succeed.
+  const [failedApproveIdeaId, setFailedApproveIdeaId] = useState<string | null>(
+    null
+  );
   const setError = useRef<UseFormSetError<FormValues>>();
 
   const { projectId, phaseId } = useParams({
@@ -60,7 +71,7 @@ const IdeaEditor = ({ ideaId, setIdeaId, onIdeaApproved }: Props) => {
     Record<string, UserFormData>
   >({});
   const [ideaFormStatePerIdea, setIdeaFormStatePerIdea] = useState<
-    Record<string, FormValues>
+    Partial<Record<string, FormValues>>
   >({});
 
   const { data: idea } = useIdeaById(ideaId ?? undefined);
@@ -82,6 +93,12 @@ const IdeaEditor = ({ ideaId, setIdeaId, onIdeaApproved }: Props) => {
   const { mutate: updateUser } = useUpdateUser();
   const { mutateAsync: createOfflineUser } = useCreateOfflineUser();
 
+  // An approved input is read-only until the approval is undone: its answers
+  // are live data, so nothing in the editor may write to it.
+  const isApproved = idea?.data.attributes.publication_status === 'published';
+  const undoDisabledByEngagement =
+    !!idea && isApproved && hasEngagement(idea.data.attributes);
+
   const userFormData = getUserFormValues(
     ideaId,
     userFormStatePerIdea,
@@ -90,15 +107,9 @@ const IdeaEditor = ({ ideaId, setIdeaId, onIdeaApproved }: Props) => {
   );
 
   const ideaFormData: FormValues | null =
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    ideaId && ideaFormStatePerIdea[ideaId]
-      ? ideaFormStatePerIdea[ideaId]
-      : // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      idea
-      ? idea.data.attributes
-      : null;
+    (ideaId ? ideaFormStatePerIdea[ideaId] : undefined) ??
+    idea?.data.attributes ??
+    null;
 
   const setUserFormData = (
     getUserFormData: (oldData: UserFormData) => UserFormData
@@ -122,27 +133,53 @@ const IdeaEditor = ({ ideaId, setIdeaId, onIdeaApproved }: Props) => {
 
   // Auto-save form edits to the backend so that "Approve All" picks up changes.
   // Strip publication_status: the form's defaultValues carry the idea's current
-  // status, so sending it back can race with an Approve for another idea and
-  // flip an already-approved idea back to 'draft' — producing a persistent
-  // desync where the idea reappears in IdeaList while still in the approved
-  // list. Only Approve/Undo should ever touch publication_status.
+  // status, so sending it back could race with an Approve for another idea and
+  // flip a just-approved idea back to 'draft'. Only Approve/Undo should ever
+  // touch publication_status.
+  //
+  // Saves can settle out of order, so only the latest save of an idea may
+  // show or hide its error: an older one would report on outdated answers.
+  const latestAutoSavePerIdea = useRef<Partial<Record<string, number>>>({});
+  // A save can settle after switching to another input: its field errors
+  // must not land on that input's form.
+  const currentIdeaId = useRef(ideaId);
+  currentIdeaId.current = ideaId;
   const autoSave = useCallback(
     (id: string, formData: FormValues) => {
       const { publication_status: _omit, ...rest } = formData;
-      updateIdea({ id, requestBody: rest, skipRefetchCounts: true });
+      const saveNumber = (latestAutoSavePerIdea.current[id] ?? 0) + 1;
+      latestAutoSavePerIdea.current[id] = saveNumber;
+      const isLatestSave = () =>
+        latestAutoSavePerIdea.current[id] === saveNumber;
+
+      updateIdea({ id, requestBody: rest, skipRefetchCounts: true })
+        .then(() => {
+          if (!isLatestSave()) return;
+          setFailedSaveIdeaId((failedId) =>
+            failedId === id ? null : failedId
+          );
+        })
+        .catch((error) => {
+          if (!isLatestSave()) return;
+          setFailedSaveIdeaId(id);
+          if (currentIdeaId.current === id && setError.current) {
+            handleHookFormSubmissionError(error, setError.current);
+          }
+        });
     },
     [updateIdea]
   );
 
   useEffect(() => {
-    if (!ideaId || !(ideaId in ideaFormStatePerIdea)) return;
+    const formData = ideaId ? ideaFormStatePerIdea[ideaId] : undefined;
+    if (!ideaId || isApproved || !formData) return;
 
     const timeout = setTimeout(() => {
-      autoSave(ideaId, ideaFormStatePerIdea[ideaId]);
+      autoSave(ideaId, formData);
     }, 500);
 
     return () => clearTimeout(timeout);
-  }, [ideaId, ideaFormStatePerIdea, autoSave]);
+  }, [ideaId, isApproved, ideaFormStatePerIdea, autoSave]);
 
   const userFormDataValid = isUserFormDataValid(userFormData);
 
@@ -203,9 +240,6 @@ const IdeaEditor = ({ ideaId, setIdeaId, onIdeaApproved }: Props) => {
         },
       });
 
-      const approvedTitle = localize(idea?.data.attributes.title_multiloc);
-      onIdeaApproved({ id: ideaId, title: approvedTitle });
-
       setUserFormStatePerIdea((userFormState) => {
         const clone = { ...userFormState };
         delete clone[ideaId];
@@ -218,11 +252,33 @@ const IdeaEditor = ({ ideaId, setIdeaId, onIdeaApproved }: Props) => {
         return clone;
       });
 
+      setFailedSaveIdeaId((failedId) =>
+        failedId === ideaId ? null : failedId
+      );
+      setFailedApproveIdeaId((failedId) =>
+        failedId === ideaId ? null : failedId
+      );
+
       const nextIdeaId = getNextIdeaId(ideaId, ideas);
       setIdeaId(nextIdeaId);
     } catch (error) {
+      setFailedApproveIdeaId(ideaId);
       setError.current &&
         handleHookFormSubmissionError(error, setError.current);
+    }
+  };
+
+  const onUndoApproval = async () => {
+    if (!ideaId) return;
+
+    setLoadingUndoApproval(true);
+    try {
+      await updateIdea({
+        id: ideaId,
+        requestBody: { publication_status: 'draft' },
+      });
+    } finally {
+      setLoadingUndoApproval(false);
     }
   };
 
@@ -248,20 +304,55 @@ const IdeaEditor = ({ ideaId, setIdeaId, onIdeaApproved }: Props) => {
       >
         {ideaMetadata && (
           <>
-            <MetaBox phaseName={phaseName} locale={locale} />
-            {userFormData && (
-              <UserForm
-                userFormData={userFormData}
-                setUserFormData={setUserFormData}
-              />
+            {!isApproved &&
+              (failedSaveIdeaId === ideaId ||
+                failedApproveIdeaId === ideaId) && (
+                <Box w="90%" mt="12px">
+                  <Error text={formatMessage(messages.saveFailed)} />
+                </Box>
+              )}
+            {isApproved && (
+              <Box
+                w="90%"
+                mt="12px"
+                px="12px"
+                py="8px"
+                bgColor={colors.grey100}
+                borderRadius={stylingConsts.borderRadius}
+              >
+                <Text m="0" color="coolGrey700" fontSize="s">
+                  <FormattedMessage {...messages.approvedReadOnlyNotice} />
+                </Text>
+              </Box>
             )}
-            <IdeaForm
-              formData={ideaFormData ?? {}}
-              setIdeaFormDataValid={setIdeaFormDataValid}
-              setFormData={setIdeaFormData}
-              setError={setError}
-              key={ideaId}
-            />
+            <Box
+              w="100%"
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+              // `inert` blocks mouse and keyboard interaction for the whole
+              // subtree, like FullScreenPreview does for builder previews.
+              ref={(el: HTMLElement | null) =>
+                isApproved
+                  ? el?.setAttribute('inert', '')
+                  : el?.removeAttribute('inert')
+              }
+            >
+              <MetaBox phaseName={phaseName} locale={locale} />
+              {userFormData && (
+                <UserForm
+                  userFormData={userFormData}
+                  setUserFormData={setUserFormData}
+                />
+              )}
+              <IdeaForm
+                formData={ideaFormData ?? {}}
+                setIdeaFormDataValid={setIdeaFormDataValid}
+                setFormData={setIdeaFormData}
+                setError={setError}
+                key={ideaId}
+              />
+            </Box>
           </>
         )}
       </Box>
@@ -274,26 +365,46 @@ const IdeaEditor = ({ ideaId, setIdeaId, onIdeaApproved }: Props) => {
         flexDirection="column"
         justifyContent="flex-end"
       >
-        {ideaId && (
-          <Tooltip
-            disabled={!disabledReason}
-            placement="top"
-            content={disabledReason || <></>}
-          >
-            <div>
-              <Button
-                bgColor={colors.primary}
-                icon="check"
-                w="100%"
-                processing={loadingApproveIdea}
-                disabled={!userFormDataValid || !ideaFormDataValid}
-                onClick={onApproveIdea}
-              >
-                <FormattedMessage {...messages.approve} />
-              </Button>
-            </div>
-          </Tooltip>
-        )}
+        {ideaId &&
+          (isApproved ? (
+            <Tooltip
+              disabled={!undoDisabledByEngagement}
+              placement="top"
+              content={formatMessage(messages.undoApprovalDisabledEngagement)}
+            >
+              <div>
+                <Button
+                  buttonStyle="secondary-outlined"
+                  icon="undo"
+                  w="100%"
+                  processing={loadingUndoApproval}
+                  disabled={undoDisabledByEngagement}
+                  onClick={onUndoApproval}
+                >
+                  <FormattedMessage {...messages.undoApproval} />
+                </Button>
+              </div>
+            </Tooltip>
+          ) : (
+            <Tooltip
+              disabled={!disabledReason}
+              placement="top"
+              content={disabledReason || <></>}
+            >
+              <div>
+                <Button
+                  bgColor={colors.primary}
+                  icon="check"
+                  w="100%"
+                  processing={loadingApproveIdea}
+                  disabled={!userFormDataValid || !ideaFormDataValid}
+                  onClick={onApproveIdea}
+                >
+                  <FormattedMessage {...messages.approve} />
+                </Button>
+              </div>
+            </Tooltip>
+          ))}
       </Box>
     </>
   );

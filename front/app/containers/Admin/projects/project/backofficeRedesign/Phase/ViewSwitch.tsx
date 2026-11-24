@@ -1,89 +1,59 @@
 import React from 'react';
 
-import { Box, colors, Tooltip } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
+import { useRouter } from '@tanstack/react-router';
 
-import Link, { typedStyled } from 'utils/cl-router/Link';
+import SegmentedTabs, {
+  SegmentedTab,
+  SegmentedTabList,
+} from 'design-system/SegmentedTabs';
+
+import useLocale from 'hooks/useLocale';
 
 import { PhaseView } from './usePhaseViews';
-
-// A pill, so the radius is a shape rather than the card radius in
-// stylingConsts. The active segment is styled off aria-current so the state
-// lives in one place for both assistive tech and the eye.
-const segment = `
-  display: inline-flex;
-  align-items: center;
-  padding: 5px 14px;
-  border-radius: 999px;
-  font-size: 12.5px;
-  font-weight: 600;
-  white-space: nowrap;
-`;
-
-const Segment = typedStyled(Link)`
-  ${segment}
-  color: ${colors.coolGrey600};
-
-  &:hover {
-    color: ${colors.textPrimary};
-  }
-
-  &[aria-current='page'] {
-    background: ${colors.white};
-    color: ${colors.textPrimary};
-  }
-`;
-
-// A view the phase has no tab for. Not a <button disabled> so it stays part of
-// the reading order rather than being skipped over.
-const LockedSegment = styled.span`
-  ${segment}
-  color: ${colors.coolGrey500};
-  cursor: default;
-`;
+import 'design-system/tokens.css';
 
 interface Props {
+  label: string;
   views: PhaseView[];
   activeView: string;
   projectId: string;
   phaseId: string;
 }
 
-const ViewSwitch = ({ views, activeView, projectId, phaseId }: Props) => {
+// Each view has its own route, so the tabs are links and the route decides
+// which one is selected. The router builds the hrefs, so the search params it
+// retains (the redesign preview flag) stay on them.
+const ViewSwitch = ({
+  label,
+  views,
+  activeView,
+  projectId,
+  phaseId,
+}: Props) => {
+  const locale = useLocale();
+  const router = useRouter();
+
   if (views.length < 2) return null;
 
   return (
-    <Box
-      display="inline-flex"
-      alignItems="center"
-      gap="2px"
-      p="3px"
-      borderRadius="999px"
-      background={colors.grey100}
-    >
-      {views.map((view) =>
-        view.to ? (
-          <Segment
+    <SegmentedTabs selectedKey={activeView}>
+      <SegmentedTabList aria-label={label}>
+        {views.map((view) => (
+          <SegmentedTab
             key={view.key}
-            to={view.to}
-            params={{ projectId, phaseId }}
-            aria-current={view.key === activeView ? 'page' : undefined}
+            id={view.key}
+            href={
+              router.buildLocation({
+                to: `/$locale${view.to}` as const,
+                params: { locale, projectId, phaseId },
+              }).href
+            }
           >
             {view.label}
-          </Segment>
-        ) : (
-          <Tooltip
-            key={view.key}
-            content={view.lockedReason}
-            disabled={!view.lockedReason}
-            theme="dark"
-            appendTo={() => document.body}
-          >
-            <LockedSegment aria-disabled="true">{view.label}</LockedSegment>
-          </Tooltip>
-        )
-      )}
-    </Box>
+          </SegmentedTab>
+        ))}
+      </SegmentedTabList>
+    </SegmentedTabs>
   );
 };
 

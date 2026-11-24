@@ -89,7 +89,7 @@ module Analysis
     def classify_input_text(input_text, topics)
       prompt = LLM::Prompt.new.fetch('fully_automated_classifier', inputs_text: input_text, topics: topics)
       chosen_topic = begin
-        gpt4mini.chat(prompt)
+        classification_llm.chat(prompt)
       rescue Faraday::BadRequestError => e # https://go.microsoft.com/fwlink/?linkid=2198766
         ErrorReporter.report(e)
         'Other'
@@ -103,8 +103,8 @@ module Analysis
       @gpt5 ||= LLM::GPT54.new
     end
 
-    def gpt4mini
-      @gpt4mini ||= LLM::GPT4oMini.new
+    def classification_llm
+      @classification_llm ||= LLMSelector.new.llm_class_for_use_case('sensemaking_auto_tagging').new
     end
 
     def other_term?(tag_name)
@@ -112,6 +112,9 @@ module Analysis
     end
 
     def classify_many!(inputs, topics, tag_type)
+      # Select the LLM before the tasks start. The tasks run in other threads,
+      # and these threads cannot read the tenant settings.
+      classification_llm
       pool = Concurrent::FixedThreadPool.new(POOL_SIZE)
       tasks = inputs.map.with_index do |input, idx|
         input_id = input.id

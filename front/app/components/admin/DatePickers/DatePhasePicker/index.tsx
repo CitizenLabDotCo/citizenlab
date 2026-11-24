@@ -22,6 +22,8 @@ const DatePhasePicker = ({
 }: Props) => {
   const [calendarOpen, setCalendarOpen] = useState(false);
 
+  const toggleCalendar = () => setCalendarOpen((open) => !open);
+
   const selectedRangeIsOpenEnded = isSelectedRangeOpenEnded(
     selectedRange,
     disabledRanges
@@ -47,13 +49,14 @@ const DatePhasePicker = ({
           </Box>
         }
         placement="bottom"
+        popperOptions={{ strategy: 'fixed' }}
         visible={calendarOpen}
         width="1200px"
       >
         <Input
           selectedRange={selectedRange}
           selectedRangeIsOpenEnded={selectedRangeIsOpenEnded}
-          onClick={() => setCalendarOpen((open) => !open)}
+          onClick={toggleCalendar}
           className={className}
         />
       </Tooltip>

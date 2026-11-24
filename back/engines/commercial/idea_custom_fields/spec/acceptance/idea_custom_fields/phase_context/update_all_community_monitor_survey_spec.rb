@@ -118,7 +118,8 @@ resource 'Idea Custom Fields' do
             linear_scale_label_11_multiloc: {},
             question_category: 'quality_of_life',
             include_in_printed_form: true,
-            answers_visible_to: 'moderators'
+            answers_visible_to: 'moderators',
+            show_as_filter: false
           },
           id: an_instance_of(String),
           type: 'custom_field',
@@ -145,7 +146,8 @@ resource 'Idea Custom Fields' do
             page_layout: 'default',
             question_category: 'other',
             include_in_printed_form: true,
-            answers_visible_to: 'moderators'
+            answers_visible_to: 'moderators',
+            show_as_filter: false
           },
           id: an_instance_of(String),
           type: 'custom_field',

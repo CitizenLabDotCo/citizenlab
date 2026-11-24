@@ -39,7 +39,6 @@ type Props = {
   customFields: IFlatCustomField[];
   projectId: string;
   phase: IPhaseData;
-  isFormPhaseSpecific: boolean;
   onSaveSuccess?: () => void;
 };
 
@@ -49,7 +48,6 @@ const EditSchemaButtonWithModal = ({
   customFields,
   projectId,
   phase,
-  isFormPhaseSpecific,
   onSaveSuccess,
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -116,7 +114,7 @@ const EditSchemaButtonWithModal = ({
       await updateFormCustomFields(
         {
           projectId,
-          phaseId: isFormPhaseSpecific ? phase.id : undefined,
+          phaseId: phase.id,
           customFields: parsed,
           customForm: {
             saveType: 'schema',

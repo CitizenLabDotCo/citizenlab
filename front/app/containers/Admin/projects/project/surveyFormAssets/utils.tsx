@@ -13,10 +13,9 @@ import Warning from 'components/UI/Warning';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import UserFieldsInFormNotice from '../../_shared/components/UserFieldsInFormNotice';
-
 import AccessRightsNotice from './AccessRightsNotice';
 import messages from './messages';
+import SurveyDemographics from './SurveyDemographics';
 
 export const nativeSurveyConfig: FormBuilderConfig = {
   type: 'survey',
@@ -52,11 +51,11 @@ export const nativeSurveyConfig: FormBuilderConfig = {
     'point',
     'line',
     'polygon',
+    'multipoint',
   ],
   displayBuiltInFields: false,
   builtInFields: [],
   showStatusBadge: true,
-  isFormPhaseSpecific: true,
   getWarningNotice: () => {
     return (
       <Box id="e2e-warning-notice" mb="16px">
@@ -76,7 +75,7 @@ export const nativeSurveyConfig: FormBuilderConfig = {
     ) : null;
   },
   getUserFieldsNotice: () => {
-    return <UserFieldsInFormNotice />;
+    return <SurveyDemographics />;
   },
 };
 

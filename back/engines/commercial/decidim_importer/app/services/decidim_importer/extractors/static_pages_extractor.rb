@@ -6,7 +6,7 @@ module DecidimImporter
     #
     # A Decidim page is a single block of rich text (the `body` multiloc in the component's
     # `specific_data`). It becomes a custom, project-scoped static page: the component name becomes the
-    # page title and the body its top info section. Unpublished pages (Decidim drafts) are skipped —
+    # page title and the body goes in the page's layout. Unpublished pages (Decidim drafts) are skipped —
     # static pages are always live, so importing a draft would publish unreviewed content.
     class StaticPagesExtractor < BaseExtractor
       COLUMNS = {

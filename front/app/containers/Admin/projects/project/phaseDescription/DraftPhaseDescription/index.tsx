@@ -6,17 +6,24 @@ import {
   Button,
   IconTooltip,
   Spinner,
-  Badge,
   Icon,
   colors,
 } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
-import { useForm, FormProvider } from 'react-hook-form';
+import { Controller, useForm, FormProvider } from 'react-hook-form';
 import { Multiloc } from 'typings';
+
+import Banner from 'design-system/Banner';
+import DSButton from 'design-system/Button';
+import DSIcon from 'design-system/Icon';
+import IconButton from 'design-system/IconButton';
+import DSSpinner from 'design-system/Spinner';
 
 import usePhases from 'api/phases/usePhases';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
 
+import MultilocRichTextField from 'components/admin/MultilocFields/MultilocRichTextField';
+import { usePhasePreviewPublisher } from 'components/admin/PhasePreview/DraftContext';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 import Warning from 'components/UI/Warning';
 
@@ -25,6 +32,10 @@ import { isEmptyMultiloc } from 'utils/helperUtils';
 import { useParams } from 'utils/router';
 
 import messages from '../messages';
+
+import styles from './DraftPhaseDescription.module.css';
+import StatusBadges from './StatusBadges';
+import 'design-system/tokens.css';
 
 const AUTOSAVE_DEBOUNCE_MS = 1000;
 
@@ -36,14 +47,19 @@ interface Props {
   phaseId: string;
   descriptionMultiloc: Multiloc;
   draftDescriptionMultiloc: Multiloc | undefined;
+  variant?: 'default' | 'panel';
+  placeholder?: string;
 }
 
 const DraftPhaseDescription = ({
   phaseId,
   descriptionMultiloc,
   draftDescriptionMultiloc: initialDraft,
+  variant = 'default',
+  placeholder,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const isPanel = variant === 'panel';
   const { projectId } = useParams({ strict: false }) as { projectId: string };
   const { data: phases } = usePhases(projectId);
   const { mutate: updatePhase, isPending } = useUpdatePhase();
@@ -61,6 +77,17 @@ const DraftPhaseDescription = ({
         : descriptionMultiloc,
     },
   });
+
+  const preview = usePhasePreviewPublisher('description', phaseId);
+  React.useEffect(() => {
+    const subscription = methods.watch(() =>
+      preview.publish({
+        description_multiloc: methods.getValues('draft_description_multiloc'),
+        draft_description_multiloc: {},
+      })
+    );
+    return () => subscription.unsubscribe();
+  }, [methods, preview]);
 
   const debouncedSaveDraft = useMemo(
     () =>
@@ -101,7 +128,12 @@ const DraftPhaseDescription = ({
         description_multiloc: methods.getValues('draft_description_multiloc'),
         draft_description_multiloc: {},
       },
-      { onSuccess: () => setIsEditing(false) }
+      {
+        onSuccess: () => {
+          preview.clear();
+          setIsEditing(false);
+        },
+      }
     );
   };
 
@@ -114,11 +146,98 @@ const DraftPhaseDescription = ({
         onSuccess: () => {
           methods.reset({ draft_description_multiloc: descriptionMultiloc });
           debouncedSaveDraft.cancel();
+          preview.clear();
           setIsEditing(false);
         },
       }
     );
   };
+
+  const statusTooltip = formatMessage(
+    isEditing
+      ? messages.draftDescriptionDraftTooltip
+      : messages.draftDescriptionPublishedTooltip
+  );
+
+  const showEmptyWarning =
+    phases && phases.data.length < 2 && isEmptyMultiloc(descriptionMultiloc);
+
+  if (isPanel) {
+    return (
+      <FormProvider {...methods}>
+        <div>
+          {showEmptyWarning && (
+            <div className={styles.warning}>
+              <Banner tone="info">
+                {formatMessage(messages.emptyDescriptionWarning)}
+              </Banner>
+            </div>
+          )}
+          <Controller
+            name="draft_description_multiloc"
+            control={methods.control}
+            render={({ field }) => (
+              <MultilocRichTextField
+                id="draft_description_multiloc"
+                label={
+                  <span className={styles.badges}>
+                    <StatusBadges isEditing={!!isEditing} isPanel />
+                    <IconButton
+                      icon="info-16"
+                      size={24}
+                      aria-label={statusTooltip}
+                    />
+                  </span>
+                }
+                aria-label={formatMessage(messages.descriptionLabel)}
+                placeholder={placeholder}
+                valueMultiloc={field.value}
+                onChange={field.onChange}
+                onBlur={field.onBlur}
+                onFocus={isEditing ? undefined : handleClickToEdit}
+                withCTAButton
+              />
+            )}
+          />
+          {isEditing && (
+            <div className={styles.footer}>
+              <DSButton
+                variant="quiet"
+                onPress={handleDiscard}
+                isDisabled={isPending}
+              >
+                {formatMessage(messages.draftDescriptionDiscardChanges)}
+              </DSButton>
+              <div className={styles.saveGroup}>
+                {isDraftLoading ? (
+                  <div className={styles.saveState}>
+                    <DSSpinner />
+                    <span className={styles.saveStateText}>
+                      {formatMessage(messages.draftDescriptionSaving)}
+                    </span>
+                  </div>
+                ) : !hasPendingChanges ? (
+                  <div className={styles.saveState}>
+                    <DSIcon name="check-14" className={styles.savedIcon} />
+                    <span className={styles.saveStateText}>
+                      {formatMessage(messages.draftDescriptionSaved)}
+                    </span>
+                  </div>
+                ) : null}
+                <DSButton
+                  variant="primary"
+                  onPress={handlePublish}
+                  isDisabled={isPending}
+                >
+                  {formatMessage(messages.draftDescriptionPublish)}
+                </DSButton>
+              </div>
+            </div>
+          )}
+        </div>
+      </FormProvider>
+    );
+  }
 
   return (
     <FormProvider {...methods}>
@@ -127,38 +246,17 @@ const DraftPhaseDescription = ({
           <Text fontWeight="bold" m="0px">
             {formatMessage(messages.descriptionLabel)}
           </Text>
-          <IconTooltip
-            content={formatMessage(
-              isEditing
-                ? messages.draftDescriptionDraftTooltip
-                : messages.draftDescriptionPublishedTooltip
-            )}
-          />
-          <Badge
-            color={isEditing ? colors.orange500 : colors.green500}
-            className="inverse"
-          >
-            {formatMessage(
-              isEditing
-                ? messages.draftDescriptionDraftBadge
-                : messages.draftDescriptionPublishedBadge
-            )}
-          </Badge>
-          <Badge color={colors.coolGrey600} className="inverse">
-            {formatMessage(messages.beta)}
-          </Badge>
+          <IconTooltip content={statusTooltip} />
+          <StatusBadges isEditing={!!isEditing} isPanel={false} />
         </Box>
-        {phases &&
-          phases.data.length < 2 &&
-          isEmptyMultiloc(descriptionMultiloc) && (
-            <Box my="16px">
-              <Warning>
-                {formatMessage(messages.emptyDescriptionWarning)}
-              </Warning>
-            </Box>
-          )}
+        {showEmptyWarning && (
+          <Box mt="16px" mb="16px">
+            <Warning>{formatMessage(messages.emptyDescriptionWarning)}</Warning>
+          </Box>
+        )}
         <QuillMultilocWithLocaleSwitcher
           name="draft_description_multiloc"
+          placeholder={placeholder}
           withCTAButton
           onFocus={isEditing ? undefined : handleClickToEdit}
         />

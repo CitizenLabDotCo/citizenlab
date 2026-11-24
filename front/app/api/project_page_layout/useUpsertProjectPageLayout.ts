@@ -3,6 +3,7 @@ import { CLErrors } from 'typings';
 
 import { IContentBuilderLayout } from 'api/content_builder/types';
 import fileAttachmentsKeys from 'api/file_attachments/keys';
+import projectsKeys from 'api/projects/keys';
 
 import { CraftJson } from 'components/admin/ContentBuilder/typings';
 
@@ -37,6 +38,11 @@ const useUpsertProjectPageLayout = () => {
           queryKey: projectPageLayoutKeys.item({
             projectId: variables.projectId,
           }),
+        });
+
+        // The save marks the project's page setup step.
+        queryClient.invalidateQueries({
+          queryKey: projectsKeys.item({ id: variables.projectId }),
         });
 
         queryClient.invalidateQueries({

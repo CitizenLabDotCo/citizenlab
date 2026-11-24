@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useId } from 'react';
 
 import {
   IconTooltip,
@@ -8,19 +8,27 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
+import { FieldError } from 'design-system/Field';
+import NumberField from 'design-system/NumberField';
+
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
+import SettingToggleRow from 'components/admin/SettingToggleRow';
 import Error from 'components/UI/Error';
 import UpsellTooltip from 'components/UpsellTooltip';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isSuperAdmin } from 'utils/permissions/roles';
 
 import messages from '../messages';
+
+import styles from './SimilarityDetectionConfig.module.css';
+import 'design-system/tokens.css';
 
 interface Props {
   similarity_enabled?: boolean | null;
@@ -32,6 +40,7 @@ interface Props {
     field: 'similarity_threshold_title' | 'similarity_threshold_body',
     value: number
   ) => void;
+  variant?: 'default' | 'panel';
 }
 
 const SimilarityDetectionConfig = ({
@@ -41,7 +50,11 @@ const SimilarityDetectionConfig = ({
   apiErrors,
   handleSimilarityEnabledChange,
   handleThresholdChange,
+  variant = 'default',
 }: Props) => {
+  const { formatMessage } = useIntl();
+  const errorId = useId();
+  const getApiErrorMessage = useApiErrorText();
   const isInputIQActivated = useFeatureFlag({ name: 'input_iq' });
   const isInputIQAllowed = useFeatureFlag({
     name: 'input_iq',
@@ -56,6 +69,141 @@ const SimilarityDetectionConfig = ({
 
   const showUpsellTooltip = !isInputIQAllowed;
   const allowConfiguringThreshold = isSuperAdmin(user) && isInputIQActivated;
+
+  const thresholds = allowConfiguringThreshold && similarity_enabled && (
+    <>
+      <Input
+        type="number"
+        min="0"
+        max="1"
+        step="0.01"
+        value={
+          typeof similarity_threshold_title === 'number'
+            ? similarity_threshold_title.toString()
+            : null
+        }
+        onChange={(value) =>
+          handleThresholdChange('similarity_threshold_title', parseFloat(value))
+        }
+        name="similarity_threshold_title"
+        label={
+          <Box display="flex" alignItems="center">
+            <FormattedMessage {...messages.similarityThresholdTitle} />{' '}
+            <IconTooltip
+              content={
+                <FormattedMessage
+                  {...messages.similarityThresholdTitleTooltipMessage}
+                />
+              }
+            />
+          </Box>
+        }
+      />
+      <Error apiErrors={apiErrors?.similarity_threshold_title} />
+
+      <Input
+        type="number"
+        min="0"
+        max="1"
+        step="0.01"
+        value={
+          typeof similarity_threshold_body === 'number'
+            ? similarity_threshold_body.toString()
+            : null
+        }
+        onChange={(value) =>
+          handleThresholdChange('similarity_threshold_body', parseFloat(value))
+        }
+        name="similarity_threshold_body"
+        label={
+          <Box display="flex" alignItems="center">
+            <FormattedMessage {...messages.similarityThresholdBody} />{' '}
+            <IconTooltip
+              content={
+                <FormattedMessage
+                  {...messages.similarityThresholdBodyTooltipMessage}
+                />
+              }
+            />
+          </Box>
+        }
+      />
+      <Error apiErrors={apiErrors?.similarity_threshold_body} />
+    </>
+  );
+
+  if (variant === 'panel') {
+    const enabledError = getApiErrorMessage(apiErrors?.similarity_enabled);
+
+    return (
+      <div className={styles.panel}>
+        <UpsellTooltip disabled={!showUpsellTooltip}>
+          <SettingToggleRow
+            id="similarity_enabled"
+            aria-describedby={enabledError ? errorId : undefined}
+            title={formatMessage(messages.similarIdeaDetection)}
+            description={formatMessage(
+              messages.similarIdeaDetectionDescription
+            )}
+            checked={!!similarity_enabled && isInputIQActivated}
+            disabled={!isInputIQActivated}
+            onChange={() => handleSimilarityEnabledChange(!similarity_enabled)}
+          />
+        </UpsellTooltip>
+        {enabledError && <FieldError id={errorId}>{enabledError}</FieldError>}
+        {allowConfiguringThreshold && similarity_enabled && (
+          <>
+            <NumberField
+              name="similarity_threshold_title"
+              label={formatMessage(messages.similarityThresholdTitle)}
+              labelTooltip={formatMessage(
+                messages.similarityThresholdTitleTooltipMessage
+              )}
+              size={32}
+              hideStepButtons
+              minValue={0}
+              maxValue={1}
+              step={0.01}
+              value={
+                typeof similarity_threshold_title === 'number'
+                  ? similarity_threshold_title
+                  : undefined
+              }
+              onChange={(value) =>
+                handleThresholdChange('similarity_threshold_title', value)
+              }
+              errorMessage={getApiErrorMessage(
+                apiErrors?.similarity_threshold_title
+              )}
+            />
+            <NumberField
+              name="similarity_threshold_body"
+              label={formatMessage(messages.similarityThresholdBody)}
+              labelTooltip={formatMessage(
+                messages.similarityThresholdBodyTooltipMessage
+              )}
+              size={32}
+              hideStepButtons
+              minValue={0}
+              maxValue={1}
+              step={0.01}
+              value={
+                typeof similarity_threshold_body === 'number'
+                  ? similarity_threshold_body
+                  : undefined
+              }
+              onChange={(value) =>
+                handleThresholdChange('similarity_threshold_body', value)
+              }
+              errorMessage={getApiErrorMessage(
+                apiErrors?.similarity_threshold_body
+              )}
+            />
+          </>
+        )}
+      </div>
+    );
+  }
 
   return (
     <SectionField display="flex">
@@ -84,65 +232,7 @@ const SimilarityDetectionConfig = ({
         </UpsellTooltip>
         <Error apiErrors={apiErrors?.similarity_enabled} />
 
-        {allowConfiguringThreshold && similarity_enabled && (
-          <>
-            <Input
-              type="number"
-              min="0"
-              max="1"
-              step="0.01"
-              value={similarity_threshold_title?.toString() ?? ''}
-              onChange={(value) =>
-                handleThresholdChange(
-                  'similarity_threshold_title',
-                  parseFloat(value)
-                )
-              }
-              name="similarity_threshold_title"
-              label={
-                <Box display="flex" alignItems="center">
-                  <FormattedMessage {...messages.similarityThresholdTitle} />{' '}
-                  <IconTooltip
-                    content={
-                      <FormattedMessage
-                        {...messages.similarityThresholdTitleTooltipMessage}
-                      />
-                    }
-                  />
-                </Box>
-              }
-            />
-            <Error apiErrors={apiErrors?.similarity_threshold_title} />
-
-            <Input
-              type="number"
-              min="0"
-              max="1"
-              step="0.01"
-              value={similarity_threshold_body?.toString() ?? ''}
-              onChange={(value) =>
-                handleThresholdChange(
-                  'similarity_threshold_body',
-                  parseFloat(value)
-                )
-              }
-              name="similarity_threshold_body"
-              label={
-                <Box display="flex" alignItems="center">
-                  <FormattedMessage {...messages.similarityThresholdBody} />{' '}
-                  <IconTooltip
-                    content={
-                      <FormattedMessage
-                        {...messages.similarityThresholdBodyTooltipMessage}
-                      />
-                    }
-                  />
-                </Box>
-              }
-            />
-            <Error apiErrors={apiErrors?.similarity_threshold_body} />
-          </>
-        )}
+        {thresholds}
       </Box>
     </SectionField>
   );

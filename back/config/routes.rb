@@ -129,12 +129,14 @@ Rails.application.routes.draw do
 
       # auth
       post 'user_token' => 'user_token#create'
+      delete 'user_token' => 'user_token#destroy'
       post 'user_token_phone' => 'user_token#create_phone'
 
       resources :users, only: %i[index create update destroy] do
         collection do
           get :me
           get 'me/ping', action: 'ping'
+          get 'me/intercom_token', action: 'intercom_token'
           get :seats
           get :billed_admins
           get :billed_moderators
@@ -246,6 +248,7 @@ Rails.application.routes.draw do
         concerns :file_attachable, attachable_type: 'Phase'
 
         member do
+          post 'review_setup_card'
           get 'survey_results'
           get 'input_response_fields'
           post 'input_responses_pdf'
@@ -374,6 +377,12 @@ Rails.application.routes.draw do
 
       resources :experiments, only: %i[index create]
 
+      resources :pulse_checks, only: [] do
+        post :show_next, on: :collection
+        patch :answer, on: :member
+        patch :dismiss, on: :member
+      end
+
       scope 'stats' do
         with_options controller: 'stats_users' do
           get 'users_count'
@@ -449,6 +458,14 @@ Rails.application.routes.draw do
       end
 
       resources :file_attachments, controller: 'files/file_attachments'
+
+      resources :ai_assistant_conversations, only: %i[index show create], controller: 'ai_assistant/conversations' do
+        resources :messages, only: %i[create], controller: 'ai_assistant/messages'
+      end
+      resources :ai_assistant_tool_calls, only: [], controller: 'ai_assistant/tool_calls' do
+        post :approve, on: :member
+        post :reject, on: :member
+      end
     end
   end
 
@@ -456,6 +473,5 @@ Rails.application.routes.draw do
   post '/auth/:provider/callback', to: 'omniauth_callback#create'
   get '/auth/failure', to: 'omniauth_callback#failure'
   post '/auth/failure', to: 'omniauth_callback#failure'
-  get '/auth/:provider/logout_data', to: 'omniauth_callback#logout_data'
   get '/auth/:provider/spslo', to: 'omniauth_callback#spslo'
 end

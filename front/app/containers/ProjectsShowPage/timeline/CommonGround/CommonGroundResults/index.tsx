@@ -5,7 +5,10 @@ import Text from 'component-library/components/Text';
 
 import useCommonGroundResults from 'api/common_ground/useCommonGroundResults';
 
+import PreviewSkeleton from 'components/PhasePreview/PreviewSkeleton';
+
 import { useIntl } from 'utils/cl-intl';
+import { usePhasePreview } from 'utils/phasePreview/runtime';
 
 import messages from '../messages';
 
@@ -20,6 +23,7 @@ interface Props {
 const CommonGroundResults = ({ phaseId }: Props) => {
   const { formatMessage } = useIntl();
   const { data: results, isLoading } = useCommonGroundResults(phaseId);
+  const preview = usePhasePreview();
 
   if (isLoading) {
     return (
@@ -28,6 +32,8 @@ const CommonGroundResults = ({ phaseId }: Props) => {
       </Box>
     );
   }
+
+  if (!results && preview) return <PreviewSkeleton />;
 
   if (!results) {
     return (
@@ -41,8 +47,12 @@ const CommonGroundResults = ({ phaseId }: Props) => {
     stats: { num_participants, num_ideas, votes },
     top_consensus_ideas,
     top_controversial_ideas,
+    ideas_by_agreement,
   } = results.data.attributes;
   const totalVotes = votes.up + votes.down + votes.neutral;
+  const ideasWithAgreement = ideas_by_agreement.filter(
+    (idea) => idea.agreement !== null
+  );
 
   return (
     <Box mt="8px">
@@ -61,6 +71,11 @@ const CommonGroundResults = ({ phaseId }: Props) => {
         title={formatMessage(messages.closeCallsTitle)}
         description={formatMessage(messages.closeCallsDescription)}
         items={top_controversial_ideas}
+      />
+      <ResultList
+        title={formatMessage(messages.allStatementsTitle)}
+        description={formatMessage(messages.allStatementsDescription1)}
+        items={ideasWithAgreement}
       />
     </Box>
   );

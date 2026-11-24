@@ -30,7 +30,7 @@ describe McpServer::WebApi::V1::OauthAuthorizationsController do
     }
   end
   let(:auth_headers) do
-    { 'Authorization' => "Bearer #{AuthToken::AuthToken.new(payload: user.to_token_payload).token}" }
+    { 'Cookie' => auth_cookie(user) }
   end
 
   describe 'GET /web_api/v1/oauth_authorization' do

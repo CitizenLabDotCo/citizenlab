@@ -58,11 +58,20 @@ interface WordExportProviderProps {
 
 type ExportNode =
   | { type: 'text'; html: string }
+  | { type: 'pagebreak' }
   | { type: 'whitespace'; size?: 'small' | 'medium' | 'large' }
   | { type: 'iframe'; url: string; title?: string }
   | { type: 'image'; nodeId: string; widgetName: string };
 
-const EXPORTABLE_WIDGETS = new Set(Object.keys(WIDGET_TITLES));
+// Word paginates the document itself, so a captured contents list would carry a
+// column of page numbers that nothing ever fills in.
+const NON_EXPORTABLE_WIDGETS = new Set(['TableOfContents']);
+
+const EXPORTABLE_WIDGETS = new Set(
+  Object.keys(WIDGET_TITLES).filter(
+    (widget) => !NON_EXPORTABLE_WIDGETS.has(widget)
+  )
+);
 const CONTAINER_NODES = new Set([
   'Container',
   'Box',
@@ -110,6 +119,11 @@ const buildExportNodes = (
     if (nodeName === 'TextMultiloc') {
       const html = getTextFromMultiloc(node.props?.text, locale, tenantLocales);
       return html ? [{ type: 'text', html }] : [];
+    }
+
+    // Word has a page break of its own; a picture of the dashed line is not one.
+    if (nodeName === 'PageBreak') {
+      return [{ type: 'pagebreak' }];
     }
 
     if (nodeName === 'WhiteSpace') {
@@ -206,6 +220,11 @@ export const ReportWordExportProvider = ({
       for (const node of exportNodes) {
         if (node.type === 'text') {
           sections.push({ type: 'text', html: node.html });
+          continue;
+        }
+
+        if (node.type === 'pagebreak') {
+          sections.push({ type: 'pagebreak' });
           continue;
         }
 

@@ -63,23 +63,26 @@ module DecidimImporter
 
     # @param import_uploads [Boolean] when false, every `remote_*_url` (images *and* file attachments) is
     #   stripped before deserialize — no external HTTP — e.g. for exports whose upload URLs are unreachable.
-    def self.apply_template_file(path, import_uploads: true)
+    # @param dropped_uploads [Array, nil] collects the uploads dropped before deserialize, for the run report
+    #   (see {TemplateCleaner.dropped_upload}).
+    def self.apply_template_file(path, import_uploads: true, dropped_uploads: nil)
       # Parsing a large, anchor-heavy template is a silent single-threaded pause before the first DB
       # query — bracket it so the log shows progress rather than an apparent hang.
       Rails.logger.info "Loading template #{path} (#{File.size(path) / 1_048_576} MB)…"
       template = YAML.load_file(path, aliases: true)
       Rails.logger.info 'Template loaded, resolving idea statuses…'
-      apply_template(template, import_uploads: import_uploads)
+      apply_template(template, import_uploads: import_uploads, dropped_uploads: dropped_uploads)
     end
 
     # Deserializes an in-memory template into the current tenant and runs the post-import passes. Shared
     # by {.apply_template_file} and {TemplateCreator#import}. Returns the deserializer's created-ids hash.
-    def self.apply_template(template, import_uploads: true, validate: true)
+    def self.apply_template(template, import_uploads: true, validate: true, dropped_uploads: nil)
       IdeaStatuses.resolve!(template)
       resolve_area_orderings!(template)
-      TemplateCleaner.prepare_uploads!(template, import_uploads: import_uploads)
+      dropped = TemplateCleaner.prepare_uploads!(template, import_uploads: import_uploads)
+      dropped_uploads&.concat(dropped)
       TemplateCleaner.prune_fileless_attachments!(template)
-      TemplateCleaner.prune_imageless_project_images!(template)
+      TemplateCleaner.prune_imageless_images!(template)
       # Suppress `touch: true` callbacks during the bulk load so imported records keep their template dates.
       created = ActiveRecord::Base.no_touching do
         MultiTenancy::Templates::TenantDeserializer.new.deserialize(
@@ -91,6 +94,7 @@ module DecidimImporter
       restore_update_timestamps(template, created)
       reconcile_permissions!
       provision_project_pages!(created)
+      store_layout_text_images!(created)
       created
     end
 
@@ -174,6 +178,22 @@ module DecidimImporter
 
       Project.where(id: ids).find_each do |project|
         ContentBuilder::LayoutProvisioningService.new.provision_for(project)
+      end
+    end
+
+    # Stores the inline images in **this import's** layouts (static pages and project descriptions) as
+    # `TextImage`s of their page or project, replacing each `<img>` with a reference, as the builder does
+    # when it saves a layout. The deserializer bypasses that save path, so without this the images would
+    # stay linked to the Decidim site. Only `RichTextMultiloc` bridge nodes hold images to store.
+    def self.store_layout_text_images!(created_object_ids)
+      ids = created_object_ids['ContentBuilder::Layout'] || []
+      return if ids.empty?
+
+      ContentBuilder::Layout.where(id: ids).find_each do |layout|
+        layout.craftjs_json = ContentBuilder::LayoutTextImageService.new.swap_data_images(
+          layout.craftjs_json, imageable: layout.content_buildable
+        )
+        layout.save!
       end
     end
 

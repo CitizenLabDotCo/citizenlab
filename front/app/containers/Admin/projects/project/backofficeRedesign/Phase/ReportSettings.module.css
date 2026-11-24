@@ -1,0 +1,4 @@
+.switchLabel {
+  display: flex;
+  flex-direction: column;
+}

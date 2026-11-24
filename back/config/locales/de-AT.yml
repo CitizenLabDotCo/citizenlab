@@ -140,9 +140,15 @@ de-AT:
           title: Was ist dein Thema?
   errors:
     messages:
+      ai_processing_not_allowed: darf nicht von der KI verarbeitet werden
       in_the_past: muss in der Zukunft liegen
       max_must_be_greater_than_min_characters: Das Maximum muss größer sein als das Minimum.
       max_must_be_greater_than_or_equal_to_min_select_count: Das Maximum muss größer oder gleich dem Minimum sein.
+      not_found: wurden nicht gefunden
+      not_in_project: müssen Dateien dieses Projekts sein
+      not_utf8: müssen als UTF-8 gespeichert sein
+      too_many_in_conversation: sind zu viele für eine Konversation
+      unsupported_file_type: müssen PDF-Dateien von höchstens 4 MB oder Markdown- oder Textdateien von höchstens 100 KB sein
   events:
     council_meeting_description: |
       <p>Während dieser Ratssitzung werden jene Vorschläge vorgestellt, die in weniger als 3 Monaten 100 Stimmen gewonnen haben.</p><p> Der Rat wird dann seine Sichtweise auf jede der Ideen darlegen.</p>
@@ -180,6 +186,7 @@ de-AT:
       logic_no_further_questions: Basierend auf Ihren Antworten müssen Sie <strong>keine</strong> weiteren Fragen beantworten.
       logic_section: Abschnitt %{letter}
       matrix_print_description: Markieren Sie für jede Reihe einen Kreis mit einem Kreuz, um Ihre Präferenz anzugeben.
+      multipoint_print_description: Bitte markiere jeden Standort, den du hinzufügen möchtest, mit einem X auf der Karte unten.
       optional: optional
       page: Seite
       permission: Berechtigung

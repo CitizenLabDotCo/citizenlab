@@ -1,0 +1,250 @@
+import {
+  pickTodayInPhaseDatePicker,
+  randomString,
+} from '../../support/commands';
+
+describe('Survey reuse feedback', () => {
+  const projects: string[] = [];
+  let targetId: string;
+  let targetPhaseId: string;
+  let sourcePhaseId: string;
+  let surveyTitle: string;
+  let otherTitle: string;
+  let ideaTitle: string;
+
+  const create = (title: string, method: 'native_survey' | 'ideation') =>
+    cy
+      .apiCreateProject({
+        title,
+        descriptionPreview: randomString(),
+        publicationStatus: 'draft',
+      })
+      .then(({ body }) => {
+        const id = body.data.id;
+        projects.push(id);
+        return cy
+          .apiCreatePhase({
+            projectId: id,
+            title,
+            startAt: '2026-01-01',
+            participationMethod: method,
+            nativeSurveyTitleMultiloc:
+              method === 'native_survey'
+                ? { en: title, 'nl-BE': title }
+                : undefined,
+            nativeSurveyButtonMultiloc:
+              method === 'native_survey'
+                ? { en: 'Take the survey', 'nl-BE': 'Take the survey' }
+                : undefined,
+          })
+          .then((phase) => ({ id, phaseId: phase.body.data.id }));
+      });
+
+  const visitSetup = () =>
+    cy.visit(
+      `/admin/projects/${targetId}/phases/${targetPhaseId}/setup?project_backoffice_redesign`
+    );
+  const openReuse = () => {
+    cy.contains('button', 'Edit survey').click();
+    cy.contains('Use a previous survey').click();
+  };
+  const chooseProject = (title: string) => {
+    cy.get('[data-cy="e2e-copy-survey-modal"] input[role="combobox"]').type(
+      title
+    );
+    cy.get('[role="option"]').contains(title).click();
+  };
+  // The redesign picks the survey in a design-system Select; its options open
+  // in a popover.
+  const chooseSurvey = (title: string) => {
+    cy.get('#e2e-phase-filter').click();
+    cy.contains('[role="option"]', title).click();
+  };
+  const duplicateButton = () => cy.dataCy('e2e-copy-survey-modal-duplicate');
+
+  beforeEach(() => {
+    surveyTitle = `Source survey ${randomString()}`;
+    otherTitle = `Other survey ${randomString()}`;
+    ideaTitle = `Ideas only ${randomString()}`;
+    cy.setConsentAndAdminLoginCookies();
+    create(`Target survey ${randomString()}`, 'native_survey').then(
+      ({ id, phaseId }) => {
+        targetId = id;
+        targetPhaseId = phaseId;
+      }
+    );
+    create(surveyTitle, 'native_survey').then(({ phaseId }) => {
+      sourcePhaseId = phaseId;
+    });
+    create(otherTitle, 'native_survey');
+    create(ideaTitle, 'ideation');
+  });
+
+  afterEach(() => {
+    projects.splice(0).forEach((id) => cy.apiRemoveProject(id));
+  });
+
+  it('filters source projects and clears the source survey on project changes and reopening', () => {
+    cy.intercept('GET', '**/projects/for_admin?*native_survey*').as(
+      'sourceProjects'
+    );
+    visitSetup();
+    openReuse();
+    chooseProject(surveyTitle);
+    cy.wait('@sourceProjects')
+      .its('request.url')
+      .should('include', 'native_survey');
+    chooseSurvey(surveyTitle);
+    duplicateButton().should('not.be.disabled');
+    chooseProject(otherTitle);
+    duplicateButton().should('be.disabled');
+    chooseSurvey(otherTitle);
+    duplicateButton().should('not.be.disabled');
+    cy.get('[role="dialog"]').contains('button', 'Cancel').click();
+    openReuse();
+    duplicateButton().should('be.disabled');
+    cy.get('[data-cy="e2e-copy-survey-modal"] input[role="combobox"]').type(
+      ideaTitle
+    );
+    cy.wait('@sourceProjects');
+    cy.contains('[role="option"]', ideaTitle).should('not.exist');
+  });
+
+  it('requires clearing configured questions before reuse and can undo the deletion', () => {
+    // The form builder links back without the redesign url parameter, so the
+    // flag itself must be on for the round trips to land on the setup page.
+    cy.intercept('GET', '**/web_api/v1/app_configuration**', (request) => {
+      request.continue((response) => {
+        response.body.data.attributes.settings.project_backoffice_redesign.enabled =
+          true;
+      });
+    });
+    visitSetup();
+    cy.contains('button', 'Edit survey').click();
+    cy.contains('Edit form').click();
+    cy.get('[data-cy="e2e-field-row"]').contains('Your question').click();
+    cy.get('#e2e-title-multiloc').clear().type('Saved manual question');
+    cy.intercept(
+      'PATCH',
+      `**/phases/${targetPhaseId}/custom_fields/update_all`
+    ).as('saveQuestions');
+    cy.get('[data-cy="e2e-form-builder-top-bar"]')
+      .contains('button', 'Save')
+      .click();
+    cy.wait('@saveQuestions').its('response.statusCode').should('eq', 200);
+    cy.get('[data-cy="e2e-form-builder-top-bar"]')
+      .contains('button', 'Save')
+      .should('have.attr', 'aria-disabled', 'false');
+    cy.contains('button', 'Go back').click();
+    cy.get('body')
+      .should(($body) => {
+        const builderOpen =
+          $body.find('[data-cy="e2e-form-builder-top-bar"]').length > 0;
+        expect(
+          !builderOpen ||
+            $body.text().includes('Are you sure you want to leave?')
+        ).to.eq(true);
+      })
+      .then(($body) => {
+        if ($body.text().includes('Are you sure you want to leave?')) {
+          cy.contains('Yes, I want to leave').click();
+        }
+      });
+    cy.contains('button', 'Edit survey').click();
+    cy.contains('button', 'Use a previous survey').should('be.disabled');
+    cy.intercept(
+      'PATCH',
+      `**/phases/${targetPhaseId}/custom_fields/update_all`
+    ).as('clearQuestions');
+    cy.contains('button', 'Delete questions').click();
+    cy.wait('@clearQuestions').its('response.statusCode').should('eq', 200);
+    cy.contains('button', 'Use a previous survey').should('not.be.disabled');
+    cy.contains('button', 'Undo').click();
+    cy.wait('@clearQuestions').its('response.statusCode').should('eq', 200);
+    cy.contains('button', 'Use a previous survey').should('be.disabled');
+    cy.get('[role="dialog"] [data-cy="e2e-modal-close-button"]').click();
+    cy.contains('button', 'Edit survey').click();
+    cy.contains('Edit form').click();
+    cy.get('[data-cy="e2e-field-row"]').should(
+      'contain',
+      'Saved manual question'
+    );
+    cy.contains('button', 'Go back').click();
+    cy.contains('button', 'Edit survey').click();
+    cy.contains('button', 'Delete questions').click();
+    cy.wait('@clearQuestions').its('response.statusCode').should('eq', 200);
+    cy.contains('button', 'Use a previous survey').click();
+    chooseProject(surveyTitle);
+    chooseSurvey(surveyTitle);
+    duplicateButton().click();
+    cy.get('[data-cy="e2e-field-row"]')
+      .should('contain', 'Your question')
+      .and('not.contain', 'Saved manual question');
+  });
+
+  it('validates a draft and opens reuse before its first explicit save', () => {
+    cy.apiCreateProject({
+      title: randomString(),
+      descriptionPreview: randomString(),
+      publicationStatus: 'draft',
+    }).then(({ body }) => {
+      projects.push(body.data.id);
+      cy.visit(
+        `/admin/projects/${body.data.id}/phases/new?project_backoffice_redesign&participation_method=native_survey`
+      );
+    });
+    cy.contains('button', 'Add questions').click();
+    cy.contains('Use a previous survey').click();
+    cy.contains(
+      '[slot="errorMessage"], .e2e-error-message',
+      'Missing start date'
+    ).should('be.visible');
+    cy.contains('The phase could not be saved').should('not.exist');
+    cy.get('#phase-build-panel-title').type('Draft survey');
+    pickTodayInPhaseDatePicker();
+    cy.contains('button', 'Add questions').click();
+    cy.contains('Use a previous survey').click();
+    cy.dataCy('e2e-copy-survey-modal').should('be.visible');
+    cy.location('pathname').should('not.include', '/phases/new');
+    chooseProject(surveyTitle);
+    chooseSurvey(surveyTitle);
+    duplicateButton().should('not.be.disabled');
+  });
+
+  it('keeps the legacy picker usable without survey-only project filtering', () => {
+    cy.intercept('GET', '**/web_api/v1/app_configuration**', (request) => {
+      request.continue((response) => {
+        response.body.data.attributes.settings.project_backoffice_redesign.enabled =
+          false;
+      });
+    });
+    cy.visit(`/admin/projects/${targetId}/phases/${targetPhaseId}/survey-form`);
+    cy.contains('button', 'Duplicate another survey').click();
+    cy.get('[role="dialog"]').should(
+      'not.contain',
+      'Search projects with surveys'
+    );
+    chooseProject(ideaTitle);
+    cy.get('[role="dialog"]').should('contain', 'No appropriate phases');
+    cy.dataCy('e2e-copy-survey-modal-duplicate')
+      .find('button')
+      .should('have.attr', 'aria-disabled', 'true');
+    chooseProject(surveyTitle);
+    cy.get('#e2e-phase-filter').select(sourcePhaseId);
+    cy.dataCy('e2e-copy-survey-modal-duplicate')
+      .find('button')
+      .should('have.attr', 'aria-disabled', 'false');
+  });
+
+  it('keeps survey reuse unavailable when responses exist', () => {
+    cy.intercept('GET', `**/phases/${targetPhaseId}/submission_count`, {
+      data: { type: 'submission_count', attributes: { totalSubmissions: 1 } },
+    });
+    visitSetup();
+    cy.contains('button', 'Edit survey').click();
+    cy.get('[role="dialog"]')
+      .should('contain', 'Edit form')
+      .and('contain', 'Use a previous survey');
+    cy.contains('button', 'Use a previous survey').should('be.disabled');
+  });
+});

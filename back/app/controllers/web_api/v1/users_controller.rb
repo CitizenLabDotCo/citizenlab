@@ -114,7 +114,15 @@ class WebApi::V1::UsersController < ApplicationController
       return
     end
 
-    head :ok
+    # The front-end can't read the auth token, so it learns when the session ends from here.
+    render json: { expires_at: AuthToken::AuthToken.new(token: token).payload['exp'] }
+  end
+
+  def intercom_token
+    authorize :user, :intercom_token?
+
+    token = IntercomMessengerTokenService.new.token(current_user)
+    render json: raw_json({ token: })
   end
 
   def me
@@ -270,6 +278,11 @@ class WebApi::V1::UsersController < ApplicationController
     delete_participation_data = ActiveModel::Type::Boolean.new.cast(params[:delete_participation_data])
     ban_email = ActiveModel::Type::Boolean.new.cast(params[:ban_email])
 
+    # Users deleting their own account are signed out, also at their SSO provider if
+    # it supports that. As when signing out, the front-end sends them to logout_url.
+    deleting_self = @user == current_user
+    logout_url = sso_logout_url if deleting_self
+
     DeleteUserJob.perform_now(
       @user.id,
       current_user,
@@ -277,7 +290,13 @@ class WebApi::V1::UsersController < ApplicationController
       ban_email:,
       ban_reason: params[:ban_reason]
     )
-    head :ok
+
+    AuthToken::Cookie.clear(response) if deleting_self
+    if logout_url
+      render json: { logout_url: logout_url }, status: :ok
+    else
+      head :ok
+    end
   end
 
   def block
@@ -374,6 +393,14 @@ class WebApi::V1::UsersController < ApplicationController
       @users.order(created_at: :asc)
     when '-created_at'
       @users.order(created_at: :desc)
+    # Without a tie-breaker the order of equal values is undefined, which makes
+    # paginated results non-deterministic
+    when 'registration_completed_at'
+      @users.order('registration_completed_at ASC NULLS LAST', created_at: :asc)
+    # NULLs only reach this branch when include_inactive is set (the admin and manager
+    # tabs), where a pending invite should read as the most recent.
+    when '-registration_completed_at'
+      @users.order('registration_completed_at DESC NULLS FIRST', created_at: :desc)
     when 'last_active_at'
       @users.order(Arel.sql('last_active_at IS NOT NULL, last_active_at ASC'))
     when '-last_active_at'

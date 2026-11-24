@@ -17,6 +17,10 @@ module Analytics
       self.table_name = 'reporting_pageviews'
       self.primary_key = :id
 
+      include ScopedView
+
+      def self.for_projects(project_ids) = where(project_id: project_ids)
+
       def self.table_description
         <<~DOC.squish
           One row per pageview: a single page displayed to a visitor. Join to
@@ -33,7 +37,10 @@ module Analytics
           'project_id' => <<~DOC.squish,
             The project the page belongs to, or NULL for pages outside any
             project (such as the home page). Use this to count visitors or
-            pageviews per project.
+            pageviews per project. For a phase's visitors, use
+            reporting_phases.visitors_count. To break them down (for example
+            by device), count the pageviews of the phase's project from its
+            start_at up to, not including, its end_at.
           DOC
           'locale' => <<~DOC.squish
             Interface language of the pageview, parsed from the path (for

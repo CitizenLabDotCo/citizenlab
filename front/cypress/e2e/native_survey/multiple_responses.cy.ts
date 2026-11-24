@@ -55,7 +55,7 @@ describe('Native survey: multiple responses per user', () => {
 
   // Opens the project, takes the (empty) survey and asserts the response was
   // created. Returns nothing – assertions happen inline.
-  const submitSurvey = (projectSlug: string) => {
+  const submitSurvey = (projectSlug: string, phaseId: string) => {
     cy.visit(`/projects/${projectSlug}`);
 
     cy.get('.e2e-idea-button')
@@ -65,7 +65,7 @@ describe('Native survey: multiple responses per user', () => {
 
     cy.location('pathname').should(
       'eq',
-      `/en/projects/${projectSlug}/surveys/new`
+      `/en/projects/${projectSlug}/surveys/new/${phaseId}`
     );
 
     cy.intercept('POST', '/web_api/v1/phases/*/inputs').as('submitSurvey');
@@ -77,11 +77,13 @@ describe('Native survey: multiple responses per user', () => {
   describe('when allow_multiple_responses is enabled', () => {
     let projectId: string;
     let projectSlug: string;
+    let phaseId: string;
 
     before(() => {
       createSurveyProject(true).then((result) => {
         projectId = result.projectId;
         projectSlug = result.projectSlug;
+        phaseId = result.phaseId;
       });
     });
 
@@ -94,8 +96,8 @@ describe('Native survey: multiple responses per user', () => {
     });
 
     it('lets a registered user submit the survey more than once', () => {
-      submitSurvey(projectSlug); // first response
-      submitSurvey(projectSlug); // second response – blocked unless the setting is on
+      submitSurvey(projectSlug, phaseId); // first response
+      submitSurvey(projectSlug, phaseId); // second response – blocked unless the setting is on
     });
 
     it('keeps showing the survey CTA after the user has already responded', () => {
@@ -107,11 +109,13 @@ describe('Native survey: multiple responses per user', () => {
   describe('when allow_multiple_responses is disabled (default)', () => {
     let projectId: string;
     let projectSlug: string;
+    let phaseId: string;
 
     before(() => {
       createSurveyProject(false).then((result) => {
         projectId = result.projectId;
         projectSlug = result.projectSlug;
+        phaseId = result.phaseId;
       });
     });
 
@@ -124,7 +128,7 @@ describe('Native survey: multiple responses per user', () => {
     });
 
     it('blocks a second submission and hides the survey CTA', () => {
-      submitSurvey(projectSlug); // first response succeeds
+      submitSurvey(projectSlug, phaseId); // first response succeeds
 
       // The CTA disappears once the single allowed response has been made.
       cy.visit(`/en/projects/${projectSlug}`);

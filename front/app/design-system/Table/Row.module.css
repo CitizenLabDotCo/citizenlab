@@ -1,0 +1,64 @@
+.row {
+  composes: ringInside from '../focus.module.css';
+  position: relative;
+  border-radius: var(--gv-radius-8);
+  color: var(--gv-text-body-subtle);
+  cursor: default;
+}
+
+.row > td {
+  padding: 0;
+  border-bottom: var(--gv-border-width-1) solid var(--gv-border-row);
+  vertical-align: middle;
+  transition-property: background-color;
+  transition-duration: var(--gv-motion-duration-fast);
+  transition-timing-function: var(--gv-motion-easing-standard);
+}
+
+.row[data-hovered] {
+  cursor: pointer;
+}
+
+.row[data-hovered] > td {
+  background: var(--gv-surface-panel-subtle);
+}
+
+.row[data-pressed] > td {
+  background: var(--gv-surface-pressed);
+}
+
+/* A selected row, or the current one (isActive), draws as Selected=Yes. */
+.row[data-selected] > td,
+.row[data-active] > td {
+  background: var(--gv-surface-selected-row);
+}
+
+.row[data-selected] > td {
+  border-bottom-color: transparent;
+}
+
+.row[data-selected]:not(.row[data-selected] + .row[data-selected])
+  > td:first-child {
+  border-top-left-radius: var(--gv-radius-8);
+}
+
+.row[data-selected]:not(.row[data-selected] + .row[data-selected])
+  > td:last-child {
+  border-top-right-radius: var(--gv-radius-8);
+}
+
+.row[data-selected]:not(:has(+ .row[data-selected])) > td:first-child {
+  border-bottom-left-radius: var(--gv-radius-8);
+}
+
+.row[data-selected]:not(:has(+ .row[data-selected])) > td:last-child {
+  border-bottom-right-radius: var(--gv-radius-8);
+}
+
+.selectionCell {
+  text-align: center;
+}
+
+.actionsCell {
+  width: var(--gv-size-28);
+}

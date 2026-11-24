@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button, Box, Title, Text } from '@citizenlab/cl2-component-library';
+import { Button, Box, Text } from '@citizenlab/cl2-component-library';
 
 import Modal from 'components/UI/Modal';
 
@@ -29,36 +29,36 @@ const LocationDeletionModal = ({
       opened={opened}
       close={() => setModalOpen(false)}
       returnFocusRef={returnFocusRef}
-      header={
-        <Title color="primary" variant="h4" m="0px">
-          {formatMessage(messages.confirmDeletion)}
-        </Title>
-      }
-    >
-      <Box p="20px">
-        <Box mb="20px">
-          <Text m="0px" textAlign="center">
-            {formatMessage(messages.deleteLocationFieldExplanation1)}
-          </Text>
-          <Text fontWeight="bold" textAlign="center">
-            {formatMessage(messages.deleteLocationFieldExplanation2)}
-          </Text>
-        </Box>
-        <Box display="flex" justifyContent="center" gap="8px">
-          <Button buttonStyle="secondary" onClick={() => setModalOpen(false)}>
+      width={520}
+      header={formatMessage(messages.confirmDeletion)}
+      footer={
+        <Box display="flex" justifyContent="flex-end" gap="8px" width="100%">
+          <Button
+            buttonStyle="secondary-outlined"
+            onClick={() => setModalOpen(false)}
+          >
             {formatMessage(messages.cancel)}
           </Button>
           <Button
             data-cy="e2e-confirm-delete-location-field"
+            buttonStyle="delete"
             onClick={() => {
               onDelete(index);
               setModalOpen(false);
             }}
-            buttonStyle="admin-dark"
           >
             {formatMessage(messages.delete)}
           </Button>
         </Box>
+      }
+    >
+      <Box p="24px">
+        <Text m="0" mb="12px">
+          {formatMessage(messages.deleteLocationFieldExplanation1)}
+        </Text>
+        <Text m="0" fontWeight="bold">
+          {formatMessage(messages.deleteLocationFieldExplanation2)}
+        </Text>
       </Box>
     </Modal>
   );

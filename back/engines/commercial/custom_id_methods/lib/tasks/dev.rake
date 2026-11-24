@@ -188,6 +188,15 @@ DEV_ID_METHOD_CONFIGS = {
     'ui_method_name' => 'Connexion Meyzieu',
     'logo_url' => 'https://mon.meyzieu.fr/media/uploads/2018/05/18/blason.png'
   },
+  # Works on plain localhost against a free Okta developer org: use `make be-up-okta`.
+  'okta' => {
+    'name' => 'okta',
+    'issuer' => ENV.fetch('DEFAULT_OKTA_ISSUER', 'https://integrator-0000000.okta.com'),
+    'client_id' => ENV.fetch('DEFAULT_OKTA_CLIENT_ID', 'fake id'),
+    'client_secret' => ENV.fetch('DEFAULT_OKTA_CLIENT_SECRET', 'fake secret'),
+    'login_mechanism_name' => 'Okta',
+    'visibility' => 'show'
+  },
   'vienna_citizen' => {
     'name' => 'vienna_citizen',
     'environment' => 'test'

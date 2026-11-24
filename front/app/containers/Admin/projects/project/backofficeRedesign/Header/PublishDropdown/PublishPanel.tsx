@@ -1,14 +1,10 @@
 import React from 'react';
 
-import {
-  Box,
-  Button,
-  Divider,
-  Text,
-  Toggle,
-  Tooltip,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import Button from 'design-system/Button';
+import Divider from 'design-system/Divider';
+import RadioGroup, { Radio } from 'design-system/RadioGroup';
+import { PopoverSwitchRow } from 'design-system/SwitchRow';
+import Text from 'design-system/Text';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useProjectPublicationRecipientCount from 'api/project_publication_recipient_count/useProjectPublicationRecipientCount';
@@ -20,15 +16,21 @@ import {
   OPEN_OPTIONS,
 } from 'containers/Admin/projects/_shared/visibilityOptions';
 import visibilityMessages from 'containers/Admin/projects/_shared/visibilityOptions/messages';
-
-import OptionRow from 'components/UI/OptionRow';
+import { getMissingItems } from 'containers/Admin/projects/project/backofficeRedesign/ProjectSetupPanel/setupItems';
+import useSetupReadiness from 'containers/Admin/projects/project/backofficeRedesign/ProjectSetupPanel/useSetupReadiness';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
-import messages from '../../messages';
+import backofficeRedesignMessages from '../../messages';
 
 import { ConfirmableStatus } from './ConfirmStatusChangeModal';
+import GroupsChecklist from './GroupsChecklist';
+import messages from './messages';
+import { MissingEssentialsIntent } from './MissingEssentialsModal';
 import getPublicationState, { PublicationState } from './publicationState';
+import styles from './PublishDropdown.module.css';
+import usePublishNow from './usePublishNow';
+import 'design-system/tokens.css';
 
 const HEADER_MESSAGES: Record<PublicationState, MessageDescriptor> = {
   published: messages.publishStatePublished,
@@ -41,6 +43,7 @@ interface Props {
   project: IProjectData;
   onSchedule: () => void;
   onConfirmStatusChange: (status: ConfirmableStatus) => void;
+  onMissingEssentials: (intent: MissingEssentialsIntent) => void;
   onDone: () => void;
 }
 
@@ -48,10 +51,14 @@ const PublishPanel = ({
   project,
   onSchedule,
   onConfirmStatusChange,
+  onMissingEssentials,
   onDone,
 }: Props) => {
   const { formatMessage, formatDate, formatTime } = useIntl();
-  const { mutate: updateProject, isPending } = useUpdateProject();
+  const { mutate: updateProject } = useUpdateProject();
+  const { publishNow, isPending } = usePublishNow(project);
+  const { readiness, isLoading: readinessLoading } = useSetupReadiness(project);
+  const hasMissingItems = getMissingItems(readiness).length > 0;
   const { data: recipientCount } = useProjectPublicationRecipientCount(
     project.id
   );
@@ -101,165 +108,165 @@ const PublishPanel = ({
   const setVisibleTo = (nextVisibleTo: Visibility) =>
     updateProject({ projectId: project.id, visible_to: nextVisibleTo });
 
+  const handleVisibleToChange = (value: string) => {
+    const option = OPEN_OPTIONS.find(
+      (openOption) => openOption.value === value
+    );
+    if (option) setVisibleTo(option.value);
+  };
+
   const setSendEmail = (enabled: boolean) =>
     updateProject({
       projectId: project.id,
       publication_email_enabled: enabled,
     });
 
-  const publishNow = () =>
-    updateProject(
-      {
-        projectId: project.id,
-        admin_publication_attributes: { publication_status: 'published' },
-        publication_email_enabled,
-      },
-      { onSuccess: onDone }
-    );
+  const handlePublishNow = () =>
+    hasMissingItems ? onMissingEssentials('publish') : publishNow(onDone);
+
+  const handleSchedule = () =>
+    hasMissingItems ? onMissingEssentials('schedule') : onSchedule();
 
   const count = recipientCount?.data.attributes.count;
 
   return (
-    <Box>
-      <Text variant="boSection" mb="12px">
-        {header}
-      </Text>
+    <div className={styles.panel}>
+      <h2 className={styles.header}>{header}</h2>
 
-      <Text variant="boSection" mb="4px">
-        {formatMessage(visibilityMessages.publishWhoCanFind)}
-      </Text>
-      <Box role="radiogroup" display="flex" flexDirection="column">
-        {FIND_OPTIONS.map((option) => {
-          const optionListed = option.value === 'listed';
-
-          return (
-            <OptionRow
-              key={option.value}
-              icon={option.icon}
-              label={formatMessage(option.label)}
-              description={formatMessage(option.description)}
-              selected={listed === optionListed}
-              onClick={() => setListed(optionListed)}
-            />
-          );
-        })}
-      </Box>
-
-      <Text variant="boSection" mt="12px" mb="4px">
-        {formatMessage(visibilityMessages.publishWhoCanOpen)}
-      </Text>
-      <Box role="radiogroup" display="flex" flexDirection="column">
-        {OPEN_OPTIONS.map((option) => (
-          <OptionRow
-            key={option.value}
-            icon={option.icon}
-            label={formatMessage(option.label)}
-            description={formatMessage(option.description)}
-            selected={visible_to === option.value}
-            onClick={() => setVisibleTo(option.value)}
-          />
-        ))}
-      </Box>
-
-      <Divider />
-
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        gap="12px"
-      >
-        <Text variant="boLabel">
-          {formatMessage(messages.publishSendEmail)}
-        </Text>
-        <Tooltip
-          content={formatMessage(messages.publishEmailUnavailable)}
-          disabled={!emailToggleDisabled}
+      <div className={styles.radioGroups}>
+        <RadioGroup
+          label={formatMessage(visibilityMessages.publishWhoCanFind)}
+          value={listed ? 'listed' : 'unlisted'}
+          onChange={(value) => setListed(value === 'listed')}
         >
-          <Toggle
-            checked={publication_email_enabled && !emailToggleDisabled}
-            disabled={emailToggleDisabled}
-            onChange={() => setSendEmail(!publication_email_enabled)}
-          />
-        </Tooltip>
-      </Box>
-      {count !== undefined && (
-        <Text variant="boMicro" mt="4px">
-          {formatMessage(messages.publishEmailRecipients, { count })}
-        </Text>
-      )}
+          {FIND_OPTIONS.map((option) => (
+            <Radio key={option.value} value={option.value}>
+              <span className={styles.option}>
+                <Text as="span" variant="ui" tone="primary">
+                  {formatMessage(option.label)}
+                </Text>
+                <Text as="span" variant="ui" tone="secondary">
+                  {formatMessage(option.description)}
+                </Text>
+              </span>
+            </Radio>
+          ))}
+        </RadioGroup>
 
-      <Box
-        display="flex"
-        justifyContent="flex-end"
-        gap="8px"
-        mt="16px"
-        pt="16px"
-        borderTop={`1px solid ${colors.grey200}`}
-      >
+        <RadioGroup
+          label={formatMessage(visibilityMessages.publishWhoCanSee)}
+          value={visible_to}
+          onChange={handleVisibleToChange}
+        >
+          {OPEN_OPTIONS.map((option) => (
+            <Radio key={option.value} value={option.value}>
+              <span className={styles.option}>
+                <Text as="span" variant="ui" tone="primary">
+                  {formatMessage(option.label)}
+                </Text>
+                <Text as="span" variant="ui" tone="secondary">
+                  {formatMessage(option.description)}
+                </Text>
+              </span>
+            </Radio>
+          ))}
+        </RadioGroup>
+      </div>
+      {visible_to === 'groups' && <GroupsChecklist projectId={project.id} />}
+
+      <div className={styles.divider}>
+        <Divider />
+      </div>
+
+      <div className={styles.emailRow}>
+        <PopoverSwitchRow
+          isSelected={publication_email_enabled && !emailToggleDisabled}
+          disabledReason={
+            emailToggleDisabled
+              ? formatMessage(messages.publishEmailUnavailable)
+              : undefined
+          }
+          onChange={() => setSendEmail(!publication_email_enabled)}
+        >
+          {formatMessage(messages.publishSendEmail)}
+        </PopoverSwitchRow>
+        {count !== undefined && (
+          <Text variant="small" tone="secondary">
+            {formatMessage(messages.publishEmailRecipients, { count })}
+          </Text>
+        )}
+      </div>
+
+      <div className={styles.footer}>
         {publicationState === 'published' && (
           <>
-            <Box flex="1">
+            <div className={styles.action}>
               <Button
-                buttonStyle="bo-secondary"
-                width="100%"
-                onClick={() => onConfirmStatusChange('draft')}
+                fullWidth
+                variant="secondary"
+                size={32}
+                onPress={() => onConfirmStatusChange('draft')}
               >
-                {formatMessage(messages.publishRestoreToDraft)}
+                {formatMessage(
+                  backofficeRedesignMessages.publishRestoreToDraft
+                )}
               </Button>
-            </Box>
-            <Box flex="1">
+            </div>
+            <div className={styles.action}>
               <Button
-                buttonStyle="bo-secondary"
-                width="100%"
-                onClick={() => onConfirmStatusChange('archived')}
+                fullWidth
+                variant="secondary"
+                size={32}
+                onPress={() => onConfirmStatusChange('archived')}
               >
                 {formatMessage(messages.publishMoveToArchive)}
               </Button>
-            </Box>
+            </div>
           </>
         )}
 
         {publicationState === 'archived' && (
-          <Box flex="1">
+          <div className={styles.action}>
             <Button
-              buttonStyle="bo-secondary"
-              width="100%"
-              onClick={() => onConfirmStatusChange('draft')}
+              fullWidth
+              variant="secondary"
+              size={32}
+              onPress={() => onConfirmStatusChange('draft')}
             >
-              {formatMessage(messages.publishRestoreToDraft)}
+              {formatMessage(backofficeRedesignMessages.publishRestoreToDraft)}
             </Button>
-          </Box>
+          </div>
         )}
 
         {isDraftOrScheduled && (
           <>
-            <Box flex="1">
+            <div className={styles.action}>
               <Button
-                buttonStyle="bo-secondary"
-                width="100%"
-                icon="calendar"
-                onClick={onSchedule}
+                fullWidth
+                variant="secondary"
+                size={32}
+                icon="calendar-16"
+                onPress={handleSchedule}
+                isPending={readinessLoading}
               >
                 {formatMessage(messages.publishSchedule)}
               </Button>
-            </Box>
-            <Box flex="1">
+            </div>
+            <div id="e2e-publish-now" className={styles.action}>
               <Button
-                buttonStyle="bo-primary"
-                width="100%"
-                icon="send"
-                onClick={publishNow}
-                processing={isPending}
-                id="e2e-publish-now"
+                fullWidth
+                variant="primary"
+                size={32}
+                onPress={handlePublishNow}
+                isPending={isPending || readinessLoading}
               >
                 {formatMessage(messages.publishNow)}
               </Button>
-            </Box>
+            </div>
           </>
         )}
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 };
 

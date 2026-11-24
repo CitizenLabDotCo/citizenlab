@@ -34,5 +34,5 @@ export interface AddProjectImageObject {
 export interface UpdateProjectImageObject {
   projectId: string;
   imageId: string;
-  image: { image: string; alt_text_multiloc?: Multiloc };
+  image: { image?: string; alt_text_multiloc?: Multiloc };
 }

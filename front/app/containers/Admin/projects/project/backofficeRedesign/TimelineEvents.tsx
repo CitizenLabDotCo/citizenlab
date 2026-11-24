@@ -1,13 +1,11 @@
 import React from 'react';
 
-import {
-  Box,
-  Icon,
-  Text,
-  Tooltip,
-  colors,
-} from '@citizenlab/cl2-component-library';
 import { Locale, format, isSameDay, isThisYear } from 'date-fns';
+import { router } from 'routes';
+
+import IconButton from 'design-system/IconButton';
+import PanelGroupHeader from 'design-system/PanelGroupHeader';
+import Text from 'design-system/Text';
 
 import useEvents from 'api/events/useEvents';
 
@@ -15,12 +13,11 @@ import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
 import {
-  Row,
+  STATUS_LABELS,
   formatDateRange,
 } from 'containers/Admin/projects/project/projectPage/phaseRowUtils';
 
 import { getLocale } from 'components/admin/DatePickers/_shared/locales';
-import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
@@ -28,6 +25,7 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 import { useParams } from 'utils/router';
 
 import messages from './messages';
+import styles from './TimelineEvents.module.css';
 
 // Events often span several years, so the year is shown unless it's this one.
 const formatDay = (date: Date, locale: Locale) =>
@@ -51,7 +49,8 @@ interface Props {
 const TimelineEvents = ({ projectId }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const dateLocale = getLocale(useLocale());
+  const locale = useLocale();
+  const dateLocale = getLocale(locale);
   const { id: selectedEventId } = useParams({ strict: false });
   const { data: events } = useEvents({
     projectIds: [projectId],
@@ -62,40 +61,28 @@ const TimelineEvents = ({ projectId }: Props) => {
   if (!events) return null;
 
   return (
-    <Box>
-      <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-        pl="12px"
-        mb="12px"
-      >
-        <Link to="/admin/projects/$projectId/events" params={{ projectId }}>
-          <Box as="h4" m="0">
-            <Text as="span" variant="boSection" m="0">
-              {formatMessage(messages.eventsSection)}
-            </Text>
-          </Box>
-        </Link>
-        <Tooltip
-          content={formatMessage(messages.newEvent)}
-          theme="dark"
-          placement="bottom"
-        >
-          <ButtonWithLink
-            to="/admin/projects/$projectId/events/new"
-            params={{ projectId }}
-            buttonStyle="bo-text"
-            icon="plus"
-            width="32px"
-            height="32px"
-            padding="0"
-            ariaLabel={formatMessage(messages.newEvent)}
-          />
-        </Tooltip>
-      </Box>
+    <div>
+      <div className={styles.header}>
+        <PanelGroupHeader
+          context="rail"
+          level={4}
+          label={formatMessage(messages.eventsSection)}
+          action={
+            <IconButton
+              icon="plus-16"
+              aria-label={formatMessage(messages.newEvent)}
+              onPress={() =>
+                router.navigate({
+                  to: '/$locale/admin/projects/$projectId/events/new',
+                  params: { locale, projectId },
+                })
+              }
+            />
+          }
+        />
+      </div>
 
-      <Box display="flex" flexDirection="column">
+      <div className={styles.events}>
         {events.data.map((event) => {
           const { start_at, end_at, title_multiloc } = event.attributes;
           const status = pastPresentOrFuture([start_at, end_at]);
@@ -105,40 +92,21 @@ const TimelineEvents = ({ projectId }: Props) => {
               key={event.id}
               to="/admin/projects/$projectId/events/$id"
               params={{ projectId, id: event.id }}
+              className={styles.eventRow}
+              data-selected={event.id === selectedEventId || undefined}
             >
-              <Row selected={event.id === selectedEventId}>
-                <Box flexGrow={1} pb="4px">
-                  <Box display="flex" alignItems="center" gap="10px">
-                    <Icon
-                      name="calendar"
-                      width="16px"
-                      height="16px"
-                      fill={
-                        status === 'past' ? colors.coolGrey500 : colors.primary
-                      }
-                    />
-                    <Text
-                      as="span"
-                      m="0"
-                      fontSize="s"
-                      color={
-                        status === 'past' ? 'textSecondary' : 'textPrimary'
-                      }
-                    >
-                      {localize(title_multiloc)}
-                    </Text>
-                  </Box>
-                  {/* 26px = 16px icon + 10px gap, so the date lines up with the title */}
-                  <Text m="2px 0 0 26px" fontSize="xs" color="textSecondary">
-                    {formatEventDate(start_at, end_at, dateLocale)}
-                  </Text>
-                </Box>
-              </Row>
+              <Text as="span" variant="smallStrong" tone="primary">
+                {localize(title_multiloc)}
+              </Text>
+              <Text as="span" variant="small" tone="secondary">
+                {formatMessage(STATUS_LABELS[status])} ·{' '}
+                {formatEventDate(start_at, end_at, dateLocale)}
+              </Text>
             </Link>
           );
         })}
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 };
 

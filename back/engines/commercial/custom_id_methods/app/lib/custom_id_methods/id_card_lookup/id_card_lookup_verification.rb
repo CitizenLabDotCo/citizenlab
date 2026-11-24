@@ -23,41 +23,24 @@ module CustomIdMethods::IdCardLookup
       '516e134d-e22b-4386-a783-0db4c2708256'
     end
 
-    def config_parameters
-      %i[
-        ui_method_name
-        card_id
-        card_id_tooltip
-        card_id_placeholder
-        explainer_image_url
-      ]
-    end
-
     def config_parameters_schema
       {
         ui_method_name: {
-          type: 'string',
-          private: true
+          type: 'string'
         },
         card_id: {
-          type: 'string',
-          private: true
+          type: 'string'
         },
         card_id_tooltip: {
-          type: 'string',
-          private: true
+          type: 'string'
+        },
+        card_id_placeholder: {
+          type: 'string'
+        },
+        explainer_image_url: {
+          type: 'string'
         }
       }
-    end
-
-    def exposed_config_parameters
-      %i[
-        ui_method_name
-        card_id
-        card_id_tooltip
-        card_id_placeholder
-        explainer_image_url
-      ]
     end
 
     def verification_parameters

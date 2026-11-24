@@ -59,11 +59,9 @@ const EXPECTED_COMPONENTS: Partial<Record<ParticipationMethod, ExportId[]>> = {
     'participation-timeline',
     'demographics',
   ],
-  document_annotation: [
-    'participation-metrics',
-    'participation-timeline',
-    'demographics',
-  ],
+  // Konveio keeps the participation data, so the phase has no audience to
+  // describe and no demographics section to wait for.
+  document_annotation: ['participation-metrics', 'participation-timeline'],
 };
 
 const DEFAULT_COMPONENTS: ExportId[] = [

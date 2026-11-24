@@ -140,9 +140,15 @@ pa-IN:
           title: ਤੁਹਾਡਾ ਵਿਸ਼ਾ ਕੀ ਹੈ?
   errors:
     messages:
+      ai_processing_not_allowed: ਹੋ ਸਕਦਾ ਹੈ ਕਿ AI ਦੁਆਰਾ ਪ੍ਰੋਸੈਸ ਨਾ ਕੀਤਾ ਜਾਵੇ
       in_the_past: ਭਵਿੱਖ ਵਿੱਚ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ
       max_must_be_greater_than_min_characters: ਵੱਧ ਤੋਂ ਵੱਧ ਘੱਟੋ-ਘੱਟ ਤੋਂ ਵੱਡਾ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ।
       max_must_be_greater_than_or_equal_to_min_select_count: ਵੱਧ ਤੋਂ ਵੱਧ ਘੱਟੋ-ਘੱਟ ਤੋਂ ਵੱਧ ਜਾਂ ਇਸਦੇ ਬਰਾਬਰ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ।
+      not_found: ਨਹੀਂ ਮਿਲੀਆਂ
+      not_in_project: ਇਸ ਪ੍ਰੋਜੈਕਟ ਦੀਆਂ ਫਾਈਲਾਂ ਹੋਣੀਆਂ ਚਾਹੀਦੀਆਂ ਹਨ
+      not_utf8: UTF-8 ਵਜੋਂ ਸੇਵ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ
+      too_many_in_conversation: ਇੱਕ ਗੱਲਬਾਤ ਲਈ ਬਹੁਤ ਜ਼ਿਆਦਾ ਹਨ
+      unsupported_file_type: ਵੱਧ ਤੋਂ ਵੱਧ 4 MB ਦੀਆਂ PDF ਫਾਈਲਾਂ, ਜਾਂ ਵੱਧ ਤੋਂ ਵੱਧ 100 KB ਦੀਆਂ ਮਾਰਕਡਾਊਨ ਜਾਂ ਟੈਕਸਟ ਫਾਈਲਾਂ ਹੋਣੀਆਂ ਚਾਹੀਦੀਆਂ ਹਨ
   events:
     council_meeting_description: |
       <p>ਇਸ ਕੌਂਸਲ ਮੀਟਿੰਗ ਦੌਰਾਨ, ਉਨ੍ਹਾਂ ਨਾਗਰਿਕ ਪਹਿਲਕਦਮੀਆਂ ਨੂੰ ਪੇਸ਼ ਕੀਤਾ ਜਾਵੇਗਾ ਜਿਨ੍ਹਾਂ ਨੇ 3 ਮਹੀਨਿਆਂ ਤੋਂ ਵੀ ਘੱਟ ਸਮੇਂ ਵਿੱਚ 100 ਵੋਟਾਂ ਹਾਸਲ ਕੀਤੀਆਂ ਹਨ।</p><p>ਫਿਰ ਕੌਂਸਲ ਹਰੇਕ ਵਿਚਾਰ 'ਤੇ ਆਪਣਾ ਵਿਚਾਰ ਸਾਂਝਾ ਕਰੇਗੀ।</p>
@@ -180,6 +186,7 @@ pa-IN:
       logic_no_further_questions: ਤੁਹਾਡੇ ਜਵਾਬਾਂ ਦੇ ਅਧਾਰ 'ਤੇ, ਤੁਹਾਨੂੰ ਅੱਗੇ ਕਿਸੇ ਹੋਰ ਸਵਾਲ ਦਾ ਜਵਾਬ ਦੇਣ ਦੀ <strong>ਲੋੜ ਨਹੀਂ</strong> ਹੈ।
       logic_section: ਸੈਕਸ਼ਨ %{letter}
       matrix_print_description: ਹਰੇਕ ਕਤਾਰ ਲਈ, ਆਪਣੀ ਪਸੰਦ ਨੂੰ ਦਰਸਾਉਣ ਲਈ ਇੱਕ ਚੱਕਰ ਨੂੰ ਕਰਾਸ ਨਾਲ ਚਿੰਨ੍ਹਿਤ ਕਰੋ।
+      multipoint_print_description: ਕਿਰਪਾ ਕਰਕੇ ਹਰੇਕ ਥਾਂ ਲਈ ਹੇਠਾਂ ਦਿੱਤੇ ਨਕਸ਼ੇ 'ਤੇ ਇੱਕ X ਬਣਾਓ ਜਿਸ ਨੂੰ ਤੁਸੀਂ ਜੋੜਨਾ ਚਾਹੁੰਦੇ ਹੋ।
       optional: ਵਿਕਲਪਿਕ
       page: ਪੰਨਾ
       permission: ਇਜਾਜ਼ਤ

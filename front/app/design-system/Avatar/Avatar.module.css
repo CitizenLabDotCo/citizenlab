@@ -1,0 +1,53 @@
+.avatar {
+  composes: smallStrong from '../typography.module.css';
+  box-sizing: border-box;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: var(--gv-radius-full);
+  color: var(--gv-text-inverse);
+  white-space: nowrap;
+}
+
+/* 28 draws the white ring inside, 24 outside. */
+.size28 {
+  width: var(--gv-size-28);
+  height: var(--gv-size-28);
+  border: var(--gv-border-width-2) solid var(--gv-border-inverse);
+}
+
+.size24 {
+  width: var(--gv-size-24);
+  height: var(--gv-size-24);
+  box-shadow: 0 0 0 var(--gv-border-width-2) var(--gv-border-inverse);
+}
+
+.initials {
+  background: var(--gv-surface-brand-strong);
+}
+
+.image {
+  background: var(--gv-surface-muted-hovered);
+}
+
+.empty {
+  background: var(--gv-surface-hovered);
+  border: var(--gv-border-width-1) dashed
+    var(--gv-component-avatar-border-empty);
+  box-shadow: none;
+}
+
+.photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.placeholder {
+  flex-shrink: 0;
+  width: var(--gv-size-icon-14);
+  height: var(--gv-size-icon-14);
+  color: var(--gv-icon-tertiary);
+}

@@ -141,6 +141,28 @@ describe BulkImportIdeas::Importers::ProjectImporter do
     end
   end
 
+  describe '#process_user_custom_field_values' do
+    let!(:domicile) { create(:custom_field_domicile) }
+    let!(:area) { create(:area, title_multiloc: { 'en' => 'Westside' }) }
+    let(:custom_field_values) { service.send(:process_user_custom_field_values, [domicile], 'domicile' => answer) }
+
+    context 'when the user picked an area' do
+      let(:answer) { 'Westside' }
+
+      it 'answers domicile with the area id' do
+        expect(custom_field_values).to eq({ 'domicile' => area.id })
+      end
+    end
+
+    context 'when the user picked the somewhere else option' do
+      let(:answer) { 'Somewhere else' }
+
+      it "answers domicile with 'outside'" do
+        expect(custom_field_values).to eq({ 'domicile' => 'outside' })
+      end
+    end
+  end
+
   describe '#create_project_attachments' do
     let(:project) { create(:project) }
 

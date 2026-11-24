@@ -16,23 +16,12 @@ module ProjectFolders
 
     def before_update(_folder, _user); end
 
+    def before_destroy(_folder, _user); end
+
     def after_update(folder, user)
       change = folder.saved_changes
 
-      if folder.space_id_previously_changed?
-        folder.projects.each do |project|
-          project.space_id = folder.space_id
-
-          if project.save
-            project_change = project.saved_changes
-
-            payload = { project: clean_time_attributes(project.attributes) }
-            payload[:change] = sanitize_change(project_change) if project_change.present?
-
-            LogActivityJob.perform_later(project, 'changed', user, project.updated_at.to_i, payload: payload)
-          end
-        end
-      end
+      move_projects_to_folder_space(folder, user) if folder.space_id_previously_changed?
 
       payload = { project_folder: clean_time_attributes(folder.attributes) }
       payload[:change] = sanitize_change(change) if change.present?
@@ -54,6 +43,25 @@ module ProjectFolders
     end
 
     private
+
+    # Skips the projects' validations: a project that is invalid for another
+    # reason would stay in the old space, and then fail to save ever after,
+    # because its space no longer matches its folder's.
+    def move_projects_to_folder_space(folder, user)
+      old_space_ids = folder.projects
+        .where('projects.space_id IS DISTINCT FROM ?', folder.space_id)
+        .pluck(:id, :space_id).to_h
+      moved_projects = Project.where(id: old_space_ids.keys)
+      moved_projects.update_all(space_id: folder.space_id, updated_at: Time.current)
+
+      moved_projects.each do |project|
+        payload = {
+          project: clean_time_attributes(project.attributes),
+          change: { 'space_id' => [old_space_ids[project.id], folder.space_id] }
+        }
+        LogActivityJob.perform_later(project, 'changed', user, project.updated_at.to_i, payload: payload)
+      end
+    end
 
     def enqueue_scheduled_transition(admin_pub)
       return unless admin_pub.saved_change_to_scheduled_at?

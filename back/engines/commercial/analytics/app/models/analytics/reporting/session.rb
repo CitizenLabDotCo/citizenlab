@@ -21,6 +21,11 @@ module Analytics
       self.table_name = 'reporting_sessions'
       self.primary_key = :id
 
+      include ScopedView
+
+      # The visits with at least one pageview in the projects.
+      def self.for_projects(project_ids) = where(id: Pageview.for_projects(project_ids).select(:session_id))
+
       def self.table_description
         <<~DOC.squish
           One row per browser session on the platform. Bot traffic is filtered

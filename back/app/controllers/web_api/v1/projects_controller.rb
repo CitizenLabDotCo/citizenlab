@@ -228,7 +228,6 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def copy
     source_project = Project.find(params[:id])
-    dest_folder = source_project.folder if UserRoleService.new.can_moderate?(source_project.folder, current_user)
 
     # The authorization of this action is more complex than usual. It works in two steps:
     # - Check if the user can copy the source project.
@@ -236,6 +235,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     # In between these two steps, there is a third authorization check that is an optimization that allows us to
     # return early in some cases.
     authorize(source_project)
+    dest_folder = source_project.folder if UserRoleService.new.can_moderate?(source_project.folder, current_user)
 
     # Optimization: We perform the authorization on a dummy project that resembles the result of the copy. This
     # approach allows us to return early in some cases without performing the actual copy, which can be expensive.
@@ -278,6 +278,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     process_due_status_transition(@project)
     policy_context[:prior_record] = Project.find(@project.id)
     @project.assign_attributes(update_params)
+    keep_completed_setup_steps(@project)
     remove_image_if_requested!(@project, update_params, :header_bg)
 
     # Authorize again here (in addition to the :authorize_project before_action)
@@ -463,6 +464,13 @@ class WebApi::V1::ProjectsController < ApplicationController
         assign_scheduled_by(admin_pub_attrs) if admin_pub_attrs
       end
     end
+  end
+
+  # Merge, so a client with a stale copy can't drop steps the server added.
+  def keep_completed_setup_steps(project)
+    return unless project.completed_setup_steps_changed?
+
+    project.completed_setup_steps = project.completed_setup_steps_was | project.completed_setup_steps
   end
 
   def assign_scheduled_by(admin_publication_attrs)

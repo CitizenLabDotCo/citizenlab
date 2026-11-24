@@ -69,7 +69,7 @@ export interface IProject {
   data: IProjectData;
 }
 
-export type ProjectSetupStep = 'settings' | 'share';
+export type ProjectSetupStep = 'settings' | 'share' | 'page';
 
 export interface IProjectAttributes {
   title_multiloc: Multiloc;
@@ -159,6 +159,10 @@ export interface IProjectData {
       data: IRelationship | null;
     };
     user_follower: {
+      data: IRelationship | null;
+    };
+    // Only present while the llm_reporting feature is on.
+    report?: {
       data: IRelationship | null;
     };
     permissions?: {

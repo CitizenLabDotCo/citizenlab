@@ -6,8 +6,9 @@ module ContentBuilder
   # it — the banner (when the page shows one), the title, then the sections. Nothing is pinned:
   # as on the homepage, an admin can reorder any of it.
   #
-  # It runs only where a page has no layout yet — the backfill task, a newly created page, a new
-  # tenant's template, and a layout created empty through the API. Once a layout exists the
+  # It runs only where a page has no layout yet — a newly created page, a new tenant's template,
+  # a layout created empty through the API, and an importer building a page from a title and a
+  # body (#craftjs_json_for_body). Once a layout exists the
   # builder owns it: an admin's edits are saved as sent, and nothing here runs again. So every
   # rule below decides what a page *starts* with, never what may be put on it afterwards.
   #
@@ -40,7 +41,7 @@ module ContentBuilder
       # has them.
       sections = {
         BANNER_ID => banner_node(static_page, persist_images: persist_images),
-        TITLE_ID => title_node(static_page),
+        TITLE_ID => title_node(show_title: !static_page.banner_enabled),
         TOP_INFO_ID => section_node(
           static_page.top_info_section_multiloc,
           enabled: static_page.top_info_section_enabled
@@ -52,6 +53,18 @@ module ContentBuilder
           static_page.bottom_info_section_multiloc,
           enabled: static_page.bottom_info_section_enabled
         )
+      }.compact
+
+      canonical_nodes(sections.keys).merge(sections)
+    end
+
+    # The graph for a page made of a title and one block of rich text, for importers that build
+    # pages from outside content. Takes the body itself, not a page, so it does not depend on the
+    # section columns.
+    def craftjs_json_for_body(body_multiloc)
+      sections = {
+        TITLE_ID => title_node(show_title: true),
+        TOP_INFO_ID => section_node(body_multiloc, enabled: true)
       }.compact
 
       canonical_nodes(sections.keys).merge(sections)
@@ -120,11 +133,11 @@ module ContentBuilder
     # Always seeded: title_multiloc is the page name, but only a page without a banner shows it.
     # Read from the record rather than copied, because it also names the page in the admin list and
     # the nav bar.
-    def title_node(static_page)
+    def title_node(show_title:)
       {
         'type' => { 'resolvedName' => 'CustomPageTitle' },
         'nodes' => [],
-        'props' => { 'showTitle' => !static_page.banner_enabled },
+        'props' => { 'showTitle' => show_title },
         'custom' => {
           'title' => {
             'id' => 'app.components.CustomPageBuilder.Widgets.CustomPageTitle.title',
@@ -146,8 +159,8 @@ module ContentBuilder
       return {} unless static_page.files_section_enabled
 
       # `file_attachments` sorts on position alone, and position is NULL on every row until TAN-5126
-      # turns position management back on. Without a tie-break two derives of one page can
-      # differ by order alone, so the migration task's overwrite rewrites rows nothing changed in.
+      # turns position management back on. The tie-break keeps the files in the order they were
+      # added, the same on every derive.
       attachments = static_page.file_attachments.order(:created_at, :id)
       attachments.to_h do |attachment|
         [
@@ -188,7 +201,10 @@ module ContentBuilder
           'ids' => filter_ids(static_page),
           'timeFilters' => ['upcoming'],
           'limit' => 3,
-          'projectPublicationStatuses' => ['published']
+          'projectPublicationStatuses' => ['published'],
+          # An admin turned the page's events section on, so the events are part of what the page
+          # is for: when there are none, it says so rather than leaving a gap.
+          'showEmptyMessage' => true
         },
         BODY_ID
       )

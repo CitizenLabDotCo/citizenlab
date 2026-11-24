@@ -2,7 +2,6 @@ import React from 'react';
 
 import {
   Box,
-  IconTooltip,
   Text,
   Badge,
   Icon,
@@ -11,13 +10,12 @@ import {
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 
-import { builtInFieldKeys } from 'components/FormBuilder/utils';
-
-import { useIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../../../messages';
 import { getTranslatedFieldBadgeLabel } from '../../utils';
 
+import ManagersOnlyBadge from './ManagersOnlyBadge';
 import { communityMonitorDefaultPageKeys, getFieldIcon } from './utils';
 
 interface Props {
@@ -26,25 +24,14 @@ interface Props {
 }
 
 const IconsAndBadges = ({ field, displayBuiltInFields }: Props) => {
-  const { formatMessage } = useIntl();
-
-  const showVisibilityIcon =
+  const showManagersOnlyBadge =
     displayBuiltInFields &&
     field.input_type !== 'page' &&
-    !builtInFieldKeys.includes(field.key);
+    field.answers_visible_to !== 'public';
   const isFieldGrouping = field.input_type === 'page';
 
   return (
     <Box pr="32px" display="flex" height="100%" alignContent="center">
-      {showVisibilityIcon && (
-        <IconTooltip
-          placement="top"
-          icon="eye-off"
-          iconColor={colors.coolGrey300}
-          content={formatMessage(messages.fieldIsNotVisibleTooltip)}
-          maxTooltipWidth={250}
-        />
-      )}
       {communityMonitorDefaultPageKeys.includes(field.key) && (
         <Box mt="auto" mb="auto" ml="12px">
           <Badge className="inverse" color={colors.orange100}>
@@ -105,6 +92,11 @@ const IconsAndBadges = ({ field, displayBuiltInFields }: Props) => {
               </Text>
             </Box>
           </Badge>
+        </Box>
+      )}
+      {showManagersOnlyBadge && (
+        <Box my="auto" ml="12px">
+          <ManagersOnlyBadge />
         </Box>
       )}
     </Box>

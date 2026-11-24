@@ -143,6 +143,29 @@ RSpec.describe BulkImportIdeas::Parsers::Pdf::FormSyncSchemaBuilder do
       end
     end
 
+    context 'with matrix_linear_scale field where only some columns are labelled' do
+      let!(:matrix_field) do
+        create(
+          :custom_field_matrix_linear_scale,
+          resource: custom_form,
+          key: 'matrix_field',
+          title_multiloc: { 'en' => 'Rate these statements' },
+          linear_scale_label_1_multiloc: { 'en' => 'Strongly disagree' },
+          linear_scale_label_5_multiloc: { 'en' => 'Strongly agree' },
+          maximum: 5
+        )
+      end
+
+      it 'keeps one column per scale point, so column numbers match the printed form' do
+        sub_prop = builder.output_schema[:properties]['question_1'][:properties]['question_1.1']
+
+        expect(sub_prop[:enum]).to eq([1, 2, 3, 4, 5, 0, -1])
+        expect(sub_prop[:description]).to include(
+          "1 = 'Strongly disagree', 2 = (no label), 3 = (no label), 4 = (no label), 5 = 'Strongly agree'"
+        )
+      end
+    end
+
     context 'with checkbox field' do
       let!(:checkbox_field) { create(:custom_field, resource: custom_form, key: 'checkbox_field', input_type: 'checkbox', title_multiloc: { 'en' => 'I agree' }) }
 

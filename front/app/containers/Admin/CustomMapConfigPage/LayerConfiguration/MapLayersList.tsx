@@ -5,11 +5,14 @@ import {
   Icon,
   IconTooltip,
   colors,
-  fontSizes,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
+
+import IconButton from 'design-system/IconButton';
+import Link from 'design-system/Link';
+import Popover, { DialogTrigger } from 'design-system/Popover';
 
 import { IMapConfig } from 'api/map_config/types';
 import useUpdateMapConfig from 'api/map_config/useUpdateMapConfig';
@@ -36,6 +39,8 @@ import messages from '../messages';
 import addOrderingToLayers, {
   IMapLayerAttributesWithOrdering,
 } from './addOrderingToLayers';
+import styles from './LayerConfiguration.module.css';
+import LayerTitle from './LayerTitle';
 
 const Container = styled.div``;
 
@@ -59,16 +64,6 @@ const LayerIcon = styled(Icon)<{ color: string }>`
   margin-right: 10px;
 `;
 
-const LayerName = styled.div`
-  color: ${colors.primary};
-  font-size: ${fontSizes.m}px;
-  line-height: normal;
-  font-weight: 400;
-  flex: 1;
-  display: flex;
-  align-items: center;
-`;
-
 const Buttons = styled.div`
   display: flex;
   align-items: center;
@@ -88,6 +83,7 @@ interface Props {
   onEditLayer: (layerId: string) => void;
   className?: string;
   setView: (view: ViewOptions) => void;
+  variant?: 'default' | 'panel';
 }
 
 const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
@@ -98,7 +94,9 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
     intl: { formatMessage },
     setView,
     localize,
+    variant = 'default',
   }) => {
+    const isPanel = variant === 'panel';
     const { projectId } = useParams({ strict: false }) as {
       projectId: string;
     };
@@ -118,16 +116,19 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
       });
     };
 
-    const removeLayer = (layerId: string) => (event: React.FormEvent) => {
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      event?.preventDefault();
-
+    const confirmRemoveLayer = (layerId: string) => {
       const message = formatMessage(messages.deleteConfirmation);
 
       if (window.confirm(message)) {
         deleteProjectMapLayer({ mapConfigId: mapConfig.data.id, id: layerId });
       }
+    };
+
+    const removeLayer = (layerId: string) => (event: React.FormEvent) => {
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      event?.preventDefault();
+      confirmRemoveLayer(layerId);
     };
 
     const removeWebMap = () => {
@@ -166,22 +167,179 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       layers && layers.length > 0 ? addOrderingToLayers(layers) : null;
 
+    const layersTooltip = isEsriIntegrationEnabled && ( // TODO: Remove once Esri integration is released
+      <StyledIconTooltip
+        content={
+          <FormattedMessage
+            {...messages.layersTooltip}
+            values={{
+              supportArticle: supportArticleLink,
+            }}
+          />
+        }
+      />
+    );
+
+    if (isPanel) {
+      return (
+        <div className={className}>
+          <h3 className={styles.heading}>
+            <span className={styles.headingText}>
+              <FormattedMessage {...messages.mapData} />
+            </span>
+            {isEsriIntegrationEnabled && ( // TODO: Remove once Esri integration is released
+              <DialogTrigger>
+                <IconButton
+                  icon="info-16"
+                  size={24}
+                  aria-label={formatMessage(messages.mapData)}
+                />
+                <Popover aria-label={formatMessage(messages.mapData)}>
+                  <p className={styles.popoverText}>
+                    <FormattedMessage
+                      {...messages.layersTooltip}
+                      values={{
+                        supportArticle: (
+                          <Link
+                            href={supportArticleUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            {formatMessage(messages.supportArticle)}
+                          </Link>
+                        ),
+                      }}
+                    />
+                  </p>
+                </Popover>
+              </DialogTrigger>
+            )}
+          </h3>
+          {layersWithOrdering && (
+            <SortableList
+              key={layersWithOrdering.length}
+              items={layersWithOrdering}
+              onReorder={handleReorderLayers}
+              className={`${styles.layersList} maplayers-list e2e-admin-maplayers-list`}
+              id="e2e-admin-maplayers-list"
+            >
+              {({ itemsList, handleDragRow, handleDropRow }) => (
+                <>
+                  {(itemsList as IMapLayerAttributesWithOrdering[]).map(
+                    (mapLayer, index) => {
+                      const isEsriLayer =
+                        mapLayer.type === 'CustomMaps::EsriFeatureLayer';
+                      const localizedLayerTitle = localize(
+                        mapLayer.title_multiloc
+                      );
+                      const layerTitle =
+                        localizedLayerTitle === 'Unnamed layer'
+                          ? formatMessage(messages.unnamedLayer)
+                          : localizedLayerTitle;
+
+                      return (
+                        <SortableRow
+                          key={mapLayer.id}
+                          id={mapLayer.id}
+                          index={index}
+                          isLastItem={index === itemsList.length - 1}
+                          moveRow={handleDragRow}
+                          dropRow={handleDropRow}
+                        >
+                          <div className={styles.listItem}>
+                            {/* Layer icons are the platform's marker icons, which the design system does not have. */}
+                            <Icon
+                              className={styles.layerIcon}
+                              name={
+                                isEsriLayer
+                                  ? 'timeline'
+                                  : getLayerIcon(mapLayer)
+                              }
+                              fill={
+                                isEsriLayer
+                                  ? colors.coolGrey600
+                                  : getLayerColor(mapLayer)
+                              }
+                            />
+                            <LayerTitle variant={variant}>
+                              {layerTitle}
+                            </LayerTitle>
+                            <div className={styles.buttons}>
+                              {mapLayer.type === 'CustomMaps::GeojsonLayer' && (
+                                <IconButton
+                                  icon="pencil-14"
+                                  aria-label={formatMessage(messages.edit)}
+                                  onPress={() => onEditLayer(mapLayer.id)}
+                                />
+                              )}
+                              <div className={styles.spacer} />
+                              <IconButton
+                                data-cy="e2e-admin-layer-remove-btn"
+                                icon="trash-2-16"
+                                aria-label={formatMessage(messages.remove)}
+                                onPress={() => confirmRemoveLayer(mapLayer.id)}
+                              />
+                            </div>
+                          </div>
+                        </SortableRow>
+                      );
+                    }
+                  )}
+                </>
+              )}
+            </SortableList>
+          )}
+          {/* TODO: Fix this the next time the file is edited. */}
+          {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
+          {mapConfig?.data.attributes.esri_web_map_id && (
+            <div className={styles.webMap}>
+              <div className={styles.webMapRow}>
+                <div className={styles.listItem}>
+                  <Icon
+                    className={styles.layerIcon}
+                    name="map"
+                    fill={colors.coolGrey600}
+                  />
+                  <LayerTitle variant={variant}>
+                    {formatMessage(messages.esriWebMap)}:{' '}
+                    {mapConfig.data.attributes.esri_web_map_id}
+                  </LayerTitle>
+                  <div className={styles.buttons}>
+                    <div className={styles.spacer} />
+                    <IconButton
+                      icon="trash-2-16"
+                      aria-label={formatMessage(messages.remove)}
+                      onPress={removeWebMap}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* TODO: Fix this the next time the file is edited. */}
+          {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
+          {mapConfig?.data?.id && (
+            <>
+              {isEsriIntegrationEnabled && ( // TODO: Remove hiding of buttons once Esri integration is released + internal training done
+                <EsriImportOptions
+                  setView={setView}
+                  mapConfig={mapConfig}
+                  variant={variant}
+                />
+              )}
+              <GeoJsonImportButton mapConfig={mapConfig} variant={variant} />
+            </>
+          )}
+        </div>
+      );
+    }
+
     return (
       <Container className={className || ''}>
         <SubSectionTitle>
           <FormattedMessage {...messages.mapData} />
-          {isEsriIntegrationEnabled && ( // TODO: Remove once Esri integration is released
-            <StyledIconTooltip
-              content={
-                <FormattedMessage
-                  {...messages.layersTooltip}
-                  values={{
-                    supportArticle: supportArticleLink,
-                  }}
-                />
-              }
-            />
-          )}
+          {layersTooltip}
         </SubSectionTitle>
         {layersWithOrdering && (
           <StyledSortableList
@@ -227,7 +385,9 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
                                 : layerColor
                             }
                           />
-                          <LayerName>{layerTitle}</LayerName>
+                          <LayerTitle variant={variant}>
+                            {layerTitle}
+                          </LayerTitle>
                           <Buttons>
                             {mapLayer.type === 'CustomMaps::GeojsonLayer' && (
                               <Tooltip
@@ -288,12 +448,12 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
             <Box mb="24px" ml="32px">
               <ListItem>
                 <LayerIcon name="map" color={colors.coolGrey600} />
-                <LayerName>
+                <LayerTitle variant={variant}>
                   {formatMessage(messages.esriWebMap)}:{' '}
                   {/* TODO: Fix this the next time the file is edited. */}
                   {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
                   {mapConfig?.data.attributes.esri_web_map_id}
-                </LayerName>
+                </LayerTitle>
                 <Buttons>
                   <Spacer />
                   <Tooltip
@@ -323,9 +483,13 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
         {mapConfig?.data?.id && (
           <>
             {isEsriIntegrationEnabled && ( // TODO: Remove hiding of buttons once Esri integration is released + internal training done
-              <EsriImportOptions setView={setView} mapConfig={mapConfig} />
+              <EsriImportOptions
+                setView={setView}
+                mapConfig={mapConfig}
+                variant={variant}
+              />
             )}
-            <GeoJsonImportButton mapConfig={mapConfig} />
+            <GeoJsonImportButton mapConfig={mapConfig} variant={variant} />
           </>
         )}
       </Container>

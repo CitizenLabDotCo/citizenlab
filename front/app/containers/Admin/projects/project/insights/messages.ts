@@ -1,6 +1,43 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  recommendedActions: {
+    id: 'app.containers.Admin.projects.project.insights.recommendedActions',
+    defaultMessage: 'Recommended actions',
+  },
+  addReport: {
+    id: 'app.containers.Admin.projects.project.insights.addReport',
+    defaultMessage: 'Add a report',
+  },
+  reportCreationFailed: {
+    id: 'app.containers.Admin.projects.project.insights.reportCreationFailed',
+    defaultMessage: 'The report could not be created. Please try again.',
+  },
+  shareResults: {
+    id: 'app.containers.Admin.projects.project.insights.shareResults',
+    defaultMessage: 'Share results with participants',
+  },
+  goToMessaging: {
+    id: 'app.containers.Admin.projects.project.insights.goToMessaging',
+    defaultMessage: 'Go to Messaging',
+  },
+  editProjectHomepage: {
+    id: 'app.containers.Admin.projects.project.insights.editProjectHomepage',
+    defaultMessage: 'Edit the project homepage',
+  },
+  createInformationPhase: {
+    id: 'app.containers.Admin.projects.project.insights.createInformationPhase',
+    defaultMessage: 'Create an information phase',
+  },
+  downloadInsights: {
+    id: 'app.containers.Admin.projects.project.insights.downloadInsights',
+    defaultMessage: 'Download insights',
+  },
+  aiSensemaking: {
+    id: 'app.containers.Admin.projects.project.insights.aiSensemaking',
+    defaultMessage: 'Get an AI Sensemaking summary',
+  },
+
   insights: {
     id: 'app.containers.Admin.projects.project.insights',
     defaultMessage: 'Insights',
@@ -101,6 +138,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.demographicsAndAudience',
     defaultMessage: 'Demographics & Audience',
   },
+  demographicsAndAudienceCard: {
+    id: 'app.containers.Admin.projects.project.insights.demographicsAndAudienceCard',
+    defaultMessage: 'Demographics and audience',
+  },
   noDemographicData: {
     id: 'app.containers.Admin.projects.project.insights.noDemographicData',
     defaultMessage: 'No demographic data available for this phase.',
@@ -153,6 +194,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.participationOverTime',
     defaultMessage: 'Participation over time',
   },
+  visitorsOverTime: {
+    id: 'app.containers.Admin.projects.project.insights.visitorsOverTime',
+    defaultMessage: 'Visitors over time',
+  },
   openForResponses: {
     id: 'app.containers.Admin.projects.project.insights.openForResponses',
     defaultMessage: 'Open for responses',
@@ -168,10 +213,6 @@ export default defineMessages({
   aiAnalysis: {
     id: 'app.containers.Admin.projects.project.insights.aiAnalysis',
     defaultMessage: 'AI analysis',
-  },
-  downloadSurveyResults: {
-    id: 'app.containers.Admin.projects.project.insights.downloadSurveyResults',
-    defaultMessage: 'Download survey results',
   },
   deleteSurveyResults: {
     id: 'app.containers.Admin.projects.project.insights.deleteSurveyResults',

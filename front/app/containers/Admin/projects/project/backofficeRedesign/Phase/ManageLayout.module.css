@@ -1,0 +1,28 @@
+.layout {
+  display: flex;
+  flex-grow: 1;
+  gap: var(--gv-space-8);
+  min-width: 0;
+  min-height: 0;
+}
+
+.side {
+  position: relative;
+  display: flex;
+  flex: 0 0 308px;
+  flex-direction: column;
+  gap: var(--gv-space-8);
+  width: 308px;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.main {
+  composes: panel from '../../../../../../design-system/surfaces.module.css';
+  position: relative;
+  flex-grow: 1;
+  min-width: 0;
+  min-height: 0;
+  padding: var(--gv-space-18);
+  overflow-y: auto;
+}

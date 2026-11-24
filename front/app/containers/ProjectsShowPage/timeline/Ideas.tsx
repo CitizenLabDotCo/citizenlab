@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useMemo } from 'react';
+import React, { lazy, Suspense, useEffect, useMemo, useRef } from 'react';
 
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
 
@@ -18,6 +18,7 @@ import IdeaListScrollAnchor from 'components/IdeaListScrollAnchor';
 
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+import { isPhasePreviewFrame } from 'utils/phasePreview/runtime';
 import { useParams, useSearch } from 'utils/router';
 
 interface InnerProps {
@@ -37,6 +38,7 @@ interface QueryParameters {
   sort: IdeaSortMethod;
   input_topics?: string[];
   idea_status?: string;
+  custom_field_answers?: Record<string, string[]>;
 }
 
 const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
@@ -45,14 +47,24 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
   // defaults. On the public project route the values resolve as before; the cast
   // restores the per-route search shape that the loose read widens.
   const { slug } = useParams({ strict: false });
-  const { sort, search, topics, idea_status } = useSearch({
+  const { sort, search, topics, idea_status, answers } = useSearch({
     strict: false,
   }) as {
     sort?: IdeaSortMethod;
     search?: string;
     topics?: string[];
     idea_status?: string;
+    answers?: Record<string, string[]>;
   };
+  const defaultView = phase.attributes.presentation_mode;
+  const previousDefaultView = useRef(defaultView);
+  useEffect(() => {
+    if (isPhasePreviewFrame() && previousDefaultView.current !== defaultView) {
+      updateSearchParams({ view: undefined, idea_map_id: undefined });
+    }
+    previousDefaultView.current = defaultView;
+  }, [defaultView]);
+
   const config = getMethodConfig(phase.attributes.participation_method, {
     showIdeaFilters: phase.attributes.voting_filtering_enabled,
   });
@@ -67,8 +79,9 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
       search: search ?? undefined,
       input_topics: topics,
       idea_status: idea_status ?? undefined,
+      custom_field_answers: answers,
     }),
-    [config, projectId, sort, search, phase, topics, idea_status]
+    [config, projectId, sort, search, phase, topics, idea_status, answers]
   );
 
   const participationMethod = phase.attributes.participation_method;
@@ -81,7 +94,7 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
     projectId,
     phaseId: phase.id,
     projectSlug: slug,
-    defaultView: phase.attributes.presentation_mode,
+    defaultView,
   };
   const sidebarFiltersEnabled = config.showIdeaFilters === true;
 

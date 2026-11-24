@@ -140,9 +140,15 @@ ar-SA:
           title: ما هو موضوعك؟
   errors:
     messages:
+      ai_processing_not_allowed: قد لا تتم معالجتها بواسطة الذكاء الاصطناعي
       in_the_past: يجب أن يكون ذلك في المستقبل
       max_must_be_greater_than_min_characters: يجب أن يكون الحد الأقصى أكبر من الحد الأدنى.
       max_must_be_greater_than_or_equal_to_min_select_count: يجب أن يكون الحد الأقصى أكبر من أو يساوي الحد الأدنى.
+      not_found: لم يتم العثور عليها
+      not_in_project: يجب أن تكون ملفات تابعة لهذا المشروع
+      not_utf8: يجب حفظها بتنسيق UTF-8
+      too_many_in_conversation: كثيرة جداً لمحادثة واحدة
+      unsupported_file_type: يجب أن تكون ملفات PDF بمساحة 4 ميجابايت كحد أقصى، أو ملفات Markdown أو ملفات نصية بمساحة 100 كيلوبايت كحد أقصى
   events:
     council_meeting_description: |
       <p> في اجتماع المجلس هذا، سيتم تقديم مبادرات المواطنين التي حصلت على 100 صوت في أقل من 3 أشهر. </p><p>سيتبادل أعضاء المجلس وجهات النظر حول كل فكرة.</p>
@@ -184,6 +190,7 @@ ar-SA:
       logic_no_further_questions: بناءً على إجاباتك، <strong>فلست بحاجة</strong> للإجابة على أي أسئلة أخرى.
       logic_section: القسم %{letter}
       matrix_print_description: بالنسبة لكل صف، قم بوضع علامة على دائرة بعلامة X للإشارة إلى تفضيلاتك.
+      multipoint_print_description: يرجى رسم علامة X على الخريطة أدناه لكل موقع ترغب في إضافته.
       optional: خياري
       page: صفحة
       permission: إذن

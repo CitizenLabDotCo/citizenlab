@@ -24,8 +24,10 @@ import PageLoading from 'components/UI/PageLoading';
 
 import { permissiveOneOf } from 'utils/cl-router/permissiveOneOf';
 import type { Routes } from 'utils/moduleUtils';
+import { isPhasePreviewFrame } from 'utils/phasePreview/runtime';
 
 const HomePage = lazy(() => import('containers/HomePage'));
+const BlockHarness = lazy(() => import('containers/Admin/BlockHarness'));
 const OAuthAuthorize = lazy(() => import('containers/OAuthAuthorize'));
 const SiteMap = lazy(() => import('containers/SiteMap'));
 const UsersEditPage = lazy(() => import('containers/UsersEditPage'));
@@ -36,7 +38,13 @@ const IdeasEditPage = lazy(() => import('containers/IdeasEditPage'));
 const IdeasIndexPage = lazy(() => import('containers/IdeasIndexPage'));
 const IdeasShowPage = lazy(() => import('containers/IdeasShowPage'));
 const IdeasNewPage = lazy(() => import('containers/IdeasNewPage'));
+const IdeasNewRedirect = lazy(
+  () => import('containers/IdeasNewPage/IdeasNewRedirect')
+);
 const IdeasNewSurveyPage = lazy(() => import('containers/IdeasNewSurveyPage'));
+const IdeasNewSurveyRedirect = lazy(
+  () => import('containers/IdeasNewSurveyPage/IdeasNewSurveyRedirect')
+);
 const ProjectsIndexPage = lazy(() => import('containers/ProjectsIndexPage'));
 const ProjectsShowPage = lazy(() => import('containers/ProjectsShowPage'));
 const ProjectFolderShowPage = lazy(
@@ -99,8 +107,8 @@ const rootSearchSchema = yup.object({
   'yes-I-accept-cookies': yup.string().optional(),
   // Phase context (used by sharing buttons, idea cards)
   phase_context: yup.string().optional(),
-  // SSO provider testing param
-  provider: yup.string().optional(),
+  // Shows SSO and verification methods while the id_config feature is off
+  id_config: yup.string().optional(),
   // Used by IdeaCard across many routes to scroll to a specific card
   scroll_to_card: yup.string().optional(),
   // Used by vote inputs after auth flow completes
@@ -127,9 +135,11 @@ const rootRoute = createRootRoute({
   component: () => (
     <App>
       <Outlet />
-      <React.Suspense fallback={null}>
-        <TanStackRouterDevtools />
-      </React.Suspense>
+      {!isPhasePreviewFrame() && (
+        <React.Suspense fallback={null}>
+          <TanStackRouterDevtools />
+        </React.Suspense>
+      )}
     </App>
   ),
   notFoundComponent: () => (
@@ -144,6 +154,23 @@ export const localeRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '$locale',
   component: Outlet,
+});
+
+// Where the custom block renderer mounts a generated block to see what it does.
+//
+// Deliberately not under /admin: the browser that opens it has no session, only a
+// token scoped to one layout's data. An admin route would redirect it to a sign-in
+// page. It is not a page anyone navigates to either — it renders nothing at all
+// until a block is handed to it over window.__blockHarness, and it sits behind the
+// same feature flag as the rest of the feature.
+const blockHarnessRoute = createRoute({
+  getParentRoute: () => localeRoute,
+  path: 'block-harness',
+  component: () => (
+    <PageLoading>
+      <BlockHarness />
+    </PageLoading>
+  ),
 });
 
 // Index route (home page)
@@ -340,7 +367,6 @@ const ideasShowRoute = createRoute({
 
 // Project idea/survey new routes
 const projectIdeaNewSearchSchema = yup.object({
-  phase_id: yup.string().optional(),
   idea_id: yup.string().optional(),
   selected_idea_id: yup.string().optional(),
   lat: yup.number().optional(),
@@ -349,7 +375,7 @@ const projectIdeaNewSearchSchema = yup.object({
 
 const projectIdeaNewRoute = createRoute({
   getParentRoute: () => localeRoute,
-  path: 'projects/$slug/ideas/new',
+  path: 'projects/$slug/ideas/new/$phaseId',
   validateSearch: (search: Record<string, unknown>) =>
     projectIdeaNewSearchSchema.validateSync(search, { stripUnknown: true }),
   component: () => (
@@ -359,8 +385,26 @@ const projectIdeaNewRoute = createRoute({
   ),
 });
 
-const projectSurveyNewSearchSchema = yup.object({
+// Idea links shared before the phase moved into the path.
+const projectIdeaNewRedirectSearchSchema = projectIdeaNewSearchSchema.shape({
   phase_id: yup.string().optional(),
+});
+
+const projectIdeaNewRedirectRoute = createRoute({
+  getParentRoute: () => localeRoute,
+  path: 'projects/$slug/ideas/new',
+  validateSearch: (search: Record<string, unknown>) =>
+    projectIdeaNewRedirectSearchSchema.validateSync(search, {
+      stripUnknown: true,
+    }),
+  component: () => (
+    <PageLoading>
+      <IdeasNewRedirect />
+    </PageLoading>
+  ),
+});
+
+const projectSurveyNewSearchSchema = yup.object({
   idea_id: yup.string().optional(),
   go_back: yup.string().optional(),
 });
@@ -371,7 +415,7 @@ type ProjectSurveyNewSearchParams = yup.InferType<
 
 const projectSurveyNewRoute = createRoute({
   getParentRoute: () => localeRoute,
-  path: 'projects/$slug/surveys/new',
+  path: 'projects/$slug/surveys/new/$phaseId',
   validateSearch: (
     search: Record<string, unknown>
   ): ProjectSurveyNewSearchParams =>
@@ -379,6 +423,33 @@ const projectSurveyNewRoute = createRoute({
   component: () => (
     <PageLoading>
       <IdeasNewSurveyPage />
+    </PageLoading>
+  ),
+});
+
+// Survey links shared before the phase moved into the path.
+const projectSurveyNewRedirectSearchSchema = projectSurveyNewSearchSchema.shape(
+  {
+    phase_id: yup.string().optional(),
+  }
+);
+
+type ProjectSurveyNewRedirectSearchParams = yup.InferType<
+  typeof projectSurveyNewRedirectSearchSchema
+>;
+
+const projectSurveyNewRedirectRoute = createRoute({
+  getParentRoute: () => localeRoute,
+  path: 'projects/$slug/surveys/new',
+  validateSearch: (
+    search: Record<string, unknown>
+  ): ProjectSurveyNewRedirectSearchParams =>
+    projectSurveyNewRedirectSearchSchema.validateSync(search, {
+      stripUnknown: true,
+    }),
+  component: () => (
+    <PageLoading>
+      <IdeasNewSurveyRedirect />
     </PageLoading>
   ),
 });
@@ -422,6 +493,19 @@ const projectShowSearchSchema = yup.object({
   search: yup.string().optional(),
   topics: yup.array().of(yup.string().required()).optional(),
   idea_status: yup.string().optional(),
+  // Field ids are only known at runtime; stripUnknown drops every key of a shapeless object().
+  answers: yup
+    .lazy((value) =>
+      yup.object(
+        Object.fromEntries(
+          Object.keys(value ?? {}).map((fieldId) => [
+            fieldId,
+            yup.array().of(yup.string().required()).required(),
+          ])
+        )
+      )
+    )
+    .optional(),
   idea_map_id: yup.string().optional(),
   view: yup.string().oneOf(presentationModes).optional(),
 });
@@ -659,6 +743,7 @@ const disabledAccountRoute = createRoute({
 const buildRouteTree = (moduleRoutes: Partial<Routes> = {}) =>
   rootRoute.addChildren([
     localeRoute.addChildren([
+      blockHarnessRoute,
       homeRoute,
       signInAdminRoute,
       signInRoute,
@@ -675,7 +760,9 @@ const buildRouteTree = (moduleRoutes: Partial<Routes> = {}) =>
       ideasIndexRoute,
       ideasShowRoute,
       projectIdeaNewRoute,
+      projectIdeaNewRedirectRoute,
       projectSurveyNewRoute,
+      projectSurveyNewRedirectRoute,
       projectPreviewRoute.addChildren([projectPreviewTokenRoute]),
       projectsIndexRoute,
       projectShowRoute.addChildren([

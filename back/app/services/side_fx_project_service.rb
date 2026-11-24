@@ -21,6 +21,7 @@ class SideFxProjectService
     CheckProjectPublicationConsistencyJob.perform_later(project.id)
 
     after_publish project, user if project.admin_publication.published?
+    PulseCheckService.new.after_project_create(project, user)
   end
 
   def after_copy(source_project, copied_project, user, start_time)
@@ -50,6 +51,7 @@ class SideFxProjectService
 
   def before_update(project, _user)
     @publication_status_was = project.admin_publication.publication_status_was
+    @first_published_at_was = project.admin_publication.first_published_at
     @folder_id_was = project.admin_publication.parent_id_was
   end
 
@@ -81,8 +83,10 @@ class SideFxProjectService
     # transition as published, which would approve the review on any unrelated update.
     approve_pending_review(project, user) if project.admin_publication.publication_status == 'published' && @publication_status_was != 'published'
     # We don't want to send out the "project published" campaign when e.g. changing from "archived" to "published"
-    after_publish project, user if project.admin_publication.published? && @publication_status_was == 'draft'
+    # or when republishing a project that went back to draft.
+    after_publish project, user if project.admin_publication.published? && @publication_status_was == 'draft' && @first_published_at_was.nil?
     enqueue_scheduled_transition(project.admin_publication)
+    PulseCheckService.new.after_project_update(project, user)
   end
 
   def before_destroy(project, user); end

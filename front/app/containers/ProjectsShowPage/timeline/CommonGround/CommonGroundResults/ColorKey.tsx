@@ -24,6 +24,12 @@ const ColorKey = () => {
         </Text>
       </Box>
       <Box display="flex" alignItems="center" gap="4px">
+        <Box width="12px" height="12px" borderRadius="2px" bg={colors.red500} />
+        <Text fontSize="s" color="grey700" my="0px">
+          {formatMessage(messages.disagreeLabel)}
+        </Text>
+      </Box>
+      <Box display="flex" alignItems="center" gap="4px">
         <Box
           width="12px"
           height="12px"
@@ -32,12 +38,6 @@ const ColorKey = () => {
         />
         <Text fontSize="s" color="grey700" my="0px">
           {formatMessage(messages.unsureLabel)}
-        </Text>
-      </Box>
-      <Box display="flex" alignItems="center" gap="4px">
-        <Box width="12px" height="12px" borderRadius="2px" bg={colors.red500} />
-        <Text fontSize="s" color="grey700" my="0px">
-          {formatMessage(messages.disagreeLabel)}
         </Text>
       </Box>
     </Box>

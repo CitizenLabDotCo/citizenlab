@@ -1,6 +1,14 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  moreFromThisSubmission: {
+    id: 'app.containers.IdeasShow.moreFromThisSubmission',
+    defaultMessage: 'More from this submission',
+  },
+  notAnswered: {
+    id: 'app.containers.IdeasShow.notAnswered',
+    defaultMessage: 'Not answered',
+  },
   deletedUser: {
     id: 'app.containers.IdeasShow.deletedUser',
     defaultMessage: 'deleted user',

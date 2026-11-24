@@ -1,6 +1,7 @@
 import 'cypress-file-upload';
 import './dnd';
 import './form-builder';
+import './input-form';
 import * as moment from 'moment';
 import { IUserUpdate } from '../../app/api/users/types';
 import { IUpdatedAppConfigurationProperties } from '../../app/api/app_configuration/types';
@@ -17,6 +18,128 @@ import {
   IPhasePermissionAction,
 } from '../../app/api/phase_permissions/types';
 import { TReactionMode } from '../../app/api/idea_reactions/types';
+import {
+  IdeaStatusParticipationMethod,
+  IIdeaStatusData,
+  InputStatusCode,
+} from '../../app/api/idea_statuses/types';
+// The API hands out the auth token only in this HttpOnly cookie, and reads it from
+// there only. Cypress can still read and set HttpOnly cookies itself.
+export const AUTH_COOKIE = 'cl2_auth_token';
+// Set and cleared by the API together with the auth cookie, for the front-end to
+// read (see AuthToken::Cookie). The helpers below keep both in step, as the API does.
+const SIGNED_IN_COOKIE = 'cl2_signed_in';
+
+// Reads the auth token the API set in the response's auth cookie.
+export function authTokenFromResponse(response: Cypress.Response<unknown>) {
+  const setCookie = response.headers['set-cookie'];
+  const lines = Array.isArray(setCookie) ? setCookie : [setCookie ?? ''];
+  const prefix = `${AUTH_COOKIE}=`;
+  const line = lines.find((cookie) => cookie.startsWith(prefix));
+  const token = line?.slice(prefix.length).split(';')[0];
+  if (!token) throw new Error(`Response did not set the ${AUTH_COOKIE} cookie`);
+  return token;
+}
+
+/*
+  Removes every cookie named `name` from the browser. There can be more than one:
+  cookies with the same name but a different domain (host-only `e2e.front` vs
+  `.e2e.front`) coexist, and the browser sends all of them.
+*/
+function clearCookieEverywhere(
+  name: string,
+  attemptsLeft = 5
+): Cypress.Chainable<null> {
+  return cy.getCookie(name, { log: false }).then((cookie) => {
+    if (!cookie) return cy.wrap(null, { log: false });
+    if (attemptsLeft === 0) {
+      throw new Error(`Could not clear the ${name} cookie`);
+    }
+    return cy
+      .clearCookie(name, { domain: cookie.domain, log: false })
+      .then(() => clearCookieEverywhere(name, attemptsLeft - 1));
+  });
+}
+
+// Signs the browser out: removes the auth cookie and the signed-in cookie.
+function clearAuthCookie(): Cypress.Chainable<null> {
+  return clearCookieEverywhere(AUTH_COOKIE).then(() =>
+    clearCookieEverywhere(SIGNED_IN_COOKIE)
+  );
+}
+
+/*
+  Signs the browser in with `jwt`, and sets the signed-in cookie next to it. Like the
+  API's own Set-Cookie, the cookies are host-only, so they replace the current ones
+  in one step. Don't clear the cookies first: a page that is open would send its
+  requests in between without one, get a 401 and act as if the user signed out.
+*/
+function setAuthCookie(jwt: string) {
+  return cy
+    .setCookie(AUTH_COOKIE, jwt, {
+      httpOnly: true,
+      hostOnly: true,
+      sameSite: 'lax',
+    })
+    .then(() =>
+      cy.setCookie(SIGNED_IN_COOKIE, 'true', {
+        hostOnly: true,
+        sameSite: 'lax',
+      })
+    );
+}
+
+/*
+  cy.request stores the cookies a response sets in the browser, including the auth
+  cookie the API sets when signing someone in. Runs `request` without that side
+  effect: afterwards, the browser is signed in as the same user as before (if any).
+*/
+function preservingAuthCookie<T>(
+  request: () => Cypress.Chainable<T>
+): Cypress.Chainable<T> {
+  return cy.getCookie(AUTH_COOKIE).then((previous) =>
+    request().then((result) => {
+      if (previous) {
+        return setAuthCookie(previous.value).then(() =>
+          cy.wrap(result, { log: false })
+        );
+      }
+      return clearAuthCookie().then(() => cy.wrap(result, { log: false }));
+    })
+  );
+}
+
+// Makes an API request as the user the auth token `jwt` belongs to.
+function requestAs<T = any>(
+  jwt: string,
+  options: Partial<Cypress.RequestOptions>
+): Cypress.Chainable<Cypress.Response<T>> {
+  return preservingAuthCookie(() =>
+    setAuthCookie(jwt).then(() => cy.request<T>(options))
+  );
+}
+
+/*
+  Makes an API request as a visitor who isn't signed in, whoever the browser is
+  signed in as. Some endpoints, such as confirm_code_email, reject signed-in callers.
+
+  cy.request always sends the browser's cookies, after any Cookie header given here.
+  Instead of removing the auth cookie (a page that is open would then act as if the
+  user signed out), the request sends an empty auth cookie first: the API uses the
+  first cookie of a name, so it sees no token. (Saying the request comes from another
+  website doesn't work: the API rejects such requests, see CrossSiteRequestGuard.)
+*/
+function requestAnonymously<T = any>(
+  options: Partial<Cypress.RequestOptions>
+): Cypress.Chainable<Cypress.Response<T>> {
+  return preservingAuthCookie(() =>
+    cy.request<T>({
+      ...options,
+      headers: { ...options.headers, Cookie: `${AUTH_COOKIE}=` },
+    })
+  );
+}
+
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
@@ -27,6 +150,7 @@ declare global {
       goToLandingPage: typeof goToLandingPage;
       signUp: typeof signUp;
       apiLogin: typeof apiLogin;
+      requestAs: typeof requestAs;
       apiCreateManualGroup: typeof apiCreateManualGroup;
       apiAddMembership: typeof apiAddMembership;
       setAdminLoginCookie: typeof setAdminLoginCookie;
@@ -54,6 +178,7 @@ declare global {
       getArea: typeof getArea;
       apiCreateIdea: typeof apiCreateIdea;
       apiRemoveIdea: typeof apiRemoveIdea;
+      apiSetIdeaStatus: typeof apiSetIdeaStatus;
       apiReactToIdea: typeof apiReactToIdea;
       apiCreateOfficialFeedbackForIdea: typeof apiCreateOfficialFeedbackForIdea;
       apiAddComment: typeof apiAddComment;
@@ -69,6 +194,7 @@ declare global {
       apiRemoveCustomPage: typeof apiRemoveCustomPage;
       apiCreateCustomPage: typeof apiCreateCustomPage;
       apiUpdateCustomPage: typeof apiUpdateCustomPage;
+      apiRemoveCustomPageLayout: typeof apiRemoveCustomPageLayout;
       apiAddFileToCustomPage: typeof apiAddFileToCustomPage;
       apiAddProjectsToFolder: typeof apiAddProjectsToFolder;
       apiCreatePhase: typeof apiCreatePhase;
@@ -80,6 +206,7 @@ declare global {
       apiCreateCause: typeof apiCreateCause;
       apiVerifyBogus: typeof apiVerifyBogus;
       apiCreateEvent: typeof apiCreateEvent;
+      apiAttendEvent: typeof apiAttendEvent;
       apiRemoveEvent: typeof apiRemoveEvent;
       apiCreateReportBuilder: typeof apiCreateReportBuilder;
       apiRemoveReportBuilder: typeof apiRemoveReportBuilder;
@@ -119,6 +246,9 @@ declare global {
       dragToolboxItemTo(
         toolboxSelector: string,
         targetSelector: string
+      ): Chainable<JQuery<HTMLElement>>;
+      clickInputFormPageButton(
+        dataCy: 'e2e-next-page' | 'e2e-submit-form'
       ): Chainable<JQuery<HTMLElement>>;
       selectReactSelectOption: typeof selectReactSelectOption;
       apiCreateInputTopic: typeof apiCreateInputTopic;
@@ -164,6 +294,16 @@ export function randomPhoneNumber() {
   return { national, e164: `+32${national}` };
 }
 
+// Picks today in the redesigned phase date picker, then closes its calendar.
+export function pickTodayInPhaseDatePicker() {
+  cy.get('.e2e-date-phase-picker-input button').first().click();
+  cy.get('[role="dialog"] [role="grid"] [data-today]').first().click();
+  // The pressed day keeps focus, so Escape reaches the calendar popover.
+  // Typing into the dialog instead would first click it, pressing another day.
+  cy.focused().should('have.attr', 'role', 'button').type('{esc}');
+  cy.get('[role="dialog"] [role="grid"]').should('not.exist');
+}
+
 function unregisterServiceWorkers() {
   if (navigator.serviceWorker) {
     navigator.serviceWorker.getRegistrations().then((registrations) => {
@@ -204,25 +344,34 @@ function signUp() {
   cy.get('.e2e-signup-success-close-button').wait(500).click();
 }
 
-function apiLogin(email: string, password: string) {
-  return cy.request({
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    method: 'POST',
-    url: 'web_api/v1/user_token',
-    body: {
-      auth: {
-        email,
-        password,
+// Gets an auth token for the user, as `body.jwt`, without signing the browser in.
+function apiLogin(
+  email: string,
+  password: string
+): Cypress.Chainable<Cypress.Response<any>> {
+  return preservingAuthCookie(() =>
+    cy.request({
+      headers: {
+        'Content-Type': 'application/json',
       },
-    },
-  });
+      method: 'POST',
+      url: 'web_api/v1/user_token',
+      body: {
+        auth: {
+          email,
+          password,
+        },
+      },
+    })
+  ).then((response) => ({
+    ...response,
+    body: { jwt: authTokenFromResponse(response) },
+  }));
 }
 
 function setLoginCookie(email: string, password: string) {
   return cy.apiLogin(email, password).then((res) => {
-    cy.setCookie('cl2_jwt', res.body.jwt);
+    setAuthCookie(res.body.jwt);
   });
 }
 
@@ -247,8 +396,9 @@ function setConsentAndAdminLoginCookies() {
   cy.setAdminLoginCookie();
 }
 
+// Creates the account as a visitor would, even when the browser is signed in.
 function emailSignup(email: string) {
-  return cy.request({
+  return requestAnonymously({
     headers: {
       'Content-Type': 'application/json',
     },
@@ -263,8 +413,14 @@ function emailSignup(email: string) {
   });
 }
 
-function emailConfirmation(email: string) {
-  return cy.request({
+/*
+  Confirms the email, without signing the browser in. The endpoint rejects signed-in
+  callers, so the request is made as a visitor even when the browser is signed in.
+*/
+function emailConfirmation(
+  email: string
+): Cypress.Chainable<Cypress.Response<unknown>> {
+  return requestAnonymously({
     headers: {
       'Content-Type': 'application/json',
     },
@@ -281,10 +437,9 @@ function updateProfile(
   jwt: string,
   attributes: Record<string, any>
 ) {
-  return cy.request({
+  return requestAs(jwt, {
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${jwt}`,
     },
     method: 'PATCH',
     url: `web_api/v1/users/${id}`,
@@ -303,8 +458,7 @@ function apiSignup(
   return emailSignup(email).then((response) => {
     const id = response.body.data.id;
     return emailConfirmation(email).then((emailConfirmationResponse) => {
-      const jwt =
-        emailConfirmationResponse.body.data.attributes.auth_token.token;
+      const jwt = authTokenFromResponse(emailConfirmationResponse);
 
       return updateProfile(id, jwt, {
         first_name,
@@ -343,17 +497,16 @@ function apiCreateAdmin(
 }
 
 function apiUpdateCurrentUser(attrs: IUserUpdate) {
-  cy.getCookie('cl2_jwt').then((cookie) => {
+  cy.getCookie(AUTH_COOKIE).then((cookie) => {
     if (!cookie) {
       return;
     }
     const jwt = cookie.value;
     const userId = jwtDecode<{ sub: string }>(jwt).sub;
 
-    return cy.request({
+    return requestAs(jwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${jwt}`,
       },
       method: 'PATCH',
       url: `web_api/v1/users/${userId}`,
@@ -373,10 +526,9 @@ function apiUpdateUserCustomFields(
   const makeRequest = (jwt: any) => {
     const userId = jwtDecode<{ sub: string }>(jwt).sub;
 
-    return cy.request({
+    return requestAs(jwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${jwt}`,
       },
       method: 'PATCH',
       url: `web_api/v1/users/${userId}`,
@@ -403,10 +555,9 @@ function apiRemoveUser(userId: string) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'DELETE',
       url: `web_api/v1/users/${userId}`,
@@ -418,10 +569,9 @@ function apiGetUsersCount() {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'GET',
       url: `web_api/v1/stats/users_count`,
@@ -433,10 +583,9 @@ function apiGetSeats() {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'GET',
       url: `web_api/v1/users/seats`,
@@ -448,10 +597,9 @@ function apiGetAppConfiguration() {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'GET',
       url: `web_api/v1/app_configuration`,
@@ -463,10 +611,9 @@ function apiGetCommunityMonitorProject() {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'GET',
       url: `web_api/v1/projects/community_monitor`,
@@ -492,10 +639,9 @@ function apiCreateModeratorForProject({
     return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
       const adminJwt = response.body.jwt;
 
-      return cy.request({
+      return requestAs(adminJwt, {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${adminJwt}`,
         },
         method: 'POST',
         url: `web_api/v1/projects/${projectId}/moderators`,
@@ -527,10 +673,9 @@ function apiCreateModeratorForFolder({
     return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
       const adminJwt = response.body.jwt;
 
-      return cy.request({
+      return requestAs(adminJwt, {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${adminJwt}`,
         },
         method: 'POST',
         url: `web_api/v1/project_folders/${folderId}/moderators`,
@@ -568,10 +713,9 @@ function getProjectBySlug(projectSlug: string) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'GET',
       url: `web_api/v1/projects/by_slug/${projectSlug}`,
@@ -583,10 +727,9 @@ function getProjectById(projectId: string) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'GET',
       url: `web_api/v1/projects/${projectId}`,
@@ -604,18 +747,14 @@ function getTopics({ excludeCode }: { excludeCode?: string }) {
   });
 }
 
+// The user the browser is signed in as: cy.request sends the browser's auth cookie.
 function getAuthUser() {
-  return cy.getCookie('cl2_jwt').then((cookie) => {
-    const jwt = cookie?.value;
-
-    return cy.request({
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${jwt}`,
-      },
-      method: 'GET',
-      url: 'web_api/v1/users/me',
-    });
+  return cy.request({
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    method: 'GET',
+    url: 'web_api/v1/users/me',
   });
 }
 
@@ -623,10 +762,9 @@ function getAdminAuthUser() {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'GET',
       url: 'web_api/v1/users/me',
@@ -648,10 +786,9 @@ function getUserById(userId: string) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'GET',
       url: `web_api/v1/users/${userId}`,
@@ -677,10 +814,9 @@ function apiCreateInputTopic({
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'POST',
       url: `web_api/v1/projects/${projectId}/input_topics`,
@@ -712,6 +848,7 @@ type IdeaType = {
   budget?: number;
   anonymous?: boolean;
   topicIds?: string[];
+  customFieldValues?: Record<string, unknown>;
 };
 
 function apiCreateIdea({
@@ -724,12 +861,12 @@ function apiCreateIdea({
   budget,
   anonymous,
   topicIds,
+  customFieldValues,
 }: IdeaType) {
   const doRequest = (jwt: string) =>
-    cy.request({
+    requestAs(jwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${jwt}`,
       },
       method: 'POST',
       url: `web_api/v1/phases/${phaseId}/inputs`,
@@ -749,6 +886,7 @@ function apiCreateIdea({
           budget,
           anonymous,
           topic_ids: topicIds,
+          ...customFieldValues,
         },
       },
     });
@@ -767,10 +905,9 @@ function apiRemoveIdea(ideaId: string) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'DELETE',
       url: `web_api/v1/ideas/${ideaId}`,
@@ -778,19 +915,58 @@ function apiRemoveIdea(ideaId: string) {
   });
 }
 
+// Only statuses that `can_manually_transition_to?` are accepted by the API;
+// `threshold_reached` and `expired` are reached by the automated transitions only.
+function apiSetIdeaStatus({
+  ideaId,
+  statusCode,
+  participationMethod,
+}: {
+  ideaId: string;
+  statusCode: InputStatusCode;
+  participationMethod: IdeaStatusParticipationMethod;
+}) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy
+      .requestAs(adminJwt, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        method: 'GET',
+        url: `web_api/v1/idea_statuses?participation_method=${participationMethod}`,
+      })
+      .then((statuses) => {
+        const status = statuses.body.data.find(
+          (ideaStatus: IIdeaStatusData) =>
+            ideaStatus.attributes.code === statusCode
+        );
+
+        return requestAs(adminJwt, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: 'PATCH',
+          url: `web_api/v1/ideas/${ideaId}`,
+          body: { idea: { idea_status_id: status.id } },
+        });
+      });
+  });
+}
+
 function apiReactToIdea(
   email: string,
   password: string,
   ideaId: string,
-  mode: TReactionMode
+  mode: TReactionMode | 'neutral'
 ) {
   return cy.apiLogin(email, password).then((response) => {
     const jwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(jwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${jwt}`,
       },
       method: 'POST',
       url: `web_api/v1/ideas/${ideaId}/reactions`,
@@ -811,10 +987,9 @@ function apiCreateOfficialFeedbackForIdea(
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'POST',
       url: `web_api/v1/ideas/${ideaId}/official_feedback`,
@@ -841,10 +1016,9 @@ function apiAddComment(
   jwt?: string
 ) {
   if (jwt) {
-    return cy.request({
+    return requestAs(jwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${jwt}`,
       },
       method: 'POST',
       url: `web_api/v1/ideas/${postId}/comments`,
@@ -862,10 +1036,9 @@ function apiAddComment(
     return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
       const adminJwt = response.body.jwt;
 
-      return cy.request({
+      return requestAs(adminJwt, {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${adminJwt}`,
         },
         method: 'POST',
         url: `web_api/v1/ideas/${postId}/comments`,
@@ -887,10 +1060,9 @@ function apiRemoveComment(commentId: string) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'POST',
       url: `web_api/v1/comments/${commentId}/mark_as_deleted`,
@@ -921,10 +1093,9 @@ function apiCreateProject({
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'POST',
       url: 'web_api/v1/projects',
@@ -957,18 +1128,19 @@ function apiEditPhase({
   phaseId,
   submission_enabled,
   user_fields_in_form,
+  placement_type,
 }: {
   phaseId: string;
   submission_enabled?: boolean;
   user_fields_in_form?: boolean;
+  placement_type?: 'on_timeline' | 'standalone';
 }) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'PATCH',
       url: `web_api/v1/phases/${phaseId}`,
@@ -976,6 +1148,7 @@ function apiEditPhase({
         phase: {
           submission_enabled,
           user_fields_in_form,
+          placement_type,
         },
       },
     });
@@ -1003,10 +1176,9 @@ function apiEditProject({
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'PATCH',
       url: `web_api/v1/projects/${projectId}`,
@@ -1046,12 +1218,15 @@ function apiSetFolderDescription(folderId: string, description: string) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const authHeaders = {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${response.body.jwt}`,
     };
     const layoutPath = `web_api/v1/project_folders/${folderId}/content_builder_layouts/project_folder_description`;
 
     return cy
-      .request({ headers: authHeaders, method: 'GET', url: layoutPath })
+      .requestAs(response.body.jwt, {
+        headers: authHeaders,
+        method: 'GET',
+        url: layoutPath,
+      })
       .then((layout) => {
         const craftjs = layout.body.data.attributes.craftjs_json;
         const textId = Object.keys(craftjs).find(
@@ -1067,7 +1242,7 @@ function apiSetFolderDescription(folderId: string, description: string) {
           'fr-BE': `<p>${description}</p>`,
         };
 
-        return cy.request({
+        return requestAs(response.body.jwt, {
           headers: authHeaders,
           method: 'POST',
           url: `${layoutPath}/upsert`,
@@ -1093,10 +1268,9 @@ function apiCreateFolder({
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    cy.request({
+    requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'POST',
       url: 'web_api/v1/project_folders',
@@ -1129,10 +1303,9 @@ function apiAddProjectsToFolder(projectIds: string[], folderId: string) {
     const adminJwt = response.body.jwt;
 
     projectIds.map((projectId) => {
-      cy.request({
+      requestAs(adminJwt, {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${adminJwt}`,
         },
         method: 'PATCH',
         url: `web_api/v1/projects/${projectId}`,
@@ -1145,10 +1318,9 @@ function apiRemoveProject(projectId: string) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'DELETE',
       url: `web_api/v1/projects/${projectId}`,
@@ -1160,10 +1332,9 @@ function apiRemovePhase(phaseId: string) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'DELETE',
       url: `web_api/v1/phases/${phaseId}`,
@@ -1175,10 +1346,9 @@ function apiRemoveEvent(eventId: string) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'DELETE',
       url: `web_api/v1/events/${eventId}`,
@@ -1190,10 +1360,9 @@ function apiRemoveFolder(folderId: string) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'DELETE',
       url: `web_api/v1/project_folders/${folderId}`,
@@ -1205,10 +1374,9 @@ function apiCreateCustomPage(title: string, projectId?: string) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'POST',
       url: `web_api/v1/static_pages`,
@@ -1232,13 +1400,26 @@ function apiRemoveCustomPage(customPageId: string) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'DELETE',
       url: `web_api/v1/static_pages/${customPageId}`,
+    });
+  });
+}
+
+function apiRemoveCustomPageLayout(customPageId: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return requestAs(adminJwt, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'DELETE',
+      url: `web_api/v1/static_pages/${customPageId}/content_builder_layouts/custom_page`,
     });
   });
 }
@@ -1250,10 +1431,9 @@ function apiUpdateCustomPage(
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'PATCH',
       url: `web_api/v1/static_pages/${customPageId}`,
@@ -1272,10 +1452,9 @@ function apiAddFileToCustomPage(
     const adminJwt = response.body.jwt;
 
     return cy.fixture(fixture, 'base64').then((content) =>
-      cy.request({
+      requestAs(adminJwt, {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${adminJwt}`,
         },
         method: 'POST',
         url: `web_api/v1/static_pages/${customPageId}/files`,
@@ -1296,10 +1475,9 @@ function apiAddPoll(
     const adminJwt = response.body.jwt;
 
     questions.forEach((question, index) => {
-      cy.request({
+      requestAs(adminJwt, {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${adminJwt}`,
         },
         method: 'POST',
         url: 'web_api/v1/poll_questions',
@@ -1311,10 +1489,9 @@ function apiAddPoll(
         },
       }).then((question) => {
         options[index].forEach((option) => {
-          cy.request({
+          requestAs(adminJwt, {
             headers: {
               'Content-Type': 'application/json',
-              Authorization: `Bearer ${adminJwt}`,
             },
             method: 'POST',
             url: `web_api/v1/poll_questions/${question.body.data.id}/poll_options`,
@@ -1332,10 +1509,9 @@ function apiCreateCause(phaseId: string, title: string) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'POST',
       url: 'web_api/v1/causes',
@@ -1362,6 +1538,7 @@ function apiCreatePhase({
   description,
   surveyUrl,
   surveyService,
+  documentAnnotationUrl,
   votingMaxTotal,
   allow_anonymous_participation,
   allow_multiple_responses,
@@ -1372,6 +1549,8 @@ function apiCreatePhase({
   nativeSurveyTitleMultiloc,
   presentation_mode,
   reacting_dislike_enabled,
+  reactingThreshold,
+  expireDaysLimit,
   available_views = ['card', 'map'],
   placementType,
 }: {
@@ -1386,6 +1565,7 @@ function apiCreatePhase({
   description?: string;
   surveyUrl?: string;
   surveyService?: 'typeform' | 'survey_monkey' | 'google_forms';
+  documentAnnotationUrl?: string;
   presentation_mode?: 'card' | 'map' | 'feed';
   available_views?: ('card' | 'map' | 'feed')[];
   votingMaxTotal?: number;
@@ -1397,17 +1577,16 @@ function apiCreatePhase({
   nativeSurveyButtonMultiloc?: Multiloc;
   nativeSurveyTitleMultiloc?: Multiloc;
   reacting_dislike_enabled?: boolean;
-  // Only settable on creation: 'standalone' phases are extra surveys that run
-  // in parallel with the timeline.
+  reactingThreshold?: number;
+  expireDaysLimit?: number;
   placementType?: 'on_timeline' | 'standalone';
 }) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'POST',
       url: `web_api/v1/projects/${projectId}/phases`,
@@ -1423,12 +1602,15 @@ function apiCreatePhase({
           voting_method: votingMethod,
           submission_enabled: canPost,
           reacting_enabled: canReact,
+          reacting_threshold: reactingThreshold,
+          expire_days_limit: expireDaysLimit,
           commenting_enabled: canComment,
           presentation_mode,
           available_views,
           description_multiloc: { en: description },
           survey_embed_url: surveyUrl,
           survey_service: surveyService,
+          document_annotation_embed_url: documentAnnotationUrl,
           voting_max_total: votingMaxTotal,
           allow_anonymous_participation: allow_anonymous_participation,
           allow_multiple_responses: allow_multiple_responses,
@@ -1452,10 +1634,9 @@ function apiCreateCustomField(
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'POST',
       url: 'web_api/v1/users/custom_fields',
@@ -1481,10 +1662,9 @@ function apiCreateCustomFieldOption(optionName: string, customFieldId: string) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'POST',
       url: `web_api/v1/custom_fields/${customFieldId}/custom_field_options`,
@@ -1502,10 +1682,9 @@ function apiGetUserCustomFields() {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'GET',
       url: 'web_api/v1/users/custom_fields',
@@ -1517,10 +1696,9 @@ function apiRemoveCustomField(fieldId: string) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'DELETE',
       url: `web_api/v1/users/custom_fields/${fieldId}`,
@@ -1529,10 +1707,9 @@ function apiRemoveCustomField(fieldId: string) {
 }
 
 function apiVerifyBogus(jwt: string, error?: string) {
-  return cy.request({
+  return requestAs(jwt, {
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${jwt}`,
     },
     method: 'POST',
     url: 'web_api/v1/id_methods/bogus/verification',
@@ -1541,6 +1718,16 @@ function apiVerifyBogus(jwt: string, error?: string) {
         desired_error: error || '',
       },
     },
+  });
+}
+
+function apiAttendEvent(eventId: string, jwt: string) {
+  return requestAs(jwt, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    method: 'POST',
+    url: `web_api/v1/events/${eventId}/attendances`,
   });
 }
 
@@ -1553,6 +1740,7 @@ function apiCreateEvent({
   startDate,
   endDate,
   onlineLink,
+  maximumAttendees,
 }: {
   projectId: string;
   title: string;
@@ -1562,14 +1750,14 @@ function apiCreateEvent({
   endDate: Date;
   includeLocation?: boolean;
   onlineLink?: string;
+  maximumAttendees?: number;
 }) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'POST',
       url: `web_api/v1/projects/${projectId}/events`,
@@ -1594,6 +1782,7 @@ function apiCreateEvent({
           start_at: startDate.toJSON(),
           end_at: endDate.toJSON(),
           online_link: onlineLink,
+          maximum_attendees: maximumAttendees,
         },
       },
     });
@@ -1604,10 +1793,9 @@ function apiCreateReportBuilder(phaseId?: string, visible: boolean = true) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'POST',
       url: 'web_api/v1/reports',
@@ -1623,10 +1811,9 @@ function apiCreateReportBuilder(phaseId?: string, visible: boolean = true) {
 }
 
 function removeReport(reportId: string, jwt: any) {
-  return cy.request({
+  return requestAs(jwt, {
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${jwt}`,
     },
     method: 'DELETE',
     url: `web_api/v1/reports/${reportId}`,
@@ -1648,10 +1835,9 @@ function apiRemoveAllReports() {
     const adminJwt = response.body.jwt;
 
     return cy
-      .request({
+      .requestAs(adminJwt, {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${adminJwt}`,
         },
         method: 'GET',
         url: 'web_api/v1/reports',
@@ -1688,10 +1874,9 @@ function apiOverridePhasePermission({
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'PATCH',
       url: `web_api/v1/phases/${phaseId}/permissions/${action}/override`,
@@ -1710,10 +1895,9 @@ function apiSetPhasePermission({
     .then((response) => {
       const adminJwt = response.body.jwt;
 
-      return cy.request({
+      return requestAs(adminJwt, {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${adminJwt}`,
         },
         method: 'PATCH',
         url: `web_api/v1/phases/${phaseId}/permissions/${action}`,
@@ -1726,10 +1910,9 @@ function apiGetPhasePermission({ phaseId, action }: ApiSetPermissionTypeProps) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'GET',
       url: `web_api/v1/phases/${phaseId}/permissions/${action}`,
@@ -1747,10 +1930,9 @@ function apiCreateManualGroup({ title }: { title: Multiloc }) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request<IGroup>({
+    return requestAs<IGroup>(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'POST',
       url: 'web_api/v1/groups',
@@ -1774,10 +1956,9 @@ function apiAddMembership({
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'POST',
       url: `web_api/v1/groups/${groupId}/memberships`,
@@ -1796,10 +1977,9 @@ function apiUpdateAppConfiguration(
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'PATCH',
       url: `web_api/v1/app_configuration/`,
@@ -1839,10 +2019,9 @@ function apiGetHomepageLayout() {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'GET',
       url: `web_api/v1/home_pages/content_builder_layouts/homepage`,
@@ -1857,10 +2036,9 @@ function apiUpdateHomepageLayout({
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'POST',
       url: `web_api/v1/home_pages/content_builder_layouts/homepage/upsert`,
@@ -1878,10 +2056,9 @@ function apiRemoveArea(areaId: string) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'DELETE',
       url: `web_api/v1/areas/${areaId}`,
@@ -1893,10 +2070,9 @@ function apiCreateArea(title: string) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'POST',
       url: 'web_api/v1/areas',
@@ -1914,10 +2090,9 @@ function apiSetProjectAreas(projectId: string, areaIds: string[]) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'PATCH',
       url: `web_api/v1/projects/${projectId}`,
@@ -1933,10 +2108,9 @@ function apiUpdateProjectPageLayout(
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'POST',
       url: `web_api/v1/projects/${projectId}/content_builder_layouts/project_page/upsert`,
@@ -1954,10 +2128,9 @@ function apiCreateSmartGroup(groupName: string, rules: TRule[]) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'POST',
       url: 'web_api/v1/groups',
@@ -1995,10 +2168,9 @@ function apiRemoveSmartGroup(smartGroupId: string) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'DELETE',
       url: `web_api/v1/groups/${smartGroupId}`,
@@ -2051,10 +2223,9 @@ function apiCreateSurveyQuestions(
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'PATCH',
       url: `web_api/v1/phases/${phaseId}/custom_fields/update_all`,
@@ -2098,10 +2269,9 @@ function apiCreateSurveyResponse(
   jwt?: any
 ) {
   const makeRequest = (jwt: any) => {
-    return cy.request({
+    return requestAs(jwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${jwt}`,
       },
       method: 'POST',
       url: `web_api/v1/phases/${phase_id}/inputs`,
@@ -2130,10 +2300,9 @@ function uploadSurveyImageQuestionImage(base64: string) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'POST',
       url: 'web_api/v1/custom_field_option_images',
@@ -2148,10 +2317,9 @@ function apiGetSurveyFields(phaseId: string) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'GET',
       url: `web_api/v1/phases/${phaseId}/custom_fields`,
@@ -2163,10 +2331,9 @@ function uploadProjectFolderImage(folderId: string, base64: string) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'POST',
       url: `web_api/v1/project_folders/${folderId}/images`,
@@ -2181,10 +2348,9 @@ function uploadProjectImage(projectId: string, base64: string) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return requestAs(adminJwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
       },
       method: 'POST',
       url: `web_api/v1/projects/${projectId}/images`,
@@ -2424,10 +2590,9 @@ function apiRequestProjectReview(
   password: string
 ) {
   return cy.apiLogin(email, password).then((response) => {
-    return cy.request({
+    return requestAs(response.body.jwt, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${response.body.jwt}`,
       },
       method: 'POST',
       url: `web_api/v1/projects/${projectId}/review`,
@@ -2472,10 +2637,9 @@ function deleteEventAttendances(
     const adminJwt = response.body.jwt;
 
     return cy
-      .request({
+      .requestAs(adminJwt, {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${adminJwt}`,
         },
         method: 'GET',
         url: `web_api/v1/events/${eventIdNoCoordinates}/attendances`,
@@ -2484,10 +2648,9 @@ function deleteEventAttendances(
         const attendances = response.body.data;
         if (attendances.length !== 0) {
           attendances.forEach((attendance: any) => {
-            cy.request({
+            requestAs(adminJwt, {
               headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${adminJwt}`,
               },
               method: 'DELETE',
               url: `web_api/v1/event_attendances/${attendance.id}`,
@@ -2507,13 +2670,12 @@ function apiRemoveIdeas(projectId: string) {
     const adminJwt = response.body.jwt;
 
     return cy
-      .request({
+      .requestAs(adminJwt, {
         method: 'GET',
         url: `/web_api/v1/ideas`,
         qs: { 'projects[]': projectId },
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${adminJwt}`,
         },
       })
       .then((response) => {
@@ -2533,6 +2695,7 @@ Cypress.Commands.add('unregisterServiceWorkers', unregisterServiceWorkers);
 Cypress.Commands.add('goToLandingPage', goToLandingPage);
 Cypress.Commands.add('signUp', signUp);
 Cypress.Commands.add('apiLogin', apiLogin);
+Cypress.Commands.add('requestAs', requestAs);
 Cypress.Commands.add('apiSignup', apiSignup);
 Cypress.Commands.add('apiCreateAdmin', apiCreateAdmin);
 Cypress.Commands.add('apiUpdateCurrentUser', apiUpdateCurrentUser);
@@ -2560,6 +2723,7 @@ Cypress.Commands.add('getAdminAuthUser', getAdminAuthUser);
 Cypress.Commands.add('getArea', getArea);
 Cypress.Commands.add('apiCreateIdea', apiCreateIdea);
 Cypress.Commands.add('apiRemoveIdea', apiRemoveIdea);
+Cypress.Commands.add('apiSetIdeaStatus', apiSetIdeaStatus);
 Cypress.Commands.add('apiReactToIdea', apiReactToIdea);
 Cypress.Commands.add(
   'apiCreateOfficialFeedbackForIdea',
@@ -2593,6 +2757,7 @@ Cypress.Commands.add('setConsentCookie', setConsentCookie);
 Cypress.Commands.add('setLoginCookie', setLoginCookie);
 Cypress.Commands.add('apiVerifyBogus', apiVerifyBogus);
 Cypress.Commands.add('apiCreateEvent', apiCreateEvent);
+Cypress.Commands.add('apiAttendEvent', apiAttendEvent);
 Cypress.Commands.add('apiRemoveEvent', apiRemoveEvent);
 Cypress.Commands.add('apiCreateReportBuilder', apiCreateReportBuilder);
 Cypress.Commands.add('apiRemoveReportBuilder', apiRemoveReportBuilder);
@@ -2616,6 +2781,7 @@ Cypress.Commands.add('apiSetProjectAreas', apiSetProjectAreas);
 Cypress.Commands.add('apiRemoveCustomPage', apiRemoveCustomPage);
 Cypress.Commands.add('apiCreateCustomPage', apiCreateCustomPage);
 Cypress.Commands.add('apiUpdateCustomPage', apiUpdateCustomPage);
+Cypress.Commands.add('apiRemoveCustomPageLayout', apiRemoveCustomPageLayout);
 Cypress.Commands.add('apiAddFileToCustomPage', apiAddFileToCustomPage);
 Cypress.Commands.add('clickLocaleSwitcherAndType', clickLocaleSwitcherAndType);
 Cypress.Commands.add('apiCreateSmartGroup', apiCreateSmartGroup);

@@ -33,6 +33,15 @@ describe SideFxUserService do
         .exactly(1).times
     end
 
+    it "logs a 'created' action job with flow: 'invitation' when an invitation creates the user" do
+      invitee = create(:invite).invitee
+
+      expect { service.after_create(invitee, current_user) }
+        .to enqueue_job(LogActivityJob)
+        .with(invitee, 'created', invitee, invitee.created_at.to_i, payload: { flow: 'invitation' })
+        .exactly(1).times
+    end
+
     it 'generates an avatar after a user is created' do
       expect { service.after_create(user, current_user) }
         .to have_enqueued_job(GenerateUserAvatarJob).with(user)
@@ -330,6 +339,42 @@ describe SideFxUserService do
     it "logs an 'unblocked' action job when a user is unblocked" do
       expect { service.after_unblock(user, current_user) }
         .to have_enqueued_job(LogActivityJob).with(user, 'unblocked', current_user, user.updated_at.to_i)
+    end
+  end
+
+  describe 'after_error' do
+    def invalid_user(email)
+      build(:user, email: email).tap(&:validate)
+    end
+
+    it "logs a 'blacklisted_email_domain_used' activity when the email domain is blocked" do
+      rejected_user = invalid_user("someone@#{User::EMAIL_DOMAIN_BLACKLIST.first}")
+
+      expect { service.after_error(rejected_user, '1.2.3.4') }
+        .to have_enqueued_job(LogActivityJob)
+        .with(AppConfiguration.instance, 'blacklisted_email_domain_used', nil, anything, payload: { email: rejected_user.email, remote_ip: '1.2.3.4' })
+    end
+
+    it "logs a 'banned_email_used' activity on the ban, without the email, when the email is banned" do
+      ban = EmailBan.ban!('banned@example.com')
+
+      expect { service.after_error(invalid_user('banned@example.com'), '1.2.3.4') }
+        .to have_enqueued_job(LogActivityJob)
+        .with(ban, 'banned_email_used', nil, anything, payload: { remote_ip: '1.2.3.4' })
+    end
+
+    it 'logs the activity for a blocked new email too' do
+      user.new_email = "someone@#{User::EMAIL_DOMAIN_BLACKLIST.first}"
+      user.validate
+
+      expect { service.after_error(user, '1.2.3.4') }
+        .to have_enqueued_job(LogActivityJob)
+        .with(AppConfiguration.instance, 'blacklisted_email_domain_used', nil, anything, payload: { email: user.new_email, remote_ip: '1.2.3.4' })
+    end
+
+    it 'logs nothing for other validation errors' do
+      expect { service.after_error(invalid_user('not-an-email'), '1.2.3.4') }
+        .not_to have_enqueued_job(LogActivityJob)
     end
   end
 end

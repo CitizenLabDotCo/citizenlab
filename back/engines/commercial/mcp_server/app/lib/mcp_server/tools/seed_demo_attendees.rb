@@ -42,11 +42,9 @@ class McpServer::Tools::SeedDemoAttendees < McpServer::BaseTool
   end
 
   class Runner < McpServer::BaseTool::Runner
-    DEMO_ONLY_MESSAGE = 'Demo attendees can only be created on demo and trial platforms.'
-
     def run
       return error('Pass exactly one of event_id or project_id.') unless [params[:event_id], params[:project_id]].compact.size == 1
-      return error(DEMO_ONLY_MESSAGE) unless published_writable_platform?
+      return demo_only_error('Creating demo attendees') unless published_writable_platform?
 
       if params[:event_id]
         event = Event.find_by(id: params[:event_id])

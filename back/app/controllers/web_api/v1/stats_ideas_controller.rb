@@ -16,7 +16,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
       .limit(limit)
       .count('id')
 
-    IdeasCountService.aggregate_child_input_topic_counts(serie)
+    add_child_counts_to_parents(serie)
   end
 
   def ideas_by_topic

@@ -1,7 +1,8 @@
 import React, { useId, useState } from 'react';
 
-import { Box, Button, bo } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
+
+import Modal from 'design-system/Modal';
 
 import useAddProjectGroup from 'api/project_groups/useAddProjectGroup';
 import { IProject } from 'api/projects/types';
@@ -13,13 +14,13 @@ import NewProjectForm, {
 import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 
 import Outlet from 'components/Outlet';
-import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isCLErrorsWrapper } from 'utils/errorUtils';
 
 import messages from './messages';
+import 'design-system/tokens.css';
 
 export type NewProjectMode = 'scratch' | 'template';
 
@@ -91,55 +92,44 @@ const NewProjectModal = ({ mode, onClose }: Props) => {
     close();
   };
 
+  const closeOnDismiss = (isOpen: boolean) => {
+    if (!isOpen) close();
+  };
+
   return (
     <>
       <Modal
-        opened={mode === 'scratch'}
-        close={close}
-        width={560}
-        variant="bo"
-        header={formatMessage(messages.newProject)}
-        footer={
-          <Box w="100%" display="flex" justifyContent="flex-end">
-            <Button
-              buttonStyle="bo-primary"
-              height={bo.buttonMedium.height}
-              padding={bo.buttonMedium.padding}
-              fontSize={bo.buttonMedium.fontSize}
-              type="submit"
-              form={formId}
-              processing={processing}
-            >
-              {formatMessage(messages.createProject)}
-            </Button>
-          </Box>
-        }
+        size={560}
+        isOpen={mode === 'scratch'}
+        onOpenChange={closeOnDismiss}
+        title={formatMessage(messages.newProject)}
+        primaryAction={{
+          label: formatMessage(messages.createProject),
+          type: 'submit',
+          form: formId,
+          isPending: processing,
+        }}
       >
-        <Box p="24px">
-          <NewProjectForm
-            id={formId}
-            failed={failed}
-            apiErrors={apiErrors}
-            onSubmit={handleSubmit}
-          />
-        </Box>
+        <NewProjectForm
+          id={formId}
+          failed={failed}
+          apiErrors={apiErrors}
+          onSubmit={handleSubmit}
+        />
       </Modal>
 
       <Modal
-        opened={mode === 'template'}
-        close={close}
-        width={1000}
-        variant="bo"
-        header={formatMessage(messages.fromTemplate)}
+        size={920}
+        isOpen={mode === 'template'}
+        onOpenChange={closeOnDismiss}
+        title={formatMessage(messages.fromTemplate)}
       >
-        <Box p="24px">
-          <Outlet
-            id="app.containers.Admin.projects.all.createProject"
-            selectedTabValue="template"
-            onDone={close}
-            variant="bo"
-          />
-        </Box>
+        <Outlet
+          id="app.containers.Admin.projects.all.createProject"
+          selectedTabValue="template"
+          onDone={close}
+          variant="panel"
+        />
       </Modal>
     </>
   );

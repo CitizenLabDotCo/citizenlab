@@ -23,6 +23,11 @@ declare global {
       initialize: (options: { api_key: string }) => void;
       getCurrentLang: () => string;
       switchTo: (lang: string) => void;
+      // Weglot fetches its project settings after initialize() returns, so
+      // nothing below is readable until this flips.
+      initialized: boolean;
+      // Source language plus each enabled target, once initialized.
+      getAvailableLanguages: () => string[];
       on: (event: string, callback: (...args: any[]) => void) => void;
       off: (event: string, callback: (...args: any[]) => void) => void;
       translate: (

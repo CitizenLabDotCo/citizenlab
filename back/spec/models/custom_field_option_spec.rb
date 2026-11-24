@@ -41,6 +41,29 @@ RSpec.describe CustomFieldOption do
     end
   end
 
+  describe '#answer_key' do
+    it 'returns the option key' do
+      expect(create(:custom_field_option, key: 'bike').answer_key).to eq 'bike'
+    end
+
+    context 'for the domicile field' do
+      # The domicile field creates an option per existing area on creation, and
+      # each later area creates its own.
+      let!(:domicile) { create(:custom_field_domicile) }
+      let!(:area) { create(:area) }
+
+      it "returns the area id for an area's option" do
+        expect(area.custom_field_option.answer_key).to eq area.id
+      end
+
+      it "returns 'outside' for the somewhere else option" do
+        somewhere_else = domicile.options.reload.find { |option| option.area.nil? }
+
+        expect(somewhere_else.answer_key).to eq 'outside'
+      end
+    end
+  end
+
   describe 'saving a custom field option without title_multiloc' do
     it 'produces validation errors on the key and the title_multiloc' do
       field = create(:custom_field_select)

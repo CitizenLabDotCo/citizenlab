@@ -1,0 +1,148 @@
+.button {
+  composes: button from '../reset.module.css';
+  composes: uiStrong from '../typography.module.css';
+  composes: ringOutside from '../focus.module.css';
+  box-sizing: border-box;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--gv-radius-8);
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  transition-property: background-color, border-color, color;
+  transition-duration: var(--gv-motion-duration-fast);
+  transition-timing-function: var(--gv-motion-easing-standard);
+}
+
+.size28 {
+  height: var(--gv-size-28);
+  padding: 0 var(--gv-space-12);
+  gap: var(--gv-space-6);
+}
+
+.size32 {
+  height: var(--gv-size-32);
+  padding: 0 var(--gv-space-16);
+  gap: var(--gv-space-8);
+}
+
+/* Without a label: a square. */
+.unlabelled {
+  padding: 0;
+}
+
+.unlabelled.size32 {
+  width: var(--gv-size-32);
+}
+
+/* React Aria marks a pending button disabled too; Pending stays at full strength. */
+.button[data-disabled]:not([data-pending]),
+.button[aria-disabled='true'] {
+  opacity: var(--gv-opacity-disabled);
+  cursor: default;
+}
+
+.button[data-pending] {
+  cursor: default;
+}
+
+.icon {
+  flex-shrink: 0;
+}
+
+.chevron {
+  flex-shrink: 0;
+  opacity: 0.75;
+}
+
+/* Primary */
+.primary {
+  background: var(--gv-surface-brand-strong);
+  color: var(--gv-text-inverse);
+}
+
+.primary .icon,
+.primary .chevron {
+  color: var(--gv-icon-inverse);
+}
+
+.primary[data-hovered]:not([aria-disabled='true']) {
+  background: var(--gv-surface-brand-strong-hovered);
+}
+
+.primary[data-pressed] {
+  background: var(--gv-surface-brand-strong-pressed);
+}
+
+/* Secondary */
+.secondary {
+  background: var(--gv-surface-panel);
+  border: var(--gv-border-width-1) solid var(--gv-border-control);
+  color: var(--gv-text-primary);
+}
+
+.secondary .icon {
+  color: var(--gv-icon-tertiary);
+}
+
+.secondary .chevron {
+  color: var(--gv-icon-primary);
+}
+
+.secondary[data-hovered]:not([aria-disabled='true']) {
+  background: var(--gv-surface-panel-subtle);
+  border-color: var(--gv-border-control-hovered);
+}
+
+.secondary[data-pressed] {
+  background: var(--gv-surface-pressed);
+  border-color: var(--gv-border-control-hovered);
+}
+
+/* Quiet */
+.quiet {
+  color: var(--gv-text-secondary);
+}
+
+.quiet .icon {
+  color: var(--gv-icon-tertiary);
+}
+
+.quiet .chevron {
+  color: var(--gv-icon-primary);
+}
+
+.quiet[data-hovered]:not([aria-disabled='true']) {
+  background: var(--gv-surface-hovered);
+  color: var(--gv-text-primary);
+}
+
+.quiet[data-pressed] {
+  background: var(--gv-surface-pressed);
+  color: var(--gv-text-primary);
+}
+
+/* Danger */
+.danger {
+  background: var(--gv-surface-danger-strong);
+  color: var(--gv-text-inverse);
+}
+
+.danger .icon,
+.danger .chevron {
+  color: var(--gv-icon-inverse);
+}
+
+.danger[data-hovered]:not([aria-disabled='true']) {
+  background: var(--gv-surface-danger-strong-hovered);
+}
+
+.danger[data-pressed] {
+  background: var(--gv-surface-danger-strong-pressed);
+}
+
+.fullWidth {
+  width: 100%;
+}

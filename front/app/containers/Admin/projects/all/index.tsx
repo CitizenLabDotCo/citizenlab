@@ -8,6 +8,7 @@ import { useIntl } from 'utils/cl-intl';
 import { useSearch } from 'utils/router';
 
 import Search from './_shared/FilterBar/Filters/Search';
+import usePersistedParams from './_shared/usePersistedParams';
 import Folders from './Folders';
 import Header from './Header';
 import messages from './messages';
@@ -47,6 +48,7 @@ const AdminProjectsListNew = () => {
     from: '/$locale/admin/projects/',
   });
   const { formatMessage } = useIntl();
+  const { isRestoring } = usePersistedParams();
   const tab = searchParams.tab;
   const calendarViewEnabled = useFeatureFlag({
     name: 'project_planning_calendar',
@@ -73,40 +75,44 @@ const AdminProjectsListNew = () => {
     >
       <Box px="51px" maxWidth="1400px" w="100%">
         <Header />
-        <Box
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          borderBottom={`1px solid ${colors.grey200}`}
-          height="44px"
-          mt="36px"
-        >
-          <Tabs />
-          {searchMessage && (
-            <Box mb="16px">
-              <Search placeholder={formatMessage(searchMessage)} />
+        {!isRestoring && (
+          <>
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              borderBottom={`1px solid ${colors.grey200}`}
+              height="44px"
+              mt="36px"
+            >
+              <Tabs />
+              {searchMessage && (
+                <Box mb="16px">
+                  <Search placeholder={formatMessage(searchMessage)} />
+                </Box>
+              )}
             </Box>
-          )}
-        </Box>
-        <Box mt="20px">
-          {tab === undefined && <Projects />}
-          {tab === 'folders' && <Folders />}
-          {tab === 'calendar' && (
-            <Suspense>
-              <Calendar />
-            </Suspense>
-          )}
-          {tab === 'spaces' && (
-            <Suspense>
-              <Spaces />
-            </Suspense>
-          )}
-          {tab === 'ordering' && (
-            <Box>
-              <Ordering />
+            <Box mt="20px">
+              {tab === undefined && <Projects />}
+              {tab === 'folders' && <Folders />}
+              {tab === 'calendar' && (
+                <Suspense>
+                  <Calendar />
+                </Suspense>
+              )}
+              {tab === 'spaces' && (
+                <Suspense>
+                  <Spaces />
+                </Suspense>
+              )}
+              {tab === 'ordering' && (
+                <Box>
+                  <Ordering />
+                </Box>
+              )}
             </Box>
-          )}
-        </Box>
+          </>
+        )}
       </Box>
     </Box>
   );

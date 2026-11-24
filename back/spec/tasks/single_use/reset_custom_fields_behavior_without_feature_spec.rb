@@ -18,10 +18,12 @@ describe 'single_use:reset_custom_fields_behavior_without_feature' do
   # What TenantScript writes a dry run to, and what the outreach list is drawn from.
   let(:dry_run_report) { 'reset_custom_fields_behavior_without_feature_dry_run.json' }
 
-  after do
-    task.reenable
-    FileUtils.rm_f(dry_run_report)
+  # TenantScript writes its report to the working directory, so run in a throwaway one.
+  around do |example|
+    Dir.mktmpdir { |dir| Dir.chdir(dir) { example.run } }
   end
+
+  after { task.reenable }
 
   def without_the_feature
     SettingsService.new.deactivate_feature!('permissions_custom_fields')

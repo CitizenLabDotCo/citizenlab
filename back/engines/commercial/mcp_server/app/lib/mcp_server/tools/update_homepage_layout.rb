@@ -38,10 +38,8 @@ class McpServer::Tools::UpdateHomepageLayout < McpServer::BaseTool
   class Runner < McpServer::BaseTool::Runner
     include McpServer::LayoutPatchable
 
-    DEMO_ONLY_MESSAGE = 'The homepage layout can only be updated on demo and trial platforms.'
-
     def run
-      return error(DEMO_ONLY_MESSAGE) unless published_writable_platform?
+      return demo_only_error('Updating the homepage layout') unless published_writable_platform?
 
       layout = ContentBuilder::Layout.find_by(content_buildable: nil, code: ContentBuilder::Layout::HOMEPAGE_CODE)
       if layout.nil?
@@ -53,6 +51,7 @@ class McpServer::Tools::UpdateHomepageLayout < McpServer::BaseTool
 
       stored = layout.craftjs_json || {}
       protect_fixed_widgets!(stored)
+      show_events_empty_message!(stored)
       graph = patched_graph(stored)
       preserve_no_delete!(stored, graph)
       protect_fixed_structure!(stored, graph)
@@ -122,6 +121,19 @@ class McpServer::Tools::UpdateHomepageLayout < McpServer::BaseTool
 
       raise PatchError, "node #{id}: the homepage events widget lists events from every project and cannot " \
                         'be filtered. Use "source":"all".'
+    end
+
+    # As from the builder's toolbox, a homepage events widget says when there are no events, unless
+    # the client switches that off. A patch that leaves the setting out keeps the stored one, so an
+    # edit cannot undo an admin's choice.
+    def show_events_empty_message!(stored)
+      patch_nodes.each do |id, node|
+        next unless node.is_a?(Hash) && resolved_name(node) == ContentBuilder::Craftjs::Nodes::EVENTS_WIDGET_NAME
+
+        stored_value = stored[id].dig('props', 'showEmptyMessage') if stored[id].is_a?(Hash)
+        default = stored_value.nil? ? true : stored_value
+        node['props'] = { 'showEmptyMessage' => default }.merge(node['props'] || {})
+      end
     end
 
     # A fixed widget may have its props edited but not be restructured: no type change, no

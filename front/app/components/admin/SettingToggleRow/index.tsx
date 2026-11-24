@@ -1,0 +1,47 @@
+import React from 'react';
+
+import Switch from 'design-system/Switch';
+
+import styles from './SettingToggleRow.module.css';
+import 'design-system/tokens.css';
+
+interface Props {
+  id?: string;
+  title: string;
+  'aria-describedby'?: string;
+  description?: string;
+  checked: boolean;
+  disabled?: boolean;
+  onChange: () => void;
+}
+
+const SettingToggleRow = ({
+  id,
+  title,
+  'aria-describedby': ariaDescribedBy,
+  description,
+  checked,
+  disabled,
+  onChange,
+}: Props) => (
+  <div>
+    <Switch
+      id={id}
+      aria-describedby={ariaDescribedBy}
+      size={26}
+      isSelected={checked}
+      isDisabled={disabled}
+      labelAlign={description ? 'top' : 'center'}
+      onChange={() => onChange()}
+    >
+      <span className={styles.text}>
+        <span className={styles.title}>{title}</span>
+        {description && (
+          <span className={styles.description}>{description}</span>
+        )}
+      </span>
+    </Switch>
+  </div>
+);
+
+export default SettingToggleRow;

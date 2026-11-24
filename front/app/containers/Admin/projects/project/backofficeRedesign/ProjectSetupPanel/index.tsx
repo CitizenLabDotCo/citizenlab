@@ -1,34 +1,38 @@
 import React, { useState } from 'react';
 
-import {
-  Box,
-  Button,
-  Title,
-  Tooltip,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import IconButton from 'design-system/IconButton';
+import Text from 'design-system/Text';
 
 import { IProjectData } from 'api/projects/types';
+
+import { usePageSave } from 'components/admin/PageSaveContext';
 
 import { useIntl } from 'utils/cl-intl';
 
 import useMarkSetupStep from '../_shared/useMarkSetupStep';
-import { HeaderDropdownName } from '../Header/HeaderDropdown';
-import messages from '../messages';
 
-import GetStarted from './GetStarted';
-import NextActions from './NextActions';
+import ArchivedPanel from './ArchivedPanel';
+import BeforeYouPublish from './BeforeYouPublish';
+import getPanelStage from './getPanelStage';
+import LivePanel from './LivePanel';
+import messages from './messages';
+import PanelDivider from './PanelDivider';
+import ProjectDetails from './ProjectDetails';
 import ProjectSettingsModal from './ProjectSettingsModal';
-import SetupCards from './SetupCards';
+import styles from './ProjectSetupPanel.module.css';
+import SaveError from './SaveError';
+import { SetupDraftProvider } from './SetupDraftContext';
+import 'design-system/tokens.css';
 
 interface Props {
   project: IProjectData;
-  onOpenDropdown: (dropdown: HeaderDropdownName) => void;
 }
 
-const ProjectSetupPanel = ({ project, onOpenDropdown }: Props) => {
+const ProjectSetupPanel = ({ project }: Props) => {
   const { formatMessage } = useIntl();
   const [settingsOpened, setSettingsOpened] = useState(false);
+
+  const pageSave = usePageSave();
   const markSetupStep = useMarkSetupStep(project);
 
   const openSettings = () => {
@@ -36,50 +40,51 @@ const ProjectSetupPanel = ({ project, onOpenDropdown }: Props) => {
     setSettingsOpened(true);
   };
 
-  const published = project.attributes.publication_status === 'published';
+  const stage = getPanelStage(project);
 
   return (
-    <Box p="20px" display="flex" flexDirection="column" gap="20px">
-      <Box display="flex" alignItems="center" justifyContent="space-between">
-        <Title variant="h4" fontSize="s" fontWeight="semi-bold" m="0">
-          {formatMessage(messages.projectSetupPanel)}
-        </Title>
-        <Tooltip
-          content={formatMessage(messages.projectSettings)}
-          theme="dark"
-          placement="bottom"
-        >
-          <Button
-            buttonStyle="bo-text"
-            icon="settings"
-            width="36px"
-            padding="0"
-            bgHoverColor={colors.grey100}
-            iconHoverColor={colors.textPrimary}
-            ariaLabel={formatMessage(messages.projectSettings)}
-            onClick={openSettings}
+    // Discarding changes bumps the revision, which resets the draft.
+    <SetupDraftProvider key={pageSave?.revision} project={project}>
+      <div className={styles.panel}>
+        <div className={styles.header}>
+          <Text as="h2" variant="uiStrong" tone="primary">
+            {formatMessage(messages.projectSetupPanel)}
+          </Text>
+          <IconButton
+            icon="settings-16"
+            aria-label={formatMessage(messages.projectSettings)}
+            onPress={openSettings}
           />
-        </Tooltip>
-      </Box>
+        </div>
 
-      {published ? (
-        <NextActions project={project} />
-      ) : (
-        <GetStarted
+        <SaveError />
+
+        {stage === 'draft' ? (
+          <BeforeYouPublish
+            key={project.id}
+            project={project}
+            onOpenSettings={openSettings}
+          />
+        ) : (
+          <div>
+            {stage === 'live' && <LivePanel project={project} />}
+            {stage === 'archived' && <ArchivedPanel project={project} />}
+            <PanelDivider />
+            <ProjectDetails
+              key={project.id}
+              project={project}
+              onOpenSettings={openSettings}
+            />
+          </div>
+        )}
+
+        <ProjectSettingsModal
           project={project}
-          onOpenSettings={openSettings}
-          onOpenDropdown={onOpenDropdown}
+          opened={settingsOpened}
+          onClose={() => setSettingsOpened(false)}
         />
-      )}
-
-      <SetupCards key={project.id} project={project} />
-
-      <ProjectSettingsModal
-        project={project}
-        opened={settingsOpened}
-        onClose={() => setSettingsOpened(false)}
-      />
-    </Box>
+      </div>
+    </SetupDraftProvider>
   );
 };
 

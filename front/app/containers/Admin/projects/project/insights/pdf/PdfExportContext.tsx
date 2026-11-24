@@ -27,7 +27,7 @@ interface PdfExportContextValue {
   skippedSections: string[];
 }
 
-const PdfExportContext = createContext<PdfExportContextValue>({
+export const PdfExportContext = createContext<PdfExportContextValue>({
   downloadPdf: async () => {},
   isDownloading: false,
   error: null,
@@ -39,17 +39,14 @@ const PdfExportContext = createContext<PdfExportContextValue>({
 
 interface PdfExportProviderProps {
   children: ReactNode;
-  filename?: string;
-  isPdfRenderMode?: boolean;
+  filename: string;
 }
 
 export const PdfExportProvider = ({
   children,
   filename,
-  isPdfRenderMode = false,
 }: PdfExportProviderProps) => {
   const { formatMessage } = useIntl();
-  const parentContext = useContext(PdfExportContext);
   const {
     downloadPdf,
     isDownloading,
@@ -58,22 +55,19 @@ export const PdfExportProvider = ({
     progress,
     skippedSections,
   } = useInsightsPdfDownload({
-    filename: filename || '',
+    filename,
     errorMessage: formatMessage(messages.errorPdfDownload),
   });
 
-  // If nested (no filename), inherit download state from parent
-  const value = filename
-    ? {
-        downloadPdf,
-        isDownloading,
-        error,
-        isPdfRenderMode,
-        status,
-        progress,
-        skippedSections,
-      }
-    : { ...parentContext, isPdfRenderMode };
+  const value = {
+    downloadPdf,
+    isDownloading,
+    error,
+    isPdfRenderMode: false,
+    status,
+    progress,
+    skippedSections,
+  };
 
   return (
     <PdfExportContext.Provider value={value}>

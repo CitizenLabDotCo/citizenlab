@@ -5,8 +5,8 @@ import {
   Icon,
   IconNames,
   Text,
-  bo,
   colors,
+  isRtl,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
@@ -34,44 +34,14 @@ type TBreadcrumb = {
 
 export type TBreadcrumbs = TBreadcrumb[];
 
-type Variant = 'default' | 'backofficeRedesign';
-
-const ICON_AND_SEPARATOR: Record<
-  Variant,
-  {
-    iconSize: string;
-    iconGap: string;
-    chevronSize: string;
-    chevronColor: string;
-    chevronMargin: string;
-  }
-> = {
-  default: {
-    iconSize: '18px',
-    iconGap: '8px',
-    chevronSize: '16px',
-    chevronColor: colors.coolGrey500,
-    chevronMargin: '0 8px',
-  },
-  backofficeRedesign: {
-    iconSize: '15px',
-    iconGap: '5px',
-    chevronSize: '13px',
-    chevronColor: bo.colors.crumbSeparator,
-    chevronMargin: '0 0 0 4px',
-  },
-};
-
-// The back office redesign's header text size has no Text font size.
-const HeaderCrumb = styled.span`
-  font-size: ${bo.headerFontSize};
-  font-weight: 400;
-  line-height: 1.5;
-`;
-
-const HeaderCurrentCrumb = styled(HeaderCrumb)`
+// The current page heading keeps the type it has always had here.
+const HeadingCrumb = styled.span`
+  font-size: 14px;
   font-weight: 500;
-  color: ${bo.colors.textHeadingStrong};
+  line-height: 1.4;
+  color: #1e1e1e;
+  margin: 0;
+  ${isRtl`direction: rtl;`}
 `;
 
 interface Props {
@@ -80,7 +50,6 @@ interface Props {
   separator?: 'slash' | 'chevron';
   fontSize?: 's' | 'm';
   highlightCurrentPage?: boolean;
-  variant?: Variant;
 }
 
 const Breadcrumbs = ({
@@ -89,25 +58,20 @@ const Breadcrumbs = ({
   separator = 'slash',
   fontSize = 'm',
   highlightCurrentPage = false,
-  variant = 'default',
 }: Props) => {
   if (breadcrumbs.length === 0) {
     return null;
   }
 
-  const redesign = variant === 'backofficeRedesign';
-  const { iconSize, iconGap, chevronSize, chevronColor, chevronMargin } =
-    ICON_AND_SEPARATOR[variant];
-
   return (
-    <Box display="flex" alignItems="center">
+    <Box display="flex" alignItems="center" minWidth="0">
       {icon && (
         <Icon
           name={icon}
-          width={iconSize}
-          height={iconSize}
+          width="18px"
+          height="18px"
           fill={colors.coolGrey500}
-          mr={iconGap}
+          mr="8px"
         />
       )}
       {breadcrumbs.map(({ label, link }, index) => {
@@ -119,21 +83,11 @@ const Breadcrumbs = ({
             key={label}
             display="flex"
             alignItems="center"
+            minWidth={isLastBreadcrumb ? '0' : undefined}
             color="textSecondary"
             data-cy={`breadcrumbs-${label}`}
           >
-            {link && redesign && (
-              <HeaderCrumb>
-                <StyledLink
-                  to={link.to}
-                  params={link.params}
-                  search={link.search}
-                >
-                  {label}
-                </StyledLink>
-              </HeaderCrumb>
-            )}
-            {link && !redesign && (
+            {link && (
               <Text fontSize={fontSize} as="span" mb="0">
                 <StyledLink
                   to={link.to}
@@ -144,30 +98,20 @@ const Breadcrumbs = ({
                 </StyledLink>
               </Text>
             )}
-            {!link && !isHeading && redesign && (
-              <HeaderCrumb>{label}</HeaderCrumb>
-            )}
-            {!link && !isHeading && !redesign && (
+            {!link && !isHeading && (
               <Text color="textSecondary" fontSize={fontSize} as="span" mb="0">
                 {label}
               </Text>
             )}
-            {isHeading && redesign && (
-              <HeaderCurrentCrumb>{label}</HeaderCurrentCrumb>
-            )}
-            {isHeading && !redesign && (
-              <Text variant="boSection" as="span">
-                {label}
-              </Text>
-            )}
+            {isHeading && <HeadingCrumb>{label}</HeadingCrumb>}
             {!isLastBreadcrumb &&
               (separator === 'chevron' ? (
                 <Icon
                   name="chevron-right"
-                  width={chevronSize}
-                  height={chevronSize}
-                  fill={chevronColor}
-                  m={chevronMargin}
+                  width="16px"
+                  height="16px"
+                  fill={colors.coolGrey500}
+                  m="0 8px"
                 />
               ) : (
                 <Text

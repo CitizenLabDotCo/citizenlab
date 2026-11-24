@@ -18,7 +18,9 @@ import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 import useUpdateReportLayout from 'api/report_layout/useUpdateReportLayout';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
+import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
 import projectFilesMessages from 'containers/Admin/projects/project/files/components/messages';
 import insightWordMessages from 'containers/Admin/projects/project/insights/word/messages';
@@ -42,6 +44,7 @@ import { PROJECT_TEMPLATE_MIN_NUMBER_OF_NODES_BEFORE_AUTOSAVE } from '../Templat
 import { View } from '../ViewContainer/typings';
 import ViewPicker from '../ViewContainer/ViewPicker';
 
+import GenerateReportButton from './GenerateReportButton';
 import messages from './messages';
 import QuitModal from './QuitModal';
 import ReportTitle from './ReportTitle';
@@ -92,12 +95,18 @@ const ContentBuilderTopBar = ({
     useReportWordExportContext();
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
+  const backofficeRedesign = useProjectBackofficeRedesign();
 
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
+  const llmReportingEnabled = useFeatureFlag({ name: 'llm_reporting' });
   const disableSave = hasPendingState || saved;
-  const disablePrint = hasPendingState || !saved;
+  // Saving before printing is part of the generation flow, so without it unsaved
+  // changes still block the export.
+  const disablePrint = llmReportingEnabled
+    ? hasPendingState
+    : hasPendingState || !saved;
   const disableWordExport = isDownloading;
   const hasUnsavedChanges = hasPendingState || !saved;
   const disableDownloadMenu = hasUnsavedChanges && isDownloading;
@@ -121,9 +130,11 @@ const ContentBuilderTopBar = ({
       return;
     }
 
+    // The redesigned workspace shows the phase preview on its setup page.
+    const phaseTab = backofficeRedesign ? 'setup' : 'report';
     const goBackUrl =
       projectId && phaseId
-        ? `/admin/projects/${projectId}/phases/${phaseId}/report`
+        ? `/admin/projects/${projectId}/phases/${phaseId}/${phaseTab}`
         : '/admin/reporting/report-builder';
 
     clHistory.push(goBackUrl);
@@ -153,8 +164,30 @@ const ContentBuilderTopBar = ({
     }
 
     const printUrl = `/admin/reporting/report-builder/${reportId}/print`;
-    window.open(printUrl, '_blank', 'noreferrer');
     setDownloadMenuOpened(false);
+
+    if (saved || !llmReportingEnabled) {
+      window.open(printUrl, '_blank', 'noreferrer');
+      return;
+    }
+
+    // The print view renders the report the server has, so unsaved edits would
+    // print a stale document. Save first, then send the tab there. The tab is
+    // opened here, still inside the click, because one opened after the save
+    // resolves is a popup and gets blocked.
+    const tab = window.open('', '_blank');
+    const nodesToSave = query.getSerializedNodes();
+
+    updateReportLayout(
+      { id: reportId, craftjs_json: nodesToSave, projectId },
+      {
+        onSuccess: () => {
+          setSaved(nodesToSave);
+          if (tab) tab.location.href = printUrl;
+        },
+        onError: () => tab?.close(),
+      }
+    );
   };
 
   const handleDownloadWord = () => {
@@ -294,6 +327,15 @@ const ContentBuilderTopBar = ({
         {!!phaseId && (
           <Box ml="32px">
             <ViewPicker view={view} setView={setView} />
+          </Box>
+        )}
+        {!!phaseId && llmReportingEnabled && (
+          <Box ml="32px" display="flex" alignItems="center">
+            <GenerateReportButton
+              reportId={reportId}
+              phaseId={phaseId}
+              setSaved={setSaved}
+            />
           </Box>
         )}
         <Box ml="32px">

@@ -1,15 +1,17 @@
 import React from 'react';
 
-import { Box, Button, Text } from '@citizenlab/cl2-component-library';
+import Modal from 'design-system/Modal';
+import Text from 'design-system/Text';
 
 import { IProjectData, PublicationStatus } from 'api/projects/types';
 import useUpdateProject from 'api/projects/useUpdateProject';
 
-import Modal from 'components/UI/Modal';
-
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
-import messages from '../../messages';
+import backofficeRedesignMessages from '../../messages';
+
+import messages from './messages';
+import 'design-system/tokens.css';
 
 export type ConfirmableStatus = 'draft' | 'archived';
 
@@ -19,7 +21,7 @@ const COPY: Record<
 > = {
   draft: {
     title: messages.publishRestoreToDraftTitle,
-    confirm: messages.publishRestoreToDraft,
+    confirm: backofficeRedesignMessages.publishRestoreToDraft,
   },
   archived: {
     title: messages.publishArchiveTitle,
@@ -31,11 +33,11 @@ const getBodyMessage = (
   target: ConfirmableStatus,
   current: PublicationStatus
 ): MessageDescriptor => {
-  if (target === 'archived') return messages.publishArchiveBody;
+  if (target === 'archived') return messages.publishArchiveBody2;
 
   return current === 'archived'
     ? messages.publishRestoreToDraftFromArchiveBody
-    : messages.publishRestoreToDraftBody;
+    : messages.publishRestoreToDraftBody2;
 };
 
 interface Props {
@@ -68,31 +70,26 @@ const ConfirmStatusChangeModal = ({
 
   return (
     <Modal
-      opened={opened}
-      close={onClose}
-      header={formatMessage(copy.title)}
-      footer={
-        <Box display="flex" justifyContent="flex-end" gap="8px" w="100%">
-          <Button
-            buttonStyle="bo-secondary"
-            onClick={onClose}
-            disabled={isPending}
-          >
-            {formatMessage(messages.publishCancel)}
-          </Button>
-          <Button
-            buttonStyle="bo-primary"
-            onClick={confirm}
-            processing={isPending}
-          >
-            {formatMessage(copy.confirm)}
-          </Button>
-        </Box>
-      }
+      size={560}
+      isOpen={opened}
+      onOpenChange={(isOpen) => {
+        if (!isOpen) onClose();
+      }}
+      title={formatMessage(copy.title)}
+      secondaryAction={{
+        label: formatMessage(messages.publishCancel),
+        onPress: onClose,
+        isDisabled: isPending,
+      }}
+      primaryAction={{
+        label: formatMessage(copy.confirm),
+        onPress: confirm,
+        isPending,
+      }}
     >
-      <Box p="28px">
-        <Text variant="boHelper">{formatMessage(body)}</Text>
-      </Box>
+      <Text variant="ui" tone="secondary">
+        {formatMessage(body)}
+      </Text>
     </Modal>
   );
 };

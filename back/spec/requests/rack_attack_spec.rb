@@ -21,7 +21,7 @@ describe 'Rack::Attack' do
   # Throttles key off the IP and the JWT, so examples vary one and hold the other fixed.
   def json_headers(token: nil, ip: nil)
     headers = { 'CONTENT_TYPE' => 'application/json' }
-    headers['Authorization'] = "Bearer #{token}" if token
+    headers['Cookie'] = "#{AuthToken::Cookie::NAME}=#{token}" if token
     headers['REMOTE_ADDR'] = ip if ip
     headers
   end
@@ -251,6 +251,19 @@ describe 'Rack::Attack' do
     end
   end
 
+  it 'does not fail requests whose form body cannot be parsed' do
+    # Bots probing for Next.js server actions send multipart POSTs with no body.
+    multipart = { 'CONTENT_TYPE' => 'multipart/form-data; boundary=----bound', 'CONTENT_LENGTH' => '5494' }
+    urlencoded = { 'CONTENT_TYPE' => 'application/x-www-form-urlencoded' }
+    path = '/web_api/v1/user/request_reconfirm_code_email'
+
+    # Tests raise instead of rendering errors, so these show the request got past
+    # Rack::Attack to Rails, which answers 404 and 400 in production.
+    expect { post '/api/auth/callback', headers: multipart }.to raise_error(ActionController::RoutingError)
+    expect { post path, headers: multipart }.to raise_error(ActionController::BadRequest)
+    expect { post path, params: 'a[]=1&a[b]=2', headers: urlencoded }.to raise_error(ActionController::BadRequest)
+  end
+
   it 'limits invite acceptance requests from same IP to 10 in 20 seconds' do
     freeze_time do
       10.times do
@@ -460,21 +473,6 @@ describe 'Rack::Attack' do
             expect(status).not_to eq(429)
           end
         end
-      end
-    end
-
-    it 'counts a token passed as a query param against the same user' do
-      # AuthToken reads params[:token] before the Authorization header, so a caller
-      # can't escape the per-user limit by moving the token from one to the other.
-      path = '/web_api/v1/user/request_reconfirm_code_email'
-      params = '{ "request_code": { "only_if_first_time": false } }'
-
-      freeze_at_window_start do
-        post("#{path}?token=#{token}", params: params, headers: json_headers(ip: '1.2.3.1'))
-        expect(status).to eq(200) # OK
-
-        post(path, params: params, headers: json_headers(token: token, ip: '1.2.3.2'))
-        expect(status).to eq(429) # Too many requests
       end
     end
   end
@@ -803,6 +801,43 @@ describe 'Rack::Attack' do
           post('/web_api/v1/users/check_phone', params: params, headers: headers.merge('REMOTE_ADDR' => '1.2.3.8'))
           expect(status).to eq(200) # ok
         end
+      end
+    end
+  end
+
+  describe 'AI assistant turns' do
+    let(:message_path) { "/web_api/v1/ai_assistant_conversations/#{SecureRandom.uuid}/messages" }
+    let(:approve_path) { "/web_api/v1/ai_assistant_tool_calls/#{SecureRandom.uuid}/approve" }
+    let(:params) { '{ "ai_assistant_message": { "content": "Hello" } }' }
+
+    it 'limits messages and decisions for the same user to 60 in an hour' do
+      freeze_time do
+        30.times { |i| post(message_path, params: params, headers: json_headers(token: token, ip: "1.2.3.#{i + 1}")) }
+        30.times { |i| post(approve_path, headers: json_headers(token: token, ip: "1.2.4.#{i + 1}")) }
+        expect(status).not_to eq(429)
+
+        post(message_path, params: params, headers: json_headers(token: token, ip: '1.2.5.1'))
+        expect(status).to eq(429) # Too many requests
+      end
+    end
+
+    it 'limits messages and decisions from the same IP to 120 in an hour' do
+      freeze_time do
+        120.times { post(message_path, params: params, headers: json_headers(ip: '1.2.3.4')) }
+        expect(status).not_to eq(429)
+
+        post(approve_path, headers: json_headers(ip: '1.2.3.4'))
+        expect(status).to eq(429) # Too many requests
+      end
+    end
+
+    it 'counts requests with a format suffix too' do
+      freeze_time do
+        120.times { post("#{message_path}.json", params: params, headers: json_headers(ip: '1.2.3.4')) }
+        expect(status).not_to eq(429)
+
+        post("#{approve_path}.json", headers: json_headers(ip: '1.2.3.4'))
+        expect(status).to eq(429) # Too many requests
       end
     end
   end

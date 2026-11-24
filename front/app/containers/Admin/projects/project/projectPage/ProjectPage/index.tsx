@@ -1,13 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
-import {
-  Box,
-  Button,
-  Spinner,
-  Text,
-  bo,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import { Box, Spinner, colors } from '@citizenlab/cl2-component-library';
+
+import Modal from 'design-system/Modal';
 
 import useGroupsByIds from 'api/groups/useGroupsByIds';
 import useProjectById from 'api/projects/useProjectById';
@@ -17,9 +12,9 @@ import useLocalize from 'hooks/useLocalize';
 import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
 import PhonePreviewBackdrop from 'containers/Admin/projects/_shared/components/PhonePreviewBackdrop';
+import PreviewProjectButton from 'containers/Admin/projects/_shared/components/PreviewProjectButton';
 
 import PagePreview from 'components/admin/PagePreview';
-import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
@@ -27,6 +22,9 @@ import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { useParams, useSearch } from 'utils/router';
 
 import messages from '../messages';
+
+import styles from './ProjectPage.module.css';
+import 'design-system/tokens.css';
 
 const ProjectPage = () => {
   const { formatMessage, formatList } = useIntl();
@@ -82,35 +80,29 @@ const ProjectPage = () => {
     );
   };
 
+  const groupsFailedOpen =
+    failedGroupIds.length > 0 && failedGroups.every(Boolean);
+  const groupsNotAddedText = formatMessage(messages.groupsNotAdded2, {
+    groups: formatList(failedGroupTitles, { type: 'conjunction' }),
+  });
+
   return (
-    <PhonePreviewBackdrop>
+    <PhonePreviewBackdrop
+      action={redesign && <PreviewProjectButton slug={slug} />}
+    >
       <Modal
-        opened={failedGroupIds.length > 0 && failedGroups.every(Boolean)}
-        close={closeGroupsFailed}
-        width={480}
-        variant="bo"
-        header={formatMessage(messages.groupsNotAddedTitle)}
-        footer={
-          <Box w="100%" display="flex" justifyContent="flex-end">
-            <Button
-              buttonStyle="bo-primary"
-              height={bo.buttonMedium.height}
-              padding={bo.buttonMedium.padding}
-              fontSize={bo.buttonMedium.fontSize}
-              onClick={closeGroupsFailed}
-            >
-              {formatMessage(messages.groupsNotAddedOk)}
-            </Button>
-          </Box>
-        }
+        size={440}
+        isOpen={groupsFailedOpen}
+        onOpenChange={(isOpen) => {
+          if (!isOpen) closeGroupsFailed();
+        }}
+        title={formatMessage(messages.groupsNotAddedTitle)}
+        primaryAction={{
+          label: formatMessage(messages.groupsNotAddedOk),
+          onPress: closeGroupsFailed,
+        }}
       >
-        <Box p="24px">
-          <Text m="0" fontSize="s" color="coolGrey600">
-            {formatMessage(messages.groupsNotAdded2, {
-              groups: formatList(failedGroupTitles, { type: 'conjunction' }),
-            })}
-          </Text>
-        </Box>
+        <p className={styles.groupsNotAdded}>{groupsNotAddedText}</p>
       </Modal>
       <PagePreview
         src={`/${locale}/projects/${slug}${search}`}
@@ -121,6 +113,10 @@ const ProjectPage = () => {
         onEdit={openContentBuilder}
         dataCy="e2e-project-page-preview"
         editPageContentClassName="intercom-product-tour-project-edit-project"
+        editPageContentText={
+          redesign ? formatMessage(messages.editProjectPage) : undefined
+        }
+        variant={redesign ? 'workspace' : 'default'}
       />
     </PhonePreviewBackdrop>
   );

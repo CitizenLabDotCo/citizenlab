@@ -1,3 +1,5 @@
+import { IFlatCustomField } from 'api/custom_fields/types';
+
 import generateYupSchema from './generateYupSchema';
 
 describe('generateYupSchema', () => {
@@ -27,6 +29,16 @@ describe('generateYupSchema', () => {
       expect(
         schema.isValidSync({ select_q: 'other', select_q_other: 'Bla' })
       ).toBe(true);
+    });
+
+    it('does not make other field required if otherTextOptional is set', () => {
+      const lenientSchema = generateYupSchema({
+        pageQuestions,
+        formatMessage,
+        localize,
+        otherTextOptional: true,
+      });
+      expect(lenientSchema.isValidSync({ select_q: 'other' })).toBe(true);
     });
   });
 
@@ -64,5 +76,50 @@ describe('generateYupSchema', () => {
         })
       ).toBe(true);
     });
+
+    it('does not make other field required if otherTextOptional is set', () => {
+      const lenientSchema = generateYupSchema({
+        pageQuestions,
+        formatMessage,
+        localize,
+        otherTextOptional: true,
+      });
+      expect(
+        lenientSchema.isValidSync({ multiselect_q: ['Value', 'other'] })
+      ).toBe(true);
+    });
+  });
+
+  describe('birthyear field', () => {
+    const birthyearQuestion = (key: string): IFlatCustomField => ({
+      id: `${key}-id`,
+      type: 'custom_field',
+      key,
+      title_multiloc: { en: 'Year of birth' },
+      description_multiloc: {},
+      input_type: 'number',
+      required: false,
+      answers_visible_to: 'moderators',
+      show_as_filter: false,
+      enabled: true,
+      ordering: 0,
+      created_at: '',
+      updated_at: '',
+      logic: {},
+    });
+
+    it.each(['birthyear', 'u_birthyear'])(
+      'rejects a year before 1900 for %s',
+      (key) => {
+        const schema = generateYupSchema({
+          pageQuestions: [birthyearQuestion(key)],
+          formatMessage,
+          localize,
+        });
+
+        expect(schema.isValidSync({ [key]: 1363 })).toBe(false);
+        expect(schema.isValidSync({ [key]: 1963 })).toBe(true);
+      }
+    );
   });
 });

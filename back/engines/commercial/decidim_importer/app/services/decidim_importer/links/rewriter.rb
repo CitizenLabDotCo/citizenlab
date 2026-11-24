@@ -3,7 +3,8 @@
 module DecidimImporter
   module Links
     # Post-import step (runs in the applied tenant): rewrites Decidim back-links in the tenant's Content
-    # Builder layouts (project/folder descriptions) and static pages via a {Map}. File links resolve to
+    # Builder layouts (project/folder descriptions and static page bodies) and static pages' top info
+    # sections via a {Map}. File links resolve to
     # the imported file's `content.url`; unresolvable ones are returned as "broken" rows for a report.
     # Runs post-import because layouts, static pages and file URLs only exist once the template is
     # deserialized into the tenant.
@@ -30,7 +31,7 @@ module DecidimImporter
         ContentBuilder::Layout.find_each do |layout|
           changed, found = correct_layout_links(layout)
           save_changed(layout, changed)
-          # A layout's container is its buildable (a Project or folder) — that's the page to link to.
+          # A layout's container is its buildable (a Project, folder or static page) — that's the page to link to.
           found.each { |url| broken << broken_link_row(url, layout.content_buildable) }
         end
         StaticPage.find_each do |page|
@@ -58,7 +59,7 @@ module DecidimImporter
         end
       end
 
-      # Applies the mapping to one layout's `TextMultiloc` fields. Returns `[changed?, broken_urls]`.
+      # Applies the mapping to one layout's text nodes. Returns `[changed?, broken_urls]`.
       # Reassigns `craftjs_json` (a deep dup) only on change, so ActiveRecord sees it dirty.
       def correct_layout_links(layout)
         craftjs = layout.craftjs_json
@@ -68,8 +69,7 @@ module DecidimImporter
         changed = false
         broken = []
         craftjs.each_value do |node|
-          # ROOT's `type` is the plain string 'div', so guard before treating it as a component hash.
-          next unless node.is_a?(Hash) && node['type'].is_a?(Hash) && node['type']['resolvedName'] == 'TextMultiloc'
+          next unless TemplateCleaner.craftjs_text_node?(node)
 
           text = node.dig('props', 'text')
           next unless text.is_a?(Hash)

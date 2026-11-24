@@ -359,4 +359,49 @@ resource 'ContentBuilderLayouts' do
       end
     end
   end
+
+  context 'when project moderator' do
+    def craftjs_json_with_file(file_id)
+      {
+        'ROOT' => { 'type' => { 'resolvedName' => 'Container' }, 'nodes' => ['file1'] },
+        'file1' => { 'type' => { 'resolvedName' => 'FileAttachment' }, 'props' => { 'fileId' => file_id } }
+      }
+    end
+
+    post 'web_api/v1/projects/:project_id/content_builder_layouts/:code/upsert' do
+      with_options scope: :content_builder_layout do
+        parameter :craftjs_json, 'The craftjs layout configuration'
+      end
+
+      let(:project) { create(:project) }
+      let(:project_id) { project.id }
+      let(:code) { 'project_page' }
+      let(:moderator) { create(:project_moderator, projects: [project]) }
+      let(:other_project_file) { create(:file, projects: [create(:project)]) }
+
+      before { header_token_for(moderator) }
+
+      context 'when the saved layout already has a file from a project they do not moderate' do
+        let!(:layout) do
+          create(:layout, content_buildable: project, code: code, craftjs_json: craftjs_json_with_file(other_project_file.id))
+        end
+        let(:craftjs_json) { layout.craftjs_json }
+
+        example_request 'Save a layout that keeps that file' do
+          assert_status 200
+        end
+      end
+
+      context 'when they add a file from a project they do not moderate' do
+        let!(:layout) { create(:layout, content_buildable: project, code: code, craftjs_json: {}) }
+        let(:craftjs_json) { craftjs_json_with_file(other_project_file.id) }
+
+        example_request '[error] Try to add that file to the layout' do
+          assert_status 401
+          expect(json_parse(response_body).dig(:errors, :base, 0, :error)).to eq 'unauthorized_file'
+          expect(layout.reload.referenced_file_ids).to be_empty
+        end
+      end
+    end
+  end
 end

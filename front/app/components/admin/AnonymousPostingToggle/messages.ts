@@ -37,4 +37,13 @@ export default defineMessages({
     defaultMessage:
       'Anonymous posting for logged-in users is automatically enabled when the posting requirement is set to "None" (no registration needed).',
   },
+  anonymousParticipation: {
+    id: 'app.components.admin.AnonymousPostingToggle.anonymousParticipation',
+    defaultMessage: 'Anonymous participation',
+  },
+  anonymousParticipationDescription: {
+    id: 'app.components.admin.AnonymousPostingToggle.anonymousParticipationDescription',
+    defaultMessage:
+      'Participants can hide their identity from other participants, administrators and managers.',
+  },
 });

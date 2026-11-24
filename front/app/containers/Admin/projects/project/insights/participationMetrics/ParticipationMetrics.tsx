@@ -5,10 +5,17 @@ import { Box, Text, Spinner } from '@citizenlab/cl2-component-library';
 import usePhaseInsights from 'api/phase_insights/usePhaseInsights';
 import { IPhaseData } from 'api/phases/types';
 
+import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
+
+import projectMessages from 'containers/Admin/projects/project/messages';
+
+import Warning from 'components/UI/Warning';
+
 import { useIntl } from 'utils/cl-intl';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 
 import messages from '../messages';
+import { usePdfExportContext } from '../pdf/PdfExportContext';
 import wordMessages from '../word/messages';
 import { useWordSection } from '../word/useWordSection';
 
@@ -21,6 +28,8 @@ interface Props {
 
 const ParticipationMetrics = ({ phase }: Props) => {
   const intl = useIntl();
+  const redesigned = useProjectBackofficeRedesign();
+  const { isPdfRenderMode } = usePdfExportContext();
   const { formatMessage, formatNumber } = intl;
   const { start_at, end_at, participation_method } = phase.attributes;
   const {
@@ -33,6 +42,11 @@ const ParticipationMetrics = ({ phase }: Props) => {
 
   const metrics = response?.data.attributes.metrics;
   const isCurrentPhase = pastPresentOrFuture([start_at, end_at]) === 'present';
+  // null when the back end could not measure them, as opposed to measuring none
+  const participants = metrics?.participants ?? null;
+  const participationRate = metrics?.participation_rate_as_percent ?? null;
+  // for Konveio, notice to explain where data can be found.
+  const showKonveioNotice = participation_method === 'document_annotation';
 
   useWordSection(
     'participation-metrics',
@@ -43,17 +57,19 @@ const ParticipationMetrics = ({ phase }: Props) => {
       ];
 
       rows.push([formatMessage(messages.visitors), String(metrics.visitors)]);
-      rows.push([
-        formatMessage(messages.participants),
-        String(metrics.participants),
-      ]);
 
-      rows.push([
-        formatMessage(messages.participationRate),
-        typeof metrics.participation_rate_as_percent === 'number'
-          ? `${metrics.participation_rate_as_percent.toFixed(1)}%`
-          : '-',
-      ]);
+      if (participants !== null) {
+        rows.push([formatMessage(messages.participants), String(participants)]);
+      }
+
+      if (participationRate !== null) {
+        rows.push([
+          formatMessage(messages.participationRate),
+          typeof participationRate === 'number'
+            ? `${participationRate.toFixed(1)}%`
+            : '-',
+        ]);
+      }
 
       if (metrics.ideation) {
         rows.push([
@@ -141,6 +157,16 @@ const ParticipationMetrics = ({ phase }: Props) => {
           text: formatMessage(wordMessages.participationMetrics),
           level: 2 as const,
         },
+        ...(showKonveioNotice
+          ? [
+              {
+                type: 'paragraph' as const,
+                text: formatMessage(
+                  projectMessages.konveioParticipationDataNotice
+                ),
+              },
+            ]
+          : []),
         { type: 'table' as const, rows, columnWidths: [60, 40] },
       ];
     },
@@ -161,7 +187,7 @@ const ParticipationMetrics = ({ phase }: Props) => {
     );
   }
 
-  if (!response) {
+  if (!metrics) {
     return (
       <Box
         display="flex"
@@ -175,64 +201,85 @@ const ParticipationMetrics = ({ phase }: Props) => {
     );
   }
 
-  const { participation_rate_as_percent } = metrics!;
-
   return (
-    <Box display="flex" flexWrap="wrap" gap="16px" w="100%">
-      <MetricCard
-        label={formatMessage(messages.visitors)}
-        value={metrics!.visitors}
-        icon="user-circle"
-        change={
-          isCurrentPhase ? metrics!.visitors_7_day_percent_change : undefined
-        }
-      />
-      <MetricCard
-        label={formatMessage(messages.participants)}
-        value={metrics!.participants}
-        icon="sidebar-users"
-        change={
-          isCurrentPhase
-            ? metrics!.participants_7_day_percent_change
-            : undefined
-        }
-        labelTooltip={formatMessage(messages.phaseParticipantsMetricTooltip2)}
-      />
-      <MethodMetrics
-        participationMethod={participation_method}
-        metrics={metrics!}
-        showChange={isCurrentPhase}
-      />
-      <MetricCard
-        label={formatMessage(messages.participationRate)}
-        value={
-          participation_rate_as_percent ===
-          'participant_count_compared_with_zero_visitors'
-            ? '-'
-            : formatNumber(participation_rate_as_percent / 100, {
-                style: 'percent',
-                minimumFractionDigits: 1,
-                maximumFractionDigits: 1,
-              })
-        }
-        icon="chart-bar"
-        change={
-          isCurrentPhase
-            ? metrics!.participation_rate_7_day_percent_change
-            : undefined
-        }
-        labelTooltip={formatMessage(
-          messages.participationRateExplanationTooltip
+    <Box display="flex" flexDirection="column" gap="16px" w="100%">
+      {showKonveioNotice && (!redesigned || isPdfRenderMode) && (
+        <Warning>
+          {formatMessage(projectMessages.konveioParticipationDataNotice)}
+        </Warning>
+      )}
+      <Box
+        display="flex"
+        flexWrap="wrap"
+        gap={redesigned && !isPdfRenderMode ? '10px' : '16px'}
+        w="100%"
+      >
+        <MetricCard
+          label={formatMessage(messages.visitors)}
+          value={metrics.visitors}
+          icon="user-circle"
+          change={
+            isCurrentPhase ? metrics.visitors_7_day_percent_change : undefined
+          }
+        />
+        {participants !== null && (
+          <MetricCard
+            label={formatMessage(messages.participants)}
+            value={participants}
+            icon="sidebar-users"
+            change={
+              isCurrentPhase
+                ? metrics.participants_7_day_percent_change
+                : undefined
+            }
+            labelTooltip={formatMessage(
+              messages.phaseParticipantsMetricTooltip2
+            )}
+          />
         )}
-        valueTooltip={
-          participation_rate_as_percent ===
-          'participant_count_compared_with_zero_visitors'
-            ? formatMessage(
-                messages.cannotCalculateParticipationRateZeroVisitors
-              )
-            : undefined
-        }
-      />
+        <MethodMetrics
+          participationMethod={participation_method}
+          inputTerm={
+            redesigned && !isPdfRenderMode
+              ? phase.attributes.input_term
+              : undefined
+          }
+          metrics={metrics}
+          showChange={isCurrentPhase}
+        />
+        {participationRate !== null && (
+          <MetricCard
+            label={formatMessage(messages.participationRate)}
+            value={
+              participationRate ===
+              'participant_count_compared_with_zero_visitors'
+                ? '-'
+                : formatNumber(participationRate / 100, {
+                    style: 'percent',
+                    minimumFractionDigits: 1,
+                    maximumFractionDigits: 1,
+                  })
+            }
+            icon="chart-bar"
+            change={
+              isCurrentPhase
+                ? metrics.participation_rate_7_day_percent_change
+                : undefined
+            }
+            labelTooltip={formatMessage(
+              messages.participationRateExplanationTooltip
+            )}
+            valueTooltip={
+              participationRate ===
+              'participant_count_compared_with_zero_visitors'
+                ? formatMessage(
+                    messages.cannotCalculateParticipationRateZeroVisitors
+                  )
+                : undefined
+            }
+          />
+        )}
+      </Box>
     </Box>
   );
 };

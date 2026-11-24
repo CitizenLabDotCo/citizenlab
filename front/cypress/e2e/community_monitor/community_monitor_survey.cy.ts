@@ -1,16 +1,6 @@
 import { ICustomFieldResponse } from '../../../app/api/custom_fields/types';
 import { randomString } from '../../support/commands';
 
-// The next/submit buttons stay disabled until the page's last question has
-// been scrolled into view (IntersectionObserver in PageControlButtons), so
-// scroll there and wait for the enabled state instead of force-clicking —
-// a force-click on the still-disabled button silently does nothing.
-const clickPageButton = (dataCy: 'e2e-next-page' | 'e2e-submit-form') => {
-  cy.get('[data-question-id]').last().scrollIntoView();
-  cy.dataCy(dataCy).should('be.visible').should('not.have.class', 'disabled');
-  cy.dataCy(dataCy).click();
-};
-
 describe('Submit community monitor survey', () => {
   let communityMonitorProjectId: string;
   let communityMonitorPhaseId: string;
@@ -49,7 +39,7 @@ describe('Submit community monitor survey', () => {
 
   it('can be submitted by an admin user', () => {
     cy.visit(
-      `projects/community-monitor/surveys/new?phase_id=${communityMonitorPhaseId}`
+      `projects/community-monitor/surveys/new/${communityMonitorPhaseId}`
     );
 
     // First default question
@@ -58,13 +48,13 @@ describe('Submit community monitor survey', () => {
     // Select first question
     cy.get('#place_to_live-linear-scale-option-1').click();
 
-    clickPageButton('e2e-next-page');
+    cy.clickInputFormPageButton('e2e-next-page');
     cy.contains('Service delivery').should('be.visible');
-    clickPageButton('e2e-next-page');
+    cy.clickInputFormPageButton('e2e-next-page');
     cy.contains('Governance and trust').should('be.visible');
 
     // save the form
-    clickPageButton('e2e-submit-form');
+    cy.clickInputFormPageButton('e2e-submit-form');
 
     // Confirm submissions was successful
     cy.dataCy('e2e-after-submission').should('exist');
@@ -75,7 +65,7 @@ describe('Submit community monitor survey', () => {
     cy.setConsentCookie();
 
     cy.visit(
-      `projects/community-monitor/surveys/new?phase_id=${communityMonitorPhaseId}`
+      `projects/community-monitor/surveys/new/${communityMonitorPhaseId}`
     );
 
     // First default question
@@ -85,13 +75,13 @@ describe('Submit community monitor survey', () => {
     cy.get('#place_to_live-linear-scale-option-1').click();
 
     // Go to last page
-    clickPageButton('e2e-next-page');
+    cy.clickInputFormPageButton('e2e-next-page');
     cy.contains('Service delivery').should('be.visible');
-    clickPageButton('e2e-next-page');
+    cy.clickInputFormPageButton('e2e-next-page');
     cy.contains('Governance and trust').should('be.visible');
 
     // save the form
-    clickPageButton('e2e-submit-form');
+    cy.clickInputFormPageButton('e2e-submit-form');
 
     // Confirm submissions was successful
     cy.dataCy('e2e-after-submission').should('exist');
@@ -110,7 +100,7 @@ describe('Submit community monitor survey', () => {
     cy.clearAllCookies();
     cy.setConsentCookie();
     cy.visit(
-      `projects/community-monitor/surveys/new?phase_id=${communityMonitorPhaseId}`
+      `projects/community-monitor/surveys/new/${communityMonitorPhaseId}`
     );
 
     // Authentication modal should pop up

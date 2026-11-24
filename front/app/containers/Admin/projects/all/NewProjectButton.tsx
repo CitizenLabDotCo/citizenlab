@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
-import { Box, Dropdown, bo } from '@citizenlab/cl2-component-library';
+import DSButton from 'design-system/Button';
+import Menu, { MenuItem, MenuTrigger } from 'design-system/Menu';
 
 import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
@@ -9,19 +10,13 @@ import Button from 'components/UI/ButtonWithLink';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
-import NewProjectMenuItem from './NewProjectMenuItem';
 import NewProjectModal, { NewProjectMode } from './NewProjectModal';
+import 'design-system/tokens.css';
 
 const NewProjectButton = () => {
   const { formatMessage } = useIntl();
   const redesignEnabled = useProjectBackofficeRedesign();
-  const [dropdownOpened, setDropdownOpened] = useState(false);
   const [mode, setMode] = useState<NewProjectMode | null>(null);
-
-  const openModal = (mode: NewProjectMode) => {
-    setDropdownOpened(false);
-    setMode(mode);
-  };
 
   if (!redesignEnabled) {
     return (
@@ -38,44 +33,30 @@ const NewProjectButton = () => {
   }
 
   return (
-    <Box position="relative">
-      <Button
-        data-cy="e2e-new-project-button"
-        className="intercom-admin-projects-new-project-button"
-        icon="plus-circle"
-        buttonStyle="admin-dark"
-        onClick={() => setDropdownOpened(!dropdownOpened)}
-        aria-haspopup="menu"
-        aria-expanded={dropdownOpened}
-      >
-        <FormattedMessage {...messages.newProject} />
-      </Button>
-
-      <Dropdown
-        opened={dropdownOpened}
-        onClickOutside={() => setDropdownOpened(false)}
-        top="calc(100% + 6px)"
-        right="0px"
-        width="200px"
-        borderRadius={bo.borderRadius}
-        content={
-          <Box role="menu">
-            <NewProjectMenuItem
-              icon="page"
-              label={formatMessage(messages.fromScratchMenuItem)}
-              onClick={() => openModal('scratch')}
-            />
-            <NewProjectMenuItem
-              icon="grid"
-              label={formatMessage(messages.useTemplateMenuItem)}
-              onClick={() => openModal('template')}
-            />
-          </Box>
-        }
-      />
+    // The product tour points at this class; the design-system button takes no className.
+    <div className="intercom-admin-projects-new-project-button">
+      <MenuTrigger>
+        <DSButton
+          data-cy="e2e-new-project-button"
+          variant="primary"
+          size={32}
+          icon="plus-16"
+          hasMenu
+        >
+          <FormattedMessage {...messages.newProject} />
+        </DSButton>
+        <Menu placement="bottom end">
+          <MenuItem icon="file-16" onAction={() => setMode('scratch')}>
+            {formatMessage(messages.fromScratchMenuItem)}
+          </MenuItem>
+          <MenuItem icon="copy-16" onAction={() => setMode('template')}>
+            {formatMessage(messages.useTemplateMenuItem)}
+          </MenuItem>
+        </Menu>
+      </MenuTrigger>
 
       <NewProjectModal mode={mode} onClose={() => setMode(null)} />
-    </Box>
+    </div>
   );
 };
 

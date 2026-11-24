@@ -1,0 +1,114 @@
+/* The veil separates the panel from the page, so the panel has no shadow. */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--gv-surface-backdrop);
+  /* Above full-page views like the form builder (10000), below React Aria
+     popovers (100000). */
+  z-index: 50000;
+}
+
+.overlay[data-entering] {
+  animation: fade-in var(--gv-motion-duration-medium)
+    var(--gv-motion-easing-standard);
+}
+
+.overlay[data-exiting] {
+  animation: fade-out var(--gv-motion-duration-medium)
+    var(--gv-motion-easing-exit);
+}
+
+.panel {
+  position: absolute;
+  top: var(--gv-space-8);
+  right: var(--gv-space-8);
+  bottom: var(--gv-space-8);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: 480px;
+  border-radius: var(--gv-radius-12);
+  background: var(--gv-surface-panel);
+  overflow: hidden;
+  outline: none;
+  --gv-side-panel-out: translateX(calc(100% + var(--gv-space-8)));
+}
+
+.panel[data-entering] {
+  animation: panel-in var(--gv-motion-duration-panel)
+    var(--gv-motion-easing-silk);
+}
+
+.panel[data-exiting] {
+  animation: panel-out var(--gv-motion-duration-medium)
+    var(--gv-motion-easing-exit);
+}
+
+/* The body's cards rise as one wave, ordered by position and capped near 200 ms of delay.
+   They run once on mount, so they do not replay when the panel leaves. */
+.body > * {
+  animation: card-rise var(--gv-motion-duration-slow)
+    var(--gv-motion-easing-enter) backwards;
+  animation-delay: calc(
+    var(--gv-motion-duration-instant) + 5 * var(--gv-motion-stagger)
+  );
+}
+
+.body > :nth-child(1) {
+  animation-delay: var(--gv-motion-duration-instant);
+}
+
+.body > :nth-child(2) {
+  animation-delay: calc(
+    var(--gv-motion-duration-instant) + var(--gv-motion-stagger)
+  );
+}
+
+.body > :nth-child(3) {
+  animation-delay: calc(
+    var(--gv-motion-duration-instant) + 2 * var(--gv-motion-stagger)
+  );
+}
+
+.body > :nth-child(4) {
+  animation-delay: calc(
+    var(--gv-motion-duration-instant) + 3 * var(--gv-motion-stagger)
+  );
+}
+
+.body > :nth-child(5) {
+  animation-delay: calc(
+    var(--gv-motion-duration-instant) + 4 * var(--gv-motion-stagger)
+  );
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes panel-in {
+  from {
+    transform: var(--gv-side-panel-out);
+  }
+}
+
+@keyframes panel-out {
+  to {
+    transform: var(--gv-side-panel-out);
+  }
+}
+
+@keyframes card-rise {
+  from {
+    opacity: 0;
+    transform: translateY(var(--gv-motion-offset-far));
+  }
+}

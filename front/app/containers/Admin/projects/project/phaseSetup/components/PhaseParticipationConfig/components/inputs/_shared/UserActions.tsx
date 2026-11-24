@@ -1,18 +1,15 @@
-import React from 'react';
+import React, { ReactNode, useId } from 'react';
 
-import {
-  Box,
-  IconTooltip,
-  Radio,
-  Toggle,
-} from '@citizenlab/cl2-component-library';
-import { CLErrors } from 'typings';
+import { IconTooltip, Radio } from '@citizenlab/cl2-component-library';
+import { CLError, CLErrors } from 'typings';
+
+import { FieldError } from 'design-system/Field';
 
 import PhaseActionAccessRow, {
   AccessOnlyAction,
 } from 'containers/Admin/projects/_shared/components/PhaseActionAccessRow';
-import ToggleActionAccess from 'containers/Admin/projects/_shared/components/ToggleActionAccess';
 
+import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 
@@ -20,11 +17,10 @@ import { useIntl } from 'utils/cl-intl';
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 
 import messages from '../../../../../../messages';
-import {
-  ReactingLimitInput,
-  StyledSectionField,
-  ToggleRow,
-} from '../../shared/styling';
+import { ReactingLimitInput, StyledSectionField } from '../../shared/styling';
+
+import ActionToggle from './ActionToggle';
+import ActionToggleRow from './ActionToggleRow';
 
 const UserActions = ({
   submission_enabled,
@@ -42,12 +38,18 @@ const UserActions = ({
   showCommentingToggle = true,
   showReactingToggle = true,
   phaseId,
+  layout = 'page',
   accessOnlyActions = [],
+  reactingSettings,
 }: {
   showCommentingToggle?: boolean;
   showReactingToggle?: boolean;
   phaseId?: string;
+  /** In the workspace panel the likes limit is shown by the caller. */
+  layout?: 'page' | 'panel';
   accessOnlyActions?: AccessOnlyAction[];
+  /** Shown right below the reacting toggle, before the access-only actions. */
+  reactingSettings?: ReactNode;
   submission_enabled: boolean;
   commenting_enabled: boolean;
   reacting_enabled: boolean;
@@ -64,75 +66,125 @@ const UserActions = ({
   handleLikingLimitOnChange: (reacting_like_limited_max: string) => void;
 }) => {
   const { formatMessage } = useIntl();
-  return (
+  const getApiErrorMessage = useApiErrorText();
+  const errorId = useId();
+  const postingErrorId = `${errorId}-posting`;
+  const commentingErrorId = `${errorId}-commenting`;
+  const reactingErrorId = `${errorId}-reacting`;
+  const panel = layout === 'panel';
+
+  // The panel shows errors as plain field error text, linked to the toggle.
+  const actionError = (errors: CLError[] | undefined, id: string) => {
+    if (!panel) return { error: <Error apiErrors={errors} /> };
+    const message = getApiErrorMessage(errors);
+    if (!message) return {};
+    return {
+      error: <FieldError id={id}>{message}</FieldError>,
+      describedBy: id,
+    };
+  };
+
+  const postingError = actionError(
+    apiErrors?.submission_enabled,
+    postingErrorId
+  );
+  const commentingError = actionError(
+    apiErrors?.commenting_enabled,
+    commentingErrorId
+  );
+  const reactingError = actionError(
+    apiErrors?.reacting_enabled,
+    reactingErrorId
+  );
+
+  const actions = (
     <>
-      <StyledSectionField>
+      {!panel && (
         <SubSectionTitle>
           <FormattedMessage {...messages.enabledActionsForUsers} />
           <IconTooltip
             content={<FormattedMessage {...messages.enabledActionsTooltip} />}
           />
         </SubSectionTitle>
+      )}
 
-        <ToggleRow>
-          <Toggle
-            checked={submission_enabled || false}
-            onChange={togglePostingEnabled}
-            label={formatMessage(messages.inputPostingEnabled)}
+      <ActionToggleRow
+        phaseId={phaseId}
+        action="posting_idea"
+        error={postingError.error}
+      >
+        <ActionToggle
+          layout={layout}
+          aria-describedby={postingError.describedBy}
+          checked={submission_enabled || false}
+          onChange={togglePostingEnabled}
+          label={formatMessage(messages.inputPostingEnabled)}
+        />
+      </ActionToggleRow>
+
+      {showCommentingToggle && (
+        <ActionToggleRow
+          phaseId={phaseId}
+          action="commenting_idea"
+          error={commentingError.error}
+        >
+          <ActionToggle
+            layout={layout}
+            aria-describedby={commentingError.describedBy}
+            checked={commenting_enabled || false}
+            onChange={toggleCommentingEnabled}
+            label={formatMessage(messages.inputCommentingEnabled)}
           />
-          <Error apiErrors={apiErrors && apiErrors.submission_enabled} />
-        </ToggleRow>
-        {phaseId && (
-          <ToggleActionAccess phaseId={phaseId} action="posting_idea" />
-        )}
+        </ActionToggleRow>
+      )}
 
-        {showCommentingToggle && (
-          <ToggleRow>
-            <Toggle
-              checked={commenting_enabled || false}
-              onChange={toggleCommentingEnabled}
-              label={formatMessage(messages.inputCommentingEnabled)}
-            />
-            <Error apiErrors={apiErrors && apiErrors.commenting_enabled} />
-          </ToggleRow>
-        )}
-        {showCommentingToggle && phaseId && (
-          <ToggleActionAccess phaseId={phaseId} action="commenting_idea" />
-        )}
+      {showReactingToggle && (
+        <ActionToggleRow
+          phaseId={phaseId}
+          action="reacting_idea"
+          last
+          error={reactingError.error}
+        >
+          <ActionToggle
+            layout={layout}
+            aria-describedby={reactingError.describedBy}
+            checked={reacting_enabled || false}
+            onChange={toggleReactingEnabled}
+            label={formatMessage(messages.inputReactingEnabled)}
+          />
+        </ActionToggleRow>
+      )}
 
-        {showReactingToggle && (
-          <ToggleRow className="last">
-            <Toggle
-              checked={reacting_enabled || false}
-              onChange={toggleReactingEnabled}
-              label={formatMessage(messages.inputReactingEnabled)}
-            />
-            <Error apiErrors={apiErrors && apiErrors.reacting_enabled} />
-          </ToggleRow>
-        )}
-        {showReactingToggle && phaseId && (
-          <ToggleActionAccess phaseId={phaseId} action="reacting_idea" />
-        )}
+      {reactingSettings}
 
-        {phaseId && (
-          <Box mt="4px">
-            {accessOnlyActions.map(({ action, label }) => (
-              <PhaseActionAccessRow
-                key={action}
-                phaseId={phaseId}
-                action={action}
-                label={label}
-              />
-            ))}
+      {phaseId && (
+        <div>
+          {accessOnlyActions.map(({ action, label }) => (
             <PhaseActionAccessRow
+              key={action}
               phaseId={phaseId}
-              action="attending_event"
-              label={messages.attendingEventAction}
+              action={action}
+              label={label}
             />
-          </Box>
-        )}
-      </StyledSectionField>
-      {reacting_enabled && (
+          ))}
+          <PhaseActionAccessRow
+            phaseId={phaseId}
+            action="attending_event"
+            label={messages.attendingEventAction}
+          />
+        </div>
+      )}
+    </>
+  );
+
+  return (
+    <>
+      {panel ? (
+        <div>{actions}</div>
+      ) : (
+        <StyledSectionField>{actions}</StyledSectionField>
+      )}
+      {reacting_enabled && !panel && (
         <>
           <SectionField>
             <SubSectionTitle>

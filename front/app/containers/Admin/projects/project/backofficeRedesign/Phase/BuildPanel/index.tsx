@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { useForm } from 'react-hook-form';
 import { CLErrors } from 'typings';
 
 import { IFileAttachmentData } from 'api/file_attachments/types';
@@ -9,20 +9,24 @@ import usePhases from 'api/phases/usePhases';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
 import { isTimelinePhase } from 'api/phases/utils';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import usePhaseFileAttachments, {
   fileAttachmentErrors,
 } from 'containers/Admin/projects/_shared/usePhaseFileAttachments';
 import { SurveyMethod } from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/components/SurveyMethodChoices';
-import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/typings';
 import { validateDates } from 'containers/Admin/projects/project/phaseSetup/validate';
+
+import { useRegisterPageSaver } from 'components/admin/PageSaveContext';
+import { usePhasePreviewPublisher } from 'components/admin/PhasePreview/DraftContext';
 
 import { useIntl } from 'utils/cl-intl';
 
-import { useRegisterPageSaver } from '../../_shared/PageSaveContext';
-
 import BuildFields from './BuildFields';
+import styles from './BuildPanel.module.css';
 import SwitchSurveyMethodModal from './SwitchSurveyMethodModal';
 import useSurveyMethodLocks from './useSurveyMethodLocks';
+import 'design-system/tokens.css';
 
 interface Props {
   projectId: string;
@@ -35,75 +39,119 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
   const { data: phases } = usePhases(projectId);
   const { mutateAsync: updatePhase } = useUpdatePhase();
 
-  const [formData, setFormData] = useState<IUpdatedPhaseProperties>(
-    phase.attributes
-  );
-  const [dirty, setDirty] = useState(false);
+  const {
+    watch,
+    setValue,
+    getValues,
+    reset,
+    setError,
+    clearErrors,
+    formState: { isDirty, errors: formErrors },
+  } = useForm<{ phase: IUpdatedPhaseProperties }>({
+    defaultValues: { phase: phase.attributes },
+  });
+  const formData = watch('phase');
+  const [filesChanged, setFilesChanged] = useState(false);
   const [errors, setErrors] = useState<CLErrors | null>(null);
-  const [validationErrors, setValidationErrors] = useState<ValidationErrors>(
-    {}
-  );
   const [pendingSurveyMethod, setPendingSurveyMethod] =
     useState<SurveyMethod | null>(null);
   const surveyMethodLocks = useSurveyMethodLocks(phase);
+  const draftDescriptionEnabled = useFeatureFlag({
+    name: 'draft_phase_description',
+  });
 
   const files = usePhaseFileAttachments({
     projectId,
     phaseId: phase.id,
     savedAttachments,
-    onStage: () => setDirty(true),
+    onStage: () => setFilesChanged(true),
   });
 
   // Detached phases skip the timeline rules: their dates may overlap and stay
   // open-ended.
   const standalone = !isTimelinePhase(phase);
 
+  const preview = usePhasePreviewPublisher('build', phase.id);
+
   const updateFormData = (newData: Partial<IUpdatedPhaseProperties>) => {
-    setDirty(true);
-    setFormData((formData) => ({ ...formData, ...newData }));
+    preview.publish(newData);
+    setErrors((errors) =>
+      errors
+        ? Object.fromEntries(
+            Object.entries(errors).filter(([field]) => !(field in newData))
+          )
+        : null
+    );
+    setValue(
+      'phase',
+      { ...getValues('phase'), ...newData },
+      { shouldDirty: true }
+    );
   };
 
   const save = async () => {
-    const { isValidated, errors } = validateDates(
-      formData,
+    const values = getValues('phase');
+    const { isValidated, errors: dateErrors } = validateDates(
+      values,
       phases,
       formatMessage,
       phase.id,
       standalone
     );
 
-    setValidationErrors(errors);
-    if (!isValidated) throw new Error('Invalid phase dates');
+    if (!isValidated) {
+      setError('root.dates', { message: dateErrors.phaseDateError });
+      throw new Error('Invalid phase dates');
+    }
 
     try {
       const response = await updatePhase({
         phaseId: phase.id,
-        title_multiloc: formData.title_multiloc,
-        start_at: formData.start_at,
-        end_at: formData.end_at,
+        title_multiloc: values.title_multiloc,
+        start_at: values.start_at,
+        end_at: values.end_at,
+        input_term: values.input_term,
+        ...(phase.attributes.participation_method === 'survey'
+          ? {
+              survey_service: values.survey_service,
+              survey_embed_url: values.survey_embed_url,
+            }
+          : {}),
+        ...(phase.attributes.participation_method === 'document_annotation'
+          ? {
+              document_annotation_embed_url:
+                values.document_annotation_embed_url,
+            }
+          : {}),
+        // A draft description publishes on its own; sending the loaded value
+        // would undo a publish made since.
+        ...(draftDescriptionEnabled
+          ? {}
+          : { description_multiloc: values.description_multiloc }),
       });
-      setFormData(response.data.attributes);
+      reset({ phase: response.data.attributes });
+      preview.clear();
       await files.save(phase.id);
       setErrors(null);
-      setDirty(false);
+      setFilesChanged(false);
     } catch (reason) {
       setErrors(fileAttachmentErrors(reason));
       throw reason;
     }
   };
 
-  useRegisterPageSaver('build', { dirty, save });
+  useRegisterPageSaver('build', { dirty: isDirty || filesChanged, save });
 
   return (
-    <Box display="flex" flexDirection="column" flexGrow={1} minHeight="0">
-      <Box flexGrow={1} p="20px">
+    <div className={styles.panel}>
+      <div className={styles.fields}>
         <BuildFields
           projectId={projectId}
           phaseId={phase.id}
           participationMethod={phase.attributes.participation_method}
           formData={formData}
           errors={errors}
-          validationErrors={validationErrors}
+          validationErrors={{ phaseDateError: formErrors.root?.dates.message }}
           standalone={standalone}
           files={files}
           surveyMethodSwitch={{
@@ -112,21 +160,18 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
           }}
           onChange={updateFormData}
           onDatesChange={(dates) => {
-            setValidationErrors((errors) => ({
-              ...errors,
-              phaseDateError: undefined,
-            }));
+            clearErrors('root.dates');
             updateFormData(dates);
           }}
         />
-      </Box>
+      </div>
 
       <SwitchSurveyMethodModal
         phase={phase}
         method={pendingSurveyMethod}
         onClose={() => setPendingSurveyMethod(null)}
       />
-    </Box>
+    </div>
   );
 };
 

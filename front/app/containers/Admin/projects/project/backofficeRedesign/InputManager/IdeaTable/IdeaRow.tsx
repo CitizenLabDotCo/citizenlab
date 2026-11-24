@@ -1,15 +1,8 @@
 import React from 'react';
 
-import {
-  Box,
-  Checkbox,
-  colors,
-  Icon,
-  Td,
-  Text,
-  Tooltip,
-} from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
+import Icon from 'design-system/Icon';
+import { Cell, Row } from 'design-system/Table';
+import TooltipMark from 'design-system/Tooltip/TooltipMark';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IIdeaData } from 'api/ideas/types';
@@ -22,30 +15,15 @@ import { ColumnKey, COLUMNS } from '../columns';
 import messages from '../messages';
 
 import IdeaCell from './IdeaCell';
-
-const Row = styled.tr<{ selected: boolean; active: boolean }>`
-  cursor: pointer;
-  background: ${({ selected, active }) =>
-    selected || active ? colors.grey100 : colors.white};
-
-  &:hover {
-    background: ${colors.grey50};
-  }
-`;
-
-const cellProps = {
-  py: '8px',
-  borderBottom: `1px solid ${colors.divider}`,
-};
+import styles from './IdeaTable.module.css';
+import RowTitleButton from './RowTitleButton';
 
 interface Props {
   idea: IIdeaData;
   columns: ColumnKey[];
   statuses: IIdeaStatusData[];
   tagLabels: Map<string, string>;
-  selected: boolean;
   active: boolean;
-  onToggleSelect: () => void;
   onOpen: () => void;
 }
 
@@ -54,9 +32,7 @@ const IdeaRow = ({
   columns,
   statuses,
   tagLabels,
-  selected,
   active,
-  onToggleSelect,
   onOpen,
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -68,62 +44,40 @@ const IdeaRow = ({
   const showsMark = (column: ColumnKey) => columns.includes(column);
   const wasImported = !!relationships.idea_import?.data;
   const hasReply = attributes.official_feedbacks_count > 0;
+  const title = localize(attributes.title_multiloc);
 
   return (
     <Row
-      selected={selected}
-      active={active}
+      id={idea.id}
+      textValue={title}
+      isActive={active}
+      onAction={onOpen}
       data-cy={`e2e-idea-row-${idea.id}`}
     >
-      <Td {...cellProps} width="40px" pr="0">
-        <Checkbox
-          size="18px"
-          checked={selected}
-          onChange={onToggleSelect}
-          ariaLabel={formatMessage(messages.selectInput)}
-        />
-      </Td>
-      <Td {...cellProps} onClick={onOpen} maxWidth="0" width="100%">
-        <Box display="flex" alignItems="center" gap="8px">
-          <Text
-            variant="boLabel"
-            color="textPrimary"
-            as="span"
-            m="0"
-            overflow="hidden"
-            whiteSpace="nowrap"
-            textOverflow="ellipsis"
-          >
-            {localize(attributes.title_multiloc)}
-          </Text>
-          {showsMark('replied') && hasReply && (
-            <Tooltip content={formatMessage(messages.repliedMark)} theme="dark">
-              <Icon name="chat-bubble" width="16px" fill={colors.coolGrey500} />
-            </Tooltip>
-          )}
-          {showsMark('imported') && wasImported && (
-            <Tooltip
-              content={formatMessage(messages.sourceImported)}
-              theme="dark"
-            >
-              <Icon name="download" width="16px" fill={colors.coolGrey500} />
-            </Tooltip>
-          )}
-        </Box>
-      </Td>
+      <Cell>
+        <RowTitleButton title={title} onOpen={onOpen} />
+        {showsMark('replied') && hasReply && (
+          <TooltipMark label={formatMessage(messages.repliedMark)}>
+            <Icon name="message-square-16" className={styles.markIcon} />
+          </TooltipMark>
+        )}
+        {showsMark('imported') && wasImported && (
+          <TooltipMark label={formatMessage(messages.sourceImported)}>
+            <Icon name="download-16" className={styles.markIcon} />
+          </TooltipMark>
+        )}
+      </Cell>
       {columns
         .filter((column) => !COLUMNS[column].mark)
         .map((column) => (
-          <Td key={column} {...cellProps} onClick={onOpen}>
-            <IdeaCell
-              column={column}
-              idea={idea}
-              status={status}
-              tagLabels={tagLabels}
-            />
-          </Td>
+          <IdeaCell
+            key={column}
+            column={column}
+            idea={idea}
+            status={status}
+            tagLabels={tagLabels}
+          />
         ))}
-      <Td {...cellProps} onClick={onOpen} />
     </Row>
   );
 };

@@ -48,12 +48,15 @@ class InputTopic < ApplicationRecord
   validates :description_multiloc, multiloc: { presence: false }
   validate :max_depth_validation
   validate :icon_only_for_root_topics
+  # Only checked when the icon changes, so rows saved before this validation existed can still be
+  # updated. The front end escapes the icon before rendering it, which covers those rows.
+  validates :icon, emoji: true, allow_blank: true, if: :will_save_change_to_icon?
 
   plain_text_multiloc :title_multiloc
   before_validation :sanitize_description_multiloc, if: :description_multiloc
 
   scope :order_ideas_count, lambda { |ideas, direction: :asc|
-    topics_counts = IdeasCountService.counts(ideas, ['input_topic_id'])['input_topic_id']
+    topics_counts = Facets::IdeaInputTopic.new.counts(ideas)
     sorted_ids = ids.sort_by do |id|
       count = topics_counts[id] || 0
       direction == :desc ? -count : count

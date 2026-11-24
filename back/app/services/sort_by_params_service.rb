@@ -21,6 +21,7 @@ class SortByParamsService
     when '-assignee' then scope.order_assignee(:asc)
     when 'status' then scope.order_status(:desc)
     when '-status' then scope.order_status(:asc)
+    when 'status_priority' then scope.order_status_priority
     when 'trending'
       ids = TrendingIdeaService.new.sort_trending(scope).map(&:id)
       Idea.unscoped.where(id: ids).order_as_specified(id: ids)

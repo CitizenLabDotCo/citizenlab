@@ -40,6 +40,8 @@ export interface IUserCustomFieldData {
     enabled: boolean;
     ordering: number;
     hidden: boolean;
+    min_characters?: number | null;
+    max_characters?: number | null;
     created_at: string;
     updated_at: string;
   };

@@ -80,14 +80,16 @@ resource 'Idea Custom Fields' do
       context 'when the form has been persisted before' do
         let!(:custom_form) { create(:custom_form, :with_default_fields, participation_context: context) }
 
-        example 'Make the answers of a custom question public', document: false do
+        example 'Make the answers of a custom question public and show them as a filter', document: false do
           do_request custom_fields: default_fields_param + [
-            { input_type: 'text', title_multiloc: { 'en' => 'Public question' }, answers_visible_to: 'public' },
+            { input_type: 'select', title_multiloc: { 'en' => 'Public question' }, answers_visible_to: 'public', show_as_filter: true },
             final_page
           ]
 
           assert_status 200
-          expect(custom_form.custom_fields.where(code: nil).find_by(input_type: 'text')).to be_answers_visible_to_public
+          field = custom_form.custom_fields.find_by(input_type: 'select')
+          expect(field).to be_answers_visible_to_public
+          expect(field.show_as_filter).to be true
         end
 
         example 'Add, update and remove a field' do

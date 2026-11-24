@@ -1,11 +1,16 @@
+import { requestCodeEmail } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
 import createAccountFromInvite, {
+  acceptInvite,
   Parameters as CreateAccountFromInviteParameters,
 } from 'api/authentication/createAccountFromInvite';
 import getUserDataFromToken from 'api/authentication/getUserDataFromToken';
 
+import { reportError } from 'utils/loggingUtils';
+
 import {
   AuthenticationData,
   GetRequirements,
+  SetError,
   UpdateState,
 } from '../../typings';
 
@@ -20,6 +25,7 @@ export const inviteFlow = (
   getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
+  setError: SetError,
   updateState: UpdateState
 ) => {
   return {
@@ -29,7 +35,26 @@ export const inviteFlow = (
       },
       SUBMIT: async (params: CreateAccountFromInviteParameters) => {
         try {
-          await createAccountFromInvite(params);
+          const { password, ...rest } = params;
+
+          // No password means an invitation code: the email typed in still has
+          // to be confirmed, and the password comes after that.
+          if (password === undefined) {
+            await acceptInvite(rest);
+            updateState({ email: rest.email, flow: 'signup' });
+            setCurrentStep('pre-auth:unauthenticated-confirmation');
+
+            // The invite is used up by now, so a code email that fails to go
+            // out must not stop here: the confirmation step tells the user and
+            // can send it again.
+            await requestCodeEmail(rest.email).catch((e) => {
+              reportError(e);
+              setError('resending_code_failed');
+            });
+            return;
+          }
+
+          await createAccountFromInvite({ ...rest, password });
           trackAuthenticated('signup', 'invite');
 
           const { requirements } = await getRequirements();

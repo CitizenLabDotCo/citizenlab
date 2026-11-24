@@ -1,0 +1,30 @@
+/* The tabs run edge to edge, so the frame cancels the modal body's padding. */
+.frame {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  margin: calc(-1 * var(--gv-space-24));
+}
+
+.notice {
+  padding: var(--gv-space-12) var(--gv-space-24);
+  border-bottom: var(--gv-border-width-1) solid var(--gv-border-row);
+}
+
+.layout {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+}
+
+.tabList {
+  overflow-y: auto;
+}
+
+.tabPanel {
+  flex: 1;
+  min-width: 0;
+  padding: var(--gv-space-24);
+  overflow-y: auto;
+}

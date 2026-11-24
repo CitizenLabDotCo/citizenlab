@@ -38,6 +38,7 @@ interface Props {
   getAriaLabel: (value: number, total: number) => string;
   onChange: (data?: number) => void;
   onFocusSliderRef: () => void;
+  disabled: boolean;
 }
 
 const TableHead = ({
@@ -46,6 +47,7 @@ const TableHead = ({
   getAriaLabel,
   onChange,
   onFocusSliderRef,
+  disabled,
 }: Props) => {
   const theme = useTheme();
 
@@ -69,6 +71,8 @@ const TableHead = ({
                   ariaPressed={isSelected}
                   width="100%"
                   tabIndex={-1}
+                  disabled={disabled}
+                  opacityDisabled="1"
                   onClick={() => {
                     if (isSelected) {
                       onChange(undefined);

@@ -140,7 +140,8 @@ class UserService
       return if sso_email.blank?
 
       unless user_params.key?(:email)
-        build_user_confirmation(user) if sso_email_confirmed && sso_email == user.email
+        # Letter-case is ignored, as when the account was looked up by this address.
+        build_user_confirmation(user) if sso_email_confirmed && user.email.present? && sso_email.casecmp?(user.email)
         return
       end
 

@@ -71,6 +71,12 @@ describe 'rake demos:translate_missing_locales' do
   describe 'locale and lifecycle validation' do
     let_it_be(:demo_tenant) { create(:tenant, host: 'demo-platform.com', lifecycle: 'demo', locales: %w[en fr-FR]) }
     let_it_be(:active_tenant) { create(:tenant, host: 'active-platform.com', lifecycle: 'active') }
+    let_it_be(:trial_tenant) { create(:tenant, host: 'trial-platform.com', lifecycle: 'trial') }
+
+    before do
+      allow(MachineTranslations::MachineTranslationService).to receive(:new)
+        .and_return(instance_double(MachineTranslations::MachineTranslationService))
+    end
 
     it 'validates source locale and lifecycle stage' do
       aggregate_failures do
@@ -79,9 +85,15 @@ describe 'rake demos:translate_missing_locales' do
           .to output(/ERROR: Source locale 'de' is not in configured locales/).to_stdout
 
         task.reenable
-        # Cannot translate on non-demo platforms
+        # Cannot translate on platforms that are neither demo nor trial
         expect { task.invoke('active-platform.com', 'en', 'true') }
-          .to output(/ERROR: Translations can only be run on demo platforms/).to_stdout
+          .to output(/ERROR: Translations can only be run on demo or trial platforms/).to_stdout
+
+        task.reenable
+        # Can translate on trial platforms
+        output = capture_stdout { task.invoke('trial-platform.com', 'en', 'true') }
+        expect(output).not_to include('ERROR')
+        expect(output).to include('SUMMARY FOR trial-platform.com')
 
         task.reenable
         # Audit allowed on non-demo platforms

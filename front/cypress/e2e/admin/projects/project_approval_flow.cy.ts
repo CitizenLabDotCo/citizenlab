@@ -1,5 +1,11 @@
 import { randomString, randomEmail } from '../../../support/commands';
 
+// The review and phases requests only start once the project fetch resolves
+// and the header mounts. `cy.wait()` bounds time-to-request by
+// `requestTimeout`, which this suite leaves at Cypress's 5s default -- too
+// short for that chain under CI load. The response phase keeps its default.
+const PAGE_DATA_REQUEST_TIMEOUT = 30000;
+
 const email = randomEmail();
 const password = randomString();
 const projectTitle = randomString();
@@ -49,7 +55,9 @@ describe('Admin project approval flow', () => {
       'include',
       `/admin/projects/${projectId}/project-page`
     );
-    cy.wait(['@getReview', '@getPhases']);
+    cy.wait(['@getReview', '@getPhases'], {
+      requestTimeout: PAGE_DATA_REQUEST_TIMEOUT,
+    });
 
     cy.dataCy('e2e-request-approval')
       .should('be.visible')
@@ -133,7 +141,9 @@ describe('Admin publishing a project without approving it first', () => {
       cy.intercept('GET', `**/projects/${projectId}/phases`).as('getPhases');
 
       cy.visit(`admin/projects/${projectId}`);
-      cy.wait(['@getReview', '@getPhases']);
+      cy.wait(['@getReview', '@getPhases'], {
+        requestTimeout: PAGE_DATA_REQUEST_TIMEOUT,
+      });
 
       cy.get('#e2e-publish')
         .should('be.visible')
@@ -186,7 +196,9 @@ describe('Admin publishing a project without approving it first', () => {
       cy.intercept('GET', `**/projects/${projectId}/phases`).as('getPhases');
 
       cy.visit(`admin/projects/${projectId}`);
-      cy.wait(['@getReview', '@getPhases']);
+      cy.wait(['@getReview', '@getPhases'], {
+        requestTimeout: PAGE_DATA_REQUEST_TIMEOUT,
+      });
 
       cy.get('#e2e-publish')
         .should('be.visible')
@@ -253,7 +265,9 @@ describe('Taking a published project out of publication', () => {
         cy.intercept('PATCH', `**/projects/${projectId}`).as('updateProject');
 
         cy.visit(`admin/projects/${projectId}`);
-        cy.wait(['@getReview', '@getPhases']);
+        cy.wait(['@getReview', '@getPhases'], {
+          requestTimeout: PAGE_DATA_REQUEST_TIMEOUT,
+        });
 
         cy.get('#e2e-publish').click();
         cy.get(`.e2e-projectstatus-${newStatus}`).click();
@@ -262,7 +276,7 @@ describe('Taking a published project out of publication', () => {
 
         // The project update deletes the approved review server-side and
         // invalidates the review query, so the buttons update without a reload.
-        cy.wait('@getReview');
+        cy.wait('@getReview', { requestTimeout: PAGE_DATA_REQUEST_TIMEOUT });
 
         cy.dataCy('e2e-request-approval').should('be.visible');
         cy.dataCy('e2e-request-approval-pending').should('not.exist');
@@ -321,7 +335,9 @@ describe('A published project with a pending review', () => {
     cy.intercept('GET', `**/projects/${projectId}/phases`).as('getPhases');
 
     cy.visit(`admin/projects/${projectId}`);
-    cy.wait(['@getReview', '@getPhases']);
+    cy.wait(['@getReview', '@getPhases'], {
+      requestTimeout: PAGE_DATA_REQUEST_TIMEOUT,
+    });
 
     cy.get('#e2e-publish').should('be.visible').and('contain', 'Published');
     cy.get('#e2e-approve-project').should('not.exist');
@@ -337,7 +353,9 @@ describe('A published project with a pending review', () => {
     cy.intercept('GET', `**/projects/${projectId}/phases`).as('getPhases');
 
     cy.visit(`admin/projects/${projectId}`);
-    cy.wait(['@getReview', '@getPhases']);
+    cy.wait(['@getReview', '@getPhases'], {
+      requestTimeout: PAGE_DATA_REQUEST_TIMEOUT,
+    });
 
     cy.get('#e2e-approve-project').should('be.visible').click();
     cy.get('#e2e-approve-project').should('not.exist');

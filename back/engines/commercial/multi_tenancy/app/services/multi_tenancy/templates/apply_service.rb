@@ -29,7 +29,7 @@ module MultiTenancy
 
       def apply_internal_template(template_name)
         serialized_models = template_utils.fetch_internal_template_models(template_name)
-        MultiTenancy::Templates::TenantDeserializer.new.deserialize(serialized_models)
+        MultiTenancy::Templates::TenantDeserializer.new.deserialize(serialized_models, bulk: true)
       end
 
       def apply_external_template(template_name, prefix: nil)
@@ -41,7 +41,7 @@ module MultiTenancy
         copy_s3_files(template_prefix, Tenant.current.id, model_id_mapping)
 
         MultiTenancy::Templates::TenantSerializer.format_for_deserializer!(template_models)
-        MultiTenancy::Templates::TenantDeserializer.new.deserialize(template_models)
+        MultiTenancy::Templates::TenantDeserializer.new.deserialize(template_models, bulk: true)
       end
 
       def tenant_bucket

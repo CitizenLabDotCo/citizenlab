@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 
 import { isEmpty, debounce as debounceFn } from 'lodash-es';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 import { colors, isRtl, defaultStyles } from '../../utils/styleUtils';
 import testEnv from '../../utils/testUtils/testEnv';
@@ -41,9 +41,7 @@ const StyledLabel = styled.label<{ isFloating: boolean; color?: string }>`
   `}
 `;
 
-type Variant = 'default' | 'bo';
-
-const StyledInput = styled(Input)<{ variant: Variant }>`
+const StyledInput = styled(Input)`
   input {
     padding-right: 40px;
     width: 100%;
@@ -58,51 +56,23 @@ const StyledInput = styled(Input)<{ variant: Variant }>`
         padding-left: 40px;
     }
   `}
-
-  ${({ variant }) =>
-    variant === 'bo' &&
-    css`
-      input {
-        padding: 0 12px 0 33px;
-
-        &::-webkit-search-cancel-button {
-          display: none;
-        }
-      }
-      ${isRtl`
-        input {
-          padding: 0 33px 0 12px;
-        }
-      `}
-    `}
 `;
 
-const IconContainer = styled(Box)<{ variant: Variant }>`
+const IconContainer = styled(Box)`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-
-  ${({ variant }) =>
-    variant === 'bo'
-      ? css`
-          left: 11px;
-          ${isRtl`
-            left: auto;
-            right: 11px;
-          `}
-        `
-      : css`
-          right: 10px;
-          ${isRtl`
-            left: 10px;
-            right: auto;
-          `}
-        `}
+  right: 10px;
+  ${isRtl`
+    left: 10px;
+    right: auto;
+  `}
 `;
 
 export interface Props {
   id?: string;
   defaultValue?: string;
+  value?: string | null;
   placeholder: string;
   ariaLabel: string;
   debounce?: number;
@@ -115,12 +85,12 @@ export interface Props {
   labelColor?: string;
   hideLabel?: boolean;
   dataCy?: string;
-  variant?: Variant;
 }
 
 const SearchInput = ({
   id,
   defaultValue,
+  value,
   placeholder,
   ariaLabel,
   debounce = 500,
@@ -132,11 +102,19 @@ const SearchInput = ({
   labelColor,
   hideLabel = false,
   dataCy,
-  variant = 'default',
 }: Props) => {
   const [internalSearchTerm, setInternalSearchTerm] = useState(
-    defaultValue ?? null
+    value ?? defaultValue ?? null
   );
+  const [prevValue, setPrevValue] = useState(value);
+
+  if (value !== prevValue) {
+    setPrevValue(value);
+
+    if (value !== undefined) {
+      setInternalSearchTerm(value);
+    }
+  }
   const [isFocused, setIsFocused] = useState(false);
 
   const debouncedOnChange = useMemo(
@@ -176,7 +154,7 @@ const SearchInput = ({
   };
 
   const isLabelFloating = isFocused || !!internalSearchTerm;
-  const showLabel = !hideLabel && variant !== 'bo';
+  const showLabel = !hideLabel;
 
   return (
     <Box
@@ -208,9 +186,8 @@ const SearchInput = ({
           setRef={handleRef}
           onFocus={handleFocus}
           onBlur={handleBlur}
-          variant={variant}
         />
-        <IconContainer variant={variant}>
+        <IconContainer>
           {internalSearchTerm ? (
             <IconButton
               iconName="close"
@@ -218,19 +195,13 @@ const SearchInput = ({
               onClick={handleOnReset}
               iconColor={colors.textSecondary}
               iconColorOnHover="#000"
-              iconWidth={variant === 'bo' ? '15px' : undefined}
-              iconHeight={variant === 'bo' ? '15px' : undefined}
               a11y_buttonActionMessage={a11y_closeIconTitle}
               mr="-5px"
             />
           ) : (
             <Icon
               name="search"
-              fill={
-                variant === 'bo' ? colors.coolGrey500 : colors.textSecondary
-              }
-              width={variant === 'bo' ? '15px' : undefined}
-              height={variant === 'bo' ? '15px' : undefined}
+              fill={colors.textSecondary}
               role="presentation"
             />
           )}

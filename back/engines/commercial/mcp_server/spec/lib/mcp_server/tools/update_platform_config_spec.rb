@@ -43,6 +43,32 @@ describe McpServer::Tools::UpdatePlatformConfig do
     expect(response.structured_content[:timezone]).to eq('Europe/London')
   end
 
+  it 'lets an admin who is not a super admin change every setting the tool writes' do
+    response = run_mcp_tool(
+      described_class,
+      params: {
+        colors: { main: '#112233', secondary: '#223344', text: '#445566' },
+        organization_name_multiloc: { 'en' => 'New' },
+        locales: %w[en fr-BE],
+        timezone: 'Europe/London',
+        currency: 'GBP',
+        country_code: 'GB'
+      },
+      current_user: create(:admin)
+    )
+
+    expect(response).not_to be_error
+    expect(AppConfiguration.instance.reload.settings('core')).to include(
+      'color_main' => '#112233',
+      'color_secondary' => '#223344',
+      'color_text' => '#445566',
+      'locales' => %w[en fr-BE],
+      'timezone' => 'Europe/London',
+      'currency' => 'GBP',
+      'country_code' => 'GB'
+    )
+  end
+
   it 'sets the logo from a public URL' do
     url = 'https://example.com/logo.png'
     stub_remote_image_download(url)

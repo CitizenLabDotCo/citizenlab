@@ -10,11 +10,17 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 
+import AlertDialog from 'design-system/AlertDialog';
+import DSButton from 'design-system/Button';
+import DSDivider from 'design-system/Divider';
+import IconButton from 'design-system/IconButton';
+
 import usePermissionsPhaseCustomFields from 'api/permissions_phase_custom_fields/usePermissionsPhaseCustomFields';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import AccessSection from './AccessSection';
+import styles from './ActionForm.module.css';
 import DataSection from './DataSection';
 import { buildSummary, useVisibleSecurityRequirements } from './logic';
 import messages from './messages';
@@ -23,6 +29,7 @@ import PlatformDefaultsNote from './PlatformDefaultsNote';
 import RevertToDefaultsModal from './RevertToDefaultsModal';
 import { Changes, Props } from './types';
 import { Chip, ReadOnlyOverlay } from './ui';
+import 'design-system/tokens.css';
 
 const ActionForm = ({
   phaseId,
@@ -93,6 +100,104 @@ const ActionForm = ({
     }
   };
 
+  if (variant !== 'card') {
+    const panelBody = (
+      <>
+        <div className={styles.dividerTop}>
+          <DSDivider />
+        </div>
+
+        <AccessSection
+          permission={permissionData}
+          showAnyone={showAnyone}
+          onChange={handleChange}
+        />
+
+        {!isAdmins && (
+          <>
+            <div className={styles.dividerBetween}>
+              <DSDivider />
+            </div>
+            <DataSection
+              permission={permissionData}
+              phaseId={phaseId}
+              onChange={handleChange}
+            />
+          </>
+        )}
+
+        {onRevertToDefaults && !usingPlatformDefaults && (
+          <div className={styles.revert}>
+            <DSButton
+              variant="quiet"
+              data-cy={`e2e-revert-to-platform-defaults-${action}`}
+              onPress={() => setRevertModalOpened(true)}
+            >
+              <FormattedMessage {...messages.revertToPlatformDefaults} />
+            </DSButton>
+          </div>
+        )}
+      </>
+    );
+
+    const dataBody = isAdmins ? (
+      <p className={styles.helper}>
+        {formatMessage(messages.adminsOnlyNoData)}
+      </p>
+    ) : (
+      <DataSection
+        permission={permissionData}
+        phaseId={phaseId}
+        onChange={handleChange}
+      />
+    );
+    const content = variant === 'data' ? dataBody : panelBody;
+
+    return (
+      <div>
+        {usingPlatformDefaults && (
+          <div className={styles.defaultsRow}>
+            <IconButton
+              icon="info-16"
+              aria-label={formatMessage(messages.platformDefaultsTooltip)}
+            />
+            <div className={styles.spacer} />
+            <PlatformDefaultsNote />
+            <DSButton
+              variant="secondary"
+              size={32}
+              icon="pencil-14"
+              isPending={processing}
+              onPress={handleOverride}
+            >
+              {formatMessage(messages.override)}
+            </DSButton>
+          </div>
+        )}
+        {usingPlatformDefaults ? (
+          <div className={styles.readOnly}>{content}</div>
+        ) : (
+          content
+        )}
+        {onRevertToDefaults && (
+          <AlertDialog
+            isOpen={revertModalOpened}
+            onOpenChange={setRevertModalOpened}
+            title={formatMessage(messages.revertToPlatformDefaultsConfirmation)}
+            confirmLabel={formatMessage(
+              messages.revertToPlatformDefaultsConfirmButton
+            )}
+            isPending={processing}
+            onConfirm={handleRevertToDefaults}
+            confirmDataCy="e2e-confirm-revert-to-platform-defaults"
+          >
+            {formatMessage(messages.revertToPlatformDefaultsInfo)}
+          </AlertDialog>
+        )}
+      </div>
+    );
+  }
+
   const body = (
     <>
       <Divider mt="0" mb="20px" />
@@ -134,42 +239,6 @@ const ActionForm = ({
       )}
     </>
   );
-
-  const revertModal = onRevertToDefaults && (
-    <RevertToDefaultsModal
-      opened={revertModalOpened}
-      processing={processing}
-      onClose={() => setRevertModalOpened(false)}
-      onConfirm={handleRevertToDefaults}
-    />
-  );
-
-  if (variant === 'plain') {
-    return (
-      <Box>
-        {usingPlatformDefaults && <PlatformDefaultsNote mb="16px" />}
-        {usingPlatformDefaults ? (
-          <ReadOnlyOverlay>{body}</ReadOnlyOverlay>
-        ) : (
-          body
-        )}
-        {usingPlatformDefaults && (
-          <Box mt="24px">
-            <Button
-              buttonStyle="secondary-outlined"
-              icon="edit"
-              width="auto"
-              processing={processing}
-              onClick={handleOverride}
-            >
-              {formatMessage(messages.override)}
-            </Button>
-          </Box>
-        )}
-        {revertModal}
-      </Box>
-    );
-  }
 
   return (
     <Box
@@ -260,7 +329,14 @@ const ActionForm = ({
         )}
       </Box>
 
-      {revertModal}
+      {onRevertToDefaults && (
+        <RevertToDefaultsModal
+          opened={revertModalOpened}
+          processing={processing}
+          onClose={() => setRevertModalOpened(false)}
+          onConfirm={handleRevertToDefaults}
+        />
+      )}
     </Box>
   );
 };

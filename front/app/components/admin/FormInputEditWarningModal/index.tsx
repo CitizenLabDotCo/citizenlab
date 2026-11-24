@@ -8,33 +8,99 @@ import {
   Icon,
 } from '@citizenlab/cl2-component-library';
 
+import DSIcon from 'design-system/Icon';
+import DSModal from 'design-system/Modal';
+
 import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
+import styles from './FormInputEditWarningModal.module.css';
 import messages from './messages';
+import 'design-system/tokens.css';
 
 type Props = {
   showEditWarningModal: boolean;
   setShowEditWarningModal: (show: boolean) => void;
   editFormLink: string;
+  variant?: 'panel';
 };
 
 const FormInputEditWarningModal = ({
   showEditWarningModal,
   setShowEditWarningModal,
   editFormLink,
+  variant,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const close = () => setShowEditWarningModal(false);
+  const goToForm = () => clHistory.push(editFormLink);
+
+  if (variant === 'panel') {
+    return (
+      <DSModal
+        size={560}
+        isOpen={showEditWarningModal}
+        onOpenChange={setShowEditWarningModal}
+        title={formatMessage(messages.title)}
+        secondaryAction={{ label: formatMessage(messages.noCancel) }}
+        primaryAction={{
+          label: formatMessage(messages.yesContinue),
+          onPress: goToForm,
+        }}
+        data-cy="e2e-form-input-edit-warning-modal"
+      >
+        <div className={styles.content}>
+          <p className={styles.warning}>
+            {formatMessage(messages.loseDataWarning)}
+          </p>
+
+          <div className={styles.item}>
+            <DSIcon name="trash-2-16" className={styles.iconDanger} />
+            <div className={styles.itemText}>
+              <p className={styles.itemTitle}>
+                {formatMessage(messages.deleteAQuestion)}
+              </p>
+              <p className={styles.itemDescription}>
+                {formatMessage(messages.deleteAQuestionDescription)}
+              </p>
+            </div>
+          </div>
+
+          <div className={styles.item}>
+            <DSIcon name="triangle-alert-16" className={styles.iconNeutral} />
+            <div className={styles.itemText}>
+              <p className={styles.itemTitle}>
+                {formatMessage(messages.addOrReorder)}
+              </p>
+              <p className={styles.itemDescription}>
+                {formatMessage(messages.addOrReorderDescription)}
+              </p>
+            </div>
+          </div>
+
+          <div className={styles.item}>
+            <DSIcon name="circle-check-filled-16" />
+            <div className={styles.itemText}>
+              <p className={styles.itemTitle}>
+                {formatMessage(messages.changeQuestionText)}
+              </p>
+              <p className={styles.itemDescription}>
+                {formatMessage(messages.changeQuestionTextDescription)}
+              </p>
+            </div>
+          </div>
+        </div>
+      </DSModal>
+    );
+  }
 
   return (
     <Modal
       width={520}
       opened={showEditWarningModal}
-      close={() => {
-        setShowEditWarningModal(false);
-      }}
+      close={close}
       header={formatMessage(messages.title)}
     >
       <Box m="24px" data-cy="e2e-form-input-edit-warning-modal">
@@ -87,22 +153,10 @@ const FormInputEditWarningModal = ({
         </Box>
 
         <Box mt="40px" display="flex" justifyContent="space-between">
-          <Button
-            p="0px"
-            m="0px"
-            buttonStyle="text"
-            onClick={() => {
-              setShowEditWarningModal(false);
-            }}
-          >
+          <Button p="0px" m="0px" buttonStyle="text" onClick={close}>
             {formatMessage(messages.noCancel)}
           </Button>
-          <Button
-            bgColor={colors.error}
-            onClick={() => {
-              clHistory.push(editFormLink);
-            }}
-          >
+          <Button bgColor={colors.error} onClick={goToForm}>
             {formatMessage(messages.yesContinue)}
           </Button>
         </Box>

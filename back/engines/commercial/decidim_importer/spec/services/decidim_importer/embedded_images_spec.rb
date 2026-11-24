@@ -37,6 +37,19 @@ RSpec.describe DecidimImporter::TemplateCreator do
         .to include('src="https://arcueil.fr/rails/blobs/b/Pic.png"')
     end
 
+    it 'makes a root-relative img src absolute inside a layout’s RichTextMultiloc bridge node' do
+      craftjs = {
+        'text-1' => { 'type' => { 'resolvedName' => 'RichTextMultiloc' },
+                      'props' => { 'text' => { 'fr-FR' => '<img src="/rails/blobs/c/Pic.png">' } } }
+      }
+      record = register('content_builder/layout', { 'craftjs_json' => craftjs })
+
+      creator.send(:absolutize_embedded_images!)
+
+      expect(record.attributes['craftjs_json']['text-1']['props']['text']['fr-FR'])
+        .to include('src="https://arcueil.fr/rails/blobs/c/Pic.png"')
+    end
+
     it 'leaves absolute, data: and protocol-relative srcs untouched' do
       html = '<img src="https://cdn.fr/a.png"> <img src="data:image/png;base64,AAA"> <img src="//cdn.fr/b.png">'
       record = register('static_page', { 'top_info_section_multiloc' => { 'fr-FR' => html } })

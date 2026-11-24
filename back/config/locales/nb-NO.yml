@@ -140,9 +140,15 @@ nb-NO:
           title: Hva er temaet ditt?
   errors:
     messages:
+      ai_processing_not_allowed: kan kanskje ikke behandles av AI
       in_the_past: må ligge i fremtiden
       max_must_be_greater_than_min_characters: Maksimum må være større enn minimum.
       max_must_be_greater_than_or_equal_to_min_select_count: Maksimum må være større enn eller lik minimum.
+      not_found: ble ikke funnet
+      not_in_project: må være filer fra dette prosjektet
+      not_utf8: må lagres som UTF-8
+      too_many_in_conversation: er for mange for én samtale
+      unsupported_file_type: må være PDF-filer på maksimalt 4 MB, eller Markdown- eller tekstfiler på maksimalt 100 KB
   events:
     council_meeting_description: |
       <p>Under dette rådsmøtet vil de innbyggerinitiativene som har fått 100 stemmer på mindre enn tre måneder, bli presentert.</p><p>Rådet vil deretter dele sitt syn på hver enkelt idé.</p>
@@ -180,6 +186,7 @@ nb-NO:
       logic_no_further_questions: Basert på svarene dine trenger du <strong>ikke</strong> å besvare flere spørsmål.
       logic_section: Del %{letter}
       matrix_print_description: Marker en sirkel for hver rad med et kryss for å angi hva du foretrekker.
+      multipoint_print_description: Vennligst sett et kryss på kartet nedenfor for hvert sted du vil legge til.
       optional: valgfritt
       page: Side
       permission: Tillatelse
