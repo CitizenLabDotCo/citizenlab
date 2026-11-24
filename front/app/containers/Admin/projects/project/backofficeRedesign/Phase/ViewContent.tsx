@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 
 import Banner from 'design-system/Banner';
-import Spinner from 'design-system/Spinner';
+import Skeleton from 'design-system/Skeleton';
 
 import { PhaseInsightsParticipationMetrics } from 'api/phase_insights/types';
 import usePhaseInsights from 'api/phase_insights/usePhaseInsights';
@@ -106,8 +106,8 @@ const ViewContent = ({ phase, view, children }: Props) => {
 
   if (isPending) {
     return (
-      <div className={styles.loading}>
-        <Spinner />
+      <div className={styles.loading} aria-busy="true">
+        <Skeleton shape="block" width="100%" height={266} />
       </div>
     );
   }

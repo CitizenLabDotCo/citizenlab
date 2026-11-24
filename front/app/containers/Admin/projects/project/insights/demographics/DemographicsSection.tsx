@@ -11,6 +11,7 @@ import styled, { css } from 'styled-components';
 
 import DashboardCard from 'design-system/DashboardCard';
 import EmptyState from 'design-system/EmptyState';
+import Skeleton from 'design-system/Skeleton';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { transformDemographicsResponse } from 'api/phase_insights/transformDemographics';
@@ -173,6 +174,14 @@ const DemographicsSection = ({ phase }: Props) => {
   // has no audience to describe
   if (!privateAttributesInExport || !showDemographics) {
     return null;
+  }
+
+  if (isLoading && redesigned) {
+    return (
+      <section aria-busy="true">
+        <Skeleton shape="block" height={144} />
+      </section>
+    );
   }
 
   if (isLoading) {

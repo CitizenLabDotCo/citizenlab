@@ -2,6 +2,8 @@ import React from 'react';
 
 import { Box, Text, Spinner } from '@citizenlab/cl2-component-library';
 
+import Skeleton from 'design-system/Skeleton';
+
 import usePhaseInsights from 'api/phase_insights/usePhaseInsights';
 import { IPhaseData } from 'api/phases/types';
 
@@ -21,6 +23,7 @@ import { useWordSection } from '../word/useWordSection';
 
 import MethodMetrics from './MethodMetrics';
 import MetricCard from './MetricCard';
+import styles from './MetricCard.module.css';
 
 interface Props {
   phase: IPhaseData;
@@ -172,6 +175,21 @@ const ParticipationMetrics = ({ phase }: Props) => {
     },
     { skip: isLoading || !!error || !metrics }
   );
+
+  if (isLoading && redesigned && !isPdfRenderMode) {
+    return (
+      <Box display="flex" gap="10px" aria-busy="true">
+        {[0, 1, 2, 3, 4].map((column) => (
+          <Skeleton
+            key={column}
+            shape="block"
+            height={102}
+            className={styles.panelMetric}
+          />
+        ))}
+      </Box>
+    );
+  }
 
   if (isLoading) {
     return (

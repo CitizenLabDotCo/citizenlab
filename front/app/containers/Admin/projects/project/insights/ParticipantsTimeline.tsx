@@ -107,6 +107,7 @@ const ParticipantsTimeline = ({ phase }: Props) => {
   const exportMenu = (
     <ReportExportMenu
       name="participation-timeline"
+      variant={redesigned ? 'dashboard' : 'default'}
       svgNode={graphRef}
       xlsx={{ data: xlsxData }}
     />
