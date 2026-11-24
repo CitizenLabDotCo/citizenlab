@@ -184,35 +184,36 @@ const WorkspaceHeader = ({
       </div>
 
       <div className={styles.actions}>
-        {inPhase || pageSave?.dirty ? (
-          <SaveChangesButton key={phase?.id} label={saveButtonLabel} />
-        ) : (
-          <>
-            <div className={styles.dropdowns}>
-              <ShareDropdown
-                project={project}
-                opened={openDropdown === 'share'}
-                onOpenChange={(opened) =>
-                  onOpenDropdown(opened ? 'share' : null)
-                }
-              />
-              <ReviewFlow
-                project={project}
-                opened={openDropdown === 'review'}
-                onOpenChange={(opened) =>
-                  onOpenDropdown(opened ? 'review' : null)
-                }
-              />
-              <PublishDropdown
-                project={project}
-                opened={openDropdown === 'publish'}
-                onOpenChange={(opened) =>
-                  onOpenDropdown(opened ? 'publish' : null)
-                }
-              />
-            </div>
-          </>
-        )}
+        {!editingMap &&
+          (inPhase || pageSave?.dirty ? (
+            <SaveChangesButton key={phase?.id} label={saveButtonLabel} />
+          ) : (
+            <>
+              <div className={styles.dropdowns}>
+                <ShareDropdown
+                  project={project}
+                  opened={openDropdown === 'share'}
+                  onOpenChange={(opened) =>
+                    onOpenDropdown(opened ? 'share' : null)
+                  }
+                />
+                <ReviewFlow
+                  project={project}
+                  opened={openDropdown === 'review'}
+                  onOpenChange={(opened) =>
+                    onOpenDropdown(opened ? 'review' : null)
+                  }
+                />
+                <PublishDropdown
+                  project={project}
+                  opened={openDropdown === 'publish'}
+                  onOpenChange={(opened) =>
+                    onOpenDropdown(opened ? 'publish' : null)
+                  }
+                />
+              </div>
+            </>
+          ))}
       </div>
     </header>
   );

@@ -1,10 +1,22 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  stagedSaveZoomHelp: {
-    id: 'app.containers.AdminPage.CustomMapConfigPage.stagedSaveZoomHelp',
+  autoSaveZoomHelp: {
+    id: 'app.containers.AdminPage.CustomMapConfigPage.autoSaveZoomHelp',
     defaultMessage:
-      'Enter coordinates and zoom, or move the map and press {button}. Then save your changes.',
+      'Move and zoom the map, then press {button}. Values you enter here save automatically.',
+  },
+  mapPositionSaved: {
+    id: 'app.containers.AdminPage.CustomMapConfigPage.mapPositionSaved',
+    defaultMessage: 'Saved',
+  },
+  mapPositionSaveFailed: {
+    id: 'app.containers.AdminPage.CustomMapConfigPage.mapPositionSaveFailed',
+    defaultMessage: 'The map position could not be saved.',
+  },
+  retryMapPositionSave: {
+    id: 'app.containers.AdminPage.CustomMapConfigPage.retryMapPositionSave',
+    defaultMessage: 'Try again',
   },
   invalidCenterAndZoom: {
     id: 'app.containers.AdminPage.CustomMapConfigPage.invalidCenterAndZoom',

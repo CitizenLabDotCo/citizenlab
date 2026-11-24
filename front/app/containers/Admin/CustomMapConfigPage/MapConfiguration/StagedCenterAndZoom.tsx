@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Banner from 'design-system/Banner';
+import Button from 'design-system/Button';
 import Text from 'design-system/Text';
 import TextField from 'design-system/TextField';
 
@@ -18,16 +19,17 @@ export type CenterAndZoomValues = Record<'lat' | 'lng' | 'zoom', string>;
 
 interface Props {
   mapConfig: IMapConfig;
-  /** Edits not saved yet. The page's save button saves them. */
   staged: CenterAndZoomValues | null;
-  invalid: boolean;
+  error?: 'invalid_values' | 'request_failed';
+  onRetry: () => void;
   onChange: (values: CenterAndZoomValues) => void;
 }
 
 const StagedCenterAndZoom = ({
   mapConfig,
   staged,
-  invalid,
+  error,
+  onRetry,
   onChange,
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -73,13 +75,21 @@ const StagedCenterAndZoom = ({
         </div>
       ))}
       <Text variant="small" tone="secondary">
-        {formatMessage(messages.stagedSaveZoomHelp, {
+        {formatMessage(messages.autoSaveZoomHelp, {
           button: formatMessage(messages.saveZoom),
         })}
       </Text>
-      {invalid && (
+      {error === 'invalid_values' && (
         <Banner tone="error">
           {formatMessage(messages.invalidCenterAndZoom)}
+        </Banner>
+      )}
+      {error === 'request_failed' && (
+        <Banner tone="error">
+          {formatMessage(messages.mapPositionSaveFailed)}{' '}
+          <Button variant="secondary" onPress={onRetry}>
+            {formatMessage(messages.retryMapPositionSave)}
+          </Button>
         </Banner>
       )}
     </div>

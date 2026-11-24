@@ -104,7 +104,7 @@ describe('Project setup feedback', () => {
     cy.location('pathname').should('include', '/phases/new');
   });
 
-  it('rejects invalid map coordinates and saves valid changes from the workspace', () => {
+  it('validates and autosaves the map position, even after retrying a failed save', () => {
     cy.apiCreatePhase({
       projectId,
       title: 'Map setup',
@@ -112,29 +112,37 @@ describe('Project setup feedback', () => {
       participationMethod: 'ideation',
     }).then(({ body }) => {
       const path = `/admin/projects/${projectId}/phases/${body.data.id}/setup?project_backoffice_redesign&map_config=true`;
-      cy.intercept('PATCH', '**/web_api/v1/map_configs/*').as('updateMap');
+      let failNext = true;
+      cy.intercept('PATCH', '**/web_api/v1/map_configs/*', (request) => {
+        if (failNext) {
+          failNext = false;
+          request.reply({ statusCode: 503, body: {} });
+        }
+      }).as('updateMap');
       cy.visit(path);
 
       const latitude = () => cy.get('input[aria-label="Default latitude"]');
+      const zoom = () => cy.get('input[aria-label="Map zoom level"]');
+      cy.contains('button', /^Save$/).should('not.exist');
+
       latitude().clear().type('12.5north');
-      cy.contains('button', /^Save$/).click();
       cy.contains('Enter valid coordinates').should('be.visible');
       cy.get('@updateMap.all').should('have.length', 0);
-
-      latitude().clear().type('12.5');
-      const zoom = () => cy.get('input[aria-label="Map zoom level"]');
       zoom().clear().type('8.5');
-      cy.contains('button', /^Save$/).click();
+      latitude().clear().type('12.5');
       cy.contains('Enter valid coordinates').should('be.visible');
       cy.get('@updateMap.all').should('have.length', 0);
 
       zoom().clear().type('8');
-      cy.contains('button', /^Save$/).click();
+      cy.wait('@updateMap').its('response.statusCode').should('eq', 503);
+      cy.contains('The map position could not be saved.').should('be.visible');
+      cy.contains('button', 'Try again').click();
       cy.wait('@updateMap').its('response.statusCode').should('eq', 200);
+      cy.contains('[role="status"]', /^Saved$/).should('be.visible');
 
       cy.visit(path);
       latitude().should('have.value', '12.5');
-      cy.get('input[aria-label="Map zoom level"]').should('have.value', '8');
+      zoom().should('have.value', '8');
     });
   });
 
