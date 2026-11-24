@@ -2,6 +2,7 @@ import React, { lazy, Suspense } from 'react';
 
 import { Multiloc } from 'typings';
 
+import Text from 'design-system/Text';
 import TextField from 'design-system/TextField';
 
 import SetupCard from 'containers/Admin/projects/_shared/components/SetupCard';
@@ -13,10 +14,9 @@ import useApiErrorText from 'components/admin/MultilocFields/useApiErrorText';
 import { useIntl } from 'utils/cl-intl';
 
 import 'design-system/tokens.css';
-import LocationComboBox from './LocationComboBox';
-import Text from 'design-system/Text';
-import messages from './messages';
 import styles from './LocationCard.module.css';
+import LocationComboBox from './LocationComboBox';
+import messages from './messages';
 import { EventForm } from './useEventForm';
 
 // Lazy so ArcGIS only loads once the event has a place on the map.
