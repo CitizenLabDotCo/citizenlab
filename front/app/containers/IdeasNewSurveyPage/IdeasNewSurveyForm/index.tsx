@@ -7,17 +7,13 @@ import {
   useWindowSize,
 } from '@citizenlab/cl2-component-library';
 
-import { IPhases, IPhaseData } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
-import usePhases from 'api/phases/usePhases';
-import { getCurrentPhase } from 'api/phases/utils';
 import { IProject } from 'api/projects/types';
 
 import useLocalize from 'hooks/useLocalize';
 
 import { FORM_PAGE_CHANGE_EVENT } from 'components/CustomFieldsForm/PageControlButtons/events';
 
-import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import eventEmitter from 'utils/eventEmitter';
 
 import IdeasNewSurveyMeta from '../IdeasNewSurveyMeta';
@@ -29,36 +25,20 @@ const SurveyForm = React.lazy(
   () => import('components/CustomFieldsForm/SurveyForm')
 );
 
-const getConfig = (
-  phaseFromUrl: IPhaseData | undefined,
-  phases: IPhases | undefined
-) => {
-  const participationMethod = phaseFromUrl
-    ? phaseFromUrl.attributes.participation_method
-    : getCurrentPhase(phases?.data)?.attributes.participation_method;
-
-  if (!participationMethod) return;
-  return getMethodConfig(participationMethod);
-};
-
 interface Props {
   project: IProject;
-  phaseId: string | undefined;
+  phaseId: string;
 }
 
 const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
   const localize = useLocalize();
   const isSmallerThanPhone = useBreakpoint('phone');
 
-  const { data: phases } = usePhases(project.data.id);
-  const { data: phaseFromUrl } = usePhase(phaseId);
+  const { data: phaseData } = usePhase(phaseId);
 
   const [usingMapView, setUsingMapView] = useState(false);
 
-  const participationMethodConfig = getConfig(phaseFromUrl?.data, phases);
-  const phase = phaseFromUrl
-    ? phaseFromUrl.data
-    : getCurrentPhase(phases?.data);
+  const phase = phaseData?.data;
 
   // Used only to rerender the component when window is resized to recalculate the form's height https://stackoverflow.com/a/38641993
   useWindowSize();
@@ -75,10 +55,6 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
       subscription.unsubscribe();
     };
   }, []);
-
-  if (!participationMethodConfig || !phaseId) {
-    return null;
-  }
 
   if (!phase) {
     return null;

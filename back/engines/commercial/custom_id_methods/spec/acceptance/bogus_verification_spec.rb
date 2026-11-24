@@ -56,7 +56,8 @@ resource 'Verifications' do
       let(:desired_error) { nil }
 
       example '[error] Fake verify with bogus on a customer platform', document: false do
-        expect { do_request }.to raise_error(RuntimeError, 'Unknown verification method bogus')
+        do_request
+        assert_status 404
         expect(@user.reload.verified).to be false
       end
     end

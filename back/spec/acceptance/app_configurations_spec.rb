@@ -220,6 +220,23 @@ resource 'AppConfigurations' do
       end
     end
 
+    example 'An admin saves a helper text with unsafe HTML', document: false do
+      helper_text = { 'en' => '<b>Welcome</b><img src="x" onerror="alert(1)"><style>body{display:none}</style>' }
+      do_request(app_configuration: { settings: { core: { enter_email_helper_text: helper_text } } })
+
+      assert_status 200
+      expect(json_parse(response_body).dig(:data, :attributes, :settings, :core, :enter_email_helper_text, :en))
+        .to eq '<b>Welcome</b>'
+      expect(AppConfiguration.instance.reload.settings('core', 'enter_email_helper_text', 'en')).to eq '<b>Welcome</b>'
+    end
+
+    example '[error] An admin saves a helper text that is not text', document: false do
+      do_request(app_configuration: { settings: { core: { enter_email_helper_text: { en: ['<b>Welcome</b>'] } } } })
+
+      assert_status 422
+      expect(json_parse(response_body).dig(:errors, :settings)).to be_present
+    end
+
     describe do
       example 'The logo can be removed' do
         configuration = AppConfiguration.instance

@@ -56,7 +56,10 @@ describe('Extra survey permissions', () => {
 
       clickSpotlightSurveyButton();
 
-      cy.url().should('include', `/projects/${projectSlug}/surveys/new`);
+      cy.location('pathname').should(
+        'eq',
+        `/en/projects/${projectSlug}/surveys/new/${surveyPhaseId}`
+      );
       cy.get('#e2e-authentication-modal').should('exist');
     });
 
@@ -67,7 +70,10 @@ describe('Extra survey permissions', () => {
 
       clickSpotlightSurveyButton();
 
-      cy.url().should('include', `phase_id=${surveyPhaseId}`);
+      cy.location('pathname').should(
+        'eq',
+        `/en/projects/${projectSlug}/surveys/new/${surveyPhaseId}`
+      );
       submitEmptySurvey();
     });
   });
@@ -106,7 +112,10 @@ describe('Extra survey permissions', () => {
 
       clickSpotlightSurveyButton();
 
-      cy.url().should('include', `phase_id=${surveyPhaseId}`);
+      cy.location('pathname').should(
+        'eq',
+        `/en/projects/${projectSlug}/surveys/new/${surveyPhaseId}`
+      );
       submitEmptySurvey();
     });
   });

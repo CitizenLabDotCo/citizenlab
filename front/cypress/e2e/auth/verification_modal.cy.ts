@@ -78,8 +78,8 @@ describe('Verification modal', () => {
 
       // we should now be redirected to idea form
       cy.location('pathname').should(
-        'eq',
-        `/en/projects/verified-charlie-poeple-project/ideas/new`
+        'match',
+        /^\/en\/projects\/verified-charlie-poeple-project\/ideas\/new\/[^/]+$/
       );
       cy.logout();
     });
