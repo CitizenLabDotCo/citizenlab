@@ -3,8 +3,8 @@ import React, { ReactNode, useEffect, useMemo, useState } from 'react';
 import { debounce } from 'lodash-es';
 
 import ComboBox from 'design-system/ComboBox';
-import IconButton from 'design-system/IconButton';
 import { ListBoxOption } from 'design-system/ListBox';
+import TooltipMark from 'design-system/Tooltip/TooltipMark';
 
 import { IUserData } from 'api/users/types';
 import useInfiniteUsers from 'api/users/useInfiniteUsers';
@@ -12,11 +12,12 @@ import useUserById from 'api/users/useUserById';
 
 import formMessages from 'components/UI/FormComponents/messages';
 
+import { ScreenReaderOnly } from 'utils/a11y';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 
-import styles from './AuthorField.module.css';
+import styles from './AuthorComboBox.module.css';
 import 'design-system/tokens.css';
 
 interface Props {
@@ -57,17 +58,23 @@ const AuthorComboBox = ({
       ? [selected, ...usersList]
       : usersList;
 
+  const optional = `(${formatMessage(formMessages.optional)})`;
+
   return (
     <ComboBox
       label={
-        <span className={styles.label}>
+        <>
           {formatMessage(messages.authorFieldLabel)}
-          <IconButton
-            icon="info-16"
+          <ScreenReaderOnly>{` ${optional}`}</ScreenReaderOnly>
+        </>
+      }
+      labelAccessory={
+        <span className={styles.labelAccessory}>
+          <TooltipMark
             size={24}
-            aria-label={formatMessage(messages.adminFieldTooltip)}
+            label={formatMessage(messages.adminFieldTooltip)}
           />
-          ({formatMessage(formMessages.optional)})
+          <span aria-hidden="true">{optional}</span>
         </span>
       }
       placeholder={placeholder}

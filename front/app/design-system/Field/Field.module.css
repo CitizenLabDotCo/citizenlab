@@ -20,6 +20,11 @@
   gap: var(--gv-space-8);
 }
 
+.labelRowWithAccessory {
+  composes: labelRow;
+  gap: var(--gv-space-4);
+}
+
 .label {
   composes: body from '../typography.module.css';
   color: var(--gv-text-primary);

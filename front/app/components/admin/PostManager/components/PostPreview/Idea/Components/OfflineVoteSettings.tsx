@@ -134,26 +134,21 @@ const OfflineVoteSettings = ({
         {isBudgeting && (
           <div className={styles.field}>
             <NumberField
-              label={
-                <span className={styles.label}>
-                  {formatMessage(messages.manualVotersLabel)}
-                  <TooltipMark
-                    label={formatMessage(messages.manualVotersLabel)}
-                    content={
-                      <>
-                        <FormattedMessage
-                          {...messages.manualVotersTooltip1}
-                          values={{ b: (chunks) => <strong>{chunks}</strong> }}
-                        />
-                        <span className={styles.tooltipBlock}>
-                          <FormattedMessage
-                            {...messages.manualVotersTooltip2}
-                          />
-                        </span>
-                      </>
-                    }
-                  />
-                </span>
+              label={formatMessage(messages.manualVotersLabel)}
+              labelAccessory={
+                <TooltipMark
+                  content={
+                    <>
+                      <FormattedMessage
+                        {...messages.manualVotersTooltip1}
+                        values={{ b: (chunks) => <strong>{chunks}</strong> }}
+                      />
+                      <span className={styles.tooltipBlock}>
+                        <FormattedMessage {...messages.manualVotersTooltip2} />
+                      </span>
+                    </>
+                  }
+                />
               }
               value={manualVotersAmount ?? undefined}
               // NumberField commits its value on blur, Enter and the steppers.
@@ -170,47 +165,44 @@ const OfflineVoteSettings = ({
         )}
         <div className={styles.field}>
           <NumberField
-            label={
-              <span className={styles.label}>
-                {votesLabel}
-                <TooltipMark
-                  label={votesLabel}
-                  content={
-                    <>
-                      <img
-                        className={styles.tooltipImage}
-                        src={tooltipPreview}
-                        alt="info"
-                      />
-                      <FormattedMessage
-                        {...messages.manualVoteAdjustmentTooltip1}
-                      />
-                      <ul className={styles.tooltipList}>
-                        <li>
-                          <FormattedMessage
-                            {...messages.manualVoteAdjustmentTooltip2}
-                          />
-                        </li>
-                        <li>
-                          <FormattedMessage
-                            {...messages.manualVoteAdjustmentTooltip3}
-                          />
-                        </li>
-                        <li>
-                          <FormattedMessage
-                            {...messages.manualVoteAdjustmentTooltip4}
-                          />
-                        </li>
-                        <li>
-                          <FormattedMessage
-                            {...messages.manualVoteAdjustmentTooltip5}
-                          />
-                        </li>
-                      </ul>
-                    </>
-                  }
-                />
-              </span>
+            label={votesLabel}
+            labelAccessory={
+              <TooltipMark
+                content={
+                  <>
+                    <img
+                      className={styles.tooltipImage}
+                      src={tooltipPreview}
+                      alt="info"
+                    />
+                    <FormattedMessage
+                      {...messages.manualVoteAdjustmentTooltip1}
+                    />
+                    <ul className={styles.tooltipList}>
+                      <li>
+                        <FormattedMessage
+                          {...messages.manualVoteAdjustmentTooltip2}
+                        />
+                      </li>
+                      <li>
+                        <FormattedMessage
+                          {...messages.manualVoteAdjustmentTooltip3}
+                        />
+                      </li>
+                      <li>
+                        <FormattedMessage
+                          {...messages.manualVoteAdjustmentTooltip4}
+                        />
+                      </li>
+                      <li>
+                        <FormattedMessage
+                          {...messages.manualVoteAdjustmentTooltip5}
+                        />
+                      </li>
+                    </ul>
+                  </>
+                }
+              />
             }
             value={manualVotesAmount ?? undefined}
             isDisabled={votesDisabled}

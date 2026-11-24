@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Checkbox from 'design-system/Checkbox';
-import IconButton from 'design-system/IconButton';
+import TooltipMark from 'design-system/Tooltip/TooltipMark';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -44,10 +44,9 @@ const PanelCommentActions = ({
           >
             {formatMessage(messages.postAnonymously)}
           </Checkbox>
-          <IconButton
-            icon="info-16"
+          <TooltipMark
             size={24}
-            aria-label={formatMessage(messages.inputsAssociatedWithProfile)}
+            label={formatMessage(messages.inputsAssociatedWithProfile)}
           />
         </div>
       )}

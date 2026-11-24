@@ -31,11 +31,16 @@ it('keeps the locale and preview flag in admin links and uses client navigation'
     component: () => (
       <AdminDesignSystemProvider>
         <Breadcrumbs separator="slash">
-          <Breadcrumb href="/admin/projects?from=review#setup">
+          <Breadcrumb href="/admin/projects?from=review&code=1e3&price=1.50&name=a%20b#setup">
             Projects
           </Breadcrumb>
           <Breadcrumb>Phase</Breadcrumb>
         </Breadcrumbs>
+        <Link href="/uploads/example.pdf?version=1.50">Attachment</Link>
+        <Link href="/web_api/v1/export?key=1e3">Export</Link>
+        <Link href="/admin/projects?project_backoffice_redesign&code=%31">
+          Preview
+        </Link>
         <Link href="https://example.org/support" target="_blank">
           Support
         </Link>
@@ -63,13 +68,34 @@ it('keeps the locale and preview flag in admin links and uses client navigation'
   const breadcrumb = await screen.findByRole('link', { name: 'Projects' });
   const href = breadcrumb.getAttribute('href');
   expect(href).toBe(
-    '/fr-FR/admin/projects?from=review&project_backoffice_redesign=1#setup'
+    '/fr-FR/admin/projects?from=review&code=1e3&price=1.50&name=a%20b&project_backoffice_redesign=1#setup'
   );
   expect(screen.getByRole('link', { name: 'Support' })).toHaveAttribute(
     'href',
     'https://example.org/support'
   );
 
+  expect(screen.getByRole('link', { name: 'Attachment' })).toHaveAttribute(
+    'href',
+    '/uploads/example.pdf?version=1.50'
+  );
+  expect(screen.getByRole('link', { name: 'Export' })).toHaveAttribute(
+    'href',
+    '/web_api/v1/export?key=1e3'
+  );
+  expect(screen.getByRole('link', { name: 'Preview' })).toHaveAttribute(
+    'href',
+    '/fr-FR/admin/projects?project_backoffice_redesign&code=%31'
+  );
+
+  const navigate = jest.spyOn(router, 'navigate').mockResolvedValue(undefined);
+  await userEvent.click(screen.getByRole('link', { name: 'Attachment' }));
+  expect(navigate).toHaveBeenCalledWith({
+    href: '/uploads/example.pdf?version=1.50',
+    reloadDocument: true,
+  });
+
   await userEvent.click(breadcrumb);
   await waitFor(() => expect(history.location.href).toBe(href));
+  navigate.mockRestore();
 });

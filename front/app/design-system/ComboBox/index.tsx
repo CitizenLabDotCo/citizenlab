@@ -32,6 +32,7 @@ type ComboBoxProps<T extends object> = {
   onInputChange?: (value: string) => void;
   placeholder?: string;
   labelTooltip?: string;
+  labelAccessory?: ReactNode;
   description?: ReactNode;
   errorMessage?: ReactNode;
   size?: 36 | 32;
@@ -49,6 +50,7 @@ const ComboBox = <T extends object>({
   onInputChange,
   placeholder,
   labelTooltip,
+  labelAccessory,
   description,
   errorMessage,
   size = 36,
@@ -75,7 +77,9 @@ const ComboBox = <T extends object>({
         isInvalid={isInvalid}
         data-cy={dataCy}
       >
-        <FieldLabel tooltip={labelTooltip}>{label}</FieldLabel>
+        <FieldLabel tooltip={labelTooltip} labelAccessory={labelAccessory}>
+          {label}
+        </FieldLabel>
         <div className={fieldStyles.control}>
           <Group
             className={`${styles.frame} ${styles[`size${size}`]}`}

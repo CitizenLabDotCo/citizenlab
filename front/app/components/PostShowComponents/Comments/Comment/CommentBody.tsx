@@ -1,11 +1,4 @@
-import React, {
-  FormEvent,
-  lazy,
-  Suspense,
-  useEffect,
-  useState,
-  useRef,
-} from 'react';
+import React, { FormEvent, useEffect, useState, useRef } from 'react';
 
 import { Button } from '@citizenlab/cl2-component-library';
 import { filter } from 'rxjs/operators';
@@ -33,13 +26,12 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { weglotTranslateSubmission } from 'utils/weglot';
 
+import PanelFormButtons from '../CommentForm/PanelFormButtons';
 import panelStyles from '../commentsPanel.module.css';
 import { panelTextAreaStyle, useIsPanelComments } from '../commentsVariant';
 import { commentTranslateButtonClicked$ } from '../events';
 import messages from '../messages';
 import 'design-system/tokens.css';
-
-const PanelFormButtons = lazy(() => import('../CommentForm/PanelFormButtons'));
 
 const Container = styled.div``;
 
@@ -266,14 +258,12 @@ const CommentBody = ({
           {isPanel ? (
             <div className={panelStyles.editFooter}>
               {editError}
-              <Suspense fallback={null}>
-                <PanelFormButtons
-                  cancelLabel={formatMessage(messages.cancelCommentEdit)}
-                  submitLabel={formatMessage(messages.saveCommentEdit)}
-                  onCancel={resetEditing}
-                  processing={processing}
-                />
-              </Suspense>
+              <PanelFormButtons
+                cancelLabel={formatMessage(messages.cancelCommentEdit)}
+                submitLabel={formatMessage(messages.saveCommentEdit)}
+                onCancel={resetEditing}
+                processing={processing}
+              />
             </div>
           ) : (
             <ButtonsWrapper>

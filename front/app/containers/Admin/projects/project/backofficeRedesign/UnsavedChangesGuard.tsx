@@ -1,5 +1,6 @@
 import React from 'react';
 
+import alertDialogMessages from 'design-system/AlertDialog/messages';
 import Button from 'design-system/Button';
 import Modal from 'design-system/Modal';
 import Text from 'design-system/Text';
@@ -12,7 +13,6 @@ import { useIntl } from 'utils/cl-intl';
 import { useBlocker } from 'utils/router';
 
 import useReturnToPhaseAfterSave from './_shared/useReturnToPhaseAfterSave';
-import publishMessages from './Header/PublishDropdown/messages';
 import messages from './messages';
 
 const UnsavedChangesGuard = () => {
@@ -48,7 +48,10 @@ const UnsavedChangesGuard = () => {
   return (
     <Modal
       isOpen
-      onOpenChange={(isOpen) => !isOpen && blocker.reset()}
+      onOpenChange={(isOpen) => {
+        if (!isOpen && !pageSave.saving) blocker.reset();
+      }}
+      isCloseDisabled={pageSave.saving}
       size={560}
       title={formatMessage(messages.unsavedChangesTitle)}
       leadingAction={
@@ -63,7 +66,10 @@ const UnsavedChangesGuard = () => {
           {formatMessage(messages.discardChanges)}
         </Button>
       }
-      secondaryAction={{ label: formatMessage(publishMessages.publishCancel) }}
+      secondaryAction={{
+        label: formatMessage(alertDialogMessages.cancel),
+        isDisabled: pageSave.saving,
+      }}
       primaryAction={{
         label: formatMessage(phaseSetupMessages.saveChangesLabel),
         isPending: pageSave.saving,

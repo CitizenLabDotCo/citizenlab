@@ -14,6 +14,24 @@
   box-shadow: none;
 }
 
+.size24 {
+  composes: size24 from '../IconButton/IconButton.module.css';
+  justify-content: center;
+  border-radius: var(--gv-radius-8);
+}
+
+.size24 .info {
+  color: var(--gv-icon-tertiary);
+}
+
+.size24:hover {
+  background: var(--gv-surface-pressed);
+}
+
+.size24:hover .info {
+  color: var(--gv-icon-primary);
+}
+
 .info {
   color: var(--gv-icon-secondary);
 }

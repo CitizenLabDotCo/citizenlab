@@ -32,6 +32,7 @@ export type DialogLayoutProps = {
   secondaryAction?: DialogAction;
   leadingAction?: ReactNode;
   showClose?: boolean;
+  isCloseDisabled?: boolean;
 };
 
 type Props = DialogLayoutProps & {
@@ -52,6 +53,7 @@ const DialogLayout = ({
   secondaryAction,
   leadingAction,
   showClose = true,
+  isCloseDisabled,
   role = 'dialog',
   primaryVariant = 'primary',
   autoFocusSecondary = false,
@@ -86,6 +88,7 @@ const DialogLayout = ({
                 icon="x-16"
                 aria-label={formatMessage(messages.close)}
                 onPress={close}
+                isDisabled={isCloseDisabled}
                 data-cy="e2e-modal-close-button"
               />
             )}

@@ -54,10 +54,20 @@ const SetupCard = ({
     </SummaryReviewedContext.Provider>
   );
 
+  const staticTitle = titleTooltip ? (
+    <span className={styles.titleRow}>
+      {title}
+      <TooltipMark content={titleTooltip} className={styles.infoMark} />
+    </span>
+  ) : (
+    title
+  );
+
   const card = button ? (
     <SetupCardButton
       title={title}
       titleTooltip={titleTooltip}
+      staticTitle={staticTitle}
       status={status}
       action={summary}
       button={button}
@@ -67,20 +77,7 @@ const SetupCard = ({
   ) : (
     <Disclosure
       header="static"
-      title={
-        titleTooltip ? (
-          <span className={styles.titleRow}>
-            {title}
-            <TooltipMark
-              label={title}
-              content={titleTooltip}
-              className={styles.infoMark}
-            />
-          </span>
-        ) : (
-          title
-        )
-      }
+      title={staticTitle}
       status={status}
       actions={summary}
     >

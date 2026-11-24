@@ -13,12 +13,6 @@
   gap: var(--gv-space-4);
 }
 
-.label {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--gv-space-4);
-}
-
 .modifiedBy {
   composes: small from '../../../../../../../design-system/typography.module.css';
   margin: 0;

@@ -33,6 +33,7 @@ const ACTION_ICONS: Record<CardIcon, IconName> = {
 interface Props {
   title: string;
   titleTooltip?: JSX.Element;
+  staticTitle?: ReactNode;
   /** A review status, shown next to the title. */
   status?: ReactNode;
   action?: ReactNode;
@@ -43,6 +44,7 @@ interface Props {
 const SetupCardButton = ({
   title,
   titleTooltip,
+  staticTitle = title,
   status,
   action,
   button,
@@ -79,7 +81,7 @@ const SetupCardButton = ({
     return (
       <Disclosure
         header="static"
-        title={title}
+        title={staticTitle}
         status={status}
         summary={action}
         actions={

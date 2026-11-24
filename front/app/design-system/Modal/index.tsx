@@ -26,6 +26,7 @@ const Modal = ({
   secondaryAction,
   leadingAction,
   showClose = true,
+  isCloseDisabled,
   size = 560,
   isOpen,
   onOpenChange,
@@ -35,7 +36,8 @@ const Modal = ({
   <ModalOverlay
     isOpen={isOpen}
     onOpenChange={onOpenChange}
-    isDismissable={isDismissable}
+    isDismissable={isDismissable && !isCloseDisabled}
+    isKeyboardDismissDisabled={isCloseDisabled}
     className={styles.overlay}
   >
     <AriaModal className={`${styles.modal} ${styles[`size${size}`]}`}>
@@ -46,6 +48,7 @@ const Modal = ({
         secondaryAction={secondaryAction}
         leadingAction={leadingAction}
         showClose={showClose}
+        isCloseDisabled={isCloseDisabled}
         data-cy={dataCy}
       >
         {children}

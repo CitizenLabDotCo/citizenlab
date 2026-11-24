@@ -1,33 +1,39 @@
 import React, { ReactNode } from 'react';
 
+import { useIntl } from 'utils/cl-intl';
+
 import Icon from '../Icon';
 
+import messages from './messages';
 import styles from './TooltipMark.module.css';
 import TooltipTarget from './TooltipTarget';
 
 import Tooltip from './index';
 
 type Props = {
-  label: string;
+  label?: string;
   content?: ReactNode;
   children?: ReactNode;
   className?: string;
+  size?: 24;
 };
 
-const TooltipMark = ({
-  label,
-  content = label,
-  children,
-  className,
-}: Props) => (
-  <Tooltip content={content}>
-    <TooltipTarget
-      className={className ? `${styles.mark} ${className}` : styles.mark}
-      aria-label={label}
-    >
-      {children ?? <Icon name="info-16" className={styles.info} />}
-    </TooltipTarget>
-  </Tooltip>
-);
+const TooltipMark = ({ label, content, children, className, size }: Props) => {
+  const { formatMessage } = useIntl();
+  const accessibleLabel = label ?? formatMessage(messages.moreInformation);
+
+  return (
+    <Tooltip content={content ?? accessibleLabel}>
+      <TooltipTarget
+        className={`${styles.mark} ${size === 24 ? styles.size24 : ''} ${
+          className ?? ''
+        }`}
+        aria-label={accessibleLabel}
+      >
+        {children ?? <Icon name="info-16" className={styles.info} />}
+      </TooltipTarget>
+    </Tooltip>
+  );
+};
 
 export default TooltipMark;

@@ -23,11 +23,19 @@ type FieldLabelProps = {
   children: ReactNode;
   // Extra help behind an info icon; it also names the icon for screen readers.
   tooltip?: string;
+  labelAccessory?: ReactNode;
 };
 
-export const FieldLabel = ({ children, tooltip }: FieldLabelProps) => (
-  <div className={styles.labelRow}>
+export const FieldLabel = ({
+  children,
+  tooltip,
+  labelAccessory,
+}: FieldLabelProps) => (
+  <div
+    className={labelAccessory ? styles.labelRowWithAccessory : styles.labelRow}
+  >
     <Label className={styles.label}>{children}</Label>
+    {labelAccessory}
     {tooltip && <TooltipMark label={tooltip} />}
   </div>
 );

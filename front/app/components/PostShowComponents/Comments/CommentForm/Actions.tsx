@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react';
+import React from 'react';
 
 import {
   useBreakpoint,
@@ -17,7 +17,7 @@ import { useLocation } from 'utils/router';
 import { useIsPanelComments } from '../commentsVariant';
 import messages from '../messages';
 
-const PanelCommentActions = lazy(() => import('./PanelCommentActions'));
+import PanelCommentActions from './PanelCommentActions';
 
 interface Props {
   processing: boolean;
@@ -62,18 +62,16 @@ const Actions = ({
 
   if (isPanel) {
     return (
-      <Suspense fallback={null}>
-        <PanelCommentActions
-          processing={processing}
-          postAnonymously={postAnonymously}
-          allowAnonymousParticipation={allowAnonymousParticipation}
-          submitButtonDisabled={submitButtonDisabled}
-          submitLabel={formatMessage(buttonText)}
-          togglePostAnonymously={togglePostAnonymously}
-          onSubmit={onSubmit}
-          onCancel={onCancel}
-        />
-      </Suspense>
+      <PanelCommentActions
+        processing={processing}
+        postAnonymously={postAnonymously}
+        allowAnonymousParticipation={allowAnonymousParticipation}
+        submitButtonDisabled={submitButtonDisabled}
+        submitLabel={formatMessage(buttonText)}
+        togglePostAnonymously={togglePostAnonymously}
+        onSubmit={onSubmit}
+        onCancel={onCancel}
+      />
     );
   }
 
