@@ -16,6 +16,7 @@ import {
 } from 'utils/phasePreview/types';
 
 import messages from './messages';
+import SimulateBar from './SimulateBar';
 
 const lifecycleOptions = {
   before: {
@@ -134,10 +135,7 @@ const PhasePreview = ({ src, title, snapshot }: Props) => {
           frameName={PREVIEW_FRAME_NAME}
           frameRef={frameRef}
           dataCy="e2e-phase-preview"
-          bottomSpace={
-            (isInformation ? 0 : snapshot.unsaved ? 88 : 56) +
-            (blocked ? 32 : 0)
-          }
+          bottomSpace={(isInformation ? 0 : 56) + (blocked ? 32 : 0)}
         />
       </Box>
       <Box role="status" px="16px">
@@ -154,19 +152,7 @@ const PhasePreview = ({ src, title, snapshot }: Props) => {
         )}
       </Box>
       {!isInformation && (
-        <Box
-          display="flex"
-          flexDirection="column"
-          alignItems="flex-end"
-          gap="8px"
-          px="16px"
-          pb="16px"
-        >
-          {snapshot.unsaved && (
-            <Text fontSize="s" color="textSecondary" textAlign="right" m="0">
-              {formatMessage(messages.newPhase)}
-            </Text>
-          )}
+        <SimulateBar>
           <PreviewStateSelector
             aria-label={formatMessage(messages.lifecycle)}
             options={LIFECYCLES.map((value) => ({
@@ -185,7 +171,7 @@ const PhasePreview = ({ src, title, snapshot }: Props) => {
               }
             }}
           />
-        </Box>
+        </SimulateBar>
       )}
     </Box>
   );

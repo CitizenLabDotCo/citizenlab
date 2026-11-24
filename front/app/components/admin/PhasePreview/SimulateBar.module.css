@@ -1,0 +1,39 @@
+.bar {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gv-space-12);
+  height: var(--gv-size-48);
+  margin: 0 var(--gv-space-8) var(--gv-space-8);
+  padding: 0 var(--gv-space-6) 0 var(--gv-space-16);
+  border: var(--gv-border-width-1) solid var(--gv-border-control);
+  border-radius: var(--gv-radius-8);
+  background: var(--gv-surface-panel);
+  white-space: nowrap;
+}
+
+.label {
+  composes: ui from '../../../design-system/typography.module.css';
+  composes: ringOutside from '../../../design-system/focus.module.css';
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gv-space-8);
+  border-radius: var(--gv-radius-4);
+  color: var(--gv-text-secondary);
+  cursor: default;
+}
+
+.label:hover,
+.label:focus-visible {
+  color: var(--gv-text-primary);
+}
+
+.tipTitle {
+  display: block;
+  font-weight: var(--gv-font-weight-medium);
+}
+
+.tipText {
+  display: block;
+}
