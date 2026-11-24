@@ -26,7 +26,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { weglotTranslateSubmission } from 'utils/weglot';
 
-import PanelFormButtons from '../CommentForm/PanelFormButtons';
+import LazyPanelFormButtons from '../CommentForm/LazyPanelFormButtons';
 import panelStyles from '../commentsPanel.module.css';
 import { panelTextAreaStyle, useIsPanelComments } from '../commentsVariant';
 import { commentTranslateButtonClicked$ } from '../events';
@@ -258,7 +258,7 @@ const CommentBody = ({
           {isPanel ? (
             <div className={panelStyles.editFooter}>
               {editError}
-              <PanelFormButtons
+              <LazyPanelFormButtons
                 cancelLabel={formatMessage(messages.cancelCommentEdit)}
                 submitLabel={formatMessage(messages.saveCommentEdit)}
                 onCancel={resetEditing}
