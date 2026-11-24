@@ -178,10 +178,9 @@ context 'criipto verification' do
       auth_hash['extra']['raw_info']['address_details']['municipality_code'] = '0666'
       auth_hash['extra']['raw_info']['address']['postal_code'] = '3500'
       OmniAuth.config.mock_auth[:criipto] = OmniAuth::AuthHash.new(auth_hash)
-      @user.custom_field_answers.build(key: 'birthdate', value: '1902-12-25')
-      @user.custom_field_answers.build(key: 'birthyear', value: 1902)
-      @user.custom_field_answers.build(key: 'municipality_code', value: '0123')
-      @user.custom_field_answers.build(key: 'postal_code', value: '1234')
+      { 'birthdate' => '1902-12-25', 'birthyear' => 1902, 'municipality_code' => '0123', 'postal_code' => '1234' }.each do |key, value|
+        create(:custom_field_answer, answerable: @user, custom_field: CustomField.find_by!(key: key), value: value)
+      end
       @user.update!(verified: true)
     end
 
