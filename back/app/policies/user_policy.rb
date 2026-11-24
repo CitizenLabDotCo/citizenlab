@@ -42,6 +42,12 @@ class UserPolicy < ApplicationPolicy
       IntercomMessengerTokenService.new.configured?
   end
 
+  def userjot_identity?
+    active_admin? &&
+      AppConfiguration.instance.feature_activated?('userjot') &&
+      UserjotIdentityService.new.configured?
+  end
+
   def index_xlsx?
     active_admin?
   end
