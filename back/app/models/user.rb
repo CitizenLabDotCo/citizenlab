@@ -73,6 +73,8 @@ class User < ApplicationRecord
   EMAIL_DOMAIN_BLACKLIST = EmailDomainBlacklist.load
   EMAIL_DOMAIN_BLOCKED_ERROR_CODE = 'zrb-42'
   EMAIL_BANNED_ERROR_CODE = 'zrb-43'
+  # See +.destroy_all_async+.
+  THIRD_PARTY_REMOVAL_BATCH_SIZE = 250
 
   # NOTE: Apr 2026 - Slug is still generated but no longer used in the codebase.
   # It will be removed in the near future when we are sure there is no further use for it.
@@ -85,6 +87,10 @@ class User < ApplicationRecord
     # Users that already have a pending +DeleteUserJob+ are skipped. Because the jobs are
     # spread out over time, a sweep is still in flight long after it was started, and a
     # second sweep would otherwise enqueue a duplicate job for every remaining user.
+    #
+    # The users are removed from third-party services (Intercom, Segment, Matomo, PostHog)
+    # with one job per service for every +THIRD_PARTY_REMOVAL_BATCH_SIZE+ users, instead of
+    # four jobs per user.
     def destroy_all_async(scope = User)
       pending = user_ids_with_pending_deletion_job
       ids, skipped = scope.pluck(:id).partition { |id| pending.exclude?(id) }
@@ -98,7 +104,17 @@ class User < ApplicationRecord
       ids.each.with_index do |id, idx|
         # Spread out the deletion of users to avoid throttling.
         # Note: No need to update member counts if we're deleting all users, as the count will never be seen.
-        DeleteUserJob.set(wait: (idx / 5.0).seconds).perform_later(id, update_member_counts: false)
+        DeleteUserJob
+          .set(wait: (idx / 5.0).seconds)
+          .perform_later(id, update_member_counts: false, remove_from_third_parties: false)
+      end
+
+      # Each batch is removed from third parties a few minutes after its last user was deleted,
+      # so that the users can no longer be tracked again in the meantime.
+      side_fx = SideFxUserService.new
+      ids.each_slice(THIRD_PARTY_REMOVAL_BATCH_SIZE).with_index do |batch, batch_idx|
+        last_deletion_at = (((batch_idx * THIRD_PARTY_REMOVAL_BATCH_SIZE) + batch.size - 1) / 5.0).seconds
+        side_fx.after_destroy_all(batch, wait: last_deletion_at + 5.minutes)
       end
     end
 
