@@ -123,6 +123,8 @@
   display: flex;
   flex-shrink: 0;
   align-items: center;
+  /* A card whose action is a switch is as tall as one with an icon box. */
+  min-height: var(--gv-size-28);
 }
 
 /* Closing: the height on easing-move. Opening (below): easing-silk. */
