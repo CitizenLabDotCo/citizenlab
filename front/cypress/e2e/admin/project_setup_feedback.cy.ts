@@ -288,7 +288,7 @@ describe('Project setup feedback', () => {
     };
     for (let attempt = 0; attempt < 2; attempt++) {
       scrollAway();
-      cy.contains('button', /^Save$/).click();
+      cy.contains('button', /^Save changes$/).click();
       expectErrorInView('Missing start date');
     }
 
@@ -298,12 +298,12 @@ describe('Project setup feedback', () => {
     cy.intercept('POST', `**/web_api/v1/projects/${projectId}/phases`).as(
       'createOpenPhase'
     );
-    cy.contains('button', /^Save$/).click();
+    cy.contains('button', /^Save changes$/).click();
     cy.wait('@createOpenPhase').its('response.statusCode').should('eq', 422);
     expectErrorInView('This cannot be empty.');
 
     cy.get('#phase-build-panel-title').type('Open-ended phase');
-    cy.contains('button', /^Save$/).click();
+    cy.contains('button', /^Save changes$/).click();
     cy.wait('@createOpenPhase').then(({ response }) => {
       expect(response?.statusCode).to.eq(201);
       expect(response?.body.data.attributes.end_at).to.eq(null);
@@ -339,7 +339,7 @@ describe('Project setup feedback', () => {
     cy.get('#phase-build-panel-title').type('Phase with tags');
     cy.contains('button', 'Idea tags').click();
     cy.get('#phase-add-input-tag').type('Unsaved tag{enter}');
-    cy.contains('button', /^Save$/).click();
+    cy.contains('button', /^Save changes$/).click();
     cy.wait('@createPhase').then(({ response }) => {
       expect(response?.statusCode).to.eq(201);
       cy.wait('@failedTag');
@@ -347,7 +347,7 @@ describe('Project setup feedback', () => {
       cy.contains('The tags could not be saved').should('be.visible');
       cy.contains('Unsaved tag').scrollIntoView().should('be.visible');
 
-      cy.contains('button', /^Save$/).click();
+      cy.contains('button', /^Save changes$/).click();
       cy.location('pathname').should(
         'include',
         `/phases/${response?.body.data.id}/setup`
@@ -376,7 +376,7 @@ describe('Project setup feedback', () => {
     );
     cy.get('[role="dialog"]').contains('example.pdf').should('be.visible');
     cy.get('[role="dialog"]').contains('button', 'Done').click();
-    cy.contains('button', /^Save$/).click();
+    cy.contains('button', /^Save changes$/).click();
     cy.wait('@createPhase').then(({ response }) => {
       expect(response?.statusCode).to.eq(201);
       cy.wait('@failedAttachment');
@@ -386,7 +386,7 @@ describe('Project setup feedback', () => {
         .contains('What should an input be called?')
         .click();
       cy.get('[data-review-card="input_term"]').should('contain', 'Reviewed');
-      cy.contains('button', /^Save$/).click();
+      cy.contains('button', /^Save changes$/).click();
       cy.location('pathname').should(
         'include',
         `/phases/${response?.body.data.id}/setup`
