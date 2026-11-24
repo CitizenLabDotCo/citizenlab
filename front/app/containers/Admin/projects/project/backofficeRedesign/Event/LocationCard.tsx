@@ -5,7 +5,6 @@ import { Multiloc } from 'typings';
 import TextField from 'design-system/TextField';
 
 import SetupCard from 'containers/Admin/projects/_shared/components/SetupCard';
-import { EventForm } from 'containers/Admin/projects/_shared/events/useEventForm';
 import eventMessages from 'containers/Admin/projects/project/events/messages';
 
 import MultilocTextField from 'components/admin/MultilocFields/MultilocTextField';
@@ -16,6 +15,7 @@ import { useIntl } from 'utils/cl-intl';
 import styles from './LocationCard.module.css';
 import LocationComboBox from './LocationComboBox';
 import messages from './messages';
+import { EventForm } from './useEventForm';
 import 'design-system/tokens.css';
 
 // Lazy so ArcGIS only loads once the event has a place on the map.
