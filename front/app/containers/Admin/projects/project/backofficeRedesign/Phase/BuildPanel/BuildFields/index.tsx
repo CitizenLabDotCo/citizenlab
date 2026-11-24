@@ -83,16 +83,15 @@ const BuildFields = ({
       </div>
 
       <div className={styles.sections}>
-        <PhaseDates
-          participationMethod={participationMethod}
-          formData={formData}
-          errors={errors}
-          validationErrors={validationErrors}
-          standalone={standalone}
-          onChange={onDatesChange}
-        />
-
         <div className={styles.details}>
+          <PhaseDates
+            participationMethod={participationMethod}
+            formData={formData}
+            errors={errors}
+            validationErrors={validationErrors}
+            standalone={standalone}
+            onChange={onDatesChange}
+          />
           <div className={styles.group}>
             <div className="intercom-admin-phase-name">
               <MultilocTitleField
