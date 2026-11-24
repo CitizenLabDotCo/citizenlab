@@ -296,6 +296,9 @@ export function randomPhoneNumber() {
 
 // Picks today in the redesigned phase date picker, then closes its calendar.
 export function pickTodayInPhaseDatePicker() {
+  cy.contains('button[aria-expanded]', /^(Survey )?Dates/i).then(($dates) => {
+    if ($dates.attr('aria-expanded') === 'false') cy.wrap($dates).click();
+  });
   cy.get('.e2e-date-phase-picker-input button').first().click();
   cy.get('[role="dialog"] [role="grid"] [data-today]').first().click();
   // The pressed day keeps focus, so Escape reaches the calendar popover.
