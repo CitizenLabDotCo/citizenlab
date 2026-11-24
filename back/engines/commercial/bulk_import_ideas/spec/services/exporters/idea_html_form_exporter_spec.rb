@@ -110,6 +110,15 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
       end
     end
 
+    context 'when the custom start text is blank for the export locale' do
+      let(:custom_form) { create(:custom_form, participation_context: phase, print_start_multiloc: { 'en' => '' }) }
+
+      it 'falls back to the default header with the instructions' do
+        expect(parsed_html.css('h2').map(&:text)).to include 'Instructions'
+        expect(parsed_html.css('ul.instructions')).to be_present
+      end
+    end
+
     context 'personal data not enabled' do
       it 'does not return a personal data section' do
         expect(parsed_html.css('div#personal-data')).to be_empty
