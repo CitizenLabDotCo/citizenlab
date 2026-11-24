@@ -36,7 +36,7 @@ const IdeationInsights = ({ phaseId }: MethodSpecificInsightProps) => {
         gap="16px"
         w="100%"
       >
-        <Box w="100%" flex={redesigned ? '1 1 320px' : undefined} minWidth="0">
+        <Box w="100%" flex={redesigned ? '1.4 1 320px' : undefined} minWidth="0">
           <AiSummary phaseId={phaseId} participationMethod="ideation" />
         </Box>
         <Box w="100%" flex={redesigned ? '1 1 320px' : undefined} minWidth="0">
