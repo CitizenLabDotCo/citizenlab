@@ -1,4 +1,6 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
+
+import { Controller, useFieldArray, useForm } from 'react-hook-form';
 
 import Banner from 'design-system/Banner';
 import Checkbox from 'design-system/Checkbox';
@@ -28,44 +30,61 @@ interface Props {
   onClose: () => void;
 }
 
+interface FormValues {
+  files: Pick<Upload, 'file' | 'status' | 'category'>[];
+  allowAiProcessing: boolean;
+}
+
 const AddFilesModal = ({ draft, opened, onClose }: Props) => {
   const { formatMessage } = useIntl();
-  const [selected, setSelected] = useState<Upload[]>([]);
-  const [tooManyFiles, setTooManyFiles] = useState(false);
-  const [allowAiProcessing, setAllowAiProcessing] = useState(false);
-  const nextKey = useRef(0);
+  const {
+    control,
+    handleSubmit,
+    reset,
+    setError,
+    clearErrors,
+    formState: { errors },
+  } = useForm<FormValues>({
+    defaultValues: { files: [], allowAiProcessing: false },
+  });
+  const {
+    fields: selected,
+    append,
+    remove,
+  } = useFieldArray({ control, name: 'files' });
 
   const addFiles = (files: File[]) => {
-    const tooMany = selected.length + files.length > MAX_FILES;
-    setTooManyFiles(tooMany);
-    if (tooMany) return;
+    if (selected.length + files.length > MAX_FILES) {
+      setError('files', { type: 'max' });
+      return;
+    }
 
-    setSelected((current) => [
-      ...current,
-      ...files.map(
-        (file): Upload => ({
-          key: nextKey.current++,
-          file,
-          status: file.size > MAX_FILE_SIZE ? 'too_large' : 'queued',
-        })
-      ),
-    ]);
+    clearErrors('files');
+    append(
+      files.map((file) => ({
+        file,
+        status: file.size > MAX_FILE_SIZE ? 'too_large' : 'queued',
+      }))
+    );
   };
 
-  const queued = selected.filter(({ status }) => status === 'queued');
+  const queuedCount = selected.filter(
+    ({ status }) => status === 'queued'
+  ).length;
   const totalSize = selected.reduce((sum, { file }) => sum + file.size, 0);
 
   const handleClose = () => {
-    setSelected([]);
-    setTooManyFiles(false);
-    setAllowAiProcessing(false);
+    reset();
     onClose();
   };
 
-  const handleAdd = () => {
-    draft.addFiles(queued, allowAiProcessing);
+  const handleAdd = handleSubmit(({ files, allowAiProcessing }) => {
+    draft.addFiles(
+      files.filter(({ status }) => status === 'queued'),
+      allowAiProcessing
+    );
     handleClose();
-  };
+  });
 
   const addFilesLabel = formatMessage(resourcesSectionMessages.addFiles);
 
@@ -79,8 +98,8 @@ const AddFilesModal = ({ draft, opened, onClose }: Props) => {
       size={560}
       primaryAction={{
         label: addFilesLabel,
-        onPress: handleAdd,
-        isDisabled: queued.length === 0,
+        onPress: () => handleAdd(),
+        isDisabled: queuedCount === 0,
       }}
     >
       <div className={styles.upload}>
@@ -92,7 +111,7 @@ const AddFilesModal = ({ draft, opened, onClose }: Props) => {
         <p className={styles.hint}>
           {formatMessage(messages.supportedFileTypes)}
         </p>
-        {tooManyFiles && (
+        {errors.files && (
           <Banner tone="error">
             {formatMessage(filesMessages.maxFilesError, {
               maxFiles: MAX_FILES,
@@ -109,35 +128,37 @@ const AddFilesModal = ({ draft, opened, onClose }: Props) => {
             })}
           </p>
           <div className={styles.files}>
-            {selected.map(({ key, file, status, category }) => (
-              <UploadingFileRow
-                key={key}
-                file={file}
-                status={status}
-                category={category}
-                onCategoryChange={(category) =>
-                  setSelected((current) =>
-                    current.map((upload) =>
-                      upload.key === key ? { ...upload, category } : upload
-                    )
-                  )
-                }
-                onRemove={() =>
-                  setSelected((current) =>
-                    current.filter((upload) => upload.key !== key)
-                  )
-                }
+            {selected.map(({ id, file, status }, index) => (
+              <Controller
+                key={id}
+                control={control}
+                name={`files.${index}.category`}
+                render={({ field }) => (
+                  <UploadingFileRow
+                    file={file}
+                    status={status}
+                    category={field.value}
+                    onCategoryChange={field.onChange}
+                    onRemove={() => remove(index)}
+                  />
+                )}
               />
             ))}
           </div>
           <div className={styles.aiProcessing}>
-            <Checkbox
-              isSelected={allowAiProcessing}
-              isDisabled={queued.length === 0}
-              onChange={setAllowAiProcessing}
-            >
-              {formatMessage(filesMessages.allowAiProcessing)}
-            </Checkbox>
+            <Controller
+              control={control}
+              name="allowAiProcessing"
+              render={({ field }) => (
+                <Checkbox
+                  isSelected={field.value}
+                  isDisabled={queuedCount === 0}
+                  onChange={field.onChange}
+                >
+                  {formatMessage(filesMessages.allowAiProcessing)}
+                </Checkbox>
+              )}
+            />
           </div>
         </div>
       )}
